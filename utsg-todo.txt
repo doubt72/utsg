@@ -1,0 +1,17 @@
+Proper signup page
+  check to see what's returned
+  check to see if username available
+  check to see if email available
+Proper login page
+Proper logout page
+Reroute bad URIs to homepage
+Allow user deletion
+  Allow from verification page
+    Are you sure?
+
+Add profile page
+Add about page
+Add current user display
+
+Add working chat
+Okay

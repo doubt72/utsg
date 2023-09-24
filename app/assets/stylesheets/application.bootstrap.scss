@@ -1,0 +1,94 @@
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+@import './colors.scss';
+@import './standard-formatting.scss';
+
+// Common
+
+button.custom-button,a.custom-button {
+  text-decoration: none;
+  color: $light-green;
+  background-color: $dark-green;
+  margin: 0.25em;
+  border-radius: 0.33em;
+  border: none;
+  outline: none;
+}
+
+a.custom-button {
+  padding: 0.33em 1em;
+}
+
+button.custom-button {
+  padding: 0.155em 1em;
+}
+
+button.custom-button:hover,a.custom-button:hover {
+  color: white;
+  background-color: black;
+}
+
+.form-container {
+  width: 500px;
+  padding: 1em;
+  margin: 1em;
+  border: 2px solid $border-color-light-gray;
+  border-radius: 0.5em;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.2em 0.5em;
+  margin: 0 0 0.5em 0;
+  // border-radius: 0.25em;
+}
+
+.form-error-message {
+  color: red;
+}
+
+// Common header
+.header {
+  display: flex;
+  width: 100%;
+  padding: 1em 1em 0.5em 1em;
+  border-bottom: 3px solid $border-color;
+}
+
+.header-logo {
+  color: $dark-green;
+  background-color: $background-green;
+  padding: 0.25em 0.5em;
+  font-weight: bold;
+  border-radius: 0.5em;
+}
+
+.header-user-controls {
+  padding: 0.5em 0.5em 0em 0.5em;
+  flex-grow: 1;
+  text-align: end;
+}
+
+// Main page layout
+.main-page-top-section {
+  display: flex;
+  width: 100%;
+  padding: 1em;
+}
+
+.main-page-announcements {
+  padding: 1em;
+  margin-right: 1em;
+  width: 40%;
+  height: 250px;
+  background-color: $background-green;
+  border-radius: 0.5em;
+}
+
+.main-page-chat {
+  padding: 1em;
+  flex-grow: 1;
+  height: 250px;
+  background-color: $background-gray;
+  border-radius: 0.5em;
+}

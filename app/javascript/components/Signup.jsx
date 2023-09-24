@@ -1,0 +1,150 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+const Signup = () => {
+  const navigate = useNavigate();
+  const [formInput, setFormInput] = useState({
+    username: "", email: "", password: "", confirmPassword: ""
+  });
+  const [formErrors, setFormError] = useState({
+    username: "", email: "", password: ""
+  });
+
+  const validateForm = (name, value) => {
+    let usernameError = formErrors.username;
+    let emailError = formErrors.email;
+    let passwordError = formErrors.password;
+
+    if (name === "username") {
+      if (value === "") {
+        usernameError = "Username must not be blank";
+      } else {
+        // TODO check to see if available
+        usernameError = ""
+      }
+    } else if (name === "email") {
+      const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      if (value === "") {
+        emailError = "Email must not be blank";
+      } else if (value.match(validRegex)) {
+        // TODO check to see if available
+        emailError = "";
+      } else {
+        emailError = "Please enter a valid email address"
+      }
+    } else if (name === "password") {
+      if (value !== formInput.confirmPassword) {
+        passwordError = "Passwords must match";
+      } else if (value === "") {
+        passwordError = "Password must not be blank";
+      } else {
+        passwordError = "";
+      }
+    } else if (name === "confirmPassword") {
+      if (value !== formInput.password) {
+        passwordError = "Passwords must match";
+      } else if (formInput.password === "") {
+        passwordError = "Password must not be blank";
+      } else {
+        passwordError = "";
+      }
+    }
+    setFormError({ username: usernameError, email: emailError, password: passwordError });
+    return usernameError === "" && emailError === "" && passwordError === ""
+  }
+
+  const onChange = (name, value) => {
+    setFormInput({ ...formInput, [name]: value });
+    validateForm(name, value);
+  }
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (!validateForm("", "")) {
+      return false;
+    } else {
+      const url = "/api/v1/users";
+
+      const body = {
+        user: {
+          username: formInput.username,
+          email: formInput.email,
+          password: formInput.password,
+        }
+      };
+
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then(response => {
+          if (response.ok) {
+            const json = response.json().then(json => {
+              localStorage.setItem("username", json.username)
+              localStorage.setItem("email", json.email)
+              navigate("/validate_account", { replace: true });
+            })
+            return
+          }
+          console.log(response.json());
+          throw new Error("something went wrong");
+      }).catch(error => console.log(error.message));
+    }
+  };
+
+  return (
+    <div>
+      <div className="header">
+        <div className="header-logo">UTSG</div>
+      </div>
+      <div className="form-container">
+        <form onSubmit={onSubmit}>
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            className="form-input"
+            onChange={({ target }) => onChange(target.name, target.value)}
+          />
+          <div className="form-error-message">{formErrors.username}</div>
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            className="form-input"
+            onChange={({ target }) => onChange(target.name, target.value)}
+          />
+          <div className="form-error-message">{formErrors.email}</div>
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            className="form-input"
+            onChange={({ target }) => onChange(target.name, target.value)}
+          />
+          <label>Verify Password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="userConfirmPassword"
+            className="form-input"
+            onChange={({ target }) => onChange(target.name, target.value)}
+          />
+          <div className="form-error-message">{formErrors.password}</div>
+          <button type="submit" className="custom-button">
+            Sign Up
+          </button>
+          <Link to="/" className="custom-button">
+            Cancel
+          </Link>
+        </form>
+      </div>
+    </div>
+  )
+};
+
+export default Signup;
