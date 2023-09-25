@@ -23,8 +23,8 @@ button.custom-button {
 }
 
 button.custom-button:hover,a.custom-button:hover {
-  color: white;
-  background-color: black;
+  color: $bright-green;
+  background-color: $very-dark-green;
 }
 
 .form-container {
@@ -52,25 +52,19 @@ button.custom-button:hover,a.custom-button:hover {
   width: 100%;
   padding: 1em 0.5em 0.5em 0.5em;
   border-bottom: 3px solid $border-color;
-  background-color: #DDD;
 }
 
 .header-section {
-  padding: 0.5em 0.25em 0em 0.25em;
+  padding: 2.8em 0.25em 0em 0.25em;
 }
 
 .header-right {
   flex-grow: 1;
   text-align: end;
-  background-color: #BBB;
 }
 
-.logo {
-  color: $dark-green;
-  background-color: $background-green;
-  padding: 0.25em 0.5em;
-  font-weight: bold;
-  border-radius: 0.5em;
+.header-logo {
+  padding: 0.5em 0.25em 0em 0.25em;
 }
 
 // Main page layout

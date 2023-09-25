@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "./Logo"
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,13 +24,13 @@ const Login = () => {
 
     if (name === "username") {
       if (value === "") {
-        usernameError = "Please enter a username or email";
+        usernameError = "please enter a username or email";
       } else {
         usernameError = ""
       }
     } else if (name === "password") {
       if (value === "") {
-        passwordError = "Please enter a password";
+        passwordError = "please enter a password";
       } else {
         passwordError = "";
       }
@@ -74,10 +75,9 @@ const Login = () => {
             })
             return
           } else if (response.status === 401) {
-            setFormError({ username: "", password: "Supplied username or password are not correct" });
+            setFormError({ username: "", password: "username not found or password incorrect" });
           }
           console.log(response.json());
-          throw new Error("something went wrong");
       }).catch(error => console.log(error.message));
     }
   };
@@ -85,11 +85,11 @@ const Login = () => {
   return (
     <div>
       <div className="header">
-        <div className="header-logo">UTSG</div>
+        <Logo />
       </div>
       <div className="form-container">
         <form onSubmit={onSubmit}>
-          <label>Username or email address</label>
+          <label>username or email address</label>
           <input
             type="text"
             name="username"
@@ -97,7 +97,7 @@ const Login = () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.username}</div>
-          <label>Password</label>
+          <label>password</label>
           <input
             type="password"
             name="password"
@@ -105,12 +105,14 @@ const Login = () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.password}</div>
-          <button type="submit" className="custom-button">
-            Login
-          </button>
-          <Link to="/" className="custom-button">
-            Cancel
-          </Link>
+          <div className="align-end">
+            <Link to="/" className="custom-button">
+              cancel
+            </Link>
+            <button type="submit" className="custom-button">
+              login
+            </button>
+          </div>
         </form>
       </div>
     </div>

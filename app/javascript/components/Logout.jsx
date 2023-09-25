@@ -21,7 +21,6 @@ const Logout = () => {
           return
         }
         console.log(response.json());
-        throw new Error("something went wrong");
     }).catch(error => console.log(error.message));
   }, []);
 

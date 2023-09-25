@@ -33,14 +33,14 @@ const NewUser = () => {
       },
       body: JSON.stringify(body),
     })
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
           return response.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => navigate(`/users/${response.id}`))
-      .catch((error) => console.log(error.message));
+      .then(response => navigate(`/users/${response.id}`))
+      .catch(error => console.log(error.message));
   };
 
   return (

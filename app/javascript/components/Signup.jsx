@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "./Logo"
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -38,8 +39,8 @@ const Signup = () => {
           if (response.ok) {
             const json = response.json().then(json => {
               if (json.conflict) {
-                const usernameError = type === "username" ? "Username already taken" : formErrors.username
-                const emailError = type === "email" ? "Email already taken" : formErrors.email
+                const usernameError = type === "username" ? "username already exists" : formErrors.username
+                const emailError = type === "email" ? "email already exists" : formErrors.email
                 setFormError({
                   username: usernameError,
                   email: emailError,
@@ -51,7 +52,6 @@ const Signup = () => {
             return
           }
           console.log(response.json());
-          throw new Error("something went wrong");
       }).catch(error => console.log(error.message));
     }, 1000);
     if (conflictTimer > 0) {
@@ -67,7 +67,7 @@ const Signup = () => {
 
     if (name === "username") {
       if (value === "") {
-        usernameError = "Username must not be blank";
+        usernameError = "username must not be blank";
       } else {
         usernameError = ""
       }
@@ -75,19 +75,19 @@ const Signup = () => {
     } else if (name === "email") {
       const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
       if (value === "") {
-        emailError = "Email must not be blank";
+        emailError = "email must not be blank";
       } else if (value.match(validRegex)) {
         emailError = "";
       } else {
-        emailError = "Please enter a valid email address"
+        emailError = "please enter a valid email address"
       }
       checkConflict("email", value);
     } else if (name === "password") {
       if (value !== formInput.confirmPassword) {
-        confirmPasswordError = "Passwords must match";
+        confirmPasswordError = "passwords must match";
         passwordError = "";
       } else if (value === "") {
-        passwordError = "Password must not be blank";
+        passwordError = "password must not be blank";
         confirmPasswordError = "";
       } else {
         confirmPasswordError = "";
@@ -95,10 +95,10 @@ const Signup = () => {
       }
     } else if (name === "confirmPassword") {
       if (value !== formInput.password) {
-        confirmPasswordError = "Passwords must match";
+        confirmPasswordError = "passwords must match";
         passwordError = "";
       } else if (formInput.password === "") {
-        passwordError = "Password must not be blank";
+        passwordError = "password must not be blank";
         confirmPasswordError = "";
       } else {
         passwordError = "";
@@ -152,7 +152,6 @@ const Signup = () => {
             return
           }
           console.log(response.json());
-          throw new Error("something went wrong");
       }).catch(error => console.log(error.message));
     }
   };
@@ -160,14 +159,14 @@ const Signup = () => {
   return (
     <div>
       <div className="header">
-        <div className="header-logo">UTSG</div>
+        <Logo />
       </div>
       <div className="form-container">
         <div className="mb1em">
           Sign up for a new account here:
         </div>
         <form onSubmit={onSubmit}>
-          <label>Username</label>
+          <label>username</label>
           <input
             type="text"
             name="username"
@@ -175,7 +174,7 @@ const Signup = () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.username}</div>
-          <label>Email</label>
+          <label>email</label>
           <input
             type="email"
             name="email"
@@ -183,7 +182,7 @@ const Signup = () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.email}</div>
-          <label>Password</label>
+          <label>password</label>
           <input
             type="password"
             name="password"
@@ -191,7 +190,7 @@ const Signup = () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.password}</div>
-          <label>Verify Password</label>
+          <label>verify Password</label>
           <input
             type="password"
             name="confirmPassword"
@@ -200,12 +199,14 @@ const Signup = () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.confirmPassword}</div>
-          <button type="submit" className="custom-button">
-            Sign Up
-          </button>
-          <Link to="/" className="custom-button">
-            Cancel
-          </Link>
+          <div className="align-end">
+            <Link to="/" className="custom-button">
+              cancel
+            </Link>
+            <button type="submit" className="custom-button">
+              sign up
+            </button>
+          </div>
         </form>
       </div>
     </div>

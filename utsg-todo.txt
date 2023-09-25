@@ -1,6 +1,5 @@
 Proper signup page
-  check to see if username available
-  check to see if email available
+  Add tooltips
 Reroute bad URIs to homepage
 Allow generate new token
 Allow user deletion
@@ -9,11 +8,7 @@ Allow user deletion
 
 Add profile page
 Add about page
-Add current user display
 
 Add working chat
-Okay
-
-Add global name/logo: add to welcome on signup, add to about
 
 Add linters

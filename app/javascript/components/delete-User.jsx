@@ -9,13 +9,13 @@ const User = () => {
   useEffect(() => {
     const url = `/api/v1/show/${params.id}`;
     fetch(url)
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
           return response.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => setUser(response))
+      .then(response => setUser(response))
       .catch(() => navigate("/users"));
   }, [params.id]);
 
@@ -30,14 +30,14 @@ const User = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => {
+      .then(response => {
         if (response.ok) {
           return response.json();
         }
         throw new Error("Network response was not ok.");
       })
       .then(() => navigate("/users"))
-      .catch((error) => console.log(error.message));
+      .catch(error => console.log(error.message));
   };
   
   return (

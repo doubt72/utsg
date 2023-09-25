@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Logo from "./Logo"
 
 export default () => {
 
@@ -13,16 +14,14 @@ export default () => {
 
   const loggedOut = (
     <div className="header-section header-right">
-      <Link to="/signup" className="custom-button">signup</Link>
+      <Link to="/signup" className="custom-button">sign up</Link>
       <Link to="/login" className="custom-button">login</Link>
     </div>
   );
 
   return (
     <div className="header">
-      <div className="header-section">
-        <span className="logo">UTSG</span>
-      </div>
+      <Logo />
       <div className="header-section">
         <Link to="/about" className="custom-button">about</Link>
       </div>

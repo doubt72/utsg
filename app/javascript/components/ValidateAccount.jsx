@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Logo from "./Logo"
 
 const ValidateAccount = () => {
   const navigate = useNavigate();
@@ -27,18 +28,17 @@ const ValidateAccount = () => {
           navigate("/", { replace: true });
           return
         } else if (response.status === 403) {
-          setVerificationError("Verification code does not match")
+          setVerificationError("code does not match")
           return
         }
         console.log(response.json());
-        throw new Error("something went wrong");
     }).catch(error => console.log(error.message));
   };
 
   return (
     <div>
       <div className="header">
-        <div className="header-logo">UTSG</div>
+        <Logo />
       </div>
       <div className="form-container">
         <div className="mb1em">
@@ -46,7 +46,7 @@ const ValidateAccount = () => {
           Please enter it here to activate your account.
         </div>
         <form onSubmit={onSubmit}>
-          <label>Verification code:</label>
+          <label>verification code:</label>
           <input
             type="text"
             name="verificationCode"
@@ -54,19 +54,33 @@ const ValidateAccount = () => {
             onChange={event => onChange(event, setVerificationCode)}
           />
           <div className="form-error-message">{verificationError}</div>
-          <button type="submit" className="custom-button">
-            Verify Email
-          </button>
-          <Link to="/resent_confirmation" className="custom-button">
-            Send New Code
-          </Link>
-          <Link to="/delete_account" className="custom-button">
-            Delete Account
-          </Link>
-          <Link to="/logout" className="custom-button">
-            Logout
-          </Link>
+          <div className="align-end">
+            <Link to="/logout" className="custom-button">
+              logout
+            </Link>
+            <button type="submit" className="custom-button">
+              confirm
+            </button>
+          </div>
         </form>
+        <div className="mt1em mb1em">
+          If you did not receive the email with the verification code,
+          you may request a new code:
+        </div>
+        <div className="align-end">
+          <Link to="/resent_confirmation" className="custom-button">
+            send new code
+          </Link>
+        </div>
+        <div className="mt1em mb1em">
+          If you no longer want to create an account with this username
+          and password, you may cancel the signup and delete this account:
+        </div>
+        <div className="align-end">
+          <Link to="/delete_account" className="custom-button">
+            delete account
+          </Link>
+        </div>
       </div>
     </div>
   )
