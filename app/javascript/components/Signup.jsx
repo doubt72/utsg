@@ -7,13 +7,28 @@ const Signup = () => {
     username: "", email: "", password: "", confirmPassword: ""
   });
   const [formErrors, setFormError] = useState({
-    username: "", email: "", password: ""
+    username: "", email: "", password: "", confirmPassword: ""
   });
+
+  const anyEmpty = () => {
+    if (formInput.username === "") {
+      validateForm("username", "")
+      return true
+    } else if (formInput.email === "") {
+      validateForm("email", "")
+      return true
+    } else if (formInput.password === "") {
+      validateForm("password", "")
+      return true
+    }
+    return false
+  }
 
   const validateForm = (name, value) => {
     let usernameError = formErrors.username;
     let emailError = formErrors.email;
     let passwordError = formErrors.password;
+    let confirmPasswordError = formErrors.confirmPassword;
 
     if (name === "username") {
       if (value === "") {
@@ -34,23 +49,34 @@ const Signup = () => {
       }
     } else if (name === "password") {
       if (value !== formInput.confirmPassword) {
-        passwordError = "Passwords must match";
+        confirmPasswordError = "Passwords must match";
+        passwordError = "";
       } else if (value === "") {
         passwordError = "Password must not be blank";
+        confirmPasswordError = "";
       } else {
+        confirmPasswordError = "";
         passwordError = "";
       }
     } else if (name === "confirmPassword") {
       if (value !== formInput.password) {
-        passwordError = "Passwords must match";
+        confirmPasswordError = "Passwords must match";
+        passwordError = "";
       } else if (formInput.password === "") {
         passwordError = "Password must not be blank";
+        confirmPasswordError = "";
       } else {
         passwordError = "";
+        confirmPasswordError = "";
       }
     }
-    setFormError({ username: usernameError, email: emailError, password: passwordError });
-    return usernameError === "" && emailError === "" && passwordError === ""
+    setFormError({
+      username: usernameError,
+      email: emailError,
+      password: passwordError,
+      confirmPassword: confirmPasswordError
+    });
+    return usernameError === "" && emailError === "" && passwordError === "" && confirmPasswordError === ""
   }
 
   const onChange = (name, value) => {
@@ -60,9 +86,13 @@ const Signup = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    if (!validateForm("", "")) {
+    if (!validateForm("", "") || anyEmpty()) {
       return false;
     } else {
+      if (allEmpty()) {
+        validateForm("username", "")
+        return false;
+      } 
       const url = "/api/v1/users";
 
       const body = {
@@ -102,6 +132,9 @@ const Signup = () => {
         <div className="header-logo">UTSG</div>
       </div>
       <div className="form-container">
+        <div className="mb1em">
+          Sign up for a new account here:
+        </div>
         <form onSubmit={onSubmit}>
           <label>Username</label>
           <input
@@ -126,6 +159,7 @@ const Signup = () => {
             className="form-input"
             onChange={({ target }) => onChange(target.name, target.value)}
           />
+          <div className="form-error-message">{formErrors.password}</div>
           <label>Verify Password</label>
           <input
             type="password"
@@ -134,7 +168,7 @@ const Signup = () => {
             className="form-input"
             onChange={({ target }) => onChange(target.name, target.value)}
           />
-          <div className="form-error-message">{formErrors.password}</div>
+          <div className="form-error-message">{formErrors.confirmPassword}</div>
           <button type="submit" className="custom-button">
             Sign Up
           </button>

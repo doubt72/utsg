@@ -1,12 +1,11 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create, :auth]
-  # before_action :set_user, only: %i[show destroy]
+  skip_before_action :authenticate_user!, only: [:create, :login, :auth]
 
   def create
     user = User.signup_user(create_params)
     if user
       session[:current_user] = user.id
-      render json: user, status: :created
+      render json: user_body, status: :created
     else
       render json: user.errors, status: :unprocessable_entity
     end
@@ -20,16 +19,27 @@ class Api::V1::UsersController < ApplicationController
   #   render json: { message: 'success' }
   # end
 
+  def login
+    user = User.lookup(params[:user][:username])
+    if user && user.authenticate(params[:user][:password])
+      session[:current_user] = user.id
+      render json: user_body, status: :ok
+    else
+      render json: { message: 'not authorized' }, status: :unauthorized
+    end
+  end
+
+  def logout
+    session[:current_user] = nil
+    render json: {}, status: :ok
+  end
+
   def auth
     if current_user
-      body = {
-        username: current_user.username,
-        email: current_user.email,
-      }
       if current_user.verified
-        render json: body, status: :ok
+        render json: user_body, status: :ok
       else
-        render json: body, status: :forbidden
+        render json: user_body, status: :forbidden
       end
     else
       render json: { message: 'not authorized' }, status: :unauthorized
@@ -52,7 +62,10 @@ class Api::V1::UsersController < ApplicationController
     params.require(:user).permit(:username, :email, :password)
   end
 
-  def set_user
-    @user = User.find(params[:id])
+  def user_body
+    {
+      username: current_user.username,
+      email: current_user.email,
+    }
   end
 end

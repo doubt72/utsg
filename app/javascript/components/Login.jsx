@@ -1,21 +1,120 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../AuthProvider";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  // const { setToken } = useAuth();
   const navigate = useNavigate();
+  const [formInput, setFormInput] = useState({ username: "", password: "" });
+  const [formErrors, setFormError] = useState({ username: "", password: "" });
 
-  const handleLogin = () => {
-    // setToken("this is a test token");
-    navigate("/", { replace: true });
+  const anyEmpty = () => {
+    if (formInput.username === "") {
+      validateForm("username", "")
+      return true
+    } else if (formInput.password === "") {
+      validateForm("password", "")
+      return true
+    }
+    return false
+  }
+
+  const validateForm = (name, value) => {
+    let usernameError = formErrors.username;
+    let passwordError = formErrors.password;
+
+    if (name === "username") {
+      if (value === "") {
+        usernameError = "Please enter a username or email";
+      } else {
+        usernameError = ""
+      }
+    } else if (name === "password") {
+      if (value === "") {
+        passwordError = "Please enter a password";
+      } else {
+        passwordError = "";
+      }
+    }
+    setFormError({ username: usernameError, password: passwordError });
+    return usernameError === "" && passwordError === ""
+  }
+
+  const onChange = (name, value) => {
+    setFormInput({ ...formInput, [name]: value });
+    validateForm(name, value);
+  }
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (!validateForm("", "") || anyEmpty()) {
+      return false;
+    } else {
+      const url = "/api/v1/users/login";
+
+      const body = {
+        user: {
+          username: formInput.username,
+          password: formInput.password,
+        }
+      };
+
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then(response => {
+          if (response.ok) {
+            const json = response.json().then(json => {
+              localStorage.setItem("username", json.username)
+              localStorage.setItem("email", json.email)
+              navigate("/", { replace: true });
+            })
+            return
+          } else if (response.status === 401) {
+            setFormError({ username: "", password: "Supplied username or password are not correct" });
+          }
+          console.log(response.json());
+          throw new Error("something went wrong");
+      }).catch(error => console.log(error.message));
+    }
   };
 
-  setTimeout(() => {
-    handleLogin();
-  }, 3 * 1000);
-
-  return <>Login Page</>;
+  return (
+    <div>
+      <div className="header">
+        <div className="header-logo">UTSG</div>
+      </div>
+      <div className="form-container">
+        <form onSubmit={onSubmit}>
+          <label>Username or email address</label>
+          <input
+            type="text"
+            name="username"
+            className="form-input"
+            onChange={({ target }) => onChange(target.name, target.value)}
+          />
+          <div className="form-error-message">{formErrors.username}</div>
+          <label>Password</label>
+          <input
+            type="password"
+            name="password"
+            className="form-input"
+            onChange={({ target }) => onChange(target.name, target.value)}
+          />
+          <div className="form-error-message">{formErrors.password}</div>
+          <button type="submit" className="custom-button">
+            Login
+          </button>
+          <Link to="/" className="custom-button">
+            Cancel
+          </Link>
+        </form>
+      </div>
+    </div>
+  )
 };
 
 export default Login;

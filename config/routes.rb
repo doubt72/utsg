@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :users, only: [:create] do
         get 'auth', on: :collection
+        post 'login', on: :collection
+        post 'logout', on: :collection
         post 'validate_code', on: :collection
       end
       # get 'users/index'

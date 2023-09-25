@@ -21,7 +21,6 @@ const Routes = () => {
       children: [
         { path: "/", element: <MainPage />},
         { path: "/validate_account", element: <ValidateAccount /> },
-        { path: "/logout", element: <Logout /> },
         { path: "/profile", element: <div>profile</div> },
         { path: "/logout", element: <Logout /> },
       ],

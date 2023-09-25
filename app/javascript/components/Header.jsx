@@ -14,8 +14,8 @@ export default () => {
   const loggedOut = (
     <div className="header-user-controls">
       <Link to="/about" className="custom-button">about</Link>
-      <Link to="/login" className="custom-button">login</Link>
       <Link to="/signup" className="custom-button">signup</Link>
+      <Link to="/login" className="custom-button">login</Link>
     </div>
   );
 
