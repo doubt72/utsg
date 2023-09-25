@@ -4,7 +4,6 @@
 @import './standard-formatting.scss';
 
 // Common
-
 button.custom-button,a.custom-button {
   text-decoration: none;
   color: $light-green;
@@ -40,33 +39,38 @@ button.custom-button:hover,a.custom-button:hover {
   width: 100%;
   padding: 0.2em 0.5em;
   margin: 0 0 0.5em 0;
-  // border-radius: 0.25em;
 }
 
 .form-error-message {
   color: red;
+  margin-bottom: 1em;
 }
 
 // Common header
 .header {
   display: flex;
   width: 100%;
-  padding: 1em 1em 0.5em 1em;
+  padding: 1em 0.5em 0.5em 0.5em;
   border-bottom: 3px solid $border-color;
+  background-color: #DDD;
 }
 
-.header-logo {
+.header-section {
+  padding: 0.5em 0.25em 0em 0.25em;
+}
+
+.header-right {
+  flex-grow: 1;
+  text-align: end;
+  background-color: #BBB;
+}
+
+.logo {
   color: $dark-green;
   background-color: $background-green;
   padding: 0.25em 0.5em;
   font-weight: bold;
   border-radius: 0.5em;
-}
-
-.header-user-controls {
-  padding: 0.5em 0.5em 0em 0.5em;
-  flex-grow: 1;
-  text-align: end;
 }
 
 // Main page layout

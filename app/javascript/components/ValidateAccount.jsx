@@ -57,6 +57,9 @@ const ValidateAccount = () => {
           <button type="submit" className="custom-button">
             Verify Email
           </button>
+          <Link to="/resent_confirmation" className="custom-button">
+            Send New Code
+          </Link>
           <Link to="/delete_account" className="custom-button">
             Delete Account
           </Link>

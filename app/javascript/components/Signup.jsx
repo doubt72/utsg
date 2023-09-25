@@ -24,6 +24,41 @@ const Signup = () => {
     return false
   }
 
+  const checkConflict = (type, value) => {
+    const conflictTimer = setTimeout(() => {
+      const token = document.querySelector('meta[name="csrf-token"]').content;
+      fetch("/api/v1/users/check_conflict", {
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ check: value }),
+      }).then(response => {
+          if (response.ok) {
+            const json = response.json().then(json => {
+              if (json.conflict) {
+                const usernameError = type === "username" ? "Username already taken" : formErrors.username
+                const emailError = type === "email" ? "Email already taken" : formErrors.email
+                setFormError({
+                  username: usernameError,
+                  email: emailError,
+                  password: formErrors.password,
+                  confirmPassword: formErrors.confirmPassword,
+                });
+              }
+            })
+            return
+          }
+          console.log(response.json());
+          throw new Error("something went wrong");
+      }).catch(error => console.log(error.message));
+    }, 1000);
+    if (conflictTimer > 0) {
+      clearTimeout(conflictTimer - 1);
+    }
+  }
+
   const validateForm = (name, value) => {
     let usernameError = formErrors.username;
     let emailError = formErrors.email;
@@ -34,19 +69,19 @@ const Signup = () => {
       if (value === "") {
         usernameError = "Username must not be blank";
       } else {
-        // TODO check to see if available
         usernameError = ""
       }
+      checkConflict("username", value);
     } else if (name === "email") {
       const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
       if (value === "") {
         emailError = "Email must not be blank";
       } else if (value.match(validRegex)) {
-        // TODO check to see if available
         emailError = "";
       } else {
         emailError = "Please enter a valid email address"
       }
+      checkConflict("email", value);
     } else if (name === "password") {
       if (value !== formInput.confirmPassword) {
         confirmPasswordError = "Passwords must match";
@@ -74,7 +109,7 @@ const Signup = () => {
       username: usernameError,
       email: emailError,
       password: passwordError,
-      confirmPassword: confirmPasswordError
+      confirmPassword: confirmPasswordError,
     });
     return usernameError === "" && emailError === "" && passwordError === "" && confirmPasswordError === ""
   }
@@ -89,10 +124,6 @@ const Signup = () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false;
     } else {
-      if (allEmpty()) {
-        validateForm("username", "")
-        return false;
-      } 
       const url = "/api/v1/users";
 
       const body = {

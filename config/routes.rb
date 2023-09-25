@@ -6,6 +6,7 @@ Rails.application.routes.draw do
         post 'login', on: :collection
         post 'logout', on: :collection
         post 'validate_code', on: :collection
+        post 'check_conflict', on: :collection
       end
       # get 'users/index'
       # post 'users/create'

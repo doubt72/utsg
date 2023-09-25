@@ -4,8 +4,10 @@ class User < ApplicationRecord
   has_secure_password
 
   def self.lookup(username)
-    user = User.find_by(username: username)
-    user = User.find_by(email: username) unless user
+    user = User.where(
+      "LOWER(username) = ? OR LOWER(email) = ?",
+      username.downcase, username.downcase
+    ).first
     user
   end
 

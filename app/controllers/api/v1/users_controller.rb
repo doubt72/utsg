@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create, :login, :auth]
+  skip_before_action :authenticate_user!, only: [:create, :login, :auth, :check_conflict]
 
   def create
     user = User.signup_user(create_params)
@@ -54,6 +54,12 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: { message: 'confirmation code is invalid' }, status: :forbidden
     end
+  end
+
+  def check_conflict
+    puts params
+    user = User.lookup(params[:check].downcase)
+    render json: { conflict: user ? true : false }, status: :ok
   end
 
   private
