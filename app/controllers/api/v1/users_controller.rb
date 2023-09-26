@@ -1,49 +1,34 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create, :login, :auth, :check_conflict]
+  skip_before_action :authenticate_user!, only: [:create, :check_conflict]
 
   def create
     user = User.signup_user(create_params)
     if user
       session[:current_user] = user.id
-      render json: user_body, status: :created
+      render json: user.body, status: :created
     else
       render json: user.errors, status: :unprocessable_entity
     end
   end
 
-  # def update
-  # end
-
-  # def destroy
-  #   @user.destroy
-  #   render json: { message: 'success' }
-  # end
-
-  def login
-    user = User.lookup(params[:user][:username])
-    if user && user.authenticate(params[:user][:password])
-      session[:current_user] = user.id
-      render json: user_body, status: :ok
+  def update
+    if current_user.update_user(update_params)
+      render json: current_user.body, status: :ok
     else
       render json: { message: 'not authorized' }, status: :unauthorized
     end
   end
 
-  def logout
+  def destroy
+    user = current_user
     session[:current_user] = nil
+    user.destroy
     render json: {}, status: :ok
   end
 
-  def auth
-    if current_user
-      if current_user.verified
-        render json: user_body, status: :ok
-      else
-        render json: user_body, status: :forbidden
-      end
-    else
-      render json: { message: 'not authorized' }, status: :unauthorized
-    end
+  def new_code
+    current_user.reset_confirmation_code
+    render json: current_user.body, status: :ok
   end
 
   def validate_code
@@ -62,16 +47,16 @@ class Api::V1::UsersController < ApplicationController
     render json: { conflict: user ? true : false }, status: :ok
   end
 
+  def password_reset
+  end
+
   private
 
   def create_params
     params.require(:user).permit(:username, :email, :password)
   end
 
-  def user_body
-    {
-      username: current_user.username,
-      email: current_user.email,
-    }
+  def update_params
+    params.require(:user).permit(:username, :email, :password, :old_password)
   end
 end

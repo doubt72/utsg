@@ -1,14 +1,11 @@
-Proper signup page
-  Add tooltips
-Reroute bad URIs to homepage
-Allow generate new token
-Allow user deletion
-  Allow from verification page
-    Are you sure?
+Add tooltips to signup page
 
-Add profile page
-Add about page
+Reroute bad URIs to homepage
+
+Allow password resets
 
 Add working chat
 
 Add linters
+
+Add more info on signup page

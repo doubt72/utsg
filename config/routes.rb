@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resource :users, only: [:create] do
+      resource :user, only: %i(create update destroy) do
+        collection do
+          post 'new_code'
+          post 'validate_code'
+          post 'check_conflict'
+          post 'password_reset'
+        end
+      end
+      resource :session, only: %i(create destroy) do
         get 'auth', on: :collection
-        post 'login', on: :collection
-        post 'logout', on: :collection
-        post 'validate_code', on: :collection
-        post 'check_conflict', on: :collection
       end
       # get 'users/index'
       # post 'users/create'

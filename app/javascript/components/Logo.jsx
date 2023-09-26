@@ -5,7 +5,7 @@ export default () => {
   return (
     <div className="header-logo">
       <Link to="/">
-        <img src="/assets/utsg-64.png" alt="UTSG Logo" />
+        <img src="/assets/utsg-48.png" alt="UTSG Logo" />
       </Link>
     </div>
   )

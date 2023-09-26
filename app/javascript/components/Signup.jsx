@@ -28,7 +28,7 @@ const Signup = () => {
   const checkConflict = (type, value) => {
     const conflictTimer = setTimeout(() => {
       const token = document.querySelector('meta[name="csrf-token"]').content;
-      fetch("/api/v1/users/check_conflict", {
+      fetch("/api/v1/user/check_conflict", {
         method: "POST",
         headers: {
           "X-CSRF-Token": token,
@@ -124,7 +124,7 @@ const Signup = () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false;
     } else {
-      const url = "/api/v1/users";
+      const url = "/api/v1/user";
 
       const body = {
         user: {
@@ -163,7 +163,8 @@ const Signup = () => {
       </div>
       <div className="form-container">
         <div className="mb1em">
-          Sign up for a new account here:
+          <p>Welcome to the Untitled TSG server.</p>
+          <p>Sign up for a new account here:</p>
         </div>
         <form onSubmit={onSubmit}>
           <label>username</label>
@@ -190,7 +191,7 @@ const Signup = () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.password}</div>
-          <label>verify Password</label>
+          <label>verify password</label>
           <input
             type="password"
             name="confirmPassword"

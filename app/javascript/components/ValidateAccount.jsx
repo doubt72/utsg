@@ -16,7 +16,7 @@ const ValidateAccount = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch("/api/v1/users/validate_code", {
+    fetch("/api/v1/user/validate_code", {
       method: "POST",
       headers: {
         "X-CSRF-Token": token,
@@ -68,13 +68,13 @@ const ValidateAccount = () => {
           you may request a new code:
         </div>
         <div className="align-end">
-          <Link to="/resent_confirmation" className="custom-button">
+          <Link to="/new_validation_code" className="custom-button">
             send new code
           </Link>
         </div>
         <div className="mt1em mb1em">
           If you no longer want to create an account with this username
-          and password, you may cancel the signup and delete this account:
+          and password, you may cancel this signup and delete this account:
         </div>
         <div className="align-end">
           <Link to="/delete_account" className="custom-button">

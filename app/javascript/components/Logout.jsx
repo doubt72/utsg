@@ -6,8 +6,8 @@ const Logout = () => {
 
   useEffect(() => {
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    fetch("/api/v1/users/logout", {
-      method: "POST",
+    fetch("/api/v1/session", {
+      method: "DELETE",
       headers: {
         "X-CSRF-Token": token,
         "Content-Type": "application/json",

@@ -2,12 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo"
 
-export default () => {
+export default (props) => {
+  const profileSection = (
+    <Link to="/profile" className="custom-button">profile</Link>
+  )
 
   const loggedIn = (
     <div className="header-section header-right">
       <span className="mr1em">logged in as {localStorage.getItem("username")}</span>
-      <Link to="/profile" className="custom-button">profile</Link>
+      { (props.hideProfile === "true") ? '' : profileSection }
       <Link to="/logout" className="custom-button">logout</Link>
     </div>
   );
@@ -19,12 +22,16 @@ export default () => {
     </div>
   );
 
+  const headerSection = (
+    <div className="header-section">
+      <Link to="/about" className="custom-button">about</Link>
+    </div>
+  )
+
   return (
     <div className="header">
       <Logo />
-      <div className="header-section">
-        <Link to="/about" className="custom-button">about</Link>
-      </div>
+      { (props.hideAbout === "true") ? '' : headerSection }
       { localStorage.getItem("username") ? loggedIn : loggedOut }
     </div>
   )

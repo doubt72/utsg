@@ -49,7 +49,7 @@ const Login = () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false;
     } else {
-      const url = "/api/v1/users/login";
+      const url = "/api/v1/session";
 
       const body = {
         user: {

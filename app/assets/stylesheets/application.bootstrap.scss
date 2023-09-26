@@ -46,7 +46,20 @@ button.custom-button:hover,a.custom-button:hover {
   margin-bottom: 1em;
 }
 
-// Common header
+.standard-body {
+  display: flex;
+  width: 100%;
+  padding: 1em;
+}
+
+.standard-section {
+  padding: 1em;
+  flex-grow: 1;
+  background-color: $background-gray;
+  border-radius: 0.5em;
+}
+
+// Header layout
 .header {
   display: flex;
   width: 100%;
@@ -55,7 +68,7 @@ button.custom-button:hover,a.custom-button:hover {
 }
 
 .header-section {
-  padding: 2.8em 0.25em 0em 0.25em;
+  padding: 29px 0.25em 0em 0.25em;
 }
 
 .header-right {
@@ -68,18 +81,12 @@ button.custom-button:hover,a.custom-button:hover {
 }
 
 // Main page layout
-.main-page-top-section {
-  display: flex;
-  width: 100%;
-  padding: 1em;
-}
-
 .main-page-announcements {
   padding: 1em;
   margin-right: 1em;
   width: 40%;
   height: 250px;
-  background-color: $background-green;
+  background-color: $background-gray;
   border-radius: 0.5em;
 }
 
@@ -88,5 +95,34 @@ button.custom-button:hover,a.custom-button:hover {
   flex-grow: 1;
   height: 250px;
   background-color: $background-gray;
+  border-radius: 0.5em;
+}
+
+// About page layout
+.about-about {
+  padding: 1em;
+  margin-right: 1em;
+  flex-grow: 1;
+  background-color: $background-gray;
+  border-radius: 0.5em;
+}
+
+.about-logo {
+  padding: 1em;
+}
+
+// Profile page layout
+.profile-main {
+  padding: 1em;
+  margin-right: 1em;
+  flex-grow: 1;
+  background-color: $background-gray;
+  border-radius: 0.5em;
+}
+
+.profile-form {
+  width: 500px;
+  padding: 1em;
+  border: 2px solid $border-color-light-gray;
   border-radius: 0.5em;
 }
