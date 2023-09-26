@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Person, Trash3 } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 
 export default () => {
@@ -114,13 +115,13 @@ export default () => {
         <div className="form-error-message">{formErrors.email}</div>
         <div className="align-end">
           <button type="submit" className="custom-button">
-            update user info
+            <Person />update user info
           </button>
         </div>
       </form>
       <div className="mt1em mb1em">You can delete your account here:</div>
       <div className="align-end">
-        <Link to="/delete_account" className="custom-button">delete account</Link>
+        <Link to="/delete_account" className="custom-button"><Trash3 />delete account</Link>
       </div>
     </div>
   )

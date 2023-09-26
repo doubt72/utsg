@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo"
+import { ArrowRepeat, XCircle } from "react-bootstrap-icons";
 
 export default () => {
   const navigate = useNavigate();
@@ -64,10 +65,10 @@ export default () => {
           <div className="form-error-message">{usernameError}</div>
           <div className="align-end">
             <Link to="/" className="custom-button">
-              cancel
+              <XCircle />cancel
             </Link>
             <button type="submit" className="custom-button">
-              send code
+              <ArrowRepeat />send code
             </button>
           </div>
         </form>

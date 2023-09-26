@@ -14,12 +14,22 @@ button.custom-button,a.custom-button {
   outline: none;
 }
 
+button.custom-button svg {
+  vertical-align: -2px;
+  margin-right: 5px;
+}
+
+a.custom-button svg {
+  vertical-align: -2px;
+  margin-right: 5px;
+}
+
 a.custom-button {
-  padding: 0.33em 1em;
+  padding: 0.33em 0.75em;
 }
 
 button.custom-button {
-  padding: 0.155em 1em;
+  padding: 0.155em 0.75em;
 }
 
 button.custom-button:hover,a.custom-button:hover {
@@ -60,9 +70,9 @@ button.custom-button:hover,a.custom-button:hover {
 }
 
 .standard-tooltip {
-  font-size: 8px;
   color: $alert-orange;
-  margin-left: 2px;
+  vertical-align: 1px;
+  margin-left: 3px;
 }
 
 // Header layout

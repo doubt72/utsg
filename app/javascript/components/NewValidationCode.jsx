@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo"
+import { ArrowRepeat } from "react-bootstrap-icons";
 
 export default () => {
   const email = localStorage.getItem("email")
@@ -27,15 +28,13 @@ export default () => {
       <div className="header">
         <Logo />
       </div>
-      <div className="standard-body">
-        <div className="standard-section">
-          A new verification code has been generated and was sent to your
-          email: {email}
-          <div className="mt1em">
-            <Link to="/validate_account" className="custom-button">
-              continue
-            </Link>
-          </div>
+      <div className="form-container">
+        A new verification code has been generated and was sent to your
+        email: {email}
+        <div className="align-end mt1em">
+          <Link to="/validate_account" className="custom-button">
+            <ArrowRepeat />continue
+          </Link>
         </div>
       </div>
     </div>

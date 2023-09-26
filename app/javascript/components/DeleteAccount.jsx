@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo"
+import { Trash3, XCircle } from "react-bootstrap-icons";
 
 export default () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ export default () => {
           if (response.ok) {
             localStorage.removeItem("username")
             localStorage.removeItem("email")
-            navigate("/", { replace: true });
+            navigate("/");
             return
           }
           console.log(response.json());
@@ -61,10 +62,10 @@ export default () => {
           <div className="form-error-message">{confirmError}</div>
           <div className="align-end">
             <Link to="/" className="custom-button">
-              cancel
+              <XCircle />cancel
             </Link>
             <button type="submit" className="custom-button">
-              delete account
+              <Trash3 />delete account
             </button>
           </div>
         </form>

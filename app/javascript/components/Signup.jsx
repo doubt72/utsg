@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
+import { ExclamationCircleFill, PencilSquare, XCircle } from "react-bootstrap-icons"
 import Logo from "./Logo"
 
 export default () => {
@@ -183,9 +184,9 @@ export default () => {
           <div className="form-error-message">{formErrors.username}</div>
           <label>
             email
-            <sup className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={emailTooltip}>
-              ⬤
-            </sup>
+            <span className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={emailTooltip}>
+              <ExclamationCircleFill />
+            </span>
             <Tooltip className="standard-tooltip-popout" id="email-tt" />
           </label>
           <input
@@ -197,9 +198,9 @@ export default () => {
           <div className="form-error-message">{formErrors.email}</div>
           <label>
             password
-            <sup className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={passwordTooltip}>
-              ⬤
-            </sup>
+            <span className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={passwordTooltip}>
+              <ExclamationCircleFill />
+            </span>
             <Tooltip className="standard-tooltip-popout" id="email-tt" />
           </label>
           <input
@@ -220,10 +221,10 @@ export default () => {
           <div className="form-error-message">{formErrors.confirmPassword}</div>
           <div className="align-end">
             <Link to="/" className="custom-button">
-              cancel
+              <XCircle />cancel
             </Link>
             <button type="submit" className="custom-button">
-              sign up
+              <PencilSquare />sign up
             </button>
           </div>
         </form>

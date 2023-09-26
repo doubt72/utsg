@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo"
+import { ArrowRepeat, BoxArrowRight, Check2Square, Trash3 } from "react-bootstrap-icons";
 
 const ValidateAccount = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const ValidateAccount = () => {
       body: JSON.stringify({ code: verificationCode }),
     }).then(response => {
         if (response.ok) {
+          localStorage.removeItem("validationNeeded")
           navigate("/", { replace: true });
           return
         } else if (response.status === 403) {
@@ -56,10 +58,10 @@ const ValidateAccount = () => {
           <div className="form-error-message">{verificationError}</div>
           <div className="align-end">
             <Link to="/logout" className="custom-button">
-              logout
+              <BoxArrowRight />logout
             </Link>
             <button type="submit" className="custom-button">
-              confirm
+              <Check2Square />confirm
             </button>
           </div>
         </form>
@@ -69,7 +71,7 @@ const ValidateAccount = () => {
         </div>
         <div className="align-end">
           <Link to="/new_validation_code" className="custom-button">
-            send new code
+            <ArrowRepeat />send new code
           </Link>
         </div>
         <div className="mt1em mb1em">
@@ -78,7 +80,7 @@ const ValidateAccount = () => {
         </div>
         <div className="align-end">
           <Link to="/delete_account" className="custom-button">
-            delete account
+            <Trash3 />delete account
           </Link>
         </div>
       </div>

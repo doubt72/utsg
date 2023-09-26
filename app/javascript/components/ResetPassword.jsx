@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
+import { ArrowRepeat, ExclamationCircleFill, XCircle } from "react-bootstrap-icons"
 import Logo from "./Logo"
 
 export default () => {
@@ -153,10 +154,10 @@ export default () => {
           <div className="form-error-message">{formErrors.code}</div>
           <label>
             new password
-            <sup className="standard-tooltip" data-tooltip-id="code-tt" data-tooltip-html={passwordTooltip}>
-              ⬤
-            </sup>
-            <Tooltip className="standard-tooltip-popout" id="code-tt" />
+            <span className="standard-tooltip" data-tooltip-id="password-tt" data-tooltip-html={passwordTooltip}>
+              <ExclamationCircleFill />
+            </span>
+            <Tooltip className="standard-tooltip-popout" id="password-tt" />
           </label>
           <input
             type="password"
@@ -176,10 +177,10 @@ export default () => {
           <div className="form-error-message">{formErrors.confirmPassword}</div>
           <div className="align-end">
             <Link to="/" className="custom-button">
-              cancel
+              <XCircle />cancel
             </Link>
             <button type="submit" className="custom-button">
-              reset password
+              <ArrowRepeat />reset password
             </button>
           </div>
         </form>

@@ -1,5 +1,6 @@
-import React, { useState, setState } from "react";
+import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
+import { ExclamationCircleFill, ShieldExclamation } from "react-bootstrap-icons"
 
 export default () => {
   const [formInput, setFormInput] = useState({
@@ -123,10 +124,10 @@ export default () => {
         <div className="form-error-message">{formErrors.oldPassword}</div>
         <label>
           new password
-          <sup className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={passwordTooltip}>
-            ⬤
-          </sup>
-          <Tooltip className="standard-tooltip-popout" id="email-tt" />
+          <span className="standard-tooltip" data-tooltip-id="password-tt" data-tooltip-html={passwordTooltip}>
+            <ExclamationCircleFill />
+          </span>
+          <Tooltip className="standard-tooltip-popout" id="password-tt" />
         </label>
         <input
           type="password"
@@ -148,7 +149,7 @@ export default () => {
         <div className="form-error-message">{formErrors.confirmPassword}</div>
         <div className="align-end">
           <button type="submit" className="custom-button">
-            change password
+            <ShieldExclamation />change password
           </button>
         </div>
       </form>

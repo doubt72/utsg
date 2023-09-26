@@ -10,9 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_21_065332) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_26_054959) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "games", force: :cascade do |t|
+    t.bigint "owner_id", null: false
+    t.bigint "player_one_id"
+    t.bigint "player_two_id"
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_games_on_created_at"
+    t.index ["id"], name: "index_games_on_id"
+    t.index ["owner_id"], name: "index_games_on_owner_id"
+    t.index ["player_one_id"], name: "index_games_on_player_one_id"
+    t.index ["player_two_id"], name: "index_games_on_player_two_id"
+    t.index ["updated_at"], name: "index_games_on_updated_at"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "game_id"
+    t.string "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_messages_on_created_at"
+    t.index ["game_id"], name: "index_messages_on_game_id"
+    t.index ["id"], name: "index_messages_on_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
@@ -25,7 +52,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_21_065332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email"
+    t.index ["id"], name: "index_users_on_id"
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "games", "users", column: "owner_id"
+  add_foreign_key "games", "users", column: "player_one_id"
+  add_foreign_key "games", "users", column: "player_two_id"
+  add_foreign_key "messages", "games"
+  add_foreign_key "messages", "users"
 end

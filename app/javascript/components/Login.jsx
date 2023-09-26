@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo"
+import { ArrowRepeat, BoxArrowInRight, XCircle } from "react-bootstrap-icons";
 
 export default () => {
   const navigate = useNavigate();
@@ -107,10 +108,10 @@ export default () => {
           <div className="form-error-message">{formErrors.password}</div>
           <div className="align-end">
             <Link to="/" className="custom-button">
-              cancel
+              <XCircle />cancel
             </Link>
             <button type="submit" className="custom-button">
-              login
+              <BoxArrowInRight />login
             </button>
           </div>
         </form>
@@ -119,7 +120,7 @@ export default () => {
         </div>
         <div className="align-end mt1em">
           <Link to="/recover_account" className="custom-button">
-            recover account
+            <ArrowRepeat />recover account
           </Link>
         </div>
       </div>

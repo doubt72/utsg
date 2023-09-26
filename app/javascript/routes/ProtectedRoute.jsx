@@ -31,6 +31,8 @@ export const ProtectedRoute = (props) => {
           response.json().then(body => {
             if (body.username === undefined) {
               unauthorized();
+            } else {
+              localStorage.removeItem("validationNeeded")
             }
           }).catch(error => {
             console.log(error.message);
@@ -39,6 +41,7 @@ export const ProtectedRoute = (props) => {
           return
         } else if (response.status === 403) {
           if (!unvalidatedPaths.includes(path)) {
+            localStorage.setItem("validationNeeded", true)
             navigate("/validate_account", { replace: true });
           }
           return
