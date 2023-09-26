@@ -59,6 +59,12 @@ button.custom-button:hover,a.custom-button:hover {
   border-radius: 0.5em;
 }
 
+.standard-tooltip {
+  font-size: 8px;
+  color: $alert-orange;
+  margin-left: 2px;
+}
+
 // Header layout
 .header {
   display: flex;
@@ -83,9 +89,8 @@ button.custom-button:hover,a.custom-button:hover {
 // Main page layout
 .main-page-announcements {
   padding: 1em;
-  margin-right: 1em;
+  margin-left: 1em;
   width: 40%;
-  height: 250px;
   background-color: $background-gray;
   border-radius: 0.5em;
 }

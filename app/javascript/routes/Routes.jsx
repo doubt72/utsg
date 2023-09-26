@@ -6,6 +6,8 @@ import MainPage from "../components/MainPage";
 import Login from '../components/Login'
 import Logout from '../components/Logout'
 import Signup from '../components/Signup'
+import RecoverAccount from "../components/RecoverAccount";
+import ResetPassword from "../components/ResetPassword";
 
 import ValidateAccount from '../components/ValidateAccount'
 import NewValidationCode from '../components/NewValidationCode'
@@ -16,9 +18,12 @@ import Profile from "../components/Profile";
 
 const Routes = () => {
   const publicRoutes = [
+    { path: "*", element: <MainPage /> },
     { path: "/about", element: <About /> },
     { path: "/login", element: <Login /> },
     { path: "/signup", element: <Signup /> },
+    { path: "/recover_account", element: <RecoverAccount /> },
+    { path: "/reset_password", element: <ResetPassword /> },
   ];
 
   const protectedRoutes = [

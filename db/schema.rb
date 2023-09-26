@@ -20,7 +20,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_21_065332) do
     t.string "password_digest", null: false
     t.string "confirmation_code"
     t.boolean "verified", default: false, null: false
-    t.boolean "password_reset_required", default: false, null: false
+    t.string "recovery_code"
+    t.datetime "recovery_code_expires"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email"

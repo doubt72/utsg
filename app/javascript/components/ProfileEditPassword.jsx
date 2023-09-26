@@ -1,4 +1,5 @@
 import React, { useState, setState } from "react";
+import { Tooltip } from "react-tooltip";
 
 export default () => {
   const [formInput, setFormInput] = useState({
@@ -101,6 +102,10 @@ export default () => {
     }
   };
 
+  const passwordTooltip = "we don't enforce any password quality at all but<br />" +
+                          "you should still choose a unique, secure password<br />" +
+                          "and if you don't, that's on you"
+
   return (
     <div className="profile-form">
       <div className="mb1em">
@@ -116,7 +121,13 @@ export default () => {
           onChange={({ target }) => onChange(target.name, target.value)}
         />
         <div className="form-error-message">{formErrors.oldPassword}</div>
-        <label>new password</label>
+        <label>
+          new password
+          <sup className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={passwordTooltip}>
+            ⬤
+          </sup>
+          <Tooltip className="standard-tooltip-popout" id="email-tt" />
+        </label>
         <input
           type="password"
           name="password"
@@ -125,7 +136,7 @@ export default () => {
           onChange={({ target }) => onChange(target.name, target.value)}
         />
         <div className="form-error-message">{formErrors.password}</div>
-        <label>verify new password</label>
+        <label>confirm new password</label>
         <input
           type="password"
           name="confirmPassword"

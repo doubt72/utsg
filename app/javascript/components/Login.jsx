@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo"
 
-const Login = () => {
+export default () => {
   const navigate = useNavigate();
   const [formInput, setFormInput] = useState({ username: "", password: "" });
   const [formErrors, setFormError] = useState({ username: "", password: "" });
@@ -114,9 +114,15 @@ const Login = () => {
             </button>
           </div>
         </form>
+        <div className="mt1em">
+          If you've forgotten your password, you can recover your account here:
+        </div>
+        <div className="align-end mt1em">
+          <Link to="/recover_account" className="custom-button">
+            recover account
+          </Link>
+        </div>
       </div>
     </div>
   )
 };
-
-export default Login;

@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create, :check_conflict]
+  skip_before_action :authenticate_user!, only: [:create, :check_conflict, :set_recovery, :password_reset]
 
   def create
     user = User.signup_user(create_params)
@@ -42,12 +42,22 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def check_conflict
-    puts params
     user = User.lookup(params[:check].downcase)
     render json: { conflict: user ? true : false }, status: :ok
   end
 
+  def set_recovery
+    User.lookup(params[:check].downcase)&.set_recovery_code
+    render json: {}, status: :ok
+  end
+
   def password_reset
+    if User.lookup(params[:check].downcase)&.
+      reset_password_with_code(params[:code], params[:password])
+      render json: (), status: :ok
+    else
+      render json: { message: 'recovery code is invalid' }, status: :forbidden
+    end
   end
 
   private

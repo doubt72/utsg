@@ -6,7 +6,8 @@ class CreateUsers < ActiveRecord::Migration[7.0]
       t.string :password_digest, null: false
       t.string :confirmation_code
       t.boolean :verified, default: false, null: false
-      t.boolean :password_reset_required, default: false, null: false
+      t.string :recovery_code
+      t.datetime :recovery_code_expires
 
       t.timestamps
     end

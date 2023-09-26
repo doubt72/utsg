@@ -6,18 +6,18 @@ import Logo from "./Logo"
 export default () => {
   const navigate = useNavigate();
   const [formInput, setFormInput] = useState({
-    username: "", email: "", password: "", confirmPassword: ""
+    username: "", code: "", password: "", confirmPassword: ""
   });
   const [formErrors, setFormError] = useState({
-    username: "", email: "", password: "", confirmPassword: ""
+    username: "", code: "", password: "", confirmPassword: ""
   });
 
   const anyEmpty = () => {
     if (formInput.username === "") {
       validateForm("username", "")
       return true
-    } else if (formInput.email === "") {
-      validateForm("email", "")
+    } else if (formInput.code === "") {
+      validateForm("code", "")
       return true
     } else if (formInput.password === "") {
       validateForm("password", "")
@@ -26,63 +26,24 @@ export default () => {
     return false
   }
 
-  const checkConflict = (type, value) => {
-    const conflictTimer = setTimeout(() => {
-      const token = document.querySelector('meta[name="csrf-token"]').content;
-      fetch("/api/v1/user/check_conflict", {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ check: value }),
-      }).then(response => {
-          if (response.ok) {
-            const json = response.json().then(json => {
-              if (json.conflict) {
-                const usernameError = type === "username" ? "username already exists" : formErrors.username
-                const emailError = type === "email" ? "email already exists" : formErrors.email
-                setFormError({
-                  username: usernameError,
-                  email: emailError,
-                  password: formErrors.password,
-                  confirmPassword: formErrors.confirmPassword,
-                });
-              }
-            })
-            return
-          }
-          console.log(response.json());
-      }).catch(error => console.log(error.message));
-    }, 1000);
-    if (conflictTimer > 0) {
-      clearTimeout(conflictTimer - 1);
-    }
-  }
-
   const validateForm = (name, value) => {
     let usernameError = formErrors.username;
-    let emailError = formErrors.email;
+    let codeError = formErrors.code;
     let passwordError = formErrors.password;
     let confirmPasswordError = formErrors.confirmPassword;
 
     if (name === "username") {
       if (value === "") {
-        usernameError = "username must not be blank";
+        usernameError = "please supply a username or email address";
       } else {
         usernameError = ""
       }
-      checkConflict("username", value);
-    } else if (name === "email") {
-      const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    } else if (name === "code") {
       if (value === "") {
-        emailError = "email must not be blank";
-      } else if (value.match(validRegex)) {
-        emailError = "";
+        codeError = "please enter your recovery code";
       } else {
-        emailError = "please enter a valid email address"
+        codeError = ""
       }
-      checkConflict("email", value);
     } else if (name === "password") {
       if (value !== formInput.confirmPassword) {
         confirmPasswordError = "passwords must match";
@@ -108,11 +69,11 @@ export default () => {
     }
     setFormError({
       username: usernameError,
-      email: emailError,
+      code: codeError,
       password: passwordError,
       confirmPassword: confirmPasswordError,
     });
-    return usernameError === "" && emailError === "" && passwordError === "" && confirmPasswordError === ""
+    return usernameError === "" && codeError === "" && passwordError === "" && confirmPasswordError === ""
   }
 
   const onChange = (name, value) => {
@@ -125,14 +86,12 @@ export default () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false;
     } else {
-      const url = "/api/v1/user";
+      const url = "/api/v1/user/password_reset";
 
       const body = {
-        user: {
-          username: formInput.username,
-          email: formInput.email,
-          password: formInput.password,
-        }
+        check: formInput.username,
+        code: formInput.code,
+        password: formInput.password,
       };
 
       const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -144,20 +103,23 @@ export default () => {
         },
         body: JSON.stringify(body),
       }).then(response => {
-          if (response.ok) {
-            const json = response.json().then(json => {
-              localStorage.setItem("username", json.username)
-              localStorage.setItem("email", json.email)
-              navigate("/validate_account", { replace: true });
-            })
-            return
-          }
-          console.log(response.json());
+        if (response.ok) {
+          navigate("/login", { replace: true });
+          return
+        } else if (response.status === 403) {
+          setFormError({
+            username: "",
+            code: "recovery code is not valid",
+            password: "",
+            confirmPassword: "",
+          });
+          return
+        }
+        console.log(response.json());
       }).catch(error => console.log(error.message));
     }
   };
 
-  const emailTooltip = "email will be used to send a verification code<br />to complete signup";
   const passwordTooltip = "we don't enforce any password quality at all but<br />" +
                           "you should still choose a unique, secure password<br />" +
                           "and if you don't, that's on you"
@@ -169,11 +131,11 @@ export default () => {
       </div>
       <div className="form-container">
         <div className="mb1em">
-          <p>Welcome to the Untitled TSG server.</p>
-          <p>Sign up for a new account here:</p>
+          If a recovery code has been sent to your email, you can use it here to reset
+          your password.
         </div>
         <form onSubmit={onSubmit}>
-          <label>username</label>
+          <label>username or email address</label>
           <input
             type="text"
             name="username"
@@ -181,26 +143,20 @@ export default () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.username}</div>
-          <label>
-            email
-            <sup className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={emailTooltip}>
-              ⬤
-            </sup>
-            <Tooltip className="standard-tooltip-popout" id="email-tt" />
-          </label>
+          <label>recovery code</label>
           <input
-            type="email"
-            name="email"
+            type="code"
+            name="code"
             className="form-input"
             onChange={({ target }) => onChange(target.name, target.value)}
           />
-          <div className="form-error-message">{formErrors.email}</div>
+          <div className="form-error-message">{formErrors.code}</div>
           <label>
-            password
-            <sup className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={passwordTooltip}>
+            new password
+            <sup className="standard-tooltip" data-tooltip-id="code-tt" data-tooltip-html={passwordTooltip}>
               ⬤
             </sup>
-            <Tooltip className="standard-tooltip-popout" id="email-tt" />
+            <Tooltip className="standard-tooltip-popout" id="code-tt" />
           </label>
           <input
             type="password"
@@ -223,7 +179,7 @@ export default () => {
               cancel
             </Link>
             <button type="submit" className="custom-button">
-              sign up
+              reset password
             </button>
           </div>
         </form>

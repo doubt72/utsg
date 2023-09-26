@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo"
 
-const Logout = () => {
+export default () => {
   const email = localStorage.getItem("email")
 
   useEffect(() => {
@@ -41,5 +41,3 @@ const Logout = () => {
     </div>
   );
 };
-
-export default Logout;
