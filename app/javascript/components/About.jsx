@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Header from "./Header"
+import Header from "./Header";
 import { Hexagon } from "react-bootstrap-icons";
 
 export default () => {
-
   return (
     <div>
       <Header hideAbout="true" />
@@ -23,4 +22,4 @@ export default () => {
       </div>
     </div>
   )
-};
+}

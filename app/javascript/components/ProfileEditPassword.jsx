@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
-import { ExclamationCircleFill, ShieldExclamation } from "react-bootstrap-icons"
+import { ExclamationCircleFill, ShieldExclamation } from "react-bootstrap-icons";
 
 export default () => {
   const [formInput, setFormInput] = useState({
     oldPassword: "", password: "", confirmPassword: ""
-  });
+  })
   const [formErrors, setFormError] = useState({
     oldPassword: "", password: "", confirmPassword: ""
-  });
+  })
 
   const anyEmpty = () => {
     if (formInput.oldPassword === "") {
@@ -22,67 +22,67 @@ export default () => {
   }
 
   const validateForm = (name, value) => {
-    let oldPasswordError = formErrors.oldPassword;
-    let passwordError = formErrors.password;
-    let confirmPasswordError = formErrors.confirmPassword;
+    let oldPasswordError = formErrors.oldPassword
+    let passwordError = formErrors.password
+    let confirmPasswordError = formErrors.confirmPassword
 
     if (name === "oldPassword") {
       if (value === "") {
-        oldPasswordError = "please enter your current password";
+        oldPasswordError = "please enter your current password"
       } else {
         oldPasswordError = ""
       }
     } else if (name === "password") {
       if (value !== formInput.confirmPassword) {
-        confirmPasswordError = "new passwords must match";
-        passwordError = "";
+        confirmPasswordError = "new passwords must match"
+        passwordError = ""
       } else if (value === "") {
-        passwordError = "new password must not be blank";
-        confirmPasswordError = "";
+        passwordError = "new password must not be blank"
+        confirmPasswordError = ""
       } else {
-        confirmPasswordError = "";
-        passwordError = "";
+        confirmPasswordError = ""
+        passwordError = ""
       }
     } else if (name === "confirmPassword") {
       if (value !== formInput.password) {
-        confirmPasswordError = "new passwords must match";
-        passwordError = "";
+        confirmPasswordError = "new passwords must match"
+        passwordError = ""
       } else if (formInput.password === "") {
-        passwordError = "new password must not be blank";
-        confirmPasswordError = "";
+        passwordError = "new password must not be blank"
+        confirmPasswordError = ""
       } else {
-        passwordError = "";
-        confirmPasswordError = "";
+        passwordError = ""
+        confirmPasswordError = ""
       }
     }
     setFormError({
       oldPassword: oldPasswordError,
       password: passwordError,
       confirmPassword: confirmPasswordError,
-    });
+    })
     return oldPasswordError === "" && passwordError === "" && confirmPasswordError === ""
   }
 
   const onChange = (name, value) => {
-    setFormInput({ ...formInput, [name]: value });
-    validateForm(name, value);
+    setFormInput({ ...formInput, [name]: value })
+    validateForm(name, value)
   }
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (!validateForm("", "") || anyEmpty()) {
-      return false;
+      return false
     } else {
-      const url = "/api/v1/user";
+      const url = "/api/v1/user"
 
       const body = {
         user: {
           old_password: formInput.oldPassword,
           password: formInput.password,
         }
-      };
+      }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch(url, {
         method: "PUT",
         headers: {
@@ -98,10 +98,10 @@ export default () => {
           setFormError({ oldPassword: "old password not valid", password: "", confirmPassword: "" })
           return
         }
-        console.log(response.json());
-      }).catch(error => console.log(error.message));
+        console.log(response.json())
+      }).catch(error => console.log(error.message))
     }
-  };
+  }
 
   const passwordTooltip = "we don't enforce any password quality at all but<br />" +
                           "you should still choose a unique, secure password<br />" +
@@ -155,4 +155,4 @@ export default () => {
       </form>
     </div>
   )
-};
+}

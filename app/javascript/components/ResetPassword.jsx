@@ -5,13 +5,13 @@ import { ArrowRepeat, ExclamationCircleFill, XCircle } from "react-bootstrap-ico
 import Logo from "./Logo"
 
 export default () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [formInput, setFormInput] = useState({
     username: "", code: "", password: "", confirmPassword: ""
-  });
+  })
   const [formErrors, setFormError] = useState({
     username: "", code: "", password: "", confirmPassword: ""
-  });
+  })
 
   const anyEmpty = () => {
     if (formInput.username === "") {
@@ -28,44 +28,44 @@ export default () => {
   }
 
   const validateForm = (name, value) => {
-    let usernameError = formErrors.username;
-    let codeError = formErrors.code;
-    let passwordError = formErrors.password;
-    let confirmPasswordError = formErrors.confirmPassword;
+    let usernameError = formErrors.username
+    let codeError = formErrors.code
+    let passwordError = formErrors.password
+    let confirmPasswordError = formErrors.confirmPassword
 
     if (name === "username") {
       if (value === "") {
-        usernameError = "please supply a username or email address";
+        usernameError = "please supply a username or email address"
       } else {
         usernameError = ""
       }
     } else if (name === "code") {
       if (value === "") {
-        codeError = "please enter your recovery code";
+        codeError = "please enter your recovery code"
       } else {
         codeError = ""
       }
     } else if (name === "password") {
       if (value !== formInput.confirmPassword) {
-        confirmPasswordError = "passwords must match";
-        passwordError = "";
+        confirmPasswordError = "passwords must match"
+        passwordError = ""
       } else if (value === "") {
-        passwordError = "password must not be blank";
-        confirmPasswordError = "";
+        passwordError = "password must not be blank"
+        confirmPasswordError = ""
       } else {
-        confirmPasswordError = "";
-        passwordError = "";
+        confirmPasswordError = ""
+        passwordError = ""
       }
     } else if (name === "confirmPassword") {
       if (value !== formInput.password) {
-        confirmPasswordError = "passwords must match";
-        passwordError = "";
+        confirmPasswordError = "passwords must match"
+        passwordError = ""
       } else if (formInput.password === "") {
-        passwordError = "password must not be blank";
-        confirmPasswordError = "";
+        passwordError = "password must not be blank"
+        confirmPasswordError = ""
       } else {
-        passwordError = "";
-        confirmPasswordError = "";
+        passwordError = ""
+        confirmPasswordError = ""
       }
     }
     setFormError({
@@ -73,29 +73,29 @@ export default () => {
       code: codeError,
       password: passwordError,
       confirmPassword: confirmPasswordError,
-    });
+    })
     return usernameError === "" && codeError === "" && passwordError === "" && confirmPasswordError === ""
   }
 
   const onChange = (name, value) => {
-    setFormInput({ ...formInput, [name]: value });
-    validateForm(name, value);
+    setFormInput({ ...formInput, [name]: value })
+    validateForm(name, value)
   }
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (!validateForm("", "") || anyEmpty()) {
-      return false;
+      return false
     } else {
-      const url = "/api/v1/user/password_reset";
+      const url = "/api/v1/user/password_reset"
 
       const body = {
         check: formInput.username,
         code: formInput.code,
         password: formInput.password,
-      };
+      }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch(url, {
         method: "POST",
         headers: {
@@ -105,7 +105,7 @@ export default () => {
         body: JSON.stringify(body),
       }).then(response => {
         if (response.ok) {
-          navigate("/login", { replace: true });
+          navigate("/login", { replace: true })
           return
         } else if (response.status === 403) {
           setFormError({
@@ -113,13 +113,13 @@ export default () => {
             code: "recovery code is not valid",
             password: "",
             confirmPassword: "",
-          });
+          })
           return
         }
-        console.log(response.json());
-      }).catch(error => console.log(error.message));
+        console.log(response.json())
+      }).catch(error => console.log(error.message))
     }
-  };
+  }
 
   const passwordTooltip = "we don't enforce any password quality at all but<br />" +
                           "you should still choose a unique, secure password<br />" +
@@ -187,4 +187,4 @@ export default () => {
       </div>
     </div>
   )
-};
+}

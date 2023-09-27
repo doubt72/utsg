@@ -3,20 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo"
 import { ArrowRepeat, BoxArrowRight, Check2Square, Trash3 } from "react-bootstrap-icons";
 
-const ValidateAccount = () => {
-  const navigate = useNavigate();
+export default () => {
+  const navigate = useNavigate()
   const [verificationCode, setVerificationCode] = useState("")
   const [verificationError, setVerificationError] = useState("")
 
   const email = localStorage.getItem("email")
 
   const onChange = (event, setFunction) => {
-    setFunction(event.target.value);
-  };
+    setFunction(event.target.value)
+  }
 
   const onSubmit = (event) => {
-    event.preventDefault();
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    event.preventDefault()
+    const token = document.querySelector('meta[name="csrf-token"]').content
     fetch("/api/v1/user/validate_code", {
       method: "POST",
       headers: {
@@ -27,15 +27,15 @@ const ValidateAccount = () => {
     }).then(response => {
         if (response.ok) {
           localStorage.removeItem("validationNeeded")
-          navigate("/", { replace: true });
+          navigate("/", { replace: true })
           return
         } else if (response.status === 403) {
           setVerificationError("code does not match")
           return
         }
-        console.log(response.json());
-    }).catch(error => console.log(error.message));
-  };
+        console.log(response.json())
+    }).catch(error => console.log(error.message))
+  }
 
   return (
     <div>
@@ -86,6 +86,4 @@ const ValidateAccount = () => {
       </div>
     </div>
   )
-};
-
-export default ValidateAccount;
+}

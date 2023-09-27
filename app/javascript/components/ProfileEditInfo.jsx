@@ -3,12 +3,12 @@ import { Person, Trash3 } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
 
 export default () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [formInput, setFormInput] = useState({
     username: localStorage.getItem("username"),
     email: localStorage.getItem("email"),
-  });
-  const [formErrors, setFormError] = useState({ username: "", email: "" });
+  })
+  const [formErrors, setFormError] = useState({ username: "", email: "" })
 
   const anyEmpty = () => {
     if (formInput.username === "") {
@@ -22,21 +22,21 @@ export default () => {
   }
 
   const validateForm = (name, value) => {
-    let usernameError = formErrors.username;
-    let emailError = formErrors.email;
+    let usernameError = formErrors.username
+    let emailError = formErrors.email
 
     if (name === "username") {
       if (value === "") {
-        usernameError = "username must not be blank";
+        usernameError = "username must not be blank"
       } else {
         usernameError = ""
       }
     } else if (name === "email") {
-      const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
       if (value === "") {
-        emailError = "email must not be blank";
+        emailError = "email must not be blank"
       } else if (value.match(validRegex)) {
-        emailError = "";
+        emailError = ""
       } else {
         emailError = "please enter a valid email address"
       }
@@ -44,30 +44,30 @@ export default () => {
     setFormError({
       username: usernameError,
       email: emailError,
-    });
+    })
     return usernameError === "" && emailError === ""
   }
 
   const onChange = (name, value) => {
-    setFormInput({ ...formInput, [name]: value });
-    validateForm(name, value);
+    setFormInput({ ...formInput, [name]: value })
+    validateForm(name, value)
   }
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (!validateForm("", "") || anyEmpty()) {
-      return false;
+      return false
     } else {
-      const url = "/api/v1/user";
+      const url = "/api/v1/user"
 
       const body = {
         user: {
           username: formInput.username,
           email: formInput.email,
         }
-      };
+      }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch(url, {
         method: "PUT",
         headers: {
@@ -80,14 +80,14 @@ export default () => {
             const json = response.json().then(json => {
               localStorage.setItem("username", json.username)
               localStorage.setItem("email", json.email)
-              navigate("/profile", { replace: true });
+              navigate("/profile", { replace: true })
             })
             return
           }
-          console.log(response.json());
-      }).catch(error => console.log(error.message));
+          console.log(response.json())
+      }).catch(error => console.log(error.message))
     }
-  };
+  }
 
   return (
     <div className="profile-form mr1em">
@@ -125,4 +125,4 @@ export default () => {
       </div>
     </div>
   )
-};
+}

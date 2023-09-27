@@ -49,6 +49,8 @@ button.custom-button:hover,a.custom-button:hover {
   width: 100%;
   padding: 0.2em 0.5em;
   margin: 0 0 0.5em 0;
+  border-radius: 0.33em;
+  border: 2px solid $border-color-light-gray;
 }
 
 .form-error-message {
@@ -100,7 +102,8 @@ button.custom-button:hover,a.custom-button:hover {
 .main-page-announcements {
   padding: 1em;
   margin-left: 1em;
-  width: 40%;
+  width: 650px;
+  min-width: 650px;
   background-color: $background-gray;
   border-radius: 0.5em;
 }
@@ -108,9 +111,63 @@ button.custom-button:hover,a.custom-button:hover {
 .main-page-chat {
   padding: 1em;
   flex-grow: 1;
-  height: 250px;
   background-color: $background-gray;
   border-radius: 0.5em;
+}
+
+.chat-output {
+  height: 250px;
+  background-color: white;
+  margin-bottom: 1em;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  overflow-y: scroll;
+
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.chat-output-record {
+  flex-direction: row;
+  display: flex;
+}
+
+.chat-output-date {
+  font-family: monospace;
+  color: $lightish-gray;
+  padding-right: 0.5em;
+}
+
+.chat-output-date-invisible {
+  font-family: monospace;
+  color: white;
+  padding-right: 1.5em;
+}
+
+.chat-output-message {
+  flex-grow: 1;
+}
+
+.chat-output-username {
+  color: $darkish-green;
+  font-weight: bold;
+  padding-right: 0.5em;
+}
+
+.chat-output-username-invisible {
+  display: none;
+}
+
+.chat-entry {
+  display: flex;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 0.2em 0.5em;
+  margin: 0em 0.25em 0 0;
+  border-radius: 0.35em;
+  border: 2px solid $border-color-gray;
 }
 
 // About page layout

@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import Logo from "./Logo"
+import Logo from "./Logo";
 import { ArrowRepeat } from "react-bootstrap-icons";
 
 export default () => {
   const email = localStorage.getItem("email")
 
   useEffect(() => {
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector('meta[name="csrf-token"]').content
     fetch("/api/v1/user/new_code", {
       method: "POST",
       headers: {
@@ -19,9 +19,9 @@ export default () => {
         if (response.ok) {
           return
         }
-        console.log(response.json());
-    }).catch(error => console.log(error.message));
-  }, []);
+        console.log(response.json())
+    }).catch(error => console.log(error.message))
+  }, [])
 
   return (
     <div>
@@ -38,5 +38,5 @@ export default () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -4,25 +4,25 @@ import Logo from "./Logo"
 import { Trash3, XCircle } from "react-bootstrap-icons";
 
 export default () => {
-  const navigate = useNavigate();
-  const [confirm, setConfirm] = useState("");
-  const [confirmError, setConfirmError] = useState("");
+  const navigate = useNavigate()
+  const [confirm, setConfirm] = useState("")
+  const [confirmError, setConfirmError] = useState("")
 
   const onChange = (value) => {
-    setConfirm(value);
+    setConfirm(value)
     if (value !== "DELETE") {
-      setConfirmError("value does not equal 'DELETE'");
+      setConfirmError("value does not equal 'DELETE'")
     } else {
-      setConfirmError("are you really really sure?");
+      setConfirmError("are you really really sure?")
     }
   }
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (confirm !== "DELETE") {
-      return false;
+      return false
     } else {
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch("/api/v1/user", {
         method: "DELETE",
         headers: {
@@ -34,13 +34,13 @@ export default () => {
           if (response.ok) {
             localStorage.removeItem("username")
             localStorage.removeItem("email")
-            navigate("/");
+            navigate("/")
             return
           }
-          console.log(response.json());
-      }).catch(error => console.log(error.message));
+          console.log(response.json())
+      }).catch(error => console.log(error.message))
     }
-  };
+  }
 
   return (
     <div>
@@ -72,4 +72,4 @@ export default () => {
       </div>
     </div>
   )
-};
+}

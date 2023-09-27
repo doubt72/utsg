@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "./Logo"
+import Logo from "./Logo";
 import { ArrowRepeat, XCircle } from "react-bootstrap-icons";
 
 export default () => {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [usernameError, setUsernameError] = useState("");
+  const navigate = useNavigate()
+  const [username, setUsername] = useState("")
+  const [usernameError, setUsernameError] = useState("")
 
   const onChange = (value) => {
-    setUsername(value);
+    setUsername(value)
     if (value === "") {
-      setUsernameError("please supply a username or email address'");
+      setUsernameError("please supply a username or email address'")
     } else {
-      setUsernameError("");
+      setUsernameError("")
     }
   }
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (username === "") {
-      setUsernameError("please supply a username or email address'");
-      return false;
+      setUsernameError("please supply a username or email address'")
+      return false
     } else {
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch("/api/v1/user/set_recovery", {
         method: "POST",
         headers: {
@@ -33,13 +33,13 @@ export default () => {
         body: JSON.stringify({ check: username }),
       }).then(response => {
         if (response.ok) {
-          navigate("/reset_password", { replace: true });
+          navigate("/reset_password", { replace: true })
           return
         }
-        console.log(response.json());
-      }).catch(error => console.log(error.message));
+        console.log(response.json())
+      }).catch(error => console.log(error.message))
     }
-  };
+  }
 
   return (
     <div>
@@ -75,4 +75,4 @@ export default () => {
       </div>
     </div>
   )
-};
+}

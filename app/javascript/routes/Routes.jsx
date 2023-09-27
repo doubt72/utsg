@@ -3,15 +3,15 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
 import MainPage from "../components/MainPage";
 
-import Login from '../components/Login'
-import Logout from '../components/Logout'
-import Signup from '../components/Signup'
+import Login from '../components/Login';
+import Logout from '../components/Logout';
+import Signup from '../components/Signup';
 import RecoverAccount from "../components/RecoverAccount";
 import ResetPassword from "../components/ResetPassword";
 
-import ValidateAccount from '../components/ValidateAccount'
-import NewValidationCode from '../components/NewValidationCode'
-import DeleteAccount from '../components/DeleteAccount'
+import ValidateAccount from '../components/ValidateAccount';
+import NewValidationCode from '../components/NewValidationCode';
+import DeleteAccount from '../components/DeleteAccount';
 
 import About from "../components/About";
 import Profile from "../components/Profile";
@@ -24,7 +24,7 @@ const Routes = () => {
     { path: "/signup", element: <Signup /> },
     { path: "/recover_account", element: <RecoverAccount /> },
     { path: "/reset_password", element: <ResetPassword /> },
-  ];
+  ]
 
   const protectedRoutes = [
     {
@@ -39,14 +39,14 @@ const Routes = () => {
         { path: "/profile", element: <Profile /> },
       ],
     },
-  ];
+  ]
 
   const router = createBrowserRouter([
     ...publicRoutes,
     ...protectedRoutes,
-  ]);
+  ])
 
-  return <RouterProvider router={router} />;
-};
+  return <RouterProvider router={router} />
+}
 
-export default Routes;
+export default Routes

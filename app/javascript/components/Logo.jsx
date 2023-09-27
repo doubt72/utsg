@@ -9,4 +9,4 @@ export default () => {
       </Link>
     </div>
   )
-};
+}

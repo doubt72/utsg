@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 export const ProtectedRoute = (props) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const unvalidatedPaths = [
     "/validate_account", '/new_validation_code', '/logout', '/delete_account'
@@ -13,13 +13,13 @@ export const ProtectedRoute = (props) => {
     localStorage.removeItem("username")
     localStorage.removeItem("email")
     if (path !== '/') {
-      navigate("/", { replace: true });
+      navigate("/", { replace: true })
     }
-  };
+  }
 
   useEffect(() => {
     const path = window.location.pathname
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector('meta[name="csrf-token"]').content
     fetch("/api/v1/session/auth", {
       method: "GET",
       headers: {
@@ -30,25 +30,25 @@ export const ProtectedRoute = (props) => {
         if (response.ok) {
           response.json().then(body => {
             if (body.username === undefined) {
-              unauthorized();
+              unauthorized()
             } else {
               localStorage.removeItem("validationNeeded")
             }
           }).catch(error => {
-            console.log(error.message);
-            unauthorized();
+            console.log(error.message)
+            unauthorized()
           })
           return
         } else if (response.status === 403) {
           if (!unvalidatedPaths.includes(path)) {
             localStorage.setItem("validationNeeded", true)
-            navigate("/validate_account", { replace: true });
+            navigate("/validate_account", { replace: true })
           }
           return
         }
-        unauthorized();
-    }).catch(error => console.log(error.message));
-  }, []);
+        unauthorized()
+    }).catch(error => console.log(error.message))
+  }, [])
 
-  return <Outlet />;
-};
+  return <Outlet />
+}

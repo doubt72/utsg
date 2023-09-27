@@ -5,13 +5,13 @@ import { ExclamationCircleFill, PencilSquare, XCircle } from "react-bootstrap-ic
 import Logo from "./Logo"
 
 export default () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [formInput, setFormInput] = useState({
     username: "", email: "", password: "", confirmPassword: ""
-  });
+  })
   const [formErrors, setFormError] = useState({
     username: "", email: "", password: "", confirmPassword: ""
-  });
+  })
 
   const anyEmpty = () => {
     if (formInput.username === "") {
@@ -29,7 +29,7 @@ export default () => {
 
   const checkConflict = (type, value) => {
     const conflictTimer = setTimeout(() => {
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch("/api/v1/user/check_conflict", {
         method: "POST",
         headers: {
@@ -48,63 +48,63 @@ export default () => {
                   email: emailError,
                   password: formErrors.password,
                   confirmPassword: formErrors.confirmPassword,
-                });
+                })
               }
             })
             return
           }
-          console.log(response.json());
-      }).catch(error => console.log(error.message));
-    }, 1000);
+          console.log(response.json())
+      }).catch(error => console.log(error.message))
+    }, 1000)
     if (conflictTimer > 0) {
-      clearTimeout(conflictTimer - 1);
+      clearTimeout(conflictTimer - 1)
     }
   }
 
   const validateForm = (name, value) => {
-    let usernameError = formErrors.username;
-    let emailError = formErrors.email;
-    let passwordError = formErrors.password;
-    let confirmPasswordError = formErrors.confirmPassword;
+    let usernameError = formErrors.username
+    let emailError = formErrors.email
+    let passwordError = formErrors.password
+    let confirmPasswordError = formErrors.confirmPassword
 
     if (name === "username") {
       if (value === "") {
-        usernameError = "username must not be blank";
+        usernameError = "username must not be blank"
       } else {
         usernameError = ""
       }
-      checkConflict("username", value);
+      checkConflict("username", value)
     } else if (name === "email") {
-      const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
       if (value === "") {
-        emailError = "email must not be blank";
+        emailError = "email must not be blank"
       } else if (value.match(validRegex)) {
-        emailError = "";
+        emailError = ""
       } else {
         emailError = "please enter a valid email address"
       }
-      checkConflict("email", value);
+      checkConflict("email", value)
     } else if (name === "password") {
       if (value !== formInput.confirmPassword) {
-        confirmPasswordError = "passwords must match";
-        passwordError = "";
+        confirmPasswordError = "passwords must match"
+        passwordError = ""
       } else if (value === "") {
-        passwordError = "password must not be blank";
-        confirmPasswordError = "";
+        passwordError = "password must not be blank"
+        confirmPasswordError = ""
       } else {
-        confirmPasswordError = "";
-        passwordError = "";
+        confirmPasswordError = ""
+        passwordError = ""
       }
     } else if (name === "confirmPassword") {
       if (value !== formInput.password) {
-        confirmPasswordError = "passwords must match";
-        passwordError = "";
+        confirmPasswordError = "passwords must match"
+        passwordError = ""
       } else if (formInput.password === "") {
-        passwordError = "password must not be blank";
-        confirmPasswordError = "";
+        passwordError = "password must not be blank"
+        confirmPasswordError = ""
       } else {
-        passwordError = "";
-        confirmPasswordError = "";
+        passwordError = ""
+        confirmPasswordError = ""
       }
     }
     setFormError({
@@ -112,21 +112,21 @@ export default () => {
       email: emailError,
       password: passwordError,
       confirmPassword: confirmPasswordError,
-    });
+    })
     return usernameError === "" && emailError === "" && passwordError === "" && confirmPasswordError === ""
   }
 
   const onChange = (name, value) => {
-    setFormInput({ ...formInput, [name]: value });
-    validateForm(name, value);
+    setFormInput({ ...formInput, [name]: value })
+    validateForm(name, value)
   }
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (!validateForm("", "") || anyEmpty()) {
-      return false;
+      return false
     } else {
-      const url = "/api/v1/user";
+      const url = "/api/v1/user"
 
       const body = {
         user: {
@@ -134,9 +134,9 @@ export default () => {
           email: formInput.email,
           password: formInput.password,
         }
-      };
+      }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch(url, {
         method: "POST",
         headers: {
@@ -149,16 +149,16 @@ export default () => {
             const json = response.json().then(json => {
               localStorage.setItem("username", json.username)
               localStorage.setItem("email", json.email)
-              navigate("/validate_account", { replace: true });
+              navigate("/validate_account", { replace: true })
             })
             return
           }
-          console.log(response.json());
-      }).catch(error => console.log(error.message));
+          console.log(response.json())
+      }).catch(error => console.log(error.message))
     }
-  };
+  }
 
-  const emailTooltip = "email will be used to send a verification code<br />to complete signup";
+  const emailTooltip = "email will be used to send a verification code<br />to complete signup"
   const passwordTooltip = "we don't enforce any password quality at all but<br />" +
                           "you should still choose a unique, secure password<br />" +
                           "and if you don't, that's on you"
@@ -231,4 +231,4 @@ export default () => {
       </div>
     </div>
   )
-};
+}

@@ -4,9 +4,9 @@ import Logo from "./Logo"
 import { ArrowRepeat, BoxArrowInRight, XCircle } from "react-bootstrap-icons";
 
 export default () => {
-  const navigate = useNavigate();
-  const [formInput, setFormInput] = useState({ username: "", password: "" });
-  const [formErrors, setFormError] = useState({ username: "", password: "" });
+  const navigate = useNavigate()
+  const [formInput, setFormInput] = useState({ username: "", password: "" })
+  const [formErrors, setFormError] = useState({ username: "", password: "" })
 
   const anyEmpty = () => {
     if (formInput.username === "") {
@@ -20,46 +20,46 @@ export default () => {
   }
 
   const validateForm = (name, value) => {
-    let usernameError = formErrors.username;
-    let passwordError = formErrors.password;
+    let usernameError = formErrors.username
+    let passwordError = formErrors.password
 
     if (name === "username") {
       if (value === "") {
-        usernameError = "please enter a username or email";
+        usernameError = "please enter a username or email"
       } else {
         usernameError = ""
       }
     } else if (name === "password") {
       if (value === "") {
-        passwordError = "please enter a password";
+        passwordError = "please enter a password"
       } else {
-        passwordError = "";
+        passwordError = ""
       }
     }
-    setFormError({ username: usernameError, password: passwordError });
+    setFormError({ username: usernameError, password: passwordError })
     return usernameError === "" && passwordError === ""
   }
 
   const onChange = (name, value) => {
-    setFormInput({ ...formInput, [name]: value });
-    validateForm(name, value);
+    setFormInput({ ...formInput, [name]: value })
+    validateForm(name, value)
   }
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     if (!validateForm("", "") || anyEmpty()) {
-      return false;
+      return false
     } else {
-      const url = "/api/v1/session";
+      const url = "/api/v1/session"
 
       const body = {
         user: {
           username: formInput.username,
           password: formInput.password,
         }
-      };
+      }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content;
+      const token = document.querySelector('meta[name="csrf-token"]').content
       fetch(url, {
         method: "POST",
         headers: {
@@ -72,16 +72,16 @@ export default () => {
             const json = response.json().then(json => {
               localStorage.setItem("username", json.username)
               localStorage.setItem("email", json.email)
-              navigate("/", { replace: true });
+              navigate("/", { replace: true })
             })
             return
           } else if (response.status === 401) {
-            setFormError({ username: "", password: "username not found or password incorrect" });
+            setFormError({ username: "", password: "username not found or password incorrect" })
           }
-          console.log(response.json());
-      }).catch(error => console.log(error.message));
+          console.log(response.json())
+      }).catch(error => console.log(error.message))
     }
-  };
+  }
 
   return (
     <div>
@@ -126,4 +126,4 @@ export default () => {
       </div>
     </div>
   )
-};
+}

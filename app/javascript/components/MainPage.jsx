@@ -1,22 +1,23 @@
 import React, { useEffect } from "react";
 import Header from './Header'
 import { useNavigate } from "react-router-dom";
+import ChatDisplay from "./ChatDisplay";
 
 export default () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (localStorage.getItem("validationNeeded")) {
-      navigate("/validate_account", { replace: true });
+      navigate("/validate_account", { replace: true })
     }
-  }, []);
+  }, [])
 
   return (
     <div className="main-page">
       <Header />
       <div className="standard-body">
         <div className="main-page-chat">
-          Some sort of chat bullshit coming soon.
+          <ChatDisplay />
         </div>
         <div className="main-page-announcements">
           <p>
@@ -31,4 +32,4 @@ export default () => {
       <div className="standard-body"></div>
     </div>
   )
-};
+}
