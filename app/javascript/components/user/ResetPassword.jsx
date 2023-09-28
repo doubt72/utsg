@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Tooltip } from "react-tooltip";
-import { ArrowRepeat, ExclamationCircleFill, XCircle } from "react-bootstrap-icons"
-import Logo from "./Logo";
-import { postAPI } from "../helper";
+import { useNavigate } from "react-router-dom";
+import Logo from "../Logo";
+import { postAPI } from "../../utilities/network";
+import { PasswordTooltip } from "../utilities/tooltips";
+import { CancelButton, ResetPasswordButton } from "../utilities/buttons";
 
 export default () => {
   const navigate = useNavigate()
@@ -108,10 +108,6 @@ export default () => {
     }
   }
 
-  const passwordTooltip = "we don't enforce any password quality at all but<br />" +
-                          "you should still choose a unique, secure password<br />" +
-                          "and if you don't, that's on you"
-
   return (
     <div>
       <div className="header">
@@ -139,13 +135,7 @@ export default () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.code}</div>
-          <label>
-            new password
-            <span className="standard-tooltip" data-tooltip-id="password-tt" data-tooltip-html={passwordTooltip}>
-              <ExclamationCircleFill />
-            </span>
-            <Tooltip className="standard-tooltip-popout" id="password-tt" />
-          </label>
+          <label>new password<PasswordTooltip /></label>
           <input
             type="password"
             name="password"
@@ -163,12 +153,8 @@ export default () => {
           />
           <div className="form-error-message">{formErrors.confirmPassword}</div>
           <div className="align-end">
-            <Link to="/" className="custom-button">
-              <XCircle />cancel
-            </Link>
-            <button type="submit" className="custom-button">
-              <ArrowRepeat />reset password
-            </button>
+            <CancelButton />
+            <ResetPasswordButton type="confirm" />
           </div>
         </form>
       </div>

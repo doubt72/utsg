@@ -1,6 +1,9 @@
 class User < ApplicationRecord
-  has_many :games
-  has_many :messages
+  has_many :games, foreign_key: :owner_id, dependent: :destroy
+  has_many :messages, dependent: :destroy
+
+  has_many :games_as_player_one, class_name: "Game", foreign_key: :player_one_id, dependent: :nullify
+  has_many :games_as_player_two, class_name: "Game", foreign_key: :player_two_id, dependent: :nullify
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
@@ -42,6 +45,7 @@ class User < ApplicationRecord
   end
 
   def reset_password_with_code(code, password)
+    return false unless recovery_code
     return false if recovery_code_expires < Time.zone.now
     return false if recovery_code != code
     update!(password: password, recovery_code: nil, recovery_code_expires: nil)

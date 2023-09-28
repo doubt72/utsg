@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Tooltip } from "react-tooltip";
-import { ExclamationCircleFill, ShieldExclamation } from "react-bootstrap-icons";
-import { putAPI } from "../helper";
+import { putAPI } from "../../utilities/network";
+import { PasswordTooltip } from "../utilities/tooltips";
+import { ChangePasswordButton } from "../utilities/buttons";
 
 export default () => {
   const [formInput, setFormInput] = useState({
@@ -92,10 +92,6 @@ export default () => {
     }
   }
 
-  const passwordTooltip = "we don't enforce any password quality at all but<br />" +
-                          "you should still choose a unique, secure password<br />" +
-                          "and if you don't, that's on you"
-
   return (
     <div className="profile-form">
       <div className="mb1em">
@@ -111,13 +107,7 @@ export default () => {
           onChange={({ target }) => onChange(target.name, target.value)}
         />
         <div className="form-error-message">{formErrors.oldPassword}</div>
-        <label>
-          new password
-          <span className="standard-tooltip" data-tooltip-id="password-tt" data-tooltip-html={passwordTooltip}>
-            <ExclamationCircleFill />
-          </span>
-          <Tooltip className="standard-tooltip-popout" id="password-tt" />
-        </label>
+        <label>new password<PasswordTooltip /></label>
         <input
           type="password"
           name="password"
@@ -137,9 +127,7 @@ export default () => {
         />
         <div className="form-error-message">{formErrors.confirmPassword}</div>
         <div className="align-end">
-          <button type="submit" className="custom-button">
-            <ShieldExclamation />change password
-          </button>
+          <ChangePasswordButton />
         </div>
       </form>
     </div>

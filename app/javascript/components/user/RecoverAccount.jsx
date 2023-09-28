@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowRepeat, XCircle } from "react-bootstrap-icons";
-import Logo from "./Logo";
-import { postAPI } from "../helper";
+import { useNavigate } from "react-router-dom";
+import Logo from "../Logo";
+import { postAPI } from "../../utilities/network";
+import { CancelButton, RecoverAccountButton } from "../utilities/buttons";
 
 export default () => {
   const navigate = useNavigate()
@@ -54,12 +54,8 @@ export default () => {
           />
           <div className="form-error-message">{usernameError}</div>
           <div className="align-end">
-            <Link to="/" className="custom-button">
-              <XCircle />cancel
-            </Link>
-            <button type="submit" className="custom-button">
-              <ArrowRepeat />send code
-            </button>
+            <CancelButton />
+            <RecoverAccountButton type="confirm" />
           </div>
         </form>
       </div>

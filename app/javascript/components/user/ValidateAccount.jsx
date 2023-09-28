@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowRepeat, BoxArrowRight, Check2Square, Trash3 } from "react-bootstrap-icons";
-import Logo from "./Logo";
-import { postAPI } from "../helper";
+import { useNavigate } from "react-router-dom";
+import Logo from "../Logo";
+import { postAPI } from "../../utilities/network";
+import { DeleteButton, LogoutButton, SendNewCodeButton, VerifyButton } from "../utilities/buttons";
 
 export default () => {
   const navigate = useNavigate()
@@ -47,12 +47,8 @@ export default () => {
           />
           <div className="form-error-message">{verificationError}</div>
           <div className="align-end">
-            <Link to="/logout" className="custom-button">
-              <BoxArrowRight />logout
-            </Link>
-            <button type="submit" className="custom-button">
-              <Check2Square />confirm
-            </button>
+            <LogoutButton />
+            <VerifyButton />
           </div>
         </form>
         <div className="mt1em mb1em">
@@ -60,18 +56,14 @@ export default () => {
           you may request a new code:
         </div>
         <div className="align-end">
-          <Link to="/new_validation_code" className="custom-button">
-            <ArrowRepeat />send new code
-          </Link>
+          <SendNewCodeButton />
         </div>
         <div className="mt1em mb1em">
           If you no longer want to create an account with this username
           and password, you may cancel this signup and delete this account:
         </div>
         <div className="align-end">
-          <Link to="/delete_account" className="custom-button">
-            <Trash3 />delete account
-          </Link>
+          <DeleteButton />
         </div>
       </div>
     </div>

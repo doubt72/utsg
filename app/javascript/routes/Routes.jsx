@@ -2,19 +2,17 @@ import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
 import MainPage from "../components/MainPage";
-
-import Login from '../components/Login';
-import Logout from '../components/Logout';
-import Signup from '../components/Signup';
-import RecoverAccount from "../components/RecoverAccount";
-import ResetPassword from "../components/ResetPassword";
-
-import ValidateAccount from '../components/ValidateAccount';
-import NewValidationCode from '../components/NewValidationCode';
-import DeleteAccount from '../components/DeleteAccount';
-
 import About from "../components/About";
-import Profile from "../components/Profile";
+
+import Profile from "../components/user/Profile";
+import Login from '../components/user/Login';
+import Logout from '../components/user/Logout';
+import Signup from '../components/user/Signup';
+import ValidateAccount from '../components/user/ValidateAccount';
+import NewValidationCode from '../components/user/NewValidationCode';
+import RecoverAccount from "../components/user/RecoverAccount";
+import ResetPassword from "../components/user/ResetPassword";
+import DeleteAccount from '../components/user/DeleteAccount';
 
 const Routes = () => {
   const publicRoutes = [

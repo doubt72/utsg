@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowRepeat, BoxArrowInRight, XCircle } from "react-bootstrap-icons";
-import Logo from "./Logo";
-import { postAPI } from "../helper";
+import { useNavigate } from "react-router-dom";
+import Logo from "../Logo";
+import { postAPI } from "../../utilities/network";
+import { CancelButton, LoginButton, RecoverAccountButton } from "../utilities/buttons";
 
 export default () => {
   const navigate = useNavigate()
@@ -97,21 +97,15 @@ export default () => {
           />
           <div className="form-error-message">{formErrors.password}</div>
           <div className="align-end">
-            <Link to="/" className="custom-button">
-              <XCircle />cancel
-            </Link>
-            <button type="submit" className="custom-button">
-              <BoxArrowInRight />login
-            </button>
+            <CancelButton />
+            <LoginButton type="confirm" />
           </div>
         </form>
         <div className="mt1em">
           If you've forgotten your password, you can recover your account here:
         </div>
         <div className="align-end mt1em">
-          <Link to="/recover_account" className="custom-button">
-            <ArrowRepeat />recover account
-          </Link>
+          <RecoverAccountButton />
         </div>
       </div>
     </div>

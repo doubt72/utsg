@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Tooltip } from "react-tooltip";
-import { ExclamationCircleFill, PencilSquare, XCircle } from "react-bootstrap-icons"
-import Logo from "./Logo";
-import { postAPI } from "../helper";
+import { useNavigate } from "react-router-dom";
+import Logo from "../Logo";
+import { postAPI } from "../../utilities/network";
+import { PasswordTooltip, SignupEmailTooltip } from "../utilities/tooltips";
+import { CancelButton, SignupButton } from "../utilities/buttons";
 
 export default () => {
   const navigate = useNavigate()
@@ -138,11 +138,6 @@ export default () => {
     }
   }
 
-  const emailTooltip = "email will be used to send a verification code<br />to complete signup"
-  const passwordTooltip = "we don't enforce any password quality at all but<br />" +
-                          "you should still choose a unique, secure password<br />" +
-                          "and if you don't, that's on you"
-
   return (
     <div>
       <div className="header">
@@ -162,13 +157,7 @@ export default () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.username}</div>
-          <label>
-            email
-            <span className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={emailTooltip}>
-              <ExclamationCircleFill />
-            </span>
-            <Tooltip className="standard-tooltip-popout" id="email-tt" />
-          </label>
+          <label>email<SignupEmailTooltip /></label>
           <input
             type="email"
             name="email"
@@ -176,13 +165,7 @@ export default () => {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.email}</div>
-          <label>
-            password
-            <span className="standard-tooltip" data-tooltip-id="email-tt" data-tooltip-html={passwordTooltip}>
-              <ExclamationCircleFill />
-            </span>
-            <Tooltip className="standard-tooltip-popout" id="email-tt" />
-          </label>
+          <label>password<PasswordTooltip /></label>
           <input
             type="password"
             name="password"
@@ -200,12 +183,8 @@ export default () => {
           />
           <div className="form-error-message">{formErrors.confirmPassword}</div>
           <div className="align-end">
-            <Link to="/" className="custom-button">
-              <XCircle />cancel
-            </Link>
-            <button type="submit" className="custom-button">
-              <PencilSquare />sign up
-            </button>
+            <CancelButton />
+            <SignupButton type="confirm" />
           </div>
         </form>
       </div>

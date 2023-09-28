@@ -17,13 +17,18 @@ const fetchAPI = (url, verb, body, responseOptions) => {
     if (response.ok) {
       responseOptions.ok(response)
       return
-    } else if (response.status === 401 && responseOptions.forbidden) {
-      responseOptions.forbidden(response)
-      return
-    } else if (response.status === 403 && responseOptions.unauthorized) {
-      responseOptions.unauthorized(response)
-      return
-    } else if (responseOptions.other) {
+    } else if (response.status === 401) {
+      if (responseOptions.unauthorized !== undefined) {
+        responseOptions.unauthorized(response)
+        return
+      }
+    } else if (response.status === 403) {
+      if (responseOptions.forbidden !== undefined) {
+        responseOptions.forbidden(response)
+        return
+      }
+    }
+    if (responseOptions.other) {
       responseOptions.other(response)
       return
     }

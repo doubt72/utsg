@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
-import { getAPI } from "../helper";
+import { getAPI } from "../utilities/network";
 
 export const ProtectedRoute = (props) => {
   const navigate = useNavigate()

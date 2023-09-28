@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Trash3, XCircle } from "react-bootstrap-icons";
-import Logo from "./Logo";
-import { deleteAPI } from "../helper";
+import { useNavigate } from "react-router-dom";
+import Logo from "../Logo";
+import { deleteAPI } from "../../utilities/network";
+import { CancelButton } from "../utilities/buttons";
 
 export default () => {
   const navigate = useNavigate()
@@ -40,7 +40,10 @@ export default () => {
       </div>
       <div className="form-container">
         <div className="mb1em">
-          <p>Are you sure you want to delete this account?</p>
+          <p>
+            Are you sure you want to delete this account?  All of your data including
+            your games.
+          </p>
         </div>
         <form onSubmit={onSubmit}>
           <label>Enter '<span className="red">DELETE</span>' to confirm that you want to delete this account:</label>
@@ -52,12 +55,8 @@ export default () => {
           />
           <div className="form-error-message">{confirmError}</div>
           <div className="align-end">
-            <Link to="/" className="custom-button">
-              <XCircle />cancel
-            </Link>
-            <button type="submit" className="custom-button">
-              <Trash3 />delete account
-            </button>
+            <CancelButton />
+            <DeleteButton type="confirm" />
           </div>
         </form>
       </div>

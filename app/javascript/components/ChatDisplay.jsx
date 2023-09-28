@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { ChatText } from "react-bootstrap-icons";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import sanitize from "sanitize-html";
-import { getAPI, postAPI } from "../helper";
+import { getAPI, postAPI } from "../utilities/network";
+import { ChatButton } from "./utilities/buttons";
 
 export default () => {
   const [message, setMessage] = useState("")
@@ -99,9 +99,7 @@ export default () => {
           placeholder="please keep chat messages relevant to game discussion"
           onChange={({ target }) => onChange(target.value)}
         />
-        <button type="submit" className="custom-button nowrap">
-          <ChatText />chat
-        </button>
+        <ChatButton />
       </div>
     </form>
   )

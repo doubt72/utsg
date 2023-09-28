@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteAPI } from "../helper";
+import { deleteAPI } from "../../utilities/network";
 
 export default () => {
   const navigate = useNavigate()

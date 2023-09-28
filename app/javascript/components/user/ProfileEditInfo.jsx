@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Person, Trash3 } from "react-bootstrap-icons";
-import { Link, useNavigate } from "react-router-dom";
-import { putAPI } from "../helper";
+import { useNavigate } from "react-router-dom";
+import { putAPI } from "../../utilities/network";
+import { DeleteButton, UpdateInfoButton } from "../utilities/buttons";
 
 export default () => {
   const navigate = useNavigate()
@@ -103,14 +103,12 @@ export default () => {
         />
         <div className="form-error-message">{formErrors.email}</div>
         <div className="align-end">
-          <button type="submit" className="custom-button">
-            <Person />update user info
-          </button>
+          <UpdateInfoButton />
         </div>
       </form>
       <div className="mt1em mb1em">You can delete your account here:</div>
       <div className="align-end">
-        <Link to="/delete_account" className="custom-button"><Trash3 />delete account</Link>
+        <DeleteButton />
       </div>
     </div>
   )
