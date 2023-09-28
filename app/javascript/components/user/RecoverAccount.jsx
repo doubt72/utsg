@@ -54,7 +54,7 @@ export default () => {
           />
           <div className="form-error-message">{usernameError}</div>
           <div className="align-end">
-            <CancelButton />
+            <CancelButton url="/login"/>
             <RecoverAccountButton type="confirm" />
           </div>
         </form>

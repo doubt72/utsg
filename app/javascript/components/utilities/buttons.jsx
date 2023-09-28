@@ -27,7 +27,8 @@ const CancelButton = (props) => {
       </button>
     )
   } else {
-    return <CustomLink url="/" text="cancel"><XCircle /></CustomLink>
+    const url = props.url !== undefined ? props.url : "/"
+    return <CustomLink url={url} text="cancel"><XCircle /></CustomLink>
   }
 }
 
@@ -97,7 +98,7 @@ const VerifyButton = () => {
 
 export {
   AboutButton,
-  CancelButton,             // type=submit prop = submit button version, name = cancel
+  CancelButton,             // type=submit prop = submit button version, name = cancel; url prop available
   ChangePasswordButton,
   ChatButton,
   DeleteButton,
