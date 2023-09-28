@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { getAPI } from "../helper";
 
 export const ProtectedRoute = (props) => {
   const navigate = useNavigate()
@@ -19,35 +20,27 @@ export const ProtectedRoute = (props) => {
 
   useEffect(() => {
     const path = window.location.pathname
-    const token = document.querySelector('meta[name="csrf-token"]').content
-    fetch("/api/v1/session/auth", {
-      method: "GET",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json",
-      },
-    }).then(response => {
-        if (response.ok) {
-          response.json().then(body => {
-            if (body.username === undefined) {
-              unauthorized()
-            } else {
-              localStorage.removeItem("validationNeeded")
-            }
-          }).catch(error => {
-            console.log(error.message)
+    getAPI("/api/v1/session/auth", {
+      ok: response => {
+        response.json().then(body => {
+          if (body.username === undefined) {
             unauthorized()
-          })
-          return
-        } else if (response.status === 403) {
-          if (!unvalidatedPaths.includes(path)) {
-            localStorage.setItem("validationNeeded", true)
-            navigate("/validate_account", { replace: true })
+          } else {
+            localStorage.removeItem("validationNeeded")
           }
-          return
+        }).catch(error => {
+          console.log(error.message)
+          unauthorized()
+        })
+      },
+      forbidden: _response => {
+        if (!unvalidatedPaths.includes(path)) {
+          localStorage.setItem("validationNeeded", true)
+          navigate("/validate_account", { replace: true })
         }
-        unauthorized()
-    }).catch(error => console.log(error.message))
+      },
+      other: _response => unauthorized()
+    })
   }, [])
 
   return <Outlet />

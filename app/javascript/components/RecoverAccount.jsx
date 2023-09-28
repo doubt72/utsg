@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "./Logo";
 import { ArrowRepeat, XCircle } from "react-bootstrap-icons";
+import Logo from "./Logo";
+import { postAPI } from "../helper";
 
 export default () => {
   const navigate = useNavigate()
@@ -23,21 +24,10 @@ export default () => {
       setUsernameError("please supply a username or email address'")
       return false
     } else {
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch("/api/v1/user/set_recovery", {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ check: username }),
-      }).then(response => {
-        if (response.ok) {
-          navigate("/reset_password", { replace: true })
-          return
-        }
-        console.log(response.json())
-      }).catch(error => console.log(error.message))
+      body = { check: username }
+      postAPI("/api/v1/user/set_recovery", body, {
+        ok: _response => navigate("/reset_password", { replace: true })
+      })
     }
   }
 

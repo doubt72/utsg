@@ -1,8 +1,8 @@
-import { parse } from "postcss";
 import React, { useCallback, useEffect, useState } from "react";
 import { ChatText } from "react-bootstrap-icons";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import sanitize from "sanitize-html";
+import { getAPI, postAPI } from "../helper";
 
 export default () => {
   const [message, setMessage] = useState("")
@@ -51,22 +51,9 @@ export default () => {
   }
 
   useEffect(() => {
-    const token = document.querySelector('meta[name="csrf-token"]').content
-    fetch("/api/v1/messages?game_id=0", {
-      method: "GET",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json",
-      },
-    }).then(response => {
-      if (response.ok) {
-        const json = response.json().then(json => {
-          setAllMessages([...json])
-        })
-        return
-      }
-      console.log(response.json())
-    }).catch(error => console.log(error.message))
+    getAPI("/api/v1/messages?game_id=0", {
+      ok: response => response.json().then(json => { setAllMessages([...json]) })
+    })
   }, [])
 
   useEffect(() => {
@@ -93,21 +80,10 @@ export default () => {
     if (message === "") {
       return false
     } else {
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch("/api/v1/messages", {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: { value: message, game_id: 0 }}),
-      }).then(response => {
-          if (response.ok) {
-            setMessage("")
-            return
-          }
-          console.log(response.json())
-      }).catch(error => console.log(error.message))
+      body = { message: { value: message, game_id: 0 }}
+      postAPI("/api/v1/messages", body, {
+        ok: _response => setMessage("")
+      })
     }
   }
 

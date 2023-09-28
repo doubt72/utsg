@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "./Logo"
 import { ArrowRepeat, BoxArrowRight, Check2Square, Trash3 } from "react-bootstrap-icons";
+import Logo from "./Logo";
+import { postAPI } from "../helper";
 
 export default () => {
   const navigate = useNavigate()
@@ -16,25 +17,14 @@ export default () => {
 
   const onSubmit = (event) => {
     event.preventDefault()
-    const token = document.querySelector('meta[name="csrf-token"]').content
-    fetch("/api/v1/user/validate_code", {
-      method: "POST",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json",
+    body = { code: verificationCode }
+    postAPI("/api/v1/user/validate_code", body, {
+      ok: _response => {
+        localStorage.removeItem("validationNeeded")
+        navigate("/", { replace: true })
       },
-      body: JSON.stringify({ code: verificationCode }),
-    }).then(response => {
-        if (response.ok) {
-          localStorage.removeItem("validationNeeded")
-          navigate("/", { replace: true })
-          return
-        } else if (response.status === 403) {
-          setVerificationError("code does not match")
-          return
-        }
-        console.log(response.json())
-    }).catch(error => console.log(error.message))
+      forbidden: _response => setVerificationError("code does not match")
+    })
   }
 
   return (

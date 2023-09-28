@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "./Logo"
 import { BoxArrowInRight, BoxArrowRight, InfoCircle, PencilSquare, Person } from "react-bootstrap-icons";
+import Logo from "./Logo";
 
 export default (props) => {
   const profileSection = (

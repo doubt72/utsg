@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { ArrowRepeat, ExclamationCircleFill, XCircle } from "react-bootstrap-icons"
-import Logo from "./Logo"
+import Logo from "./Logo";
+import { postAPI } from "../helper";
 
 export default () => {
   const navigate = useNavigate()
@@ -87,37 +88,23 @@ export default () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false
     } else {
-      const url = "/api/v1/user/password_reset"
-
       const body = {
         check: formInput.username,
         code: formInput.code,
         password: formInput.password,
       }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then(response => {
-        if (response.ok) {
-          navigate("/login", { replace: true })
-          return
-        } else if (response.status === 403) {
+      postAPI("/api/v1/user/password_reset", body, {
+        ok: _response => navigate("/login", { replace: true }),
+        forbidden: _response => {
           setFormError({
             username: "",
             code: "recovery code is not valid",
             password: "",
             confirmPassword: "",
           })
-          return
         }
-        console.log(response.json())
-      }).catch(error => console.log(error.message))
+      })
     }
   }
 

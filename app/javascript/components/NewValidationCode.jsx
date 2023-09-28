@@ -1,26 +1,16 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import Logo from "./Logo";
 import { ArrowRepeat } from "react-bootstrap-icons";
+import Logo from "./Logo";
+import { postAPI } from "../helper";
 
 export default () => {
   const email = localStorage.getItem("email")
 
   useEffect(() => {
-    const token = document.querySelector('meta[name="csrf-token"]').content
-    fetch("/api/v1/user/new_code", {
-      method: "POST",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({}),
-    }).then(response => {
-        if (response.ok) {
-          return
-        }
-        console.log(response.json())
-    }).catch(error => console.log(error.message))
+    postAPI("/api/v1/user/new_code", {}, {
+      ok: _response => {}
+    })
   }, [])
 
   return (

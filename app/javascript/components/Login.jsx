@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "./Logo"
 import { ArrowRepeat, BoxArrowInRight, XCircle } from "react-bootstrap-icons";
+import Logo from "./Logo";
+import { postAPI } from "../helper";
 
 export default () => {
   const navigate = useNavigate()
@@ -50,8 +51,6 @@ export default () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false
     } else {
-      const url = "/api/v1/session"
-
       const body = {
         user: {
           username: formInput.username,
@@ -59,27 +58,18 @@ export default () => {
         }
       }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
+      postAPI("/api/v1/session", body, {
+        ok: response => {
+          const json = response.json().then(json => {
+            localStorage.setItem("username", json.username)
+            localStorage.setItem("email", json.email)
+            navigate("/", { replace: true })
+          })
         },
-        body: JSON.stringify(body),
-      }).then(response => {
-          if (response.ok) {
-            const json = response.json().then(json => {
-              localStorage.setItem("username", json.username)
-              localStorage.setItem("email", json.email)
-              navigate("/", { replace: true })
-            })
-            return
-          } else if (response.status === 401) {
-            setFormError({ username: "", password: "username not found or password incorrect" })
-          }
-          console.log(response.json())
-      }).catch(error => console.log(error.message))
+        unauthorized: _response => {
+          setFormError({ username: "", password: "username not found or password incorrect" })
+        }
+      })
     }
   }
 

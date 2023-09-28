@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Tooltip } from "react-tooltip";
 import { ExclamationCircleFill, ShieldExclamation } from "react-bootstrap-icons";
+import { putAPI } from "../helper";
 
 export default () => {
   const [formInput, setFormInput] = useState({
@@ -73,8 +74,6 @@ export default () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false
     } else {
-      const url = "/api/v1/user"
-
       const body = {
         user: {
           old_password: formInput.oldPassword,
@@ -82,24 +81,14 @@ export default () => {
         }
       }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch(url, {
-        method: "PUT",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then(response => {
-        if (response.ok) {
+      putAPI("/api/v1/user", body, {
+        ok: _response => {
           setFormInput({ oldPassword: "", password: "", confirmPassword: "" })
-          return
-        } else if (response.status === 401) {
+        },
+        unauthorized: _response => {
           setFormError({ oldPassword: "old password not valid", password: "", confirmPassword: "" })
-          return
         }
-        console.log(response.json())
-      }).catch(error => console.log(error.message))
+      })
     }
   }
 

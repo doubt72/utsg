@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "./Logo"
 import { Trash3, XCircle } from "react-bootstrap-icons";
+import Logo from "./Logo";
+import { deleteAPI } from "../helper";
 
 export default () => {
   const navigate = useNavigate()
@@ -22,23 +23,13 @@ export default () => {
     if (confirm !== "DELETE") {
       return false
     } else {
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch("/api/v1/user", {
-        method: "DELETE",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      }).then(response => {
-          if (response.ok) {
-            localStorage.removeItem("username")
-            localStorage.removeItem("email")
-            navigate("/")
-            return
-          }
-          console.log(response.json())
-      }).catch(error => console.log(error.message))
+      deleteAPI("/api/v1/user", {
+        ok: _response => {
+          localStorage.removeItem("username")
+          localStorage.removeItem("email")
+          navigate("/")
+        }
+      })
     }
   }
 

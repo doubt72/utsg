@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 import { ExclamationCircleFill, PencilSquare, XCircle } from "react-bootstrap-icons"
-import Logo from "./Logo"
+import Logo from "./Logo";
+import { postAPI } from "../helper";
 
 export default () => {
   const navigate = useNavigate()
@@ -29,32 +30,23 @@ export default () => {
 
   const checkConflict = (type, value) => {
     const conflictTimer = setTimeout(() => {
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch("/api/v1/user/check_conflict", {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ check: value }),
-      }).then(response => {
-          if (response.ok) {
-            const json = response.json().then(json => {
-              if (json.conflict) {
-                const usernameError = type === "username" ? "username already exists" : formErrors.username
-                const emailError = type === "email" ? "email already exists" : formErrors.email
-                setFormError({
-                  username: usernameError,
-                  email: emailError,
-                  password: formErrors.password,
-                  confirmPassword: formErrors.confirmPassword,
-                })
-              }
-            })
-            return
-          }
-          console.log(response.json())
-      }).catch(error => console.log(error.message))
+      const body = { check: value }
+      postAPI("/api/v1/user/check_conflict", body, {
+        ok: response => {
+          response.json().then(json => {
+            if (json.conflict) {
+              const usernameError = type === "username" ? "username already exists" : formErrors.username
+              const emailError = type === "email" ? "email already exists" : formErrors.email
+              setFormError({
+                username: usernameError,
+                email: emailError,
+                password: formErrors.password,
+                confirmPassword: formErrors.confirmPassword,
+              })
+            }
+          })
+        }
+      })
     }, 1000)
     if (conflictTimer > 0) {
       clearTimeout(conflictTimer - 1)
@@ -126,8 +118,6 @@ export default () => {
     if (!validateForm("", "") || anyEmpty()) {
       return false
     } else {
-      const url = "/api/v1/user"
-
       const body = {
         user: {
           username: formInput.username,
@@ -136,25 +126,15 @@ export default () => {
         }
       }
 
-      const token = document.querySelector('meta[name="csrf-token"]').content
-      fetch(url, {
-        method: "POST",
-        headers: {
-          "X-CSRF-Token": token,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }).then(response => {
-          if (response.ok) {
-            const json = response.json().then(json => {
-              localStorage.setItem("username", json.username)
-              localStorage.setItem("email", json.email)
-              navigate("/validate_account", { replace: true })
-            })
-            return
-          }
-          console.log(response.json())
-      }).catch(error => console.log(error.message))
+      postAPI("/api/v1/user", body, {
+        ok: response => {
+          response.json().then(json => {
+            localStorage.setItem("username", json.username)
+            localStorage.setItem("email", json.email)
+            navigate("/validate_account", { replace: true })
+          })
+        }
+      })
     }
   }
 
