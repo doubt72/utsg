@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import { postAPI } from "../../utilities/network";
 import { DeleteButton, LogoutButton, SendNewCodeButton, VerifyButton } from "../utilities/buttons";
+import DeleteAccount from "./DeleteAccount";
 
 export default () => {
   const navigate = useNavigate()
   const [verificationCode, setVerificationCode] = useState("")
   const [verificationError, setVerificationError] = useState("")
+  const [deleting, setDeleting] = useState(false)
+  const [newCodeSent, setNewCodeSent] = useState(false)
 
   const email = localStorage.getItem("email")
 
@@ -26,6 +29,38 @@ export default () => {
       forbidden: _response => setVerificationError("code does not match")
     })
   }
+
+  const onNewCodeSubmit = (event) => {
+    event.preventDefault()
+    postAPI("/api/v1/user/new_code", {}, {
+      ok: _response => {}
+    })
+    setNewCodeSent(true)
+  }
+
+  const onDeleteSubmit = (event) => {
+    event.preventDefault()
+    setDeleting(true)
+  }
+
+  const codeSentMessage = (
+    <div className="mt1em mb1em ml1em mr1em red">
+      A new verification code has been generated and was sent to your
+      email.
+    </div>
+  )
+
+  const deleteForm = (
+    <div className="delete-confirm-form">
+      <form onSubmit={onDeleteSubmit}>
+        <div className="align-end">
+          <DeleteButton />
+        </div>
+      </form>
+    </div>
+  )
+
+  const deleteConfirmForm = <DeleteAccount version="signup" reset={() => setDeleting(false)} />
 
   return (
     <div>
@@ -51,20 +86,21 @@ export default () => {
             <VerifyButton />
           </div>
         </form>
-        <div className="mt1em mb1em">
-          If you did not receive the email with the verification code,
-          you may request a new code:
-        </div>
-        <div className="align-end">
-          <SendNewCodeButton />
-        </div>
+        <form onSubmit={onNewCodeSubmit}>
+          <div className="mt1em mb1em">
+            If you did not receive the email with the verification code,
+            you may request a new code:
+          </div>
+          <div className="align-end">
+            <SendNewCodeButton />
+          </div>
+          { newCodeSent ? codeSentMessage : "" }
+        </form>
         <div className="mt1em mb1em">
           If you no longer want to create an account with this username
           and password, you may cancel this signup and delete this account:
         </div>
-        <div className="align-end">
-          <DeleteButton />
-        </div>
+        { deleting ? deleteConfirmForm : deleteForm }
       </div>
     </div>
   )

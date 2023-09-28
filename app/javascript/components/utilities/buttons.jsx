@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 import {
   ArrowRepeat, BoxArrowInRight, BoxArrowRight, ChatText, Check2Square, Hexagon,
-  InfoCircle, PencilSquare, Person, Trash3, XCircle
+  InfoCircle, PencilSquare, Person, ShieldExclamation, Trash3, XCircle
 } from "react-bootstrap-icons"
 
 // Form submit putton, enclose icon and pass text as a prop
@@ -19,8 +19,16 @@ const AboutButton = () => {
   return <CustomLink url="/about" text="about"><InfoCircle /></CustomLink>
 }
 
-const CancelButton = () => {
-  return <CustomLink url="/" text="cancel"><XCircle /></CustomLink>
+const CancelButton = (props) => {
+  if (props.type === "submit") {
+    return (
+      <button type="submit" className="custom-button nowrap" name="cancel">
+        <XCircle />cancel
+      </button>
+    )
+  } else {
+    return <CustomLink url="/" text="cancel"><XCircle /></CustomLink>
+  }
 }
 
 const ChatButton = () => {
@@ -36,11 +44,7 @@ const ResetPasswordButton = () => {
 }
 
 const DeleteButton = (props) => {
-  if (props.type === "confirm") {
-    return <CustomSubmitButton text="delete account"><Trash3 /></CustomSubmitButton>
-  } else {
-    return <CustomLink url="/delete_account" text="delete account"><Trash3 /></CustomLink>
-  }
+  return <CustomSubmitButton text="delete account"><Trash3 /></CustomSubmitButton>
 }
 
 const LoginButton = (props) => {
@@ -72,12 +76,12 @@ const ReturnButton = () => {
 }
 
 const SendNewCodeButton = () => {
-  return <CustomLink url="/new_validation_code" text="send new code"><ArrowRepeat /></CustomLink>
+  return <CustomSubmitButton text="send new code"><ArrowRepeat /></CustomSubmitButton>
 }
 
 const SignupButton = (props) => {
   if (props.type === "confirm") {
-    return <CustomSubmitButton text="sign up "><PencilSquare /></CustomSubmitButton>
+    return <CustomSubmitButton text="sign up"><PencilSquare /></CustomSubmitButton>
   } else {
     return <CustomLink url="/signup" text="sign up"><PencilSquare /></CustomLink>
   }
@@ -87,30 +91,24 @@ const UpdateInfoButton = () => {
   return <CustomSubmitButton text="update account"><Person /></CustomSubmitButton>
 }
 
-const ValidateAccountButton = () => {
-  return <CustomLink url="/validate_account" text="continue"><ArrowRepeat /></CustomLink>
-}
-
 const VerifyButton = () => {
   return <CustomSubmitButton text="verify"><Check2Square /></CustomSubmitButton>
 }
 
-// A few of these have link/submit versions (set type prop to confirm for submit)
 export {
   AboutButton,
-  CancelButton,
+  CancelButton,             // type=submit prop = submit button version, name = cancel
   ChangePasswordButton,
   ChatButton,
   DeleteButton,
-  LoginButton,
+  LoginButton,              // type=confirm prop = submit button version
   LogoutButton,
   ProfileButton,
-  RecoverAccountButton,
+  RecoverAccountButton,     // type=confirm prop = submit button version
   ResetPasswordButton,
   ReturnButton,
   SendNewCodeButton,
-  SignupButton,
+  SignupButton,             // type=confirm prop = submit button version
   UpdateInfoButton,
-  ValidateAccountButton,
   VerifyButton,
 }

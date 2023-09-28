@@ -8,8 +8,7 @@ import Profile from "../components/user/Profile";
 import Login from '../components/user/Login';
 import Logout from '../components/user/Logout';
 import Signup from '../components/user/Signup';
-import ValidateAccount from '../components/user/ValidateAccount';
-import NewValidationCode from '../components/user/NewValidationCode';
+import VerifyAccount from "../components/user/VerifyAccount";
 import RecoverAccount from "../components/user/RecoverAccount";
 import ResetPassword from "../components/user/ResetPassword";
 import DeleteAccount from '../components/user/DeleteAccount';
@@ -30,8 +29,7 @@ const Routes = () => {
       element: <ProtectedRoute />,
       children: [
         { path: "/", element: <MainPage />},
-        { path: "/validate_account", element: <ValidateAccount /> },
-        { path: "/new_validation_code", element: <NewValidationCode /> },
+        { path: "/verify_account", element: <VerifyAccount /> },
         { path: "/delete_account", element: <DeleteAccount /> },
         { path: "/logout", element: <Logout /> },
         { path: "/profile", element: <Profile /> },

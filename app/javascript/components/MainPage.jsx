@@ -8,7 +8,7 @@ export default () => {
 
   useEffect(() => {
     if (localStorage.getItem("validationNeeded")) {
-      navigate("/validate_account", { replace: true })
+      navigate("/verify_account", { replace: true })
     }
   }, [])
 

@@ -1,7 +1,4 @@
 standardize errorchecking
-move code resend into page
-move delete confirm page into page
-keep recover clunky
 
 Add linters
 

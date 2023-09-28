@@ -10,6 +10,7 @@ export default () => {
       ok: _response => {
         localStorage.removeItem("username")
         localStorage.removeItem("email")
+        localStorage.removeItem("validationNeeded")
         navigate("/", { replace: true })
       }
     })

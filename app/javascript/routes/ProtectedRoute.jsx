@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { getAPI } from "../utilities/network";
 
 export const ProtectedRoute = (props) => {
   const navigate = useNavigate()
 
   const unvalidatedPaths = [
-    "/validate_account", '/new_validation_code', '/logout', '/delete_account'
+    "/verify_account", '/new_validation_code', '/logout', '/delete_account'
   ]
 
   const unauthorized = () => {
     const path = window.location.pathname
     localStorage.removeItem("username")
     localStorage.removeItem("email")
+    localStorage.removeItem("validationNeeded")
     if (path !== '/') {
       navigate("/", { replace: true })
     }
@@ -36,7 +37,7 @@ export const ProtectedRoute = (props) => {
       forbidden: _response => {
         if (!unvalidatedPaths.includes(path)) {
           localStorage.setItem("validationNeeded", true)
-          navigate("/validate_account", { replace: true })
+          navigate("/verify_account", { replace: true })
         }
       },
       other: _response => unauthorized()

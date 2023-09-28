@@ -16,7 +16,7 @@ $border-color: $dark-green;
 $border-color-light-gray: $light-gray;
 $border-color-gray: $lightish-gray;
 
-$alert-orange: #D90;
+$alert-orange: #B80;
 
 // National colors:
 
@@ -38,5 +38,5 @@ $nation-finnish: #DDD;
 $nation-axis-minor: #9CB;
 
 .red {
-  color: #C00;
+  color: $alert-orange;
 }

@@ -131,7 +131,7 @@ export default () => {
           response.json().then(json => {
             localStorage.setItem("username", json.username)
             localStorage.setItem("email", json.email)
-            navigate("/validate_account", { replace: true })
+            navigate("/verify_account", { replace: true })
           })
         }
       })

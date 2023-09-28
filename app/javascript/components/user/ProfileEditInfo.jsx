@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { putAPI } from "../../utilities/network";
 import { DeleteButton, UpdateInfoButton } from "../utilities/buttons";
+import DeleteAccount from "./DeleteAccount";
 
 export default () => {
   const navigate = useNavigate()
@@ -10,6 +11,7 @@ export default () => {
     email: localStorage.getItem("email"),
   })
   const [formErrors, setFormError] = useState({ username: "", email: "" })
+  const [deleting, setDeleting] = useState(false)
 
   const anyEmpty = () => {
     if (formInput.username === "") {
@@ -78,6 +80,24 @@ export default () => {
     }
   }
 
+  const onDeleteSubmit = (event) => {
+    event.preventDefault()
+    setDeleting(true)
+  }
+
+  const deleteForm = (
+    <div className="delete-confirm-form">
+      <form onSubmit={onDeleteSubmit}>
+        <div className="mt1em mb1em">You can delete your account here:</div>
+        <div className="align-end">
+          <DeleteButton />
+        </div>
+      </form>
+    </div>
+  )
+
+  const deleteConfirmForm = <DeleteAccount reset={() => setDeleting(false)} />
+
   return (
     <div className="profile-form mr1em">
       <div className="mb1em">
@@ -106,10 +126,7 @@ export default () => {
           <UpdateInfoButton />
         </div>
       </form>
-      <div className="mt1em mb1em">You can delete your account here:</div>
-      <div className="align-end">
-        <DeleteButton />
-      </div>
+      { deleting ? deleteConfirmForm : deleteForm }
     </div>
   )
 }
