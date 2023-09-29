@@ -1,5 +1,10 @@
-standardize errorchecking
-
-Add linters
+Add linters and plugins
 
 Add more info on signup page
+
+Start working on framework
+  E - C - S?
+  Game
+    Map
+      Terrain
+    Units
