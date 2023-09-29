@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_26_054959) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_29_042105) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "game_moves", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.bigint "user_id"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.index ["created_at"], name: "index_game_moves_on_created_at"
+    t.index ["game_id"], name: "index_game_moves_on_game_id"
+    t.index ["id"], name: "index_game_moves_on_id"
+    t.index ["user_id"], name: "index_game_moves_on_user_id"
+  end
 
   create_table "games", force: :cascade do |t|
     t.bigint "owner_id", null: false
@@ -21,6 +32,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_26_054959) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "metadata", null: false
+    t.bigint "last_move_id"
     t.index ["created_at"], name: "index_games_on_created_at"
     t.index ["id"], name: "index_games_on_id"
     t.index ["owner_id"], name: "index_games_on_owner_id"
@@ -34,7 +47,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_26_054959) do
     t.bigint "game_id"
     t.string "value", null: false
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_messages_on_created_at"
     t.index ["game_id"], name: "index_messages_on_game_id"
     t.index ["id"], name: "index_messages_on_id"
@@ -56,6 +68,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_26_054959) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "game_moves", "games"
+  add_foreign_key "game_moves", "users"
   add_foreign_key "games", "users", column: "owner_id"
   add_foreign_key "games", "users", column: "player_one_id"
   add_foreign_key "games", "users", column: "player_two_id"

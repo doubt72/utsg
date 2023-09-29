@@ -11,6 +11,7 @@ class CreateGames < ActiveRecord::Migration[7.0]
     end
 
     add_index :games, :id
+
     add_index :games, :created_at
     add_index :games, :updated_at
   end
