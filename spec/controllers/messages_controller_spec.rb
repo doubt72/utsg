@@ -41,7 +41,7 @@ RSpec.describe Api::V1::MessagesController do
       login(user1)
 
       expect { post :create, params: { message: { value: "hello", game_id: game.id } } }
-        .to change(Message, :count).by(1)
+        .to change { Message.count }.by(1)
 
       expect(Message.last.value).to be == "hello"
       expect(Message.last.user).to be == user1
@@ -50,7 +50,7 @@ RSpec.describe Api::V1::MessagesController do
 
     it "sucessfully handles logged out user" do
       expect { post :create, params: { message: { value: "hello", game_id: game.id } } }
-        .not_to change(Message, :count)
+        .not_to change { Message.count }
 
       expect(response.status).to be == 401
     end
@@ -59,7 +59,7 @@ RSpec.describe Api::V1::MessagesController do
       login(user1)
 
       expect { post :create, params: { message: { value: "hello", game_id: 0 } } }
-        .to change(Message, :count).by(1)
+        .to change { Message.count }.by(1)
 
       expect(Message.last.value).to be == "hello"
       expect(Message.last.user).to be == user1

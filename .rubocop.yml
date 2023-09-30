@@ -4,21 +4,28 @@ AllCops:
     - 'db/schema.rb'
     - 'tmp/logo.rb'
 
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
+Lint/AmbiguousBlockAssociation:
+  AllowedMethods: [change]
+
+Metric/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metric/ClassLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metric/MethodLength:
+  Max: 12
 
 Style/Documentation:
   Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
 
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
-
-Metric/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-
-Metric/MethodLength:
-  Max: 12

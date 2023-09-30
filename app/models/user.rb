@@ -21,20 +21,17 @@ class User < ApplicationRecord
 
   class << self
     def lookup(username)
-      user = User.where(
+      User.where(
         "LOWER(username) = ? OR LOWER(email) = ?",
         username.downcase, username.downcase
       ).first
-      !!user || username == User::UNKNOWN_USERNAME
     end
 
     def signup_user(params)
       params["confirmation_code"] = generate_confirmation_code
       # TODO: mail out that code
-      create!(params)
+      create(params)
     end
-
-    private
 
     def generate_confirmation_code(length = 6)
       (1..length).map { [*(0..9), *("A".."Z")][rand(36)].to_s }.join
@@ -48,7 +45,7 @@ class User < ApplicationRecord
   end
 
   def update_user(params)
-    if params["old_password"]
+    if params["password"]
       return false unless authenticate(params["old_password"])
 
       update!(password: params["password"])

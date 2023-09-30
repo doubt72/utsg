@@ -23,12 +23,11 @@ RSpec.describe Game do
   end
 
   it "lookup finds usernames or emails regardless of case" do
-    expect(User.lookup(user.username.downcase)).to be == true
-    expect(User.lookup(user.username.upcase)).to be == true
-    expect(User.lookup(user.email.downcase)).to be == true
-    expect(User.lookup(user.email.upcase)).to be == true
-    expect(User.lookup(User::UNKNOWN_USERNAME)).to be == true
-    expect(User.lookup("")).to be == false
+    expect(User.lookup(user.username.downcase)).to be == user
+    expect(User.lookup(user.username.upcase)).to be == user
+    expect(User.lookup(user.email.downcase)).to be == user
+    expect(User.lookup(user.email.upcase)).to be == user
+    expect(User.lookup("")).to be_nil
   end
 
   it "cleans up after itself on deletion" do

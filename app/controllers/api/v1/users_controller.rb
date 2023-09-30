@@ -7,7 +7,7 @@ module Api
 
       def create
         user = User.signup_user(create_params)
-        if user
+        if user && !user.errors.present?
           session[:current_user] = user.id
           render json: user.body, status: :created
         else
@@ -46,7 +46,7 @@ module Api
       end
 
       def check_conflict
-        user = User.lookup(params[:check].downcase)
+        user = User.lookup(params[:check].downcase) || params[:check].downcase == User::UNKNOWN_USERNAME
         render json: { conflict: user ? true : false }, status: :ok
       end
 
