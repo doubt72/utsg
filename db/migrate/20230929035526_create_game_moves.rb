@@ -2,7 +2,6 @@ class CreateGameMoves < ActiveRecord::Migration[7.0]
   def change
     create_table :game_moves do |t|
       t.references :game, foreign_key: true, null: false
-      # No null: user might delete their account, only owned games go away:
       t.references :user, foreign_key: true
       t.jsonb :data, null: false
 
@@ -13,5 +12,7 @@ class CreateGameMoves < ActiveRecord::Migration[7.0]
     add_index :game_moves, :id
 
     add_index :game_moves, :created_at
+
+    add_foreign_key :games, :game_moves, column: :last_move_id, foreign_key: { to_table: :game_moves }
   end
 end

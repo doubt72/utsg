@@ -7,19 +7,19 @@ class Message < ApplicationRecord
   
   after_create :broadcast
 
-  def created
+  def format_created
     created_at.iso8601
   end
 
   def body
-    { created_at: created, username: user.username, value: value }
+    { created_at: format_created, username: user.username, value: value }
   end
 
   private
 
   def broadcast
     ActionCable.server.broadcast("game-#{game_id || 0}", {
-      body: { created_at: created, username: user.username, value: value }
+      body: { created_at: format_created, username: user.username, value: value }
     })
   end
 end

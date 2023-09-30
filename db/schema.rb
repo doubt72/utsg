@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_29_042105) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,13 +29,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_042105) do
     t.bigint "owner_id", null: false
     t.bigint "player_one_id"
     t.bigint "player_two_id"
+    t.bigint "current_player_id"
+    t.bigint "last_move_id"
     t.string "name", null: false
+    t.integer "state", default: 0, null: false
+    t.jsonb "metadata", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.jsonb "metadata", null: false
-    t.bigint "last_move_id"
     t.index ["created_at"], name: "index_games_on_created_at"
+    t.index ["current_player_id"], name: "index_games_on_current_player_id"
     t.index ["id"], name: "index_games_on_id"
+    t.index ["last_move_id"], name: "index_games_on_last_move_id"
     t.index ["owner_id"], name: "index_games_on_owner_id"
     t.index ["player_one_id"], name: "index_games_on_player_one_id"
     t.index ["player_two_id"], name: "index_games_on_player_two_id"
@@ -70,6 +74,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_042105) do
 
   add_foreign_key "game_moves", "games"
   add_foreign_key "game_moves", "users"
+  add_foreign_key "games", "game_moves", column: "last_move_id"
+  add_foreign_key "games", "users", column: "current_player_id"
   add_foreign_key "games", "users", column: "owner_id"
   add_foreign_key "games", "users", column: "player_one_id"
   add_foreign_key "games", "users", column: "player_two_id"

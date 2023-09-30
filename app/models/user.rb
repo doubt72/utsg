@@ -1,14 +1,20 @@
 class User < ApplicationRecord
+  # Owned games are deleted only if no other users are associated with them (see reassign_games)
   has_many :games, foreign_key: :owner_id, dependent: :destroy
   has_many :messages, dependent: :destroy
 
+  # Games are not otherwise deleted, only abandoned (other participants can still see/continue them)
   has_many :games_as_player_one, class_name: "Game", foreign_key: :player_one_id, dependent: :nullify
   has_many :games_as_player_two, class_name: "Game", foreign_key: :player_two_id, dependent: :nullify
+  has_many :games_as_current_player, class_name: "Game", foreign_key: :current_player_id,
+    dependent: :nullify
   has_many :game_moves, dependent: :nullify
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   has_secure_password
+
+  before_destroy :reassign_games
 
   def self.lookup(username)
     user = User.where(
@@ -63,5 +69,16 @@ class User < ApplicationRecord
 
   def self.generate_confirmation_code(length = 6)
     code = (1..length).map { [*(0..9), *("A".."Z")][rand(36)].to_s }.join
+  end
+
+  def reassign_games
+    # Reassign games to other players if possible
+    Game.where(owner: self).each do |g|
+      if (g.player_one && g.player_one != self)
+        g.update!(owner: g.player_one)
+      elsif (g.player_two && g.player_two != self)
+        g.update!(owner: g.player_two)
+      end
+    end
   end
 end

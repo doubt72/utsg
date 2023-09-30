@@ -6,7 +6,8 @@ class CreateMessages < ActiveRecord::Migration[7.0]
 
       t.string :value, null: false
 
-      t.timestamps
+      # Messages are effectively write-only, not user-modifiable
+      t.datetime :created_at, null: false
     end
 
     add_index :messages, :id
