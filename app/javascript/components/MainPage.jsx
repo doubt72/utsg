@@ -3,7 +3,7 @@ import Header from './Header'
 import { useNavigate } from "react-router-dom";
 import ChatDisplay from "./ChatDisplay";
 
-export default () => {
+export default function MainPage() {
   const navigate = useNavigate()
 
   useEffect(() => {

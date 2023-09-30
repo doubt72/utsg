@@ -1,8 +1,9 @@
 import React from "react";
+import PropType from "prop-types";
 import Logo from "./Logo";
 import { AboutButton, LoginButton, LogoutButton, ProfileButton, SignupButton } from "./utilities/buttons";
 
-export default (props) => {
+export default function Header(props) {
   const profileSection = (
     <ProfileButton />
   )
@@ -35,4 +36,9 @@ export default (props) => {
       { localStorage.getItem("username") ? loggedIn : loggedOut }
     </div>
   )
+}
+
+Header.propTypes = {
+  hideAbout: PropType.string,
+  hideProfile: PropType.string,
 }

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { getAPI } from "../utilities/network";
 
-export const ProtectedRoute = (props) => {
+export const ProtectedRoute = () => {
   const navigate = useNavigate()
 
   const unvalidatedPaths = [
@@ -34,13 +34,13 @@ export const ProtectedRoute = (props) => {
           unauthorized()
         })
       },
-      forbidden: _response => {
+      forbidden: () => {
         if (!unvalidatedPaths.includes(path)) {
           localStorage.setItem("validationNeeded", true)
           navigate("/verify_account", { replace: true })
         }
       },
-      other: _response => unauthorized()
+      other: () => unauthorized()
     })
   }, [])
 

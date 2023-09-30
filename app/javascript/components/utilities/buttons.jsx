@@ -4,15 +4,27 @@ import {
   ArrowRepeat, BoxArrowInRight, BoxArrowRight, ChatText, Check2Square, Hexagon,
   InfoCircle, PencilSquare, Person, ShieldExclamation, Trash3, XCircle
 } from "react-bootstrap-icons"
+import PropTypes from "prop-types"
 
 // Form submit putton, enclose icon and pass text as a prop
 const CustomSubmitButton = (props) => {
   return <button type="submit" className="custom-button nowrap">{props.children}{props.text}</button>
 }
 
+CustomSubmitButton.propTypes = {
+  children: PropTypes.node,
+  text: PropTypes.string,
+}
+
 // Link button, enclose icon and pass url and text as props
 const CustomLink = (props) => {
   return <Link to={props.url} className="custom-button nowrap">{props.children}{props.text}</Link>
+}
+
+CustomLink.propTypes = {
+  children: PropTypes.node,
+  text: PropTypes.string,
+  url: PropTypes.string,
 }
 
 const AboutButton = () => {
@@ -32,6 +44,11 @@ const CancelButton = (props) => {
   }
 }
 
+CancelButton.propTypes = {
+  type: PropTypes.string,
+  url: PropTypes.string,
+}
+
 const ChatButton = () => {
   return <CustomSubmitButton text="chat"><ChatText /></CustomSubmitButton>
 }
@@ -44,7 +61,7 @@ const ResetPasswordButton = () => {
   return <CustomSubmitButton text="reset password"><ArrowRepeat /></CustomSubmitButton>
 }
 
-const DeleteButton = (props) => {
+const DeleteButton = () => {
   return <CustomSubmitButton text="delete account"><Trash3 /></CustomSubmitButton>
 }
 
@@ -54,6 +71,10 @@ const LoginButton = (props) => {
   } else {
     return <CustomLink url="/login" text="login"><BoxArrowInRight /></CustomLink>
   }
+}
+
+LoginButton.propTypes = {
+  type: PropTypes.string,
 }
 
 const LogoutButton = () => {
@@ -72,6 +93,10 @@ const RecoverAccountButton = (props) => {
   }
 }
 
+RecoverAccountButton.propTypes = {
+  type: PropTypes.string,
+}
+
 const ReturnButton = () => {
   return <CustomLink url="/" text="main page"><Hexagon /></CustomLink>
 }
@@ -86,6 +111,10 @@ const SignupButton = (props) => {
   } else {
     return <CustomLink url="/signup" text="sign up"><PencilSquare /></CustomLink>
   }
+}
+
+SignupButton.propTypes = {
+  type: PropTypes.string,
 }
 
 const UpdateInfoButton = () => {

@@ -1,6 +1,7 @@
 import React from "react";
 import { ExclamationCircleFill } from "react-bootstrap-icons";
 import { Tooltip } from "react-tooltip";
+import PropTypes from "prop-types";
 
 // pass html to the props (so can include line breaks and such)
 const CustomTooltip = (props) => {
@@ -13,6 +14,11 @@ const CustomTooltip = (props) => {
     </span>
   )
 }
+
+CustomTooltip.propTypes = {
+  html: PropTypes.string
+}
+
 
 const PasswordTooltip = () => {
   const html = "we don't enforce any password quality at all but<br />" +

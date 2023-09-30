@@ -4,7 +4,7 @@ import Logo from "../Logo";
 import { postAPI } from "../../utilities/network";
 import { CancelButton, RecoverAccountButton } from "../utilities/buttons";
 
-export default () => {
+export default function RecoverAccount() {
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [usernameError, setUsernameError] = useState("")
@@ -24,9 +24,9 @@ export default () => {
       setUsernameError("please supply a username or email address'")
       return false
     } else {
-      body = { check: username }
+      const body = { check: username }
       postAPI("/api/v1/user/set_recovery", body, {
-        ok: _response => navigate("/reset_password", { replace: true })
+        ok: () => navigate("/reset_password", { replace: true })
       })
     }
   }

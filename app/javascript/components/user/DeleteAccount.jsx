@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PropType from "prop-types";
 import { deleteAPI } from "../../utilities/network";
 import { CancelButton, DeleteButton } from "../utilities/buttons";
 
-export default (props) => {
+export default function DeleteAccount(props) {
   const navigate = useNavigate()
   const [confirm, setConfirm] = useState("")
   const [confirmError, setConfirmError] = useState("")
@@ -27,7 +28,7 @@ export default (props) => {
       return false
     } else {
       deleteAPI("/api/v1/user", {
-        ok: _response => {
+        ok: () => {
           localStorage.removeItem("username")
           localStorage.removeItem("email")
           localStorage.removeItem("validationNeeded")
@@ -64,4 +65,9 @@ export default (props) => {
       </form>
     </div>
   )
+}
+
+DeleteAccount.propTypes = {
+  reset: PropType.func,
+  version: PropType.string,
 }

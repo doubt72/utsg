@@ -5,7 +5,7 @@ import { postAPI } from "../../utilities/network";
 import { PasswordTooltip } from "../utilities/tooltips";
 import { CancelButton, ResetPasswordButton } from "../utilities/buttons";
 
-export default () => {
+export default function ResetPassword() {
   const navigate = useNavigate()
   const [formInput, setFormInput] = useState({
     username: "", code: "", password: "", confirmPassword: ""
@@ -95,8 +95,8 @@ export default () => {
       }
 
       postAPI("/api/v1/user/password_reset", body, {
-        ok: _response => navigate("/login", { replace: true }),
-        forbidden: _response => {
+        ok: () => navigate("/login", { replace: true }),
+        forbidden: () => {
           setFormError({
             username: "",
             code: "recovery code is not valid",

@@ -3,7 +3,7 @@ import { putAPI } from "../../utilities/network";
 import { PasswordTooltip } from "../utilities/tooltips";
 import { ChangePasswordButton } from "../utilities/buttons";
 
-export default () => {
+export default function ProfileEditPassword() {
   const [formInput, setFormInput] = useState({
     oldPassword: "", password: "", confirmPassword: ""
   })
@@ -82,10 +82,10 @@ export default () => {
       }
 
       putAPI("/api/v1/user", body, {
-        ok: _response => {
+        ok: () => {
           setFormInput({ oldPassword: "", password: "", confirmPassword: "" })
         },
-        unauthorized: _response => {
+        unauthorized: () => {
           setFormError({ oldPassword: "old password not valid", password: "", confirmPassword: "" })
         }
       })

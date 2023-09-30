@@ -4,7 +4,7 @@ import ProfileEditInfo from "./ProfileEditInfo"
 import ProfileEditPassword from "./ProfileEditPassword"
 import { ReturnButton } from "../utilities/buttons";
 
-export default () => {
+export default function Profile() {
 
   return (
     <div>

@@ -4,7 +4,7 @@ import Logo from "../Logo";
 import { postAPI } from "../../utilities/network";
 import { CancelButton, LoginButton, RecoverAccountButton } from "../utilities/buttons";
 
-export default () => {
+export default function Login() {
   const navigate = useNavigate()
   const [formInput, setFormInput] = useState({ username: "", password: "" })
   const [formErrors, setFormError] = useState({ username: "", password: "" })
@@ -60,13 +60,13 @@ export default () => {
 
       postAPI("/api/v1/session", body, {
         ok: response => {
-          const json = response.json().then(json => {
+          response.json().then(json => {
             localStorage.setItem("username", json.username)
             localStorage.setItem("email", json.email)
             navigate("/", { replace: true })
           })
         },
-        unauthorized: _response => {
+        unauthorized: () => {
           setFormError({ username: "", password: "username not found or password incorrect" })
         }
       })

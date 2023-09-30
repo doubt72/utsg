@@ -1,0 +1,13 @@
+{
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 14
+  },
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "react/no-unescaped-entities": ["error", {"forbid": [">", "}"]}]
+  }
+}

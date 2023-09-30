@@ -5,7 +5,7 @@ import { postAPI } from "../../utilities/network";
 import { PasswordTooltip, SignupEmailTooltip } from "../utilities/tooltips";
 import { CancelButton, SignupButton } from "../utilities/buttons";
 
-export default () => {
+export default function Signup() {
   const navigate = useNavigate()
   const [formInput, setFormInput] = useState({
     username: "", email: "", password: "", confirmPassword: ""

@@ -5,7 +5,7 @@ import { postAPI } from "../../utilities/network";
 import { DeleteButton, LogoutButton, SendNewCodeButton, VerifyButton } from "../utilities/buttons";
 import DeleteAccount from "./DeleteAccount";
 
-export default () => {
+export default function VerifyAccount() {
   const navigate = useNavigate()
   const [verificationCode, setVerificationCode] = useState("")
   const [verificationError, setVerificationError] = useState("")
@@ -20,20 +20,20 @@ export default () => {
 
   const onSubmit = (event) => {
     event.preventDefault()
-    body = { code: verificationCode }
+    const body = { code: verificationCode }
     postAPI("/api/v1/user/validate_code", body, {
-      ok: _response => {
+      ok: () => {
         localStorage.removeItem("validationNeeded")
         navigate("/", { replace: true })
       },
-      forbidden: _response => setVerificationError("code does not match")
+      forbidden: () => setVerificationError("code does not match")
     })
   }
 
   const onNewCodeSubmit = (event) => {
     event.preventDefault()
     postAPI("/api/v1/user/new_code", {}, {
-      ok: _response => {}
+      ok: () => {}
     })
     setNewCodeSent(true)
   }

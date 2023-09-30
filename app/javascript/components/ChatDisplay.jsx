@@ -4,7 +4,7 @@ import sanitize from "sanitize-html";
 import { getAPI, postAPI } from "../utilities/network";
 import { ChatButton } from "./utilities/buttons";
 
-export default () => {
+export default function ChatDisplay() {
   const [message, setMessage] = useState("")
   const [allMessages, setAllMessages] = useState([])
   const [diplayAllMessages, setDisplayAllMessages] = useState("")
@@ -80,9 +80,9 @@ export default () => {
     if (message === "") {
       return false
     } else {
-      body = { message: { value: message, game_id: 0 }}
+      const body = { message: { value: message, game_id: 0 }}
       postAPI("/api/v1/messages", body, {
-        ok: _response => setMessage("")
+        ok: () => setMessage("")
       })
     }
   }

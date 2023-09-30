@@ -4,7 +4,7 @@ import { putAPI } from "../../utilities/network";
 import { DeleteButton, UpdateInfoButton } from "../utilities/buttons";
 import DeleteAccount from "./DeleteAccount";
 
-export default () => {
+export default function ProfileEditInfo() {
   const navigate = useNavigate()
   const [formInput, setFormInput] = useState({
     username: localStorage.getItem("username"),

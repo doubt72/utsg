@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default () => {
+export default function Logo() {
   return (
     <div className="header-logo">
       <Link to="/">

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import { ReturnButton } from "./utilities/buttons";
 
-export default () => {
+export default function About() {
   return (
     <div>
       <Header hideAbout="true" />
