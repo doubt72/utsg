@@ -33,7 +33,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
     t.bigint "last_move_id"
     t.string "name", null: false
     t.integer "state", default: 0, null: false
-    t.jsonb "metadata", null: false
+    t.jsonb "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_at"], name: "index_games_on_created_at"
