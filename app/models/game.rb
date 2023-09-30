@@ -8,7 +8,7 @@ class Game < ApplicationRecord
 
   has_many :game_moves, dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_one :last_move_id
+  has_one :last_move, class_name: "GameMove", required: false
 
   validates :owner, presence: true
   validates :name, presence: true
@@ -26,8 +26,11 @@ class Game < ApplicationRecord
   private
 
   def check_players
-    return unless (ready? || in_progress?) && !(player_one && player_two)
+    update!(state: :needs_player) if (ready? || in_progress?) && !game_full?
+    update!(state: :ready) if needs_player? && game_full?
+  end
 
-    update!(state: :needs_player)
+  def game_full?
+    player_one && player_two
   end
 end

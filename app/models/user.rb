@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   # Owned games are deleted only if no other users are associated with them (see reassign_games)
-  has_many :games, foreign_key: :owner_id, dependent: :destroy
+  has_many :games, foreign_key: :owner_id
   has_many :messages, dependent: :destroy
 
   # Games are not otherwise deleted, only abandoned (other participants can still see/continue them)
@@ -16,25 +16,25 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   has_secure_password
 
-  before_destroy :reassign_games
+  before_destroy :reassign_games_and_destroy
 
   class << self
-    def self.lookup(username)
+    def lookup(username)
       User.where(
         "LOWER(username) = ? OR LOWER(email) = ?",
         username.downcase, username.downcase
       ).first
     end
 
-    def self.signup_user(params)
+    def signup_user(params)
       params["confirmation_code"] = generate_confirmation_code
       # TODO: mail out that code
       create!(params)
     end
 
-    private_class_methods
+    private
 
-    def self.generate_confirmation_code(length = 6)
+    def generate_confirmation_code(length = 6)
       (1..length).map { [*(0..9), *("A".."Z")][rand(36)].to_s }.join
     end
   end
@@ -78,7 +78,7 @@ class User < ApplicationRecord
 
   private
 
-  def reassign_games
+  def reassign_games_and_destroy
     # Reassign games to other players if possible
     Game.where(owner: self).each do |g|
       if g.player_one && g.player_one != self
@@ -87,5 +87,7 @@ class User < ApplicationRecord
         g.update!(owner: g.player_two)
       end
     end
+
+    Game.where(owner: self).destroy_all
   end
 end

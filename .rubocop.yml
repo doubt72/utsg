@@ -12,3 +12,7 @@ Style/Documentation:
 
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
+
+Metric/BlockLength:
+  Exclude:
+    - 'spec/**/*'

@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :game do
     association :owner, factory: :user
-    name { Faker::String.random(length: 2..10) }
+    name { Faker::Books::CultureSeries.culture_ship }
   end
 end

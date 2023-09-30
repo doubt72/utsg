@@ -2,7 +2,7 @@
 
 class Message < ApplicationRecord
   belongs_to :user
-  belongs_to :games, optional: true
+  belongs_to :game, optional: true
 
   validates :user, presence: true
   validates :value, presence: true
