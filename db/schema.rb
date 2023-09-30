@@ -47,7 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.bigint "game_id"
     t.string "value", null: false
     t.datetime "created_at", null: false

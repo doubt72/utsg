@@ -16,3 +16,6 @@ Style/TrailingCommaInHashLiteral:
 Metric/BlockLength:
   Exclude:
     - 'spec/**/*'
+
+Metric/MethodLength:
+  Max: 12

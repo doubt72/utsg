@@ -28,39 +28,47 @@ RSpec.describe Game do
     expect(GameMove.count).to be_zero
   end
 
-  it "handles player one state changes" do
-    game.update!(player_one: nil)
-    expect(game.reload).to be_needs_player
-
-    game.update!(player_one: user1)
-    expect(game.reload).to be_ready
-  end
-
-  it "handles player two state changes" do
-    game.update!(player_two: nil)
-    expect(game.reload).to be_needs_player
-
-    game.update!(player_two: user2)
-    expect(game.reload).to be_ready
-  end
-
-  context "when state is ready" do
-    let(:state) { :ready }
+  context "handles player deletions and additions" do
+    let(:user3) { create(:user) }
 
     it "handles player one state changes" do
-      game.update!(player_one: nil)
+      user1.destroy
+
       expect(game.reload).to be_needs_player
 
-      game.update!(player_one: user1)
+      game.update!(player_one: user3)
       expect(game.reload).to be_ready
     end
 
     it "handles player two state changes" do
-      game.update!(player_two: nil)
+      user2.destroy
+
       expect(game.reload).to be_needs_player
 
-      game.update!(player_two: user2)
+      game.update!(player_two: user3)
       expect(game.reload).to be_ready
+    end
+
+    context "when state is ready" do
+      let(:state) { :ready }
+
+      it "handles player one state changes" do
+        user1.destroy
+
+        expect(game.reload).to be_needs_player
+
+        game.update!(player_one: user3)
+        expect(game.reload).to be_ready
+      end
+
+      it "handles player two state changes" do
+        user2.destroy
+
+        expect(game.reload).to be_needs_player
+
+        game.update!(player_two: user3)
+        expect(game.reload).to be_ready
+      end
     end
   end
 end

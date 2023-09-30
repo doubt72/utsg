@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Message < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :game, optional: true
 
   validates :user, presence: true
@@ -13,8 +13,12 @@ class Message < ApplicationRecord
     created_at.iso8601
   end
 
+  def username
+    user&.username || User::UNKNOWN_USERNAME
+  end
+
   def body
-    { created_at: format_created, username: user.username, value: }
+    { created_at: format_created, username:, value: }
   end
 
   private
@@ -23,7 +27,7 @@ class Message < ApplicationRecord
     ActionCable.server.broadcast(
       "game-#{game_id || 0}",
       {
-        body: { created_at: format_created, username: user.username, value: },
+        body: { created_at: format_created, username:, value: },
       }
     )
   end

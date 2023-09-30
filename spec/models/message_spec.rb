@@ -14,4 +14,13 @@ RSpec.describe Message do
       value: message.value,
     }
   end
+
+  it "handles deleted user" do
+    message.user.destroy
+    expect(message.reload.body).to be == {
+      created_at: message.created_at.iso8601,
+      username: User::UNKNOWN_USERNAME,
+      value: message.value,
+    }
+  end
 end

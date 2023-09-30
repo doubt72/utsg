@@ -14,7 +14,7 @@ class Game < ApplicationRecord
   validates :name, presence: true
   validates :state, presence: true
 
-  after_save :check_players
+  before_save :check_players
 
   # needs_player:   owner must choose side when creating game
   # ready:          players joined, start needs confirmation (but non-owner can drop back out)
@@ -26,8 +26,8 @@ class Game < ApplicationRecord
   private
 
   def check_players
-    update!(state: :needs_player) if (ready? || in_progress?) && !game_full?
-    update!(state: :ready) if needs_player? && game_full?
+    self.state = :needs_player if (ready? || in_progress?) && !game_full?
+    self.state = :ready if needs_player? && game_full?
   end
 
   def game_full?

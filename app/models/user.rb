@@ -1,29 +1,31 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  # Owned games are deleted only if no other users are associated with them (see reassign_games)
+  # Owned games are deleted only if no other users are associated with them (see before_destroy hooks)
   has_many :games, foreign_key: :owner_id
-  has_many :messages, dependent: :destroy
+  has_many :messages
 
-  # Games are not otherwise deleted, only abandoned (other participants can still see/continue them)
-  has_many :games_as_player_one, class_name: "Game", foreign_key: :player_one_id, dependent: :nullify
-  has_many :games_as_player_two, class_name: "Game", foreign_key: :player_two_id, dependent: :nullify
-  has_many :games_as_current_player, class_name: "Game", foreign_key: :current_player_id,
-                                     dependent: :nullify
+  has_many :games_as_player_one, class_name: "Game", foreign_key: :player_one_id
+  has_many :games_as_player_two, class_name: "Game", foreign_key: :player_two_id
+  has_many :games_as_current_player, class_name: "Game", foreign_key: :current_player_id
   has_many :game_moves, dependent: :nullify
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   has_secure_password
 
-  before_destroy :reassign_games_and_destroy
+  before_destroy :reassign_games_nullify_and_destroy
+  before_destroy :cleanup_messages
+
+  UNKNOWN_USERNAME = "[unknown]"
 
   class << self
     def lookup(username)
-      User.where(
+      user = User.where(
         "LOWER(username) = ? OR LOWER(email) = ?",
         username.downcase, username.downcase
       ).first
+      !!user || username == User::UNKNOWN_USERNAME
     end
 
     def signup_user(params)
@@ -78,8 +80,13 @@ class User < ApplicationRecord
 
   private
 
-  def reassign_games_and_destroy
-    # Reassign games to other players if possible
+  # Doing this ourselves because dependencies don't fire hooks
+  def reassign_games_nullify_and_destroy
+    reassign_games
+    cleanup_games
+  end
+
+  def reassign_games
     Game.where(owner: self).each do |g|
       if g.player_one && g.player_one != self
         g.update!(owner: g.player_one)
@@ -87,7 +94,18 @@ class User < ApplicationRecord
         g.update!(owner: g.player_two)
       end
     end
+  end
 
+  def cleanup_games
     Game.where(owner: self).destroy_all
+
+    %i[player_one player_two current_player].each do |f|
+      Game.where(f => self).each { |g| g.update!(f => nil) }
+    end
+  end
+
+  def cleanup_messages
+    Message.where(user: self, game: nil).destroy_all
+    Message.where(user: self).update_all(user_id: nil)
   end
 end
