@@ -1,4 +1,8 @@
 Add linters and plugins
+Add rspec
+  Do some happy path stuff
+  Make sure deleting users cascades correctly
+
 
 Add more info on signup page
 
