@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
     t.bigint "game_id", null: false
     t.bigint "user_id"
     t.jsonb "data", null: false
+    t.integer "player", default: 1, null: false
     t.datetime "created_at", null: false
     t.index ["created_at"], name: "index_game_moves_on_created_at"
     t.index ["game_id"], name: "index_game_moves_on_game_id"

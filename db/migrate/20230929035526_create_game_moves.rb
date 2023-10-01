@@ -6,6 +6,7 @@ class CreateGameMoves < ActiveRecord::Migration[7.0]
       t.references :game, foreign_key: true, null: false
       t.references :user, foreign_key: true
       t.jsonb :data, null: false
+      t.integer :player, null: false, default: 1
 
       # Moves are effectively write-only, undos are new moves
       t.datetime :created_at, null: false
