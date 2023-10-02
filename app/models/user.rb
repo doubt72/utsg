@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  # Owned games are deleted only if no other users are associated with them (see before_destroy hooks)
+  # Owned games are deleted only if no other users are associated with them (see
+  # before_destroy hooks)
   has_many :games, foreign_key: :owner_id
   has_many :messages
 
@@ -21,6 +22,8 @@ class User < ApplicationRecord
 
   class << self
     def lookup(username)
+      return nil unless username.present?
+
       User.where(
         "LOWER(username) = ? OR LOWER(email) = ?",
         username.downcase, username.downcase
@@ -69,10 +72,7 @@ class User < ApplicationRecord
   end
 
   def body
-    {
-      username:,
-      email:,
-    }
+    { username:, email: }
   end
 
   private

@@ -33,7 +33,7 @@ export default function ChatDisplay() {
       const time = `${("0" + date.getHours()).slice (-2)}:` +
         `${("0" + date.getMinutes()).slice (-2)}:` +
         `${("0" + date.getSeconds()).slice (-2)}`
-      const name = sanitize(rec.username, { allowedTags: [], disallowedTagsMode: 'escape' })
+      const name = sanitize(rec.user, { allowedTags: [], disallowedTagsMode: 'escape' })
       const msg = sanitize(rec.value, { allowedTags: [], disallowedTagsMode: 'escape'  })
       const dateClass = name === lastName ? "chat-output-date-invisible" : "chat-output-date"
       const nameClass = name === lastName ? "chat-output-username-invisible" : "chat-output-username"

@@ -16,6 +16,7 @@ class CreateGameMoves < ActiveRecord::Migration[7.0]
 
     add_index :game_moves, :created_at
 
-    add_foreign_key :games, :game_moves, column: :last_move_id, foreign_key: { to_table: :game_moves }
+    add_foreign_key :games, :game_moves, column: :last_move_id,
+                                         foreign_key: { to_table: :game_moves }
   end
 end

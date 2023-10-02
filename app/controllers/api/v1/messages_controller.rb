@@ -42,9 +42,8 @@ module Api
         )
       end
 
-      def create_params # rubocop:disable Metrics/AbcSize
-        user = User.find_by(id: current_user)
-        params[:message] = params[:message].merge(user_id: user.id)
+      def create_params
+        params[:message].merge!(user_id: current_user.id)
         params[:message].delete(:game_id) if params[:message][:game_id].to_i.zero?
 
         params.require(:message).permit(:value, :game_id, :user_id)

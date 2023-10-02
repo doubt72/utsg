@@ -93,8 +93,9 @@ class UserIntegrationSpec < ActionDispatch::IntegrationTest
 
         expect { put "/api/v1/user", params: { user: { username: "user", email: user.email } } }
           .to change { user.reload.username }
-        expect { put "/api/v1/user", params: { user: { username: "user", email: "user@example.com" } } }
-          .to change { user.reload.email }
+        expect do
+          put "/api/v1/user", params: { user: { username: "user", email: "user@example.com" } }
+        end.to change { user.reload.email }
 
         expect(user.username).to be == "user"
         expect(user.email).to be == "user@example.com"
@@ -120,7 +121,9 @@ class UserIntegrationSpec < ActionDispatch::IntegrationTest
         delete "/api/v1/session"
         expect_unauthorized
 
-        post "/api/v1/session", params: { user: { username: user.username, password: new_password } }
+        post "/api/v1/session", params: {
+          user: { username: user.username, password: new_password },
+        }
         expect_authorized
       end
 
@@ -163,7 +166,9 @@ class UserIntegrationSpec < ActionDispatch::IntegrationTest
           }
         end.to change { user.reload.password_digest }
 
-        post "/api/v1/session", params: { user: { username: user.username, password: new_password } }
+        post "/api/v1/session", params: {
+          user: { username: user.username, password: new_password },
+        }
         expect_authorized
       end
     end

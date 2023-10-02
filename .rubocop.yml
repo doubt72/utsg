@@ -7,13 +7,22 @@ AllCops:
 Lint/AmbiguousBlockAssociation:
   AllowedMethods: [change]
 
+Metric/AbcSize:
+  CountRepeatedAttributes: false
+
 Metric/BlockLength:
   Exclude:
     - 'spec/**/*'
+    - 'config/routes.rb'
 
 Metric/ClassLength:
   Exclude:
     - 'spec/**/*'
+
+Metric/LineLength:
+  Max: 100
+  Exclude:
+    - 'Gemfile'
 
 Metric/MethodLength:
   Max: 12

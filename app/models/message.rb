@@ -18,7 +18,7 @@ class Message < ApplicationRecord
   end
 
   def body
-    { created_at: format_created, username:, value: }
+    { created_at: format_created, user: username, value: }
   end
 
   private
@@ -27,7 +27,7 @@ class Message < ApplicationRecord
     ActionCable.server.broadcast(
       "game-#{game_id || 0}",
       {
-        body: { created_at: format_created, username:, value: },
+        body: { created_at: format_created, user: username, value: },
       }
     )
   end

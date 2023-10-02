@@ -3,7 +3,9 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      skip_before_action :authenticate_user!, only: %i[create check_conflict set_recovery password_reset]
+      skip_before_action :authenticate_user!, only: %i[
+        create check_conflict set_recovery password_reset
+      ]
 
       def create
         user = User.signup_user(create_params)
@@ -46,7 +48,8 @@ module Api
       end
 
       def check_conflict
-        user = User.lookup(params[:check].downcase) || params[:check].downcase == User::UNKNOWN_USERNAME
+        user = User.lookup(params[:check].downcase) ||
+               params[:check].downcase == User::UNKNOWN_USERNAME
         render json: { conflict: user ? true : false }, status: :ok
       end
 
@@ -56,7 +59,8 @@ module Api
       end
 
       def password_reset
-        if User.lookup(params[:check].downcase)&.reset_password_with_code(params[:code], params[:password])
+        if User.lookup(params[:check].downcase)
+               &.reset_password_with_code(params[:code], params[:password])
           render json: {}, status: :ok
         else
           render json: { message: "recovery code is invalid" }, status: :forbidden

@@ -16,6 +16,14 @@ Rails.application.routes.draw do
         end
       end
       resources :messages, only: %i[index create]
+      resources :games, only: %i[index show create update] do
+        member do
+          post "join"
+          post "start"
+          post "complete"
+        end
+      end
+      resources :game_moves, only: %i[index create]
     end
   end
   root "home#index"

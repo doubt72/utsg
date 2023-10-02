@@ -21,6 +21,21 @@ RSpec.describe Game do
     game.update!(last_move_id: GameMove.last)
   end
 
+  it "has body" do
+    expect(game.show_body).to be == {
+      id: game.id,
+      name: game.name,
+      state: game.state,
+      owner: user1.username,
+      player_one: user1.username,
+      player_two: user2.username,
+      current_player: user2.username,
+      metadata: game.metadata,
+      created_at: game.created_at.iso8601,
+      updated_at: game.moves.last.created_at.iso8601,
+    }
+  end
+
   it "cleans up after itself" do
     game.destroy
 

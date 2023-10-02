@@ -10,7 +10,7 @@ RSpec.describe Message do
     expect(message.user).not_to be nil?
     expect(message.body).to be == {
       created_at: message.created_at.iso8601,
-      username: message.user.username,
+      user: message.user.username,
       value: message.value,
     }
   end
@@ -19,7 +19,7 @@ RSpec.describe Message do
     message.user.destroy
     expect(message.reload.body).to be == {
       created_at: message.created_at.iso8601,
-      username: User::UNKNOWN_USERNAME,
+      user: User::UNKNOWN_USERNAME,
       value: message.value,
     }
   end
