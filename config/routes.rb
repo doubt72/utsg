@@ -24,6 +24,12 @@ Rails.application.routes.draw do
         end
       end
       resources :game_moves, only: %i[index create]
+      resources :scenarios, only: %i[index show] do
+        collection do
+          get "allied_factions"
+          get "axis_factions"
+        end
+      end
     end
   end
   root "home#index"

@@ -5,14 +5,12 @@ import Header from "../Header";
 import { CreateGameButton, CustomCheckbox } from "../utilities/buttons";
 
 export default function NewGame() {
-
   // const navigate = useNavigate()
   const [formInput, setFormInput] = useState({ name: "", scenario: "", player: 1 })
   // const [formErrors, setFormError] = useState({ name: "" })
 
   const onChange = (name, value) => {
     setFormInput({ ...formInput, [name]: value })
-    // validateForm(name, value)
   }
 
   const setPlayerOne = () => {
@@ -89,7 +87,7 @@ export default function NewGame() {
             <div className="scenario-list-filter">
               <label>allied faction filter</label><br />
               <select
-                name="allied"
+                name="allies"
                 className="form-input-gray"
                 onChange={{}}
               >
@@ -97,14 +95,6 @@ export default function NewGame() {
                 <option value="soviet">Soviet</option>
                 <option value="usarmy">U.S. Army</option>
                 <option value="commonwealth">Commonwealth</option>
-                <option value="french">French</option>
-                <option value="polish">Polish</option>
-                <option value="greek">Greek</option>
-                <option value="norwegian">Norwegian</option>
-                <option value="dutch">Dutch</option>
-                <option value="usmarines">U.S. Marines</option>
-                <option value="chinese">Chinese</option>
-                <option value="philippine">Philippine</option>
               </select>
             </div>
             <div className="scenario-list-filter">
@@ -118,11 +108,6 @@ export default function NewGame() {
                 <option value="german">German</option>
                 <option value="german">Italian</option>
                 <option value="german">Japanese</option>
-                <option value="german">Finnish</option>
-                <option value="german">Romanian</option>
-                <option value="german">Bulgarian</option>
-                <option value="german">Hungarian</option>
-                <option value="german">Slovakian</option>
               </select>
             </div>
             <div className="scenario-list-select">
