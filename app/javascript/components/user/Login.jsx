@@ -80,7 +80,7 @@ export default function Login() {
       </div>
       <div className="form-container">
         <form onSubmit={onSubmit}>
-          <label>username or email address</label>
+          <label className="form-label">username or email address</label>
           <input
             type="text"
             name="username"
@@ -88,7 +88,7 @@ export default function Login() {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.username}</div>
-          <label>password</label>
+          <label className="form-label">password</label>
           <input
             type="password"
             name="password"

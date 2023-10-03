@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom"
 import {
-  ArrowRepeat, BoxArrowInRight, BoxArrowRight, ChatText, Check2Square, Hexagon,
+  ArrowRepeat, BoxArrowInRight, BoxArrowRight, ChatText, Check2Square, CircleFill, Hexagon,
   InfoCircle, PencilSquare, Person, ShieldExclamation, Trash3, XCircle
 } from "react-bootstrap-icons"
 import PropTypes from "prop-types"
@@ -25,6 +25,20 @@ CustomLink.propTypes = {
   children: PropTypes.node,
   text: PropTypes.string,
   url: PropTypes.string,
+}
+
+// Radio button / checkbox
+const CustomCheckbox = (props) => {
+  if (props.selected) {
+    return <button className="custom-checkbox custom-checkbox-selected" onClick={props.onClick}><CircleFill /></button>
+  } else {
+    return <button className="custom-checkbox" onClick={props.onClick}><CircleFill /></button>
+  }
+}
+
+CustomCheckbox.propTypes = {
+  selected: PropTypes.bool,
+  onClick: PropTypes.func,
 }
 
 const AboutButton = () => {
@@ -81,6 +95,18 @@ const LogoutButton = () => {
   return <CustomLink url="/logout" text="logout"><BoxArrowRight /></CustomLink>
 }
 
+const CreateGameButton = (props) => {
+  if (props.type === "confirm") {
+    return <CustomSubmitButton text="create new game"><Hexagon /></CustomSubmitButton>
+  } else {
+    return <CustomLink url="/new_game" text="create new game"><Hexagon /></CustomLink>
+  }
+}
+
+CreateGameButton.propTypes = {
+  type: PropTypes.string,
+}
+
 const ProfileButton = () => {
   return <CustomLink url="/profile" text="profile"><Person /></CustomLink>
 }
@@ -129,10 +155,12 @@ export {
   AboutButton,
   CancelButton,             // type=submit prop = submit button version, name = cancel; url prop available
   ChangePasswordButton,
+  CustomCheckbox,
   ChatButton,
   DeleteButton,
   LoginButton,              // type=confirm prop = submit button version
   LogoutButton,
+  CreateGameButton,         // type=confirm prop = submit button version
   ProfileButton,
   RecoverAccountButton,     // type=confirm prop = submit button version
   ResetPasswordButton,

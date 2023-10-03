@@ -119,7 +119,7 @@ export default function ResetPassword() {
           your password.
         </div>
         <form onSubmit={onSubmit}>
-          <label>username or email address</label>
+          <label className="form-label">username or email address</label>
           <input
             type="text"
             name="username"
@@ -127,7 +127,7 @@ export default function ResetPassword() {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.username}</div>
-          <label>recovery code</label>
+          <label className="form-label">recovery code</label>
           <input
             type="code"
             name="code"
@@ -135,7 +135,7 @@ export default function ResetPassword() {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.code}</div>
-          <label>new password<PasswordTooltip /></label>
+          <label className="form-label">new password<PasswordTooltip /></label>
           <input
             type="password"
             name="password"
@@ -143,7 +143,7 @@ export default function ResetPassword() {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.password}</div>
-          <label>confirm password</label>
+          <label className="form-label">confirm password</label>
           <input
             type="password"
             name="confirmPassword"

@@ -45,7 +45,7 @@ export default function RecoverAccount() {
           code.
         </div>
         <form onSubmit={onSubmit}>
-          <label>username or email address</label>
+          <label className="form-label">username or email address</label>
           <input
             type="text"
             name="username"

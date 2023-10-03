@@ -73,7 +73,7 @@ export default function VerifyAccount() {
           Please enter it here to activate your account.
         </div>
         <form onSubmit={onSubmit}>
-          <label>verification code:</label>
+          <label className="form-label">verification code:</label>
           <input
             type="text"
             name="verificationCode"

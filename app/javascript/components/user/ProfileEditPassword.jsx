@@ -98,7 +98,7 @@ export default function ProfileEditPassword() {
         You can change your password here:
       </div>
       <form onSubmit={onSubmit}>
-        <label>current password</label>
+        <label className="form-label">current password</label>
         <input
           type="password"
           name="oldPassword"
@@ -107,7 +107,7 @@ export default function ProfileEditPassword() {
           onChange={({ target }) => onChange(target.name, target.value)}
         />
         <div className="form-error-message">{formErrors.oldPassword}</div>
-        <label>new password<PasswordTooltip /></label>
+        <label className="form-label">new password<PasswordTooltip /></label>
         <input
           type="password"
           name="password"
@@ -116,7 +116,7 @@ export default function ProfileEditPassword() {
           onChange={({ target }) => onChange(target.name, target.value)}
         />
         <div className="form-error-message">{formErrors.password}</div>
-        <label>confirm new password</label>
+        <label className="form-label">confirm new password</label>
         <input
           type="password"
           name="confirmPassword"

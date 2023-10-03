@@ -3,18 +3,25 @@
 $very-dark-green: #230;
 $dark-green: #450;
 $darkish-green: #670;
+$lightish-green: #9A0;
 $light-green: #CE7;
 $bright-green: #DF9;
 
-$light-gray: #DDD;
-$lightish-gray: #BBB;
+$gray-f: #F7F7F7;
+$gray-e: #EEE;
+$gray-d: #DDD;
+$gray-c: #CCC;
+$gray-b: #BBB;
+
+$transparent: rgba(0, 0, 0, 0);
 
 $background-green: $light-green;
-$background-gray: $light-gray;
+$background-gray: $gray-d;
 
 $border-color: $dark-green;
-$border-color-light-gray: $light-gray;
-$border-color-gray: $lightish-gray;
+$border-color-light: $lightish-green;
+$border-color-light-gray: $gray-d;
+$border-color-gray: $gray-b;
 
 $alert-orange: #B80;
 

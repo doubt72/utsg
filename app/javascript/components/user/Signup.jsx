@@ -149,7 +149,7 @@ export default function Signup() {
           <p>Sign up for a new account here:</p>
         </div>
         <form onSubmit={onSubmit}>
-          <label>username</label>
+          <label className="form-label">username</label>
           <input
             type="text"
             name="username"
@@ -157,7 +157,7 @@ export default function Signup() {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.username}</div>
-          <label>email<SignupEmailTooltip /></label>
+          <label className="form-label">email<SignupEmailTooltip /></label>
           <input
             type="email"
             name="email"
@@ -165,7 +165,7 @@ export default function Signup() {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.email}</div>
-          <label>password<PasswordTooltip /></label>
+          <label className="form-label">password<PasswordTooltip /></label>
           <input
             type="password"
             name="password"
@@ -173,7 +173,7 @@ export default function Signup() {
             onChange={({ target }) => onChange(target.name, target.value)}
           />
           <div className="form-error-message">{formErrors.password}</div>
-          <label>confirm password</label>
+          <label className="form-label">confirm password</label>
           <input
             type="password"
             name="confirmPassword"

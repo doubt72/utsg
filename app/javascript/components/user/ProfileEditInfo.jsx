@@ -104,7 +104,7 @@ export default function ProfileEditInfo() {
         You can change your username or email here:
       </div>
       <form onSubmit={onSubmit}>
-        <label>username</label>
+        <label className="form-label">username</label>
         <input
           type="text"
           name="username"
@@ -113,7 +113,7 @@ export default function ProfileEditInfo() {
           onChange={({ target }) => onChange(target.name, target.value)}
         />
         <div className="form-error-message">{formErrors.username}</div>
-        <label>email</label>
+        <label className="form-label">email</label>
         <input
           type="email"
           name="email"
