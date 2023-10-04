@@ -5,23 +5,24 @@ module Utility
     module Definitions
       AVAILABLE_ALLIED_FACTIONS = [
         # Current supported factions
-        { name: "Commonwealth", code: "uk" },
+        { name: "American", code: "usa" },
+        { name: "British", code: "uk" },
         { name: "Soviet", code: "ussr" },
-        { name: "U.S. Army", code: "usa" },
 
         # Likely future factions
+        # { name: "Commonwealth", code: "com" },
         # { name: "U.S. Marines", code: "usm" },
-        # { name: 'French', code: 'fra' },
+        # { name: "French", code: "fra" },
 
         # Possible future factions
-        # { name: 'Polish', code: 'pol' },
-        # { name: 'Greek', code: 'gre' },
-        # { name: 'Norwegian', code: 'nor' },
-        # { name: 'Chinese', code: 'chi' },
-        # { name: 'Philippine', code: 'phi' },
-        # { name: 'Dutch', code: 'net' },
-        # { name: 'Belgian', code: 'bel' },
-        # { name: 'Yugoslav', code: 'yug' },
+        # { name: "Polish", code: "pol" },
+        # { name: "Greek", code: "gre" },
+        # { name: "Norwegian", code: "nor" },
+        # { name: "Chinese", code: "chi" },
+        # { name: "Philippine", code: "phi" },
+        # { name: "Dutch", code: "net" },
+        # { name: "Belgian", code: "bel" },
+        # { name: "Yugoslav", code: "yug" },
       ].freeze
 
       AVAILABLE_AXIS_FACTIONS = [

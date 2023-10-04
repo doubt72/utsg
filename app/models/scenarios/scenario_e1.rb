@@ -3,7 +3,7 @@
 module Scenarios
   class ScenarioE1 < Base
     ID = "E1"
-    NAME = "Infantry Meeting Engagement"
+    NAME = "Lost in the Woods"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 
@@ -14,8 +14,8 @@ module Scenarios
           turns: 6,
           first_setup: :allies,
           first_move: :axis,
-          date: "43/9/6",
-          location: "Yartzevo, Russia",
+          date: "42/7/31",
+          location: "Rzhev, Russia",
           description:,
           map_data:,
           allied_units:,
@@ -25,7 +25,8 @@ module Scenarios
 
       def description
         <<~TEXT
-          A simple meeting engagement.
+          A simple meeting engagement as german troops counterattack a Russian breakthrough
+          in the woods near Rzhev.
         TEXT
       end
 
@@ -58,8 +59,7 @@ module Scenarios
           s: [
             "ussr-leader-5-2",
             "ussr-leader-4-1",
-            "8:ussr-rifle-s",
-            "ussr-mmg",
+            "9:ussr-rifle-s",
             "ussr-lmg",
           ],
         }

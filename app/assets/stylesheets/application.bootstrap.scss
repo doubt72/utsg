@@ -294,7 +294,7 @@ button.custom-button:hover,a.custom-button:hover {
 
 // Game page layout
 .game-form-container {
-  width: 500px;
+  min-width: 500px;
   padding: 1em;
   margin-right: 1em;
   border: 2px solid $border-color-light-gray;
@@ -316,5 +316,37 @@ button.custom-button:hover,a.custom-button:hover {
 }
 
 .scenario-list-select {
+  min-height: 135px;
+  margin: 1em 1em 0 0;
   flex-basis: 100%;
+}
+
+.scenario-row {
+  display: flex;
+  flex-basis: auto;
+  background-color: $gray-f;
+  padding: 0.25em 0.5em 0.35em 0.5em;
+  margin-top: 0.2em;
+  border-radius: 0.33em;
+}
+
+.scenario-row-code {
+  color: $darkish-green;
+  text-align: end;
+  margin-right: 1em;
+  width: 2em;
+}
+
+.scenario-row-name {
+  flex-grow: 1;
+}
+
+.scenario-row-allies {
+  white-space: nowrap;
+  margin-left: 0.5em;
+}
+
+.scenario-row-axis {
+  white-space: nowrap;
+  margin-left: 0.5em;
 }

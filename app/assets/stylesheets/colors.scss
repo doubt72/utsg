@@ -25,25 +25,38 @@ $border-color-gray: $gray-b;
 
 $alert-orange: #B80;
 
-// National colors:
-
-$nation-usarmy: #AB4;
-$nation-usmarines: #9A2;
-$nation-soviet: #C84;
-$nation-commonwealth: #ECA;
-$nation-french: #AAF;
-$nation-chinese: #CCF;
-$nation-polish: #FAA;
-$nation-greek: #AEE;
-// Yugoslav, Dutch, Belgian, Danish, Norwegian, Philippine, Brazil?
-
-$nation-german: #BBB;
-$nation-italian: #8E8;
-$nation-japanese: #ED5;
-$nation-finnish: #DDD;
-// Hungarian, Slovakian, Romanian, Bulgarian
-$nation-axis-minor: #9CB;
-
 .red {
   color: $alert-orange;
 }
+
+.nation-pill {
+  padding: 0 0.5em 0.1em 0.5em;
+  margin: 0 0.1em;
+  font-variant-caps: all-small-caps;
+  border: 1px solid black;
+  border-radius: 0.25em;
+}
+
+.nation-ussr { background-color: #EA6; }
+.nation-usa { background-color: #BC5; }
+.nation-uk { background-color: #DCB; }
+.nation-usm { background-color: #AB4; }
+.nation-com { background-color: #DCB; }
+.nation-fra { background-color: #AAF; }
+.nation-pol { background-color: #FAA; }
+.nation-gre { background-color: #AEE; }
+.nation-nor { background-color: #FFF; }
+.nation-chi { background-color: #CCF; }
+.nation-phi { background-color: #CD6; }
+.nation-net { background-color: #FC5; }
+.nation-bel { background-color: #FC5; }
+.nation-yug { background-color: #FAA; }
+
+.nation-ger { background-color: #CCC; }
+.nation-ita { background-color: #AEA; }
+.nation-jap { background-color: #ED5; }
+.nation-fin { background-color: #DDD; }
+.nation-rom { background-color: #9CB; }
+.nation-bul { background-color: #9CB; }
+.nation-hun { background-color: #9CB; }
+.nation-slo { background-color: #9CB; }

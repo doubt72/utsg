@@ -82,7 +82,7 @@ RSpec.describe Api::V1::ScenariosController do
       body = JSON.parse(response.body)
       usa = body.select { |a| a["code"] == "usa" }
       expect(usa.length).to be == 1
-      expect(usa[0]["name"]).to be == "U.S. Army"
+      expect(usa[0]["name"]).to be == "American"
 
       ussr = body.select { |a| a["code"] == "ussr" }
       expect(ussr.length).to be == 1
