@@ -327,17 +327,23 @@ button.custom-button:hover,a.custom-button:hover {
   background-color: $gray-f;
   padding: 0.25em 0.5em 0.35em 0.5em;
   margin-top: 0.2em;
+  border: 2px solid $gray-c;
   border-radius: 0.33em;
 }
 
+.scenario-row-selected {
+  border: 2px solid $alert-orange;
+}
+
 .scenario-row-code {
-  color: $darkish-green;
+  color: $alert-orange;
   text-align: end;
   margin-right: 1em;
   width: 2em;
 }
 
 .scenario-row-name {
+  color: $darkish-green;
   flex-grow: 1;
 }
 

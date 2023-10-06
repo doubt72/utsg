@@ -5,13 +5,13 @@ module Utility
     module Definitions
       AVAILABLE_ALLIED_FACTIONS = [
         # Current supported factions
-        { name: "American", code: "usa" },
-        { name: "British", code: "uk" },
+        # { name: "American", code: "usa" },
+        # { name: "British", code: "uk" },
         { name: "Soviet", code: "ussr" },
 
         # Likely future factions
-        # { name: "Commonwealth", code: "com" },
         # { name: "U.S. Marines", code: "usm" },
+        # { name: "Commonwealth", code: "com" },
         # { name: "French", code: "fra" },
 
         # Possible future factions
@@ -28,7 +28,7 @@ module Utility
       AVAILABLE_AXIS_FACTIONS = [
         # Currently supported factions
         { name: "German", code: "ger" },
-        { name: "Italian", code: "ita" },
+        # { name: "Italian", code: "ita" },
 
         # Likely future factions
         # { name: "Japanese", code: "jap" },

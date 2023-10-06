@@ -47,7 +47,7 @@ export default function Signup() {
           })
         }
       })
-    }, 1000)
+    }, 500)
     if (conflictTimer > 0) {
       clearTimeout(conflictTimer - 1)
     }

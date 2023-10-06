@@ -80,9 +80,10 @@ RSpec.describe Api::V1::ScenariosController do
 
       expect(response.status).to be == 200
       body = JSON.parse(response.body)
-      usa = body.select { |a| a["code"] == "usa" }
-      expect(usa.length).to be == 1
-      expect(usa[0]["name"]).to be == "American"
+      # TODO: add this back when we add back the code
+      # usa = body.select { |a| a["code"] == "usa" }
+      # expect(usa.length).to be == 1
+      # expect(usa[0]["name"]).to be == "American"
 
       ussr = body.select { |a| a["code"] == "ussr" }
       expect(ussr.length).to be == 1
@@ -100,9 +101,10 @@ RSpec.describe Api::V1::ScenariosController do
       expect(ger.length).to be == 1
       expect(ger[0]["name"]).to be == "German"
 
-      ita = body.select { |a| a["code"] == "ita" }
-      expect(ita.length).to be == 1
-      expect(ita[0]["name"]).to be == "Italian"
+      # TODO: add this back when we add back the code
+      # ita = body.select { |a| a["code"] == "ita" }
+      # expect(ita.length).to be == 1
+      # expect(ita[0]["name"]).to be == "Italian"
     end
   end
 end

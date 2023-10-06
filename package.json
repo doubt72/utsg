@@ -19,7 +19,6 @@
     "react-router-dom": "^6.16.0",
     "react-tooltip": "^5.21.4",
     "react-use-websocket": "^4.4.0",
-    "sanitize-html": "^2.11.0",
     "sass": "^1.68.0"
   },
   "scripts": {

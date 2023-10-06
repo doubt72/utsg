@@ -7,38 +7,29 @@ import ScenarioRow from "./ScenarioRow";
 
 export default function NewGame() {
   // const navigate = useNavigate()
-  const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: ""})
-  const [string, setString] = useState("")
-  const [allies, setAllies] = useState("")
-  const [axis, setAxis] = useState("")
-  const [formErrors, setFormError] = useState({ name: "" , scenario: "" })
-  const [alliedFactions, setAlliedFaction] = useState([])
-  const [axisFactions, setAxisFactions] = useState([])
+  const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: "" })
+  const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
+
+  const [scenarioSearch, setScenarioSearch] = useState({ string: "", allies: "", axis: "" })
   const [scenarioList, setScenarioList] = useState([])
+
+  const [alliedFactions, setAlliedFactions] = useState([])
+  const [axisFactions, setAxisFactions] = useState([])
 
   const checkScenarios = () => {
     const scenarioTimer = setTimeout(() => {
       const params = {}
-      if (string != "") { params.string = string }
-      if (allies != "") { params.allies = allies }
-      if (axis != "") { params.axis = axis }
+      if (scenarioSearch.string != "") { params.string = scenarioSearch.string }
+      if (scenarioSearch.allies != "") { params.allies = scenarioSearch.allies }
+      if (scenarioSearch.axis != "") { params.axis = scenarioSearch.axis }
       const urlParams = new URLSearchParams(params).toString()
       const url = urlParams.length > 0 ? "/api/v1/scenarios?" + urlParams : "/api/v1/scenarios"
       getAPI(url, {
         ok: response => {
-          response.json().then(json => {
-            const list = []
-            console.log(json)
-            for(const rec of json) {
-              list.push(
-                <ScenarioRow key={rec.id} code={rec.id} name={rec.name} allies={rec.allies} axis={rec.axis}/>
-              )
-            }
-            setScenarioList(list)
-          })
+          response.json().then(json => { setScenarioList(json) })
         }
       })
-    }, 1000)
+    }, 500)
     if (scenarioTimer > 0) {
       clearTimeout(scenarioTimer - 1)
     }
@@ -46,34 +37,22 @@ export default function NewGame() {
 
   useEffect(() => {
     checkScenarios()
-  }, [string, allies, axis])
+  }, [scenarioSearch.string, scenarioSearch.allies, scenarioSearch.axis])
 
   useEffect(() => {
     getAPI("/api/v1/scenarios/allied_factions", {
-      ok: respons => respons.json().then(json => {
-        const allies = [<option key="" value="">[ any ]</option>]
-        for (const rec of json) {
-          allies.push(<option key={rec.code} value={rec.code}>{rec.name}</option>)
-        }
-        setAlliedFaction(allies)
-      })
+      ok: respons => respons.json().then(json => { setAlliedFactions(json) })
     })
     getAPI("/api/v1/scenarios/axis_factions", {
-      ok: respons => respons.json().then(json => {
-        const axis = [<option key="" value="">[ any ]</option>]
-        for (const rec of json) {
-          axis.push(<option key={rec.code} value={rec.code}>{rec.name}</option>)
-        }
-        setAxisFactions(axis)
-      })
+      ok: respons => respons.json().then(json => { setAxisFactions(json) })
     })
   }, [])
 
   const validateName = (name) => {
     if (name == "") {
-      setFormError({name: "please choose a name for the game"})
+      setFormErrors({ ...formErrors, name: "please choose a name for the game" })
     } else {
-      setFormError({name: ""})
+      setFormErrors({ ...formErrors, name: "" })
     }
   }
 
@@ -86,23 +65,22 @@ export default function NewGame() {
     setFormInput({ ...formInput, player: num })
   }
 
-  const onStringChange = (value) => {
-    setString(value)
+  const setScenario = (code) => {
+    setFormInput({ ...formInput, scenario: code })
+    setFormErrors({ ...formErrors, scenario: "" })
   }
 
-  const onAlliedChange = (value) => {
-    setAllies(value)
-  }
-
-  const onAxisChange = (value) => {
-    setAxis(value)
+  const onSearchChange = (name, value) => {
+    setScenarioSearch({ ...scenarioSearch, [name]: value })
   }
 
   const onSubmit = (event) => {
     event.preventDefault()
     if (formInput.name == "") {
-      setFormError({name: "please choose a name for the game"})
+      setFormErrors({ ...formErrors, name: "please choose a name for the game" })
       return false
+    } else if (formInput.scenario == "") {
+      setFormErrors({ ...formErrors, scenario: "please select a scenario" })
     }
     return false
     // if (!validateForm("", "") || anyEmpty()) {
@@ -127,6 +105,48 @@ export default function NewGame() {
     // }
   }
 
+  const alliedFactionSelector = (
+    <select
+      name="allies"
+      className="form-input-gray"
+      onChange={({ target }) => onSearchChange(target.name, target.value)}
+    >
+      <option key="" value="">[ any ]</option>
+      {
+        alliedFactions.map(faction => {
+          return <option key={faction.code} value={faction.code}>{faction.name}</option>
+        })
+      }
+    </select>
+  )
+
+  const axisFactionSelector = (
+    <select
+      name="axis"
+      className="form-input-gray"
+      onChange={({ target }) => onSearchChange(target.name, target.value)}
+    >
+      <option key="" value="">[ any ]</option>
+      {
+        axisFactions.map(faction => {
+          return <option key={faction.code} value={faction.code}>{faction.name}</option>
+        })
+      }
+    </select>
+  )
+
+  const scenarioDisplayList = (
+    scenarioList.map(row => {
+      return (
+        <ScenarioRow
+          onClick={setScenario} selected={formInput.scenario === row.id}
+          key={row.id} code={row.id} name={row.name}
+          allies={row.allies} axis={row.axis}
+        />
+      )
+    })
+  )
+
   return (
     <div className="main-page">
       <Header />
@@ -145,11 +165,11 @@ export default function NewGame() {
             <div className="red">{formErrors.name}</div>
             <div className="mt1em">
               <CustomCheckbox onClick={() => setPlayer(1)} selected={ formInput.player === 1 }/>
-              <span className="font11em">play allied side</span>
+              <span className="font11em">play as allied side</span>
             </div>
             <div>
               <CustomCheckbox onClick={() => setPlayer(2)} selected={ formInput.player === 2 }/>
-              <span className="font11em">play axis side</span>
+              <span className="font11em">play as axis side</span>
             </div>
             <div className="align-end">
               <CreateGameButton type="confirm" />
@@ -157,38 +177,27 @@ export default function NewGame() {
           </div>
           <div className="scenario-list-container">
             <div className="scenario-list-filter">
-              <label>scenario names filter</label>
+              <label>filter by scenario name</label>
               <input
                 type="text"
                 name="string"
-                value={string}
+                value={scenarioSearch.string}
                 className="form-input-gray"
-                onChange={({ target }) => onStringChange(target.value)}
+                onChange={({ target }) => onSearchChange(target.name, target.value)}
               />
             </div>
             <div className="scenario-list-filter">
-              <label>allied faction filter</label><br />
-              <select
-                name="allies"
-                className="form-input-gray"
-                onChange={({ target }) => onAlliedChange(target.value)}
-              >
-                {alliedFactions}
-              </select>
+              <label>by allied faction</label><br />
+              {alliedFactionSelector}
             </div>
             <div className="scenario-list-filter">
-              <label>axis faction filter</label><br />
-              <select
-                name="axis"
-                className="form-input-gray"
-                onChange={({ target }) => onAxisChange(target.value)}
-              >
-                {axisFactions}
-              </select>
+              <label>by axis faction</label><br />
+              {axisFactionSelector}
             </div>
             <div className="scenario-list-select">
-              Select scenario:<br />
-              {scenarioList}
+              <div>select scenario:</div>
+              <div className="red">{formErrors.scenario}</div>
+              {scenarioDisplayList}
             </div>
           </div>
         </div>

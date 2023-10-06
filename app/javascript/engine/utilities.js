@@ -38,8 +38,6 @@ const axisCodeToName = (code) => {
   ]
 
   for (const rec of lookup) {
-    console.log(`${rec} ?`)
-    console.log(`${code} : ${rec.code} ?`)
     if (rec.code === code) {
       return rec.name
     }
