@@ -4,6 +4,7 @@ import { getAPI } from "../../utilities/network";
 import Header from "../Header";
 import { CreateGameButton, CustomCheckbox } from "../utilities/buttons";
 import ScenarioRow from "./ScenarioRow";
+import ScenarioSummary from "./ScenarioSummary";
 
 export default function NewGame() {
   // const navigate = useNavigate()
@@ -12,6 +13,7 @@ export default function NewGame() {
 
   const [scenarioSearch, setScenarioSearch] = useState({ string: "", allies: "", axis: "" })
   const [scenarioList, setScenarioList] = useState([])
+  const [scenarioData, setScenarioData] = useState(null)
 
   const [alliedFactions, setAlliedFactions] = useState([])
   const [axisFactions, setAxisFactions] = useState([])
@@ -34,6 +36,18 @@ export default function NewGame() {
       clearTimeout(scenarioTimer - 1)
     }
   }
+
+  useEffect(() => {
+    if (formInput.scenario !== "") {
+      console.log('scenario set')
+      const url = `/api/v1/scenarios/${formInput.scenario}`
+      getAPI(url, {
+        ok: response => {
+          response.json().then(json => { setScenarioData(json) })
+        }
+      })
+    }
+  }, [formInput.scenario])
 
   useEffect(() => {
     checkScenarios()
@@ -147,6 +161,18 @@ export default function NewGame() {
     })
   )
 
+  const noScenario = (
+    <div className="scenario-description scenario-no-description">
+      no scenario selected
+    </div>
+  )
+
+  const scenarioDisplay = (
+    <div>
+      { scenarioData ? <ScenarioSummary data={scenarioData} /> : noScenario }
+    </div>
+  )
+
   return (
     <div className="main-page">
       <Header />
@@ -202,6 +228,7 @@ export default function NewGame() {
           </div>
         </div>
       </form>
+      { scenarioDisplay }
     </div>
   )
 }

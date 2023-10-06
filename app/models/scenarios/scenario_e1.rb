@@ -12,9 +12,9 @@ module Scenarios
       def generate
         {
           turns: 6,
-          first_setup: :allies,
-          first_move: :axis,
-          date: "42/7/31",
+          first_setup: 1,
+          first_move: 2,
+          date: [1942, 7, 31],
           location: "Rzhev, Russia",
           description:,
           map_data:,

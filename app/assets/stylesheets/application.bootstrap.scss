@@ -356,3 +356,15 @@ button.custom-button:hover,a.custom-button:hover {
   white-space: nowrap;
   margin-left: 0.5em;
 }
+
+.scenario-description {
+  display: flex;
+  padding: 1em;
+  margin: 0 1em 1em 1em;
+  border: 2px solid $gray-c;
+  border-radius: 0.5em;
+}
+
+.scenario-no-description {
+  color: $gray-8;
+}
