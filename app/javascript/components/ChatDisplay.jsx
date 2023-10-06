@@ -22,7 +22,7 @@ export default function ChatDisplay() {
 
   useEffect(() => {
     getAPI("/api/v1/messages?game_id=0", {
-      ok: response => response.json().then(json => { console.log('getting'); console.log(json); setChatMessages(json) })
+      ok: response => response.json().then(json => { setChatMessages(json) })
     })
   }, [])
 
@@ -60,7 +60,6 @@ export default function ChatDisplay() {
     <div className="chat-output">
       {
         [...chatMessages].map(msg => {
-          console.log(msg)
           const date = new Date(msg.created_at)
           if (new Date(Date.now() - 24 * 3600 * 1000) > date) {
             return ("")
@@ -73,7 +72,6 @@ export default function ChatDisplay() {
           if (msg.user !== lastUser) {
             lastUser = msg.user
           }
-          console.log(`${key} : ${lastUser}`)
           return (
             <div key={key++} className="chat-output-record">
               <div className={dateClass}>{time}</div>
