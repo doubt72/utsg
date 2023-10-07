@@ -46,4 +46,12 @@ const axisCodeToName = (code) => {
   return "Unknown"
 }
 
-export { alliedCodeToName, axisCodeToName }
+const getFormattedDate = (date) => {
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"    
+  ]
+  
+  return `${months[date.getMonth() - 1]} ${date.getDate()}, ${date.getFullYear()}`
+}
+
+export { alliedCodeToName, axisCodeToName, getFormattedDate }

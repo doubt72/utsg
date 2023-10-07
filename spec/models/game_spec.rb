@@ -25,11 +25,13 @@ RSpec.describe Game do
     expect(game.show_body).to be == {
       id: game.id,
       name: game.name,
+      scenario: game.scenario,
       state: game.state,
       owner: user1.username,
       player_one: user1.username,
       player_two: user2.username,
       current_player: user2.username,
+      winner: nil,
       metadata: game.metadata,
       created_at: game.created_at.iso8601,
       updated_at: game.moves.last.created_at.iso8601,

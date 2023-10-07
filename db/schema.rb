@@ -31,8 +31,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
     t.bigint "player_one_id"
     t.bigint "player_two_id"
     t.bigint "current_player_id"
+    t.bigint "winner_id"
     t.bigint "last_move_id"
     t.string "name", null: false
+    t.string "scenario", null: false
     t.integer "state", default: 0, null: false
     t.jsonb "metadata"
     t.datetime "created_at", null: false
@@ -44,7 +46,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
     t.index ["owner_id"], name: "index_games_on_owner_id"
     t.index ["player_one_id"], name: "index_games_on_player_one_id"
     t.index ["player_two_id"], name: "index_games_on_player_two_id"
+    t.index ["scenario"], name: "index_games_on_scenario"
     t.index ["updated_at"], name: "index_games_on_updated_at"
+    t.index ["winner_id"], name: "index_games_on_winner_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -80,6 +84,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
   add_foreign_key "games", "users", column: "owner_id"
   add_foreign_key "games", "users", column: "player_one_id"
   add_foreign_key "games", "users", column: "player_two_id"
+  add_foreign_key "games", "users", column: "winner_id"
   add_foreign_key "messages", "games"
   add_foreign_key "messages", "users"
 end

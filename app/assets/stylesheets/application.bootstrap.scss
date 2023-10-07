@@ -292,8 +292,8 @@ button.custom-button:hover,a.custom-button:hover {
   border-radius: 0.5em;
 }
 
-// Game page layout
-.game-form-container {
+// Create game page layout
+.scenario-form-container {
   min-width: 500px;
   padding: 1em;
   margin-right: 1em;
@@ -338,27 +338,11 @@ button.custom-button:hover,a.custom-button:hover {
 .scenario-row-code {
   color: $alert-orange;
   text-align: end;
-  margin-right: 1em;
+  margin-right: 0.5em;
   width: 2em;
 }
 
-.scenario-row-name {
-  color: $darkish-green;
-  flex-grow: 1;
-}
-
-.scenario-row-allies {
-  white-space: nowrap;
-  margin-left: 0.5em;
-}
-
-.scenario-row-axis {
-  white-space: nowrap;
-  margin-left: 0.5em;
-}
-
 .scenario-description {
-  display: flex;
   padding: 1em;
   margin: 0 1em 1em 1em;
   border: 2px solid $gray-c;
@@ -367,4 +351,13 @@ button.custom-button:hover,a.custom-button:hover {
 
 .scenario-no-description {
   color: $gray-8;
+}
+
+.scenario-description-row {
+  display: flex;
+  padding: 0.5em 1em;
+}
+
+.scenario-description-description {
+  padding: 1em 1em 0.25em 1em;
 }

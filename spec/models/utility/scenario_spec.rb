@@ -91,6 +91,25 @@ RSpec.describe Utility::Scenario do
           end
         end
 
+        it "has valid units" do
+          current_scenario = described_class.scenario_by_id(scenario[:id])
+
+          metadata = current_scenario[:metadata]
+          expect(metadata[:allied_units].length).to be > 0
+          metadata[:allied_units].each_value do |turn|
+            turn.each do |unit|
+              expect(unit).not_to be == :unknown
+            end
+          end
+
+          expect(metadata[:axis_units].length).to be > 0
+          metadata[:allied_units].each_value do |turn|
+            turn.each do |unit|
+              expect(unit).not_to be == :unknown
+            end
+          end
+        end
+
         it "has metadata" do
           scenario = described_class.scenario_by_id(scenario[:id])
           expect(scenario).not_to be_nil

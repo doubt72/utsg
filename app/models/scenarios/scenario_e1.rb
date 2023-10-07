@@ -16,6 +16,7 @@ module Scenarios
           first_move: 2,
           date: [1942, 7, 31],
           location: "Rzhev, Russia",
+          author: "Douglas Triggs",
           description:,
           map_data:,
           allied_units:,
@@ -24,10 +25,12 @@ module Scenarios
       end
 
       def description
-        <<~TEXT
-          A simple meeting engagement as german troops counterattack a Russian breakthrough
-          in the woods near Rzhev.
-        TEXT
+        [
+          "A simple meeting engagement as German divisional reserves attempt
+          to plug a gap in the German defenses by counterattacking a small
+          Soviet breakthrough in the woods on the second day of the first
+          Soviet Rzhev-Sychyovka offensive.",
+        ]
       end
 
       # TODO: documentation for map definitions
@@ -57,22 +60,22 @@ module Scenarios
       def allied_units
         {
           s: [
-            "ussr-leader-5-2",
-            "ussr-leader-4-1",
-            "9:ussr-rifle-s",
-            "ussr-lmg",
-          ],
+            :ussr_leader_5_2,
+            :ussr_leader_4_1,
+            [8, :ussr_rifle_s],
+            :ussr_lmg,
+          ].map { |u| Utility::Scenarios::Units.unit_definition(u) },
         }
       end
 
       def axis_units
         {
           s: [
-            "ger-leader-6-2",
-            "ger-leader-4-1",
-            "6:ger-rifle-s",
-            "2:ger-lmg",
-          ],
+            :ger_leader_6_2,
+            :ger_leader_4_1,
+            [6, :ger_rifle_s],
+            [2, :ger_lmg],
+          ].map { |u| Utility::Scenarios::Units.unit_definition(u) },
         }
       end
     end

@@ -11,9 +11,9 @@ export default function ScenarioRow(props) {
       <div className={ props.selected ? "scenario-row scenario-row-selected" : "scenario-row" }
         onClick={() => props.onClick(props.code)}>
         <div className="scenario-row-code">{props.code}:</div>
-        <div className="scenario-row-name">{props.name}</div>
-        <div className="scenario-row-allies">{allies}</div>
-        <div className="scenario-row-axis">{axis}</div>
+        <div className="green flex-fill">{props.name}</div>
+        <div className="ml05em nowrap">{allies}</div>
+        <div className="ml05em nowrap">{axis}</div>
       </div>
     </div>
   )

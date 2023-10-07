@@ -5,14 +5,15 @@ class Game < ApplicationRecord
   belongs_to :player_one, class_name: "User", optional: true
   belongs_to :player_two, class_name: "User", optional: true
   belongs_to :current_player, class_name: "User", optional: true
+  belongs_to :winner, class_name: "User", optional: true
 
   has_many :moves, class_name: "GameMove", dependent: :destroy
   has_many :messages, dependent: :destroy
   has_one :last_move, class_name: "GameMove", required: false
 
   validates :owner, presence: true
-  # TODO: maybe move to metadata, or maybe split out winner from metadata?
   validates :name, presence: true
+  validates :scenario, presence: true
   validates :state, presence: true
 
   validate :valid_players
@@ -32,13 +33,14 @@ class Game < ApplicationRecord
     Game.where("player_one_id = ? OR player_two_id = ?", user.id, user.id)
   end
 
-  def index_body
+  def index_body # rubocop:disable Metrics/AbcSize
     {
-      id:, name:, state:,
+      id:, name:, scenario:, state:,
       owner: owner.username,
       player_one: player_one&.username,
       player_two: player_two&.username,
       current_player: current_player&.username,
+      winner: winner&.username,
       created_at: created_at.iso8601,
       updated_at: last_moved_at,
     }

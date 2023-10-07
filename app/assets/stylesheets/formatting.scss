@@ -1,3 +1,8 @@
+.mt05em { margin-top: 0.5em; }
+.mb05em { margin-bottom: 0.5em; }
+.ml05em { margin-left: 0.5em; }
+.mr05em { margin-right: 0.5em; }
+
 .mt075em { margin-top: 0.75em; }
 .mb075em { margin-bottom: 0.75em; }
 .ml075em { margin-left: 0.75em; }
@@ -23,4 +28,8 @@
 
 .font11em {
   font-size: 1.1em;
+}
+
+.flex-fill {
+  flex-grow: 1;
 }

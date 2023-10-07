@@ -71,7 +71,9 @@ RSpec.describe Api::V1::GamesController do
 
       expect do
         post :create, params: {
-          game: { name: "new game", player_one: user1.username, metadata: '{ "b": 2 }' },
+          game: {
+            name: "new game", scenario: "T0", player_one: user1.username, metadata: '{ "b": 2 }',
+          },
         }
       end.to change { Game.count }.by(1)
 

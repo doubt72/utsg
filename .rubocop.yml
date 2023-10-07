@@ -27,6 +27,9 @@ Metric/LineLength:
 Metric/MethodLength:
   Max: 12
 
+Naming/VariableNumber:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
 

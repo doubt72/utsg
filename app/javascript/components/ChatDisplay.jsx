@@ -54,12 +54,11 @@ export default function ChatDisplay() {
   }
 
   let lastUser = ""
-  let key = 0
 
   const chatMessageDispay = (
     <div className="chat-output">
       {
-        [...chatMessages].map(msg => {
+        [...chatMessages].map((msg, i) => {
           const date = new Date(msg.created_at)
           if (new Date(Date.now() - 24 * 3600 * 1000) > date) {
             return ("")
@@ -73,7 +72,7 @@ export default function ChatDisplay() {
             lastUser = msg.user
           }
           return (
-            <div key={key++} className="chat-output-record">
+            <div key={i} className="chat-output-record">
               <div className={dateClass}>{time}</div>
               <div className="chat-output-message">
                 <span className={nameClass}>{msg.user}</span>{msg.value}

@@ -82,7 +82,9 @@ module Api
         translate("player_one")
         translate("player_two")
 
-        params.require(:game).permit(:name, :owner_id, :player_one_id, :player_two_id, :metadata)
+        params.require(:game).permit(
+          :name, :scenario, :owner_id, :player_one_id, :player_two_id, :metadata
+        )
       end
 
       def update_params

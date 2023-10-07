@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-import { getAPI } from "../../utilities/network";
+import { useNavigate } from "react-router-dom";
+import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
 import { CreateGameButton, CustomCheckbox } from "../utilities/buttons";
 import ScenarioRow from "./ScenarioRow";
 import ScenarioSummary from "./ScenarioSummary";
 
 export default function NewGame() {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: "" })
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
 
@@ -95,28 +95,27 @@ export default function NewGame() {
       return false
     } else if (formInput.scenario == "") {
       setFormErrors({ ...formErrors, scenario: "please select a scenario" })
+      return false
+    } else {
+      const user = localStorage.getItem("username")
+      const game = {
+        name: formInput.name,
+        scenario: formInput.scenario,
+        metadata: {},
+      }
+      if (formInput.player === 1) {
+        game.player_one = user
+      } else {
+        game.player_two = user
+      }
+      postAPI("/api/v1/games", { game: game }, {
+        ok: response => {
+          response.json().then(json => {
+            navigate(`/game/${json.id}`)
+          })
+        }
+      })
     }
-    return false
-    // if (!validateForm("", "") || anyEmpty()) {
-    //   return false
-    // } else {
-    //   const body = {
-    //     user: {
-    //       username: formInput.username,
-    //       email: formInput.email,
-    //     }
-    //   }
-
-    //   putAPI("/api/v1/user", body, {
-    //     ok: response => {
-    //       response.json().then(json => {
-    //         localStorage.setItem("username", json.username)
-    //         localStorage.setItem("email", json.email)
-    //         navigate("/profile", { replace: true })
-    //       })
-    //     }
-    //   })
-    // }
   }
 
   const alliedFactionSelector = (
@@ -149,6 +148,7 @@ export default function NewGame() {
     </select>
   )
 
+  // TODO: add pagination at some point
   const scenarioDisplayList = (
     scenarioList.map(row => {
       return (
@@ -178,7 +178,7 @@ export default function NewGame() {
       <Header />
       <form onSubmit={onSubmit}>
         <div className="standard-body">
-          <div className="game-form-container">
+          <div className="scenario-form-container">
             Create a new game:
             <label className="form-label">name</label>
             <input
