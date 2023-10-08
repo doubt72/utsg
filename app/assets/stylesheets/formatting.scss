@@ -18,8 +18,14 @@
 .ml2em { margin-left: 2em; }
 .mr2em { margin-right: 2em; }
 
+.p1em { padding: 1em }
+
 .align-end {
   text-align: end;
+}
+
+.valign-bottom {
+  vertical-align: bottom;
 }
 
 .nowrap {
@@ -30,6 +36,14 @@
   font-size: 1.1em;
 }
 
+.flex {
+  display: flex;
+}
+
 .flex-fill {
   flex-grow: 1;
+}
+
+.monospace {
+  font-family: monospace;
 }

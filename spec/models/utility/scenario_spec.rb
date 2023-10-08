@@ -97,15 +97,17 @@ RSpec.describe Utility::Scenario do
           metadata = current_scenario[:metadata]
           expect(metadata[:allied_units].length).to be > 0
           metadata[:allied_units].each_value do |turn|
-            turn.each do |unit|
-              expect(unit).not_to be == :unknown
+            expect(turn[:list]&.is_a?(Array)).to be true
+            turn[:list].each do |unit|
+              expect(unit).not_to have_key :not_found
             end
           end
 
           expect(metadata[:axis_units].length).to be > 0
           metadata[:allied_units].each_value do |turn|
-            turn.each do |unit|
-              expect(unit).not_to be == :unknown
+            expect(turn[:list]&.is_a?(Array)).to be true
+            turn[:list].each do |unit|
+              expect(unit).not_to have_key :not_found
             end
           end
         end

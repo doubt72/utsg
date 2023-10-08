@@ -3,6 +3,8 @@
 @import './colors.scss';
 @import './formatting.scss';
 
+@import './game.scss';
+
 // Common
 button.custom-button,a.custom-button {
   text-decoration: none;
@@ -339,7 +341,8 @@ button.custom-button:hover,a.custom-button:hover {
   color: $alert-orange;
   text-align: end;
   margin-right: 0.5em;
-  width: 2em;
+  font-family: monospace;
+  width: 2.5em;
 }
 
 .scenario-description {
@@ -356,8 +359,4 @@ button.custom-button:hover,a.custom-button:hover {
 .scenario-description-row {
   display: flex;
   padding: 0.5em 1em;
-}
-
-.scenario-description-description {
-  padding: 1em 1em 0.25em 1em;
 }

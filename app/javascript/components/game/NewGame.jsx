@@ -39,7 +39,6 @@ export default function NewGame() {
 
   useEffect(() => {
     if (formInput.scenario !== "") {
-      console.log('scenario set')
       const url = `/api/v1/scenarios/${formInput.scenario}`
       getAPI(url, {
         ok: response => {
