@@ -176,14 +176,14 @@ module Utility
           i = "squad"
           {
             ger_pioneer_s: {
-              c:, t:, n: "Pioneer", i:, m: 4, s: 6, f: 7, r: 3, v: 5, o: { a: 1, s: 3 },
+              c:, t:, n: "Pioneer", i:, m: 4, s: 6, f: 7, r: 3, v: 5, o: { a: 1, s: 1 },
             },
-            ger_ss_s: { c:, t:, n: "SS", i:, m: 4, s: 6, f: 6, r: 5, v: 5, o: { a: 1, s: 3 } },
+            ger_ss_s: { c:, t:, n: "SS", i:, m: 4, s: 6, f: 6, r: 5, v: 5, o: { a: 1, s: 1 } },
             ger_fj_s: {
-              c:, t:, n: "Fallschirmjäger", i:, m: 4, s: 6, f: 5, r: 4, v: 5, o: { a: 1, s: 3 },
+              c:, t:, n: "Fallschirmjäger", i:, m: 4, s: 6, f: 5, r: 4, v: 5, o: { a: 1, s: 1 },
             },
             ger_sturm_s: {
-              c:, t:, n: "Sturm", i:, m: 4, s: 6, f: 6, r: 4, v: 4, o: { a: 1, s: 3 },
+              c:, t:, n: "Sturm", i:, m: 4, s: 6, f: 6, r: 4, v: 4, o: { a: 1, s: 1 },
             },
             ger_rifle_s: { c:, t:, n: "Rifle", i:, m: 3, s: 6, f: 5, r: 5, v: 4, o: { s: 1 } },
             ger_volksgrenadier_s: { c:, t:, n: "Volksgrenadier", i:, m: 3, s: 6, f: 5, r: 4, v: 4 },
