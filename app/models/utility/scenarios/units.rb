@@ -29,7 +29,7 @@ module Utility
 
         def gen_leaders(nation)
           # Currently 6-2, 5-2, 6-1, 5-1, 4-1, 3-1
-          i = "tank"
+          i = "leader"
           lu = {}
           [5, 6].each do |x|
             lu["#{nation}_leader_#{x}_2".to_sym] = {
