@@ -29,7 +29,7 @@ module Utility
 
         def gen_leaders(nation)
           # Currently 6-2, 5-2, 6-1, 5-1, 4-1, 3-1
-          i = "leader"
+          i = "tank"
           lu = {}
           [5, 6].each do |x|
             lu["#{nation}_leader_#{x}_2".to_sym] = {
@@ -54,7 +54,7 @@ module Utility
         def satchel_charge(nation)
           {
             c: nation, t: "sw", n: "Satchel Charge", i: "explosive", f: 32, r: 1, v: 0,
-            o: { a: 1, x: 1 },
+            o: { a: 1, x: 1, t: 1 },
           }
         end
 
@@ -115,13 +115,13 @@ module Utility
             ussr_ft: flamethrower(c),
             ussr_sc: satchel_charge(c),
             ussr_mc: {
-              c:, t:, n: "Molotov Coctail", i: "explosive", f: 12, r: 1, v: 0, o: { a: 1, x: 1 },
+              c:, t:, n: "Molotov Coctail", i: "explosive", f: 12, r: 1, v: 0, o: { a: 1, x: 1, t: 1 },
             },
             ussr_lm: {
-              c:, t:, n: "Light Mortar", i: "mortar", f: 8, r: 14, v: -1, o: { t: 1, m: 2, b: 2 },
+              c:, t:, n: "82-PM-41", i: "mortar", f: 8, r: 14, v: -1, o: { t: 1, m: 2, b: 2 },
             },
             ussr_hm: {
-              c:, t:, n: "Heavy Mortar", i: "mortar", f: 18, r: 16, v: -3,
+              c:, t:, n: "120-PM-38", i: "mortar", f: 18, r: 16, v: -3,
               o: { t: 1, m: 3, b: 2, s: 1 },
             },
             ussr_ampulomet: {
@@ -224,10 +224,10 @@ module Utility
             ger_ft: flamethrower(c),
             ger_sc: satchel_charge(c),
             ger_lm: {
-              c:, t:, n: "Light Mortar", i: "mortar", f: 8, r: 13, v: -2, o: { t: 1, m: 2, b: 2 },
+              c:, t:, n: "5cm leGrW 36", i: "mortar", f: 8, r: 13, v: -2, o: { t: 1, m: 2, b: 2 },
             },
             ger_mm: {
-              c:, t:, n: "Medium Mortar", i: "mortar", f: 18, r: 16, v: -3,
+              c:, t:, n: "8cm GrW 34", i: "mortar", f: 18, r: 16, v: -3,
               o: { t: 1, m: 3, b: 2, s: 1 },
             },
             ger_panzerfaust: {

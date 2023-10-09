@@ -31,16 +31,23 @@ def scale_path(path, xoffset, yoffset, scale)
   end
 end
 
+def write_text(cx, cy, size, text, file)
+  file.puts "<text x=\"#{cx}\" y=\"#{cy}\" " +
+    "style=\"fill:black;font-size:#{size}em;font-family:monospace;" +
+    "text-anchor:middle;\">#{text}</text>"
+end
+
+
 def write_circle(cx, cy, radius, file, fill=true)
   string = "<circle cx=\"#{cx}\" cy=\"#{cy}\" r=\"#{radius}\""
   if fill
     file.puts string + ' style="fill:#000;" />'
   else
-    file.puts string + ' style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />'
+    file.puts string + ' style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />'
   end
 end
 
-def write_path(path, file, fill=true)
+def write_path(path, file, fill=true, line=3)
   string = '<path d="'
   string += path.map do |section|
     section.map do |segment|
@@ -54,16 +61,30 @@ def write_path(path, file, fill=true)
   if fill
     file.puts string + '" style="fill:#000;" />'
   else
-    file.puts string + '" style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />'
+    file.puts string + '" style="fill:rgba(0,0,0,0);stroke-width:' + line.to_s +
+      ';stroke:#000;" />'
   end
 end
 
 File.open('leader.svg', 'w') do |file|
   file.puts header
-  points = []
-  0.upto(6) do |x|
-    
+  # write_path([["M", 20, 15], ["L", 80, 45]], file, false)
+  # write_path([["M", 20, 35], ["L", 80, 65]], file, false)
+  # write_path([["M", 20, 55], ["L", 80, 85]], file, false)
+  path = []
+  0.upto(6) do |n|
+    x = Math.sin(n * 144.0 / 180 * Math::PI) * -30 + 50
+    y = Math.cos(n * 144.0 / 180 * Math::PI) * -30 + 50
+    path.push([n == 0 ? "M" : "L", x, y])
   end
+  write_path(path, file)
+  path = []
+  0.upto(7) do |n|
+    x = Math.cos(n / 3.0 * Math::PI) * -45 + 50
+    y = Math.sin(n / 3.0 * Math::PI) * -45 + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, false)
   # helmet_paths.each do |path|
   #   write_path(scale_path(path, 0, 0, 1), file)
   # end
@@ -78,6 +99,7 @@ File.open('crew.svg', 'w') do |file|
   write_path([["M", 10, 90], ["L", 90, 30]], file, false)
   write_path([["M", 10, 30], ["L", 90, 90]], file, false)
   write_circle(50, 16, 10, file, false)
+  write_text(50, 44.5, 1.5, "WPN", file)
   # helmet_paths.each do |path|
   #   write_path(scale_path(path, 0, 0, 0.625), file)
   # end
@@ -138,29 +160,28 @@ end
 
 File.open('mg.svg', 'w') do |file|
   file.puts header
-  write_path([["M", 50, 90], ["L", 50, 10]], file, false)
-  write_path([["M", 35, 30], ["L", 50, 10], ["L", 65, 30]], file, false)
-  write_path([["M", 35, 90], ["L", 65, 90]], file, false)
+  write_path([["M", 50, 80], ["L", 50, 20]], file, false)
+  write_path([["M", 35, 40], ["L", 50, 20], ["L", 65, 40]], file, false)
+  write_path([["M", 35, 80], ["L", 65, 80]], file, false)
   file.puts footer
 end
 
 File.open('flamethrower.svg', 'w') do |file|
   file.puts header
   write_path([
-    ["M", 40, 90], ["L", 40, 20], ["A", [10, 10], 0, [0, 1], [60, 20]], ["L", 60, 30]
+    ["M", 40, 80], ["L", 40, 30], ["A", [10, 10], 0, [0, 1], [60, 30]], ["L", 60, 40]
   ], file, false)
-  write_path([["M", 30, 90], ["L", 60, 90]], file, false)
+  write_path([["M", 30, 80], ["L", 60, 80]], file, false)
   file.puts footer
 end
 
 File.open('explosive.svg', 'w') do |file|
   file.puts header
-  sqrt = 40/Math.sqrt(2)
-  write_path([["M", 50 + sqrt, 50 + sqrt], ["L", 50 + sqrt/2, 50 + sqrt/2]], file, false)
-  write_path([["M", 50 + sqrt, 50 - sqrt], ["L", 50 + sqrt/2, 50 - sqrt/2]], file, false)
-  write_path([["M", 50 - sqrt, 50 + sqrt], ["L", 50 - sqrt/2, 50 + sqrt/2]], file, false)
-  write_path([["M", 50 - sqrt, 50 - sqrt], ["L", 50 - sqrt/2, 50 - sqrt/2]], file, false)
-  write_circle(50, 50, 20, file, false)
+  sqrt = 30/Math.sqrt(2)
+  write_path([["M", 50, 30], ["L", 50, 45]], file, false)
+  write_path([["M", 50 + sqrt, 60 - sqrt], ["L", 50 + sqrt/2, 60 - sqrt/2]], file, false)
+  write_path([["M", 50 - sqrt, 60 - sqrt], ["L", 50 - sqrt/2, 60 - sqrt/2]], file, false)
+  write_circle(50, 60, 15, file, false)
   file.puts footer
 end
 
@@ -213,5 +234,63 @@ File.open('radio.svg', 'w') do |file|
     ["L", 70, 30], ["L", 80, 40],
   ], file, false)
   write_path([["M", 50, 30], ["L", 50, 80]], file, false)
+  file.puts footer
+end
+
+File.open('tank.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 20, 3], ["L", 20, 98], ["L", 80, 98], ["L", 80, 3], ["L", 20, 3], ["L", 20, 98],
+  ], file, false)
+  write_path([["M", 35, 20], ["L", 50, 3], ["L", 65, 20]], file, false, 2)
+  write_path([
+    ["M", 35, 42.5], ["A", [15, 15], 0, [0, 1], [65, 42.5]],
+    ["L", 65, 57.5], ["A", [15, 15], 0, [0, 1], [35, 57.5]], ["L", 35, 42.5],
+  ], file, false)
+  file.puts footer
+end
+
+File.open('spg.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 20, 3], ["L", 20, 98], ["L", 80, 98], ["L", 80, 3], ["L", 20, 3], ["L", 20, 98],
+  ], file, false)
+  write_path([["M", 35, 20], ["L", 50, 3], ["L", 65, 20]], file, false, 2)
+  write_path([
+    ["M", 35, 42.5], ["A", [15, 15], 0, [0, 1], [65, 42.5]],
+    ["L", 65, 57.5], ["A", [15, 15], 0, [0, 1], [35, 57.5]], ["L", 35, 42.5],
+  ], file, false)
+  write_circle(50, 50, 8, file)
+  file.puts footer
+end
+
+File.open('spat.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 20, 3], ["L", 20, 98], ["L", 80, 98], ["L", 80, 3], ["L", 20, 3], ["L", 20, 98],
+  ], file, false)
+  write_path([["M", 35, 20], ["L", 50, 3], ["L", 65, 20]], file, false, 2)
+  write_path([
+    ["M", 35, 42.5], ["A", [15, 15], 0, [0, 1], [65, 42.5]],
+    ["L", 65, 57.5], ["A", [15, 15], 0, [0, 1], [35, 57.5]], ["L", 35, 42.5],
+  ], file, false)
+  write_path([["M", 20, 98], ["L", 50, 50], ["L", 80, 98]], file, false)
+  file.puts footer
+end
+
+File.open('car.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 20, 3], ["L", 20, 98], ["L", 80, 98], ["L", 80, 3], ["L", 20, 3], ["L", 20, 98],
+  ], file, false)
+  write_path([["M", 35, 20], ["L", 50, 3], ["L", 65, 20]], file, false, 2)
+  write_path([
+    ["M", 35, 42.5], ["A", [15, 15], 0, [0, 1], [65, 42.5]],
+    ["L", 65, 57.5], ["A", [15, 15], 0, [0, 1], [35, 57.5]], ["L", 35, 42.5],
+  ], file, false)
+  write_path([["M", 20, 98], ["L", 80, 3]], file, false)
+  write_circle(63, 89.5, 5, file, false)
+  write_circle(50, 89.5, 5, file, false)
+  write_circle(37, 89.5, 5, file, false)
   file.puts footer
 end

@@ -8,20 +8,9 @@ Start working on framework
       Terrain
     Units
 
-leader
-squad
-team
-mg
-flamethrower
-satchel
-molotov
-mortar
-ampulomet
-radio
-gun
-atgun
 tank
-destroyer
+spg
+spat
 car
 
 PzKpfw I
