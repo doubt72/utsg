@@ -33,6 +33,16 @@ const unitCounter = (unit) => {
     return section(display, "unit-disp")
   }
 
+  const icon = () => {
+    const display = unit.displayIcon
+    if (display.value === null) { return "" }
+    return (
+      <div className={`unit-icon${display.display}`}>
+        <img src={`/assets/units/${display.value}.svg`} />
+      </div>
+    )
+  }
+
   const specialRight = () => {
     const display = unit.displaySpecialRight
     return section(display, "unit-disp")
@@ -62,7 +72,7 @@ const unitCounter = (unit) => {
     <div className={unitClasses}>
       {name()}{status()}
       {morale()}{size()}
-      {specialLeft()}{specialRight()}
+      {specialLeft()}{icon()}{specialRight()}
       {firepower()}{range()}{movement()}
     </div>
   )

@@ -7,6 +7,7 @@ const Unit = class {
     this.nation = data.c
     this.type = data.t
     this.name = data.n
+    this.icon = data.i
     this.baseMorale = data.m
     this.size = data.s
     this.baseFirepower = data.f
@@ -25,7 +26,8 @@ const Unit = class {
     this.brokenMovement = data.o?.bv || 6
     this.targetedRange = data.o?.t
     this.minimumRange = data.o?.m
-    this.antiTank = data.o?.p
+    this.antiTank = !!data.o?.p
+    this.offBoard = !!data.o?.o
 
     this.status = unitStatus.Normal
   }
@@ -36,6 +38,10 @@ const Unit = class {
     } else {
       return { value: this.name, display: "" }
     }
+  }
+
+  get displayIcon() {
+    return { value: this.icon, display: "" }
   }
 
   get currentMorale() {
@@ -52,7 +58,7 @@ const Unit = class {
     if (this.baseMorale === undefined) {
       return { value: null }
     } else if (this.status === unitStatus.Broken || this.status === unitStatus.Pinned) {
-      return { value: this.currentMorale, display: " unit-disp-circle unit-disp-red" }
+      return { value: this.currentMorale, display: " unit-disp-red-text" }
     } else {
       return { value: this.baseMorale, display: "" }
     }
@@ -89,9 +95,9 @@ const Unit = class {
 
   get displaySpecialLeft() {
     if (this.currentLeadership) {
-      return { value: this.currentLeadership, display: " unit-special-leadership unit-disp-circle"}
+      return { value: this.currentLeadership, display: " unit-special-left-leader unit-disp-hex"}
     } else if (this.currentGunHandling) {
-      return { value: this.currentGunHandling, display: " unit-special-left-modifier unit-disp-small-circle unit-disp-black"}
+      return { value: this.currentGunHandling, display: " unit-special-left-gun unit-disp-small-circle"}
     } if (this.breakWeaponRoll) {
       return { value: this.breakWeaponRoll, display: " unit-special-breakdown unit-disp-small-circle unit-disp-red"}
     } else {
@@ -127,9 +133,9 @@ const Unit = class {
     // Don't use currentFirepower because we only display the "base" values on the counter
     let smallClass = this.baseFirepower > 9 ? " unit-disp-small" : ""
     if (this.status == unitStatus.Broken) {
-      return { value: 0, display: "unit-range unit-disp unit-disp-circle unit-disp-red" }
+      return { value: 0, display: "unit-range unit-disp unit-disp-red-text" }
     } else if (this.status == unitStatus.Pinned) {
-      return { value: Math.floor(this.baseFirepower / 2), display: " unit-disp-circle unit-disp-red" }
+      return { value: Math.floor(this.baseFirepower / 2), display: " unit-disp-red-text" }
     } else if (this.assualt) {
       const itClass = this.ignoreTerrain ? " unit-disp-white" : ""
       const sfClass = this.singleFire ? " unit-disp-black" : ""
@@ -138,6 +144,9 @@ const Unit = class {
       smallClass = this.baseFirepower > 9 ? " unit-disp-more-small" : ""
       const sfClass = this.singleFire ? " unit-disp-black" : ""
       return { value: this.baseFirepower, display: ` unit-disp-circle${smallClass}${sfClass}` }
+    } else if (this.offBoard) {
+      smallClass = this.baseFirepower > 9 ? " unit-disp-hex-small" : ""
+      return { value: this.baseFirepower, display: ` unit-disp-hex${smallClass}` }
     } else {
       return { value: this.baseFirepower, display: `${smallClass}` }
     }
@@ -153,23 +162,26 @@ const Unit = class {
 
   get displayRange() {
     if (this.status === unitStatus.Broken) {
-      return { value: this.currentRange, display: "unit-range unit-disp unit-disp-circle unit-disp-red" }
+      return { value: this.currentRange, display: "unit-range unit-disp unit-disp-red-text" }
     } else if (this.targetedRange) {
+      const blackGround = this.type === "sw" ? " unit-disp-black" : ""
       if (this.minimumRange) {
         return {
           value: `${this.minimumRange}-${this.currentRange}`,
-          display: "unit-range-dbl unit-disp-dbl unit-disp-oval"
+          display: `unit-range-dbl unit-disp-dbl unit-disp-oval${blackGround}`
         }
       } else {
         const smallClass = this.currentRange > 9 ? " unit-disp-more-small" : ""
         return {
           value: this.currentRange,
-          display: `unit-range unit-disp unit-disp-circle${smallClass}`
+          display: `unit-range unit-disp unit-disp-circle${smallClass}${blackGround}`
         }
       }
+    } else if (this.currentRange === 0) {
+      return { value: "-", display: `unit-range unit-disp` }
     } else {
       const rapidClass = this.rapidFire ? " unit-disp-box" : ""
-      const smallClass = (this.currentRange > 9 && this.rapidFire) ? " unit-disp-small" : ""
+      const smallClass = (this.currentRange > 9 && this.rapidFire) ? " unit-disp-more-small" : ""
       return { value: this.currentRange, display: `unit-range unit-disp${rapidClass}${smallClass}` }
     }
   }
@@ -189,11 +201,12 @@ const Unit = class {
   get displayMovement() {
     if (this.status === unitStatus.Broken || this.status === unitStatus.Pinned ||
         this.status === unitStatus.Tired) {
-      return { value: this.currentMovement, display: " unit-movement unit-disp-circle unit-disp-red" }
+      return { value: this.currentMovement, display: " unit-movement unit-disp-red-text" }
     } else if (this.currentMovement < 0) {
+      const color = this.type === "sw" ? " unit-disp-red" : " unit-disp-black"
       return {
         value: this.currentMovement,
-        display: " unit-movement-small unit-disp-small-circle unit-disp-red unit-disp-very-small"
+        display: ` unit-movement-small unit-disp-small-circle unit-disp-very-small${color}`
       }
     } else if (this.currentMovement === 0) {
       return { value: "-", display: " unit-movement" }

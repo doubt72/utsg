@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<path d="M 78.2842712474619 78.2842712474619 L 64.14213562373095 64.14213562373095" style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />
+<path d="M 78.2842712474619 21.7157287525381 L 64.14213562373095 35.85786437626905" style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />
+<path d="M 21.7157287525381 78.2842712474619 L 35.85786437626905 64.14213562373095" style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />
+<path d="M 21.7157287525381 21.7157287525381 L 35.85786437626905 35.85786437626905" style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />
+<circle cx="50" cy="50" r="20" style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />
+</svg>

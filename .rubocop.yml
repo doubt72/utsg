@@ -2,7 +2,7 @@ AllCops:
   Exclude:
     - 'bin/bundle'
     - 'db/schema.rb'
-    - 'tmp/logo.rb'
+    - 'support/**/*'
 
 Lint/AmbiguousBlockAssociation:
   AllowedMethods: [change]

@@ -66,6 +66,15 @@
   transform: translate(0, -2px);
 }
 
+.unit-icon {
+  position: absolute;
+  padding: 0;
+  top: 13px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+}
+
 .unit-disp-box {
   border: 1px solid black;
 }
@@ -79,6 +88,16 @@
   border: 1px solid black;
   border-radius: 5px;
 }
+
+.unit-disp-hex {
+  background-image: url('/assets/unit-hex.svg');
+  background-repeat: no-repeat;
+}
+
+// .unit-disp-hex-fill {
+  // -webkit-clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  // clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+// }
 
 .unit-disp-small-circle {
   width: 16px;
@@ -103,6 +122,11 @@
   border: 1px solid red;
   background-color: red;
   color: white;
+}
+
+.unit-disp-red-text {
+  font-weight: bolder;
+  color: red;
 }
 
 .unit-disp-yellow {
@@ -138,6 +162,15 @@
   transform: translate(0, -2.5px);
 }
 
+.unit-disp-hex-small {
+  font-size: 0.7rem;
+}
+
+.unit-disp-hex-small span {
+  display: block;
+  transform: translate(0, 1px);
+}
+
 .unit-morale {
   top: 14px;
   left: 2px;
@@ -148,14 +181,19 @@
   right: 2px;
 }
 
-.unit-special-leadership {
+.unit-special-left-leader {
   top: 34px;
   left: 2px;
 }
 
-.unit-special-left-modifier {
+.unit-special-left-gun {
   top: 36px;
-  left: 3px;
+  left: 4px;
+}
+
+.unit-special-left-modifier {
+  top: 34px;
+  left: 2px;
 }
 
 .unit-special-breakdown {
@@ -184,7 +222,7 @@
 }
 
 .unit-range-dbl {
-  bottom: 7px;
+  bottom: 6.5px;
   left: 24px;
 }
 
