@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<path d="M 20 10 L 20 98 L 80 98 L 80 10 L 20 10 L 20 98" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:red;" />
+<path d="M 42.5 60 C 37.6,60 20,50 50,20 C 50,40 66,32 66,50 C 66,60 60,60 57.5,60 C 59,57 65,45 50,35 C 50,45 41,43 40,50 C 39,55 40,57.5 42.5,60 C 37.6,60 20,50 50,20" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:red;" />
+<text x="50" y="93" style="fill:#000;font-size:2.5em;font-family:monospace;text-anchor:middle;">WRECK</text>
+</svg>

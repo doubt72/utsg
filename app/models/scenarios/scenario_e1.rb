@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class ScenarioE1 < Base # rubocop:disable Metrics/ClassLength
+  class ScenarioE1 < Base
     ID = "E1"
     NAME = "Lost in the Woods"
     ALLIES = ["ussr"].freeze
@@ -57,7 +57,7 @@ module Scenarios
       end
 
       # TODO: documentation for unit definitions
-      def allied_units # rubocop:disable Metrics/MethodLength
+      def allied_units
         {
           s: { list: [
             :ussr_leader_5_2,
@@ -69,7 +69,7 @@ module Scenarios
         }
       end
 
-      def axis_units # rubocop:disable Metrics/MethodLength
+      def axis_units
         {
           s: { list: [
             :ger_leader_6_2,

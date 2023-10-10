@@ -107,4 +107,15 @@ RSpec.describe Api::V1::ScenariosController do
       # expect(ita[0]["name"]).to be == "Italian"
     end
   end
+
+  describe "all_units" do
+    it "returns units" do
+      get :all_units
+
+      expect(response.status).to be == 200
+      body = JSON.parse(response.body)
+      expect(body["ussr_rifle_s"]["n"]).to be == "Rifle"
+      expect(body["ger_rifle_s"]["n"]).to be == "Rifle"
+    end
+  end
 end

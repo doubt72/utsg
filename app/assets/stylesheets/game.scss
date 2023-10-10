@@ -8,6 +8,8 @@
   border-radius: 0.25em;
 }
 
+// Counters
+
 .unit-counter {
   position: relative;
   height: 5rem;
@@ -30,7 +32,7 @@
 
 .unit-name-broken {
   color: white;
-  background-color: red;
+  background-color: $unit-red;
   border-top-left-radius: 0.2rem;
   border-top-right-radius: 0.2rem;
 }
@@ -46,6 +48,21 @@
 }
 
 .unit-disp span {
+  display: block;
+  transform: translate(0, -3px);
+}
+
+.unit-disp-wide {
+  position: absolute;
+  padding: 0;
+  width: 28px;
+  height: 20px;
+  font-family: monospace;
+  text-align: right;
+  border: 1px solid rgba(0,0,0,0.0);
+}
+
+.unit-disp-wide span {
   display: block;
   transform: translate(0, -3px);
 }
@@ -118,20 +135,32 @@
   color: white;
 }
 
+.unit-disp-black-yellow {
+  border: 1px solid $unit-yellow;
+  background-color: black;
+  color: white;
+}
+
+.unit-disp-red-white {
+  border: 1px solid white;
+  background-color: $unit-red;
+  color: white;
+}
+
 .unit-disp-red {
-  border: 1px solid red;
-  background-color: red;
+  border: 1px solid $unit-red;
+  background-color: $unit-red;
   color: white;
 }
 
 .unit-disp-red-text {
   font-weight: bolder;
-  color: red;
+  color: $unit-red;
 }
 
 .unit-disp-yellow {
-  border: 1px solid yellow;
-  background-color: yellow;
+  border: 1px solid $unit-yellow;
+  background-color: $unit-yellow;
   color: black;
 }
 
@@ -171,9 +200,24 @@
   transform: translate(0, 1px);
 }
 
+.unit-disp-extremely-small {
+  font-size: 0.55rem;
+}
+
+.unit-disp-extremely-small span {
+  font-family: sans-serif;
+  display: block;
+  transform: translate(0, 0.1px);
+}
+
 .unit-morale {
   top: 14px;
   left: 2px;
+}
+
+.unit-special-vehicle-top {
+  top: 14px;
+  left: 3px;
 }
 
 .unit-size {
@@ -201,6 +245,11 @@
   left: 3px;
 }
 
+.unit-special-vehicle-bottom {
+  top: 34px;
+  left: 3px;
+}
+
 .unit-special-right-modifier {
   top: 37px;
   right: 3px;
@@ -209,6 +258,16 @@
 .unit-special-right-gun {
   top: 35px;
   right: 3px;
+}
+
+.unit-hull-armor {
+  top: 39px;
+  right: 2px;
+}
+
+.unit-turret-armor {
+  top: 29px;
+  right: 2px;
 }
 
 .unit-firepower {

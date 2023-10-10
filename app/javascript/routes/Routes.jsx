@@ -13,6 +13,7 @@ import RecoverAccount from "../components/user/RecoverAccount";
 import ResetPassword from "../components/user/ResetPassword";
 import DeleteAccount from '../components/user/DeleteAccount';
 import NewGame from "../components/game/NewGame";
+import DebugUnits from "../components/game/DebugUnits";
 
 const Routes = () => {
   const publicRoutes = [
@@ -35,6 +36,7 @@ const Routes = () => {
         { path: "/logout", element: <Logout /> },
         { path: "/profile", element: <Profile /> },
 
+        { path: "/debug/units", element: <DebugUnits /> },
         { path: "/new_game", element: <NewGame /> },
       ],
     },

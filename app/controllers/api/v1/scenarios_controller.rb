@@ -24,6 +24,10 @@ module Api
       def axis_factions
         render json: Utility::Scenarios::Definitions::AVAILABLE_AXIS_FACTIONS, status: :ok
       end
+
+      def all_units
+        render json: Utility::Scenarios::Units.lookup_data, status: :ok
+      end
     end
   end
 end

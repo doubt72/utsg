@@ -28,6 +28,7 @@ Rails.application.routes.draw do
         collection do
           get "allied_factions"
           get "axis_factions"
+          get "all_units"
         end
       end
     end

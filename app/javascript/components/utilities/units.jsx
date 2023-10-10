@@ -28,6 +28,11 @@ const unitCounter = (unit) => {
     return section(display, "unit-size unit-disp")
   }
 
+  const specialLeftVehicle = () => {
+    const display = unit.displaySpecialLeftVehicle
+    return section(display, "unit-disp")
+  }
+
   const specialLeft = () => {
     const display = unit.displaySpecialLeft
     return section(display, "unit-disp")
@@ -46,6 +51,16 @@ const unitCounter = (unit) => {
   const specialRight = () => {
     const display = unit.displaySpecialRight
     return section(display, "unit-disp")
+  }
+
+  const hullArmor = () => {
+    const display = unit.displayHullArmor
+    return section(display, "unit-disp-wide unit-hull-armor")
+  }
+
+  const turretArmor = () => {
+    const display = unit.displayTurretArmor
+    return section(display, "unit-disp-wide unit-turret-armor")
   }
 
   const firepower = () => {
@@ -71,8 +86,8 @@ const unitCounter = (unit) => {
   return (
     <div className={unitClasses}>
       {name()}{status()}
-      {morale()}{size()}
-      {specialLeft()}{icon()}{specialRight()}
+      {morale()}{specialLeftVehicle()}{size()}
+      {specialLeft()}{icon()}{specialRight()}{hullArmor()}{turretArmor()}
       {firepower()}{range()}{movement()}
     </div>
   )
