@@ -60,11 +60,12 @@ module Scenarios
       def allied_units
         {
           s: { list: [
-            :ussr_leader_5_2,
-            :ussr_leader_4_1,
+            # TODO: turn this back on when done rejiggering CSS
+            # :ussr_leader_5_2,
+            # :ussr_leader_4_1,
             [8, :ussr_rifle_s],
-            :ussr_lmg,
-            :ussr_mmg,
+            :ussr_dp_27_lmg,
+            # :ussr_sg_43_mmg,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -73,9 +74,9 @@ module Scenarios
         {
           s: { list: [
             :ger_leader_6_2,
-            :ger_leader_4_1,
+            # :ger_leader_4_1,
             [6, :ger_rifle_s],
-            [2, :ger_lmg],
+            [2, :ger_mg_34_lmg],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

@@ -1,6 +1,6 @@
 const unitStatus = {
-  Normal: 0, Pinned: 1, Broken: 2, Activated: 3, Exhausted: 4, Tired: 5,
-  Immobilized: 6, TurretJammed: 7, Wreck: 8
+  Normal: 0, Pinned: 1, Broken: 2, Activated: 3, Exhausted: 4, Tired: 5, Jammed: 6,
+  Immobilized: 7, TurretJammed: 8, Wreck: 9
 }
 
 const Unit = class {
@@ -9,6 +9,7 @@ const Unit = class {
     this.type = data.t
     this.name = data.n
     this.icon = data.i
+    this.year = data.y
     this.baseMorale = data.m
     this.size = data.s
     this.baseFirepower = data.f
@@ -29,7 +30,7 @@ const Unit = class {
     this.targetedRange = data.o?.t
     this.minimumRange = data.o?.m
     this.antiTank = !!data.o?.p
-    this.cannon = !!data.o?.c
+    this.crewed = !!data.o?.c
     this.rotatingMount = !!data.o?.z
     this.offBoard = !!data.o?.o
     this.turreted = !!data.o?.u
@@ -188,14 +189,15 @@ const Unit = class {
     } else if (this.isPinned) {
       return { value: Math.floor(this.baseFirepower / 2), display: " unit-disp-red-text" }
     } else if (this.assualt) {
-      const itClass = this.ignoreTerrain ? " unit-disp-white" : ""
-      const sfClass = this.singleFire ? " unit-disp-black" : ""
-      return { value: this.baseFirepower, display: ` unit-disp-box${smallClass}${itClass}${sfClass}`}
+      let background = this.ignoreTerrain ? " unit-disp-white" : ""
+      background = this.singleFire ? " unit-disp-black" : background
+      background = this.singleFire && this.ignoreTerrain ? " unit-disp-white-black" : background
+      return { value: this.baseFirepower, display: ` unit-disp-box${smallClass}${background}`}
     } else if (this.antiTank) {
       smallClass = this.baseFirepower > 9 ? " unit-disp-more-small" : ""
       const sfClass = this.singleFire ? " unit-disp-black" : ""
       return { value: this.baseFirepower, display: ` unit-disp-circle${smallClass}${sfClass}` }
-    } else if (this.cannon) {
+    } else if (this.crewed && !this.type == "sw") {
       smallClass = this.baseFirepower > 9 ? " unit-disp-more-small" : ""
       return { value: this.baseFirepower, display: ` unit-disp-circle unit-disp-yellow${smallClass}` }
     } else if (this.offBoard) {
@@ -227,6 +229,7 @@ const Unit = class {
       } else {
         const smallClass = this.currentRange > 9 ? " unit-disp-more-small" : ""
         background = this.turreted ? " unit-disp-white" : background
+        background = this.rotatingMount ? " unit-disp-white-black" : background
         return {
           value: this.currentRange,
           display: `unit-range unit-disp unit-disp-circle${smallClass}${background}`
@@ -263,14 +266,16 @@ const Unit = class {
         this.isWreck) {
       return { value: this.currentMovement, display: " unit-movement unit-disp-red-text" }
     } else if (this.currentMovement < 0) {
-      let color = this.type === "sw" ? " unit-disp-red" : " unit-disp-black"
-      color = this.rotatingMount ? " unit-disp-black-yellow" : color
+      // TODO: remove these
+      const color = this.type === "sw" ? " unit-disp-red" : " unit-disp-black"
       const circle = this.rotatingMount ? "unit-movement unit-disp-circle unit-disp-small" :
         "unit-movement-small unit-disp-small-circle unit-disp-very-small"
       return {
         value: this.currentMovement,
         display: ` ${circle}${color}`
       }
+    } else if (this.crewed) {
+      return { value: this.currentMovement, display: " unit-movement unit-disp-circle unit-disp-black" }
     } else if (this.tracked) {
       return { value: this.currentMovement, display: " unit-movement unit-disp-circle unit-disp-white" }
     } else if (this.wheeled) {

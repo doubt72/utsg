@@ -8,6 +8,11 @@ Start working on framework
       Terrain
     Units
 
+Clean Up Unit Generation
+Clean Up icons
+German Units
+American Units
+
 East Front
   generic small unit meeting engagements in mixed terrain
   urban infantry slogs

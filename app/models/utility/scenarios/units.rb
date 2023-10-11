@@ -4,11 +4,12 @@ module Utility
   module Scenarios
     module Units
       class << self # rubocop:disable Metric/ClassLength
-        # rubocop:disable Metric/MethodLength
-        def lookup_data # rubocop:disable Metric/AbcSize
-          leaders.merge(soviet_squads).merge(soviet_teams).merge(soviet_support)
+        # rubocop:disable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
+        # -rubocop:disable Metric/PerceivedComplexity
+        def lookup_data
+          leaders.merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
+                 .merge(support_weapons)
                  .merge(soviet_guns).merge(soviet_tanks).merge(soviet_vehicles)
-                 .merge(german_squads).merge(german_teams).merge(german_support)
                  .merge(german_guns).merge(german_tanks).merge(german_vehicles)
         end
 
@@ -21,7 +22,13 @@ module Utility
           end
         end
 
-        # c: nation, t: type, n: name, i: icon
+        def sanitize(name)
+          # TODO: remove when done debugging
+          puts "--- #{name.gsub(%r{[-\s/]}, '_').downcase}"
+          name.gsub(%r{[-\s/]}, "_").downcase
+        end
+
+        # c: nation, t: type, n: name, i: icon, y: year
         #               sqd, tm, ldr, sw
         # m: morale (2-6), s: size (l: 1, 3, 6), f: firepower, r: range, v: movement,
         #                                                        bv: broken movement (if not 6)
@@ -29,136 +36,192 @@ module Utility
         #    l: leadership, g: gun adj, a: assault, r: rapid fire, s: smoke, x: expend
         #    i: ignore terrain, b: weapon break number, j: weapon jam number, d: drive break
         #    t: target fire, m: minimum range, p: anti-tank, o: off-board artillery, u: turret
-        #    k: tracked, w: wheeled, c: dual purpose gun, z: rotating mount
+        #    k: tracked, w: wheeled, c: crewed gun/mortar, z: rotating mount
         #    ha: hull armor
         #    ta: turret armor
         #        f: front, s: side, r: rear
         # x: count
 
-        def gen_leaders(nation)
+        def leaders
           # Currently 6-2, 5-2, 6-1, 5-1, 4-1, 3-1
           i = "leader"
+          y = 30
+          s = f = r = 1
           lu = {}
-          [5, 6].each do |x|
-            lu["#{nation}_leader_#{x}_2".to_sym] = {
-              c: nation, t: "ldr", n: "Leader", i:, m: x, s: 1, f: 1, r: 1, v: 6, o: { l: 2 },
-            }
+          %w[ger usa ussr].each do |nation|
+            [6, 5, 4, 3].each do |m|
+              [2, 1].each do |l|
+                next if l == 2 && m < 5
+                next if l + m != 8 && l + m != 4 # TODO: remove when done rejiggering CSS
+
+                lu["#{nation}_leader_#{m}_#{l}".to_sym] = {
+                  c: nation, t: "ldr", n: "Leader", i:, y:, m:, s:, f:, r:, v: 6, o: { l: },
+                }
+              end
+            end
           end
-          [3, 4, 5, 6].each do |x|
-            lu["#{nation}_leader_#{x}_1".to_sym] = {
-              c: nation, t: "ldr", n: "Leader", i:, m: x, s: 1, f: 1, r: 1, v: 6, o: { l: 1 },
+          lu
+        end
+
+        def infantry
+          lu = {}
+          key = %i[c n y m f r v o]
+          [
+            ["ger", "Pionier", 0, 4, 9, 2, 5, { a: 1, s: 1 }],
+            # TODO: replace all units when done rejiggering CSS
+            # ["ger", "SS", 34, 4, 8, 5, 5, { a: 1, s: 1 }],
+            # ["ger", "Fallschirmjäger", 35, 4, 7, 4, 5, { a: 1, s: 1 }],
+            # ["ger", "Sturm", 0, 4, 8, 4, 5, { a: 1, s: 1 }],
+            ["ger", "Rifle", 0, 3, 7, 5, 4, { a: nil, s: 1 }],
+            ["ger", "Volksgrenadier", 44, 3, 7, 4, 4, { a: nil, s: nil }],
+            # ["ger", "Conscript", 0, 2, 6, 3, 3, { a: nil, s: nil }],
+            # ["usa", "Engineer", 0, 4, 9, 3, 5, { a: 1, s: 1 }],
+            # ["usa", "Paratroop", 43, 4, 8, 4, 5, { a: 1, s: 1 }],
+            ["usa", "Ranger", 42, 4, 8, 4, 5, { a: 1, s: 1 }],
+            ["usa", "Veteran", 0, 4, 7, 6, 4, { a: nil, s: 1 }],
+            # ["usa", "Rifle", 0, 3, 7, 6, 4, { a: nil, s: 1 }],
+            # ["usa", "Garrison", 0, 2, 6, 4, 3, { a: nil, s: nil }],
+            ["usa", "Green", 0, 2, 6, 4, 3, { a: nil, s: nil }],
+            ["ussr", "Assault", 41, 4, 9, 2, 5, { a: 1, s: 1 }],
+            # ["ussr", "Guards Rifle", 41, 4, 7, 5, 5, { a: nil, s: nil }],
+            ["ussr", "Guards SMG", 41, 4, 8, 3, 5, { a: 1, s: nil }],
+            ["ussr", "Rifle", 0, 3, 7, 3, 4, { a: nil, s: nil }],
+            # ["ussr", "SMG", 0, 3, 7, 2, 4, { a: 1, s: nil }],
+            # ["ussr", "Militia", 0, 2, 6, 2, 3, { a: nil, s: nil }],
+          ].each do |unit|
+            squad = { t: "sqd", i: "squad", s: 6 }
+            team = { t: "tm", i: "team", s: 3 }
+            unit.each_with_index do |v, i|
+              squad[key[i]] = v
+              team[key[i]] = v
+            end
+            squad[:o].delete(:a) if squad[:o][:a].nil?
+            squad[:o].delete(:s) if squad[:o][:s].nil?
+            squad.delete(:o) if squad[:o][:a].nil? && squad[:o][:s].nil?
+
+            team.delete(:o)
+            team[:f] = team[:f] / 2
+
+            name = "#{team[:c]}_#{sanitize(team[:n])}"
+            lu["#{name}_s".to_sym] = squad
+            lu["#{name}_t".to_sym] = team
+          end
+          %w[ger usa ussr].each do |c|
+            t = "tm"
+            lu["#{c}_elite_crew_t"] = {
+              c:, t:, n: "Crew", i: "crew", y: 30, m: 4, s: 3, f: 1, r: 1, v: 5, o: { g: 2 },
+            }
+            lu["#{c}_crew_t"] = {
+              c:, t:, n: "Crew", i: "crew", y: 30, m: 3, s: 3, f: 1, r: 1, v: 4, o: { g: 1 },
             }
           end
           lu
         end
 
-        def flamethrower(nation)
-          {
-            c: nation, t: "sw", n: "Flamethrower", i: "flamethrower", f: 24, r: 1, v: 0,
-            o: { a: 1, i: 1, b: 3 },
-          }
+        def machine_guns
+          lu = {}
+          key = %i[c n y f r v o]
+          [
+            ["ger", "MG 34 LMG", 36, 5, 8, 0, { a: 1, r: 1, j: 3 }],
+            # ["ger", "MG 44 LMG", 42, 8, 8, 0, { a: 1, r: 1, j: 3 }],
+            ["ger", "MG 08/15 HMG", 17, 10, 12, -1, { r: 1, j: 3 }],
+            ["ussr", "DP-27 LMG", 28, 4, 6, 0, { a: 1, r: 1, j: 3 }],
+            # ["ussr", "SG-43 MMG", 43, 5, 10, -2, { r: 1, j: 3 }],
+            # ["ussr", "PM M1910 HMG", 10, 8, 10, -2, { r: 1, j: 3 }],
+            ["ussr", "DShK HMG", 38, 14, 15, -2, { r: 1, j: 3 }],
+          ].each do |unit|
+            mg = { t: "sw", i: "mg" }
+            unit.each_with_index do |v, i|
+              mg[key[i]] = v
+            end
+            lu["#{mg[:c]}_#{sanitize(mg[:n])}".to_sym] = mg
+          end
+          lu
         end
 
-        def satchel_charge(nation)
-          {
-            c: nation, t: "sw", n: "Satchel Charge", i: "explosive", f: 32, r: 1, v: 0,
-            o: { a: 1, x: 1, t: 1 },
-          }
+        def mortars
+          lu = {}
+          key = %i[c n y f r v o]
+          [
+            ["ger", "5cm leGrW 36 MTR", 36, 8, 11, 0, { m: 2 }],
+            # ["ger", "8cm GrW 34 MTR", 37, 20, 17, -2, { s: 1, m: 3 }],
+            ["ger", "kz 8cm GrW 42 MTR", 41, 20, 16, -1, { s: 1, m: 3 }],
+            ["ger", "12cm GrW 42 MTR", 43, 40, 32, 1, { s: 1, m: 4, c: 1 }],
+            ["ussr", "RM-38 MTR", 38, 8, 14, 0, { m: 2 }],
+            # ["ussr", "82-BM-37 MTR", 37, 20, 24, -2, { s: 1, m: 3 }],
+            ["ussr", "82-PM-41 MTR", 41, 20, 24, -2, { s: 1, m: 3 }],
+            ["ussr", "120-PM-38 MTR", 39, 40, 32, 1, { s: 1, m: 4, c: 1 }],
+          ].each do |unit|
+            mortar = { t: "sw", i: "mortar" }
+            unit.each_with_index do |v, i|
+              mortar[key[i]] = v
+            end
+            mortar[:o].merge!({ t: 1, b: 3 })
+            lu["#{mortar[:c]}_#{sanitize(mortar[:n])}".to_sym] = mortar
+          end
+          lu
         end
 
-        def leaders
-          gen_leaders("ussr").merge(gen_leaders("ger"))
+        def radios
+          lu = {}
+          key = %i[c n y f]
+          [
+            ["ger", "Radio 7.5cm", 31, 16],
+            # ["ussr", "Radio 76mm", 41, 16],
+            # ["ussr", "Radio 85mm", 41, 20],
+            # ["ussr", "Radio 122mm", 41, 40],
+            ["ussr", "Radio 152mm", 41, 64],
+          ].each do |unit|
+            radio = { t: "sw", i: "radio" }
+            unit.each_with_index do |v, i|
+              radio[key[i]] = v
+            end
+            radio.merge!({ r: 0, v: 0, o: { s: 1, o: 1 } })
+            lu["#{radio[:c]}_#{sanitize(radio[:n])}".to_sym] = radio
+          end
+          lu
         end
 
-        def soviet_squads
-          c = "ussr"
-          t = "sqd"
-          i = "squad"
-          {
-            ussr_assault_s: {
-              c:, t:, n: "Assault", i:, m: 4, s: 6, f: 7, r: 2, v: 5, o: { a: 1, s: 1 },
-            },
-            ussr_guards_rifle_s: { c:, t:, n: "Guards Rifle", i:, m: 3, s: 6, f: 5, r: 5, v: 5 },
-            ussr_guards_smg_s: {
-              c:, t:, n: "Guards SMG", i:, m: 3, s: 6, f: 6, r: 3, v: 5, o: { a: 1 },
-            },
-            ussr_rifle_s: { c:, t:, n: "Rifle", i:, m: 3, s: 6, f: 5, r: 3, v: 4 },
-            ussr_smg_s: { c:, t:, n: "SMG", i:, m: 3, s: 6, f: 5, r: 2, v: 4, o: { a: 1 } },
-            ussr_militia_s: {
-              c:, t:, n: "Militia", i:, m: 2, s: 6, f: 5, r: 2, v: 3, o: { bv: 5 },
-            },
-          }
-        end
-
-        def soviet_teams
-          c = "ussr"
-          t = "tm"
-          i = "team"
-          {
-            ussr_assault_t: { c:, t:, n: "Assault", i:, m: 4, s: 3, f: 3, r: 2, v: 5 },
-            ussr_guards_rifle_t: { c:, t:, n: "Guards Rifle", i:, m: 3, s: 3, f: 3, r: 2, v: 5 },
-            ussr_guards_smg_t: { c:, t:, n: "Guards SMG", i:, m: 3, s: 3, f: 3, r: 2, v: 5 },
-            ussr_rifle_t: { c:, t:, n: "Rifle", i:, m: 3, s: 3, f: 2, r: 2, v: 4 },
-            ussr_smg_t: { c:, t:, n: "SMG", i:, m: 3, s: 3, f: 2, r: 2, v: 4 },
-            ussr_militia_t: {
-              c:, t:, n: "Militia", i:, m: 2, s: 3, f: 2, r: 2, v: 3, o: { bv: 5 },
-            },
-
-            ussr_elite_crew: {
-              c:, t:, n: "Crew", i: "crew", m: 4, s: 3, f: 1, r: 1, v: 5, o: { g: 1 },
-            },
-            ussr_crew: {
-              c:, t:, n: "Crew", i: "crew", m: 3, s: 3, f: 1, r: 1, v: 4, o: { g: 1 },
-            },
-          }
-        end
-
-        def soviet_support
-          c = "ussr"
+        def support_weapons
+          lu = {}
+          key = %i[c n y f r v o]
+          [
+            ["ger", "Panzerfaust", 43, 6, 1, 0, { x: 1 }],
+            ["ger", "Panzerschreck", 43, 10, 4, 0, { b: 4 }],
+            ["ussr", "Ampulomet", 41, 6, 6, -1, { b: 5 }],
+          ].each do |unit|
+            rocket = { t: "sw", i: "rocket" }
+            unit.each_with_index do |v, i|
+              rocket[key[i]] = v
+            end
+            rocket[:o].merge!({ t: 1, p: 1 })
+            lu["#{rocket[:c]}_#{sanitize(rocket[:n])}".to_sym] = rocket
+          end
+          [
+            # TODO: currently no light AT
+          ].each do |unit|
+            at = { t: "sw", i: "antitank" }
+            unit.each_with_index do |v, i|
+              at[key[i]] = v
+            end
+            at[:o].merge!({ t: 1, b: 3 })
+            lu["#{at[:c]}_#{sanitize(at[:n])}".to_sym] = at
+          end
           t = "sw"
-          {
-            ussr_lmg: {
-              c:, t:, n: "DP-27 LMG", i: "mg", f: 6, r: 6, v: 0, o: { a: 1, r: 1, j: 2 },
-            },
-            ussr_mmg: { c:, t:, n: "SG-43 G MMG", i: "mg", f: 8, r: 10, v: -2, o: { r: 1, j: 2 } },
-            ussr_hmg: {
-              c:, t:, n: "PM M1910 HMG", i: "mg", f: 12, r: 12, v: -2, o: { r: 1, j: 2 },
-            },
-            ussr_50cal: {
-              c:, t:, n: "DShK HMG", i: "mg", f: 16, r: 16, v: -2, o: { r: 1, j: 2 },
-            },
-            ussr_ft: flamethrower(c),
-            ussr_sc: satchel_charge(c),
-            ussr_mc: {
-              c:, t:, n: "Molotov Coctail", i: "explosive", f: 12, r: 1, v: 0,
-              o: { a: 1, x: 1, t: 1 },
-            },
-            ussr_lm: {
-              c:, t:, n: "82-PM-41 MTR", i: "mortar", f: 8, r: 14, v: -1, o: { t: 1, m: 2, b: 2 },
-            },
-            ussr_hm: {
-              c:, t:, n: "120-PM-38 MTR", i: "mortar", f: 16, r: 16, v: -3,
-              o: { t: 1, m: 3, b: 2, s: 1 },
-            },
-            ussr_ampulomet: {
-              c:, t:, n: "Ampulomet", i: "rocket", f: 8, r: 4, v: 0, o: { b: 4, p: 1, t: 1 },
-            },
-            ussr_radio76: {
-              c:, t:, n: "Radio 76mm", i: "radio", f: 12, r: 0, v: 0, o: { s: 1, o: 1 },
-            },
-            ussr_radio85: {
-              c:, t:, n: "Radio 85mm", i: "radio", f: 16, r: 0, v: 0, o: { s: 1, o: 1 },
-            },
-            ussr_radio107: {
-              c:, t:, n: "Radio 107mm", i: "radio", f: 24, r: 0, v: 0, o: { s: 1, o: 1 },
-            },
-            ussr_radio122: {
-              c:, t:, n: "Radio 122mm", i: "radio", f: 32, r: 0, v: 0, o: { s: 1, o: 1 },
-            },
-            ussr_radio152: {
-              c:, t:, n: "Radio 152mm", i: "radio", f: 48, r: 0, v: 0, o: { s: 1, o: 1 },
-            },
-          }
+          %w[ger usa ussr].each do |c|
+            i = "flamethrower"
+            n = i.capitalize
+            lu["#{c}_ft"] = { c:, t:, n:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 3 } }
+            n = "Satchel Charge"
+            i = "explosive"
+            lu["#{c}_sc"] = { c:, t:, n:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
+          end
+          %w[ussr].each do |c|
+            n = "Molotov Coctail"
+            i = "explosive"
+            lu["#{c}_mc"] = { c:, t:, n:, i:, f: 4, r: 1, v: 0, o: { a: 1, i: 1, x: 1, t: 1 } }
+          end
+          lu
         end
 
         def soviet_guns
@@ -354,89 +417,6 @@ module Utility
                 ha: { f: 1, s: 0, r: 0 },
                 ta: { f: 1, s: 1, r: 1 },
               },
-            },
-          }
-        end
-
-        def german_squads
-          c = "ger"
-          t = "sqd"
-          i = "squad"
-          {
-            ger_pioneer_s: {
-              c:, t:, n: "Pioneer", i:, m: 4, s: 6, f: 7, r: 3, v: 5, o: { a: 1, s: 1 },
-            },
-            ger_ss_s: { c:, t:, n: "SS", i:, m: 4, s: 6, f: 6, r: 5, v: 5, o: { a: 1, s: 1 } },
-            ger_fj_s: {
-              c:, t:, n: "Fallschirmjäger", i:, m: 4, s: 6, f: 5, r: 4, v: 5, o: { a: 1, s: 1 },
-            },
-            ger_sturm_s: {
-              c:, t:, n: "Sturm", i:, m: 4, s: 6, f: 6, r: 4, v: 4, o: { a: 1, s: 1 },
-            },
-            ger_rifle_s: { c:, t:, n: "Rifle", i:, m: 3, s: 6, f: 5, r: 5, v: 4, o: { s: 1 } },
-            ger_volksgrenadier_s: { c:, t:, n: "Volksgrenadier", i:, m: 3, s: 6, f: 5, r: 4, v: 4 },
-            ger_conscript_s: {
-              c:, t:, n: "Conscript", i:, m: 2, s: 6, f: 5, r: 3, v: 3, o: { bv: 5 },
-            },
-          }
-        end
-
-        def german_teams
-          c = "ger"
-          t = "tm"
-          i = "team"
-          {
-            ger_pioneer_t: { c:, t:, n: "Pioneer", i:, m: 4, s: 3, f: 3, r: 3, v: 5 },
-            ger_ss_t: { c:, t:, n: "SS", i:, m: 4, s: 3, f: 3, r: 5, v: 5 },
-            ger_fj_t: { c:, t:, n: "Fallschirmjäger", i:, m: 4, s: 3, f: 2, r: 4, v: 5 },
-            ger_sturm_t: { c:, t:, n: "Sturm", i:, m: 4, s: 3, f: 3, r: 4, v: 4 },
-            ger_rifle_t: { c:, t:, n: "Rifle", i:, m: 3, s: 3, f: 2, r: 5, v: 4 },
-            ger_volksgrenadier_t: { c:, t:, n: "Volksgrenadier", i:, m: 3, s: 3, f: 2, r: 4, v: 4 },
-            ger_conscript_t: {
-              c:, t:, n: "Conscript", i:, m: 2, s: 3, f: 2, r: 3, v: 3, o: { bv: 5 },
-            },
-
-            ger_elite_crew: {
-              c:, t:, n: "Crew", i: "crew", m: 4, s: 3, f: 1, r: 1, v: 5, o: { g: 1 },
-            },
-            ger_crew: { c:, t:, n: "Crew", i: "crew", m: 3, s: 3, f: 1, r: 1, v: 4, o: { g: 1 } },
-          }
-        end
-
-        def german_support
-          c = "ger"
-          t = "sw"
-          {
-            ger_lmg: { c:, t:, n: "MG 34 LMG", i: "mg", f: 8, r: 8, v: 0, o: { a: 1, r: 1, j: 2 } },
-            ger_lmg2: {
-              c:, t:, n: "MG 42 LMG", i: "mg", f: 10, r: 8, v: 0, o: { a: 1, r: 1, j: 2 },
-            },
-            ger_hmg: { c:, t:, n: "MG 08/15 HMG", i: "mg", f: 12, r: 16, v: -1, o: { r: 1, j: 2 } },
-            ger_ft: flamethrower(c),
-            ger_sc: satchel_charge(c),
-            ger_lm: {
-              c:, t:, n: "5cm leGrW 36", i: "mortar", f: 8, r: 13, v: -2, o: { t: 1, m: 2, b: 2 },
-            },
-            ger_mm: {
-              c:, t:, n: "8cm GrW 34", i: "mortar", f: 16, r: 16, v: -3,
-              o: { t: 1, m: 3, b: 2, s: 1 },
-            },
-            ger_panzerfaust: {
-              c:, t:, n: "Panzerfaust", i: "antitank", f: 16, r: 1, v: 0,
-              o: { x: 1, p: 1, t: 1 },
-            },
-            ger_panzerschreck: {
-              c:, t:, n: "Panzerschreck", i: "rocket", f: 16, r: 4, v: 0,
-              o: { b: 3, p: 1, t: 1 },
-            },
-            ger_radio75: {
-              c:, t:, n: "Radio 7.5cm", i: "radio", f: 12, r: 0, v: 0, o: { s: 1, o: 1 },
-            },
-            ger_radio105: {
-              c:, t:, n: "Radio 10.5cm", i: "radio", f: 24, r: 0, v: 0, o: { s: 1, o: 1 },
-            },
-            ger_radio150: {
-              c:, t:, n: "Radio 15cm", i: "radio", f: 48, r: 0, v: 0, o: { s: 1, o: 1 },
             },
           }
         end
@@ -711,7 +691,8 @@ module Utility
             },
           }
         end
-        # rubocop:enable Metric/MethodLength
+        # rubocop:enable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
+        # -rubocop:enable Metric/PerceivedComplexity
       end
     end
   end
