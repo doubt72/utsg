@@ -68,28 +68,48 @@ end
 
 File.open('leader.svg', 'w') do |file|
   file.puts header
-  # write_path([["M", 20, 15], ["L", 80, 45]], file, false)
-  # write_path([["M", 20, 35], ["L", 80, 65]], file, false)
-  # write_path([["M", 20, 55], ["L", 80, 85]], file, false)
-  path = []
-  0.upto(6) do |n|
-    x = Math.sin(n * 144.0 / 180 * Math::PI) * -30 + 50
-    y = Math.cos(n * 144.0 / 180 * Math::PI) * -30 + 50
-    path.push([n == 0 ? "M" : "L", x, y])
-  end
-  write_path(path, file)
-  path = []
-  0.upto(7) do |n|
-    x = Math.cos(n / 3.0 * Math::PI) * -45 + 50
-    y = Math.sin(n / 3.0 * Math::PI) * -45 + 50
-    path.push([n == 0 ? "M" : "L", x, y])
-  end
-  write_path(path, file, false)
-  # helmet_paths.each do |path|
-  #   write_path(scale_path(path, 0, 0, 1), file)
+  write_path([
+    ["M", 10, 55], ["A", [40, 45], 0, [0, 1], [90, 55]], ["L", 10, 55],
+    ["A", [45, 50], 0, [0, 1], [90, 55]],
+  ], file, true)
+  write_path([
+    ["M", 80, 55], ["A", [30, 35], 0, [0, 1], [20, 55]],
+  ], file, false)
+  write_path([["M", 35, 40], ["L", 50, 50], ["L", 65, 40]], file, true, 3, "#DDD")
+  # path = []
+  # 0.upto(6) do |n|
+  #   x = Math.sin(n * 144.0 / 180 * Math::PI) * -16 + 50
+  #   y = Math.cos(n * 144.0 / 180 * Math::PI) * -16 + 35
+  #   path.push([n == 0 ? "M" : "L", x, y])
   # end
+  # write_path(path, file, true, 3, "#FFF")
   file.puts footer
 end
+
+# File.open('leader.svg', 'w') do |file|
+#   file.puts header
+#   path = []
+#   0.upto(6) do |n|
+#     x = Math.sin(n * 144.0 / 180 * Math::PI) * -30 + 50
+#     y = Math.cos(n * 144.0 / 180 * Math::PI) * -30 + 50
+#     path.push([n == 0 ? "M" : "L", x, y])
+#   end
+#   write_path(path, file)
+#   path = []
+#   0.upto(7) do |n|
+#     x = Math.cos(n / 3.0 * Math::PI) * -45 + 50
+#     y = Math.sin(n / 3.0 * Math::PI) * -45 + 50
+#     path.push([n == 0 ? "M" : "L", x, y])
+#   end
+#   write_path(path, file, false)
+#   # write_path([["M", 20, 15], ["L", 80, 45]], file, false)
+#   # write_path([["M", 20, 35], ["L", 80, 65]], file, false)
+#   # write_path([["M", 20, 55], ["L", 80, 85]], file, false)
+#   # helmet_paths.each do |path|
+#   #   write_path(scale_path(path, 0, 0, 1), file)
+#   # end
+#   file.puts footer
+# end
 
 File.open('crew.svg', 'w') do |file|
   file.puts header

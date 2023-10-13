@@ -23,9 +23,12 @@ const unitCounter = (unit) => {
     return section(display, "unit-counter-top-left unit-counter-sec unit-counter-box")
   }
 
-  const subtitle = () => {
-    const display = unit.displaySubtitle
-    return section(display, "unit-counter-subtitle")
+  const topLeftSmall = () => {
+    const display = unit.displayTopLeftSmall
+    return section(display,
+      "unit-counter-top-left-small unit-counter-sec-small-circle " +
+      "unit-counter-small-circle unit-counter-yellow"
+    )
   }
 
   const size = () => {
@@ -38,19 +41,16 @@ const unitCounter = (unit) => {
     return section(display, "unit-counter-left unit-counter-sec")
   }
 
-  const jam = () => {
-    const display = unit.displayJam
+  const leftSmall = () => {
+    const display = unit.displayLeftSmall
     return section(display,
-      "unit-counter-jam unit-counter-sec-small-circle unit-counter-small-circle unit-counter-red"
+      "unit-counter-left-small unit-counter-sec-small-circle unit-counter-small-circle"
     )
   }
 
-  const breakdown = () => {
-    const display = unit.displayBreakdown
-    return section(display,
-      "unit-counter-breakdown unit-counter-sec-small-circle " +
-      "unit-counter-small-circle unit-counter-red-white"
-    )
+  const sponson = () => {
+    const display = unit.displaySponson
+    return section(display, "unit-counter-sponson unit-counter-sec-sponson unit-counter-sponson")
   }
 
   const icon = () => {
@@ -101,8 +101,8 @@ const unitCounter = (unit) => {
   return (
     <div className={unitClasses}>
       {name()}
-      {subtitle()}{topLeft()}{breakdown()}{size()}
-      {left()}{jam()}{icon()}{right()}
+      {topLeft()}{topLeftSmall()}{size()}
+      {left()}{leftSmall()}{icon()}{sponson()}{right()}
       {hullArmor()}{turretArmor()}
       {firepower()}{range()}{movement()}
       {status()}

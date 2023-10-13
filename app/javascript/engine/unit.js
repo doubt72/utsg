@@ -25,7 +25,7 @@ const Unit = class {
     this.nation = data.c
     this.type = data.t
     this.name = data.n
-    this.subtitle = data.sub
+    this.smallName = data.o?.sn
     this.icon = data.i
     this.year = data.y
     this.baseMorale = data.m
@@ -67,6 +67,9 @@ const Unit = class {
     if (data.o?.ta !== undefined) {
       this.turretArmor = [data.o.ta.f, data.o.ta.s, data.o.ta.r]
     }
+    if (data.o?.sg !== undefined) {
+      this.sponson = [data.o.sg.f, data.o.sg.r]
+    }
 
     this.status = unitStatus.Normal
   }
@@ -92,18 +95,12 @@ const Unit = class {
   }
 
   get displayName() {
+    let longName = this.smallName ? "-small" : ""
+    longName = this.smallName && this.smallName > 1 ? "-smaller" : longName
     if (this.isBroken || this.isWreck) {
-      return { value: this.name, display: " unit-counter-name-broken" }
+      return { value: this.name, display: `${longName} unit-counter-name-broken` }
     } else {
-      return { value: this.name, display: "" }
-    }
-  }
-
-  get displaySubtitle() {
-    if (this.subtitle) {
-      return { value: this.subtitle, display: "" }
-    } else {
-      return { value: null }
+      return { value: this.name, display: longName }
     }
   }
 
@@ -132,6 +129,14 @@ const Unit = class {
       return { value: this.currentMorale, display: " unit-counter-red-text" }
     } else {
       return { value: this.baseMorale, display: "" }
+    }
+  }
+
+  get displayTopLeftSmall() {
+    if (this.breakWeaponRoll && !this.noFire) {
+      return { value: this.breakWeaponRoll, display: "" }
+    } else {
+      return { value: null }
     }
   }
 
@@ -168,24 +173,25 @@ const Unit = class {
   get displayLeft() {
     if (this.currentLeadership) {
       return { value: this.currentLeadership, display: " unit-counter-hex"}
-    } else if (this.currentGunHandling) {
-      return { value: this.currentGunHandling, display: " unit-counter-circle unit-counter-outline"}
     } else {
       return { value: null }
     }
   }
 
-  get displayJam() {
-    if (this.breakWeaponRoll && !this.noFire) {
-      return { value: this.breakWeaponRoll, display: "" }
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displayBreakdown() {
+  get displayLeftSmall() {
     if (this.breakdownRoll && !this.isWreck) {
-      return { value: this.breakdownRoll, display: "" }
+      return { value: this.breakdownRoll, display: " unit-counter-yellow" }
+    } else if (this.currentGunHandling) {
+      return { value: this.currentGunHandling, display: " unit-counter-outline"}
+    } else {
+      return { value: null }
+    }
+  }
+
+  get displaySponson() {
+    if (this.sponson && !this.isWreck) {
+      const gun = this.sponson
+      return { value: `${gun[0]}-${gun[1]}`, display: ` nation-${this.nation}` }
     } else {
       return { value: null }
     }
@@ -199,18 +205,18 @@ const Unit = class {
     }
   }
 
-  get displayHullArmor() {
-    if (this.hullArmor && !this.isWreck) {
-      const armor = this.hullArmor
+  get displayTurretArmor() {
+    if (this.turretArmor && !this.isWreck) {
+      const armor = this.turretArmor
       return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: "" }
     } else {
       return { value: null }
     }
   }
 
-  get displayTurretArmor() {
-    if (this.turretArmor && !this.isWreck) {
-      const armor = this.turretArmor
+  get displayHullArmor() {
+    if (this.hullArmor && !this.isWreck) {
+      const armor = this.hullArmor
       return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: "" }
     } else {
       return { value: null }
@@ -284,8 +290,7 @@ const Unit = class {
 
       let color = this.targetedRange || this.rapidFire ? " unit-counter-outline" : ""
       color = this.type === "sw" && this.targetedRange ? " unit-counter-black" : color
-      color = this.turreted ? " unit-counter-white" : color
-      color = this.rotatingMount ? " unit-counter-white-black" : color
+      color = this.turreted || this.rotatingMount ? " unit-counter-white" : color
 
       return { value: range, display: `${location}${shape}${color}`}
     }

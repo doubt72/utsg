@@ -18,6 +18,26 @@
   font-size: 0.575rem;
 }
 
+.unit-counter-name-small {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.8rem;
+  padding-left: 2px;
+  font-size: 0.525rem;
+}
+
+.unit-counter-name-smaller {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.8rem;
+  padding-left: 2px;
+  font-size: 0.5rem;
+}
+
 .unit-counter-name-broken {
   color: white;
   background-color: $unit-dark-red;
@@ -84,7 +104,7 @@
 .unit-counter-sec-range {
   position: absolute;
   padding: 0;
-  width: 30px;
+  width: 28px;
   height: 14px;
   font-family: monospace;
   text-align: center;
@@ -97,7 +117,16 @@
   width: 28px;
   height: 20px;
   font-family: monospace;
-  text-align: right;
+  border: 1px solid rgba(0,0,0,0.0);
+}
+
+.unit-counter-sec-sponson {
+  position: absolute;
+  padding: 0;
+  width: 28px;
+  height: 12px;
+  font-family: monospace;
+  text-align: center;
   border: 1px solid rgba(0,0,0,0.0);
 }
 
@@ -191,6 +220,13 @@
   transform: translate(0, -0.1px);
 }
 
+.unit-counter-sponson span {
+  display: block;
+  font-size: 0.575rem;
+  font-family: sans-serif;
+  transform: translate(0, -2px);
+}
+
 // Section Locations
 .unit-counter-top-left {
   top: 12px;
@@ -207,12 +243,12 @@
   left: 2px;
 }
 
-.unit-counter-breakdown {
+.unit-counter-top-left-small {
   top: 16px;
   left: 4px;
 }
 
-.unit-counter-jam {
+.unit-counter-left-small {
   top: 34px;
   left: 4px;
 }
@@ -253,15 +289,19 @@
 }
 
 .unit-counter-turret-armor {
-  top: 32px;
+  top: 31px;
   right: 2px;
 }
 
 .unit-counter-hull-armor {
-  top: 42px;
+  top: 41px;
   right: 2px;
 }
 
+.unit-counter-sponson {
+  top: 43px;
+  left: 24px;
+}
 
 // Color Styling
 .unit-counter-red-text {
@@ -273,25 +313,8 @@
   border: 1px solid black;
 }
 
-.unit-counter-red {
-  border: 1px solid $unit-red;
-  background-color: $unit-red;
-  color: white;
-}
-
-.unit-counter-red-white {
-  border: 1px solid white;
-  background-color: $unit-red;
-  color: white;
-}
-
 .unit-counter-white {
   border: 1px solid white;
-  background-color: white;
-}
-
-.unit-counter-white-black {
-  border: 1px solid black;
   background-color: white;
 }
 
@@ -302,7 +325,7 @@
 }
 
 .unit-counter-yellow {
-  border: 1px solid $unit-yellow;
+  border: 1px solid black;
   background-color: $unit-yellow;
   color: black;
 }
