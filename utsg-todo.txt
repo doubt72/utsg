@@ -8,9 +8,8 @@ Start working on framework
       Terrain
     Units
 
-Clean Up Unit Generation
-Clean Up icons
-German Units
+Fix Long Names
+Years?
 American Units
 
 East Front

@@ -17,11 +17,11 @@ export default function DebugUnits() {
   }
 
   const tanks = () => {
-    return Object.values(units).filter(u => ["veh"].includes(u.t) && u.o.u)
+    return Object.values(units).filter(u => ["tank", "ac"].includes(u.t))
   }
 
   const spg = () => {
-    return Object.values(units).filter(u => ["veh"].includes(u.t) && !u.o.u)
+    return Object.values(units).filter(u => ["spg", "ht"].includes(u.t))
   }
 
   const usedInfantry = () => {

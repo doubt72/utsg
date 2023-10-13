@@ -15,57 +15,72 @@ const unitCounter = (unit) => {
 
   const name = () => {
     const display = unit.displayName
-    return section(display, "unit-name")
+    return section(display, "unit-counter-name")
   }
 
-  const morale = () => {
-    const display = unit.displayMorale
-    return section(display, "unit-morale unit-disp")
+  const topLeft = () => {
+    const display = unit.displayTopLeft
+    return section(display, "unit-counter-top-left unit-counter-sec unit-counter-box")
+  }
+
+  const subtitle = () => {
+    const display = unit.displaySubtitle
+    return section(display, "unit-counter-subtitle")
   }
 
   const size = () => {
     const display = unit.displaySize
-    return section(display, "unit-size unit-disp")
+    return section(display, "unit-counter-size unit-counter-sec")
   }
 
-  const specialLeftVehicle = () => {
-    const display = unit.displaySpecialLeftVehicle
-    return section(display, "unit-disp")
+  const left = () => {
+    const display = unit.displayLeft
+    return section(display, "unit-counter-left unit-counter-sec")
   }
 
-  const specialLeft = () => {
-    const display = unit.displaySpecialLeft
-    return section(display, "unit-disp")
+  const jam = () => {
+    const display = unit.displayJam
+    return section(display,
+      "unit-counter-jam unit-counter-sec-small-circle unit-counter-small-circle unit-counter-red"
+    )
+  }
+
+  const breakdown = () => {
+    const display = unit.displayBreakdown
+    return section(display,
+      "unit-counter-breakdown unit-counter-sec-small-circle " +
+      "unit-counter-small-circle unit-counter-red-white"
+    )
   }
 
   const icon = () => {
     const display = unit.displayIcon
     if (display.value === null) { return "" }
     return (
-      <div className={`unit-icon${display.display}`}>
+      <div className={`unit-counter-icon${display.display}`}>
         <img src={`/assets/units/${display.value}.svg`} />
       </div>
     )
   }
 
-  const specialRight = () => {
-    const display = unit.displaySpecialRight
-    return section(display, "unit-disp")
+  const right = () => {
+    const display = unit.displayRight
+    return section(display, "unit-counter-sec unit-counter-right unit-counter-box")
   }
 
   const hullArmor = () => {
     const display = unit.displayHullArmor
-    return section(display, "unit-disp-wide unit-hull-armor")
+    return section(display, "unit-counter-hull-armor unit-counter-sec-armor unit-counter-armor")
   }
 
   const turretArmor = () => {
     const display = unit.displayTurretArmor
-    return section(display, "unit-disp-wide unit-turret-armor")
+    return section(display, "unit-counter-turret-armor unit-counter-sec-armor unit-counter-armor")
   }
 
   const firepower = () => {
     const display = unit.displayFirepower
-    return section(display, "unit-firepower unit-disp")
+    return section(display, "unit-counter-sec")
   }
 
   const range = () => {
@@ -75,20 +90,22 @@ const unitCounter = (unit) => {
 
   const movement = () => {
     const display = unit.displayMovement
-    return section(display, "unit-disp")
+    return section(display, "unit-counter-sec")
   }
 
   const status = () => {
     const display = unit.displayBadge
-    return section(display, "unit-status")
+    return section(display, "unit-counter-status")
   }
 
   return (
     <div className={unitClasses}>
-      {name()}{status()}
-      {morale()}{specialLeftVehicle()}{size()}
-      {specialLeft()}{icon()}{specialRight()}{hullArmor()}{turretArmor()}
+      {name()}
+      {subtitle()}{topLeft()}{breakdown()}{size()}
+      {left()}{jam()}{icon()}{right()}
+      {hullArmor()}{turretArmor()}
       {firepower()}{range()}{movement()}
+      {status()}
     </div>
   )
 }

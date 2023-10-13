@@ -104,7 +104,7 @@ RSpec.describe Utility::Scenario do
           end
 
           expect(metadata[:axis_units].length).to be > 0
-          metadata[:allied_units].each_value do |turn|
+          metadata[:axis_units].each_value do |turn|
             expect(turn[:list]&.is_a?(Array)).to be true
             turn[:list].each do |unit|
               expect(unit).not_to have_key :not_found

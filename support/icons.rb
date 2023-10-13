@@ -31,8 +31,8 @@ def scale_path(path, xoffset, yoffset, scale)
   end
 end
 
-def write_text(cx, cy, size, text, file, color = "#000")
-  file.puts "<text x=\"#{cx}\" y=\"#{cy}\" " +
+def write_text(cx, cy, size, text, file, color = "#000", rotate = "")
+  file.puts "<text x=\"#{cx}\" y=\"#{cy}\" #{rotate}" +
     "style=\"fill:#{color};font-size:#{size}em;font-family:monospace;" +
     "text-anchor:middle;\">#{text}</text>"
 end
@@ -281,7 +281,24 @@ File.open('spat.svg', 'w') do |file|
   file.puts footer
 end
 
-File.open('car.svg', 'w') do |file|
+File.open('spft.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([
+    ["M", 37.5, 98], ["L", 37.5, 42.5], ["A", [7.5, 7.5], 0, [0, 1], [52.5, 42.5]], ["L", 52.5, 47.5]
+  ], file, false)
+  file.puts footer
+end
+
+File.open('ac.svg', 'w') do |file|
   file.puts header
   write_path([
     ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
@@ -299,18 +316,104 @@ File.open('car.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('ht.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  file.puts footer
+end
+
+File.open('htgun.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  write_circle(45, 50, 8, file)
+  file.puts footer
+end
+
+File.open('htat.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  write_path([["M", 35, 98], ["L", 45, 80], ["L", 55, 98]], file, false)
+  file.puts footer
+end
+
+File.open('htmtr.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 20], ["L", 45, 8], ["L", 55, 20]], file, false)
+  write_path([["M", 45, 42], ["L", 45, 8]], file, false)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  write_circle(45, 50, 8, file, false)
+  file.puts footer
+end
+
+File.open('htft.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  write_path([
+    ["M", 37.5, 98], ["L", 37.5, 42.5], ["A", [7.5, 7.5], 0, [0, 1], [52.5, 42.5]], ["L", 52.5, 47.5]
+  ], file, false)
+  file.puts footer
+end
+
 File.open('wreck.svg', 'w') do |file|
   file.puts header
   write_path([
-    ["M", 20, 10], ["L", 20, 98], ["L", 80, 98], ["L", 80, 10], ["L", 20, 10], ["L", 20, 98],
-  ], file, false, 3, "red")
+    ["M", 15, 10], ["L", 15, 98], ["L", 75, 98], ["L", 75, 10], ["L", 15, 10], ["L", 15, 98],
+  ], file, false, 3, "#C00")
   write_path([
-    ["M", 42.5, 60], ["C", [37.6, 60], [20, 50], [50, 20]], ["C", [50, 40], [66, 32], [66, 50]],
-    ["C", [66, 60], [60, 60], [57.5, 60]], ["C", [59, 57], [65, 45], [50, 35]],
-    ["C", [50, 45], [41, 43], [40, 50]], ["C", [39, 55], [40, 57.5], [42.5, 60]],
-    ["C", [37.6, 60], [20, 50], [50, 20]],
-  ], file, false, 3, "red")
-  write_text(50, 93, 2.5, "WRECK", file, "#000")
+    ["M", 37.5, 70], ["C", [32.6, 70], [15, 60], [45, 30]], ["C", [45, 50], [61, 42], [61, 60]],
+    ["C", [61, 70], [55, 70], [52.5, 70]], ["C", [54, 67], [60, 55], [45, 45]],
+    ["C", [45, 55], [36, 53], [35, 60]], ["C", [34, 65], [35, 67.5], [37.5, 70]],
+    ["C", [32.6, 70], [15, 60], [45, 30]],
+  ], file, false, 3, "#C00")
+  write_text(95, 54, 2.25, "WRECK", file, "#C00", rotate='transform="rotate(270 95 54)" ')
   file.puts footer
 end
 

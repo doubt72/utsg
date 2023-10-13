@@ -3,11 +3,29 @@ const unitStatus = {
   Immobilized: 7, TurretJammed: 8, Wreck: 9
 }
 
+  // c: nation, t: type, n: name, i: icon, y: year
+  // m: morale (2-6)
+  // s: size (1-6)
+  // f: firepower
+  // r: range
+  // v: movement
+  // o: flags:
+  //    l: leadership, a: assault, s: smoke, r: rapid fire, z: armored
+  //    cw: crew skill, x: single shot, i: ignore terrain
+  //    j: jam number, b: break number, bd: breakdown number
+  //    t: targeted fire, m: minimum range, p: antitank, g: artillery, o: offboard artillery
+  //    u: turret, k: tracked, w: wheeled, c: crewed, y: rotating mount
+  //    ha: hull armor
+  //    ta: turret armor
+  //        f: front, s: side, r: rear
+  // x: count
+
 const Unit = class {
   constructor(data) {
     this.nation = data.c
     this.type = data.t
     this.name = data.n
+    this.subtitle = data.sub
     this.icon = data.i
     this.year = data.y
     this.baseMorale = data.m
@@ -17,28 +35,34 @@ const Unit = class {
     this.baseMovement = data.v
 
     this.leadership = data.o?.l
-    this.gunHandling = data.o?.g
-    this.assualt = !!data.o?.a
-    this.rapidFire = !!data.o?.r
+    this.assault = !!data.o?.a
     this.smokeCapable = !!data.o?.s
+    this.gunHandling = data.o?.cw
+    this.brokenMovement = data.o?.bv || 6
+
+    this.rapidFire = !!data.o?.r
     this.singleFire = !!data.o?.x
     this.ignoreTerrain = !!data.o?.i
-    this.breakWeaponRoll = data.o?.b || data.o?.j
-    this.breakDestroysWeapon = !!data.o?.b
-    this.breakDriveRoll = data.o?.d
-    this.brokenMovement = data.o?.bv || 6
+
     this.targetedRange = data.o?.t
     this.minimumRange = data.o?.m
+    this.fieldGun = !!data.o?.g
     this.antiTank = !!data.o?.p
+    this.rotatingMount = !!data.o?.y
     this.crewed = !!data.o?.c
-    this.rotatingMount = !!data.o?.z
     this.offBoard = !!data.o?.o
+
+    this.breakWeaponRoll = data.o?.b || data.o?.j
+    this.breakDestroysWeapon = !!data.o?.b
+    this.breakdownRoll = data.o?.bd
+
     this.turreted = !!data.o?.u
     this.tracked = !!data.o?.k
     this.wheeled = !!data.o?.w
 
     if (data.o?.ha !== undefined) {
       this.hullArmor = [data.o.ha.f, data.o.ha.s, data.o.ha.r]
+      this.armored = true
     }
     if (data.o?.ta !== undefined) {
       this.turretArmor = [data.o.ta.f, data.o.ta.s, data.o.ta.r]
@@ -69,9 +93,17 @@ const Unit = class {
 
   get displayName() {
     if (this.isBroken || this.isWreck) {
-      return { value: this.name, display: " unit-name-broken" }
+      return { value: this.name, display: " unit-counter-name-broken" }
     } else {
       return { value: this.name, display: "" }
+    }
+  }
+
+  get displaySubtitle() {
+    if (this.subtitle) {
+      return { value: this.subtitle, display: "" }
+    } else {
+      return { value: null }
     }
   }
 
@@ -93,11 +125,11 @@ const Unit = class {
     }
   }
 
-  get displayMorale() {
+  get displayTopLeft() {
     if (this.baseMorale === undefined) {
       return { value: null }
     } else if (this.isBroken || this.isPinned) {
-      return { value: this.currentMorale, display: " unit-disp-red-text" }
+      return { value: this.currentMorale, display: " unit-counter-red-text" }
     } else {
       return { value: this.baseMorale, display: "" }
     }
@@ -105,9 +137,11 @@ const Unit = class {
 
   get displaySize() {
     if (this.size) {
-      return { value: this.size, display: "" }
+      const shape = this.armored && !this.isWreck ? " unit-counter-circle unit-counter-outline"
+                                                  : " unit-counter-box"
+      return { value: this.size, display: shape }
     } else {
-      return { value: "-", display: "" }
+      return { value: null }
     }
   }
 
@@ -131,39 +165,53 @@ const Unit = class {
     return this.smokeCapable && !this.isBroken
   }
 
-  get displaySpecialLeft() {
+  get displayLeft() {
     if (this.currentLeadership) {
-      return { value: this.currentLeadership, display: " unit-special-left-leader unit-disp-hex"}
+      return { value: this.currentLeadership, display: " unit-counter-hex"}
     } else if (this.currentGunHandling) {
-      return { value: this.currentGunHandling, display: " unit-special-left-gun unit-disp-small-circle"}
-    } if (this.breakWeaponRoll && !this.noFire) {
-      const section = this.type === "veh" ? " unit-special-vehicle-bottom" : " unit-special-breakdown"
-      return {
-        value: this.breakWeaponRoll, display: `${section} unit-disp-small-circle unit-disp-red`
-      }
+      return { value: this.currentGunHandling, display: " unit-counter-circle unit-counter-outline"}
     } else {
       return { value: null }
     }
   }
 
-  get displaySpecialLeftVehicle() {
-    if (this.breakDriveRoll && this.currentMovement > 0) {
-      return {
-        value: this.breakDriveRoll,
-        display: " unit-special-vehicle-top unit-disp-small-circle unit-disp-red-white"
-      }
+  get displayJam() {
+    if (this.breakWeaponRoll && !this.noFire) {
+      return { value: this.breakWeaponRoll, display: "" }
     } else {
       return { value: null }
     }
   }
 
-  get displaySpecialRight() {
+  get displayBreakdown() {
+    if (this.breakdownRoll && !this.isWreck) {
+      return { value: this.breakdownRoll, display: "" }
+    } else {
+      return { value: null }
+    }
+  }
+
+  get displayRight() {
     if (this.currentSmokeCapable) {
-      if (this.type !== "sqd") {
-        return { value: "*", display: " unit-special-right-gun"}
-      } else {
-        return { value: "*", display: " unit-special-right-modifier"}
-      }
+      return { value: "S", display: " unit-counter-box-small"}
+    } else {
+      return { value: null }
+    }
+  }
+
+  get displayHullArmor() {
+    if (this.hullArmor && !this.isWreck) {
+      const armor = this.hullArmor
+      return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: "" }
+    } else {
+      return { value: null }
+    }
+  }
+
+  get displayTurretArmor() {
+    if (this.turretArmor && !this.isWreck) {
+      const armor = this.turretArmor
+      return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: "" }
     } else {
       return { value: null }
     }
@@ -183,28 +231,25 @@ const Unit = class {
 
   get displayFirepower() {
     // Don't use currentFirepower because we only display the "base" values on the counter
-    let smallClass = this.baseFirepower > 9 ? " unit-disp-small" : ""
-    if (this.noFire) {
-      return { value: 0, display: "unit-range unit-disp unit-disp-red-text" }
-    } else if (this.isPinned) {
-      return { value: Math.floor(this.baseFirepower / 2), display: " unit-disp-red-text" }
-    } else if (this.assualt) {
-      let background = this.ignoreTerrain ? " unit-disp-white" : ""
-      background = this.singleFire ? " unit-disp-black" : background
-      background = this.singleFire && this.ignoreTerrain ? " unit-disp-white-black" : background
-      return { value: this.baseFirepower, display: ` unit-disp-box${smallClass}${background}`}
-    } else if (this.antiTank) {
-      smallClass = this.baseFirepower > 9 ? " unit-disp-more-small" : ""
-      const sfClass = this.singleFire ? " unit-disp-black" : ""
-      return { value: this.baseFirepower, display: ` unit-disp-circle${smallClass}${sfClass}` }
-    } else if (this.crewed && !this.type == "sw") {
-      smallClass = this.baseFirepower > 9 ? " unit-disp-more-small" : ""
-      return { value: this.baseFirepower, display: ` unit-disp-circle unit-disp-yellow${smallClass}` }
-    } else if (this.offBoard) {
-      smallClass = this.baseFirepower > 9 ? " unit-disp-hex-small" : ""
-      return { value: this.baseFirepower, display: ` unit-disp-hex${smallClass}` }
+    const location = this.minimumRange ? " unit-counter-firepower-w-range" : " unit-counter-firepower"
+    if (this.noFire || this.isPinned) {
+      return {
+        value: this.currentFirepower, display: `${location} unit-counter-box unit-counter-red-text`
+      }
     } else {
-      return { value: this.baseFirepower, display: `${smallClass}` }
+      let shape = this.antiTank || this.fieldGun ? " unit-counter-circle" : " unit-counter-box"
+      shape = this.offBoard ? " unit-counter-hex" : shape
+      if (this.baseFirepower > 9) {
+        shape = `${shape}-small`
+      }
+
+      let color = this.assault || this.antiTank ? " unit-counter-outline" : ""
+      color = this.fieldGun ? " unit-counter-white" : color
+      color = this.ignoreTerrain ? " unit-counter-yellow" : color
+      color = this.singleFire ? " unit-counter-black" : color
+      color = this.singleFire && this.ignoreTerrain ? " unit-counter-white-black" : color
+
+      return { value: this.baseFirepower, display: `${location}${shape}${color}`}
     }
   }
 
@@ -218,32 +263,31 @@ const Unit = class {
 
   get displayRange() {
     if (this.noFire) {
-      return { value: this.currentRange, display: "unit-range unit-disp unit-disp-red-text" }
-    } else if (this.targetedRange) {
-      let background = this.type === "sw" ? " unit-disp-black" : ""
-      if (this.minimumRange) {
-        return {
-          value: `${this.minimumRange}-${this.currentRange}`,
-          display: `unit-range-dbl unit-disp-dbl unit-disp-oval${background}`
-        }
-      } else {
-        const smallClass = this.currentRange > 9 ? " unit-disp-more-small" : ""
-        background = this.turreted ? " unit-disp-white" : background
-        background = this.rotatingMount ? " unit-disp-white-black" : background
-        return {
-          value: this.currentRange,
-          display: `unit-range unit-disp unit-disp-circle${smallClass}${background}`
-        }
+      return {
+        value: this.currentRange,
+        display: "unit-counter-range unit-counter-sec unit-counter-box unit-counter-red-text"
       }
     } else if (this.currentRange === 0) {
-      return { value: "-", display: `unit-range unit-disp` }
+      return { value: "-", display: `unit-counter-range unit-counter-sec unit-counter-box` }
     } else {
-      const background = this.turreted ? " unit-disp-white" : ""
-      const rapidClass = this.rapidFire ? " unit-disp-box" : ""
-      const smallClass = (this.currentRange > 9 && this.rapidFire) ? " unit-disp-more-small" : ""
-      return {
-        value: this.currentRange, display: `unit-range unit-disp${rapidClass}${smallClass}${background}`
+      let location = "unit-counter-range unit-counter-sec "
+      let shape = this.targetedRange ? " unit-counter-circle" : " unit-counter-box"
+      if (this.currentRange > 9) {
+        shape = `${shape}-small`
       }
+      let range = this.currentRange
+      if (this.minimumRange) {
+        location = "unit-counter-range-range unit-counter-sec-range"
+        shape = " unit-counter-range-circle"
+        range = `${this.minimumRange}-${range}`
+      }
+
+      let color = this.targetedRange || this.rapidFire ? " unit-counter-outline" : ""
+      color = this.type === "sw" && this.targetedRange ? " unit-counter-black" : color
+      color = this.turreted ? " unit-counter-white" : color
+      color = this.rotatingMount ? " unit-counter-white-black" : color
+
+      return { value: range, display: `${location}${shape}${color}`}
     }
   }
 
@@ -261,67 +305,43 @@ const Unit = class {
   }
 
   get displayMovement() {
+    const location = this.minimumRange ? " unit-counter-movement-w-range" : " unit-counter-movement"
     if (this.isBroken || this.isPinned ||
         this.status === unitStatus.Tired || this.status === unitStatus.Immobilized ||
         this.isWreck) {
-      return { value: this.currentMovement, display: " unit-movement unit-disp-red-text" }
-    } else if (this.currentMovement < 0) {
-      // TODO: remove these
-      const color = this.type === "sw" ? " unit-disp-red" : " unit-disp-black"
-      const circle = this.rotatingMount ? "unit-movement unit-disp-circle unit-disp-small" :
-        "unit-movement-small unit-disp-small-circle unit-disp-very-small"
       return {
-        value: this.currentMovement,
-        display: ` ${circle}${color}`
-      }
-    } else if (this.crewed) {
-      return { value: this.currentMovement, display: " unit-movement unit-disp-circle unit-disp-black" }
-    } else if (this.tracked) {
-      return { value: this.currentMovement, display: " unit-movement unit-disp-circle unit-disp-white" }
-    } else if (this.wheeled) {
-      const smallClass = (this.currentMovement > 9) ? " unit-disp-small" : ""
-      return {
-        value: this.currentMovement,
-        display: ` unit-movement unit-disp-circle unit-disp-yellow${smallClass}`
+        value: this.currentMovement, display: `${location} unit-counter-box unit-counter-red-text`
       }
     } else if (this.currentMovement === 0) {
-      return { value: "-", display: " unit-movement" }
+      return { value: "-", display: `${location} unit-counter-box` }
     } else {
-      return { value: this.currentMovement, display: " unit-movement" }
-    }
-  }
+      let shape = this.wheeled || this.tracked || this.crewed ? " unit-counter-circle" : " unit-counter-box"
+      shape = this.currentMovement < 0 ? " unit-counter-circle" : shape
+      if (this.currentMovement > 9 || this.currentMovement < 0) {
+        shape = `${shape}-small`
+      }
 
-  get displayHullArmor() {
-    if (this.hullArmor && !this.isWreck) {
-      const armor = this.hullArmor
-      return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: " unit-disp-extremely-small" }
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displayTurretArmor() {
-    if (this.turretArmor && !this.isWreck) {
-      const armor = this.turretArmor
-      return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: " unit-disp-extremely-small" }
-    } else {
-      return { value: null }
+      let color = this.crewed ? " unit-counter-black" : ""
+      color = this.tracked ? " unit-counter-outline" : color
+      color = this.wheeled ? " unit-counter-white" : color
+      color = this.currentMovement < 0 ? " unit-counter-red-text" : color
+      return { value: this.currentMovement, display: `${location}${shape}${color}`}
     }
   }
 
   get displayBadge() {
     if (this.isPinned) {
-      return { value: "pinned", display: " unit-status-red" }
+      return { value: "PIN", display: " unit-counter-status-red" }
     } else if (this.status === unitStatus.Activated) {
-      return { value: "activated", display: " unit-status-yellow" }
+      return { value: "ACT", display: " unit-counter-status-yellow" }
     } else if (this.status === unitStatus.Exhausted) {
-      return { value: "exhausted", display: " unit-status-yellow" }
+      return { value: "EXH", display: " unit-counter-status-yellow" }
     } else if (this.status === unitStatus.Tired) {
-      return { value: "tired", display: " unit-status-yellow" }
+      return { value: "TRD", display: " unit-counter-status-yellow" }
     } else if (this.status === unitStatus.Immobilized) {
-      return { value: "immobile", display: " unit-status-red" }
+      return { value: "IMM", display: " unit-counter-status-red" }
     } else if (this.status === unitStatus.TurretJammed) {
-      return { value: "turret jam", display: " unit-status-red" }
+      return { value: "JAM", display: " unit-counter-status-red" }
     } else {
       return { value: "", display: " transparent"}
     }
