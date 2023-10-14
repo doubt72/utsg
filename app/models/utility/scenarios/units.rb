@@ -35,7 +35,7 @@ module Utility
           y = 0
           s = f = r = 1
           lu = {}
-          %w[chi fra ger ita jap uk usa ussr].each do |nation|
+          %w[ger ita jap fin rom uk usa ussr fra chi pol gre nor phi net].each do |nation|
             [6, 5, 4, 3].each do |m|
               [2, 1].each do |l|
                 next if l == 2 && m < 5
@@ -188,9 +188,9 @@ module Utility
           [
             ["ger", "Panzerfaust", 43, 6, 1, 0, { x: 1 }],
             ["ger", "Panzerschreck", 43, 10, 4, 0, { b: 4 }],
-            ["usa", "M1 Bazooka", 42, 10, 4, 0, { b: 5 }],
-            ["usa", "M1A1 Bazooka", 43, 12, 4, 0, { b: 4 }],
-            ["usa", "M9 Bazooka", 4431, 16, 3, 0, { b: 4 }],
+            ["usa", "M1 Bazooka", 42, 8, 4, 0, { b: 5 }],
+            ["usa", "M1A1 Bazooka", 43, 10, 4, 0, { b: 4 }],
+            ["usa", "M9 Bazooka", 43, 12, 3, 0, { b: 4 }],
             ["ussr", "Ampulomet", 41, 6, 6, -1, { b: 5 }],
           ].each do |unit|
             rocket = { t: "sw", i: "rocket" }
@@ -351,7 +351,7 @@ module Utility
             ["ussr", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 }, bd: 4 }],
             ["ussr", "M3 Grant", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, bd: 4, sg: { f: 24, r: 12 } }],
             ["ussr", "M4A2 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["ussr", "M4A2-76 Sherman", 44, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 2 }],
+            ["ussr", "M4A2(76) Sherman", 44, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 3 }],
           ].each do |unit|
             tank = { t: "tank", i: "tank" }
             unit.each_with_index do |v, i|

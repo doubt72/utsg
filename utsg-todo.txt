@@ -13,8 +13,11 @@ Years?
 UK Units
 ITA Units
 JAP Units
-CHI Units
 FRA Units
+CHI Units
+FIN/ROM
+POL/GRE/NOR/PHI/NET
+
 
 East Front
   generic small unit meeting engagements in mixed terrain

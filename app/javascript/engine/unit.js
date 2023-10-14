@@ -97,6 +97,7 @@ const Unit = class {
   get displayName() {
     let longName = this.smallName ? "-small" : ""
     longName = this.smallName && this.smallName > 1 ? "-smaller" : longName
+    longName = this.smallName && this.smallName > 2 ? "-smallest" : longName
     if (this.isBroken || this.isWreck) {
       return { value: this.name, display: `${longName} unit-counter-name-broken` }
     } else {
@@ -346,7 +347,7 @@ const Unit = class {
     } else if (this.status === unitStatus.Immobilized) {
       return { value: "IMM", display: " unit-counter-status-red" }
     } else if (this.status === unitStatus.TurretJammed) {
-      return { value: "JAM", display: " unit-counter-status-red" }
+      return { value: "TRT", display: " unit-counter-status-red" }
     } else {
       return { value: "", display: " transparent"}
     }
