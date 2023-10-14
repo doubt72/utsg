@@ -9,7 +9,7 @@ module Utility
         def lookup_data
           leaders.merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
                  .merge(support_weapons).merge(infantry_guns).merge(at_guns)
-                 .merge(tanks).merge(assault_guns).merge(armored_cars).merge(half_tracks)
+                 .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
         end
 
         def unit_definition(code)
@@ -55,13 +55,21 @@ module Utility
           lu = {}
           key = %i[c n y m f r v o]
           [
-            ["ger", "Pionier", 0, 4, 9, 2, 5, { a: 1, s: 1 }],
+            ["ger", "Pionier", 0, 4, 9, 3, 5, { a: 1, s: 1 }],
             ["ger", "SS", 34, 4, 8, 5, 5, { a: 1, s: 1 }],
             ["ger", "Fallschirmjäger", 35, 4, 7, 4, 5, { a: 1, s: 1 }],
             ["ger", "Sturm", 0, 4, 8, 4, 5, { a: 1, s: 1 }],
             ["ger", "Rifle", 0, 3, 7, 5, 4, { s: 1 }],
             ["ger", "Volksgrenadier", 44, 3, 7, 4, 4, {}],
             ["ger", "Conscript", 0, 2, 6, 3, 3, {}],
+            ["uk", "Engineer", 0, 4, 9, 5, 5, { a: 1, s: 1 }],
+            ["uk", "Airborne", 42, 4, 8, 5, 5, { a: 1, s: 1 }],
+            ["uk", "Guard", 0, 4, 7, 5, 5, { s: 1 }],
+            ["uk", "Line", 0, 3, 7, 4, 4, { s: 1 }],
+            ["uk", "Territorial", 0, 2, 6, 3, 3, {}],
+            ["uk", "Gurkha", 0, 4, 7, 5, 5, { a: 1 }],
+            ["uk", "Indian", 0, 3, 6, 4, 4, {}],
+            ["uk", "Colonial", 0, 2, 6, 3, 3, {}],
             ["usa", "Engineer", 0, 4, 9, 3, 5, { a: 1, s: 1 }],
             ["usa", "Paratroop", 43, 4, 8, 4, 5, { a: 1, s: 1 }],
             ["usa", "Ranger", 42, 4, 8, 4, 5, { a: 1, s: 1 }],
@@ -110,6 +118,9 @@ module Utility
             ["ger", "MG 34", 36, 5, 8, 0, { a: 1, r: 1, j: 3 }],
             ["ger", "MG 44", 42, 8, 8, 0, { a: 1, r: 1, j: 3 }],
             ["ger", "MG 08/15", 17, 10, 12, -1, { r: 1, j: 3 }],
+            ["uk", "Bren LMG", 35, 3, 6, 0, { a: 1, r: 1, j: 3 }],
+            ["uk", "Lewis Gun", 14, 4, 8, 0, { a: 1, r: 1, j: 3 }],
+            ["uk", "Vickers MG", 12, 7, 10, -1, { r: 1, j: 2 }],
             ["usa", "M1918 BAR", 18, 5, 8, 0, { a: 1, r: 1, j: 3 }],
             ["usa", "M1919 Browning", 19, 6, 8, 0, { r: 1, j: 3 }],
             ["usa", "M1917 Browning", 17, 8, 12, -2, { r: 1, j: 3 }],
@@ -136,6 +147,9 @@ module Utility
             ["ger", "8cm GrW 34", 37, 20, 17, -2, { s: 1, m: 3 }],
             ["ger", "kz 8cm GrW 42", 41, 20, 16, -1, { s: 1, m: 3 }],
             ["ger", "12cm GrW 42", 43, 40, 32, 1, { s: 1, m: 4, c: 1 }],
+            ["uk", "2inch Mortar", 37, 7, 10, 0, { m: 2 }],
+            ["uk", "ML 3inch Mortar", 33, 20, 17, -1, { s: 1, m: 3 }],
+            ["uk", "ML 4.2inch Mortar", 40, 32, 32, 1, { s: 1, m: 4, c: 1, sn: 2 }],
             ["usa", "M2 Mortar", 40, 10, 16, -1, { m: 2 }],
             ["usa", "M1 Mortar", 35, 20, 24, -2, { s: 1, m: 3 }],
             ["usa", "M2 4.2inch Mortar", 43, 32, 32, 1, { sn: 2, s: 1, m: 4, c: 1 }],
@@ -163,6 +177,11 @@ module Utility
             ["ger", "Radio 15cm", 34, 64],
             ["ger", "Radio 17cm", 41, 80],
             ["ger", "Radio 21cm", 39, 96],
+            ["uk", "Radio 88mm", 40, 32],
+            ["uk", "Radio 114mm", 38, 40],
+            ["uk", "Radio 140mm", 41, 48],
+            ["uk", "Radio 152mm", 16, 64],
+            ["uk", "Radio 183mm", 40, 96],
             ["usa", "Radio 75mm", 32, 16],
             ["usa", "Radio 105mm", 41, 32],
             ["usa", "Radio 155mm", 42, 64],
@@ -188,6 +207,7 @@ module Utility
           [
             ["ger", "Panzerfaust", 43, 6, 1, 0, { x: 1 }],
             ["ger", "Panzerschreck", 43, 10, 4, 0, { b: 4 }],
+            ["uk", "PIAT", 42, 8, 3, 0, { b: 4 }],
             ["usa", "M1 Bazooka", 42, 8, 4, 0, { b: 5 }],
             ["usa", "M1A1 Bazooka", 43, 10, 4, 0, { b: 4 }],
             ["usa", "M9 Bazooka", 43, 12, 3, 0, { b: 4 }],
@@ -201,28 +221,31 @@ module Utility
             lu["#{rocket[:c]}_#{sanitize(rocket[:n])}".to_sym] = rocket
           end
           [
-            # TODO: currently no light AT
+            ["uk", "Boys AT Rifle", 37, 2, 8, -1, { b: 3 }],
           ].each do |unit|
             at = { t: "sw", i: "antitank" }
             unit.each_with_index do |v, i|
               at[key[i]] = v
             end
-            at[:o].merge!({ t: 1, b: 3 })
+            at[:o].merge!({ t: 1, p: 1 })
             lu["#{at[:c]}_#{sanitize(at[:n])}".to_sym] = at
           end
           t = "sw"
           %w[ger usa ussr].each do |c|
             i = "flamethrower"
             n = i.capitalize
-            lu["#{c}_ft"] = { c:, t:, n:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 3 } }
+            y = 15
+            lu["#{c}_ft"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 3 } }
             n = "Satchel Charge"
             i = "explosive"
-            lu["#{c}_sc"] = { c:, t:, n:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
+            y = 36
+            lu["#{c}_sc"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
           end
           %w[ussr].each do |c|
             n = "Molotov Coctail"
             i = "explosive"
-            lu["#{c}_mc"] = { c:, t:, n:, i:, f: 4, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
+            y = 39
+            lu["#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
           end
           lu
         end
@@ -233,6 +256,9 @@ module Utility
           [
             ["ger", "7.5cm leIG 18", 32, 16, 14, {}],
             ["ger", "15cm sIG 33", 36, 64, 18, {}],
+            ["uk", "QF 25-Pounder", 40, 20, 16, {}],
+            ["uk", "QF 25Pdr Short", 43, 16, 15, {}],
+            ["uk", "QF 4.5inch", 8, 32, 20, {}],
             ["usa", "75mm M1 Pack", 27, 16, 16, {}],
             ["ussr", "76mm M1927", 28, 16, 16, {}],
           ].each do |unit|
@@ -260,6 +286,10 @@ module Utility
             ["ger", "8.8cm Pak 43", 43, 64, 32, { y: 1 }],
             ["ger", "12.8cm Pak 44", 44, 96, 40, { y: 1 }],
             ["ger", "8.8cm Flak 36", 36, 48, 30, { y: 1 }],
+            ["uk", "QF 2-Pounder", 36, 10, 12, {}],
+            ["uk", "QF 6Pdr Mk II", 41, 20, 16, {}],
+            ["uk", "QF 6Pdr Mk IV", 41, 24, 20, {}],
+            ["uk", "QF 17-Pounder", 43, 48, 24, {}],
             ["usa", "37mm M3", 38, 7, 12, {}],
             ["usa", "57mm M1A2", 43, 20, 16, {}],
             ["usa", "75mm M1897", 40, 24, 20, {}],
@@ -363,7 +393,7 @@ module Utility
           lu
         end
 
-        def assault_guns
+        def sp_guns
           lu = {}
           key = %i[c n y s f r v o]
           [
@@ -387,7 +417,7 @@ module Utility
             ["ger", "Jagdpanther", 44, 6, 64, 32, 6, { t: 1, p: 1, ha: { f: 6, s: 4, r: 3 } }],
             ["ger", "Jagdtiger", 44, 8, 96, 40, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 6 } }],
             ["uk", "M10 Achilles", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
-            ["uk", "M10C Achilles", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
+            ["uk", "M10 Achilles C", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
             ["usa", "M3A1 Stuart FT", 44, 3, 24, 1, 5, { i: 1, ha: { f: 4, s: 3, r: 3 } }],
             ["usa", "M4A3R5 Sherman", 44, 5, 24, 1, 5, { i: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 2 }],
             ["usa", "M10", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
@@ -412,38 +442,6 @@ module Utility
             spg[:o][:u] = 1 if spg[:o][:ta]
             spg[:o].merge!({ j: 3, k: 1 })
             lu["#{spg[:c]}_#{sanitize(spg[:n])}".to_sym] = spg
-          end
-          lu
-        end
-
-        def armored_cars
-          lu = {}
-          key = %i[c n y s f r v o]
-          [
-            ["chi", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["fra", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
-            ["ger", "SdKfz 221", 35, 3, 5, 8, 7, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ger", "SdKfz 222", 37, 3, 3, 10, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ger", "SdKfz 234/1", 43, 3, 4, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 0, r: 0 } }],
-            ["ger", "SdKfz 234/2", 43, 3, 24, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
-            ["ger", "SdKfz 234/3", 44, 3, 16, 16, 6, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
-            ["ger", "SdKfz 234/4", 44, 3, 32, 24, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
-            ["uk", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["uk", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
-            ["usa", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["usa", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
-            ["usa", "M20 Greyhound", 43, 3, 8, 12, 5, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
-            ["ussr", "BA-10", 38, 3, 12, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
-            ["ussr", "BA-20", 36, 3, 4, 6, 6, { r: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
-            ["ussr", "BA-64", 42, 3, 4, 6, 7, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
-            ["ussr", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
-          ].each do |unit|
-            ac = { t: "ac", i: "ac" }
-            unit.each_with_index do |v, i|
-              ac[key[i]] = v
-            end
-            ac[:o].merge!({ j: 3, u: 1, w: 1 })
-            lu["#{ac[:c]}_#{sanitize(ac[:n])}".to_sym] = ac
           end
           lu
         end
@@ -484,6 +482,38 @@ module Utility
             ht[:o].merge!({ k: 1 })
             ht[:o][:m] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3 })
             lu["#{ht[:c]}_#{sanitize(ht[:n])}".to_sym] = ht
+          end
+          lu
+        end
+
+        def armored_cars
+          lu = {}
+          key = %i[c n y s f r v o]
+          [
+            ["chi", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+            ["fra", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
+            ["ger", "SdKfz 221", 35, 3, 5, 8, 7, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["ger", "SdKfz 222", 37, 3, 3, 10, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["ger", "SdKfz 234/1", 43, 3, 4, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 0, r: 0 } }],
+            ["ger", "SdKfz 234/2", 43, 3, 24, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
+            ["ger", "SdKfz 234/3", 44, 3, 16, 16, 6, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
+            ["ger", "SdKfz 234/4", 44, 3, 32, 24, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
+            ["uk", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+            ["uk", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
+            ["usa", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+            ["usa", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
+            ["usa", "M20 Greyhound", 43, 3, 8, 12, 5, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
+            ["ussr", "BA-10", 38, 3, 12, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
+            ["ussr", "BA-20", 36, 3, 4, 6, 6, { r: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
+            ["ussr", "BA-64", 42, 3, 4, 6, 7, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
+            ["ussr", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+          ].each do |unit|
+            ac = { t: "ac", i: "ac" }
+            unit.each_with_index do |v, i|
+              ac[key[i]] = v
+            end
+            ac[:o].merge!({ j: 3, u: 1, w: 1 })
+            lu["#{ac[:c]}_#{sanitize(ac[:n])}".to_sym] = ac
           end
           lu
         end

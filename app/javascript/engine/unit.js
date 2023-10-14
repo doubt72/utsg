@@ -18,6 +18,8 @@ const unitStatus = {
   //    ha: hull armor
   //    ta: turret armor
   //        f: front, s: side, r: rear
+  //    sp: sponson mounted gun
+  //        f: firepower, r: range
   // x: count
 
 const Unit = class {

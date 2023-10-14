@@ -65,11 +65,37 @@ export default function DebugUnits() {
     })
   }
 
+  const years = () => {
+    y = {}
+    for (u of Object.values(units)) {
+      y[u.y] = true
+    }
+    return Object.keys(y).sort((a,b) => a-b)
+  }
+
   return (
     <div className="p1em flex flex-wrap">
-      { Object.values(units).map((unit, i) => <div key={i}>{unitCounter(new Unit(unit))}</div>) }
-      { usedTanks() } { usedSPG() }
-      { usedInfantry() }
+      {
+        years().map((y, i) => {
+          return (
+            <div key={i} className="flex flex-wrap">
+              {
+                Object.values(units).filter(u => Number(u.y) === Number(y)).map(
+                  (c, j) => <div key={j}>{unitCounter(new Unit(c))}</div>
+                )
+              }
+            </div>
+          )
+        })
+      }
     </div>
   )
+
+  // return (
+  //   <div className="p1em flex flex-wrap">
+  //     { Object.values(units).map((unit, i) => <div key={i}>{unitCounter(new Unit(unit))}</div>) }
+  //     { usedTanks() } { usedSPG() }
+  //     { usedInfantry() }
+  //   </div>
+  // )
 }
