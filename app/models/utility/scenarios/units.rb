@@ -115,13 +115,13 @@ module Utility
             lu["#{name}_s".to_sym] = squad
             lu["#{name}_t".to_sym] = team
           end
-          %w[ger usa ussr].each do |c|
+          all_factions.each do |c|
             t = "tm"
             lu["#{c}_elite_crew_t"] = {
-              c:, t:, n: "Crew", i: "crew", y: 30, m: 4, s: 3, f: 1, r: 1, v: 5, o: { cw: 2 },
+              c:, t:, n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: { cw: 2 },
             }
             lu["#{c}_crew_t"] = {
-              c:, t:, n: "Crew", i: "crew", y: 30, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 },
+              c:, t:, n: "Crew", i: "crew", y: 0, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 },
             }
           end
           lu
@@ -135,7 +135,7 @@ module Utility
             ["ger", "MG 44", 42, 8, 8, 0, { a: 1, r: 1, j: 3 }],
             ["ger", "MG 08/15", 17, 10, 12, -1, { r: 1, j: 3 }],
             ["ita", "Breda 30", 30, 3, 7, 0, { a: 1, r: 1, j: 4 }],
-            ["ita", "Fiat-Revelli 1935", 36, 6, 10, -1, { r: 1, j: 4 }],
+            ["ita", "Fiat-Revelli 1935", 36, 6, 10, -1, { r: 1, j: 4, sn: 1 }],
             ["ita", "Breda M37", 37, 8, 12, -1, { r: 1, j: 3 }],
             ["jap", "Type 11 LMG", 22, 3, 7, 0, { r: 1, j: 5 }],
             ["jap", "Type 96 LMG", 36, 4, 8, 0, { a: 1, r: 1, j: 4 }],
@@ -211,9 +211,9 @@ module Utility
             ["ita", "Radio 75mm", 37, 16],
             ["ita", "Radio 100mm", 14, 32],
             ["ita", "Radio 149mm", 14, 64],
-            ["jap", "Radio 7.5cm", 39, 16],
-            ["jap", "Radio 10cm", 39, 32],
-            ["jap", "Radio 15cm", 39, 64],
+            ["jap", "Radio 7.5cm", 36, 16],
+            ["jap", "Radio 10cm", 31, 32],
+            ["jap", "Radio 15cm", 37, 64],
             ["uk", "Radio 88mm", 40, 32],
             ["uk", "Radio 114mm", 38, 40],
             ["uk", "Radio 140mm", 41, 48],
@@ -283,7 +283,7 @@ module Utility
             n = "Molotov Cocktail"
             i = "explosive"
             y = 39
-            lu["#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, a: 1, x: 1, t: 1 } }
+            lu["#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, a: 1, x: 1, t: 1, sn: 1 } }
           end
           lu
         end
@@ -294,11 +294,10 @@ module Utility
           [
             ["ger", "7.5cm leIG 18", 32, 16, 14, {}],
             ["ger", "15cm sIG 33", 36, 64, 18, {}],
-            ["ita", "Cannone da 65/17", 13, 12, 12, { sn: 1 }],
+            ["ita", "Cannone da 65/17", 13, 12, 12, { sn: 2 }],
             ["ita", "Obice da 75/18", 34, 16, 14, {}],
             ["ita", "Obice da 100/17", 14, 32, 16, {}],
-            ["jap", "Type 90 75mm", 35, 16, 14, {}],
-            ["jap", "Type 92 70mm", 32, 12, 14, {}],
+            ["jap", "70mm Type 92", 32, 12, 14, {}],
             ["uk", "QF 25-Pounder", 40, 20, 16, {}],
             ["uk", "QF 25Pdr Short", 43, 16, 15, {}],
             ["uk", "QF 4.5inch", 8, 32, 20, {}],
@@ -323,9 +322,9 @@ module Utility
             ["ger", "2.8cm sPzB 41", 41, 8, 10, {}],
             ["ger", "3.7cm Pak 36", 36, 8, 16, {}],
             ["ger", "5cm Pak 38", 40, 24, 16, {}],
-            ["ger", "7.5cm Pak 97/38", 42, 24, 20, {}],
+            ["ger", "7.5cm Pak 97/38", 42, 24, 20, { sn: 1 }],
             ["ger", "7.5cm Pak 40", 42, 32, 24, {}],
-            ["ger", "8.8cm Pak 43/41", 43, 64, 32, {}],
+            ["ger", "8.8cm Pak 43/41", 43, 64, 32, { sn: 1 }],
             ["ger", "8.8cm Pak 43", 43, 64, 32, { y: 1 }],
             ["ger", "12.8cm Pak 44", 44, 96, 40, { y: 1 }],
             ["ger", "8.8cm Flak 36", 36, 48, 30, { y: 1 }],
@@ -333,9 +332,10 @@ module Utility
             ["ita", "Cannone da 47/40", 38, 16, 16, { sn: 2 }],
             ["ita", "Cannone da 75/46", 34, 32, 24, { sn: 2 }],
             ["ita", "Cannone da 90/53", 39, 48, 32, { sn: 2 }],
-            ["jap", "Type 94 37mm", 36, 8, 14, {}],
-            ["jap", "Type 1 37mm", 41, 10, 16, {}],
-            ["jap", "Type 1 47mm", 42, 16, 16, {}],
+            ["jap", "37mm Type 94", 36, 8, 14, {}],
+            ["jap", "37mm Type 1", 41, 10, 16, {}],
+            ["jap", "47mm Type 1", 42, 16, 16, {}],
+            ["jap", "75mm Type 90", 42, 32, 20, {}],
             ["uk", "QF 2-Pounder", 36, 10, 12, {}],
             ["uk", "QF 6Pdr Mk II", 41, 20, 16, {}],
             ["uk", "QF 6Pdr Mk IV", 41, 24, 20, {}],
@@ -390,6 +390,19 @@ module Utility
             ["ger", "Panther A/G", 43, 6, 40, 32, 6, { t: 1, p: 1, ha: { f: 6, s: 3, r: 3 }, ta: { f: 7, s: 4, r: 4 } }],
             ["ger", "Tiger I", 42, 7, 48, 32, 5, { t: 1, p: 1, ha: { f: 7, s: 4, r: 4 }, ta: { f: 8, s: 6, r: 6 }, bd: 3 }],
             ["ger", "Tiger II", 44, 8, 64, 32, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 6 }, ta: { f: 9, s: 6, r: 6 }, bd: 4 }],
+            ["ita", "L5/30", 30, 3, 10, 8, 4, { r: 1, ha: { f: 1, s: 1, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["ita", "L6/40", 40, 3, 3, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 1, r: 0 }, ta: { f: 3, s: 3, r: 3 } }],
+            ["ita", "M11/39", 39, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 1, r: 0 }, ta: { f: 3, s: 3, r: 3 } }],
+            ["ita", "M13/40", 40, 3, 12, 14, 4, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 3, r: 3 } }],
+            ["ita", "M14/41", 41, 3, 12, 14, 4, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 3, r: 3 } }],
+            ["jap", "Type 94", 34, 3, 4, 8, 4, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 0, r: 0 } }],
+            ["jap", "Type 97 Te-Ke", 38, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["jap", "Type 97 Te-Ke MG", 30, 3, 4, 8, 4, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, sn: 2 }],
+            ["jap", "Type 95 Ha-Go", 33, 3, 4, 12, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["jap", "Type 89 I-Go", 31, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 0, r: 0 } }],
+            ["jap", "Type 97 Chi-Ha", 38, 3, 10, 12, 5, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 }, sn: 1 }],
+            ["jap", "Type 97 Kai", 39, 4, 16, 14, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 }, sn: 1 }],
+            ["jap", "Type 2 Ka-Mi", 41, 3, 8, 14, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, amp: 1 }],
             ["uk", "Light Tank Mk VI", 36, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, sn: 1 }],
             ["uk", "Tetrarch", 38, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
             ["uk", "Cruiser Mk I", 38, 3, 10, 12, 5, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
@@ -462,7 +475,8 @@ module Utility
             unit.each_with_index do |v, i|
               tank[key[i]] = v
             end
-            tank[:o].merge!({ j: 3, u: 3, k: 1 })
+            tank[:i] = "tank-amp" if tank[:o][:amp]
+            tank[:o].merge!({ j: 3, u: 1, k: 1 })
             lu["#{tank[:c]}_#{sanitize(tank[:n])}".to_sym] = tank
           end
           lu
@@ -472,24 +486,33 @@ module Utility
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["ger", "PzKpfw II Flamm", 37, 3, 24, 1, 6, { i: 1, ha: { f: 3, s: 1, r: 1 } }],
+            ["ger", "PzKpfw II Flamm", 40, 3, 24, 1, 6, { i: 1, ha: { f: 3, s: 1, r: 1 } }],
             ["ger", "StuG III-A", 40, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: 1 }, bd: 3 }],
             ["ger", "StuG III-B/E", 40, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: 1 } }],
             ["ger", "StuG III-F/G", 42, 4, 32, 24, 5, { t: 1, p: 1, ha: { f: 6, s: 1, r: 1 } }],
             ["ger", "StuH 42", 42, 4, 32, 24, 5, { t: 1, g: 1, ha: { f: 6, s: 1, r: 1 } }],
             ["ger", "StuG IV", 43, 4, 32, 24, 5, { t: 1, p: 1, ha: { f: 6, s: 1, r: 1 } }],
             ["ger", "SdKfz 166", 42, 5, 64, 20, 4, { t: 1, g: 1, ha: { f: 7, s: 1, r: 1 } }],
-            ["ger", "Panzerjäger I", 40, 3, 12, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["ger", "Marder I", 42, 3, 32, 24, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["ger", "Marder II", 42, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: 1 } }],
-            ["ger", "Marder III", 42, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: 0 } }],
-            ["ger", "Marder III-H/M", 43, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 1, r: 0 } }],
-            ["ger", "Nashorn", 42, 5, 64, 32, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: 1 } }],
+            ["ger", "Panzerjäger I", 40, 3, 12, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: -1 } }],
+            ["ger", "Marder I", 42, 3, 32, 24, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: -1 } }],
+            ["ger", "Marder II", 42, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: -1 } }],
+            ["ger", "Marder III", 42, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: -1 } }],
+            ["ger", "Marder III-H/M", 43, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 1, r: -1 } }],
+            ["ger", "Nashorn", 42, 5, 64, 32, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: -1 } }],
             ["ger", "Elefant", 42, 8, 64, 32, 4, { t: 1, p: 1, ha: { f: 9, s: 3, r: 3 } }],
             ["ger", "Jagdpanzer IV", 43, 5, 40, 32, 5, { t: 1, p: 1, ha: { f: 6, s: 3, r: 2 } }],
             ["ger", "Hetzer", 44, 4, 40, 32, 4, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 } }],
             ["ger", "Jagdpanther", 44, 6, 64, 32, 6, { t: 1, p: 1, ha: { f: 6, s: 4, r: 3 } }],
             ["ger", "Jagdtiger", 44, 8, 96, 40, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 6 } }],
+            ["ita", "L3/33", 33, 3, 3, 6, 6, { r: 1, ha: { f: 1, s: 1, r: -1 } }],
+            ["ita", "L3/35", 35, 3, 10, 8, 6, { r: 1, ha: { f: 1, s: 1, r: -1 } }],
+            ["ita", "L3/38", 38, 3, 10, 10, 6, { r: 1, ha: { f: 1, s: 1, r: -1 } }],
+            ["ita", "Sv da 47/32", 42, 3, 12, 14, 4, { t: 1, p: 1, ha: { f: 3, s: 1, r: 1 } }],
+            ["ita", "Sv da 75/18", 42, 3, 16, 14, 5, { t: 1, g: 1, ha: { f: 3, s: 2, r: 2 } }],
+            ["jap", "Type 97 Chi-Ha FT", 41, 3, 24, 1, 5, { i: 1, ha: { f: 2, s: 1, r: 1 }, sn: 3 }],
+            ["jap", "Type 1 Ho-Ni I", 42, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 2, s: 2, r: -1 } }],
+            ["jap", "Type 1 Ho-Ni II", 43, 4, 32, 20, 5, { t: 1, g: 1, ha: { f: 2, s: 2, r: -1 } }],
+            ["jap", "Type 1 Ho-Ni III", 44, 4, 32, 20, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 1 } }],
             ["uk", "Cruiser Mk I CS", 38, 3, 24, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3, s: 1 }],
             ["uk", "Cruiser Mk II CS", 40, 3, 24, 16, 4, { t: 1, g: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, s: 1 }],
             ["uk", "Crusader I CS", 41, 4, 16, 12, 6, { t: 1, g: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 }, bd: 3, s: 1 }],
@@ -506,7 +529,8 @@ module Utility
             # ["fra", "M10", 43, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
             ["uk", "M10 Achilles", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
             ["uk", "M10 Achilles C", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
-            ["ussr", "SU-76", 42, 3, 16, 22, 5, { t: 1, g: 1, ha: { f: 3, s: 1, r: 1 } }],
+            ["ussr", "SU-76", 42, 3, 16, 22, 5, { t: 1, g: 1, ha: { f: 3, s: 1, r: 1 }, bd: 4 }],
+            ["ussr", "SU-76M", 42, 3, 16, 22, 5, { t: 1, g: 1, ha: { f: 3, s: 1, r: -1 } }],
             ["ussr", "SU-85", 43, 5, 48, 28, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 } }],
             ["ussr", "SU-100", 44, 5, 80, 30, 6, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 } }],
             ["ussr", "SU-122", 42, 5, 40, 30, 6, { t: 1, g: 1, ha: { f: 3, s: 3, r: 3 } }],
@@ -519,6 +543,7 @@ module Utility
               spg[key[i]] = v
             end
             spg[:i] = "spg" if spg[:o][:g]
+            spg[:i] = "spgmg" if spg[:o][:r]
             spg[:i] = "spat" if spg[:o][:p]
             spg[:i] = "spft" if spg[:o][:i]
             spg[:o][:u] = 1 if spg[:o][:ta]
@@ -542,6 +567,9 @@ module Utility
             ["ger", "SdKfz 251/9", 39, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 251/10", 39, 3, 8, 16, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 251/16", 39, 3, 24, 1, 5, { i: 1, ha: { f: 1, s: 0, r: 0 } }],
+            ["jap", "Type 98 So-Da", 41, 3, 0, 0, 5, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+            ["jap", "Type 100 Te-Re", 40, 3, 0, 0, 5, { r: 1, ha: { f: 0, s: 0, r: 0 } }],
+            ["jap", "Type 1 Ho-Ga", 44, 3, 4, 8, 6, { r: 1, ha: { f: 0, s: 0, r: 0 } }],
             ["uk", "Loyd Carrier", 39, 3, 0, 0, 6, { r: 1, ha: { f: 0, s: 0, r: 0 } }],
             ["uk", "Universal Carrier", 40, 3, 3, 6, 7, { r: 1, ha: { f: 0, s: 0, r: 0 }, sn: 1 }],
             ["uk", "U Carrier 2Pdr", 41, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0 } }],
@@ -583,6 +611,9 @@ module Utility
             ["ger", "SdKfz 234/2", 43, 3, 24, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
             ["ger", "SdKfz 234/3", 44, 3, 16, 16, 6, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
             ["ger", "SdKfz 234/4", 44, 3, 32, 24, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
+            ["ita", "Autoblindo 41", 41, 3, 3, 12, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["jap", "Chiyoda AC", 31, 3, 4, 8, 5, { r: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
+            ["jap", "Sumida Type 91", 33, 3, 4, 8, 3, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
             ["uk", "AEC AC I", 41, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 5, s: 4, r: 4 } }],
             ["uk", "AEC AC II", 42, 3, 20, 16, 5, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
             ["uk", "AEC AC II CS", 42, 3, 16, 12, 5, { t: 1, g: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],

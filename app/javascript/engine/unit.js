@@ -220,7 +220,8 @@ const Unit = class {
   get displayHullArmor() {
     if (this.hullArmor && !this.isWreck) {
       const armor = this.hullArmor
-      return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: "" }
+      const value = `${armor[0]}-${armor[1]}-${armor[2] > -1 ? armor[2] : "X"}`
+      return { value: value, display: "" }
     } else {
       return { value: null }
     }
