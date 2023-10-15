@@ -29,13 +29,17 @@ module Utility
           sanitized
         end
 
+        def all_factions
+          %w[ger ita jap uk usa ussr fra fin chi axm alm]
+        end
+
         def leaders
           # Currently 6-2, 5-2, 6-1, 5-1, 4-1, 3-1
           i = "leader"
           y = 0
           s = f = r = 1
           lu = {}
-          %w[ger ita jap fin rom uk usa ussr fra chi pol gre nor phi net].each do |nation|
+          all_factions.each do |nation|
             [6, 5, 4, 3].each do |m|
               [2, 1].each do |l|
                 next if l == 2 && m < 5
@@ -64,20 +68,20 @@ module Utility
             ["ger", "Conscript", 0, 2, 6, 3, 3, {}],
             ["uk", "Engineer", 0, 4, 9, 5, 5, { a: 1, s: 1 }],
             ["uk", "Airborne", 42, 4, 8, 5, 5, { a: 1, s: 1 }],
+            ["uk", "Gurkha", 0, 4, 7, 5, 5, { a: 1 }],
             ["uk", "Guard", 0, 4, 7, 5, 5, { s: 1 }],
             ["uk", "Line", 0, 3, 7, 4, 4, { s: 1 }],
-            ["uk", "Territorial", 0, 2, 6, 3, 3, {}],
-            ["uk", "Gurkha", 0, 4, 7, 5, 5, { a: 1 }],
             ["uk", "Indian", 0, 3, 6, 4, 4, {}],
+            ["uk", "Territorial", 0, 2, 6, 3, 3, {}],
             ["uk", "Colonial", 0, 2, 6, 3, 3, {}],
             ["usa", "Engineer", 0, 4, 9, 3, 5, { a: 1, s: 1 }],
             ["usa", "Paratroop", 43, 4, 8, 4, 5, { a: 1, s: 1 }],
             ["usa", "Ranger", 42, 4, 8, 4, 5, { a: 1, s: 1 }],
+            ["usa", "Marine Rifle", 0, 4, 7, 6, 5, { a: 1 }],
             ["usa", "Veteran", 0, 4, 7, 6, 4, { s: 1 }],
             ["usa", "Rifle", 0, 3, 7, 6, 4, { s: 1 }],
             ["usa", "Garrison", 0, 2, 6, 4, 3, {}],
             ["usa", "Green", 0, 2, 6, 4, 3, {}],
-            ["usa", "Marine Rifle", 0, 4, 7, 6, 5, { a: 1 }],
             ["ussr", "Assault", 41, 4, 9, 2, 5, { a: 1, s: 1 }],
             ["ussr", "Guards Rifle", 41, 4, 7, 5, 5, {}],
             ["ussr", "Guards SMG", 41, 4, 8, 3, 5, { a: 1 }],
@@ -205,13 +209,13 @@ module Utility
           lu = {}
           key = %i[c n y f r v o]
           [
-            ["ger", "Panzerfaust", 43, 6, 1, 0, { x: 1 }],
-            ["ger", "Panzerschreck", 43, 10, 4, 0, { b: 4 }],
+            ["ger", "Panzerfaust", 43, 16, 1, 0, { x: 1 }],
+            ["ger", "Panzerschreck", 43, 12, 3, 0, { b: 4 }],
             ["uk", "PIAT", 42, 8, 3, 0, { b: 4 }],
             ["usa", "M1 Bazooka", 42, 8, 4, 0, { b: 5 }],
             ["usa", "M1A1 Bazooka", 43, 10, 4, 0, { b: 4 }],
-            ["usa", "M9 Bazooka", 43, 12, 3, 0, { b: 4 }],
-            ["ussr", "Ampulomet", 41, 6, 6, -1, { b: 5 }],
+            ["usa", "M9 Bazooka", 43, 10, 4, 0, { b: 4 }],
+            ["ussr", "Ampulomet", 41, 12, 6, -1, { b: 5 }],
           ].each do |unit|
             rocket = { t: "sw", i: "rocket" }
             unit.each_with_index do |v, i|
@@ -231,7 +235,7 @@ module Utility
             lu["#{at[:c]}_#{sanitize(at[:n])}".to_sym] = at
           end
           t = "sw"
-          %w[ger usa ussr].each do |c|
+          all_factions.each do |c|
             i = "flamethrower"
             n = i.capitalize
             y = 15
@@ -241,7 +245,7 @@ module Utility
             y = 36
             lu["#{c}_sc"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
           end
-          %w[ussr].each do |c|
+          %w[fin ussr].each do |c|
             n = "Molotov Coctail"
             i = "explosive"
             y = 39
@@ -316,15 +320,13 @@ module Utility
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["chi", "M4A4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["fra", "M4A4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["ger", "PzKpfw I", 34, 3, 6, 8, 5, { r: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["ger", "PzKpfw I", 34, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
             ["ger", "PzKpfw II-A/E", 37, 3, 3, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
             ["ger", "PzKpfw II-F", 41, 3, 3, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
             ["ger", "PzKpfw II Luchs", 43, 3, 4, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
             ["ger", "PzKpfw 35(t)", 38, 3, 8, 12, 5, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 2 } }],
-            ["ger", "PzKpfw 38(t)-A/D", 39, 3, 8, 14, 5, { sn: 1, t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 } }],
-            ["ger", "PzKpfw 38(t)-E/G", 40, 3, 8, 14, 5, { sn: 1, t: 1, p: 1, ha: { f: 4, s: 1, r: 1 }, ta: { f: 4, s: 1, r: 1 } }],
+            ["ger", "PzKpfw 38(t) A/D", 39, 3, 8, 14, 5, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 }, sn: 1 }],
+            ["ger", "PzKpfw 38(t) E/G", 40, 3, 8, 14, 5, { t: 1, p: 1, ha: { f: 4, s: 1, r: 1 }, ta: { f: 4, s: 1, r: 1 }, sn: 1 }],
             ["ger", "PzKpfw III ('39)", 39, 4, 8, 14, 5, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
             ["ger", "PzKpfw III ('40)", 40, 4, 16, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
             ["ger", "PzKpfw III-J", 41, 4, 16, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 } }],
@@ -342,23 +344,54 @@ module Utility
             ["ger", "Panther A/G", 43, 6, 40, 32, 6, { t: 1, p: 1, ha: { f: 6, s: 3, r: 3 }, ta: { f: 7, s: 4, r: 4 } }],
             ["ger", "Tiger I", 42, 7, 48, 32, 5, { t: 1, p: 1, ha: { f: 7, s: 4, r: 4 }, ta: { f: 8, s: 6, r: 6 }, bd: 3 }],
             ["ger", "Tiger II", 44, 8, 64, 32, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 6 }, ta: { f: 9, s: 6, r: 6 }, bd: 4 }],
-            ["uk", "M3 Stuart I", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["uk", "M22 Locust", 42, 3, 7, 10, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 0, r: 0 } }],
-            ["uk", "M24 Chaffee", 44, 4, 24, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 } }],
-            ["uk", "M3 Lee I", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 24, r: 12 } }],
-            ["uk", "M3 Grant I", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 24, r: 12 } }],
-            ["uk", "M4 Sherman I", 42, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 5, s: 4, r: 4 } }],
-            ["uk", "M4 Sherman IIA", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["uk", "Sherman Firefly", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["uk", "Light Tank Mk VI", 36, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, sn: 1 }],
+            ["uk", "Tetrarch", 38, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["uk", "Cruiser Mk I", 38, 3, 10, 12, 5, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
+            ["uk", "Cruiser Mk II", 40, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
+            ["uk", "Cruiser Mk III", 40, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
+            ["uk", "Cruiser Mk IV", 40, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
+            ["uk", "Crusader I", 41, 4, 10, 12, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, bd: 3 }],
+            ["uk", "Crusader II", 41, 4, 10, 12, 6, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 3, r: 3 }, bd: 3 }],
+            ["uk", "Crusader III", 42, 4, 20, 16, 6, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 3, r: 3 }, bd: 3 }],
+            ["uk", "Centaur", 44, 5, 24, 16, 7, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 4, r: 4 } }],
+            ["uk", "Cromwell", 44, 5, 24, 16, 7, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 4, r: 4 } }],
+            ["uk", "Challenger", 44, 5, 48, 32, 6, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 5, s: 3, r: 3 } }],
+            ["uk", "Comet", 44, 6, 40, 28, 6, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 7, s: 4, r: 4 } }],
+            ["uk", "Matilda I", 38, 3, 8, 12, 3, { r: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
+            ["uk", "Matilda II", 39, 5, 10, 12, 4, { t: 1, p: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 } }],
+            ["ussr", "Matilda II", 41, 5, 10, 12, 4, { t: 1, p: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 } }],
+            ["uk", "Valentine I-VII", 40, 4, 10, 12, 5, { t: 1, p: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 } }],
+            ["uk", "Valentine IX-X", 43, 4, 20, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 } }],
+            ["ussr", "Valentine", 41, 4, 10, 12, 5, { t: 1, p: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 } }],
+            ["uk", "Churchill I-II", 41, 6, 10, 12, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["uk", "Churchill III-IV", 42, 6, 20, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["uk", "Churchill V-VI", 43, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["uk", "Churchill VII-VIII", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 } }],
+            ["ussr", "Churchill II", 41, 6, 10, 12, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["ussr", "Churchill III", 42, 6, 20, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
             ["usa", "M2A4", 35, 3, 6, 8, 7, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
             ["usa", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
             ["usa", "M5 Stuart", 42, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
+            ["uk", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
+            ["ussr", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 }, bd: 4 }],
+            ["uk", "M22 Locust", 42, 3, 7, 10, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 0, r: 0 } }],
             ["usa", "M24 Chaffee", 44, 4, 24, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 } }],
+            ["uk", "M24 Chaffee", 44, 4, 24, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 } }],
             ["usa", "M3 Lee", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 24, r: 12 } }],
+            ["uk", "M3 Lee", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 24, r: 12 } }],
+            ["uk", "M3 Grant", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 24, r: 12 } }],
+            ["ussr", "M3 Grant", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, bd: 4, sg: { f: 24, r: 12 } }],
             ["usa", "M4 Sherman", 42, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 5, s: 4, r: 4 } }],
             ["usa", "M4(76) Sherman", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 1 }],
             ["usa", "M4A3E2 Sherman", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 5 }, ta: { f: 9, s: 9, r: 9 }, sn: 2 }],
             ["usa", "M4A3E8 Sherman", 44, 6, 40, 24, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 5 }, ta: { f: 9, s: 9, r: 9 }, sn: 2 }],
+            ["chi", "M4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["fra", "M4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["uk", "M4 Sherman", 42, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 5, s: 4, r: 4 } }],
+            ["uk", "M4(76) Sherman", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 1 }],
+            ["uk", "Sherman Firefly", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["ussr", "M4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
+            ["ussr", "M4(76) Sherman", 44, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 1 }],
             ["usa", "M26 Pershing", 44, 6, 48, 32, 5, { t: 1, p: 1, ha: { f: 5, s: 5, r: 5 }, ta: { f: 7, s: 5, r: 5 } }],
             ["ussr", "BT-5", 32, 3, 12, 16, 9, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
             ["ussr", "BT-7", 35, 3, 12, 16, 9, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
@@ -378,10 +411,6 @@ module Utility
             ["ussr", "KV-2", 40, 7, 64, 32, 4, { t: 1, g: 1, ha: { f: 7, s: 4, r: 4 }, ta: { f: 7, s: 4, r: 4 }, bd: 3 }],
             ["ussr", "KV-85", 43, 6, 48, 28, 5, { t: 1, p: 1, ha: { f: 7, s: 4, r: 4 }, ta: { f: 7, s: 4, r: 4 } }],
             ["ussr", "IS-2", 44, 6, 96, 32, 5, { t: 1, p: 1, ha: { f: 7, s: 6, r: 6 }, ta: { f: 8, s: 6, r: 6 } }],
-            ["ussr", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 }, bd: 4 }],
-            ["ussr", "M3 Grant", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, bd: 4, sg: { f: 24, r: 12 } }],
-            ["ussr", "M4A2 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["ussr", "M4A2(76) Sherman", 44, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 3 }],
           ].each do |unit|
             tank = { t: "tank", i: "tank" }
             unit.each_with_index do |v, i|
@@ -397,7 +426,6 @@ module Utility
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["fra", "M10", 43, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
             ["ger", "PzKpfw II Flamm", 37, 3, 24, 1, 6, { i: 1, ha: { f: 3, s: 1, r: 1 } }],
             ["ger", "StuG III-A", 40, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: 1 }, bd: 3 }],
             ["ger", "StuG III-B/E", 40, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: 1 } }],
@@ -416,14 +444,22 @@ module Utility
             ["ger", "Hetzer", 44, 4, 40, 32, 4, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 } }],
             ["ger", "Jagdpanther", 44, 6, 64, 32, 6, { t: 1, p: 1, ha: { f: 6, s: 4, r: 3 } }],
             ["ger", "Jagdtiger", 44, 8, 96, 40, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 6 } }],
-            ["uk", "M10 Achilles", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
-            ["uk", "M10 Achilles C", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
+            ["uk", "Cruiser Mk I CS", 38, 3, 24, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
+            ["uk", "Cruiser Mk II CS", 40, 3, 24, 16, 4, { t: 1, g: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
+            ["uk", "Crusader I CS", 41, 4, 16, 12, 6, { t: 1, g: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 }, bd: 3 }],
+            ["uk", "Crusader II CS", 42, 4, 16, 12, 6, { t: 1, g: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 }, bd: 3 }],
+            ["uk", "Matilda II CS", 39, 5, 16, 12, 4, { t: 1, g: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 }, bd: 3 }],
+            ["uk", "Matilda Frog", 44, 5, 24, 1, 4, { i: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 } }],
+            ["uk", "Valentine III CS", 40, 4, 16, 12, 5, { t: 1, g: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 } }],
             ["usa", "M3A1 Stuart FT", 44, 3, 24, 1, 5, { i: 1, ha: { f: 4, s: 3, r: 3 } }],
             ["usa", "M4A3R5 Sherman", 44, 5, 24, 1, 5, { i: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 2 }],
             ["usa", "M10", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
             ["usa", "M10A1", 43, 5, 32, 20, 6, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
             ["usa", "M18 Hellcat", 43, 4, 40, 24, 7, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 } }],
             ["usa", "M36", 44, 5, 48, 32, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 5, s: 3, r: 3 } }],
+            ["fra", "M10", 43, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
+            ["uk", "M10 Achilles", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
+            ["uk", "M10 Achilles C", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
             ["ussr", "SU-76", 42, 3, 16, 22, 5, { t: 1, g: 1, ha: { f: 3, s: 1, r: 1 } }],
             ["ussr", "SU-85", 43, 5, 48, 28, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 } }],
             ["ussr", "SU-100", 44, 5, 80, 30, 6, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 } }],
@@ -450,26 +486,31 @@ module Utility
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["chi", "M5 Half-track", 42, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
-            ["fra", "M9 Half-track", 41, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
-            ["ger", "SdKfz 250/1", 41, 3, 5, 8, 6, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
+            ["ger", "SdKfz 250/1", 41, 3, 8, 8, 6, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 250/7", 41, 3, 20, 16, 6, { t: 1, m: 3, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 250/8", 41, 3, 16, 16, 6, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 250/9", 41, 3, 4, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 250/10", 41, 3, 8, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 250/11", 41, 3, 8, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 } }],
-            ["ger", "SdKfz 251/1", 39, 3, 5, 8, 5, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
+            ["ger", "SdKfz 251/1", 39, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 251/9", 39, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 251/10", 39, 3, 8, 16, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 } }],
             ["ger", "SdKfz 251/16", 39, 3, 24, 1, 5, { i: 1, ha: { f: 1, s: 0, r: 0 } }],
-            ["uk", "M5 Half-track", 42, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
-            ["usa", "M2 Half-track", 41, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
+            ["uk", "Loyd Carrier", 39, 3, 0, 0, 6, { r: 1, ha: { f: 0, s: 0, r: 0 } }],
+            ["uk", "Universal Carrier", 40, 3, 3, 6, 7, { r: 1, ha: { f: 0, s: 0, r: 0 }, sn: 1 }],
+            ["uk", "U Carrier 2Pdr", 41, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0 } }],
+            ["uk", "U Carrier 6Pdr", 41, 3, 20, 16, 7, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0 } }],
+            ["uk", "U Carrier Wasp", 41, 3, 24, 1, 7, { i: 1, ha: { f: 0, s: 0, r: 0 } }],
+            ["usa", "M2 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
             ["usa", "M3 Half-track", 41, 3, 6, 8, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
-            ["usa", "M3A1 Half-track", 42, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
+            ["usa", "M3A1 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
             ["usa", "T19/M21 MMC", 42, 3, 20, 20, 6, { t: 1, m: 3, ha: { f: 1, s: 1, r: 0 } }],
             ["usa", "T48 GMC", 42, 3, 7, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 0 } }],
-            ["ussr", "M5 Half-track", 42, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
-            ["ussr", "M9 Half-track", 41, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
+            ["chi", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
+            ["fra", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
+            ["uk", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
+            ["ussr", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
+            ["ussr", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
           ].each do |unit|
             ht = { t: "ht", i: "ht" }
             unit.each_with_index do |v, i|
@@ -490,23 +531,32 @@ module Utility
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["chi", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["fra", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
-            ["ger", "SdKfz 221", 35, 3, 5, 8, 7, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["ger", "SdKfz 221", 35, 3, 8, 8, 7, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
             ["ger", "SdKfz 222", 37, 3, 3, 10, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
             ["ger", "SdKfz 234/1", 43, 3, 4, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 0, r: 0 } }],
             ["ger", "SdKfz 234/2", 43, 3, 24, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
             ["ger", "SdKfz 234/3", 44, 3, 16, 16, 6, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
             ["ger", "SdKfz 234/4", 44, 3, 32, 24, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 } }],
-            ["uk", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["uk", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
-            ["usa", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+            ["uk", "AEC AC I", 41, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 5, s: 4, r: 4 } }],
+            ["uk", "AEC AC II", 42, 3, 20, 16, 5, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
+            ["uk", "AEC AC II CS", 42, 3, 16, 12, 5, { t: 1, g: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
+            ["uk", "Daimler AC", 41, 3, 10, 12, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["uk", "Daimler AC CS", 41, 3, 16, 12, 5, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["uk", "Humber AC I", 40, 3, 32, 15, 5, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["uk", "Humber AC IV", 42, 3, 24, 16, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["uk", "T17E1 Staghound", 44, 3, 24, 16, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 1, r: 1 }, sn: 1 }],
+            ["uk", "Humber LRC", 40, 3, 2, 8, 8, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
+            ["usa", "M3A1 Scout Car", 39, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
             ["usa", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
-            ["usa", "M20 Greyhound", 43, 3, 8, 12, 5, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
+            ["usa", "M20 Greyhound", 43, 3, 10, 12, 5, { r: 1, ha: { f: 1, s: 0, r: 0 } }],
+            ["chi", "M3A1 Scout Car", 39, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+            ["fra", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
+            ["uk", "M3A1 Scout Car", 39, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
+            ["uk", "M8 Greyhound", 43, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
+            ["ussr", "M3A1 Scout Car", 39, 3, 10, 15, 6, { r: 1, ha: { f: 1, s: 1, r: 0 } }],
             ["ussr", "BA-10", 38, 3, 12, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
             ["ussr", "BA-20", 36, 3, 4, 6, 6, { r: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
             ["ussr", "BA-64", 42, 3, 4, 6, 7, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
-            ["ussr", "M3A1 Scout Car", 39, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 } }],
           ].each do |unit|
             ac = { t: "ac", i: "ac" }
             unit.each_with_index do |v, i|

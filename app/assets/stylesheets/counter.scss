@@ -8,6 +8,15 @@
   border-radius: 0.2rem;
 }
 
+.unit-counter-year {
+  height: 5rem;
+  width: 5rem;
+  margin: 0.2rem;
+  font-size: 3.6rem;
+  color: $gray-a;
+  text-align: center;
+}
+
 .unit-counter-name {
   position: absolute;
   top: 0;
@@ -290,7 +299,7 @@
 
 .unit-counter-range-range {
   bottom: 5px;
-  left: 22px;
+  left: 23px;
 }
 
 .unit-counter-movement-w-range {

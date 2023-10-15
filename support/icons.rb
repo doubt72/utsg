@@ -73,9 +73,9 @@ File.open('leader.svg', 'w') do |file|
     ["A", [45, 50], 0, [0, 1], [90, 55]],
   ], file, true)
   write_path([
-    ["M", 80, 55], ["A", [30, 35], 0, [0, 1], [20, 55]],
+    ["M", 77.5, 55], ["A", [27.5, 35], 0, [0, 1], [22.5, 55]],
   ], file, false)
-  write_path([["M", 35, 40], ["L", 50, 50], ["L", 65, 40]], file, true, 3, "#DDD")
+  write_path([["M", 40, 40], ["L", 50, 50], ["L", 60, 40]], file, true, 3, "#DDD")
   # path = []
   # 0.upto(6) do |n|
   #   x = Math.sin(n * 144.0 / 180 * Math::PI) * -16 + 50

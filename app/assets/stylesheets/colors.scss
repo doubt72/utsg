@@ -45,25 +45,30 @@ $unit-dark-red: #C00;
   background-color: $gray-e;
 }
 
-.nation-ussr { background-color: #EA6; }
-.nation-usa { background-color: #BC5; }
+.nation-ussr { background-color: #DA7; }
+.nation-usa { background-color: #AB5; }
 .nation-uk { background-color: #DC9; }
-// .nation-usm { background-color: #AB4; }
 .nation-fra { background-color: #AAF; }
-.nation-pol { background-color: #FAA; }
-.nation-gre { background-color: #AEE; }
-.nation-nor { background-color: #FFF; }
 .nation-chi { background-color: #CCF; }
-.nation-phi { background-color: #DE6; }
-.nation-net { background-color: #FC5; }
-.nation-bel { background-color: #FC5; }
-.nation-yug { background-color: #FAA; }
+.nation-alm { background-color: #EA9; } // pol, gre, nor, net, yug, bel
 
-.nation-ger { background-color: #CCC; }
-.nation-ita { background-color: #AEA; }
-.nation-jap { background-color: #ED5; }
-.nation-fin { background-color: #E7E7E7; }
-.nation-rom { background-color: #9CB; }
-.nation-bul { background-color: #9CB; }
-.nation-hun { background-color: #9CB; }
-.nation-slo { background-color: #9CB; }
+.nation-ger { background-color: #BBB; }
+.nation-ita { background-color: #9DC; }
+.nation-jap { background-color: #EE5; }
+.nation-fin { background-color: #CCC; }
+.nation-axm { background-color: #7CB; } // slo hun bul rom
+
+// Not used:
+// .nation-usm { background-color: #AB4; }
+// .nation-phi { background-color: #DE6; }
+// .nation-yug { background-color: #FAA; }
+// .nation-net { background-color: #FC5; }
+// .nation-bel { background-color: #FC5; }
+// .nation-gre { background-color: #AEE; }
+// .nation-nor { background-color: #DDF; }
+// .nation-rom { background-color: #9CB; }
+// .nation-bul { background-color: #9CB; }
+// .nation-hun { background-color: #9CB; }
+// .nation-slo { background-color: #9CB; }
+// .nation-pol { background-color: #FAA; }
+

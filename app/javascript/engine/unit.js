@@ -239,16 +239,19 @@ const Unit = class {
   }
 
   get displayFirepower() {
-    // Don't use currentFirepower because we only display the "base" values on the counter
     const location = this.minimumRange ? " unit-counter-firepower-w-range" : " unit-counter-firepower"
     if (this.noFire || this.isPinned) {
       return {
         value: this.currentFirepower, display: `${location} unit-counter-box unit-counter-red-text`
       }
     } else {
+      // Don't use currentFirepower because we only display the "base" values on
+      // the counter except above
+      const firepower = this.baseFirepower == 0 ? "-" : this.baseFirepower
+
       let shape = this.antiTank || this.fieldGun ? " unit-counter-circle" : " unit-counter-box"
       shape = this.offBoard ? " unit-counter-hex" : shape
-      if (this.baseFirepower > 9) {
+      if (firepower > 9) {
         shape = `${shape}-small`
       }
 
@@ -258,7 +261,7 @@ const Unit = class {
       color = this.singleFire ? " unit-counter-black" : color
       color = this.singleFire && this.ignoreTerrain ? " unit-counter-white-black" : color
 
-      return { value: this.baseFirepower, display: `${location}${shape}${color}`}
+      return { value: firepower, display: `${location}${shape}${color}`}
     }
   }
 
