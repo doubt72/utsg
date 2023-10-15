@@ -201,7 +201,7 @@ const Unit = class {
   }
 
   get displayRight() {
-    if (this.currentSmokeCapable) {
+    if (this.currentSmokeCapable && !this.hullArmor) {
       return { value: "S", display: " unit-counter-box-small"}
     } else {
       return { value: null }
@@ -257,9 +257,10 @@ const Unit = class {
 
       let color = this.assault || this.antiTank ? " unit-counter-outline" : ""
       color = this.fieldGun ? " unit-counter-white" : color
+      color = this.fieldGun && this.hullArmor ? " unit-counter-white-black" : color
       color = this.ignoreTerrain ? " unit-counter-yellow" : color
       color = this.singleFire ? " unit-counter-black" : color
-      color = this.singleFire && this.ignoreTerrain ? " unit-counter-white-black" : color
+      color = this.singleFire && this.ignoreTerrain ? " unit-counter-black-yellow" : color
 
       return { value: firepower, display: `${location}${shape}${color}`}
     }

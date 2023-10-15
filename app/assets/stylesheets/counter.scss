@@ -337,10 +337,22 @@
   background-color: white;
 }
 
+.unit-counter-white-black {
+  border: 1px solid black;
+  background-color: white;
+}
+
+
 .unit-counter-black {
   border: 1px solid black;
   background-color: black;
   color: white;
+}
+
+.unit-counter-black-yellow {
+  border: 1px solid $unit-yellow;
+  background-color: black;
+  color: $unit-yellow;
 }
 
 .unit-counter-yellow {
