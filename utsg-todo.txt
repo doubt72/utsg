@@ -8,10 +8,6 @@ Start working on framework
       Terrain
     Units
 
-Fix Long Names
-Years?
-ITA Units
-JAP Units
 FRA Units
 CHI Units
 FIN/ROM
