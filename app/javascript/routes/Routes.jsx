@@ -14,6 +14,7 @@ import ResetPassword from "../components/user/ResetPassword";
 import DeleteAccount from '../components/user/DeleteAccount';
 import NewGame from "../components/game/NewGame";
 import DebugUnits from "../components/game/DebugUnits";
+import ShowGame from "../components/game/ShowGame";
 
 const Routes = () => {
   const publicRoutes = [
@@ -37,7 +38,9 @@ const Routes = () => {
         { path: "/profile", element: <Profile /> },
 
         { path: "/debug/units", element: <DebugUnits /> },
+
         { path: "/new_game", element: <NewGame /> },
+        { path: "/game/:id", element: <ShowGame /> },
       ],
     },
   ]

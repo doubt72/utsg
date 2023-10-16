@@ -61,9 +61,10 @@ module Scenarios
         {
           s: { list: [
             # TODO: turn this back on when done rejiggering CSS
-            # :ussr_leader_5_2,
-            # :ussr_leader_4_1,
-            [8, :ussr_rifle_s],
+            :ussr_leader_5_2,
+            :ussr_leader_4_1,
+            [5, :ussr_rifle_s],
+            [2, :ussr_smg_s],
             :ussr_dp_27,
             :ussr_sg_43,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
@@ -73,8 +74,8 @@ module Scenarios
       def axis_units
         {
           s: { list: [
-            # :ger_leader_6_2,
-            # :ger_leader_4_1,
+            :ger_leader_6_2,
+            :ger_leader_4_1,
             [6, :ger_rifle_s],
             [2, :ger_mg_34],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },

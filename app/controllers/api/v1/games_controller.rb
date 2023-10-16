@@ -27,8 +27,11 @@ module Api
       end
 
       def create
-        game = Game.create(create_params)
-        if !game.errors
+        puts "----0 #{params}"
+        puts "----1 #{create_params}"
+        # game = Game.create(create_params)
+        if false && !game.errors
+          puts game.errors
           render json: game.show_body, status: :ok
         else
           render json: game.errors, status: :unprocessable_entity
@@ -78,23 +81,22 @@ module Api
       end
 
       def create_params
-        params[:game].merge!(owner_id: current_user.id)
-        translate("player_one")
-        translate("player_two")
-
-        params.require(:game).permit(
-          :name, :scenario, :owner_id, :player_one_id, :player_two_id, :metadata
+        p = params.require(:game).permit(
+          :name, :scenario, :player_one, :player_two, :metadata
         )
+        p[:game].merge!(owner_id: current_user.id)
+        translate(p, "player_one").translate(p, "player_two")
       end
 
       def update_params
-        translate("current_player")
-
-        params.require(:game).permit(:current_player_id, :metadata)
+        p = params.require(:game).permit(:current_player, :metadata)
+        translate(p, "current_player")
       end
 
-      def translate(player)
-        params[:game].merge!("#{player}_id".to_sym => User.lookup(params[:game][player.to_sym])&.id)
+      def translate(p, player)
+        p[:game].merge!("#{player}_id".to_sym => User.lookup(p[:game][player.to_sym])&.id)
+        p.delete(player.to_sym)
+        p
       end
 
       def current_game

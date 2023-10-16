@@ -43,7 +43,6 @@ module Utility
             [6, 5, 4, 3].each do |m|
               [2, 1].each do |l|
                 next if l == 2 && m < 5
-                next if l != 2 || m != 6 # TODO: remove after finishing units
 
                 lu["#{nation}_leader_#{m}_#{l}".to_sym] = {
                   c: nation, t: "ldr", n: "Leader", i:, y:, m:, s:, f:, r:, v: 6, o: { l: },
