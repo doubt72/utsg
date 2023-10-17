@@ -4,6 +4,7 @@ import { Scenario } from "./scenario"
 
 const Game = class {
   constructor(data) {
+    if (!data) { return }
     this.id = data.id
     this.name = data.name
     this.scenario = new Scenario(data.scenario)
@@ -17,6 +18,24 @@ const Game = class {
     this.turn = data.metadata.turn
 
     this.resetMoves()
+  }
+
+  actionsAvailable(currentPlayer) {
+    if (this.state === "needs_player") {
+      if (this.ownerName === currentPlayer) {
+        return [{ type: "none", message: "Waiting for player to join" }]
+      } else {
+        return [{ type: "join" }]
+      }
+    } else if (this.state === "ready") {
+      if (this.ownerName === currentPlayer) {
+        return [{ type: "start" }]
+      } else {
+        return [{ type: "none", message: "Waiting for game to start" }]
+      }
+    } else {
+      return [{ type: "none", message: "Not implemented yet" }]
+    }
   }
 
   resetMoves() {

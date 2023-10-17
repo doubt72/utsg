@@ -5,10 +5,11 @@ import { Game } from "../../engine/game";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
 import MoveDisplay from "./MoveDisplay";
+import Gamecontrols from "./GameControls";
 
 export default function GameDisplay() {
   const { id } = useParams()
-  const [game, setGame] = useState({})
+  const [game, setGame] = useState(new Game({}))
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
@@ -44,7 +45,7 @@ export default function GameDisplay() {
   return (
     <div className="main-page">
       <Header />
-      <div className="game-title">
+      <div className="game-control ml05em mr05em mt05em">
         <div className="red monospace mr05em">
           {game.scenario?.code}:
         </div>
@@ -73,8 +74,7 @@ export default function GameDisplay() {
                        showInput={showInput()} />
         </div>
       </div>
-      <div className="standard-body">
-      </div>
+      <Gamecontrols game={game} />
     </div>
   )
 }

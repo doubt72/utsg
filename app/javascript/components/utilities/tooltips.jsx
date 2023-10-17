@@ -16,7 +16,7 @@ const CustomTooltip = (props) => {
 }
 
 CustomTooltip.propTypes = {
-  html: PropTypes.string
+  html: PropTypes.string.isRequired,
 }
 
 

@@ -83,5 +83,5 @@ export default function ScenarioSummary(props) {
 }
 
 ScenarioSummary.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.object.isRequired,
 }

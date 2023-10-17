@@ -116,6 +116,6 @@ export default function ChatDisplay(props) {
 }
 
 ChatDisplay.propTypes = {
-  gameId: PropTypes.number,
-  showInput: PropTypes.bool,
+  gameId: PropTypes.number.isRequired,
+  showInput: PropTypes.bool.isRequired,
 }

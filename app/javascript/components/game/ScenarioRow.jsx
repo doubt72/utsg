@@ -20,10 +20,10 @@ export default function ScenarioRow(props) {
 }
 
 ScenarioRow.propTypes = {
-  onClick: PropTypes.func,
-  selected: PropTypes.bool,
-  code: PropTypes.string,
-  name: PropTypes.string,
-  allies: PropTypes.array,
-  axis: PropTypes.array,
+  onClick: PropTypes.func.isRequired,
+  selected: PropTypes.bool.isRequired,
+  code: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  allies: PropTypes.array.isRequired,
+  axis: PropTypes.array.isRequired,
 }

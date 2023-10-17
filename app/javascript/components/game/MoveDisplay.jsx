@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { getAPI } from "../../utilities/network";
 import PropTypes from "prop-types"
+import { getAPI } from "../../utilities/network";
 import { GameMove } from "../../engine/gameMove";
 
 export default function MoveDisplay(props) {
@@ -66,7 +66,7 @@ export default function MoveDisplay(props) {
 }
 
 MoveDisplay.propTypes = {
-  gameId: PropTypes.number,
-  callback: PropTypes.func,
-  chatInput: PropTypes.bool,
+  gameId: PropTypes.number.isRequired,
+  callback: PropTypes.func.isRequired,
+  chatInput: PropTypes.bool.isRequired,
 }
