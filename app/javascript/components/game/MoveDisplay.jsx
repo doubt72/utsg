@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { getAPI } from "../../utilities/network";
 import PropTypes from "prop-types"
+import { GameMove } from "../../engine/gameMove";
 
 export default function MoveDisplay(props) {
   const [moves, setMoves] = useState([])
@@ -11,12 +12,12 @@ export default function MoveDisplay(props) {
   const subscribe = useCallback(() => {
     sendJsonMessage({
       command: "subscribe",
-      identifier: `{ "channel": "MessageChannel", "game_id": ${props.gameId} }`,
+      identifier: `{ "channel": "MoveChannel", "game_id": ${props.gameId} }`,
     })
   })
 
   useEffect(() => {
-    getAPI(`/api/v1/messages?game_id=${props.gameId}`, {
+    getAPI(`/api/v1/game_moves?game_id=${props.gameId}`, {
       ok: response => response.json().then(json => setMoves(json))
     })
   }, [])
@@ -32,6 +33,7 @@ export default function MoveDisplay(props) {
       const msg = JSON.parse(lastMessage.data).message
       if (msg && msg.body) {
         setMoves([...moves, msg.body])
+        props.callback(msg.body)
       }
     }
   }, [lastMessage])
@@ -41,19 +43,13 @@ export default function MoveDisplay(props) {
   const moveList = (
     <div className={displayClass}>
       {
-        [...moves].map((msg, i) => {
-          const date = new Date(msg.created_at)
-          if (new Date(Date.now() - 24 * 3600 * 1000) > date) {
-            return ("")
-          }
-          const time = `${("0" + date.getHours()).slice (-2)}:` +
-            `${("0" + date.getMinutes()).slice (-2)}:` +
-            `${("0" + date.getSeconds()).slice (-2)}`
+        [...moves].map((m, i) => {
+          const move = new GameMove(m)
           return (
             <div key={i} className="move-output-record">
-              <div className="move-output-date">{time}</div>
+              <div className="move-output-date">{move.formattedDate}</div>
               <div className="move-output-message">
-                <span className="move-output-username">{msg.user}</span>{msg.value}
+                <span className="move-output-username">{move.user}</span>{move.description}
               </div>
             </div>
           )
@@ -71,4 +67,5 @@ export default function MoveDisplay(props) {
 
 MoveDisplay.propTypes = {
   gameId: PropTypes.number,
+  callback: PropTypes.func,
 }

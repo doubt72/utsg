@@ -89,6 +89,7 @@ export default function NewGame() {
 
   const onSubmit = (event) => {
     event.preventDefault()
+    if (event.nativeEvent.submitter.name === "check") { return }
     if (formInput.name == "") {
       setFormErrors({ ...formErrors, name: "please choose a name for the game" })
       return false

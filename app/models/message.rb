@@ -9,10 +9,6 @@ class Message < ApplicationRecord
 
   after_create :broadcast
 
-  def format_created
-    created_at.iso8601
-  end
-
   def username
     user&.username || User::UNKNOWN_USERNAME
   end
@@ -23,12 +19,11 @@ class Message < ApplicationRecord
 
   private
 
+  def format_created
+    created_at.iso8601
+  end
+
   def broadcast
-    ActionCable.server.broadcast(
-      "game-#{game_id || 0}",
-      {
-        body: { created_at: format_created, user: username, value: },
-      }
-    )
+    ActionCable.server.broadcast("messages-#{game_id || 0}", { body: })
   end
 end

@@ -17,12 +17,22 @@ export default function GameDisplay() {
         getAPI(`/api/v1/scenarios/${code}`, {
           ok: response => response.json().then(scenario => {
             json.scenario = scenario
-            setGame(new Game(json))
+            const game = new Game(json)
+            setGame(game)
+            game.resetMoves()
           })
         })
       })
     })
   }, [])
+
+  const moveNotification = (move) => {
+    console.log("Thinking about doing a thing.")
+    if (["create", "join"].includes(move.data.type)) {
+      console.log("I'm doing a thing!")
+      game.resetMoves()
+    }
+  }
 
   return (
     <div className="main-page">
@@ -36,8 +46,9 @@ export default function GameDisplay() {
         </div>
         <div className="ml1em mr1em nowrap">
           (
-            { game.turn >= 0 ? <span>turn {game.turn}/{game.scenario?.turns}</span> : "initial setup" }
-            { game.playerOneName && game.playerTwoName ? "" : " - waiting for player to join" }
+            { game.turn > 0 ? <span>turn {game.turn}/{game.scenario?.turns}</span> : "initial setup" }
+            { game.state === "needs_player" ? " - waiting for player to join" : "" }
+            { game.state === "ready" ? " - waiting for game to start" : "" }
           )
         </div>
         <div className="flex-fill align-end">
@@ -46,7 +57,7 @@ export default function GameDisplay() {
       </div>
       <div className="standard-body">
         <div className="game-page-moves">
-          <MoveDisplay gameId={Number(id)} />
+          <MoveDisplay gameId={Number(id)} callback={moveNotification} />
         </div>
         <div className="chat-section">
           <ChatDisplay gameId={Number(id)}

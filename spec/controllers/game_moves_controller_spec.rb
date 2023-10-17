@@ -22,7 +22,6 @@ RSpec.describe Api::V1::GameMovesController do
 
       json = JSON.parse(response.body)
       expect(json.length).to be == 2
-      expect(json[0]["game_id"]).to be == game.id
     end
 
     it "returns no moves for bogus game id" do

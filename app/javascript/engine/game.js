@@ -1,3 +1,5 @@
+import { getAPI } from "../utilities/network"
+import { GameMove } from "./gameMove"
 import { Scenario } from "./scenario"
 
 const Game = class {
@@ -14,6 +16,19 @@ const Game = class {
 
     this.turn = data.metadata.turn
 
+    this.resetMoves()
+  }
+
+  resetMoves() {
+    this.moves = []
+    getAPI(`/api/v1/game_moves?game_id=${this.id}`, {
+      ok: response => response.json().then(json => {
+        for (const move of json) {
+          // TODO someday need to actually process the moves
+          this.moves.push(new GameMove(move))
+        }
+      })
+    })
   }
 }
 

@@ -30,9 +30,9 @@ CustomLink.propTypes = {
 // Radio button / checkbox
 const CustomCheckbox = (props) => {
   if (props.selected) {
-    return <button className="custom-checkbox custom-checkbox-selected" onClick={props.onClick}><CircleFill /></button>
+    return <button className="custom-checkbox custom-checkbox-selected" name="check" onClick={props.onClick}><CircleFill /></button>
   } else {
-    return <button className="custom-checkbox" onClick={props.onClick}><CircleFill /></button>
+    return <button className="custom-checkbox" name="check" onClick={props.onClick}><CircleFill /></button>
   }
 }
 

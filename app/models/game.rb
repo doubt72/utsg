@@ -33,6 +33,17 @@ class Game < ApplicationRecord
     Game.where("player_one_id = ? OR player_two_id = ?", user.id, user.id)
   end
 
+  def self.create_game(params)
+    game = Game.create(params)
+    if game.persisted?
+      GameMove.create(game:, user: game.owner, player: 1, data: { action: "create" })
+      GameMove.create(
+        game:, user: game.owner, player: game.player_one ? 1 : 2, data: { action: "join" }
+      )
+    end
+    game
+  end
+
   def index_body # rubocop:disable Metrics/AbcSize
     {
       id:, name:, scenario:, state:,
@@ -59,12 +70,20 @@ class Game < ApplicationRecord
   def join(user)
     return nil if game_full? || player_one_id == user.id || player_two_id == user.id
 
-    !player_one_id ? update(player_one_id: user.id) : update(player_two_id: user.id)
+    player = 1
+    if player_one
+      update(player_two_id: user.id)
+      player = 2
+    else
+      update(player_one_id: user.id)
+    end
+    GameMove.create(game: self, user:, player:, data: { action: "join" })
   end
 
   def start(user)
     return nil unless owner_id == user.id && ready?
 
+    GameMove.create(game: self, user:, player: 1, data: { action: "start" })
     in_progress!
     self
   end

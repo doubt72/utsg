@@ -8,6 +8,7 @@ class GameMove < ApplicationRecord
   validates :player, presence: true, numericality: { in: 1..2 }
 
   after_create :update_game_last_move
+  after_create :broadcast
 
   def self.create_move(params)
     game = Game.find_by(id: params[:game_id])
@@ -24,12 +25,22 @@ class GameMove < ApplicationRecord
 
   def body
     {
-      game_id:, user: user&.username || User::UNKNOWN_USERNAME, player:, data:,
-      created_at: created_at.iso8601,
+      user: user&.username || User::UNKNOWN_USERNAME, player:, data:,
+      created_at: format_created,
     }
   end
 
   def update_game_last_move
     game.update!(last_move_id: id)
+  end
+
+  private
+
+  def format_created
+    created_at.iso8601
+  end
+
+  def broadcast
+    ActionCable.server.broadcast("moves-#{game_id || 0}", { body: })
   end
 end

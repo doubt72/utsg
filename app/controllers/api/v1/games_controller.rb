@@ -27,7 +27,7 @@ module Api
       end
 
       def create
-        game = Game.create(create_params)
+        game = Game.create_game(create_params)
         if game.persisted?
           render json: game.show_body, status: :ok
         else

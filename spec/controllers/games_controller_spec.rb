@@ -80,6 +80,21 @@ RSpec.describe Api::V1::GamesController do
       expect(Game.last.name).to be == "new game"
     end
 
+    it "creates initial moves" do
+      login(user1)
+
+      expect do
+        post :create, params: {
+          game: {
+            name: "new game", scenario: "T0", player_one: user1.username, metadata: '{ "turn": 2 }',
+          },
+        }
+      end.to change { GameMove.count }.by(2)
+
+      expect(GameMove.first.data["action"]).to be == "create"
+      expect(GameMove.last.data["action"]).to be == "join"
+    end
+
     it "can't create bogus game" do
       login(user1)
 
@@ -145,6 +160,16 @@ RSpec.describe Api::V1::GamesController do
       expect(response.status).to be == 200
       expect(game2.state).to be == "ready"
       expect(game2.player_two).to be == user2
+    end
+
+    it "creates join move" do
+      login(user2)
+
+      expect do
+        post :join, params: { id: game2.id }
+      end.to change { GameMove.count }.by(1)
+
+      expect(GameMove.last.data["action"]).to be == "join"
     end
 
     it "doesn't allow player to join full game" do
