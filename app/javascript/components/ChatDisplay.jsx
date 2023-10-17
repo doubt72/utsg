@@ -2,8 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { getAPI, postAPI } from "../utilities/network";
 import { ChatButton } from "./utilities/buttons";
+import PropTypes from "prop-types"
 
-export default function ChatDisplay() {
+export default function ChatDisplay(props) {
   const [message, setMessage] = useState("")
   const [chatMessages, setChatMessages] = useState([])
 
@@ -16,13 +17,13 @@ export default function ChatDisplay() {
   const subscribe = useCallback(() => {
     sendJsonMessage({
       command: "subscribe",
-      identifier: '{ "channel": "MessageChannel", "game_id": 0 }',
+      identifier: `{ "channel": "MessageChannel", "game_id": ${props.gameId} }`,
     })
   })
 
   useEffect(() => {
-    getAPI("/api/v1/messages?game_id=0", {
-      ok: response => response.json().then(json => { setChatMessages(json) })
+    getAPI(`/api/v1/messages?game_id=${props.gameId}`, {
+      ok: response => response.json().then(json => setChatMessages(json))
     })
   }, [])
 
@@ -46,7 +47,7 @@ export default function ChatDisplay() {
     if (message === "") {
       return false
     } else {
-      const body = { message: { value: message, game_id: 0 }}
+      const body = { message: { value: message, game_id: props.gameId }}
       postAPI("/api/v1/messages", body, {
         ok: () => setMessage("")
       })
@@ -55,8 +56,10 @@ export default function ChatDisplay() {
 
   let lastUser = ""
 
+  const outputClass = "chat-output " + (props.gameId === 0 ? "main-chat-output" : "game-chat-output")
+
   const chatMessageDispay = (
-    <div className="chat-output">
+    <div className={outputClass}>
       {
         [...chatMessages].map((msg, i) => {
           const date = new Date(msg.created_at)
@@ -84,6 +87,16 @@ export default function ChatDisplay() {
     </div>
   )
 
+  const chatInputMessage = props.gameId === 0 ? "please keep chat messages relevant to game discussion" :
+                                                "chat for current game"
+
+  const showChatBox = () => {
+    if (!localStorage.getItem("username")) { return false }
+    return props.gameId === 0 ||
+           localStorage.getItem("username") === props.playerOneName ||
+           localStorage.getItem("username") === props.playerTwoName
+  }
+
   const chatBox = (
     <form onSubmit={onSubmit} autoComplete="off">
       <div className="chat-entry">
@@ -93,7 +106,7 @@ export default function ChatDisplay() {
           className="chat-input"
           maxLength={1000}
           value={message}
-          placeholder="please keep chat messages relevant to game discussion"
+          placeholder={chatInputMessage}
           onChange={({ target }) => onChange(target.value)}
         />
         <ChatButton />
@@ -104,7 +117,13 @@ export default function ChatDisplay() {
   return (
     <div>
       { chatMessageDispay }
-      { localStorage.getItem("username") ? chatBox : "" }
+      { showChatBox() ? chatBox : "" }
     </div>
   )
+}
+
+ChatDisplay.propTypes = {
+  gameId: PropTypes.number,
+  playerOneName: PropTypes.string,
+  playerTwoName: PropTypes.string,
 }

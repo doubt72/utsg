@@ -19,15 +19,19 @@ export default function MainPage() {
     </div>
   )
 
+  const loggedIn = !!localStorage.getItem('username')
+
+  const classes = "main-page-announcements main-page-announcements-logged-" + (loggedIn ? "in" : "out")
+
   return (
     <div className="main-page">
       <Header />
       <div className="standard-body">
-        <div className="main-page-chat">
-          <ChatDisplay />
+        <div className="chat-section">
+          <ChatDisplay gameId={0} />
         </div>
         <div>
-          <div className="main-page-announcements">
+          <div className={classes}>
             <p>
               The UTSG server is still massively under construction.  If you're seeing this, you're
               probably just looking at the github repo, nothing is actually out there being hosted
@@ -36,7 +40,7 @@ export default function MainPage() {
               There are, as yet, no announcements.
             </p>
           </div>
-          { localStorage.getItem('username') ? newGameButton : "" }
+          { loggedIn ? newGameButton : "" }
         </div>
       </div>
     </div>

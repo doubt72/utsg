@@ -100,7 +100,8 @@ export default function NewGame() {
       const game = {
         name: formInput.name,
         scenario: formInput.scenario,
-        metadata: {},
+        // raw json causes issues with parameter validation
+        metadata: JSON.stringify({ turn: 0 }),
       }
       if (formInput.player === 1) {
         game.player_one = user

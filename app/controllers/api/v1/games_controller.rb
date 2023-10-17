@@ -27,11 +27,8 @@ module Api
       end
 
       def create
-        puts "----0 #{params}"
-        puts "----1 #{create_params}"
-        # game = Game.create(create_params)
-        if false && !game.errors
-          puts game.errors
+        game = Game.create(create_params)
+        if game.persisted?
           render json: game.show_body, status: :ok
         else
           render json: game.errors, status: :unprocessable_entity
@@ -84,19 +81,22 @@ module Api
         p = params.require(:game).permit(
           :name, :scenario, :player_one, :player_two, :metadata
         )
-        p[:game].merge!(owner_id: current_user.id)
-        translate(p, "player_one").translate(p, "player_two")
+        p[:owner_id] = current_user.id
+        # raw json causes issues with parameter validation
+        p[:metadata] = JSON.parse(p[:metadata])
+        translate(translate(p, "player_one"), "player_two")
       end
 
       def update_params
         p = params.require(:game).permit(:current_player, :metadata)
+        p[:metadata] = JSON.parse(p[:metadata]) if p[:metadata]
         translate(p, "current_player")
       end
 
-      def translate(p, player)
-        p[:game].merge!("#{player}_id".to_sym => User.lookup(p[:game][player.to_sym])&.id)
-        p.delete(player.to_sym)
-        p
+      def translate(pars, player)
+        pars["#{player}_id".to_sym] = User.lookup(pars[player.to_sym])&.id
+        pars.delete(player.to_sym)
+        pars
       end
 
       def current_game

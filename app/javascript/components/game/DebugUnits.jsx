@@ -26,12 +26,12 @@ export default function DebugUnits() {
     const cells = []
     years().forEach(y => {
       if (Number(y) < 10) {
-        cells.push(<div className="unit-counter-year">0{y}</div>)
+        cells.push(<div key={y} className="unit-counter-year">0{y}</div>)
       } else {
-        cells.push(<div className="unit-counter-year">{y}</div>)
+        cells.push(<div key={y} className="unit-counter-year">{y}</div>)
       }
       Object.values(units).filter(u => Number(u.y) === Number(y)).map(
-        (c, j) => cells.push(<div key={j}>{unitCounter(new Unit(c))}</div>)
+        (c, j) => cells.push(<div key={`${y}-${j}`}>{unitCounter(new Unit(c))}</div>)
       )
     })
     return cells

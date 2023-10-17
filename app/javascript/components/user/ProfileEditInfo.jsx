@@ -99,7 +99,7 @@ export default function ProfileEditInfo() {
   const deleteConfirmForm = <DeleteAccount reset={() => setDeleting(false)} />
 
   return (
-    <div className="profile-form mr1em">
+    <div className="profile-form mr05em">
       <div className="mb1em">
         You can change your username or email here:
       </div>

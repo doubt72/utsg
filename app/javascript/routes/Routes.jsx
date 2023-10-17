@@ -14,7 +14,7 @@ import ResetPassword from "../components/user/ResetPassword";
 import DeleteAccount from '../components/user/DeleteAccount';
 import NewGame from "../components/game/NewGame";
 import DebugUnits from "../components/game/DebugUnits";
-import ShowGame from "../components/game/ShowGame";
+import GameDisplay from "../components/game/GameDisplay";
 
 const Routes = () => {
   const publicRoutes = [
@@ -24,6 +24,7 @@ const Routes = () => {
     { path: "/signup", element: <Signup /> },
     { path: "/recover_account", element: <RecoverAccount /> },
     { path: "/reset_password", element: <ResetPassword /> },
+    { path: "/game/:id", element: <GameDisplay /> },
   ]
 
   const protectedRoutes = [
@@ -40,7 +41,6 @@ const Routes = () => {
         { path: "/debug/units", element: <DebugUnits /> },
 
         { path: "/new_game", element: <NewGame /> },
-        { path: "/game/:id", element: <ShowGame /> },
       ],
     },
   ]

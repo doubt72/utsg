@@ -43,7 +43,7 @@ button.custom-button:hover,a.custom-button:hover {
 .form-container {
   width: 500px;
   padding: 1em;
-  margin: 1em;
+  margin: 0.5em;
   border: 2px solid $border-color-light-gray;
   border-radius: 0.5em;
 }
@@ -128,7 +128,6 @@ button.custom-button:hover,a.custom-button:hover {
   color: $light-green;
 }
 
-
 .form-error-message {
   color: $alert-orange;
   margin-bottom: 1em;
@@ -138,11 +137,11 @@ button.custom-button:hover,a.custom-button:hover {
 .standard-body {
   display: flex;
   width: 100%;
-  padding: 1em;
+  padding: 0.5em;
 }
 
 .standard-section {
-  padding: 1em;
+  padding: 0.5em;
   flex-grow: 1;
   background-color: $background-gray;
   border-radius: 0.5em;
@@ -178,18 +177,25 @@ button.custom-button:hover,a.custom-button:hover {
 
 // Main page layout
 .main-page-announcements {
-  height: calc(250px + 1em);
   padding: 1em;
-  margin-left: 1em;
+  margin-left: 0.5em;
   width: 650px;
   min-width: 650px;
   background-color: $background-gray;
   border-radius: 0.5em;
 }
 
+.main-page-announcements-logged-in {
+  height: 250px;
+}
+
+.main-page-announcements-logged-out {
+  height: calc(250px + 1em);
+}
+
 .main-page-start-game {
   padding: 1em;
-  margin: 1em 0 0 1em;
+  margin: 0.5em 0 0 0.5em;
   width: 650px;
   min-width: 650px;
   border: 2px solid $border-color-light-gray;
@@ -197,23 +203,25 @@ button.custom-button:hover,a.custom-button:hover {
   text-align: end;
 }
 
-.main-page-chat {
-  padding: 1em;
+.chat-section {
+  padding: 0.5em;
   flex-grow: 1;
   background-color: $background-gray;
   border-radius: 0.5em;
 }
 
 .chat-output {
-  height: 250px;
   background-color: white;
-  margin-bottom: 1em;
   border-radius: 0.5em;
   padding: 0.5em;
   overflow-y: scroll;
 
   display: flex;
   flex-direction: column-reverse;
+}
+
+.main-chat-output {
+  height: 250px;
 }
 
 .chat-output-record {
@@ -248,7 +256,13 @@ button.custom-button:hover,a.custom-button:hover {
 }
 
 .chat-entry {
+  padding-top: 0.5em;
   display: flex;
+}
+
+.chat-entry-logged-out {
+  padding: 0.5em 0 0 1em;
+  color: $gray-7;
 }
 
 .chat-input {
@@ -268,7 +282,7 @@ button.custom-button:hover,a.custom-button:hover {
 // About page layout
 .about-about {
   padding: 1em;
-  margin-right: 1em;
+  margin-right: 0.5em;
   flex-grow: 1;
   background-color: $background-gray;
   border-radius: 0.5em;
@@ -281,7 +295,7 @@ button.custom-button:hover,a.custom-button:hover {
 // Profile page layout
 .profile-main {
   padding: 1em;
-  margin-right: 1em;
+  margin-right: 0.5em;
   flex-grow: 1;
   background-color: $background-gray;
   border-radius: 0.5em;
@@ -292,71 +306,4 @@ button.custom-button:hover,a.custom-button:hover {
   padding: 1em;
   border: 2px solid $border-color-light-gray;
   border-radius: 0.5em;
-}
-
-// Create game page layout
-.scenario-form-container {
-  min-width: 500px;
-  padding: 1em;
-  margin-right: 1em;
-  border: 2px solid $border-color-light-gray;
-  border-radius: 0.5em;
-}
-
-.scenario-list-container {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 1em 0 1em 1em;
-  flex-grow: 1;
-  background-color: $background-gray;
-  border-radius: 0.5em;
-}
-
-.scenario-list-filter {
-  flex-grow: 1;
-  margin-right: 1em;
-}
-
-.scenario-list-select {
-  min-height: 135px;
-  margin: 1em 1em 0 0;
-  flex-basis: 100%;
-}
-
-.scenario-row {
-  display: flex;
-  flex-basis: auto;
-  background-color: $gray-f;
-  padding: 0.25em 0.5em 0.35em 0.5em;
-  margin-top: 0.2em;
-  border: 2px solid $gray-c;
-  border-radius: 0.33em;
-}
-
-.scenario-row-selected {
-  border: 2px solid $alert-orange;
-}
-
-.scenario-row-code {
-  color: $alert-orange;
-  text-align: end;
-  margin-right: 0.5em;
-  font-family: monospace;
-  width: 2.5em;
-}
-
-.scenario-description {
-  padding: 1em;
-  margin: 0 1em 1em 1em;
-  border: 2px solid $gray-c;
-  border-radius: 0.5em;
-}
-
-.scenario-no-description {
-  color: $gray-8;
-}
-
-.scenario-description-row {
-  display: flex;
-  padding: 0.5em 1em;
 }
