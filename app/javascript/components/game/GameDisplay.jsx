@@ -34,6 +34,13 @@ export default function GameDisplay() {
     }
   }
 
+  const showInput = () => {
+    if (!localStorage.getItem("username")) { return false }
+    return game.id === 0 ||
+           localStorage.getItem("username") === game.playerOneName ||
+           localStorage.getItem("username") === game.playerTwoName
+  }
+
   return (
     <div className="main-page">
       <Header />
@@ -57,12 +64,13 @@ export default function GameDisplay() {
       </div>
       <div className="standard-body">
         <div className="game-page-moves">
-          <MoveDisplay gameId={Number(id)} callback={moveNotification} />
+          <MoveDisplay gameId={Number(id)}
+                       callback={moveNotification}
+                       chatInput={showInput()} />
         </div>
         <div className="chat-section">
           <ChatDisplay gameId={Number(id)}
-                      playerOneName={game.playerOneName}
-                      playerTwoName={game.playerTwoName} />
+                       showInput={showInput()} />
         </div>
       </div>
       <div className="standard-body">

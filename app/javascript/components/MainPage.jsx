@@ -28,7 +28,7 @@ export default function MainPage() {
       <Header />
       <div className="standard-body">
         <div className="chat-section">
-          <ChatDisplay gameId={0} />
+          <ChatDisplay gameId={0} showInput={loggedIn} />
         </div>
         <div>
           <div className={classes}>

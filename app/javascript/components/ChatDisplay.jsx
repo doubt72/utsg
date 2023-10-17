@@ -90,13 +90,6 @@ export default function ChatDisplay(props) {
   const chatInputMessage = props.gameId === 0 ? "please keep chat messages relevant to game discussion" :
                                                 "chat for current game"
 
-  const showChatBox = () => {
-    if (!localStorage.getItem("username")) { return false }
-    return props.gameId === 0 ||
-           localStorage.getItem("username") === props.playerOneName ||
-           localStorage.getItem("username") === props.playerTwoName
-  }
-
   const chatBox = (
     <form onSubmit={onSubmit} autoComplete="off">
       <div className="chat-entry">
@@ -117,13 +110,12 @@ export default function ChatDisplay(props) {
   return (
     <div>
       { chatMessageDispay }
-      { showChatBox() ? chatBox : "" }
+      { props.showInput ? chatBox : "" }
     </div>
   )
 }
 
 ChatDisplay.propTypes = {
   gameId: PropTypes.number,
-  playerOneName: PropTypes.string,
-  playerTwoName: PropTypes.string,
+  showInput: PropTypes.bool,
 }

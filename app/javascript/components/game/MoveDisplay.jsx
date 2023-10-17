@@ -38,7 +38,7 @@ export default function MoveDisplay(props) {
     }
   }, [lastMessage])
 
-  const displayClass = "move-output move-output-logged-" + (localStorage.getItem('username') ? "in" : "out")
+  const displayClass = "move-output move-output-logged-" + (props.chatInput ? "in" : "out")
 
   const moveList = (
     <div className={displayClass}>
@@ -68,4 +68,5 @@ export default function MoveDisplay(props) {
 MoveDisplay.propTypes = {
   gameId: PropTypes.number,
   callback: PropTypes.func,
+  chatInput: PropTypes.bool,
 }
