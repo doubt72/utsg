@@ -4,7 +4,6 @@ import { Scenario } from "./scenario"
 
 const Game = class {
   constructor(data) {
-    if (!data) { return }
     this.id = data.id
     this.name = data.name
     this.scenario = new Scenario(data.scenario)
@@ -24,6 +23,8 @@ const Game = class {
     if (this.state === "needs_player") {
       if (this.ownerName === currentPlayer) {
         return [{ type: "none", message: "Waiting for player to join" }]
+      } else if (!currentPlayer) {
+        return [{ type: "none", message: "" }]
       } else {
         return [{ type: "join" }]
       }

@@ -9,7 +9,7 @@ import Gamecontrols from "./GameControls";
 
 export default function GameDisplay() {
   const { id } = useParams()
-  const [game, setGame] = useState(new Game({}))
+  const [game, setGame] = useState({})
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
