@@ -8,7 +8,12 @@ module Api
       def index
         # TODO: clean up N+1s
         game_id = params[:game_id]&.to_i
-        render json: GameMove.where(game_id:).map(&:body), status: :ok
+        limit = params[:after_id]&.to_i
+        if limit
+          render json: GameMove.where(game_id:, id: (limit + 1)..).map(&:body), status: :ok
+        else
+          render json: GameMove.where(game_id:).map(&:body), status: :ok
+        end
       end
 
       def create

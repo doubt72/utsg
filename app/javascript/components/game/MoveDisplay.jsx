@@ -33,7 +33,7 @@ export default function MoveDisplay(props) {
       const msg = JSON.parse(lastMessage.data).message
       if (msg && msg.body) {
         setMoves([...moves, msg.body])
-        props.callback(msg.body)
+        props.callback()
       }
     }
   }, [lastMessage])

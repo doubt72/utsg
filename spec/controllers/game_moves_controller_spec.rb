@@ -22,6 +22,18 @@ RSpec.describe Api::V1::GameMovesController do
 
       json = JSON.parse(response.body)
       expect(json.length).to be == 2
+      expect(json.first["id"]).to be == move1.id
+      expect(json.last["id"]).to be == move2.id
+    end
+
+    it "returns recent moves with after_id" do
+      get :index, params: { game_id: game.id, after_id: move1.id }
+
+      expect(response.status).to be == 200
+
+      json = JSON.parse(response.body)
+      expect(json.length).to be == 1
+      expect(json.first["id"]).to be == move2.id
     end
 
     it "returns no moves for bogus game id" do

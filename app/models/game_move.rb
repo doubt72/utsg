@@ -25,7 +25,7 @@ class GameMove < ApplicationRecord
 
   def body
     {
-      user: user&.username || User::UNKNOWN_USERNAME, player:, data:,
+      id:, user: user&.username || User::UNKNOWN_USERNAME, player:, data:,
       created_at: format_created,
     }
   end

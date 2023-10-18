@@ -11,6 +11,7 @@ RSpec.describe GameMove do
     expect(game_move.game).not_to be nil?
     expect(game_move.user).not_to be nil?
     expect(game_move.body).to be == {
+      id: game_move.id,
       user: game_move.user.username,
       player: 1,
       data: game_move.data,

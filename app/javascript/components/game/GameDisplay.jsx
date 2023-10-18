@@ -9,7 +9,7 @@ import Gamecontrols from "./GameControls";
 
 export default function GameDisplay() {
   const { id } = useParams()
-  const [game, setGame] = useState({})
+  const [game, setGame] = useState({ k: {}, turn: 0, state: "", update: 0 })
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
@@ -18,28 +18,35 @@ export default function GameDisplay() {
         getAPI(`/api/v1/scenarios/${code}`, {
           ok: response => response.json().then(scenario => {
             json.scenario = scenario
-            const game = new Game(json)
-            setGame(game)
-            game.resetMoves()
+            const g = new Game(json, gameNotification)
+            setGame({k: g, turn: g.turn, state: g.state})
           })
         })
       })
     })
   }, [])
 
-  const moveNotification = (move) => {
-    console.log("Thinking about doing a thing.")
-    if (["create", "join"].includes(move.data.type)) {
-      console.log("I'm doing a thing!")
-      game.resetMoves()
-    }
+  const moveNotification = () => {
+    console.log(`got notification for move`)
+    game.k.loadNewMoves()
+  }
+
+  const gameNotification = (g) => {
+    console.log("notification:")
+    console.log(g)
+    setGame({
+      k: g,
+      turn: g.turn,
+      state: g.state,
+      update: g.moves.length, // TODO: hack, looks like a bad pattern here, untangle sooner rather than later
+    })
   }
 
   const showInput = () => {
     if (!localStorage.getItem("username")) { return false }
-    return game.id === 0 ||
-           localStorage.getItem("username") === game.playerOneName ||
-           localStorage.getItem("username") === game.playerTwoName
+    return game.k.id === 0 ||
+           localStorage.getItem("username") === game.k.playerOneName ||
+           localStorage.getItem("username") === game.k.playerTwoName
   }
 
   return (
@@ -47,20 +54,20 @@ export default function GameDisplay() {
       <Header />
       <div className="game-control ml05em mr05em mt05em">
         <div className="red monospace mr05em">
-          {game.scenario?.code}:
+          {game.k.scenario?.code}:
         </div>
         <div className="green nowrap">
-          {game.scenario?.name} 
+          {game.k.scenario?.name} 
         </div>
         <div className="ml1em mr1em nowrap">
           (
-            { game.turn > 0 ? <span>turn {game.turn}/{game.scenario?.turns}</span> : "initial setup" }
+            { game.turn > 0 ? <span>turn {game.turn}/{game.k.scenario?.turns}</span> : "initial setup" }
             { game.state === "needs_player" ? " - waiting for player to join" : "" }
             { game.state === "ready" ? " - waiting for game to start" : "" }
           )
         </div>
         <div className="flex-fill align-end">
-          {game.name}
+          {game.k.name}
         </div>
       </div>
       <div className="standard-body">
@@ -74,7 +81,7 @@ export default function GameDisplay() {
                        showInput={showInput()} />
         </div>
       </div>
-      <Gamecontrols game={game} />
+      <Gamecontrols game={game.k} update={game.update} />
     </div>
   )
 }

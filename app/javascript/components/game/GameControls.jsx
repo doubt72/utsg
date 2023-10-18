@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types"
 import { Game } from "../../engine/game";
+import JoinButton from "./Controls/JoinButton";
+import StartButton from "./Controls/StartButton";
 
 export default function Gamecontrols(props) {
   const [controls, setControls] = useState([])
@@ -8,21 +10,18 @@ export default function Gamecontrols(props) {
   useEffect(() => {
     if (!props.game.id) { return }
     displayActions()
-  }, [props.game])
+  }, [props.game, props.update])
 
   const displayActions = () => {
-    console.log(props.game)
     const user = localStorage.getItem("username")
-    console.log(user)
-    setControls(props.game.actionsAvailable(user).forEach((a, i) => {
+    setControls(props.game.actionsAvailable(user).map((a, i) => {
       if (a.type === "none") {
-        console.log(a.message)
-        console.log(i)
-        const foo = <div key={i}>{a.message}</div>
-        console.log(foo)
-        return foo
+        return <div key={i}>{a.message}</div>
+      } else if (a.type === "join") {
+        return <JoinButton gameId={props.game.id} key={i} />
+      } else if (a.type === "start") {
+        return <StartButton gameId={props.game.id} key={i} />
       } else {
-        console.log(a.type)
         return <div key={i}>unknown action {a.type}</div>
       }
     }))
@@ -30,7 +29,7 @@ export default function Gamecontrols(props) {
 
   return (
     <div className="game-control ml05em mr05em">
-      {controls.forEach(c => c)}
+      {controls}
     </div>
   )
 }
@@ -40,4 +39,5 @@ Gamecontrols.propTypes = {
     PropTypes.object,
     PropTypes.instanceOf(Game),
   ]).isRequired,
+  update: PropTypes.number,
 }

@@ -68,6 +68,7 @@ class Game < ApplicationRecord
   end
 
   def join(user)
+    puts "----- #{user.id} : #{user}"
     return nil if game_full? || player_one_id == user.id || player_two_id == user.id
 
     player = 1
@@ -78,6 +79,7 @@ class Game < ApplicationRecord
       update(player_one_id: user.id)
     end
     GameMove.create(game: self, user:, player:, data: { action: "join" })
+    self
   end
 
   def start(user)

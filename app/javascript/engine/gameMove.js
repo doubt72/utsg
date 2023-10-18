@@ -1,5 +1,6 @@
 const GameMove = class {
   constructor(data) {
+    this.id = data.id
     this.user = data.user
     this.player = data.player
     this.created_at = data.created_at
@@ -18,11 +19,13 @@ const GameMove = class {
   get description() {
     switch(this.action) {
       case "create":
-        return "Game created"
+        return "game created"
+      case "start":
+        return "game started"
       case "join":
         return `${this.user} joined as player ${this.player}`
       default:
-        return "I don't even know"
+        return "i don't even know"
     }
   }
 }
