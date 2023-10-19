@@ -1,3 +1,13 @@
+- game main page display
+- game pagination
+
+- non-owner leaving game they've joined
+- fix return selecting player rather than completing form on new game
+- scenario pagination
+- check moves N+1
+- check games N+1
+- hotseat games?
+- refactor CSS
 
 Add more info on signup page
 Refactor CSS?

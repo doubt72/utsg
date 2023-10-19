@@ -19,8 +19,64 @@ RSpec.describe Api::V1::GamesController do
   end
 
   describe "index" do
+    let!(:game3) do
+      create(
+        :game, owner: user1, player_one: user1, player_two: user2,
+               current_player: user2, name: "game 3", state: :ready
+      )
+    end
+    let!(:game4) do
+      create(
+        :game, owner: user1, player_one: user1, player_two: user2,
+               current_player: user2, name: "game 4", state: :complete
+      )
+    end
+
     it "can find user's games" do
       get :index, params: { user: user2.username }
+
+      expect(response.status).to be == 200
+
+      json = JSON.parse(response.body)
+      expect(json.length).to be == 3
+      expect(json[0]["id"]).to be == game4.id
+      expect(json[1]["id"]).to be == game3.id
+      expect(json[2]["id"]).to be == game1.id
+      expect(json[2]["state"]).to be == "in_progress"
+    end
+
+    it "can find all games" do
+      get :index, params: { user: "" }
+
+      expect(response.status).to be == 200
+      json = JSON.parse(response.body)
+      expect(json.length).to be == 4
+
+      get :index
+
+      json = JSON.parse(response.body)
+      expect(json.length).to be == 4
+      expect(json[0]["id"]).to be == game4.id
+      expect(json[1]["id"]).to be == game3.id
+      expect(json[2]["id"]).to be == game2.id
+      expect(json[3]["id"]).to be == game1.id
+    end
+
+    it "can find new games" do
+      get :index, params: { scope: "not_started" }
+
+      expect(response.status).to be == 200
+
+      json = JSON.parse(response.body)
+      expect(json.length).to be == 2
+      expect(json[0]["id"]).to be == game3.id
+      expect(json[1]["id"]).to be == game2.id
+      expect(json[0]["state"]).to be == "ready"
+      expect(json[1]["state"]).to be == "needs_player"
+    end
+
+    it "can find active games" do
+      get :index, params: { scope: "active" }
 
       expect(response.status).to be == 200
 
@@ -30,19 +86,41 @@ RSpec.describe Api::V1::GamesController do
       expect(json[0]["state"]).to be == "in_progress"
     end
 
-    it "can find all games" do
-      get :index, params: { user: "" }
+    it "can find complete games" do
+      get :index, params: { scope: "complete" }
 
       expect(response.status).to be == 200
-      json = JSON.parse(response.body)
-      expect(json.length).to be == 2
-
-      get :index
 
       json = JSON.parse(response.body)
-      expect(json.length).to be == 2
-      expect(json[0]["id"]).to be == game2.id
-      expect(json[1]["id"]).to be == game1.id
+      expect(json.length).to be == 1
+      expect(json[0]["id"]).to be == game4.id
+      expect(json[0]["state"]).to be == "complete"
+    end
+
+    it "can find need_action games" do
+      login(user1)
+
+      get :index, params: { user: user2.username, scope: "needs_action" }
+
+      expect(response.status).to be == 200
+
+      json = JSON.parse(response.body)
+      expect(json.length).to be == 1
+      expect(json[0]["id"]).to be == game3.id
+      expect(json[0]["state"]).to be == "ready"
+    end
+
+    it "can find need_move games" do
+      login(user2)
+
+      get :index, params: { user: user2.username, scope: "needs_move" }
+
+      expect(response.status).to be == 200
+
+      json = JSON.parse(response.body)
+      expect(json.length).to be == 1
+      expect(json[0]["id"]).to be == game1.id
+      expect(json[0]["state"]).to be == "in_progress"
     end
   end
 
@@ -55,7 +133,7 @@ RSpec.describe Api::V1::GamesController do
       json = JSON.parse(response.body)
       expect(json["id"]).to be == game1.id
       expect(json["state"]).to be == "in_progress"
-      expect(JSON.parse(json["metadata"])["a"]).to be == 1
+      expect(JSON.parse(json["metadata"])["turn"]).to be == 1
     end
 
     it "handles missing game" do
@@ -72,7 +150,8 @@ RSpec.describe Api::V1::GamesController do
       expect do
         post :create, params: {
           game: {
-            name: "new game", scenario: "T0", player_one: user1.username, metadata: '{ "turn": 2 }',
+            name: "new game", scenario: "E01", player_one: user1.username,
+            metadata: '{ "turn": 2 }',
           },
         }
       end.to change { Game.count }.by(1)
@@ -86,7 +165,8 @@ RSpec.describe Api::V1::GamesController do
       expect do
         post :create, params: {
           game: {
-            name: "new game", scenario: "T0", player_one: user1.username, metadata: '{ "turn": 2 }',
+            name: "new game", scenario: "E01", player_one: user1.username,
+            metadata: '{ "turn": 2 }',
           },
         }
       end.to change { GameMove.count }.by(2)
@@ -99,7 +179,7 @@ RSpec.describe Api::V1::GamesController do
       login(user1)
 
       expect do
-        post :create, params: { game: { name: "new game", metadata: '{ "b": 2 }' } }
+        post :create, params: { game: { name: "new game", metadata: '{ "turn": 2 }' } }
       end.to_not change { Game.count }
 
       expect(response.status).to be == 422
@@ -107,7 +187,7 @@ RSpec.describe Api::V1::GamesController do
       expect do
         post :create, params: { game: {
           name: "new game", player_one: user1.username, player_two: user1.username,
-          metadata: '{ "b": 2 }',
+          metadata: '{ "turn": 2 }',
         } }
       end.to_not change { Game.count }
 
@@ -115,7 +195,7 @@ RSpec.describe Api::V1::GamesController do
 
       expect do
         post :create, params: { game: {
-          name: "new game", player_one: user2.username, metadata: '{ "b": 2 }',
+          name: "new game", player_one: user2.username, metadata: '{ "turn": 2 }',
         } }
       end.to_not change { Game.count }
 

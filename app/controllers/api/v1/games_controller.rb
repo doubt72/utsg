@@ -6,19 +6,15 @@ module Api
       skip_before_action :authenticate_user!, only: %i[index show]
 
       def index
-        # TODO: do we need to limit by state?  Or perhaps aggregate by state?
-        # Or just leave to client side?
         # TODO: pagination
-        # TODO: Clean up N+1s
+        games = index_games(params[:scope])
         if (user = User.lookup(params[:user]))
-          render json: user_games(user), status: :ok
-        else
-          render json: all_games, status: :ok
+          games = games.for_user(user)
         end
+        render json: serialize_index(games), status: :ok
       end
 
       def show
-        # TODO: version with moves included?
         if current_game
           render json: current_game.show_body, status: :ok
         else
@@ -69,12 +65,29 @@ module Api
 
       private
 
-      def all_games
-        Game.all.order(created_at: :desc).map(&:index_body)
+      def index_includes
+        %i[owner player_one player_two winner last_move]
       end
 
-      def user_games(user)
-        Game.user_games(user).order(created_at: :desc).map(&:index_body)
+      def index_games(scope) # rubocop:disable Metric/MethodLength
+        games = Game.includes(index_includes)
+        case scope
+        when "not_started"
+          games = games.not_started
+        when "active"
+          games = games.in_progress
+        when "complete"
+          games = games.complete
+        when "needs_action"
+          games = games.needs_action(current_user)
+        when "needs_move"
+          games = games.needs_move(current_user)
+        end
+        games.order(created_at: :desc)
+      end
+
+      def serialize_index(games)
+        games.map(&:index_body)
       end
 
       def create_params

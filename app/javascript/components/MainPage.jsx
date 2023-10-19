@@ -3,6 +3,7 @@ import Header from './Header'
 import { useNavigate } from "react-router-dom";
 import ChatDisplay from "./ChatDisplay";
 import { CreateGameButton } from "./utilities/buttons";
+import GameList from "./GameList";
 
 export default function MainPage() {
   const navigate = useNavigate()
@@ -43,6 +44,7 @@ export default function MainPage() {
           { loggedIn ? newGameButton : "" }
         </div>
       </div>
+      <GameList />
     </div>
   )
 }

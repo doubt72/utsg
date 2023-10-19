@@ -48,7 +48,7 @@
   flex-basis: auto;
   background-color: $gray-f;
   padding: 0.25em 0.5em 0.35em 0.5em;
-  margin-top: 0.2em;
+  margin-top: 1px;
   border: 2px solid $gray-c;
   border-radius: 0.33em;
 }
@@ -67,7 +67,7 @@
 
 .scenario-description {
   padding: 1em;
-  margin: 0 1em 1em 1em;
+  margin: 0 0.5em 1em;
   border: 2px solid $gray-c;
   border-radius: 0.5em;
 }

@@ -5,7 +5,7 @@ FactoryBot.define do
     association :owner, factory: :user
     player_one { owner }
     name { Faker::Books::CultureSeries.culture_ship }
-    scenario { "T0" }
-    metadata { '{ "a": 1 }' }
+    scenario { "E01" }
+    metadata { '{ "turn": 1 }' }
   end
 end

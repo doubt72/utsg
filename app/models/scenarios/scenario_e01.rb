@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class ScenarioE1 < Base
-    ID = "E1"
+  class ScenarioE01 < Base
+    ID = "E01"
     NAME = "Lost in the Woods"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
@@ -60,7 +60,6 @@ module Scenarios
       def allied_units
         {
           s: { list: [
-            # TODO: turn this back on when done rejiggering CSS
             :ussr_leader_5_2,
             :ussr_leader_4_1,
             [5, :ussr_rifle_s],

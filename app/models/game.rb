@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Game < ApplicationRecord
+class Game < ApplicationRecord # rubocop:disable Metric/ClassLength
   belongs_to :owner, class_name: "User"
   belongs_to :player_one, class_name: "User", optional: true
   belongs_to :player_two, class_name: "User", optional: true
@@ -26,11 +26,25 @@ class Game < ApplicationRecord
   # in_progress:    game currently being played
   #                 -> moves to needs_player if player deletes account (otherwise no quitting)
   # complete:       game over
-  enum state: %i[needs_player ready in_progress complete]
+  enum state: { needs_player: 0, ready: 1, in_progress: 2, complete: 3 }
 
-  def self.user_games(user)
-    # Owner should always be player one or two; players can only change if user deleted
-    Game.where("player_one_id = ? OR player_two_id = ?", user.id, user.id)
+  # Owner should always be player one or two; players can only change if user deleted
+  scope :for_user, ->(user) { where("player_one_id = ? OR player_two_id = ?", user.id, user.id) }
+
+  # Rails enums are broken, referencing the column in a scope IN ANY WAY causes
+  # errors, so we have to implement scopes ourselves.  WTAF Rails.
+  def self.not_started
+    where(state: [0, 1])
+  end
+
+  def self.needs_action(user)
+    where(
+      "state = ? AND owner_id = ? OR state = ? AND owner_id != ?", 1, user.id, 0, user.id
+    )
+  end
+
+  def self.needs_move(user)
+    where("current_player_id = ? AND state = ?", user.id, 2)
   end
 
   def self.create_game(params)
@@ -44,7 +58,7 @@ class Game < ApplicationRecord
     game
   end
 
-  def index_body # rubocop:disable Metrics/AbcSize
+  def body # rubocop:disable Metrics/AbcSize
     {
       id:, name:, scenario:, state:,
       owner: owner.username,
@@ -57,8 +71,19 @@ class Game < ApplicationRecord
     }
   end
 
+  def index_body
+    s = Utility::Scenario.scenario_by_id(scenario)
+    body.merge(
+      summary_metadata: {
+        scenario_name: s[:name],
+        scenario_turns: s[:metadata][:turns],
+        turn: metadata["turn"],
+      }
+    )
+  end
+
   def show_body
-    index_body.merge(metadata:)
+    body.merge(metadata:)
   end
 
   def update_game(user, params)
@@ -68,7 +93,6 @@ class Game < ApplicationRecord
   end
 
   def join(user)
-    puts "----- #{user.id} : #{user}"
     return nil if game_full? || player_one_id == user.id || player_two_id == user.id
 
     player = 1
@@ -85,6 +109,12 @@ class Game < ApplicationRecord
   def start(user)
     return nil unless owner_id == user.id && ready?
 
+    s = Utility::Scenario.scenario_by_id(scenario)
+    if s["first_setup"] == 1
+      update!(current_player: player_one)
+    else
+      update!(current_player: player_two)
+    end
     GameMove.create(game: self, user:, player: 1, data: { action: "start" })
     in_progress!
     self

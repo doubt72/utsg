@@ -203,6 +203,57 @@ button.custom-button:hover,a.custom-button:hover {
   text-align: end;
 }
 
+// Scenario list
+.main-page-list-container {
+  margin: 0 0.5em;
+}
+
+.main-page-list-tabs {
+  display: flex;
+}
+
+.main-page-list-tab {
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+  padding: 0.4em 1em 0.2em;
+}
+
+.main-page-list-tab-selected {
+  background-color: $background-gray;
+  border: 2px solid $background-gray;
+}
+
+.main-page-list-tab-unselected {
+  border: 2px solid $background-gray;
+}
+
+.main-page-list-contents {
+  padding: 0.5em 1em 1em;
+  margin-bottom: 0.5em;
+  border-top-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background-color: $background-gray;
+}
+
+.main-page-list-row {
+  display: flex;
+  background-color: $gray-f;
+  padding: 0.25em 1em 0.35em;
+  margin-top: 1px;
+  border: 2px solid $gray-c;
+  border-radius: 0.33em;
+}
+
+.main-page-list-row-status {
+  min-width: 225px;
+}
+
+.main-page-list-row-names {
+  min-width: 300px;
+}
+
+// Chat details
 .chat-section {
   padding: 0.5em;
   flex-grow: 1;

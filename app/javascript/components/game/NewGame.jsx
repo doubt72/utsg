@@ -102,7 +102,6 @@ export default function NewGame() {
       const game = {
         name: formInput.name,
         scenario: formInput.scenario,
-        // raw json causes issues with parameter validation
         metadata: JSON.stringify({ turn: 0 }),
       }
       if (formInput.player === 1) {
@@ -152,13 +151,9 @@ export default function NewGame() {
 
   // TODO: add pagination at some point
   const scenarioDisplayList = (
-    scenarioList.map(row => {
+    scenarioList.map((row, i) => {
       return (
-        <ScenarioRow
-          onClick={setScenario} selected={formInput.scenario === row.id}
-          key={row.id} code={row.id} name={row.name}
-          allies={row.allies} axis={row.axis}
-        />
+        <ScenarioRow key={i} onClick={setScenario} selected={formInput.scenario === row.id} data={row} />
       )
     })
   )

@@ -19,7 +19,7 @@ module Utility
       end
 
       def scenario_by_id(id)
-        return if id.empty?
+        return if id&.empty?
 
         ::Scenarios.constants.map { |k| ::Scenarios.const_get(k) }
                    .select { |k| id == k::ID }.last&.full_record
