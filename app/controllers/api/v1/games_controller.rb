@@ -87,7 +87,11 @@ module Api
       end
 
       def serialize_index(games)
-        { data: games.map(&:index_body) }
+        page_size = 8
+        page = params[:page]&.to_i || 0
+        count = games.count
+        games = games.limit(page_size).offset(page * page_size)
+        { data: games.map(&:index_body), page:, more: count > page_size * (page + 1) }
       end
 
       def create_params

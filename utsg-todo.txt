@@ -24,6 +24,20 @@ CHI Units
 FIN/ROM
 POL/GRE/NOR/PHI/NET
 
+EF00 East Front
+WF00 West Front (late)
+NO00 Normandy
+NA00 North Africa
+SP00 South Pacific
+IT00 Italy
+
+PO00 Poland
+FR00 France
+CH00 China
+FI00 Finland
+GR00 Greece
+NG00 New Guinea
+PH00 Philippines
 
 East Front
   generic small unit meeting engagements in mixed terrain

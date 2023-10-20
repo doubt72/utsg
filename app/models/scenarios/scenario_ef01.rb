@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class ScenarioE01 < Base
-    ID = "E01"
+  class ScenarioEf01 < Base
+    ID = "EF01"
     NAME = "Lost in the Woods"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze

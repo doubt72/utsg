@@ -122,6 +122,37 @@ RSpec.describe Api::V1::GamesController do
       expect(json[0]["id"]).to be == game1.id
       expect(json[0]["state"]).to be == "in_progress"
     end
+
+    context "with pagination" do
+      before do
+        10.times do
+          create(
+            :game, owner: user1, player_one: user1, player_two: nil,
+                   current_player: nil, name: "game 2", state: :needs_player
+          )
+        end
+
+        it "paginates properly" do
+          get :index, params: { scope: "not_started" }
+
+          expect(response.status).to be == 200
+
+          json = JSON.parse(response.body)
+          expect(json["more"]).to be == true
+          expect(json["page"]).to be == 0
+          expect(json["data"].length).to be == 8
+
+          get :index, params: { user: user1.username, scope: "not_started", page: 1 }
+
+          expect(response.status).to be == 200
+
+          json = JSON.parse(response.body)
+          expect(json["more"]).to be == false
+          expect(json["page"]).to be == 1
+          expect(json["data"].length).to be == 2
+        end
+      end
+    end
   end
 
   describe "show" do

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getAPI } from "../utilities/network";
 import GameListRow from "./GameListRow";
-import { CaretDownFill, CaretUpFill } from "react-bootstrap-icons";
+import { CaretDownFill, CaretUp, CaretUpFill } from "react-bootstrap-icons";
 
 export default function GameList() {
-  const [show, setShow] = useState({ tab: null, newPage: 0, activePage: 0, completPage: 0 })
+  const [show, setShow] = useState({ tab: null, newPage: 0, activePage: 0, completePage: 0 })
+  const [current, setCurrent] = useState({ tab: null, newPage: 0, activePage: 0, completePage: 0 })
 
   const [scroll, setScroll] = useState({
     newUp: false, newDown: false,
@@ -17,7 +18,6 @@ export default function GameList() {
   const [completedGames, setCompletedGames] = useState([])
 
   useEffect(() => {
-    setScroll // TODO get past the linter temporarily
     if (show.tab === null) {
       if (localStorage.getItem("username")) {
         setTab(2)
@@ -26,62 +26,107 @@ export default function GameList() {
       }
       return
     }
+    const newScroll = scroll
     if (show.tab === 2) {
-      getAPI("/api/v1/games?scope=needs_action", {
-        ok: response => {
-          response.json().then(json => {
-            const list = json.data.length > 0 ? json.data : [{ empty: true }]
-            setNewGames(list)
-          })
-        }
-      })
-      getAPI("/api/v1/games?scope=needs_move", {
-        ok: response => {
-          response.json().then(json => {
-            const list = json.data.length > 0 ? json.data : [{ empty: true }]
-            setActiveGames(list)
-          })
-        }
-      })
+      const params = { scope: "needs_action", page: show.newPage }
+      let urlParams = new URLSearchParams(params).toString()
+      if (show.tab !== current.tab || show.newPage !== current.newPage) {
+        getAPI("/api/v1/games?" + urlParams, {
+          ok: response => {
+            response.json().then(json => {
+              const list = json.data.length > 0 ? json.data : [{ empty: true }]
+              newScroll.newUp = json.page > 0
+              newScroll.newDown = json.more
+              setNewGames(list)
+            })
+          }
+        })
+      }
+      if (show.tab !== current.tab || show.activePage !== current.activePage) {
+        params.scope = "needs_move"
+        params.page = show.activePage
+        urlParams = new URLSearchParams(params).toString()
+        getAPI("/api/v1/games?" + urlParams, {
+          ok: response => {
+            response.json().then(json => {
+              const list = json.data.length > 0 ? json.data : [{ empty: true }]
+              newScroll.activeUp = json.page > 0
+              newScroll.activeDown = json.more
+              setActiveGames(list)
+            })
+          }
+        })
+      }
     } else {
-      const params = { scope: "not_started" }
+      const params = { scope: "not_started", page: show.newPage }
       if (show.tab == 1) {
         params.user = localStorage.getItem("username")
       }
       let urlParams = new URLSearchParams(params).toString()
-      getAPI("/api/v1/games?" + urlParams, {
-        ok: response => {
-          response.json().then(json => {
-            const list = json.data.length > 0 ? json.data : [{ empty: true }]
-            setNewGames(list)
-          })
-        }
-      })
-      params.scope = "active"
-      urlParams = new URLSearchParams(params).toString()
-      getAPI("/api/v1/games?" + urlParams, {
-        ok: response => {
-          response.json().then(json => {
-            const list = json.data.length > 0 ? json.data : [{ empty: true }]
-            setActiveGames(list)
-          })
-        }
-      })
-      params.scope = "complete"
-      urlParams = new URLSearchParams(params).toString()
-      getAPI("/api/v1/games?" + urlParams, {
-        ok: response => {
-          response.json().then(json => {
-            const list = json.data.length > 0 ? json.data : [{ empty: true }]
-            setCompletedGames(list)
-          })
-        }
-      })
+      if (show.tab !== current.tab || show.newPage !== current.newPage) {
+        getAPI("/api/v1/games?" + urlParams, {
+          ok: response => {
+            response.json().then(json => {
+              const list = json.data.length > 0 ? json.data : [{ empty: true }]
+              newScroll.newUp = json.page > 0
+              newScroll.newDown = json.more
+              setNewGames(list)
+            })
+          }
+        })
+      }
+      if (show.tab !== current.tab || show.activePage !== current.activePage) {
+        params.scope = "active"
+        params.page = show.activePage
+        urlParams = new URLSearchParams(params).toString()
+        getAPI("/api/v1/games?" + urlParams, {
+          ok: response => {
+            response.json().then(json => {
+              const list = json.data.length > 0 ? json.data : [{ empty: true }]
+              newScroll.activeUp = json.page > 0
+              newScroll.activeDown = json.more
+              setActiveGames(list)
+            })
+          }
+        })
+      }
+      if (show.tab !== current.tab || show.completePage !== current.completePage) {
+        params.scope = "complete"
+        params.page = show.completePage
+        urlParams = new URLSearchParams(params).toString()
+        getAPI("/api/v1/games?" + urlParams, {
+          ok: response => {
+            response.json().then(json => {
+              const list = json.data.length > 0 ? json.data : [{ empty: true }]
+              newScroll.completeUp = json.page > 0
+              newScroll.completeDown = json.more
+              setCompletedGames(list)
+            })
+          }
+        })
+      }
     }
+    setScroll(newScroll)
+    setCurrent({
+      tab: show.tab, newPage: show.newPage, activePage: show.activePage,
+      completePage: show.completePage
+    })
   }, [show])
 
   const setTab = (tab) => {
-    setShow({ tab: tab, newPage: 0, activePage: 0, completPage: 0 })
+    setShow({ tab: tab, newPage: 0, activePage: 0, completePage: 0 })
+  }
+
+  const setNewPage = (page) => {
+    setShow({ ...show, newPage: page})
+  }
+
+  const setActivePage = (page) => {
+    setShow({ ...show, activePage: page})
+  }
+
+  const setCompletePage = (page) => {
+    setShow({ ...show, completePage: page})
   }
 
   const tabClasses = (index) => {
@@ -89,20 +134,29 @@ export default function GameList() {
            `main-page-list-tab-${show.tab === index ? "" : "un"}selected`
   }
 
-  const newGameUp = scroll.newUp ? <div><CaretUpFill /></div> :
-                                   <div className="transparent"><CaretUpFill /></div>
+  const newGameUp = scroll.newUp ?
+    <div onClick={() => setNewPage(show.newPage - 1)}><CaretUpFill /></div> :
+    (scroll.newDown ? <div><CaretUp /></div> :
+      <div className="transparent"><CaretUpFill /></div>)
 
-  const newGameDown = scroll.newDown ? <div><CaretDownFill /></div> : ""
+  const newGameDown = scroll.newDown ?
+    <div onClick={() => setNewPage(show.newPage + 1)}><CaretDownFill /></div> : ""
 
-  const activeGameUp = scroll.activeUp ? <div><CaretUpFill /></div> :
-                                         <div className="transparent"><CaretUpFill /></div>
+  const activeGameUp = scroll.activeUp ?
+    <div onClick={() => setActivePage(show.newPage - 1)}><CaretUpFill /></div> :
+    (scroll.activeDown ? <div><CaretUp /></div> :
+      <div className="transparent"><CaretUpFill /></div>)
 
-  const activeGameDown = scroll.activeDown ? <div><CaretDownFill /></div> : ""
+  const activeGameDown = scroll.activeDown ?
+    <div onClick={() => setActivePage(show.newPage + 1)}><CaretDownFill /></div> : ""
 
-  const completeGameUp = scroll.completeUp ? <div><CaretUpFill /></div> :
-                                             <div className="transparent"><CaretUpFill /></div>
+  const completeGameUp = scroll.completeUp ?
+    <div onClick={() => setCompletePage(show.newPage - 1)}><CaretUpFill /></div> :
+    (scroll.completeDown ? <div><CaretUp /></div> :
+      <div className="transparent"><CaretUpFill /></div>)
 
-  const completeGameDown = scroll.completeDown ? <div><CaretDownFill /></div> : ""
+  const completeGameDown = scroll.completeDown ?
+    <div onClick={() => setCompletePage(show.newPage + 1)}><CaretDownFill /></div> : ""
 
   return (
     <div className="main-page-list-container">
