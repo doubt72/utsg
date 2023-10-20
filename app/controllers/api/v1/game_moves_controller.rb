@@ -6,13 +6,13 @@ module Api
       skip_before_action :authenticate_user!, only: [:index]
 
       def index
-        # TODO: clean up N+1s
         game_id = params[:game_id]&.to_i
         limit = params[:after_id]&.to_i
         if limit
-          render json: GameMove.where(game_id:, id: (limit + 1)..).map(&:body), status: :ok
+          render json: GameMove.includes(:user).where(game_id:, id: (limit + 1)..).map(&:body),
+                 status: :ok
         else
-          render json: GameMove.where(game_id:).map(&:body), status: :ok
+          render json: GameMove.includes(:user).where(game_id:).map(&:body), status: :ok
         end
       end
 

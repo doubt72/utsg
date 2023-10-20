@@ -220,11 +220,15 @@ button.custom-button:hover,a.custom-button:hover {
 
 .main-page-list-tab-selected {
   background-color: $background-gray;
-  border: 2px solid $background-gray;
+  border-top: 2px solid $background-gray;
+  border-left: 2px solid $background-gray;
+  border-right: 2px solid $background-gray;
 }
 
 .main-page-list-tab-unselected {
-  border: 2px solid $background-gray;
+  border-top: 2px solid $background-gray;
+  border-left: 2px solid $background-gray;
+  border-right: 2px solid $background-gray;
 }
 
 .main-page-list-contents {
@@ -307,6 +311,7 @@ button.custom-button:hover,a.custom-button:hover {
 }
 
 .chat-entry {
+  margin: 0 1em;
   padding-top: 0.5em;
   display: flex;
 }

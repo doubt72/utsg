@@ -50,7 +50,7 @@ const unitCounter = (unit) => {
 
   const sponson = () => {
     const display = unit.displaySponson
-    return section(display, "unit-counter-sponson unit-counter-sec-sponson unit-counter-sponson")
+    return section(display, "unit-counter-sponson unit-counter-sec-sponson")
   }
 
   const icon = () => {
@@ -63,9 +63,14 @@ const unitCounter = (unit) => {
     )
   }
 
-  const right = () => {
-    const display = unit.displayRight
-    return section(display, "unit-counter-sec unit-counter-right unit-counter-box")
+  const smoke = () => {
+    const display = unit.displaySmoke
+    return section(display, "unit-counter-sec unit-counter-smoke unit-counter-box")
+  }
+
+  const vehicleSmoke = () => {
+    const display = unit.displayVehicleSmoke
+    return section(display, "unit-counter-vehicle-smoke unit-counter-sec-vehicle-smoke")
   }
 
   const hullArmor = () => {
@@ -102,7 +107,7 @@ const unitCounter = (unit) => {
     <div className={unitClasses}>
       {name()}
       {topLeft()}{topLeftSmall()}{size()}
-      {left()}{leftSmall()}{icon()}{sponson()}{right()}
+      {left()}{leftSmall()}{icon()}{sponson()}{smoke()}{vehicleSmoke()}
       {hullArmor()}{turretArmor()}
       {firepower()}{range()}{movement()}
       {status()}

@@ -87,7 +87,7 @@ module Api
       end
 
       def serialize_index(games)
-        games.map(&:index_body)
+        { data: games.map(&:index_body) }
       end
 
       def create_params

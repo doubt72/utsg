@@ -1,5 +1,5 @@
-- game main page display
 - game pagination
+- game page live updates
 
 - non-owner leaving game they've joined
 - fix return selecting player rather than completing form on new game

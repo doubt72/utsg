@@ -37,7 +37,7 @@ RSpec.describe Api::V1::GamesController do
 
       expect(response.status).to be == 200
 
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 3
       expect(json[0]["id"]).to be == game4.id
       expect(json[1]["id"]).to be == game3.id
@@ -49,12 +49,12 @@ RSpec.describe Api::V1::GamesController do
       get :index, params: { user: "" }
 
       expect(response.status).to be == 200
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 4
 
       get :index
 
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 4
       expect(json[0]["id"]).to be == game4.id
       expect(json[1]["id"]).to be == game3.id
@@ -67,7 +67,7 @@ RSpec.describe Api::V1::GamesController do
 
       expect(response.status).to be == 200
 
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 2
       expect(json[0]["id"]).to be == game3.id
       expect(json[1]["id"]).to be == game2.id
@@ -80,7 +80,7 @@ RSpec.describe Api::V1::GamesController do
 
       expect(response.status).to be == 200
 
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 1
       expect(json[0]["id"]).to be == game1.id
       expect(json[0]["state"]).to be == "in_progress"
@@ -91,7 +91,7 @@ RSpec.describe Api::V1::GamesController do
 
       expect(response.status).to be == 200
 
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 1
       expect(json[0]["id"]).to be == game4.id
       expect(json[0]["state"]).to be == "complete"
@@ -104,7 +104,7 @@ RSpec.describe Api::V1::GamesController do
 
       expect(response.status).to be == 200
 
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 1
       expect(json[0]["id"]).to be == game3.id
       expect(json[0]["state"]).to be == "ready"
@@ -117,7 +117,7 @@ RSpec.describe Api::V1::GamesController do
 
       expect(response.status).to be == 200
 
-      json = JSON.parse(response.body)
+      json = JSON.parse(response.body)["data"]
       expect(json.length).to be == 1
       expect(json[0]["id"]).to be == game1.id
       expect(json[0]["state"]).to be == "in_progress"

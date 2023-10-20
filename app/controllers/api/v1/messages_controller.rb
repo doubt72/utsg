@@ -38,7 +38,7 @@ module Api
 
       def game_messages(game_id)
         messages_to_json(
-          Message.where(game_id:).order(:created_at)
+          Message.includes(:user).where(game_id:).order(:created_at)
         )
       end
 
