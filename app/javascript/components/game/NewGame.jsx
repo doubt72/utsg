@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
 import { CreateGameButton, CustomCheckbox } from "../utilities/buttons";
+import { CaretDownFill, CaretUp, CaretUpFill } from "react-bootstrap-icons";
 import ScenarioRow from "./ScenarioRow";
 import ScenarioSummary from "./ScenarioSummary";
 
@@ -11,26 +12,34 @@ export default function NewGame() {
   const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: "" })
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
 
-  const [scenarioSearch, setScenarioSearch] = useState({ string: "", allies: "", axis: "" })
+  const [scenarioSearch, setScenarioSearch] = useState({ string: "", allies: "", axis: "", page: 0 })
+  const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
   const [scenarioData, setScenarioData] = useState(null)
 
   const [alliedFactions, setAlliedFactions] = useState([])
   const [axisFactions, setAxisFactions] = useState([])
 
+  const loadScenarios = () => {
+    const params = { page: scenarioSearch.page }
+    if (scenarioSearch.string != "") { params.string = scenarioSearch.string }
+    if (scenarioSearch.allies != "") { params.allies = scenarioSearch.allies }
+    if (scenarioSearch.axis != "") { params.axis = scenarioSearch.axis }
+    const urlParams = new URLSearchParams(params).toString()
+    const url = urlParams.length > 0 ? "/api/v1/scenarios?" + urlParams : "/api/v1/scenarios"
+    getAPI(url, {
+      ok: response => {
+        response.json().then(json => {
+          setScenarioList(json.data)
+          setScroll({ up: json.page > 0, down: json.more })
+        })
+      }
+    })
+  }
+
   const checkScenarios = () => {
     const scenarioTimer = setTimeout(() => {
-      const params = {}
-      if (scenarioSearch.string != "") { params.string = scenarioSearch.string }
-      if (scenarioSearch.allies != "") { params.allies = scenarioSearch.allies }
-      if (scenarioSearch.axis != "") { params.axis = scenarioSearch.axis }
-      const urlParams = new URLSearchParams(params).toString()
-      const url = urlParams.length > 0 ? "/api/v1/scenarios?" + urlParams : "/api/v1/scenarios"
-      getAPI(url, {
-        ok: response => {
-          response.json().then(json => { setScenarioList(json) })
-        }
-      })
+      loadScenarios()
     }, 500)
     if (scenarioTimer > 0) {
       clearTimeout(scenarioTimer - 1)
@@ -45,12 +54,19 @@ export default function NewGame() {
           response.json().then(json => { setScenarioData(json) })
         }
       })
+    } else {
+      setScenarioData(null)
     }
   }, [formInput.scenario])
 
   useEffect(() => {
+    setFormInput({ ...formInput, scenario: "" })
     checkScenarios()
   }, [scenarioSearch.string, scenarioSearch.allies, scenarioSearch.axis])
+
+  useEffect(() => {
+    loadScenarios()
+  }, [scenarioSearch.page])
 
   useEffect(() => {
     getAPI("/api/v1/scenarios/allied_factions", {
@@ -84,7 +100,7 @@ export default function NewGame() {
   }
 
   const onSearchChange = (name, value) => {
-    setScenarioSearch({ ...scenarioSearch, [name]: value })
+    setScenarioSearch({ ...scenarioSearch, [name]: value, page: 0 })
   }
 
   const onSubmit = (event) => {
@@ -149,8 +165,8 @@ export default function NewGame() {
     </select>
   )
 
-  // TODO: add pagination at some point
   const scenarioDisplayList = (
+    scenarioList.length < 1 ? <div className="red mt05em">no scenarios match search</div> :
     scenarioList.map((row, i) => {
       return (
         <ScenarioRow key={i} onClick={setScenario} selected={formInput.scenario === row.id} data={row} />
@@ -169,6 +185,18 @@ export default function NewGame() {
       { scenarioData ? <ScenarioSummary data={scenarioData} /> : noScenario }
     </div>
   )
+
+  const setPage = (page) => {
+    setScenarioSearch({ ...scenarioSearch, page: page })
+  }
+
+  const scrollUp = scroll.up ?
+    <div onClick={() => setPage(scenarioSearch.page - 1)}><CaretUpFill /></div> :
+    (scroll.down ? <div><CaretUp /></div> :
+      <div className="transparent"><CaretUpFill /></div>)
+
+  const scrollDown = scroll.down ?
+    <div onClick={() => setPage(scenarioSearch.page + 1)}><CaretDownFill /></div> : ""
 
   return (
     <div className="main-page">
@@ -220,7 +248,12 @@ export default function NewGame() {
             <div className="scenario-list-select">
               <div>select scenario:</div>
               <div className="red">{formErrors.scenario}</div>
-              {scenarioDisplayList}
+              <div className="flex">
+                <div className="flex-fill">
+                  {scenarioDisplayList}
+                </div>
+                <div className="ml05em control-large">{scrollUp}{scrollDown}</div>
+              </div>
             </div>
           </div>
         </div>

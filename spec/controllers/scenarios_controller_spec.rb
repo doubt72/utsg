@@ -27,22 +27,22 @@ RSpec.describe Api::V1::ScenariosController do
       get :index
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body).length).to be == Scenarios.constants.length - 1
+      expect(JSON.parse(response.body)["data"].length).to be == Scenarios.constants.length - 1
     end
 
     it "gets spec scenario when filtering by string" do
       get :index, params: { string: scenario_name }
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body).length).to be == 1
-      expect(JSON.parse(response.body).first["id"]).to be == "SPEC"
+      expect(JSON.parse(response.body)["data"].length).to be == 1
+      expect(JSON.parse(response.body)["data"].first["id"]).to be == "SPEC"
     end
 
     it "gets correct scenarios with allies filter" do
       get :index, params: { allies: "usa" }
 
       expect(response.status).to be == 200
-      scenarios = JSON.parse(response.body)
+      scenarios = JSON.parse(response.body)["data"]
       scenarios.each do |s|
         expect(s["allies"].include?("usa")).to be true
       end
@@ -55,7 +55,7 @@ RSpec.describe Api::V1::ScenariosController do
       get :index, params: { axis: "ger" }
 
       expect(response.status).to be == 200
-      scenarios = JSON.parse(response.body)
+      scenarios = JSON.parse(response.body)["data"]
       scenarios.each do |s|
         expect(s["axis"].include?("ger")).to be true
       end

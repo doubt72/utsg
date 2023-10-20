@@ -54,7 +54,7 @@
 }
 
 .scenario-row-selected {
-  border: 2px solid $alert-orange;
+  background-color: white;
 }
 
 .scenario-row-code {
@@ -62,7 +62,7 @@
   text-align: end;
   margin-right: 0.5em;
   font-family: monospace;
-  width: 2.5em;
+  width: 3.25em;
 }
 
 .scenario-description {
