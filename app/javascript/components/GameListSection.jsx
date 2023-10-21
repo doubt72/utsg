@@ -6,6 +6,7 @@ import GameListRow from "./GameListRow";
 
 export default function GameListSection(props) {
   const [page, setPage] = useState(0)
+  const [reload, setReload] = useState(0)
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [games, setGames] = useState([])
 
@@ -21,10 +22,21 @@ export default function GameListSection(props) {
           const list = json.data.length > 0 ? json.data : [{ empty: true }]
           setGames(list)
           setScroll({ up: json.page > 0, down: json.more })
+          if (page > 0 && json.data.length < 1) {
+            setPage(page - 1)
+          }
         })
       }
     })
-  }, [page])
+  }, [page, reload])
+
+  const pollTime = 10000 // 10 seconds
+  useEffect(() => {
+    setInterval(() => {
+      // TODO is this worth switching to a cable?
+      setReload(r => r + 1)
+    }, pollTime)
+  }, [])
 
   const scrollUp = scroll.up ?
     <div onClick={() => setPage(page - 1)}><CaretUpFill /></div> :
