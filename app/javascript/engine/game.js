@@ -39,19 +39,16 @@ const Game = class {
 
   loadNewMoves() {
     const limit = this.moves[this.moves.length - 1].id
-    console.log(limit)
     getAPI(`/api/v1/game_moves?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
         for (const move of json) {
           // TODO someday need to actually process the moves
           // read only!  Game state should only change/be saved when creating moves
-          console.log(`adding move ${move.data.action}`)
           this.moves.push(new GameMove(move))
         }
         // Moves can change game state
         getAPI(`/api/v1/games/${this.id}`, {
           ok: response => response.json().then(json => {
-            console.log(`updating game state ${json.state}`)
             this.loadCurrentState(json)
             this.refreshCallback(this)
           })

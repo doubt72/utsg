@@ -27,13 +27,10 @@ export default function GameDisplay() {
   }, [])
 
   const moveNotification = () => {
-    console.log(`got notification for move`)
     game.k.loadNewMoves()
   }
 
   const gameNotification = (g) => {
-    console.log("notification:")
-    console.log(g)
     setGame({
       k: g,
       turn: g.turn,

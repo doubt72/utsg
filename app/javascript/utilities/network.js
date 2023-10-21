@@ -32,7 +32,7 @@ const fetchAPI = (url, verb, body, responseOptions) => {
       responseOptions.other(response)
       return
     }
-    console.log(response.json())
+    console.log(response.json()) // Something was probably called incorrectly
   }).catch(error => console.log(error.message))
 }
 
