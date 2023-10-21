@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { Game } from "../../engine/game";
 import JoinButton from "./Controls/JoinButton";
 import StartButton from "./Controls/StartButton";
+import LeaveButton from "./Controls/LeaveButton";
 
 export default function Gamecontrols(props) {
   const [controls, setControls] = useState([])
@@ -19,6 +20,8 @@ export default function Gamecontrols(props) {
         return <div key={i}>{a.message}</div>
       } else if (a.type === "join") {
         return <JoinButton gameId={props.game.id} key={i} />
+      } else if (a.type === "leave") {
+        return <LeaveButton gameId={props.game.id} key={i} />
       } else if (a.type === "start") {
         return <StartButton gameId={props.game.id} key={i} />
       } else {

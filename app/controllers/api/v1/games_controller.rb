@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class GamesController < ApplicationController
+    class GamesController < ApplicationController # rubocop:disable Metric/ClassLength
       skip_before_action :authenticate_user!, only: %i[index show]
 
       def index
@@ -41,6 +41,14 @@ module Api
 
       def join
         if current_game&.join(current_user)
+          render json: current_game.show_body, status: :ok
+        else
+          render json: {}, status: :forbidden
+        end
+      end
+
+      def leave
+        if current_game&.leave(current_user)
           render json: current_game.show_body, status: :ok
         else
           render json: {}, status: :forbidden

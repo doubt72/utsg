@@ -23,7 +23,9 @@ const GameMove = class {
       case "start":
         return "game started"
       case "join":
-        return `${this.user} joined as player ${this.player}`
+        return `joined as player ${this.player}`
+      case "leave":
+        return `left game`
       default:
         return "i don't even know"
     }

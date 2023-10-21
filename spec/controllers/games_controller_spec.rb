@@ -304,6 +304,50 @@ RSpec.describe Api::V1::GamesController do
     end
   end
 
+  describe "leave_game" do
+    it "allows player to leave current game" do
+      login(user2)
+
+      expect do
+        post :leave, params: { id: game1.id }
+      end.to change { game1.reload.player_two }
+
+      expect(response.status).to be == 200
+      expect(game2.state).to be == "needs_player"
+      expect(game2.player_two).to be_nil
+    end
+
+    it "creates leave move" do
+      login(user2)
+
+      expect do
+        post :leave, params: { id: game1.id }
+      end.to change { GameMove.count }.by(1)
+
+      expect(GameMove.last.data["action"]).to be == "leave"
+    end
+
+    it "doesn't allow player to leave game they own" do
+      login(user1)
+
+      expect do
+        post :leave, params: { id: game1.id }
+      end.not_to change { game1.reload.player_one }
+
+      expect(response.status).to be == 403
+    end
+
+    it "doesn't allow player to leave game they aren't in" do
+      login(user2)
+
+      expect do
+        post :leave, params: { id: game2.id }
+      end.not_to change { game2.reload.player_two }
+
+      expect(response.status).to be == 403
+    end
+  end
+
   describe "start_game" do
     let!(:game3) do
       create(

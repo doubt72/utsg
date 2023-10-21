@@ -106,6 +106,22 @@ class Game < ApplicationRecord # rubocop:disable Metric/ClassLength
     self
   end
 
+  def leave(user)
+    return nil unless game_full?
+    return nil unless player_one_id == user.id || player_two_id == user.id
+    return nil if owner_id == user.id
+
+    player = 2
+    if player_one == user
+      update(player_one: nil)
+      player = 1
+    else
+      update(player_two: nil)
+    end
+    GameMove.create(game: self, user:, player:, data: { action: "leave" })
+    self
+  end
+
   def start(user)
     return nil unless owner_id == user.id && ready?
 

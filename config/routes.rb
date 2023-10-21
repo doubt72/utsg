@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       resources :games, only: %i[index show create update] do
         member do
           post "join"
+          post "leave"
           post "start"
           post "complete"
         end

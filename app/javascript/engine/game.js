@@ -70,6 +70,9 @@ const Game = class {
     } else if (this.state === "ready") {
       if (this.ownerName === currentPlayer) {
         return [{ type: "start" }]
+      } else if (currentPlayer &&
+        (this.playerOneName === currentPlayer || this.playerTwoName === currentPlayer)) {
+        return [{ type: "leave" }]
       } else {
         return [{ type: "none", message: "waiting for game to start" }]
       }
