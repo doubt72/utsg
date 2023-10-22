@@ -1,3 +1,4 @@
+import { Map } from "./map"
 import { getFormattedDate } from "./utilities"
 
 const Scenario = class {
@@ -19,7 +20,7 @@ const Scenario = class {
     this.firstMove = data.metadata.first_move
     this.firstSetup = data.metadata.first_setup
 
-    this.map = data.metadata.map_data // TODO: use map class
+    this.map = new Map(data.metadata.map_data)
   }
 
   get displayDate() {

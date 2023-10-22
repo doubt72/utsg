@@ -6,10 +6,12 @@ import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
 import MoveDisplay from "./MoveDisplay";
 import Gamecontrols from "./GameControls";
+import GameMap from "./GameMap";
 
 export default function GameDisplay() {
   const { id } = useParams()
   const [game, setGame] = useState({ k: {}, turn: 0, state: "", update: 0 })
+  const [map, setMap] = useState(null)
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
@@ -20,6 +22,7 @@ export default function GameDisplay() {
             json.scenario = scenario
             const g = new Game(json, gameNotification)
             setGame({k: g, turn: g.turn, state: g.state})
+            setMap(g.scenario.map)
           })
         })
       })
@@ -79,6 +82,7 @@ export default function GameDisplay() {
         </div>
       </div>
       <Gamecontrols game={game.k} update={game.update} />
+      <GameMap map={map} />
     </div>
   )
 }

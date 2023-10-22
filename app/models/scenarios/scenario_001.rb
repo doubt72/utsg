@@ -36,19 +36,24 @@ module Scenarios
       # TODO: documentation for map definitions
       def map_data
         {
-          orientation: "x+",
           hexes:,
+          layout: [15, 11, "x"],
+          allied_edge: "r",
+          axis_edge: "l",
+          victory_hexes: [],
+          allied_setup: { "0" => [] },
+          axis_setup: { "0" => [] },
         }
       end
 
+      # TODO: maybe standardize maps?  Maybe not?
+      # TODO: think about modularity?
       def hexes
         hexes = []
-        10.times do
+        11.times do
           row = []
-          12.times do |x|
+          15.times do
             hex = { t: "o" }
-            hex[:f] = ["xs"] if x < 4
-            hex[:f] = ["as"] if x > 5
             row.push(hex)
           end
           hexes.push(row)
