@@ -473,3 +473,25 @@ File.open('wreck.svg', 'w') do |file|
   file.puts footer
 end
 
+# File.open('test.svg', 'w') do |file|
+#   file.puts header
+#   path = []
+#   letter = "M"
+#   radius = 2.0
+#   0.upto(8) do |n|
+#     path.push([
+#       letter,
+#       ((radius * Math.cos(n/4.0 * Math::PI) + 2) * 100).to_i / 100.0,
+#       ((radius * Math.sin(n/4.0 * Math::PI) + 2) * 100).to_i / 100.0
+#     ])
+#     letter = "L"
+#     path.push([
+#       "L",
+#       ((radius*0.75 * Math.cos((n/4.0 + 1/8.0) * Math::PI) + 2) * 100).to_i / 100.0,
+#       ((radius*0.75 * Math.sin((n/4.0 + 1/8.0) * Math::PI) + 2) * 100).to_i / 100.0
+#     ])
+#   end
+#   write_path(path, file)
+#   file.puts footer
+# end
+

@@ -11,57 +11,71 @@ export default function MapHex(props) {
   const elevation = () => {
     const hex = props.hex.elevationHex
     if (hex) {
-      console.log(hex.d)
       return <path d={hex.d} style={hex.style} />
     }
     const path = props.hex.elevationContinuous
     if (path) {
-      return <path d={path} style={props.hex.elevationStyle} />
+      return <path d={path.d} style={path.style} />
     }
   }
 
-  const label = (
-    <text x={props.hex.labelX} y={props.hex.labelY} style={{
-      fill: "#777", textAnchor: "middle", fontFamily: "monospace", fontSize: "12px" }}>
-      {props.hex.label}
-    </text>
-  )
-
   const terrain = () => {
+    const orchard = props.hex.orchardDisplay
+    if (orchard) {
+      return (
+        <g>
+          {orchard.map((c, i) => {
+            return <circle key={i} cx={c.x} cy={c.y} r={c.r} style={c.style} />
+          })}
+        </g>
+      )
+    }
+    const building = props.hex.buildingDisplay
+    if (building) {
+      return <path d={building.d} style={building.style} />
+    }
     const circle = props.hex.terrainCircle
     if (circle) {
       return <circle cx={circle.x} cy={circle.y} r={circle.r} style={circle.style} />
     }
     const path = props.hex.terrainContinuous
     if (path) {
-      return <path d={path} style={props.hex.terrainContinuousStyle} />
+      return <path d={path.d} style={path.style} />
     }
   }
 
-  const road = () => {
-    if (!props.hex.road) { return "" }
-    const path = props.hex.roadPath
-    return (
-      <g>
-        <path d={path} style={props.hex.roadOutlineStyle} />
-        <path d={path} style={props.hex.roadEdgeStyle} />
-        <path d={path} style={props.hex.roadStyle} />
-      </g>
-    )
+  const terrainPattern = () => {
+    const terrainStyle = props.hex.terrainPattern
+    console.log(terrainStyle)
+    if (terrainStyle) {
+      if (props.hex.backgroundTerrain) {
+        return <polygon points={props.hex.hexCoords} style={terrainStyle} />
+      }
+      const circle = props.hex.terrainCircle
+      if (circle) {
+        return <circle cx={circle.x} cy={circle.y} r={circle.r} style={terrainStyle} />
+      }
+      const path = props.hex.terrainContinuous
+      if (path) {
+        return <path d={path.d} style={terrainStyle} />
+      }
+    }
   }
 
-  const outline = (
-    <polygon points={props.hex.hexCoords} style={{ strokeWidth: 1, stroke: "#CCC", fill: "rgba(0,0,0,0)" }} />
+  const label = (
+    <text x={props.hex.labelX} y={props.hex.labelY} style={{
+      fill: "rgba(0,0,0,0.33)", textAnchor: "middle", fontFamily: "monospace", fontSize: "12px" }}>
+      {props.hex.label}
+    </text>
   )
 
   return (
     <g>
       {background}
       {elevation()}
-      {label}
       {terrain()}
-      {road()}
-      {outline}
+      {terrainPattern()}
+      {label}
     </g>
   )
 }
