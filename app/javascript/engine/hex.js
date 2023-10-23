@@ -4,6 +4,7 @@ const Hex = class {
     this.x = x
     this.y = y
     this.terrain = data.t
+    this.direction = data.d
     this.road = !!data.r
     if (this.road) {
       this.roadType = data.r.t
@@ -22,7 +23,6 @@ const Hex = class {
     if (this.building) {
       this.buildingStyle = data.st.s
       this.buildingShape = data.st.sh
-      this.buildingDirection = data.st.d
     }
   }
 
@@ -91,7 +91,7 @@ const Hex = class {
   }
 
   borderDecorationStyles = {
-    f: { stroke: "#963", strokeWidth: 8, strokeDasharray: [2, this.radius/4] },
+    f: { stroke: "#963", strokeWidth: 8, strokeDasharray: [2, this.radius/5] },
     w: { stroke: "#888", strokeWidth: 8, strokeDasharray: [2, 2] },
     b: { stroke: "rgba(0,0,0,0)" },
     c: { stroke: "rgba(0,0,0,0)" },
@@ -173,21 +173,25 @@ const Hex = class {
 
   get orchardDisplay() {
     if (this.terrain !== "d") { return false }
-    return [0, 1, 2, 3, 4, 5].map((x) => {
-      return {
-        x: this.xOffset - Math.round((x-1)/2) * this.radius*0.575 + this.radius*0.575,
-        y: this.yOffset - x%2 * this.radius*0.575 + this.radius*0.275,
-        r: this.radius/5,
-        style: { fill: "#393" }
-      }
+    const trees = []
+    [0, 1, 2].forEach((x) => {
+      [0, 1].forEach((y) => {
+        trees.push({
+          x: this.xOffset - Math.round((x-1)/2) * this.radius*0.575 + this.radius*0.575,
+          y: this.yOffset - x%2 * this.radius*0.575 + this.radius*0.275,
+          r: this.radius/5,
+          style: { fill: "#393" }
+        })
+      })
     })
+    return trees
   }
 
   get buildingDisplay() {
     if (!this.building) { return false }
     let path = []
     let inset = 8
-    let dir = this.buildingDirection
+    let dir = this.direction
     if (this.buildingShape === "c") {
       inset = 16
       path = [
@@ -208,7 +212,7 @@ const Hex = class {
     } else if (this.buildingShape === "x") {
       const outside = this.radius * 0.8
       const inside = outside * Math.sin(Math.PI/5.333)
-      dir = (2/3 - this.buildingDirection/3) + Math.PI/4
+      dir = (2/3 - this.direction/3) + Math.PI/4
       let angle = dir * Math.PI
       path = [
         "M", this.xOffset + outside * Math.sin(angle), this.yOffset + outside * Math.cos(angle)
