@@ -2,19 +2,25 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Map } from "../../engine/map";
 import MapHex from "./MapHex";
+import MapHexOverlay from "./MapHexOverlay";
+import MapHexPatterns from "./MapHexPatterns";
 
 export default function GameMap(props) {
   const [hexes, setHexes] = useState([])
+  const [overlays, setOverlays] = useState([])
 
   useEffect(() => {
     if (!props.map) { return }
     const hexLoader = []
+    const overlayLoader = []
     props.map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex}/>)
+        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}/>)
       })
     })
     setHexes(hexLoader)
+    setOverlays(overlayLoader)
   }, [props.map])
 
   const hexNarrow = 96
@@ -26,7 +32,9 @@ export default function GameMap(props) {
     <div className="map-container">
       <svg className="map-svg" width={width} height={height}
            viewBox={`0 0 ${width} ${height}`}>
+        <MapHexPatterns />
         {hexes}
+        {overlays}
       </svg>
     </div>
   )

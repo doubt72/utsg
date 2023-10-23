@@ -46,7 +46,6 @@ export default function MapHex(props) {
 
   const terrainPattern = () => {
     const terrainStyle = props.hex.terrainPattern
-    console.log(terrainStyle)
     if (terrainStyle) {
       if (props.hex.backgroundTerrain) {
         return <polygon points={props.hex.hexCoords} style={terrainStyle} />

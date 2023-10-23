@@ -1,9 +1,9 @@
 const Hex = class {
-  constructor(x, y, data) {
+  constructor(x, y, data, map) {
+    this.map = map
     this.x = x
     this.y = y
     this.terrain = data.t
-    this.terrainEdges = data.e
     this.road = !!data.r
     if (this.road) {
       this.roadType = data.r.t
@@ -15,9 +15,8 @@ const Hex = class {
       this.riverDirections = data.s.d
     }
     this.elevation = data.h || 0
-    this.elevationEdges = data.he
     this.border = data.b
-    // Hexes will check next hex, so only place these in positions 1, 2, and 3
+    // Hexes will check next hex, only need to do one side
     this.borderEdges = data.be
     this.building = !!data.st
     if (this.building) {
@@ -25,6 +24,33 @@ const Hex = class {
       this.buildingShape = data.st.sh
       this.buildingDirection = data.st.d
     }
+  }
+
+  get elevationEdges() {
+    let all = true
+    let none = true
+    const edges = this.map.hexNeighbors(this.x, this.y).map((h, i) => {
+      const check = (this.border === "c" && this.borderEdges.includes(i+1)) ||
+                    !h || h.elevation >= this.elevation
+      if (check) { none = false } else { all = false }
+      return check ? 1 : 0
+    })
+    if (all) { return "all" }
+    if (none) { return null }
+    return edges
+  }
+
+  get terrainEdges() {
+    let all = true
+    let none = true
+    const edges = this.map.hexNeighbors(this.x, this.y).map((h, i) => {
+      const check = !h || h.terrain === this.terrain
+      if (check) { none = false } else { all = false }
+      return check ? 1 : 0
+    })
+    if (all) { return "all" }
+    if (none) { return null }
+    return edges
   }
 
   elevationStyles = [

@@ -10,7 +10,26 @@ const Map = class {
     this.alliedSetupHexes = data.allied_setup
     this.axisSetupHexes = data.axis_setup
 
-    this.loadMap(data.hexes)
+    this.loadMap(data.hexes, this)
+  }
+
+  hexAt(x, y) {
+    if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
+      return null
+    }
+    return this.mapHexes[y][x]
+  }
+
+  hexNeighbors(x, y) {
+    const offset = y%2
+    return [
+      this.hexAt(x - 1, y),
+      this.hexAt(x - 1 + offset, y - 1),
+      this.hexAt(x + offset, y - 1),
+      this.hexAt(x + 1, y),
+      this.hexAt(x + offset, y + 1),
+      this.hexAt(x - 1 + offset, y + 1),
+    ]
   }
 
   loadConfig(data) {
@@ -27,9 +46,9 @@ const Map = class {
     this.horizontal = data[2] === "x"
   }
 
-  loadMap(data) {
+  loadMap(data, map) {
     this.mapHexes = data.map((row, y) => {
-      return row.map((hex, x) => new Hex(x, y, hex))
+      return row.map((hex, x) => new Hex(x, y, hex, map))
     })
   }
 }
