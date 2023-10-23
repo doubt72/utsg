@@ -30,7 +30,7 @@ export default function GameMap(props) {
 
   return (
     <div className="map-container">
-      <svg className="map-svg" width={width} height={height}
+      <svg className="map-svg" width={width * props.scale} height={height * props.scale}
            viewBox={`0 0 ${width} ${height}`}>
         <MapHexPatterns />
         {hexes}
@@ -42,4 +42,5 @@ export default function GameMap(props) {
 
 GameMap.propTypes = {
   map: PropTypes.instanceOf(Map),
+  scale: PropTypes.number.isRequired,
 }

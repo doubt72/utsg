@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario001 < Base
+  class Scenario001 < Base # rubocop:disable Metric/ClassLength
     ID = "001"
     NAME = "Lost in the Woods"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 
-    class << self
+    class << self # rubocop:disable Metric/ClassLength
       # TODO: documentation for field descriptions
       def generate
         {
@@ -16,7 +16,7 @@ module Scenarios
           first_move: 2,
           date: [1942, 7, 31],
           location: "Rzhev, Russia",
-          author: "Douglas Triggs",
+          author: "The Establishment",
           description:,
           map_data:,
           allied_units:,
@@ -48,7 +48,7 @@ module Scenarios
 
       # TODO: maybe standardize maps?  Maybe not?
       # TODO: think about modularity?
-      def hexes
+      def hexes # rubocop:disable Metric/MethodLength
         [
           [
             { t: "f" },
@@ -141,8 +141,8 @@ module Scenarios
             { t: "o" },
             { t: "o", s: { d: [2, 6] } },
             { t: "o", b: "f", be: [1, 2, 3] },
-            { t: "o", b: "f", be: [2, 3]  },
-            { t: "o", b: "f", be: [2, 3, 4]  },
+            { t: "o", b: "f", be: [2, 3] },
+            { t: "o", b: "f", be: [2, 3, 4] },
             { t: "f" },
             { t: "f" },
             { t: "o" },
@@ -159,7 +159,7 @@ module Scenarios
             { t: "g", b: "f", be: [1, 2, 6] },
             { t: "g" },
             { t: "g" },
-            { t: "o", b: "f", be: [3, 4]  },
+            { t: "o", b: "f", be: [3, 4] },
             { t: "f" },
             { t: "o" },
           ], [
@@ -192,7 +192,7 @@ module Scenarios
             { t: "o", s: { d: [1, 5] } },
             { t: "o", b: "f", be: [1, 6] },
             { t: "o", d: 1, st: { sh: "l" } },
-            { t: "o", b: "f", be: [3, 4, 5] },
+            { t: "o", b: "f", be: [3] },
             { t: "f" },
           ], [
             { t: "o" },
@@ -226,7 +226,7 @@ module Scenarios
             { t: "o" },
             { t: "f" },
             { t: "f", r: { t: "d", d: [2, 5] } },
-          ]
+          ],
         ]
       end
 

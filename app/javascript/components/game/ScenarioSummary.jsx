@@ -4,9 +4,11 @@ import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
 import { unitCounter } from "../utilities/units";
 import { Unit } from "../../engine/unit";
 import { Scenario } from "../../engine/scenario";
+import GameMap from "./GameMap";
 
 export default function ScenarioSummary(props) {
   const scenario = new Scenario(props.data)
+  const map = scenario.map
 
   const player1Pills = (
     <span>
@@ -36,7 +38,7 @@ export default function ScenarioSummary(props) {
         <div className="mr1em nowrap">
           Moves first: {scenario.firstMove == 1 ? player1Pills : player2Pills}
         </div>
-        <div className="flex-fill align-end">By: {scenario.author}</div>
+        <div className="flex-fill align-end">Author: <span className="green">{scenario.author}</span></div>
       </div>
       <div className="flex mt1em">
         <div className="p1em mr1em background-gray">
@@ -44,6 +46,11 @@ export default function ScenarioSummary(props) {
             return <p key={i}>{p}</p>
           })}
         </div>
+        <div>
+          <GameMap map={map} scale={0.25} />
+        </div>
+      </div>
+      <div className="flex mt1em">
         <div>
           <div className="flex nowrap">
             {scenario.alliedUnitList.map((unit, i) => {
@@ -72,9 +79,6 @@ export default function ScenarioSummary(props) {
                 return <div key={i}>{unitCounter(new Unit(unit))}</div>
               }
             })}
-          </div>
-          <div>
-            Map
           </div>
         </div>
       </div>

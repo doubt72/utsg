@@ -43,7 +43,7 @@ const Hex = class {
   get terrainEdges() {
     let all = true
     let none = true
-    const edges = this.map.hexNeighbors(this.x, this.y).map((h, i) => {
+    const edges = this.map.hexNeighbors(this.x, this.y).map(h => {
       const check = !h || h.terrain === this.terrain
       if (check) { none = false } else { all = false }
       return check ? 1 : 0
@@ -62,14 +62,14 @@ const Hex = class {
     { fill: "#620" },
   ]
 
-  lightWater = "#59C"
+  // lightWater = "#59C"
   darkWater = "#46A"
 
   terrainStyles = {
     j: { fill: "rgba(47,191,47,0.33)" },
-    s: { fill: "#DD9" },
+    s: { fill: "#EEA" },
     m: { fill: "#CEE" },
-    g: { fill: "#DEA" },
+    g: { fill: "#EFB" },
     w: { fill: this.darkWater }, // TODO: special shallow beach water?
   }
 
@@ -80,7 +80,6 @@ const Hex = class {
     s: { fill: "url(#sand-pattern)" },
     m: { fill: "url(#marsh-pattern)" },
     g: { fill: "url(#grain-pattern)" },
-    // w: { fill: this.darkWater },
   }
 
   borderStyles = {
@@ -174,16 +173,17 @@ const Hex = class {
   get orchardDisplay() {
     if (this.terrain !== "d") { return false }
     const trees = []
-    [0, 1, 2].forEach((x) => {
-      [0, 1].forEach((y) => {
-        trees.push({
-          x: this.xOffset - Math.round((x-1)/2) * this.radius*0.575 + this.radius*0.575,
-          y: this.yOffset - x%2 * this.radius*0.575 + this.radius*0.275,
-          r: this.radius/5,
-          style: { fill: "#393" }
-        })
-      })
-    })
+    for (let x = 0; x < 3; x++) {
+      for (let y = 0; y < 2; y++) {
+        const dir = -this.direction - 0.5
+        const mag = this.radius*0.5
+        const x0 = this.xOffset + (x-1) * mag * Math.sin(dir/3 * Math.PI) +
+          (y-0.5) * mag * Math.sin((dir/3 + 0.5) * Math.PI)
+        const y0 = this.yOffset + (x-1) * mag * Math.cos(dir/3 * Math.PI) +
+          (y-0.5) * mag * Math.cos((dir/3 + 0.5) * Math.PI)
+        trees.push({ x: x0, y: y0, r: this.radius/5, style: { fill: "#4A4" } })
+      }
+    }
     return trees
   }
 

@@ -82,7 +82,7 @@ export default function GameDisplay() {
         </div>
       </div>
       <Gamecontrols game={game.k} update={game.update} />
-      <GameMap map={map} />
+      <GameMap map={map} scale={1.0} />
     </div>
   )
 }
