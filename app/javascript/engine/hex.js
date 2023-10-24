@@ -183,7 +183,6 @@ const Hex = class {
   // These allow doing simple X, Y coords, but then rotate for direction (used
   // for doing all the "square" buildings)
   xRotated(direction, x, y) {
-    console.log(y)
     const  dir = -direction - 0.5
     return this.xOffset + x * Math.sin(dir/3 * Math.PI) + y * Math.sin((dir/3 + 0.5) * Math.PI)
   }

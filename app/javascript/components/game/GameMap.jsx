@@ -15,13 +15,19 @@ export default function GameMap(props) {
     const overlayLoader = []
     props.map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
-        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex}/>)
-        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}/>)
+        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} selected={false} />)
+        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
+                                          selectCallback={makeSelection}/>)
       })
     })
     setHexes(hexLoader)
     setOverlays(overlayLoader)
   }, [props.map])
+
+  const makeSelection = (x, y) => {
+    // Replace this with whatever hooks we actually need
+    console.log(`clicked on ${x},${y}`)
+  }
 
   const hexNarrow = 96
   const hexWide = hexNarrow / 2 / Math.sin(1/3 * Math.PI) * 1.5

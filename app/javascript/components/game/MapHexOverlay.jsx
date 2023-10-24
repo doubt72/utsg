@@ -38,7 +38,8 @@ export default function MapHexOverlay(props) {
 
   const outline = (
     <polygon points={props.hex.hexCoords}
-             style={{ strokeWidth: 1, stroke: "rgba(0,0,0,0.16)", fill: "rgba(0,0,0,0)" }} />
+             style={{ strokeWidth: 1, stroke: "rgba(0,0,0,0.16)", fill: "rgba(0,0,0,0)" }}
+             onClick={() => props.selectCallback(props.hex.x, props.hex.y)} />
   )
 
   return (
@@ -53,4 +54,6 @@ export default function MapHexOverlay(props) {
 
 MapHexOverlay.propTypes = {
   hex: PropTypes.instanceOf(Hex),
+  selectCallback: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
 }

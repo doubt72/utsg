@@ -260,13 +260,37 @@ export default function GameMap() {
     const overlayLoader = []
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
-        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex}/>)
-        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}/>)
+        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} selected={false} />)
+        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
+                                          selectCallback={makeSelection}/>)
       })
     })
     setHexes(hexLoader)
     setOverlays(overlayLoader)
   }, [])
+
+  const makeSelection = (x, y) => {
+    const key = `${x}-${y}`
+    setHexes(hexes =>
+      hexes.map(h => {
+        if (h.key === key) {
+          return <MapHex key={`${x}-${y}`} hex={h.props.hex} selected={!h.props.selected} />
+        } else {
+          return h
+        }
+      })
+    )
+    setOverlays(overlays =>
+      overlays.map(h => {
+        if (h.key === `key-o`) {
+          return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} selected={!h.props.selected}
+                                selectCallback={makeSelection}/>
+        } else {
+          return h
+        }
+      })
+    )
+  }
 
   const hexNarrow = 96
   const hexWide = hexNarrow / 2 / Math.sin(1/3 * Math.PI) * 1.5

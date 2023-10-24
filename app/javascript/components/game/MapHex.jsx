@@ -68,6 +68,12 @@ export default function MapHex(props) {
     </text>
   )
 
+  const selectedStyle = { fill: "rgba(0,0,0,0.1)" }
+
+  const selected = (
+    props.selected ? <polygon points={props.hex.hexCoords} style={selectedStyle} /> : ""
+  )
+
   return (
     <g>
       {background}
@@ -75,10 +81,12 @@ export default function MapHex(props) {
       {terrain()}
       {terrainPattern()}
       {label}
+      {selected}
     </g>
   )
 }
 
 MapHex.propTypes = {
   hex: PropTypes.instanceOf(Hex),
+  selected: PropTypes.bool,
 }
