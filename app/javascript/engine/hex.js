@@ -17,40 +17,14 @@ const Hex = class {
     }
     this.elevation = data.h || 0
     this.border = data.b
-    // Hexes will check next hex, only need to do one side
+    // Hexes will check next hex in game, only need to do one side, but matters
+    // for cliffs and rendering elevation (i.e., put on higher elevation edge)
     this.borderEdges = data.be
     this.building = !!data.st
     if (this.building) {
       this.buildingStyle = data.st.s
       this.buildingShape = data.st.sh
     }
-  }
-
-  get elevationEdges() {
-    let all = true
-    let none = true
-    const edges = this.map.hexNeighbors(this.x, this.y).map((h, i) => {
-      const check = (this.border === "c" && this.borderEdges.includes(i+1)) ||
-                    !h || h.elevation >= this.elevation
-      if (check) { none = false } else { all = false }
-      return check ? 1 : 0
-    })
-    if (all) { return "all" }
-    if (none) { return null }
-    return edges
-  }
-
-  get terrainEdges() {
-    let all = true
-    let none = true
-    const edges = this.map.hexNeighbors(this.x, this.y).map(h => {
-      const check = !h || h.terrain === this.terrain
-      if (check) { none = false } else { all = false }
-      return check ? 1 : 0
-    })
-    if (all) { return "all" }
-    if (none) { return null }
-    return edges
   }
 
   elevationStyles = [
@@ -96,16 +70,20 @@ const Hex = class {
     c: { stroke: "rgba(0,0,0,0)" },
   }
 
-  get narrow() { return 96 } // Base hex side, measuring flat side
+  // Base hex side, measuring flat side, and other common measurements
+  get narrow() { return 96 }
   get radius() { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
   get xOffset() { return this.narrow * (this.x + this.y%2/2 + 0.5) + 1 }
   get yOffset() { return this.radius * (this.y*1.5 + 1) + 1 }
 
+  // Corners and edges on demand (with offsets) for doing continous curves
   xCorner(i, inset = 0) { return this.xOffset - (this.radius - inset) * Math.cos((i-0.5)/3 * Math.PI) }
   yCorner(i, inset = 0) { return this.yOffset - (this.radius - inset) * Math.sin((i-0.5)/3 * Math.PI) }
   xEdge(i, inset = 0) { return this.xOffset - (this.narrow/2 - inset) * Math.cos((i-1)/3 * Math.PI) }
   yEdge(i, inset = 0) { return this.yOffset - (this.narrow/2 - inset) * Math.sin((i-1)/3 * Math.PI) }
 
+  // When matching up hexes with continuous curves, use this to calculate how
+  // far the open terrain crosses from the corner of the hex
   xCornerOffset(i, offset, dir, inset = 0) {
     const x = this.xCorner(i, inset)
     return x - offset * Math.cos((i - 0.5 + 2*dir)/3 * Math.PI)
@@ -115,28 +93,41 @@ const Hex = class {
     return y - offset * Math.sin((i - 0.5 + 2*dir)/3 * Math.PI)
   }
 
+  // When calculating connected vs. open hexes, offboard counts as any elevation or terrain
+  get elevationEdges() {
+    let all = true
+    let none = true
+    const edges = this.map.hexNeighbors(this.x, this.y).map((h, i) => {
+      const check = (this.border === "c" && this.borderEdges.includes(i+1)) ||
+                    !h || h.elevation >= this.elevation
+      if (check) { none = false } else { all = false }
+      return check ? 1 : 0
+    })
+    if (all) { return "all" }
+    if (none) { return null }
+    return edges
+  }
+
+  get terrainEdges() {
+    let all = true
+    let none = true
+    const edges = this.map.hexNeighbors(this.x, this.y).map(h => {
+      const check = !h || h.terrain === this.terrain
+      if (check) { none = false } else { all = false }
+      return check ? 1 : 0
+    })
+    if (all) { return "all" }
+    if (none) { return null }
+    return edges
+  }
+
   get hexCoords() {
     return [0, 1, 2, 3, 4, 5, 6].map(i => {
       return `${this.xCorner(i)},${this.yCorner(i)}`
     }).join(" ")
   }
 
-  hexRoundCoordsInset(inset) {
-    let path = ["M", this.xCornerOffset(-1, inset, 1, inset), this.yCornerOffset(-1, inset, 1, inset)]
-    for (let i = 0; i < 6; i++) {
-      path = path.concat(
-        ["L", this.xCornerOffset(i, inset, -1, inset), this.yCornerOffset(i, inset, -1, inset)]
-      )
-      path = path.concat(
-        [
-          "A", inset*2, inset*2, 0, 0, 1,
-          this.xCornerOffset(i, inset, 1, inset), this.yCornerOffset(i, inset, 1, inset)
-        ]
-      )
-    }
-    return path.join(" ")
-  }
-
+  // "Solid" terrain (i.e., surrounded), no need for curves
   get backgroundTerrain() {
     return this.terrainEdges === "all"
   }
@@ -161,7 +152,8 @@ const Hex = class {
   }
 
   get label() {
-    // handle up to 52 for now
+    // handle up to 52 for now, easy to extend if we need it, but at 1" hexes,
+    // 52 would be a somewhat ludicrous seven 8.5x11" pages wide
     const letters = [
       "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
       "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
@@ -170,6 +162,7 @@ const Hex = class {
     return `${letters[this.x]}${this.y + 1}`
   }
 
+  // Draw the orchard hex, rotated by direction
   get orchardDisplay() {
     if (this.terrain !== "d") { return false }
     const trees = []
@@ -187,12 +180,71 @@ const Hex = class {
     return trees
   }
 
+  // These allow doing simple X, Y coords, but then rotate for direction (used
+  // for doing all the "square" buildings)
+  xRotated(direction, x, y) {
+    console.log(y)
+    const  dir = -direction - 0.5
+    return this.xOffset + x * Math.sin(dir/3 * Math.PI) + y * Math.sin((dir/3 + 0.5) * Math.PI)
+  }
+
+  yRotated(direction, x, y) {
+    const  dir = -direction - 0.5
+    return this.yOffset + x * Math.cos(dir/3 * Math.PI) + y * Math.cos((dir/3 + 0.5) * Math.PI)
+  }
+
+  // Core of the "standard" multi-hex building
+  drawCore(dir, x, y, inset, offset1, offset2) {
+    const outset = inset*3
+    return [
+      "M", this.xRotated(dir, -x + offset2, -y), this.yRotated(dir, -x + offset2, -y),
+      "L", this.xRotated(dir, -outset*1.5, -y), this.yRotated(dir, -outset*1.5, -y),
+      "L", this.xRotated(dir, -outset*1.5, -y-outset), this.yRotated(dir, -outset*1.5, -y-outset),
+      "L", this.xRotated(dir, outset*1.5, -y-outset), this.yRotated(dir, outset*1.5, -y-outset),
+      "L", this.xRotated(dir, outset*1.5, -y), this.yRotated(dir, outset*1.5, -y),
+      "L", this.xRotated(dir, x - offset1, -y), this.yRotated(dir, x - offset1, -y),
+      "L", this.xRotated(dir, x - offset1, y), this.yRotated(dir, x - offset1, y),
+      "L", this.xRotated(dir, outset*1.5, y), this.yRotated(dir, outset*1.5, y),
+      "L", this.xRotated(dir, outset*1.5, y+outset), this.yRotated(dir, outset*1.5, y+outset),
+      "L", this.xRotated(dir, -outset*1.5, y+outset), this.yRotated(dir, -outset*1.5, y+outset),
+      "L", this.xRotated(dir, -outset*1.5, y), this.yRotated(dir, -outset*1.5, y),
+      "L", this.xRotated(dir, -x + offset2, y), this.yRotated(dir, -x + offset2, y),
+      "L", this.xRotated(dir, -x + offset2, -y), this.yRotated(dir, -x + offset2, -y),
+    ]
+  }
+
+  // Eaves for all the "standard" buildings
+  drawEave(dir, x, y) {
+    return [
+      "M", this.xRotated(dir, -x*1.5, y), this.yRotated(dir, -x*1.5, y),
+      "L", this.xRotated(dir, 0, y-x), this.yRotated(dir, 0, y-x),
+      "L", this.xRotated(dir, x*1.5, y), this.yRotated(dir, x*1.5, y),
+      "L", this.xRotated(dir, 0, y-x), this.yRotated(dir, 0, y-x),
+      "M", this.xRotated(dir, 0, y+x), this.yRotated(dir, 0, y+x),
+      "L", this.xRotated(dir, 0, y-x), this.yRotated(dir, 0, y-x),
+    ]
+  }
+
+  // End pieces for "standard" buildings
+  drawEnd(dir, x, y, size, center) {
+    return [
+      "M", this.xRotated(dir, center, 0), this.yRotated(dir, center, 0),
+      "L", this.xRotated(dir, x - size*6, 0), this.yRotated(dir, x - size*6, 0),
+      "L", this.xRotated(dir, x - size*2, -y), this.yRotated(dir, x - size*2, -y),
+      "L", this.xRotated(dir, x - size*6, 0), this.yRotated(dir, x - size*6, 0),
+      "M", this.xRotated(dir, x - size*6, 0), this.yRotated(dir, x - size*6, 0),
+      "L", this.xRotated(dir, x - size*2, y), this.yRotated(dir, x - size*2, y),
+    ]
+  }
+
   get buildingDisplay() {
     if (!this.building) { return false }
     let path = []
-    let inset = 8
+    let inset = 4
+    const outset = inset*3
     let dir = this.direction
     if (this.buildingShape === "c") {
+      // Circular "silo" type thing
       inset = 16
       path = [
         "M", this.xCorner(0, inset), this.yCorner(0, inset),
@@ -209,87 +261,74 @@ const Hex = class {
           ]
         )
       }
-    } else if (this.buildingShape === "x") {
-      const outside = this.radius * 0.8
-      const inside = outside * Math.sin(Math.PI/5.333)
-      dir = (2/3 - this.direction/3) + Math.PI/4
-      let angle = dir * Math.PI
-      path = [
-        "M", this.xOffset + outside * Math.sin(angle), this.yOffset + outside * Math.cos(angle)
-      ]
-      for (let i = 0; i < 4; i++) {
-        angle = (i/2 + dir) * Math.PI
-        path = path.concat([
-          "L", this.xOffset + outside * Math.sin(angle), this.yOffset + outside * Math.cos(angle),
-          "L", this.xOffset + inside * Math.sin(angle + Math.PI/8),
-          this.yOffset + inside * Math.cos(angle + Math.PI/8),
-          "L", this.xOffset + outside * Math.sin(angle + Math.PI/4),
-          this.yOffset + outside * Math.cos(angle + Math.PI/4)
-        ])
-      }
-      angle = (2 + dir) * Math.PI
-      path = path.concat([
-        "L", this.xOffset + outside * Math.sin(angle), this.yOffset + outside * Math.cos(angle)
-      ])
-      for (let i = 0; i < 4; i++) {
-        angle = (i/2 + dir) * Math.PI
-        path = path.concat([
-          "M", this.xOffset + outside * Math.sin(angle), this.yOffset + outside * Math.cos(angle),
-          "L", this.xOffset + inside * Math.sin(angle - Math.PI/8),
-          this.yOffset + inside * Math.cos(angle - Math.PI/8),
-          "L", this.xOffset, this.yOffset,
-          "L", this.xOffset + inside * Math.sin(angle - Math.PI/8),
-          this.yOffset + inside * Math.cos(angle - Math.PI/8),
-          "L", this.xOffset + outside * Math.sin(angle - Math.PI/4),
-          this.yOffset + outside * Math.cos(angle - Math.PI/4)
-        ])
-      }
     } else if (this.buildingShape === "m") {
-      inset = 4
-      path = [
-        "M", this.xCornerOffset(dir-3, inset, -1), this.yCornerOffset(dir-3, inset, -1),
-        "L", this.xCornerOffset(dir-1, inset, 1), this.yCornerOffset(dir-1, inset, 1),
-        "L", this.xCornerOffset(dir, inset, -1), this.yCornerOffset(dir, inset, -1),
-        "L", this.xCornerOffset(dir+2, inset, 1), this.yCornerOffset(dir+2, inset, 1),
-        "L", this.xCornerOffset(dir+3, inset, -1), this.yCornerOffset(dir+3, inset, -1),
-        "M", this.xEdge(dir), this.yEdge(dir),
-        "L", this.xEdge(dir+3), this.yEdge(dir+3),
-      ]
+      // Standard building m = center segment, s=sides (rotate to fit), l=lone (not multi-hex)
+      const x = this.narrow/2
+      const y = this.radius/2 - inset
+      path = this.drawCore(dir, x, y, inset, 0, 0)
+      path = path.concat([
+        "M", this.xRotated(dir, -x, 0), this.yRotated(dir, -x, 0),
+        "L", this.xRotated(dir, x, 0), this.yRotated(dir, x, 0),
+      ])
+      path = path.concat(this.drawEave(dir, -outset, -y))
+      path = path.concat(this.drawEave(dir, outset, y))
     } else if (this.buildingShape === "s") {
-      inset = 4
-      const xO = inset*4 * Math.sin((dir+0.5)/3 * Math.PI)
-      const yO = -inset*4 * Math.cos((dir+0.5)/3 * Math.PI)
-      path = [
-        "M", this.xCornerOffset(dir-3, inset, -1), this.yCornerOffset(dir-3, inset, -1),
-        "L", this.xCornerOffset(dir-1, inset, 1) + xO, this.yCornerOffset(dir-1, inset, 1) + yO,
-        "L", this.xCornerOffset(dir, inset, -1) + xO, this.yCornerOffset(dir, inset, -1) + yO,
-        "L", this.xCornerOffset(dir+2, inset, 1), this.yCornerOffset(dir+2, inset, 1),
-        "L", this.xCornerOffset(dir+3, inset, -1), this.yCornerOffset(dir+3, inset, -1),
-        "M", this.xEdge(dir, inset*8), this.yEdge(dir, inset*8),
-        "L", this.xEdge(dir+3), this.yEdge(dir+3),
-        "M", this.xEdge(dir, inset*8), this.yEdge(dir, inset*8),
-        "L", this.xCornerOffset(dir-1, inset, 1) + xO, this.yCornerOffset(dir-1, inset, 1) + yO,
-        "M", this.xEdge(dir, inset*8), this.yEdge(dir, inset*8),
-        "L", this.xCornerOffset(dir, inset, -1) + xO, this.yCornerOffset(dir, inset, -1) + yO,
-      ]
+      const x = this.narrow/2
+      const y = this.radius/2 - inset
+      path = this.drawCore(dir, x, y, inset, inset*2, 0)
+      path = path.concat(this.drawEnd(dir, x, y, inset, -x))
+      path = path.concat(this.drawEave(dir, -outset, -y))
+      path = path.concat(this.drawEave(dir, outset, y))
     } else if (this.buildingShape === "l") {
-      path = ["M", this.xCorner(dir-3, inset), this.yCorner(dir-3, inset)]
-      for (let i = 0; i < 2; i++) {
-        path = path.concat([
-          "L", this.xCorner(i*3-1+dir, inset), this.yCorner(i*3-1+dir, inset),
-          "L", this.xCorner(i*3+dir, inset), this.yCorner(i*3+dir, inset),
-        ])
-      }
-      for (let i = 0; i < 2; i++) {
-        path = path.concat([
-          "M", this.xCorner(i*3-1+dir, inset), this.yCorner(i*3-1+dir, inset),
-          "L", this.xEdge(i*3+dir, inset*3), this.yEdge(i*3+dir, inset*3),
-          "L", this.xOffset, this.yOffset,
-          "M", this.xCorner(i*3+dir, inset), this.yCorner(i*3+dir, inset),
-          "L", this.xEdge(i*3+dir, inset*3), this.yEdge(i*3+dir, inset*3),
-        ])
-      }
-    }
+      const x = this.narrow/2
+      const y = this.radius/2 - inset
+      path = this.drawCore(dir, x, y, inset, inset*2, inset*2)
+      path = path.concat(this.drawEnd(dir, x, y, inset, 0))
+      path = path.concat(this.drawEnd(dir, -x, y, -inset, 0))
+      path = path.concat(this.drawEave(dir, -outset, -y))
+      path = path.concat(this.drawEave(dir, outset, y))
+    } else if (this.buildingShape === "x") {
+      // Symmetrical "x" or "cross" building for some variety
+      const mag1 = this.narrow/2 - inset*2
+      const mag2 = mag1/2.5
+      // This could be abstracted a bit, but it's probably not really worth it;
+      // things rotate when they repeat, and swapping x and y is a pain
+      path = [
+        "M", this.xRotated(dir, mag1, mag2), this.yRotated(dir, mag1, mag2),
+        "L", this.xRotated(dir, mag2, mag2), this.yRotated(dir, mag2, mag2),
+        "L", this.xRotated(dir, mag2, mag1), this.yRotated(dir, mag2, mag1),
+        "L", this.xRotated(dir, -mag2, mag1), this.yRotated(dir, -mag2, mag1),
+        "L", this.xRotated(dir, -mag2, mag2), this.yRotated(dir, -mag2, mag2),
+        "L", this.xRotated(dir, -mag1, mag2), this.yRotated(dir, -mag1, mag2),
+        "L", this.xRotated(dir, -mag1, -mag2), this.yRotated(dir, -mag1, -mag2),
+        "L", this.xRotated(dir, -mag2, -mag2), this.yRotated(dir, -mag2, -mag2),
+        "L", this.xRotated(dir, -mag2, -mag1), this.yRotated(dir, -mag2, -mag1),
+        "L", this.xRotated(dir, mag2, -mag1), this.yRotated(dir, mag2, -mag1),
+        "L", this.xRotated(dir, mag2, -mag2), this.yRotated(dir, mag2, -mag2),
+        "L", this.xRotated(dir, mag1, -mag2), this.yRotated(dir, mag1, -mag2),
+        "L", this.xRotated(dir, mag1, mag2), this.yRotated(dir, mag1, mag2),
+        "M", this.xRotated(dir, mag1, mag2), this.yRotated(dir, mag1, mag2),
+        "L", this.xRotated(dir, mag1 - inset*4, 0), this.yRotated(dir, mag1 - inset*4, 0),
+        "M", this.xRotated(dir, mag1, -mag2), this.yRotated(dir, mag1, -mag2),
+        "L", this.xRotated(dir, mag1 - inset*4, 0), this.yRotated(dir, mag1 - inset*4, 0),
+        "M", this.xRotated(dir, -mag1, mag2), this.yRotated(dir, -mag1, mag2),
+        "L", this.xRotated(dir, -mag1 + inset*4, 0), this.yRotated(dir, -mag1 + inset*4, 0),
+        "M", this.xRotated(dir, -mag1, -mag2), this.yRotated(dir, -mag1, -mag2),
+        "L", this.xRotated(dir, -mag1 + inset*4, 0), this.yRotated(dir, -mag1 + inset*4, 0),
+        "M", this.xRotated(dir, mag2, mag1), this.yRotated(dir, mag2, mag1),
+        "L", this.xRotated(dir, 0, mag1 - inset*4), this.yRotated(dir, 0, mag1 - inset*4),
+        "M", this.xRotated(dir, -mag2, mag1), this.yRotated(dir, -mag2, mag1),
+        "L", this.xRotated(dir, 0, mag1 - inset*4), this.yRotated(dir, 0, mag1 - inset*4),
+        "M", this.xRotated(dir, mag2, -mag1), this.yRotated(dir, mag2, -mag1),
+        "L", this.xRotated(dir, 0, -mag1 + inset*4), this.yRotated(dir, 0, -mag1 + inset*4),
+        "M", this.xRotated(dir, -mag2, -mag1), this.yRotated(dir, -mag2, -mag1),
+        "L", this.xRotated(dir, 0, -mag1 + inset*4), this.yRotated(dir, 0, -mag1 + inset*4),
+        "M", this.xRotated(dir, mag1 - inset*4, 0), this.yRotated(dir, mag1 - inset*4, 0),
+        "L", this.xRotated(dir, -mag1 + inset*4, 0), this.yRotated(dir, -mag1 + inset*4, 0),
+        "M", this.xRotated(dir, 0, mag1 - inset*4), this.yRotated(dir, 0, mag1 - inset*4),
+        "L", this.xRotated(dir, 0, -mag1 + inset*4), this.yRotated(dir, 0, -mag1 + inset*4),
+      ]
+    } 
     return { d: path.join(" "), style: {
       fill: this.buildingStyle === "f" ? "#B97" : "#AAA",
       stroke: "#333",
@@ -305,15 +344,37 @@ const Hex = class {
     }
   }
 
+  // Used for "isolated" terrain hexes (e.g., summits)
+  hexRoundCoordsInset(inset) {
+    let path = ["M", this.xCornerOffset(-1, inset, 1, inset), this.yCornerOffset(-1, inset, 1, inset)]
+    for (let i = 0; i < 6; i++) {
+      path = path.concat(
+        ["L", this.xCornerOffset(i, inset, -1, inset), this.yCornerOffset(i, inset, -1, inset)]
+      )
+      path = path.concat(
+        [
+          "A", inset*2, inset*2, 0, 0, 1,
+          this.xCornerOffset(i, inset, 1, inset), this.yCornerOffset(i, inset, 1, inset)
+        ]
+      )
+    }
+    return path.join(" ")
+  }
+
   get elevationHex() {
     if (this.elevationEdges || this.elevation < 1) { return false }
     return { d: this.hexRoundCoordsInset(5), style: this.elevationStyles[this.elevation] }
   }
 
+  // When generating the continuous paths, we want to be able to start anywhere
+  // with a flush edge, and commonly check next/last sides, so a generic check
+  // to keep things in bounds
   checkSide(hexSides, i) {
     return hexSides[(i+6)%6]
   }
 
+  // Used for both terrain and elevations; terrain has a deeper inset on open
+  // sides to make it easier to pick out
   generatePaths(edges, edgeOffset) {
     let path = []
     for (let j = 0; j < 6; j++) {
@@ -411,6 +472,7 @@ const Hex = class {
       const c2x = (xCenter + x2)/2
       const c2y = (this.yOffset + y2)/2
       let path = ["M", x1, y1]
+      // Center can be shifted left or right, used for doing vertical roads
       if (center) {
         path = path.concat(["L", xCenter, this.yOffset])
         path = path.concat(["L", x2, y2])
@@ -474,7 +536,7 @@ const Hex = class {
     return {
       fill: "rgba(0,0,0,0)",
       strokeWidth: 28,
-      stroke: "#BBB",
+      stroke: this.roadType === "t" ? "#BBB" : "#975",
     }
   }
 
