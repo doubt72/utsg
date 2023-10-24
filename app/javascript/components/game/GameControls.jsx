@@ -5,13 +5,13 @@ import JoinButton from "./Controls/JoinButton";
 import StartButton from "./Controls/StartButton";
 import LeaveButton from "./Controls/LeaveButton";
 
-export default function Gamecontrols(props) {
+export default function GameControls(props) {
   const [controls, setControls] = useState([])
 
   useEffect(() => {
     if (!props.game.id) { return }
     displayActions()
-  }, [props.game, props.update])
+  }, [props.game])
 
   const displayActions = () => {
     const user = localStorage.getItem("username")
@@ -37,10 +37,9 @@ export default function Gamecontrols(props) {
   )
 }
 
-Gamecontrols.propTypes = {
+GameControls.propTypes = {
   game: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.instanceOf(Game),
   ]).isRequired,
-  update: PropTypes.number,
 }

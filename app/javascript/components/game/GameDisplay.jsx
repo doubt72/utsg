@@ -5,13 +5,14 @@ import { Game } from "../../engine/game";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
 import MoveDisplay from "./MoveDisplay";
-import Gamecontrols from "./GameControls";
+import GameControls from "./GameControls";
 import GameMap from "./GameMap";
 
 export default function GameDisplay() {
   const { id } = useParams()
-  const [game, setGame] = useState({ k: {}, turn: 0, state: "", update: 0 })
+  const [game, setGame] = useState({ k: {}, turn: 0, state: "" })
   const [map, setMap] = useState(null)
+  const [controls, setControls] = useState(null)
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
@@ -22,6 +23,7 @@ export default function GameDisplay() {
             json.scenario = scenario
             const g = new Game(json, gameNotification)
             setGame({k: g, turn: g.turn, state: g.state})
+            setControls(<GameControls game={g} />)
             setMap(g.scenario.map)
           })
         })
@@ -38,8 +40,8 @@ export default function GameDisplay() {
       k: g,
       turn: g.turn,
       state: g.state,
-      update: g.moves.length, // TODO: hack, looks like a bad pattern here, untangle sooner rather than later
     })
+    setControls(<GameControls key={Number(new Date)} game={g} />) // key hack to force updates
   }
 
   const showInput = () => {
@@ -81,7 +83,7 @@ export default function GameDisplay() {
                        showInput={showInput()} />
         </div>
       </div>
-      <Gamecontrols game={game.k} update={game.update} />
+      {controls}
       <GameMap map={map} scale={1.0} />
     </div>
   )
