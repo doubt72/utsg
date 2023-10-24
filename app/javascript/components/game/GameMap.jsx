@@ -15,7 +15,7 @@ export default function GameMap(props) {
     const overlayLoader = []
     props.map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
-        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} selected={false} />)
+        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
         overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
                                           selectCallback={makeSelection}/>)
       })

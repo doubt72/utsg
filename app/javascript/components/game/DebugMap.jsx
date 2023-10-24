@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Map } from "../../engine/map";
+// import { Unit } from "../../engine/unit";
 import MapHex from "./MapHex";
 import MapHexOverlay from "./MapHexOverlay";
 import MapHexPatterns from "./MapHexPatterns";
@@ -7,6 +8,7 @@ import MapHexPatterns from "./MapHexPatterns";
 export default function GameMap() {
   const [hexes, setHexes] = useState([])
   const [overlays, setOverlays] = useState([])
+  // const [units, setUnits] = useState([])
 
   const map = new Map({
     layout: [15, 15, "x"],
@@ -255,12 +257,38 @@ export default function GameMap() {
     ]
   })
 
+  // const testUnits = [
+  //   new Unit({
+  //     c: "ger", f: 16, i: "tank", n: "PzKpfw IV-F1",
+  //     o: {t: 1, g: 1, ha: {f: 4, s: 3, r: 2}, ta: {f: 4, s: 3, r: 3}, j: 3, u: 1, k: 1},
+  //     r: 16, s: 4, t: "tank", v: 5, y: 41
+  //   }), new Unit({
+  //     c: "ger", f: 16, i: "spg", n: "StuG III-B/E",
+  //     o: {t: 1, g: 1, ha: {f: 4, s: 1, r: 1}, j: 3, k: 1},
+  //     r: 16, s: 4, t: "spg", v: 5, y: 40
+  //   }), new Unit({
+  //     c: "ger", f: 40, i: "tank", n: "Panther A/G",
+  //     o: {t: 1, p: 1, ha: {f: 6, s: 3, r: 3}, ta: {f: 7, s: 4, r: 4}, j: 3, u: 1, k: 1},
+  //     r: 32, s: 6, t: "tank", v: 6, y: 43
+  //   }), new Unit({
+  //     c: "uk", f: 32, i: "ac", n: "Humber AC I",
+  //     o: {r: 1, ha: {f: 1, s: 0, r: 0}, ta: {f: 1, s: 1, r: 1}, j: 3, u: 1, w: 1},
+  //     r: 15, s: 3, t: "ac", v: 5, y: 40
+  //   }), new Unit({
+  //     c: "usa", f: 10, i: "mg", n: "M2 Browning", o: {r: 1, j: 3}, r: 15, t: "sw", v: -2, y: 33
+  //   }), new Unit({
+  //     c: "ussr", f: 48, i: "tank", n: "T-34-85",
+  //     o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, u: 1, k: 1},
+  //     r: 28, s: 5, t: "tank", v: 6, y: 43
+  //   })
+  // ]
+
   useEffect(() => {
     const hexLoader = []
     const overlayLoader = []
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
-        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} selected={false} />)
+        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
         overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
                                           selectCallback={makeSelection}/>)
       })
@@ -271,18 +299,10 @@ export default function GameMap() {
 
   const makeSelection = (x, y) => {
     const key = `${x}-${y}`
-    setHexes(hexes =>
-      hexes.map(h => {
-        if (h.key === key) {
-          return <MapHex key={`${x}-${y}`} hex={h.props.hex} selected={!h.props.selected} />
-        } else {
-          return h
-        }
-      })
-    )
+    // Only use the overlays for selection events
     setOverlays(overlays =>
       overlays.map(h => {
-        if (h.key === `key-o`) {
+        if (h.key === `${key}-o`) {
           return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} selected={!h.props.selected}
                                 selectCallback={makeSelection}/>
         } else {

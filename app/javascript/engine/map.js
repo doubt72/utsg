@@ -13,6 +13,11 @@ const Map = class {
     this.loadMap(data.hexes, this)
   }
 
+  get narrow() { return 96 }
+  get radius() { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
+  xOffset(x, y) { return this.narrow * (x + y%2/2 + 0.5) + 1 }
+  yOffset(y) { return this.radius * (y*1.5 + 1) + 1 }
+
   hexAt(x, y) {
     if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
       return null

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getAPI } from "../../utilities/network";
 import { unitCounter } from "../utilities/units";
+// import { Unit } from "../../engine/unit";
 import { Unit, unitStatus } from "../../engine/unit";
 
 
-export default function DebugUnits() {
+export default function OldDebugUnits() {
   const [units, setUnits] = useState({})
 
   useEffect(() => {

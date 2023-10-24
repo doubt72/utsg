@@ -64,17 +64,17 @@ const Hex = class {
   }
 
   borderDecorationStyles = {
-    f: { stroke: "#963", strokeWidth: 8, strokeDasharray: [2, this.radius/5] },
+    f: { stroke: "#963", strokeWidth: 8, strokeDasharray: [2, 11.1] },
     w: { stroke: "#888", strokeWidth: 8, strokeDasharray: [2, 2] },
     b: { stroke: "rgba(0,0,0,0)" },
     c: { stroke: "rgba(0,0,0,0)" },
   }
 
   // Base hex side, measuring flat side, and other common measurements
-  get narrow() { return 96 }
-  get radius() { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
-  get xOffset() { return this.narrow * (this.x + this.y%2/2 + 0.5) + 1 }
-  get yOffset() { return this.radius * (this.y*1.5 + 1) + 1 }
+  get narrow() { return this.map.narrow }
+  get radius() { return this.map.radius }
+  get xOffset() { return this.map.xOffset(this.x, this.y) }
+  get yOffset() { return this.map.yOffset(this.y) }
 
   // Corners and edges on demand (with offsets) for doing continous curves
   xCorner(i, inset = 0) { return this.xOffset - (this.radius - inset) * Math.cos((i-0.5)/3 * Math.PI) }
