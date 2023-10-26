@@ -1,26 +1,26 @@
 const unitStatus = {
-  Normal: 0, Pinned: 1, Broken: 2, Activated: 3, Exhausted: 4, Tired: 5, Jammed: 6,
-  Immobilized: 7, TurretJammed: 8, Wreck: 9
+  Normal: 0, Pinned: 1, Broken: 2, Activated: 3, Exhausted: 4,  Wreck: 5
 }
+// TODO: activated/exhausted is orthogonal to tired/immobilized/turretJammed
 
-  // c: nation, t: type, n: name, i: icon, y: year
-  // m: morale (2-6)
-  // s: size (1-6)
-  // f: firepower
-  // r: range
-  // v: movement
-  // o: flags:
-  //    l: leadership, a: assault, s: smoke, r: rapid fire, z: armored
-  //    cw: crew skill, x: single shot, i: ignore terrain
-  //    j: jam number, b: break number, bd: breakdown number
-  //    t: targeted fire, m: minimum range, p: antitank, g: artillery, o: offboard artillery
-  //    u: turret, k: tracked, w: wheeled, c: crewed, y: rotating mount
-  //    ha: hull armor
-  //    ta: turret armor
-  //        f: front, s: side, r: rear
-  //    sp: sponson mounted gun
-  //        f: firepower, r: range
-  // x: count
+// c: nation, t: type, n: name, i: icon, y: year
+// m: morale (2-6)
+// s: size (1-6)
+// f: firepower
+// r: range
+// v: movement
+// o: flags:
+//    l: leadership, a: assault, s: smoke, r: rapid fire, z: armored
+//    cw: crew skill, x: single shot, i: ignore terrain
+//    j: jam number, b: break number, bd: breakdown number
+//    t: targeted fire, m: minimum range, p: antitank, g: artillery, o: offboard artillery
+//    u: turret, k: tracked, w: wheeled, c: crewed, y: rotating mount
+//    ha: hull armor
+//    ta: turret armor
+//        f: front, s: side, r: rear
+//    sp: sponson mounted gun
+//        f: firepower, r: range
+// x: count
 
 const Unit = class {
   constructor(data) {
@@ -74,14 +74,27 @@ const Unit = class {
     }
 
     this.status = unitStatus.Normal
+    this.tired = false
+    this.jammed = false
+    this.turretJammed = false
+    this.immobilized = false
+    this.brokenDown = false
   }
 
-  get isBroken() {
-    return this.status === unitStatus.Broken
+  get isActivated() {
+    return this.status === unitStatus.Activated
+  }
+
+  get isExhausted() {
+    return this.status === unitStatus.Exhausted
   }
 
   get isPinned() {
     return this.status === unitStatus.Pinned
+  }
+
+  get isBroken() {
+    return this.status === unitStatus.Broken
   }
 
   get isWreck() {
@@ -90,7 +103,7 @@ const Unit = class {
 
   get noFire() {
     // Turret Jams and Immobile assault guns can fire at penalties in facing dir
-    if (this.isBroken || this.isWreck) {
+    if (this.isBroken || this.isWreck || this.jammed) {
       return true
     }
     return false
@@ -170,7 +183,7 @@ const Unit = class {
   }
 
   get currentSmokeCapable() {
-    return this.smokeCapable && !this.isBroken
+    return this.smokeCapable && !this.isBroken && !this.jammed
   }
 
   get displayLeft() {
@@ -256,7 +269,7 @@ const Unit = class {
     } else {
       // Don't use currentFirepower because we only display the "base" values on
       // the counter except above
-      const firepower = this.baseFirepower == 0 ? "-" : this.baseFirepower
+      const firepower = this.baseFirepower === 0 ? "-" : this.baseFirepower
 
       let shape = this.antiTank || this.fieldGun ? " unit-counter-circle" : " unit-counter-box"
       shape = this.offBoard ? " unit-counter-hex" : shape
@@ -314,10 +327,9 @@ const Unit = class {
   get currentMovement() {
     if (this.isBroken) {
       return this.brokenMovement
-    } else if (this.isPinned || this.status === unitStatus.Immobilized ||
-               this.isWreck) {
+    } else if (this.isPinned || this.immobilized || this.brokenDown || this.isWreck) {
       return 0
-    } else if (this.status === unitStatus.Tired) {
+    } else if (this.tired) {
       return this.baseMovement - 2
     } else {
       return this.baseMovement
@@ -326,9 +338,7 @@ const Unit = class {
 
   get displayMovement() {
     const location = this.minimumRange ? " unit-counter-movement-w-range" : " unit-counter-movement"
-    if (this.isBroken || this.isPinned ||
-        this.status === unitStatus.Tired || this.status === unitStatus.Immobilized ||
-        this.isWreck) {
+    if (this.isBroken || this.isPinned || this.tired || this.immobilized || this.isWreck) {
       return {
         value: this.currentMovement, display: `${location} unit-counter-box unit-counter-red-text`
       }
@@ -356,11 +366,11 @@ const Unit = class {
       return { value: "ACT", display: " unit-counter-status-yellow" }
     } else if (this.status === unitStatus.Exhausted) {
       return { value: "EXH", display: " unit-counter-status-yellow" }
-    } else if (this.status === unitStatus.Tired) {
+    } else if (this.tired) {
       return { value: "TRD", display: " unit-counter-status-yellow" }
-    } else if (this.status === unitStatus.Immobilized) {
+    } else if (this.immobilized) {
       return { value: "IMM", display: " unit-counter-status-red" }
-    } else if (this.status === unitStatus.TurretJammed) {
+    } else if (this.turretJammed) {
       return { value: "TRT", display: " unit-counter-status-red" }
     } else {
       return { value: "", display: " transparent"}

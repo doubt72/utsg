@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAPI } from "../../utilities/network";
-import { unitCounter } from "../utilities/units";
 import { Unit, unitStatus } from "../../engine/unit";
+import CounterDisplay from "./CounterDisplay";
 
 
 export default function DebugUnits() {
@@ -42,6 +42,10 @@ export default function DebugUnits() {
   //   </div>
   // )
 
+  const guns = () => {
+    return Object.values(units).filter(u => ["sw", "gun"].includes(u.t) && u.o.j)
+  }
+
   const infantry = () => {
     return Object.values(units).filter(u => ["ldr", "sqd", "tm"].includes(u.t))
   }
@@ -58,15 +62,40 @@ export default function DebugUnits() {
     return vehicles().filter(v => !v.o.ta)
   }
 
+  const svgContainer = (unit, key) => {
+    return <CounterDisplay key={key} unit={unit} />
+  }
+
+  const usedGuns = () => {
+    return guns().map((data, i) => {
+      const unit = new Unit(data)
+      unit.jammed = true
+      const versions = [svgContainer(unit, i)]
+      return versions
+    })
+  }
+
   const usedInfantry = () => {
     return infantry().map((data, i) => {
       const unit = new Unit(data)
-      unit.status = unitStatus.Tired
-      const versions = [<div key={i*3}>{unitCounter(unit)}</div>]
-      unit.status = unitStatus.Pinned
-      versions.push(<div key={i*3+1}>{unitCounter(unit)}</div>)
-      unit.status = unitStatus.Broken
-      versions.push(<div key={i*3+2}>{unitCounter(unit)}</div>)
+      unit.status = unitStatus.Activated
+      const versions = [svgContainer(unit, i*5)]
+
+      const unit2 = new Unit(data)
+      unit2.status = unitStatus.Exhausted
+      versions.push(svgContainer(unit2, i*5+1))
+
+      const unit3 = new Unit(data)
+      unit3.tired = true
+      versions.push(svgContainer(unit3, i*5+2))
+
+      const unit4 = new Unit(data)
+      unit4.status = unitStatus.Pinned
+      versions.push(svgContainer(unit4, i*5+3))
+
+      const unit5 = new Unit(data)
+      unit5.status = unitStatus.Broken
+      versions.push(svgContainer(unit5, i*5+4))
       return versions
     })
   }
@@ -74,12 +103,46 @@ export default function DebugUnits() {
   const usedTanks = () => {
     return tanks().map((data, i) => {
       const unit = new Unit(data)
-      unit.status = unitStatus.Immobilized
-      const versions = [<div key={i*3}>{unitCounter(unit)}</div>]
-      unit.status = unitStatus.TurretJammed
-      versions.push(<div key={i*3+1}>{unitCounter(unit)}</div>)
-      unit.status = unitStatus.Wreck
-      versions.push(<div key={i*3+2}>{unitCounter(unit)}</div>)
+      unit.status = unitStatus.Activated
+      const versions = [svgContainer(unit, i*9)]
+
+      const unit2 = new Unit(data)
+      unit2.status = unitStatus.Exhausted
+      versions.push(svgContainer(unit2, i*9+1))
+
+      const unit3 = new Unit(data)
+      unit3.jammed = true
+      versions.push(svgContainer(unit3, i*9+2))
+
+      const unit4 = new Unit(data)
+      unit4.brokenDown = true
+      versions.push(svgContainer(unit4, i*9+3))
+
+      const unit5 = new Unit(data)
+      unit5.immobilized = true
+      versions.push(svgContainer(unit5, i*9+4))
+
+      const unit6 = new Unit(data)
+      unit6.turretJammed = true
+      versions.push(svgContainer(unit6, i*9+5))
+
+      const unit7 = new Unit(data)
+      unit7.status = unitStatus.Activated
+      unit7.immobilized = true
+      unit7.turretJammed = true
+      versions.push(svgContainer(unit7, i*9+6))
+
+      const unit8 = new Unit(data)
+      unit8.status = unitStatus.Exhausted
+      unit8.jammed = true
+      unit8.brokenDown = true
+      unit8.immobilized = true
+      unit8.turretJammed = true
+      versions.push(svgContainer(unit8, i*9+7))
+
+      const unit9 = new Unit(data)
+      unit9.status = unitStatus.Wreck
+      versions.push(svgContainer(unit9, i*9+8))
       return versions
     })
   }
@@ -87,19 +150,50 @@ export default function DebugUnits() {
   const usedSPG = () => {
     return spg().map((data, i) => {
       const unit = new Unit(data)
-      unit.status = unitStatus.Immobilized
-      const versions = [<div key={i*3}>{unitCounter(unit)}</div>]
-      unit.status = unitStatus.Wreck
-      versions.push(<div key={i*3+2}>{unitCounter(unit)}</div>)
+      unit.status = unitStatus.Activated
+      const versions = [svgContainer(unit, i*8)]
+
+      const unit2 = new Unit(data)
+      unit2.status = unitStatus.Exhausted
+      versions.push(svgContainer(unit2, i*8+1))
+
+      const unit3 = new Unit(data)
+      unit3.jammed = true
+      versions.push(svgContainer(unit3, i*8+2))
+
+      const unit4 = new Unit(data)
+      unit4.brokenDown = true
+      versions.push(svgContainer(unit4, i*8+3))
+
+      const unit5 = new Unit(data)
+      unit5.immobilized = true
+      versions.push(svgContainer(unit5, i*8+4))
+
+      const unit6 = new Unit(data)
+      unit6.status = unitStatus.Activated
+      unit6.immobilized = true
+      versions.push(svgContainer(unit6, i*8+5))
+
+      const unit7 = new Unit(data)
+      unit7.status = unitStatus.Exhausted
+      unit7.jammed = true
+      unit7.brokenDown = true
+      unit7.immobilized = true
+      versions.push(svgContainer(unit7, i*8+6))
+
+      const unit8 = new Unit(data)
+      unit8.status = unitStatus.Wreck
+      versions.push(svgContainer(unit8, i*8+7))
       return versions
     })
   }
 
   return (
     <div className="p1em flex flex-wrap">
-      { Object.values(units).map((unit, i) => <div key={i}>{unitCounter(new Unit(unit))}</div>) }
-      { usedTanks() } { usedSPG() }
+      { Object.values(units).map((unit, i) => svgContainer(new Unit(unit), i)) }
+      { usedGuns() }
       { usedInfantry() }
+      { usedTanks() } { usedSPG() }
     </div>
   )
 }
