@@ -13,7 +13,6 @@ import RecoverAccount from "../components/user/RecoverAccount";
 import ResetPassword from "../components/user/ResetPassword";
 import DeleteAccount from '../components/user/DeleteAccount';
 import NewGame from "../components/game/NewGame";
-import OldDebugUnits from "../components/game/OldDebugUnits";
 import DebugUnits from "../components/game/DebugUnits";
 import DebugMap from "../components/game/DebugMap";
 import GameDisplay from "../components/game/GameDisplay";
@@ -40,7 +39,6 @@ const Routes = () => {
         { path: "/logout", element: <Logout /> },
         { path: "/profile", element: <Profile /> },
 
-        { path: "/debug/old_units", element: <OldDebugUnits /> },
         { path: "/debug/units", element: <DebugUnits /> },
         { path: "/debug/map", element: <DebugMap /> },
 

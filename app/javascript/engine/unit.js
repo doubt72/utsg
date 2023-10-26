@@ -109,25 +109,6 @@ const Unit = class {
     return false
   }
 
-  get displayName() {
-    let longName = this.smallName ? "-small" : ""
-    longName = this.smallName && this.smallName > 1 ? "-smaller" : longName
-    longName = this.smallName && this.smallName > 2 ? "-smallest" : longName
-    if (this.isBroken || this.isWreck) {
-      return { value: this.name, display: `${longName} unit-counter-name-broken` }
-    } else {
-      return { value: this.name, display: longName }
-    }
-  }
-
-  get displayIcon() {
-    if (this.isWreck) {
-      return { value: "wreck", display: "" }
-    } else {
-      return { value: this.icon, display: "" }
-    }
-  }
-
   get currentMorale() {
     if (this.isBroken) {
       return this.baseMorale - 2
@@ -135,34 +116,6 @@ const Unit = class {
       return this.baseMorale - 1
     } else {
       return this.baseMorale
-    }
-  }
-
-  get displayTopLeft() {
-    if (this.baseMorale === undefined) {
-      return { value: null }
-    } else if (this.isBroken || this.isPinned) {
-      return { value: this.currentMorale, display: " unit-counter-red-text" }
-    } else {
-      return { value: this.baseMorale, display: "" }
-    }
-  }
-
-  get displayTopLeftSmall() {
-    if (this.breakWeaponRoll && !this.noFire) {
-      return { value: this.breakWeaponRoll, display: "" }
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displaySize() {
-    if (this.size) {
-      const shape = this.armored && !this.isWreck ? " unit-counter-circle unit-counter-outline"
-                                                  : " unit-counter-box"
-      return { value: this.size, display: shape }
-    } else {
-      return { value: null }
     }
   }
 
@@ -186,68 +139,6 @@ const Unit = class {
     return this.smokeCapable && !this.isBroken && !this.jammed
   }
 
-  get displayLeft() {
-    if (this.currentLeadership) {
-      return { value: this.currentLeadership, display: " unit-counter-hex"}
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displayLeftSmall() {
-    if (this.breakdownRoll && !this.isWreck) {
-      return { value: this.breakdownRoll, display: " unit-counter-yellow" }
-    } else if (this.currentGunHandling) {
-      return { value: this.currentGunHandling, display: " unit-counter-outline"}
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displaySponson() {
-    if (this.sponson && !this.isWreck) {
-      const gun = this.sponson
-      return { value: `${gun[0]}-${gun[1]}`, display: ` nation-${this.nation}` }
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displaySmoke() {
-    if (this.currentSmokeCapable && !this.hullArmor) {
-      return { value: "S", display: " unit-counter-box-small"}
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displayVehicleSmoke() {
-    if (this.hullArmor && this.currentSmokeCapable) {
-      return { value: "S", display: "" }
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displayTurretArmor() {
-    if (this.turretArmor && !this.isWreck) {
-      const armor = this.turretArmor
-      return { value: `${armor[0]}-${armor[1]}-${armor[2]}`, display: "" }
-    } else {
-      return { value: null }
-    }
-  }
-
-  get displayHullArmor() {
-    if (this.hullArmor && !this.isWreck) {
-      const armor = this.hullArmor
-      const value = `${armor[0]}-${armor[1]}-${armor[2] > -1 ? armor[2] : "X"}`
-      return { value: value, display: "" }
-    } else {
-      return { value: null }
-    }
-  }
-
   get currentFirepower() {
     // TODO: there's some nuance here depending on type and state; SW have different rules
     // depending on carrying unit state + opportunity fire, implement this later, also target
@@ -260,67 +151,11 @@ const Unit = class {
     }
   }
 
-  get displayFirepower() {
-    const location = this.minimumRange ? " unit-counter-firepower-w-range" : " unit-counter-firepower"
-    if (this.noFire || this.isPinned) {
-      return {
-        value: this.currentFirepower, display: `${location} unit-counter-box unit-counter-red-text`
-      }
-    } else {
-      // Don't use currentFirepower because we only display the "base" values on
-      // the counter except above
-      const firepower = this.baseFirepower === 0 ? "-" : this.baseFirepower
-
-      let shape = this.antiTank || this.fieldGun ? " unit-counter-circle" : " unit-counter-box"
-      shape = this.offBoard ? " unit-counter-hex" : shape
-      if (firepower > 9) {
-        shape = `${shape}-small`
-      }
-
-      let color = this.assault || this.antiTank ? " unit-counter-outline" : ""
-      color = this.fieldGun ? " unit-counter-white" : color
-      color = this.ignoreTerrain ? " unit-counter-yellow" : color
-      color = this.singleFire ? " unit-counter-black" : color
-      color = this.singleFire && this.ignoreTerrain ? " unit-counter-red" : color
-
-      return { value: firepower, display: `${location}${shape}${color}`}
-    }
-  }
-
   get currentRange() {
     if (this.noFire) {
       return 0
     } else {
       return this.baseRange
-    }
-  }
-
-  get displayRange() {
-    if (this.noFire) {
-      return {
-        value: this.currentRange,
-        display: "unit-counter-range unit-counter-sec unit-counter-box unit-counter-red-text"
-      }
-    } else if (this.currentRange === 0) {
-      return { value: "-", display: `unit-counter-range unit-counter-sec unit-counter-box` }
-    } else {
-      let location = "unit-counter-range unit-counter-sec "
-      let shape = this.targetedRange ? " unit-counter-circle" : " unit-counter-box"
-      if (this.currentRange > 9) {
-        shape = `${shape}-small`
-      }
-      let range = this.currentRange
-      if (this.minimumRange) {
-        location = "unit-counter-range-range unit-counter-sec-range"
-        shape = " unit-counter-range-circle"
-        range = `${this.minimumRange}-${range}`
-      }
-
-      let color = this.targetedRange || this.rapidFire ? " unit-counter-outline" : ""
-      color = this.type === "sw" && this.targetedRange ? " unit-counter-black" : color
-      color = this.turreted || this.rotatingMount ? " unit-counter-white" : color
-
-      return { value: range, display: `${location}${shape}${color}`}
     }
   }
 
@@ -333,47 +168,6 @@ const Unit = class {
       return this.baseMovement - 2
     } else {
       return this.baseMovement
-    }
-  }
-
-  get displayMovement() {
-    const location = this.minimumRange ? " unit-counter-movement-w-range" : " unit-counter-movement"
-    if (this.isBroken || this.isPinned || this.tired || this.immobilized || this.isWreck) {
-      return {
-        value: this.currentMovement, display: `${location} unit-counter-box unit-counter-red-text`
-      }
-    } else if (this.currentMovement === 0) {
-      return { value: "-", display: `${location} unit-counter-box` }
-    } else {
-      let shape = this.wheeled || this.tracked || this.crewed ? " unit-counter-circle" : " unit-counter-box"
-      shape = this.currentMovement < 0 ? " unit-counter-circle" : shape
-      if (this.currentMovement > 9 || this.currentMovement < 0) {
-        shape = `${shape}-small`
-      }
-
-      let color = this.crewed ? " unit-counter-black" : ""
-      color = this.tracked ? " unit-counter-outline" : color
-      color = this.wheeled ? " unit-counter-white" : color
-      color = this.currentMovement < 0 ? " unit-counter-red-text" : color
-      return { value: this.currentMovement, display: `${location}${shape}${color}`}
-    }
-  }
-
-  get displayBadge() {
-    if (this.isPinned) {
-      return { value: "PIN", display: " unit-counter-status-red" }
-    } else if (this.status === unitStatus.Activated) {
-      return { value: "ACT", display: " unit-counter-status-yellow" }
-    } else if (this.status === unitStatus.Exhausted) {
-      return { value: "EXH", display: " unit-counter-status-yellow" }
-    } else if (this.tired) {
-      return { value: "TRD", display: " unit-counter-status-yellow" }
-    } else if (this.immobilized) {
-      return { value: "IMM", display: " unit-counter-status-red" }
-    } else if (this.turretJammed) {
-      return { value: "TRT", display: " unit-counter-status-red" }
-    } else {
-      return { value: "", display: " transparent"}
     }
   }
 }

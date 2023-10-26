@@ -221,7 +221,7 @@ const Counter = class {
     } else {
       if (this.unit.antiTank || this.unit.fieldGun) { path = this.circlePath(x, y, 10) }
       if (this.unit.offBoard) {
-        path = this.hexPath(x, y, 10.5, false)
+        path = this.hexPath(x, y+0.5, 11, false)
         size = 12.5
       }
       if (this.unit.antiTank || this.unit.singleFire || this.unit.assault || this.unit.offBoard) {
@@ -286,7 +286,7 @@ const Counter = class {
         "L", x-8, y+8, "A", 6, 6, 0, 0, 1, x-8, y-4,
       ].join(" ")
       value = `${this.unit.minimumRange}-${value}`
-      size = 10
+      size = 10.5
     }
     return {
       path: path, style: style, tStyle: { fill: color }, x: x, y: y+5, size: size, value: value,

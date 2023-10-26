@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types"
 import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
-import { unitCounter } from "../utilities/units";
 import { Unit } from "../../engine/unit";
 import { Scenario } from "../../engine/scenario";
 import GameMap from "./GameMap";
+import CounterDisplay from "./CounterDisplay";
 
 export default function ScenarioSummary(props) {
   const scenario = new Scenario(props.data)
@@ -58,11 +58,11 @@ export default function ScenarioSummary(props) {
                 return (
                   <div key={i} className="flex nowrap">
                     <div className="unit-list-multiplier">{`${unit.x}x`}</div>
-                    <div>{unitCounter(new Unit(unit))}</div>
+                    <CounterDisplay unit={new Unit(unit)} />
                   </div>
                 )
               } else {
-                return <div key={i}>{unitCounter(new Unit(unit))}</div>
+                return <CounterDisplay key={i} unit={new Unit(unit)} />
               }
             })}
           </div>
@@ -72,11 +72,11 @@ export default function ScenarioSummary(props) {
                 return (
                   <div key={i} className="flex nowrap">
                     <div className="unit-list-multiplier">{`${unit.x}x`}</div>
-                    <div>{unitCounter(new Unit(unit))}</div>
+                    <CounterDisplay unit={new Unit(unit)} />
                   </div>
                 )
               } else {
-                return <div key={i}>{unitCounter(new Unit(unit))}</div>
+                return <CounterDisplay key={i} unit={new Unit(unit)} />
               }
             })}
           </div>
