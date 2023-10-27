@@ -148,10 +148,11 @@ const Hex = class {
   }
 
   get labelY() {
-    return this.yOffset - this.radius + 18
+    return this.yOffset - this.radius + 21
   }
 
   get label() {
+    if (!this.map.showCoords) { return "" }
     // handle up to 52 for now, easy to extend if we need it, but at 1" hexes,
     // 52 would be a somewhat ludicrous seven 8.5x11" pages wide
     const letters = [

@@ -5,12 +5,21 @@ import { Counter } from "../../engine/counter";
 export default function MapCounter(props) {
 
   const counterBack = (
-    <path d={props.counter.counterPath} style={props.counter.counterStyle} />
+    <path d={props.counter.counterPath()} style={props.counter.counterStyle} />
   )
 
   const nameBackground = (
     <path d={props.counter.nameBackgroundPath} style={props.counter.nameBackgroundStyle} />
   )
+
+  const shadow = () => {
+    const layout = props.counter.shadowPath
+    if (layout) {
+      return (
+        <path d={layout} style={{ fill: "rgba(0,0,0,0.2)" }} />
+      )
+    }
+  }
 
   const name = () => {
     const layout = props.counter.nameLayout
@@ -163,8 +172,10 @@ export default function MapCounter(props) {
         <text key={i} x={layout.x} y={layout.y + layout.size*i} fontSize={layout.size}
               textAnchor="middle" fontFamily="monospace" style={layout.fStyle}>{t}</text>
       ))
+      const c = props.counter
+      const r = c.rotation
       return (
-        <g opacity="0.8">
+        <g opacity="0.8" transform={`rotate(${r ? `${-r.a} ${c.x+40} ${c.y+40}` : "0"})`}>
           <path d={layout.path} style={layout.style} />
           {text}
         </g>
@@ -172,8 +183,14 @@ export default function MapCounter(props) {
     }
   }
 
+  const rotation = () => {
+    const r = props.counter.rotation
+    return r ? `${r.a} ${r.x} ${r.y}` : "0"
+  }
+
   return (
-    <g>
+    <g transform={`rotate(${rotation()})`}>
+      {shadow()}
       {counterBack}
       {nameBackground}{name()}
       {morale()}

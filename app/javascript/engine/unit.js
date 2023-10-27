@@ -79,6 +79,13 @@ const Unit = class {
     this.turretJammed = false
     this.immobilized = false
     this.brokenDown = false
+
+    this.facing = 1
+    this.turretFacing = 1
+  }
+
+  get isSimpleCounter() {
+    return false
   }
 
   get isActivated() {

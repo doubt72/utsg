@@ -6,7 +6,7 @@
 @import './game.scss';
 
 // Common
-button.custom-button,a.custom-button {
+button.custom-button,a.custom-button,div.custom-button {
   text-decoration: none;
   font-size: 1.1em;
   color: $light-green;
@@ -27,7 +27,7 @@ a.custom-button svg {
   margin-right: 5px;
 }
 
-a.custom-button {
+a.custom-button,div.custom-button {
   padding: 0.33em 0.75em;
 }
 
@@ -35,7 +35,7 @@ button.custom-button {
   padding: 0.155em 0.75em;
 }
 
-button.custom-button:hover,a.custom-button:hover {
+button.custom-button:hover,a.custom-button:hover,div.custom-button:hover {
   color: $bright-green;
   background-color: $very-dark-green;
 }

@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Map } from "../../engine/map";
-// import { Unit } from "../../engine/unit";
+import { Unit, unitStatus } from "../../engine/unit";
 import MapHex from "./MapHex";
 import MapHexOverlay from "./MapHexOverlay";
 import MapHexPatterns from "./MapHexPatterns";
+import MapCounter from "./MapCounter";
+import { Counter } from "../../engine/counter";
 
 export default function GameMap() {
   const [hexes, setHexes] = useState([])
   const [overlays, setOverlays] = useState([])
+  const [counters, setCounters] = useState([])
+  const [scale, setScale] = useState(1)
+  const [coords, setCoords] = useState(true)
+  const [statusCounters, setStatusCounters] = useState(false)
   // const [units, setUnits] = useState([])
 
   const map = new Map({
@@ -257,35 +263,89 @@ export default function GameMap() {
     ]
   })
 
-  // const testUnits = [
-  //   new Unit({
-  //     c: "ger", f: 16, i: "tank", n: "PzKpfw IV-F1",
-  //     o: {t: 1, g: 1, ha: {f: 4, s: 3, r: 2}, ta: {f: 4, s: 3, r: 3}, j: 3, u: 1, k: 1},
-  //     r: 16, s: 4, t: "tank", v: 5, y: 41
-  //   }), new Unit({
-  //     c: "ger", f: 16, i: "spg", n: "StuG III-B/E",
-  //     o: {t: 1, g: 1, ha: {f: 4, s: 1, r: 1}, j: 3, k: 1},
-  //     r: 16, s: 4, t: "spg", v: 5, y: 40
-  //   }), new Unit({
-  //     c: "ger", f: 40, i: "tank", n: "Panther A/G",
-  //     o: {t: 1, p: 1, ha: {f: 6, s: 3, r: 3}, ta: {f: 7, s: 4, r: 4}, j: 3, u: 1, k: 1},
-  //     r: 32, s: 6, t: "tank", v: 6, y: 43
-  //   }), new Unit({
-  //     c: "uk", f: 32, i: "ac", n: "Humber AC I",
-  //     o: {r: 1, ha: {f: 1, s: 0, r: 0}, ta: {f: 1, s: 1, r: 1}, j: 3, u: 1, w: 1},
-  //     r: 15, s: 3, t: "ac", v: 5, y: 40
-  //   }), new Unit({
-  //     c: "usa", f: 10, i: "mg", n: "M2 Browning", o: {r: 1, j: 3}, r: 15, t: "sw", v: -2, y: 33
-  //   }), new Unit({
-  //     c: "ussr", f: 48, i: "tank", n: "T-34-85",
-  //     o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, u: 1, k: 1},
-  //     r: 28, s: 5, t: "tank", v: 6, y: 43
-  //   })
-  // ]
+  const testUnitData = {
+    ginf: {
+      c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
+    },
+    gldr: {
+      c: "ger", f: 1, i: "leader", m: 6, n:  "Leader", o: {l: 1}, r: 1, s: 1, t: "ldr", v: 6, y: 0
+    },
+    gmg: {
+      c: "ger", f: 8, i: "mg", n: "MG 44", o: {a: 1, r: 1, j: 3}, r: 8, t: "sw", v: 0, y: 42
+    },
+    gtank: {
+      c: "ger", f: 40, i: "tank", n: "Panther D", r: 32, s: 6, t: "tank", v: 5, y: 43,
+      o: {t: 1, p: 1, ha: {f: 6, s: 3, r: 3}, ta: {f: 7, s: 4, r: 4}, bd: 3, j: 3, u: 1, k: 1}
+    },
+    gspag: {
+      c: "ger", f: 32, i: "spat", n: "StuG III-F/G", r: 24, s: 4, t: "spg", v: 5, y: 42,
+      o: {t: 1, p: 1, ha: {f: 6, s: 1, r: 1}, j: 3, k: 1}
+    },
+    rinf: {
+      c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
+    },
+    rldr: {
+      c: "ussr", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
+    },
+    rmg: {
+      t: "sw", i: "mg", c: "ussr", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3}
+    },
+    rgun: {
+      c: "ussr", f: 16, i: "gun", n: "76mm M1927", o: {t: 1, j: 3, g: 1, s: 1, c: 1}, r: 16,
+      t: "gun", v: 1, y: 28
+    },
+    rcrew: {
+      c: "ussr", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
+    },
+    rat: {
+      c: "ussr", f: 24, i: "atgun", n: "57mm ZiS-2", o: {t: 1, j: 3, p: 1, c: 1}, r: 20, s: 3,
+      t: "gun", v: 1, y: 41
+    },
+    rtank: {
+      c: "ussr", f: 48, i: "tank", n: "T-34-85", r: 28, s: 5, t: "tank", v: 6, y: 43,
+      o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, u: 1, k: 1}
+    }
+  }
+
+  const testUnits = [
+    { u: testUnitData.rinf, x: 8, y: 1, f: null, tf: null },
+    { u: testUnitData.rtank, x: 10, y: 2, f: 1, tf: 6 },
+    { u: testUnitData.rinf, x: 9, y: 2, f: null, tf: null },
+    { u: testUnitData.rmg, x: 9, y: 2, f: null, tf: null },
+    { u: testUnitData.rldr, x: 9, y: 2, f: null, tf: null },
+    { u: testUnitData.gtank, x: 3, y: 2, f: 5, tf: 4 },
+    { u: testUnitData.rcrew, x: 10, y: 3, f: null, tf: null },
+    { u: testUnitData.rgun, x: 10, y: 3, f: 6, tf: null },
+    { u: testUnitData.ginf, x: 5, y: 3, f: null, tf: null },
+    { u: testUnitData.rinf, x: 11, y: 4, f: null, tf: null },
+    { u: testUnitData.ginf, x: 6, y: 4, f: null, tf: null },
+    { u: testUnitData.gmg, x: 6, y: 4, f: null, tf: null },
+    { u: testUnitData.gldr, x: 6, y: 4, f: null, tf: null },
+    { u: testUnitData.rtank, x: 10, y: 5, f: 1, tf: 1, imm: true },
+    { u: testUnitData.rinf, x: 11, y: 6, f: null, tf: null, st: unitStatus.Activated },
+    { u: testUnitData.ginf, x: 7, y: 6, f: null, tf: null, st: unitStatus.Broken },
+    { u: testUnitData.gspag, x: 0, y: 7, f: 4, tf: null },
+    { u: testUnitData.ginf, x: 6, y: 7, f: null, tf: null, st: unitStatus.Pinned },
+    { u: testUnitData.ginf, x: 6, y: 10, f: null, tf: null, st: unitStatus.Exhausted },
+    { u: testUnitData.gtank, x: 5, y: 11, f: 5, tf: 4, st: unitStatus.Wreck },
+    { u: testUnitData.rcrew, x: 14, y: 14, f: null, tf: null },
+    { u: testUnitData.rat, x: 14, y: 14, f: 1, tf: null },
+  ]
+
+  testUnits.forEach(data => {
+    const unit = new Unit(data.u)
+    if (data.f) { unit.facing = data.f }
+    if (data.tf) { unit.turretFacing = data.tf }
+    if (data.st) { unit.status = data.st }
+    if (data.imm) { unit.immobilized = true }
+    map.addUnit(data.x, data.y, unit)
+  })
 
   useEffect(() => {
     const hexLoader = []
     const overlayLoader = []
+    map.showCoords = coords
+    map.showAllCounters = statusCounters
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
@@ -295,7 +355,12 @@ export default function GameMap() {
     })
     setHexes(hexLoader)
     setOverlays(overlayLoader)
-  }, [])
+    setCounters(map.counters.map((data, i) => {
+      const counter = new Counter(data.x, data.y, data.u, map)
+      counter.stackingIndex = data.s
+      return <MapCounter key={i} counter={counter} />
+    }))
+  }, [coords, statusCounters])
 
   const makeSelection = (x, y) => {
     const key = `${x}-${y}`
@@ -312,18 +377,36 @@ export default function GameMap() {
     )
   }
 
-  const hexNarrow = 96
+  const hexNarrow = 115
   const hexWide = hexNarrow / 2 / Math.sin(1/3 * Math.PI) * 1.5
   const width = hexNarrow * ((map.width || 0) + 0.5) + 2
   const height = hexWide * ((map.height || 0) + 0.3333) + 2
 
   return (
     <div className="map-container">
-      <svg className="map-svg" width={width} height={height}
+      <div className="flex mb05em">
+        <div className="custom-button" onClick={() => setScale(s => s/1.1)}>
+          size -
+        </div>
+        <div className="custom-button" onClick={() => setScale(1)}>
+          0
+        </div>
+        <div className="custom-button" onClick={() => setScale(s => s*1.1)}>
+          + size
+        </div>
+        <div className="custom-button" onClick={() => setCoords(c => !c)}>
+          coordinates { coords ? "on" : "off" }
+        </div>
+        <div className="custom-button"onClick={() => setStatusCounters(sc => !sc)}>
+          { statusCounters ? "status counters" : "status badges" }
+        </div>
+      </div>
+      <svg className="map-svg" width={width * scale} height={height * scale}
            viewBox={`0 0 ${width} ${height}`}>
         <MapHexPatterns />
         {hexes}
         {overlays}
+        {counters}
       </svg>
     </div>
   )

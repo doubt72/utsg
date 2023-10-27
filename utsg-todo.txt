@@ -1,7 +1,14 @@
-- non-owner leaving game they've joined
+- Add hulls
+- Add counter markers
+- Allow expansion of counters
+- Show with map
+- Show help
+- Add selection
+
+- Add scenarios to fill things out
+
 - fix return selecting player rather than completing form on new game
 - don't limit game chat to recent
-- game page live updates (maybe just reload, but deal with scrolling?)
 - hotseat games?
 - refactor CSS
 

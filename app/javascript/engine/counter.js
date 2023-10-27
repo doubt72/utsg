@@ -1,9 +1,23 @@
 const Counter = class {
   constructor(x, y, unit, map) {
-    this.x = map ? map.xOffset(x, y) - 40 : 1
-    this.y = map ? map.yOffset(y) - 40 : 1
+    this.xHex = x
+    this.yHex = y
+    this.xBase = map ? map.xOffset(x, y) - 40 : 3
+    this.yBase = map ? map.yOffset(y) - 40 : 1
     this.unit = unit
     this.map = map
+    this.stackingIndex = 0
+  }
+
+  get stackOffset() { return this.map ? 5 : 3 }
+  get x() { return this.xBase + this.stackingIndex * this.stackOffset }
+  get y() { return this.yBase - this.stackingIndex * this.stackOffset }
+
+  get rotation() {
+    if (!this.map || ["sw", "ldr", "sqd", "tm"].includes(this.unit.type)) {
+      return false
+    }
+    return { a: this.unit.facing*60 - 150, x: this.x + 40, y: this.y + 40 }
   }
 
   // TODO: extract this into utilities?
@@ -12,23 +26,16 @@ const Counter = class {
     ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", alm: "#EA9",
     ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
   }
-
   clear = "rgba(0,0,0,0)"
   red = "#E00"
 
-  get color() {
-    return this.nationalColors[this.unit.nation]
-  }
+  get color() { return this.nationalColors[this.unit.nation] }
 
-  get counterStyle() {
-    return {
-      fill: this.color, stroke: "black", strokeWidth: 1
-    }
-  }
+  get counterStyle() { return { fill: this.color, stroke: "black", strokeWidth: 1 } }
 
-  get counterPath() {
-    const x = this.x
-    const y = this.x
+  counterPath(xOffset = 0, yOffset = 0) {
+    const x = this.x + xOffset
+    const y = this.y + yOffset
     const corner = 4
     return [
       "M", x+corner, y,
@@ -39,17 +46,24 @@ const Counter = class {
     ].join(" ")
   }
 
+  get shadowPath() {
+    // if (!this.map) { return false }
+    const angle = this.rotation ? this.rotation.a : 0
+    return this.counterPath(
+      -this.stackOffset * Math.sqrt(2) * Math.cos((angle + 45)/ 180 * Math.PI),
+      this.stackOffset * Math.sqrt(2) * Math.sin((angle + 45) / 180 * Math.PI)
+    )
+  }
+
   get reverseName() {
     return this.unit.isBroken || this.unit.isWreck || (this.unit.jammed && !this.unit.hullArmor)
   }
 
-  get nameBackgroundStyle() {
-    return { fill: this.reverseName ? "red" : this.clear }
-  }
+  get nameBackgroundStyle() { return { fill: this.reverseName ? "red" : this.clear } }
 
   get nameBackgroundPath() {
     const x = this.x
-    const y = this.x
+    const y = this.y
     const corner = 4
     return [
       "M", x+corner, y,
@@ -172,9 +186,7 @@ const Counter = class {
     return { x: x, y: y, size: size, value: "S", style: { fill: "black" } }
   }
 
-  get icon() {
-    if (this.unit.isWreck) { return "wreck" } else { return this.unit.icon }
-  }
+  get icon() { if (this.unit.isWreck) { return "wreck" } else { return this.unit.icon } }
 
   get sponsonLayout() {
     const gun = this.unit.sponson
@@ -323,11 +335,11 @@ const Counter = class {
   }
 
   get statusLayout() {
-    if (this.unit.isBroken || this.unit.isWreck) { return false }
-    const x = this.x + 41
-    let y = this.y + 39
+    if (this.unit.isBroken || this.unit.isWreck || this.map.showAllCounters) { return false }
+    const x = this.x + 40
+    let y = this.y + 46
     let size = 20
-    const path = this.circlePath(x, y - 6, 21)
+    const path = this.circlePath(x, y - 6, 22)
     const style = { fill: "yellow", stroke: "black", strokeWidth: 2 }
     const fStyle = { fill: "black" }
     if (this.unit.isPinned || this.unit.immobilized || this.unit.brokenDown || this.unit.turretJammed ||

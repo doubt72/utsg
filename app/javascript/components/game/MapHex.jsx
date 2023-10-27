@@ -63,7 +63,7 @@ export default function MapHex(props) {
 
   const label = (
     <text x={props.hex.labelX} y={props.hex.labelY} style={{
-      fill: "rgba(0,0,0,0.33)", textAnchor: "middle", fontFamily: "monospace", fontSize: "12px" }}>
+      fill: "rgba(0,0,0,0.33)", textAnchor: "middle", fontFamily: "monospace", fontSize: "15px" }}>
       {props.hex.label}
     </text>
   )

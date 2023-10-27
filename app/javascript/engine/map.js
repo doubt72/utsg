@@ -11,9 +11,41 @@ const Map = class {
     this.axisSetupHexes = data.axis_setup
 
     this.loadMap(data.hexes, this)
+
+    this.units = []
+    for (let i = 0; i < this.height; i++) {
+      const array = []
+      for (let j = 0; j < this.width; j++) {
+          array.push([])
+      }
+      this.units.push(array)
+    }
+
+    this.showCoords = true
+    this.showAllCounters = true
   }
 
-  get narrow() { return 96 }
+  loadConfig(data) {
+    // Other values of width/height will work, but in only really matters for
+    // display, and technically we're designing for horizontal 1" (flat-width) hexes.
+
+    // hexes = x: sheets * 8 - 1, y: sheets * 12 - 1
+    // 2x1 sheet = 16x10.5" = 15x11 hexes
+    // 4x2 sheet = 32x21" = 31x23 hexes
+
+    this.height = data[1]
+    this.width = data[0]
+    // Using anything besides x will either do nothing or possibly break things (eventually)
+    this.horizontal = data[2] === "x"
+  }
+
+  loadMap(data, map) {
+    this.mapHexes = data.map((row, y) => {
+      return row.map((hex, x) => new Hex(x, y, hex, map))
+    })
+  }
+
+  get narrow() { return 115 }
   get radius() { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
   xOffset(x, y) { return this.narrow * (x + y%2/2 + 0.5) + 1 }
   yOffset(y) { return this.radius * (y*1.5 + 1) + 1 }
@@ -37,24 +69,22 @@ const Map = class {
     ]
   }
 
-  loadConfig(data) {
-    // Other values of width/height will work, but in only really matters for
-    // display, and technically we're designing for horizontal 1" (flat-width) hexes.
-
-    // hexes = x: sheets * 8 - 1, y: sheets * 12 - 1
-    // 2x1 sheet = 16x10.5" = 15x11 hexes
-    // 4x2 sheet = 32x21" = 31x23 hexes
-
-    this.height = data[1]
-    this.width = data[0]
-    // Using anything besides x will either do nothing or possibly break things (eventually)
-    this.horizontal = data[2] === "x"
+  addUnit(x, y, unit) {
+    const list = this.units[y][x]
+    list.push(unit)
   }
 
-  loadMap(data, map) {
-    this.mapHexes = data.map((row, y) => {
-      return row.map((hex, x) => new Hex(x, y, hex, map))
-    })
+  get counters() {
+    const c = []
+    for (let y = 0; y < this.width; y++) {
+      for (let x = this.height - 1; x >= 0; x--) {
+        const list = this.units[y][x]
+        list.forEach((u, i) => {
+          c.push({ x: x, y: y, u: u, s: i })
+        })
+      }
+    }
+    return c
   }
 }
 
