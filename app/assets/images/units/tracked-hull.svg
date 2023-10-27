@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" style="fill:rgba(0,0,0,0.2);" />
+<path d="M 50 25 L 60 15 A 13.5,13.5 0 0,1 70,10 L 130 10 A 13.5,13.5 0 0,1 140,15 L 150 25 L 150 175 L 140 185 A 13.5,13.5 0 0,1 130,190 L 70 190 A 13.5,13.5 0 0,1 60,185 L 50 175 L 50 30" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 100 45 L 100 15" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 80 35 L 100 15 L 120 35" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 10 L 175 10 L 175 185 L 150 185 L 150 10" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 50 10 L 25 10 L 25 185 L 50 185 L 50 10" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 17.5 L 50 17.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 17.5 L 175 17.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 33.5 L 50 33.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 33.5 L 175 33.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 49.5 L 50 49.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 49.5 L 175 49.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 65.5 L 50 65.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 65.5 L 175 65.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 81.5 L 50 81.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 81.5 L 175 81.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 97.5 L 50 97.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 97.5 L 175 97.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 113.5 L 50 113.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 113.5 L 175 113.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 129.5 L 50 129.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 129.5 L 175 129.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 145.5 L 50 145.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 145.5 L 175 145.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 161.5 L 50 161.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 161.5 L 175 161.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 25 177.5 L 50 177.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 150 177.5 L 175 177.5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+</svg>

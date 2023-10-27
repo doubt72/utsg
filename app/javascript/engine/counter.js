@@ -47,7 +47,6 @@ const Counter = class {
   }
 
   get shadowPath() {
-    // if (!this.map) { return false }
     const angle = this.rotation ? this.rotation.a : 0
     return this.counterPath(
       -this.stackOffset * Math.sqrt(2) * Math.cos((angle + 45)/ 180 * Math.PI),
@@ -103,7 +102,6 @@ const Counter = class {
   }
 
   sizeFor(n, circle) {
-    // range = 10.5
     if (n > 9 || n < 0) {
       return circle ? 12.5 : 13.5
     } else {
@@ -335,7 +333,8 @@ const Counter = class {
   }
 
   get statusLayout() {
-    if (this.unit.isBroken || this.unit.isWreck || this.map.showAllCounters) { return false }
+    const showAllCounters = this.map ? this.map.showAllCounters : false
+    if (this.unit.isBroken || this.unit.isWreck || showAllCounters) { return false }
     const x = this.x + 40
     let y = this.y + 46
     let size = 20
