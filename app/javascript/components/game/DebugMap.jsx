@@ -304,7 +304,11 @@ export default function GameMap() {
     rtank: {
       c: "ussr", f: 48, i: "tank", n: "T-34-85", r: 28, s: 5, t: "tank", v: 6, y: 43,
       o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, u: 1, k: 1}
-    }
+    },
+    // russian grant
+    // british CS with smoke
+    // FT/MT/Mortar/Panzfaust/Panzerschreck
+    // Wheeled Scout car with MG
   }
 
   const testUnits = [
