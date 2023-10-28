@@ -33,7 +33,7 @@ export default function GameMap(props) {
     setCounterDisplay(props.map.counters.map((counter, i) => 
       <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     ))
-  }, [props.showCoords, props.showStatusCounters, props.hideCounters])
+  }, [props.map, props.showCoords, props.showStatusCounters, props.hideCounters])
 
   useEffect(() => {
     if (overlay.x < 0) { return }

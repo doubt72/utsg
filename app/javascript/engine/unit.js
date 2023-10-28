@@ -160,8 +160,8 @@ const Unit = class {
       return 0
     } else if (this.isPinned) {
       return Math.floor(this.baseFirepower / 2)
-    } else
-      return { value: this.baseFirepower
+    } else {
+      return this.baseFirepower
     }
   }
 
@@ -183,6 +183,122 @@ const Unit = class {
     } else {
       return this.baseMovement
     }
+  }
+
+  get typeName() {
+    const names = {
+      ac: ["armored car"], antittank: ["anti-tank rifle"], atgun: ["anit-tank gun"],
+      crew: ["trained gun crew"], explosive: ["explosive"], flamethrower: ["flame thrower"],
+      gun: ["field gun"], ht: ["armored infantry vehicle"],
+      htat: ["armored infantry vehicle", "w/anti-tank gun"],
+      htft: ["armored infantry vehicle", "w/flame thrower"],
+      htgun: ["armored infantry vehicle", "w/mounted field gun"],
+      htmtr: ["armored infantry vehicle", "w/mounted mortar"],
+      leader: ["leader"], mg: ["machine gun"], mortar: ["mortar"], radio: ["radio"],
+      rocket: ["anti-tank rocket"], spat: ["tank destroyer"], spft: ["flame-thrower tank"],
+      spg: ["self-propelled gun"], spgmg: ["armored vehicle"], squad: ["infantry squad"],
+      "tank-amp": ["amphibious tank"], tank: ["tank"], team: ["infantry team"],
+    }
+    if (this.icon === "mortar" && this.baseMovement > 0) { return ["crewed mortar"] }
+    return names[this.icon]
+  }
+
+  get helpText() {
+    let text = [this.name]
+    text = text.concat(this.typeName)
+    text.push("[ from name, clockwise ]")
+    if (this.size > 0) {
+      text.push(`stacking/size ${this.size} (${this.armored ? "armored" : "soft"})`)
+    }
+    if (this.turretArmor) {
+      text.push("turret armor:")
+      text.push(`- front ${this.turretArmor[0]} / side ${this.turretArmor[1]} / rear ${this.turretArmor[2]}`)
+    }
+    if (this.hullArmor) {
+      text.push("hull armor:")
+      text.push(`- front ${this.hullArmor[0]} / side ${this.hullArmor[1]} / rear ${this.hullArmor[2]}`)
+    }
+    if (this.baseMovement > 0) {
+      text.push(`movement ${this.currentMovement}`)
+      if (this.tracked) {
+        text.push("- tracked movement")
+      } else if (this.wheeled) {
+        text.push("- wheeled movement")
+      } else if (this.crewed) {
+        text.push("- man handled")
+      } else if (this.isBroken) {
+        text.push("- routing only")
+      }
+    } else {
+      text.push(`movement modifier ${this.baseMovement}`)
+    }
+    text.push(`range ${this.currentRange}`)
+    if (this.minimumRange) {
+      text.push(`minimum range ${this.minimumRange}`)
+    }
+    if (this.targetedRange && !this.jammed) {
+      text.push("- target roll required")
+    }
+    if (this.turreted && !this.jammed) {
+      text.push("- turret mounted")
+    }
+    if (this.rotatingMount) {
+      text.push("- rotating mount")
+    }
+    if (this.rapidFire && !this.jammed) {
+      text.push("- rapid fire")
+    }
+    if ((this.minimumRange || this.type === "sw") && this.targetedRange) {
+      text.push("- no crew targeting bonus")
+    }
+    text.push(`firepower ${this.currentFirepower}`)
+    if (this.assault && !this.isBroken && !this.jammed) {
+      text.push("- assault bonus")
+    }
+    if (this.offBoard && !this.jammed) {
+      text.push("- offboard artillery")
+    }
+    if (this.antiTank && !this.jammed) {
+      text.push("- anti-armor capable")
+      text.push("- half firepower vs. soft targets")
+    }
+    if (this.fieldGun && !this.jammed) {
+      text.push("- anti-armor capable")
+      text.push("- half firepower vs. armor")
+    }
+    if (this.singleFire) {
+      text.push("- firing expends weapon")
+    }
+    if (this.ignoreTerrain) {
+      text.push("- ignores terrain")
+    }
+    if (this.currentSmokeCapable) {
+      text.push("can lay smoke")
+    }
+    if (this.breakdownRoll && !this.brokenDown) {
+      text.push(`breakdown roll ${this.breakdownRoll}`)
+    }
+    if (this.gunHandling && !this.isBroken) {
+      text.push(`gun operation bonus ${this.gunHandling}`)
+    }
+    if (this.currentLeadership) {
+      text.push(`leadership ${this.currentLeadership}`)
+    }
+    if (this.breakWeaponRoll && !this.jammed) {
+      text.push(`weapon breaks on ${this.breakWeaponRoll}`)
+    }
+    if (this.baseMorale) {
+      text.push(`unit morale ${this.currentMorale}`)
+    }
+    if (this.sponson) {
+      text.push("center / symbol bottom:")
+      text.push(`- firepower ${this.sponson[0]}`)
+      text.push(`- range ${this.sponson[1]}`)
+      text.push("- target roll required")
+      text.push("- anti-armor capable")
+      text.push("- half firepower vs. soft targets")
+    }
+    return text
   }
 }
 

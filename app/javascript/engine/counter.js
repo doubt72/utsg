@@ -4,19 +4,20 @@ const Counter = class {
   constructor(x, y, target, map) {
     this.xHex = x
     this.yHex = y
-    this.xBase = map ? map.xOffset(x, y) - 40 : 3
-    this.yBase = map ? map.yOffset(y) - 40 : 1
+    this.onMap = map && x > -1
+    this.xBase = this.onMap ? map.xOffset(x, y) - 40 : 3
+    this.yBase = this.onMap ? map.yOffset(y) - 40 : 1
     this.target = target
     this.map = map
     this.stackingIndex = 0
   }
 
-  get stackOffset() { return this.map ? 5 : 3 }
+  get stackOffset() { return this.onMap ? 5 : 3 }
   get x() { return this.xBase + this.stackingIndex * this.stackOffset }
   get y() { return this.yBase - this.stackingIndex * this.stackOffset }
 
   get rotation() {
-    if (!this.map || !this.target.rotates) {
+    if (!this.onMap || !this.target.rotates) {
       return false
     }
     let facing = this.target.facing
@@ -326,7 +327,7 @@ const Counter = class {
     let color = "black"
     let path = this.circlePath(x, y, 10)
     let size = this.sizeFor(value)
-    if (this.target.isBroken || this.target.isPinned || this.target.tired || value < 0 ||
+    if (this.target.isBroken || this.target.isPinned || this.target.isTired || value < 0 ||
       this.target.immobilized || this.target.brokenDown || this.target.isWreck) {
       color = this.red
     } else {
@@ -369,7 +370,7 @@ const Counter = class {
 
   get statusLayout() {
     if (this.target.isMarker) { return false }
-    const showAllCounters = this.map ? this.map.showAllCounters : this.showAllCounters
+    const showAllCounters = this.onMap ? this.map.showAllCounters : this.showAllCounters
     if (this.target.isBroken || this.target.isWreck || showAllCounters) { return false }
     const x = this.x + 40
     let y = this.y + 46
@@ -408,6 +409,40 @@ const Counter = class {
       text = [text.slice(0,2).join(" "), text.slice(2,4).join(" "), text.slice(4,6).join(" ")]
     }
     return { value: text, x: x, y: y, size: size, path: path, style: style, fStyle: fStyle }
+  }
+
+  helpLayout(x, y) {
+    const text = this.target.helpText
+    const size = 20
+    let width = 180
+    if (text.filter(t => t === "- half firepower vs. soft targets").length > 0) {
+      width = 215
+    }
+    let x1 = x
+    let x2 = x + width
+    let y1 = y
+    let y2 = y + text.length * size + size/2
+    if (x2 > this.map.xSize) {
+      const diff = - (width + 182.5)
+      x1 += diff
+      x2 += diff
+    }
+    if (y2 > this.map.ySize) {
+      const diff = this.map.ySize - y2
+      y1 += diff
+      y2 += diff
+    }
+    const layout = {
+      path: [
+        "M", x1, y1, "L", x2, y1, "L", x2, y2, "L", x1, y2, "L", x1, y1,
+      ].join(" "), style: { fill: "black", stroke: "white", strokeWidth: 2 },
+      size: size-6
+    }
+    const diff = size
+    layout.texts = text.map((t, i) => {
+      return { x: x1+5, y: y1 + i*diff + size, v: t }
+    })
+    return layout
   }
 }
 

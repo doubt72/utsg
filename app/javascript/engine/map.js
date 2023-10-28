@@ -116,8 +116,8 @@ const Map = class {
   get counters() {
     const c = []
     if (this.hideCounters) { return c }
-    for (let y = 0; y < this.width; y++) {
-      for (let x = this.height - 1; x >= 0; x--) {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = this.width - 1; x >= 0; x--) {
         this.countersAt(x, y).forEach(data => {
           const counter = new Counter(data.x, data.y, data.u, this)
           counter.stackingIndex = data.s
@@ -236,6 +236,15 @@ const Map = class {
       b.y = b.y + 4
       return b
     })
+  }
+
+  counterHelpButtonLayout(x, y, counter) {
+    if (counter.target.isMarker || counter.target.isWreck) { return false }
+    const size = 24
+    return { path: [
+      "M", x-size/2, y, "A", size/2, size/2, 0, 0, 1, x+size/2, y,
+      "A", size/2, size/2, 0, 0, 1, x-size/2, y
+    ].join(" "), x: x, y: y+5, size: size-8 }
   }
 }
 

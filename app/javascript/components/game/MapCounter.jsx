@@ -196,7 +196,7 @@ export default function MapCounter(props) {
       const c = props.counter
       const r = c.rotation
       return (
-        <g opacity="0.8" transform={`rotate(${r ? `${-r.a} ${c.x+40} ${c.y+40}` : "0"})`}>
+        <g transform={`rotate(${r ? `${-r.a} ${c.x+40} ${c.y+40}` : "0"})`}>
           <path d={layout.path} style={layout.style} />
           {text}
         </g>

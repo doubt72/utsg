@@ -8,7 +8,7 @@ export default function DebugMap() {
   const [scale, setScale] = useState(1)
   const [coords, setCoords] = useState(false)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
-  const [hideCounters, setHideCounters] = useState(false)
+  const [hideCounters, setHideCounters] = useState(true)
 
   const testUnitData = {
     ginf: {
@@ -37,6 +37,10 @@ export default function DebugMap() {
     gscout: {
       c: "ger", f: 8, i: "ac", n: "SdKfz 221", r: 8, s: 3, t: "ac", v: 7, y: 35,
       o: {r: 1, ha: {f: 1, s: 0, r: 0}, ta: {f: 1, s: 1, r: 1}, j: 3, u: 1, w: 1},
+    },
+    ght: {
+      c: "ger", f: 8, i: "htat", n: "SdKfz 250/11",
+      o: {t: 1, p: 1, ha: {f: 1, s: 0, r: 0}, k: 1, j: 3}, r: 10, s: 3, t: "ht", v: 6, y: 41
     },
     rinf: {
       c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
@@ -81,7 +85,7 @@ export default function DebugMap() {
       },
     },
     rm2cs: {
-      c: "ussr", f: 16, i: "spg", n: "Matilda II CS", r: 12, s: 5, t: "spg", v: 4, y: 39,
+      c: "uk", f: 16, i: "spg", n: "Matilda II CS", r: 12, s: 5, t: "spg", v: 4, y: 39,
       o: {t: 1, g: 1, ha: {f: 6, s: 5, r: 4}, ta: {f: 5, s: 5, r: 5}, bd: 3, s: 1, u: 1, j: 3, k: 1}
     },
   }
@@ -97,6 +101,7 @@ export default function DebugMap() {
     { u: testUnitData.rinf, x: 11, y: 1, f: null, tf: null },
     { u: testUnitData.rft, x: 11, y: 1, f: null, tf: null },
     { u: testUnitData.rinf, x: 8, y: 1, f: null, tf: null },
+    { u: testUnitData.ght, x: 1, y: 1, f: 4, tf: null },
     { u: testUnitData.rtank, x: 10, y: 2, f: 1, tf: 6 },
     { u: testUnitData.rinf, x: 9, y: 2, f: null, tf: null },
     { u: testUnitData.rmg, x: 9, y: 2, f: null, tf: null },
@@ -396,7 +401,7 @@ export default function DebugMap() {
       if (data.trt) { unit.turretJammed = true }
       map.addUnit(data.x, data.y, unit)
     })
-    setCoords(true)
+    setHideCounters(false)
   }, [map])
 
   const hexSelection = (x, y) => {

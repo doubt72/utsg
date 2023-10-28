@@ -9,7 +9,7 @@ export default function CounterDisplay(props) {
   return (
     <div style={{padding: "0.1rem"}} >
       <svg height="84" width="84" viewBox="0 0 84 84">
-        <MapCounter counter={new Counter(0, 0, props.unit, null)} />
+        <MapCounter counter={new Counter(-1, -1, props.unit)} ovCallback={() => {}} />
       </svg>
     </div>
   )
