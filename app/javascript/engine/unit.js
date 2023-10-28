@@ -1,7 +1,6 @@
 const unitStatus = {
-  Normal: 0, Pinned: 1, Broken: 2, Activated: 3, Exhausted: 4,  Wreck: 5
+  Normal: 0, Tired: 1, Pinned: 2, Broken: 3, Activated: 4, Exhausted: 5, Wreck: 6
 }
-// TODO: activated/exhausted is orthogonal to tired/immobilized/turretJammed
 
 // c: nation, t: type, n: name, i: icon, y: year
 // m: morale (2-6)
@@ -84,8 +83,12 @@ const Unit = class {
     this.turretFacing = 1
   }
 
-  get isSimpleCounter() {
+  get isMarker() {
     return false
+  }
+
+  get rotates() {
+    return ["sw", "ldr", "sqd", "tm"].includes(this.type)
   }
 
   get isActivated() {
@@ -94,6 +97,10 @@ const Unit = class {
 
   get isExhausted() {
     return this.status === unitStatus.Exhausted
+  }
+
+  get isTired() {
+    return this.status === unitStatus.Tired
   }
 
   get isPinned() {
@@ -171,7 +178,7 @@ const Unit = class {
       return this.brokenMovement
     } else if (this.isPinned || this.immobilized || this.brokenDown || this.isWreck) {
       return 0
-    } else if (this.tired) {
+    } else if (this.isTired) {
       return this.baseMovement - 2
     } else {
       return this.baseMovement

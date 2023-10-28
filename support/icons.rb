@@ -13,7 +13,7 @@ helmet_paths = [
 
 header = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
 header2 = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">'
-header2 += '<rect width="200" height="200" style="fill:rgba(0,0,0,0.2);" />'
+# header2 += '<rect width="200" height="200" style="fill:rgba(0,0,0,0.2);" />'
 footer = '</svg>'
 
 def scale_path(path, xoffset, yoffset, scale)
@@ -477,25 +477,25 @@ end
 File.open('tracked-hull.svg', 'w') do |file|
   file.puts header2
   write_path([
-    ["M", 50, 25], ["L", 60, 15], ["A", [13.5, 13.5], 0, [0, 1], [70, 10]],
-    ["L", 130, 10], ["A", [13.5, 13.5], 0, [0, 1], [140, 15]], ["L", 150, 25],
-    ["L", 150, 175], ["L", 140, 185], ["A", [13.5, 13.5], 0, [0, 1], [130, 190]],
-    ["L", 70, 190], ["A", [13.5, 13.5], 0, [0, 1], [60, 185]], ["L", 50, 175],
-    ["L", 50, 30],
-  ], file, false)
-  write_path([["M", 100, 45], ["L", 100, 15]], file, false)
-  write_path([["M", 80, 35], ["L", 100, 15], ["L", 120, 35]], file, false)
+    ["M", 65, 35], ["L", 75, 25], ["A", [15, 15], 0, [0, 1], [85, 20]],
+    ["L", 115, 20], ["A", [15, 15], 0, [0, 1], [125, 25]], ["L", 135, 35],
+    ["L", 135, 165], ["L", 125, 175], ["A", [15, 15], 0, [0, 1], [115, 180]],
+    ["L", 85, 180], ["A", [15, 15], 0, [0, 1], [75, 175]], ["L", 65, 165],
+    ["L", 65, 35], ["L", 75, 25]
+  ], file, false, 4.5)
+  write_path([["M", 100, 55], ["L", 100, 30]], file, false)
+  write_path([["M", 85, 45], ["L", 100, 30], ["L", 115, 45]], file, false)
   write_path([
-    ["M", 150, 10], ["L", 175, 10], ["L", 175, 185], ["L", 150, 185], ["L", 150, 10]
-  ], file, false)
+    ["M", 135, 20], ["L", 160, 20], ["L", 160, 180], ["L", 135, 180], ["L", 135, 20], ["L", 160, 20]
+  ], file, false, 4.5)
   write_path([
-    ["M", 50, 10], ["L", 25, 10], ["L", 25, 185], ["L", 50, 185], ["L", 50, 10],
-  ], file, false)
+    ["M", 65, 20], ["L", 40, 20], ["L", 40, 180], ["L", 65, 180], ["L", 65, 20], ["L", 40, 20]
+  ], file, false, 4.5)
   0.upto(10) do |i|
-    beg = 17.5
-    diff = 16
-    write_path([["M", 25, beg+i*diff], ["L", 50, beg+i*diff]], file, false)
-    write_path([["M", 150, beg+i*diff], ["L", 175, beg+i*diff]], file, false)
+    beg = 28.75
+    diff = 14.25
+    write_path([["M", 40, beg+i*diff], ["L", 65, beg+i*diff]], file, false)
+    write_path([["M", 135, beg+i*diff], ["L", 160, beg+i*diff]], file, false)
   end
   file.puts footer
 end
@@ -503,24 +503,26 @@ end
 File.open('wheeled-hull.svg', 'w') do |file|
   file.puts header2
   write_path([
-    ["M", 50, 30], ["A", [20, 20], 0, [0, 1], [70, 10]], ["L", 130, 10],
-    ["A", [20, 20], 0, [0, 1], [150, 30]], ["L", 150, 170],
-    ["A", [20, 20], 0, [0, 1], [130, 190]], ["L", 70, 190],
-    ["A", [20, 20], 0, [0, 1], [50, 170]], ["L", 50, 30],
-  ], file, false)
-  write_path([["M", 100, 45], ["L", 100, 15]], file, false)
-  write_path([["M", 80, 35], ["L", 100, 15], ["L", 120, 35]], file, false)
-
-
-  write_path([
-    ["M", 150, 30], ["L", 175, 30], ["L", 175, 170], ["L", 150, 170],
-  ], file, false)
-  write_path([
-    ["M", 50, 30], ["L", 25, 30], ["L", 25, 170], ["L", 50, 170],
-  ], file, false)
-  0.upto(8) do |i|
-    write_path([["M", 25, 40+i*15], ["L", 50, 40+i*15]], file, false)
-    write_path([["M", 150, 40+i*15], ["L", 175, 40+i*15]], file, false)
+    ["M", 60, 40], ["A", [20, 20], 0, [0, 1], [80, 20]],
+    ["L", 120, 20], ["A", [20, 20], 0, [0, 1], [140, 40]],
+    ["L", 140, 160], ["A", [20, 20], 0, [0, 1], [120, 180]],
+    ["L", 80, 180], ["A", [20, 20], 0, [0, 1], [60, 160]],
+    ["L", 60, 40], ["A", [20, 20], 0, [0, 1], [80, 20]],
+  ], file, false, 4.5)
+  write_path([["M", 100, 55], ["L", 100, 30]], file, false)
+  write_path([["M", 85, 45], ["L", 100, 30], ["L", 115, 45]], file, false)
+  [
+    [60, -8, 38], [140, 8, 38],
+    [60, -8, 96], [140, 8, 96],
+    [60, -8, 130], [140, 8, 130],
+  ].each do |set|
+    x = set[0]
+    dx = set[1]
+    y = set[2]
+    write_path([
+      ["M", x, y], ["A", [8, 8], 0, [0, dx > 0 ? 1 : 0], [x+dx, y+8]],
+      ["L", x+dx, y+24], ["A", [8, 8], 0, [0, dx > 0 ? 1 : 0], [x, y+32]],
+    ], file, true)
   end
   file.puts footer
 end

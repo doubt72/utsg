@@ -273,13 +273,23 @@ export default function GameMap() {
     gmg: {
       c: "ger", f: 8, i: "mg", n: "MG 44", o: {a: 1, r: 1, j: 3}, r: 8, t: "sw", v: 0, y: 42
     },
+    gps: {
+      t: "sw", i: "rocket", c: "ger", n: "Panzerschreck", y: 43, f: 12, r: 3, v: 0, o: { b: 4, t: 1, p: 1 }
+    },
+    gpf: {
+      t: "sw", i: "rocket", c: "ger", n: "Panzerfaust", y: 43, f: 16, r: 1, v: 0, o: {x: 1, t: 1, p: 1}
+    },
     gtank: {
       c: "ger", f: 40, i: "tank", n: "Panther D", r: 32, s: 6, t: "tank", v: 5, y: 43,
       o: {t: 1, p: 1, ha: {f: 6, s: 3, r: 3}, ta: {f: 7, s: 4, r: 4}, bd: 3, j: 3, u: 1, k: 1}
     },
-    gspag: {
+    gspg: {
       c: "ger", f: 32, i: "spat", n: "StuG III-F/G", r: 24, s: 4, t: "spg", v: 5, y: 42,
       o: {t: 1, p: 1, ha: {f: 6, s: 1, r: 1}, j: 3, k: 1}
+    },
+    gscout: {
+      c: "ger", f: 8, i: "ac", n: "SdKfz 221", r: 8, s: 3, t: "ac", v: 7, y: 35,
+      o: {r: 1, ha: {f: 1, s: 0, r: 0}, ta: {f: 1, s: 1, r: 1}, j: 3, u: 1, w: 1},
     },
     rinf: {
       c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
@@ -289,6 +299,17 @@ export default function GameMap() {
     },
     rmg: {
       t: "sw", i: "mg", c: "ussr", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3}
+    },
+    rft: {
+      c: "ussr", f: 24, i: "flamethrower", n: "Flamethrower", o: {a: 1, i: 1, b: 3}, r: 1,
+      t: "sw", v: 0, y: 15
+    },
+    rmc: {
+      c: "ussr", f: 4, i: "explosive", n: "Molotov Cocktail",
+      o: {i: 1, a: 1, x: 1, t: 1, sn: 1}, r: 1, t: "sw", v: 0, y: 39
+    },
+    rmort: {
+      t: "sw", i: "mortar", c: "ussr", n: "RM-38", y: 38, f: 8, r: 14, v: 0, o: {m: 2, t: 1, b: 3}
     },
     rgun: {
       c: "ussr", f: 16, i: "gun", n: "76mm M1927", o: {t: 1, j: 3, g: 1, s: 1, c: 1}, r: 16,
@@ -305,13 +326,30 @@ export default function GameMap() {
       c: "ussr", f: 48, i: "tank", n: "T-34-85", r: 28, s: 5, t: "tank", v: 6, y: 43,
       o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, u: 1, k: 1}
     },
-    // russian grant
-    // british CS with smoke
+    rgrant: {
+      c: "ussr", f: 7, i: "tank", n: "M3 Grant", r: 10, s: 5, t: "tank", v: 5, y: 41,
+      o: {
+        bd: 4, ha: {f: 4, s: 3, r: 3}, j: 3, k: 1, p: 1, sg: {f: 24, r: 12}, t: 1,
+        ta: {f: 4, s: 4, r: 4}, u: 1
+      },
+    },
+    rm2cs: {
+      c: "ussr", f: 16, i: "spg", n: "Matilda II CS", r: 12, s: 5, t: "spg", v: 4, y: 39,
+      o: {t: 1, g: 1, ha: {f: 6, s: 5, r: 4}, ta: {f: 5, s: 5, r: 5}, bd: 3, s: 1, u: 1, j: 3, k: 1}
+    },
     // FT/MT/Mortar/Panzfaust/Panzerschreck
-    // Wheeled Scout car with MG
   }
 
   const testUnits = [
+    { u: testUnitData.ginf, x: 6, y: 0, f: null, tf: null },
+    { u: testUnitData.gpf, x: 6, y: 0, f: null, tf: null },
+    { u: testUnitData.rgrant, x: 14, y: 1, f: 1, tf: 2 },
+    { u: testUnitData.rinf, x: 13, y: 1, f: null, tf: null },
+    { u: testUnitData.rmort, x: 13, y: 1, f: null, tf: null },
+    { u: testUnitData.rinf, x: 12, y: 1, f: null, tf: null },
+    { u: testUnitData.rmc, x: 12, y: 1, f: null, tf: null },
+    { u: testUnitData.rinf, x: 11, y: 1, f: null, tf: null },
+    { u: testUnitData.rft, x: 11, y: 1, f: null, tf: null },
     { u: testUnitData.rinf, x: 8, y: 1, f: null, tf: null },
     { u: testUnitData.rtank, x: 10, y: 2, f: 1, tf: 6 },
     { u: testUnitData.rinf, x: 9, y: 2, f: null, tf: null },
@@ -325,15 +363,24 @@ export default function GameMap() {
     { u: testUnitData.ginf, x: 6, y: 4, f: null, tf: null },
     { u: testUnitData.gmg, x: 6, y: 4, f: null, tf: null },
     { u: testUnitData.gldr, x: 6, y: 4, f: null, tf: null },
-    { u: testUnitData.rtank, x: 10, y: 5, f: 1, tf: 1, imm: true },
+    { u: testUnitData.gtank, x: 4, y: 4, f: 5, tf: 5, imm: true },
+    { u: testUnitData.gtank, x: 3, y: 4, f: 3, tf: 3, trt: true },
+    {
+      u: testUnitData.rtank, x: 10, y: 5, f: 1, tf: 1, imm: true, st: unitStatus.Activated,
+      brk: true, bdn: true, trt: true
+    },
     { u: testUnitData.rinf, x: 11, y: 6, f: null, tf: null, st: unitStatus.Activated },
     { u: testUnitData.ginf, x: 7, y: 6, f: null, tf: null, st: unitStatus.Broken },
-    { u: testUnitData.gspag, x: 0, y: 7, f: 4, tf: null },
+    { u: testUnitData.rm2cs, x: 14, y: 7, f: 1, tf: 1 },
     { u: testUnitData.ginf, x: 6, y: 7, f: null, tf: null, st: unitStatus.Pinned },
+    { u: testUnitData.gspg, x: 0, y: 7, f: 4, tf: null },
+    { u: testUnitData.gscout, x: 4, y: 8, f: 4, tf: 3 },
     { u: testUnitData.ginf, x: 6, y: 10, f: null, tf: null, st: unitStatus.Exhausted },
     { u: testUnitData.gtank, x: 5, y: 11, f: 5, tf: 4, st: unitStatus.Wreck },
     { u: testUnitData.rcrew, x: 14, y: 14, f: null, tf: null },
     { u: testUnitData.rat, x: 14, y: 14, f: 1, tf: null },
+    { u: testUnitData.ginf, x: 7, y: 14, f: null, tf: null },
+    { u: testUnitData.gps, x: 7, y: 14, f: null, tf: null },
   ]
 
   testUnits.forEach(data => {
@@ -342,6 +389,9 @@ export default function GameMap() {
     if (data.tf) { unit.turretFacing = data.tf }
     if (data.st) { unit.status = data.st }
     if (data.imm) { unit.immobilized = true }
+    if (data.brk) { unit.jammed = true }
+    if (data.bdn) { unit.brokenDown = true }
+    if (data.trt) { unit.turretJammed = true }
     map.addUnit(data.x, data.y, unit)
   })
 

@@ -8,9 +8,12 @@ export default function MapCounter(props) {
     <path d={props.counter.counterPath()} style={props.counter.counterStyle} />
   )
 
-  const nameBackground = (
-    <path d={props.counter.nameBackgroundPath} style={props.counter.nameBackgroundStyle} />
-  )
+  const nameBackground = () => {
+    const path = props.counter.nameBackgroundPath
+    if (path) return (
+        <path d={path} style={props.counter.nameBackgroundStyle} />
+    )
+  }
 
   const shadow = () => {
     const layout = props.counter.shadowPath
@@ -100,10 +103,13 @@ export default function MapCounter(props) {
     )
   }
 
-  const icon = (
-    <image width="40" height="40" x={props.counter.x + 20} y={props.counter.y + 13}
-           href={`/assets/units/${props.counter.icon}.svg`} /> 
-  )
+  const icon = () => {
+    const layout = props.counter.iconLayout
+    if (layout) return (
+      <image width={layout.size} height={layout.size} x={layout.x} y={layout.y}
+             href={`/assets/units/${layout.icon}.svg`} /> 
+    )
+  }
 
   const sponson = () => {
     const layout = props.counter.sponsonLayout
@@ -165,6 +171,21 @@ export default function MapCounter(props) {
     )
   }
 
+  const marker = () => {
+    const layout = props.counter.markerLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style} />
+        {
+          layout.text.map((t, i) =>
+            <text key={i} x={t.x} y={t.y} fontSize={layout.size} textAnchor="middle"
+                  fontFamily="monospace" style={layout.tStyle}>{t.value}</text>
+          )
+        }
+      </g>
+    )
+  }
+
   const status = () => {
     const layout = props.counter.statusLayout
     if (layout) {
@@ -192,13 +213,14 @@ export default function MapCounter(props) {
     <g transform={`rotate(${rotation()})`}>
       {shadow()}
       {counterBack}
-      {nameBackground}{name()}
+      {nameBackground()}{name()}
       {morale()}
       {weaponBreak()}{size()}
       {leadership()}{handling()}{breakdown()}{smoke()}
-      {icon}
+      {icon()}
       {sponson()}{turretArmor()}{hullArmor()}
       {firepower()}{range()}{movement()}
+      {marker()}
       {status()}
     </g>
   )

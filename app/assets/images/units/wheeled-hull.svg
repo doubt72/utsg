@@ -1,25 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" style="fill:rgba(0,0,0,0.2);" />
-<path d="M 50 30 A 20,20 0 0,1 70,10 L 130 10 A 20,20 0 0,1 150,30 L 150 170 A 20,20 0 0,1 130,190 L 70 190 A 20,20 0 0,1 50,170 L 50 30" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 100 45 L 100 15" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 80 35 L 100 15 L 120 35" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 30 L 175 30 L 175 170 L 150 170" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 50 30 L 25 30 L 25 170 L 50 170" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 40 L 50 40" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 40 L 175 40" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 55 L 50 55" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 55 L 175 55" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 70 L 50 70" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 70 L 175 70" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 85 L 50 85" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 85 L 175 85" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 100 L 50 100" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 100 L 175 100" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 115 L 50 115" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 115 L 175 115" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 130 L 50 130" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 130 L 175 130" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 145 L 50 145" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 145 L 175 145" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 25 160 L 50 160" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
-<path d="M 150 160 L 175 160" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<path d="M 60 40 A 20,20 0 0,1 80,20 L 120 20 A 20,20 0 0,1 140,40 L 140 160 A 20,20 0 0,1 120,180 L 80 180 A 20,20 0 0,1 60,160 L 60 40 A 20,20 0 0,1 80,20" style="fill:rgba(0,0,0,0);stroke-width:4.5;stroke:#000;" />
+<path d="M 100 55 L 100 30" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 85 45 L 100 30 L 115 45" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 60 38 A 8,8 0 0,0 52,46 L 52 62 A 8,8 0 0,0 60,70" style="fill:#000;" />
+<path d="M 140 38 A 8,8 0 0,1 148,46 L 148 62 A 8,8 0 0,1 140,70" style="fill:#000;" />
+<path d="M 60 96 A 8,8 0 0,0 52,104 L 52 120 A 8,8 0 0,0 60,128" style="fill:#000;" />
+<path d="M 140 96 A 8,8 0 0,1 148,104 L 148 120 A 8,8 0 0,1 140,128" style="fill:#000;" />
+<path d="M 60 130 A 8,8 0 0,0 52,138 L 52 154 A 8,8 0 0,0 60,162" style="fill:#000;" />
+<path d="M 140 130 A 8,8 0 0,1 148,138 L 148 154 A 8,8 0 0,1 140,162" style="fill:#000;" />
 </svg>

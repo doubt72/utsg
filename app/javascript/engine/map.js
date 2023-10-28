@@ -1,4 +1,5 @@
 import { Hex } from "./hex"
+import { Marker, markerType } from "./marker"
 
 const Map = class {
   constructor (data) {
@@ -79,8 +80,51 @@ const Map = class {
     for (let y = 0; y < this.width; y++) {
       for (let x = this.height - 1; x >= 0; x--) {
         const list = this.units[y][x]
-        list.forEach((u, i) => {
-          c.push({ x: x, y: y, u: u, s: i })
+        let index = 0
+        list.forEach(u => {
+          const r = u.rotates
+          const f = u.turreted && !u.isWreck ? u.turretFacing : u.facing
+          if (u.turreted && !u.isWreck) {
+            const type = u.wheeled ? markerType.WheeledHull : markerType.TrackedHull
+            c.push({ x: x, y: y, u: new Marker(
+              { type: type, nation: u.nation, facing: u.facing }
+            ), s: index++ })
+          }
+          c.push({ x: x, y: y, u: u, s: index++ })
+          if (this.showAllCounters) {
+            if (u.immobilized) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.Immobilized, rotates: r, facing: f }), s: index++ })
+            }
+            if (u.brokenDown) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.BrokenDown, rotates: r, facing: f }), s: index++ })
+            }
+            if (u.turretJammed) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.TurretJammed, rotates: r, facing: f }), s: index++ })
+            }
+            if (u.jammed) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.Jammed, rotates: r, facing: f }), s: index++ })
+            }
+            if (u.isTired) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.Tired, rotates: r, facing: f }), s: index++ })
+            }
+            if (u.isPinned) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.Pinned, rotates: r, facing: f }), s: index++ })
+            }
+            if (u.isExhausted) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.Exhausted, rotates: r, facing: f }), s: index++ })
+            }
+            if (u.isActivated) {
+              c.push({ x: x, y: y, u: new Marker({
+                type: markerType.Activated, rotates: r, facing: f }), s: index++ })
+            }
+          }
         })
       }
     }

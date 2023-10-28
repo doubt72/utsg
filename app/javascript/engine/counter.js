@@ -1,10 +1,12 @@
+import { markerType } from "./marker"
+
 const Counter = class {
-  constructor(x, y, unit, map) {
+  constructor(x, y, target, map) {
     this.xHex = x
     this.yHex = y
     this.xBase = map ? map.xOffset(x, y) - 40 : 3
     this.yBase = map ? map.yOffset(y) - 40 : 1
-    this.unit = unit
+    this.target = target
     this.map = map
     this.stackingIndex = 0
   }
@@ -14,22 +16,24 @@ const Counter = class {
   get y() { return this.yBase - this.stackingIndex * this.stackOffset }
 
   get rotation() {
-    if (!this.map || ["sw", "ldr", "sqd", "tm"].includes(this.unit.type)) {
+    if (!this.map || this.target.rotates) {
       return false
     }
-    return { a: this.unit.facing*60 - 150, x: this.x + 40, y: this.y + 40 }
+    let facing = this.target.facing
+    if (this.target.turreted && !this.target.isWreck) { facing = this.target.turretFacing }
+    return { a: facing*60 - 150, x: this.x + 40, y: this.y + 40 }
   }
 
   // TODO: extract this into utilities?
   // TODO: need to keep in sync with CSS
   nationalColors = {
     ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", alm: "#EA9",
-    ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
+    ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB", none: "white",
   }
   clear = "rgba(0,0,0,0)"
   red = "#E00"
 
-  get color() { return this.nationalColors[this.unit.nation] }
+  get color() { return this.nationalColors[this.target.nation] }
 
   get counterStyle() { return { fill: this.color, stroke: "black", strokeWidth: 1 } }
 
@@ -55,7 +59,7 @@ const Counter = class {
   }
 
   get reverseName() {
-    return this.unit.isBroken || this.unit.isWreck || (this.unit.jammed && !this.unit.hullArmor)
+    return this.target.isBroken || this.target.isWreck || (this.target.jammed && !this.target.hullArmor)
   }
 
   get nameBackgroundStyle() { return { fill: this.reverseName ? "red" : this.clear } }
@@ -74,11 +78,11 @@ const Counter = class {
 
   get nameLayout() {
     let size = 9
-    if (this.unit.smallName > 0) { size = 8.25 }
-    if (this.unit.smallName > 1) { size = 7.825 }
-    if (this.unit.smallName > 2) { size = 7.5 }
+    if (this.target.smallName > 0) { size = 8.25 }
+    if (this.target.smallName > 1) { size = 7.825 }
+    if (this.target.smallName > 2) { size = 7.5 }
     return {
-      x: this.x + 3, y: this.y+10, size: size, name: this.unit.name,
+      x: this.x + 3, y: this.y+10, size: size, name: this.target.name,
       style: { fill: this.reverseName ? "white" : "black" }
     }
   }
@@ -110,56 +114,56 @@ const Counter = class {
   }
 
   get moraleLayout() {
-    if (!this.unit.baseMorale) { return false }
+    if (!this.target.baseMorale) { return false }
     return {
-      x: this.x + 13, y: this.y + 28, size: 16, value: this.unit.currentMorale,
-      style: { fill: this.unit.currentMorale === this.unit.baseMorale ? "black" : this.red }
+      x: this.x + 13, y: this.y + 28, size: 16, value: this.target.currentMorale,
+      style: { fill: this.target.currentMorale === this.target.baseMorale ? "black" : this.red }
     }
   }
 
   get weaponBreakLayout() {
-    if (!this.unit.breakWeaponRoll || this.unit.noFire || this.unit.jammed) { return false }
+    if (!this.target.breakWeaponRoll || this.target.noFire || this.target.jammed) { return false }
     const x = this.x + 14
     const y = this.y + 25
     return {
       path: this.circlePath(x, y, 8),
       style: { stroke: "black", strokeWidth: 1, fill: "yellow" }, tStyle: { fill: "black" },
-      x: x, y: y + 4, size: 13, value: this.unit.breakWeaponRoll,
+      x: x, y: y + 4, size: 13, value: this.target.breakWeaponRoll,
     }
   }
   
   get sizeLayout() {
-    if (!this.unit.size ) { return false }
-    const stroke = this.unit.armored && !this.unit.isWreck ? "black" : this.clear
+    if (!this.target.size ) { return false }
+    const stroke = this.target.armored && !this.target.isWreck ? "black" : this.clear
     return {
       path: this.circlePath(this.x + 66, this.y + 23, 10),
       style: { stroke: stroke, strokeWidth: 1, fill: this.clear }, tStyle: { fill: "black" },
-      x: this.x + 66, y: this.y + 28, size: 16, value: this.unit.size,
+      x: this.x + 66, y: this.y + 28, size: 16, value: this.target.size,
     }
   }
 
   get leadershipLayout() {
-    if (!this.unit.currentLeadership) { return false }
+    if (!this.target.currentLeadership) { return false }
     return {
       path: this.hexPath(this.x + 13, this.y + 44, 10, true),
       style: { stroke: "black", strokeWidth: 1, fill: this.clear }, tStyle: { fill: "black" },
-      x: this.x + 13, y: this.y + 49, size: 16, value: this.unit.currentLeadership,
+      x: this.x + 13, y: this.y + 49, size: 16, value: this.target.currentLeadership,
     }
   }
 
   get handlingLayout() {
-    if (!this.unit.currentGunHandling) { return false }
+    if (!this.target.currentGunHandling) { return false }
     const x = this.x + 13
     const y = this.y + 42
     const path = this.circlePath(x, y, 8)
     return {
       path: path, style: { stroke: "black", strokeWidth: 1, fill: this.clear }, tStyle: { fill: "black" },
-      x: x, y: y+4, size: 13, value: this.unit.currentGunHandling,
+      x: x, y: y+4, size: 13, value: this.target.currentGunHandling,
     }
   }
 
   get breakdownLayout() {
-    if (!this.unit.breakdownRoll || this.unit.immobilized || this.unit.brokenDown || this.unit.isWreck) {
+    if (!this.target.breakdownRoll || this.target.immobilized || this.target.brokenDown || this.target.isWreck) {
       return false
     }
     const x = this.x + 14
@@ -167,16 +171,16 @@ const Counter = class {
     const path = this.circlePath(x, y, 8)
     return {
       path: path, style: { stroke: "black", strokeWidth: 1, fill: "yellow" }, tStyle: { fill: "black" },
-      x: x, y: y+4, size: 13, value: this.unit.breakdownRoll,
+      x: x, y: y+4, size: 13, value: this.target.breakdownRoll,
     }
   }
 
   get smokeLayout() {
-    if (!this.unit.currentSmokeCapable) { return false }
+    if (!this.target.currentSmokeCapable) { return false }
     let x = this.x + 13
     let y = this.y + 51
     let size = 16
-    if (this.unit.breakdownRoll) {
+    if (this.target.breakdownRoll) {
       x = this.x + 5
       y = this.y + 59
       size = 13
@@ -184,11 +188,19 @@ const Counter = class {
     return { x: x, y: y, size: size, value: "S", style: { fill: "black" } }
   }
 
-  get icon() { if (this.unit.isWreck) { return "wreck" } else { return this.unit.icon } }
+  get iconLayout() {
+    if (!this.target.icon) { return false }
+    const x = this.x + (this.target.fullIcon ? 0 : 20)
+    const y = this.y + (this.target.fullIcon ? 0 : 13)
+    const size = this.target.fullIcon ? 80 : 40
+    return {
+      x: x, y: y, size: size, icon: this.target.isWreck ? "wreck" : this.target.icon
+    }
+  }
 
   get sponsonLayout() {
-    const gun = this.unit.sponson
-    if (!gun || this.unit.isWreck) { return false }
+    const gun = this.target.sponson
+    if (!gun || this.target.isWreck) { return false }
     const x = this.x + 38
     const y = this.y + 53
     const path = [
@@ -199,8 +211,8 @@ const Counter = class {
   }
 
   get turretArmorLayout() {
-    const armor = this.unit.turretArmor
-    if (!armor || this.unit.isWreck) { return false }
+    const armor = this.target.turretArmor
+    if (!armor || this.target.isWreck) { return false }
     const x = this.x + 65
     const y = this.y + 43
     const value = armor.map(v => v < 0 ? "X" : v).join("-")
@@ -208,8 +220,8 @@ const Counter = class {
   }
 
   get hullArmorLayout() {
-    const armor = this.unit.hullArmor
-    if (!armor || this.unit.isWreck) { return false }
+    const armor = this.target.hullArmor
+    if (!armor || this.target.isWreck) { return false }
     const x = this.x + 65
     const y = this.y + 53
     const value = armor.map(v => v < 0 ? "X" : v).join("-")
@@ -217,41 +229,42 @@ const Counter = class {
   }
 
   get firepowerLayout() {
-    let x = this.x + 14 + (this.unit.minimumRange ? 0 : 2)
+    if (this.target.isMarker) { return false }
+    let x = this.x + 14 + (this.target.minimumRange ? 0 : 2)
     let y = this.y + 67
     const style = { stroke: this.clear, fill: this.clear, strokeWidth: 1 }
-    let value = this.unit.baseFirepower
+    let value = this.target.baseFirepower
     let color = "black"
     let path = this.squarePath(x, y)
     let size = this.sizeFor(value)
-    if (this.unit.noFire || this.unit.isPinned) {
+    if (this.target.noFire || this.target.isPinned) {
       color = this.red
-      value = this.unit.currentFirepower
+      value = this.target.currentFirepower
       size = 16
     } else {
-      if (this.unit.antiTank || this.unit.fieldGun) { path = this.circlePath(x, y, 10) }
-      if (this.unit.offBoard) {
+      if (this.target.antiTank || this.target.fieldGun) { path = this.circlePath(x, y, 10) }
+      if (this.target.offBoard) {
         path = this.hexPath(x, y+0.5, 11, false)
         size = 12.5
       }
-      if (this.unit.antiTank || this.unit.singleFire || this.unit.assault || this.unit.offBoard) {
+      if (this.target.antiTank || this.target.singleFire || this.target.assault || this.target.offBoard) {
         style.stroke = "black"
       }
-      if (this.unit.singleFire && this.unit.ignoreTerrain) {
+      if (this.target.singleFire && this.target.ignoreTerrain) {
         style.stroke = "red"
         style.fill = "red"
-      } else if (this.unit.singleFire) {
+      } else if (this.target.singleFire) {
         style.stroke = "black"
         style.fill = "black"
-      } else if (this.unit.ignoreTerrain) {
+      } else if (this.target.ignoreTerrain) {
         style.stroke = "yellow"
         style.fill = "yellow"
       }
-      if (this.unit.fieldGun) {
+      if (this.target.fieldGun) {
         style.stroke = "black"
         style.fill = "white"
       }
-      if (this.unit.singleFire) { color = "white" }
+      if (this.target.singleFire) { color = "white" }
       if (value === 0) { value = "-" }
     }
     if (size < 16) { y = y - 0.5 }
@@ -261,41 +274,42 @@ const Counter = class {
   }
 
   get rangeLayout() {
+    if (this.target.isMarker) { return false }
     let x = this.x + 40
     let y = this.y + 67
     const style = { stroke: this.clear, fill: this.clear, strokeWidth: 1 }
-    let value = this.unit.currentRange
+    let value = this.target.currentRange
     let color = "black"
     let path = this.squarePath(x, y)
     let size = this.sizeFor(value)
-    if (this.unit.noFire) {
+    if (this.target.noFire) {
       color = this.red
       size = 16
     } else {
-      if (this.unit.targetedRange) { path = this.circlePath(x, y, 10) }
-      if (this.unit.targetedRange || this.unit.rapidFire) { style.stroke = "black" }
-      if (this.unit.type === "sw" && this.unit.targetedRange) {
+      if (this.target.targetedRange) { path = this.circlePath(x, y, 10) }
+      if (this.target.targetedRange || this.target.rapidFire) { style.stroke = "black" }
+      if (this.target.type === "sw" && this.target.targetedRange) {
         style.stroke = "black"
         style.fill = "black"
         color = "white"
-      } else if (this.unit.turreted || this.unit.rotatingMount) {
+      } else if (this.target.turreted || this.target.rotatingMount) {
         style.stroke = "white"
         style.fill = "white"
       }
-      if (this.unit.targetedRange || this.unit.rapidFire) { style.stroke = "black" }
+      if (this.target.targetedRange || this.target.rapidFire) { style.stroke = "black" }
       if (value === 0) {
         style.stroke = this.clear
         value = "-"
       }
     }
     if (size < 16) { y = y - 0.5 }
-    if (this.unit.minimumRange) {
+    if (this.target.minimumRange) {
       y = this.y + 65.25
       path = [
         "M", x-8, y-4, "L", x+8, y-4, "A", 6, 6, 0, 0, 1, x+8, y+8,
         "L", x-8, y+8, "A", 6, 6, 0, 0, 1, x-8, y-4,
       ].join(" ")
-      value = `${this.unit.minimumRange}-${value}`
+      value = `${this.target.minimumRange}-${value}`
       size = 10.5
     }
     return {
@@ -304,24 +318,25 @@ const Counter = class {
   }
 
   get movementLayout() {
-    let x = this.x + 66 - (this.unit.minimumRange ? 0 : 2)
+    if (this.target.isMarker) { return false }
+    let x = this.x + 66 - (this.target.minimumRange ? 0 : 2)
     let y = this.y + 67
     const style = { stroke: this.clear, fill: this.clear, strokeWidth: 1 }
-    let value = this.unit.currentMovement
+    let value = this.target.currentMovement
     let color = "black"
     let path = this.circlePath(x, y, 10)
     let size = this.sizeFor(value)
-    if (this.unit.isBroken || this.unit.isPinned || this.unit.tired || value < 0 ||
-      this.unit.immobilized || this.unit.brokenDown || this.unit.isWreck) {
+    if (this.target.isBroken || this.target.isPinned || this.target.tired || value < 0 ||
+      this.target.immobilized || this.target.brokenDown || this.target.isWreck) {
       color = this.red
     } else {
-      if (this.unit.tracked || this.unit.crewed || this.unit.wheeled ) {
+      if (this.target.tracked || this.target.crewed || this.target.wheeled ) {
         style.stroke = "black"
       }
-      if (this.unit.crewed) {
+      if (this.target.crewed) {
         style.fill = "black"
         color = "white"
-      } else if (this.unit.wheeled) {
+      } else if (this.target.wheeled) {
         style.fill = "white"
       }
       if (value === 0) { value = "-" }
@@ -332,30 +347,51 @@ const Counter = class {
     }
   }
 
+  get markerLayout() {
+    if (!this.target.isMarker || this.target.type === markerType.TrackedHull ||
+      this.target.type === markerType.WheeledHull) { return false }
+    const x = this.x + 40
+    const y = this.y + 40
+    const size = this.target.displayText[0] === "immobilized" ? 10 : 12
+    const ty = y + 8 - size/2 * this.target.displayText.length
+    const color = this.target.isMinor ? "yellow" : this.red
+    const textColor = this.target.isMinor ? "black" : "white"
+    const text = this.target.displayText.map((t, i) => {
+      return { x: x, y: ty + size*i, value: t }
+    })
+    return {
+      path: [
+        "M", x-39.5, y-14, "L", x+39.5, y-14, "L", x+39.5, y+14, "L", x-39.5, y+14, "L", x-39.5, y-14
+      ].join(" "),
+      style: { fill: color }, size: size, tStyle: { fill: textColor }, text: text
+    }
+  }
+
   get statusLayout() {
+    if (this.target.isMarker) { return false }
     const showAllCounters = this.map ? this.map.showAllCounters : false
-    if (this.unit.isBroken || this.unit.isWreck || showAllCounters) { return false }
+    if (this.target.isBroken || this.target.isWreck || showAllCounters) { return false }
     const x = this.x + 40
     let y = this.y + 46
     let size = 20
     const path = this.circlePath(x, y - 6, 22)
     const style = { fill: "yellow", stroke: "black", strokeWidth: 2 }
     const fStyle = { fill: "black" }
-    if (this.unit.isPinned || this.unit.immobilized || this.unit.brokenDown || this.unit.turretJammed ||
-      (this.unit.jammed && this.unit.hullArmor)) {
+    if (this.target.isPinned || this.target.immobilized || this.target.brokenDown || this.target.turretJammed ||
+      (this.target.jammed && this.target.hullArmor)) {
       style.fill = this.red
       style.stroke = "white"
       fStyle.fill = "white"
     }
     let text = []
-    if (this.unit.isActivated) { text.push("ACT") }
-    if (this.unit.isExhausted) { text.push("EXH") }
-    if (this.unit.isPinned) { text.push("PIN") }
-    if (this.unit.tired) { text.push("TRD") }
-    if (this.unit.immobilized) { text.push("IMM") }
-    if (this.unit.brokenDown) { text.push("BDN") }
-    if (this.unit.turretJammed) { text.push("TRT") }
-    if (this.unit.jammed && this.unit.hullArmor) { text.push("WBK") }
+    if (this.target.isActivated) { text.push("ACT") }
+    if (this.target.isExhausted) { text.push("EXH") }
+    if (this.target.isPinned) { text.push("PIN") }
+    if (this.target.isTired) { text.push("TRD") }
+    if (this.target.immobilized) { text.push("IMM") }
+    if (this.target.brokenDown) { text.push("BDN") }
+    if (this.target.turretJammed) { text.push("TRT") }
+    if (this.target.jammed && this.target.hullArmor) { text.push("WBK") }
     if (text.length === 0) { return false }
     if (text.length === 2) {
       size = 15

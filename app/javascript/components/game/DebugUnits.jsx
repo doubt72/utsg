@@ -86,7 +86,7 @@ export default function DebugUnits() {
       versions.push(svgContainer(unit2, i*5+1))
 
       const unit3 = new Unit(data)
-      unit3.tired = true
+      unit3.status = unitStatus.Tired
       versions.push(svgContainer(unit3, i*5+2))
 
       const unit4 = new Unit(data)
