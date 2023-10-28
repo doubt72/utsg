@@ -15,7 +15,6 @@ export default function GameMap(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")
 
   useEffect(() => {
-    console.log(`basic check ${props.map?.width} ${props.map?.height}`)
     if (!props.map) { return }
     const hexLoader = []
     const overlayLoader = []
@@ -37,7 +36,6 @@ export default function GameMap(props) {
   }, [props.showCoords, props.showStatusCounters, props.hideCounters])
 
   useEffect(() => {
-    console.log(`basic overlay ${overlay.x} ${overlay.y}`)
     if (overlay.x < 0) { return }
     if (!overlay.show) { setOverlayDisplay(""); return }
     const counters = props.map.countersAt(overlay.x, overlay.y)

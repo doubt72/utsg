@@ -25,6 +25,7 @@ const Map = class {
 
     this.showCoords = true
     this.showAllCounters = false
+    this.hideCounters = false
   }
 
   loadConfig(data) {
@@ -114,6 +115,7 @@ const Map = class {
 
   get counters() {
     const c = []
+    if (this.hideCounters) { return c }
     for (let y = 0; y < this.width; y++) {
       for (let x = this.height - 1; x >= 0; x--) {
         this.countersAt(x, y).forEach(data => {

@@ -133,7 +133,6 @@ export default function DebugMap() {
   ]
 
   useEffect(() => {
-    console.log("creating map")
     setMap(
       new Map({
         layout: [15, 15, "x"],
@@ -385,9 +384,7 @@ export default function DebugMap() {
   }, [])
 
   useEffect(() => {
-    console.log("trying to load units")
     if (!map) { return }
-    console.log("loading units")
     testUnits.forEach(data => {
       const unit = new Unit(data.u)
       if (data.f) { unit.facing = data.f }
