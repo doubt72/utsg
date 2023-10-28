@@ -1,267 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Map } from "../../engine/map";
 import { Unit, unitStatus } from "../../engine/unit";
-import MapHex from "./MapHex";
-import MapHexOverlay from "./MapHexOverlay";
-import MapHexPatterns from "./MapHexPatterns";
-import MapCounter from "./MapCounter";
-import { Counter } from "../../engine/counter";
+import GameMap from "./GameMap";
 
-export default function GameMap() {
-  const [hexes, setHexes] = useState([])
-  const [overlays, setOverlays] = useState([])
-  const [counters, setCounters] = useState([])
+export default function DebugMap() {
+  const [map, setMap] = useState(null)
   const [scale, setScale] = useState(1)
-  const [coords, setCoords] = useState(true)
-  const [statusCounters, setStatusCounters] = useState(false)
-  // const [units, setUnits] = useState([])
-
-  const map = new Map({
-    layout: [15, 15, "x"],
-    hexes: [
-      [
-        { t: "s" },
-        { t: "s", r: { d: [2, 5], t: "d" } },
-        { t: "s" },
-        { t: "o", r: { d: [3, 6], t: "d" } },
-        { t: "f" },
-        { t: "f" },
-        { t: "f" },
-        { t: "o" },
-        { t: "o", b: "b", be: [1] },
-        { t: "o" },
-        { t: "o", r: { d: [2, 6], t: "t", c: "l" } },
-        { t: "o", b: "w", be: [1] },
-        { t: "o", d: 3, st: { sh: "s" } },
-        { t: "o" },
-        { t: "o" },
-      ], [
-        { t: "s" },
-        { t: "s", r: { d: [2, 4], t: "d" } },
-        { t: "o", r: { d: [1, 3, 5], t: "d" } },
-        { t: "f" },
-        { t: "f" },
-        { t: "o" },
-        { t: "d", d: 3, b: "b", be: [2, 3] },
-        { t: "o", b: "b", be: [2, 3], st: { sh: "c" } },
-        { t: "o", d: 2, b: "b", be: [1, 2], st: { sh: "s", s: "f" } },
-        { t: "o", r: { d: [3, 5], t: "t", c: "r" } },
-        { t: "o", b: "w", be: [1, 2] },
-        { t: "o", d: 6, st: { sh: "s" } },
-        { t: "o", d: 3, st: { sh: "l" } },
-        { t: "o", d: 1, st: { sh: "l" } },
-        { t: "o" },
-      ], [
-        { t: "w" },
-        { t: "w" },
-        { t: "f" },
-        { t: "o", r: { d: [2, 5], t: "d" } },
-        { t: "b" },
-        { t: "b" },
-        { t: "o" },
-        { t: "d", d: 2 },
-        { t: "d", d: 1 },
-        { t: "o", d: 5, st: { sh: "s", s: "f" } },
-        { t: "o", r: { d: [2, 4, 6], t: "t", c: "l" }, b: "w", be: [3] },
-        { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-        { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-        { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-        { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-      ], [
-        { t: "w", s: { d: [1, 4] } },
-        { t: "o", s: { d: [1, 5] } },
-        { t: "o" },
-        { t: "o", r: { d: [2, 5], t: "d" } },
-        { t: "f" },
-        { t: "f", r: { t: "p", d: [4, 6] } },
-        { t: "o" },
-        { t: "g", b: "f", be: [1, 2, 3] },
-        { t: "g", b: "f", be: [2, 3] },
-        { t: "o", r: { d: [3, 5], t: "t", c: "r" }, b: "f", be: [1] },
-        { t: "o", d: 1, st: { sh: "s" } },
-        { t: "o", d: 1, st: { sh: "m" } },
-        { t: "o", d: 4, st: { sh: "s" } },
-        { t: "o", d: 2, st: { sh: "x", s: "f" } },
-        { t: "o" },
-      ], [
-        { t: "w" },
-        { t: "b" },
-        { t: "o", s: { d: [2, 6] } },
-        { t: "o" },
-        { t: "o", r: { d: [2, 5], t: "d" } },
-        { t: "f", r: { t: "p", d: [1, 3] } },
-        { t: "f" },
-        { t: "o", b: "f", be: [3] },
-        { t: "g", b: "f", be: [1] },
-        { t: "g", b: "f", be: [3] },
-        { t: "o", r: { d: [2, 6], t: "t", c: "l" }, b: "f", be: [1] },
-        { t: "o", d: 1, st: { sh: "s" } },
-        { t: "o", d: 4, st: { sh: "s" } },
-        { t: "o", d: 1, st: { sh: "x" } },
-        { t: "o", d: 3, st: { sh: "x" } },
-      ], [
-        { t: "m" },
-        { t: "m", s: { d: [3, 4] } },
-        { t: "m", s: { d: [1, 5] } },
-        { t: "b" },
-        { t: "o", r: { d: [2, 5], t: "d" } },
-        { t: "f" },
-        { t: "o" },
-        { t: "o", b: "f", be: [3] },
-        { t: "o", r: { d: [4, 6], t: "d" }, b: "f", be: [2, 3] },
-        { t: "o", r: { d: [1, 3, 4], t: "t", c: "r" }, b: "f", be: [2] },
-        { t: "o", r: { d: [1, 4], t: "t" } },
-        { t: "o", r: { d: [1, 4], t: "t" } },
-        { t: "o", r: { d: [1, 4], t: "t" } },
-        { t: "o", r: { d: [1, 4], t: "t" } },
-        { t: "o", r: { d: [1, 4], t: "t" }, s: { d: [3, 5] } },
-      ], [
-        { t: "o" },
-        { t: "w" },
-        { t: "m" },
-        { t: "o", s: { d: [2, 5] } },
-        { t: "b" },
-        { t: "o", r: { d: [2, 5], t: "d" } },
-        { t: "f" },
-        { t: "o" },
-        { t: "o", r: { d: [3, 6], t: "d" } },
-        { t: "f" },
-        { t: "f" },
-        { t: "o", d: 2, st: { sh: "l", s: "f" } },
-        { t: "o", d: 2.5, st: { sh: "l", s: "f" } },
-        { t: "o", d: 3, st: { sh: "s" } },
-        { t: "o" },
-      ], [
-        { t: "o", r: { d: [1, 4], t: "d" } },
-        { t: "o", r: { d: [1, 4], t: "d" } },
-        { t: "o", r: { d: [1, 4], t: "d" } },
-        { t: "o", s: { d: [2, 5] }, r: { d: [1, 4], t: "d" } },
-        { t: "o", r: { d: [1, 4], t: "d" } },
-        { t: "o", r: { d: [1, 2, 4], t: "d" } },
-        { t: "o", r: { d: [1, 4], t: "d" } },
-        { t: "o", r: { d: [1, 3, 5], t: "d" } },
-        { t: "f" },
-        { t: "f" },
-        { t: "f" },
-        { t: "o" },
-        { t: "o", d: 6, st: { sh: "s" } },
-        { t: "o" },
-        { t: "o" },
-      ], [
-        { t: "o" },
-        { t: "o" },
-        { t: "j" },
-        { t: "o", h: 1 },
-        { t: "o", s: { d: [2, 6] } },
-        { t: "j" },
-        { t: "j" },
-        { t: "o" },
-        { t: "o", r: { d: [2, 4], t: "d" } },
-        { t: "f", r: { d: [1, 4], t: "d" } },
-        { t: "f", r: { d: [1, 5], t: "d" } },
-        { t: "f" },
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-      ], [
-        { t: "o" },
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", s: { d: [3, 5] } },
-        { t: "o" },
-        { t: "j" },
-        { t: "j", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "f", h: 1 },
-        { t: "f", h: 1, r: { d: [2, 5], t: "d" } },
-        { t: "o", h: 1 },
-        { t: "f", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 2 },
-      ], [
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 2 },
-        { t: "o", h: 1 },
-        { t: "o", s: { d: [2, 5] } },
-        { t: "o", h: 1 },
-        { t: "j", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 2 },
-        { t: "o", h: 2 },
-        { t: "o", h: 1, r: { d: [2, 6], t: "d" } },
-        { t: "f", h: 2 },
-        { t: "o", h: 2 },
-        { t: "o", h: 2 },
-      ], [
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "o", h: 2, b: "c", be: [3, 4] },
-        { t: "o", s: { d: [2, 5] } },
-        { t: "o", h: 2, b: "c", be: [1, 6] },
-        { t: "o", h: 2 },
-        { t: "o", h: 2 },
-        { t: "o", h: 2 },
-        { t: "o", h: 2 },
-        { t: "o", h: 2, r: { d: [3, 6], t: "d" } },
-        { t: "f", h: 2 },
-        { t: "o", h: 2 },
-        { t: "f", h: 3 },
-        { t: "o", h: 3 },
-      ], [
-        { t: "o", h: 1 },
-        { t: "o", h: 1 },
-        { t: "b", h: 2 },
-        { t: "o", h: 2 },
-        { t: "o", h: 2, b: "c", be: [3, 4, 5] },
-        { t: "o", s: { d: [2, 6] } },
-        { t: "o", h: 2, b: "c", be: [1] },
-        { t: "o", h: 3 },
-        { t: "o", h: 3 },
-        { t: "o", h: 3 },
-        { t: "o", h: 3, r: { d: [3, 5], t: "d" } },
-        { t: "o", h: 3 },
-        { t: "o", h: 3 },
-        { t: "f", h: 3 },
-        { t: "f", h: 3 },
-      ], [
-        { t: "o", h: 2 },
-        { t: "o", h: 2 },
-        { t: "b", h: 2 },
-        { t: "o", h: 3, b: "c", be: [4, 5] },
-        { t: "o", s: { d: [3, 6] } },
-        { t: "o", h: 3, b: "c", be: [1, 2] },
-        { t: "o", h: 3 },
-        { t: "o", h: 3 },
-        { t: "o", h: 3 },
-        { t: "o", h: 3 },
-        { t: "o", h: 3, r: { d: [2, 5], t: "d" } },
-        { t: "o", h: 4 },
-        { t: "o", h: 4 },
-        { t: "o", h: 4 },
-        { t: "o", h: 4 },
-      ], [
-        { t: "o", h: 2 },
-        { t: "o", h: 2 },
-        { t: "b", h: 2 },
-        { t: "o", h: 3, b: "c", be: [4] },
-        { t: "o", h: 1, s: { d: [3, 5] } },
-        { t: "o", h: 3, b: "c", be: [1, 2] },
-        { t: "o", h: 3 },
-        { t: "o", h: 4 },
-        { t: "o", h: 3 },
-        { t: "o", h: 4 },
-        { t: "o", h: 4 },
-        { t: "o", h: 4, r: { d: [2, 5], t: "d" } },
-        { t: "o", h: 4 },
-        { t: "o", h: 5 },
-        { t: "o", h: 5 },
-      ]
-    ]
-  })
+  const [coords, setCoords] = useState(false)
+  const [showStatusCounters, setShowStatusCounters] = useState(false)
+  const [hideCounters, setHideCounters] = useState(false)
 
   const testUnitData = {
     ginf: {
@@ -337,7 +84,6 @@ export default function GameMap() {
       c: "ussr", f: 16, i: "spg", n: "Matilda II CS", r: 12, s: 5, t: "spg", v: 4, y: 39,
       o: {t: 1, g: 1, ha: {f: 6, s: 5, r: 4}, ta: {f: 5, s: 5, r: 5}, bd: 3, s: 1, u: 1, j: 3, k: 1}
     },
-    // FT/MT/Mortar/Panzfaust/Panzerschreck
   }
 
   const testUnits = [
@@ -374,7 +120,10 @@ export default function GameMap() {
     { u: testUnitData.rm2cs, x: 14, y: 7, f: 1, tf: 1 },
     { u: testUnitData.ginf, x: 6, y: 7, f: null, tf: null, st: unitStatus.Pinned },
     { u: testUnitData.gspg, x: 0, y: 7, f: 4, tf: null },
+    { u: testUnitData.ginf, x: 6, y: 8, f: null, tf: null, st: unitStatus.Tired },
     { u: testUnitData.gscout, x: 4, y: 8, f: 4, tf: 3 },
+    { u: testUnitData.ginf, x: 0, y: 8, f: null, tf: null },
+    { u: testUnitData.gmg, x: 0, y: 8, f: null, tf: null, brk: true },
     { u: testUnitData.ginf, x: 6, y: 10, f: null, tf: null, st: unitStatus.Exhausted },
     { u: testUnitData.gtank, x: 5, y: 11, f: 5, tf: 4, st: unitStatus.Wreck },
     { u: testUnitData.rcrew, x: 14, y: 14, f: null, tf: null },
@@ -383,85 +132,305 @@ export default function GameMap() {
     { u: testUnitData.gps, x: 7, y: 14, f: null, tf: null },
   ]
 
-  testUnits.forEach(data => {
-    const unit = new Unit(data.u)
-    if (data.f) { unit.facing = data.f }
-    if (data.tf) { unit.turretFacing = data.tf }
-    if (data.st) { unit.status = data.st }
-    if (data.imm) { unit.immobilized = true }
-    if (data.brk) { unit.jammed = true }
-    if (data.bdn) { unit.brokenDown = true }
-    if (data.trt) { unit.turretJammed = true }
-    map.addUnit(data.x, data.y, unit)
-  })
-
   useEffect(() => {
-    const hexLoader = []
-    const overlayLoader = []
-    map.showCoords = coords
-    map.showAllCounters = statusCounters
-    map.mapHexes.forEach((row, y) => {
-      row.forEach((hex, x) => {
-        hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
-        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
-                                          selectCallback={makeSelection}/>)
-      })
-    })
-    setHexes(hexLoader)
-    setOverlays(overlayLoader)
-    setCounters(map.counters.map((data, i) => {
-      const counter = new Counter(data.x, data.y, data.u, map)
-      counter.stackingIndex = data.s
-      return <MapCounter key={i} counter={counter} />
-    }))
-  }, [coords, statusCounters])
-
-  const makeSelection = (x, y) => {
-    const key = `${x}-${y}`
-    // Only use the overlays for selection events
-    setOverlays(overlays =>
-      overlays.map(h => {
-        if (h.key === `${key}-o`) {
-          return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} selected={!h.props.selected}
-                                selectCallback={makeSelection}/>
-        } else {
-          return h
-        }
+    console.log("creating map")
+    setMap(
+      new Map({
+        layout: [15, 15, "x"],
+        hexes: [
+          [
+            { t: "s" },
+            { t: "s", r: { d: [2, 5], t: "d" } },
+            { t: "s" },
+            { t: "o", r: { d: [3, 6], t: "d" } },
+            { t: "f" },
+            { t: "f" },
+            { t: "f" },
+            { t: "o" },
+            { t: "o", b: "b", be: [1] },
+            { t: "o" },
+            { t: "o", r: { d: [2, 6], t: "t", c: "l" } },
+            { t: "o", b: "w", be: [1] },
+            { t: "o", d: 3, st: { sh: "s" } },
+            { t: "o" },
+            { t: "o" },
+          ], [
+            { t: "s" },
+            { t: "s", r: { d: [2, 4], t: "d" } },
+            { t: "o", r: { d: [1, 3, 5], t: "d" } },
+            { t: "f" },
+            { t: "f" },
+            { t: "o" },
+            { t: "d", d: 3, b: "b", be: [2, 3] },
+            { t: "o", b: "b", be: [2, 3], st: { sh: "c" } },
+            { t: "o", d: 2, b: "b", be: [1, 2], st: { sh: "s", s: "f" } },
+            { t: "o", r: { d: [3, 5], t: "t", c: "r" } },
+            { t: "o", b: "w", be: [1, 2] },
+            { t: "o", d: 6, st: { sh: "s" } },
+            { t: "o", d: 3, st: { sh: "l" } },
+            { t: "o", d: 1, st: { sh: "l" } },
+            { t: "o" },
+          ], [
+            { t: "w" },
+            { t: "w" },
+            { t: "f" },
+            { t: "o", r: { d: [2, 5], t: "d" } },
+            { t: "b" },
+            { t: "b" },
+            { t: "o" },
+            { t: "d", d: 2 },
+            { t: "d", d: 1 },
+            { t: "o", d: 5, st: { sh: "s", s: "f" } },
+            { t: "o", r: { d: [2, 4, 6], t: "t", c: "l" }, b: "w", be: [3] },
+            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+          ], [
+            { t: "w", s: { d: [1, 4] } },
+            { t: "o", s: { d: [1, 5] } },
+            { t: "o" },
+            { t: "o", r: { d: [2, 5], t: "d" } },
+            { t: "f" },
+            { t: "f", r: { t: "p", d: [4, 6] } },
+            { t: "o" },
+            { t: "g", b: "f", be: [1, 2, 3] },
+            { t: "g", b: "f", be: [2, 3] },
+            { t: "o", r: { d: [3, 5], t: "t", c: "r" }, b: "f", be: [1] },
+            { t: "o", d: 1, st: { sh: "s" } },
+            { t: "o", d: 1, st: { sh: "m" } },
+            { t: "o", d: 4, st: { sh: "s" } },
+            { t: "o", d: 2, st: { sh: "x", s: "f" } },
+            { t: "o" },
+          ], [
+            { t: "w" },
+            { t: "b" },
+            { t: "o", s: { d: [2, 6] } },
+            { t: "o" },
+            { t: "o", r: { d: [2, 5], t: "d" } },
+            { t: "f", r: { t: "p", d: [1, 3] } },
+            { t: "f" },
+            { t: "o", b: "f", be: [3] },
+            { t: "g", b: "f", be: [1] },
+            { t: "g", b: "f", be: [3] },
+            { t: "o", r: { d: [2, 6], t: "t", c: "l" }, b: "f", be: [1] },
+            { t: "o", d: 1, st: { sh: "s" } },
+            { t: "o", d: 4, st: { sh: "s" } },
+            { t: "o", d: 1, st: { sh: "x" } },
+            { t: "o", d: 3, st: { sh: "x" } },
+          ], [
+            { t: "m" },
+            { t: "m", s: { d: [3, 4] } },
+            { t: "m", s: { d: [1, 5] } },
+            { t: "b" },
+            { t: "o", r: { d: [2, 5], t: "d" } },
+            { t: "f" },
+            { t: "o" },
+            { t: "o", b: "f", be: [3] },
+            { t: "o", r: { d: [4, 6], t: "d" }, b: "f", be: [2, 3] },
+            { t: "o", r: { d: [1, 3, 4], t: "t", c: "r" }, b: "f", be: [2] },
+            { t: "o", r: { d: [1, 4], t: "t" } },
+            { t: "o", r: { d: [1, 4], t: "t" } },
+            { t: "o", r: { d: [1, 4], t: "t" } },
+            { t: "o", r: { d: [1, 4], t: "t" } },
+            { t: "o", r: { d: [1, 4], t: "t" }, s: { d: [3, 5] } },
+          ], [
+            { t: "o" },
+            { t: "w" },
+            { t: "m" },
+            { t: "o", s: { d: [2, 5] } },
+            { t: "b" },
+            { t: "o", r: { d: [2, 5], t: "d" } },
+            { t: "f" },
+            { t: "o" },
+            { t: "o", r: { d: [3, 6], t: "d" } },
+            { t: "f" },
+            { t: "f" },
+            { t: "o", d: 2, st: { sh: "l", s: "f" } },
+            { t: "o", d: 2.5, st: { sh: "l", s: "f" } },
+            { t: "o", d: 3, st: { sh: "s" } },
+            { t: "o" },
+          ], [
+            { t: "o", r: { d: [1, 4], t: "d" } },
+            { t: "o", r: { d: [1, 4], t: "d" } },
+            { t: "o", r: { d: [1, 4], t: "d" } },
+            { t: "o", s: { d: [2, 5] }, r: { d: [1, 4], t: "d" } },
+            { t: "o", r: { d: [1, 4], t: "d" } },
+            { t: "o", r: { d: [1, 2, 4], t: "d" } },
+            { t: "o", r: { d: [1, 4], t: "d" } },
+            { t: "o", r: { d: [1, 3, 5], t: "d" } },
+            { t: "f" },
+            { t: "f" },
+            { t: "f" },
+            { t: "o" },
+            { t: "o", d: 6, st: { sh: "s" } },
+            { t: "o" },
+            { t: "o" },
+          ], [
+            { t: "o" },
+            { t: "o" },
+            { t: "j" },
+            { t: "o", h: 1 },
+            { t: "o", s: { d: [2, 6] } },
+            { t: "j" },
+            { t: "j" },
+            { t: "o" },
+            { t: "o", r: { d: [2, 4], t: "d" } },
+            { t: "f", r: { d: [1, 4], t: "d" } },
+            { t: "f", r: { d: [1, 5], t: "d" } },
+            { t: "f" },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+          ], [
+            { t: "o" },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", s: { d: [3, 5] } },
+            { t: "o" },
+            { t: "j" },
+            { t: "j", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "f", h: 1 },
+            { t: "f", h: 1, r: { d: [2, 5], t: "d" } },
+            { t: "o", h: 1 },
+            { t: "f", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 2 },
+          ], [
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 2 },
+            { t: "o", h: 1 },
+            { t: "o", s: { d: [2, 5] } },
+            { t: "o", h: 1 },
+            { t: "j", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 1, r: { d: [2, 6], t: "d" } },
+            { t: "f", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+          ], [
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 2, b: "c", be: [3, 4] },
+            { t: "o", s: { d: [2, 5] } },
+            { t: "o", h: 2, b: "c", be: [1, 6] },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2, r: { d: [3, 6], t: "d" } },
+            { t: "f", h: 2 },
+            { t: "o", h: 2 },
+            { t: "f", h: 3 },
+            { t: "o", h: 3 },
+          ], [
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "b", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2, b: "c", be: [3, 4, 5] },
+            { t: "o", s: { d: [2, 6] } },
+            { t: "o", h: 2, b: "c", be: [1] },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3, r: { d: [3, 5], t: "d" } },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "f", h: 3 },
+            { t: "f", h: 3 },
+          ], [
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "b", h: 2 },
+            { t: "o", h: 3, b: "c", be: [4, 5] },
+            { t: "o", s: { d: [3, 6] } },
+            { t: "o", h: 3, b: "c", be: [1, 2] },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3, r: { d: [2, 5], t: "d" } },
+            { t: "o", h: 4 },
+            { t: "o", h: 4 },
+            { t: "o", h: 4 },
+            { t: "o", h: 4 },
+          ], [
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "b", h: 2 },
+            { t: "o", h: 3, b: "c", be: [4] },
+            { t: "o", h: 1, s: { d: [3, 5] } },
+            { t: "o", h: 3, b: "c", be: [1, 2] },
+            { t: "o", h: 3 },
+            { t: "o", h: 4 },
+            { t: "o", h: 3 },
+            { t: "o", h: 4 },
+            { t: "o", h: 4 },
+            { t: "o", h: 4, r: { d: [2, 5], t: "d" } },
+            { t: "o", h: 4 },
+            { t: "o", h: 5 },
+            { t: "o", h: 5 },
+          ]
+        ]
       })
     )
-  }
+  }, [])
 
-  const hexNarrow = 115
-  const hexWide = hexNarrow / 2 / Math.sin(1/3 * Math.PI) * 1.5
-  const width = hexNarrow * ((map.width || 0) + 0.5) + 2
-  const height = hexWide * ((map.height || 0) + 0.3333) + 2
+  useEffect(() => {
+    console.log("trying to load units")
+    if (!map) { return }
+    console.log("loading units")
+    testUnits.forEach(data => {
+      const unit = new Unit(data.u)
+      if (data.f) { unit.facing = data.f }
+      if (data.tf) { unit.turretFacing = data.tf }
+      if (data.st) { unit.status = data.st }
+      if (data.imm) { unit.immobilized = true }
+      if (data.brk) { unit.jammed = true }
+      if (data.bdn) { unit.brokenDown = true }
+      if (data.trt) { unit.turretJammed = true }
+      map.addUnit(data.x, data.y, unit)
+    })
+    setCoords(true)
+  }, [map])
+
+  const hexSelection = (x, y) => {
+    const key = `${x}-${y}`
+    console.log(key)
+  }
 
   return (
     <div className="map-container">
       <div className="flex mb05em">
-        <div className="custom-button" onClick={() => setScale(s => s/1.1)}>
+        <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
           size -
         </div>
         <div className="custom-button" onClick={() => setScale(1)}>
           0
         </div>
-        <div className="custom-button" onClick={() => setScale(s => s*1.1)}>
+        <div className="custom-button" onClick={() => setScale(s => Math.min(s*1.25, 2.5))}>
           + size
         </div>
         <div className="custom-button" onClick={() => setCoords(c => !c)}>
           coordinates { coords ? "on" : "off" }
         </div>
-        <div className="custom-button"onClick={() => setStatusCounters(sc => !sc)}>
-          { statusCounters ? "status counters" : "status badges" }
+        <div className="custom-button"onClick={() => setShowStatusCounters(ssc => !ssc)}>
+          { showStatusCounters ? "status counters" : "status badges" }
+        </div>
+        <div className="custom-button"onClick={() => setHideCounters(sc => !sc)}>
+          { hideCounters ? "hide counters" : "show counters" }
         </div>
       </div>
-      <svg className="map-svg" width={width * scale} height={height * scale}
-           viewBox={`0 0 ${width} ${height}`}>
-        <MapHexPatterns />
-        {hexes}
-        {overlays}
-        {counters}
-      </svg>
+      <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
+               hideCounters={hideCounters} hexCallback={hexSelection} />
     </div>
   )
 }

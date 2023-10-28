@@ -88,7 +88,7 @@ const Unit = class {
   }
 
   get rotates() {
-    return ["sw", "ldr", "sqd", "tm"].includes(this.type)
+    return !["sw", "ldr", "sqd", "tm"].includes(this.type)
   }
 
   get isActivated() {

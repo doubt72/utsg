@@ -16,7 +16,7 @@ const Counter = class {
   get y() { return this.yBase - this.stackingIndex * this.stackOffset }
 
   get rotation() {
-    if (!this.map || this.target.rotates) {
+    if (!this.map || !this.target.rotates) {
       return false
     }
     let facing = this.target.facing
@@ -369,7 +369,7 @@ const Counter = class {
 
   get statusLayout() {
     if (this.target.isMarker) { return false }
-    const showAllCounters = this.map ? this.map.showAllCounters : false
+    const showAllCounters = this.map ? this.map.showAllCounters : this.showAllCounters
     if (this.target.isBroken || this.target.isWreck || showAllCounters) { return false }
     const x = this.x + 40
     let y = this.y + 46
@@ -389,9 +389,9 @@ const Counter = class {
     if (this.target.isPinned) { text.push("PIN") }
     if (this.target.isTired) { text.push("TRD") }
     if (this.target.immobilized) { text.push("IMM") }
-    if (this.target.brokenDown) { text.push("BDN") }
+    if (this.target.brokenDown && !this.target.immobilized) { text.push("BDN") }
     if (this.target.turretJammed) { text.push("TRT") }
-    if (this.target.jammed && this.target.hullArmor) { text.push("WBK") }
+    if (this.target.jammed && this.target.hullArmor) { text.push("WPN") }
     if (text.length === 0) { return false }
     if (text.length === 2) {
       size = 15

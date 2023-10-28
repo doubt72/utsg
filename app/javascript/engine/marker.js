@@ -20,6 +20,10 @@ const Marker = class {
     return [markerType.Activated, markerType.Exhausted, markerType.Tired].includes(this.type)
   }
 
+  get hideOverlayRotation() {
+    return ![markerType.TrackedHull, markerType.WheeledHull].includes(this.type)
+  }
+
   get displayText() {
     if (this.type === markerType.Tired) { return ["tired"]}
     if (this.type === markerType.Pinned) { return ["pinned"]}

@@ -203,6 +203,13 @@ export default function MapCounter(props) {
       )
     }
   }
+  
+  const overlay = (
+    <path d={props.counter.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
+          onMouseEnter={() => props.ovCallback(
+            { show: true, x: props.counter.xHex, y: props.counter.yHex }
+          )} />
+  )
 
   const rotation = () => {
     const r = props.counter.rotation
@@ -222,12 +229,14 @@ export default function MapCounter(props) {
       {firepower()}{range()}{movement()}
       {marker()}
       {status()}
+      {overlay}
     </g>
   )
 }
 
 MapCounter.propTypes = {
   counter: PropTypes.instanceOf(Counter),
+  ovCallback: PropTypes.func,
   x: PropTypes.number,
   y: PropTypes.number,
 }
