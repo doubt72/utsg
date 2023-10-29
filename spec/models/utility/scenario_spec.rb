@@ -8,7 +8,7 @@ RSpec.describe Utility::Scenario do
   before :all do
     unless defined?(Scenarios::Spec)
       class Scenarios::Spec < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
-        ID = "SPEC"
+        ID = "000"
         NAME = "xxx Spec Test xxx"
         ALLIES = %w[uk usa].freeze
         AXIS = %w[ger ita].freeze
@@ -23,7 +23,7 @@ RSpec.describe Utility::Scenario do
   end
 
   it "gets correct scenario from get_scenario" do
-    expect(described_class.scenario_by_id("SPEC")[:name]).to be == scenario_name
+    expect(described_class.scenario_by_id("000")[:name]).to be == scenario_name
   end
 
   describe "all_scenarios" do
@@ -35,7 +35,7 @@ RSpec.describe Utility::Scenario do
     it "gets spec scenario when filtering by string" do
       scenarios = described_class.all_scenarios({ string: scenario_name })
       expect(scenarios.length).to be == 1
-      expect(scenarios.first[:id]).to be == "SPEC"
+      expect(scenarios.first[:id]).to be == "000"
     end
 
     it "gets correct scenarios with allies filter" do
@@ -43,9 +43,9 @@ RSpec.describe Utility::Scenario do
       scenarios.each do |s|
         expect(s[:allies].include?("usa")).to be true
       end
-      scenarios.select! { |s| s[:id] == "SPEC" }
+      scenarios.select! { |s| s[:id] == "000" }
       expect(scenarios.length).to be == 1
-      expect(scenarios.first[:id]).to be == "SPEC"
+      expect(scenarios.first[:id]).to be == "000"
     end
 
     it "gets correct scenarios with axis filter" do
@@ -53,9 +53,9 @@ RSpec.describe Utility::Scenario do
       scenarios.each do |s|
         expect(s[:axis].include?("ger")).to be true
       end
-      scenarios.select! { |s| s[:id] == "SPEC" }
+      scenarios.select! { |s| s[:id] == "000" }
       expect(scenarios.length).to be == 1
-      expect(scenarios.first[:id]).to be == "SPEC"
+      expect(scenarios.first[:id]).to be == "000"
     end
   end
 

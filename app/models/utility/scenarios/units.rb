@@ -272,17 +272,17 @@ module Utility
             i = "flamethrower"
             n = i.capitalize
             y = 15
-            lu["#{c}_ft"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 3 } }
+            lu["#{c}_ft".to_sym] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 3 } }
             n = "Satchel Charge"
             i = "explosive"
             y = 36
-            lu["#{c}_sc"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
+            lu["#{c}_sc".to_sym] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
           end
           %w[fin ussr].each do |c|
             n = "Molotov Cocktail"
             i = "explosive"
             y = 39
-            lu["#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, a: 1, x: 1, t: 1, sn: 1 } }
+            lu["#{c}_mc".to_sym] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, a: 1, x: 1, t: 1, sn: 1 } }
           end
           lu
         end

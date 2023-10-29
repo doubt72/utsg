@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario001 < Base # rubocop:disable Metric/ClassLength
-    ID = "001"
-    NAME = "Lost in the Woods"
+  class Scenario005 < Base # rubocop:disable Metric/ClassLength
+    ID = "005"
+    NAME = "Contact"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 
@@ -14,8 +14,8 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1942, 7, 31],
-          location: "Rzhev, Russia",
+          date: [1942, 8, 23],
+          location: "Stalingrad, Russia",
           author: "The Establishment",
           description:,
           map_data:,
@@ -26,10 +26,9 @@ module Scenarios
 
       def description
         [
-          "A simple meeting engagement.  German divisional reserves attempt
-          to plug a gap in the German defenses by counterattacking a small
-          Soviet breakthrough in the woods on the second day of the first
-          Soviet Rzhev-Sychyovka offensive.",
+          "Vicious block-to-block fighing.  Russian defenders attempt to hold
+          every inch of ground as the German army enters the city on the first
+          day of the battle of Stalingrad.",
         ]
       end
 
@@ -234,12 +233,13 @@ module Scenarios
       def allied_units
         {
           s: { list: [
-            :ussr_leader_5_2,
+            :ussr_leader_5_1,
             :ussr_leader_4_1,
-            [5, :ussr_rifle_s],
-            [2, :ussr_smg_s],
-            :ussr_dp_27,
-            :ussr_sg_43,
+            :ussr_leader_3_1,
+            [6, :ussr_rifle_s],
+            [4, :ussr_smg_s],
+            [4, :ussr_dp_27],
+            [6, :ussr_mc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -248,9 +248,11 @@ module Scenarios
         {
           s: { list: [
             :ger_leader_6_2,
-            :ger_leader_4_1,
-            [6, :ger_rifle_s],
-            [2, :ger_mg_34],
+            [2, :ger_leader_5_1],
+            [10, :ger_rifle_s],
+            [4, :ger_mg_34],
+            :ger_ft,
+            [2, :ger_sc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

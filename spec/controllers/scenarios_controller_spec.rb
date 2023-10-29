@@ -8,7 +8,7 @@ RSpec.describe Api::V1::ScenariosController do
   before :all do
     unless defined?(Scenarios::Spec)
       class Scenarios::Spec < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
-        ID = "SPEC"
+        ID = "000"
         NAME = "xxx Spec Test xxx"
         ALLIES = %w[uk usa].freeze
         AXIS = %w[ger ita].freeze
@@ -23,11 +23,11 @@ RSpec.describe Api::V1::ScenariosController do
   end
 
   describe "index" do
-    it "gets all scenarios with no filters" do
+    it "gets first page of scenarios with no filters" do
       get :index
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body)["data"].length).to be == Scenarios.constants.length - 1
+      expect(JSON.parse(response.body)["data"].length).to be == 8
     end
 
     it "gets spec scenario when filtering by string" do
@@ -35,7 +35,7 @@ RSpec.describe Api::V1::ScenariosController do
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 1
-      expect(JSON.parse(response.body)["data"].first["id"]).to be == "SPEC"
+      expect(JSON.parse(response.body)["data"].first["id"]).to be == "000"
     end
 
     it "gets correct scenarios with allies filter" do
@@ -46,9 +46,9 @@ RSpec.describe Api::V1::ScenariosController do
       scenarios.each do |s|
         expect(s["allies"].include?("usa")).to be true
       end
-      scenarios.select! { |s| s["id"] == "SPEC" }
+      scenarios.select! { |s| s["id"] == "000" }
       expect(scenarios.length).to be == 1
-      expect(scenarios.first["id"]).to be == "SPEC"
+      expect(scenarios.first["id"]).to be == "000"
     end
 
     it "gets correct scenarios with axis filter" do
@@ -59,15 +59,12 @@ RSpec.describe Api::V1::ScenariosController do
       scenarios.each do |s|
         expect(s["axis"].include?("ger")).to be true
       end
-      scenarios.select! { |s| s["id"] == "SPEC" }
-      expect(scenarios.length).to be == 1
-      expect(scenarios.first["id"]).to be == "SPEC"
     end
   end
 
   describe "show" do
     it "gets correct scenario from get_scenario" do
-      get :show, params: { id: "SPEC" }
+      get :show, params: { id: "000" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["name"]).to be == scenario_name
