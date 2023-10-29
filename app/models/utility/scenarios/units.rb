@@ -116,10 +116,10 @@ module Utility
           end
           all_factions.each do |c|
             t = "tm"
-            lu["#{c}_elite_crew_t"] = {
+            lu["#{c}_elite_crew_t".to_sym] = {
               c:, t:, n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: { cw: 2 },
             }
-            lu["#{c}_crew_t"] = {
+            lu["#{c}_crew_t".to_sym] = {
               c:, t:, n: "Crew", i: "crew", y: 0, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 },
             }
           end

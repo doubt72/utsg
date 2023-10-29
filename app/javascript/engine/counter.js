@@ -418,13 +418,18 @@ const Counter = class {
     return { value: text, x: x, y: y, size: size, path: path, style: style, fStyle: fStyle }
   }
 
-  helpLayout(x, y) {
+  helpLayout(x, y, document) {
     const text = this.target.helpText
     const size = 20
-    let width = 180
-    if (text.filter(t => t === "- half firepower vs. soft targets").length > 0) {
-      width = 215
-    }
+    let width = 100
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')
+    context.font = getComputedStyle(document.body).font
+    text.forEach(t => {
+      const n = context.measureText(t).width * 0.975
+      console.log(n)
+      if (n > width) { width = n }
+    })
     let x1 = x
     let x2 = x + width
     let y1 = y
@@ -447,7 +452,7 @@ const Counter = class {
     }
     const diff = size
     layout.texts = text.map((t, i) => {
-      return { x: x1+5, y: y1 + i*diff + size, v: t }
+      return { x: x1+8, y: y1 + i*diff + size, v: t }
     })
     return layout
   }

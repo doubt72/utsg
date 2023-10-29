@@ -18,7 +18,7 @@ export default function MapCounterOverlayHelp(props) {
   }, [props.x, props.y])
 
   const showHelp = () => {
-    const layout = props.counter.helpLayout(props.x + 20, props.y - 10)
+    const layout = props.counter.helpLayout(props.x + 20, props.y - 10, document)
     props.setHelpDisplay(
       <g>
         <path d={layout.path} style={layout.style} />

@@ -85,7 +85,7 @@ export default function GameDisplay() {
       </div>
       {controls}
       <div className="mt05em mb05em ml05em mr05em">
-        <GameMap map={map} scale={1.0} showCoords={true} showStatusCounters={true}
+        <GameMap map={map} scale={0.6} showCoords={true} showStatusCounters={true}
                 hideCounters={false} />
       </div>
     </div>

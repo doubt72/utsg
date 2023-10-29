@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario001 < Base # rubocop:disable Metric/ClassLength
+  class Scenario001 < Base
     ID = "001"
     NAME = "Lost in the Woods"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 
-    class << self # rubocop:disable Metric/ClassLength
+    class << self
       # TODO: documentation for field descriptions
       def generate
         {
@@ -48,7 +48,7 @@ module Scenarios
 
       # TODO: maybe standardize maps?  Maybe not?
       # TODO: think about modularity?
-      def hexes # rubocop:disable Metric/MethodLength
+      def hexes
         [
           [
             { t: "f" },

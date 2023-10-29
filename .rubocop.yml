@@ -18,6 +18,7 @@ Metric/BlockLength:
 Metric/ClassLength:
   Exclude:
     - 'spec/**/*'
+    - 'app/models/scenarios/**/*'
 
 Metric/LineLength:
   Max: 100
@@ -26,6 +27,8 @@ Metric/LineLength:
 
 Metric/MethodLength:
   Max: 12
+  Exclude:
+    - 'app/models/scenarios/**/*'
 
 Naming/VariableNumber:
   Enabled: false

@@ -115,7 +115,7 @@ export default function DebugMap() {
     { u: testUnitData.gmg, x: 6, y: 4, f: null, tf: null },
     { u: testUnitData.gldr, x: 6, y: 4, f: null, tf: null },
     { u: testUnitData.gtank, x: 4, y: 4, f: 5, tf: 5, imm: true },
-    { u: testUnitData.gtank, x: 3, y: 4, f: 3, tf: 3, trt: true },
+    { u: testUnitData.gtank, x: 2, y: 3, f: 3, tf: 3, trt: true },
     {
       u: testUnitData.rtank, x: 10, y: 5, f: 1, tf: 1, imm: true, st: unitStatus.Activated,
       brk: true, bdn: true, trt: true
