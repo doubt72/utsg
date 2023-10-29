@@ -41,7 +41,7 @@ export default function ScenarioSummary(props) {
         <div className="flex-fill align-end">Author: <span className="green">{scenario.author}</span></div>
       </div>
       <div className="flex mt1em">
-        <div className="p1em mr1em background-gray">
+        <div className="p1em mr1em background-gray flex-fill">
           {scenario.description.map((p, i) => {
             return <p key={i}>{p}</p>
           })}

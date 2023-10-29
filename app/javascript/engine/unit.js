@@ -81,7 +81,10 @@ const Unit = class {
 
     this.facing = 1
     this.turretFacing = 1
+    this.selected = false
   }
+
+  select() { this.selected = !this.selected }
 
   get isMarker() {
     return false
@@ -275,7 +278,7 @@ const Unit = class {
     if (this.currentSmokeCapable) {
       text.push("can lay smoke")
     }
-    if (this.breakdownRoll && !this.brokenDown) {
+    if (this.breakdownRoll && !this.brokenDown && !this.immobilized) {
       text.push(`breakdown roll ${this.breakdownRoll}`)
     }
     if (this.gunHandling && !this.isBroken) {
@@ -292,6 +295,7 @@ const Unit = class {
     }
     if (this.sponson) {
       text.push("center / symbol bottom:")
+      text.push("sponson gun - forward arc only")
       text.push(`- firepower ${this.sponson[0]}`)
       text.push(`- range ${this.sponson[1]}`)
       text.push("- target roll required")

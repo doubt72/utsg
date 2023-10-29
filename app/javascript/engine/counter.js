@@ -10,6 +10,7 @@ const Counter = class {
     this.target = target
     this.map = map
     this.stackingIndex = 0
+    this.trueIndex = undefined
   }
 
   get stackOffset() { return this.onMap ? 5 : 3 }
@@ -36,7 +37,13 @@ const Counter = class {
 
   get color() { return this.nationalColors[this.target.nation] }
 
-  get counterStyle() { return { fill: this.color, stroke: "black", strokeWidth: 1 } }
+  get counterStyle() {
+    if (this.target.selected) {
+      return { fill: this.color, stroke: this.red, strokeWidth: 4 }
+    } else {
+      return { fill: this.color, stroke: "black", strokeWidth: 1 }
+    }
+  }
 
   counterPath(xOffset = 0, yOffset = 0) {
     const x = this.x + xOffset

@@ -6,7 +6,7 @@ import GameMap from "./GameMap";
 export default function DebugMap() {
   const [map, setMap] = useState(null)
   const [scale, setScale] = useState(1)
-  const [coords, setCoords] = useState(false)
+  const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(true)
 
@@ -409,6 +409,11 @@ export default function DebugMap() {
     console.log(key)
   }
 
+  const unitSelection = (x, y, counter) => {
+    const key = `x ${x}-${y}-${counter.trueIndex}`
+    console.log(key)
+  }
+
   return (
     <div className="map-container">
       <div className="flex mb05em">
@@ -432,7 +437,7 @@ export default function DebugMap() {
         </div>
       </div>
       <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-               hideCounters={hideCounters} hexCallback={hexSelection} />
+               hideCounters={hideCounters} hexCallback={hexSelection} counterCallback={unitSelection} />
     </div>
   )
 }

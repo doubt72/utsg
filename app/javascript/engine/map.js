@@ -83,6 +83,7 @@ const Map = class {
     const c = []
     const list = this.units[y][x]
     let index = 0
+    let trueIndex = 0
     list.forEach(u => {
       const r = u.rotates
       const f = u.turreted && !u.isWreck ? u.turretFacing : u.facing
@@ -92,7 +93,7 @@ const Map = class {
           { type: type, nation: u.nation, rotates: true, facing: u.facing, x: x, y: y }
         ), s: index++ })
       }
-      c.push({ x: x, y: y, u: u, s: index++ })
+      c.push({ x: x, y: y, u: u, s: index++, ti: trueIndex++ })
       if (this.showAllCounters) {
         const markerTypes = []
         if (u.immobilized) { markerTypes.push(markerType.Immobilized) }
@@ -121,6 +122,9 @@ const Map = class {
         this.countersAt(x, y).forEach(data => {
           const counter = new Counter(data.x, data.y, data.u, this)
           counter.stackingIndex = data.s
+          if (data.ti) {
+            counter.trueIndex = data.ti
+          }
           c.push(counter)
         })
       }

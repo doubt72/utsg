@@ -16,12 +16,16 @@ const Marker = class {
     return true
   }
 
+  get isHull() {
+    return [markerType.TrackedHull, markerType.WheeledHull].includes(this.type)
+  }
+
   get isMinor() {
     return [markerType.Activated, markerType.Exhausted, markerType.Tired].includes(this.type)
   }
 
   get hideOverlayRotation() {
-    return ![markerType.TrackedHull, markerType.WheeledHull].includes(this.type)
+    return !this.isHull
   }
 
   get displayText() {

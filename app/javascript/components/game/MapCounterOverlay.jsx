@@ -8,17 +8,25 @@ import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
 export default function MapCounterOverlay(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")
   const [helpDisplay, setHelpDisplay] = useState("")
+  const [update, setUpdate] = useState("")
 
   useEffect(() => {
     const counters = props.map.countersAt(props.x, props.y)
     const layout = props.map.overlayLayout(props.x, props.y, counters.length)
     const helpOverlays = []
+    const selectionOverlays = []
+    let trueIndex = 0
     setOverlayDisplay(
       <g>
         <path d={layout.path} style={layout.style} />
         { counters.map((data, i) => {
           const cd = new Counter(-1, -1, data.u, props.map)
           cd.showAllCounters = true
+          if (!cd.target.isMarker) {
+            cd.trueIndex = trueIndex++
+          } else if (cd.target.isHull) {
+            cd.trueIndex = trueIndex
+          }
           const badges = props.map.counterInfoBadges(layout.x+i*170 + 30, layout.y2 + 8, cd).map((b, i) => {
             const arrow = b.arrow ?
               <g>
@@ -40,6 +48,15 @@ export default function MapCounterOverlay(props) {
             <MapCounterOverlayHelp key={i} x={layout.x + i*170+160} y={layout.y+8}
                                    map={props.map} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
+          selectionOverlays.push(
+            <g key={i} transform={`scale(2) translate(${layout.x/2 + i*85} ${layout.y/2})`}>
+              <path d={cd.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
+                    onClick={() => {
+                      setUpdate(s => s + 1)
+                      props.selectionCallback(props.x, props.y, cd)
+                    }} />
+            </g>
+          )
           return (
             <g key={i} >
               <g transform={`scale(2) translate(${layout.x/2 + i*85} ${layout.y/2})`}>
@@ -51,11 +68,12 @@ export default function MapCounterOverlay(props) {
         })}
         <g onMouseLeave={() => props.setOverlay({ show: false, x: 0, y: 0 })} >
           <path d={layout.path} style={{ fill: "rgba(0,0,0,0)"}} />
+          {selectionOverlays}
           {helpOverlays.reverse()}
         </g>
       </g>
     )
-  }, [props.x, props.y])
+  }, [props.x, props.y, update])
 
   return (
     <g>
@@ -68,6 +86,7 @@ export default function MapCounterOverlay(props) {
 MapCounterOverlay.propTypes = {
   map: PropTypes.instanceOf(Map),
   setOverlay: PropTypes.func,
+  selectionCallback: PropTypes.func,
   x: PropTypes.number,
   y: PropTypes.number,
 }

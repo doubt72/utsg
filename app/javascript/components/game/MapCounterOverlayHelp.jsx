@@ -9,11 +9,10 @@ export default function MapCounterOverlayHelp(props) {
   useEffect(() => {
     const bl = props.map.counterHelpButtonLayout(props.x, props.y, props.counter)
     setHelpButton(
-      <g>
+      <g onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} >
         <path d={bl.path} style={{ fill: "black", stroke: "white", strokeWidth: 2 }} />
         <text x={bl.x} y={bl.y} fontSize={bl.size} textAnchor="middle" fontFamily="monospace"
-              style={{ fill: "white" }} onMouseOver={() => showHelp()} cursor="default"
-              onMouseLeave={() => hideHelp()}>?</text>
+              style={{ fill: "white" }} cursor="default">?</text>
       </g>
     )
   }, [props.x, props.y])

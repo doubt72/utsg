@@ -13,6 +13,7 @@ export default function GameMap(props) {
   const [counterDisplay, setCounterDisplay] = useState([])
   const [overlay, setOverlay] = useState({ show: false, x: -1, y: -1 })
   const [overlayDisplay, setOverlayDisplay] = useState("")
+  const [updateUnitSelected, setUpdateUnitSelected] = useState(0)
 
   useEffect(() => {
     if (!props.map) { return }
@@ -30,16 +31,21 @@ export default function GameMap(props) {
     })
     setHexDisplay(hexLoader)
     setHexDisplayOverlays(overlayLoader)
-    setCounterDisplay(props.map.counters.map((counter, i) => 
-      <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
-    ))
-  }, [props.map, props.showCoords, props.showStatusCounters, props.hideCounters])
+    setCounterDisplay(props.map.counters.map((counter, i) => {
+      return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+    }))
+  }, [props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected])
+
+  useEffect(() => {
+    console.log(updateUnitSelected)
+  }, [updateUnitSelected])
 
   useEffect(() => {
     if (overlay.x < 0) { return }
     if (!overlay.show) { setOverlayDisplay(""); return }
     setOverlayDisplay(
-      <MapCounterOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay} />
+      <MapCounterOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay}
+                         selectionCallback={unitSelection} />
     )
   }, [overlay.show, overlay.x, overlay.y])
 
@@ -58,6 +64,15 @@ export default function GameMap(props) {
         }
       })
     )
+  }
+
+  const unitSelection = (x, y, counter) => {
+    if (counter.trueIndex === undefined) { return }
+    const key = `${x}-${y}-${counter.trueIndex}`
+    console.log(key)
+    props.map.units[y][x][counter.trueIndex].select()
+    setUpdateUnitSelected(s => s+1)
+    props.counterCallback(x, y, counter)
   }
 
   return (
