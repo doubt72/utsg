@@ -1,11 +1,4 @@
-- Add hulls
-- Add counter markers
-- Allow expansion of counters
-- Show with map
-- Show help
-- Add selection
-
-- Add scenarios to fill things out
+- Fill out scenarios
 
 - fix return selecting player rather than completing form on new game
 - don't limit game chat to recent
