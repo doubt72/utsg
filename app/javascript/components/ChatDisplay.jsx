@@ -63,7 +63,7 @@ export default function ChatDisplay(props) {
       {
         [...chatMessages].map((msg, i) => {
           const date = new Date(msg.created_at)
-          if (new Date(Date.now() - 24 * 3600 * 1000) > date) {
+          if (new Date(Date.now() - 24 * 3600 * 1000) > date && props.gameId === 0) {
             return ("")
           }
           const time = `${("0" + date.getHours()).slice (-2)}:` +
