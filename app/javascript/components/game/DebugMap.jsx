@@ -118,7 +118,7 @@ export default function DebugMap() {
     { u: testUnitData.gtank, x: 2, y: 3, f: 3, tf: 3, trt: true },
     {
       u: testUnitData.rtank, x: 10, y: 5, f: 1, tf: 1, imm: true, st: unitStatus.Activated,
-      brk: true, bdn: true, trt: true
+      brk: true, trt: true
     },
     { u: testUnitData.rinf, x: 11, y: 6, f: null, tf: null, st: unitStatus.Activated },
     { u: testUnitData.ginf, x: 7, y: 6, f: null, tf: null, st: unitStatus.Broken },
@@ -397,7 +397,6 @@ export default function DebugMap() {
       if (data.st) { unit.status = data.st }
       if (data.imm) { unit.immobilized = true }
       if (data.brk) { unit.jammed = true }
-      if (data.bdn) { unit.brokenDown = true }
       if (data.trt) { unit.turretJammed = true }
       map.addUnit(data.x, data.y, unit)
     })

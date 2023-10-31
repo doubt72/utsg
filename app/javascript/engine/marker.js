@@ -1,7 +1,7 @@
 const markerType = {
   TrackedHull: 0, WheeledHull: 1,
   Tired: 2, Pinned: 3, Activated: 4, Exhausted: 5,
-  BrokenDown: 6, Jammed: 7, TurretJammed: 8, Immobilized: 9
+  Jammed: 6, TurretJammed: 7, Immobilized: 8
 }
 
 const Marker = class {
@@ -33,7 +33,6 @@ const Marker = class {
     if (this.type === markerType.Pinned) { return ["pinned"]}
     if (this.type === markerType.Activated) { return ["activated"]}
     if (this.type === markerType.Exhausted) { return ["exhausted"]}
-    if (this.type === markerType.BrokenDown) { return ["broken", "down"]}
     if (this.type === markerType.Jammed) { return ["weapon", "broken"]}
     if (this.type === markerType.TurretJammed) { return ["turret", "jammed"]}
     if (this.type === markerType.Immobilized) { return ["immobilized"]}

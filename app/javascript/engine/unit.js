@@ -77,7 +77,6 @@ const Unit = class {
     this.jammed = false
     this.turretJammed = false
     this.immobilized = false
-    this.brokenDown = false
 
     this.facing = 1
     this.turretFacing = 1
@@ -179,7 +178,7 @@ const Unit = class {
   get currentMovement() {
     if (this.isBroken) {
       return this.brokenMovement
-    } else if (this.isPinned || this.immobilized || this.brokenDown || this.isWreck) {
+    } else if (this.isPinned || this.immobilized || this.isWreck) {
       return 0
     } else if (this.isTired) {
       return this.baseMovement - 2
@@ -278,7 +277,7 @@ const Unit = class {
     if (this.currentSmokeCapable) {
       text.push("can lay smoke")
     }
-    if (this.breakdownRoll && !this.brokenDown && !this.immobilized) {
+    if (this.breakdownRoll && !this.immobilized) {
       text.push(`breakdown roll ${this.breakdownRoll}`)
     }
     if (this.gunHandling && !this.isBroken) {

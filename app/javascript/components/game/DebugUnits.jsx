@@ -115,19 +115,20 @@ export default function DebugUnits() {
       versions.push(svgContainer(unit3, i*9+2))
 
       const unit4 = new Unit(data)
-      unit4.brokenDown = true
+      unit4.immobilized = true
       versions.push(svgContainer(unit4, i*9+3))
 
       const unit5 = new Unit(data)
-      unit5.immobilized = true
+      unit5.turretJammed = true
       versions.push(svgContainer(unit5, i*9+4))
 
       const unit6 = new Unit(data)
-      unit6.turretJammed = true
+      unit6.status = unitStatus.Activated
+      unit6.immobilized = true
       versions.push(svgContainer(unit6, i*9+5))
 
       const unit7 = new Unit(data)
-      unit7.status = unitStatus.Activated
+      unit7.status = unitStatus.Exhausted
       unit7.immobilized = true
       unit7.turretJammed = true
       versions.push(svgContainer(unit7, i*9+6))
@@ -135,7 +136,6 @@ export default function DebugUnits() {
       const unit8 = new Unit(data)
       unit8.status = unitStatus.Exhausted
       unit8.jammed = true
-      unit8.brokenDown = true
       unit8.immobilized = true
       unit8.turretJammed = true
       versions.push(svgContainer(unit8, i*9+7))
@@ -151,39 +151,34 @@ export default function DebugUnits() {
     return spg().map((data, i) => {
       const unit = new Unit(data)
       unit.status = unitStatus.Activated
-      const versions = [svgContainer(unit, i*8)]
+      const versions = [svgContainer(unit, i*7)]
 
       const unit2 = new Unit(data)
       unit2.status = unitStatus.Exhausted
-      versions.push(svgContainer(unit2, i*8+1))
+      versions.push(svgContainer(unit2, i*7+1))
 
       const unit3 = new Unit(data)
       unit3.jammed = true
-      versions.push(svgContainer(unit3, i*8+2))
+      versions.push(svgContainer(unit3, i*7+2))
 
       const unit4 = new Unit(data)
-      unit4.brokenDown = true
-      versions.push(svgContainer(unit4, i*8+3))
+      unit4.immobilized = true
+      versions.push(svgContainer(unit4, i*7+3))
 
       const unit5 = new Unit(data)
+      unit5.status = unitStatus.Activated
       unit5.immobilized = true
-      versions.push(svgContainer(unit5, i*8+4))
+      versions.push(svgContainer(unit5, i*7+4))
 
       const unit6 = new Unit(data)
-      unit6.status = unitStatus.Activated
+      unit6.status = unitStatus.Exhausted
+      unit6.jammed = true
       unit6.immobilized = true
-      versions.push(svgContainer(unit6, i*8+5))
+      versions.push(svgContainer(unit6, i*7+5))
 
       const unit7 = new Unit(data)
-      unit7.status = unitStatus.Exhausted
-      unit7.jammed = true
-      unit7.brokenDown = true
-      unit7.immobilized = true
-      versions.push(svgContainer(unit7, i*8+6))
-
-      const unit8 = new Unit(data)
-      unit8.status = unitStatus.Wreck
-      versions.push(svgContainer(unit8, i*8+7))
+      unit7.status = unitStatus.Wreck
+      versions.push(svgContainer(unit7, i*7+6))
       return versions
     })
   }

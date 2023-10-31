@@ -171,7 +171,7 @@ const Counter = class {
   }
 
   get breakdownLayout() {
-    if (!this.target.breakdownRoll || this.target.immobilized || this.target.brokenDown || this.target.isWreck) {
+    if (!this.target.breakdownRoll || this.target.immobilized || this.target.isWreck) {
       return false
     }
     const x = this.x + 14
@@ -335,7 +335,7 @@ const Counter = class {
     let path = this.circlePath(x, y, 10)
     let size = this.sizeFor(value)
     if (this.target.isBroken || this.target.isPinned || this.target.isTired || value < 0 ||
-      this.target.immobilized || this.target.brokenDown || this.target.isWreck) {
+      this.target.immobilized || this.target.isWreck) {
       color = this.red
     } else {
       if (this.target.tracked || this.target.crewed || this.target.wheeled ) {
@@ -385,7 +385,7 @@ const Counter = class {
     const path = this.circlePath(x, y - 6, 22)
     const style = { fill: "yellow", stroke: "black", strokeWidth: 2 }
     const fStyle = { fill: "black" }
-    if (this.target.isPinned || this.target.immobilized || this.target.brokenDown || this.target.turretJammed ||
+    if (this.target.isPinned || this.target.immobilized || this.target.turretJammed ||
       (this.target.jammed && this.target.hullArmor)) {
       style.fill = this.red
       style.stroke = "white"
@@ -397,7 +397,6 @@ const Counter = class {
     if (this.target.isPinned) { text.push("PIN") }
     if (this.target.isTired) { text.push("TRD") }
     if (this.target.immobilized) { text.push("IMM") }
-    if (this.target.brokenDown && !this.target.immobilized) { text.push("BDN") }
     if (this.target.turretJammed) { text.push("TRT") }
     if (this.target.jammed && this.target.hullArmor) { text.push("WPN") }
     if (text.length === 0) { return false }

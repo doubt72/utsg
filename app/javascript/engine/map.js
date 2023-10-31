@@ -97,7 +97,6 @@ const Map = class {
       if (this.showAllCounters) {
         const markerTypes = []
         if (u.immobilized) { markerTypes.push(markerType.Immobilized) }
-        if (u.brokenDown && !u.immobilized) { markerTypes.push(markerType.BrokenDown) }
         if (u.turretJammed) { markerTypes.push(markerType.TurretJammed) }
         if (u.jammed && u.turreted) { markerTypes.push(markerType.Jammed) }
         if (u.isTired) { markerTypes.push(markerType.Tired) }
@@ -188,9 +187,6 @@ const Map = class {
       }
       if (u.immobilized && s) {
         badges.push({ text: "immobilized", color: counter.red, tColor: "white" })
-      }
-      if (u.brokenDown && !u.immobilized && s) {
-        badges.push({ text: "broken down", color: counter.red, tColor: "white" })
       }
       if (u.turretJammed && s) {
         badges.push({ text: "turret jammed", color: counter.red, tColor: "white" })

@@ -36,7 +36,7 @@ export default function ScenarioSummary(props) {
           Sets up first: {scenario.firstSetup == 1 ? player1Pills : player2Pills}
         </div>
         <div className="mr1em nowrap">
-          Moves first: {scenario.firstMove == 1 ? player1Pills : player2Pills}
+          Initiative: {scenario.firstMove == 1 ? player1Pills : player2Pills}
         </div>
         <div className="flex-fill align-end">Author: <span className="green">{scenario.author}</span></div>
       </div>
