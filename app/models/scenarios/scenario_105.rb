@@ -3,8 +3,8 @@
 module Scenarios
   class Scenario105 < Base
     ID = "105"
-    NAME = "Through the Hedges"
-    ALLIES = ["usa"].freeze
+    NAME = "Siezing the Port"
+    ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
 
     class << self

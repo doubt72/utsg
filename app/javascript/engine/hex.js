@@ -243,9 +243,11 @@ const Hex = class {
     let inset = 4
     const outset = inset*3
     let dir = this.direction
-    if (this.buildingShape === "c") {
+    if (this.buildingShape === "c" || this.buildingShape === "t") {
       // Circular "silo" type thing
+      // Larger "tank"
       inset = 16
+      if (this.buildingShape === "c") { inset = 32 }
       path = [
         "M", this.xCorner(0, inset), this.yCorner(0, inset),
         "A", this.radius - inset, this.radius - inset, 0, 1, 0,

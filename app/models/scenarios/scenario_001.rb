@@ -101,7 +101,7 @@ module Scenarios
           ], [
             { t: "d", d: 2, b: "f", be: [2, 3, 4] },
             { t: "o", r: { t: "d", d: [2, 5] } },
-            { t: "o", d: 2, st: { sh: "l" } },
+            { t: "o", d: 2, st: { sh: "l", s: "f" } },
             { t: "o" },
             { t: "f" },
             { t: "f" },
@@ -191,7 +191,7 @@ module Scenarios
             { t: "o", s: { d: [2, 4] } },
             { t: "o", s: { d: [1, 5] } },
             { t: "o", b: "f", be: [1, 6] },
-            { t: "o", d: 1, st: { sh: "l" } },
+            { t: "o", d: 1, st: { sh: "l", s: "f" } },
             { t: "o", b: "f", be: [3] },
             { t: "f" },
           ], [

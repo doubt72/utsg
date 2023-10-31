@@ -11,10 +11,16 @@ module Utility
         filter(scenarios, :string, options)
         filter(scenarios, :allies, options)
         filter(scenarios, :axis, options)
-        scenarios.each { |s| s.delete(:string) }
+        scenarios.sort { |a, b| a[:id] <=> b[:id] }.each { |s| s.delete(:string) }
       end
 
       def filter(scenarios, key, options)
+        if key == :string && options[key]
+          scenarios.filter! do |s|
+            s[key].include?(options[key].downcase) || s[:id].include?(options[key])
+          end
+          return
+        end
         scenarios.filter! { |s| s[key].include?(options[key].downcase) } if options[key]
       end
 

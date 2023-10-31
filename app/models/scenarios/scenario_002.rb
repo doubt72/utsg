@@ -243,8 +243,9 @@ module Scenarios
           s: { list: [
             :ger_leader_6_2,
             [2, :ger_leader_5_1],
-            [10, :ger_rifle_s],
-            [4, :ger_mg_34],
+            [2, :ger_pionier_s],
+            [8, :ger_rifle_s],
+            [4, :ger_mg_42],
             :ger_ft,
             [2, :ger_sc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },

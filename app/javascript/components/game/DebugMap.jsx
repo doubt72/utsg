@@ -157,7 +157,7 @@ export default function DebugMap() {
             { t: "o", b: "w", be: [1] },
             { t: "o", d: 3, st: { sh: "s" } },
             { t: "o" },
-            { t: "o" },
+            { t: "o", d: 1, st: { sh: "t" } },
           ], [
             { t: "s" },
             { t: "s", r: { d: [2, 4], t: "d" } },

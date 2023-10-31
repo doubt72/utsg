@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario103 < Base
     ID = "103"
-    NAME = "Take the Hill"
+    NAME = "Through the Hedges"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
 
