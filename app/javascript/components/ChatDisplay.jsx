@@ -55,25 +55,42 @@ export default function ChatDisplay(props) {
   }
 
   let lastUser = ""
+  let lastTime = null
 
   const outputClass = "chat-output " + (props.gameId === 0 ? "main-chat-output" : "game-chat-output")
+
+  const formattedDate = (date) => {
+    return `${("0" + (date.getMonth() + 1)).slice (-2)}/` +
+           `${("0" + date.getDate()).slice (-2)} ` +
+           `${("0" + date.getHours()).slice (-2)}:` +
+           `${("0" + date.getMinutes()).slice (-2)}`
+  }
 
   const chatMessageDispay = (
     <div className={outputClass}>
       {
         [...chatMessages].map((msg, i) => {
           const date = new Date(msg.created_at)
+          if (!lastTime) {
+            lastTime = new Date(Date.now() - 24 * 3600 * 1000)
+          }
+
           if (new Date(Date.now() - 24 * 3600 * 1000) > date && props.gameId === 0) {
             return ("")
           }
-          const time = `${("0" + date.getHours()).slice (-2)}:` +
-            `${("0" + date.getMinutes()).slice (-2)}:` +
-            `${("0" + date.getSeconds()).slice (-2)}`
-          const dateClass = msg.user === lastUser ? "chat-output-date-invisible" : "chat-output-date"
-          const nameClass = msg.user === lastUser ? "chat-output-username-invisible" : "chat-output-username"
+          let time = `${("0" + date.getHours()).slice (-2)}:` +
+                     `${("0" + date.getMinutes()).slice (-2)}:` +
+                     `${("0" + date.getSeconds()).slice (-2)}`
+          if (props.gameId !== 0) {
+            time = formattedDate(date)
+          }
+          const check = msg.user === lastUser && lastTime > (date - 3600 * 1000)
+          const dateClass = check ? "chat-output-date-invisible" : "chat-output-date"
+          const nameClass = check ? "chat-output-username-invisible" : "chat-output-username"
           if (msg.user !== lastUser) {
             lastUser = msg.user
           }
+          lastTime = date
           return (
             <div key={i} className="chat-output-record">
               <div className={dateClass}>{time}</div>
