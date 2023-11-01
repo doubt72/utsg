@@ -1,7 +1,4 @@
 - Fill out scenarios
-
-- fix return selecting player rather than completing form on new game
-- don't limit game chat to recent
 - hotseat games?
 - refactor CSS
 
@@ -19,50 +16,11 @@ FIN/ROM
 POL/GRE/NOR/PHI/NET
 
 000 East Front
-100 Normandy
-200 North Africa
+100 North Africa
+200 Normandy
 300 West Front (late)
-400 Italy
-500 South Pacific/New Guinea/Philippines
+400 South Pacific/New Guinea/Philippines
+500 Italy
 600 Poland/France
-700 China
-800 Finland/Greece
-
-East Front
-  generic small unit meeting engagements in mixed terrain
-  urban infantry slogs
-  defensive infantry stand against armor in town / mixed / forest
-  armored meeting engagements in mixed / open
-  mixed forces attacking mixed force in town
-  assault across gorge
-
-Finland
-  forest road ambush
-  other finish battles?
-
-West Front
-  cliff/beach assaults
-  infantry bocage close / open
-  US hold town against counter armor
-  infantry meeting engagement over farm house
-  german defensive stands in town / mixed / farm
-  winter forest defensive fight (bulge)
-  urban slog (cherbourg)
-  bridge assault
-
-Italy
-  take the hill
-  various bad terrain
-
-Greece
-  take the pass
-
-North Africa
-  open armored engagement
-  german infantry defense against british armored
-
-Pacific
-  Jungle / bridge / river
-
-China
-  urban / mountain / various
+700 Finland/Greece
+800 China
