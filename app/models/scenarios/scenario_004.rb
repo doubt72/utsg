@@ -25,8 +25,11 @@ module Scenarios
 
       def description
         [
-          "An armored clash during the battle of Kursk.  The first day of the German attack,
-          reinforced by heavy tanks and supported by artillery.",
+          "German heavy armor (supported by artillery) advances and attempts a
+          breakthrough after penetrating the first line of defenses at a weak point
+          in the Soviet line.  Soviet reserves attempt to stop them.  An armored
+          clash during the first day of the initial German attack during the battle
+          of Kursk.",
         ]
       end
 

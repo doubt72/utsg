@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario003 < Base
     ID = "003"
-    NAME = "Holding the Line"
+    NAME = "Speed Bump"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 
@@ -25,7 +25,7 @@ module Scenarios
 
       def description
         [
-          "Defensive action near Mogilev.  In the opening days of the battle of Smolensk,
+          "Defensive action.  In the opening days of the battle of Smolensk,
           Soviet troops attempt to slow the German offensive.",
         ]
       end
@@ -243,7 +243,7 @@ module Scenarios
           s: { list: [
             :ger_leader_5_1,
             :ger_leader_4_1,
-            [4, :ger_rifle_s],
+            [5, :ger_rifle_s],
             :ger_mg_34,
             [3, :ger_pzkpfw_iii__40],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },

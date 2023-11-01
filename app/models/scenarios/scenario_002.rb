@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario002 < Base
     ID = "002"
-    NAME = "The Only Way to Win Is"
+    NAME = "Block by Block"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 
@@ -25,8 +25,9 @@ module Scenarios
 
       def description
         [
-          "An urban battle.  Russian defenders attempt to hold every inch of ground
-          as the German army enters the city of Stalingrad.",
+          "An urban brawl.  As German forces force an advance into the denser parts of
+          the city, Soviet defenders attempt to hold them at bay, or even push them
+          back if the opportunity arises.",
         ]
       end
 
@@ -230,9 +231,9 @@ module Scenarios
             :ussr_leader_5_1,
             :ussr_leader_4_1,
             :ussr_leader_3_1,
-            [8, :ussr_rifle_s],
+            [7, :ussr_rifle_s],
             [2, :ussr_smg_s],
-            [4, :ussr_dp_27],
+            [3, :ussr_dp_27],
             [6, :ussr_mc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
@@ -245,7 +246,7 @@ module Scenarios
             [2, :ger_leader_5_1],
             [2, :ger_pionier_s],
             [8, :ger_rifle_s],
-            [4, :ger_mg_42],
+            [3, :ger_mg_42],
             :ger_ft,
             [2, :ger_sc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },

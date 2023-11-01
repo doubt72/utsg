@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario001 < Base
     ID = "001"
-    NAME = "Lost in the Woods"
+    NAME = "Into the the Gap"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 

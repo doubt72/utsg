@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario006 < Base
     ID = "006"
-    NAME = "KV Surprise"
+    NAME = "Surpise!  KV"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 
@@ -143,8 +143,8 @@ module Scenarios
             { t: "d", d: 3 },
             { t: "o" },
           ], [
-            { t: "f" },
-            { t: "f" },
+            { t: "o" },
+            { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "g", b: "f", be: [1, 2] },
@@ -159,8 +159,8 @@ module Scenarios
             { t: "d", d: 3 },
             { t: "o" },
           ], [
-            { t: "f" },
-            { t: "f" },
+            { t: "o" },
+            { t: "o" },
             { t: "o" },
             { t: "g", b: "f", be: [1, 2, 6] },
             { t: "g" },
@@ -177,7 +177,7 @@ module Scenarios
           ], [
             { t: "f" },
             { t: "f" },
-            { t: "f" },
+            { t: "o" },
             { t: "o" },
             { t: "g", b: "f", be: [1, 5, 6] },
             { t: "g", b: "f", be: [5, 6] },

@@ -68,7 +68,7 @@ module Utility
             ["ita", "Guastatori", 40, 4, 8, 2, 5, { a: 1, s: 1 }],
             ["ita", "Alpini", 0, 4, 7, 3, 5, { a: 1 }],
             ["ita", "Bersaglieri", 0, 4, 6, 4, 5, { s: 1 }],
-            ["ita", "Paracadutisti", 40, 3, 6, 3, 5, { a: 1, s: 1 }],
+            ["ita", "Paracadutisti", 40, 4, 6, 3, 5, { a: 1, s: 1 }],
             ["ita", "Fucilieri", 0, 3, 6, 4, 4, {}],
             ["ita", "Blackshirt", 23, 2, 5, 3, 3, {}],
             ["jap", "Betsudotai", 0, 5, 7, 3, 5, { a: 1 }],
@@ -192,7 +192,7 @@ module Utility
             unit.each_with_index do |v, i|
               mortar[key[i]] = v
             end
-            mortar[:o].merge!({ t: 1, b: 3 })
+            mortar[:o].merge!({ t: 1, b: 3, g: 1 })
             mortar[:s] = 3 if mortar[:o][:c]
             lu["#{mortar[:c]}_#{sanitize(mortar[:n])}".to_sym] = mortar
           end
@@ -303,11 +303,10 @@ module Utility
             ["usa", "75mm M1 Pack", 27, 16, 16, {}],
             ["ussr", "76mm M1927", 28, 16, 16, {}],
           ].each do |unit|
-            gun = { t: "gun", i: "gun" }
+            gun = { t: "gun", i: "gun", v: 1, s: 3 }
             unit.each_with_index do |v, i|
               gun[key[i]] = v
             end
-            gun.merge!({ v: 1 })
             gun[:o].merge!({ t: 1, j: 3, g: 1, s: 1, c: 1 })
             lu["#{gun[:c]}_#{sanitize(gun[:n])}".to_sym] = gun
           end
@@ -350,11 +349,10 @@ module Utility
             ["ussr", "76mm F-22", 37, 32, 24, {}],
             ["ussr", "100mm BS-3", 44, 64, 30, {}],
           ].each do |unit|
-            at = { t: "gun", i: "atgun", s: 3 }
+            at = { t: "gun", i: "atgun", v: 1, s: 3 }
             unit.each_with_index do |v, i|
               at[key[i]] = v
             end
-            at.merge!({ v: 1 })
             at[:o].merge!({ t: 1, j: 3, p: 1, c: 1 })
             lu["#{at[:c]}_#{sanitize(at[:n])}".to_sym] = at
           end

@@ -244,10 +244,10 @@ module Scenarios
           s: { list: [
             :ger_leader_6_1,
             :ger_leader_4_1,
-            [8, :ger_ss_s],
-            :ger_elite_crew_t,
+            [6, :ger_ss_s],
+            [2, :ger_elite_crew_t],
             [2, :ger_mg_42],
-            :ger_7_5cm_leig_18,
+            [2, :ger_7_5cm_leig_18],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
