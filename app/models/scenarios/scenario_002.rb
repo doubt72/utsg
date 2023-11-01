@@ -25,7 +25,7 @@ module Scenarios
 
       def description
         [
-          "An urban brawl.  As German forces force an advance into the denser parts of
+          "An urban brawl.  As German forces force an advance into the dense core of
           the city, Soviet defenders attempt to hold them at bay, or even push them
           back if the opportunity arises.",
         ]

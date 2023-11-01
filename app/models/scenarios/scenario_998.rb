@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario101 < Base
-    ID = "101"
-    NAME = "Hellfire Pass"
+  class Scenario998 < Base
+    ID = "998"
+    NAME = "Broken Ground"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
 
@@ -25,9 +25,9 @@ module Scenarios
 
       def description
         [
-          "British armored forces try to force the pass during Operation Battleaxe.
-          However, the Germans had fortified the defenses with 88s, and attempted
-          to draw in the British forces by deploying a few tanks as bait.",
+          "Vicious block-to-block fighing.  Russian defenders attempt to hold
+          every inch of ground as the German army enters the city on the first
+          day of the battle of Stalingrad.",
         ]
       end
 
@@ -46,24 +46,24 @@ module Scenarios
       def hexes
         [
           [
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
-            { t: "b" },
+            { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
-            { t: "s" },
+            { t: "o" },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
           ], [
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
@@ -72,31 +72,31 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
-            { t: "s" },
+            { t: "o" },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
           ], [
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
             { t: "o" },
             { t: "o", r: { d: [3, 5] } },
-            { t: "s" },
+            { t: "o" },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
           ], [
-            { t: "o", h: 4 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
@@ -110,11 +110,11 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
           ], [
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
@@ -126,11 +126,11 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
           ], [
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
             { t: "o", r: { d: [3, 5] } },
@@ -139,44 +139,44 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
           ], [
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1, r: { d: [4, 5] } },
             { t: "o", h: 1, r: { d: [1, 2] } },
             { t: "o", h: 1 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
           ], [
-            { t: "o", h: 4 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1, r: { d: [4, 6] } },
             { t: "o", h: 1, r: { d: [1, 2] } },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
           ], [
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
@@ -190,7 +190,7 @@ module Scenarios
             { t: "o", h: 3 },
             { t: "o", h: 3 },
           ], [
-            { t: "o", h: 3 },
+            { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2, r: { d: [4, 6] } },
@@ -203,24 +203,24 @@ module Scenarios
             { t: "o", h: 3 },
             { t: "o", h: 3 },
             { t: "o", h: 3 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
           ], [
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 2, r: { d: [4, 6] } },
             { t: "o", h: 2, r: { d: [1, 3] } },
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
             { t: "o", h: 3 },
             { t: "o", h: 3 },
             { t: "o", h: 3 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
+            { t: "o", h: 3 },
           ],
         ]
       end
@@ -228,13 +228,13 @@ module Scenarios
       def allied_units
         {
           s: { list: [
-            :uk_leader_5_1,
-            :uk_leader_4_1,
-            [6, :uk_line_s],
-            :uk_bren_lmg,
-            :uk_2inch_mortar,
-            [5, :uk_matilda_ii],
-            [2, :uk_matilda_ii_cs],
+            :ussr_leader_5_1,
+            :ussr_leader_4_1,
+            :ussr_leader_3_1,
+            [6, :ussr_rifle_s],
+            [4, :ussr_smg_s],
+            [4, :ussr_dp_27],
+            [6, :ussr_mc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -243,12 +243,11 @@ module Scenarios
         {
           s: { list: [
             :ger_leader_6_2,
-            [4, :ger_rifle_s],
-            [3, :ger_elite_crew_t],
-            :ger_mg_34,
-            [3, :ger_8_8cm_flak_36],
-            [2, :ger_pzkpfw_ii_f],
-            :ger_pzkpfw_iii__40,
+            [2, :ger_leader_5_1],
+            [10, :ger_rifle_s],
+            [4, :ger_mg_34],
+            :ger_ft,
+            [2, :ger_sc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

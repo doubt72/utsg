@@ -1,4 +1,15 @@
-- Fill out scenarios
+- line of sight checking
+- smoke counters
+- pillboxes/foxholes/etc
+- mines
+- wire
+
+103 something with sand (999)
+105 something something broken ground (998)
+204 something on omaha beach
+205 urban slog (cherbourg)
+302 arnhem
+
 - hotseat games?
 - refactor CSS
 

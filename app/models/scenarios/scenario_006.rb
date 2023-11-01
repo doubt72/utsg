@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario006 < Base
     ID = "006"
-    NAME = "Surpise!  KV"
+    NAME = "Surpise! KV"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 

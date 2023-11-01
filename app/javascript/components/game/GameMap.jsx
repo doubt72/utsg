@@ -37,10 +37,6 @@ export default function GameMap(props) {
   }, [props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected])
 
   useEffect(() => {
-    console.log(updateUnitSelected)
-  }, [updateUnitSelected])
-
-  useEffect(() => {
     if (overlay.x < 0) { return }
     if (!overlay.show) { setOverlayDisplay(""); return }
     setOverlayDisplay(

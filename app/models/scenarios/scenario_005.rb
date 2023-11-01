@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario005 < Base
     ID = "005"
-    NAME = "Opposite Force"
+    NAME = "Interior Lines"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 

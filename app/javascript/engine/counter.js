@@ -426,7 +426,6 @@ const Counter = class {
     context.font = getComputedStyle(document.body).font
     text.forEach(t => {
       const n = context.measureText(t).width * 0.975
-      console.log(n)
       if (n > width) { width = n }
     })
     let x1 = x

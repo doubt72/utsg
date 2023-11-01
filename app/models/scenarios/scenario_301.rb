@@ -247,7 +247,7 @@ module Scenarios
             [6, :ger_ss_s],
             [2, :ger_elite_crew_t],
             [2, :ger_mg_42],
-            [2, :ger_7_5cm_leig_18],
+            :ger_7_5cm_leig_18,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
