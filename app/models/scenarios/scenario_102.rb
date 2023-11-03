@@ -25,8 +25,9 @@ module Scenarios
 
       def description
         [
-          "Ariete armored division defends against a British attack.  Part of Operation Crusader
-          and the attempt to relieve the siege of Tobruk.",
+          "The Italian Ariete armored division defends against a British attack.
+          Part of the early part of Operation Crusader and the attempt to flank
+          the axis forces in Africa and relieve the siege of Tobruk.",
         ]
       end
 
@@ -160,7 +161,7 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "s" },
             { t: "s" },
-            { t: "o" },
+            { t: "o", d: 2, st: { sh: "h", s: "f" } },
             { t: "o", r: { d: [3, 6] } },
             { t: "o", h: 1 },
             { t: "o", r: { d: [2, 4] } },

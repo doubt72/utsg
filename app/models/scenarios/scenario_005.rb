@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario005 < Base
     ID = "005"
-    NAME = "Interior Lines"
+    NAME = "The Road to Izium"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
 

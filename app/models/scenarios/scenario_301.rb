@@ -248,6 +248,9 @@ module Scenarios
             [2, :ger_elite_crew_t],
             [2, :ger_mg_42],
             :ger_7_5cm_leig_18,
+            [4, :wire],
+            [2, :ap_mines],
+            [2, :pillbox],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

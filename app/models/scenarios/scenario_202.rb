@@ -237,6 +237,7 @@ module Scenarios
             [2, :usa_m1a1_bazooka],
             :usa_m2_mortar,
             :usa_radio_155mm,
+            [3, :foxhole],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
