@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Map } from "../../engine/map";
 import { Unit, unitStatus } from "../../engine/unit";
+import { Feature } from "../../engine/feature";
 import GameMap from "./GameMap";
 
 export default function DebugMap() {
@@ -90,6 +91,32 @@ export default function DebugMap() {
     },
   }
 
+  const testFeatureData = {
+    smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
+    fire: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
+    wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
+    apmines: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
+    mixedmines: { ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 } },
+    atmines: { ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { p: 1 } },
+    fox: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },
+    pillbox: { ft: 1, n: "Pillbox", t: "bunker", i: "bunker", o: { da: { f: 3, s: 3, r: 1 }} },
+    bunker: { ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 4, s: 4, r: 1 }} },
+    strongpoint: { ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 }} },
+  }
+
+  const testFeatures = [
+    { u: testFeatureData.smoke, x: 6, y: 5, f: null },
+    { u: testFeatureData.fire, x: 7, y: 5, f: null },
+    { u: testFeatureData.wire, x: 0, y: 9, f: null },
+    { u: testFeatureData.apmines, x: 0, y: 11, f: null },
+    { u: testFeatureData.mixedmines, x: 1, y: 11, f: null },
+    { u: testFeatureData.atmines, x: 2, y: 11, f: null },
+    { u: testFeatureData.fox, x: 7, y: 6, f: null },
+    { u: testFeatureData.pillbox, x: 0, y: 13, f: 2 },
+    { u: testFeatureData.bunker, x: 7, y: 14, f: 2 },
+    { u: testFeatureData.strongpoint, x: 3, y: 14, f: 3 },
+  ]
+
   const testUnits = [
     { u: testUnitData.ginf, x: 6, y: 0, f: null, tf: null },
     { u: testUnitData.gpf, x: 6, y: 0, f: null, tf: null },
@@ -151,8 +178,8 @@ export default function DebugMap() {
             { t: "f" },
             { t: "f" },
             { t: "o" },
-            { t: "o", b: "b", be: [1] },
-            { t: "o" },
+            { t: "o", b: "b", be: [1], d: 1, st: { sh: "h" } },
+            { t: "o", d: 2, st: { sh: "h", s: "f" }  },
             { t: "o", r: { d: [2, 6], t: "t", c: "l" } },
             { t: "o", b: "w", be: [1] },
             { t: "o", d: 3, st: { sh: "s" } },
@@ -278,7 +305,7 @@ export default function DebugMap() {
             { t: "o", s: { d: [2, 6] } },
             { t: "j" },
             { t: "j" },
-            { t: "o" },
+            { t: "r" },
             { t: "o", r: { d: [2, 4], t: "d" } },
             { t: "f", r: { d: [1, 4], t: "d" } },
             { t: "f", r: { d: [1, 5], t: "d" } },
@@ -294,7 +321,7 @@ export default function DebugMap() {
             { t: "o" },
             { t: "j" },
             { t: "j", h: 1 },
-            { t: "o", h: 1 },
+            { t: "r", h: 1 },
             { t: "o", h: 1 },
             { t: "f", h: 1 },
             { t: "f", h: 1, r: { d: [2, 5], t: "d" } },
@@ -311,8 +338,8 @@ export default function DebugMap() {
             { t: "o", h: 1 },
             { t: "j", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 2 },
+            { t: "r", h: 1 },
+            { t: "r", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1, r: { d: [2, 6], t: "d" } },
             { t: "f", h: 2 },
@@ -327,8 +354,8 @@ export default function DebugMap() {
             { t: "o", h: 2, b: "c", be: [1, 6] },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
+            { t: "r", h: 2 },
+            { t: "r", h: 2 },
             { t: "o", h: 2, r: { d: [3, 6], t: "d" } },
             { t: "f", h: 2 },
             { t: "o", h: 2 },
@@ -343,10 +370,10 @@ export default function DebugMap() {
             { t: "o", s: { d: [2, 6] } },
             { t: "o", h: 2, b: "c", be: [1] },
             { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "r", h: 3 },
+            { t: "r", h: 3 },
             { t: "o", h: 3, r: { d: [3, 5], t: "d" } },
-            { t: "o", h: 3 },
+            { t: "r", h: 3 },
             { t: "o", h: 3 },
             { t: "f", h: 3 },
             { t: "f", h: 3 },
@@ -362,7 +389,7 @@ export default function DebugMap() {
             { t: "o", h: 3 },
             { t: "o", h: 3 },
             { t: "o", h: 3, r: { d: [2, 5], t: "d" } },
-            { t: "o", h: 4 },
+            { t: "r", h: 4 },
             { t: "o", h: 4 },
             { t: "o", h: 4 },
             { t: "o", h: 4 },
@@ -380,7 +407,7 @@ export default function DebugMap() {
             { t: "o", h: 4 },
             { t: "o", h: 4, r: { d: [2, 5], t: "d" } },
             { t: "o", h: 4 },
-            { t: "o", h: 5 },
+            { t: "r", h: 5 },
             { t: "o", h: 5 },
           ]
         ]
@@ -390,6 +417,11 @@ export default function DebugMap() {
 
   useEffect(() => {
     if (!map) { return }
+    testFeatures.forEach(data => {
+      const unit = new Feature(data.u)
+      if (data.f) { unit.facing = data.f }
+      map.addUnit(data.x, data.y, unit)
+    })
     testUnits.forEach(data => {
       const unit = new Unit(data.u)
       if (data.f) { unit.facing = data.f }

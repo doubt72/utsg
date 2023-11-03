@@ -16,6 +16,10 @@ const Marker = class {
     return true
   }
 
+  get isFeature() {
+    return false
+  }
+
   get isHull() {
     return [markerType.TrackedHull, markerType.WheeledHull].includes(this.type)
   }

@@ -30,7 +30,8 @@ const Counter = class {
   // TODO: need to keep in sync with CSS
   nationalColors = {
     ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", alm: "#EA9",
-    ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB", none: "white",
+    ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
+    none: "white", fort: "white"
   }
   clear = "rgba(0,0,0,0)"
   red = "#E00"
@@ -85,12 +86,13 @@ const Counter = class {
   }
 
   get nameLayout() {
-    let size = 9
+    let size = this.target.isFeature ? 11 : 9
     if (this.target.smallName > 0) { size = 8.25 }
     if (this.target.smallName > 1) { size = 7.825 }
     if (this.target.smallName > 2) { size = 7.5 }
+    const y = this.target.isFeature ? this.y + 12 : this.y + 10
     return {
-      x: this.x + 3, y: this.y+10, size: size, name: this.target.name,
+      x: this.x + 5, y: y, size: size, name: this.target.name,
       style: { fill: this.reverseName ? "white" : "black" }
     }
   }
@@ -198,8 +200,11 @@ const Counter = class {
 
   get iconLayout() {
     if (!this.target.icon) { return false }
-    const x = this.x + (this.target.fullIcon ? 0 : 20)
-    const y = this.y + (this.target.fullIcon ? 0 : 13)
+    let x = this.x + (this.target.fullIcon ? 0 : 20)
+    let y = this.y + (this.target.fullIcon ? 0 : 13)
+    if (this.target.isFeature) {
+      y = this.y + 15
+    }
     const size = this.target.fullIcon ? 80 : 40
     return {
       x: x, y: y, size: size, icon: this.target.isWreck ? "wreck" : this.target.icon
@@ -275,6 +280,14 @@ const Counter = class {
       if (this.target.singleFire) { color = "white" }
       if (value === 0) { value = "-" }
     }
+    if (this.target.isFeature) {
+      if (!this.target.fieldGun) {
+        color = "white"
+      }
+      if (this.target.antiTank) {
+        style.stroke = "white"
+      }
+    }
     if (size < 16) { y = y - 0.5 }
     return {
       path: path, style: style, tStyle: { fill: color }, x: x, y: y+5, size: size, value: value,
@@ -309,6 +322,9 @@ const Counter = class {
         style.stroke = this.clear
         value = "-"
       }
+    }
+    if (this.target.isFeature) {
+      color = "white"
     }
     if (size < 16) { y = y - 0.5 }
     if (this.target.minimumRange) {
@@ -349,6 +365,9 @@ const Counter = class {
       }
       if (value === 0) { value = "-" }
     }
+    if (this.target.isFeature) {
+      color = "white"
+    }
     if (size < 16) { y = y - 0.5 }
     return {
       path: path, style: style, tStyle: { fill: color }, x: x, y: y+5, size: size, value: value,
@@ -373,6 +392,41 @@ const Counter = class {
       ].join(" "),
       style: { fill: color }, size: size, tStyle: { fill: textColor }, text: text
     }
+  }
+
+  get featureLayout() {
+    if (!this.target.isFeature) { return false }
+    const x = this.x + 0.5
+    const y = this.y + 0.5
+    const corner = 3.5
+    const path = [
+      "M", x, y+54.5, "L", x+79, y+54.5, "L", x+79, y+79-corner,
+      "A", corner, corner, 0, 0, 1, x+79-corner, y+79,
+      "L", x+corner, y+79, "A", corner, corner, 0, 0, 1, x, y+79-corner, "L", x, y+54.5
+    ].join(" ")
+    let value = ""
+    let size = 11
+    if (this.target.blocksLOS) {
+      value = "blocks LOS"
+    } else if (this.target.hindrance) {
+      value = `hindrance ${this.target.hindrance}`
+      size = 10.5
+    } else if (this.target.cover) {
+      size = 14
+      value = `cover ${this.target.cover}`
+    } else if (this.target.coverSides) {
+      const cs = this.target.coverSides
+      value = `cover ${cs[0]}-${cs[1]}-${cs[2]}`
+      size = 10.5
+    }
+    const style = { fill: this.red }
+    const tStyle = { fill: "white" }
+    if (["foxhole", "smoke", "bunker"].includes(this.target.type)) {
+      style.fill = "#BBB"
+      tStyle.fill = "black"
+    }
+
+    return { path: path, style: style, value: value, tStyle: tStyle, x: x+40, y: y+70, size: size }
   }
 
   get statusLayout() {
@@ -425,7 +479,7 @@ const Counter = class {
     const context = canvas.getContext('2d')
     context.font = getComputedStyle(document.body).font
     text.forEach(t => {
-      const n = context.measureText(t).width * 0.975
+      const n = context.measureText(t).width
       if (n > width) { width = n }
     })
     let x1 = x

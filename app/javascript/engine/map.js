@@ -231,7 +231,7 @@ const Map = class {
           "A", size/2, size/2, 0, 0, 1, c-size/2, b.y
         ].join(" ")
         b.dx = c
-        b.dy = y
+        b.dy = b.y
       }
       b.y = b.y + 4
       return b

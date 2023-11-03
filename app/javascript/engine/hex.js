@@ -52,6 +52,7 @@ const Hex = class {
     b: { fill: "url(#brush-pattern)" },
     j: { fill: "url(#jungle-pattern)" },
     s: { fill: "url(#sand-pattern)" },
+    r: { fill: "url(#rough-pattern)" },
     m: { fill: "url(#marsh-pattern)" },
     g: { fill: "url(#grain-pattern)" },
   }
@@ -60,7 +61,7 @@ const Hex = class {
     f: { stroke: "#963", strokeWidth: 3 },
     w: { stroke: "#BBB", strokeWidth: 8, strokeLinecap: "round" },
     b: { stroke: "#060", strokeWidth: 8, strokeLinecap: "round" },
-    c: { stroke: "#420", strokeWidth: 8, strokeLinecap: "round" },
+    c: { stroke: "#320", strokeWidth: 8, strokeLinecap: "round" },
   }
 
   borderDecorationStyles = {
@@ -262,6 +263,23 @@ const Hex = class {
             "L", this.xCorner(i/2 + 3, inset), this.yCorner(i/2 + 3, inset)
           ]
         )
+      }
+    } else if (this.buildingShape === "h") {
+      const size = 15
+      for (let i = 0; i < 4; i++) {
+        const x = size*2*Math.sin((i+0.5)/2 * Math.PI)
+        const y = size*2*Math.cos((i+0.5)/2 * Math.PI)
+        path = path.concat([
+          "M", this.xRotated(dir, x-size, y-size), this.yRotated(dir, x-size, y-size),
+          "L", this.xRotated(dir, x+size, y-size), this.yRotated(dir, x+size, y-size),
+          "L", this.xRotated(dir, x+size, y+size), this.yRotated(dir, x+size, y+size),
+          "L", this.xRotated(dir, x-size, y+size), this.yRotated(dir, x-size, y+size),
+          "L", this.xRotated(dir, x-size, y-size), this.yRotated(dir, x-size, y-size),
+          "M", this.xRotated(dir, x-size, y-size), this.yRotated(dir, x-size, y-size),
+          "L", this.xRotated(dir, x+size, y+size), this.yRotated(dir, x+size, y+size),
+          "M", this.xRotated(dir, x-size, y+size), this.yRotated(dir, x-size, y+size),
+          "L", this.xRotated(dir, x+size, y-size), this.yRotated(dir, x+size, y-size),
+        ])
       }
     } else if (this.buildingShape === "m") {
       // Standard building m = center segment, s=sides (rotate to fit), l=lone (not multi-hex)

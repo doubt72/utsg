@@ -186,6 +186,17 @@ export default function MapCounter(props) {
     )
   }
 
+  const feature = () => {
+    const layout = props.counter.featureLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+      </g>
+    )
+  }
+
   const status = () => {
     const layout = props.counter.statusLayout
     if (layout) {
@@ -226,6 +237,7 @@ export default function MapCounter(props) {
       {leadership()}{handling()}{breakdown()}{smoke()}
       {icon()}
       {sponson()}{turretArmor()}{hullArmor()}
+      {feature()}
       {firepower()}{range()}{movement()}
       {marker()}
       {status()}

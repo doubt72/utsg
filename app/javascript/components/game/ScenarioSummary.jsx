@@ -5,6 +5,7 @@ import { Unit } from "../../engine/unit";
 import { Scenario } from "../../engine/scenario";
 import GameMap from "./GameMap";
 import CounterDisplay from "./CounterDisplay";
+import { Feature } from "../../engine/feature";
 
 export default function ScenarioSummary(props) {
   const scenario = new Scenario(props.data)
@@ -21,6 +22,14 @@ export default function ScenarioSummary(props) {
       { scenario.axisFactions.map(f => axisCodeToPill(f)) }
     </span>
   )
+
+  const makeUnit = (data) => {
+    if (data.ft) {
+      return new Feature(data)
+    } else {
+      return new Unit(data)
+    }
+  }
 
   return (
     <div className="scenario-description">
@@ -58,11 +67,11 @@ export default function ScenarioSummary(props) {
                 return (
                   <div key={i} className="flex nowrap">
                     <div className="unit-list-multiplier">{`${unit.x}x`}</div>
-                    <CounterDisplay unit={new Unit(unit)} />
+                    <CounterDisplay unit={makeUnit(unit)} />
                   </div>
                 )
               } else {
-                return <CounterDisplay key={i} unit={new Unit(unit)} />
+                return <CounterDisplay key={i} unit={makeUnit(unit)} />
               }
             })}
           </div>
@@ -72,11 +81,11 @@ export default function ScenarioSummary(props) {
                 return (
                   <div key={i} className="flex nowrap">
                     <div className="unit-list-multiplier">{`${unit.x}x`}</div>
-                    <CounterDisplay unit={new Unit(unit)} />
+                    <CounterDisplay unit={makeUnit(unit)} />
                   </div>
                 )
               } else {
-                return <CounterDisplay key={i} unit={new Unit(unit)} />
+                return <CounterDisplay key={i} unit={makeUnit(unit)} />
               }
             })}
           </div>

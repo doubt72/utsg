@@ -7,9 +7,9 @@ module Utility
         # rubocop:disable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
         # -rubocop:disable Metric/PerceivedComplexity
         def lookup_data
-          leaders.merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
-                 .merge(support_weapons).merge(infantry_guns).merge(at_guns)
-                 .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
+          features.merge(leaders).merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
+                  .merge(support_weapons).merge(infantry_guns).merge(at_guns)
+                  .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
         end
 
         def unit_definition(code)
@@ -31,6 +31,29 @@ module Utility
 
         def all_factions
           %w[ger ita jap uk usa ussr] # fra fin chi axm alm
+        end
+
+        def features
+          {
+            smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
+            blaze: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
+            wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
+            mines: { ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 } },
+            ap_mines: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
+            at_mines: {
+              ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { p: 1 },
+            },
+            foxhole: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },
+            pillbox: {
+              ft: 1, n: "Pillbox", t: "bunker", i: "bunker", o: { da: { f: 3, s: 3, r: 1 } },
+            },
+            bunker: {
+              ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 4, s: 4, r: 1 } },
+            },
+            strongpoint: {
+              ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 } },
+            },
+          }
         end
 
         def leaders

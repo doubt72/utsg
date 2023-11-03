@@ -13,7 +13,7 @@ helmet_paths = [
 
 header = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
 header2 = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">'
-# header2 += '<rect width="200" height="200" style="fill:rgba(0,0,0,0.2);" />'
+# header += '<rect width="100" height="100" style="fill:rgba(0,0,0,0.2);" />'
 footer = '</svg>'
 
 def scale_path(path, xoffset, yoffset, scale)
@@ -38,9 +38,17 @@ def write_text(cx, cy, size, text, file, color = "#000", rotate = "")
     "text-anchor:middle;\">#{text}</text>"
 end
 
-
 def write_circle(cx, cy, radius, file, fill=true, color="#000")
   string = "<circle cx=\"#{cx}\" cy=\"#{cy}\" r=\"#{radius}\""
+  if fill
+    file.puts string + " style=\"fill:#{color};\" />"
+  else
+    file.puts string + " style=\"fill:rgba(0,0,0,0);stroke-width:3;stroke:#{color};\" />"
+  end
+end
+
+def write_ellipse(cx, cy, rx, ry, file, fill=true, color="#000")
+  string = "<ellipse cx=\"#{cx}\" cy=\"#{cy}\" rx=\"#{rx}\" ry=\"#{ry}\""
   if fill
     file.puts string + " style=\"fill:#{color};\" />"
   else
@@ -65,6 +73,21 @@ def write_path(path, file, fill=true, line=3, color = "#000")
     file.puts string + '" style="fill:rgba(0,0,0,0);stroke-width:' + line.to_s +
       ";stroke:#{color};\" />"
   end
+end
+
+def write_path_dash(path, file, line=6, color = "#000")
+  string = '<path d="'
+  string += path.map do |section|
+    section.map do |segment|
+      if segment.is_a? Array
+        segment.map { |n| n.to_s }.join(',')
+      else
+        segment
+      end
+    end.join(' ')
+  end.join(' ')
+  file.puts string + '" style="fill:rgba(0,0,0,0);stroke-width:' + line.to_s +
+    ";stroke:#{color};\" stroke-dasharray=\"3 6\" />"
 end
 
 File.open('leader.svg', 'w') do |file|
@@ -524,6 +547,98 @@ File.open('wheeled-hull.svg', 'w') do |file|
       ["L", x+dx, y+24], ["A", [8, 8], 0, [0, dx > 0 ? 1 : 0], [x, y+32]],
     ], file, true)
   end
+  file.puts footer
+end
+
+File.open('fire.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 35, 90], ["C", [25.2, 90], [-10, 70], [50, 10]], ["C", [50, 50], [82, 34], [82, 70]],
+    ["C", [82, 90], [70, 90], [65, 90]], ["C", [68, 84], [80, 60], [50, 40]],
+    ["C", [50, 60], [32, 56], [30, 70]], ["C", [28, 80], [30, 85], [35, 90]],
+    ["C", [25.2, 90], [-10, 70], [50, 10]],
+  ], file, false, 3, "#C00")
+  file.puts footer
+end
+
+File.open('smoke.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 10, 25], ["A", [10, 10], 0, [0, 1], [30, 20]], ["A", [10, 10], 0, [0, 1], [50, 15]],
+    ["A", [10, 10], 0, [0, 1], [70, 20]], ["A", [10, 10], 0, [0, 1], [90, 25]],
+    ["M", 20, 40], ["A", [10, 10], 0, [0, 1], [40, 35]], ["A", [10, 10], 0, [0, 1], [60, 35]],
+    ["A", [10, 10], 0, [0, 1], [80, 40]],
+    ["M", 10, 60], ["A", [10, 10], 0, [0, 1], [30, 55]], ["A", [10, 10], 0, [0, 1], [50, 50]],
+    ["A", [10, 10], 0, [0, 1], [70, 55]], ["A", [10, 10], 0, [0, 1], [90, 60]],
+    ["M", 20, 75], ["A", [10, 10], 0, [0, 1], [40, 70]], ["A", [10, 10], 0, [0, 1], [60, 70]],
+    ["A", [10, 10], 0, [0, 1], [80, 75]],
+    ["M", 30, 90], ["A", [10, 10], 0, [0, 1], [50, 85]], ["A", [10, 10], 0, [0, 1], [70, 90]],
+  ], file, false)
+  file.puts footer
+end
+
+File.open('wire.svg', 'w') do |file|
+  file.puts header
+  path = [
+    ["M", 14, 90], ["A", [40, 40], 0, [0, 0], [65, 50]], ["A", [25, 40], 0, [0, 0], [35, 10]],
+    ["A", [25, 40], 0, [0, 0], [15, 50]], ["A", [30, 40], 0, [0, 0], [75, 50]],
+
+    ["A", [25, 40], 0, [0, 0], [45, 10]], ["A", [25, 40], 0, [0, 0], [25, 50]],
+    ["A", [30, 40], 0, [0, 0], [85, 50]],
+    
+    ["A", [25, 40], 0, [0, 0], [55, 10]], ["A", [25, 40], 0, [0, 0], [35, 50]],
+    ["A", [40, 40], 0, [0, 0], [86, 90]],
+  ]
+  write_path(path, file, false)
+  write_path_dash(path, file)
+  file.puts footer
+end
+
+File.open('mines.svg', 'w') do |file|
+  file.puts header
+  write_ellipse(50, 42.5, 40, 16, file, false)
+  write_path([
+    ["M", 90, 42.5], ["L", 90, 57.5], ["A", [40, 16], 0, [0, 1], 10, 57.5], ["L", 10, 42.5],
+  ], file, false)
+  write_ellipse(50, 42.5, 25, 10, file, false)
+  write_ellipse(50, 42.5, 7.5, 3, file, true)
+  file.puts footer
+end
+
+File.open('foxhole.svg', 'w') do |file|
+  file.puts header
+  write_ellipse(50, 50, 45, 16, file, true, "#AAA")
+  write_ellipse(50, 50, 45, 16, file, false)
+  # write_path([
+  #   ["M", 5, 50], ["A", [45, 20], 0, [0, 0], 95, 50], ["L", 5, 50],
+  # ], file, true)
+  file.puts footer
+end
+
+File.open('bunker.svg', 'w') do |file|
+  file.puts header
+  path = []
+  0.upto(6) do |i|
+    x0 = 50 + 48 * Math.sin((i-0.5)/3.0 * Math::PI)
+    x1 = 50 + 48 * Math.sin((i+0.5)/3.0 * Math::PI)
+    x2 = 50 + 48 * Math.sin((i+1.5)/3.0 * Math::PI)
+    y0 = 50 + 48 * Math.cos((i-0.5)/3.0 * Math::PI)
+    y1 = 50 + 48 * Math.cos((i+0.5)/3.0 * Math::PI)
+    y2 = 50 + 48 * Math.cos((i+1.5)/3.0 * Math::PI)
+    path.push(["M", (x0+x1*2)/3, (y0+y1*2)/3])
+    path.push(["L", x1, y1])
+    path.push(["L", (x1*2+x2)/3, (y1*2+y2)/3])
+  end
+  write_path(path, file, false, 6)
+  write_path([
+    ["M", 50, 50],
+    ["L", 50, 2.5],
+  ], file, false)
+
+  # write_path([
+  #   ["M", 5, 70], ["L", 30, 30], ["L", 70, 30], ["L", 95, 70], ["L", 5, 70], ["L", 30, 30],
+  #   ["M", 40, 45], ["L", 60, 45]
+  # ], file, false)
   file.puts footer
 end
 

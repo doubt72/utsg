@@ -3,10 +3,24 @@ import React from "react";
 export default function MapHexPatterns() {
   const clear = "rgba(0,0,0,0)"
   const darkStyle = { fill: "rgba(0,0,0,0.16)" }
+  const darkerStyle = { fill: "rgba(0,0,0,0.33)" }
   const forestStyle = { fill: "#070" }
   const brushStyle = { stroke: "#7B7", fill: clear, strokeWidth: 0.2 }
   const jungleStyle = { fill: clear, stroke: "#282", strokeWidth: 0.16 }
   const marshStyle = { fill: clear, stroke: "#77C", strokeWidth: 0.33 }
+
+  const triangle = (cx, cy) => {
+    let path = []
+    let letter = "M"
+    const size = 3
+    for (let i = 0; i < 4; i++) {
+      path = path.concat([
+        letter, cx + size * Math.sin(2*i/3 * Math.PI), cy - size * Math.cos(2*i/3 * Math.PI)
+      ])
+      letter = "L"
+    }
+    return path.join(" ")
+  }
 
   return (
     <defs>
@@ -50,6 +64,13 @@ export default function MapHexPatterns() {
         <circle cx="9" cy="9" r="0.8" style={darkStyle} />
         <circle cx="12" cy="9" r="0.8" style={darkStyle} />
         <circle cx="15" cy="9" r="0.8" style={darkStyle} />
+      </pattern>
+      <pattern id="rough-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
+               width="24" height="24" viewBox="0 0 16 16">
+        <path d={triangle(3, 3)} style={darkerStyle} />
+        <path d={triangle(8, 3)} style={darkerStyle} />
+        <path d={triangle(8, 11)} style={darkerStyle} />
+        <path d={triangle(13, 11)} style={darkerStyle} />
       </pattern>
       <pattern id="marsh-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="24" height="24" viewBox="0 0 10 10">

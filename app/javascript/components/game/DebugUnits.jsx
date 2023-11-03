@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getAPI } from "../../utilities/network";
 import { Unit, unitStatus } from "../../engine/unit";
 import CounterDisplay from "./CounterDisplay";
+import { Feature } from "../../engine/feature";
 
 
 export default function DebugUnits() {
@@ -183,9 +184,17 @@ export default function DebugUnits() {
     })
   }
 
+  const makeUnit = (data) => {
+    if (data.ft) {
+      return new Feature(data)
+    } else {
+      return new Unit(data)
+    }
+  }
+
   return (
     <div className="p1em flex flex-wrap">
-      { Object.values(units).map((unit, i) => svgContainer(new Unit(unit), i)) }
+      { Object.values(units).map((unit, i) => svgContainer(makeUnit(unit), i)) }
       { usedGuns() }
       { usedInfantry() }
       { usedTanks() } { usedSPG() }

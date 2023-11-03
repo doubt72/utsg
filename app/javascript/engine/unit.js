@@ -21,6 +21,10 @@ const unitStatus = {
 //        f: firepower, r: range
 // x: count
 
+// ft: feature
+// h: hindrance
+// d: cover
+
 const Unit = class {
   constructor(data) {
     this.nation = data.c
@@ -86,6 +90,10 @@ const Unit = class {
   select() { this.selected = !this.selected }
 
   get isMarker() {
+    return false
+  }
+
+  get isFeature() {
     return false
   }
 
