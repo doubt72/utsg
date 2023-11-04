@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario302 < Base
-    ID = "302"
-    NAME = "American Armor"
-    ALLIES = ["usa"].freeze
+  class Scenario997 < Base
+    ID = "997"
+    NAME = "Template"
+    ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
 
     class << self
@@ -13,8 +13,8 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1944, 9, 19],
-          location: "Arracourt, France",
+          date: [1942, 8, 23],
+          location: "Stalingrad, Russia",
           author: "The Establishment",
           description:,
           map_data:,
@@ -25,7 +25,9 @@ module Scenarios
 
       def description
         [
-          "Special rules: rookie Germans, fog, special breakdown rules",
+          "Vicious block-to-block fighing.  Russian defenders attempt to hold
+          every inch of ground as the German army enters the city on the first
+          day of the battle of Stalingrad.",
         ]
       end
 
@@ -226,15 +228,13 @@ module Scenarios
       def allied_units
         {
           s: { list: [
-            :usa_leader_6_2,
-            :usa_leader_5_1,
-            [2, :usa_engineer_s],
-            [4, :usa_rifle_s],
-            [2, :usa_m2_browning],
-            :usa_radio_155mm,
-            [2, :usa_m3a1_half_track],
-            [5, :usa_m4_sherman],
-            [2, :usa_m18_hellcat],
+            :ussr_leader_5_1,
+            :ussr_leader_4_1,
+            :ussr_leader_3_1,
+            [6, :ussr_rifle_s],
+            [4, :ussr_smg_s],
+            [4, :ussr_dp_27],
+            [6, :ussr_mc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -242,13 +242,12 @@ module Scenarios
       def axis_units
         {
           s: { list: [
-            :ger_leader_5_1,
-            :ger_leader_3_1,
-            [6, :ger_rifle_s],
-            [2, :ger_mg_42],
-            [4, :ger_panther_a_g],
-            [2, :ger_jagdpanzer_iv],
-            [2, :ger_stug_iv],
+            :ger_leader_6_2,
+            [2, :ger_leader_5_1],
+            [10, :ger_rifle_s],
+            [4, :ger_mg_34],
+            :ger_ft,
+            [2, :ger_sc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

@@ -33,7 +33,7 @@ const Hex = class {
       g: "#D0EED0",
       d: "#EEB",
       s: "#EEE",
-      u: "#D7E7D0",
+      u: "#D7E0D0",
     }[this.map.baseTerrain]
   }
 

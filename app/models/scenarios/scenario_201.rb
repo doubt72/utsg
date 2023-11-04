@@ -26,7 +26,7 @@ module Scenarios
       def description
         [
           "German infantry attempt to dislodge a group of American paratroopers that have
-          organized themselves into a small force.",
+          organized themselves at a strong point.",
         ]
       end
 
