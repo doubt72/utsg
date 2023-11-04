@@ -41,6 +41,7 @@ module Scenarios
           victory_hexes: [],
           allied_setup: { "0" => [] },
           axis_setup: { "0" => [] },
+          base_terrain: "d",
         }
       end
 

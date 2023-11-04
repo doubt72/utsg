@@ -23,6 +23,8 @@ const Map = class {
       this.units.push(array)
     }
 
+    this.baseTerrain = data.base_terrain || "g"
+
     this.showCoords = true
     this.showAllCounters = false
     this.hideCounters = false

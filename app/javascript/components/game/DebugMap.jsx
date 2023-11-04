@@ -10,6 +10,7 @@ export default function DebugMap() {
   const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(true)
+  const [baseTerrain, setBaseTerrain] = useState("g")
 
   const testUnitData = {
     ginf: {
@@ -168,6 +169,7 @@ export default function DebugMap() {
     setMap(
       new Map({
         layout: [15, 15, "x"],
+        base_terrain: "g",
         hexes: [
           [
             { t: "s" },
@@ -445,6 +447,24 @@ export default function DebugMap() {
     console.log(key)
   }
 
+  const baseTerrainName = (t) => {
+    return {
+      g: "grass",
+      d: "desert",
+      s: "snow",
+      u: "urban",
+    }[t]
+  }
+
+  const nextTerrain = (t) => {
+    return {
+      g: "d",
+      d: "s",
+      s: "u",
+      u: "g",
+    }[t]
+  }
+
   return (
     <div className="map-container">
       <div className="flex mb05em">
@@ -465,6 +485,14 @@ export default function DebugMap() {
         </div>
         <div className="custom-button"onClick={() => setHideCounters(sc => !sc)}>
           { hideCounters ? "hide counters" : "show counters" }
+        </div>
+        <div className="custom-button"onClick={() => {
+          const nt = nextTerrain(baseTerrain)
+          console.log(`page: ${nt}`)
+          map.baseTerrain = nt
+          setBaseTerrain(nt)
+        }}>
+          { `base ${baseTerrainName(baseTerrain)}` }
         </div>
       </div>
       <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}

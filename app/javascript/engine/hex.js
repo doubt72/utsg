@@ -27,23 +27,35 @@ const Hex = class {
     }
   }
 
-  elevationStyles = [
-    { fill: "#D7FFD0" },
-    { fill: "#DA7" },
-    { fill: "#B85" },
-    { fill: "#963" },
-    { fill: "#741" },
-    { fill: "#620" },
-  ]
+  get mapColors() {
+    console.log(`hex: ${this.map.baseTerrain}`)
+    return {
+      g: "#D0EED0",
+      d: "#EEB",
+      s: "#EEE",
+      u: "#D7E7D0",
+    }[this.map.baseTerrain]
+  }
+
+  get elevationStyles() {
+    return [
+      { fill: this.mapColors },
+      { fill: "#DA7" },
+      { fill: "#B85" },
+      { fill: "#963" },
+      { fill: "#741" },
+      { fill: "#620" },
+    ]
+  }
 
   // lightWater = "#59C"
   darkWater = "#46A"
 
   terrainStyles = {
     j: { fill: "rgba(47,191,47,0.33)" },
-    s: { fill: "#EEA" },
+    // s: { fill: "#EEA" },
     m: { fill: "#CEE" },
-    g: { fill: "#EFB" },
+    g: { fill: "#DEA" },
     w: { fill: this.darkWater }, // TODO: special shallow beach water?
   }
 

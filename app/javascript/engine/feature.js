@@ -70,10 +70,9 @@ const Feature = class {
       text.push("cover:")
       text.push(`- front ${this.coverSides[0]} / side ${this.coverSides[1]} / rear ${this.coverSides[2]}`)
     }
-    if (this.currentMovement === "A") {
-      text.push("requires all movement")
-    }
-    if (this.baseFirepower) {
+    if (this.baseFirepower === "½") {
+      text.push("halves firepower")
+    } else if (this.baseFirepower) {
       text.push(`firepower ${this.baseFirepower}`)
     }
     if (this.antiTank) {
@@ -83,6 +82,9 @@ const Feature = class {
     if (this.fieldGun) {
       text.push("- anti-armor capable")
       text.push("- half firepower vs. armor")
+    }
+    if (this.currentMovement === "A") {
+      text.push("requires all movement")
     }
     return text
   }

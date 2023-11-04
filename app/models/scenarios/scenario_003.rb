@@ -25,8 +25,8 @@ module Scenarios
 
       def description
         [
-          "Defensive action.  In the opening days of the battle of Smolensk,
-          Soviet troops attempt to slow the German offensive as best they can.",
+          "Defensive action.  In the opening days of the battle of Smolensk during Operation
+          Barbarossa, Soviet troops attempt to slow the German offensive as best they can.",
         ]
       end
 

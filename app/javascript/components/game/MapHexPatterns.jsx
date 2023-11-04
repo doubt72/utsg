@@ -58,6 +58,7 @@ export default function MapHexPatterns() {
       </pattern>
       <pattern id="sand-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="20" height="20" viewBox="0 0 16 16">
+        <rect width="16" height="16" opacity="0.7" style={{ fill: "#DD8" }}/>
         <circle cx="1" cy="1" r="0.8" style={darkStyle} />
         <circle cx="4" cy="1" r="0.8" style={darkStyle} />
         <circle cx="7" cy="1" r="0.8" style={darkStyle} />
