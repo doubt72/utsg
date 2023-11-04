@@ -31,11 +31,35 @@ export default function ScenarioSummary(props) {
     }
   }
 
+  const scenarioNote = () => {
+    console.log(scenario.status)
+    if (!scenario.status) { return "" }
+    let note = "this scenario is an unfinished prototype.  It is still in initial design \
+      and is not yet ready to be played."
+    if (scenario.status === "b") {
+      note = "this scenario is a beta scenario currently in development.  It is still undergoing \
+        testing."
+    }
+    if (scenario.status === "a") {
+      note = "this scenario is a beta scenario currently in development.  It is still undergoing \
+        early testing."
+    }
+    return (
+      <p>
+        <b>NOTE</b>: {note}  Games using this scenario may be deleted at any time; play at your own
+        risk.
+      </p>
+    )
+  }
+
   return (
     <div className="scenario-description">
       <div className="scenario-description-row background-gray">
         <div className="red mr05em monospace">{scenario.code}:</div>
-        <div className="green flex-fill">{scenario.name}</div>
+        <div className="green flex-fill">
+          {scenario.name} {scenario.status ?
+            <span className="red">{`[${scenario.statusName}]`}</span>  : ""}
+        </div>
         <div className="red ml1em">{scenario.displayDate}</div>
         <div className="green ml1em"> {scenario.location}</div>
       </div>
@@ -54,6 +78,7 @@ export default function ScenarioSummary(props) {
           {scenario.description.map((p, i) => {
             return <p key={i}>{p}</p>
           })}
+          {scenarioNote()}
         </div>
         <div>
           <GameMap map={map} scale={0.25} />

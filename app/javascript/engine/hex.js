@@ -28,7 +28,6 @@ const Hex = class {
   }
 
   get mapColors() {
-    console.log(`hex: ${this.map.baseTerrain}`)
     return {
       g: "#D0EED0",
       d: "#EEB",

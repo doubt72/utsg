@@ -6,7 +6,7 @@ module Utility
 
     class << self
       def all_scenarios(options = {})
-        scenarios = ::Scenarios.constants.reject { |k| k == :Base }
+        scenarios = ::Scenarios.constants.reject { |k| %i[Base Scenario999].include?(k) }
                                .map { |k| ::Scenarios.const_get(k).index_record }
         filter(scenarios, :string, options)
         filter(scenarios, :allies, options)

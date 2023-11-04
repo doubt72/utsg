@@ -6,6 +6,7 @@ module Scenarios
     NAME = "Hellfire Pass"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "p"
 
     class << self
       def generate

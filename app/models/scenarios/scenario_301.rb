@@ -6,6 +6,7 @@ module Scenarios
     NAME = "Entering the Gates"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "p"
 
     class << self
       def generate

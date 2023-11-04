@@ -6,6 +6,7 @@ module Scenarios
     NAME = "Into the the Gap"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "b"
 
     class << self
       # TODO: documentation for field descriptions

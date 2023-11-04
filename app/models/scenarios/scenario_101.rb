@@ -6,6 +6,7 @@ module Scenarios
     NAME = "Desert Sands"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "p"
 
     class << self
       def generate
@@ -26,8 +27,8 @@ module Scenarios
       def description
         [
           "The Germans attempt to flank the British at the first battle of El Alamein.
-          The 18th Indian infantry brigade attempts to blunt the initial attack before
-          additional armored reinforcements can arrive.",
+          British infantry attempts to blunt the initial attack before additional armored
+          reinforcements can arrive.",
         ]
       end
 
@@ -389,17 +390,20 @@ module Scenarios
       def allied_units
         {
           s: { list: [
-            :uk_leader_5_2,
+            :uk_leader_5_1,
             :uk_leader_4_1,
-            [8, :uk_line_s],
-            [2, :uk_elite_crew_t],
+            [5, :uk_line_s],
+            [4, :uk_elite_crew_t],
             [2, :uk_vickers_mg],
-            [2, :uk_boys_at_rifle],
+            [2, :uk_qf_25_pounder],
             [2, :uk_qf_6pdr_mk_ii],
-            [2, :uk_universal_carrier],
             [2, :uk_matilda_ii],
-            [4, :uk_crusader_iii],
-            [2, :uk_matilda_ii_cs],
+          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
+          t3: { list: [
+            :uk_leader_5_2,
+            [4, :uk_line_s],
+            [2, :uk_universal_carrier],
+            [5, :uk_crusader_iii],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -413,7 +417,7 @@ module Scenarios
             [2, :ger_mg_34],
             [2, :ger_sdkfz_250_1],
             :ger_sdkfz_221,
-            [5, :ger_pzkpfw_iii_l],
+            [6, :ger_pzkpfw_iii_l],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

@@ -6,6 +6,7 @@ module Scenarios
     NAME = "The Road to Izium"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "p"
 
     class << self
       def generate

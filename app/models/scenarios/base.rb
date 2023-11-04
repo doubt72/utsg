@@ -3,12 +3,14 @@
 module Scenarios
   class Base
     ID = ""
+    STATUS = nil
 
     class << self
       def index_record
         {
           id: self::ID,
           name: self::NAME,
+          status: self::STATUS,
           string: self::NAME.downcase,
           allies: self::ALLIES,
           axis: self::AXIS,

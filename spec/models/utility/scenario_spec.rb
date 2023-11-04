@@ -29,7 +29,7 @@ RSpec.describe Utility::Scenario do
   describe "all_scenarios" do
     it "gets all scenarios with no filters" do
       scenarios = described_class.all_scenarios
-      expect(scenarios.length).to be == Scenarios.constants.length - 1
+      expect(scenarios.length).to be == Scenarios.constants.length - 2
     end
 
     it "gets spec scenario when filtering by string" do

@@ -488,7 +488,6 @@ export default function DebugMap() {
         </div>
         <div className="custom-button"onClick={() => {
           const nt = nextTerrain(baseTerrain)
-          console.log(`page: ${nt}`)
           map.baseTerrain = nt
           setBaseTerrain(nt)
         }}>

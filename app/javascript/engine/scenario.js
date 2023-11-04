@@ -6,6 +6,7 @@ const Scenario = class {
     this.code = data.id
     this.name = data.name
     this.author = data.metadata.author
+    this.status = data.status
 
     this.alliedFactions = data.allies
     this.axisFactions = data.axis
@@ -25,6 +26,14 @@ const Scenario = class {
 
   get displayDate() {
     return getFormattedDate(new Date(this.date[0], this.date[1], this.date[2]))
+  }
+
+  get statusName() {
+    return {
+      p: "PROTOTYPE",
+      a: "ALPHA",
+      b: "BETA",
+    }[this.status]
   }
 
   get alliedUnitList() {

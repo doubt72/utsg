@@ -6,6 +6,7 @@ module Scenarios
     NAME = "Clash of Steel"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "p"
 
     class << self
       def generate

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario998 < Base
-    ID = "998"
+  class Scenario104 < Base
+    ID = "104"
     NAME = "Broken Ground"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "p"
 
     class << self
       def generate

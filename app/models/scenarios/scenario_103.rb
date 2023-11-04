@@ -6,6 +6,7 @@ module Scenarios
     NAME = "Less Sand than Stone"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
+    STATUS = "p"
 
     class << self
       def generate

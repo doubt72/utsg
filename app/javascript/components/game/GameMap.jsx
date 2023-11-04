@@ -35,8 +35,8 @@ export default function GameMap(props) {
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
   }, [
-    props.map, props.map?.baseTerrain, props.showCoords, props.showStatusCounters,
-    props.hideCounters, updateUnitSelected
+    props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
+    props.map?.baseTerrain // debugging only
   ])
 
   useEffect(() => {
@@ -67,8 +67,6 @@ export default function GameMap(props) {
 
   const unitSelection = (x, y, counter) => {
     if (counter.trueIndex === undefined) { return }
-    const key = `${x}-${y}-${counter.trueIndex}`
-    console.log(key)
     props.map.units[y][x][counter.trueIndex].select()
     setUpdateUnitSelected(s => s+1)
     props.counterCallback(x, y, counter)

@@ -6,6 +6,7 @@ module Scenarios
     NAME = "Block by Block"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
+    STATUS = "a"
 
     class << self
       def generate
