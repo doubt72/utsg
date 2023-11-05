@@ -354,13 +354,13 @@ const Counter = class {
       this.target.immobilized || this.target.isWreck) {
       color = this.red
     } else {
-      if (this.target.tracked || this.target.crewed || this.target.wheeled ) {
+      if (this.target.isTracked || this.target.crewed || this.target.isWheeled ) {
         style.stroke = "black"
       }
       if (this.target.crewed) {
         style.fill = "black"
         color = "white"
-      } else if (this.target.wheeled) {
+      } else if (this.target.isWheeled) {
         style.fill = "white"
       }
       if (value === 0) { value = "-" }

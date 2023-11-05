@@ -10,7 +10,10 @@ export default function DebugMap() {
   const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(true)
+  const [showLOS, setShowLOS] = useState(false)
+  const [debugLOS, setDebugLOS] = useState(false)
   const [baseTerrain, setBaseTerrain] = useState("g")
+  const [night, setNight] = useState(false)
 
   const testUnitData = {
     ginf: {
@@ -483,6 +486,18 @@ export default function DebugMap() {
         <div className="custom-button"onClick={() => setShowStatusCounters(ssc => !ssc)}>
           { showStatusCounters ? "status counters" : "status badges" }
         </div>
+        <div className="custom-button"onClick={() => setShowLOS(sl => !sl)}>
+          { showLOS ? "show LOS" : "show stacks" }
+        </div>
+        {
+          showLOS ? 
+          <div className="custom-button"onClick={() => {
+            setDebugLOS(sl => !sl)
+            map.debug = !map.debug
+          }}>
+            { debugLOS ? "debug LOS on" : "debug LOS off" }
+          </div> : ""
+        }
         <div className="custom-button"onClick={() => setHideCounters(sc => !sc)}>
           { hideCounters ? "hide counters" : "show counters" }
         </div>
@@ -493,9 +508,16 @@ export default function DebugMap() {
         }}>
           { `base ${baseTerrainName(baseTerrain)}` }
         </div>
+        <div className="custom-button"onClick={() => {
+          map.night = !map.night
+          setNight(nt => !nt)
+        }}>
+          { night ? "nighttime" : "daytime" }
+        </div>
       </div>
       <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-               hideCounters={hideCounters} hexCallback={hexSelection} counterCallback={unitSelection} />
+               showLOS={showLOS} hideCounters={hideCounters}
+               hexCallback={hexSelection} counterCallback={unitSelection} />
     </div>
   )
 }

@@ -47,12 +47,15 @@ const Hex = class {
     ]
   }
 
+  get night() {
+    return this.map.night
+  }
+
   // lightWater = "#59C"
   darkWater = "#46A"
 
   terrainStyles = {
     j: { fill: "rgba(47,191,47,0.33)" },
-    // s: { fill: "#EEA" },
     m: { fill: "#CEE" },
     g: { fill: "#DEA" },
     w: { fill: this.darkWater }, // TODO: special shallow beach water?
@@ -137,6 +140,12 @@ const Hex = class {
     return [0, 1, 2, 3, 4, 5, 6].map(i => {
       return `${this.xCorner(i)},${this.yCorner(i)}`
     }).join(" ")
+  }
+
+  edgeCoords(dir) {
+    return [
+      "M", this.xCorner(dir), this.yCorner(dir), "L", this.xCorner(dir+1), this.yCorner(dir+1),
+    ].join(" ")
   }
 
   // "Solid" terrain (i.e., surrounded), no need for curves

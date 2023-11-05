@@ -1,6 +1,9 @@
 const unitStatus = {
   Normal: 0, Tired: 1, Pinned: 2, Broken: 3, Activated: 4, Exhausted: 5, Wreck: 6
 }
+const movementType = {
+  Foot: 0, Tracked: 1, Wheeled: 2, Gun: 3
+}
 
 // c: nation, t: type, n: name, i: icon, y: year
 // m: morale (2-6)
@@ -62,8 +65,16 @@ const Unit = class {
     this.breakdownRoll = data.o?.bd
 
     this.turreted = !!data.o?.u
-    this.tracked = !!data.o?.k
-    this.wheeled = !!data.o?.w
+    this.movementType = movementType.Foot
+    if (data.o?.k) {
+      this.movementType = movementType.Tracked
+    }
+    if (data.o?.w) {
+      this.movementType = movementType.Wheeled
+    }
+    if (this.crewed) {
+      this.movementType = movementType.Gun
+    }
 
     if (data.o?.ha !== undefined) {
       this.hullArmor = [data.o.ha.f, data.o.ha.s, data.o.ha.r]
@@ -123,6 +134,14 @@ const Unit = class {
 
   get isWreck() {
     return this.status === unitStatus.Wreck
+  }
+
+  get isTracked() {
+    return this.movementType === movementType.Tracked
+  }
+
+  get isWheeled() {
+    return this.movementType === movementType.Wheeled
   }
 
   get noFire() {
@@ -230,9 +249,9 @@ const Unit = class {
     }
     if (this.baseMovement > 0) {
       text.push(`movement ${this.currentMovement}`)
-      if (this.tracked) {
+      if (this.isTracked) {
         text.push("- tracked movement")
-      } else if (this.wheeled) {
+      } else if (this.isWheeled) {
         text.push("- wheeled movement")
       } else if (this.crewed) {
         text.push("- man handled")
@@ -313,4 +332,4 @@ const Unit = class {
   }
 }
 
-export { Unit, unitStatus }
+export { Unit, unitStatus, movementType }

@@ -6,6 +6,8 @@ import MapHex from "./MapHex";
 import MapHexOverlay from "./MapHexOverlay";
 import MapCounter from "./MapCounter";
 import MapCounterOverlay from "./MapCounterOverlay";
+import MapLOSOverlay from "./MapLOSOverlay";
+import MapLOSDebugOverlay from "./MapLOSDebugOverlay";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -36,16 +38,28 @@ export default function GameMap(props) {
     }))
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
-    props.map?.baseTerrain // debugging only
+    props.map?.baseTerrain, props.map?.night // debugging only, don't change in actual games
   ])
 
   useEffect(() => {
     if (overlay.x < 0) { return }
     if (!overlay.show) { setOverlayDisplay(""); return }
-    setOverlayDisplay(
-      <MapCounterOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay}
-                         selectionCallback={unitSelection} />
-    )
+    if (props.showLOS) {
+      const counters = props.map.countersAt(overlay.x, overlay.y).filter(c => !c.u.isFeature)
+      if (counters.length < 1) { return }
+      if (props.map.debug) { // debugging only, never set in actual games
+        setOverlayDisplay(<MapLOSDebugOverlay x={overlay.x} y={overlay.y} map={props.map} />)
+      } else {
+        setOverlayDisplay(
+          <MapLOSOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay} />
+        )
+      }
+    } else {
+      setOverlayDisplay(
+        <MapCounterOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay}
+                           selectionCallback={unitSelection} />
+      )
+    }
   }, [overlay.show, overlay.x, overlay.y])
 
   const hexSelection = (x, y) => {
@@ -79,8 +93,9 @@ export default function GameMap(props) {
       <MapHexPatterns />
       {hexDisplay}
       {hexDisplayOverlays}
+      {props.showLOS ? overlayDisplay : ""}
       {counterDisplay}
-      {overlayDisplay}
+      {props.showLOS ? "" : overlayDisplay}
     </svg>
   )
 }
@@ -90,6 +105,7 @@ GameMap.propTypes = {
   scale: PropTypes.number,
   showCoords: PropTypes.bool,
   showStatusCounters: PropTypes.bool,
+  showLOS: PropTypes.bool,
   hideCounters: PropTypes.bool,
   hexCallback: PropTypes.func,
   counterCallback: PropTypes.func,

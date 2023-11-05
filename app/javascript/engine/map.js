@@ -1,3 +1,4 @@
+import { Point, doesIntersect, orientation } from "../utilities/lines"
 import { Counter } from "./counter"
 import { Hex } from "./hex"
 import { Marker, markerType } from "./marker"
@@ -24,6 +25,7 @@ const Map = class {
     }
 
     this.baseTerrain = data.base_terrain || "g"
+    this.night = data.night
 
     this.showCoords = true
     this.showAllCounters = false
@@ -34,9 +36,12 @@ const Map = class {
     // Other values of width/height will work, but in only really matters for
     // display, and technically we're designing for horizontal 1" (flat-width) hexes.
 
-    // hexes = x: sheets * 8 - 1, y: sheets * 12 - 1
+    // hexes = x: sheets * 8 - 1, y: sheets * 12 - 1 (packed slightly more)
     // 2x1 sheet = 16x10.5" = 15x11 hexes
-    // 4x2 sheet = 32x21" = 31x23 hexes
+    // 3x1 sheet = 24x10.5" = 23x11 hexes
+    // 2x2 sheet = 16x21" = 15x21 hexes
+    // 3x2 sheet = 24x21" = 23x21 hexes
+    // 4x2 sheet = 32x21" = 31x21 hexes
 
     this.height = data[1]
     this.width = data[0]
@@ -90,7 +95,7 @@ const Map = class {
       const r = u.rotates
       const f = u.turreted && !u.isWreck ? u.turretFacing : u.facing
       if (u.turreted && !u.isWreck) {
-        const type = u.wheeled ? markerType.WheeledHull : markerType.TrackedHull
+        const type = u.isWheeled ? markerType.WheeledHull : markerType.TrackedHull
         c.push({ x: x, y: y, u: new Marker(
           { type: type, nation: u.nation, rotates: true, facing: u.facing, x: x, y: y }
         ), s: index++ })
@@ -131,6 +136,113 @@ const Map = class {
       }
     }
     return c
+  }
+
+  // All direction indexes are normalized here and in hexPath to be 1-6, not
+  // 0-5. This made debugging easier, is consistent with the configuration data,
+  // makes simpler existence checks for return values (since directions are
+  // always truthy) at the expense of adding and subtracting numbers more than
+  // would otherwise be needed.  Not sure if there are any ideal choices here,
+  // all of this is quite complicated either way.
+  hexIntersection(hex, p0, p1, fromEdge, fromCorner) {
+    for (let i = 0; i < 6; i++) {
+      const h0 = new Point(hex.xCorner(i), hex.yCorner(i))
+      // Prioritize corner intersections (technically each corner intersects two
+      // edges as well, but if we hit a corner, that's what we care about);
+      // exclude opposite corners if (1) it's the starting hex but doesn't
+      // intersect the line or (2) it's a corner we just came from
+      if (orientation(p0, h0, p1) === 0 && h0.onSegment(p0, p1) && i+1 !== fromCorner) {
+        const center = new Point(hex.xOffset, hex.yOffset)
+        const o = orientation(p0, center, p1)
+        if (o === 0) {
+          return { c: i+1 }
+        } else {
+          return { cx: i+1, o: o }
+        }
+      }
+    }
+    for (let i = 0; i < 6; i++) {
+      const h0 = new Point(hex.xCorner(i), hex.yCorner(i))
+      const h1 = new Point(hex.xCorner(i+1), hex.yCorner(i+1))
+      // Exclude (1) edges we came from and (2) edges that intersect a corner we
+      // came from if we hit it at an angle that doesn't match a hex edge
+      if (doesIntersect(h0, h1, p0, p1) && i+1 !== fromEdge) {
+        const nextCorner = fromCorner === 1 ? 6 : fromCorner - 1
+        if (i+1 !== fromCorner && i+1 !== nextCorner) {
+          return { e: i+1 }
+        }
+      }
+    }
+    console.log("this shouldn't happen, something went wrong")
+  }
+
+  // We care about both specific edges and hexes traversed for the purposes of
+  // LOS and hindrance, so this is actually quite tricky.  And we need to make
+  // sure that we don't backtrack which is why we need to keep track of what
+  // direction we came from so we can send that back to the intersection code so
+  // it will ignore intersections we don't want.
+  hexPath(x0, y0, x1, y1) {
+    const hexes = []
+    if (x0 === x1 && y0 === y1) { return hexes }
+
+    let hex = this.mapHexes[y0][x0]
+    const target = this.mapHexes[y1][x1]
+    const p0 = new Point(hex.xOffset, hex.yOffset)
+    const p1 = new Point(target.xOffset, target.yOffset)
+
+    let count = 0
+    let fromEdge = null
+    let fromCorner = null
+    while (hex.x !== target.x || hex.y !== target.y) {
+      // Should never ever need this but infinite loops are very, very bad
+      if (count++ > 99) { break }
+      const check = this.hexIntersection(hex, p0, p1, fromEdge, fromCorner)
+      if (check?.e) { // Edge crossing
+        // Add edge crossed, move to next hex
+        hexes.push({ e: check.e === 1 ? 6 : check.e - 1, eh: hex })
+        hex = this.hexNeighbors(hex.x, hex.y)[check.e - 1]
+        hexes.push({ h: hex})
+
+        fromEdge = check.e > 3 ? check.e - 3 : check.e + 3
+        fromCorner = null
+      } else if (check?.c) { // Corner crossings - travelling along hex edge
+        // Add edge traversed, move to hex at end of traversal
+        hex = this.hexNeighbors(hex.x, hex.y)[check.c - 1]
+        const edge = check.c > 3 ? check.c - 3 : check.c + 3
+        hexes.push({ e: edge, eh: hex })
+        const dir = check.c == 1 ? 6 : check.c - 1
+        hex = this.hexNeighbors(hex.x, hex.y)[dir - 1]
+        hexes.push({ h: hex })
+
+        fromCorner = check.c > 3 ? check.c - 3 : check.c + 3
+        fromEdge = null
+      } else if (check?.cx) { // Corner crossing - hex-to-hex
+        // Technically we cross the edge at the...  Edge of the edge, then move
+        // to next hex.  An...  Edge case, but can happen at long range
+        let dir = check.o > 0 ? check.cx : check.cx - 1
+        if (dir < 1) { dir += 6 }
+        hexes.push({ e: dir === 1 ? 6 : dir - 1, eh: hex })
+        hex = this.hexNeighbors(hex.x, hex.y)[dir - 1]
+        hexes.push({ h: hex })
+
+        fromCorner = check.o > 0 ? check.cx - 2 : check.cx + 2
+        if (fromCorner < 1) { fromCorner += 6 }
+        if (fromCorner > 6) { fromCorner -= 6 }
+        fromEdge = null
+      } else {
+        // If we had to break out of an infinite loop, we'll probably hit this
+        console.log("this shouldn't happen, something went wrong")
+      }
+    }
+    return hexes
+  }
+
+  hexLOS(x0, y0, x1, y1) {
+    if (x0 === x1 && y0 === y1) {
+      return true
+    }
+    // const path = this.hexPath(x0, y0, x1, y1)
+    return false
   }
 
   overlayLayout(x, y, size) {

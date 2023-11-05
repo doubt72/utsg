@@ -32,7 +32,6 @@ export default function ScenarioSummary(props) {
   }
 
   const scenarioNote = () => {
-    console.log(scenario.status)
     if (!scenario.status) { return "" }
     let note = "this scenario is an unfinished prototype.  It is still in initial design \
       and is not yet ready to be played."
