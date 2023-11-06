@@ -11,7 +11,7 @@ export default function MapCounterOverlay(props) {
   const [update, setUpdate] = useState("")
 
   useEffect(() => {
-    const counters = props.map.countersAt(props.x, props.y)
+    const counters = props.map.counterDataAt(props.x, props.y)
     const layout = props.map.overlayLayout(props.x, props.y, counters.length)
     const helpOverlays = []
     const selectionOverlays = []

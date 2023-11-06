@@ -6,8 +6,8 @@ import MapHex from "./MapHex";
 import MapHexOverlay from "./MapHexOverlay";
 import MapCounter from "./MapCounter";
 import MapCounterOverlay from "./MapCounterOverlay";
-import MapLOSOverlay from "./MapLOSOverlay";
-import MapLOSDebugOverlay from "./MapLOSDebugOverlay";
+import MapLosOverlay from "./MapLosOverlay";
+import MapLosDebugOverlay from "./MapLosDebugOverlay";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -16,6 +16,7 @@ export default function GameMap(props) {
   const [overlay, setOverlay] = useState({ show: false, x: -1, y: -1 })
   const [overlayDisplay, setOverlayDisplay] = useState("")
   const [updateUnitSelected, setUpdateUnitSelected] = useState(0)
+  const [counterLosOverlay, setCounterLosOverlay] = useState("")
 
   useEffect(() => {
     if (!props.map) { return }
@@ -43,16 +44,21 @@ export default function GameMap(props) {
 
   useEffect(() => {
     if (overlay.x < 0) { return }
-    if (!overlay.show) { setOverlayDisplay(""); return }
-    if (props.showLOS) {
-      const counters = props.map.countersAt(overlay.x, overlay.y).filter(c => !c.u.isFeature)
+    if (!overlay.show) { setOverlayDisplay(""); setCounterLosOverlay(""); return }
+    if (props.showLos) {
+      const counters = props.map.counterDataAt(overlay.x, overlay.y).filter(c => !c.u.isFeature)
       if (counters.length < 1) { return }
       if (props.map.debug) { // debugging only, never set in actual games
-        setOverlayDisplay(<MapLOSDebugOverlay x={overlay.x} y={overlay.y} map={props.map} />)
+        setOverlayDisplay(
+          <MapLosDebugOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay} />
+        )
       } else {
         setOverlayDisplay(
-          <MapLOSOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay} />
+          <MapLosOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay} />
         )
+        setCounterLosOverlay(props.map.countersAt(overlay.x, overlay.y).map((c, i) => 
+          <MapCounter key={i} counter={c} ovCallback={() => {}} />
+        ))
       }
     } else {
       setOverlayDisplay(
@@ -93,9 +99,9 @@ export default function GameMap(props) {
       <MapHexPatterns />
       {hexDisplay}
       {hexDisplayOverlays}
-      {props.showLOS ? overlayDisplay : ""}
       {counterDisplay}
-      {props.showLOS ? "" : overlayDisplay}
+      {overlayDisplay}
+      {counterLosOverlay}
     </svg>
   )
 }
@@ -105,7 +111,7 @@ GameMap.propTypes = {
   scale: PropTypes.number,
   showCoords: PropTypes.bool,
   showStatusCounters: PropTypes.bool,
-  showLOS: PropTypes.bool,
+  showLos: PropTypes.bool,
   hideCounters: PropTypes.bool,
   hexCallback: PropTypes.func,
   counterCallback: PropTypes.func,

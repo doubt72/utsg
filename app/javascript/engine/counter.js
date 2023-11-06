@@ -406,7 +406,7 @@ const Counter = class {
     ].join(" ")
     let value = ""
     let size = 11
-    if (this.target.blocksLOS) {
+    if (this.target.blocksLos) {
       value = "blocks LOS"
     } else if (this.target.hindrance) {
       value = `hindrance ${this.target.hindrance}`

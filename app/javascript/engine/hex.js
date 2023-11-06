@@ -1,9 +1,11 @@
+import { Terrain } from "./terrain"
+
 const Hex = class {
   constructor(x, y, data, map) {
     this.map = map
     this.x = x
     this.y = y
-    this.terrain = data.t
+    this.baseTerrain = data.t
     this.direction = data.d
     this.road = !!data.r
     if (this.road) {
@@ -25,6 +27,117 @@ const Hex = class {
       this.buildingStyle = data.st.s
       this.buildingShape = data.st.sh
     }
+  }
+
+  get terrain() {
+    return new Terrain(this)
+  }
+
+  terrainBorderEdge(dir) {
+    const neighbor = this.map.neighborAt(this.x, this.y, dir)
+    const same = this.borderEdges?.includes(dir)
+    const opp = neighbor?.borderEdges?.includes(dir > 3 ? dir - 3 : dir + 3)
+    if (same && opp) {
+      console.log(`edge along ${this.x},${this.y}-${dir} has misconfiged border on both sides`)
+    }
+    if (same) { return this.terrain.borderAttr }
+    // Border might be on opposite hex, we only configure one
+    if (opp) { return neighbor.terrain.borderAttr }
+    // If neither, no effect on hindrance or LOS
+    return { hindrance: 0, los: true }
+  }
+
+  get hindrance() {
+    let smoke = 0
+    const counters = this.map.counterDataAt(this.x, this.y)
+    for (let i = 0; i < counters.length; i++) {
+      const check = counters[i].u.hindrance
+      if (check) { smoke += check }
+    }
+    return this.terrain.baseAttr.hindrance + smoke
+  }
+
+  edgeHindrance(dir) {
+    return this.terrainBorderEdge(dir).hindrance
+  }
+
+  alongEdgeHindrance(dir) {
+    const neighbor = this.map.neighborAt(this.x, this.y, dir)
+    let rc = this.terrainBorderEdge(dir).hindrance
+    // If terrain crosses the edge, it may hinder (terrain considered to run off edge)
+    if (this.baseTerrain === (neighbor?.baseTerrain || this.baseTerrain)) {
+      rc += this.terrain.baseAttr.hindrance
+    }
+    let lSmoke = 0
+    let rSmoke = 0
+    const counters = this.map.counterDataAt(this.x, this.y)
+    for (let i = 0; i < counters.length; i++) {
+      const check = counters[i].u.hindrance
+      if (check) { lSmoke += check }
+    }
+    if (neighbor) {
+      const counters = this.map.counterDataAt(neighbor.x, neighbor.y)
+      for (let i = 0; i < counters.length; i++) {
+        const check = counters[i].u.hindrance
+        if (check) { rSmoke += check }
+      }
+    } else {
+      rSmoke = lSmoke
+    }
+    rc += Math.min(lSmoke, rSmoke)
+    // TODO Hinder if there are fences (or more) on both sides of the starting or ending edge
+    return rc
+  }
+
+  get los() {
+    if (this.building) { return false }
+    // Blaze blocks LOS
+    const counters = this.map.counterDataAt(this.x, this.y)
+    for (let i = 0; i < counters.length; i++) {
+      if (counters[i].u.blocksLos) { return false }
+    }
+    return this.terrain.baseAttr.los
+  }
+
+  edgeLos(dir) {
+    return this.terrainBorderEdge(dir).los
+  }
+
+  alongEdgeLos(dir) {
+    const neighbor = this.map.neighborAt(this.x, this.y, dir)
+    if (!this.terrainBorderEdge(dir).los) { return false }
+    // If terrain crosses the edge, it may block (terrain considered to run off edge)
+    if (this.baseTerrain === (neighbor?.baseTerrain || this.baseTerrain)) {
+      if (!this.terrain.baseAttr.los) { return false }
+    }
+    // Handle blazes
+    let lBlock = false
+    let rBlock = false
+    const counters = this.map.counterDataAt(this.x, this.y)
+    for (let i = 0; i < counters.length; i++) {
+      if (counters[i].u.blocksLos) { lBlock = true }
+    }
+    if (neighbor) {
+      const counters = this.map.counterDataAt(neighbor.x, neighbor.y)
+      for (let i = 0; i < counters.length; i++) {
+        if (counters[i].u.blocksLos) { rBlock = true }
+      }
+    } else {
+      rBlock = lBlock
+    }
+    if (lBlock && rBlock) { return false }
+    // TODO Block if there is terrain on both sides of the starting or ending edge
+    // Buildings block if they cross edge
+    if (this.building && neighbor?.building) {
+      const same = this.direction === dir
+      const opp = this.direction === dir > 3 ? dir - 3 : dir + 3
+      const blockLeft = (this.buildingStyle === "m" && (same || opp )) ||
+        (this.buildingStyle === "s" && opp)
+      const blockRight = (neighbor.buildingStyle === "m" && (same || opp )) ||
+        (neighbor.buildingStyle === "s" && same)
+      if (blockLeft && blockRight) { return false }
+    }
+    return true
   }
 
   get mapColors() {
@@ -127,7 +240,7 @@ const Hex = class {
     let all = true
     let none = true
     const edges = this.map.hexNeighbors(this.x, this.y).map(h => {
-      const check = !h || h.terrain === this.terrain
+      const check = !h || h.baseTerrain === this.baseTerrain
       if (check) { none = false } else { all = false }
       return check ? 1 : 0
     })
@@ -144,7 +257,7 @@ const Hex = class {
 
   edgeCoords(dir) {
     return [
-      "M", this.xCorner(dir), this.yCorner(dir), "L", this.xCorner(dir+1), this.yCorner(dir+1),
+      "M", this.xCorner(dir-1), this.yCorner(dir-1), "L", this.xCorner(dir), this.yCorner(dir),
     ].join(" ")
   }
 
@@ -154,8 +267,8 @@ const Hex = class {
   }
 
   get background() {
-    if (this.backgroundTerrain && this.terrainStyles[this.terrain]) {
-      return this.terrainStyles[this.terrain]
+    if (this.backgroundTerrain && this.terrainStyles[this.baseTerrain]) {
+      return this.terrainStyles[this.baseTerrain]
     }
     if (this.elevationEdges === "all") {
       return this.elevationStyles[this.elevation || 0]
@@ -186,7 +299,7 @@ const Hex = class {
 
   // Draw the orchard hex, rotated by direction
   get orchardDisplay() {
-    if (this.terrain !== "d") { return false }
+    if (this.baseTerrain !== "d") { return false }
     const trees = []
     for (let x = 0; x < 3; x++) {
       for (let y = 0; y < 2; y++) {
@@ -377,10 +490,10 @@ const Hex = class {
   }
 
   get terrainCircle() {
-    if (this.terrainEdges || this.terrain === "o") { return false }
+    if (this.terrainEdges || this.baseTerrain === "o") { return false }
     return {
       x: this.xOffset, y: this.yOffset, r: this.narrow/2 - 5,
-      style: this.terrainStyles[this.terrain] || { fill: "rgba(0,0,0,0" }
+      style: this.terrainStyles[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
     }
   }
 
@@ -478,13 +591,13 @@ const Hex = class {
     if (!edges || edges === "all") { return false }
     return {
       d: this.generatePaths(edges, 4),
-      style: this.terrainStyles[this.terrain] || { fill: "rgba(0,0,0,0" }
+      style: this.terrainStyles[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
     }
   }
 
   get terrainPattern() {
-    if (!this.patternStyles[this.terrain]) { return false }
-    return this.patternStyles[this.terrain]
+    if (!this.patternStyles[this.baseTerrain]) { return false }
+    return this.patternStyles[this.baseTerrain]
   }
 
   get elevationContinuous() {
@@ -566,7 +679,7 @@ const Hex = class {
     const width = this.roadType === "p" ? 10 : 28
     return {
       fill: "rgba(0,0,0,0)",
-      strokeWidth: (["j", "f", "b"].includes(this.terrain) || this.river) ? width : 0,
+      strokeWidth: (["j", "f", "b"].includes(this.baseTerrain) || this.river) ? width : 0,
       stroke: this.elevationStyles[this.elevation || 0]["fill"],
       strokeLinejoin: "round",
     }

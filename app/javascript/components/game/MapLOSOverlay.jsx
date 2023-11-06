@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Map } from "../../engine/map";
 
-export default function MapLOSOverlay(props) {
+export default function MapLosOverlay(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")
 
   useEffect(() => {
@@ -12,14 +12,25 @@ export default function MapLOSOverlay(props) {
           props.map.mapHexes.map((row, y) =>
             row.map((hex, x) => {
               const key = `${x}-${y}`
-              const value = props.map.hexLOS(props.x, props.y, x, y)
-              if (x === props.x && y === props.y || value === true) {
+              const value = props.map.hexLos(props.x, props.y, x, y)
+              if (value === true) {
                 return <polygon key={key} points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }}
                                 onMouseEnter={() => props.setOverlay({ show: false, x: 0, y: 0 })} />
               }
               if (value === false) {
-                return <polygon key={key} points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0.4)" }}
-                                onMouseEnter={() => props.setOverlay({ show: false, x: 0, y: 0 })} />
+                const offset = props.map.counterDataAt(x, y).length * 5 - 5
+                const xd = hex.xOffset + offset
+                const yd = hex.yOffset + 20 - offset
+                return (
+                  <g key={key}>
+                    <text x={xd} y={yd} fontSize={80}
+                          textAnchor="middle" fontFamily="monospace" style={{ fill: "rgba(0,0,0,0.2)" }}>
+                      &#8416;
+                    </text>
+                    <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0.4)" }}
+                             onMouseEnter={() => props.setOverlay({ show: false, x: 0, y: 0 })} />
+                  </g>
+                )
               }
               return (
                 <g key={key}>
@@ -43,7 +54,7 @@ export default function MapLOSOverlay(props) {
   )
 }
 
-MapLOSOverlay.propTypes = {
+MapLosOverlay.propTypes = {
   map: PropTypes.instanceOf(Map),
   setOverlay: PropTypes.func,
   x: PropTypes.number,

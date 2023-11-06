@@ -26,7 +26,7 @@ const Feature = class {
 
     this.fieldGun = !!data.o?.g
     this.antiTank = !!data.o?.p
-    this.blocksLOS = !!data.o?.los
+    this.blocksLos = !!data.o?.los
 
     if (data.o?.da !== undefined) {
       this.coverSides = [data.o.da.f, data.o.da.s, data.o.da.r]
@@ -60,7 +60,7 @@ const Feature = class {
     if (this.hindrance) {
       text.push(`hindrance ${this.hindrance}`)
     }
-    if (this.blocksLOS) {
+    if (this.blocksLos) {
       text.push(`blocks LOS`)
     }
     if (this.cover) {

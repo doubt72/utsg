@@ -81,12 +81,16 @@ const Map = class {
     ]
   }
 
+  neighborAt(x, y, dir) {
+    return this.hexNeighbors(x, y)[dir - 1]
+  }
+
   addUnit(x, y, unit) {
     const list = this.units[y][x]
     list.push(unit)
   }
 
-  countersAt(x, y) {
+  counterDataAt(x, y) {
     const c = []
     const list = this.units[y][x]
     let index = 0
@@ -120,19 +124,25 @@ const Map = class {
     return c
   }
 
-  get counters() {
+  countersAt(x, y) {
     const c = []
+    this.counterDataAt(x, y).forEach(data => {
+      const counter = new Counter(data.x, data.y, data.u, this)
+      counter.stackingIndex = data.s
+      if (data.ti) {
+        counter.trueIndex = data.ti
+      }
+      c.push(counter)
+    })
+    return c
+  }
+
+  get counters() {
+    let c = []
     if (this.hideCounters) { return c }
     for (let y = 0; y < this.height; y++) {
       for (let x = this.width - 1; x >= 0; x--) {
-        this.countersAt(x, y).forEach(data => {
-          const counter = new Counter(data.x, data.y, data.u, this)
-          counter.stackingIndex = data.s
-          if (data.ti) {
-            counter.trueIndex = data.ti
-          }
-          c.push(counter)
-        })
+        c = c.concat(this.countersAt(x, y))
       }
     }
     return c
@@ -199,20 +209,20 @@ const Map = class {
       const check = this.hexIntersection(hex, p0, p1, fromEdge, fromCorner)
       if (check?.e) { // Edge crossing
         // Add edge crossed, move to next hex
-        hexes.push({ e: check.e === 1 ? 6 : check.e - 1, eh: hex })
-        hex = this.hexNeighbors(hex.x, hex.y)[check.e - 1]
-        hexes.push({ h: hex})
+        hexes.push({ edge: check.e, edgeHex: hex, long: false })
+        hex = this.neighborAt(hex.x, hex.y, check.e)
+        hexes.push({ hex: hex})
 
         fromEdge = check.e > 3 ? check.e - 3 : check.e + 3
         fromCorner = null
       } else if (check?.c) { // Corner crossings - travelling along hex edge
         // Add edge traversed, move to hex at end of traversal
-        hex = this.hexNeighbors(hex.x, hex.y)[check.c - 1]
-        const edge = check.c > 3 ? check.c - 3 : check.c + 3
-        hexes.push({ e: edge, eh: hex })
+        hex = this.neighborAt(hex.x, hex.y, check.c)
+        const edge = check.c > 2 ? check.c - 2 : check.c + 4
+        hexes.push({ edge: edge, edgeHex: hex, long: true })
         const dir = check.c == 1 ? 6 : check.c - 1
-        hex = this.hexNeighbors(hex.x, hex.y)[dir - 1]
-        hexes.push({ h: hex })
+        hex = this.neighborAt(hex.x, hex.y, dir)
+        hexes.push({ hex: hex })
 
         fromCorner = check.c > 3 ? check.c - 3 : check.c + 3
         fromEdge = null
@@ -221,9 +231,9 @@ const Map = class {
         // to next hex.  An...  Edge case, but can happen at long range
         let dir = check.o > 0 ? check.cx : check.cx - 1
         if (dir < 1) { dir += 6 }
-        hexes.push({ e: dir === 1 ? 6 : dir - 1, eh: hex })
-        hex = this.hexNeighbors(hex.x, hex.y)[dir - 1]
-        hexes.push({ h: hex })
+        hexes.push({ edge: dir, edgeHex: hex, long: false })
+        hex = this.neighborAt(hex.x, hex.y, dir)
+        hexes.push({ hex: hex })
 
         fromCorner = check.o > 0 ? check.cx - 2 : check.cx + 2
         if (fromCorner < 1) { fromCorner += 6 }
@@ -237,12 +247,37 @@ const Map = class {
     return hexes
   }
 
-  hexLOS(x0, y0, x1, y1) {
+  hexLos(x0, y0, x1, y1) {
     if (x0 === x1 && y0 === y1) {
       return true
     }
-    // const path = this.hexPath(x0, y0, x1, y1)
-    return false
+    let hindrance = 0
+    const path = this.hexPath(x0, y0, x1, y1)
+    for (let i = 0; i < path.length; i++) {
+      const curr = path[i]
+      if (curr.edge) {
+        if (curr.long) {
+          hindrance += curr.edgeHex.alongEdgeHindrance(curr.edge)
+          const los = curr.edgeHex.alongEdgeLos(curr.edge)
+          if (!los) { return false }
+        } else {
+          hindrance += curr.edgeHex.edgeHindrance(curr.edge)
+          const los = curr.edgeHex.edgeLos(curr.edge)
+          const hex = path[i+1].hex
+          if (!los && (hex.x !== x1 || hex.y !== y1)) { return false }
+        }
+      } else {
+        hindrance += curr.hex.hindrance
+        if (!curr.hex.los && (curr.hex.x !== x1 || curr.hex.y !== y1)) { return false }
+      }
+    }
+    const lastHex = path[path.length-1].hex
+    const offset = this.counterDataAt(x1, y1).length * 5 - 5
+    if (hindrance === 0) { return true }
+    return {
+      text: hindrance, size: 80, x: lastHex.xOffset + offset, y: lastHex.yOffset + 24 - offset,
+      style: { fill: "rgba(0,0,0,0.6)" }
+    }
   }
 
   overlayLayout(x, y, size) {
