@@ -18,7 +18,7 @@ export default function MapLosOverlay(props) {
                                 onMouseEnter={() => props.setOverlay({ show: false, x: 0, y: 0 })} />
               }
               if (value === false) {
-                const offset = props.map.counterDataAt(x, y).length * 5 - 5
+                const offset = Math.max(props.map.counterDataAt(x, y).length * 5 - 5, 0)
                 const xd = hex.xOffset + offset
                 const yd = hex.yOffset + 20 - offset
                 return (

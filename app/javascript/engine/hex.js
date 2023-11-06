@@ -92,11 +92,6 @@ const Hex = class {
     const b1 = this.terrainBorderEdge(dir1)
     const n1 = this.map.neighborAt(this.x, this.y, dir1)
     const b2 = n1.terrainBorderEdge(dir1 > 2 ? dir1 - 2 : dir1 + 4)
-    console.log("leading")
-    console.log(dir1)
-    console.log(dir1 > 2 ? dir1 - 2 : dir1 + 4)
-    console.log(b1)
-    console.log(b2)
     if (b1.hindrance && b2.hindrance) {
       rc += Math.min(b1.hindrance, b2.hindrance)
     } else if (b1.hindrance && !b2.los) {
@@ -109,11 +104,6 @@ const Hex = class {
     const b3 = this.terrainBorderEdge(dir2)
     const n2 = this.map.neighborAt(this.x, this.y, dir2)
     const b4 = n2.terrainBorderEdge(dir2 < 5 ? dir2 + 2 : dir2 - 4)
-    console.log("trailing")
-    console.log(dir2)
-    console.log(dir2 < 5 ? dir2 + 2 : dir2 - 4)
-    console.log(b3)
-    console.log(b4)
     if (b3.hindrance && b4.hindrance) {
       rc += Math.min(b3.hindrance, b4.hindrance)
     } else if (b3.hindrance && !b4.los) {

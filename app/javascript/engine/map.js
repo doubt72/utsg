@@ -278,7 +278,7 @@ const Map = class {
       }
     }
     const lastHex = path[path.length-1].hex
-    const offset = this.counterDataAt(x1, y1).length * 5 - 5
+    const offset = Math.max(this.counterDataAt(x1, y1).length * 5 - 5, 0)
     if (hindrance === 0) { return true }
     return {
       text: hindrance, size: 80, x: lastHex.xOffset + offset, y: lastHex.yOffset + 24 - offset,
