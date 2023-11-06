@@ -19,8 +19,9 @@ const Hex = class {
     }
     this.elevation = data.h || 0
     this.border = data.b
-    // Hexes will check next hex in game, only need to do one side, but matters
-    // for cliffs and rendering elevation (i.e., put on higher elevation edge)
+    // Only need to do one side, and which side doesn't matter for most things,
+    // but matters for cliffs and rendering elevation (i.e., put on higher
+    // elevation edge)
     this.borderEdges = data.be
     this.building = !!data.st
     if (this.building) {
@@ -85,7 +86,41 @@ const Hex = class {
       rSmoke = lSmoke
     }
     rc += Math.min(lSmoke, rSmoke)
-    // TODO Hinder if there are fences (or more) on both sides of the starting or ending edge
+    // Hinder if there are fences (or more) on both sides of the starting or ending edge
+    // Leading corner
+    const dir1 = dir === 6 ? 1 : dir + 1
+    const b1 = this.terrainBorderEdge(dir1)
+    const n1 = this.map.neighborAt(this.x, this.y, dir1)
+    const b2 = n1.terrainBorderEdge(dir1 > 2 ? dir1 - 2 : dir1 + 4)
+    console.log("leading")
+    console.log(dir1)
+    console.log(dir1 > 2 ? dir1 - 2 : dir1 + 4)
+    console.log(b1)
+    console.log(b2)
+    if (b1.hindrance && b2.hindrance) {
+      rc += Math.min(b1.hindrance, b2.hindrance)
+    } else if (b1.hindrance && !b2.los) {
+      rc += b1.hindrance
+    } else if (b2.hindrance && !b1.los) {
+      rc += b2.hindrance
+    }
+    // Trailing corner
+    const dir2 = dir === 1 ? 6 : dir - 1
+    const b3 = this.terrainBorderEdge(dir2)
+    const n2 = this.map.neighborAt(this.x, this.y, dir2)
+    const b4 = n2.terrainBorderEdge(dir2 < 5 ? dir2 + 2 : dir2 - 4)
+    console.log("trailing")
+    console.log(dir2)
+    console.log(dir2 < 5 ? dir2 + 2 : dir2 - 4)
+    console.log(b3)
+    console.log(b4)
+    if (b3.hindrance && b4.hindrance) {
+      rc += Math.min(b3.hindrance, b4.hindrance)
+    } else if (b3.hindrance && !b4.los) {
+      rc += b3.hindrance
+    } else if (b4.hindrance && !b3.los) {
+      rc += b4.hindrance
+    }
     return rc
   }
 
@@ -126,7 +161,19 @@ const Hex = class {
       rBlock = lBlock
     }
     if (lBlock && rBlock) { return false }
-    // TODO Block if there is terrain on both sides of the starting or ending edge
+    // Block if there is terrain on both sides of the starting or ending edge
+    // Leading corner
+    const dir1 = dir === 6 ? 1 : dir + 1
+    const b1 = this.terrainBorderEdge(dir1)
+    const n1 = this.map.neighborAt(this.x, this.y, dir1)
+    const b2 = n1.terrainBorderEdge(dir1 > 2 ? dir1 - 2 : dir1 + 4)
+    if (!b1.los && !b2.los) { return false }
+    // Trailing corner
+    const dir2 = dir === 1 ? 6 : dir - 1
+    const b3 = this.terrainBorderEdge(dir2)
+    const n2 = this.map.neighborAt(this.x, this.y, dir2)
+    const b4 = n2.terrainBorderEdge(dir2 < 5 ? dir2 + 2 : dir2 - 4)
+    if (!b3.los && !b4.los) { return false }
     // Buildings block if they cross edge
     if (this.building && neighbor?.building) {
       const same = this.direction === dir
