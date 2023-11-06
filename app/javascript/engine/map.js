@@ -183,7 +183,7 @@ const Map = class {
         }
       }
     }
-    console.log("this shouldn't happen, something went wrong")
+    console.log("hexIntersection: this shouldn't happen, something went wrong")
   }
 
   // We care about both specific edges and hexes traversed for the purposes of
@@ -205,7 +205,7 @@ const Map = class {
     let fromCorner = null
     while (hex.x !== target.x || hex.y !== target.y) {
       // Should never ever need this but infinite loops are very, very bad
-      if (count++ > 99) { break }
+      if (count++ > 99) { console.log("aborting"); break }
       const check = this.hexIntersection(hex, p0, p1, fromEdge, fromCorner)
       if (check?.e) { // Edge crossing
         // Add edge crossed, move to next hex
@@ -217,7 +217,13 @@ const Map = class {
         fromCorner = null
       } else if (check?.c) { // Corner crossings - travelling along hex edge
         // Add edge traversed, move to hex at end of traversal
-        hex = this.neighborAt(hex.x, hex.y, check.c)
+        const x = hex.x
+        const y = hex.y
+        hex = this.neighborAt(x, y, check.c)
+        // Handle when traversing off edge of map; next hex will be on it
+        if (!hex) {
+          hex = new Hex(x, y, {}, this)
+        }
         const edge = check.c > 2 ? check.c - 2 : check.c + 4
         hexes.push({ edge: edge, edgeHex: hex, long: true })
         const dir = check.c == 1 ? 6 : check.c - 1
@@ -241,7 +247,7 @@ const Map = class {
         fromEdge = null
       } else {
         // If we had to break out of an infinite loop, we'll probably hit this
-        console.log("this shouldn't happen, something went wrong")
+        console.log("hexPath: this shouldn't happen, something went wrong")
       }
     }
     return hexes

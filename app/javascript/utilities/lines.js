@@ -6,8 +6,9 @@ const Point = class {
 
   onSegment(p, q) 
   { 
-    if (this.x <= Math.max(p.x, q.x) && this.x >= Math.min(p.x, q.x) && 
-        this.y <= Math.max(p.y, q.y) && this.y >= Math.min(p.y, q.y)) {
+    const delta = 0.0000001 // deal with floating point precision issues
+    if (this.x <= Math.max(p.x, q.x) + delta && this.x >= Math.min(p.x, q.x) - delta &&
+        this.y <= Math.max(p.y, q.y) + delta && this.y >= Math.min(p.y, q.y) - delta) {
       return true
     }
     return false 
@@ -15,7 +16,7 @@ const Point = class {
 }
 
 const orientation = (p, q, r) => {
-  const delta = 0.0001
+  const delta = 0.0000001 // deal with floating point precision issues
   const o = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y)
   if (o < delta && o > -delta) { return 0 }
   return o > 0 ? 1 : -1
