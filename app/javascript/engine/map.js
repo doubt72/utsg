@@ -310,11 +310,13 @@ const Map = class {
       const curr = path[i]
       if (curr.edge) {
         if (curr.long) {
-          hindrance += curr.edgeHex.alongEdgeHindrance(curr.edge)
-          const los = curr.edgeHex.alongEdgeLos(curr.edge)
+          hindrance += curr.edgeHex.alongEdgeHindrance(curr.edge, i === 0)
+          const los = curr.edgeHex.alongEdgeLos(curr.edge, i === 0)
           if (los) { return false }
         } else {
-          hindrance += curr.edgeHex.edgeHindrance(curr.edge)
+          if (i !== 0) {
+            hindrance += curr.edgeHex.edgeHindrance(curr.edge)
+          }
           const los = curr.edgeHex.edgeLos(curr.edge)
           const hex = path[i+1].hex
           if (los && (hex.x !== x1 || hex.y !== y1) && (i !== 0)) { return false }

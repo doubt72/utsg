@@ -81,7 +81,7 @@ const Hex = class {
     }
   }
 
-  alongEdgeHindrance(dir) {
+  alongEdgeHindrance(dir, initialEdge = false) {
     const neighbor = this.map.neighborAt(this.x, this.y, dir)
     let rc = this.terrainBorderEdge(dir).hindrance
     // If terrain crosses the edge, it may hinder (terrain considered to run off edge)
@@ -97,17 +97,19 @@ const Hex = class {
       rc += neighbor?.counterLos?.hindrance || 0
     }
     // Hinder if there are fences (or more) on both sides of the starting or ending edge
-    // Leading corner
-    const e1 = this.terrainCornerBorders(dir, 1)
-    if (e1.a.hindrance && e1.b.hindrance) {
-      rc += Math.min(e1.a.hindrance, e1.b.hindrance)
-    } else if (e1.a.hindrance && e1.b.los) {
-      rc += e1.a.hindrance
-    } else if (e1.b.hindrance && e1.a.los) {
-      rc += e1.b.hindrance
+    // Leading corner -- ignore if initialEdge
+    if (!initialEdge) {
+      const e1 = this.terrainCornerBorders(dir, -1)
+      if (e1.a.hindrance && e1.b.hindrance) {
+        rc += Math.min(e1.a.hindrance, e1.b.hindrance)
+      } else if (e1.a.hindrance && e1.b.los) {
+        rc += e1.a.hindrance
+      } else if (e1.b.hindrance && e1.a.los) {
+        rc += e1.b.hindrance
+      }
     }
     // Trailing corner
-    const e2 = this.terrainCornerBorders(dir, -1)
+    const e2 = this.terrainCornerBorders(dir, 1)
     if (e2.a.hindrance && e2.b.hindrance) {
       rc += Math.min(e2.a.hindrance, e2.b.hindrance)
     } else if (e2.a.hindrance && e2.b.los) {
@@ -128,7 +130,7 @@ const Hex = class {
     return this.terrainBorderEdge(dir).los
   }
 
-  alongEdgeLos(dir) {
+  alongEdgeLos(dir, initialEdge = false) {
     const neighbor = this.map.neighborAt(this.x, this.y, dir)
     if (this.terrainBorderEdge(dir).los) { return true }
     // If terrain crosses the edge, it may block (terrain considered to run off edge)
@@ -137,12 +139,12 @@ const Hex = class {
     }
     if (this.counterLos.los && neighbor?.counterLos?.los) { return true }
     // Block if there is terrain on both sides of the starting or ending edge
-    // Leading corner
-    const e1 = this.terrainCornerBorders(dir, 1)
-    if (e1.a.los && e1.b.los) { return true }
-    // Trailing corner
-    const e2 = this.terrainCornerBorders(dir, -1)
+    // Leading corner -- ignore if initialEdge
+    const e2 = this.terrainCornerBorders(dir, 1)
     if (e2.a.los && e2.b.los) { return true }
+    // Trailing corner
+    const e1 = this.terrainCornerBorders(dir, -1)
+    if (e1.a.los && e1.b.los && !initialEdge) { return true }
     // Buildings block if they cross edge
     if (this.building && neighbor?.building) {
       const same = this.direction === dir
