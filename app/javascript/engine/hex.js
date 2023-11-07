@@ -34,6 +34,17 @@ const Hex = class {
     return new Terrain(this)
   }
 
+  get counterLos() {
+    let hindrance = 0
+    let los = false
+    const counters = this.map.counterDataAt(this.x, this.y)
+    counters.forEach(c => {
+      if (c.u.hindrance) { hindrance += c.u.hindrance }
+      if (c.u.blocksLos) { los = true }
+    })
+    return { hindrance: hindrance, los: los}
+  }
+
   terrainBorderEdge(dir) {
     const neighbor = this.map.neighborAt(this.x, this.y, dir)
     const same = this.borderEdges?.includes(dir)
@@ -45,21 +56,29 @@ const Hex = class {
     // Border might be on opposite hex, we only configure one
     if (opp) { return neighbor.terrain.borderAttr }
     // If neither, no effect on hindrance or LOS
-    return { hindrance: 0, los: true }
+    return { hindrance: 0, los: false }
   }
 
   get hindrance() {
-    let smoke = 0
-    const counters = this.map.counterDataAt(this.x, this.y)
-    for (let i = 0; i < counters.length; i++) {
-      const check = counters[i].u.hindrance
-      if (check) { smoke += check }
-    }
-    return this.terrain.baseAttr.hindrance + smoke
+    return this.terrain.baseAttr.hindrance + this.counterLos.hindrance
   }
 
   edgeHindrance(dir) {
     return this.terrainBorderEdge(dir).hindrance
+  }
+
+  terrainCornerBorders(dir, sign) {
+    let newDir = dir + sign
+    if (newDir > 6) { newDir -= 6 }
+    if (newDir < 1) { newDir += 6 }
+    const newHex = this.map.neighborAt(this.x, this.y, newDir)
+    let secondDir = newDir + 4 * sign
+    if (secondDir > 6) { secondDir -= 6 }
+    if (secondDir < 1) { secondDir += 6 }
+    return {
+      a: this.terrainBorderEdge(newDir),
+      b: newHex?.terrainBorderEdge(secondDir) || {}
+    }
   }
 
   alongEdgeHindrance(dir) {
@@ -69,59 +88,40 @@ const Hex = class {
     if (this.baseTerrain === (neighbor?.baseTerrain || this.baseTerrain)) {
       rc += this.terrain.baseAttr.hindrance
     }
-    let lSmoke = 0
-    let rSmoke = 0
-    const counters = this.map.counterDataAt(this.x, this.y)
-    for (let i = 0; i < counters.length; i++) {
-      const check = counters[i].u.hindrance
-      if (check) { lSmoke += check }
-    }
-    if (neighbor) {
-      const counters = this.map.counterDataAt(neighbor.x, neighbor.y)
-      for (let i = 0; i < counters.length; i++) {
-        const check = counters[i].u.hindrance
-        if (check) { rSmoke += check }
-      }
+    // If counters on both sides, apply effects
+    if (!this.counterLos.los && !neighbor?.counterLOS?.los) {
+      rc += Math.min(this.counterLos.hindrance, neighbor?.counterLos?.hindrance || 0)
+    } else if (this.counterLos.los) {
+      rc += this.counterLos.hindrance
     } else {
-      rSmoke = lSmoke
+      rc += neighbor?.counterLos?.hindrance || 0
     }
-    rc += Math.min(lSmoke, rSmoke)
     // Hinder if there are fences (or more) on both sides of the starting or ending edge
     // Leading corner
-    const dir1 = dir === 6 ? 1 : dir + 1
-    const b1 = this.terrainBorderEdge(dir1)
-    const n1 = this.map.neighborAt(this.x, this.y, dir1)
-    const b2 = n1.terrainBorderEdge(dir1 > 2 ? dir1 - 2 : dir1 + 4)
-    if (b1.hindrance && b2.hindrance) {
-      rc += Math.min(b1.hindrance, b2.hindrance)
-    } else if (b1.hindrance && !b2.los) {
-      rc += b1.hindrance
-    } else if (b2.hindrance && !b1.los) {
-      rc += b2.hindrance
+    const e1 = this.terrainCornerBorders(dir, 1)
+    if (e1.a.hindrance && e1.b.hindrance) {
+      rc += Math.min(e1.a.hindrance, e1.b.hindrance)
+    } else if (e1.a.hindrance && e1.b.los) {
+      rc += e1.a.hindrance
+    } else if (e1.b.hindrance && e1.a.los) {
+      rc += e1.b.hindrance
     }
     // Trailing corner
-    const dir2 = dir === 1 ? 6 : dir - 1
-    const b3 = this.terrainBorderEdge(dir2)
-    const n2 = this.map.neighborAt(this.x, this.y, dir2)
-    const b4 = n2.terrainBorderEdge(dir2 < 5 ? dir2 + 2 : dir2 - 4)
-    if (b3.hindrance && b4.hindrance) {
-      rc += Math.min(b3.hindrance, b4.hindrance)
-    } else if (b3.hindrance && !b4.los) {
-      rc += b3.hindrance
-    } else if (b4.hindrance && !b3.los) {
-      rc += b4.hindrance
+    const e2 = this.terrainCornerBorders(dir, -1)
+    if (e2.a.hindrance && e2.b.hindrance) {
+      rc += Math.min(e2.a.hindrance, e2.b.hindrance)
+    } else if (e2.a.hindrance && e2.b.los) {
+      rc += e2.a.hindrance
+    } else if (e2.b.hindrance && e2.a.los) {
+      rc += e2.b.hindrance
     }
     return rc
   }
 
+  // LOS = true means LOS is BLOCKED
   get los() {
-    if (this.building) { return false }
-    // Blaze blocks LOS
-    const counters = this.map.counterDataAt(this.x, this.y)
-    for (let i = 0; i < counters.length; i++) {
-      if (counters[i].u.blocksLos) { return false }
-    }
-    return this.terrain.baseAttr.los
+    if (this.building) { return true }
+    return this.terrain.baseAttr.los || this.counterLos.los
   }
 
   edgeLos(dir) {
@@ -130,40 +130,19 @@ const Hex = class {
 
   alongEdgeLos(dir) {
     const neighbor = this.map.neighborAt(this.x, this.y, dir)
-    if (!this.terrainBorderEdge(dir).los) { return false }
+    if (this.terrainBorderEdge(dir).los) { return true }
     // If terrain crosses the edge, it may block (terrain considered to run off edge)
     if (this.baseTerrain === (neighbor?.baseTerrain || this.baseTerrain)) {
-      if (!this.terrain.baseAttr.los) { return false }
+      if (this.terrain.baseAttr.los) { return true }
     }
-    // Handle blazes
-    let lBlock = false
-    let rBlock = false
-    const counters = this.map.counterDataAt(this.x, this.y)
-    for (let i = 0; i < counters.length; i++) {
-      if (counters[i].u.blocksLos) { lBlock = true }
-    }
-    if (neighbor) {
-      const counters = this.map.counterDataAt(neighbor.x, neighbor.y)
-      for (let i = 0; i < counters.length; i++) {
-        if (counters[i].u.blocksLos) { rBlock = true }
-      }
-    } else {
-      rBlock = lBlock
-    }
-    if (lBlock && rBlock) { return false }
+    if (this.counterLos.los && neighbor?.counterLos?.los) { return true }
     // Block if there is terrain on both sides of the starting or ending edge
     // Leading corner
-    const dir1 = dir === 6 ? 1 : dir + 1
-    const b1 = this.terrainBorderEdge(dir1)
-    const n1 = this.map.neighborAt(this.x, this.y, dir1)
-    const b2 = n1.terrainBorderEdge(dir1 > 2 ? dir1 - 2 : dir1 + 4)
-    if (!b1.los && !b2.los) { return false }
+    const e1 = this.terrainCornerBorders(dir, 1)
+    if (e1.a.los && e1.b.los) { return true }
     // Trailing corner
-    const dir2 = dir === 1 ? 6 : dir - 1
-    const b3 = this.terrainBorderEdge(dir2)
-    const n2 = this.map.neighborAt(this.x, this.y, dir2)
-    const b4 = n2.terrainBorderEdge(dir2 < 5 ? dir2 + 2 : dir2 - 4)
-    if (!b3.los && !b4.los) { return false }
+    const e2 = this.terrainCornerBorders(dir, -1)
+    if (e2.a.los && e2.b.los) { return true }
     // Buildings block if they cross edge
     if (this.building && neighbor?.building) {
       const same = this.direction === dir
@@ -172,9 +151,9 @@ const Hex = class {
         (this.buildingStyle === "s" && opp)
       const blockRight = (neighbor.buildingStyle === "m" && (same || opp )) ||
         (neighbor.buildingStyle === "s" && same)
-      if (blockLeft && blockRight) { return false }
+      if (blockLeft && blockRight) { return true }
     }
-    return true
+    return false
   }
 
   get mapColors() {

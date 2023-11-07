@@ -27,7 +27,7 @@ const Counter = class {
   }
 
   // TODO: extract this into utilities?
-  // TODO: need to keep in sync with CSS
+  // TODO: figure out a way to keep in sync with CSS
   nationalColors = {
     ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", alm: "#EA9",
     ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",

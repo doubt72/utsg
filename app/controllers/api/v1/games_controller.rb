@@ -6,7 +6,6 @@ module Api
       skip_before_action :authenticate_user!, only: %i[index show]
 
       def index
-        # TODO: pagination
         games = index_games(params[:scope])
         if (user = User.lookup(params[:user]))
           games = games.for_user(user)

@@ -104,7 +104,6 @@ export default function NewGame() {
   }
 
   const onSubmit = (event) => {
-    // TODO: fix return changing player selection instead of submitting
     event.preventDefault()
     if (event.nativeEvent.submitter.name === "check") { return }
     if (formInput.name == "") {

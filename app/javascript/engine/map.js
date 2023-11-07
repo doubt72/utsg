@@ -148,12 +148,27 @@ const Map = class {
     return c
   }
 
+  // TODO move LOS code to own class
+
+  // If you're doing a lot of hex manipulation (or any other sort of game
+  // programming), I highly recomment my old classmate Amit Patel's page:
+  // https://www.redblobgames.com/ -- the explanation and presentations of
+  // various concepts there are exceptional.  Though really none of my code here
+  // is based on anything there (most of my algorithms are either trivial and/or
+  // have special requirements for edges and such, and I've prioritized making
+  // it easy to build low-bandwidth configuration at the expense of elegance.
+  // OTOH I did skim some of the hexagonal grid pages while thinking about how I
+  // want to tackle things and they have help me focus my implementations). Some
+  // of the LOS code could no doubt be decomposed into smaller helper functions,
+  // and I may (probably will) refactor thigns a bit at some point; this code is
+  // admittedly a hack-y mess.
+
   // All direction indexes are normalized here and in hexPath to be 1-6, not
   // 0-5. This made debugging easier, is consistent with the configuration data,
   // makes simpler existence checks for return values (since directions are
-  // always truthy) at the expense of adding and subtracting numbers more than
-  // would otherwise be needed.  Not sure if there are any ideal choices here,
-  // all of this is quite complicated either way.
+  // always truthy) at the expense of adding and subtracting numbers at times
+  // that they would not otherwise be.  Not sure if there are any ideal choices
+  // here, all of this is quite complicated either way.
   hexIntersection(hex, p0, p1, fromEdge, fromCorner) {
     for (let i = 0; i < 6; i++) {
       const h0 = new Point(hex.xCorner(i), hex.yCorner(i))
@@ -186,11 +201,12 @@ const Map = class {
     console.log("hexIntersection: this shouldn't happen, something went wrong")
   }
 
-  // We care about both specific edges and hexes traversed for the purposes of
-  // LOS and hindrance, so this is actually quite tricky.  And we need to make
-  // sure that we don't backtrack which is why we need to keep track of what
-  // direction we came from so we can send that back to the intersection code so
-  // it will ignore intersections we don't want.
+  // We care about both specific edges and corners and hexes traversed for the
+  // purposes of LOS and hindrance, so this is actually quite tricky.  We're
+  // essentially doing a ray trace through hexes, and we also need to make sure
+  // that we don't backtrack so we need to keep track of what direction we came
+  // from so we can send that back to the intersection code so it will ignore
+  // intersections we don't want.
   hexPath(x0, y0, x1, y1) {
     const hexes = []
     if (x0 === x1 && y0 === y1) { return hexes }
@@ -253,6 +269,37 @@ const Map = class {
     return hexes
   }
 
+  // TODO consider replacing some of the x, y's with Points?
+  hexDistance(x0, y0, x1, y1) {
+    // Transform X into axial coordinates
+    const x00 = x0 - Math.floor(y0/2)
+    const x11 = x1 - Math.floor(y1/2)
+    // Add a cubic component
+    const z0 = -x00-y0
+    const z1 = -x11-y1
+    // And now things are simple
+    return Math.max(Math.abs(x00 - x11), Math.abs(y0 - y1), Math.abs(z0 - z1))
+  }
+
+  elevationLos(x0, y0, x1, y1, hex) {
+    if (hex.counterLos.los) { return true }
+    const se = this.hexAt(x0, y0).elevation
+    const te = this.hexAt(x1, y1).elevation
+    if (hex.elevation > se && hex.elevation > te) { return true }
+    if (se === te && hex.elevation == se) { return hex.los }
+    if (hex.elevation < se && hex.elevation < te) { return false }
+    const dist = this.hexDistance(x0, y0, x1, y1)
+    const currDist = se > te ? this.hexDistance(x0, y0, hex.x, hex.y) :
+      this.hexDistance(hex.x, hex.y, x1, y1)
+    const lo = se > te ? te : se
+    const hi = se > te ? se : te
+    if (hex.elevation > lo && hex.elevation == hi) { return true }
+    const mid = hex.elevation + ( hex.los ? 1 : 0 )
+    console.log(`${hi} ${lo} ${mid} - ${dist - currDist} ${currDist}`)
+    console.log((dist-currDist) * (hi - lo) / (currDist + 1) / (mid-lo))
+    return (dist - currDist) * (hi - lo) / (currDist + 1) / (mid - lo) < 1
+  }
+
   hexLos(x0, y0, x1, y1) {
     if (x0 === x1 && y0 === y1) {
       return true
@@ -265,16 +312,17 @@ const Map = class {
         if (curr.long) {
           hindrance += curr.edgeHex.alongEdgeHindrance(curr.edge)
           const los = curr.edgeHex.alongEdgeLos(curr.edge)
-          if (!los) { return false }
+          if (los) { return false }
         } else {
           hindrance += curr.edgeHex.edgeHindrance(curr.edge)
           const los = curr.edgeHex.edgeLos(curr.edge)
           const hex = path[i+1].hex
-          if (!los && (hex.x !== x1 || hex.y !== y1)) { return false }
+          if (los && (hex.x !== x1 || hex.y !== y1) && (i !== 0)) { return false }
         }
       } else {
         hindrance += curr.hex.hindrance
-        if (!curr.hex.los && (curr.hex.x !== x1 || curr.hex.y !== y1)) { return false }
+        const block = this.elevationLos(x0, y0, x1, y1, curr.hex)
+        if (block && (curr.hex.x !== x1 || curr.hex.y !== y1)) { return false }
       }
     }
     const lastHex = path[path.length-1].hex
