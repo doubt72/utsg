@@ -123,7 +123,7 @@ const Hex = class {
   // LOS = true means LOS is BLOCKED
   get los() {
     if (this.building) { return true }
-    return this.terrain.baseAttr.los || this.counterLos.los
+    return this.terrain.baseAttr.los
   }
 
   edgeLos(dir) {
@@ -147,12 +147,13 @@ const Hex = class {
     if (e1.a.los && e1.b.los && !initialEdge) { return true }
     // Buildings block if they cross edge
     if (this.building && neighbor?.building) {
-      const same = this.direction === dir
-      const opp = this.direction === dir > 3 ? dir - 3 : dir + 3
-      const blockLeft = (this.buildingStyle === "m" && (same || opp )) ||
-        (this.buildingStyle === "s" && opp)
-      const blockRight = (neighbor.buildingStyle === "m" && (same || opp )) ||
-        (neighbor.buildingStyle === "s" && same)
+      const opp = dir > 3 ? dir - 3 : dir + 3
+      const blockLeft = (this.buildingShape === "m" &&
+        (this.direction === dir || this.direction === opp )) ||
+        (this.buildingShape === "s" && this.direction === opp)
+      const blockRight = (neighbor.buildingShape === "m" &&
+        (neighbor.direction === dir || neighbor.direction === opp )) ||
+        (neighbor.buildingShape === "s" && neighbor.direction === dir)
       if (blockLeft && blockRight) { return true }
     }
     return false
