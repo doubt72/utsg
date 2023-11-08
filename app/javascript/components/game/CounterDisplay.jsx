@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import { Counter } from "../../engine/counter";
 import { Unit } from "../../engine/unit";
 import MapCounter from "./MapCounter";
+import { Feature } from "../../engine/feature";
 
 export default function CounterDisplay(props) {
 
@@ -16,5 +17,8 @@ export default function CounterDisplay(props) {
 }
 
 CounterDisplay.propTypes = {
-  unit: PropTypes.instanceOf(Unit),
+  unit: PropTypes.oneOfType([
+    PropTypes.instanceOf(Unit),
+    PropTypes.instanceOf(Feature),
+  ])
 }

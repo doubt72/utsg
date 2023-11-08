@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario005 < Base
     ID = "005"
-    NAME = "The Road to Izium"
+    NAME = "The Panzer Awakens"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
@@ -395,7 +395,7 @@ module Scenarios
             [2, :ussr_dp_27],
             :ussr_rm_38,
             :ussr_45mm_53_k,
-            :ussr_t_34_m40,
+            [2, :ussr_t_34_m40],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -410,7 +410,7 @@ module Scenarios
             :ger_radio_15cm,
             :ger_sc,
             :ger_sdkfz_250_1,
-            :ger_pzkpfw_iii_j,
+            [2, :ger_pzkpfw_iii_j],
             :ger_panzerjager_i,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }

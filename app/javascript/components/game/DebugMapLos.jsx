@@ -52,6 +52,7 @@ export default function DebugMapLos() {
     { u: testUnitData.ginf, x: 14, y: 14 },
     { u: testUnitData.ginf, x: 3, y: 3 },
     { u: testUnitData.ginf, x: 8, y: 2 },
+    { u: testUnitData.ginf, x: 10, y: 6 },
   ]
 
   useEffect(() => {

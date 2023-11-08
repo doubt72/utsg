@@ -295,8 +295,6 @@ const Map = class {
     const hi = se > te ? se : te
     if (hex.elevation > lo && hex.elevation == hi) { return true }
     const mid = hex.elevation + ( hex.los ? 1 : 0 )
-    console.log(`${hi} ${lo} ${mid} - ${dist - currDist} ${currDist}`)
-    console.log((dist-currDist) * (hi - lo) / (currDist + 1) / (mid-lo))
     return (dist - currDist) * (hi - lo) / (currDist + 1) / (mid - lo) < 1
   }
 
