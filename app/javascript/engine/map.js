@@ -207,12 +207,11 @@ const Map = class {
   // that we don't backtrack so we need to keep track of what direction we came
   // from so we can send that back to the intersection code so it will ignore
   // intersections we don't want.
-  hexPath(x0, y0, x1, y1) {
+  hexPath(start, target) {
     const hexes = []
-    if (x0 === x1 && y0 === y1) { return hexes }
+    if (start.x === target.x && start.y === target.y) { return hexes }
 
-    let hex = this.mapHexes[y0][x0]
-    const target = this.mapHexes[y1][x1]
+    let hex = start
     const p0 = new Point(hex.xOffset, hex.yOffset)
     const p1 = new Point(target.xOffset, target.yOffset)
 
@@ -270,29 +269,27 @@ const Map = class {
   }
 
   // TODO consider replacing some of the x, y's with Points?
-  hexDistance(x0, y0, x1, y1) {
+  hexDistance(hex0, hex1) {
     // Transform X into axial coordinates
-    const x00 = x0 - Math.floor(y0/2)
-    const x11 = x1 - Math.floor(y1/2)
+    const x00 = hex0.x - Math.floor(hex0.y/2)
+    const x11 = hex1.x - Math.floor(hex1.y/2)
     // Add a cubic component
-    const z0 = -x00-y0
-    const z1 = -x11-y1
+    const z0 = -x00-hex0.y
+    const z1 = -x11-hex1.y
     // And now things are simple
-    return Math.max(Math.abs(x00 - x11), Math.abs(y0 - y1), Math.abs(z0 - z1))
+    return Math.max(Math.abs(x00 - x11), Math.abs(hex0.y - hex1.y), Math.abs(z0 - z1))
   }
 
-  elevationLos(x0, y0, x1, y1, hex) {
+  elevationLos(start, target, hex) {
     if (hex.counterLos.los) { return true }
-    const se = this.hexAt(x0, y0).elevation
-    const te = this.hexAt(x1, y1).elevation
-    if (hex.elevation > se && hex.elevation > te) { return true }
-    if (se === te && hex.elevation == se) { return hex.los }
-    if (hex.elevation < se && hex.elevation < te) { return false }
-    const dist = this.hexDistance(x0, y0, x1, y1)
-    const currDist = se > te ? this.hexDistance(x0, y0, hex.x, hex.y) :
-      this.hexDistance(hex.x, hex.y, x1, y1)
-    const lo = se > te ? te : se
-    const hi = se > te ? se : te
+    if (hex.elevation > start.elevation && hex.elevation > target.elevation) { return true }
+    if (start.elevation === target.elevation && hex.elevation == start.elevation) { return hex.los }
+    if (hex.elevation < start.elevation && hex.elevation < target.elevation) { return false }
+    const dist = this.hexDistance(start, target)
+    const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) :
+      this.hexDistance(hex, target)
+    const lo = start.elevation > target.elevation ? target.elevation : start.elevation
+    const hi = start.elevation > target.elevation ? start.elevation : target.elevation
     if (hex.elevation > lo && hex.elevation == hi) { return true }
     const mid = hex.elevation + ( hex.los ? 1 : 0 )
     return (dist - currDist) * (hi - lo) / (currDist + 1) / (mid - lo) < 1
@@ -302,8 +299,10 @@ const Map = class {
     if (x0 === x1 && y0 === y1) {
       return true
     }
+    const hex0 = this.hexAt(x0, y0)
+    const hex1 = this.hexAt(x1, y1)
     let hindrance = 0
-    const path = this.hexPath(x0, y0, x1, y1)
+    const path = this.hexPath(hex0, hex1)
     for (let i = 0; i < path.length; i++) {
       const curr = path[i]
       if (curr.edge) {
@@ -321,7 +320,7 @@ const Map = class {
         }
       } else {
         hindrance += curr.hex.hindrance
-        const block = this.elevationLos(x0, y0, x1, y1, curr.hex)
+        const block = this.elevationLos(hex0, hex1, curr.hex)
         if (block && (curr.hex.x !== x1 || curr.hex.y !== y1)) { return false }
       }
     }
