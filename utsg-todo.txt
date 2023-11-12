@@ -2,6 +2,7 @@
   - handle edge elevation
   - handle hindrance elevation
 - front/rear arc
+- nerf grant/lee slightly
 - add crocodile
 - find specific font for counters
 
