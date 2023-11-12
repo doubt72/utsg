@@ -50,11 +50,11 @@ export default function MapHexPatterns() {
         <circle cx="0" cy="2.598" r="0.75" style={jungleStyle} />
         <circle cx="2" cy="2.598" r="0.75" style={jungleStyle} />
         <circle cx="1" cy="4.330" r="0.75" style={jungleStyle} />
-        <circle cx="0" cy="0.2" r="1" style={jungleStyle} />
-        <circle cx="2" cy="0.2" r="1" style={jungleStyle} />
-        <circle cx="1" cy="1.932" r="1" style={jungleStyle} />
-        <circle cx="0" cy="3.664" r="1" style={jungleStyle} />
-        <circle cx="2" cy="3.664" r="1" style={jungleStyle} />
+        <circle cx="0" cy="0.3" r="1" style={jungleStyle} />
+        <circle cx="2" cy="0.3" r="1" style={jungleStyle} />
+        <circle cx="1" cy="2.032" r="1" style={jungleStyle} />
+        <circle cx="0" cy="3.764" r="1" style={jungleStyle} />
+        <circle cx="2" cy="3.764" r="1" style={jungleStyle} />
       </pattern>
       <pattern id="sand-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="20" height="20" viewBox="0 0 16 16">
@@ -70,8 +70,9 @@ export default function MapHexPatterns() {
                width="24" height="24" viewBox="0 0 16 16">
         <path d={triangle(3, 3)} style={darkerStyle} />
         <path d={triangle(8, 3)} style={darkerStyle} />
-        <path d={triangle(8, 11)} style={darkerStyle} />
-        <path d={triangle(13, 11)} style={darkerStyle} />
+        <path d={triangle(0, 11)} style={darkerStyle} />
+        <path d={triangle(11, 11)} style={darkerStyle} />
+        <path d={triangle(16, 11)} style={darkerStyle} />
       </pattern>
       <pattern id="marsh-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="24" height="24" viewBox="0 0 10 10">

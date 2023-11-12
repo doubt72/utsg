@@ -84,7 +84,7 @@ const Feature = class {
       text.push("- half firepower vs. armor")
     }
     if (this.currentMovement === "A") {
-      text.push("requires all movement")
+      text.push("uses all movement")
     }
     return text
   }

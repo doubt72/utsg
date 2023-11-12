@@ -38,7 +38,7 @@ export default function MapCounterOverlay(props) {
             return (
               <g key={i} >
                 <path d={b.path} style={{ fill: b.color, stroke: b.tColor, strokeWidth: 2 }} />
-                <text x={b.x} y={b.y} fontSize={b.size} textAnchor="left" fontFamily="monospace"
+                <text x={b.x} y={b.y} fontSize={b.size} textAnchor="left" fontFamily="'Courier Prime', monospace"
                       style={{ fill: b.tColor }}>{b.text}</text>
                 {arrow}
               </g>

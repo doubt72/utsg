@@ -17,14 +17,14 @@ export default function MapLosDebugOverlay(props) {
           !lastLos ?
             <g>
               <text x={lastHex.xOffset} y={lastHex.yOffset+20} fontSize={80}
-                    textAnchor="middle" fontFamily="monospace" style={{ fill: "black" }}>
+                    textAnchor="middle" fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
                 &#8416;
               </text>
               <polygon points={lastHex.hexCoords} style={{ fill: "rgba(255,0,0,0.5)" }} />
             </g>:
           (lastLos === true ? "" :
             <text x={lastLos.x} y={lastLos.y} fontSize={lastLos.size}
-                  textAnchor="middle" fontFamily="monospace" style={{ fill: "black" }}>
+                  textAnchor="middle" fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
               {lastLos.text}
             </text>
           )

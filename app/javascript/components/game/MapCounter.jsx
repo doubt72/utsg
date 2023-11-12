@@ -36,7 +36,7 @@ export default function MapCounter(props) {
     const layout = props.counter.moraleLayout
     if (layout) return (
       <text x={layout.x} y={layout.y} fontSize={layout.fsize} textAnchor="middle"
-            fontFamily="monospace" style={layout.style}>{layout.value}</text>
+            fontFamily="'Courier Prime', monospace" style={layout.style}>{layout.value}</text>
     )
   }
 
@@ -46,7 +46,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -57,7 +57,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -68,7 +68,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -79,7 +79,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -90,7 +90,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -99,7 +99,7 @@ export default function MapCounter(props) {
     const layout = props.counter.smokeLayout
     if (layout) return (
       <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-            fontFamily="monospace" style={layout.style}>{layout.value}</text>
+            fontFamily="'Courier Prime', monospace" style={layout.style}>{layout.value}</text>
     )
   }
 
@@ -144,7 +144,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -155,7 +155,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -166,7 +166,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -179,7 +179,7 @@ export default function MapCounter(props) {
         {
           layout.text.map((t, i) =>
             <text key={i} x={t.x} y={t.y} fontSize={layout.size} textAnchor="middle"
-                  fontFamily="monospace" style={layout.tStyle}>{t.value}</text>
+                  fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{t.value}</text>
           )
         }
       </g>
@@ -192,7 +192,7 @@ export default function MapCounter(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="monospace" style={layout.tStyle}>{layout.value}</text>
+              fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{layout.value}</text>
       </g>
     )
   }
@@ -202,7 +202,7 @@ export default function MapCounter(props) {
     if (layout) {
       const text = layout.value.map((t, i) => (
         <text key={i} x={layout.x} y={layout.y + layout.size*i} fontSize={layout.size}
-              textAnchor="middle" fontFamily="monospace" style={layout.fStyle}>{t}</text>
+              textAnchor="middle" fontFamily="'Courier Prime', monospace" style={layout.fStyle}>{t}</text>
       ))
       const c = props.counter
       const r = c.rotation

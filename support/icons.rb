@@ -143,7 +143,7 @@ File.open('crew.svg', 'w') do |file|
   write_path([["M", 10, 90], ["L", 90, 30]], file, false)
   write_path([["M", 10, 30], ["L", 90, 90]], file, false)
   write_circle(50, 16, 10, file, false)
-  write_text(50, 87, 1.5, "WPN", file)
+  write_text(50, 88, 1.33, "WPN", file)
   # helmet_paths.each do |path|
   #   write_path(scale_path(path, 0, 0, 0.625), file)
   # end
@@ -493,7 +493,7 @@ File.open('wreck.svg', 'w') do |file|
     ["C", [45, 55], [36, 53], [35, 60]], ["C", [34, 65], [35, 67.5], [37.5, 70]],
     ["C", [32.6, 70], [15, 60], [45, 30]],
   ], file, false, 3, "#C00")
-  write_text(95, 54, 2.25, "WRECK", file, "#C00", rotate='transform="rotate(270 95 54)" ')
+  write_text(95.5, 55, 1.9, "WRECK", file, "#C00", rotate='transform="rotate(270 95 54)" ')
   file.puts footer
 end
 

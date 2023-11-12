@@ -11,7 +11,7 @@ export default function MapCounterOverlayHelp(props) {
     setHelpButton(
       <g onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} >
         <path d={bl.path} style={{ fill: "black", stroke: "white", strokeWidth: 2 }} />
-        <text x={bl.x} y={bl.y} fontSize={bl.size} textAnchor="middle" fontFamily="monospace"
+        <text x={bl.x} y={bl.y} fontSize={bl.size} textAnchor="middle" fontFamily="'Courier Prime', monospace"
               style={{ fill: "white" }} cursor="default">?</text>
       </g>
     )

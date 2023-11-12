@@ -24,7 +24,7 @@ export default function MapLosOverlay(props) {
                 return (
                   <g key={key}>
                     <text x={xd} y={yd} fontSize={80}
-                          textAnchor="middle" fontFamily="monospace" style={{ fill: "rgba(0,0,0,0.2)" }}>
+                          textAnchor="middle" fontFamily="'Courier Prime', monospace" style={{ fill: "rgba(0,0,0,0.2)" }}>
                       &#8416;
                     </text>
                     <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0.4)" }}
@@ -35,7 +35,7 @@ export default function MapLosOverlay(props) {
               return (
                 <g key={key}>
                   <text x={value.x} y={value.y} fontSize={value.size}
-                        textAnchor="middle" fontFamily="monospace" style={value.style}>{value.text}</text>
+                        textAnchor="middle" fontFamily="'Courier Prime', monospace" style={value.style}>{value.text}</text>
                   <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }}
                            onMouseEnter={() => props.setOverlay({ show: false, x: 0, y: 0 })} />
                 </g>
