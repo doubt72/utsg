@@ -8,6 +8,7 @@
 // Common
 button.custom-button,a.custom-button,div.custom-button {
   text-decoration: none;
+  white-space: nowrap;
   font-size: 1.1em;
   color: $light-green;
   background-color: $dark-green;
