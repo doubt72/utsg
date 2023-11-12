@@ -3,6 +3,7 @@
   - handle hindrance elevation
 - front/rear arc
 - add crocodile
+- find specific font for counters
 
 - hotseat games?
 - refactor CSS
