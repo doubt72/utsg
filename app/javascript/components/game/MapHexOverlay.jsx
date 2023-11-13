@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { Hex } from "../../engine/hex";
 
 export default function MapHexOverlay(props) {
-
   const river = () => {
     if (!props.hex.river) { return "" }
     const path = props.hex.riverPath
@@ -45,14 +44,39 @@ export default function MapHexOverlay(props) {
              style={{ strokeWidth: 1, stroke: "rgba(0,0,0,0.16)", fill: "rgba(0,0,0,0)" }} />
   )
 
+  const updateTerrainInfo = (e) => {
+    if (props.showTerrain) {
+      const x = e.clientX - props.svgRef.current.getBoundingClientRect().x + 10
+      const y = e.clientY - props.svgRef.current.getBoundingClientRect().y + 10
+      const layout = props.hex.helpLayout(x, y)
+      props.terrainCallback(
+        <g>
+          <path d={layout.path} style={layout.style} />
+          {
+            layout.texts.map((t, i) => 
+              <text key={i} x={t.x} y={t.y} fontSize={layout.size} fontFamily="'Courier Prime', monospace"
+                    textAnchor="left" style={{ fill: "white" }}>{t.v}</text>
+            )
+          }
+        </g>
+      )
+    } else {
+      props.terrainCallback("")
+    }
+  }
+
   const selectedStyle = { fill: "rgba(0,0,0,0.1)" }
   const unSelectedStyle = { fill: "rgba(0,0,0,0)" }
 
   const selected = (
     props.selected ? <polygon points={props.hex.hexCoords} style={selectedStyle}
-                              onClick={() => props.selectCallback(props.hex.x, props.hex.y)} /> :
+                              onClick={() => props.selectCallback(props.hex.x, props.hex.y)}
+                              onMouseLeave={() => props.terrainCallback("")}
+                              onMouseMove={e => updateTerrainInfo(e)} /> :
                     <polygon points={props.hex.hexCoords} style={unSelectedStyle}
-                              onClick={() => props.selectCallback(props.hex.x, props.hex.y)} />
+                              onClick={() => props.selectCallback(props.hex.x, props.hex.y)}
+                              onMouseLeave={() => props.terrainCallback("")}
+                              onMouseMove={e => updateTerrainInfo(e)} />
   )
 
   return (
@@ -71,4 +95,7 @@ MapHexOverlay.propTypes = {
   hex: PropTypes.instanceOf(Hex),
   selectCallback: PropTypes.func.isRequired,
   selected: PropTypes.bool,
+  showTerrain: PropTypes.bool,
+  terrainCallback: PropTypes.func,
+  svgRef: PropTypes.object,
 }

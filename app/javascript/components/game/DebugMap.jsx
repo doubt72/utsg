@@ -10,6 +10,7 @@ export default function DebugMap() {
   const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(true)
+  const [showTerrain, setShowTerrain] = useState(false)
   const [showLos, setShowLos] = useState(false)
   const [debugLos, setDebugLos] = useState(false)
   const [baseTerrain, setBaseTerrain] = useState("g")
@@ -525,6 +526,9 @@ export default function DebugMap() {
         <div className="custom-button"onClick={() => setHideCounters(sc => !sc)}>
           { hideCounters ? "hide counters" : "show counters" }
         </div>
+        <div className="custom-button"onClick={() => setShowTerrain(sc => !sc)}>
+          { showTerrain ? "terrain info on" : "terrain info off" }
+        </div>
         <div className="custom-button"onClick={() => {
           const nt = nextTerrain(baseTerrain)
           map.baseTerrain = nt
@@ -540,7 +544,7 @@ export default function DebugMap() {
         </div>
       </div>
       <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-               showLos={showLos} hideCounters={hideCounters}
+               showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
                hexCallback={hexSelection} counterCallback={unitSelection} />
     </div>
   )

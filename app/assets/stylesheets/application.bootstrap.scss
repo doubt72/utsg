@@ -16,6 +16,9 @@ button.custom-button,a.custom-button,div.custom-button {
   border-radius: 0.33em;
   border: none;
   outline: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 button.custom-button svg {

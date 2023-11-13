@@ -69,6 +69,16 @@ const Map = class {
     return this.mapHexes[y][x]
   }
 
+  get baseTerrainName() {
+    return {
+      g: "grass",
+      d: "desert",
+      s: "snow",
+      m: "mud",
+      u: "urban",
+    }[this.baseTerrain]
+  }
+
   hexNeighbors(x, y) {
     const offset = y%2
     return [

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Map } from "../../engine/map";
 import MapHexPatterns from "./MapHexPatterns";
@@ -17,6 +17,9 @@ export default function GameMap(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")
   const [updateUnitSelected, setUpdateUnitSelected] = useState(0)
   const [counterLosOverlay, setCounterLosOverlay] = useState("")
+  const [terrainInfoOverlay, setTerrainInfoOverlay] = useState("")
+
+  const svgRef = useRef()
 
   useEffect(() => {
     if (!props.map) { return }
@@ -29,7 +32,8 @@ export default function GameMap(props) {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
         overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
-                                          selectCallback={hexSelection}/>)
+                                          selectCallback={hexSelection} showTerrain={props.showTerrain}
+                                          terrainCallback={setTerrainInfoOverlay} svgRef={svgRef} />)
       })
     })
     setHexDisplay(hexLoader)
@@ -77,7 +81,8 @@ export default function GameMap(props) {
             props.hexCallback(x, y, !h.props.selected)
           }
           return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} selected={!h.props.selected}
-                                selectCallback={hexSelection}/>
+                                selectCallback={hexSelection} showTerrain={props.showTerrain}
+                                terrainCallback={setTerrainInfoOverlay} svgRef={svgRef} />
         } else {
           return h
         }
@@ -93,7 +98,7 @@ export default function GameMap(props) {
   }
 
   return (
-    <svg className="map-svg" width={(props.map?.xSize || 1) * (props.scale || 1)}
+    <svg ref={svgRef} className="map-svg" width={(props.map?.xSize || 1) * (props.scale || 1)}
          height={(props.map?.ySize || 1) * (props.scale || 1)}
          viewBox={`0 0 ${props.map?.xSize || 1} ${props.map?.ySize || 1}`}>
       <MapHexPatterns />
@@ -102,6 +107,7 @@ export default function GameMap(props) {
       {counterDisplay}
       {overlayDisplay}
       {counterLosOverlay}
+      {terrainInfoOverlay}
     </svg>
   )
 }
@@ -113,6 +119,7 @@ GameMap.propTypes = {
   showStatusCounters: PropTypes.bool,
   showLos: PropTypes.bool,
   hideCounters: PropTypes.bool,
+  showTerrain: PropTypes.bool,
   hexCallback: PropTypes.func,
   counterCallback: PropTypes.func,
 }

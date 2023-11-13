@@ -9,7 +9,7 @@ const Hex = class {
     this.direction = data.d
     this.road = !!data.r
     if (this.road) {
-      this.roadType = data.r.t
+      this.roadType = data.r.t || "d"
       this.roadDirections = data.r.d
       this.roadCenter = data.r.c
     }
@@ -164,7 +164,7 @@ const Hex = class {
       g: "#D0EED0",
       d: "#EEB",
       s: "#EEE",
-      m: "#EB8",
+      m: "#EFBF8F",
       u: "#D7E0D0",
     }[this.map.baseTerrain]
   }
@@ -746,6 +746,129 @@ const Hex = class {
 
   get edgeDecorationStyle() {
     return this.borderDecorationStyles[this.border]
+  }
+
+  get helpText() {
+    let text = [this.terrain.name]
+    if (this.elevation > 0) {
+      text.push(`elevation ${this.elevation}`)
+    }
+    if (this.terrain.cover !== false) {
+      text.push(`cover ${this.terrain.cover}`)
+    }
+    if (this.terrain.hindrance) {
+      text.push(`hindrance ${this.terrain.hindrance}`)
+    }
+    if (this.terrain.los) {
+      text.push("blocks line-of-sight")
+    }
+    if (this.terrain.move !== false) {
+      text.push(`movement cost ${this.terrain.move}`)
+      if (this.river && this.road) {
+        if (["m", "s"].includes(this.map.baseTerrain)) {
+          text.push(`- cost +2 if not following road`)
+        } else {
+          text.push(`- cost +1 if not following road`)
+        }
+      } else if (this.road && ["m", "s"].includes(this.map.baseTerrain)) {
+        text.push(`- cost +1 if not following road`)
+      }
+      if (!this.terrain.gun) {
+        text.push("- crewed weapons cannot enter")
+      } else if (this.terrain.gun === "back") {
+        text.push("- crewed weapons can only back in")
+      }
+      if (!this.terrain.vehicle) {
+        text.push("- vehicles cannot enter")
+      }
+    }
+    if (this.road) {
+      if (this.roadType === 'p') {
+        text.push("path")
+        text.push("- foot movement cost 1 if moving along path")
+      } else if (this.roadType === 't') {
+        if (this.river) {
+          text.push("bridge")
+        } else {
+          text.push("paved road")
+        }
+        text.push("- movement bonus +1 if moving along road")
+        if (!this.terrain.gun || !this.terrain.vehicle) {
+          text.push("- all units can move along road")
+        }
+        text.push("- wheeled movement cost 1/2")
+      } else {
+        if (this.river) {
+          text.push("wooden bridge")
+        } else {
+          text.push("unpaved road")
+        }
+        text.push("- movement bonus +1 if moving along road")
+        if (!this.terrain.gun || !this.terrain.vehicle) {
+          text.push("- all units can move along road")
+        }
+        if (!["m", "s"].includes(this.map.baseTerrain)) {
+          text.push("- wheeled movement cost 1/2")
+        }
+      }
+    }
+    if (this.river && this.terrain.move) {
+      text.push("stream")
+      text.push("- movement cost +1 when leaving")
+      if (this.road) {
+        text.push("- unless following road")
+      }
+    }
+    const borderText = {}
+    let bd = this.terrain.borderText()
+    if (bd) {
+      borderText[bd.key] = bd.text
+    }
+    this.map.hexNeighbors(this.x, this.y).forEach((n, i) => {
+      if (n) {
+        bd = n.terrain.borderText(i + 1)
+        if (bd) {
+          borderText[bd.key] = bd.text
+        }
+      }
+    })
+    Object.keys(borderText).forEach(k => borderText[k].forEach(t => text.push(t)))
+    return text
+  }
+
+  helpLayout(x, y) {
+    const text = this.helpText
+    const size = 22
+    let width = 24.4
+    text.forEach(t => {
+      const n = t.length * 9.6 + 16
+      if (n > width) { width = n }
+    })
+    let x1 = x
+    let x2 = x + width
+    let y1 = y
+    let y2 = y + text.length * size + size/2
+    if (x2 > this.map.xSize) {
+      const diff = - (width + 20)
+      x1 += diff
+      x2 += diff
+    }
+    if (y2 > this.map.ySize) {
+      const diff = this.map.ySize - y2
+      y1 += diff
+      y2 += diff
+    }
+    const layout = {
+      path: [
+        "M", x1, y1, "L", x2, y1, "L", x2, y2, "L", x1, y2, "L", x1, y1,
+      ].join(" "), style: { fill: "black", stroke: "white", strokeWidth: 2 },
+      size: size-6
+    }
+    const diff = size
+    layout.texts = text.map((t, i) => {
+      return { x: x1+8, y: y1 + i*diff + size, v: t }
+    })
+    return layout
   }
 }
 
