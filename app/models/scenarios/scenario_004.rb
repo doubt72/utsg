@@ -239,7 +239,7 @@ module Scenarios
           s: { list: [
             :ussr_leader_5_2,
             :ussr_leader_4_1,
-            [5, :ussr_rifle_s],
+            [7, :ussr_rifle_s],
             [2, :ussr_smg_s],
             :ussr_dp_27,
             :ussr_sg_43,
@@ -252,8 +252,9 @@ module Scenarios
           s: { list: [
             :ger_leader_6_2,
             :ger_leader_4_1,
-            [6, :ger_rifle_s],
+            [8, :ger_rifle_s],
             [2, :ger_mg_34],
+            :ger_5cm_legrw_36,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

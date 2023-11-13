@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario006 < Base
     ID = "006"
-    NAME = "The Panzer Awakens"
+    NAME = "Release the Panzer"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
@@ -393,7 +393,6 @@ module Scenarios
             [8, :ussr_rifle_s],
             :ussr_crew_t,
             [2, :ussr_dp_27],
-            :ussr_rm_38,
             :ussr_45mm_53_k,
             [2, :ussr_t_34_m40],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
@@ -404,14 +403,12 @@ module Scenarios
         {
           s: { list: [
             :ger_leader_5_2,
-            :ger_leader_4_1,
-            [9, :ger_rifle_s],
-            [3, :ger_mg_34],
+            [2, :ger_leader_4_1],
+            [6, :ger_rifle_s],
+            [2, :ger_mg_34],
             :ger_radio_15cm,
-            :ger_sc,
-            :ger_sdkfz_250_1,
-            [2, :ger_pzkpfw_iii_j],
-            :ger_panzerjager_i,
+            [1, :ger_sdkfz_250_1],
+            [4, :ger_pzkpfw_iii_j],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

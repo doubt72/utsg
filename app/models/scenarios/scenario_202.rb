@@ -26,7 +26,7 @@ module Scenarios
 
       def description
         [
-          "American forces attempt to stop a German counterattack.  Part of the Operation
+          "American forces attempt to stop a last-gasp German counterattack.  Part of the Operation
           Lüttich, a large-scale german attempt to push back the Allies during the battle
           of Normandy.",
         ]
