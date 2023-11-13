@@ -234,8 +234,8 @@ module Scenarios
             :usa_leader_5_1,
             :usa_leader_4_1,
             [2, :usa_engineer_s],
-            [10, :usa_rifle_s],
-            [4, :usa_m1918_bar],
+            [8, :usa_rifle_s],
+            [2, :usa_m1918_bar],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -244,7 +244,7 @@ module Scenarios
         {
           s: { list: [
             [2, :ger_leader_4_1],
-            [6, :ger_volksgrenadier_s],
+            [4, :ger_volksgrenadier_s],
             [2, :ger_mg_42],
             [8, :wire],
             [2, :pillbox],
