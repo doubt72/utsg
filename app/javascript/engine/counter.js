@@ -117,16 +117,16 @@ const Counter = class {
 
   sizeFor(n, circle) {
     if (n > 9 || n < 0) {
-      return circle ? 12.5 : 13.5
+      return circle ? 12.5 : 15
     } else {
-      return 16
+      return 18
     }
   }
 
   get moraleLayout() {
     if (!this.target.baseMorale) { return false }
     return {
-      x: this.x + 13, y: this.y + 28, size: 16, value: this.target.currentMorale,
+      x: this.x + 13, y: this.y + 28, size: 18, value: this.target.currentMorale,
       style: { fill: this.target.currentMorale === this.target.baseMorale ? "black" : this.red }
     }
   }
@@ -138,7 +138,7 @@ const Counter = class {
     return {
       path: this.circlePath(x, y, 8),
       style: { stroke: "black", strokeWidth: 1, fill: "yellow" }, tStyle: { fill: "black" },
-      x: x, y: y + 4, size: 13, value: this.target.breakWeaponRoll,
+      x: x, y: y + 4.25, size: 15, value: this.target.breakWeaponRoll,
     }
   }
   
@@ -148,7 +148,7 @@ const Counter = class {
     return {
       path: this.circlePath(this.x + 66, this.y + 23, 10),
       style: { stroke: stroke, strokeWidth: 1, fill: this.clear }, tStyle: { fill: "black" },
-      x: this.x + 66, y: this.y + 28, size: 16, value: this.target.size,
+      x: this.x + 66, y: this.y + 28, size: 18, value: this.target.size,
     }
   }
 
@@ -157,7 +157,7 @@ const Counter = class {
     return {
       path: this.hexPath(this.x + 13, this.y + 44, 10, true),
       style: { stroke: "black", strokeWidth: 1, fill: this.clear }, tStyle: { fill: "black" },
-      x: this.x + 13, y: this.y + 49, size: 16, value: this.target.currentLeadership,
+      x: this.x + 13, y: this.y + 49, size: 18, value: this.target.currentLeadership,
     }
   }
 
@@ -168,7 +168,7 @@ const Counter = class {
     const path = this.circlePath(x, y, 8)
     return {
       path: path, style: { stroke: "black", strokeWidth: 1, fill: this.clear }, tStyle: { fill: "black" },
-      x: x, y: y+4, size: 13, value: this.target.currentGunHandling,
+      x: x, y: y+4.25, size: 15, value: this.target.currentGunHandling,
     }
   }
 
@@ -181,7 +181,7 @@ const Counter = class {
     const path = this.circlePath(x, y, 8)
     return {
       path: path, style: { stroke: "black", strokeWidth: 1, fill: "yellow" }, tStyle: { fill: "black" },
-      x: x, y: y+4, size: 13, value: this.target.breakdownRoll,
+      x: x, y: y+4.25, size: 15, value: this.target.breakdownRoll,
     }
   }
 
@@ -253,7 +253,7 @@ const Counter = class {
     if (this.target.noFire || this.target.isPinned) {
       color = this.red
       value = this.target.currentFirepower
-      size = 16
+      size = 18
     } else {
       if (this.target.antiTank || this.target.fieldGun) { path = this.circlePath(x, y, 10) }
       if (this.target.offBoard) {
@@ -305,7 +305,7 @@ const Counter = class {
     let size = this.sizeFor(value)
     if (this.target.noFire) {
       color = this.red
-      size = 16
+      size = 18
     } else {
       if (this.target.targetedRange) { path = this.circlePath(x, y, 10) }
       if (this.target.targetedRange || this.target.rapidFire) { style.stroke = "black" }
@@ -471,15 +471,12 @@ const Counter = class {
     return { value: text, x: x, y: y, size: size, path: path, style: style, fStyle: fStyle }
   }
 
-  helpLayout(x, y, document) {
+  helpLayout(x, y) {
     const text = this.target.helpText
-    const size = 20
-    let width = 100
-    const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
-    context.font = getComputedStyle(document.body).font
+    const size = 22
+    let width = 24.4
     text.forEach(t => {
-      const n = context.measureText(t).width
+      const n = t.length * 9.6 + 16
       if (n > width) { width = n }
     })
     let x1 = x

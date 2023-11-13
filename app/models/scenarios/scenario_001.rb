@@ -31,6 +31,7 @@ module Scenarios
           to plug a gap in the German defenses by counterattacking a small
           Soviet breakthrough in the woods on the second day of the first
           Soviet Rzhev-Sychyovka offensive.",
+          "Special rules: mud",
         ]
       end
 

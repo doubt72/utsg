@@ -35,7 +35,7 @@ export default function MapCounter(props) {
   const morale = () => {
     const layout = props.counter.moraleLayout
     if (layout) return (
-      <text x={layout.x} y={layout.y} fontSize={layout.fsize} textAnchor="middle"
+      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
             fontFamily="'Courier Prime', monospace" style={layout.style}>{layout.value}</text>
     )
   }

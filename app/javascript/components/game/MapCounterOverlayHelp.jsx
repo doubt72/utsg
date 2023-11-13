@@ -18,14 +18,14 @@ export default function MapCounterOverlayHelp(props) {
   }, [props.x, props.y])
 
   const showHelp = () => {
-    const layout = props.counter.helpLayout(props.x + 20, props.y - 10, document)
+    const layout = props.counter.helpLayout(props.x + 20, props.y - 10)
     props.setHelpDisplay(
       <g>
         <path d={layout.path} style={layout.style} />
         {
           layout.texts.map((t, i) => 
-            <text key={i} x={t.x} y={t.y} fontSize={layout.size} textAnchor="left"
-                  style={{ fill: "white" }}>{t.v}</text>
+            <text key={i} x={t.x} y={t.y} fontSize={layout.size} fontFamily="'Courier Prime', monospace"
+                  textAnchor="left" style={{ fill: "white" }}>{t.v}</text>
           )
         }
       </g>

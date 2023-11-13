@@ -2,7 +2,8 @@
   - handle edge elevation
   - handle hindrance elevation
 - front/rear arc
-- fix SVG font
+- mud
+- terrain info
 
 - hotseat games?
 - refactor CSS

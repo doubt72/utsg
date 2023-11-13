@@ -164,6 +164,7 @@ const Hex = class {
       g: "#D0EED0",
       d: "#EEB",
       s: "#EEE",
+      m: "#DCA",
       u: "#D7E0D0",
     }[this.map.baseTerrain]
   }
@@ -188,7 +189,6 @@ const Hex = class {
 
   terrainStyles = {
     j: { fill: "rgba(47,191,47,0.33)" },
-    m: { fill: "#CEE" },
     g: { fill: "#DEA" },
     w: { fill: this.darkWater }, // TODO: special shallow beach water?
   }

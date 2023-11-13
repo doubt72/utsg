@@ -255,7 +255,7 @@ const Map = class {
         b.dx = c
         b.dy = b.y
       }
-      b.y = b.y + 4
+      b.y = b.y + 5
       return b
     })
   }

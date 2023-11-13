@@ -22,6 +22,9 @@ export default function DebugMap() {
     gldr: {
       c: "ger", f: 1, i: "leader", m: 6, n:  "Leader", o: {l: 1}, r: 1, s: 1, t: "ldr", v: 6, y: 0
     },
+    gcrew: {
+      c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 }
+    },
     gmg: {
       c: "ger", f: 8, i: "mg", n: "MG 44", o: {a: 1, r: 1, j: 3}, r: 8, t: "sw", v: 0, y: 42
     },
@@ -85,13 +88,27 @@ export default function DebugMap() {
     rgrant: {
       c: "ussr", f: 7, i: "tank", n: "M3 Grant", r: 10, s: 5, t: "tank", v: 5, y: 41,
       o: {
-        bd: 4, ha: {f: 4, s: 3, r: 3}, j: 3, k: 1, p: 1, sg: {f: 24, r: 12}, t: 1,
+        bd: 4, ha: {f: 4, s: 3, r: 3}, j: 3, k: 1, p: 1, sg: {f: 20, r: 12}, t: 1,
         ta: {f: 4, s: 4, r: 4}, u: 1
       },
     },
     rm2cs: {
       c: "uk", f: 16, i: "spg", n: "Matilda II CS", r: 12, s: 5, t: "spg", v: 4, y: 39,
       o: {t: 1, g: 1, ha: {f: 6, s: 5, r: 4}, ta: {f: 5, s: 5, r: 5}, bd: 3, s: 1, u: 1, j: 3, k: 1}
+    },
+    croc: {
+      c: "uk", f: 24, i: "spft", n: "Churchill Crocodile", r: 16, s: 6, t: "spg", v: 4, y: 44,
+      o: {
+        ha: {f: 9, s: 6, r: 4}, j: 3, k: 1, p: 1, sg: {f: "F24", r: 1}, sn: 3, t: 1,
+        ta: {f: 9, s: 6, r: 6}, u: 1
+      },
+    },
+    flak88: {
+      c: "ger", f: 48, i: "atgun", n: "8.8cm Flak 36", o: {y: 1, t: 1, j: 3, p: 1, c: 1},
+      r: 30, s: 3, t: "gun", v: 1, y: 36
+    },
+    radio: {
+      t: "sw", i: "radio", c: "ussr", n: "Radio 85mm", y: 43, f: 16, r: 0, v: 0, o: { s: 1, o: 1, j: 3 }
     },
   }
 
@@ -166,6 +183,11 @@ export default function DebugMap() {
     { u: testUnitData.rat, x: 14, y: 14, f: 1, tf: null },
     { u: testUnitData.ginf, x: 7, y: 14, f: null, tf: null },
     { u: testUnitData.gps, x: 7, y: 14, f: null, tf: null },
+    { u: testUnitData.croc, x: 14, y: 11, f: 1, tf: 2 },
+    { u: testUnitData.rinf, x: 14, y: 4, f: null, tf: null },
+    { u: testUnitData.radio, x: 14, y: 4, f: null, tf: null },
+    { u: testUnitData.gcrew, x: 3, y: 13, f: null, tf: null },
+    { u: testUnitData.flak88, x: 3, y: 13, f: 3, tf: null },
   ]
 
   useEffect(() => {
@@ -455,6 +477,7 @@ export default function DebugMap() {
       g: "grass",
       d: "desert",
       s: "snow",
+      m: "mud",
       u: "urban",
     }[t]
   }
@@ -463,7 +486,8 @@ export default function DebugMap() {
     return {
       g: "d",
       d: "s",
-      s: "u",
+      s: "m",
+      m: "u",
       u: "g",
     }[t]
   }

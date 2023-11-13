@@ -31,7 +31,7 @@ export default function MapCounterOverlay(props) {
             const arrow = b.arrow ?
               <g>
                 <path d={b.dirpath} style={{ fill: b.color, stroke: b.tColor, strokeWidth: 2 }} />
-                <text x={b.dx} y={b.y+1.5} fontSize={b.size} textAnchor="middle"
+                <text x={b.dx} y={b.y+1} fontSize={b.size} textAnchor="middle"
                       style={{ fill: b.tColor }}
                       transform={`rotate(${b.arrow*60-60} ${b.dx} ${b.dy})`}>←</text>
               </g> : "" 

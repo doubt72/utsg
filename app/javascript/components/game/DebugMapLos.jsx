@@ -335,6 +335,7 @@ export default function DebugMapLos() {
       g: "grass",
       d: "desert",
       s: "snow",
+      m: "mud",
       u: "urban",
     }[t]
   }
@@ -343,7 +344,8 @@ export default function DebugMapLos() {
     return {
       g: "d",
       d: "s",
-      s: "u",
+      s: "m",
+      m: "u",
       u: "g",
     }[t]
   }

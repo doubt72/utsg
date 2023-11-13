@@ -235,7 +235,8 @@ const Unit = class {
   get helpText() {
     let text = [this.name]
     text = text.concat(this.typeName)
-    text.push("[ from name, clockwise ]")
+    text.push("")
+    text.push("[from name, clockwise]")
     if (this.size > 0) {
       text.push(`stacking/size ${this.size} (${this.armored ? "armored" : "soft"})`)
     }
@@ -302,7 +303,11 @@ const Unit = class {
       text.push("- ignores terrain")
     }
     if (this.currentSmokeCapable) {
-      text.push("can lay smoke")
+      if (this.targetedRange) {
+        text.push("- can fire smoke rounds")
+      } else {
+        text.push("can lay smoke")
+      }
     }
     if (this.breakdownRoll && !this.immobilized) {
       text.push(`breakdown roll ${this.breakdownRoll}`)
@@ -321,12 +326,20 @@ const Unit = class {
     }
     if (this.sponson) {
       text.push("center / symbol bottom:")
-      text.push("sponson gun - forward arc only")
-      text.push(`- firepower ${this.sponson[0]}`)
-      text.push(`- range ${this.sponson[1]}`)
-      text.push("- target roll required")
-      text.push("- anti-armor capable")
-      text.push("- half firepower vs. soft targets")
+      if (String(this.sponson[0]).slice(0, 1) === "F") {
+        text.push("flamethrower mounted")
+        text.push("- forward arc only")
+        text.push(`- firepower ${this.sponson[0].slice(1)}`)
+        text.push(`- range ${this.sponson[1]}`)
+        text.push("- ignores terrain")
+      } else {
+        text.push("sponson gun - forward arc only")
+        text.push(`- firepower ${this.sponson[0]}`)
+        text.push(`- range ${this.sponson[1]}`)
+        text.push("- target roll required")
+        text.push("- anti-armor capable")
+        text.push("- half firepower vs. soft targets")
+      }
     }
     return text
   }

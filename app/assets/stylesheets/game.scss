@@ -62,6 +62,8 @@
   text-align: end;
   margin-right: 0.5em;
   font-family: 'Courier Prime', monospace;
+  position: relative;
+  bottom: -2px;
   width: 3.25em;
 }
 
@@ -121,6 +123,8 @@
 
 .move-output-date {
   font-family: 'Courier Prime', monospace;
+  position: relative;
+  bottom: -2px;
   color: $gray-b;
   padding-right: 0.5em;
 }

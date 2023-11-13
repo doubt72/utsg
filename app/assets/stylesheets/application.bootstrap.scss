@@ -287,6 +287,8 @@ button.custom-button:hover,a.custom-button:hover,div.custom-button:hover {
 
 .chat-output-date {
   font-family: 'Courier Prime', monospace;
+  position: relative;
+  bottom: -2px;
   color: $gray-b;
   padding-right: 0.5em;
 }

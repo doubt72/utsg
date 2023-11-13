@@ -446,7 +446,6 @@ module Utility
             ["uk", "Churchill III-IV", 42, 6, 20, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
             ["uk", "Churchill V-VI", 43, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
             ["uk", "Churchill VII-VIII", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 } }],
-            ["uk", "Churchill Crocodile", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 }, sn: 3, sg: { f: "F24", r: 1 } }],
             ["ussr", "Churchill II", 41, 6, 10, 12, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
             ["ussr", "Churchill III", 42, 6, 20, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
             ["usa", "M2A4", 35, 3, 6, 8, 7, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
@@ -503,7 +502,7 @@ module Utility
           lu
         end
 
-        def sp_guns
+        def sp_guns # rubocop:disable Metrics/PerceivedComplexity
           lu = {}
           key = %i[c n y s f r v o]
           [
@@ -541,6 +540,7 @@ module Utility
             ["uk", "Matilda II CS", 39, 5, 16, 12, 4, { t: 1, g: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 }, bd: 3, s: 1 }],
             ["uk", "Matilda Frog", 44, 5, 24, 1, 4, { i: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 } }],
             ["uk", "Valentine III CS", 40, 4, 16, 12, 5, { t: 1, g: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 }, s: 1 }],
+            ["uk", "Churchill Crocodile", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 }, sn: 3, sg: { f: "F24", r: 1 } }],
             ["usa", "M3A1 Stuart FT", 44, 3, 24, 1, 5, { i: 1, ha: { f: 4, s: 3, r: 3 } }],
             ["usa", "M4A3R5 Sherman", 44, 5, 24, 1, 5, { i: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 2 }],
             ["usa", "M10", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2 } }],
@@ -566,7 +566,7 @@ module Utility
             spg[:i] = "spg" if spg[:o][:g]
             spg[:i] = "spgmg" if spg[:o][:r]
             spg[:i] = "spat" if spg[:o][:p]
-            spg[:i] = "spft" if spg[:o][:i]
+            spg[:i] = "spft" if spg[:o][:i] || spg[:o][:sg]
             spg[:o][:u] = 1 if spg[:o][:ta]
             spg[:o].merge!({ j: 3, k: 1 })
             lu["#{spg[:c]}_#{sanitize(spg[:n])}".to_sym] = spg
