@@ -61,7 +61,7 @@ const Terrain = class {
     let move = 0
     move = this.baseAttr.move
     if (this.hex.building) { move = 2 }
-    if (["s", "m"].includes(this.hex.map.baseTerrain) && !this.hex.road && move < 3) {
+    if (["s", "m"].includes(this.hex.map.baseTerrain) && !this.hex.road) {
       move += 1
     }
     if (this.hex.river && !this.hex.road) {

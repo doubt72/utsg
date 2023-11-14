@@ -773,6 +773,15 @@ const Hex = class {
       } else if (this.road && ["m", "s"].includes(this.map.baseTerrain)) {
         text.push(`- cost +1 if not following road`)
       }
+      let rise = false
+      this.map.hexNeighbors(this.x, this.y).forEach(n => {
+        if (n && n.elevation < this.elevation) {
+          rise = true
+        }
+      })
+      if (rise) {
+        text.push(" cost +1 if moving from lower elevation")
+      }
       if (!this.terrain.gun) {
         text.push("- crewed weapons cannot enter")
       } else if (this.terrain.gun === "back") {
@@ -793,10 +802,10 @@ const Hex = class {
           text.push("paved road")
         }
         text.push("- movement bonus +1 if moving along road")
+        text.push("- except wheeled movement cost 1/2")
         if (!this.terrain.gun || !this.terrain.vehicle) {
           text.push("- all units can move along road")
         }
-        text.push("- wheeled movement cost 1/2")
       } else {
         if (this.river) {
           text.push("wooden bridge")
@@ -804,11 +813,11 @@ const Hex = class {
           text.push("unpaved road")
         }
         text.push("- movement bonus +1 if moving along road")
+        if (!["m", "s"].includes(this.map.baseTerrain)) {
+          text.push("- except wheeled movement cost 1/2")
+        }
         if (!this.terrain.gun || !this.terrain.vehicle) {
           text.push("- all units can move along road")
-        }
-        if (!["m", "s"].includes(this.map.baseTerrain)) {
-          text.push("- wheeled movement cost 1/2")
         }
       }
     }

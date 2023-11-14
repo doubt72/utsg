@@ -2,8 +2,6 @@
   - handle edge elevation
   - handle hindrance elevation
 - front/rear arc
-- mud
-- terrain info
 
 - hotseat games?
 - refactor CSS

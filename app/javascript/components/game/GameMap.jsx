@@ -33,7 +33,9 @@ export default function GameMap(props) {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
         overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
                                           selectCallback={hexSelection} showTerrain={props.showTerrain}
-                                          terrainCallback={setTerrainInfoOverlay} svgRef={svgRef} />)
+                                          terrainCallback={props.showTerrain ?
+                                            setTerrainInfoOverlay : () => setTerrainInfoOverlay("") }
+                                          svgRef={svgRef} />)
       })
     })
     setHexDisplay(hexLoader)
@@ -43,6 +45,7 @@ export default function GameMap(props) {
     }))
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
+    props.showTerrain,
     props.map?.baseTerrain, props.map?.night // debugging only, don't change in actual games
   ])
 
