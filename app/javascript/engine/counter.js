@@ -505,6 +505,27 @@ const Counter = class {
     })
     return layout
   }
+
+  facingLine(dir) {
+    const hex = this.map.hexAt(this.xHex, this.yHex)
+    const x = hex.xCorner(dir)
+    const y = hex.yCorner(dir)
+    const len = this.map.radius * (this.map.height + this.map.width)
+    return [
+      "M", x, y, "L", x - len * Math.cos((dir-0.5)/3 * Math.PI),
+      y - len * Math.sin((dir-0.5)/3 * Math.PI)
+    ]
+  }
+
+  get facingLayout() {
+    if ((!this.target.turreted && !this.target.rotates) || this.target.isWreck) { return false }
+    const dir = this.target.turreted ? this.target.turretFacing : this.target.facing
+    const path = this.facingLine(dir).concat(this.facingLine(dir === 1 ? 6 : dir - 1)).join(" ")
+    return {
+      path: path, style: { fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(255,255,255,1)" },
+      dash: "4 4", style2: { fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(0,0,0,1)" }
+    }
+  }
 }
 
 export { Counter }

@@ -164,7 +164,7 @@ const Hex = class {
       g: "#D0EED0",
       d: "#EEB",
       s: "#EEE",
-      m: "#EFBF8F",
+      m: "#F7C797",
       u: "#D7E0D0",
     }[this.map.baseTerrain]
   }

@@ -473,14 +473,8 @@ export default function DebugMap() {
     console.log(key)
   }
 
-  const baseTerrainName = (t) => {
-    return {
-      g: "grass",
-      d: "desert",
-      s: "snow",
-      m: "mud",
-      u: "urban",
-    }[t]
+  const baseTerrainName = () => {
+    return map?.baseTerrainName
   }
 
   const nextTerrain = (t) => {

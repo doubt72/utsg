@@ -43,6 +43,17 @@ export default function MapLosOverlay(props) {
             })
           )
         }
+        {props.map.countersAt(props.x, props.y).map((c, i) => {
+          if (c.target.isMarker || c.target.isFeature) { return "" }
+          const fl = c.facingLayout
+          if (!fl) { return "" }
+          return (
+            <g key={i}>
+              {fl ? <path d={fl.path} style={fl.style2} /> : ""}
+              {fl ? <path d={fl.path} style={fl.style} strokeDasharray={fl.dash} /> : ""}
+            </g>
+          )
+        })}
       </g>
     )
   }, [props.x, props.y])

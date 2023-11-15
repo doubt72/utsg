@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Map } from "../../engine/map";
+import { Los } from "../../utilities/los";
 
 export default function MapLosDebugOverlay(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")
@@ -8,8 +9,9 @@ export default function MapLosDebugOverlay(props) {
   const [target, setTarget] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
-    const losPath = props.map.hexPath(props.x, props.y, target.x, target.y)
+    const start = props.map.hexAt(props.x, props.y)
     const lastHex = props.map.hexAt(target.x, target.y)
+    const losPath = new Los(props.map).hexPath(start, lastHex)
     const lastLos = props.map.hexLos(props.x, props.y, target.x, target.y)
     setTargetPath(
       <g>

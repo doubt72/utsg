@@ -332,7 +332,7 @@ export default function DebugMapLos() {
   }
 
   const baseTerrainName = () => {
-    return map.baseTerrainName
+    return map?.baseTerrainName
   }
 
   const nextTerrain = (t) => {
