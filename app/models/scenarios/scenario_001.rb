@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario001 < Base
     ID = "001"
-    NAME = "A Simple Problem"
+    NAME = "A Straightforward Proposition"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"

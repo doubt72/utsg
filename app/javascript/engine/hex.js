@@ -189,7 +189,6 @@ const Hex = class {
 
   terrainStyles = {
     j: { fill: "rgba(47,191,47,0.33)" },
-    g: { fill: "#DEA" },
     w: { fill: this.darkWater }, // TODO: special shallow beach water?
   }
 

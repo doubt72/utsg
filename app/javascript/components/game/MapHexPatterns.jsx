@@ -76,12 +76,13 @@ export default function MapHexPatterns() {
       </pattern>
       <pattern id="marsh-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="24" height="24" viewBox="0 0 10 10">
-        <rect width="10" height="10" opacity="0.7" style={{ fill: "#DFF" }}/>
+        <rect width="10" height="10" opacity="0.5" style={{ fill: "#DFF" }}/>
         <path d="M 1 9 L 5 9 M 3 9 L 1.5 7.5 M 3 9 L 4.5 7.5 M 3 9 L 3 7" style={marshStyle} />
         <path d="M 5 4 L 9 4 M 7 4 L 5.5 2.5 M 7 4 L 8.5 2.5 M 7 4 L 7 2" style={marshStyle} />
       </pattern>
       <pattern id="grain-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="5.5" height="9.9" viewBox="0 0 10 18">
+        <rect width="10" height="18" opacity="0.7" style={{ fill: "#FFA" }}/>
         <g id="grain-component">
           <path d="M0 0l5 3v5l-5 -3z" style={darkStyle} />
           <path d="M10 0l-5 3v5l5 -3" style={darkStyle} />
