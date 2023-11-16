@@ -374,7 +374,7 @@ const HexBuilding = class {
       path = this.bigCorner3
     }
     return { d: path.join(" "), style: {
-      fill: this.buildingStyle === "f" ? "#B97" : "#AAA",
+      fill: this.hex.buildingStyle === "f" ? "#B97" : "#AAA",
       stroke: this.hex.buildingShape === "fm" ? "rgba(0,0,0,0)" : "#333",
       strokeWidth: 1,
     }}
