@@ -34,6 +34,7 @@ const Hex = class {
     return new Terrain(this)
   }
 
+  // TODO: move LOS effects to own class
   get counterLos() {
     let hindrance = 0
     let los = false
@@ -146,17 +147,28 @@ const Hex = class {
     const e1 = this.terrainCornerBorders(dir, -1)
     if (e1.a.los && e1.b.los && !initialEdge) { return true }
     // Buildings block if they cross edge
-    if (this.building && neighbor?.building) {
-      const opp = dir > 3 ? dir - 3 : dir + 3
-      const blockLeft = (this.buildingShape === "m" &&
-        (this.direction === dir || this.direction === opp )) ||
-        (this.buildingShape === "s" && this.direction === opp)
-      const blockRight = (neighbor.buildingShape === "m" &&
-        (neighbor.direction === dir || neighbor.direction === opp )) ||
-        (neighbor.buildingShape === "s" && neighbor.direction === dir)
-      if (blockLeft && blockRight) { return true }
-    }
+    const opp = dir > 3 ? dir - 3 : dir + 3
+    console.log(`${this.x}, ${this.y} dir ${dir}: ${this.buildingLosEdges} - ${neighbor?.buildingLosEdges}`)
+    if (this.building && this.buildingLosEdges.includes(dir)) { return true }
+    if (neighbor?.building && neighbor.buildingLosEdges.includes(opp)) { return true }
     return false
+  }
+
+  get buildingLosEdges() {
+    const dir = this.direction
+    const opp = dir > 3 ? dir - 3 : dir + 3
+    if (!this.building) { return [] }
+    if (this.buildingShape === "m") { return [dir, opp] }
+    if (this.buildingShape === "s") { return [opp] }
+    if (this.buildingShape === "bm") { return [1, 2, 3, 4, 5, 6] }
+    let sides = []
+    if (this.buildingShape === "bs1") { return [dir+2, opp, opp+1] }
+    if (this.buildingShape === "bs2") { return [dir, opp, opp+1, opp+2] }
+    if (this.buildingShape === "bs3") { return [opp+1, opp+2] }
+    if (this.buildingShape === "bc1") { return [opp, opp+1, opp+2] }
+    if (this.buildingShape === "bc2") { return [dir, opp+1, opp+2] }
+    sides = sides.map(s => s > 6 ? s - 6 : s)
+    return sides
   }
 
   get mapColors() {
@@ -228,7 +240,7 @@ const Hex = class {
   xEdge(i, inset = 0) { return this.xOffset - (this.narrow/2 - inset) * Math.cos((i-1)/3 * Math.PI) }
   yEdge(i, inset = 0) { return this.yOffset - (this.narrow/2 - inset) * Math.sin((i-1)/3 * Math.PI) }
 
-  // When matching up hexes with continuous curves, use this to calculate how
+  // When matching up hexes with continuous edges, use this to calculate how
   // far the open terrain crosses from the corner of the hex
   xCornerOffset(i, offset, dir, inset = 0) {
     const x = this.xCorner(i, inset)
@@ -389,6 +401,7 @@ const Hex = class {
     ]
   }
 
+  // TODO maybe split into another class?
   get buildingDisplay() {
     if (!this.building) { return false }
     let path = []
@@ -499,10 +512,82 @@ const Hex = class {
         "M", this.xRotated(dir, 0, mag1 - inset*4), this.yRotated(dir, 0, mag1 - inset*4),
         "L", this.xRotated(dir, 0, -mag1 + inset*4), this.yRotated(dir, 0, -mag1 + inset*4),
       ]
-    } 
+    } else if (this.buildingShape === "bm") {
+      let pa = "M"
+      for (let i = 0; i <= 6; i++) {
+        path.push(pa)
+        path.push(this.xCorner(i))
+        path.push(this.yCorner(i))
+        pa = "L"
+      }
+    } else if (this.buildingShape === "bs1") {
+      const x1 = this.xCornerOffset(dir + 1, outset, 1)
+      const y1 = this.yCornerOffset(dir + 1, outset, 1)
+      const x2 = this.xCornerOffset(dir + 4, outset, -1)
+      const y2 = this.yCornerOffset(dir + 4, outset, -1)
+      const xOff = outset * Math.sin(Math.PI/3)
+      path = [
+        "M", x1, y1, "L", this.xCorner(dir + 2), this.yCorner(dir + 2),
+        "L", this.xCorner(dir + 3), this.yCorner(dir + 3), "L", x2, y2,
+        "L", this.xRotated(dir, -xOff, outset*3), this.yRotated(dir, -xOff, outset*3),
+        "L", this.xRotated(dir, xOff*3, outset*3), this.yRotated(dir, xOff*3, outset*3),
+        "L", this.xRotated(dir, xOff*3, -outset*3), this.yRotated(dir, xOff*3, -outset*3),
+        "L", this.xRotated(dir, -xOff, -outset*3), this.yRotated(dir, -xOff, -outset*3),
+        "L", x1, y1,
+      ]
+    } else if (this.buildingShape === "bs2") {
+      const x1 = this.xCornerOffset(dir + 2, outset, 1)
+      const y1 = this.yCornerOffset(dir + 2, outset, 1)
+      const x2 = this.xCornerOffset(dir, outset, -1)
+      const y2 = this.yCornerOffset(dir, outset, -1)
+      path = [
+        "M", x1, y1, "L", this.xCorner(dir + 3), this.yCorner(dir + 3),
+        "L", this.xCorner(dir + 4), this.yCorner(dir + 4),
+        "L", this.xCorner(dir + 5), this.yCorner(dir + 5),
+        "L", x2, y2, "L", x1, y1,
+      ]
+    } else if (this.buildingShape === "bs3") {
+      const x1 = this.xCornerOffset(dir - 1, outset, -1)
+      const y1 = this.yCornerOffset(dir - 1, outset, -1)
+      const x2 = this.xCornerOffset(dir + 3, outset, 1)
+      const y2 = this.yCornerOffset(dir + 3, outset, 1)
+      const xOff = this.narrow/2 - outset * Math.sin(Math.PI/3)
+      path = [
+        "M", x1, y1,
+        "L", this.xRotated(dir, xOff, -outset*2), this.yRotated(dir, xOff, -outset*2),
+        "L", this.xRotated(dir, -xOff, -outset*2), this.yRotated(dir, -xOff, -outset*2),
+        "L", x2, y2, "L", this.xCorner(dir + 4), this.yCorner(dir + 4), "L", x1, y1,
+      ]
+    } else if (this.buildingShape === "bc1") {
+      const x1 = this.xCornerOffset(dir - 1, outset, -1)
+      const y1 = this.yCornerOffset(dir - 1, outset, -1)
+      const x2 = this.xCornerOffset(dir + 2, outset, 1)
+      const y2 = this.yCornerOffset(dir + 2, outset, 1)
+      const xOff = this.narrow/2 - outset * Math.sin(Math.PI/3)
+      path = [
+        "M", x1, y1,
+        "L", this.xRotated(dir, xOff, -this.radius/3),
+             this.yRotated(dir, xOff, -this.radius/3),
+        "L", x2, y2, "L", this.xCorner(dir + 3), this.yCorner(dir + 3),
+        "L", this.xCorner(dir + 4), this.yCorner(dir + 4), "L", x1, y1,
+      ]
+    } else if (this.buildingShape === "bc2") {
+      const x1 = this.xCornerOffset(dir, outset, -1)
+      const y1 = this.yCornerOffset(dir, outset, -1)
+      const x2 = this.xCornerOffset(dir + 3, outset, 1)
+      const y2 = this.yCornerOffset(dir + 3, outset, 1)
+      const xOff = this.narrow/2 - outset * Math.sin(Math.PI/3)
+      path = [
+        "M", x1, y1,
+        "L", this.xRotated(dir + 3, xOff, this.radius/3),
+             this.yRotated(dir + 3, xOff, this.radius/3),
+        "L", x2, y2, "L", this.xCorner(dir + 4), this.yCorner(dir + 4),
+        "L", this.xCorner(dir + 5), this.yCorner(dir + 5), "L", x1, y1,
+      ]
+    }
     return { d: path.join(" "), style: {
       fill: this.buildingStyle === "f" ? "#B97" : "#AAA",
-      stroke: "#333",
+      stroke: this.buildingShape === "fm" ? "rgba(0,0,0,0)" : "#333",
       strokeWidth: 1,
     }}
   }
