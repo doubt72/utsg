@@ -28,8 +28,8 @@ export default function DebugMapLos() {
   }
 
   const testFeatures = [
-    { u: testFeatureData.smoke, x: 12, y: 12 },
-    { u: testFeatureData.fire, x: 13, y: 13 },
+    { u: testFeatureData.smoke, x: 14, y: 13 },
+    { u: testFeatureData.fire, x: 13, y: 14 },
   ]
 
   const testUnits = [
@@ -69,6 +69,14 @@ export default function DebugMapLos() {
     { u: testUnitData.ginf, x: 8, y: 12 },
     { u: testUnitData.ginf, x: 5, y: 13 },
     { u: testUnitData.ginf, x: 6, y: 14 },
+    { u: testUnitData.ginf, x: 3, y: 11 },
+    { u: testUnitData.ginf, x: 4, y: 11 },
+    { u: testUnitData.ginf, x: 6, y: 9 },
+    { u: testUnitData.ginf, x: 10, y: 14 },
+    { u: testUnitData.ginf, x: 9, y: 13 },
+    { u: testUnitData.ginf, x: 10, y: 12 },
+    { u: testUnitData.ginf, x: 9, y: 11 },
+    { u: testUnitData.ginf, x: 11, y: 13 },
   ]
 
   useEffect(() => {
@@ -226,8 +234,8 @@ export default function DebugMapLos() {
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "o", d: 1, st: { sh: "bc1" } },
+            { t: "o", d: 1, st: { sh: "bc3" } },
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -242,15 +250,15 @@ export default function DebugMapLos() {
             { t: "o" },
             { t: "o" },
             { t: "o" },
+            { t: "o", d: 4, st: { sh: "bc3" } },
+            { t: "o", d: 4, st: { sh: "bc1" } },
             { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "o", d: 1, st: { sh: "bc1" } },
+            { t: "o", d: 1, st: { sh: "bc2" } },
             { t: "o" },
             { t: "o", d: 1, st: { sh: "s" } },
           ], [
@@ -264,9 +272,9 @@ export default function DebugMapLos() {
             { t: "o", d: 1, st: { sh: "bs2" } },
             { t: "o", d: 1, st: { sh: "bc2" } },
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "o", d: 1, st: { sh: "bs1" } },
+            { t: "o", d: 1, st: { sh: "bm" } },
+            { t: "o", d: 4, st: { sh: "bs1" } },
             { t: "o" },
             { t: "o" },
           ], [
@@ -281,8 +289,8 @@ export default function DebugMapLos() {
             { t: "o", d: 1, st: { sh: "bm" } },
             { t: "o", d: 4, st: { sh: "bs1" } },
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "o", d: 1, st: { sh: "bs4" } },
+            { t: "o", d: 4, st: { sh: "bs4" } },
             { t: "o" },
             { t: "o" },
           ], [
@@ -296,9 +304,9 @@ export default function DebugMapLos() {
             { t: "o", d: 4, st: { sh: "bs2" } },
             { t: "o", d: 4, st: { sh: "bc1" } },
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "o", d: 1, st: { sh: "bs1" } },
+            { t: "o", d: 1, st: { sh: "bm" } },
+            { t: "o", d: 4, st: { sh: "bs1" } },
             { t: "o" },
             { t: "o" },
           ], [
@@ -313,8 +321,8 @@ export default function DebugMapLos() {
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
-            { t: "o" },
+            { t: "o", d: 4, st: { sh: "bc2" } },
+            { t: "o", d: 4, st: { sh: "bc1" } },
             { t: "o" },
             { t: "o" },
           ]
