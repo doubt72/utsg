@@ -26,7 +26,7 @@ module Scenarios
 
       def description
         [
-          "Urban fighting in Stalingrad.  As German forces force an advance into the dense core of
+          "Urban fighting in Stalingrad.  As German forces force an advance into denser parts of
           the city, Soviet defenders attempt to hold them at bay, or even push them
           back if the opportunity arises.",
         ]
