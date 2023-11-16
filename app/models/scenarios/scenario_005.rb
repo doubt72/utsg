@@ -264,7 +264,7 @@ module Scenarios
             { t: "g", b: "f", be: [1, 2] },
             { t: "g" },
             { t: "o", r: { d: [3, 6] } },
-            { t: "o", d: 1, st: { sh: "l", s: "f" } },
+            { t: "o", d: 1, st: { sh: "x", s: "f" } },
             { t: "o" },
             { t: "g" },
             { t: "g", b: "f", be: [3, 4, 5] },

@@ -263,7 +263,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
-            { t: "o", d: 3, st: { sh: "l", s: "f" } },
+            { t: "o", d: 3, st: { sh: "x", s: "f" } },
             { t: "o", b: "f", be: [4, 5] },
             { t: "o" },
             { t: "f" },
