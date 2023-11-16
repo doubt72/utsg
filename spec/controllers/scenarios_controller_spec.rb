@@ -27,7 +27,7 @@ RSpec.describe Api::V1::ScenariosController do
       get :index
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body)["data"].length).to be == 8
+      expect(JSON.parse(response.body)["data"].length).to be == 10
     end
 
     it "gets spec scenario when filtering by string" do
