@@ -2,18 +2,9 @@ const alliedCodeToName = (code) => {
   const lookup = [
     { name: "Soviet", code: "ussr" },
     { name: "American", code: "usa" },
-    { name: "British", code: "uk" },
-    { name: "U.S. Marines", code: "usm" },
-    { name: "Commonwealth", code: "com" },
+    { name: "Commonwealth", code: "uk" },
     { name: "French", code: "fra" },
-    { name: "Polish", code: "pol" },
-    { name: "Greek", code: "gre" },
-    { name: "Norwegian", code: "nor" },
-    { name: "Chinese", code: "chi" },
-    { name: "Philippine", code: "phi" },
-    { name: "Dutch", code: "net" },
-    { name: "Belgian", code: "bel" },
-    { name: "Yugoslav", code: "yug" },
+    { name: "Allied", code: "alm" },
   ]
 
   for (const rec of lookup) {
@@ -31,10 +22,7 @@ const axisCodeToName = (code) => {
     { name: "Italian", code: "ita" },
     { name: "Japanese", code: "jap" },
     { name: "Finnish", code: "fin" },
-    { name: "Romanian", code: "rom" },
-    { name: "Bulgarian", code: "bul" },
-    { name: "Hungarian", code: "hun" },
-    { name: "Slovakian", code: "slo" },
+    { name: "Axis", code: "axm" },
   ]
 
   for (const rec of lookup) {

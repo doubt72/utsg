@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types"
+import MapCounter from "./MapCounter";
 import { Counter } from "../../engine/counter";
 import { Unit } from "../../engine/unit";
-import MapCounter from "./MapCounter";
 import { Feature } from "../../engine/feature";
+import { Marker } from "../../engine/marker";
 
 export default function CounterDisplay(props) {
 
@@ -20,5 +21,6 @@ CounterDisplay.propTypes = {
   unit: PropTypes.oneOfType([
     PropTypes.instanceOf(Unit),
     PropTypes.instanceOf(Feature),
+    PropTypes.instanceOf(Marker),
   ])
 }

@@ -1,7 +1,6 @@
 - line of sight checking
   - handle edge elevation
   - handle hindrance elevation
-- front/rear arc
 
 - hotseat games?
 - refactor CSS

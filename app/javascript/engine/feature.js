@@ -10,6 +10,7 @@
 //    z: armored, p: antitank, g: artillery, los: blocks LOS
 //    ca: cover facing
 //        f: front, s: side, r: rear
+//    q: sniper
 // x: count
 
 const Feature = class {
@@ -23,6 +24,7 @@ const Feature = class {
     this.currentMovement = data.v
     this.hindrance = data.h
     this.cover = data.d
+    this.sniperRoll = data.o?.q
 
     this.fieldGun = !!data.o?.g
     this.antiTank = !!data.o?.p

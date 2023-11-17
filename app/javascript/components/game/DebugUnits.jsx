@@ -3,6 +3,7 @@ import { getAPI } from "../../utilities/network";
 import { Unit, unitStatus } from "../../engine/unit";
 import CounterDisplay from "./CounterDisplay";
 import { Feature } from "../../engine/feature";
+import { Marker } from "../../engine/marker";
 
 
 export default function DebugUnits() {
@@ -187,6 +188,8 @@ export default function DebugUnits() {
   const makeUnit = (data) => {
     if (data.ft) {
       return new Feature(data)
+    } else if (data.mk) {
+      return new Marker(data)
     } else {
       return new Unit(data)
     }

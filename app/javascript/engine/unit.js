@@ -22,11 +22,16 @@ const movementType = {
 //        f: front, s: side, r: rear
 //    sp: sponson mounted gun
 //        f: firepower, r: range
+//    sn: small names
 // x: count
 
 // ft: feature
 // h: hindrance
 // d: cover
+// q: sniper
+
+// mk: marker
+// v: value
 
 const Unit = class {
   constructor(data) {

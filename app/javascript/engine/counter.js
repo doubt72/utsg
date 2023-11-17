@@ -1,3 +1,4 @@
+import { counterRed, markerYellow } from "../utilities/colors"
 import { markerType } from "./marker"
 
 const Counter = class {
@@ -34,7 +35,8 @@ const Counter = class {
     none: "white", fort: "white"
   }
   clear = "rgba(0,0,0,0)"
-  red = "#E00"
+  red = counterRed
+  yellow = markerYellow
 
   get color() { return this.nationalColors[this.target.nation] }
 
@@ -211,6 +213,15 @@ const Counter = class {
     }
   }
 
+  get centerLabelLayout() {
+    if (!this.target.sniperRoll) { return false }
+    let x = this.x + 40
+    let y = this.y + 48
+    return {
+      x: x, y: y, size: 40, value: this.target.sniperRoll, style: { fill: this.red }
+    }
+  }
+
   get sponsonLayout() {
     const gun = this.target.sponson
     if (!gun || this.target.isWreck) { return false }
@@ -376,13 +387,17 @@ const Counter = class {
 
   get markerLayout() {
     if (!this.target.isMarker || this.target.type === markerType.TrackedHull ||
-      this.target.type === markerType.WheeledHull) { return false }
+        this.target.type === markerType.WheeledHull || this.target.type === markerType.Initiative) {
+      return false
+    }
     const x = this.x + 40
     const y = this.y + 40
-    const size = this.target.displayText[0] === "immobilized" ? 10 : 12
-    const ty = y + 8 - size/2 * this.target.displayText.length
-    const color = this.target.isMinor ? "yellow" : this.red
-    const textColor = this.target.isMinor ? "black" : "white"
+    let size = this.target.displayText[0] === "immobilized" ? 11 : 12
+    let ty = y + 9 - 6 * this.target.displayText.length
+    if (this.target.type === markerType.Wind || this.target.type === markerType.Precipitation) {
+      size = 15
+      ty += 1
+    }
     const text = this.target.displayText.map((t, i) => {
       return { x: x, y: ty + size*i, value: t }
     })
@@ -390,8 +405,31 @@ const Counter = class {
       path: [
         "M", x-39.5, y-14, "L", x+39.5, y-14, "L", x+39.5, y+14, "L", x-39.5, y+14, "L", x-39.5, y-14
       ].join(" "),
-      style: { fill: color }, size: size, tStyle: { fill: textColor }, text: text
+      style: { fill: this.target.color }, size: size, tStyle: { fill: this.target.textColor }, text: text
     }
+  }
+
+  get windArrowLayout() {
+    if (!this.target.isMarker) { return false }
+    if (this.target.type !== markerType.Wind) { return false }
+
+    const x = this.x + 40
+    const y = this.y + 5
+    return {
+      path: [
+        "M", x - 6, y + 6, "L", x, y, "L", x + 6, y + 6
+      ].join(" "),
+      style: { fill: "rgba(0,0,0,0", stroke: "black", strokeWidth: 1.5 },
+    }
+  }
+
+  get markerSubLayout() {
+    if (!this.target.isMarker) { return false }
+    if (!this.target.subText) { return false }
+
+    const x = this.x + 40
+    const y = [this.y + 22, this.y + 64, this.y + 75]
+    return { style: { fill: "#222" }, value: this.target.subText, x: x, y: y, size: 11.5 }
   }
 
   get featureLayout() {
@@ -437,7 +475,7 @@ const Counter = class {
     let y = this.y + 46
     let size = 20
     const path = this.circlePath(x, y - 6, 22)
-    const style = { fill: "yellow", stroke: "black", strokeWidth: 2 }
+    const style = { fill: this.yellow, stroke: "black", strokeWidth: 2 }
     const fStyle = { fill: "black" }
     if (this.target.isPinned || this.target.immobilized || this.target.turretJammed ||
       (this.target.jammed && this.target.hullArmor)) {

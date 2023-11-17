@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="40" style="fill:rgba(255,255,255,0.75);" />
+<circle cx="50" cy="50" r="40" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 33 17 L 35 17 L 35 19 L 37 19 L 37 81 L 35 81 L 35 83 L 33 83 L 33 81 L 31 81 L 31 19 L 33 19 L 33 17" style="fill:#000;" />
+<path d="M 37 60 L 45 60 L 45 55 A 10,10 0 0,0 43,50 L 41 50.5 A 10,10 0 0,1 42,55 A 2,2 0 0,1 40,57 L 37 57" style="fill:#000;" />
+<path d="M 38.5 81 L 38.5 61.5" style="fill:rgba(0,0,0,0);stroke-width:1;stroke:#000;" />
+<path d="M 49 17 L 51 17 L 51 19 L 53 19 L 53 81 L 51 81 L 51 83 L 49 83 L 49 81 L 47 81 L 47 19 L 49 19 L 49 17" style="fill:#000;" />
+<path d="M 53 60 L 61 60 L 61 55 A 10,10 0 0,0 59,50 L 57 50.5 A 10,10 0 0,1 58,55 A 2,2 0 0,1 56,57 L 53 57" style="fill:#000;" />
+<path d="M 54.5 81 L 54.5 61.5" style="fill:rgba(0,0,0,0);stroke-width:1;stroke:#000;" />
+<path d="M 65 17 L 67 17 L 67 19 L 69 19 L 69 81 L 67 81 L 67 83 L 65 83 L 65 81 L 63 81 L 63 19 L 65 19 L 65 17" style="fill:#000;" />
+<path d="M 69 60 L 77 60 L 77 55 A 10,10 0 0,0 75,50 L 73 50.5 A 10,10 0 0,1 74,55 A 2,2 0 0,1 72,57 L 69 57" style="fill:#000;" />
+<path d="M 70.5 81 L 70.5 61.5" style="fill:rgba(0,0,0,0);stroke-width:1;stroke:#000;" />
+</svg>

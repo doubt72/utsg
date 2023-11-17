@@ -111,6 +111,14 @@ export default function MapCounter(props) {
     )
   }
 
+  const centerLabel = () => {
+    const layout = props.counter.centerLabelLayout
+    if (layout) return (
+      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+            fontFamily="'Courier Prime', monospace" style={layout.style}>{layout.value}</text>
+    )
+  }
+
   const sponson = () => {
     const layout = props.counter.sponsonLayout
     if (layout) return (
@@ -186,6 +194,25 @@ export default function MapCounter(props) {
     )
   }
 
+  const windArrow = () => {
+    const layout = props.counter.windArrowLayout
+    if (layout) return <path d={layout.path} style={layout.style} />
+  }
+
+  const markerSub = () => {
+    const layout = props.counter.markerSubLayout
+    if (layout) return (
+      <g>
+        <text x={layout.x} y={layout.y[0]} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace" style={layout.style}>{layout.value[0]}</text>
+        <text x={layout.x} y={layout.y[1]} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace" style={layout.style}>{layout.value[1]}</text>
+        <text x={layout.x} y={layout.y[2]} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace" style={layout.style}>{layout.value[2]}</text>
+      </g>
+    )
+  }
+
   const feature = () => {
     const layout = props.counter.featureLayout
     if (layout) return (
@@ -235,11 +262,11 @@ export default function MapCounter(props) {
       {morale()}
       {weaponBreak()}{size()}
       {leadership()}{handling()}{breakdown()}{smoke()}
-      {icon()}
+      {icon()}{centerLabel()}
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}
       {firepower()}{range()}{movement()}
-      {marker()}
+      {marker()}{windArrow()}{markerSub()}
       {status()}
       {overlay}
     </g>

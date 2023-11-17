@@ -7,7 +7,8 @@ module Utility
         # rubocop:disable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
         # -rubocop:disable Metric/PerceivedComplexity
         def lookup_data
-          features.merge(leaders).merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
+          features.merge(markers).merge(initiative).merge(hulls).merge(leaders)
+                  .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
                   .merge(support_weapons).merge(infantry_guns).merge(at_guns)
                   .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
         end
@@ -30,7 +31,7 @@ module Utility
         end
 
         def all_factions
-          %w[ger ita jap uk usa ussr] # fra fin chi axm alm
+          %w[ger ita jap uk usa ussr fra fin chi] # fra fin chi axm alm
         end
 
         def features
@@ -53,7 +54,75 @@ module Utility
             strongpoint: {
               ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 } },
             },
+            sniper2: { ft: 1, n: "sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 2 } },
+            sniper3: { ft: 1, n: "sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 3 } },
+            sniper4: { ft: 1, n: "sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 4 } },
+            sniper5: { ft: 1, n: "sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 5 } },
+            sniper6: { ft: 1, n: "sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 6 } },
+            sniper7: { ft: 1, n: "sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 7 } },
           }
+        end
+
+        def markers
+          {
+            calm: { mk: 1, type: 9, subtype: 0 },
+            calm_variable: { mk: 1, type: 9, subtype: 0, v: 1 },
+            breezy: { mk: 1, type: 9, subtype: 1 },
+            breezy_variable: { mk: 1, type: 9, subtype: 1, v: 1 },
+            windy: { mk: 1, type: 9, subtype: 2 },
+            windy_variable: { mk: 1, type: 9, subtype: 2, v: 1 },
+            still: { mk: 1, type: 9, subtype: 3 },
+            still_variable: { mk: 1, type: 9, subtype: 3, v: 1 },
+            sunny: { mk: 1, type: 10, subtype: 0 },
+            fog: { mk: 1, type: 10, subtype: 1 },
+            rain: { mk: 1, type: 10, subtype: 2 },
+            rain_20: { mk: 1, type: 10, subtype: 2, v: 20 },
+            rain_40: { mk: 1, type: 10, subtype: 2, v: 40 },
+            rain_60: { mk: 1, type: 10, subtype: 2, v: 60 },
+            rain_80: { mk: 1, type: 10, subtype: 2, v: 80 },
+            snow: { mk: 1, type: 10, subtype: 3 },
+            snow_20: { mk: 1, type: 10, subtype: 3, v: 20 },
+            snow_40: { mk: 1, type: 10, subtype: 3, v: 40 },
+            snow_60: { mk: 1, type: 10, subtype: 3, v: 60 },
+            snow_80: { mk: 1, type: 10, subtype: 3, v: 80 },
+            sand: { mk: 1, type: 10, subtype: 4 },
+            dust: { mk: 1, type: 10, subtype: 5 },
+            tired: { mk: 1, type: 2 },
+            activated: { mk: 1, type: 4 },
+            exhausted: { mk: 1, type: 5 },
+            pinned: { mk: 1, type: 3 },
+            jammed: { mk: 1, type: 6 },
+            turret_jammed: { mk: 1, type: 7 },
+            immobilized: { mk: 1, type: 8 },
+          }
+        end
+
+        def hulls
+          lu = {}
+          all_factions.each do |nation|
+            lu["#{nation}_tracked_hull".to_sym] = { mk: 1, nation:, type: 0 }
+            lu["#{nation}_wheeled_hull".to_sym] = { mk: 1, nation:, type: 1 }
+          end
+          lu
+        end
+
+        def initiative
+          lu = {}
+          all_factions.each do |nation|
+            next if %w[alm axm].include?(nation)
+
+            lu["#{nation}_initiative".to_sym] = { mk: 1, nation:, i: nation, type: 11 }
+          end
+          lu[:axm_bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
+          lu[:axm_hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
+          lu[:axm_rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
+          lu[:axm_slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
+          lu[:alm_pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
+          lu[:alm_gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
+          lu[:alm_nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
+          lu[:alm_bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
+          lu[:alm_dut_initiative] = { mk: 1, nation: "alm", i: "dut", type: 11 }
+          lu
         end
 
         def leaders

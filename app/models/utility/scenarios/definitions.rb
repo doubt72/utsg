@@ -6,14 +6,15 @@ module Utility
       AVAILABLE_ALLIED_FACTIONS = [
         # Current supported factions
         { name: "American", code: "usa" },
-        { name: "British", code: "uk" },
+        { name: "Commonwealth", code: "uk" },
         { name: "Soviet", code: "ussr" },
 
         # Likely future factions
         # { name: "French", code: "fra" },
         # { name: "Chinese", code: "chi" },
+        # { name: "Allied", code: "alm" },
 
-        # Possible future factions
+        # Possible future factions -- part of allied minors
         # { name: "Polish", code: "pol" },
         # { name: "Greek", code: "gre" },
         # { name: "Norwegian", code: "nor" },
@@ -30,9 +31,10 @@ module Utility
         { name: "Japanese", code: "jap" },
 
         # Likely future factions
-
-        # Possible future factions
         # { name: "Finnish", code: "fin" },
+        # { name: "Axis", code: "axm" },
+
+        # Possible future factions -- part of axis minors
         # { name: "Romanian", code: "rom" },
         # { name: "Bulgarian", code: "bul" },
         # { name: "Hungarian", code: "hun" },
