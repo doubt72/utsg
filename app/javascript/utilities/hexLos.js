@@ -50,7 +50,7 @@ const HexLos = class {
     }
   }
 
-  alongEdgeHindrance(dir, initialEdge = false) {
+  alongEdgeHindrance(dir, initialEdge) {
     const neighbor = this.hex.map.neighborAt(this.hex.x, this.hex.y, dir)
     let rc = this.terrainBorderEdge(dir).hindrance
     // If terrain crosses the edge, it may hinder (terrain considered to run off edge)
@@ -99,7 +99,7 @@ const HexLos = class {
     return this.terrainBorderEdge(dir).los
   }
 
-  alongEdgeLos(dir, initialEdge = false) {
+  alongEdgeLos(dir, initialEdge) {
     const neighbor = this.hex.map.neighborAt(this.hex.x, this.hex.y, dir)
     if (this.terrainBorderEdge(dir).los) { return true }
     // If terrain crosses the edge, it may block (terrain considered to run off edge)

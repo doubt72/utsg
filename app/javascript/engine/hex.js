@@ -41,12 +41,12 @@ const Hex = class {
 
   get los() { return this.hexLos.los }
   edgeLos(dir) { return this.hexLos.edgeLos(dir) }
-  alongEdgeLos(dir) { return this.hexLos.alongEdgeLos(dir) }
+  alongEdgeLos(dir, initial = false) { return this.hexLos.alongEdgeLos(dir, initial) }
   get counterLos() { return this.hexLos.counterLos }
 
   get hindrance() { return this.hexLos.hindrance }
   edgeHindrance(dir) { return this.hexLos.edgeHindrance(dir) }
-  alongEdgeHindrance(dir) { return this.hexLos.alongEdgeHindrance(dir) }
+  alongEdgeHindrance(dir, initial = false) { return this.hexLos.alongEdgeHindrance(dir, initial) }
   get counterHindrance() { return this.hexLos.counterHindrance }
 
   get mapColors() {
