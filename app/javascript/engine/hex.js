@@ -1,3 +1,4 @@
+import { baseHexCoords } from "../utilities/graphics"
 import { HexBuilding } from "../utilities/hexBuilding"
 import { HexLos } from "../utilities/hexLos"
 import { Terrain } from "./terrain"
@@ -50,13 +51,7 @@ const Hex = class {
   get counterHindrance() { return this.hexLos.counterHindrance }
 
   get mapColors() {
-    return {
-      g: "#D0EED0",
-      d: "#EEB",
-      s: "#EEE",
-      m: "#F7C797",
-      u: "#D7E0D0",
-    }[this.map.baseTerrain]
+    return this.map.baseTerrainColor
   }
 
   get elevationStyles() {
@@ -158,9 +153,7 @@ const Hex = class {
   }
 
   get hexCoords() {
-    return [0, 1, 2, 3, 4, 5, 6].map(i => {
-      return `${this.xCorner(i)},${this.yCorner(i)}`
-    }).join(" ")
+    return baseHexCoords(this.map, this.xOffset, this.yOffset)
   }
 
   edgeCoords(dir) {

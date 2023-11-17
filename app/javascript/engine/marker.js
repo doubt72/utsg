@@ -1,4 +1,4 @@
-import { counterRed, markerYellow } from "../utilities/colors"
+import { counterRed, markerYellow } from "../utilities/graphics"
 
 const markerType = {
   TrackedHull: 0, WheeledHull: 1,

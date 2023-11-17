@@ -2,7 +2,7 @@ const alliedCodeToName = (code) => {
   const lookup = [
     { name: "Soviet", code: "ussr" },
     { name: "American", code: "usa" },
-    { name: "Commonwealth", code: "uk" },
+    { name: "British", code: "uk" },
     { name: "French", code: "fra" },
     { name: "Allied", code: "alm" },
   ]

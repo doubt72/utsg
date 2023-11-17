@@ -55,12 +55,14 @@ const Map = class {
     })
   }
 
+  statusSize = 2.5
+
   get narrow() { return 115 }
   get radius() { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
   xOffset(x, y) { return this.narrow * (x + y%2/2 + 0.5) + 1 }
-  yOffset(y) { return this.radius * (y*1.5 + 1) + 1 }
+  yOffset(y) { return this.radius * (y*1.5 + 1 + this.statusSize) + 1 }
   get xSize() { return this.narrow * (this.width + 0.5) + 2 }
-  get ySize() { return 1.5 * this.radius * (this.height + 0.3333) + 2 }
+  get ySize() { return 1.5 * this.radius * (this.height + 0.3333 + this.statusSize/1.5) + 2 }
 
   hexAt(x, y) {
     if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
@@ -76,6 +78,16 @@ const Map = class {
       s: "snow",
       m: "mud",
       u: "urban",
+    }[this.baseTerrain]
+  }
+
+  get baseTerrainColor() {
+    return {
+      g: "#D0EED0",
+      d: "#EEB",
+      s: "#EEE",
+      m: "#F7C797",
+      u: "#D7E0D0",
     }[this.baseTerrain]
   }
 

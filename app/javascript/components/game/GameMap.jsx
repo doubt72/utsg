@@ -8,6 +8,7 @@ import MapCounter from "./MapCounter";
 import MapCounterOverlay from "./MapCounterOverlay";
 import MapLosOverlay from "./MapLosOverlay";
 import MapLosDebugOverlay from "./MapLosDebugOverlay";
+import WeatherDisplay from "./WeatherDisplay";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -111,6 +112,7 @@ export default function GameMap(props) {
       {overlayDisplay}
       {counterLosOverlay}
       {terrainInfoOverlay}
+      <WeatherDisplay map={props.map} x={2} y={2} />
     </svg>
   )
 }

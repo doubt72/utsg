@@ -1,4 +1,4 @@
-import { counterRed, markerYellow } from "../utilities/colors"
+import { baseCounterPath, counterRed, markerYellow } from "../utilities/graphics"
 import { markerType } from "./marker"
 
 const Counter = class {
@@ -49,16 +49,7 @@ const Counter = class {
   }
 
   counterPath(xOffset = 0, yOffset = 0) {
-    const x = this.x + xOffset
-    const y = this.y + yOffset
-    const corner = 4
-    return [
-      "M", x+corner, y,
-      "L", x+80-corner, y, "A", corner, corner, 0, 0, 1, x+80, y+corner,
-      "L", x+80, y+80-corner, "A", corner, corner, 0, 0, 1, x+80-corner, y+80,
-      "L", x+corner, y+80, "A", corner, corner, 0, 0, 1, x, y+80-corner,
-      "L", x, y+corner, "A", corner, corner, 0, 0, 1, x+corner, y,
-    ].join(" ")
+    return baseCounterPath(this.x + xOffset, this.y + yOffset)
   }
 
   get shadowPath() {
