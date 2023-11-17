@@ -31,7 +31,7 @@ module Utility
         end
 
         def all_factions
-          %w[ger ita jap uk usa ussr fra fin chi] # fra fin chi axm alm
+          %w[ger ita jap uk usa ussr] # fra fin chi axm alm
         end
 
         def features
@@ -113,15 +113,15 @@ module Utility
 
             lu["#{nation}_initiative".to_sym] = { mk: 1, nation:, i: nation, type: 11 }
           end
-          lu[:axm_bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
-          lu[:axm_hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
-          lu[:axm_rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
-          lu[:axm_slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
-          lu[:alm_pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
-          lu[:alm_gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
-          lu[:alm_nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
-          lu[:alm_bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
-          lu[:alm_dut_initiative] = { mk: 1, nation: "alm", i: "dut", type: 11 }
+          # lu[:axm_bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
+          # lu[:axm_hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
+          # lu[:axm_rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
+          # lu[:axm_slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
+          # lu[:alm_pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
+          # lu[:alm_gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
+          # lu[:alm_nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
+          # lu[:alm_bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
+          # lu[:alm_dut_initiative] = { mk: 1, nation: "alm", i: "dut", type: 11 }
           lu
         end
 
