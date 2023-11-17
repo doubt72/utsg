@@ -6,7 +6,7 @@ module Utility
       AVAILABLE_ALLIED_FACTIONS = [
         # Current supported factions
         { name: "American", code: "usa" },
-        { name: "Commonwealth", code: "uk" },
+        { name: "British", code: "uk" },
         { name: "Soviet", code: "ussr" },
 
         # Likely future factions

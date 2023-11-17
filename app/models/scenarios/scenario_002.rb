@@ -237,6 +237,7 @@ module Scenarios
             [2, :ussr_smg_s],
             [3, :ussr_dp_27],
             [6, :ussr_mc],
+            :sniper3,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
