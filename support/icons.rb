@@ -2297,7 +2297,7 @@ end
 
 File.open('ita.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "rgba(255,255,255,0.75)")
+  write_circle(50, 50, 40, file, true, "#FFF")
   write_circle(50, 50, 40, file, false, "#000")
   -1.upto(1) do |n|
     x = n*16
