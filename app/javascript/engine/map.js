@@ -4,9 +4,11 @@ import { Hex } from "./hex"
 import { Marker, markerType } from "./marker"
 
 const Map = class {
-  constructor (data) {
+  constructor (data, game) {
+    console.log(game)
     this.loadConfig(data.layout)
 
+    this.game = game
     this.alliedEdge = data.allied_edge
     this.axisEdge = data.axis_edge
     this.victoryHexes = data.victory_hexes
@@ -55,14 +57,16 @@ const Map = class {
     })
   }
 
-  statusSize = 2.5
+  get statusSize() {
+    return this.preview ? 0 : 200
+  }
 
   get narrow() { return 115 }
   get radius() { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
   xOffset(x, y) { return this.narrow * (x + y%2/2 + 0.5) + 1 }
-  yOffset(y) { return this.radius * (y*1.5 + 1 + this.statusSize) + 1 }
-  get xSize() { return this.narrow * (this.width + 0.5) + 2 }
-  get ySize() { return 1.5 * this.radius * (this.height + 0.3333 + this.statusSize/1.5) + 2 }
+  yOffset(y) { return this.radius * (y*1.5 + 1) + 1 }
+  get xSize() { return this.narrow * (this.width + 0.5) + 2 + this.statusSize }
+  get ySize() { return 1.5 * this.radius * (this.height + 0.3333) + 2 }
 
   hexAt(x, y) {
     if (x < 0 || y < 0 || x >= this.width || y >= this.height) {

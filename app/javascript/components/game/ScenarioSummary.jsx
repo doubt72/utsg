@@ -10,6 +10,7 @@ import { Feature } from "../../engine/feature";
 export default function ScenarioSummary(props) {
   const scenario = new Scenario(props.data)
   const map = scenario.map
+  map.preview = true
 
   const player1Pills = (
     <span>

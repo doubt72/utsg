@@ -1,13 +1,12 @@
 import { counterRed, markerYellow } from "../utilities/graphics"
+import { weatherType, windType } from "./game"
 
 const markerType = {
   TrackedHull: 0, WheeledHull: 1,
   Tired: 2, Pinned: 3, Activated: 4, Exhausted: 5,
   Jammed: 6, TurretJammed: 7, Immobilized: 8,
-  Wind: 9, Precipitation: 10, Initiative: 11,
+  Wind: 9, Precip: 10, Initiative: 11,
 }
-const windType = { Calm: 0, Breeze: 1, Moderate: 2, Strong: 3 }
-const precipitationType = { Clear: 0, Fog: 1, Rain: 2, Snow: 3, Sand: 4, Dust: 5 }
 
 const Marker = class {
   constructor(data) {
@@ -50,8 +49,8 @@ const Marker = class {
       if (this.subType === windType.Calm) { return "#black" }
       return "white"
     }
-    if (this.type === markerType.Precipitation) {
-      if (this.subType === precipitationType.Rain || this.subType === precipitationType.Fog) {
+    if (this.type === markerType.Precip) {
+      if (this.subType === weatherType.Rain || this.subType === weatherType.Fog) {
         return "white"
       }
       return "black"
@@ -68,13 +67,13 @@ const Marker = class {
       if (this.subType === windType.Moderate) { return "#77B" }
       if (this.subType === windType.Strong) { return "#448" }
     }
-    if (this.type === markerType.Precipitation) {
-      if (this.subType === precipitationType.Clear) { return "#DDF" }
-      if (this.subType === precipitationType.Fog) { return "#777" }
-      if (this.subType === precipitationType.Rain) { return "#44D" }
-      if (this.subType === precipitationType.Snow) { return "#EEE" }
-      if (this.subType === precipitationType.Sand) { return "#DD8" }
-      if (this.subType === precipitationType.Dust) { return "#DB9" }
+    if (this.type === markerType.Precip) {
+      if (this.subType === weatherType.Clear) { return "#DDF" }
+      if (this.subType === weatherType.Fog) { return "#777" }
+      if (this.subType === weatherType.Rain) { return "#44D" }
+      if (this.subType === weatherType.Snow) { return "#EEE" }
+      if (this.subType === weatherType.Sand) { return "#DD8" }
+      if (this.subType === weatherType.Dust) { return "#DB9" }
     }
     return this.red
   }
@@ -93,24 +92,24 @@ const Marker = class {
       if (this.subType === windType.Moderate) { return ["moderate"] }
       if (this.subType === windType.Strong) { return ["strong"] }
     }
-    if (this.type === markerType.Precipitation) {
-      if (this.subType === precipitationType.Clear) { return ["clear"] }
-      if (this.subType === precipitationType.Fog) { return ["fog"] }
-      if (this.subType === precipitationType.Rain) { return ["rain"] }
-      if (this.subType === precipitationType.Snow) { return ["snow"] }
-      if (this.subType === precipitationType.Sand) { return ["sand"] }
-      if (this.subType === precipitationType.Dust) { return ["dust"] }
+    if (this.type === markerType.Precip) {
+      if (this.subType === weatherType.Clear) { return ["clear"] }
+      if (this.subType === weatherType.Fog) { return ["fog"] }
+      if (this.subType === weatherType.Rain) { return ["rain"] }
+      if (this.subType === weatherType.Snow) { return ["snow"] }
+      if (this.subType === weatherType.Sand) { return ["sand"] }
+      if (this.subType === weatherType.Dust) { return ["dust"] }
     }
     return []
   }
 
   get subText() {
-    if (this.type === markerType.Precipitation) {
-      if (this.subType === precipitationType.Clear) { return ["10% fe", "", ""] }
-      if (this.subType === precipitationType.Fog) { return ["30% fe", "", ""] }
-      if (this.subType === precipitationType.Sand) { return ["30% fe", "", ""] }
-      if (this.subType === precipitationType.Dust) { return ["", "+10% fs", ""] }
-      const fe = this.subType === precipitationType.Rain ? "60% fe" : "40% fe"
+    if (this.type === markerType.Precip) {
+      if (this.subType === weatherType.Clear) { return ["10% fe", "", ""] }
+      if (this.subType === weatherType.Fog) { return ["30% fe", "", ""] }
+      if (this.subType === weatherType.Sand) { return ["30% fe", "", ""] }
+      if (this.subType === weatherType.Dust) { return ["", "+10% fs", ""] }
+      const fe = this.subType === weatherType.Rain ? "60% fe" : "40% fe"
       if (!this.value) { return [fe, "", ""] }
       return [fe, `${this.value}% chance`, ""]
     }
@@ -151,4 +150,4 @@ const Marker = class {
   }
 }
 
-export { Marker, markerType, windType, precipitationType }
+export { Marker, markerType }

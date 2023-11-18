@@ -2,7 +2,8 @@ import { Map } from "./map"
 import { getFormattedDate } from "./utilities"
 
 const Scenario = class {
-  constructor(data) {
+  constructor(data, game) {
+    console.log(game)
     this.code = data.id
     this.name = data.name
     this.author = data.metadata.author
@@ -21,7 +22,17 @@ const Scenario = class {
     this.firstMove = data.metadata.first_move
     this.firstSetup = data.metadata.first_setup
 
-    this.map = new Map(data.metadata.map_data)
+    this.game = game
+    this.game.currentWeather = data.metadata.start_weather || 0
+    this.game.baseWeather = data.metadata.base_weather || 0
+    const precip = data.metadata.precip
+    this.game.precip = precip ? precip[1] : 2
+    this.game.precipChance = precip ? precip[0] : 0
+    const wind = data.metadata.wind
+    this.game.windSpeed = wind ? wind[0] : 0
+    this.game.windDirection = wind ? wind[1] : 1
+    this.game.windVariable = wind ? wind[2] : false
+    this.map = new Map(data.metadata.map_data, game)
   }
 
   get displayDate() {

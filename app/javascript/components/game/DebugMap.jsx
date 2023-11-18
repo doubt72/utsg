@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Map } from "../../engine/map";
 import { Unit, unitStatus } from "../../engine/unit";
 import { Feature } from "../../engine/feature";
+import { Game, weatherType, windType } from "../../engine/game";
 import GameMap from "./GameMap";
 
 export default function DebugMap() {
@@ -15,6 +15,13 @@ export default function DebugMap() {
   const [debugLos, setDebugLos] = useState(false)
   const [baseTerrain, setBaseTerrain] = useState("g")
   const [night, setNight] = useState(false)
+  const [currentWeather, setCurrentWeather] = useState(0)
+  const [baseWeather, setBaseWeather] = useState(0)
+  const [precipType, setPrecipType] = useState(2)
+  const [precipChance, setPrecipChance] = useState(0)
+  const [wind, setWind] = useState(0)
+  const [windDir, setWindDir] = useState(1)
+  const [windVariable, setWindVariable] = useState(false)
 
   const testUnitData = {
     ginf: {
@@ -192,255 +199,267 @@ export default function DebugMap() {
   ]
 
   useEffect(() => {
-    setMap(
-      new Map({
-        layout: [15, 15, "x"],
-        base_terrain: "g",
-        hexes: [
-          [
-            { t: "s" },
-            { t: "s", r: { d: [2, 5], t: "d" } },
-            { t: "s" },
-            { t: "o", r: { d: [3, 6], t: "d" } },
-            { t: "f" },
-            { t: "f" },
-            { t: "f" },
-            { t: "o" },
-            { t: "o", b: "b", be: [1], d: 1, st: { sh: "h" } },
-            { t: "o", d: 2, st: { sh: "h", s: "f" }  },
-            { t: "o", r: { d: [2, 6], t: "t", c: "l" } },
-            { t: "o", b: "w", be: [1] },
-            { t: "o", d: 3, st: { sh: "s" } },
-            { t: "o" },
-            { t: "o", d: 1, st: { sh: "t" } },
-          ], [
-            { t: "s" },
-            { t: "s", r: { d: [2, 4], t: "d" } },
-            { t: "o", r: { d: [1, 3, 5], t: "d" } },
-            { t: "f" },
-            { t: "f" },
-            { t: "o" },
-            { t: "d", d: 3, b: "b", be: [2, 3] },
-            { t: "o", b: "b", be: [2, 3], st: { sh: "c" } },
-            { t: "o", d: 2, b: "b", be: [1, 2], st: { sh: "s", s: "f" } },
-            { t: "o", r: { d: [3, 5], t: "t", c: "r" } },
-            { t: "o", b: "w", be: [1, 2] },
-            { t: "o", d: 6, st: { sh: "s" } },
-            { t: "o", d: 3, st: { sh: "l" } },
-            { t: "o", d: 1, st: { sh: "l" } },
-            { t: "o" },
-          ], [
-            { t: "w" },
-            { t: "w" },
-            { t: "f" },
-            { t: "o", r: { d: [2, 5], t: "d" } },
-            { t: "b" },
-            { t: "b" },
-            { t: "o" },
-            { t: "d", d: 2 },
-            { t: "d", d: 1 },
-            { t: "o", d: 5, st: { sh: "s", s: "f" } },
-            { t: "o", r: { d: [2, 4, 6], t: "t", c: "l" }, b: "w", be: [3] },
-            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-            { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
-          ], [
-            { t: "w", s: { d: [1, 4] } },
-            { t: "o", s: { d: [1, 5] } },
-            { t: "o" },
-            { t: "o", r: { d: [2, 5], t: "d" } },
-            { t: "f" },
-            { t: "f", r: { t: "p", d: [4, 6] } },
-            { t: "o" },
-            { t: "g", b: "f", be: [1, 2, 3] },
-            { t: "g", b: "f", be: [2, 3] },
-            { t: "o", r: { d: [3, 5], t: "t", c: "r" }, b: "f", be: [1] },
-            { t: "o", d: 1, st: { sh: "s" } },
-            { t: "o", d: 1, st: { sh: "m" } },
-            { t: "o", d: 4, st: { sh: "s" } },
-            { t: "o", d: 2, st: { sh: "x", s: "f" } },
-            { t: "o" },
-          ], [
-            { t: "w" },
-            { t: "b" },
-            { t: "o", s: { d: [2, 6] } },
-            { t: "o" },
-            { t: "o", r: { d: [2, 5], t: "d" } },
-            { t: "f", r: { t: "p", d: [1, 3] } },
-            { t: "f" },
-            { t: "o", b: "f", be: [3] },
-            { t: "g", b: "f", be: [1] },
-            { t: "g", b: "f", be: [3] },
-            { t: "o", r: { d: [2, 6], t: "t", c: "l" }, b: "f", be: [1] },
-            { t: "o", d: 1, st: { sh: "s" } },
-            { t: "o", d: 4, st: { sh: "s" } },
-            { t: "o", d: 1, st: { sh: "x" } },
-            { t: "o", d: 3, st: { sh: "x" } },
-          ], [
-            { t: "m" },
-            { t: "m", s: { d: [3, 4] } },
-            { t: "m", s: { d: [1, 5] } },
-            { t: "b" },
-            { t: "o", r: { d: [2, 5], t: "d" } },
-            { t: "f" },
-            { t: "o" },
-            { t: "o", b: "f", be: [3] },
-            { t: "o", r: { d: [4, 6], t: "d" }, b: "f", be: [2, 3] },
-            { t: "o", r: { d: [1, 3, 4], t: "t", c: "r" }, b: "f", be: [2] },
-            { t: "o", r: { d: [1, 4], t: "t" } },
-            { t: "o", r: { d: [1, 4], t: "t" } },
-            { t: "o", r: { d: [1, 4], t: "t" } },
-            { t: "o", r: { d: [1, 4], t: "t" } },
-            { t: "o", r: { d: [1, 4], t: "t" }, s: { d: [3, 5] } },
-          ], [
-            { t: "o" },
-            { t: "w" },
-            { t: "m" },
-            { t: "o", s: { d: [2, 5] } },
-            { t: "b" },
-            { t: "o", r: { d: [2, 5], t: "d" } },
-            { t: "f" },
-            { t: "o" },
-            { t: "o", r: { d: [3, 6], t: "d" } },
-            { t: "f" },
-            { t: "f" },
-            { t: "o", d: 2, st: { sh: "l", s: "f" } },
-            { t: "o", d: 2.5, st: { sh: "l", s: "f" } },
-            { t: "o", d: 3, st: { sh: "s" } },
-            { t: "o" },
-          ], [
-            { t: "o", r: { d: [1, 4], t: "d" } },
-            { t: "o", r: { d: [1, 4], t: "d" } },
-            { t: "o", r: { d: [1, 4], t: "d" } },
-            { t: "o", s: { d: [2, 5] }, r: { d: [1, 4], t: "d" } },
-            { t: "o", r: { d: [1, 4], t: "d" } },
-            { t: "o", r: { d: [1, 2, 4], t: "d" } },
-            { t: "o", r: { d: [1, 4], t: "d" } },
-            { t: "o", r: { d: [1, 3, 5], t: "d" } },
-            { t: "f" },
-            { t: "f" },
-            { t: "f" },
-            { t: "o" },
-            { t: "o", d: 6, st: { sh: "s" } },
-            { t: "o" },
-            { t: "o" },
-          ], [
-            { t: "o" },
-            { t: "o" },
-            { t: "j" },
-            { t: "o", h: 1 },
-            { t: "o", s: { d: [2, 6] } },
-            { t: "j" },
-            { t: "j" },
-            { t: "r" },
-            { t: "o", r: { d: [2, 4], t: "d" } },
-            { t: "f", r: { d: [1, 4], t: "d" } },
-            { t: "f", r: { d: [1, 5], t: "d" } },
-            { t: "f" },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-          ], [
-            { t: "o" },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", s: { d: [3, 5] } },
-            { t: "o" },
-            { t: "j" },
-            { t: "j", h: 1 },
-            { t: "r", h: 1 },
-            { t: "o", h: 1 },
-            { t: "f", h: 1 },
-            { t: "f", h: 1, r: { d: [2, 5], t: "d" } },
-            { t: "o", h: 1 },
-            { t: "f", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 2 },
-          ], [
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 2 },
-            { t: "o", h: 1 },
-            { t: "o", s: { d: [2, 5] } },
-            { t: "o", h: 1 },
-            { t: "j", h: 1 },
-            { t: "o", h: 1 },
-            { t: "r", h: 1 },
-            { t: "r", h: 2 },
-            { t: "o", h: 2 },
-            { t: "o", h: 1, r: { d: [2, 6], t: "d" } },
-            { t: "f", h: 2 },
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
-          ], [
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 2, b: "c", be: [3, 4] },
-            { t: "o", s: { d: [2, 5] } },
-            { t: "o", h: 2, b: "c", be: [1, 6] },
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
-            { t: "r", h: 2 },
-            { t: "r", h: 2 },
-            { t: "o", h: 2, r: { d: [3, 6], t: "d" } },
-            { t: "f", h: 2 },
-            { t: "o", h: 2 },
-            { t: "f", h: 3 },
-            { t: "o", h: 3 },
-          ], [
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "b", h: 2 },
-            { t: "o", h: 2 },
-            { t: "o", h: 2, b: "c", be: [3, 4, 5] },
-            { t: "o", s: { d: [2, 6] } },
-            { t: "o", h: 2, b: "c", be: [1] },
-            { t: "o", h: 3 },
-            { t: "r", h: 3 },
-            { t: "r", h: 3 },
-            { t: "o", h: 3, r: { d: [3, 5], t: "d" } },
-            { t: "r", h: 3 },
-            { t: "o", h: 3 },
-            { t: "f", h: 3 },
-            { t: "f", h: 3 },
-          ], [
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
-            { t: "b", h: 2 },
-            { t: "o", h: 3, b: "c", be: [4, 5] },
-            { t: "o", s: { d: [3, 6] } },
-            { t: "o", h: 3, b: "c", be: [1, 2] },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3 },
-            { t: "o", h: 3, r: { d: [2, 5], t: "d" } },
-            { t: "r", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-          ], [
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
-            { t: "b", h: 2 },
-            { t: "o", h: 3, b: "c", be: [4] },
-            { t: "o", h: 1, s: { d: [3, 5] } },
-            { t: "o", h: 3, b: "c", be: [1, 2] },
-            { t: "o", h: 3 },
-            { t: "o", h: 4 },
-            { t: "o", h: 3 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4 },
-            { t: "o", h: 4, r: { d: [2, 5], t: "d" } },
-            { t: "o", h: 4 },
-            { t: "r", h: 5 },
-            { t: "o", h: 5 },
-          ]
-        ]
-      })
-    )
+    const game = new Game({
+      id: 1, name: "test", owner: "one", player_one: "one", player_two: "two",
+      current_player: "one", metadata: { turn: 1 },
+      scenario: {
+        id: "999", name: "test", allies: ["ussr"], axis: ["ger"],
+        metadata: {
+          start_weather: weatherType.Clear,
+          base_weather: weatherType.Clear,
+          precip: [0, weatherType.Rain],
+          wind: [windType.Calm, 1, false],
+          map_data: {
+            layout: [15, 15, "x"],
+            base_terrain: "g",
+            hexes: [
+              [
+                { t: "s" },
+                { t: "s", r: { d: [2, 5], t: "d" } },
+                { t: "s" },
+                { t: "o", r: { d: [3, 6], t: "d" } },
+                { t: "f" },
+                { t: "f" },
+                { t: "f" },
+                { t: "o" },
+                { t: "o", b: "b", be: [1], d: 1, st: { sh: "h" } },
+                { t: "o", d: 2, st: { sh: "h", s: "f" }  },
+                { t: "o", r: { d: [2, 6], t: "t", c: "l" } },
+                { t: "o", b: "w", be: [1] },
+                { t: "o", d: 3, st: { sh: "s" } },
+                { t: "o" },
+                { t: "o", d: 1, st: { sh: "t" } },
+              ], [
+                { t: "s" },
+                { t: "s", r: { d: [2, 4], t: "d" } },
+                { t: "o", r: { d: [1, 3, 5], t: "d" } },
+                { t: "f" },
+                { t: "f" },
+                { t: "o" },
+                { t: "d", d: 3, b: "b", be: [2, 3] },
+                { t: "o", b: "b", be: [2, 3], st: { sh: "c" } },
+                { t: "o", d: 2, b: "b", be: [1, 2], st: { sh: "s", s: "f" } },
+                { t: "o", r: { d: [3, 5], t: "t", c: "r" } },
+                { t: "o", b: "w", be: [1, 2] },
+                { t: "o", d: 6, st: { sh: "s" } },
+                { t: "o", d: 3, st: { sh: "l" } },
+                { t: "o", d: 1, st: { sh: "l" } },
+                { t: "o" },
+              ], [
+                { t: "w" },
+                { t: "w" },
+                { t: "f" },
+                { t: "o", r: { d: [2, 5], t: "d" } },
+                { t: "b" },
+                { t: "b" },
+                { t: "o" },
+                { t: "d", d: 2 },
+                { t: "d", d: 1 },
+                { t: "o", d: 5, st: { sh: "s", s: "f" } },
+                { t: "o", r: { d: [2, 4, 6], t: "t", c: "l" }, b: "w", be: [3] },
+                { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+                { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+                { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+                { t: "o", r: { d: [1, 4], t: "t" }, b: "w", be: [2, 3] },
+              ], [
+                { t: "w", s: { d: [1, 4] } },
+                { t: "o", s: { d: [1, 5] } },
+                { t: "o" },
+                { t: "o", r: { d: [2, 5], t: "d" } },
+                { t: "f" },
+                { t: "f", r: { t: "p", d: [4, 6] } },
+                { t: "o" },
+                { t: "g", b: "f", be: [1, 2, 3] },
+                { t: "g", b: "f", be: [2, 3] },
+                { t: "o", r: { d: [3, 5], t: "t", c: "r" }, b: "f", be: [1] },
+                { t: "o", d: 1, st: { sh: "s" } },
+                { t: "o", d: 1, st: { sh: "m" } },
+                { t: "o", d: 4, st: { sh: "s" } },
+                { t: "o", d: 2, st: { sh: "x", s: "f" } },
+                { t: "o" },
+              ], [
+                { t: "w" },
+                { t: "b" },
+                { t: "o", s: { d: [2, 6] } },
+                { t: "o" },
+                { t: "o", r: { d: [2, 5], t: "d" } },
+                { t: "f", r: { t: "p", d: [1, 3] } },
+                { t: "f" },
+                { t: "o", b: "f", be: [3] },
+                { t: "g", b: "f", be: [1] },
+                { t: "g", b: "f", be: [3] },
+                { t: "o", r: { d: [2, 6], t: "t", c: "l" }, b: "f", be: [1] },
+                { t: "o", d: 1, st: { sh: "s" } },
+                { t: "o", d: 4, st: { sh: "s" } },
+                { t: "o", d: 1, st: { sh: "x" } },
+                { t: "o", d: 3, st: { sh: "x" } },
+              ], [
+                { t: "m" },
+                { t: "m", s: { d: [3, 4] } },
+                { t: "m", s: { d: [1, 5] } },
+                { t: "b" },
+                { t: "o", r: { d: [2, 5], t: "d" } },
+                { t: "f" },
+                { t: "o" },
+                { t: "o", b: "f", be: [3] },
+                { t: "o", r: { d: [4, 6], t: "d" }, b: "f", be: [2, 3] },
+                { t: "o", r: { d: [1, 3, 4], t: "t", c: "r" }, b: "f", be: [2] },
+                { t: "o", r: { d: [1, 4], t: "t" } },
+                { t: "o", r: { d: [1, 4], t: "t" } },
+                { t: "o", r: { d: [1, 4], t: "t" } },
+                { t: "o", r: { d: [1, 4], t: "t" } },
+                { t: "o", r: { d: [1, 4], t: "t" }, s: { d: [3, 5] } },
+              ], [
+                { t: "o" },
+                { t: "w" },
+                { t: "m" },
+                { t: "o", s: { d: [2, 5] } },
+                { t: "b" },
+                { t: "o", r: { d: [2, 5], t: "d" } },
+                { t: "f" },
+                { t: "o" },
+                { t: "o", r: { d: [3, 6], t: "d" } },
+                { t: "f" },
+                { t: "f" },
+                { t: "o", d: 2, st: { sh: "l", s: "f" } },
+                { t: "o", d: 2.5, st: { sh: "l", s: "f" } },
+                { t: "o", d: 3, st: { sh: "s" } },
+                { t: "o" },
+              ], [
+                { t: "o", r: { d: [1, 4], t: "d" } },
+                { t: "o", r: { d: [1, 4], t: "d" } },
+                { t: "o", r: { d: [1, 4], t: "d" } },
+                { t: "o", s: { d: [2, 5] }, r: { d: [1, 4], t: "d" } },
+                { t: "o", r: { d: [1, 4], t: "d" } },
+                { t: "o", r: { d: [1, 2, 4], t: "d" } },
+                { t: "o", r: { d: [1, 4], t: "d" } },
+                { t: "o", r: { d: [1, 3, 5], t: "d" } },
+                { t: "f" },
+                { t: "f" },
+                { t: "f" },
+                { t: "o" },
+                { t: "o", d: 6, st: { sh: "s" } },
+                { t: "o" },
+                { t: "o" },
+              ], [
+                { t: "o" },
+                { t: "o" },
+                { t: "j" },
+                { t: "o", h: 1 },
+                { t: "o", s: { d: [2, 6] } },
+                { t: "j" },
+                { t: "j" },
+                { t: "r" },
+                { t: "o", r: { d: [2, 4], t: "d" } },
+                { t: "f", r: { d: [1, 4], t: "d" } },
+                { t: "f", r: { d: [1, 5], t: "d" } },
+                { t: "f" },
+                { t: "o", h: 1 },
+                { t: "o", h: 1 },
+                { t: "o", h: 1 },
+              ], [
+                { t: "o" },
+                { t: "o", h: 1 },
+                { t: "o", h: 1 },
+                { t: "o", s: { d: [3, 5] } },
+                { t: "o" },
+                { t: "j" },
+                { t: "j", h: 1 },
+                { t: "r", h: 1 },
+                { t: "o", h: 1 },
+                { t: "f", h: 1 },
+                { t: "f", h: 1, r: { d: [2, 5], t: "d" } },
+                { t: "o", h: 1 },
+                { t: "f", h: 1 },
+                { t: "o", h: 1 },
+                { t: "o", h: 2 },
+              ], [
+                { t: "o", h: 1 },
+                { t: "o", h: 1 },
+                { t: "o", h: 2 },
+                { t: "o", h: 1 },
+                { t: "o", s: { d: [2, 5] } },
+                { t: "o", h: 1 },
+                { t: "j", h: 1 },
+                { t: "o", h: 1 },
+                { t: "r", h: 1 },
+                { t: "r", h: 2 },
+                { t: "o", h: 2 },
+                { t: "o", h: 1, r: { d: [2, 6], t: "d" } },
+                { t: "f", h: 2 },
+                { t: "o", h: 2 },
+                { t: "o", h: 2 },
+              ], [
+                { t: "o", h: 1 },
+                { t: "o", h: 1 },
+                { t: "o", h: 1 },
+                { t: "o", h: 2, b: "c", be: [3, 4] },
+                { t: "o", s: { d: [2, 5] } },
+                { t: "o", h: 2, b: "c", be: [1, 6] },
+                { t: "o", h: 2 },
+                { t: "o", h: 2 },
+                { t: "r", h: 2 },
+                { t: "r", h: 2 },
+                { t: "o", h: 2, r: { d: [3, 6], t: "d" } },
+                { t: "f", h: 2 },
+                { t: "o", h: 2 },
+                { t: "f", h: 3 },
+                { t: "o", h: 3 },
+              ], [
+                { t: "o", h: 1 },
+                { t: "o", h: 1 },
+                { t: "b", h: 2 },
+                { t: "o", h: 2 },
+                { t: "o", h: 2, b: "c", be: [3, 4, 5] },
+                { t: "o", s: { d: [2, 6] } },
+                { t: "o", h: 2, b: "c", be: [1] },
+                { t: "o", h: 3 },
+                { t: "r", h: 3 },
+                { t: "r", h: 3 },
+                { t: "o", h: 3, r: { d: [3, 5], t: "d" } },
+                { t: "r", h: 3 },
+                { t: "o", h: 3 },
+                { t: "f", h: 3 },
+                { t: "f", h: 3 },
+              ], [
+                { t: "o", h: 2 },
+                { t: "o", h: 2 },
+                { t: "b", h: 2 },
+                { t: "o", h: 3, b: "c", be: [4, 5] },
+                { t: "o", s: { d: [3, 6] } },
+                { t: "o", h: 3, b: "c", be: [1, 2] },
+                { t: "o", h: 3 },
+                { t: "o", h: 3 },
+                { t: "o", h: 3 },
+                { t: "o", h: 3 },
+                { t: "o", h: 3, r: { d: [2, 5], t: "d" } },
+                { t: "r", h: 4 },
+                { t: "o", h: 4 },
+                { t: "o", h: 4 },
+                { t: "o", h: 4 },
+              ], [
+                { t: "o", h: 2 },
+                { t: "o", h: 2 },
+                { t: "b", h: 2 },
+                { t: "o", h: 3, b: "c", be: [4] },
+                { t: "o", h: 1, s: { d: [3, 5] } },
+                { t: "o", h: 3, b: "c", be: [1, 2] },
+                { t: "o", h: 3 },
+                { t: "o", h: 4 },
+                { t: "o", h: 3 },
+                { t: "o", h: 4 },
+                { t: "o", h: 4 },
+                { t: "o", h: 4, r: { d: [2, 5], t: "d" } },
+                { t: "o", h: 4 },
+                { t: "r", h: 5 },
+                { t: "o", h: 5 },
+              ]
+            ]
+          }
+        }
+      }
+    })
+    setMap(game.scenario.map)
   }, [])
 
   useEffect(() => {
@@ -487,6 +506,34 @@ export default function DebugMap() {
     }[t]
   }
 
+  const nextWeather = (w, precip = false) => {
+    let type = w + 1
+    if (precip) {
+      if (type > 3) { type = 2 }
+    } else {
+      if (type > 5) { type = 0 }
+    }
+    return type
+  }
+
+  const nextChance = (c) => {
+    let chance = c + 1
+    if (chance > 10) { chance = 0 }
+    return chance
+  }
+
+  const nextWind = (w) => {
+    let wind = w + 1
+    if (wind > 3) { wind = 0 }
+    return wind
+  }
+
+  const nextDirection = (d) => {
+    let dir = d + 1
+    if (dir > 6) { dir = 1 }
+    return dir
+  }
+
   return (
     <div className="map-container">
       <div className="flex mb05em">
@@ -502,39 +549,88 @@ export default function DebugMap() {
         <div className="custom-button" onClick={() => setCoords(c => !c)}>
           coordinates { coords ? "on" : "off" }
         </div>
-        <div className="custom-button"onClick={() => setShowStatusCounters(ssc => !ssc)}>
+        <div className="custom-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
           { showStatusCounters ? "status counters" : "status badges" }
         </div>
-        <div className="custom-button"onClick={() => setShowLos(sl => !sl)}>
+        <div className="custom-button" onClick={() => setShowLos(sl => !sl)}>
           { showLos ? "show LOS" : "show stacks" }
         </div>
         {
           showLos ? 
-          <div className="custom-button"onClick={() => {
+          <div className="custom-button" onClick={() => {
             setDebugLos(sl => !sl)
             map.debug = !map.debug
           }}>
             { debugLos ? "debug LOS on" : "debug LOS off" }
           </div> : ""
         }
-        <div className="custom-button"onClick={() => setHideCounters(sc => !sc)}>
+        <div className="custom-button" onClick={() => setHideCounters(sc => !sc)}>
           { hideCounters ? "hide counters" : "show counters" }
         </div>
-        <div className="custom-button"onClick={() => setShowTerrain(sc => !sc)}>
+        <div className="custom-button" onClick={() => setShowTerrain(sc => !sc)}>
           { showTerrain ? "terrain info on" : "terrain info off" }
         </div>
-        <div className="custom-button"onClick={() => {
+        <div className="custom-button" onClick={() => {
           const nt = nextTerrain(baseTerrain)
           map.baseTerrain = nt
           setBaseTerrain(nt)
         }}>
           { `base ${baseTerrainName(baseTerrain)}` }
         </div>
-        <div className="custom-button"onClick={() => {
+        <div className="custom-button" onClick={() => {
           map.night = !map.night
           setNight(nt => !nt)
         }}>
           { night ? "nighttime" : "daytime" }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map.game) { return }
+          map.game.currentWeather = nextWeather(map.game.currentWeather)
+          setCurrentWeather(() => map.game.currentWeather)
+        }}>
+          c: { map?.game?.weatherName(currentWeather) }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map.game) { return }
+          map.game.baseWeather = nextWeather(map.game.baseWeather)
+          setBaseWeather(() => map.game.baseWeather)
+        }}>
+          b: { map?.game?.weatherName(baseWeather) }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map.game) { return }
+          map.game.precip = nextWeather(precipType, true)
+          setPrecipType(() => map.game.precip)
+        }}>
+          p: { map?.game?.weatherName(precipType) }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map.game) { return }
+          map.game.precipChance = nextChance(precipChance)
+          setPrecipChance(() => map.game.precipChance)
+        }}>
+          { `${precipChance}${precipChance > 0 ? "0" : ""}%` }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map.game) { return }
+          map.game.windSpeed = nextWind(wind, true)
+          setWind(() => map.game.windSpeed)
+        }}>
+          { map?.game?.windName }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map.game) { return }
+          map.game.windDirection = nextDirection(map.game.windDirection, true)
+          setWindDir(() => map.game.windDirection)
+        }}>
+          { windDir }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map.game) { return }
+          map.game.windVariable = !map.game.windVariable
+          setWindVariable(map.game.windVariable)
+        }}>
+          { windVariable ? "variable" : "steady" }
         </div>
       </div>
       <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}

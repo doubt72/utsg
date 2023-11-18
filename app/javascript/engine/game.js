@@ -2,12 +2,15 @@ import { getAPI } from "../utilities/network"
 import { GameMove } from "./gameMove"
 import { Scenario } from "./scenario"
 
+const windType = { Calm: 0, Breeze: 1, Moderate: 2, Strong: 3 }
+const weatherType = { Clear: 0, Fog: 1, Rain: 2, Snow: 3, Sand: 4, Dust: 5 }
+
 const Game = class {
   constructor(data, refreshCallback) {
     // Immutable state only
     this.id = data.id
     this.name = data.name
-    this.scenario = new Scenario(data.scenario)
+    this.scenario = new Scenario(data.scenario, this)
     this.ownerName = data.owner
     this.refreshCallback = refreshCallback
 
@@ -57,6 +60,26 @@ const Game = class {
     })
   }
 
+  weatherName(w) {
+    return {
+      0: "clear",
+      1: "fog",
+      2: "rain",
+      3: "snow",
+      4: "sand",
+      5: "dust",
+    }[w]
+  }
+
+  get windName() {
+    return {
+      0: "calm",
+      1: "breeze",
+      2: "moderate",
+      3: "strong",
+    }[this.windSpeed]
+  }
+
   actionsAvailable(currentPlayer) {
     if (this.state === "needs_player") {
       if (this.ownerName === currentPlayer || !currentPlayer) {
@@ -79,4 +102,4 @@ const Game = class {
   }
 }
 
-export { Game }
+export { Game, windType, weatherType }

@@ -19,6 +19,7 @@ export default function GameMap(props) {
   const [updateUnitSelected, setUpdateUnitSelected] = useState(0)
   const [counterLosOverlay, setCounterLosOverlay] = useState("")
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState("")
+  const [weather, setWeather] = useState("")
 
   const svgRef = useRef()
 
@@ -44,6 +45,10 @@ export default function GameMap(props) {
     setCounterDisplay(props.map.counters.map((counter, i) => {
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
+    setWeather(() =>
+      props.map?.preview ? "" : <WeatherDisplay preview={false} map={props.map}
+                                                x={(props.map?.xSize || 0) - 192} y={2} />
+    )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
     props.showTerrain,
@@ -108,11 +113,11 @@ export default function GameMap(props) {
       <MapHexPatterns />
       {hexDisplay}
       {hexDisplayOverlays}
+      {weather}
       {counterDisplay}
       {overlayDisplay}
       {counterLosOverlay}
       {terrainInfoOverlay}
-      <WeatherDisplay map={props.map} x={2} y={2} />
     </svg>
   )
 }

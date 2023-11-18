@@ -36,7 +36,7 @@ export default function MapHexOverlay(props) {
   }
 
   const night = (
-    <polygon points={props.hex.hexCoords} style={{ fill: "rgba(0,0,0,0.25)" }} />
+    <polygon points={props.hex.hexCoords} style={{ fill: "rgba(0,0,0,0.16)" }} />
   )
 
   const outline = (

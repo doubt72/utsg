@@ -385,7 +385,7 @@ const Counter = class {
     const y = this.y + 40
     let size = this.target.displayText[0] === "immobilized" ? 11 : 12
     let ty = y + 9 - 6 * this.target.displayText.length
-    if (this.target.type === markerType.Wind || this.target.type === markerType.Precipitation) {
+    if (this.target.type === markerType.Wind || this.target.type === markerType.Precip) {
       size = 15
       ty += 1
     }
