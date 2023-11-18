@@ -7,7 +7,7 @@
 }
 </style>
 </defs>
-<path d="M 15 10 L 15 98 L 75 98 L 75 10 L 15 10 L 15 98" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#C00;" />
-<path d="M 37.5 70 C 32.6,70 15,60 45,30 C 45,50 61,42 61,60 C 61,70 55,70 52.5,70 C 54,67 60,55 45,45 C 45,55 36,53 35,60 C 34,65 35,67.5 37.5,70 C 32.6,70 15,60 45,30" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#C00;" />
-<text x="95.5" y="55" transform="rotate(270 95 54)" style="fill:#C00;font-size:1.9em;font-family:'Courier Prime';text-anchor:middle;">WRECK</text>
+<path d="M 15 10 L 15 98 L 75 98 L 75 10 L 15 10 L 15 98" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#D00;" />
+<path d="M 37.5 70 C 32.6,70 15,60 45,30 C 45,50 61,42 61,60 C 61,70 55,70 52.5,70 C 54,67 60,55 45,45 C 45,55 36,53 35,60 C 34,65 35,67.5 37.5,70 C 32.6,70 15,60 45,30" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#D00;" />
+<text x="95.5" y="55" transform="rotate(270 95 54)" style="fill:#D00;font-size:1.9em;font-family:'Courier Prime';text-anchor:middle;">WRECK</text>
 </svg>

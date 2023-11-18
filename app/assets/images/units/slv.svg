@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-<circle cx="50" cy="50" r="40" style="fill:#E00;" />
-<path d="M 45 18 L 55 18 L 55 82 L 45 82 L 45 18" style="fill:#FFF;" />
-<path d="M 27.5 35 L 72.5 35 L 72.5 45 L 27.5 45 L 27.5 35" style="fill:#FFF;" />
-<path d="M 25 65 L 75 65 L 75 55 L 25 55 L 25 65" style="fill:#FFF;" />
+<path d="M 10 20 L 85 20 L 85 40 L 10 40 L 10 20" style="fill:#FFF;" />
+<path d="M 10 60 L 85 60 L 85 40 L 10 40 L 10 60" style="fill:#007;" />
+<path d="M 10 80 L 85 80 L 85 60 L 10 60 L 10 80" style="fill:#D00;" />
 </svg>

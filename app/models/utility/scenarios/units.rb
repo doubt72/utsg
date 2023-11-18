@@ -113,6 +113,7 @@ module Utility
 
             lu["#{nation}_initiative".to_sym] = { mk: 1, nation:, i: nation, type: 11 }
           end
+          # lu[:uk_sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
           # lu[:axm_bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
           # lu[:axm_hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
           # lu[:axm_rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }

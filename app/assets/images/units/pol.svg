@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-<path d="M 15 15 L 15 50 L 50 50 L 50 15 L 15 15 M 85 85 L 85 50 L 50 50 L 50 85 L 85 85" style="fill:#E00;" />
-<path d="M 15 85 L 15 50 L 50 50 L 50 85 L 15 85 M 85 15 L 85 50 L 50 50 L 50 15 L 85 15" style="fill:#FFF;" />
+<path d="M 15 15 L 15 50 L 50 50 L 50 15 L 15 15 M 85 85 L 85 50 L 50 50 L 50 85 L 85 85" style="fill:#FFF;" />
+<path d="M 15 85 L 15 50 L 50 50 L 50 85 L 15 85 M 85 15 L 85 50 L 50 50 L 50 15 L 85 15" style="fill:#D00;" />
+<path d="M 22 22 L 22 50 L 50 50 L 50 22 L 22 22 M 78 78 L 78 50 L 50 50 L 50 78 L 78 78" style="fill:#D00;" />
+<path d="M 22 78 L 22 50 L 50 50 L 50 78 L 22 78 M 78 22 L 78 50 L 50 50 L 50 22 L 78 22" style="fill:#FFF;" />
 </svg>

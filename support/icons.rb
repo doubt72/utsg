@@ -1921,14 +1921,14 @@ File.open('wreck.svg', 'w') do |file|
   file.puts header3
   write_path([
     ["M", 15, 10], ["L", 15, 98], ["L", 75, 98], ["L", 75, 10], ["L", 15, 10], ["L", 15, 98],
-  ], file, false, 3, "#C00")
+  ], file, false, 3, "#D00")
   write_path([
     ["M", 37.5, 70], ["C", [32.6, 70], [15, 60], [45, 30]], ["C", [45, 50], [61, 42], [61, 60]],
     ["C", [61, 70], [55, 70], [52.5, 70]], ["C", [54, 67], [60, 55], [45, 45]],
     ["C", [45, 55], [36, 53], [35, 60]], ["C", [34, 65], [35, 67.5], [37.5, 70]],
     ["C", [32.6, 70], [15, 60], [45, 30]],
-  ], file, false, 3, "#C00")
-  write_text(95.5, 55, 1.9, "WRECK", file, "#C00", rotate='transform="rotate(270 95 54)" ')
+  ], file, false, 3, "#D00")
+  write_text(95.5, 55, 1.9, "WRECK", file, "#D00", rotate='transform="rotate(270 95 54)" ')
   file.puts footer
 end
 
@@ -1992,7 +1992,7 @@ File.open('fire.svg', 'w') do |file|
     ["C", [82, 90], [70, 90], [65, 90]], ["C", [68, 84], [80, 60], [50, 40]],
     ["C", [50, 60], [32, 56], [30, 70]], ["C", [28, 80], [30, 85], [35, 90]],
     ["C", [25.2, 90], [-10, 70], [50, 10]],
-  ], file, false, 3, "#C00")
+  ], file, false, 3, "#D00")
   file.puts footer
 end
 
@@ -2082,19 +2082,27 @@ File.open('pol.svg', 'w') do |file|
   write_path([
     ["M", 15, 15], ["L", 15, 50], ["L", 50, 50], ["L", 50, 15], ["L", 15, 15],
     ["M", 85, 85], ["L", 85, 50], ["L", 50, 50], ["L", 50, 85], ["L", 85, 85],
-  ], file, true, 3, "#E00")
+  ], file, true, 3, "#FFF")
   write_path([
     ["M", 15, 85], ["L", 15, 50], ["L", 50, 50], ["L", 50, 85], ["L", 15, 85],
     ["M", 85, 15], ["L", 85, 50], ["L", 50, 50], ["L", 50, 15], ["L", 85, 15],
+  ], file, true, 3, "#D00")
+  write_path([
+    ["M", 22, 22], ["L", 22, 50], ["L", 50, 50], ["L", 50, 22], ["L", 22, 22],
+    ["M", 78, 78], ["L", 78, 50], ["L", 50, 50], ["L", 50, 78], ["L", 78, 78],
+  ], file, true, 3, "#D00")
+  write_path([
+    ["M", 22, 78], ["L", 22, 50], ["L", 50, 50], ["L", 50, 78], ["L", 22, 78],
+    ["M", 78, 22], ["L", 78, 50], ["L", 50, 50], ["L", 50, 22], ["L", 78, 22],
   ], file, true, 3, "#FFF")
   file.puts footer
 end
 
 File.open('gre.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#77F")
+  write_circle(50, 50, 40, file, true, "#33D")
   write_circle(50, 50, 26.7, file, true, "#FFF")
-  write_circle(50, 50, 13.3, file, true, "#77F")
+  write_circle(50, 50, 13.3, file, true, "#33D")
   # write_path([
   #   ["M", 15, 15], ["L", 15, 85], ["L", 85, 85], ["L", 85, 15], ["L", 15, 15],
   # ], file, true, 3, "#88F")
@@ -2108,34 +2116,30 @@ end
 
 File.open('nor.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#E00")
+  # write_circle(50, 50, 40, file, true, "#D00")
+  # write_path([
+  #   ["M", 40, 15], ["L", 40, 85], ["L", 60, 85], ["L", 60, 15], ["L", 40, 15],
+  # ], file, true, 3, "#FFF")
+  # write_path([
+  #   ["M", 45, 15], ["L", 45, 85], ["L", 55, 85], ["L", 55, 15], ["L", 45, 15],
+  # ], file, true, 3, "#007")
+  # write_circle(50, 50, 30, file, false, "#FFF", 8)
+  # write_circle(50, 50, 36, file, false, "#007", 8)
+  write_path([
+    ["M", 15, 15], ["L", 15, 85], ["L", 85, 85], ["L", 85, 15], ["L", 15, 15],
+  ], file, true, 3, "#D00")
   write_path([
     ["M", 40, 15], ["L", 40, 85], ["L", 60, 85], ["L", 60, 15], ["L", 40, 15],
   ], file, true, 3, "#FFF")
   write_path([
     ["M", 45, 15], ["L", 45, 85], ["L", 55, 85], ["L", 55, 15], ["L", 45, 15],
   ], file, true, 3, "#007")
-  write_circle(50, 50, 30, file, false, "#FFF", 8)
-  write_circle(50, 50, 36, file, false, "#007", 8)
-  # write_path([
-  #   ["M", 15, 15], ["L", 15, 85], ["L", 85, 85], ["L", 85, 15], ["L", 15, 15],
-  # ], file, true, 3, "#E00")
-  # write_path([
-  #   ["M", 40, 15], ["L", 60, 15], ["L", 60, 40], ["L", 85, 40], ["L", 85, 60],
-  #   ["L", 60, 60], ["L", 60, 85], ["L", 40, 85], ["L", 40, 60], ["L", 15, 60],
-  #   ["L", 15, 40], ["L", 40, 40], ["L", 40, 15],
-  # ], file, true, 3, "#FFF")
-  # write_path([
-  #   ["M", 45, 15], ["L", 55, 15], ["L", 55, 45], ["L", 85, 45], ["L", 85, 55],
-  #   ["L", 55, 55], ["L", 55, 85], ["L", 45, 85], ["L", 45, 55], ["L", 15, 55],
-  #   ["L", 15, 45], ["L", 45, 45], ["L", 45, 15],
-  # ], file, true, 3, "#007")
   file.puts footer
 end
 
 File.open('bel.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#E00")
+  write_circle(50, 50, 40, file, true, "#D00")
   write_circle(50, 50, 26.7, file, true, "#ED0")
   write_circle(50, 50, 13.3, file, true, "#000")
   file.puts footer
@@ -2162,75 +2166,84 @@ end
 
 File.open('slv.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#E00")
+  # write_circle(50, 50, 40, file, true, "#D00")
+  # write_path([
+  #   ["M", 45, 18], ["L", 55, 18], ["L", 55, 82], ["L", 45, 82], ["L", 45, 18],
+  # ], file, true, 3, "#FFF")
+  # write_path([
+  #   ["M", 27.5, 35], ["L", 72.5, 35], ["L", 72.5, 45], ["L", 27.5, 45], ["L", 27.5, 35],
+  # ], file, true, 3, "#FFF")
+  # write_path([
+  #   ["M", 25, 65], ["L", 75, 65], ["L", 75, 55], ["L", 25, 55], ["L", 25, 65],
+  # ], file, true, 3, "#FFF")
   write_path([
-    ["M", 45, 18], ["L", 55, 18], ["L", 55, 82], ["L", 45, 82], ["L", 45, 18],
+    ["M", 10, 20], ["L", 85, 20], ["L", 85, 40], ["L", 10, 40], ["L", 10, 20],
   ], file, true, 3, "#FFF")
   write_path([
-    ["M", 27.5, 35], ["L", 72.5, 35], ["L", 72.5, 45], ["L", 27.5, 45], ["L", 27.5, 35],
-  ], file, true, 3, "#FFF")
+    ["M", 10, 60], ["L", 85, 60], ["L", 85, 40], ["L", 10, 40], ["L", 10, 60],
+  ], file, true, 3, "#007")
   write_path([
-    ["M", 25, 65], ["L", 75, 65], ["L", 75, 55], ["L", 25, 55], ["L", 25, 65],
-  ], file, true, 3, "#FFF")
+    ["M", 10, 80], ["L", 85, 80], ["L", 85, 60], ["L", 10, 60], ["L", 10, 80],
+  ], file, true, 3, "#D00")
   file.puts footer
 end
 
 File.open('hun.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#E00")
-  write_circle(50, 50, 30, file, true, "#FFF")
-  write_path([
-    ["M", 46, 25], ["L", 54, 25], ["L", 54, 75], ["L", 46, 75], ["L", 46, 25],
-  ], file, true, 3, "#070")
-  write_path([
-    ["M", 35, 35], ["L", 65, 35], ["L", 65, 43], ["L", 35, 43], ["L", 35, 35],
-  ], file, true, 3, "#070")
-  write_path([
-    ["M", 30, 50], ["L", 70, 50], ["L", 70, 58], ["L", 30, 58], ["L", 30, 50],
-  ], file, true, 3, "#070")
+  # write_circle(50, 50, 40, file, true, "#D00")
+  # write_circle(50, 50, 30, file, true, "#FFF")
   # write_path([
-  #   ["M", 15, 15], ["L", 85, 15], ["L", 85, 38], ["L", 15, 38], ["L", 15, 15],
-  # ], file, true, 3, "#E00")
-  # write_path([
-  #   ["M", 15, 62], ["L", 85, 62], ["L", 85, 38], ["L", 15, 38], ["L", 15, 62],
-  # ], file, true, 3, "#FFF")
-  # write_path([
-  #   ["M", 15, 85], ["L", 85, 85], ["L", 85, 62], ["L", 15, 62], ["L", 15, 85],
+  #   ["M", 46, 25], ["L", 54, 25], ["L", 54, 75], ["L", 46, 75], ["L", 46, 25],
   # ], file, true, 3, "#070")
+  # write_path([
+  #   ["M", 35, 35], ["L", 65, 35], ["L", 65, 43], ["L", 35, 43], ["L", 35, 35],
+  # ], file, true, 3, "#070")
+  # write_path([
+  #   ["M", 30, 50], ["L", 70, 50], ["L", 70, 58], ["L", 30, 58], ["L", 30, 50],
+  # ], file, true, 3, "#070")
+  write_path([
+    ["M", 10, 20], ["L", 85, 20], ["L", 85, 40], ["L", 10, 40], ["L", 10, 20],
+  ], file, true, 3, "#D00")
+  write_path([
+    ["M", 10, 60], ["L", 85, 60], ["L", 85, 40], ["L", 10, 40], ["L", 10, 60],
+  ], file, true, 3, "#FFF")
+  write_path([
+    ["M", 10, 80], ["L", 85, 80], ["L", 85, 60], ["L", 10, 60], ["L", 10, 80],
+  ], file, true, 3, "#070")
   file.puts footer
 end
 
 File.open('bul.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#E00")
-  write_circle(50, 50, 26.7, file, true, "#070")
-  write_circle(50, 50, 13.3, file, true, "#FFF")
-  # write_path([
-  #   ["M", 15, 15], ["L", 85, 15], ["L", 85, 38], ["L", 15, 38], ["L", 15, 15],
-  # ], file, true, 3, "#FFF")
-  # write_path([
-  #   ["M", 15, 62], ["L", 85, 62], ["L", 85, 38], ["L", 15, 38], ["L", 15, 62],
-  # ], file, true, 3, "#070")
-  # write_path([
-  #   ["M", 15, 85], ["L", 85, 85], ["L", 85, 62], ["L", 15, 62], ["L", 15, 85],
-  # ], file, true, 3, "#E00")
+  # write_circle(50, 50, 40, file, true, "#D00")
+  # write_circle(50, 50, 26.7, file, true, "#070")
+  # write_circle(50, 50, 13.3, file, true, "#FFF")
+  write_path([
+    ["M", 10, 20], ["L", 85, 20], ["L", 85, 40], ["L", 10, 40], ["L", 10, 20],
+  ], file, true, 3, "#FFF")
+  write_path([
+    ["M", 10, 60], ["L", 85, 60], ["L", 85, 40], ["L", 10, 40], ["L", 10, 60],
+  ], file, true, 3, "#070")
+  write_path([
+    ["M", 10, 80], ["L", 85, 80], ["L", 85, 60], ["L", 10, 60], ["L", 10, 80],
+  ], file, true, 3, "#D00")
   file.puts footer
 end
 
 File.open('rom.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#E00")
-  write_circle(50, 50, 26.7, file, true, "#ED0")
-  write_circle(50, 50, 13.3, file, true, "#009")
-  # write_path([
-  #   ["M", 15, 15], ["L", 15, 85], ["L", 38, 85], ["L", 38, 15], ["L", 15, 15],
-  # ], file, true, 3, "#007")
-  # write_path([
-  #   ["M", 62, 15], ["L", 62, 85], ["L", 38, 85], ["L", 38, 15], ["L", 62, 15],
-  # ], file, true, 3, "#ED0")
-  # write_path([
-  #   ["M", 85, 15], ["L", 85, 85], ["L", 62, 85], ["L", 62, 15], ["L", 85, 15],
-  # ], file, true, 3, "#E00")
+  # write_circle(50, 50, 40, file, true, "#D00")
+  # write_circle(50, 50, 26.7, file, true, "#ED0")
+  # write_circle(50, 50, 13.3, file, true, "#009")
+  write_path([
+    ["M", 10, 20], ["L", 10, 80], ["L", 37, 80], ["L", 37, 20], ["L", 10, 20],
+  ], file, true, 3, "#007")
+  write_path([
+    ["M", 63, 20], ["L", 63, 80], ["L", 37, 80], ["L", 37, 20], ["L", 63, 20],
+  ], file, true, 3, "#ED0")
+  write_path([
+    ["M", 90, 20], ["L", 90, 80], ["L", 63, 80], ["L", 63, 20], ["L", 90, 20],
+  ], file, true, 3, "#D00")
   file.puts footer
 end
 
@@ -2254,23 +2267,24 @@ end
 
 File.open('fin.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#FFF")
-  write_circle(50, 50, 26.7, file, true, "#007")
-  write_circle(50, 50, 13.3, file, true, "#FFF")
-  # write_path([
-  #   ["M", 15, 15], ["L", 15, 85], ["L", 85, 85], ["L", 85, 15], ["L", 15, 15],
-  # ], file, true, 3, "#FFF")
-  # write_path([
-  #   ["M", 40, 15], ["L", 60, 15], ["L", 60, 40], ["L", 85, 40], ["L", 85, 60],
-  #   ["L", 60, 60], ["L", 60, 85], ["L", 40, 85], ["L", 40, 60], ["L", 15, 60],
-  #   ["L", 15, 40], ["L", 40, 40], ["L", 40, 15],
-  # ], file, true, 3, "#007")
+  # write_circle(50, 50, 40, file, true, "#FFF")
+  # write_circle(50, 50, 26.7, file, true, "#007")
+  # write_circle(50, 50, 13.3, file, true, "#FFF")
+  write_path([
+    ["M", 10, 20], ["L", 10, 80], ["L", 90, 80], ["L", 90, 20], ["L", 10, 20],
+  ], file, true, 3, "#FFF")
+  write_path([
+    ["M", 10, 42.5], ["L", 10, 57.5], ["L", 90, 57.5], ["L", 90, 42.5], ["L", 10, 42.5],
+  ], file, true, 3, "#007")
+  write_path([
+    ["M", 32.5, 20], ["L", 32.5, 80], ["L", 47.5, 80], ["L", 47.5, 20], ["L", 32.5, 20],
+  ], file, true, 3, "#007")
   file.puts footer
 end
 
 File.open('fra.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 40, file, true, "#E00")
+  write_circle(50, 50, 40, file, true, "#D00")
   write_circle(50, 50, 26.7, file, true, "#FFF")
   write_circle(50, 50, 13.3, file, true, "#007")
   file.puts footer
@@ -2321,7 +2335,7 @@ end
 File.open('jap.svg', 'w') do |file|
   file.puts header
   write_circle(50, 50, 39, file, true, "#FFF")
-  write_circle(50, 50, 36, file, true, "#E00")
+  write_circle(50, 50, 36, file, true, "#D00")
   file.puts footer
 end
 
@@ -2329,7 +2343,15 @@ File.open('uk.svg', 'w') do |file|
   file.puts header
   write_circle(50, 50, 40, file, true, "#007")
   write_circle(50, 50, 26.7, file, true, "#FFF")
-  write_circle(50, 50, 13.3, file, true, "#E00")
+  write_circle(50, 50, 13.3, file, true, "#D00")
+  file.puts footer
+end
+
+File.open('sa.svg', 'w') do |file|
+  file.puts header
+  write_circle(50, 50, 40, file, true, "#007")
+  write_circle(50, 50, 26.7, file, true, "#FFF")
+  write_circle(50, 50, 13.3, file, true, "#F70")
   file.puts footer
 end
 
@@ -2367,7 +2389,7 @@ File.open('ussr.svg', 'w') do |file|
     y = Math.cos(n * 144.0 / 180 * Math::PI) * -40 + 52
     path.push([n == 0 ? "M" : "L", x, y])
   end
-  write_path(path, file, true, 3, "#E00")
+  write_path(path, file, true, 3, "#D00")
   file.puts footer
 end
 
