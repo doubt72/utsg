@@ -15,7 +15,6 @@ import DeleteAccount from '../components/user/DeleteAccount';
 import NewGame from "../components/game/NewGame";
 import DebugUnits from "../components/game/DebugUnits";
 import DebugMap from "../components/game/DebugMap";
-import DebugMapLos from "../components/game/DebugMapLos";
 import GameDisplay from "../components/game/GameDisplay";
 
 const Routes = () => {
@@ -41,8 +40,7 @@ const Routes = () => {
         { path: "/profile", element: <Profile /> },
 
         { path: "/debug/units", element: <DebugUnits /> },
-        { path: "/debug/map", element: <DebugMap /> },
-        { path: "/debug/maplos", element: <DebugMapLos /> },
+        { path: "/debug/map/:id", element: <DebugMap /> },
 
         { path: "/new_game", element: <NewGame /> },
       ],

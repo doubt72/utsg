@@ -5,7 +5,6 @@ import { Marker, markerType } from "./marker"
 
 const Map = class {
   constructor (data, game) {
-    console.log(game)
     this.loadConfig(data.layout)
 
     this.game = game

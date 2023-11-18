@@ -3,7 +3,6 @@ import { getFormattedDate } from "./utilities"
 
 const Scenario = class {
   constructor(data, game) {
-    console.log(game)
     this.code = data.id
     this.name = data.name
     this.author = data.metadata.author
