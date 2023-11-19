@@ -133,7 +133,6 @@ export default function WeatherDisplay(props) {
   ])
 
   useEffect(() => {
-    console.log("checking")
     if (!props.map) { return }
     if (props.hideCounters) {
       setCurrentWeather("")
@@ -145,21 +144,18 @@ export default function WeatherDisplay(props) {
         const cc = new Counter(x.current, y.current, new Marker({
           type: markerType.Weather, subtype: props.map.currentWeather,
         }), props.map, true)
-        const ccb = () => { props.ovCallback({ show: true, counters: [cc] }) }
-        setCurrentWeather(<MapCounter counter={cc} ovCallback={ccb} x={x.current} y={y.current} />)
+        setCurrentWeather(<MapCounter counter={cc} ovCallback={() => {}} x={x.current} y={y.current} />)
         if (props.map.currentWeather !== props.map.baseWeather) {
           const bc = new Counter(x.base, y.base, new Marker({
             type: markerType.Weather, subtype: props.map.currentWeather,
           }), props.map, true)
-          const bcb = () => { props.ovCallback({ show: true, counters: [bc] }) }
-          setBaseWeather(<MapCounter counter={bc} ovCallback={bcb} x={x.base} y={y.base} />)
+          setBaseWeather(<MapCounter counter={bc} ovCallback={() => {}} x={x.base} y={y.base} />)
         }
         if (props.map.precipChance > 0 && props.map.precipChance < 10) {
           const pcc = new Counter(x.base, y.base, new Marker({
             type: markerType.Weather, subtype: props.map.currentWeather,
           }), props.map, true)
-          const pccb = () => { props.ovCallback({ show: true, counters: [pcc] }) }
-          setPrecipitation(<MapCounter counter={pcc} ovCallback={pccb} x={x.base} y={y.base} />)
+          setPrecipitation(<MapCounter counter={pcc} ovCallback={() => {}} x={x.base} y={y.base} />)
         }
       } else {
         const counters = []
@@ -173,29 +169,29 @@ export default function WeatherDisplay(props) {
           }), props.map, true))
         }
         if (counters.length === 1) {
-          const cb = () => { props.ovCallback({ show: true, counters: counters }) }
+          const cb = () => { props.ovCallback({ show: true, counters: counters, x: 0 }) }
           setCurrentWeather(
             <MapCounter counter={counters[0]} ovCallback={cb} x={x.current} y={y.current} />
           )
           setPrecipitation("")
         } else if (props.map.baseWeather === props.map.currentWeather) {
-          const cb = () => { props.ovCallback({ show: true, counters: counters }) }
-          setCurrentWeather(
-            <MapCounter counter={counters[0]} ovCallback={cb} x={x.current} y={y.current} />
-          )
-          setPrecipitation(
-            <MapCounter counter={counters[1]} ovCallback={cb} x={x.precip} y={y.precip} />
-          )
-        } else {
-          const cb1 = () => { props.ovCallback({ show: true, counters: [counters[0]] }) }
+          const cb1 = () => { props.ovCallback({ show: true, counters: [counters[0]], x: 1 }) }
           setCurrentWeather(
             <MapCounter counter={counters[0]} ovCallback={cb1} x={x.current} y={y.current} />
           )
+          const cb2 = () => { props.ovCallback({ show: true, counters: [counters[1]], x: 2 }) }
+          setPrecipitation(
+            <MapCounter counter={counters[1]} ovCallback={cb2} x={x.precip} y={y.precip} />
+          )
+        } else {
+          const cb = () => { props.ovCallback({ show: true, counters: counters, x: 3 }) }
+          setCurrentWeather(
+            <MapCounter counter={counters[0]} ovCallback={cb} x={x.current} y={y.current} />
+          )
           counters[1].xBase = x.current + 5
           counters[1].yBase = y.current - 5
-          const cb2 = () => { props.ovCallback({ show: true, counters: [counters[0]] }) }
           setPrecipitation(
-            <MapCounter counter={counters[1]} ovCallback={cb2} x={x.current + 5} y={y.current - 5} />
+            <MapCounter counter={counters[1]} ovCallback={cb} x={x.current + 5} y={y.current - 5} />
           )
         }
       }

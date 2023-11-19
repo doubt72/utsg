@@ -208,9 +208,13 @@ const Map = class {
     return los.hexLos(x0, y0, x1, y1)
   }
 
-  overlayLayout(x, y, size) {
+  overlayLayout(x, y, size, absolute = false) {
     let x1 = this.xOffset(x, y) - 80
     let y1 = this.yOffset(y) - 80
+    if (absolute) {
+      x1 = x - 40
+      y1 = y - 40
+    }
     let x2 = x1 + size*170 + 10
     let y2 = y1 + 170 + 10
     if (x2 > this.xSize) {
@@ -316,7 +320,12 @@ const Map = class {
   }
 
   counterHelpButtonLayout(x, y, counter) {
-    if (counter.target.isMarker || counter.target.isWreck) { return false }
+    if (counter.target.isWreck) { return false }
+    if (counter.target.isMarker) {
+      if (counter.target.type !== markerType.Wind && counter.target.type !== markerType.Weather) {
+        return false
+      }
+    }
     const size = 24
     return { path: [
       "M", x-size/2, y, "A", size/2, size/2, 0, 0, 1, x+size/2, y,

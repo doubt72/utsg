@@ -82,7 +82,10 @@ export default function GameMap(props) {
                            selectionCallback={unitSelection} />
       )
     } else if (!props.showLos) {
-      console.log('thing')
+      setOverlayDisplay(
+        <MapCounterOverlay counters={overlay.counters} map={props.map} setOverlay={setOverlay}
+                           selectionCallback={unitSelection} />
+      )
     }
   }, [overlay.show, overlay.x, overlay.y, overlay.counter])
 

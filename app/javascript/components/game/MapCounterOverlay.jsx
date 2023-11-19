@@ -11,8 +11,11 @@ export default function MapCounterOverlay(props) {
   const [update, setUpdate] = useState("")
 
   useEffect(() => {
-    const counters = props.map.counterDataAt(props.x, props.y)
-    const layout = props.map.overlayLayout(props.x, props.y, counters.length)
+    const counters = props.counters ? props.counters : props.map.counterDataAt(props.x, props.y)
+    const layout = props.map.overlayLayout(
+      props.counters ? props.counters[0].xBase : props.x, props.counters ? props.counters[0].yBase : props.y,
+      counters.length, !!props.counters
+    )
     const helpOverlays = []
     const selectionOverlays = []
     let trueIndex = 0
@@ -20,7 +23,8 @@ export default function MapCounterOverlay(props) {
       <g>
         <path d={layout.path} style={layout.style} />
         { counters.map((data, i) => {
-          const cd = new Counter(-1, -1, data.u, props.map)
+          const cd = props.counters ? new Counter(-1, -1, data.target, props.map) :
+            new Counter(-1, -1, data.u, props.map)
           cd.showAllCounters = true
           if (!cd.target.isMarker) {
             cd.trueIndex = trueIndex++
@@ -73,7 +77,7 @@ export default function MapCounterOverlay(props) {
         </g>
       </g>
     )
-  }, [props.x, props.y, update])
+  }, [props.x, props.y, props.counters, update])
 
   return (
     <g>
@@ -89,4 +93,5 @@ MapCounterOverlay.propTypes = {
   selectionCallback: PropTypes.func,
   x: PropTypes.number,
   y: PropTypes.number,
+  counters: PropTypes.array,
 }

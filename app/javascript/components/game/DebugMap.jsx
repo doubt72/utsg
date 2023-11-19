@@ -172,15 +172,21 @@ export default function DebugMap() {
         </div>
         <div className="custom-button" onClick={() => {
           if (!map) { return }
-          map.currentWeather = nextWeather(map.currentWeather)
-          setCurrentWeather(() => map.currentWeather)
-        }}>
-          c: { map?.weatherName(currentWeather) }
-        </div>
-        <div className="custom-button" onClick={() => {
-          if (!map) { return }
           map.baseWeather = nextWeather(map.baseWeather)
           setBaseWeather(() => map.baseWeather)
+          if (map.baseWeather === weatherType.Rain || map.baseWeather === weatherType.Snow) {
+            map.precip = map.baseWeather
+            setPrecipType(() => map.precip)
+            if (map.currentWeather === weatherType.Rain || map.currentWeather === weatherType.Snow) {
+              map.currentWeather = map.baseWeather
+              setCurrentWeather(() => map.currentWeather)
+            }
+          } else {
+            if (map.currentWeather !== weatherType.Rain && map.currentWeather !== weatherType.Snow) {
+              map.currentWeather = map.baseWeather
+              setCurrentWeather(() => map.currentWeather)
+            }
+          }
         }}>
           b: { map?.weatherName(baseWeather) }
         </div>
@@ -188,6 +194,14 @@ export default function DebugMap() {
           if (!map) { return }
           map.precip = nextWeather(precipType, true)
           setPrecipType(() => map.precip)
+          if (map.currentWeather === weatherType.Rain || map.currentWeather === weatherType.Snow) {
+            map.currentWeather = map.precip
+            setCurrentWeather(() => map.currentWeather)
+          }
+          if (map.baseWeather === weatherType.Rain || map.baseWeather === weatherType.Snow) {
+            map.baseWeather = map.precip
+            setBaseWeather(() => map.baseWeather)
+          }
         }}>
           p: { map?.weatherName(precipType) }
         </div>
@@ -197,6 +211,17 @@ export default function DebugMap() {
           setPrecipChance(() => map.precipChance)
         }}>
           { `${precipChance}${precipChance > 0 ? "0" : ""}%` }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (!map) { return }
+          if (map.currentWeather === map.baseWeather) {
+            map.currentWeather = map.precip
+          } else {
+            map.currentWeather = map.baseWeather
+          }
+          setCurrentWeather(() => map.currentWeather)
+        }}>
+          c: { map?.weatherName(currentWeather) }
         </div>
         <div className="custom-button" onClick={() => {
           if (!map) { return }
