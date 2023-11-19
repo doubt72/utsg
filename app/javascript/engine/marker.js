@@ -5,7 +5,7 @@ const markerType = {
   TrackedHull: 0, WheeledHull: 1,
   Tired: 2, Pinned: 3, Activated: 4, Exhausted: 5,
   Jammed: 6, TurretJammed: 7, Immobilized: 8,
-  Wind: 9, Precip: 10, Initiative: 11,
+  Wind: 9, Weather: 10, Initiative: 11,
 }
 
 const Marker = class {
@@ -49,7 +49,7 @@ const Marker = class {
       if (this.subType === windType.Calm) { return "#black" }
       return "white"
     }
-    if (this.type === markerType.Precip) {
+    if (this.type === markerType.Weather) {
       if (this.subType === weatherType.Rain || this.subType === weatherType.Fog) {
         return "white"
       }
@@ -67,11 +67,11 @@ const Marker = class {
       if (this.subType === windType.Moderate) { return "#77B" }
       if (this.subType === windType.Strong) { return "#448" }
     }
-    if (this.type === markerType.Precip) {
+    if (this.type === markerType.Weather) {
       if (this.subType === weatherType.Clear) { return "#DDF" }
       if (this.subType === weatherType.Fog) { return "#777" }
       if (this.subType === weatherType.Rain) { return "#44D" }
-      if (this.subType === weatherType.Snow) { return "#EEE" }
+      if (this.subType === weatherType.Snow) { return "#DFDFDF" }
       if (this.subType === weatherType.Sand) { return "#DD8" }
       if (this.subType === weatherType.Dust) { return "#DB9" }
     }
@@ -92,7 +92,7 @@ const Marker = class {
       if (this.subType === windType.Moderate) { return ["moderate"] }
       if (this.subType === windType.Strong) { return ["strong"] }
     }
-    if (this.type === markerType.Precip) {
+    if (this.type === markerType.Weather) {
       if (this.subType === weatherType.Clear) { return ["clear"] }
       if (this.subType === weatherType.Fog) { return ["fog"] }
       if (this.subType === weatherType.Rain) { return ["rain"] }
@@ -104,18 +104,18 @@ const Marker = class {
   }
 
   get subText() {
-    if (this.type === markerType.Precip) {
+    if (this.type === markerType.Weather) {
       if (this.subType === weatherType.Clear) { return ["10% fe", "", ""] }
       if (this.subType === weatherType.Fog) { return ["30% fe", "", ""] }
       if (this.subType === weatherType.Sand) { return ["30% fe", "", ""] }
       if (this.subType === weatherType.Dust) { return ["", "+10% fs", ""] }
       const fe = this.subType === weatherType.Rain ? "60% fe" : "40% fe"
       if (!this.value) { return [fe, "", ""] }
-      return [fe, `${this.value}% chance`, ""]
+      return [fe, `${this.value}0% chance`, ""]
     }
     if (this.type === markerType.Wind) {
       const text = []
-      if (this.value === 1) {
+      if (this.value) {
         text.push("variable")
       } else {
         text.push("")

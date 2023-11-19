@@ -4,10 +4,9 @@ import { Hex } from "./hex"
 import { Marker, markerType } from "./marker"
 
 const Map = class {
-  constructor (data, game) {
+  constructor (data) {
     this.loadConfig(data.layout)
 
-    this.game = game
     this.alliedEdge = data.allied_edge
     this.axisEdge = data.axis_edge
     this.victoryHexes = data.victory_hexes
@@ -27,6 +26,17 @@ const Map = class {
 
     this.baseTerrain = data.base_terrain || "g"
     this.night = data.night
+
+    this.currentWeather = data.start_weather || 0
+    this.baseWeather = data.base_weather || 0
+    const precip = data.precip
+    this.precip = precip ? precip[1] : 2
+    this.precipChance = precip ? precip[0] : 0
+
+    const wind = data.wind
+    this.windSpeed = wind ? wind[0] : 0
+    this.windDirection = wind ? wind[1] : 1
+    this.windVariable = wind ? wind[2] : false
 
     this.showCoords = true
     this.showAllCounters = false
@@ -72,6 +82,26 @@ const Map = class {
       return null
     }
     return this.mapHexes[y][x]
+  }
+
+  weatherName(w) {
+    return {
+      0: "clear",
+      1: "fog",
+      2: "rain",
+      3: "snow",
+      4: "sand",
+      5: "dust",
+    }[w]
+  }
+
+  get windName() {
+    return {
+      0: "calm",
+      1: "breeze",
+      2: "moderate",
+      3: "strong",
+    }[this.windSpeed]
   }
 
   get baseTerrainName() {

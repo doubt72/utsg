@@ -46,19 +46,22 @@ export default function GameMap(props) {
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
     setWeather(() =>
-      props.map?.preview ? "" : <WeatherDisplay preview={false} map={props.map}
-                                                x={(props.map?.xSize || 0) - 192} y={2} />
+      props.map?.preview ? "" :
+        <WeatherDisplay preview={false} map={props.map} game={props.map.game} hideCounters={props.hideCounters}
+                        x={(props.map?.xSize || 0) - 192} y={2} ovCallback={setOverlay} />
     )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
     props.showTerrain,
+    props.map?.currentWeather, props.map?.baseWeather, props.map?.precip, props.map?.precipChance,
+    props.map?.windSpeed, props.map?.windDirection, props.map?.windVariable,
     props.map?.baseTerrain, props.map?.night // debugging only, don't change in actual games
   ])
 
   useEffect(() => {
     if (overlay.x < 0) { return }
     if (!overlay.show) { setOverlayDisplay(""); setCounterLosOverlay(""); return }
-    if (props.showLos) {
+    if (props.showLos && !overlay.counter) {
       const counters = props.map.counterDataAt(overlay.x, overlay.y).filter(c => !c.u.isFeature)
       if (counters.length < 1) { return }
       if (props.map.debug) { // debugging only, never set in actual games
@@ -73,13 +76,15 @@ export default function GameMap(props) {
           <MapCounter key={i} counter={c} ovCallback={() => {}} />
         ))
       }
-    } else {
+    } else if (!overlay.counters) {
       setOverlayDisplay(
         <MapCounterOverlay x={overlay.x} y={overlay.y} map={props.map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} />
       )
+    } else if (!props.showLos) {
+      console.log('thing')
     }
-  }, [overlay.show, overlay.x, overlay.y])
+  }, [overlay.show, overlay.x, overlay.y, overlay.counter])
 
   const hexSelection = (x, y) => {
     const key = `${x}-${y}`

@@ -2,12 +2,20 @@ import { baseCounterPath, counterRed, markerYellow } from "../utilities/graphics
 import { markerType } from "./marker"
 
 const Counter = class {
-  constructor(x, y, target, map) {
-    this.xHex = x
-    this.yHex = y
+  constructor(x, y, target, map, absolute = false) {
     this.onMap = map && x > -1
-    this.xBase = this.onMap ? map.xOffset(x, y) - 40 : 3
-    this.yBase = this.onMap ? map.yOffset(y) - 40 : 1
+    if (absolute) {
+      this.absolute = absolute
+      this.xHex = 0
+      this.yHex = 0
+      this.xBase = x
+      this.yBase = y
+    } else {
+      this.xHex = x
+      this.yHex = y
+      this.xBase = this.onMap ? map.xOffset(x, y) - 40 : 3
+      this.yBase = this.onMap ? map.yOffset(y) - 40 : 1
+    }
     this.target = target
     this.map = map
     this.stackingIndex = 0
@@ -385,7 +393,7 @@ const Counter = class {
     const y = this.y + 40
     let size = this.target.displayText[0] === "immobilized" ? 11 : 12
     let ty = y + 9 - 6 * this.target.displayText.length
-    if (this.target.type === markerType.Wind || this.target.type === markerType.Precip) {
+    if (this.target.type === markerType.Wind || this.target.type === markerType.Weather) {
       size = 15
       ty += 1
     }

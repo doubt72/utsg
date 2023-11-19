@@ -60,26 +60,6 @@ const Game = class {
     })
   }
 
-  weatherName(w) {
-    return {
-      0: "clear",
-      1: "fog",
-      2: "rain",
-      3: "snow",
-      4: "sand",
-      5: "dust",
-    }[w]
-  }
-
-  get windName() {
-    return {
-      0: "calm",
-      1: "breeze",
-      2: "moderate",
-      3: "strong",
-    }[this.windSpeed]
-  }
-
   actionsAvailable(currentPlayer) {
     if (this.state === "needs_player") {
       if (this.ownerName === currentPlayer || !currentPlayer) {
