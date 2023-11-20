@@ -70,7 +70,9 @@ export default function InitiativeDisplay(props) {
       const nation = props.map.game.initiativePlayer ? props.map.game.scenario.axisFactions[0] :
         props.map.game.scenario.alliedFactions[0]
       const index = props.map.game.initiative
-      const counter = new Counter(xOffset(index), xOffset(index), new Marker({
+      console.log(nation)
+      console.log(index)
+      const counter = new Counter(xOffset(index), yOffset(index), new Marker({
         type: markerType.Initiative, nation: nation, i: nation,
       }), props.map, true)
       const cb = () => { props.ovCallback({ show: true, counters: [counter] }) }

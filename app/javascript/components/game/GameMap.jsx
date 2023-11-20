@@ -61,6 +61,7 @@ export default function GameMap(props) {
     props.showTerrain,
     props.map?.currentWeather, props.map?.baseWeather, props.map?.precip, props.map?.precipChance,
     props.map?.windSpeed, props.map?.windDirection, props.map?.windVariable,
+    props.map?.game?.initiative, props.map?.game?.initiativePlayer,
     props.map?.baseTerrain, props.map?.night // debugging only, don't change in actual games
   ])
 

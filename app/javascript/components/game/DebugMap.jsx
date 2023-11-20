@@ -50,7 +50,7 @@ export default function DebugMap() {
       }
     })
     setMap(game.scenario.map)
-    setInitiativePlayer(game.initativePlayer ? "axis" : "allies")
+    setInitiativePlayer(game.initiativePlayer ? "axis" : "allies")
   }, [])
 
   useEffect(() => {
@@ -138,10 +138,10 @@ export default function DebugMap() {
           + size
         </div>
         <div className="custom-button" onClick={() => setCoords(c => !c)}>
-          coordinates { coords ? "on" : "off" }
+          coords { coords ? "on" : "off" }
         </div>
         <div className="custom-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
-          { showStatusCounters ? "status counters" : "status badges" }
+          { showStatusCounters ? "counters" : "badges" }
         </div>
         <div className="custom-button" onClick={() => setShowLos(sl => !sl)}>
           { showLos ? "show LOS" : "show stacks" }
@@ -159,20 +159,20 @@ export default function DebugMap() {
           { hideCounters ? "hide counters" : "show counters" }
         </div>
         <div className="custom-button" onClick={() => setShowTerrain(sc => !sc)}>
-          { showTerrain ? "terrain info on" : "terrain info off" }
+          { showTerrain ? "terrain on" : "terrain off" }
         </div>
         <div className="custom-button" onClick={() => {
           const nt = nextTerrain(baseTerrain)
           map.baseTerrain = nt
           setBaseTerrain(nt)
         }}>
-          { `base ${baseTerrainName(baseTerrain)}` }
+          { baseTerrainName(baseTerrain) }
         </div>
         <div className="custom-button" onClick={() => {
           map.night = !map.night
           setNight(nt => !nt)
         }}>
-          { night ? "nighttime" : "daytime" }
+          { night ? "night" : "day" }
         </div>
         <div className="custom-button" onClick={() => {
           map.baseWeather = nextWeather(map.baseWeather)
@@ -242,22 +242,22 @@ export default function DebugMap() {
           { windVariable ? "variable" : "steady" }
         </div>
         <div className="custom-button" onClick={() => {
-          map.game.initativePlayer = 1 - map.game.initativePlayer
-          setInitiativePlayer(map.game.initativePlayer ? "axis" : "allies")
+          map.game.initiativePlayer = 1 - map.game.initiativePlayer
+          setInitiativePlayer(map.game.initiativePlayer ? "axis" : "allies")
         }}>
-          initiative { initiativePlayer }
+          i: {initiativePlayer} {initiative}
         </div>
         <div className="custom-button" onClick={() => {
           if (map.game.initiative < 7) { map.game.initiative += 1 }
           setInitiative(map.game.initiative)
         }}>
-          {initiative} +1
+          +1
         </div>
         <div className="custom-button" onClick={() => {
           if (map.game.initiative > -7) { map.game.initiative -= 1 }
           setInitiative(map.game.initiative)
         }}>
-          {initiative} -1
+          -1
         </div>
       </div>
       <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
