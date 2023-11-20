@@ -19,8 +19,10 @@ const Scenario = class {
 
     this.turns = data.metadata.turns
     this.firstMove = data.metadata.first_move
-    game.initiativePlayer = this.firstMove
-    game.initiative = 0
+    if (game) {
+      game.initiativePlayer = this.firstMove
+      game.initiative = 0
+    }
     this.firstSetup = data.metadata.first_setup
 
     this.map = new Map(data.metadata.map_data, game)

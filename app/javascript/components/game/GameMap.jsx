@@ -53,8 +53,9 @@ export default function GameMap(props) {
                         x={(props.map?.xSize || 0) - 192} y={2} ovCallback={setOverlay} />
     )
     setInitiative(() =>
-      <InitiativeDisplay preview={false} map={props.map} game={props.map.game} hideCounters={props.hideCounters}
-                      x={(props.map?.xSize || 0) - 192} y={278} ovCallback={setOverlay} />
+      props.map?.preview ? "" :
+        <InitiativeDisplay map={props.map} game={props.map.game} hideCounters={props.hideCounters}
+                           x={(props.map?.xSize || 0) - 192} y={278} ovCallback={setOverlay} />
     )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
