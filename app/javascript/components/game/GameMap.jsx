@@ -9,6 +9,7 @@ import MapCounterOverlay from "./MapCounterOverlay";
 import MapLosOverlay from "./MapLosOverlay";
 import MapLosDebugOverlay from "./MapLosDebugOverlay";
 import WeatherDisplay from "./WeatherDisplay";
+import InitiativeDisplay from "./InitiativeDisplay";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -20,6 +21,7 @@ export default function GameMap(props) {
   const [counterLosOverlay, setCounterLosOverlay] = useState("")
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState("")
   const [weather, setWeather] = useState("")
+  const [initiative, setInitiative] = useState("")
 
   const svgRef = useRef()
 
@@ -50,6 +52,10 @@ export default function GameMap(props) {
         <WeatherDisplay preview={false} map={props.map} game={props.map.game} hideCounters={props.hideCounters}
                         x={(props.map?.xSize || 0) - 192} y={2} ovCallback={setOverlay} />
     )
+    setInitiative(() =>
+      <InitiativeDisplay preview={false} map={props.map} game={props.map.game} hideCounters={props.hideCounters}
+                      x={(props.map?.xSize || 0) - 192} y={278} ovCallback={setOverlay} />
+    )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
     props.showTerrain,
@@ -61,7 +67,7 @@ export default function GameMap(props) {
   useEffect(() => {
     if (overlay.x < 0) { return }
     if (!overlay.show) { setOverlayDisplay(""); setCounterLosOverlay(""); return }
-    if (props.showLos && !overlay.counter) {
+    if (props.showLos && !overlay.counters) {
       const counters = props.map.counterDataAt(overlay.x, overlay.y).filter(c => !c.u.isFeature)
       if (counters.length < 1) { return }
       if (props.map.debug) { // debugging only, never set in actual games
@@ -122,6 +128,7 @@ export default function GameMap(props) {
       {hexDisplay}
       {hexDisplayOverlays}
       {weather}
+      {initiative}
       {counterDisplay}
       {overlayDisplay}
       {counterLosOverlay}

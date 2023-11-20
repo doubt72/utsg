@@ -97,15 +97,6 @@ module Utility
           }
         end
 
-        def hulls
-          lu = {}
-          all_factions.each do |nation|
-            lu["#{nation}_tracked_hull".to_sym] = { mk: 1, nation:, type: 0 }
-            lu["#{nation}_wheeled_hull".to_sym] = { mk: 1, nation:, type: 1 }
-          end
-          lu
-        end
-
         def initiative
           lu = {}
           all_factions.each do |nation|
@@ -123,6 +114,15 @@ module Utility
           # lu[:alm_nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
           # lu[:alm_bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
           # lu[:alm_dut_initiative] = { mk: 1, nation: "alm", i: "dut", type: 11 }
+          lu
+        end
+
+        def hulls
+          lu = {}
+          all_factions.each do |nation|
+            lu["#{nation}_tracked_hull".to_sym] = { mk: 1, nation:, type: 0 }
+            lu["#{nation}_wheeled_hull".to_sym] = { mk: 1, nation:, type: 1 }
+          end
           lu
         end
 

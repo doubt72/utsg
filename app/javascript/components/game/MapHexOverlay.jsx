@@ -55,7 +55,7 @@ export default function MapHexOverlay(props) {
           {
             layout.texts.map((t, i) => 
               <text key={i} x={t.x} y={t.y} fontSize={layout.size} fontFamily="'Courier Prime', monospace"
-                    textAnchor="left" style={{ fill: "white" }}>{t.v}</text>
+                    textAnchor="start" style={{ fill: "white" }}>{t.v}</text>
             )
           }
         </g>

@@ -4,8 +4,10 @@ import { Hex } from "./hex"
 import { Marker, markerType } from "./marker"
 
 const Map = class {
-  constructor (data) {
+  constructor (data, game) {
     this.loadConfig(data.layout)
+
+    this.game = game
 
     this.alliedEdge = data.allied_edge
     this.axisEdge = data.axis_edge

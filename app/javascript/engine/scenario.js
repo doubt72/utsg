@@ -2,7 +2,7 @@ import { Map } from "./map"
 import { getFormattedDate } from "./utilities"
 
 const Scenario = class {
-  constructor(data) {
+  constructor(data, game) {
     this.code = data.id
     this.name = data.name
     this.author = data.metadata.author
@@ -19,9 +19,11 @@ const Scenario = class {
 
     this.turns = data.metadata.turns
     this.firstMove = data.metadata.first_move
+    game.initiativePlayer = this.firstMove
+    game.initiative = 0
     this.firstSetup = data.metadata.first_setup
 
-    this.map = new Map(data.metadata.map_data)
+    this.map = new Map(data.metadata.map_data, game)
   }
 
   get displayDate() {

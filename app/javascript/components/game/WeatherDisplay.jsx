@@ -25,9 +25,9 @@ export default function WeatherDisplay(props) {
       hex: props.x + (prev ? 356 : 95),
     })
     setY({
-      current: props.y + (prev ? 24 : 10),
-      base: props.y + 24,
-      precip: props.y + (prev ? 24 : 10),
+      current: props.y + (prev ? 20 : 10),
+      base: props.y + 20,
+      precip: props.y + (prev ? 20 : 10),
       hex: props.y + (prev ? 76 : 170),
     })
   }, [props.x, props.y, props.preview])
@@ -64,7 +64,7 @@ export default function WeatherDisplay(props) {
     const current = <g>
       <path d={baseCounterPath(x.current, y.current)}
             style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-      <text x={x.current + xTextOffset} y={y.current + yTextOffset} fontSize={16} textAnchor="left"
+      <text x={x.current + xTextOffset} y={y.current + yTextOffset} fontSize={16} textAnchor="start"
             fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
         { prev ? "start" : "current" }
       </text>
@@ -73,12 +73,12 @@ export default function WeatherDisplay(props) {
     const precip = <g>
       <path d={baseCounterPath(x.precip, y.precip)}
             style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-      <text x={x.precip + xTextOffset} y={y.precip + yTextOffset} fontSize={16} textAnchor="left"
+      <text x={x.precip + xTextOffset} y={y.precip + yTextOffset} fontSize={16} textAnchor="start"
             fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
         precip
       </text>
       <text x={x.precip + 40} y={y.precip + 46} fontSize={16} textAnchor="middle"
-            fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
+            fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
         none
       </text>
     </g>
@@ -87,7 +87,7 @@ export default function WeatherDisplay(props) {
       const base = <g>
         <path d={baseCounterPath(x.base, y.base)}
               style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-        <text x={x.base + xTextOffset} y={y.base + yTextOffset} fontSize={16} textAnchor="left"
+        <text x={x.base + xTextOffset} y={y.base + yTextOffset} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
           base
         </text>
@@ -97,7 +97,7 @@ export default function WeatherDisplay(props) {
         <g>
           <path d={roundedRectangle(props.x, props.y, 442, 150)}
                 style={{ fill: props.map?.baseTerrainColor, stroke: "#777", strokeWidth: 2 }} />
-          <text x={props.x + 14} y={props.y + 140} fontSize={16} textAnchor="left"
+          <text x={props.x + 14} y={props.y + 140} fontSize={16} textAnchor="start"
                   fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
             terrain: {props.map?.baseTerrainName} ({props.map?.night ? "night" : "daytime"})
           </text>
@@ -117,7 +117,7 @@ export default function WeatherDisplay(props) {
               <path d={roundedRectangle(props.x, props.y, 190, 268)}
                     style={{ fill: "rgba(0,0,0,0.16)", strokeWidth: 0 }} /> : ""
           }
-          <text x={props.x + 14} y={props.y + 260} fontSize={16} textAnchor="left"
+          <text x={props.x + 10} y={props.y + 260} fontSize={16} textAnchor="start"
                   fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
             {props.map?.baseTerrainName} ({props.map?.night ? "night" : "daytime"})
           </text>

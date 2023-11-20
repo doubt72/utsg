@@ -26,6 +26,8 @@ export default function DebugMap() {
   const [wind, setWind] = useState(0)
   const [windDir, setWindDir] = useState(1)
   const [windVariable, setWindVariable] = useState(false)
+  const [initiative, setInitiative] = useState(0)
+  const [initiativePlayer, setInitiativePlayer] = useState("")
 
   useEffect(() => {
     const game = new Game({
@@ -34,6 +36,7 @@ export default function DebugMap() {
       scenario: {
         id: "999", name: "test", allies: ["ussr"], axis: ["ger"],
         metadata: {
+          first_move: 0,
           map_data: {
             layout: [mapDebugData[id].x, mapDebugData[id].y, "x"],
             base_terrain: "g",
@@ -47,6 +50,7 @@ export default function DebugMap() {
       }
     })
     setMap(game.scenario.map)
+    setInitiativePlayer(game.initativePlayer ? "axis" : "allies")
   }, [])
 
   useEffect(() => {
@@ -171,7 +175,6 @@ export default function DebugMap() {
           { night ? "nighttime" : "daytime" }
         </div>
         <div className="custom-button" onClick={() => {
-          if (!map) { return }
           map.baseWeather = nextWeather(map.baseWeather)
           setBaseWeather(() => map.baseWeather)
           if (map.baseWeather === weatherType.Rain || map.baseWeather === weatherType.Snow) {
@@ -191,7 +194,6 @@ export default function DebugMap() {
           b: { map?.weatherName(baseWeather) }
         </div>
         <div className="custom-button" onClick={() => {
-          if (!map) { return }
           map.precip = nextWeather(precipType, true)
           setPrecipType(() => map.precip)
           if (map.currentWeather === weatherType.Rain || map.currentWeather === weatherType.Snow) {
@@ -206,14 +208,12 @@ export default function DebugMap() {
           p: { map?.weatherName(precipType) }
         </div>
         <div className="custom-button" onClick={() => {
-          if (!map) { return }
           map.precipChance = nextChance(precipChance)
           setPrecipChance(() => map.precipChance)
         }}>
           { `${precipChance}${precipChance > 0 ? "0" : ""}%` }
         </div>
         <div className="custom-button" onClick={() => {
-          if (!map) { return }
           if (map.currentWeather === map.baseWeather) {
             map.currentWeather = map.precip
           } else {
@@ -224,25 +224,40 @@ export default function DebugMap() {
           c: { map?.weatherName(currentWeather) }
         </div>
         <div className="custom-button" onClick={() => {
-          if (!map) { return }
           map.windSpeed = nextWind(wind, true)
           setWind(() => map.windSpeed)
         }}>
           { map?.windName }
         </div>
         <div className="custom-button" onClick={() => {
-          if (!map) { return }
           map.windDirection = nextDirection(map.windDirection, true)
           setWindDir(() => map.windDirection)
         }}>
           { windDir }
         </div>
         <div className="custom-button" onClick={() => {
-          if (!map) { return }
           map.windVariable = !map.windVariable
           setWindVariable(map.windVariable)
         }}>
           { windVariable ? "variable" : "steady" }
+        </div>
+        <div className="custom-button" onClick={() => {
+          map.game.initativePlayer = 1 - map.game.initativePlayer
+          setInitiativePlayer(map.game.initativePlayer ? "axis" : "allies")
+        }}>
+          initiative { initiativePlayer }
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (map.game.initiative < 7) { map.game.initiative += 1 }
+          setInitiative(map.game.initiative)
+        }}>
+          {initiative} +1
+        </div>
+        <div className="custom-button" onClick={() => {
+          if (map.game.initiative > -7) { map.game.initiative -= 1 }
+          setInitiative(map.game.initiative)
+        }}>
+          {initiative} -1
         </div>
       </div>
       <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
