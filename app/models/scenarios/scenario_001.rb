@@ -35,6 +35,10 @@ module Scenarios
       # TODO: documentation for map definitions
       def map_data
         {
+          start_weather: 0,
+          base_weather: 0,
+          precip: [0, 2],
+          wind: [0, 3, false],
           hexes:,
           layout: [15, 11, "x"],
           allied_edge: "r",

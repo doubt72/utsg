@@ -1,5 +1,5 @@
 import { counterRed, markerYellow } from "../utilities/graphics"
-import { weatherType, windType } from "./game"
+import { weatherType, windType } from "./map"
 
 const markerType = {
   TrackedHull: 0, WheeledHull: 1,

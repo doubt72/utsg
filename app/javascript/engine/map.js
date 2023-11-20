@@ -3,6 +3,9 @@ import { Counter } from "./counter"
 import { Hex } from "./hex"
 import { Marker, markerType } from "./marker"
 
+const windType = { Calm: 0, Breeze: 1, Moderate: 2, Strong: 3 }
+const weatherType = { Clear: 0, Fog: 1, Rain: 2, Snow: 3, Sand: 4, Dust: 5 }
+
 const Map = class {
   constructor (data, game) {
     this.loadConfig(data.layout)
@@ -336,4 +339,4 @@ const Map = class {
   }
 }
 
-export { Map }
+export { Map, windType, weatherType }

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Unit } from "../../engine/unit";
 import { Feature } from "../../engine/feature";
-import { Game, weatherType, windType } from "../../engine/game";
+import { Game } from "../../engine/game";
 import { mapDebugData } from "../../utilities/debugData";
 import GameMap from "./GameMap";
+import { weatherType, windType } from "../../engine/map";
 
 export default function DebugMap() {
   const { id } = useParams()

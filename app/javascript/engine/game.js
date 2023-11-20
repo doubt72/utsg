@@ -2,9 +2,6 @@ import { getAPI } from "../utilities/network"
 import { GameMove } from "./gameMove"
 import { Scenario } from "./scenario"
 
-const windType = { Calm: 0, Breeze: 1, Moderate: 2, Strong: 3 }
-const weatherType = { Clear: 0, Fog: 1, Rain: 2, Snow: 3, Sand: 4, Dust: 5 }
-
 const Game = class {
   constructor(data, refreshCallback) {
     // Immutable state only
@@ -82,4 +79,4 @@ const Game = class {
   }
 }
 
-export { Game, windType, weatherType }
+export { Game }

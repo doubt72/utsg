@@ -150,12 +150,16 @@ export default function WeatherDisplay(props) {
             type: markerType.Weather, subtype: props.map.currentWeather,
           }), props.map, true)
           setBaseWeather(<MapCounter counter={bc} ovCallback={() => {}} x={x.base} y={y.base} />)
+        } else {
+          setBaseWeather("")
         }
         if (props.map.precipChance > 0 && props.map.precipChance < 10) {
-          const pcc = new Counter(x.base, y.base, new Marker({
-            type: markerType.Weather, subtype: props.map.currentWeather,
+          const pcc = new Counter(x.precip, y.precip, new Marker({
+            type: markerType.Weather, subtype: props.map.precip, v: props.map.precipChance,
           }), props.map, true)
-          setPrecipitation(<MapCounter counter={pcc} ovCallback={() => {}} x={x.base} y={y.base} />)
+          setPrecipitation(<MapCounter counter={pcc} ovCallback={() => {}} x={x.precip} y={y.precip} />)
+        } else {
+          setPrecipitation("")
         }
       } else {
         const counters = []

@@ -49,12 +49,12 @@ export default function GameMap(props) {
     }))
     setWeather(() =>
       props.map?.preview ? "" :
-        <WeatherDisplay preview={false} map={props.map} game={props.map.game} hideCounters={props.hideCounters}
+        <WeatherDisplay preview={false} map={props.map} hideCounters={props.hideCounters}
                         x={(props.map?.xSize || 0) - 192} y={2} ovCallback={setOverlay} />
     )
     setInitiative(() =>
       props.map?.preview ? "" :
-        <InitiativeDisplay map={props.map} game={props.map.game} hideCounters={props.hideCounters}
+        <InitiativeDisplay map={props.map} hideCounters={props.hideCounters}
                            x={(props.map?.xSize || 0) - 192} y={278} ovCallback={setOverlay} />
     )
   }, [

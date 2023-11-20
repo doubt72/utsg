@@ -6,6 +6,7 @@ import { Scenario } from "../../engine/scenario";
 import GameMap from "./GameMap";
 import CounterDisplay from "./CounterDisplay";
 import { Feature } from "../../engine/feature";
+import WeatherDisplay from "./WeatherDisplay";
 
 export default function ScenarioSummary(props) {
   const scenario = new Scenario(props.data)
@@ -114,6 +115,12 @@ export default function ScenarioSummary(props) {
               }
             })}
           </div>
+        </div>
+        <div className="flex-fill align-end valign-bottom">
+          <svg className="map-svg" width={446} height={175} viewBox={"0 0 446 175"}>
+            <WeatherDisplay preview={true} map={map} hideCounters={false}
+                            x={2} y={25} ovCallback={() => {}} />
+          </svg>
         </div>
       </div>
     </div>
