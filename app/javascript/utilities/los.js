@@ -140,6 +140,44 @@ const Los = class {
     return Math.max(Math.abs(x00 - x11), Math.abs(hex0.y - hex1.y), Math.abs(z0 - z1))
   }
 
+  elevationHindrance(start, target, elevation, currDist, hindrance) {
+    if (start.elevation === target.elevation && elevation === start.elevation) { return hindrance }
+    if (elevation < start.elevation && elevation < target.elevation) { return 0 }
+    const dist = this.hexDistance(start, target)
+    const lo = start.elevation > target.elevation ? target.elevation : start.elevation
+    const hi = start.elevation > target.elevation ? start.elevation : target.elevation
+    return ((dist - currDist) / dist) < ((elevation-lo+1)/(hi-lo+1)) ? hindrance : 0
+  }
+
+  hexElevationHindrance(start, target, hex) {
+    if (hex.counterLos.hindrance > 0) { return hex.counterLos.hindrance }
+    if (hex.elevation > start.elevation && hex.elevation > target.elevation) { return 0 }
+    const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) :
+      this.hexDistance(hex, target)
+    return this.elevationHindrance(start, target, hex.elevation, currDist, hex.hindrance)
+  }
+
+  edgeElevationHindrance(start, target, hex, edge) {
+    const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) + 1 :
+      this.hexDistance(hex, target)
+    return this.elevationHindrance(start, target, hex.elevation, currDist, hex.edgeHindrance(edge))
+  }
+
+  alongEdgeElevationHindrance(start, target, hex, edge, initialEdge) {
+    const neighbor = hex.map.neighborAt(hex.x, hex.y, edge)
+    const counterHindrance = neighbor ? neighbor.counterLos.hindrance : 0
+    if (hex.counterLos.hindrance > 0 && counterHindrance > 0) {
+      return Math.min(hex.counterLos.hindrance, counterHindrance)
+    }
+    const elevation = Math.min(hex.elevation, neighbor?.elevation || hex.elevation)
+    if (elevation > start.elevation && elevation > target.elevation) { return true }
+    const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) :
+      this.hexDistance(hex, target)
+    return this.elevationHindrance(
+      start, target, hex.elevation, currDist, hex.alongEdgeHindrance(edge, initialEdge)
+    )
+  }
+
   elevationLos(start, target, elevation, currDist, los) {
     if (start.elevation === target.elevation && elevation === start.elevation) { return los }
     if (elevation < start.elevation && elevation < target.elevation) { return false }
@@ -168,7 +206,7 @@ const Los = class {
   alongEdgeElevationLos(start, target, hex, edge, initialEdge, finalEdge) {
     const neighbor = hex.map.neighborAt(hex.x, hex.y, edge)
     const counterLos = neighbor ? neighbor.counterLos.los : true
-    if (hex.counterLos.los && counterLos) { return true}
+    if (hex.counterLos.los && counterLos) { return true }
     const elevation = Math.min(hex.elevation, neighbor?.elevation || hex.elevation)
     if (elevation > start.elevation && elevation > target.elevation) { return true }
     const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) :
@@ -190,21 +228,21 @@ const Los = class {
       const curr = path[i]
       if (curr.edge) {
         if (curr.long) {
-          hindrance += curr.edgeHex.alongEdgeHindrance(curr.edge, i === 0)
+          hindrance += this.alongEdgeElevationHindrance(hex0, hex1, curr.edgeHex, curr.edge, i === 0)
           const los = this.alongEdgeElevationLos(
             hex0, hex1, curr.edgeHex, curr.edge, i === 0, i === path.length - 2
           )
           if (los) { return false }
         } else {
           if (i !== 0) {
-            hindrance += curr.edgeHex.edgeHindrance(curr.edge)
+            hindrance += this.edgeElevationHindrance(hex0, hex1, curr.edgeHex, curr.edge)
           }
           const los = this.edgeElevationLos(hex0, hex1, curr.edgeHex, curr.edge)
           const hex = path[i+1].hex
           if (los && (hex.x !== x1 || hex.y !== y1) && (i !== 0)) { return false }
         }
       } else {
-        hindrance += curr.hex.hindrance
+        hindrance += this.hexElevationHindrance(hex0, hex1, curr.hex)
         const block = this.hexElevationLos(hex0, hex1, curr.hex)
         if (block && (curr.hex.x !== x1 || curr.hex.y !== y1)) { return false }
       }
