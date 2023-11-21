@@ -30,7 +30,7 @@ const HexLos = class {
   }
 
   get hindrance() {
-    return this.hex.terrain.baseAttr.hindrance + this.hex.counterLos.hindrance
+    return this.hex.terrain.baseAttr.hindrance
   }
 
   edgeHindrance(dir) {
@@ -57,14 +57,6 @@ const HexLos = class {
     // If terrain crosses the edge, it may hinder (terrain considered to run off edge)
     if (this.hex.baseTerrain === (neighbor?.baseTerrain || this.hex.baseTerrain)) {
       rc += this.hex.terrain.baseAttr.hindrance
-    }
-    // If counters on both sides, apply effects
-    if (!this.hex.counterLos.los && !neighbor?.counterLOS?.los) {
-      rc += Math.min(this.hex.counterLos.hindrance, neighbor?.counterLos?.hindrance || 0)
-    } else if (this.hex.counterLos.los) {
-      rc += this.hex.counterLos.hindrance
-    } else {
-      rc += neighbor?.counterLos?.hindrance || 0
     }
     // Hinder if there are fences (or more) on both sides of the starting or ending edge
     // Leading corner -- ignore if initialEdge
@@ -107,7 +99,6 @@ const HexLos = class {
     if (this.hex.baseTerrain === (neighbor?.baseTerrain || this.hex.baseTerrain)) {
       if (this.hex.terrain.baseAttr.los) { return true }
     }
-    if (this.hex.counterLos.los && neighbor?.counterLos?.los) { return true }
     // Block if there is terrain on both sides of the starting or ending edge
     // Leading corner -- ignore if initialEdge
     const e1 = this.terrainCornerBorders(dir, -1)

@@ -150,11 +150,11 @@ const Los = class {
   }
 
   hexElevationHindrance(start, target, hex) {
-    if (hex.counterLos.hindrance > 0) { return hex.counterLos.hindrance }
-    if (hex.elevation > start.elevation && hex.elevation > target.elevation) { return 0 }
+    const ch = hex.counterLos.hindrance
+    if (hex.elevation > start.elevation && hex.elevation > target.elevation) { return 0 + ch }
     const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) :
       this.hexDistance(hex, target)
-    return this.elevationHindrance(start, target, hex.elevation, currDist, hex.hindrance)
+    return this.elevationHindrance(start, target, hex.elevation, currDist, hex.hindrance) + ch
   }
 
   edgeElevationHindrance(start, target, hex, edge) {
@@ -165,17 +165,24 @@ const Los = class {
 
   alongEdgeElevationHindrance(start, target, hex, edge, initialEdge) {
     const neighbor = hex.map.neighborAt(hex.x, hex.y, edge)
-    const counterHindrance = neighbor ? neighbor.counterLos.hindrance : 0
-    if (hex.counterLos.hindrance > 0 && counterHindrance > 0) {
-      return Math.min(hex.counterLos.hindrance, counterHindrance)
+    let ch = 0
+    // If counters on both sides, apply effects
+    if (!hex.counterLos.los && !neighbor?.counterLos?.los) {
+      ch = Math.min(hex.counterLos.hindrance, neighbor?.counterLos?.hindrance || 0)
+    } else if (hex.counterLos.los) {
+      ch = neighbor?.counterLos?.hindrance || 0
+    } else {
+      ch = hex.counterLos.hindrance
     }
-    const elevation = Math.min(hex.elevation, neighbor?.elevation || hex.elevation)
-    if (elevation > start.elevation && elevation > target.elevation) { return true }
+    const elevation = Math.min(
+      hex.elevation, neighbor?.elevation === undefined ? hex.elevation : neighbor.elevation
+    )
+    if (elevation > start.elevation && elevation > target.elevation) { return 0 }
     const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) :
       this.hexDistance(hex, target)
     return this.elevationHindrance(
       start, target, hex.elevation, currDist, hex.alongEdgeHindrance(edge, initialEdge)
-    )
+    ) + ch
   }
 
   elevationLos(start, target, elevation, currDist, los) {
@@ -207,12 +214,14 @@ const Los = class {
     const neighbor = hex.map.neighborAt(hex.x, hex.y, edge)
     const counterLos = neighbor ? neighbor.counterLos.los : true
     if (hex.counterLos.los && counterLos) { return true }
-    const elevation = Math.min(hex.elevation, neighbor?.elevation || hex.elevation)
+    const elevation = Math.min(
+      hex.elevation, neighbor?.elevation === undefined ? hex.elevation : neighbor.elevation
+    )
     if (elevation > start.elevation && elevation > target.elevation) { return true }
     const currDist = start.elevation > target.elevation ? this.hexDistance(start, hex) :
       this.hexDistance(hex, target)
     return this.elevationLos(
-      start, target, hex.elevation, currDist, hex.alongEdgeLos(edge, initialEdge, finalEdge)
+      start, target, elevation, currDist, hex.alongEdgeLos(edge, initialEdge, finalEdge)
     )
   }
 
