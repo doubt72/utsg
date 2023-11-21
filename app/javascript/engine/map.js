@@ -4,7 +4,7 @@ import { Hex } from "./hex"
 import { Marker, markerType } from "./marker"
 
 const windType = { Calm: 0, Breeze: 1, Moderate: 2, Strong: 3 }
-const weatherType = { Clear: 0, Fog: 1, Rain: 2, Snow: 3, Sand: 4, Dust: 5 }
+const weatherType = { Dry: 0, Fog: 1, Rain: 2, Snow: 3, Sand: 4, Dust: 5 }
 
 const Map = class {
   constructor (data, game) {
@@ -91,7 +91,7 @@ const Map = class {
 
   weatherName(w) {
     return {
-      0: "clear",
+      0: "dry",
       1: "fog",
       2: "rain",
       3: "snow",

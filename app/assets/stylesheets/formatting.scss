@@ -24,6 +24,7 @@
 .mr2em { margin-right: 2em; }
 
 .p1em { padding: 1em }
+.p05em { padding: 0.5em }
 
 .align-end {
   text-align: end;
@@ -51,6 +52,14 @@
 
 .flex-wrap {
   flex-wrap: wrap;
+}
+
+.corner-round {
+  border-radius: 0.5rem;
+}
+
+.edge-line {
+  border: 2px solid $gray-c;
 }
 
 .control-large {

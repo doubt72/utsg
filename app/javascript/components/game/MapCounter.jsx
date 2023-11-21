@@ -181,17 +181,19 @@ export default function MapCounter(props) {
 
   const marker = () => {
     const layout = props.counter.markerLayout
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style} />
-        {
-          layout.text.map((t, i) =>
-            <text key={i} x={t.x} y={t.y} fontSize={layout.size} textAnchor="middle"
-                  fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{t.value}</text>
-          )
-        }
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style} />
+          {
+            layout.text.map((t, i) =>
+              <text key={i} x={t.x} y={t.y} fontSize={layout.size} textAnchor="middle"
+                    fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{t.value}</text>
+            )
+          }
+        </g>
+      )
+    }
   }
 
   const windArrow = () => {

@@ -41,8 +41,8 @@ export default function DebugMap() {
           map_data: {
             layout: [mapDebugData[id].x, mapDebugData[id].y, "x"],
             base_terrain: "g",
-            start_weather: weatherType.Clear,
-            base_weather: weatherType.Clear,
+            start_weather: weatherType.Dry,
+            base_weather: weatherType.Dry,
             precip: [0, weatherType.Rain],
             wind: [windType.Calm, 1, false],
             hexes: mapDebugData[id].hexes,

@@ -55,7 +55,7 @@ export default function ScenarioSummary(props) {
 
   return (
     <div className="scenario-description">
-      <div className="scenario-description-row background-gray">
+      <div className="scenario-description-row background-gray corner-round">
         <div className="red mr05em monospace">{scenario.code}:</div>
         <div className="green flex-fill">
           {scenario.name} {scenario.status ?
@@ -75,18 +75,24 @@ export default function ScenarioSummary(props) {
         <div className="flex-fill align-end">Author: <span className="green">{scenario.author}</span></div>
       </div>
       <div className="flex mt1em">
-        <div className="p1em mr1em background-gray flex-fill">
+        <div className="p1em mr1em background-gray flex-fill corner-round">
           {scenario.description.map((p, i) => {
             return <p key={i}>{p}</p>
           })}
           {scenarioNote()}
         </div>
-        <div>
+        <div className="p05em corner-round edge-line">
           <GameMap map={map} scale={0.25} />
         </div>
       </div>
       <div className="flex mt1em">
-        <div>
+        <div className="mr1em">
+          <svg className="map-svg" width={446} height={172} viewBox={"0 0 446 172"}>
+            <WeatherDisplay preview={true} map={map} hideCounters={false}
+                            x={2} y={2} ovCallback={() => {}} />
+          </svg>
+        </div>
+        <div className="flex-fill">
           <div className="flex nowrap">
             {scenario.alliedUnitList.map((unit, i) => {
               if (unit.x !== undefined) {
@@ -115,12 +121,6 @@ export default function ScenarioSummary(props) {
               }
             })}
           </div>
-        </div>
-        <div className="flex-fill align-end valign-bottom">
-          <svg className="map-svg" width={446} height={175} viewBox={"0 0 446 175"}>
-            <WeatherDisplay preview={true} map={map} hideCounters={false}
-                            x={2} y={25} ovCallback={() => {}} />
-          </svg>
         </div>
       </div>
     </div>

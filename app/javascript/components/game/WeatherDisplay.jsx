@@ -25,10 +25,10 @@ export default function WeatherDisplay(props) {
       hex: props.x + (prev ? 356 : 95),
     })
     setY({
-      current: props.y + (prev ? 20 : 10),
-      base: props.y + 20,
-      precip: props.y + (prev ? 20 : 10),
-      hex: props.y + (prev ? 76 : 170),
+      current: props.y + (prev ? 60 : 10),
+      base: props.y + 60,
+      precip: props.y + (prev ? 60 : 10),
+      hex: props.y + (prev ? 80 : 170),
     })
   }, [props.x, props.y, props.preview])
 
@@ -95,11 +95,15 @@ export default function WeatherDisplay(props) {
 
       setBase(
         <g>
-          <path d={roundedRectangle(props.x, props.y, 442, 150)}
-                style={{ fill: props.map?.baseTerrainColor, stroke: "#777", strokeWidth: 2 }} />
-          <text x={props.x + 14} y={props.y + 140} fontSize={16} textAnchor="start"
+          <path d={roundedRectangle(props.x, props.y, 442, 169)}
+                style={{ fill: props.map?.baseTerrainColor, stroke: "#CCC", strokeWidth: 2 }} />
+          <text x={props.x + 14} y={props.y + 160} fontSize={16} textAnchor="start"
                   fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
             terrain: {props.map?.baseTerrainName} ({props.map?.night ? "night" : "daytime"})
+          </text>
+          <text x={props.x + 10} y={props.y + 20} fontSize={16} textAnchor="start"
+                  fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
+            environmental conditions
           </text>
           {current}
           {base}

@@ -46,7 +46,7 @@ const Marker = class {
     if (this.type === markerType.Tired || this.type === markerType.Activated ||
         this.type === markerType.Exhausted) { return "black" }
     if (this.type === markerType.Wind) {
-      if (this.subType === windType.Calm) { return "#black" }
+      if (this.subType === windType.Calm) { return "black" }
       return "white"
     }
     if (this.type === markerType.Weather) {
@@ -68,7 +68,7 @@ const Marker = class {
       if (this.subType === windType.Strong) { return "#448" }
     }
     if (this.type === markerType.Weather) {
-      if (this.subType === weatherType.Clear) { return "#DDF" }
+      if (this.subType === weatherType.Dry) { return "#DDF" }
       if (this.subType === weatherType.Fog) { return "#777" }
       if (this.subType === weatherType.Rain) { return "#44D" }
       if (this.subType === weatherType.Snow) { return "#DFDFDF" }
@@ -93,7 +93,7 @@ const Marker = class {
       if (this.subType === windType.Strong) { return ["strong"] }
     }
     if (this.type === markerType.Weather) {
-      if (this.subType === weatherType.Clear) { return ["clear"] }
+      if (this.subType === weatherType.Dry) { return ["dry"] }
       if (this.subType === weatherType.Fog) { return ["fog"] }
       if (this.subType === weatherType.Rain) { return ["rain"] }
       if (this.subType === weatherType.Snow) { return ["snow"] }
@@ -105,7 +105,7 @@ const Marker = class {
 
   get subText() {
     if (this.type === markerType.Weather) {
-      if (this.subType === weatherType.Clear) { return ["10% fe", "", ""] }
+      if (this.subType === weatherType.Dry) { return ["10% fe", "", ""] }
       if (this.subType === weatherType.Fog) { return ["30% fe", "", ""] }
       if (this.subType === weatherType.Sand) { return ["30% fe", "", ""] }
       if (this.subType === weatherType.Dust) { return ["", "+10% fs", ""] }
@@ -166,8 +166,8 @@ const Marker = class {
       }
       text.push(`- direction ${this.facing}`)
     } else if (this.type === markerType.Weather) {
-      if (this.subType === weatherType.Clear) {
-        text.push("clear")
+      if (this.subType === weatherType.Dry) {
+        text.push("dry")
       }
       if (this.subType === weatherType.Fog) {
         text.push("fog")
