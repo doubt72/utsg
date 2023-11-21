@@ -32,6 +32,7 @@ const Hex = class {
       this.buildingShape = data.st.sh
     }
 
+    this.offmap = data.offmap
     this.hexLos = new HexLos(this)
     this.hexBuilding = new HexBuilding(this)
   }

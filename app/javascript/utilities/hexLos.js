@@ -4,6 +4,9 @@ const HexLos = class {
   }
 
   get counterLos() {
+    if (this.hex.offmap) {
+      return { hindrance: 0, los: true }
+    }
     let hindrance = 0
     let los = false
     const counters = this.hex.map.counterDataAt(this.hex.x, this.hex.y)

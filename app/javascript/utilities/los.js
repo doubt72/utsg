@@ -93,7 +93,11 @@ const Los = class {
         hex = this.map.neighborAt(x, y, check.c)
         // Handle when traversing off edge of map; next hex will be on it
         if (!hex) {
-          hex = new Hex(x, y, {}, this.map)
+          if (check.c === 3) {
+            hex = new Hex(x + 1, y - 1, { offmap: true }, this.map)
+          } else if (check.c === 6) {
+            hex = new Hex(x - 1, y + 1, { offmap: true }, this.map)
+          }
         }
         const edge = check.c > 2 ? check.c - 2 : check.c + 4
         hexes.push({ edge: edge, edgeHex: hex, long: true })
