@@ -423,8 +423,8 @@ const mapDebugData = [
   {
     x: 15, y: 15,
     features: [
-      { u: testFeatureData.smoke, x: 14, y: 13 },
-      { u: testFeatureData.fire, x: 13, y: 14 },
+      { u: testFeatureData.smoke, x: 4, y: 14 },
+      { u: testFeatureData.fire, x: 5, y: 14 },
     ],
     units: [
       { u: testUnitData.ginf, x: 0, y: 0 },
@@ -471,6 +471,9 @@ const mapDebugData = [
       { u: testUnitData.ginf, x: 10, y: 12 },
       { u: testUnitData.ginf, x: 9, y: 11 },
       { u: testUnitData.ginf, x: 11, y: 13 },
+      { u: testUnitData.ginf, x: 14, y: 10 },
+      { u: testUnitData.ginf, x: 14, y: 9 },
+      { u: testUnitData.ginf, x: 14, y: 13 },
     ],
     hexes: [
       [
@@ -604,6 +607,10 @@ const mapDebugData = [
       ], [
         { t: "o" },
         { t: "o" },
+        { t: "o", b: "w", be: [5] },
+        { t: "o" },
+        { t: "o" },
+        { t: "o", b: "w", be: [3] },
         { t: "o" },
         { t: "o" },
         { t: "o" },
@@ -612,11 +619,7 @@ const mapDebugData = [
         { t: "o" },
         { t: "o" },
         { t: "o" },
-        { t: "o" },
-        { t: "o" },
-        { t: "o" },
-        { t: "o" },
-        { t: "o" },
+        { t: "o", d: 1, st: { sh: "s" } },
       ], [
         { t: "o" },
         { t: "o" },
@@ -648,7 +651,7 @@ const mapDebugData = [
         { t: "o", d: 1, st: { sh: "bc1" } },
         { t: "o", d: 1, st: { sh: "bc2" } },
         { t: "o" },
-        { t: "o", d: 1, st: { sh: "s" } },
+        { t: "o" },
       ], [
         { t: "o" },
         { t: "o", d: 1, st: { sh: "bs3" } },
@@ -680,7 +683,7 @@ const mapDebugData = [
         { t: "o", d: 1, st: { sh: "bs4" } },
         { t: "o", d: 4, st: { sh: "bs4" } },
         { t: "o" },
-        { t: "o" },
+        { t: "o", d: 1, st: { sh: "l" } },
       ], [
         { t: "o" },
         { t: "o", d: 4, st: { sh: "bs3" } },

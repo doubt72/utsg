@@ -42,7 +42,7 @@ const Hex = class {
 
   get los() { return this.hexLos.los }
   edgeLos(dir) { return this.hexLos.edgeLos(dir) }
-  alongEdgeLos(dir, initial = false) { return this.hexLos.alongEdgeLos(dir, initial) }
+  alongEdgeLos(dir, initial = false, final = false) { return this.hexLos.alongEdgeLos(dir, initial, final) }
   get counterLos() { return this.hexLos.counterLos }
 
   get hindrance() { return this.hexLos.hindrance }

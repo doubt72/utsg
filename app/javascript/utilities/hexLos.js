@@ -99,7 +99,7 @@ const HexLos = class {
     return this.terrainBorderEdge(dir).los
   }
 
-  alongEdgeLos(dir, initialEdge) {
+  alongEdgeLos(dir, initialEdge, finalEdge) {
     const neighbor = this.hex.map.neighborAt(this.hex.x, this.hex.y, dir)
     if (this.terrainBorderEdge(dir).los) { return true }
     // If terrain crosses the edge, it may block (terrain considered to run off edge)
@@ -109,11 +109,11 @@ const HexLos = class {
     if (this.hex.counterLos.los && neighbor?.counterLos?.los) { return true }
     // Block if there is terrain on both sides of the starting or ending edge
     // Leading corner -- ignore if initialEdge
-    const e2 = this.terrainCornerBorders(dir, 1)
-    if (e2.a.los && e2.b.los) { return true }
-    // Trailing corner
     const e1 = this.terrainCornerBorders(dir, -1)
     if (e1.a.los && e1.b.los && !initialEdge) { return true }
+    // Trailing corner -- ignore if finalEdge
+    const e2 = this.terrainCornerBorders(dir, 1)
+    if (e2.a.los && e2.b.los && !finalEdge) { return true }
     // Buildings block if they cross edge
     const opp = dir > 3 ? dir - 3 : dir + 3
     if (this.hex.building && this.hex.hexBuilding.buildingLosEdges.includes(dir)) { return true }
