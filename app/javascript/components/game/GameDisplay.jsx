@@ -10,9 +10,17 @@ import GameMap from "./GameMap";
 
 export default function GameDisplay() {
   const { id } = useParams()
+
   const [game, setGame] = useState({ k: {}, turn: 0, state: "" })
   const [map, setMap] = useState(null)
   const [controls, setControls] = useState(null)
+
+  const [scale, setScale] = useState(1)
+  const [coords, setCoords] = useState(true)
+  const [showStatusCounters, setShowStatusCounters] = useState(false)
+  const [hideCounters, setHideCounters] = useState(false)
+  const [showTerrain, setShowTerrain] = useState(false)
+  const [showLos, setShowLos] = useState(false)
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
@@ -51,6 +59,16 @@ export default function GameDisplay() {
            localStorage.getItem("username") === game.k.playerTwoName
   }
 
+  const hexSelection = (x, y) => {
+    const key = `${x}-${y}`
+    console.log(key)
+  }
+
+  const unitSelection = (x, y, counter) => {
+    const key = `x ${x}-${y}-${counter.trueIndex}`
+    console.log(key)
+  }
+
   return (
     <div className="main-page">
       <Header />
@@ -84,9 +102,36 @@ export default function GameDisplay() {
         </div>
       </div>
       {controls}
+      <div className="flex ml1em mr1em p05em">
+        <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
+          size -
+        </div>
+        <div className="custom-button" onClick={() => setScale(1)}>
+          0
+        </div>
+        <div className="custom-button" onClick={() => setScale(s => Math.min(s*1.25, 2.5))}>
+          + size
+        </div>
+        <div className="custom-button" onClick={() => setCoords(c => !c)}>
+          coords { coords ? "on" : "off" }
+        </div>
+        <div className="custom-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
+          show { showStatusCounters ? "counters" : "badges" }
+        </div>
+        <div className="custom-button" onClick={() => setShowLos(sl => !sl)}>
+          { showLos ? "show LOS" : "show stacks" }
+        </div>
+        <div className="custom-button" onClick={() => setHideCounters(sc => !sc)}>
+          { hideCounters ? "hide counters" : "show counters" }
+        </div>
+        <div className="custom-button" onClick={() => setShowTerrain(sc => !sc)}>
+          terrain info { showTerrain ? "on" : "off" }
+        </div>
+      </div>
       <div className="mt05em mb05em ml05em mr05em">
-        <GameMap map={map} scale={1} showCoords={true} showStatusCounters={true}
-                hideCounters={false} />
+        <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
+                showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
+                hexCallback={hexSelection} counterCallback={unitSelection} />
       </div>
     </div>
   )

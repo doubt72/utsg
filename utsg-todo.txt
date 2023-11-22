@@ -1,7 +1,4 @@
-- line of sight checking
-  - handle edge elevation
-  - handle hindrance elevation
-
+- tests!!!
 - hotseat games?
 - refactor CSS
 
