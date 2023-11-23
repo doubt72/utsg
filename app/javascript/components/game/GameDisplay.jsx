@@ -102,7 +102,8 @@ export default function GameDisplay() {
         </div>
       </div>
       {controls}
-      <div className="flex ml1em mr1em p05em">
+      <div className="flex mr05em p05em">
+        <div className="flex-fill"></div>
         <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
           size -
         </div>
@@ -116,19 +117,19 @@ export default function GameDisplay() {
           coords { coords ? "on" : "off" }
         </div>
         <div className="custom-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
-          show { showStatusCounters ? "counters" : "badges" }
+          status { showStatusCounters ? "counters" : "badges" }
         </div>
         <div className="custom-button" onClick={() => setShowLos(sl => !sl)}>
-          { showLos ? "show LOS" : "show stacks" }
+          { showLos ? "LOS" : "stack" } overlays
         </div>
         <div className="custom-button" onClick={() => setHideCounters(sc => !sc)}>
-          { hideCounters ? "hide counters" : "show counters" }
+          { hideCounters ? "show" : "hide" } counters
         </div>
         <div className="custom-button" onClick={() => setShowTerrain(sc => !sc)}>
           terrain info { showTerrain ? "on" : "off" }
         </div>
       </div>
-      <div className="mt05em mb05em ml05em mr05em">
+      <div className="mb05em ml05em mr05em">
         <GameMap map={map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
                 showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
                 hexCallback={hexSelection} counterCallback={unitSelection} />

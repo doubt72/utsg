@@ -393,8 +393,8 @@ const Counter = class {
       size = 15
       ty += 1
     } else if (this.target.type === markerType.Turn) {
-      size = 20
-      ty += 1.5
+      size = 22
+      ty -= 15
     }
     const text = this.target.displayText.map((t, i) => {
       return { x: x, y: ty + size*i, value: t }
@@ -413,18 +413,14 @@ const Counter = class {
 
   get turnLayout() {
     if (!this.target.isMarker || this.target.type !== markerType.Turn ) { return false }
-    const x = this.x + 40
-    const y1 = this.y + 16
-    const y2 = this.y + 64
-
     return [
       {
-        x: x, y: y1, r: 12,
-        style: { fill: `url(#nation-${this.target.value})`, strokeWidth: 1, stroke: "#000" }
+        x: this.x + 22, y: this.y + 50, r: 16,
+        style: { fill: `url(#nation-${this.target.value}-16)`, strokeWidth: 1, stroke: "#000" }
       },
       {
-        x: x, y: y2, r: 12,
-        style: { fill: `url(#nation-${this.target.value2})`, strokeWidth: 1, stroke: "#000" }
+        x: this.x + 58, y: this.y + 50, r: 16,
+        style: { fill: `url(#nation-${this.target.value2}-16)`, strokeWidth: 1, stroke: "#000" }
       }
     ]
   }

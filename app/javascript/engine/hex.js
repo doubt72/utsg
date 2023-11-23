@@ -467,7 +467,7 @@ const Hex = class {
     const x = this.xCorner(5, 20)
     const y = this.yCorner(5, 20)
     return {
-      x: x, y: y, r: 12, style: { fill: `url(#nation-${victory})`, strokeWidth: 1, stroke: "#000" },
+      x: x, y: y, r: 12, style: { fill: `url(#nation-${victory}-12)`, strokeWidth: 1, stroke: "#000" },
     }
   }
 

@@ -33,10 +33,11 @@ export default function DebugMap() {
   useEffect(() => {
     const game = new Game({
       id: 1, name: "test", owner: "one", player_one: "one", player_two: "two",
-      current_player: "one", metadata: { turn: 1 },
+      current_player: "one", metadata: { turn: 0 },
       scenario: {
         id: "999", name: "test", allies: ["ussr"], axis: ["ger"],
         metadata: {
+          turns: 8,
           first_move: 0,
           map_data: {
             layout: [mapDebugData[id].x, mapDebugData[id].y, "x"],

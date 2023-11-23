@@ -12,6 +12,7 @@ import WeatherDisplay from "./WeatherDisplay";
 import InitiativeDisplay from "./InitiativeDisplay";
 import ScoreDisplay from "./ScoreDisplay";
 import TurnDisplay from "./TurnDisplay";
+import Reinforcements from "./Controls/Reinforcements";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -26,6 +27,7 @@ export default function GameMap(props) {
   const [initiative, setInitiative] = useState("")
   const [score, setScore] = useState("")
   const [turn, setTurn] = useState("")
+  const [reinforcements, setReinforcements] = useState("")
 
   const svgRef = useRef()
 
@@ -64,12 +66,16 @@ export default function GameMap(props) {
     setInitiative(() =>
       props.map?.preview ? "" :
         <InitiativeDisplay map={props.map} ovCallback={setOverlay} hideCounters={props.hideCounters}
-                           x={(props.map?.xSize || 0) - 192} y={336 + props.map?.yStatusSize} />
+                           x={(props.map?.xSize || 0) - 192} y={342 + props.map?.yStatusSize} />
     )
     setTurn(() =>
       props.map?.preview ? "" :
         <TurnDisplay x={(props.map?.xSize || 0) - 102 - props.map?.game?.scenario?.turns * 90} y={2}
                      hideCounters={props.hideCounters} map={props.map} ovCallback={setOverlay}/>
+    )
+    setReinforcements(() =>
+      props.map?.preview ? "" :
+        <Reinforcements x={2} y={2} map={props.map} callback={() => {}}/>
     )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
@@ -148,6 +154,7 @@ export default function GameMap(props) {
       {initiative}
       {score}
       {turn}
+      {reinforcements}
       {counterDisplay}
       {overlayDisplay}
       {counterLosOverlay}

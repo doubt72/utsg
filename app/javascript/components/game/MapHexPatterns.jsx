@@ -23,12 +23,12 @@ export default function MapHexPatterns() {
     return path.join(" ")
   }
 
-  const nationalPattern = (nation) => {
+  const nationalPattern = (nation, size) => {
     return (
-      <pattern id={`nation-${nation}`} x="0" y="0" patternUnits="objectBoundingBox"
-               width="24" height="24">
-        <rect width="24" height="24" style={{ fill: nationalColors[nation] }}/>
-        <image x="0" y="0" height="24" width="24" xlinkHref={`/assets/units/${nation}.svg`}/>
+      <pattern id={`nation-${nation}-${size}`} x="0" y="0" patternUnits="objectBoundingBox"
+               width={size*2} height={size*2}>
+        <rect width={size*2} height={size*2} style={{ fill: nationalColors[nation] }}/>
+        <image x="0" y="0" height={size*2} width={size*2} xlinkHref={`/assets/units/${nation}.svg`}/>
       </pattern>
     )
   }
@@ -100,15 +100,24 @@ export default function MapHexPatterns() {
         </g>
         <use x="0" y="9" xlinkHref="#grain-component"></use>
       </pattern>
-      {nationalPattern("ger")}
-      {nationalPattern("ita")}
-      {nationalPattern("jap")}
-      {nationalPattern("fin")}
-      {nationalPattern("uk")}
-      {nationalPattern("usa")}
-      {nationalPattern("ussr")}
-      {nationalPattern("chi")}
-      {nationalPattern("fra")}
+      {nationalPattern("ger", 12)}
+      {nationalPattern("ita", 12)}
+      {nationalPattern("jap", 12)}
+      {nationalPattern("fin", 12)}
+      {nationalPattern("uk", 12)}
+      {nationalPattern("usa", 12)}
+      {nationalPattern("ussr", 12)}
+      {nationalPattern("chi", 12)}
+      {nationalPattern("fra", 12)}
+      {nationalPattern("ger", 16)}
+      {nationalPattern("ita", 16)}
+      {nationalPattern("jap", 16)}
+      {nationalPattern("fin", 16)}
+      {nationalPattern("uk", 16)}
+      {nationalPattern("usa", 16)}
+      {nationalPattern("ussr", 16)}
+      {nationalPattern("chi", 16)}
+      {nationalPattern("fra", 16)}
     </defs>
   )
 }

@@ -14,9 +14,9 @@ const Map = class {
 
     this.alliedEdge = data.allied_edge
     this.axisEdge = data.axis_edge
-    this.victoryHexes = data.victory_hexes.map(v => {
+    this.victoryHexes = data.victory_hexes?.map(v => {
       return { x: v[0], y: v[1], player: v[2] }
-    })
+    }) || []
     this.alliedSetupHexes = data.allied_setup
     this.axisSetupHexes = data.axis_setup
 
