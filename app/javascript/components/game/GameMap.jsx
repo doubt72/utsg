@@ -118,6 +118,10 @@ export default function GameMap(props) {
     }
   }, [overlay.show, overlay.x, overlay.y, overlay.counter])
 
+  useEffect(() => {
+    setOverlay({ show: false, x: -1, y: -1 })
+  }, [props.showLos])
+
   const hexSelection = (x, y) => {
     const key = `${x}-${y}`
     setHexDisplayOverlays(overlays =>
