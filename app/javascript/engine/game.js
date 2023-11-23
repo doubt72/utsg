@@ -23,6 +23,9 @@ const Game = class {
     this.currentPlayerName = data.current_player
     this.winner = data.winner
     this.turn = data.metadata.turn
+
+    this.playerOnePoints = 0
+    this.playerTwoPoints = 0
   }
 
   loadAllMoves() {
@@ -55,6 +58,32 @@ const Game = class {
         })
       })
     })
+  }
+
+  get playerOneNation() {
+    return this.scenario.alliedFactions[0]
+  }
+
+  get playerTwoNation() {
+    return this.scenario.axisFactions[0]
+  }
+
+  get playerOneScore() {
+    let victoryHexes = 0
+    for (let i = 0; i < this.scenario.map.victoryHexes.length; i++) {
+      const vh = this.scenario.map.victoryHexes[i]
+      if (vh.player === 1) { victoryHexes += 10 }
+    }
+    return this.playerOnePoints + victoryHexes
+  }
+
+  get playerTwoScore() {
+    let victoryHexes = 0
+    for (let i = 0; i < this.scenario.map.victoryHexes.length; i++) {
+      const vh = this.scenario.map.victoryHexes[i]
+      if (vh.player === 2) { victoryHexes += 10 }
+    }
+    return this.playerTwoPoints + victoryHexes
   }
 
   actionsAvailable(currentPlayer) {

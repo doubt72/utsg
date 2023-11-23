@@ -10,6 +10,7 @@ import MapLosOverlay from "./MapLosOverlay";
 import MapLosDebugOverlay from "./MapLosDebugOverlay";
 import WeatherDisplay from "./WeatherDisplay";
 import InitiativeDisplay from "./InitiativeDisplay";
+import ScoreDisplay from "./ScoreDisplay";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -22,6 +23,7 @@ export default function GameMap(props) {
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState("")
   const [weather, setWeather] = useState("")
   const [initiative, setInitiative] = useState("")
+  const [score, setScore] = useState("")
 
   const svgRef = useRef()
 
@@ -57,12 +59,17 @@ export default function GameMap(props) {
         <InitiativeDisplay map={props.map} hideCounters={props.hideCounters}
                            x={(props.map?.xSize || 0) - 192} y={278} ovCallback={setOverlay} />
     )
+    setScore(() =>
+      props.map?.preview ? "" :
+        <ScoreDisplay map={props.map} x={(props.map?.xSize || 0) - 192} y={1056}/>
+    )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
     props.showTerrain,
     props.map?.currentWeather, props.map?.baseWeather, props.map?.precip, props.map?.precipChance,
     props.map?.windSpeed, props.map?.windDirection, props.map?.windVariable,
     props.map?.game?.initiative, props.map?.game?.initiativePlayer,
+    props.map?.game?.playerOneScore, props.map?.game?.playerTwoScore,
     props.map?.baseTerrain, props.map?.night // debugging only, don't change in actual games
   ])
 
@@ -131,6 +138,7 @@ export default function GameMap(props) {
       {hexDisplayOverlays}
       {weather}
       {initiative}
+      {score}
       {counterDisplay}
       {overlayDisplay}
       {counterLosOverlay}

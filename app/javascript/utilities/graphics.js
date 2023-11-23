@@ -1,6 +1,14 @@
 const counterRed = "#E00"
 const markerYellow = "#EE0"
 
+// TODO: figure out a way to keep in sync with CSS
+const nationalColors = {
+  ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", alm: "#EA9",
+  ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
+  none: "white", fort: "white"
+}
+const clearColor = "rgba(0,0,0,0)"
+
 const xCorner = (map, x, i) => {
   return x - map.radius * Math.cos((i-0.5)/3 * Math.PI)
 }
@@ -38,6 +46,6 @@ const roundedRectangle = (x, y, width, height) => {
 }
 
 export {
-  counterRed, markerYellow,
+  counterRed, markerYellow, nationalColors, clearColor,
   baseHexCoords, baseCounterPath, roundedRectangle
 }

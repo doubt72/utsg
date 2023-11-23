@@ -461,6 +461,16 @@ const Hex = class {
     return this.borderDecorationStyles[this.border]
   }
 
+  get victoryLayout() {
+    const victory = this.map.victoryAt(this.x, this.y)
+    if (!victory) { return false }
+    const x = this.xCorner(5, 20)
+    const y = this.yCorner(5, 20)
+    return {
+      x: x, y: y, r: 12, style: { fill: `url(#nation-${victory})`, strokeWidth: 1, stroke: "#000" },
+    }
+  }
+
   get helpText() {
     let text = [this.terrain.name]
     if (this.elevation > 0) {

@@ -6,9 +6,7 @@ export default function MapHexOverlay(props) {
   const river = () => {
     if (!props.hex.river) { return "" }
     const path = props.hex.riverPath
-    return (
-      <path d={path} style={props.hex.riverStyle} />
-    )
+    return <path d={path} style={props.hex.riverStyle} />
   }
 
   const road = () => {
@@ -33,6 +31,12 @@ export default function MapHexOverlay(props) {
         <path d={path} style={props.hex.edgeDecorationStyle} />
       </g>
     )
+  }
+
+  const victory = () => {
+    const layout = props.hex.victoryLayout
+    if (!layout) { return "" }
+    return <circle cx={layout.x} cy={layout.y} r={layout.r} style={layout.style}/>
   }
 
   const night = (
@@ -86,6 +90,7 @@ export default function MapHexOverlay(props) {
       {outline}
       {props.hex.night ? night : ""}
       {edge()}
+      {victory()}
       {selected}
     </g>
   )

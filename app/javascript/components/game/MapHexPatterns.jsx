@@ -1,4 +1,5 @@
 import React from "react";
+import { nationalColors } from "../../utilities/graphics";
 
 export default function MapHexPatterns() {
   const clear = "rgba(0,0,0,0)"
@@ -20,6 +21,16 @@ export default function MapHexPatterns() {
       letter = "L"
     }
     return path.join(" ")
+  }
+
+  const nationalPattern = (nation) => {
+    return (
+      <pattern id={`nation-${nation}`} x="0" y="0" patternUnits="objectBoundingBox"
+               width="24" height="24">
+        <rect width="24" height="24" style={{ fill: nationalColors[nation] }}/>
+        <image x="0" y="0" height="24" width="24" xlinkHref={`/assets/units/${nation}.svg`}/>
+      </pattern>
+    )
   }
 
   return (
@@ -89,6 +100,12 @@ export default function MapHexPatterns() {
         </g>
         <use x="0" y="9" xlinkHref="#grain-component"></use>
       </pattern>
+      {nationalPattern("ger")}
+      {nationalPattern("ita")}
+      {nationalPattern("jap")}
+      {nationalPattern("uk")}
+      {nationalPattern("usa")}
+      {nationalPattern("ussr")}
     </defs>
   )
 }

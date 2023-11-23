@@ -1,4 +1,4 @@
-import { baseCounterPath, counterRed, markerYellow } from "../utilities/graphics"
+import { baseCounterPath, clearColor, counterRed, markerYellow, nationalColors } from "../utilities/graphics"
 import { markerType } from "./marker"
 
 const Counter = class {
@@ -35,18 +35,11 @@ const Counter = class {
     return { a: facing*60 - 150, x: this.x + 40, y: this.y + 40 }
   }
 
-  // TODO: extract this into utilities?
-  // TODO: figure out a way to keep in sync with CSS
-  nationalColors = {
-    ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", alm: "#EA9",
-    ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
-    none: "white", fort: "white"
-  }
-  clear = "rgba(0,0,0,0)"
+  clear = clearColor
   red = counterRed
   yellow = markerYellow
 
-  get color() { return this.nationalColors[this.target.nation] }
+  get color() { return nationalColors[this.target.nation] }
 
   get counterStyle() {
     if (this.target.selected) {

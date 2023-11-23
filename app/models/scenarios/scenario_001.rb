@@ -13,8 +13,8 @@ module Scenarios
       def generate
         {
           turns: 6,
-          first_setup: 1,
-          first_move: 2,
+          first_setup: 2,
+          first_move: 1,
           date: [1944, 6, 25],
           location: "Bogushevsk, Belarus",
           author: "The Establishment",
@@ -43,9 +43,12 @@ module Scenarios
           layout: [15, 11, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [[2, 2, 2], [3, 1, 2], [5, 3, 2], [7, 2, 2], [11, 5, 2]],
+          allied_setup: { s: [
+            [0, "*"], [1, "*"], [2, "*"], [3, "*"], [4, "*"], [5, "*"],
+            [6, "*"], [7, "*"], [8, "*"], [9, "*"], [10, "*"], [11, "*"],
+          ] },
+          axis_setup: { s: [[12, "*"], [13, "*"], [14, "*"]] },
         }
       end
 

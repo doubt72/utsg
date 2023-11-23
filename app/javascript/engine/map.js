@@ -14,7 +14,9 @@ const Map = class {
 
     this.alliedEdge = data.allied_edge
     this.axisEdge = data.axis_edge
-    this.victoryHexes = data.victory_hexes
+    this.victoryHexes = data.victory_hexes.map(v => {
+      return { x: v[0], y: v[1], player: v[2] }
+    })
     this.alliedSetupHexes = data.allied_setup
     this.axisSetupHexes = data.axis_setup
 
@@ -81,6 +83,21 @@ const Map = class {
   yOffset(y) { return this.radius * (y*1.5 + 1) + 1 }
   get xSize() { return this.narrow * (this.width + 0.5) + 2 + this.statusSize }
   get ySize() { return 1.5 * this.radius * (this.height + 0.3333) + 2 }
+
+  victoryAt(x, y) {
+    if (!this.game) { return false }
+    for (let i = 0; i < this.victoryHexes.length; i++) {
+      const v = this.victoryHexes[i]
+      if (v.x === x && v.y === y) {
+        if (v.player === 1) {
+          return this.game.playerOneNation
+        } else {
+          return this.game.playerTwoNation
+        }
+      }
+    }
+    return false
+  }
 
   hexAt(x, y) {
     if (x < 0 || y < 0 || x >= this.width || y >= this.height) {
