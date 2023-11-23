@@ -77,10 +77,6 @@ export default function WeatherDisplay(props) {
             fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
         precip
       </text>
-      <text x={x.precip + 40} y={y.precip + 46} fontSize={16} textAnchor="middle"
-            fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
-        none
-      </text>
     </g>
 
     if (prev) {
@@ -92,7 +88,6 @@ export default function WeatherDisplay(props) {
           base
         </text>
       </g>
-
       setBase(
         <g>
           <path d={roundedRectangle(props.x, props.y, 442, 169)}

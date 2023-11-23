@@ -103,9 +103,12 @@ export default function MapHexPatterns() {
       {nationalPattern("ger")}
       {nationalPattern("ita")}
       {nationalPattern("jap")}
+      {nationalPattern("fin")}
       {nationalPattern("uk")}
       {nationalPattern("usa")}
       {nationalPattern("ussr")}
+      {nationalPattern("chi")}
+      {nationalPattern("fra")}
     </defs>
   )
 }

@@ -12,7 +12,7 @@ module Scenarios
       # TODO: documentation for field descriptions
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_setup: 2,
           first_move: 1,
           date: [1944, 6, 25],
@@ -44,7 +44,7 @@ module Scenarios
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [[2, 2, 2], [3, 1, 2], [5, 3, 2], [7, 2, 2], [11, 5, 2]],
-          allied_setup: { s: [
+          allied_setup: { "0": [
             [0, "*"], [1, "*"], [2, "*"], [3, "*"], [4, "*"], [5, "*"],
             [6, "*"], [7, "*"], [8, "*"], [9, "*"], [10, "*"], [11, "*"],
           ] },
@@ -239,7 +239,7 @@ module Scenarios
       # TODO: documentation for unit definitions
       def allied_units
         {
-          s: { list: [
+          "0": { list: [
             :ussr_leader_6_2,
             :ussr_leader_4_1,
             [6, :ussr_rifle_s],
@@ -252,7 +252,7 @@ module Scenarios
 
       def axis_units
         {
-          s: { list: [
+          "0": { list: [
             :ger_leader_5_1,
             :ger_leader_4_1,
             [6, :ger_rifle_s],

@@ -7,10 +7,10 @@ module Utility
         # rubocop:disable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
         # -rubocop:disable Metric/PerceivedComplexity
         def lookup_data
-          features.merge(markers).merge(initiative).merge(hulls).merge(leaders)
-                  .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
-                  .merge(support_weapons).merge(infantry_guns).merge(at_guns)
-                  .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
+          markers.merge(features).merge(initiative).merge(hulls).merge(leaders)
+                 .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
+                 .merge(support_weapons).merge(infantry_guns).merge(at_guns)
+                 .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
         end
 
         def unit_definition(code)
@@ -31,40 +31,12 @@ module Utility
         end
 
         def all_factions
-          %w[ger ita jap uk usa ussr] # fra fin chi axm alm
-        end
-
-        def features
-          {
-            smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
-            blaze: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
-            wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
-            mines: { ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 } },
-            ap_mines: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
-            at_mines: {
-              ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { p: 1 },
-            },
-            foxhole: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },
-            pillbox: {
-              ft: 1, n: "Pillbox", t: "bunker", i: "bunker", o: { da: { f: 3, s: 3, r: 1 } },
-            },
-            bunker: {
-              ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 4, s: 4, r: 1 } },
-            },
-            strongpoint: {
-              ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 } },
-            },
-            sniper2: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 2 } },
-            sniper3: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 3 } },
-            sniper4: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 4 } },
-            sniper5: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 5 } },
-            sniper6: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 6 } },
-            sniper7: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 7 } },
-          }
+          %w[ger ita jap uk usa ussr fra fin chi axm alm]
         end
 
         def markers
           {
+            turn: { mk: 1, type: 12, v: "ussr", v2: "ger" },
             calm: { mk: 1, type: 9, subtype: 0 },
             calm_variable: { mk: 1, type: 9, subtype: 0, v: true },
             breezy: { mk: 1, type: 9, subtype: 1 },
@@ -97,6 +69,35 @@ module Utility
           }
         end
 
+        def features
+          {
+            smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
+            blaze: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
+            wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
+            mines: { ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 } },
+            ap_mines: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
+            at_mines: {
+              ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { p: 1 },
+            },
+            foxhole: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },
+            pillbox: {
+              ft: 1, n: "Pillbox", t: "bunker", i: "bunker", o: { da: { f: 3, s: 3, r: 1 } },
+            },
+            bunker: {
+              ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 4, s: 4, r: 1 } },
+            },
+            strongpoint: {
+              ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 } },
+            },
+            sniper2: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 2 } },
+            sniper3: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 3 } },
+            sniper4: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 4 } },
+            sniper5: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 5 } },
+            sniper6: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 6 } },
+            sniper7: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 7 } },
+          }
+        end
+
         def initiative
           lu = {}
           all_factions.each do |nation|
@@ -104,16 +105,16 @@ module Utility
 
             lu["#{nation}_initiative".to_sym] = { mk: 1, nation:, i: nation, type: 11 }
           end
-          # lu[:uk_sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
-          # lu[:axm_bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
-          # lu[:axm_hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
-          # lu[:axm_rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
-          # lu[:axm_slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
-          # lu[:alm_pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
-          # lu[:alm_gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
-          # lu[:alm_nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
-          # lu[:alm_bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
-          # lu[:alm_dut_initiative] = { mk: 1, nation: "alm", i: "dut", type: 11 }
+          lu[:uk_sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
+          lu[:axm_bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
+          lu[:axm_hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
+          lu[:axm_rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
+          lu[:axm_slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
+          lu[:alm_pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
+          lu[:alm_gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
+          lu[:alm_nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
+          lu[:alm_bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
+          lu[:alm_dut_initiative] = { mk: 1, nation: "alm", i: "dut", type: 11 }
           lu
         end
 

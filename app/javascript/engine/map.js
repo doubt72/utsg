@@ -73,16 +73,20 @@ const Map = class {
     })
   }
 
-  get statusSize() {
+  get yStatusSize() {
+    return this.preview ? 0 : 110
+  }
+
+  get xStatusSize() {
     return this.preview ? 0 : 200
   }
 
   get narrow() { return 115 }
   get radius() { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
   xOffset(x, y) { return this.narrow * (x + y%2/2 + 0.5) + 1 }
-  yOffset(y) { return this.radius * (y*1.5 + 1) + 1 }
-  get xSize() { return this.narrow * (this.width + 0.5) + 2 + this.statusSize }
-  get ySize() { return 1.5 * this.radius * (this.height + 0.3333) + 2 }
+  yOffset(y) { return this.radius * (y*1.5 + 1) + 1 + this.yStatusSize }
+  get xSize() { return this.narrow * (this.width + 0.5) + 2 + this.xStatusSize }
+  get ySize() { return 1.5 * this.radius * (this.height + 0.3333) + 2 + this.yStatusSize }
 
   victoryAt(x, y) {
     if (!this.game) { return false }

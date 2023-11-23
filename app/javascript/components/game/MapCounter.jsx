@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types"
 import { Counter } from "../../engine/counter";
+import MapHexPatterns from "./MapHexPatterns";
 
 export default function MapCounter(props) {
 
@@ -184,13 +185,25 @@ export default function MapCounter(props) {
     if (layout) {
       return (
         <g>
-          <path d={layout.path} style={layout.style} />
+          {layout.path ? <path d={layout.path} style={layout.style}/> : ""}
           {
             layout.text.map((t, i) =>
               <text key={i} x={t.x} y={t.y} fontSize={layout.size} textAnchor="middle"
                     fontFamily="'Courier Prime', monospace" style={layout.tStyle}>{t.value}</text>
             )
           }
+        </g>
+      )
+    }
+  }
+
+  const turnBadges = () => {
+    const layout = props.counter.turnLayout
+    if (layout) {
+      return (
+        <g>
+          <MapHexPatterns />
+          {layout.map((c, i) => <circle key={i} cx={c.x} cy={c.y} r={c.r} style={c.style}/>)}
         </g>
       )
     }
@@ -268,7 +281,7 @@ export default function MapCounter(props) {
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}
       {firepower()}{range()}{movement()}
-      {marker()}{windArrow()}{markerSub()}
+      {marker()}{windArrow()}{markerSub()}{turnBadges()}
       {status()}
       {overlay}
     </g>

@@ -5,7 +5,7 @@ const markerType = {
   TrackedHull: 0, WheeledHull: 1,
   Tired: 2, Pinned: 3, Activated: 4, Exhausted: 5,
   Jammed: 6, TurretJammed: 7, Immobilized: 8,
-  Wind: 9, Weather: 10, Initiative: 11,
+  Wind: 9, Weather: 10, Initiative: 11, Turn: 12,
 }
 
 const Marker = class {
@@ -14,6 +14,7 @@ const Marker = class {
     this.nationalIcon = data.i
     this.subType = data.subtype
     this.value = data.v
+    this.value2 = data.v2
     this.nation = data.nation || "none"
     this.facing = data.facing || 1
     this.rotates = data.rotates || false
@@ -44,7 +45,7 @@ const Marker = class {
 
   get textColor() {
     if (this.type === markerType.Tired || this.type === markerType.Activated ||
-        this.type === markerType.Exhausted) { return "black" }
+        this.type === markerType.Exhausted || this.type === markerType.Turn ) { return "black" }
     if (this.type === markerType.Wind) {
       if (this.subType === windType.Calm) { return "black" }
       return "white"
@@ -100,6 +101,7 @@ const Marker = class {
       if (this.subType === weatherType.Sand) { return ["sand"] }
       if (this.subType === weatherType.Dust) { return ["dust"] }
     }
+    if (this.type === markerType.Turn) { return ["turn"] }
     return []
   }
 
@@ -152,38 +154,18 @@ const Marker = class {
   get helpText() {
     const text = []
     if (this.type === markerType.Wind) {
-      if (this.subType === windType.Calm) {
-        text.push("wind: calm")
-      }
-      if (this.subType === windType.Breeze) {
-        text.push("wind: breeze")
-      }
-      if (this.subType === windType.Moderate) {
-        text.push("wind: moderate")
-      }
-      if (this.subType === windType.Strong) {
-        text.push("wind: strong")
-      }
+      if (this.subType === windType.Calm) { text.push("wind: calm") }
+      if (this.subType === windType.Breeze) { text.push("wind: breeze") }
+      if (this.subType === windType.Moderate) { text.push("wind: moderate") }
+      if (this.subType === windType.Strong) { text.push("wind: strong") }
       text.push(`- direction ${this.facing}`)
     } else if (this.type === markerType.Weather) {
-      if (this.subType === weatherType.Dry) {
-        text.push("dry")
-      }
-      if (this.subType === weatherType.Fog) {
-        text.push("fog")
-      }
-      if (this.subType === weatherType.Rain) {
-        text.push("rain")
-      }
-      if (this.subType === weatherType.Snow) {
-        text.push("snow")
-      }
-      if (this.subType === weatherType.Sand) {
-        text.push("sand")
-      }
-      if (this.subType === weatherType.Dust) {
-        text.push("dust")
-      }
+      if (this.subType === weatherType.Dry) { text.push("dry") }
+      if (this.subType === weatherType.Fog) { text.push("fog") }
+      if (this.subType === weatherType.Rain) { text.push("rain") }
+      if (this.subType === weatherType.Snow) { text.push("snow") }
+      if (this.subType === weatherType.Sand) { text.push("sand") }
+      if (this.subType === weatherType.Dust) { text.push("dust") }
     }
     const subText = this.subText
     const variable = []

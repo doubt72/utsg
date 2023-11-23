@@ -42,6 +42,9 @@ const Counter = class {
   get color() { return nationalColors[this.target.nation] }
 
   get counterStyle() {
+    if (this.target.isMarker && this.target.type === markerType.Turn) {
+      return { fill: "#DFDFDF", stroke: "black", strokeWidth: 1 }
+    }
     if (this.target.selected) {
       return { fill: this.color, stroke: this.red, strokeWidth: 4 }
     } else {
@@ -389,16 +392,41 @@ const Counter = class {
     if (this.target.type === markerType.Wind || this.target.type === markerType.Weather) {
       size = 15
       ty += 1
+    } else if (this.target.type === markerType.Turn) {
+      size = 20
+      ty += 1.5
     }
     const text = this.target.displayText.map((t, i) => {
       return { x: x, y: ty + size*i, value: t }
     })
-    return {
-      path: [
-        "M", x-39.5, y-14, "L", x+39.5, y-14, "L", x+39.5, y+14, "L", x-39.5, y+14, "L", x-39.5, y-14
-      ].join(" "),
-      style: { fill: this.target.color }, size: size, tStyle: { fill: this.target.textColor }, text: text
+    if (this.target.type === markerType.Turn) {
+      return { size: size, tStyle: { fill: this.target.textColor }, text: text }
+    } else {
+      return {
+        path: [
+          "M", x-39.5, y-14, "L", x+39.5, y-14, "L", x+39.5, y+14, "L", x-39.5, y+14, "L", x-39.5, y-14
+        ].join(" "),
+        style: { fill: this.target.color }, size: size, tStyle: { fill: this.target.textColor }, text: text
+      }
     }
+  }
+
+  get turnLayout() {
+    if (!this.target.isMarker || this.target.type !== markerType.Turn ) { return false }
+    const x = this.x + 40
+    const y1 = this.y + 16
+    const y2 = this.y + 64
+
+    return [
+      {
+        x: x, y: y1, r: 12,
+        style: { fill: `url(#nation-${this.target.value})`, strokeWidth: 1, stroke: "#000" }
+      },
+      {
+        x: x, y: y2, r: 12,
+        style: { fill: `url(#nation-${this.target.value2})`, strokeWidth: 1, stroke: "#000" }
+      }
+    ]
   }
 
   get windArrowLayout() {

@@ -20,7 +20,7 @@ const Game = class {
     this.state = data.state // TODO: make enum?
     this.playerOneName = data.player_one
     this.playerTwoName = data.player_two
-    this.currentPlayerName = data.current_player
+    this.currentPlayer = (data.current_player === data.player_one) ? 1 : 2
     this.winner = data.winner
     this.turn = data.metadata.turn
 

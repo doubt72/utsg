@@ -11,6 +11,7 @@ import MapLosDebugOverlay from "./MapLosDebugOverlay";
 import WeatherDisplay from "./WeatherDisplay";
 import InitiativeDisplay from "./InitiativeDisplay";
 import ScoreDisplay from "./ScoreDisplay";
+import TurnDisplay from "./TurnDisplay";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -24,6 +25,7 @@ export default function GameMap(props) {
   const [weather, setWeather] = useState("")
   const [initiative, setInitiative] = useState("")
   const [score, setScore] = useState("")
+  const [turn, setTurn] = useState("")
 
   const svgRef = useRef()
 
@@ -52,23 +54,29 @@ export default function GameMap(props) {
     setWeather(() =>
       props.map?.preview ? "" :
         <WeatherDisplay preview={false} map={props.map} hideCounters={props.hideCounters}
-                        x={(props.map?.xSize || 0) - 192} y={2} ovCallback={setOverlay} />
-    )
-    setInitiative(() =>
-      props.map?.preview ? "" :
-        <InitiativeDisplay map={props.map} hideCounters={props.hideCounters}
-                           x={(props.map?.xSize || 0) - 192} y={278} ovCallback={setOverlay} />
+                        x={(props.map?.xSize || 0) - 192} y={2 + props.map?.yStatusSize}
+                        ovCallback={setOverlay} />
     )
     setScore(() =>
       props.map?.preview ? "" :
-        <ScoreDisplay map={props.map} x={(props.map?.xSize || 0) - 192} y={1056}/>
+        <ScoreDisplay map={props.map} x={(props.map?.xSize || 0) - 192} y={280  + props.map?.yStatusSize}/>
+    )
+    setInitiative(() =>
+      props.map?.preview ? "" :
+        <InitiativeDisplay map={props.map} ovCallback={setOverlay} hideCounters={props.hideCounters}
+                           x={(props.map?.xSize || 0) - 192} y={336 + props.map?.yStatusSize} />
+    )
+    setTurn(() =>
+      props.map?.preview ? "" :
+        <TurnDisplay x={(props.map?.xSize || 0) - 102 - props.map?.game?.scenario?.turns * 90} y={2}
+                     hideCounters={props.hideCounters} map={props.map} ovCallback={setOverlay}/>
     )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
     props.showTerrain,
     props.map?.currentWeather, props.map?.baseWeather, props.map?.precip, props.map?.precipChance,
     props.map?.windSpeed, props.map?.windDirection, props.map?.windVariable,
-    props.map?.game?.initiative, props.map?.game?.initiativePlayer,
+    props.map?.game?.initiative, props.map?.game?.initiativePlayer, props.map?.game?.turn,
     props.map?.game?.playerOneScore, props.map?.game?.playerTwoScore,
     props.map?.baseTerrain, props.map?.night // debugging only, don't change in actual games
   ])
@@ -139,6 +147,7 @@ export default function GameMap(props) {
       {weather}
       {initiative}
       {score}
+      {turn}
       {counterDisplay}
       {overlayDisplay}
       {counterLosOverlay}
