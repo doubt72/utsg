@@ -238,8 +238,8 @@ const Map = class {
     let x1 = this.xOffset(x, y) - 80
     let y1 = this.yOffset(y) - 80
     if (absolute) {
-      x1 = x - 40
-      y1 = y - 40
+      x1 = x - 50
+      y1 = y - 50
     }
     let x2 = x1 + size*170 + 10
     let y2 = y1 + 170 + 10
