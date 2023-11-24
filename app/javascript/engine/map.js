@@ -235,8 +235,8 @@ const Map = class {
   }
 
   overlayLayout(x, y, size, absolute = false) {
-    let x1 = this.xOffset(x, y) - 80
-    let y1 = this.yOffset(y) - 80
+    let x1 = this.xOffset(x, y) - 90
+    let y1 = this.yOffset(y) - 90
     if (absolute) {
       x1 = x - 50
       y1 = y - 50
