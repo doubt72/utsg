@@ -13,6 +13,7 @@ import InitiativeDisplay from "./InitiativeDisplay";
 import ScoreDisplay from "./ScoreDisplay";
 import TurnDisplay from "./TurnDisplay";
 import Reinforcements from "../controls/Reinforcements";
+import SniperDisplay from "./SniperDisplay";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -27,6 +28,7 @@ export default function GameMap(props) {
   const [initiative, setInitiative] = useState("")
   const [score, setScore] = useState("")
   const [turn, setTurn] = useState("")
+  const [sniper, setSniper] = useState("")
   const [reinforcements, setReinforcements] = useState("")
 
   const svgRef = useRef()
@@ -73,6 +75,11 @@ export default function GameMap(props) {
         <TurnDisplay x={(props.map?.xSize || 0) - 102 - props.map?.game?.scenario?.turns * 90} y={2}
                      hideCounters={props.hideCounters} map={props.map} ovCallback={setOverlay}/>
     )
+    setSniper(() =>
+      props.map?.preview || (!props.map?.game?.allied_sniper && !props.map?.game?.axis_sniper) ? "" :
+        <SniperDisplay x={260} y={2} hideCounters={props.hideCounters} map={props.map}
+                       ovCallback={setOverlay}/>
+    )
     setReinforcements(() =>
       props.map?.preview ? "" :
         <Reinforcements x={2} y={2} map={props.map} callback={() => {}}/>
@@ -116,7 +123,7 @@ export default function GameMap(props) {
                            selectionCallback={unitSelection} />
       )
     }
-  }, [overlay.show, overlay.x, overlay.y, overlay.counter])
+  }, [overlay.show, overlay.x, overlay.y, overlay.counters])
 
   useEffect(() => {
     setOverlay({ show: false, x: -1, y: -1 })
@@ -158,6 +165,7 @@ export default function GameMap(props) {
       {initiative}
       {score}
       {turn}
+      {sniper}
       {reinforcements}
       {counterDisplay}
       {overlayDisplay}

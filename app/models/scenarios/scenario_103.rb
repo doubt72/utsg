@@ -393,7 +393,7 @@ module Scenarios
 
       def allied_units
         {
-          s: { list: [
+          "0": { list: [
             :uk_leader_5_2,
             :uk_leader_4_1,
             [8, :uk_line_s],
@@ -409,7 +409,7 @@ module Scenarios
 
       def axis_units
         {
-          s: { list: [
+          "0": { list: [
             :ita_leader_5_1,
             :ita_leader_3_1,
             [7, :ita_bersaglieri_s],

@@ -10,8 +10,7 @@ const Scenario = class {
 
     this.alliedFactions = data.allies
     this.axisFactions = data.axis
-    this.alliedReinforcements = data.metadata.allied_units
-    this.axisReinforcements = data.metadata.axis_units
+    this.setUnits(data.metadata, game)
 
     this.date = data.metadata.date
     this.location = data.metadata.location
@@ -26,6 +25,24 @@ const Scenario = class {
     this.firstSetup = data.metadata.first_setup
 
     this.map = new Map(data.metadata.map_data, game)
+  }
+
+  setUnits(data, game) {
+    if (game && data.allied_units && data.axis_units) {
+      data.allied_units[0].list = data.allied_units[0].list.filter(u => {
+        if (u.n === "Sniper") { game.allied_sniper = u }
+        return u.n !== "Sniper"
+      })
+      data.axis_units[0].list = data.axis_units[0].list.filter(u => {
+        if (u.n === "Sniper") { game.axis_sniper = u }
+        return u.n !== "Sniper"
+      })
+      this.alliedReinforcements = data.allied_units
+      this.axisReinforcements = data.axis_units
+    } else {
+      this.alliedReinforcements = data.allied_units
+      this.axisReinforcements = data.axis_units
+    }
   }
 
   get displayDate() {

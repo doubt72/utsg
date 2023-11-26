@@ -72,6 +72,9 @@ const Feature = class {
       text.push("cover:")
       text.push(`- front ${this.coverSides[0]} / side ${this.coverSides[1]} / rear ${this.coverSides[2]}`)
     }
+    if (this.sniperRoll) {
+      text.push(`trigger roll ${this.sniperRoll}`)
+    }
     if (this.baseFirepower === "½") {
       text.push("halves firepower")
     } else if (this.baseFirepower) {

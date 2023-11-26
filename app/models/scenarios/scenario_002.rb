@@ -11,7 +11,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 8,
           first_setup: 1,
           first_move: 2,
           date: [1942, 8, 23],
@@ -42,9 +42,16 @@ module Scenarios
           layout: [15, 11, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [
+            [3, 1, 2], [5, 8, 1], [7, 5, 1], [7, 1, 1], [10, 1, 1], [10, 5, 1], [10, 9, 1],
+          ],
+          allied_setup: { s: [
+            [5, "*"], [6, "*"], [7, "*"], [8, "*"], [9, "*"],
+            [10, "*"], [11, "*"], [12, "*"], [13, "*"], [14, "*"],
+          ] },
+          axis_setup: { "0": [
+            [0, "*"], [1, "*"], [2, "*"], [3, "*"], [4, "*"],
+          ] },
           base_terrain: "u",
         }
       end
@@ -233,7 +240,7 @@ module Scenarios
 
       def allied_units
         {
-          s: { list: [
+          "0": { list: [
             :ussr_leader_5_1,
             :ussr_leader_4_1,
             :ussr_leader_3_1,
@@ -248,7 +255,7 @@ module Scenarios
 
       def axis_units
         {
-          s: { list: [
+          "0": { list: [
             :ger_leader_6_2,
             [2, :ger_leader_5_1],
             [2, :ger_pionier_s],

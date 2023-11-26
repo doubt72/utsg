@@ -394,7 +394,7 @@ module Scenarios
 
       def allied_units
         {
-          s: { list: [
+          "0": { list: [
             :ussr_leader_6_1,
             :ussr_leader_4_1,
             [3, :ussr_rifle_s],
@@ -410,7 +410,7 @@ module Scenarios
 
       def axis_units
         {
-          s: { list: [
+          "0": { list: [
             :ger_leader_6_2,
             :ger_leader_4_1,
             [5, :ger_rifle_s],

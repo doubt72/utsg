@@ -231,7 +231,7 @@ module Scenarios
 
       def allied_units
         {
-          s: { list: [
+          "0": { list: [
             :usa_leader_6_2,
             :usa_leader_5_1,
             [6, :usa_paratroop_s],
@@ -242,7 +242,7 @@ module Scenarios
 
       def axis_units
         {
-          s: { list: [
+          "0": { list: [
             :ger_leader_4_1,
             :ger_leader_3_1,
             [10, :ger_volksgrenadier_s],

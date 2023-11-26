@@ -10,6 +10,20 @@ export default function InitiativeDisplay(props) {
   const [base, setBase] = useState("")
   const [initiative, setInitiative] = useState("")
 
+  const nationOne = () => {
+    const n = props.map.game.playerOneNation
+    return {
+      fill: `url(#nation-${n}-16)`, strokeWidth: 1, stroke: "#000"
+    }
+  }
+
+  const nationTwo = () => {
+    const n = props.map.game.playerTwoNation
+    return {
+      fill: `url(#nation-${n}-16)`, strokeWidth: 1, stroke: "#000"
+    }
+  }
+
   const xOffset = (i) => {
     if (i < 0) { return props.x + 10 }
     if (i > 0) { return props.x + 100 }
@@ -27,7 +41,7 @@ export default function InitiativeDisplay(props) {
   useEffect(() => {
     setBase(
       <g>
-        <path d={roundedRectangle(props.x, props.y, 190, 768)}
+        <path d={roundedRectangle(props.x, props.y, 190, 752)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         <text x={props.x + 10} y={props.y + 20} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
@@ -50,14 +64,8 @@ export default function InitiativeDisplay(props) {
             }
           )
         }
-        <text x={props.x + 10} y={props.y + 758} fontSize={16} textAnchor="start"
-                fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-          axis
-        </text>
-        <text x={props.x + 180} y={props.y + 758} fontSize={16} textAnchor="end"
-                fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-          allied
-        </text>
+        <circle cx={props.x + 26} cy={props.y + 96} r={16} style={nationTwo()}/>
+        <circle cx={props.x + 164} cy={props.y + 96} r={16} style={nationOne()}/>
       </g>
     )
   }, [props.x, props.y])

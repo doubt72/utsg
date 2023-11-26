@@ -1,3 +1,7 @@
+- Wheeled units 0.75x
+- Sniper display
+- Place units
+
 - tests!!!
 - hotseat games?
 - refactor CSS
