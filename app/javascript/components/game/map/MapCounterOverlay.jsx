@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Map } from "../../engine/map";
-import { Counter } from "../../engine/counter";
 import MapCounter from "./MapCounter";
 import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
+import { Map } from "../../../engine/map";
+import { Counter } from "../../../engine/counter";
 
 export default function MapCounterOverlay(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")

@@ -5,8 +5,8 @@ import { Game } from "../../engine/game";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
 import MoveDisplay from "./MoveDisplay";
-import GameControls from "./GameControls";
-import GameMap from "./GameMap";
+import GameControls from "./Controls/GameControls";
+import GameMap from "./map/GameMap";
 
 export default function GameDisplay() {
   const { id } = useParams()

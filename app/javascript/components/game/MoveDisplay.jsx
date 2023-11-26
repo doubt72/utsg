@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import PropTypes from "prop-types"
-import { getAPI } from "../../utilities/network";
 import { GameMove } from "../../engine/gameMove";
+import { getAPI } from "../../utilities/network";
 
 export default function MoveDisplay(props) {
   const [moves, setMoves] = useState([])

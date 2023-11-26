@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types"
-import { Counter } from "../../engine/counter";
 import MapHexPatterns from "./MapHexPatterns";
+import { Counter } from "../../../engine/counter";
 
 export default function MapCounter(props) {
 

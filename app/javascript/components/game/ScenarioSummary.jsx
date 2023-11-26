@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types"
-import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
+import CounterDisplay from "./CounterDisplay";
+import GameMap from "./map/GameMap";
+import WeatherDisplay from "./map/WeatherDisplay";
 import { Unit } from "../../engine/unit";
 import { Scenario } from "../../engine/scenario";
-import GameMap from "./GameMap";
-import CounterDisplay from "./CounterDisplay";
 import { Feature } from "../../engine/feature";
-import WeatherDisplay from "./WeatherDisplay";
+import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
 
 export default function ScenarioSummary(props) {
   const scenario = new Scenario(props.data)

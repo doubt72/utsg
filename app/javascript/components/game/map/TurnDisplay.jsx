@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Map } from "../../engine/map";
-import { baseCounterPath, roundedRectangle } from "../../utilities/graphics";
 import MapCounter from "./MapCounter";
-import { Counter } from "../../engine/counter";
-import { Marker, markerType } from "../../engine/marker";
+import { baseCounterPath, roundedRectangle } from "../../../utilities/graphics";
+import { Map } from "../../../engine/map";
+import { Counter } from "../../../engine/counter";
+import { Marker, markerType } from "../../../engine/marker";
 
 export default function TurnDisplay(props) {
   const [base, setBase] = useState("")

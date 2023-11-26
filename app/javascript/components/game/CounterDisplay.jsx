@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types"
-import MapCounter from "./MapCounter";
+import MapCounter from "./map/MapCounter";
 import { Counter } from "../../engine/counter";
 import { Unit } from "../../engine/unit";
 import { Feature } from "../../engine/feature";

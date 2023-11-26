@@ -1,5 +1,5 @@
 import React from "react";
-import { nationalColors } from "../../utilities/graphics";
+import { nationalColors } from "../../../utilities/graphics";
 
 export default function MapHexPatterns() {
   const clear = "rgba(0,0,0,0)"

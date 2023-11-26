@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Map } from "../../engine/map";
-import { Los } from "../../utilities/los";
+import { Los } from "../../../utilities/los";
+import { Map } from "../../../engine/map";
 
 export default function MapLosDebugOverlay(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")

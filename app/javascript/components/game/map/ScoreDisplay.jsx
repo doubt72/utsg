@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Map } from "../../engine/map";
-import { roundedRectangle } from "../../utilities/graphics";
+import { roundedRectangle } from "../../../utilities/graphics";
+import { Map } from "../../../engine/map";
 
 export default function ScoreDisplay(props) {
   const [base, setBase] = useState("")

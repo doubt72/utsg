@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import { Map } from "../../engine/map";
+import { Map } from "../../../engine/map";
 import MapHexPatterns from "./MapHexPatterns";
 import MapHex from "./MapHex";
 import MapHexOverlay from "./MapHexOverlay";
@@ -12,7 +12,7 @@ import WeatherDisplay from "./WeatherDisplay";
 import InitiativeDisplay from "./InitiativeDisplay";
 import ScoreDisplay from "./ScoreDisplay";
 import TurnDisplay from "./TurnDisplay";
-import Reinforcements from "./Controls/Reinforcements";
+import Reinforcements from "../controls/Reinforcements";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])

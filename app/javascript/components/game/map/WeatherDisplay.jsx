@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import MapCounter from "./MapCounter";
-import { Counter } from "../../engine/counter";
-import { Marker, markerType } from "../../engine/marker";
-import { Map } from "../../engine/map";
-import { baseCounterPath, baseHexCoords, roundedRectangle } from "../../utilities/graphics";
+import { baseCounterPath, baseHexCoords, roundedRectangle } from "../../../utilities/graphics";
+import { Counter } from "../../../engine/counter";
+import { Marker, markerType } from "../../../engine/marker";
+import { Map } from "../../../engine/map";
 
 export default function WeatherDisplay(props) {
   const [base, setBase] = useState("")

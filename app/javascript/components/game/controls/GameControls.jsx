@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types"
-import { Game } from "../../engine/game";
-import JoinButton from "./Controls/JoinButton";
-import StartButton from "./Controls/StartButton";
-import LeaveButton from "./Controls/LeaveButton";
+import { Game } from "../../../engine/game";
+import JoinButton from "./JoinButton";
+import StartButton from "./StartButton";
+import LeaveButton from "./LeaveButton";
 
 export default function GameControls(props) {
   const [controls, setControls] = useState([])

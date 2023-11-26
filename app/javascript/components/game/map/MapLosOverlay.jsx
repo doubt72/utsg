@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Map } from "../../engine/map";
+import { Map } from "../../../engine/map";
 
 export default function MapLosOverlay(props) {
   const [overlayDisplay, setOverlayDisplay] = useState("")

@@ -4,7 +4,7 @@ import { Unit } from "../../engine/unit";
 import { Feature } from "../../engine/feature";
 import { Game } from "../../engine/game";
 import { mapDebugData } from "../../utilities/debugData";
-import GameMap from "./GameMap";
+import GameMap from "./map/GameMap";
 import { weatherType, windType } from "../../engine/map";
 
 export default function DebugMap() {
