@@ -14,6 +14,7 @@ import ScoreDisplay from "./ScoreDisplay";
 import TurnDisplay from "./TurnDisplay";
 import Reinforcements from "../controls/Reinforcements";
 import SniperDisplay from "./SniperDisplay";
+import ReinforcementPanel from "../Controls/ReinforcementPanel";
 
 export default function GameMap(props) {
   const [hexDisplay, setHexDisplay] = useState([])
@@ -24,6 +25,8 @@ export default function GameMap(props) {
   const [updateUnitSelected, setUpdateUnitSelected] = useState(0)
   const [counterLosOverlay, setCounterLosOverlay] = useState("")
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState("")
+  const [reinforcementsOverlay, setReinforcementsOverlay] = useState("")
+
   const [weather, setWeather] = useState("")
   const [initiative, setInitiative] = useState("")
   const [score, setScore] = useState("")
@@ -82,7 +85,7 @@ export default function GameMap(props) {
     )
     setReinforcements(() =>
       props.map?.preview ? "" :
-        <Reinforcements x={2} y={2} map={props.map} callback={() => {}}/>
+        <Reinforcements x={2} y={2} map={props.map} callback={showReinforcements}/>
     )
   }, [
     props.map, props.showCoords, props.showStatusCounters, props.hideCounters, updateUnitSelected,
@@ -154,6 +157,13 @@ export default function GameMap(props) {
     props.counterCallback(x, y, counter)
   }
 
+  const showReinforcements = (x, y, player) => {
+    setReinforcementsOverlay(
+      <ReinforcementPanel map={props.map} x={x-10} y={y-10} player={player} selCallback={() => {}}
+                          leaveCallback={() => setReinforcementsOverlay("")}/>
+    )
+  }
+
   return (
     <svg ref={svgRef} className="map-svg" width={(props.map?.xSize || 1) * (props.scale || 1)}
          height={(props.map?.ySize || 1) * (props.scale || 1)}
@@ -171,6 +181,7 @@ export default function GameMap(props) {
       {overlayDisplay}
       {counterLosOverlay}
       {terrainInfoOverlay}
+      {reinforcementsOverlay}
     </svg>
   )
 }

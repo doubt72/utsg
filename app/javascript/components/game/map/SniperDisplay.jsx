@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import MapCounter from "./MapCounter";
 import { Map } from "../../../engine/map";
-import { baseCounterPath, roundedRectangle } from "../../../utilities/graphics";
 import { Counter } from "../../../engine/counter";
 import { Feature } from "../../../engine/feature";
+import { baseCounterPath, roundedRectangle } from "../../../utilities/graphics";
 
 export default function SniperDisplay(props) {
   const [base, setBase] = useState("")

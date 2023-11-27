@@ -6,22 +6,24 @@ import { baseCounterPath, nationalColors, roundedRectangle } from "../../../util
 export default function Reinforcements(props) {
   const [base, setBase] = useState("")
 
-  const nation = (x, y, n) => {
+  const nation = (x, y, n, player) => {
     return (
       <g>
         <path d={baseCounterPath(x, y)}
               style={{ fill: nationalColors[n], stroke: "black", strokeWidth: 1 }}/>
-        <image width={80} height={80} x={x} y={y} href={`/assets/units/${n}.svg`}/> 
+        <image width={80} height={80} x={x} y={y} href={`/assets/units/${n}.svg`}/>
+        <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0)" }}
+              onMouseEnter={() => props.callback(x, y, player)}/>
       </g>
     )
   }
 
   const nationOne = (x, y) => {
-    return nation(x, y, props.map.game.playerOneNation)
+    return nation(x, y, props.map.game.playerOneNation, 1)
   }
 
   const nationTwo = (x, y) => {
-    return nation(x, y, props.map.game.playerTwoNation)
+    return nation(x, y, props.map.game.playerTwoNation, 2)
   }
 
   useEffect(() => {

@@ -16,7 +16,7 @@ module Utility
         def unit_definition(code)
           lookup = lookup_data
           if code.is_a? Array
-            lookup[code[1]]&.merge(id: code)&.merge(x: code[0]) || { not_found: true, code: }
+            lookup[code[1]]&.merge(id: code[1])&.merge(x: code[0]) || { not_found: true, code: }
           else
             lookup[code]&.merge(id: code) || { not_found: true, code: }
           end

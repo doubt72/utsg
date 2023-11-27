@@ -1,3 +1,4 @@
+import { roundedRectangle } from "../utilities/graphics"
 import { Los } from "../utilities/los"
 import { Counter } from "./counter"
 import { Hex } from "./hex"
@@ -263,16 +264,9 @@ const Map = class {
       y1 += diff
       y2 += diff
     }
-    const corner = 10
-    const path = [
-      "M", x1, y2-corner, "L", x1, y1+corner,
-      "A", corner, corner, 0, 0, 1, x1+corner, y1, "L", x2-corner, y1,
-      "A", corner, corner, 0, 0, 1, x2, y1+corner, "L", x2, y2-corner,
-      "A", corner, corner, 0, 0, 1, x2-corner, y2, "L", x1+corner, y2,
-      "A", corner, corner, 0, 0, 1, x1, y2-corner, "L", x1, y1+corner,
-    ].join(" ")
     return {
-      path: path, style: { fill: "rgba(0,0,0,0.4" }, x: x1 + 5, y: y1 + 7.5, y2: y2
+      path: roundedRectangle(x1, y1, x2 - x1, y2 - y1), x: x1 + 5, y: y1 + 7.5, y2: y2,
+      style: { fill: "rgba(0,0,0,0.4" },
     }
   }
 
