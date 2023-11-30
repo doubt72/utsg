@@ -22,6 +22,7 @@ export default function ReinforcementPanel(props) {
     const turn = props.map.game.turn
     const all = props.player === 1 ? props.map.game.scenario.alliedReinforcements :
       props.map.game.scenario.axisReinforcements
+    if (!all) { return false }
     const rc = {}
     for (const [key, value] of Object.entries(all)) {
       if (key <= turn) {
@@ -53,9 +54,30 @@ export default function ReinforcementPanel(props) {
 
   useEffect(() => {
     const units = allUnits()
+    if (!units) {
+      setBase(
+        <g onMouseLeave={props.leaveCallback}>
+          <path d={roundedRectangle(props.x, props.y, 170, 100)}
+                style={{ fill: "#555", stroke: "#D5D5D5", strokeWidth: 1 }}/>
+          <text x={props.x + 10} y={props.y + 22} fontSize={16} textAnchor="start"
+                fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
+            available units
+          </text>
+          <text x={props.x + 10} y={props.y + 52} fontSize={16} textAnchor="start"
+                fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
+            all units
+          </text>
+          <text x={props.x + 10} y={props.y + 70} fontSize={16} textAnchor="start"
+                fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
+            deployed
+          </text>
+        </g>
+      )
+      return
+    }
     setBase(
       <g onMouseLeave={props.leaveCallback}>
-        <path d={roundedRectangle(props.x, props.y, maxWidth(units), Object.keys(units).length * 106 + 36)}
+        <path d={roundedRectangle(props.x, props.y, maxWidth(units), Object.keys(units).length * 106 + 44)}
               style={{ fill: "#555", stroke: "#D5D5D5", strokeWidth: 1 }}/>
         <text x={props.x + 10} y={props.y + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
@@ -64,14 +86,14 @@ export default function ReinforcementPanel(props) {
         {
           Object.entries(units).map((pair, i) => 
             <g key={i}>
-              <text x={props.x + 10} y={props.y + 92 + 106*i} fontSize={16} textAnchor="start"
+              <text x={props.x + 10} y={props.y + 100 + 106*i} fontSize={16} textAnchor="start"
                     fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
                 {pair[0] > 0 ? `turn ${pair[0]}` : "setup"}
               </text>
               {
                 pair[1].map((u, j) => {
                   const x = props.x + 80 + 90*j
-                  const y = props.y + 44 + 106*i
+                  const y = props.y + 52 + 106*i
                   const counter = new Counter(x, y+5, u.u, null, true)
                   return (
                     <g key={j}>
