@@ -1,4 +1,3 @@
-- Wheeled units 0.75x
 - Place units
 
 - tests!!! (jest?)
