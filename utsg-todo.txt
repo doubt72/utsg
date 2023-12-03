@@ -1,3 +1,4 @@
+- fix text selection on select scenario
 - Place units
 
 - tests!!! (jest?)
