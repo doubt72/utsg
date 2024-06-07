@@ -2,7 +2,7 @@
 
 module Utility
   module Scenarios
-    module Units
+    module Units # rubocop:disable Metric/ModuleLength
       class << self # rubocop:disable Metric/ClassLength
         # rubocop:disable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
         # -rubocop:disable Metric/PerceivedComplexity

@@ -9,5 +9,10 @@
   },
   "rules": {
     "react/no-unescaped-entities": ["error", {"forbid": [">", "}"]}]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }

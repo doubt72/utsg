@@ -1,24 +1,20 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
 * Ruby version
 
-* System dependencies
+.tool-versions have latest versions of ruby, nodejs, yarn used.  I use asdf to handle the installs.
 
-* Configuration
+Postgresql needs to be installed.
 
-* Database creation
+Then run
 
-* Database initialization
+```
+bundle install
+yarn
+rake db:create
+rake db:migrate
+bin/dev
+```
 
-* How to run the test suite
+There is a git hook in support (`pre-commit`) which runs the linters and specs.  Can just be put in `.git/hooks`.
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
