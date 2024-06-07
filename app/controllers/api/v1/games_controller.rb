@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class GamesController < ApplicationController # rubocop:disable Metric/ClassLength
+    class GamesController < ApplicationController # rubocop:disable Metrics/ClassLength
       skip_before_action :authenticate_user!, only: %i[index show]
 
       def index
@@ -76,7 +76,7 @@ module Api
         %i[owner player_one player_two winner last_move]
       end
 
-      def index_games(scope) # rubocop:disable Metric/MethodLength
+      def index_games(scope) # rubocop:disable Metrics/MethodLength
         games = Game.includes(index_includes)
         case scope
         when "not_started"
@@ -118,7 +118,7 @@ module Api
       end
 
       def translate(pars, player)
-        pars["#{player}_id".to_sym] = User.lookup(pars[player.to_sym])&.id
+        pars[:"#{player}_id"] = User.lookup(pars[player.to_sym])&.id
         pars.delete(player.to_sym)
         pars
       end

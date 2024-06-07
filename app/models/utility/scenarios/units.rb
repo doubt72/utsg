@@ -103,7 +103,7 @@ module Utility
           all_factions.each do |nation|
             next if %w[alm axm].include?(nation)
 
-            lu["#{nation}_initiative".to_sym] = { mk: 1, nation:, i: nation, type: 11 }
+            lu[:"#{nation}_initiative"] = { mk: 1, nation:, i: nation, type: 11 }
           end
           lu[:uk_sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
           lu[:axm_bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
@@ -121,8 +121,8 @@ module Utility
         def hulls
           lu = {}
           all_factions.each do |nation|
-            lu["#{nation}_tracked_hull".to_sym] = { mk: 1, nation:, type: 0 }
-            lu["#{nation}_wheeled_hull".to_sym] = { mk: 1, nation:, type: 1 }
+            lu[:"#{nation}_tracked_hull"] = { mk: 1, nation:, type: 0 }
+            lu[:"#{nation}_wheeled_hull"] = { mk: 1, nation:, type: 1 }
           end
           lu
         end
@@ -138,7 +138,7 @@ module Utility
               [2, 1].each do |l|
                 next if l == 2 && m < 5
 
-                lu["#{nation}_leader_#{m}_#{l}".to_sym] = {
+                lu[:"#{nation}_leader_#{m}_#{l}"] = {
                   c: nation, t: "ldr", n: "Leader", i:, y:, m:, s:, f:, r:, v: 6, o: { l: },
                 }
               end
@@ -205,15 +205,15 @@ module Utility
             team[:f] = team[:f] / 2
 
             name = "#{team[:c]}_#{sanitize(team[:n])}"
-            lu["#{name}_s".to_sym] = squad
-            lu["#{name}_t".to_sym] = team
+            lu[:"#{name}_s"] = squad
+            lu[:"#{name}_t"] = team
           end
           all_factions.each do |c|
             t = "tm"
-            lu["#{c}_elite_crew_t".to_sym] = {
+            lu[:"#{c}_elite_crew_t"] = {
               c:, t:, n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: { cw: 2 },
             }
-            lu["#{c}_crew_t".to_sym] = {
+            lu[:"#{c}_crew_t"] = {
               c:, t:, n: "Crew", i: "crew", y: 0, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 },
             }
           end
@@ -251,7 +251,7 @@ module Utility
             unit.each_with_index do |v, i|
               mg[key[i]] = v
             end
-            lu["#{mg[:c]}_#{sanitize(mg[:n])}".to_sym] = mg
+            lu[:"#{mg[:c]}_#{sanitize(mg[:n])}"] = mg
           end
           lu
         end
@@ -288,7 +288,7 @@ module Utility
             end
             mortar[:o].merge!({ t: 1, b: 3, g: 1 })
             mortar[:s] = 3 if mortar[:o][:c]
-            lu["#{mortar[:c]}_#{sanitize(mortar[:n])}".to_sym] = mortar
+            lu[:"#{mortar[:c]}_#{sanitize(mortar[:n])}"] = mortar
           end
           lu
         end
@@ -326,7 +326,7 @@ module Utility
               radio[key[i]] = v
             end
             radio.merge!({ r: 0, v: 0, o: { s: 1, o: 1, j: 3 } })
-            lu["#{radio[:c]}_#{sanitize(radio[:n])}".to_sym] = radio
+            lu[:"#{radio[:c]}_#{sanitize(radio[:n])}"] = radio
           end
           lu
         end
@@ -348,7 +348,7 @@ module Utility
               rocket[key[i]] = v
             end
             rocket[:o].merge!({ t: 1, p: 1 })
-            lu["#{rocket[:c]}_#{sanitize(rocket[:n])}".to_sym] = rocket
+            lu[:"#{rocket[:c]}_#{sanitize(rocket[:n])}"] = rocket
           end
           [
             ["jap", "Type 97 AC", 35, 3, 8, -2, { b: 3 }],
@@ -359,24 +359,24 @@ module Utility
               at[key[i]] = v
             end
             at[:o].merge!({ t: 1, p: 1 })
-            lu["#{at[:c]}_#{sanitize(at[:n])}".to_sym] = at
+            lu[:"#{at[:c]}_#{sanitize(at[:n])}"] = at
           end
           t = "sw"
           all_factions.each do |c|
             i = "flamethrower"
             n = i.capitalize
             y = 15
-            lu["#{c}_ft".to_sym] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 3 } }
+            lu[:"#{c}_ft"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 3 } }
             n = "Satchel Charge"
             i = "explosive"
             y = 36
-            lu["#{c}_sc".to_sym] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
+            lu[:"#{c}_sc"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
           end
           %w[fin ussr].each do |c|
             n = "Molotov Cocktail"
             i = "explosive"
             y = 39
-            lu["#{c}_mc".to_sym] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, a: 1, x: 1, t: 1, sn: 1 } }
+            lu[:"#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, a: 1, x: 1, t: 1, sn: 1 } }
           end
           lu
         end
@@ -402,7 +402,7 @@ module Utility
               gun[key[i]] = v
             end
             gun[:o].merge!({ t: 1, j: 3, g: 1, s: 1, c: 1 })
-            lu["#{gun[:c]}_#{sanitize(gun[:n])}".to_sym] = gun
+            lu[:"#{gun[:c]}_#{sanitize(gun[:n])}"] = gun
           end
           lu
         end
@@ -448,7 +448,7 @@ module Utility
               at[key[i]] = v
             end
             at[:o].merge!({ t: 1, j: 3, p: 1, c: 1 })
-            lu["#{at[:c]}_#{sanitize(at[:n])}".to_sym] = at
+            lu[:"#{at[:c]}_#{sanitize(at[:n])}"] = at
           end
           lu
         end
@@ -568,7 +568,7 @@ module Utility
             end
             tank[:i] = "tank-amp" if tank[:o][:amp]
             tank[:o].merge!({ j: 3, u: 1, k: 1 })
-            lu["#{tank[:c]}_#{sanitize(tank[:n])}".to_sym] = tank
+            lu[:"#{tank[:c]}_#{sanitize(tank[:n])}"] = tank
           end
           lu
         end
@@ -640,7 +640,7 @@ module Utility
             spg[:i] = "spft" if spg[:o][:i] || spg[:o][:sg]
             spg[:o][:u] = 1 if spg[:o][:ta]
             spg[:o].merge!({ j: 3, k: 1 })
-            lu["#{spg[:c]}_#{sanitize(spg[:n])}".to_sym] = spg
+            lu[:"#{spg[:c]}_#{sanitize(spg[:n])}"] = spg
           end
           lu
         end
@@ -688,7 +688,7 @@ module Utility
             ht[:i] = "htft" if ht[:o][:i]
             ht[:o].merge!({ k: 1 })
             ht[:o][:m] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3 })
-            lu["#{ht[:c]}_#{sanitize(ht[:n])}".to_sym] = ht
+            lu[:"#{ht[:c]}_#{sanitize(ht[:n])}"] = ht
           end
           lu
         end
@@ -732,7 +732,7 @@ module Utility
               ac[key[i]] = v
             end
             ac[:o].merge!({ j: 3, u: 1, w: 1 })
-            lu["#{ac[:c]}_#{sanitize(ac[:n])}".to_sym] = ac
+            lu[:"#{ac[:c]}_#{sanitize(ac[:n])}"] = ac
           end
           lu
         end

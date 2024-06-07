@@ -36,7 +36,7 @@ module Api
         page = params[:page].to_i || 0
         count = data.length
         {
-          data: data[(page * page_size)..(page_size * (page + 1) - 1)],
+          data: data[(page * page_size)..((page_size * (page + 1)) - 1)],
           page:, more: count > page_size * (page + 1),
         }
       end

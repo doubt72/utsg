@@ -3,6 +3,7 @@ AllCops:
     - 'bin/bundle'
     - 'db/schema.rb'
     - 'support/**/*'
+  NewCops: enable
 
 Lint/AmbiguousBlockAssociation:
   AllowedMethods: [change]
@@ -20,7 +21,7 @@ Metrics/ClassLength:
     - 'spec/**/*'
     - 'app/models/scenarios/**/*'
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
   Exclude:
     - 'Gemfile'

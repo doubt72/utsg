@@ -15,8 +15,8 @@ class GameMove < ApplicationRecord
     user_id = params[:user_id]
     return nil unless game&.in_progress?
 
-    if params[:player].to_i == 1 && game.player_one.id != user_id ||
-       params[:player].to_i == 2 && game.player_two.id != user_id
+    if (params[:player].to_i == 1 && game.player_one.id != user_id) ||
+       (params[:player].to_i == 2 && game.player_two.id != user_id)
       return nil
     end
 
