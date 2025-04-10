@@ -280,6 +280,7 @@ export default class Map {
   }
 
   hexLos(start: Coordinate, end: Coordinate): TextLayout | boolean {
+    // TODO: Consider decoupling "layout" from value here
     return los(this, start, end)
   }
 

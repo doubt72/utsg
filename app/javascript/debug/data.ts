@@ -457,6 +457,8 @@ export const mapDebugData: {
       { u: testUnitData.ginf, x: 14, y: 6 },
       { u: testUnitData.ginf, x: 14, y: 14 },
       { u: testUnitData.ginf, x: 3, y: 3 },
+      { u: testUnitData.ginf, x: 8, y: 1 },
+      { u: testUnitData.ginf, x: 4, y: 2 },
       { u: testUnitData.ginf, x: 8, y: 2 },
       { u: testUnitData.ginf, x: 10, y: 6 },
       { u: testUnitData.ginf, x: 0, y: 11 },
@@ -754,6 +756,8 @@ export const mapDebugData: {
       { u: testUnitData.ginf, x: 2, y: 8 },
       { u: testUnitData.ginf, x: 3, y: 8 },
       { u: testUnitData.ginf, x: 4, y: 8 },
+      { u: testUnitData.ginf, x: 10, y: 13 },
+      { u: testUnitData.ginf, x: 14, y: 14 },
     ],
     hexes: [
       [
@@ -978,8 +982,8 @@ export const mapDebugData: {
         { t: "o" },
         { t: "o" },
         { t: "o" },
-        { t: "o" },
-        { t: "o" },
+        { t: "g", b: "f", be: [1, 2, 3] },
+        { t: "o", b: "f", be: [1] },
       ], [
         { t: "o" },
         { t: "o" },
@@ -994,8 +998,8 @@ export const mapDebugData: {
         { t: "o" },
         { t: "o" },
         { t: "o" },
-        { t: "o" },
-        { t: "o" },
+        { t: "o", b: "f", be: [3] },
+        { t: "o", b: "f", be: [2] },
       ]
     ],
   },
