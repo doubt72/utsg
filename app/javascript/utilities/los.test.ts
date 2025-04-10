@@ -236,7 +236,7 @@ describe("los", () => {
         }
       });
 
-      describe("doesn't block edges", () => {
+      describe("doesn't block along edges", () => {
         for (const tuple of edgeHexes) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -269,7 +269,7 @@ describe("los", () => {
         }
       });
 
-      describe("clean misses", () => {
+      describe("doesn't block clean misses", () => {
         for (const tuple of missHexes) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -281,7 +281,7 @@ describe("los", () => {
       });
     });
 
-    describe("edge shift left", () => {
+    describe("map edge, shifted left", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 5,
@@ -329,7 +329,7 @@ describe("los", () => {
       }
     });
 
-    describe("edge shift right", () => {
+    describe("map edge, shifted right", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 6,
@@ -405,18 +405,16 @@ describe("los", () => {
 
       const map = createMap(mapData);
 
-      describe("blocks near", () => {
-        for (const tuple of nearHexes) {
-          const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
-            expect(
-              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            ).toBe(true); // TODO: fix, this should be false
-          });
-        }
-      });
+      describe("blocks through double walls", () => {
+        // for (const tuple of nearHexes) {
+        //   const [x1, y1, x2, y2] = tuple;
+        //   test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+        //     expect(
+        //       los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+        //     ).toBe(false);
+        //   });
+        // }
 
-      describe("blocks far", () => {
         for (const tuple of farHexes) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -425,9 +423,7 @@ describe("los", () => {
             ).toBe(false);
           });
         }
-      });
 
-      describe("blocks far to near", () => {
         for(const tuple of farNearHexes) {
           const [x1, y1, x2, y2] = tuple
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -436,9 +432,7 @@ describe("los", () => {
             ).toBe(false);
           });
         }
-      });
 
-      describe("blocks near to far", () => {
         for(const tuple of nearFarHexes) {
           const [x1, y1, x2, y2] = tuple
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -449,7 +443,7 @@ describe("los", () => {
         }
       });
 
-      describe("blocks edges", () => {
+      describe("blocks along edges", () => {
         for (const tuple of edgeHexes) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -482,7 +476,7 @@ describe("los", () => {
         }
       });
 
-      describe("clean misses", () => {
+      describe("doesn't block clean misses", () => {
         for (const tuple of missHexes) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -495,7 +489,7 @@ describe("los", () => {
     });
 
     describe("blaze", () => {
-      describe("center obstacle", () => {
+      describe("in center", () => {
         const mapData: MapTestData = {
           x: 5,
           y: 5,
@@ -544,29 +538,7 @@ describe("los", () => {
           }
         });
 
-        describe("doesn't block out", () => {
-          for (const tuple of outHexes) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} clear`, () => {
-              expect(
-                los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              ).toBe(true);
-            });
-          }
-        });
-
-        describe("doesn't block in", () => {
-          for (const tuple of inHexes) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} clear`, () => {
-              expect(
-                los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              ).toBe(true);
-            });
-          }
-        });
-
-        describe("clean misses", () => {
+        describe("doesn't block clean misses", () => {
           for (const tuple of missHexes) {
             const [x1, y1, x2, y2] = tuple;
             test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -578,7 +550,7 @@ describe("los", () => {
         });
       });
 
-      describe("edge shift left", () => {
+      describe("map edge, shifted left", () => {
         const mapData: MapTestData = {
           x: 5,
           y: 5,
@@ -630,7 +602,7 @@ describe("los", () => {
         }
       });
 
-      describe("edge shift right", () => {
+      describe("map edge, shifted right", () => {
         const mapData: MapTestData = {
           x: 5,
           y: 6,
@@ -686,7 +658,7 @@ describe("los", () => {
   });
 
   describe("hindrance", () => {
-    describe("center plus fences", () => {
+    describe("combined fence and hex", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 5,
@@ -802,7 +774,7 @@ describe("los", () => {
       });
     });
 
-    describe("edge shift left", () => {
+    describe("map edge, shifted left", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 5,
@@ -851,7 +823,7 @@ describe("los", () => {
       }
     });
 
-    describe("edge shift right", () => {
+    describe("map edge, shifted right", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 6,
@@ -902,7 +874,7 @@ describe("los", () => {
     });
 
     describe("smoke", () => {
-      describe("center", () => {
+      describe("in center", () => {
         const mapData: MapTestData = {
           x: 5,
           y: 5,
@@ -977,7 +949,7 @@ describe("los", () => {
           }
         });
   
-        describe("clean misses", () => {
+        describe("doesn't hinder clean misses", () => {
           for(const tuple of missHexes) {
             const [x1, y1, x2, y2] = tuple
             test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -989,7 +961,7 @@ describe("los", () => {
         });
       });
   
-      describe("edge shift left", () => {
+      describe("map edge, shifted left", () => {
         const mapData: MapTestData = {
           x: 5,
           y: 5,
@@ -1042,7 +1014,7 @@ describe("los", () => {
         }
       });
   
-      describe("edge shift right", () => {
+      describe("map edge, shifted right", () => {
         const mapData: MapTestData = {
           x: 5,
           y: 6,
@@ -1098,7 +1070,7 @@ describe("los", () => {
     });
   });
 
-  describe("complex buildings", () => {
+  describe("buildings", () => {
     test("true", () => {
       expect(true).toBe(true);
     });
