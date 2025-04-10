@@ -28,7 +28,9 @@
     "build:css:prefix": "postcss ./app/assets/builds/application.css --use=autoprefixer --output=./app/assets/builds/application.css",
     "build:css": "yarn build:css:compile && yarn build:css:prefix",
     "watch:css": "nodemon --watch ./app/assets/stylesheets/ --ext scss --exec \"yarn build:css\"",
-    "lint": "eslint 'app/javascript/**/**/**/*'"
+    "lint": "eslint 'app/javascript/**/**/**/*'",
+    "test": "vitest",
+    "test:ci": "vitest run"
   },
   "browserslist": [
     "defaults"
@@ -47,6 +49,7 @@
     "prettier": "^3.3.2",
     "prettier-eslint": "^16.3.0",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.14.1"
+    "typescript-eslint": "^7.14.1",
+    "vitest": "^3.1.1"
   }
 }

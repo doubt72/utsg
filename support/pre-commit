@@ -14,6 +14,13 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+check="$(yarn test:ci)"
+if [ $? -ne 0 ]; then
+  echo "\n====== vitest did not pass ======\n" 
+  echo "$check"
+  exit 1
+fi
+
 check="$(rubocop 2>/dev/null)"
 if [ $? -ne 0 ]; then
   echo "\n====== rubocop did not pass ======\n" 

@@ -20,8 +20,10 @@ POL/GRE/NOR/PHI/NET
 
 000 East Front
 100 North Africa
+ - US M3/M6 https://www.youtube.com/watch?v=7pd-b8V9Euw
 200 Normandy
 300 West Front (late)
+ - M18 Bulge - https://www.youtube.com/watch?v=7pd-b8V9Euw
 400 South Pacific/New Guinea/Philippines
 500 Italy
 600 Poland/France
