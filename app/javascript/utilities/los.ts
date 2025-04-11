@@ -379,7 +379,8 @@ function alongEdgeElevationLos(
     target,
     elevation,
     currDist,
-    hex.alongEdgeLos(edge, initialEdge, finalEdge)
+    hex.alongEdgeLos(edge, initialEdge, finalEdge) ||
+      !!neighbor?.alongEdgeLos(normalDir(edge + 3), finalEdge, initialEdge)
   );
 }
 
