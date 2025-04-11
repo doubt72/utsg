@@ -319,7 +319,7 @@ export default class Hex {
   }
 
   get elevationHex(): PathLayout | false {
-    if (this.elevationEdges || this.elevation < 1) { return false }
+    if (this.elevationEdges !== "none" || this.elevation < 1) { return false }
     return {
       path: this.hexRoundCoordsInset(5), style: this.elevationStyles[this.elevation]
     }

@@ -959,7 +959,7 @@ export const mapDebugData: {
         { t: "o" },
         { t: "o" },
         { t: "o" },
-        { t: "o" },
+        { t: "o", d: 1, st: { sh: "x" }, h: 1 },
         { t: "o" },
         { t: "o" },
         { t: "o" },

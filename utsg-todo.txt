@@ -1,4 +1,3 @@
-- fix hill with feature render
 - fix tests
 - text terrain edge connection
 - test building LOS
