@@ -428,15 +428,6 @@ describe("los", () => {
       const map = createMap(mapData);
 
       describe("blocks through double walls", () => {
-        // for (const tuple of nearHexes) {
-        //   const [x1, y1, x2, y2] = tuple;
-        //   test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
-        //     expect(
-        //       los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-        //     ).toBe(false);
-        //   });
-        // }
-
         for (const tuple of farHexes) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -491,6 +482,17 @@ describe("los", () => {
         for (const tuple of inHexes) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
+            expect(
+              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+            ).toBe(true);
+          });
+        }
+      });
+
+      describe("doesn't block edge-to-edge", () => {
+        for (const tuple of nearHexes) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
             expect(
               los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
             ).toBe(true);
@@ -767,6 +769,7 @@ describe("los", () => {
         }
       });
 
+      // TODO: fix corner edge cases
       // describe("out", () => {
       //   for (const tuple of outHexes) {
       //     const [x1, y1, x2, y2] = tuple;
@@ -776,7 +779,7 @@ describe("los", () => {
       //       ).toBe(true);
       //     });
       //   }
-      // }); TODO: fix corner edge cases
+      // });
 
       describe("in", () => {
         for (const tuple of farInHexes) {
@@ -971,6 +974,7 @@ describe("los", () => {
           }
         });
 
+        // TODO: add self-hindering
         // describe("hinders out", () => {
         //   for(const tuple of outHexes) {
         //     const [x1, y1, x2, y2] = tuple
@@ -981,7 +985,7 @@ describe("los", () => {
         //       expect(hindrance).toBe(2);
         //     });
         //   }
-        // }); TODO: fix
+        // });
 
         describe("hinders in", () => {
           for (const tuple of inHexes) {
