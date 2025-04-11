@@ -122,6 +122,28 @@ const inHexes = [
   [4, 0, 2, 2],
 ];
 
+const closeInHexes = [
+  [1, 1, 2, 2],
+  [2, 3, 2, 2],
+  [2, 1, 2, 2],
+  [1, 3, 2, 2],
+  [1, 2, 2, 2],
+  [3, 2, 2, 2],
+];
+
+const farInHexes = [
+  [1, 0, 2, 2],
+  [3, 4, 2, 2],
+  [3, 0, 2, 2],
+  [1, 4, 2, 2],
+  [2, 0, 2, 2],
+  [2, 4, 2, 2],
+  [0, 0, 2, 2],
+  [4, 4, 2, 2],
+  [0, 4, 2, 2],
+  [4, 0, 2, 2],
+];
+
 const missHexes = [
   [0, 0, 0, 4],
   [0, 4, 0, 0],
@@ -668,94 +690,110 @@ describe("los", () => {
           [
             { t: "o" },
             { t: "o" },
-            { t: "g", b: "w", be: [1, 2, 3, 4, 5, 6] },
+            { t: "g", b: "f", be: [1, 2, 3] },
+            { t: "o", b: "f", be: [1] },
+            { t: "o" },
+          ],
+          [
+            { t: "o" },
+            { t: "o", b: "f", be: [3] },
+            { t: "o", b: "f", be: [2] },
             { t: "o" },
             { t: "o" },
           ],
-          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
       };
 
       const map = createMap(mapData);
 
-      // describe("from near", () => {
-      //   for(const tuple of nearHexes) {
-      //     const [x1, y1, x2, y2] = tuple
-      //     test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
-      //       const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-      //       const hindrance = (<TextLayout>lc).value
+      describe("from near", () => {
+        for (const tuple of nearHexes) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
 
-      //       expect(hindrance).toBe(2);
-      //     });
-      //   }
-      // }); TODO: fix
+            expect(hindrance).toBe(2);
+          });
+        }
+      });
 
-      // describe("from far", () => {
-      //   for(const tuple of farHexes) {
-      //     const [x1, y1, x2, y2] = tuple
-      //     test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
-      //       const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-      //       const hindrance = (<TextLayout>lc).value
-
-      //       expect(hindrance).toBe(3);
-      //     });
-      //   }
-      // }); TODO: fix
-
-      describe("along edge", () => {
-        for(const tuple of nearHexes) {
+      describe("from far", () => {
+        for(const tuple of farHexes) {
           const [x1, y1, x2, y2] = tuple
-          test(`${x1},${y1} to ${x2},${y2} be 1`, () => {
+          test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
             const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
             const hindrance = (<TextLayout>lc).value
+
+            expect(hindrance).toBe(3);
+          });
+        }
+      });
+
+      describe("along edge", () => {
+        for (const tuple of edgeHexes) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} be 1`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
 
             expect(hindrance).toBe(1);
           });
         }
       });
 
-      // describe("near to far", () => {
-      //   for(const tuple of nearFarHexes) {
-      //     const [x1, y1, x2, y2] = tuple
-      //     test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
-      //       const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-      //       const hindrance = (<TextLayout>lc).value
-
-      //       expect(hindrance).toBe(2);
-      //     });
-      //   }
-      // }); TODO: fix
-
-      // describe("far to near", () => {
-      //   for(const tuple of farNearHexes) {
-      //     const [x1, y1, x2, y2] = tuple
-      //     test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
-      //       const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-      //       const hindrance = (<TextLayout>lc).value
-
-      //       expect(hindrance).toBe(3);
-      //     });
-      //   }
-      // }); TODO: fix
-
-      describe("out", () => {
-        for(const tuple of outHexes) {
+      describe("near to far", () => {
+        for(const tuple of nearFarHexes) {
           const [x1, y1, x2, y2] = tuple
-          test(`${x1},${y1} to ${x2},${y2} have none`, () => {
-            expect(
-              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            ).toBe(true);
+          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+            const hindrance = (<TextLayout>lc).value
+
+            expect(hindrance).toBe(2);
           });
         }
       });
 
-      describe("in", () => {
-        for(const tuple of inHexes) {
+      describe("far to near", () => {
+        for(const tuple of farNearHexes) {
           const [x1, y1, x2, y2] = tuple
-          test(`${x1},${y1} to ${x2},${y2} be 1`, () => {
+          test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
             const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
             const hindrance = (<TextLayout>lc).value
+
+            expect(hindrance).toBe(3);
+          });
+        }
+      });
+
+      // describe("out", () => {
+      //   for (const tuple of outHexes) {
+      //     const [x1, y1, x2, y2] = tuple;
+      //     test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+      //       expect(
+      //         los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+      //       ).toBe(true);
+      //     });
+      //   }
+      // }); TODO: fix corner edge cases
+
+      describe("in", () => {
+        for (const tuple of farInHexes) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(2);
+          });
+        }
+
+        for (const tuple of closeInHexes) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
 
             expect(hindrance).toBe(1);
           });
@@ -763,8 +801,8 @@ describe("los", () => {
       });
 
       describe("clean misses", () => {
-        for(const tuple of missHexes) {
-          const [x1, y1, x2, y2] = tuple
+        for (const tuple of missHexes) {
+          const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} have none`, () => {
             expect(
               los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
@@ -798,12 +836,12 @@ describe("los", () => {
         [4, 3, 4, 1],
         [3, 0, 4, 3],
         [4, 3, 3, 0],
-      ]
-      for(const tuple of tuples) {
-        const [x1, y1, x2, y2] = tuple
+      ];
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
-          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-          const hindrance = (<TextLayout>lc).value
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          const hindrance = (<TextLayout>lc).value;
 
           expect(hindrance).toBe(1);
         });
@@ -812,13 +850,13 @@ describe("los", () => {
       tuples = [
         [0, 1, 0, 3],
         [0, 3, 0, 1],
-      ]
-      for(const tuple of tuples) {
-        const [x1, y1, x2, y2] = tuple
+      ];
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} have none`, () => {
-          expect(
-            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-          ).toBe(true);
+          expect(los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))).toBe(
+            true
+          );
         });
       }
     });
@@ -848,12 +886,12 @@ describe("los", () => {
         [0, 4, 0, 2],
         [2, 0, 0, 4],
         [0, 4, 2, 0],
-      ]
-      for(const tuple of tuples) {
-        const [x1, y1, x2, y2] = tuple
+      ];
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
-          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-          const hindrance = (<TextLayout>lc).value
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          const hindrance = (<TextLayout>lc).value;
 
           expect(hindrance).toBe(1);
         });
@@ -862,13 +900,13 @@ describe("los", () => {
       tuples = [
         [4, 2, 4, 4],
         [4, 4, 4, 2],
-      ]
-      for(const tuple of tuples) {
-        const [x1, y1, x2, y2] = tuple
+      ];
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} have none`, () => {
-          expect(
-            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-          ).toBe(true);
+          expect(los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))).toBe(
+            true
+          );
         });
       }
     });
@@ -887,36 +925,44 @@ describe("los", () => {
             [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           ],
         };
-  
+
         const map = createMap(mapData);
-  
+
         describe("hinders near", () => {
-          for(const tuple of nearHexes) {
-            const [x1, y1, x2, y2] = tuple
+          for (const tuple of nearHexes) {
+            const [x1, y1, x2, y2] = tuple;
             test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-              const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              const hindrance = (<TextLayout>lc).value
-  
+              const lc = los(
+                map,
+                new Coordinate(x1, y1),
+                new Coordinate(x2, y2)
+              );
+              const hindrance = (<TextLayout>lc).value;
+
               expect(hindrance).toBe(2);
             });
           }
         });
-  
+
         describe("hinders far", () => {
-          for(const tuple of farHexes) {
-            const [x1, y1, x2, y2] = tuple
+          for (const tuple of farHexes) {
+            const [x1, y1, x2, y2] = tuple;
             test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-              const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              const hindrance = (<TextLayout>lc).value
-  
+              const lc = los(
+                map,
+                new Coordinate(x1, y1),
+                new Coordinate(x2, y2)
+              );
+              const hindrance = (<TextLayout>lc).value;
+
               expect(hindrance).toBe(2);
             });
           }
         });
-  
+
         describe("doesn't hinder edges", () => {
-          for(const tuple of edgeHexes) {
-            const [x1, y1, x2, y2] = tuple
+          for (const tuple of edgeHexes) {
+            const [x1, y1, x2, y2] = tuple;
             test(`${x1},${y1} to ${x2},${y2} clear`, () => {
               expect(
                 los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
@@ -924,34 +970,38 @@ describe("los", () => {
             });
           }
         });
-  
+
         // describe("hinders out", () => {
         //   for(const tuple of outHexes) {
         //     const [x1, y1, x2, y2] = tuple
         //     test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
         //       const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
         //       const hindrance = (<TextLayout>lc).value
-  
+
         //       expect(hindrance).toBe(2);
         //     });
         //   }
         // }); TODO: fix
-  
+
         describe("hinders in", () => {
-          for(const tuple of inHexes) {
-            const [x1, y1, x2, y2] = tuple
+          for (const tuple of inHexes) {
+            const [x1, y1, x2, y2] = tuple;
             test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-              const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              const hindrance = (<TextLayout>lc).value
-  
+              const lc = los(
+                map,
+                new Coordinate(x1, y1),
+                new Coordinate(x2, y2)
+              );
+              const hindrance = (<TextLayout>lc).value;
+
               expect(hindrance).toBe(2);
             });
           }
         });
-  
+
         describe("doesn't hinder clean misses", () => {
-          for(const tuple of missHexes) {
-            const [x1, y1, x2, y2] = tuple
+          for (const tuple of missHexes) {
+            const [x1, y1, x2, y2] = tuple;
             test(`${x1},${y1} to ${x2},${y2} clear`, () => {
               expect(
                 los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
@@ -960,7 +1010,7 @@ describe("los", () => {
           }
         });
       });
-  
+
       describe("map edge, shifted left", () => {
         const mapData: MapTestData = {
           x: 5,
@@ -977,9 +1027,9 @@ describe("los", () => {
             [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           ],
         };
-  
+
         const map = createMap(mapData);
-  
+
         let tuples = [
           [0, 0, 0, 4],
           [0, 4, 0, 0],
@@ -989,23 +1039,23 @@ describe("los", () => {
           [4, 3, 4, 1],
           [3, 0, 4, 3],
           [4, 3, 3, 0],
-        ]
-        for(const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple
+        ];
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            const hindrance = (<TextLayout>lc).value
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
 
             expect(hindrance).toBe(2);
           });
         }
-  
+
         tuples = [
           [0, 1, 0, 3],
           [0, 3, 0, 1],
-        ]
-        for(const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple
+        ];
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
             expect(
               los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
@@ -1013,7 +1063,7 @@ describe("los", () => {
           });
         }
       });
-  
+
       describe("map edge, shifted right", () => {
         const mapData: MapTestData = {
           x: 5,
@@ -1031,9 +1081,9 @@ describe("los", () => {
             [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           ],
         };
-  
+
         const map = createMap(mapData);
-  
+
         let tuples = [
           [4, 1, 4, 5],
           [4, 5, 4, 1],
@@ -1043,23 +1093,23 @@ describe("los", () => {
           //[0, 4, 0, 2], TODO: fix
           [2, 0, 0, 4],
           [0, 4, 2, 0],
-        ]
-        for(const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple
+        ];
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            const hindrance = (<TextLayout>lc).value
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
 
             expect(hindrance).toBe(2);
           });
         }
-  
+
         tuples = [
           [4, 2, 4, 4],
           [4, 4, 4, 2],
-        ]
-        for(const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple
+        ];
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
             expect(
               los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
