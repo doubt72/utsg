@@ -287,7 +287,12 @@ function alongEdgeElevationHindrance(
       target,
       hex.elevation,
       currDist,
-      hex.alongEdgeHindrance(edge, initialEdge)
+      Math.max(
+        hex.alongEdgeHindrance(edge, initialEdge),
+        hex.map
+          .neighborAt(hex.coord, edge)
+          ?.alongEdgeHindrance(normalDir(edge + 3), !initialEdge) || 0
+      )
     ) + ch
   );
 }
