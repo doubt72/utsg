@@ -292,7 +292,7 @@ function bigCorner1(hex: Hex): SVGPathArray {
   const xOff = hex.narrow/2 - outset * Math.sin(Math.PI/3)
   return [
     "M", x1, y1,
-    "L", ...buildingRotatePoint(hex, dir, new Coordinate(-xOff, -hex.radius/3)).tuple,
+    "L", ...buildingRotatePoint(hex, dir, new Coordinate(xOff, -hex.radius/3)).tuple,
     "L", x2, y2, "L", hex.xCorner(normalDir(dir + 3)), hex.yCorner(normalDir(dir + 3)),
     "L", hex.xCorner(normalDir(dir + 4)), hex.yCorner(normalDir(dir + 4)), "L", x1, y1,
   ]
