@@ -263,7 +263,7 @@ function alongEdgeElevationHindrance(
   if (!hex.counterLos.los && !neighbor?.counterLos?.los) {
     ch = Math.min(
       hex.counterLos.hindrance,
-      neighbor?.counterLos?.hindrance || 0
+      neighbor ? neighbor.counterLos.hindrance : hex.counterLos.hindrance
     );
   } else if (hex.counterLos.los) {
     ch = neighbor?.counterLos?.hindrance || 0;

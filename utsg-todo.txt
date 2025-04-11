@@ -1,5 +1,5 @@
 - fix tests
-- text terrain edge connection
+- test terrain edge connection
 - test building LOS
 - test elevation
 - fix websockets
