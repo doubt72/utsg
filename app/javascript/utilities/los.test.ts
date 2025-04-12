@@ -34,31 +34,36 @@ type MapTestData = {
 //  06  16  26  36  46
 //    07  17  27  37  47
 
-// TODO:  There are an awful lot of symmetrical LOS cases...  I could change the
-// tests to be symmetrical but TBH I'm not sure repeating yourself is a terrible
-// thing if the point is to make the tests clear as possible.  Will ponder.
+function reverse(set: number[]): number[] {
+  return [set[2], set[3], set[0], set[1]]
+}
 
-const nearHexes = [
+function symmetrical(sets: number[][]): number[][] {
+  const rc = []
+  for (const set of sets) {
+    rc.push(set)
+    rc.push(reverse(set))
+  }
+  return rc
+}
+
+function reverseAll(sets: number[][]): number[][] {
+  return sets.map(s => reverse(s))
+}
+
+const nearHexes = symmetrical([
   [1, 1, 2, 3],
-  [2, 3, 1, 1],
   [2, 1, 1, 3],
-  [1, 3, 2, 1],
   [1, 2, 3, 2],
-  [3, 2, 1, 2],
-];
+])
 
-const farHexes = [
+const farHexes = symmetrical([
   [1, 0, 3, 4],
-  [3, 4, 1, 0],
   [3, 0, 1, 4],
-  [1, 4, 3, 0],
   [2, 0, 2, 4],
-  [2, 4, 2, 0],
   [0, 0, 4, 4],
-  [4, 4, 0, 0],
   [0, 4, 4, 0],
-  [4, 0, 0, 4],
-];
+]);
 
 const farNearHexes = [
   [1, 0, 2, 3],
@@ -67,69 +72,18 @@ const farNearHexes = [
   [3, 4, 1, 1],
   [1, 4, 2, 1],
   [0, 2, 3, 2],
-]
+];
 
-const nearFarHexes = [
-  [2, 3, 1, 0],
-  [1, 3, 3, 0],
-  [1, 2, 4, 2],
-  [1, 1, 3, 4],
-  [2, 1, 1, 4],
-  [3, 2, 0, 2],
-]
+const nearFarHexes = reverseAll(farNearHexes)
 
-const edgeHexes = [
+const edgeHexes = symmetrical([
   [1, 1, 3, 2],
   [3, 2, 1, 3],
   [1, 3, 1, 1],
   [1, 2, 2, 1],
   [2, 1, 2, 3],
   [2, 3, 1, 2],
-  [3, 2, 1, 1],
-  [1, 3, 3, 2],
-  [1, 1, 1, 3],
-  [2, 1, 1, 2],
-  [2, 3, 2, 1],
-  [1, 2, 2, 3],
-];
-
-const outHexes = [
-  [2, 2, 2, 3],
-  [2, 2, 1, 1],
-  [2, 2, 1, 3],
-  [2, 2, 2, 1],
-  [2, 2, 3, 2],
-  [2, 2, 1, 2],
-  [2, 2, 3, 4],
-  [2, 2, 1, 0],
-  [2, 2, 1, 4],
-  [2, 2, 3, 0],
-  [2, 2, 2, 4],
-  [2, 2, 2, 0],
-  [2, 2, 4, 4],
-  [2, 2, 0, 0],
-  [2, 2, 4, 0],
-  [2, 2, 0, 4],
-];
-
-const inHexes = [
-  [1, 1, 2, 2],
-  [2, 3, 2, 2],
-  [2, 1, 2, 2],
-  [1, 3, 2, 2],
-  [1, 2, 2, 2],
-  [3, 2, 2, 2],
-  [1, 0, 2, 2],
-  [3, 4, 2, 2],
-  [3, 0, 2, 2],
-  [1, 4, 2, 2],
-  [2, 0, 2, 2],
-  [2, 4, 2, 2],
-  [0, 0, 2, 2],
-  [4, 4, 2, 2],
-  [0, 4, 2, 2],
-  [4, 0, 2, 2],
-];
+]);
 
 const closeInHexes = [
   [1, 1, 2, 2],
@@ -153,18 +107,17 @@ const farInHexes = [
   [4, 0, 2, 2],
 ];
 
-const missHexes = [
+const inHexes = closeInHexes.concat(farInHexes)
+
+const outHexes = reverseAll(inHexes)
+
+const missHexes = symmetrical([
   [0, 0, 0, 4],
-  [0, 4, 0, 0],
   [4, 0, 4, 4],
-  [4, 4, 4, 0],
   [0, 0, 2, 4],
-  [2, 4, 0, 0],
   [2, 4, 4, 0],
-  [4, 0, 2, 4],
   [0, 0, 4, 0],
-  [4, 0, 0, 0],
-];
+]);
 
 function createMap(data: MapTestData): Map {
   const map = new Map({
@@ -376,16 +329,12 @@ describe("los", () => {
 
       const map = createMap(mapData);
 
-      let tuples = [
+      let tuples = symmetrical([
         [4, 1, 4, 5],
-        [4, 5, 4, 1],
         [0, 1, 0, 5],
-        [0, 5, 0, 1],
         [0, 2, 0, 4],
-        [0, 4, 0, 2],
         [2, 0, 0, 4],
-        [0, 4, 2, 0],
-      ];
+      ])
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -395,10 +344,9 @@ describe("los", () => {
         });
       }
 
-      tuples = [
+      tuples = symmetrical([
         [4, 2, 4, 4],
-        [4, 4, 4, 2],
-      ];
+      ])
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -425,10 +373,10 @@ describe("los", () => {
       const map = createMap(mapData);
 
       describe("blocks near", () => {
-        const tuples = [
+
+        const tuples = symmetrical([
           [1, 1, 1, 3],
-          [1, 3, 1, 1]
-        ]
+        ])
 
         for (const tuple of tuples) {
           const [x1, y1, x2, y2] = tuple;
@@ -634,16 +582,12 @@ describe("los", () => {
 
         const map = createMap(mapData);
 
-        let tuples = [
+        let tuples = symmetrical([
           [0, 0, 0, 4],
-          [0, 4, 0, 0],
           [4, 0, 4, 4],
-          [4, 4, 4, 0],
           [4, 1, 4, 3],
-          [4, 3, 4, 1],
           [3, 0, 4, 3],
-          [4, 3, 3, 0],
-        ];
+        ])
         for (const tuple of tuples) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -653,10 +597,9 @@ describe("los", () => {
           });
         }
 
-        tuples = [
+        tuples = symmetrical([
           [0, 1, 0, 3],
-          [0, 3, 0, 1],
-        ];
+        ])
         for (const tuple of tuples) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -687,16 +630,12 @@ describe("los", () => {
 
         const map = createMap(mapData);
 
-        let tuples = [
+        let tuples = symmetrical([
           [4, 1, 4, 5],
-          [4, 5, 4, 1],
           [0, 1, 0, 5],
-          [0, 5, 0, 1],
           [0, 2, 0, 4],
-          [0, 4, 0, 2],
           [2, 0, 0, 4],
-          [0, 4, 2, 0],
-        ];
+        ])
         for (const tuple of tuples) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -706,10 +645,9 @@ describe("los", () => {
           });
         }
 
-        tuples = [
+        tuples = symmetrical([
           [4, 2, 4, 4],
-          [4, 4, 4, 2],
-        ];
+        ])
         for (const tuple of tuples) {
           const [x1, y1, x2, y2] = tuple;
           test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -741,10 +679,9 @@ describe("los", () => {
         const map = createMap(mapData);
 
         describe("blocks near", () => {
-          const tuples = [
+          const tuples = symmetrical([
             [1, 1, 1, 3],
-            [1, 3, 1, 1]
-          ]
+          ])
 
           for (const tuple of tuples) {
             const [x1, y1, x2, y2] = tuple;
@@ -784,18 +721,13 @@ describe("los", () => {
 
       const map = createMap(mapData);
 
-      let tuples = [
+      let tuples = symmetrical([
         [0, 2, 0, 6],
-        [0, 6, 0, 2],
         [4, 3, 4, 7],
-        [4, 7, 4, 3],
         [1, 2, 3, 2],
-        [3, 2, 1, 2],
         [2, 4, 3, 2],
-        [3, 2, 2, 4],
         [1, 1, 3, 4],
-        [3, 4, 1, 1],
-      ]
+      ])
 
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
@@ -806,14 +738,11 @@ describe("los", () => {
         });
       }
 
-      tuples = [
+      tuples = symmetrical([
         [0, 2, 0, 0],
-        [0, 0, 0, 2],
         [4, 3, 4, 1],
-        [4, 1, 4, 3],
         [1, 3, 3, 2],
-        [3, 2, 1, 3],
-      ]
+      ])
 
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
@@ -855,32 +784,20 @@ describe("los", () => {
 
       const map = createMap(mapData);
 
-      const tuples = [
+      const tuples = symmetrical([
         [0, 2, 0, 6],
-        [0, 6, 0, 2],
         [4, 3, 4, 7],
-        [4, 7, 4, 3],
         [1, 2, 3, 2],
-        [3, 2, 1, 2],
         [2, 4, 3, 2],
-        [3, 2, 2, 4],
         [1, 1, 3, 4],
-        [3, 4, 1, 1],
         [0, 2, 0, 0],
-        [0, 0, 0, 2],
         [4, 3, 4, 1],
-        [4, 1, 4, 3],
         [1, 3, 3, 2],
-        [3, 2, 1, 3],
         [1, 5, 2, 7],
-        [2, 7, 1, 5],
         [1, 7, 2, 5],
-        [2, 5, 1, 7],
         [1, 5, 1, 7],
-        [1, 7, 1, 5],
         [2, 5, 2, 7],
-        [2, 7, 2, 5],
-      ]
+      ])
 
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
@@ -925,24 +842,16 @@ describe("los", () => {
 
       const map = createMap(mapData);
 
-      let tuples = [
+      let tuples = symmetrical([
         [1, 1, 1, 3],
-        [1, 3, 1, 1],
         [1, 0, 1, 4],
-        [1, 4, 1, 0],
         [2, 1, 2, 3],
-        [2, 3, 2, 1],
         [3, 0, 3, 4],
-        [3, 4, 3, 0],
         [2, 2, 0, 0],
-        [0, 0, 2, 2],
         [2, 2, 4, 0],
-        [4, 0, 2, 2],
         [2, 2, 0, 4],
-        [0, 4, 2, 2],
         [2, 2, 4, 4],
-        [4, 4, 2, 2],
-      ]
+      ])
 
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
@@ -953,24 +862,16 @@ describe("los", () => {
         });
       }
 
-      tuples = [
+      tuples = symmetrical([
         [2, 2, 1, 1],
-        [1, 1, 2, 2],
         [2, 2, 2, 1],
-        [2, 1, 2, 2],
         [2, 2, 3, 2],
-        [3, 2, 2, 2],
         [2, 2, 2, 3],
-        [2, 3, 2, 2],
         [2, 2, 1, 3],
-        [1, 3, 2, 2],
         [2, 2, 1, 2],
-        [1, 2, 2, 2],
         [0, 1, 0, 3],
-        [0, 3, 0, 1],
         [3, 1, 3, 3],
-        [3, 3, 3, 1],
-      ]
+      ])
 
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
@@ -1139,16 +1040,12 @@ describe("hindrance", () => {
 
     const map = createMap(mapData);
 
-    let tuples = [
+    let tuples = symmetrical([
       [0, 0, 0, 4],
-      [0, 4, 0, 0],
       [4, 0, 4, 4],
-      [4, 4, 4, 0],
       [4, 1, 4, 3],
-      [4, 3, 4, 1],
       [3, 0, 4, 3],
-      [4, 3, 3, 0],
-    ];
+    ]);
     for (const tuple of tuples) {
       const [x1, y1, x2, y2] = tuple;
       test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
@@ -1159,10 +1056,9 @@ describe("hindrance", () => {
       });
     }
 
-    tuples = [
+    tuples = symmetrical([
       [0, 1, 0, 3],
-      [0, 3, 0, 1],
-    ];
+    ]);
     for (const tuple of tuples) {
       const [x1, y1, x2, y2] = tuple;
       test(`${x1},${y1} to ${x2},${y2} have none`, () => {
@@ -1189,16 +1085,12 @@ describe("hindrance", () => {
 
     const map = createMap(mapData);
 
-    let tuples = [
+    let tuples = symmetrical([
       [4, 1, 4, 5],
-      [4, 5, 4, 1],
       [0, 1, 0, 5],
-      [0, 5, 0, 1],
       [0, 2, 0, 4],
-      [0, 4, 0, 2],
       [2, 0, 0, 4],
-      [0, 4, 2, 0],
-    ];
+    ]);
     for (const tuple of tuples) {
       const [x1, y1, x2, y2] = tuple;
       test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
@@ -1209,10 +1101,9 @@ describe("hindrance", () => {
       });
     }
 
-    tuples = [
+    tuples = symmetrical([
       [4, 2, 4, 4],
-      [4, 4, 4, 2],
-    ];
+    ]);
     for (const tuple of tuples) {
       const [x1, y1, x2, y2] = tuple;
       test(`${x1},${y1} to ${x2},${y2} have none`, () => {
@@ -1239,10 +1130,9 @@ describe("hindrance", () => {
     const map = createMap(mapData);
 
     describe("blocks near", () => {
-      const tuples = [
+      const tuples = symmetrical([
         [1, 1, 1, 3],
-        [1, 3, 1, 1]
-      ]
+      ])
 
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
@@ -1375,16 +1265,12 @@ describe("hindrance", () => {
 
       const map = createMap(mapData);
 
-      let tuples = [
+      let tuples = symmetrical([
         [0, 0, 0, 4],
-        [0, 4, 0, 0],
         [4, 0, 4, 4],
-        [4, 4, 4, 0],
         [4, 1, 4, 3],
-        [4, 3, 4, 1],
         [3, 0, 4, 3],
-        [4, 3, 3, 0],
-      ];
+      ]);
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -1395,10 +1281,9 @@ describe("hindrance", () => {
         });
       }
 
-      tuples = [
+      tuples = symmetrical([
         [0, 1, 0, 3],
-        [0, 3, 0, 1],
-      ];
+      ]);
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -1429,16 +1314,12 @@ describe("hindrance", () => {
 
       const map = createMap(mapData);
 
-      let tuples = [
+      let tuples = symmetrical([
         [4, 1, 4, 5],
-        [4, 5, 4, 1],
         [0, 1, 0, 5],
-        [0, 5, 0, 1],
         [0, 2, 0, 4],
-        [0, 4, 0, 2],
         [2, 0, 0, 4],
-        [0, 4, 2, 0],
-      ];
+      ]);
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
@@ -1449,10 +1330,9 @@ describe("hindrance", () => {
         });
       }
 
-      tuples = [
+      tuples = symmetrical([
         [4, 2, 4, 4],
-        [4, 4, 4, 2],
-      ];
+      ]);
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
         test(`${x1},${y1} to ${x2},${y2} clear`, () => {
@@ -1484,10 +1364,9 @@ describe("hindrance", () => {
       const map = createMap(mapData);
 
       describe("blocks near", () => {
-        const tuples = [
+        const tuples = symmetrical([
           [1, 1, 1, 3],
-          [1, 3, 1, 1]
-        ]
+        ])
 
         for (const tuple of tuples) {
           const [x1, y1, x2, y2] = tuple;

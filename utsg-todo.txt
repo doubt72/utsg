@@ -1,4 +1,3 @@
-- refactor LOS tests for symmetry
 - test elevation
 - fix chat
 Q should LOS follow roads?
