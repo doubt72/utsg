@@ -1008,60 +1008,26 @@ export const mapDebugData: {
   },
   {
     // Minitest map, to visually verify LOS integration tests
-    x: 5,
-    y: 5,
-    features: [],
-    units: [],
-    hexes: [
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [
-        { t: "o" },
-        { t: "o", d: 1, st: { sh: "bc1" } },
-        { t: "o", d: 1, st: { sh: "bc2" } },
-        { t: "o" },
-        { t: "o" },
-      ],
-      [
-        { t: "o" },
-        { t: "o", d: 1, st: { sh: "bs1" } },
-        { t: "o", d: 1, st: { sh: "bm" } },
-        { t: "o", d: 4, st: { sh: "bs1" } },
-        { t: "o" },
-      ],
-      [
-        { t: "o" },
-        { t: "o", d: 4, st: { sh: "bc2" } },
-        { t: "o", d: 4, st: { sh: "bc1" } },
-        { t: "o" },
-        { t: "o" },
-      ],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-    ],
-  },
-  {
-    x: 5,
-    y: 5,
-    units: [],
-    features: [{ u: testFeatureData.smoke, x: 2, y: 2 }],
-    hexes: [
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o", h: 1 }, { t: "o" }, { t: "o", h: 1 }, { t: "o", h: 1 }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-    ],
-  },
-  {
-    // Minitest map, to visually verify LOS integration tests
     x: 6,
     y: 8,
-    units: [],
+    units: [
+      { u: testUnitData.ginf, x: 3, y: 7 },
+      { u: testUnitData.ginf, x: 4, y: 7 },
+      { u: testUnitData.ginf, x: 5, y: 7 },
+    ],
     features: [],
     hexes: [
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "d" }, { t: "d" }, { t: "d" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o" },
+        { t: "o", b: "f", be: [2, 3] },
+        { t: "o", b: "f", be: [2, 3] },
+        { t: "o", b: "f", be: [2, 3] },
+        { t: "o" },
+        { t: "o" },
+      ],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],

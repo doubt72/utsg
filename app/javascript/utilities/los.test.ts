@@ -897,7 +897,7 @@ describe("los", () => {
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
       };
-  
+
       const map = createMap(mapData);
 
       describe("blocks near", () => {
@@ -979,7 +979,7 @@ describe("los", () => {
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
       };
-  
+
       const map = createMap(mapData);
 
       describe("hill to hill", () => {
@@ -1040,7 +1040,7 @@ describe("los", () => {
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
       };
-  
+
       const map = createMap(mapData);
 
       describe("hill to hill", () => {
@@ -1102,7 +1102,7 @@ describe("los", () => {
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
       };
-  
+
       const map = createMap(mapData);
 
       describe("hill to hill", () => {
@@ -1145,7 +1145,7 @@ describe("los", () => {
           ],
         ],
       };
-  
+
       const map = createMap(mapData);
 
       let tuples = symmetrical([
@@ -1673,9 +1673,326 @@ describe("hindrance", () => {
     });
   });
 
-  describe.skip("elevation", () => {
-    test("true", () => {
-      expect(true).toBe(true);
+  describe("elevation", () => {
+    describe("two small hills", () => {
+      const mapData: MapTestData = {
+        x: 5,
+        y: 5,
+        hexes: [
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "g", h: 1 }, { t: "g" }, { t: "g", h: 1 }, { t: "o", h: 1 }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        ],
+      };
+
+      const map = createMap(mapData);
+
+      describe("hill to hill", () => {
+        let tuples = [
+          [1, 2, 3, 2],
+          [3, 2, 1, 2],
+          [1, 2, 4, 2],
+        ]
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 1`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(1);
+          });
+        }
+
+        tuples = [
+          [4, 2, 1, 2],
+        ]
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(2);
+          });
+        }
+      });
+
+      describe("hill and valley", () => {
+        // TODO: fix uphill
+        // let tuples = symmetrical([
+        const tuples = reverseAll([
+          [2, 2, 1, 2],
+          [2, 2, 3, 2],
+        ])
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 1`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(1);
+          });
+        }
+      });
+    });
+
+    describe("two small hills smoke between", () => {
+      const mapData: MapTestData = {
+        x: 5,
+        y: 5,
+        features: [{ u: testFeatureData.smoke, x: 2, y: 2 }],
+        hexes: [
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o", h: 1 }, { t: "o" }, { t: "o", h: 1 }, { t: "o", h: 1 }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        ],
+      };
+
+      const map = createMap(mapData);
+
+      describe("hill to hill", () => {
+        const tuples = symmetrical([
+          [1, 2, 3, 2],
+          [1, 2, 4, 2],
+        ])
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(2);
+          });
+        }
+      });
+    });
+
+    describe("shadow distance", () => {
+      describe("from hex", () => {
+        const mapData: MapTestData = {
+          x: 6,
+          y: 8,
+          hexes: [
+            [{ t: "g" }, { t: "g" }, { t: "g" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "g" }, { t: "g" }, { t: "g" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "g" }, { t: "g" }, { t: "g" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "g" }, { t: "g" }, { t: "g" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [
+              { t: "o" },
+              { t: "o" },
+              { t: "o" },
+              { t: "o", h: 1 },
+              { t: "o", h: 2 },
+              { t: "o", h: 3 },
+            ],
+          ],
+        };
+
+        const map = createMap(mapData);
+
+        let tuples = [
+          [3, 7, 1, 3],
+          [4, 7, 2, 3],
+          [5, 7, 3, 3],
+        ]
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 1`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(1);
+          });
+        }
+
+        for (const tuple of reverseAll(tuples)) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} has none`, () => {
+            expect(
+              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+            ).toBe(true);
+          });
+        }
+
+        tuples = [
+          [3, 7, 1, 2],
+          [4, 7, 2, 2],
+          [4, 7, 1, 1],
+          [5, 7, 3, 2],
+          [5, 7, 2, 1],
+          [5, 7, 2, 0],
+        ]
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(2);
+          });
+        }
+
+        for (const tuple of reverseAll(tuples)) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 1`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(1);
+          });
+        }
+
+        tuples = [
+          [3, 7, 0, 1],
+          [4, 7, 1, 0],
+        ]
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 3`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(3);
+          });
+        }
+
+        for (const tuple of reverseAll(tuples)) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(2);
+          });
+        }
+
+        tuples = [
+          [3, 7, 0, 0],
+        ]
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 4`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(4);
+          });
+        }
+
+        for (const tuple of reverseAll(tuples)) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 3`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(3);
+          });
+        }
+      });
+
+      describe("from fence", () => {
+        const mapData: MapTestData = {
+          x: 6,
+          y: 8,
+          hexes: [
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [
+              { t: "o" },
+              { t: "o", b: "f", be: [2, 3] },
+              { t: "o", b: "f", be: [2, 3] },
+              { t: "o", b: "f", be: [2, 3] },
+              { t: "o" },
+              { t: "o" },
+            ],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [
+              { t: "o" },
+              { t: "o" },
+              { t: "o" },
+              { t: "o", h: 1 },
+              { t: "o", h: 2 },
+              { t: "o", h: 3 },
+            ],
+          ],
+        };
+
+        const map = createMap(mapData);
+
+        let tuples = [
+          [3, 7, 1, 2],
+          [4, 7, 2, 2],
+          [5, 7, 3, 2],
+        ]
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 1`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(1);
+          });
+        }
+
+        for (const tuple of reverseAll(tuples)) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} has none`, () => {
+            expect(
+              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+            ).toBe(true);
+          });
+        }
+
+        tuples = symmetrical([
+          [3, 7, 0, 1],
+          [3, 7, 0, 0],
+          [4, 7, 1, 1],
+        ])
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} is 1`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+            const hindrance = (<TextLayout>lc).value;
+
+            expect(hindrance).toBe(1);
+          });
+        }
+
+        tuples = symmetrical([
+          // [4, 7, 1, 0],
+          // [5, 7, 2, 1], TODO: fix
+          [5, 7, 2, 0],
+        ])
+
+        for (const tuple of tuples) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} has none`, () => {
+            expect(
+              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+            ).toBe(true);
+          });
+        }
+      });
     });
   });
 });
