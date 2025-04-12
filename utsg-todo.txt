@@ -1,6 +1,7 @@
-- test building LOS
+- refactor LOS tests for symmetry
 - test elevation
-- fix websockets
+- fix chat
+Q should LOS follow roads?
 
 - fix text selection on select scenario
 - Place units

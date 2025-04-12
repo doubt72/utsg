@@ -1006,4 +1006,36 @@ export const mapDebugData: {
       ]
     ],
   },
+  {
+    // Minitest map, to visually verify LOS integration tests
+    x: 5,
+    y: 5,
+    features: [],
+    units: [],
+    hexes: [
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o" },
+        { t: "o", d: 1, st: { sh: "bc1" } },
+        { t: "o", d: 1, st: { sh: "bc2" } },
+        { t: "o" },
+        { t: "o" },
+      ],
+      [
+        { t: "o" },
+        { t: "o", d: 1, st: { sh: "bs1" } },
+        { t: "o", d: 1, st: { sh: "bm" } },
+        { t: "o", d: 4, st: { sh: "bs1" } },
+        { t: "o" },
+      ],
+      [
+        { t: "o" },
+        { t: "o", d: 4, st: { sh: "bc2" } },
+        { t: "o", d: 4, st: { sh: "bc1" } },
+        { t: "o" },
+        { t: "o" },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ],
+  },
 ]

@@ -28,6 +28,15 @@ type MapTestData = {
 //    03  13  23  33  43
 //  04  14  24  34  44
 //
+// Extended to eight rows:
+//
+//    05  15  25  35  45
+//  06  16  26  36  46
+//    07  17  27  37  47
+
+// TODO:  There are an awful lot of symmetrical LOS cases...  I could change the
+// tests to be symmetrical but TBH I'm not sure repeating yourself is a terrible
+// thing if the point is to make the tests clear as possible.  Will ponder.
 
 const nearHexes = [
   [1, 1, 2, 3],
@@ -751,9 +760,226 @@ describe("los", () => {
   });
 
   describe("buildings", () => {
-    // TODO: add tests
-    test("true", () => {
-      expect(true).toBe(true);
+    describe("single hex buildings", () => {
+      const mapData: MapTestData = {
+        x: 5,
+        y: 8,
+        hexes: [
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o", d: 1, st: { sh: "l" } }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [
+            { t: "o" },
+            { t: "o" },
+            { t: "o", d: 2, st: { sh: "x" } },
+            { t: "o" },
+            { t: "o", d: 1, st: { sh: "x" } },
+          ],
+          [{ t: "o" }, { t: "o" }, { t: "o", d: 2, st: { sh: "x" } }, { t: "o" }, { t: "o" }],
+          [{ t: "o", d: 1, st: { sh: "c" } }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o", d: 1, st: { sh: "x" } }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        ],
+      };
+
+      const map = createMap(mapData);
+
+      let tuples = [
+        [0, 2, 0, 6],
+        [0, 6, 0, 2],
+        [4, 3, 4, 7],
+        [4, 7, 4, 3],
+        [1, 2, 3, 2],
+        [3, 2, 1, 2],
+        [2, 4, 3, 2],
+        [3, 2, 2, 4],
+        [1, 1, 3, 4],
+        [3, 4, 1, 1],
+      ]
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(false);
+        });
+      }
+
+      tuples = [
+        [0, 2, 0, 0],
+        [0, 0, 0, 2],
+        [4, 3, 4, 1],
+        [4, 1, 4, 3],
+        [1, 3, 3, 2],
+        [3, 2, 1, 3],
+      ]
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(true);
+        });
+      }
+    });
+
+    describe("multi hex buildings", () => {
+      const mapData: MapTestData = {
+        x: 5,
+        y: 8,
+        hexes: [
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o", d: 4, st: { sh: "s" } }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [
+            { t: "o" },
+            { t: "o" },
+            { t: "o", d: 2, st: { sh: "s" } },
+            { t: "o" },
+            { t: "o", d: 1, st: { sh: "s" } },
+          ],
+          [{ t: "o" }, { t: "o" }, { t: "o", d: 5, st: { sh: "s" } }, { t: "o" }, { t: "o" }],
+          [{ t: "o", d: 4, st: { sh: "s" } }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o", d: 1, st: { sh: "s" } }],
+          [
+            { t: "o" },
+            { t: "o", d: 1, st: { sh: "s" } },
+            { t: "o", d: 1, st: { sh: "m" } },
+            { t: "o", d: 4, st: { sh: "s" } },
+            { t: "o" },
+          ],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        ],
+      };
+
+      const map = createMap(mapData);
+
+      const tuples = [
+        [0, 2, 0, 6],
+        [0, 6, 0, 2],
+        [4, 3, 4, 7],
+        [4, 7, 4, 3],
+        [1, 2, 3, 2],
+        [3, 2, 1, 2],
+        [2, 4, 3, 2],
+        [3, 2, 2, 4],
+        [1, 1, 3, 4],
+        [3, 4, 1, 1],
+        [0, 2, 0, 0],
+        [0, 0, 0, 2],
+        [4, 3, 4, 1],
+        [4, 1, 4, 3],
+        [1, 3, 3, 2],
+        [3, 2, 1, 3],
+        [1, 5, 2, 7],
+        [2, 7, 1, 5],
+        [1, 7, 2, 5],
+        [2, 5, 1, 7],
+        [1, 5, 1, 7],
+        [1, 7, 1, 5],
+        [2, 5, 2, 7],
+        [2, 7, 2, 5],
+      ]
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(false);
+        });
+      }
+    });
+
+    describe("very large building", () => {
+      const mapData: MapTestData = {
+        x: 5,
+        y: 5,
+        hexes: [
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [
+            { t: "o" },
+            { t: "o", d: 1, st: { sh: "bc1" } },
+            { t: "o", d: 1, st: { sh: "bc2" } },
+            { t: "o" },
+            { t: "o" },
+          ],
+          [
+            { t: "o" },
+            { t: "o", d: 1, st: { sh: "bs1" } },
+            { t: "o", d: 1, st: { sh: "bm" } },
+            { t: "o", d: 4, st: { sh: "bs1" } },
+            { t: "o" },
+          ],
+          [
+            { t: "o" },
+            { t: "o", d: 4, st: { sh: "bc2" } },
+            { t: "o", d: 4, st: { sh: "bc1" } },
+            { t: "o" },
+            { t: "o" },
+          ],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        ],
+      };
+
+      const map = createMap(mapData);
+
+      let tuples = [
+        [1, 1, 1, 3],
+        [1, 3, 1, 1],
+        [1, 0, 1, 4],
+        [1, 4, 1, 0],
+        [2, 1, 2, 3],
+        [2, 3, 2, 1],
+        [3, 0, 3, 4],
+        [3, 4, 3, 0],
+        [2, 2, 0, 0],
+        [0, 0, 2, 2],
+        [2, 2, 4, 0],
+        [4, 0, 2, 2],
+        [2, 2, 0, 4],
+        [0, 4, 2, 2],
+        [2, 2, 4, 4],
+        [4, 4, 2, 2],
+      ]
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(false);
+        });
+      }
+
+      tuples = [
+        [2, 2, 1, 1],
+        [1, 1, 2, 2],
+        [2, 2, 2, 1],
+        [2, 1, 2, 2],
+        [2, 2, 3, 2],
+        [3, 2, 2, 2],
+        [2, 2, 2, 3],
+        [2, 3, 2, 2],
+        [2, 2, 1, 3],
+        [1, 3, 2, 2],
+        [2, 2, 1, 2],
+        [1, 2, 2, 2],
+        [0, 1, 0, 3],
+        [0, 3, 0, 1],
+        [3, 1, 3, 3],
+        [3, 3, 3, 1],
+      ]
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(true);
+        });
+      }
     });
   });
 
