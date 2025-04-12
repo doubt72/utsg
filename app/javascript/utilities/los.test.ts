@@ -769,17 +769,16 @@ describe("los", () => {
         }
       });
 
-      // TODO: fix corner edge cases
-      // describe("out", () => {
-      //   for (const tuple of outHexes) {
-      //     const [x1, y1, x2, y2] = tuple;
-      //     test(`${x1},${y1} to ${x2},${y2} have none`, () => {
-      //       expect(
-      //         los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-      //       ).toBe(true);
-      //     });
-      //   }
-      // });
+      describe("out", () => {
+        for (const tuple of outHexes) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+            expect(
+              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+            ).toBe(true);
+          });
+        }
+      });
 
       describe("in", () => {
         for (const tuple of farInHexes) {

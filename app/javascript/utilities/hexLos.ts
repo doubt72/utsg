@@ -62,8 +62,16 @@ export function hexLosAlongEdgeHindrance(hex: Hex, dir: Direction, initialEdge: 
     rc += hex.terrain.baseAttr.hindrance
   }
   // Hinder if there are fences (or more) on both sides of the starting or ending edge
-  // Leading corner -- ignore if initialEdge
-  if (!initialEdge) {
+  if (initialEdge) {
+    const e2 = terrainCornerBorders(hex, dir, 1)
+    if (e2.a.hindrance && e2.b.hindrance) {
+      rc += Math.min(e2.a.hindrance, e2.b.hindrance)
+    } else if (e2.a.hindrance && e2.b.los) {
+      rc += e2.a.hindrance
+    } else if (e2.b.hindrance && e2.a.los) {
+      rc += e2.b.hindrance
+    }
+  } else {
     const e1 = terrainCornerBorders(hex, dir, -1)
     if (e1.a.hindrance && e1.b.hindrance) {
       rc += Math.min(e1.a.hindrance, e1.b.hindrance)
@@ -72,15 +80,6 @@ export function hexLosAlongEdgeHindrance(hex: Hex, dir: Direction, initialEdge: 
     } else if (e1.b.hindrance && e1.a.los) {
       rc += e1.b.hindrance
     }
-  }
-  // Trailing corner
-  const e2 = terrainCornerBorders(hex, dir, 1)
-  if (e2.a.hindrance && e2.b.hindrance) {
-    rc += Math.min(e2.a.hindrance, e2.b.hindrance)
-  } else if (e2.a.hindrance && e2.b.los) {
-    rc += e2.a.hindrance
-  } else if (e2.b.hindrance && e2.a.los) {
-    rc += e2.b.hindrance
   }
   return rc
 }
