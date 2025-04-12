@@ -750,39 +750,312 @@ describe("los", () => {
     });
   });
 
-  describe("hindrance", () => {
-    describe("combined fence and hex", () => {
+  describe("buildings", () => {
+    // TODO: add tests
+    test("true", () => {
+      expect(true).toBe(true);
+    });
+  });
+
+  describe("elevation", () => {
+    // TODO: add tests
+    test("true", () => {
+      expect(true).toBe(true);
+    });
+  });
+});
+
+describe("hindrance", () => {
+  describe("combined fence and hex", () => {
+    const mapData: MapTestData = {
+      x: 5,
+      y: 5,
+      hexes: [
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [
+          { t: "o" },
+          { t: "o" },
+          { t: "g", b: "f", be: [1, 2, 3] },
+          { t: "o", b: "f", be: [1] },
+          { t: "o" },
+        ],
+        [
+          { t: "o" },
+          { t: "o", b: "f", be: [3] },
+          { t: "o", b: "f", be: [2] },
+          { t: "o" },
+          { t: "o" },
+        ],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ],
+    };
+
+    const map = createMap(mapData);
+
+    describe("from near", () => {
+      for (const tuple of nearHexes) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          const hindrance = (<TextLayout>lc).value;
+
+          expect(hindrance).toBe(2);
+        });
+      }
+    });
+
+    describe("from far", () => {
+      for(const tuple of farHexes) {
+        const [x1, y1, x2, y2] = tuple
+        test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          const hindrance = (<TextLayout>lc).value
+
+          expect(hindrance).toBe(3);
+        });
+      }
+    });
+
+    describe("along edge", () => {
+      for (const tuple of edgeHexes) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} be 1`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          const hindrance = (<TextLayout>lc).value;
+
+          expect(hindrance).toBe(1);
+        });
+      }
+    });
+
+    describe("near to far", () => {
+      for(const tuple of nearFarHexes) {
+        const [x1, y1, x2, y2] = tuple
+        test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          const hindrance = (<TextLayout>lc).value
+
+          expect(hindrance).toBe(2);
+        });
+      }
+    });
+
+    describe("far to near", () => {
+      for(const tuple of farNearHexes) {
+        const [x1, y1, x2, y2] = tuple
+        test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          const hindrance = (<TextLayout>lc).value
+
+          expect(hindrance).toBe(3);
+        });
+      }
+    });
+
+    describe("out", () => {
+      for (const tuple of outHexes) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(true);
+        });
+      }
+    });
+
+    describe("in", () => {
+      for (const tuple of farInHexes) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          const hindrance = (<TextLayout>lc).value;
+
+          expect(hindrance).toBe(2);
+        });
+      }
+
+      for (const tuple of closeInHexes) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          const hindrance = (<TextLayout>lc).value;
+
+          expect(hindrance).toBe(1);
+        });
+      }
+    });
+
+    describe("clean misses", () => {
+      for (const tuple of missHexes) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(true);
+        });
+      }
+    });
+  });
+
+  describe("map edge, shifted left", () => {
+    const mapData: MapTestData = {
+      x: 5,
+      y: 5,
+      hexes: [
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "g" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "g" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ],
+    };
+
+    const map = createMap(mapData);
+
+    let tuples = [
+      [0, 0, 0, 4],
+      [0, 4, 0, 0],
+      [4, 0, 4, 4],
+      [4, 4, 4, 0],
+      [4, 1, 4, 3],
+      [4, 3, 4, 1],
+      [3, 0, 4, 3],
+      [4, 3, 3, 0],
+    ];
+    for (const tuple of tuples) {
+      const [x1, y1, x2, y2] = tuple;
+      test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
+        const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+        const hindrance = (<TextLayout>lc).value;
+
+        expect(hindrance).toBe(1);
+      });
+    }
+
+    tuples = [
+      [0, 1, 0, 3],
+      [0, 3, 0, 1],
+    ];
+    for (const tuple of tuples) {
+      const [x1, y1, x2, y2] = tuple;
+      test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+        expect(los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))).toBe(
+          true
+        );
+      });
+    }
+  });
+
+  describe("map edge, shifted right", () => {
+    const mapData: MapTestData = {
+      x: 5,
+      y: 6,
+      hexes: [
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "g" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "g" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ],
+    };
+
+    const map = createMap(mapData);
+
+    let tuples = [
+      [4, 1, 4, 5],
+      [4, 5, 4, 1],
+      [0, 1, 0, 5],
+      [0, 5, 0, 1],
+      [0, 2, 0, 4],
+      [0, 4, 0, 2],
+      [2, 0, 0, 4],
+      [0, 4, 2, 0],
+    ];
+    for (const tuple of tuples) {
+      const [x1, y1, x2, y2] = tuple;
+      test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
+        const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+        const hindrance = (<TextLayout>lc).value;
+
+        expect(hindrance).toBe(1);
+      });
+    }
+
+    tuples = [
+      [4, 2, 4, 4],
+      [4, 4, 4, 2],
+    ];
+    for (const tuple of tuples) {
+      const [x1, y1, x2, y2] = tuple;
+      test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+        expect(los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))).toBe(
+          true
+        );
+      });
+    }
+  });
+
+  describe("along edge between neighbors", () => {
+    const mapData: MapTestData = {
+      x: 5,
+      y: 5,
+      hexes: [
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "g" }, { t: "g" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ],
+    };
+
+    const map = createMap(mapData);
+
+    describe("blocks near", () => {
+      const tuples = [
+        [1, 1, 1, 3],
+        [1, 3, 1, 1]
+      ]
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+          const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          const hindrance = (<TextLayout>lc).value;
+
+          expect(hindrance).toBe(1);
+        });
+      }
+    });
+  });
+
+  describe("smoke", () => {
+    describe("in center", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 5,
+        features: [{ u: testFeatureData.smoke, x: 2, y: 2 }],
         hexes: [
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          [
-            { t: "o" },
-            { t: "o" },
-            { t: "g", b: "f", be: [1, 2, 3] },
-            { t: "o", b: "f", be: [1] },
-            { t: "o" },
-          ],
-          [
-            { t: "o" },
-            { t: "o", b: "f", be: [3] },
-            { t: "o", b: "f", be: [2] },
-            { t: "o" },
-            { t: "o" },
-          ],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
       };
 
       const map = createMap(mapData);
 
-      describe("from near", () => {
+      describe("hinders near", () => {
         for (const tuple of nearHexes) {
           const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
+            const lc = los(
+              map,
+              new Coordinate(x1, y1),
+              new Coordinate(x2, y2)
+            );
             const hindrance = (<TextLayout>lc).value;
 
             expect(hindrance).toBe(2);
@@ -790,58 +1063,26 @@ describe("los", () => {
         }
       });
 
-      describe("from far", () => {
-        for(const tuple of farHexes) {
-          const [x1, y1, x2, y2] = tuple
-          test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            const hindrance = (<TextLayout>lc).value
+      describe("hinders far", () => {
+        for (const tuple of farHexes) {
+          const [x1, y1, x2, y2] = tuple;
+          test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
+            const lc = los(
+              map,
+              new Coordinate(x1, y1),
+              new Coordinate(x2, y2)
+            );
+            const hindrance = (<TextLayout>lc).value;
 
-            expect(hindrance).toBe(3);
+            expect(hindrance).toBe(2);
           });
         }
       });
 
-      describe("along edge", () => {
+      describe("doesn't hinder edges", () => {
         for (const tuple of edgeHexes) {
           const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} be 1`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
-            const hindrance = (<TextLayout>lc).value;
-
-            expect(hindrance).toBe(1);
-          });
-        }
-      });
-
-      describe("near to far", () => {
-        for(const tuple of nearFarHexes) {
-          const [x1, y1, x2, y2] = tuple
-          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            const hindrance = (<TextLayout>lc).value
-
-            expect(hindrance).toBe(2);
-          });
-        }
-      });
-
-      describe("far to near", () => {
-        for(const tuple of farNearHexes) {
-          const [x1, y1, x2, y2] = tuple
-          test(`${x1},${y1} to ${x2},${y2} be 3`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            const hindrance = (<TextLayout>lc).value
-
-            expect(hindrance).toBe(3);
-          });
-        }
-      });
-
-      describe("out", () => {
-        for (const tuple of outHexes) {
-          const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+          test(`${x1},${y1} to ${x2},${y2} clear`, () => {
             expect(
               los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
             ).toBe(true);
@@ -849,32 +1090,38 @@ describe("los", () => {
         }
       });
 
-      describe("in", () => {
-        for (const tuple of farInHexes) {
+      describe("hinders out", () => {
+        for(const tuple of outHexes) {
+          const [x1, y1, x2, y2] = tuple
+          test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
+            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+            const hindrance = (<TextLayout>lc).value
+
+            expect(hindrance).toBe(2);
+          });
+        }
+      });
+
+      describe("hinders in", () => {
+        for (const tuple of inHexes) {
           const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
+          test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
+            const lc = los(
+              map,
+              new Coordinate(x1, y1),
+              new Coordinate(x2, y2)
+            );
             const hindrance = (<TextLayout>lc).value;
 
             expect(hindrance).toBe(2);
           });
         }
-
-        for (const tuple of closeInHexes) {
-          const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} be 2`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
-            const hindrance = (<TextLayout>lc).value;
-
-            expect(hindrance).toBe(1);
-          });
-        }
       });
 
-      describe("clean misses", () => {
+      describe("doesn't hinder clean misses", () => {
         for (const tuple of missHexes) {
           const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} have none`, () => {
+          test(`${x1},${y1} to ${x2},${y2} clear`, () => {
             expect(
               los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
             ).toBe(true);
@@ -887,10 +1134,14 @@ describe("los", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 5,
+        features: [
+          { u: testFeatureData.smoke, x: 0, y: 2 },
+          { u: testFeatureData.smoke, x: 4, y: 2 },
+        ],
         hexes: [
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          [{ t: "g" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "g" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
@@ -910,11 +1161,11 @@ describe("los", () => {
       ];
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
-        test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
           const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
           const hindrance = (<TextLayout>lc).value;
 
-          expect(hindrance).toBe(1);
+          expect(hindrance).toBe(2);
         });
       }
 
@@ -924,10 +1175,10 @@ describe("los", () => {
       ];
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
-        test(`${x1},${y1} to ${x2},${y2} have none`, () => {
-          expect(los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))).toBe(
-            true
-          );
+        test(`${x1},${y1} to ${x2},${y2} clear`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(true);
         });
       }
     });
@@ -936,11 +1187,15 @@ describe("los", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 6,
+        features: [
+          { u: testFeatureData.smoke, x: 0, y: 3 },
+          { u: testFeatureData.smoke, x: 4, y: 3 },
+        ],
         hexes: [
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          [{ t: "g" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "g" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
@@ -960,11 +1215,11 @@ describe("los", () => {
       ];
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
-        test(`${x1},${y1} to ${x2},${y2} to be 1`, () => {
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
           const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
           const hindrance = (<TextLayout>lc).value;
 
-          expect(hindrance).toBe(1);
+          expect(hindrance).toBe(2);
         });
       }
 
@@ -974,10 +1229,10 @@ describe("los", () => {
       ];
       for (const tuple of tuples) {
         const [x1, y1, x2, y2] = tuple;
-        test(`${x1},${y1} to ${x2},${y2} have none`, () => {
-          expect(los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))).toBe(
-            true
-          );
+        test(`${x1},${y1} to ${x2},${y2} clear`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(true);
         });
       }
     });
@@ -986,10 +1241,15 @@ describe("los", () => {
       const mapData: MapTestData = {
         x: 5,
         y: 5,
+        features: [
+          { u: testFeatureData.smoke, x: 1, y: 2 },
+          { u: testFeatureData.smoke, x: 2, y: 2 },
+
+        ],
         hexes: [
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          [{ t: "o" }, { t: "g" }, { t: "g" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
@@ -1009,266 +1269,15 @@ describe("los", () => {
             const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
             const hindrance = (<TextLayout>lc).value;
 
-            expect(hindrance).toBe(1);
-          });
-        }
-      });
-    });
-
-    describe("smoke", () => {
-      describe("in center", () => {
-        const mapData: MapTestData = {
-          x: 5,
-          y: 5,
-          features: [{ u: testFeatureData.smoke, x: 2, y: 2 }],
-          hexes: [
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          ],
-        };
-
-        const map = createMap(mapData);
-
-        describe("hinders near", () => {
-          for (const tuple of nearHexes) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-              const lc = los(
-                map,
-                new Coordinate(x1, y1),
-                new Coordinate(x2, y2)
-              );
-              const hindrance = (<TextLayout>lc).value;
-
-              expect(hindrance).toBe(2);
-            });
-          }
-        });
-
-        describe("hinders far", () => {
-          for (const tuple of farHexes) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-              const lc = los(
-                map,
-                new Coordinate(x1, y1),
-                new Coordinate(x2, y2)
-              );
-              const hindrance = (<TextLayout>lc).value;
-
-              expect(hindrance).toBe(2);
-            });
-          }
-        });
-
-        describe("doesn't hinder edges", () => {
-          for (const tuple of edgeHexes) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} clear`, () => {
-              expect(
-                los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              ).toBe(true);
-            });
-          }
-        });
-
-        describe("hinders out", () => {
-          for(const tuple of outHexes) {
-            const [x1, y1, x2, y2] = tuple
-            test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-              const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              const hindrance = (<TextLayout>lc).value
-
-              expect(hindrance).toBe(2);
-            });
-          }
-        });
-
-        describe("hinders in", () => {
-          for (const tuple of inHexes) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-              const lc = los(
-                map,
-                new Coordinate(x1, y1),
-                new Coordinate(x2, y2)
-              );
-              const hindrance = (<TextLayout>lc).value;
-
-              expect(hindrance).toBe(2);
-            });
-          }
-        });
-
-        describe("doesn't hinder clean misses", () => {
-          for (const tuple of missHexes) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} clear`, () => {
-              expect(
-                los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-              ).toBe(true);
-            });
-          }
-        });
-      });
-
-      describe("map edge, shifted left", () => {
-        const mapData: MapTestData = {
-          x: 5,
-          y: 5,
-          features: [
-            { u: testFeatureData.smoke, x: 0, y: 2 },
-            { u: testFeatureData.smoke, x: 4, y: 2 },
-          ],
-          hexes: [
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          ],
-        };
-
-        const map = createMap(mapData);
-
-        let tuples = [
-          [0, 0, 0, 4],
-          [0, 4, 0, 0],
-          [4, 0, 4, 4],
-          [4, 4, 4, 0],
-          [4, 1, 4, 3],
-          [4, 3, 4, 1],
-          [3, 0, 4, 3],
-          [4, 3, 3, 0],
-        ];
-        for (const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
-            const hindrance = (<TextLayout>lc).value;
-
             expect(hindrance).toBe(2);
           });
         }
-
-        tuples = [
-          [0, 1, 0, 3],
-          [0, 3, 0, 1],
-        ];
-        for (const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} clear`, () => {
-            expect(
-              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            ).toBe(true);
-          });
-        }
       });
-
-      describe("map edge, shifted right", () => {
-        const mapData: MapTestData = {
-          x: 5,
-          y: 6,
-          features: [
-            { u: testFeatureData.smoke, x: 0, y: 3 },
-            { u: testFeatureData.smoke, x: 4, y: 3 },
-          ],
-          hexes: [
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          ],
-        };
-
-        const map = createMap(mapData);
-
-        let tuples = [
-          [4, 1, 4, 5],
-          [4, 5, 4, 1],
-          [0, 1, 0, 5],
-          [0, 5, 0, 1],
-          [0, 2, 0, 4],
-          [0, 4, 0, 2],
-          [2, 0, 0, 4],
-          [0, 4, 2, 0],
-        ];
-        for (const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
-            const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
-            const hindrance = (<TextLayout>lc).value;
-
-            expect(hindrance).toBe(2);
-          });
-        }
-
-        tuples = [
-          [4, 2, 4, 4],
-          [4, 4, 4, 2],
-        ];
-        for (const tuple of tuples) {
-          const [x1, y1, x2, y2] = tuple;
-          test(`${x1},${y1} to ${x2},${y2} clear`, () => {
-            expect(
-              los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-            ).toBe(true);
-          });
-        }
-      });
-
-      describe("along edge between neighbors", () => {
-        const mapData: MapTestData = {
-          x: 5,
-          y: 5,
-          features: [
-            { u: testFeatureData.smoke, x: 1, y: 2 },
-            { u: testFeatureData.smoke, x: 2, y: 2 },
-
-          ],
-          hexes: [
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          ],
-        };
-
-        const map = createMap(mapData);
-
-        describe("blocks near", () => {
-          const tuples = [
-            [1, 1, 1, 3],
-            [1, 3, 1, 1]
-          ]
-
-          for (const tuple of tuples) {
-            const [x1, y1, x2, y2] = tuple;
-            test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
-              const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2));
-              const hindrance = (<TextLayout>lc).value;
-
-              expect(hindrance).toBe(2);
-            });
-          }
-        });
-      });
-    });
-  });
-
-  describe("buildings", () => {
-    test("true", () => {
-      expect(true).toBe(true);
     });
   });
 
   describe("elevation", () => {
+    // TODO: add tests
     test("true", () => {
       expect(true).toBe(true);
     });
