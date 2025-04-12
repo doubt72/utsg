@@ -1038,4 +1038,41 @@ export const mapDebugData: {
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
     ],
   },
+  {
+    x: 5,
+    y: 5,
+    units: [],
+    features: [{ u: testFeatureData.smoke, x: 2, y: 2 }],
+    hexes: [
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o", h: 1 }, { t: "o" }, { t: "o", h: 1 }, { t: "o", h: 1 }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ],
+  },
+  {
+    // Minitest map, to visually verify LOS integration tests
+    x: 6,
+    y: 8,
+    units: [],
+    features: [],
+    hexes: [
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "d" }, { t: "d" }, { t: "d" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o" },
+        { t: "o" },
+        { t: "o" },
+        { t: "o", h: 1 },
+        { t: "o", h: 2 },
+        { t: "o", h: 3 },
+      ],
+    ],
+  },
 ]
