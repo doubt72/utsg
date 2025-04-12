@@ -399,7 +399,8 @@ export function los(
   }
   const hex0 = map.hexAt(start) as Hex;
   const hex1 = map.hexAt(end) as Hex;
-  let hindrance = 0;
+  // Smoke in starting hex is special and always adds to hindrance:
+  let hindrance = hex0.counterLos.hindrance;
   const path = losHexPath(map, hex0, hex1);
   for (let i = 0; i < path.length; i++) {
     const curr = path[i];

@@ -739,6 +739,7 @@ export const mapDebugData: {
       { u: testFeatureData.fire, x: 1, y: 3 },
       { u: testFeatureData.smoke, x: 2, y: 3 },
       { u: testFeatureData.smoke, x: 3, y: 3 },
+      { u: testFeatureData.smoke, x: 11, y: 3 },
     ],
     units: [
       { u: testUnitData.ginf, x: 0, y: 0 },
@@ -746,6 +747,7 @@ export const mapDebugData: {
       { u: testUnitData.ginf, x: 2, y: 0 },
       { u: testUnitData.ginf, x: 3, y: 0 },
       { u: testUnitData.ginf, x: 4, y: 0 },
+      { u: testUnitData.ginf, x: 11, y: 3 },
       { u: testUnitData.ginf, x: 0, y: 6 },
       { u: testUnitData.ginf, x: 1, y: 6 },
       { u: testUnitData.ginf, x: 2, y: 6 },

@@ -973,18 +973,17 @@ describe("los", () => {
           }
         });
 
-        // TODO: add self-hindering
-        // describe("hinders out", () => {
-        //   for(const tuple of outHexes) {
-        //     const [x1, y1, x2, y2] = tuple
-        //     test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
-        //       const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
-        //       const hindrance = (<TextLayout>lc).value
+        describe("hinders out", () => {
+          for(const tuple of outHexes) {
+            const [x1, y1, x2, y2] = tuple
+            test(`${x1},${y1} to ${x2},${y2} to be 2`, () => {
+              const lc = los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+              const hindrance = (<TextLayout>lc).value
 
-        //       expect(hindrance).toBe(2);
-        //     });
-        //   }
-        // });
+              expect(hindrance).toBe(2);
+            });
+          }
+        });
 
         describe("hinders in", () => {
           for (const tuple of inHexes) {
