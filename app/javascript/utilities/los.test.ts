@@ -1681,7 +1681,7 @@ describe("hindrance", () => {
         hexes: [
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-          [{ t: "o" }, { t: "g", h: 1 }, { t: "g" }, { t: "g", h: 1 }, { t: "o", h: 1 }],
+          [{ t: "o" }, { t: "d", h: 1 }, { t: "d" }, { t: "d", h: 1 }, { t: "o", h: 1 }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
           [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         ],
@@ -1722,9 +1722,7 @@ describe("hindrance", () => {
       });
 
       describe("hill and valley", () => {
-        // TODO: fix uphill
-        // let tuples = symmetrical([
-        const tuples = reverseAll([
+        const tuples = symmetrical([
           [2, 2, 1, 2],
           [2, 2, 3, 2],
         ])

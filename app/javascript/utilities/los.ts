@@ -211,9 +211,13 @@ function elevationHindrance(
     start.elevation > target.elevation ? target.elevation : start.elevation;
   const hi =
     start.elevation > target.elevation ? start.elevation : target.elevation;
-  return (dist - currDist) / dist < (elevation - lo + 1) / (hi - lo + 1)
-    ? hindrance
-    : 0;
+  if (dist === 1 && start.elevation < target.elevation) {
+    // Feels like a hack, this apparently seems to coming out on wrong direction
+    // but only in this case
+    return hindrance;
+  } else {
+    return (dist - currDist) / dist < (elevation - lo + 1) / (hi - lo + 1) ? hindrance : 0;
+  }
 }
 
 function hexElevationHindrance(start: Hex, target: Hex, hex: Hex): number {
