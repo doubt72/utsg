@@ -180,7 +180,8 @@ function elevationHindrance(
   target: Hex,
   elevation: number,
   currDist: number,
-  hindrance: number
+  hindrance: number,
+  edge?: boolean
 ): number {
   if (start.elevation === target.elevation && elevation === start.elevation) {
     return hindrance;
@@ -191,10 +192,10 @@ function elevationHindrance(
   const dist = hexDistance(start, target);
   const lo = start.elevation > target.elevation ? target.elevation : start.elevation;
   const hi = start.elevation > target.elevation ? start.elevation : target.elevation;
-  if (dist === 1 && start.elevation < target.elevation) {
+  if ((dist === 1 && start.elevation < target.elevation) || edge) {
     // Feels like a hack, this apparently seems to coming out on wrong direction
-    // but only in this case
-    return hindrance;
+    // but only in this case, or when doing edge calculations
+    return (dist - currDist) / dist <= (elevation - lo + 1) / (hi - lo + 1) ? hindrance : 0;
   } else {
     return (dist - currDist) / dist < (elevation - lo + 1) / (hi - lo + 1) ? hindrance : 0;
   }
@@ -212,8 +213,8 @@ function hexElevationHindrance(start: Hex, target: Hex, hex: Hex): number {
 
 function edgeElevationHindrance(start: Hex, target: Hex, hex: Hex, edge: Direction): number {
   const currDist =
-    start.elevation > target.elevation ? hexDistance(start, hex) + 1 : hexDistance(hex, target);
-  return elevationHindrance(start, target, hex.elevation, currDist, hex.edgeHindrance(edge));
+    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target) - 1;
+  return elevationHindrance(start, target, hex.elevation, currDist, hex.edgeHindrance(edge), true);
 }
 
 function alongEdgeElevationHindrance(

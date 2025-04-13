@@ -2043,8 +2043,8 @@ describe("hindrance", () => {
         }
 
         tuples = symmetrical([
-          // [4, 7, 1, 0],
-          // [5, 7, 2, 1], TODO: fix
+          [4, 7, 1, 0],
+          [5, 7, 2, 1],
           [5, 7, 2, 0],
         ])
 
