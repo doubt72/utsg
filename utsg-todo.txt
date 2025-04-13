@@ -1,5 +1,5 @@
+- test coverage
 - fix chat
-Q should LOS follow roads?
 
 - fix text selection on select scenario
 - Place units

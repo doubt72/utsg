@@ -193,8 +193,8 @@ function elevationHindrance(
   const lo = start.elevation > target.elevation ? target.elevation : start.elevation;
   const hi = start.elevation > target.elevation ? start.elevation : target.elevation;
   if ((dist === 1 && start.elevation < target.elevation) || edge) {
-    // Feels like a hack, this apparently seems to coming out on wrong direction
-    // but only in this case, or when doing edge calculations
+    // Feels like a hack, this apparently seems to coming out in the wrong
+    // direction but only in this case, or when doing edge calculations
     return (dist - currDist) / dist <= (elevation - lo + 1) / (hi - lo + 1) ? hindrance : 0;
   } else {
     return (dist - currDist) / dist < (elevation - lo + 1) / (hi - lo + 1) ? hindrance : 0;
