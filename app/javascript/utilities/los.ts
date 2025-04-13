@@ -2,12 +2,7 @@ import Hex from "../engine/Hex";
 import Map from "../engine/Map";
 import { Coordinate, Direction } from "./commonTypes";
 import { TextLayout } from "./graphics";
-import {
-  OrientationType,
-  lineDoesIntersect,
-  lineOrientation,
-  orientation,
-} from "./lines";
+import { OrientationType, lineDoesIntersect, lineOrientation, orientation } from "./lines";
 import { normalDir } from "./utilities";
 
 // If you're doing a lot of hex manipulation (or any other sort of game
@@ -42,10 +37,7 @@ function hexIntersection(
   fromCorner?: Direction
 ): IntersectionData {
   for (let i = 0; i < 6; i++) {
-    const h0 = new Coordinate(
-      hex.xCorner(normalDir(i)),
-      hex.yCorner(normalDir(i))
-    );
+    const h0 = new Coordinate(hex.xCorner(normalDir(i)), hex.yCorner(normalDir(i)));
     // Prioritize corner intersections (technically each corner intersects two
     // edges as well, but if we hit a corner, that's what we care about);
     // exclude opposite corners if (1) it's the starting hex but doesn't
@@ -65,14 +57,8 @@ function hexIntersection(
     }
   }
   for (let i = 0; i < 6; i++) {
-    const h0 = new Coordinate(
-      hex.xCorner(normalDir(i)),
-      hex.yCorner(normalDir(i))
-    );
-    const h1 = new Coordinate(
-      hex.xCorner(normalDir(i + 1)),
-      hex.yCorner(normalDir(i + 1))
-    );
+    const h0 = new Coordinate(hex.xCorner(normalDir(i)), hex.yCorner(normalDir(i)));
+    const h1 = new Coordinate(hex.xCorner(normalDir(i + 1)), hex.yCorner(normalDir(i + 1)));
     // Exclude (1) edges we came from and (2) edges that intersect a corner we
     // came from if we hit it at an angle that doesn't match a hex edge
     if (lineDoesIntersect(h0, h1, p0, p1) && i + 1 !== fromEdge) {
@@ -186,11 +172,7 @@ function hexDistance(hex0: Hex, hex1: Hex): number {
   const z0 = -x00 - hex0.coord.y;
   const z1 = -x11 - hex1.coord.y;
   // And now things are simple
-  return Math.max(
-    Math.abs(x00 - x11),
-    Math.abs(hex0.coord.y - hex1.coord.y),
-    Math.abs(z0 - z1)
-  );
+  return Math.max(Math.abs(x00 - x11), Math.abs(hex0.coord.y - hex1.coord.y), Math.abs(z0 - z1));
 }
 
 function elevationHindrance(
@@ -207,10 +189,8 @@ function elevationHindrance(
     return 0;
   }
   const dist = hexDistance(start, target);
-  const lo =
-    start.elevation > target.elevation ? target.elevation : start.elevation;
-  const hi =
-    start.elevation > target.elevation ? start.elevation : target.elevation;
+  const lo = start.elevation > target.elevation ? target.elevation : start.elevation;
+  const hi = start.elevation > target.elevation ? start.elevation : target.elevation;
   if (dist === 1 && start.elevation < target.elevation) {
     // Feels like a hack, this apparently seems to coming out on wrong direction
     // but only in this case
@@ -226,32 +206,14 @@ function hexElevationHindrance(start: Hex, target: Hex, hex: Hex): number {
     return 0 + ch;
   }
   const currDist =
-    start.elevation > target.elevation
-      ? hexDistance(start, hex)
-      : hexDistance(hex, target);
-  return (
-    elevationHindrance(start, target, hex.elevation, currDist, hex.hindrance) +
-    ch
-  );
+    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
+  return elevationHindrance(start, target, hex.elevation, currDist, hex.hindrance) + ch;
 }
 
-function edgeElevationHindrance(
-  start: Hex,
-  target: Hex,
-  hex: Hex,
-  edge: Direction
-): number {
+function edgeElevationHindrance(start: Hex, target: Hex, hex: Hex, edge: Direction): number {
   const currDist =
-    start.elevation > target.elevation
-      ? hexDistance(start, hex) + 1
-      : hexDistance(hex, target);
-  return elevationHindrance(
-    start,
-    target,
-    hex.elevation,
-    currDist,
-    hex.edgeHindrance(edge)
-  );
+    start.elevation > target.elevation ? hexDistance(start, hex) + 1 : hexDistance(hex, target);
+  return elevationHindrance(start, target, hex.elevation, currDist, hex.edgeHindrance(edge));
 }
 
 function alongEdgeElevationHindrance(
@@ -282,9 +244,7 @@ function alongEdgeElevationHindrance(
     return 0;
   }
   const currDist =
-    start.elevation > target.elevation
-      ? hexDistance(start, hex)
-      : hexDistance(hex, target);
+    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
   return (
     elevationHindrance(
       start,
@@ -315,10 +275,8 @@ function elevationLos(
     return false;
   }
   const dist = hexDistance(start, target);
-  const lo =
-    start.elevation > target.elevation ? target.elevation : start.elevation;
-  const hi =
-    start.elevation > target.elevation ? start.elevation : target.elevation;
+  const lo = start.elevation > target.elevation ? target.elevation : start.elevation;
+  const hi = start.elevation > target.elevation ? start.elevation : target.elevation;
   if (elevation > lo && elevation === hi) {
     return true;
   }
@@ -334,29 +292,14 @@ function hexElevationLos(start: Hex, target: Hex, hex: Hex): boolean {
     return true;
   }
   const currDist =
-    start.elevation > target.elevation
-      ? hexDistance(start, hex)
-      : hexDistance(hex, target);
+    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
   return elevationLos(start, target, hex.elevation, currDist, hex.los);
 }
 
-function edgeElevationLos(
-  start: Hex,
-  target: Hex,
-  hex: Hex,
-  edge: Direction
-): boolean {
+function edgeElevationLos(start: Hex, target: Hex, hex: Hex, edge: Direction): boolean {
   const currDist =
-    start.elevation > target.elevation
-      ? hexDistance(start, hex)
-      : hexDistance(hex, target) - 1;
-  return elevationLos(
-    start,
-    target,
-    hex.elevation,
-    currDist,
-    hex.edgeLos(edge)
-  );
+    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target) - 1;
+  return elevationLos(start, target, hex.elevation, currDist, hex.edgeLos(edge));
 }
 
 function alongEdgeElevationLos(
@@ -380,9 +323,7 @@ function alongEdgeElevationLos(
     return true;
   }
   const currDist =
-    start.elevation > target.elevation
-      ? hexDistance(start, hex)
-      : hexDistance(hex, target);
+    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
   return elevationLos(
     start,
     target,
@@ -393,11 +334,7 @@ function alongEdgeElevationLos(
   );
 }
 
-export function los(
-  map: Map,
-  start: Coordinate,
-  end: Coordinate
-): TextLayout | boolean {
+export function los(map: Map, start: Coordinate, end: Coordinate): TextLayout | boolean {
   if (start.x === end.x && start.y === end.y) {
     return true;
   }
@@ -430,35 +367,18 @@ export function los(
         }
       } else {
         if (i !== 0) {
-          hindrance += edgeElevationHindrance(
-            hex0,
-            hex1,
-            curr.edgeHex as Hex,
-            curr.edge
-          );
+          hindrance += edgeElevationHindrance(hex0, hex1, curr.edgeHex as Hex, curr.edge);
         }
-        const los = edgeElevationLos(
-          hex0,
-          hex1,
-          curr.edgeHex as Hex,
-          curr.edge
-        );
+        const los = edgeElevationLos(hex0, hex1, curr.edgeHex as Hex, curr.edge);
         const hex = path[i + 1].hex;
-        if (
-          los &&
-          (hex?.coord.x !== end.x || hex.coord.y !== end.y) &&
-          i !== 0
-        ) {
+        if (los && (hex?.coord.x !== end.x || hex.coord.y !== end.y) && i !== 0) {
           return false;
         }
       }
     } else {
       hindrance += hexElevationHindrance(hex0, hex1, curr.hex as Hex);
       const block = hexElevationLos(hex0, hex1, curr.hex as Hex);
-      if (
-        block &&
-        (curr.hex?.coord.x !== end.x || curr.hex?.coord.y !== end.y)
-      ) {
+      if (block && (curr.hex?.coord.x !== end.x || curr.hex?.coord.y !== end.y)) {
         return false;
       }
     }
