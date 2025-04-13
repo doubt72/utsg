@@ -1181,6 +1181,72 @@ describe("los", () => {
         });
       }
     });
+
+    describe("from wall", () => {
+      const mapData: MapTestData = {
+        x: 6,
+        y: 8,
+        hexes: [
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [
+            { t: "o" },
+            { t: "o", b: "w", be: [2, 3] },
+            { t: "o", b: "w", be: [2, 3] },
+            { t: "o", b: "w", be: [2, 3] },
+            { t: "o" },
+            { t: "o" },
+          ],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          [
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o", h: 1 },
+            { t: "o", h: 2 },
+            { t: "o", h: 3 },
+          ],
+        ],
+      };
+
+      const map = createMap(mapData);
+
+      let tuples = symmetrical([
+        [3, 7, 1, 2],
+        [4, 7, 2, 2],
+        [5, 7, 3, 2],
+        [4, 7, 1, 0],
+        [5, 7, 2, 1],
+        [5, 7, 2, 0],
+      ])
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} clear`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(true);
+        });
+      }
+
+      tuples = symmetrical([
+        [3, 7, 0, 1],
+        [3, 7, 0, 0],
+        [4, 7, 1, 1],
+      ])
+
+      for (const tuple of tuples) {
+        const [x1, y1, x2, y2] = tuple;
+        test(`${x1},${y1} to ${x2},${y2} blocked`, () => {
+          expect(
+            los(map, new Coordinate(x1, y1), new Coordinate(x2, y2))
+          ).toBe(false);
+        });
+      }
+    });
   });
 });
 
