@@ -51,7 +51,7 @@ export default function MoveDisplay({ gameId, callback, chatInput}: MoveDisplayP
     <div className={displayClass}>
       {
         [...moves].map((m: GameMoveData, i) => {
-          const move = new GameMove(m).mappedMove
+          const move = new GameMove(m).moveClass
           return (
             <div key={i} className="move-output-record">
               <div className="move-output-date">{move.formattedDate}</div>

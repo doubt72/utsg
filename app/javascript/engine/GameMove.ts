@@ -18,30 +18,37 @@ export default class GameMove {
     this.data = data;
   }
 
-  get mappedMove(): BaseMove {
-    const mapping: { [key: string]: BaseMove } = {
-      create: new NullMove(this.data, "game created"),
-      start: new NullMove(this.data, "game started"),
-      join: new NullMove(this.data, `joined as player ${this.data.player}`),
-      leave: new NullMove(this.data, "left game"),
-      // place marker
-      // check initiative
-      // rally check
-      // pass rally phase
-      // fire
-      // intensive fire
-      // opportunity fire
-      // intense opportunity fire
-      // move
-      // rush
-      // assault move
-      // rout
-      // reaction fire
-      // pass main phase
-      // cleanup unit
-      // close combat
-    };
+  get moveClass(): BaseMove {
+    if (this.data.data.action === "create") {
+      return new NullMove(this.data, "game created");
+    }
+    if (this.data.data.action === "start") {
+      return new NullMove(this.data, "game started");
+    }
+    if (this.data.data.action === "join") {
+      return new NullMove(this.data, `joined as player ${this.data.player}`);
+    }
+    if (this.data.data.action === "leave") {
+      return new NullMove(this.data, "left game");
+    }
 
-    return mapping[this.data.data.action] || new NullMove(this.data, "unhandled move type");
+    // place marker
+    // check initiative
+    // rally check
+    // pass rally phase
+    // fire
+    // intensive fire
+    // opportunity fire
+    // intense opportunity fire
+    // move
+    // rush
+    // assault move
+    // rout
+    // reaction fire
+    // pass main phase
+    // cleanup unit
+    // close combat
+
+    return new NullMove(this.data, "unhandled move type");
   }
 }

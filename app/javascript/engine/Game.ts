@@ -72,7 +72,7 @@ export default class Game {
       ok: response => response.json().then(json => {
         for (const move of json) {
           // TODO someday need to actually process the moves
-          this.moves.push(new GameMove(move).mappedMove)
+          this.moves.push(new GameMove(move).moveClass)
         }
       })
     })
@@ -85,7 +85,7 @@ export default class Game {
         for (const move of json) {
           // TODO someday need to actually process the moves
           // read only!  Game state should only change/be saved when creating moves
-          this.moves.push(new GameMove(move).mappedMove)
+          this.moves.push(new GameMove(move).moveClass)
         }
         // Moves can change game state
         getAPI(`/api/v1/games/${this.id}`, {
