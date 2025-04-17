@@ -23,7 +23,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-check="$(rspec)"
+check="$(bundle exec rspec)"
 if [ $? -ne 0 ]; then
   echo "\n====== respec did not pass ======\n" 
   echo "$check"

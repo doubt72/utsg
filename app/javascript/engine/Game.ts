@@ -3,6 +3,7 @@ import { getAPI } from "../utilities/network";
 import Scenario, { ScenarioData } from "./Scenario";
 import GameMove from "./GameMove";
 import Feature from "./Feature";
+import BaseMove from "./moves/BaseMove";
 
 export type GameData = {
   id: number;
@@ -35,7 +36,7 @@ export default class Game {
   turn: number = 0;
   playerOnePoints: number = 0;
   playerTwoPoints: number = 0;
-  moves: GameMove[] = [];
+  moves: BaseMove[] = [];
   initiativePlayer: Player = 1;
   initiative: number = 0;
   allied_sniper?: Feature;
@@ -71,7 +72,7 @@ export default class Game {
       ok: response => response.json().then(json => {
         for (const move of json) {
           // TODO someday need to actually process the moves
-          this.moves.push(new GameMove(move))
+          this.moves.push(new GameMove(move).mappedMove)
         }
       })
     })
@@ -84,7 +85,7 @@ export default class Game {
         for (const move of json) {
           // TODO someday need to actually process the moves
           // read only!  Game state should only change/be saved when creating moves
-          this.moves.push(new GameMove(move))
+          this.moves.push(new GameMove(move).mappedMove)
         }
         // Moves can change game state
         getAPI(`/api/v1/games/${this.id}`, {

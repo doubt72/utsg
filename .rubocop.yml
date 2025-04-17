@@ -4,6 +4,7 @@ AllCops:
     - 'db/schema.rb'
     - 'support/**/*'
   NewCops: enable
+  SuggestExtensions: false
 
 Lint/AmbiguousBlockAssociation:
   AllowedMethods: [change]

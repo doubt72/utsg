@@ -1,8 +1,6 @@
-- test coverage
 - fix chat
-
-- fix text selection on select scenario
 - Place units
+- fix text selection on select scenario
 
 - hotseat games?
 

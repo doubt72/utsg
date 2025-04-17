@@ -1,3 +1,6 @@
+import BaseMove from "./moves/BaseMove";
+import { NullMove } from "./moves/NullMove";
+
 export type GameMoveData = {
   id: number; // TODO: not sure this is a number?
   user: number;
@@ -6,45 +9,39 @@ export type GameMoveData = {
   data: {
     action: string;
   };
-}
+};
 
 export default class GameMove {
-  id: number;
-  user: number;
-  player: number;
-  createdAt: string;
-  action: string;
+  data: GameMoveData;
 
   constructor(data: GameMoveData) {
-    this.id = data.id
-    this.user = data.user
-    this.player = data.player
-    this.createdAt = data.created_at
-
-    this.action = data.data.action
+    this.data = data;
   }
 
-  get formattedDate() {
-    const date = new Date(this.createdAt)
-    return `${("0" + (date.getMonth() + 1)).slice (-2)}/` +
-           `${("0" + date.getDate()).slice (-2)} ` +
-           `${("0" + date.getHours()).slice (-2)}:` +
-           `${("0" + date.getMinutes()).slice (-2)}`
-  }
+  get mappedMove(): BaseMove {
+    const mapping: { [key: string]: BaseMove } = {
+      create: new NullMove(this.data, "game created"),
+      start: new NullMove(this.data, "game started"),
+      join: new NullMove(this.data, `joined as player ${this.data.player}`),
+      leave: new NullMove(this.data, "left game"),
+      // place marker
+      // check initiative
+      // rally check
+      // pass rally phase
+      // fire
+      // intensive fire
+      // opportunity fire
+      // intense opportunity fire
+      // move
+      // rush
+      // assault move
+      // rout
+      // reaction fire
+      // pass main phase
+      // cleanup unit
+      // close combat
+    };
 
-  get description() {
-    switch(this.action) {
-      case "create":
-        return "game created"
-      case "start":
-        return "game started"
-      case "join":
-        return `joined as player ${this.player}`
-      case "leave":
-        return `left game`
-      default:
-        return "i don't even know"
-    }
+    return mapping[this.data.data.action] || new NullMove(this.data, "unhandled move type");
   }
 }
-

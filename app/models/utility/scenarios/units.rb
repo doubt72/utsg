@@ -2,10 +2,9 @@
 
 module Utility
   module Scenarios
-    module Units # rubocop:disable Metric/ModuleLength
-      class << self # rubocop:disable Metric/ClassLength
-        # rubocop:disable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
-        # -rubocop:disable Metric/PerceivedComplexity
+    module Units # rubocop:disable Metrics/ModuleLength
+      class << self # rubocop:disable Metrics/ClassLength
+        # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
         def lookup_data
           markers.merge(features).merge(initiative).merge(hulls).merge(leaders)
                  .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
@@ -147,7 +146,7 @@ module Utility
           lu
         end
 
-        # rubocop:disable Metric/LineLength
+        # rubocop:disable Layout/LineLength
         def infantry
           lu = {}
           key = %i[c n y m f r v o]
@@ -737,9 +736,8 @@ module Utility
           lu
         end
 
-        # rubocop:enable Metric/MethodLength, Metric/AbcSize, Metric/CyclomaticComplexity
-        # -rubocop:enable Metric/PerceivedComplexity
-        # rubocop:enable Metric/LineLength
+        # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+        # rubocop:enable Layout/LineLength
       end
     end
   end
