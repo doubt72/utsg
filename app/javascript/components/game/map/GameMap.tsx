@@ -99,7 +99,7 @@ export default function GameMap({
                      yy={2} hideCounters={hideCounters} map={map} ovCallback={setOverlay}/>
     )
     setSniper(() =>
-      map?.preview || (!map?.game?.allied_sniper && !map?.game?.axis_sniper) ? undefined :
+      map?.preview || (!map?.game?.alliedSniper && !map?.game?.axisSniper) ? undefined :
         <SniperDisplay xx={260} yy={2} hideCounters={hideCounters} map={map}
                        ovCallback={setOverlay}/>
     )

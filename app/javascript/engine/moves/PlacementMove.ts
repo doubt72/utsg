@@ -2,7 +2,7 @@ import Game from "../Game";
 import { GameMoveData } from "../GameMove";
 import BaseMove from "./BaseMove";
 
-export default class NullMove extends BaseMove {
+export default class PlacementMove extends BaseMove {
   description: string;
 
   constructor(data: GameMoveData, description: string) {

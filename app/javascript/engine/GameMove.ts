@@ -1,5 +1,6 @@
+import { Coordinate } from "../utilities/commonTypes";
 import BaseMove from "./moves/BaseMove";
-import { NullMove } from "./moves/NullMove";
+import NullMove from "./moves/NullMove";
 
 export type GameMoveData = {
   id: number; // TODO: not sure this is a number?
@@ -8,6 +9,11 @@ export type GameMoveData = {
   created_at: string;
   data: {
     action: string;
+    origin?: Coordinate;
+    originIndex?: number;
+    target?: Coordinate;
+    targetIndex?: number;
+    path?: Coordinate[];
   };
 };
 

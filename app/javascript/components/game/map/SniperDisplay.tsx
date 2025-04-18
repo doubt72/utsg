@@ -72,16 +72,16 @@ export default function SniperDisplay({
       setSniperOne(undefined)
       setSniperTwo(undefined)
     } else {
-      if (map.game && map.game.allied_sniper) {
+      if (map.game && map.game.alliedSniper) {
         const counter = new Counter(
-          new Coordinate(xx + 52, yy + 10), map.game.allied_sniper, map, true
+          new Coordinate(xx + 52, yy + 10), map.game.alliedSniper, map, true
         )
         const cb = () => { ovCallback({ show: true, counters: [counter] }) }
         setSniperOne(<MapCounter counter={counter} ovCallback={cb} />)
       }
-      if (map.game && map.game.axis_sniper) {
+      if (map.game && map.game.axisSniper) {
         const counter = new Counter(
-          new Coordinate(xx + 142, yy + 10), map.game.axis_sniper, map, true
+          new Coordinate(xx + 142, yy + 10), map.game.axisSniper, map, true
         )
         const cb = () => { ovCallback({ show: true, counters: [counter] }) }
         setSniperTwo(<MapCounter counter={counter} ovCallback={cb} />)

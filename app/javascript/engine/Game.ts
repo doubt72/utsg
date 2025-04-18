@@ -19,6 +19,8 @@ export type GameData = {
   metadata: {
     turn: number;
   }
+
+  suppress_network?: boolean;
 }
 
 export default class Game {
@@ -39,8 +41,10 @@ export default class Game {
   moves: BaseMove[] = [];
   initiativePlayer: Player = 1;
   initiative: number = 0;
-  allied_sniper?: Feature;
-  axis_sniper?: Feature;
+  alliedSniper?: Feature;
+  axisSniper?: Feature;
+
+  suppressNetwork: boolean = false;
 
   constructor(data: GameData, refreshCallback: (g: Game) => void = () => {}) {
     // Immutable state only
@@ -51,6 +55,9 @@ export default class Game {
     this.refreshCallback = refreshCallback
 
     this.loadCurrentState(data)
+    if (data.suppress_network) {
+      this.suppressNetwork = data.suppress_network
+    }
     this.loadAllMoves()
   }
 
@@ -68,6 +75,8 @@ export default class Game {
   }
 
   loadAllMoves() {
+    if (this.suppressNetwork) { return }
+
     getAPI(`/api/v1/game_moves?game_id=${this.id}`, {
       ok: response => response.json().then(json => {
         for (const move of json) {

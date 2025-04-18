@@ -70,11 +70,11 @@ export default class Scenario {
   setUnits({ metadata }: ScenarioData, game?: Game) {
     if (game && metadata.allied_units && metadata.axis_units) {
       metadata.allied_units[0].list = metadata.allied_units[0].list.filter(u => {
-        if (u.n === "Sniper") { game.allied_sniper = new Feature(u as FeatureData) }
+        if (u.n === "Sniper") { game.alliedSniper = new Feature(u as FeatureData) }
         return u.n !== "Sniper"
       })
       metadata.axis_units[0].list = metadata.axis_units[0].list.filter(u => {
-        if (u.n === "Sniper") { game.axis_sniper = new Feature(u as FeatureData) }
+        if (u.n === "Sniper") { game.axisSniper = new Feature(u as FeatureData) }
         return u.n !== "Sniper"
       })
     }
