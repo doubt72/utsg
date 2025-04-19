@@ -53,6 +53,8 @@ export default class Feature {
   coverSides?: [number, number, number];
   facing: Direction = 1;
 
+  rawData: FeatureData;
+
   constructor(data: FeatureData) {
     this.type = data.t
     this.name = data.n
@@ -73,25 +75,12 @@ export default class Feature {
     }
 
     this.facing = 1
+
+    this.rawData = data
   }
 
   clone(): Feature {
-    const data: FeatureData = {
-      t: this.type, n: this.name, i: this.icon, f: this.baseFirepower, r: this.currentRange,
-      v: this.currentMovement, h: this.hindrance, d: this.cover,
-      ft: 1
-    }
-
-    data.o = {
-      q: this.sniperRoll ? 1 : 0, g: this.fieldGun ? 1 : 0,
-      p: this.antiTank ? 1 : 0, los: this.blocksLos ? 1 : 0,
-    }
-
-    if (this.coverSides) {
-      data.o.da = { f: this.coverSides[0], s: this.coverSides[1], r: this.coverSides[2] }
-    }
-
-    return new Feature(data)
+    return new Feature(this.rawData)
   }
 
   turreted = false

@@ -101,6 +101,8 @@ export default class Unit {
 
   smallName: number;
 
+  rawData: UnitData;
+
   constructor(data: UnitData) {
     this.nation = data.c
     this.type = data.t
@@ -168,45 +170,12 @@ export default class Unit {
     this.facing = 1
     this.turretFacing = 1
     this.selected = false
+
+    this.rawData = data
   }
 
   clone(): Unit {
-    const data: UnitData = {
-      c: this.nation, t: this.type, n: this.name, i: this.icon, y: this.year,
-      m: this.baseMorale, s: this.size,
-      f: this.baseFirepower, r: this.baseRange, v: this.baseMovement,
-      o: {
-        l: this.leadership, a: this.assault ? 1 : 0, s: this.smokeCapable ? 1 : 0,
-        r: this.rapidFire ? 1 : 0, z: this.armored ? 1 : 0, cw: this.gunHandling,
-        x: this.singleFire ? 1 : 0, i: this.ignoreTerrain ? 1 : 0, bd: this.breakdownRoll,
-        t: this.targetedRange ? 1 : 0, m: this.minimumRange, p: this.antiTank ? 1 : 0,
-        g: this.fieldGun ? 1 : 0, o: this.offBoard ? 1 : 0, u: this.turreted ? 1 : 0,
-        c: this.crewed ? 1 : 0, y: this.rotatingMount ? 1 : 0,
-        sn: this.smallName, bv: this.brokenMovement,
-      }
-    }
-
-    if (this.breakDestroysWeapon) {
-      data.o.b = this.breakWeaponRoll ? 1 : 0
-    } else {
-      data.o.j = this.breakWeaponRoll ? 1 : 0
-    }
-    if (this.movementType == movementType.tracked) {
-      data.o.k = 1
-    } else if (this.movementType == movementType.wheeled) {
-      data.o.w = 1
-    }
-    if (this.hullArmor) {
-      data.o.ha = { f: this.hullArmor[0], s: this.hullArmor[1], r: this.hullArmor[2] }
-    }
-    if (this.turretArmor) {
-      data.o.ta = { f: this.turretArmor[0], s: this.turretArmor[1], r: this.turretArmor[2] }
-    }
-    if (this.sponson) {
-      data.o.sg = { f: this.sponson[0], r: this.sponson[1] }
-    }
-
-    return new Unit(data)
+    return new Unit(this.rawData)
   }
 
   fullIcon = false
