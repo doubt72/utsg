@@ -2,8 +2,9 @@ import { describe, expect, test } from "vitest";
 import Game from "./Game";
 import { ScenarioData } from "./Scenario";
 import { MapData } from "./Map";
-import { baseTerrainType, weatherType, windType } from "../utilities/commonTypes";
+import { Coordinate, baseTerrainType, weatherType, windType } from "../utilities/commonTypes";
 import { UnitData } from "./Unit";
+import GameMove, { GameMoveData } from "./GameMove";
 
 describe("move integration test", () => {
   const mapData: MapData = {
@@ -29,7 +30,7 @@ describe("move integration test", () => {
   }
 
   const ginf: UnitData = {
-    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
+    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0, x: 3
   }
   const rinf: UnitData = {
     c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
@@ -55,7 +56,7 @@ describe("move integration test", () => {
         0: { list: [rinf, rmg, rldr]}
       },
       axis_units: {
-        0: { list: [ginf, ginf, ginf]}
+        0: { list: [ginf]} // three units here
       },
       map_data: mapData,
     }
@@ -64,12 +65,60 @@ describe("move integration test", () => {
   const game = new Game({
     id: 1,
     name: "test game", scenario: scenarioData,
-    owner: "a", state: "0", player_one: "a", player_two: "", current_player: "",
+    owner: "a", state: "0", player_one: "a", player_two: "b", current_player: "a",
     metadata: { turn: 0 },
     suppress_network: true
   });
 
-  test("stub", () => {
-    expect(game.name).toBe("test game");
-  });
+  describe("sequence 1", () => {
+    // The first few moves don't actually mutate the game, mostly just making
+    // sure nothing crashes when running through them -- when running the FE
+    // sends commands to the BE for these, they move objects themselves only
+    // really exist for logging/display
+    let curretMove: GameMoveData = {
+      id: 1, user: 1, player: 1, created_at: "2025-04-18 01:44:19.245245",
+      data: { action: "create" }
+
+    }
+    game.executeMove(new GameMove(curretMove))
+
+    curretMove = {
+      id: 1, user: 1, player: 2, created_at: "2025-04-18 01:44:19.245245",
+      data: { action: "join" }
+
+    }
+    game.executeMove(new GameMove(curretMove))
+
+    curretMove = {
+      id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
+      data: { action: "join" }
+
+    }
+    game.executeMove(new GameMove(curretMove))
+
+    curretMove = {
+      id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
+      data: { action: "leave" }
+
+    }
+    game.executeMove(new GameMove(curretMove))
+
+    curretMove = {
+      id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
+      data: { action: "join" }
+
+    }
+    game.executeMove(new GameMove(curretMove))
+
+    test("create", () => {
+      expect(game.name).toBe("test game");
+    });
+
+    curretMove = {
+      id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
+      data: { action: "place", originIndex: 0, target: new Coordinate(4, 3) }
+
+    }
+    game.executeMove(new GameMove(curretMove))
+  })
 });

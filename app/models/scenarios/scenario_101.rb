@@ -403,7 +403,7 @@ module Scenarios
             [2, :uk_qf_6pdr_mk_ii],
             [2, :uk_matilda_ii],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          t3: { list: [
+          "3": { list: [
             :uk_leader_5_2,
             [4, :uk_line_s],
             [2, :uk_universal_carrier],

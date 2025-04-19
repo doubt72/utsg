@@ -3,9 +3,8 @@ import MapCounter from "../map/MapCounter";
 import { roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
 import { Coordinate, Player } from "../../../utilities/commonTypes";
-import Feature, { FeatureData } from "../../../engine/Feature";
-import Unit, { UnitData } from "../../../engine/Unit";
 import Counter from "../../../engine/Counter";
+import { ReinforcementSchedule } from "../../../engine/Scenario";
 
 interface ReinforcementPanelProps {
   map: Map;
@@ -21,47 +20,12 @@ export default function ReinforcementPanel({
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
 
-  const makeUnit = (data: FeatureData | UnitData) => {
-    if (data.ft) {
-      return new Feature(data)
-    } else {
-      return new Unit(data)
-    }
-  }
-
-  type AllUnitData = {
-    [index: string]: {
-      x: number;
-      id?: string;
-      u: Unit | Feature;
-    }[]
-  }
-
-  // TODO: this logic (and type) belongs somewhere else (game object)
-  const allUnits = (): AllUnitData | false => {
-    const turn = (map.game?.turn as number).toString()
+  const allUnits = (): ReinforcementSchedule | false => {
     const all = player === 1 ? map.game?.scenario.alliedReinforcements :
       map.game?.scenario.axisReinforcements
+
     if (!all) { return false }
-    const rc: AllUnitData = {}
-    for (const [key, value] of Object.entries(all)) {
-      if (key <= turn) {
-        if (!rc[turn]) { rc[turn] = [] }
-        for (const e of value.list) {
-          const current = rc[turn].find(u => u.id === e.id)
-          if (current) {
-            current.x += (e.x || 1)
-          } else {
-            rc[turn].push({ x: (e.x || 1), id: e.id, u: makeUnit(e) })
-          }
-        }
-      } else {
-        rc[key] = value.list.map(u => {
-          return { x: (u.x || 1), id: u.id, u: makeUnit(u) }
-        })
-      }
-    }
-    return rc
+    return all
   }
 
   const maxWidth = (units: object) => {
@@ -114,16 +78,21 @@ export default function ReinforcementPanel({
                 pair[1].map((u, j) => {
                   const x = xx + 80 + 90*j
                   const y = yy + 52 + 106*i
-                  const counter = new Counter(new Coordinate(x, y+5), u.u, undefined, true)
-                  return (
-                    <g key={j}>
-                      <text x={x} y={y} fontSize={16} textAnchor="start"
-                            fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-                        {u.x || 1}x
-                      </text>
-                      <MapCounter counter={counter} ovCallback={() => {}}/>
-                    </g>
-                  )
+                  const counter = new Counter(new Coordinate(x, y+5), u.counter, undefined, true)
+                  const count = (u.x || 1) - (u.used || 0)
+                  if (count > 0) {
+                    return (
+                      <g key={j}>
+                        <text x={x} y={y} fontSize={16} textAnchor="start"
+                              fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
+                          {count}x
+                        </text>
+                        <MapCounter counter={counter} ovCallback={() => {}}/>
+                      </g>
+                    )
+                  } else { return (
+                    <g key={j}></g>
+                  )}
                 })
               }
             </g>

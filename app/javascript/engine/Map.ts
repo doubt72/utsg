@@ -1,10 +1,30 @@
 import Game from "./Game";
-import { BaseTerrainTypeType, Coordinate, Direction, MapEdgeType, MarkerTypeType, VictoryHexType, WeatherTypeType, WindTypeType, baseTerrainType, markerType, weatherType, windType } from "../utilities/commonTypes";
+import {
+  BaseTerrainTypeType,
+  Coordinate,
+  Direction,
+  MapEdgeType,
+  MarkerTypeType,
+  VictoryHexType,
+  WeatherTypeType,
+  WindTypeType,
+  baseTerrainType,
+  markerType,
+  weatherType,
+  windType,
+} from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
 import Unit from "./Unit";
 import Counter from "./Counter";
 import { los } from "../utilities/los";
-import { BadgeLayout, HelpButtonLayout, OverlayLayout, TextLayout, counterRed, roundedRectangle } from "../utilities/graphics";
+import {
+  BadgeLayout,
+  HelpButtonLayout,
+  OverlayLayout,
+  TextLayout,
+  counterRed,
+  roundedRectangle,
+} from "../utilities/graphics";
 import Marker from "./Marker";
 import Feature from "./Feature";
 
@@ -217,6 +237,11 @@ export default class Map {
   addUnit(loc: Coordinate, unit: Unit | Feature) {
     const list = this.units[loc.y][loc.x]
     list.push(unit)
+  }
+
+  popUnit(loc: Coordinate): Unit | Feature | undefined {
+    const list = this.units[loc.y][loc.x]
+    return list.pop()
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {

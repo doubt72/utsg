@@ -3,7 +3,7 @@ import { getFormattedDate } from "../utilities/utilities";
 import Feature, { FeatureData } from "./Feature";
 import Game from "./Game"
 import Map, { MapData } from "./Map";
-import { UnitData } from "./Unit";
+import Unit, { UnitData } from "./Unit";
 
 export type ScenarioData = {
   id: string;
@@ -19,11 +19,14 @@ export type ScenarioData = {
     turns: number;
     first_setup?: Player;
     first_move: Player;
-    allied_units?: { [index: number]: { list: (UnitData | FeatureData)[]}};
-    axis_units?: { [index: number]: { list: (UnitData | FeatureData)[]}};
+    allied_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
+    axis_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
     map_data: MapData;
   }
 }
+
+export type ReinforcementList = {x: number, used: number, id?: string, counter: Unit | Feature}[]
+export type ReinforcementSchedule = { [index: number]: ReinforcementList };
 
 export default class Scenario {
   code: string;
@@ -38,8 +41,8 @@ export default class Scenario {
   turns: number;
   firstMove: Player;
   firstSetup?: Player;
-  alliedReinforcements?: { [index: number]: { list: (UnitData | FeatureData)[]}} = {};
-  axisReinforcements?: { [index: number]: { list: (UnitData | FeatureData)[]}} = {};
+  alliedReinforcements: ReinforcementSchedule = {};
+  axisReinforcements: ReinforcementSchedule = {};
   map: Map;
 
   constructor(data: ScenarioData, game?: Game) {
@@ -78,8 +81,25 @@ export default class Scenario {
         return u.n !== "Sniper"
       })
     }
-    this.alliedReinforcements = metadata.allied_units
-    this.axisReinforcements = metadata.axis_units
+    this.alliedReinforcements = this.convertUnitData(metadata.allied_units)
+    this.axisReinforcements = this.convertUnitData(metadata.axis_units)
+  }
+
+  convertUnitData(data: { [index: number]: {list: (UnitData | FeatureData)[]} }): ReinforcementSchedule {
+    const converted: ReinforcementSchedule = {}
+    for (const turn in data) {
+      const turnCounters = []
+      const list = data[turn].list
+      for (const counterData of list) {
+        const x = counterData.x || 1
+        const id = counterData.id
+        const counter = counterData.ft ? new Feature(counterData) : new Unit(counterData)
+
+        turnCounters.push({x, used: 0, id, counter})
+      }
+      converted[turn] = turnCounters
+    }
+    return converted
   }
 
   get displayDate(): string {
@@ -96,13 +116,35 @@ export default class Scenario {
     }[this.status]
   }
 
-  get alliedUnitList(): (UnitData | FeatureData)[] {
+  get alliedUnitList(): ReinforcementList {
     if (!this.alliedReinforcements) { return [] }
-    return Object.entries(this.alliedReinforcements).flatMap(kv => kv[1].list)
+    return Object.entries(this.alliedReinforcements).flatMap(kv => kv[1])
   }
 
-  get axisUnitList(): (UnitData | FeatureData)[] {
+  get axisUnitList(): ReinforcementList {
     if (!this.axisReinforcements) { return [] }
-    return Object.entries(this.axisReinforcements).flatMap(kv => kv[1].list)
+    return Object.entries(this.axisReinforcements).flatMap(kv => kv[1])
   }
+
+  takeAxisReinforcement(turn: number, index: number): Unit | Feature {
+    this.axisReinforcements[turn][index].used++
+
+    return this.axisReinforcements[turn][index].counter.clone()
+  }
+
+  takeAlliedReinforcement(turn: number, index: number): Unit | Feature {
+    this.alliedReinforcements[turn][index].used++
+
+    return this.alliedReinforcements[turn][index].counter.clone()
+  }
+
+  replaceAxisReinforcement(turn: number, index: number): void {
+    this.axisReinforcements[turn][index].used--
+  }
+
+  replaceAlliedReinforcement(turn: number, index: number): void {
+    this.axisReinforcements[turn][index].used--
+  }
+
+  
 }

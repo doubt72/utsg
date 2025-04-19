@@ -155,5 +155,9 @@ export default class Game {
       return [{ type: "none", message: "not implemented yet" }]
     }
   }
+
+  executeMove(move: GameMove) {
+    move.moveClass.mutateGame(this)
+  }
 }
 

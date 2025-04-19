@@ -4,8 +4,6 @@ import GameMap from "./map/GameMap";
 import WeatherDisplay from "./map/WeatherDisplay";
 import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
 import Scenario, { ScenarioData } from "../../engine/Scenario";
-import Unit, { UnitData } from "../../engine/Unit";
-import Feature, { FeatureData } from "../../engine/Feature";
 
 interface ScenarioSummaryProps {
   data: ScenarioData
@@ -27,14 +25,6 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
       { scenario.axisFactions?.map(f => axisCodeToPill(f)) }
     </span>
   )
-
-  const makeUnit = (data: UnitData | FeatureData) => {
-    if (data.ft) {
-      return new Feature(data)
-    } else {
-      return new Unit(data)
-    }
-  }
 
   const scenarioNote = () => {
     if (!scenario.status) { return "" }
@@ -102,11 +92,11 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
                 return (
                   <div key={i} className="flex nowrap">
                     <div className="unit-list-multiplier">{`${unit.x}x`}</div>
-                    <CounterDisplay unit={makeUnit(unit)} />
+                    <CounterDisplay unit={unit.counter} />
                   </div>
                 )
               } else {
-                return <CounterDisplay key={i} unit={makeUnit(unit)} />
+                return <CounterDisplay key={i} unit={unit.counter} />
               }
             })}
           </div>
@@ -116,11 +106,11 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
                 return (
                   <div key={i} className="flex nowrap">
                     <div className="unit-list-multiplier">{`${unit.x}x`}</div>
-                    <CounterDisplay unit={makeUnit(unit)} />
+                    <CounterDisplay unit={unit.counter} />
                   </div>
                 )
               } else {
-                return <CounterDisplay key={i} unit={makeUnit(unit)} />
+                return <CounterDisplay key={i} unit={unit.counter} />
               }
             })}
           </div>

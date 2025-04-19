@@ -4,7 +4,16 @@ import GameMap from "./map/GameMap";
 import Game from "../../engine/Game";
 import { mapDebugData } from "../../debug/data";
 import Map from "../../engine/Map";
-import { BaseTerrainTypeType, Coordinate, Direction, WeatherTypeType, WindTypeType, baseTerrainType, weatherType, windType } from "../../utilities/commonTypes";
+import {
+  BaseTerrainTypeType,
+  Coordinate,
+  Direction,
+  WeatherTypeType,
+  WindTypeType,
+  baseTerrainType,
+  weatherType,
+  windType,
+} from "../../utilities/commonTypes";
 import Feature from "../../engine/Feature";
 import Unit from "../../engine/Unit";
 import Counter from "../../engine/Counter";
