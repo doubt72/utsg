@@ -8,6 +8,7 @@ export default class BaseMove {
   player: Player;
   createdAt: string;
   data: object;
+  valid: boolean;
 
   constructor(data: GameMoveData) {
     this.id = data.id
@@ -15,6 +16,7 @@ export default class BaseMove {
     this.player = data.player as Player
     this.createdAt = data.created_at
     this.data = data.data
+    this.valid = true
   }
 
   get formattedDate() {
@@ -27,17 +29,19 @@ export default class BaseMove {
 
   get stringValue(): string { throw new Error("needs local implementation") }
 
+  // Override if undoable
   get undoPossible(): boolean { return false }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mutateGame(_game: Game): void { throw new Error("needs local implementation") }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  undo(_game: Game): void { throw new Error("needs local implementation") }
+  undo(_game: Game): void { throw new Error("can't be undone") }
 
   validate(term: unknown) {
     if (term === undefined) {
-      throw new Error(`Bad data for move: ${this.data}`)
+      this.valid = false
+      throw new Error("Bad data for move: " + JSON.stringify(this.data))
     }
   }
 }

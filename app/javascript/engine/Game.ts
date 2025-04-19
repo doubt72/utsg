@@ -39,6 +39,7 @@ export default class Game {
   playerOnePoints: number = 0;
   playerTwoPoints: number = 0;
   moves: BaseMove[] = [];
+  lastMove: BaseMove | undefined;
   initiativePlayer: Player = 1;
   initiative: number = 0;
   alliedSniper?: Feature;
@@ -80,8 +81,10 @@ export default class Game {
     getAPI(`/api/v1/game_moves?game_id=${this.id}`, {
       ok: response => response.json().then(json => {
         for (const move of json) {
-          // TODO someday need to actually process the moves
-          this.moves.push(new GameMove(move).moveClass)
+          const m = new GameMove(move).moveClass
+          m.mutateGame(this)
+          this.moves.push(m)
+          this.lastMove = m
         }
       })
     })
@@ -157,7 +160,20 @@ export default class Game {
   }
 
   executeMove(move: GameMove) {
-    move.moveClass.mutateGame(this)
+    const m = move.moveClass
+    m.mutateGame(this)
+    this.moves.push(m)
+    this.lastMove = m
+  }
+
+  get undoPossible() {
+    if (!this.lastMove) { return false }
+    return this.lastMove.undoPossible
+  }
+
+  undo() {
+    if (!this.lastMove) { return }
+    this.lastMove.undo(this)
   }
 }
 

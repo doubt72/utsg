@@ -70,55 +70,70 @@ describe("move integration test", () => {
     suppress_network: true
   });
 
-  describe("sequence 1", () => {
+  test("validation", () => {
+    const moveData = {
+      id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
+      data: { action: "place" }
+
+    }
+
+    expect(() => new GameMove(moveData).moveClass).toThrowError('Bad data for move')
+  })
+
+  test("sequence", () => {
     // The first few moves don't actually mutate the game, mostly just making
     // sure nothing crashes when running through them -- when running the FE
     // sends commands to the BE for these, they move objects themselves only
     // really exist for logging/display
-    let curretMove: GameMoveData = {
+    let curretMoveData: GameMoveData = {
       id: 1, user: 1, player: 1, created_at: "2025-04-18 01:44:19.245245",
       data: { action: "create" }
 
     }
-    game.executeMove(new GameMove(curretMove))
+    game.executeMove(new GameMove(curretMoveData))
 
-    curretMove = {
+    curretMoveData = {
       id: 1, user: 1, player: 2, created_at: "2025-04-18 01:44:19.245245",
       data: { action: "join" }
 
     }
-    game.executeMove(new GameMove(curretMove))
+    game.executeMove(new GameMove(curretMoveData))
 
-    curretMove = {
+    curretMoveData = {
       id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
       data: { action: "join" }
 
     }
-    game.executeMove(new GameMove(curretMove))
+    game.executeMove(new GameMove(curretMoveData))
 
-    curretMove = {
+    curretMoveData = {
       id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
       data: { action: "leave" }
 
     }
-    game.executeMove(new GameMove(curretMove))
+    game.executeMove(new GameMove(curretMoveData))
 
-    curretMove = {
+    curretMoveData = {
       id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
       data: { action: "join" }
 
     }
-    game.executeMove(new GameMove(curretMove))
+    game.executeMove(new GameMove(curretMoveData))
 
-    test("create", () => {
-      expect(game.name).toBe("test game");
-    });
-
-    curretMove = {
+    expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
+    expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
+    curretMoveData = {
       id: 1, user: 2, player: 1, created_at: "2025-04-18 01:44:19.245245",
-      data: { action: "place", originIndex: 0, target: new Coordinate(4, 3) }
+      data: { action: "place", originIndex: 0, target: new Coordinate(4, 3), orientation: 1 }
 
     }
-    game.executeMove(new GameMove(curretMove))
+    game.executeMove(new GameMove(curretMoveData))
+    expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
+    expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
+
+    expect(game.undoPossible).toBe(true)
+    game.undo()
+    expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
+    expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
   })
 });

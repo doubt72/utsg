@@ -1,22 +1,27 @@
-import { Coordinate } from "../../utilities/commonTypes";
+import { Coordinate, Direction, movementType } from "../../utilities/commonTypes";
+import Feature from "../Feature";
 import Game from "../Game";
 import { GameMoveData } from "../GameMove";
+import Unit from "../Unit";
 import BaseMove from "./BaseMove";
 
 export default class PlacementMove extends BaseMove {
   description: string = "";
   originIndex: number;
   target: Coordinate;
+  orientation: Direction;
 
   constructor(data: GameMoveData) {
     super(data)
 
     this.validate(data.data.originIndex)
     this.validate(data.data.target)
+    this.validate(data.data.orientation)
 
     // Validate will already error out if data is missing, but the linter can't tell
     this.originIndex = data.data.originIndex as number
     this.target = data.data.target as Coordinate
+    this.orientation = data.data.orientation as Direction
   }
 
   get stringValue() {
@@ -35,6 +40,12 @@ export default class PlacementMove extends BaseMove {
       scenario.takeAxisReinforcement(turn, this.originIndex) :
       scenario.takeAlliedReinforcement(turn, this.originIndex)
 
+    if (
+      (uf.isFeature && (uf as Feature).coverSides) ||
+      (!uf.isFeature && (uf as Unit).movementType !== movementType.Foot)
+    ) {
+      uf.facing = this.orientation;
+    }
     map.addUnit(this.target, uf)
   }
 

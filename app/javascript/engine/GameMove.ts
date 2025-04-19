@@ -1,4 +1,4 @@
-import { Coordinate } from "../utilities/commonTypes";
+import { Coordinate, Direction } from "../utilities/commonTypes";
 import BaseMove from "./moves/BaseMove";
 import NullMove from "./moves/NullMove";
 import PlacementMove from "./moves/PlacementMove";
@@ -20,6 +20,7 @@ export type GameMoveData = {
     target?: Coordinate;
     targetIndex?: number;
     path?: Coordinate[];
+    orientation?: Direction;
     diceResult?: DiceResult;
   };
 };
@@ -44,7 +45,7 @@ export default class GameMove {
     if (this.data.data.action === "leave") {
       return new NullMove(this.data, "left game");
     }
-    if (this.data.data.action === "placement") {
+    if (this.data.data.action === "place") {
       return new PlacementMove(this.data);
     }
 
