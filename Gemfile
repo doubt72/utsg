@@ -64,7 +64,7 @@ group :development, :test do
 end
 
 group :development do
-  gem "rubocop", "~> 1.64", require: false
+  # gem "rubocop", "~> 1.64", require: false # Breaks VSCode
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"

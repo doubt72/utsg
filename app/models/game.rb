@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Game < ApplicationRecord # rubocop:disable Metric/ClassLength
+class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :owner, class_name: "User"
   belongs_to :player_one, class_name: "User", optional: true
   belongs_to :player_two, class_name: "User", optional: true
@@ -54,6 +54,9 @@ class Game < ApplicationRecord # rubocop:disable Metric/ClassLength
       GameMove.create(
         game:, user: game.owner, player: game.player_one ? 1 : 2, data: { action: "join" }
       )
+      if game.player_one && game.player_two
+        GameMove.create(game:, user: game.owner, player: 2, data: { action: "join" })
+      end
     end
     game
   end
@@ -151,9 +154,6 @@ class Game < ApplicationRecord # rubocop:disable Metric/ClassLength
 
   def valid_players
     errors.add(:player_one, "or player_two must not be nil") if !player_one && !player_two
-    if player_one == player_two && player_one
-      errors.add(:player_one, "cannot be the same as player two")
-    end
     errors.add(:owner, "must be one of the players") if owner != player_one && owner != player_two
   end
 

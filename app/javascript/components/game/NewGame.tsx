@@ -94,7 +94,7 @@ export default function NewGame() {
     setFormInput({ ...formInput, name: value })
   }
 
-  const setPlayer = (num: Player) => {
+  const setPlayer = (num: Player | 0) => {
     setFormInput({ ...formInput, player: num })
   }
 
@@ -127,7 +127,10 @@ export default function NewGame() {
       }
       if (formInput.player === 1) {
         game.player_one = user
+      } else if (formInput.player === 2) {
+        game.player_two = user
       } else {
+        game.player_one = user
         game.player_two = user
       }
       postAPI("/api/v1/games", { game: game }, {
@@ -227,6 +230,10 @@ export default function NewGame() {
             <div>
               <CustomCheckbox onClick={() => setPlayer(2)} selected={ formInput.player === 2 }/>
               <span className="font11em">play as axis side</span>
+            </div>
+            <div>
+              <CustomCheckbox onClick={() => setPlayer(0)} selected={ formInput.player === 0 }/>
+              <span className="font11em">hotseat / solo</span>
             </div>
             <div className="align-end">
               <CreateGameButton type="confirm" />
