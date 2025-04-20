@@ -9,7 +9,7 @@ import {
 import Map from "./Map"
 import Terrain from "./Terrain"
 import { CircleLayout, PathLayout, SVGPathArray, SVGStyle, baseHexCoords } from "../utilities/graphics";
-import { normalDir } from "../utilities/utilities";
+import { coordinateToLable, normalDir } from "../utilities/utilities";
 import { hexBuildingBuildingDisplay } from "../utilities/hexBuilding";
 
 type HelpTextLayout = {
@@ -258,14 +258,7 @@ export default class Hex {
 
   get label(): string {
     if (!this.map.showCoords) { return "" }
-    // handle up to 52 for now, easy to extend if we need it, but at 1" hexes,
-    // 52 would be a somewhat ludicrous seven 8.5x11" pages wide
-    const letters = [
-      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-      "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-    ]
-    letters.forEach(l => letters.push(l + l))
-    return `${letters[this.coord.x]}${this.coord.y + 1}`
+    return coordinateToLable(this.coord)
   }
 
   // Draw the orchard hex, rotated by direction

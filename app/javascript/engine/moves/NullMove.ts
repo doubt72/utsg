@@ -5,8 +5,8 @@ import BaseMove from "./BaseMove";
 export default class NullMove extends BaseMove {
   description: string;
 
-  constructor(data: GameMoveData, description: string) {
-    super(data)
+  constructor(data: GameMoveData, game: Game, index: number, description: string) {
+    super(data, game, index)
     this.description = description
   }
 
@@ -14,8 +14,7 @@ export default class NullMove extends BaseMove {
     return this.description
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  mutateGame(_game: Game): void {
+  mutateGame(): void {
     // do nothing
   }
 }

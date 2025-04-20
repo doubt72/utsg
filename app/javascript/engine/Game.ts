@@ -1,7 +1,7 @@
 import { GameAction, Player } from "../utilities/commonTypes";
 import { getAPI } from "../utilities/network";
 import Scenario, { ScenarioData } from "./Scenario";
-import GameMove from "./GameMove";
+import GameMove, { GameMoveData } from "./GameMove";
 import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
 
@@ -23,23 +23,30 @@ export type GameData = {
   suppress_network?: boolean;
 }
 
+export type GamePhase = 0 | 1 | 2 | 3
+export const gamePhaseType: { [index: string]: GamePhase } = {
+  Placement: 0, Prep: 1, Main: 2, Cleanup: 3
+}
+
 export default class Game {
   id: number;
   name: string;
   scenario: Scenario;
   ownerName: string;
-  refreshCallback: (g: Game) => void;
-
-  state?: string;
   playerOneName: string = "";
   playerTwoName: string = "";
-  currentPlayer?: Player;
+  state?: string;
+
+  refreshCallback: (g: Game) => void;
+
+  currentPlayer: Player;
   winner?: Player;
   turn: number = 0;
+  phase: GamePhase;
   playerOnePoints: number = 0;
   playerTwoPoints: number = 0;
   moves: BaseMove[] = [];
-  lastMove: BaseMove | undefined;
+  lastMoveIndex: number = -1;
   initiativePlayer: Player = 1;
   initiative: number = 0;
   alliedSniper?: Feature;
@@ -48,31 +55,27 @@ export default class Game {
   suppressNetwork: boolean = false;
 
   constructor(data: GameData, refreshCallback: (g: Game) => void = () => {}) {
-    // Immutable state only
     this.id = data.id
     this.name = data.name
     this.scenario = new Scenario(data.scenario, this)
     this.ownerName = data.owner
+    this.playerOneName = data.player_one
+    this.playerTwoName = data.player_two
+    this.state = data.state
+
     this.refreshCallback = refreshCallback
 
-    this.loadCurrentState(data)
     if (data.suppress_network) {
       this.suppressNetwork = data.suppress_network
     }
-    this.loadAllMoves()
-  }
 
-  loadCurrentState(data: GameData) {
-    // The mutable parts of the game state for when handling moves:
-    this.state = data.state // TODO: make enum?
-    this.playerOneName = data.player_one
-    this.playerTwoName = data.player_two
-    this.currentPlayer = (data.current_player === data.player_one) ? 1 : 2
-    this.winner = data.winner
-    this.turn = data.metadata.turn
-
+    // Initial state, moves will modify
+    this.currentPlayer = this.scenario.firstSetup || 1
+    this.turn = 0
+    this.phase = gamePhaseType.Placement
     this.playerOnePoints = 0
     this.playerTwoPoints = 0
+    this.loadAllMoves()
   }
 
   loadAllMoves() {
@@ -80,32 +83,27 @@ export default class Game {
 
     getAPI(`/api/v1/game_moves?game_id=${this.id}`, {
       ok: response => response.json().then(json => {
-        for (const move of json) {
-          const m = new GameMove(move).moveClass
-          m.mutateGame(this)
-          this.moves.push(m)
-          this.lastMove = m
+        for (let i = 0; i < json.length; i++) {
+          const move = new GameMove(json[i], this, i)
+          this.executeMove(move)
         }
       })
     })
   }
 
+  // TODO: need change this to websocketing
+  //   load/execute with new moves
+  //   handle moves being undone
   loadNewMoves() {
     const limit = this.moves[this.moves.length - 1].id
     getAPI(`/api/v1/game_moves?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
-        for (const move of json) {
+        for (let i = 0; i < json.length; i++) {
           // TODO someday need to actually process the moves
           // read only!  Game state should only change/be saved when creating moves
-          this.moves.push(new GameMove(move).moveClass)
+          const move = new GameMove(json[i], this, i)
+          this.executeMove(move)
         }
-        // Moves can change game state
-        getAPI(`/api/v1/games/${this.id}`, {
-          ok: response => response.json().then(json => {
-            this.loadCurrentState(json)
-            this.refreshCallback(this)
-          })
-        })
       })
     })
   }
@@ -159,11 +157,29 @@ export default class Game {
     }
   }
 
+  get lastMove(): BaseMove | undefined {
+    if (this.lastMoveIndex < 0) { return undefined }
+    return this.moves[this.lastMoveIndex]
+  }
+
+  previousMoveUndoPossible(index: number): boolean {
+    let check = index - 1
+
+    while(check >= 0 && this.moves[check].undone) {
+      check--
+    }
+
+    if (check < 0) { return false }
+    return this.moves[check].undoPossible
+  }
+
   executeMove(move: GameMove) {
     const m = move.moveClass
-    m.mutateGame(this)
     this.moves.push(m)
-    this.lastMove = m
+    if (!m.undone) {
+      this.lastMoveIndex = move.index
+      m.mutateGame()
+    }
   }
 
   get undoPossible() {
@@ -173,7 +189,46 @@ export default class Game {
 
   undo() {
     if (!this.lastMove) { return }
-    this.lastMove.undo(this)
+    this.lastMove.undo()
+
+    while(this.lastMoveIndex >= 0 && this.lastMove.undone) {
+      this.lastMoveIndex--
+    }
+  }
+
+  checkPhase() {
+    const data: GameMoveData = {
+      player: this.currentPlayer, user: this.currentPlayer,
+      data: { action: "phase" }
+    }
+    const oldPhase = this.phase
+    const oldTurn = this.turn
+    if (this.phase == gamePhaseType.Placement) {
+      const counters = this.currentPlayer === 1 ?
+        this.scenario.axisReinforcements[this.turn] :
+        this.scenario.alliedReinforcements[this.turn]
+
+      const count = counters.reduce((tot, u) => tot + u.x - u.used, 0)
+      if (count === 0) {
+        if (this.turn === 0) {
+          data.data.phase = [oldPhase, gamePhaseType.Placement]
+          if (this.currentPlayer === this.scenario.firstSetup) {
+            data.data.player = this.currentPlayer === 1 ? 2 : 1
+            data.data.turn = [oldTurn, 0]
+          } else {
+            data.data.player = this.scenario.firstMove
+            data.data.turn = [oldTurn, 1]
+          }
+        } else {
+          data.data.player = this.currentPlayer === 1 ? 2 : 1
+          data.data.turn = [oldTurn, oldTurn]
+          data.data.phase = this.currentPlayer === this.scenario.firstMove ?
+            [oldPhase, gamePhaseType.Placement] :
+            [oldPhase, gamePhaseType.Prep]
+        }
+        this.executeMove(new GameMove(data, this, this.moves.length))
+      }
+    }
   }
 }
 

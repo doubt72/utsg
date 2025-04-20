@@ -96,7 +96,7 @@ export default function GameDisplay() {
       </div>
       <div className="standard-body">
         <div className="game-page-moves">
-          <MoveDisplay gameId={Number(id)}
+          <MoveDisplay game={game.k}
                        callback={moveNotification}
                        chatInput={showInput()} />
         </div>

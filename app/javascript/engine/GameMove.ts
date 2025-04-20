@@ -1,6 +1,8 @@
-import { Coordinate, Direction } from "../utilities/commonTypes";
+import { Direction } from "../utilities/commonTypes";
+import Game, { GamePhase } from "./Game";
 import BaseMove from "./moves/BaseMove";
 import NullMove from "./moves/NullMove";
+import PhaseMove from "./moves/PhaseMove";
 import PlacementMove from "./moves/PlacementMove";
 
 export type DiceResult = {
@@ -9,47 +11,58 @@ export type DiceResult = {
 }
 
 export type GameMoveData = {
-  id: number; // TODO: not sure this is a number?
+  id?: number;
   user: number;
   player: number;
-  created_at: string;
+  created_at?: string;
   data: {
     action: string;
-    origin?: Coordinate;
+    origin?: [number, number];
     originIndex?: number;
-    target?: Coordinate;
+    target?: [number, number];
     targetIndex?: number;
-    path?: Coordinate[];
+    path?: [number, number][];
     orientation?: Direction;
     diceResult?: DiceResult;
+    undone?: true;
+    phase?: [GamePhase, GamePhase];
+    turn?: [number, number] | number;
+    player?: number;
   };
 };
 
 export default class GameMove {
   data: GameMoveData;
+  game: Game;
+  index: number;
 
-  constructor(data: GameMoveData) {
-    this.data = data;
+  constructor(data: GameMoveData, game: Game, index: number) {
+    // TODO: need to process the special bits
+    this.data = data
+    this.game = game
+    this.index = index
   }
 
   get moveClass(): BaseMove {
     if (this.data.data.action === "create") {
-      return new NullMove(this.data, "game created");
+      return new NullMove(this.data, this.game, this.index, "game created");
     }
     if (this.data.data.action === "start") {
-      return new NullMove(this.data, "game started");
+      return new NullMove(this.data, this.game, this.index, "game started");
     }
     if (this.data.data.action === "join") {
-      return new NullMove(this.data, `joined as player ${this.data.player}`);
+      return new NullMove(this.data, this.game, this.index, `joined as player ${this.data.player}`);
     }
     if (this.data.data.action === "leave") {
-      return new NullMove(this.data, "left game");
+      return new NullMove(this.data, this.game, this.index, "left game");
+    }
+    if (this.data.data.action === "phase") {
+      return new PhaseMove(this.data, this.game, this.index)
     }
     if (this.data.data.action === "place") {
-      return new PlacementMove(this.data);
+      return new PlacementMove(this.data, this.game, this.index);
     }
 
-    // place marker
     // check initiative
     // rally check
     // pass rally phase
@@ -66,6 +79,6 @@ export default class GameMove {
     // cleanup unit
     // close combat
 
-    return new NullMove(this.data, "unhandled move type");
+    return new NullMove(this.data, this.game, this.index, "unhandled move type");
   }
 }

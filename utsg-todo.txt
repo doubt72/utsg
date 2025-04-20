@@ -1,5 +1,6 @@
-- fix chat
 - Place units
+- Switch game status to websocket
+- Switch game moves to websocket
 - fix text selection on select scenario
 
 - hotseat games?

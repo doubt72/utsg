@@ -1,22 +1,31 @@
 import { Player } from "../../utilities/commonTypes";
+import { nowUTCString } from "../../utilities/utilities";
 import Game from "../Game"
 import { GameMoveData } from "../GameMove"
 
 export default class BaseMove {
   id: number;
+  index: number;
   user: number;
   player: Player;
   createdAt: string;
   data: object;
-  valid: boolean;
+  game: Game;
 
-  constructor(data: GameMoveData) {
-    this.id = data.id
+  valid: boolean;
+  undone: boolean;
+
+  constructor(data: GameMoveData, game: Game, index: number) {
+    this.id = data.id ?? 0
+    this.index = index
     this.user = data.user
     this.player = data.player as Player
-    this.createdAt = data.created_at
+    this.createdAt = data.created_at || nowUTCString()
     this.data = data.data
+    this.game = game
+
     this.valid = true
+    this.undone = !!data.data.undone;
   }
 
   get formattedDate() {
@@ -33,10 +42,10 @@ export default class BaseMove {
   get undoPossible(): boolean { return false }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  mutateGame(_game: Game): void { throw new Error("needs local implementation") }
+  mutateGame(): void { throw new Error("needs local implementation") }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  undo(_game: Game): void { throw new Error("can't be undone") }
+  undo(): void { throw new Error("can't be undone") }
 
   validate(term: unknown) {
     if (term === undefined) {
