@@ -30,7 +30,6 @@ export default class PhaseMove extends BaseMove {
   }
 
   get placementMessage(): string {
-    console.log(this.data)
     let first = this.game.scenario.firstMove
     let last = this.newTurn === 1 ? "setup finished" : "cleanup finished"
     if (this.newTurn === 0) {
