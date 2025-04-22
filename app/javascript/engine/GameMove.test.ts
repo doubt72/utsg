@@ -59,8 +59,8 @@ describe("move integration test", () => {
       date: [1944, 6, 5],
       location: "anywhere",
       turns: 5,
-      first_setup: 1,
-      first_move: 2,
+      first_setup: 2,
+      first_move: 1,
       allied_units: {
         0: { list: [rinf, rcrew, rmg, rldr, rgun]}
       },
@@ -107,9 +107,9 @@ describe("move integration test", () => {
     game.executeMove(new GameMove(curretMoveData, game, index++))
 
     curretMoveData = {
-      user: 2, player: 1,
+      user: 2, player: 2,
       data: {
-        action: "phase", turn: [0, 0], phase: [gamePhaseType.Placement, gamePhaseType.Placement], player: 1
+        action: "phase", turn: [0, 0], phase: [gamePhaseType.Placement, gamePhaseType.Placement], player: 2
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))

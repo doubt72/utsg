@@ -39,15 +39,15 @@ export default class PhaseMove extends BaseMove {
     }
     if (first === 1) {
       if (this.newPlayer === 1) {
-        return last + ", begin Axis counter placement"
+        return last + ", begin Allied counter placement"
       } else {
-        return "Axis counter placement done, begin Allied counter placement"
+        return "Allied counter placement done, begin Axis counter placement"
       }
     } else {
       if (this.newPlayer === 1) {
-        return "Allied counter placement done, begin Axis counter placement"
+        return "Axis counter placement done, begin Allied counter placement"
       } else {
-        return last + ", begin Allied counter placement"
+        return last + ", begin Axis counter placement"
       }
     }
   }

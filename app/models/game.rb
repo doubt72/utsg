@@ -128,13 +128,15 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def start(user)
     return nil unless owner_id == user.id && ready?
 
-    s = Utility::Scenario.scenario_by_id(scenario)
-    if s["first_setup"] == 1
+    first_setup = Utility::Scenario.scenario_by_id(scenario)[:metadata][:first_setup]
+    if first_setup == 1
       update!(current_player: player_one)
     else
       update!(current_player: player_two)
     end
-    GameMove.create(game: self, user:, player: 1, data: { action: "start" })
+    GameMove.create!(game: self, user:, player: 1, data: { action: "start" })
+    GameMove.create!(game: self, user:, player: first_setup, data:
+      { action: "phase", turn: [0, 0], phase: [0, 0], player: first_setup })
     in_progress!
     self
   end

@@ -205,8 +205,8 @@ export default class Game {
     const oldTurn = this.turn
     if (this.phase == gamePhaseType.Placement) {
       const counters = this.currentPlayer === 1 ?
-        this.scenario.axisReinforcements[this.turn] :
-        this.scenario.alliedReinforcements[this.turn]
+        this.scenario.alliedReinforcements[this.turn] :
+        this.scenario.axisReinforcements[this.turn]
 
       const count = counters.reduce((tot, u) => tot + u.x - u.used, 0)
       if (count === 0) {

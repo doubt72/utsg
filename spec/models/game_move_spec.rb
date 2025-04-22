@@ -28,4 +28,21 @@ RSpec.describe GameMove do
     expect(game.reload.moves.length).to be == 1
     expect(game.last_move).to be == move
   end
+
+  it "handles various json" do
+    expect(game.moves.length).to be == 0
+    expect(game.last_move).to be_nil
+
+    move = GameMove.create!({ game:, user:, data: { action: "action" } })
+
+    expect(game.reload.moves.length).to be == 1
+    puts game.last_move.id
+    expect(game.last_move).to be == move
+
+    GameMove.create!({ game:, user:, data: { action: "go", turn: [], player: 1 } })
+
+    expect(game.reload.moves.length).to be == 2
+    # Load directly to defeat AR cacheing
+    expect(GameMove.find(game.last_move_id).data["action"]).to be == "go"
+  end
 end

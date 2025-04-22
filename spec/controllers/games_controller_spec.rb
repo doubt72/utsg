@@ -367,6 +367,17 @@ RSpec.describe Api::V1::GamesController do
       expect(game3.state).to be == "in_progress"
     end
 
+    it "moves to first phase" do
+      login(user1)
+
+      expect do
+        post :start, params: { id: game3.id }
+      end.to change { GameMove.count }.by(2)
+
+      expect(GameMove.last.data["action"]).to be == "phase"
+      expect(GameMove.second_to_last.data["action"]).to be == "start"
+    end
+
     it "doesn't allow owner to start in progress game" do
       login(user1)
 
