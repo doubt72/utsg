@@ -15,6 +15,13 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     <path d={counter.counterPath()} style={counter.counterStyle as object} />
   )
 
+  const showDisabled = () => {
+    const disable = counter.showDisabled
+    if (disable) return (
+      <path d={counter.counterPath()} style={{ fill: "rgba(0,0,0,0.33)" }} />
+    )
+  }
+
   const nameBackground = () => {
     const path = counter.nameBackgroundPath
     if (path) return (
@@ -311,6 +318,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {firepower()}{range()}{movement()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}
       {status()}
+      {showDisabled()}
       {overlay}
     </g>
   )

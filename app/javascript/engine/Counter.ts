@@ -48,6 +48,7 @@ export default class Counter {
   }
 
   showAllCounters = false;
+  showDisabled = false;
 
   get stackOffset(): number { return this.onMap ? 5 : 3 }
   get x(): number { return (this.base?.x ?? 0) + this.stackingIndex * this.stackOffset }

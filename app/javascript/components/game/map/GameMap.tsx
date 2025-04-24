@@ -185,7 +185,8 @@ export default function GameMap({
   const showReinforcements = (x: number, y: number, player: Player) => {
     setReinforcementsOverlay(
       <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
-                          leaveCallback={() => setReinforcementsOverlay(undefined)}/>
+                          leaveCallback={() => setReinforcementsOverlay(undefined)}
+                          ovCallback={setOverlay}/>
     )
   }
 
@@ -204,10 +205,10 @@ export default function GameMap({
       {sniper}
       {reinforcements}
       {counterDisplay}
+      {reinforcementsOverlay}
       {overlayDisplay}
       {counterLosOverlay}
       {terrainInfoOverlay}
-      {reinforcementsOverlay}
     </svg>
   )
 }
