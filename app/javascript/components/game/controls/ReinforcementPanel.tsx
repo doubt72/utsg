@@ -23,12 +23,8 @@ export default function ReinforcementPanel({
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
 
-  const allUnits = (): ReinforcementSchedule | false => {
-    const all = player === 1 ? map.game?.scenario.alliedReinforcements :
-      map.game?.scenario.axisReinforcements
-
-    if (!all) { return false }
-    return all
+  const allUnits = (): ReinforcementSchedule | undefined => {
+    return map.game?.availableReinforcements(player)
   }
 
   const maxWidth = (units: object) => {
@@ -36,7 +32,7 @@ export default function ReinforcementPanel({
     for (const value of Object.values(units)) {
       if (value.length > length) { length = value.length }
     }
-    return length * 90 + 80
+    return length == 1 ? 210 : length * 90 + 80
   }
 
   useEffect(() => {
@@ -47,13 +43,13 @@ export default function ReinforcementPanel({
     const close = (
       <g>
         <circle cx={closeX} cy={closeY} r={8}
-          style={{ fill: "#FFF", stroke: "#F33", strokeWidth: 2 }}
+          style={{ fill: "#CCC", stroke: "#F55", strokeWidth: 2 }}
           onClick={leaveCallback}/>
         <line x1={closeX - ff} y1={closeY - ff} x2={closeX + ff} y2={closeY + ff}
-          style={{ stroke: "#F33", strokeWidth: 2 }}
+          style={{ stroke: "#F55", strokeWidth: 2 }}
           onClick={leaveCallback}/>
         <line x1={closeX - ff} y1={closeY + ff} x2={closeX + ff} y2={closeY - ff}
-          style={{ stroke: "#F33", strokeWidth: 2 }}
+          style={{ stroke: "#F55", strokeWidth: 2 }}
           onClick={leaveCallback}/>
       </g>
     )
@@ -107,7 +103,7 @@ export default function ReinforcementPanel({
                               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
                           {count}x
                         </text>
-                        <MapCounter counter={counter} ovCallback={cb}/>
+                        <MapCounter counter={counter} ovCallback={cb} />
                       </g>
                     )
                   } else { return (

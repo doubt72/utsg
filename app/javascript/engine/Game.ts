@@ -1,6 +1,6 @@
 import { GameAction, Player } from "../utilities/commonTypes";
 import { getAPI } from "../utilities/network";
-import Scenario, { ScenarioData } from "./Scenario";
+import Scenario, { ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
 import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
@@ -194,6 +194,21 @@ export default class Game {
     while(this.lastMoveIndex >= 0 && this.lastMove.undone) {
       this.lastMoveIndex--
     }
+  }
+
+  availableReinforcements(player: Player): ReinforcementSchedule {
+    const rc: ReinforcementSchedule = {}
+    const schedule = player === 1 ? this.scenario.alliedReinforcements : this.scenario.axisReinforcements
+    for (const turn in schedule) {
+      rc[turn] = []
+      for (const counter of schedule[turn]) {
+        if (counter.x > counter.used) {
+          rc[turn].push(counter)
+        }
+      }
+      if (rc[turn].length === 0) { console.log("delete"); delete rc[turn] }
+    }
+    return rc
   }
 
   checkPhase() {

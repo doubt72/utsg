@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import GameMap from "./map/GameMap";
-import Game from "../../engine/Game";
+import Game, { gamePhaseType } from "../../engine/Game";
 import { mapDebugData } from "../../debug/data";
 import Map from "../../engine/Map";
 import {
@@ -51,6 +51,8 @@ export default function DebugMap() {
         metadata: {
           turns: 8,
           first_move: 1,
+          allied_units: { 0: { list: [] }},
+          axis_units: { 0: { list: [] }},
           map_data: {
             layout: [mapDebugData[id].x, mapDebugData[id].y, "x"],
             base_terrain: "g",
@@ -63,6 +65,7 @@ export default function DebugMap() {
         }
       }
     })
+    game.phase = gamePhaseType.Main
     setMap(game.scenario.map)
     setInitiativePlayer(game.initiativePlayer ? "axis" : "allies")
   }, [])

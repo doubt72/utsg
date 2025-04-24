@@ -17,10 +17,10 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
   const nation = (x: number, y: number, n: string, player: Player, enabled: boolean) => {
     const showDisabled = enabled ? (
       <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0)" }}
-      onMouseEnter={() => callback(x, y, player)}/>
+      onClick={() => callback(x, y, player)}/>
     ) : (
       <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0.33)" }}
-      onMouseEnter={() => callback(x, y, player)}/>
+      onClick={() => callback(x, y, player)}/>
     )
     return (
       <g>
@@ -47,14 +47,25 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
   }
 
   useEffect(() => {
+    const placing = map.game?.phase === gamePhaseType.Placement
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, 248, 100)}
+        <path d={roundedRectangle(xx, yy, placing ? 340 : 190 , 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
-        <text x={xx + 190} y={yy + 22} fontSize={16} textAnchor="start"
-              fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
-          units
-        </text>
+        { placing ?
+          (
+            <g>
+              <text x={xx + 190} y={yy + 22} fontSize={16} textAnchor="start"
+                    fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
+                select icon
+              </text>
+              <text x={xx + 190} y={yy + 40} fontSize={16} textAnchor="start"
+                    fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
+                to deploy units
+              </text>
+            </g>
+          ) : undefined
+        }
         {nationOne(xx + 10, yy + 10)}
         {nationTwo(xx + 100, yy + 10)}
       </g>
