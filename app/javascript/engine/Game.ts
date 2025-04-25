@@ -258,7 +258,11 @@ export default class Game {
     return this.reinforcementSelection
   }
 
-  setReinforcementSelection(select: ReinforcementSelection) {
+  setReinforcementSelection(select: ReinforcementSelection | undefined) {
+    if (!select) {
+      this.reinforcementSelection = select
+      return
+    }
     const current = this.reinforcementSelection
     if (select.player === current?.player && select.turn === current.turn && select.index === current.index) {
       this.reinforcementSelection = undefined

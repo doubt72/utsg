@@ -66,7 +66,8 @@ export default function GameMap({
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
-        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={false}
+        const selected = map.placementHex(x, y)
+        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={selected}
                                           selectCallback={hexSelection} showTerrain={showTerrain}
                                           terrainCallback={showTerrain ?
                                             setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
@@ -113,7 +114,7 @@ export default function GameMap({
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
     map?.windSpeed, map?.windDirection, map?.windVariable,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
-    map?.game?.playerOneScore, map?.game?.playerTwoScore,
+    map?.game?.playerOneScore, map?.game?.playerTwoScore, map?.game?.reinforcementSelection,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games
   ])
 
@@ -189,14 +190,15 @@ export default function GameMap({
         turn: selection.target.turn,
         index: selection.target.index,
       })
-      selection.counter.target.select()
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
-      const s = reinforcementsOverlay?.props.selectionUpdate + 1
       setReinforcementsOverlay(
         <ReinforcementPanel map={map} xx={x} yy={y} player={selection.target.player}
-                            closeCallback={() => setReinforcementsOverlay(undefined)}
-                            ovCallback={setOverlay} selectionUpdate={s}/>
+                            closeCallback={() => {
+                              setReinforcementsOverlay(undefined)
+                              map.game?.setReinforcementSelection(undefined)
+                            }}
+                            ovCallback={setOverlay}/>
       )
     }
     setUpdateUnitSelected(s => s + 1)
@@ -206,7 +208,7 @@ export default function GameMap({
     setReinforcementsOverlay(
       <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
                           closeCallback={() => setReinforcementsOverlay(undefined)}
-                          ovCallback={setOverlay} selectionUpdate={0} />
+                          ovCallback={setOverlay}/>
     )
   }
 

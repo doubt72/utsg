@@ -12,14 +12,13 @@ interface ReinforcementPanelProps {
   player: Player;
   xx: number;
   yy: number;
-  selectionUpdate: number;
   closeCallback: MouseEventHandler;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
 }
 
 export default function ReinforcementPanel({
-  map, player, xx, yy, selectionUpdate, closeCallback, ovCallback
+  map, player, xx, yy, closeCallback, ovCallback
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
 
@@ -130,7 +129,7 @@ export default function ReinforcementPanel({
         }
       </g>
     )
-  }, [xx, yy, selectionUpdate])
+  }, [xx, yy, map.game?.reinforcementSelection])
 
   return (
     <g>

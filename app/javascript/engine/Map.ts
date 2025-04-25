@@ -29,7 +29,7 @@ import Marker from "./Marker";
 import Feature from "./Feature";
 
 type MapLayout = [ number, number, "x" | "y" ];
-type SetupHexesType = { [index: string]: [number, string][] }
+type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
 
 export type MapData = {
   layout: MapLayout;
@@ -428,5 +428,26 @@ export default class Map {
       "M", loc.x-size/2, loc.y, "A", size/2, size/2, 0, 0, 1, loc.x+size/2, loc.y,
       "A", size/2, size/2, 0, 0, 1, loc.x-size/2, loc.y
     ].join(" "), x: loc.x, y: loc.y+5, size: size-8 }
+  }
+
+  placementHex(x: number, y: number): boolean {
+    if (!this.game?.reinforcementSelection) {
+      return false
+    }
+    const player = this.game.reinforcementSelection.player
+    const turn = this.game.reinforcementSelection.turn
+    const ts = `${turn}`
+    if (!this.alliedSetupHexes || !this.axisSetupHexes) { return false }
+    const hexes = player === 1 ? this.alliedSetupHexes[ts] : this.axisSetupHexes[ts]
+    for (const h of hexes) {
+      if (h[0] === "*") {
+        if (y === h[1]) { return true }
+      } else if (h[1] === "*") {
+        if (x === h[0]) { return true }
+      } else {
+        if (x === h[0] && y === h[1]) { return true }
+      }
+    }
+    return false
   }
 }
