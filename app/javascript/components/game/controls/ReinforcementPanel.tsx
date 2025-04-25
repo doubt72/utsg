@@ -36,7 +36,6 @@ export default function ReinforcementPanel({
   }
 
   useEffect(() => {
-    console.log("updating rep panel")
     const units = allUnits()
     const closeX = !units || Object.keys(units).length == 0 ? xx + 210 : xx + maxWidth(units) - 15
     const closeY = yy + 18
@@ -96,13 +95,13 @@ export default function ReinforcementPanel({
                     const y = yy + 52 + 106*i
                     const counter = new Counter(new Coordinate(x, y+5), u.counter, map, true)
                     counter.reinforcement = { player, turn, index: j }
-                    console.log("yadda")
-                    if (map.game?.reinforcementSelection) {
-                      console.log(map.game.reinforcementSelection)
-                      const r = map.game.reinforcementSelection
-                      if (player === r.player && turn === r.turn && j === r.index) {
+                    const r = map.game?.currentReinforcementSelection
+                    if (r && player === r.player && turn === r.turn && j === r.index) {
+                      if (!counter.target.selected) {
                         counter.target.select()
                       }
+                    } else if (counter.target.selected) {
+                      counter.target.select()
                     }
                     counter.showDisabled = map.game?.phase !== gamePhaseType.Placement ||
                       map.game.currentPlayer !== player

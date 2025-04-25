@@ -177,7 +177,6 @@ export default function GameMap({
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
-    console.log(selection)
     if (selection.target.type === "map") {
       const x = selection.target.xy.x
       const y = selection.target.xy.y
@@ -185,16 +184,20 @@ export default function GameMap({
       map.units[y][x][selection.counter.trueIndex].select()
       counterCallback(x, y, selection.counter)
     } else if (selection.target.type === "reinforcement" && map.game) {
-      if (!map.game.reinforcementSelection ||
-        map.game.reinforcementSelection.index !== selection.target.index) {
-        map.game.reinforcementSelection = {
-          player: selection.target.player,
-          turn: selection.target.turn,
-          index: selection.target.index,
-        }
-      } else {
-        map.game.reinforcementSelection = undefined
-      }
+      map.game.setReinforcementSelection({
+        player: selection.target.player,
+        turn: selection.target.turn,
+        index: selection.target.index,
+      })
+      selection.counter.target.select()
+      const x = reinforcementsOverlay?.props.xx
+      const y = reinforcementsOverlay?.props.yy
+      const s = reinforcementsOverlay?.props.selectionUpdate + 1
+      setReinforcementsOverlay(
+        <ReinforcementPanel map={map} xx={x} yy={y} player={selection.target.player}
+                            closeCallback={() => setReinforcementsOverlay(undefined)}
+                            ovCallback={setOverlay} selectionUpdate={s}/>
+      )
     }
     setUpdateUnitSelected(s => s + 1)
   }
@@ -203,7 +206,7 @@ export default function GameMap({
     setReinforcementsOverlay(
       <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
                           closeCallback={() => setReinforcementsOverlay(undefined)}
-                          ovCallback={setOverlay} selectionUpdate={updateUnitSelected}/>
+                          ovCallback={setOverlay} selectionUpdate={0} />
     )
   }
 

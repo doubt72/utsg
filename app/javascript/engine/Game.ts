@@ -214,7 +214,7 @@ export default class Game {
           rc[turn].push(counter)
         }
       }
-      if (rc[turn].length === 0) { console.log("delete"); delete rc[turn] }
+      if (rc[turn].length === 0) { delete rc[turn] }
     }
     return rc
   }
@@ -251,6 +251,19 @@ export default class Game {
         }
         this.executeMove(new GameMove(data, this, this.moves.length))
       }
+    }
+  }
+
+  get currentReinforcementSelection(): ReinforcementSelection | undefined {
+    return this.reinforcementSelection
+  }
+
+  setReinforcementSelection(select: ReinforcementSelection) {
+    const current = this.reinforcementSelection
+    if (select.player === current?.player && select.turn === current.turn && select.index === current.index) {
+      this.reinforcementSelection = undefined
+    } else {
+      this.reinforcementSelection = select
     }
   }
 }
