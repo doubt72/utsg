@@ -12,14 +12,14 @@ interface ReinforcementPanelProps {
   player: Player;
   xx: number;
   yy: number;
-  // selCallback: Function;
-  leaveCallback: MouseEventHandler;
+  selectionUpdate: number;
+  closeCallback: MouseEventHandler;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
 }
 
 export default function ReinforcementPanel({
-  map, player, xx, yy, leaveCallback, ovCallback
+  map, player, xx, yy, selectionUpdate, closeCallback, ovCallback
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
 
@@ -36,6 +36,7 @@ export default function ReinforcementPanel({
   }
 
   useEffect(() => {
+    console.log("updating rep panel")
     const units = allUnits()
     const closeX = !units || Object.keys(units).length == 0 ? xx + 210 : xx + maxWidth(units) - 15
     const closeY = yy + 18
@@ -44,13 +45,13 @@ export default function ReinforcementPanel({
       <g>
         <circle cx={closeX} cy={closeY} r={8}
           style={{ fill: "#CCC", stroke: "#F55", strokeWidth: 2 }}
-          onClick={leaveCallback}/>
+          onClick={closeCallback}/>
         <line x1={closeX - ff} y1={closeY - ff} x2={closeX + ff} y2={closeY + ff}
           style={{ stroke: "#F55", strokeWidth: 2 }}
-          onClick={leaveCallback}/>
+          onClick={closeCallback}/>
         <line x1={closeX - ff} y1={closeY + ff} x2={closeX + ff} y2={closeY - ff}
           style={{ stroke: "#F55", strokeWidth: 2 }}
-          onClick={leaveCallback}/>
+          onClick={closeCallback}/>
       </g>
     )
     if (!units || Object.keys(units).length === 0) {
@@ -81,42 +82,56 @@ export default function ReinforcementPanel({
         </text>
         {close}
         {
-          Object.entries(units).map((pair, i) => 
-            <g key={i}>
-              <text x={xx + 10} y={yy + 100 + 106*i} fontSize={16} textAnchor="start"
-                    fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-                {Number(pair[0]) > 0 ? `turn ${pair[0]}` : "setup"}
-              </text>
-              {
-                pair[1].map((u, j) => {
-                  const x = xx + 80 + 90*j
-                  const y = yy + 52 + 106*i
-                  const counter = new Counter(new Coordinate(x, y+5), u.counter, map, true)
-                  counter.showDisabled = map.game?.phase !== gamePhaseType.Placement ||
-                    map.game.currentPlayer !== player
-                  const count = (u.x || 1) - (u.used || 0)
-                  if (count > 0) {
-                    const cb = () => { ovCallback({show: true, counters: [counter]})}
-                    return (
-                      <g key={j}>
-                        <text x={x} y={y} fontSize={16} textAnchor="start"
-                              fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-                          {count}x
-                        </text>
-                        <MapCounter counter={counter} ovCallback={cb} />
-                      </g>
-                    )
-                  } else { return (
-                    <g key={j}></g>
-                  )}
-                })
-              }
-            </g>
-          )
+          Object.entries(units).map((pair, i) => {
+            const turn = Number(pair[0])
+            return (
+              <g key={i}>
+                <text x={xx + 10} y={yy + 100 + 106*i} fontSize={16} textAnchor="start"
+                      fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
+                  {turn > 0 ? `turn ${turn}` : "setup"}
+                </text>
+                {
+                  pair[1].map((u, j) => {
+                    const x = xx + 80 + 90*j
+                    const y = yy + 52 + 106*i
+                    const counter = new Counter(new Coordinate(x, y+5), u.counter, map, true)
+                    counter.reinforcement = { player, turn, index: j }
+                    console.log("yadda")
+                    if (map.game?.reinforcementSelection) {
+                      console.log(map.game.reinforcementSelection)
+                      const r = map.game.reinforcementSelection
+                      if (player === r.player && turn === r.turn && j === r.index) {
+                        counter.target.select()
+                      }
+                    }
+                    counter.showDisabled = map.game?.phase !== gamePhaseType.Placement ||
+                      map.game.currentPlayer !== player
+                    const count = (u.x || 1) - (u.used || 0)
+                    if (count > 0) {
+                      const cb = () => { ovCallback({show: true, counters: [counter]})}
+                      return (
+                        <g key={j}>
+                          <text x={x} y={y} fontSize={16} textAnchor="start"
+                                fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
+                            {count}x
+                          </text>
+                          <MapCounter counter={counter} ovCallback={cb} />
+                        </g>
+                      )
+                    } else {
+                      return (
+                        <g key={j}></g>
+                      )
+                    }
+                  })
+                }
+              </g>
+            )
+          })
         }
       </g>
     )
-  }, [xx, yy])
+  }, [xx, yy, selectionUpdate])
 
   return (
     <g>

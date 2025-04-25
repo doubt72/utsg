@@ -15,7 +15,7 @@ import SniperDisplay from "./SniperDisplay";
 import Map from "../../../engine/Map";
 import Counter from "../../../engine/Counter";
 import ReinforcementPanel from "../controls/ReinforcementPanel";
-import { Coordinate, Player } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Player } from "../../../utilities/commonTypes";
 
 interface GameMapProps {
   map: Map;
@@ -164,7 +164,8 @@ export default function GameMap({
           if (hexCallback) {
             hexCallback(x, y, !h.props.selected)
           }
-          return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} selected={!h.props.selected}
+          const selected = map.debug ? !h.props.selected : false
+          return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} selected={selected}
                                 selectCallback={hexSelection} showTerrain={showTerrain}
                                 terrainCallback={setTerrainInfoOverlay}
                                 svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
@@ -175,18 +176,34 @@ export default function GameMap({
     )
   }
 
-  const unitSelection = (x: number, y: number, counter: Counter) => {
-    if (counter.trueIndex === undefined) { return }
-    map.units[y][x][counter.trueIndex].select()
-    setUpdateUnitSelected(s => s+1)
-    counterCallback(x, y, counter)
+  const unitSelection = (selection: CounterSelectionTarget) => {
+    console.log(selection)
+    if (selection.target.type === "map") {
+      const x = selection.target.xy.x
+      const y = selection.target.xy.y
+      if (selection.counter.trueIndex === undefined) { return }
+      map.units[y][x][selection.counter.trueIndex].select()
+      counterCallback(x, y, selection.counter)
+    } else if (selection.target.type === "reinforcement" && map.game) {
+      if (!map.game.reinforcementSelection ||
+        map.game.reinforcementSelection.index !== selection.target.index) {
+        map.game.reinforcementSelection = {
+          player: selection.target.player,
+          turn: selection.target.turn,
+          index: selection.target.index,
+        }
+      } else {
+        map.game.reinforcementSelection = undefined
+      }
+    }
+    setUpdateUnitSelected(s => s + 1)
   }
 
   const showReinforcements = (x: number, y: number, player: Player) => {
     setReinforcementsOverlay(
       <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
-                          leaveCallback={() => setReinforcementsOverlay(undefined)}
-                          ovCallback={setOverlay}/>
+                          closeCallback={() => setReinforcementsOverlay(undefined)}
+                          ovCallback={setOverlay} selectionUpdate={updateUnitSelected}/>
     )
   }
 

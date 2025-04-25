@@ -1,3 +1,5 @@
+import Counter from "../engine/Counter";
+
 // TODO: maybe do more sophisticated range types at some point?
 export type Direction = 1 | 2 | 3 | 4 | 5 | 6
 export type ExtendedDirection = Direction | 1.5 | 2.5 | 3.5 | 4.5 | 5.5 | 6.5
@@ -46,6 +48,17 @@ export class Coordinate {
   yShift(yv: number) {
     this.y = this.y + yv
   }
+}
+
+export type CounterSelectionTarget = {
+  target:
+    { type: "map", xy: Coordinate } |
+    { type: "reinforcement", player: Player, turn: number, index: number };
+  counter: Counter;
+}
+
+export type ReinforcementSelection = {
+  player: Player, turn: number, index: number
 }
 
 export type WindTypeType = 0 | 1 | 2 | 3

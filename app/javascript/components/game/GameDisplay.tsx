@@ -107,7 +107,6 @@ export default function GameDisplay() {
       </div>
       {controls}
       <div className="flex mr05em p05em">
-        <div className="flex-fill"></div>
         <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
           size -
         </div>

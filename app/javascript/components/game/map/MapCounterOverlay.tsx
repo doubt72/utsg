@@ -74,8 +74,23 @@ export default function MapCounterOverlay({
             <g key={i} transform={`scale(2) translate(${layout.x/2 + i*85} ${layout.y/2})`}>
               <path d={cd.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
                     onClick={() => {
+                      if (xx !== undefined && yy !== undefined) {
+                        selectionCallback({
+                          target: { type: "map", xy: new Coordinate(xx, yy) },
+                          counter: cd,
+                        })
+                      } else if (counter.reinforcement) {
+                        selectionCallback({
+                          target: {
+                            type: "reinforcement",
+                            player: counter.reinforcement.player,
+                            turn: counter.reinforcement.turn,
+                            index: counter.reinforcement.index,
+                          },
+                          counter: cd,
+                        })
+                      }
                       setUpdate(s => s + 1)
-                      selectionCallback(xx, yy, cd)
                     }} />
             </g>
           )

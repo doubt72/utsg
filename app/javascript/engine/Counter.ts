@@ -1,4 +1,4 @@
-import { Coordinate, Direction, FeatureTypeType, featureType, markerType } from "../utilities/commonTypes";
+import { Coordinate, Direction, FeatureTypeType, Player, featureType, markerType } from "../utilities/commonTypes";
 import Marker from "./Marker";
 import Unit from "./Unit";
 import Feature from "./Feature";
@@ -20,6 +20,8 @@ export default class Counter {
   map?: Map;
   stackingIndex: number;
   trueIndex?: number;
+
+  reinforcement?: { player: Player, turn: number, index: number }
 
   constructor(
     coord: Coordinate | undefined, target: Unit | Marker | Feature,
@@ -49,6 +51,7 @@ export default class Counter {
 
   showAllCounters = false;
   showDisabled = false;
+  placeIndex?: number;
 
   get stackOffset(): number { return this.onMap ? 5 : 3 }
   get x(): number { return (this.base?.x ?? 0) + this.stackingIndex * this.stackOffset }

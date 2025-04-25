@@ -259,4 +259,8 @@ export default class Marker {
     }
     return text.concat(variable)
   }
+
+  select() {
+    // does nothing, can't select markers
+  }
 }

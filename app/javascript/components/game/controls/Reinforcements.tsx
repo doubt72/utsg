@@ -50,7 +50,7 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
     const placing = map.game?.phase === gamePhaseType.Placement
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, placing ? 340 : 190 , 100)}
+        <path d={roundedRectangle(xx, yy, placing ? 305 : 190 , 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         { placing ?
           (
@@ -61,7 +61,11 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
               </text>
               <text x={xx + 190} y={yy + 40} fontSize={16} textAnchor="start"
                     fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
-                to deploy units
+                to deploy
+              </text>
+              <text x={xx + 190} y={yy + 58} fontSize={16} textAnchor="start"
+                    fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
+                units
               </text>
             </g>
           ) : undefined

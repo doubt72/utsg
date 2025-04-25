@@ -1,4 +1,4 @@
-import { GameAction, Player } from "../utilities/commonTypes";
+import { GameAction, Player, ReinforcementSelection } from "../utilities/commonTypes";
 import { getAPI } from "../utilities/network";
 import Scenario, { ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
@@ -53,6 +53,7 @@ export default class Game {
   axisSniper?: Feature;
 
   suppressNetwork: boolean = false;
+  reinforcementSelection?: ReinforcementSelection;
 
   constructor(data: GameData, refreshCallback: (g: Game) => void = () => {}) {
     this.id = data.id
@@ -137,6 +138,10 @@ export default class Game {
   }
 
   actionsAvailable(currentPlayer: string): GameAction[] {
+    const moves = []
+    if (this.lastMove?.undoPossible) {
+      moves.push({ type: "undo" })
+    }
     if (this.state === "needs_player") {
       if (this.ownerName === currentPlayer || !currentPlayer) {
         return [{ type: "none", message: "waiting for player to join" }]
@@ -152,6 +157,9 @@ export default class Game {
       } else {
         return [{ type: "none", message: "waiting for game to start" }]
       }
+    } else if (this.phase === gamePhaseType.Placement) {
+      moves.unshift({ type: "placement" })
+      return moves
     } else {
       return [{ type: "none", message: "not implemented yet" }]
     }

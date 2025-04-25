@@ -3,6 +3,7 @@ import Game from "../../../engine/Game";
 import JoinButton from "./JoinButton";
 import LeaveButton from "./LeaveButton";
 import StartButton from "./StartButton";
+import UndoButton from "./UndoButton";
 
 interface GameControlsProps {
   game: Game;
@@ -20,15 +21,19 @@ export default function GameControls({ game }: GameControlsProps) {
     const user = localStorage.getItem("username")
     setControls(game.actionsAvailable(user as string).map((a, i) => {
       if (a.type === "none") {
-        return <div key={i}>{a.message}</div>
+        return <div className="mt05em mb05em mr05em" key={i}>{a.message}</div>
+      } else if (a.type === "undo") {
+        return <UndoButton gameId={game.id} key={i} />
       } else if (a.type === "join") {
         return <JoinButton gameId={game.id} key={i} />
       } else if (a.type === "leave") {
         return <LeaveButton gameId={game.id} key={i} />
       } else if (a.type === "start") {
         return <StartButton gameId={game.id} key={i} />
+      } else if (a.type === "placement") {
+        return <div className="mt05em mb05em mr05em" key={i}>select reinforcement panel to deploy units</div>
       } else {
-        return <div key={i}>unknown action {a.type}</div>
+        return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>
       }
     }))
   }

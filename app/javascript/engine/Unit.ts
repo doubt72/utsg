@@ -183,7 +183,9 @@ export default class Unit {
   sniperRoll = 0
   hideOverlayRotation = false
 
-  select() { this.selected = !this.selected }
+  select() {
+    this.selected = !this.selected
+  }
 
   get hindrance(): number { return 0 }
 

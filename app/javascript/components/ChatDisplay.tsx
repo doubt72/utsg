@@ -97,7 +97,7 @@ export default function ChatDisplay({ gameId, showInput}: ChatDisplayProps) {
             time = formattedDate(date)
           }
           const check = msg.user === lastUser &&
-            lastTime.getTime() > (date.getTime() - 3600 * 1000)
+            lastTime.getTime() > (date.getTime() - 300 * 1000)
           const dateClass = check ? "chat-output-date-invisible" : "chat-output-date"
           const nameClass = check ? "chat-output-username-invisible" : "chat-output-username"
           if (msg.user !== lastUser) {
