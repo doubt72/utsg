@@ -41,7 +41,7 @@ export default function GameMap({
     show: boolean, x: number, y: number, counters?: Counter[]
   }>({ show: false, x: -1, y: -1 })
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
-  const [updateUnitSelected, setUpdateUnitSelected] = useState(0)
+  const [updateUnitshaded, setUpdateUnitshaded] = useState(0)
   const [counterLosOverlay, setCounterLosOverlay] = useState<JSX.Element[] | undefined>()
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState<JSX.Element | undefined>()
   const [reinforcementsOverlay, setReinforcementsOverlay] = useState<JSX.Element | undefined>()
@@ -66,8 +66,8 @@ export default function GameMap({
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
-        const selected = map.placementHex(x, y)
-        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selected={selected}
+        const shaded = !map.openHex(x, y)
+        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} shaded={shaded}
                                           selectCallback={hexSelection} showTerrain={showTerrain}
                                           terrainCallback={showTerrain ?
                                             setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
@@ -109,7 +109,7 @@ export default function GameMap({
         <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements}/>
     )
   }, [
-    map, showCoords, showStatusCounters, hideCounters, updateUnitSelected,
+    map, showCoords, showStatusCounters, hideCounters, updateUnitshaded,
     showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
     map?.windSpeed, map?.windDirection, map?.windVariable,
@@ -163,10 +163,10 @@ export default function GameMap({
       overlays.map(h => {
         if (h.key === `${key}-o`) {
           if (hexCallback) {
-            hexCallback(x, y, !h.props.selected)
+            hexCallback(x, y, !h.props.shaded)
           }
-          const selected = map.debug ? !h.props.selected : false
-          return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} selected={selected}
+          const shaded = map.debug ? !h.props.shaded : false
+          return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} shaded={shaded}
                                 selectCallback={hexSelection} showTerrain={showTerrain}
                                 terrainCallback={setTerrainInfoOverlay}
                                 svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
@@ -201,7 +201,7 @@ export default function GameMap({
                             ovCallback={setOverlay}/>
       )
     }
-    setUpdateUnitSelected(s => s + 1)
+    setUpdateUnitshaded(s => s + 1)
   }
 
   const showReinforcements = (x: number, y: number, player: Player) => {

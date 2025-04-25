@@ -4,14 +4,14 @@ import Hex from "../../../engine/Hex";
 interface MapHexOverlayProps {
   hex: Hex;
   selectCallback: (x: number, y: number) => void,
-  selected: boolean;
+  shaded: boolean;
   showTerrain: boolean;
   terrainCallback: (a: JSX.Element | undefined) => void;
   svgRef: React.MutableRefObject<HTMLElement>;
 }
 
 export default function MapHexOverlay({
-  hex, selectCallback, selected, showTerrain, terrainCallback, svgRef
+  hex, selectCallback, shaded, showTerrain, terrainCallback, svgRef
 }: MapHexOverlayProps) {
   const river = () => {
     if (!hex.river) { return "" }
@@ -81,15 +81,15 @@ export default function MapHexOverlay({
     }
   }
 
-  const selectedStyle = { fill: "rgba(0,0,0,0.1)" }
-  const unSelectedStyle = { fill: "rgba(0,0,0,0)" }
+  const shadedStyle = { fill: "rgba(0,0,0,0.1)" }
+  const unshadedStyle = { fill: "rgba(0,0,0,0)" }
 
-  const selectedSVG = (
-    selected ? <polygon points={hex.hexCoords} style={selectedStyle}
+  const shadedSVG = (
+    shaded ? <polygon points={hex.hexCoords} style={shadedStyle}
                         onClick={() => selectCallback(hex.coord.x, hex.coord.y)}
                         onMouseLeave={() => terrainCallback(undefined)}
                         onMouseMove={e => updateTerrainInfo(e)} /> :
-               <polygon points={hex.hexCoords} style={unSelectedStyle}
+               <polygon points={hex.hexCoords} style={unshadedStyle}
                         onClick={() => selectCallback(hex.coord.x, hex.coord.y)}
                         onMouseLeave={() => terrainCallback(undefined)}
                         onMouseMove={e => updateTerrainInfo(e)} />
@@ -103,7 +103,7 @@ export default function MapHexOverlay({
       {hex.night ? night : ""}
       {edge()}
       {victory()}
-      {selectedSVG}
+      {shadedSVG}
     </g>
   )
 }

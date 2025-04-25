@@ -430,9 +430,9 @@ export default class Map {
     ].join(" "), x: loc.x, y: loc.y+5, size: size-8 }
   }
 
-  placementHex(x: number, y: number): boolean {
+  openHex(x: number, y: number): boolean {
     if (!this.game?.reinforcementSelection) {
-      return false
+      return true
     }
     const player = this.game.reinforcementSelection.player
     const turn = this.game.reinforcementSelection.turn
