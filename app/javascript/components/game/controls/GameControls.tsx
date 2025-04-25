@@ -31,7 +31,7 @@ export default function GameControls({ game }: GameControlsProps) {
       } else if (a.type === "start") {
         return <StartButton gameId={game.id} key={i} />
       } else if (a.type === "placement") {
-        return <div className="mt05em mb05em mr05em" key={i}>select reinforcement panel to deploy units</div>
+        return <div className="mt05em mb05em mr05em" key={i}>select country icon to deploy units</div>
       } else {
         return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>
       }

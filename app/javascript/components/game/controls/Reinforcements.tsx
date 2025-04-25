@@ -70,6 +70,11 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
             </g>
           ) : undefined
         }
+        <text x="0" y="0" fontSize={16} textAnchor="end"
+                 fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}
+                 transform={`translate(${xx + 195 + (placing ? 115 : 0)},${yy + 95}) rotate(90)`}>
+          units
+        </text>
         {nationOne(xx + 10, yy + 10)}
         {nationTwo(xx + 100, yy + 10)}
       </g>

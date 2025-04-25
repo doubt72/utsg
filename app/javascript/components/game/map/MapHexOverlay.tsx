@@ -81,7 +81,7 @@ export default function MapHexOverlay({
     }
   }
 
-  const shadedStyle = { fill: "rgba(0,0,0,0.1)" }
+  const shadedStyle = { fill: "rgba(0,0,0,0.25)" }
   const unshadedStyle = { fill: "rgba(0,0,0,0)" }
 
   const shadedSVG = (

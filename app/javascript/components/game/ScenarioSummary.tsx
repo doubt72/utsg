@@ -91,7 +91,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
               if (unit.x !== undefined) {
                 return (
                   <div key={i} className="flex nowrap">
-                    <div className="unit-list-multiplier">{`${unit.x}x`}</div>
+                    <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
                     <CounterDisplay unit={unit.counter} />
                   </div>
                 )
@@ -105,7 +105,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
               if (unit.x !== undefined) {
                 return (
                   <div key={i} className="flex nowrap">
-                    <div className="unit-list-multiplier">{`${unit.x}x`}</div>
+                    <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
                     <CounterDisplay unit={unit.counter} />
                   </div>
                 )
