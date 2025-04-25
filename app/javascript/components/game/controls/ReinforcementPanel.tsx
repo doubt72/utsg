@@ -32,12 +32,12 @@ export default function ReinforcementPanel({
     for (const value of Object.values(units)) {
       if (value.length > length) { length = value.length }
     }
-    return length == 1 ? 210 : length * 90 + 80
+    return length == 1 ? 225 : length * 90 + 80
   }
 
   useEffect(() => {
     const units = allUnits()
-    const closeX = !units || Object.keys(units).length == 0 ? xx + 195 : xx + maxWidth(units) - 15
+    const closeX = !units || Object.keys(units).length == 0 ? xx + 210 : xx + maxWidth(units) - 15
     const closeY = yy + 18
     const ff = Math.sin(45 * Math.PI / 180) * 8
     const close = (
@@ -56,15 +56,15 @@ export default function ReinforcementPanel({
     if (!units || Object.keys(units).length === 0) {
       setBase(
         <g>
-          <path d={roundedRectangle(xx, yy, 210, 65)}
-                style={{ fill: "#555", stroke: "#D5D5D5", strokeWidth: 1 }}/>
+          <path d={roundedRectangle(xx, yy, 225, 100)}
+                style={{ fill: "#AAA", stroke: "#D5D5D5", strokeWidth: 1 }}/>
           <text x={xx + 10} y={yy + 22} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-            available units
+            available units:
           </text>
-          <text x={xx + 10} y={yy + 52} fontSize={16} textAnchor="start"
+          <text x={xx + 15} y={yy + 60} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-            all units deployed
+            (all units deployed)
           </text>
           {close}
         </g>
@@ -74,10 +74,10 @@ export default function ReinforcementPanel({
     setBase(
       <g>
         <path d={roundedRectangle(xx, yy, maxWidth(units), Object.keys(units).length * 106 + 44)}
-              style={{ fill: "#555", stroke: "#D5D5D5", strokeWidth: 1 }}/>
+              style={{ fill: "#AAA", stroke: "#D5D5D5", strokeWidth: 1 }}/>
         <text x={xx + 10} y={yy + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-          available units
+          available units:
         </text>
         {close}
         {
