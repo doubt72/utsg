@@ -93,7 +93,9 @@ export default function ReinforcementPanel({
                     const x = xx + 80 + 90*j
                     const y = yy + 52 + 106*i
                     const counter = new Counter(new Coordinate(x, y+5), u.counter, map, true)
-                    counter.reinforcement = { player, turn, index: j }
+                    if (player === map.game?.currentPlayer) {
+                      counter.reinforcement = { player, turn, index: j }
+                    }
                     const r = map.game?.currentReinforcementSelection
                     if (r && player === r.player && turn === r.turn && j === r.index) {
                       if (!counter.target.selected) {
