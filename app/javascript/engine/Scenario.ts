@@ -153,6 +153,4 @@ export default class Scenario {
   replaceAlliedReinforcement(turn: number, index: number): void {
     this.axisReinforcements[turn][index].used--
   }
-
-  
 }

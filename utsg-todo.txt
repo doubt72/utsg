@@ -5,6 +5,7 @@
 - persist moves
 - fix game move websocket
 - catch errors?
+- extend move test
 
 - Switch game status to websocket
 - fix text selection on select scenario
