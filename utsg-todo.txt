@@ -7,6 +7,15 @@
 - catch errors?
 - extend move test
 
+- alternate logos?
+  - USA: broken circle
+  - Finland: truncated swastika (uhhh probably not)
+    - Maybe roundel?
+  - Bulgaria: X or that flag shield
+  - Hungary: red/green cross
+  - Romania: pointy cross
+  - Slovakia: double cross
+
 - Switch game status to websocket
 - fix text selection on select scenario
 

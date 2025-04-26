@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-<path d="M 10 20 L 85 20 L 85 40 L 10 40 L 10 20" style="fill:#D00;" />
-<path d="M 10 60 L 85 60 L 85 40 L 10 40 L 10 60" style="fill:#FFF;" />
-<path d="M 10 80 L 85 80 L 85 60 L 10 60 L 10 80" style="fill:#070;" />
+<path d="M 18 18 L 82 18 L 82 82 L 18 82 L 18 18 L 82 18" style="fill:rgba(0,0,0,0);stroke-width:4;stroke:#000;" />
+<path d="M 18 18 L 82 18 L 82 82 L 18 82 L 18 18 L 82 18" style="fill:#FFF;" />
+<path d="M 82 82 L 58 82 L 58 58 L 82 58" style="fill:#000;" />
+<path d="M 18 18 L 42 18 L 42 42 L 18 42" style="fill:#000;" />
+<path d="M 82 18 L 58 18 L 58 42 L 82 42" style="fill:#000;" />
+<path d="M 18 82 L 42 82 L 42 58 L 18 58" style="fill:#000;" />
 </svg>

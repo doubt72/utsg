@@ -64,7 +64,18 @@ export const markerYellow = "#EE0"
 export const nationalColors: { [index: string]: string } = {
   ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", alm: "#EA9",
   ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
-  none: "white", fort: "white"
+  none: "white", fort: "white",
+
+   sa: "#DC9", pol: "#EA9", bel: "#EA9", dut: "#EA9", nor: "#EA9", yug: "#EA9", gre: "#EA9",
+   bul: "#7CB", hun: "#7CB", rom: "#7CB", slv: "#7CB"
+}
+export const nationalControlBackgrounds: { [index: string]: string } = {
+  ussr: "#DA7", usa: "#070", uk: "#DC9", fra: "#DDD", chi: "#DDD", alm: "#EA9",
+  ger: "#BBB", ita: "#9DC", jap: "#FFF", fin: "#BBB", axm: "#7CB",
+  none: "white", fort: "white",
+
+   sa: "#DC9", pol: "#CCC", bel: "#DDD", dut: "#DDD", nor: "#DDD", yug: "#CCC", gre: "#DDD",
+   bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB"
 }
 export const clearColor = "rgba(0,0,0,0)"
 

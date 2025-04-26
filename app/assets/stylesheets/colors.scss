@@ -53,13 +53,26 @@ $unit-dark-red: #C00;
 .nation-uk { background-color: #DC9; }
 .nation-fra { background-color: #AAF; }
 .nation-chi { background-color: #CCF; }
-.nation-alm { background-color: #EA9; } // pol, gre, nor, net, yug, bel
+.nation-alm { background-color: #EA9; }
+
+.nation-sa { background-color: #DC9; } // might want to consolidate at some point
+.nation-pol { background-color: #EA9; } 
+.nation-gre { background-color: #EA9; }
+.nation-nor { background-color: #EA9; }
+.nation-dut { background-color: #EA9; }
+.nation-yug { background-color: #EA9; }
+.nation-bel { background-color: #EA9; }
 
 .nation-ger { background-color: #BBB; }
 .nation-ita { background-color: #9DC; }
 .nation-jap { background-color: #ED4; }
 .nation-fin { background-color: #CCC; }
-.nation-axm { background-color: #7CB; } // slo hun bul rom
+.nation-axm { background-color: #7CB; }
+
+.nation-bul { background-color: #7CB; } // might want to consolidate at some point
+.nation-hun { background-color: #7CB; }
+.nation-rom { background-color: #7CB; }
+.nation-slv { background-color: #7CB; }
 
 // Not used:
 // .nation-usm { background-color: #AB4; }
