@@ -109,10 +109,9 @@ export default function GameMap({
         <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements}/>
     )
   }, [
-    map, showCoords, showStatusCounters, hideCounters, updateUnitshaded,
-    showTerrain,
+    map, showCoords, showStatusCounters, hideCounters, updateUnitshaded, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
-    map?.windSpeed, map?.windDirection, map?.windVariable,
+    map?.windSpeed, map?.windDirection, map?.windVariable, map?.game?.currentPlayer, map?.game?.lastMove,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore, map?.game?.reinforcementSelection,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games

@@ -210,9 +210,7 @@ export default class Game {
     for (const turn in schedule) {
       rc[turn] = []
       for (const counter of schedule[turn]) {
-        if (counter.x > counter.used) {
-          rc[turn].push(counter)
-        }
+        rc[turn].push(counter)
       }
       if (rc[turn].length === 0) { delete rc[turn] }
     }

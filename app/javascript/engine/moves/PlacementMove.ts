@@ -29,8 +29,8 @@ export default class PlacementMove extends BaseMove {
 
   get stringValue(): string {
     const name = this.player === 1 ?
-      this.game.scenario.axisReinforcements[this.game.turn][this.originIndex].counter.name :
-      this.game.scenario.alliedReinforcements[this.game.turn][this.originIndex].counter.name
+      this.game.scenario.alliedReinforcements[this.game.turn][this.originIndex].counter.name :
+      this.game.scenario.axisReinforcements[this.game.turn][this.originIndex].counter.name
     return `placed ${name} at ${coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`;
   }
 
@@ -43,8 +43,8 @@ export default class PlacementMove extends BaseMove {
     const turn = this.game.turn
 
     const uf = this.player === 1 ?
-      scenario.takeAxisReinforcement(turn, this.originIndex) :
-      scenario.takeAlliedReinforcement(turn, this.originIndex)
+      scenario.takeAlliedReinforcement(turn, this.originIndex) :
+      scenario.takeAxisReinforcement(turn, this.originIndex)
 
     if (
       (uf.isFeature && (uf as Feature).coverSides) ||
@@ -65,9 +65,9 @@ export default class PlacementMove extends BaseMove {
     map.popUnit(this.target) // throw away result, don't need it
 
     if (this.player === 1) {
-      scenario.replaceAxisReinforcement(turn, this.originIndex)
-    } else {
       scenario.replaceAlliedReinforcement(turn, this.originIndex)
+    } else {
+      scenario.replaceAxisReinforcement(turn, this.originIndex)
     }
     this.undone = true;
   }

@@ -94,20 +94,20 @@ describe("move integration test", () => {
     let curretMoveData: GameMoveData = { user: 1, player: 1, data: { action: "create" } }
     game.executeMove(new GameMove(curretMoveData, game, index++))
 
-    curretMoveData = { user: 1, player: 2, data: { action: "join" } }
+    curretMoveData = { user: 3, player: 2, data: { action: "join" } }
     game.executeMove(new GameMove(curretMoveData, game, index++))
 
-    curretMoveData = { user: 2, player: 1, data: { action: "join" } }
+    curretMoveData = { user: 4, player: 1, data: { action: "join" } }
     game.executeMove(new GameMove(curretMoveData, game, index++))
 
-    curretMoveData = { user: 2, player: 1, data: { action: "leave" } }
+    curretMoveData = { user: 4, player: 1, data: { action: "leave" } }
     game.executeMove(new GameMove(curretMoveData, game, index++))
 
-    curretMoveData = { user: 2, player: 1, data: { action: "join" } }
+    curretMoveData = { user: 4, player: 1, data: { action: "join" } }
     game.executeMove(new GameMove(curretMoveData, game, index++))
 
     curretMoveData = {
-      user: 2, player: 2,
+      user: 4, player: 2,
       data: {
         action: "phase", turn: [0, 0], phase: [gamePhaseType.Placement, gamePhaseType.Placement], player: 2
       }
@@ -119,7 +119,7 @@ describe("move integration test", () => {
     expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     curretMoveData = {
-      user: 2, player: 1, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
@@ -141,7 +141,7 @@ describe("move integration test", () => {
 
     // Loading an undone move doesn't execute or increment last move
     curretMoveData = {
-      user: 2, player: 1, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0, undone: true }
+      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0, undone: true }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
@@ -150,7 +150,7 @@ describe("move integration test", () => {
     expect(game.lastMoveIndex).toBe(index - 3)
 
     curretMoveData = {
-      user: 2, player: 1, data: { action: "place", originIndex: 0, target: [4, 4], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 4], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
@@ -164,7 +164,7 @@ describe("move integration test", () => {
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].target.name).toBe("Rifle")
 
     curretMoveData = {
-      user: 2, player: 1, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
@@ -174,7 +174,7 @@ describe("move integration test", () => {
     expect(game.moves.length).toBe(index)
     expect(game.lastMoveIndex).toBe(index - 1)
     curretMoveData = {
-      user: 2, player: 1, data: { action: "place", originIndex: 1, target: [4, 1], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "place", originIndex: 1, target: [4, 1], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
@@ -185,5 +185,7 @@ describe("move integration test", () => {
     index++
     expect(game.moves.length).toBe(index)
     expect(game.lastMoveIndex).toBe(index - 1)
+
+    expect(game.currentPlayer).toBe(1)
   })
 });

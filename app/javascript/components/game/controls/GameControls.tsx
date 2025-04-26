@@ -15,7 +15,7 @@ export default function GameControls({ game }: GameControlsProps) {
   useEffect(() => {
     if (!game.id) { return }
     displayActions()
-  }, [game])
+  }, [game, game.lastMove])
 
   const displayActions = () => {
     const user = localStorage.getItem("username")
@@ -31,7 +31,7 @@ export default function GameControls({ game }: GameControlsProps) {
       } else if (a.type === "start") {
         return <StartButton gameId={game.id} key={i} />
       } else if (a.type === "placement") {
-        return <div className="mt05em mb05em mr05em" key={i}>select country icon to deploy units</div>
+        return <div className="mt05em mb05em mr05em" key={i}>deploy units</div>
       } else {
         return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>
       }
@@ -41,6 +41,7 @@ export default function GameControls({ game }: GameControlsProps) {
   return (
     <div className="game-control ml05em mr05em">
       {controls}
+      <div className="mt05em mb05em mr05em transparent">O</div>
     </div>
   )
 }

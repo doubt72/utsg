@@ -79,7 +79,7 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
         {nationTwo(xx + 100, yy + 10)}
       </g>
     )
-  }, [xx, yy])
+  }, [xx, yy, map.game?.reinforcementSelection])
 
   return (
     <g>

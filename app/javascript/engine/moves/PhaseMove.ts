@@ -59,6 +59,7 @@ export default class PhaseMove extends BaseMove {
   mutateGame(): void {
     this.game.phase = this.newPhase
     this.game.turn = this.newTurn
+    this.game.currentPlayer = this.newPlayer
   }
   
   undo(): void {

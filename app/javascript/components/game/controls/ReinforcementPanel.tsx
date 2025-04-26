@@ -56,7 +56,7 @@ export default function ReinforcementPanel({
       setBase(
         <g>
           <path d={roundedRectangle(xx, yy, 225, 100)}
-                style={{ fill: "#AAA", stroke: "#D5D5D5", strokeWidth: 1 }}/>
+                style={{ fill: "#999", stroke: "#777", strokeWidth: 1 }}/>
           <text x={xx + 10} y={yy + 22} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
             available units:
@@ -73,7 +73,7 @@ export default function ReinforcementPanel({
     setBase(
       <g>
         <path d={roundedRectangle(xx, yy, maxWidth(units), Object.keys(units).length * 106 + 44)}
-              style={{ fill: "#AAA", stroke: "#D5D5D5", strokeWidth: 1 }}/>
+              style={{ fill: "#999", stroke: "#777", strokeWidth: 1 }}/>
         <text x={xx + 10} y={yy + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
           available units:
@@ -107,8 +107,22 @@ export default function ReinforcementPanel({
                     counter.showDisabled = map.game?.phase !== gamePhaseType.Placement ||
                       map.game.currentPlayer !== player
                     const count = (u.x || 1) - (u.used || 0)
-                    if (count > 0) {
-                      const cb = () => { ovCallback({show: true, counters: [counter]})}
+                    const cb = () => { ovCallback({show: true, counters: [counter]})}
+                    if (count < 1) {
+                      counter.showDisabled = true
+                      if (counter.target.selected) {
+                        counter.target.select()
+                      }
+                      return (
+                        <g key={j}>
+                          <text x={x} y={y} fontSize={16} textAnchor="start"
+                                fontFamily="'Courier Prime', monospace" style={{ fill: "#999" }}>
+                            {count}x
+                          </text>
+                          <MapCounter counter={counter} ovCallback={cb} />
+                        </g>
+                      )
+                    } else {
                       return (
                         <g key={j}>
                           <text x={x} y={y} fontSize={16} textAnchor="start"
@@ -117,10 +131,6 @@ export default function ReinforcementPanel({
                           </text>
                           <MapCounter counter={counter} ovCallback={cb} />
                         </g>
-                      )
-                    } else {
-                      return (
-                        <g key={j}></g>
                       )
                     }
                   })
@@ -131,7 +141,7 @@ export default function ReinforcementPanel({
         }
       </g>
     )
-  }, [xx, yy, map.game?.reinforcementSelection])
+  }, [xx, yy, map.game?.reinforcementSelection, map.game?.lastMove])
 
   return (
     <g>

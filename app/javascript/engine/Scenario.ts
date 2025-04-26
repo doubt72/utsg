@@ -127,15 +127,23 @@ export default class Scenario {
   }
 
   takeAxisReinforcement(turn: number, index: number): Unit | Feature {
-    this.axisReinforcements[turn][index].used++
+    const entry = this.axisReinforcements[turn][index]
+    if (entry.used >= entry.x) {
+      throw new Error('Error placing too many of reinforcement type')
+    }
+    entry.used++
 
-    return this.axisReinforcements[turn][index].counter.clone()
+    return entry.counter.clone()
   }
 
   takeAlliedReinforcement(turn: number, index: number): Unit | Feature {
-    this.alliedReinforcements[turn][index].used++
+    const entry = this.alliedReinforcements[turn][index]
+    if (entry.used >= entry.x) {
+      throw new Error('Error placing too many of reinforcement type')
+    }
+    entry.used++
 
-    return this.alliedReinforcements[turn][index].counter.clone()
+    return entry.counter.clone()
   }
 
   replaceAxisReinforcement(turn: number, index: number): void {

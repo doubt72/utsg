@@ -1,6 +1,12 @@
-- Place units
+- fix map overlay when placing units
+- fix reinforcement panel update
+- add direction selection
+- fix undo
+- persist moves
+- fix game move websocket
+- catch errors?
+
 - Switch game status to websocket
-- Switch game moves to websocket
 - fix text selection on select scenario
 
 - hotseat games?

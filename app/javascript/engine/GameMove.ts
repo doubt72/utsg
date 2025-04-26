@@ -37,7 +37,6 @@ export default class GameMove {
   index: number;
 
   constructor(data: GameMoveData, game: Game, index: number) {
-    // TODO: need to process the special bits
     this.data = data
     this.game = game
     this.index = index

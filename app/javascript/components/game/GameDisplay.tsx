@@ -9,6 +9,7 @@ import GameControls from "./controls/GameControls";
 import Game from "../../engine/Game";
 import Map from "../../engine/Map";
 import Counter from "../../engine/Counter";
+import GameMove from "../../engine/GameMove";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -64,8 +65,18 @@ export default function GameDisplay() {
   }
 
   const hexSelection = (x: number, y: number) => {
-    const key = `${x}-${y}`
-    console.log(key)
+    if (game.k?.reinforcementSelection) {
+      const move = new GameMove({
+        user: game.k.currentPlayer,
+        player: game.k.reinforcementSelection.player,
+        data: {
+          action: "place", originIndex: game.k.reinforcementSelection.index,
+          target: [x, y], orientation: 1, turn: game.k.turn
+        }
+      }, game.k, game.k.moves.length)
+      game.k.executeMove(move)
+      gameNotification(game.k)
+    }
   }
 
   const unitSelection = (x: number, y: number, counter: Counter) => {
