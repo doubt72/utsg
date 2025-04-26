@@ -1,4 +1,3 @@
-- fix map overlay when placing units
 - fix reinforcement panel update
 - add direction selection
 - fix undo

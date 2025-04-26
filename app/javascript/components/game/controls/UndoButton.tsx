@@ -9,7 +9,7 @@ interface UndoButtonProps {
 export default function UndoButton({ gameId }: UndoButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    // TODO: implement undo
+    // TODO: implement undo on backend
     postAPI(`/api/v1/games/${gameId}/join`, {}, {
       ok: () => {}
     })
