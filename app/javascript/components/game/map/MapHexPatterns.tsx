@@ -119,10 +119,14 @@ export default function MapHexPatterns() {
       {nationalControlPattern("usa", 12)}
       {nationalControlPattern("ussr", 12)}
       {nationalControlPattern("chi", 12)}
-      {nationalControlPattern("chc", 12)}
       {nationalControlPattern("fra", 12)}
-      
+      {nationalControlPattern("frf", 12)}
+
       {nationalControlPattern("sa", 12)}
+      {nationalControlPattern("can", 12)}
+      {nationalControlPattern("aus", 12)}
+      {nationalControlPattern("nz", 12)}
+      {nationalControlPattern("ind", 12)}
       {nationalControlPattern("bra", 12)}
       {nationalControlPattern("pol", 12)}
       {nationalControlPattern("bel", 12)}
@@ -134,6 +138,7 @@ export default function MapHexPatterns() {
       {nationalControlPattern("hun", 12)}
       {nationalControlPattern("rom", 12)}
       {nationalControlPattern("slv", 12)}
+      {nationalControlPattern("cro", 12)}
 
       {nationalControlPattern("ger", 16)}
       {nationalControlPattern("ita", 16)}
@@ -143,10 +148,14 @@ export default function MapHexPatterns() {
       {nationalControlPattern("usa", 16)}
       {nationalControlPattern("ussr", 16)}
       {nationalControlPattern("chi", 16)}
-      {nationalControlPattern("chc", 16)}
       {nationalControlPattern("fra", 16)}
-      
+      {nationalControlPattern("frf", 16)}
+
       {nationalControlPattern("sa", 16)}
+      {nationalControlPattern("can", 16)}
+      {nationalControlPattern("aus", 16)}
+      {nationalControlPattern("nz", 16)}
+      {nationalControlPattern("ind", 16)}
       {nationalControlPattern("bra", 16)}
       {nationalControlPattern("pol", 16)}
       {nationalControlPattern("bel", 16)}
@@ -158,6 +167,7 @@ export default function MapHexPatterns() {
       {nationalControlPattern("hun", 16)}
       {nationalControlPattern("rom", 16)}
       {nationalControlPattern("slv", 16)}
+      {nationalControlPattern("cro", 16)}
     </defs>
   )
 }

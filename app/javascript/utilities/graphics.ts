@@ -62,20 +62,22 @@ export const markerYellow = "#EE0"
 
 // TODO: figure out a way to keep in sync with CSS
 export const nationalColors: { [index: string]: string } = {
-  ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", chi: "#CCF", chc: "#DA7", alm: "#EA9",
+  ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", frf: "#AAF", chi: "#CCF", alm: "#EA9",
   ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
   none: "white", fort: "white",
 
-   sa: "#DC9", bra: "#BC7", pol: "#EA9", bel: "#EA9", dut: "#EA9", nor: "#EA9", yug: "#EA9", gre: "#EA9",
-   bul: "#7CB", hun: "#7CB", rom: "#7CB", slv: "#7CB"
+  sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#BC7",
+  pol: "#EA9", bel: "#EA9", dut: "#EA9", nor: "#EA9", yug: "#EA9", gre: "#EA9",
+  bul: "#7CB", hun: "#7CB", rom: "#7CB", slv: "#7CB", cro: "#7CB"
 }
 export const nationalControlBackgrounds: { [index: string]: string } = {
-  ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#DDD", chi: "#DDD", chc: "#D00", alm: "#EA9",
+  ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#DDD", frf: "#FFF", chi: "#DDD", alm: "#EA9",
   ger: "#BBB", ita: "#9DC", jap: "#FFF", fin: "#BBB", axm: "#7CB",
   none: "white", fort: "white",
 
-   sa: "#DC9", bra: "#570", pol: "#CCC", bel: "#DDD", dut: "#DDD", nor: "#DDD", yug: "#CCC", gre: "#DDD",
-   bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB"
+  sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#570",
+  pol: "#CCC", bel: "#DDD", dut: "#DDD", nor: "#DDD", yug: "#CCC", gre: "#DDD",
+  bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB", cro: "#BBB"
 }
 export const clearColor = "rgba(0,0,0,0)"
 

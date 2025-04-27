@@ -5,6 +5,7 @@ module Utility
     module Units # rubocop:disable Metrics/ModuleLength
       class << self # rubocop:disable Metrics/ClassLength
         # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/PerceivedComplexity
         def lookup_data
           initiative.merge(markers).merge(features).merge(hulls).merge(leaders)
                     .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
@@ -37,14 +38,21 @@ module Utility
           {
             turn1: { mk: 1, type: 12, v: "uk", v2: "ger" },
             turn2: { mk: 1, type: 12, v: "uk", v2: "ita" },
-            turn3: { mk: 1, type: 12, v: "sa", v2: "ita" },
+            turn3: { mk: 1, type: 12, v: "can", v2: "ger" },
+            turn3a: { mk: 1, type: 12, v: "aus", v2: "ger" },
+            turn3b: { mk: 1, type: 12, v: "nz", v2: "ger" },
+            turn3c: { mk: 1, type: 12, v: "ind", v2: "ger" },
+            turn3d: { mk: 1, type: 12, v: "sa", v2: "ger" },
+            turn3e: { mk: 1, type: 12, v: "sa", v2: "ita" },
             turn4: { mk: 1, type: 12, v: "uk", v2: "jap" },
+            turn4b: { mk: 1, type: 12, v: "aus", v2: "jap" },
             turn5: { mk: 1, type: 12, v: "ussr", v2: "ger" },
             turn6: { mk: 1, type: 12, v: "ussr", v2: "fin" },
             turn7: { mk: 1, type: 12, v: "ussr", v2: "bul" },
             turn8: { mk: 1, type: 12, v: "ussr", v2: "hun" },
             turn9: { mk: 1, type: 12, v: "ussr", v2: "rom" },
             turn10: { mk: 1, type: 12, v: "ussr", v2: "slv" },
+            turn10b: { mk: 1, type: 12, v: "ussr", v2: "cro" },
             turn11: { mk: 1, type: 12, v: "ussr", v2: "jap" },
             turn12: { mk: 1, type: 12, v: "usa", v2: "ger" },
             turn13: { mk: 1, type: 12, v: "usa", v2: "ita" },
@@ -55,12 +63,13 @@ module Utility
             turn16: { mk: 1, type: 12, v: "bel", v2: "ger" },
             turn17: { mk: 1, type: 12, v: "dut", v2: "ger" },
             turn18: { mk: 1, type: 12, v: "fra", v2: "ger" },
+            turn18b: { mk: 1, type: 12, v: "frf", v2: "ger" },
+            turn18c: { mk: 1, type: 12, v: "frf", v2: "ita" },
             turn19: { mk: 1, type: 12, v: "nor", v2: "ger" },
             turn20: { mk: 1, type: 12, v: "yug", v2: "ger" },
             turn21: { mk: 1, type: 12, v: "gre", v2: "ger" },
             turn22: { mk: 1, type: 12, v: "gre", v2: "ita" },
             turn23: { mk: 1, type: 12, v: "chi", v2: "jap" },
-            turn23b: { mk: 1, type: 12, v: "chc", v2: "jap" },
             turn24: { mk: 1, type: 12, v: "dut", v2: "jap" },
             calm: { mk: 1, type: 9, subtype: 0 },
             calm_variable: { mk: 1, type: 9, subtype: 0, v: true },
@@ -131,11 +140,19 @@ module Utility
             lu[:"#{nation}_initiative"] = {
               mk: 1, nation:, i: nation == "ussr" ? "ussr2" : nation, type: 11,
             }
+            lu[:can_initiative] = { mk: 1, nation: "can", i: "can", type: 11 } if nation == "uk"
+            lu[:aus_initiative] = { mk: 1, nation: "aus", i: "aus", type: 11 } if nation == "uk"
+            lu[:nz_initiative] = { mk: 1, nation: "nz", i: "nz", type: 11 } if nation == "uk"
+            lu[:ind_initiative] = { mk: 1, nation: "ind", i: "ind", type: 11 } if nation == "uk"
+            lu[:sa_initiative] = { mk: 1, nation: "sa", i: "sa", type: 11 } if nation == "uk"
+            lu[:bra_initiative] = { mk: 1, nation: "bra", i: "bra", type: 11 } if nation == "usa"
+            lu[:frf_initiative] = { mk: 1, nation: "frf", i: "frf", type: 11 } if nation == "fra"
           end
           lu[:bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
           lu[:hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
           lu[:rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
           lu[:slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
+          lu[:cro_initiative] = { mk: 1, nation: "axm", i: "cro", type: 11 }
           lu[:pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
           lu[:gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
           lu[:nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
@@ -151,9 +168,6 @@ module Utility
           # lu[:rum3_initiative] = { mk: 1, nation: "axm", i: "rom3", type: 11 }
           # lu[:slv2_initiative] = { mk: 1, nation: "axm", i: "slv2", type: 11 }
           # lu[:slv3_initiative] = { mk: 1, nation: "axm", i: "slv3", type: 11 }
-          lu[:sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
-          lu[:bra_initiative] = { mk: 1, nation: "usa", i: "bra", type: 11 }
-          lu[:chc_initiative] = { mk: 1, nation: "chc", i: "chc", type: 11 }
           # lu[:usa2_initiative] = { mk: 1, nation: "usa", i: "usa2", type: 11 }
           # lu[:nor2_initiative] = { mk: 1, nation: "usa", i: "nor2", type: 11 }
           lu
@@ -778,6 +792,7 @@ module Utility
           lu
         end
 
+        # rubocop:enable Metrics/PerceivedComplexity
         # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
         # rubocop:enable Layout/LineLength
       end
