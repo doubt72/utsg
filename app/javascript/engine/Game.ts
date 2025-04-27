@@ -265,7 +265,10 @@ export default class Game {
     if (select.player === current?.player && select.turn === current.turn && select.index === current.index) {
       this.reinforcementSelection = undefined
     } else {
-      this.reinforcementSelection = select
+      const counter = this.availableReinforcements(select.player)[select.turn][select.index]
+      if (counter.x > counter.used) {
+        this.reinforcementSelection = select
+      }
     }
   }
 }

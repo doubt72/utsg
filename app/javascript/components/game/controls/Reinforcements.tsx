@@ -9,9 +9,10 @@ interface ReinforcementsProps {
   xx: number;
   yy: number;
   callback: (x: number, y: number, player: Player) => void;
+  update: { key: boolean };
 }
 
-export default function Reinforcements({ map, xx, yy, callback }: ReinforcementsProps) {
+export default function Reinforcements({ map, xx, yy, callback, update }: ReinforcementsProps) {
   const [base, setBase] = useState<JSX.Element | undefined>()
 
   const nation = (x: number, y: number, n: string, player: Player, enabled: boolean) => {
@@ -47,6 +48,10 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
   }
 
   useEffect(() => {
+    // do nothing
+  }, [update])
+
+  useEffect(() => {
     const placing = map.game?.phase === gamePhaseType.Placement
     setBase(
       <g>
@@ -79,7 +84,7 @@ export default function Reinforcements({ map, xx, yy, callback }: Reinforcements
         {nationTwo(xx + 100, yy + 10)}
       </g>
     )
-  }, [xx, yy, map.game?.reinforcementSelection])
+  }, [xx, yy, update])
 
   return (
     <g>

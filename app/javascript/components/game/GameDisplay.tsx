@@ -54,7 +54,7 @@ export default function GameDisplay() {
       turn: g.turn,
       state: g.state,
     })
-    setControls(<GameControls key={Number(new Date)} game={g} />) // key hack to force updates
+    setControls(<GameControls key={Number(new Date)} game={g} />) // TODO: fix key hack to force updates
   }
 
   const showInput = () => {
@@ -65,7 +65,11 @@ export default function GameDisplay() {
   }
 
   const hexSelection = (x: number, y: number) => {
+    console.log(`GD processing ${x},${y}`)
     if (game.k?.reinforcementSelection) {
+      if (map && !map.openHex(x, y)) {
+        return
+      }
       const move = new GameMove({
         user: game.k.currentPlayer,
         player: game.k.reinforcementSelection.player,
@@ -74,14 +78,24 @@ export default function GameDisplay() {
           target: [x, y], orientation: 1, turn: game.k.turn
         }
       }, game.k, game.k.moves.length)
+      const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
+        game.k.reinforcementSelection.index]
       game.k.executeMove(move)
       gameNotification(game.k)
+      if (counter.x == counter.used) {
+        game.k.reinforcementSelection = undefined
+      }
     }
   }
 
   const unitSelection = (x: number, y: number, counter: Counter) => {
     const key = `x ${x}-${y}-${counter.trueIndex}`
     console.log(key)
+  }
+
+  const resetDisplay = () => {
+    setShowLos(false)
+    setHideCounters(false)
   }
 
   return (
@@ -145,8 +159,8 @@ export default function GameDisplay() {
       </div>
       <div className="mb05em ml05em mr05em">
         <GameMap map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-                showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
-                hexCallback={hexSelection} counterCallback={unitSelection} />
+                 showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
+                 hexCallback={hexSelection} counterCallback={unitSelection} resetCallback={resetDisplay} />
       </div>
     </div>
   )

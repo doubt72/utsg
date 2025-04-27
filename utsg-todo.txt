@@ -1,9 +1,10 @@
-- fix reinforcement panel update
+- find reason for warning
 - add direction selection
 - fix undo
 - persist moves
 - fix game move websocket
-- catch errors?
+- catch errors, show message
+  - error out if overstacking
 - extend move test
 
 - alternate logos?

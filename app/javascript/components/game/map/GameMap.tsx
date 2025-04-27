@@ -26,14 +26,15 @@ interface GameMapProps {
   showLos?: boolean;
   hideCounters?: boolean;
   showTerrain?: boolean;
-  hexCallback?: (x: number, y: number, sel: boolean) => void;
+  hexCallback?: (x: number, y: number) => void;
   counterCallback?: (x: number, y: number, counter: Counter) => void;
+  resetCallback?: () => void;
 }
 
 export default function GameMap({
   map, scale, showCoords = false, showStatusCounters = false, showLos = false,
   hideCounters = false, showTerrain = false,
-  hexCallback = () => {}, counterCallback = () => {}
+  hexCallback = () => {}, counterCallback = () => {}, resetCallback = () => {}
 }: GameMapProps) {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
@@ -57,6 +58,15 @@ export default function GameMap({
 
   // IDEK what I'm doing with types here
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
+
+  useEffect(() => {
+    if (hideCounters || showLos) {
+      if (map.game?.reinforcementSelection) {
+        map.game.reinforcementSelection = undefined
+      }
+      setReinforcementsOverlay(undefined)
+    }
+  }, [hideCounters, showLos])
 
   useEffect(() => {
     if (!map) { return }
@@ -114,7 +124,7 @@ export default function GameMap({
     )
     setReinforcements(() =>
       map?.preview ? undefined :
-        <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements}/>
+        <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements} update={{key: true}}/>
     )
   }, [
     map, showCoords, showStatusCounters, hideCounters, updateUnitshaded, showTerrain,
@@ -147,12 +157,12 @@ export default function GameMap({
           <MapCounter key={i} counter={c} ovCallback={() => {}} />
         ))
       }
-    } else if (!overlay.counters && map.game?.reinforcementSelection === undefined) {
+    } else if (!overlay.counters) {
       setOverlayDisplay(
         <MapCounterOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} />
       )
-    } else if (!showLos && map.game?.reinforcementSelection === undefined) {
+    } else if (!showLos) {
       setOverlayDisplay(
         <MapCounterOverlay counters={overlay.counters} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} />
@@ -166,13 +176,29 @@ export default function GameMap({
 
   const hexSelection = (x: number, y: number) => {
     const key = `${x}-${y}`
+    console.log(`GM processing ${x},${y}`)
     setHexDisplayOverlays(overlays =>
       overlays.map(h => {
         if (h.key === `${key}-o`) {
-          if (hexCallback) {
-            hexCallback(x, y, !h.props.shaded)
+          const shaded = map.debug ? !h.props.shaded : h.props.shaded
+          if (map.game?.reinforcementSelection) {
+            const xx = reinforcementsOverlay?.props.xx
+            const yy = reinforcementsOverlay?.props.yy
+            setReinforcements(r => {
+              if (r) { r.props.update.key = !r.props.update.key }
+              return r
+            })
+            setReinforcementsOverlay(
+              <ReinforcementPanel map={map} xx={xx} yy={yy} player={map.game?.currentPlayer || 1}
+                                  closeCallback={() => {
+                                    setReinforcementsOverlay(undefined)
+                                    map.game?.setReinforcementSelection(undefined)
+                                  }}
+                                  ovCallback={setOverlay}/>)
           }
-          const shaded = map.debug ? !h.props.shaded : false
+          if (hexCallback) {
+            hexCallback(x, y)
+          }
           return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} shaded={shaded}
                                 selectCallback={hexSelection} />
         } else {
@@ -210,6 +236,7 @@ export default function GameMap({
   }
 
   const showReinforcements = (x: number, y: number, player: Player) => {
+    resetCallback()
     setReinforcementsOverlay(
       <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
                           closeCallback={() => setReinforcementsOverlay(undefined)}
