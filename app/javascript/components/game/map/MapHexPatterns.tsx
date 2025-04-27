@@ -119,6 +119,7 @@ export default function MapHexPatterns() {
       {nationalControlPattern("usa", 12)}
       {nationalControlPattern("ussr", 12)}
       {nationalControlPattern("chi", 12)}
+      {nationalControlPattern("chc", 12)}
       {nationalControlPattern("fra", 12)}
       
       {nationalControlPattern("sa", 12)}
@@ -142,6 +143,7 @@ export default function MapHexPatterns() {
       {nationalControlPattern("usa", 16)}
       {nationalControlPattern("ussr", 16)}
       {nationalControlPattern("chi", 16)}
+      {nationalControlPattern("chc", 16)}
       {nationalControlPattern("fra", 16)}
       
       {nationalControlPattern("sa", 16)}

@@ -60,6 +60,7 @@ module Utility
             turn21: { mk: 1, type: 12, v: "gre", v2: "ger" },
             turn22: { mk: 1, type: 12, v: "gre", v2: "ita" },
             turn23: { mk: 1, type: 12, v: "chi", v2: "jap" },
+            turn23b: { mk: 1, type: 12, v: "chc", v2: "jap" },
             turn24: { mk: 1, type: 12, v: "dut", v2: "jap" },
             calm: { mk: 1, type: 9, subtype: 0 },
             calm_variable: { mk: 1, type: 9, subtype: 0, v: true },
@@ -150,8 +151,9 @@ module Utility
           # lu[:rum3_initiative] = { mk: 1, nation: "axm", i: "rom3", type: 11 }
           # lu[:slv2_initiative] = { mk: 1, nation: "axm", i: "slv2", type: 11 }
           # lu[:slv3_initiative] = { mk: 1, nation: "axm", i: "slv3", type: 11 }
-          lu[:uk_sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
-          lu[:uk_bra_initiative] = { mk: 1, nation: "usa", i: "bra", type: 11 }
+          lu[:sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
+          lu[:bra_initiative] = { mk: 1, nation: "usa", i: "bra", type: 11 }
+          lu[:chc_initiative] = { mk: 1, nation: "chc", i: "chc", type: 11 }
           # lu[:usa2_initiative] = { mk: 1, nation: "usa", i: "usa2", type: 11 }
           # lu[:nor2_initiative] = { mk: 1, nation: "usa", i: "nor2", type: 11 }
           lu

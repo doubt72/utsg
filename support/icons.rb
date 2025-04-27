@@ -2789,6 +2789,26 @@ File.open('ussr.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('chc.svg', 'w') do |file|
+  file.puts header
+  write_circle(50, 50, 42, file, true, "#D00")
+  # path = []
+  # 0.upto(6) do |n|
+  #   x = Math.sin(n * 144.0 / 180 * Math::PI) * -40 + 50
+  #   y = Math.cos(n * 144.0 / 180 * Math::PI) * -40 + 50
+  #   path.push([n == 0 ? "M" : "L", x, y])
+  # end
+  # write_path(path, file, false, 4, "#FFF")
+  path = []
+  0.upto(6) do |n|
+    x = Math.sin(n * 144.0 / 180 * Math::PI) * -35 + 50
+    y = Math.cos(n * 144.0 / 180 * Math::PI) * -35 + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#FF0")
+  file.puts footer
+end
+
 # File.open('test.svg', 'w') do |file|
 #   file.puts header
 #   path = []
