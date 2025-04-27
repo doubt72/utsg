@@ -2685,7 +2685,7 @@ File.open('usa.svg', 'w') do |file|
   file.puts footer
 end
 
-File.open('ussr.svg', 'w') do |file|
+File.open('ussr2.svg', 'w') do |file|
   file.puts header
   path = []
   0.upto(6) do |n|
@@ -2698,6 +2698,25 @@ File.open('ussr.svg', 'w') do |file|
   0.upto(6) do |n|
     x = Math.sin(n * 144.0 / 180 * Math::PI) * -40 + 50
     y = Math.cos(n * 144.0 / 180 * Math::PI) * -40 + 52
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#D00")
+  file.puts footer
+end
+
+File.open('ussr.svg', 'w') do |file|
+  file.puts header
+  path = []
+  0.upto(6) do |n|
+    x = Math.sin(n * 144.0 / 180 * Math::PI) * -40 + 50
+    y = Math.cos(n * 144.0 / 180 * Math::PI) * -40 + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, false, 4, "#FFF")
+  path = []
+  0.upto(6) do |n|
+    x = Math.sin(n * 144.0 / 180 * Math::PI) * -40 + 50
+    y = Math.cos(n * 144.0 / 180 * Math::PI) * -40 + 50
     path.push([n == 0 ? "M" : "L", x, y])
   end
   write_path(path, file, true, 3, "#D00")

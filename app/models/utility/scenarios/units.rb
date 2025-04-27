@@ -123,7 +123,9 @@ module Utility
           all_factions.each do |nation|
             next if %w[alm axm].include?(nation)
 
-            lu[:"#{nation}_initiative"] = { mk: 1, nation:, i: nation, type: 11 }
+            lu[:"#{nation}_initiative"] = {
+              mk: 1, nation:, i: nation == "ussr" ? "ussr2" : nation, type: 11,
+            }
           end
           lu[:bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
           lu[:hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
