@@ -35,28 +35,32 @@ module Utility
 
         def markers
           {
-            turn: { mk: 1, type: 12, v: "ussr", v2: "ger" },
-            turn2: { mk: 1, type: 12, v: "usa", v2: "ger" },
-            turn3: { mk: 1, type: 12, v: "uk", v2: "ger" },
-            turn4: { mk: 1, type: 12, v: "sa", v2: "ger" },
-            turn4b: { mk: 1, type: 12, v: "pol", v2: "ger" },
-            turn5: { mk: 1, type: 12, v: "fra", v2: "ger" },
-            turn5b: { mk: 1, type: 12, v: "bel", v2: "ger" },
-            turn6: { mk: 1, type: 12, v: "nor", v2: "ger" },
-            turn7: { mk: 1, type: 12, v: "yug", v2: "ger" },
-            turn8: { mk: 1, type: 12, v: "gre", v2: "ita" },
-            turn8b: { mk: 1, type: 12, v: "gre", v2: "ger" },
-            turn8c: { mk: 1, type: 12, v: "ussr", v2: "fin" },
-            turn9: { mk: 1, type: 12, v: "ussr", v2: "bul" },
-            turn10: { mk: 1, type: 12, v: "ussr", v2: "hun" },
-            turn11: { mk: 1, type: 12, v: "ussr", v2: "rom" },
-            turn12: { mk: 1, type: 12, v: "ussr", v2: "slv" },
-            turn13: { mk: 1, type: 12, v: "uk", v2: "ita" },
-            turn14: { mk: 1, type: 12, v: "usa", v2: "ita" },
-            turn15: { mk: 1, type: 12, v: "chi", v2: "jap" },
-            turn16: { mk: 1, type: 12, v: "usa", v2: "jap" },
-            turn17: { mk: 1, type: 12, v: "uk", v2: "jap" },
-            turn18: { mk: 1, type: 12, v: "dut", v2: "jap" },
+            turn1: { mk: 1, type: 12, v: "uk", v2: "ger" },
+            turn2: { mk: 1, type: 12, v: "uk", v2: "ita" },
+            turn3: { mk: 1, type: 12, v: "sa", v2: "ita" },
+            turn4: { mk: 1, type: 12, v: "uk", v2: "jap" },
+            turn5: { mk: 1, type: 12, v: "ussr", v2: "ger" },
+            turn6: { mk: 1, type: 12, v: "ussr", v2: "fin" },
+            turn7: { mk: 1, type: 12, v: "ussr", v2: "bul" },
+            turn8: { mk: 1, type: 12, v: "ussr", v2: "hun" },
+            turn9: { mk: 1, type: 12, v: "ussr", v2: "rom" },
+            turn10: { mk: 1, type: 12, v: "ussr", v2: "slv" },
+            turn11: { mk: 1, type: 12, v: "ussr", v2: "jap" },
+            turn12: { mk: 1, type: 12, v: "usa", v2: "ger" },
+            turn13: { mk: 1, type: 12, v: "usa", v2: "ita" },
+            turn13b: { mk: 1, type: 12, v: "bra", v2: "ita" },
+            turn14: { mk: 1, type: 12, v: "usa", v2: "jap" },
+            turn15: { mk: 1, type: 12, v: "pol", v2: "ger" },
+            turn15b: { mk: 1, type: 12, v: "pol", v2: "slv" },
+            turn16: { mk: 1, type: 12, v: "bel", v2: "ger" },
+            turn17: { mk: 1, type: 12, v: "dut", v2: "ger" },
+            turn18: { mk: 1, type: 12, v: "fra", v2: "ger" },
+            turn19: { mk: 1, type: 12, v: "nor", v2: "ger" },
+            turn20: { mk: 1, type: 12, v: "yug", v2: "ger" },
+            turn21: { mk: 1, type: 12, v: "gre", v2: "ger" },
+            turn22: { mk: 1, type: 12, v: "gre", v2: "ita" },
+            turn23: { mk: 1, type: 12, v: "chi", v2: "jap" },
+            turn24: { mk: 1, type: 12, v: "dut", v2: "jap" },
             calm: { mk: 1, type: 9, subtype: 0 },
             calm_variable: { mk: 1, type: 9, subtype: 0, v: true },
             breezy: { mk: 1, type: 9, subtype: 1 },
@@ -137,18 +141,19 @@ module Utility
           lu[:bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
           lu[:dut_initiative] = { mk: 1, nation: "alm", i: "dut2", type: 11 }
           lu[:yug_initiative] = { mk: 1, nation: "alm", i: "yug", type: 11 }
-          lu[:fin2_initiative] = { mk: 1, nation: "fin", i: "fin2", type: 11 }
-          lu[:bul2_initiative] = { mk: 1, nation: "axm", i: "bul2", type: 11 }
-          lu[:bul3_initiative] = { mk: 1, nation: "axm", i: "bul3", type: 11 }
-          lu[:hun2_initiative] = { mk: 1, nation: "axm", i: "hun2", type: 11 }
-          lu[:hun3_initiative] = { mk: 1, nation: "axm", i: "hun3", type: 11 }
-          lu[:rum2_initiative] = { mk: 1, nation: "axm", i: "rom2", type: 11 }
-          lu[:rum3_initiative] = { mk: 1, nation: "axm", i: "rom3", type: 11 }
-          lu[:slv2_initiative] = { mk: 1, nation: "axm", i: "slv2", type: 11 }
-          lu[:slv3_initiative] = { mk: 1, nation: "axm", i: "slv3", type: 11 }
+          # lu[:fin2_initiative] = { mk: 1, nation: "fin", i: "fin2", type: 11 }
+          # lu[:bul2_initiative] = { mk: 1, nation: "axm", i: "bul2", type: 11 }
+          # lu[:bul3_initiative] = { mk: 1, nation: "axm", i: "bul3", type: 11 }
+          # lu[:hun2_initiative] = { mk: 1, nation: "axm", i: "hun2", type: 11 }
+          # lu[:hun3_initiative] = { mk: 1, nation: "axm", i: "hun3", type: 11 }
+          # lu[:rum2_initiative] = { mk: 1, nation: "axm", i: "rom2", type: 11 }
+          # lu[:rum3_initiative] = { mk: 1, nation: "axm", i: "rom3", type: 11 }
+          # lu[:slv2_initiative] = { mk: 1, nation: "axm", i: "slv2", type: 11 }
+          # lu[:slv3_initiative] = { mk: 1, nation: "axm", i: "slv3", type: 11 }
           lu[:uk_sa_initiative] = { mk: 1, nation: "uk", i: "sa", type: 11 }
-          lu[:usa2_initiative] = { mk: 1, nation: "usa", i: "usa2", type: 11 }
-          lu[:nor2_initiative] = { mk: 1, nation: "usa", i: "nor2", type: 11 }
+          lu[:uk_bra_initiative] = { mk: 1, nation: "usa", i: "bra", type: 11 }
+          # lu[:usa2_initiative] = { mk: 1, nation: "usa", i: "usa2", type: 11 }
+          # lu[:nor2_initiative] = { mk: 1, nation: "usa", i: "nor2", type: 11 }
           lu
         end
 

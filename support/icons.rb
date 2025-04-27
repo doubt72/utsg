@@ -2653,7 +2653,7 @@ end
 
 File.open('usa.svg', 'w') do |file|
   file.puts header
-  write_circle(50, 50, 45, file, true, "#070")
+  write_circle(50, 50, 45, file, true, "#570")
   starsize = -28
   0.upto(4) do |n|
     x1 = Math.sin((n * 144.0 - 31.0) / 180 * Math::PI) * starsize * -1.3 + 50
@@ -2679,6 +2679,72 @@ File.open('usa.svg', 'w') do |file|
   0.upto(6) do |n|
     x = Math.sin(n * 144.0 / 180 * Math::PI) * starsize + 50
     y = Math.cos(n * 144.0 / 180 * Math::PI) * starsize + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#FFF")
+  file.puts footer
+end
+
+File.open('bra.svg', 'w') do |file|
+  file.puts header
+  write_circle(50, 50, 45, file, true, "#570")
+  starsize = -28
+  0.upto(3) do |n|
+    x1 = Math.sin((n * 90.0 + 5.0) / 180 * Math::PI) * starsize * -1.3 + 50
+    y1 = Math.cos((n * 90.0 + 5.0) / 180 * Math::PI) * starsize * -1.3 + 50
+    x2 = Math.sin((n * 90.0 + 85.0) / 180 * Math::PI) * starsize * -1.3 + 50
+    y2 = Math.cos((n * 90.0 + 85.0) / 180 * Math::PI) * starsize * -1.3 + 50
+    x3 = Math.sin((n * 90.0 + 84.5) / 180 * Math::PI) * starsize * -1.1 + 50
+    y3 = Math.cos((n * 90.0 + 84.5) / 180 * Math::PI) * starsize * -1.1 + 50
+    x4 = Math.sin((n * 90.0 + 5.5) / 180 * Math::PI) * starsize * -1.1 + 50
+    y4 = Math.cos((n * 90.0 + 5.5) / 180 * Math::PI) * starsize * -1.1 + 50
+    path = "M #{x1} #{y1} A #{starsize * -1.3} #{starsize * -1.3} 1 0 0 #{x2} #{y2}"
+    path += "L #{x3} #{y3} A #{starsize * -1.1} #{starsize * -1.1} 1 0 1 #{x4} #{y4}"
+    file.puts("<path d=\"#{path}\" stroke=\"#000\" stroke-width=\"#{0}\" fill=\"#FFF\" />")
+  end
+  # path = []
+  # 0.upto(6) do |n|
+  #   x = Math.sin(n * 144.0 / 180 * Math::PI) * starsize + 50
+  #   y = Math.cos(n * 144.0 / 180 * Math::PI) * starsize + 52
+  #   path.push([n == 0 ? "M" : "L", x, y])
+  # end
+  # write_path(path, file, false, 1, "#000")
+  path = []
+  smallstar = -7.5
+  centerDist = 21
+  centerAngle = 22.5
+  cx = Math.sin(centerAngle / 180 * Math::PI) * centerDist
+  cy = Math.cos(centerAngle / 180 * Math::PI) * centerDist
+  0.upto(6) do |n|
+    x = Math.sin((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + cx + 50
+    y = Math.cos((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + cy + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#FFF")
+  smallstar = -6.5
+  0.upto(6) do |n|
+    x = Math.sin((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar - cx + 50
+    y = Math.cos((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar - cy + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#FFF")
+  0.upto(6) do |n|
+    x = Math.sin((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + 32
+    y = Math.cos((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#FFF")
+  smallstar = -5
+  0.upto(6) do |n|
+    x = Math.sin((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + 62
+    y = Math.cos((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + 37
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#FFF")
+  smallstar = -4
+  0.upto(6) do |n|
+    x = Math.sin((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + 57
+    y = Math.cos((n * 144.0 + 22.5) / 180 * Math::PI) * smallstar + 51
     path.push([n == 0 ? "M" : "L", x, y])
   end
   write_path(path, file, true, 3, "#FFF")

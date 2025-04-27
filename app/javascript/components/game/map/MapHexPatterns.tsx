@@ -122,6 +122,7 @@ export default function MapHexPatterns() {
       {nationalControlPattern("fra", 12)}
       
       {nationalControlPattern("sa", 12)}
+      {nationalControlPattern("bra", 12)}
       {nationalControlPattern("pol", 12)}
       {nationalControlPattern("bel", 12)}
       {nationalControlPattern("dut", 12)}
@@ -144,6 +145,7 @@ export default function MapHexPatterns() {
       {nationalControlPattern("fra", 16)}
       
       {nationalControlPattern("sa", 16)}
+      {nationalControlPattern("bra", 16)}
       {nationalControlPattern("pol", 16)}
       {nationalControlPattern("bel", 16)}
       {nationalControlPattern("dut", 16)}
