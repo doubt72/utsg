@@ -60,6 +60,7 @@ export default function GameMap({
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
 
   useEffect(() => {
+    if (!map || map.debug) { return }
     if (hideCounters || showLos) {
       if (map.game?.reinforcementSelection) {
         map.game.reinforcementSelection = undefined
