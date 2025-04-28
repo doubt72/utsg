@@ -116,6 +116,7 @@ export default function ReinforcementPanel({
                     const x0 = x + 80 + 90*j
                     const y = yy + 52 + 106*i
                     const counter = new Counter(new Coordinate(x0, y+5), u.counter, map, true)
+                    counter.onMap = false
                     if (player === map.game?.currentPlayer) {
                       counter.reinforcement = { player, turn, index: j }
                     }

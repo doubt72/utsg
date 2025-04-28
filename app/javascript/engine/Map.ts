@@ -347,7 +347,7 @@ export default class Map {
   counterInfoBadges(x: number, y: number, counter: Counter): BadgeLayout[] {
     const badges: { text: string, color: string, tColor: string, arrow?: Direction}[] = []
     if (counter.target.rotates && !counter.target.isWreck &&
-        !counter.target.hideOverlayRotation) {
+        !counter.target.hideOverlayRotation && !counter.reinforcement) {
       const turret = counter.target.turreted && !counter.target.isWreck
       const dir = turret ? counter.target.turretFacing : counter.target.facing
       badges.push({ text: `direction: ${dir}`, arrow: dir, color: "white", tColor: "black" })

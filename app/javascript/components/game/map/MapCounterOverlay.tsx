@@ -40,7 +40,10 @@ export default function MapCounterOverlay({
           const counterData = data as MapCounterData
           const cd = counters ? new Counter(undefined, counter.target, map) :
             new Counter(undefined, counterData.u, map)
-          if (counters) { cd.showDisabled = counter.showDisabled }
+          if (counters) {
+            cd.showDisabled = counter.showDisabled
+            cd.reinforcement = counter.reinforcement
+          }
           cd.showAllCounters = true
           if (!cd.target.isMarker) {
             cd.trueIndex = trueIndex++
