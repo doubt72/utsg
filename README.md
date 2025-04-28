@@ -20,4 +20,4 @@ Probably could do a more to TS-ify the react code.  Some things were refactored 
 
 WIP:
 
-![picture of the game screen](support/placement.png)
+![picture of the game screen](support/deployment.png)

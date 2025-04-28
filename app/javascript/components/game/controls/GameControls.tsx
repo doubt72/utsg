@@ -30,7 +30,7 @@ export default function GameControls({ game }: GameControlsProps) {
         return <LeaveButton gameId={game.id} key={i} />
       } else if (a.type === "start") {
         return <StartButton gameId={game.id} key={i} />
-      } else if (a.type === "placement") {
+      } else if (a.type === "deploy") {
         return <div className="mt05em mb05em mr05em" key={i}>deploy units</div>
       } else {
         return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>

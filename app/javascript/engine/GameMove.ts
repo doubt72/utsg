@@ -3,7 +3,7 @@ import Game, { GamePhase } from "./Game";
 import BaseMove from "./moves/BaseMove";
 import NullMove from "./moves/NullMove";
 import PhaseMove from "./moves/PhaseMove";
-import PlacementMove from "./moves/PlacementMove";
+import DeployMove from "./moves/DeployMove";
 
 export type DiceResult = {
   rawResult: number;
@@ -58,8 +58,8 @@ export default class GameMove {
     if (this.data.data.action === "phase") {
       return new PhaseMove(this.data, this.game, this.index)
     }
-    if (this.data.data.action === "place") {
-      return new PlacementMove(this.data, this.game, this.index);
+    if (this.data.data.action === "deploy") {
+      return new DeployMove(this.data, this.game, this.index);
     }
 
     // check initiative

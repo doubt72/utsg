@@ -128,7 +128,7 @@ export default function ReinforcementPanel({
                     } else if (counter.target.selected) {
                       counter.target.select()
                     }
-                    counter.showDisabled = map.game?.phase !== gamePhaseType.Placement ||
+                    counter.showDisabled = map.game?.phase !== gamePhaseType.Deployment ||
                       map.game.currentPlayer !== player
                     const count = (u.x || 1) - (u.used || 0)
                     const cb = () => { ovCallback({show: true, counters: [counter]})}

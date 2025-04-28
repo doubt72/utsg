@@ -6,7 +6,7 @@ import { GameMoveData } from "../GameMove";
 import Unit from "../Unit";
 import BaseMove from "./BaseMove";
 
-export default class PlacementMove extends BaseMove {
+export default class DeployMove extends BaseMove {
   originIndex: number;
   target: Coordinate;
   orientation: Direction;
@@ -31,7 +31,7 @@ export default class PlacementMove extends BaseMove {
     const name = this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.game.turn][this.originIndex].counter.name :
       this.game.scenario.axisReinforcements[this.game.turn][this.originIndex].counter.name
-    return `placed ${name} at ${coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`;
+    return `deployed ${name} at ${coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`;
   }
 
   get undoPossible() { return true }

@@ -129,7 +129,7 @@ export default class Scenario {
   takeAxisReinforcement(turn: number, index: number): Unit | Feature {
     const entry = this.axisReinforcements[turn][index]
     if (entry.used >= entry.x) {
-      throw new Error('Error placing too many of reinforcement type')
+      throw new Error('Error deploying too many of reinforcement type')
     }
     entry.used++
 
@@ -139,7 +139,7 @@ export default class Scenario {
   takeAlliedReinforcement(turn: number, index: number): Unit | Feature {
     const entry = this.alliedReinforcements[turn][index]
     if (entry.used >= entry.x) {
-      throw new Error('Error placing too many of reinforcement type')
+      throw new Error('Error deploying too many of reinforcement type')
     }
     entry.used++
 

@@ -75,7 +75,7 @@ export default function GameDisplay() {
           user: game.k.currentPlayer,
           player: game.k.reinforcementSelection.player,
           data: {
-            action: "place", originIndex: game.k.reinforcementSelection.index,
+            action: "deploy", originIndex: game.k.reinforcementSelection.index,
             target: [x, y], orientation: 1, turn: game.k.turn
           }
         }, game.k, game.k.moves.length)
@@ -103,7 +103,7 @@ export default function GameDisplay() {
         user: game.k.currentPlayer,
         player: game.k.reinforcementSelection.player,
         data: {
-          action: "place", originIndex: game.k.reinforcementSelection.index,
+          action: "deploy", originIndex: game.k.reinforcementSelection.index,
           target: [x, y], orientation: d, turn: game.k.turn
         }
       }, game.k, game.k.moves.length)

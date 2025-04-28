@@ -17,19 +17,19 @@ export default class PhaseMove extends BaseMove {
     this.validate(data.data.turn)
     this.validate(data.data.player)
 
-    this.oldPhase = (data.data.phase ?? [gamePhaseType.Placement])[0]
-    this.newPhase = (data.data.phase ?? [0, gamePhaseType.Placement])[1]
+    this.oldPhase = (data.data.phase ?? [gamePhaseType.Deployment])[0]
+    this.newPhase = (data.data.phase ?? [0, gamePhaseType.Deployment])[1]
     this.oldTurn = (data.data.turn as [number, number])[0]
     this.newTurn = (data.data.turn as [number, number])[1]
     this.newPlayer = data.data.player as Player
   }
 
   get stringValue(): string {
-    if (this.newPhase === gamePhaseType.Placement) { return this.placementMessage }
+    if (this.newPhase === gamePhaseType.Deployment) { return this.deploymentMessage }
     return `problem parsing data ${this.data}`
   }
 
-  get placementMessage(): string {
+  get deploymentMessage(): string {
     let first = this.game.scenario.firstMove
     let last = this.newTurn === 1 ? "setup finished" : "cleanup finished"
     if (this.newTurn === 0) {
@@ -38,15 +38,15 @@ export default class PhaseMove extends BaseMove {
     }
     if (first === 1) {
       if (this.newPlayer === 1) {
-        return last + ", begin Allied counter placement"
+        return last + ", begin Allied deployment"
       } else {
-        return "Allied counter placement done, begin Axis counter placement"
+        return "Allied deployment done, begin Axis deployment"
       }
     } else {
       if (this.newPlayer === 1) {
-        return "Axis counter placement done, begin Allied counter placement"
+        return "Axis deployment done, begin Allied deployment"
       } else {
-        return last + ", begin Axis counter placement"
+        return last + ", begin Axis deployment"
       }
     }
   }

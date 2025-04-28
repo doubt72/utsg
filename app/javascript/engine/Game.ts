@@ -25,7 +25,7 @@ export type GameData = {
 
 export type GamePhase = 0 | 1 | 2 | 3
 export const gamePhaseType: { [index: string]: GamePhase } = {
-  Placement: 0, Prep: 1, Main: 2, Cleanup: 3
+  Deployment: 0, Prep: 1, Main: 2, Cleanup: 3
 }
 
 export default class Game {
@@ -74,7 +74,7 @@ export default class Game {
     // Initial state, moves will modify
     this.currentPlayer = this.scenario.firstSetup || 1
     this.turn = 0
-    this.phase = gamePhaseType.Placement
+    this.phase = gamePhaseType.Deployment
     this.playerOnePoints = 0
     this.playerTwoPoints = 0
     this.loadAllMoves()
@@ -158,8 +158,8 @@ export default class Game {
       } else {
         return [{ type: "none", message: "waiting for game to start" }]
       }
-    } else if (this.phase === gamePhaseType.Placement) {
-      moves.unshift({ type: "placement" })
+    } else if (this.phase === gamePhaseType.Deployment) {
+      moves.unshift({ type: "deploy" })
       return moves
     } else {
       return [{ type: "none", message: "not implemented yet" }]
@@ -225,7 +225,7 @@ export default class Game {
     }
     const oldPhase = this.phase
     const oldTurn = this.turn
-    if (this.phase == gamePhaseType.Placement) {
+    if (this.phase == gamePhaseType.Deployment) {
       const counters = this.currentPlayer === 1 ?
         this.scenario.alliedReinforcements[this.turn] :
         this.scenario.axisReinforcements[this.turn]
@@ -233,7 +233,7 @@ export default class Game {
       const count = counters.reduce((tot, u) => tot + u.x - u.used, 0)
       if (count === 0) {
         if (this.turn === 0) {
-          data.data.phase = [oldPhase, gamePhaseType.Placement]
+          data.data.phase = [oldPhase, gamePhaseType.Deployment]
           if (this.currentPlayer === this.scenario.firstSetup) {
             data.data.player = this.currentPlayer === 1 ? 2 : 1
             data.data.turn = [oldTurn, 0]
@@ -245,7 +245,7 @@ export default class Game {
           data.data.player = this.currentPlayer === 1 ? 2 : 1
           data.data.turn = [oldTurn, oldTurn]
           data.data.phase = this.currentPlayer === this.scenario.firstMove ?
-            [oldPhase, gamePhaseType.Placement] :
+            [oldPhase, gamePhaseType.Deployment] :
             [oldPhase, gamePhaseType.Prep]
         }
         this.executeMove(new GameMove(data, this, this.moves.length))

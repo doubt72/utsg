@@ -80,7 +80,7 @@ describe("move integration test", () => {
   });
 
   test("validation", () => {
-    const moveData = { user: 2, player: 1, data: { action: "place" } }
+    const moveData = { user: 2, player: 1, data: { action: "deploy" } }
 
     expect(() => new GameMove(moveData, game, 0).moveClass).toThrowError('Bad data for move')
   })
@@ -109,22 +109,22 @@ describe("move integration test", () => {
     curretMoveData = {
       user: 4, player: 2,
       data: {
-        action: "phase", turn: [0, 0], phase: [gamePhaseType.Placement, gamePhaseType.Placement], player: 2
+        action: "phase", turn: [0, 0], phase: [gamePhaseType.Deployment, gamePhaseType.Deployment], player: 2
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
-    expect(game.lastMove?.stringValue).toBe("game started, begin Axis counter placement")
+    expect(game.lastMove?.stringValue).toBe("game started, begin Axis deployment")
     expect(game.lastMove?.undoPossible).toBe(false)
 
     expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     curretMoveData = {
-      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
-    expect(game.moves[6].stringValue).toBe("placed Rifle at E4")
+    expect(game.moves[6].stringValue).toBe("deployed Rifle at E4")
 
     expect(game.undoPossible).toBe(true)
     expect(game.moves.length).toBe(index)
@@ -137,11 +137,11 @@ describe("move integration test", () => {
     // Otherwise moves are treated sort of as a stack, with lastMoveIndex as the
     // "execution" pointer
     expect(game.lastMoveIndex).toBe(index - 2)
-    expect(game.moves[6].stringValue).toBe("placed Rifle at E4 [cancelled]")
+    expect(game.moves[6].stringValue).toBe("deployed Rifle at E4 [cancelled]")
 
     // Loading an undone move doesn't execute or increment last move
     curretMoveData = {
-      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0, undone: true }
+      user: 4, player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3], orientation: 1, turn: 0, undone: true }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
@@ -150,7 +150,7 @@ describe("move integration test", () => {
     expect(game.lastMoveIndex).toBe(index - 3)
 
     curretMoveData = {
-      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 4], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "deploy", originIndex: 0, target: [4, 4], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
@@ -164,7 +164,7 @@ describe("move integration test", () => {
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].target.name).toBe("Rifle")
 
     curretMoveData = {
-      user: 4, player: 2, data: { action: "place", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
@@ -174,13 +174,13 @@ describe("move integration test", () => {
     expect(game.moves.length).toBe(index)
     expect(game.lastMoveIndex).toBe(index - 1)
     curretMoveData = {
-      user: 4, player: 2, data: { action: "place", originIndex: 1, target: [4, 1], orientation: 1, turn: 0 }
+      user: 4, player: 2, data: { action: "deploy", originIndex: 1, target: [4, 1], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
 
-    expect(game.lastMove?.stringValue).toBe("Axis counter placement done, begin Allied counter placement")
+    expect(game.lastMove?.stringValue).toBe("Axis deployment done, begin Allied deployment")
 
     index++
     expect(game.moves.length).toBe(index)

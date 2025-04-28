@@ -36,14 +36,14 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
   const nationOne = (x: number, y: number) => {
     return nation(
       x, y, map.game?.playerOneNation as string, 1,
-      map.game?.phase === gamePhaseType.Placement && map.game.currentPlayer === 1
+      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 1
     );
   }
 
   const nationTwo = (x: number, y: number) => {
     return nation(
       x, y, map.game?.playerTwoNation as string, 2,
-      map.game?.phase === gamePhaseType.Placement && map.game.currentPlayer === 2
+      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 2
     )
   }
 
@@ -52,12 +52,12 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
   }, [update])
 
   useEffect(() => {
-    const placing = map.game?.phase === gamePhaseType.Placement
+    const deployment = map.game?.phase === gamePhaseType.Deployment
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, placing ? 305 : 190 , 100)}
+        <path d={roundedRectangle(xx, yy, deployment ? 305 : 190 , 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
-        { placing ?
+        { deployment ?
           (
             <g>
               <text x={xx + 190} y={yy + 22} fontSize={16} textAnchor="start"
@@ -77,7 +77,7 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
         }
         <text x="0" y="0" fontSize={16} textAnchor="end"
                  fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}
-                 transform={`translate(${xx + 195 + (placing ? 115 : 0)},${yy + 95}) rotate(90)`}>
+                 transform={`translate(${xx + 195 + (deployment ? 115 : 0)},${yy + 95}) rotate(90)`}>
           units
         </text>
         {nationOne(xx + 10, yy + 10)}
