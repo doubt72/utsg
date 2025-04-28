@@ -12,13 +12,15 @@ interface ReinforcementPanelProps {
   player: Player;
   xx: number;
   yy: number;
+  shifted: boolean;
   closeCallback: MouseEventHandler;
+  shiftCallback: MouseEventHandler;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
 }
 
 export default function ReinforcementPanel({
-  map, player, xx, yy, closeCallback, ovCallback
+  map, player, xx, yy, shifted, closeCallback, shiftCallback, ovCallback
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
 
@@ -36,7 +38,8 @@ export default function ReinforcementPanel({
 
   useEffect(() => {
     const units = allUnits()
-    const closeX = !units || Object.keys(units).length == 0 ? xx + 210 : xx + maxWidth(units) - 15
+    const x = xx + (shifted ? (units ? maxWidth(units) + 150 : 300) : 0)
+    const closeX = !units || Object.keys(units).length == 0 ? x + 210 : x + maxWidth(units) - 15
     const closeY = yy + 18
     const ff = Math.sin(45 * Math.PI / 180) * 8
     const close = (
@@ -55,13 +58,13 @@ export default function ReinforcementPanel({
     if (!units || Object.keys(units).length === 0) {
       setBase(
         <g>
-          <path d={roundedRectangle(xx, yy, 225, 100)}
+          <path d={roundedRectangle(x, yy, 225, 100)}
                 style={{ fill: "#999", stroke: "#777", strokeWidth: 1 }}/>
-          <text x={xx + 10} y={yy + 22} fontSize={16} textAnchor="start"
+          <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
             available units:
           </text>
-          <text x={xx + 15} y={yy + 60} fontSize={16} textAnchor="start"
+          <text x={x + 15} y={yy + 60} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
             (all units deployed)
           </text>
@@ -70,29 +73,49 @@ export default function ReinforcementPanel({
       )
       return
     }
+    const sX2 = closeX - 16
+    const sX1 = sX2 - 16
+    const sY1 = closeY - 8
+    const sY2 = closeY + 8
+    const sX12 = sX2 - (shifted ? 4 : 12)
+    const sX21 = sX2 - (shifted ? 12 : 4)
+    const path = `M ${sX1} ${sY1} L ${sX2} ${sY1} L ${sX2} ${sY2} L ${sX1} ${sY2} Z`
+    const shiftButton = (
+      <g>
+        <path d={path} style={{ fill: "#CCC", stroke: "#070", strokeWidth: 2 }}
+          onClick={shiftCallback}/>
+        <line x1={sX12} y1={sY1} x2={sX21} y2={closeY}
+          style={{ stroke: "#070", strokeWidth: 2 }}
+          onClick={shiftCallback}/>
+        <line x1={sX12} y1={sY2} x2={sX21} y2={closeY}
+          style={{ stroke: "#070", strokeWidth: 2 }}
+          onClick={shiftCallback}/>
+      </g>
+    )
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, maxWidth(units), Object.keys(units).length * 106 + 44)}
+        <path d={roundedRectangle(x, yy, maxWidth(units), Object.keys(units).length * 106 + 44)}
               style={{ fill: "#999", stroke: "#777", strokeWidth: 1 }}/>
-        <text x={xx + 10} y={yy + 22} fontSize={16} textAnchor="start"
+        <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
           available units:
         </text>
+        {shiftButton}
         {close}
         {
           Object.entries(units).map((pair, i) => {
             const turn = Number(pair[0])
             return (
               <g key={i}>
-                <text x={xx + 10} y={yy + 100 + 106*i} fontSize={16} textAnchor="start"
+                <text x={x + 10} y={yy + 100 + 106*i} fontSize={16} textAnchor="start"
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
                   {turn > 0 ? `turn ${turn}` : "setup"}
                 </text>
                 {
                   pair[1].map((u, j) => {
-                    const x = xx + 80 + 90*j
+                    const x0 = x + 80 + 90*j
                     const y = yy + 52 + 106*i
-                    const counter = new Counter(new Coordinate(x, y+5), u.counter, map, true)
+                    const counter = new Counter(new Coordinate(x0, y+5), u.counter, map, true)
                     if (player === map.game?.currentPlayer) {
                       counter.reinforcement = { player, turn, index: j }
                     }
@@ -115,7 +138,7 @@ export default function ReinforcementPanel({
                       }
                       return (
                         <g key={j}>
-                          <text x={x} y={y} fontSize={16} textAnchor="start"
+                          <text x={x0} y={y} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#999" }}>
                             {count}x
                           </text>
@@ -125,7 +148,7 @@ export default function ReinforcementPanel({
                     } else {
                       return (
                         <g key={j}>
-                          <text x={x} y={y} fontSize={16} textAnchor="start"
+                          <text x={x0} y={y} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
                             {count}x
                           </text>
@@ -141,7 +164,7 @@ export default function ReinforcementPanel({
         }
       </g>
     )
-  }, [xx, yy, map.game?.reinforcementSelection, map.game?.lastMove])
+  }, [xx, yy, shifted, map.game?.reinforcementSelection, map.game?.lastMove])
 
   return (
     <g>

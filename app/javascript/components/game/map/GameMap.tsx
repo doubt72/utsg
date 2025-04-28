@@ -175,6 +175,16 @@ export default function GameMap({
     setOverlay({ show: false, x: -1, y: -1 })
   }, [showLos])
 
+  const shift = () => {
+    setReinforcementsOverlay(rp => 
+      <ReinforcementPanel map={map} xx={rp?.props.xx} yy={rp?.props.yy} player={rp?.props.player}
+                          closeCallback={() => setReinforcementsOverlay(undefined)}
+                          shifted={!rp?.props.shifted}
+                          shiftCallback={shift}
+                          ovCallback={setOverlay}/>
+    )
+  }
+
   const hexSelection = (x: number, y: number) => {
     const key = `${x}-${y}`
     console.log(`GM processing ${x},${y}`)
@@ -189,12 +199,14 @@ export default function GameMap({
               if (r) { r.props.update.key = !r.props.update.key }
               return r
             })
-            setReinforcementsOverlay(
+            setReinforcementsOverlay(rp =>
               <ReinforcementPanel map={map} xx={xx} yy={yy} player={map.game?.currentPlayer || 1}
                                   closeCallback={() => {
                                     setReinforcementsOverlay(undefined)
                                     map.game?.setReinforcementSelection(undefined)
                                   }}
+                                  shifted={rp?.props.shifted ?? false}
+                                  shiftCallback={shift}
                                   ovCallback={setOverlay}/>)
           }
           if (hexCallback) {
@@ -217,19 +229,22 @@ export default function GameMap({
       map.units[y][x][selection.counter.trueIndex].select()
       counterCallback(x, y, selection.counter)
     } else if (selection.target.type === "reinforcement" && map.game) {
+      const player = selection.target.player
       map.game.setReinforcementSelection({
-        player: selection.target.player,
+        player: player,
         turn: selection.target.turn,
         index: selection.target.index,
       })
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
-      setReinforcementsOverlay(
-        <ReinforcementPanel map={map} xx={x} yy={y} player={selection.target.player}
+      setReinforcementsOverlay(rp =>
+        <ReinforcementPanel map={map} xx={x} yy={y} player={player}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
                               map.game?.setReinforcementSelection(undefined)
                             }}
+                            shifted={rp?.props.shifted ?? false}
+                            shiftCallback={shift}
                             ovCallback={setOverlay}/>
       )
     }
@@ -238,10 +253,18 @@ export default function GameMap({
 
   const showReinforcements = (x: number, y: number, player: Player) => {
     resetCallback()
-    setReinforcementsOverlay(
-      <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
-                          closeCallback={() => setReinforcementsOverlay(undefined)}
-                          ovCallback={setOverlay}/>
+    setReinforcementsOverlay(rp => {
+      if (!rp || rp.props.player !== player) {
+        return (
+          <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
+                              closeCallback={() => setReinforcementsOverlay(undefined)}
+                              shifted={false} shiftCallback={shift}
+                              ovCallback={setOverlay}/>
+        )
+      } else {
+        return undefined
+      }
+    }
     )
   }
 
