@@ -15,8 +15,9 @@ import SniperDisplay from "./SniperDisplay";
 import Map from "../../../engine/Map";
 import Counter from "../../../engine/Counter";
 import ReinforcementPanel from "../controls/ReinforcementPanel";
-import { Coordinate, CounterSelectionTarget, Player } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Direction, Player } from "../../../utilities/commonTypes";
 import MapHexOverlay from "./MapHexOverlay";
+import DirectionSelector from "./DirectionSelector";
 
 interface GameMapProps {
   map: Map;
@@ -28,13 +29,14 @@ interface GameMapProps {
   showTerrain?: boolean;
   hexCallback?: (x: number, y: number) => void;
   counterCallback?: (x: number, y: number, counter: Counter) => void;
+  directionCallback?: (x: number, y: number, d: Direction) => void;
   resetCallback?: () => void;
 }
 
 export default function GameMap({
   map, scale, showCoords = false, showStatusCounters = false, showLos = false,
   hideCounters = false, showTerrain = false,
-  hexCallback = () => {}, counterCallback = () => {}, resetCallback = () => {}
+  hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {}
 }: GameMapProps) {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
@@ -48,6 +50,7 @@ export default function GameMap({
   const [counterLosOverlay, setCounterLosOverlay] = useState<JSX.Element[] | undefined>()
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState<JSX.Element | undefined>()
   const [reinforcementsOverlay, setReinforcementsOverlay] = useState<JSX.Element | undefined>()
+  const [directionSelectionOverlay, setDirectionSelectionOverlay] = useState<JSX.Element | undefined>()
 
   const [weather, setWeather] = useState<JSX.Element | undefined>()
   const [initiative, setInitiative] = useState<JSX.Element | undefined>()
@@ -132,7 +135,8 @@ export default function GameMap({
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
     map?.windSpeed, map?.windDirection, map?.windVariable, map?.game?.currentPlayer, map?.game?.lastMove,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
-    map?.game?.playerOneScore, map?.game?.playerTwoScore, map?.game?.reinforcementSelection,
+    map?.game?.playerOneScore, map?.game?.playerTwoScore,
+    map?.game?.reinforcementSelection, map?.game?.reinforcementNeedsDirection,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games
   ])
 
@@ -185,33 +189,12 @@ export default function GameMap({
     )
   }
 
-  const hexSelection = (x: number, y: number) => {
-    const key = `${x}-${y}`
-    console.log(`GM processing ${x},${y}`)
+  const updateHexOverlays = (x: number, y: number) => {
+    const key = `${x}-${y}-o`
     setHexDisplayOverlays(overlays =>
       overlays.map(h => {
-        if (h.key === `${key}-o`) {
+        if (h.key === key) {
           const shaded = map.debug ? !h.props.shaded : h.props.shaded
-          if (map.game?.reinforcementSelection) {
-            const xx = reinforcementsOverlay?.props.xx
-            const yy = reinforcementsOverlay?.props.yy
-            setReinforcements(r => {
-              if (r) { r.props.update.key = !r.props.update.key }
-              return r
-            })
-            setReinforcementsOverlay(rp =>
-              <ReinforcementPanel map={map} xx={xx} yy={yy} player={map.game?.currentPlayer || 1}
-                                  closeCallback={() => {
-                                    setReinforcementsOverlay(undefined)
-                                    map.game?.setReinforcementSelection(undefined)
-                                  }}
-                                  shifted={rp?.props.shifted ?? false}
-                                  shiftCallback={shift}
-                                  ovCallback={setOverlay}/>)
-          }
-          if (hexCallback) {
-            hexCallback(x, y)
-          }
           return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} shaded={shaded}
                                 selectCallback={hexSelection} />
         } else {
@@ -219,6 +202,42 @@ export default function GameMap({
         }
       })
     )
+    if (reinforcementsOverlay) {
+      const xx = reinforcementsOverlay?.props.xx
+      const yy = reinforcementsOverlay?.props.yy
+      setReinforcements(r => {
+        if (r) { r.props.update.key = !r.props.update.key }
+        return r
+      })
+      setReinforcementsOverlay(rp =>
+        <ReinforcementPanel map={map} xx={xx} yy={yy} player={map.game?.currentPlayer || 1}
+                            closeCallback={() => {
+                              setReinforcementsOverlay(undefined)
+                              map.game?.setReinforcementSelection(undefined)
+                            }}
+                            shifted={rp?.props.shifted ?? false}
+                            shiftCallback={shift}
+                            ovCallback={setOverlay}/>)
+    }
+  }
+
+  const hexSelection = (x: number, y: number) => {
+    console.log(`GM processing ${x},${y}`)
+    if (hexCallback) {
+      if (map.game?.reinforcementSelection) {
+        const counter = map.game.availableReinforcements(map.game.currentPlayer)[
+          map.game.turn][map.game.reinforcementSelection.index]
+        if (counter.counter.rotates && !map.game.reinforcementNeedsDirection) {
+          map.game.reinforcementNeedsDirection = [x, y]
+          setDirectionSelectionOverlay(
+            <DirectionSelector hex={map.hexAt(new Coordinate(x, y))}
+                               selectCallback={directionSelection} />
+          )
+        }
+      }
+      hexCallback(x, y)
+    }
+    updateHexOverlays(x, y)
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
@@ -229,6 +248,10 @@ export default function GameMap({
       map.units[y][x][selection.counter.trueIndex].select()
       counterCallback(x, y, selection.counter)
     } else if (selection.target.type === "reinforcement" && map.game) {
+      if (map.game.reinforcementSelection?.index !== selection.target.index) {
+        map.game.reinforcementNeedsDirection = undefined
+        setDirectionSelectionOverlay(undefined)
+      }
       const player = selection.target.player
       map.game.setReinforcementSelection({
         player: player,
@@ -249,6 +272,13 @@ export default function GameMap({
       )
     }
     setUpdateUnitshaded(s => s + 1)
+  }
+
+  const directionSelection = (x: number, y: number, d: Direction) => {
+    console.log(`DS processing ${x},${y}`)
+    directionCallback(x, y, d)
+    setDirectionSelectionOverlay(undefined)
+    updateHexOverlays(x, y)
   }
 
   const showReinforcements = (x: number, y: number, player: Player) => {
@@ -287,6 +317,7 @@ export default function GameMap({
       {reinforcementsOverlay}
       {overlayDisplay}
       {counterLosOverlay}
+      {directionSelectionOverlay}
       {terrainInfoOverlay}
     </svg>
   )

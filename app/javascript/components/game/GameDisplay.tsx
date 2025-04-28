@@ -10,6 +10,7 @@ import Game from "../../engine/Game";
 import Map from "../../engine/Map";
 import Counter from "../../engine/Counter";
 import GameMove from "../../engine/GameMove";
+import { Direction } from "../../utilities/commonTypes";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -67,23 +68,22 @@ export default function GameDisplay() {
   const hexSelection = (x: number, y: number) => {
     console.log(`GD processing ${x},${y}`)
     if (game.k?.reinforcementSelection) {
-      if (map && !map.openHex(x, y)) {
-        return
-      }
-      const move = new GameMove({
-        user: game.k.currentPlayer,
-        player: game.k.reinforcementSelection.player,
-        data: {
-          action: "place", originIndex: game.k.reinforcementSelection.index,
-          target: [x, y], orientation: 1, turn: game.k.turn
-        }
-      }, game.k, game.k.moves.length)
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
         game.k.reinforcementSelection.index]
-      game.k.executeMove(move)
-      gameNotification(game.k)
-      if (counter.x == counter.used) {
-        game.k.reinforcementSelection = undefined
+      if (!counter.counter.rotates || !game.k.reinforcementNeedsDirection) {
+        const move = new GameMove({
+          user: game.k.currentPlayer,
+          player: game.k.reinforcementSelection.player,
+          data: {
+            action: "place", originIndex: game.k.reinforcementSelection.index,
+            target: [x, y], orientation: 1, turn: game.k.turn
+          }
+        }, game.k, game.k.moves.length)
+        game.k.executeMove(move)
+        gameNotification(game.k)
+        if (counter.x == counter.used) {
+          game.k.reinforcementSelection = undefined
+        }
       }
     }
   }
@@ -91,6 +91,29 @@ export default function GameDisplay() {
   const unitSelection = (x: number, y: number, counter: Counter) => {
     const key = `x ${x}-${y}-${counter.trueIndex}`
     console.log(key)
+  }
+
+  const directionSelection = (x: number, y: number, d: Direction) => {
+    const key = `x ${x}-${y}-${d}`
+    console.log(key)
+    if (game.k?.reinforcementSelection) {
+      const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
+      game.k.reinforcementSelection.index]
+      const move = new GameMove({
+        user: game.k.currentPlayer,
+        player: game.k.reinforcementSelection.player,
+        data: {
+          action: "place", originIndex: game.k.reinforcementSelection.index,
+          target: [x, y], orientation: d, turn: game.k.turn
+        }
+      }, game.k, game.k.moves.length)
+      game.k.executeMove(move)
+      gameNotification(game.k)
+      if (counter.x == counter.used) {
+        game.k.reinforcementSelection = undefined
+      }
+      game.k.reinforcementNeedsDirection = undefined
+    }
   }
 
   const resetDisplay = () => {
@@ -160,7 +183,8 @@ export default function GameDisplay() {
       <div className="mb05em ml05em mr05em">
         <GameMap map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
                  showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
-                 hexCallback={hexSelection} counterCallback={unitSelection} resetCallback={resetDisplay} />
+                 hexCallback={hexSelection} counterCallback={unitSelection}
+                 directionCallback={directionSelection} resetCallback={resetDisplay} />
       </div>
     </div>
   )

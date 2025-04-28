@@ -225,6 +225,18 @@ export default class Hex {
     return baseHexCoords(this.map, this.xOffset, this.yOffset)
   }
 
+  directionSelectionCoords(vertex: Direction): [string, [number, number]] {
+    const x1 = (this.xCorner(vertex) + this.xCorner(normalDir(vertex - 1)))/2
+    const y1 = (this.yCorner(vertex) + this.yCorner(normalDir(vertex - 1)))/2
+    const x2 = (this.xCorner(vertex) + this.xOffset)/2
+    const y2 = (this.yCorner(vertex) + this.yOffset)/2
+    const x3 = (this.xCorner(normalDir(vertex - 1)) + this.xOffset)/2
+    const y3 = (this.yCorner(normalDir(vertex - 1)) + this.yOffset)/2
+    const xC = (x1 + x2 + x3)/3
+    const yC = (y1 + y2 + y3)/3
+    return [`M ${x1} ${y1} L ${x2} ${y2} L ${x3}, ${y3} Z`, [xC, yC]]
+  }
+  
   edgeCoords(dir: Direction): string {
     return [
       "M", this.xCorner(normalDir(dir-1)), this.yCorner(normalDir(dir-1)),

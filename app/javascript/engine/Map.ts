@@ -434,6 +434,7 @@ export default class Map {
     if (!this.game?.reinforcementSelection) {
       return true
     }
+    if (this.game.reinforcementNeedsDirection) { return false }
     const player = this.game.reinforcementSelection.player
     const turn = this.game.reinforcementSelection.turn
     const ts = `${turn}`

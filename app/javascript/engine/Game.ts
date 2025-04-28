@@ -54,6 +54,7 @@ export default class Game {
 
   suppressNetwork: boolean = false;
   reinforcementSelection?: ReinforcementSelection;
+  reinforcementNeedsDirection?: [number, number]
 
   constructor(data: GameData, refreshCallback: (g: Game) => void = () => {}) {
     this.id = data.id
