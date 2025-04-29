@@ -9,9 +9,7 @@ import GameControls from "./controls/GameControls";
 import Game from "../../engine/Game";
 import Map from "../../engine/Map";
 import Counter from "../../engine/Counter";
-import GameMove from "../../engine/GameMove";
 import { Direction } from "../../utilities/commonTypes";
-import { ReinforcementItem } from "../../engine/Scenario";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -66,31 +64,12 @@ export default function GameDisplay() {
            localStorage.getItem("username") === game.k?.playerTwoName
   }
 
-  const executeMove = (x: number, y: number, counter: ReinforcementItem, d: Direction) => {
-    if (game.k?.reinforcementSelection) {
-      const move = new GameMove({
-        user: game.k.currentPlayer,
-        player: game.k.reinforcementSelection.player,
-        data: {
-          action: "deploy", originIndex: game.k.reinforcementSelection.index,
-          target: [x, y], orientation: d, turn: game.k.turn
-        }
-      }, game.k, game.k.moves.length)
-      game.k.executeMove(move)
-      gameNotification(game.k)
-      if (counter.x == counter.used) {
-        game.k.reinforcementSelection = undefined
-      }
-      game.k.reinforcementNeedsDirection = undefined
-    }
-  }
-
   const hexSelection = (x: number, y: number) => {
     if (game.k?.reinforcementSelection) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
         game.k.reinforcementSelection.index]
       if (!counter.counter.rotates || !game.k.reinforcementNeedsDirection) {
-        executeMove(x, y, counter, 1)
+        game.k.executeReinforcement(x, y, counter, 1, gameNotification)
       }
     }
   }
@@ -105,7 +84,7 @@ export default function GameDisplay() {
     if (game.k?.reinforcementSelection) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
         game.k.reinforcementSelection.index]
-      executeMove(x, y, counter, d)
+      game.k.executeReinforcement(x, y, counter, d, gameNotification)
     }
   }
 

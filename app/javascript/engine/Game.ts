@@ -1,6 +1,6 @@
-import { GameAction, Player, ReinforcementSelection } from "../utilities/commonTypes";
+import { Direction, GameAction, Player, ReinforcementSelection } from "../utilities/commonTypes";
 import { getAPI } from "../utilities/network";
-import Scenario, { ReinforcementSchedule, ScenarioData } from "./Scenario";
+import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
 import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
@@ -266,6 +266,27 @@ export default class Game {
       if (counter.x > counter.used) {
         this.reinforcementSelection = select
       }
+    }
+  }
+
+  executeReinforcement(
+    x: number, y: number, counter: ReinforcementItem, d: Direction, callback: (game: Game) => void
+  ) {
+    if (this.reinforcementSelection) {
+      const move = new GameMove({
+        user: this.currentPlayer,
+        player: this.reinforcementSelection.player,
+        data: {
+          action: "deploy", originIndex: this.reinforcementSelection.index,
+          target: [x, y], orientation: d, turn: this.turn
+        }
+      }, this, this.moves.length)
+      this.executeMove(move)
+      callback(this)
+      if (counter.x == counter.used) {
+        this.reinforcementSelection = undefined
+      }
+      this.reinforcementNeedsDirection = undefined
     }
   }
 }
