@@ -1,9 +1,7 @@
-import { Coordinate, Direction, movementType } from "../../utilities/commonTypes";
+import { Coordinate, Direction } from "../../utilities/commonTypes";
 import { coordinateToLable } from "../../utilities/utilities";
-import Feature from "../Feature";
 import Game from "../Game";
 import { GameMoveData } from "../GameMove";
-import Unit from "../Unit";
 import BaseMove from "./BaseMove";
 
 export default class DeployMove extends BaseMove {
@@ -46,11 +44,11 @@ export default class DeployMove extends BaseMove {
       scenario.takeAlliedReinforcement(turn, this.originIndex) :
       scenario.takeAxisReinforcement(turn, this.originIndex)
 
-    if (
-      (uf.isFeature && (uf as Feature).coverSides) ||
-      (!uf.isFeature && (uf as Unit).movementType !== movementType.Foot)
-    ) {
-      uf.facing = this.orientation;
+    console.log(`rotates? ${uf.type}`)
+    if (uf.rotates) {
+      console.log(`to ${this.orientation}`)
+      uf.facing = this.orientation
+      uf.turretFacing = this.orientation
     }
     map.addUnit(this.target, uf)
     this.game.checkPhase()

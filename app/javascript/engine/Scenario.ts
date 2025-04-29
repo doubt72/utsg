@@ -25,7 +25,8 @@ export type ScenarioData = {
   }
 }
 
-export type ReinforcementList = {x: number, used: number, id?: string, counter: Unit | Feature}[]
+export type ReinforcementItem = {x: number, used: number, id?: string, counter: Unit | Feature}
+export type ReinforcementList = ReinforcementItem[]
 export type ReinforcementSchedule = { [index: number]: ReinforcementList };
 
 export default class Scenario {
