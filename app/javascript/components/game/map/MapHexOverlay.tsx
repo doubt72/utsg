@@ -15,9 +15,9 @@ export default function MapHexOverlay({
 
   const shadedSVG = (
     shaded ? <polygon points={hex.hexCoords} style={shadedStyle}
-                      onClick={() => {console.log(`shaded ${hex.coord.x},${hex.coord.y}`)}} /> :
+                      onClick={() => {}} /> :
              <polygon points={hex.hexCoords} style={unshadedStyle}
-                      onClick={() => {console.log(`unshaded ${hex.coord.x},${hex.coord.y}`); selectCallback(hex.coord.x, hex.coord.y)}} />
+                      onClick={() => selectCallback(hex.coord.x, hex.coord.y)} />
   )
   return (
     <g>

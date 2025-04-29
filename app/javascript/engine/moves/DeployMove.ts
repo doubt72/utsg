@@ -43,10 +43,7 @@ export default class DeployMove extends BaseMove {
     const uf = this.player === 1 ?
       scenario.takeAlliedReinforcement(turn, this.originIndex) :
       scenario.takeAxisReinforcement(turn, this.originIndex)
-
-    console.log(`rotates? ${uf.type}`)
     if (uf.rotates) {
-      console.log(`to ${this.orientation}`)
       uf.facing = this.orientation
       uf.turretFacing = this.orientation
     }

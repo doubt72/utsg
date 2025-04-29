@@ -224,7 +224,6 @@ export default function GameMap({
   }
 
   const hexSelection = (x: number, y: number) => {
-    console.log(`GM processing ${x},${y}`)
     if (hexCallback) {
       if (map.game?.reinforcementSelection) {
         const counter = map.game.availableReinforcements(map.game.currentPlayer)[
@@ -277,7 +276,6 @@ export default function GameMap({
   }
 
   const directionSelection = (x: number, y: number, d: Direction) => {
-    console.log(`DS processing ${x},${y}`)
     directionCallback(x, y, d)
     setDirectionSelectionOverlay(undefined)
     updateHexOverlays(x, y)

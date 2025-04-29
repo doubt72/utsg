@@ -180,7 +180,6 @@ export default class Game {
 
   executeMove(move: GameMove) {
     const m = move.moveClass
-    console.log(`move ID: ${m.id}`)
     this.moves.push(m)
     if (!m.undone) {
       this.lastMoveIndex = move.index

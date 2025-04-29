@@ -86,7 +86,6 @@ export default function GameDisplay() {
   }
 
   const hexSelection = (x: number, y: number) => {
-    console.log(`GD processing ${x},${y}`)
     if (game.k?.reinforcementSelection) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
         game.k.reinforcementSelection.index]
@@ -99,13 +98,11 @@ export default function GameDisplay() {
   const unitSelection = (x: number, y: number, counter: Counter) => {
     const key = `x ${x}-${y}-${counter.trueIndex}`
     console.log(key)
+    // Currently does nothing
   }
 
   const directionSelection = (x: number, y: number, d: Direction) => {
-    const key = `D ${x}-${y}-${d}`
-    console.log(key)
     if (game.k?.reinforcementSelection) {
-      // TODO: consolidate
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
         game.k.reinforcementSelection.index]
       executeMove(x, y, counter, d)

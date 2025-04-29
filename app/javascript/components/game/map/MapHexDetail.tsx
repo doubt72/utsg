@@ -82,7 +82,7 @@ export default function MapHexDetail({
 
   const interactionOverly = (
     <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }}
-             onClick={() => { console.log(`clicky ${hex.coord.x},${hex.coord.y}`); selectCallback(hex.coord.x, hex.coord.y) }}
+             onClick={() => selectCallback(hex.coord.x, hex.coord.y)}
              onMouseLeave={() => terrainCallback(undefined)}
              onMouseMove={e => updateTerrainInfo(e)} />
   )
