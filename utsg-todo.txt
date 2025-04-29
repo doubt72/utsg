@@ -1,20 +1,12 @@
-- find reason for warning
-- add direction selection
 - fix undo
 - persist moves
 - fix game move websocket
 - catch errors, show message
-  - error out if overstacking
-- extend move test
-
-- alternate logos?
-  - USA: broken circle
-  - Finland: truncated swastika (uhhh probably not)
-    - Maybe roundel?
-  - Bulgaria: X or that flag shield
-  - Hungary: red/green cross
-  - Romania: pointy cross
-  - Slovakia: double cross
+  - error if overstacking
+  - error if illegal terrain
+- show warming message
+  - warning if placing gun/mg with no one operating it
+- extend move test to complete deployment
 
 - Switch game status to websocket
 - fix text selection on select scenario

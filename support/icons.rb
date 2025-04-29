@@ -2589,7 +2589,10 @@ File.open('frf.svg', 'w') do |file|
   bottomLength = 25
   bottom = 50
   width = 4
-  write_circle(50, 50, 39, file, true, "#FFF")
+  # write_circle(50, 50, 39, file, true, "#FFF")
+  write_path([
+    ["M", 5, 50], ["L", 50, 5], ["L", 95, 50], ["L", 50, 95], ["L", 5, 50],
+  ], file, true, 3, "#FFF")
   write_path([
     ["M", 50 - width, 17.5], ["L", 50 + width, 17.5], ["L", 50 + width, 82.5], ["L", 50 - width, 82.5],
     ["L", 50 - width, 17.5],
