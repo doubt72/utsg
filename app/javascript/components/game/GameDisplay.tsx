@@ -97,6 +97,7 @@ export default function GameDisplay() {
     const key = `x ${x}-${y}-${d}`
     console.log(key)
     if (game.k?.reinforcementSelection) {
+      // TODO: consolidate
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
       game.k.reinforcementSelection.index]
       const move = new GameMove({

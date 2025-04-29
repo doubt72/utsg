@@ -93,16 +93,12 @@ export default class Game {
     })
   }
 
-  // TODO: need change this to websocketing
-  //   load/execute with new moves
-  //   handle moves being undone
+  // TODO: fix this, handle moves being undone
   loadNewMoves() {
     const limit = this.moves[this.moves.length - 1].id
     getAPI(`/api/v1/game_moves?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
-          // TODO someday need to actually process the moves
-          // read only!  Game state should only change/be saved when creating moves
           const move = new GameMove(json[i], this, i)
           this.executeMove(move)
         }
@@ -184,6 +180,7 @@ export default class Game {
 
   executeMove(move: GameMove) {
     const m = move.moveClass
+    console.log(`move ID: ${m.id}`)
     this.moves.push(m)
     if (!m.undone) {
       this.lastMoveIndex = move.index

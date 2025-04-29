@@ -4,7 +4,7 @@ import Game from "../Game"
 import { GameMoveData } from "../GameMove"
 
 export default class BaseMove {
-  id: number;
+  id?: number;
   index: number;
   user: number;
   player: Player;
@@ -16,7 +16,7 @@ export default class BaseMove {
   undone: boolean;
 
   constructor(data: GameMoveData, game: Game, index: number) {
-    this.id = data.id ?? 0
+    this.id = data.id
     this.index = index
     this.user = data.user
     this.player = data.player as Player
@@ -25,7 +25,7 @@ export default class BaseMove {
     this.game = game
 
     this.valid = true
-    this.undone = !!data.data.undone;
+    this.undone = !!data.undone;
   }
 
   get formattedDate() {

@@ -141,7 +141,8 @@ describe("move integration test", () => {
 
     // Loading an undone move doesn't execute or increment last move
     curretMoveData = {
-      user: 4, player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3], orientation: 1, turn: 0, undone: true }
+      undone: true, user: 4, player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3],
+      orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)

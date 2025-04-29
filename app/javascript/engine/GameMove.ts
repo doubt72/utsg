@@ -15,6 +15,7 @@ export type GameMoveData = {
   user: number;
   player: number;
   created_at?: string;
+  undone?: boolean;
   data: {
     action: string;
     origin?: [number, number];
@@ -24,7 +25,6 @@ export type GameMoveData = {
     path?: [number, number][];
     orientation?: Direction;
     diceResult?: DiceResult;
-    undone?: true;
     phase?: [GamePhase, GamePhase];
     turn?: [number, number] | number;
     player?: number;
