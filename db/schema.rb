@@ -10,19 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_29_035526) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_29_163450) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "game_moves", force: :cascade do |t|
+    t.integer "sequence", null: false
     t.bigint "game_id", null: false
     t.bigint "user_id"
     t.jsonb "data", null: false
     t.integer "player", default: 1, null: false
     t.datetime "created_at", null: false
+    t.boolean "undone", default: false, null: false
     t.index ["created_at"], name: "index_game_moves_on_created_at"
     t.index ["game_id"], name: "index_game_moves_on_game_id"
     t.index ["id"], name: "index_game_moves_on_id"
+    t.index ["sequence", "game_id"], name: "index_game_moves_on_sequence_and_game_id", unique: true
     t.index ["user_id"], name: "index_game_moves_on_user_id"
   end
 

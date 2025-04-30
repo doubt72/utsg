@@ -207,6 +207,7 @@ export default function GameMap({
       return r
     })
     setReinforcementsOverlay(rp => {
+      if (!rp) { return undefined }
       const xx = rp?.props.xx
       const yy = rp?.props.yy
       const player = rp?.props.player

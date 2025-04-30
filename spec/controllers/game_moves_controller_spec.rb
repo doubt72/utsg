@@ -11,8 +11,8 @@ RSpec.describe Api::V1::GameMovesController do
              current_player: user2, name: "game", state: :in_progress
     )
   end
-  let!(:move1) { create(:game_move, user: user1, game:) }
-  let!(:move2) { create(:game_move, user: user2, game:) }
+  let!(:move1) { create(:game_move, sequence: 1, user: user1, game:) }
+  let!(:move2) { create(:game_move, sequence: 2, user: user2, game:) }
 
   describe "index" do
     it "returns all moves for game with id" do
@@ -56,7 +56,9 @@ RSpec.describe Api::V1::GameMovesController do
       login(user1)
 
       expect do
-        post :create, params: { game_move: { game_id: game.id, data: '{ "2d6": 7 }', player: 1 } }
+        post :create, params: {
+          game_move: { sequence: 3, game_id: game.id, data: '{ "2d6": 7 }', player: 1 },
+        }
       end.to change { GameMove.count }.by(1)
 
       expect(GameMove.last.user).to be == user1

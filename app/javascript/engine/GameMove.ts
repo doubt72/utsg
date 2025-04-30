@@ -1,7 +1,7 @@
 import { Direction } from "../utilities/commonTypes";
 import Game, { GamePhase } from "./Game";
 import BaseMove from "./moves/BaseMove";
-import NullMove from "./moves/NullMove";
+import StateMove from "./moves/StateMove";
 import PhaseMove from "./moves/PhaseMove";
 import DeployMove from "./moves/DeployMove";
 
@@ -10,25 +10,28 @@ export type DiceResult = {
   adjustment: number;
 }
 
+export type GameMoveDetails = {
+  action: string;
+  origin?: [number, number];
+  originIndex?: number;
+  target?: [number, number];
+  targetIndex?: number;
+  path?: [number, number][];
+  orientation?: Direction;
+  diceResult?: DiceResult;
+  phase?: [GamePhase, GamePhase];
+  turn?: [number, number] | number;
+  player?: number;
+}
+
 export type GameMoveData = {
   id?: number;
-  user: number;
+  sequence?: number;
+  user: string;
   player: number;
   created_at?: string;
   undone?: boolean;
-  data: {
-    action: string;
-    origin?: [number, number];
-    originIndex?: number;
-    target?: [number, number];
-    targetIndex?: number;
-    path?: [number, number][];
-    orientation?: Direction;
-    diceResult?: DiceResult;
-    phase?: [GamePhase, GamePhase];
-    turn?: [number, number] | number;
-    player?: number;
-  };
+  data: GameMoveDetails;
 };
 
 export default class GameMove {
@@ -44,16 +47,16 @@ export default class GameMove {
 
   get moveClass(): BaseMove {
     if (this.data.data.action === "create") {
-      return new NullMove(this.data, this.game, this.index, "game created");
+      return new StateMove(this.data, this.game, this.index, "game created");
     }
     if (this.data.data.action === "start") {
-      return new NullMove(this.data, this.game, this.index, "game started");
+      return new StateMove(this.data, this.game, this.index, "game started");
     }
     if (this.data.data.action === "join") {
-      return new NullMove(this.data, this.game, this.index, `joined as player ${this.data.player}`);
+      return new StateMove(this.data, this.game, this.index, `joined as player ${this.data.player}`);
     }
     if (this.data.data.action === "leave") {
-      return new NullMove(this.data, this.game, this.index, "left game");
+      return new StateMove(this.data, this.game, this.index, "left game");
     }
     if (this.data.data.action === "phase") {
       return new PhaseMove(this.data, this.game, this.index)
@@ -78,6 +81,6 @@ export default class GameMove {
     // cleanup unit
     // close combat
 
-    return new NullMove(this.data, this.game, this.index, "unhandled move type");
+    return new StateMove(this.data, this.game, this.index, "unhandled move type");
   }
 }

@@ -36,6 +36,7 @@ export default class Game {
   playerOneName: string = "";
   playerTwoName: string = "";
   state?: string;
+  currentSequence = 1;
 
   refreshCallback: (g: Game) => void;
 
@@ -93,7 +94,6 @@ export default class Game {
     })
   }
 
-  // TODO: fix this, handle moves being undone
   loadNewMoves() {
     const limit = this.moves[this.moves.length - 1].id
     getAPI(`/api/v1/game_moves?game_id=${this.id}&after_id=${limit}`, {
@@ -104,6 +104,10 @@ export default class Game {
         }
       })
     })
+  }
+
+  get currentUser(): string {
+    return this.currentPlayer === 1 ? this.playerOneName : this.playerTwoName
   }
 
   get playerOneNation(): string {
@@ -134,22 +138,22 @@ export default class Game {
     return this.playerTwoPoints + victoryHexes
   }
 
-  actionsAvailable(currentPlayer: string): GameAction[] {
+  actionsAvailable(activePlayer: string): GameAction[] {
     const moves = []
     if (this.lastMove?.undoPossible) {
       moves.push({ type: "undo" })
     }
     if (this.state === "needs_player") {
-      if (this.ownerName === currentPlayer || !currentPlayer) {
+      if (this.ownerName === activePlayer || !activePlayer) {
         return [{ type: "none", message: "waiting for player to join" }]
       } else {
         return [{ type: "join" }]
       }
     } else if (this.state === "ready") {
-      if (this.ownerName === currentPlayer) {
+      if (this.ownerName === activePlayer) {
         return [{ type: "start" }]
-      } else if (currentPlayer &&
-        (this.playerOneName === currentPlayer || this.playerTwoName === currentPlayer)) {
+      } else if (activePlayer &&
+        (this.playerOneName === activePlayer || this.playerTwoName === activePlayer)) {
         return [{ type: "leave" }]
       } else {
         return [{ type: "none", message: "waiting for game to start" }]
@@ -160,6 +164,13 @@ export default class Game {
     } else {
       return [{ type: "none", message: "not implemented yet" }]
     }
+  }
+
+  checkSequence(sequence: number): boolean {
+    for (const m of this.moves) {
+      if (m.sequence === sequence) { return true }
+    }
+    return false
   }
 
   get lastMove(): BaseMove | undefined {
@@ -180,11 +191,19 @@ export default class Game {
 
   executeMove(move: GameMove) {
     const m = move.moveClass
+    if (m.sequence) {
+      if (this.checkSequence(m.sequence)) { return }
+      if (m.sequence > this.currentSequence) { this.currentSequence = m.sequence }
+    } else {
+      this.currentSequence++
+      m.sequence = this.currentSequence
+    }
     this.moves.push(m)
     if (!m.undone) {
       this.lastMoveIndex = move.index
       m.mutateGame()
     }
+    this.refreshCallback(this)
   }
 
   get undoPossible() {
@@ -199,6 +218,7 @@ export default class Game {
     while(this.lastMoveIndex >= 0 && this.lastMove.undone) {
       this.lastMoveIndex--
     }
+    this.refreshCallback(this)
   }
 
   availableReinforcements(player: Player): ReinforcementSchedule {
@@ -216,7 +236,7 @@ export default class Game {
 
   checkPhase() {
     const data: GameMoveData = {
-      player: this.currentPlayer, user: this.currentPlayer,
+      player: this.currentPlayer, user: this.currentUser,
       data: { action: "phase" }
     }
     const oldPhase = this.phase
@@ -274,7 +294,7 @@ export default class Game {
   ) {
     if (this.reinforcementSelection) {
       const move = new GameMove({
-        user: this.currentPlayer,
+        user: this.currentUser,
         player: this.reinforcementSelection.player,
         data: {
           action: "deploy", originIndex: this.reinforcementSelection.index,

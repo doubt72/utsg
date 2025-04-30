@@ -1,15 +1,16 @@
 import { Player } from "../../utilities/commonTypes";
 import { nowUTCString } from "../../utilities/utilities";
 import Game from "../Game"
-import { GameMoveData } from "../GameMove"
+import { GameMoveData, GameMoveDetails } from "../GameMove"
 
 export default class BaseMove {
   id?: number;
+  sequence?: number;
   index: number;
-  user: number;
+  user: string;
   player: Player;
   createdAt: string;
-  data: object;
+  data: GameMoveDetails;
   game: Game;
 
   valid: boolean;
@@ -17,6 +18,7 @@ export default class BaseMove {
 
   constructor(data: GameMoveData, game: Game, index: number) {
     this.id = data.id
+    this.sequence = data.sequence
     this.index = index
     this.user = data.user
     this.player = data.player as Player

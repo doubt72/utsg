@@ -5,6 +5,8 @@ class GameMove < ApplicationRecord
   belongs_to :user, optional: true
 
   validates :data, presence: true
+  validates :sequence, presence: true
+  validates :sequence, uniqueness: { scope: :game_id }
   validates :player, presence: true, numericality: { in: 1..2 }
 
   after_create :update_game_last_move
@@ -25,8 +27,8 @@ class GameMove < ApplicationRecord
 
   def body
     {
-      id:, user: user&.username || User::UNKNOWN_USERNAME, player:, data:,
-      created_at: format_created,
+      id:, sequence:, user: user&.username || User::UNKNOWN_USERNAME, player:, undone:,
+      data:, created_at: format_created,
     }
   end
 

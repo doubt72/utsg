@@ -1,34 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { getAPI } from "../../utilities/network";
-import GameMove, { GameMoveData } from "../../engine/GameMove";
 import Game from "../../engine/Game";
 
 interface MoveDisplayProps {
-  game: Game | undefined;
+  game: Game;
   callback: () => void;
   chatInput: boolean;
 }
 
 export default function MoveDisplay({ game, callback, chatInput }: MoveDisplayProps) {
-  const [moves, setMoves] = useState<GameMoveData[]>([])
-
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:3000/cable"
   )
 
   const subscribe = useCallback(() => {
-    if (!game) { return }
     sendJsonMessage({
       command: "subscribe",
       identifier: `{ "channel": "MoveChannel", "game_id": ${game.id} }`,
-    })
-  }, [game])
-
-  useEffect(() => {
-    if (!game) { return }
-    getAPI(`/api/v1/game_moves?game_id=${game.id}`, {
-      ok: response => response.json().then(json => setMoves(json))
     })
   }, [game])
 
@@ -42,7 +30,6 @@ export default function MoveDisplay({ game, callback, chatInput }: MoveDisplayPr
     if (lastMessage) {
       const msg = JSON.parse(lastMessage.data).message
       if (msg && msg.body) {
-        setMoves([...moves, msg.body])
         callback()
       }
     }
@@ -53,9 +40,7 @@ export default function MoveDisplay({ game, callback, chatInput }: MoveDisplayPr
   const moveList = (
     <div className={displayClass}>
       {
-        [...moves].map((m: GameMoveData, i) => {
-          // moves won't be loaded without game, so casting "undefined" to Game is okay
-          const move = new GameMove(m, game as Game, i).moveClass
+        game.moves.map((move, i) => {
           return (
             <div key={i} className="move-output-record">
               <div className="move-output-date">{move.formattedDate}</div>

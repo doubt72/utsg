@@ -36,14 +36,16 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
   const nationOne = (x: number, y: number) => {
     return nation(
       x, y, map.game?.playerOneNation as string, 1,
-      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 1
+      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 1 &&
+        map.game.state === "in_progress"
     );
   }
 
   const nationTwo = (x: number, y: number) => {
     return nation(
       x, y, map.game?.playerTwoNation as string, 2,
-      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 2
+      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 2 &&
+        map.game.state === "in_progress"
     )
   }
 

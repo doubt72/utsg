@@ -11,8 +11,8 @@ RSpec.describe Game do
              current_player: user2, name: "game", state: :in_progress
     )
   end
-  let!(:move1) { create(:game_move, user:, game:) }
-  let!(:move2) { create(:game_move, user: user2, game:) }
+  let!(:move1) { create(:game_move, sequence: 1, user:, game:) }
+  let!(:move2) { create(:game_move, sequence: 2, user: user2, game:) }
   let!(:game_message1) { create(:message, user:, game:) }
   let!(:game_message2) { create(:message, user: user2, game:) }
   let!(:global_message1) { create(:message, user:, game: nil) }

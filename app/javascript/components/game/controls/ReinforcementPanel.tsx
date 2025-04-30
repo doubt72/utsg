@@ -129,7 +129,7 @@ export default function ReinforcementPanel({
                       counter.target.select()
                     }
                     counter.showDisabled = map.game?.phase !== gamePhaseType.Deployment ||
-                      map.game.currentPlayer !== player
+                      map.game.currentPlayer !== player || map.game.state !== 'in_progress'
                     const count = (u.x || 1) - (u.used || 0)
                     const cb = () => { ovCallback({show: true, counters: [counter]})}
                     if (count < 1) {

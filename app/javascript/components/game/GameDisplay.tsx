@@ -18,6 +18,8 @@ export default function GameDisplay() {
     turn: 0
   })
   const [map, setMap] = useState<Map | undefined>(undefined)
+  const [moves, setMoves] = useState<JSX.Element | undefined>(undefined)
+  const [turn, setTurn] = useState<JSX.Element | undefined>(undefined)
   const [controls, setControls] = useState<JSX.Element | undefined>(undefined)
 
   const [scale, setScale] = useState(1)
@@ -44,8 +46,29 @@ export default function GameDisplay() {
     })
   }, [])
 
+  useEffect(() => {
+    if (!game.k || moves) { return }
+    setMoves(<MoveDisplay game={game.k} callback={moveNotification} chatInput={showInput()} />)
+  }, [game.k])
+
+  useEffect(() => {
+    if (!game.k) { return }
+    setControls(gc => {
+      const key = Number(gc?.key ?? 0)
+      return <GameControls key={key + 1} game={game.k as Game} />
+    })
+
+    let status = game.k.turn > 0 ? <span>turn {game.k.turn}/{game.k.scenario.turns}</span> : "initial setup"
+    if (game.k.state === "needs_player") { status += " - waiting for player to join" }
+    if (game.k.state === "ready") { status += " - waiting for game to start"}
+    setTurn(<>{status}</>)
+  }, [game.k?.state])
+
   const moveNotification = () => {
-    game.k?.loadNewMoves()
+    if (game.k) {
+      game.k?.loadNewMoves()
+      gameNotification(game.k)
+    }
   }
 
   const gameNotification = (g: Game) => {
@@ -54,7 +77,6 @@ export default function GameDisplay() {
       turn: g.turn,
       state: g.state,
     })
-    setControls(<GameControls key={Number(new Date)} game={g} />) // TODO: fix key hack to force updates
   }
 
   const showInput = () => {
@@ -104,11 +126,7 @@ export default function GameDisplay() {
           {game.k?.scenario?.name} 
         </div>
         <div className="ml1em mr1em nowrap">
-          (
-            { game.turn > 0 ? <span>turn {game.turn}/{game.k?.scenario?.turns}</span> : "initial setup" }
-            { game.state === "needs_player" ? " - waiting for player to join" : "" }
-            { game.state === "ready" ? " - waiting for game to start" : "" }
-          )
+          ({turn})
         </div>
         <div className="flex-fill align-end">
           {game.k?.name}
@@ -116,9 +134,7 @@ export default function GameDisplay() {
       </div>
       <div className="standard-body">
         <div className="game-page-moves">
-          <MoveDisplay game={game.k}
-                       callback={moveNotification}
-                       chatInput={showInput()} />
+          {moves}
         </div>
         <div className="chat-section">
           <ChatDisplay gameId={Number(id)}

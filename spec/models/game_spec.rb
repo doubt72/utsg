@@ -14,8 +14,8 @@ RSpec.describe Game do
   end
 
   before do
-    create(:game_move, user: user1, game:)
-    create(:game_move, user: user2, game:)
+    create(:game_move, sequence: 1, user: user1, game:)
+    create(:game_move, sequence: 2, user: user2, game:)
     create(:message, user: user1, game:)
     create(:message, user: user2, game:)
     game.update!(last_move_id: GameMove.last)
