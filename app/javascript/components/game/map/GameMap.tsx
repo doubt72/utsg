@@ -130,6 +130,9 @@ export default function GameMap({
       map?.preview ? undefined :
         <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements} update={{key: true}}/>
     )
+    if (!map.game?.reinforcementNeedsDirection) {
+      setDirectionSelectionOverlay(undefined)
+    }
   }, [
     map, showCoords, showStatusCounters, hideCounters, updateUnitshaded, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
@@ -252,7 +255,6 @@ export default function GameMap({
     } else if (selection.target.type === "reinforcement" && map.game) {
       if (map.game.reinforcementSelection?.index !== selection.target.index) {
         map.game.reinforcementNeedsDirection = undefined
-        setDirectionSelectionOverlay(undefined)
       }
       const player = selection.target.player
       map.game.setReinforcementSelection({
@@ -278,7 +280,6 @@ export default function GameMap({
 
   const directionSelection = (x: number, y: number, d: Direction) => {
     directionCallback(x, y, d)
-    setDirectionSelectionOverlay(undefined)
     updateHexOverlays(x, y)
   }
 
