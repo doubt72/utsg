@@ -46,4 +46,20 @@ RSpec.describe GameMove do
     # Load directly to defeat AR cacheing
     expect(GameMove.find(game.last_move_id).data["action"]).to be == "go"
   end
+
+  it "can undo action" do
+    move = GameMove.create!({ game:, sequence: 1, user:, data: { action: "action" } })
+
+    expect(move.undone).to be == false
+    move.undo(user)
+    expect(move.reload.undone).to be == true
+  end
+
+  it "can't undo certain actions" do
+    move = GameMove.create!({ game:, sequence: 1, user:, data: { action: "initiative" } })
+
+    expect(move.undone).to be == false
+    move.undo(user)
+    expect(move.reload.undone).to be == false
+  end
 end

@@ -26,12 +26,24 @@ module Api
         end
       end
 
+      def undo
+        if current_move&.undo(current_user)
+          render json: current_move.body, status: :ok
+        else
+          render json: {}, status: :forbidden
+        end
+      end
+
       private
 
       def create_params
         params[:game_move].merge!(user_id: current_user.id)
 
         params.require(:game_move).permit(:sequence, :game_id, :user_id, :player, :undone, :data)
+      end
+
+      def current_move
+        @current_move ||= GameMove.find_by(id: params[:id])
       end
     end
   end

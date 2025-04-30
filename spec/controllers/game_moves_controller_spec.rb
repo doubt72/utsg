@@ -86,4 +86,39 @@ RSpec.describe Api::V1::GameMovesController do
       expect(GameMove.last.user).to be_nil
     end
   end
+
+  describe "undo" do
+    it "can undo move" do
+      login(user1)
+
+      expect do
+        post :undo, params: { id: move1.id }
+      end.to change { move1.reload.undone }
+
+      expect(response.status).to be == 200
+      expect(move1.undone).to be == true
+    end
+
+    it "can't undo other user's move" do
+      login(user1)
+
+      expect do
+        post :undo, params: { id: move2.id }
+      end.not_to change { move1.reload.undone }
+
+      expect(response.status).to be == 403
+    end
+
+    it "can't undo undone move" do
+      login(user1)
+
+      move1.update(undone: true)
+
+      expect do
+        post :undo, params: { id: move1.id }
+      end.not_to change { move1.reload.undone }
+
+      expect(response.status).to be == 403
+    end
+  end
 end

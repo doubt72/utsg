@@ -5,6 +5,6 @@ FactoryBot.define do
     game
     user
     undone { false }
-    data { { a: 1 } }
+    data { { action: "action" } }
   end
 end

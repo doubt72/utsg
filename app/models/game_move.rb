@@ -34,11 +34,26 @@ class GameMove < ApplicationRecord
     }
   end
 
+  def undo(user)
+    return nil if user.id != user_id || undone
+    return nil unless undoable_actions.include?(data["action"])
+
+    update!(undone: true)
+
+    ActionCable.server.broadcast("moves-#{game_id || 0}", { body: })
+    true
+  end
+
   def update_game_last_move
     game.update!(last_move_id: id)
   end
 
   private
+
+  def undoable_actions
+    # "action" isn't actually used except for testing
+    %w[action deploy phase]
+  end
 
   def format_created
     created_at.iso8601

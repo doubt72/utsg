@@ -24,7 +24,11 @@ Rails.application.routes.draw do
           post "complete"
         end
       end
-      resources :game_moves, only: %i[index create]
+      resources :game_moves, only: %i[index create] do
+        member do
+          post "undo"
+        end
+      end
       resources :scenarios, only: %i[index show] do
         collection do
           get "allied_factions"
