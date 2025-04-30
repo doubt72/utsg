@@ -13,12 +13,12 @@ export type DiceResult = {
 export type GameMoveDetails = {
   action: string;
   origin?: [number, number];
-  originIndex?: number;
+  origin_index?: number;
   target?: [number, number];
-  targetIndex?: number;
+  target_index?: number;
   path?: [number, number][];
   orientation?: Direction;
-  diceResult?: DiceResult;
+  dice_result?: DiceResult;
   phase?: [GamePhase, GamePhase];
   turn?: [number, number] | number;
   player?: number;

@@ -13,13 +13,13 @@ export default class DeployMove extends BaseMove {
   constructor(data: GameMoveData, game: Game, index: number) {
     super(data, game, index)
 
-    this.validate(data.data.originIndex)
+    this.validate(data.data.origin_index)
     this.validate(data.data.target)
     this.validate(data.data.orientation)
     this.validate(data.data.turn)
 
     // Validate will already error out if data is missing, but the linter can't tell
-    this.originIndex = data.data.originIndex as number
+    this.originIndex = data.data.origin_index as number
     this.target = new Coordinate((data.data.target ?? [0])[0], (data.data.target ?? [0, 0])[1])
     this.orientation = data.data.orientation as Direction
     this.turn = data.data.turn as number

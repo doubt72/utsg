@@ -29,7 +29,7 @@ module Api
       def create_params
         params[:game_move].merge!(user_id: current_user.id)
 
-        params.require(:game_move).permit(:sequence, :game_id, :user_id, :data, :player)
+        params.require(:game_move).permit(:sequence, :game_id, :user_id, :player, :undone, :data)
       end
     end
   end

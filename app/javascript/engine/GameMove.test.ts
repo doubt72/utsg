@@ -131,7 +131,7 @@ describe("move integration test", () => {
     expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
@@ -153,7 +153,7 @@ describe("move integration test", () => {
 
     // Loading an undone move doesn't execute or increment last move
     curretMoveData = {
-      undone: true, user: "two", player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3],
+      undone: true, user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3],
       orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
@@ -163,7 +163,7 @@ describe("move integration test", () => {
     expect(game.lastMoveIndex).toBe(index - 3)
 
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", originIndex: 0, target: [4, 4], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 4], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
@@ -177,7 +177,7 @@ describe("move integration test", () => {
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].target.name).toBe("Rifle")
 
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", originIndex: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
@@ -187,7 +187,7 @@ describe("move integration test", () => {
     expect(game.moves.length).toBe(index)
     expect(game.lastMoveIndex).toBe(index - 1)
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", originIndex: 1, target: [4, 1], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: { action: "deploy", origin_index: 1, target: [4, 1], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++))
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)

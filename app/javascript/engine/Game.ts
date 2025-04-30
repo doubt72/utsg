@@ -1,5 +1,5 @@
 import { Direction, GameAction, Player, ReinforcementSelection } from "../utilities/commonTypes";
-import { getAPI } from "../utilities/network";
+import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
 import Feature from "./Feature";
@@ -203,6 +203,16 @@ export default class Game {
       this.lastMoveIndex = move.index
       m.mutateGame()
     }
+    if (!this.suppressNetwork && m.id === undefined) {
+      postAPI(`/api/v1/game_moves`, {
+        game_move: {
+          sequence: m.sequence, game_id: this.id, player: m.player, undone: false,
+          data: JSON.stringify(m.data),
+        }
+      }, {
+        ok: () => {}
+      })
+    }
     this.refreshCallback(this)
   }
 
@@ -297,7 +307,7 @@ export default class Game {
         user: this.currentUser,
         player: this.reinforcementSelection.player,
         data: {
-          action: "deploy", originIndex: this.reinforcementSelection.index,
+          action: "deploy", origin_index: this.reinforcementSelection.index,
           target: [x, y], orientation: d, turn: this.turn
         }
       }, this, this.moves.length)
