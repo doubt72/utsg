@@ -130,7 +130,7 @@ export default function GameMap({
       map?.preview ? undefined :
         <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements} update={{key: true}}/>
     )
-    if (!map.game?.reinforcementNeedsDirection) {
+    if (!map.game?.reinforcementNeedsDirection || !map.game.reinforcementSelection) {
       setDirectionSelectionOverlay(undefined)
     }
   }, [
