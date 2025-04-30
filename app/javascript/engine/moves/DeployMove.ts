@@ -34,11 +34,11 @@ export default class DeployMove extends BaseMove {
 
   get undoPossible() { return true }
 
-  mutateGame(): void {
+  mutateGame(network: boolean): void {
     const scenario = this.game.scenario
     const map = scenario.map
 
-    const turn = this.game.turn
+    const turn = this.turn
 
     const uf = this.player === 1 ?
       scenario.takeAlliedReinforcement(turn, this.originIndex) :
@@ -48,15 +48,16 @@ export default class DeployMove extends BaseMove {
       uf.turretFacing = this.orientation
     }
     map.addUnit(this.target, uf)
-    this.game.checkPhase()
+    this.game.checkPhase(network)
   }
 
   undo(): void {
     const scenario = this.game.scenario
     const map = scenario.map
 
-    const turn = this.game.turn
+    const turn = this.turn
 
+    console.log("popping unit?")
     map.popUnit(this.target) // throw away result, don't need it
 
     if (this.player === 1) {

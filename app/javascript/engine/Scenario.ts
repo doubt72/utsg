@@ -148,10 +148,12 @@ export default class Scenario {
   }
 
   replaceAxisReinforcement(turn: number, index: number): void {
+    console.log("replacing Axis?")
     this.axisReinforcements[turn][index].used--
   }
 
   replaceAlliedReinforcement(turn: number, index: number): void {
+    console.log("replacing Allies?")
     this.axisReinforcements[turn][index].used--
   }
 }

@@ -88,19 +88,19 @@ export default class Game {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
           const move = new GameMove(json[i], this, i)
-          this.executeMove(move)
+          this.executeMove(move, true)
         }
       })
     })
   }
 
   loadNewMoves() {
-    const limit = this.moves[this.moves.length - 1].id
+    const limit = this.moves[this.lastMoveIndex - 1].id
     getAPI(`/api/v1/game_moves?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
           const move = new GameMove(json[i], this, i)
-          this.executeMove(move)
+          this.executeMove(move, true)
         }
       })
     })
@@ -138,9 +138,9 @@ export default class Game {
     return this.playerTwoPoints + victoryHexes
   }
 
-  checkSequence(sequence: number): boolean {
+  findBySequence(sequence: number): BaseMove | false {
     for (const m of this.moves) {
-      if (m.sequence === sequence) { return true }
+      if (m.sequence === sequence) { return m }
     }
     return false
   }
@@ -161,10 +161,24 @@ export default class Game {
     return this.moves[check].undoPossible
   }
 
-  executeMove(move: GameMove) {
+  executeMove(move: GameMove, network: boolean) {
     const m = move.moveClass
     if (m.sequence) {
-      if (this.checkSequence(m.sequence)) { return }
+      const em = this.findBySequence(m.sequence)
+      if (em) {
+        console.log("existing")
+        if (!em.id) {
+          console.log(`setting id ${m.id}`)
+          em.id = m.id
+        }
+        if (m.undone) {
+          console.log("undoing")
+          if (!em.undone) {
+            em.undo()
+          }
+        }
+        return
+      }
       if (m.sequence > this.currentSequence) { this.currentSequence = m.sequence }
     } else {
       this.currentSequence++
@@ -173,7 +187,7 @@ export default class Game {
     this.moves.push(m)
     if (!m.undone) {
       this.lastMoveIndex = move.index
-      m.mutateGame()
+      m.mutateGame(network)
     }
     if (!this.suppressNetwork && m.id === undefined) {
       postAPI(`/api/v1/game_moves`, {
@@ -182,7 +196,7 @@ export default class Game {
           data: JSON.stringify(m.data),
         }
       }, {
-        ok: () => {}
+        ok: () => {},
       })
     }
     this.refreshCallback(this)
@@ -195,11 +209,16 @@ export default class Game {
 
   undo() {
     if (!this.lastMove) { return }
-    this.lastMove.undo()
+    const move = this.lastMove
+    move.undo()
 
     while(this.lastMoveIndex >= 0 && this.lastMove.undone) {
       this.lastMoveIndex--
     }
+    if (move.lastUndoCascade) {
+      this.undo()
+    }
+    console.log("refeshing?")
     this.refreshCallback(this)
   }
 
@@ -216,7 +235,8 @@ export default class Game {
     return rc
   }
 
-  checkPhase() {
+  checkPhase(network: boolean) {
+    if (network) { return }
     const data: GameMoveData = {
       player: this.currentPlayer, user: this.currentUser,
       data: { action: "phase" }
@@ -246,7 +266,7 @@ export default class Game {
             [oldPhase, gamePhaseType.Deployment] :
             [oldPhase, gamePhaseType.Prep]
         }
-        this.executeMove(new GameMove(data, this, this.moves.length))
+        this.executeMove(new GameMove(data, this, this.moves.length), network)
       }
     }
   }
@@ -283,7 +303,7 @@ export default class Game {
           target: [x, y], orientation: d, turn: this.turn
         }
       }, this, this.moves.length)
-      this.executeMove(move)
+      this.executeMove(move, false)
       callback(this)
       if (counter.x == counter.used) {
         this.reinforcementSelection = undefined

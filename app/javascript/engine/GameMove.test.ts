@@ -88,34 +88,34 @@ describe("move integration test", () => {
   test("sequence", () => {
     let index = 0
     let curretMoveData: GameMoveData = { user: "one", player: 1, data: { action: "create" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
 
     expect(game.playerOneName).toBe("one")
     expect(game.playerTwoName).toBe("")
     expect(game.state).toBe("needs_player")
     curretMoveData = { user: "one", player: 1, data: { action: "join" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.playerOneName).toBe("one")
     expect(game.state).toBe("needs_player")
 
     expect(game.playerTwoName).toBe("")
     curretMoveData = { user: "two", player: 2, data: { action: "join" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.playerTwoName).toBe("two")
     expect(game.state).toBe("ready")
 
     curretMoveData = { user: "two", player: 2, data: { action: "leave" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.playerTwoName).toBe("")
     expect(game.state).toBe("needs_player")
 
     curretMoveData = { user: "two", player: 2, data: { action: "join" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.playerTwoName).toBe("two")
     expect(game.state).toBe("ready")
 
     curretMoveData = { user: "one", player: 1, data: { action: "start" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.state).toBe("in_progress")
 
     curretMoveData = {
@@ -124,7 +124,7 @@ describe("move integration test", () => {
         action: "phase", turn: [0, 0], phase: [gamePhaseType.Deployment, gamePhaseType.Deployment], player: 2
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.lastMove?.stringValue).toBe("game started, begin Axis deployment")
     expect(game.lastMove?.undoPossible).toBe(false)
 
@@ -133,7 +133,7 @@ describe("move integration test", () => {
     curretMoveData = {
       user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
     expect(game.moves[index - 1].stringValue).toBe("deployed unit: Rifle to E4")
@@ -156,7 +156,7 @@ describe("move integration test", () => {
       undone: true, user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3],
       orientation: 1, turn: 0 }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
     expect(game.moves.length).toBe(index)
@@ -165,12 +165,12 @@ describe("move integration test", () => {
     curretMoveData = {
       user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 4], orientation: 1, turn: 0 }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].target.name).toBe("Rifle")
 
     // Same unit, same spot
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4)).length).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].target.name).toBe("Rifle")
@@ -179,7 +179,7 @@ describe("move integration test", () => {
     curretMoveData = {
       user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
 
@@ -189,7 +189,7 @@ describe("move integration test", () => {
     curretMoveData = {
       user: "two", player: 2, data: { action: "deploy", origin_index: 1, target: [4, 1], orientation: 1, turn: 0 }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++))
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
 

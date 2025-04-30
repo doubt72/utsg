@@ -56,7 +56,7 @@ export default class PhaseMove extends BaseMove {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  mutateGame(): void {
+  mutateGame(network: boolean): void {
     this.game.phase = this.newPhase
     this.game.turn = this.newTurn
     this.game.currentPlayer = this.newPlayer
@@ -67,4 +67,6 @@ export default class PhaseMove extends BaseMove {
     this.game.turn = this.newTurn
     this.undone = true;
   }
+
+  get lastUndoCascade(): boolean { return true }
 }

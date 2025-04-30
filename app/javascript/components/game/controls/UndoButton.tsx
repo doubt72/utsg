@@ -3,14 +3,14 @@ import { ArrowCounterclockwise } from "react-bootstrap-icons";
 import { postAPI } from "../../../utilities/network";
 
 interface UndoButtonProps {
-  gameId: number;
+  moveId: number;
 }
 
-export default function UndoButton({ gameId }: UndoButtonProps) {
+export default function UndoButton({ moveId }: UndoButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     // TODO: implement undo on backend
-    postAPI(`/api/v1/games/${gameId}/join`, {}, {
+    postAPI(`/api/v1/game_moves/${moveId}/undo`, {}, {
       ok: () => {}
     })
   }
