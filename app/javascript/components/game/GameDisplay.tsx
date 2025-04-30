@@ -62,7 +62,7 @@ export default function GameDisplay() {
     if (game.k.state === "needs_player") { status += " - waiting for player to join" }
     if (game.k.state === "ready") { status += " - waiting for game to start"}
     setTurn(<>{status}</>)
-  }, [game.k?.state])
+  }, [game.k?.state, game.k?.lastMoveIndex])
 
   const moveNotification = () => {
     if (game.k) {

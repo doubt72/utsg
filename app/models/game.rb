@@ -60,7 +60,7 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     game
   end
 
-  def body # rubocop:disable Metrics/AbcSize
+  def body
     {
       id:, name:, scenario:, state:,
       owner: owner.username,
@@ -126,15 +126,11 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self
   end
 
-  def start(user) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def start(user)
     return nil unless owner_id == user.id && ready?
 
     first_setup = Utility::Scenario.scenario_by_id(scenario)[:metadata][:first_setup]
-    if first_setup == 1
-      update!(current_player: player_one)
-    else
-      update!(current_player: player_two)
-    end
+    update!(current_player: first_setup == 1 ? player_one : player_two)
     seq = last_sequence + 1
     GameMove.create!(sequence: seq, game: self, user:, player: 1, data: { action: "start" })
     GameMove.create!(sequence: seq + 1, game: self, user:, player: first_setup, data:

@@ -138,34 +138,6 @@ export default class Game {
     return this.playerTwoPoints + victoryHexes
   }
 
-  actionsAvailable(activePlayer: string): GameAction[] {
-    const moves = []
-    if (this.lastMove?.undoPossible) {
-      moves.push({ type: "undo" })
-    }
-    if (this.state === "needs_player") {
-      if (this.ownerName === activePlayer || !activePlayer) {
-        return [{ type: "none", message: "waiting for player to join" }]
-      } else {
-        return [{ type: "join" }]
-      }
-    } else if (this.state === "ready") {
-      if (this.ownerName === activePlayer) {
-        return [{ type: "start" }]
-      } else if (activePlayer &&
-        (this.playerOneName === activePlayer || this.playerTwoName === activePlayer)) {
-        return [{ type: "leave" }]
-      } else {
-        return [{ type: "none", message: "waiting for game to start" }]
-      }
-    } else if (this.phase === gamePhaseType.Deployment) {
-      moves.unshift({ type: "deploy" })
-      return moves
-    } else {
-      return [{ type: "none", message: "not implemented yet" }]
-    }
-  }
-
   checkSequence(sequence: number): boolean {
     for (const m of this.moves) {
       if (m.sequence === sequence) { return true }
@@ -317,6 +289,34 @@ export default class Game {
         this.reinforcementSelection = undefined
       }
       this.reinforcementNeedsDirection = undefined
+    }
+  }
+
+  actionsAvailable(activePlayer: string): GameAction[] {
+    const moves = []
+    if (this.lastMove?.undoPossible) {
+      moves.push({ type: "undo" })
+    }
+    if (this.state === "needs_player") {
+      if (this.ownerName === activePlayer || !activePlayer) {
+        return [{ type: "none", message: "waiting for player to join" }]
+      } else {
+        return [{ type: "join" }]
+      }
+    } else if (this.state === "ready") {
+      if (this.ownerName === activePlayer) {
+        return [{ type: "start" }]
+      } else if (activePlayer &&
+        (this.playerOneName === activePlayer || this.playerTwoName === activePlayer)) {
+        return [{ type: "leave" }]
+      } else {
+        return [{ type: "none", message: "waiting for game to start" }]
+      }
+    } else if (this.phase === gamePhaseType.Deployment) {
+      moves.unshift({ type: "deploy" })
+      return moves
+    } else {
+      return [{ type: "none", message: "not implemented yet" }]
     }
   }
 }

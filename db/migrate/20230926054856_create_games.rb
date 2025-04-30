@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CreateGames < ActiveRecord::Migration[7.0]
-  def change # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def change # rubocop:disable Metrics/MethodLength
     create_table :games do |t|
       t.references :owner, null: false, foreign_key: { to_table: :users }
       t.references :player_one, foreign_key: { to_table: :users }

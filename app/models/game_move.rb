@@ -12,7 +12,7 @@ class GameMove < ApplicationRecord
   after_create :update_game_last_move
   after_create :broadcast
 
-  def self.create_move(params) # rubocop:disable Metrics/AbcSize
+  def self.create_move(params)
     game = Game.find_by(id: params[:game_id])
     user_id = params[:user_id]
     return nil unless game&.in_progress?

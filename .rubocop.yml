@@ -10,6 +10,7 @@ Lint/AmbiguousBlockAssociation:
   AllowedMethods: [change]
 
 Metrics/AbcSize:
+  Max: 25
   CountRepeatedAttributes: false
 
 Metrics/BlockLength:
