@@ -143,7 +143,7 @@ export default function GameMap({
     map, showCoords, showStatusCounters, hideCounters, updateUnitshaded, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
     map?.windSpeed, map?.windDirection, map?.windVariable,
-    map?.game?.currentPlayer, map?.game?.lastMoveIndex,
+    map?.game?.currentPlayer, map?.game?.lastMoveIndex, map?.game?.lastMove?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore,
     map?.game?.reinforcementSelection, map?.game?.reinforcementNeedsDirection,

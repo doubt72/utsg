@@ -23,7 +23,7 @@ export default function GameControls({ game }: GameControlsProps) {
       if (a.type === "none") {
         return <div className="mt05em mb05em mr05em" key={i}>{a.message}</div>
       } else if (a.type === "undo") {
-        return <UndoButton moveId={game.lastMove?.id ?? 0} key={i} />
+        return <UndoButton game={game} key={i} />
       } else if (a.type === "join") {
         return <JoinButton gameId={game.id} key={i} />
       } else if (a.type === "leave") {

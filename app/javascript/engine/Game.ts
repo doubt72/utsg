@@ -211,6 +211,11 @@ export default class Game {
     while(this.lastMoveIndex >= 0 && this.lastMove.undone) {
       this.lastMoveIndex--
     }
+    if (!this.suppressNetwork) {
+      postAPI(`/api/v1/game_moves/${move.id}/undo`, {}, {
+          ok: () => {}
+      })
+    }
     if (move.lastUndoCascade) {
       this.executeUndo()
     }

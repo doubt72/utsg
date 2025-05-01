@@ -30,6 +30,7 @@ export default class PhaseMove extends BaseMove {
   }
 
   get deploymentMessage(): string {
+    const undoMsg = this.undone ? " [cancelled]" : ""
     let first = this.game.scenario.firstMove
     let last = this.newTurn === 1 ? "setup finished" : "cleanup finished"
     if (this.newTurn === 0) {
@@ -38,15 +39,15 @@ export default class PhaseMove extends BaseMove {
     }
     if (first === 1) {
       if (this.newPlayer === 1) {
-        return last + ", begin Allied deployment"
+        return last + ", begin Allied deployment" + undoMsg
       } else {
-        return "Allied deployment done, begin Axis deployment"
+        return "Allied deployment done, begin Axis deployment" + undoMsg
       }
     } else {
       if (this.newPlayer === 1) {
-        return "Axis deployment done, begin Allied deployment"
+        return "Axis deployment done, begin Allied deployment" + undoMsg
       } else {
-        return last + ", begin Axis deployment"
+        return last + ", begin Axis deployment" + undoMsg
       }
     }
   }
@@ -65,6 +66,7 @@ export default class PhaseMove extends BaseMove {
   undo(): void {
     this.game.phase = this.oldPhase
     this.game.turn = this.newTurn
+    this.game.currentPlayer = this.player
     this.undone = true;
   }
 

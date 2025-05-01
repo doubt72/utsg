@@ -166,7 +166,7 @@ export default function ReinforcementPanel({
         }
       </g>
     )
-  }, [xx, yy, shifted, map.game?.reinforcementSelection, map.game?.lastMove])
+  }, [xx, yy, shifted, map.game?.reinforcementSelection, map.game?.lastMove, map.game?.lastMoveIndex])
 
   return (
     <g>
