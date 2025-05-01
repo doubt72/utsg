@@ -150,7 +150,7 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def last_sequence
     # Zero failover for testing
-    GameMove.where(game_id: id).pluck(&:sequence).max || 0
+    GameMove.where(game_id: id).pluck(:sequence).max || 0
   end
 
   def last_moved_at

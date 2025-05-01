@@ -1,6 +1,4 @@
-- fix undo
-- persist moves
-- fix game move websocket
+- fix undo across phase boundary
 - catch errors, show message
   - error if overstacking
   - error if illegal terrain

@@ -141,7 +141,7 @@ describe("move integration test", () => {
     expect(game.undoPossible).toBe(true)
     expect(game.moves.length).toBe(index)
     expect(game.lastMoveIndex).toBe(index - 1)
-    game.undo()
+    game.executeUndo()
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
     // Undone moves are just marked as undone

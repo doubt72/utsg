@@ -200,18 +200,6 @@ export default function GameMap({
   }
 
   const updateReinforcementOverlays = () => {
-    // const key = `${x}-${y}-o`
-    // setHexDisplayOverlays(overlays =>
-    //   overlays.map(h => {
-    //     if (h.key === key) {
-    //       const shaded = map.debug ? !h.props.shaded : h.props.shaded
-    //       return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} shaded={shaded}
-    //                             selectCallback={hexSelection} />
-    //     } else {
-    //       return h
-    //     }
-    //   })
-    // )
     setReinforcements(r => {
       if (r) { r.props.update.key = !r.props.update.key }
       return r
@@ -221,7 +209,7 @@ export default function GameMap({
       const xx = rp.props.xx
       const yy = rp.props.yy
       const player = rp.props.player
-      const key = rp.props.key ?? 0
+      const key = Number(rp.key)
       return (
         <ReinforcementPanel key={key + 1} map={map} xx={xx} yy={yy} player={player}
                             closeCallback={() => {
@@ -229,8 +217,7 @@ export default function GameMap({
                               map.game?.setReinforcementSelection(undefined)
                             }}
                             shifted={rp?.props.shifted ?? false}
-                            shiftCallback={shift}
-                            ovCallback={setOverlay}/>
+                            shiftCallback={shift} ovCallback={setOverlay}/>
       )
     })
   }

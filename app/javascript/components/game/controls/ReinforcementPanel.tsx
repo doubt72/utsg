@@ -55,11 +55,12 @@ export default function ReinforcementPanel({
           onClick={closeCallback}/>
       </g>
     )
+    const fill = "rgba(143,143,143,0.95)"
     if (!units || Object.keys(units).length === 0) {
       setBase(
         <g>
           <path d={roundedRectangle(x, yy, 225, 100)}
-                style={{ fill: "#999", stroke: "#777", strokeWidth: 1 }}/>
+                style={{ fill: fill, stroke: "#777", strokeWidth: 1 }}/>
           <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
             available units:
@@ -95,7 +96,7 @@ export default function ReinforcementPanel({
     setBase(
       <g>
         <path d={roundedRectangle(x, yy, maxWidth(units), Object.keys(units).length * 106 + 44)}
-              style={{ fill: "#999", stroke: "#777", strokeWidth: 1 }}/>
+              style={{ fill: fill, stroke: "#777", strokeWidth: 1 }}/>
         <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
           available units:

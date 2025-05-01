@@ -15,7 +15,7 @@ export default function GameControls({ game }: GameControlsProps) {
   useEffect(() => {
     if (!game.id) { return }
     displayActions()
-  }, [game, game.lastMove])
+  }, [game, game.lastMoveIndex])
 
   const displayActions = () => {
     const user = localStorage.getItem("username")

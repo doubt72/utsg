@@ -168,11 +168,10 @@ export default class Game {
       if (em) {
         if (!em.id) {
           em.id = m.id
+          this.refreshCallback(this)
         }
-        if (m.undone) {
-          if (!em.undone) {
-            this.undo()
-          }
+        if (m.undone && !em.undone) {
+          this.executeUndo()
         }
         return
       }
@@ -204,7 +203,7 @@ export default class Game {
     return this.lastMove.undoPossible
   }
 
-  undo() {
+  executeUndo() {
     if (!this.lastMove) { return }
     const move = this.lastMove
     move.undo()
@@ -213,7 +212,7 @@ export default class Game {
       this.lastMoveIndex--
     }
     if (move.lastUndoCascade) {
-      this.undo()
+      this.executeUndo()
     }
     this.refreshCallback(this)
   }
