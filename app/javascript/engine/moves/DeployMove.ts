@@ -57,7 +57,6 @@ export default class DeployMove extends BaseMove {
 
     const turn = this.turn
 
-    console.log("popping unit?")
     map.popUnit(this.target) // throw away result, don't need it
 
     if (this.player === 1) {

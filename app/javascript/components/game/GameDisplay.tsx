@@ -64,9 +64,9 @@ export default function GameDisplay() {
     setTurn(<>{status}</>)
   }, [game.k?.state, game.k?.lastMoveIndex])
 
-  const moveNotification = () => {
+  const moveNotification = (moveId?: number) => {
     if (game.k) {
-      game.k?.loadNewMoves()
+      game.k?.loadNewMoves(moveId)
       gameNotification(game.k)
     }
   }

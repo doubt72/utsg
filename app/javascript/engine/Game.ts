@@ -94,8 +94,8 @@ export default class Game {
     })
   }
 
-  loadNewMoves() {
-    const limit = this.moves[this.lastMoveIndex - 1].id
+  loadNewMoves(moveId?: number) {
+    const limit = moveId ? moveId - 1 : this.moves[this.lastMoveIndex].id
     getAPI(`/api/v1/game_moves?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
@@ -166,15 +166,12 @@ export default class Game {
     if (m.sequence) {
       const em = this.findBySequence(m.sequence)
       if (em) {
-        console.log("existing")
         if (!em.id) {
-          console.log(`setting id ${m.id}`)
           em.id = m.id
         }
         if (m.undone) {
-          console.log("undoing")
           if (!em.undone) {
-            em.undo()
+            this.undo()
           }
         }
         return
@@ -218,7 +215,6 @@ export default class Game {
     if (move.lastUndoCascade) {
       this.undo()
     }
-    console.log("refeshing?")
     this.refreshCallback(this)
   }
 

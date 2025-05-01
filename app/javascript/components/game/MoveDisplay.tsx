@@ -4,7 +4,7 @@ import Game from "../../engine/Game";
 
 interface MoveDisplayProps {
   game: Game;
-  callback: () => void;
+  callback: (moveId?: number) => void;
   chatInput: boolean;
 }
 
@@ -30,7 +30,11 @@ export default function MoveDisplay({ game, callback, chatInput }: MoveDisplayPr
     if (lastMessage) {
       const msg = JSON.parse(lastMessage.data).message
       if (msg && msg.body) {
-        callback()
+        if (msg.body.undone) {
+          callback(msg.body.id)
+        } else {
+          callback()
+        }
       }
     }
   }, [lastMessage])

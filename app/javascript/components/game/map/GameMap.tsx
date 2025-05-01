@@ -130,13 +130,20 @@ export default function GameMap({
       map?.preview ? undefined :
         <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements} update={{key: true}}/>
     )
-    if (!map.game?.reinforcementNeedsDirection || !map.game.reinforcementSelection) {
-      setDirectionSelectionOverlay(undefined)
-    }
+    setDirectionSelectionOverlay(() => {
+      if (!map.game?.reinforcementNeedsDirection || !map.game.reinforcementSelection) {
+        return undefined
+      }
+      const [x, y] = map.game.reinforcementNeedsDirection
+      return <DirectionSelector hex={map.hexAt(new Coordinate(x, y))}
+                                selectCallback={directionSelection} />
+    })
+    updateReinforcementOverlays()
   }, [
     map, showCoords, showStatusCounters, hideCounters, updateUnitshaded, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
-    map?.windSpeed, map?.windDirection, map?.windVariable, map?.game?.currentPlayer, map?.game?.lastMove,
+    map?.windSpeed, map?.windDirection, map?.windVariable,
+    map?.game?.currentPlayer, map?.game?.lastMoveIndex,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore,
     map?.game?.reinforcementSelection, map?.game?.reinforcementNeedsDirection,
@@ -192,30 +199,31 @@ export default function GameMap({
     )
   }
 
-  const updateHexOverlays = (x: number, y: number) => {
-    const key = `${x}-${y}-o`
-    setHexDisplayOverlays(overlays =>
-      overlays.map(h => {
-        if (h.key === key) {
-          const shaded = map.debug ? !h.props.shaded : h.props.shaded
-          return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} shaded={shaded}
-                                selectCallback={hexSelection} />
-        } else {
-          return h
-        }
-      })
-    )
+  const updateReinforcementOverlays = () => {
+    // const key = `${x}-${y}-o`
+    // setHexDisplayOverlays(overlays =>
+    //   overlays.map(h => {
+    //     if (h.key === key) {
+    //       const shaded = map.debug ? !h.props.shaded : h.props.shaded
+    //       return <MapHexOverlay key={`${x}-${y}-o`} hex={h.props.hex} shaded={shaded}
+    //                             selectCallback={hexSelection} />
+    //     } else {
+    //       return h
+    //     }
+    //   })
+    // )
     setReinforcements(r => {
       if (r) { r.props.update.key = !r.props.update.key }
       return r
     })
     setReinforcementsOverlay(rp => {
       if (!rp) { return undefined }
-      const xx = rp?.props.xx
-      const yy = rp?.props.yy
-      const player = rp?.props.player
+      const xx = rp.props.xx
+      const yy = rp.props.yy
+      const player = rp.props.player
+      const key = rp.props.key ?? 0
       return (
-        <ReinforcementPanel map={map} xx={xx} yy={yy} player={player}
+        <ReinforcementPanel key={key + 1} map={map} xx={xx} yy={yy} player={player}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
                               map.game?.setReinforcementSelection(undefined)
@@ -234,15 +242,11 @@ export default function GameMap({
           map.game.turn][map.game.reinforcementSelection.index]
         if (counter.counter.rotates && !map.game.reinforcementNeedsDirection) {
           map.game.reinforcementNeedsDirection = [x, y]
-          setDirectionSelectionOverlay(
-            <DirectionSelector hex={map.hexAt(new Coordinate(x, y))}
-                               selectCallback={directionSelection} />
-          )
         }
       }
       hexCallback(x, y)
     }
-    updateHexOverlays(x, y)
+    updateReinforcementOverlays()
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
@@ -280,7 +284,7 @@ export default function GameMap({
 
   const directionSelection = (x: number, y: number, d: Direction) => {
     directionCallback(x, y, d)
-    updateHexOverlays(x, y)
+    updateReinforcementOverlays()
   }
 
   const showReinforcements = (x: number, y: number, player: Player) => {

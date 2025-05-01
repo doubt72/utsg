@@ -9,7 +9,6 @@ interface UndoButtonProps {
 export default function UndoButton({ moveId }: UndoButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    // TODO: implement undo on backend
     postAPI(`/api/v1/game_moves/${moveId}/undo`, {}, {
       ok: () => {}
     })
@@ -18,7 +17,7 @@ export default function UndoButton({ moveId }: UndoButtonProps) {
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><ArrowCounterclockwise/>undo</button>
+        <button type="submit" className="custom-button nowrap"><ArrowCounterclockwise/>undo {moveId}</button>
       </div>
     </form>
   )
