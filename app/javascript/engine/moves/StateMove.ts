@@ -14,8 +14,7 @@ export default class StateMove extends BaseMove {
     return this.description
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  mutateGame(network: boolean): void {
+  mutateGame(): void {
     // No need for create; games are always already created, and that state
     // never changes on the frontend
     if (this.data.action === "start") {

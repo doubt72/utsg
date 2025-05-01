@@ -43,8 +43,7 @@ export default class BaseMove {
   // Override if undoable
   get undoPossible(): boolean { return false }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  mutateGame(network: boolean): void { throw new Error("needs local implementation") }
+  mutateGame(): void { throw new Error("needs local implementation") }
 
   undo(): void { throw new Error("can't be undone") }
 

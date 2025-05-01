@@ -27,14 +27,14 @@ export default class DeployMove extends BaseMove {
 
   get stringValue(): string {
     const name = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.game.turn][this.originIndex].counter.name :
-      this.game.scenario.axisReinforcements[this.game.turn][this.originIndex].counter.name
+      this.game.scenario.alliedReinforcements[this.turn][this.originIndex].counter.name :
+      this.game.scenario.axisReinforcements[this.turn][this.originIndex].counter.name
     return `deployed unit: ${name} to ${coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`;
   }
 
   get undoPossible() { return true }
 
-  mutateGame(network: boolean): void {
+  mutateGame(): void {
     const scenario = this.game.scenario
     const map = scenario.map
 
@@ -48,7 +48,6 @@ export default class DeployMove extends BaseMove {
       uf.turretFacing = this.orientation
     }
     map.addUnit(this.target, uf)
-    this.game.checkPhase(network)
   }
 
   undo(): void {

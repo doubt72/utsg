@@ -161,7 +161,7 @@ export default class Game {
     return this.moves[check].undoPossible
   }
 
-  executeMove(move: GameMove, network: boolean) {
+  executeMove(move: GameMove, backendSync: boolean) {
     const m = move.moveClass
     if (m.sequence) {
       const em = this.findBySequence(m.sequence)
@@ -183,7 +183,7 @@ export default class Game {
     this.moves.push(m)
     if (!m.undone) {
       this.lastMoveIndex = move.index
-      m.mutateGame(network)
+      m.mutateGame()
     }
     if (!this.suppressNetwork && m.id === undefined) {
       postAPI(`/api/v1/game_moves`, {
@@ -195,6 +195,7 @@ export default class Game {
         ok: () => {},
       })
     }
+    this.checkPhase(backendSync)
     this.refreshCallback(this)
   }
 
@@ -235,8 +236,8 @@ export default class Game {
     return rc
   }
 
-  checkPhase(network: boolean) {
-    if (network) { return }
+  checkPhase(backendSync: boolean) {
+    if (backendSync) { return }
     const data: GameMoveData = {
       player: this.currentPlayer, user: this.currentUser,
       data: { action: "phase" }
@@ -248,7 +249,7 @@ export default class Game {
         this.scenario.alliedReinforcements[this.turn] :
         this.scenario.axisReinforcements[this.turn]
 
-      const count = counters.reduce((tot, u) => tot + u.x - u.used, 0)
+      const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
       if (count === 0) {
         if (this.turn === 0) {
           data.data.phase = [oldPhase, gamePhaseType.Deployment]
@@ -266,7 +267,7 @@ export default class Game {
             [oldPhase, gamePhaseType.Deployment] :
             [oldPhase, gamePhaseType.Prep]
         }
-        this.executeMove(new GameMove(data, this, this.moves.length), network)
+        this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
       }
     }
   }
@@ -336,7 +337,8 @@ export default class Game {
       moves.unshift({ type: "deploy" })
       return moves
     } else {
-      return [{ type: "none", message: "not implemented yet" }]
+      moves.unshift({ type: "none", message: "not implemented yet" })
+      return moves
     }
   }
 }

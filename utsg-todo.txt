@@ -1,4 +1,3 @@
-- fix undo across phase boundary
 - catch errors, show message
   - error if overstacking
   - error if illegal terrain
