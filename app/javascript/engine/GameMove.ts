@@ -4,6 +4,7 @@ import BaseMove from "./moves/BaseMove";
 import StateMove from "./moves/StateMove";
 import PhaseMove from "./moves/PhaseMove";
 import DeployMove from "./moves/DeployMove";
+import InfoMove from "./moves/InfoMove";
 
 export type DiceResult = {
   rawResult: number;
@@ -12,6 +13,7 @@ export type DiceResult = {
 
 export type GameMoveDetails = {
   action: string;
+  message?: string;
   origin?: [number, number];
   origin_index?: number;
   target?: [number, number];
@@ -46,6 +48,9 @@ export default class GameMove {
   }
 
   get moveClass(): BaseMove {
+    if (this.data.data.action === "info") {
+      return new InfoMove(this.data, this.game, this.index);
+    }
     if (this.data.data.action === "create") {
       return new StateMove(this.data, this.game, this.index, "game created");
     }

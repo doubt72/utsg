@@ -24,6 +24,8 @@ export default class PhaseMove extends BaseMove {
     this.newPlayer = data.data.player as Player
   }
 
+  get type(): string { return "phase" }
+
   get stringValue(): string {
     const undoMsg = this.undone ? " [cancelled]" : ""
     if (this.newPhase === gamePhaseType.Deployment) { return this.deploymentMessage + undoMsg }

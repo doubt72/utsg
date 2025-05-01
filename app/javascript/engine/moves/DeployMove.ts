@@ -25,6 +25,8 @@ export default class DeployMove extends BaseMove {
     this.turn = data.data.turn as number
   }
 
+  get type(): string { return "deploy" }
+
   get stringValue(): string {
     const name = this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.turn][this.originIndex].counter.name :

@@ -30,6 +30,8 @@ export default class BaseMove {
     this.undone = !!data.undone;
   }
 
+  get type(): string { throw new Error("must implement type") }
+
   get formattedDate() {
     const date = new Date(this.createdAt)
     return `${("0" + (date.getMonth() + 1)).slice (-2)}/` +

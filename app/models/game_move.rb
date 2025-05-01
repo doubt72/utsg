@@ -52,7 +52,7 @@ class GameMove < ApplicationRecord
 
   def undoable_actions
     # "action" isn't actually used except for testing
-    %w[action deploy phase]
+    %w[action deploy info phase]
   end
 
   def format_created

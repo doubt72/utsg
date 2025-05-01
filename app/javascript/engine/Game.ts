@@ -195,7 +195,7 @@ export default class Game {
         ok: () => {},
       })
     }
-    this.checkPhase(backendSync)
+    if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
     this.refreshCallback(this)
   }
 
@@ -249,8 +249,16 @@ export default class Game {
         this.scenario.alliedReinforcements[this.turn] :
         this.scenario.axisReinforcements[this.turn]
 
+      const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
       const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
       if (count === 0) {
+        if (initialCount === 0) {
+          this.executeMove(new GameMove({
+            player: this.currentPlayer, user: this.currentUser, data: {
+              action: "info", message: "no units to deploy, skipping phase"
+            }
+          }, this, this.moves.length), backendSync)
+        }
         if (this.turn === 0) {
           data.data.phase = [oldPhase, gamePhaseType.Deployment]
           if (this.currentPlayer === this.scenario.firstSetup) {

@@ -10,6 +10,8 @@ export default class StateMove extends BaseMove {
     this.description = description
   }
 
+  get type(): string { return "state" }
+
   get stringValue() {
     return this.description
   }
