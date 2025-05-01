@@ -141,8 +141,8 @@ export default function ReinforcementPanel({
                       return (
                         <g key={j}>
                           <text x={x0} y={y} fontSize={16} textAnchor="start"
-                                fontFamily="'Courier Prime', monospace" style={{ fill: "#999" }}>
-                            {count}x
+                                fontFamily="'Courier Prime', monospace" style={{ fill: "#555" }}>
+                            {u.x}x
                           </text>
                           <MapCounter counter={counter} ovCallback={cb} />
                         </g>
@@ -152,7 +152,7 @@ export default function ReinforcementPanel({
                         <g key={j}>
                           <text x={x0} y={y} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-                            {count}x
+                            {u.used > 0 ? `${u.used}/${u.x}` : count}x
                           </text>
                           <MapCounter counter={counter} ovCallback={cb} />
                         </g>

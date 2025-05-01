@@ -12,24 +12,24 @@ export default class Terrain {
   // los = BLOCKS los
   get baseAttr(): TerrainAttributesType {
     return {
-      o: { move: 1,     hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "open" },
-      f: { move: 2,     hindrance: 0, cover: 1, los: true,  vehicle: false, gun: "back", name: "forest" },
-      b: { move: 2,     hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "brush" },
-      d: { move: 1,     hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "orchard" },
-      g: { move: 1,     hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "field" },
-      s: { move: 2,     hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "sand" },
-      m: { move: 3,     hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "marsh" },
-      j: { move: 3,     hindrance: 0, cover: 2, los: true,  vehicle: false, gun: false,  name: "jungle" },
-      r: { move: 2,     hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "rough" },
+      o: { move: 1, hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "open" },
+      f: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: "back", name: "forest" },
+      b: { move: 2, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "brush" },
+      d: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "orchard" },
+      g: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "field" },
+      s: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "sand" },
+      m: { move: 3, hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "marsh" },
+      j: { move: 3, hindrance: 0, cover: 2, los: true,  vehicle: false, gun: false,  name: "jungle" },
+      r: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "rough" },
       w: { move: 0, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "water" },
     }[this.hex.baseTerrain]
   }
 
   get borderAttr(): TerrainAttributesType {
     return {
-      f: { move: 1,     hindrance: 1, cover: 0, los: false, vehicle: true,  gun: false, name: "fence" },
-      w: { move: 2,     hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "wall" },
-      b: { move: 2,     hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "bocage" },
+      f: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: false, name: "fence" },
+      w: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "wall" },
+      b: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "bocage" },
       c: { move: 0, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false, name: "cliff" },
     }[this.hex.border as BorderTypeType]
   }

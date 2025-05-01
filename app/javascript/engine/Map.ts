@@ -437,6 +437,26 @@ export default class Map {
     if (this.game.reinforcementNeedsDirection) { return false }
     const player = this.game.reinforcementSelection.player
     const turn = this.game.reinforcementSelection.turn
+    const index = this.game.reinforcementSelection.index
+    const hex = this.hexAt(new Coordinate(x, y))
+    const uf = player === 1 ?
+      this.game.scenario.alliedReinforcements[turn][index].counter :
+      this.game.scenario.axisReinforcements[turn][index].counter
+    if (!hex?.terrain.move) { return false }
+    if (!hex.terrain.vehicle && !uf.isFeature && (uf.isTracked || uf.isWheeled)) { return false }
+    if (hex.terrain.gun === false && !uf.isFeature && uf.fieldGun) { return false }
+    if (uf.isFeature) {
+      for (const f of this.countersAt(hex.coord)) {
+        if (f.target.isFeature) { return false }
+      }
+    } else {
+      const size = this.countersAt(hex.coord).reduce((sum, c) => {
+        return c.target.isFeature ? sum : sum + c.target.size
+      }, 0)
+      if (uf.size + size > 15) {
+        return false
+      }
+    }
     const ts = `${turn}`
     if (!this.alliedSetupHexes || !this.axisSetupHexes) { return false }
     const hexes = player === 1 ? this.alliedSetupHexes[ts] : this.axisSetupHexes[ts]

@@ -18,7 +18,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   const showDisabled = () => {
     const disable = counter.showDisabled
     if (disable) return (
-      <path d={counter.counterPath()} style={{ fill: "rgba(0,0,0,0.33)" }} />
+      <path d={counter.counterPath()} style={{ fill: "rgba(0,0,0,0.5)" }} />
     )
   }
 

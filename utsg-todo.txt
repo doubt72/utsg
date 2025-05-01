@@ -1,6 +1,6 @@
+- show selected feature when deploying
+- don't allow deployed unit selection when deploying
 - catch errors, show message
-  - error if overstacking
-  - error if illegal terrain
 - show warming message
   - warning if placing gun/mg with no one operating it
 - extend move test to complete deployment
