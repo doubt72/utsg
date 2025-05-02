@@ -125,7 +125,9 @@ export default class Feature {
   selected = false
   hideOverlayRotation = false
 
-  select() { }
+  select() {
+    this.selected = !this.selected
+  }
 
   get isMarker(): boolean { return false }
 
