@@ -23,7 +23,9 @@ export default function ErrorDisplay({ type, message, callBack }: ErrorDisplayPr
             {intro}{message}
           </div>
         </div>
-        <div onClick={callBack} className="custom-button game-error-button nowrap"><XCircle /> close</div>
+        <button onClick={callBack} className="custom-button game-error-button nowrap">
+          <XCircle />close
+        </button>
       </div>
     </div>
   )
