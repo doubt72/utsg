@@ -14,39 +14,49 @@ interface ReinforcementsProps {
 
 export default function Reinforcements({ map, xx, yy, callback, update }: ReinforcementsProps) {
   const [base, setBase] = useState<JSX.Element | undefined>()
+  const [mouseover, setMouseover] = useState<JSX.Element | undefined>()
+
+  const enter = (x: number, y: number) => {
+    console.log(`entering ${x} ${y}`)
+    setMouseover(
+      <path d={baseCounterPath(x, y)} style={{ fill: "rgba(1,0,0,0.5)" }}/>
+    )
+  }
 
   const nation = (x: number, y: number, n: string, player: Player, enabled: boolean) => {
     const showDisabled = enabled ? (
       <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0)" }}
-      onClick={() => callback(x, y, player)}/>
+            onClick={() => callback(x, y, player)}
+            onMouseEnter={() => enter(x, y)}
+            onMouseLeave={() => {
+              console.log("leave")
+              setMouseover(undefined)
+            }} />
     ) : (
       <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0.33)" }}
-      onClick={() => callback(x, y, player)}/>
+            onClick={() => callback(x, y, player)}/>
     )
     return (
       <g>
         <path d={baseCounterPath(x, y)}
               style={{ fill: nationalColors[n], stroke: "black", strokeWidth: 1 }}/>
         <image width={80} height={80} x={x} y={y} href={`/assets/units/${n}.svg`}/>
+        {mouseover}
         {showDisabled}
       </g>
     )
   }
 
   const nationOne = (x: number, y: number) => {
-    return nation(
-      x, y, map.game?.playerOneNation as string, 1,
-      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 1 &&
-        map.game.state === "in_progress"
-    );
+    const enabled = map.game?.phase === gamePhaseType.Deployment &&
+      map.game.currentPlayer === 1 && map.game.state === "in_progress"
+    return nation(x, y, map.game?.playerOneNation as string, 1, enabled);
   }
 
   const nationTwo = (x: number, y: number) => {
-    return nation(
-      x, y, map.game?.playerTwoNation as string, 2,
-      map.game?.phase === gamePhaseType.Deployment && map.game.currentPlayer === 2 &&
-        map.game.state === "in_progress"
-    )
+    const enabled = map.game?.phase === gamePhaseType.Deployment &&
+      map.game.currentPlayer === 2 && map.game.state === "in_progress"
+    return nation(x, y, map.game?.playerTwoNation as string, 2, enabled)
   }
 
   useEffect(() => {

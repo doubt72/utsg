@@ -1,7 +1,9 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes";
 import { coordinateToLable } from "../../utilities/utilities";
+import Feature from "../Feature";
 import Game from "../Game";
 import { GameMoveData } from "../GameMove";
+import Unit from "../Unit";
 import BaseMove from "./BaseMove";
 
 export default class DeployMove extends BaseMove {
@@ -58,7 +60,7 @@ export default class DeployMove extends BaseMove {
 
     const turn = this.turn
 
-    let counter: Unit | Counter | undefined = undefined
+    let counter: Unit | Feature | undefined = undefined
     if (this.player === 1) {
       scenario.replaceAlliedReinforcement(turn, this.originIndex)
       counter = scenario.alliedReinforcements[turn][this.originIndex].counter
