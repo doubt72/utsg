@@ -122,11 +122,13 @@ export default function GameMap({
         <TurnDisplay xx={(map?.xSize || 0) - 102 - (map?.game?.scenario.turns ?? 0) * 90}
                      yy={2} hideCounters={hideCounters} map={map} ovCallback={setOverlay}/>
     )
-    setSniper(() =>
-      map?.preview || (!map?.game?.alliedSniper && !map?.game?.axisSniper) ? undefined :
-        <SniperDisplay xx={260} yy={2} hideCounters={hideCounters} map={map}
+    setSniper(() => {
+      const x = map.xSize - 384 - (map.game?.scenario.turns ?? 0) * 90
+      return map?.preview || (!map?.game?.alliedSniper && !map?.game?.axisSniper) ?
+        undefined :
+        <SniperDisplay xx={x} yy={2} hideCounters={hideCounters} map={map}
                        ovCallback={setOverlay}/>
-    )
+    })
     setReinforcements(() =>
       map?.preview ? undefined :
         <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements} update={{key: true}}/>
@@ -309,10 +311,10 @@ export default function GameMap({
       {reinforcements}
       {counterDisplay}
       {hexDisplayOverlays}
+      {directionSelectionOverlay}
       {reinforcementsOverlay}
       {overlayDisplay}
       {counterLosOverlay}
-      {directionSelectionOverlay}
       {terrainInfoOverlay}
     </svg>
   )

@@ -73,7 +73,7 @@ export const weatherType: { [index: string]: WeatherTypeType } = {
 
 export type BaseTerrainTypeType = "d" | "m" | "g" | "u" | "s";
 export const baseTerrainType: { [index: string]: BaseTerrainTypeType } = {
-  Grass: "g", Urban: "u", Desert: "d", Mud: "m", Snow: "s"
+  Grass: "g", Urban: "u", Sand: "d", Mud: "m", Snow: "s"
 }
 
 export type TerrainTypeType = "o" | "f" | "b" | "j" | "s" | "m" | "w" | "g" | "r" | "d"

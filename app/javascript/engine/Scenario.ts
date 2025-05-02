@@ -127,16 +127,6 @@ export default class Scenario {
     return Object.entries(this.axisReinforcements).flatMap(kv => kv[1])
   }
 
-  takeAxisReinforcement(turn: number, index: number): Unit | Feature {
-    const entry = this.axisReinforcements[turn][index]
-    if (entry.used >= entry.x) {
-      throw new Error('Error deploying too many of reinforcement type')
-    }
-    entry.used++
-
-    return entry.counter.clone()
-  }
-
   takeAlliedReinforcement(turn: number, index: number): Unit | Feature {
     const entry = this.alliedReinforcements[turn][index]
     if (entry.used >= entry.x) {
@@ -147,11 +137,21 @@ export default class Scenario {
     return entry.counter.clone()
   }
 
-  replaceAxisReinforcement(turn: number, index: number): void {
-    this.axisReinforcements[turn][index].used--
+  takeAxisReinforcement(turn: number, index: number): Unit | Feature {
+    const entry = this.axisReinforcements[turn][index]
+    if (entry.used >= entry.x) {
+      throw new Error('Error deploying too many of reinforcement type')
+    }
+    entry.used++
+
+    return entry.counter.clone()
   }
 
   replaceAlliedReinforcement(turn: number, index: number): void {
     this.alliedReinforcements[turn][index].used--
+  }
+
+  replaceAxisReinforcement(turn: number, index: number): void {
+    this.axisReinforcements[turn][index].used--
   }
 }
