@@ -27,6 +27,7 @@ import {
 } from "../utilities/graphics";
 import Marker from "./Marker";
 import Feature from "./Feature";
+import WarningMoveError from "./moves/WarningMoveError";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -236,7 +237,30 @@ export default class Map {
 
   addUnit(loc: Coordinate, unit: Unit | Feature) {
     const list = this.units[loc.y][loc.x]
-    list.push(unit)
+    if (unit.isFeature) {
+      list.unshift(unit)
+    } else {
+      const last = list[list.length-1]
+      list.push(unit)
+      if (unit.type === "sw") {
+        if (!last ||
+          (last.type !== "sqd" && last.type !== "tm" && last.type !== "ldr")) {
+          throw new WarningMoveError(
+            "unit being placed is not assigned to an operator, it " +
+            "must be placed on top of a squad, team, or leader to be assigned."
+          )
+        }
+      }
+      if (unit.type === "gun") {
+        if (!last ||
+          (last.type !== "sqd" && last.type !== "tm")) {
+          throw new WarningMoveError(
+            "unit being placed is not assigned to an operator, it " +
+            "must be placed on top of a squad or team to be assigned."
+          )
+        }
+      }
+    }
   }
 
   popUnit(loc: Coordinate): Unit | Feature | undefined {

@@ -183,7 +183,6 @@ export default class Game {
       if (!m.undone) {
         try {
           m.mutateGame()
-          throw new WarningMoveError("unit being placed is not assigned to an operator, must be placed on top of a squad, team, crew, or leader to be assigned.")
         } catch(err) {
           if (err instanceof WarningMoveError) {
             this.refreshCallback(this, ["warn", err.message])

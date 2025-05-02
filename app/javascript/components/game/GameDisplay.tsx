@@ -74,7 +74,6 @@ export default function GameDisplay() {
   }
 
   const gameNotification = (g: Game, error?: [string, string]) => {
-    console.log(`error: ${error}`)
     if (error) {
       setErrorWindow(
         <ErrorDisplay type={error[0]} message={error[1]} callBack={
