@@ -58,12 +58,18 @@ export default class DeployMove extends BaseMove {
 
     const turn = this.turn
 
-    map.popUnit(this.target) // throw away result, don't need it
-
+    let counter: Unit | Counter | undefined = undefined
     if (this.player === 1) {
       scenario.replaceAlliedReinforcement(turn, this.originIndex)
+      counter = scenario.alliedReinforcements[turn][this.originIndex].counter
     } else {
       scenario.replaceAxisReinforcement(turn, this.originIndex)
+      counter = scenario.axisReinforcements[turn][this.originIndex].counter
+    }
+    if (counter.isFeature) {
+      map.shiftUnit(this.target)
+    } else {
+      map.popUnit(this.target)
     }
     this.undone = true;
   }

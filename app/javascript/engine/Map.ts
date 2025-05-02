@@ -268,6 +268,11 @@ export default class Map {
     return list.pop()
   }
 
+  shiftUnit(loc: Coordinate): Unit | Feature | undefined {
+    const list = this.units[loc.y][loc.x]
+    return list.shift()
+  }
+
   counterDataAt(loc: Coordinate): MapCounterData[] {
     const c: MapCounterData[] = []
     const list = this.units[loc.y][loc.x]
