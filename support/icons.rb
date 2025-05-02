@@ -2992,7 +2992,7 @@ File.open('sa.svg', 'w') do |file|
   file.puts footer
 end
 
-File.open('usa2.svg', 'w') do |file|
+File.open('usa3.svg', 'w') do |file|
   file.puts header
   path = []
   0.upto(6) do |n|
@@ -3011,7 +3011,7 @@ File.open('usa2.svg', 'w') do |file|
   file.puts footer
 end
 
-File.open('usa.svg', 'w') do |file|
+File.open('usa2.svg', 'w') do |file|
   file.puts header
   write_circle(50, 50, 45, file, true, "#570")
   starsize = -28
@@ -3035,6 +3035,22 @@ File.open('usa.svg', 'w') do |file|
   #   path.push([n == 0 ? "M" : "L", x, y])
   # end
   # write_path(path, file, false, 1, "#000")
+  path = []
+  0.upto(6) do |n|
+    x = Math.sin(n * 144.0 / 180 * Math::PI) * starsize + 50
+    y = Math.cos(n * 144.0 / 180 * Math::PI) * starsize + 50
+    path.push([n == 0 ? "M" : "L", x, y])
+  end
+  write_path(path, file, true, 3, "#FFF")
+  file.puts footer
+end
+
+File.open('usa.svg', 'w') do |file|
+  file.puts header
+  starsize = -28
+  write_circle(50, 50, 45, file, true, "#570")
+  write_circle(50, 50, starsize * -1.3, file, true, "#FFF")
+  write_circle(50, 50, starsize * -1.1, file, true, "#570")
   path = []
   0.upto(6) do |n|
     x = Math.sin(n * 144.0 / 180 * Math::PI) * starsize + 50
