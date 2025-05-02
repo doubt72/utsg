@@ -10,6 +10,7 @@ import Game from "../../engine/Game";
 import Map from "../../engine/Map";
 import Counter from "../../engine/Counter";
 import { Direction } from "../../utilities/commonTypes";
+import ErrorDisplay from "./ErrorDisplay";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -21,6 +22,7 @@ export default function GameDisplay() {
   const [moves, setMoves] = useState<JSX.Element | undefined>(undefined)
   const [turn, setTurn] = useState<JSX.Element | undefined>(undefined)
   const [controls, setControls] = useState<JSX.Element | undefined>(undefined)
+  const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>(undefined)
 
   const [scale, setScale] = useState(1)
   const [coords, setCoords] = useState(true)
@@ -71,7 +73,16 @@ export default function GameDisplay() {
     }
   }
 
-  const gameNotification = (g: Game) => {
+  const gameNotification = (g: Game, error?: [string, string]) => {
+    console.log(`error: ${error}`)
+    if (error) {
+      setErrorWindow(
+        <ErrorDisplay type={error[0]} message={error[1]} callBack={
+          () => setErrorWindow(undefined)
+        } />
+      )
+      return
+    }
     setGame({
       k: g,
       turn: g.turn,
@@ -174,6 +185,7 @@ export default function GameDisplay() {
                  hexCallback={hexSelection} counterCallback={unitSelection}
                  directionCallback={directionSelection} resetCallback={resetDisplay} />
       </div>
+      {errorWindow}
     </div>
   )
 }

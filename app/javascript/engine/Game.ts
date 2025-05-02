@@ -4,6 +4,8 @@ import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from
 import GameMove, { GameMoveData } from "./GameMove";
 import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
+import IllegalMoveError from "./moves/IllegalMoveError";
+import WarningMoveError from "./moves/WarningMoveError";
 
 export type GameData = {
   id: number;
@@ -38,7 +40,7 @@ export default class Game {
   state?: string;
   currentSequence = 1;
 
-  refreshCallback: (g: Game) => void;
+  refreshCallback: (g: Game, error?: [string, string]) => void;
 
   currentPlayer: Player;
   winner?: Player;
@@ -57,7 +59,7 @@ export default class Game {
   reinforcementSelection?: ReinforcementSelection;
   reinforcementNeedsDirection?: [number, number]
 
-  constructor(data: GameData, refreshCallback: (g: Game) => void = () => {}) {
+  constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
     this.scenario = new Scenario(data.scenario, this)
@@ -176,27 +178,45 @@ export default class Game {
         return
       }
       if (m.sequence > this.currentSequence) { this.currentSequence = m.sequence }
-    } else {
-      this.currentSequence++
-      m.sequence = this.currentSequence
     }
-    this.moves.push(m)
-    if (!m.undone) {
-      this.lastMoveIndex = move.index
-      m.mutateGame()
-    }
-    if (!this.suppressNetwork && m.id === undefined) {
-      postAPI(`/api/v1/game_moves`, {
-        game_move: {
-          sequence: m.sequence, game_id: this.id, player: m.player, undone: false,
-          data: JSON.stringify(m.data),
+    try {
+      if (!m.undone) {
+        try {
+          m.mutateGame()
+          throw new WarningMoveError("unit being placed is not assigned to an operator, must be placed on top of a squad, team, crew, or leader to be assigned.")
+        } catch(err) {
+          if (err instanceof WarningMoveError) {
+            this.refreshCallback(this, ["warn", err.message])
+          } else {
+            throw err
+          }
         }
-      }, {
-        ok: () => {},
-      })
+        this.lastMoveIndex = move.index
+      }
+      this.moves.push(m)
+      if (!m.sequence) {
+        this.currentSequence++
+        m.sequence = this.currentSequence
+      }
+      if (!this.suppressNetwork && m.id === undefined) {
+        postAPI(`/api/v1/game_moves`, {
+          game_move: {
+            sequence: m.sequence, game_id: this.id, player: m.player, undone: false,
+            data: JSON.stringify(m.data),
+          }
+        }, {
+          ok: () => {},
+        })
+      }
+      if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
+      this.refreshCallback(this)
+    } catch(err) {
+      if (err instanceof IllegalMoveError) {
+        this.refreshCallback(this, ["illegal", err.message])
+      } else if (err instanceof Error) {
+        this.refreshCallback(this, ["unknown", err.message])
+      }
     }
-    if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
-    this.refreshCallback(this)
   }
 
   get undoPossible() {

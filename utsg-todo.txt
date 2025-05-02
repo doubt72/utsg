@@ -1,4 +1,5 @@
 - show selected feature when deploying
+- deploy features to bottom of stack
 - don't allow deployed unit selection when deploying
 - catch errors, show message
 - show warming message
