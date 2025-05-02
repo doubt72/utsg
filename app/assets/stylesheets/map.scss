@@ -2,6 +2,14 @@
   margin: 0.5em;
 }
 
+.svg-button-hover {
+  fill: rgba(0,0,0,0);
+}
+
+.svg-button-hover:hover {
+  fill: rgba(255,255,255,0.167);
+}
+
 .map-svg {
   // background-color: $gray-e;
 }

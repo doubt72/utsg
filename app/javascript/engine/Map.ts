@@ -246,8 +246,8 @@ export default class Map {
         if (!last ||
           (last.type !== "sqd" && last.type !== "tm" && last.type !== "ldr")) {
           throw new WarningMoveError(
-            "unit being placed is not assigned to an operator, it " +
-            "must be placed on top of a squad, team, or leader to be assigned."
+            `${unit.name} is not assigned to an operator; it ` +
+            "must be placed on a squad, team, or leader to be assigned."
           )
         }
       }
@@ -255,8 +255,8 @@ export default class Map {
         if (!last ||
           (last.type !== "sqd" && last.type !== "tm")) {
           throw new WarningMoveError(
-            "unit being placed is not assigned to an operator, it " +
-            "must be placed on top of a squad or team to be assigned."
+            `${unit.name} is not assigned to an operator; it ` +
+            "must be placed on a squad or team to be assigned."
           )
         }
       }
@@ -477,6 +477,9 @@ export default class Map {
     if (uf.isFeature) {
       for (const f of this.countersAt(hex.coord)) {
         if (f.target.isFeature) { return false }
+      }
+      if ((uf.type === "mines" || uf.type === "wire") && this.victoryAt(hex.coord)) {
+        return false
       }
     } else {
       const size = this.countersAt(hex.coord).reduce((sum, c) => {

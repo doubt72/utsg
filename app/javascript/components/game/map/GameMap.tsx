@@ -18,6 +18,7 @@ import ReinforcementPanel from "../controls/ReinforcementPanel";
 import { Coordinate, CounterSelectionTarget, Direction, Player } from "../../../utilities/commonTypes";
 import MapHexOverlay from "./MapHexOverlay";
 import DirectionSelector from "./DirectionSelector";
+import { gamePhaseType } from "../../../engine/Game";
 
 interface GameMapProps {
   map: Map;
@@ -238,6 +239,7 @@ export default function GameMap({
 
   const unitSelection = (selection: CounterSelectionTarget) => {
     if (selection.target.type === "map") {
+      if (map.game?.phase === gamePhaseType.Deployment) { return }
       const x = selection.target.xy.x
       const y = selection.target.xy.y
       if (selection.counter.trueIndex === undefined) { return }

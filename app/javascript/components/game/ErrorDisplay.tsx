@@ -8,6 +8,7 @@ interface ErrorDisplayProps {
 }
 
 export default function ErrorDisplay({ type, message, callBack }: ErrorDisplayProps ) {
+  const intro = type === "warn" ? "warning: " : ""
   const icon = type === "warn" ? <ShieldFillExclamation /> : <ShieldFillX />
   const iconColor = type === "warn" ? "#B90" : "#C00"
 
@@ -19,7 +20,7 @@ export default function ErrorDisplay({ type, message, callBack }: ErrorDisplayPr
             {icon}
           </div>
           <div className="game-error-text">
-            {message}
+            {intro}{message}
           </div>
         </div>
         <div onClick={callBack} className="custom-button game-error-button nowrap"><XCircle /> close</div>
