@@ -5,6 +5,7 @@ import {
   Direction,
   MapEdgeType,
   MarkerTypeType,
+  Player,
   VictoryHexType,
   WeatherTypeType,
   WindTypeType,
@@ -22,6 +23,8 @@ import {
   HelpButtonLayout,
   OverlayLayout,
   TextLayout,
+  counterElite,
+  counterGreen,
   counterRed,
   roundedRectangle,
 } from "../utilities/graphics";
@@ -290,6 +293,8 @@ export default class Map {
       c.push({ loc: loc, u: u, s: index++, ti: trueIndex++ })
       if (this.showAllCounters) {
         const markerTypes: MarkerTypeType[] = []
+        if (!u.isFeature && (u as Unit).eliteCrew > 0) { markerTypes.push(markerType.EliteCrew) }
+        if (!u.isFeature && (u as Unit).eliteCrew < 0) { markerTypes.push(markerType.GreenCrew) }
         if (u.immobilized) { markerTypes.push(markerType.Immobilized) }
         if (u.turretJammed) { markerTypes.push(markerType.TurretJammed) }
         if (u.jammed && u.turreted) { markerTypes.push(markerType.Jammed) }
@@ -384,6 +389,12 @@ export default class Map {
     if (!counter.target.isMarker || !counter.target.isWreck) {
       const u = counter.target
       const s = !this.showAllCounters
+      if (!u.isFeature && (u as Unit).eliteCrew > 0 && s) {
+        badges.push({ text: "elite crew +1", color: counterElite, tColor: "white" })
+      }
+      if (!u.isFeature && (u as Unit).eliteCrew < 0 && s) {
+        badges.push({ text: "green crew -1", color: counterGreen, tColor: "black" })
+      }
       if (u.isBroken) {
         badges.push({ text: "broken", color: counterRed, tColor: "white" })
       }
@@ -499,6 +510,22 @@ export default class Map {
         if (x === h[0]) { return true }
       } else {
         if (x === h[0] && y === h[1]) { return true }
+      }
+    }
+    return false
+  }
+
+  anyBrokenUnits(player: Player): boolean {
+    for (const listX of this.units) {
+      for (const listY of listX) {
+        for (const unit of listY) {
+          if (!unit.isFeature) {
+            const unitPlayer = unit.nation === this.game?.playerOneNation ? 1 : 2
+            if (player === unitPlayer && (unit.isBroken || unit.jammed)) {
+              return true
+            }
+          }
+        }
       }
     }
     return false

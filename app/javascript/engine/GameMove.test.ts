@@ -65,7 +65,7 @@ describe("move integration test", () => {
         0: { list: [rinf, rcrew, rmg, rldr, rgun]}
       },
       axis_units: {
-        0: { list: [ginf, wire]} // three units here
+        0: { list: [ginf, wire]}
       },
       map_data: mapData,
     }
@@ -198,7 +198,66 @@ describe("move integration test", () => {
     index++
     expect(game.moves.length).toBe(index)
     expect(game.lastMoveIndex).toBe(index - 1)
-
     expect(game.currentPlayer).toBe(1)
+
+    game.executeUndo()
+    expect(game.moves.length).toBe(index)
+    expect(game.lastMoveIndex).toBe(index - 3)
+    expect(game.currentPlayer).toBe(2)
+    expect(game.lastMove?.stringValue).toBe("deployed unit: Rifle to E4")
+    expect(game.moves[game.moves.length-2].stringValue).toBe("deployed unit: Wire to E2 [cancelled]")
+    expect(game.moves[game.moves.length-1].stringValue).toBe(
+      "Axis deployment done, begin Allied deployment [cancelled]"
+    )
+
+    index++
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    expect(game.moves.length).toBe(index)
+    expect(game.lastMoveIndex).toBe(index - 1)
+    expect(game.currentPlayer).toBe(1)
+    expect(game.lastMove?.stringValue).toBe("Axis deployment done, begin Allied deployment")
+
+    // { list: [rinf, rcrew, rmg, rldr, rgun]}
+
+    curretMoveData = {
+      user: "one", player: 1, data: { action: "deploy", origin_index: 0, target: [0, 0], orientation: 1, turn: 0 }
+    }
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    expect(game.moves.length).toBe(index)
+    expect(game.lastMove?.stringValue).toBe("deployed unit: Guards SMG to A1")
+
+    curretMoveData = {
+      user: "one", player: 1, data: { action: "deploy", origin_index: 1, target: [0, 1], orientation: 1, turn: 0 }
+    }
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    expect(game.moves.length).toBe(index)
+    expect(game.lastMove?.stringValue).toBe("deployed unit: Crew to A2")
+
+    curretMoveData = {
+      user: "one", player: 1, data: { action: "deploy", origin_index: 2, target: [0, 2], orientation: 1, turn: 0 }
+    }
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    expect(game.moves.length).toBe(index)
+    expect(game.lastMove?.stringValue).toBe("deployed unit: DShK to A3")
+
+    curretMoveData = {
+      user: "one", player: 1, data: { action: "deploy", origin_index: 3, target: [0, 3], orientation: 1, turn: 0 }
+    }
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    expect(game.moves.length).toBe(index)
+    expect(game.lastMove?.stringValue).toBe("deployed unit: Leader to A4")
+
+    curretMoveData = {
+      user: "one", player: 1, data: { action: "deploy", origin_index: 4, target: [0, 4], orientation: 1, turn: 0 }
+    }
+    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    index += 9
+    expect(game.moves.length).toBe(index)
+    expect(game.currentPlayer).toBe(1)
+    expect(game.moves[index - 7].stringValue).toBe("Allied deployment done, begin Axis deployment")
+    expect(game.moves[index - 6].stringValue).toBe("no units to deploy, skipping phase")
+    expect(game.moves[index - 3].stringValue).toBe("Allied rally phase done, begin Axis rally phase")
+    expect(game.moves[index - 2].stringValue).toBe("no broken units or jammed weapons, skipping phase")
+    expect(game.lastMove?.stringValue).toBe("rally phase done, begin main phase")
   })
 });

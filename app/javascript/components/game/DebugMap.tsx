@@ -81,6 +81,7 @@ export default function DebugMap() {
       const unit = new Unit(data.u)
       if (data.f) { unit.facing = data.f }
       if (data.tf) { unit.turretFacing = data.tf }
+      if (data.v) { unit.eliteCrew = data.v }
       if (data.st) { unit.status = data.st }
       if (data.imm) { unit.immobilized = true }
       if (data.brk) { unit.jammed = true }

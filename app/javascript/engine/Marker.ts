@@ -1,5 +1,5 @@
 import { Direction, MarkerTypeType, NumberBoolean, WeatherTypeType, WindTypeType, markerType, weatherType, windType } from "../utilities/commonTypes"
-import { counterRed, markerYellow } from "../utilities/graphics";
+import { counterElite, counterGreen, counterRed, markerYellow } from "../utilities/graphics";
 
 // mk: marker
 // v: value
@@ -113,6 +113,8 @@ export default class Marker {
   yellow = markerYellow
 
   get textColor(): string {
+    if (this.type === markerType.GreenCrew) { return "black" }
+    if (this.type === markerType.EliteCrew) { return "white" }
     if (this.type === markerType.Tired || this.type === markerType.Activated ||
         this.type === markerType.Exhausted || this.type === markerType.Turn ) { return "black" }
     if (this.type === markerType.Wind) {
@@ -129,6 +131,8 @@ export default class Marker {
   }
 
   get color(): string {
+    if (this.type === markerType.GreenCrew) { return counterGreen }
+    if (this.type === markerType.EliteCrew) { return counterElite }
     if (this.type === markerType.Tired || this.type === markerType.Activated ||
         this.type === markerType.Exhausted) { return this.yellow }
     if (this.type === markerType.Wind) {
@@ -149,6 +153,8 @@ export default class Marker {
   }
 
   get displayText(): string[] {
+    if (this.type === markerType.GreenCrew) { return ["green", "crew"] }
+    if (this.type === markerType.EliteCrew) { return ["elite", "crew"] }
     if (this.type === markerType.Tired) { return ["tired"] }
     if (this.type === markerType.Pinned) { return ["pinned"] }
     if (this.type === markerType.Activated) { return ["activated"] }
@@ -175,6 +181,8 @@ export default class Marker {
   }
 
   get subText(): string[] | false {
+    if (this.type === markerType.GreenCrew) { return ["", "-1", "targeting"] }
+    if (this.type === markerType.EliteCrew) { return ["", "+1", "targeting"] }
     if (this.type === markerType.Weather) {
       if (this.subType === weatherType.Dry) { return ["10% fe", "", ""] }
       if (this.subType === weatherType.Fog) { return ["30% fe", "", ""] }

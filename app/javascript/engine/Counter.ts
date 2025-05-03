@@ -5,7 +5,7 @@ import Feature from "./Feature";
 import Map from "./Map";
 import {
   CircleLayout,
-  CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGPathArray, SVGStyle, StatusLayout, TextArrayLayout, baseCounterPath, clearColor, counterRed,
+  CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGPathArray, SVGStyle, StatusLayout, TextArrayLayout, baseCounterPath, clearColor, counterElite, counterGreen, counterRed,
   facingLayout,
   markerYellow, nationalColors
 } from "../utilities/graphics";
@@ -433,7 +433,7 @@ export default class Counter {
     }
     const loc = new Coordinate(this.x + 40, this.y + 40)
     const target = this.target as Marker
-    let size = target.displayText[0] === "immobilized" ? 11 : 12
+    let size = (target.displayText[0] === "immobilized") ? 11 : 12
     let ty = loc.y + 9 - 6 * target.displayText.length
     if (this.target.type === markerType.Wind || this.target.type === markerType.Weather) {
       size = 15
@@ -580,6 +580,23 @@ export default class Counter {
     return {
       value: text, x: loc.x, y: loc.y, size: size, path: path,
       style: style, fStyle: fStyle
+    }
+  }
+
+  get eliteLayout(): CounterLayout | false {
+    if (this.target.isMarker || this.target.isFeature) { return false }
+    const showAllCounters = this.onMap ? this.map?.showAllCounters : this.showAllCounters
+    const elite = (this.target as Unit).eliteCrew
+    if (this.target.isWreck || showAllCounters || elite === 0) {
+      return false
+    }
+    const color = elite > 0 ? counterElite : counterGreen
+    const stroke = elite > 0 ? "white" : "black"
+    const tColor = elite > 0 ? "white" : "black"
+    return {
+      path: this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10),
+      style: { stroke, strokeWidth: 1, fill: color }, tStyle: { fill: tColor },
+      x: this.x + 66, y: this.y + 28, size: 18, value: this.target.size,
     }
   }
 

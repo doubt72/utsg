@@ -204,6 +204,18 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const elite = () => {
+    const layout = counter.eliteLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
   const marker = () => {
     const layout = counter.markerLayout
     if (layout) {
@@ -316,6 +328,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}
       {firepower()}{range()}{movement()}
+      {elite()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}
       {status()}
       {showDisabled()}

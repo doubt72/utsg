@@ -117,7 +117,7 @@ export const mapDebugData: {
   x: number, y: number,
   features: { u: FeatureData, x: number, y: number, f?: Direction }[],
   units: {
-    u: UnitData, x: number, y: number, f?: Direction, tf?: Direction,
+    u: UnitData, x: number, y: number, f?: Direction, tf?: Direction, v?: number,
     imm?: boolean, trt?: boolean, st?: UnitStatusType, brk?: boolean
   }[],
   hexes: HexData[][]
@@ -152,7 +152,8 @@ export const mapDebugData: {
       { u: testUnitData.rinf, x: 9, y: 2 },
       { u: testUnitData.rmg, x: 9, y: 2 },
       { u: testUnitData.rldr, x: 9, y: 2 },
-      { u: testUnitData.gtank, x: 3, y: 2, f: 5, tf: 4 },
+      { u: testUnitData.gtank, x: 2, y: 1, f: 5, tf: 5, v: -1 },
+      { u: testUnitData.gtank, x: 3, y: 2, f: 5, tf: 4, v: 1 },
       { u: testUnitData.rcrew, x: 10, y: 3 },
       { u: testUnitData.rgun, x: 10, y: 3, f: 6 },
       { u: testUnitData.ginf, x: 5, y: 3 },

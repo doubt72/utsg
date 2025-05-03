@@ -16,6 +16,7 @@ import {
 //    j: jam number, b: break number, bd: breakdown number
 //    t: targeted fire, m: minimum range, p: antitank, g: artillery, o: offboard artillery
 //    u: turret, k: tracked, w: wheeled, c: crewed, y: rotating mount
+//    v: elite(1)/green(-1) crew
 //    ha: hull armor
 //    ta: turret armor
 //        f: front, s: side, r: rear
@@ -36,7 +37,7 @@ export type UnitData = {
     j?: number; b?: number; bd?: number;
     t?: NumberBoolean; m?: number; p?: NumberBoolean; g?: NumberBoolean;
     o?: NumberBoolean; u?: NumberBoolean; k?: NumberBoolean; w?: NumberBoolean;
-    c?: NumberBoolean; y?: NumberBoolean;
+    c?: NumberBoolean; y?: NumberBoolean; v?: number,
     ha?: { f: number; s: number; r: number; }
     ta?: { f: number; s: number; r: number; }
     sg?: { f: number | string; r: number; }
@@ -82,6 +83,7 @@ export default class Unit {
   breakDestroysWeapon: boolean;
   breakdownRoll?: number;
 
+  eliteCrew: number;
   turreted: boolean;
   movementType: MovementTypeType;
   hullArmor?: [number, number, number];
@@ -138,6 +140,7 @@ export default class Unit {
     this.breakDestroysWeapon = !!data.o?.b
     this.breakdownRoll = data.o?.bd
 
+    this.eliteCrew = data.o?.v ?? 0
     this.turreted = !!data.o?.u
     this.movementType = movementType.Foot
     if (data.o?.k) {

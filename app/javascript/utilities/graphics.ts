@@ -59,6 +59,8 @@ export type facingLayout = {
 
 export const counterRed = "#E00"
 export const markerYellow = "#EE0"
+export const counterGreen = "#2F2"
+export const counterElite = "#070"
 
 // TODO: figure out a way to keep in sync with CSS
 export const nationalColors: { [index: string]: string } = {

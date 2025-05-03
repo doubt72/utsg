@@ -106,46 +106,70 @@ export default function DebugUnits() {
   const usedTanks = () => {
     return tanks().map((data, i) => {
       const unit = new Unit(data)
-      unit.status = unitStatus.Activated
-      const versions = [svgContainer(unit, i*9)]
+      unit.eliteCrew = -1
+      const versions = [svgContainer(unit, i*13)]
 
       const unit2 = new Unit(data)
-      unit2.status = unitStatus.Exhausted
-      versions.push(svgContainer(unit2, i*9+1))
+      unit2.eliteCrew = 1
+      versions.push(svgContainer(unit2, i*13+1))
 
       const unit3 = new Unit(data)
-      unit3.jammed = true
-      versions.push(svgContainer(unit3, i*9+2))
+      unit3.status = unitStatus.Activated
+      versions.push(svgContainer(unit3, i*13+2))
 
       const unit4 = new Unit(data)
-      unit4.immobilized = true
-      versions.push(svgContainer(unit4, i*9+3))
+      unit4.status = unitStatus.Exhausted
+      versions.push(svgContainer(unit4, i*13+3))
 
       const unit5 = new Unit(data)
-      unit5.turretJammed = true
-      versions.push(svgContainer(unit5, i*9+4))
+      unit5.jammed = true
+      versions.push(svgContainer(unit5, i*13+4))
 
       const unit6 = new Unit(data)
-      unit6.status = unitStatus.Activated
       unit6.immobilized = true
-      versions.push(svgContainer(unit6, i*9+5))
+      versions.push(svgContainer(unit6, i*13+5))
 
       const unit7 = new Unit(data)
-      unit7.status = unitStatus.Exhausted
-      unit7.immobilized = true
       unit7.turretJammed = true
-      versions.push(svgContainer(unit7, i*9+6))
+      versions.push(svgContainer(unit7, i*13+6))
 
       const unit8 = new Unit(data)
-      unit8.status = unitStatus.Exhausted
-      unit8.jammed = true
+      unit8.status = unitStatus.Activated
       unit8.immobilized = true
-      unit8.turretJammed = true
-      versions.push(svgContainer(unit8, i*9+7))
+      versions.push(svgContainer(unit8, i*13+7))
 
       const unit9 = new Unit(data)
-      unit9.status = unitStatus.Wreck
-      versions.push(svgContainer(unit9, i*9+8))
+      unit9.status = unitStatus.Exhausted
+      unit9.immobilized = true
+      unit9.turretJammed = true
+      versions.push(svgContainer(unit9, i*13+8))
+
+      const unit10 = new Unit(data)
+      unit10.status = unitStatus.Exhausted
+      unit10.jammed = true
+      unit10.immobilized = true
+      unit10.turretJammed = true
+      versions.push(svgContainer(unit10, i*13+9))
+
+      const unit11 = new Unit(data)
+      unit11.status = unitStatus.Exhausted
+      unit11.jammed = true
+      unit11.immobilized = true
+      unit11.turretJammed = true
+      unit11.eliteCrew = -1
+      versions.push(svgContainer(unit11, i*13+10))
+
+      const unit12 = new Unit(data)
+      unit12.status = unitStatus.Exhausted
+      unit12.jammed = true
+      unit12.immobilized = true
+      unit12.turretJammed = true
+      unit12.eliteCrew = 1
+      versions.push(svgContainer(unit12, i*13+11))
+
+      const unit13 = new Unit(data)
+      unit13.status = unitStatus.Wreck
+      versions.push(svgContainer(unit13, i*13+12))
       return versions
     })
   }
@@ -154,34 +178,56 @@ export default function DebugUnits() {
     return spg().map((data, i) => {
       const unit = new Unit(data)
       unit.status = unitStatus.Activated
-      const versions = [svgContainer(unit, i*7)]
+      const versions = [svgContainer(unit, i*11)]
 
       const unit2 = new Unit(data)
-      unit2.status = unitStatus.Exhausted
-      versions.push(svgContainer(unit2, i*7+1))
+      unit2.eliteCrew = -1
+      versions.push(svgContainer(unit2, i*11+1))
 
       const unit3 = new Unit(data)
-      unit3.jammed = true
-      versions.push(svgContainer(unit3, i*7+2))
+      unit3.eliteCrew = 1
+      versions.push(svgContainer(unit3, i*11+2))
 
       const unit4 = new Unit(data)
-      unit4.immobilized = true
-      versions.push(svgContainer(unit4, i*7+3))
+      unit4.status = unitStatus.Exhausted
+      versions.push(svgContainer(unit4, i*11+3))
 
       const unit5 = new Unit(data)
-      unit5.status = unitStatus.Activated
-      unit5.immobilized = true
-      versions.push(svgContainer(unit5, i*7+4))
+      unit5.jammed = true
+      versions.push(svgContainer(unit5, i*11+4))
 
       const unit6 = new Unit(data)
-      unit6.status = unitStatus.Exhausted
-      unit6.jammed = true
       unit6.immobilized = true
-      versions.push(svgContainer(unit6, i*7+5))
+      versions.push(svgContainer(unit6, i*11+5))
 
       const unit7 = new Unit(data)
-      unit7.status = unitStatus.Wreck
-      versions.push(svgContainer(unit7, i*7+6))
+      unit7.status = unitStatus.Activated
+      unit7.immobilized = true
+      versions.push(svgContainer(unit7, i*11+6))
+
+      const unit8 = new Unit(data)
+      unit8.status = unitStatus.Exhausted
+      unit8.jammed = true
+      unit8.immobilized = true
+      versions.push(svgContainer(unit8, i*11+7))
+
+      const unit9 = new Unit(data)
+      unit9.status = unitStatus.Exhausted
+      unit9.jammed = true
+      unit9.immobilized = true
+      unit9.eliteCrew = -1
+      versions.push(svgContainer(unit9, i*11+8))
+
+      const unit10 = new Unit(data)
+      unit10.status = unitStatus.Exhausted
+      unit10.jammed = true
+      unit10.immobilized = true
+      unit10.eliteCrew = 1
+      versions.push(svgContainer(unit10, i*11+9))
+
+      const unit11 = new Unit(data)
+      unit11.status = unitStatus.Wreck
+      versions.push(svgContainer(unit11, i*11+10))
       return versions
     })
   }

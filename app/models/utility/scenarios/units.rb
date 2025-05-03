@@ -100,6 +100,8 @@ module Utility
             jammed: { mk: 1, type: 6 },
             turret_jammed: { mk: 1, type: 7 },
             immobilized: { mk: 1, type: 8 },
+            elite_crew: { mk: 1, type: 13 },
+            green_crew: { mk: 1, type: 14 },
           }
         end
 

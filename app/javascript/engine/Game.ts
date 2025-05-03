@@ -296,6 +296,26 @@ export default class Game {
         }
         this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
       }
+    } else if (this.phase === gamePhaseType.Prep) {
+      if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {
+        return
+      }
+      this.executeMove(new GameMove({
+        player: this.currentPlayer, user: this.currentUser, data: {
+          action: "info", message: "no broken units or jammed weapons, skipping phase"
+        }
+      }, this, this.moves.length), backendSync)
+      // TODO: move this logic to something that can be reused for passing
+      data.data.turn = [oldTurn, oldTurn]
+      if (this.currentPlayer === this.scenario.firstMove) {
+        data.data.player = this.currentPlayer === 1 ? 2 : 1
+        data.data.phase = [oldPhase, oldPhase]
+      } else {
+        data.data.player = this.currentPlayer === 1 ? 2 : 1
+        data.data.phase = [oldPhase, gamePhaseType.Main]
+
+      }
+      this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
     }
   }
 
