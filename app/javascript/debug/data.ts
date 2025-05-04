@@ -36,7 +36,7 @@ const testUnitData: { [index: string]: UnitData } = {
   },
   ght: {
     c: "ger", f: 8, i: "htat", n: "SdKfz 250/11",
-    o: {t: 1, p: 1, ha: {f: 1, s: 0, r: 0}, k: 1, j: 3}, r: 10, s: 3, t: "ht", v: 6, y: 41
+    o: {t: 1, p: 1, ha: {f: 1, s: 0, r: 0, t: -1}, k: 1, j: 3}, r: 10, s: 3, t: "ht", v: 6, y: 41
   },
   rinf: {
     c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
