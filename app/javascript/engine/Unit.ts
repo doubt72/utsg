@@ -157,11 +157,11 @@ export default class Unit {
     if (data.o?.ha !== undefined) {
       this.hullArmor = [data.o.ha.f, data.o.ha.s, data.o.ha.r]
       this.armored = true
-      this.topOpen = data.o.ha.t !== undefined
+      this.topOpen = (data.o.ha.t !== undefined || data.o.ha.r < 0)
     }
     if (data.o?.ta !== undefined) {
       this.turretArmor = [data.o.ta.f, data.o.ta.s, data.o.ta.r]
-      this.topOpen = this.topOpen || data.o.ta.t !== undefined
+      this.topOpen = this.topOpen || (data.o.ta.t !== undefined || data.o.ta.r < 0)
     }
     if (data.o?.sg !== undefined) {
       this.sponson = [data.o.sg.f, data.o.sg.r]
