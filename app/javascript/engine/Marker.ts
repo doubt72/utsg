@@ -70,6 +70,7 @@ export default class Marker {
   sniperRoll = 0
   currentSmokeCapable = false
   armored = false
+  topOpen = false
   isTracked = false
   isWheeled = false
   crewed = false;

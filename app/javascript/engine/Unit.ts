@@ -19,7 +19,7 @@ import {
 //    v: elite(1)/green(-1) crew
 //    ha: hull armor
 //    ta: turret armor
-//        f: front, s: side, r: rear
+//        f: front, s: side, r: rear, t: top (if zero)
 //    sg: sponson mounted gun
 //        f: firepower, r: range
 //    sn: small names, bv: broken movement
@@ -38,8 +38,8 @@ export type UnitData = {
     t?: NumberBoolean; m?: number; p?: NumberBoolean; g?: NumberBoolean;
     o?: NumberBoolean; u?: NumberBoolean; k?: NumberBoolean; w?: NumberBoolean;
     c?: NumberBoolean; y?: NumberBoolean; v?: number,
-    ha?: { f: number; s: number; r: number; }
-    ta?: { f: number; s: number; r: number; }
+    ha?: { f: number; s: number; r: number; t?: -1}
+    ta?: { f: number; s: number; r: number; t?: -1}
     sg?: { f: number | string; r: number; }
     sn?: number; bv?: number;
   }
@@ -89,6 +89,7 @@ export default class Unit {
   hullArmor?: [number, number, number];
   turretArmor?: [number, number, number];
   armored: boolean = false;
+  topOpen: boolean = false;
 
   sponson?: [number | string, number];
 
@@ -156,9 +157,11 @@ export default class Unit {
     if (data.o?.ha !== undefined) {
       this.hullArmor = [data.o.ha.f, data.o.ha.s, data.o.ha.r]
       this.armored = true
+      this.topOpen = data.o.ha.t !== undefined
     }
     if (data.o?.ta !== undefined) {
       this.turretArmor = [data.o.ta.f, data.o.ta.s, data.o.ta.r]
+      this.topOpen = this.topOpen || data.o.ta.t !== undefined
     }
     if (data.o?.sg !== undefined) {
       this.sponson = [data.o.sg.f, data.o.sg.r]

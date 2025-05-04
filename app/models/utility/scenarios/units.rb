@@ -642,7 +642,7 @@ module Utility
             ["ger", "StuG IV", 43, 4, 32, 24, 5, { t: 1, p: 1, ha: { f: 6, s: 1, r: 1 } }],
             ["ger", "SdKfz 166", 42, 5, 64, 20, 4, { t: 1, g: 1, ha: { f: 7, s: 1, r: 1 } }],
             ["ger", "Panzerjäger I", 40, 3, 12, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: -1 } }],
-            ["ger", "Marder I", 42, 3, 32, 24, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: -1 } }],
+            ["ger", "Marder I", 42, 3, 32, 24, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: -1, t: -1 } }],
             ["ger", "Marder II", 42, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: -1 } }],
             ["ger", "Marder III", 42, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: -1 } }],
             ["ger", "Marder III-H/M", 43, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 1, r: -1 } }],

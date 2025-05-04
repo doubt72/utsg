@@ -175,9 +175,12 @@ export default class Counter {
   get sizeLayout(): CounterLayout | false {
     if (!this.target.size ) { return false }
     const stroke = this.target.armored && !this.target.isWreck ? "black" : clearColor
+    const path = this.target.armored && this.target.topOpen ?
+      this.squarePath(new Coordinate(this.x + 66, this.y + 23)) :
+      this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10)
     return {
-      path: this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10),
-      style: { stroke: stroke, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
+      path,
+      style: { stroke, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
       x: this.x + 66, y: this.y + 28, size: 18, value: this.target.size,
     }
   }
@@ -593,11 +596,14 @@ export default class Counter {
     const color = elite > 0 ? counterElite : counterGreen
     const stroke = elite > 0 ? "white" : "black"
     const tColor = elite > 0 ? "white" : "black"
-    return {
-      path: this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10),
-      style: { stroke, strokeWidth: 1, fill: color }, tStyle: { fill: tColor },
-      x: this.x + 66, y: this.y + 28, size: 18, value: this.target.size,
-    }
+    const rc: CounterLayout | false = this.sizeLayout
+    if (!rc) { return false }
+    if (!rc.style) { return rc }
+    rc.style.fill = color
+    rc.style.stroke = stroke
+    if (!rc.tStyle) { return rc }
+    rc.tStyle.fill = tColor
+    return rc
   }
 
   helpLayout(loc: Coordinate): HelpLayout {

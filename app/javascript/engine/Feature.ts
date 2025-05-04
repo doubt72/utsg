@@ -109,6 +109,7 @@ export default class Feature {
   currentLeadership = 0
   currentSmokeCapable = false
   armored = false
+  topOpen = false
   isTracked = false
   isWheeled = false
   crewed = false;
