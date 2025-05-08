@@ -281,28 +281,28 @@ module Utility
           lu = {}
           key = %i[c n y f r v o]
           [
-            ["ger", "MG 34", 36, 5, 8, 0, { a: 1, r: 1, j: 3 }],
-            ["ger", "MG 42", 42, 8, 8, 0, { a: 1, r: 1, j: 3 }],
-            ["ger", "MG 08/15", 17, 10, 12, -1, { r: 1, j: 3 }],
-            ["ita", "Breda 30", 30, 3, 7, 0, { a: 1, r: 1, j: 4 }],
-            ["ita", "Fiat-Revelli 1935", 36, 6, 10, -1, { r: 1, j: 4, sn: 1 }],
-            ["ita", "Breda M37", 37, 8, 12, -1, { r: 1, j: 3 }],
-            ["jap", "Type 11 LMG", 22, 3, 7, 0, { r: 1, j: 5 }],
-            ["jap", "Type 96 LMG", 36, 4, 8, 0, { a: 1, r: 1, j: 4 }],
-            ["jap", "Type 99 LMG", 39, 5, 8, 0, { a: 1, r: 1, j: 3 }],
-            ["jap", "Type 3 HMG", 14, 5, 10, -2, { r: 1, j: 3 }],
-            ["jap", "Type 92 HMG", 32, 7, 10, -2, { r: 1, j: 3 }],
-            ["uk", "Bren LMG", 35, 3, 6, 0, { a: 1, r: 1, j: 3 }],
-            ["uk", "Lewis Gun", 14, 4, 8, 0, { a: 1, r: 1, j: 3 }],
-            ["uk", "Vickers MG", 12, 7, 10, -1, { r: 1, j: 2 }],
-            ["usa", "M1918 BAR", 18, 5, 8, 0, { a: 1, r: 1, j: 3 }],
-            ["usa", "M1919 Browning", 19, 6, 8, 0, { r: 1, j: 3 }],
-            ["usa", "M1917 Browning", 17, 8, 12, -2, { r: 1, j: 3 }],
-            ["usa", "M2 Browning", 33, 10, 15, -2, { r: 1, j: 3 }],
-            ["ussr", "DP-27", 28, 4, 6, 0, { a: 1, r: 1, j: 3 }],
-            ["ussr", "SG-43", 43, 5, 10, -2, { r: 1, j: 3 }],
-            ["ussr", "PM M1910", 10, 8, 10, -2, { r: 1, j: 3 }],
-            ["ussr", "DShK", 38, 14, 15, -2, { r: 1, j: 3 }],
+            ["ger", "MG 34", 36, 5, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
+            ["ger", "MG 42", 42, 8, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
+            ["ger", "MG 08/15", 17, 10, 12, -1, { r: 1, j: 3, f: 16 }],
+            ["ita", "Breda 30", 30, 3, 7, 0, { a: 1, r: 1, j: 4, f: 16 }],
+            ["ita", "Fiat-Revelli 1935", 36, 6, 10, -1, { r: 1, j: 4, f: 17, sn: 1 }],
+            ["ita", "Breda M37", 37, 8, 12, -1, { r: 1, j: 3, f: 16 }],
+            ["jap", "Type 11 LMG", 22, 3, 7, 0, { r: 1, j: 5, f: 17 }],
+            ["jap", "Type 96 LMG", 36, 4, 8, 0, { a: 1, r: 1, j: 4, f: 17 }],
+            ["jap", "Type 99 LMG", 39, 5, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
+            ["jap", "Type 3 HMG", 14, 5, 10, -2, { r: 1, j: 3, f: 16 }],
+            ["jap", "Type 92 HMG", 32, 7, 10, -2, { r: 1, j: 3, f: 16 }],
+            ["uk", "Bren LMG", 35, 3, 6, 0, { a: 1, r: 1, j: 3, f: 16 }],
+            ["uk", "Lewis Gun", 14, 4, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
+            ["uk", "Vickers MG", 12, 7, 10, -1, { r: 1, j: 2, f: 15 }],
+            ["usa", "M1918 BAR", 18, 5, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
+            ["usa", "M1919 Browning", 19, 6, 8, 0, { r: 1, j: 3, f: 16 }],
+            ["usa", "M1917 Browning", 17, 8, 12, -2, { r: 1, j: 3, f: 16 }],
+            ["usa", "M2 Browning", 33, 10, 15, -2, { r: 1, j: 3, f: 16 }],
+            ["ussr", "DP-27", 28, 4, 6, 0, { a: 1, r: 1, j: 3, f: 16 }],
+            ["ussr", "SG-43", 43, 5, 10, -2, { r: 1, j: 3, f: 16 }],
+            ["ussr", "PM M1910", 10, 8, 10, -2, { r: 1, j: 3, f: 16 }],
+            ["ussr", "DShK", 38, 14, 15, -2, { r: 1, j: 3, f: 16 }],
           ].each do |unit|
             mg = { t: "sw", i: "mg" }
             unit.each_with_index do |v, i|
@@ -382,7 +382,7 @@ module Utility
             unit.each_with_index do |v, i|
               radio[key[i]] = v
             end
-            radio.merge!({ r: 0, v: 0, o: { s: 1, o: 1, j: 3 } })
+            radio.merge!({ r: 0, v: 0, o: { s: 1, o: 1, j: 3, f: 18 } })
             lu[:"#{radio[:c]}_#{sanitize(radio[:n])}"] = radio
           end
           lu
@@ -458,7 +458,7 @@ module Utility
             unit.each_with_index do |v, i|
               gun[key[i]] = v
             end
-            gun[:o].merge!({ t: 1, j: 3, g: 1, s: 1, c: 1 })
+            gun[:o].merge!({ t: 1, j: 3, f: 18, g: 1, s: 1, c: 1 })
             lu[:"#{gun[:c]}_#{sanitize(gun[:n])}"] = gun
           end
           lu
@@ -504,7 +504,7 @@ module Utility
             unit.each_with_index do |v, i|
               at[key[i]] = v
             end
-            at[:o].merge!({ t: 1, j: 3, p: 1, c: 1 })
+            at[:o].merge!({ t: 1, j: 3, f: 18, p: 1, c: 1 })
             lu[:"#{at[:c]}_#{sanitize(at[:n])}"] = at
           end
           lu

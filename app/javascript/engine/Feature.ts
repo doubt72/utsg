@@ -104,7 +104,9 @@ export default class Feature {
   currentFirepower = 0
   minimumRange = 0
   breakWeaponRoll = 0
+  breakDestroysWeapon = false
   breakdownRoll = 0
+  repairRoll = 0
   currentGunHandling = 0
   currentLeadership = 0
   currentSmokeCapable = false

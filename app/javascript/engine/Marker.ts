@@ -64,7 +64,9 @@ export default class Marker {
   currentRange = 0;
   currentMovement = 0;
   breakWeaponRoll = 0
+  breakDestroysWeapon = false
   breakdownRoll = 0
+  repairRoll = 0
   currentGunHandling = 0
   currentLeadership = 0
   sniperRoll = 0

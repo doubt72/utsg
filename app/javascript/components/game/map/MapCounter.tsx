@@ -67,6 +67,18 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const weaponFix = () => {
+    const layout = counter.weaponFixLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
   const size = () => {
     const layout = counter.sizeLayout
     if (layout) return (
@@ -323,7 +335,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {nameBackground()}{name()}
       {morale()}
       {weaponBreak()}{size()}
-      {leadership()}{handling()}{breakdown()}{smoke()}
+      {leadership()}{handling()}{breakdown()}{smoke()}{weaponFix()}
       {icon()}{centerLabel()}
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}

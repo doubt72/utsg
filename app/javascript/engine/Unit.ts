@@ -22,7 +22,7 @@ import {
 //        f: front, s: side, r: rear, t: top (if zero)
 //    sg: sponson mounted gun
 //        f: firepower, r: range
-//    sn: small names, bv: broken movement
+//    sn: small names, bv: broken movement, f: fix number
 // x: count
 
 // TODO: Maybe more types for some of these
@@ -41,7 +41,7 @@ export type UnitData = {
     ha?: { f: number; s: number; r: number; t?: -1}
     ta?: { f: number; s: number; r: number; t?: -1}
     sg?: { f: number | string; r: number; }
-    sn?: number; bv?: number;
+    sn?: number; bv?: number; f?: number;
   }
   x?: number;
 
@@ -82,6 +82,7 @@ export default class Unit {
   breakWeaponRoll?: number;
   breakDestroysWeapon: boolean;
   breakdownRoll?: number;
+  repairRoll?: number;
 
   eliteCrew: number;
   turreted: boolean;
@@ -140,6 +141,7 @@ export default class Unit {
     this.breakWeaponRoll = data.o?.b ?? data.o?.j
     this.breakDestroysWeapon = !!data.o?.b
     this.breakdownRoll = data.o?.bd
+    this.repairRoll = data.o?.f
 
     this.eliteCrew = data.o?.v ?? 0
     this.turreted = !!data.o?.u

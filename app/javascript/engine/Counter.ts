@@ -161,14 +161,29 @@ export default class Counter {
   }
 
   get weaponBreakLayout(): CounterLayout | false {
-    if (!this.target.breakWeaponRoll || this.target.noFire || this.target.jammed) {
+    if (!this.target.breakWeaponRoll || this.target.isWreck) {
       return false
     }
     const loc = new Coordinate(this.x + 14, this.y + 25)
+    const red = this.target.breakDestroysWeapon || this.target.jammed
+    const fill = red ? "red" : "yellow"
+    const textColor = red ? "white" : "black"
     return {
       path: this.circlePath(loc, 8),
-      style: { stroke: "black", strokeWidth: 1, fill: "yellow" }, tStyle: { fill: "black" },
+      style: { stroke: "black", strokeWidth: 1, fill: fill }, tStyle: { fill: textColor },
       x: loc.x, y: loc.y + 4.25, size: 15, value: this.target.breakWeaponRoll,
+    }
+  }
+
+  get weaponFixLayout(): CounterLayout | false {
+    if (!this.target.repairRoll || !this.target.jammed || this.target.isWreck) {
+      return false
+    }
+    const loc = new Coordinate(this.x + 14, this.y + 40)
+    return {
+      path: this.circlePath(loc, 8),
+      style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
+      x: loc.x, y: loc.y + 4.25, size: 12, value: this.target.repairRoll,
     }
   }
   
