@@ -198,7 +198,7 @@ export default class Counter {
     return {
       path: this.circlePath(loc, 10),
       style: { strokeWidth: 0, fill: counterRed }, tStyle: { fill: "white" },
-      x: loc.x, y: loc.y + 4.25, size: 16, value: "3",
+      x: loc.x, y: loc.y + 4.25, size: 16, value: "4",
     }
   }
 

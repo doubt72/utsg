@@ -79,7 +79,7 @@ export default class Unit {
   crewed: boolean;
   offBoard: boolean;
 
-  breakWeaponRoll?: number;
+  rawBreakWeaponRoll?: number;
   breakDestroysWeapon: boolean;
   breakdownRoll?: number;
   repairRoll?: number;
@@ -139,7 +139,7 @@ export default class Unit {
     this.crewed = !!data.o?.c
     this.offBoard = !!data.o?.o
 
-    this.breakWeaponRoll = data.o?.b ?? data.o?.j
+    this.rawBreakWeaponRoll = data.o?.b ?? data.o?.j
     this.breakDestroysWeapon = !!data.o?.b
     this.breakdownRoll = data.o?.bd
     this.repairRoll = data.o?.f
@@ -251,6 +251,15 @@ export default class Unit {
       return true
     }
     return false
+  }
+
+  get breakWeaponRoll(): number | undefined {
+    if (!this.rawBreakWeaponRoll) { return undefined }
+    if (this.jammed) {
+      return this.rawBreakWeaponRoll > 4 ? this.rawBreakWeaponRoll : 4
+    } else {
+      return this.rawBreakWeaponRoll
+    }
   }
 
   get currentMorale(): MoraleRange {
