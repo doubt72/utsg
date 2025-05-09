@@ -2535,17 +2535,17 @@ File.open('chi.svg', 'w') do |file|
   file.puts header
   write_circle(50, 50, 40, file, true, "#007")
   path = []
-  0.upto(16) do |n|
-    x = Math.sin(n * 22.5 / 180 * Math::PI) * 36 + 50
-    y = Math.cos(n * 22.5 / 180 * Math::PI) * 36 + 50
+  0.upto(12) do |n|
+    x = Math.sin(n * 30.0 / 180 * Math::PI) * 38 + 50
+    y = Math.cos(n * 30.0 / 180 * Math::PI) * 38 + 50
     path.push([n == 0 ? "M" : "L", x, y])
-    x = Math.sin((n + 0.5) * 22.5 / 180 * Math::PI) * 20 + 50
-    y = Math.cos((n + 0.5) * 22.5 / 180 * Math::PI) * 20 + 50
+    x = Math.sin((n + 0.5) * 30.0 / 180 * Math::PI) * 20 + 50
+    y = Math.cos((n + 0.5) * 30.0 / 180 * Math::PI) * 20 + 50
     path.push(["L", x, y])
   end
   write_path(path, file, true, 3, "#FFF")
   write_circle(50, 50, 22, file, true, "#007")
-  write_circle(50, 50, 20, file, true, "#FFF")
+  write_circle(50, 50, 19, file, true, "#FFF")
   file.puts footer
 end
 

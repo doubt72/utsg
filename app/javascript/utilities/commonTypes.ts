@@ -148,11 +148,11 @@ export const unitType: { [index: string]: UnitTypeType} = {
   SelfPropelledGun: "spg", HalfTrack: "ht", ArmoredCar: "ac"
 }
 
-export type MarkerTypeType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14
+export type MarkerTypeType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
 export const markerType: { [index: string]: MarkerTypeType } = {
   TrackedHull: 0, WheeledHull: 1, Tired: 2, Pinned: 3, Activated: 4, Exhausted: 5,
   Jammed: 6, TurretJammed: 7, Immobilized: 8, Wind: 9, Weather: 10, Initiative: 11,
-  Turn: 12, EliteCrew: 13, GreenCrew: 14
+  Turn: 12, EliteCrew: 13, GreenCrew: 14, WeaponBroken: 15
 }
 
 export type FeatureTypeType = "bunker" | "pillbox" | "foxhole" |

@@ -73,12 +73,12 @@ export const nationalColors: { [index: string]: string } = {
   bul: "#7CB", hun: "#7CB", rom: "#7CB", slv: "#7CB", cro: "#7CB"
 }
 export const nationalControlBackgrounds: { [index: string]: string } = {
-  ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#DDD", frf: "#FFF", chi: "#DDD", alm: "#EA9",
+  ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#EEE", frf: "#FFF", chi: "#EEE", alm: "#EA9",
   ger: "#BBB", ita: "#9DC", jap: "#FFF", fin: "#BBB", axm: "#7CB",
   none: "white", fort: "white",
 
   sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#570",
-  pol: "#CCC", bel: "#DDD", dut: "#DDD", nor: "#DDD", yug: "#CCC", gre: "#DDD",
+  pol: "#CCC", bel: "#EEE", dut: "#EEE", nor: "#EEE", yug: "#CCC", gre: "#EEE",
   bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB", cro: "#BBB"
 }
 export const clearColor = "rgba(0,0,0,0)"

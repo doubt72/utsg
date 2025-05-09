@@ -79,6 +79,30 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const markerBreak = () => {
+    const layout = counter.markerBreakLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
+  const markerFix = () => {
+    const layout = counter.markerFixLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
   const size = () => {
     const layout = counter.sizeLayout
     if (layout) return (
@@ -342,6 +366,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {firepower()}{range()}{movement()}
       {elite()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}
+      {markerBreak()}{markerFix()}
       {status()}
       {showDisabled()}
       {overlay}

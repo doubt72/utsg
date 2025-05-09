@@ -298,6 +298,7 @@ export default class Map {
         if (u.immobilized) { markerTypes.push(markerType.Immobilized) }
         if (u.turretJammed) { markerTypes.push(markerType.TurretJammed) }
         if (u.jammed && u.turreted) { markerTypes.push(markerType.Jammed) }
+        if (u.weaponBroken) { markerTypes.push(markerType.WeaponBroken) }
         if (u.isTired) { markerTypes.push(markerType.Tired) }
         if (u.isPinned) { markerTypes.push(markerType.Pinned) }
         if (u.isExhausted) { markerTypes.push(markerType.Exhausted) }
@@ -408,9 +409,11 @@ export default class Map {
         badges.push({ text: "turret jammed", color: counterRed, tColor: "white" })
       }
       if (u.jammed && u.turreted && s) {
-        badges.push({ text: "weapon broken", color: counterRed, tColor: "white" })
+        badges.push({ text: "weapon jammed", color: counterRed, tColor: "white" })
       } else if (u.jammed && !u.turreted) {
         badges.push({ text: "broken", color: counterRed, tColor: "white" })
+      } else if (u.weaponBroken && s) {
+        badges.push({ text: "weapon broken", color: counterRed, tColor: "white" })
       }
       if (u.isTired && s) {
         badges.push({ text: "tired", color: "yellow", tColor: "black" })

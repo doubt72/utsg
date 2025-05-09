@@ -91,6 +91,7 @@ export default class Feature {
   isTired = false;
   isActivated = false
   jammed = false
+  weaponBroken = false
   turretJammed = false
   immobilized = false
   turretFacing: Direction = 1

@@ -97,6 +97,7 @@ export default class Unit {
   status: UnitStatusType;
   tired: boolean;
   jammed: boolean;
+  weaponBroken: boolean;
   turretJammed: boolean;
   immobilized: boolean;
   facing: Direction;
@@ -172,6 +173,7 @@ export default class Unit {
     this.status = unitStatus.Normal
     this.tired = false
     this.jammed = false
+    this.weaponBroken = false
     this.turretJammed = false
     this.immobilized = false
 
@@ -245,7 +247,7 @@ export default class Unit {
 
   get noFire(): boolean {
     // Turret Jams and Immobile assault guns can fire at penalties in facing dir
-    if (this.isBroken || this.isWreck || this.jammed) {
+    if (this.isBroken || this.isWreck || this.jammed || this.weaponBroken) {
       return true
     }
     return false

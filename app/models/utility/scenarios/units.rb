@@ -98,6 +98,7 @@ module Utility
             exhausted: { mk: 1, type: 5 },
             pinned: { mk: 1, type: 3 },
             jammed: { mk: 1, type: 6 },
+            broken: { mk: 1, type: 15 },
             turret_jammed: { mk: 1, type: 7 },
             immobilized: { mk: 1, type: 8 },
             elite_crew: { mk: 1, type: 13 },
@@ -624,7 +625,7 @@ module Utility
               tank[key[i]] = v
             end
             tank[:i] = "tank-amp" if tank[:o][:amp]
-            tank[:o].merge!({ j: 3, u: 1, k: 1 })
+            tank[:o].merge!({ j: 3, f: 18, u: 1, k: 1 })
             lu[:"#{tank[:c]}_#{sanitize(tank[:n])}"] = tank
           end
           lu
@@ -696,7 +697,7 @@ module Utility
             spg[:i] = "spat" if spg[:o][:p]
             spg[:i] = "spft" if spg[:o][:i] || spg[:o][:sg]
             spg[:o][:u] = 1 if spg[:o][:ta]
-            spg[:o].merge!({ j: 3, k: 1 })
+            spg[:o].merge!({ j: 3, f: 18, k: 1 })
             lu[:"#{spg[:c]}_#{sanitize(spg[:n])}"] = spg
           end
           lu
@@ -744,7 +745,7 @@ module Utility
             ht[:i] = "htmtr" if ht[:o][:m]
             ht[:i] = "htft" if ht[:o][:i]
             ht[:o].merge!({ k: 1 })
-            ht[:o][:m] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3 })
+            ht[:o][:m] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3, f: 18 })
             lu[:"#{ht[:c]}_#{sanitize(ht[:n])}"] = ht
           end
           lu
@@ -788,7 +789,7 @@ module Utility
             unit.each_with_index do |v, i|
               ac[key[i]] = v
             end
-            ac[:o].merge!({ j: 3, u: 1, w: 1 })
+            ac[:o].merge!({ j: 3, f: 18, u: 1, w: 1 })
             lu[:"#{ac[:c]}_#{sanitize(ac[:n])}"] = ac
           end
           lu

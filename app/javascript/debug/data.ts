@@ -14,7 +14,7 @@ const testUnitData: { [index: string]: UnitData } = {
     c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 }
   },
   gmg: {
-    c: "ger", f: 8, i: "mg", n: "MG 44", o: {a: 1, r: 1, j: 3}, r: 8, t: "sw", v: 0, y: 42
+    c: "ger", f: 8, i: "mg", n: "MG 44", o: {a: 1, r: 1, j: 3, f: 16}, r: 8, t: "sw", v: 0, y: 42
   },
   gps: {
     t: "sw", i: "rocket", c: "ger", n: "Panzerschreck", y: 43, f: 12, r: 3, v: 0, o: { b: 4, t: 1, p: 1 }
@@ -24,19 +24,19 @@ const testUnitData: { [index: string]: UnitData } = {
   },
   gtank: {
     c: "ger", f: 40, i: "tank", n: "Panther D", r: 32, s: 6, t: "tank", v: 5, y: 43,
-    o: {t: 1, p: 1, ha: {f: 6, s: 3, r: 3}, ta: {f: 7, s: 4, r: 4}, bd: 3, j: 3, u: 1, k: 1}
+    o: {t: 1, p: 1, ha: {f: 6, s: 3, r: 3}, ta: {f: 7, s: 4, r: 4}, bd: 3, j: 3, f: 18, u: 1, k: 1}
   },
   gspg: {
     c: "ger", f: 32, i: "spat", n: "StuG III-F/G", r: 24, s: 4, t: "spg", v: 5, y: 42,
-    o: {t: 1, p: 1, ha: {f: 6, s: 1, r: 1}, j: 3, k: 1}
+    o: {t: 1, p: 1, ha: {f: 6, s: 1, r: 1}, j: 3, f: 18, k: 1}
   },
   gscout: {
     c: "ger", f: 8, i: "ac", n: "SdKfz 221", r: 8, s: 3, t: "ac", v: 7, y: 35,
-    o: {r: 1, ha: {f: 1, s: 0, r: 0}, ta: {f: 1, s: 1, r: 1}, j: 3, u: 1, w: 1},
+    o: {r: 1, ha: {f: 1, s: 0, r: 0}, ta: {f: 1, s: 1, r: 1}, j: 3, f: 18, u: 1, w: 1},
   },
   ght: {
     c: "ger", f: 8, i: "htat", n: "SdKfz 250/11",
-    o: {t: 1, p: 1, ha: {f: 1, s: 0, r: 0, t: -1}, k: 1, j: 3}, r: 10, s: 3, t: "ht", v: 6, y: 41
+    o: {t: 1, p: 1, ha: {f: 1, s: 0, r: 0, t: -1}, k: 1, j: 3, f: 18}, r: 10, s: 3, t: "ht", v: 6, y: 41
   },
   rinf: {
     c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
@@ -45,7 +45,7 @@ const testUnitData: { [index: string]: UnitData } = {
     c: "ussr", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
   },
   rmg: {
-    t: "sw", i: "mg", c: "ussr", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3}
+    t: "sw", i: "mg", c: "ussr", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3, f: 16}
   },
   rft: {
     c: "ussr", f: 24, i: "flamethrower", n: "Flamethrower", o: {a: 1, i: 1, b: 3}, r: 1,
@@ -59,44 +59,44 @@ const testUnitData: { [index: string]: UnitData } = {
     t: "sw", i: "mortar", c: "ussr", n: "RM-38", y: 38, f: 8, r: 14, v: 0, o: {m: 2, t: 1, b: 3}
   },
   rgun: {
-    c: "ussr", f: 16, i: "gun", n: "76mm M1927", o: {t: 1, j: 3, g: 1, s: 1, c: 1}, r: 16,
+    c: "ussr", f: 16, i: "gun", n: "76mm M1927", o: {t: 1, j: 3, f: 18, g: 1, s: 1, c: 1}, r: 16,
     t: "gun", v: 1, y: 28
   },
   rcrew: {
     c: "ussr", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
   },
   rat: {
-    c: "ussr", f: 24, i: "atgun", n: "57mm ZiS-2", o: {t: 1, j: 3, p: 1, c: 1}, r: 20, s: 3,
+    c: "ussr", f: 24, i: "atgun", n: "57mm ZiS-2", o: {t: 1, j: 3, f: 18, p: 1, c: 1}, r: 20, s: 3,
     t: "gun", v: 1, y: 41
   },
   rtank: {
     c: "ussr", f: 48, i: "tank", n: "T-34-85", r: 28, s: 5, t: "tank", v: 6, y: 43,
-    o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, u: 1, k: 1}
+    o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, f: 18, u: 1, k: 1}
   },
   rgrant: {
     c: "ussr", f: 7, i: "tank", n: "M3 Grant", r: 10, s: 5, t: "tank", v: 5, y: 41,
     o: {
-      bd: 4, ha: {f: 4, s: 3, r: 3}, j: 3, k: 1, p: 1, sg: {f: 20, r: 12}, t: 1,
+      bd: 4, ha: {f: 4, s: 3, r: 3}, j: 3, f: 18, k: 1, p: 1, sg: {f: 20, r: 12}, t: 1,
       ta: {f: 4, s: 4, r: 4}, u: 1
     },
   },
   rm2cs: {
     c: "uk", f: 16, i: "spg", n: "Matilda II CS", r: 12, s: 5, t: "spg", v: 4, y: 39,
-    o: {t: 1, g: 1, ha: {f: 6, s: 5, r: 4}, ta: {f: 5, s: 5, r: 5}, bd: 3, s: 1, u: 1, j: 3, k: 1}
+    o: {t: 1, g: 1, ha: {f: 6, s: 5, r: 4}, ta: {f: 5, s: 5, r: 5}, bd: 3, s: 1, u: 1, j: 3, f: 18, k: 1}
   },
   croc: {
     c: "uk", f: 24, i: "spft", n: "Churchill Crocodile", r: 16, s: 6, t: "spg", v: 4, y: 44,
     o: {
-      ha: {f: 9, s: 6, r: 4}, j: 3, k: 1, p: 1, sg: {f: "F24", r: 1}, sn: 3, t: 1,
+      ha: {f: 9, s: 6, r: 4}, j: 3, f: 18, k: 1, p: 1, sg: {f: "F24", r: 1}, sn: 3, t: 1,
       ta: {f: 9, s: 6, r: 6}, u: 1
     },
   },
   flak88: {
-    c: "ger", f: 48, i: "atgun", n: "8.8cm Flak 36", o: {y: 1, t: 1, j: 3, p: 1, c: 1},
+    c: "ger", f: 48, i: "atgun", n: "8.8cm Flak 36", o: {y: 1, t: 1, j: 3, f: 18, p: 1, c: 1},
     r: 30, s: 3, t: "gun", v: 1, y: 36
   },
   radio: {
-    t: "sw", i: "radio", c: "ussr", n: "Radio 85mm", y: 43, f: 16, r: 0, v: 0, o: { s: 1, o: 1, j: 3 }
+    t: "sw", i: "radio", c: "ussr", n: "Radio 85mm", y: 43, f: 16, r: 0, v: 0, o: { s: 1, o: 1, j: 3, f: 18 }
   },
 }
 
@@ -118,7 +118,7 @@ export const mapDebugData: {
   features: { u: FeatureData, x: number, y: number, f?: Direction }[],
   units: {
     u: UnitData, x: number, y: number, f?: Direction, tf?: Direction, v?: number,
-    imm?: boolean, trt?: boolean, st?: UnitStatusType, brk?: boolean
+    imm?: boolean, trt?: boolean, st?: UnitStatusType, brk?: boolean, wpn?: boolean,
   }[],
   hexes: HexData[][]
 }[] = [
@@ -163,6 +163,7 @@ export const mapDebugData: {
       { u: testUnitData.gldr, x: 6, y: 4 },
       { u: testUnitData.gtank, x: 4, y: 4, f: 5, tf: 5, imm: true },
       { u: testUnitData.gtank, x: 2, y: 3, f: 3, tf: 3, trt: true },
+      { u: testUnitData.gtank, x: 2, y: 7, f: 3, tf: 4, wpn: true },
       {
         u: testUnitData.rtank, x: 10, y: 5, f: 1, tf: 1, imm: true, st: unitStatus.Activated,
         brk: true, trt: true

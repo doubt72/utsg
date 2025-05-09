@@ -85,6 +85,7 @@ export default function DebugMap() {
       if (data.st) { unit.status = data.st }
       if (data.imm) { unit.immobilized = true }
       if (data.brk) { unit.jammed = true }
+      if (data.wpn) { unit.weaponBroken = true }
       if (data.trt) { unit.turretJammed = true }
       map.addUnit(new Coordinate(data.x, data.y), unit)
     })

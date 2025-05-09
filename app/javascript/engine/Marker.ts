@@ -48,6 +48,7 @@ export default class Marker {
   isTired = false;
   isActivated = false
   jammed = false
+  weaponBroken = false
   turretJammed = false
   immobilized = false
   turretFacing: Direction = 1
@@ -162,7 +163,8 @@ export default class Marker {
     if (this.type === markerType.Pinned) { return ["pinned"] }
     if (this.type === markerType.Activated) { return ["activated"] }
     if (this.type === markerType.Exhausted) { return ["exhausted"] }
-    if (this.type === markerType.Jammed) { return ["weapon", "broken"] }
+    if (this.type === markerType.Jammed) { return ["weapon", "jammed"] }
+    if (this.type === markerType.WeaponBroken) { return ["weapon", "broken"] }
     if (this.type === markerType.TurretJammed) { return ["turret", "jammed"] }
     if (this.type === markerType.Immobilized) { return ["immobilized"] }
     if (this.type === markerType.Wind) {

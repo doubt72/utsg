@@ -162,25 +162,25 @@ export default class Counter {
 
   get weaponBreakLayout(): CounterLayout | false {
     if (this.target.isWreck) { return false }
-    if (!this.target.breakWeaponRoll && !this.target.isMarker) { return false }
-    if (this.target.isMarker && this.target.type !== markerType.jammed) { return false }
+    if (!this.target.breakWeaponRoll) { return false }
 
-    let loc = new Coordinate(this.x + 14, this.y + 25)
-    if (this.target.isMarker) {
-      loc = new Coordinate(this.x + 40, this.y + 13)
+    const loc = new Coordinate(this.x + 14, this.y + 25)
+    const red = this.target.breakDestroysWeapon || this.target.jammed
+    let fill = red ? counterRed : markerYellow
+    let textColor = red ? "white" : "black"
+    if (this.target.weaponBroken) {
+      fill = "rgba(0,0,0,0)"
+      textColor = "rgba(0,0,0,0)"
     }
-    const red = this.target.breakDestroysWeapon || this.target.jammed || this.target.isMarker
-    const fill = red ? "red" : "yellow"
-    const textColor = red ? "white" : "black"
     return {
       path: this.circlePath(loc, 8),
-      style: { stroke: "black", strokeWidth: 1, fill: fill }, tStyle: { fill: textColor },
+      style: { stroke: textColor, strokeWidth: 1, fill: fill }, tStyle: { fill: textColor },
       x: loc.x, y: loc.y + 4.25, size: 15, value: this.target.breakWeaponRoll,
     }
   }
 
   get weaponFixLayout(): CounterLayout | false {
-    if (!this.target.repairRoll || !this.target.jammed || this.target.isWreck) {
+    if (!this.target.repairRoll || !this.target.jammed || this.target.isWreck || this.target.breakdownRoll) {
       return false
     }
     const loc = new Coordinate(this.x + 14, this.y + 40)
@@ -188,6 +188,27 @@ export default class Counter {
       path: this.circlePath(loc, 8),
       style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
       x: loc.x, y: loc.y + 4.25, size: 12, value: this.target.repairRoll,
+    }
+  }
+
+  get markerBreakLayout(): CounterLayout | false {
+    if (!this.target.isMarker || this.target.type !== markerType.Jammed) { return false }
+
+    const loc = new Coordinate(this.x + 40, this.y + 14)
+    return {
+      path: this.circlePath(loc, 10),
+      style: { strokeWidth: 0, fill: counterRed }, tStyle: { fill: "white" },
+      x: loc.x, y: loc.y + 4.25, size: 16, value: "3",
+    }
+  }
+
+  get markerFixLayout(): CounterLayout | false {
+    if (!this.target.isMarker || this.target.type !== markerType.Jammed) { return false }
+    const loc = new Coordinate(this.x + 40, this.y + 63)
+    return {
+      path: this.circlePath(loc, 8),
+      style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
+      x: loc.x, y: loc.y + 4.25, size: 16, value: "18",
     }
   }
   
@@ -575,7 +596,7 @@ export default class Counter {
     const style = { fill: markerYellow, stroke: "black", strokeWidth: 2 }
     const fStyle = { fill: "black" }
     if (this.target.isPinned || this.target.immobilized || this.target.turretJammed ||
-       (this.target.jammed && this.target.hullArmor)) {
+       (this.target.jammed && this.target.hullArmor) || this.target.weaponBroken) {
       style.fill = counterRed
       style.stroke = "white"
       fStyle.fill = "white"
@@ -587,7 +608,8 @@ export default class Counter {
     if (this.target.isTired) { text.push("TRD") }
     if (this.target.immobilized) { text.push("IMM") }
     if (this.target.turretJammed) { text.push("TRT") }
-    if (this.target.jammed && this.target.hullArmor) { text.push("WPN") }
+    if (this.target.jammed && this.target.hullArmor) { text.push("JAM") }
+    if (this.target.weaponBroken) { text.push("WPN") }
     if (text.length === 0) { return false }
     if (text.length === 2) {
       size = 15
