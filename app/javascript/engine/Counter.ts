@@ -161,11 +161,15 @@ export default class Counter {
   }
 
   get weaponBreakLayout(): CounterLayout | false {
-    if (!this.target.breakWeaponRoll || this.target.isWreck) {
-      return false
+    if (this.target.isWreck) { return false }
+    if (!this.target.breakWeaponRoll && !this.target.isMarker) { return false }
+    if (this.target.isMarker && this.target.type !== markerType.jammed) { return false }
+
+    let loc = new Coordinate(this.x + 14, this.y + 25)
+    if (this.target.isMarker) {
+      loc = new Coordinate(this.x + 40, this.y + 13)
     }
-    const loc = new Coordinate(this.x + 14, this.y + 25)
-    const red = this.target.breakDestroysWeapon || this.target.jammed
+    const red = this.target.breakDestroysWeapon || this.target.jammed || this.target.isMarker
     const fill = red ? "red" : "yellow"
     const textColor = red ? "white" : "black"
     return {
@@ -547,8 +551,12 @@ export default class Counter {
     }
     const style = { fill: counterRed }
     const tStyle = { fill: "white" }
-    if (["foxhole", "smoke", "bunker"].includes(target.type)) {
-      style.fill = "#BBB"
+    if (["foxhole", "bunker"].includes(target.type)) {
+      style.fill = "#999"
+      tStyle.fill = "white"
+    }
+    if (["smoke"].includes(target.type)) {
+      style.fill = "#DDD"
       tStyle.fill = "black"
     }
 
