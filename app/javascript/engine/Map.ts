@@ -614,11 +614,6 @@ export default class Map {
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const unit = this.units[y][x][selection.counter.trueIndex]
-    const next = this.units[y][x][selection.counter.trueIndex + 1]
-    if (next && next.selected === unit.selected &&
-      (next.type === unitType.SupportWeapon || next.type === unitType.Gun)) {
-      next.select()
-    }
     unit.select()
     this.clearOtherSelections(selection.counter, x, y)
     callback(x, y, selection.counter)
