@@ -568,13 +568,14 @@ export default class Map {
   clearOtherSelections(unit: Counter, x: number, y: number) {
     const counters = this.allUnits
     // Have to clear the leaders first, otherwise can't clear units out of leader range
-    if (unit.target.type === unitType.Leader) {
-      for (const c of counters) {
-        if (c.hex === undefined) { continue }
-        if (c.hex.x !== x || c.hex.y !== y) {
-          if (c.target.selected && c.target.type === unitType.Leader) {
-            if (!unit.target.selected ||
-              hexDistance(c.hex, new Coordinate(x, y)) > unit.target.currentLeadership) {
+    for (const c of counters) {
+      if (c.hex === undefined) { continue }
+      if (c.hex.x !== x || c.hex.y !== y) {
+        if (c.target.selected && c.target.type === unitType.Leader) {
+          if (unit.target.type === unitType.Leader) {
+            c.target.select()
+          } else {
+            if (hexDistance(c.hex, new Coordinate(x, y)) > c.target.currentLeadership) {
               c.target.select()
             }
           }
