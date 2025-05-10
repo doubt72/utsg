@@ -2527,7 +2527,7 @@ File.open('yug.svg', 'w') do |file|
     end
   end
   write_path(path, file, true, 2, "#FFF")
-  write_path(path, file, false, 2, "#007")
+  write_path(path, file, false, 3, "#007")
   file.puts footer
 end
 
