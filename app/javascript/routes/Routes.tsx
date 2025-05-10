@@ -16,6 +16,8 @@ import NewGame from "../components/game/NewGame";
 import DebugUnits from "../components/game/DebugUnits";
 import DebugMap from "../components/game/DebugMap";
 import GameDisplay from "../components/game/GameDisplay";
+import DebugMarkers from "../components/game/DebugMarkers";
+import DebugUnitsByYear from "../components/game/DebugUnitsByYear";
 
 export default function Routes() {
   const publicRoutes = [
@@ -39,7 +41,9 @@ export default function Routes() {
         { path: "/logout", element: <Logout /> },
         { path: "/profile", element: <Profile /> },
 
-        { path: "/debug/units", element: <DebugUnits /> },
+        { path: "/debug/markers", element: <DebugMarkers /> },
+        { path: "/debug/units", element: <DebugUnitsByYear /> },
+        { path: "/debug/units/:nation", element: <DebugUnits /> },
         { path: "/debug/map/:id", element: <DebugMap /> },
 
         { path: "/new_game", element: <NewGame /> },

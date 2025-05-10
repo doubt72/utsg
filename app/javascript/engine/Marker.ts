@@ -186,8 +186,8 @@ export default class Marker {
   }
 
   get subText(): string[] | false {
-    if (this.type === markerType.GreenCrew) { return ["", "-1", "targeting"] }
-    if (this.type === markerType.EliteCrew) { return ["", "+1", "targeting"] }
+    if (this.type === markerType.GreenCrew) { return ["", "+1", "targeting"] }
+    if (this.type === markerType.EliteCrew) { return ["", "-1", "targeting"] }
     if (this.type === markerType.Weather) {
       if (this.subType === weatherType.Dry) { return ["10% fe", "", ""] }
       if (this.subType === weatherType.Fog) { return ["30% fe", "", ""] }

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { getAPI } from "../../utilities/network";
 import CounterDisplay from "./CounterDisplay";
 import Unit, { UnitData } from "../../engine/Unit";
-import Feature, { FeatureData } from "../../engine/Feature";
-import Marker, { MarkerData } from "../../engine/Marker";
 import { unitStatus } from "../../utilities/commonTypes";
+import { useParams } from "react-router-dom";
+import { FeatureData } from "../../engine/Feature";
+import { MarkerData } from "../../engine/Marker";
 
 
 export default function DebugUnits() {
+  const nation: string | undefined = useParams().nation
   const [units, setUnits] = useState<{ [index: string]: UnitData }>({})
 
   useEffect(() => {
@@ -16,45 +18,16 @@ export default function DebugUnits() {
     })
   }, [])
 
-  // const years = () => {
-  //   const y = {}
-  //   for (const u of Object.values(units)) {
-  //     y[u.y] = true
-  //   }
-  //   return Object.keys(y).sort((a,b) => a-b)
-  // }
-
-  // const cells = () => {
-  //   const cells = []
-  //   years().forEach(y => {
-  //     if (Number(y) < 10) {
-  //       cells.push(<div key={y} className="unit-counter-year">0{y}</div>)
-  //     } else {
-  //       cells.push(<div key={y} className="unit-counter-year">{y}</div>)
-  //     }
-  //     Object.values(units).filter(u => Number(u.y) === Number(y)).map(
-  //       (c, j) => cells.push(<div key={`${y}-${j}`}>{unitCounter(new Unit(c))}</div>)
-  //     )
-  //   })
-  //   return cells
-  // }
-
-  // return (
-  //   <div className="p1em flex flex-wrap">
-  //     {cells()}
-  //   </div>
-  // )
-
   const guns = () => {
-    return Object.values(units).filter(u => ["sw", "gun"].includes(u.t) && u.o.j)
+    return Object.values(units).filter(u => ["sw", "gun"].includes(u.t) && u.o.j && u.c === nation)
   }
 
   const infantry = () => {
-    return Object.values(units).filter(u => ["ldr", "sqd", "tm"].includes(u.t))
+    return Object.values(units).filter(u => ["ldr", "sqd", "tm"].includes(u.t) && u.c === nation)
   }
 
   const vehicles = () => {
-    return Object.values(units).filter(u => ["tank", "spg", "ac", "ht"].includes(u.t))
+    return Object.values(units).filter(u => ["tank", "spg", "ac", "ht"].includes(u.t) && u.c === nation)
   }
 
   const tanks = () => {
@@ -65,7 +38,8 @@ export default function DebugUnits() {
     return vehicles().filter(v => !v.o.ta)
   }
 
-  const svgContainer = (unit: Unit | Feature | Marker, key: number) => {
+  const svgContainer = (unit: Unit | undefined, key: number) => {
+    if (!unit) { return <></> }
     return <CounterDisplay key={key} unit={unit} />
   }
 
@@ -232,11 +206,13 @@ export default function DebugUnits() {
     })
   }
 
-  const makeUnit = (data: UnitData | FeatureData | MarkerData) => {
+  const makeUnit = (data: UnitData | FeatureData | MarkerData): Unit | undefined => {
     if (data.ft) {
-      return new Feature(data)
+      return undefined
     } else if (data.mk) {
-      return new Marker(data)
+      return undefined
+    } else if (data.c !== nation) {
+      return undefined
     } else {
       return new Unit(data)
     }
