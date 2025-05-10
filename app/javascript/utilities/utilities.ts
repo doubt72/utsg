@@ -50,6 +50,17 @@ export function normalDir(dir: number): Direction {
   return dir as Direction
 }
 
+export function hexDistance(hex0: Coordinate, hex1: Coordinate): number {
+  // Transform X into axial coordinates
+  const x00 = hex0.x - Math.floor(hex0.y / 2);
+  const x11 = hex1.x - Math.floor(hex1.y / 2);
+  // Add a cubic component
+  const z0 = -x00 - hex0.y;
+  const z1 = -x11 - hex1.y;
+  // And now things are simple
+  return Math.max(Math.abs(x00 - x11), Math.abs(hex0.y - hex1.y), Math.abs(z0 - z1));
+}
+
 export function coordinateToLable(loc: Coordinate): string {
   // handle up to 52 for now, easy to extend if we need it, but at 1" hexes,
   // 52 would be a somewhat ludicrous seven 8.5x11" pages wide

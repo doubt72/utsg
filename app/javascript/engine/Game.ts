@@ -131,6 +131,14 @@ export default class Game {
     return this.scenario.axisFactions[0]
   }
 
+  get currentPlayerNation(): string {
+    return this.currentPlayer === 1 ? this.playerOneNation : this.playerTwoNation
+  }
+
+  get otherPlayerNation(): string {
+    return this.currentPlayer !== 1 ? this.playerOneNation : this.playerTwoNation
+  }
+
   get playerOneScore(): number {
     let victoryHexes = 0
     for (let i = 0; i < this.scenario.map.victoryHexes.length; i++) {

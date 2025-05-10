@@ -52,6 +52,10 @@ export default class Counter {
   showAllCounters = false;
   showDisabled = false;
 
+  get isUnit(): boolean {
+    return !this.target.isFeature && !this.target.isMarker
+  }
+
   get stackOffset(): number { return this.onMap ? 5 : 3 }
   get x(): number { return (this.base?.x ?? 0) + this.stackingIndex * this.stackOffset }
   get y(): number { return (this.base?.y ?? 0) - this.stackingIndex * this.stackOffset }
@@ -673,7 +677,7 @@ export default class Counter {
   }
 
   get eliteLayout(): CounterLayout | false {
-    if (this.target.isMarker || this.target.isFeature) { return false }
+    if (!this.isUnit) { return false }
     const showAllCounters = this.onMap ? this.map?.showAllCounters : this.showAllCounters
     const elite = (this.target as Unit).eliteCrew
     if (this.target.isWreck || showAllCounters || elite === 0) {

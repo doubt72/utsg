@@ -59,7 +59,7 @@ export default function MapLosOverlay({
           )
         }
         {map.countersAt(new Coordinate(xx, yy)).map((c, i) => {
-          if (c.target.isMarker || c.target.isFeature) { return "" }
+          if (!c.isUnit) { return "" }
           const fl = c.facingLayout
           if (!fl) { return "" }
           return (

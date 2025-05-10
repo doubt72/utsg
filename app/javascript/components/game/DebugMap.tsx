@@ -67,6 +67,7 @@ export default function DebugMap() {
     })
     game.phase = gamePhaseType.Main
     setMap(game.scenario.map)
+    game.scenario.map.debug = true
     setInitiativePlayer(game.initiativePlayer ? "axis" : "allies")
   }, [])
 

@@ -12,6 +12,7 @@ import {
   WindTypeType,
   baseTerrainType,
   markerType,
+  unitType,
   weatherType,
   windType,
 } from "../utilities/commonTypes";
@@ -32,6 +33,7 @@ import {
 import Marker from "./Marker";
 import Feature from "./Feature";
 import WarningMoveError from "./moves/WarningMoveError";
+import { hexDistance } from "../utilities/utilities";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -329,15 +331,29 @@ export default class Map {
     return c
   }
 
-  get counters(): Counter[] {
+  get allCounters(): Counter[] {
     let c: Counter[] = []
-    if (this.hideCounters) { return c }
     for (let y = 0; y < this.height; y++) {
       for (let x = this.width - 1; x >= 0; x--) {
         c = c.concat(this.countersAt(new Coordinate(x, y)))
       }
     }
     return c
+  }
+
+  get allUnits(): Counter[] {
+    let c: Counter[] = []
+    for (let y = 0; y < this.height; y++) {
+      for (let x = this.width - 1; x >= 0; x--) {
+        c = c.concat(this.countersAt(new Coordinate(x, y)).filter(c => c.isUnit))
+      }
+    }
+    return c
+  }
+
+  get counters(): Counter[] {
+    if (this.hideCounters) { return [] }
+    return this.allCounters
   }
 
   hexLos(start: Coordinate, end: Coordinate): TextLayout | boolean {
@@ -535,21 +551,75 @@ export default class Map {
     return false
   }
 
-  selectable(selection: CounterSelectionTarget): boolean {
-    if (this.game?.phase === gamePhaseType.Deployment) { return false }
-    if (selection.counter.target.isFeature || selection.counter.target.isMarker) {
-      return false
+  inRangeOfSelectedLeader(unit: Counter): boolean {
+    if (unit.hex === undefined) { return false }
+    const counters = this.allUnits
+    for (const c of counters) {
+      if (c.hex === undefined) { continue }
+      if (c !== unit && c.target.type === unitType.Leader && c.target.selected) {
+        if (hexDistance(c.hex, unit.hex) <= c.target.currentLeadership) {
+          return true
+        }
+      }
     }
+    return false
+  }
+
+  clearOtherSelections(unit: Counter, x: number, y: number) {
+    const counters = this.allUnits
+    // Have to clear the leaders first, otherwise can't clear units out of leader range
+    if (unit.target.type === unitType.Leader) {
+      for (const c of counters) {
+        if (c.hex === undefined) { continue }
+        if (c.hex.x !== x || c.hex.y !== y) {
+          if (c.target.selected && c.target.type === unitType.Leader) {
+            if (!unit.target.selected ||
+              hexDistance(c.hex, new Coordinate(x, y)) > unit.target.currentLeadership) {
+              c.target.select()
+            }
+          }
+        }
+      }
+    }
+    for (const c of counters) {
+      if (c.hex === undefined) { continue }
+      if ((c.hex.x !== x || c.hex.y !== y) && c.target.selected) {
+        if (!this.inRangeOfSelectedLeader(c)) {
+          c.target.select()
+        }
+      }
+    }
+  }
+
+  selectable(selection: CounterSelectionTarget): boolean {
+    if (!this.game) { return false }
+    if (selection.counter.target.isFeature) { return false }
+    if (this.debug) { return true }
+    if (this.game.phase === gamePhaseType.Deployment) { return false }
+    if (this.game.phase === gamePhaseType.Prep) { return false } // Not supported yet
+    if (this.game.phase === gamePhaseType.Main) {
+      if (selection.counter.target.nation !== this.game.currentPlayerNation) {
+        return false
+      }
+    }
+    if (this.game.phase === gamePhaseType.Cleanup) { return false } // Not supported yet
     return true
   }
 
   selectUnit(selection: CounterSelectionTarget, callback: (x: number, y: number, counter: Counter) => void) {
     if (selection.target.type === "reinforcement") { return } // shouldn't happen
-    if (selection.counter.trueIndex === undefined) { return } // shouldn't happen
+    if (selection.counter.trueIndex === undefined) { return }
     if (!this.selectable(selection)) { return }
     const x = selection.target.xy.x
     const y = selection.target.xy.y
-    this.units[y][x][selection.counter.trueIndex].select()
+    const unit = this.units[y][x][selection.counter.trueIndex]
+    const next = this.units[y][x][selection.counter.trueIndex + 1]
+    if (next && next.selected === unit.selected &&
+      (next.type === unitType.SupportWeapon || next.type === unitType.Gun)) {
+      next.select()
+    }
+    unit.select()
+    this.clearOtherSelections(selection.counter, x, y)
     callback(x, y, selection.counter)
   }
 }

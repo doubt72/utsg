@@ -1,4 +1,5 @@
-- extend move test to complete deployment
+- find undo bug on KV map/gun
+
 - rally phase
 - main phase
 - cleanup phase

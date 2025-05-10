@@ -3,7 +3,7 @@ import Map from "../engine/Map";
 import { Coordinate, Direction } from "./commonTypes";
 import { TextLayout } from "./graphics";
 import { OrientationType, lineDoesIntersect, lineOrientation, orientation } from "./lines";
-import { normalDir } from "./utilities";
+import { hexDistance, normalDir } from "./utilities";
 
 // If you're doing a lot of hex manipulation (or any other sort of game
 // programming), I highly recomment my old classmate Amit Patel's page:
@@ -164,17 +164,6 @@ export function losHexPath(map: Map, start: Hex, target: Hex): hexPathData[] {
   return hexes;
 }
 
-function hexDistance(hex0: Hex, hex1: Hex): number {
-  // Transform X into axial coordinates
-  const x00 = hex0.coord.x - Math.floor(hex0.coord.y / 2);
-  const x11 = hex1.coord.x - Math.floor(hex1.coord.y / 2);
-  // Add a cubic component
-  const z0 = -x00 - hex0.coord.y;
-  const z1 = -x11 - hex1.coord.y;
-  // And now things are simple
-  return Math.max(Math.abs(x00 - x11), Math.abs(hex0.coord.y - hex1.coord.y), Math.abs(z0 - z1));
-}
-
 function elevationHindrance(
   start: Hex,
   target: Hex,
@@ -189,7 +178,7 @@ function elevationHindrance(
   if (elevation < start.elevation && elevation < target.elevation) {
     return 0;
   }
-  const dist = hexDistance(start, target);
+  const dist = hexDistance(start.coord, target.coord);
   const lo = start.elevation > target.elevation ? target.elevation : start.elevation;
   const hi = start.elevation > target.elevation ? start.elevation : target.elevation;
   if ((dist === 1 && start.elevation < target.elevation) || edge) {
@@ -207,13 +196,15 @@ function hexElevationHindrance(start: Hex, target: Hex, hex: Hex): number {
     return 0 + ch;
   }
   const currDist =
-    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
+    start.elevation > target.elevation ? hexDistance(start.coord, hex.coord) :
+    hexDistance(hex.coord, target.coord);
   return elevationHindrance(start, target, hex.elevation, currDist, hex.hindrance) + ch;
 }
 
 function edgeElevationHindrance(start: Hex, target: Hex, hex: Hex, edge: Direction): number {
   const currDist =
-    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target) - 1;
+    start.elevation > target.elevation ? hexDistance(start.coord, hex.coord) :
+    hexDistance(hex.coord, target.coord) - 1;
   return elevationHindrance(start, target, hex.elevation, currDist, hex.edgeHindrance(edge), true);
 }
 
@@ -245,7 +236,8 @@ function alongEdgeElevationHindrance(
     return 0;
   }
   const currDist =
-    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
+    start.elevation > target.elevation ? hexDistance(start.coord, hex.coord) :
+    hexDistance(hex.coord, target.coord);
   return (
     elevationHindrance(
       start,
@@ -275,7 +267,7 @@ function elevationLos(
   if (elevation < start.elevation && elevation < target.elevation) {
     return false;
   }
-  const dist = hexDistance(start, target);
+  const dist = hexDistance(start.coord, target.coord);
   const lo = start.elevation > target.elevation ? target.elevation : start.elevation;
   const hi = start.elevation > target.elevation ? start.elevation : target.elevation;
   if (elevation > lo && elevation === hi) {
@@ -293,13 +285,15 @@ function hexElevationLos(start: Hex, target: Hex, hex: Hex): boolean {
     return true;
   }
   const currDist =
-    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
+    start.elevation > target.elevation ? hexDistance(start.coord, hex.coord) :
+    hexDistance(hex.coord, target.coord);
   return elevationLos(start, target, hex.elevation, currDist, hex.los);
 }
 
 function edgeElevationLos(start: Hex, target: Hex, hex: Hex, edge: Direction): boolean {
   const currDist =
-    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target) - 1;
+    start.elevation > target.elevation ? hexDistance(start.coord, hex.coord) :
+    hexDistance(hex.coord, target.coord) - 1;
   return elevationLos(start, target, hex.elevation, currDist, hex.edgeLos(edge));
 }
 
@@ -324,7 +318,8 @@ function alongEdgeElevationLos(
     return true;
   }
   const currDist =
-    start.elevation > target.elevation ? hexDistance(start, hex) : hexDistance(hex, target);
+    start.elevation > target.elevation ? hexDistance(start.coord, hex.coord) :
+    hexDistance(hex.coord, target.coord);
   return elevationLos(
     start,
     target,
