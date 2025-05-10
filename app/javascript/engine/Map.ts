@@ -553,6 +553,7 @@ export default class Map {
 
   inRangeOfSelectedLeader(unit: Counter): boolean {
     if (unit.hex === undefined) { return false }
+    if (!(unit.target as Unit).canGroupFire) { return false }
     const counters = this.allUnits
     for (const c of counters) {
       if (c.hex === undefined) { continue }
@@ -572,12 +573,10 @@ export default class Map {
       if (c.hex === undefined) { continue }
       if (c.hex.x !== x || c.hex.y !== y) {
         if (c.target.selected && c.target.type === unitType.Leader) {
-          if (unit.target.type === unitType.Leader) {
+          if (unit.target.type === unitType.Leader || !(unit.target as Unit).canGroupFire) {
             c.target.select()
-          } else {
-            if (hexDistance(c.hex, new Coordinate(x, y)) > c.target.currentLeadership) {
-              c.target.select()
-            }
+          } else if (hexDistance(c.hex, new Coordinate(x, y)) > c.target.currentLeadership) {
+            c.target.select()
           }
         }
       }

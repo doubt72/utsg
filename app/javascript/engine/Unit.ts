@@ -209,6 +209,10 @@ export default class Unit {
     return false
   }
 
+  get canGroupFire(): boolean {
+    return ["sw", "ldr", "sqd", "tm"].includes(this.type)
+  }
+
   get rotates(): boolean {
     return !["sw", "ldr", "sqd", "tm"].includes(this.type)
   }
