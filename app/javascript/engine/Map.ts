@@ -554,11 +554,11 @@ export default class Map {
   inRangeOfSelectedLeader(unit: Counter): boolean {
     if (unit.hex === undefined) { return false }
     if (!(unit.target as Unit).canGroupFire) { return false }
-    const counters = this.allUnits
-    for (const c of counters) {
-      if (c.hex === undefined) { continue }
-      if (c !== unit && c.target.type === unitType.Leader && c.target.selected) {
-        if (hexDistance(c.hex, unit.hex) <= c.target.currentLeadership) {
+    const units = this.allUnits
+    for (const u of units) {
+      if (u.hex === undefined) { continue }
+      if (u !== unit && u.target.type === unitType.Leader && u.target.selected) {
+        if (hexDistance(u.hex, unit.hex) <= u.target.currentLeadership) {
           return true
         }
       }
@@ -567,25 +567,25 @@ export default class Map {
   }
 
   clearOtherSelections(unit: Counter, x: number, y: number) {
-    const counters = this.allUnits
+    const units = this.allUnits
     // Have to clear the leaders first, otherwise can't clear units out of leader range
-    for (const c of counters) {
-      if (c.hex === undefined) { continue }
-      if (c.hex.x !== x || c.hex.y !== y) {
-        if (c.target.selected && c.target.type === unitType.Leader) {
+    for (const u of units) {
+      if (u.hex === undefined) { continue }
+      if (u.hex.x !== x || u.hex.y !== y) {
+        if (u.target.selected && u.target.type === unitType.Leader) {
           if (unit.target.type === unitType.Leader || !(unit.target as Unit).canGroupFire) {
-            c.target.select()
-          } else if (hexDistance(c.hex, new Coordinate(x, y)) > c.target.currentLeadership) {
-            c.target.select()
+            u.target.select()
+          } else if (hexDistance(u.hex, new Coordinate(x, y)) > u.target.currentLeadership) {
+            u.target.select()
           }
         }
       }
     }
-    for (const c of counters) {
-      if (c.hex === undefined) { continue }
-      if ((c.hex.x !== x || c.hex.y !== y) && c.target.selected) {
-        if (!this.inRangeOfSelectedLeader(c)) {
-          c.target.select()
+    for (const u of units) {
+      if (u.hex === undefined) { continue }
+      if ((u.hex.x !== x || u.hex.y !== y) && u.target.selected) {
+        if (!this.inRangeOfSelectedLeader(u)) {
+          u.target.select()
         }
       }
     }
@@ -616,5 +616,29 @@ export default class Map {
     unit.select()
     this.clearOtherSelections(selection.counter, x, y)
     callback(x, y, selection.counter)
+  }
+
+  get noSelection(): boolean {
+    const units = this.allUnits
+    for (const c of units) {
+      if (c.target.selected) { return false }
+    }
+    return true
+  }
+
+  get multiSelection(): boolean {
+    const units = this.allUnits
+    let foundX: number | undefined = undefined
+    let foundY: number | undefined = undefined
+    for (const c of units) {
+      if (c.target.selected) {
+        if (foundX !== undefined && foundY !== undefined) {
+          if (foundX !== c.hex?.x || foundY !== c.hex?.y ) { return true }
+        }
+        foundX = c.hex?.x
+        foundY = c.hex?.y
+      }
+    }
+    return false
   }
 }

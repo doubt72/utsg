@@ -169,6 +169,16 @@ export default class Game {
     return this.moves[this.lastMoveIndex]
   }
 
+  get opportunityFire(): boolean {
+    // TODO: check last move
+    return false
+  }
+
+  get reactionFire(): boolean {
+    // TODO: check last move
+    return false
+  }
+
   previousMoveUndoPossible(index: number): boolean {
     let check = index - 1
 
@@ -377,6 +387,8 @@ export default class Game {
     }
   }
 
+  executePass() {}
+
   actionsAvailable(activePlayer: string): GameAction[] {
     const moves = []
     if (this.lastMove?.undoPossible) {
@@ -399,6 +411,42 @@ export default class Game {
       }
     } else if (this.phase === gamePhaseType.Deployment) {
       moves.unshift({ type: "deploy" })
+      return moves
+    } else if (this.phase === gamePhaseType.Main) {
+      if ((activePlayer === this.playerOneName && this.currentPlayer === 1) ||
+          (activePlayer === this.playerTwoName && this.currentPlayer === 2)) {
+        if (this.opportunityFire) {
+          moves.unshift({ type: "none", message: "opportunity fire" })
+          moves.push({ type: "opportunity_fire" })
+          moves.push({ type: "opportunity_intensive_fire" })
+          moves.push({ type: "empty_pass" })
+        } else if (this.reactionFire) {
+          moves.unshift({ type: "none", message: "reaction fire" })
+          moves.push({ type: "reaction_fire" })
+          moves.push({ type: "reaction_intensive_fire" })
+          moves.push({ type: "empty_pass" })
+        } else if (this.scenario.map.noSelection) {
+          moves.unshift({ type: "none", message: "select units to activate" })
+          moves.push({ type: "enemy_rout" })
+          moves.push({ type: "pass" })
+        } else {
+          if (this.scenario.map.multiSelection) {
+            moves.push({ type: "fire" })
+            moves.push({ type: "intensive_fire" })
+            moves.push({ type: "pass" })
+          } else {
+            moves.push({ type: "fire" })
+            moves.push({ type: "intensive_fire" })
+            moves.push({ type: "move" })
+            moves.push({ type: "rush" })
+            moves.push({ type: "assault_move" })
+            moves.push({ type: "rout" })
+            moves.push({ type: "pass" })
+          }
+        }
+      } else {
+        moves.unshift({ type: "none", message: "waiting for opponent to move" })
+      }
       return moves
     } else {
       moves.unshift({ type: "none", message: "not implemented yet" })

@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom"
 import {
-  ArrowRepeat, BoxArrowInRight, BoxArrowRight, ChatText, Check2Square, CircleFill, Hexagon,
-  InfoCircle, PencilSquare, Person, ShieldExclamation, Trash3, XCircle
+  ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, BoxArrowInRight, BoxArrowRight,
+  ChatText, Check2Square, CircleFill, Hexagon, InfoCircle, PencilSquare, Person, Record, RecordFill,
+  ShieldExclamation, Trash3, XCircle
 } from "react-bootstrap-icons"
 
 interface ButtonTypeProps {
@@ -151,4 +152,24 @@ export const UpdateInfoButton = () => {
 
 export const VerifyButton = () => {
   return <CustomSubmitButton text="verify"><Check2Square /></CustomSubmitButton>
+}
+
+export const FireGlyph = () => {
+  return <Record/>
+}
+
+export const FireIntenseGlyph = () => {
+  return <RecordFill/>
+}
+
+export const MoveGlyph = () => {
+  return <ArrowsMove/>
+}
+
+export const MoveRushGlyph = () => {
+  return <ArrowsCollapseVertical/>
+}
+
+export const RoutGlyph = () => {
+  return <ArrowsExpandVertical/>
 }

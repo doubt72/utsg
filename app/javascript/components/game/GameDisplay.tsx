@@ -109,7 +109,10 @@ export default function GameDisplay() {
   const unitSelection = (x: number, y: number, counter: Counter) => {
     const key = `x ${x}-${y}-${counter.trueIndex}`
     console.log(key)
-    // Currently does nothing
+    setControls(gc => {
+      const key = Number(gc?.key ?? 0)
+      return <GameControls key={key + 1} game={game.k as Game} />
+    })
   }
 
   const directionSelection = (x: number, y: number, d: Direction) => {

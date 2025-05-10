@@ -1,8 +1,7 @@
-- find undo bug on KV map/gun
-
-- rally phase
-- main phase
-- cleanup phase
+- Find undo bug on KV map/gun
+  - probably just switch to only load changes on synchronization
+- Switch map to have scrollbars and overview
+- Implement moves
 
 - Switch game status to websocket
 - fix text selection on select scenario

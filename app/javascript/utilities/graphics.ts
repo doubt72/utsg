@@ -118,4 +118,3 @@ export function roundedRectangle(x: number, y: number, width: number, height: nu
     "L", x, y+corner, "A", corner, corner, 0, 0, 1, x+corner, y,
   ].join(" ")
 }
-
