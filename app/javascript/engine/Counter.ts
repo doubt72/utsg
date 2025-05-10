@@ -468,6 +468,47 @@ export default class Counter {
     }
   }
 
+  get markerMoraleLayout(): CounterLayout | false {
+    if (!this.target.isMarker || this.target.type !== markerType.Pinned) { return false }
+    return {
+      x: this.x + 13, y: this.y + 24, size: 16, value: "-1",
+      tStyle: { fill: counterRed },
+    }
+  }
+
+  get markerFirepowerLayout(): CounterLayout | false {
+    if (!this.target.isMarker || this.target.type !== markerType.Pinned) { return false }
+    const loc = new Coordinate(this.x + 16, this.y + 67)
+    const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
+    const path = this.squarePath(loc)
+    return {
+      path: path, style: style, tStyle: { fill: counterRed },
+      x: loc.x, y: loc.y + 4, size: 18, value: "½",
+    }
+  }
+
+  get markerRangeLayout(): CounterLayout | false {
+    if (!this.target.isMarker || this.target.type !== markerType.Pinned) { return false }
+    const loc = new Coordinate(this.x + 40, this.y + 67)
+    const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
+    const path = this.squarePath(loc)
+    return {
+      path: path, style: style, tStyle: { fill: counterRed }, x: loc.x, y: loc.y + 4,
+      size: 18, value: "-",
+    }
+  }
+
+  get markerMovementLayout(): CounterLayout | false {
+    if (!this.target.isMarker || this.target.type !== markerType.Pinned) { return false }
+    const loc = new Coordinate(this.x + 64, this.y + 67)
+    const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
+    const path = this.circlePath(loc, 10)
+    return {
+      path: path, style: style, tStyle: { fill: counterRed }, x: loc.x, y: loc.y + 4,
+      size: 18, value: "0",
+    }
+  }
+
   get markerLayout(): MarkerLayout | false {
     if (!this.target.isMarker || this.target.type === markerType.TrackedHull ||
         this.target.type === markerType.WheeledHull ||

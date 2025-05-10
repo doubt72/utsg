@@ -240,6 +240,54 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const markerMorale = () => {
+    const layout = counter.markerMoraleLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
+  const markerFirepower = () => {
+    const layout = counter.markerFirepowerLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
+  const markerRange = () => {
+    const layout = counter.markerRangeLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
+  const markerMovement = () => {
+    const layout = counter.markerMovementLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
   const elite = () => {
     const layout = counter.eliteLayout
     if (layout) return (
@@ -367,6 +415,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {elite()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}
       {markerBreak()}{markerFix()}
+      {markerMorale()}{markerFirepower()}{markerRange()}{markerMovement()}
       {status()}
       {showDisabled()}
       {overlay}
