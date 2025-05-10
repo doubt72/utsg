@@ -1,7 +1,8 @@
-import Game from "./Game";
+import Game, { gamePhaseType } from "./Game";
 import {
   BaseTerrainTypeType,
   Coordinate,
+  CounterSelectionTarget,
   Direction,
   MapEdgeType,
   MarkerTypeType,
@@ -532,5 +533,23 @@ export default class Map {
       }
     }
     return false
+  }
+
+  selectable(selection: CounterSelectionTarget): boolean {
+    if (this.game?.phase === gamePhaseType.Deployment) { return false }
+    if (selection.counter.target.isFeature || selection.counter.target.isMarker) {
+      return false
+    }
+    return true
+  }
+
+  selectUnit(selection: CounterSelectionTarget, callback: (x: number, y: number, counter: Counter) => void) {
+    if (selection.target.type === "reinforcement") { return } // shouldn't happen
+    if (selection.counter.trueIndex === undefined) { return } // shouldn't happen
+    if (!this.selectable(selection)) { return }
+    const x = selection.target.xy.x
+    const y = selection.target.xy.y
+    this.units[y][x][selection.counter.trueIndex].select()
+    callback(x, y, selection.counter)
   }
 }

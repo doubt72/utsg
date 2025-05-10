@@ -1,4 +1,4 @@
-import { Direction, GameAction, Player, ReinforcementSelection } from "../utilities/commonTypes";
+import { Direction, GameAction, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
@@ -30,6 +30,14 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3
 }
 
+export type ReinforcementSelection = {
+  player: Player, turn: number, index: number
+}
+
+export type GameMoveState = {
+  player: Player
+}
+
 export default class Game {
   id: number;
   name: string;
@@ -58,6 +66,7 @@ export default class Game {
   suppressNetwork: boolean = false;
   reinforcementSelection?: ReinforcementSelection;
   reinforcementNeedsDirection?: [number, number]
+  gameMoveState?: GameMoveState;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id

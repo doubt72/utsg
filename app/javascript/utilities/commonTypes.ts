@@ -57,10 +57,6 @@ export type CounterSelectionTarget = {
   counter: Counter;
 }
 
-export type ReinforcementSelection = {
-  player: Player, turn: number, index: number
-}
-
 export type WindTypeType = 0 | 1 | 2 | 3
 export const windType: { [index: string]: WindTypeType } = {
   Calm: 0, Breeze: 1, Moderate: 2, Strong: 3

@@ -22,6 +22,8 @@ WIP:
 
 ![picture of the game screen](support/deployment.png)
 
+Some counter debug list displays:
+
 ![all UK counters](support/counters-uk.png)
 
 ![all German counters](support/counters-ger.png)
