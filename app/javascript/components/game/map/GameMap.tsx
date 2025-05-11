@@ -66,7 +66,7 @@ export default function GameMap({
 
   const [xOffset, setXOffset] = useState<number>(0)
   const [yOffset, setYOffset] = useState<number>(0)
-  const [reinforcementOffset, setReinforcementOffset] = useState<number>(272)
+  const [reinforcementOffset, setReinforcementOffset] = useState<number>(269)
 
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
     if (preview || m?.preview) { return map.ySize * scale }
