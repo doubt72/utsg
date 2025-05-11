@@ -388,12 +388,14 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     }
   }
   
-  const overlay = (
-    <path d={counter.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
-          onMouseEnter={() => ovCallback(
-            { show: true, x: counter.hex?.x, y: counter.hex?.y }
-          )} />
-  )
+  const overlay = () => {
+    return (
+      <path d={counter.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
+            onMouseEnter={() => ovCallback(
+              { show: true, x: counter.hex?.x, y: counter.hex?.y }
+            )} />
+    )
+  }
 
   const rotation = () => {
     const r = counter.rotation
@@ -418,7 +420,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {markerMorale()}{markerFirepower()}{markerRange()}{markerMovement()}
       {status()}
       {showDisabled()}
-      {overlay}
+      {overlay()}
     </g>
   )
 }

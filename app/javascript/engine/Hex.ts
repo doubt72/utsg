@@ -224,6 +224,9 @@ export default class Hex {
   get hexCoords(): string {
     return baseHexCoords(this.map, this.xOffset, this.yOffset)
   }
+  // get hexOffsetCoords(): string {
+  //   return baseHexCoords(this.map, this.xOffset, this.yOffset + yOffset)
+  // }
 
   directionSelectionCoords(vertex: Direction): [string, [number, number]] {
     const x1 = (this.xCorner(vertex) + this.xCorner(normalDir(vertex - 1)))/2

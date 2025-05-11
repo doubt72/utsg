@@ -31,8 +31,12 @@ a.custom-button svg {
   margin-right: 5px;
 }
 
-a.custom-button,div.custom-button {
+a.custom-button {
   padding: 0.33em 0.75em;
+}
+
+div.custom-button {
+  padding: 0.2em 0.75em;
 }
 
 button.custom-button {

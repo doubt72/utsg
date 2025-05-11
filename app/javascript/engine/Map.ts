@@ -29,6 +29,7 @@ import {
   counterGreen,
   counterRed,
   roundedRectangle,
+  yMapOffset,
 } from "../utilities/graphics";
 import Marker from "./Marker";
 import Feature from "./Feature";
@@ -89,6 +90,7 @@ export default class Map {
 
   preview: boolean = false;
   debug: boolean = false;
+  debugLos: boolean = false;
 
   constructor (data: MapData, game?: Game) {
     this.loadConfig(data.layout)
@@ -153,7 +155,7 @@ export default class Map {
   }
 
   get yStatusSize(): number {
-    return this.preview ? 0 : 110
+    return this.preview ? 0 : yMapOffset
   }
 
   get xStatusSize(): number {
@@ -163,10 +165,11 @@ export default class Map {
   get narrow(): number { return 115 }
   get radius(): number { return this.narrow / 2 / Math.sin(1/3 * Math.PI) }
   xOffset(x: number, y: number): number { return this.narrow * (x + y%2/2 + 0.5) + 1 }
-  yOffset(y: number): number { return this.radius * (y*1.5 + 1) + 1 + this.yStatusSize }
+  yOffset(y: number): number { return this.radius * (y*1.5 + 1) + 1 }
   get xSize(): number { return this.narrow * (this.width + 0.5) + 2 + this.xStatusSize }
+  get previewXSize(): number { return this.narrow * (this.width + 0.5) + 2 }
   get ySize(): number {
-    return 1.5 * this.radius * (this.height + 0.3333) + 2 + this.yStatusSize
+    return 1.5 * this.radius * (this.height + 0.3333) + 2
   }
 
   victoryAt(loc: Coordinate): string | false {
@@ -361,17 +364,17 @@ export default class Map {
     return los(this, start, end)
   }
 
-  overlayLayout(loc: Coordinate, size: number, absolute = false): OverlayLayout {
+  overlayLayout(loc: Coordinate, size: number, max: Coordinate, absolute = false): OverlayLayout {
     let x1 = this.xOffset(loc.x, loc.y) - 90
-    let y1 = this.yOffset(loc.y) - 90
+    let y1 = this.yOffset(loc.y) - 90 + yMapOffset
     if (absolute) {
       x1 = loc.x - 50
       y1 = loc.y - 50
     }
     let x2 = x1 + size*170 + 10
     let y2 = y1 + 170 + 10
-    if (x2 > this.xSize) {
-      const diff = this.xSize - x2
+    if (x2 > max.x) {
+      const diff = max.x - x2
       x1 += diff
       x2 += diff
     }
@@ -380,13 +383,13 @@ export default class Map {
       x1 += diff
       x2 += diff
     }
-    if (y2 > this.ySize) {
-      const diff = this.ySize - y2
+    if (y2 > max.y) {
+      const diff = max.y - y2
       y1 += diff
       y2 += diff
     }
-    if (y1 < 0) {
-      const diff = -y1
+    if (y1 < 50) {
+      const diff = 50 - y1
       y1 += diff
       y2 += diff
     }
@@ -396,7 +399,7 @@ export default class Map {
     }
   }
 
-  counterInfoBadges(x: number, y: number, counter: Counter): BadgeLayout[] {
+  counterInfoBadges(x: number, y: number, maxY: number, counter: Counter): BadgeLayout[] {
     const badges: { text: string, color: string, tColor: string, arrow?: Direction}[] = []
     if (counter.target.rotates && !counter.target.isWreck &&
         !counter.target.hideOverlayRotation && !counter.reinforcement) {
@@ -448,7 +451,7 @@ export default class Map {
     const size = 24
     let diff = size+4
     let start = y
-    if (y + diff * badges.length > this.ySize) {
+    if (y + diff * badges.length > maxY) {
       diff = -diff
       start = y - 196
     }

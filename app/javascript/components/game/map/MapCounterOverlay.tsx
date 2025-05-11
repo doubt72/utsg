@@ -13,11 +13,13 @@ interface MapCounterOverlayProps {
   selectionCallback: Function;
   xx?: number;
   yy?: number;
+  maxX: number;
+  maxY: number;
   counters?: Counter[];
 }
 
 export default function MapCounterOverlay({
-  map, setOverlay, selectionCallback, xx, yy, counters
+  map, setOverlay, selectionCallback, xx, yy, maxX, maxY, counters
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
@@ -28,7 +30,7 @@ export default function MapCounterOverlay({
     const displayCounters = counters ? counters :
       map.counterDataAt(new Coordinate(xx as number, yy as number))
     const coord = counters ? counters[0].base as Coordinate : new Coordinate(xx as number, yy as number)
-    const layout = map.overlayLayout(coord, displayCounters.length, !!counters)
+    const layout = map.overlayLayout(coord, displayCounters.length, new Coordinate(maxX, maxY), !!counters)
     const helpOverlays: JSX.Element[] = []
     const selectionOverlays: JSX.Element[] = []
     let trueIndex = 0
@@ -51,7 +53,7 @@ export default function MapCounterOverlay({
             cd.trueIndex = trueIndex
           }
           const badges = map.counterInfoBadges(
-            layout.x+i*170 + 30, layout.y2 + 8, cd
+            layout.x+i*170 + 30, layout.y2 + 8, maxY, cd
           ).map((b, i) => {
             const arrow = b.arrow ?
               <g>
@@ -70,7 +72,7 @@ export default function MapCounterOverlay({
             )
           })
           helpOverlays.push(
-            <MapCounterOverlayHelp key={i} xx={layout.x + i*170+160} yy={layout.y+8}
+            <MapCounterOverlayHelp key={i} xx={layout.x + i*170+160} yy={layout.y+8} maxX={maxX} maxY={maxY}
                                    map={map} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
           selectionOverlays.push(

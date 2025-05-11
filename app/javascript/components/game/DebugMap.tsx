@@ -145,7 +145,7 @@ export default function DebugMap() {
 
   return (
     <div className="map-container">
-      <div className="flex mb05em">
+      <div className="flex map-control">
         <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
           size -
         </div>
@@ -168,7 +168,7 @@ export default function DebugMap() {
           showLos ? 
           <div className="custom-button" onClick={() => {
             setDebugLos(sl => !sl)
-            map && (map.debug = !map.debug)
+            map && (map.debugLos = !map.debugLos)
           }}>
             { debugLos ? "debug LOS on" : "debug LOS off" }
           </div> : ""
@@ -299,7 +299,7 @@ export default function DebugMap() {
         </div>
       </div>
       <GameMap map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-               showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
+               showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
                hexCallback={hexSelection} counterCallback={unitSelection} />
     </div>
   )

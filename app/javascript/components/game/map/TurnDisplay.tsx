@@ -61,7 +61,7 @@ export default function TurnDisplay({
       const cb = () => { ovCallback({ show: true, counters: [counter] }) }
       setTurn(<MapCounter counter={counter} ovCallback={cb} />)
     }
-  }, [xx, yy, hideCounters, map.game?.scenario.turns])
+  }, [xx, yy, hideCounters, map.game?.scenario.turns, map.game?.turn])
 
   return (
     <g>

@@ -9,11 +9,13 @@ interface MapCounterOverlayHelpProps {
   counter: Counter;
   xx: number;
   yy: number;
+  maxX: number;
+  maxY: number;
   setHelpDisplay: (a: JSX.Element | undefined) => void;
 }
 
 export default function MapCounterOverlayHelp({
-  map, counter, xx, yy, setHelpDisplay
+  map, counter, xx, yy, maxX, maxY, setHelpDisplay
 }: MapCounterOverlayHelpProps) {
   const [helpButton, setHelpButton] = useState<JSX.Element | undefined>()
 
@@ -29,7 +31,7 @@ export default function MapCounterOverlayHelp({
   }, [xx, yy])
 
   const showHelp = () => {
-    const layout = counter.helpLayout(new Coordinate(xx + 20, yy - 10))
+    const layout = counter.helpLayout(new Coordinate(xx + 20, yy - 10), new Coordinate(maxX, maxY))
     setHelpDisplay(
       <g>
         <path d={layout.path} style={layout.style as object} />

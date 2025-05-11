@@ -4,10 +4,9 @@ import Unit from "./Unit";
 import Feature from "./Feature";
 import Map from "./Map";
 import {
-  CircleLayout,
-  CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGPathArray, SVGStyle, StatusLayout, TextArrayLayout, baseCounterPath, clearColor, counterElite, counterGreen, counterRed,
-  facingLayout,
-  markerYellow, nationalColors
+  CircleLayout, CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGPathArray, SVGStyle, StatusLayout,
+  TextArrayLayout, baseCounterPath, clearColor, counterElite, counterGreen, counterRed,
+  facingLayout, markerYellow, nationalColors,
 } from "../utilities/graphics";
 import { normalDir } from "../utilities/utilities";
 
@@ -696,7 +695,7 @@ export default class Counter {
     return rc
   }
 
-  helpLayout(loc: Coordinate): HelpLayout {
+  helpLayout(loc: Coordinate, max: Coordinate): HelpLayout {
     if (!this.map) { return { path: "", size: 0, style: {} } }
     const text = this.target.helpText
     const size = 22
@@ -706,13 +705,13 @@ export default class Counter {
       if (n > width) { width = n }
     })
     const loc2 = loc.delta(width, text.length * size + size/2)
-    if (loc2.x > this.map.xSize) {
+    if (loc2.x > max.x) {
       const diff = - (width + 182.5)
       loc.xShift(diff)
       loc2.xShift(diff)
     }
-    if (loc2.y > this.map.ySize) {
-      const diff = this.map.ySize - loc2.y
+    if (loc2.y > max.y) {
+      const diff = max.y - loc2.y
       loc.yShift(diff)
       loc2.yShift(diff)
     }

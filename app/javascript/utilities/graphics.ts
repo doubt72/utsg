@@ -108,8 +108,9 @@ export function baseCounterPath(x: number, y: number): string {
   ].join(" ")
 }
 
-export function roundedRectangle(x: number, y: number, width: number, height: number): string {
-  const corner = 10
+export function roundedRectangle(
+  x: number, y: number, width: number, height: number, corner: number = 10
+): string {
   return [
     "M", x+corner, y,
     "L", x+width-corner, y, "A", corner, corner, 0, 0, 1, x+width, y+corner,
@@ -118,3 +119,5 @@ export function roundedRectangle(x: number, y: number, width: number, height: nu
     "L", x, y+corner, "A", corner, corner, 0, 0, 1, x+corner, y,
   ].join(" ")
 }
+
+export const yMapOffset = 160

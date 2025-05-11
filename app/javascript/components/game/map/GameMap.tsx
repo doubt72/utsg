@@ -18,6 +18,8 @@ import ReinforcementPanel from "../controls/ReinforcementPanel";
 import { Coordinate, CounterSelectionTarget, Direction, Player } from "../../../utilities/commonTypes";
 import MapHexOverlay from "./MapHexOverlay";
 import DirectionSelector from "./DirectionSelector";
+import MiniMap from "./MiniMap";
+import { yMapOffset } from "../../../utilities/graphics";
 
 interface GameMapProps {
   map: Map;
@@ -27,6 +29,7 @@ interface GameMapProps {
   showLos?: boolean;
   hideCounters?: boolean;
   showTerrain?: boolean;
+  preview: boolean;
   hexCallback?: (x: number, y: number) => void;
   counterCallback?: (x: number, y: number, counter: Counter) => void;
   directionCallback?: (x: number, y: number, d: Direction) => void;
@@ -35,7 +38,7 @@ interface GameMapProps {
 
 export default function GameMap({
   map, scale, showCoords = false, showStatusCounters = false, showLos = false,
-  hideCounters = false, showTerrain = false,
+  hideCounters = false, showTerrain = false, preview,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {}
 }: GameMapProps) {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
@@ -45,9 +48,10 @@ export default function GameMap({
   const [overlay, setOverlay] = useState<{
     show: boolean, x: number, y: number, counters?: Counter[]
   }>({ show: false, x: -1, y: -1 })
-  const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [updateUnitshaded, setUpdateUnitshaded] = useState(0)
+  const [losOverlay, setLosOverlay] = useState<JSX.Element | undefined>()
   const [counterLosOverlay, setCounterLosOverlay] = useState<JSX.Element[] | undefined>()
+  const [counterOverlay, setCounterOverlay] = useState<JSX.Element | undefined>()
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState<JSX.Element | undefined>()
   const [reinforcementsOverlay, setReinforcementsOverlay] = useState<JSX.Element | undefined>()
   const [directionSelectionOverlay, setDirectionSelectionOverlay] = useState<JSX.Element | undefined>()
@@ -58,9 +62,65 @@ export default function GameMap({
   const [turn, setTurn] = useState<JSX.Element | undefined>()
   const [sniper, setSniper] = useState<JSX.Element | undefined>()
   const [reinforcements, setReinforcements] = useState<JSX.Element | undefined>()
+  const [minimap, setMinimap] = useState<JSX.Element | undefined>()
+
+  const [xOffset, setXOffset] = useState<number>(0)
+  const [yOffset, setYOffset] = useState<number>(0)
+
+  const minHeight = (height: number, scale: number = 1, m?: Map) => {
+    if (preview || m?.preview) { return map.ySize * scale }
+    const fill = m?.debug ? 16 : 408
+    return height - fill < 1254 * scale ? 1254 * scale : height - fill
+  }
+  const minWidth = (width: number, scale: number = 1, m?: Map) => {
+    if (preview || m?.preview) { return map.xSize * scale }
+    let min = 705 + (m?.game?.scenario.turns ?? 0) * 90
+    if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 280 }
+    return width - 24 < min * scale ? min * scale : width - 24
+  }
+
+  const [width, setWidth] = useState<number>(minWidth(window.innerWidth, 1, map))
+  const [height, setHeight] = useState<number>(minHeight(window.innerHeight, 1, map))
 
   // IDEK what I'm doing with types here
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(minWidth(window.innerWidth, scale, map))
+      setHeight(minHeight(window.innerHeight, scale, map))
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [scale, map])
+
+  useEffect(() => {
+    setWidth(minWidth(window.innerWidth, scale, map))
+    setHeight(minHeight(window.innerHeight, scale, map))
+  }, [scale, map])
+
+  const minimapCallback = (event: React.MouseEvent, calculated: {
+    size: Coordinate, mapSize: Coordinate, scale: number
+  }) => {
+    const element = event.target as SVGPathElement
+    const rect = element.getBoundingClientRect()
+    const x = event.clientX - rect.x;
+    const y = event.clientY - rect.y;
+    console.log(`${x} ${y} ${calculated}`)
+    // TODO: actually use this
+    setXOffset(0)
+    setYOffset(0)
+  }
+
+  useEffect(() => {
+    if (!map || map.preview || preview) { return }
+    const xScale = (width - 200 * scale) / map.previewXSize / scale
+    const yScale = (height - yMapOffset * scale) / map.ySize / scale
+    console.log(`int ${width - 200},${map.previewXSize} - ${height - yMapOffset},${map.ySize}`)
+    setMinimap(<MiniMap map={map} xx={2} yy={2} xScale={xScale > 1 ? 1 : xScale}
+                        yScale={yScale > 1 ? 1 : yScale} xOffset={xOffset} yOffset={yOffset}
+                        callback={minimapCallback} />)
+  }, [map, width, height, scale])
 
   useEffect(() => {
     if (!map || map.debug) { return }
@@ -102,35 +162,35 @@ export default function GameMap({
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
     setWeather(() =>
-      map?.preview ? undefined :
+      map.preview || preview ? undefined :
         <WeatherDisplay preview={false} map={map} hideCounters={hideCounters}
-                        xx={(map?.xSize || 0) - 192} yy={2 + map?.yStatusSize}
+                        xx={width / (scale || 1) - 192} yy={2 + map?.yStatusSize}
                         ovCallback={setOverlay} />
     )
     setScore(() =>
-      map?.preview ? undefined :
-        <ScoreDisplay map={map} xx={(map?.xSize || 0) - 192} yy={280  + map?.yStatusSize}/>
+      map.preview || preview ? undefined :
+        <ScoreDisplay map={map} xx={width / (scale || 1) - 192} yy={280  + map?.yStatusSize}/>
     )
     setInitiative(() =>
-      map?.preview ? undefined :
+      map.preview || preview ? undefined :
         <InitiativeDisplay map={map} ovCallback={setOverlay} hideCounters={hideCounters}
-                           xx={(map?.xSize || 0) - 192} yy={342 + map?.yStatusSize} />
+                           xx={width / (scale || 1) - 192} yy={342 + map?.yStatusSize} />
     )
     setTurn(() =>
-      map?.preview ? undefined :
-        <TurnDisplay xx={(map?.xSize || 0) - 102 - (map?.game?.scenario.turns ?? 0) * 90}
-                     yy={2} hideCounters={hideCounters} map={map} ovCallback={setOverlay}/>
+      map.preview || preview ? undefined :
+        <TurnDisplay xx={width / (scale || 1) - 102 - (map?.game?.scenario.turns ?? 0) * 90}
+                     yy={52} hideCounters={hideCounters} map={map} ovCallback={setOverlay}/>
     )
     setSniper(() => {
-      const x = map.xSize - 384 - (map.game?.scenario.turns ?? 0) * 90
-      return map?.preview || (!map?.game?.alliedSniper && !map?.game?.axisSniper) ?
+      const x = width / (scale || 1) - 384 - (map.game?.scenario.turns ?? 0) * 90
+      return map.preview || preview || (!map?.game?.alliedSniper && !map?.game?.axisSniper) ?
         undefined :
-        <SniperDisplay xx={x} yy={2} hideCounters={hideCounters} map={map}
+        <SniperDisplay xx={x} yy={52} hideCounters={hideCounters} map={map}
                        ovCallback={setOverlay}/>
     })
     setReinforcements(() =>
-      map?.preview ? undefined :
-        <Reinforcements xx={2} yy={2} map={map} callback={showReinforcements} update={{key: true}}/>
+      map.preview || preview ? undefined :
+        <Reinforcements xx={272} yy={52} map={map} callback={showReinforcements} update={{key: true}}/>
     )
     setDirectionSelectionOverlay(() => {
       if (!map.game?.reinforcementNeedsDirection || !map.game.reinforcementSelection) {
@@ -144,7 +204,7 @@ export default function GameMap({
   }, [
     map, showCoords, showStatusCounters, hideCounters, updateUnitshaded, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
-    map?.windSpeed, map?.windDirection, map?.windVariable,
+    map?.windSpeed, map?.windDirection, map?.windVariable, width, height, scale,
     map?.game?.currentPlayer, map?.game?.lastMoveIndex, map?.game?.lastMove?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore,
@@ -155,19 +215,20 @@ export default function GameMap({
   useEffect(() => {
     if (overlay.x < 0) { return }
     if (!overlay.show) {
-      setOverlayDisplay(undefined)
+      setLosOverlay(undefined)
       setCounterLosOverlay(undefined)
+      setCounterOverlay(undefined)
       return
     }
     if (showLos && !overlay.counters) {
       const counters = map.counterDataAt(new Coordinate(overlay.x, overlay.y)).filter(c => !c.u.isFeature)
       if (counters.length < 1) { return }
-      if (map.debug) { // debugging only, never set in actual games
-        setOverlayDisplay(
+      if (map.debugLos) { // debugging only, never set in actual games
+        setLosOverlay(
           <MapLosDebugOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay} />
         )
       } else {
-        setOverlayDisplay(
+        setLosOverlay(
           <MapLosOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay} />
         )
         setCounterLosOverlay(map.countersAt(new Coordinate(overlay.x, overlay.y)).map((c, i) => 
@@ -175,17 +236,17 @@ export default function GameMap({
         ))
       }
     } else if (!overlay.counters) {
-      setOverlayDisplay(
+      setCounterOverlay(
         <MapCounterOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay}
-                           selectionCallback={unitSelection} />
+                           selectionCallback={unitSelection} maxX={width} maxY={height} />
       )
     } else if (!showLos) {
-      setOverlayDisplay(
+      setCounterOverlay(
         <MapCounterOverlay counters={overlay.counters} map={map} setOverlay={setOverlay}
-                           selectionCallback={unitSelection} />
+                           selectionCallback={unitSelection} maxX={width} maxY={height}  />
       )
     }
-  }, [overlay.show, overlay.x, overlay.y, overlay.counters])
+  }, [overlay.show, overlay.x, overlay.y, overlay.counters, map?.debugLos])
 
   useEffect(() => {
     setOverlay({ show: false, x: -1, y: -1 })
@@ -289,26 +350,52 @@ export default function GameMap({
     )
   }
 
+  const mapDisplay = () => {
+    if (map?.preview || preview) {
+      return (
+        <g>
+          {hexDisplay}
+          {hexDisplayDetail}
+          {counterDisplay}
+        </g>
+      )
+    } else {
+      let mWidth = width / (scale || 1) - 200
+      let mHeight = height / (scale || 1) - yMapOffset
+      if (map) {
+        if (mWidth > map?.previewXSize) { mWidth = map.previewXSize }
+        if (mHeight > map?.ySize) { mHeight = map.ySize }
+      }
+      return (
+        <svg x={0} y={yMapOffset} width={mWidth} height={mHeight}
+             viewBox={`0 0 ${mWidth} ${mHeight}`}>
+          {hexDisplay}
+          {hexDisplayDetail}
+          {counterDisplay}
+          {losOverlay}
+          {counterLosOverlay}
+        </svg>
+      )
+    }
+  }
+
   return (
     <svg ref={svgRef as React.LegacyRef<SVGSVGElement>}
-         className="map-svg" width={(map?.xSize || 1) * (scale || 1)}
-         height={(map?.ySize || 1) * (scale || 1)}
-         viewBox={`0 0 ${map?.xSize || 1} ${map?.ySize || 1}`}>
+         className="map-svg" width={width} height={height}
+         viewBox={`0 0 ${width / (scale || 1)} ${height / (scale || 1)}`}>
       <MapHexPatterns />
-      {hexDisplay}
-      {hexDisplayDetail}
+      {mapDisplay()}
       {weather}
       {initiative}
       {score}
       {turn}
       {sniper}
       {reinforcements}
-      {counterDisplay}
       {hexDisplayOverlays}
       {directionSelectionOverlay}
       {reinforcementsOverlay}
-      {overlayDisplay}
-      {counterLosOverlay}
+      {minimap}
+      {counterOverlay}
       {terrainInfoOverlay}
     </svg>
   )

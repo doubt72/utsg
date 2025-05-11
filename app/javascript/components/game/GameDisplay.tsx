@@ -155,7 +155,8 @@ export default function GameDisplay() {
         </div>
       </div>
       {controls}
-      <div className="flex mr05em p05em">
+      <div className="flex map-control">
+        <div className="flex-fill"></div>
         <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
           size -
         </div>
@@ -181,9 +182,9 @@ export default function GameDisplay() {
           terrain info { showTerrain ? "on" : "off" }
         </div>
       </div>
-      <div className="mb05em ml05em mr05em">
+      <div className="game-map">
         <GameMap map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-                 showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain}
+                 showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
                  hexCallback={hexSelection} counterCallback={unitSelection}
                  directionCallback={directionSelection} resetCallback={resetDisplay} />
       </div>
