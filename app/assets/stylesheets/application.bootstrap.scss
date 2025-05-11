@@ -36,7 +36,11 @@ a.custom-button {
 }
 
 div.custom-button {
-  padding: 0.2em 0.75em;
+  padding: 0.1em 0.75em 0.3em;
+}
+
+div.custom-button span {
+  padding-top: 0.2em;
 }
 
 button.custom-button {

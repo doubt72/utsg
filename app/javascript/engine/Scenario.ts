@@ -21,6 +21,7 @@ export type ScenarioData = {
     first_move: Player;
     allied_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
     axis_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
+    special_rules?: string[],
     map_data: MapData;
   }
 }
@@ -45,6 +46,7 @@ export default class Scenario {
   alliedReinforcements: ReinforcementSchedule = {};
   axisReinforcements: ReinforcementSchedule = {};
   map: Map;
+  specialRules: string[]
 
   constructor(data: ScenarioData, game?: Game) {
     this.code = data.id
@@ -54,6 +56,8 @@ export default class Scenario {
 
     this.alliedFactions = data.allies
     this.axisFactions = data.axis
+    this.specialRules = data.metadata.special_rules ? data.metadata.special_rules : []
+    console.log(this.specialRules)
     this.setUnits(data, game)
 
     this.date = data.metadata.date
@@ -94,6 +98,16 @@ export default class Scenario {
       for (const counterData of list) {
         const x = counterData.x || 1
         const id = counterData.id
+        if (!counterData.ft && this.axisFactions.includes(counterData.c)) {
+          if (this.specialRules.includes("axis_green_armor")) {
+            if (["tank", "spg", "ht", "ac"].includes(counterData.t)) { counterData.o.v = -1 }
+          }
+          if (this.specialRules.includes("axis_fragile_vehicles")) {
+            if (["tank", "spg", "ht", "ac"].includes(counterData.t)) {
+              counterData.o.bd = counterData.o.bd ? counterData.o.bd + 1 : 3
+            }
+          }
+        }
         const counter = counterData.ft ? new Feature(counterData) : new Unit(counterData)
 
         turnCounters.push({x, used: 0, id, counter})

@@ -364,9 +364,9 @@ export default class Map {
     return los(this, start, end)
   }
 
-  overlayLayout(loc: Coordinate, size: number, max: Coordinate, absolute = false): OverlayLayout {
-    let x1 = this.xOffset(loc.x, loc.y) - 90
-    let y1 = this.yOffset(loc.y) - 90 + yMapOffset
+  overlayLayout(loc: Coordinate, size: number, max: Coordinate, shift: Coordinate, absolute = false): OverlayLayout {
+    let x1 = this.xOffset(loc.x, loc.y) - 90 - shift.x
+    let y1 = this.yOffset(loc.y) - 90 + yMapOffset - shift.y
     if (absolute) {
       x1 = loc.x - 50
       y1 = loc.y - 50
@@ -507,7 +507,7 @@ export default class Map {
       this.game.scenario.axisReinforcements[turn][index].counter
     if (!hex?.terrain.move) { return false }
     if (!hex.terrain.vehicle && !uf.isFeature && (uf.isTracked || uf.isWheeled)) { return false }
-    if (hex.terrain.gun === false && !uf.isFeature && uf.fieldGun) { return false }
+    if (hex.terrain.gun === false && !uf.isFeature && (uf.type === unitType.Gun)) { return false }
     if (uf.isFeature) {
       for (const f of this.countersAt(hex.coord)) {
         if (f.target.isFeature) { return false }

@@ -20,7 +20,7 @@ Probably could do a more to TS-ify the react code.  Some things were refactored 
 
 WIP:
 
-![picture of the game screen](support/deployment.png)
+![picture of the game screen](support/game.png)
 
 Some counter debug list displays:
 

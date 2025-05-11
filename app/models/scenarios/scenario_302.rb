@@ -21,6 +21,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: %i[axis_green_armor axis_fragile_vehicles],
         }
       end
 
@@ -43,11 +44,18 @@ module Scenarios
           wind: [1, 3, true],
           hexes:,
           layout: [23, 21, "x"],
-          allied_edge: "r",
-          axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          allied_edge: "l",
+          axis_edge: "r",
+          victory_hexes: [
+            [4, 18, 1], [7, 15, 1], [8, 13, 1], [9, 16, 1], [10, 14, 1], [12, 19, 1],
+            [14, 2, 2], [16, 3, 2], [19, 8, 2], [19, 16, 2], [20, 15, 2],
+          ],
+          allied_setup: {
+            "0": 10.upto(20).map { |y| 0.upto(12).map { |x| [x, y] } }.flatten(1),
+          },
+          axis_setup: {
+            "0": 0.upto(4).map { |y| ["*", y] }.concat(18.upto(22).map { |x| [x, "*"] }),
+          },
         }
       end
 
@@ -569,10 +577,11 @@ module Scenarios
             [2, :usa_engineer_s],
             [5, :usa_rifle_s],
             [2, :usa_m2_browning],
+            :usa_m2_mortar,
             :usa_radio_155mm,
-            [3, :usa_m3a1_half_track],
-            [7, :usa_m4_sherman],
-            [3, :usa_m18_hellcat],
+            [2, :usa_m3a1_half_track],
+            [4, :usa_m4_sherman],
+            [2, :usa_m18_hellcat],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -584,9 +593,11 @@ module Scenarios
             :ger_leader_3_1,
             [9, :ger_rifle_s],
             [3, :ger_mg_42],
+            :ger_panzerschreck,
             [5, :ger_panther_a_g],
-            [3, :ger_jagdpanzer_iv],
-            [3, :ger_stug_iv],
+            [2, :ger_jagdpanzer_iv],
+            [2, :ger_stug_iv],
+            :ger_sdkfz_234_1,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

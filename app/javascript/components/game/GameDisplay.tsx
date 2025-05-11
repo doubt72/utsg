@@ -11,6 +11,10 @@ import Map from "../../engine/Map";
 import Counter from "../../engine/Counter";
 import { Direction } from "../../utilities/commonTypes";
 import ErrorDisplay from "./ErrorDisplay";
+import {
+  Circle, CircleFill, DashCircle, EyeFill, GeoAlt, GeoAltFill, Hexagon, HexagonFill,
+  PlusCircle, Square, SquareFill, Stack
+} from "react-bootstrap-icons";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -158,28 +162,28 @@ export default function GameDisplay() {
       <div className="flex map-control">
         <div className="flex-fill"></div>
         <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
-          size -
+          <span>size</span> <DashCircle />
         </div>
         <div className="custom-button" onClick={() => setScale(1)}>
-          0
+          <Circle />
         </div>
         <div className="custom-button" onClick={() => setScale(s => Math.min(s*1.25, 2.5))}>
-          + size
+          <PlusCircle /> <span>size</span>
         </div>
         <div className="custom-button" onClick={() => setCoords(c => !c)}>
-          coords { coords ? "on" : "off" }
+          { coords ? <GeoAltFill /> : <GeoAlt /> } <span>coords</span>
         </div>
         <div className="custom-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
-          status { showStatusCounters ? "counters" : "badges" }
+          { showStatusCounters ? <Stack /> : <CircleFill /> } <span>status</span>
         </div>
         <div className="custom-button" onClick={() => setShowLos(sl => !sl)}>
-          { showLos ? "LOS" : "stack" } overlays
+          { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
         </div>
         <div className="custom-button" onClick={() => setHideCounters(sc => !sc)}>
-          { hideCounters ? "show" : "hide" } counters
+        { hideCounters ? <Square /> : <SquareFill /> } <span>counters</span>
         </div>
         <div className="custom-button" onClick={() => setShowTerrain(sc => !sc)}>
-          terrain info { showTerrain ? "on" : "off" }
+        { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain info</span>
         </div>
       </div>
       <div className="game-map">

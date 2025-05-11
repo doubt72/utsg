@@ -1,10 +1,19 @@
 - Find undo bug on KV map/gun
   - probably just switch to only load changes on synchronization
-- Switch map to have scrollbars and overview
+- Support mouse scroll on map
+- Change zoom to only affect map
+  - one step for status displays
+  - make scale of 1 maximum, probably
+- Minimap conforms to map shape
+  - Adjust reinforcements to match
+- Reinforcement window always opens to the left / finer movement control for it
+- Improve layout of moves/chat on smaller screens
+
 - Implement moves
 
-- Switch game status to websocket
-- fix text selection on select scenario
+- Switch main page game status to websocket
+
+- fix text selection on select scenario maybe
 
 - Add more info on signup page
 

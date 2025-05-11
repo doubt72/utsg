@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 import {
   ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, BoxArrowInRight, BoxArrowRight,
-  ChatText, Check2Square, CircleFill, Hexagon, InfoCircle, PencilSquare, Person, Record, RecordFill,
+  ChatText, Check2Square, CircleFill, Crosshair, Crosshair2, Hexagon, InfoCircle, PencilSquare, Person,
   ShieldExclamation, Trash3, XCircle
 } from "react-bootstrap-icons"
 
@@ -155,11 +155,11 @@ export const VerifyButton = () => {
 }
 
 export const FireGlyph = () => {
-  return <Record/>
+  return <Crosshair/>
 }
 
 export const FireIntenseGlyph = () => {
-  return <RecordFill/>
+  return <Crosshair2/>
 }
 
 export const MoveGlyph = () => {
