@@ -8,6 +8,8 @@ interface MiniMapProps {
   map: Map;
   xx: number;
   yy: number;
+  scale: number;
+  mapScale: number;
   xScale: number;
   yScale: number;
   xOffset: number;
@@ -20,7 +22,9 @@ interface MiniMapProps {
 }
 
 export default function MiniMap(
-  {map, xx, yy, xScale, yScale, xOffset, yOffset, callback, widthCallback }: MiniMapProps
+  {
+    map, xx, yy, scale, mapScale, xScale, yScale, xOffset, yOffset, callback, widthCallback
+  }: MiniMapProps
 ) {
   const [minimap, setMinimap] = useState<JSX.Element | undefined>()
   const [width, setWidth] = useState<number>(0)
@@ -30,14 +34,14 @@ export default function MiniMap(
     const maxYSize = 180 // outer size is +10
     const x = map.previewXSize
     const y = map.ySize
-    const scale = maxXSize / x < maxYSize / y ? maxXSize / x : maxYSize / y
-    const xSize = x * scale + 6
-    const ySize = y * scale + 6
-    const xShift = (xSize + 10 - x * scale)/2
-    const yShift = (ySize + 16 - y * scale)/2
-    const xMap = x * scale
-    const yMap = y * scale
-    const extraShift = ySize < 140 ? 140 - ySize : 0
+    const miniScale = maxXSize / x < maxYSize / y ? maxXSize / x : maxYSize / y
+    const xSize = x * miniScale + 6
+    const ySize = y * miniScale + 6
+    const xShift = (xSize + 10 - x * miniScale)/2
+    const yShift = (ySize + 16 - y * miniScale)/2
+    const xMap = x * miniScale
+    const yMap = y * miniScale
+    const extraShift = ySize < (139 + 50 / scale - 50) ? (139 + 50 / scale - 50) - ySize : 0
 
     const xI = xShift + xOffset * xMap
     const yI = yShift + yOffset * yMap + extraShift
@@ -54,7 +58,7 @@ export default function MiniMap(
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "#EEE", strokeWidth: 4, stroke: "#670", fillRule: "evenodd" }} />
         <g transform={`translate(${xShift} ${yShift + extraShift})`}>
-          <GameMap map={map} scale={scale} preview={true} />
+          <GameMap map={map} scale={miniScale} preview={true} />
         </g>
         <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 5)}
               style={{ fill: "rgb(0,0,0,0.2)", strokeWidth: 0, stroke: "rgb(0,0,0,0)" }} />
@@ -65,12 +69,12 @@ export default function MiniMap(
               onClick={event => callback(
                 event, {
                   mapSize: new Coordinate(xMap, yMap),
-                  scale
+                  scale: miniScale
                 }
               )} />
       </g>
     )
-  }, [xScale, xOffset, yOffset, map.game?.lastMove])
+  }, [scale, mapScale, xScale, xOffset, yOffset, map.game?.lastMove])
 
   useEffect(() => {
     widthCallback(width + xx + 16)

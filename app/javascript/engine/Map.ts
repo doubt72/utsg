@@ -364,9 +364,11 @@ export default class Map {
     return los(this, start, end)
   }
 
-  overlayLayout(loc: Coordinate, size: number, max: Coordinate, shift: Coordinate, absolute = false): OverlayLayout {
-    let x1 = this.xOffset(loc.x, loc.y) - 90 - shift.x
-    let y1 = this.yOffset(loc.y) - 90 + yMapOffset - shift.y
+  overlayLayout(
+    loc: Coordinate, size: number, max: Coordinate, shift: Coordinate, mapScale: number, absolute = false
+  ): OverlayLayout {
+    let x1 = (this.xOffset(loc.x, loc.y) - shift.x) * mapScale - 90
+    let y1 = (this.yOffset(loc.y) - shift.y) * mapScale - 90 + yMapOffset
     if (absolute) {
       x1 = loc.x - 50
       y1 = loc.y - 50

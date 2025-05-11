@@ -1,6 +1,3 @@
-- Change zoom to only affect map
-  - one step for status displays
-  - make scale of 1 maximum, probably
 - Improve layout of moves/chat on smaller screens
 - Tooltips for map controls?
 

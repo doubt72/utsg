@@ -12,8 +12,8 @@ import Counter from "../../engine/Counter";
 import { Direction } from "../../utilities/commonTypes";
 import ErrorDisplay from "./ErrorDisplay";
 import {
-  Circle, CircleFill, DashCircle, EyeFill, GeoAlt, GeoAltFill, Hexagon, HexagonFill,
-  PlusCircle, Square, SquareFill, Stack
+  ArrowsCollapse, ArrowsExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
+  GeoAltFill, Hexagon, HexagonFill, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
 
 export default function GameDisplay() {
@@ -28,7 +28,8 @@ export default function GameDisplay() {
   const [controls, setControls] = useState<JSX.Element | undefined>(undefined)
   const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>(undefined)
 
-  const [scale, setScale] = useState(1)
+  const [mapScale, setMapScale] = useState(1)
+  const [interfaceShrink, setInterfaceShrink] = useState(false)
   const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(false)
@@ -161,14 +162,20 @@ export default function GameDisplay() {
       {controls}
       <div className="flex map-control">
         <div className="flex-fill"></div>
-        <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
-          <span>size</span> <DashCircle />
+        <div className={mapScale > 0.52 ? "custom-button" : "custom-button custom-button-ghost"}
+             onClick={() => setMapScale(s => Math.max(s/1.25, 0.512))}>
+          <span>map</span> <DashCircle />
         </div>
-        <div className="custom-button" onClick={() => setScale(1)}>
+        <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
+             onClick={() => setMapScale(1)}>
           <Circle />
         </div>
-        <div className="custom-button" onClick={() => setScale(s => Math.min(s*1.25, 2.5))}>
-          <PlusCircle /> <span>size</span>
+        <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
+             onClick={() => setMapScale(s => Math.min(s*1.25, 1.0))}>
+          <PlusCircle /> <span>map</span>
+        </div>
+        <div className="custom-button" onClick={() => setInterfaceShrink(c => !c)}>
+          { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>controls</span>
         </div>
         <div className="custom-button" onClick={() => setCoords(c => !c)}>
           { coords ? <GeoAltFill /> : <GeoAlt /> } <span>coords</span>
@@ -187,8 +194,9 @@ export default function GameDisplay() {
         </div>
       </div>
       <div className="game-map">
-        <GameMap map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-                 showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
+        <GameMap map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
+                 showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
+                 hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
                  hexCallback={hexSelection} counterCallback={unitSelection}
                  directionCallback={directionSelection} resetCallback={resetDisplay} />
       </div>

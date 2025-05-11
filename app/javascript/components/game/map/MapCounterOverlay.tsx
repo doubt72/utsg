@@ -13,6 +13,7 @@ interface MapCounterOverlayProps {
   selectionCallback: Function;
   xx?: number;
   yy?: number;
+  mapScale: number;
   shiftX: number;
   shiftY: number;
   maxX: number;
@@ -21,7 +22,7 @@ interface MapCounterOverlayProps {
 }
 
 export default function MapCounterOverlay({
-  map, setOverlay, selectionCallback, xx, yy, shiftX, shiftY, maxX, maxY, counters
+  map, setOverlay, selectionCallback, xx, yy, mapScale, shiftX, shiftY, maxX, maxY, counters
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
@@ -33,7 +34,8 @@ export default function MapCounterOverlay({
       map.counterDataAt(new Coordinate(xx as number, yy as number))
     const coord = counters ? counters[0].base as Coordinate : new Coordinate(xx as number, yy as number)
     const layout = map.overlayLayout(
-      coord, displayCounters.length, new Coordinate(maxX, maxY), new Coordinate(shiftX, shiftY), !!counters
+      coord, displayCounters.length, new Coordinate(maxX, maxY),
+      new Coordinate(shiftX, shiftY), mapScale, !!counters
     )
     const helpOverlays: JSX.Element[] = []
     const selectionOverlays: JSX.Element[] = []

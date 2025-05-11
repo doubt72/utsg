@@ -52,6 +52,10 @@ button.custom-button:hover,a.custom-button:hover,div.custom-button:hover {
   background-color: $very-dark-green;
 }
 
+div.custom-button-ghost,div.custom-button-ghost:hover {
+  color: $darkish-green;
+}
+
 .form-container {
   width: 500px;
   padding: 1em;
