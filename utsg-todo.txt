@@ -1,13 +1,17 @@
-- Find undo bug on KV map/gun
-  - probably just switch to only load changes on synchronization
-- Support mouse scroll on map
 - Change zoom to only affect map
   - one step for status displays
   - make scale of 1 maximum, probably
-- Minimap conforms to map shape
-  - Adjust reinforcements to match
 - Reinforcement window always opens to the left / finer movement control for it
 - Improve layout of moves/chat on smaller screens
+- Tooltips for map controls?
+
+- Support mouse scroll on map
+  - Much harder than it appears, need a way to intercept only scroll/wheel/key events
+    but pass through all other mouse events
+
+- Find undo bug on KV map/gun
+  - probably a synchronization issue but haven't been able to reproduce
+  - probably just switch to only load changes on synchronization
 
 - Implement moves
 

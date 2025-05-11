@@ -57,7 +57,6 @@ export default class Scenario {
     this.alliedFactions = data.allies
     this.axisFactions = data.axis
     this.specialRules = data.metadata.special_rules ? data.metadata.special_rules : []
-    console.log(this.specialRules)
     this.setUnits(data, game)
 
     this.date = data.metadata.date

@@ -66,6 +66,7 @@ export default function GameMap({
 
   const [xOffset, setXOffset] = useState<number>(0)
   const [yOffset, setYOffset] = useState<number>(0)
+  const [reinforcementOffset, setReinforcementOffset] = useState<number>(272)
 
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
     if (preview || m?.preview) { return map.ySize * scale }
@@ -139,7 +140,7 @@ export default function GameMap({
 
     setMinimap(<MiniMap map={map} xx={2} yy={7} xScale={xScale > 1 ? 1 : xScale}
                         yScale={yScale > 1 ? 1 : yScale} xOffset={xOffset} yOffset={yOffset}
-                        callback={minimapCallback} />)
+                        callback={minimapCallback} widthCallback={setReinforcementOffset} />)
   }, [map, width, height, scale, xOffset, yOffset, map?.game?.lastMove])
 
   useEffect(() => {
@@ -210,7 +211,8 @@ export default function GameMap({
     })
     setReinforcements(() =>
       map.preview || preview ? undefined :
-        <Reinforcements xx={274} yy={52} map={map} callback={showReinforcements} update={{key: true}}/>
+        <Reinforcements xx={reinforcementOffset} yy={52} map={map} callback={showReinforcements}
+                        update={{key: true}}/>
     )
     setDirectionSelectionOverlay(() => {
       if (!map.game?.reinforcementNeedsDirection || !map.game.reinforcementSelection) {
