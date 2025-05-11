@@ -1,7 +1,6 @@
 - Change zoom to only affect map
   - one step for status displays
   - make scale of 1 maximum, probably
-- Reinforcement window always opens to the left / finer movement control for it
 - Improve layout of moves/chat on smaller screens
 - Tooltips for map controls?
 

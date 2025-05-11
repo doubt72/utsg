@@ -18,10 +18,10 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
   const nation = (x: number, y: number, n: string, player: Player, enabled: boolean) => {
     const overlay = enabled ? (
       <path className="svg-button-hover" d={baseCounterPath(x, y)}
-            onClick={() => callback(x, y, player)} />
+            onClick={() => callback(player === 1 ? x : x - 90, y, player)} />
     ) : (
       <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0.33)" }}
-            onClick={() => callback(x, y, player)}/>
+            onClick={() => callback(player === 1 ? x : x - 90, y, player)}/>
     )
     return (
       <g>

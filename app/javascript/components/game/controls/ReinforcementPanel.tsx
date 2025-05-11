@@ -38,7 +38,7 @@ export default function ReinforcementPanel({
 
   useEffect(() => {
     const units = allUnits()
-    const x = xx + (shifted ? (units ? maxWidth(units) + 150 : 300) : 0)
+    const x = xx + (shifted ? (units ? maxWidth(units) : 300) : 0)
     const closeX = !units || Object.keys(units).length == 0 ? x + 210 : x + maxWidth(units) - 15
     const closeY = yy + 18
     const ff = Math.sin(45 * Math.PI / 180) * 8

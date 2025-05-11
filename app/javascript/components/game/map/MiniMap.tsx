@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
-import { counterRed, roundedRectangle } from "../../../utilities/graphics";
+import { counterRed, roundedRectangle, roundedRectangleHole } from "../../../utilities/graphics";
 import GameMap from "./GameMap";
 import { Coordinate } from "../../../utilities/commonTypes";
 
@@ -38,16 +38,27 @@ export default function MiniMap(
     const xMap = x * scale
     const yMap = y * scale
     const extraShift = ySize < 137 ? 137 - ySize : 0
+
+    const xI = xShift + xOffset * xMap
+    const yI = yShift + yOffset * yMap + extraShift
+    const wI = xScale * xMap
+    const hI = yScale * yMap
+    const xO = xShift
+    const yO = yShift + extraShift
+    const wO = xSize - 6
+    const hO = ySize - 6
+
     setWidth(() => xSize)
     setMinimap(
       <g>
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
-              style={{ fill: "#BBB", strokeWidth: 4, stroke: "#670" }} />
+              style={{ fill: "#EEE", strokeWidth: 4, stroke: "#670", fillRule: "evenodd" }} />
         <g transform={`translate(${xShift} ${yShift + extraShift})`}>
           <GameMap map={map} scale={scale} preview={true} />
         </g>
-        <path d={roundedRectangle(
-          xShift + xOffset * xMap, yShift + yOffset * yMap + extraShift, xScale * xMap, yScale * yMap, 2 )}
+        <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 3)}
+              style={{ fill: "rgb(0,0,0,0.2)", strokeWidth: 0, stroke: "rgb(0,0,0,0)" }} />
+        <path d={roundedRectangle(xI, yI, wI, hI, 3)}
               style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: counterRed }} />
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: "#rgb(0,0,0,0)" }}
