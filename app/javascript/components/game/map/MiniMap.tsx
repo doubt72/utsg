@@ -34,10 +34,10 @@ export default function MiniMap(
     const xSize = x * scale + 6
     const ySize = y * scale + 6
     const xShift = (xSize + 10 - x * scale)/2
-    const yShift = (ySize + 20 - y * scale)/2
+    const yShift = (ySize + 16 - y * scale)/2
     const xMap = x * scale
     const yMap = y * scale
-    const extraShift = ySize < 137 ? 137 - ySize : 0
+    const extraShift = ySize < 140 ? 140 - ySize : 0
 
     const xI = xShift + xOffset * xMap
     const yI = yShift + yOffset * yMap + extraShift
@@ -56,9 +56,9 @@ export default function MiniMap(
         <g transform={`translate(${xShift} ${yShift + extraShift})`}>
           <GameMap map={map} scale={scale} preview={true} />
         </g>
-        <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 3)}
+        <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 5)}
               style={{ fill: "rgb(0,0,0,0.2)", strokeWidth: 0, stroke: "rgb(0,0,0,0)" }} />
-        <path d={roundedRectangle(xI, yI, wI, hI, 3)}
+        <path d={roundedRectangle(xI, yI, wI, hI, 5)}
               style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: counterRed }} />
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: "#rgb(0,0,0,0)" }}

@@ -132,10 +132,10 @@ export function roundedRectangleHole(
     "L", x+corner, y+height, "A", corner, corner, 0, 0, 1, x, y+height-corner,
     "L", x, y+corner, "A", corner, corner, 0, 0, 1, x+corner, y, "z",
     "M", x2+width2-corner, y2,
-    "L", x2+corner, y2, "A", corner, corner, 0, 0, 1, x2, y2+corner,
-    "L", x2, y2+height2-corner, "A", corner, corner, 0, 0, 1, x2+corner, y2+height2,
-    "L", x2+width2-corner, y2+height2, "A", corner, corner, 0, 0, 1, x2+width2, y2+height2-corner,
-    "L", x2+width2, y2+corner, "A", corner, corner, 0, 0, 1, x2+width2-corner, y2, "z"
+    "L", x2+corner, y2, "A", corner, corner, 0, 0, 0, x2, y2+corner,
+    "L", x2, y2+height2-corner, "A", corner, corner, 0, 0, 0, x2+corner, y2+height2,
+    "L", x2+width2-corner, y2+height2, "A", corner, corner, 0, 0, 0, x2+width2, y2+height2-corner,
+    "L", x2+width2, y2+corner, "A", corner, corner, 0, 0, 0, x2+width2-corner, y2, "z"
   ].join(" ")
 }
 

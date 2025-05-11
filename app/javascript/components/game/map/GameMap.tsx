@@ -138,7 +138,7 @@ export default function GameMap({
     if (xOffset > 1 - xScale) { setXOffset(1 - xScale) }
     if (yOffset > 1 - yScale) { setYOffset(1 - yScale) }
 
-    setMinimap(<MiniMap map={map} xx={2} yy={7} xScale={xScale > 1 ? 1 : xScale}
+    setMinimap(<MiniMap map={map} xx={2} yy={5} xScale={xScale > 1 ? 1 : xScale}
                         yScale={yScale > 1 ? 1 : yScale} xOffset={xOffset} yOffset={yOffset}
                         callback={minimapCallback} widthCallback={setReinforcementOffset} />)
   }, [map, width, height, scale, xOffset, yOffset, map?.game?.lastMove])
