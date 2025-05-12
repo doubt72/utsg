@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_29_163450) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "game_moves", force: :cascade do |t|
-    t.integer "sequence", null: false
     t.bigint "game_id", null: false
     t.bigint "user_id"
     t.jsonb "data", null: false
     t.integer "player", default: 1, null: false
     t.datetime "created_at", null: false
     t.boolean "undone", default: false, null: false
+    t.integer "sequence", null: false
     t.index ["created_at"], name: "index_game_moves_on_created_at"
     t.index ["game_id"], name: "index_game_moves_on_game_id"
     t.index ["id"], name: "index_game_moves_on_id"
@@ -80,7 +80,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_29_163450) do
     t.index ["username"], name: "index_users_on_username"
   end
 
-  add_foreign_key "game_moves", "games"
+  add_foreign_key "game_moves", "games", on_delete: :cascade
   add_foreign_key "game_moves", "users"
   add_foreign_key "games", "game_moves", column: "last_move_id"
   add_foreign_key "games", "users", column: "current_player_id"
@@ -88,6 +88,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_29_163450) do
   add_foreign_key "games", "users", column: "player_one_id"
   add_foreign_key "games", "users", column: "player_two_id"
   add_foreign_key "games", "users", column: "winner_id"
-  add_foreign_key "messages", "games"
+  add_foreign_key "messages", "games", on_delete: :cascade
   add_foreign_key "messages", "users"
 end
