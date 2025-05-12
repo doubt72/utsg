@@ -2980,7 +2980,7 @@ end
 File.open('ind.svg', 'w') do |file|
   file.puts header
   write_circle(50, 50, 40, file, true, "#007")
-  write_circle(50, 50, 22, file, true, "#77D")
+  write_circle(50, 50, 22, file, true, "#99F")
   file.puts footer
 end
 

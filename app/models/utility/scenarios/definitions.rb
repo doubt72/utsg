@@ -5,40 +5,21 @@ module Utility
     module Definitions
       AVAILABLE_ALLIED_FACTIONS = [
         # Current supported factions
-        { name: "American", code: "usa" },
-        { name: "British", code: "uk" },
-        { name: "Soviet", code: "ussr" },
-
-        # Likely future factions
-        # { name: "French", code: "fra" },
-        # { name: "Chinese", code: "chi" },
-        # { name: "Allied", code: "alm" },
-
-        # Possible future factions -- part of allied minors
-        # { name: "Polish", code: "pol" },
-        # { name: "Greek", code: "gre" },
-        # { name: "Norwegian", code: "nor" },
-        # { name: "Philippine", code: "phi" },
-        # { name: "Dutch", code: "net" },
-        # { name: "Belgian", code: "bel" },
-        # { name: "Yugoslav", code: "yug" },
+        { name: "Soviet", code: "ussr", nations: ["ussr"] },
+        { name: "Commonwealth", code: "uk", nations: %w[uk can aus nz ind sa] },
+        { name: "American", code: "usa", nations: %w[usa bra] },
+        { name: "French", code: "fra", nations: %w[fra frf] },
+        { name: "Chinese", code: "chi", nations: ["chi"] },
+        { name: "Minor Powers", code: "alm", nations: %w[pol gre nor bel dut yug] },
       ].freeze
 
       AVAILABLE_AXIS_FACTIONS = [
         # Currently supported factions
-        { name: "German", code: "ger" },
-        { name: "Italian", code: "ita" },
-        { name: "Japanese", code: "jap" },
-
-        # Likely future factions
-        # { name: "Finnish", code: "fin" },
-        # { name: "Axis", code: "axm" },
-
-        # Possible future factions -- part of axis minors
-        # { name: "Romanian", code: "rom" },
-        # { name: "Bulgarian", code: "bul" },
-        # { name: "Hungarian", code: "hun" },
-        # { name: "Slovakian", code: "slo" },
+        { name: "German", code: "ger", nations: ["ger"] },
+        { name: "Italian", code: "ita", nations: ["ita"] },
+        { name: "Japanese", code: "jap", nations: ["jap"] },
+        { name: "Finnish", code: "fin", nations: ["fin"] },
+        { name: "Minor Powers", code: "axm", nations: %w[pol gre nor bel dut yug] },
       ].freeze
     end
   end

@@ -75,7 +75,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           {scenarioNote()}
         </div>
         <div className="p05em corner-round edge-line">
-          <GameMap map={map} scale={0.25} />
+          <GameMap map={map} scale={0.25} preview={true} />
         </div>
       </div>
       <div className="flex mt1em">
@@ -86,7 +86,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           </svg>
         </div>
         <div className="flex-fill">
-          <div className="flex nowrap">
+          <div className="flex flex-wrap">
             {scenario.alliedUnitList.map((unit, i) => {
               if (unit.x !== undefined) {
                 return (
@@ -100,7 +100,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
               }
             })}
           </div>
-          <div className="flex nowrap">
+          <div className="flex flex-wrap">
             {scenario.axisUnitList.map((unit, i) => {
               if (unit.x !== undefined) {
                 return (

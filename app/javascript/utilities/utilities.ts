@@ -5,6 +5,7 @@ export function alliedCodeToName(code: string): string {
     { name: "Soviet", code: "ussr" },
     { name: "American", code: "usa" },
     { name: "British", code: "uk" },
+    { name: "Indian", code: "ind" },
     { name: "French", code: "fra" },
     { name: "Allied", code: "alm" },
   ]

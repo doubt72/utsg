@@ -12,6 +12,9 @@ Lint/AmbiguousBlockAssociation:
 Metrics/AbcSize:
   Max: 25
   CountRepeatedAttributes: false
+  Exclude:
+    - 'spec/**/*'
+    - 'app/models/scenarios/**/*'
 
 Metrics/BlockLength:
   Exclude:

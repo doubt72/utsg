@@ -245,7 +245,6 @@ export default function GameMap({
       setCounterOverlay(undefined)
       return
     }
-    console.log(mapScale)
     const xShift = (map?.previewXSize ?? 1) * xOffset
     const yShift = (map?.ySize ?? 1) * yOffset - 50 / scale + 50
     if (showLos && !overlay.counters) {

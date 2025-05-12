@@ -22,6 +22,10 @@ WIP:
 
 ![picture of the game screen](support/game.png)
 
+LOS:
+
+![picture of the game screen](support/game2.png)
+
 Some counter debug list displays:
 
 ![all UK counters](support/counters-uk.png)

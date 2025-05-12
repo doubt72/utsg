@@ -15,13 +15,27 @@ module Utility
       end
 
       def filter(scenarios, key, options)
-        if key == :string && options[key]
+        return unless options[key]
+
+        if key == :string
           scenarios.filter! do |s|
             s[key].include?(options[key].downcase) || s[:id].include?(options[key])
           end
           return
         end
-        scenarios.filter! { |s| s[key].include?(options[key].downcase) } if options[key]
+        nations = nations_by_key(key, options[key])
+        scenarios.filter! do |s|
+          !s[key].intersection(nations).empty?
+        end
+      end
+
+      def nations_by_key(side, code)
+        factions = if side == :allies
+                     Utility::Scenarios::Definitions::AVAILABLE_ALLIED_FACTIONS
+                   else
+                     Utility::Scenarios::Definitions::AVAILABLE_AXIS_FACTIONS
+                   end
+        factions.find { |x| x[:code] == code }[:nations]
       end
 
       def scenario_by_id(id)

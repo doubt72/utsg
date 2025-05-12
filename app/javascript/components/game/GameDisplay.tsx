@@ -36,6 +36,10 @@ export default function GameDisplay() {
   const [showTerrain, setShowTerrain] = useState(false)
   const [showLos, setShowLos] = useState(false)
 
+  const [mapScaleMinusButton, setMapScaleMinusButton] = useState<JSX.Element | undefined>()
+  const [mapScaleResetButton, setMapScaleResetButton] = useState<JSX.Element | undefined>()
+  const [mapScalePlusButton, setMapScalePlusButton] = useState<JSX.Element | undefined>()
+
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
       ok: response => response.json().then(json => {
@@ -51,7 +55,61 @@ export default function GameDisplay() {
         })
       })
     })
+    const shrink = localStorage.getItem("interfaceShrink")
+    const mScale = localStorage.getItem("mapScale")
+    if (shrink !== null) { setInterfaceShrink(shrink === "true") }
+    if (mScale !== null) { setMapScale(Number(mScale)) }
   }, [])
+
+  const switchMapScale = (set: -1 | 0 | 1) => {
+    if (set < 0) {
+      setMapScale(ms => {
+        const nv = Math.max(ms/1.25, 0.512)
+        localStorage.setItem("mapScale", String(nv))
+        return nv
+      })
+    } else if (set > 0) {
+      setMapScale(ms => {
+        const nv = Math.min(ms*1.25, 1.0)
+        localStorage.setItem("mapScale", String(nv))
+        return nv
+      })
+    } else {
+      setMapScale(() => {
+        localStorage.setItem("mapScale", String(1))
+        return 1
+      })
+    }
+  }
+
+  useEffect(() => {
+    setMapScaleMinusButton(
+      <div className={mapScale > 0.52 ? "custom-button" : "custom-button custom-button-ghost"}
+           onClick={() => switchMapScale(-1)}>
+        <span>map</span> <DashCircle />
+      </div>
+    )
+    setMapScaleResetButton(
+      <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
+           onClick={() => switchMapScale(0)}>
+        <Circle />
+      </div>
+    )
+    setMapScalePlusButton(
+      <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
+           onClick={() => switchMapScale(1)}>
+        <PlusCircle /> <span>map</span>
+      </div>
+    )
+  }, [mapScale])
+
+  const toggleInterfaceShrink = () => {
+    setInterfaceShrink(is => {
+      const nv = !is
+      localStorage.setItem("interfaceShrink", String(nv))
+      return nv
+    })
+  }
 
   useEffect(() => {
     if (!game.k || moves) { return }
@@ -162,19 +220,10 @@ export default function GameDisplay() {
       {controls}
       <div className="flex map-control">
         <div className="flex-fill"></div>
-        <div className={mapScale > 0.52 ? "custom-button" : "custom-button custom-button-ghost"}
-             onClick={() => setMapScale(s => Math.max(s/1.25, 0.512))}>
-          <span>map</span> <DashCircle />
-        </div>
-        <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
-             onClick={() => setMapScale(1)}>
-          <Circle />
-        </div>
-        <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
-             onClick={() => setMapScale(s => Math.min(s*1.25, 1.0))}>
-          <PlusCircle /> <span>map</span>
-        </div>
-        <div className="custom-button" onClick={() => setInterfaceShrink(c => !c)}>
+        {mapScaleMinusButton}
+        {mapScaleResetButton}
+        {mapScalePlusButton}
+        <div className="custom-button" onClick={() => toggleInterfaceShrink()}>
           { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>controls</span>
         </div>
         <div className="custom-button" onClick={() => setCoords(c => !c)}>

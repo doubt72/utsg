@@ -1,3 +1,10 @@
+- Remember scale/mapScale
+
+- fix LOS error along firing arc in last image
+- fix bug when changing faction filter from page 2
+- change filtering to handle multiple "factions"
+  - 
+
 - Improve layout of moves/chat on smaller screens
 - Tooltips for map controls?
 
