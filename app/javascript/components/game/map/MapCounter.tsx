@@ -183,7 +183,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       <g>
         <path d={layout.path} style={layout.style as object} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="sans-serif" style={{fill: "black"}}>{layout.value}</text>
+              fontFamily="sans-serif" style={{ fill: "black" }}>{layout.value}</text>
       </g>
     )
   }

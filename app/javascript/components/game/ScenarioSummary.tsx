@@ -26,6 +26,24 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
     </span>
   )
 
+  const specialRules = () => {
+    if (scenario.specialRules.length === 0) { return "" }
+    return (
+      <p>
+        <b>SPECIAL RULES:</b>
+        <ul>
+          {
+            scenario.specialRulesList.map((r,i) => {
+              return (
+                <li key={i}>{r}</li>
+              )
+            })
+          }
+        </ul>
+      </p>
+    )
+  }
+
   const scenarioNote = () => {
     if (!scenario.status) { return "" }
     let note = "this scenario is an unfinished prototype.  It is still in initial design \
@@ -72,6 +90,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           {scenario.description?.map((p, i) => {
             return <p key={i}>{p}</p>
           })}
+          {specialRules()}
           {scenarioNote()}
         </div>
         <div className="p05em corner-round edge-line">

@@ -1832,6 +1832,21 @@ File.open('ac.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('cav.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  file.puts footer
+end
+
 File.open('ht.svg', 'w') do |file|
   file.puts header
   write_path([

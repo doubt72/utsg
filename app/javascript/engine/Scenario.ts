@@ -167,4 +167,23 @@ export default class Scenario {
   replaceAxisReinforcement(turn: number, index: number): void {
     this.axisReinforcements[turn][index].used--
   }
+
+  get specialRulesList(): string[] {
+    return this.specialRules.map(r => {
+      if (r === "axis_green_armor") {
+        return "Axis vehicle crews are green (get a penalty on targeting rolls)"
+      } else if (r === "axis_elite_armor") {
+        return "Axis vehicle crews are elite (get a bonus to targeting rolls)"
+      } else if (r === "axis_fragile_vehicles") {
+        return "Axis vehicles are more likely to break down"
+      } else if (r === "allied_green_armor") {
+        return "Allied vehicle crews are green (get a penalty on targeting rolls"
+      } else if (r === "allied_elite_armor") {
+        return "Allied vehicle crews are elite (get a bonus to targeting rolls)"
+      } else if (r === "allied_fragile_vehicles") {
+        return "Axis vehicles are more likely to break down"
+      }
+      return "unknown rule"
+    })
+  }
 }

@@ -297,14 +297,22 @@ export default class Counter {
   }
 
   get sponsonLayout(): CounterLayout | false {
-    const gun = this.target.sponson as [number, number]
+    const gun = this.target.sponson as [number, number] | [number, number, string]
     if (!gun || this.target.isWreck) { return false }
     const x = this.x + 38
     const y = this.y + 53
+    const width = 12.8
     const path = [
-      "M", x-14, y-9, "L", x+14, y-9, "L", x+14, y+3, "L", x-14, y+3, "L", x-14, y-9
+      "M", x-width, y-9, "L", x+width, y-9, "L", x+width, y+3, "L", x-width, y+3, "L", x-width, y-9
     ].join(" ")
     const style = { fill: this.color }
+    if (gun.length > 2) {
+      if (gun[2] === "ft") {
+        style.fill = markerYellow
+      } else if (gun[2] === "g") {
+        style.fill = "white"
+      }
+    }
     return {
       path: path, x: x, y: y, size: 9.5, style: style, value: `${gun[0]}-${gun[1]}`
     }

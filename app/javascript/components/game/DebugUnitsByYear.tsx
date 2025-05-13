@@ -4,9 +4,11 @@ import CounterDisplay from "./CounterDisplay";
 import Unit, { UnitData } from "../../engine/Unit";
 import { MarkerData } from "../../engine/Marker";
 import { FeatureData } from "../../engine/Feature";
+import { useParams } from "react-router-dom";
 
 
 export default function DebugUnitsByYear() {
+  const nation: string | undefined = useParams().nation
   const [units, setUnits] = useState<{ [index: string]: UnitData }>({})
 
   useEffect(() => {
@@ -19,7 +21,9 @@ export default function DebugUnitsByYear() {
     const y: { [index: number]: boolean } = {}
     for (const u of Object.values(units)) {
       if (!u.mk && !u.ft) {
-        y[u.y] = true
+        if (!nation || u.c === nation) {
+          y[u.y] = true
+        }
       }
     }
     const keys = Object.keys(y).map(n => Number(n))
@@ -43,13 +47,16 @@ export default function DebugUnitsByYear() {
 
   const svgContainer = (unit: Unit | undefined, key: number) => {
     if (!unit) { return <></> }
-    return <CounterDisplay key={key} unit={unit} />
+    const fullKey = `${unit.name}-${unit.year}-${key}`
+    return <CounterDisplay key={fullKey} unit={unit} />
   }
 
   const makeUnit = (data: UnitData | FeatureData | MarkerData): Unit | undefined => {
     if (data.ft) {
       return undefined
     } else if (data.mk) {
+      return undefined
+    } else if (nation && data.c !== nation) {
       return undefined
     } else {
       return new Unit(data)

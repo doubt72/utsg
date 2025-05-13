@@ -32,7 +32,6 @@ module Scenarios
           significant artillery support, and while the German attackers had recently received
           new Panther tanks, they neither had the time nor fuel to properly train the new crews
           operating them, and fuel shortages also dogged the Germans once the fight began.",
-          "Special rules: rookie Germans, fog, special breakdown rules",
         ]
       end
 

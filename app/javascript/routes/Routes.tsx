@@ -42,8 +42,11 @@ export default function Routes() {
         { path: "/profile", element: <Profile /> },
 
         { path: "/debug/markers", element: <DebugMarkers /> },
-        { path: "/debug/units", element: <DebugUnitsByYear /> },
-        { path: "/debug/units/:nation", element: <DebugUnits /> },
+        { path: "/debug/markers/:nation", element: <DebugUnits /> },
+        { path: "/debug/units/", element: <DebugUnits /> },
+        { path: "/debug/units/:nation", element: <DebugUnits suppressMarkers={true} /> },
+        { path: "/debug/units/year", element: <DebugUnitsByYear /> },
+        { path: "/debug/units/year/:nation", element: <DebugUnitsByYear /> },
         { path: "/debug/map/:id", element: <DebugMap /> },
 
         { path: "/new_game", element: <NewGame /> },

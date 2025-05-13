@@ -21,7 +21,7 @@ import {
 //    ta: turret armor
 //        f: front, s: side, r: rear, t: top (if zero)
 //    sg: sponson mounted gun
-//        f: firepower, r: range
+//        f: firepower, r: range, t: type=g/ft
 //    sn: small names, bv: broken movement, f: fix number
 // x: count
 
@@ -40,7 +40,7 @@ export type UnitData = {
     c?: NumberBoolean; y?: NumberBoolean; v?: number,
     ha?: { f: number; s: number; r: number; t?: -1}
     ta?: { f: number; s: number; r: number; t?: -1}
-    sg?: { f: number | string; r: number; }
+    sg?: { f: number; r: number; t?: string }
     sn?: number; bv?: number; f?: number;
   }
   x?: number;
@@ -92,7 +92,7 @@ export default class Unit {
   armored: boolean = false;
   topOpen: boolean = false;
 
-  sponson?: [number | string, number];
+  sponson?: [number, number] | [number, number, string];
 
   status: UnitStatusType;
   tired: boolean;
@@ -167,7 +167,8 @@ export default class Unit {
       this.topOpen = this.topOpen || (data.o.ta.t !== undefined || data.o.ta.r < 0)
     }
     if (data.o?.sg !== undefined) {
-      this.sponson = [data.o.sg.f, data.o.sg.r]
+      this.sponson = data.o.sg.t ? [data.o.sg.f, data.o.sg.r, data.o.sg.t] :
+        [data.o.sg.f, data.o.sg.r]      
     }
 
     this.status = unitStatus.Normal

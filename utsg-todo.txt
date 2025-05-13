@@ -1,3 +1,6 @@
+- Show special rules on preview
+- Fix reinforcement panel drifting down
+
 - Fill Out Scenarios
 
 - fix LOS error along firing arc in last image
