@@ -511,6 +511,7 @@ export default class Map {
     if (!hex.terrain.vehicle && !uf.isFeature && (uf.isTracked || uf.isWheeled)) { return false }
     if (hex.terrain.gun === false && !uf.isFeature && (uf.type === unitType.Gun)) { return false }
     if (uf.isFeature) {
+      if (!hex.terrain.vehicle) { return false }
       for (const f of this.countersAt(hex.coord)) {
         if (f.target.isFeature) { return false }
       }
@@ -529,13 +530,23 @@ export default class Map {
     if (!this.alliedSetupHexes || !this.axisSetupHexes) { return false }
     const hexes = player === 1 ? this.alliedSetupHexes[ts] : this.axisSetupHexes[ts]
     for (const h of hexes) {
-      if (h[0] === "*") {
-        if (y === h[1]) { return true }
+      let xMatch = false
+      let yMatch = false
+      if (typeof h[0] === "string" && h[0].includes("-")) {
+        const [lo, hi] = h[0].split("-")
+        if (x >= Number(lo) && x <= Number(hi)) { xMatch = true }
+      } else if (h[0] === "*") {
+        xMatch = true
+      } else if (x === h[0]) { xMatch = true }
+
+      if (typeof h[1] === "string" && h[1].includes("-")) {
+        const [lo, hi] = h[1].split("-")
+        if (y >= Number(lo) && y <= Number(hi)) { yMatch = true }
       } else if (h[1] === "*") {
-        if (x === h[0]) { return true }
-      } else {
-        if (x === h[0] && y === h[1]) { return true }
-      }
+        yMatch = true
+      } else if (y === h[1]) { yMatch = true }
+
+      if (xMatch && yMatch) { return true }
     }
     return false
   }

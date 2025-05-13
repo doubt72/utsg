@@ -36,6 +36,10 @@ Metrics/MethodLength:
   Exclude:
     - 'app/models/scenarios/**/*'
 
+Style/WordArray:
+  Exclude:
+    - 'app/models/scenarios/**/*'
+
 Naming/VariableNumber:
   Enabled: false
 

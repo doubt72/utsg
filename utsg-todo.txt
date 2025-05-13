@@ -1,5 +1,9 @@
-- Show special rules on preview
+- Refactor Scenario Page:
+  - Max widths for factions
+  - Filter out alpha/beta/prototypes
+
 - Fix reinforcement panel drifting down
+- Cancel direction if undo
 
 - Fill Out Scenarios
 

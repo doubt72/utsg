@@ -15,7 +15,7 @@ module Scenarios
           first_setup: 1,
           first_move: 2,
           date: [1942, 8, 23],
-          location: "Stalingrad, Russia",
+          location: "Somewhere",
           author: "The Establishment",
           description:,
           map_data:,
@@ -26,9 +26,7 @@ module Scenarios
 
       def description
         [
-          "Vicious block-to-block fighing.  Russian defenders attempt to hold
-          every inch of ground as the German army enters the city on the first
-          day of the battle of Stalingrad.",
+          "Something something something",
         ]
       end
 

@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Ayo Gorkhali"
     ALLIES = ["ind"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate

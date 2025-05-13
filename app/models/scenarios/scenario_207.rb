@@ -6,7 +6,7 @@ module Scenarios
     NAME = "American Armor"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -49,12 +49,8 @@ module Scenarios
             [4, 18, 1], [7, 15, 1], [8, 13, 1], [9, 16, 1], [10, 14, 1], [12, 19, 1],
             [14, 2, 2], [16, 3, 2], [19, 8, 2], [19, 16, 2], [20, 15, 2],
           ],
-          allied_setup: {
-            "0": 10.upto(20).map { |y| 0.upto(12).map { |x| [x, y] } }.flatten(1),
-          },
-          axis_setup: {
-            "0": 0.upto(4).map { |y| ["*", y] }.concat(18.upto(22).map { |x| [x, "*"] }),
-          },
+          allied_setup: { "0": [["0-12", "10-20"]] },
+          axis_setup: { "0": [["*", "0-4"], ["18-22", "*"]] },
         }
       end
 

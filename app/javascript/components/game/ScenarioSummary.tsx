@@ -53,7 +53,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         testing."
     }
     if (scenario.status === "a") {
-      note = "this scenario is a beta scenario currently in development.  It is still undergoing \
+      note = "this scenario is an alpha scenario currently in development.  It is still undergoing \
         early testing."
     }
     return (

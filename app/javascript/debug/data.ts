@@ -87,7 +87,7 @@ const testUnitData: { [index: string]: UnitData } = {
   croc: {
     c: "uk", f: 24, i: "spft", n: "Churchill Crocodile", r: 16, s: 6, t: "spg", v: 4, y: 44,
     o: {
-      ha: {f: 9, s: 6, r: 4}, j: 3, f: 18, k: 1, p: 1, sg: {f: "F24", r: 1}, sn: 3, t: 1,
+      ha: {f: 9, s: 6, r: 4}, j: 3, f: 18, k: 1, p: 1, sg: {f: 24, r: 1, t: "ft"}, sn: 3, t: 1,
       ta: {f: 9, s: 6, r: 6}, u: 1
     },
   },

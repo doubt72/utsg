@@ -6,7 +6,7 @@ module Scenarios
     NAME = "A Straightforward Proposition"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
+    STATUS = "a"
 
     class << self
       # TODO: documentation for field descriptions
