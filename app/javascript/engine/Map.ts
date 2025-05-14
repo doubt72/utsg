@@ -137,10 +137,13 @@ export default class Map {
 
     // hexes = x: sheets * 8 - 1, y: sheets * 12 - 1 (packed slightly more)
     // 2x1 sheet = 16x10.5" = 15x11 hexes
-    // 3x1 sheet = 24x10.5" = 23x11 hexes
     // 2x2 sheet = 16x21" = 15x21 hexes
+    // 2x3 sheet = 16x31.5" = 15x?? hexes
+    // 3x1 sheet = 24x10.5" = 23x11 hexes
     // 3x2 sheet = 24x21" = 23x21 hexes
+    // 3x3 sheet = 24x31.5" = 31x?? hexes
     // 4x2 sheet = 32x21" = 31x21 hexes
+    // 4x3 sheet = 32x31.5" = 31x?? hexes
 
     this.height = data[1]
     this.width = data[0]
