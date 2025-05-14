@@ -5,6 +5,7 @@
   - Filter by Size
     15x11, 23x11, 15x21, 23x21, 31x21
   - Sort by...  Number? Map size?
+  - Fix left sniper
 
 - Fix terrain info over terrain (probably offset)
   - Also terrain help for ice
