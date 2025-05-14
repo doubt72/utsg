@@ -1,7 +1,10 @@
 - Refactor Scenario Page:
   - Max widths for factions
   - Filter out alpha/beta/prototypes
+  - Sort by...  Number? Map size?
 
+- Fix terrain info over terrain (probably offset)
+  - Also terrain help for ice
 - Fix reinforcement panel drifting down
 - Cancel direction if undo
 

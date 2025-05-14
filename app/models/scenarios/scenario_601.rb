@@ -29,7 +29,7 @@ module Scenarios
           "During the opening days of the Battle of Shanghai, the Chinese
           sensed an opportunity.  The Japanese forces were concentrated in the
           center of Shanghai, surrounded by much more numerous Chinese troops.
-          Chiang Kai-shek decided to commit his best unit, the 88th Division
+          Chiang Kai-shek decided to commit his best unit, the 88th Division,
           to attempt to capture the Japanese headquarters near Zhabei as part
           of a larger offensive to drive the Japanese from Shanghai.  Trained
           by German advisers, the division had not entirely completed its
@@ -38,7 +38,7 @@ module Scenarios
           The ensuing battle was brutal, and due to poor artillery
           coordination, the division made limited progress in the first two
           days of the battle.  On the 16th, they commenced a second attack
-          using German-trained assault tactics, operation Iron Fist.  While
+          using German-trained assault tactics: operation Iron Fist.  While
           the attack was successful at first, the Japanese countered by
           deploying several tanks and armored cars, and eventually halted the
           attack.  This led the Chinese to deploy their own tanks on the

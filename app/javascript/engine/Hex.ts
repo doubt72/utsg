@@ -1,6 +1,6 @@
 import {
   BorderTypeType, BuildingShapeType, BuildingStyleType, Coordinate, Direction,
-  Elevation, ExtendedDirection, RoadCenterType, RoadTypeType, TerrainTypeType, borderType, roadType, terrainType
+  Elevation, ExtendedDirection, RoadCenterType, RoadTypeType, TerrainTypeType, baseTerrainType, borderType, roadType, terrainType
 } from "../utilities/commonTypes"
 import {
   hexLos, hexLosAlongEdgeHindrance, hexLosAlongEdgeLos, hexLosCounterLos,
@@ -131,20 +131,27 @@ export default class Hex {
 
   // lightWater = "#59C"
   darkWater = "#46A"
+  iceWater = "#DDE"
 
-  terrainStyles: { [index: string]: SVGStyle } = {
-    j: { fill: "rgba(47,191,47,0.33)" },
-    w: { fill: this.darkWater }, // TODO: special shallow beach water?
+  terrainStyles = (): { [index: string]: SVGStyle } => {
+    return {
+      j: { fill: "rgba(47,191,47,0.33)" },
+      w: { fill: this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater },
+      // TODO: special shallow beach water?
+    }
   }
 
-  patternStyles: { [index: string]: SVGStyle } = {
-    f: { fill: "url(#forest-pattern)" },
-    b: { fill: "url(#brush-pattern)" },
-    j: { fill: "url(#jungle-pattern)" },
-    s: { fill: "url(#sand-pattern)" },
-    r: { fill: "url(#rough-pattern)" },
-    m: { fill: "url(#marsh-pattern)" },
-    g: { fill: "url(#grain-pattern)" },
+  patternStyles = (): { [index: string]: SVGStyle } => {
+    return {
+      f: { fill: "url(#forest-pattern)" },
+      b: { fill: "url(#brush-pattern)" },
+      j: { fill: "url(#jungle-pattern)" },
+      s: { fill: "url(#sand-pattern)" },
+      r: { fill: "url(#rough-pattern)" },
+      m: { fill: this.map.baseTerrain === baseTerrainType.Snow ? "url(#frozen-marsh-pattern)" :
+        "url(#marsh-pattern)" },
+      g: { fill: "url(#grain-pattern)" },
+    }
   }
 
   borderStyles: { [index: string]: SVGStyle } = {
@@ -253,8 +260,8 @@ export default class Hex {
   }
 
   get background(): SVGStyle {
-    if (this.backgroundTerrain && this.terrainStyles[this.baseTerrain]) {
-      return this.terrainStyles[this.baseTerrain]
+    if (this.backgroundTerrain && this.terrainStyles()[this.baseTerrain]) {
+      return this.terrainStyles()[this.baseTerrain]
     }
     if (this.elevationEdges === "all") {
       return this.elevationStyles[this.elevation]
@@ -302,7 +309,7 @@ export default class Hex {
     if (this.terrainEdges !== "none" || this.baseTerrain === "o") { return false }
     return {
       x: this.xOffset, y: this.yOffset, r: this.narrow/2 - 5,
-      style: this.terrainStyles[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
+      style: this.terrainStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
     }
   }
 
@@ -415,13 +422,13 @@ export default class Hex {
     if (edges == "none" || edges === "all") { return false }
     return {
       path: this.generatePaths(edges, 4),
-      style: this.terrainStyles[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
+      style: this.terrainStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
     }
   }
 
   get terrainPattern(): SVGStyle | false {
-    if (!this.patternStyles[this.baseTerrain]) { return false }
-    return this.patternStyles[this.baseTerrain]
+    if (!this.patternStyles()[this.baseTerrain]) { return false }
+    return this.patternStyles()[this.baseTerrain]
   }
 
   get elevationContinuous(): PathLayout | false {
@@ -493,7 +500,7 @@ export default class Hex {
     return {
       fill: "rgba(0,0,0,0)",
       strokeWidth: 10,
-      stroke: this.darkWater,
+      stroke: this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater,
       strokeLinejoin: "round",
     }
   }

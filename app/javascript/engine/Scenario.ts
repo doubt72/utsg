@@ -1,5 +1,5 @@
 import { Player } from "../utilities/commonTypes";
-import { getFormattedDate } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, getFormattedDate } from "../utilities/utilities";
 import Feature, { FeatureData } from "./Feature";
 import Game from "./Game"
 import Map, { MapData } from "./Map";
@@ -169,19 +169,27 @@ export default class Scenario {
   }
 
   get specialRulesList(): string[] {
+    const allied = alliedCodeToName(this.alliedFactions[0])
+    const axis = axisCodeToName(this.axisFactions[0])
     return this.specialRules.map(r => {
       if (r === "axis_green_armor") {
-        return "Axis vehicle crews are green (get a penalty on targeting rolls)"
+        return `${axis} vehicle crews are green (get a penalty on targeting rolls)`
       } else if (r === "axis_elite_armor") {
-        return "Axis vehicle crews are elite (get a bonus to targeting rolls)"
+        return `${axis} vehicle crews are elite (get a bonus to targeting rolls)`
       } else if (r === "axis_fragile_vehicles") {
-        return "Axis vehicles are more likely to break down"
+        return `${axis} vehicles are more likely to break down`
       } else if (r === "allied_green_armor") {
-        return "Allied vehicle crews are green (get a penalty on targeting rolls"
+        return `${allied} vehicle crews are green (get a penalty on targeting rolls`
       } else if (r === "allied_elite_armor") {
-        return "Allied vehicle crews are elite (get a bonus to targeting rolls)"
+        return `${allied} vehicle crews are elite (get a bonus to targeting rolls)`
       } else if (r === "allied_fragile_vehicles") {
-        return "Axis vehicles are more likely to break down"
+        return `${allied} vehicles are more likely to break down`
+      } else if (r === "allied_ignore_snow") {
+        return `${allied} units ignore penalties for moving through snow`
+      } else if (r === "axis_ignore_snow") {
+        return `${axis} units ignore penalties for moving through snow`
+      } else if (r === "winter") {
+        return `Winter: no digging in, treat water/river hexes as open`
       }
       return "unknown rule"
     })
