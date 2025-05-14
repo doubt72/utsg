@@ -28,18 +28,18 @@ RSpec.describe Utility::Scenario do
 
   describe "all_scenarios" do
     it "gets all scenarios with no filters" do
-      scenarios = described_class.all_scenarios
+      scenarios = described_class.all_scenarios({ "status" => "*" })
       expect(scenarios.length).to be == Scenarios.constants.length - 2
     end
 
     it "gets spec scenario when filtering by string" do
-      scenarios = described_class.all_scenarios({ string: scenario_name })
+      scenarios = described_class.all_scenarios({ "string" => scenario_name, "status" => "*" })
       expect(scenarios.length).to be == 1
       expect(scenarios.first[:id]).to be == "000"
     end
 
     it "gets correct scenarios with allies filter" do
-      scenarios = described_class.all_scenarios({ allies: "usa" })
+      scenarios = described_class.all_scenarios({ "allies" => "usa", "status" => "*" })
       scenarios.each do |s|
         expect(s[:allies].include?("usa")).to be true
       end
@@ -49,7 +49,7 @@ RSpec.describe Utility::Scenario do
     end
 
     it "gets correct scenarios with axis filter" do
-      scenarios = described_class.all_scenarios({ axis: "ger" })
+      scenarios = described_class.all_scenarios({ "axis" => "ger", "status" => "*" })
       scenarios.each do |s|
         expect(s[:axis].include?("ger")).to be true
       end

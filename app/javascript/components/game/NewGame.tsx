@@ -15,7 +15,7 @@ export default function NewGame() {
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
 
   const [scenarioSearch, setScenarioSearch] = useState({
-    string: "", allies: "", axis: "", page: 0
+    string: "", allies: "", axis: "", status: "*", type: "", size: "", page: 0
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
@@ -29,6 +29,9 @@ export default function NewGame() {
     if (scenarioSearch.string != "") { params.string = scenarioSearch.string }
     if (scenarioSearch.allies != "") { params.allies = scenarioSearch.allies }
     if (scenarioSearch.axis != "") { params.axis = scenarioSearch.axis }
+    if (scenarioSearch.status != "") { params.status = scenarioSearch.status }
+    if (scenarioSearch.type != "") { params.type = scenarioSearch.type }
+    if (scenarioSearch.size != "") { params.size = scenarioSearch.size }
     const urlParams = new URLSearchParams(params).toString()
     const url = urlParams.length > 0 ? "/api/v1/scenarios?" + urlParams : "/api/v1/scenarios"
     getAPI(url, {
@@ -66,7 +69,10 @@ export default function NewGame() {
   useEffect(() => {
     setFormInput({ ...formInput, scenario: "" })
     checkScenarios()
-  }, [scenarioSearch.string, scenarioSearch.allies, scenarioSearch.axis])
+  }, [
+    scenarioSearch.string, scenarioSearch.allies, scenarioSearch.axis, scenarioSearch.status,
+    scenarioSearch.type, scenarioSearch.size,
+  ])
 
   useEffect(() => {
     loadScenarios()
@@ -173,6 +179,77 @@ export default function NewGame() {
     </select>
   )
 
+  const statuses = [
+    { code: "", name: "Finished"},
+    { code: "b", name: "Beta Test"},
+    { code: "a", name: "Alpha Test"},
+    { code: "p", name: "Prototype"},
+    { code: "*", name: "[ any ]"},
+  ]
+
+  const statusSelector = (
+    <select
+      name="status"
+      className="form-input-gray"
+      onChange={({ target }) => onSearchChange(target.name, target.value)}
+    >
+      {
+        statuses.map(status => {
+          return <option key={status.code} value={status.code}>{status.name}</option>
+        })
+      }
+    </select>
+  )
+
+  const unitClasses = [
+    { code: "", name: "[ any ]"},
+    { code: "inf", name: "Infantry Only"},
+    { code: "art", name: "Infantry and Artillery"},
+    { code: "tank", name: "Vehicles Only"},
+    { code: "no_feat", name: "Units Only"},
+  ]
+
+  const classSelector = (
+    <select
+      name="type"
+      className="form-input-gray"
+      onChange={({ target }) => onSearchChange(target.name, target.value)}
+    >
+      {
+        unitClasses.map(status => {
+          return <option key={status.code} value={status.code}>{status.name}</option>
+        })
+      }
+    </select>
+  )
+
+  const sizes = [
+    { code: "", name: "[ any ]"},
+    { code: "2x1", name: "15x11 (2x1 pages)"},
+    { code: "2x2", name: "15x23 (2x2 pages)"},
+    { code: "2x3", name: "15x36 (2x3 pages)"},
+    { code: "3x1", name: "23x11 (3x1 pages)"},
+    { code: "3x2", name: "23x23 (3x2 pages)"},
+    { code: "3x3", name: "23x36 (3x3 pages)"},
+    { code: "4x2", name: "32x23 (4x2 pages)"},
+    { code: "4x3", name: "32x36 (4x3 pages)"},
+    { code: "other", name: "other"},
+  ]
+
+  const sizeSelector = (
+    <select
+      name="size"
+      className="form-input-gray"
+      onChange={({ target }) => onSearchChange(target.name, target.value)}
+    >
+      {
+        sizes.map(status => {
+          return <option key={status.code} value={status.code}>{status.name}</option>
+        })
+      }
+    </select>
+  )
+
   const scenarioDisplayList = (
     scenarioList.length < 1 ? <div className="red mt05em">no scenarios match search</div> :
     scenarioList.map((row: ScenarioData, i) => {
@@ -250,13 +327,25 @@ export default function NewGame() {
                 onChange={({ target }) => onSearchChange(target.name, target.value)}
               />
             </div>
-            <div className="scenario-list-filter">
+            <div className="scenario-list-filter-limit">
               <label>by allied faction</label><br />
               {alliedFactionSelector}
             </div>
-            <div className="scenario-list-filter">
+            <div className="scenario-list-filter-limit">
               <label>by axis faction</label><br />
               {axisFactionSelector}
+            </div>
+            <div className="scenario-list-filter-limit">
+              <label>by unit types</label><br />
+              {classSelector}
+            </div>
+            <div className="scenario-list-filter-limit">
+              <label>by map size</label><br />
+              {sizeSelector}
+            </div>
+            <div className="scenario-list-filter-limit">
+              <label>by dev status</label><br />
+              {statusSelector}
             </div>
             <div className="scenario-list-select">
               <div>select scenario:</div>

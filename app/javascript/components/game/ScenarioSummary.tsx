@@ -94,7 +94,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           {scenarioNote()}
         </div>
         <div className="p05em corner-round edge-line">
-          <GameMap map={map} scale={0.25} preview={true} />
+          <GameMap map={map} scale={0.2} preview={true} />
         </div>
       </div>
       <div className="flex mt1em">

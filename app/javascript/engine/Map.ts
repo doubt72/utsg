@@ -139,9 +139,9 @@ export default class Map {
     // 2x1 sheet = 17x11" = 15x11 hexes
     // 2x2 sheet = 17x22" = 15x23 hexes
     // 2x3 sheet = 17x33" = 15x36 hexes
-    // 3x1 sheet = 25.11" = 23x11 hexes
-    // 3x2 sheet = 25.22" = 23x23 hexes
-    // 3x3 sheet = 25.33" = 32x36 hexes
+    // 3x1 sheet = 25.5x11" = 23x11 hexes
+    // 3x2 sheet = 25.5x22" = 23x23 hexes
+    // 3x3 sheet = 25.5x33" = 23x36 hexes
     // 4x2 sheet = 34x22" = 32x23 hexes
     // 4x3 sheet = 34x33" = 32x36 hexes
 

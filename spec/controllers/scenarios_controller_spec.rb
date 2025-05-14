@@ -12,10 +12,15 @@ RSpec.describe Api::V1::ScenariosController do
         NAME = "xxx Spec Test xxx"
         ALLIES = %w[uk usa].freeze
         AXIS = %w[ger ita].freeze
+        STATUS = "p"
 
         class << self
           def generate
-            {}
+            {
+              allied_units: { "0" => { list: [] } },
+              axis_units: { "0" => { list: [] } },
+              map_data: { layout: [15, 11, "x"] },
+            }
           end
         end
       end
@@ -24,14 +29,14 @@ RSpec.describe Api::V1::ScenariosController do
 
   describe "index" do
     it "gets first page of scenarios with no filters" do
-      get :index
+      get :index, params: { status: "*" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 10
     end
 
     it "gets spec scenario when filtering by string" do
-      get :index, params: { string: scenario_name }
+      get :index, params: { string: scenario_name, status: "*" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 1
@@ -39,7 +44,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with allies filter" do
-      get :index, params: { allies: "usa" }
+      get :index, params: { allies: "usa", status: "*" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -52,13 +57,73 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with axis filter" do
-      get :index, params: { axis: "ger" }
+      get :index, params: { axis: "ger", status: "*" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
       scenarios.each do |s|
         expect(s["axis"].include?("ger")).to be true
       end
+    end
+
+    it "gets correct scenarios with status filter" do
+      get :index, params: { status: "p" }
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      scenarios.each do |s|
+        expect(s["status"]).to be == "p"
+      end
+    end
+
+    it "status filter defaults to no prototype scenarios" do
+      get :index
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      scenarios.each do |s|
+        expect(s["status"]).not_to be == "p"
+      end
+    end
+
+    it "gets correct scenarios with size filter" do
+      get :index, params: { status: "*", size: "2x1" }
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      expect(scenarios.length).to be > 0
+    end
+
+    it "gets correct scenarios with infantry filter" do
+      get :index, params: { status: "*", type: "inf" }
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      expect(scenarios.length).to be > 0
+    end
+
+    it "gets correct scenarios with artillery filter" do
+      get :index, params: { status: "*", type: "art" }
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      expect(scenarios.length).to be > 0
+    end
+
+    it "gets correct scenarios with tank filter" do
+      get :index, params: { status: "*", type: "tank" }
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      expect(scenarios.length).to be > 0
+    end
+
+    it "gets correct scenarios with no_feat filter" do
+      get :index, params: { status: "*", type: "no_feat" }
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      expect(scenarios.length).to be > 0
     end
   end
 

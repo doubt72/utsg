@@ -37,6 +37,12 @@
   margin-right: 1em;
 }
 
+.scenario-list-filter-limit {
+  flex-grow: 1;
+  margin-right: 1em;
+  max-width: 180px;
+}
+
 .scenario-list-select {
   min-height: 135px;
   margin: 1em 1em 0 0;
