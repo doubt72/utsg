@@ -908,7 +908,7 @@ module Utility
             ["fra", "Citroen U23", "truck", 35, 4, 0, 0, 5, {}],
             ["ger", "Horse", "cav", 0, 3, 0, 0, 7, {}],
             ["ger", "BMW R75", "cav-wheel", 41, 3, 0, 0, 6, {}],
-            ["ger", "Zündapp KS 750", "cav-wheel", 41, 3, 0, 0, 6, {}],
+            ["ger", "Zündapp KS 750", "cav-wheel", 41, 3, 0, 0, 6, { sn: 1 }],
             ["ger", "BMW R17", "cav-wheel", 35, 3, 0, 0, 6, {}],
             ["ger", "L3000", "truck", 38, 4, 0, 0, 5, {}],
             ["ger", "Opel Blitz", "truck", 30, 3, 0, 0, 5, {}],

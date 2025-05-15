@@ -685,7 +685,7 @@ module Scenarios
             :jap_radio_15cm,
             :jap_chiyoda_ac,
             [6, :wire],
-            [4, :bunker],
+            [4, :pillbox],
             :sniper4,
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
           "3": { list: [
