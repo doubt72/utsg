@@ -1,18 +1,5 @@
 - Refactor Scenario Page:
   - Sort by...  Number? Map size?
-- Fix left sniper
-
-- Renumber Scenarios?
-  000: East Front
-  100: North Africa
-  200: Italy
-  300: Normandy/West Front
-  400: Pacific
-  500: Finland/Poland/France/Norway/Balkans
-  600: China
-  700: Uh...  Spain?
-  800: Uh...  Korea?
-  900: Completely Fictional
 
 - Fix terrain info over terrain (probably offset)
   - Also terrain help for ice

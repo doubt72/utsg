@@ -1,47 +1,43 @@
-+ German, Italian, Japanese, Finnish, British, Indian, American, Russian, French, Chinese
+- Australian, Canadian, New Zealand, South African, Brazilian, Free French,
+  Bulgarian, Hungarian, Romanian, Slovakian, Croatian,
+  Polish, Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-- Australian, Romanian, Polish
-
-- Canadian, New Zealand, South African, Brazilian,
-  Free French, Bulgarian, Hungarian, Slovakian, Croatian, Greek,
-  Norwegian, Belgian, Dutch, Yugoslavian
-
-+ 40x    Polish Infantry Resisting German Armor
-+ 00x    Rumanian Town Clearing in early Barbarossa
-  Something in Italy
-+ 00x    Stalingrad Factory
-+ 10x    British assulting Fort Capuzzo in 40
-+ 00x    Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
-+ 10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
-+ 20x    Pegasus Bridge British take bridge then counterattack
-+ 20x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
-+ 50x    Hold New Guinea village against constant piecemeal Japanese Attack
-+ 50x    Reduce Japanese Strongpoint in New Guinea
-+ 10x    Fight over featureless land (tanks)
-+ 10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
-+ 20x    Americans Clearing Edge of Large Town - Carentan
-+ 40x    Finish Bunkers along Border in Winter War
-+ 50x    Late Manila urban Fighting
+50x    Polish Infantry Resisting German Armor
+00x Rumanian Town Clearing in early Barbarossa
+20x Something in Italy
+00x Stalingrad Factory
+10x British assulting Fort Capuzzo in 40
+00x Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
+10x Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
+30x    Pegasus Bridge British take bridge then counterattack
+30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+40x    Hold New Guinea village against constant piecemeal Japanese Attack
+40x    Reduce Japanese Strongpoint in New Guinea
+10x Fight over featureless land (tanks)
+10x El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
+30x    Americans Clearing Edge of Large Town - Carentan
+50x    Finish Bunkers along Border in Winter War
+40x    Late Manila urban Fighting
 
 000 East Front
 + 001 44 Simple Squad Battle, MG only
 + 002 42 Stalingrad Outskirts
 - 003 42 Mud / Infantry Battle
 + 004 41 Delaying Action Against Tanks
+  00x    Romanian Town Clearing in early Barbarossa
   00x    Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
-- 006 43 Tank Battle Kursk
-+ 007 41 KV Tank Surprise
-- 008 42 Tank Battle Kharkov
+- 007 43 Tank Battle Kursk
++ 008 41 KV Tank Surprise
+- 009 42 Tank Battle Kharkov
   00x    Stalingrad Factory
   00x    Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
   00x    44 Tank Battle
-  00x    45 Tank Battle
-  00x    Rumanian Town Clearing in early Barbarossa
-  00x    Mass Assualt on Hill
-  00x    Fight Over Bridge in Gully Somewhere
   00x    Bulgarian Attack Somewhere
   00x    Hungarian Attack Somewhere
   00x    Croatian Attack Somewhere
+  00x    45 Tank Battle
+  00x    Mass Assualt on Hill
+  00x    Fight Over Bridge in Gully Somewhere
 
 Velikiye Luki/Stalingrad of the North
 Barrikady Fuel Tanks, Stalingrad, 22 Dec 42
@@ -51,44 +47,18 @@ Dom 31 Barrikady, 27 Oct 42
 Grain Elevator, Manina Stalingrad, 18 Sep 42
 
 100 North Africa
-- 101 42 British Breaching German Defenses
-- 102 41 Hellfire Pass
+  10x    Fight over featureless land (tanks)
+  10x    British assulting Fort Capuzzo in 40
 - 103 41 British / Italian Tank Battle
 + 104 42 Indian Division at El Alamein
+- 105 42 British Breaching German Defenses
+- 106 41 Hellfire Pass
   10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
   10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
-  10x    British assulting Fort Capuzzo in 40
   10x    Fight over featureless land (infantry)
-  10x    Fight over featureless land (tanks)
   10x    Hill Assault Somewhere
 
 Sidi Barrani, Bardia, Beda Fromm, Brevity, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
-
-200 Normandy/Late West Front
-- 201 44 Counterattack Against Paratroopers
-- 202 44 German Tank Counterattack
-- 203 44 Bocage
-? 204 44 Omaha Beach	? later reinforcements
-- 205 44 Cherbourg City Attack
-- 206 44 Manor Attack
-+ 207 44 Arracourt
-  20x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry again strongpoint CC49
-  20x    Pointe-du-Hoc Rangers
-  20x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
-  20x    Bulge tank counterattack
-  20x    Pegasus Bridge British take bridge then counterattack
-  20x    Airborne Arnhem
-  20x    Market Garden Tank Support
-  20x    Hill 104 defense St Jean De Daye
-  20x    La Fiere Airborne Slugfest / St Mere Eglise
-  20x    Americans Clearing Small Normandy Town
-  20x    British Clearing Normandy Town - Cheux?
-  20x    Americans Clearing Edge of Large Town - Carentan
-  20x    Closing the Falais Pocket Hill 262
-  20x    Defending Hill 314 Mortain
-  20x    Canadian Street Fighting in Caen
-  20x    Assault on Battery like from Band of Brothers
-  20x    Lanzerath Ridge
 
 200 Italy/Sicily
   20x    Japanese Troops at Little Cassino
@@ -98,42 +68,70 @@ Sidi Barrani, Bardia, Beda Fromm, Brevity, Skorpion, Battleaxe, Mareth Line/Buer
 
 Monte Cassino, Anzio, Sicily, Salerno
 
-400 Poland/France/Finland/Norway/Balkans/Greece
-+ 401 40 Finish Ambush in snow against armored column Winter War
-+ 402 40 French Armor vs. German Armor (FCM 36)
-  40x    Polish Infantry Resisting German Armor
-+ 404 40 French Isolated Armor + Infantry against German Armor
-+ 405 40 French Armor vs. German Armor (Char B1 bis)
-  40x    Finish Bunkers along Border in Winter War
-  40x    Polish Cavalry Attack
-  40x    Slovakian vs. Polish Fight Somewhere
-  40x    Matildas vs. 88s, Arras?
-  40x    French Isolated Armor + Infantry against German Armor
-  40x    Forest Parallel Lines with small town in back (sideways E), French, All Infantry
-  40x    Nisava River Bridge in Yugoslavia
+300 Normandy/Late West Front
+- 301 44 Counterattack Against Paratroopers
+- 302 44 German Tank Counterattack
+- 303 44 Bocage
+  30x    Market Garden Tank Support - Hell's Highway
+? 305 44 Omaha Beach	? later reinforcements
+  30x    Pegasus Bridge British take bridge then counterattack
+  30x    Canadian Street Fighting in Caen
+- 308 44 Cherbourg City Attack
+- 309 44 Manor Attack
+  30x    British Clearing Normandy Town - Cheux?
++ 311 44 Arracourt
+  30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry again strongpoint CC49
+  30x    Pointe-du-Hoc Rangers
+  30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+  30x    Bulge tank counterattack
+  30x    Airborne Arnhem
+  30x    Hill 104 defense St Jean De Daye
+  30x    La Fiere Airborne Slugfest / St Mere Eglise
+  30x    Americans Clearing Small Normandy Town
+  30x    Americans Clearing Edge of Large Town - Carentan
+  30x    Closing the Falais Pocket Hill 262
+  30x    Defending Hill 314 Mortain
+  30x    Assault on Battery like from Band of Brothers
+  30x    Lanzerath Ridge
+
+400 Pacific (South Pacific/New Guinea/Phillipines)
+  40x    Fight over fields inside a clearing, somewhere in the Philippines
+  40x    Bataan Defense
+  40x    Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
+  40x    Marines Hill 382 Iwo Jima
+  40x    Edson's/Bloody Ridge Guadalcanal
+  40x    Saddle Ridge/Battle of Henderson Field, Guadalcanal
+  40x    New Strip Buna New Guinea
+  40x    Kokoda Trail raid by Japanese on camp
+  40x    Reduce Japanese Strongpoint in New Guinea
+  40x    Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
+  40x    Hold New Guinea village against constant piecemeal Japanese Attack
+  40x    Early Philippines Defending Towards Bataan
+  40x    Late Manila urban Fighting
+
+Singapore, Okinawa, Bobdubi Ridge
+
+500 Finland/Poland/France/Norway/Balkans
++ 501 40 Finish Ambush in snow against armored column Winter War
++ 502 40 French Armor vs. German Armor (FCM 36)
+  50x    Polish Infantry Resisting German Armor
++ 504 40 French Isolated Armor + Infantry against German Armor
++ 505 40 French Armor vs. German Armor (Char B1 bis)
+  50x    Finish Bunkers along Border in Winter War
+  50x    Polish Cavalry Attack
+  50x    Slovakian vs. Polish Fight Somewhere
+  50x    Matildas vs. 88s, Arras?
+  50x    French Isolated Armor + Infantry against German Armor
+  50x    Forest Parallel Lines with small town in back (sideways E), French, All Infantry
+  50x    Nisava River Bridge in Yugoslavia
 
 Crete, Norway, Greece
 
-500 Pacific (South Pacific/New Guinea/Phillipines/Burma)
-  50x    Imphal/Gurka
-  50x    Fight over fields inside a clearing, somewhere in the Philippines
-  50x    Bataan Defense
-  50x    Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
-  50x    Marines Hill 382 Iwo Jima
-  50x    Edson's/Bloody Ridge Guadalcanal
-  50x    Saddle Ridge/Battle of Henderson Field, Guadalcanal
-  50x    New Strip Buna New Guinea
-  50x    Kokoda Trail raid by Japanese on camp
-  50x    Reduce Japanese Strongpoint in New Guinea
-  50x    Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
-  50x    Hold New Guinea village against constant piecemeal Japanese Attack
-  50x    Early Philippines Defending Towards Bataan
-  50x    Late Manila urban Fighting
-
-Singapore, Okinawa, Bobdubi Ridge, Burma
-
-600 China
+600 China/Burma
 + 601 37 Battle of Shanghai / Iron Fist
+  60x    Imphal/Gurka
+
+China, Burma
 
 700 Spain?
 

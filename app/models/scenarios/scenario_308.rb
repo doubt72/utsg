@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario205 < Base
-    ID = "205"
-    NAME = "Siezing the Port"
+  class Scenario308 < Base
+    ID = "308"
+    NAME = "A Day on the Waterfront"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
