@@ -1,11 +1,18 @@
 - Refactor Scenario Page:
-  - Max widths for factions
-  - Filter out alpha/beta/prototypes
-  - Filter by Infantry Only, Infantry and Guns Only, Vehicles Only
-  - Filter by Size
-    15x11, 23x11, 15x21, 23x21, 31x21
   - Sort by...  Number? Map size?
-  - Fix left sniper
+- Fix left sniper
+
+- Renumber Scenarios?
+  000: East Front
+  100: North Africa
+  200: Italy
+  300: Normandy/West Front
+  400: Pacific
+  500: Finland/Poland/France/Norway/Balkans
+  600: China
+  700: Uh...  Spain?
+  800: Uh...  Korea?
+  900: Completely Fictional
 
 - Fix terrain info over terrain (probably offset)
   - Also terrain help for ice

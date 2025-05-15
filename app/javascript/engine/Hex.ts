@@ -295,7 +295,8 @@ export default class Hex {
           (y-0.5) * mag * Math.sin((dir/3 + 0.5) * Math.PI)
         const y0 = this.yOffset + (x-1) * mag * Math.cos(dir/3 * Math.PI) +
           (y-0.5) * mag * Math.cos((dir/3 + 0.5) * Math.PI)
-        trees.push({ x: x0, y: y0, r: this.radius/5, style: { fill: "#4A4" } })
+        // trees.push({ x: x0, y: y0, r: this.radius/5, style: { fill: "#4A4" } })
+        trees.push({ x: x0, y: y0, r: this.radius/5, style: { fill: "#070" } })
       }
     }
     return trees

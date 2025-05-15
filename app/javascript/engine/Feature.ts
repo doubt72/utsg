@@ -99,6 +99,7 @@ export default class Feature {
   turretArmor = false
   sponson = false
   size = 0
+  tow = undefined
   smallName = 0
   baseMorale = 0
   currentMorale = 0

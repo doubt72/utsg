@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<path d="M 35 15 L 45 3 L 55 15" style="fill:rgba(0,0,0,0);stroke-width:2;stroke:#000;" />
+<path d="M 45 20 L 45 3" style="fill:rgba(0,0,0,0);stroke-width:2;stroke:#000;" />
+<path d="M 15 3 L 15 98 L 75 98 L 75 3 L 15 3 L 15 98" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 15 98 L 75 3" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<circle cx="58" cy="89.5" r="5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<circle cx="45" cy="89.5" r="5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<circle cx="32" cy="89.5" r="5" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+</svg>

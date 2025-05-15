@@ -67,7 +67,7 @@ module Utility
       def infantry_only?(scenarios)
         units = all_units(scenarios)
         units.each do |u|
-          return false unless %w[ldr sqd tm sw].include?(u[:t]) || u[:ft]
+          return false unless %w[ldr sqd tm horse sw].include?(u[:t]) || u[:ft]
         end
         true
       end
@@ -75,7 +75,7 @@ module Utility
       def infantry_artillery_only?(scenarios)
         units = all_units(scenarios)
         units.each do |u|
-          return false unless %w[ldr sqd tm sw gun].include?(u[:t]) || u[:ft]
+          return false unless %w[ldr sqd tm sw horse gun].include?(u[:t]) || u[:ft]
         end
         true
       end
@@ -83,7 +83,7 @@ module Utility
       def vehicles_only?(scenarios)
         units = all_units(scenarios)
         units.each do |u|
-          return false if %w[ldr sqd tm sw].include?(u[:t]) && !u[:ft]
+          return false if %w[ldr sqd tm sw horse gun].include?(u[:t]) && !u[:ft]
         end
         true
       end

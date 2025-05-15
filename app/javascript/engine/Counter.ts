@@ -228,6 +228,16 @@ export default class Counter {
     }
   }
 
+  get towLayout(): CounterLayout | false {
+    if (!this.target.tow) { return false }
+    const path = this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10)
+    return {
+      path,
+      style: { stroke: clearColor, strokeWidth: 0, fill: clearColor }, tStyle: { fill: "black" },
+      x: this.x + 73, y: this.y + 21, size: 12, value: this.target.size,
+    }
+  }
+
   get leadershipLayout(): CounterLayout | false {
     if (!this.target.currentLeadership) { return false }
     return {

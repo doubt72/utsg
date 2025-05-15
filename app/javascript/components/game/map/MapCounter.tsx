@@ -115,6 +115,18 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const tow = () => {
+    const layout = counter.towLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
   const leadership = () => {
     const layout = counter.leadershipLayout
     if (layout) return (
@@ -408,7 +420,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {counterBack}
       {nameBackground()}{name()}
       {morale()}
-      {weaponBreak()}{size()}
+      {weaponBreak()}{size()}{tow()}
       {leadership()}{handling()}{breakdown()}{smoke()}{weaponFix()}
       {icon()}{centerLabel()}
       {sponson()}{turretArmor()}{hullArmor()}

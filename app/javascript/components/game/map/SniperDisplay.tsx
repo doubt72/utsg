@@ -47,7 +47,7 @@ export default function SniperDisplay({
               fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
           no
         </text>
-        <text x={xx + 82} y={yy + 60} fontSize={16} textAnchor="middle"
+        <text x={xx + 92} y={yy + 60} fontSize={16} textAnchor="middle"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
           sniper
         </text>

@@ -1,12 +1,11 @@
-+ German, Italian, Japanese, Finnish, British, Indian, American, Russian, Chinese
++ German, Italian, Japanese, Finnish, British, Indian, American, Russian, French, Chinese
 
-- Australian, French, Romanian, Polish
+- Australian, Romanian, Polish
 
 - Canadian, New Zealand, South African, Brazilian,
   Free French, Bulgarian, Hungarian, Slovakian, Croatian, Greek,
   Norwegian, Belgian, Dutch, Yugoslavian
 
-+ 40x    French Isolated Armor + Infantry against German Armor
 + 40x    Polish Infantry Resisting German Armor
 + 00x    Rumanian Town Clearing in early Barbarossa
   Something in Italy
@@ -22,7 +21,6 @@
 + 10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
 + 20x    Americans Clearing Edge of Large Town - Carentan
 + 40x    Finish Bunkers along Border in Winter War
-+ 40x    French Isolated Armor + Infantry against German Infantry
 + 50x    Late Manila urban Fighting
 
 000 East Front
@@ -92,24 +90,27 @@ Sidi Barrani, Bardia, Beda Fromm, Brevity, Skorpion, Battleaxe, Mareth Line/Buer
   20x    Assault on Battery like from Band of Brothers
   20x    Lanzerath Ridge
 
-300 Italy/Sicily
-  30x    Japanese Troops at Little Cassino
-  30x    Brazillian Monte Costello
-  30x    Canadians at Ortona Little Stalingrad
-  30x    Americans Clearing Italians From Sicilian Town
+200 Italy/Sicily
+  20x    Japanese Troops at Little Cassino
+  20x    Brazillian Monte Costello
+  20x    Canadians at Ortona Little Stalingrad
+  20x    Americans Clearing Italians From Sicilian Town
 
 Monte Cassino, Anzio, Sicily, Salerno
 
 400 Poland/France/Finland/Norway/Balkans/Greece
-+ 40x    Finish Ambush in snow against armored column Winter War
-  40x    Finish Bunkers along Border in Winter War
-  40x    French Isolated Armor + Infantry against German Armor
-  40x    French Isolated Armor + Infantry against German Infantry
-  40x    Polish Cavalry Attack
++ 401 40 Finish Ambush in snow against armored column Winter War
++ 402 40 French Armor vs. German Armor (FCM 36)
   40x    Polish Infantry Resisting German Armor
-  40x    Nisava River Bridge in Yugoslavia
-  40x    Forest Parallel Lines with small town in back (sideways E), French, All Infantry
++ 404 40 French Isolated Armor + Infantry against German Armor
++ 405 40 French Armor vs. German Armor (Char B1 bis)
+  40x    Finish Bunkers along Border in Winter War
+  40x    Polish Cavalry Attack
   40x    Slovakian vs. Polish Fight Somewhere
+  40x    Matildas vs. 88s, Arras?
+  40x    French Isolated Armor + Infantry against German Armor
+  40x    Forest Parallel Lines with small town in back (sideways E), French, All Infantry
+  40x    Nisava River Bridge in Yugoslavia
 
 Crete, Norway, Greece
 
@@ -132,7 +133,7 @@ Crete, Norway, Greece
 Singapore, Okinawa, Bobdubi Ridge, Burma
 
 600 China
-+ 601    Battle of Shanghai / Iron Fist
++ 601 37 Battle of Shanghai / Iron Fist
 
 700 Spain?
 

@@ -1832,7 +1832,92 @@ File.open('ac.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('truck.svg', 'w') do |file|
+  file.puts header
+  radius = 24
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_circle(45, 50, radius, file, false)
+  path = []
+  0.upto(3) do |n|
+    x = Math.sin(n * 45.0 / 180 * Math::PI) * radius + 45
+    y = Math.cos(n * 45.0 / 180 * Math::PI) * radius + 50
+    path.push(["M", x, y])
+    x = Math.sin(n * 45.0 / 180 * Math::PI) * -radius + 45
+    y = Math.cos(n * 45.0 / 180 * Math::PI) * -radius + 50
+    path.push(["L", x, y])
+  end
+  write_path(path, file, false)
+  file.puts footer
+end
+
+File.open('truck-amp.svg', 'w') do |file|
+  file.puts header
+  radius = 24
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_circle(45, 50, radius, file, false)
+  path = []
+  0.upto(3) do |n|
+    x = Math.sin(n * 45.0 / 180 * Math::PI) * radius + 45
+    y = Math.cos(n * 45.0 / 180 * Math::PI) * radius + 50
+    path.push(["M", x, y])
+    x = Math.sin(n * 45.0 / 180 * Math::PI) * -radius + 45
+    y = Math.cos(n * 45.0 / 180 * Math::PI) * -radius + 50
+    path.push(["L", x, y])
+  end
+  write_path(path, file, false)
+  y1 = 90
+  y2 = 80
+  write_path([
+    ["M", 15, y2], ["C", [22, y2], [18, y1], [25, y1]], ["C", [32, y1], [28, y2], [35, y2]],
+    ["C", [42, y2], [38, y1], [45, y1]], ["C", [52, y1], [48, y2], [55, y2]],
+    ["C", [62, y2], [58, y1], [65, y1]], ["C", [72, y1], [68, y2], [75, y2]],
+  ], file, false)
+  file.puts footer
+end
+
+File.open('car.svg', 'w') do |file|
+  file.puts header
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_circle(58, 89.5, 5, file, false)
+  write_circle(45, 89.5, 5, file, false)
+  write_circle(32, 89.5, 5, file, false)
+  file.puts footer
+end
+
 File.open('cav.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 10, 90], ["L", 10, 30], ["L", 90, 30], ["L", 90, 90], ["L", 10, 90], ["L", 10, 30],
+  ], file, false)
+  write_path([["M", 10, 90], ["L", 90, 30]], file, false)
+  file.puts footer
+end
+
+File.open('cav-wheel.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 10, 90], ["L", 10, 30], ["L", 90, 30], ["L", 90, 90], ["L", 10, 90], ["L", 10, 30],
+  ], file, false)
+  write_path([["M", 10, 90], ["L", 90, 30]], file, false)
+  write_circle(78, 82, 5, file, false)
+  write_circle(65, 82, 5, file, false)
+  file.puts footer
+end
+
+File.open('acav.svg', 'w') do |file|
   file.puts header
   write_path([
     ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],

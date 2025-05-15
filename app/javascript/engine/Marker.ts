@@ -56,6 +56,7 @@ export default class Marker {
   turretArmor = false
   sponson = false
   size = 0
+  tow = undefined
   smallName = 0
   baseMorale = 0
   currentMorale = 0

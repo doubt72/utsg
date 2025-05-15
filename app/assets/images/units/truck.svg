@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<path d="M 35 15 L 45 3 L 55 15" style="fill:rgba(0,0,0,0);stroke-width:2;stroke:#000;" />
+<path d="M 45 20 L 45 3" style="fill:rgba(0,0,0,0);stroke-width:2;stroke:#000;" />
+<path d="M 15 3 L 15 98 L 75 98 L 75 3 L 15 3 L 15 98" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<circle cx="45" cy="50" r="24" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+<path d="M 45.0 74.0 L 45.0 26.0 M 61.970562748477136 66.97056274847714 L 28.02943725152286 33.02943725152286 M 69.0 50.0 L 21.0 50.0 M 61.97056274847714 33.029437251522864 L 28.029437251522857 66.97056274847714" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
+</svg>

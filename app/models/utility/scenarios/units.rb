@@ -11,6 +11,7 @@ module Utility
                     .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
                     .merge(support_weapons).merge(infantry_guns).merge(at_guns)
                     .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
+                    .merge(trucks)
         end
 
         def unit_definition(code)
@@ -357,32 +358,32 @@ module Utility
             ["chi", "Type 20 Mortar", 27, 20, 24, -2, { s: 1, m: 3 }],
             ["chi", "M1 Mortar", 42, 20, 24, -2, { s: 1, m: 3 }],
             ["chi", "M2 Mortar", 42, 10, 16, -1, { m: 2 }],
-            ["chi", "M2 4.2inch Mortar", 43, 32, 32, 1, { sn: 2, s: 1, m: 4, c: 1 }],
+            ["chi", "M2 4.2inch Mortar", 43, 32, 32, 1, { sn: 2, s: 1, m: 4, c: 1, tow: 3 }],
             ["fin", "81mm Tampelia", 27, 20, 24, -2, { s: 1, m: 3 }],
             ["fra", "Brandt M1935", 35, 10, 16, -1, { m: 3 }],
             ["fra", "Brandt M27/31", 27, 20, 24, -2, { s: 1, m: 3 }],
-            ["fra", "M1917 Fabry", 18, 64, 32, 1, { s: 1, m: 4, c: 1 }],
+            ["fra", "M1917 Fabry", 18, 64, 32, 1, { s: 1, m: 4, c: 1, tow: 4 }],
             ["ger", "5cm leGrW 36", 36, 8, 11, 0, { m: 2 }],
             ["ger", "8cm GrW 34", 37, 20, 17, -2, { s: 1, m: 3 }],
             ["ger", "kz 8cm GrW 42", 41, 20, 16, -1, { s: 1, m: 3 }],
-            ["ger", "12cm GrW 42", 43, 40, 32, 1, { s: 1, m: 4, c: 1 }],
+            ["ger", "12cm GrW 42", 43, 40, 32, 1, { s: 1, m: 4, c: 1, tow: 4 }],
             ["ita", "Brixia M35", 35, 6, 11, -1, { m: 2 }],
             ["ita", "81/14 M35", 35, 20, 16, -2, { s: 1, m: 3 }],
             ["jap", "Type 10 Gren.L", 21, 6, 6, 0, { s: 1, m: 2 }],
             ["jap", "Type 89 Gren.L", 29, 8, 11, 0, { s: 1, m: 2 }],
             ["jap", "Type 97 81mm", 37, 20, 24, -3, { s: 1, m: 3 }],
-            ["jap", "Type 97 90mm", 37, 24, 24, 1, { s: 1, m: 3, c: 1 }],
-            ["jap", "Type 94 90mm", 34, 24, 24, 1, { s: 1, m: 3, c: 1 }],
+            ["jap", "Type 97 90mm", 37, 24, 24, 1, { s: 1, m: 3, c: 1, tow: 3 }],
+            ["jap", "Type 94 90mm", 34, 24, 24, 1, { s: 1, m: 3, c: 1, tow: 3 }],
             ["uk", "2inch Mortar", 37, 7, 10, 0, { m: 2 }],
             ["uk", "ML 3inch Mortar", 33, 20, 17, -1, { s: 1, m: 3 }],
-            ["uk", "ML 4.2inch Mortar", 40, 32, 32, 1, { s: 1, m: 4, c: 1, sn: 2 }],
+            ["uk", "ML 4.2inch Mortar", 40, 32, 32, 1, { s: 1, m: 4, c: 1, sn: 2, tow: 3 }],
             ["usa", "M2 Mortar", 40, 10, 16, -1, { m: 2 }],
             ["usa", "M1 Mortar", 35, 20, 24, -2, { s: 1, m: 3 }],
-            ["usa", "M2 4.2inch Mortar", 43, 32, 32, 1, { sn: 2, s: 1, m: 4, c: 1 }],
+            ["usa", "M2 4.2inch Mortar", 43, 32, 32, 1, { sn: 2, s: 1, m: 4, c: 1, tow: 3 }],
             ["ussr", "RM-38", 38, 8, 14, 0, { m: 2 }],
             ["ussr", "82-BM-37", 37, 20, 24, -2, { s: 1, m: 3 }],
             ["ussr", "82-PM-41", 41, 20, 24, -2, { s: 1, m: 3 }],
-            ["ussr", "120-PM-38", 39, 40, 32, 1, { s: 1, m: 4, c: 1 }],
+            ["ussr", "120-PM-38", 39, 40, 32, 1, { s: 1, m: 4, c: 1, tow: 4 }],
           ].each do |unit|
             mortar = { t: "sw", i: "mortar" }
             unit.each_with_index do |v, i|
@@ -499,22 +500,22 @@ module Utility
           lu = {}
           key = %i[c n y f r o]
           [
-            ["chi", "Bofors 75mm", 23, 16, 16, {}],
-            ["chi", "75mm M1 Pack", 42, 16, 16, {}],
-            ["chi", "75mm Gun", 32, 16, 16, {}],
-            ["fra", "75mm M1897", 0, 16, 16, {}],
+            ["chi", "Bofors 75mm", 23, 16, 16, { tow: 3 }],
+            ["chi", "75mm M1 Pack", 42, 16, 16, { tow: 3 }],
+            ["chi", "75mm Gun", 32, 16, 16, { tow: 3 }],
+            ["fra", "75mm M1897", 0, 16, 16, { tow: 3 }],
             ["fra", "37mm M1916", 16, 4, 12, {}],
-            ["ger", "7.5cm leIG 18", 32, 16, 14, {}],
-            ["ger", "15cm sIG 33", 36, 64, 18, {}],
+            ["ger", "7.5cm leIG 18", 32, 16, 14, { tow: 3 }],
+            ["ger", "15cm sIG 33", 36, 64, 18, { tow: 4 }],
             ["ita", "Cannone da 65/17", 13, 12, 12, { sn: 2 }],
-            ["ita", "Obice da 75/18", 34, 16, 14, {}],
-            ["ita", "Obice da 100/17", 14, 32, 16, {}],
-            ["jap", "70mm Type 92", 32, 12, 14, {}],
-            ["uk", "QF 25-Pounder", 40, 20, 16, {}],
-            ["uk", "QF 25Pdr Short", 43, 16, 15, {}],
-            ["uk", "QF 4.5inch", 8, 32, 20, {}],
-            ["usa", "75mm M1 Pack", 27, 16, 16, {}],
-            ["ussr", "76mm M1927", 28, 16, 16, {}],
+            ["ita", "Obice da 75/18", 34, 16, 14, { tow: 3 }],
+            ["ita", "Obice da 100/17", 14, 32, 16, { tow: 4 }],
+            ["jap", "70mm Type 92", 32, 12, 14, { tow: 3 }],
+            ["uk", "QF 25-Pounder", 40, 20, 16, { tow: 3 }],
+            ["uk", "QF 25Pdr Short", 43, 16, 15, { tow: 3 }],
+            ["uk", "QF 4.5inch", 8, 32, 20, { tow: 3 }],
+            ["usa", "75mm M1 Pack", 27, 16, 16, { tow: 3 }],
+            ["ussr", "76mm M1927", 28, 16, 16, { tow: 3 }],
           ].each do |unit|
             gun = { t: "gun", i: "gun", v: 1, s: 3 }
             unit.each_with_index do |v, i|
@@ -539,34 +540,34 @@ module Utility
             ["ger", "2.8cm sPzB 41", 41, 8, 10, {}],
             ["ger", "3.7cm Pak 36", 36, 8, 16, {}],
             ["ger", "5cm Pak 38", 40, 24, 16, {}],
-            ["ger", "7.5cm Pak 97/38", 42, 24, 20, { sn: 1 }],
-            ["ger", "7.5cm Pak 40", 42, 32, 24, {}],
-            ["ger", "8.8cm Pak 43/41", 43, 64, 32, { sn: 1 }],
-            ["ger", "8.8cm Pak 43", 43, 64, 32, { y: 1 }],
-            ["ger", "12.8cm Pak 44", 44, 96, 40, { y: 1 }],
-            ["ger", "8.8cm Flak 36", 36, 48, 30, { y: 1 }],
+            ["ger", "7.5cm Pak 97/38", 42, 24, 20, { sn: 1, tow: 3 }],
+            ["ger", "7.5cm Pak 40", 42, 32, 24, { tow: 3 }],
+            ["ger", "8.8cm Pak 43/41", 43, 64, 32, { sn: 1, tow: 4 }],
+            ["ger", "8.8cm Pak 43", 43, 64, 32, { y: 1, tow: 4 }],
+            ["ger", "12.8cm Pak 44", 44, 96, 40, { y: 1, tow: 4 }],
+            ["ger", "8.8cm Flak 36", 36, 48, 30, { y: 1, tow: 4 }],
             ["ita", "Cannone da 47/32", 35, 12, 16, { sn: 2 }],
             ["ita", "Cannone da 47/40", 38, 16, 16, { sn: 2 }],
-            ["ita", "Cannone da 75/46", 34, 32, 24, { sn: 2 }],
-            ["ita", "Cannone da 90/53", 39, 48, 32, { sn: 2 }],
+            ["ita", "Cannone da 75/46", 34, 32, 24, { sn: 2, tow: 3 }],
+            ["ita", "Cannone da 90/53", 39, 48, 32, { sn: 2, tow: 4 }],
             ["jap", "37mm Type 94", 36, 8, 14, {}],
             ["jap", "37mm Type 1", 41, 10, 16, {}],
             ["jap", "47mm Type 1", 42, 16, 16, {}],
-            ["jap", "75mm Type 90", 42, 32, 20, {}],
+            ["jap", "75mm Type 90", 42, 32, 20, { tow: 3 }],
             ["uk", "QF 2-Pounder", 36, 10, 12, {}],
-            ["uk", "QF 6Pdr Mk II", 41, 20, 16, {}],
-            ["uk", "QF 6Pdr Mk IV", 41, 24, 20, {}],
-            ["uk", "QF 17-Pounder", 43, 48, 24, {}],
+            ["uk", "QF 6Pdr Mk II", 41, 20, 16, { tow: 3 }],
+            ["uk", "QF 6Pdr Mk IV", 41, 24, 20, { tow: 3 }],
+            ["uk", "QF 17-Pounder", 43, 48, 24, { tow: 4 }],
             ["usa", "37mm M3", 38, 7, 12, {}],
             ["usa", "57mm M1A2", 43, 20, 16, {}],
-            ["usa", "75mm M1897", 40, 24, 20, {}],
-            ["usa", "3inch M5", 43, 40, 24, {}],
+            ["usa", "75mm M1897", 40, 24, 20, { tow: 3 }],
+            ["usa", "3inch M5", 43, 40, 24, { tow: 3 }],
             ["ussr", "45mm 19-K", 34, 12, 16, {}],
             ["ussr", "45mm 53-K", 37, 12, 16, {}],
             ["ussr", "45mm M-42", 42, 16, 16, {}],
             ["ussr", "57mm ZiS-2", 41, 24, 20, {}],
-            ["ussr", "76mm F-22", 37, 32, 24, {}],
-            ["ussr", "100mm BS-3", 44, 64, 30, {}],
+            ["ussr", "76mm F-22", 37, 32, 24, { tow: 3 }],
+            ["ussr", "100mm BS-3", 44, 64, 30, { tow: 4 }],
           ].each do |unit|
             at = { t: "gun", i: "atgun", v: 1, s: 3 }
             unit.each_with_index do |v, i|
@@ -794,7 +795,7 @@ module Utility
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["fra", "UE Chenillette", 32, 3, 0, 0, 4, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
+            ["fra", "Renault UE", 32, 3, 0, 0, 4, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
             ["fra", "Lorraine 37L", 39, 3, 0, 0, 5, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/1", 41, 3, 8, 8, 6, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/7", 41, 3, 20, 16, 6, { t: 1, m: 3, ha: { f: 1, s: 0, r: 0, t: -1 } }],
@@ -845,7 +846,7 @@ module Utility
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["fra", "Schneider P16", 28, 3, 8, 12, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["fra", "Schneider P16", 28, 3, 8, 12, 5, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
             ["fra", "White AM AC", 15, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],
             ["fra", "Panhard 178", 37, 3, 4, 12, 5, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
             ["ger", "SdKfz 221", 35, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
@@ -886,9 +887,82 @@ module Utility
             if ac[:n] == "Schneider P16"
               ac[:o].delete(:w)
               ac[:o][:k] = 1
-              ac[:i] = "cav"
+              ac[:i] = "acav"
             end
             lu[:"#{ac[:c]}_#{sanitize(ac[:n])}"] = ac
+          end
+          lu
+        end
+
+        def trucks
+          lu = {}
+          key = %i[c n i y s f r v o]
+          [
+            ["alm", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["alm", "Sokol 1000", "cav-wheel", 33, 3, 0, 0, 6, {}],
+            ["alm", "Polski Fiat 621", "truck", 35, 3, 0, 0, 5, {}],
+            ["axm", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["chi", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["fra", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["fra", "Laffly S20", "truck", 37, 3, 0, 0, 5, {}],
+            ["fra", "Citroen U23", "truck", 35, 4, 0, 0, 5, {}],
+            ["ger", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["ger", "BMW R75", "cav-wheel", 41, 3, 0, 0, 6, {}],
+            ["ger", "Zündapp KS 750", "cav-wheel", 41, 3, 0, 0, 6, {}],
+            ["ger", "BMW R17", "cav-wheel", 35, 3, 0, 0, 6, {}],
+            ["ger", "L3000", "truck", 38, 4, 0, 0, 5, {}],
+            ["ger", "Opel Blitz", "truck", 30, 3, 0, 0, 5, {}],
+            ["ger", "BMW 325", "car", 36, 2, 0, 0, 5, {}],
+            ["ger", "VW Kübelwagen", "car", 40, 2, 0, 0, 5, { sn: 1 }],
+            ["ger", "m. E. Pkw", "car", 37, 2, 0, 0, 5, {}],
+            ["ger", "s. E. Pkw", "truck", 38, 3, 0, 0, 5, {}],
+            ["ger", "le. gl. Lkw", "truck", 37, 4, 0, 0, 5, {}],
+            ["ger", "L3000", "truck", 38, 4, 0, 0, 5, {}],
+            ["ita", "Alfa Romeo 430", "truck", 42, 4, 0, 0, 5, {}],
+            ["ita", "Alfa Romeo 500", "truck", 37, 4, 0, 0, 5, {}],
+            ["ita", "Alfa Romeo 800", "truck", 40, 5, 0, 0, 5, {}],
+            ["jap", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["jap", "Bicycle", "cav-wheel", 30, 3, 0, 0, 4, { w: 1 }],
+            ["uk", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["uk", "Bedford MW", "truck", 39, 3, 0, 0, 5, {}],
+            ["uk", "Bedford OY", "truck", 39, 4, 0, 0, 5, {}],
+            ["uk", "Bedford QL", "truck", 41, 4, 0, 0, 5, {}],
+            ["uk", "Ford F15", "truck", 39, 3, 0, 0, 5, {}],
+            ["uk", "Dodge D60", "truck", 39, 4, 0, 0, 5, {}],
+            ["uk", "Dodge WC", "truck", 41, 3, 0, 0, 5, {}],
+            ["usa", "H-D WLA", "cav-wheel", 40, 3, 0, 0, 6, {}],
+            ["usa", "Dodge VC", "truck", 40, 3, 0, 0, 5, {}],
+            ["usa", "Dodge WC", "truck", 41, 3, 0, 0, 5, {}],
+            ["ussr", "Dodge WC", "truck", 42, 3, 0, 0, 5, {}],
+            ["fra", "Dodge WC", "truck", 41, 3, 0, 0, 5, {}],
+            ["uk", "Dodge WC", "truck", 41, 3, 0, 0, 5, {}],
+            ["usa", "GMC CCKW", "truck", 41, 4, 0, 0, 5, {}],
+            ["ussr", "Studebaker US6", "truck", 41, 4, 0, 0, 5, { sn: 1 }],
+            ["usa", "Jeep", "car", 41, 2, 0, 0, 5, {}],
+            ["uk", "Jeep", "car", 41, 2, 0, 0, 5, {}], # TODO: arm as needed, especially SAS
+            ["ussr", "Jeep", "car", 41, 2, 0, 0, 5, {}],
+            ["fra", "Jeep", "car", 41, 2, 0, 0, 5, {}],
+            ["ussr", "Jeep", "car", 41, 2, 0, 0, 5, {}],
+            ["usa", "Jeep .50 MG", "car", 41, 2, 10, 15, 5, { r: 1, j: 3, f: 16 }],
+            ["usa", "Jeep 37mm AT", "car", 41, 2, 7, 10, 5, { t: 1, j: 3, f: 18, p: 1 }],
+            ["usa", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, {}],
+            ["uk", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, {}],
+            ["ussr", "Horse", "cav", 0, 3, 0, 0, 7, {}],
+            ["ussr", "PMZ-A-750", "cav-wheel", 34, 3, 0, 0, 5, {}],
+            ["ussr", "Dnepr M-72", "cav-wheel", 42, 3, 0, 0, 6, {}],
+            ["ussr", "GAZ-67", "car", 43, 2, 0, 0, 5, {}],
+            ["ussr", "GAZ-AA", "truck", 32, 3, 0, 0, 5, {}],
+            ["ussr", "GAZ-AAA", "truck", 36, 3, 0, 0, 5, {}],
+            ["ussr", "GAZ-MM", "truck", 36, 3, 0, 0, 5, {}],
+            ["ussr", "ZIS-5", "truck", 34, 3, 0, 0, 5, {}],
+          ].each do |unit|
+            truck = { t: "truck", i: "truck" }
+            unit.each_with_index do |v, i|
+              truck[key[i]] = v
+            end
+            truck[:o].merge!({ w: 1 }) if truck[:n] != "Horse"
+            truck[:t] = "cav" if %w[cav cav-wheel].include?(truck[:i])
+            lu[:"#{truck[:c]}_#{sanitize(truck[:n])}"] = truck
           end
           lu
         end

@@ -40,6 +40,10 @@ Style/WordArray:
   Exclude:
     - 'app/models/scenarios/**/*'
 
+Style/SymbolArray:
+  Exclude:
+    - 'app/models/scenarios/**/*'
+
 Naming/VariableNumber:
   Enabled: false
 
