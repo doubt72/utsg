@@ -2,22 +2,22 @@
   Bulgarian, Hungarian, Romanian, Slovakian, Croatian,
   Polish, Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-50x    Polish Infantry Resisting German Armor
-00x Rumanian Town Clearing in early Barbarossa
-20x Something in Italy
+503 Polish Infantry Resisting German Armor
+304 Market Garden Tank Support - Hell's Highway
+005 Rumanian Town Clearing in early Barbarossa
+401 Hold New Guinea village against constant piecemeal Japanese Attack
+201 Something in Italy
+006 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
+
 00x Stalingrad Factory
-10x British assulting Fort Capuzzo in 40
-00x Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
 10x Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
-30x    Pegasus Bridge British take bridge then counterattack
-30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
-40x    Hold New Guinea village against constant piecemeal Japanese Attack
-40x    Reduce Japanese Strongpoint in New Guinea
-10x Fight over featureless land (tanks)
+30x Pegasus Bridge British take bridge then counterattack
+30x Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+40x Reduce Japanese Strongpoint in New Guinea
 10x El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
-30x    Americans Clearing Edge of Large Town - Carentan
-50x    Finish Bunkers along Border in Winter War
-40x    Late Manila urban Fighting
+30x Americans Clearing Edge of Large Town - Carentan
+50x Finish Bunkers along Border in Winter War
+40x Late Manila urban Fighting
 
 000 East Front
 + 001 44 Simple Squad Battle, MG only
@@ -47,8 +47,8 @@ Dom 31 Barrikady, 27 Oct 42
 Grain Elevator, Manina Stalingrad, 18 Sep 42
 
 100 North Africa
-  10x    Fight over featureless land (tanks)
-  10x    British assulting Fort Capuzzo in 40
++ 10x 41 Fight over featureless land (tanks)
++ 10x 40 British assulting Fort Capuzzo in 40
 - 103 41 British / Italian Tank Battle
 + 104 42 Indian Division at El Alamein
 - 105 42 British Breaching German Defenses

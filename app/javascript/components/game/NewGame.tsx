@@ -231,9 +231,10 @@ export default function NewGame() {
     { code: "3x1", name: "23x11 (3x1 pages)"},
     { code: "3x2", name: "23x23 (3x2 pages)"},
     { code: "3x3", name: "23x36 (3x3 pages)"},
+    { code: "4x1", name: "32x11 (4x1 pages)"},
     { code: "4x2", name: "32x23 (4x2 pages)"},
     { code: "4x3", name: "32x36 (4x3 pages)"},
-    { code: "other", name: "other"},
+    { code: "other", name: "Other"},
   ]
 
   const sizeSelector = (

@@ -2,9 +2,9 @@
   - Sort by...  Number? Map size?
 
 - Fix terrain info over terrain (probably offset)
-  - Also terrain help for ice
+  - Also add terrain help for ice / switch ice to special rule
 - Fix reinforcement panel drifting down
-- Cancel direction if undo
+- Cancel direction if undo or reselection
 
 - Fill Out Scenarios
 

@@ -98,10 +98,11 @@ export const buildingStyle: { [index: string]: BuildingStyleType } = {
   Farm: "f", Urban: "u"
 }
 
-export type BuildingShapeType = "c" | "t" | "h" | "x" | "l" | "s" | "m" | "bs1"
-  | "bs2" | "bs3" | "bs4" | "bm" | "bc1" | "bc2" | "bc3"
+export type BuildingShapeType = "c" | "t" | "h" | "x" | "l" | "s" | "m" | "l2" | "s2" | "m2" |
+  "bs1" | "bs2" | "bs3" | "bs4" | "bm" | "bc1" | "bc2" | "bc3"
 export const buildingShape: { [index: string]: BuildingShapeType } = {
   Silo: "c", Tank: "t", Hut: "h", Cross: "x", Lone: "l", Side: "s", Middle: "m",
+  Lone2: "l2", Side2: "s2", Middle2: "m2",
   BigSide1: "bs1", BigSide2: "bs2", BigSide3: "bs3", BigSide4: "bs4",
   BigMiddle: "bm", BigCorner1: "bc1", BigCorner2: "bc2", BigCorner3: "bc3"
 }

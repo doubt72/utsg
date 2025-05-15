@@ -131,6 +131,17 @@ function drawCore(
   ])
 }
 
+// Core of the "standard" multi-hex building (no eaves)
+function drawCore2(
+  hex: Hex, dir: ExtendedDirection,
+  x: number, y: number, inset: number, offset1: number, offset2: number
+): SVGPathArray {
+  return buildingRotatedMap(hex, dir, [
+    "M", [-x + offset2, -y], "L", [x - offset1, -y], "L", [x - offset1, y],
+    "L", [-x + offset2, y], "L", [-x + offset2, -y],
+  ])
+}
+
 // Eaves for all the "standard" buildings
 function drawEave(
   hex: Hex, dir: ExtendedDirection, x: number, y: number
@@ -194,6 +205,43 @@ function middlePath(hex: Hex): SVGPathArray {
   ]))
   path = path.concat(drawEave(hex, dir, -outset, -y))
   path = path.concat(drawEave(hex, dir, outset, y))
+  return path
+}
+
+// The single-hex-wide (non-eaved) "standard" buildings
+function lonePath2(hex: Hex): SVGPathArray {
+  let path = []
+  const inset = 4
+  const dir = hex.direction 
+  const x = hex.narrow/2
+  const y = hex.radius/2 - inset
+  path = drawCore2(hex, dir, x, y, inset, inset*2, inset*2)
+  path = path.concat(drawEnd(hex, dir, x, y, inset, 0))
+  path = path.concat(drawEnd(hex, dir, -x, y, -inset, 0))
+  return path
+}
+
+function sidePath2(hex: Hex): SVGPathArray {
+  let path = []
+  const inset = 4
+  const dir = hex.direction 
+  const x = hex.narrow/2
+  const y = hex.radius/2 - inset
+  path = drawCore2(hex, dir, x, y, inset, inset*2, 0)
+  path = path.concat(drawEnd(hex, dir, x, y, inset, -x))
+  return path
+}
+
+function middlePath2(hex: Hex): SVGPathArray {
+  let path = []
+  const inset = 4
+  const dir = hex.direction 
+  const x = hex.narrow/2
+  const y = hex.radius/2 - inset
+  path = drawCore2(hex, dir, x, y, inset, 0, 0)
+  path = path.concat(buildingRotatedMap(hex, dir, [
+    "M", [-x, 0], "L", [x, 0],
+  ]))
   return path
 }
 
@@ -351,6 +399,12 @@ export function hexBuildingBuildingDisplay(hex: Hex): PathLayout | false {
     path = sidePath(hex)
   } else if (hex.buildingShape === buildingShape.Middle) {
     path = middlePath(hex)
+  } else if (hex.buildingShape === buildingShape.Lone2) {
+    path = lonePath2(hex)
+  } else if (hex.buildingShape === buildingShape.Side2) {
+    path = sidePath2(hex)
+  } else if (hex.buildingShape === buildingShape.Middle2) {
+    path = middlePath2(hex)
   } else if (hex.buildingShape === buildingShape.BigMiddle) {
     path = bigMiddle(hex)
   } else if (hex.buildingShape === buildingShape.BigSide1) {

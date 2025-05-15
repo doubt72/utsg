@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario502 < Base
     ID = "502"
-    NAME = "Armored Carnage"
+    NAME = "Armored Connage"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
