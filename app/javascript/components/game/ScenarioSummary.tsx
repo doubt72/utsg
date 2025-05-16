@@ -64,6 +64,10 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
     )
   }
 
+  const scale = () => {
+    return 7.5 / (map.width + map.height)
+  }
+
   return (
     <div className="scenario-description">
       <div className="scenario-description-row background-gray corner-round">
@@ -93,8 +97,10 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           {specialRules()}
           {scenarioNote()}
         </div>
-        <div className="p05em corner-round edge-line">
-          <GameMap map={map} scale={0.2} preview={true} />
+        <div>
+          <div className="p05em corner-round edge-line">
+            <GameMap map={map} scale={scale()} preview={true} />
+          </div>
         </div>
       </div>
       <div className="flex mt1em">

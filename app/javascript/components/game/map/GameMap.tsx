@@ -344,7 +344,7 @@ export default function GameMap({
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
       setReinforcementsOverlay(rp =>
-        <ReinforcementPanel map={map} xx={x} yy={y + 50 / scale - 50} player={player}
+        <ReinforcementPanel map={map} xx={x} yy={y} player={player}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
                               map.game?.setReinforcementSelection(undefined)
