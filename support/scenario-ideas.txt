@@ -2,7 +2,8 @@
   Bulgarian, Hungarian, Slovakian, Croatian,
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-304 Market Garden Tank Support - Hell's Highway
+302 -- Bigger Map
+310 Market Garden Tank Support - Hell's Highway
 401 Hold New Guinea village against constant piecemeal Japanese Attack
 201 Something in Italy
 006 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
@@ -67,16 +68,16 @@ Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripo
 Monte Cassino, Anzio, Sicily, Salerno
 
 300 Normandy/Late West Front
-- 301 44 Counterattack Against Paratroopers
-- 302 44 German Tank Counterattack
-- 303 44 Bocage
-  30x    Market Garden Tank Support - Hell's Highway
++ 301 44 Counterattack Against Paratroopers
++ 302 44 German Tank Counterattack
++ 303 44 Bocage
+  30x    British Clearing Normandy Town - Cheux?
 + 305 44 Omaha Beach
   30x    Pegasus Bridge British take bridge then counterattack
   30x    Canadian Street Fighting in Caen
-- 308 44 Cherbourg City Attack
++ 308 44 Cherbourg City Attack
 + 309 44 Manor Attack
-  30x    British Clearing Normandy Town - Cheux?
+  30x    Market Garden Tank Support - Hell's Highway
 + 311 44 Arracourt
   30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry again strongpoint CC49
   30x    Pointe-du-Hoc Rangers

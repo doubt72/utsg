@@ -26,18 +26,24 @@ module Scenarios
 
       def description
         [
-          "While Aachen had little intrinsic military importance, it was an
-          important symbol to both the Nazi regime and the German people; it
-          was the first German city threatened, it was the historical capital
-          of Charlemagne, founder of the Holy Roman Empire, whose legacy the
-          Nazis claimed, so the psychological value was immense.  It was the
-          first time the Germans were fighting on home soil instead of as
-          occupiers.  Both sides took heavy losses and much of the city was
-          destroyed, and the tenacious defense significantly disrupted Allied
-          plans for the advance into Germany.",
-          "This scenario is for the assault of an outlying manor that has been
-          turned into a German stronghold as part of the overall battle, rather than
-          part of the (significant) urban fighting in the city proper.",
+          "When the Battle of Aachen began, the Allies hoped to capture it
+          quickly and then advance into the industrialized Ruhr basin.  While
+          Aachen had little intrinsic military importance, it was an important
+          symbol to both the Nazi regime and the German people; it was the
+          first German city threatened by the Allies and it was the historical
+          capital of Charlemagne, founder of the Holy Roman Empire, whose
+          legacy the Nazis claimed, so the psychological value was immense.
+          It was the first time the Germans were fighting on home soil instead
+          of as occupiers.  Both sides took heavy losses and much of the city
+          was destroyed, and the tenacious defense significantly disrupted
+          Allied plans for the advance into Germany.",
+          "On the 2nd of October, the 30th Infantry Division began to advance
+          around the north of Aachen. Starting by using divisional heavy
+          artillery to target German pillboxes resistance was much heavier
+          than expected and the going was slow, and if the Americans paused
+          after taking a pillbox, the Germans would immediately coutnerattack.
+          Rimburg was taken on the second day of the offensive, but advancing
+          through German defenses remained slow.",
         ]
       end
 
@@ -261,7 +267,7 @@ module Scenarios
           "0": { list: [
             :ger_leader_6_1,
             :ger_leader_4_1,
-            [6, :ger_ss_s],
+            [6, :ger_rifle_s],
             :ger_elite_crew_t,
             [2, :ger_mg_42],
             :ger_7_5cm_leig_18,

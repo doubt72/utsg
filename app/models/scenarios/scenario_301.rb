@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Rally Point"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,8 +26,17 @@ module Scenarios
 
       def description
         [
-          "German infantry attempt to dislodge a group of American paratroopers that have
-          organized themselves at a strong point.",
+          "After the airborne landings in Normandy, paratroopers were badly
+          scattered due to cloud cover, anti-aircraft fire, and difficult
+          navigation, and just plain mis-drops. This caused many to land
+          outside their intended drop zones, often far outside, disrupting
+          most of the pre-drop plans.  On the other hand, the scattered
+          landings also created confusion among the German forces, as they
+          didn't know the true extent of the airborne assault.",
+          "While initially chaotic, the scattered paratroopers still managed
+          to capture many of their objectives, disrupt German defenses and tie
+          down significant enemy forces, contributing to the success of the
+          Normandy invasion.",
         ]
       end
 
@@ -39,11 +48,13 @@ module Scenarios
           wind: [1, 3, false],
           hexes:,
           layout: [15, 11, "x"],
-          allied_edge: "r",
-          axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          allied_edge: "t",
+          axis_edge: "b",
+          victory_hexes: [
+            [4, 3, 1], [4, 7, 1], [6, 5, 1], [8, 4, 1], [9, 6, 1],
+          ],
+          allied_setup: { "0" => [["4-9", "3-7"]] },
+          axis_setup: { "0" => [["0-1", "*"], ["13-14", "*"], ["*", "0-1"], ["*", "9-10"]] },
         }
       end
 
@@ -71,7 +82,7 @@ module Scenarios
             { t: "o" },
             { t: "d", d: 2 },
             { t: "o", r: { d: [2, 5], t: "t" } },
-            { t: "o", d: 2, st: { sh: "s" } },
+            { t: "o", d: 2, st: { sh: "l" } },
             { t: "o" },
             { t: "o", b: "b", be: [1, 6] },
             { t: "o" },

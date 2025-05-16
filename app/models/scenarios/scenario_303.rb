@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Over the Hedge"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,8 +26,15 @@ module Scenarios
 
       def description
         [
-          "American troops advance through the difficult bocage terrain of Normandy,
-          France.",
+          "The Normandy bocage, a landscape characterized by dense hedgerows
+          and sunken lanes, presented significant challenges for Allied forces
+          during the Battle of Normandy. These natural defenses allowed German
+          troops to easily create fortifications and ambush advancing Allied
+          forces. The bocage also hindered Allied tank movement and made
+          progress slow and costly",
+          "The fighting in the bocage became known as the \"Battle of the
+          Hedgerows\" or \"Hedge War,\" highlighting the significant impact of
+          this terrain on the Allied advance.",
         ]
       end
 
@@ -39,11 +46,13 @@ module Scenarios
           wind: [1, 4, false],
           hexes:,
           layout: [15, 11, "x"],
-          allied_edge: "r",
-          axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          allied_edge: "l",
+          axis_edge: "r",
+          victory_hexes: [
+            [5, 6, 2], [6, 4, 2], [9, 1, 2], [11, 3, 2], [12, 8, 2],
+          ],
+          allied_setup: { "0" => [["0-2", "*"]] },
+          axis_setup: { "0" => [["4-14", "*"]] },
         }
       end
 

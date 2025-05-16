@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Counterattack!"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,9 +26,19 @@ module Scenarios
 
       def description
         [
-          "American forces attempt to stop a last-gasp German counterattack.  Part of the Operation
-          Lüttich, a large-scale german attempt to push back the Allies during the battle
-          of Normandy.",
+          "Operation Lüttich was the codename of the Nazi German
+          counter-attack near Mortain in northwestern France during the Battle
+          of Normandy.  Despite initial success against the defending U.S. VII
+          Corps, the Germans were soon halted, and the Allies inflicted severe
+          losses on the attacking troops, eventually destroying most of the
+          tanks the Germans committed.",
+          "Ordered by Hitler despite protests from the German commanders on
+          the spot, there was little chance of the attack succeeding, and the
+          concentration of their armoured reserves at the western end of the
+          front in Normandy soon led to disaster, as they were outflanked to
+          their south and the front to their east collapsed, resulting in many
+          of the German troops in Normandy being trapped in the Falaise
+          Pocket.",
         ]
       end
 
@@ -40,11 +50,13 @@ module Scenarios
           wind: [1, 5, true],
           hexes:,
           layout: [15, 11, "x"],
-          allied_edge: "r",
-          axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          allied_edge: "l",
+          axis_edge: "r",
+          victory_hexes: [
+            [2, 4, 1], [4, 5, 1], [4, 8, 1], [8, 5, 1], [10, 3, 2],
+          ],
+          allied_setup: { "0" => [["0-8", "*"]] },
+          axis_setup: { "0" => [["10-14", "*"]] },
         }
       end
 
@@ -234,8 +246,7 @@ module Scenarios
         {
           "0": { list: [
             :usa_leader_5_1,
-            :usa_leader_4_1,
-            :usa_leader_4_1,
+            [2, :usa_leader_4_1],
             [8, :usa_rifle_s],
             [2, :usa_m1918_bar],
             :usa_m2_browning,

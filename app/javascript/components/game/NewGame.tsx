@@ -15,7 +15,7 @@ export default function NewGame() {
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
 
   const [scenarioSearch, setScenarioSearch] = useState({
-    string: "", allies: "", axis: "", theater: "", status: "a", type: "", size: "", page: 0
+    string: "", allies: "", axis: "", theater: "", status: "*", type: "", size: "", page: 0
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
