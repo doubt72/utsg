@@ -4,11 +4,22 @@ export function alliedCodeToName(code: string): string {
   const lookup = [
     { name: "Soviet", code: "ussr" },
     { name: "American", code: "usa" },
+    { name: "Brazilian", code: "bra" },
     { name: "British", code: "uk" },
+    { name: "Canadian", code: "can" },
+    { name: "Australian", code: "aus" },
+    { name: "New Zealand", code: "nz" },
     { name: "Indian", code: "ind" },
+    { name: "South African", code: "sa" },
     { name: "French", code: "fra" },
+    { name: "Free French", code: "frf" },
     { name: "Chinese", code: "chi" },
-    { name: "Allied", code: "alm" },
+    { name: "Polish", code: "pol" },
+    { name: "Greek", code: "gre" },
+    { name: "Norwegian", code: "nor" },
+    { name: "Belgian", code: "bel" },
+    { name: "Dutch", code: "dut" },
+    { name: "Yugoslavian", code: "yug" },
   ]
 
   for (const rec of lookup) {
@@ -26,7 +37,11 @@ export function axisCodeToName(code: string): string {
     { name: "Italian", code: "ita" },
     { name: "Japanese", code: "jap" },
     { name: "Finnish", code: "fin" },
-    { name: "Axis", code: "axm" },
+    { name: "Hungarian", code: "hun" },
+    { name: "Bulgarian", code: "bul" },
+    { name: "Romanian", code: "rom" },
+    { name: "Slovakian", code: "slo" },
+    { name: "Croatian", code: "cro" },
   ]
 
   for (const rec of lookup) {

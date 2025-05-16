@@ -86,6 +86,16 @@ RSpec.describe Api::V1::ScenariosController do
       end
     end
 
+    it "gets correct scenarios with theater filter" do
+      get :index, params: { status: "*", theater: "1" }
+
+      expect(response.status).to be == 200
+      scenarios = JSON.parse(response.body)["data"]
+      scenarios.each do |s|
+        expect(s["id"][0]).to be == "1"
+      end
+    end
+
     it "gets correct scenarios with size filter" do
       get :index, params: { status: "*", size: "2x1" }
 

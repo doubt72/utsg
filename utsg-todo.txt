@@ -3,10 +3,10 @@
 
 - Fix terrain info over terrain (probably offset)
   - Also add terrain help for ice / switch ice to special rule
-- Fix reinforcement panel drifting down
 - Cancel direction if undo or reselection
 - Add help for minimum towing size
 - Allow tanks to deploy on road but limit directions
+- Add graduated coloring when placing support weapons
 
 - Fill Out Scenarios
 

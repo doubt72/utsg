@@ -295,6 +295,7 @@ module Utility
             ["alm", "Bren LMG", 35, 3, 6, 0, { a: 1, r: 1, j: 3, f: 16 }],
             ["alm", "Vickers MG", 12, 7, 10, -1, { r: 1, j: 2, f: 15 }],
             ["alm", "MG 08/15", 24, 10, 12, -1, { r: 1, j: 3, f: 16 }],
+            ["alm", "rkm wz. 1928", 28, 5, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
             ["axm", "MG 08/15", 24, 10, 12, -1, { r: 1, j: 3, f: 16 }],
             ["axm", "MG 34", 36, 5, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
             ["axm", "MG 42", 42, 8, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
@@ -459,15 +460,15 @@ module Utility
             lu[:"#{rocket[:c]}_#{sanitize(rocket[:n])}"] = rocket
           end
           [
-            ["axm", "S-18/100", 34, 3, 8, -2, { b: 3 }],
-            ["alm", "Boys AT Rifle", 37, 2, 8, -1, { b: 3 }],
-            ["alm", "wz. 35 AT Rifle", 38, 2, 4, 0, { b: 3 }],
-            ["chi", "Boys AT Rifle", 44, 2, 8, -1, { b: 3 }],
-            ["fin", "Lahti L-39", 40, 3, 8, -2, { b: 3 }],
-            ["fin", "14 mm pst kiv/37", 37, 2, 8, -1, { b: 3, sn: 1 }],
-            ["fin", "8 mm pst kiv/38", 38, 2, 4, 0, { b: 3 }],
-            ["jap", "Type 97 AC", 35, 3, 8, -2, { b: 3 }],
-            ["uk", "Boys AT Rifle", 37, 2, 8, -1, { b: 3 }],
+            ["axm", "S-18/100", 34, 4, 6, -2, { j: 3 }],
+            ["alm", "Boys AT Rifle", 37, 3, 6, -1, { j: 3 }],
+            ["alm", "wz. 35 AT Rifle", 38, 3, 4, 0, { j: 3 }],
+            ["chi", "Boys AT Rifle", 44, 3, 6, -1, { j: 3 }],
+            ["fin", "Lahti L-39", 40, 4, 6, -2, { j: 3 }],
+            ["fin", "14 mm pst kiv/37", 37, 3, 6, -1, { j: 3, sn: 1 }],
+            ["fin", "8 mm pst kiv/38", 38, 3, 4, 0, { j: 3 }],
+            ["jap", "Type 97 AC", 35, 3, 5, -2, { j: 3 }],
+            ["uk", "Boys AT Rifle", 37, 3, 6, -1, { j: 3 }],
           ].each do |unit|
             at = { t: "sw", i: "antitank" }
             unit.each_with_index do |v, i|
@@ -863,7 +864,7 @@ module Utility
             ["uk", "AEC AC II CS", 42, 3, 16, 12, 4, { t: 1, g: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
             ["uk", "Daimler AC", 41, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
             ["uk", "Daimler AC CS", 41, 3, 16, 12, 4, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["uk", "Humber AC I", 40, 3, 32, 15, 4, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
+            ["uk", "Humber AC I", 40, 3, 12, 12, 4, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
             ["uk", "Humber AC IV", 42, 3, 24, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
             ["uk", "T17E1 Staghound", 44, 3, 24, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 1, r: 1 }, sn: 1 }],
             ["uk", "Humber LRC", 40, 3, 2, 8, 8, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 } }],

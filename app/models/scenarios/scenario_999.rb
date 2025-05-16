@@ -4,7 +4,7 @@ module Scenarios
   class Scenario999 < Base
     ID = "999"
     NAME = "Template"
-    ALLIES = ["uk"].freeze
+    ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "x"
 
@@ -39,6 +39,7 @@ module Scenarios
           victory_hexes: [],
           allied_setup: { "0" => [] },
           axis_setup: { "0" => [] },
+          base_terrain: "g",
         }
       end
 
@@ -228,12 +229,7 @@ module Scenarios
         {
           "0": { list: [
             :ussr_leader_5_1,
-            :ussr_leader_4_1,
-            :ussr_leader_3_1,
-            [6, :ussr_rifle_s],
-            [4, :ussr_smg_s],
-            [4, :ussr_dp_27],
-            [6, :ussr_mc],
+            [2, :ussr_rifle_s],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -242,11 +238,7 @@ module Scenarios
         {
           "0": { list: [
             :ger_leader_6_2,
-            [2, :ger_leader_5_1],
-            [10, :ger_rifle_s],
-            [4, :ger_mg_34],
-            :ger_ft,
-            [2, :ger_sc],
+            [2, :ger_rifle_s],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

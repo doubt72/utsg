@@ -8,7 +8,7 @@ module Api
       def index
         options = {}
         params.each_pair do |key, value|
-          options[key] = value if %w[string allies axis status type size].include? key
+          options[key] = value if %w[string allies axis status theater type size].include? key
         end
         render json: paginate(Utility::Scenario.all_scenarios(options)), status: :ok
       end

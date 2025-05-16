@@ -1,8 +1,7 @@
 - Australian, Canadian, New Zealand, South African, Brazilian, Free French,
   Bulgarian, Hungarian, Romanian, Slovakian, Croatian,
-  Polish, Greek, Norwegian, Belgian, Dutch, Yugoslavian
+  Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-503 Polish Infantry Resisting German Armor
 304 Market Garden Tank Support - Hell's Highway
 005 Rumanian Town Clearing in early Barbarossa
 401 Hold New Guinea village against constant piecemeal Japanese Attack
@@ -114,7 +113,7 @@ Singapore, Okinawa, Bobdubi Ridge
 500 Finland/Poland/France/Norway/Balkans
 + 501 40 Finish Ambush in snow against armored column Winter War
 + 502 40 French Armor vs. German Armor (FCM 36)
-  50x    Polish Infantry Resisting German Armor
++ 503 39 Polish Infantry Resisting German Armor
 + 504 40 French Isolated Armor + Infantry against German Armor
 + 505 40 French Armor vs. German Armor (Char B1 bis)
   50x    Finish Bunkers along Border in Winter War

@@ -15,7 +15,7 @@ export default function NewGame() {
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
 
   const [scenarioSearch, setScenarioSearch] = useState({
-    string: "", allies: "", axis: "", status: "a", type: "", size: "", page: 0
+    string: "", allies: "", axis: "", theater: "", status: "a", type: "", size: "", page: 0
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
@@ -30,6 +30,7 @@ export default function NewGame() {
     if (scenarioSearch.allies != "") { params.allies = scenarioSearch.allies }
     if (scenarioSearch.axis != "") { params.axis = scenarioSearch.axis }
     if (scenarioSearch.status != "") { params.status = scenarioSearch.status }
+    if (scenarioSearch.theater != "") { params.theater = scenarioSearch.theater }
     if (scenarioSearch.type != "") { params.type = scenarioSearch.type }
     if (scenarioSearch.size != "") { params.size = scenarioSearch.size }
     const urlParams = new URLSearchParams(params).toString()
@@ -71,7 +72,7 @@ export default function NewGame() {
     checkScenarios()
   }, [
     scenarioSearch.string, scenarioSearch.allies, scenarioSearch.axis, scenarioSearch.status,
-    scenarioSearch.type, scenarioSearch.size,
+    scenarioSearch.type, scenarioSearch.size, scenarioSearch.theater,
   ])
 
   useEffect(() => {
@@ -195,6 +196,34 @@ export default function NewGame() {
     >
       {
         statuses.map(status => {
+          return <option key={status.code} value={status.code}>{status.name}</option>
+        })
+      }
+    </select>
+  )
+
+  const theaters = [
+    { code: "", name: "[ any ]"},
+    { code: "0", name: "East Front"},
+    { code: "1", name: "North Africa"},
+    { code: "2", name: "Italy/Sicily"},
+    { code: "3", name: "Normandy/West"},
+    { code: "4", name: "Pacific"},
+    { code: "5", name: "Europe Other"},
+    { code: "6", name: "China/Asia"},
+    // { code: "7", name: "Spain/Africa"},
+    // { code: "8", name: "Korea"},
+    // { code: "9", name: "Hypthetical"},
+  ]
+
+  const theaterSelector = (
+    <select
+      name="theater"
+      className="form-input-gray"
+      onChange={({ target }) => onSearchChange(target.name, target.value)}
+    >
+      {
+        theaters.map(status => {
           return <option key={status.code} value={status.code}>{status.name}</option>
         })
       }
@@ -335,6 +364,10 @@ export default function NewGame() {
             <div className="scenario-list-filter-limit">
               <label>by axis faction</label><br />
               {axisFactionSelector}
+            </div>
+            <div className="scenario-list-filter-limit">
+              <label>by theater</label><br />
+              {theaterSelector}
             </div>
             <div className="scenario-list-filter-limit">
               <label>by unit types</label><br />

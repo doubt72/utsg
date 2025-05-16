@@ -5,11 +5,12 @@ module Utility
     include Utility::Scenarios::Definitions
 
     class << self
-      def all_scenarios(options = {})
+      def all_scenarios(options = {}) # rubocop:disable Metrics/AbcSize
         scenarios = ::Scenarios.constants.reject { |k| %i[Base Scenario999].include?(k) }
                                .map { |k| ::Scenarios.const_get(k).index_record }
         filter_string(scenarios, options["string"])
         filter_status(scenarios, options["status"])
+        filter_theater(scenarios, options["theater"])
         filter_type(scenarios, options["type"])
         filter_size(scenarios, options["size"])
         filter_faction(scenarios, "allies", options)
@@ -53,6 +54,12 @@ module Utility
             !%w[a b p].include?(s[:status])
           end
         end
+      end
+
+      def filter_theater(scenarios, theater)
+        return unless theater
+
+        scenarios.filter! { |s| s[:id][0] == theater }
       end
 
       def filter_type(scenarios, type)
