@@ -26,10 +26,22 @@ module Scenarios
 
       def description
         [
-          "Germans encounter KV-1 tanks during the opening stages of Operation Barbarossa.
-          The German army was completely unaware of the existance of German T-34s and KV tanks
-          until encountering them in the field, and initially had significant trouble dealing
-          with them.",
+          "When the Germans first encountered Soviet KV-1 tanks, they were
+          shocked. They were completely unaware of their existence until
+          encountering them in the feild, and the discovery was not a pleasant
+          one.  The KV's heavy armor was practically immune to the guns the
+          German tanks mounted at the time, and the larger guns of the KV
+          tanks could easily make short work of the less-armored German tanks
+          in turn.  The Germans referred to the the tank as the \"Russischer
+          Koloss\" — \"Russian Colossus\".",
+          "Germans first faced them in the Battle of Raseiniai, just after the
+          start of Operation Barbarossa.  While the tanks were difficult to
+          kill, the Germans were able to outflank them or destroy them with
+          explosive charges or point-blank fire.  The tanks were not without
+          their flaws, they were difficult to steer and the transmissions were
+          terrible, the ergonomics were also bad and visibility was very poor.
+          They were ultimately inferior to the T-34 — another tank that was
+          also an unpleasant surprise to the Germans.",
         ]
       end
 

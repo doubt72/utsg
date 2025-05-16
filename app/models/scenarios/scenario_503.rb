@@ -40,8 +40,8 @@ module Scenarios
           produced and deployed, neither the Germans or Soviets were aware of
           the rifle's existance unti encountering it in the field.  The weapon
           itself was only moderately successful.  Several other nations
-          independently produced similar (even superior) versions of the
-          rifle, and though it could be used successfully against lighter
+          independently produced similar (even superior) anti-tank
+          rifles, and though it could be used successfully against lighter
           armor at short ranges, it wasn't really a substitute for larger
           anti-tank weapons (or later various man-portable rocket-propelled
           weapons with large warheads), and it was quickly made obsolete by

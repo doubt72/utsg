@@ -26,8 +26,15 @@ module Scenarios
 
       def description
         [
-          "Defensive action.  In the opening days of the battle of Smolensk during Operation
-          Barbarossa, Soviet troops attempt to slow the German offensive as best they can.",
+          "After a massive Soviet counterattack against German Army Group
+          Center failed, and multiple Soviet armies had been encircled and
+          destroyed just to the east, German forces were closing in on
+          Smolensk from multiple directions.  However, several armies had
+          managed to escape that pocket and were reforming to defend the city,
+          and the rapid advances into Soviet territory were starting to cause
+          logistical crises of increasing severity.",
+          "Here, a small Soviet detachment attempts to slow German armor as
+          best they can to buy time to establish a new defensive line.",
         ]
       end
 

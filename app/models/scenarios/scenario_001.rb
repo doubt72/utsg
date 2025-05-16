@@ -27,8 +27,17 @@ module Scenarios
 
       def description
         [
-          "Soviet infantry doing a clearing operation against a local German force concentration.
-          Part of the Vitebsk-Orsha offensive during Operation Bagration.",
+          "Operation Bagration was a Soviet offensive during June, July, and
+          August of 1944 in Byelorussia.  Expecting attack in the south, the
+          German Army Group Center had been stripped of a third of its
+          artillery, half of its tank destroyers, and the vast majority of its
+          tanks to bolster Army Group South.  German lines were thinly held,
+          and the Soviets took advantage of mistaken German assumptions to
+          crush the German defenses and recapture all of Byelorussia and
+          advance into German East Prussia.",
+          "This is a Soviet clearing operation against a local local German
+          force concentration as part of the Vitebsk-Orsha offensive during
+          the operation.",
         ]
       end
 

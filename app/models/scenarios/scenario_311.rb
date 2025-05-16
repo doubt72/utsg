@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario311 < Base
     ID = "311"
-    NAME = "American Armor"
+    NAME = "Tip of the Spear"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
@@ -27,11 +27,22 @@ module Scenarios
 
       def description
         [
-          "German forces counter-attack the American bridgehead near Arracourt.  Fog negated
-          American air support at the beginning of the battle, but the Americans still had
-          significant artillery support, and while the German attackers had recently received
-          new Panther tanks, they neither had the time nor fuel to properly train the new crews
-          operating them, and fuel shortages also dogged the Germans once the fight began.",
+          "As the U.S. Third Army advanced through Lorraine, the Germans assembled a
+          force to counter-attack at Arracourt.  While the 11th Panzer
+          Division was experienced, it was short of tanks, having lost most of
+          them in previous battles.  The other two brigades assembled had new
+          Panther tanks, but were very green having only received two weeks of
+          training, and that training was additionally limited by fuel
+          shortages.  But forces were needed quickly, whether or not they had
+          any proficiency in maneuver, combined arms operations, or even
+          properly reading maps.",
+          "The 5th Panzer Army outnumbered the defending Combat Command A of
+          the 4th Armored Division, and the Panther tanks were superior the
+          the M4 Shermans of the Americans (at least in terms of guns and
+          frontal armor), but would they be able to take advantage?  On the
+          flip side, the Americans had an overwhelming advantage in close air
+          support, but fog limited air operations at the beginning of the
+          battle.  And the German fuel supply issues were dire.",
         ]
       end
 
@@ -634,7 +645,7 @@ module Scenarios
           "0": { list: [
             :ger_leader_5_1,
             :ger_leader_3_1,
-            [9, :ger_rifle_s],
+            [9, :ger_conscript_s],
             [3, :ger_mg_42],
             :ger_panzerschreck,
             [5, :ger_panther_a_g],

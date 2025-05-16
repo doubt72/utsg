@@ -26,31 +26,26 @@ module Scenarios
 
       def description
         [
-          "
-          As the initial German armored spearhead advanced into France, the
+          "As the initial German armored spearhead advanced into France, the
           French forces counter-attacked with tank formations of their own.
           Contrary to popular history, the French had more and tougher tanks
           than the Germans, where they came short was in doctrine and the fact
           that the doctrine called for tanks to be used in a defensive role,
           so they were also very slow.  Having the advantage of faster tanks
-          and radios, and also concentrated their armored formations, the
-          Germans still managed to destroy numerous French tank formations,
-          though often at a heavy cost.
-          ",
-          "
-          After Sedan fell, the Germans turned their attention to the
-          northwest to drive towards the English Channel, and the French
+          and radios, and having also concentrated their armored formations,
+          the Germans still managed to punch a hole through every Allied army
+          they faced in France, though often at a heavy cost.",
+          "After Sedan fell and the Germans turned their attention to the
+          northwest to drive towards the English Channel, the French
           counter-attacked from the south at Stonne to try and take the high
-          ground and threaten the German's advances.  The Germans couldn't
-          allow this to happen, and what resulted was a vicious two-day battle
-          where they faced the French Char B1 bis tank for the only time.
-          ",
-          "
-          Ultimately the French attack was unsuccessful and the failure to
+          ground and threaten the German flank.  The Germans couldn't allow
+          this to happen, and what resulted was a vicious two-day battle where
+          they faced the French Char B1 bis tank for first and only time in an
+          armored engagement.",
+          "Ultimately the French attack was unsuccessful and the failure to
           eliminate the Sedan bridgeheads resulted in the Germans cutting off
           large parts of the French army and the entire British Expeditionary
-          Force which then was forced to evacuate at Dunkirk.
-          ",
+          Force which then was forced to evacuate at Dunkirk.",
         ]
       end
 

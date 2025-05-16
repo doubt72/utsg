@@ -26,9 +26,19 @@ module Scenarios
 
       def description
         [
-          "Urban fighting in Stalingrad.  As German forces force an advance into denser parts of
-          the city, Soviet defenders attempt to hold them at bay, or even push them
-          back if the opportunity arises.",
+          "On the 23rd of August 1942, the German 6th Army reached the
+          outskirts of Stalingrad in pursuit of the Soviet 62nd and 64th
+          Armies, which fell back into the city itself.  Recognizing the
+          danger of having the Volga cut in two, the Soviets rushed all
+          available troops to the east bank of the Volga, some from as far
+          away as Siberia.  The Luftwaffe had begun bombing the city, and in
+          particular took measures to try and prevent reinforcements from
+          crossing the river, bombing river ferries and troop transports.",
+          "The 6th Army began fighting its way into the city against
+          stiffening resistance, fighting through houses and apartments,
+          advancing house-to-house, room-to-room on its way to eventually
+          reaching the Dzershinszky Tractor Factory where fighting would
+          continue for months.",
         ]
       end
 

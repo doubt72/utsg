@@ -38,7 +38,7 @@ module Scenarios
           mobile artillery available had left theirs behind and depended on
           air support instead.  While effective, there was less weight of air
           support available than artillery may have been able to supply, and
-          it was concentrated on more critical targets.",
+          it was concentrated on the most critical targets.",
           "Nonetheless, the infantry of the German Armored fighting formations
           that were the spearhead of the advance were mobile infantry, which
           allowed them to concentrate forces at the point of attack, something
