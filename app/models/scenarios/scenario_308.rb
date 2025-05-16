@@ -6,7 +6,7 @@ module Scenarios
     NAME = "A Day on the Waterfront"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,10 +26,19 @@ module Scenarios
 
       def description
         [
-          "Last-ditch defense of the (already demolished) port of Cherbourg.  This was the last part
-          of the Contentin Peninsula to be captured, and while the port was eventually put back
-          into service, the damage was extensive.  By this point, the defenders were
-          mostly made up of hastily drafted naval personnel and labor units.",
+          "Despite not landing directly on Cotentin Peninsula, capturing the
+          city of Cherbourg there was a priority after the invasion of
+          Normandy due to the need for deep-water ports to supply the
+          invasion.  However, it was a hard-fought, month-long campaign to
+          capture the city and the port, and by the time the port was
+          captured, it had been thoroughly wrecked by the Germans and was not
+          fully operational again for months afterwards.",
+          "Due to being cut off from reinforcements and resupply, as well as
+          some ill-considered decisions imposed by Hitler in the defense, by
+          the time Cherbourg fell (though the port was already destroyed)
+          the city itself was only defended by a rag-tag collection of dispirited and
+          disorganized defenders, including hastily drafted naval personnel
+          and men from labor units.",
         ]
       end
 
@@ -43,9 +52,20 @@ module Scenarios
           layout: [15, 11, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [
+            [4, 2, 2], [4, 4, 2], [5, 7, 2], [10, 2, 2], [11, 5, 1],
+          ],
+          allied_setup: {
+            "0": 0.upto(10).map do |y|
+              (12 - ((y - 1) / 2)).upto(14).map { |x| [x, y] }
+            end.flatten(1),
+            "3": 10.upto(14).map { |x| [x, 20] }.concat(15.upto(20).map { |y| [14, y] }),
+          },
+          axis_setup: {
+            "0": 0.upto(10).map do |y|
+              0.upto(10 - ((y - 1) / 2)).map { |x| [x, y] }
+            end.flatten(1),
+          },
           base_terrain: "u",
         }
       end
