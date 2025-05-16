@@ -1,5 +1,5 @@
 - Australian, Canadian, New Zealand, South African, Brazilian, Free French,
-  Bulgarian, Hungarian, Romanian, Slovakian, Croatian,
+  Bulgarian, Hungarian, Slovakian, Croatian,
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
 304 Market Garden Tank Support - Hell's Highway
@@ -71,11 +71,11 @@ Monte Cassino, Anzio, Sicily, Salerno
 - 302 44 German Tank Counterattack
 - 303 44 Bocage
   30x    Market Garden Tank Support - Hell's Highway
-? 305 44 Omaha Beach	? later reinforcements
++ 305 44 Omaha Beach
   30x    Pegasus Bridge British take bridge then counterattack
   30x    Canadian Street Fighting in Caen
 - 308 44 Cherbourg City Attack
-- 309 44 Manor Attack
++ 309 44 Manor Attack
   30x    British Clearing Normandy Town - Cheux?
 + 311 44 Arracourt
   30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry again strongpoint CC49

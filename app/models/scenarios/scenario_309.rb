@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Storming the Gates"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,7 +26,18 @@ module Scenarios
 
       def description
         [
-          "Assault on german stronghold.  Part of the larger Seige of Aachen.",
+          "While Aachen had little intrinsic military importance, it was an
+          important symbol to both the Nazi regime and the German people; it
+          was the first German city threatened, it was the historical capital
+          of Charlemagne, founder of the Holy Roman Empire, whose legacy the
+          Nazis claimed, so the psychological value was immense.  It was the
+          first time the Germans were fighting on home soil instead of as
+          occupiers.  Both sides took heavy losses and much of the city was
+          destroyed, and the tenacious defense significantly disrupted Allied
+          plans for the advance into Germany.",
+          "This scenario is for the assault of an outlying manor that has been
+          turned into a German stronghold as part of the overall battle, rather than
+          part of the (significant) urban fighting in the city proper.",
         ]
       end
 
@@ -38,11 +49,13 @@ module Scenarios
           wind: [1, 2, true],
           hexes:,
           layout: [15, 11, "x"],
-          allied_edge: "r",
-          axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          allied_edge: "b",
+          axis_edge: "t",
+          victory_hexes: [
+            [3, 2, 2], [4, 8, 2], [5, 2, 2], [11, 9, 1], [13, 3, 2],
+          ],
+          allied_setup: { "0" => [["*", "9-10"]] },
+          axis_setup: { "0" => [["0-6", "0-7"], ["*", "0-4"]] },
         }
       end
 
@@ -236,7 +249,6 @@ module Scenarios
             [2, :usa_engineer_s],
             [8, :usa_rifle_s],
             :usa_m2_browning,
-            :usa_m2_mortar,
             :usa_ft,
             [2, :usa_sc],
             :usa_radio_155mm,
@@ -250,11 +262,11 @@ module Scenarios
             :ger_leader_6_1,
             :ger_leader_4_1,
             [6, :ger_ss_s],
-            [2, :ger_elite_crew_t],
+            :ger_elite_crew_t,
             [2, :ger_mg_42],
             :ger_7_5cm_leig_18,
             [4, :wire],
-            [2, :ap_mines],
+            :ap_mines,
             [2, :pillbox],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
