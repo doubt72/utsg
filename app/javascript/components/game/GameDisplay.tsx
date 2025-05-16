@@ -127,7 +127,9 @@ export default function GameDisplay() {
     if (game.k.state === "needs_player") { status += " - waiting for player to join" }
     if (game.k.state === "ready") { status += " - waiting for game to start"}
     setTurn(<>{status}</>)
-  }, [game.k?.state, game.k?.lastMove?.undone, game.k?.lastMove?.id])
+  }, [
+    game.k?.state, game.k?.lastMove?.undone, game.k?.lastMove?.id
+  ])
 
   const moveNotification = (moveId?: number) => {
     if (game.k) {
@@ -165,6 +167,11 @@ export default function GameDisplay() {
         game.k.reinforcementSelection.index]
       if (!counter.counter.rotates || !game.k.reinforcementNeedsDirection) {
         game.k.executeReinforcement(x, y, counter, 1, gameNotification)
+      } else {
+        setControls(gc => {
+          const key = Number(gc?.key ?? 0)
+          return <GameControls key={key + 1} game={game.k as Game} />
+        })
       }
     }
   }

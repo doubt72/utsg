@@ -189,7 +189,7 @@ export default class Scenario {
       } else if (r === "axis_ignore_snow") {
         return `${axis} units ignore penalties for moving through snow`
       } else if (r === "winter") {
-        return `Winter: no digging in, treat water/river hexes as open`
+        return `Winter: no digging in, treat water/river hexes as open for infantry`
       }
       return "unknown rule"
     })

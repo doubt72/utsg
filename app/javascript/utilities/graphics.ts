@@ -64,17 +64,17 @@ export const counterElite = "#070"
 
 // TODO: figure out a way to keep in sync with CSS
 export const nationalColors: { [index: string]: string } = {
-  ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#AAF", frf: "#AAF", chi: "#CCF", alm: "#EA9",
-  ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#CCC", axm: "#7CB",
+  ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#BBF", frf: "#BBF", chi: "#DCF", alm: "#FA9",
+  ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#DDD", axm: "#8CD",
   none: "white", fort: "white",
 
   sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#BC7",
-  pol: "#EA9", bel: "#EA9", dut: "#EA9", nor: "#EA9", yug: "#EA9", gre: "#EA9",
-  bul: "#7CB", hun: "#7CB", rom: "#7CB", slv: "#7CB", cro: "#7CB"
+  pol: "#FA9", bel: "#FA9", dut: "#FA9", nor: "#FA9", yug: "#FA9", gre: "#FA9",
+  bul: "#8CD", hun: "#8CD", rom: "#8CD", slv: "#8CD", cro: "#8CD"
 }
 export const nationalControlBackgrounds: { [index: string]: string } = {
-  ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#EEE", frf: "#FFF", chi: "#EEE", alm: "#EA9",
-  ger: "#BBB", ita: "#9DC", jap: "#FFF", fin: "#BBB", axm: "#7CB",
+  ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#EEE", frf: "#FFF", chi: "#EEE", alm: "#FA9",
+  ger: "#BBB", ita: "#9DC", jap: "#FFF", fin: "#BBB", axm: "#8CD",
   none: "white", fort: "white",
 
   sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#570",

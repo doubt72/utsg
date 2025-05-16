@@ -3,7 +3,6 @@
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
 304 Market Garden Tank Support - Hell's Highway
-005 Rumanian Town Clearing in early Barbarossa
 401 Hold New Guinea village against constant piecemeal Japanese Attack
 201 Something in Italy
 006 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
@@ -23,7 +22,7 @@
 + 002 42 Stalingrad Outskirts
 - 003 42 Mud / Infantry Battle
 + 004 41 Delaying Action Against Tanks
-  00x    Romanian Town Clearing in early Barbarossa
++ 005 42 Romanian Tank Defense Operation Uranus
   00x    Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
 - 007 43 Tank Battle Kursk
 + 008 41 KV Tank Surprise
@@ -31,8 +30,8 @@
   00x    Stalingrad Factory
   00x    Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
   00x    44 Tank Battle
-  00x    Bulgarian Attack Somewhere
-  00x    Hungarian Attack Somewhere
+  00x    Bulgarian Attack Somewhere / Town Clearing?
+  00x    Hungarian Attack Somewhere / Town Clearing?
   00x    Croatian Attack Somewhere
   00x    45 Tank Battle
   00x    Mass Assualt on Hill
@@ -48,16 +47,16 @@ Grain Elevator, Manina Stalingrad, 18 Sep 42
 100 North Africa
 + 10x 41 Fight over featureless land (tanks)
 + 10x 40 British assulting Fort Capuzzo in 40
-- 103 41 British / Italian Tank Battle
+- 103 41 British / Italian Tank Battle Crusader
 + 104 42 Indian Division at El Alamein
-- 105 42 British Breaching German Defenses
+- 105 42 British Breaching German Defenses 2nd Alamein
 - 106 41 Hellfire Pass
   10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
   10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
   10x    Fight over featureless land (infantry)
   10x    Hill Assault Somewhere
 
-Sidi Barrani, Bardia, Beda Fromm, Brevity, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
+Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
   20x    Japanese Troops at Little Cassino

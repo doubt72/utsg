@@ -389,9 +389,14 @@ export default class Game {
 
   executePass() {}
 
+  get moveInProgress(): boolean {
+    if (this.reinforcementSelection && this.reinforcementNeedsDirection) { return true }
+    return false
+  }
+
   actionsAvailable(activePlayer: string): GameAction[] {
     const moves = []
-    if (this.lastMove?.undoPossible) {
+    if (this.lastMove?.undoPossible && !this.moveInProgress) {
       moves.push({ type: "undo" })
     }
     if (this.state === "needs_player") {
