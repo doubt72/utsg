@@ -27,12 +27,14 @@ module Scenarios
       def description
         [
           "The Battle of Kursk began as a Soviet attack meant to keep the
-          strategic initiative.  It began on the May 12th, 1942 when the
-          Soviet forces launched an offensive against the German 6th Army from
-          a salient established during the winter counter-offensive.
-          Unortunately, it failed to a achieve significant surprise, and after
-          a promising start, the offensive was stopped with the help of massive
-          airstrikes.",
+          strategic initiative after pushing the Germans back over the winter.
+          It began on the May 12th, 1942 when the Soviet forces launched an
+          offensive against the German 6th Army from a salient established
+          during the winter counter-offensive.  Despite the Soviet army mostly
+          being made up of fresh, untried conscripts, the offensive got off to
+          a promising start.  Unfortunately for the Soviets, it also failed to
+          a achieve significant surprise, and the offensive was stopped with
+          the help of massive airstrikes.",
           "On May 17th, the German army took the initiative, as the 3rd Panzer
           Corps and 44th Army Corps began a counterattack on the Barvenkovo
           bridgehead from Aleksandrovka in the south. They soon were able to
@@ -49,13 +51,14 @@ module Scenarios
           wind: [1, 6, true],
           hexes:,
           layout: [15, 23, "x"],
-          allied_edge: "r",
-          axis_edge: "l",
+          allied_edge: "t",
+          axis_edge: "b",
           victory_hexes: [
-            [1, 1, 1], [2, 2, 1], [3, 3, 1], [4, 4, 1], [5, 5, 1],
+            [1, 3, 1], [8, 3, 1], [5, 4, 1], [13, 5, 1], [7, 7, 1],
+            [9, 13, 1], [10, 20, 2],
           ],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          allied_setup: { "0" => [["*", "0-17"]] },
+          axis_setup: { "0" => [["*", "19-22"]] },
         }
       end
 
