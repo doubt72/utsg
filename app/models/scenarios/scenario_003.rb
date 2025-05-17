@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Into the the Gap"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       # TODO: documentation for field descriptions
@@ -27,11 +27,19 @@ module Scenarios
 
       def description
         [
-          "A simple meeting engagement.  German divisional reserves attempt
-          to plug a gap in the German defenses by counterattacking a small
-          Soviet breakthrough in the woods on the second day of the first
-          Soviet Rzhev-Sychyovka offensive.",
-          "Special rules: mud",
+          "The battle of Rzhev started with an artillery barrage on the
+          morning of July 30th, 1942.  After half an hour of intense
+          bombardment, Soviet infantry advanced through heavy rain and quickly
+          overran forward German defenses.  The rain (and muddy terrain — it
+          had been an unusually wet summer) did the attackers no favors, and
+          had additionally limited the ability of the Soviets to bring up
+          armor and artillery support.  Regardless, the attack picked up
+          momentum and the Soviets made substantial gains, although they were
+          eventually brought to a halt by German counter-attacks.",
+          "The next day, while the Soviets attempted to resume their advance,
+          the Germans had started to hold fast, and were managing to plug what
+          gaps had appeared with divisional reserves who were now fighting
+          desperate battles to hold the line until help could arrive.",
         ]
       end
 
@@ -46,9 +54,11 @@ module Scenarios
           layout: [15, 11, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [
+            [2, 3, 2], [6, 6, 2], [7, 1, 2], [10, 9, 1], [12, 8, 1],
+          ],
+          allied_setup: { "0" => [["9-14", "*"]] },
+          axis_setup: { "0" => [["0-5", "*"]] },
           base_terrain: "m",
         }
       end

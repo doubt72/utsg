@@ -21,11 +21,11 @@
 000 East Front
 + 001 44 Simple Squad Battle, MG only
 + 002 42 Stalingrad Outskirts
-- 003 42 Mud / Infantry Battle
++ 003 42 Mud / Infantry Battle
 + 004 41 Delaying Action Against Tanks
 + 005 42 Romanian Tank Defense Operation Uranus
   00x    Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
-- 007 43 Tank Battle Kursk
++ 007 43 Tank Battle Kursk
 + 008 41 KV Tank Surprise
 - 009 42 Tank Battle Kharkov
   00x    Stalingrad Factory
@@ -79,7 +79,7 @@ Monte Cassino, Anzio, Sicily, Salerno
 + 309 44 Manor Attack
   30x    Market Garden Tank Support - Hell's Highway
 + 311 44 Arracourt
-  30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry again strongpoint CC49
+  30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
   30x    Pointe-du-Hoc Rangers
   30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
   30x    Bulge tank counterattack

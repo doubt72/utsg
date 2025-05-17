@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Release the Panzer"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,8 +26,18 @@ module Scenarios
 
       def description
         [
-          "Part of a German counter-attack.  The German army attempts to eliminate a
-          Soviet salient during the Second Battle of Kharkov.",
+          "The Battle of Kursk began as a Soviet attack meant to keep the
+          strategic initiative.  It began on the May 12th, 1942 when the
+          Soviet forces launched an offensive against the German 6th Army from
+          a salient established during the winter counter-offensive.
+          Unortunately, it failed to a achieve significant surprise, and after
+          a promising start, the offensive was stopped with the help of massive
+          airstrikes.",
+          "On May 17th, the German army took the initiative, as the 3rd Panzer
+          Corps and 44th Army Corps began a counterattack on the Barvenkovo
+          bridgehead from Aleksandrovka in the south. They soon were able to
+          crush Soviet positions and advanced up to ten kilometres in the
+          first day of the attack.",
         ]
       end
 
@@ -41,7 +51,9 @@ module Scenarios
           layout: [15, 23, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
+          victory_hexes: [
+            [1, 1, 1], [2, 2, 1], [3, 3, 1], [4, 4, 1], [5, 5, 1],
+          ],
           allied_setup: { "0" => [] },
           axis_setup: { "0" => [] },
         }
@@ -424,9 +436,9 @@ module Scenarios
       def allied_units
         {
           "0": { list: [
-            :ussr_leader_5_1,
+            :ussr_leader_4_1,
             :ussr_leader_3_1,
-            [8, :ussr_rifle_s],
+            [8, :ussr_militia_s],
             :ussr_crew_t,
             [2, :ussr_dp_27],
             :ussr_45mm_53_k,

@@ -33,11 +33,10 @@ module Scenarios
           artillery, half of its tank destroyers, and the vast majority of its
           tanks to bolster Army Group South.  German lines were thinly held,
           and the Soviets took advantage of mistaken German assumptions to
-          crush the German defenses and recapture all of Byelorussia and
-          advance into German East Prussia.",
+          crush the German defenses and recapture all of Byelorussia.",
           "This is a Soviet clearing operation against a local local German
           force concentration as part of the Vitebsk-Orsha offensive during
-          the operation.",
+          operation Bragration.",
         ]
       end
 

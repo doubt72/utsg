@@ -26,8 +26,8 @@ module Scenarios
 
       def description
         [
-          "When the Germans first encountered Soviet KV-1 tanks, they were
-          shocked. They were completely unaware of their existence until
+          "When the Germans first encountered Soviet KV-1 tanks, they came as a
+          surprise. They were completely unaware of their existence until
           encountering them in the feild, and the discovery was not a pleasant
           one.  The KV's heavy armor was practically immune to the guns the
           German tanks mounted at the time, and the larger guns of the KV

@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Clash of Steel"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,11 +26,24 @@ module Scenarios
 
       def description
         [
-          "German heavy armor (supported by artillery) advances and attempts a
-          breakthrough after penetrating the first line of defenses at a weak point
-          in the Soviet line.  Soviet reserves attempt to stop them.  An armored
-          clash during the first day of the initial German attack during the battle
-          of Kursk.",
+          "The battle of Kursk began with the launch of Operation Citadel by
+          the German army, which had the goal of encircling Soviet forces in
+          the Kursk salient via pincer attacks from the north and south.  On
+          the north side, the initial German attack was spearheaded by assault
+          guns and heavy (Tiger) tanks. While most of the front was heavy
+          fortified and mined, intelligence obtained from prisoner
+          interrogation identified a weakness at the boundary of the 15th and
+          81st Rifle Divisions caused by the German preliminary artillery
+          bombardment; accordingly, the Tigers tanks of the spearhead were
+          redeployed to strike towards this area.",
+          "The Red Army recognized the threat and countered with a large force
+          of T-34s.  In the resulting three-hour battle,  The Soviet armoured
+          units lost 42 tanks while the Germans lost two Tigers and a further
+          five more immobilized with track damage.  While the Red Army
+          counter-attack was defeated and the first defensive belt breached,
+          the fighting had delayed the Germans long enough for the rest of
+          29th Rifle Corps of the 13th Army — initially deployed behind the
+          first belt — to move forward and seal the breach",
         ]
       end
 
@@ -44,9 +57,11 @@ module Scenarios
           layout: [15, 23, "x"],
           allied_edge: "t",
           axis_edge: "b",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [
+            [2, 1, 2], [4, 2, 2], [5, 7, 1], [11, 10, 1], [7, 12, 1], [7, 18, 1], [6, 20, 1],
+          ],
+          allied_setup: { "0" => [["*", "7-22"]] },
+          axis_setup: { "0" => [["*", "0-3"]] },
         }
       end
 
@@ -432,8 +447,9 @@ module Scenarios
             [3, :ussr_rifle_s],
             [2, :ussr_smg_s],
             [2, :ussr_crew_t],
-            [2, :ussr_57mm_zis_2],
+            :ussr_dp_27,
             :ussr_120_pm_38,
+            [2, :ussr_57mm_zis_2],
             [4, :ussr_t_34_m42_m43],
             [2, :ussr_su_122],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
@@ -450,6 +466,7 @@ module Scenarios
             :ger_radio_15cm,
             :ger_sdkfz_222,
             [2, :ger_sdkfz_251_1],
+            [2, :ger_stuh_42],
             [5, :ger_tiger_i],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }

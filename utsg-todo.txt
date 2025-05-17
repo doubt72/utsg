@@ -1,5 +1,8 @@
 - Refactor Scenario Page:
-  - Sort by...  Number? Map size?
+  - Sort by:
+    - Number
+    - Date
+    - Map Size
 
 - Close reinforcement panel when last reinforcement placed
 - Fix terrain info over terrain (probably offset)
