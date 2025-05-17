@@ -65,7 +65,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
   }
 
   const scale = () => {
-    return 7.5 / (map.width + map.height)
+    return 6 / (map.width + map.height)
   }
 
   return (

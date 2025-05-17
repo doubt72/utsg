@@ -27,7 +27,7 @@
   00x    Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
 + 007 43 Tank Battle Kursk
 + 008 41 KV Tank Surprise
-- 009 42 Tank Battle Kharkov
++ 009 42 Tank Battle Kharkov
   00x    Stalingrad Factory
   00x    Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
   00x    44 Tank Battle
@@ -48,10 +48,10 @@ Grain Elevator, Manina Stalingrad, 18 Sep 42
 100 North Africa
 + 10x 41 Fight over featureless land (tanks)
 + 10x 40 British assulting Fort Capuzzo in 40
-- 103 41 British / Italian Tank Battle Crusader
++ 103 41 British / Italian Tank Battle Crusader
 + 104 42 Indian Division at El Alamein
-- 105 42 British Breaching German Defenses 2nd Alamein
-- 106 41 Hellfire Pass
++ 105 42 British Breaching German Defenses 2nd Alamein
++ 106 41 Hellfire Pass
   10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
   10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
   10x    Fight over featureless land (infantry)

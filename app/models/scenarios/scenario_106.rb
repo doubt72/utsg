@@ -6,14 +6,14 @@ module Scenarios
     NAME = "Hellfire Pass"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
         {
-          turns: 6,
-          first_setup: 1,
-          first_move: 2,
+          turns: 7,
+          first_setup: 2,
+          first_move: 1,
           date: [1941, 6, 15],
           location: "Halfaya Pass, Libya",
           author: "The Establishment",
@@ -26,10 +26,19 @@ module Scenarios
 
       def description
         [
-          "British armored forces try to force the pass during Operation Battleaxe.
-          The Germans attempted to draw in British tanks by deploying a small tank
-          force of their own, but they'd fortified the pass with 88s in hopes of
-          surprising the attackers.",
+          "Halfaya Pass was of great strategic importance; the only ways
+          westwards into Libya were along the narrow passage along the coast,
+          or to assault the pass or flank it to the south.  The British had
+          captured the pass both during the initial assault on Libya and
+          during Operation Brevity, but neither time had the British
+          ultimately held it before being driven back farther east.",
+          "By the time the British next assaulted the pass during Operation
+          Battleaxe, Rommel had realized the strategic significance of it, and
+          fortified it with 88mm guns.  During the battle, the Germans
+          attempted to draw in British tanks by deploying a small tank force
+          as a decoy to draw British armor into an ambush; the ambush was
+          executed successfully and all but one of the attacking British tank
+          were destroyed.",
         ]
       end
 
@@ -43,9 +52,16 @@ module Scenarios
           layout: [15, 23, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [
+            [13, 4, 1], [2, 11, 2], [2, 18, 2], [4, 20, 2], [10, 21, 2],
+          ],
+          allied_setup: { "0" => [
+            ["10-14", "0-7"], ["*", 0], ["*", 0], ["1-14", 1], ["3-14", 2],
+            ["6-14", 3], [9, 4],
+          ] },
+          axis_setup: { "0" => [
+            ["*", "10-22"], ["0-3", 9], ["0-1", 8],
+          ] },
           base_terrain: "d",
         }
       end

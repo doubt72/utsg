@@ -12,9 +12,10 @@ type ChatMessage = {
 interface ChatDisplayProps {
   gameId: number;
   showInput: boolean;
+  collapse?: boolean;
 }
 
-export default function ChatDisplay({ gameId, showInput}: ChatDisplayProps) {
+export default function ChatDisplay({ gameId, showInput, collapse = false }: ChatDisplayProps) {
   const [message, setMessage] = useState("")
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
 
@@ -69,9 +70,10 @@ export default function ChatDisplay({ gameId, showInput}: ChatDisplayProps) {
   let lastUser = ""
   let lastTime: Date | undefined = undefined
 
-  const outputClass = "chat-output " + (gameId === 0 ? "main-chat-output" : "game-chat-output")
+  const outputClass = collapse ? "chat-output game-chat-collapse" :
+    ("chat-output " + (gameId === 0 ? "main-chat-output" : "game-chat-output"))
 
-  const formattedDate = (date: Date) => {
+    const formattedDate = (date: Date) => {
     return `${("0" + (date.getMonth() + 1)).slice (-2)}/` +
            `${("0" + date.getDate()).slice (-2)} ` +
            `${("0" + date.getHours()).slice (-2)}:` +
@@ -140,7 +142,7 @@ export default function ChatDisplay({ gameId, showInput}: ChatDisplayProps) {
   return (
     <div>
       { chatMessageDispay }
-      { showInput ? chatBox : "" }
+      { showInput && !collapse ? chatBox : "" }
     </div>
   )
 }

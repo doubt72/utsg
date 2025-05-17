@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Game from "../../engine/Game";
 
@@ -6,9 +6,14 @@ interface MoveDisplayProps {
   game: Game;
   callback: (moveId?: number) => void;
   chatInput: boolean;
+  collapse?: boolean;
 }
 
-export default function MoveDisplay({ game, callback, chatInput }: MoveDisplayProps) {
+export default function MoveDisplay({
+  game, callback, chatInput, collapse = false
+}: MoveDisplayProps) {
+  const [divClass, setDivClass] = useState<string>("")
+
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     "ws://localhost:3000/cable"
   )
@@ -39,10 +44,16 @@ export default function MoveDisplay({ game, callback, chatInput }: MoveDisplayPr
     }
   }, [lastMessage])
 
-  const displayClass = "move-output move-output-logged-" + (chatInput ? "in" : "out")
+  useEffect(() => {
+    console.log(`display ${collapse}`)
+    setDivClass(
+      collapse ? "move-output move-output-collapse" :
+        ("move-output move-output-logged-" + (chatInput ? "in" : "out"))
+    )
+  }, [collapse])
 
   const moveList = (
-    <div className={displayClass}>
+    <div className={divClass}>
       {
         game.moves.map((move, i) => {
           return (

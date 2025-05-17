@@ -28,6 +28,8 @@ export default function GameDisplay() {
   const [controls, setControls] = useState<JSX.Element | undefined>(undefined)
   const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>(undefined)
 
+  const [collapseLayout, setCollapseLayout] = useState<boolean>(false)
+
   const [mapScale, setMapScale] = useState(1)
   const [interfaceShrink, setInterfaceShrink] = useState(false)
   const [coords, setCoords] = useState(true)
@@ -84,19 +86,28 @@ export default function GameDisplay() {
 
   useEffect(() => {
     setMapScaleMinusButton(
-      <div className={mapScale > 0.52 ? "custom-button" : "custom-button custom-button-ghost"}
+      <div className={
+        mapScale > 0.52 ? "custom-button normal-button" :
+          "custom-button normal-button custom-button-ghost"
+      }
            onClick={() => switchMapScale(-1)}>
         <span>map</span> <DashCircle />
       </div>
     )
     setMapScaleResetButton(
-      <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
+      <div className={
+        mapScale < 1 ? "custom-button normal-button" :
+          "custom-button normal-button custom-button-ghost"
+      }
            onClick={() => switchMapScale(0)}>
         <Circle />
       </div>
     )
     setMapScalePlusButton(
-      <div className={mapScale < 1 ? "custom-button" : "custom-button custom-button-ghost"}
+      <div className={
+        mapScale < 1 ? "custom-button normal-button" :
+          "custom-button normal-button custom-button-ghost"
+      }
            onClick={() => switchMapScale(1)}>
         <PlusCircle /> <span>map</span>
       </div>
@@ -113,8 +124,15 @@ export default function GameDisplay() {
 
   useEffect(() => {
     if (!game.k || moves) { return }
-    setMoves(<MoveDisplay game={game.k} callback={moveNotification} chatInput={showInput()} />)
+    setMoves(<MoveDisplay game={game.k} callback={moveNotification}
+                          collapse={collapseLayout} chatInput={showInput()} />)
   }, [game.k])
+
+  useEffect(() => {
+    if (!game.k) { return }
+    setMoves(<MoveDisplay game={game.k} callback={moveNotification}
+                          collapse={collapseLayout} chatInput={showInput()} />)
+  }, [collapseLayout])
 
   useEffect(() => {
     if (!game.k) { return }
@@ -198,54 +216,94 @@ export default function GameDisplay() {
     setHideCounters(false)
   }
 
+  const layout = () => {
+    if (collapseLayout) {
+      return (
+        <div className="flex">
+          <div className="custom-button normal-button expand-button"
+               onClick={() => setCollapseLayout(false)}>
+            <PlusCircle />
+          </div>
+          <div className="standard-body">
+            <div className="game-page-moves">
+              {moves}
+            </div>
+            <div className="chat-section">
+              <ChatDisplay gameId={Number(id)} collapse={true}
+                           showInput={showInput()} />
+            </div>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div className="flex">
+            <div className="custom-button normal-button collapse-button"
+                 onClick={() => setCollapseLayout(true)}>
+              <DashCircle />
+            </div>
+            <div className="game-control ml05em mr05em mt05em flex-fill">
+              <div className="red monospace mr05em">
+                {game.k?.scenario?.code}:
+              </div>
+              <div className="green nowrap">
+                {game.k?.scenario?.name} 
+              </div>
+              <div className="ml1em mr1em nowrap">
+                ({turn})
+              </div>
+              <div className="flex-fill align-end mr05em">
+                {game.k?.name}
+              </div>
+            </div>
+          </div>
+          <div className="standard-body">
+            <div className="game-page-moves">
+              {moves}
+            </div>
+            <div className="chat-section">
+              <ChatDisplay gameId={Number(id)}
+                           showInput={showInput()} />
+            </div>
+          </div>
+        </div>
+      )
+    }
+  }
+
   return (
     <div className="main-page">
       <Header />
-      <div className="game-control ml05em mr05em mt05em">
-        <div className="red monospace mr05em">
-          {game.k?.scenario?.code}:
-        </div>
-        <div className="green nowrap">
-          {game.k?.scenario?.name} 
-        </div>
-        <div className="ml1em mr1em nowrap">
-          ({turn})
-        </div>
-        <div className="flex-fill align-end">
-          {game.k?.name}
-        </div>
-      </div>
-      <div className="standard-body">
-        <div className="game-page-moves">
-          {moves}
-        </div>
-        <div className="chat-section">
-          <ChatDisplay gameId={Number(id)}
-                       showInput={showInput()} />
-        </div>
-      </div>
+      {layout()}
       {controls}
       <div className="flex map-control">
         <div className="flex-fill"></div>
         {mapScaleMinusButton}
         {mapScaleResetButton}
         {mapScalePlusButton}
-        <div className="custom-button" onClick={() => toggleInterfaceShrink()}>
+        <div className="custom-button normal-button"
+             onClick={() => toggleInterfaceShrink()}>
           { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>controls</span>
         </div>
-        <div className="custom-button" onClick={() => setCoords(c => !c)}>
+        <div className="custom-button normal-button"
+             onClick={() => setCoords(c => !c)}>
           { coords ? <GeoAltFill /> : <GeoAlt /> } <span>coords</span>
         </div>
-        <div className="custom-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
+        <div className="custom-button normal-button"
+             onClick={() => setShowStatusCounters(ssc => !ssc)}>
           { showStatusCounters ? <Stack /> : <CircleFill /> } <span>status</span>
         </div>
-        <div className="custom-button" onClick={() => setShowLos(sl => !sl)}>
+        <div className="custom-button normal-button"
+             onClick={() => setShowLos(sl => !sl)}>
           { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
         </div>
-        <div className="custom-button" onClick={() => setHideCounters(sc => !sc)}>
+        <div className="custom-button normal-button"
+             onClick={() => setHideCounters(sc => !sc)}>
         { hideCounters ? <Square /> : <SquareFill /> } <span>counters</span>
         </div>
-        <div className="custom-button" onClick={() => setShowTerrain(sc => !sc)}>
+        <div className="custom-button normal-button"
+             onClick={() => setShowTerrain(sc => !sc)}>
         { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain info</span>
         </div>
       </div>
