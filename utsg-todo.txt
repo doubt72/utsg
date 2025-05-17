@@ -4,6 +4,7 @@
     - Date
     - Map Size
 - Collapse Move/Chat windows
+  - Persist
 
 - Close reinforcement panel when last reinforcement placed
 - Fix terrain info over terrain (probably offset)

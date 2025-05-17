@@ -59,8 +59,10 @@ export default function GameDisplay() {
     })
     const shrink = localStorage.getItem("interfaceShrink")
     const mScale = localStorage.getItem("mapScale")
+    const collape = localStorage.getItem("collapseLayout")
     if (shrink !== null) { setInterfaceShrink(shrink === "true") }
     if (mScale !== null) { setMapScale(Number(mScale)) }
+    if (collape !== null) { setCollapseLayout(collape == "true") }
   }, [])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
@@ -221,7 +223,10 @@ export default function GameDisplay() {
       return (
         <div className="flex">
           <div className="custom-button normal-button expand-button"
-               onClick={() => setCollapseLayout(false)}>
+               onClick={() => {
+                 setCollapseLayout(false)
+                localStorage.setItem("collapseLayout", "false")
+               }}>
             <PlusCircle />
           </div>
           <div className="standard-body">
@@ -240,7 +245,10 @@ export default function GameDisplay() {
         <div>
           <div className="flex">
             <div className="custom-button normal-button collapse-button"
-                 onClick={() => setCollapseLayout(true)}>
+                 onClick={() => {
+                   setCollapseLayout(true)
+                   localStorage.setItem("collapseLayout", "true")
+                 }}>
               <DashCircle />
             </div>
             <div className="game-control ml05em mr05em mt05em flex-fill">
