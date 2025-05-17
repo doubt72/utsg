@@ -45,7 +45,6 @@ export default function MoveDisplay({
   }, [lastMessage])
 
   useEffect(() => {
-    console.log(`display ${collapse}`)
     setDivClass(
       collapse ? "move-output move-output-collapse" :
         ("move-output move-output-logged-" + (chatInput ? "in" : "out"))

@@ -31,6 +31,7 @@ interface GameMapProps {
   hideCounters?: boolean;
   showTerrain?: boolean;
   preview: boolean;
+  guiCollapse?: boolean;
   hexCallback?: (x: number, y: number) => void;
   counterCallback?: (x: number, y: number, counter: Counter) => void;
   directionCallback?: (x: number, y: number, d: Direction) => void;
@@ -39,7 +40,7 @@ interface GameMapProps {
 
 export default function GameMap({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
-  hideCounters = false, showTerrain = false, preview,
+  hideCounters = false, showTerrain = false, preview, guiCollapse = false,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {}
 }: GameMapProps) {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
@@ -71,8 +72,10 @@ export default function GameMap({
 
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
     if (preview || m?.preview) { return map.ySize * scale }
-    const fill = m?.debug ? 16 : 408
-    return height - fill < 1254 * scale ? 1254 * scale : height - fill
+    const gc = guiCollapse ? 178 : 0
+    const fill = m?.debug ? 16 : 408 - gc
+    const available = 1254 + 50 / scale - 50
+    return height - fill < available * scale ? available * scale : height - fill
   }
   const minWidth = (width: number, scale: number = 1, m?: Map) => {
     if (preview || m?.preview) { return map.xSize * scale }
@@ -94,12 +97,12 @@ export default function GameMap({
     }
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [scale, map])
+  }, [scale, map, guiCollapse])
 
   useEffect(() => {
     setWidth(minWidth(window.innerWidth, scale, map))
     setHeight(minHeight(window.innerHeight, scale, map))
-  }, [scale, map])
+  }, [scale, map, guiCollapse])
 
   const minimapCallback = (event: React.MouseEvent, calculated: {
     mapSize: Coordinate, scale: number

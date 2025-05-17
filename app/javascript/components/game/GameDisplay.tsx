@@ -319,6 +319,7 @@ export default function GameDisplay() {
         <GameMap map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
                  showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
                  hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
+                 guiCollapse={collapseLayout}
                  hexCallback={hexSelection} counterCallback={unitSelection}
                  directionCallback={directionSelection} resetCallback={resetDisplay} />
       </div>
