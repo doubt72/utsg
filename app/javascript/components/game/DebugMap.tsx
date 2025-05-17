@@ -161,53 +161,53 @@ export default function DebugMap() {
   return (
     <div className="map-container">
       <div className="flex map-control">
-        <div className="custom-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
+        <div className="custom-button normal-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
           size -
         </div>
-        <div className="custom-button" onClick={() => setScale(1)}>
+        <div className="custom-button normal-button" onClick={() => setScale(1)}>
           0
         </div>
-        <div className="custom-button" onClick={() => setScale(s => Math.min(s*1.25, 2.5))}>
+        <div className="custom-button normal-button" onClick={() => setScale(s => Math.min(s*1.25, 2.5))}>
           + size
         </div>
-        <div className="custom-button" onClick={() => setCoords(c => !c)}>
+        <div className="custom-button normal-button" onClick={() => setCoords(c => !c)}>
           coords { coords ? "on" : "off" }
         </div>
-        <div className="custom-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
+        <div className="custom-button normal-button" onClick={() => setShowStatusCounters(ssc => !ssc)}>
           { showStatusCounters ? "counters" : "badges" }
         </div>
-        <div className="custom-button" onClick={() => setShowLos(sl => !sl)}>
+        <div className="custom-button normal-button" onClick={() => setShowLos(sl => !sl)}>
           { showLos ? "show LOS" : "show stacks" }
         </div>
         {
           showLos ? 
-          <div className="custom-button" onClick={() => {
+          <div className="custom-button normal-button" onClick={() => {
             setDebugLos(sl => !sl)
             map && (map.debugLos = !map.debugLos)
           }}>
             { debugLos ? "debug LOS on" : "debug LOS off" }
           </div> : ""
         }
-        <div className="custom-button" onClick={() => setHideCounters(sc => !sc)}>
+        <div className="custom-button normal-button" onClick={() => setHideCounters(sc => !sc)}>
           { hideCounters ? "hide counters" : "show counters" }
         </div>
-        <div className="custom-button" onClick={() => setShowTerrain(sc => !sc)}>
+        <div className="custom-button normal-button" onClick={() => setShowTerrain(sc => !sc)}>
           { showTerrain ? "terrain on" : "terrain off" }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           const nt = nextTerrain(baseTerrain)
           map && (map.baseTerrain = nt)
           setBaseTerrain(nt)
         }}>
           { baseTerrainName() }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           map && (map.night = !map.night)
           setNight(nt => !nt)
         }}>
           { night ? "night" : "day" }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map) {
             map.baseWeather = nextWeather(map.baseWeather)
             setBaseWeather(() => map.baseWeather)
@@ -228,7 +228,7 @@ export default function DebugMap() {
         }}>
           b: { map?.weatherName(baseWeather) }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map) {
             map.precip = nextWeather(precipType, true)
             setPrecipType(() => map.precip)
@@ -244,7 +244,7 @@ export default function DebugMap() {
         }}>
           p: { map?.weatherName(precipType) }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map) {
             map.precipChance = nextChance(precipChance)
             setPrecipChance(() => map.precipChance)
@@ -252,7 +252,7 @@ export default function DebugMap() {
         }}>
           { `${precipChance}${precipChance > 0 ? "0" : ""}%` }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map) {
             if (map.currentWeather === map.baseWeather) {
               map.currentWeather = map.precip
@@ -264,7 +264,7 @@ export default function DebugMap() {
         }}>
           c: { map?.weatherName(currentWeather) }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map) {
             map.windSpeed = nextWind(wind)
             setWind(() => map.windSpeed)
@@ -272,7 +272,7 @@ export default function DebugMap() {
         }}>
           { map?.windName }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map) {
             map.windDirection = nextDirection(map.windDirection)
             setWindDir(() => map.windDirection)
@@ -280,7 +280,7 @@ export default function DebugMap() {
         }}>
           { windDir }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map) {
             map.windVariable = !map.windVariable
             setWindVariable(map.windVariable)
@@ -288,7 +288,7 @@ export default function DebugMap() {
         }}>
           { windVariable ? "variable" : "steady" }
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map && map.game) {
             map.game.initiativePlayer = map.game.initiativePlayer == 1 ? 2 : 1
             setInitiativePlayer(map.game.initiativePlayer ? "axis" : "allies")
@@ -296,7 +296,7 @@ export default function DebugMap() {
         }}>
           i: {initiativePlayer} {initiative}
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map && map.game) {
             if (map.game.initiative < 7) { map.game.initiative += 1 }
             setInitiative(map.game.initiative)
@@ -304,7 +304,7 @@ export default function DebugMap() {
         }}>
           +1
         </div>
-        <div className="custom-button" onClick={() => {
+        <div className="custom-button normal-button" onClick={() => {
           if (map && map.game) {
             if (map.game.initiative > -7) { map.game.initiative -= 1 }
             setInitiative(map.game.initiative)

@@ -3,17 +3,17 @@
 module Scenarios
   class Scenario105 < Base
     ID = "105"
-    NAME = "Broken Ground"
+    NAME = "The Crumbling"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
         {
-          turns: 6,
-          first_setup: 1,
-          first_move: 2,
+          turns: 7,
+          first_setup: 2,
+          first_move: 1,
           date: [1942, 10, 24],
           location: "El Alamein, Egypt",
           author: "The Establishment",
@@ -21,14 +21,30 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: [
+            "infantry_wire_clearing", "armored_wire_clearing", "engineer_mine_clearing",
+          ],
         }
       end
 
       def description
         [
-          "British infantry (with support from infantry tanks) attempt to breach the axis defenses
-          during the second battle of El Alamein.",
-          "Mine removal by infantry special rules",
+          "On the 23rd of October, 1942 the British attack at El Alamein
+          began.  The first phase was a massive general bombardment, followed
+          by precision artillery support in support of advancing infantry. The
+          plan was for the infantry (since they wouldn't set off anti-tank
+          mines) to clear narrow paths for tanks coming behind. The minefields
+          turned out to be exceptionally difficult and dangerous to clear,
+          proving much deeper and more extensive than initially anticipated,
+          and clearing them was additionally hampered by defensive fire by the
+          defending troops.  In addition, the tanks following in the cleared
+          paths stirred up so much dust that there was no visibility at all,
+          and traffic jams developed with tanks getting bogged down.",
+          "Clearing continued the next day in parts of the battlefield,
+          fighting was intense at points where the British attacked or the
+          Germans counter-attacked, but overall not much progress was made
+          beyond the minefields that had been penetrated that day either; the
+          battle remained one of attrition, not maneuver.",
         ]
       end
 
@@ -42,9 +58,11 @@ module Scenarios
           layout: [23, 11, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [
+            [1, 8, 2], [3, 2, 2], [8, 5, 2], [12, 9, 2], [19, 3, 1],
+          ],
+          allied_setup: { "0" => [["15-22", "*"]] },
+          axis_setup: { "0" => [["0-12", "*"]] },
           base_terrain: "d",
         }
       end
@@ -324,12 +342,12 @@ module Scenarios
           "0": { list: [
             :uk_leader_5_2,
             :uk_leader_4_1,
-            [2, :uk_engineer_s],
-            [8, :uk_line_s],
-            [3, :uk_vickers_mg],
+            [3, :uk_engineer_s],
+            [6, :uk_line_s],
+            [2, :uk_lewis_gun],
             :uk_radio_114mm,
             [2, :uk_valentine_i_vii],
-            [2, :uk_valentine_iii_cs],
+            [4, :uk_valentine_iii_cs],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
@@ -339,14 +357,14 @@ module Scenarios
           "0": { list: [
             :ger_leader_6_1,
             :ger_leader_5_1,
-            [7, :ger_rifle_s],
+            [4, :ger_rifle_s],
             [2, :ger_elite_crew_t],
-            [2, :ger_mg_34],
+            :ger_mg_34,
             :ger_mg_08_15,
             [2, :ger_5cm_pak_38],
             [6, :wire],
-            [4, :at_mines],
-            [4, :pillbox],
+            [6, :at_mines],
+            [3, :pillbox],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end

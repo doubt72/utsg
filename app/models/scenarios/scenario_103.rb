@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Less Sand than Stone"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     class << self
       def generate
@@ -26,9 +26,21 @@ module Scenarios
 
       def description
         [
-          "The Italian Ariete armored division defends against a British attack.
-          Part of the early part of Operation Crusader and the attempt to flank
-          the axis forces in Africa and relieve the siege of Tobruk.",
+          "During the opening of Operation Crusader, the British
+          22nd Armoured Brigade attempted to capture Bir el Gubi, a key
+          position in Cyrenaica. The Italian \"Ariete\" Division repelled the
+          attack, inflicting heavy casualties and holding their ground,
+          resulting in a significant Italian victory.",
+          "With their forces unexpectedly tied up with the Italians, only one
+          full-strength British armored regiment reached Sidi Rezegh, where it
+          was crushed by the Afrika Korps. The defeat marked the failure of
+          the initial British move in Crusader, though it later defeated the
+          Italian−German forces in a battle of attrition and forced them to
+          retreat. The British attacked with Crusader tanks with long-range
+          artillery support but no infantry. The \"Ariete\" Division had adopted
+          the German practice of tank–infantry coordination while training
+          with the Panzer units of the Afrika Korps during the previous months
+          and had put it to god use at Bir el Gubi.",
         ]
       end
 
@@ -42,9 +54,11 @@ module Scenarios
           layout: [15, 23, "x"],
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [],
-          allied_setup: { "0" => [] },
-          axis_setup: { "0" => [] },
+          victory_hexes: [
+            [2, 2, 2], [5, 6, 2], [6, 9, 2], [2, 18, 2], [12, 8, 1],
+          ],
+          allied_setup: { "0" => [["12-14", "*"]] },
+          axis_setup: { "0" => [["0-6", "*"]] },
           base_terrain: "d",
         }
       end
@@ -427,13 +441,8 @@ module Scenarios
         {
           "0": { list: [
             :uk_leader_5_2,
-            :uk_leader_4_1,
-            [8, :uk_line_s],
-            :uk_elite_crew_t,
-            [2, :uk_bren_lmg],
-            [2, :uk_boys_at_rifle],
-            :uk_qf_2_pounder,
-            [5, :uk_crusader_i],
+            :uk_radio_140mm,
+            [6, :uk_crusader_i],
             [2, :uk_humber_lrc],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
@@ -444,12 +453,12 @@ module Scenarios
           "0": { list: [
             :ita_leader_5_1,
             :ita_leader_3_1,
-            [7, :ita_bersaglieri_s],
+            [6, :ita_bersaglieri_s],
             [2, :ita_elite_crew_t],
             [2, :ita_breda_30],
             [1, :ita_brixia_m35],
             [2, :ita_cannone_da_47_32],
-            [5, :ita_m13_40],
+            [4, :ita_m13_40],
           ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
         }
       end
