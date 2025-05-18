@@ -6,7 +6,31 @@ module Scenarios
     NAME = "Surpise! KV"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1941, 6, 23].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_3_1,
+        [4, :ussr_rifle_s],
+        :ussr_dp_27,
+        [2, :ussr_kv_1_m40],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_5_2,
+        :ger_pionier_s,
+        [4, :ger_rifle_s],
+        :ger_crew_t,
+        [2, :ger_mg_34],
+        :ger_3_7cm_pak_36,
+        [4, :ger_pzkpfw_35t],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +38,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1941, 6, 23],
+          date:,
           location: "Raseiniai, Lithuania",
           author: "The Establishment",
           description:,
@@ -52,7 +76,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 5, false],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [[2, 3, 2], [9, 6, 1], [10, 8, 1], [11, 9, 1], [13, 4, 1]],
@@ -246,31 +270,6 @@ module Scenarios
             { t: "f" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_3_1,
-            [4, :ussr_rifle_s],
-            :ussr_dp_27,
-            [2, :ussr_kv_1_m40],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_5_2,
-            :ger_pionier_s,
-            [4, :ger_rifle_s],
-            :ger_crew_t,
-            [2, :ger_mg_34],
-            :ger_3_7cm_pak_36,
-            [4, :ger_pzkpfw_35t],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

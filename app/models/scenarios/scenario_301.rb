@@ -6,7 +6,28 @@ module Scenarios
     NAME = "Rally Point"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1944, 6, 6].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :usa_leader_6_2,
+        :usa_leader_5_1,
+        [6, :usa_paratroop_s],
+        [2, :usa_m1918_bar],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_4_1,
+        :ger_leader_3_1,
+        [10, :ger_volksgrenadier_s],
+        [2, :ger_mg_42],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +35,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1944, 6, 6],
+          date:,
           location: "Normandy, France",
           author: "The Establishment",
           description:,
@@ -47,7 +68,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 3, false],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "t",
           axis_edge: "b",
           victory_hexes: [
@@ -238,28 +259,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :usa_leader_6_2,
-            :usa_leader_5_1,
-            [6, :usa_paratroop_s],
-            [2, :usa_m1918_bar],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_4_1,
-            :ger_leader_3_1,
-            [10, :ger_volksgrenadier_s],
-            [2, :ger_mg_42],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

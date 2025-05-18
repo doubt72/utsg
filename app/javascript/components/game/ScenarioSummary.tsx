@@ -29,7 +29,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
   const specialRules = () => {
     if (scenario.specialRules.length === 0) { return "" }
     return (
-      <p>
+      <>
         <b>SPECIAL RULES:</b>
         <ul>
           {
@@ -40,7 +40,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
             })
           }
         </ul>
-      </p>
+      </>
     )
   }
 

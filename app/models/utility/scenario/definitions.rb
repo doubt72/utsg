@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Utility
-  module Scenarios
+  class Scenario
     module Definitions
       AVAILABLE_ALLIED_FACTIONS = [
         # Current supported factions

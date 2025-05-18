@@ -6,7 +6,29 @@ module Scenarios
     NAME = "Fort Capuzzo"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1940, 5, 14].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :uk_leader_5_1,
+        :uk_leader_4_1,
+        [6, :uk_line_s],
+        [2, :uk_bren_lmg],
+        :uk_matilda_ii,
+        :uk_humber_ac_i,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ita_leader_3_1,
+        [6, :ita_fucilieri_s],
+        :ita_breda_30,
+      ] },
+    }.freeze
 
     class << self
       # TODO: documentation for field descriptions
@@ -15,7 +37,7 @@ module Scenarios
           turns: 6,
           first_setup: 2,
           first_move: 1,
-          date: [1940, 5, 14],
+          date:,
           location: "Fort Capuzzo, Libya",
           author: "The Establishment",
           description:,
@@ -46,7 +68,7 @@ module Scenarios
           precip: [0, 2],
           wind: [0, 3, false],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -242,30 +264,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      # TODO: documentation for unit definitions
-      def allied_units
-        {
-          "0": { list: [
-            :uk_leader_5_1,
-            :uk_leader_4_1,
-            [6, :uk_line_s],
-            [2, :uk_bren_lmg],
-            :uk_matilda_ii,
-            :uk_humber_ac_i,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ita_leader_3_1,
-            [6, :ita_fucilieri_s],
-            :ita_breda_30,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

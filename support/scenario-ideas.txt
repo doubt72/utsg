@@ -2,21 +2,41 @@
   Bulgarian, Hungarian, Slovakian, Croatian,
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-302 -- Bigger Map
-310 Market Garden Tank Support - Hell's Highway
-401 Hold New Guinea village against constant piecemeal Japanese Attack
-201 Something in Italy
-006 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
+006 Snow Battle Outside Moscow Germans Defending (Infantry Only)
+010 Stalingrad Factory
+011 Hungarian Attack Somewhere / Town Clearing?
+012 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
+013 4x3 44 Tank Battle
+014 Bulgarian Attack Somewhere / Town Clearing?
 
-00x Stalingrad Factory
-10x Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
-30x Pegasus Bridge British take bridge then counterattack
-30x Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
-40x Reduce Japanese Strongpoint in New Guinea
-10x El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
-30x Americans Clearing Edge of Large Town - Carentan
-50x Finish Bunkers along Border in Winter War
-40x Late Manila urban Fighting
+106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
+108 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
+
+201 Americans Clearing Somewhere in Sicily
+202 Monte Cassino
+203 Canadians at Ortona
+204 100th Infantry
+205 Brazilians at Monte Castello
+
+304 British Clearing Normandy Town - Cheux?
+306 Pegasus Bridge British take bridge then counterattack
+307 Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+310 2x3 Market Garden Tank Support - Hell's Highway
+
+401 Edson's/Bloody Ridge Guadalcanal
+402 Hold New Guinea village against constant piecemeal Japanese Attack (Aus)
+403 Reduce Japanese Strongpoint in New Guinea (Aus)
+404 Late Manila urban Fighting
+
+505 Finish Bunkers along Border in Winter War
+506 Matildas vs. 88s, Arras?
+507 Greek
+508 Norwegian
+508 Nisava River Bridge in Yugoslavia
+
+602 Burma
+603 Imphal/Gurka
+604 China Pass
 
 000 East Front
 + 001 44 Simple Squad Battle, MG only
@@ -29,10 +49,10 @@
 + 008 41 KV Tank Surprise
 + 009 42 Tank Battle Kharkov
   00x    Stalingrad Factory
+  00x    Hungarian Attack Somewhere / Town Clearing?
   00x    Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
   00x    44 Tank Battle
   00x    Bulgarian Attack Somewhere / Town Clearing?
-  00x    Hungarian Attack Somewhere / Town Clearing?
   00x    Croatian Attack Somewhere
   00x    45 Tank Battle
   00x    Mass Assualt on Hill
@@ -46,13 +66,13 @@ Dom 31 Barrikady, 27 Oct 42
 Grain Elevator, Manina Stalingrad, 18 Sep 42
 
 100 North Africa
-+ 10x 41 Fight over featureless land (tanks)
-+ 10x 40 British assulting Fort Capuzzo in 40
++ 101 41 Fight over featureless land (tanks)
++ 102 40 British assulting Fort Capuzzo in 40
 + 103 41 British / Italian Tank Battle Crusader
 + 104 42 Indian Division at El Alamein
 + 105 42 British Breaching German Defenses 2nd Alamein
-+ 106 41 Hellfire Pass
   10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
++ 107 41 Hellfire Pass
   10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
   10x    Fight over featureless land (infantry)
   10x    Hill Assault Somewhere
@@ -60,7 +80,7 @@ Grain Elevator, Manina Stalingrad, 18 Sep 42
 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
-  20x    Japanese Troops at Little Cassino
+  20x    Japanese Troops
   20x    Brazillian Monte Costello
   20x    Canadians at Ortona Little Stalingrad
   20x    Americans Clearing Italians From Sicilian Town
@@ -74,20 +94,20 @@ Monte Cassino, Anzio, Sicily, Salerno
   30x    British Clearing Normandy Town - Cheux?
 + 305 44 Omaha Beach
   30x    Pegasus Bridge British take bridge then counterattack
-  30x    Canadian Street Fighting in Caen
+  30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
 + 308 44 Cherbourg City Attack
 + 309 44 Manor Attack
   30x    Market Garden Tank Support - Hell's Highway
 + 311 44 Arracourt
+  30x    Canadian Street Fighting in Caen
+  30x    Americans Clearing Edge of Large Town - Carentan
   30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
   30x    Pointe-du-Hoc Rangers
-  30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
   30x    Bulge tank counterattack
   30x    Airborne Arnhem
   30x    Hill 104 defense St Jean De Daye
   30x    La Fiere Airborne Slugfest / St Mere Eglise
   30x    Americans Clearing Small Normandy Town
-  30x    Americans Clearing Edge of Large Town - Carentan
   30x    Closing the Falais Pocket Hill 262
   30x    Defending Hill 314 Mortain
   30x    Assault on Battery like from Band of Brothers

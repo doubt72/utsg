@@ -6,7 +6,38 @@ module Scenarios
     NAME = "The Crumbling"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1942, 10, 24].freeze
+    LAYOUT = [23, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :uk_leader_5_2,
+        :uk_leader_4_1,
+        [3, :uk_engineer_s],
+        [6, :uk_line_s],
+        [2, :uk_lewis_gun],
+        :uk_radio_114mm,
+        [2, :uk_valentine_i_vii],
+        [4, :uk_valentine_iii_cs],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_1,
+        :ger_leader_5_1,
+        [4, :ger_rifle_s],
+        [2, :ger_elite_crew_t],
+        :ger_mg_34,
+        :ger_mg_08_15,
+        [2, :ger_5cm_pak_38],
+        [6, :wire],
+        [6, :at_mines],
+        [3, :pillbox],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +45,7 @@ module Scenarios
           turns: 7,
           first_setup: 2,
           first_move: 1,
-          date: [1942, 10, 24],
+          date:,
           location: "El Alamein, Egypt",
           author: "The Establishment",
           description:,
@@ -55,7 +86,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 4, false],
           hexes:,
-          layout: [23, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -335,38 +366,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :uk_leader_5_2,
-            :uk_leader_4_1,
-            [3, :uk_engineer_s],
-            [6, :uk_line_s],
-            [2, :uk_lewis_gun],
-            :uk_radio_114mm,
-            [2, :uk_valentine_i_vii],
-            [4, :uk_valentine_iii_cs],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_1,
-            :ger_leader_5_1,
-            [4, :ger_rifle_s],
-            [2, :ger_elite_crew_t],
-            :ger_mg_34,
-            :ger_mg_08_15,
-            [2, :ger_5cm_pak_38],
-            [6, :wire],
-            [6, :at_mines],
-            [3, :pillbox],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

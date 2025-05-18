@@ -8,7 +8,9 @@ module Api
       def index
         options = {}
         params.each_pair do |key, value|
-          options[key] = value if %w[string allies axis status theater type size].include? key
+          options[key] = value if %w[
+            string allies axis status theater type size sort sort_dir
+          ].include? key
         end
         render json: paginate(Utility::Scenario.all_scenarios(options)), status: :ok
       end
@@ -18,15 +20,15 @@ module Api
       end
 
       def allied_factions
-        render json: Utility::Scenarios::Definitions::AVAILABLE_ALLIED_FACTIONS, status: :ok
+        render json: Utility::Scenario::Definitions::AVAILABLE_ALLIED_FACTIONS, status: :ok
       end
 
       def axis_factions
-        render json: Utility::Scenarios::Definitions::AVAILABLE_AXIS_FACTIONS, status: :ok
+        render json: Utility::Scenario::Definitions::AVAILABLE_AXIS_FACTIONS, status: :ok
       end
 
       def all_units
-        render json: Utility::Scenarios::Units.lookup_data, status: :ok
+        render json: Utility::Scenario::Units.lookup_data, status: :ok
       end
 
       private

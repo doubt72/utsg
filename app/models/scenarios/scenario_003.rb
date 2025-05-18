@@ -6,7 +6,31 @@ module Scenarios
     NAME = "Into the the Gap"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1942, 7, 31].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_5_2,
+        :ussr_leader_4_1,
+        [7, :ussr_rifle_s],
+        [2, :ussr_smg_s],
+        :ussr_dp_27,
+        :ussr_sg_43,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_2,
+        :ger_leader_4_1,
+        [8, :ger_rifle_s],
+        [2, :ger_mg_34],
+        :ger_5cm_legrw_36,
+      ] },
+    }.freeze
 
     class << self
       # TODO: documentation for field descriptions
@@ -15,7 +39,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1942, 7, 31],
+          date:,
           location: "Rzhev, Russia",
           author: "The Establishment",
           description:,
@@ -51,7 +75,7 @@ module Scenarios
           precip: [3, 2],
           wind: [0, 1, false],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -245,32 +269,6 @@ module Scenarios
             { t: "f", r: { t: "d", d: [2, 5] } },
           ],
         ]
-      end
-
-      # TODO: documentation for unit definitions
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_5_2,
-            :ussr_leader_4_1,
-            [7, :ussr_rifle_s],
-            [2, :ussr_smg_s],
-            :ussr_dp_27,
-            :ussr_sg_43,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            :ger_leader_4_1,
-            [8, :ger_rifle_s],
-            [2, :ger_mg_34],
-            :ger_5cm_legrw_36,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

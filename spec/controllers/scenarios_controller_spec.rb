@@ -6,13 +6,17 @@ RSpec.describe Api::V1::ScenariosController do
   let(:scenario_name) { "xxx Spec Test xxx" }
 
   before :all do
-    unless defined?(Scenarios::Spec)
-      class Scenarios::Spec < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
+    unless defined?(Scenarios::Scenario000)
+      class Scenarios::Scenario000 < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
         ID = "000"
         NAME = "xxx Spec Test xxx"
         ALLIES = %w[uk usa].freeze
         AXIS = %w[ger ita].freeze
         STATUS = "p"
+        DATE = [1941, 6, 15].freeze
+        LAYOUT = [15, 23, "x"].freeze
+        ALLIED_UNITS = {}.freeze
+        AXIS_UNITS = {}.freeze
 
         class << self
           def generate
@@ -28,13 +32,131 @@ RSpec.describe Api::V1::ScenariosController do
   end
 
   describe "index" do
-    it "gets first page of scenarios with no filters" do
+    it "gets first page of scenarios with no filters and default sorting" do
       get :index, params: { status: "*" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 10
     end
+  end
 
+  describe "sorting" do
+    it "gets data in correct order with default sorting" do
+      get :index, params: { status: "*", sort: "n", sort_dir: "asc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = ""
+      data.each do |d|
+        expect(d["id"]).to be > last
+        last = d["id"]
+      end
+    end
+
+    it "gets data in correct order with reverse sorting" do
+      get :index, params: { status: "*", sort: "n", sort_dir: "desc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = "999"
+      data.each do |d|
+        expect(d["id"]).to be < last
+        last = d["id"]
+      end
+    end
+
+    it "gets data in correct order with date sorting" do
+      get :index, params: { status: "*", sort: "d", sort_dir: "asc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = [1, 1, 1]
+      data.each do |d|
+        scenario = Utility::Scenario.scenario_by_id(d["id"])
+        expect(scenario[:date] <=> last).to be >= 0
+        last = scenario[:date]
+      end
+    end
+
+    it "gets data in correct order with reverse date sorting" do
+      get :index, params: { status: "*", sort: "d", sort_dir: "desc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = [9999, 1, 1]
+      data.each do |d|
+        scenario = Utility::Scenario.scenario_by_id(d["id"])
+        expect(scenario[:date] <=> last).to be <= 0
+        last = scenario[:date]
+      end
+    end
+
+    it "gets data in correct order with map size sorting" do
+      get :index, params: { status: "*", sort: "m", sort_dir: "asc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = 0
+      data.each do |d|
+        scenario = Utility::Scenario.scenario_by_id(d["id"])
+        unit_count = Utility::Scenario.map_size(scenario)
+        expect(unit_count <=> last).to be >= 0
+        last = unit_count
+      end
+    end
+
+    it "gets data in correct order with reverse map size sorting" do
+      get :index, params: { status: "*", sort: "m", sort_dir: "desc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = 99
+      data.each do |d|
+        scenario = Utility::Scenario.scenario_by_id(d["id"])
+        unit_count = Utility::Scenario.map_size(scenario)
+        expect(unit_count <=> last).to be <= 0
+        last = unit_count
+      end
+    end
+
+    it "gets data in correct order with unit count sorting" do
+      get :index, params: { status: "*", sort: "u", sort_dir: "asc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = 0
+      data.each do |d|
+        scenario = Utility::Scenario.scenario_by_id(d["id"])
+        unit_count = Utility::Scenario.all_units(scenario).length
+        expect(unit_count <=> last).to be >= 0
+        last = unit_count
+      end
+    end
+
+    it "gets data in correct order with reverse unit count sorting" do
+      get :index, params: { status: "*", sort: "u", sort_dir: "desc" }
+
+      expect(response.status).to be == 200
+      data = JSON.parse(response.body)["data"]
+
+      last = 99
+      data.each do |d|
+        scenario = Utility::Scenario.scenario_by_id(d["id"])
+        unit_count = Utility::Scenario.all_units(scenario).length
+        expect(unit_count <=> last).to be <= 0
+        last = unit_count
+      end
+    end
+  end
+
+  describe "filters" do
     it "gets spec scenario when filtering by string" do
       get :index, params: { string: scenario_name, status: "*" }
 

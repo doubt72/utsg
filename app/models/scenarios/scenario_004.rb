@@ -6,7 +6,32 @@ module Scenarios
     NAME = "Speed Bump"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1941, 7, 10].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_4_1,
+        :ussr_leader_3_1,
+        [5, :ussr_rifle_s],
+        [2, :ussr_crew_t],
+        :ussr_dp_27,
+        :ussr_82_bm_37,
+        [2, :ussr_45mm_19_k],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_5_1,
+        :ger_leader_4_1,
+        [5, :ger_rifle_s],
+        :ger_mg_34,
+        [3, :ger_pzkpfw_iii__40],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +39,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1941, 7, 10],
+          date:,
           location: "Mogilev, Belarus",
           author: "The Establishment",
           description:,
@@ -45,7 +70,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 2, true],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [[1, 3, 2], [4, 4, 1], [6, 6, 1], [11, 6, 1], [13, 8, 1]],
@@ -239,32 +264,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_4_1,
-            :ussr_leader_3_1,
-            [5, :ussr_rifle_s],
-            [2, :ussr_crew_t],
-            :ussr_dp_27,
-            :ussr_82_bm_37,
-            [2, :ussr_45mm_19_k],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_5_1,
-            :ger_leader_4_1,
-            [5, :ger_rifle_s],
-            :ger_mg_34,
-            [3, :ger_pzkpfw_iii__40],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

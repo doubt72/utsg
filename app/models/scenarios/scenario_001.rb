@@ -6,7 +6,31 @@ module Scenarios
     NAME = "A Straightforward Proposition"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1944, 6, 25].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    # TODO: documentation for unit definitions
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_6_2,
+        :ussr_leader_4_1,
+        [6, :ussr_rifle_s],
+        [3, :ussr_smg_s],
+        [2, :ussr_dp_27],
+        :ussr_dshk,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_5_1,
+        :ger_leader_4_1,
+        [6, :ger_rifle_s],
+        [2, :ger_mg_42],
+      ] },
+    }.freeze
 
     class << self
       # TODO: documentation for field descriptions
@@ -15,7 +39,7 @@ module Scenarios
           turns: 7,
           first_setup: 2,
           first_move: 1,
-          date: [1944, 6, 25],
+          date:,
           location: "Bogushevsk, Belarus",
           author: "The Establishment",
           description:,
@@ -48,7 +72,7 @@ module Scenarios
           precip: [0, 2],
           wind: [0, 3, false],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [[2, 2, 2], [3, 1, 2], [5, 3, 2], [7, 2, 2], [11, 5, 2]],
@@ -242,31 +266,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      # TODO: documentation for unit definitions
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_6_2,
-            :ussr_leader_4_1,
-            [6, :ussr_rifle_s],
-            [3, :ussr_smg_s],
-            [2, :ussr_dp_27],
-            :ussr_dshk,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_5_1,
-            :ger_leader_4_1,
-            [6, :ger_rifle_s],
-            [2, :ger_mg_42],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

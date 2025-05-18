@@ -6,7 +6,41 @@ module Scenarios
     NAME = "A Hard Place" # TODO: save this name for something else: "Ayo Gorkhali"
     ALLIES = ["ind"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1942, 7, 1].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :uk_leader_5_1,
+        :uk_leader_4_1,
+        [5, :uk_gurkha_s],
+        [4, :uk_crew_t],
+        [2, :uk_vickers_mg],
+        [2, :uk_qf_25_pounder],
+        [2, :uk_qf_6pdr_mk_ii],
+        [2, :uk_matilda_ii],
+      ] },
+      "3": { list: [
+        :uk_leader_5_2,
+        [4, :uk_line_s],
+        [2, :uk_universal_carrier],
+        [5, :uk_crusader_iii],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_2,
+        :ger_leader_5_1,
+        [6, :ger_rifle_s],
+        [2, :ger_mg_34],
+        [2, :ger_sdkfz_250_1],
+        :ger_sdkfz_221,
+        [6, :ger_pzkpfw_iii_l],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +48,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1942, 7, 1],
+          date:,
           location: "Deir el Shein, Egypt",
           author: "The Establishment",
           description:,
@@ -53,7 +87,7 @@ module Scenarios
           precip: [0, 2],
           wind: [2, 4, true],
           hexes:,
-          layout: [15, 23, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -446,41 +480,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :uk_leader_5_1,
-            :uk_leader_4_1,
-            [5, :uk_gurkha_s],
-            [4, :uk_crew_t],
-            [2, :uk_vickers_mg],
-            [2, :uk_qf_25_pounder],
-            [2, :uk_qf_6pdr_mk_ii],
-            [2, :uk_matilda_ii],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "3": { list: [
-            :uk_leader_5_2,
-            [4, :uk_line_s],
-            [2, :uk_universal_carrier],
-            [5, :uk_crusader_iii],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            :ger_leader_5_1,
-            [6, :ger_rifle_s],
-            [2, :ger_mg_34],
-            [2, :ger_sdkfz_250_1],
-            :ger_sdkfz_221,
-            [6, :ger_pzkpfw_iii_l],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

@@ -6,7 +6,29 @@ module Scenarios
     NAME = "Over the Hedge"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1944, 7, 1].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :usa_leader_5_1,
+        :usa_leader_4_1,
+        [7, :usa_rifle_s],
+        :usa_m1917_browning,
+        :usa_radio_105mm,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_5_1,
+        :ger_leader_4_1,
+        [5, :ger_volksgrenadier_s],
+        [2, :ger_mg_42],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +36,7 @@ module Scenarios
           turns: 6,
           first_setup: 2,
           first_move: 1,
-          date: [1944, 7, 1],
+          date:,
           location: "Normandy, France",
           author: "The Establishment",
           description:,
@@ -45,7 +67,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 4, false],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "l",
           axis_edge: "r",
           victory_hexes: [
@@ -236,29 +258,6 @@ module Scenarios
             { t: "g" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :usa_leader_5_1,
-            :usa_leader_4_1,
-            [7, :usa_rifle_s],
-            :usa_m1917_browning,
-            :usa_radio_105mm,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_5_1,
-            :ger_leader_4_1,
-            [5, :ger_volksgrenadier_s],
-            [2, :ger_mg_42],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

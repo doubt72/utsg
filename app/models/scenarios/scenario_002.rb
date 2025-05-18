@@ -6,7 +6,35 @@ module Scenarios
     NAME = "Block by Block"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1942, 8, 23].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_5_1,
+        :ussr_leader_4_1,
+        :ussr_leader_3_1,
+        [7, :ussr_rifle_s],
+        [2, :ussr_smg_s],
+        [3, :ussr_dp_27],
+        [6, :ussr_mc],
+        :sniper3,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_2,
+        [2, :ger_leader_5_1],
+        [2, :ger_pionier_s],
+        [8, :ger_rifle_s],
+        [3, :ger_mg_42],
+        :ger_ft,
+        [2, :ger_sc],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +42,7 @@ module Scenarios
           turns: 8,
           first_setup: 1,
           first_move: 2,
-          date: [1942, 8, 23],
+          date:,
           location: "Stalingrad, Russia",
           author: "The Establishment",
           description:,
@@ -49,7 +77,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 4, false],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -246,35 +274,6 @@ module Scenarios
             { t: "d", d: 1 },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_5_1,
-            :ussr_leader_4_1,
-            :ussr_leader_3_1,
-            [7, :ussr_rifle_s],
-            [2, :ussr_smg_s],
-            [3, :ussr_dp_27],
-            [6, :ussr_mc],
-            :sniper3,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            [2, :ger_leader_5_1],
-            [2, :ger_pionier_s],
-            [8, :ger_rifle_s],
-            [3, :ger_mg_42],
-            :ger_ft,
-            [2, :ger_sc],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

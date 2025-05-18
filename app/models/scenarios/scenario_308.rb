@@ -6,7 +6,31 @@ module Scenarios
     NAME = "A Day on the Waterfront"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1944, 6, 29].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :usa_leader_5_1,
+        :usa_leader_4_1,
+        [2, :usa_engineer_s],
+        [8, :usa_rifle_s],
+        [2, :usa_m1918_bar],
+        :usa_m2_browning,
+        :usa_m2_mortar,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_4_1,
+        :ger_leader_3_1,
+        [10, :ger_conscript_s],
+        :ger_mg_42,
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +38,7 @@ module Scenarios
           turns: 6,
           first_setup: 2,
           first_move: 1,
-          date: [1944, 6, 29],
+          date:,
           location: "Cherbourg, France",
           author: "The Establishment",
           description:,
@@ -49,7 +73,7 @@ module Scenarios
           precip: [0, 2],
           wind: [2, 5, true],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -250,31 +274,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :usa_leader_5_1,
-            :usa_leader_4_1,
-            [2, :usa_engineer_s],
-            [8, :usa_rifle_s],
-            [2, :usa_m1918_bar],
-            :usa_m2_browning,
-            :usa_m2_mortar,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_4_1,
-            :ger_leader_3_1,
-            [10, :ger_conscript_s],
-            :ger_mg_42,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

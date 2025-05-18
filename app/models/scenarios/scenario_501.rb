@@ -6,7 +6,30 @@ module Scenarios
     NAME = "Raate Road"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1940, 1, 1].freeze
+    LAYOUT = [23, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_4_1,
+        [6, :ussr_rifle_s],
+        [2, :ussr_dp_27],
+        :ussr_t_26_m38,
+        :ussr_ba_20,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :fin_leader_6_1,
+        :fin_leader_5_1,
+        [8, :fin_sissi_s],
+        [2, :fin_ls_26],
+        :fin_14_mm_pst_kiv_37,
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +37,7 @@ module Scenarios
           turns: 5,
           first_setup: 1,
           first_move: 2,
-          date: [1940, 1, 1],
+          date:,
           location: "Suomussalmi, Finland",
           author: "The Establishment",
           description:,
@@ -58,7 +81,7 @@ module Scenarios
           precip: [2, 3],
           wind: [0, 5, false],
           hexes:,
-          layout: [23, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -338,30 +361,6 @@ module Scenarios
             { t: "f" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_4_1,
-            [6, :ussr_rifle_s],
-            [2, :ussr_dp_27],
-            :ussr_t_26_m38,
-            :ussr_ba_20,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :fin_leader_6_1,
-            :fin_leader_5_1,
-            [8, :fin_sissi_s],
-            [2, :fin_ls_26],
-            :fin_14_mm_pst_kiv_37,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

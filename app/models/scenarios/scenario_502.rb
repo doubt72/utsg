@@ -6,7 +6,51 @@ module Scenarios
     NAME = "Armored Connage"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1940, 1, 1].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :fra_leader_5_2,
+        [2, :fra_leader_5_1],
+        [2, :fra_bar_s],
+        [4, :fra_reservist_s],
+        :fra_crew_t,
+        [2, :fra_fm_24_29],
+        :fra_25mm_hotchkiss,
+        :fra_radio_155mm,
+        [6, :fra_fcm_36],
+      ] },
+      "3": { list: [
+        [3, :fra_fcm_36],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_2,
+        :ger_leader_5_1,
+        [4, :ger_rifle_s],
+        [2, :ger_elite_crew_t],
+        [2, :ger_mg_34],
+        [2, :ger_3_7cm_pak_36],
+        [4, :ger_pzkpfw_ii_a_e],
+        [2, :ger_pzkpfw_iii__39],
+      ] },
+      "2": { list: [
+        :ger_leader_5_1,
+        [2, :ger_rifle_s],
+        :ger_mg_34,
+      ] },
+      "4": { list: [
+        [2, :ger_pzkpfw_iii__39],
+        :ger_elite_crew_t,
+        :ger_8_8cm_flak_36,
+        :ger_le__gl__lkw,
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +58,7 @@ module Scenarios
           turns: 7,
           first_setup: 1,
           first_move: 2,
-          date: [1940, 5, 14],
+          date:,
           location: "Connage, France",
           author: "The Establishment",
           description:,
@@ -51,7 +95,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 5, true],
           hexes:,
-          layout: [15, 23, "x"],
+          layout:,
           allied_edge: "b",
           axis_edge: "t",
           victory_hexes: [
@@ -442,51 +486,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :fra_leader_5_2,
-            [2, :fra_leader_5_1],
-            [2, :fra_bar_s],
-            [4, :fra_reservist_s],
-            :fra_crew_t,
-            [2, :fra_fm_24_29],
-            :fra_25mm_hotchkiss,
-            :fra_radio_155mm,
-            [6, :fra_fcm_36],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "3": { list: [
-            [3, :fra_fcm_36],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            :ger_leader_5_1,
-            [4, :ger_rifle_s],
-            [2, :ger_elite_crew_t],
-            [2, :ger_mg_34],
-            [2, :ger_3_7cm_pak_36],
-            [4, :ger_pzkpfw_ii_a_e],
-            [2, :ger_pzkpfw_iii__39],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "2": { list: [
-            :ger_leader_5_1,
-            [2, :ger_rifle_s],
-            :ger_mg_34,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "4": { list: [
-            [2, :ger_pzkpfw_iii__39],
-            :ger_elite_crew_t,
-            :ger_8_8cm_flak_36,
-            :ger_le__gl__lkw,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

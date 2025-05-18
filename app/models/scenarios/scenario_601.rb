@@ -6,7 +6,66 @@ module Scenarios
     NAME = "Iron Fist"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1937, 8, 19].freeze
+    LAYOUT = [23, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :chi_leader_5_1,
+        [3, :chi_leader_4_1],
+        [20, :chi_elite_s],
+        :chi_crew_t,
+        [4, :chi_type_24_maxim],
+        [2, :chi_type_20_mortar],
+        :chi_75mm_gun,
+        :chi_vickers_6_ton,
+        :sniper4,
+      ] },
+      "2": { list: [
+        :chi_leader_6_1,
+        [4, :chi_elite_s],
+        :chi_czeck_lmg,
+      ] },
+      "4": { list: [
+        :chi_leader_5_1,
+        [5, :chi_elite_s],
+        :chi_vickers_6_ton,
+      ] },
+      "6": { list: [
+        :chi_leader_4_1,
+        [3, :chi_elite_s],
+        :chi_czeck_lmg,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        [2, :jap_leader_6_1],
+        [2, :jap_leader_5_1],
+        [12, :jap_snlf_s],
+        [2, :jap_elite_crew_t],
+        [4, :jap_type_92_hmg],
+        [2, :jap_70mm_type_92],
+        :jap_radio_15cm,
+        :jap_chiyoda_ac,
+        [6, :wire],
+        [4, :pillbox],
+        :sniper4,
+      ] },
+      "3": { list: [
+        :jap_leader_4_1,
+        [3, :jap_snlf_s],
+        :jap_type_97_ac,
+      ] },
+      "5": { list: [
+        :jap_leader_5_1,
+        [3, :jap_snlf_s],
+        :jap_type_96_lmg,
+        :jap_chiyoda_ac,
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +73,7 @@ module Scenarios
           turns: 9,
           first_setup: 1,
           first_move: 1,
-          date: [1937, 8, 19],
+          date:,
           location: "Shanghai, China",
           author: "The Establishment",
           description:,
@@ -60,7 +119,7 @@ module Scenarios
           precip: [0, 2],
           wind: [0, 6, true],
           hexes:,
-          layout: [23, 23, "x"],
+          layout:,
           allied_edge: "t",
           axis_edge: "b",
           victory_hexes: [
@@ -640,66 +699,6 @@ module Scenarios
             { t: "w" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :chi_leader_5_1,
-            [3, :chi_leader_4_1],
-            [20, :chi_elite_s],
-            :chi_crew_t,
-            [4, :chi_type_24_maxim],
-            [2, :chi_type_20_mortar],
-            :chi_75mm_gun,
-            :chi_vickers_6_ton,
-            :sniper4,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "2": { list: [
-            :chi_leader_6_1,
-            [4, :chi_elite_s],
-            :chi_czeck_lmg,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "4": { list: [
-            :chi_leader_5_1,
-            [5, :chi_elite_s],
-            :chi_vickers_6_ton,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "6": { list: [
-            :chi_leader_4_1,
-            [3, :chi_elite_s],
-            :chi_czeck_lmg,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            [2, :jap_leader_6_1],
-            [2, :jap_leader_5_1],
-            [12, :jap_snlf_s],
-            [2, :jap_elite_crew_t],
-            [4, :jap_type_92_hmg],
-            [2, :jap_70mm_type_92],
-            :jap_radio_15cm,
-            :jap_chiyoda_ac,
-            [6, :wire],
-            [4, :pillbox],
-            :sniper4,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "3": { list: [
-            :jap_leader_4_1,
-            [3, :jap_snlf_s],
-            :jap_type_97_ac,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "5": { list: [
-            :jap_leader_5_1,
-            [3, :jap_snlf_s],
-            :jap_type_96_lmg,
-            :jap_chiyoda_ac,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

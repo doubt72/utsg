@@ -8,13 +8,34 @@ module Scenarios
     AXIS = ["ger"].freeze
     STATUS = "x"
 
+    DATE = [1941, 6, 15].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": {
+        list: [
+          :ussr_leader_5_1,
+          [2, :ussr_rifle_s],
+        ],
+      },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": {
+        list: [
+          :ger_leader_6_2,
+          [2, :ger_rifle_s],
+        ],
+      },
+    }.freeze
+
     class << self
       def generate
         {
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1942, 8, 23],
+          date:,
           location: "Somewhere",
           author: "The Establishment",
           description:,
@@ -33,7 +54,7 @@ module Scenarios
       def map_data
         {
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [],
@@ -223,24 +244,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_5_1,
-            [2, :ussr_rifle_s],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            [2, :ger_rifle_s],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

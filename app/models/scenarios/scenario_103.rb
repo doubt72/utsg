@@ -6,7 +6,32 @@ module Scenarios
     NAME = "Less Sand than Stone"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1941, 11, 19].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :uk_leader_5_2,
+        :uk_radio_140mm,
+        [6, :uk_crusader_i],
+        [2, :uk_humber_lrc],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ita_leader_5_1,
+        :ita_leader_3_1,
+        [6, :ita_bersaglieri_s],
+        [2, :ita_elite_crew_t],
+        [2, :ita_breda_30],
+        [1, :ita_brixia_m35],
+        [2, :ita_cannone_da_47_32],
+        [4, :ita_m13_40],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +39,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1941, 11, 19],
+          date:,
           location: "Bir el Gubi, Libya",
           author: "The Establishment",
           description:,
@@ -51,7 +76,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 3, false],
           hexes:,
-          layout: [15, 23, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -435,32 +460,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :uk_leader_5_2,
-            :uk_radio_140mm,
-            [6, :uk_crusader_i],
-            [2, :uk_humber_lrc],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ita_leader_5_1,
-            :ita_leader_3_1,
-            [6, :ita_bersaglieri_s],
-            [2, :ita_elite_crew_t],
-            [2, :ita_breda_30],
-            [1, :ita_brixia_m35],
-            [2, :ita_cannone_da_47_32],
-            [4, :ita_m13_40],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

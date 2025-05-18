@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 module Utility
-  module Scenarios
+  class Scenario
     module Units # rubocop:disable Metrics/ModuleLength
-      class << self # rubocop:disable Metrics/ClassLength
+      class << self
         # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
         # rubocop:disable Metrics/PerceivedComplexity
         def lookup_data
-          initiative.merge(markers).merge(features).merge(hulls).merge(leaders)
-                    .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
-                    .merge(support_weapons).merge(infantry_guns).merge(at_guns)
-                    .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
-                    .merge(trucks)
+          # rubocop: disable Style/ClassVars
+          @@lu ||= initiative.merge(markers).merge(features).merge(hulls).merge(leaders)
+                             .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
+                             .merge(support_weapons).merge(infantry_guns).merge(at_guns)
+                             .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
+                             .merge(trucks)
+          # rubocop: enable Style/ClassVars
         end
 
         def unit_definition(code)

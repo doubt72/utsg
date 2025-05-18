@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
 import { CreateGameButton, CustomCheckbox } from "../utilities/buttons";
-import { CaretDownFill, CaretUp, CaretUpFill } from "react-bootstrap-icons";
+import { ArrowDownCircle, ArrowUpCircle, CaretDownFill, CaretUp, CaretUpFill } from "react-bootstrap-icons";
 import ScenarioRow from "./ScenarioRow";
 import ScenarioSummary from "./ScenarioSummary";
 import { Player } from "../../utilities/commonTypes";
@@ -15,7 +15,8 @@ export default function NewGame() {
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
 
   const [scenarioSearch, setScenarioSearch] = useState({
-    string: "", allies: "", axis: "", theater: "", status: "*", type: "", size: "", page: 0
+    sort: "n", sortDir: "asc", string: "", allies: "", axis: "", theater: "", status: "*",
+    type: "", size: "", page: 0,
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
@@ -26,6 +27,8 @@ export default function NewGame() {
 
   const loadScenarios = () => {
     const params: Record<string, string> = { page: scenarioSearch.page.toString() }
+    params.sort = scenarioSearch.sort
+    params.sort_dir = scenarioSearch.sortDir
     if (scenarioSearch.string != "") { params.string = scenarioSearch.string }
     if (scenarioSearch.allies != "") { params.allies = scenarioSearch.allies }
     if (scenarioSearch.axis != "") { params.axis = scenarioSearch.axis }
@@ -72,7 +75,8 @@ export default function NewGame() {
     checkScenarios()
   }, [
     scenarioSearch.string, scenarioSearch.allies, scenarioSearch.axis, scenarioSearch.status,
-    scenarioSearch.type, scenarioSearch.size, scenarioSearch.theater,
+    scenarioSearch.type, scenarioSearch.size, scenarioSearch.theater, scenarioSearch.sort,
+    scenarioSearch.sortDir,
   ])
 
   useEffect(() => {
@@ -150,6 +154,35 @@ export default function NewGame() {
     }
   }
 
+  const sorts = [
+    { code: "n", name: "Scenario ID"},
+    { code: "d", name: "Date"},
+    { code: "m", name: "Map Size"},
+    { code: "u", name: "Unit Count"},
+  ]
+
+  const sortSelector = (
+    <div className="flex nowrap" >
+      <select
+        name="sort"
+        className="form-input-gray"
+        onChange={({ target }) => onSearchChange(target.name, target.value)}
+      >
+        {
+          sorts.map(sel => {
+            return <option key={sel.code} value={sel.code}>{sel.name}</option>
+          })
+        }
+      </select>
+      <div className="custom-button sort-button"
+            onClick={() => setScenarioSearch(s => {
+              return { ...s, sortDir: s.sortDir === "asc" ? "desc" : "asc" }
+            }) }>
+        { scenarioSearch.sortDir === "asc" ? <ArrowUpCircle /> : <ArrowDownCircle /> }
+      </div>
+    </div>
+  )
+
   const alliedFactionSelector = (
     <select
       name="allies"
@@ -195,8 +228,8 @@ export default function NewGame() {
       onChange={({ target }) => onSearchChange(target.name, target.value)}
     >
       {
-        statuses.map(status => {
-          return <option key={status.code} value={status.code}>{status.name}</option>
+        statuses.map(sel => {
+          return <option key={sel.code} value={sel.code}>{sel.name}</option>
         })
       }
     </select>
@@ -223,8 +256,8 @@ export default function NewGame() {
       onChange={({ target }) => onSearchChange(target.name, target.value)}
     >
       {
-        theaters.map(status => {
-          return <option key={status.code} value={status.code}>{status.name}</option>
+        theaters.map(sel => {
+          return <option key={sel.code} value={sel.code}>{sel.name}</option>
         })
       }
     </select>
@@ -245,8 +278,8 @@ export default function NewGame() {
       onChange={({ target }) => onSearchChange(target.name, target.value)}
     >
       {
-        unitClasses.map(status => {
-          return <option key={status.code} value={status.code}>{status.name}</option>
+        unitClasses.map(sel => {
+          return <option key={sel.code} value={sel.code}>{sel.name}</option>
         })
       }
     </select>
@@ -273,8 +306,8 @@ export default function NewGame() {
       onChange={({ target }) => onSearchChange(target.name, target.value)}
     >
       {
-        sizes.map(status => {
-          return <option key={status.code} value={status.code}>{status.name}</option>
+        sizes.map(sel => {
+          return <option key={sel.code} value={sel.code}>{sel.name}</option>
         })
       }
     </select>
@@ -347,6 +380,10 @@ export default function NewGame() {
             </div>
           </div>
           <div className="scenario-list-container">
+            <div className="scenario-list-filter-limit">
+              <label>sort by</label><br />
+              {sortSelector}
+            </div>
             <div className="scenario-list-filter">
               <label>filter by scenario name</label>
               <input

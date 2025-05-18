@@ -6,7 +6,39 @@ module Scenarios
     NAME = "Tip of the Spear"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1944, 9, 19].freeze
+    LAYOUT = [23, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :usa_leader_6_2,
+        :usa_leader_5_1,
+        [2, :usa_engineer_s],
+        [5, :usa_rifle_s],
+        [2, :usa_m2_browning],
+        :usa_m2_mortar,
+        :usa_radio_155mm,
+        [2, :usa_m3a1_half_track],
+        [4, :usa_m4_sherman],
+        [2, :usa_m18_hellcat],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_5_1,
+        :ger_leader_3_1,
+        [9, :ger_conscript_s],
+        [3, :ger_mg_42],
+        :ger_panzerschreck,
+        [5, :ger_panther_a_g],
+        [2, :ger_jagdpanzer_iv],
+        [2, :ger_stug_iv],
+        :ger_sdkfz_234_1,
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +46,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1944, 9, 19],
+          date:,
           location: "Arracourt, France",
           author: "The Establishment",
           description:,
@@ -53,7 +85,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 3, true],
           hexes:,
-          layout: [23, 23, "x"],
+          layout:,
           allied_edge: "l",
           axis_edge: "r",
           victory_hexes: [
@@ -621,39 +653,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :usa_leader_6_2,
-            :usa_leader_5_1,
-            [2, :usa_engineer_s],
-            [5, :usa_rifle_s],
-            [2, :usa_m2_browning],
-            :usa_m2_mortar,
-            :usa_radio_155mm,
-            [2, :usa_m3a1_half_track],
-            [4, :usa_m4_sherman],
-            [2, :usa_m18_hellcat],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_5_1,
-            :ger_leader_3_1,
-            [9, :ger_conscript_s],
-            [3, :ger_mg_42],
-            :ger_panzerschreck,
-            [5, :ger_panther_a_g],
-            [2, :ger_jagdpanzer_iv],
-            [2, :ger_stug_iv],
-            :ger_sdkfz_234_1,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

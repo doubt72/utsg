@@ -6,7 +6,37 @@ module Scenarios
     NAME = "Storming the Gates"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1944, 10, 2].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :usa_leader_5_1,
+        :usa_leader_4_1,
+        [2, :usa_engineer_s],
+        [8, :usa_rifle_s],
+        :usa_m2_browning,
+        :usa_ft,
+        [2, :usa_sc],
+        :usa_radio_155mm,
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_1,
+        :ger_leader_4_1,
+        [6, :ger_rifle_s],
+        :ger_elite_crew_t,
+        [2, :ger_mg_42],
+        :ger_7_5cm_leig_18,
+        [4, :wire],
+        :ap_mines,
+        [2, :pillbox],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +44,7 @@ module Scenarios
           turns: 6,
           first_setup: 2,
           first_move: 1,
-          date: [1944, 10, 2],
+          date:,
           location: "Rimburg, Netherlands",
           author: "The Establishment",
           description:,
@@ -54,7 +84,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 2, true],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "b",
           axis_edge: "t",
           victory_hexes: [
@@ -245,37 +275,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :usa_leader_5_1,
-            :usa_leader_4_1,
-            [2, :usa_engineer_s],
-            [8, :usa_rifle_s],
-            :usa_m2_browning,
-            :usa_ft,
-            [2, :usa_sc],
-            :usa_radio_155mm,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_1,
-            :ger_leader_4_1,
-            [6, :ger_rifle_s],
-            :ger_elite_crew_t,
-            [2, :ger_mg_42],
-            :ger_7_5cm_leig_18,
-            [4, :wire],
-            :ap_mines,
-            [2, :pillbox],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

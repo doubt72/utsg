@@ -6,7 +6,39 @@ module Scenarios
     NAME = "Clash of Steel"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1943, 7, 5].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_6_1,
+        :ussr_leader_4_1,
+        [3, :ussr_rifle_s],
+        [2, :ussr_smg_s],
+        [2, :ussr_crew_t],
+        :ussr_dp_27,
+        :ussr_120_pm_38,
+        [2, :ussr_57mm_zis_2],
+        [4, :ussr_t_34_m42_m43],
+        [2, :ussr_su_122],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_2,
+        :ger_leader_4_1,
+        [5, :ger_rifle_s],
+        [2, :ger_mg_42],
+        :ger_radio_15cm,
+        :ger_sdkfz_222,
+        [2, :ger_sdkfz_251_1],
+        [2, :ger_stuh_42],
+        [5, :ger_tiger_i],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +46,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1943, 7, 5],
+          date:,
           location: "Orel, Russia",
           author: "The Establishment",
           description:,
@@ -54,7 +86,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 3, true],
           hexes:,
-          layout: [15, 23, "x"],
+          layout:,
           allied_edge: "t",
           axis_edge: "b",
           victory_hexes: [
@@ -437,39 +469,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_6_1,
-            :ussr_leader_4_1,
-            [3, :ussr_rifle_s],
-            [2, :ussr_smg_s],
-            [2, :ussr_crew_t],
-            :ussr_dp_27,
-            :ussr_120_pm_38,
-            [2, :ussr_57mm_zis_2],
-            [4, :ussr_t_34_m42_m43],
-            [2, :ussr_su_122],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            :ger_leader_4_1,
-            [5, :ger_rifle_s],
-            [2, :ger_mg_42],
-            :ger_radio_15cm,
-            :ger_sdkfz_222,
-            [2, :ger_sdkfz_251_1],
-            [2, :ger_stuh_42],
-            [5, :ger_tiger_i],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

@@ -6,7 +6,34 @@ module Scenarios
     NAME = "Release the Panzer"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1942, 5, 17].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_4_1,
+        :ussr_leader_3_1,
+        [8, :ussr_militia_s],
+        :ussr_crew_t,
+        [2, :ussr_dp_27],
+        :ussr_45mm_53_k,
+        [2, :ussr_t_34_m40],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_5_2,
+        [2, :ger_leader_4_1],
+        [6, :ger_rifle_s],
+        [2, :ger_mg_34],
+        :ger_radio_15cm,
+        [1, :ger_sdkfz_250_1],
+        [4, :ger_pzkpfw_iii_j],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +41,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1942, 5, 17],
+          date:,
           location: "Barvenkovo, Ukraine",
           author: "The Establishment",
           description:,
@@ -50,7 +77,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 6, true],
           hexes:,
-          layout: [15, 23, "x"],
+          layout:,
           allied_edge: "t",
           axis_edge: "b",
           victory_hexes: [
@@ -434,34 +461,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_4_1,
-            :ussr_leader_3_1,
-            [8, :ussr_militia_s],
-            :ussr_crew_t,
-            [2, :ussr_dp_27],
-            :ussr_45mm_53_k,
-            [2, :ussr_t_34_m40],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_5_2,
-            [2, :ger_leader_4_1],
-            [6, :ger_rifle_s],
-            [2, :ger_mg_34],
-            :ger_radio_15cm,
-            [1, :ger_sdkfz_250_1],
-            [4, :ger_pzkpfw_iii_j],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

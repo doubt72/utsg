@@ -6,7 +6,23 @@ module Scenarios
     NAME = "A Brief Encounter"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1941, 5, 13].freeze
+    LAYOUT = [23, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        [8, :uk_cruiser_mk_iv],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        [3, :ger_pzkpfw_iii__40],
+        [3, :ger_pzkpfw_iv_e],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +30,7 @@ module Scenarios
           turns: 5,
           first_setup: 2,
           first_move: 1,
-          date: [1941, 5, 13],
+          date:,
           location: "Near the Frontier Wire",
           author: "The Establishment",
           description:,
@@ -46,7 +62,7 @@ module Scenarios
           precip: [0, 2],
           wind: [1, 4, false],
           hexes:,
-          layout: [23, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -326,23 +342,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            [8, :uk_cruiser_mk_iv],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            [3, :ger_pzkpfw_iii__40],
-            [3, :ger_pzkpfw_iv_e],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

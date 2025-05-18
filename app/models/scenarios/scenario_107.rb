@@ -1,12 +1,39 @@
 # frozen_string_literal: true
 
 module Scenarios
-  class Scenario106 < Base
-    ID = "106"
+  class Scenario107 < Base
+    ID = "107"
     NAME = "Hellfire Pass"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1941, 6, 15].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :uk_leader_5_1,
+        :uk_leader_4_1,
+        [6, :uk_line_s],
+        :uk_bren_lmg,
+        :uk_2inch_mortar,
+        [5, :uk_matilda_ii],
+        [2, :uk_matilda_ii_cs],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_2,
+        [4, :ger_rifle_s],
+        [3, :ger_elite_crew_t],
+        :ger_mg_34,
+        [3, :ger_8_8cm_flak_36],
+        [2, :ger_pzkpfw_ii_f],
+        :ger_pzkpfw_iii__40,
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +41,7 @@ module Scenarios
           turns: 7,
           first_setup: 2,
           first_move: 1,
-          date: [1941, 6, 15],
+          date:,
           location: "Halfaya Pass, Libya",
           author: "The Establishment",
           description:,
@@ -49,7 +76,7 @@ module Scenarios
           precip: [0, 2],
           wind: [2, 5, true],
           hexes:,
-          layout: [15, 23, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -438,34 +465,6 @@ module Scenarios
             { t: "o", h: 5 },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :uk_leader_5_1,
-            :uk_leader_4_1,
-            [6, :uk_line_s],
-            :uk_bren_lmg,
-            :uk_2inch_mortar,
-            [5, :uk_matilda_ii],
-            [2, :uk_matilda_ii_cs],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            [4, :ger_rifle_s],
-            [3, :ger_elite_crew_t],
-            :ger_mg_34,
-            [3, :ger_8_8cm_flak_36],
-            [2, :ger_pzkpfw_ii_f],
-            :ger_pzkpfw_iii__40,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

@@ -6,7 +6,35 @@ module Scenarios
     NAME = "The Shingle"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1944, 6, 6].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :usa_leader_5_1,
+        :usa_leader_4_1,
+        [2, :usa_engineer_s],
+        [6, :usa_rifle_s],
+        [2, :usa_m1918_bar],
+      ] },
+      "2": { list: [
+        :usa_leader_5_1,
+        [3, :usa_rifle_s],
+        [1, :usa_m1918_bar],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        [2, :ger_leader_4_1],
+        [4, :ger_volksgrenadier_s],
+        [2, :ger_mg_42],
+        [8, :wire],
+        [2, :pillbox],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +42,7 @@ module Scenarios
           turns: 6,
           first_setup: 2,
           first_move: 1,
-          date: [1944, 6, 6],
+          date:,
           location: "Normandy, France",
           author: "The Establishment",
           description:,
@@ -47,7 +75,7 @@ module Scenarios
           precip: [0, 2],
           wind: [3, 5, true],
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "t",
           axis_edge: "b",
           victory_hexes: [[1, 10, 2], [5, 7, 2], [5, 10, 2], [7, 9, 2], [11, 10, 2]],
@@ -243,35 +271,6 @@ module Scenarios
             { t: "o", h: 4 },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :usa_leader_5_1,
-            :usa_leader_4_1,
-            [2, :usa_engineer_s],
-            [6, :usa_rifle_s],
-            [2, :usa_m1918_bar],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-          "2": { list: [
-            :usa_leader_5_1,
-            [3, :usa_rifle_s],
-            [1, :usa_m1918_bar],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            [2, :ger_leader_4_1],
-            [4, :ger_volksgrenadier_s],
-            [2, :ger_mg_42],
-            [8, :wire],
-            [2, :pillbox],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

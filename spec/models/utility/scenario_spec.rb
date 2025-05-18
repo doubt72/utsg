@@ -6,12 +6,16 @@ RSpec.describe Utility::Scenario do
   let(:scenario_name) { "xxx Spec Test xxx" }
 
   before :all do
-    unless defined?(Scenarios::Spec)
-      class Scenarios::Spec < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
+    unless defined?(Scenarios::Scenario000)
+      class Scenarios::Scenario000 < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
         ID = "000"
         NAME = "xxx Spec Test xxx"
         ALLIES = %w[uk usa].freeze
         AXIS = %w[ger ita].freeze
+        DATE = [1941, 6, 15].freeze
+        LAYOUT = [15, 23, "x"].freeze
+        ALLIED_UNITS = {}.freeze
+        AXIS_UNITS = {}.freeze
 
         class << self
           def generate

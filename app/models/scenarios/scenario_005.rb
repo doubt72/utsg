@@ -6,7 +6,32 @@ module Scenarios
     NAME = "Uranus Descending"
     ALLIES = ["ussr"].freeze
     AXIS = ["rom"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1942, 11, 20].freeze
+    LAYOUT = [15, 23, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :ussr_leader_5_1,
+        :ussr_leader_4_1,
+        [6, :ussr_rifle_s],
+        :ussr_dp_27,
+        :ussr_82_pm_41,
+        [4, :ussr_t_34_m40],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :axm_leader_4_1,
+        :axm_leader_3_1,
+        [4, :axm_conscript_s],
+        :axm_crew_t,
+        :axm_3_7cm_pak_36,
+        [6, :axm_r_2],
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +39,7 @@ module Scenarios
           turns: 5,
           first_setup: 2,
           first_move: 1,
-          date: [1942, 11, 20],
+          date:,
           location: "Serafimovich, Russia",
           author: "The Establishment",
           description:,
@@ -55,7 +80,7 @@ module Scenarios
       def map_data
         {
           hexes:,
-          layout: [15, 23, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -438,32 +463,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :ussr_leader_5_1,
-            :ussr_leader_4_1,
-            [6, :ussr_rifle_s],
-            :ussr_dp_27,
-            :ussr_82_pm_41,
-            [4, :ussr_t_34_m40],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :axm_leader_4_1,
-            :axm_leader_3_1,
-            [4, :axm_conscript_s],
-            :axm_crew_t,
-            :axm_3_7cm_pak_36,
-            [6, :axm_r_2],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end

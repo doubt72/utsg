@@ -6,7 +6,33 @@ module Scenarios
     NAME = "Uruguay"
     ALLIES = ["pol"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
+
+    DATE = [1939, 9, 1].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": { list: [
+        :alm_leader_5_1,
+        :alm_leader_4_1,
+        [6, :alm_regular_s],
+        [2, :alm_regular_t],
+        [2, :alm_rkm_wz__1928],
+        [2, :alm_wz__35_at_rifle],
+      ] },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": { list: [
+        :ger_leader_6_2,
+        :ger_leader_4_1,
+        [4, :ger_rifle_s],
+        [2, :ger_mg_34],
+        :ger_pzkpfw_i,
+        [2, :ger_pzkpfw_ii_a_e],
+        :ger_pzkpfw_35t,
+      ] },
+    }.freeze
 
     class << self
       def generate
@@ -14,7 +40,7 @@ module Scenarios
           turns: 6,
           first_setup: 1,
           first_move: 2,
-          date: [1942, 8, 23],
+          date:,
           location: "Mokra, Poland",
           author: "The Establishment",
           description:,
@@ -53,7 +79,7 @@ module Scenarios
       def map_data
         {
           hexes:,
-          layout: [15, 11, "x"],
+          layout:,
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
@@ -245,33 +271,6 @@ module Scenarios
             { t: "o" },
           ],
         ]
-      end
-
-      def allied_units
-        {
-          "0": { list: [
-            :alm_leader_5_1,
-            :alm_leader_4_1,
-            [6, :alm_regular_s],
-            [2, :alm_regular_t],
-            [2, :alm_rkm_wz__1928],
-            [2, :alm_wz__35_at_rifle],
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
-      end
-
-      def axis_units
-        {
-          "0": { list: [
-            :ger_leader_6_2,
-            :ger_leader_4_1,
-            [4, :ger_rifle_s],
-            [2, :ger_mg_34],
-            :ger_pzkpfw_i,
-            [2, :ger_pzkpfw_ii_a_e],
-            :ger_pzkpfw_35t,
-          ].map { |u| Utility::Scenarios::Units.unit_definition(u) } },
-        }
       end
     end
   end
