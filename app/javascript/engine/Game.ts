@@ -282,6 +282,16 @@ export default class Game {
     return rc
   }
 
+  get reinforcementsCount(): [number, number] {
+      const counters = this.currentPlayer === 1 ?
+        this.scenario.alliedReinforcements[this.turn] :
+        this.scenario.axisReinforcements[this.turn]
+
+      const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
+      const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
+      return [count, initialCount]
+  }
+
   checkPhase(backendSync: boolean) {
     if (backendSync) { return }
     const data: GameMoveData = {
@@ -291,12 +301,7 @@ export default class Game {
     const oldPhase = this.phase
     const oldTurn = this.turn
     if (this.phase == gamePhaseType.Deployment) {
-      const counters = this.currentPlayer === 1 ?
-        this.scenario.alliedReinforcements[this.turn] :
-        this.scenario.axisReinforcements[this.turn]
-
-      const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
-      const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
+      const [count, initialCount] = this.reinforcementsCount
       if (count === 0) {
         if (initialCount === 0) {
           this.executeMove(new GameMove({

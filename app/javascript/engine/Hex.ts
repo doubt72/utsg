@@ -1,6 +1,7 @@
 import {
   BorderTypeType, BuildingShapeType, BuildingStyleType, Coordinate, Direction,
-  Elevation, ExtendedDirection, RoadCenterType, RoadTypeType, TerrainTypeType, baseTerrainType, borderType, roadType, terrainType
+  Elevation, ExtendedDirection, RoadCenterType, RoadTypeType, StreamTypeType, TerrainTypeType,
+  baseTerrainType, borderType, roadType, terrainType
 } from "../utilities/commonTypes"
 import {
   hexLos, hexLosAlongEdgeHindrance, hexLosAlongEdgeLos, hexLosCounterLos,
@@ -27,6 +28,7 @@ export type HexData = {
   }
   s?: {                    // stream/river
     d: Direction[];        //   direction/endpoints
+    t?: StreamTypeType;    //   type
   }
   h?: Elevation;           // elevation
   // Only need to do one side, and which side doesn't matter for most things,
@@ -55,6 +57,7 @@ export default class Hex {
   roadCenter?: RoadCenterType;
 
   river: boolean;
+  riverType?: StreamTypeType;
   riverDirections?: Direction[];
 
   border?: BorderTypeType;
@@ -80,6 +83,7 @@ export default class Hex {
     this.river = !!data.s
     if (this.river) {
       this.riverDirections = data.s?.d
+      this.riverType = data.s?.t
     }
     this.elevation = data.h ?? 0
     this.border = data.b
@@ -114,15 +118,16 @@ export default class Hex {
     return this.map.baseTerrainColor
   }
 
-  get elevationStyles(): SVGStyle[] {
-    return [
-      { fill: this.mapColor },
-      { fill: "#DA7" },
-      { fill: "#B85" },
-      { fill: "#963" },
-      { fill: "#741" },
-      { fill: "#620" },
-    ]
+  get elevationStyles(): { [index: number]: SVGStyle } {
+    return {
+      "-1": { fill: "#ACA" },
+      0: { fill: this.mapColor },
+      1: { fill: "#DA7" },
+      2: { fill: "#B85" },
+      3: { fill: "#963" },
+      4: { fill: "#741" },
+      5: { fill: "#620" },
+    }
   }
 
   get night() {
@@ -151,13 +156,14 @@ export default class Hex {
       m: { fill: this.map.baseTerrain === baseTerrainType.Snow ? "url(#frozen-marsh-pattern)" :
         "url(#marsh-pattern)" },
       g: { fill: "url(#grain-pattern)" },
+      t: { fill: "url(#soft-pattern)" },
     }
   }
 
   borderStyles: { [index: string]: SVGStyle } = {
     f: { stroke: "#963", strokeWidth: 3 },
     w: { stroke: "#BBB", strokeWidth: 8, strokeLinecap: "round" },
-    b: { stroke: "#060", strokeWidth: 8, strokeLinecap: "round" },
+    b: { stroke: "#070", strokeWidth: 8, strokeLinecap: "round" },
     c: { stroke: "#320", strokeWidth: 8, strokeLinecap: "round" },
   }
 
@@ -206,7 +212,8 @@ export default class Hex {
     const edges = this.map.hexNeighbors(this.coord).map((h, i) => {
       const check = (this.border === borderType.Cliff &&
                      this.borderEdges?.includes(i+1 as Direction)) ||
-                    !h || h.elevation >= this.elevation
+                    !h || (h.elevation >= this.elevation && h.elevation > 0) ||
+                    (h.elevation <= this.elevation && h.elevation < 0)
       if (check) { none = false } else { all = false }
       return check
     })
@@ -266,7 +273,11 @@ export default class Hex {
     if (this.elevationEdges === "all") {
       return this.elevationStyles[this.elevation]
     } else {
-      return this.elevationStyles[this.elevation ? this.elevation - 1 : 0]
+      if (this.elevation > 0) {
+        return this.elevationStyles[this.elevation ? this.elevation - 1 : 0]
+      } else {
+        return this.elevationStyles[0]
+      }
     }
   }
 
@@ -498,10 +509,15 @@ export default class Hex {
   }
 
   get riverStyle(): SVGStyle {
+    let color = this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater
+    if (this.riverType === "g") {
+      color = "#070"
+    }
     return {
       fill: "rgba(0,0,0,0)",
       strokeWidth: 10,
-      stroke: this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater,
+      stroke: color,
+      strokeDasharray: this.riverType === "g" ? [14, 14] : undefined,
       strokeLinejoin: "round",
     }
   }

@@ -72,10 +72,10 @@ export const baseTerrainType: { [index: string]: BaseTerrainTypeType } = {
   Grass: "g", Urban: "u", Sand: "d", Mud: "m", Snow: "s"
 }
 
-export type TerrainTypeType = "o" | "f" | "b" | "j" | "s" | "m" | "w" | "g" | "r" | "d"
+export type TerrainTypeType = "o" | "f" | "b" | "j" | "s" | "m" | "w" | "g" | "r" | "d" | "t"
 export const terrainType: { [index: string]: TerrainTypeType } = {
   Open: "o", Forest: "f", Brush: "b", Jungle: "j", Sand: "s", Marsh: "m", Water: "w",
-  Grain: "g", Rough: "r", Orchard: "d"
+  Grain: "g", Rough: "r", Orchard: "d", Soft: "t",
 }
 
 export type RoadTypeType = "t" | "d" | "p"
@@ -86,6 +86,11 @@ export const roadType: { [index: string]: RoadTypeType } = {
 export type RoadCenterType = "l" | "r"
 export const roadCenter: { [index: string]: RoadCenterType } = {
   Left: "l", Right: "r"
+}
+
+export type StreamTypeType = "s" | "g"
+export const streamType: { [index: string]: StreamTypeType } = {
+  Stream: "s", Gully: "g",
 }
 
 export type BorderTypeType = "w" | "f" | "c" | "b"
@@ -107,7 +112,7 @@ export const buildingShape: { [index: string]: BuildingShapeType } = {
   BigMiddle: "bm", BigCorner1: "bc1", BigCorner2: "bc2", BigCorner3: "bc3"
 }
 
-export type Elevation = 0 | 1 | 2 | 3 | 4 | 5
+export type Elevation = -1 | 0 | 1 | 2 | 3 | 4 | 5
 
 export type MapEdgeType = "t" | "b" | "l" | "r"
 export const mapEdge: { [index: string]: MapEdgeType } = {

@@ -117,6 +117,13 @@ export default function MapHexPatterns() {
         </g>
         <use x="0" y="9" xlinkHref="#grain-component"></use>
       </pattern>
+      <pattern id="soft-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
+               width="36" height="36" viewBox="0 0 16 16">
+        <circle cx="1" cy="1" r="1" style={darkStyle} />
+        <circle cx="4" cy="1" r="1" style={darkStyle} />
+        <circle cx="9" cy="9" r="1" style={darkStyle} />
+        <circle cx="12" cy="9" r="1" style={darkStyle} />
+      </pattern>
 
       {nationalControlPattern("ger", 12)}
       {nationalControlPattern("ita", 12)}

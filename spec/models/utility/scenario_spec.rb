@@ -82,7 +82,9 @@ RSpec.describe Utility::Scenario do
         it "has valid allied forces" do
           expect(scenario[:allies].length).to be > 0
           scenario[:allies].each do |force|
-            allies = described_class::AVAILABLE_ALLIED_FACTIONS.map { |f| f[:nations] }.flatten
+            allies = described_class::Definitions::AVAILABLE_ALLIED_FACTIONS.map do |f|
+              f[:nations]
+            end.flatten
             expect(allies.include?(force)).to be true
           end
         end
@@ -90,7 +92,7 @@ RSpec.describe Utility::Scenario do
         it "has valid axis forces" do
           expect(scenario[:axis].length).to be > 0
           scenario[:axis].each do |force|
-            axis = described_class::AVAILABLE_AXIS_FACTIONS.map { |f| f[:code] }
+            axis = described_class::Definitions::AVAILABLE_AXIS_FACTIONS.map { |f| f[:code] }
             expect(axis.include?(force)).to be true
           end
         end

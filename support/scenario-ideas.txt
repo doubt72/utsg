@@ -12,21 +12,20 @@
 106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
 108 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
 
-201 Americans Clearing Somewhere in Sicily
-202 Monte Cassino
-203 Canadians at Ortona
-204 100th Infantry
-205 Brazilians at Monte Castello
++ 201 Americans Clearing Somewhere in Sicily
++ 202 Monte Cassino
++ 203 Canadians at Ortona
++ 204 100th Infantry
++ 205 Brazilians at Monte Castello
 
 304 British Clearing Normandy Town - Cheux?
 306 Pegasus Bridge British take bridge then counterattack
 307 Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
-310 2x3 Market Garden Tank Support - Hell's Highway
 
-401 Edson's/Bloody Ridge Guadalcanal
-402 Hold New Guinea village against constant piecemeal Japanese Attack (Aus)
-403 Reduce Japanese Strongpoint in New Guinea (Aus)
-404 Late Manila urban Fighting
++ 401 Edson's/Bloody Ridge Guadalcanal
++ 402 Hold New Guinea village against constant piecemeal Japanese Attack (Aus)
++ 403 Reduce Japanese Strongpoint in New Guinea
++ 404 Late Manila urban Fighting
 
 505 Finish Bunkers along Border in Winter War
 506 Matildas vs. 88s, Arras?
@@ -34,9 +33,9 @@
 508 Norwegian
 508 Nisava River Bridge in Yugoslavia
 
-602 Burma
-603 Imphal/Gurka
-604 China Pass
++ 602 Burma
++ 603 Imphal/Gurka
++ 604 China Pass
 
 000 East Front
 + 001 44 Simple Squad Battle, MG only
@@ -97,7 +96,7 @@ Monte Cassino, Anzio, Sicily, Salerno
   30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
 + 308 44 Cherbourg City Attack
 + 309 44 Manor Attack
-  30x    Market Garden Tank Support - Hell's Highway
++ 30x 44 Market Garden Tank Support - Hell's Highway
 + 311 44 Arracourt
   30x    Canadian Street Fighting in Caen
   30x    Americans Clearing Edge of Large Town - Carentan

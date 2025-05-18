@@ -498,7 +498,7 @@ export default class Map {
     ].join(" "), x: loc.x, y: loc.y+5, size: size-8 }
   }
 
-  openHex(x: number, y: number): boolean {
+  openHex(x: number, y: number): boolean | -1 {
     if (!this.game?.reinforcementSelection) {
       return true
     }

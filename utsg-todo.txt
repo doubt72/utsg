@@ -1,16 +1,19 @@
-- Refactor Scenario Page:
-  - Sort by:
-    - Number
-    - Date
-    - Map Size
+- Add graduated coloring when placing support weapons
+
+- Add help for minimum towing size
+
+- Allow tanks to deploy on road but limit directions
+
+- Hell's Highway:
+- Fix terrain info over terrain (probably offset)
+  - Add terrain help for ice / switch ice to special rule
+  - Add gullies
+    - Do this for first scenario with gullies
+  - Add non-marsh soft ground
+    - Same
 
 - Close reinforcement panel when last reinforcement placed
-- Fix terrain info over terrain (probably offset)
-  - Also add gullies
-  - Also add terrain help for ice / switch ice to special rule
-- Add help for minimum towing size
-- Allow tanks to deploy on road but limit directions
-- Add graduated coloring when placing support weapons
+  - Deal with panel flickering from excessive updates
 
 - Fill Out Scenarios
 
