@@ -2,40 +2,38 @@
   Bulgarian, Hungarian, Slovakian, Croatian,
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-006 Snow Battle Outside Moscow Germans Defending (Infantry Only)
++ 006 Snow Battle Outside Moscow Germans Defending (Infantry Only)
 010 Stalingrad Factory
-011 Hungarian Attack Somewhere / Town Clearing?
-012 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
++ 011 Hungarian Attack Somewhere / Town Clearing?
++ 012 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
 013 4x3 44 Tank Battle
-014 Bulgarian Attack Somewhere / Town Clearing?
++ 014 Bulgarian Attack Somewhere / Town Clearing?
 
-106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
-108 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
++ 106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
++ 108 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
 
-+ 201 Americans Clearing Somewhere in Sicily
-+ 202 Monte Cassino
-+ 203 Canadians at Ortona
-+ 204 100th Infantry
-+ 205 Brazilians at Monte Castello
++ 202 Canadians at Ortona
+203 100th Infantry
+204 Brazilians at Monte Castello
 
 304 British Clearing Normandy Town - Cheux?
-306 Pegasus Bridge British take bridge then counterattack
-307 Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
++ 306 Pegasus Bridge British take bridge then counterattack
++ 307 Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
 
-+ 401 Edson's/Bloody Ridge Guadalcanal
-+ 402 Hold New Guinea village against constant piecemeal Japanese Attack (Aus)
-+ 403 Reduce Japanese Strongpoint in New Guinea
-+ 404 Late Manila urban Fighting
+401 Edson's/Bloody Ridge Guadalcanal
+402 Hold New Guinea village against constant piecemeal Japanese Attack (Aus)
+403 Reduce Japanese Strongpoint in New Guinea
+404 Late Manila urban Fighting
 
-505 Finish Bunkers along Border in Winter War
++ 505 Finish Bunkers along Border in Winter War
 506 Matildas vs. 88s, Arras?
-507 Greek
-508 Norwegian
-508 Nisava River Bridge in Yugoslavia
++ 507 Greek
++ 508 Norwegian
++ 508 Nisava River Bridge in Yugoslavia
 
-+ 602 Burma
-+ 603 Imphal/Gurka
-+ 604 China Pass
+602 Burma
+603 Imphal/Gurka
+604 China Pass
 
 000 East Front
 + 001 44 Simple Squad Battle, MG only
@@ -79,12 +77,14 @@ Grain Elevator, Manina Stalingrad, 18 Sep 42
 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
++ 201 43 Troina
   20x    Japanese Troops
   20x    Brazillian Monte Costello
   20x    Canadians at Ortona Little Stalingrad
-  20x    Americans Clearing Italians From Sicilian Town
 
-Monte Cassino, Anzio, Sicily, Salerno
+Monte Cassino - Algerians/Free French to the North?
+Monte Cassino - Fighting over the flooded valley?
+Anzio, Sicily, Salerno
 
 300 Normandy/Late West Front
 + 301 44 Counterattack Against Paratroopers

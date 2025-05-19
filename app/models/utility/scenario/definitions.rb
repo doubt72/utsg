@@ -19,7 +19,7 @@ module Utility
         { name: "Italian", code: "ita", nations: ["ita"] },
         { name: "Japanese", code: "jap", nations: ["jap"] },
         { name: "Finnish", code: "fin", nations: ["fin"] },
-        { name: "Minor Powers", code: "axm", nations: %w[pol gre nor bel dut yug] },
+        { name: "Minor Powers", code: "axm", nations: %w[hun bul rom slv cro] },
       ].freeze
     end
   end

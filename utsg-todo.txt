@@ -4,13 +4,12 @@
 
 - Allow tanks to deploy on road but limit directions
 
-- Hell's Highway:
 - Fix terrain info over terrain (probably offset)
   - Add terrain help for ice / switch ice to special rule
   - Add gullies
-    - Do this for first scenario with gullies
-  - Add non-marsh soft ground
-    - Same
+    - Gully cover/movement effects; not implemented for rivers yet either
+    - Add help
+  - Add help for soft ground
 
 - Close reinforcement panel when last reinforcement placed
   - Deal with panel flickering from excessive updates

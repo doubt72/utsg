@@ -9,7 +9,7 @@ module Scenarios
     STATUS = "x"
 
     DATE = [1941, 6, 15].freeze
-    LAYOUT = [15, 23, "x"].freeze
+    LAYOUT = [15, 11, "x"].freeze
 
     ALLIED_UNITS = {
       "0": {
