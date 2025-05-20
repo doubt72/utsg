@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Hell's Highway"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "x"
+    STATUS = "p"
 
     DATE = [1944, 9, 18].freeze
     LAYOUT = [15, 36, "x"].freeze

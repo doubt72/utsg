@@ -118,7 +118,7 @@ export default class Scenario {
 
   get displayDate(): string {
     if (!this.date) { return "" }
-    return getFormattedDate(new Date(this.date[0], this.date[1], this.date[2]))
+    return getFormattedDate(this.date)
   }
 
   get statusName(): string | undefined {

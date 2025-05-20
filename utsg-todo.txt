@@ -5,6 +5,7 @@
 - Allow tanks to deploy on road but limit directions
 
 - Fix terrain info over terrain (probably offset)
+  - scaling
   - Add terrain help for ice / switch ice to special rule
   - Add gullies
     - Gully cover/movement effects; not implemented for rivers yet either

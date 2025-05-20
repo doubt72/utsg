@@ -53,12 +53,14 @@ export function axisCodeToName(code: string): string {
   return "Unknown"
 }
 
-export function getFormattedDate(date: Date): string {
+export function getFormattedDate(date: [number, number, number]): string {
+  const [year, month, day] = date
   const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"    
   ]
+  console.log(date)
   
-  return `${months[date.getMonth() - 1]} ${date.getDate()}, ${date.getFullYear()}`
+  return `${months[month - 1]} ${day}, ${year}`
 }
 
 export function normalDir(dir: number): Direction {

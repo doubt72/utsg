@@ -210,9 +210,10 @@ export default class Hex {
     let all = true
     let none = true
     const edges = this.map.hexNeighbors(this.coord).map((h, i) => {
+      if (!h) { return true } // doesn't affect all or none -- but include edges if partial
       const check = (this.border === borderType.Cliff &&
                      this.borderEdges?.includes(i+1 as Direction)) ||
-                    !h || (h.elevation >= this.elevation && h.elevation > 0) ||
+                    (h.elevation >= this.elevation && h.elevation > 0) ||
                     (h.elevation <= this.elevation && h.elevation < 0)
       if (check) { none = false } else { all = false }
       return check

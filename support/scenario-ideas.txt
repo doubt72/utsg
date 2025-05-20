@@ -2,12 +2,9 @@
   Bulgarian, Hungarian, Slovakian, Croatian,
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-+ 006 Snow Battle Outside Moscow Germans Defending (Infantry Only)
 010 Stalingrad Factory
 + 011 Hungarian Attack Somewhere / Town Clearing?
-+ 012 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
 013 4x3 44 Tank Battle
-+ 014 Bulgarian Attack Somewhere / Town Clearing?
 
 + 106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
 + 108 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
@@ -25,7 +22,6 @@
 403 Reduce Japanese Strongpoint in New Guinea
 404 Late Manila urban Fighting
 
-+ 505 Finish Bunkers along Border in Winter War
 506 Matildas vs. 88s, Arras?
 + 507 Greek
 + 508 Norwegian
@@ -36,25 +32,26 @@
 604 China Pass
 
 000 East Front
-+ 001 44 Simple Squad Battle, MG only
-+ 002 42 Stalingrad Outskirts
-+ 003 42 Mud / Infantry Battle
-+ 004 41 Delaying Action Against Tanks
-+ 005 42 Romanian Tank Defense Operation Uranus
-  00x    Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
-+ 007 43 Tank Battle Kursk
-+ 008 41 KV Tank Surprise
-+ 009 42 Tank Battle Kharkov
-  00x    Stalingrad Factory
+- 001 44 Simple Squad Battle, MG only
+- 002 42 Stalingrad Outskirts
+- 003 42 Mud / Infantry Battle
+- 004 41 Delaying Action Against Tanks
+- 005 42 Romanian Tank Defense Operation Uranus
+- 006 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
   00x    Hungarian Attack Somewhere / Town Clearing?
-  00x    Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
+- 008 43 Tank Battle Kursk
+- 009 41 KV Tank Surprise
+- 010 42 Tank Battle Kharkov
+  00x    Stalingrad Factory
+- 012 41 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
   00x    44 Tank Battle
-  00x    Bulgarian Attack Somewhere / Town Clearing?
-  00x    Croatian Attack Somewhere
+- 014 41 Armored counter-attack at Moscow
   00x    45 Tank Battle
-  00x    Mass Assualt on Hill
-  00x    Fight Over Bridge in Gully Somewhere
+  00x    41 Tank Battle
 
+Croatian Attack Somewhere
+Fight Over Bridge in Gully Somewhere
+Mass Assualt on Hill
 Velikiye Luki/Stalingrad of the North
 Barrikady Fuel Tanks, Stalingrad, 22 Dec 42
 Commisar House, Stalingrad, 13 Nov 42
@@ -63,13 +60,13 @@ Dom 31 Barrikady, 27 Oct 42
 Grain Elevator, Manina Stalingrad, 18 Sep 42
 
 100 North Africa
-+ 101 41 Fight over featureless land (tanks)
-+ 102 40 British assulting Fort Capuzzo in 40
-+ 103 41 British / Italian Tank Battle Crusader
-+ 104 42 Indian Division at El Alamein
-+ 105 42 British Breaching German Defenses 2nd Alamein
+- 101 41 Fight over featureless land (tanks)
+- 102 40 British assulting Fort Capuzzo in 40
+- 103 41 British / Italian Tank Battle Crusader
+- 104 42 Indian Division at El Alamein
+- 105 42 British Breaching German Defenses 2nd Alamein
   10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
-+ 107 41 Hellfire Pass
+- 107 41 Hellfire Pass
   10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
   10x    Fight over featureless land (infantry)
   10x    Hill Assault Somewhere
@@ -77,7 +74,7 @@ Grain Elevator, Manina Stalingrad, 18 Sep 42
 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
-+ 201 43 Troina
+- 201 43 Troina
   20x    Japanese Troops
   20x    Brazillian Monte Costello
   20x    Canadians at Ortona Little Stalingrad
@@ -87,17 +84,17 @@ Monte Cassino - Fighting over the flooded valley?
 Anzio, Sicily, Salerno
 
 300 Normandy/Late West Front
-+ 301 44 Counterattack Against Paratroopers
-+ 302 44 German Tank Counterattack
-+ 303 44 Bocage
+- 301 44 Counterattack Against Paratroopers
+- 302 44 German Tank Counterattack
+- 303 44 Bocage
   30x    British Clearing Normandy Town - Cheux?
-+ 305 44 Omaha Beach
+- 305 44 Omaha Beach
   30x    Pegasus Bridge British take bridge then counterattack
   30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
-+ 308 44 Cherbourg City Attack
-+ 309 44 Manor Attack
-+ 30x 44 Market Garden Tank Support - Hell's Highway
-+ 311 44 Arracourt
+- 308 44 Cherbourg City Attack
+- 309 44 Manor Attack
+- 30x 44 Market Garden Tank Support - Hell's Highway
+- 311 44 Arracourt
   30x    Canadian Street Fighting in Caen
   30x    Americans Clearing Edge of Large Town - Carentan
   30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
@@ -130,12 +127,12 @@ Anzio, Sicily, Salerno
 Singapore, Okinawa, Bobdubi Ridge
 
 500 Finland/Poland/France/Norway/Balkans
-+ 501 40 Finish Ambush in snow against armored column Winter War
-+ 502 40 French Armor vs. German Armor (FCM 36)
-+ 503 39 Polish Infantry Resisting German Armor
-+ 504 40 French Isolated Armor + Infantry against German Armor
-+ 505 40 French Armor vs. German Armor (Char B1 bis)
-  50x    Finish Bunkers along Border in Winter War
+- 501 40 Finish Ambush in snow against armored column Winter War
+- 502 40 French Armor vs. German Armor (FCM 36)
+- 503 39 Polish Infantry Resisting German Armor
+- 504 40 French Isolated Armor + Infantry against German Armor
+- 505 40 French Armor vs. German Armor (Char B1 bis)
+- 506 39 Finish Bunkers along Border in Winter War
   50x    Polish Cavalry Attack
   50x    Slovakian vs. Polish Fight Somewhere
   50x    Matildas vs. 88s, Arras?
@@ -146,7 +143,7 @@ Singapore, Okinawa, Bobdubi Ridge
 Crete, Norway, Greece
 
 600 China/Burma
-+ 601 37 Battle of Shanghai / Iron Fist
+- 601 37 Battle of Shanghai / Iron Fist
   60x    Imphal/Gurka
 
 China, Burma
