@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario201 < Base
     ID = "201"
-    NAME = "The Sicilian Crucible"
+    NAME = "Sicilian Crucible"
     ALLIES = ["usa"].freeze
     AXIS = ["ita"].freeze
     STATUS = "p"

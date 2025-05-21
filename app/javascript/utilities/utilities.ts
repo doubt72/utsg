@@ -58,7 +58,6 @@ export function getFormattedDate(date: [number, number, number]): string {
   const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"    
   ]
-  console.log(date)
   
   return `${months[month - 1]} ${day}, ${year}`
 }

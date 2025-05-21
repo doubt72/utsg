@@ -1,9 +1,8 @@
 - Australian, Canadian, New Zealand, South African, Brazilian, Free French,
-  Bulgarian, Hungarian, Slovakian, Croatian,
+  Slovakian, Croatian,
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
 010 Stalingrad Factory
-+ 011 Hungarian Attack Somewhere / Town Clearing?
 013 4x3 44 Tank Battle
 
 + 106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
@@ -38,7 +37,7 @@
 - 004 41 Delaying Action Against Tanks
 - 005 42 Romanian Tank Defense Operation Uranus
 - 006 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
-  00x    Hungarian Attack Somewhere / Town Clearing?
+- 00x 41 Hungarian Attack Somewhere / Town Clearing?
 - 008 43 Tank Battle Kursk
 - 009 41 KV Tank Surprise
 - 010 42 Tank Battle Kharkov
@@ -52,9 +51,11 @@
 Croatian Attack Somewhere
 Fight Over Bridge in Gully Somewhere
 Mass Assualt on Hill
+the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
 Velikiye Luki/Stalingrad of the North
 Barrikady Fuel Tanks, Stalingrad, 22 Dec 42
 Commisar House, Stalingrad, 13 Nov 42
+Pavlov's House
 Barrikady Gun Factory, Stalingrad, 17 Oct 42
 Dom 31 Barrikady, 27 Oct 42
 Grain Elevator, Manina Stalingrad, 18 Sep 42
