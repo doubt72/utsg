@@ -10,6 +10,7 @@ export default function MapHexPatterns() {
   const jungleStyle = { fill: clear, stroke: "#282", strokeWidth: 0.16 }
   const marshStyle = { fill: clear, stroke: "#77C", strokeWidth: 0.33 }
   const frozenMarshStyle = { fill: clear, stroke: "#DDE", strokeWidth: 0.33 }
+  const darkStrokeStyle = { fill: clear, stroke: "rgba(0,0,0,0.16)", strokewidth: 0.33 }
 
   const triangle = (cx: number, cy: number) => {
     let path: (number | string)[] = []
@@ -123,6 +124,39 @@ export default function MapHexPatterns() {
         <circle cx="4" cy="1" r="1" style={darkStyle} />
         <circle cx="9" cy="9" r="1" style={darkStyle} />
         <circle cx="12" cy="9" r="1" style={darkStyle} />
+      </pattern>
+      <pattern id="debris-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
+               width="40" height="40" viewBox="0 0 18 18">
+        <path d={
+            `M ${
+              5 + 5 * Math.sin(15 * Math.PI / 180)} ${5 + 5 * Math.cos(15 * Math.PI / 180)
+            } L ${
+              5 - 5 * Math.sin(15 * Math.PI / 180)} ${5 - 5 * Math.cos(15 * Math.PI / 180)
+            } M ${
+              5 + 5 * Math.sin(75 * Math.PI / 180)} ${5 + 5 * Math.cos(75 * Math.PI / 180)
+            } L ${
+              5 - 5 * Math.sin(75 * Math.PI / 180)} ${5 - 5 * Math.cos(75 * Math.PI / 180)
+            } M ${
+              5 + 5 * Math.sin(135 * Math.PI / 180)} ${5 + 5 * Math.cos(135 * Math.PI / 180)
+            } L ${
+              5 - 5 * Math.sin(135 * Math.PI / 180)} ${5 - 5 * Math.cos(135 * Math.PI / 180)
+            }`
+          } style={darkStrokeStyle} />
+        <path d={
+            `M ${
+              13 + 5 * Math.sin(15 * Math.PI / 180)} ${13 + 5 * Math.cos(15 * Math.PI / 180)
+            } L ${
+              13 - 5 * Math.sin(15 * Math.PI / 180)} ${13 - 5 * Math.cos(15 * Math.PI / 180)
+            } M ${
+              13 + 5 * Math.sin(75 * Math.PI / 180)} ${13 + 5 * Math.cos(75 * Math.PI / 180)
+            } L ${
+              13 - 5 * Math.sin(75 * Math.PI / 180)} ${13 - 5 * Math.cos(75 * Math.PI / 180)
+            } M ${
+              13 + 5 * Math.sin(135 * Math.PI / 180)} ${13 + 5 * Math.cos(135 * Math.PI / 180)
+            } L ${
+              13 - 5 * Math.sin(135 * Math.PI / 180)} ${13 - 5 * Math.cos(135 * Math.PI / 180)
+            }`
+          } style={darkStrokeStyle} />
       </pattern>
 
       {nationalControlPattern("ger", 12)}

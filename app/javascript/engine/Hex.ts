@@ -25,11 +25,15 @@ export type HexData = {
     d: Direction[];        //   direction/endpoints
     t?: RoadTypeType;      //   type
     c?: RoadCenterType;    //   center offset
-  }
+    r?: Direction;         //   rotate (*60)
+  };
+  rr?: {                   // railroad
+    d: Direction[][];      //   directions/endpoints
+  };
   s?: {                    // stream/river
     d: Direction[];        //   direction/endpoints
     t?: StreamTypeType;    //   type
-  }
+  };
   h?: Elevation;           // elevation
   // Only need to do one side, and which side doesn't matter for most things,
   // but matters for cliffs and rendering elevation (i.e., put on higher
@@ -39,7 +43,7 @@ export type HexData = {
   st?: {                   // building
     s?: BuildingStyleType; //   style
     sh: BuildingShapeType; //   shape
-  }
+  };
   offmap?: boolean         // true if used for offmap displays
 }
 
@@ -55,6 +59,10 @@ export default class Hex {
   roadType?: RoadTypeType;
   roadDirections?: Direction[];
   roadCenter?: RoadCenterType;
+  roadRotation?: Direction;
+
+  railroad: boolean;
+  railroadDirections?: Direction[][];
 
   river: boolean;
   riverType?: StreamTypeType;
@@ -79,6 +87,11 @@ export default class Hex {
       this.roadType = data.r?.t ?? roadType.Dirt
       this.roadDirections = data.r?.d
       this.roadCenter = data.r?.c
+      this.roadRotation = data.r?.r
+    }
+    this.railroad = !!data.rr
+    if (this.railroad) {
+      this.railroadDirections = data.rr?.d
     }
     this.river = !!data.s
     if (this.river) {
@@ -157,6 +170,7 @@ export default class Hex {
         "url(#marsh-pattern)" },
       g: { fill: "url(#grain-pattern)" },
       t: { fill: "url(#soft-pattern)" },
+      x: { fill: "url(#debris-pattern)" },
     }
   }
 
@@ -560,6 +574,44 @@ export default class Hex {
       strokeWidth: this.roadType === "p" ? 2 : 12,
       stroke: this.roadType === "t" ? "#DDD" : "#B85",
       strokeDasharray: this.roadType === "p" ? [5, 5] : undefined,
+      strokeLinejoin: "round",
+    }
+  }
+
+  get roadRotate(): string {
+    if (!this.roadRotation) { return "" }
+    return `rotate(${this.roadRotation * 60} ${this.xOffset} ${this.yOffset})`
+  }
+
+  get railroadPath(): string {
+    if (!this.railroadDirections) { return "" }
+    return this.railroadDirections.map(d => this.path(d)).join(" ")
+  }
+
+  get railroadBedStyle(): SVGStyle {
+    return {
+      fill: "rgba(0,0,0,0)",
+      strokeWidth: 28,
+      stroke: "rgba(127,63,0,0.25)",
+      strokeLinejoin: "round",
+    }
+  }
+
+  get railroadtieStyle(): SVGStyle {
+    return {
+      fill: "rgba(0,0,0,0)",
+      strokeWidth: 16,
+      stroke: "#777",
+      strokeDasharray: [3, 20],
+      strokeLinejoin: "round",
+    }
+  }
+
+  get railroadTrackStyle(): SVGStyle {
+    return {
+      fill: "rgba(0,0,0,0)",
+      strokeWidth: 6,
+      stroke: "#777",
       strokeLinejoin: "round",
     }
   }

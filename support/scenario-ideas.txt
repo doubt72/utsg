@@ -1,9 +1,6 @@
 - Australian, Canadian, New Zealand, South African, Brazilian, Free French,
-  Slovakian, Croatian,
+  Slovakian, Croatian, (Bulgarian)
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
-
-010 Stalingrad Factory
-013 4x3 44 Tank Battle
 
 + 106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
 + 108 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
@@ -41,7 +38,7 @@
 - 008 43 Tank Battle Kursk
 - 009 41 KV Tank Surprise
 - 010 42 Tank Battle Kharkov
-  00x    Stalingrad Factory
+- 011 42 Stalingrad Factory
 - 012 41 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
   00x    44 Tank Battle
 - 014 41 Armored counter-attack at Moscow
@@ -76,9 +73,11 @@ Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripo
 
 200 Italy/Sicily
 - 201 43 Troina
-  20x    Japanese Troops
-  20x    Brazillian Monte Costello
-  20x    Canadians at Ortona Little Stalingrad
+
+Japanese Troops, 100th infantry
+Brazillian Monte Costello
+Canadians at Ortona Little Stalingrad
+NZ at Orsonga
 
 Monte Cassino - Algerians/Free French to the North?
 Monte Cassino - Fighting over the flooded valley?

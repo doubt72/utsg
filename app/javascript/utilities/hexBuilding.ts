@@ -382,6 +382,26 @@ function bigCorner3(hex: Hex): SVGPathArray {
   ]
 }
 
+function bigCorner4(hex: Hex): SVGPathArray {
+  const inset = 4
+  const outset = inset*3
+  const dir = hex.direction 
+  const x1 = hex.xCornerOffset(normalDir(dir + 2), outset, 1)
+  const y1 = hex.yCornerOffset(normalDir(dir + 2), outset, 1)
+  const x2 = hex.xCornerOffset(normalDir(dir + 4), outset, -1)
+  const y2 = hex.yCornerOffset(normalDir(dir + 4), outset, -1)
+  const xOff2 = outset * Math.sin(Math.PI/3)
+  const xOff = xOff2 - hex.narrow/2
+  return [
+    "M", x1, y1,
+    "L", ...buildingRotatePoint(hex, normalDir(dir + 3), new Coordinate(xOff, hex.radius/3)).tuple,
+    "L", ...buildingRotatePoint(hex, normalDir(dir + 3), new Coordinate(xOff, -hex.radius/2)).tuple,
+    "L", ...buildingRotatePoint(hex, normalDir(dir + 3), new Coordinate(xOff2, -hex.radius/2)).tuple,
+    "L", x2, y2, "L", hex.xCorner(normalDir(dir + 3)), hex.yCorner(normalDir(dir + 3)),
+    "L", x1, y1,
+  ]
+}
+
 export function hexBuildingBuildingDisplay(hex: Hex): PathLayout | false {
   if (!hex.building) { return false }
   let path: SVGPathArray = []
@@ -421,6 +441,8 @@ export function hexBuildingBuildingDisplay(hex: Hex): PathLayout | false {
     path = bigCorner2(hex)
   } else if (hex.buildingShape === buildingShape.BigCorner3) {
     path = bigCorner3(hex)
+  } else if (hex.buildingShape === buildingShape.BigCorner4) {
+    path = bigCorner4(hex)
   }
   return { path: path.join(" "), style: {
     fill: hex.buildingStyle === "f" ? "#B97" : "#AAA",

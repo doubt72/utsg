@@ -23,10 +23,31 @@ export default function MapHexDetail({
     const path = hex.roadPath
     return (
       <g>
-        <path d={path} style={hex.roadOutlineStyle as object} />
-        { hex.river ? <path d={path} style={hex.bridgeStyle as object} /> : "" }
-        <path d={path} style={hex.roadEdgeStyle as object} />
-        <path d={path} style={hex.roadStyle as object} />
+        <path d={path} style={hex.roadOutlineStyle as object} transform={hex.roadRotate} />
+        { hex.river ? <path d={path} style={hex.bridgeStyle as object} transform={hex.roadRotate} /> : "" }
+        <path d={path} style={hex.roadEdgeStyle as object} transform={hex.roadRotate} />
+        <path d={path} style={hex.roadStyle as object} transform={hex.roadRotate} />
+      </g>
+    )
+  }
+
+  const railroadBottom = () => {
+    if (!hex.railroad) { return "" }
+    const path = hex.railroadPath
+    return (
+      <g>
+        <path d={path} style={hex.railroadBedStyle as object} />
+        <path d={path} style={hex.railroadtieStyle as object} />
+      </g>
+    )
+  }
+
+  const railroad = () => {
+    if (!hex.railroad) { return "" }
+    const path = hex.railroadPath
+    return (
+      <g>
+        <path d={path} style={hex.railroadTrackStyle as object} />
       </g>
     )
   }
@@ -90,7 +111,9 @@ export default function MapHexDetail({
   return (
     <g>
       {river()}
+      {railroadBottom()}
       {road()}
+      {railroad()}
       {outline}
       {hex.night ? night : ""}
       {edge()}

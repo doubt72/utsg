@@ -21,7 +21,8 @@ export default class Terrain {
       m: { move: 3, hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "marsh" },
       j: { move: 3, hindrance: 0, cover: 2, los: true,  vehicle: false, gun: false,  name: "jungle" },
       r: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "rough" },
-      t: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "soft" },
+      t: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "soft ground" },
+      x: { move: 1, hindrance: 1, cover: 1, los: false, vehicle: false, gun: false,  name: "debris" },
       w: { move: 0, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "water" },
     }[this.hex.baseTerrain]
   }
