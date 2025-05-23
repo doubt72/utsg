@@ -135,11 +135,11 @@ export default class Hex {
     return {
       "-1": { fill: "#ACA" },
       0: { fill: this.mapColor },
-      1: { fill: "#DA7" },
-      2: { fill: "#B85" },
-      3: { fill: "#963" },
-      4: { fill: "#741" },
-      5: { fill: "#620" },
+      1: { fill: "#DB9" },
+      2: { fill: "#CA8" },
+      3: { fill: "#B97" },
+      4: { fill: "#A86" },
+      5: { fill: "#975" },
     }
   }
 
@@ -569,10 +569,12 @@ export default class Hex {
   }
 
   get roadStyle(): SVGStyle {
+    let stroke = this.roadType === "t" ? "#DDD" : "#B85"
+    if (this.roadType === "p") { stroke = "rgba(47, 31, 0, 0.5)"}
     return {
       fill: "rgba(0,0,0,0)",
       strokeWidth: this.roadType === "p" ? 2 : 12,
-      stroke: this.roadType === "t" ? "#DDD" : "#B85",
+      stroke,
       strokeDasharray: this.roadType === "p" ? [5, 5] : undefined,
       strokeLinejoin: "round",
     }
