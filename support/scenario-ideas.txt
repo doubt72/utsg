@@ -1,4 +1,4 @@
-- Australian, Canadian, New Zealand, South African, Brazilian, Free French,
+- Australian, Canadian, New Zealand, South African, Brazilian,
   Slovakian, Croatian, (Bulgarian)
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
@@ -39,11 +39,11 @@ Later:
 - 106 43 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
 - 107 41 Hellfire Pass
 - 108 43 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
+- 109 42 Free French at Bir Hakeim
 
 Now:
   Fight over featureless land (infantry)
   Hill Assault Somewhere
-  Free French (Torch?)
 
 Later:
   Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
