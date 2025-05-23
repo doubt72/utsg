@@ -238,6 +238,16 @@ export default class Counter {
     }
   }
 
+  get ifvLayout(): CounterLayout | false {
+    if (!this.target.protectSquad) { return false }
+    const path = this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10)
+    return {
+      path,
+      style: { stroke: clearColor, strokeWidth: 0, fill: clearColor }, tStyle: { fill: "black" },
+      x: this.x + 72.5, y: this.y + 22, size: 12, value: "*",
+    }
+  }
+
   get leadershipLayout(): CounterLayout | false {
     if (!this.target.currentLeadership) { return false }
     return {

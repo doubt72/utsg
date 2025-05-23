@@ -179,7 +179,7 @@ export default class Scenario {
       } else if (r === "axis_fragile_vehicles") {
         return `${axis} vehicles are more likely to break down`
       } else if (r === "allied_green_armor") {
-        return `${allied} vehicle crews are green (get a penalty on targeting rolls`
+        return `${allied} vehicle crews are green (get a penalty on targeting rolls)`
       } else if (r === "allied_elite_armor") {
         return `${allied} vehicle crews are elite (get a bonus to targeting rolls)`
       } else if (r === "allied_fragile_vehicles") {

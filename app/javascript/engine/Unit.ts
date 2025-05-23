@@ -42,7 +42,7 @@ export type UnitData = {
     ha?: { f: number; s: number; r: number; t?: -1}
     ta?: { f: number; s: number; r: number; t?: -1}
     sg?: { f: number; r: number; t?: string }
-    sn?: number; bv?: number; f?: number; tow?: SizeRange;
+    sn?: number; bv?: number; f?: number; tow?: SizeRange; ifv?: NumberBoolean;
   }
   x?: number;
 
@@ -59,6 +59,7 @@ export default class Unit {
   baseMorale: MoraleRange;
   size: SizeRange;
   tow: SizeRange | undefined;
+  protectSquad: boolean;
   baseFirepower: number;
   baseRange: number;
   baseMovement: number;
@@ -120,6 +121,7 @@ export default class Unit {
     this.baseMorale = data.m ?? 0
     this.size = data.s ?? 1
     this.tow = data.o?.tow
+    this.protectSquad = !!data.o?.ifv
     this.baseFirepower = data.f
     this.baseRange = data.r
     this.baseMovement = data.v

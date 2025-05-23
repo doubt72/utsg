@@ -25,14 +25,10 @@ Later:
   Croatian Attack Somewhere
   Fight Over Bridge in Gully Somewhere
   Mass Assualt on Hill
-  the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
   Velikiye Luki/Stalingrad of the North
-  Barrikady Fuel Tanks, Stalingrad, 22 Dec 42
-  Commisar House, Stalingrad, 13 Nov 42
-  Pavlov's House
-  Barrikady Gun Factory, Stalingrad, 17 Oct 42
-  Dom 31 Barrikady, 27 Oct 42
-  Grain Elevator, Manina Stalingrad, 18 Sep 42
+  the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
+    Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
+    Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
 
 100 North Africa
 - 101 41 Fight over featureless land (tanks)
@@ -40,14 +36,13 @@ Later:
 - 103 41 British / Italian Tank Battle Crusader
 - 104 42 Indian Division at El Alamein
 - 105 42 British Breaching German Defenses 2nd Alamein
-  10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
+- 106 43 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
 - 107 41 Hellfire Pass
-  10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
+- 108 43 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
 
 Now:
   Fight over featureless land (infantry)
   Hill Assault Somewhere
-  South Africans
   Free French (Torch?)
 
 Later:

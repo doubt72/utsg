@@ -166,7 +166,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with allies filter" do
-      get :index, params: { allies: "usa", status: "*" }
+      get :index, params: { allies: "usa", status: "*", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]

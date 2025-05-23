@@ -519,6 +519,7 @@ module Utility
             ["uk", "QF 25Pdr Short", 43, 16, 15, { tow: 3 }],
             ["uk", "QF 4.5inch", 8, 32, 20, { tow: 3 }],
             ["usa", "75mm M1 Pack", 27, 16, 16, { tow: 3 }],
+            ["usa", "75mm M1897", 40, 24, 20, { tow: 3 }],
             ["ussr", "76mm M1927", 28, 16, 16, { tow: 3 }],
           ].each do |unit|
             gun = { t: "gun", i: "gun", v: 1, s: 3 }
@@ -565,7 +566,6 @@ module Utility
             ["uk", "QF 17-Pounder", 43, 48, 24, { tow: 4 }],
             ["usa", "37mm M3", 38, 7, 12, {}],
             ["usa", "57mm M1A2", 43, 20, 16, {}],
-            ["usa", "75mm M1897", 40, 24, 20, { tow: 3 }],
             ["usa", "3inch M5", 43, 40, 24, { tow: 3 }],
             ["ussr", "45mm 19-K", 34, 12, 16, {}],
             ["ussr", "45mm 53-K", 37, 12, 16, {}],
@@ -807,11 +807,11 @@ module Utility
         end
 
         def half_tracks
-          # Actually carriers, sometimes fully tracked
+          # Usually carriers (or base), sometimes fully tracked
           lu = {}
           key = %i[c n y s f r v o]
           [
-            ["fra", "Renault UE", 32, 3, 0, 0, 4, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
+            ["fra", "Renault UE", 32, 3, 0, 0, 4, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, ifv: 1 }],
             ["fra", "Lorraine 37L", 39, 3, 0, 0, 5, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/1", 41, 3, 8, 8, 6, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/7", 41, 3, 20, 16, 6, { t: 1, m: 3, ha: { f: 1, s: 0, r: 0, t: -1 } }],
@@ -819,7 +819,7 @@ module Utility
             ["ger", "SdKfz 250/9", 41, 3, 4, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/10", 41, 3, 8, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/11", 41, 3, 8, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 251/1", 39, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
+            ["ger", "SdKfz 251/1", 39, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, ifv: 1 }],
             ["ger", "SdKfz 251/9", 39, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 251/10", 39, 3, 8, 16, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 251/16", 39, 3, 24, 1, 5, { i: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
@@ -831,14 +831,16 @@ module Utility
             ["uk", "U Carrier 2Pdr", 41, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
             ["uk", "U Carrier 6Pdr", 41, 3, 20, 16, 7, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
             ["uk", "U Carrier Wasp", 41, 3, 24, 1, 7, { i: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
-            ["usa", "M2 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["usa", "M3 Half-track", 41, 3, 6, 8, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["usa", "M3A1 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["uk", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["ussr", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["chi", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["ussr", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
+            ["usa", "M2 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
+            ["usa", "M3 Half-track", 41, 3, 6, 8, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
+            ["usa", "M3A1 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
+            ["uk", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
+            ["ussr", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
+            ["chi", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
+            ["ussr", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
             ["fra", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
+            ["usa", "T12 GMC", 42, 3, 24, 20, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
+            ["usa", "T19 GMC", 42, 3, 40, 24, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
             ["usa", "T48 GMC", 42, 3, 7, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
             ["usa", "T19/M21 MMC", 42, 3, 20, 20, 6, { t: 1, m: 3, ha: { f: 1, s: 1, r: 0, t: -1 } }],
           ].each do |unit|

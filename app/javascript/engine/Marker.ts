@@ -57,6 +57,7 @@ export default class Marker {
   sponson = false
   size = 0
   tow = undefined
+  protectSquad = false
   smallName = 0
   baseMorale = 0
   currentMorale = 0
