@@ -147,7 +147,7 @@ export default class Hex {
     return this.map.night
   }
 
-  // lightWater = "#59C"
+  lightWater = "#59C"
   darkWater = "#46A"
   iceWater = "#DDE"
 
@@ -155,7 +155,7 @@ export default class Hex {
     return {
       j: { fill: "rgba(47,191,47,0.33)" },
       w: { fill: this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater },
-      // TODO: special shallow beach water?
+      y: { fill: this.lightWater },
     }
   }
 
@@ -241,7 +241,11 @@ export default class Hex {
     let all = true
     let none = true
     const edges = this.map.hexNeighbors(this.coord).map(h => {
-      const check = !h || h.baseTerrain === this.baseTerrain
+      let check = !h || h.baseTerrain === this.baseTerrain
+      if ((this.baseTerrain === terrainType.Water || this.baseTerrain === terrainType.Shallow) &&
+          (h?.baseTerrain === terrainType.Water || h?.baseTerrain === terrainType.Shallow)) {
+        check = true
+      }
       if (check) { none = false } else { all = false }
       return check
     })

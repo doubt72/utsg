@@ -72,10 +72,10 @@ export const baseTerrainType: { [index: string]: BaseTerrainTypeType } = {
   Grass: "g", Urban: "u", Sand: "d", Mud: "m", Snow: "s"
 }
 
-export type TerrainTypeType = "o" | "f" | "b" | "j" | "s" | "m" | "w" | "g" | "r" | "d" | "t"
+export type TerrainTypeType = "o" | "f" | "b" | "j" | "s" | "m" | "w" | "g" | "r" | "d" | "t" | "x" | "y"
 export const terrainType: { [index: string]: TerrainTypeType } = {
   Open: "o", Forest: "f", Brush: "b", Jungle: "j", Sand: "s", Marsh: "m", Water: "w",
-  Grain: "g", Rough: "r", Orchard: "d", Soft: "t",
+  Grain: "g", Rough: "r", Orchard: "d", Soft: "t", Debris: "x", Shallow: "y",
 }
 
 export type RoadTypeType = "t" | "d" | "p"

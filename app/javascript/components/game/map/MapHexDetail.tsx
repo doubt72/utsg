@@ -1,5 +1,6 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
+import { terrainType } from "../../../utilities/commonTypes";
 
 interface MapHexDetailProps {
   hex: Hex;
@@ -24,7 +25,8 @@ export default function MapHexDetail({
     return (
       <g>
         <path d={path} style={hex.roadOutlineStyle as object} transform={hex.roadRotate} />
-        { hex.river ? <path d={path} style={hex.bridgeStyle as object} transform={hex.roadRotate} /> : "" }
+        { (hex.river || hex.baseTerrain === terrainType.Water) ?
+            <path d={path} style={hex.bridgeStyle as object} transform={hex.roadRotate} /> : "" }
         <path d={path} style={hex.roadEdgeStyle as object} transform={hex.roadRotate} />
         <path d={path} style={hex.roadStyle as object} transform={hex.roadRotate} />
       </g>

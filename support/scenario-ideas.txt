@@ -1,6 +1,5 @@
 - Australian, Canadian, New Zealand, South African, Brazilian,
-  Slovakian, Croatian, (Bulgarian)
-  Greek, Norwegian, Belgian, Dutch, Yugoslavian
+  Slovakian, Croatian, (Bulgarian), Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
 000 East Front
 - 001 44 Simple Squad Battle, MG only
@@ -21,11 +20,11 @@
 - 016 42 Stalingrad Factory
 
 Later:
-  Budapest? Berlin?
-  Croatian Attack Somewhere
++ Croatian Attack Somewhere
++ Budapest? Berlin?
++ Velikiye Luki/Stalingrad of the North
   Fight Over Bridge in Gully Somewhere
   Mass Assualt on Hill
-  Velikiye Luki/Stalingrad of the North
   the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
     Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
     Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
@@ -41,74 +40,67 @@ Later:
 - 108 43 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
 - 109 42 Free French at Bir Hakeim
 
-Now:
-  Fight over featureless land (infantry)
-  Hill Assault Somewhere
-
 Later:
++ Hill Assault Somewhere
++ Fight over featureless land (infantry)
   Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
 - 201 43 Troina
-
-Now:
-  Japanese Troops, 100th infantry
-  Brazillian Monte Costello
-  Canadians at Ortona Little Stalingrad
-  NZ at Orsogna
+- 202 43 Japanese Troops, 100th infantry Battalion
+  203    Canadians at Ortona Little Stalingrad
+  204    Brazillian Monte Costello
+  205    NZ at Orsogna
 
 Later:
-  Monte Cassino - Algerians/Free French to the North?
-  Monte Cassino - Fighting over the flooded valley?
++ Monte Cassino - Algerians/Free French to the North?
++ Monte Cassino - Fighting over the flooded valley?
   Anzio, Sicily, Salerno
 
 300 Normandy/Late West Front
 - 301 44 Counterattack Against Paratroopers
 - 302 44 German Tank Counterattack
 - 303 44 Bocage
-  30x    British Clearing Normandy Town - Cheux?
+  304    British Clearing Normandy Town - Cheux?
 - 305 44 Omaha Beach
-  30x    Pegasus Bridge British take bridge then counterattack
-  30x    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+  306    Pegasus Bridge British take bridge then counterattack
+  307    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
 - 308 44 Cherbourg City Attack
 - 309 44 Manor Attack
-- 30x 44 Market Garden Tank Support - Hell's Highway
+- 310 44 Market Garden Tank Support - Hell's Highway
 - 311 44 Arracourt
+  312    Americans Clearing Edge of Large Town - Carentan
 
 Later:
-  Canadian Street Fighting in Caen
-  Americans Clearing Edge of Large Town - Carentan
-  Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
-  Pointe-du-Hoc Rangers
-  Bulge tank counterattack
-  Airborne Arnhem
-  Airborne Nijmagen/Support Attack?
-  Hill 104 defense St Jean De Daye
-  La Fiere Airborne Slugfest / St Mere Eglise
-  Americans Clearing Small Normandy Town
-  Closing the Falais Pocket Hill 262
-  Defending Hill 314 Mortain
++ Canadian Street Fighting in Caen
++ Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
++ Pointe-du-Hoc Rangers
++ Bulge tank counterattack
++ Airborne Arnhem
++ Airborne Nijmagen/Support Attack?
++ Hill 104 defense St Jean De Daye
++ La Fiere Airborne Slugfest / St Mere Eglise
++ Closing the Falais Pocket Hill 262
++ Defending Hill 314 Mortain
   Assault on Battery like from Band of Brothers
   Lanzerath Ridge
+  Americans Clearing Small Normandy Town
 
 400 Pacific (South Pacific/New Guinea/Phillipines)
-
-Now:
-  Edson's/Bloody Ridge Guadalcanal
-  Hold New Guinea village against constant piecemeal Japanese Attack /
-    Kokoda Trail raid by Japanese on camp
-  Reduce Japanese Strongpoint in New Guinea
-  Late Manila urban Fighting
+  401    Edson's/Bloody Ridge Guadalcanal
+  402    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
+  403    Reduce Japanese Strongpoint in New Guinea
+  404    Late Manila urban Fighting
 
 Later:
-  Attu Island
-  Fight over fields inside a clearing, somewhere in the Philippines
++ Fight over fields inside a clearing, somewhere in the Philippines
++ Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
++ Saddle Ridge/Battle of Henderson Field, Guadalcanal
++ Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
++ Marines Hill 382 Iwo Jima
++ Attu Island
++ New Strip Buna New Guinea
   Bataan Defense
-  Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
-  Marines Hill 382 Iwo Jima
-  Saddle Ridge/Battle of Henderson Field, Guadalcanal
-  New Strip Buna New Guinea
-  Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
   Early Philippines Defending Towards Bataan
   Singapore, Okinawa, Bobdubi Ridge
 
@@ -119,27 +111,25 @@ Later:
 - 504 40 French Isolated Armor + Infantry against German Armor
 - 505 40 French Armor vs. German Armor (Char B1 bis)
 - 506 39 Finish Bunkers along Border in Winter War
-
-Now:
-  506 Matildas vs. 88s, Arras?
-  507 Greek
-  508 Norwegian
-  506 Nisava River Bridge in Yugoslavia
+  507    Greek-Italy
+  508    Norwegian
+  509    Nisava River Bridge in Yugoslavia
+  510    Matildas vs. 88s, Arras?
+  511    French Isolated Armor + Infantry against German Armor
+  512    Greek-German
 
 Later:
-  Polish Cavalry Attack
-  Slovakian vs. Polish Fight Somewhere
-  French Isolated Armor + Infantry against German Armor
-  Forest Parallel Lines with small town in back (sideways E), French, All Infantry
-  Crete
++ Polish Cavalry Attack
++ Slovakian vs. Polish Fight Somewhere
++ Forest Parallel Lines with small town in back (sideways E), French, All Infantry
++ Crete
 
 600 China/Burma
 - 601 37 Battle of Shanghai / Iron Fist
-
-Now
-  Imphal/Gurka
-  China Somewhere Remote/Pass
-  Khalkin Gol
+  602    Imphal/Gurka
+  603    China Somewhere Remote/Pass
+  604    Khalkin Gol
+  605    Some Burma Raid
 
 Later:
   China, Burma

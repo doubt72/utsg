@@ -1,5 +1,13 @@
 - Add graduated coloring when placing support weapons
 
+- Mark vehicle can carry squad/team/leader
+- Mark unit can clear wire/mines
+- Consider Hull Gun Display
+
+- Update Rules on Carrying/Towing
+
+- D-gost
+
 - Find undo bug on KV map/gun
   - probably a synchronization issue but haven't been able to reproduce
   - probably just switch to only load changes on synchronization
