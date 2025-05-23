@@ -10,7 +10,7 @@ export default function MapHexPatterns() {
   const jungleStyle = { fill: clear, stroke: "#282", strokeWidth: 0.16 }
   const marshStyle = { fill: clear, stroke: "#77C", strokeWidth: 0.33 }
   const frozenMarshStyle = { fill: clear, stroke: "#DDE", strokeWidth: 0.33 }
-  const darkStrokeStyle = { fill: clear, stroke: "rgba(0,0,0,0.16)", strokewidth: 0.33 }
+  const darkStrokeStyle = { fill: clear, stroke: "rgba(0,0,0,0.33)", strokewidth: 0.33 }
 
   const triangle = (cx: number, cy: number) => {
     let path: (number | string)[] = []

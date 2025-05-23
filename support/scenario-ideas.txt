@@ -2,60 +2,37 @@
   Slovakian, Croatian, (Bulgarian)
   Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
-+ 106 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
-+ 108 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
-
-+ 202 Canadians at Ortona
-203 100th Infantry
-204 Brazilians at Monte Castello
-
-304 British Clearing Normandy Town - Cheux?
-+ 306 Pegasus Bridge British take bridge then counterattack
-+ 307 Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
-
-401 Edson's/Bloody Ridge Guadalcanal
-402 Hold New Guinea village against constant piecemeal Japanese Attack (Aus)
-403 Reduce Japanese Strongpoint in New Guinea
-404 Late Manila urban Fighting
-
-506 Matildas vs. 88s, Arras?
-+ 507 Greek
-+ 508 Norwegian
-+ 508 Nisava River Bridge in Yugoslavia
-
-602 Burma
-603 Imphal/Gurka
-604 China Pass
-
 000 East Front
 - 001 44 Simple Squad Battle, MG only
 - 002 42 Stalingrad Outskirts
-- 003 42 Mud / Infantry Battle
-- 004 41 Delaying Action Against Tanks
-- 005 42 Romanian Tank Defense Operation Uranus
-- 006 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
-- 00x 41 Hungarian Attack Somewhere / Town Clearing?
+- 003 41 Delaying Action Against Tanks
+- 004 42 Mud / Infantry Battle
+- 005 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
+- 006 42 Romanian Tank Defense Operation Uranus
+- 007 41 KV Tank Surprise
 - 008 43 Tank Battle Kursk
-- 009 41 KV Tank Surprise
-- 010 42 Tank Battle Kharkov
-- 011 42 Stalingrad Factory
+- 009 42 Rasputitsa
+- 010 41 Hungarian Attack Somewhere / Town Clearing?
+- 011 42 Tank Battle Kharkov
 - 012 41 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
-  00x    44 Tank Battle
+- 013 44 IS-2 vs Tiger
 - 014 41 Armored counter-attack at Moscow
-  00x    45 Tank Battle
-  00x    41 Tank Battle
+- 015 41 41 Tank Battle
+- 016 42 Stalingrad Factory
 
-Croatian Attack Somewhere
-Fight Over Bridge in Gully Somewhere
-Mass Assualt on Hill
-the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
-Velikiye Luki/Stalingrad of the North
-Barrikady Fuel Tanks, Stalingrad, 22 Dec 42
-Commisar House, Stalingrad, 13 Nov 42
-Pavlov's House
-Barrikady Gun Factory, Stalingrad, 17 Oct 42
-Dom 31 Barrikady, 27 Oct 42
-Grain Elevator, Manina Stalingrad, 18 Sep 42
+Later:
+  Budapest? Berlin?
+  Croatian Attack Somewhere
+  Fight Over Bridge in Gully Somewhere
+  Mass Assualt on Hill
+  the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
+  Velikiye Luki/Stalingrad of the North
+  Barrikady Fuel Tanks, Stalingrad, 22 Dec 42
+  Commisar House, Stalingrad, 13 Nov 42
+  Pavlov's House
+  Barrikady Gun Factory, Stalingrad, 17 Oct 42
+  Dom 31 Barrikady, 27 Oct 42
+  Grain Elevator, Manina Stalingrad, 18 Sep 42
 
 100 North Africa
 - 101 41 Fight over featureless land (tanks)
@@ -66,22 +43,29 @@ Grain Elevator, Manina Stalingrad, 18 Sep 42
   10x    Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
 - 107 41 Hellfire Pass
   10x    El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
-  10x    Fight over featureless land (infantry)
-  10x    Hill Assault Somewhere
 
-Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
+Now:
+  Fight over featureless land (infantry)
+  Hill Assault Somewhere
+  South Africans
+  Free French (Torch?)
+
+Later:
+  Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
 - 201 43 Troina
 
-Japanese Troops, 100th infantry
-Brazillian Monte Costello
-Canadians at Ortona Little Stalingrad
-NZ at Orsonga
+Now:
+  Japanese Troops, 100th infantry
+  Brazillian Monte Costello
+  Canadians at Ortona Little Stalingrad
+  NZ at Orsogna
 
-Monte Cassino - Algerians/Free French to the North?
-Monte Cassino - Fighting over the flooded valley?
-Anzio, Sicily, Salerno
+Later:
+  Monte Cassino - Algerians/Free French to the North?
+  Monte Cassino - Fighting over the flooded valley?
+  Anzio, Sicily, Salerno
 
 300 Normandy/Late West Front
 - 301 44 Counterattack Against Paratroopers
@@ -95,36 +79,43 @@ Anzio, Sicily, Salerno
 - 309 44 Manor Attack
 - 30x 44 Market Garden Tank Support - Hell's Highway
 - 311 44 Arracourt
-  30x    Canadian Street Fighting in Caen
-  30x    Americans Clearing Edge of Large Town - Carentan
-  30x    Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
-  30x    Pointe-du-Hoc Rangers
-  30x    Bulge tank counterattack
-  30x    Airborne Arnhem
-  30x    Hill 104 defense St Jean De Daye
-  30x    La Fiere Airborne Slugfest / St Mere Eglise
-  30x    Americans Clearing Small Normandy Town
-  30x    Closing the Falais Pocket Hill 262
-  30x    Defending Hill 314 Mortain
-  30x    Assault on Battery like from Band of Brothers
-  30x    Lanzerath Ridge
+
+Later:
+  Canadian Street Fighting in Caen
+  Americans Clearing Edge of Large Town - Carentan
+  Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
+  Pointe-du-Hoc Rangers
+  Bulge tank counterattack
+  Airborne Arnhem
+  Airborne Nijmagen/Support Attack?
+  Hill 104 defense St Jean De Daye
+  La Fiere Airborne Slugfest / St Mere Eglise
+  Americans Clearing Small Normandy Town
+  Closing the Falais Pocket Hill 262
+  Defending Hill 314 Mortain
+  Assault on Battery like from Band of Brothers
+  Lanzerath Ridge
 
 400 Pacific (South Pacific/New Guinea/Phillipines)
-  40x    Fight over fields inside a clearing, somewhere in the Philippines
-  40x    Bataan Defense
-  40x    Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
-  40x    Marines Hill 382 Iwo Jima
-  40x    Edson's/Bloody Ridge Guadalcanal
-  40x    Saddle Ridge/Battle of Henderson Field, Guadalcanal
-  40x    New Strip Buna New Guinea
-  40x    Kokoda Trail raid by Japanese on camp
-  40x    Reduce Japanese Strongpoint in New Guinea
-  40x    Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
-  40x    Hold New Guinea village against constant piecemeal Japanese Attack
-  40x    Early Philippines Defending Towards Bataan
-  40x    Late Manila urban Fighting
 
-Singapore, Okinawa, Bobdubi Ridge
+Now:
+  Edson's/Bloody Ridge Guadalcanal
+  Hold New Guinea village against constant piecemeal Japanese Attack /
+    Kokoda Trail raid by Japanese on camp
+  Reduce Japanese Strongpoint in New Guinea
+  Late Manila urban Fighting
+
+Later:
+  Attu Island
+  Fight over fields inside a clearing, somewhere in the Philippines
+  Bataan Defense
+  Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
+  Marines Hill 382 Iwo Jima
+  Saddle Ridge/Battle of Henderson Field, Guadalcanal
+  New Strip Buna New Guinea
+  Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
+  Early Philippines Defending Towards Bataan
+  Singapore, Okinawa, Bobdubi Ridge
 
 500 Finland/Poland/France/Norway/Balkans
 - 501 40 Finish Ambush in snow against armored column Winter War
@@ -133,20 +124,30 @@ Singapore, Okinawa, Bobdubi Ridge
 - 504 40 French Isolated Armor + Infantry against German Armor
 - 505 40 French Armor vs. German Armor (Char B1 bis)
 - 506 39 Finish Bunkers along Border in Winter War
-  50x    Polish Cavalry Attack
-  50x    Slovakian vs. Polish Fight Somewhere
-  50x    Matildas vs. 88s, Arras?
-  50x    French Isolated Armor + Infantry against German Armor
-  50x    Forest Parallel Lines with small town in back (sideways E), French, All Infantry
-  50x    Nisava River Bridge in Yugoslavia
 
-Crete, Norway, Greece
+Now:
+  506 Matildas vs. 88s, Arras?
+  507 Greek
+  508 Norwegian
+  506 Nisava River Bridge in Yugoslavia
+
+Later:
+  Polish Cavalry Attack
+  Slovakian vs. Polish Fight Somewhere
+  French Isolated Armor + Infantry against German Armor
+  Forest Parallel Lines with small town in back (sideways E), French, All Infantry
+  Crete
 
 600 China/Burma
 - 601 37 Battle of Shanghai / Iron Fist
-  60x    Imphal/Gurka
 
-China, Burma
+Now
+  Imphal/Gurka
+  China Somewhere Remote/Pass
+  Khalkin Gol
+
+Later:
+  China, Burma
 
 700 Spain?
 

@@ -1,11 +1,15 @@
 - Add graduated coloring when placing support weapons
 
+- Find undo bug on KV map/gun
+  - probably a synchronization issue but haven't been able to reproduce
+  - probably just switch to only load changes on synchronization
+
 - Add help for minimum towing size
 
 - Allow tanks to deploy on road but limit directions
 
 - Fix terrain info over terrain (probably offset)
-  - scaling
+  - overlay scaling
   - Add terrain help for ice / switch ice to special rule
   - Add gullies
     - Gully cover/movement effects; not implemented for rivers yet either
@@ -13,26 +17,22 @@
   - Add help for soft ground
 
 - Close reinforcement panel when last reinforcement placed
-  - Deal with panel flickering from excessive updates
+  - Deal with panel flickering from excessive updates(?)
 
 - Fill Out Scenarios
 
-- fix LOS error along firing arc in last image
-- Improve layout of moves/chat on smaller screens
+- fix LOS error along firing arc in LOS repo image
+- Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
 - Tooltips for map controls?
 
 - Support mouse scroll on map
   - Much harder than it appears, need a way to intercept only scroll/wheel/key events
     but pass through all other mouse events
 
-- Find undo bug on KV map/gun
-  - probably a synchronization issue but haven't been able to reproduce
-  - probably just switch to only load changes on synchronization
-
 - Implement moves
 
 - Switch main page game status to websocket
 
-- fix text selection on select scenario maybe
+- fix text selection on select scenario, other places?
 
 - Add more info on signup page

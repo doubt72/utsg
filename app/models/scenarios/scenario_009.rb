@@ -3,69 +3,69 @@
 module Scenarios
   class Scenario009 < Base
     ID = "009"
-    NAME = "Surpise! KV"
+    NAME = "That Sinking Feeling"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
 
-    DATE = [1941, 6, 23].freeze
+    DATE = [1941, 10, 17].freeze
     LAYOUT = [15, 11, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": { list: [
-        :ussr_leader_3_1,
-        [4, :ussr_rifle_s],
-        :ussr_dp_27,
-        [2, :ussr_kv_1_m40],
-      ] },
+      "0": {
+        list: [
+          :ussr_leader_4_1,
+          [6, :ussr_rifle_s],
+          :ussr_rifle_t,
+          [2, :ussr_dp_27],
+          :ussr_45mm_53_k,
+        ],
+      },
     }.freeze
 
     AXIS_UNITS = {
-      "0": { list: [
-        :ger_leader_5_2,
-        :ger_pionier_s,
-        [4, :ger_rifle_s],
-        :ger_crew_t,
-        [2, :ger_mg_34],
-        :ger_3_7cm_pak_36,
-        [4, :ger_pzkpfw_35t],
-      ] },
+      "0": {
+        list: [
+          :ger_leader_5_1,
+          [4, :ger_rifle_s],
+          [2, :ger_mg_34],
+          [2, :ger_pzkpfw_iii_j],
+          [2, :ger_pzkpfw_iv_f1],
+          :ger_sdkfz_251_1,
+        ],
+      },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_setup: 1,
           first_move: 2,
           date:,
-          location: "Raseiniai, Lithuania",
+          location: "Mozhaisk, Russia",
           author: "The Establishment",
           description:,
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: [:axis_fragile_vehicles],
         }
       end
 
       def description
         [
-          "When the Germans first encountered Soviet KV-1 tanks, they came as a
-          surprise. They were completely unaware of their existence until
-          encountering them in the feild, and the discovery was not a pleasant
-          one.  The KV's heavy armor was practically immune to the guns the
-          German tanks mounted at the time, and the larger guns of the KV
-          tanks could easily make short work of the less-armored German tanks
-          in turn.  The Germans referred to the the tank as the \"Russischer
-          Koloss\" — \"Russian Colossus\".",
-          "Germans first faced them in the Battle of Raseiniai, just after the
-          start of Operation Barbarossa.  While the tanks were difficult to
-          kill, the Germans were able to outflank them or destroy them with
-          explosive charges or point-blank fire.  The tanks were not without
-          their flaws, they were difficult to steer and the transmissions were
-          terrible, the ergonomics were also bad and visibility was very poor.
-          They were ultimately inferior to the T-34 — another tank that was
-          also an unpleasant surprise to the Germans.",
+          "The Battle of Mozhaisk, fought in mid-October 1941, was part of the
+          German advance on Moscow during Operation Typhoon. Soviet forces,
+          using hastily formed defensive lines west of the capital, tried to
+          slow the German offensive near the town of Mozhaisk. Despite being
+          outnumbered and outmatched, Soviet troops put up fierce resistance.",
+
+          "The battle took place during the Rasputitsa, when autumn rain and snow
+          turned roads to mud, severely slowing German tanks and supply
+          lines. Though the Germans captured Mozhaisk by the 18th of October,
+          the delay allowed the Soviets to reinforce Moscow and contributed to
+          the eventual failure of the German campaign.",
         ]
       end
 
@@ -73,60 +73,24 @@ module Scenarios
         {
           start_weather: 0,
           base_weather: 0,
-          precip: [0, 2],
-          wind: [1, 5, false],
+          precip: [1, 3],
+          wind: [0, 2, false],
           hexes:,
           layout:,
           allied_edge: "r",
           axis_edge: "l",
-          victory_hexes: [[2, 3, 2], [9, 6, 1], [10, 8, 1], [11, 9, 1], [13, 4, 1]],
-          allied_setup: { "0": [
-            [4, "*"], [5, "*"], [6, "*"], [7, "*"], [8, "*"], [9, "*"], [10, "*"],
-            [11, "*"], [12, "*"], [13, "*"], [14, "*"],
-          ] },
-          axis_setup: { "0": [
-            [0, "*"], [1, "*"], [2, "*"], [3, "*"],
-          ] },
+          victory_hexes: [
+            [2, 4, 2], [9, 6, 1], [11, 9, 1], [12, 1, 1], [12, 3, 1],
+          ],
+          allied_setup: { "0" => [["4-14", "*"]] },
+          axis_setup: { "0" => [["0-2", "*"]] },
+          base_terrain: "m",
         }
       end
 
       def hexes
         [
           [
-            { t: "f" },
-            { t: "f" },
-            { t: "f" },
-            { t: "o" },
-            { t: "o" },
-            { t: "w" },
-            { t: "w" },
-            { t: "b" },
-            { t: "b" },
-            { t: "b" },
-            { t: "w" },
-            { t: "o" },
-            { t: "f" },
-            { t: "f" },
-            { t: "f" },
-          ], [
-            { t: "f" },
-            { t: "f" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "b" },
-            { t: "b" },
-            { t: "w", s: { d: [3, 5] } },
-            { t: "o" },
-            { t: "o" },
-            { t: "f" },
-            { t: "f" },
-            { t: "f" },
-          ], [
-            { t: "f" },
-            { t: "f" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -135,139 +99,173 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o", s: { d: [2, 6] } },
-            { t: "o" },
-            { t: "o" },
-            { t: "f" },
-            { t: "f" },
-          ], [
-            { t: "o", r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 5] } },
-            { t: "o", b: "f", be: [2, 3] },
-            { t: "o", b: "f", be: [2, 3] },
-            { t: "o", b: "f", be: [2, 3] },
-            { t: "o", b: "f", be: [2, 3, 4] },
-            { t: "o" },
-            { t: "o", s: { d: [3, 6] } },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "f" },
-            { t: "f" },
-          ], [
-            { t: "o" },
-            { t: "b" },
-            { t: "b" },
-            { t: "b" },
-            { t: "o", r: { d: [2, 5] } },
-            { t: "o" },
-            { t: "o" },
-            { t: "o" },
-            { t: "o", b: "f", be: [3, 4] },
-            { t: "o", s: { d: [3, 6] } },
-            { t: "b" },
-            { t: "b" },
-            { t: "o", r: { d: [4, 6] } },
-            { t: "o", r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 4] } },
-          ], [
             { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o", r: { d: [2, 4] } },
-            { t: "o", r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 5] } },
-            { t: "o", s: { d: [3, 5] } },
-            { t: "b" },
-            { t: "b" },
-            { t: "o", r: { d: [3, 6] } },
-            { t: "o", d: 3, st: { sh: "c" } },
-            { t: "d", d: 3 },
+            { t: "o" },
+            { t: "o" },
             { t: "o" },
           ], [
             { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "g", b: "f", be: [1, 2] },
-            { t: "g" },
-            { t: "g" },
             { t: "o" },
-            { t: "o", r: { d: [2, 4, 5] } },
-            { t: "o", r: { d: [1, 4] }, s: { d: [2, 5] } },
-            { t: "o", r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 3] } },
-            { t: "d", d: 3 },
-            { t: "d", d: 3 },
             { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o", d: 3.5, st: { sh: "l", s: "f" } },
+            { t: "o", r: { d: [4, 6], t: "p" } },
+            { t: "o", r: { d: [1, 4], t: "p" } },
           ], [
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "g", b: "f", be: [1, 2, 6] },
-            { t: "g" },
-            { t: "g" },
-            { t: "f" },
-            { t: "f" },
-            { t: "o", r: { d: [2, 5] } },
-            { t: "o", s: { d: [2, 5] } },
             { t: "o" },
-            { t: "d", d: 3 },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "t" },
+            { t: "t" },
+            { t: "o", r: { d: [4, 6], t: "p" } },
+            { t: "o", r: { d: [1, 3], t: "p" } },
+            { t: "o" },
+          ], [
+            { t: "o" },
+            { t: "o" },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "t" },
+            { t: "t" },
+            { t: "o", r: { d: [3, 6], t: "p" } },
+            { t: "o", d: 1, st: { sh: "l", s: "f" } },
+            { t: "o" },
+            { t: "o" },
+          ], [
+            { t: "o" },
+            { t: "o" },
+            { t: "o", d: 1, st: { sh: "l", s: "f" } },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
+            { t: "o" },
+            { t: "o" },
+            { t: "t" },
+            { t: "t" },
+            { t: "o", r: { d: [3, 6], t: "p" } },
             { t: "d", d: 3 },
             { t: "o" },
             { t: "o" },
           ], [
-            { t: "f" },
-            { t: "f" },
             { t: "o" },
             { t: "o" },
-            { t: "g", b: "f", be: [1, 5, 6] },
-            { t: "g", b: "f", be: [5, 6] },
-            { t: "f" },
-            { t: "f" },
             { t: "o" },
-            { t: "o", r: { d: [2, 4] } },
-            { t: "o", s: { d: [2, 6] }, r: { d: [1, 4] } },
-            { t: "o", r: { d: [1, 5] } },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o", r: { d: [4, 6], t: "p" } },
+            { t: "o", r: { d: [1, 3], t: "p" } },
             { t: "d", d: 3 },
-            { t: "f" },
-            { t: "f" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
           ], [
-            { t: "f" },
-            { t: "f" },
-            { t: "f" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "o", s: { d: [3, 6] } },
+            { t: "o", r: { d: [4, 6], t: "p" } },
+            { t: "o", r: { d: [1, 4], t: "p" } },
+            { t: "o", r: { d: [1, 4], t: "p" } },
+            { t: "o", r: { d: [1, 3, 5], t: "p" } },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
             { t: "o" },
-            { t: "f", r: { d: [2, 5] } },
-            { t: "f" },
-            { t: "f" },
-            { t: "f" },
+            { t: "o" },
           ], [
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
             { t: "f" },
             { t: "f" },
+            { t: "o", r: { d: [3, 6], t: "p" } },
+            { t: "d", d: 1 },
+            { t: "d", d: 1 },
+            { t: "d", d: 1 },
+            { t: "o", r: { d: [2, 5], t: "p" } },
+            { t: "t" },
+            { t: "t" },
+            { t: "t" },
+            { t: "o" },
+            { t: "o" },
+          ], [
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o", r: { d: [4, 6], t: "p" } },
+            { t: "o", r: { d: [1, 4], t: "p" } },
+            { t: "o", r: { d: [1, 3], t: "p" } },
+            { t: "f" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o", r: { d: [2, 5], t: "p" } },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+          ], [
+            { t: "o", r: { d: [1, 4], t: "p" } },
+            { t: "o", r: { d: [1, 4], t: "p" } },
+            { t: "o", r: { d: [1, 3], t: "p" } },
             { t: "f" },
             { t: "f" },
             { t: "f" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
+            { t: "f" },
+            { t: "o", r: { d: [2, 5], t: "p" } },
+            { t: "o", d: 2, st: { sh: "l", s: "f" } },
             { t: "o" },
-            { t: "o", s: { d: [3, 6] } },
+            { t: "o" },
+            { t: "o" },
+          ], [
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
             { t: "f" },
             { t: "f" },
-            { t: "f", r: { d: [2, 5] } },
-            { t: "f" },
-            { t: "f" },
+            { t: "o", r: { d: [2, 5], t: "p" } },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
           ],
         ]
       end
