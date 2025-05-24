@@ -34,7 +34,6 @@ module Scenarios
           [8, :ger_rifle_s],
           :ger_crew_t,
           [3, :ger_mg_42],
-          :ger_8cm_grw_34,
           :ger_7_5cm_leig_18,
           :pillbox,
           :bunker,

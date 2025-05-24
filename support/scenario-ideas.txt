@@ -48,7 +48,7 @@ Later:
 200 Italy/Sicily
 - 201 43 Troina
 - 202 43 Japanese Troops, 100th infantry Battalion
-  203    Canadians at Ortona Little Stalingrad
+- 203 43 Canadians at Ortona Little Stalingrad
   204    Brazillian Monte Costello
   205    NZ at Orsogna
 

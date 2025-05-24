@@ -444,8 +444,17 @@ export function hexBuildingBuildingDisplay(hex: Hex): PathLayout | false {
   } else if (hex.buildingShape === buildingShape.BigCorner4) {
     path = bigCorner4(hex)
   }
+  const hcs = hex.elevationStyles[hex.elevation].fill as string
+  // TODO: maybe generic versions of this?  If we ever do this anywhere else
+  let base = hcs.length > 4 ?
+    (parseInt(hcs.substring(1, 3), 16) + parseInt(hcs.substring(3, 5), 16) +
+      parseInt(hcs.substring(5, 7), 16))/3 :
+    (parseInt(hcs.substring(1, 2), 16) + parseInt(hcs.substring(2, 3), 16) +
+      parseInt(hcs.substring(3, 4), 16))/3*17
+  if (base > 191) { base = 191 }
   return { path: path.join(" "), style: {
-    fill: hex.buildingStyle === "f" ? "#B97" : "#AAA",
+    fill: hex.buildingStyle === "f" ? `rgb(${base * 1},${base * 0.75},${base * 0.5})` :
+      `rgb(${base * 0.9},${base * 0.9},${base * 0.9})`,
     stroke: "#333", strokeWidth: 1,
   }}
 }
