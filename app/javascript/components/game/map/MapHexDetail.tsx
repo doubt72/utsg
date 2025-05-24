@@ -25,7 +25,7 @@ export default function MapHexDetail({
     return (
       <g>
         <path d={path} style={hex.roadOutlineStyle as object} transform={hex.roadRotate} />
-        { (hex.river || hex.baseTerrain === terrainType.Water) ?
+        { (hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow) ?
             <path d={path} style={hex.bridgeStyle as object} transform={hex.roadRotate} /> : "" }
         <path d={path} style={hex.roadEdgeStyle as object} transform={hex.roadRotate} />
         <path d={path} style={hex.roadStyle as object} transform={hex.roadRotate} />

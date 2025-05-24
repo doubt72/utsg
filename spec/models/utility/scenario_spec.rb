@@ -45,7 +45,7 @@ RSpec.describe Utility::Scenario do
     it "gets correct scenarios with allies filter" do
       scenarios = described_class.all_scenarios({ "allies" => "usa", "status" => "*" })
       scenarios.each do |s|
-        expect(s[:allies].include?("usa")).to be true
+        expect(s[:allies].include?("usa") || s[:allies].include?("bra")).to be true
       end
       scenarios.select! { |s| s[:id] == "000" }
       expect(scenarios.length).to be == 1

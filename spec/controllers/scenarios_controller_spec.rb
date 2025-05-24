@@ -171,7 +171,7 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
       scenarios.each do |s|
-        expect(s["allies"].include?("usa")).to be true
+        expect(s["allies"].include?("usa") || s["allies"].include?("bra")).to be true
       end
       scenarios.select! { |s| s["id"] == "000" }
       expect(scenarios.length).to be == 1

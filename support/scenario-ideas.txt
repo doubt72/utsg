@@ -49,12 +49,13 @@ Later:
 - 201 43 Troina
 - 202 43 Japanese Troops, 100th infantry Battalion
 - 203 43 Canadians at Ortona Little Stalingrad
-  204    Brazillian Monte Costello
-  205    NZ at Orsogna
+- 204 44 Monte Cassino - Fighting over the flooded valley?
+- 205 43 NZ at Orsogna
+- 206 44 Brazillian Monte Costello
 
 Later:
++ 92nd Infantry Division
 + Monte Cassino - Algerians/Free French to the North?
-+ Monte Cassino - Fighting over the flooded valley?
   Anzio, Sicily, Salerno
 
 300 Normandy/Late West Front
