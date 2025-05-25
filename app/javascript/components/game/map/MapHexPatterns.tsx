@@ -49,12 +49,12 @@ export default function MapHexPatterns() {
     <defs>
       <pattern id="forest-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="12" height="20.8" viewBox="0 0 2 3.46">
-        <circle cx="0" cy="-0.866" r="0.9" style={forestStyle} />
-        <circle cx="2" cy="-0.866" r="0.9" style={forestStyle} />
-        <circle cx="1" cy="0.866" r="0.9" style={forestStyle} />
-        <circle cx="0" cy="2.598" r="0.9" style={forestStyle} />
-        <circle cx="2" cy="2.598" r="0.9" style={forestStyle} />
-        <circle cx="1" cy="4.330" r="0.9" style={forestStyle} />
+        <circle cx="0" cy="-0.866" r="0.85" style={forestStyle} />
+        <circle cx="2" cy="-0.866" r="0.85" style={forestStyle} />
+        <circle cx="1" cy="0.866" r="0.85" style={forestStyle} />
+        <circle cx="0" cy="2.598" r="0.85" style={forestStyle} />
+        <circle cx="2" cy="2.598" r="0.85" style={forestStyle} />
+        <circle cx="1" cy="4.330" r="0.85" style={forestStyle} />
       </pattern>
       <pattern id="brush-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="10" height="17.3" viewBox="0 0 2 3.46">

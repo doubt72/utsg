@@ -1,4 +1,4 @@
-- Australian, Canadian, New Zealand, South African, Brazilian,
+- Australian, South African,
   Slovakian, Croatian, (Bulgarian), Greek, Norwegian, Belgian, Dutch, Yugoslavian
 
 000 East Front
@@ -20,9 +20,9 @@
 - 016 42 Stalingrad Factory
 
 Later:
-+ Croatian Attack Somewhere
-+ Budapest? Berlin?
-+ Velikiye Luki/Stalingrad of the North
+- Croatian Attack Somewhere
+- Budapest? Berlin?
+- Velikiye Luki/Stalingrad of the North
   Fight Over Bridge in Gully Somewhere
   Mass Assualt on Hill
   the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
@@ -41,8 +41,8 @@ Later:
 - 109 42 Free French at Bir Hakeim
 
 Later:
-+ Hill Assault Somewhere
-+ Fight over featureless land (infantry)
+- Hill Assault Somewhere
+- Fight over featureless land (infantry)
   Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
@@ -51,12 +51,11 @@ Later:
 - 203 43 Canadians at Ortona Little Stalingrad
 - 204 44 Monte Cassino - Fighting over the flooded valley?
 - 205 43 NZ at Orsogna
-- 206 44 Brazillian Monte Costello
+- 206 44 Brazilians Monte Costello
 
 Later:
-+ 92nd Infantry Division
 + Monte Cassino - Algerians/Free French to the North?
-  Anzio, Sicily, Salerno
+- Anzio, Sicily, Salerno
 
 300 Normandy/Late West Front
 - 301 44 Counterattack Against Paratroopers
@@ -73,6 +72,7 @@ Later:
   312    Americans Clearing Edge of Large Town - Carentan
 
 Later:
++ 761st Tank Battalion
 + Canadian Street Fighting in Caen
 + Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
 + Pointe-du-Hoc Rangers
@@ -127,10 +127,10 @@ Later:
 
 600 China/Burma
 - 601 37 Battle of Shanghai / Iron Fist
-  602    Imphal/Gurka
-  603    China Somewhere Remote/Pass
-  604    Khalkin Gol
-  605    Some Burma Raid
+- 602 44 Imphal Tanks
+- 603 41 2nd Changsha
+- 604 39 Khalkin Gol
+  605    Battle of Mogaung / Red House
 
 Later:
   China, Burma

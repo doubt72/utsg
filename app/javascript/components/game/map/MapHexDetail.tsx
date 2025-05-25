@@ -37,8 +37,10 @@ export default function MapHexDetail({
     if (!hex.railroad) { return "" }
     const path = hex.railroadPath
     return (
-      <g>
-        <path d={path} style={hex.railroadBedStyle as object} />
+      <g>        
+        { (hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow) ?
+            <path d={path} style={hex.railroadBridgeStyle as object} /> :
+            <path d={path} style={hex.railroadBedStyle as object} /> }
         <path d={path} style={hex.railroadtieStyle as object} />
       </g>
     )

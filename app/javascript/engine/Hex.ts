@@ -603,6 +603,14 @@ export default class Hex {
     }
   }
 
+  get railroadBridgeStyle(): SVGStyle {
+    return {
+      fill: "rgba(0,0,0,0)",
+      strokeWidth: 22,
+      stroke: "#DDD",
+    }
+  }
+
   get railroadtieStyle(): SVGStyle {
     return {
       fill: "rgba(0,0,0,0)",
