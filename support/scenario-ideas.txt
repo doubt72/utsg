@@ -48,7 +48,7 @@ Existing:
 - 508 40 Norwegian
 - 509 40 French Isolated Armor + Infantry against German Armor
 - 510 40 Forest Parallel Lines with small town in back (sideways E), French, All Infantry
-  511    Matildas vs. 88s, Arras?
+- 511 40 Matildas vs. 88s, Arras
 - 512 41 Greek-German
 
 600 China/Burma
@@ -112,10 +112,10 @@ Later:
 
 Future Scenarios:
 + 2 Monte Cassino - Algerians/Free French to the North?
-+ 5 Belgium
 + 5 Crete
++ 5 Belgium
 + 5 Polish Cavalry Attack
-+ 5 Slovakian vs. Polish Fight Somewhere
++ 5 Slovakian vs. Polish Fight
 + 5 Yugoslavia (Nisava River Bridge?)
 + 5 Battle of Hannut / Somua S35s
 
