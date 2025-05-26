@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario506 < Base
     ID = "506"
-    NAME = "A Line in the Snow"
+    NAME = "Line in the Snow"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
     STATUS = "p"

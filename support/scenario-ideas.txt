@@ -103,7 +103,7 @@ Later:
 + New Strip Buna New Guinea
   Bataan Defense
   Early Philippines Defending Towards Bataan
-  Singapore, Okinawa, Bobdubi Ridge
+  Okinawa, Bobdubi Ridge
 
 500 Finland/Poland/France/Norway/Balkans
 - 501 40 Finish Ambush in snow against armored column Winter War
@@ -112,12 +112,12 @@ Later:
 - 504 40 French Isolated Armor + Infantry against German Armor
 - 505 40 French Armor vs. German Armor (Char B1 bis)
 - 506 39 Finish Bunkers along Border in Winter War
-  507    Greek-Italy
+- 507 40 Greek-Italy
   508    Norwegian
   509    Nisava River Bridge in Yugoslavia
   510    Matildas vs. 88s, Arras?
   511    French Isolated Armor + Infantry against German Armor
-  512    Greek-German
+- 512 41 Greek-German
 
 Later:
 + Polish Cavalry Attack
@@ -126,14 +126,16 @@ Later:
 + Crete
 
 600 China/Burma
-- 601 37 Battle of Shanghai / Iron Fist
+- 601 39 China Pass
 - 602 44 Imphal Tanks
 - 603 41 2nd Changsha
 - 604 39 Khalkin Gol
-  605    Battle of Mogaung / Red House
+- 605 44 Battle of Mogaung / Red House
+- 606 42 Burma / Oil Fields
+- 607 37 Battle of Shanghai / Iron Fist
 
 Later:
-  China, Burma
+  Singapore/Malaysia
 
 700 Spain?
 

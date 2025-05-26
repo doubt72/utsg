@@ -224,6 +224,7 @@ module Utility
             ["ger", "Pionier", 0, 4, 9, 3, 5, { a: 1, s: 1 }],
             ["ger", "SS", 34, 4, 8, 5, 5, { a: 1, s: 1 }],
             ["ger", "Fallschirmjäger", 35, 4, 7, 4, 5, { a: 1, s: 1 }],
+            ["ger", "Gebirgsjäger", 0, 4, 7, 4, 5, { a: 1, s: 1 }],
             ["ger", "Sturm", 0, 4, 8, 4, 5, { a: 1, s: 1 }],
             ["ger", "Rifle", 0, 3, 7, 5, 4, { s: 1 }],
             ["ger", "Volksgrenadier", 44, 3, 7, 4, 4, {}],
@@ -504,6 +505,7 @@ module Utility
           lu = {}
           key = %i[c n y f r o]
           [
+            ["alm", "75mm Gun", 32, 16, 16, { tow: 3 }],
             ["chi", "Bofors 75mm", 23, 16, 16, { tow: 3 }],
             ["chi", "75mm M1 Pack", 42, 16, 16, { tow: 3 }],
             ["chi", "75mm Gun", 32, 16, 16, { tow: 3 }],
@@ -537,6 +539,7 @@ module Utility
           lu = {}
           key = %i[c n y f r o]
           [
+            ["alm", "40mm AT Gun", 36, 10, 12, {}],
             ["axm", "3.7cm Pak 36", 36, 8, 16, {}],
             ["chi", "Type 30 AT Gun", 36, 8, 16, {}],
             ["chi", "45mm 19-K", 34, 12, 16, {}],
