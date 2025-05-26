@@ -491,6 +491,10 @@ export default class Counter {
     }
     if (this.target.isFeature) {
       color = "white"
+      if ((this.target as Feature).type === featureType.Roadblock) {
+        style.stroke = "white"
+        value = "0"
+      }
     }
     if (size < 16) { loc.xShift(0.5) }
     return {

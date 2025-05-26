@@ -112,6 +112,8 @@ module Utility
         def features
           {
             smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
+            rubble: { ft: 1, n: "Rubble", t: "rubble", i: "rubble", o: { los: 1 } },
+            roadblock: { ft: 1, n: "Road Block", t: "roadblock", i: "roadblock", f: 0, r: 0, v: 0 },
             blaze: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
             wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
             mines: { ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 } },
@@ -297,6 +299,7 @@ module Utility
             ["alm", "M1915 Chauchat", 15, 2, 6, 0, { a: 1, r: 1, j: 4, f: 16, sn: 1 }],
             ["alm", "Bren LMG", 35, 3, 6, 0, { a: 1, r: 1, j: 3, f: 16 }],
             ["alm", "Vickers MG", 12, 7, 10, -1, { r: 1, j: 2, f: 15 }],
+            ["alm", "Colt M/29", 17, 8, 12, -2, { r: 1, j: 3, f: 16 }],
             ["alm", "MG 08/15", 24, 10, 12, -1, { r: 1, j: 3, f: 16 }],
             ["alm", "rkm wz. 1928", 28, 5, 8, 0, { a: 1, r: 1, j: 3, f: 16 }],
             ["axm", "MG 08/15", 24, 10, 12, -1, { r: 1, j: 3, f: 16 }],

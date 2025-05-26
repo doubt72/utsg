@@ -158,10 +158,10 @@ export const markerType: { [index: string]: MarkerTypeType } = {
 }
 
 export type FeatureTypeType = "bunker" | "pillbox" | "foxhole" |
-  "smoke" | "fire" | "wire" | "mines"
+  "smoke" | "fire" | "wire" | "mines" | "rubble" | "roadblock"
 export const featureType: { [index: string]: FeatureTypeType } = {
   Bunker: "bunker", Smoke: "smoke", Fire: "fire", Wire: "wire", Mines: "mines",
-  Foxhole: "foxhole"
+  Foxhole: "foxhole", Rubble: "rubble", Roadblock: "roadblock",
 }
 
 // TODO: Might need to increase the range for modified values?

@@ -1,5 +1,5 @@
 - Australian, South African,
-  Slovakian, Croatian, (Bulgarian), Greek, Norwegian, Belgian, Dutch, Yugoslavian
+  Slovakian, Croatian, (Bulgarian), Belgian, Dutch, Yugoslavian
 
 000 East Front
 - 001 44 Simple Squad Battle, MG only
@@ -113,7 +113,7 @@ Later:
 - 505 40 French Armor vs. German Armor (Char B1 bis)
 - 506 39 Finish Bunkers along Border in Winter War
 - 507 40 Greek-Italy
-  508    Norwegian
+- 508 40 Norwegian
   509    Nisava River Bridge in Yugoslavia
   510    Matildas vs. 88s, Arras?
   511    French Isolated Armor + Infantry against German Armor
