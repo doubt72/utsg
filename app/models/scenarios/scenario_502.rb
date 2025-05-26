@@ -8,7 +8,7 @@ module Scenarios
     AXIS = ["ger"].freeze
     STATUS = "p"
 
-    DATE = [1940, 1, 1].freeze
+    DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 23, "x"].freeze
 
     ALLIED_UNITS = {

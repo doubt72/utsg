@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario606 < Base
     ID = "606"
-    NAME = "Burma Burning Grounds"
+    NAME = "Burning Grounds"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"

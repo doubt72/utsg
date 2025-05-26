@@ -1,5 +1,4 @@
-- Australian, South African,
-  Slovakian, Croatian, (Bulgarian), Belgian, Dutch, Yugoslavian
+Existing:
 
 000 East Front
 - 001 44 Simple Squad Battle, MG only
@@ -19,31 +18,16 @@
 - 015 41 41 Tank Battle
 - 016 42 Stalingrad Factory
 
-Later:
-- Croatian Attack Somewhere
-- Budapest? Berlin?
-- Velikiye Luki/Stalingrad of the North
-  Fight Over Bridge in Gully Somewhere
-  Mass Assualt on Hill
-  the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
-    Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
-    Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
-
 100 North Africa
 - 101 41 Fight over featureless land (tanks)
 - 102 40 British assulting Fort Capuzzo in 40
 - 103 41 British / Italian Tank Battle Crusader
 - 104 42 Indian Division at El Alamein
 - 105 42 British Breaching German Defenses 2nd Alamein
-- 106 43 Kasserine - Infantry + M3/M6 13:30 https://www.youtube.com/watch?v=7pd-b8V9Euw
+- 106 43 Kasserine - Infantry + M3/M6
 - 107 41 Hellfire Pass
-- 108 43 El Guettar - M10                   https://www.youtube.com/watch?v=7pd-b8V9Euw
+- 108 43 El Guettar - M10
 - 109 42 Free French at Bir Hakeim
-
-Later:
-- Hill Assault Somewhere
-- Fight over featureless land (infantry)
-  Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
 
 200 Italy/Sicily
 - 201 43 Troina
@@ -53,9 +37,30 @@ Later:
 - 205 43 NZ at Orsogna
 - 206 44 Brazilians Monte Costello
 
-Later:
-+ Monte Cassino - Algerians/Free French to the North?
-- Anzio, Sicily, Salerno
+500 Finland/Poland/France/Norway/Balkans
+- 501 40 Finish Ambush in snow against armored column Winter War
+- 502 40 French Armor vs. German Armor (FCM 36)
+- 503 39 Polish Infantry Resisting German Armor
+- 504 40 French Isolated Armor + Infantry against German Armor
+- 505 39 Finish Bunkers along Border in Winter War
+- 506 40 Greek-Italy
+- 507 40 French Armor vs. German Armor (Char B1 bis)
+- 508 40 Norwegian
+- 509 40 French Isolated Armor + Infantry against German Armor
+- 510 40 Forest Parallel Lines with small town in back (sideways E), French, All Infantry
+  511    Matildas vs. 88s, Arras?
+- 512 41 Greek-German
+
+600 China/Burma
+- 601 39 China Pass
+- 602 44 Imphal Tanks
+- 603 41 2nd Changsha
+- 604 39 Khalkin Gol
+- 605 44 Battle of Mogaung / Red House
+- 606 42 Burma / Oil Fields
+- 607 37 Battle of Shanghai / Iron Fist
+
+Create:
 
 300 Normandy/Late West Front
 - 301 44 Counterattack Against Paratroopers
@@ -71,22 +76,6 @@ Later:
 - 311 44 Arracourt
   312    Americans Clearing Edge of Large Town - Carentan
 
-Later:
-+ 761st Tank Battalion
-+ Canadian Street Fighting in Caen
-+ Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
-+ Pointe-du-Hoc Rangers
-+ Bulge tank counterattack
-+ Airborne Arnhem
-+ Airborne Nijmagen/Support Attack?
-+ Hill 104 defense St Jean De Daye
-+ La Fiere Airborne Slugfest / St Mere Eglise
-+ Closing the Falais Pocket Hill 262
-+ Defending Hill 314 Mortain
-  Assault on Battery like from Band of Brothers
-  Lanzerath Ridge
-  Americans Clearing Small Normandy Town
-
 400 Pacific (South Pacific/New Guinea/Phillipines)
   401    Edson's/Bloody Ridge Guadalcanal
   402    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
@@ -94,51 +83,61 @@ Later:
   404    Late Manila urban Fighting
 
 Later:
-+ Fight over fields inside a clearing, somewhere in the Philippines
-+ Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
-+ Saddle Ridge/Battle of Henderson Field, Guadalcanal
-+ Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
-+ Marines Hill 382 Iwo Jima
-+ Attu Island
-+ New Strip Buna New Guinea
-  Bataan Defense
-  Early Philippines Defending Towards Bataan
-  Okinawa, Bobdubi Ridge
-
-500 Finland/Poland/France/Norway/Balkans
-- 501 40 Finish Ambush in snow against armored column Winter War
-- 502 40 French Armor vs. German Armor (FCM 36)
-- 503 39 Polish Infantry Resisting German Armor
-- 504 40 French Isolated Armor + Infantry against German Armor
-- 505 40 French Armor vs. German Armor (Char B1 bis)
-- 506 39 Finish Bunkers along Border in Winter War
-- 507 40 Greek-Italy
-- 508 40 Norwegian
-  509    Nisava River Bridge in Yugoslavia
-  510    Matildas vs. 88s, Arras?
-  511    French Isolated Armor + Infantry against German Armor
-- 512 41 Greek-German
++ 3 761st Tank Battalion
++ 3 Canadian Street Fighting in Caen
++ 3 Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
++ 3 Pointe-du-Hoc Rangers
++ 3 Bulge tank counterattack
++ 3 Airborne Arnhem
++ 3 Airborne Nijmagen/Support Attack?
++ 3 Hill 104 defense St Jean De Daye
++ 3 La Fiere Airborne Slugfest / St Mere Eglise
++ 3 Closing the Falais Pocket Hill 262
++ 3 Defending Hill 314 Mortain
+  3 Assault on Battery like from Band of Brothers
+  3 Lanzerath Ridge
+  3 Americans Clearing Small Normandy Town
 
 Later:
-+ Polish Cavalry Attack
-+ Slovakian vs. Polish Fight Somewhere
-+ Forest Parallel Lines with small town in back (sideways E), French, All Infantry
-+ Crete
++ 4 Fight over fields inside a clearing, somewhere in the Philippines
++ 4 Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
++ 4 Saddle Ridge/Battle of Henderson Field, Guadalcanal
++ 4 Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
++ 4 Marines Hill 382 Iwo Jima
++ 4 Attu Island
++ 4 New Strip Buna New Guinea
+  4 Bataan Defense
+  4 Early Philippines Defending Towards Bataan
+  4 Okinawa, Bobdubi Ridge
 
-600 China/Burma
-- 601 39 China Pass
-- 602 44 Imphal Tanks
-- 603 41 2nd Changsha
-- 604 39 Khalkin Gol
-- 605 44 Battle of Mogaung / Red House
-- 606 42 Burma / Oil Fields
-- 607 37 Battle of Shanghai / Iron Fist
+Future Scenarios:
++ 2 Monte Cassino - Algerians/Free French to the North?
++ 5 Belgium
++ 5 Crete
++ 5 Polish Cavalry Attack
++ 5 Slovakian vs. Polish Fight Somewhere
++ 5 Yugoslavia (Nisava River Bridge?)
++ 5 Battle of Hannut / Somua S35s
 
-Later:
-  Singapore/Malaysia
+- 0 Croatian Attack Somewhere
+- 0 Budapest? Berlin?
+- 0 Velikiye Luki/Stalingrad of the North
+- 1 Hill Assault Somewhere
+- 1 Fight over featureless land (infantry)
+- 2 Anzio, Sicily, Salerno
 
-700 Spain?
+  0 Fight Over Bridge in Gully Somewhere
+  0 Mass Assualt on Hill
+  0 the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
+    Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
+    Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
+  1 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
+  6 Singapore/Malaysia
 
-800 Korea?
+- Australian, (South African), Slovakian, Croatian, (Bulgarian), Belgian, Dutch, (Yugoslavian)
 
-900 Completely Fictional
+Future Series:
+  700 Spain? (Probably "Other Europe" is better)
+  800 Korea?
+  900 Completely Fictional
+      Or Split something over 100 count?  Split Normandy from West Front?

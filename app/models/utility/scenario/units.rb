@@ -217,6 +217,7 @@ module Utility
             ["fin", "Regular", 0, 3, 6, 4, 4, {}],
             ["fin", "Conscript", 0, 2, 6, 3, 3, {}],
             ["fin", "Sissi", 0, 4, 7, 5, 5, {}],
+            ["fra", "Génie", 0, 4, 9, 3, 5, { a: 1, s: 1 }],
             ["fra", "BAR", 0, 3, 8, 4, 4, { a: 1, s: 1 }],
             ["fra", "Legionnaire", 0, 4, 7, 5, 5, { s: 1 }],
             ["fra", "Chasseur", 0, 3, 6, 4, 5, { s: 1 }],
