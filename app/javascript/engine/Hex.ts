@@ -151,14 +151,6 @@ export default class Hex {
   darkWater = "#46A"
   iceWater = "#DDE"
 
-  terrainStyles = (): { [index: string]: SVGStyle } => {
-    return {
-      j: { fill: "rgba(47,191,47,0.33)" },
-      w: { fill: this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater },
-      y: { fill: this.lightWater },
-    }
-  }
-
   patternStyles = (): { [index: string]: SVGStyle } => {
     return {
       f: { fill: "url(#forest-pattern)" },
@@ -171,6 +163,8 @@ export default class Hex {
       g: { fill: "url(#grain-pattern)" },
       t: { fill: "url(#soft-pattern)" },
       x: { fill: "url(#debris-pattern)" },
+      w: { fill: this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater },
+      y: { fill: this.lightWater },
     }
   }
 
@@ -286,9 +280,6 @@ export default class Hex {
   }
 
   get background(): SVGStyle {
-    if (this.backgroundTerrain && this.terrainStyles()[this.baseTerrain]) {
-      return this.terrainStyles()[this.baseTerrain]
-    }
     if (this.elevationEdges === "all") {
       return this.elevationStyles[this.elevation]
     } else {
@@ -340,7 +331,7 @@ export default class Hex {
     if (this.terrainEdges !== "none" || this.baseTerrain === "o") { return false }
     return {
       x: this.xOffset, y: this.yOffset, r: this.narrow/2 - 5,
-      style: this.terrainStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
+      style: this.patternStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
     }
   }
 
@@ -453,7 +444,7 @@ export default class Hex {
     if (edges == "none" || edges === "all") { return false }
     return {
       path: this.generatePaths(edges, 4),
-      style: this.terrainStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
+      style: this.patternStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
     }
   }
 

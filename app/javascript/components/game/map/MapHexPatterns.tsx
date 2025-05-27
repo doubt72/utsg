@@ -8,8 +8,8 @@ export default function MapHexPatterns() {
   const forestStyle = { fill: "#070" }
   const brushStyle = { stroke: "#7B7", fill: clear, strokeWidth: 0.2 }
   const jungleStyle = { fill: clear, stroke: "#282", strokeWidth: 0.16 }
-  const marshStyle = { fill: clear, stroke: "#77C", strokeWidth: 0.33 }
-  const frozenMarshStyle = { fill: clear, stroke: "#DDE", strokeWidth: 0.33 }
+  const marshStyle = { fill: clear, stroke: "#282", strokeWidth: 0.33 }
+  const frozenMarshStyle = { fill: clear, stroke: "#CDC", strokeWidth: 0.33 }
   const darkStrokeStyle = { fill: clear, stroke: "rgba(0,0,0,0.33)", strokewidth: 0.33 }
 
   const triangle = (cx: number, cy: number) => {
@@ -67,6 +67,7 @@ export default function MapHexPatterns() {
       </pattern>
       <pattern id="jungle-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="13.3" height="23.1" viewBox="0 0 2 3.46">
+        <rect width="2" height="3.46" opacity="0.333" style={{ fill: "#3B3" }}/>
         <circle cx="0" cy="-0.866" r="0.75" style={jungleStyle} />
         <circle cx="2" cy="-0.866" r="0.75" style={jungleStyle} />
         <circle cx="1" cy="0.866" r="0.75" style={jungleStyle} />
@@ -98,13 +99,13 @@ export default function MapHexPatterns() {
         <path d={triangle(16, 11)} style={darkerStyle} />
       </pattern>
       <pattern id="marsh-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
-               width="24" height="24" viewBox="0 0 10 10">
+               width="36" height="36" viewBox="0 0 10 10">
         <rect width="10" height="10" opacity="0.5" style={{ fill: "#DFF" }}/>
         <path d="M 1 9 L 5 9 M 3 9 L 1.5 7.5 M 3 9 L 4.5 7.5 M 3 9 L 3 7" style={marshStyle} />
         <path d="M 5 4 L 9 4 M 7 4 L 5.5 2.5 M 7 4 L 8.5 2.5 M 7 4 L 7 2" style={marshStyle} />
       </pattern>
       <pattern id="frozen-marsh-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
-               width="24" height="24" viewBox="0 0 10 10">
+               width="36" height="36" viewBox="0 0 10 10">
         <rect width="10" height="10" opacity="0.5" style={{ fill: "#EFF" }}/>
         <path d="M 1 9 L 5 9 M 3 9 L 1.5 7.5 M 3 9 L 4.5 7.5 M 3 9 L 3 7" style={frozenMarshStyle} />
         <path d="M 5 4 L 9 4 M 7 4 L 5.5 2.5 M 7 4 L 8.5 2.5 M 7 4 L 7 2" style={frozenMarshStyle} />

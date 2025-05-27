@@ -37,14 +37,6 @@ export default function MapHex({ hex }: MapHexProps) {
     if (building) {
       return <path d={building.path} style={building.style as object} />
     }
-    const circle = hex.terrainCircle
-    if (circle) {
-      return <circle cx={circle.x} cy={circle.y} r={circle.r} style={circle.style as object} />
-    }
-    const path = hex.terrainContinuous
-    if (path) {
-      return <path d={path.path} style={path.style as object} />
-    }
   }
 
   const terrainPattern = () => {

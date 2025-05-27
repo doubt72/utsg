@@ -37,6 +37,28 @@ Existing:
 - 205 43 NZ at Orsogna
 - 206 44 Brazilians Monte Costello
 
+400 Pacific (South Pacific/New Guinea/Phillipines)
+  401    
+  402    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
+  403    Reduce Japanese Strongpoint in New Guinea
+  404    Late Manila urban Fighting
+
+- 405 42 The Long Patrol
+- 407 42 Edson's/Bloody Ridge Guadalcanal
+
+Later:
+  4 Second, Third, Fourth Battles of Matanikau
+  4 Saddle Ridge/Battle for Henderson Field
+
+  4 Fight over fields inside a clearing, somewhere in the Philippines
+  4 Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
+  4 Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
+  4 Marines Hill 382 Iwo Jima
+  4 Attu Island
+  4 New Strip Buna New Guinea
+  4 Bataan Defense
+  4 Okinawa, Bobdubi Ridge
+
 500 Finland/Poland/France/Norway/Balkans
 - 501 40 Finish Ambush in snow against armored column Winter War
 - 502 40 French Armor vs. German Armor (FCM 36)
@@ -76,12 +98,6 @@ Create:
 - 311 44 Arracourt
   312    Americans Clearing Edge of Large Town - Carentan
 
-400 Pacific (South Pacific/New Guinea/Phillipines)
-  401    Edson's/Bloody Ridge Guadalcanal
-  402    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
-  403    Reduce Japanese Strongpoint in New Guinea
-  404    Late Manila urban Fighting
-
 Later:
 + 3 761st Tank Battalion
 + 3 Canadian Street Fighting in Caen
@@ -97,18 +113,6 @@ Later:
   3 Assault on Battery like from Band of Brothers
   3 Lanzerath Ridge
   3 Americans Clearing Small Normandy Town
-
-Later:
-+ 4 Fight over fields inside a clearing, somewhere in the Philippines
-+ 4 Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
-+ 4 Saddle Ridge/Battle of Henderson Field, Guadalcanal
-+ 4 Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
-+ 4 Marines Hill 382 Iwo Jima
-+ 4 Attu Island
-+ 4 New Strip Buna New Guinea
-  4 Bataan Defense
-  4 Early Philippines Defending Towards Bataan
-  4 Okinawa, Bobdubi Ridge
 
 Future Scenarios:
 + 2 Monte Cassino - Algerians/Free French to the North?
