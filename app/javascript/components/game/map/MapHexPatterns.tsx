@@ -8,6 +8,7 @@ export default function MapHexPatterns() {
   const forestStyle = { fill: "#070" }
   const brushStyle = { stroke: "#7B7", fill: clear, strokeWidth: 0.2 }
   const jungleStyle = { fill: clear, stroke: "#282", strokeWidth: 0.16 }
+  const palmStyle = { fill: "#3A3", stroke: "#3A3", strokeLineJoin: "miter", strokeWidth: 0.16 }
   const marshStyle = { fill: clear, stroke: "#282", strokeWidth: 0.33 }
   const frozenMarshStyle = { fill: clear, stroke: "#CDC", strokeWidth: 0.33 }
   const darkStrokeStyle = { fill: clear, stroke: "rgba(0,0,0,0.33)", strokewidth: 0.33 }
@@ -79,6 +80,25 @@ export default function MapHexPatterns() {
         <circle cx="1" cy="2.032" r="1" style={jungleStyle} />
         <circle cx="0" cy="3.764" r="1" style={jungleStyle} />
         <circle cx="2" cy="3.764" r="1" style={jungleStyle} />
+      </pattern>
+      <pattern id="palm-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
+               width="50" height="50" viewBox="0 0 10 10">
+        <path d={
+          [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360].map(a => {
+            let rc = a === 0 ? "M" : "L"
+            rc += ` ${Math.sin(a/180*Math.PI) * 2.5 + 2.5} ${Math.cos(a/180*Math.PI) * 2.5 + 2.5}`
+            rc += ` ${Math.sin((a+15)/180*Math.PI) * 0.75 + 2.5} ${Math.cos((a+15)/180*Math.PI) * 0.75 + 2.5}`
+            return rc
+          }).join(" ")
+        } style={palmStyle}/>
+        <path d={
+          [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360].map(a => {
+            let rc = a === 0 ? "M" : "L"
+            rc += ` ${Math.sin(a/180*Math.PI) * 2.5 + 7.5} ${Math.cos(a/180*Math.PI) * 2.5 + 7.5}`
+            rc += ` ${Math.sin((a+15)/180*Math.PI) * 0.75 + 7.5} ${Math.cos((a+15)/180*Math.PI) * 0.75 + 7.5}`
+            return rc
+          }).join(" ")
+        } style={palmStyle}/>
       </pattern>
       <pattern id="sand-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="20" height="20" viewBox="0 0 16 16">

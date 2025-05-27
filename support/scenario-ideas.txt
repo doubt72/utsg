@@ -38,26 +38,28 @@ Existing:
 - 206 44 Brazilians Monte Costello
 
 400 Pacific (South Pacific/New Guinea/Phillipines)
-  401    
-  402    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
-  403    Reduce Japanese Strongpoint in New Guinea
-  404    Late Manila urban Fighting
-
+  401    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
+  402    Reduce Japanese Strongpoint in New Guinea
+  403    Late Manila urban Fighting
+  404    Tarawa
 - 405 42 The Long Patrol
+
 - 407 42 Edson's/Bloody Ridge Guadalcanal
+- 408 43 Attu Island
 
 Later:
-  4 Second, Third, Fourth Battles of Matanikau
-  4 Saddle Ridge/Battle for Henderson Field
-
   4 Fight over fields inside a clearing, somewhere in the Philippines
   4 Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
   4 Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
-  4 Marines Hill 382 Iwo Jima
-  4 Attu Island
   4 New Strip Buna New Guinea
+  4 Bobdubi Ridge New Guinea
   4 Bataan Defense
-  4 Okinawa, Bobdubi Ridge
+
++ 4 Eniwetok
+- 4 Second, Third, Fourth Battles of Matanikau
+- 4 Saddle Ridge/Battle for Henderson Field
+- 4 Iwo Jima / Hill 382 / Hill 362 / The Meatgrinder / Flamethrowers
+  4 Okinawa / Steel Storm
 
 500 Finland/Poland/France/Norway/Balkans
 - 501 40 Finish Ambush in snow against armored column Winter War
@@ -122,6 +124,7 @@ Future Scenarios:
 + 5 Slovakian vs. Polish Fight
 + 5 Yugoslavia (Nisava River Bridge?)
 + 5 Battle of Hannut / Somua S35s
++ 6 Ayo Gorkhali
 
 - 0 Croatian Attack Somewhere
 - 0 Budapest? Berlin?
@@ -136,7 +139,7 @@ Future Scenarios:
     Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
     Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
   1 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
-  6 Singapore/Malaysia
+  6 Singapore, Malaysia
 
 - Australian, (South African), Slovakian, Croatian, (Bulgarian), Belgian, Dutch, (Yugoslavian)
 

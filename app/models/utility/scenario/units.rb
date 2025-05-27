@@ -846,6 +846,12 @@ module Utility
             ["chi", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
             ["ussr", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
             ["fra", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
+            ["usa", "M2 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, ifv: 1 }],
+            ["usa", "LVT-1 '42", 42, 4, 10, 12, 5, { r: 1, amp: 1 }],
+            ["usa", "LVT-2 '42", 42, 4, 7, 10, 5, { t: 1, p: 1, amp: 1 }],
+            ["usa", "LVT(A)-4", 44, 4, 24, 20, 5, { t: 1, g: 1, ha: { f: 3, s: 0, r: 0, t: -1 }, amp: 1 }],
+            ["usa", "LVT-1 '43", 43, 4, 10, 12, 5, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, amp: 1 }],
+            ["usa", "LVT-2 '43", 43, 4, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, amp: 1 }],
             ["usa", "T12 GMC", 42, 3, 24, 20, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
             ["usa", "T19 GMC", 42, 3, 40, 24, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
             ["usa", "T48 GMC", 42, 3, 7, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
@@ -859,6 +865,7 @@ module Utility
             ht[:i] = "htat" if ht[:o][:p]
             ht[:i] = "htmtr" if ht[:o][:m]
             ht[:i] = "htft" if ht[:o][:i]
+            ht[:i] += "-amp" if ht[:o][:amp]
             ht[:o].merge!({ k: 1 })
             ht[:o][:m] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3, f: 18 })
             lu[:"#{ht[:c]}_#{sanitize(ht[:n])}"] = ht
@@ -970,8 +977,8 @@ module Utility
             ["ussr", "Jeep", "car", 41, 2, 0, 0, 5, {}],
             ["usa", "Jeep .50 MG", "car", 41, 2, 10, 15, 5, { r: 1, j: 3, f: 16 }],
             ["usa", "Jeep 37mm AT", "car", 41, 2, 7, 10, 5, { t: 1, j: 3, f: 18, p: 1 }],
-            ["usa", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, {}],
-            ["uk", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, {}],
+            ["usa", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, { amp: 1 }],
+            ["uk", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, { amp: 1 }],
             ["ussr", "Horse", "cav", 0, 3, 0, 0, 7, {}],
             ["ussr", "PMZ-A-750", "cav-wheel", 34, 3, 0, 0, 5, {}],
             ["ussr", "Dnepr M-72", "cav-wheel", 42, 3, 0, 0, 6, {}],

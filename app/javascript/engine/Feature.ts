@@ -117,6 +117,7 @@ export default class Feature {
   topOpen = false
   isTracked = false
   isWheeled = false
+  amphibious = false
   crewed = false;
   offBoard = false
   singleFire = false

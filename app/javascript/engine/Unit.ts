@@ -43,6 +43,7 @@ export type UnitData = {
     ta?: { f: number; s: number; r: number; t?: -1}
     sg?: { f: number; r: number; t?: string }
     sn?: number; bv?: number; f?: number; tow?: SizeRange; ifv?: NumberBoolean;
+    amp?: NumberBoolean;
   }
   x?: number;
 
@@ -90,6 +91,7 @@ export default class Unit {
   eliteCrew: number;
   turreted: boolean;
   movementType: MovementTypeType;
+  amphibious: boolean;
   hullArmor?: [number, number, number];
   turretArmor?: [number, number, number];
   armored: boolean = false;
@@ -161,6 +163,7 @@ export default class Unit {
     if (this.crewed) {
       this.movementType = movementType.Gun
     }
+    this.amphibious = !!data.o?.amp
 
     if (data.o?.ha !== undefined) {
       this.hullArmor = [data.o.ha.f, data.o.ha.s, data.o.ha.r]

@@ -1982,6 +1982,77 @@ File.open('htat.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('ht-amp.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  y1 = 90
+  y2 = 80
+  write_path([
+    ["M", 15, y2], ["C", [22, y2], [18, y1], [25, y1]], ["C", [32, y1], [28, y2], [35, y2]],
+    ["C", [42, y2], [38, y1], [45, y1]], ["C", [52, y1], [48, y2], [55, y2]],
+    ["C", [62, y2], [58, y1], [65, y1]], ["C", [72, y1], [68, y2], [75, y2]],
+  ], file, false)
+  file.puts footer
+end
+
+File.open('htat-amp.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  # write_path([["M", 35, 98], ["L", 45, 80], ["L", 55, 98]], file, false)
+  y1 = 90
+  y2 = 80
+  write_path([
+    ["M", 15, y2], ["C", [22, y2], [18, y1], [25, y1]], ["C", [32, y1], [28, y2], [35, y2]],
+    ["C", [42, y2], [38, y1], [45, y1]], ["C", [52, y1], [48, y2], [55, y2]],
+    ["C", [62, y2], [58, y1], [65, y1]], ["C", [72, y1], [68, y2], [75, y2]],
+  ], file, false)
+  file.puts footer
+end
+
+File.open('htgun-amp.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 30, 42.5], ["A", [15, 15], 0, [0, 1], [60, 42.5]],
+    ["L", 60, 57.5], ["A", [15, 15], 0, [0, 1], [30, 57.5]], ["L", 30, 42.5],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 75, 3]], file, false)
+  write_path([["M", 75, 98], ["L", 15, 3]], file, false)
+  write_circle(45, 50, 8, file)
+  y1 = 90
+  y2 = 80
+  write_path([
+    ["M", 15, y2], ["C", [22, y2], [18, y1], [25, y1]], ["C", [32, y1], [28, y2], [35, y2]],
+    ["C", [42, y2], [38, y1], [45, y1]], ["C", [52, y1], [48, y2], [55, y2]],
+    ["C", [62, y2], [58, y1], [65, y1]], ["C", [72, y1], [68, y2], [75, y2]],
+  ], file, false)
+  file.puts footer
+end
+
 File.open('htmtr.svg', 'w') do |file|
   file.puts header
   write_path([

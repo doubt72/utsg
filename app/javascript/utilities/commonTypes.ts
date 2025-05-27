@@ -72,15 +72,15 @@ export const baseTerrainType: { [index: string]: BaseTerrainTypeType } = {
   Grass: "g", Urban: "u", Sand: "d", Mud: "m", Snow: "s"
 }
 
-export type TerrainTypeType = "o" | "f" | "b" | "j" | "s" | "m" | "w" | "g" | "r" | "d" | "t" | "x" | "y"
+export type TerrainTypeType = "o" | "f" | "b" | "j" | "p" | "s" | "m" | "w" | "g" | "r" | "d" | "t" | "x" | "y"
 export const terrainType: { [index: string]: TerrainTypeType } = {
   Open: "o", Forest: "f", Brush: "b", Jungle: "j", Sand: "s", Marsh: "m", Water: "w",
-  Grain: "g", Rough: "r", Orchard: "d", Soft: "t", Debris: "x", Shallow: "y",
+  Grain: "g", Rough: "r", Orchard: "d", Soft: "t", Debris: "x", Shallow: "y", Palm: "p"
 }
 
-export type RoadTypeType = "t" | "d" | "p"
+export type RoadTypeType = "t" | "d" | "p" | "a"
 export const roadType: { [index: string]: RoadTypeType } = {
-  Tarmac: "t", Dirt: "d", Path: "p"
+  Tarmac: "t", Dirt: "d", Path: "p", Airfield: "a"
 }
 
 export type RoadCenterType = "l" | "r"
@@ -88,9 +88,9 @@ export const roadCenter: { [index: string]: RoadCenterType } = {
   Left: "l", Right: "r"
 }
 
-export type StreamTypeType = "s" | "g"
+export type StreamTypeType = "s" | "g" | "t"
 export const streamType: { [index: string]: StreamTypeType } = {
-  Stream: "s", Gully: "g",
+  Stream: "s", Gully: "g", Trench: "t"
 }
 
 export type BorderTypeType = "w" | "f" | "c" | "b"

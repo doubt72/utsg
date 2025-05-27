@@ -8,7 +8,7 @@ export type SVGStyle = {
   strokeWidth?: number;
   strokeLinecap?: string;
   strokeLinejoin?: string;
-  strokeDasharray?: [number, number];
+  strokeDasharray?: number[];
 }
 export type PathLayout = {
   path: string;

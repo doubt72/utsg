@@ -12,6 +12,7 @@ import {
   WindTypeType,
   baseTerrainType,
   markerType,
+  terrainType,
   unitType,
   weatherType,
   windType,
@@ -511,7 +512,11 @@ export default class Map {
       this.game.scenario.alliedReinforcements[turn][index].counter :
       this.game.scenario.axisReinforcements[turn][index].counter
     if (!hex?.terrain.move) { return false }
-    if (!hex.terrain.vehicle && !uf.isFeature && (uf.isTracked || uf.isWheeled)) { return false }
+    if (!hex.terrain.vehicle && !uf.isFeature && (uf.isTracked || uf.isWheeled)) {
+      if (hex.baseTerrain !== terrainType.Shallow || uf.isFeature || !uf.amphibious) {
+        return false
+      }
+    }
     if (hex.terrain.gun === false && !uf.isFeature && (uf.type === unitType.Gun)) { return false }
     if (uf.isFeature) {
       if (!hex.terrain.vehicle) { return false }

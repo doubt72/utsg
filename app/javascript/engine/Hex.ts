@@ -1,7 +1,7 @@
 import {
   BorderTypeType, BuildingShapeType, BuildingStyleType, Coordinate, Direction,
   Elevation, ExtendedDirection, RoadCenterType, RoadTypeType, StreamTypeType, TerrainTypeType,
-  baseTerrainType, borderType, roadType, terrainType
+  baseTerrainType, borderType, roadType, streamType, terrainType
 } from "../utilities/commonTypes"
 import {
   hexLos, hexLosAlongEdgeHindrance, hexLosAlongEdgeLos, hexLosCounterLos,
@@ -156,6 +156,7 @@ export default class Hex {
       f: { fill: "url(#forest-pattern)" },
       b: { fill: "url(#brush-pattern)" },
       j: { fill: "url(#jungle-pattern)" },
+      p: { fill: "url(#palm-pattern)" },
       s: { fill: "url(#sand-pattern)" },
       r: { fill: "url(#rough-pattern)" },
       m: { fill: this.map.baseTerrain === baseTerrainType.Snow ? "url(#frozen-marsh-pattern)" :
@@ -463,7 +464,8 @@ export default class Hex {
 
   path(directions?: Direction[], center?: RoadCenterType): string {
     if (!directions) { return "" }
-    if (directions.length === 2) {
+    if (directions.length === 2 && !(this.river && this.riverType === streamType.Trench) &&
+      !(this.road && this.roadType === roadType.Airfield)) {
       const d1 = directions[0]
       const d2 = directions[1]
       const x1 = this.xEdge(d1)
@@ -520,14 +522,19 @@ export default class Hex {
 
   get riverStyle(): SVGStyle {
     let color = this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater
+    let dash = undefined
     if (this.riverType === "g") {
       color = "#070"
+      dash = [14, 14]
+    } else if (this.riverType === "t") {
+      color = "#753"
+      dash = [18, 5]
     }
     return {
       fill: "rgba(0,0,0,0)",
       strokeWidth: 10,
       stroke: color,
-      strokeDasharray: this.riverType === "g" ? [14, 14] : undefined,
+      strokeDasharray: dash,
       strokeLinejoin: "round",
     }
   }
@@ -555,23 +562,35 @@ export default class Hex {
   }
 
   get roadEdgeStyle(): SVGStyle {
+    const stroke = (this.roadType === roadType.Tarmac || this.roadType === roadType.Airfield) ?
+      "#AAA" : "#FD7"
+    let width = this.roadType === roadType.Path ? 0 : 16
+    if (this.roadType === roadType.Airfield) { width = 64 }
     return {
       fill: "rgba(0,0,0,0)",
-      strokeWidth: this.roadType === "p" ? 0 : 16,
-      stroke: this.roadType === "t" ? "#AAA" : "#FD7",
-      strokeLinejoin: "round",
+      strokeWidth: width,
+      stroke: stroke,
+      strokeLinejoin: this.roadType === roadType.Airfield ? "miter" : "round",
     }
   }
 
   get roadStyle(): SVGStyle {
-    let stroke = this.roadType === "t" ? "#DDD" : "#B85"
-    if (this.roadType === "p") { stroke = "rgba(47, 31, 0, 0.5)"}
+    let stroke = this.roadType === roadType.Tarmac ? "#DDD" : "#B85"
+    let width = 12
+    if (this.roadType === roadType.Path) {
+      stroke = "rgba(47, 31, 0, 0.5)"
+      width = 2
+    }
+    if (this.roadType === roadType.Airfield) {
+      stroke = "#DCB"
+      width = 56
+    }
     return {
       fill: "rgba(0,0,0,0)",
-      strokeWidth: this.roadType === "p" ? 2 : 12,
+      strokeWidth: width,
       stroke,
-      strokeDasharray: this.roadType === "p" ? [5, 5] : undefined,
-      strokeLinejoin: "round",
+      strokeDasharray: this.roadType === roadType.Path ? [5, 5] : undefined,
+      strokeLinejoin: this.roadType === roadType.Airfield ? "miter" : "round",
     }
   }
 

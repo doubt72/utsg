@@ -26,8 +26,8 @@ module Scenarios
         list: [
           :jap_leader_6_1,
           :jap_leader_4_1,
-          [8, :jap_a_division_s],
-          :jap_a_division_t,
+          [8, :jap_b_division_s],
+          :jap_b_division_t,
           [2, :jap_type_99_lmg],
           :jap_type_89_gren_l,
           :jap_70mm_type_92,

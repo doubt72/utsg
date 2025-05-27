@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario405 < Base
     ID = "405"
-    NAME = "End of the Patrol"
+    NAME = "Patrol's End"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"
@@ -27,7 +27,7 @@ module Scenarios
         list: [
           :jap_leader_4_1,
           :jap_leader_3_1,
-          [6, :jap_a_division_s],
+          [6, :jap_b_division_s],
           [2, :jap_type_99_lmg],
         ],
       },
@@ -102,13 +102,13 @@ module Scenarios
             { t: "o", h: 3 },
             { t: "o", h: 3 },
             { t: "o", h: 2 },
-            { t: "o", h: 2 },
-            { t: "o", h: 2 },
+            { t: "p", h: 2 },
+            { t: "p", h: 2 },
             { t: "j", h: 2 },
             { t: "j", h: 2 },
             { t: "o", h: 2 },
-            { t: "b", h: 2 },
-            { t: "b", h: 2 },
+            { t: "p", h: 2 },
+            { t: "p", h: 2 },
           ], [
             { t: "j", h: 3 },
             { t: "j", h: 3 },
@@ -118,13 +118,13 @@ module Scenarios
             { t: "j", h: 3 },
             { t: "j", h: 3 },
             { t: "o", h: 3 },
-            { t: "o", h: 3 },
+            { t: "p", h: 3 },
             { t: "j", h: 3 },
             { t: "j", h: 3 },
             { t: "o", h: 2 },
             { t: "o", h: 2 },
-            { t: "b", h: 2 },
-            { t: "b", h: 2 },
+            { t: "p", h: 2 },
+            { t: "p", h: 2 },
           ], [
             { t: "j", h: 3 },
             { t: "j", h: 3 },
@@ -190,8 +190,8 @@ module Scenarios
             { t: "j", h: 2 },
             { t: "j", h: 2 },
           ], [
-            { t: "b", h: 2 },
-            { t: "b", h: 2 },
+            { t: "p", h: 2 },
+            { t: "p", h: 2 },
             { t: "j", h: 2 },
             { t: "j", h: 3 },
             { t: "j", h: 3 },
@@ -207,7 +207,7 @@ module Scenarios
             { t: "j", h: 2 },
           ], [
             { t: "j", h: 1, b: "c", be: [2, 3, 4] },
-            { t: "b", h: 2 },
+            { t: "p", h: 2 },
             { t: "j", h: 2 },
             { t: "j", h: 3 },
             { t: "j", h: 3 },
@@ -224,7 +224,7 @@ module Scenarios
           ], [
             { t: "j", h: 1 },
             { t: "j", h: 1, b: "c", be: [3, 4] },
-            { t: "b", h: 2, b: "c", be: [5, 6] },
+            { t: "p", h: 2, b: "c", be: [5, 6] },
             { t: "j", h: 2, b: "c", be: [5, 6] },
             { t: "j", h: 2, b: "c", be: [5, 6] },
             { t: "j", h: 2, b: "c", be: [5, 6] },

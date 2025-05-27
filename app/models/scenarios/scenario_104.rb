@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario104 < Base
     ID = "104"
-    NAME = "A Hard Place" # TODO: save this name for something else: "Ayo Gorkhali"
+    NAME = "A Hard Place"
     ALLIES = ["ind"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

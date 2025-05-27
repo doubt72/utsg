@@ -20,6 +20,7 @@ export default class Terrain {
       s: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "sand" },
       m: { move: 3, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "marsh" },
       j: { move: 3, hindrance: 0, cover: 2, los: true,  vehicle: false, gun: false,  name: "jungle" },
+      p: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "palm trees" },
       r: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "rough" },
       t: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "soft ground" },
       x: { move: 1, hindrance: 1, cover: 1, los: false, vehicle: false, gun: false,  name: "debris" },
