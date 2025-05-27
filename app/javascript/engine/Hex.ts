@@ -1,7 +1,7 @@
 import {
   BorderTypeType, BuildingShapeType, BuildingStyleType, Coordinate, Direction,
   Elevation, ExtendedDirection, RoadCenterType, RoadTypeType, StreamTypeType, TerrainTypeType,
-  baseTerrainType, borderType, roadType, streamType, terrainType
+  baseTerrainType, roadType, streamType, terrainType
 } from "../utilities/commonTypes"
 import {
   hexLos, hexLosAlongEdgeHindrance, hexLosAlongEdgeLos, hexLosCounterLos,
@@ -220,7 +220,7 @@ export default class Hex {
     let none = true
     const edges = this.map.hexNeighbors(this.coord).map((h, i) => {
       if (!h) { return true } // doesn't affect all or none -- but include edges if partial
-      const check = (this.border === borderType.Cliff &&
+      const check = (this.border !== undefined &&
                      this.borderEdges?.includes(i+1 as Direction)) ||
                     (h.elevation >= this.elevation && h.elevation > 0) ||
                     (h.elevation <= this.elevation && h.elevation < 0)

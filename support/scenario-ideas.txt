@@ -38,28 +38,32 @@ Existing:
 - 206 44 Brazilians Monte Costello
 
 400 Pacific (South Pacific/New Guinea/Phillipines)
-  401    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
-  402    Reduce Japanese Strongpoint in New Guinea
-  403    Late Manila urban Fighting
-  404    Tarawa
+- 401 44 Lyte Valley
+  402    Hold village against constant piecemeal attack / Kokoda Trail raid by Japanese on camp
+  403    Reduce Japanese Strongpoint in New Guinea
+- 404 45 Manila urban Fighting
 - 405 42 The Long Patrol
-
+- 406 43 Tarawa
 - 407 42 Edson's/Bloody Ridge Guadalcanal
 - 408 43 Attu Island
 
+  410    Tank Attack on Saipan
+
 Later:
-  4 Fight over fields inside a clearing, somewhere in the Philippines
   4 Eora Kokoda Australian New Guinea - Jungle Bridge Crossing
   4 Up the Beach against Japanese Strongpoint in Tarawa or Pelieu
   4 New Strip Buna New Guinea
   4 Bobdubi Ridge New Guinea
-  4 Bataan Defense
 
++ 4 Bataan Defense
++ 4 Saipan Landings / Death Valley / Flame Throwers / Flame Tanks
 + 4 Eniwetok
++ 4 Luzon Tank Battle
 - 4 Second, Third, Fourth Battles of Matanikau
 - 4 Saddle Ridge/Battle for Henderson Field
 - 4 Iwo Jima / Hill 382 / Hill 362 / The Meatgrinder / Flamethrowers
   4 Okinawa / Steel Storm
+  4 Lyte 44 Battle of the Ridges/ Airfields / Shoestring Ridge
 
 500 Finland/Poland/France/Norway/Balkans
 - 501 40 Finish Ambush in snow against armored column Winter War
