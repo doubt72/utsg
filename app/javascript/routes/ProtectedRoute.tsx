@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { getAPI } from "../utilities/network";
+import { adminUsers, getAPI } from "../utilities/network";
 
 export function ProtectedRoute() {
   const navigate = useNavigate()
@@ -28,6 +28,9 @@ export function ProtectedRoute() {
             unauthorized()
           } else {
             localStorage.removeItem("validationNeeded")
+            if (path.includes("debug") && !adminUsers.includes(body.username)) {
+              navigate("/", { replace: true })
+            }
           }
         }).catch(error => {
           console.log(error.message)

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getAPI } from "../../utilities/network";
-import CounterDisplay from "./CounterDisplay";
-import Feature, { FeatureData } from "../../engine/Feature";
-import Marker, { MarkerData } from "../../engine/Marker";
-import { UnitData } from "../../engine/Unit";
+import { getAPI } from "../utilities/network";
+import CounterDisplay from "../components/game/CounterDisplay";
+import Feature, { FeatureData } from "../engine/Feature";
+import Marker, { MarkerData } from "../engine/Marker";
+import { UnitData } from "../engine/Unit";
 
 
 export default function DebugMarkers() {

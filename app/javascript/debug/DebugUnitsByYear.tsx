@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getAPI } from "../../utilities/network";
-import CounterDisplay from "./CounterDisplay";
-import Unit, { UnitData } from "../../engine/Unit";
-import { MarkerData } from "../../engine/Marker";
-import { FeatureData } from "../../engine/Feature";
+import { getAPI } from "../utilities/network";
+import CounterDisplay from "../components/game/CounterDisplay";
+import Unit, { UnitData } from "../engine/Unit";
+import { MarkerData } from "../engine/Marker";
+import { FeatureData } from "../engine/Feature";
 import { useParams } from "react-router-dom";
 
 

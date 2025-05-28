@@ -70,3 +70,8 @@ export function putAPI(url: string, body: object, responseOptions: HTTPResponses
 export function deleteAPI(url: string, responseOptions: HTTPResponses): void {
   fetchAPI(url, "DELETE", {}, responseOptions)
 }
+
+// TODO: maybe move this to DB?
+export const adminUsers = [
+  "doubt72",
+]

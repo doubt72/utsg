@@ -13,11 +13,12 @@ import RecoverAccount from "../components/user/RecoverAccount";
 import ResetPassword from "../components/user/ResetPassword";
 import DeleteAccount from '../components/user/DeleteAccount';
 import NewGame from "../components/game/NewGame";
-import DebugUnits from "../components/game/DebugUnits";
-import DebugMap from "../components/game/DebugMap";
+import DebugUnits from "../debug/DebugUnits";
+import DebugMap from "../debug/DebugMap";
 import GameDisplay from "../components/game/GameDisplay";
-import DebugMarkers from "../components/game/DebugMarkers";
-import DebugUnitsByYear from "../components/game/DebugUnitsByYear";
+import DebugMarkers from "../debug/DebugMarkers";
+import DebugUnitsByYear from "../debug/DebugUnitsByYear";
+import DebugIndex from "../debug/DebugIndex";
 
 export default function Routes() {
   const publicRoutes = [
@@ -41,6 +42,7 @@ export default function Routes() {
         { path: "/logout", element: <Logout /> },
         { path: "/profile", element: <Profile /> },
 
+        { path: "/debug/", element: <DebugIndex /> },
         { path: "/debug/markers", element: <DebugMarkers /> },
         { path: "/debug/markers/:nation", element: <DebugUnits /> },
         { path: "/debug/units/", element: <DebugUnits /> },

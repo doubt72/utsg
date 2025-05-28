@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import GameMap from "./map/GameMap";
-import Game, { gamePhaseType } from "../../engine/Game";
-import { mapDebugData } from "../../debug/data";
-import Map from "../../engine/Map";
+import GameMap from "../components/game/map/GameMap";
+import Game, { gamePhaseType } from "../engine/Game";
+import { mapDebugData } from "./data";
+import Map from "../engine/Map";
 import {
   BaseTerrainTypeType,
   Coordinate,
@@ -13,11 +13,11 @@ import {
   baseTerrainType,
   weatherType,
   windType,
-} from "../../utilities/commonTypes";
-import Feature from "../../engine/Feature";
-import Unit from "../../engine/Unit";
-import Counter from "../../engine/Counter";
-import { normalDir } from "../../utilities/utilities";
+} from "../utilities/commonTypes";
+import Feature from "../engine/Feature";
+import Unit from "../engine/Unit";
+import Counter from "../engine/Counter";
+import { normalDir } from "../utilities/utilities";
 
 export default function DebugMap() {
   const id: number = Number(useParams().id)
