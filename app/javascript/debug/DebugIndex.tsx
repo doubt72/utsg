@@ -58,6 +58,36 @@ export default function DebugIndex() {
         </ul>
       </div>
       <div className="p1em">
+        Units by Type:
+        <ul>
+          <li><Link to={"/debug/units/type"}>all</Link></li>
+        </ul>
+        Types:
+        <ul>
+          <li><Link to={"/debug/units/type/ldr"}>leaders</Link></li>
+          <li><Link to={"/debug/units/type/sqd"}>infantry squads</Link></li>
+          <li><Link to={"/debug/units/type/tm"}>infantry teams</Link></li>
+          <li><Link to={"/debug/units/type/sw"}>infantry weapons</Link></li>
+          <li><Link to={"/debug/units/type/gun"}>guns</Link></li>
+          <li><Link to={"/debug/units/type/tank"}>tanks</Link></li>
+          <li><Link to={"/debug/units/type/spg"}>self-propelled guns</Link></li>
+          <li><Link to={"/debug/units/type/ac"}>armored cars</Link></li>
+          <li><Link to={"/debug/units/type/ht"}>half-tracks</Link></li>
+          <li><Link to={"/debug/units/type/truck"}>trucks</Link></li>
+          <li><Link to={"/debug/units/type/cav"}>cavalry</Link></li>
+        </ul>
+        Functions:
+        <ul>
+          <li><Link to={"/debug/units/ability/assault"}>assault</Link></li>
+          <li><Link to={"/debug/units/ability/smoke"}>smoke</Link></li>
+          <li><Link to={"/debug/units/ability/eng"}>engineering</Link></li>
+          <li><Link to={"/debug/units/ability/tow"}>can be towed</Link></li>
+          <li><Link to={"/debug/units/ability/amp"}>amphibious</Link></li>
+          <li><Link to={"/debug/units/ability/trans"}>transports</Link></li>
+          <li><Link to={"/debug/units/ability/spon"}>sponsons</Link></li>
+        </ul>
+      </div>
+      <div className="p1em">
         Markers:
         <ul>
           <li><Link to={"/debug/markers"}>all</Link></li>

@@ -22,8 +22,8 @@ import {
 //        f: front, s: side, r: rear, t: top (if zero)
 //    sg: sponson mounted gun
 //        f: firepower, r: range, t: type=g/ft
-//    sn: small names, bv: broken movement, f: fix number,
-//    tow: size truck needed for towing,
+//    sn: small names, bv: broken movement, f: fix number, eng: engineering,
+//    tow: size truck needed for towing, tr: transport, amp: amphibious
 // x: count
 
 // TODO: Maybe more types for some of these
@@ -42,8 +42,8 @@ export type UnitData = {
     ha?: { f: number; s: number; r: number; t?: -1}
     ta?: { f: number; s: number; r: number; t?: -1}
     sg?: { f: number; r: number; t?: string }
-    sn?: number; bv?: number; f?: number; tow?: SizeRange; ifv?: NumberBoolean;
-    amp?: NumberBoolean;
+    sn?: number; bv?: number; f?: number; tow?: SizeRange; tr?: number;
+    amp?: NumberBoolean; eng: NumberBoolean;
   }
   x?: number;
 
@@ -60,13 +60,14 @@ export default class Unit {
   baseMorale: MoraleRange;
   size: SizeRange;
   tow: SizeRange | undefined;
-  protectSquad: boolean;
+  transport: number;
   baseFirepower: number;
   baseRange: number;
   baseMovement: number;
 
   leadership: LeadershipRange;
   assault: boolean;
+  engineer: boolean;
   smokeCapable: boolean;
   gunHandling: GunHandlingRange;
   brokenMovement: number;
@@ -123,13 +124,14 @@ export default class Unit {
     this.baseMorale = data.m ?? 0
     this.size = data.s ?? 1
     this.tow = data.o?.tow
-    this.protectSquad = !!data.o?.ifv
+    this.transport = data.o?.tr ?? 0
     this.baseFirepower = data.f
     this.baseRange = data.r
     this.baseMovement = data.v
 
     this.leadership = data.o?.l ?? 0
     this.assault = !!data.o?.a
+    this.engineer = !!data.o?.eng
     this.smokeCapable = !!data.o?.s
     this.gunHandling = data.o?.cw ?? 0
     this.brokenMovement = data.o?.bv || 6

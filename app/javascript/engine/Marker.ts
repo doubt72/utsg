@@ -57,7 +57,7 @@ export default class Marker {
   sponson = false
   size = 0
   tow = undefined
-  protectSquad = false
+  transport = 0
   smallName = 0
   baseMorale = 0
   currentMorale = 0
@@ -84,6 +84,7 @@ export default class Marker {
   offBoard = false
   singleFire = false
   assault = false
+  engineer = false
   ignoreTerrain = false
   targetedRange = false
   rapidFire = false
