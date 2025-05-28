@@ -99,6 +99,7 @@ module Scenarios
           allied_setup: { "0" => [["*", "0-18"]] },
           axis_setup: { "0" => [["*", "20-22"]] },
           base_terrain: "g",
+          night: true,
         }
       end
 

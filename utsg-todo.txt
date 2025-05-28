@@ -1,3 +1,7 @@
+- Add some pages for statistical analysis of
+  - Weather/wind
+  - Unit Usage
+
 - Add graduated coloring when placing support weapons
 
 - Mark vehicle can carry squad/team/leader

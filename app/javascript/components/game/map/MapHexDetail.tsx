@@ -74,7 +74,7 @@ export default function MapHexDetail({
   }
 
   const night = (
-    <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0.16)" }} />
+    <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0.1)" }} />
   )
 
   const outline = (

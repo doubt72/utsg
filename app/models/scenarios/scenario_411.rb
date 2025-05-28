@@ -1,0 +1,282 @@
+# frozen_string_literal: true
+
+module Scenarios
+  class Scenario411 < Base
+    ID = "411"
+    NAME = "Breaking Back"
+    ALLIES = ["aus"].freeze
+    AXIS = ["jap"].freeze
+    STATUS = "p"
+
+    DATE = [1942, 10, 22].freeze
+    LAYOUT = [15, 11, "x"].freeze
+
+    ALLIED_UNITS = {
+      "0": {
+        list: [
+          :uk_leader_5_1,
+          :uk_leader_4_1,
+          [10, :uk_line_s],
+          [2, :uk_vickers_mg],
+        ],
+      },
+    }.freeze
+
+    AXIS_UNITS = {
+      "0": {
+        list: [
+          :jap_leader_5_1,
+          :jap_leader_4_1,
+          [6, :jap_b_division_s],
+          :jap_crew_t,
+          [2, :jap_type_92_hmg],
+          :jap_70mm_type_92,
+          :pillbox,
+        ],
+      },
+    }.freeze
+
+    class << self
+      def generate
+        {
+          turns: 6,
+          first_setup: 2,
+          first_move: 1,
+          date:,
+          location: "Eora, Papua New Guinea",
+          author: "The Establishment",
+          description:,
+          map_data:,
+          allied_units:,
+          axis_units:,
+        }
+      end
+
+      def description
+        [
+          "During a series of battles along the Kokoda Track across the Owen
+          Stanley Range along the spine of Papua New Guinea in August and
+          September, the Japanese force fought the Australians back to near
+          the southern end of the Kokoda Track at Ioribaiwa.  Here, in
+          mid-September, the Australians finally managed to fight the Japanese
+          to a standstill before withdrawing further to Imita Ridge, where
+          they established a final defensive line for a last stand.  Before
+          this climactic battle could take place, though, the Japanese reached
+          the limit of their supply line and the strategic situation elsewhere
+          in the Pacific, specifically the defeats around Milne Bay and on
+          Guadalcanal, resulted in the tide shifting towards the Australians.
+          By late September, the Japanese commander had received orders to
+          assume a defensive posture rather than continuing the drive on Port
+          Moresby.",
+
+          "By October, the tide had completely turned, and the Australians
+          advanced along the Kokoda Track.  A series of actions were
+          subsequently fought around the Eora Creek and Templeton's Crossing
+          and now the Australians outnumbered the Japanese roughly 2 to 1,
+          essentially mirroring the situation during the first battle in the vicinity.",
+        ]
+      end
+
+      def map_data
+        {
+          start_weather: 0,
+          base_weather: 0,
+          precip: [0, 2],
+          wind: [0, 3, false],
+          hexes:,
+          layout:,
+          allied_edge: "r",
+          axis_edge: "l",
+          victory_hexes: [
+            [2, 5, 2], [6, 4, 2], [8, 6, 2], [10, 4, 2], [12, 3, 2],
+          ],
+          allied_setup: { "0" => [["*", "9-10"]] },
+          axis_setup: { "0" => [["*", "0-7"]] },
+          base_terrain: "g",
+        }
+      end
+
+      def hexes
+        [
+          [
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j", r: { d: [3, 6], t: "p" } },
+            { t: "y" },
+            { t: "o" },
+            { t: "j" },
+          ], [
+            { t: "j", h: 1 },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "o", r: { d: [3, 6], t: "p" } },
+            { t: "j" },
+            { t: "y" },
+            { t: "o" },
+            { t: "j" },
+          ], [
+            { t: "j", h: 1 },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "o" },
+            { t: "o", r: { d: [3, 6], t: "p" } },
+            { t: "p" },
+            { t: "y" },
+            { t: "o" },
+            { t: "j" },
+          ], [
+            { t: "j" },
+            { t: "j" },
+            { t: "y" },
+            { t: "y" },
+            { t: "y" },
+            { t: "y" },
+            { t: "y" },
+            { t: "j" },
+            { t: "o" },
+            { t: "o", r: { d: [3, 5] } },
+            { t: "p" },
+            { t: "y" },
+            { t: "o", d: 3, st: { sh: "l2", s: "f" } },
+            { t: "o" },
+            { t: "j", h: 1 },
+          ], [
+            { t: "j" },
+            { t: "j" },
+            { t: "y" },
+            { t: "p" },
+            { t: "p" },
+            { t: "o", d: 1, st: { sh: "l2", s: "f" } },
+            { t: "o", d: 1, st: { sh: "l2", s: "f" } },
+            { t: "y" },
+            { t: "y" },
+            { t: "y" },
+            { t: "y", r: { d: [2, 5] } },
+            { t: "y" },
+            { t: "o", r: { d: [3, 6], t: "p" } },
+            { t: "o" },
+            { t: "j", h: 1 },
+          ], [
+            { t: "j" },
+            { t: "y" },
+            { t: "o", d: 3, st: { sh: "l2", s: "f" } },
+            { t: "o" },
+            { t: "o" },
+            { t: "p" },
+            { t: "o", r: { d: [4, 6] } },
+            { t: "o", r: { d: [1, 4] } },
+            { t: "o", r: { d: [1, 4] } },
+            { t: "o", r: { d: [1, 4] } },
+            { t: "o", r: { d: [1, 2] } },
+            { t: "y" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+          ], [
+            { t: "j" },
+            { t: "y" },
+            { t: "p" },
+            { t: "o" },
+            { t: "o", r: { d: [4, 6] } },
+            { t: "o", r: { d: [1, 4] } },
+            { t: "o", r: { d: [1, 3] } },
+            { t: "p" },
+            { t: "o", d: 1, st: { sh: "l2", s: "f" } },
+            { t: "j" },
+            { t: "o" },
+            { t: "o" },
+            { t: "y" },
+            { t: "y" },
+            { t: "y" },
+          ], [
+            { t: "j" },
+            { t: "y" },
+            { t: "p" },
+            { t: "o", r: { d: [3, 5] } },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "o" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+          ], [
+            { t: "j" },
+            { t: "j" },
+            { t: "y" },
+            { t: "p" },
+            { t: "o", r: { d: [2, 5], t: "p" } },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j" },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+          ], [
+            { t: "j" },
+            { t: "j" },
+            { t: "y" },
+            { t: "j" },
+            { t: "o", r: { d: [2, 5], t: "p" } },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "p", h: 1 },
+            { t: "p", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+          ], [
+            { t: "j" },
+            { t: "j" },
+            { t: "y" },
+            { t: "j" },
+            { t: "j" },
+            { t: "o", h: 1, r: { d: [2, 5], t: "p" } },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "o", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+            { t: "j", h: 1 },
+          ],
+        ]
+      end
+    end
+  end
+end

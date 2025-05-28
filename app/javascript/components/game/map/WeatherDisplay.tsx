@@ -106,6 +106,11 @@ export default function WeatherDisplay({
         <g>
           <path d={roundedRectangle(xx, yy, 442, 169)}
                 style={{ fill: map?.baseTerrainColor, stroke: "#CCC", strokeWidth: 2 }} />
+          {
+            map?.night ? 
+              <path d={roundedRectangle(xx, yy, 442, 169)}
+                    style={{ fill: "rgba(0,0,0,0.1)", strokeWidth: 0 }} /> : ""
+          }
           <text x={xx + 14} y={yy + 160} fontSize={16} textAnchor="start"
                   fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
             terrain: {map?.baseTerrainName} ({map?.night ? "night" : "daytime"})
@@ -128,7 +133,7 @@ export default function WeatherDisplay({
           {
             map?.night ? 
               <path d={roundedRectangle(xx, yy, 190, 268)}
-                    style={{ fill: "rgba(0,0,0,0.16)", strokeWidth: 0 }} /> : ""
+                    style={{ fill: "rgba(0,0,0,0.1)", strokeWidth: 0 }} /> : ""
           }
           <text x={xx + 10} y={yy + 260} fontSize={16} textAnchor="start"
                   fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
