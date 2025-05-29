@@ -232,13 +232,21 @@ export default class Counter {
   }
 
   get towLayout(): CounterLayout | false {
-    if (!this.target.tow) { return false }
-    const path = this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10)
+    if (!this.target.towSize) { return false }
     return {
-      path,
-      style: { stroke: clearColor, strokeWidth: 0, fill: clearColor }, tStyle: { fill: "black" },
-      x: this.x + 73, y: this.y + 21, size: 12, value: this.target.tow,
+      tStyle: { fill: "black" },
+      x: this.x + 73, y: this.y + 21, size: 12, value: this.target.towSize,
     }
+  }
+
+  get canTowLayout(): CounterLayout | false {
+    if (!this.target.canTow) { return false }
+    const x = this.x + 66
+    const y = this.y + 30.5
+    const size = 5
+    const path = `M ${x - size} ${y} L ${x + size} ${y}`
+    console.log(path)
+    return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
   }
 
   get leadershipLayout(): CounterLayout | false {

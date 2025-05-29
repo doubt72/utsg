@@ -1,12 +1,4 @@
-- Add some pages for statistical analysis of
-  - Weather/wind
-  - Unit Usage
-
 - Add graduated coloring when placing support weapons
-
-- Mark vehicle can carry squad/team/leader
-- Mark unit can clear wire/mines
-- Consider Hull Gun Display
 
 - Update Rules on Carrying/Towing
 
@@ -34,6 +26,7 @@
 - Fill Out Scenarios
 
 - fix LOS error along firing arc in LOS repo image
+  - Also bug for hindrance at higher elevation
 - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
 - Tooltips for map controls?
 

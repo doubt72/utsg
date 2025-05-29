@@ -119,10 +119,18 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     const layout = counter.towLayout
     if (layout) return (
       <g>
-        <path d={layout.path} style={layout.style as object} />
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
               fontFamily="'Courier Prime', monospace"
               style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
+  const canTow = () => {
+    const layout = counter.canTowLayout
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
       </g>
     )
   }
@@ -454,7 +462,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {firepower()}{range()}{movement()}
       {smoke()}{engineer()}{amphibious()}
       {elite()}
-      {tow()}{leftTransport()}{rightTransport()}
+      {tow()}{canTow()}{leftTransport()}{rightTransport()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}
       {markerBreak()}{markerFix()}
       {markerMorale()}{markerFirepower()}{markerRange()}{markerMovement()}

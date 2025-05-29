@@ -22,7 +22,7 @@ import {
 //    sg: sponson mounted gun
 //        f: firepower, r: range, t: type=g/ft
 //    sn: small names, bv: broken movement, f: fix number, eng: engineering,
-//    tow: size truck needed for towing, tr: transport, amp: amphibious
+//    tow: size truck needed for towing, tr: transport, trg: can tow, amp: amphibious
 // x: count
 
 // TODO: Maybe more types for some of these
@@ -42,7 +42,7 @@ export type UnitData = {
     ta?: { f: number; s: number; r: number; t?: -1}
     sg?: { f: number; r: number; t?: string }
     sn?: number; bv?: number; f?: number; tow?: SizeRange; tr?: number;
-    amp?: NumberBoolean; eng: NumberBoolean;
+    amp?: NumberBoolean; eng?: NumberBoolean; trg?: NumberBoolean;
   }
   x?: number;
 
@@ -58,7 +58,8 @@ export default class Unit {
   year: number;
   baseMorale: MoraleRange;
   size: SizeRange;
-  tow: SizeRange | undefined;
+  towSize: SizeRange | undefined;
+  canTow: boolean;
   transport: number;
   baseFirepower: number;
   baseRange: number;
@@ -122,7 +123,8 @@ export default class Unit {
     this.year = data.y
     this.baseMorale = data.m ?? 0
     this.size = data.s ?? 1
-    this.tow = data.o?.tow
+    this.towSize = data.o?.tow
+    this.canTow = !!data.o?.trg
     this.transport = data.o?.tr ?? 0
     this.baseFirepower = data.f
     this.baseRange = data.r

@@ -28,10 +28,8 @@ LOS:
 
 Some counter debug list displays:
 
-![all UK counters](support/counters-uk.png)
-
 ![all German counters](support/counters-ger.png)
 
-![counters](support/counters.png)
+![USA counters by year](support/counters-usa.png)
 
 ![markers](support/markers.png)

@@ -41,7 +41,7 @@ module Scenarios
         list: [
           [2, :ger_crew_t],
           [2, :ger_8_8cm_flak_36],
-          [2, :ger_opel_blitz],
+          [2, :ger_l3000],
           :ger_pzkpfw_iii__39,
           :ger_pzkpfw_iv_a,
         ],
