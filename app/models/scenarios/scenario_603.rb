@@ -81,7 +81,7 @@ module Scenarios
           start_weather: 0,
           base_weather: 0,
           precip: [0, 2],
-          wind: [0, 3, false],
+          wind: [0, 2, false],
           hexes:,
           layout:,
           allied_edge: "l",
