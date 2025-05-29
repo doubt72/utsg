@@ -107,7 +107,7 @@ module Scenarios
           allied_edge: "r",
           axis_edge: "l",
           victory_hexes: [
-            [2, 5, 1], [4, 8, 1], [6, 4, 1], [8, 6, 1], [10, 4, 1],
+            [2, 5, 1], [4, 8, 1], [6, 4, 1], [8, 6, 1], [11, 5, 1],
           ],
           allied_setup: { "0" => [["*", "3-10"]] },
           axis_setup: {
