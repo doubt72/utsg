@@ -78,6 +78,7 @@ export default class Marker {
   topOpen = false
   isTracked = false
   isWheeled = false
+  amphibious = false
   crewed = false;
   antiTank = false
   fieldGun = false

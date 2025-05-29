@@ -54,9 +54,7 @@ export default function DebugUnitsByType() {
           (u.t === "sqd" || u.t === "gun" || u.i === "radio" || u.i === "mortar")
         ) { return true }
         if (ability === "eng" && u.o?.eng === undefined && u.t === "sqd" ) { return true }
-        if (ability === "tow" && u.o?.tow === undefined &&
-          (u.t === "gun" || u.i === "mortar")
-        ) { return true }
+        if (ability === "tow" && u.o?.tow === undefined && u.o?.c === 1) { return true }
         if (ability === "amp" && u.o?.amp === undefined && (u.o?.w || u.o?.k)) { return true }
         if (ability === "spon" && u.o?.sg === undefined && u.t === "tank") { return true }
         if (ability === "trans" && u.o?.tr === undefined &&

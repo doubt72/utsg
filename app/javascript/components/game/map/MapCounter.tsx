@@ -127,18 +127,6 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
-  const ifv = () => {
-    const layout = counter.ifvLayout
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
-  }
-
   const leadership = () => {
     const layout = counter.leadershipLayout
     if (layout) return (
@@ -178,9 +166,35 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   const smoke = () => {
     const layout = counter.smokeLayout
     if (layout) return (
-      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-            fontFamily="'Courier Prime', monospace"
-            style={layout.style as object}>{layout.value}</text>
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
+  const engineer = () => {
+    const layout = counter.engineerLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
+  const amphibious = () => {
+    const layout = counter.amphibiousLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
+  const rightTransport = () => {
+    const layout = counter.transportRLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
+  const leftTransport = () => {
+    const layout = counter.transportLLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
     )
   }
 
@@ -432,13 +446,15 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {counterBack}
       {nameBackground()}{name()}
       {morale()}
-      {weaponBreak()}{size()}{tow()}{ifv()}
-      {leadership()}{handling()}{breakdown()}{smoke()}{weaponFix()}
+      {weaponBreak()}{size()}
+      {leadership()}{handling()}{breakdown()}{weaponFix()}
       {icon()}{centerLabel()}
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}
       {firepower()}{range()}{movement()}
+      {smoke()}{engineer()}{amphibious()}
       {elite()}
+      {tow()}{leftTransport()}{rightTransport()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}
       {markerBreak()}{markerFix()}
       {markerMorale()}{markerFirepower()}{markerRange()}{markerMovement()}

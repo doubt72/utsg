@@ -1900,20 +1900,20 @@ end
 File.open('cav.svg', 'w') do |file|
   file.puts header
   write_path([
-    ["M", 10, 90], ["L", 10, 30], ["L", 90, 30], ["L", 90, 90], ["L", 10, 90], ["L", 10, 30],
+    ["M", 10, 95], ["L", 10, 35], ["L", 90, 35], ["L", 90, 95], ["L", 10, 95], ["L", 10, 35],
   ], file, false)
-  write_path([["M", 10, 90], ["L", 90, 30]], file, false)
+  write_path([["M", 10, 95], ["L", 90, 35]], file, false)
   file.puts footer
 end
 
 File.open('cav-wheel.svg', 'w') do |file|
   file.puts header
   write_path([
-    ["M", 10, 90], ["L", 10, 30], ["L", 90, 30], ["L", 90, 90], ["L", 10, 90], ["L", 10, 30],
+    ["M", 10, 95], ["L", 10, 35], ["L", 90, 35], ["L", 90, 95], ["L", 10, 95], ["L", 10, 35],
   ], file, false)
-  write_path([["M", 10, 90], ["L", 90, 30]], file, false)
-  write_circle(78, 82, 5, file, false)
-  write_circle(65, 82, 5, file, false)
+  write_path([["M", 10, 95], ["L", 90, 35]], file, false)
+  write_circle(78, 87, 5, file, false)
+  write_circle(65, 87, 5, file, false)
   file.puts footer
 end
 

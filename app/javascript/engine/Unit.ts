@@ -1,7 +1,6 @@
 import {
   Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementTypeType,
-  NumberBoolean,
-  SizeRange, UnitStatusType, UnitTypeType, movementType, unitStatus
+  NumberBoolean, SizeRange, UnitStatusType, UnitTypeType, movementType, unitStatus
 } from "../utilities/commonTypes";
 
 // c: nation, t: type, n: name, i: icon, y: year

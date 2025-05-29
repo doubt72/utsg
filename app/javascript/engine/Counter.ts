@@ -216,15 +216,17 @@ export default class Counter {
   }
   
   get sizeLayout(): CounterLayout | false {
+    const x = this.x + 66
+    const y = this.y + 23
     if (!this.target.size ) { return false }
     const stroke = this.target.armored && !this.target.isWreck ? "black" : clearColor
     const path = this.target.armored && this.target.topOpen ?
-      this.squarePath(new Coordinate(this.x + 66, this.y + 23)) :
-      this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10)
+      this.squarePath(new Coordinate(x, y)) :
+      this.circlePath(new Coordinate(x, y), 10)
     return {
       path,
       style: { stroke, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
-      x: this.x + 66, y: this.y + 28, size: 18, value: this.target.size,
+      x: x, y: y + 5, size: 18, value: this.target.size,
     }
   }
 
@@ -235,16 +237,6 @@ export default class Counter {
       path,
       style: { stroke: clearColor, strokeWidth: 0, fill: clearColor }, tStyle: { fill: "black" },
       x: this.x + 73, y: this.y + 21, size: 12, value: this.target.tow,
-    }
-  }
-
-  get ifvLayout(): CounterLayout | false {
-    if (this.target.transport === 0) { return false }
-    const path = this.circlePath(new Coordinate(this.x + 66, this.y + 23), 10)
-    return {
-      path,
-      style: { stroke: clearColor, strokeWidth: 0, fill: clearColor }, tStyle: { fill: "black" },
-      x: this.x + 72.5, y: this.y + 22, size: 12, value: "*",
     }
   }
 
@@ -283,15 +275,52 @@ export default class Counter {
 
   get smokeLayout(): CounterLayout | false {
     if (!this.target.currentSmokeCapable) { return false }
-    let x = this.x + 13
-    let y = this.y + 51
-    let size = 16
-    if (this.target.breakdownRoll) {
-      x = this.x + 5
-      y = this.y + 59
-      size = 13
-    }
-    return { x: x, y: y, size: size, value: "S", style: { fill: "black" } }
+    let x = this.x + 16
+    let y = this.y + 57
+    const size = 2
+    if (this.target.assault || this.target.targetedRange) { y -= 4 }
+    if (this.target.offBoard) { y -= 3 }
+    if (this.target.breakdownRoll) { y += 2; x -= 8 }
+    if (this.target.minimumRange) { x -= 2 }
+    const path = this.circlePath(new Coordinate(x, y), size)
+    return { x, y, size, path, style: { fill: "black" } }
+  }
+
+  get engineerLayout(): CounterLayout | false {
+    if (!this.target.engineer) { return false }
+    const x = this.x + 64
+    const y = this.y + 57
+    const size = 2
+    const path = this.circlePath(new Coordinate(x, y), size)
+    return { x, y, size, path, style: { fill: "black" } }
+  }
+
+  get amphibiousLayout(): CounterLayout | false {
+    if (!this.target.amphibious) { return false }
+    const x = this.x + 64
+    const y = this.y + 74
+    const size = 4
+    const path = `M ${x - size} ${y} L ${x + size} ${y}`
+    console.log(path)
+    return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
+  }
+
+  get transportLLayout(): CounterLayout | false {
+    if (this.target.transport !== 1 && this.target.transport !== 3) { return false }
+    const x = this.x + 59
+    const y = this.y + 23
+    const size = 2
+    const path = this.circlePath(new Coordinate(x, y), size)
+    return { x, y, size, path, style: { fill: "black" } }
+  }
+
+  get transportRLayout(): CounterLayout | false {
+    if (this.target.transport < 2) { return false }
+    const x = this.x + 73
+    const y = this.y + 23
+    const size = 2
+    const path = this.circlePath(new Coordinate(x, y), size)
+    return { x, y, size, path, style: { fill: "black" } }
   }
 
   get iconLayout(): CounterLayout | false {
