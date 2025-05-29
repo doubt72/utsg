@@ -967,7 +967,7 @@ module Utility
             ["uk", "Ford F15", "truck", 39, 3, 0, 0, 5, { tr: 3, trg: 1 }],
             ["uk", "Dodge D60", "truck", 39, 4, 0, 0, 5, { tr: 3, trg: 1 }],
             ["uk", "Dodge WC", "truck", 41, 3, 0, 0, 5, { tr: 3, trg: 1 }],
-            ["usa", "H-D WLA", "cav-wheel", 40, 3, 0, 0, 6, { tr: 3, trg: 1 }],
+            ["usa", "H-D WLA", "cav-wheel", 40, 3, 0, 0, 6, { tr: 3 }],
             ["usa", "Dodge VC", "truck", 40, 3, 0, 0, 5, { tr: 3, trg: 1 }],
             ["usa", "Dodge WC", "truck", 41, 3, 0, 0, 5, { tr: 3, trg: 1 }],
             ["ussr", "Dodge WC", "truck", 42, 3, 0, 0, 5, { tr: 3, trg: 1 }],
