@@ -94,7 +94,7 @@ module Scenarios
           ],
           allied_setup: { "0" => [["12-14", "*"]] },
           axis_setup: { "0" => [["0-10", "*"]] },
-          base_terrain: "g",
+          base_terrain: "u",
         }
       end
 

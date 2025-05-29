@@ -96,7 +96,7 @@ export default class Hex {
     this.river = !!data.s
     if (this.river) {
       this.riverDirections = data.s?.d
-      this.riverType = data.s?.t
+      this.riverType = data.s?.t ?? "s"
     }
     this.elevation = data.h ?? 0
     this.border = data.b

@@ -8,16 +8,16 @@ import Unit, { UnitData } from "./Unit";
 export type ScenarioData = {
   id: string;
   name: string;
-  status?: string;
+  status: string;
   allies: string[];
   axis: string[];
   metadata: {
-    author?: string;
-    description?: string[];
-    date?: [number, number, number];
-    location?: string;
+    author: string;
+    description: string[];
+    date: [number, number, number];
+    location: string;
     turns: number;
-    first_setup?: Player;
+    first_setup: Player;
     first_move: Player;
     allied_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
     axis_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
@@ -33,16 +33,16 @@ export type ReinforcementSchedule = { [index: number]: ReinforcementList };
 export default class Scenario {
   code: string;
   name: string;
-  author?: string;
-  status?: string;
+  author: string;
+  status: string;
   alliedFactions: string[];
   axisFactions: string[];
-  date?: [number, number, number];
-  location?: string;
-  description?: string[];
+  date: [number, number, number];
+  location: string;
+  description: string[];
   turns: number;
   firstMove: Player;
-  firstSetup?: Player;
+  firstSetup: Player;
   alliedReinforcements: ReinforcementSchedule = {};
   axisReinforcements: ReinforcementSchedule = {};
   map: Map;
@@ -52,7 +52,7 @@ export default class Scenario {
     this.code = data.id
     this.name = data.name
     this.author = data.metadata.author
-    this.status = data.status
+    this.status = data.status ?? "p"
 
     this.alliedFactions = data.allies
     this.axisFactions = data.axis

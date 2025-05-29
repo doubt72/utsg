@@ -7,6 +7,12 @@ import Feature, { FeatureData } from "../engine/Feature";
 import Scenario from "../engine/Scenario";
 import { useParams } from "react-router-dom";
 
+// Yes, I could have put all this on the backend, but (1) the backend is largely
+// a big dumb JSON blob store WRT to any game logic, and (2) while this is super
+// heavy on the network traffic, it's at least straightforward instead of adding
+// a whole new API for it.  And I wanted it on the web side, to make "casual
+// analysis" easier, not as some sort of text report (being able to see the
+// counters adds context).
 
 export default function DebugUnitStats() {
   const nation: string | undefined = useParams().nation

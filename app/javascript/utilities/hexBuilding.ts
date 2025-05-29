@@ -475,3 +475,26 @@ export function hexBuildingBuildingLosEdges(hex: Hex): number[] {
   if (hex.buildingShape === "bc3") { return [dir, opp+2] }
   return []
 }
+
+export function hexBuildingNames(code: string | undefined): string {
+  if (code === "x") { return "cross" }
+  if (code === "c") { return "silo" }
+  if (code === "t") { return "tank" }
+  if (code === "h") { return "huts" }
+  if (code === "l") { return "single (eaves)" }
+  if (code === "l2") { return "single" }
+  if (code === "s") { return "end (eaves)" }
+  if (code === "s2") { return "end" }
+  if (code === "m") { return "link (eaves)" }
+  if (code === "m2") { return "link" }
+  if (code === "bm") { return "middle" }
+  if (code === "bc1") { return "corner (1)" }
+  if (code === "bc2") { return "corner (2)" }
+  if (code === "bc3") { return "corner (3)" }
+  if (code === "bc4") { return "corner (4)" }
+  if (code === "bs1") { return "side (1)" }
+  if (code === "bs2") { return "side (2)" }
+  if (code === "bs3") { return "side (3)" }
+  if (code === "bs4") { return "side (4)" }
+  return "unknown"
+}

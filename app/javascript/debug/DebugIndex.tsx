@@ -18,28 +18,6 @@ export default function DebugIndex() {
         </ul>
       </div>
       <div className="p1em">
-        Unit Statistics:
-        <ul>
-          <li><Link to={"/debug/stats/units"}>all</Link></li>
-        </ul>
-        Countries:
-        <ul>
-          <li><Link to={"/debug/stats/units/ussr"}>soviet</Link></li>
-          <li><Link to={"/debug/stats/units/uk"}>commonwealth</Link></li>
-          <li><Link to={"/debug/stats/units/usa"}>american</Link></li>
-          <li><Link to={"/debug/stats/units/fra"}>french</Link></li>
-          <li><Link to={"/debug/stats/units/chi"}>chinese</Link></li>
-          <li><Link to={"/debug/stats/units/alm"}>allied minors</Link></li>
-        </ul>
-        <ul>
-          <li><Link to={"/debug/stats/units/ger"}>german</Link></li>
-          <li><Link to={"/debug/stats/units/ita"}>italian</Link></li>
-          <li><Link to={"/debug/stats/units/jap"}>japanese</Link></li>
-          <li><Link to={"/debug/stats/units/fin"}>finnish</Link></li>
-          <li><Link to={"/debug/stats/units/axm"}>axis minors</Link></li>
-        </ul>
-      </div>
-      <div className="p1em">
         Units:
         <ul>
           <li><Link to={"/debug/units"}>all</Link></li>
@@ -133,6 +111,28 @@ export default function DebugIndex() {
           <li><Link to={"/debug/markers/jap"}>japanese</Link></li>
           <li><Link to={"/debug/markers/fin"}>finnish</Link></li>
           <li><Link to={"/debug/markers/axm"}>axis minors</Link></li>
+        </ul>
+      </div>
+      <div className="p1em">
+        Unit Statistics:
+        <ul>
+          <li><Link to={"/debug/stats/units"}>all</Link></li>
+        </ul>
+        Countries:
+        <ul>
+          <li><Link to={"/debug/stats/units/ussr"}>soviet</Link></li>
+          <li><Link to={"/debug/stats/units/uk"}>commonwealth</Link></li>
+          <li><Link to={"/debug/stats/units/usa"}>american</Link></li>
+          <li><Link to={"/debug/stats/units/fra"}>french</Link></li>
+          <li><Link to={"/debug/stats/units/chi"}>chinese</Link></li>
+          <li><Link to={"/debug/stats/units/alm"}>allied minors</Link></li>
+        </ul>
+        <ul>
+          <li><Link to={"/debug/stats/units/ger"}>german</Link></li>
+          <li><Link to={"/debug/stats/units/ita"}>italian</Link></li>
+          <li><Link to={"/debug/stats/units/jap"}>japanese</Link></li>
+          <li><Link to={"/debug/stats/units/fin"}>finnish</Link></li>
+          <li><Link to={"/debug/stats/units/axm"}>axis minors</Link></li>
         </ul>
       </div>
     </div>

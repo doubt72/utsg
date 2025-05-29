@@ -38,6 +38,23 @@ export default class Terrain {
     }[this.hex.border as BorderTypeType]
   }
 
+  get roadAttr(): { name: string} | undefined {
+    return {
+      t: { name: "tarmac" },
+      d: { name: "dirt" },
+      p: { name: "path" },
+      a: { name: "runway" },
+    }[this.hex.roadType ?? "d"]
+  }
+
+  get streamAttr(): { name: string} | undefined {
+    return {
+      s: { name: "stream" },
+      g: { name: "gully" },
+      t: { name: "trench" },
+    }[this.hex.riverType ?? "s"]
+  }
+
   opposite(dir: Direction): Direction {
     return normalDir(dir + 3)
   }

@@ -21,6 +21,7 @@ import DebugUnitsByYear from "../debug/DebugUnitsByYear";
 import DebugIndex from "../debug/DebugIndex";
 import DebugUnitsByType from "../debug/DebugUnitsByType";
 import DebugUnitStats from "../debug/DebugUnitStats";
+import DebugScenarioStats from "../debug/DebugScenarioStats";
 
 export default function Routes() {
   const publicRoutes = [
@@ -57,7 +58,8 @@ export default function Routes() {
         { path: "/debug/map/:id", element: <DebugMap /> },
         { path: "/debug/stats/units", element: <DebugUnitStats /> },
         { path: "/debug/stats/units/:nation", element: <DebugUnitStats /> },
-        { path: "/debug/stats/scenarios", element: <DebugUnits /> },
+        { path: "/debug/stats/scenarios", element: <DebugScenarioStats /> },
+        { path: "/debug/stats/scenarios/:nation", element: <DebugScenarioStats /> },
 
         { path: "/new_game", element: <NewGame /> },
       ],
