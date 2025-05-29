@@ -54,7 +54,7 @@ module Utility
       end
 
       def unit_count(scenario)
-        all_units(scenario).length
+        all_units(scenario).reduce(0) { |cnt, u| cnt + (u[0].to_i.positive? ? u[0].to_i : 1) }
       end
     end
   end

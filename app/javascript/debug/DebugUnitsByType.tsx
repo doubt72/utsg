@@ -34,7 +34,7 @@ export default function DebugUnitsByType() {
   const cells = () => {
     const cells: JSX.Element[] = []
     if (ability) {
-      cells.push(<div key="match" className="debug-unit-counter-year">match</div>)
+      cells.push(<div key="match" className="debug-unit-counter-type">match</div>)
       Object.values(units).filter(u => {
         if (ability === "assault" && u.o?.a === 1) { return true }
         if (ability === "smoke" && u.o?.s === 1) { return true }
@@ -47,7 +47,7 @@ export default function DebugUnitsByType() {
       }).map(
         (c, j) => cells.push(svgContainer(makeUnit(c), j))
       )
-      cells.push(<div key="no-match" className="debug-unit-counter-year">other</div>)
+      cells.push(<div key="no-match" className="debug-unit-counter-type">other</div>)
       Object.values(units).filter(u => {
         if (ability === "assault" && u.o?.a !== 1 && u.t === "sqd") { return true }
         if (ability === "smoke" && u.o?.s !== 1 &&
@@ -68,7 +68,7 @@ export default function DebugUnitsByType() {
       )
     } else {
       types().forEach(t => {
-        cells.push(<div key={t} className="debug-unit-counter-year">{t}</div>)
+        cells.push(<div key={t} className="debug-unit-counter-type">{t}</div>)
         Object.values(units).filter(u => u.t === t).map(
           (c, j) => cells.push(svgContainer(makeUnit(c), j))
         )

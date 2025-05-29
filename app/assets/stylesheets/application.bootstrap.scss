@@ -406,11 +406,16 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   width: 87px;
 }
 
-.debug-unit-counter-year {
+.debug-unit-counter-type {
   font-size: 28px;
   padding: 18px 2px;
   text-align: center;
   color: #AAA;
   height: 87px;
   width: 87px;
+}
+
+.debug-unit-counter-stat {
+  font-size: 12px;
+  text-align: center;
 }

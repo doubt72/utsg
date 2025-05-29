@@ -76,8 +76,8 @@ RSpec.describe Api::V1::ScenariosController do
       last = [1, 1, 1]
       data.each do |d|
         scenario = Utility::Scenario.scenario_by_id(d["id"])
-        expect(scenario[:date] <=> last).to be >= 0
-        last = scenario[:date]
+        expect(scenario[:metadata][:date] <=> last).to be >= 0
+        last = scenario[:metadata][:date]
       end
     end
 
@@ -90,8 +90,8 @@ RSpec.describe Api::V1::ScenariosController do
       last = [9999, 1, 1]
       data.each do |d|
         scenario = Utility::Scenario.scenario_by_id(d["id"])
-        expect(scenario[:date] <=> last).to be <= 0
-        last = scenario[:date]
+        expect(scenario[:metadata][:date] <=> last).to be <= 0
+        last = scenario[:metadata][:date]
       end
     end
 
@@ -104,9 +104,10 @@ RSpec.describe Api::V1::ScenariosController do
       last = 0
       data.each do |d|
         scenario = Utility::Scenario.scenario_by_id(d["id"])
-        unit_count = Utility::Scenario.map_size(scenario)
-        expect(unit_count <=> last).to be >= 0
-        last = unit_count
+        x, y = scenario[:metadata][:map_data][:layout]
+        size = x + y
+        expect(size <=> last).to be >= 0
+        last = size
       end
     end
 
@@ -119,9 +120,9 @@ RSpec.describe Api::V1::ScenariosController do
       last = 99
       data.each do |d|
         scenario = Utility::Scenario.scenario_by_id(d["id"])
-        unit_count = Utility::Scenario.map_size(scenario)
-        expect(unit_count <=> last).to be <= 0
-        last = unit_count
+        x, y = scenario[:metadata][:map_data][:layout]
+        size = x + y
+        last = size
       end
     end
 
@@ -134,7 +135,10 @@ RSpec.describe Api::V1::ScenariosController do
       last = 0
       data.each do |d|
         scenario = Utility::Scenario.scenario_by_id(d["id"])
-        unit_count = Utility::Scenario.all_units(scenario).length
+        units = scenario[:metadata][:allied_units].map { |t| t[1] }.flatten(1) +
+                scenario[:metadata][:axis_units].map { |t| t[1] }.flatten(1)
+        units = units.map { |u| u[:list] }.flatten(1)
+        unit_count = units.reduce(0) { |cnt, u| cnt + (u[:x] || 1) }
         expect(unit_count <=> last).to be >= 0
         last = unit_count
       end
@@ -146,10 +150,13 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
 
-      last = 99
+      last = 999
       data.each do |d|
         scenario = Utility::Scenario.scenario_by_id(d["id"])
-        unit_count = Utility::Scenario.all_units(scenario).length
+        units = scenario[:metadata][:allied_units].map { |t| t[1] }.flatten(1) +
+                scenario[:metadata][:axis_units].map { |t| t[1] }.flatten(1)
+        units = units.map { |u| u[:list] }.flatten(1)
+        unit_count = units.reduce(0) { |cnt, u| cnt + (u[:x] || 1) }
         expect(unit_count <=> last).to be <= 0
         last = unit_count
       end

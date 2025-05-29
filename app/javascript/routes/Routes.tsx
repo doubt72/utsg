@@ -20,6 +20,7 @@ import DebugMarkers from "../debug/DebugMarkers";
 import DebugUnitsByYear from "../debug/DebugUnitsByYear";
 import DebugIndex from "../debug/DebugIndex";
 import DebugUnitsByType from "../debug/DebugUnitsByType";
+import DebugUnitStats from "../debug/DebugUnitStats";
 
 export default function Routes() {
   const publicRoutes = [
@@ -54,6 +55,9 @@ export default function Routes() {
         { path: "/debug/units/year", element: <DebugUnitsByYear /> },
         { path: "/debug/units/year/:nation", element: <DebugUnitsByYear /> },
         { path: "/debug/map/:id", element: <DebugMap /> },
+        { path: "/debug/stats/units", element: <DebugUnitStats /> },
+        { path: "/debug/stats/units/:nation", element: <DebugUnitStats /> },
+        { path: "/debug/stats/scenarios", element: <DebugUnits /> },
 
         { path: "/new_game", element: <NewGame /> },
       ],

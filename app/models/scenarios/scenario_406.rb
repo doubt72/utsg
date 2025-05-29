@@ -55,7 +55,7 @@ module Scenarios
           first_setup: 1,
           first_move: 1,
           date:,
-          location: "Betio Island, Tarawa, Gilbert Islands",
+          location: "Tarawa, Gilbert Islands",
           author: "The Establishment",
           description:,
           map_data:,

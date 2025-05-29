@@ -27,7 +27,8 @@ module Utility
 
         def sanitize(name)
           sanitized = name.gsub(%r{[-\s/.']}, "_").gsub(/['()]/, "").downcase
-          sanitized = sanitized.gsub("ä", "a").gsub("ö", "o").gsub("ü", "u").downcase
+          sanitized = sanitized.gsub("ä", "a").gsub("ö", "o").gsub("ü", "u")
+          sanitized = sanitized.gsub("é", "e")
           # TODO: remove when done debugging
           puts sanitized unless sanitized =~ /^[a-z0-9_]*$/
           sanitized

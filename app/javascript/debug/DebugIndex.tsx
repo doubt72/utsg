@@ -12,6 +12,32 @@ export default function DebugIndex() {
           <li><Link to={"/debug/map/2"}>more LOS</Link></li>
           <li><Link to={"/debug/map/3"}>small WIP</Link></li>
         </ul>
+        Scenario Statistics:
+        <ul>
+          <li><Link to={"/debug/stats/scenarios"}>page</Link></li>
+        </ul>
+      </div>
+      <div className="p1em">
+        Unit Statistics:
+        <ul>
+          <li><Link to={"/debug/stats/units"}>all</Link></li>
+        </ul>
+        Countries:
+        <ul>
+          <li><Link to={"/debug/stats/units/ussr"}>soviet</Link></li>
+          <li><Link to={"/debug/stats/units/uk"}>commonwealth</Link></li>
+          <li><Link to={"/debug/stats/units/usa"}>american</Link></li>
+          <li><Link to={"/debug/stats/units/fra"}>french</Link></li>
+          <li><Link to={"/debug/stats/units/chi"}>chinese</Link></li>
+          <li><Link to={"/debug/stats/units/alm"}>allied minors</Link></li>
+        </ul>
+        <ul>
+          <li><Link to={"/debug/stats/units/ger"}>german</Link></li>
+          <li><Link to={"/debug/stats/units/ita"}>italian</Link></li>
+          <li><Link to={"/debug/stats/units/jap"}>japanese</Link></li>
+          <li><Link to={"/debug/stats/units/fin"}>finnish</Link></li>
+          <li><Link to={"/debug/stats/units/axm"}>axis minors</Link></li>
+        </ul>
       </div>
       <div className="p1em">
         Units:
@@ -90,7 +116,7 @@ export default function DebugIndex() {
       <div className="p1em">
         Markers:
         <ul>
-          <li><Link to={"/debug/markers"}>all</Link></li>
+          <li><Link to={"/debug/markers"}>and features</Link></li>
         </ul>
         Units/Markers:
         <ul>

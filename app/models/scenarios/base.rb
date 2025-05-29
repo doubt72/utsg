@@ -26,6 +26,10 @@ module Scenarios
       def full_record
         record = index_record
         record.delete(:string)
+        record.delete(:date)
+        record.delete(:layout)
+        record.delete(:allied_units)
+        record.delete(:axis_units)
         record.merge({ metadata: generate })
       end
 
