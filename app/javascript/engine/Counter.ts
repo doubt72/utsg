@@ -217,7 +217,8 @@ export default class Counter {
   
   get sizeLayout(): CounterLayout | false {
     const x = this.x + 66
-    const y = this.y + 23
+    let y = this.y + 23
+    if (this.target.icon === "cav" || this.target.icon === "cav-wheel") { y -= 3 }
     if (!this.target.size ) { return false }
     const stroke = this.target.armored && !this.target.isWreck ? "black" : clearColor
     const path = this.target.armored && this.target.topOpen ?
@@ -308,7 +309,8 @@ export default class Counter {
   get transportLLayout(): CounterLayout | false {
     if (this.target.transport !== 1 && this.target.transport !== 3) { return false }
     const x = this.x + 59
-    const y = this.y + 23
+    let y = this.y + 23
+    if (this.target.icon === "cav" || this.target.icon === "cav-wheel") { y -= 3 }
     const size = 2
     const path = this.circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
@@ -317,7 +319,8 @@ export default class Counter {
   get transportRLayout(): CounterLayout | false {
     if (this.target.transport < 2) { return false }
     const x = this.x + 73
-    const y = this.y + 23
+    let y = this.y + 23
+    if (this.target.icon === "cav" || this.target.icon === "cav-wheel") { y -= 3 }
     const size = 2
     const path = this.circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
