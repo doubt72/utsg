@@ -674,6 +674,11 @@ export default class Hex {
 
   get helpText(): string[] {
     const text = [this.terrain.name]
+    if (this.terrain.name === "water" && this.map.baseTerrain === baseTerrainType.Snow) {
+      text.push("frozen")
+      text.push("movement cost 2")
+      text.push("- vehicles cannot enter")
+    }
     if (this.elevation > 0) {
       text.push(`elevation ${this.elevation}`)
     }
@@ -704,7 +709,7 @@ export default class Hex {
         }
       })
       if (rise) {
-        text.push(" cost +1 if moving from lower elevation")
+        text.push("- add 1 movement cost if moving from lower elevation")
       }
       if (!this.terrain.gun) {
         text.push("- crewed weapons cannot enter")
@@ -745,11 +750,32 @@ export default class Hex {
         }
       }
     }
+    if (this.railroad) {
+      text.push("railroad")
+      text.push("- 1 cover")
+    }
     if (this.river && this.terrain.move) {
-      text.push("stream")
-      text.push("- movement cost +1 when leaving")
-      if (this.road) {
-        text.push("- unless following road")
+      if (this.riverType === streamType.Gully) {
+        text.push("gully")
+        text.push("- 1 cover")
+        text.push("- movement cost +1 when leaving")
+        if (this.road) {
+          text.push("- unless following road")
+        }
+      } else if (this.riverType === streamType.Trench) {
+        text.push("trench")
+        text.push("- 3 cover")
+        text.push("- movement cost +1 when leaving")
+      } else {
+        text.push("stream")
+        if (this.map.baseTerrain === baseTerrainType.Snow) {
+          text.push("- frozen, no movement effects")
+        } else {
+          text.push("- movement cost +1 when leaving")
+          if (this.road) {
+            text.push("- unless following road")
+          }
+        }
       }
     }
     const borderText: { [index: string]: string[] } = {}

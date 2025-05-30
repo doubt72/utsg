@@ -8,10 +8,11 @@ interface MapHexDetailProps {
   showTerrain: boolean;
   terrainCallback: (a: JSX.Element | undefined) => void;
   svgRef: React.MutableRefObject<HTMLElement>;
+  scale: number;
 }
 
 export default function MapHexDetail({
-  hex, selectCallback, showTerrain, terrainCallback, svgRef
+  hex, selectCallback, showTerrain, terrainCallback, svgRef, scale
 }: MapHexDetailProps) {
   const river = () => {
     if (!hex.river) { return "" }
@@ -85,8 +86,8 @@ export default function MapHexDetail({
   const updateTerrainInfo = (e: React.MouseEvent) => {
     if (showTerrain) {
       if (svgRef.current) {
-        const x = e.clientX - svgRef.current.getBoundingClientRect().x + 10
-        const y = e.clientY - svgRef.current.getBoundingClientRect().y + 10
+        const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
+        const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10
         const layout = hex.helpLayout(x, y)
         terrainCallback(
           <g>

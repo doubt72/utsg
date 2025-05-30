@@ -173,7 +173,8 @@ export default function GameMap({
                                         selectCallback={hexSelection} showTerrain={showTerrain}
                                         terrainCallback={showTerrain ?
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
-                                        svgRef={svgRef as React.MutableRefObject<HTMLElement>} />)
+                                        svgRef={svgRef as React.MutableRefObject<HTMLElement>}
+                                        scale={scale} />)
         if (map.game?.reinforcementSelection) {
           const shaded = !map.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}

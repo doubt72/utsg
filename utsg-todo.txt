@@ -1,13 +1,6 @@
 - Come up with name (D-GOST?)
   - Add more info on signup page mebbe
 
-- Fix terrain info over terrain
-  - Add new terrains to test maps
-  - overlay scaling/offset
-  - Add terrain help for ice
-  - Add gullies / Trench / Soft Ground / Depressions / Palm
-    - Gully cover/movement effects; not implemented for rivers yet either
-
 - Add graduated coloring when placing support weapons
 - Allow tanks to deploy on road but limit directions
 - Find undo bug on KV map/gun (unable to reproduce, have not seen it since)
