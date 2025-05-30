@@ -245,7 +245,6 @@ export default class Counter {
     const y = this.y + 30.5
     const size = 5
     const path = `M ${x - size} ${y} L ${x + size} ${y}`
-    console.log(path)
     return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
   }
 
@@ -310,7 +309,6 @@ export default class Counter {
     const y = this.y + 74
     const size = 4
     const path = `M ${x - size} ${y} L ${x + size} ${y}`
-    console.log(path)
     return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
   }
 
@@ -456,7 +454,8 @@ export default class Counter {
     if (this.target.isMarker) { return false }
     if (this.target.isFeature &&
       [
-        featureType.Smoke, featureType.Fire, featureType.Bunker, featureType.Foxhole
+        featureType.Smoke, featureType.Fire, featureType.Bunker, featureType.Foxhole,
+        featureType.Rubble,
       ].includes(this.target.type as FeatureTypeType)) {
     return false
   }

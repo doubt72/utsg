@@ -1,3 +1,6 @@
+- Add unarmored German half-tracks
+- fix rubble marker
+
 - Add graduated coloring when placing support weapons
 
 - Update Rules on Carrying/Towing

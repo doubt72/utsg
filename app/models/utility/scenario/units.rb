@@ -947,6 +947,14 @@ module Utility
             ["ger", "BMW R75", "cav-wheel", 41, 3, 0, 0, 6, { tr: 3 }],
             ["ger", "Zündapp KS 750", "cav-wheel", 41, 3, 0, 0, 6, { sn: 1, tr: 3 }],
             ["ger", "BMW R17", "cav-wheel", 35, 3, 0, 0, 6, { tr: 3 }],
+            ["ger", "Kettenkrad", "truck", 41, 2, 0, 0, 5, { tr: 1, trg: 1, k: 1 }],
+            ["ger", "Maultier", "truck", 41, 3, 0, 0, 5, { tr: 3, trg: 1, k: 1 }],
+            ["ger", "SdKfz 6", "truck", 39, 4, 0, 0, 5, { tr: 3, trg: 1, k: 1 }],
+            ["ger", "SdKfz 7", "truck", 38, 3, 0, 0, 5, { tr: 2, trg: 1, k: 1 }],
+            ["ger", "SdKfz 8", "truck", 37, 5, 0, 0, 5, { tr: 3, trg: 1, k: 1 }],
+            ["ger", "SdKfz 9", "truck", 39, 5, 0, 0, 5, { tr: 3, trg: 1, k: 1 }],
+            ["ger", "SdKfz 10", "truck", 38, 4, 0, 0, 5, { tr: 2, trg: 1, k: 1 }],
+            ["ger", "SdKfz 11", "truck", 38, 4, 0, 0, 5, { tr: 2, trg: 1, k: 1 }],
             ["ger", "L3000", "truck", 38, 4, 0, 0, 5, { tr: 3, trg: 1 }],
             ["ger", "Opel Blitz", "truck", 30, 3, 0, 0, 5, { tr: 3, trg: 1 }],
             ["ger", "BMW 325", "car", 36, 2, 0, 0, 5, { tr: 2, trg: 1 }],
@@ -997,7 +1005,7 @@ module Utility
             unit.each_with_index do |v, i|
               truck[key[i]] = v
             end
-            truck[:o].merge!({ w: 1 }) if truck[:n] != "Horse"
+            truck[:o].merge!({ w: 1 }) if truck[:n] != "Horse" && !truck[:o][:k]
             truck[:t] = "cav" if %w[cav cav-wheel].include?(truck[:i])
             lu[:"#{truck[:c]}_#{sanitize(truck[:n])}"] = truck
           end
