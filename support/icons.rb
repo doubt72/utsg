@@ -2230,6 +2230,16 @@ File.open('roadblock.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('tanktrap.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 45, 10], ["L", 55, 80],
+    ["M", 15, 20], ["L", 95, 80],
+    ["M", 85, 20], ["L", 5, 80],
+  ], file, false, 7)
+  file.puts footer
+end
+
 File.open('wire.svg', 'w') do |file|
   file.puts header
   path = [

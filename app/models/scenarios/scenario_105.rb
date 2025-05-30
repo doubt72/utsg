@@ -34,7 +34,7 @@ module Scenarios
         :ger_mg_08_15,
         [2, :ger_5cm_pak_38],
         [6, :wire],
-        [6, :at_mines],
+        [6, :at_mines8],
         [3, :pillbox],
       ] },
     }.freeze

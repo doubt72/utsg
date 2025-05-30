@@ -1,123 +1,45 @@
-import { FeatureData } from "../engine/Feature"
 import { HexData } from "../engine/Hex"
-import { UnitData } from "../engine/Unit"
 import { Direction, UnitStatusType, unitStatus } from "../utilities/commonTypes"
 
-const testUnitData: { [index: string]: UnitData } = {
-  ginf: {
-    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
-  },
-  gldr: {
-    c: "ger", f: 1, i: "leader", m: 6, n:  "Leader", o: {l: 1}, r: 1, s: 1, t: "ldr", v: 6, y: 0
-  },
-  gcrew: {
-    c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 }
-  },
-  gmg: {
-    c: "ger", f: 8, i: "mg", n: "MG 44", o: {a: 1, r: 1, j: 3, f: 16}, r: 8, t: "sw", v: 0, y: 42
-  },
-  gps: {
-    t: "sw", i: "rocket", c: "ger", n: "Panzerschreck", y: 43, f: 12, r: 3, v: 0, o: { b: 4, t: 1, p: 1 }
-  },
-  gpf: {
-    t: "sw", i: "rocket", c: "ger", n: "Panzerfaust", y: 43, f: 16, r: 1, v: 0, o: {x: 1, t: 1, p: 1}
-  },
-  gtank: {
-    c: "ger", f: 40, i: "tank", n: "Panther D", r: 32, s: 6, t: "tank", v: 5, y: 43,
-    o: {t: 1, p: 1, ha: {f: 6, s: 3, r: 3}, ta: {f: 7, s: 4, r: 4}, bd: 3, j: 3, f: 18, u: 1, k: 1}
-  },
-  gspg: {
-    c: "ger", f: 32, i: "spat", n: "StuG III-F/G", r: 24, s: 4, t: "spg", v: 5, y: 42,
-    o: {t: 1, p: 1, ha: {f: 6, s: 1, r: 1}, j: 3, f: 18, k: 1}
-  },
-  gscout: {
-    c: "ger", f: 8, i: "ac", n: "SdKfz 221", r: 8, s: 3, t: "ac", v: 7, y: 35,
-    o: {r: 1, ha: {f: 1, s: 0, r: 0}, ta: {f: 1, s: 1, r: 1}, j: 3, f: 18, u: 1, w: 1},
-  },
-  ght: {
-    c: "ger", f: 8, i: "htat", n: "SdKfz 250/11",
-    o: {t: 1, p: 1, ha: {f: 1, s: 0, r: 0, t: -1}, k: 1, j: 3, f: 18}, r: 10, s: 3, t: "ht", v: 6, y: 41
-  },
-  rinf: {
-    c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
-  },
-  rldr: {
-    c: "ussr", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
-  },
-  rmg: {
-    t: "sw", i: "mg", c: "ussr", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3, f: 16}
-  },
-  rft: {
-    c: "ussr", f: 24, i: "flamethrower", n: "Flamethrower", o: {a: 1, i: 1, b: 3}, r: 1,
-    t: "sw", v: 0, y: 15
-  },
-  rmc: {
-    c: "ussr", f: 4, i: "explosive", n: "Molotov Cocktail",
-    o: {i: 1, a: 1, x: 1, t: 1, sn: 1}, r: 1, t: "sw", v: 0, y: 39
-  },
-  rmort: {
-    t: "sw", i: "mortar", c: "ussr", n: "RM-38", y: 38, f: 8, r: 14, v: 0, o: {m: 2, t: 1, b: 3}
-  },
-  rgun: {
-    c: "ussr", f: 16, i: "gun", n: "76mm M1927", o: {t: 1, j: 3, f: 18, g: 1, s: 1, c: 1}, r: 16,
-    t: "gun", v: 1, y: 28
-  },
-  rcrew: {
-    c: "ussr", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
-  },
-  rat: {
-    c: "ussr", f: 24, i: "atgun", n: "57mm ZiS-2", o: {t: 1, j: 3, f: 18, p: 1, c: 1}, r: 20, s: 3,
-    t: "gun", v: 1, y: 41
-  },
-  rtank: {
-    c: "ussr", f: 48, i: "tank", n: "T-34-85", r: 28, s: 5, t: "tank", v: 6, y: 43,
-    o: {t: 1, p: 1, ha: {f: 3, s: 3, r: 3}, ta: {f: 6, s: 4, r: 3}, j: 3, f: 18, u: 1, k: 1}
-  },
-  rgrant: {
-    c: "ussr", f: 7, i: "tank", n: "M3 Grant", r: 10, s: 5, t: "tank", v: 5, y: 41,
-    o: {
-      bd: 4, ha: {f: 4, s: 3, r: 3}, j: 3, f: 18, k: 1, p: 1, sg: {f: 20, r: 12}, t: 1,
-      ta: {f: 4, s: 4, r: 4}, u: 1
-    },
-  },
-  rm2cs: {
-    c: "uk", f: 16, i: "spg", n: "Matilda II CS", r: 12, s: 5, t: "spg", v: 4, y: 39,
-    o: {t: 1, g: 1, ha: {f: 6, s: 5, r: 4}, ta: {f: 5, s: 5, r: 5}, bd: 3, s: 1, u: 1, j: 3, f: 18, k: 1}
-  },
-  croc: {
-    c: "uk", f: 24, i: "spft", n: "Churchill Crocodile", r: 16, s: 6, t: "spg", v: 4, y: 44,
-    o: {
-      ha: {f: 9, s: 6, r: 4}, j: 3, f: 18, k: 1, p: 1, sg: {f: 24, r: 1, t: "ft"}, sn: 3, t: 1,
-      ta: {f: 9, s: 6, r: 6}, u: 1
-    },
-  },
-  flak88: {
-    c: "ger", f: 48, i: "atgun", n: "8.8cm Flak 36", o: {y: 1, t: 1, j: 3, f: 18, p: 1, c: 1},
-    r: 30, s: 3, t: "gun", v: 1, y: 36
-  },
-  radio: {
-    t: "sw", i: "radio", c: "ussr", n: "Radio 85mm", y: 43, f: 16, r: 0, v: 0, o: { s: 1, o: 1, j: 3, f: 18 }
-  },
+const testUnitData: { [index: string]: string } = {
+  ginf: "ger_Rifle_sqd", gldr: "ger_Leader_ldr_6_2", gcrew: "ger_Crew_tm_1",
+  gmg: "ger_MG 42_sw", gps: "ger_Panzerschreck_sw", gpf: "ger_Panzerfaust_sw",
+  gtank: "ger_Panther D_tank", gspg: "ger_StuG III-F/G_spg", gscout: "ger_SdKfz 221_ac",
+  ght: "ger_SdKfz 250/11_ht",
+  rinf: "ussr_Guards SMG_sqd", rldr: "ussr_Leader_ldr_4_1", rmg: "ussr_DShK_sw",
+  rft: "ussr_Flamethrower_sw", rmc: "ussr_Molotov Cocktail_sw", rmort: "ussr_RM-38_sw",
+  rgun: "ussr_76mm M1927_gun", rcrew: "ussr_Crew_tm_2", rat: "ussr_57mm ZiS-2_gun",
+  rtank: "ussr_T-34-85_tank", rgrant: "ussr_M3 Grant_tank",
+  rm2cs: "uk_Matilda II CS_spg", croc: "uk_Churchill Crocodile_spg",
+  flak88: "ger_8.8cm Flak 36_gun", radio: "ussr_Radio 85mm_sw",
+  usldr: "usa_Leader_ldr_5_2", usldr2: "usa_Leader_ldr_4_1", useng: "usa_Engineer_sqd", usinf: "usa_Green_sqd",
+  uscrew: "usa_Crew_tm_2", usft: "usa_Flamethrower_sw", usmg: "usa_M1918 BAR_sw", usmg2: "usa_M2 Browning_sw",
+  ussc: "usa_Satchel Charge_sw", usradio: "usa_Radio 155mm_sw", usmort: "usa_M2 Mortar_sw",
+  usmort2: "usa_M1 Mortar_sw", usmort3: "usa_M2 4.2inch Mortar_sw", usbaz: "usa_M1 Bazooka_sw",
+  usgun: "usa_75mm M1 Pack_gun", usat: "usa_37mm M3_gun", usac: "usa_M3A1 Scout Car_ac",
+  ustank: "usa_M4 Sherman_tank", ussg: "usa_M3 Lee_tank", usspg: "usa_M8 Scott_spg",
+  usspat: "usa_M18 Hellcat_spg", usftt: "usa_M3A1 Stuart FT_spg", usftt2: "usa_M4A3R5 Sherman_spg",
+  usht: "usa_M2 Half-track_ht", usht2: "usa_T12 GMC_ht", usht3: "usa_T19/M21 MMC_ht",
+  usht4: "usa_LVT-1_ht", usht5: "usa_LVT-2_ht", usht6: "usa_LVT(A)-4_ht", ustruck: "usa_GMC CCKW_truck",
+  ustruck2: "usa_GMC DUKW_truck", usjeep: "usa_Jeep_truck", usjeep2: "usa_Jeep .50 MG_truck",
+  usmoto: "usa_H-D WLA_cav", hcav: "ger_Horse_cav", bcav: "jap_Bicycle_cav", htm: "ger_Kettenkrad_truck",
+  htsm: "ger_SdKfz 7_truck", tspag: "ger_Marder I_spg", tft: "ger_SdKfz 251/16_ht", atr: "uk_Boys AT Rifle_sw",
+  uc: "uk_Universal Carrier_ht", tkt: "ita_L3/33_spg", amt: "jap_Type 2 Ka-Mi_tank",
+  ukinf: "uk_Guard_sqd", ac: "fra_Schneider P16_ac"
 }
 
-const testFeatureData: { [index: string]: FeatureData } = {
-  smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
-  fire: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
-  wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
-  apmines: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
-  mixedmines: { ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 } },
-  atmines: { ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { p: 1 } },
-  fox: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },
-  pillbox: { ft: 1, n: "Pillbox", t: "bunker", i: "bunker", o: { da: { f: 3, s: 3, r: 1 }} },
-  bunker: { ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 4, s: 4, r: 1 }} },
-  strongpoint: { ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 }} },
+const testFeatureData: { [index: string]: string } = {
+  smoke: "f_Smoke_2", fire: "f_Blaze", wire: "f_Wire", apmines: "f_AP Minefield", mixedmines: "f_Minefield",
+  atmines: "f_AT Minefield", fox: "f_Foxhole", pillbox: "f_Pillbox", bunker: "f_Bunker",
+  strongpoint: "f_Strong Point", trench: "f_Trench", scrape: "f_Shell Scrape", roadblock: "f_Road Block",
+  rubble: "f_Rubble", tanktrap: "f_Hedgehog",
 }
 
 export const mapDebugData: {
   x: number, y: number,
-  features: { u: FeatureData, x: number, y: number, f?: Direction }[],
+  features: { u: string, x: number, y: number, f?: Direction }[],
   units: {
-    u: UnitData, x: number, y: number, f?: Direction, tf?: Direction, v?: number,
+    u: string, x: number, y: number, f?: Direction, tf?: Direction, v?: number,
     imm?: boolean, trt?: boolean, st?: UnitStatusType, brk?: boolean, wpn?: boolean,
   }[],
   hexes: HexData[][]
@@ -742,6 +664,11 @@ export const mapDebugData: {
       { u: testFeatureData.smoke, x: 2, y: 3 },
       { u: testFeatureData.smoke, x: 3, y: 3 },
       { u: testFeatureData.smoke, x: 11, y: 3 },
+      { u: testFeatureData.rubble, x: 12, y: 1},
+      { u: testFeatureData.tanktrap, x: 13, y: 1},
+      { u: testFeatureData.roadblock, x: 11, y: 1},
+      { u: testFeatureData.trench, x: 10, y: 1},
+      { u: testFeatureData.scrape, x: 9, y: 1},
     ],
     units: [
       { u: testUnitData.ginf, x: 0, y: 0 },
@@ -763,6 +690,65 @@ export const mapDebugData: {
       { u: testUnitData.ginf, x: 9, y: 13 },
       { u: testUnitData.ginf, x: 12, y: 13 },
       { u: testUnitData.ginf, x: 13, y: 14 },
+      { u: testUnitData.useng, x: 0, y: 9 },
+      { u: testUnitData.usft, x: 0, y: 9 },
+      { u: testUnitData.usldr, x: 0, y: 9 },
+      { u: testUnitData.usradio, x: 0, y: 9 },
+      { u: testUnitData.usinf, x: 1, y: 9 },
+      { u: testUnitData.usmg, x: 1, y: 9 },
+      { u: testUnitData.usldr2, x: 1, y: 9 },
+      { u: testUnitData.usinf, x: 2, y: 9 },
+      { u: testUnitData.usmg2, x: 2, y: 9 },
+      { u: testUnitData.usinf, x: 3, y: 9 },
+      { u: testUnitData.usmort, x: 3, y: 9 },
+      { u: testUnitData.usinf, x: 4, y: 9 },
+      { u: testUnitData.usmort2, x: 4, y: 9 },
+      { u: testUnitData.usinf, x: 5, y: 9 },
+      { u: testUnitData.usmort3, x: 5, y: 9 },
+      { u: testUnitData.useng, x: 6, y: 9 },
+      { u: testUnitData.ussc, x: 6, y: 9 },
+      { u: testUnitData.usinf, x: 7, y: 9 },
+      { u: testUnitData.usbaz, x: 7, y: 9 },
+      { u: testUnitData.uscrew, x: 8, y: 9 },
+      { u: testUnitData.usgun, x: 8, y: 9, f: 2 },
+      { u: testUnitData.uscrew, x: 9, y: 9 },
+      { u: testUnitData.usat, x: 9, y: 9, f: 2 },
+      { u: testUnitData.usac, x: 10, y: 9, f: 2, tf: 2 },
+      { u: testUnitData.ustank, x: 11, y: 9, f: 2, tf: 2 },
+      { u: testUnitData.ussg, x: 12, y: 9, f: 2, tf: 2 },
+      { u: testUnitData.usspg, x: 13, y: 9, f: 2, tf: 2 },
+      { u: testUnitData.usspat, x: 14, y: 9, f: 2, tf: 2 },
+      { u: testUnitData.usftt, x: 0, y: 10, f: 2 },
+      { u: testUnitData.usftt2, x: 1, y: 10, f: 2, tf: 2 },
+      { u: testUnitData.usht, x: 2, y: 10, f: 2 },
+      { u: testUnitData.usht2, x: 3, y: 10, f: 2 },
+      { u: testUnitData.usht3, x: 4, y: 10, f: 2 },
+      { u: testUnitData.usht4, x: 5, y: 10, f: 2 },
+      { u: testUnitData.usht5, x: 6, y: 10, f: 2 },
+      { u: testUnitData.usht6, x: 7, y: 10, f: 2 },
+      { u: testUnitData.ustruck, x: 8, y: 10, f: 2 },
+      { u: testUnitData.ustruck2, x: 9, y: 10, f: 2 },
+      { u: testUnitData.usjeep, x: 10, y: 10, f: 2 },
+      { u: testUnitData.usjeep2, x: 11, y: 10, f: 2 },
+      { u: testUnitData.usmoto, x: 12, y: 10 },
+      { u: testUnitData.bcav, x: 13, y: 10 },
+      { u: testUnitData.htm, x: 14, y: 10, f: 2 },
+      { u: testUnitData.htsm, x: 0, y: 11, f: 2 },
+      { u: testUnitData.tspag, x: 1, y: 11, f: 2 },
+      { u: testUnitData.tft, x: 2, y: 11, f: 2 },
+      { u: testUnitData.ukinf, x: 3, y: 11 },
+      { u: testUnitData.atr, x: 3, y: 11 },
+      { u: testUnitData.uc, x: 4, y: 11, f: 2 },
+      { u: testUnitData.tkt, x: 5, y: 11, f: 2 },
+      { u: testUnitData.amt, x: 6, y: 11, f: 2, tf: 2 },
+      { u: testUnitData.ginf, x: 7, y: 11 },
+      { u: testUnitData.gpf, x: 7, y: 11 },
+      { u: testUnitData.rm2cs, x: 8, y: 11, f: 2, tf: 2 },
+      { u: testUnitData.croc, x: 9, y: 11, f: 2, tf: 2 },
+      { u: testUnitData.rinf, x: 10, y: 11 },
+      { u: testUnitData.rmc, x: 10, y: 11 },
+      { u: testUnitData.ac, x: 11, y: 11, f: 2, tf: 2 },
+      { u: testUnitData.hcav, x: 12, y: 11 },
     ],
     hexes: [
       [

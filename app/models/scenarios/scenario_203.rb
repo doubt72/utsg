@@ -34,7 +34,7 @@ module Scenarios
           [4, :ger_mg_42],
           [4, :ger_sc],
           [4, :wire],
-          [2, :ap_mines],
+          [2, :ap_mines8],
           :sniper5,
         ],
       },

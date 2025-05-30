@@ -14,7 +14,7 @@ export default function DebugUnitsByType() {
 
   useEffect(() => {
     getAPI("/api/v1/scenarios/all_units", {
-      ok: respons => respons.json().then(json => { setUnits(json) })
+      ok: response => response.json().then(json => { setUnits(json) })
     })
   }, [])
 

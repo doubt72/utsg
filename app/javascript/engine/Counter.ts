@@ -506,7 +506,7 @@ export default class Counter {
   }
 
   get movementLayout(): CounterLayout | false {
-    if (this.target.isMarker) { return false }
+    if (this.target.isMarker || this.target.type === "rubble") { return false }
     const loc = new Coordinate(this.x + 66 - (this.target.minimumRange ? 0 : 2), this.y + 67)
     const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
     let value = this.target.currentMovement
@@ -674,10 +674,10 @@ export default class Counter {
     let size = 11
     if (this.target.blocksLos) {
       value = "blocks LOS"
-    } else if (this.target.hindrance) {
+    } else if (target.hindrance && !target.impassableToVehicles) {
       value = `hindrance ${this.target.hindrance}`
       size = 10.5
-    } else if (target.cover) {
+    } else if (target.cover && !target.impassableToVehicles) {
       size = 14
       value = `cover ${target.cover}`
     } else if (target.coverSides) {
@@ -695,7 +695,6 @@ export default class Counter {
       style.fill = "#DDD"
       tStyle.fill = "black"
     }
-
     return {
       path: path, style: style, value: value, tStyle: tStyle, x: x+40, y: y+70, size: size
     }

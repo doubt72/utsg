@@ -33,7 +33,7 @@ module Scenarios
         [2, :ger_mg_42],
         :ger_7_5cm_leig_18,
         [4, :wire],
-        :ap_mines,
+        :ap_mines8,
         [2, :pillbox],
       ] },
     }.freeze

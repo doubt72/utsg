@@ -31,7 +31,7 @@ module Scenarios
           [2, :ger_mg_42],
           :ger_marder_iii_h_m,
           [2, :wire],
-          :at_mines,
+          :at_mines8,
           :bunker,
         ],
       },

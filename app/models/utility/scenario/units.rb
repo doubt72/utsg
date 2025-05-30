@@ -112,25 +112,40 @@ module Utility
 
         def features
           {
-            smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
-            rubble: { ft: 1, n: "Rubble", t: "rubble", i: "rubble", o: { los: 1 } },
-            roadblock: { ft: 1, n: "Road Block", t: "roadblock", i: "roadblock", f: 0, r: 0, v: 0 },
-            blaze: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
+            # There's a range here:
+            smoke2: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
+            rubble: {
+              ft: 1, n: "Rubble", t: "rubble", i: "rubble", v: "A", d: 3, o: { los: 1, vi: 1 },
+            },
+            roadblock: {
+              ft: 1, n: "Road Block", t: "roadblock", i: "roadblock", f: 0, r: 0, v: 0,
+              o: { vi: 1 }, h: 1,
+            },
+            tanktrap: {
+              ft: 1, n: "Hedgehog", t: "roadblock", i: "tanktrap", f: 0, r: 0, v: 0,
+              o: { vi: 1 }, h: 1,
+            },
+            blaze: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1, ai: 1 } },
             wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
-            mines: { ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 } },
-            ap_mines: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
-            at_mines: {
+            # There's a range here
+            mines8: {
+              ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 },
+            },
+            ap_mines8: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
+            at_mines8: {
               ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { p: 1 },
             },
+            shell_scrape: { ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1 },
             foxhole: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },
+            trench: { ft: 1, n: "Trench", t: "foxhole", i: "foxhole", d: 3 },
             pillbox: {
-              ft: 1, n: "Pillbox", t: "bunker", i: "bunker", o: { da: { f: 3, s: 3, r: 1 } },
+              ft: 1, n: "Pillbox", t: "bunker", i: "bunker", o: { da: { f: 4, s: 4, r: 1 } },
             },
             bunker: {
-              ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 4, s: 4, r: 1 } },
+              ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 } },
             },
             strongpoint: {
-              ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 } },
+              ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 6, s: 6, r: 1 } },
             },
             sniper2: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 2 } },
             sniper3: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 3 } },
@@ -810,15 +825,17 @@ module Utility
             spg[:i] = "spgmg" if spg[:o][:r]
             spg[:i] = "spat" if spg[:o][:p]
             spg[:i] = "spft" if spg[:o][:i] || spg[:o][:sg]
+            spg[:o][:b] = 4 if spg[:o][:i] || spg[:o][:sg]
             spg[:o][:u] = 1 if spg[:o][:ta]
             spg[:o].merge!({ j: 3, f: 18, k: 1 })
+            spg[:o].delete(:j) if spg[:o][:i] || spg[:o][:sg]
             lu[:"#{spg[:c]}_#{sanitize(spg[:n])}"] = spg
           end
           lu
         end
 
         def half_tracks
-          # Usually carriers (or base), sometimes fully tracked
+          # Usually carriers (or base), sometimes fully tracked, some infantry, some more for artillery
           lu = {}
           key = %i[c n y s f r v o]
           [

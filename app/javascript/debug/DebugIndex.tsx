@@ -7,10 +7,10 @@ export default function DebugIndex() {
       <div className="p1em">
         Maps:
         <ul>
-          <li><Link to={"/debug/map/0"}>base test</Link></li>
-          <li><Link to={"/debug/map/1"}>building LOS</Link></li>
-          <li><Link to={"/debug/map/2"}>more LOS</Link></li>
-          <li><Link to={"/debug/map/3"}>small WIP</Link></li>
+          <li><Link to={"/debug/map/0"}>Map 0</Link></li>
+          <li><Link to={"/debug/map/1"}>Map 1</Link></li>
+          <li><Link to={"/debug/map/2"}>Map 2</Link></li>
+          <li><Link to={"/debug/map/3"}>Small Map</Link></li>
         </ul>
         Scenario Statistics:
         <ul>

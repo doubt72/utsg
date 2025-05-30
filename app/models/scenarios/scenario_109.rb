@@ -25,7 +25,7 @@ module Scenarios
           :fra_75mm_m1897,
           :fra_47mm_atx,
           [12, :wire],
-          [4, :mines],
+          [4, :mines8],
           [2, :bunker],
           [2, :strongpoint],
         ],

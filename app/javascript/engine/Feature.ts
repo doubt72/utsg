@@ -26,6 +26,7 @@ export type FeatureData = {
   d?: number;
   o?: {
     p?: NumberBoolean; g?: NumberBoolean; q?: NumberBoolean; los?: NumberBoolean;
+    vi: NumberBoolean; ai: NumberBoolean;
     da?: {
       f: number; s: number; r: number;
     }
@@ -50,6 +51,8 @@ export default class Feature {
   fieldGun: boolean;
   antiTank: boolean;
   blocksLos: boolean;
+  impassable: boolean;
+  impassableToVehicles: boolean;
   coverSides?: [number, number, number];
   facing: Direction = 1;
 
@@ -69,6 +72,8 @@ export default class Feature {
     this.fieldGun = !!data.o?.g
     this.antiTank = !!data.o?.p
     this.blocksLos = !!data.o?.los
+    this.impassable = !!data.o?.ai
+    this.impassableToVehicles = !!data.o?.vi
 
     if (data.o?.da !== undefined) {
       this.coverSides = [data.o.da.f, data.o.da.s, data.o.da.r]
@@ -179,6 +184,12 @@ export default class Feature {
     }
     if (this.currentMovement === "A") {
       text.push("uses all movement")
+    }
+    if (this.impassable) {
+      text.push("impassable")
+    }
+    if (this.impassableToVehicles) {
+      text.push("impassable to vehicles")
     }
     return text
   }

@@ -41,7 +41,7 @@ Existing:
 - 301 44 Counterattack Against Paratroopers
 - 302 44 German Tank Counterattack
 - 303 44 Bocage
-  304    British Clearing Normandy Town - Cheux?
+  304    British Clearing Normandy Town - Operation Epsom
 - 305 44 Omaha Beach
   306    Pegasus Bridge British take bridge then counterattack
   307    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
@@ -49,23 +49,7 @@ Existing:
 - 309 44 Manor Attack
 - 310 44 Market Garden Tank Support - Hell's Highway
 - 311 44 Arracourt
-  312    Americans Clearing Edge of Large Town - Carentan
-
-Later:
-+ 3 761st Tank Battalion
-+ 3 Canadian Street Fighting in Caen
-+ 3 Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
-+ 3 Pointe-du-Hoc Rangers
-+ 3 Bulge tank counterattack
-+ 3 Airborne Arnhem
-+ 3 Airborne Nijmagen/Support Attack?
-+ 3 Hill 104 defense St Jean De Daye
-+ 3 La Fiere Airborne Slugfest / St Mere Eglise
-+ 3 Closing the Falais Pocket Hill 262
-+ 3 Defending Hill 314 Mortain
-  3 Assault on Battery like from Band of Brothers
-  3 Lanzerath Ridge
-  3 Americans Clearing Small Normandy Town
+  312    Americans Clearing Edge of Large Town
 
 400 Pacific (South Pacific/New Guinea/Phillipines)
 - 401 44 Lyte Valley
@@ -104,17 +88,23 @@ Later:
 - 607 37 Battle of Shanghai / Iron Fist
 
 Future Scenarios:
++ 1 PPA / sandstorm - https://en.wikipedia.org/wiki/Popski%27s_Private_Army
++ 1 Desert Rats - https://en.wikipedia.org/wiki/7th_Armoured_Division_(United_Kingdom)
 + 2 Monte Cassino - Algerians/Free French to the North?
-+ 4 Bataan Defense
-+ 4 Saipan Landings / Death Valley / Flame Throwers / Flame Tanks /
-      maybe last-ditch tank breakout attempt
++ 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
+      Bulge tank counterattack https://en.wikipedia.org/wiki/Battle_of_the_Bulge
++ 3 Airborne Arnhem https://en.wikipedia.org/wiki/Battle_of_Arnhem
++ 3 Airborne Nijmegen/Support Attack? https://en.wikipedia.org/wiki/Battle_of_Nijmegen
++ 3 Pointe-du-Hoc Rangers https://en.wikipedia.org/wiki/Pointe_du_Hoc
++ 3 Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
+      https://www.moaa.org/content/publications-and-media/news-articles/2019-news-articles/uncovering-2nd-ranger-battalion,-the-inspiration-for-saving-private-ryan/
++ 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
 + 4 Eniwetok
 + 4 Luzon Tank Battle
 + 4 Milne Bay
 + 5 Crete
 + 5 Belgium
 + 5 Polish Cavalry Attack
-+ 5 Slovakian vs. Polish Fight
 + 5 Yugoslavia (Nisava River Bridge?)
 + 5 Battle of Hannut / Somua S35s
 + 6 Ayo Gorkhali
@@ -126,10 +116,24 @@ Future Scenarios:
 - 1 Hill Assault Somewhere
 - 1 Fight over featureless land (infantry)
 - 2 Anzio, Sicily, Salerno
+- 3 Battle of Hürtgen Forest
+- 3 La Fiere Airborne Slugfest / St Mere Eglise https://en.wikipedia.org/wiki/Mission_Boston#Along_the_Merderet
+- 3 Canadian Street Fighting in Caen https://en.wikipedia.org/wiki/Battle_for_Caen
+- 3 Defending Hill 314 Mortain https://www.nationalww2museum.org/war/articles/30th-infantry-division-battle-mortain
+- 3 Closing the Falais Pocket Hill 262 / Battle of Chambois
+- 3 British attack on battery: https://en.wikipedia.org/wiki/Battle_of_Merville_Gun_Battery
+- 3 British Capture of the Caen canal and Orne river bridges
+- 3 British Hillman Fortress
+- 3 Hill 104 defense St Jean De Daye St. Lo
+- 3 M26 Stories/Nashorn
+- 4 Bataan Defense
+- 4 Saipan Landings / Death Valley / Flame Throwers / Flame Tanks /
+      maybe last-ditch tank breakout attempt
 - 4 Second, Third, Fourth Battles of Matanikau
 - 4 Saddle Ridge/Battle for Henderson Field
 - 4 Iwo Jima / Hill 382 / Hill 362 / The Meatgrinder / Flamethrowers
 - 4 Battle of Kokoda Meeting Engagement / Second Engagement
+- 5 Slovakian vs. Polish Fight
 
   0 Fight Over Bridge in Gully Somewhere
   0 Mass Assualt on Hill
@@ -137,6 +141,10 @@ Future Scenarios:
       Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
       Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
   1 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
+  3 Operation Cobra
+  3 Assault on Battery / Band of Brothers, find out what actual action it was based on
+  3 Lanzerath Ridge
+  3 Americans Clearing Small Normandy Town Somewhere
   4 Okinawa / Steel Storm
   4 Lyte 44 Battle of the Ridges / Airfields / Shoestring Ridge
   4 Buna-Gona, New Guinea and Cartwheel

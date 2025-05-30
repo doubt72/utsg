@@ -14,13 +14,16 @@ import {
   weatherType,
   windType,
 } from "../utilities/commonTypes";
-import Feature from "../engine/Feature";
-import Unit from "../engine/Unit";
+import Feature, { FeatureData } from "../engine/Feature";
+import Unit, { UnitData } from "../engine/Unit";
 import Counter from "../engine/Counter";
 import { normalDir } from "../utilities/utilities";
+import { getAPI } from "../utilities/network";
 
 export default function DebugMap() {
   const id: number = Number(useParams().id)
+
+  const [units, setUnits] = useState<{ [index: string]: Unit | Feature }>({})
 
   const [map, setMap] = useState<Map | undefined>(undefined)
   const [scale, setScale] = useState(1)
@@ -42,13 +45,45 @@ export default function DebugMap() {
   const [initiative, setInitiative] = useState(0)
   const [initiativePlayer, setInitiativePlayer] = useState("")
 
+  const makeIndex = (unit: Unit | Feature) => {
+    if (unit.isFeature) {
+      if (unit.name === "Smoke") { return `f_Smoke_${unit.hindrance}`}
+      return `f_${unit.name}`
+    } else {
+      if (unit.name === "Leader") {
+        return `${unit.nation}_Leader_ldr_${unit.baseMorale}_${unit.currentLeadership}`
+      }
+      if (unit.name === "Crew") {
+        return `${unit.nation}_Crew_tm_${unit.currentGunHandling}`
+      }
+      return `${unit.nation}_${unit.name}_${unit.type}`
+    }
+  }
+
   useEffect(() => {
+    getAPI("/api/v1/scenarios/all_units", {
+      ok: response => response.json().then(json => {
+        const data: { [index: string]: Unit | Feature } = {}
+        Object.values(json).filter(u => !(u as UnitData).mk).forEach(
+          u => {
+            const unit = (u as UnitData).ft ? new Feature(u as FeatureData) : new Unit(u as UnitData)
+            data[makeIndex(unit)] = unit
+          }
+        )
+        setUnits(data)
+      })
+    })
+  }, [])
+
+  useEffect(() => {
+    if (Object.keys(units).length === 0) { return }
     const game = new Game({
       id: 1, name: "test", owner: "one", player_one: "one", player_two: "two",
       current_player: "one", metadata: { turn: 0 },
       scenario: {
-        id: "999", name: "test", allies: ["ussr"], axis: ["ger"],
+        id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p",
         metadata: {
+          author: "", description: [""], first_setup: 1, date: [1940, 1, 1], location: "here",
           turns: 8,
           first_move: 1,
           allied_units: { 0: { list: [] }},
@@ -69,17 +104,17 @@ export default function DebugMap() {
     setMap(game.scenario.map)
     game.scenario.map.debug = true
     setInitiativePlayer(game.initiativePlayer ? "axis" : "allies")
-  }, [])
+  }, [units])
 
   useEffect(() => {
     if (!map) { return }
     mapDebugData[id].features.forEach(data => {
-      const unit = new Feature(data.u)
+      const unit = (units[data.u] as Feature).clone()
       if (data.f) { unit.facing = data.f }
       map.addUnit(new Coordinate(data.x, data.y), unit)
     })
     mapDebugData[id].units.forEach(data => {
-      const unit = new Unit(data.u)
+      const unit = (units[data.u] as Unit).clone()
       if (data.f) { unit.facing = data.f }
       if (data.tf) { unit.turretFacing = data.tf }
       if (data.v) { unit.eliteCrew = data.v }

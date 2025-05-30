@@ -226,7 +226,7 @@ export default class Unit {
   }
 
   get rotates(): boolean {
-    return !["sw", "ldr", "sqd", "tm"].includes(this.type)
+    return !["sw", "ldr", "sqd", "tm", "cav", "cav-wheel"].includes(this.type)
   }
 
   get isActivated(): boolean {
@@ -342,17 +342,23 @@ export default class Unit {
 
   get typeName(): string[] {
     const names: { [index: string]: string[] } = {
-      ac: ["armored car"], antittank: ["anti-tank rifle"], atgun: ["anit-tank gun"],
+      ac: ["armored car"], antitank: ["anti-tank rifle"], atgun: ["anit-tank gun"],
       crew: ["trained gun crew"], explosive: ["explosive"], flamethrower: ["flame thrower"],
-      gun: ["field gun"], ht: ["armored infantry vehicle"],
-      htat: ["armored infantry vehicle", "w/anti-tank gun"],
-      htft: ["armored infantry vehicle", "w/flame thrower"],
-      htgun: ["armored infantry vehicle", "w/mounted field gun"],
-      htmtr: ["armored infantry vehicle", "w/mounted mortar"],
+      gun: ["field gun"], ht: ["infantry fighting vehicle"],
+      htat: ["infantry fighting vehicle", "w/anti-tank gun"],
+      htft: ["infantry fighting vehicle", "w/flame thrower"],
+      htgun: ["infantry fighting vehicle", "w/mounted field gun"],
+      htmtr: ["infantry fighting vehicle", "w/mounted mortar"],
       leader: ["leader"], mg: ["machine gun"], mortar: ["mortar"], radio: ["radio"],
       rocket: ["anti-tank rocket"], spat: ["tank destroyer"], spft: ["flame-thrower tank"],
       spg: ["self-propelled gun"], spgmg: ["armored vehicle"], squad: ["infantry squad"],
       "tank-amp": ["amphibious tank"], tank: ["tank"], team: ["infantry team"],
+      "ht-amp": ["infantry fighting vehicle", "(amphibious)"],
+      "htat-amp": ["infantry fighting vehicle", "(amphibious)"],
+      "htgun-amp": ["infantry fighting vehicle", "(amphibious w/gun)"],
+      truck: ["transport"], cav: ["horse transport"], "cav-wheel": ["light transport"],
+      "truck-amp": ["amphibious transport"], acav: ["armored vehicle"],
+      car: ["light vehicle"],
     }
     if (this.icon === "mortar" && this.baseMovement > 0) { return ["crewed mortar"] }
     return names[this.icon]
@@ -366,13 +372,31 @@ export default class Unit {
     if (this.size > 0) {
       text.push(`stacking/size ${this.size} (${this.armored ? "armored" : "soft"})`)
     }
+    if (this.topOpen) {
+      text.push(`- open / vulnerable to indirect fire`)
+    }
+    if (this.transport) {
+      let size = this.transport < 2 ? "leader" : "team or leader"
+      if (this.transport > 2) { size = "infantry units" }
+      text.push(`- can transport ${size}`)
+    }
+    if (this.canTow) {
+      text.push(`- towing capable`)
+    }
+    if (this.towSize) {
+      text.push(`- minimum size ${this.towSize} transport to tow`)
+    }
     if (this.turretArmor) {
       text.push("turret armor:")
-      text.push(`- front ${this.turretArmor[0]} / side ${this.turretArmor[1]} / rear ${this.turretArmor[2]}`)
+      text.push(`- front ${this.turretArmor[0]} / side ${this.turretArmor[1]} / rear ${
+        this.turretArmor[2] < 0 ? "none" : this.turretArmor[2]
+      }`)
     }
     if (this.hullArmor) {
       text.push("hull armor:")
-      text.push(`- front ${this.hullArmor[0]} / side ${this.hullArmor[1]} / rear ${this.hullArmor[2]}`)
+      text.push(`- front ${this.hullArmor[0]} / side ${this.hullArmor[1]} / rear ${
+        this.hullArmor[2] < 0 ? "none" : this.hullArmor[2]
+      }`)
     }
     if (this.baseMovement > 0) {
       text.push(`movement ${this.currentMovement}`)
@@ -384,6 +408,12 @@ export default class Unit {
         text.push("- man handled")
       } else if (this.isBroken) {
         text.push("- routing only")
+      }
+      if (this.engineer) {
+        text.push("- engineer unit")
+      }
+      if (this.amphibious) {
+        text.push("- amphibious")
       }
     } else {
       text.push(`movement modifier ${this.baseMovement}`)
@@ -432,7 +462,7 @@ export default class Unit {
       if (this.targetedRange) {
         text.push("- can fire smoke rounds")
       } else {
-        text.push("can lay smoke")
+        text.push("- can lay smoke")
       }
     }
     if (this.breakdownRoll && !this.immobilized) {
@@ -444,15 +474,22 @@ export default class Unit {
     if (this.currentLeadership) {
       text.push(`leadership ${this.currentLeadership}`)
     }
-    if (this.breakWeaponRoll && !this.jammed) {
-      text.push(`weapon breaks on ${this.breakWeaponRoll}`)
+    if (this.breakWeaponRoll) {
+      if (this.jammed) {
+        text.push(`weapon fixed on ${this.repairRoll}`)
+        text.push(`weapon breaks on ${this.breakWeaponRoll}`)
+      } else if (this.breakDestroysWeapon) {
+        text.push(`weapon breaks on ${this.breakWeaponRoll}`)
+      } else {
+        text.push(`weapon jams on ${this.breakWeaponRoll}`)
+      }
     }
     if (this.baseMorale) {
       text.push(`unit morale ${this.currentMorale}`)
     }
     if (this.sponson) {
       text.push("center / symbol bottom:")
-      if (String(this.sponson[0]).slice(0, 1) === "F") {
+      if (this.sponson[2] === "ft") {
         text.push("flamethrower mounted")
         text.push("- forward arc only")
         text.push(`- firepower ${this.sponson[0]}`)
