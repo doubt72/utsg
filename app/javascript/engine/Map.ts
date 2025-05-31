@@ -4,7 +4,7 @@ import {
   Coordinate,
   CounterSelectionTarget,
   Direction,
-  MapEdgeType,
+  ExtendedDirection,
   MarkerTypeType,
   Player,
   VictoryHexType,
@@ -42,8 +42,8 @@ type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
 
 export type MapData = {
   layout: MapLayout;
-  allied_edge?: MapEdgeType;
-  axis_edge?: MapEdgeType;
+  allied_dir: ExtendedDirection;
+  axis_dir: ExtendedDirection;
   victory_hexes?: [ number, number, 1 | 2 ][];
   allied_setup?: SetupHexesType;
   axis_setup?: SetupHexesType;
@@ -67,8 +67,8 @@ export default class Map {
   height: number = 0;
   width: number = 0;
   horizontal: boolean = true;
-  alliedEdge?: MapEdgeType;
-  axisEdge?: MapEdgeType;
+  alliedDir: ExtendedDirection;
+  axisDir: ExtendedDirection;
   victoryHexes: VictoryHexType[];
   alliedSetupHexes?: SetupHexesType;
   axisSetupHexes?: SetupHexesType;
@@ -98,8 +98,8 @@ export default class Map {
 
     this.game = game
 
-    this.alliedEdge = data.allied_edge
-    this.axisEdge = data.axis_edge
+    this.alliedDir = data.allied_dir
+    this.axisDir = data.axis_dir
     this.victoryHexes = data.victory_hexes?.map(v => {
       return { x: v[0], y: v[1], player: v[2] }
     }) || []

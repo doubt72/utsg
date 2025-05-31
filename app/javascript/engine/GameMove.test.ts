@@ -10,8 +10,8 @@ import { FeatureData } from "./Feature";
 describe("move integration test", () => {
   const mapData: MapData = {
     layout: [ 5, 5, "x" ],
-    allied_edge: "l",
-    axis_edge: "r",
+    allied_dir: "l",
+    axis_dir: "r",
     victory_hexes: [[0, 0, 2], [4, 4, 1]],
     allied_setup: { 0: [[0, "*"]] },
     axis_setup: { 0: [[4, "*"]] },

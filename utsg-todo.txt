@@ -18,6 +18,8 @@
   - Much harder than it appears, need a way to intercept only scroll/wheel/key events
     but pass through all other mouse events
 
+- remember other map settings
+
 - Switch main page game status to websocket, not polling
 
 - Implement moves

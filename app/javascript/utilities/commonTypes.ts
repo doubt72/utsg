@@ -114,11 +114,6 @@ export const buildingShape: { [index: string]: BuildingShapeType } = {
 
 export type Elevation = -1 | 0 | 1 | 2 | 3 | 4 | 5
 
-export type MapEdgeType = "t" | "b" | "l" | "r"
-export const mapEdge: { [index: string]: MapEdgeType } = {
-  Top: "t", Bottom: "b", Left: "l", Right: "r"
-}
-
 export type VictoryHexType = {
   x: number, y: number, player: 1 | 2
 }

@@ -84,8 +84,8 @@ module Scenarios
           wind: [0, 5, false],
           hexes:,
           layout:,
-          allied_edge: "b",
-          axis_edge: "t",
+          allied_dir: 2.5,
+          axis_dir: 5.5,
           victory_hexes: [
             [2, 3, 2], [6, 2, 2], [10, 4, 2], [11, 2, 2], [11, 8, 1],
           ],

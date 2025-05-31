@@ -26,25 +26,22 @@ export default function MapHexPatterns() {
     return path.join(" ")
   }
 
-  // const nationalPattern = (nation: string, size: number) => {
-  //   return (
-  //     <pattern id={`nation-${nation}-${size}`} x="0" y="0" patternUnits="objectBoundingBox"
-  //              width={size*2} height={size*2}>
-  //       <rect width={size*2} height={size*2} style={{ fill: nationalColors[nation] }}/>
-  //       <image x="0" y="0" height={size*2} width={size*2} xlinkHref={`/assets/units/${nation}.svg`}/>
-  //     </pattern>
-  //   )
-  // }
-
   const nationalControlPattern = (nation: string, size: number) => {
+    const key = `nation-${nation}-${size}`
     return (
-      <pattern id={`nation-${nation}-${size}`} x="0" y="0" patternUnits="objectBoundingBox"
+      <pattern key={key} id={key} x="0" y="0" patternUnits="objectBoundingBox"
                width={size*2} height={size*2}>
         <rect width={size*2} height={size*2} style={{ fill: nationalControlBackgrounds[nation] }}/>
         <image x="0" y="0" height={size*2} width={size*2} xlinkHref={`/assets/units/${nation}.svg`}/>
       </pattern>
     )
   }
+
+  const nations = [
+    "ger", "ita", "jap", "fin", "bul", "hun", "rom", "slv", "cro",
+    "uk", "usa", "ussr", "chi", "fra",
+    "frf", "sa", "can", "aus", "nz", "ind", "bra", "pol", "bel", "dut", "nor", "yug", "gre",    
+  ]
 
   return (
     <defs>
@@ -180,63 +177,9 @@ export default function MapHexPatterns() {
           } style={darkStrokeStyle} />
       </pattern>
 
-      {nationalControlPattern("ger", 12)}
-      {nationalControlPattern("ita", 12)}
-      {nationalControlPattern("jap", 12)}
-      {nationalControlPattern("fin", 12)}
-      {nationalControlPattern("uk", 12)}
-      {nationalControlPattern("usa", 12)}
-      {nationalControlPattern("ussr", 12)}
-      {nationalControlPattern("chi", 12)}
-      {nationalControlPattern("fra", 12)}
-      {nationalControlPattern("frf", 12)}
-
-      {nationalControlPattern("sa", 12)}
-      {nationalControlPattern("can", 12)}
-      {nationalControlPattern("aus", 12)}
-      {nationalControlPattern("nz", 12)}
-      {nationalControlPattern("ind", 12)}
-      {nationalControlPattern("bra", 12)}
-      {nationalControlPattern("pol", 12)}
-      {nationalControlPattern("bel", 12)}
-      {nationalControlPattern("dut", 12)}
-      {nationalControlPattern("nor", 12)}
-      {nationalControlPattern("yug", 12)}
-      {nationalControlPattern("gre", 12)}
-      {nationalControlPattern("bul", 12)}
-      {nationalControlPattern("hun", 12)}
-      {nationalControlPattern("rom", 12)}
-      {nationalControlPattern("slv", 12)}
-      {nationalControlPattern("cro", 12)}
-
-      {nationalControlPattern("ger", 16)}
-      {nationalControlPattern("ita", 16)}
-      {nationalControlPattern("jap", 16)}
-      {nationalControlPattern("fin", 16)}
-      {nationalControlPattern("uk", 16)}
-      {nationalControlPattern("usa", 16)}
-      {nationalControlPattern("ussr", 16)}
-      {nationalControlPattern("chi", 16)}
-      {nationalControlPattern("fra", 16)}
-      {nationalControlPattern("frf", 16)}
-
-      {nationalControlPattern("sa", 16)}
-      {nationalControlPattern("can", 16)}
-      {nationalControlPattern("aus", 16)}
-      {nationalControlPattern("nz", 16)}
-      {nationalControlPattern("ind", 16)}
-      {nationalControlPattern("bra", 16)}
-      {nationalControlPattern("pol", 16)}
-      {nationalControlPattern("bel", 16)}
-      {nationalControlPattern("dut", 16)}
-      {nationalControlPattern("nor", 16)}
-      {nationalControlPattern("yug", 16)}
-      {nationalControlPattern("gre", 16)}
-      {nationalControlPattern("bul", 16)}
-      {nationalControlPattern("hun", 16)}
-      {nationalControlPattern("rom", 16)}
-      {nationalControlPattern("slv", 16)}
-      {nationalControlPattern("cro", 16)}
+      {nations.map(n => nationalControlPattern(n, 9))}
+      {nations.map(n => nationalControlPattern(n, 12))}
+      {nations.map(n => nationalControlPattern(n, 16))}
     </defs>
   )
 }

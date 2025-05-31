@@ -44,8 +44,8 @@ module Scenarios
       def generate
         {
           turns: 6,
-          first_setup: 1,
-          first_move: 2,
+          allied_dir: 1,
+          axis_dir: 4,
           date:,
           location: "Arracourt, France",
           author: "The Establishment",
@@ -86,8 +86,8 @@ module Scenarios
           wind: [1, 3, true],
           hexes:,
           layout:,
-          allied_edge: "l",
-          axis_edge: "r",
+          allied_dir: 3.5,
+          axis_dir: 6.5,
           victory_hexes: [
             [4, 18, 1], [7, 15, 1], [8, 13, 1], [9, 16, 1], [10, 14, 1], [12, 19, 1],
             [14, 2, 2], [16, 3, 2], [19, 8, 2], [19, 16, 2], [20, 15, 2],

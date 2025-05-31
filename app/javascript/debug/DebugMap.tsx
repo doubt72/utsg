@@ -90,7 +90,7 @@ export default function DebugMap() {
           axis_units: { 0: { list: [] }},
           map_data: {
             layout: [mapDebugData[id].x, mapDebugData[id].y, "x"],
-            base_terrain: "g",
+            base_terrain: "g", axis_dir: 4, allied_dir: 1,
             start_weather: weatherType.Dry,
             base_weather: weatherType.Dry,
             precip: [0, weatherType.Rain],

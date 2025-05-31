@@ -80,8 +80,8 @@ module Scenarios
         {
           hexes:,
           layout:,
-          allied_edge: "r",
-          axis_edge: "l",
+          allied_dir: 1,
+          axis_dir: 4,
           victory_hexes: [
             [3, 5, 1], [7, 6, 1], [11, 3, 1], [11, 9, 1], [12, 5, 1],
           ],
