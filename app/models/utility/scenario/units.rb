@@ -35,7 +35,7 @@ module Utility
         end
 
         def all_factions
-          %w[ger ita jap fin axm uk usa ussr fra chi alm]
+          %w[ger ita jap fin axm ussr usa uk fra chi alm]
         end
 
         def markers
@@ -158,31 +158,37 @@ module Utility
 
         def initiative
           lu = {}
-          all_factions.each do |nation|
-            next if %w[alm axm].include?(nation)
-
+          all_factions.each do |nation| # rubocop:disable Metrics/BlockLength
+            if nation == "alm"
+              lu[:pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
+              lu[:gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
+              lu[:nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
+              lu[:bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
+              lu[:dut_initiative] = { mk: 1, nation: "alm", i: "dut2", type: 11 }
+              lu[:yug_initiative] = { mk: 1, nation: "alm", i: "yug", type: 11 }
+              next
+            end
+            if nation == "axm"
+              lu[:bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
+              lu[:hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
+              lu[:rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
+              lu[:slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
+              lu[:cro_initiative] = { mk: 1, nation: "axm", i: "cro", type: 11 }
+              next
+            end
             lu[:"#{nation}_initiative"] = {
               mk: 1, nation:, i: nation == "ussr" ? "ussr2" : nation, type: 11,
             }
-            lu[:can_initiative] = { mk: 1, nation: "can", i: "can", type: 11 } if nation == "uk"
-            lu[:aus_initiative] = { mk: 1, nation: "aus", i: "aus", type: 11 } if nation == "uk"
-            lu[:nz_initiative] = { mk: 1, nation: "nz", i: "nz", type: 11 } if nation == "uk"
-            lu[:ind_initiative] = { mk: 1, nation: "ind", i: "ind", type: 11 } if nation == "uk"
-            lu[:sa_initiative] = { mk: 1, nation: "sa", i: "sa", type: 11 } if nation == "uk"
+            if nation == "uk"
+              lu[:can_initiative] = { mk: 1, nation: "can", i: "can", type: 11 } if nation == "uk"
+              lu[:aus_initiative] = { mk: 1, nation: "aus", i: "aus", type: 11 } if nation == "uk"
+              lu[:nz_initiative] = { mk: 1, nation: "nz", i: "nz", type: 11 } if nation == "uk"
+              lu[:ind_initiative] = { mk: 1, nation: "ind", i: "ind", type: 11 } if nation == "uk"
+              lu[:sa_initiative] = { mk: 1, nation: "sa", i: "sa", type: 11 } if nation == "uk"
+            end
             lu[:bra_initiative] = { mk: 1, nation: "bra", i: "bra", type: 11 } if nation == "usa"
             lu[:frf_initiative] = { mk: 1, nation: "frf", i: "frf", type: 11 } if nation == "fra"
           end
-          lu[:bul_initiative] = { mk: 1, nation: "axm", i: "bul", type: 11 }
-          lu[:hun_initiative] = { mk: 1, nation: "axm", i: "hun", type: 11 }
-          lu[:rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: 11 }
-          lu[:slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: 11 }
-          lu[:cro_initiative] = { mk: 1, nation: "axm", i: "cro", type: 11 }
-          lu[:pol_initiative] = { mk: 1, nation: "alm", i: "pol", type: 11 }
-          lu[:gre_initiative] = { mk: 1, nation: "alm", i: "gre", type: 11 }
-          lu[:nor_initiative] = { mk: 1, nation: "alm", i: "nor", type: 11 }
-          lu[:bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: 11 }
-          lu[:dut_initiative] = { mk: 1, nation: "alm", i: "dut2", type: 11 }
-          lu[:yug_initiative] = { mk: 1, nation: "alm", i: "yug", type: 11 }
           lu
         end
 
@@ -292,7 +298,8 @@ module Utility
               team[key[i]] = v
             end
 
-            team[:v] == 3 ? team[:o][:bv] = 5 : team.delete(:o)
+            squad[:o][:bv] = squad[:v] if squad[:v] < 4
+            team[:o] = team[:v] < 4 ? { bv: team[:v] } : {}
             team[:f] = team[:f] / 2
 
             name = "#{team[:c]}_#{sanitize(team[:n])}"

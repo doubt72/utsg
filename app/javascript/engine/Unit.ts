@@ -135,7 +135,7 @@ export default class Unit {
     this.engineer = !!data.o?.eng
     this.smokeCapable = !!data.o?.s
     this.gunHandling = data.o?.cw ?? 0
-    this.brokenMovement = data.o?.bv || 6
+    this.brokenMovement = data.o?.bv || 4
 
     this.rapidFire = !!data.o?.r
     this.singleFire = !!data.o?.x

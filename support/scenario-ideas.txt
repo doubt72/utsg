@@ -1,5 +1,3 @@
-Existing:
-
 000 East Front
 - 001 44 Simple Squad Battle, MG only
 - 002 42 Stalingrad Outskirts
@@ -41,10 +39,10 @@ Existing:
 - 301 44 Counterattack Against Paratroopers
 - 302 44 German Tank Counterattack
 - 303 44 Bocage
-  304    British Clearing Normandy Town - Operation Epsom
+- 304 44 Pegasus Bridge
 - 305 44 Omaha Beach
-  306    Pegasus Bridge British take bridge then counterattack
-  307    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+  306    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+- 307 44 British Hello Tiger
 - 308 44 Cherbourg City Attack
 - 309 44 Manor Attack
 - 310 44 Market Garden Tank Support - Hell's Highway
@@ -70,7 +68,7 @@ Existing:
 - 503 39 Polish Infantry Resisting German Armor
 - 504 40 French Isolated Armor + Infantry against German Armor
 - 505 39 Finish Bunkers along Border in Winter War
-- 506 40 Greek-Italy
+- 506 40 Greek-Italian
 - 507 40 French Armor vs. German Armor (Char B1 bis)
 - 508 40 Norwegian
 - 509 40 French Isolated Armor + Infantry against German Armor

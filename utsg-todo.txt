@@ -9,6 +9,7 @@
   - Flickering panel when placing units
 
 - fix LOS error along firing arc in LOS repo image
+  - through two fence corner intersections
   - Also bug for hindrance at higher elevation
 - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
 - Tooltips for map controls
