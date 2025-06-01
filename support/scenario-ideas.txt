@@ -41,13 +41,13 @@
 - 303 44 Bocage
 - 304 44 Pegasus Bridge
 - 305 44 Omaha Beach
-  306    Bulge - Infantry + M18 - 19:45 https://www.youtube.com/watch?v=STrIgvXhvns
+  306 44 Bastogne
 - 307 44 British Hello Tiger
 - 308 44 Cherbourg City Attack
 - 309 44 Manor Attack
 - 310 44 Market Garden Tank Support - Hell's Highway
 - 311 44 Arracourt
-  312    Americans Clearing Edge of Large Town
+- 312 44 Purple Heart Lane
 
 400 Pacific (South Pacific/New Guinea/Phillipines)
 - 401 44 Lyte Valley
@@ -89,6 +89,7 @@ Future Scenarios:
 + 1 PPA / sandstorm - https://en.wikipedia.org/wiki/Popski%27s_Private_Army
 + 1 Desert Rats - https://en.wikipedia.org/wiki/7th_Armoured_Division_(United_Kingdom)
 + 2 Monte Cassino - Algerians/Free French to the North?
++ 3 Town w/causeway + orchard
 + 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
       Bulge tank counterattack https://en.wikipedia.org/wiki/Battle_of_the_Bulge
 + 3 Airborne Arnhem https://en.wikipedia.org/wiki/Battle_of_Arnhem
@@ -143,6 +144,7 @@ Future Scenarios:
   3 Assault on Battery / Band of Brothers, find out what actual action it was based on
   3 Lanzerath Ridge
   3 Americans Clearing Small Normandy Town Somewhere
+  3 Bloody Gulch (Carentan Counterattack)
   4 Okinawa / Steel Storm
   4 Lyte 44 Battle of the Ridges / Airfields / Shoestring Ridge
   4 Buna-Gona, New Guinea and Cartwheel
