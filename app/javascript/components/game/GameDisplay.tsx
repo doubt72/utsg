@@ -57,12 +57,16 @@ export default function GameDisplay() {
         })
       })
     })
-    const shrink = localStorage.getItem("interfaceShrink")
+    const shrink = localStorage.getItem("mapInterfaceShrink")
     const mScale = localStorage.getItem("mapScale")
-    const collape = localStorage.getItem("collapseLayout")
+    const collape = localStorage.getItem("mapCollapseLayout")
+    const showCoords = localStorage.getItem("mapCoords")
+    const showMarkers = localStorage.getItem("mapMarkers")
     if (shrink !== null) { setInterfaceShrink(shrink === "true") }
     if (mScale !== null) { setMapScale(Number(mScale)) }
     if (collape !== null) { setCollapseLayout(collape == "true") }
+    if (showCoords !== null) { setCoords(showCoords == "true") }
+    if (showMarkers !== null) { setShowStatusCounters(showMarkers == "true") }
   }, [])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
@@ -119,8 +123,24 @@ export default function GameDisplay() {
   const toggleInterfaceShrink = () => {
     setInterfaceShrink(is => {
       const nv = !is
-      localStorage.setItem("interfaceShrink", String(nv))
+      localStorage.setItem("mapInterfaceShrink", String(nv))
       return nv
+    })
+  }
+
+  const toggleShowCoords = () => {
+    setCoords(c => {
+      const nc = !c
+      localStorage.setItem("mapCoords", String(nc))
+      return nc
+    })
+  }
+
+  const toggleShowMarkers = () => {
+    setShowStatusCounters(sc => {
+      const nc = !sc
+      localStorage.setItem("mapMarkers", String(nc))
+      return nc
     })
   }
 
@@ -225,7 +245,7 @@ export default function GameDisplay() {
           <div className="custom-button normal-button expand-button"
                onClick={() => {
                  setCollapseLayout(false)
-                localStorage.setItem("collapseLayout", "false")
+                 localStorage.setItem("mapCollapseLayout", "false")
                }}>
             <PlusCircle />
           </div>
@@ -247,7 +267,7 @@ export default function GameDisplay() {
             <div className="custom-button normal-button collapse-button"
                  onClick={() => {
                    setCollapseLayout(true)
-                   localStorage.setItem("collapseLayout", "true")
+                   localStorage.setItem("mapCollapseLayout", "true")
                  }}>
               <DashCircle />
             </div>
@@ -295,11 +315,11 @@ export default function GameDisplay() {
           { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>controls</span>
         </div>
         <div className="custom-button normal-button"
-             onClick={() => setCoords(c => !c)}>
+             onClick={() => toggleShowCoords()}>
           { coords ? <GeoAltFill /> : <GeoAlt /> } <span>coords</span>
         </div>
         <div className="custom-button normal-button"
-             onClick={() => setShowStatusCounters(ssc => !ssc)}>
+             onClick={() => toggleShowMarkers()}>
           { showStatusCounters ? <Stack /> : <CircleFill /> } <span>status</span>
         </div>
         <div className="custom-button normal-button"

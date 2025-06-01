@@ -1,120 +1,123 @@
-000 East Front
-- 001 44 Simple Squad Battle, MG only
-- 002 42 Stalingrad Outskirts
+0xx East Front
++ 001 44 Simple Squad Battle, MG only
++ 002 42 Stalingrad Outskirts
 - 003 41 Delaying Action Against Tanks
-- 004 42 Mud / Infantry Battle
-- 005 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
-- 006 42 Romanian Tank Defense Operation Uranus
++ 004 42 Mud / Infantry Battle
++ 005 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
+  006 42 Romanian Tank Defense Operation Uranus
 - 007 41 KV Tank Surprise
-- 008 43 Tank Battle Kursk
-- 009 42 Rasputitsa
-- 010 41 Hungarian Attack Somewhere / Town Clearing?
-- 011 42 Tank Battle Kharkov
-- 012 41 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
-- 013 44 IS-2 vs Tiger
-- 014 41 Armored counter-attack at Moscow
-- 015 41 41 Tank Battle
-- 016 42 Stalingrad Factory
+  008 43 Tank Battle Kursk
+  009 42 Rasputitsa
+  010 41 Hungarian Attack Somewhere / Town Clearing?
+  011 42 Tank Battle Kharkov
+  012 41 Snow Battle Outside Moscow Germans Advancing but Vehicle Breakdown
+  013 44 IS-2 vs Tiger
+  014 41 Armored counter-attack at Moscow
+  015 41 41 Tank Battle
+  016 42 Stalingrad Factory
 
-100 North Africa
+1xx North Africa
 - 101 41 Fight over featureless land (tanks)
 - 102 40 British assulting Fort Capuzzo in 40
-- 103 41 British / Italian Tank Battle Crusader
-- 104 42 Indian Division at El Alamein
-- 105 42 British Breaching German Defenses 2nd Alamein
-- 106 43 Kasserine - Infantry + M3/M6
-- 107 41 Hellfire Pass
-- 108 43 El Guettar - M10
-- 109 42 Free French at Bir Hakeim
+  103 41 British / Italian Tank Battle Crusader
+  104 42 Indian Division at El Alamein
+  105 42 British Breaching German Defenses 2nd Alamein
+  106 43 Kasserine - Infantry + M3/M6
+  107 41 Hellfire Pass
+  108 43 El Guettar - M10
+  109 42 Free French at Bir Hakeim
 
-200 Italy/Sicily
-- 201 43 Troina
-- 202 43 Japanese Troops, 100th infantry Battalion
+2xx Italy/Sicily
+  201 43 Troina
+  202 43 Japanese Troops, 100th infantry Battalion
 - 203 43 Canadians at Ortona Little Stalingrad
-- 204 44 Monte Cassino - Fighting over the flooded valley?
-- 205 43 NZ at Orsogna
-- 206 44 Brazilians Monte Costello
+  204 44 Monte Cassino - Fighting over the flooded valley?
+  205 43 NZ at Orsogna
+  206 44 Brazilians Monte Costello
 
-300 Normandy/Late West Front
-- 301 44 Counterattack Against Paratroopers
+3xx Normandy/Late West Front
++ 301 44 Counterattack Against Paratroopers
 - 302 44 German Tank Counterattack
-- 303 44 Bocage
-- 304 44 Pegasus Bridge
++ 303 44 Bocage
+  304 44 Pegasus Bridge
 - 305 44 Omaha Beach
   306 44 Bastogne
-- 307 44 British Hello Tiger
-- 308 44 Cherbourg City Attack
-- 309 44 Manor Attack
-- 310 44 Market Garden Tank Support - Hell's Highway
-- 311 44 Arracourt
-- 312 44 Purple Heart Lane
+  307 44 British Hello Tiger
++ 308 44 Cherbourg City Attack
+  309 44 Manor Attack
+  310 44 Market Garden Tank Support - Hell's Highway
+  311 44 Arracourt
+  312 44 Purple Heart Lane
 
-400 Pacific (South Pacific/New Guinea/Phillipines)
-- 401 44 Lyte Valley
-- 402 42 Eora Creek / Piecemeal Attack 
-- 403 42 Battle of Kokoda
-- 404 45 Manila urban Fighting
+4xx Pacific (South Pacific/New Guinea/Phillipines)
+  401 44 Lyte Valley
++ 402 42 Eora Creek / Piecemeal Attack 
+  403 42 Battle of Kokoda
++ 404 45 Manila urban Fighting
 - 405 42 The Long Patrol
 - 406 43 Tarawa
 - 407 42 Edson's/Bloody Ridge Guadalcanal
-- 408 43 Attu Island
-- 409 42 Attack on Entrenched Defenders
-- 410 44 Tank Attack on Saipan
-- 411 42 Eora Creek / Bridge Crossing
+  408 43 Attu Island
+  409 42 Attack on Entrenched Defenders
+  410 44 Tank Attack on Saipan
+  411 42 Eora Creek / Bridge Crossing
 
-500 Finland/Poland/France/Norway/Balkans
+5xx Finland/Poland/France/Norway/Balkans
 - 501 40 Finish Ambush in snow against armored column Winter War
-- 502 40 French Armor vs. German Armor (FCM 36)
-- 503 39 Polish Infantry Resisting German Armor
-- 504 40 French Isolated Armor + Infantry against German Armor
-- 505 39 Finish Bunkers along Border in Winter War
-- 506 40 Greek-Italian
-- 507 40 French Armor vs. German Armor (Char B1 bis)
-- 508 40 Norwegian
-- 509 40 French Isolated Armor + Infantry against German Armor
-- 510 40 Forest Parallel Lines with small town in back (sideways E), French, All Infantry
-- 511 40 Matildas vs. 88s, Arras
-- 512 41 Greek-German
+  502 40 French Armor vs. German Armor (FCM 36)
+  503 39 Polish Infantry Resisting German Armor
+  504 40 French Isolated Armor + Infantry against German Armor
++ 505 39 Finish Bunkers along Border in Winter War
+  506 40 Greek-Italian
+  507 40 French Armor vs. German Armor (Char B1 bis)
++ 508 40 Norwegian
+  509 40 French Isolated Armor + Infantry against German Armor
++ 510 40 Forest Parallel Lines with small town in back (sideways E), French, All Infantry
+  511 40 Matildas vs. 88s, Arras
+  512 41 Greek-German
 
-600 China/Burma
-- 601 39 China Pass
-- 602 44 Imphal Tanks
-- 603 41 2nd Changsha
-- 604 39 Khalkin Gol
-- 605 44 Battle of Mogaung / Red House
-- 606 42 Burma / Oil Fields
-- 607 37 Battle of Shanghai / Iron Fist
+6xx China/Burma
++ 601 39 China Pass
+  602 44 Imphal Tanks
+  603 41 2nd Changsha
+  604 39 Khalkin Gol
++ 605 44 Battle of Mogaung / Red House
+  606 42 Burma / Oil Fields
+  607 37 Battle of Shanghai / Iron Fist
 
 Future Scenarios:
++ 0 Budapest
 + 1 PPA / sandstorm - https://en.wikipedia.org/wiki/Popski%27s_Private_Army
-+ 1 Desert Rats - https://en.wikipedia.org/wiki/7th_Armoured_Division_(United_Kingdom)
 + 2 Monte Cassino - Algerians/Free French to the North?
 + 3 Town w/causeway + orchard
 + 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
       Bulge tank counterattack https://en.wikipedia.org/wiki/Battle_of_the_Bulge
++ 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
++ 4 Eniwetok
++ 5 Crete
++ 5 Belgium
++ 6 Lake Khasan
+
+- 0 Croatian Attack Somewhere
+- 0 Slovak Uman, Slovak crapmobiles Lypovec
+- 0 Berlin?
+- 0 Velikiye Luki/Stalingrad of the North
+  0 Fight Over Bridge in Gully Somewhere
+  0 Mass Assualt on Hill
+  0 the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
+      Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
+      Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
++ 1 Desert Rats - https://en.wikipedia.org/wiki/7th_Armoured_Division_(United_Kingdom)
+- 1 Hill Assault Somewhere
+- 1 Fight over featureless land (infantry)
+  1 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
+  1 Ethiopia, Somalia
+- 2 Anzio, Sicily, Salerno
 + 3 Airborne Arnhem https://en.wikipedia.org/wiki/Battle_of_Arnhem
 + 3 Airborne Nijmegen/Support Attack? https://en.wikipedia.org/wiki/Battle_of_Nijmegen
 + 3 Pointe-du-Hoc Rangers https://en.wikipedia.org/wiki/Pointe_du_Hoc
 + 3 Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
       https://www.moaa.org/content/publications-and-media/news-articles/2019-news-articles/uncovering-2nd-ranger-battalion,-the-inspiration-for-saving-private-ryan/
-+ 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
-+ 4 Eniwetok
-+ 4 Luzon Tank Battle
-+ 4 Milne Bay
-+ 5 Crete
-+ 5 Belgium
-+ 5 Polish Cavalry Attack
-+ 5 Yugoslavia (Nisava River Bridge?)
-+ 5 Battle of Hannut / Somua S35s
-+ 6 Ayo Gorkhali
-
-- 0 Croatian Attack Somewhere
-- 0 Slovak Uman, Slovak crapmobiles Lypovec
-- 0 Budapest? Berlin?
-- 0 Velikiye Luki/Stalingrad of the North
-- 1 Hill Assault Somewhere
-- 1 Fight over featureless land (infantry)
-- 2 Anzio, Sicily, Salerno
 - 3 Battle of Hürtgen Forest
 - 3 La Fiere Airborne Slugfest / St Mere Eglise https://en.wikipedia.org/wiki/Mission_Boston#Along_the_Merderet
 - 3 Canadian Street Fighting in Caen https://en.wikipedia.org/wiki/Battle_for_Caen
@@ -125,6 +128,13 @@ Future Scenarios:
 - 3 British Hillman Fortress
 - 3 Hill 104 defense St Jean De Daye St. Lo
 - 3 M26 Stories/Nashorn
+  3 Operation Cobra
+  3 Assault on Battery / Band of Brothers, find out what actual action it was based on
+  3 Lanzerath Ridge
+  3 Americans Clearing Small Normandy Town Somewhere
+  3 Bloody Gulch (Carentan Counterattack)
++ 4 Luzon Tank Battle
++ 4 Milne Bay
 - 4 Bataan Defense
 - 4 Saipan Landings / Death Valley / Flame Throwers / Flame Tanks /
       maybe last-ditch tank breakout attempt
@@ -132,28 +142,22 @@ Future Scenarios:
 - 4 Saddle Ridge/Battle for Henderson Field
 - 4 Iwo Jima / Hill 382 / Hill 362 / The Meatgrinder / Flamethrowers
 - 4 Battle of Kokoda Meeting Engagement / Second Engagement
-- 5 Slovakian vs. Polish Fight
-
-  0 Fight Over Bridge in Gully Somewhere
-  0 Mass Assualt on Hill
-  0 the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
-      Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
-      Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
-  1 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
-  3 Operation Cobra
-  3 Assault on Battery / Band of Brothers, find out what actual action it was based on
-  3 Lanzerath Ridge
-  3 Americans Clearing Small Normandy Town Somewhere
-  3 Bloody Gulch (Carentan Counterattack)
   4 Okinawa / Steel Storm
   4 Lyte 44 Battle of the Ridges / Airfields / Shoestring Ridge
   4 Buna-Gona, New Guinea and Cartwheel
++ 5 Polish Cavalry Attack
++ 5 Yugoslavia (Nisava River Bridge?)
++ 5 Battle of Hannut / Somua S35s
+- 5 Slovakian vs. Polish Fight
++ 6 Ayo Gorkhali
   6 Singapore, Malaysia
 
 - (South African), Slovakian, Croatian, (Bulgarian), Belgian, Dutch, (Yugoslavian)
 
-Future Series:
-  700 Spain, Ethiopia, Somalia?
-  800 Korea?
-  900 Completely Fictional
-    Or Split something over 100 count?  Split Normandy from West Front?
+  7 Dien Bien Phu
+  7 Korean War, Late Chinese Civil War, Indo-Pakistan War 1947/8, 1948 Palestene/Arab-Israeli War
+  8 Spanish Civil War, Ehiopia, Chaco War
+  8 Late Warlord, Early Chinese Civil War, Sino-Soviet Clash (1929), Manchuria
+  9 Operation Olympic
+  9 Sealion
+  9 Patton's Charge

@@ -369,6 +369,7 @@ export const mapDebugData: {
       { u: testUnitData.ginf, x: 0, y: 4 },
       { u: testUnitData.ginf, x: 0, y: 14 },
       { u: testUnitData.ginf, x: 10, y: 0 },
+      { u: testUnitData.ginf, x: 9, y: 1 },
       { u: testUnitData.ginf, x: 10, y: 1 },
       { u: testUnitData.ginf, x: 10, y: 2 },
       { u: testUnitData.ginf, x: 10, y: 3 },

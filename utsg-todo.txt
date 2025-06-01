@@ -2,13 +2,14 @@
   - Add more info on signup page mebbe
 
 - Add graduated coloring when placing support weapons
+  - Improve gun placement on vehicles / check for size
 - Allow tanks to deploy on road but limit directions
 - Find undo bug on KV map/gun (unable to reproduce, have not seen it since)
   - probably just switch to only load changes on synchronization
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units
 
-- fix LOS error along firing arc in LOS repo image
+- fix hindrance error
   - through two fence corner intersections
   - Also bug for hindrance at higher elevation
 - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
@@ -18,7 +19,7 @@
   - Much harder than it appears, need a way to intercept only scroll/wheel/key events
     but pass through all other mouse events
 
-- remember other map settings
+- Start working on Help/Manual
 
 - Switch main page game status to websocket, not polling
 
