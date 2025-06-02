@@ -4,8 +4,6 @@
 - Add graduated coloring when placing support weapons
   - Improve gun placement on vehicles / check for size
 - Allow tanks to deploy on road but limit directions
-- Find undo bug on KV map/gun (unable to reproduce, have not seen it since)
-  - probably just switch to only load changes on synchronization
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units
 

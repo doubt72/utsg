@@ -32,7 +32,9 @@ export default function GameControls({ game }: GameControlsProps) {
   const displayActions = () => {
     const user = localStorage.getItem("username")
     setControls(game.actionsAvailable(user as string).map((a, i) => {
-      if (a.type === "none") {
+      if (a.type === "sync") {
+        return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing</div>
+      } else if (a.type === "none") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
       } else if (a.type === "undo") {
         return <UndoButton game={game} key={i} />

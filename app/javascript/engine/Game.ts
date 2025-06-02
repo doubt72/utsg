@@ -400,6 +400,9 @@ export default class Game {
   }
 
   actionsAvailable(activePlayer: string): GameAction[] {
+    if (this.lastMove?.id === undefined) {
+      return [{ type: "sync" }]
+    }
     const moves = []
     if (this.lastMove?.undoPossible && !this.moveInProgress) {
       moves.push({ type: "undo" })
