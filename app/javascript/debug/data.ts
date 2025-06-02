@@ -1,5 +1,5 @@
 import { HexData } from "../engine/Hex"
-import { Direction, UnitStatusType, unitStatus } from "../utilities/commonTypes"
+import { Direction, UnitStatus, unitStatus } from "../utilities/commonTypes"
 
 const testUnitData: { [index: string]: string } = {
   ginf: "ger_Rifle_sqd", gldr: "ger_Leader_ldr_6_2", gcrew: "ger_Crew_tm_1",
@@ -40,7 +40,7 @@ export const mapDebugData: {
   features: { u: string, x: number, y: number, f?: Direction }[],
   units: {
     u: string, x: number, y: number, f?: Direction, tf?: Direction, v?: number,
-    imm?: boolean, trt?: boolean, st?: UnitStatusType, brk?: boolean, wpn?: boolean,
+    imm?: boolean, trt?: boolean, st?: UnitStatus, brk?: boolean, wpn?: boolean,
   }[],
   hexes: HexData[][]
 }[] = [

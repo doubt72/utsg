@@ -1,15 +1,15 @@
 import Game, { gamePhaseType } from "./Game";
 import {
-  BaseTerrainTypeType,
+  BaseTerrainType,
   Coordinate,
   CounterSelectionTarget,
   Direction,
   ExtendedDirection,
-  MarkerTypeType,
+  MarkerType,
   Player,
-  VictoryHexType,
-  WeatherTypeType,
-  WindTypeType,
+  VictoryHex,
+  WeatherType,
+  WindType,
   baseTerrainType,
   markerType,
   terrainType,
@@ -48,12 +48,12 @@ export type MapData = {
   allied_setup?: SetupHexesType;
   axis_setup?: SetupHexesType;
   hexes: HexData[][];
-  base_terrain: BaseTerrainTypeType;
+  base_terrain: BaseTerrainType;
   night?: boolean;
-  start_weather: WeatherTypeType;
-  base_weather: WeatherTypeType;
-  precip: [number, WeatherTypeType];
-  wind: [WindTypeType, Direction, boolean];
+  start_weather: WeatherType;
+  base_weather: WeatherType;
+  precip: [number, WeatherType];
+  wind: [WindType, Direction, boolean];
 }
 
 // Defined here to avoid circular imports
@@ -69,20 +69,20 @@ export default class Map {
   horizontal: boolean = true;
   alliedDir: ExtendedDirection;
   axisDir: ExtendedDirection;
-  victoryHexes: VictoryHexType[];
+  victoryHexes: VictoryHex[];
   alliedSetupHexes?: SetupHexesType;
   axisSetupHexes?: SetupHexesType;
   mapHexes: Hex[][] = [];
 
   units: (Unit | Feature)[][][];
 
-  baseTerrain: BaseTerrainTypeType;
+  baseTerrain: BaseTerrainType;
   night?: boolean;
-  currentWeather: WeatherTypeType;
-  baseWeather: WeatherTypeType;
-  precip: WeatherTypeType;
+  currentWeather: WeatherType;
+  baseWeather: WeatherType;
+  precip: WeatherType;
   precipChance: number;
-  windSpeed: WindTypeType;
+  windSpeed: WindType;
   windDirection: Direction;
   windVariable: boolean;
   showCoords: boolean = true;
@@ -302,7 +302,7 @@ export default class Map {
       }
       c.push({ loc: loc, u: u, s: index++, ti: trueIndex++ })
       if (this.showAllCounters) {
-        const markerTypes: MarkerTypeType[] = []
+        const markerTypes: MarkerType[] = []
         if (!u.isFeature && (u as Unit).eliteCrew > 0) { markerTypes.push(markerType.EliteCrew) }
         if (!u.isFeature && (u as Unit).eliteCrew < 0) { markerTypes.push(markerType.GreenCrew) }
         if (u.immobilized) { markerTypes.push(markerType.Immobilized) }
@@ -499,7 +499,7 @@ export default class Map {
     ].join(" "), x: loc.x, y: loc.y+5, size: size-8 }
   }
 
-  openHex(x: number, y: number): boolean | -1 {
+  openHex(x: number, y: number): boolean {
     if (!this.game?.reinforcementSelection) {
       return true
     }

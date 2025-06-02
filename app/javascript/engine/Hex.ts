@@ -1,6 +1,6 @@
 import {
-  BorderTypeType, BuildingShapeType, BuildingStyleType, Coordinate, Direction,
-  Elevation, ExtendedDirection, RoadCenterType, RoadTypeType, StreamTypeType, TerrainTypeType,
+  BorderType, BuildingShape, BuildingStyle, Coordinate, Direction,
+  Elevation, ExtendedDirection, RoadCenterType, RoadType, StreamType, TerrainType,
   baseTerrainType, roadType, streamType, terrainType
 } from "../utilities/commonTypes"
 import {
@@ -19,11 +19,11 @@ type HelpTextLayout = {
 }
 
 export type HexData = {
-  t?: TerrainTypeType;     // terrain
+  t?: TerrainType;         // terrain
   d?: ExtendedDirection;   //   direction (if terrain is directional)
   r?: {                    // road
     d: Direction[];        //   direction/endpoints
-    t?: RoadTypeType;      //   type
+    t?: RoadType;          //   type
     c?: RoadCenterType;    //   center offset
     r?: Direction;         //   rotate (*60)
   };
@@ -32,17 +32,17 @@ export type HexData = {
   };
   s?: {                    // stream/river
     d: Direction[];        //   direction/endpoints
-    t?: StreamTypeType;    //   type
+    t?: StreamType;        //   type
   };
   h?: Elevation;           // elevation
   // Only need to do one side, and which side doesn't matter for most things,
   // but matters for cliffs and rendering elevation (i.e., put on higher
   // elevation edge)
-  b?: BorderTypeType;      // border
+  b?: BorderType;          // border
   be?: Direction[];        //   border edges
   st?: {                   // building
-    s?: BuildingStyleType; //   style
-    sh: BuildingShapeType; //   shape
+    s?: BuildingStyle;     //   style
+    sh: BuildingShape;     //   shape
   };
   offmap?: boolean         // true if used for offmap displays
 }
@@ -52,11 +52,11 @@ export default class Hex {
   coord: Coordinate;
   elevation: Elevation;
 
-  baseTerrain: TerrainTypeType;
+  baseTerrain: TerrainType;
   direction: ExtendedDirection;
 
   road: boolean;
-  roadType?: RoadTypeType;
+  roadType?: RoadType;
   roadDirections?: Direction[];
   roadCenter?: RoadCenterType;
   roadRotation?: Direction;
@@ -65,15 +65,15 @@ export default class Hex {
   railroadDirections?: Direction[][];
 
   river: boolean;
-  riverType?: StreamTypeType;
+  riverType?: StreamType;
   riverDirections?: Direction[];
 
-  border?: BorderTypeType;
+  border?: BorderType;
   borderEdges?: Direction[];
 
   building: boolean;
-  buildingStyle?: BuildingStyleType;
-  buildingShape?: BuildingShapeType;
+  buildingStyle?: BuildingStyle;
+  buildingShape?: BuildingShape;
 
   offmap: boolean;
 
@@ -681,6 +681,9 @@ export default class Hex {
     }
     if (this.elevation > 0) {
       text.push(`elevation ${this.elevation}`)
+    }
+    if (this.elevation < 0) {
+      text.push(`depression`)
     }
     if (this.terrain.cover !== false) {
       text.push(`cover ${this.terrain.cover}`)

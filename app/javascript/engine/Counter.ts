@@ -1,4 +1,4 @@
-import { Coordinate, Direction, FeatureTypeType, Player, featureType, markerType } from "../utilities/commonTypes";
+import { Coordinate, Direction, FeatureType, Player, featureType, markerType } from "../utilities/commonTypes";
 import Marker from "./Marker";
 import Unit from "./Unit";
 import Feature from "./Feature";
@@ -456,7 +456,7 @@ export default class Counter {
       [
         featureType.Smoke, featureType.Fire, featureType.Bunker, featureType.Foxhole,
         featureType.Rubble,
-      ].includes(this.target.type as FeatureTypeType)) {
+      ].includes(this.target.type as FeatureType)) {
     return false
   }
     let loc = new Coordinate(this.x + 40, this.y + 67)

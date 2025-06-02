@@ -1,13 +1,13 @@
-import { Direction, MarkerTypeType, NumberBoolean, WeatherTypeType, WindTypeType, markerType, weatherType, windType } from "../utilities/commonTypes"
+import { Direction, MarkerType, NumberBoolean, WeatherType, WindType, markerType, weatherType, windType } from "../utilities/commonTypes"
 import { counterElite, counterGreen, counterRed, markerYellow } from "../utilities/graphics";
 
 // mk: marker
 // v: value
 
 export type MarkerData = {
-  type: MarkerTypeType;
+  type: MarkerType;
   i?: string;
-  subtype?: WeatherTypeType | WindTypeType;
+  subtype?: WeatherType | WindType;
   v?: number | string;
   v2?: number | string;
   nation?: string;
@@ -19,9 +19,9 @@ export type MarkerData = {
 }
 
 export default class Marker {
-  type: MarkerTypeType;
+  type: MarkerType;
   nationalIcon?: string;
-  subType?: WeatherTypeType | WindTypeType;
+  subType?: WeatherType | WindType;
   value?: number | string;
   value2?: number | string;
   nation: string;

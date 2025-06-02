@@ -1,6 +1,6 @@
 import {
-  Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementTypeType,
-  NumberBoolean, SizeRange, UnitStatusType, UnitTypeType, movementType, unitStatus
+  Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
+  NumberBoolean, SizeRange, UnitStatus, UnitType, movementType, unitStatus
 } from "../utilities/commonTypes";
 
 // c: nation, t: type, n: name, i: icon, y: year
@@ -28,7 +28,7 @@ import {
 // TODO: Maybe more types for some of these
 export type UnitData = {
   id?: string;
-  c: string; t: UnitTypeType; n: string; i: string; y: number;
+  c: string; t: UnitType; n: string; i: string; y: number;
   m?: MoraleRange; s?: SizeRange;
   f: number; r: number; v: number;
   o: {
@@ -52,7 +52,7 @@ export type UnitData = {
 
 export default class Unit {
   nation: string;
-  type: UnitTypeType;
+  type: UnitType;
   name: string;
   icon: string;
   year: number;
@@ -91,7 +91,7 @@ export default class Unit {
 
   eliteCrew: number;
   turreted: boolean;
-  movementType: MovementTypeType;
+  movementType: MovementType;
   amphibious: boolean;
   hullArmor?: [number, number, number];
   turretArmor?: [number, number, number];
@@ -100,7 +100,7 @@ export default class Unit {
 
   sponson?: [number, number] | [number, number, string];
 
-  status: UnitStatusType;
+  status: UnitStatus;
   tired: boolean;
   jammed: boolean;
   weaponBroken: boolean;

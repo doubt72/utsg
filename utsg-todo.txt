@@ -2,7 +2,9 @@
   - Add more info on signup page mebbe
 
 - Add graduated coloring when placing support weapons
-  - Improve gun placement on vehicles / check for size
+- Other special warnings
+  - Handle artillery on towable vehicles
+  - Illegal placement of unit on vehicle it can't tow
 - Allow tanks to deploy on road but limit directions
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units
@@ -22,3 +24,6 @@
 - Switch main page game status to websocket, not polling
 
 - Implement moves
+
+- Clean up all the typing/get rid of all the "null object pattern"-style duplication for rendering?
+  - Maybe if I have nothing better to do someday

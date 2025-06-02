@@ -1,4 +1,4 @@
-import { BorderTypeType, Direction, TerrainAttributesType } from "../utilities/commonTypes";
+import { BorderType, Direction, TerrainAttributes } from "../utilities/commonTypes";
 import { normalDir } from "../utilities/utilities";
 import Hex from "./Hex"
 
@@ -10,7 +10,7 @@ export default class Terrain {
   }
 
   // los = BLOCKS los
-  get baseAttr(): TerrainAttributesType {
+  get baseAttr(): TerrainAttributes {
     return {
       o: { move: 1, hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "open" },
       f: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: "back", name: "forest" },
@@ -29,13 +29,13 @@ export default class Terrain {
     }[this.hex.baseTerrain]
   }
 
-  get borderAttr(): TerrainAttributesType {
+  get borderAttr(): TerrainAttributes {
     return {
       f: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: false, name: "fence" },
       w: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "wall" },
       b: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "bocage" },
       c: { move: 0, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false, name: "cliff" },
-    }[this.hex.border as BorderTypeType]
+    }[this.hex.border as BorderType]
   }
 
   get roadAttr(): { name: string} | undefined {

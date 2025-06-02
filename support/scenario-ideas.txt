@@ -1,11 +1,11 @@
 0xx East Front
-+ 001 44 Simple Squad Battle, MG only
-+ 002 42 Stalingrad Outskirts
-- 003 41 Delaying Action Against Tanks
-+ 004 42 Mud / Infantry Battle
-+ 005 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
+  001 44 Simple Squad Battle, MG only
+  002 42 Stalingrad Outskirts
+  003 41 Delaying Action Against Tanks
+  004 42 Mud / Infantry Battle
+  005 41 Snow Battle Outside Moscow Germans Defending (Infantry Only) no dig in
   006 42 Romanian Tank Defense Operation Uranus
-- 007 41 KV Tank Surprise
+  007 41 KV Tank Surprise
   008 43 Tank Battle Kursk
   009 42 Rasputitsa
   010 41 Hungarian Attack Somewhere / Town Clearing?
@@ -17,8 +17,8 @@
   016 42 Stalingrad Factory
 
 1xx North Africa
-- 101 41 Fight over featureless land (tanks)
-- 102 40 British assulting Fort Capuzzo in 40
+  101 41 Fight over featureless land (tanks)
+  102 40 British assulting Fort Capuzzo in 40
   103 41 British / Italian Tank Battle Crusader
   104 42 Indian Division at El Alamein
   105 42 British Breaching German Defenses 2nd Alamein
@@ -30,20 +30,20 @@
 2xx Italy/Sicily
   201 43 Troina
   202 43 Japanese Troops, 100th infantry Battalion
-- 203 43 Canadians at Ortona Little Stalingrad
+  203 43 Canadians at Ortona Little Stalingrad
   204 44 Monte Cassino - Fighting over the flooded valley?
   205 43 NZ at Orsogna
   206 44 Brazilians Monte Costello
 
 3xx Normandy/Late West Front
-+ 301 44 Counterattack Against Paratroopers
-- 302 44 German Tank Counterattack
-+ 303 44 Bocage
+  301 44 Counterattack Against Paratroopers
+  302 44 German Tank Counterattack
+  303 44 Bocage
   304 44 Pegasus Bridge
-- 305 44 Omaha Beach
+  305 44 Omaha Beach
   306 44 Bastogne
   307 44 British Hello Tiger
-+ 308 44 Cherbourg City Attack
+  308 44 Cherbourg City Attack
   309 44 Manor Attack
   310 44 Market Garden Tank Support - Hell's Highway
   311 44 Arracourt
@@ -51,37 +51,37 @@
 
 4xx Pacific (South Pacific/New Guinea/Phillipines)
   401 44 Lyte Valley
-+ 402 42 Eora Creek / Piecemeal Attack 
+  402 42 Eora Creek / Piecemeal Attack 
   403 42 Battle of Kokoda
-+ 404 45 Manila urban Fighting
-- 405 42 The Long Patrol
-- 406 43 Tarawa
-- 407 42 Edson's/Bloody Ridge Guadalcanal
+  404 45 Manila urban Fighting
+  405 42 The Long Patrol
+  406 43 Tarawa
+  407 42 Edson's/Bloody Ridge Guadalcanal
   408 43 Attu Island
   409 42 Attack on Entrenched Defenders
   410 44 Tank Attack on Saipan
   411 42 Eora Creek / Bridge Crossing
 
 5xx Finland/Poland/France/Norway/Balkans
-- 501 40 Finish Ambush in snow against armored column Winter War
+  501 40 Finish Ambush in snow against armored column Winter War
   502 40 French Armor vs. German Armor (FCM 36)
   503 39 Polish Infantry Resisting German Armor
   504 40 French Isolated Armor + Infantry against German Armor
-+ 505 39 Finish Bunkers along Border in Winter War
+  505 39 Finish Bunkers along Border in Winter War
   506 40 Greek-Italian
   507 40 French Armor vs. German Armor (Char B1 bis)
-+ 508 40 Norwegian
+  508 40 Norwegian
   509 40 French Isolated Armor + Infantry against German Armor
-+ 510 40 Forest Parallel Lines with small town in back (sideways E), French, All Infantry
+  510 40 Forest Parallel Lines with small town in back (sideways E), French, All Infantry
   511 40 Matildas vs. 88s, Arras
   512 41 Greek-German
 
 6xx China/Burma
-+ 601 39 China Pass
+  601 39 China Pass
   602 44 Imphal Tanks
   603 41 2nd Changsha
   604 39 Khalkin Gol
-+ 605 44 Battle of Mogaung / Red House
+  605 44 Battle of Mogaung / Red House
   606 42 Burma / Oil Fields
   607 37 Battle of Shanghai / Iron Fist
 

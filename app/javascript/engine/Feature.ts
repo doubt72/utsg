@@ -1,4 +1,4 @@
-import { Direction, FeatureTypeType, NumberBoolean, featureType } from "../utilities/commonTypes";
+import { Direction, FeatureType, NumberBoolean, featureType } from "../utilities/commonTypes";
 
 // ft: feature
 // t: type, n: name, i: icon
@@ -16,7 +16,7 @@ import { Direction, FeatureTypeType, NumberBoolean, featureType } from "../utili
 
 export type FeatureData = {
   id?: string;
-  t: FeatureTypeType;
+  t: FeatureType;
   n: string;
   i: string;
   f?: number | string;
@@ -38,7 +38,7 @@ export type FeatureData = {
 }
 
 export default class Feature {
-  type: FeatureTypeType;
+  type: FeatureType;
   nation = "none"
   name: string;
   icon: string;

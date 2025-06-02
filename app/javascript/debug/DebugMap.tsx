@@ -5,11 +5,11 @@ import Game, { gamePhaseType } from "../engine/Game";
 import { mapDebugData } from "./data";
 import Map from "../engine/Map";
 import {
-  BaseTerrainTypeType,
+  BaseTerrainType,
   Coordinate,
   Direction,
-  WeatherTypeType,
-  WindTypeType,
+  WeatherType,
+  WindType,
   baseTerrainType,
   weatherType,
   windType,
@@ -142,7 +142,7 @@ export default function DebugMap() {
     return map?.baseTerrainName
   }
 
-  const nextTerrain = (t: BaseTerrainTypeType): BaseTerrainTypeType => {
+  const nextTerrain = (t: BaseTerrainType): BaseTerrainType => {
     console.log(t)
     console.log({
       g: baseTerrainType.Sand,
@@ -167,14 +167,14 @@ export default function DebugMap() {
     }[t]
   }
 
-  const nextWeather = (w: WeatherTypeType, precip = false): WeatherTypeType => {
+  const nextWeather = (w: WeatherType, precip = false): WeatherType => {
     let type = w + 1
     if (precip) {
       if (type > 3) { type = 2 }
     } else {
       if (type > 5) { type = 0 }
     }
-    return type as WeatherTypeType
+    return type as WeatherType
   }
 
   const nextChance = (c: number): number => {
@@ -183,10 +183,10 @@ export default function DebugMap() {
     return chance
   }
 
-  const nextWind = (w: WindTypeType): WindTypeType => {
+  const nextWind = (w: WindType): WindType => {
     let wind = w + 1
     if (wind > 3) { wind = 0 }
-    return wind as WindTypeType
+    return wind as WindType
   }
 
   const nextDirection = (d: Direction): Direction => {
