@@ -20,6 +20,7 @@ import MapHexOverlay from "./MapHexOverlay";
 import DirectionSelector from "./DirectionSelector";
 import MiniMap from "./MiniMap";
 import { yMapOffset } from "../../../utilities/graphics";
+import { normalDir } from "../../../utilities/utilities";
 
 interface GameMapProps {
   map: Map;
@@ -320,14 +321,21 @@ export default function GameMap({
 
   const hexSelection = (x: number, y: number) => {
     if (hexCallback) {
+      let doCallback = true
       if (map.game?.reinforcementSelection) {
         const counter = map.game.availableReinforcements(map.game.currentPlayer)[
           map.game.turn][map.game.reinforcementSelection.index]
         if (counter.counter.rotates && !map.game.reinforcementNeedsDirection) {
           map.game.reinforcementNeedsDirection = [x, y]
+          const list = map.units[y][x]
+          const last = list[list.length - 1]
+          if (last.canTow) {
+            directionCallback(x, y, normalDir(last.facing + 3))
+            doCallback = false
+          }
         }
       }
-      hexCallback(x, y)
+      if (doCallback) { hexCallback(x, y) }
     }
     updateReinforcementOverlays()
   }

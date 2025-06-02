@@ -2,6 +2,7 @@
   - Add more info on signup page mebbe
 
 - Allow tanks to deploy on road but limit directions
+- Automatically place guns facing opposite towing vehicles
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units
 
