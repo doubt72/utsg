@@ -1,10 +1,6 @@
 - Come up with name (D-GOST?)
   - Add more info on signup page mebbe
 
-- Add graduated coloring when placing support weapons
-- Other special warnings
-  - Handle artillery on towable vehicles
-  - Illegal placement of unit on vehicle it can't tow
 - Allow tanks to deploy on road but limit directions
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units

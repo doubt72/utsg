@@ -5,12 +5,14 @@ import {
   CounterSelectionTarget,
   Direction,
   ExtendedDirection,
+  HexOpenType,
   MarkerType,
   Player,
   VictoryHex,
   WeatherType,
   WindType,
   baseTerrainType,
+  hexOpenType,
   markerType,
   terrainType,
   unitType,
@@ -266,10 +268,10 @@ export default class Map {
       }
       if (unit.type === "gun") {
         if (!last ||
-          (last.type !== "sqd" && last.type !== "tm")) {
+          (last.type !== "sqd" && last.type !== "tm" && !(last.canTow && last.size >= (unit.towSize ?? 0)))) {
           throw new WarningMoveError(
-            `${unit.name} is not assigned to an operator; it ` +
-            "must be placed on a squad or team to be assigned."
+            `${unit.name} is not assigned to an operator or vehicle; it ` +
+            "must be placed on a squad or team to be assigned, or on a vehicle large enough to tow it."
           )
         }
       }
@@ -499,11 +501,9 @@ export default class Map {
     ].join(" "), x: loc.x, y: loc.y+5, size: size-8 }
   }
 
-  openHex(x: number, y: number): boolean {
-    if (!this.game?.reinforcementSelection) {
-      return true
-    }
-    if (this.game.reinforcementNeedsDirection) { return false }
+  reinforcementOpenHex(x: number, y: number): HexOpenType {
+    if (!this.game?.reinforcementSelection) { return hexOpenType.Open }
+    if (this.game.reinforcementNeedsDirection) { return hexOpenType.Closed }
     const player = this.game.reinforcementSelection.player
     const turn = this.game.reinforcementSelection.turn
     const index = this.game.reinforcementSelection.index
@@ -514,28 +514,28 @@ export default class Map {
     if (!hex?.terrain.move) { return false }
     if (!hex.terrain.vehicle && !uf.isFeature && (uf.isTracked || uf.isWheeled)) {
       if (hex.baseTerrain !== terrainType.Shallow || uf.isFeature || !uf.amphibious) {
-        return false
+        return hexOpenType.Closed
       }
     }
     if (hex.terrain.gun === false && !uf.isFeature && (uf.type === unitType.Gun)) { return false }
     if (uf.isFeature) {
-      if (!hex.terrain.vehicle) { return false }
+      if (!hex.terrain.vehicle) { return hexOpenType.Closed }
       for (const f of this.countersAt(hex.coord)) {
-        if (f.target.isFeature) { return false }
+        if (f.target.isFeature) { return hexOpenType.Closed }
       }
       if ((uf.type === "mines" || uf.type === "wire") && this.victoryAt(hex.coord)) {
-        return false
+        return hexOpenType.Closed
       }
     } else {
       const size = this.countersAt(hex.coord).reduce((sum, c) => {
         return c.target.isFeature ? sum : sum + c.target.size
       }, 0)
       if (uf.size + size > 15) {
-        return false
+        return hexOpenType.Closed
       }
     }
     const ts = `${turn}`
-    if (!this.alliedSetupHexes || !this.axisSetupHexes) { return false }
+    if (!this.alliedSetupHexes || !this.axisSetupHexes) { return hexOpenType.Closed }
     const hexes = player === 1 ? this.alliedSetupHexes[ts] : this.axisSetupHexes[ts]
     for (const h of hexes) {
       let xMatch = false
@@ -554,9 +554,36 @@ export default class Map {
         yMatch = true
       } else if (y === h[1]) { yMatch = true }
 
-      if (xMatch && yMatch) { return true }
+      if (xMatch && yMatch) {
+        let rc = hexOpenType.Open
+        const list = this.units[hex.coord.y][hex.coord.x]
+        const last = list[list.length - 1]
+        if (uf.type === "gun") {
+          if (last && (last.canTow && last.size >= (uf.towSize ?? 0) ||
+              last.type === "sqd" || last.type === "tm")) {
+            rc = hexOpenType.Green
+          } else {
+            rc = hexOpenType.Red
+          }
+        }
+        if (uf.type === "sw") {
+          if (last && (last.type === "sqd" || last.type === "tm" || last.type === "ldr")) {
+            rc = hexOpenType.Green
+          } else {
+            rc = hexOpenType.Red
+          }
+        }
+        return rc
+      }
     }
-    return false
+    return hexOpenType.Closed
+  }
+
+  openHex(x: number, y: number): HexOpenType {
+    if (this.game?.reinforcementSelection) {
+      return this.reinforcementOpenHex(x, y)
+    }
+    return hexOpenType.Open
   }
 
   anyBrokenUnits(player: Player): boolean {

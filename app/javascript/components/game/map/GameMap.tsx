@@ -176,7 +176,7 @@ export default function GameMap({
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         if (map.game?.reinforcementSelection) {
-          const shaded = !map.openHex(x, y)
+          const shaded = map.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
         }
