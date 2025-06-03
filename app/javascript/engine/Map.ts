@@ -511,8 +511,9 @@ export default class Map {
     const uf = player === 1 ?
       this.game.scenario.alliedReinforcements[turn][index].counter :
       this.game.scenario.axisReinforcements[turn][index].counter
-    if (!hex?.terrain.move) { return false }
-    if (!hex.terrain.vehicle && !uf.isFeature && (uf.isTracked || uf.isWheeled)) {
+    if (!hex) { return false }
+    if (!hex.terrain.move && !hex.road && !hex.railroad) { return false }
+    if (!hex.terrain.vehicle && !hex.road && !uf.isFeature && (uf.isTracked || uf.isWheeled)) {
       if (hex.baseTerrain !== terrainType.Shallow || uf.isFeature || !uf.amphibious) {
         return hexOpenType.Closed
       }

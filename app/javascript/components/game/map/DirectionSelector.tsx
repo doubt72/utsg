@@ -10,7 +10,19 @@ interface MapHexProps {
 export default function DirectionSelector({ hex, selectCallback }: MapHexProps) {
 
   const directions = () => {
-    return [1, 2, 3, 4, 5, 6].map(v => {
+    if (!hex?.map?.game?.reinforcementSelection) { return }
+    const player = hex.map.game.reinforcementSelection.player
+    const turn = hex.map.game.reinforcementSelection.turn
+    const index = hex.map.game.reinforcementSelection.index
+    const uf = player === 1 ?
+      hex.map.game.scenario.alliedReinforcements[turn][index].counter :
+      hex.map.game.scenario.axisReinforcements[turn][index].counter
+    let dirs: Direction[] = [1, 2, 3, 4, 5, 6]
+    if (!hex.terrain.vehicle && (uf.isTracked || uf.isWheeled)) {
+      dirs = hex.roadDirections ?? []
+    }
+
+    return dirs.map(v => {
       if (!hex) { return undefined }
       const points = hex.directionSelectionCoords(v as Direction)
       const style = { fill: "#FFF", strokeWidth: 1, stroke: "#000" }

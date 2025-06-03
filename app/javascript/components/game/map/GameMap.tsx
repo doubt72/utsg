@@ -329,7 +329,7 @@ export default function GameMap({
           map.game.reinforcementNeedsDirection = [x, y]
           const list = map.units[y][x]
           const last = list[list.length - 1]
-          if (last.canTow) {
+          if (last && last.canTow) {
             directionCallback(x, y, normalDir(last.facing + 3))
             doCallback = false
           }
