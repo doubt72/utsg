@@ -231,7 +231,7 @@ export default class Map {
       g: "#D0EED0",
       d: "#EEB",
       s: "#EEE",
-      m: "#D7CFC0",
+      m: "#DFD7C7",
       u: "#D7DFD0",
     }[this.baseTerrain]
   }
