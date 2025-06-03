@@ -26,6 +26,7 @@
   107 41 Hellfire Pass
   108 43 El Guettar - M10
   109 42 Free French at Bir Hakeim
+  110 41 Rat Patrol
 
 2xx Italy/Sicily
   201 43 Troina
@@ -87,7 +88,6 @@
 
 Future Scenarios:
 + 0 Budapest
-+ 1 PPA / sandstorm - https://en.wikipedia.org/wiki/Popski%27s_Private_Army
 + 2 Monte Cassino - Algerians/Free French to the North?
 + 3 Town w/causeway + orchard
 + 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
@@ -113,6 +113,7 @@ Future Scenarios:
   1 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
   1 Ethiopia, Somalia
 - 2 Anzio, Sicily, Salerno
+  2 LRDG running into Compagnia Autosahariana di Cufra in Gebel Sherif
 + 3 Airborne Arnhem https://en.wikipedia.org/wiki/Battle_of_Arnhem
 + 3 Airborne Nijmegen/Support Attack? https://en.wikipedia.org/wiki/Battle_of_Nijmegen
 + 3 Pointe-du-Hoc Rangers https://en.wikipedia.org/wiki/Pointe_du_Hoc

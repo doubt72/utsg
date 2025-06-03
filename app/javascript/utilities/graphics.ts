@@ -65,7 +65,7 @@ export const counterElite = "#070"
 // TODO: figure out a way to keep in sync with CSS
 export const nationalColors: { [index: string]: string } = {
   ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#BBF", frf: "#BBF", chi: "#ECF", alm: "#FA9",
-  ger: "#BBB", ita: "#9DC", jap: "#ED4", fin: "#DDD", axm: "#8CD",
+  ger: "#BBB", ita: "#9DC", jap: "#E0D044", fin: "#DDD", axm: "#8CD",
   none: "white", fort: "white",
 
   sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#BC7",

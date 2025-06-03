@@ -79,6 +79,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/type/ht"}>half-tracks</Link></li>
           <li><Link to={"/debug/units/type/truck"}>trucks</Link></li>
           <li><Link to={"/debug/units/type/cav"}>cavalry</Link></li>
+          <li><Link to={"/debug/units/type/other"}>other</Link></li>
         </ul>
         Functions:
         <ul>

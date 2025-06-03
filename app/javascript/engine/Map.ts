@@ -32,6 +32,7 @@ import {
   counterElite,
   counterGreen,
   counterRed,
+  markerYellow,
   roundedRectangle,
   yMapOffset,
 } from "../utilities/graphics";
@@ -445,16 +446,16 @@ export default class Map {
         badges.push({ text: "weapon broken", color: counterRed, tColor: "white" })
       }
       if (u.isTired && s) {
-        badges.push({ text: "tired", color: "yellow", tColor: "black" })
+        badges.push({ text: "tired", color: markerYellow, tColor: "black" })
       }
       if (u.isPinned && s) {
         badges.push({ text: "pinned", color: counterRed, tColor: "white" })
       }
       if (u.isExhausted && s) {
-        badges.push({ text: "exhausted", color: "yellow", tColor: "black" })
+        badges.push({ text: "exhausted", color: markerYellow, tColor: "black" })
       }
       if (u.isActivated && s) {
-        badges.push({ text: "activated", color: "yellow", tColor: "black" })
+        badges.push({ text: "activated", color: markerYellow, tColor: "black" })
       }
     }
     const size = 24

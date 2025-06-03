@@ -25,7 +25,7 @@ const testUnitData: { [index: string]: string } = {
   usmoto: "usa_H-D WLA_cav", hcav: "ger_Horse_cav", bcav: "jap_Bicycle_cav", htm: "ger_Kettenkrad_truck",
   htsm: "ger_SdKfz 7_truck", tspag: "ger_Marder I_spg", tft: "ger_SdKfz 251/16_ht", atr: "uk_Boys AT Rifle_sw",
   uc: "uk_Universal Carrier_ht", tkt: "ita_L3/33_spg", amt: "jap_Type 2 Ka-Mi_tank",
-  ukinf: "uk_Guard_sqd", ac: "fra_Schneider P16_ac"
+  ukinf: "uk_Guard_sqd", ac: "fra_Schneider P16_ac", rtr: "uk_Chevy C30 AT_truck"
 }
 
 const testFeatureData: { [index: string]: string } = {
@@ -726,7 +726,7 @@ export const mapDebugData: {
       { u: testUnitData.usht3, x: 4, y: 10, f: 2 },
       { u: testUnitData.usht4, x: 5, y: 10, f: 2 },
       { u: testUnitData.usht5, x: 6, y: 10, f: 2 },
-      { u: testUnitData.usht6, x: 7, y: 10, f: 2 },
+      { u: testUnitData.usht6, x: 7, y: 10, f: 2, tf: 2 },
       { u: testUnitData.ustruck, x: 8, y: 10, f: 2 },
       { u: testUnitData.ustruck2, x: 9, y: 10, f: 2 },
       { u: testUnitData.usjeep, x: 10, y: 10, f: 2 },
@@ -750,6 +750,7 @@ export const mapDebugData: {
       { u: testUnitData.rmc, x: 10, y: 11 },
       { u: testUnitData.ac, x: 11, y: 11, f: 2, tf: 2 },
       { u: testUnitData.hcav, x: 12, y: 11 },
+      { u: testUnitData.rtr, x: 13, y: 11, f: 2 },
     ],
     hexes: [
       [

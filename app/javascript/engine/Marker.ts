@@ -41,6 +41,8 @@ export default class Marker {
 
   name = ''
   turreted = false
+  rotatingVehicleMount = false
+  backwardsMount = false
   isWreck = false
   isBroken = false
   isPinned = false

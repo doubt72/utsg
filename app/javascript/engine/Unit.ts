@@ -14,7 +14,8 @@ import {
 //    cw: crew skill, x: single shot, i: ignore terrain
 //    j: jam number, b: break number, bd: breakdown number
 //    t: targeted fire, m: minimum range, p: antitank, g: artillery, o: offboard artillery
-//    u: turret, k: tracked, w: wheeled, c: crewed, y: rotating mount
+//    u: turret, k: tracked, w: wheeled, c: crewed, y: rotating mount,
+//    uu: vehicle rotating mount, bw: gun mounted backwards,
 //    v: elite(1)/green(-1) crew
 //    ha: hull armor
 //    ta: turret armor
@@ -34,7 +35,7 @@ export type UnitData = {
   o: {
     l?: LeadershipRange; a?: NumberBoolean; s?: NumberBoolean; r?: NumberBoolean;
     z?: NumberBoolean; cw?: GunHandlingRange; x?: NumberBoolean; i?: NumberBoolean;
-    j?: number; b?: number; bd?: number;
+    j?: number; b?: number; bd?: number; uu?: NumberBoolean; bw?: NumberBoolean;
     t?: NumberBoolean; m?: number; p?: NumberBoolean; g?: NumberBoolean;
     o?: NumberBoolean; u?: NumberBoolean; k?: NumberBoolean; w?: NumberBoolean;
     c?: NumberBoolean; y?: NumberBoolean; v?: number,
@@ -91,6 +92,8 @@ export default class Unit {
 
   eliteCrew: number;
   turreted: boolean;
+  rotatingVehicleMount: boolean;
+  backwardsMount: boolean;
   movementType: MovementType;
   amphibious: boolean;
   hullArmor?: [number, number, number];
@@ -156,6 +159,8 @@ export default class Unit {
 
     this.eliteCrew = data.o?.v ?? 0
     this.turreted = !!data.o?.u
+    this.rotatingVehicleMount = !!data.o?.uu
+    this.backwardsMount = !!data.o?.bw
     this.movementType = movementType.Foot
     if (data.o?.k) {
       this.movementType = movementType.Tracked
@@ -226,7 +231,7 @@ export default class Unit {
   }
 
   get rotates(): boolean {
-    return !["sw", "ldr", "sqd", "tm", "cav", "cav-wheel"].includes(this.type)
+    return !["sw", "ldr", "sqd", "tm", "cav", "cav-wheel", "other"].includes(this.type)
   }
 
   get isActivated(): boolean {
@@ -358,7 +363,7 @@ export default class Unit {
       "htgun-amp": ["infantry fighting vehicle", "(amphibious w/gun)"],
       truck: ["transport"], cav: ["horse transport"], "cav-wheel": ["light transport"],
       "truck-amp": ["amphibious transport"], acav: ["armored vehicle"],
-      car: ["light vehicle"],
+      car: ["light vehicle"], supply: ["supply unit"],
     }
     if (this.icon === "mortar" && this.baseMovement > 0) { return ["crewed mortar"] }
     return names[this.icon]
@@ -433,6 +438,12 @@ export default class Unit {
     }
     if (this.rapidFire && !this.jammed) {
       text.push("- rapid fire")
+    }
+    if (this.rotatingVehicleMount && !this.jammed) {
+      text.push("- unrestricted firing arc")
+    }
+    if (this.backwardsMount && !this.jammed) {
+      text.push("- mounted rear")
     }
     if ((this.minimumRange || this.type === "sw") && this.targetedRange) {
       text.push("- no crew targeting bonus")

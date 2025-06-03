@@ -12,7 +12,7 @@ module Utility
                              .merge(infantry).merge(machine_guns).merge(mortars).merge(radios)
                              .merge(support_weapons).merge(infantry_guns).merge(at_guns)
                              .merge(tanks).merge(sp_guns).merge(half_tracks).merge(armored_cars)
-                             .merge(trucks)
+                             .merge(trucks).merge(other)
           # rubocop: enable Style/ClassVars
         end
 
@@ -877,8 +877,8 @@ module Utility
             ["usa", "M2 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
             ["usa", "LVT-1", 42, 4, 10, 12, 5, { r: 1, amp: 1, tr: 3 }],
             ["usa", "LVT-2", 42, 4, 7, 10, 5, { t: 1, p: 1, amp: 1, tr: 3 }],
-            ["usa", "LVT(A)-1", 44, 4, 7, 10, 5, { t: 1, g: 1, ha: { f: 3, s: 0, r: 0 }, ta: { f: 4, s: 3, r: 3 }, amp: 1, tr: 3 }],
-            ["usa", "LVT(A)-4", 44, 4, 24, 20, 5, { t: 1, g: 1, ha: { f: 3, s: 0, r: 0 }, ta: { f: 3, s: 2, r: 2, t: -1 }, amp: 1, tr: 3 }],
+            ["usa", "LVT(A)-1", 44, 4, 7, 10, 5, { u: 1, t: 1, g: 1, ha: { f: 3, s: 0, r: 0 }, ta: { f: 4, s: 3, r: 3 }, amp: 1, tr: 3 }],
+            ["usa", "LVT(A)-4", 44, 4, 24, 20, 5, { u: 1, t: 1, g: 1, ha: { f: 3, s: 0, r: 0 }, ta: { f: 3, s: 2, r: 2, t: -1 }, amp: 1, tr: 3 }],
             ["usa", "LVT-1 Armor", 43, 4, 10, 12, 5, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, amp: 1, tr: 3 }],
             ["usa", "LVT-2 Armor", 43, 4, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, amp: 1, tr: 3 }],
             ["usa", "T12 GMC", 42, 3, 24, 20, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
@@ -944,7 +944,11 @@ module Utility
             unit.each_with_index do |v, i|
               ac[key[i]] = v
             end
-            ac[:o].merge!({ j: 3, f: 18, u: 1, w: 1 })
+            if ["M20 Greyhound", "M3A1 Scout Car"].include?(ac[:n])
+              ac[:o].merge!({ j: 3, f: 18, uu: 1, w: 1 })
+            else
+              ac[:o].merge!({ j: 3, f: 18, u: 1, w: 1 })
+            end
             if ac[:n] == "Schneider P16"
               ac[:o].delete(:w)
               ac[:o][:k] = 1
@@ -998,6 +1002,9 @@ module Utility
             ["uk", "Bedford QL", "truck", 41, 4, 0, 0, 5, { tr: 3, trg: 1 }],
             ["uk", "Ford F15", "truck", 39, 3, 0, 0, 5, { tr: 3, trg: 1 }],
             ["uk", "Dodge D60", "truck", 39, 4, 0, 0, 5, { tr: 3, trg: 1 }],
+            ["uk", "Chevy C30", "truck", 39, 4, 0, 0, 5, { tr: 3, trg: 1 }],
+            ["uk", "Chevy C30 MG", "truck", 39, 4, 7, 10, 5, { uu: 1, r: 1, j: 3, f: 16, tr: 3, trg: 1 }],
+            ["uk", "Chevy C30 AT", "truck", 39, 4, 7, 10, 5, { bw: 1, t: 1, p: 1, j: 3, f: 16, tr: 3, trg: 1 }],
             ["uk", "Dodge WC", "truck", 41, 3, 0, 0, 5, { tr: 3, trg: 1 }],
             ["usa", "H-D WLA", "cav-wheel", 40, 3, 0, 0, 6, { tr: 3 }],
             ["usa", "Dodge VC", "truck", 40, 3, 0, 0, 5, { tr: 3, trg: 1 }],
@@ -1013,6 +1020,7 @@ module Utility
             ["fra", "Jeep", "car", 41, 2, 0, 0, 5, { tr: 1, trg: 1 }],
             ["ussr", "Jeep", "car", 41, 2, 0, 0, 5, { tr: 1, trg: 1 }],
             ["usa", "Jeep .50 MG", "car", 41, 2, 10, 15, 5, { r: 1, j: 3, f: 16, trg: 1 }],
+            ["uk", "Jeep MG", "car", 41, 2, 7, 10, 5, { r: 1, j: 3, f: 16, trg: 1 }],
             ["usa", "Jeep 37mm AT", "car", 41, 2, 7, 10, 5, { t: 1, j: 3, f: 18, p: 1, trg: 1 }],
             ["usa", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, { amp: 1, tr: 3 }],
             ["uk", "GMC DUKW", "truck-amp", 42, 4, 0, 0, 5, { amp: 1, tr: 3 }],
@@ -1025,13 +1033,28 @@ module Utility
             ["ussr", "GAZ-MM", "truck", 36, 3, 0, 0, 5, { tr: 3, trg: 1 }],
             ["ussr", "ZIS-5", "truck", 34, 3, 0, 0, 5, { tr: 3, trg: 1 }],
           ].each do |unit|
-            truck = { t: "truck", i: "truck" }
+            truck = { t: "truck" }
             unit.each_with_index do |v, i|
               truck[key[i]] = v
             end
             truck[:o].merge!({ w: 1 }) if truck[:n] != "Horse" && !truck[:o][:k]
             truck[:t] = "cav" if %w[cav cav-wheel].include?(truck[:i])
             lu[:"#{truck[:c]}_#{sanitize(truck[:n])}"] = truck
+          end
+          lu
+        end
+
+        def other
+          lu = {}
+          key = %i[c n i y s f r v o]
+          [
+            ["ita", "Supply Dump", "supply", 0, 8, 0, 0, 0, {}],
+          ].each do |unit|
+            other = { t: "other" }
+            unit.each_with_index do |v, i|
+              other[key[i]] = v
+            end
+            lu[:"#{other[:c]}_#{sanitize(other[:n])}"] = other
           end
           lu
         end

@@ -1,14 +1,24 @@
 - Come up with name (D-GOST?)
   - Add more info on signup page mebbe
 
-- Allow tanks to deploy on road but limit directions
-- Automatically place guns facing opposite towing vehicles
+- Implement moves
+  - Change selection to single selection until action type selected
+    - Allow additional units to be selected if move selected
+    - Show which hexes are legal, and move cost
+    - Allow selection to hex to make move
+
+    - implement initiative check
+
+    - implement allow reaction fire
+
+    - implement sniper check
+
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units
 
-- fix hindrance error
+- fix hindrance bug
   - through two fence corner intersections
-  - Also bug for hindrance at higher elevation
+  - Also for hindrance at higher elevation
 - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
 - Tooltips for map controls
 
@@ -19,8 +29,6 @@
 - Start working on Help/Manual
 
 - Switch main page game status to websocket, not polling
-
-- Implement moves
 
 - Clean up all the typing/get rid of all the "null object pattern"-style duplication for rendering?
   - Maybe if I have nothing better to do someday

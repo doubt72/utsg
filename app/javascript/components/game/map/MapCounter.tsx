@@ -135,6 +135,20 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const rightTransport = () => {
+    const layout = counter.transportRLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
+  const leftTransport = () => {
+    const layout = counter.transportLLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
   const leadership = () => {
     const layout = counter.leadershipLayout
     if (layout) return (
@@ -168,41 +182,6 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
               fontFamily="'Courier Prime', monospace"
               style={layout.tStyle as object}>{layout.value}</text>
       </g>
-    )
-  }
-
-  const smoke = () => {
-    const layout = counter.smokeLayout
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
-  }
-
-  const engineer = () => {
-    const layout = counter.engineerLayout
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
-  }
-
-  const amphibious = () => {
-    const layout = counter.amphibiousLayout
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
-  }
-
-  const rightTransport = () => {
-    const layout = counter.transportRLayout
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
-  }
-
-  const leftTransport = () => {
-    const layout = counter.transportLLayout
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
     )
   }
 
@@ -262,6 +241,13 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const smoke = () => {
+    const layout = counter.smokeLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
   const range = () => {
     const layout = counter.rangeLayout
     if (layout) return (
@@ -274,6 +260,20 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const gunForward = () => {
+    const layout = counter.gunForwardsLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
+  const gunBackward = () => {
+    const layout = counter.gunBackwardsLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
   const movement = () => {
     const layout = counter.movementLayout
     if (layout) return (
@@ -283,6 +283,20 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
               fontFamily="'Courier Prime', monospace"
               style={layout.tStyle as object}>{layout.value}</text>
       </g>
+    )
+  }
+
+  const engineer = () => {
+    const layout = counter.engineerLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
+  const amphibious = () => {
+    const layout = counter.amphibiousLayout
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
     )
   }
 
@@ -460,7 +474,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}
       {firepower()}{range()}{movement()}
-      {smoke()}{engineer()}{amphibious()}
+      {smoke()}{gunForward()}{gunBackward()}{engineer()}{amphibious()}
       {elite()}
       {tow()}{canTow()}{leftTransport()}{rightTransport()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}

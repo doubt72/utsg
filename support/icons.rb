@@ -2089,6 +2089,23 @@ File.open('htft.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('supply.svg', 'w') do |file|
+  file.puts header
+  write_path([
+    ["M", 10, 90], ["L", 10, 30], ["L", 90, 30], ["L", 90, 90], ["L", 10, 90], ["L", 10, 30],
+  ], file, false)
+  write_path([["M", 10, 78], ["L", 90, 78]], file, false)
+  # write_path([
+    # ["M", 20, 80], ["A", [30, 10], 0, [0, 0], 80, 80], ["L", 80, 20],
+    # ["A", [30, 10], 0, [0, 0], 20, 20],
+    # ["A", [30, 10], 0, [0, 0], 80, 20],
+    # ["A", [30, 10], 0, [0, 0], 20, 20], ["L", 20, 80],
+    # ["M", 20, 40], ["A", [30, 10], 0, [0, 0], 80, 40],
+    # ["M", 20, 60], ["A", [30, 10], 0, [0, 0], 80, 60],
+  # ], file, false)
+  file.puts footer
+end
+
 File.open('wreck.svg', 'w') do |file|
   file.puts header3
   write_path([
