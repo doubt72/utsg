@@ -167,7 +167,9 @@ export default class Counter {
     if (this.target.isWreck) { return false }
     if (!this.target.breakWeaponRoll) { return false }
 
-    const loc = new Coordinate(this.x + 14, this.y + 25)
+    const x = this.x + 14
+    let y = this.y + 25
+    if (this.target.breakdownRoll) { y -= 3 }
     const red = this.target.breakDestroysWeapon || this.target.jammed
     let fill = red ? counterRed : markerYellow
     let textColor = red ? "white" : "black"
@@ -176,9 +178,9 @@ export default class Counter {
       textColor = "rgba(0,0,0,0)"
     }
     return {
-      path: this.circlePath(loc, 8),
+      path: this.circlePath(new Coordinate(x, y), 8),
       style: { stroke: textColor, strokeWidth: 1, fill: fill }, tStyle: { fill: textColor },
-      x: loc.x, y: loc.y + 4.25, size: 15, value: this.target.breakWeaponRoll,
+      x, y: y + 4.25, size: 15, value: this.target.breakWeaponRoll,
     }
   }
 
@@ -292,7 +294,7 @@ export default class Counter {
     if (!this.target.breakdownRoll || this.target.immobilized || this.target.isWreck) {
       return false
     }
-    const loc = new Coordinate(this.x + 14, this.y + 44)
+    const loc = new Coordinate(this.x + 14, this.y + 40)
     const path = this.circlePath(loc, 8)
     return {
       path: path, style: { stroke: "black", strokeWidth: 1, fill: markerYellow },
@@ -426,7 +428,6 @@ export default class Counter {
     const size = 2
     if (this.target.assault || this.target.targetedRange) { y -= 4 }
     if (this.target.offBoard) { y -= 3 }
-    if (this.target.breakdownRoll) { y += 2; x -= 8 }
     if (this.target.minimumRange) { x -= 2 }
     const path = this.circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
