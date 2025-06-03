@@ -87,16 +87,16 @@
   607 37 Battle of Shanghai / Iron Fist
 
 Future Scenarios:
-+ 0 Budapest
-+ 2 Monte Cassino - Algerians/Free French to the North?
-+ 3 Town w/causeway + orchard
-+ 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
-      Bulge tank counterattack https://en.wikipedia.org/wiki/Battle_of_the_Bulge
-+ 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
 + 4 Eniwetok
++ 3 Town w/causeway + orchard
 + 5 Crete
++ 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
 + 5 Belgium
 + 6 Lake Khasan
++ 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
+      Bulge tank counterattack https://en.wikipedia.org/wiki/Battle_of_the_Bulge
++ 0 Budapest
++ 2 Monte Cassino - Algerians/Free French to the North?
 
 - 0 Croatian Attack Somewhere
 - 0 Slovak Uman, Slovak crapmobiles Lypovec

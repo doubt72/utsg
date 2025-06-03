@@ -64,8 +64,15 @@ export default function MapLosOverlay({
           if (!fl) { return "" }
           return (
             <g key={i}>
-              {fl ? <path d={fl.path} style={fl.style2 as object} /> : ""}
-              {fl ? <path d={fl.path} style={fl.style as object} strokeDasharray={fl.dash} /> : ""}
+              <defs>
+                <clipPath id="map-clip-firing-arc">
+                  <rect x="0" y="0" width={map.previewXSize} height={map.ySize}></rect>
+                </clipPath>
+              </defs>
+              {fl ? <path d={fl.path} style={fl.style2 as object}
+                          clipPath="url(#map-clip-firing-arc)"/> : ""}
+              {fl ? <path d={fl.path} style={fl.style as object} strokeDasharray={fl.dash}
+                          clipPath="url(#map-clip-firing-arc)"/> : ""}
             </g>
           )
         })}

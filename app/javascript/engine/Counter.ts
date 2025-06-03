@@ -824,10 +824,9 @@ export default class Counter {
     const x = hex.xCorner(dir)
     const y = hex.yCorner(dir)
     const len = this.map.radius * (this.map.height + this.map.width)
-    return [
-      "M", x, y, "L", x - len * Math.cos((dir-0.5)/3 * Math.PI),
-      y - len * Math.sin((dir-0.5)/3 * Math.PI)
-    ]
+    const x2 = x - len * Math.cos((dir-0.5)/3 * Math.PI)
+    const y2 = y - len * Math.sin((dir-0.5)/3 * Math.PI)
+    return ["M", x, y, "L", x2, y2]
   }
 
   get facingLayout(): facingLayout | false {
