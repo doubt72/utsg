@@ -14,6 +14,7 @@ import {
   baseTerrainType,
   hexOpenType,
   markerType,
+  roadType,
   terrainType,
   unitType,
   weatherType,
@@ -513,7 +514,8 @@ export default class Map {
       this.game.scenario.axisReinforcements[turn][index].counter
     if (!hex) { return false }
     if (!hex.terrain.move && !hex.road && !hex.railroad) { return false }
-    if (!hex.terrain.vehicle && !hex.road && !uf.isFeature && (uf.isTracked || uf.isWheeled)) {
+    if (!hex.terrain.vehicle && !(hex.road && hex.roadType !== roadType.Path) && !uf.isFeature &&
+        (uf.isTracked || uf.isWheeled)) {
       if (hex.baseTerrain !== terrainType.Shallow || uf.isFeature || !uf.amphibious) {
         return hexOpenType.Closed
       }
