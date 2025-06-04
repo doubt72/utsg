@@ -40,6 +40,7 @@ export type FeatureData = {
 export default class Feature {
   type: FeatureType;
   nation = "none"
+  playerNation = "none"
   name: string;
   icon: string;
   baseFirepower?: number | string;

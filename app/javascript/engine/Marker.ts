@@ -11,6 +11,7 @@ export type MarkerData = {
   v?: number | string;
   v2?: number | string;
   nation?: string;
+  player_nation?: string;
   facing?: Direction;
   rotates?: NumberBoolean;
 
@@ -25,6 +26,7 @@ export default class Marker {
   value?: number | string;
   value2?: number | string;
   nation: string;
+  playerNation: string;
   facing: Direction;
   rotates: boolean;
 
@@ -35,6 +37,7 @@ export default class Marker {
     this.value = data.v
     this.value2 = data.v2
     this.nation = data.nation || "none"
+    this.playerNation = data.player_nation || this.nation
     this.facing = data.facing || 1
     this.rotates = !!data.rotates || false
   }

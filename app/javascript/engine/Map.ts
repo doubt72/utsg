@@ -300,7 +300,7 @@ export default class Map {
       if (u.turreted && !u.isWreck) {
         const type = u.isWheeled ? markerType.WheeledHull : markerType.TrackedHull
         c.push({ loc: loc, u: new Marker(
-          { type: type, nation: u.nation, rotates: 1, facing: u.facing, mk: 1 }
+          { type: type, nation: u.nation, rotates: 1, facing: u.facing, mk: 1, player_nation: u.playerNation }
         ), s: index++ })
       }
       c.push({ loc: loc, u: u, s: index++, ti: trueIndex++ })
@@ -642,7 +642,7 @@ export default class Map {
     if (this.game.phase === gamePhaseType.Deployment) { return false }
     if (this.game.phase === gamePhaseType.Prep) { return false } // Not supported yet
     if (this.game.phase === gamePhaseType.Main) {
-      if ((selection.counter.target as Unit).playerNation !== this.game.currentPlayerNation) {
+      if (selection.counter.target.playerNation !== this.game.currentPlayerNation) {
         return false
       }
     }
