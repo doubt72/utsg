@@ -333,7 +333,7 @@ export default class Map {
     this.counterDataAt(loc).forEach(data => {
       const counter = new Counter(data.loc, data.u, this)
       counter.stackingIndex = data.s
-      if (data.ti) {
+      if (data.ti !== undefined) {
         counter.trueIndex = data.ti
       }
       c.push(counter)
@@ -621,9 +621,12 @@ export default class Map {
   //   return false
   // }
 
-  clearAllSelections() {
+  clearOtherSelections(x: number, y: number, trueIndex: number) {
     const units = this.allUnits
     for (const u of units) {
+      if (!u.hex || (u.hex.x === x && u.hex.y === y && u.trueIndex === trueIndex)) {
+        continue
+      }
       if (u.target.selected) { u.target.select() }
     }
   }
@@ -649,7 +652,7 @@ export default class Map {
     if (!this.selectable(selection)) { return }
     const x = selection.target.xy.x
     const y = selection.target.xy.y
-    this.clearAllSelections()
+    this.clearOtherSelections(x, y, selection.counter.trueIndex)
     const unit = this.units[y][x][selection.counter.trueIndex]
     unit.select()
     callback(x, y, selection.counter)
