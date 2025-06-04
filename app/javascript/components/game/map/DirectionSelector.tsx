@@ -10,10 +10,10 @@ interface MapHexProps {
 export default function DirectionSelector({ hex, selectCallback }: MapHexProps) {
 
   const directions = () => {
-    if (!hex?.map?.game?.reinforcementSelection) { return }
-    const player = hex.map.game.reinforcementSelection.player
-    const turn = hex.map.game.reinforcementSelection.turn
-    const index = hex.map.game.reinforcementSelection.index
+    if (!hex?.map?.game?.gameActionState?.deploy) { return }
+    const player = hex.map.game.gameActionState.player
+    const turn = hex.map.game.gameActionState.deploy.turn
+    const index = hex.map.game.gameActionState.deploy.index
     const uf = player === 1 ?
       hex.map.game.scenario.alliedReinforcements[turn][index].counter :
       hex.map.game.scenario.axisReinforcements[turn][index].counter

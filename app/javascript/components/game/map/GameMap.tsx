@@ -152,8 +152,8 @@ export default function GameMap({
   useEffect(() => {
     if (!map || map.debug) { return }
     if (hideCounters || showLos) {
-      if (map.game?.reinforcementSelection) {
-        map.game.reinforcementSelection = undefined
+      if (map.game?.gameActionState) {
+        map.game.gameActionState = undefined
       }
       setReinforcementsOverlay(undefined)
     }
@@ -176,7 +176,7 @@ export default function GameMap({
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
-        if (map.game?.reinforcementSelection) {
+        if (map.game?.gameActionState) {
           const shaded = map.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
@@ -223,10 +223,10 @@ export default function GameMap({
                         callback={showReinforcements} update={{key: true}}/>
     )
     setDirectionSelectionOverlay(() => {
-      if (!map.game?.reinforcementNeedsDirection || !map.game.reinforcementSelection) {
+      if (!map.game?.gameActionState?.deploy?.needsDirection) {
         return undefined
       }
-      const [x, y] = map.game.reinforcementNeedsDirection
+      const [x, y] = map.game.gameActionState.deploy.needsDirection
       return <DirectionSelector hex={map.hexAt(new Coordinate(x, y))}
                                 selectCallback={directionSelection} />
     })
@@ -238,7 +238,7 @@ export default function GameMap({
     map?.game?.currentPlayer, map?.game?.lastMoveIndex, map?.game?.lastMove?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore,
-    map?.game?.reinforcementSelection, map?.game?.reinforcementNeedsDirection,
+    map?.game?.gameActionState, map?.game?.gameActionState?.deploy?.needsDirection,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games
   ])
 
@@ -311,7 +311,7 @@ export default function GameMap({
         <ReinforcementPanel key={key + 1} map={map} xx={xx} yy={yy} player={player}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
-                              map.game?.setReinforcementSelection(undefined)
+                              map.game?.setReinforcementSelection(1, undefined)
                             }}
                             shifted={rp?.props.shifted ?? false}
                             shiftCallback={shift} ovCallback={setOverlay}/>
@@ -322,11 +322,11 @@ export default function GameMap({
   const hexSelection = (x: number, y: number) => {
     if (hexCallback) {
       let doCallback = true
-      if (map.game?.reinforcementSelection) {
+      if (map.game?.gameActionState?.deploy) {
         const counter = map.game.availableReinforcements(map.game.currentPlayer)[
-          map.game.turn][map.game.reinforcementSelection.index]
-        if (counter.counter.rotates && !map.game.reinforcementNeedsDirection) {
-          map.game.reinforcementNeedsDirection = [x, y]
+          map.game.turn][map.game.gameActionState.deploy.index]
+        if (counter.counter.rotates && !map.game.gameActionState.deploy.needsDirection) {
+          map.game.gameActionState.deploy.needsDirection = [x, y]
           const list = map.units[y][x]
           const last = list[list.length - 1]
           if (last && last.canTow) {
@@ -344,12 +344,12 @@ export default function GameMap({
     if (selection.target.type === "map") {
       map.selectUnit(selection, counterCallback)
     } else if (selection.target.type === "reinforcement" && map.game) {
-      if (map.game.reinforcementSelection?.index !== selection.target.index) {
-        map.game.reinforcementNeedsDirection = undefined
+      if (map.game.gameActionState?.deploy &&
+          map.game.gameActionState.deploy.index !== selection.target.index) {
+        map.game.gameActionState.deploy.needsDirection = undefined
       }
       const player = selection.target.player
-      map.game.setReinforcementSelection({
-        player: player,
+      map.game.setReinforcementSelection(player, {
         turn: selection.target.turn,
         index: selection.target.index,
       })
@@ -359,7 +359,7 @@ export default function GameMap({
         <ReinforcementPanel map={map} xx={x} yy={y} player={player}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
-                              map.game?.setReinforcementSelection(undefined)
+                              map.game?.setReinforcementSelection(1, undefined)
                             }}
                             shifted={rp?.props.shifted ?? false}
                             shiftCallback={shift}

@@ -202,10 +202,10 @@ export default function GameDisplay() {
   }
 
   const hexSelection = (x: number, y: number) => {
-    if (game.k?.reinforcementSelection) {
+    if (game.k?.gameActionState?.deploy) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
-        game.k.reinforcementSelection.index]
-      if (!counter.counter.rotates || !game.k.reinforcementNeedsDirection) {
+        game.k.gameActionState.deploy.index]
+      if (!counter.counter.rotates || !game.k.gameActionState.deploy.needsDirection) {
         game.k.executeReinforcement(x, y, counter, 1, gameNotification)
       } else {
         setControls(gc => {
@@ -226,9 +226,9 @@ export default function GameDisplay() {
   }
 
   const directionSelection = (x: number, y: number, d: Direction) => {
-    if (game.k?.reinforcementSelection) {
+    if (game.k?.gameActionState?.deploy) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
-        game.k.reinforcementSelection.index]
+        game.k.gameActionState.deploy.index]
       game.k.executeReinforcement(x, y, counter, d, gameNotification)
     }
   }

@@ -1,4 +1,4 @@
-import Game, { gamePhaseType } from "./Game";
+import Game, { actionType, gamePhaseType } from "./Game";
 import {
   BaseTerrainType,
   Coordinate,
@@ -503,11 +503,15 @@ export default class Map {
   }
 
   reinforcementOpenHex(x: number, y: number): HexOpenType {
-    if (!this.game?.reinforcementSelection) { return hexOpenType.Open }
-    if (this.game.reinforcementNeedsDirection) { return hexOpenType.Closed }
-    const player = this.game.reinforcementSelection.player
-    const turn = this.game.reinforcementSelection.turn
-    const index = this.game.reinforcementSelection.index
+    if (!this.game?.gameActionState?.deploy) { return hexOpenType.Open }
+    if (this.game.gameActionState.currentAction === actionType.Deploy &&
+        this.game.gameActionState.deploy.needsDirection
+    ) {
+      return hexOpenType.Closed
+    }
+    const player = this.game.gameActionState.player
+    const turn = this.game.gameActionState.deploy.turn
+    const index = this.game.gameActionState.deploy.index
     const hex = this.hexAt(new Coordinate(x, y))
     const uf = player === 1 ?
       this.game.scenario.alliedReinforcements[turn][index].counter :
@@ -583,7 +587,7 @@ export default class Map {
   }
 
   openHex(x: number, y: number): HexOpenType {
-    if (this.game?.reinforcementSelection) {
+    if (this.game?.gameActionState?.currentAction === actionType.Deploy) {
       return this.reinforcementOpenHex(x, y)
     }
     return hexOpenType.Open

@@ -30,12 +30,20 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3
 }
 
-export type ReinforcementSelection = {
-  player: Player, turn: number, index: number
+export type DeploySelection = {
+  turn: number, index: number, needsDirection?: [number, number],
 }
 
-export type GameMoveState = {
-  player: Player
+export type ActionType = "d" | "m"
+export const actionType: { [index: string]: ActionType } = {
+  Deploy: "d", Move: "m"
+}
+
+export type GameActionState = {
+  player: Player,
+  currentAction?: ActionType,
+  currentPrimaryMapSelection?: { x: number, y: number, ti: number }
+  deploy?: DeploySelection,
 }
 
 export default class Game {
@@ -64,9 +72,7 @@ export default class Game {
   axisSniper?: Feature;
 
   suppressNetwork: boolean = false;
-  reinforcementSelection?: ReinforcementSelection;
-  reinforcementNeedsDirection?: [number, number]
-  gameMoveState?: GameMoveState;
+  gameActionState?: GameActionState;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -351,22 +357,24 @@ export default class Game {
     }
   }
 
-  get currentReinforcementSelection(): ReinforcementSelection | undefined {
-    return this.reinforcementSelection
+  get currentReinforcementSelection(): DeploySelection | undefined {
+    return this.gameActionState?.deploy
   }
 
-  setReinforcementSelection(select: ReinforcementSelection | undefined) {
-    if (!select) {
-      this.reinforcementSelection = select
+  setReinforcementSelection(player: Player, deploy: DeploySelection | undefined) {
+    if (!deploy) {
+      this.gameActionState = undefined
       return
     }
-    const current = this.reinforcementSelection
-    if (select.player === current?.player && select.turn === current.turn && select.index === current.index) {
-      this.reinforcementSelection = undefined
+    const current = this.gameActionState
+    if (player === current?.player && deploy.turn === current.deploy?.turn &&
+        deploy.index === current.deploy?.index) {
+      this.gameActionState = undefined
     } else {
-      const counter = this.availableReinforcements(select.player)[select.turn][select.index]
+      const counter = this.availableReinforcements(player)[deploy.turn][deploy.index]
       if (counter.x > counter.used) {
-        this.reinforcementSelection = select
+        this.gameActionState = { player, currentAction: actionType.Deploy }
+        this.gameActionState.deploy = deploy
       }
     }
   }
@@ -374,28 +382,28 @@ export default class Game {
   executeReinforcement(
     x: number, y: number, counter: ReinforcementItem, d: Direction, callback: (game: Game) => void
   ) {
-    if (this.reinforcementSelection) {
+    if (this.gameActionState?.deploy) {
       const move = new GameMove({
         user: this.currentUser,
-        player: this.reinforcementSelection.player,
+        player: this.gameActionState.player,
         data: {
-          action: "deploy", origin_index: this.reinforcementSelection.index,
+          action: "deploy", origin_index: this.gameActionState.deploy.index,
           target: [x, y], orientation: d, turn: this.turn
         }
       }, this, this.moves.length)
       this.executeMove(move, false)
       callback(this)
+      this.gameActionState.deploy.needsDirection = undefined
       if (counter.x == counter.used) {
-        this.reinforcementSelection = undefined
+        this.gameActionState = undefined
       }
-      this.reinforcementNeedsDirection = undefined
     }
   }
 
   executePass() {}
 
   get moveInProgress(): boolean {
-    if (this.reinforcementSelection && this.reinforcementNeedsDirection) { return true }
+    if (this.gameActionState?.deploy && this.gameActionState.deploy.needsDirection) { return true }
     return false
   }
 
