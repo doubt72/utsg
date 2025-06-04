@@ -53,6 +53,7 @@ export type UnitData = {
 
 export default class Unit {
   nation: string;
+  playerNation: string;
   type: UnitType;
   name: string;
   icon: string;
@@ -119,6 +120,7 @@ export default class Unit {
 
   constructor(data: UnitData) {
     this.nation = data.c
+    this.playerNation = data.c
     this.type = data.t
     this.name = data.n
     this.smallName = data.o?.sn ?? 0

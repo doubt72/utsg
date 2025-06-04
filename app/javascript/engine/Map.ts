@@ -39,7 +39,6 @@ import {
 import Marker from "./Marker";
 import Feature from "./Feature";
 import WarningMoveError from "./moves/WarningMoveError";
-import { hexDistance } from "../utilities/utilities";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -606,43 +605,26 @@ export default class Map {
     return false
   }
 
-  inRangeOfSelectedLeader(unit: Counter): boolean {
-    if (unit.hex === undefined) { return false }
-    if (!(unit.target as Unit).canGroupFire) { return false }
-    const units = this.allUnits
-    for (const u of units) {
-      if (u.hex === undefined) { continue }
-      if (u !== unit && u.target.type === unitType.Leader && u.target.selected) {
-        if (hexDistance(u.hex, unit.hex) <= u.target.currentLeadership) {
-          return true
-        }
-      }
-    }
-    return false
-  }
+  // TODO: repurpose/modify this later for fire selection
+  // inRangeOfSelectedLeader(unit: Counter): boolean {
+  //   if (unit.hex === undefined) { return false }
+  //   if (!(unit.target as Unit).canGroupFire) { return false }
+  //   const units = this.allUnits
+  //   for (const u of units) {
+  //     if (u.hex === undefined) { continue }
+  //     if (u !== unit && u.target.type === unitType.Leader && u.target.selected) {
+  //       if (hexDistance(u.hex, unit.hex) <= u.target.currentLeadership) {
+  //         return true
+  //       }
+  //     }
+  //   }
+  //   return false
+  // }
 
-  clearOtherSelections(unit: Counter, x: number, y: number) {
+  clearAllSelections() {
     const units = this.allUnits
-    // Have to clear the leaders first, otherwise can't clear units out of leader range
     for (const u of units) {
-      if (u.hex === undefined) { continue }
-      if (u.hex.x !== x || u.hex.y !== y) {
-        if (u.target.selected && u.target.type === unitType.Leader) {
-          if (unit.target.type === unitType.Leader || !(unit.target as Unit).canGroupFire) {
-            u.target.select()
-          } else if (hexDistance(u.hex, new Coordinate(x, y)) > u.target.currentLeadership) {
-            u.target.select()
-          }
-        }
-      }
-    }
-    for (const u of units) {
-      if (u.hex === undefined) { continue }
-      if ((u.hex.x !== x || u.hex.y !== y) && u.target.selected) {
-        if (!this.inRangeOfSelectedLeader(u)) {
-          u.target.select()
-        }
-      }
+      if (u.target.selected) { u.target.select() }
     }
   }
 
@@ -653,7 +635,7 @@ export default class Map {
     if (this.game.phase === gamePhaseType.Deployment) { return false }
     if (this.game.phase === gamePhaseType.Prep) { return false } // Not supported yet
     if (this.game.phase === gamePhaseType.Main) {
-      if (selection.counter.target.nation !== this.game.currentPlayerNation) {
+      if ((selection.counter.target as Unit).playerNation !== this.game.currentPlayerNation) {
         return false
       }
     }
@@ -667,9 +649,9 @@ export default class Map {
     if (!this.selectable(selection)) { return }
     const x = selection.target.xy.x
     const y = selection.target.xy.y
+    this.clearAllSelections()
     const unit = this.units[y][x][selection.counter.trueIndex]
     unit.select()
-    this.clearOtherSelections(selection.counter, x, y)
     callback(x, y, selection.counter)
   }
 
