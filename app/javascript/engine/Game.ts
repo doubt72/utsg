@@ -268,6 +268,7 @@ export default class Game {
   }
 
   executeUndo() {
+    this.scenario.map.clearAllSelections()
     if (!this.lastMove) { return }
     const move = this.lastMove
     move.undo()

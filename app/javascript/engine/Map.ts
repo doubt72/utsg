@@ -621,6 +621,13 @@ export default class Map {
     return false
   }
 
+  clearAllSelections() {
+    const units = this.allUnits
+    for (const u of units) {
+      if (u.target.selected) { u.target.select() }
+    }
+  }
+
   clearOtherSelections(x: number, y: number, trueIndex: number) {
     const units = this.allUnits
     for (const u of units) {

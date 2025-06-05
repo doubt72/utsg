@@ -42,6 +42,9 @@ export default function GameDisplay() {
   const [mapScaleResetButton, setMapScaleResetButton] = useState<JSX.Element | undefined>()
   const [mapScalePlusButton, setMapScalePlusButton] = useState<JSX.Element | undefined>()
 
+  const [gameDisplay, setGameDisplay] = useState<JSX.Element | undefined>()
+  const [update, setUpdate] = useState(0)
+
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
       ok: response => response.json().then(json => {
@@ -51,7 +54,7 @@ export default function GameDisplay() {
             json.scenario = scenario
             const g = new Game(json, gameNotification)
             setGame({k: g, turn: g.turn, state: g.state})
-            setControls(<GameControls game={g} />)
+            setControls(<GameControls game={g} callback={() => setUpdate(s => s+1)} />)
             setMap(g.scenario.map)
           })
         })
@@ -68,6 +71,20 @@ export default function GameDisplay() {
     if (showCoords !== null) { setCoords(showCoords == "true") }
     if (showMarkers !== null) { setShowStatusCounters(showMarkers == "true") }
   }, [])
+
+  useEffect(() => {
+    setGameDisplay(gm => {
+      const key = Number(gm?.key ?? 0) + 1
+      return (
+        <GameMap key={key} map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
+                 showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
+                 hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
+                 guiCollapse={collapseLayout}
+                 hexCallback={hexSelection} counterCallback={unitSelection}
+                 directionCallback={directionSelection} resetCallback={resetDisplay} />
+      )
+    })
+  }, [update, game, map])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {
@@ -160,7 +177,7 @@ export default function GameDisplay() {
     if (!game.k) { return }
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
-      return <GameControls key={key + 1} game={game.k as Game} />
+      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
     })
 
     let status = game.k.turn > 0 ? <span>turn {game.k.turn}/{game.k.scenario.turns}</span> : "initial setup"
@@ -210,7 +227,7 @@ export default function GameDisplay() {
       } else {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
-          return <GameControls key={key + 1} game={game.k as Game} />
+          return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
         })
       }
     }
@@ -221,7 +238,7 @@ export default function GameDisplay() {
     console.log(key)
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
-      return <GameControls key={key + 1} game={game.k as Game} />
+      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
     })
   }
 
@@ -336,12 +353,7 @@ export default function GameDisplay() {
         </div>
       </div>
       <div className="game-map">
-        <GameMap map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
-                 showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
-                 hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
-                 guiCollapse={collapseLayout}
-                 hexCallback={hexSelection} counterCallback={unitSelection}
-                 directionCallback={directionSelection} resetCallback={resetDisplay} />
+        {gameDisplay}
       </div>
       {errorWindow}
     </div>

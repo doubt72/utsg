@@ -4,12 +4,14 @@ import { MoveGlyph } from "../../utilities/buttons";
 
 interface MoveButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function MoveButton({ game }: MoveButtonProps) {
+export default function MoveButton({ game, callback }: MoveButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.startMove()
+    callback()
   }
 
   return (

@@ -19,15 +19,22 @@ import RoutButton from "./RoutButton";
 
 interface GameControlsProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function GameControls({ game }: GameControlsProps) {
+export default function GameControls({ game, callback }: GameControlsProps) {
   const [controls, setControls] = useState<JSX.Element[]>([])
+  const [update, setUpdate] = useState(0)
 
   useEffect(() => {
     if (!game.id) { return }
     displayActions()
-  }, [game, game.lastMoveIndex])
+  }, [game, game.lastMoveIndex, update])
+
+  const callAllBack = () => {
+    setUpdate(s => s+1)
+    callback()
+  }
 
   const displayActions = () => {
     console.log("display actions")
@@ -64,7 +71,7 @@ export default function GameControls({ game }: GameControlsProps) {
       } else if (a.type === "intensive_fire") {
         return <IntensiveFireButton game={game} key={i} />
       } else if (a.type === "move") {
-        return <MoveButton game={game} key={i} />
+        return <MoveButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rush") {
         return <RushButton game={game} key={i} />
       } else if (a.type === "assault_move") {
