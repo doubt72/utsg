@@ -1,4 +1,5 @@
 import { Direction, FeatureType, NumberBoolean, featureType } from "../utilities/commonTypes";
+import Counter from "./Counter";
 
 // ft: feature
 // t: type, n: name, i: icon
@@ -141,6 +142,14 @@ export default class Feature {
   isHull = false
   selected = false
   hideOverlayRotation = false
+
+  canHandle = false
+  canCarrySupport = false
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  canTowUnit(_: Counter): boolean { return false }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  canTransportUnit(_: Counter): boolean { return false }
 
   select() {
     this.selected = !this.selected

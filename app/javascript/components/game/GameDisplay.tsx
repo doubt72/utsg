@@ -168,7 +168,7 @@ export default function GameDisplay() {
     if (game.k.state === "ready") { status += " - waiting for game to start"}
     setTurn(<>{status}</>)
   }, [
-    game.k?.state, game.k?.lastMove?.undone, game.k?.lastMove?.id
+    game.k?.state, game.k?.lastMove?.undone, game.k?.lastMove?.id,
   ])
 
   const moveNotification = (moveId?: number) => {

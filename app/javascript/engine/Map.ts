@@ -341,6 +341,15 @@ export default class Map {
     return c
   }
 
+  counterAtIndex(loc: Coordinate, ti: number): Counter | undefined {
+    console.log(`at index ${loc.x}, ${loc.y} - ${ti}`)
+    const counters = this.countersAt(loc)
+    for (const c of counters) {
+      if (!c.target.isMarker && !c.target.isFeature && c.trueIndex === ti) { return c }
+    }
+    return
+  }
+
   get allCounters(): Counter[] {
     let c: Counter[] = []
     for (let y = 0; y < this.height; y++) {
@@ -590,6 +599,9 @@ export default class Map {
     if (this.game?.gameActionState?.currentAction === actionType.Deploy) {
       return this.reinforcementOpenHex(x, y)
     }
+    if (this.game?.gameActionState?.currentAction === actionType.Move) {
+      return hexOpenType.Open
+    }
     return hexOpenType.Open
   }
 
@@ -608,22 +620,6 @@ export default class Map {
     }
     return false
   }
-
-  // TODO: repurpose/modify this later for fire selection
-  // inRangeOfSelectedLeader(unit: Counter): boolean {
-  //   if (unit.hex === undefined) { return false }
-  //   if (!(unit.target as Unit).canGroupFire) { return false }
-  //   const units = this.allUnits
-  //   for (const u of units) {
-  //     if (u.hex === undefined) { continue }
-  //     if (u !== unit && u.target.type === unitType.Leader && u.target.selected) {
-  //       if (hexDistance(u.hex, unit.hex) <= u.target.currentLeadership) {
-  //         return true
-  //       }
-  //     }
-  //   }
-  //   return false
-  // }
 
   clearOtherSelections(x: number, y: number, trueIndex: number) {
     const units = this.allUnits
@@ -670,19 +666,46 @@ export default class Map {
     return true
   }
 
-  get multiSelection(): boolean {
+  get currentSelection(): Counter[] {
+    if (!this.game) { return [] }
+    const rc: Counter[] = []
     const units = this.allUnits
-    let foundX: number | undefined = undefined
-    let foundY: number | undefined = undefined
-    for (const c of units) {
-      if (c.target.selected) {
-        if (foundX !== undefined && foundY !== undefined) {
-          if (foundX !== c.hex?.x || foundY !== c.hex?.y ) { return true }
-        }
-        foundX = c.hex?.x
-        foundY = c.hex?.y
-      }
+    for (const u of units) {
+      if (u.target.selected) { rc.push(u) }
     }
-    return false
+    return rc
   }
+
+  // TODO: repurpose/modify this later for fire selection
+  // inRangeOfSelectedLeader(unit: Counter): boolean {
+  //   if (unit.hex === undefined) { return false }
+  //   if (!(unit.target as Unit).canGroupFire) { return false }
+  //   const units = this.allUnits
+  //   for (const u of units) {
+  //     if (u.hex === undefined) { continue }
+  //     if (u !== unit && u.target.type === unitType.Leader && u.target.selected) {
+  //       if (hexDistance(u.hex, unit.hex) <= u.target.currentLeadership) {
+  //         return true
+  //       }
+  //     }
+  //   }
+  //   return false
+  // }
+
+  // TODO: repurpose this for something maybe
+  // get multiSelection(): boolean {
+  //   const units = this.allUnits
+  //   let foundX: number | undefined = undefined
+  //   let foundY: number | undefined = undefined
+  //   for (const c of units) {
+  //     if (c.target.selected) {
+  //       if (foundX !== undefined && foundY !== undefined) {
+  //         if (foundX !== c.hex?.x || foundY !== c.hex?.y ) { return true }
+  //       }
+  //       foundX = c.hex?.x
+  //       foundY = c.hex?.y
+  //     }
+  //   }
+  //   return false
+  // }
 }

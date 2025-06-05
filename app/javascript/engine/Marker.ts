@@ -1,5 +1,6 @@
 import { Direction, MarkerType, NumberBoolean, WeatherType, WindType, markerType, weatherType, windType } from "../utilities/commonTypes"
 import { counterElite, counterGreen, counterRed, markerYellow } from "../utilities/graphics";
+import Counter from "./Counter";
 
 // mk: marker
 // v: value
@@ -98,6 +99,14 @@ export default class Marker {
   noFire = false
   rotatingMount = false;
   selected = false
+
+  canHandle = false
+  canCarrySupport = false
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  canTowUnit(_: Counter): boolean { return false }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  canTransportUnit(_: Counter): boolean { return false }
 
   get hindrance(): number { return 0 }
 

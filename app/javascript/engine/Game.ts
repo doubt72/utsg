@@ -1,4 +1,4 @@
-import { Direction, GameAction, Player } from "../utilities/commonTypes";
+import { Coordinate, Direction, GameAction, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
@@ -6,6 +6,7 @@ import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
 import IllegalMoveError from "./moves/IllegalMoveError";
 import WarningMoveError from "./moves/WarningMoveError";
+import Counter from "./Counter";
 
 export type GameData = {
   id: number;
@@ -27,23 +28,33 @@ export type GameData = {
 
 export type GamePhase = 0 | 1 | 2 | 3
 export const gamePhaseType: { [index: string]: GamePhase } = {
-  Deployment: 0, Prep: 1, Main: 2, Cleanup: 3
+  Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
+}
+
+export type ActionType = "d" | "m"
+export const actionType: { [index: string]: ActionType } = {
+  Deploy: "d", Move: "m",
+}
+
+export type ActionSelection = {
+  x: number, y: number, ti: number, counter: Counter,
 }
 
 export type DeploySelection = {
   turn: number, index: number, needsDirection?: [number, number],
 }
 
-export type ActionType = "d" | "m"
-export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Move: "m"
+export type MoveSelection = {
+  path: { x: number, y: number, facing?: number }[],
 }
 
 export type GameActionState = {
   player: Player,
   currentAction?: ActionType,
-  currentPrimaryMapSelection?: { x: number, y: number, ti: number }
+  primarySelection?: ActionSelection,
+  multiSelection?: ActionSelection[],
   deploy?: DeploySelection,
+  move?: MoveSelection,
 }
 
 export default class Game {
@@ -400,6 +411,92 @@ export default class Game {
     }
   }
 
+  nextUnit(selection: Counter): Counter | undefined {
+    const hex = selection.hex as Coordinate
+    return this.scenario.map.counterAtIndex(
+      new Coordinate(hex.x, hex.y), (selection.trueIndex ?? 0) + 1
+    )
+  }
+
+  carriedUnits(selection: Counter): Counter[] {
+    const next = this.nextUnit(selection)
+    if (!next) { return [] }
+    const rc = [next]
+    if (selection.target.canCarrySupport && next.target.type === "sw") { return rc }
+    if (selection.target.canHandle && next.target.type === "gun") { return rc }
+    if (selection.target.canTowUnit(next)) {
+      const next2 = this.nextUnit(next)
+      if (next2 && selection.target.canTransportUnit(next2)) {
+        rc.push(next2)
+        const next3 = this.nextUnit(next2)
+        const next4 = next3 ? this.nextUnit(next3) : undefined
+        const next5 = next4 ? this.nextUnit(next4) : undefined
+        if (next2.target.type !== "ldr" && next3?.target.type === "sw" &&
+            next4?.target.type === "ldr" && next5?.target.type === "sw") {
+          rc.push(next3)
+          rc.push(next4)
+          rc.push(next5)
+        } else if ((next2.target.type !== "ldr" && next3?.target.type === "sw" &&
+                    next4?.target.type === "ldr") || (next2.target.type !== "ldr" &&
+                    next3?.target.type === "ldr" && next4?.target.type === "sw")) {
+          rc.push(next3)
+          rc.push(next4)
+        } else if ((next2.target.type !== "ldr" && next3?.target.type === "ldr") ||
+                   next3?.target.type === "sw") {
+          rc.push(next3)
+        }
+      }
+      return rc
+    }
+    if (selection.target.canTransportUnit(next)) {
+      const next2 = this.nextUnit(next)
+      const next3 = next2 ? this.nextUnit(next2) : undefined
+      const next4 = next3 ? this.nextUnit(next3) : undefined
+      if (next.target.type !== "ldr" && next2?.target.type === "sw" &&
+          next3?.target.type === "ldr" && next4?.target.type === "sw") {
+        rc.push(next2)
+        rc.push(next2)
+        rc.push(next4)
+      } else if ((next.target.type !== "ldr" && next2?.target.type === "sw" &&
+                  next3?.target.type === "ldr") || (next.target.type !== "ldr" &&
+                  next2?.target.type === "ldr" && next3?.target.type === "sw")) {
+        rc.push(next2)
+        rc.push(next3)
+      } else if ((next.target.type !== "ldr" && next2?.target.type === "ldr") ||
+                  next2?.target.type === "sw") {
+        rc.push(next2)
+      }
+      return rc
+    }
+    return []
+  }
+
+  startMove() {
+    console.log("starting move")
+    const selection = this.scenario.map.currentSelection[0]
+    if (selection) {
+      const loc = {
+        x: selection.x, y: selection.y,
+        facing: selection.target.rotates ? selection.target.facing : undefined
+      }
+      console.log("checking carried units")
+      const units = this.carriedUnits(selection)
+      console.log(`selecting ${units.length}`)
+      units.forEach(c => c.target.select())
+      console.log("setting state")
+      this.gameActionState = {
+        player: this.currentPlayer,
+        currentAction: actionType.Move,
+        primarySelection: { x: loc.x, y: loc.y, ti: selection.trueIndex as number, counter: selection},
+        multiSelection: units.length > 0 ? units.map(
+          c => { return { x: c.x, y: c.y, ti: c.trueIndex as number, counter: c } }
+        ) : undefined,
+        move: { path: [loc] }
+      }
+      console.log("..done?")
+    }
+  }
+
   executePass() {}
 
   get moveInProgress(): boolean {
@@ -408,6 +505,7 @@ export default class Game {
   }
 
   actionsAvailable(activePlayer: string): GameAction[] {
+    console.log("actions")
     if (this.lastMove?.id === undefined) {
       return [{ type: "sync" }]
     }
@@ -434,9 +532,13 @@ export default class Game {
       moves.unshift({ type: "deploy" })
       return moves
     } else if (this.phase === gamePhaseType.Main) {
+      console.log("main")
       if ((activePlayer === this.playerOneName && this.currentPlayer === 1) ||
           (activePlayer === this.playerTwoName && this.currentPlayer === 2)) {
-        if (this.opportunityFire) {
+        if (this.gameActionState?.currentAction === actionType.Move) {
+          console.log("move")
+          moves.push({ type: "none", message: "select" })
+        } else if (this.opportunityFire) {
           moves.unshift({ type: "none", message: "opportunity fire" })
           moves.push({ type: "opportunity_fire" })
           moves.push({ type: "opportunity_intensive_fire" })
@@ -451,19 +553,15 @@ export default class Game {
           moves.push({ type: "enemy_rout" })
           moves.push({ type: "pass" })
         } else {
-          if (this.scenario.map.multiSelection) {
-            moves.push({ type: "fire" })
-            moves.push({ type: "intensive_fire" })
-            moves.push({ type: "pass" })
-          } else {
-            moves.push({ type: "fire" })
-            moves.push({ type: "intensive_fire" })
+          moves.push({ type: "fire" })
+          moves.push({ type: "intensive_fire" })
+          if (!["sw", "gun", "other"].includes(this.scenario.map.currentSelection[0].target.type as string)) {
             moves.push({ type: "move" })
             moves.push({ type: "rush" })
             moves.push({ type: "assault_move" })
             moves.push({ type: "rout" })
-            moves.push({ type: "pass" })
           }
+          moves.push({ type: "pass" })
         }
       } else {
         moves.unshift({ type: "none", message: "waiting for opponent to move" })

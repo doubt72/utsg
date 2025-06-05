@@ -30,6 +30,7 @@ export default function GameControls({ game }: GameControlsProps) {
   }, [game, game.lastMoveIndex])
 
   const displayActions = () => {
+    console.log("display actions")
     const user = localStorage.getItem("username")
     setControls(game.actionsAvailable(user as string).map((a, i) => {
       if (a.type === "sync") {

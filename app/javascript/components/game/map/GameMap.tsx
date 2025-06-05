@@ -160,6 +160,7 @@ export default function GameMap({
   }, [hideCounters, showLos])
 
   useEffect(() => {
+    console.log("game map update")
     if (!map) { return }
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
@@ -176,7 +177,7 @@ export default function GameMap({
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
-        if (map.game?.gameActionState) {
+        if (map.game?.gameActionState?.deploy) {
           const shaded = map.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
@@ -238,7 +239,7 @@ export default function GameMap({
     map?.game?.currentPlayer, map?.game?.lastMoveIndex, map?.game?.lastMove?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore,
-    map?.game?.gameActionState, map?.game?.gameActionState?.deploy?.needsDirection,
+    map?.game?.gameActionState?.deploy, map?.game?.gameActionState?.deploy?.needsDirection,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games
   ])
 

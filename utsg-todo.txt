@@ -2,6 +2,12 @@
   - Add more info on signup page mebbe
 
 - Implement moves
+  - Automatically multiselect if:
+    infantry w/ support weapon/gun
+    vehicle towing or transporting
+  - Allow multiselect if:
+    foot unit (except if being transported or being crew)
+
   - Change selection to single selection until action type selected
     - Allow additional units to be selected if move selected
     - Show which hexes are legal, and move cost

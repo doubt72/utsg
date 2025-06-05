@@ -9,7 +9,7 @@ interface MoveButtonProps {
 export default function MoveButton({ game }: MoveButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.startMove()
   }
 
   return (

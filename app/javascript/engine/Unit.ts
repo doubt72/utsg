@@ -2,6 +2,7 @@ import {
   Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
   NumberBoolean, SizeRange, UnitStatus, UnitType, movementType, unitStatus
 } from "../utilities/commonTypes";
+import Counter from "./Counter";
 
 // c: nation, t: type, n: name, i: icon, y: year
 // m: morale (2-6)
@@ -213,6 +214,7 @@ export default class Unit {
   hideOverlayRotation = false
 
   select() {
+    console.log(`being selected`)
     this.selected = !this.selected
   }
 
@@ -232,8 +234,32 @@ export default class Unit {
     return ["sw", "ldr", "sqd", "tm"].includes(this.type)
   }
 
+  get canHandle(): boolean {
+    return ["sqd", "tm"].includes(this.type)
+  }
+
+  get canCarrySupport(): boolean {
+    return ["sqd", "tm", "ldr"].includes(this.type)
+  }
+
   get rotates(): boolean {
     return !["sw", "ldr", "sqd", "tm", "cav", "cav-wheel", "other"].includes(this.type)
+  }
+
+  canTowUnit(counter: Counter): boolean {
+    if (counter.target.isMarker || counter.target.isFeature) { return false }
+    if (!this.canTow) { return false }
+    if (this.size < (counter.target.towSize ?? 0)) { return false }
+    return true
+  }
+
+  canTransportUnit(counter: Counter): boolean {
+    if (counter.target.isMarker || counter.target.isFeature) { return false }
+    if (!this.transport) { return false }
+    if (this.transport === 1 && counter.target.type !== "ldr") { return false }
+    if (this.transport === 2 && ["tm", "ldr"].includes(counter.target.type as string)) { return false }
+    if (["sqd", "tm", "ldr"].includes(counter.target.type as string)) { return false }
+    return true
   }
 
   get isActivated(): boolean {
