@@ -33,6 +33,7 @@ interface GameMapProps {
   showTerrain?: boolean;
   preview: boolean;
   guiCollapse?: boolean;
+  forceUpdate: number;
   hexCallback?: (x: number, y: number) => void;
   counterCallback?: (x: number, y: number, counter: Counter) => void;
   directionCallback?: (x: number, y: number, d: Direction) => void;
@@ -41,7 +42,7 @@ interface GameMapProps {
 
 export default function GameMap({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
-  hideCounters = false, showTerrain = false, preview, guiCollapse = false,
+  hideCounters = false, showTerrain = false, preview, guiCollapse = false, forceUpdate,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {}
 }: GameMapProps) {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
@@ -238,7 +239,7 @@ export default function GameMap({
     map?.windSpeed, map?.windDirection, map?.windVariable, width, height, scale,
     map?.game?.currentPlayer, map?.game?.lastMoveIndex, map?.game?.lastMove?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
-    map?.game?.playerOneScore, map?.game?.playerTwoScore,
+    map?.game?.playerOneScore, map?.game?.playerTwoScore, forceUpdate,
     map?.game?.gameActionState?.deploy, map?.game?.gameActionState?.deploy?.needsDirection,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games
   ])

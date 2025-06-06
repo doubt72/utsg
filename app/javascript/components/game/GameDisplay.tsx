@@ -42,7 +42,6 @@ export default function GameDisplay() {
   const [mapScaleResetButton, setMapScaleResetButton] = useState<JSX.Element | undefined>()
   const [mapScalePlusButton, setMapScalePlusButton] = useState<JSX.Element | undefined>()
 
-  const [gameDisplay, setGameDisplay] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState(0)
 
   useEffect(() => {
@@ -71,20 +70,6 @@ export default function GameDisplay() {
     if (showCoords !== null) { setCoords(showCoords == "true") }
     if (showMarkers !== null) { setShowStatusCounters(showMarkers == "true") }
   }, [])
-
-  useEffect(() => {
-    setGameDisplay(gm => {
-      const key = Number(gm?.key ?? 0) + 1
-      return (
-        <GameMap key={key} map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
-                 showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
-                 hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
-                 guiCollapse={collapseLayout}
-                 hexCallback={hexSelection} counterCallback={unitSelection}
-                 directionCallback={directionSelection} resetCallback={resetDisplay} />
-      )
-    })
-  }, [update, game, map])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {
@@ -353,7 +338,12 @@ export default function GameDisplay() {
         </div>
       </div>
       <div className="game-map">
-        {gameDisplay}
+        <GameMap map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
+                 showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
+                 hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
+                 guiCollapse={collapseLayout} forceUpdate={update}
+                 hexCallback={hexSelection} counterCallback={unitSelection}
+                 directionCallback={directionSelection} resetCallback={resetDisplay} />
       </div>
       {errorWindow}
     </div>

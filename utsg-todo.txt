@@ -18,7 +18,6 @@
 
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units/don't reload whole panel
-  - Flickering map on load/don't reload whole map
 
 - fix hindrance bug
   - through two fence corner intersections
