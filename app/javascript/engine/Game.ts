@@ -40,21 +40,22 @@ export type ActionSelection = {
   x: number, y: number, ti: number, counter: Counter,
 }
 
-export type DeploySelection = {
+export type DeployAction = {
   turn: number, index: number, needsDirection?: [number, number],
 }
 
-export type MoveSelection = {
+export type MoveAction = {
+  initialSelection: ActionSelection[];
+  doneSelect: boolean;
   path: { x: number, y: number, facing?: number }[],
 }
 
 export type GameActionState = {
   player: Player,
   currentAction?: ActionType,
-  primarySelection?: ActionSelection,
-  multiSelection?: ActionSelection[],
-  deploy?: DeploySelection,
-  move?: MoveSelection,
+  selection?: ActionSelection[],
+  deploy?: DeployAction,
+  move?: MoveAction,
 }
 
 export default class Game {
@@ -369,19 +370,19 @@ export default class Game {
     }
   }
 
-  get currentReinforcementSelection(): DeploySelection | undefined {
+  get currentReinforcementSelection(): DeployAction | undefined {
     return this.gameActionState?.deploy
   }
 
-  setReinforcementSelection(player: Player, deploy: DeploySelection | undefined) {
+  setReinforcementSelection(player: Player, deploy: DeployAction | undefined) {
     if (!deploy) {
-      this.gameActionState = undefined
+      this.cancelAction()
       return
     }
     const current = this.gameActionState
     if (player === current?.player && deploy.turn === current.deploy?.turn &&
         deploy.index === current.deploy?.index) {
-      this.gameActionState = undefined
+      this.cancelAction()
     } else {
       const counter = this.availableReinforcements(player)[deploy.turn][deploy.index]
       if (counter.x > counter.used) {
@@ -407,94 +408,41 @@ export default class Game {
       callback(this)
       this.gameActionState.deploy.needsDirection = undefined
       if (counter.x == counter.used) {
-        this.gameActionState = undefined
+        this.cancelAction()
       }
     }
   }
 
   nextUnit(selection: Counter): Counter | undefined {
-    const hex = selection.hex as Coordinate
-    return this.scenario.map.counterAtIndex(
-      new Coordinate(hex.x, hex.y), (selection.trueIndex ?? 0) + 1
-    )
+    return this.scenario.map.nextUnit(selection)
   }
 
   carriedUnits(selection: Counter): Counter[] {
-    const next = this.nextUnit(selection)
-    if (!next) { return [] }
-    const rc = [next]
-    if (selection.target.canCarrySupport && next.target.type === "sw") { return rc }
-    if (selection.target.canHandle && next.target.type === "gun") { return rc }
-    if (selection.target.canTowUnit(next)) {
-      const next2 = this.nextUnit(next)
-      if (next2 && selection.target.canTransportUnit(next2)) {
-        rc.push(next2)
-        const next3 = this.nextUnit(next2)
-        const next4 = next3 ? this.nextUnit(next3) : undefined
-        const next5 = next4 ? this.nextUnit(next4) : undefined
-        if (next2.target.type !== "ldr" && next3?.target.type === "sw" &&
-            next4?.target.type === "ldr" && next5?.target.type === "sw") {
-          rc.push(next3)
-          rc.push(next4)
-          rc.push(next5)
-        } else if ((next2.target.type !== "ldr" && next3?.target.type === "sw" &&
-                    next4?.target.type === "ldr") || (next2.target.type !== "ldr" &&
-                    next3?.target.type === "ldr" && next4?.target.type === "sw")) {
-          rc.push(next3)
-          rc.push(next4)
-        } else if ((next2.target.type !== "ldr" && next3?.target.type === "ldr") ||
-                   next3?.target.type === "sw") {
-          rc.push(next3)
-        }
-      }
-      return rc
-    }
-    if (selection.target.canTransportUnit(next)) {
-      const next2 = this.nextUnit(next)
-      const next3 = next2 ? this.nextUnit(next2) : undefined
-      const next4 = next3 ? this.nextUnit(next3) : undefined
-      if (next.target.type !== "ldr" && next2?.target.type === "sw" &&
-          next3?.target.type === "ldr" && next4?.target.type === "sw") {
-        rc.push(next2)
-        rc.push(next2)
-        rc.push(next4)
-      } else if ((next.target.type !== "ldr" && next2?.target.type === "sw" &&
-                  next3?.target.type === "ldr") || (next.target.type !== "ldr" &&
-                  next2?.target.type === "ldr" && next3?.target.type === "sw")) {
-        rc.push(next2)
-        rc.push(next3)
-      } else if ((next.target.type !== "ldr" && next2?.target.type === "ldr") ||
-                  next2?.target.type === "sw") {
-        rc.push(next2)
-      }
-      return rc
-    }
-    return []
+    return this.scenario.map.carriedUnits(selection)
   }
 
   startMove() {
-    console.log("starting move")
     const selection = this.scenario.map.currentSelection[0]
-    if (selection) {
+    if (selection && selection.hex) {
       const loc = {
-        x: selection.x, y: selection.y,
+        x: selection.hex.x, y: selection.hex.y,
         facing: selection.target.rotates ? selection.target.facing : undefined
       }
-      console.log("checking carried units")
       const units = this.carriedUnits(selection)
-      console.log(`selecting ${units.length}`)
       units.forEach(c => c.target.select())
-      console.log("setting state")
+      const canSelect = selection.target.canCarrySupport &&
+        !(units.length === 1 && units[0].target.crewed)
+      const initialSelection = [{ x: loc.x, y: loc.y, ti: selection.trueIndex as number, counter: selection }]
+      units.forEach(u => {
+        const hex = u.hex as Coordinate
+        initialSelection.push({ x: hex.x, y: hex.y, ti: u.trueIndex as number, counter: u })
+      })
       this.gameActionState = {
         player: this.currentPlayer,
         currentAction: actionType.Move,
-        primarySelection: { x: loc.x, y: loc.y, ti: selection.trueIndex as number, counter: selection},
-        multiSelection: units.length > 0 ? units.map(
-          c => { return { x: c.x, y: c.y, ti: c.trueIndex as number, counter: c } }
-        ) : undefined,
-        move: { path: [loc] }
+        selection: initialSelection,
+        move: { initialSelection, doneSelect: !canSelect, path: [loc] }
       }
-      console.log("..done?")
     }
   }
 
@@ -506,7 +454,6 @@ export default class Game {
   }
 
   actionsAvailable(activePlayer: string): GameAction[] {
-    console.log("actions")
     if (this.lastMove?.id === undefined) {
       return [{ type: "sync" }]
     }
@@ -533,12 +480,22 @@ export default class Game {
       moves.unshift({ type: "deploy" })
       return moves
     } else if (this.phase === gamePhaseType.Main) {
-      console.log("main")
       if ((activePlayer === this.playerOneName && this.currentPlayer === 1) ||
           (activePlayer === this.playerTwoName && this.currentPlayer === 2)) {
         if (this.gameActionState?.currentAction === actionType.Move) {
-          console.log("move")
-          moves.push({ type: "none", message: "select" })
+          if (this.gameActionState.move) {
+            if (this.gameActionState.move.doneSelect) {
+              moves.unshift({ type: "none", message: "select hex to move" })
+            } else {
+              moves.unshift({ type: "none", message: "select addtional units or select hex to move" })
+            }
+            if (this.gameActionState.move.path.length > 1) {
+              moves.push({ type: "move_finish" })
+            }
+            moves.push({ type: "move_cancel" })
+          } else {
+            moves.unshift({ type: "none", message: "error: state.move undefined" })
+          }
         } else if (this.opportunityFire) {
           moves.unshift({ type: "none", message: "opportunity fire" })
           moves.push({ type: "opportunity_fire" })
@@ -572,6 +529,11 @@ export default class Game {
       moves.unshift({ type: "none", message: "not implemented yet" })
       return moves
     }
+  }
+
+  cancelAction() {
+    this.scenario.map.clearAllSelections()
+    this.gameActionState = undefined
   }
 }
 

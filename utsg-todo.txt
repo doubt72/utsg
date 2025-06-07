@@ -1,6 +1,7 @@
 - Come up with name (D-GOST?)
   - Add more info on signup page mebbe
 
+- Some sort of transient notification for why things can't be multiselected
 - Implement moves
   - Allow multiselect if:
     foot unit (except if being transported or being crew)

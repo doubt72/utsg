@@ -19,7 +19,7 @@ import { Coordinate, CounterSelectionTarget, Direction, Player } from "../../../
 import MapHexOverlay from "./MapHexOverlay";
 import DirectionSelector from "./DirectionSelector";
 import MiniMap from "./MiniMap";
-import { yMapOffset } from "../../../utilities/graphics";
+import { roundedRectangle, yMapOffset } from "../../../utilities/graphics";
 import { normalDir } from "../../../utilities/utilities";
 
 interface GameMapProps {
@@ -35,7 +35,7 @@ interface GameMapProps {
   guiCollapse?: boolean;
   forceUpdate: number;
   hexCallback?: (x: number, y: number) => void;
-  counterCallback?: (x: number, y: number, counter: Counter) => void;
+  counterCallback?: () => void;
   directionCallback?: (x: number, y: number, d: Direction) => void;
   resetCallback?: () => void;
 }
@@ -72,6 +72,11 @@ export default function GameMap({
   const [yOffset, setYOffset] = useState<number>(0)
   const [reinforcementOffset, setReinforcementOffset] = useState<number>(269)
 
+  const [notification, setNotification] = useState<JSX.Element | undefined>()
+  const [notificationDetails, setNotificationDetails] = useState<{
+    error: string, timer: number
+  }>({ error: "", timer: 0 })
+
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
     if (preview || m?.preview) { return map.ySize * scale }
     const gc = guiCollapse ? 178 : 0
@@ -91,6 +96,27 @@ export default function GameMap({
 
   // IDEK what I'm doing with types here
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
+
+  useEffect(() => {
+    const timer = notificationDetails.timer
+    if (timer < 1) {
+      setNotification(undefined)
+      return
+    }
+    const alpha =  timer < 30 ? timer / 30 : 1
+    const error = notificationDetails.error
+    const twidth = error.length * 9.6 + 24
+    const x = width / scale - 216 - twidth
+    const y = 18 + map?.yStatusSize + 50 / scale - 50
+    setNotification(
+      <g>
+        <path d={roundedRectangle(x, y, twidth, 32)} style={{ fill: `rgba(95,95,95,${alpha})` }}/>
+        <text x={x + 12} y={y + 20} fontSize={16} fontFamily="'Courier Prime', monospace"
+                  textAnchor="start" style={{ fill: `rgba(255,255,255,${alpha})` }}>{error}</text>
+      </g>
+    )
+    setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 2 } }), 20)
+  }, [notificationDetails])
 
   useEffect(() => {
     const handleResize = () => {
@@ -161,7 +187,6 @@ export default function GameMap({
   }, [hideCounters, showLos])
 
   useEffect(() => {
-    console.log("game map update")
     if (!map) { return }
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
@@ -342,9 +367,18 @@ export default function GameMap({
     updateReinforcementOverlays()
   }
 
+  const handleSelect = (error?: string) => {
+    console.log(`got callback: ${error}`)
+    if (error) {
+      setNotificationDetails({ error, timer: 200 })
+    } else {
+      counterCallback()
+    }
+  }
+
   const unitSelection = (selection: CounterSelectionTarget) => {
     if (selection.target.type === "map") {
-      map.selectUnit(selection, counterCallback)
+      map.selectUnit(selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
       if (map.game.gameActionState?.deploy &&
           map.game.gameActionState.deploy.index !== selection.target.index) {
@@ -442,6 +476,7 @@ export default function GameMap({
       {minimap}
       {counterOverlay}
       {terrainInfoOverlay}
+      {notification}
     </svg>
   )
 }

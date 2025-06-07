@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom"
 import {
-  ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, BoxArrowInRight, BoxArrowRight,
+  ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, Ban, BoxArrowInRight, BoxArrowRight,
   ChatText, Check2Square, CircleFill, Crosshair, Crosshair2, Hexagon, InfoCircle, PencilSquare, Person,
   ShieldExclamation, Trash3, XCircle
 } from "react-bootstrap-icons"
@@ -172,4 +172,8 @@ export const MoveRushGlyph = () => {
 
 export const RoutGlyph = () => {
   return <ArrowsExpandVertical/>
+}
+
+export const CancelGlyph = () => {
+  return <Ban/>
 }

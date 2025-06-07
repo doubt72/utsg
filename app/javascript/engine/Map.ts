@@ -258,18 +258,17 @@ export default class Map {
     } else {
       const last = list[list.length-1]
       list.push(unit)
-      if (unit.type === "sw") {
-        if (!last ||
-          (last.type !== "sqd" && last.type !== "tm" && last.type !== "ldr")) {
+      if (unit.uncrewedSW) {
+        if (!last || !last.canCarrySupport) {
           throw new WarningMoveError(
             `${unit.name} is not assigned to an operator; it ` +
             "must be placed on a squad, team, or leader to be assigned."
           )
         }
       }
-      if (unit.type === "gun") {
+      if (unit.crewed) {
         if (!last ||
-          (last.type !== "sqd" && last.type !== "tm" && !(last.canTow && last.size >= (unit.towSize ?? 0)))) {
+          (!last.canHandle && !(last.canTow && last.size >= (unit.towSize ?? 0)))) {
           throw new WarningMoveError(
             `${unit.name} is not assigned to an operator or vehicle; it ` +
             "must be placed on a squad or team to be assigned, or on a vehicle large enough to tow it."
@@ -342,7 +341,6 @@ export default class Map {
   }
 
   counterAtIndex(loc: Coordinate, ti: number): Counter | undefined {
-    console.log(`at index ${loc.x}, ${loc.y} - ${ti}`)
     const counters = this.countersAt(loc)
     for (const c of counters) {
       if (!c.target.isMarker && !c.target.isFeature && c.trueIndex === ti) { return c }
@@ -574,16 +572,15 @@ export default class Map {
         let rc = hexOpenType.Open
         const list = this.units[hex.coord.y][hex.coord.x]
         const last = list[list.length - 1]
-        if (uf.type === "gun") {
+        if (uf.crewed) {
           if (last && (last.canTow && last.size >= (uf.towSize ?? 0) ||
-              last.type === "sqd" || last.type === "tm")) {
+              last.canHandle)) {
             rc = hexOpenType.Green
           } else {
             rc = hexOpenType.Red
           }
-        }
-        if (uf.type === "sw") {
-          if (last && (last.type === "sqd" || last.type === "tm" || last.type === "ldr")) {
+        } else if (uf.uncrewedSW) {
+          if (last && last.canCarrySupport) {
             rc = hexOpenType.Green
           } else {
             rc = hexOpenType.Red
@@ -638,7 +635,92 @@ export default class Map {
     }
   }
 
-  selectable(selection: CounterSelectionTarget): boolean {
+  nextUnit(selection: Counter): Counter | undefined {
+    const hex = selection.hex as Coordinate
+    return this.counterAtIndex(
+      new Coordinate(hex.x, hex.y), (selection.trueIndex ?? 0) + 1
+    )
+  }
+
+  carriedUnits(selection: Counter): Counter[] {
+    const next = this.nextUnit(selection)
+    if (!next) { return [] }
+    const rc = [next]
+    if (selection.target.canCarrySupport && next.target.uncrewedSW) { return rc }
+    if (selection.target.canHandle && next.target.crewed) { return rc }
+    if (selection.target.canTowUnit(next)) {
+      const next2 = this.nextUnit(next)
+      if (next2 && selection.target.canTransportUnit(next2)) {
+        rc.push(next2)
+        const next3 = this.nextUnit(next2)
+        const next4 = next3 ? this.nextUnit(next3) : undefined
+        const next5 = next4 ? this.nextUnit(next4) : undefined
+        if (next2.target.type !== "ldr" && next3?.target.uncrewedSW &&
+            next4?.target.type === "ldr" && next5?.target.uncrewedSW) {
+          rc.push(next3)
+          rc.push(next4)
+          rc.push(next5)
+        } else if ((next2.target.type !== "ldr" && next3?.target.uncrewedSW &&
+                    next4?.target.type === "ldr") || (next2.target.type !== "ldr" &&
+                    next3?.target.type === "ldr" && next4?.target.uncrewedSW)) {
+          rc.push(next3)
+          rc.push(next4)
+        } else if ((next2.target.type !== "ldr" && next3?.target.type === "ldr") ||
+                    next3?.target.uncrewedSW) {
+          rc.push(next3)
+        }
+      }
+      return rc
+    }
+    if (selection.target.canTransportUnit(next)) {
+      const next2 = this.nextUnit(next)
+      const next3 = next2 ? this.nextUnit(next2) : undefined
+      const next4 = next3 ? this.nextUnit(next3) : undefined
+      if (next.target.type !== "ldr" && next2?.target.uncrewedSW &&
+          next3?.target.type === "ldr" && next4?.target.uncrewedSW) {
+        rc.push(next2)
+        rc.push(next2)
+        rc.push(next4)
+      } else if ((next.target.type !== "ldr" && next2?.target.uncrewedSW &&
+                  next3?.target.type === "ldr") || (next.target.type !== "ldr" &&
+                  next2?.target.type === "ldr" && next3?.target.uncrewedSW)) {
+        rc.push(next2)
+        rc.push(next3)
+      } else if ((next.target.type !== "ldr" && next2?.target.type === "ldr") ||
+                  next2?.target.uncrewedSW) {
+        rc.push(next2)
+      }
+      return rc
+    }
+    return []
+  }
+
+  canBeMoveMultiselected(counter: Counter, callback: (error?: string) => void): boolean {
+    if (!counter.target.canCarrySupport) {
+      callback("only infantry units and leaders can move together")
+      return false
+    }
+    const next = this.nextUnit(counter)
+    if (next && next?.target.crewed) {
+      callback("unit manning a crewed weapon cannot move with other infantry")
+      return false
+    }
+    const counters = this.countersAt(counter.hex as Coordinate)
+    for (const c of counters) {
+      if (c.target.canTransportUnit(counter)) {
+        const carried = this.carriedUnits(c)
+        for (const check of carried) {
+          if (check.trueIndex === counter.trueIndex) {
+            callback("unit being transported cannot move with other infantry")
+            return false
+          }
+        }
+      }
+    }
+    return true
+  }
+
+  selectable(selection: CounterSelectionTarget, callback: (error?: string) => void): boolean {
     if (!this.game) { return false }
     if (selection.counter.target.isFeature) { return false }
     if (this.debug) { return true }
@@ -648,21 +730,64 @@ export default class Map {
       if (selection.counter.target.playerNation !== this.game.currentPlayerNation) {
         return false
       }
+      if (this.game.gameActionState?.move) {
+        if (this.game.gameActionState.move.doneSelect) { return false }
+        if (selection.target.type !== "map") { return false }
+        for (const s of this.game.gameActionState.move.initialSelection) {
+          if (s.x !== selection.target.xy.x || s.y !== selection.target.xy.y) {
+            callback("all units moving together must start in same hex")
+            return false
+          }
+          if (selection.counter.trueIndex === s.ti) { return false }
+        }
+        const counter = this.counterAtIndex(selection.target.xy, selection.counter.trueIndex as number)
+        if (!this.canBeMoveMultiselected(counter as Counter, callback)) { return false }
+      }
     }
     if (this.game.phase === gamePhaseType.Cleanup) { return false } // Not supported yet
     return true
   }
 
-  selectUnit(selection: CounterSelectionTarget, callback: (x: number, y: number, counter: Counter) => void) {
+  removeActionSelection(x: number, y: number, ti: number) {
+    if (!this.game?.gameActionState?.selection) { return }
+    const selection = this.game.gameActionState.selection.filter(s =>
+      s.x !== x && s.y !== y && s.ti !== ti
+    )
+    this.game.gameActionState.selection = selection
+  }
+
+  selectUnit(selection: CounterSelectionTarget, callback: (error?: string) => void) {
     if (selection.target.type === "reinforcement") { return } // shouldn't happen
     if (selection.counter.trueIndex === undefined) { return }
-    if (!this.selectable(selection)) { return }
+    if (!this.selectable(selection, callback)) { return }
     const x = selection.target.xy.x
     const y = selection.target.xy.y
-    this.clearOtherSelections(x, y, selection.counter.trueIndex)
-    const unit = this.units[y][x][selection.counter.trueIndex]
-    unit.select()
-    callback(x, y, selection.counter)
+    if (this.game?.gameActionState?.move) {
+      const selected = selection.counter.target.selected
+      selection.counter.target.select()
+      if (selected) {
+        this.removeActionSelection(x, y, selection.counter.trueIndex)
+      } else {
+        this.game.gameActionState.selection?.push({
+          x, y, ti: selection.counter.trueIndex, counter: selection.counter,
+        })
+      }
+      const next = this.nextUnit(this.counterAtIndex(selection.target.xy, selection.counter.trueIndex) as Counter)
+      if (next && next.target.uncrewedSW) {
+        next.target.select()
+        if (selected) {
+          this.removeActionSelection(x, y, selection.counter.trueIndex + 1)
+        } else {
+          this.game.gameActionState.selection?.push({
+            x, y, ti: selection.counter.trueIndex + 1, counter: next,
+          })
+        }
+      }
+    } else {
+      this.clearOtherSelections(x, y, selection.counter.trueIndex)
+      selection.counter.target.select()
+    }
+    callback()
   }
 
   get noSelection(): boolean {

@@ -102,6 +102,7 @@ export default class Marker {
 
   canHandle = false
   canCarrySupport = false
+  uncrewedSW = false
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   canTowUnit(_: Counter): boolean { return false }

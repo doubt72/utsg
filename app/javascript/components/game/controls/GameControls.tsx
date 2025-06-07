@@ -16,6 +16,8 @@ import MoveButton from "./MoveButton";
 import RushButton from "./RushButton";
 import AssaultMoveButton from "./AssaultMoveButton";
 import RoutButton from "./RoutButton";
+import MoveFinishButton from "./MoveFinishButton";
+import MoveCancelButton from "./MoveCancelButton";
 
 interface GameControlsProps {
   game: Game;
@@ -37,7 +39,6 @@ export default function GameControls({ game, callback }: GameControlsProps) {
   }
 
   const displayActions = () => {
-    console.log("display actions")
     const user = localStorage.getItem("username")
     setControls(game.actionsAvailable(user as string).map((a, i) => {
       if (a.type === "sync") {
@@ -72,6 +73,10 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <IntensiveFireButton game={game} key={i} />
       } else if (a.type === "move") {
         return <MoveButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "move_finish") {
+        return <MoveFinishButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "move_cancel") {
+        return <MoveCancelButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rush") {
         return <RushButton game={game} key={i} />
       } else if (a.type === "assault_move") {

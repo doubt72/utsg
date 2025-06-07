@@ -8,7 +8,6 @@ import GameMap from "./map/GameMap";
 import GameControls from "./controls/GameControls";
 import Game from "../../engine/Game";
 import Map from "../../engine/Map";
-import Counter from "../../engine/Counter";
 import { Direction } from "../../utilities/commonTypes";
 import ErrorDisplay from "./ErrorDisplay";
 import {
@@ -218,9 +217,7 @@ export default function GameDisplay() {
     }
   }
 
-  const unitSelection = (x: number, y: number, counter: Counter) => {
-    const key = `x ${x}-${y}-${counter.trueIndex}`
-    console.log(key)
+  const unitSelection = () => {
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
       return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />

@@ -214,7 +214,6 @@ export default class Unit {
   hideOverlayRotation = false
 
   select() {
-    console.log(`being selected`)
     this.selected = !this.selected
   }
 
@@ -244,6 +243,12 @@ export default class Unit {
 
   get rotates(): boolean {
     return !["sw", "ldr", "sqd", "tm", "cav", "cav-wheel", "other"].includes(this.type)
+  }
+
+  get uncrewedSW(): boolean {
+    if (this.type !== "sw") { return false }
+    if (this.crewed) { return false }
+    return true
   }
 
   canTowUnit(counter: Counter): boolean {
