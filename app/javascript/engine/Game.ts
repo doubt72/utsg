@@ -432,15 +432,17 @@ export default class Game {
       units.forEach(c => c.target.select())
       const canSelect = selection.target.canCarrySupport &&
         !(units.length === 1 && units[0].target.crewed)
+      const allSelection = [{ x: loc.x, y: loc.y, ti: selection.trueIndex as number, counter: selection }]
       const initialSelection = [{ x: loc.x, y: loc.y, ti: selection.trueIndex as number, counter: selection }]
       units.forEach(u => {
         const hex = u.hex as Coordinate
+        allSelection.push({ x: hex.x, y: hex.y, ti: u.trueIndex as number, counter: u })
         initialSelection.push({ x: hex.x, y: hex.y, ti: u.trueIndex as number, counter: u })
       })
       this.gameActionState = {
         player: this.currentPlayer,
         currentAction: actionType.Move,
-        selection: initialSelection,
+        selection: allSelection,
         move: { initialSelection, doneSelect: !canSelect, path: [loc] }
       }
     }

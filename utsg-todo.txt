@@ -6,13 +6,13 @@
   - Fix flickering of move display as well
 
 - Fix tank hull selection
-- Fix unselect for move multiselect
 
 - Implement moves
     - Show which hexes are legal, and move cost
     - Move cost for RR / RR bridge?
     - Amphibious Vehicles
     - Consider adding road attributes / how base terrain affects it
+      - Implement Road Bonus
     - Allow selection to hex to make move
     - Option to drop off foot units
     - Rotation options
@@ -31,6 +31,8 @@
 - Initiative check
 - Reaction fire
 - Sniper check
+
+- disable text selection
 
 - fix hindrance bug
   - through two fence corner intersections

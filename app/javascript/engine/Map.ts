@@ -775,7 +775,7 @@ export default class Map {
   removeActionSelection(x: number, y: number, ti: number) {
     if (!this.game?.gameActionState?.selection) { return }
     const selection = this.game.gameActionState.selection.filter(s =>
-      s.x !== x && s.y !== y && s.ti !== ti
+      s.x !== x || s.y !== y || s.ti !== ti
     )
     this.game.gameActionState.selection = selection
   }
@@ -786,30 +786,32 @@ export default class Map {
     if (!this.selectable(selection, callback)) { return }
     const x = selection.target.xy.x
     const y = selection.target.xy.y
+    const ti = selection.counter.trueIndex
+    const counter = this.counterAtIndex(new Coordinate(x, y), ti) as Counter
     if (this.game?.gameActionState?.move) {
-      const selected = selection.counter.target.selected
-      selection.counter.target.select()
+      const selected = counter.target.selected
+      counter.target.select()
       if (selected) {
-        this.removeActionSelection(x, y, selection.counter.trueIndex)
+        this.removeActionSelection(x, y, ti)
       } else {
         this.game.gameActionState.selection?.push({
-          x, y, ti: selection.counter.trueIndex, counter: selection.counter,
+          x, y, ti, counter: counter,
         })
       }
-      const next = this.nextUnit(this.counterAtIndex(selection.target.xy, selection.counter.trueIndex) as Counter)
+      const next = this.nextUnit(this.counterAtIndex(selection.target.xy, ti) as Counter)
       if (next && next.target.uncrewedSW) {
         next.target.select()
         if (selected) {
-          this.removeActionSelection(x, y, selection.counter.trueIndex + 1)
+          this.removeActionSelection(x, y, ti + 1)
         } else {
           this.game.gameActionState.selection?.push({
-            x, y, ti: selection.counter.trueIndex + 1, counter: next,
+            x, y, ti: ti + 1, counter: next,
           })
         }
       }
     } else {
-      this.clearOtherSelections(x, y, selection.counter.trueIndex)
-      selection.counter.target.select()
+      this.clearOtherSelections(x, y, ti)
+      counter.target.select()
     }
     callback()
   }
