@@ -177,7 +177,7 @@ export type GameAction = {
   type: string, message?: string
 }
 
-export type HexOpenType = true | false | "red" | "yellow" | "green" | number
+export type HexOpenType = true | false | "red" | "yellow" | "green" | "all" | number
 export const hexOpenType: { [index: string]: HexOpenType } = {
-  Open: true, Closed: false, Red: "red", Yellow: "yellow", Green: "green"
+  Open: true, Closed: false, Red: "red", Yellow: "yellow", Green: "green", All: "all",
 }

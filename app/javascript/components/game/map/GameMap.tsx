@@ -364,6 +364,8 @@ export default function GameMap({
             doCallback = false
           }
         }
+      } else if (map.game?.gameActionState?.move) {
+        // Add move
       }
       if (doCallback) { hexCallback(x, y) }
     }

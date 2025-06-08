@@ -5,18 +5,15 @@
   - Flickering panel when placing units/don't reload whole panel
   - Fix flickering of move display as well
 
-- Fix tank hull selection
-
 - Implement moves
-    - Show which hexes are legal, and move cost
-    - Move cost for RR / RR bridge?
-    - Amphibious Vehicles
-    - Consider adding road attributes / how base terrain affects it
-      - Implement Road Bonus
     - Allow selection to hex to make move
-    - Option to drop off foot units
     - Rotation options
-    - Finishing/Syncing Move
+
+    - Move cost for RR / RR bridge?
+    - Consider adding road attributes / how base terrain affects it
+    - Amphibious Vehicles
+
+    - Option to drop off foot units
     - Unmanning Crewed Weapons
     - Dropping Towed Weapons
     - Dropping Support Weapons
@@ -26,10 +23,14 @@
     - Embarking on Vehicles 
     - Smoke
     - Engineering Tasks
+    - Wire/Obstacles
+
+    - Finishing/Syncing Move
 
 - Passing
 - Initiative check
 - Reaction fire
+- Mines
 - Sniper check
 
 - disable text selection

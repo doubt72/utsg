@@ -26,13 +26,14 @@ export default function MapHexOverlay({
     if (shaded === hexOpenType.Red) { style = redStyle }
     const x = hex.xOffset
     const y = hex.yOffset
+    const open = shaded !== hexOpenType.Closed
     let circle: JSX.Element | string = ""
-    if (typeof shaded === "number") {
+    if (typeof shaded === "number" || shaded === hexOpenType.All) {
       circle = (
         <g>
           <path d={circlePath(new Coordinate(x, y), 30)} style={{ fill: "rgba(0,0,0,0.3)" }} />
           <text x={x} y={y + 15} fontSize={56} textAnchor="middle" fontFamily="'Courier Prime', monospace"
-                style={{ fill: "rgba(255,255,255,0.6)"}}>{shaded}</text>
+                style={{ fill: "rgba(255,255,255,0.6)"}}>{shaded === hexOpenType.All ? "A" : shaded}</text>
         </g>
       )
     }
@@ -40,7 +41,7 @@ export default function MapHexOverlay({
       <g>
         { circle }
         <polygon points={hex.hexCoords} style={style}
-                 onClick={() => selectCallback(hex.coord.x, hex.coord.y)} />
+                 onClick={() => open ? selectCallback(hex.coord.x, hex.coord.y) : {}} />
       </g>
     )
   }

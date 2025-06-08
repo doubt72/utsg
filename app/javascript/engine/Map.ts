@@ -608,7 +608,7 @@ export default class Map {
     if (!this.game?.gameActionState?.move) { return hexOpenType.Open }
     if (!this.game?.gameActionState?.selection) { return hexOpenType.Open }
     const selection = this.game.gameActionState.selection[0]
-    const cost = this.movementCost(new Coordinate(selection.x, selection.y), new Coordinate(x, y))
+    const cost = this.movementOpen(new Coordinate(selection.x, selection.y), new Coordinate(x, y))
     if (cost === false) {
       return hexOpenType.Closed
     } else {
@@ -853,64 +853,31 @@ export default class Map {
     }
     return true
   }
-  
-  movementCost(from: Coordinate, to: Coordinate): number | false {
-    if (!this.game?.gameActionState?.move) { return false }
+
+  movementCost(from: Coordinate, to: Coordinate, target: Unit): number {
     if (from.x === to.x && from.y === to.y) {
-      return false;
+      return 1; // When rotating in place
     }
     const hexFrom = this.hexAt(from) as Hex;
     const hexTo = this.hexAt(to) as Hex;
     const terrFrom = hexFrom.terrain
     const terrTo = hexTo.terrain
-    let cost = terrTo.move
-    if (!cost) { return false }
-    const dir = this.relativeDirection(from, to)
-    if (!dir) { return false }
-    if (!this.game.gameActionState.selection) { return false }
-    const moveSize = this.game.gameActionState.selection.reduce((sum, u) => sum + u.counter.target.size, 0)
-    const toSize = this.countersAt(to).reduce((sum, u) => sum + u.target.size, 0)
-    if (moveSize + toSize > stackLimit) { return false }
-    const selection = this.game.gameActionState.selection[0].counter
+    // all of these casts should have already been checked before we get here
+    let cost = terrTo.move as number
+    const dir = this.relativeDirection(from, to) as Direction
     const roadMove = this.roadMovement(hexFrom, hexTo, dir)
-    if (selection.target.isWheeled || selection.target.isTracked) {
-      if (!terrTo.vehicle && !roadMove) { return false }
-    }
-    if (selection.target.crewed) {
-      if (!terrTo.gun && !roadMove) { return false }
-      if (terrTo.gun === "back" && dir !== normalDir(selection.target.facing + 3)) {
-        return false
-      }
-    }
-    if (selection.target.isWheeled && roadMove) {
+    if (target.isWheeled && roadMove) {
       cost = 0.5
-    } else if (selection.target.isTracked && roadMove) {
+    } else if (target.isTracked && roadMove) {
       cost = 1
     } else if (this.roadMovement(hexFrom, hexTo, dir, true)) {
       cost = 1
     }
-    if (selection.target.rotates) {
-      if (normalDir(dir + 3) === selection.target.facing) {
-        cost *= 2
-      } else if (dir !== selection.target.facing) { return false }
-    }
     if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
-      const add = terrFrom.borderMove
-      if (!add) { return false }
-      if ((selection.target.isWheeled || selection.target.isTracked) && !terrFrom.borderVehicle) {
-        return false
-      }
-      if (selection.target.crewed && !terrFrom.borderGun) { return false }
-      cost += add
+      cost += terrFrom.borderMove as number
     }
     if (hexTo.border && hexTo.borderEdges?.includes(dir)) {
-      const add = terrTo.borderMove
-      if (!add) { return false }
-      if ((selection.target.isWheeled || selection.target.isTracked) && !terrTo.borderVehicle) {
-        return false
-      }
-      if (selection.target.crewed && !terrTo.borderGun) { return false }
-      cost += add
+      cost += terrTo.borderMove as number
     }
     if (hexFrom.river && !this.alongStream(hexFrom, hexTo, dir)) {
       cost += hexTo.terrain.streamAttr.outMove
@@ -924,7 +891,73 @@ export default class Map {
     if (hexTo.elevation > hexFrom.elevation) {
       cost += 1
     }
+    if (target.rotates && normalDir(dir + 3) === target.facing) { cost *= 2 }
+    return cost
+  }
+
+  movementOpen(from: Coordinate, to: Coordinate): number | "all" | false {
+    if (!this.game?.gameActionState?.move) { return false }
+    if (from.x === to.x && from.y === to.y) {
+      return false;
+    }
+    const hexFrom = this.hexAt(from) as Hex;
+    const hexTo = this.hexAt(to) as Hex;
+    const terrFrom = hexFrom.terrain
+    const terrTo = hexTo.terrain
+    if (!terrTo.move) { return false }
+    const dir = this.relativeDirection(from, to)
+    if (!dir) { return false }
+    if (!this.game.gameActionState.selection) { return false }
+    const moveSize = this.game.gameActionState.selection.reduce((sum, u) => sum + u.counter.target.size, 0)
+    const toSize = this.countersAt(to).reduce((sum, u) => sum + u.target.size, 0)
+    if (moveSize + toSize > stackLimit) { return false }
+    const selection = this.game.gameActionState.selection[0].counter
+    const roadMove = this.roadMovement(hexFrom, hexTo, dir)
+    if (selection.target.isWheeled || selection.target.isTracked) {
+      if (!terrTo.vehicle && !roadMove) { return false }
+    }
+    const next = this.game.gameActionState.selection[1]
+    if (next && next.counter.target.crewed) {
+      if (!terrTo.gun && !roadMove) { return false }
+      if (terrTo.gun === "back" && dir !== normalDir(selection.target.facing + 3)) {
+        return false
+      }
+    }
+    if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
+      if (!terrFrom.borderMove) { return false }
+      if ((selection.target.isWheeled || selection.target.isTracked) && !terrFrom.borderVehicle) {
+        return false
+      }
+      if (next && next.counter.target.crewed && !terrFrom.borderGun) { return false }
+    }
+    if (hexTo.border && hexTo.borderEdges?.includes(dir)) {
+      if (!terrTo.borderMove) { return false }
+      if ((selection.target.isWheeled || selection.target.isTracked) && !terrTo.borderVehicle) {
+        return false
+      }
+      if (next && next.counter.target.crewed && !terrTo.borderGun) { return false }
+    }
+    if (selection.target.rotates) {
+      if (normalDir(dir + 3) !== selection.target.facing && dir !== selection.target.facing) { return false }
+    }
     const length = this.game.gameActionState.move.path.length
+    const cost = this.movementCost(from, to, selection.target as Unit)
+    let pastCost = 0
+    let road = true
+    for (let i = 0; i < length - 1; i++) {
+      const p1 = this.game.gameActionState.move.path[i]
+      const p2 = this.game.gameActionState.move.path[i]
+      const loc1 = new Coordinate(p1.x, p1.y)
+      const loc2 = new Coordinate(p2.x, p2.y)
+      pastCost += this.movementCost(loc1, loc2, selection.target as Unit)
+      if (!this.roadMovement(
+        this.hexAt(loc1) as Hex, this.hexAt(loc2) as Hex, this.relativeDirection(loc1, loc2) as Direction
+      )) {
+        road = false
+      }
+    }
+    const allRoad = road && roadMove && !next.counter.target.crewed ? 1 : 0
+    let move = selection.target.currentMovement as number + allRoad
     if (selection.target.canCarrySupport) {
       let minLdrMove = 99
       let minInfMove = 99
@@ -935,13 +968,16 @@ export default class Map {
         if (u.type === "ldr" && move < minLdrMove) { minLdrMove = move }
       }
       if (length > 1) {
-        if (minLdrMove === 99 && minInfMove < cost) { return false }
-        if (minLdrMove < cost || minInfMove + 1 < cost) { return false }
+        if (minLdrMove + allRoad === 99 && minInfMove+ allRoad < cost + pastCost) { return false }
+        if (minLdrMove + allRoad < cost + pastCost || minInfMove + allRoad + 1 < cost + pastCost) {
+          return false
+        }
+        move = (minInfMove < minLdrMove ? minInfMove : minLdrMove) + allRoad
       }
     } else {
-      if (selection.target.currentMovement as number > cost && length > 1) { return false }
+      if (move > cost + pastCost && length > 1) { return false }
     }
-    return cost
+    return move > cost ? cost : "all"
   }
 
   // TODO: repurpose/modify this later for fire selection
