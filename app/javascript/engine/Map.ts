@@ -290,6 +290,11 @@ export default class Map {
     }
   }
 
+  deleteUnit(loc: Coordinate, index: number) {
+    const list = this.units[loc.y][loc.x]
+    list.splice(index, 1)
+  }
+
   popUnit(loc: Coordinate): Unit | Feature | undefined {
     const list = this.units[loc.y][loc.x]
     return list.pop()
@@ -607,8 +612,9 @@ export default class Map {
   moveOpenHex(x: number, y: number): HexOpenType {
     if (!this.game?.gameActionState?.move) { return hexOpenType.Open }
     if (!this.game?.gameActionState?.selection) { return hexOpenType.Open }
-    const selection = this.game.gameActionState.selection[0]
-    const cost = this.movementOpen(new Coordinate(selection.x, selection.y), new Coordinate(x, y))
+    const path = this.game.gameActionState.move.path
+    const lastPath = path[path.length - 1]
+    const cost = this.movementOpen(new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
     if (cost === false) {
       return hexOpenType.Closed
     } else {
@@ -834,6 +840,16 @@ export default class Map {
     return rc
   }
 
+  move(x: number, y: number) {
+    if (!this.game?.gameActionState?.move) { return }
+    if (!this.game?.gameActionState?.selection) { return }
+    const selection = this.game.gameActionState.selection
+    const target = selection[0].counter.target
+    this.game.gameActionState.move.path.push({
+      x: x, y: y, facing: target.rotates ? target.facing : undefined,
+    })
+  }
+
   roadMovement(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
     if (!from.road || !to.road || !to.roadDirections?.includes(normalDir(dir + 3)) ||
         !from.roadDirections?.includes(dir)) {
@@ -895,7 +911,7 @@ export default class Map {
     return cost
   }
 
-  movementOpen(from: Coordinate, to: Coordinate): number | "all" | false {
+  movementOpen(from: Coordinate, to: Coordinate): HexOpenType {
     if (!this.game?.gameActionState?.move) { return false }
     if (from.x === to.x && from.y === to.y) {
       return false;
@@ -946,7 +962,7 @@ export default class Map {
     let road = true
     for (let i = 0; i < length - 1; i++) {
       const p1 = this.game.gameActionState.move.path[i]
-      const p2 = this.game.gameActionState.move.path[i]
+      const p2 = this.game.gameActionState.move.path[i+1]
       const loc1 = new Coordinate(p1.x, p1.y)
       const loc2 = new Coordinate(p2.x, p2.y)
       pastCost += this.movementCost(loc1, loc2, selection.target as Unit)
@@ -956,7 +972,7 @@ export default class Map {
         road = false
       }
     }
-    const allRoad = road && roadMove && !next.counter.target.crewed ? 1 : 0
+    const allRoad = road && roadMove && !(next && next.counter.target.crewed) ? 1 : 0
     let move = selection.target.currentMovement as number + allRoad
     if (selection.target.canCarrySupport) {
       let minLdrMove = 99
@@ -967,15 +983,17 @@ export default class Map {
         if (u.canCarrySupport && u.type !== "ldr" && move < minInfMove) { minInfMove = move }
         if (u.type === "ldr" && move < minLdrMove) { minLdrMove = move }
       }
-      if (length > 1) {
-        if (minLdrMove + allRoad === 99 && minInfMove+ allRoad < cost + pastCost) { return false }
-        if (minLdrMove + allRoad < cost + pastCost || minInfMove + allRoad + 1 < cost + pastCost) {
-          return false
-        }
+      if (minLdrMove === 99) {
+        move = minInfMove + allRoad
+      } else {
+        minInfMove += 1
         move = (minInfMove < minLdrMove ? minInfMove : minLdrMove) + allRoad
       }
-    } else {
-      if (move > cost + pastCost && length > 1) { return false }
+    }
+    if (move < cost + pastCost && length > 1) { return false }
+    console.log(`${move}+${allRoad} ${cost}+${pastCost}`)
+    for (const p of this.game.gameActionState.move.path) {
+      if (to.x === p.x && to.y === p.y ) { return hexOpenType.Open }
     }
     return move > cost ? cost : "all"
   }

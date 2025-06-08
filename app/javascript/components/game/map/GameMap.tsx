@@ -21,6 +21,7 @@ import DirectionSelector from "./DirectionSelector";
 import MiniMap from "./MiniMap";
 import { roundedRectangle, yMapOffset } from "../../../utilities/graphics";
 import { normalDir } from "../../../utilities/utilities";
+import MoveTrackOverlay from "./MoveTrackOverlay";
 
 interface GameMapProps {
   map: Map;
@@ -73,6 +74,8 @@ export default function GameMap({
   const [xOffset, setXOffset] = useState<number>(0)
   const [yOffset, setYOffset] = useState<number>(0)
   const [reinforcementOffset, setReinforcementOffset] = useState<number>(269)
+
+  const [moveTrack, setMoveTrack] = useState<JSX.Element | undefined>()
 
   const [notification, setNotification] = useState<JSX.Element | undefined>()
   const [notificationDetails, setNotificationDetails] = useState<{
@@ -316,6 +319,14 @@ export default function GameMap({
     setOverlay({ show: false, x: -1, y: -1 })
   }, [showLos])
 
+  useEffect(() => {
+    if (!map?.game?.gameActionState?.move) {
+      setMoveTrack(undefined)
+      return
+    }
+    setMoveTrack(<MoveTrackOverlay map={map} />)
+  }, [updateUnitshaded, forceUpdate])
+
   const shift = () => {
     setReinforcementsOverlay(rp => 
       <ReinforcementPanel map={map} xx={rp?.props.xx} yy={rp?.props.yy} player={rp?.props.player}
@@ -364,12 +375,13 @@ export default function GameMap({
             doCallback = false
           }
         }
+        updateReinforcementOverlays()
       } else if (map.game?.gameActionState?.move) {
-        // Add move
+        map.move(x, y)
+        setUpdateUnitshaded(s => s + 1)
       }
       if (doCallback) { hexCallback(x, y) }
     }
-    updateReinforcementOverlays()
   }
 
   const handleSelect = (error?: string) => {
@@ -460,6 +472,7 @@ export default function GameMap({
           {counterLosOverlay}
           {map?.game?.gameActionState?.deploy ? hexDisplayOverlays : ""}
           {directionSelectionOverlay}
+          {moveTrack}
         </svg>
       )
     }

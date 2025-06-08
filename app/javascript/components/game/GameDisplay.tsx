@@ -214,6 +214,11 @@ export default function GameDisplay() {
           return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
         })
       }
+    } else if (game.k?.gameActionState?.move) {
+      setControls(gc => {
+        const key = Number(gc?.key ?? 0)
+        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+      })
     }
   }
 

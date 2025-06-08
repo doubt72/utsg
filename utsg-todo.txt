@@ -5,10 +5,15 @@
   - Flickering panel when placing units/don't reload whole panel
   - Fix flickering of move display as well
 
+- "Normalize" stacks after placement
+- Registration markers
+- Maybe move "move" logic out of map.ts
+
 - Implement moves
     - Allow selection to hex to make move
     - Rotation options
 
+    - Prevent move into enemy hex
     - Move cost for RR / RR bridge?
     - Consider adding road attributes / how base terrain affects it
     - Amphibious Vehicles

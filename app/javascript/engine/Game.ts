@@ -452,6 +452,7 @@ export default class Game {
 
   get moveInProgress(): boolean {
     if (this.gameActionState?.deploy && this.gameActionState.deploy.needsDirection) { return true }
+    if (this.gameActionState?.move) { return true }
     return false
   }
 
