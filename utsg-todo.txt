@@ -1,24 +1,36 @@
 - Come up with name (D-GOST?)
   - Add more info on signup page mebbe
 
-- Some sort of transient notification for why things can't be multiselected
-- Implement moves
-  - Allow multiselect if:
-    foot unit (except if being transported or being crew)
-
-  - Change selection to single selection until action type selected
-    - Allow additional units to be selected if move selected
-    - Show which hexes are legal, and move cost
-    - Allow selection to hex to make move
-
-    - implement initiative check
-
-    - implement allow reaction fire
-
-    - implement sniper check
-
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units/don't reload whole panel
+  - Fix flickering of move display as well
+
+- Fix tank hull selection
+- Fix unselect for move multiselect
+
+- Implement moves
+    - Show which hexes are legal, and move cost
+    - Move cost for RR / RR bridge?
+    - Amphibious Vehicles
+    - Consider adding road attributes / how base terrain affects it
+    - Allow selection to hex to make move
+    - Option to drop off foot units
+    - Rotation options
+    - Finishing/Syncing Move
+    - Unmanning Crewed Weapons
+    - Dropping Towed Weapons
+    - Dropping Support Weapons
+    - Picking up Support Weapons
+    - Crewing Weapons
+    - Disambarking from Vehicles
+    - Embarking on Vehicles 
+    - Smoke
+    - Engineering Tasks
+
+- Passing
+- Initiative check
+- Reaction fire
+- Sniper check
 
 - fix hindrance bug
   - through two fence corner intersections

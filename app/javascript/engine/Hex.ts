@@ -696,15 +696,6 @@ export default class Hex {
     }
     if (this.terrain.move !== false) {
       text.push(`movement cost ${this.terrain.move}`)
-      if (this.river && this.road) {
-        if (["m", "s"].includes(this.map.baseTerrain)) {
-          text.push(`- cost +2 if not following road`)
-        } else {
-          text.push(`- cost +1 if not following road`)
-        }
-      } else if (this.road && ["m", "s"].includes(this.map.baseTerrain)) {
-        text.push(`- cost +1 if not following road`)
-      }
       let rise = false
       this.map.hexNeighbors(this.coord).forEach(n => {
         if (n && n.elevation < this.elevation) {
@@ -758,27 +749,21 @@ export default class Hex {
       text.push("- 1 cover")
     }
     if (this.river && this.terrain.move) {
-      if (this.riverType === streamType.Gully) {
-        text.push("gully")
-        text.push("- 1 cover")
-        text.push("- movement cost +1 when leaving")
+      text.push(this.terrain.streamAttr.name)
+      if (this.map.baseTerrain === baseTerrainType.Snow && this.riverType === streamType.Stream) {
+        text.push("- frozen, no movement effects")
+      } else {
+        let cost = this.terrain.streamAttr.inMove
+        if (cost > 0) { text.push(`- movement cost +${cost} when entering`) }
+        cost = this.terrain.streamAttr.outMove
+        if (cost > 0) { text.push(`- movement cost +${cost} when leaving`) }
+        cost = this.terrain.streamAttr.alongMove
+        if (cost > 0) { text.push(`- movement cost +${cost} when moving along`) }
         if (this.road) {
           text.push("- unless following road")
         }
-      } else if (this.riverType === streamType.Trench) {
-        text.push("trench")
-        text.push("- 3 cover")
-        text.push("- movement cost +1 when leaving")
-      } else {
-        text.push("stream")
-        if (this.map.baseTerrain === baseTerrainType.Snow) {
-          text.push("- frozen, no movement effects")
-        } else {
-          text.push("- movement cost +1 when leaving")
-          if (this.road) {
-            text.push("- unless following road")
-          }
-        }
+        const cover = this.terrain.streamAttr.cover
+        if (cover > 0) { text.push(`- ${cover} cover`) }
       }
     }
     const borderText: { [index: string]: string[] } = {}

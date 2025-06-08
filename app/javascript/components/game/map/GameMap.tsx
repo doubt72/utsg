@@ -38,12 +38,14 @@ interface GameMapProps {
   counterCallback?: () => void;
   directionCallback?: (x: number, y: number, d: Direction) => void;
   resetCallback?: () => void;
+  clearActionCallback?: () => void;
 }
 
 export default function GameMap({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
   hideCounters = false, showTerrain = false, preview, guiCollapse = false, forceUpdate,
-  hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {}
+  hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
+  clearActionCallback = () => {}
 }: GameMapProps) {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
@@ -107,12 +109,12 @@ export default function GameMap({
     const error = notificationDetails.error
     const twidth = error.length * 9.6 + 24
     const x = width / scale - 216 - twidth
-    const y = 18 + map?.yStatusSize + 50 / scale - 50
+    const y = 50 + map?.yStatusSize + 50 / scale - 50
     setNotification(
       <g>
-        <path d={roundedRectangle(x, y, twidth, 32)} style={{ fill: `rgba(95,95,95,${alpha})` }}/>
+        <path d={roundedRectangle(x, y, twidth, 32)} style={{ fill: `rgba(221,221,221,${alpha})` }}/>
         <text x={x + 12} y={y + 20} fontSize={16} fontFamily="'Courier Prime', monospace"
-                  textAnchor="start" style={{ fill: `rgba(255,255,255,${alpha})` }}>{error}</text>
+                  textAnchor="start" style={{ fill: `rgba(0,0,0,${alpha})` }}>{error}</text>
       </g>
     )
     setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 2 } }), 20)
@@ -181,6 +183,7 @@ export default function GameMap({
     if (hideCounters || showLos) {
       if (map.game?.gameActionState) {
         map.game.gameActionState = undefined
+        clearActionCallback()
       }
       setReinforcementsOverlay(undefined)
     }
@@ -203,7 +206,7 @@ export default function GameMap({
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
-        if (map.game?.gameActionState?.deploy) {
+        if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move) {
           const shaded = map.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
@@ -368,7 +371,6 @@ export default function GameMap({
   }
 
   const handleSelect = (error?: string) => {
-    console.log(`got callback: ${error}`)
     if (error) {
       setNotificationDetails({ error, timer: 200 })
     } else {
@@ -450,10 +452,11 @@ export default function GameMap({
              viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}>
           {hexDisplay}
           {hexDisplayDetail}
+          {map?.game?.gameActionState?.move ? hexDisplayOverlays : ""}
           {counterDisplay}
           {losOverlay}
           {counterLosOverlay}
-          {hexDisplayOverlays}
+          {map?.game?.gameActionState?.deploy ? hexDisplayOverlays : ""}
           {directionSelectionOverlay}
         </svg>
       )

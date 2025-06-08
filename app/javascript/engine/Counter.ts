@@ -5,7 +5,7 @@ import Feature from "./Feature";
 import Map from "./Map";
 import {
   CircleLayout, CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGPathArray, SVGStyle, StatusLayout,
-  TextArrayLayout, baseCounterPath, clearColor, counterElite, counterGreen, counterRed,
+  TextArrayLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, counterRed,
   facingLayout, markerYellow, nationalColors,
 } from "../utilities/graphics";
 import { normalDir } from "../utilities/utilities";
@@ -125,12 +125,6 @@ export default class Counter {
     }
   }
 
-  circlePath(loc: Coordinate, r: number): string {
-    return [
-      "M", loc.x, loc.y-r, "A", r, r, 0, 0, 1, loc.x, loc.y+r,
-      "A", r, r, 0, 0, 1, loc.x, loc.y-r].join(" ")
-  }
-
   squarePath(loc: Coordinate): string {
     return [
       "M", loc.x-10, loc.y-10, "L", loc.x+10, loc.y-10, "L", loc.x+10, loc.y+10,
@@ -178,7 +172,7 @@ export default class Counter {
       textColor = "rgba(0,0,0,0)"
     }
     return {
-      path: this.circlePath(new Coordinate(x, y), 8),
+      path: circlePath(new Coordinate(x, y), 8),
       style: { stroke: textColor, strokeWidth: 1, fill: fill }, tStyle: { fill: textColor },
       x, y: y + 4.25, size: 15, value: this.target.breakWeaponRoll,
     }
@@ -190,7 +184,7 @@ export default class Counter {
     }
     const loc = new Coordinate(this.x + 14, this.y + 40)
     return {
-      path: this.circlePath(loc, 8),
+      path: circlePath(loc, 8),
       style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
       x: loc.x, y: loc.y + 4.25, size: 12, value: this.target.repairRoll,
     }
@@ -201,7 +195,7 @@ export default class Counter {
 
     const loc = new Coordinate(this.x + 40, this.y + 14)
     return {
-      path: this.circlePath(loc, 10),
+      path: circlePath(loc, 10),
       style: { strokeWidth: 0, fill: counterRed }, tStyle: { fill: "white" },
       x: loc.x, y: loc.y + 4.25, size: 16, value: "4",
     }
@@ -211,7 +205,7 @@ export default class Counter {
     if (!this.target.isMarker || this.target.type !== markerType.Jammed) { return false }
     const loc = new Coordinate(this.x + 40, this.y + 63)
     return {
-      path: this.circlePath(loc, 8),
+      path: circlePath(loc, 8),
       style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
       x: loc.x, y: loc.y + 4.25, size: 16, value: "18",
     }
@@ -225,7 +219,7 @@ export default class Counter {
     const stroke = this.target.armored && !this.target.isWreck ? "black" : clearColor
     const path = this.target.armored && this.target.topOpen ?
       this.squarePath(new Coordinate(x, y)) :
-      this.circlePath(new Coordinate(x, y), 10)
+      circlePath(new Coordinate(x, y), 10)
     return {
       path,
       style: { stroke, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
@@ -256,7 +250,7 @@ export default class Counter {
     let y = this.y + 23
     if (this.target.icon === "cav" || this.target.icon === "cav-wheel") { y -= 3 }
     const size = 2
-    const path = this.circlePath(new Coordinate(x, y), size)
+    const path = circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
   }
 
@@ -266,7 +260,7 @@ export default class Counter {
     let y = this.y + 23
     if (this.target.icon === "cav" || this.target.icon === "cav-wheel") { y -= 3 }
     const size = 2
-    const path = this.circlePath(new Coordinate(x, y), size)
+    const path = circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
   }
 
@@ -282,7 +276,7 @@ export default class Counter {
   get handlingLayout(): CounterLayout | false {
     if (!this.target.currentGunHandling) { return false }
     const loc = new Coordinate(this.x + 13, this.y + 42)
-    const path = this.circlePath(loc, 8)
+    const path = circlePath(loc, 8)
     return {
       path: path, style: { stroke: "black", strokeWidth: 1, fill: clearColor },
       tStyle: { fill: "black" },
@@ -295,7 +289,7 @@ export default class Counter {
       return false
     }
     const loc = new Coordinate(this.x + 14, this.y + 40)
-    const path = this.circlePath(loc, 8)
+    const path = circlePath(loc, 8)
     return {
       path: path, style: { stroke: "black", strokeWidth: 1, fill: markerYellow },
       tStyle: { fill: "black" },
@@ -379,7 +373,7 @@ export default class Counter {
       size = 18
     } else {
       if (this.target.antiTank || this.target.fieldGun) {
-        path = this.circlePath(loc, 10)
+        path = circlePath(loc, 10)
       }
       if (this.target.offBoard) {
         path = this.hexPath(loc.yDelta(+0.5), 11, false)
@@ -429,7 +423,7 @@ export default class Counter {
     if (this.target.assault || this.target.targetedRange) { y -= 4 }
     if (this.target.offBoard) { y -= 3 }
     if (this.target.minimumRange) { x -= 2 }
-    const path = this.circlePath(new Coordinate(x, y), size)
+    const path = circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
   }
 
@@ -452,7 +446,7 @@ export default class Counter {
       color = counterRed
       size = 18
     } else {
-      if (this.target.targetedRange) { path = this.circlePath(loc, 10) }
+      if (this.target.targetedRange) { path = circlePath(loc, 10) }
       if (this.target.targetedRange || this.target.rapidFire) { style.stroke = "black" }
       if (this.target.type === "sw" && this.target.targetedRange) {
         style.stroke = "black"
@@ -502,7 +496,7 @@ export default class Counter {
     const x = this.x + 40
     const y = this.y + 74.5
     const size = 2
-    const path = this.circlePath(new Coordinate(x, y), size)
+    const path = circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
   }
 
@@ -512,7 +506,7 @@ export default class Counter {
     const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
     let value = this.target.currentMovement
     let color = "black"
-    const path = this.circlePath(loc, 10)
+    const path = circlePath(loc, 10)
     const size = this.sizeFor(value as number)
     if (this.target.isBroken || this.target.isPinned || this.target.isTired ||
         value as number < 0 || this.target.immobilized || this.target.isWreck) {
@@ -548,7 +542,7 @@ export default class Counter {
     const x = this.x + 64
     const y = this.y + 57
     const size = 2
-    const path = this.circlePath(new Coordinate(x, y), size)
+    const path = circlePath(new Coordinate(x, y), size)
     return { x, y, size, path, style: { fill: "black" } }
   }
 
@@ -595,7 +589,7 @@ export default class Counter {
     if (!this.target.isMarker || this.target.type !== markerType.Pinned) { return false }
     const loc = new Coordinate(this.x + 64, this.y + 67)
     const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-    const path = this.circlePath(loc, 10)
+    const path = circlePath(loc, 10)
     return {
       path: path, style: style, tStyle: { fill: counterRed }, x: loc.x, y: loc.y + 4,
       size: 18, value: "0",
@@ -725,7 +719,7 @@ export default class Counter {
     if (this.target.isBroken || this.target.isWreck || showAllCounters) { return false }
     const loc = new Coordinate(this.x + 40, this.y + 46)
     let size = 20
-    const path = this.circlePath(loc.yDelta(-6), 22)
+    const path = circlePath(loc.yDelta(-6), 22)
     const style = { fill: markerYellow, stroke: "black", strokeWidth: 2 }
     const fStyle = { fill: "black" }
     if (this.target.isPinned || this.target.immobilized || this.target.turretJammed ||

@@ -102,3 +102,5 @@ export function nowUTCString(): string {
   const sec = ("0" + date.getUTCSeconds()).slice(-2)
   return `${year}-${mon}-${day}T${hour}:${min}:${sec}Z`
 }
+
+export const stackLimit = 15

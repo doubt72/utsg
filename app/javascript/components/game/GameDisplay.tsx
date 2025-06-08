@@ -232,6 +232,15 @@ export default function GameDisplay() {
     }
   }
 
+  const clearAction = () => {
+    map?.clearAllSelections()
+    setControls(gc => {
+      const key = Number(gc?.key ?? 0)
+      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+    })
+    setUpdate(s => s+1)
+  }
+
   const resetDisplay = () => {
     setShowLos(false)
     setHideCounters(false)
@@ -340,7 +349,8 @@ export default function GameDisplay() {
                  hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
                  guiCollapse={collapseLayout} forceUpdate={update}
                  hexCallback={hexSelection} counterCallback={unitSelection}
-                 directionCallback={directionSelection} resetCallback={resetDisplay} />
+                 directionCallback={directionSelection} resetCallback={resetDisplay}
+                 clearActionCallback={clearAction} />
       </div>
       {errorWindow}
     </div>

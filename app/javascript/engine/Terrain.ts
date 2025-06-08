@@ -1,4 +1,4 @@
-import { BorderType, Direction, TerrainAttributes } from "../utilities/commonTypes";
+import { BorderType, Direction, StreamAttributes, TerrainAttributes } from "../utilities/commonTypes";
 import { normalDir } from "../utilities/utilities";
 import Hex from "./Hex"
 
@@ -47,11 +47,11 @@ export default class Terrain {
     }[this.hex.roadType ?? "d"]
   }
 
-  get streamAttr(): { name: string} | undefined {
+  get streamAttr(): StreamAttributes {
     return {
-      s: { name: "stream" },
-      g: { name: "gully" },
-      t: { name: "trench" },
+      s: { inMove: 1, outMove: 1, alongMove: 1, cover: 0, name: "stream" },
+      g: { inMove: 1, outMove: 1, alongMove: 1, cover: 1, name: "gully" },
+      t: { inMove: 1, outMove: 1, alongMove: 0, cover: 3, name: "trench" },
     }[this.hex.riverType ?? "s"]
   }
 
@@ -91,10 +91,12 @@ export default class Terrain {
     if (["s", "m"].includes(this.hex.map.baseTerrain) && !this.hex.road) {
       move += 1
     }
-    if (this.hex.river && !this.hex.road) {
-      move += 1
-    }
     return move
+  }
+
+  get borderMove(): number | false {
+    if (this.borderAttr.move === 0) { return false }
+    return this.borderAttr.move
   }
 
   get moveText(): string | false {
@@ -114,6 +116,16 @@ export default class Terrain {
   get vehicle(): boolean {
     if (this.hex.building) { return false }
     return this.baseAttr.vehicle
+  }
+
+  get borderGun(): boolean | string {
+    if (this.hex.building) { return false }
+    return this.borderAttr.gun
+  }
+
+  get borderVehicle(): boolean {
+    if (this.hex.building) { return false }
+    return this.borderAttr.vehicle
   }
 
   borderText(dir: Direction): { key: string, text: string[] } | false {

@@ -1,6 +1,7 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
-import { hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
+import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
+import { circlePath } from "../../../utilities/graphics";
 
 interface MapHexOverlayProps {
   hex: Hex;
@@ -19,12 +20,29 @@ export default function MapHexOverlay({
   const unshadedStyle = { fill: "rgba(0,0,0,0)" }
 
   const overlay = () => {
-    let style = shaded === hexOpenType.Open ? unshadedStyle : shadedStyle
-    if (shaded === hexOpenType.Green) { style = greenStyle }
+    let style = shaded === hexOpenType.Closed ? shadedStyle : unshadedStyle
+    if (shaded === hexOpenType.Green) {style = greenStyle }
     if (shaded === hexOpenType.Yellow) { style = yellowStyle }
     if (shaded === hexOpenType.Red) { style = redStyle }
-    return <polygon points={hex.hexCoords} style={style}
-                    onClick={() => selectCallback(hex.coord.x, hex.coord.y)} />
+    const x = hex.xOffset
+    const y = hex.yOffset
+    let circle: JSX.Element | string = ""
+    if (typeof shaded === "number") {
+      circle = (
+        <g>
+          <path d={circlePath(new Coordinate(x, y), 30)} style={{ fill: "rgba(0,0,0,0.3)" }} />
+          <text x={x} y={y + 15} fontSize={56} textAnchor="middle" fontFamily="'Courier Prime', monospace"
+                style={{ fill: "rgba(255,255,255,0.6)"}}>{shaded}</text>
+        </g>
+      )
+    }
+    return (
+      <g>
+        { circle }
+        <polygon points={hex.hexCoords} style={style}
+                 onClick={() => selectCallback(hex.coord.x, hex.coord.y)} />
+      </g>
+    )
   }
 
   return (

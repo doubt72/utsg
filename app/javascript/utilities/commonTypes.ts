@@ -128,6 +128,14 @@ export type TerrainAttributes = {
   name: string;
 }
 
+export type StreamAttributes = {
+  inMove: number;
+  outMove: number;
+  alongMove: number;
+  cover: number;
+  name: string;
+}
+
 export type UnitStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6
 export const unitStatus: { [index: string]: UnitStatus } = {
   Normal: 0, Tired: 1, Pinned: 2, Broken: 3, Activated: 4, Exhausted: 5, Wreck: 6
@@ -169,7 +177,7 @@ export type GameAction = {
   type: string, message?: string
 }
 
-export type HexOpenType = true | false | "red" | "yellow" | "green"
+export type HexOpenType = true | false | "red" | "yellow" | "green" | number
 export const hexOpenType: { [index: string]: HexOpenType } = {
   Open: true, Closed: false, Red: "red", Yellow: "yellow", Green: "green"
 }

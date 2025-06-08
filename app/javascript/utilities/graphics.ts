@@ -1,5 +1,5 @@
 import Map from "../engine/Map"
-import { Direction } from "./commonTypes";
+import { Coordinate, Direction } from "./commonTypes";
 
 export type SVGPathArray = (string | number)[]
 export type SVGStyle = {
@@ -137,6 +137,12 @@ export function roundedRectangleHole(
     "L", x2+width2-corner, y2+height2, "A", corner, corner, 0, 0, 0, x2+width2, y2+height2-corner,
     "L", x2+width2, y2+corner, "A", corner, corner, 0, 0, 0, x2+width2-corner, y2, "z"
   ].join(" ")
+}
+
+export function circlePath(loc: Coordinate, r: number): string {
+  return [
+    "M", loc.x, loc.y-r, "A", r, r, 0, 0, 1, loc.x, loc.y+r,
+    "A", r, r, 0, 0, 1, loc.x, loc.y-r].join(" ")
 }
 
 export const yMapOffset = 160

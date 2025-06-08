@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
+import { circlePath } from "../../../utilities/graphics";
 
 interface MapLosOverlayProps {
   map: Map;
@@ -48,7 +49,9 @@ export default function MapLosOverlay({
               }
               return (
                 <g key={key}>
-                  <text x={value.x} y={value.y} fontSize={value.size}
+                  <path d={circlePath(new Coordinate(value.x, value.y), 30)}
+                        style={{ fill: "rgba(0,0,0,0.3)" }}/>
+                  <text x={value.x} y={value.y + 15} fontSize={value.size}
                         textAnchor="middle" fontFamily="'Courier Prime', monospace"
                         style={value.style as object}>{value.value}</text>
                   <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }}

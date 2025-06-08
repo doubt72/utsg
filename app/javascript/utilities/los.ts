@@ -386,9 +386,9 @@ export function los(map: Map, start: Coordinate, end: Coordinate): TextLayout | 
   }
   return {
     value: hindrance,
-    size: 80,
+    size: 56,
     x: lastHex.xOffset + offset,
-    y: lastHex.yOffset + 24 - offset,
-    style: { fill: "rgba(0,0,0,0.6)" },
+    y: lastHex.yOffset - offset,
+    style: { fill: "rgba(255,255,255,0.6)" },
   };
 }

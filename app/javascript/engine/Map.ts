@@ -39,6 +39,7 @@ import {
 import Marker from "./Marker";
 import Feature from "./Feature";
 import WarningMoveError from "./moves/WarningMoveError";
+import { normalDir, stackLimit } from "../utilities/utilities";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -249,6 +250,17 @@ export default class Map {
 
   neighborAt(loc: Coordinate, dir: Direction): Hex | undefined {
     return this.hexNeighbors(loc)[dir - 1]
+  }
+
+  relativeDirection(from: Coordinate, to: Coordinate): Direction | undefined {
+    const offset = from.y%2
+    if (from.x - 1 === to.x && from.y === to.y) { return 1 }
+    if (from.x - 1 + offset === to.x && from.y - 1 === to.y) { return 2 }
+    if (from.x + offset === to.x && from.y - 1 === to.y) { return 3 }
+    if (from.x + 1 === to.x && from.y === to.y) { return 4 }
+    if (from.x + offset === to.x && from.y + 1 === to.y) { return 5 }
+    if (from.x - 1 + offset === to.x && from.y + 1 === to.y) { return 6 }
+    return undefined
   }
 
   addUnit(loc: Coordinate, unit: Unit | Feature) {
@@ -544,7 +556,7 @@ export default class Map {
       const size = this.countersAt(hex.coord).reduce((sum, c) => {
         return c.target.isFeature ? sum : sum + c.target.size
       }, 0)
-      if (uf.size + size > 15) {
+      if (uf.size + size > stackLimit) {
         return hexOpenType.Closed
       }
     }
@@ -592,12 +604,24 @@ export default class Map {
     return hexOpenType.Closed
   }
 
+  moveOpenHex(x: number, y: number): HexOpenType {
+    if (!this.game?.gameActionState?.move) { return hexOpenType.Open }
+    if (!this.game?.gameActionState?.selection) { return hexOpenType.Open }
+    const selection = this.game.gameActionState.selection[0]
+    const cost = this.movementCost(new Coordinate(selection.x, selection.y), new Coordinate(x, y))
+    if (cost === false) {
+      return hexOpenType.Closed
+    } else {
+      return cost
+    }
+  }
+
   openHex(x: number, y: number): HexOpenType {
     if (this.game?.gameActionState?.currentAction === actionType.Deploy) {
       return this.reinforcementOpenHex(x, y)
     }
     if (this.game?.gameActionState?.currentAction === actionType.Move) {
-      return hexOpenType.Open
+      return this.moveOpenHex(x, y)
     }
     return hexOpenType.Open
   }
@@ -806,6 +830,116 @@ export default class Map {
       if (u.target.selected) { rc.push(u) }
     }
     return rc
+  }
+
+  roadMovement(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
+    if (!from.road || !to.road || !to.roadDirections?.includes(normalDir(dir + 3)) ||
+        !from.roadDirections?.includes(dir)) {
+      return false
+    }
+    if (pathOk) { return true }
+    if (from.roadType === roadType.Path || to.roadType === roadType.Path) {
+      return false
+    }
+    return true
+  }
+
+  alongStream(from: Hex, to: Hex, dir: Direction): boolean {
+    if (!from.river || !to.river || !to.riverDirections?.includes(normalDir(dir + 3)) ||
+        !from.riverDirections?.includes(dir)) {
+      return false
+    }
+    return true
+  }
+  
+  movementCost(from: Coordinate, to: Coordinate): number | false {
+    if (!this.game?.gameActionState?.move) { return false }
+    if (from.x === to.x && from.y === to.y) {
+      return false;
+    }
+    const hexFrom = this.hexAt(from) as Hex;
+    const hexTo = this.hexAt(to) as Hex;
+    const terrFrom = hexFrom.terrain
+    const terrTo = hexTo.terrain
+    let cost = terrTo.move
+    if (!cost) { return false }
+    const dir = this.relativeDirection(from, to)
+    if (!dir) { return false }
+    if (!this.game.gameActionState.selection) { return false }
+    const moveSize = this.game.gameActionState.selection.reduce((sum, u) => sum + u.counter.target.size, 0)
+    const toSize = this.countersAt(to).reduce((sum, u) => sum + u.target.size, 0)
+    if (moveSize + toSize > stackLimit) { return false }
+    const selection = this.game.gameActionState.selection[0].counter
+    const roadMove = this.roadMovement(hexFrom, hexTo, dir)
+    if (selection.target.isWheeled || selection.target.isTracked) {
+      if (!terrTo.vehicle && !roadMove) { return false }
+    }
+    if (selection.target.crewed) {
+      if (!terrTo.gun && !roadMove) { return false }
+      if (terrTo.gun === "back" && dir !== normalDir(selection.target.facing + 3)) {
+        return false
+      }
+    }
+    if (selection.target.isWheeled && roadMove) {
+      cost = 0.5
+    } else if (selection.target.isTracked && roadMove) {
+      cost = 1
+    } else if (this.roadMovement(hexFrom, hexTo, dir, true)) {
+      cost = 1
+    }
+    if (selection.target.rotates) {
+      if (normalDir(dir + 3) === selection.target.facing) {
+        cost *= 2
+      } else if (dir !== selection.target.facing) { return false }
+    }
+    if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
+      const add = terrFrom.borderMove
+      if (!add) { return false }
+      if ((selection.target.isWheeled || selection.target.isTracked) && !terrFrom.borderVehicle) {
+        return false
+      }
+      if (selection.target.crewed && !terrFrom.borderGun) { return false }
+      cost += add
+    }
+    if (hexTo.border && hexTo.borderEdges?.includes(dir)) {
+      const add = terrTo.borderMove
+      if (!add) { return false }
+      if ((selection.target.isWheeled || selection.target.isTracked) && !terrTo.borderVehicle) {
+        return false
+      }
+      if (selection.target.crewed && !terrTo.borderGun) { return false }
+      cost += add
+    }
+    if (hexFrom.river && !this.alongStream(hexFrom, hexTo, dir)) {
+      cost += hexTo.terrain.streamAttr.outMove
+    }
+    if (hexTo.river && !this.alongStream(hexFrom, hexTo, dir)) {
+      cost += hexTo.terrain.streamAttr.inMove
+    }
+    if (this.alongStream(hexFrom, hexTo, dir)) {
+      cost += hexTo.terrain.streamAttr.alongMove
+    }
+    if (hexTo.elevation > hexFrom.elevation) {
+      cost += 1
+    }
+    const length = this.game.gameActionState.move.path.length
+    if (selection.target.canCarrySupport) {
+      let minLdrMove = 99
+      let minInfMove = 99
+      for(const sel of this.game.gameActionState.selection) {
+        const u = sel.counter.target
+        const move = u.currentMovement as number
+        if (u.canCarrySupport && u.type !== "ldr" && move < minInfMove) { minInfMove = move }
+        if (u.type === "ldr" && move < minLdrMove) { minLdrMove = move }
+      }
+      if (length > 1) {
+        if (minLdrMove === 99 && minInfMove < cost) { return false }
+        if (minLdrMove < cost || minInfMove + 1 < cost) { return false }
+      }
+    } else {
+      if (selection.target.currentMovement as number > cost && length > 1) { return false }
+    }
+    return cost
   }
 
   // TODO: repurpose/modify this later for fire selection
