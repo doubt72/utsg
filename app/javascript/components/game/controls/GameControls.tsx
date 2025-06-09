@@ -18,6 +18,7 @@ import AssaultMoveButton from "./AssaultMoveButton";
 import RoutButton from "./RoutButton";
 import MoveFinishButton from "./MoveFinishButton";
 import MoveCancelButton from "./MoveCancelButton";
+import MoveRotateToggleButton from "./MoveRotateToggleButton";
 
 interface GameControlsProps {
   game: Game;
@@ -77,6 +78,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <MoveFinishButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_cancel") {
         return <MoveCancelButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "move_rotate_toggle") {
+        return <MoveRotateToggleButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rush") {
         return <RushButton game={game} key={i} />
       } else if (a.type === "assault_move") {

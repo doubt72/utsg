@@ -45,13 +45,15 @@ export type DeployAction = {
 }
 
 export type MovePath = {
-  x: number, y: number, facing?: number
+  x: number, y: number, facing?: Direction
 }
 
 export type MoveAction = {
   initialSelection: ActionSelection[];
   doneSelect: boolean;
   path: MovePath[],
+  finalTurretRotation: Direction
+  rotatingTurret: boolean
 }
 
 export type GameActionState = {
@@ -453,7 +455,10 @@ export default class Game {
         player: this.currentPlayer,
         currentAction: actionType.Move,
         selection: allSelection,
-        move: { initialSelection, doneSelect: !canSelect, path: [loc] }
+        move: {
+          initialSelection, doneSelect: !canSelect, path: [loc],
+          finalTurretRotation: selection.target.facing, rotatingTurret: false,
+        }
       }
     }
   }
@@ -470,11 +475,20 @@ export default class Game {
     this.gameActionState.move.doneSelect = true
   }
 
-  moveRotate(x: number, y: number, dir: number) {
+  rotateToggle() {
     if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.path.push({
-      x: x, y: y, facing: dir,
-    })
+    this.gameActionState.move.rotatingTurret = !this.gameActionState.move.rotatingTurret
+  }
+
+  moveRotate(x: number, y: number, dir: Direction) {
+    if (!this.gameActionState?.move) { return }
+    if (this.gameActionState.move.rotatingTurret) {
+      this.gameActionState.move.finalTurretRotation = dir
+    } else {
+      this.gameActionState.move.path.push({
+        x: x, y: y, facing: dir,
+      })
+    }
   }
 
   executePass() {}
@@ -515,18 +529,21 @@ export default class Game {
       if ((activePlayer === this.playerOneName && this.currentPlayer === 1) ||
           (activePlayer === this.playerTwoName && this.currentPlayer === 2)) {
         if (this.gameActionState?.currentAction === actionType.Move) {
-          if (this.gameActionState.move) {
+          if (this.gameActionState.move && this.gameActionState.selection) {
             if (this.gameActionState.move.doneSelect) {
               moves.unshift({ type: "none", message: "select hex to move" })
             } else {
               moves.unshift({ type: "none", message: "select addtional units or select hex to move" })
+            }
+            if (this.gameActionState.selection[0].counter.target.turreted) {
+              moves.push({ type: "move_rotate_toggle" })
             }
             if (this.gameActionState.move.path.length > 1) {
               moves.push({ type: "move_finish" })
             }
             moves.push({ type: "move_cancel" })
           } else {
-            moves.unshift({ type: "none", message: "error: state.move undefined" })
+            moves.unshift({ type: "none", message: "error: unexpected missing state" })
           }
         } else if (this.opportunityFire) {
           moves.unshift({ type: "none", message: "opportunity fire" })
