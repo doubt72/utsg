@@ -1,4 +1,4 @@
-import { Coordinate, Direction, GameAction, Player } from "../utilities/commonTypes";
+import { Coordinate, Direction, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
@@ -7,6 +7,7 @@ import BaseMove from "./moves/BaseMove";
 import IllegalMoveError from "./moves/IllegalMoveError";
 import WarningMoveError from "./moves/WarningMoveError";
 import Counter from "./Counter";
+import { carriedUnits } from "./actions/mapSelect";
 
 export type GameData = {
   id: number;
@@ -423,10 +424,6 @@ export default class Game {
     return this.scenario.map.nextUnit(selection)
   }
 
-  carriedUnits(selection: Counter): Counter[] {
-    return this.scenario.map.carriedUnits(selection)
-  }
-
   get lastPath(): MovePath | undefined {
     if (!this.gameActionState?.move) { return }
     const path = this.gameActionState.move.path
@@ -440,7 +437,7 @@ export default class Game {
         x: selection.hex.x, y: selection.hex.y,
         facing: selection.target.rotates ? selection.target.facing : undefined
       }
-      const units = this.carriedUnits(selection)
+      const units = carriedUnits(this.scenario.map, selection)
       units.forEach(c => c.target.select())
       const canSelect = selection.target.canCarrySupport &&
         !(units.length === 1 && units[0].target.crewed)
@@ -497,87 +494,6 @@ export default class Game {
     if (this.gameActionState?.deploy && this.gameActionState.deploy.needsDirection) { return true }
     if (this.gameActionState?.move) { return true }
     return false
-  }
-
-  actionsAvailable(activePlayer: string): GameAction[] {
-    if (this.lastMove?.id === undefined) {
-      return [{ type: "sync" }]
-    }
-    const moves = []
-    if (this.lastMove?.undoPossible && !this.moveInProgress) {
-      moves.push({ type: "undo" })
-    }
-    if (this.state === "needs_player") {
-      if (this.ownerName === activePlayer || !activePlayer) {
-        return [{ type: "none", message: "waiting for player to join" }]
-      } else {
-        return [{ type: "join" }]
-      }
-    } else if (this.state === "ready") {
-      if (this.ownerName === activePlayer) {
-        return [{ type: "start" }]
-      } else if (activePlayer &&
-        (this.playerOneName === activePlayer || this.playerTwoName === activePlayer)) {
-        return [{ type: "leave" }]
-      } else {
-        return [{ type: "none", message: "waiting for game to start" }]
-      }
-    } else if (this.phase === gamePhaseType.Deployment) {
-      moves.unshift({ type: "deploy" })
-      return moves
-    } else if (this.phase === gamePhaseType.Main) {
-      if ((activePlayer === this.playerOneName && this.currentPlayer === 1) ||
-          (activePlayer === this.playerTwoName && this.currentPlayer === 2)) {
-        if (this.gameActionState?.currentAction === actionType.Move) {
-          if (this.gameActionState.move && this.gameActionState.selection) {
-            if (this.gameActionState.move.doneSelect) {
-              moves.unshift({ type: "none", message: "select hex to move" })
-            } else {
-              moves.unshift({ type: "none", message: "select addtional units or select hex to move" })
-            }
-            if (this.gameActionState.selection[0].counter.target.turreted) {
-              moves.push({ type: "move_rotate_toggle" })
-            }
-            if (this.gameActionState.move.path.length > 1) {
-              moves.push({ type: "move_finish" })
-            }
-            moves.push({ type: "move_cancel" })
-          } else {
-            moves.unshift({ type: "none", message: "error: unexpected missing state" })
-          }
-        } else if (this.opportunityFire) {
-          moves.unshift({ type: "none", message: "opportunity fire" })
-          moves.push({ type: "opportunity_fire" })
-          moves.push({ type: "opportunity_intensive_fire" })
-          moves.push({ type: "empty_pass" })
-        } else if (this.reactionFire) {
-          moves.unshift({ type: "none", message: "reaction fire" })
-          moves.push({ type: "reaction_fire" })
-          moves.push({ type: "reaction_intensive_fire" })
-          moves.push({ type: "empty_pass" })
-        } else if (this.scenario.map.noSelection) {
-          moves.unshift({ type: "none", message: "select units to activate" })
-          moves.push({ type: "enemy_rout" })
-          moves.push({ type: "pass" })
-        } else {
-          moves.push({ type: "fire" })
-          moves.push({ type: "intensive_fire" })
-          if (!["sw", "gun", "other"].includes(this.scenario.map.currentSelection[0].target.type as string)) {
-            moves.push({ type: "move" })
-            moves.push({ type: "rush" })
-            moves.push({ type: "assault_move" })
-            moves.push({ type: "rout" })
-          }
-          moves.push({ type: "pass" })
-        }
-      } else {
-        moves.unshift({ type: "none", message: "waiting for opponent to move" })
-      }
-      return moves
-    } else {
-      moves.unshift({ type: "none", message: "not implemented yet" })
-      return moves
-    }
   }
 
   cancelAction() {

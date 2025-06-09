@@ -9,14 +9,12 @@ import {
 } from "../utilities/hexLos";
 import Map from "./Map"
 import Terrain from "./Terrain"
-import { CircleLayout, PathLayout, SVGPathArray, SVGStyle, baseHexCoords } from "../utilities/graphics";
+import {
+  CircleLayout, HelpLayout, PathLayout, SVGPathArray, SVGStyle, baseHexCoords
+} from "../utilities/graphics";
 import { coordinateToLable, normalDir } from "../utilities/utilities";
 import { hexBuildingBuildingDisplay } from "../utilities/hexBuilding";
-
-type HelpTextLayout = {
-  path: string, style: SVGStyle, size: number,
-  texts: { x: number, y: number, v: string }[]
-}
+import { hexHelpLayout } from "./support/help";
 
 export type HexData = {
   t?: TerrainType;         // terrain
@@ -672,149 +670,7 @@ export default class Hex {
     }
   }
 
-  get helpText(): string[] {
-    const text = [this.terrain.name]
-    if (this.terrain.name === "water" && this.map.baseTerrain === baseTerrainType.Snow) {
-      text.push("frozen")
-      text.push("movement cost 2")
-      text.push("- vehicles cannot enter")
-    }
-    if (this.elevation > 0) {
-      text.push(`elevation ${this.elevation}`)
-    }
-    if (this.elevation < 0) {
-      text.push(`depression`)
-    }
-    if (this.terrain.cover !== false) {
-      text.push(`cover ${this.terrain.cover}`)
-    }
-    if (this.terrain.hindrance) {
-      text.push(`hindrance ${this.terrain.hindrance}`)
-    }
-    if (this.terrain.los) {
-      text.push("blocks line-of-sight")
-    }
-    if (this.terrain.move !== false) {
-      text.push(`movement cost ${this.terrain.move}`)
-      let rise = false
-      this.map.hexNeighbors(this.coord).forEach(n => {
-        if (n && n.elevation < this.elevation) {
-          rise = true
-        }
-      })
-      if (rise) {
-        text.push("- add 1 movement cost if moving from lower elevation")
-      }
-      if (!this.terrain.gun) {
-        text.push("- crewed weapons cannot enter")
-      } else if (this.terrain.gun === "back") {
-        text.push("- crewed weapons can only back in")
-      }
-      if (!this.terrain.vehicle) {
-        text.push("- vehicles cannot enter")
-      }
-    }
-    if (this.road) {
-      if (this.roadType === 'p') {
-        text.push("path")
-        text.push("- foot movement cost 1 if moving along path")
-      } else if (this.roadType === 't') {
-        if (this.river) {
-          text.push("bridge")
-        } else {
-          text.push("paved road")
-        }
-        text.push("- movement bonus +1 if moving along road")
-        text.push("- except wheeled movement cost 1/2")
-        if (!this.terrain.gun || !this.terrain.vehicle) {
-          text.push("- all units can move along road")
-        }
-      } else {
-        if (this.river) {
-          text.push("wooden bridge")
-        } else {
-          text.push("unpaved road")
-        }
-        text.push("- movement bonus +1 if moving along road")
-        if (!["m", "s"].includes(this.map.baseTerrain)) {
-          text.push("- except wheeled movement cost 1/2")
-        }
-        if (!this.terrain.gun || !this.terrain.vehicle) {
-          text.push("- all units can move along road")
-        }
-      }
-    }
-    if (this.railroad) {
-      text.push("railroad")
-      text.push("- 1 cover")
-    }
-    if (this.river && this.terrain.move) {
-      text.push(this.terrain.streamAttr.name)
-      if (this.map.baseTerrain === baseTerrainType.Snow && this.riverType === streamType.Stream) {
-        text.push("- frozen, no movement effects")
-      } else {
-        let cost = this.terrain.streamAttr.inMove
-        if (cost > 0) { text.push(`- movement cost +${cost} when entering`) }
-        cost = this.terrain.streamAttr.outMove
-        if (cost > 0) { text.push(`- movement cost +${cost} when leaving`) }
-        cost = this.terrain.streamAttr.alongMove
-        if (cost > 0) { text.push(`- movement cost +${cost} when moving along`) }
-        if (this.road) {
-          text.push("- unless following road")
-        }
-        const cover = this.terrain.streamAttr.cover
-        if (cover > 0) { text.push(`- ${cover} cover`) }
-      }
-    }
-    const borderText: { [index: string]: string[] } = {}
-    for (let i = 1; i <= 6; i++) {
-      const bd = this.terrain.borderText(i as Direction)
-      if (bd) {
-        borderText[bd.key] = bd.text
-      }
-    }
-    this.map.hexNeighbors(this.coord).forEach((n, i) => {
-      if (n) {
-        const bd = n.terrain.borderText(normalDir(i + 1))
-        if (bd) {
-          borderText[bd.key] = bd.text
-        }
-      }
-    })
-    Object.keys(borderText).forEach(k => borderText[k].forEach(t => text.push(t)))
-    return text
-  }
-
-  helpLayout(loc: Coordinate, max: Coordinate): HelpTextLayout {
-    const text = this.helpText
-    const size = 22
-    let width = 24.4
-    text.forEach(t => {
-      const n = t.length * 9.6 + 16
-      if (n > width) { width = n }
-    })
-    let x1 = loc.x
-    let x2 = x1 + width
-    let y1 = loc.y
-    let y2 = y1 + text.length * size + size/2
-    if (x2 > max.x) {
-      const diff = - (width + 20)
-      x1 += diff
-      x2 += diff
-    }
-    if (y2 > max.y) {
-      const diff = y2 - max.y
-      y1 -= diff
-      y2 -= diff
-    }
-    const diff = size
-    return {
-      path: [
-        "M", x1, y1, "L", x2, y1, "L", x2, y2, "L", x1, y2, "L", x1, y1,
-      ].join(" "), style: { fill: "black", stroke: "white", strokeWidth: 2 },
-      size: size-6, texts: text.map((t, i) => {
-        return { x: x1+8, y: y1 + i*diff + size, v: t }
-      })
-    }
+  helpLayout(loc: Coordinate, max: Coordinate): HelpLayout {
+    return hexHelpLayout(this, loc, max)
   }
 }

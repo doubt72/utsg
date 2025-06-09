@@ -1,6 +1,7 @@
 import { Direction, MarkerType, NumberBoolean, WeatherType, WindType, markerType, weatherType, windType } from "../utilities/commonTypes"
 import { counterElite, counterGreen, counterRed, markerYellow } from "../utilities/graphics";
 import Counter from "./Counter";
+import { markerHelpText } from "./support/help";
 
 // mk: marker
 // v: value
@@ -254,43 +255,7 @@ export default class Marker {
   }
 
   get helpText(): string[] {
-    const text = []
-    if (this.type === markerType.Wind) {
-      if (this.subType === windType.Calm) { text.push("wind: calm") }
-      if (this.subType === windType.Breeze) { text.push("wind: breeze") }
-      if (this.subType === windType.Moderate) { text.push("wind: moderate") }
-      if (this.subType === windType.Strong) { text.push("wind: strong") }
-      text.push(`- direction ${this.facing}`)
-    } else if (this.type === markerType.Weather) {
-      if (this.subType === weatherType.Dry) { text.push("dry") }
-      if (this.subType === weatherType.Fog) { text.push("fog") }
-      if (this.subType === weatherType.Rain) { text.push("rain") }
-      if (this.subType === weatherType.Snow) { text.push("snow") }
-      if (this.subType === weatherType.Sand) { text.push("sand") }
-      if (this.subType === weatherType.Dust) { text.push("dust") }
-    }
-    const subText = this.subText
-    const variable: string[] = []
-    if (subText) {
-      subText.forEach(t => {
-        if (t === "") { return }
-        if (t === "variable") {
-          variable.push("weather variable")
-          variable.push("- 10% chance of strength change")
-          variable.push("- 20% chance of direction change")
-        } else {
-          const parts = t.split(" ")
-          const d = {
-            fs: "chance of fires spreading",
-            fe: "chance of fires being extinguished",
-            sd: "chance of smoke dispersing",
-            chance: "chance of precipitation",
-          }[parts[1]]
-          text.push(["-", parts[0], d].join(" "))
-        }
-      })
-    }
-    return text.concat(variable)
+    return markerHelpText(this)
   }
 
   select() {

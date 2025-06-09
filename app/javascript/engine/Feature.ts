@@ -1,5 +1,6 @@
 import { Direction, FeatureType, NumberBoolean, featureType } from "../utilities/commonTypes";
 import Counter from "./Counter";
+import { featureHelpText } from "./support/help";
 
 // ft: feature
 // t: type, n: name, i: icon
@@ -165,46 +166,7 @@ export default class Feature {
   }
 
   get helpText(): string[] {
-    const text = [this.name]
-    if (this.hindrance) {
-      text.push(`hindrance ${this.hindrance}`)
-    }
-    if (this.blocksLos) {
-      text.push(`blocks LOS`)
-    }
-    if (this.cover) {
-      text.push(`cover ${this.cover}`)
-    }
-    if (this.coverSides) {
-      text.push("cover:")
-      text.push(`- front ${this.coverSides[0]} / side ${this.coverSides[1]} / rear ${this.coverSides[2]}`)
-    }
-    if (this.sniperRoll) {
-      text.push(`trigger roll ${this.sniperRoll}`)
-    }
-    if (this.baseFirepower === "½") {
-      text.push("halves firepower")
-    } else if (this.baseFirepower) {
-      text.push(`firepower ${this.baseFirepower}`)
-    }
-    if (this.antiTank) {
-      text.push("- anti-armor capable")
-      text.push("- half firepower vs. soft targets")
-    }
-    if (this.fieldGun) {
-      text.push("- anti-armor capable")
-      text.push("- half firepower vs. armor")
-    }
-    if (this.currentMovement === "A") {
-      text.push("uses all movement")
-    }
-    if (this.impassable) {
-      text.push("impassable")
-    }
-    if (this.impassableToVehicles) {
-      text.push("impassable to vehicles")
-    }
-    return text
+    return featureHelpText(this)
   }
 }
 

@@ -91,13 +91,14 @@ export default function MapHexDetail({
         const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
         const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10
         const layout = hex.helpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY))
+        if (!layout.texts) { return }
         terrainCallback(
           <g>
             <path d={layout.path} style={layout.style as object} />
             {
               layout.texts.map((t, i) => 
                 <text key={i} x={t.x} y={t.y} fontSize={layout.size} fontFamily="'Courier Prime', monospace"
-                      textAnchor="start" style={{ fill: "white" }}>{t.v}</text>
+                      textAnchor="start" style={{ fill: "white" }}>{t.value}</text>
               )
             }
           </g>

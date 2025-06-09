@@ -46,6 +46,7 @@ export type StatusLayout = {
   value: string[], x: number, y: number, size: number, path: string,
   style: SVGStyle, fStyle: SVGStyle
 }
+
 export type HelpLayout = {
   path: string, style: SVGStyle, size: number,
   texts?: { x: number, y: number, value: string }[]
@@ -143,6 +144,22 @@ export function circlePath(loc: Coordinate, r: number): string {
   return [
     "M", loc.x, loc.y-r, "A", r, r, 0, 0, 1, loc.x, loc.y+r,
     "A", r, r, 0, 0, 1, loc.x, loc.y-r].join(" ")
+}
+
+export function squarePath(loc: Coordinate): string {
+  return [
+    "M", loc.x-10, loc.y-10, "L", loc.x+10, loc.y-10, "L", loc.x+10, loc.y+10,
+    "L", loc.x-10, loc.y+10, "L", loc.x-10, loc.y-10].join(" ")
+}
+
+export function hexPath(loc: Coordinate, r: number, rotated: boolean): string {
+  let a = (rotated ? -0.5 : -1)/3 * Math.PI
+  let path = ["M", loc.x + r * Math.cos(a), loc.y + r * Math.sin(a)]
+  for (let i = 0; i < 6; i++) {
+    a = (i + (rotated ? 0.5 : 0))/3 * Math.PI
+    path = path.concat(["L", loc.x + r * Math.cos(a), loc.y + r * Math.sin(a)])
+  }
+  return path.join(" ")
 }
 
 export const yMapOffset = 160

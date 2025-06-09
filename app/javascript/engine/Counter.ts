@@ -1,14 +1,16 @@
-import { Coordinate, Direction, FeatureType, Player, featureType, markerType } from "../utilities/commonTypes";
+import { Coordinate, FeatureType, Player, featureType, markerType } from "../utilities/commonTypes";
 import Marker from "./Marker";
 import Unit from "./Unit";
 import Feature from "./Feature";
 import Map from "./Map";
 import {
-  CircleLayout, CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGPathArray, SVGStyle, StatusLayout,
+  CircleLayout, CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGStyle, StatusLayout,
   TextArrayLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, counterRed,
-  facingLayout, markerYellow, nationalColors,
+  facingLayout, hexPath, markerYellow, nationalColors,
+  squarePath,
 } from "../utilities/graphics";
-import { normalDir } from "../utilities/utilities";
+import { counterHelpLayout } from "./support/help";
+import { counterFacingLayout, counterStatusLayout } from "./support/layout";
 
 export default class Counter {
   onMap: boolean;
@@ -125,22 +127,6 @@ export default class Counter {
     }
   }
 
-  squarePath(loc: Coordinate): string {
-    return [
-      "M", loc.x-10, loc.y-10, "L", loc.x+10, loc.y-10, "L", loc.x+10, loc.y+10,
-      "L", loc.x-10, loc.y+10, "L", loc.x-10, loc.y-10].join(" ")
-  }
-
-  hexPath(loc: Coordinate, r: number, rotated: boolean): string {
-    let a = (rotated ? -0.5 : -1)/3 * Math.PI
-    let path = ["M", loc.x + r * Math.cos(a), loc.y + r * Math.sin(a)]
-    for (let i = 0; i < 6; i++) {
-      a = (i + (rotated ? 0.5 : 0))/3 * Math.PI
-      path = path.concat(["L", loc.x + r * Math.cos(a), loc.y + r * Math.sin(a)])
-    }
-    return path.join(" ")
-  }
-
   sizeFor(n: number, circle: boolean = false): number {
     if (n > 9 || n < 0) {
       return circle ? 12.5 : 15
@@ -218,13 +204,33 @@ export default class Counter {
     if (!this.target.size ) { return false }
     const stroke = this.target.armored && !this.target.isWreck ? "black" : clearColor
     const path = this.target.armored && this.target.topOpen ?
-      this.squarePath(new Coordinate(x, y)) :
+      squarePath(new Coordinate(x, y)) :
       circlePath(new Coordinate(x, y), 10)
     return {
       path,
       style: { stroke, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
       x: x, y: y + 5, size: 18, value: this.target.size,
     }
+  }
+
+  get eliteLayout(): CounterLayout | false {
+    if (!this.isUnit) { return false }
+    const showAllCounters = this.onMap ? this.map?.showAllCounters : this.showAllCounters
+    const elite = (this.target as Unit).eliteCrew
+    if (this.target.isWreck || showAllCounters || elite === 0) {
+      return false
+    }
+    const color = elite > 0 ? counterElite : counterGreen
+    const stroke = elite > 0 ? "white" : "black"
+    const tColor = elite > 0 ? "white" : "black"
+    const rc: CounterLayout | false = this.sizeLayout
+    if (!rc) { return false }
+    if (!rc.style) { return rc }
+    rc.style.fill = color
+    rc.style.stroke = stroke
+    if (!rc.tStyle) { return rc }
+    rc.tStyle.fill = tColor
+    return rc
   }
 
   get towLayout(): CounterLayout | false {
@@ -267,7 +273,7 @@ export default class Counter {
   get leadershipLayout(): CounterLayout | false {
     if (!this.target.currentLeadership) { return false }
     return {
-      path: this.hexPath(new Coordinate(this.x + 13, this.y + 44), 10, true),
+      path: hexPath(new Coordinate(this.x + 13, this.y + 44), 10, true),
       style: { stroke: "black", strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
       x: this.x + 13, y: this.y + 49, size: 18, value: this.target.currentLeadership,
     }
@@ -365,7 +371,7 @@ export default class Counter {
     const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
     let value = this.target.baseFirepower
     let color = "black"
-    let path = this.squarePath(loc)
+    let path = squarePath(loc)
     let size = value === "½" ? 18 : this.sizeFor(value as number)
     if (this.target.noFire || this.target.isPinned) {
       color = counterRed
@@ -376,7 +382,7 @@ export default class Counter {
         path = circlePath(loc, 10)
       }
       if (this.target.offBoard) {
-        path = this.hexPath(loc.yDelta(+0.5), 11, false)
+        path = hexPath(loc.yDelta(+0.5), 11, false)
         size = 12.5
       }
       if (this.target.antiTank || this.target.singleFire ||
@@ -440,7 +446,7 @@ export default class Counter {
     const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
     let value: number | string = this.target.currentRange
     let color = "black"
-    let path = this.squarePath(loc)
+    let path = squarePath(loc)
     let size = this.sizeFor(value)
     if (this.target.noFire) {
       color = counterRed
@@ -567,7 +573,7 @@ export default class Counter {
     if (!this.target.isMarker || this.target.type !== markerType.Pinned) { return false }
     const loc = new Coordinate(this.x + 16, this.y + 67)
     const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-    const path = this.squarePath(loc)
+    const path = squarePath(loc)
     return {
       path: path, style: style, tStyle: { fill: counterRed },
       x: loc.x, y: loc.y + 4, size: 18, value: "½",
@@ -578,7 +584,7 @@ export default class Counter {
     if (!this.target.isMarker || this.target.type !== markerType.Pinned) { return false }
     const loc = new Coordinate(this.x + 40, this.y + 67)
     const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-    const path = this.squarePath(loc)
+    const path = squarePath(loc)
     return {
       path: path, style: style, tStyle: { fill: counterRed }, x: loc.x, y: loc.y + 4,
       size: 18, value: "-",
@@ -714,131 +720,14 @@ export default class Counter {
   }
 
   get statusLayout(): StatusLayout | boolean {
-    if (this.target.isMarker) { return false }
-    const showAllCounters = this.onMap ? this.map?.showAllCounters : this.showAllCounters
-    if (this.target.isBroken || this.target.isWreck || showAllCounters) { return false }
-    const loc = new Coordinate(this.x + 40, this.y + 46)
-    let size = 20
-    const path = circlePath(loc.yDelta(-6), 22)
-    const style = { fill: markerYellow, stroke: "black", strokeWidth: 2 }
-    const fStyle = { fill: "black" }
-    if (this.target.isPinned || this.target.immobilized || this.target.turretJammed ||
-       (this.target.jammed && this.target.hullArmor) || this.target.weaponBroken) {
-      style.fill = counterRed
-      style.stroke = "white"
-      fStyle.fill = "white"
-    }
-    let text = []
-    if (this.target.isActivated) { text.push("ACT") }
-    if (this.target.isExhausted) { text.push("EXH") }
-    if (this.target.isPinned) { text.push("PIN") }
-    if (this.target.isTired) { text.push("TRD") }
-    if (this.target.immobilized) { text.push("IMM") }
-    if (this.target.turretJammed) { text.push("TRT") }
-    if (this.target.jammed && this.target.hullArmor) { text.push("JAM") }
-    if (this.target.weaponBroken) { text.push("WPN") }
-    if (text.length === 0) { return false }
-    if (text.length === 2) {
-      size = 15
-      loc.yShift(-9)
-    } else if (text.length === 3) {
-      size = 12
-      loc.yShift(-14.5)
-    } else if (text.length === 4) {
-      size = 9
-      loc.yShift(-17)
-    } else if (text.length > 4) {
-      size = 8.5
-      loc.yShift(-8)
-      text = [text.slice(0,2).join(" "), text.slice(2,4).join(" "), text.slice(4,6).join(" ")]
-    }
-    return {
-      value: text, x: loc.x, y: loc.y, size: size, path: path,
-      style: style, fStyle: fStyle
-    }
-  }
-
-  get eliteLayout(): CounterLayout | false {
-    if (!this.isUnit) { return false }
-    const showAllCounters = this.onMap ? this.map?.showAllCounters : this.showAllCounters
-    const elite = (this.target as Unit).eliteCrew
-    if (this.target.isWreck || showAllCounters || elite === 0) {
-      return false
-    }
-    const color = elite > 0 ? counterElite : counterGreen
-    const stroke = elite > 0 ? "white" : "black"
-    const tColor = elite > 0 ? "white" : "black"
-    const rc: CounterLayout | false = this.sizeLayout
-    if (!rc) { return false }
-    if (!rc.style) { return rc }
-    rc.style.fill = color
-    rc.style.stroke = stroke
-    if (!rc.tStyle) { return rc }
-    rc.tStyle.fill = tColor
-    return rc
+    return counterStatusLayout(this)
   }
 
   helpLayout(loc: Coordinate, max: Coordinate): HelpLayout {
-    if (!this.map) { return { path: "", size: 0, style: {} } }
-    const text = this.target.helpText
-    const size = 22
-    let width = 24.4
-    text.forEach(t => {
-      const n = t.length * 9.6 + 16
-      if (n > width) { width = n }
-    })
-    const loc2 = loc.delta(width, text.length * size + size/2)
-    if (loc2.x > max.x) {
-      const diff = - (width + 182.5)
-      loc.xShift(diff)
-      loc2.xShift(diff)
-    }
-    if (loc2.y > max.y) {
-      const diff = max.y - loc2.y
-      loc.yShift(diff)
-      loc2.yShift(diff)
-    }
-    const layout: HelpLayout = {
-      path: [
-        "M", loc.x, loc.y, "L", loc2.x, loc.y, "L", loc2.x, loc2.y,
-        "L", loc.x, loc2.y, "L", loc.x, loc.y,
-      ].join(" "), style: { fill: "black", stroke: "white", strokeWidth: 2 },
-      size: size-6
-    }
-    const diff = size
-    layout.texts = text.map((t, i) => {
-      return { x: loc.x+8, y: loc.y + i*diff + size, value: t }
-    })
-    return layout
-  }
-
-  facingLine(dir: Direction): SVGPathArray {
-    if (!this.map || !this.hex) { return [] }
-    const hex = this.map.hexAt(this.hex)
-    if (!hex) { return [] }
-    const x = hex.xCorner(dir)
-    const y = hex.yCorner(dir)
-    const len = this.map.radius * (this.map.height + this.map.width)
-    const x2 = x - len * Math.cos((dir-0.5)/3 * Math.PI)
-    const y2 = y - len * Math.sin((dir-0.5)/3 * Math.PI)
-    return ["M", x, y, "L", x2, y2]
+    return counterHelpLayout(this, loc, max)
   }
 
   get facingLayout(): facingLayout | false {
-    if ((!this.target.turreted && !this.target.rotates) || this.target.isWreck ||
-        this.target.rotatingVehicleMount || this.target.currentFirepower < 1) {
-      return false
-    }
-    let dir = this.target.turreted ? this.target.turretFacing : this.target.facing
-    if (this.target.backwardsMount) { dir = normalDir(dir + 3) }
-    const path = this.facingLine(dir).concat(this.facingLine(normalDir(dir - 1))).join(" ")
-    return {
-      path: path, dash: "4 4", style: {
-        fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(255,255,255,1)"
-      },
-      style2: {
-        fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(0,0,0,1)"
-      }
-    }
+    return counterFacingLayout(this)
   }
 }

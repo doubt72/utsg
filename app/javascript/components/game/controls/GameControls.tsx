@@ -19,6 +19,7 @@ import RoutButton from "./RoutButton";
 import MoveFinishButton from "./MoveFinishButton";
 import MoveCancelButton from "./MoveCancelButton";
 import MoveRotateToggleButton from "./MoveRotateToggleButton";
+import actionsAvailable from "../../../engine/actions/actionsAvailable";
 
 interface GameControlsProps {
   game: Game;
@@ -41,7 +42,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
 
   const displayActions = () => {
     const user = localStorage.getItem("username")
-    setControls(game.actionsAvailable(user as string).map((a, i) => {
+    setControls(actionsAvailable(game, user as string).map((a, i) => {
       if (a.type === "sync") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing</div>
       } else if (a.type === "none") {

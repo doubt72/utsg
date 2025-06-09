@@ -22,6 +22,8 @@ import MiniMap from "./MiniMap";
 import { roundedRectangle, yMapOffset } from "../../../utilities/graphics";
 import { normalDir } from "../../../utilities/utilities";
 import MoveTrackOverlay from "./MoveTrackOverlay";
+import openHex, { openHexRotateOpen } from "../../../engine/actions/openHex";
+import mapSelect from "../../../engine/actions/mapSelect";
 
 interface GameMapProps {
   map: Map;
@@ -210,7 +212,7 @@ export default function GameMap({
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move) {
-          const shaded = map.openHex(x, y)
+          const shaded = openHex(map, x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
         }
@@ -328,7 +330,7 @@ export default function GameMap({
     const lastPath = map.game.lastPath
     if (lastPath) {
       const coord = new Coordinate(lastPath.x, lastPath.y)
-      if (map.rotateMovementOpen(coord) || map.game.gameActionState.move.rotatingTurret) {
+      if (openHexRotateOpen(map, coord) || map.game.gameActionState.move.rotatingTurret) {
         const hex = map.hexAt(coord)
         setDirectionSelectionOverlay(
           <DirectionSelector hex={hex} selectCallback={directionSelection} />
@@ -404,7 +406,7 @@ export default function GameMap({
 
   const unitSelection = (selection: CounterSelectionTarget) => {
     if (selection.target.type === "map") {
-      map.selectUnit(selection, handleSelect)
+      mapSelect(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
       if (map.game.gameActionState?.deploy &&
           map.game.gameActionState.deploy.index !== selection.target.index) {
