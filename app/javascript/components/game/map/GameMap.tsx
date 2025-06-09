@@ -325,6 +325,16 @@ export default function GameMap({
       return
     }
     setMoveTrack(<MoveTrackOverlay map={map} />)
+    const lastPath = map.game.lastPath
+    if (lastPath) {
+      const coord = new Coordinate(lastPath.x, lastPath.y)
+      if (map.rotateMovementOpen(coord)) {
+        const hex = map.hexAt(coord)
+        setDirectionSelectionOverlay(
+          <DirectionSelector hex={hex} selectCallback={directionSelection} />
+        )
+      }
+    }
   }, [updateUnitshaded, forceUpdate])
 
   const shift = () => {
@@ -377,7 +387,7 @@ export default function GameMap({
         }
         updateReinforcementOverlays()
       } else if (map.game?.gameActionState?.move) {
-        map.move(x, y)
+        map.game.move(x, y)
         setUpdateUnitshaded(s => s + 1)
       }
       if (doCallback) { hexCallback(x, y) }
@@ -423,7 +433,11 @@ export default function GameMap({
 
   const directionSelection = (x: number, y: number, d: Direction) => {
     directionCallback(x, y, d)
-    updateReinforcementOverlays()
+    if (map.game?.gameActionState?.deploy) {
+      updateReinforcementOverlays()
+    } else if (map.game?.gameActionState?.move) {
+      setUpdateUnitshaded(s => s+1)
+    }
   }
 
   const showReinforcements = (x: number, y: number, player: Player) => {
@@ -471,8 +485,8 @@ export default function GameMap({
           {losOverlay}
           {counterLosOverlay}
           {map?.game?.gameActionState?.deploy ? hexDisplayOverlays : ""}
-          {directionSelectionOverlay}
           {moveTrack}
+          {directionSelectionOverlay}
         </svg>
       )
     }

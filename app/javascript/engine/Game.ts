@@ -44,10 +44,14 @@ export type DeployAction = {
   turn: number, index: number, needsDirection?: [number, number],
 }
 
+export type MovePath = {
+  x: number, y: number, facing?: number
+}
+
 export type MoveAction = {
   initialSelection: ActionSelection[];
   doneSelect: boolean;
-  path: { x: number, y: number, facing?: number }[],
+  path: MovePath[],
 }
 
 export type GameActionState = {
@@ -421,6 +425,12 @@ export default class Game {
     return this.scenario.map.carriedUnits(selection)
   }
 
+  get lastPath(): MovePath | undefined {
+    if (!this.gameActionState?.move) { return }
+    const path = this.gameActionState.move.path
+    return path[path.length - 1]
+  }
+
   startMove() {
     const selection = this.scenario.map.currentSelection[0]
     if (selection && selection.hex) {
@@ -446,6 +456,25 @@ export default class Game {
         move: { initialSelection, doneSelect: !canSelect, path: [loc] }
       }
     }
+  }
+
+  move(x: number, y: number) {
+    if (!this.gameActionState?.move) { return }
+    if (!this.gameActionState?.selection) { return }
+    const selection = this.gameActionState.selection
+    const target = selection[0].counter.target
+    const lastPath = this.lastPath as MovePath
+    this.gameActionState.move.path.push({
+      x: x, y: y, facing: target.rotates ? lastPath.facing : undefined,
+    })
+    this.gameActionState.move.doneSelect = true
+  }
+
+  moveRotate(x: number, y: number, dir: number) {
+    if (!this.gameActionState?.move) { return }
+    this.gameActionState.move.path.push({
+      x: x, y: y, facing: dir,
+    })
   }
 
   executePass() {}

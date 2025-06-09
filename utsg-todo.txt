@@ -5,14 +5,16 @@
   - Flickering panel when placing units/don't reload whole panel
   - Fix flickering of action display as well
 
+- Simplify initiative display
 - "Normalize" stacks after placement / movement
-- Add Registration markers
+- Add Registration markers (or just make special rule)
 - Move "move" logic out of map.ts / Break up biggest classes
 - Terrain Info includes terrain in overlay
+- Ability to pin game JSON to DB / only used for scenario changes
 
 - Implement moves
   (Now):
-    - Rotation options
+    - Turret Rotation
 
   (Soon):
     - Consider adding road attributes / how base terrain affects it
@@ -22,6 +24,7 @@
     - Crewing Weapons
     - Smoke
     - Finishing/Syncing Move
+      - Capture Victory points
 
   (As Needed):
     - Move cost for RR / RR bridge?

@@ -234,6 +234,8 @@ export default function GameDisplay() {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
         game.k.gameActionState.deploy.index]
       game.k.executeReinforcement(x, y, counter, d, gameNotification)
+    } else if (game.k?.gameActionState?.move) {
+      game.k.moveRotate(x, y, d)
     }
   }
 

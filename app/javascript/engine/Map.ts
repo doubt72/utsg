@@ -1,4 +1,4 @@
-import Game, { actionType, gamePhaseType } from "./Game";
+import Game, { actionType, gamePhaseType, MovePath } from "./Game";
 import {
   BaseTerrainType,
   Coordinate,
@@ -612,8 +612,7 @@ export default class Map {
   moveOpenHex(x: number, y: number): HexOpenType {
     if (!this.game?.gameActionState?.move) { return hexOpenType.Open }
     if (!this.game?.gameActionState?.selection) { return hexOpenType.Open }
-    const path = this.game.gameActionState.move.path
-    const lastPath = path[path.length - 1]
+    const lastPath = this.game.lastPath as MovePath
     const cost = this.movementOpen(new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
     if (cost === false) {
       return hexOpenType.Closed
@@ -840,17 +839,6 @@ export default class Map {
     return rc
   }
 
-  move(x: number, y: number) {
-    if (!this.game?.gameActionState?.move) { return }
-    if (!this.game?.gameActionState?.selection) { return }
-    const selection = this.game.gameActionState.selection
-    const target = selection[0].counter.target
-    this.game.gameActionState.move.path.push({
-      x: x, y: y, facing: target.rotates ? target.facing : undefined,
-    })
-    this.game.gameActionState.move.doneSelect = true
-  }
-
   roadMovement(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
     if (!from.road || !to.road || !to.roadDirections?.includes(normalDir(dir + 3)) ||
         !from.roadDirections?.includes(dir)) {
@@ -878,12 +866,12 @@ export default class Map {
         if (target.isWheeled && hexFrom.roadType !== roadType.Path) { return 0.5 }
         if (target.isTracked && hexFrom.roadType !== roadType.Path) { return 1 }
       }
+      // all of these casts should have already been checked before we get here
       return hexFrom.terrain.move as number
     }
     const hexTo = this.hexAt(to) as Hex;
     const terrFrom = hexFrom.terrain
     const terrTo = hexTo.terrain
-    // all of these casts should have already been checked before we get here
     let cost = terrTo.move as number
     const dir = this.relativeDirection(from, to) as Direction
     const roadMove = this.roadMovement(hexFrom, hexTo, dir)
@@ -916,6 +904,50 @@ export default class Map {
     return cost
   }
 
+  movementPastCost(target: Unit): number {
+    if (!this.game?.gameActionState?.move) { return 0 }
+    const length = this.game.gameActionState.move.path.length
+    let pastCost = 0
+    for (let i = 0; i < length - 1; i++) {
+      const p1 = this.game.gameActionState.move.path[i]
+      const p2 = this.game.gameActionState.move.path[i+1]
+      const loc1 = new Coordinate(p1.x, p1.y)
+      const loc2 = new Coordinate(p2.x, p2.y)
+      pastCost += this.movementCost(loc1, loc2, target)
+    }
+    return pastCost
+  }
+
+  allRoad(): boolean {
+    if (!this.game?.gameActionState?.move) { return false }
+    const length = this.game.gameActionState.move.path.length
+    for (let i = 0; i < length - 1; i++) {
+      const p1 = this.game.gameActionState.move.path[i]
+      const p2 = this.game.gameActionState.move.path[i+1]
+      const loc1 = new Coordinate(p1.x, p1.y)
+      const loc2 = new Coordinate(p2.x, p2.y)
+      if (!this.roadMovement(
+        this.hexAt(loc1) as Hex, this.hexAt(loc2) as Hex, this.relativeDirection(loc1, loc2) as Direction
+      )) {
+        return false
+      }
+    }
+    return true
+  }
+
+  rotateMovementOpen(loc: Coordinate): boolean {
+    if (!this.game?.gameActionState?.move) { return false }
+    if (!this.game.gameActionState.selection) { return false }
+    const counter = this.game.gameActionState.selection[0].counter
+    const next = this.nextUnit(counter)
+    if (!counter.target.rotates && !(next && next.target.rotates)) { return false }
+    const cost = this.movementCost(loc, loc, counter.target as Unit) +
+                 this.movementPastCost(counter.target as Unit)
+    const length = this.game.gameActionState.move.path.length
+    const move = counter.target.currentMovement as number
+    return move >= cost || length === 1
+  }
+
   movementOpen(from: Coordinate, to: Coordinate): HexOpenType {
     if (!this.game?.gameActionState?.move) { return false }
     if (from.x === to.x && from.y === to.y) {
@@ -945,9 +977,10 @@ export default class Map {
       if (terrTo.vehicle === "amph" && !roadMove && !selection.target.amphibious) { return false }
     }
     const next = this.game.gameActionState.selection[1]
+    const facing = this.game.lastPath?.facing as Direction
     if (next && next.counter.target.crewed) {
       if (!terrTo.gun && !roadMove) { return false }
-      if (terrTo.gun === "back" && dir !== normalDir(selection.target.facing + 3)) {
+      if (terrTo.gun === "back" && dir !== normalDir(facing + 3)) {
         return false
       }
     }
@@ -966,25 +999,13 @@ export default class Map {
       if (next && next.counter.target.crewed && !terrTo.borderGun) { return false }
     }
     if (selection.target.rotates) {
-      if (normalDir(dir + 3) !== selection.target.facing && dir !== selection.target.facing) { return false }
+      if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
     }
 
     const length = this.game.gameActionState.move.path.length
     const cost = this.movementCost(from, to, selection.target as Unit)
-    let pastCost = 0
-    let road = true
-    for (let i = 0; i < length - 1; i++) {
-      const p1 = this.game.gameActionState.move.path[i]
-      const p2 = this.game.gameActionState.move.path[i+1]
-      const loc1 = new Coordinate(p1.x, p1.y)
-      const loc2 = new Coordinate(p2.x, p2.y)
-      pastCost += this.movementCost(loc1, loc2, selection.target as Unit)
-      if (!this.roadMovement(
-        this.hexAt(loc1) as Hex, this.hexAt(loc2) as Hex, this.relativeDirection(loc1, loc2) as Direction
-      )) {
-        road = false
-      }
-    }
+    const pastCost = this.movementPastCost(selection.target as Unit)
+    const road = this.allRoad()
     const allRoad = road && roadMove && !selection.target.isWheeled &&
                     !(next && next.counter.target.crewed) ? 1 : 0
     let move = selection.target.currentMovement as number + allRoad
@@ -1005,7 +1026,6 @@ export default class Map {
       }
     }
     if (move < cost + pastCost && length > 1) { return false }
-    console.log(`${move}+${allRoad} ${cost}+${pastCost}`)
     for (const p of this.game.gameActionState.move.path) {
       if (to.x === p.x && to.y === p.y ) { return hexOpenType.Open }
     }

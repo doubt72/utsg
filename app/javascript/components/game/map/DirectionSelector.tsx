@@ -1,29 +1,42 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
 import { Direction, roadType } from "../../../utilities/commonTypes";
+import { MovePath } from "../../../engine/Game";
 
-interface MapHexProps {
+interface DirectionSelectorProps {
   hex?: Hex;
   selectCallback: (x: number, y: number, d: Direction) => void;
 }
 
-export default function DirectionSelector({ hex, selectCallback }: MapHexProps) {
+export default function DirectionSelector({ hex, selectCallback }: DirectionSelectorProps) {
 
   const directions = () => {
-    if (!hex?.map?.game?.gameActionState?.deploy) { return }
-    const player = hex.map.game.gameActionState.player
-    const turn = hex.map.game.gameActionState.deploy.turn
-    const index = hex.map.game.gameActionState.deploy.index
-    const uf = player === 1 ?
-      hex.map.game.scenario.alliedReinforcements[turn][index].counter :
-      hex.map.game.scenario.axisReinforcements[turn][index].counter
     let dirs: Direction[] = [1, 2, 3, 4, 5, 6]
-    if (!hex.terrain.vehicle && (uf.isTracked || uf.isWheeled) && hex.roadType !== roadType.Path) {
-      dirs = hex.roadDirections ?? []
-    }
-    if (hex.terrain.vehicle === "amph" && (uf.isTracked || uf.isWheeled) &&
-        !uf.amphibious && hex.roadType !== roadType.Path) {
-      dirs = hex.roadDirections ?? []
+    if (hex?.map?.game?.gameActionState?.deploy) {
+      const player = hex.map.game.gameActionState.player
+      const turn = hex.map.game.gameActionState.deploy.turn
+      const index = hex.map.game.gameActionState.deploy.index
+      const unit = player === 1 ?
+        hex.map.game.scenario.alliedReinforcements[turn][index].counter :
+        hex.map.game.scenario.axisReinforcements[turn][index].counter
+      if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
+        dirs = hex.roadDirections ?? []
+      }
+      if (hex.terrain.vehicle === "amph" && (unit.isTracked || unit.isWheeled) &&
+          !unit.amphibious && hex.roadType !== roadType.Path) {
+        dirs = hex.roadDirections ?? []
+      }
+    } else if (hex?.map.game?.gameActionState?.move && hex.map.game.gameActionState.selection) {
+      const unit = hex.map.game.gameActionState.selection[0].counter.target
+      const lastPath = hex.map.game.lastPath as MovePath
+      if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
+        dirs = hex.roadDirections ?? []
+      }
+      if (hex.terrain.vehicle === "amph" && (unit.isTracked || unit.isWheeled) &&
+          !unit.amphibious && hex.roadType !== roadType.Path) {
+        dirs = hex.roadDirections ?? []
+      }
+      dirs = dirs.filter(d => d !== lastPath.facing)
     }
 
     return dirs.map(v => {
@@ -44,19 +57,26 @@ export default function DirectionSelector({ hex, selectCallback }: MapHexProps) 
     })
   }
 
+  const overlay = () => {
+    if (!hex?.map?.game?.gameActionState?.move) { return }
+    return (
+      <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }} />
+    )
+  }
+
   const text = () => {
+    if (!hex?.map?.game?.gameActionState?.deploy) { return }
     const y = hex ? hex?.yOffset : 0
     return (
-      <g>
-        <text x={hex?.xOffset} y={y + 2} fontSize={13.5} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>facing</text>
-      </g>
+      <text x={hex?.xOffset} y={y + 2} fontSize={13.5} textAnchor="middle"
+            fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>facing</text>
     )
   }
 
   return (
     <g>
       { text() }
+      { overlay() }
       { directions() }
     </g>
   )
