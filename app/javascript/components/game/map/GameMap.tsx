@@ -203,7 +203,7 @@ export default function GameMap({
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
-        detailLoader.push(<MapHexDetail key={`${x}-${y}-d`} hex={hex}
+        detailLoader.push(<MapHexDetail key={`${x}-${y}-d`} hex={hex} maxX={width / scale} maxY={height / scale}
                                         selectCallback={hexSelection} showTerrain={showTerrain}
                                         terrainCallback={showTerrain ?
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }

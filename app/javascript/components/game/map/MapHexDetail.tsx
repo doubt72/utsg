@@ -1,9 +1,11 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
-import { terrainType } from "../../../utilities/commonTypes";
+import { Coordinate, terrainType } from "../../../utilities/commonTypes";
 
 interface MapHexDetailProps {
   hex: Hex;
+  maxX: number;
+  maxY: number;
   selectCallback: (x: number, y: number) => void,
   showTerrain: boolean;
   terrainCallback: (a: JSX.Element | undefined) => void;
@@ -12,7 +14,7 @@ interface MapHexDetailProps {
 }
 
 export default function MapHexDetail({
-  hex, selectCallback, showTerrain, terrainCallback, svgRef, scale
+  hex, maxX, maxY, selectCallback, showTerrain, terrainCallback, svgRef, scale
 }: MapHexDetailProps) {
   const river = () => {
     if (!hex.river) { return "" }
@@ -88,7 +90,7 @@ export default function MapHexDetail({
       if (svgRef.current) {
         const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
         const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10
-        const layout = hex.helpLayout(x, y)
+        const layout = hex.helpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY))
         terrainCallback(
           <g>
             <path d={layout.path} style={layout.style as object} />

@@ -785,7 +785,7 @@ export default class Hex {
     return text
   }
 
-  helpLayout(x: number, y: number): HelpTextLayout {
+  helpLayout(loc: Coordinate, max: Coordinate): HelpTextLayout {
     const text = this.helpText
     const size = 22
     let width = 24.4
@@ -793,19 +793,19 @@ export default class Hex {
       const n = t.length * 9.6 + 16
       if (n > width) { width = n }
     })
-    let x1 = x
-    let x2 = x + width
-    let y1 = y
-    let y2 = y + text.length * size + size/2
-    if (x2 > this.map.xSize) {
+    let x1 = loc.x
+    let x2 = x1 + width
+    let y1 = loc.y
+    let y2 = y1 + text.length * size + size/2
+    if (x2 > max.x) {
       const diff = - (width + 20)
       x1 += diff
       x2 += diff
     }
-    if (y2 > this.map.ySize) {
-      const diff = this.map.ySize - y2
-      y1 += diff
-      y2 += diff
+    if (y2 > max.y) {
+      const diff = y2 - max.y
+      y1 -= diff
+      y2 -= diff
     }
     const diff = size
     return {

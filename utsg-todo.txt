@@ -7,7 +7,6 @@ High Priority Features/Bug Fixes:
   - Flickering panel when placing units/don't reload whole panel
   - Fix flickering of action display as well
 
-- Fix Terrain info bottom issue
 - Move "move" logic out of map.ts / Split up biggest classes
 - "Normalize" stacks after placement / movement
 - Terrain Info includes terrain in overlay
