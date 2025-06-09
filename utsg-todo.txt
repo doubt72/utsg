@@ -1,20 +1,27 @@
 - Come up with name (D-GOST?)
   - Add more info on signup page mebbe
 
+High Priority Features/Bug Fixes:
+
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units/don't reload whole panel
   - Fix flickering of action display as well
 
-- Simplify initiative display
+- Fix Terrain info bottom issue
+- Move "move" logic out of map.ts / Split up biggest classes
 - "Normalize" stacks after placement / movement
-- Add Registration markers (or just make special rule)
-- Move "move" logic out of map.ts / Break up biggest classes
 - Terrain Info includes terrain in overlay
-- Ability to pin game JSON to DB / only used for scenario changes
+- Terrain Info (not just the current ones) cancel action
+  - Except figure out why changing control size/badge/coords resets pointer
 
-- Implement moves
-  (Now):
-    - Turret Rotation
+Game Actions:
+
+- Moving
+  (Now)
+    - Ghost Markers
+    - Dropping Off Part of Stack
+      - Handle case where it's the leader
+    - Smoke
 
   (Soon):
     - Consider adding road attributes / how base terrain affects it
@@ -22,7 +29,6 @@
     - Picking up Support Weapons
     - Unmanning Crewed Weapons
     - Crewing Weapons
-    - Smoke
     - Finishing/Syncing Move
       - Capture Victory points
 
@@ -33,28 +39,27 @@
     - Embarking on Vehicles
     - Wire/Obstacles
     - Engineering Tasks
-
 - Passing
 - Initiative check
 - Reaction fire
 - Mines
 - Sniper check
 
-- disable text selection
+Future Features/Bug Fixes:
 
-- fix hindrance bug
-  - through two fence corner intersections
+- Fix hindrance bug
+  - Through two fence corner intersections
   - Also for hindrance at higher elevation
 - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
 - Tooltips for map controls
-
+- Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
+  (So scenarios can be modified without breaking existing games)
+- Switch main page game status to websocket, not polling
+- Disable text selection on map/etc?
 - Support mouse scroll on map
   - Much harder than it appears, need a way to intercept only scroll/wheel/key events
     but pass through all other mouse events
 
+Generally:
+
 - Start working on Help/Manual
-
-- Switch main page game status to websocket, not polling
-
-- Clean up all the typing/get rid of all the "null object pattern"-style duplication for rendering?
-  - Maybe if I have nothing better to do someday

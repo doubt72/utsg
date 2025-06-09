@@ -55,7 +55,7 @@ export default function InitiativeDisplay({
       const size = 6
       const xl = xx + 26
       const xr = xx + 164
-      const yd = yy + 50
+      const yd = yy + 88
     setBase(
       <g>
         <path d={roundedRectangle(xx, yy, 190, 752)}
@@ -81,20 +81,18 @@ export default function InitiativeDisplay({
             }
           )
         }
-        <circle cx={xl} cy={yy + 96} r={16} style={nationTwo(16)}/>
-        <circle cx={xr} cy={yy + 96} r={16} style={nationOne(16)}/>
-        <g transform={`rotate(${(map.axisDir - 1)*60} ${xl} ${yd})`}>
+        <g transform={`rotate(${(map.alliedDir - 1)*60} ${xl} ${yd})`}>
           <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                     `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                 style={{ fill: "rgba(0,0,0,0)", stroke: "#444", strokeWidth: 2 }}/>
         </g>
-        <g transform={`rotate(${(map.alliedDir - 1)*60} ${xr} ${yd})`}>
+        <g transform={`rotate(${(map.axisDir - 1)*60} ${xr} ${yd})`}>
           <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
                     `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
                 style={{ fill: "rgba(0,0,0,0)", stroke: "#444", strokeWidth: 2 }}/>
         </g>
-        <circle cx={xl} cy={yd} r={9} style={nationTwo(9, 2)}/>
-        <circle cx={xr} cy={yd} r={9} style={nationOne(9, 2)}/>
+        <circle cx={xl} cy={yd} r={9} style={nationOne(9, 2)}/>
+        <circle cx={xr} cy={yd} r={9} style={nationTwo(9, 2)}/>
       </g>
     )
   }, [xx, yy, map.alliedDir, map.axisDir])

@@ -37,15 +37,15 @@ export default function ScoreDisplay({ map, xx, yy }: ScoreDisplayProps) {
       <g>
         <path d={roundedRectangle(xx, yy, 190, 52)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
-        <circle cx={xx + 26} cy={yy + 26} r={16} style={nationTwo()}/>
+        <circle cx={xx + 26} cy={yy + 26} r={16} style={nationOne()}/>
         <text x={xx + 48} y={yy + 32} fontSize={20} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-          {map.game?.playerTwoScore}
+          {map.game?.playerOneScore}
         </text>
-        <circle cx={xx + 164} cy={yy + 26} r={16} style={nationOne()}/>
+        <circle cx={xx + 164} cy={yy + 26} r={16} style={nationTwo()}/>
         <text x={xx + 142} y={yy + 32} fontSize={20} textAnchor="end"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-          {map.game?.playerOneScore}
+          {map.game?.playerTwoScore}
         </text>
       </g>
     )
