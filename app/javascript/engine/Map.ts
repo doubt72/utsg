@@ -848,6 +848,7 @@ export default class Map {
     this.game.gameActionState.move.path.push({
       x: x, y: y, facing: target.rotates ? target.facing : undefined,
     })
+    this.game.gameActionState.move.doneSelect = true
   }
 
   roadMovement(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
@@ -871,10 +872,14 @@ export default class Map {
   }
 
   movementCost(from: Coordinate, to: Coordinate, target: Unit): number {
-    if (from.x === to.x && from.y === to.y) {
-      return 1; // When rotating in place
-    }
     const hexFrom = this.hexAt(from) as Hex;
+    if (from.x === to.x && from.y === to.y) {  // When rotating in place
+      if (hexFrom.road) {
+        if (target.isWheeled && hexFrom.roadType !== roadType.Path) { return 0.5 }
+        if (target.isTracked && hexFrom.roadType !== roadType.Path) { return 1 }
+      }
+      return hexFrom.terrain.move as number
+    }
     const hexTo = this.hexAt(to) as Hex;
     const terrFrom = hexFrom.terrain
     const terrTo = hexTo.terrain
@@ -924,13 +929,20 @@ export default class Map {
     const dir = this.relativeDirection(from, to)
     if (!dir) { return false }
     if (!this.game.gameActionState.selection) { return false }
-    const moveSize = this.game.gameActionState.selection.reduce((sum, u) => sum + u.counter.target.size, 0)
-    const toSize = this.countersAt(to).reduce((sum, u) => sum + u.target.size, 0)
-    if (moveSize + toSize > stackLimit) { return false }
+
+    const countersAt = this.countersAt(to)
     const selection = this.game.gameActionState.selection[0].counter
+    const moveSize = this.game.gameActionState.selection.reduce((sum, u) => sum + u.counter.target.size, 0)
+    const toSize = countersAt.reduce((sum, u) => sum + u.target.size, 0)
+    if (moveSize + toSize > stackLimit) { return false }
+    for (const c of countersAt) {
+      if (selection.target.playerNation !== c.target.playerNation) { return false }
+    }
+
     const roadMove = this.roadMovement(hexFrom, hexTo, dir)
     if (selection.target.isWheeled || selection.target.isTracked) {
       if (!terrTo.vehicle && !roadMove) { return false }
+      if (terrTo.vehicle === "amph" && !roadMove && !selection.target.amphibious) { return false }
     }
     const next = this.game.gameActionState.selection[1]
     if (next && next.counter.target.crewed) {
@@ -956,6 +968,7 @@ export default class Map {
     if (selection.target.rotates) {
       if (normalDir(dir + 3) !== selection.target.facing && dir !== selection.target.facing) { return false }
     }
+
     const length = this.game.gameActionState.move.path.length
     const cost = this.movementCost(from, to, selection.target as Unit)
     let pastCost = 0
@@ -972,7 +985,8 @@ export default class Map {
         road = false
       }
     }
-    const allRoad = road && roadMove && !(next && next.counter.target.crewed) ? 1 : 0
+    const allRoad = road && roadMove && !selection.target.isWheeled &&
+                    !(next && next.counter.target.crewed) ? 1 : 0
     let move = selection.target.currentMovement as number + allRoad
     if (selection.target.canCarrySupport) {
       let minLdrMove = 99

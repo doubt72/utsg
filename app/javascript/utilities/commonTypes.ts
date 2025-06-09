@@ -123,7 +123,7 @@ export type TerrainAttributes = {
   hindrance: number;
   cover: number;
   los: boolean;
-  vehicle: boolean;
+  vehicle: boolean | string;
   gun: boolean | string;
   name: string;
 }

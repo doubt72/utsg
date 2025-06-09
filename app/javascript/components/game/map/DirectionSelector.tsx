@@ -1,6 +1,6 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
-import { Direction } from "../../../utilities/commonTypes";
+import { Direction, roadType } from "../../../utilities/commonTypes";
 
 interface MapHexProps {
   hex?: Hex;
@@ -18,7 +18,11 @@ export default function DirectionSelector({ hex, selectCallback }: MapHexProps) 
       hex.map.game.scenario.alliedReinforcements[turn][index].counter :
       hex.map.game.scenario.axisReinforcements[turn][index].counter
     let dirs: Direction[] = [1, 2, 3, 4, 5, 6]
-    if (!hex.terrain.vehicle && (uf.isTracked || uf.isWheeled)) {
+    if (!hex.terrain.vehicle && (uf.isTracked || uf.isWheeled) && hex.roadType !== roadType.Path) {
+      dirs = hex.roadDirections ?? []
+    }
+    if (hex.terrain.vehicle === "amph" && (uf.isTracked || uf.isWheeled) &&
+        !uf.amphibious && hex.roadType !== roadType.Path) {
       dirs = hex.roadDirections ?? []
     }
 

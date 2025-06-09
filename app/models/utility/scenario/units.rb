@@ -129,11 +129,11 @@ module Utility
             wire: { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" },
             # There's a range here
             mines8: {
-              ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { g: 1 },
+              ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A", o: { g: 1 },
             },
-            ap_mines8: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0 },
+            ap_mines8: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A" },
             at_mines8: {
-              ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: 0, o: { p: 1 },
+              ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A", o: { p: 1 },
             },
             shell_scrape: { ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1 },
             foxhole: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },

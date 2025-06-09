@@ -3,34 +3,33 @@
 
 - Close reinforcement panel when last reinforcement placed
   - Flickering panel when placing units/don't reload whole panel
-  - Fix flickering of move display as well
+  - Fix flickering of action display as well
 
-- "Normalize" stacks after placement
-- Registration markers
-- Maybe move "move" logic out of map.ts
+- "Normalize" stacks after placement / movement
+- Add Registration markers
+- Move "move" logic out of map.ts / Break up biggest classes
+- Terrain Info includes terrain in overlay
 
 - Implement moves
-    - Allow selection to hex to make move
+  (Now):
     - Rotation options
 
-    - Prevent move into enemy hex
-    - Move cost for RR / RR bridge?
+  (Soon):
     - Consider adding road attributes / how base terrain affects it
-    - Amphibious Vehicles
-
-    - Option to drop off foot units
-    - Unmanning Crewed Weapons
-    - Dropping Towed Weapons
     - Dropping Support Weapons
     - Picking up Support Weapons
+    - Unmanning Crewed Weapons
     - Crewing Weapons
-    - Disambarking from Vehicles
-    - Embarking on Vehicles 
     - Smoke
-    - Engineering Tasks
-    - Wire/Obstacles
-
     - Finishing/Syncing Move
+
+  (As Needed):
+    - Move cost for RR / RR bridge?
+    - Dropping Towed Weapons
+    - Disambarking from Vehicles
+    - Embarking on Vehicles
+    - Wire/Obstacles
+    - Engineering Tasks
 
 - Passing
 - Initiative check
