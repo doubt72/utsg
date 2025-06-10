@@ -93,6 +93,8 @@ export default class Game {
   suppressNetwork: boolean = false;
   gameActionState?: GameActionState;
 
+  closeReinforcementPanel: boolean = false;
+
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
@@ -353,6 +355,7 @@ export default class Game {
             [oldPhase, gamePhaseType.Prep]
         }
         this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
+        this.closeReinforcementPanel = true
       }
     } else if (this.phase === gamePhaseType.Prep) {
       if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {

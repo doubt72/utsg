@@ -3,14 +3,10 @@
 
 High Priority Features/Bug Fixes:
 
-- Close reinforcement panel when last reinforcement placed
-  - Flickering panel when placing units/don't reload whole panel
-  - Fix flickering of action display as well
+- Fix flickering of action display
 
 - "Normalize" stacks after placement / movement
 - Terrain Info includes terrain in overlay
-- Terrain Info (not just the current ones) cancel action
-  - Except figure out why changing control size/badge/coords resets pointer
 
 Game Actions:
 

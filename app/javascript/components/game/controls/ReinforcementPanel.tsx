@@ -8,7 +8,7 @@ import { ReinforcementSchedule } from "../../../engine/Scenario";
 import { gamePhaseType } from "../../../engine/Game";
 
 interface ReinforcementPanelProps {
-  map: Map;
+  map?: Map;
   player: Player;
   xx: number;
   yy: number;
@@ -17,14 +17,16 @@ interface ReinforcementPanelProps {
   shiftCallback: MouseEventHandler;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
+  forceUpdate: number;
 }
 
 export default function ReinforcementPanel({
-  map, player, xx, yy, shifted, closeCallback, shiftCallback, ovCallback
+  map, player, xx, yy, shifted, closeCallback, shiftCallback, ovCallback, forceUpdate,
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
 
   const allUnits = (): ReinforcementSchedule | undefined => {
+    if (!map) { return }
     return map.game?.availableReinforcements(player)
   }
 
@@ -37,6 +39,7 @@ export default function ReinforcementPanel({
   }
 
   useEffect(() => {
+    if (!map) { return }
     const units = allUnits()
     const x = xx + (shifted ? (units ? maxWidth(units) : 300) : 0)
     const closeX = !units || Object.keys(units).length == 0 ? x + 210 : x + maxWidth(units) - 15
@@ -167,7 +170,10 @@ export default function ReinforcementPanel({
         }
       </g>
     )
-  }, [xx, yy, shifted, map.game?.gameActionState?.deploy, map.game?.lastMove, map.game?.lastMoveIndex])
+  }, [
+    xx, yy, shifted, map?.game?.gameActionState?.deploy, map?.game?.lastMove, map?.game?.lastMoveIndex,
+    forceUpdate
+  ])
 
   return (
     <g>

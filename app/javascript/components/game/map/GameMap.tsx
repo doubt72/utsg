@@ -24,9 +24,10 @@ import { normalDir } from "../../../utilities/utilities";
 import MoveTrackOverlay from "./MoveTrackOverlay";
 import openHex, { openHexRotateOpen } from "../../../engine/actions/openHex";
 import mapSelect from "../../../engine/actions/mapSelect";
+import { MovePath } from "../../../engine/Game";
 
 interface GameMapProps {
-  map: Map;
+  map?: Map;
   scale: number;
   mapScale?: number;
   showCoords?: boolean;
@@ -50,6 +51,8 @@ export default function GameMap({
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
   clearActionCallback = () => {}
 }: GameMapProps) {
+  const [mapUpdate, setMapUpdate] = useState(0)
+
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
   const [hexDisplayOverlays, setHexDisplayOverlays] = useState<JSX.Element[]>([])
@@ -57,7 +60,6 @@ export default function GameMap({
   const [overlay, setOverlay] = useState<{
     show: boolean, x: number, y: number, counters?: Counter[]
   }>({ show: false, x: -1, y: -1 })
-  const [updateUnitshaded, setUpdateUnitshaded] = useState(0)
   const [losOverlay, setLosOverlay] = useState<JSX.Element | undefined>()
   const [counterLosOverlay, setCounterLosOverlay] = useState<JSX.Element[] | undefined>()
   const [counterOverlay, setCounterOverlay] = useState<JSX.Element | undefined>()
@@ -85,6 +87,7 @@ export default function GameMap({
   }>({ error: "", timer: 0 })
 
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
+    if (!map) { return 1 }
     if (preview || m?.preview) { return map.ySize * scale }
     const gc = guiCollapse ? 178 : 0
     const fill = m?.debug ? 16 : 408 - gc
@@ -92,6 +95,7 @@ export default function GameMap({
     return height - fill < available * scale ? available * scale : height - fill
   }
   const minWidth = (width: number, scale: number = 1, m?: Map) => {
+    if (!map) { return 1 }
     if (preview || m?.preview) { return map.xSize * scale }
     let min = 705 + (m?.game?.scenario.turns ?? 0) * 90
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 280 }
@@ -105,6 +109,7 @@ export default function GameMap({
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
 
   useEffect(() => {
+    if (!map) { return }
     const timer = notificationDetails.timer
     if (timer < 1) {
       setNotification(undefined)
@@ -142,6 +147,7 @@ export default function GameMap({
   const minimapCallback = (event: React.MouseEvent, calculated: {
     mapSize: Coordinate, scale: number
   }) => {
+    if (!map) { return }
     const element = event.target as SVGPathElement
     const rect = element.getBoundingClientRect()
     const x = event.clientX - rect.x;
@@ -193,6 +199,13 @@ export default function GameMap({
       setReinforcementsOverlay(undefined)
     }
   }, [hideCounters, showLos])
+
+  useEffect(() => {
+    if (!map?.game) { return }
+    map.game.gameActionState = undefined
+    clearActionCallback()
+    setReinforcementsOverlay(undefined)
+  }, [showTerrain])
 
   useEffect(() => {
     if (!map) { return }
@@ -257,27 +270,39 @@ export default function GameMap({
         <Reinforcements xx={reinforcementOffset} yy={52 + 50 / scale - 50} map={map}
                         callback={showReinforcements} update={{key: true}}/>
     )
-    setDirectionSelectionOverlay(() => {
-      if (!map.game?.gameActionState?.deploy?.needsDirection) {
-        return undefined
-      }
-      const [x, y] = map.game.gameActionState.deploy.needsDirection
-      return <DirectionSelector hex={map.hexAt(new Coordinate(x, y))}
-                                selectCallback={directionSelection} />
-    })
-    updateReinforcementOverlays()
+    if (map?.game?.closeReinforcementPanel) {
+      setReinforcementsOverlay(undefined)
+      map.game.closeReinforcementPanel = false
+    } else {
+      setReinforcementsOverlay(rp => {
+        if (!rp) { return undefined }
+        const xx = rp.props.xx
+        const yy = rp.props.yy
+        const player = rp.props.player
+        return (
+          <ReinforcementPanel map={map} xx={xx} yy={yy} player={player}
+                              closeCallback={() => {
+                                setReinforcementsOverlay(undefined)
+                                map.game?.setReinforcementSelection(1, undefined)
+                              }}
+                              shifted={rp?.props.shifted ?? false} shiftCallback={shift}
+                              ovCallback={setOverlay} forceUpdate={mapUpdate} />
+        )
+      })
+    }
   }, [
-    map, showCoords, showStatusCounters, hideCounters, updateUnitshaded, showTerrain,
+    map, showCoords, showStatusCounters, hideCounters, mapUpdate, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
     map?.windSpeed, map?.windDirection, map?.windVariable, width, height, scale,
     map?.game?.currentPlayer, map?.game?.lastMoveIndex, map?.game?.lastMove?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore, forceUpdate,
-    map?.game?.gameActionState?.deploy, map?.game?.gameActionState?.deploy?.needsDirection,
+    map?.game?.closeReinforcementPanel,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games
   ])
 
   useEffect(() => {
+    if (!map) { return }
     if (overlay.x < 0) { return }
     if (!overlay.show) {
       setLosOverlay(undefined)
@@ -322,57 +347,52 @@ export default function GameMap({
   }, [showLos])
 
   useEffect(() => {
-    if (!map?.game?.gameActionState?.move) {
+    if (map?.game?.gameActionState?.move) {
+      setMoveTrack(<MoveTrackOverlay map={map} />)
+    } else {
       setMoveTrack(undefined)
-      return
     }
-    setMoveTrack(<MoveTrackOverlay map={map} />)
-    const lastPath = map.game.lastPath
-    if (lastPath) {
+  }, [mapUpdate, forceUpdate])
+
+  useEffect(() => {
+    if (map?.game?.gameActionState?.move) {
+      const lastPath = map.game.lastPath as MovePath
       const coord = new Coordinate(lastPath.x, lastPath.y)
       if (openHexRotateOpen(map, coord) || map.game.gameActionState.move.rotatingTurret) {
         const hex = map.hexAt(coord)
         setDirectionSelectionOverlay(
           <DirectionSelector hex={hex} selectCallback={directionSelection} />
         )
+      } else {
+        setDirectionSelectionOverlay(undefined)
       }
+    } else if (map?.game?.gameActionState?.deploy) {
+      if (map.game.gameActionState.deploy.needsDirection) {
+        const [x, y] = map.game.gameActionState.deploy.needsDirection
+        setDirectionSelectionOverlay(<DirectionSelector hex={map.hexAt(new Coordinate(x, y))}
+                                                        selectCallback={directionSelection} />)
+      } else {
+        setDirectionSelectionOverlay(undefined)
+      }
+    } else {
+      setDirectionSelectionOverlay(undefined)
     }
-  }, [updateUnitshaded, forceUpdate])
+  }, [
+    map?.game?.gameActionState?.deploy, map?.game?.gameActionState?.deploy?.needsDirection,
+    mapUpdate, forceUpdate
+  ])
 
   const shift = () => {
     setReinforcementsOverlay(rp => 
       <ReinforcementPanel map={map} xx={rp?.props.xx} yy={rp?.props.yy} player={rp?.props.player}
                           closeCallback={() => setReinforcementsOverlay(undefined)}
-                          shifted={!rp?.props.shifted}
-                          shiftCallback={shift}
-                          ovCallback={setOverlay}/>
+                          shifted={!rp?.props.shifted} shiftCallback={shift}
+                          ovCallback={setOverlay} forceUpdate={mapUpdate} />
     )
   }
 
-  const updateReinforcementOverlays = () => {
-    setReinforcements(r => {
-      if (r) { r.props.update.key = !r.props.update.key }
-      return r
-    })
-    setReinforcementsOverlay(rp => {
-      if (!rp) { return undefined }
-      const xx = rp.props.xx
-      const yy = rp.props.yy
-      const player = rp.props.player
-      const key = Number(rp.key)
-      return (
-        <ReinforcementPanel key={key + 1} map={map} xx={xx} yy={yy} player={player}
-                            closeCallback={() => {
-                              setReinforcementsOverlay(undefined)
-                              map.game?.setReinforcementSelection(1, undefined)
-                            }}
-                            shifted={rp?.props.shifted ?? false}
-                            shiftCallback={shift} ovCallback={setOverlay}/>
-      )
-    })
-  }
-
   const hexSelection = (x: number, y: number) => {
+    if (!map) { return }
     if (hexCallback) {
       let doCallback = true
       if (map.game?.gameActionState?.deploy) {
@@ -387,11 +407,10 @@ export default function GameMap({
             doCallback = false
           }
         }
-        updateReinforcementOverlays()
       } else if (map.game?.gameActionState?.move) {
         map.game.move(x, y)
-        setUpdateUnitshaded(s => s + 1)
       }
+      setMapUpdate(s => s + 1)
       if (doCallback) { hexCallback(x, y) }
     }
   }
@@ -405,6 +424,7 @@ export default function GameMap({
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
+    if (!map) { return }
     if (selection.target.type === "map") {
       mapSelect(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
@@ -425,20 +445,18 @@ export default function GameMap({
                               setReinforcementsOverlay(undefined)
                               map.game?.setReinforcementSelection(1, undefined)
                             }}
-                            shifted={rp?.props.shifted ?? false}
-                            shiftCallback={shift}
-                            ovCallback={setOverlay}/>
+                            shifted={rp?.props.shifted ?? false} shiftCallback={shift}
+                            ovCallback={setOverlay} forceUpdate={mapUpdate} />
       )
     }
-    setUpdateUnitshaded(s => s + 1)
+    setMapUpdate(s => s + 1)
   }
 
   const directionSelection = (x: number, y: number, d: Direction) => {
+    if (!map) { return }
     directionCallback(x, y, d)
-    if (map.game?.gameActionState?.deploy) {
-      updateReinforcementOverlays()
-    } else if (map.game?.gameActionState?.move) {
-      setUpdateUnitshaded(s => s+1)
+    if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move) {
+      setMapUpdate(s => s+1)
     }
   }
 
@@ -450,7 +468,7 @@ export default function GameMap({
           <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
                               closeCallback={() => setReinforcementsOverlay(undefined)}
                               shifted={false} shiftCallback={shift}
-                              ovCallback={setOverlay}/>
+                              ovCallback={setOverlay} forceUpdate={mapUpdate} />
         )
       } else {
         return undefined
