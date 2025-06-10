@@ -8,6 +8,7 @@ import IllegalMoveError from "./moves/IllegalMoveError";
 import WarningMoveError from "./moves/WarningMoveError";
 import Counter from "./Counter";
 import { carriedUnits } from "./actions/mapSelect";
+import { normalDir } from "../utilities/utilities";
 
 export type GameData = {
   id: number;
@@ -485,6 +486,11 @@ export default class Game {
     if (this.gameActionState.move.rotatingTurret) {
       this.gameActionState.move.finalTurretRotation = dir
     } else {
+      const lastDir = this.lastPath?.facing
+      if (lastDir) {
+        const lastTur = this.gameActionState.move.finalTurretRotation
+        this.gameActionState.move.finalTurretRotation = normalDir(lastTur + dir - lastDir)
+      }
       this.gameActionState.move.path.push({
         x: x, y: y, facing: dir,
       })

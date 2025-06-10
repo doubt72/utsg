@@ -1,34 +1,15 @@
 import Game from "./Game";
 import {
-  BaseTerrainType,
-  Coordinate,
-  Direction,
-  ExtendedDirection,
-  MarkerType,
-  Player,
-  VictoryHex,
-  WeatherType,
-  WindType,
-  baseTerrainType,
-  markerType,
-  weatherType,
-  windType,
+  BaseTerrainType, Coordinate, Direction, ExtendedDirection, MarkerType, Player, VictoryHex,
+  WeatherType, WindType, baseTerrainType, markerType, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
 import Unit from "./Unit";
 import Counter from "./Counter";
 import { los } from "../utilities/los";
 import {
-  BadgeLayout,
-  HelpButtonLayout,
-  OverlayLayout,
-  TextLayout,
-  counterElite,
-  counterGreen,
-  counterRed,
-  markerYellow,
-  roundedRectangle,
-  yMapOffset,
+  BadgeLayout, HelpButtonLayout, OverlayLayout, TextLayout, counterElite, counterGreen,
+  counterRed, markerYellow, roundedRectangle, yMapOffset,
 } from "../utilities/graphics";
 import Marker from "./Marker";
 import Feature from "./Feature";

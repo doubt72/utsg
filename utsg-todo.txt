@@ -2,58 +2,53 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
-
-- Fix flickering of action display
-
-- "Normalize" stacks after placement / movement
-- Terrain Info includes terrain in overlay
+  - Fix flickering of action display
+  - "Normalize" stacks after placement / movement
+  - Terrain Info includes terrain in overlay
 
 Game Actions:
+  - Moving
+    (Now)
+      - Ghost Markers
+      - Dropping Off Part of Stack
+        - Handle case where it's the leader
+      - Smoke
 
-- Moving
-  (Now)
-    - Ghost Markers
-    - Dropping Off Part of Stack
-      - Handle case where it's the leader
-    - Smoke
+    (Soon):
+      - Consider adding road attributes / how base terrain affects it
+      - Dropping Support Weapons
+      - Picking up Support Weapons
+      - Unmanning Crewed Weapons
+      - Crewing Weapons
+      - Finishing/Syncing Move
+        - Capture Victory points
 
-  (Soon):
-    - Consider adding road attributes / how base terrain affects it
-    - Dropping Support Weapons
-    - Picking up Support Weapons
-    - Unmanning Crewed Weapons
-    - Crewing Weapons
-    - Finishing/Syncing Move
-      - Capture Victory points
-
-  (As Needed):
-    - Move cost for RR / RR bridge?
-    - Dropping Towed Weapons
-    - Disambarking from Vehicles
-    - Embarking on Vehicles
-    - Wire/Obstacles
-    - Engineering Tasks
-- Passing
-- Initiative check
-- Reaction fire
-- Mines
-- Sniper check
+    (As Needed):
+      - Move cost for RR / RR bridge?
+      - Dropping Towed Weapons
+      - Disambarking from Vehicles
+      - Embarking on Vehicles
+      - Wire/Obstacles
+      - Engineering Tasks
+  - Passing
+  - Initiative check
+  - Reaction fire
+  - Mines
+  - Sniper check
 
 Future Features/Bug Fixes:
-
-- Fix hindrance bug
-  - Through two fence corner intersections
-  - Also for hindrance at higher elevation
-- Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
-- Tooltips for map controls
-- Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
-  (So scenarios can be modified without breaking existing games)
-- Switch main page game status to websocket, not polling
-- Disable text selection on map/etc?
-- Support mouse scroll on map
-  - Much harder than it appears, need a way to intercept only scroll/wheel/key events
-    but pass through all other mouse events
+  - Fix hindrance bug
+    - Through two fence corner intersections
+    - Also for hindrance at higher elevation
+  - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
+  - Tooltips for map controls
+  - Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
+    (So scenarios can be modified without breaking existing games)
+  - Switch main page game status to websocket, not polling
+  - Disable text selection on map/etc?
+  - Support mouse scroll on map
+    - Much harder than it appears, need a way to intercept only scroll/wheel/key events
+      but pass through all other mouse events
 
 Generally:
-
-- Start working on Help/Manual
+  - Start working on Help/Manual
