@@ -1,5 +1,6 @@
-import { GameAction } from "../../utilities/commonTypes"
+import { GameAction, unitType } from "../../utilities/commonTypes"
 import Game, { actionType, gamePhaseType } from "../Game"
+import Unit from "../Unit"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
   if (game.lastMove?.id === undefined) {
@@ -30,18 +31,20 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   } else if (game.phase === gamePhaseType.Main) {
     if ((activePlayer === game.playerOneName && game.currentPlayer === 1) ||
         (activePlayer === game.playerTwoName && game.currentPlayer === 2)) {
-      if (game.gameActionState?.currentAction === actionType.Move) {
-        if (game.gameActionState.move && game.gameActionState.selection) {
-          // TODO REFACTOR
-          if (game.gameActionState.move.doneSelect) {
+      const selection = currSelection(game, false)
+      if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
+        const moveSelect = currSelection(game, true)
+        const action = game.gameActionState.move
+        if (moveSelect) {
+          if (action.doneSelect) {
             moves.unshift({ type: "none", message: "select hex to move" })
           } else {
             moves.unshift({ type: "none", message: "select addtional units or select hex to move" })
           }
-          if (game.gameActionState.selection[0].counter.target.turreted) {
+          if (moveSelect.turreted) {
             moves.push({ type: "move_rotate_toggle" })
           }
-          if (game.gameActionState.move.path.length > 1) {
+          if (action.path.length > 1) {
             moves.push({ type: "move_finish" })
           }
           moves.push({ type: "move_cancel" })
@@ -50,27 +53,25 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         }
       } else if (game.opportunityFire) {
         moves.unshift({ type: "none", message: "opportunity fire" })
-        moves.push({ type: "opportunity_fire" })
-        moves.push({ type: "opportunity_intensive_fire" })
+        if (canFire(selection)) { moves.push({ type: "opportunity_fire" }) }
+        if (canIntensiveFire(selection)) { moves.push({ type: "opportunity_intensive_fire" }) }
         moves.push({ type: "empty_pass" })
       } else if (game.reactionFire) {
         moves.unshift({ type: "none", message: "reaction fire" })
-        moves.push({ type: "reaction_fire" })
-        moves.push({ type: "reaction_intensive_fire" })
+        if (canFire(selection)) { moves.push({ type: "reaction_fire" }) }
+        if (canIntensiveFire(selection)) { moves.push({ type: "reaction_intensive_fire" }) }
         moves.push({ type: "empty_pass" })
-      } else if (game.scenario.map.noSelection) {
+      } else if (!selection) {
         moves.unshift({ type: "none", message: "select units to activate" })
         moves.push({ type: "enemy_rout" })
         moves.push({ type: "pass" })
       } else {
-        moves.push({ type: "fire" })
-        moves.push({ type: "intensive_fire" })
-        if (!["sw", "gun", "other"].includes(game.scenario.map.currentSelection[0].target.type as string)) {
-          moves.push({ type: "move" })
-          moves.push({ type: "rush" })
-          moves.push({ type: "assault_move" })
-          moves.push({ type: "rout" })
-        }
+        if (canFire(selection)) { moves.push({ type: "fire" }) }
+        if (canIntensiveFire(selection)) { moves.push({ type: "intensive_fire" }) }
+        if (canMove(selection)) { moves.push({ type: "move" }) }
+        if (canRush(selection)) { moves.push({ type: "rush" }) }
+        if (canAssaultMove(selection)) { moves.push({ type: "assault_move" }) }
+        if (canRout(selection)) { moves.push({ type: "rout" }) }
         moves.push({ type: "pass" })
       }
     } else {
@@ -83,15 +84,48 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   }
 }
 
-// TODO: add current selection
-// TODO: acd possible actions for current selection
+function currSelection(game: Game, move: boolean): Unit | undefined {
+  if (!game) { return undefined}
+  if (game.gameActionState?.selection) {
+    const unit = game.gameActionState.selection[0].counter.target as Unit
+    if (move && unit.canHandle && unit.children.length > 0 && unit.children[0].crewed) {
+      return unit.children[0]
+    }
+    return unit
+  }
+  const counters = game.scenario.map.currentSelection
+  if (counters.length < 1) { return undefined }
+  return counters[0].target as Unit
+}
 
-// function currSelection(game: Game): Unit | undefined {
-//   if (!game) { return undefined}
-//   if (game.gameActionState?.selection) {
-//     const counters = game.gameActionState.selection[0].counter
-//   }
-//   const counters = game.scenario.map.currentSelection
-//   if (counters.length < 1) { return undefined }
-//   return counters[0].target as Unit
-// }
+function canFire(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  return false
+}
+
+function canIntensiveFire(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  return false
+}
+
+function canMove(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  if (unit.type === unitType.SupportWeapon || unit.type === unitType.Gun) { return false }
+  if (unit.currentMovement === 0) { return false }
+  return true
+}
+
+function canRush(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  return false
+}
+
+function canAssaultMove(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  return false
+}
+
+function canRout(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  return false
+}

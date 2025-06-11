@@ -456,14 +456,6 @@ export default class Map {
     }
   }
 
-  get noSelection(): boolean {
-    const units = this.allUnits
-    for (const c of units) {
-      if (c.target.selected) { return false }
-    }
-    return true
-  }
-
   get currentSelection(): Counter[] {
     if (!this.game) { return [] }
     const rc: Counter[] = []
@@ -473,37 +465,4 @@ export default class Map {
     }
     return rc
   }
-
-  // TODO: repurpose/modify this later for fire selection
-  // inRangeOfSelectedLeader(unit: Counter): boolean {
-  //   if (unit.hex === undefined) { return false }
-  //   if (!(unit.target as Unit).canGroupFire) { return false }
-  //   const units = this.allUnits
-  //   for (const u of units) {
-  //     if (u.hex === undefined) { continue }
-  //     if (u !== unit && u.target.type === unitType.Leader && u.target.selected) {
-  //       if (hexDistance(u.hex, unit.hex) <= u.target.currentLeadership) {
-  //         return true
-  //       }
-  //     }
-  //   }
-  //   return false
-  // }
-
-  // TODO: repurpose this for something maybe
-  // get multiSelection(): boolean {
-  //   const units = this.allUnits
-  //   let foundX: number | undefined = undefined
-  //   let foundY: number | undefined = undefined
-  //   for (const c of units) {
-  //     if (c.target.selected) {
-  //       if (foundX !== undefined && foundY !== undefined) {
-  //         if (foundX !== c.hex?.x || foundY !== c.hex?.y ) { return true }
-  //       }
-  //       foundX = c.hex?.x
-  //       foundY = c.hex?.y
-  //     }
-  //   }
-  //   return false
-  // }
 }
