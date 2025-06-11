@@ -147,7 +147,7 @@ export const movementType: { [index: string]: MovementType } = {
 }
 
 export type UnitType = "ldr" | "sqd" | "tm" | "sw" | "gun" |
-  "tank" | "spg" | "ht" | "ac" | "truck" | "cav"
+  "tank" | "spg" | "ht" | "ac" | "truck" | "cav" | "other"
 export const unitType: { [index: string]: UnitType} = {
   Leader: "ldr", Squad: "sqd", Team: "tm", SupportWeapon: "sw", Gun: "gun", Tank: "tank",
   SelfPropelledGun: "spg", HalfTrack: "ht", ArmoredCar: "ac", Truck: "truck", Cavalry: "cav"
@@ -180,4 +180,9 @@ export type GameAction = {
 export type HexOpenType = true | false | "red" | "yellow" | "green" | "all" | number
 export const hexOpenType: { [index: string]: HexOpenType } = {
   Open: true, Closed: false, Red: "red", Yellow: "yellow", Green: "green", All: "all",
+}
+
+export type GhostData = {
+  ghost: true,
+  fromIndex?: number,
 }

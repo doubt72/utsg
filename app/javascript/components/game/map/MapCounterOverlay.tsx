@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import MapCounter from "./MapCounter";
 import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
 import Counter from "../../../engine/Counter";
-import { Coordinate } from "../../../utilities/commonTypes";
-import Map, { MapCounterData } from "../../../engine/Map";
+import { Coordinate, MarkerType, markerType, UnitType, unitType } from "../../../utilities/commonTypes";
+import Map from "../../../engine/Map";
+import { counterOutline } from "../../../utilities/graphics";
+import { counterInfoBadges } from "../../../engine/support/layout";
 
 interface MapCounterOverlayProps {
   map: Map;
@@ -31,7 +33,7 @@ export default function MapCounterOverlay({
   useEffect(() => {
     // Either counters or a number makes for iffy typing
     const displayCounters = counters ? counters :
-      map.counterDataAt(new Coordinate(xx as number, yy as number))
+      map.countersAt(new Coordinate(xx as number, yy as number))
     const coord = counters ? counters[0].base as Coordinate : new Coordinate(xx as number, yy as number)
     const layout = map.overlayLayout(
       coord, displayCounters.length, new Coordinate(maxX, maxY),
@@ -39,27 +41,24 @@ export default function MapCounterOverlay({
     )
     const helpOverlays: JSX.Element[] = []
     const selectionOverlays: JSX.Element[] = []
-    let trueIndex = 0
     setOverlayDisplay(
       <g>
         <path d={layout.path} style={layout.style as object} />
-        { displayCounters.map((data, i) => {
-          const counter = data as Counter
-          const counterData = data as MapCounterData
-          const cd = counters ? new Counter(undefined, counter.target, map) :
-            new Counter(undefined, counterData.u, map)
+        { displayCounters.map((counter, i) => {
+          const cd = new Counter(undefined, counter.target, map)
           if (counters) {
             cd.showDisabled = counter.showDisabled
             cd.reinforcement = counter.reinforcement
           }
+          cd.hideShadow = true
           cd.showAllCounters = true
-          if (!cd.target.isMarker) {
-            cd.trueIndex = trueIndex++
-          } else if (cd.target.isHull) {
-            cd.trueIndex = trueIndex
-          }
-          const badges = map.counterInfoBadges(
-            layout.x+i*170 + 30, layout.y2 + 8, maxY, cd
+          cd.unitIndex = counter.unitIndex
+          const transport = counter.target.transport && (counter.children.length > 2 ||
+            (counter.children.length === 1 && !counter.children[0].target.crewed)) ?
+            counter.children.reduce((sum, c) => sum + 1 + c.children.length, 0) : undefined
+          const shiftBadges = transport || counter.parent?.target.transport
+          const badges = counterInfoBadges(
+            map, layout.x+i*176 + 32, layout.y2 + 4 + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 0)
           ).map((b, i) => {
             const arrow = b.arrow ?
               <g>
@@ -78,11 +77,11 @@ export default function MapCounterOverlay({
             )
           })
           helpOverlays.push(
-            <MapCounterOverlayHelp key={i} xx={layout.x + i*170+160} yy={layout.y+8} maxX={maxX} maxY={maxY}
+            <MapCounterOverlayHelp key={i} xx={layout.x + i*176+170} yy={layout.y+10} maxX={maxX} maxY={maxY}
                                    map={map} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
           selectionOverlays.push(
-            <g key={i} transform={`scale(2) translate(${layout.x/2 + i*85} ${layout.y/2})`}>
+            <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
               <path d={cd.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
                     onClick={() => {
                       if (xx !== undefined && yy !== undefined) {
@@ -102,12 +101,26 @@ export default function MapCounterOverlay({
                         })
                       }
                       setUpdate(s => s + 1)
-                    }} />
+                    }} />              
             </g>
           )
           return (
             <g key={i} >
-              <g transform={`scale(2) translate(${layout.x/2 + i*85} ${layout.y/2})`}>
+              <g transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
+                {
+                  [markerType.TrackedHull, markerType.WheeledHull].includes(
+                      counter.target.type as MarkerType
+                    ) || (counter.children.length > 0 && [unitType.SupportWeapon, unitType.Gun].includes(
+                        counter.children[0].target.type as UnitType
+                    )) ?
+                    <path d={counterOutline(cd, 2, 1)}
+                          style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} />  : ""
+                }
+                {
+                  transport ?
+                    <path d={counterOutline(cd, transport + 1, 4)}
+                          style={{ fill: "rgba(0,0,0,0)", stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
+                }
                 <MapCounter counter={cd} ovCallback={() => {}} />
               </g>
               {badges}

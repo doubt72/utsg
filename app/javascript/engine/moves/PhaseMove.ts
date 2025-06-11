@@ -1,6 +1,7 @@
 import { Player } from "../../utilities/commonTypes";
 import Game, { GamePhase, gamePhaseType } from "../Game";
 import { GameMoveData } from "../GameMove";
+import organizeStacks from "../support/organizeStacks";
 import BaseMove from "./BaseMove";
 
 export default class PhaseMove extends BaseMove {
@@ -90,6 +91,7 @@ export default class PhaseMove extends BaseMove {
     this.game.phase = this.newPhase
     this.game.turn = this.newTurn
     this.game.currentPlayer = this.newPlayer
+    organizeStacks(this.game.scenario.map)
   }
   
   undo(): void {

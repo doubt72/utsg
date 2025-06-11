@@ -1,6 +1,6 @@
-import { Direction, FeatureType, NumberBoolean, featureType } from "../utilities/commonTypes";
-import Counter from "./Counter";
+import { Direction, FeatureType, GhostData, NumberBoolean, featureType } from "../utilities/commonTypes";
 import { featureHelpText } from "./support/help";
+import Unit from "./Unit";
 
 // ft: feature
 // t: type, n: name, i: icon
@@ -60,6 +60,8 @@ export default class Feature {
   facing: Direction = 1;
 
   rawData: FeatureData;
+  
+  ghost?: GhostData;
 
   constructor(data: FeatureData) {
     this.type = data.t
@@ -90,6 +92,9 @@ export default class Feature {
   clone(): Feature {
     return new Feature(this.rawData)
   }
+
+  get children(): Unit[] { return [] }
+  parent = undefined
 
   turreted = false
   rotatingVehicleMount = false
@@ -149,9 +154,9 @@ export default class Feature {
   uncrewedSW = false
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canTowUnit(_: Counter): boolean { return false }
+  canTowUnit(_: Unit): boolean { return false }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canTransportUnit(_: Counter): boolean { return false }
+  canTransportUnit(_: Unit): boolean { return false }
 
   select() {
     this.selected = !this.selected

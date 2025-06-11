@@ -20,9 +20,13 @@ export default class Counter {
   target: Unit | Marker | Feature;
   map?: Map;
   stackingIndex: number;
-  trueIndex?: number;
+  unitIndex: number;
 
   reinforcement?: { player: Player, turn: number, index: number }
+  
+  parent?: Counter;
+  children: Counter[];
+  hideShadow: boolean = false;
 
   constructor(
     coord: Coordinate | undefined, target: Unit | Marker | Feature,
@@ -47,7 +51,9 @@ export default class Counter {
     this.target = target
     this.map = map
     this.stackingIndex = 0
-    this.trueIndex = undefined
+    this.unitIndex = 0
+
+    this.children = []
   }
 
   showAllCounters = false;
@@ -87,7 +93,8 @@ export default class Counter {
     return baseCounterPath(this.x + xOffset, this.y + yOffset)
   }
 
-  get shadowPath(): string {
+  get shadowPath(): string | false {
+    if (this.hideShadow) { return false }
     const angle = this.rotation ? this.rotation.a : 0
     return this.counterPath(
       -this.stackOffset * Math.sqrt(2) * Math.cos((angle + 45)/ 180 * Math.PI),

@@ -1,3 +1,4 @@
+import Counter from "../engine/Counter";
 import Map from "../engine/Map"
 import { Coordinate, Direction } from "./commonTypes";
 
@@ -160,6 +161,24 @@ export function hexPath(loc: Coordinate, r: number, rotated: boolean): string {
     path = path.concat(["L", loc.x + r * Math.cos(a), loc.y + r * Math.sin(a)])
   }
   return path.join(" ")
+}
+
+export function counterOutline(counter: Counter, width: number, outline: number): string {
+  const x = counter.x
+  const y = counter.y
+  const xWidth = width * 88 - 8
+  const corner = 4 + outline
+  return [
+    "M", x+xWidth-corner+outline, y-outline,
+    "A", corner, corner, 0, 0, 1, x+xWidth+outline, y+corner-outline,
+    "L", x+xWidth+outline, y+80-corner+outline,
+    "A", corner, corner, 0, 0, 1, x+xWidth-corner+outline, y+80+outline,
+    "L", x+corner-outline, y+80+outline,
+    "A", corner, corner, 0, 0, 1, x-outline, y+80-corner+outline,
+    "L", x-outline, y+corner-outline,
+    "A", corner, corner, 0, 0, 1, x+corner-outline, y-outline,
+    "L", x+xWidth-corner+outline, y-outline,
+  ].join(" ")
 }
 
 export const yMapOffset = 160

@@ -32,6 +32,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         (activePlayer === game.playerTwoName && game.currentPlayer === 2)) {
       if (game.gameActionState?.currentAction === actionType.Move) {
         if (game.gameActionState.move && game.gameActionState.selection) {
+          // TODO REFACTOR
           if (game.gameActionState.move.doneSelect) {
             moves.unshift({ type: "none", message: "select hex to move" })
           } else {
@@ -81,3 +82,16 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     return moves
   }
 }
+
+// TODO: add current selection
+// TODO: acd possible actions for current selection
+
+// function currSelection(game: Game): Unit | undefined {
+//   if (!game) { return undefined}
+//   if (game.gameActionState?.selection) {
+//     const counters = game.gameActionState.selection[0].counter
+//   }
+//   const counters = game.scenario.map.currentSelection
+//   if (counters.length < 1) { return undefined }
+//   return counters[0].target as Unit
+// }

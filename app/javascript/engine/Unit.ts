@@ -1,8 +1,8 @@
 import {
-  Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
-  NumberBoolean, SizeRange, UnitStatus, UnitType, movementType, unitStatus
+  Direction, GhostData, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
+  NumberBoolean, SizeRange, UnitStatus, UnitType, movementType, unitStatus,
+  unitType
 } from "../utilities/commonTypes";
-import Counter from "./Counter";
 import { unitHelpText } from "./support/help";
 
 // c: nation, t: type, n: name, i: icon, y: year
@@ -119,6 +119,11 @@ export default class Unit {
   smallName: number;
 
   rawData: UnitData;
+  
+  ghost?: GhostData;
+  
+  parent?: Unit;
+  children: Unit[];
 
   constructor(data: UnitData) {
     this.nation = data.c
@@ -203,6 +208,8 @@ export default class Unit {
     this.selected = false
 
     this.rawData = data
+
+    this.children = []
   }
 
   clone(): Unit {
@@ -231,19 +238,28 @@ export default class Unit {
   }
 
   get canGroupFire(): boolean {
-    return ["sw", "ldr", "sqd", "tm"].includes(this.type)
+    return [
+      unitType.SupportWeapon, unitType.Leader, unitType.Squad, unitType.Team,
+    ].includes(this.type)
   }
 
   get canHandle(): boolean {
-    return ["sqd", "tm"].includes(this.type)
+    return [
+      unitType.Squad, unitType.Team,
+    ].includes(this.type)
   }
 
   get canCarrySupport(): boolean {
-    return ["sqd", "tm", "ldr"].includes(this.type)
+    return [
+      unitType.Leader, unitType.Squad, unitType.Team,
+    ].includes(this.type)
   }
 
   get rotates(): boolean {
-    return !["sw", "ldr", "sqd", "tm", "cav", "cav-wheel", "other"].includes(this.type)
+    return ![
+      unitType.SupportWeapon, unitType.Leader, unitType.Squad, unitType.Team,
+      unitType.Cavalry, unitType.Other
+    ].includes(this.type)
   }
 
   get uncrewedSW(): boolean {
@@ -252,19 +268,33 @@ export default class Unit {
     return true
   }
 
-  canTowUnit(counter: Counter): boolean {
-    if (counter.target.isMarker || counter.target.isFeature) { return false }
+  canTowUnit(unit: Unit): boolean {
+    if (!unit.crewed) { return false }
     if (!this.canTow) { return false }
-    if (this.size < (counter.target.towSize ?? 0)) { return false }
+    if (this.size < (unit.towSize ?? 0)) { return false }
+    for (let i = 0; i < this.children.length; i++) {
+      if (this.children[i].crewed) { return false }
+    }
     return true
   }
 
-  canTransportUnit(counter: Counter): boolean {
-    if (counter.target.isMarker || counter.target.isFeature) { return false }
+  canTransportUnit(unit: Unit): boolean {
     if (!this.transport) { return false }
-    if (this.transport === 1 && counter.target.type !== "ldr") { return false }
-    if (this.transport === 2 && ["tm", "ldr"].includes(counter.target.type as string)) { return false }
-    if (["sqd", "tm", "ldr"].includes(counter.target.type as string)) { return false }
+    if (this.transport === 1 && unit.type !== unitType.Leader) { return false }
+    if (this.transport === 2 && ![unitType.Team, unitType.Leader].includes(unit.type)) {
+      return false
+    }
+    if (![unitType.Squad, unitType.Team, unitType.Leader].includes(unit.type)) { return false }
+    if (unit.type === unitType.Leader) {
+      for (let i = 0; i < this.children.length; i++) {
+        if (this.children[i].type === unitType.Leader) { return false }
+      }
+    }
+    if ([unitType.Team, unitType.Squad].includes(unit.type)) {
+      for (let i = 0; i < this.children.length; i++) {
+        if ([unitType.Team, unitType.Squad].includes(this.children[i].type)) { return false }
+      }
+    }
     return true
   }
 

@@ -1,6 +1,5 @@
 import { Direction, MarkerType, NumberBoolean, WeatherType, WindType, markerType, weatherType, windType } from "../utilities/commonTypes"
 import { counterElite, counterGreen, counterRed, markerYellow } from "../utilities/graphics";
-import Counter from "./Counter";
 import { markerHelpText } from "./support/help";
 
 // mk: marker
@@ -104,11 +103,6 @@ export default class Marker {
   canHandle = false
   canCarrySupport = false
   uncrewedSW = false
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canTowUnit(_: Counter): boolean { return false }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canTransportUnit(_: Counter): boolean { return false }
 
   get hindrance(): number { return 0 }
 

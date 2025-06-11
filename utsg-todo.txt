@@ -2,9 +2,10 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
-  - Fix flickering of action display
+  - Replace action choices in actions with "can move" etc.
   - "Normalize" stacks after placement / movement
-  - Terrain Info includes terrain in overlay
+    - Refactor to have parents/children
+    - Display Stacks to show things that are carried, etc.
 
 Game Actions:
   - Moving
@@ -37,6 +38,8 @@ Game Actions:
   - Sniper check
 
 Future Features/Bug Fixes:
+  - Fix flickering of control buttons
+  ? Terrain Info includes terrain in overlay
   - Fix hindrance bug
     - Through two fence corner intersections
     - Also for hindrance at higher elevation

@@ -295,8 +295,8 @@ function openHexMovement(map: Map, from: Coordinate, to: Coordinate): HexOpenTyp
     for(const sel of game.gameActionState.selection) {
       const u = sel.counter.target
       const move = u.currentMovement as number
-      if (u.canCarrySupport && u.type !== "ldr" && move < minInfMove) { minInfMove = move }
-      if (u.type === "ldr" && move < minLdrMove) { minLdrMove = move }
+      if (u.canCarrySupport && u.type !== unitType.Leader && move < minInfMove) { minInfMove = move }
+      if (u.type === unitType.Leader && move < minLdrMove) { minLdrMove = move }
     }
     if (minLdrMove === 99) {
       move = minInfMove + allRoad

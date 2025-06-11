@@ -16,9 +16,9 @@ import {
 } from "../utilities/commonTypes";
 import Feature, { FeatureData } from "../engine/Feature";
 import Unit, { UnitData } from "../engine/Unit";
-import Counter from "../engine/Counter";
 import { normalDir } from "../utilities/utilities";
 import { getAPI } from "../utilities/network";
+import organizeStacks from "../engine/support/organizeStacks";
 
 export default function DebugMap() {
   const id: number = Number(useParams().id)
@@ -125,6 +125,7 @@ export default function DebugMap() {
       if (data.trt) { unit.turretJammed = true }
       map.addUnit(new Coordinate(data.x, data.y), unit)
     })
+    organizeStacks(map)
     setHideCounters(false)
   }, [map])
 
@@ -133,9 +134,7 @@ export default function DebugMap() {
     console.log(key)
   }
 
-  const unitSelection = (x: number, y: number, counter: Counter) => {
-    const key = `x ${x}-${y}-${counter.trueIndex}`
-    console.log(key)
+  const unitSelection = () => {
   }
 
   const baseTerrainName = () => {
@@ -350,7 +349,7 @@ export default function DebugMap() {
       </div>
       <GameMap map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
                showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
-               hexCallback={hexSelection} counterCallback={unitSelection} />
+               hexCallback={hexSelection} counterCallback={unitSelection} forceUpdate={0} />
     </div>
   )
 }

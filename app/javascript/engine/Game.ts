@@ -7,7 +7,6 @@ import BaseMove from "./moves/BaseMove";
 import IllegalMoveError from "./moves/IllegalMoveError";
 import WarningMoveError from "./moves/WarningMoveError";
 import Counter from "./Counter";
-import { carriedUnits } from "./actions/mapSelect";
 import { normalDir } from "../utilities/utilities";
 
 export type GameData = {
@@ -39,7 +38,7 @@ export const actionType: { [index: string]: ActionType } = {
 }
 
 export type ActionSelection = {
-  x: number, y: number, ti: number, counter: Counter,
+  x: number, y: number, i: number, counter: Counter,
 }
 
 export type DeployAction = {
@@ -50,12 +49,23 @@ export type MovePath = {
   x: number, y: number, facing?: Direction
 }
 
+export type addActionType = "smoke" | "shortmove"
+export type MoveAddAction = {
+  x: number, y: number, type: addActionType, cost: number,
+  meta?: {
+    fromIndex?: number,
+  },
+}
+
 export type MoveAction = {
   initialSelection: ActionSelection[];
   doneSelect: boolean;
   path: MovePath[],
+  addActions: MoveAddAction[],
   finalTurretRotation: Direction
-  rotatingTurret: boolean
+  rotatingTurret: boolean,
+  placingSmoke: boolean,
+  shortingMove: boolean,
 }
 
 export type GameActionState = {
@@ -424,10 +434,6 @@ export default class Game {
     }
   }
 
-  nextUnit(selection: Counter): Counter | undefined {
-    return this.scenario.map.nextUnit(selection)
-  }
-
   get lastPath(): MovePath | undefined {
     if (!this.gameActionState?.move) { return }
     const path = this.gameActionState.move.path
@@ -441,24 +447,24 @@ export default class Game {
         x: selection.hex.x, y: selection.hex.y,
         facing: selection.target.rotates ? selection.target.facing : undefined
       }
-      const units = carriedUnits(this.scenario.map, selection)
+      const units = selection.children
       units.forEach(c => c.target.select())
-      const canSelect = selection.target.canCarrySupport &&
-        !(units.length === 1 && units[0].target.crewed)
-      const allSelection = [{ x: loc.x, y: loc.y, ti: selection.trueIndex as number, counter: selection }]
-      const initialSelection = [{ x: loc.x, y: loc.y, ti: selection.trueIndex as number, counter: selection }]
+      const canSelect = selection.target.canCarrySupport && (units.length < 1 || !units[0].target.crewed)
+      const allSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
+      const initialSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
       units.forEach(u => {
         const hex = u.hex as Coordinate
-        allSelection.push({ x: hex.x, y: hex.y, ti: u.trueIndex as number, counter: u })
-        initialSelection.push({ x: hex.x, y: hex.y, ti: u.trueIndex as number, counter: u })
+        allSelection.push({ x: hex.x, y: hex.y, i: u.unitIndex as number, counter: u })
+        initialSelection.push({ x: hex.x, y: hex.y, i: u.unitIndex as number, counter: u })
       })
       this.gameActionState = {
         player: this.currentPlayer,
         currentAction: actionType.Move,
         selection: allSelection,
         move: {
-          initialSelection, doneSelect: !canSelect, path: [loc],
+          initialSelection, doneSelect: !canSelect, path: [loc], addActions: [],
           finalTurretRotation: selection.target.facing, rotatingTurret: false,
+          placingSmoke: false, shortingMove: false,
         }
       }
     }
@@ -495,6 +501,21 @@ export default class Game {
         x: x, y: y, facing: dir,
       })
     }
+  }
+
+  placeSmokeToggle() {
+    if (!this.gameActionState?.move) { return }
+    this.gameActionState.move.placingSmoke = !this.gameActionState.move.placingSmoke
+  }
+
+  shortingMoveToggle() {
+    if (!this.gameActionState?.move) { return }
+    this.gameActionState.move.shortingMove = !this.gameActionState.move.shortingMove
+  }
+
+  addMoveAction(x: number, y: number, cost: number, type: addActionType, meta?: { fromIndex?: number }) {
+    if (!this.gameActionState?.move) { return }
+    this.gameActionState.move.addActions.push({ x, y, cost, type, meta })
   }
 
   executePass() {}

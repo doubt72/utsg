@@ -1,6 +1,6 @@
 import Game from "./Game";
 import {
-  BaseTerrainType, Coordinate, Direction, ExtendedDirection, MarkerType, Player, VictoryHex,
+  BaseTerrainType, Coordinate, Direction, ExtendedDirection, GhostData, Player, VictoryHex,
   WeatherType, WindType, baseTerrainType, markerType, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
@@ -8,12 +8,11 @@ import Unit from "./Unit";
 import Counter from "./Counter";
 import { los } from "../utilities/los";
 import {
-  BadgeLayout, HelpButtonLayout, OverlayLayout, TextLayout, counterElite, counterGreen,
-  counterRed, markerYellow, roundedRectangle, yMapOffset,
+  HelpButtonLayout, OverlayLayout, TextLayout, roundedRectangle, yMapOffset,
 } from "../utilities/graphics";
-import Marker from "./Marker";
 import Feature from "./Feature";
 import WarningMoveError from "./moves/WarningMoveError";
+import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -35,10 +34,6 @@ export type MapData = {
 }
 
 // Defined here to avoid circular imports
-export type MapCounterData = {
-  loc: Coordinate, u: Marker | Unit | Feature, s: number, ti?: number
-}
-
 export default class Map {
   game?: Game;
 
@@ -53,6 +48,7 @@ export default class Map {
   mapHexes: Hex[][] = [];
 
   units: (Unit | Feature)[][][];
+  ghosts: (Unit | Feature)[][][];
 
   baseTerrain: BaseTerrainType;
   night?: boolean;
@@ -87,12 +83,16 @@ export default class Map {
     this.loadMap(data.hexes)
 
     this.units = []
+    this.ghosts = []
     for (let i = 0; i < this.height; i++) {
       const array: Unit[][] = []
+      const array2: Unit[][] = []
       for (let j = 0; j < this.width; j++) {
-          array.push([])
+        array.push([])
+        array2.push([])
       }
       this.units.push(array)
+      this.ghosts.push(array2)
     }
 
     this.baseTerrain = data.base_terrain || baseTerrainType.Grass
@@ -237,6 +237,22 @@ export default class Map {
     return undefined
   }
 
+  addGhost(loc: Coordinate, unit: Unit | Feature, meta?: { fromIndex?: number }) {
+    const list = this.units[loc.y][loc.x]
+    const ghost: GhostData = { ghost: true }
+    if (meta) { Object.assign(ghost, meta) }
+    unit.ghost = ghost
+    list.push(unit)
+  }
+
+  clearGhosts() {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        this.ghosts[y][x] = []
+      }
+    }
+  }
+
   addUnit(loc: Coordinate, unit: Unit | Feature) {
     const list = this.units[loc.y][loc.x]
     if (unit.isFeature) {
@@ -280,61 +296,47 @@ export default class Map {
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {
-    const c: MapCounterData[] = []
     const list = this.units[loc.y][loc.x]
-    let index = 0
-    let trueIndex = 0
-    list.forEach(u => {
-      const r = u.rotates ? 1 : 0
-      const f = u.turreted && !u.isWreck ? u.turretFacing : u.facing
-      if (u.turreted && !u.isWreck) {
-        const type = u.isWheeled ? markerType.WheeledHull : markerType.TrackedHull
-        c.push({ loc: loc, u: new Marker(
-          { type: type, nation: u.nation, rotates: 1, facing: u.facing, mk: 1, player_nation: u.playerNation }
-        ), s: index++ })
-      }
-      c.push({ loc: loc, u: u, s: index++, ti: trueIndex++ })
-      if (this.showAllCounters) {
-        const markerTypes: MarkerType[] = []
-        if (!u.isFeature && (u as Unit).eliteCrew > 0) { markerTypes.push(markerType.EliteCrew) }
-        if (!u.isFeature && (u as Unit).eliteCrew < 0) { markerTypes.push(markerType.GreenCrew) }
-        if (u.immobilized) { markerTypes.push(markerType.Immobilized) }
-        if (u.turretJammed) { markerTypes.push(markerType.TurretJammed) }
-        if (u.jammed && u.turreted) { markerTypes.push(markerType.Jammed) }
-        if (u.weaponBroken) { markerTypes.push(markerType.WeaponBroken) }
-        if (u.isTired) { markerTypes.push(markerType.Tired) }
-        if (u.isPinned) { markerTypes.push(markerType.Pinned) }
-        if (u.isExhausted) { markerTypes.push(markerType.Exhausted) }
-        if (u.isActivated) { markerTypes.push(markerType.Activated) }
-        markerTypes.forEach(t => {
-          c.push({
-            loc: loc, u: new Marker({
-              type: t, rotates: r, facing: f, mk: 1
-            }), s: index++
-          })
-        })
-      }
-    })
-    return c
+    return countersFromUnits(loc, list, this.showAllCounters)
   }
 
   countersAt(loc: Coordinate): Counter[] {
-    const c: Counter[] = []
-    this.counterDataAt(loc).forEach(data => {
-      const counter = new Counter(data.loc, data.u, this)
-      counter.stackingIndex = data.s
-      if (data.ti !== undefined) {
-        counter.trueIndex = data.ti
+    const rc: Counter[] = []
+    let index = 0
+    const lu: { [index: number]: Counter } = {}
+    const data = this.counterDataAt(loc)
+    for (let i = 0; i < data.length; i++) {
+      const counter = new Counter(data[i].loc, data[i].u, this)
+      counter.stackingIndex = i
+      const unitIndex = data[i].i
+      if (unitIndex !== undefined) {
+        if (!counter.target.isFeature && !counter.target.isMarker) {
+          lu[unitIndex] = counter
+        }
+        counter.unitIndex = unitIndex
+        index = unitIndex
       }
-      c.push(counter)
-    })
-    return c
+      const parent = data[i].pi
+      if (parent !== undefined) {
+        lu[parent].children.push(counter)
+        counter.parent = lu[parent]
+      }
+      rc.push(counter)
+    }
+    const ghosts = this.ghosts[loc.y][loc.x]
+    for (let i = 0; i < ghosts.length; i++) {
+      const counter = new Counter(loc, ghosts[i], this)
+      counter.stackingIndex = data.length + i
+      counter.unitIndex = index++
+      rc.push(counter)
+    }
+    return rc
   }
 
-  counterAtIndex(loc: Coordinate, ti: number): Counter | undefined {
+  counterAtIndex(loc: Coordinate, index: number): Counter | undefined {
     const counters = this.countersAt(loc)
     for (const c of counters) {
-      if (!c.target.isMarker && !c.target.isFeature && c.trueIndex === ti) { return c }
+      if (!c.target.isMarker && !c.target.isFeature && c.unitIndex === index) { return c }
     }
     return
   }
@@ -378,8 +380,8 @@ export default class Map {
       x1 = loc.x - 50
       y1 = loc.y - 50
     }
-    let x2 = x1 + size*170 + 10
-    let y2 = y1 + 170 + 10
+    let x2 = x1 + size*176 + 16
+    let y2 = y1 + 192
     if (x2 > max.x) {
       const diff = max.x - x2
       x1 += diff
@@ -404,85 +406,6 @@ export default class Map {
       path: roundedRectangle(x1, y1, x2 - x1, y2 - y1), x: x1 + 5, y: y1 + 7.5, y2: y2,
       style: { fill: "rgba(0,0,0,0.4" },
     }
-  }
-
-  counterInfoBadges(x: number, y: number, maxY: number, counter: Counter): BadgeLayout[] {
-    const badges: { text: string, color: string, tColor: string, arrow?: Direction}[] = []
-    if (counter.target.rotates && !counter.target.isWreck &&
-        !counter.target.hideOverlayRotation && !counter.reinforcement) {
-      const turret = counter.target.turreted && !counter.target.isWreck
-      const dir = turret ? counter.target.turretFacing : counter.target.facing
-      badges.push({ text: `direction: ${dir}`, arrow: dir, color: "white", tColor: "black" })
-    }
-    if (!counter.target.isMarker || !counter.target.isWreck) {
-      const u = counter.target
-      const s = !this.showAllCounters
-      if (!u.isFeature && (u as Unit).eliteCrew > 0 && s) {
-        badges.push({ text: "elite crew +1", color: counterElite, tColor: "white" })
-      }
-      if (!u.isFeature && (u as Unit).eliteCrew < 0 && s) {
-        badges.push({ text: "green crew -1", color: counterGreen, tColor: "black" })
-      }
-      if (u.isBroken) {
-        badges.push({ text: "broken", color: counterRed, tColor: "white" })
-      }
-      if (u.isWreck) {
-        badges.push({ text: "destroyed", color: counterRed, tColor: "white" })
-      }
-      if (u.immobilized && s) {
-        badges.push({ text: "immobilized", color: counterRed, tColor: "white" })
-      }
-      if (u.turretJammed && s) {
-        badges.push({ text: "turret jammed", color: counterRed, tColor: "white" })
-      }
-      if (u.jammed && u.turreted && s) {
-        badges.push({ text: "weapon jammed", color: counterRed, tColor: "white" })
-      } else if (u.jammed && !u.turreted) {
-        badges.push({ text: "broken", color: counterRed, tColor: "white" })
-      } else if (u.weaponBroken && s) {
-        badges.push({ text: "weapon broken", color: counterRed, tColor: "white" })
-      }
-      if (u.isTired && s) {
-        badges.push({ text: "tired", color: markerYellow, tColor: "black" })
-      }
-      if (u.isPinned && s) {
-        badges.push({ text: "pinned", color: counterRed, tColor: "white" })
-      }
-      if (u.isExhausted && s) {
-        badges.push({ text: "exhausted", color: markerYellow, tColor: "black" })
-      }
-      if (u.isActivated && s) {
-        badges.push({ text: "activated", color: markerYellow, tColor: "black" })
-      }
-    }
-    const size = 24
-    let diff = size+4
-    let start = y
-    if (y + diff * badges.length > maxY) {
-      diff = -diff
-      start = y - 196
-    }
-    return badges.map((raw, i): BadgeLayout => {
-      const b: BadgeLayout = raw
-      b.x = x+5
-      b.y = start + diff*i
-      b.size = size-8
-      b.path = [
-        "M", x, b.y-size/2, "L", x+137.5, b.y-size/2, "L", x+137.5, b.y+size/2 ,
-        "L", x, b.y+size/2, "L", x, b.y-size/2
-      ].join(" ")
-      if (b.arrow) {
-        const c = x-size*0.6
-        b.dirpath = [
-          "M", c-size/2, b.y, "A", size/2, size/2, 0, 0, 1, c+size/2, b.y,
-          "A", size/2, size/2, 0, 0, 1, c-size/2, b.y
-        ].join(" ")
-        b.dx = c
-        b.dy = b.y
-      }
-      b.y = b.y + 5
-      return b
-    })
   }
 
   counterHelpButtonLayout(loc: Coordinate, counter: Counter): HelpButtonLayout | boolean {
@@ -523,21 +446,14 @@ export default class Map {
     }
   }
 
-  clearOtherSelections(x: number, y: number, trueIndex: number) {
+  clearOtherSelections(x: number, y: number, index: number) {
     const units = this.allUnits
     for (const u of units) {
-      if (!u.hex || (u.hex.x === x && u.hex.y === y && u.trueIndex === trueIndex)) {
+      if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unitIndex === index)) {
         continue
       }
       if (u.target.selected) { u.target.select() }
     }
-  }
-
-  nextUnit(selection: Counter): Counter | undefined {
-    const hex = selection.hex as Coordinate
-    return this.counterAtIndex(
-      new Coordinate(hex.x, hex.y), (selection.trueIndex ?? 0) + 1
-    )
   }
 
   get noSelection(): boolean {
