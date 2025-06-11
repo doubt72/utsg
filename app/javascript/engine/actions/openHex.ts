@@ -23,8 +23,9 @@ export function openHexRotateOpen(map: Map, loc: Coordinate): boolean {
   if (!game?.gameActionState?.move) { return false }
   if (!game.gameActionState.selection) { return false }
   const counter = game.gameActionState.selection[0].counter
-  const next = map.nextUnit(counter)
-  if (!counter.target.rotates && !(next && next.target.rotates)) { return false }
+  if (!counter.target.rotates && !(counter.children.length > 0 && counter.children[0].target.rotates)) {
+    return false
+  }
   const cost = openHexMovementCost(map, loc, loc, counter.target as Unit) +
                openHexMovementPastCost(map, counter.target as Unit)
   const length = game.gameActionState.move.path.length

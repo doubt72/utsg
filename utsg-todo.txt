@@ -3,9 +3,6 @@
 
 High Priority Features/Bug Fixes:
   - Replace action choices in actions with "can move" etc.
-  - "Normalize" stacks after placement / movement
-    - Refactor to have parents/children
-    - Display Stacks to show things that are carried, etc.
 
 Game Actions:
   - Moving
