@@ -238,7 +238,7 @@ export default class Map {
   }
 
   addGhost(loc: Coordinate, unit: Unit | Feature, meta?: { fromIndex?: number }) {
-    const list = this.units[loc.y][loc.x]
+    const list = this.ghosts[loc.y][loc.x]
     const ghost: GhostData = { ghost: true }
     if (meta) { Object.assign(ghost, meta) }
     unit.ghost = ghost
@@ -246,6 +246,7 @@ export default class Map {
   }
 
   clearGhosts() {
+    console.log("clearing")
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         this.ghosts[y][x] = []

@@ -539,6 +539,7 @@ export default class Game {
 
   cancelAction() {
     this.scenario.map.clearAllSelections()
+    this.scenario.map.clearGhosts()
     this.gameActionState = undefined
   }
 }

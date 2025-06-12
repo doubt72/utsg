@@ -193,7 +193,7 @@ export default function GameMap({
     if (!map || map.debug) { return }
     if (hideCounters || showLos) {
       if (map.game?.gameActionState) {
-        map.game.gameActionState = undefined
+        map.game.cancelAction()
         clearActionCallback()
       }
       setReinforcementsOverlay(undefined)
@@ -202,7 +202,7 @@ export default function GameMap({
 
   useEffect(() => {
     if (!map?.game) { return }
-    map.game.gameActionState = undefined
+    map.game.cancelAction()
     clearActionCallback()
     setReinforcementsOverlay(undefined)
   }, [showTerrain])
