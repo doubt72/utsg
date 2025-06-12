@@ -495,16 +495,19 @@ export default function GameMap({
       }
       const xShift = (map?.previewXSize ?? 1) * xOffset
       const yShift = (map?.ySize ?? 1) * yOffset
+      const action = map?.game?.gameActionState
+      const early = action?.move && (!action.move.doneSelect || action.move.shortingMove)
+      const late = !early && action
       return (
         <svg x={0} y={yMapOffset + 50 / scale - 50} width={mWidth} height={mHeight}
              viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}>
           {hexDisplay}
           {hexDisplayDetail}
-          {map?.game?.gameActionState?.move ? hexDisplayOverlays : ""}
+          {early ? hexDisplayOverlays : ""}
           {counterDisplay}
           {losOverlay}
           {counterLosOverlay}
-          {map?.game?.gameActionState?.deploy ? hexDisplayOverlays : ""}
+          {late ? hexDisplayOverlays : ""}
           {moveTrack}
           {directionSelectionOverlay}
         </svg>

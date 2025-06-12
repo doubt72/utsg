@@ -147,6 +147,7 @@ export default class Feature {
   fullIcon = false
   isHull = false
   selected = false
+  altSelected = false
   hideOverlayRotation = false
 
   canHandle = false
@@ -160,6 +161,10 @@ export default class Feature {
 
   select() {
     this.selected = !this.selected
+  }
+
+  altSelect() {
+    this.altSelected = !this.altSelected
   }
 
   get isMarker(): boolean { return false }

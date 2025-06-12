@@ -61,6 +61,8 @@ export type facingLayout = {
 
 export const counterRed = "#E00"
 export const markerYellow = "#EE0"
+export const selectColor = "#E00"
+export const altSelectColor = "#AAA"
 export const counterGreen = "#2F2"
 export const counterElite = "#070"
 

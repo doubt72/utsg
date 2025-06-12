@@ -517,11 +517,13 @@ export default class Game {
   placeSmokeToggle() {
     if (!this.gameActionState?.move) { return }
     this.gameActionState.move.placingSmoke = !this.gameActionState.move.placingSmoke
+    this.gameActionState.move.shortingMove = false
   }
 
   shortingMoveToggle() {
     if (!this.gameActionState?.move) { return }
     this.gameActionState.move.shortingMove = !this.gameActionState.move.shortingMove
+    this.gameActionState.move.placingSmoke = false
   }
 
   addMoveAction(x: number, y: number, cost: number, type: addActionType, meta?: { fromIndex?: number }) {

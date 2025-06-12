@@ -17,7 +17,7 @@ export default function MoveShortToggleButton({ game, callback }: MoveShortToggl
 
   const text = () => {
     if (game.gameActionState?.move?.shortingMove === true) { return "continue moving" }
-    return "drop off unit"
+    return "drop unit"
   }
   
   const icon = () => {

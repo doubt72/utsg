@@ -6,25 +6,23 @@ High Priority Features/Bug Fixes:
 Game Actions:
   - Moving
     (Now)
-      - Ghost Markers
       - Dropping Off Part of Stack
         - Handle case where it's the leader
-      - Smoke
+      - Dropping Towed Weapons
+      - Dropping Support Weapons
+      - Unmanning Crewed Weapons
+      - Disambarking from Vehicles
 
     (Soon):
       - Consider adding road attributes / how base terrain affects it
-      - Dropping Support Weapons
       - Picking up Support Weapons
-      - Unmanning Crewed Weapons
       - Crewing Weapons
+      - Embarking on Vehicles
       - Finishing/Syncing Move
         - Capture Victory points
 
     (As Needed):
       - Move cost for RR / RR bridge?
-      - Dropping Towed Weapons
-      - Disambarking from Vehicles
-      - Embarking on Vehicles
       - Wire/Obstacles
       - Engineering Tasks
   - Passing

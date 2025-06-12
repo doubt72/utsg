@@ -5,8 +5,9 @@ import Feature from "./Feature";
 import Map from "./Map";
 import {
   CircleLayout, CounterLayout, HelpLayout, MarkerLayout, PathLayout, SVGStyle, StatusLayout,
-  TextArrayLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, counterRed,
+  TextArrayLayout, altSelectColor, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, counterRed,
   facingLayout, hexPath, markerYellow, nationalColors,
+  selectColor,
   squarePath,
 } from "../utilities/graphics";
 import { counterHelpLayout } from "./support/help";
@@ -83,7 +84,9 @@ export default class Counter {
       return { fill: "#DFDFDF", stroke: "black", strokeWidth: 1 }
     }
     if (this.target.selected) {
-      return { fill: this.color, stroke: counterRed, strokeWidth: 4 }
+      return { fill: this.color, stroke: selectColor, strokeWidth: 4 }
+    } else if (this.target.altSelected) {
+      return { fill: this.color, stroke: altSelectColor, strokeWidth: 4 }
     } else {
       return { fill: this.color, stroke: "black", strokeWidth: 1 }
     }

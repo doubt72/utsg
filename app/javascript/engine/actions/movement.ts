@@ -18,6 +18,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
     let minLdrMove = 99
     let minInfMove = 99
     for(const sel of game.gameActionState.selection) {
+      // TODO: skip units that have been dropped off
       const u = sel.counter.target
       const move = u.currentMovement as number
       if (u.canCarrySupport && u.type !== unitType.Leader && move < minInfMove) { minInfMove = move }
@@ -37,6 +38,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   const game = map.game
   if (!game?.gameActionState?.move) { return false }
   const action = game?.gameActionState.move
+  if (action.shortingMove) { return hexOpenType.Closed }
   if (!game.gameActionState.selection) { return false }
   const selection = game.gameActionState.selection[0].counter
   if (action.placingSmoke) {
@@ -57,10 +59,12 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   const moveSize = game.gameActionState.selection.reduce(
     (sum, u) => sum + u.counter.target.size + u.counter.children.reduce((sum, u) => u.target.size, 0), 0
   )
-  const toSize = countersAt.reduce((sum, u) => sum + u.target.size, 0)
+  const toSize = countersAt.reduce(
+    (sum, u) => sum + u.target.size + u.children.reduce((sum, u) => u.target.size, 0), 0
+  )
   if (moveSize + toSize > stackLimit) { return false }
   for (const c of countersAt) {
-    if (selection.target.playerNation !== c.target.playerNation) { return false }
+    if (selection.target.playerNation !== c.target.playerNation && !c.target.isFeature) { return false }
   }
 
   const roadMove = alongRoad(hexFrom, hexTo, dir)
@@ -102,7 +106,6 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   for (const p of action.path) {
     if (to.x === p.x && to.y === p.y ) { return hexOpenType.Open }
   }
-  console.log(`${move} ${cost}+${pastCost}`)
   return move >= cost + pastCost ? cost : "all"
 }
 
@@ -168,11 +171,27 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   return cost
 }
 
+export function showShort(game: Game): boolean {
+  const action = game.gameActionState
+  if (!action?.move) { return false }
+  const selection = action.selection
+  if (!selection || selection.length === 1) { return false }
+  const unit = selection[0].counter.target
+  if (mapSelectMovement(game, true) <= movementPastCost(game.scenario.map, unit as Unit)) { return false }
+  for (let i = 0; i < selection.length; i++) {
+    let check = false
+    for (const a of action.move.addActions) {
+      if (a.type === "shortmove" && a.meta?.fromIndex === selection[i].i) { check = true }
+    }
+    if (!check) { return true }
+  }
+  return false
+}
+
 function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selection: Unit): HexOpenType {
   const distance = hexDistance(from, to)
   const past = movementPastCost(map, selection)
   const move = mapSelectMovement(map.game as Game, false)
-  console.log(`${move} ${past}`)
   if (distance < 1 && move > past) { return 1 }
   if (distance < 2 && move > past + 1) { return 2 }
   return hexOpenType.Closed

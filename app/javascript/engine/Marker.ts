@@ -31,6 +31,8 @@ export default class Marker {
   facing: Direction;
   rotates: boolean;
 
+  rawData: MarkerData;
+
   constructor(data: MarkerData) {
     this.type = data.type
     this.nationalIcon = data.i
@@ -41,6 +43,12 @@ export default class Marker {
     this.playerNation = data.player_nation || this.nation
     this.facing = data.facing || 1
     this.rotates = !!data.rotates || false
+
+    this.rawData = data
+  }
+
+  clone(): Marker {
+    return new Marker(this.rawData)
   }
 
   name = ''
@@ -99,6 +107,7 @@ export default class Marker {
   noFire = false
   rotatingMount = false;
   selected = false
+  altSelected = false
 
   canHandle = false
   canCarrySupport = false
@@ -255,6 +264,10 @@ export default class Marker {
   }
 
   select() {
+    // does nothing, can't select markers
+  }
+
+  altSelect() {
     // does nothing, can't select markers
   }
 }

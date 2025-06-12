@@ -115,6 +115,7 @@ export default class Unit {
   facing: Direction;
   turretFacing: Direction;
   selected: boolean;
+  altSelected: boolean;
 
   smallName: number;
 
@@ -206,6 +207,7 @@ export default class Unit {
     this.facing = 1
     this.turretFacing = 1
     this.selected = false
+    this.altSelected = false
 
     this.rawData = data
 
@@ -223,6 +225,10 @@ export default class Unit {
 
   select() {
     this.selected = !this.selected
+  }
+
+  altSelect() {
+    this.altSelected = !this.altSelected
   }
 
   get hindrance(): number { return 0 }

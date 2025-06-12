@@ -246,7 +246,6 @@ export default class Map {
   }
 
   clearGhosts() {
-    console.log("clearing")
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         this.ghosts[y][x] = []
@@ -444,6 +443,7 @@ export default class Map {
     const units = this.allUnits
     for (const u of units) {
       if (u.target.selected) { u.target.select() }
+      if (u.target.altSelected) { u.target.altSelect() }
     }
   }
 

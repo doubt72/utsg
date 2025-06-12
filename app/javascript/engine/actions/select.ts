@@ -2,6 +2,7 @@ import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
 import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
 import Map from "../Map"
+import Unit from "../Unit"
 
 export default function select(
   map: Map, selection: CounterSelectionTarget, callback: (error?: string) => void
@@ -16,13 +17,30 @@ export default function select(
   if (game?.gameActionState?.move) {
     const selected = counter.target.selected
     counter.target.select()
-    counter.children.forEach(c => c.target.select())
-    if (selected) {
-      removeActionSelection(game, x, y, index)
+    if (game.gameActionState.move.shortingMove) {
+      counter.target.altSelect()
+      const xx = game.lastPath?.x ?? 0 // But should always exist, type notwithstanding
+      const yy = game.lastPath?.y ?? 0
+      const cost = counter.parent ? 1 : 0
+      game.gameActionState.move.addActions.push(
+        { x: xx, y: yy, cost, type: "shortmove", meta: { fromIndex: index } }
+      )
+      map.addGhost(new Coordinate(xx, yy), counter.target.clone() as Unit)
+      if (counter.children.length === 1) {
+        const child = counter.children[0]
+        child.target.select()
+        child.target.altSelect()
+        map.addGhost(new Coordinate(xx, yy), child.target.clone() as Unit)
+      }
     } else {
-      game.gameActionState.selection?.push({
-        x, y, i: index, counter: counter,
-      })
+      counter.children.forEach(c => c.target.select())
+      if (selected) {
+        removeActionSelection(game, x, y, index)
+      } else {
+        game.gameActionState.selection?.push({
+          x, y, i: index, counter: counter,
+        })
+      }
     }
   } else {
     map.clearOtherSelections(x, y, index)
@@ -62,6 +80,14 @@ function selectable(
       return false
     }
     if (game.gameActionState?.move) {
+      if (game.gameActionState.move.shortingMove) {
+        if (selection.counter.target.selected) {
+          return true
+        } else {
+          callback("must select unit that started move")
+          return false
+        }
+      }
       if (game.gameActionState.move.doneSelect) { return false }
       if (selection.target.type !== "map") { return false }
       for (const s of game.gameActionState.move.initialSelection) {
