@@ -73,5 +73,5 @@ export function deleteAPI(url: string, responseOptions: HTTPResponses): void {
 
 // TODO: maybe move this to DB?
 export const adminUsers = [
-  "doubt72",
+  "doubt72", "doubt",
 ]
