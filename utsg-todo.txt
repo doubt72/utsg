@@ -2,7 +2,6 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
-  - Replace action choices in actions with "can move" etc.
 
 Game Actions:
   - Moving
@@ -50,5 +49,5 @@ Future Features/Bug Fixes:
     - Much harder than it appears, need a way to intercept only scroll/wheel/key events
       but pass through all other mouse events
 
-Generally:
-  - Start working on Help/Manual
+Long term projects:
+  - Start working on Help/Manual / links to it

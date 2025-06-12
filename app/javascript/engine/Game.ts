@@ -1,4 +1,4 @@
-import { Coordinate, Direction, Player } from "../utilities/commonTypes";
+import { Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameMove, { GameMoveData } from "./GameMove";
@@ -474,12 +474,23 @@ export default class Game {
     if (!this.gameActionState?.move) { return }
     if (!this.gameActionState?.selection) { return }
     const selection = this.gameActionState.selection
+    const move = this.gameActionState.move
     const target = selection[0].counter.target
     const lastPath = this.lastPath as MovePath
-    this.gameActionState.move.path.push({
-      x: x, y: y, facing: target.rotates ? lastPath.facing : undefined,
-    })
-    this.gameActionState.move.doneSelect = true
+    if (move.placingSmoke) {
+      move.addActions.push({
+        x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2,
+      })
+      this.scenario.map.addGhost(
+        new Coordinate(x, y),
+        new Feature({ ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
+      )
+    } else {
+      move.path.push({
+        x, y, facing: target.rotates ? lastPath.facing : undefined,
+      })
+    }
+    move.doneSelect = true
   }
 
   rotateToggle() {

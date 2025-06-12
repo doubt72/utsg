@@ -1,6 +1,7 @@
 import { GameAction, unitType } from "../../utilities/commonTypes"
 import Game, { actionType, gamePhaseType } from "../Game"
 import Unit from "../Unit"
+import { mapSelectMovement, movementPastCost } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
   if (game.lastMove?.id === undefined) {
@@ -36,7 +37,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         const moveSelect = currSelection(game, true)
         const action = game.gameActionState.move
         if (moveSelect) {
-          if (action.doneSelect) {
+          if (action.placingSmoke) {
+            moves.unshift({ type: "none", message: "select hex to place smoke" })
+          } else if (action.doneSelect) {
             moves.unshift({ type: "none", message: "select hex to move" })
           } else {
             moves.unshift({ type: "none", message: "select addtional units or select hex to move" })
@@ -44,7 +47,11 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           if (moveSelect.turreted) {
             moves.push({ type: "move_rotate_toggle" })
           }
-          if (action.path.length > 1) {
+          if (moveSelect.smokeCapable && !moveSelect.targetedRange &&
+              movementPastCost(game.scenario.map, moveSelect) < mapSelectMovement(game, true)) {
+            moves.push({ type: "move_smoke_toggle" })
+          }
+          if (action.path.length + action.addActions.length > 1) {
             moves.push({ type: "move_finish" })
           }
           moves.push({ type: "move_cancel" })

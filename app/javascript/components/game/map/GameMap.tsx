@@ -23,7 +23,7 @@ import { roundedRectangle, yMapOffset } from "../../../utilities/graphics";
 import { normalDir } from "../../../utilities/utilities";
 import MoveTrackOverlay from "./MoveTrackOverlay";
 import openHex, { openHexRotateOpen } from "../../../engine/actions/openHex";
-import mapSelect from "../../../engine/actions/mapSelect";
+import select from "../../../engine/actions/select";
 import { MovePath } from "../../../engine/Game";
 
 interface GameMapProps {
@@ -426,7 +426,7 @@ export default function GameMap({
   const unitSelection = (selection: CounterSelectionTarget) => {
     if (!map) { return }
     if (selection.target.type === "map") {
-      mapSelect(map, selection, handleSelect)
+      select(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
       if (map.game.gameActionState?.deploy &&
           map.game.gameActionState.deploy.index !== selection.target.index) {

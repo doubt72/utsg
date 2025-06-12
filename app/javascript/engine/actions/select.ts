@@ -3,7 +3,7 @@ import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
 import Map from "../Map"
 
-export default function mapSelect(
+export default function select(
   map: Map, selection: CounterSelectionTarget, callback: (error?: string) => void
 ) {
   const game = map.game

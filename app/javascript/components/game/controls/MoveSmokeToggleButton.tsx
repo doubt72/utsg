@@ -15,8 +15,8 @@ export default function MoveSmokeToggleButton({ game, callback }: MoveSmokeToggl
   }
 
   const text = () => {
-    if (game.gameActionState?.move?.placingSmoke === true) { return "stop placing smoke" }
-    return "place smoke"
+    if (game.gameActionState?.move?.placingSmoke === true) { return "stop laying smoke" }
+    return "lay smoke"
   }
 
   const icon = () => {
