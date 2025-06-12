@@ -6,12 +6,6 @@ High Priority Features/Bug Fixes:
 Game Actions:
   - Moving
     (Now)
-      - Dropping Off Part of Stack
-        - Handle case where it's the leader
-      - Dropping Towed Weapons
-      - Dropping Support Weapons
-      - Unmanning Crewed Weapons
-      - Disambarking from Vehicles
 
     (Soon):
       - Consider adding road attributes / how base terrain affects it

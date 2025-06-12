@@ -18,7 +18,16 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
     let minLdrMove = 99
     let minInfMove = 99
     for(const sel of game.gameActionState.selection) {
-      // TODO: skip units that have been dropped off
+      let check = false
+      if (game.gameActionState.move?.addActions) {
+        for (const add of game.gameActionState.move.addActions) {
+          if (add.type === "shortmove" && add.meta?.fromIndex === sel.i) {
+            check = true
+            continue
+          }
+        }
+      }
+      if (check) { continue }
       const u = sel.counter.target
       const move = u.currentMovement as number
       if (u.canCarrySupport && u.type !== unitType.Leader && move < minInfMove) { minInfMove = move }
