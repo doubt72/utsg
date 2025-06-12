@@ -104,6 +104,8 @@ export default class Marker {
   canCarrySupport = false
   uncrewedSW = false
 
+  ghost = undefined
+
   get hindrance(): number { return 0 }
 
   get blocksLos(): boolean { return false }
