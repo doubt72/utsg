@@ -1,7 +1,6 @@
 import {
-  BorderType, BuildingShape, BuildingStyle, Coordinate, Direction,
-  Elevation, ExtendedDirection, RoadCenterType, RoadType, StreamType, TerrainType,
-  baseTerrainType, roadType, streamType, terrainType
+  BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, Elevation, ExtendedDirection,
+  RoadCenterType, RoadType, StreamType, TerrainType, roadType, terrainType
 } from "../utilities/commonTypes"
 import {
   hexLos, hexLosAlongEdgeHindrance, hexLosAlongEdgeLos, hexLosCounterLos,
@@ -9,12 +8,8 @@ import {
 } from "../utilities/hexLos";
 import Map from "./Map"
 import Terrain from "./Terrain"
-import {
-  CircleLayout, HelpLayout, PathLayout, SVGPathArray, SVGStyle, baseHexCoords
-} from "../utilities/graphics";
+import { baseHexCoords } from "../utilities/graphics";
 import { coordinateToLable, normalDir } from "../utilities/utilities";
-import { hexBuildingBuildingDisplay } from "../utilities/hexBuilding";
-import { hexHelpLayout } from "./support/help";
 
 export type HexData = {
   t?: TerrainType;         // terrain
@@ -125,60 +120,8 @@ export default class Hex {
     return hexLosAlongEdgeHindrance(this, dir, initial)
   }
 
-  get mapColor(): string {
-    return this.map.baseTerrainColor
-  }
-
-  get elevationStyles(): { [index: number]: SVGStyle } {
-    return {
-      "-1": { fill: "#ACA" },
-      0: { fill: this.mapColor },
-      1: { fill: "#DB9" },
-      2: { fill: "#CA8" },
-      3: { fill: "#B97" },
-      4: { fill: "#A86" },
-      5: { fill: "#975" },
-    }
-  }
-
   get night() {
     return this.map.night
-  }
-
-  lightWater = "#59C"
-  darkWater = "#46A"
-  iceWater = "#DDE"
-
-  patternStyles = (): { [index: string]: SVGStyle } => {
-    return {
-      f: { fill: "url(#forest-pattern)" },
-      b: { fill: "url(#brush-pattern)" },
-      j: { fill: "url(#jungle-pattern)" },
-      p: { fill: "url(#palm-pattern)" },
-      s: { fill: "url(#sand-pattern)" },
-      r: { fill: "url(#rough-pattern)" },
-      m: { fill: this.map.baseTerrain === baseTerrainType.Snow ? "url(#frozen-marsh-pattern)" :
-        "url(#marsh-pattern)" },
-      g: { fill: "url(#grain-pattern)" },
-      t: { fill: "url(#soft-pattern)" },
-      x: { fill: "url(#debris-pattern)" },
-      w: { fill: this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater },
-      y: { fill: this.lightWater },
-    }
-  }
-
-  borderStyles: { [index: string]: SVGStyle } = {
-    f: { stroke: "#963", strokeWidth: 3 },
-    w: { stroke: "#BBB", strokeWidth: 8, strokeLinecap: "round" },
-    b: { stroke: "#070", strokeWidth: 8, strokeLinecap: "round" },
-    c: { stroke: "#320", strokeWidth: 8, strokeLinecap: "round" },
-  }
-
-  borderDecorationStyles: { [index: string]: SVGStyle } = {
-    f: { stroke: "#963", strokeWidth: 8, strokeDasharray: [2, 11.1] },
-    w: { stroke: "#888", strokeWidth: 8, strokeDasharray: [2, 2] },
-    b: { stroke: "rgba(0,0,0,0)" },
-    c: { stroke: "rgba(0,0,0,0)" },
   }
 
   // Base hex side, measuring flat side, and other common measurements
@@ -230,6 +173,22 @@ export default class Hex {
     return edges
   }
 
+  get hexCoords(): string {
+    return baseHexCoords(this.map, this.xOffset, this.yOffset)
+  }
+
+  directionSelectionCoords(vertex: Direction): [string, [number, number]] {
+    const x1 = (this.xCorner(vertex) + this.xCorner(normalDir(vertex - 1)))/2
+    const y1 = (this.yCorner(vertex) + this.yCorner(normalDir(vertex - 1)))/2
+    const x2 = (this.xCorner(vertex) + this.xOffset)/2
+    const y2 = (this.yCorner(vertex) + this.yOffset)/2
+    const x3 = (this.xCorner(normalDir(vertex - 1)) + this.xOffset)/2
+    const y3 = (this.yCorner(normalDir(vertex - 1)) + this.yOffset)/2
+    const xC = (x1 + x2 + x3)/3
+    const yC = (y1 + y2 + y3)/3
+    return [`M ${x1} ${y1} L ${x2} ${y2} L ${x3}, ${y3} Z`, [xC, yC]]
+  }
+
   get terrainEdges(): "all" | "none" | boolean[] {
     let all = true
     let none = true
@@ -247,47 +206,9 @@ export default class Hex {
     return edges
   }
 
-  get hexCoords(): string {
-    return baseHexCoords(this.map, this.xOffset, this.yOffset)
-  }
-  // get hexOffsetCoords(): string {
-  //   return baseHexCoords(this.map, this.xOffset, this.yOffset + yOffset)
-  // }
-
-  directionSelectionCoords(vertex: Direction): [string, [number, number]] {
-    const x1 = (this.xCorner(vertex) + this.xCorner(normalDir(vertex - 1)))/2
-    const y1 = (this.yCorner(vertex) + this.yCorner(normalDir(vertex - 1)))/2
-    const x2 = (this.xCorner(vertex) + this.xOffset)/2
-    const y2 = (this.yCorner(vertex) + this.yOffset)/2
-    const x3 = (this.xCorner(normalDir(vertex - 1)) + this.xOffset)/2
-    const y3 = (this.yCorner(normalDir(vertex - 1)) + this.yOffset)/2
-    const xC = (x1 + x2 + x3)/3
-    const yC = (y1 + y2 + y3)/3
-    return [`M ${x1} ${y1} L ${x2} ${y2} L ${x3}, ${y3} Z`, [xC, yC]]
-  }
-  
-  edgeCoords(dir: Direction): string {
-    return [
-      "M", this.xCorner(normalDir(dir-1)), this.yCorner(normalDir(dir-1)),
-      "L", this.xCorner(dir), this.yCorner(dir),
-    ].join(" ")
-  }
-
   // "Solid" terrain (i.e., surrounded), no need for curves
   get backgroundTerrain(): boolean {
     return this.terrainEdges === "all"
-  }
-
-  get background(): SVGStyle {
-    if (this.elevationEdges === "all") {
-      return this.elevationStyles[this.elevation]
-    } else {
-      if (this.elevation > 0) {
-        return this.elevationStyles[this.elevation ? this.elevation - 1 : 0]
-      } else {
-        return this.elevationStyles[0]
-      }
-    }
   }
 
   get labelX(): number {
@@ -303,374 +224,10 @@ export default class Hex {
     return coordinateToLable(this.coord)
   }
 
-  // Draw the orchard hex, rotated by direction
-  get orchardDisplay(): CircleLayout[] | false {
-    if (this.baseTerrain !== terrainType.Orchard) { return false }
-    const trees = []
-    for (let x = 0; x < 3; x++) {
-      for (let y = 0; y < 2; y++) {
-        const dir = -this.direction - 0.5
-        const mag = this.radius*0.5
-        const x0 = this.xOffset + (x-1) * mag * Math.sin(dir/3 * Math.PI) +
-          (y-0.5) * mag * Math.sin((dir/3 + 0.5) * Math.PI)
-        const y0 = this.yOffset + (x-1) * mag * Math.cos(dir/3 * Math.PI) +
-          (y-0.5) * mag * Math.cos((dir/3 + 0.5) * Math.PI)
-        // trees.push({ x: x0, y: y0, r: this.radius/5, style: { fill: "#4A4" } })
-        trees.push({ x: x0, y: y0, r: this.radius/5, style: { fill: "#070" } })
-      }
-    }
-    return trees
-  }
-
-  get buildingDisplay(): PathLayout | false {
-    return hexBuildingBuildingDisplay(this)
-  }
-
-  get terrainCircle(): CircleLayout | false {
-    if (this.terrainEdges !== "none" || this.baseTerrain === "o") { return false }
-    return {
-      x: this.xOffset, y: this.yOffset, r: this.narrow/2 - 5,
-      style: this.patternStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
-    }
-  }
-
-  // Used for "isolated" terrain hexes (e.g., summits)
-  hexRoundCoordsInset(inset: number): string {
-    let path = [
-      "M", this.xCornerOffset(6, inset, 1, inset),
-      this.yCornerOffset(6, inset, 1, inset)
-    ]
-    for (let i = 1; i <= 6; i++) {
-      path = path.concat([
-        "L", this.xCornerOffset(i as Direction, inset, -1, inset),
-        this.yCornerOffset(i as Direction, inset, -1, inset)
-      ])
-      path = path.concat([
-        "A", inset*2, inset*2, 0, 0, 1,
-        this.xCornerOffset(i as Direction, inset, 1, inset),
-        this.yCornerOffset(i as Direction, inset, 1, inset)
-      ])
-    }
-    return path.join(" ")
-  }
-
-  get elevationHex(): PathLayout | false {
-    if (this.elevationEdges !== "none" || this.elevation < 1) { return false }
-    return {
-      path: this.hexRoundCoordsInset(5), style: this.elevationStyles[this.elevation]
-    }
-  }
-
   // When generating the continuous paths, we want to be able to start anywhere
   // with a flush edge, and commonly check next/last sides, so a generic check
   // to keep things in bounds
   checkSide(hexSides: boolean[], i: number): boolean {
     return hexSides[(i+6)%6]
-  }
-
-  // Used for both terrain and elevations; terrain has a deeper inset on open
-  // sides to make it easier to pick out
-  generatePaths(edges: boolean[], edgeOffset: number): string {
-    let path: SVGPathArray = []
-    for (let j = 0; j < 6; j++) {
-      if (!edges[j]) {
-        continue
-      }
-      if (this.checkSide(edges, j-1)) {
-        path = ["M", this.xCorner(normalDir(j)), this.yCorner(normalDir(j))]
-      } else {
-        path = [
-          "M", this.xCornerOffset(normalDir(j), edgeOffset, 1),
-          this.yCornerOffset(normalDir(j), edgeOffset, 1)
-        ]
-      }
-      for (let i = j; i < j + 6; i++) {
-        if (this.checkSide(edges, i)) {
-          if (this.checkSide(edges, i+1)) {
-            path = path.concat([
-              "L", this.xCorner(normalDir(i+1)), this.yCorner(normalDir(i+1))
-            ])
-          } else {
-            path = path.concat([
-              "L", this.xCornerOffset(normalDir(i+1), edgeOffset, -1),
-              this.yCornerOffset(normalDir(i+1), edgeOffset, -1)
-            ])
-          }
-        } else {
-          if (this.checkSide(edges, i-1)) {
-            path = path.concat(
-              [
-                "A", this.radius*2, this.radius*2, 0, 0, 0,
-                this.xEdge(normalDir(i+1), edgeOffset*2),
-                this.yEdge(normalDir(i+1), edgeOffset*2)
-              ]
-            )
-          } else {
-            path = path.concat(
-              [
-                "A", this.radius - edgeOffset*4, this.radius - edgeOffset*4, 0, 0, 1,
-                this.xEdge(normalDir(i+1), edgeOffset*2),
-                this.yEdge(normalDir(i+1), edgeOffset*2)
-              ]
-            )
-          }
-          if (this.checkSide(edges, i+1)) {
-            path = path.concat(
-              [
-                "A", this.radius*2, this.radius*2, 0, 0, 0,
-                this.xCornerOffset(normalDir(i+1), edgeOffset, 1),
-                this.yCornerOffset(normalDir(i+1), edgeOffset, 1)
-              ]
-            )
-          } else {
-            path = path.concat(
-              [
-                "A", this.radius - edgeOffset*4, this.radius - edgeOffset*4, 0, 0, 1,
-                this.xCorner(normalDir(i+1), edgeOffset*4),
-                this.yCorner(normalDir(i+1), edgeOffset*4)
-              ]
-            )
-          }
-        }
-      }
-      break
-    }
-    return path.join(" ")
-  }
-
-  get terrainContinuous(): PathLayout | false {
-    const edges = this.terrainEdges
-    if (edges == "none" || edges === "all") { return false }
-    return {
-      path: this.generatePaths(edges, 4),
-      style: this.patternStyles()[this.baseTerrain] || { fill: "rgba(0,0,0,0" }
-    }
-  }
-
-  get terrainPattern(): SVGStyle | false {
-    if (!this.patternStyles()[this.baseTerrain]) { return false }
-    return this.patternStyles()[this.baseTerrain]
-  }
-
-  get elevationContinuous(): PathLayout | false {
-    const edges = this.elevationEdges
-    if (edges === "none" || edges === "all") { return false }
-    return {
-      path: this.generatePaths(edges, 2), style: this.elevationStyles[this.elevation || 0]
-    }
-  }
-
-  path(directions?: Direction[], center?: RoadCenterType): string {
-    if (!directions) { return "" }
-    if (directions.length === 2 && !(this.river && this.riverType === streamType.Trench) &&
-      !(this.road && this.roadType === roadType.Airfield)) {
-      const d1 = directions[0]
-      const d2 = directions[1]
-      const x1 = this.xEdge(d1)
-      const y1 = this.yEdge(d1)
-      const x2 = this.xEdge(d2)
-      const y2 = this.yEdge(d2)
-      let xCenter = this.xOffset
-      if (center === "l") {
-        xCenter -= this.narrow / 4
-      } else if (center === "r") {
-        xCenter += this.narrow / 4
-      }
-      const c1x = (xCenter + x1)/2
-      const c1y = (this.yOffset + y1)/2
-      const c2x = (xCenter + x2)/2
-      const c2y = (this.yOffset + y2)/2
-      let path = ["M", x1, y1]
-      // Center can be shifted left or right, used for doing vertical roads
-      if (center) {
-        path = path.concat(["L", xCenter, this.yOffset])
-        path = path.concat(["L", x2, y2])
-      } else {
-        path = path.concat(["C", `${c1x},${c1y}`, `${c2x},${c2y}`, `${x2},${y2}`])
-      }
-      return path.join(" ")
-    } else {
-      let centerOff = 0
-      if (center === "l") {
-        centerOff = -this.narrow / 4
-      } else if (center === "r") {
-        centerOff = this.narrow / 4
-      }
-      const x1 = this.xOffset + centerOff
-      const y1 = this.yOffset
-      let path: SVGPathArray = []
-      for (let i = 0; i < directions.length - 1; i++) {
-        const d1 = directions[i]
-        const d2 = directions[i+1]
-        const x2 = this.xEdge(d1)
-        const y2 = this.yEdge(d1)
-        const x3 = this.xEdge(d2)
-        const y3 = this.yEdge(d2)
-        path = path.concat([
-          "M", x2, y2, "L", x1, y1, "L", x3, y3
-        ])
-      }
-      return path.join(" ")
-    }
-  }
-
-  get riverPath(): string {
-    return this.path(this.riverDirections)
-  }
-
-  get riverStyle(): SVGStyle {
-    let color = this.map.baseTerrain === baseTerrainType.Snow ? this.iceWater : this.darkWater
-    let dash = undefined
-    if (this.riverType === "g") {
-      color = "#070"
-      dash = [14, 14]
-    } else if (this.riverType === "t") {
-      color = "#753"
-      dash = [18, 5]
-    }
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: 10,
-      stroke: color,
-      strokeDasharray: dash,
-      strokeLinejoin: "round",
-    }
-  }
-
-  get roadPath(): string {
-    return this.path(this.roadDirections, this.roadCenter)
-  }
-
-  get roadOutlineStyle(): SVGStyle {
-    const width = this.roadType === "p" ? 10 : 28
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: (["j", "f", "b"].includes(this.baseTerrain) || this.river) ? width : 0,
-      stroke: this.elevationStyles[this.elevation || 0]["fill"],
-      strokeLinejoin: "round",
-    }
-  }
-
-  get bridgeStyle(): SVGStyle {
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: 28,
-      stroke: this.roadType === "t" ? "#BBB" : "#975",
-    }
-  }
-
-  get roadEdgeStyle(): SVGStyle {
-    const stroke = (this.roadType === roadType.Tarmac || this.roadType === roadType.Airfield) ?
-      "#AAA" : "#FD7"
-    let width = this.roadType === roadType.Path ? 0 : 16
-    if (this.roadType === roadType.Airfield) { width = 64 }
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: width,
-      stroke: stroke,
-      strokeLinejoin: this.roadType === roadType.Airfield ? "miter" : "round",
-    }
-  }
-
-  get roadStyle(): SVGStyle {
-    let stroke = this.roadType === roadType.Tarmac ? "#DDD" : "#B85"
-    let width = 12
-    if (this.roadType === roadType.Path) {
-      stroke = "rgba(47, 31, 0, 0.5)"
-      width = 2
-    }
-    if (this.roadType === roadType.Airfield) {
-      stroke = "#DCB"
-      width = 56
-    }
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: width,
-      stroke,
-      strokeDasharray: this.roadType === roadType.Path ? [5, 5] : undefined,
-      strokeLinejoin: this.roadType === roadType.Airfield ? "miter" : "round",
-    }
-  }
-
-  get roadRotate(): string {
-    if (!this.roadRotation) { return "" }
-    return `rotate(${this.roadRotation * 60} ${this.xOffset} ${this.yOffset})`
-  }
-
-  get railroadPath(): string {
-    if (!this.railroadDirections) { return "" }
-    return this.railroadDirections.map(d => this.path(d)).join(" ")
-  }
-
-  get railroadBedStyle(): SVGStyle {
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: 28,
-      stroke: "rgba(127,63,0,0.25)",
-      strokeLinejoin: "round",
-    }
-  }
-
-  get railroadBridgeStyle(): SVGStyle {
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: 22,
-      stroke: "#DDD",
-    }
-  }
-
-  get railroadtieStyle(): SVGStyle {
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: 16,
-      stroke: "#777",
-      strokeDasharray: [3, 20],
-      strokeLinejoin: "round",
-    }
-  }
-
-  get railroadTrackStyle(): SVGStyle {
-    return {
-      fill: "rgba(0,0,0,0)",
-      strokeWidth: 6,
-      stroke: "#777",
-      strokeLinejoin: "round",
-    }
-  }
-
-  get edgePath(): string | false {
-    if (!this.border || !this.borderEdges) { return false }
-    return this.borderEdges.map(d => {
-      return [
-        "M", this.xCorner(normalDir(d-1)), this.yCorner(normalDir(d-1)),
-        "L", this.xCorner(d), this.yCorner(d)
-      ].join(" ")
-    }).join(" ")
-  }
-
-  get edgeCoreStyle(): SVGStyle | false {
-    if (!this.border) { return false }
-    return this.borderStyles[this.border]
-  }
-
-  get edgeDecorationStyle(): SVGStyle | false {
-    if (!this.border) { return false }
-    return this.borderDecorationStyles[this.border]
-  }
-
-  get victoryLayout(): CircleLayout | false {
-    const victory = this.map.victoryAt(this.coord)
-    if (!victory) { return false }
-    const x = this.xCorner(5, 20)
-    const y = this.yCorner(5, 20)
-    return {
-      x: x, y: y, r: 12, style: {
-        fill: `url(#nation-${victory}-12)`, strokeWidth: 1, stroke: "#000"
-      },
-    }
-  }
-
-  helpLayout(loc: Coordinate, max: Coordinate): HelpLayout {
-    return hexHelpLayout(this, loc, max)
   }
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { circlePath } from "../../../utilities/graphics";
+import { counterFacingLayout } from "../../../engine/support/layout";
 
 interface MapLosOverlayProps {
   map: Map;
@@ -63,7 +64,7 @@ export default function MapLosOverlay({
         }
         {map.countersAt(new Coordinate(xx, yy)).map((c, i) => {
           if (!c.isUnit) { return "" }
-          const fl = c.facingLayout
+          const fl = counterFacingLayout(c)
           if (!fl) { return "" }
           return (
             <g key={i}>

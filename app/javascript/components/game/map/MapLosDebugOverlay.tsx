@@ -3,6 +3,7 @@ import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { losHexPath } from "../../../utilities/los";
 import Hex from "../../../engine/Hex";
+import { hexEdgeCoords } from "../../../engine/support/hexLayout";
 
 interface MapLosDebugOverlayProps {
   map: Map;
@@ -46,7 +47,7 @@ export default function MapLosDebugOverlay({
           if (p.hex) {
             return <polygon key={i} points={p.hex.hexCoords} style={{ fill: "rgba(255,0,0,0.5)" }} />
           } else if (p.edge) {
-            return <path key={i} d={p.edgeHex?.edgeCoords(p.edge)}
+            return <path key={i} d={hexEdgeCoords(p.edgeHex as Hex, p.edge)}
                     style={{ fill: "rgba(0,0,0,0)", strokeWidth: 12, stroke: "rgba(255,0,0,0.5)" }} />
           }
         }

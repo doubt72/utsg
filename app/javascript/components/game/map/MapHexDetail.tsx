@@ -1,6 +1,12 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
 import { Coordinate, terrainType } from "../../../utilities/commonTypes";
+import {
+  bridgeStyle, hexEdgeCoreStyle, hexEdgeDecorationStyle, hexEdgePath, railroadBedStyle, railroadBridgeStyle,
+  railroadPath, railroadtieStyle, railroadTrackStyle, riverPath, riverStyle, roadEdgeStyle, roadOutlineStyle,
+  roadPath, roadRotate, roadStyle, victoryLayout
+} from "../../../engine/support/hexLayout";
+import { hexHelpLayout } from "../../../engine/support/help";
 
 interface MapHexDetailProps {
   hex: Hex;
@@ -18,60 +24,60 @@ export default function MapHexDetail({
 }: MapHexDetailProps) {
   const river = () => {
     if (!hex.river) { return "" }
-    const path = hex.riverPath
-    return <path d={path} style={hex.riverStyle as object} />
+    const path = riverPath(hex)
+    return <path d={path} style={riverStyle(hex) as object} />
   }
 
   const road = () => {
     if (!hex.road) { return "" }
-    const path = hex.roadPath
+    const path = roadPath(hex)
     return (
       <g>
-        <path d={path} style={hex.roadOutlineStyle as object} transform={hex.roadRotate} />
+        <path d={path} style={roadOutlineStyle(hex) as object} transform={roadRotate(hex)} />
         { (hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow) ?
-            <path d={path} style={hex.bridgeStyle as object} transform={hex.roadRotate} /> : "" }
-        <path d={path} style={hex.roadEdgeStyle as object} transform={hex.roadRotate} />
-        <path d={path} style={hex.roadStyle as object} transform={hex.roadRotate} />
+            <path d={path} style={bridgeStyle(hex) as object} transform={roadRotate(hex)} /> : "" }
+        <path d={path} style={roadEdgeStyle(hex) as object} transform={roadRotate(hex)} />
+        <path d={path} style={roadStyle(hex) as object} transform={roadRotate(hex)} />
       </g>
     )
   }
 
   const railroadBottom = () => {
     if (!hex.railroad) { return "" }
-    const path = hex.railroadPath
+    const path = railroadPath(hex)
     return (
       <g>        
         { (hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow) ?
-            <path d={path} style={hex.railroadBridgeStyle as object} /> :
-            <path d={path} style={hex.railroadBedStyle as object} /> }
-        <path d={path} style={hex.railroadtieStyle as object} />
+            <path d={path} style={railroadBridgeStyle() as object} /> :
+            <path d={path} style={railroadBedStyle() as object} /> }
+        <path d={path} style={railroadtieStyle() as object} />
       </g>
     )
   }
 
   const railroad = () => {
     if (!hex.railroad) { return "" }
-    const path = hex.railroadPath
+    const path = railroadPath(hex)
     return (
       <g>
-        <path d={path} style={hex.railroadTrackStyle as object} />
+        <path d={path} style={railroadTrackStyle() as object} />
       </g>
     )
   }
 
   const edge = () => {
-    const path = hex.edgePath
+    const path = hexEdgePath(hex)
     if (!path) { return "" }
     return (
       <g>
-        <path d={path} style={hex.edgeCoreStyle as object} />
-        <path d={path} style={hex.edgeDecorationStyle as object} />
+        <path d={path} style={hexEdgeCoreStyle(hex) as object} />
+        <path d={path} style={hexEdgeDecorationStyle(hex) as object} />
       </g>
     )
   }
 
   const victory = () => {
-    const layout = hex.victoryLayout
+    const layout = victoryLayout(hex)
     if (!layout) { return "" }
     return <circle cx={layout.x} cy={layout.y} r={layout.r} style={layout.style as object}/>
   }
@@ -90,7 +96,7 @@ export default function MapHexDetail({
       if (svgRef.current) {
         const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
         const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10
-        const layout = hex.helpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY))
+        const layout = hexHelpLayout(hex, new Coordinate(x, y), new Coordinate(maxX, maxY))
         if (!layout.texts) { return }
         terrainCallback(
           <g>

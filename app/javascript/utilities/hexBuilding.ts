@@ -1,4 +1,5 @@
 import Hex from "../engine/Hex"
+import { elevationStyles } from "../engine/support/hexLayout"
 import { Coordinate, ExtendedDirection, buildingShape } from "./commonTypes"
 import { PathLayout, SVGPathArray } from "./graphics"
 import { normalDir } from "./utilities"
@@ -444,7 +445,7 @@ export function hexBuildingBuildingDisplay(hex: Hex): PathLayout | false {
   } else if (hex.buildingShape === buildingShape.BigCorner4) {
     path = bigCorner4(hex)
   }
-  const hcs = hex.elevationStyles[hex.elevation].fill as string
+  const hcs = elevationStyles(hex)[hex.elevation].fill as string
   // TODO: maybe generic versions of this?  If we ever do this anywhere else
   let base = hcs.length > 4 ?
     (parseInt(hcs.substring(1, 3), 16) + parseInt(hcs.substring(3, 5), 16) +

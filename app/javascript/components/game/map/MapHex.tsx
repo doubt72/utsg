@@ -1,5 +1,9 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
+import {
+  buildingDisplay, hexElevationContinuous, hexElevation, hexBackground, hexTerrainPattern, orchardDisplay,
+  hexTerrainCircle, hexTerrainContinuous
+} from "../../../engine/support/hexLayout";
 
 interface MapHexProps {
   hex: Hex;
@@ -8,22 +12,22 @@ interface MapHexProps {
 export default function MapHex({ hex }: MapHexProps) {
 
   const background = (
-    <polygon points={hex.hexCoords} style={hex.background as object} />
+    <polygon points={hex.hexCoords} style={hexBackground(hex) as object} />
   )
 
   const elevation = () => {
-    const path = hex.elevationHex
+    const path = hexElevation(hex)
     if (path) {
       return <path d={path.path} style={path.style as object} />
     }
-    const path2 = hex.elevationContinuous
+    const path2 = hexElevationContinuous(hex)
     if (path2) {
       return <path d={path2.path} style={path2.style as object} />
     }
   }
 
   const terrain = () => {
-    const orchard = hex.orchardDisplay
+    const orchard = orchardDisplay(hex)
     if (orchard) {
       return (
         <g>
@@ -33,23 +37,23 @@ export default function MapHex({ hex }: MapHexProps) {
         </g>
       )
     }
-    const building = hex.buildingDisplay
+    const building = buildingDisplay(hex)
     if (building) {
       return <path d={building.path} style={building.style as object} />
     }
   }
 
   const terrainPattern = () => {
-    const terrainStyle = hex.terrainPattern
+    const terrainStyle = hexTerrainPattern(hex)
     if (terrainStyle) {
       if (hex.backgroundTerrain) {
         return <polygon points={hex.hexCoords} style={terrainStyle as object} />
       }
-      const circle = hex.terrainCircle
+      const circle = hexTerrainCircle(hex)
       if (circle) {
         return <circle cx={circle.x} cy={circle.y} r={circle.r} style={terrainStyle as object} />
       }
-      const path = hex.terrainContinuous
+      const path = hexTerrainContinuous(hex)
       if (path) {
         return <path d={path.path} style={terrainStyle as object} />
       }
