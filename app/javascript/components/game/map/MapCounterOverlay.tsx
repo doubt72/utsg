@@ -6,6 +6,7 @@ import { Coordinate, MarkerType, markerType, UnitType, unitType } from "../../..
 import Map from "../../../engine/Map";
 import { counterOutline } from "../../../utilities/graphics";
 import { counterInfoBadges } from "../../../engine/support/layout";
+import { counterPath } from "../../../engine/support/unitLayout";
 
 interface MapCounterOverlayProps {
   map: Map;
@@ -82,7 +83,7 @@ export default function MapCounterOverlay({
           )
           selectionOverlays.push(
             <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
-              <path d={cd.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
+              <path d={counterPath(cd)} style={{ fill: "rgba(0,0,0,0)" }}
                     onClick={() => {
                       if (xx !== undefined && yy !== undefined) {
                         selectionCallback({

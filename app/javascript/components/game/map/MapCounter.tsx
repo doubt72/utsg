@@ -2,6 +2,20 @@ import React from "react";
 import MapHexPatterns from "./MapHexPatterns";
 import Counter from "../../../engine/Counter";
 import { CounterLayout, StatusLayout } from "../../../utilities/graphics";
+import {
+  amphibiousLayout, breakdownLayout, canTowLayout, centerLabelLayout, counterPath, counterStyle,
+  eliteLayout, engineerLayout, firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
+  hullArmorLayout, iconLayout, leadershipLayout, markerBreakLayout, markerFixLayout, moraleLayout,
+  movementLayout, nameBackgroundPath, nameBackgroundStyle, nameLayout, rangeLayout, shadowPath,
+  sizeLayout, smokeLayout, sponsonLayout, towLayout, transportLLayout, transportRLayout, turretArmorLayout,
+  weaponBreakLayout, weaponFixLayout
+} from "../../../engine/support/unitLayout";
+import {
+  markerFirepowerLayout, markerLayout, markerMoraleLayout, markerMovementLayout, markerRangeLayout,
+  markerSubLayout, turnLayout, windArrowLayout
+} from "../../../engine/support/markerLayout";
+import { featureLayout } from "../../../engine/support/featureLayout";
+import { counterStatusLayout } from "../../../engine/support/layout";
 
 interface MapCounterProps {
   counter: Counter;
@@ -12,25 +26,25 @@ interface MapCounterProps {
 export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
 
   const counterBack = (
-    <path d={counter.counterPath()} style={counter.counterStyle as object} />
+    <path d={counterPath(counter)} style={counterStyle(counter) as object} />
   )
 
   const showDisabled = () => {
     const disable = counter.showDisabled
     if (disable) return (
-      <path d={counter.counterPath()} style={{ fill: "rgba(0,0,0,0.5)" }} />
+      <path d={counterPath(counter)} style={{ fill: "rgba(0,0,0,0.5)" }} />
     )
   }
 
   const nameBackground = () => {
-    const path = counter.nameBackgroundPath
+    const path = nameBackgroundPath(counter)
     if (path) return (
-        <path d={path} style={counter.nameBackgroundStyle as object} />
+        <path d={path} style={nameBackgroundStyle(counter) as object} />
     )
   }
 
   const shadow = () => {
-    const layout = counter.shadowPath
+    const layout = shadowPath(counter)
     if (layout) {
       return (
         <path d={layout} style={{ fill: "rgba(0,0,0,0.2)" }} />
@@ -39,7 +53,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const name = () => {
-    const layout = counter.nameLayout
+    const layout = nameLayout(counter)
     return (
       <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="start"
             style={layout.style as object}>{layout.name}</text>
@@ -47,7 +61,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const morale = () => {
-    const layout = counter.moraleLayout
+    const layout = moraleLayout(counter)
     if (layout) return (
       <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
             fontFamily="'Courier Prime', monospace"
@@ -56,7 +70,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const weaponBreak = () => {
-    const layout = counter.weaponBreakLayout
+    const layout = weaponBreakLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -68,7 +82,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const weaponFix = () => {
-    const layout = counter.weaponFixLayout
+    const layout = weaponFixLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -80,7 +94,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const markerBreak = () => {
-    const layout = counter.markerBreakLayout
+    const layout = markerBreakLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -92,7 +106,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const markerFix = () => {
-    const layout = counter.markerFixLayout
+    const layout = markerFixLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -104,7 +118,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const size = () => {
-    const layout = counter.sizeLayout
+    const layout = sizeLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -116,7 +130,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const tow = () => {
-    const layout = counter.towLayout
+    const layout = towLayout(counter)
     if (layout) return (
       <g>
         <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
@@ -127,7 +141,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const canTow = () => {
-    const layout = counter.canTowLayout
+    const layout = canTowLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -136,21 +150,21 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const rightTransport = () => {
-    const layout = counter.transportRLayout
+    const layout = transportRLayout(counter)
     if (layout) return (
       <path d={layout.path} style={layout.style as object} />
     )
   }
 
   const leftTransport = () => {
-    const layout = counter.transportLLayout
+    const layout = transportLLayout(counter)
     if (layout) return (
       <path d={layout.path} style={layout.style as object} />
     )
   }
 
   const leadership = () => {
-    const layout = counter.leadershipLayout
+    const layout = leadershipLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -162,7 +176,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const handling = () => {
-    const layout = counter.handlingLayout
+    const layout = handlingLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -174,7 +188,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const breakdown = () => {
-    const layout = counter.breakdownLayout
+    const layout = breakdownLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -186,7 +200,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const icon = () => {
-    const layout = counter.iconLayout
+    const layout = iconLayout(counter)
     if (layout) return (
       <image width={layout.size} height={layout.size} x={layout.x} y={layout.y}
              href={`/assets/units/${layout.icon}.svg`} /> 
@@ -194,7 +208,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const centerLabel = () => {
-    const layout = counter.centerLabelLayout
+    const layout = centerLabelLayout(counter)
     if (layout) return (
       <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
             fontFamily="'Courier Prime', monospace"
@@ -203,7 +217,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const sponson = () => {
-    const layout = counter.sponsonLayout
+    const layout = sponsonLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -214,7 +228,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const turretArmor = () => {
-    const layout = counter.turretArmorLayout
+    const layout = turretArmorLayout(counter)
     if (layout) return (
       <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
             fontFamily="sans-serif" style={{fill: "black"}}>{layout.value}</text>
@@ -222,7 +236,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const hullArmor = () => {
-    const layout = counter.hullArmorLayout
+    const layout = hullArmorLayout(counter)
     if (layout) return (
       <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
             fontFamily="sans-serif" style={{fill: "black"}}>{layout.value}</text>
@@ -230,7 +244,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const firepower = () => {
-    const layout = counter.firepowerLayout
+    const layout = firepowerLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -242,14 +256,14 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const smoke = () => {
-    const layout = counter.smokeLayout
+    const layout = smokeLayout(counter)
     if (layout) return (
       <path d={layout.path} style={layout.style as object} />
     )
   }
 
   const range = () => {
-    const layout = counter.rangeLayout
+    const layout = rangeLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -261,21 +275,21 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const gunForward = () => {
-    const layout = counter.gunForwardsLayout
+    const layout = gunForwardsLayout(counter)
     if (layout) return (
       <path d={layout.path} style={layout.style as object} />
     )
   }
 
   const gunBackward = () => {
-    const layout = counter.gunBackwardsLayout
+    const layout = gunBackwardsLayout(counter)
     if (layout) return (
       <path d={layout.path} style={layout.style as object} />
     )
   }
 
   const movement = () => {
-    const layout = counter.movementLayout
+    const layout = movementLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -287,21 +301,21 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const engineer = () => {
-    const layout = counter.engineerLayout
+    const layout = engineerLayout(counter)
     if (layout) return (
       <path d={layout.path} style={layout.style as object} />
     )
   }
 
   const amphibious = () => {
-    const layout = counter.amphibiousLayout
+    const layout = amphibiousLayout(counter)
     if (layout) return (
       <path d={layout.path} style={layout.style as object} />
     )
   }
 
   const markerMorale = () => {
-    const layout = counter.markerMoraleLayout
+    const layout = markerMoraleLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -313,7 +327,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const markerFirepower = () => {
-    const layout = counter.markerFirepowerLayout
+    const layout = markerFirepowerLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -325,7 +339,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const markerRange = () => {
-    const layout = counter.markerRangeLayout
+    const layout = markerRangeLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -337,7 +351,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const markerMovement = () => {
-    const layout = counter.markerMovementLayout
+    const layout = markerMovementLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -349,7 +363,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const elite = () => {
-    const layout = counter.eliteLayout
+    const layout = eliteLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -361,7 +375,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const marker = () => {
-    const layout = counter.markerLayout
+    const layout = markerLayout(counter)
     if (layout) {
       return (
         <g>
@@ -379,7 +393,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const turnBadges = () => {
-    const layout = counter.turnLayout
+    const layout = turnLayout(counter)
     if (layout) {
       return (
         <g>
@@ -392,12 +406,12 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const windArrow = () => {
-    const layout = counter.windArrowLayout
+    const layout = windArrowLayout(counter)
     if (layout) return <path d={layout.path} style={layout.style as object} />
   }
 
   const markerSub = () => {
-    const layout = counter.markerSubLayout
+    const layout = markerSubLayout(counter)
     if (layout) return (
       <g>
         <text x={layout.x} y={layout.y[0]} fontSize={layout.size} textAnchor="middle"
@@ -414,7 +428,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const feature = () => {
-    const layoutSrc = counter.featureLayout
+    const layoutSrc = featureLayout(counter)
     if (layoutSrc) {
       const layout = layoutSrc as CounterLayout
       return (
@@ -429,7 +443,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   const status = () => {
-    const layoutSrc = counter.statusLayout
+    const layoutSrc = counterStatusLayout(counter)
     if (layoutSrc) {
       const layout = layoutSrc as StatusLayout
       const text = layout.value.map((t, i) => (
@@ -450,7 +464,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   
   const overlay = () => {
     return (
-      <path d={counter.counterPath()} style={{ fill: "rgba(0,0,0,0)" }}
+      <path d={counterPath(counter)} style={{ fill: "rgba(0,0,0,0)" }}
             onMouseEnter={() => ovCallback(
               { show: true, x: counter.hex?.x, y: counter.hex?.y }
             )} />
