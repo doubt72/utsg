@@ -1,28 +1,28 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
-import { BoxArrowDown } from "react-bootstrap-icons";
+import { BoxArrowInUp } from "react-bootstrap-icons";
 import { MoveGlyph } from "../../utilities/buttons";
 
-interface MoveShortToggleButtonProps {
+interface MoveLoadToggleButtonProps {
   game: Game;
   callback: () => void;
 }
 
-export default function MoveShortToggleButton({ game, callback }: MoveShortToggleButtonProps) {
+export default function MoveLoadToggleButton({ game, callback }: MoveLoadToggleButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.shortingMoveToggle()
+    game.loadingMoveToggle()
     callback()
   }
 
   const text = () => {
-    if (game.gameActionState?.move?.shortDropMove === true) { return "continue moving" }
-    return "drop unit"
+    if (game.gameActionState?.move?.loadingMove === true) { return "continue moving" }
+    return "pick up unit"
   }
   
   const icon = () => {
-    if (game.gameActionState?.move?.shortDropMove === true) { return MoveGlyph() }
-    return <BoxArrowDown />
+    if (game.gameActionState?.move?.loadingMove === true) { return MoveGlyph() }
+    return <BoxArrowInUp />
   }
 
   return (

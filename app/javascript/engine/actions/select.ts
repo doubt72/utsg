@@ -3,6 +3,7 @@ import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
 import Map from "../Map"
 import Unit from "../Unit"
+import { canBeLoaded, canLoadUnit } from "./movement"
 
 export default function select(
   map: Map, selection: CounterSelectionTarget, callback: (error?: string) => void
@@ -16,21 +17,39 @@ export default function select(
   const counter = map.counterAtIndex(new Coordinate(x, y), index) as Counter
   if (game?.gameActionState?.move) {
     const selected = counter.target.selected
+    const move = game.gameActionState.move
     counter.target.select()
-    if (game.gameActionState.move.shortingMove) {
-      counter.target.altSelect()
+    if (move.shortDropMove) {
+      counter.target.dropSelect()
       const xx = game.lastPath?.x ?? 0 // But should always exist, type notwithstanding
       const yy = game.lastPath?.y ?? 0
       const cost = counter.parent ? 1 : 0
-      game.gameActionState.move.addActions.push(
-        { x: xx, y: yy, cost, type: "shortmove", meta: { fromIndex: index } }
+      move.addActions.push(
+        { x: xx, y: yy, cost, type: "shortdrop", meta: { fromIndex: index } }
       )
       map.addGhost(new Coordinate(xx, yy), counter.target.clone() as Unit)
       if (counter.children.length === 1) {
         const child = counter.children[0]
         child.target.select()
-        child.target.altSelect()
+        child.target.dropSelect()
         map.addGhost(new Coordinate(xx, yy), child.target.clone() as Unit)
+      }
+      move.doneSelect = true
+    } else if (move.loadingMove) {
+      if (game.needPickUpDisambiguate) {
+        counter.target.loaderSelect()
+        move.loader = counter
+      } else {
+        counter.target.select()
+        counter.target.loadedSelect()
+        const load = move.loader
+        if (load) {
+          load.target.select()
+          load.target.loaderSelect()
+          move.loader = undefined
+        }
+        move.loadingMove = false
+        move.doneSelect = true
       }
     } else {
       counter.children.forEach(c => c.target.select())
@@ -71,21 +90,31 @@ function selectable(
 ): boolean {
   const game = map.game
   if (!game) { return false }
-  if (selection.counter.target.isFeature) { return false }
+  const target = selection.counter.target as Unit
+  if (target.isFeature) { return false }
   if (map.debug) { return true }
   if (game.phase === gamePhaseType.Deployment) { return false }
   if (game.phase === gamePhaseType.Prep) { return false } // Not supported yet
   if (game.phase === gamePhaseType.Main) {
-    if (selection.counter.target.playerNation !== game.currentPlayerNation) {
+    if (target.playerNation !== game.currentPlayerNation) {
       return false
     }
     if (game.gameActionState?.move) {
-      if (game.gameActionState.move.shortingMove) {
-        if (selection.counter.target.selected) {
+      if (game.gameActionState.move.shortDropMove) {
+        if (target.selected) {
           return true
         } else {
           callback("must select unit that started move")
           return false
+        }
+      }
+      if (game.gameActionState.move.loadingMove) {
+        if (game.needPickUpDisambiguate) {
+          if (!target.selected) { return false }
+          return canLoadUnit(game, target)
+        } else {
+          if (target.selected) { return false }
+          return canBeLoaded(game, target)
         }
       }
       if (game.gameActionState.move.doneSelect) { return false }

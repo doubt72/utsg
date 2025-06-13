@@ -107,7 +107,9 @@ export default class Marker {
   noFire = false
   rotatingMount = false;
   selected = false
-  altSelected = false
+  dropSelected = false
+  loaderSelected = false
+  loadedSelected = false
 
   canHandle = false
   canCarrySupport = false
@@ -267,7 +269,15 @@ export default class Marker {
     // does nothing, can't select markers
   }
 
-  altSelect() {
+  dropSelect() {
+    // does nothing, can't select markers
+  }
+
+  loaderSelect() {
+    // does nothing, can't select markers
+  }
+
+  loadedSelect() {
     // does nothing, can't select markers
   }
 }

@@ -8,6 +8,7 @@ import IllegalMoveError from "./moves/IllegalMoveError";
 import WarningMoveError from "./moves/WarningMoveError";
 import Counter from "./Counter";
 import { normalDir } from "../utilities/utilities";
+import Unit from "./Unit";
 
 export type GameData = {
   id: number;
@@ -49,7 +50,7 @@ export type MovePath = {
   x: number, y: number, facing?: Direction
 }
 
-export type addActionType = "smoke" | "shortmove"
+export type addActionType = "smoke" | "shortdrop" | "load"
 export type MoveAddAction = {
   x: number, y: number, type: addActionType, cost: number,
   meta?: {
@@ -65,7 +66,9 @@ export type MoveAction = {
   finalTurretRotation: Direction
   rotatingTurret: boolean,
   placingSmoke: boolean,
-  shortingMove: boolean,
+  shortDropMove: boolean,
+  loadingMove: boolean,
+  loader?: Counter,
 }
 
 export type GameActionState = {
@@ -464,7 +467,7 @@ export default class Game {
         move: {
           initialSelection, doneSelect: !canSelect, path: [loc], addActions: [],
           finalTurretRotation: selection.target.facing, rotatingTurret: false,
-          placingSmoke: false, shortingMove: false,
+          placingSmoke: false, shortDropMove: false, loadingMove: false,
         }
       }
     }
@@ -517,13 +520,41 @@ export default class Game {
   placeSmokeToggle() {
     if (!this.gameActionState?.move) { return }
     this.gameActionState.move.placingSmoke = !this.gameActionState.move.placingSmoke
-    this.gameActionState.move.shortingMove = false
+    this.gameActionState.move.loadingMove = false
+    this.gameActionState.move.shortDropMove = false
   }
 
   shortingMoveToggle() {
     if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.shortingMove = !this.gameActionState.move.shortingMove
+    this.gameActionState.move.shortDropMove = !this.gameActionState.move.shortDropMove
+    this.gameActionState.move.loadingMove = false
     this.gameActionState.move.placingSmoke = false
+  }
+
+  loadingMoveToggle() {
+    if (!this.gameActionState?.move) { return }
+    this.gameActionState.move.loadingMove = !this.gameActionState.move.loadingMove
+    this.gameActionState.move.shortDropMove = false
+    this.gameActionState.move.placingSmoke = false
+  }
+
+  get needPickUpDisambiguate(): boolean {
+    const action = this.gameActionState
+    if (!action?.move) { return false }
+    if (action.move.loader) { return false }
+    const selection = action.selection
+    if (!selection || !this.lastPath) { return false }
+    const counters = this.scenario.map.countersAt(new Coordinate(this.lastPath.x, this.lastPath.y))
+    let count = 0
+    for (const c of counters) {
+      if (c.target.selected || c.target.isFeature) { continue }
+      for (const s of selection) {
+        const unit = s.counter.target as Unit
+        const target = c.target as Unit
+        if (unit.canCarry(target)) { count++ }
+      }
+    }
+    return count > 1
   }
 
   addMoveAction(x: number, y: number, cost: number, type: addActionType, meta?: { fromIndex?: number }) {

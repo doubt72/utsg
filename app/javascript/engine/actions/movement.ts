@@ -4,6 +4,7 @@ import Game from "../Game"
 import Hex from "../Hex"
 import Map from "../Map"
 import Unit from "../Unit"
+import { currSelection } from "./actionsAvailable"
 
 export function mapSelectMovement(game: Game, roadMove: boolean): number {
   if (!game.gameActionState?.selection) { return 0 }
@@ -21,7 +22,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       let check = false
       if (game.gameActionState.move?.addActions) {
         for (const add of game.gameActionState.move.addActions) {
-          if (add.type === "shortmove" && add.meta?.fromIndex === sel.i) {
+          if (add.type === "shortdrop" && add.meta?.fromIndex === sel.i) {
             check = true
             continue
           }
@@ -47,7 +48,8 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   const game = map.game
   if (!game?.gameActionState?.move) { return false }
   const action = game?.gameActionState.move
-  if (action.shortingMove) { return hexOpenType.Closed }
+  if (action.shortDropMove) { return hexOpenType.Closed }
+  if (action.loadingMove) { return hexOpenType.Closed }
   if (!game.gameActionState.selection) { return false }
   const selection = game.gameActionState.selection[0].counter
   if (action.placingSmoke) {
@@ -180,9 +182,19 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   return cost
 }
 
-export function showShort(game: Game): boolean {
+export function showDropSmoke(game: Game): boolean {
+  const move = game.gameActionState?.move
+  if (move?.loadingMove || move?.shortDropMove) { return false }
+  const moveSelect = currSelection(game, true)
+  if (!moveSelect) { return false }
+  return moveSelect.smokeCapable && !moveSelect.targetedRange &&
+    movementPastCost(game.scenario.map, moveSelect) < mapSelectMovement(game, true)
+}
+
+export function showShortDropMove(game: Game): boolean {
   const action = game.gameActionState
   if (!action?.move) { return false }
+  if (action?.move?.loadingMove || action?.move?.placingSmoke) { return false }
   const selection = action.selection
   if (!selection || selection.length === 1) { return false }
   const unit = selection[0].counter.target
@@ -190,9 +202,37 @@ export function showShort(game: Game): boolean {
   for (let i = 0; i < selection.length; i++) {
     let check = false
     for (const a of action.move.addActions) {
-      if (a.type === "shortmove" && a.meta?.fromIndex === selection[i].i) { check = true }
+      if (a.type === "shortdrop" && a.meta?.fromIndex === selection[i].i) { check = true }
     }
     if (!check) { return true }
+  }
+  return false
+}
+
+export function canBeLoaded(game: Game, target: Unit): boolean {
+    const unit = game.gameActionState?.move?.loader?.target as Unit
+    if (!unit) { return false }
+    return unit.canCarry(target)
+}
+
+export function canLoadUnit(game: Game, unit: Unit): boolean {
+  const lastPath = game.lastPath
+  if (!lastPath) { return false }
+  const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
+  for (const c of counters) {
+    if (c.target.selected || c.target.isFeature) { continue }
+    if (unit.canCarry(c.target as Unit)) { return true }
+  }
+  return false
+}
+
+export function showLoadMove(game: Game): boolean {
+  const move = game.gameActionState?.move
+  if (move?.placingSmoke || move?.shortDropMove) { return false }
+  const selection = game.gameActionState?.selection
+  if (!selection) { return false }
+  for (const s of selection) {
+    if (canLoadUnit(game, s.counter.target as Unit)) { return true }
   }
   return false
 }

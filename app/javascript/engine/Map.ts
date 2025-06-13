@@ -443,7 +443,9 @@ export default class Map {
     const units = this.allUnits
     for (const u of units) {
       if (u.target.selected) { u.target.select() }
-      if (u.target.altSelected) { u.target.altSelect() }
+      if (u.target.dropSelected) { u.target.dropSelect() }
+      if (u.target.loaderSelected) { u.target.loaderSelect() }
+      if (u.target.loadedSelected) { u.target.loadedSelect() }
     }
   }
 

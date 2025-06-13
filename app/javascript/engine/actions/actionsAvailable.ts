@@ -1,7 +1,7 @@
 import { GameAction, unitType } from "../../utilities/commonTypes"
 import Game, { actionType, gamePhaseType } from "../Game"
 import Unit from "../Unit"
-import { mapSelectMovement, movementPastCost, showShort } from "./movement"
+import { showDropSmoke, showLoadMove, showShortDropMove } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
   if (game.lastMove?.id === undefined) {
@@ -37,7 +37,13 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         const moveSelect = currSelection(game, true)
         const action = game.gameActionState.move
         if (moveSelect) {
-          if (action.shortingMove) {
+          if (action.loadingMove) {
+            if (game.needPickUpDisambiguate) {
+              moves.unshift({ type: "none", message: "select unit to pick up unit" })
+            } else {
+              moves.unshift({ type: "none", message: "select unit to be picked up" })
+            }
+          } else if (action.shortDropMove) {
             moves.unshift({ type: "none", message: "select unit to drop off" })
           } else if (action.placingSmoke) {
             moves.unshift({ type: "none", message: "select hex to place smoke" })
@@ -49,12 +55,14 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           if (moveSelect.turreted) {
             moves.push({ type: "move_rotate_toggle" })
           }
-          if (moveSelect.smokeCapable && !moveSelect.targetedRange &&
-              movementPastCost(game.scenario.map, moveSelect) < mapSelectMovement(game, true)) {
+          if (showDropSmoke(game)) {
             moves.push({ type: "move_smoke_toggle" })
           }
-          if (showShort(game)) {
-            moves.push({ type: "move_short_toggle" })
+          if (showShortDropMove(game)) {
+            moves.push({ type: "move_shortdrop_toggle" })
+          }
+          if (showLoadMove(game)) {
+            moves.push({ type: "move_load_toggle" })
           }
           if (action.path.length + action.addActions.length > 1) {
             moves.push({ type: "move_finish" })
@@ -96,7 +104,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   }
 }
 
-function currSelection(game: Game, move: boolean): Unit | undefined {
+export function currSelection(game: Game, move: boolean): Unit | undefined {
   if (!game) { return undefined}
   if (game.gameActionState?.selection) {
     const unit = game.gameActionState.selection[0].counter.target as Unit

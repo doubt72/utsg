@@ -147,7 +147,9 @@ export default class Feature {
   fullIcon = false
   isHull = false
   selected = false
-  altSelected = false
+  dropSelected = false
+  loaderSelected = false
+  loadedSelected = false
   hideOverlayRotation = false
 
   canHandle = false
@@ -163,8 +165,16 @@ export default class Feature {
     this.selected = !this.selected
   }
 
-  altSelect() {
-    this.altSelected = !this.altSelected
+  dropSelect() {
+    this.dropSelected = !this.dropSelected
+  }
+
+  loaderSelect() {
+    this.loaderSelected = !this.loaderSelected
+  }
+
+  loadedSelect() {
+    this.loadedSelected = !this.loadedSelected
   }
 
   get isMarker(): boolean { return false }

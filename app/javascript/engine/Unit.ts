@@ -115,7 +115,9 @@ export default class Unit {
   facing: Direction;
   turretFacing: Direction;
   selected: boolean;
-  altSelected: boolean;
+  dropSelected: boolean;
+  loaderSelected: boolean;
+  loadedSelected: boolean;
 
   smallName: number;
 
@@ -207,7 +209,9 @@ export default class Unit {
     this.facing = 1
     this.turretFacing = 1
     this.selected = false
-    this.altSelected = false
+    this.dropSelected = false
+    this.loaderSelected = false
+    this.loadedSelected = false
 
     this.rawData = data
 
@@ -227,8 +231,16 @@ export default class Unit {
     this.selected = !this.selected
   }
 
-  altSelect() {
-    this.altSelected = !this.altSelected
+  dropSelect() {
+    this.dropSelected = !this.dropSelected
+  }
+
+  loaderSelect() {
+    this.loaderSelected = !this.loaderSelected
+  }
+
+  loadedSelect() {
+    this.loadedSelected = !this.loadedSelected
   }
 
   get hindrance(): number { return 0 }
@@ -302,6 +314,11 @@ export default class Unit {
       }
     }
     return true
+  }
+
+  canCarry(unit: Unit): boolean {
+    return this.canTransportUnit(unit) || this.canTowUnit(unit) || (this.children.length < 1 &&
+      ((this.canCarrySupport && unit.uncrewedSW) || (this.canHandle && unit.crewed)))
   }
 
   get isActivated(): boolean {
