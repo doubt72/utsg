@@ -210,8 +210,14 @@ export function showShortDropMove(game: Game): boolean {
 }
 
 export function canBeLoaded(game: Game, target: Unit): boolean {
-    const unit = game.gameActionState?.move?.loader?.target as Unit
-    if (!unit) { return false }
+    let unit = game.gameActionState?.move?.loader?.target as Unit
+    if (!unit) {
+      if (!game.gameActionState?.selection) {
+        return false
+      } else {
+        unit = game.gameActionState.selection[0].counter.target as Unit
+      }
+    }
     return unit.canCarry(target)
 }
 
@@ -220,7 +226,7 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
   if (!lastPath) { return false }
   const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
   for (const c of counters) {
-    if (c.target.selected || c.target.isFeature) { continue }
+    if (c.target.selected || c.target.loadedSelected || c.target.isFeature) { continue }
     if (unit.canCarry(c.target as Unit)) { return true }
   }
   return false

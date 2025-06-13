@@ -55,6 +55,7 @@ export type MoveAddAction = {
   x: number, y: number, type: addActionType, cost: number,
   meta?: {
     fromIndex?: number,
+    toIndex?: number,
   },
 }
 

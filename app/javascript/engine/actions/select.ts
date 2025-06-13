@@ -19,10 +19,10 @@ export default function select(
     const selected = counter.target.selected
     const move = game.gameActionState.move
     counter.target.select()
+    const xx = game.lastPath?.x ?? 0 // But should always exist, type notwithstanding
+    const yy = game.lastPath?.y ?? 0
     if (move.shortDropMove) {
       counter.target.dropSelect()
-      const xx = game.lastPath?.x ?? 0 // But should always exist, type notwithstanding
-      const yy = game.lastPath?.y ?? 0
       const cost = counter.parent ? 1 : 0
       move.addActions.push(
         { x: xx, y: yy, cost, type: "shortdrop", meta: { fromIndex: index } }
@@ -43,13 +43,21 @@ export default function select(
         counter.target.select()
         counter.target.loadedSelect()
         const load = move.loader
+        let toIndex = 0
+        if (game.gameActionState.selection) {
+          toIndex = game.gameActionState.selection[0].counter.unitIndex
+        }
         if (load) {
           load.target.select()
           load.target.loaderSelect()
+          toIndex = load.unitIndex
           move.loader = undefined
         }
         move.loadingMove = false
         move.doneSelect = true
+        move.addActions.push(
+          { x: xx, y: yy, cost: 1, type: "load", meta: { fromIndex: index, toIndex }}
+        )
       }
     } else {
       counter.children.forEach(c => c.target.select())
@@ -110,11 +118,27 @@ function selectable(
       }
       if (game.gameActionState.move.loadingMove) {
         if (game.needPickUpDisambiguate) {
-          if (!target.selected) { return false }
-          return canLoadUnit(game, target)
+          if (!target.selected) {
+            callback("must select unit that started move")
+            return false
+          }
+          if (canLoadUnit(game, target)) {
+            return true
+          } else {
+            callback("can't carry/load any available units")
+            return false
+          }
         } else {
-          if (target.selected) { return false }
-          return canBeLoaded(game, target)
+          if (target.selected || target.loaderSelected) {
+            callback("unit is already selected")
+            return false
+          }
+          if (canBeLoaded(game, target)) {
+            return true
+          } else {
+            callback("can't be carried/loaded onto selected unit")
+            return false
+          }
         }
       }
       if (game.gameActionState.move.doneSelect) { return false }
