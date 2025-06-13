@@ -253,7 +253,9 @@ export default class Game {
           m.mutateGame()
         } catch(err) {
           if (err instanceof WarningMoveError) {
-            this.refreshCallback(this, ["warn", err.message])
+            if (!m.id) {
+              this.refreshCallback(this, ["warn", err.message])
+            }
           } else {
             throw err
           }

@@ -97,20 +97,18 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
       let rc = hexOpenType.Open
       const list = map.units[hex.coord.y][hex.coord.x]
       const last = list[list.length - 1] as Unit
-      if (!last.isFeature) {
-        if (unit.crewed) {
-          if (last && (last.canTow && last.size >= (unit.towSize ?? 0) ||
-              last.canHandle)) {
-            rc = hexOpenType.Green
-          } else {
-            rc = hexOpenType.Red
-          }
-        } else if (unit.uncrewedSW) {
-          if (last && last.canCarrySupport) {
-            rc = hexOpenType.Green
-          } else {
-            rc = hexOpenType.Red
-          }
+      if (unit.crewed) {
+        if ((last && !last.isFeature) &&
+            ((last.canTow && last.size >= (unit.towSize ?? 0)) || last.canHandle)) {
+          rc = hexOpenType.Green
+        } else {
+          rc = hexOpenType.Red
+        }
+      } else if (unit.uncrewedSW) {
+        if ((last && !last.isFeature) && last.canCarrySupport) {
+          rc = hexOpenType.Green
+        } else {
+          rc = hexOpenType.Red
         }
       }
       return rc
