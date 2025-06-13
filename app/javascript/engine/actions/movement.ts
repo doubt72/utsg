@@ -7,7 +7,7 @@ import Unit from "../Unit"
 import { currSelection } from "./actionsAvailable"
 
 export function mapSelectMovement(game: Game, roadMove: boolean): number {
-  if (!game.gameActionState?.selection) { return 0 }
+  if (!game.gameActionState) { return 0 }
   const map = game.scenario.map
   const road = allAlongRoad(map)
   const selection = game.gameActionState.selection[0].counter
@@ -194,7 +194,7 @@ export function showDropSmoke(game: Game): boolean {
 export function showShortDropMove(game: Game): boolean {
   const action = game.gameActionState
   if (!action?.move) { return false }
-  if (action?.move?.loadingMove || action?.move?.placingSmoke) { return false }
+  if (action.move.loadingMove || action.move.placingSmoke) { return false }
   const selection = action.selection
   if (!selection || selection.length === 1) { return false }
   const unit = selection[0].counter.target
@@ -210,14 +210,9 @@ export function showShortDropMove(game: Game): boolean {
 }
 
 export function canBeLoaded(game: Game, target: Unit): boolean {
-    let unit = game.gameActionState?.move?.loader?.target as Unit
-    if (!unit) {
-      if (!game.gameActionState?.selection) {
-        return false
-      } else {
-        unit = game.gameActionState.selection[0].counter.target as Unit
-      }
-    }
+  if (!game.gameActionState) { return false }
+    let unit = game.gameActionState.move?.loader?.target as Unit
+    if (!unit) { unit = game.gameActionState.selection[0].counter.target as Unit }
     return unit.canCarry(target)
 }
 
@@ -234,9 +229,8 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
 
 export function showLoadMove(game: Game): boolean {
   const move = game.gameActionState?.move
-  if (move?.placingSmoke || move?.shortDropMove) { return false }
   const selection = game.gameActionState?.selection
-  if (!selection) { return false }
+  if (!selection || move?.placingSmoke || move?.shortDropMove) { return false }
   for (const s of selection) {
     if (canLoadUnit(game, s.counter.target as Unit)) { return true }
   }

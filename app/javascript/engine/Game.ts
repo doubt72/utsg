@@ -74,8 +74,8 @@ export type MoveAction = {
 
 export type GameActionState = {
   player: Player,
-  currentAction?: ActionType,
-  selection?: ActionSelection[],
+  currentAction: ActionType,
+  selection: ActionSelection[],
   deploy?: DeployAction,
   move?: MoveAction,
 }
@@ -411,7 +411,7 @@ export default class Game {
     } else {
       const counter = this.availableReinforcements(player)[deploy.turn][deploy.index]
       if (counter.x > counter.used) {
-        this.gameActionState = { player, currentAction: actionType.Deploy }
+        this.gameActionState = { player, currentAction: actionType.Deploy, selection: [] }
         this.gameActionState.deploy = deploy
       }
     }

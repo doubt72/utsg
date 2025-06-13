@@ -3,7 +3,7 @@
 
 High Priority Features/Bug Fixes:
   Clean up counter/feature/marker types
-  Current Stack Only overlay when selecting
+  Current Stack Only overlay when selecting / austomatically open overlay
 
 Game Actions:
   - Moving
