@@ -3,6 +3,7 @@ import Map from "../../../engine/Map";
 import Counter from "../../../engine/Counter";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { HelpButtonLayout } from "../../../utilities/graphics";
+import { counterHelpLayout } from "../../../engine/support/help";
 
 interface MapCounterOverlayHelpProps {
   map: Map;
@@ -31,7 +32,7 @@ export default function MapCounterOverlayHelp({
   }, [xx, yy])
 
   const showHelp = () => {
-    const layout = counter.helpLayout(new Coordinate(xx + 20, yy - 10), new Coordinate(maxX, maxY))
+    const layout = counterHelpLayout(counter, new Coordinate(xx + 20, yy - 10), new Coordinate(maxX, maxY))
     setHelpDisplay(
       <g>
         <path d={layout.path} style={layout.style as object} />
