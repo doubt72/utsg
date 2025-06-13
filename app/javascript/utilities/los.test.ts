@@ -122,6 +122,7 @@ const missHexes = symmetrical([
 function createMap(data: MapTestData): Map {
   const map = new Map({
     layout: [data.x, data.y, "x"],
+    allied_dir: 1, axis_dir: 4,
     base_terrain: "g",
     start_weather: weatherType.Dry,
     base_weather: weatherType.Dry,
@@ -136,7 +137,7 @@ function createMap(data: MapTestData): Map {
       if (featureData.f) {
         feature.facing = featureData.f;
       }
-      map.addUnit(new Coordinate(featureData.x, featureData.y), feature);
+      map.addCounter(new Coordinate(featureData.x, featureData.y), feature);
     });
   }
   return map;

@@ -54,7 +54,7 @@ export default class DeployMove extends BaseMove {
       uf.facing = this.orientation
       uf.turretFacing = this.orientation
     }
-    map.addUnit(this.target, uf)
+    map.addCounter(this.target, uf)
   }
 
   undo(): void {

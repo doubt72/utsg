@@ -32,41 +32,47 @@ export function countersFromUnits(
 }
 
 function dataForUnit(
-  loc: Coordinate, unit: Unit | Feature, index: number, showAllCounters: boolean, parent?: number
+  loc: Coordinate, uf: Unit | Feature, index: number, showAllCounters: boolean, parent?: number
 ): [MapCounterData[], number] {
   let rc: MapCounterData[] = []
-  if (unit.turreted && !unit.isWreck) {
+  const unit = uf as Unit
+  if (!uf.isFeature && unit.turreted && !unit.isWreck) {
     const type = unit.isWheeled ? markerType.WheeledHull : markerType.TrackedHull
     rc.push({ loc: loc, i: index, u: new Marker({
-      type: type, nation: unit.nation, rotates: 1, facing: unit.facing, mk: 1, player_nation: unit.playerNation
+      type: type, nation: uf.nation, rotates: 1, facing: uf.facing, mk: 1, player_nation: uf.playerNation
     })})
   }
-  rc.push({ loc: loc, u: unit, i: index++, pi: parent })
-  if (showAllCounters) { rc = rc.concat(addMarkers(loc, unit, index)) }
-  const parentIndex = index - 1
-  for (let i = 0; i < unit.children.length; i++) {
-    const [subList, newIndex] = dataForUnit(loc, unit.children[i], index, showAllCounters, parentIndex)
-    index = newIndex
-    rc = rc.concat(subList)
+  rc.push({ loc: loc, u: uf, i: index++, pi: parent })
+  if (showAllCounters) { rc = rc.concat(addMarkers(loc, uf, index)) }
+  if (!uf.isFeature) {
+    const parentIndex = index - 1
+    for (let i = 0; i < unit.children.length; i++) {
+      const [subList, newIndex] = dataForUnit(loc, unit.children[i], index, showAllCounters, parentIndex)
+      index = newIndex
+      rc = rc.concat(subList)
+    }
   }
   return [rc, index]
 }
 
-function addMarkers(loc: Coordinate, unit: Unit | Feature, index: number): MapCounterData[] {
+function addMarkers(loc: Coordinate, uf: Unit | Feature, index: number): MapCounterData[] {
   const rc: MapCounterData[] = []
-  const rotates = unit.rotates ? 1 : 0
-  const facing = unit.turreted && !unit.isWreck ? unit.turretFacing : unit.facing
+  const rotates = uf.rotates ? 1 : 0
+  const unit = uf as Unit
+  const facing = !uf.isFeature && unit.turreted && !unit.isWreck ? unit.turretFacing : uf.facing
   const markerTypes: MarkerType[] = []
-  if (!unit.isFeature && (unit as Unit).eliteCrew > 0) { markerTypes.push(markerType.EliteCrew) }
-  if (!unit.isFeature && (unit as Unit).eliteCrew < 0) { markerTypes.push(markerType.GreenCrew) }
-  if (unit.immobilized) { markerTypes.push(markerType.Immobilized) }
-  if (unit.turretJammed) { markerTypes.push(markerType.TurretJammed) }
-  if (unit.jammed && unit.turreted) { markerTypes.push(markerType.Jammed) }
-  if (unit.weaponBroken) { markerTypes.push(markerType.WeaponBroken) }
-  if (unit.isTired) { markerTypes.push(markerType.Tired) }
-  if (unit.isPinned) { markerTypes.push(markerType.Pinned) }
-  if (unit.isExhausted) { markerTypes.push(markerType.Exhausted) }
-  if (unit.isActivated) { markerTypes.push(markerType.Activated) }
+  if (!uf.isFeature) {
+    if (unit.eliteCrew > 0) { markerTypes.push(markerType.EliteCrew) }
+    if (unit.eliteCrew < 0) { markerTypes.push(markerType.GreenCrew) }
+    if (unit.immobilized) { markerTypes.push(markerType.Immobilized) }
+    if (unit.turretJammed) { markerTypes.push(markerType.TurretJammed) }
+    if (unit.jammed && unit.turreted) { markerTypes.push(markerType.Jammed) }
+    if (unit.weaponBroken) { markerTypes.push(markerType.WeaponBroken) }
+    if (unit.isTired) { markerTypes.push(markerType.Tired) }
+    if (unit.isPinned) { markerTypes.push(markerType.Pinned) }
+    if (unit.isExhausted) { markerTypes.push(markerType.Exhausted) }
+    if (unit.isActivated) { markerTypes.push(markerType.Activated) }
+  }
   markerTypes.forEach(t => rc.push({ loc: loc, u: new Marker({type: t, rotates, facing, mk: 1}), i: index }))
   return rc
 }
@@ -90,13 +96,15 @@ function unshiftFeatures(list: (Unit | Feature)[]): (Unit | Feature)[] {
 function pairCrewedWeapons(list: (Unit | Feature)[]): (Unit | Feature)[] {
   const newList: (Unit | Feature)[] = []
   for (let index = 0; index < list.length; index++) {
-    const unit = list[index]
-    if (unit.isFeature) {
-      newList.push(unit)
+    const uf = list[index]
+    if (uf.isFeature) {
+      newList.push(uf)
       continue
     }
-    const next = list[index + 1]
-    if (next && ((unit.canCarrySupport && next.uncrewedSW) || (unit.canHandle && next.crewed)) &&
+    const unit = uf as Unit
+    const next = list[index + 1] as Unit
+    if (next && !next.isFeature &&
+        ((unit.canCarrySupport && next.uncrewedSW) || (unit.canHandle && next.crewed)) &&
         unit.children.length === 0) {
       unit.children.push(next as Unit)
       next.parent = unit as Unit
@@ -110,13 +118,14 @@ function pairCrewedWeapons(list: (Unit | Feature)[]): (Unit | Feature)[] {
 function pairTowedWeapons(list: (Unit | Feature)[]): (Unit | Feature)[] {
   const newList: (Unit | Feature)[] = []
   for (let index = 0; index < list.length; index++) {
-    const unit = list[index]
-    if (unit.isFeature) {
-      newList.push(unit)
+    const uf = list[index]
+    if (uf.isFeature) {
+      newList.push(uf)
       continue
     }
-    const next = list[index + 1]
-    if (next && unit.canTowUnit(next as Unit)) {
+    const unit = uf as Unit
+    const next = list[index + 1] as Unit
+    if (next && !next.isFeature && unit.canTowUnit(next as Unit)) {
       unit.children.push(next as Unit)
       next.parent = unit as Unit
       index++
@@ -129,27 +138,28 @@ function pairTowedWeapons(list: (Unit | Feature)[]): (Unit | Feature)[] {
 function loadVehicles(list: (Unit | Feature)[]): (Unit | Feature)[] {
   const newList: (Unit | Feature)[] = []
   for (let index = 0; index < list.length; index++) {
-    const unit = list[index]
-    if (unit.isFeature) {
-      newList.push(unit)
+    const uf = list[index]
+    if (uf.isFeature) {
+      newList.push(uf)
       continue
     }
-    const next = list[index + 1]
-    const next2 = list[index + 2]
-    if (next && next2) {
+    const unit = uf as Unit
+    const next = list[index + 1] as Unit
+    const next2 = list[index + 2] as Unit
+    if (next && next2 && !next.isFeature && !next2.isFeature) {
       if (unit.canTransportUnit(next as Unit)) {
         unit.children.push(next as Unit)
-        next.parent = unit as Unit
+        next.parent = unit
         index++
-        if (unit.canTransportUnit(next2 as Unit)) {
-          unit.children.push(next2 as Unit)
-          next2.parent = unit as Unit
+        if (unit.canTransportUnit(next2)) {
+          unit.children.push(next2)
+          next2.parent = unit
           index++
         }
       }
-    } else if (next && unit.canTransportUnit(next as Unit)) {
-      unit.children.push(next as Unit)
-      next.parent = unit as Unit
+    } else if (next && !next.isFeature && unit.canTransportUnit(next)) {
+      unit.children.push(next)
+      next.parent = unit
       index++
     }
     newList.push(unit)
@@ -159,6 +169,7 @@ function loadVehicles(list: (Unit | Feature)[]): (Unit | Feature)[] {
 
 function sortValues(unit: Unit | Feature): number {
   if (unit.isFeature) { return 0 }
+  const u = unit as Unit
   return {
     sw: 1, gun: 1,
     sqd: 2, tm: 2,
@@ -166,12 +177,14 @@ function sortValues(unit: Unit | Feature): number {
     cav: 4, ht: 4, truck: 4,
     tank: 5, spg: 5, ac: 5,
     other: 6,
-  }[(unit as Unit).type] ?? 9
+  }[(u).type] ?? 9
 }
 
 function sortStack(list: (Unit | Feature)[]): (Unit | Feature)[] {
   list.forEach(u => {
-    sortStack(u.children)
+    if (u.isFeature) { return }
+    const unit = u as Unit
+    sortStack(unit.children)
   })
   return list.sort((a, b) => {
     const av = sortValues(a)

@@ -25,6 +25,7 @@ import MoveTrackOverlay from "./MoveTrackOverlay";
 import openHex, { openHexRotateOpen } from "../../../engine/actions/openHex";
 import select from "../../../engine/actions/select";
 import { MovePath } from "../../../engine/Game";
+import Unit from "../../../engine/Unit";
 
 interface GameMapProps {
   map?: Map;
@@ -401,7 +402,7 @@ export default function GameMap({
         if (counter.counter.rotates && !map.game.gameActionState.deploy.needsDirection) {
           map.game.gameActionState.deploy.needsDirection = [x, y]
           const list = map.units[y][x]
-          const last = list[list.length - 1]
+          const last = list[list.length - 1] as Unit
           if (last && last.canTow) {
             directionCallback(x, y, normalDir(last.facing + 3))
             doCallback = false

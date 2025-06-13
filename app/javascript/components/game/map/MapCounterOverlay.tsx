@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import MapCounter from "./MapCounter";
 import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
 import Counter from "../../../engine/Counter";
-import { Coordinate, MarkerType, markerType, UnitType, unitType } from "../../../utilities/commonTypes";
+import { Coordinate, markerType, unitType } from "../../../utilities/commonTypes";
 import Map from "../../../engine/Map";
 import { counterOutline } from "../../../utilities/graphics";
-import { counterInfoBadges } from "../../../engine/support/layout";
-import { counterPath } from "../../../engine/support/unitLayout";
+import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
 
 interface MapCounterOverlayProps {
   map: Map;
@@ -46,7 +45,7 @@ export default function MapCounterOverlay({
       <g>
         <path d={layout.path} style={layout.style as object} />
         { displayCounters.map((counter, i) => {
-          const cd = new Counter(undefined, counter.target, map)
+          const cd = new Counter(undefined, counter.container, map)
           if (counters) {
             cd.showDisabled = counter.showDisabled
             cd.reinforcement = counter.reinforcement
@@ -54,10 +53,10 @@ export default function MapCounterOverlay({
           cd.hideShadow = true
           cd.showAllCounters = true
           cd.unitIndex = counter.unitIndex
-          const transport = counter.target.transport && (counter.children.length > 2 ||
-            (counter.children.length === 1 && !counter.children[0].target.crewed)) ?
+          const transport = counter.unit.transport && (counter.children.length > 2 ||
+            (counter.children.length === 1 && !counter.children[0].unit.crewed)) ?
             counter.children.reduce((sum, c) => sum + 1 + c.children.length, 0) : undefined
-          const shiftBadges = transport || counter.parent?.target.transport
+          const shiftBadges = transport || counter.parent?.unit.transport
           const badges = counterInfoBadges(
             map, layout.x+i*176 + 32, layout.y2 + 4 + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 0)
           ).map((b, i) => {
@@ -109,10 +108,9 @@ export default function MapCounterOverlay({
             <g key={i} >
               <g transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
                 {
-                  [markerType.TrackedHull, markerType.WheeledHull].includes(
-                      counter.target.type as MarkerType
-                    ) || (counter.children.length > 0 && [unitType.SupportWeapon, unitType.Gun].includes(
-                        counter.children[0].target.type as UnitType
+                  [markerType.TrackedHull, markerType.WheeledHull].includes(counter.marker.type) ||
+                    (counter.children.length > 0 && [unitType.SupportWeapon, unitType.Gun].includes(
+                      counter.children[0].unit.type
                     )) ?
                     <path d={counterOutline(cd, 2, 1)}
                           style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} />  : ""

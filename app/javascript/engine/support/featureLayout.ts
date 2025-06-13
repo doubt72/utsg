@@ -1,10 +1,9 @@
 import { CounterLayout, counterRed } from "../../utilities/graphics"
 import Counter from "../Counter"
-import Feature from "../Feature"
 
 export function featureLayout(counter: Counter): CounterLayout | boolean {
-  if (!counter.target.isFeature) { return false }
-  const target = counter.target as Feature
+  if (!counter.hasFeature) { return false }
+  const feature = counter.feature
   const x = counter.x + 0.5
   const y = counter.y + 0.5
   const corner = 3.5
@@ -15,26 +14,26 @@ export function featureLayout(counter: Counter): CounterLayout | boolean {
   ].join(" ")
   let value = ""
   let size = 11
-  if (counter.target.blocksLos) {
+  if (feature.blocksLos) {
     value = "blocks LOS"
-  } else if (target.hindrance && !target.impassableToVehicles) {
-    value = `hindrance ${counter.target.hindrance}`
+  } else if (feature.hindrance && !feature.impassableToVehicles) {
+    value = `hindrance ${feature.hindrance}`
     size = 10.5
-  } else if (target.cover && !target.impassableToVehicles) {
+  } else if (feature.cover && !feature.impassableToVehicles) {
     size = 14
-    value = `cover ${target.cover}`
-  } else if (target.coverSides) {
-    const cs = target.coverSides
+    value = `cover ${feature.cover}`
+  } else if (feature.coverSides) {
+    const cs = feature.coverSides
     value = `cover ${cs[0]}-${cs[1]}-${cs[2]}`
     size = 10.5
   }
   const style = { fill: counterRed }
   const tStyle = { fill: "white" }
-  if (["foxhole", "bunker"].includes(target.type)) {
+  if (["foxhole", "bunker"].includes(feature.type)) {
     style.fill = "#999"
     tStyle.fill = "white"
   }
-  if (["smoke"].includes(target.type)) {
+  if (["smoke"].includes(feature.type)) {
     style.fill = "#DDD"
     tStyle.fill = "black"
   }

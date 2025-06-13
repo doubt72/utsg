@@ -51,75 +51,71 @@ export default class Marker {
     return new Marker(this.rawData)
   }
 
-  name = ''
-  turreted = false
-  rotatingVehicleMount = false
-  backwardsMount = false
-  isWreck = false
-  isBroken = false
-  isPinned = false
-  isExhausted = false
-  isTired = false;
-  isActivated = false
-  jammed = false
-  weaponBroken = false
-  turretJammed = false
-  immobilized = false
-  turretFacing: Direction = 1
-  hullArmor = false
-  turretArmor = false
-  sponson = false
-  size = 0
-  towSize = undefined
-  canTow = false
-  transport = 0
-  smallName = 0
-  baseMorale = 0
-  currentMorale = 0
-  baseFirepower = 0
-  currentFirepower = 0
-  minimumRange = 0
-  currentRange = 0;
-  currentMovement = 0;
-  breakWeaponRoll = 0
-  breakDestroysWeapon = false
-  breakdownRoll = 0
-  repairRoll = 0
-  currentGunHandling = 0
-  currentLeadership = 0
-  sniperRoll = 0
-  currentSmokeCapable = false
-  armored = false
-  topOpen = false
-  isTracked = false
-  isWheeled = false
-  amphibious = false
-  crewed = false;
-  antiTank = false
-  fieldGun = false
-  offBoard = false
-  singleFire = false
-  assault = false
-  engineer = false
-  ignoreTerrain = false
-  targetedRange = false
-  rapidFire = false
-  noFire = false
-  rotatingMount = false;
-  selected = false
-  dropSelected = false
-  loaderSelected = false
-  loadedSelected = false
+  // name = ''
+  // turreted = false
+  // rotatingVehicleMount = false
+  // backwardsMount = false
+  // isWreck = false
+  // isBroken = false
+  // isPinned = false
+  // isExhausted = false
+  // isTired = false;
+  // isActivated = false
+  // jammed = false
+  // weaponBroken = false
+  // turretJammed = false
+  // immobilized = false
+  // turretFacing: Direction = 1
+  // hullArmor = false
+  // turretArmor = false
+  // sponson = false
+  // size = 0
+  // towSize = undefined
+  // canTow = false
+  // transport = 0
+  // smallName = 0
+  // baseMorale = 0
+  // currentMorale = 0
+  // baseFirepower = 0
+  // currentFirepower = 0
+  // minimumRange = 0
+  // currentRange = 0;
+  // currentMovement = 0;
+  // breakWeaponRoll = 0
+  // breakDestroysWeapon = false
+  // breakdownRoll = 0
+  // repairRoll = 0
+  // currentGunHandling = 0
+  // currentLeadership = 0
+  // sniperRoll = 0
+  // currentSmokeCapable = false
+  // armored = false
+  // topOpen = false
+  // isTracked = false
+  // isWheeled = false
+  // amphibious = false
+  // crewed = false;
+  // antiTank = false
+  // fieldGun = false
+  // offBoard = false
+  // singleFire = false
+  // assault = false
+  // engineer = false
+  // ignoreTerrain = false
+  // targetedRange = false
+  // rapidFire = false
+  // noFire = false
+  // rotatingMount = false;
+  // selected = false
+  // dropSelected = false
+  // loaderSelected = false
+  // loadedSelected = false
 
-  canHandle = false
-  canCarrySupport = false
-  uncrewedSW = false
+  // canHandle = false
+  // canCarrySupport = false
+  // uncrewedSW = false
 
-  ghost = undefined
-
-  get hindrance(): number { return 0 }
-
-  get blocksLos(): boolean { return false }
+  // ghost = undefined
 
   get isMarker(): boolean {
     return true
@@ -140,9 +136,6 @@ export default class Marker {
   get hideOverlayRotation(): boolean {
     return !this.isHull
   }
-
-  red = counterRed
-  yellow = markerYellow
 
   get textColor(): string {
     if (this.type === markerType.GreenCrew) { return "black" }
@@ -166,7 +159,7 @@ export default class Marker {
     if (this.type === markerType.GreenCrew) { return counterGreen }
     if (this.type === markerType.EliteCrew) { return counterElite }
     if (this.type === markerType.Tired || this.type === markerType.Activated ||
-        this.type === markerType.Exhausted) { return this.yellow }
+        this.type === markerType.Exhausted) { return markerYellow }
     if (this.type === markerType.Wind) {
       if (this.subType === windType.Calm) { return "#DDF" }
       if (this.subType === windType.Breeze) { return "#AAE" }
@@ -181,7 +174,7 @@ export default class Marker {
       if (this.subType === weatherType.Sand) { return "#DD8" }
       if (this.subType === weatherType.Dust) { return "#DB9" }
     }
-    return this.red
+    return counterRed
   }
 
   get displayText(): string[] {
@@ -265,19 +258,19 @@ export default class Marker {
     return markerHelpText(this)
   }
 
-  select() {
-    // does nothing, can't select markers
-  }
+  // select() {
+  //   // does nothing, can't select markers
+  // }
 
-  dropSelect() {
-    // does nothing, can't select markers
-  }
+  // dropSelect() {
+  //   // does nothing, can't select markers
+  // }
 
-  loaderSelect() {
-    // does nothing, can't select markers
-  }
+  // loaderSelect() {
+  //   // does nothing, can't select markers
+  // }
 
-  loadedSelect() {
-    // does nothing, can't select markers
-  }
+  // loadedSelect() {
+  //   // does nothing, can't select markers
+  // }
 }

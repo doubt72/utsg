@@ -253,17 +253,18 @@ export default class Map {
     }
   }
 
-  addUnit(loc: Coordinate, unit: Unit | Feature) {
+  addCounter(loc: Coordinate, counter: Unit | Feature) {
     const list = this.units[loc.y][loc.x]
-    if (unit.isFeature) {
-      list.unshift(unit)
+    if (counter.isFeature) {
+      list.unshift(counter)
     } else {
-      const last = list[list.length-1]
-      list.push(unit)
+      const unit = counter as Unit
+      const last = list[list.length-1] as Unit
+      list.push(counter)
       if (unit.uncrewedSW) {
         if (!last || !last.canCarrySupport) {
           throw new WarningMoveError(
-            `${unit.name} is not assigned to an operator; it ` +
+            `${counter.name} is not assigned to an operator; it ` +
             "must be placed on a squad, team, or leader to be assigned."
           )
         }
@@ -272,7 +273,7 @@ export default class Map {
         if (!last ||
           (!last.canHandle && !(last.canTow && last.size >= (unit.towSize ?? 0)))) {
           throw new WarningMoveError(
-            `${unit.name} is not assigned to an operator or vehicle; it ` +
+            `${counter.name} is not assigned to an operator or vehicle; it ` +
             "must be placed on a squad or team to be assigned, or on a vehicle large enough to tow it."
           )
         }
@@ -310,7 +311,7 @@ export default class Map {
       counter.stackingIndex = i
       const unitIndex = data[i].i
       if (unitIndex !== undefined) {
-        if (!counter.target.isFeature && !counter.target.isMarker) {
+        if (counter.hasUnit) {
           lu[unitIndex] = counter
         }
         counter.unitIndex = unitIndex
@@ -333,10 +334,10 @@ export default class Map {
     return rc
   }
 
-  counterAtIndex(loc: Coordinate, index: number): Counter | undefined {
+  unitAtIndex(loc: Coordinate, index: number): Counter | undefined {
     const counters = this.countersAt(loc)
     for (const c of counters) {
-      if (!c.target.isMarker && !c.target.isFeature && c.unitIndex === index) { return c }
+      if (c.hasUnit && c.unitIndex === index) { return c }
     }
     return
   }
@@ -351,11 +352,12 @@ export default class Map {
     return c
   }
 
+  // Counters only contain units, no features
   get allUnits(): Counter[] {
     let c: Counter[] = []
     for (let y = 0; y < this.height; y++) {
       for (let x = this.width - 1; x >= 0; x--) {
-        c = c.concat(this.countersAt(new Coordinate(x, y)).filter(c => c.isUnit))
+        c = c.concat(this.countersAt(new Coordinate(x, y)).filter(c => c.hasUnit))
       }
     }
     return c
@@ -409,10 +411,10 @@ export default class Map {
   }
 
   counterHelpButtonLayout(loc: Coordinate, counter: Counter): HelpButtonLayout | boolean {
-    if (counter.target.isWreck) { return false }
-    if (counter.target.isMarker) {
-      if (counter.target.type !== markerType.Wind &&
-          counter.target.type !== markerType.Weather) {
+    if (counter.hasUnit && counter.unit.isWreck) { return false }
+    if (counter.hasMarker) {
+      if (counter.marker.type !== markerType.Wind &&
+          counter.marker.type !== markerType.Weather) {
         return false
       }
     }
@@ -426,8 +428,9 @@ export default class Map {
   anyBrokenUnits(player: Player): boolean {
     for (const listX of this.units) {
       for (const listY of listX) {
-        for (const unit of listY) {
-          if (!unit.isFeature) {
+        for (const u of listY) {
+          if (!u.isFeature) {
+            const unit = u as Unit
             const unitPlayer = unit.nation === this.game?.playerOneNation ? 1 : 2
             if (player === unitPlayer && (unit.isBroken || unit.jammed)) {
               return true
@@ -442,10 +445,10 @@ export default class Map {
   clearAllSelections() {
     const units = this.allUnits
     for (const u of units) {
-      if (u.target.selected) { u.target.select() }
-      if (u.target.dropSelected) { u.target.dropSelect() }
-      if (u.target.loaderSelected) { u.target.loaderSelect() }
-      if (u.target.loadedSelected) { u.target.loadedSelect() }
+      if (u.unit.selected) { u.unit.select() }
+      if (u.unit.dropSelected) { u.unit.dropSelect() }
+      if (u.unit.loaderSelected) { u.unit.loaderSelect() }
+      if (u.unit.loadedSelected) { u.unit.loadedSelect() }
     }
   }
 
@@ -455,7 +458,7 @@ export default class Map {
       if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unitIndex === index)) {
         continue
       }
-      if (u.target.selected) { u.target.select() }
+      if (u.unit.selected) { u.unit.select() }
     }
   }
 
@@ -464,7 +467,7 @@ export default class Map {
     const rc: Counter[] = []
     const units = this.allUnits
     for (const u of units) {
-      if (u.target.selected) { rc.push(u) }
+      if (u.unit.selected) { rc.push(u) }
     }
     return rc
   }

@@ -222,10 +222,10 @@ export default class Unit {
     return new Unit(this.rawData)
   }
 
-  fullIcon = false
-  isHull = false
-  sniperRoll = 0
-  hideOverlayRotation = false
+  // fullIcon = false
+  // isHull = false
+  // sniperRoll = 0
+  // hideOverlayRotation = false
 
   select() {
     this.selected = !this.selected

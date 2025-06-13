@@ -9,7 +9,7 @@ export default class Counter {
   absolute: boolean = true;
   hex?: Coordinate;
   base?: Coordinate;
-  target: Unit | Marker | Feature;
+  container: Unit | Marker | Feature;
   map?: Map;
   stackingIndex: number;
   unitIndex: number;
@@ -40,7 +40,7 @@ export default class Counter {
         this.base = new Coordinate(3, 1)
       }
     }
-    this.target = target
+    this.container = target
     this.map = map
     this.stackingIndex = 0
     this.unitIndex = 0
@@ -51,8 +51,35 @@ export default class Counter {
   showAllCounters = false;
   showDisabled = false;
 
-  get isUnit(): boolean {
-    return !this.target.isFeature && !this.target.isMarker
+  get hasUnit(): boolean {
+    return !this.container.isFeature && !this.container.isMarker
+  }
+
+  get hasFeature(): boolean {
+    return this.container.isFeature
+  }
+
+  get hasMarker(): boolean {
+    return this.container.isMarker
+  }
+
+  get unit(): Unit {
+    return this.container as Unit
+  }
+
+  get feature(): Feature {
+    return this.container as Feature
+  }
+
+  get marker(): Marker {
+    return this.container as Marker
+  }
+
+  get containerUF(): Unit | Feature {
+    if (this.hasUnit) {
+      return this.container as Unit
+    }
+    return this.container as Feature
   }
 
   get stackOffset(): number { return this.onMap ? 5 : 3 }
@@ -60,11 +87,11 @@ export default class Counter {
   get y(): number { return (this.base?.y ?? 0) - this.stackingIndex * this.stackOffset }
   
   get rotation(): { a: number, x: number, y: number} | false {
-    if (!this.onMap || !this.target.rotates) {
+    if (!this.onMap || !this.container.rotates) {
       return false
     }
-    let facing = this.target.facing
-    if (this.target.turreted && !this.target.isWreck) { facing = this.target.turretFacing }
+    let facing = this.container.facing
+    if (this.hasUnit && this.unit.turreted && !this.unit.isWreck) { facing = this.unit.turretFacing }
     return { a: facing*60 - 150, x: this.x + 40, y: this.y + 40 }
   }
 }

@@ -10,8 +10,7 @@ import { FeatureData } from "./Feature";
 describe("move integration test", () => {
   const mapData: MapData = {
     layout: [ 5, 5, "x" ],
-    allied_dir: "l",
-    axis_dir: "r",
+    allied_dir: 4, axis_dir: 1,
     victory_hexes: [[0, 0, 2], [4, 4, 1]],
     allied_setup: { 0: [[0, "*"]] },
     axis_setup: { 0: [[4, "*"]] },
@@ -135,7 +134,7 @@ describe("move integration test", () => {
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
-    expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
+    expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
     expect(game.moves[index - 1].stringValue).toBe("deployed unit: Rifle to E4")
 
     expect(game.undoPossible).toBe(true)
@@ -167,21 +166,21 @@ describe("move integration test", () => {
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
-    expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].target.name).toBe("Rifle")
+    expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
 
     // Same unit, same spot
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4)).length).toBe(2)
-    expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].target.name).toBe("Rifle")
-    expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].target.name).toBe("Rifle")
+    expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
+    expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].unit.name).toBe("Rifle")
 
     curretMoveData = {
       user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3], orientation: 1, turn: 0 }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
-    expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
+    expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
     // Should trigger phase end
     expect(game.moves.length).toBe(index)
@@ -191,7 +190,7 @@ describe("move integration test", () => {
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
-    expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].target.name).toBe("Rifle")
+    expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
     expect(game.lastMove?.stringValue).toBe("Axis deployment done, begin Allied deployment")
 

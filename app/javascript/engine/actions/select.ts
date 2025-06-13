@@ -14,42 +14,42 @@ export default function select(
   const x = selection.target.xy.x
   const y = selection.target.xy.y
   const index = selection.counter.unitIndex
-  const counter = map.counterAtIndex(new Coordinate(x, y), index) as Counter
+  const counter = map.unitAtIndex(new Coordinate(x, y), index) as Counter
   if (game?.gameActionState?.move) {
-    const selected = counter.target.selected
+    const selected = counter.unit.selected
     const move = game.gameActionState.move
-    counter.target.select()
+    counter.unit.select()
     const xx = game.lastPath?.x ?? 0 // But should always exist, type notwithstanding
     const yy = game.lastPath?.y ?? 0
     if (move.shortDropMove) {
-      counter.target.dropSelect()
+      counter.unit.dropSelect()
       const cost = counter.parent ? 1 : 0
       move.addActions.push(
         { x: xx, y: yy, cost, type: "shortdrop", meta: { fromIndex: index } }
       )
-      map.addGhost(new Coordinate(xx, yy), counter.target.clone() as Unit)
+      map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
       if (counter.children.length === 1) {
         const child = counter.children[0]
-        child.target.select()
-        child.target.dropSelect()
-        map.addGhost(new Coordinate(xx, yy), child.target.clone() as Unit)
+        child.unit.select()
+        child.unit.dropSelect()
+        map.addGhost(new Coordinate(xx, yy), child.unit.clone() as Unit)
       }
       move.doneSelect = true
     } else if (move.loadingMove) {
       if (game.needPickUpDisambiguate) {
-        counter.target.loaderSelect()
+        counter.unit.loaderSelect()
         move.loader = counter
       } else {
-        counter.target.select()
-        counter.target.loadedSelect()
+        counter.unit.select()
+        counter.unit.loadedSelect()
         const load = move.loader
         let toIndex = 0
         if (game.gameActionState.selection) {
           toIndex = game.gameActionState.selection[0].counter.unitIndex
         }
         if (load) {
-          load.target.select()
-          load.target.loaderSelect()
+          load.unit.select()
+          load.unit.loaderSelect()
           toIndex = load.unitIndex
           move.loader = undefined
         }
@@ -60,7 +60,7 @@ export default function select(
         )
       }
     } else {
-      counter.children.forEach(c => c.target.select())
+      counter.children.forEach(c => c.unit.select())
       if (selected) {
         removeActionSelection(game, x, y, index)
       } else {
@@ -71,18 +71,18 @@ export default function select(
     }
   } else {
     map.clearOtherSelections(x, y, index)
-    counter.target.select()
+    counter.unit.select()
   }
   callback()
 }
 
 function canBeMoveMultiselected(map: Map, counter: Counter, callback: (error?: string) => void): boolean {
-  if (!counter.target.canCarrySupport) {
+  if (!counter.unit.canCarrySupport) {
     callback("only infantry units and leaders can move together")
     return false
   }
   const next = counter.children[0]
-  if (next && next?.target.crewed) {
+  if (next && next?.unit.crewed) {
     callback("unit manning a crewed weapon cannot move with other infantry")
     return false
   }
@@ -98,7 +98,7 @@ function selectable(
 ): boolean {
   const game = map.game
   if (!game) { return false }
-  const target = selection.counter.target as Unit
+  const target = selection.counter.unit as Unit
   if (target.isFeature) { return false }
   if (map.debug) { return true }
   if (game.phase === gamePhaseType.Deployment) { return false }
@@ -150,7 +150,7 @@ function selectable(
         }
         if (selection.counter.unitIndex === s.i) { return false }
       }
-      const counter = map.counterAtIndex(selection.target.xy, selection.counter.unitIndex)
+      const counter = map.unitAtIndex(selection.target.xy, selection.counter.unitIndex)
       if (!canBeMoveMultiselected(map, counter as Counter, callback)) { return false }
     }
   }

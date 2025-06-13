@@ -3,19 +3,21 @@ import MapHexPatterns from "./MapHexPatterns";
 import Counter from "../../../engine/Counter";
 import { CounterLayout, StatusLayout } from "../../../utilities/graphics";
 import {
-  amphibiousLayout, breakdownLayout, canTowLayout, centerLabelLayout, counterPath, counterStyle,
-  eliteLayout, engineerLayout, firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
-  hullArmorLayout, iconLayout, leadershipLayout, markerBreakLayout, markerFixLayout, moraleLayout,
-  movementLayout, nameBackgroundPath, nameBackgroundStyle, nameLayout, rangeLayout, shadowPath,
+  amphibiousLayout, breakdownLayout, canTowLayout, centerLabelLayout, eliteLayout, engineerLayout,
+  firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
+  hullArmorLayout, iconLayout, leadershipLayout, moraleLayout, movementLayout, rangeLayout,
   sizeLayout, smokeLayout, sponsonLayout, towLayout, transportLLayout, transportRLayout, turretArmorLayout,
   weaponBreakLayout, weaponFixLayout
 } from "../../../engine/support/unitLayout";
 import {
-  markerFirepowerLayout, markerLayout, markerMoraleLayout, markerMovementLayout, markerRangeLayout,
-  markerSubLayout, turnLayout, windArrowLayout
+  markerBreakLayout, markerFirepowerLayout, markerFixLayout, markerLayout, markerMoraleLayout,
+  markerMovementLayout, markerRangeLayout, markerSubLayout, turnLayout, windArrowLayout
 } from "../../../engine/support/markerLayout";
 import { featureLayout } from "../../../engine/support/featureLayout";
-import { counterStatusLayout } from "../../../engine/support/layout";
+import {
+  counterPath, counterStatusLayout, counterStyle, nameBackgroundPath, nameBackgroundStyle, nameLayout,
+  shadowPath
+} from "../../../engine/support/counterLayout";
 
 interface MapCounterProps {
   counter: Counter;
@@ -477,7 +479,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   return (
-    <g transform={`rotate(${rotation()})`} opacity={counter.target.ghost ? 0.7 : 1}>
+    <g transform={`rotate(${rotation()})`} opacity={counter.containerUF.ghost ? 0.7 : 1}>
       {shadow()}
       {counterBack}
       {nameBackground()}{name()}

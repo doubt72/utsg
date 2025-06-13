@@ -12,10 +12,10 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
   const road = allAlongRoad(map)
   const selection = game.gameActionState.selection[0].counter
   const next = selection.children[0]
-  const allRoad = road && roadMove && !selection.target.isWheeled &&
-                  !(next && next.target.crewed) ? 1 : 0
-  let move = selection.target.currentMovement as number + allRoad
-  if (selection.target.canCarrySupport) {
+  const allRoad = road && roadMove && !selection.unit.isWheeled &&
+                  !(next && next.unit.crewed) ? 1 : 0
+  let move = selection.unit.currentMovement as number + allRoad
+  if (selection.unit.canCarrySupport) {
     let minLdrMove = 99
     let minInfMove = 99
     for(const sel of game.gameActionState.selection) {
@@ -29,7 +29,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
         }
       }
       if (check) { continue }
-      const u = sel.counter.target
+      const u = sel.counter.unit
       const move = u.currentMovement as number
       if (u.canCarrySupport && u.type !== unitType.Leader && move < minInfMove) { minInfMove = move }
       if (u.type === unitType.Leader && move < minLdrMove) { minLdrMove = move }
@@ -53,7 +53,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   if (!game.gameActionState.selection) { return false }
   const selection = game.gameActionState.selection[0].counter
   if (action.placingSmoke) {
-    return smokeOpenHex(map, from, to, selection.target as Unit)
+    return smokeOpenHex(map, from, to, selection.unit)
   }
   if (from.x === to.x && from.y === to.y) {
     return false;
@@ -68,24 +68,24 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
 
   const countersAt = map.countersAt(to)
   const moveSize = game.gameActionState.selection.reduce(
-    (sum, u) => sum + u.counter.target.size + u.counter.children.reduce((sum, u) => u.target.size, 0), 0
+    (sum, u) => sum + u.counter.unit.size + u.counter.children.reduce((sum, u) => u.unit.size, 0), 0
   )
   const toSize = countersAt.reduce(
-    (sum, u) => sum + u.target.size + u.children.reduce((sum, u) => u.target.size, 0), 0
+    (sum, u) => u.hasFeature ? sum : sum + u.unit.size + u.children.reduce((sum, u) => u.unit.size, 0), 0
   )
   if (moveSize + toSize > stackLimit) { return false }
   for (const c of countersAt) {
-    if (selection.target.playerNation !== c.target.playerNation && !c.target.isFeature) { return false }
+    if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return false }
   }
 
   const roadMove = alongRoad(hexFrom, hexTo, dir)
-  if (selection.target.isWheeled || selection.target.isTracked) {
+  if (selection.unit.isWheeled || selection.unit.isTracked) {
     if (!terrTo.vehicle && !roadMove) { return false }
-    if (terrTo.vehicle === "amph" && !roadMove && !selection.target.amphibious) { return false }
+    if (terrTo.vehicle === "amph" && !roadMove && !selection.unit.amphibious) { return false }
   }
   const next = selection.children[0]
   const facing = game.lastPath?.facing as Direction
-  if (next && next.target.crewed) {
+  if (next && next.unit.crewed) {
     if (!terrTo.gun && !roadMove) { return false }
     if (terrTo.gun === "back" && dir !== normalDir(facing + 3)) {
       return false
@@ -93,25 +93,25 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     if (!terrFrom.borderMove) { return false }
-    if ((selection.target.isWheeled || selection.target.isTracked) && !terrFrom.borderVehicle) {
+    if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrFrom.borderVehicle) {
       return false
     }
-    if (next && next.target.crewed && !terrFrom.borderGun) { return false }
+    if (next && next.unit.crewed && !terrFrom.borderGun) { return false }
   }
   if (hexTo.border && hexTo.borderEdges?.includes(dir)) {
     if (!terrTo.borderMove) { return false }
-    if ((selection.target.isWheeled || selection.target.isTracked) && !terrTo.borderVehicle) {
+    if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrTo.borderVehicle) {
       return false
     }
-    if (next && next.target.crewed && !terrTo.borderGun) { return false }
+    if (next && next.unit.crewed && !terrTo.borderGun) { return false }
   }
-  if (selection.target.rotates) {
+  if (selection.unit.rotates) {
     if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
   }
 
   const length = action.path.length + action.addActions.length
-  const cost = movementCost(map, from, to, selection.target as Unit)
-  const pastCost = movementPastCost(map, selection.target as Unit)
+  const cost = movementCost(map, from, to, selection.unit)
+  const pastCost = movementPastCost(map, selection.unit)
   const move = mapSelectMovement(game, roadMove)
   if (move < cost + pastCost && length > 1) { return false }
   for (const p of action.path) {
@@ -197,7 +197,7 @@ export function showShortDropMove(game: Game): boolean {
   if (action.move.loadingMove || action.move.placingSmoke) { return false }
   const selection = action.selection
   if (!selection || selection.length === 1) { return false }
-  const unit = selection[0].counter.target
+  const unit = selection[0].counter.unit
   if (mapSelectMovement(game, true) <= movementPastCost(game.scenario.map, unit as Unit)) { return false }
   for (let i = 0; i < selection.length; i++) {
     let check = false
@@ -211,8 +211,8 @@ export function showShortDropMove(game: Game): boolean {
 
 export function canBeLoaded(game: Game, target: Unit): boolean {
   if (!game.gameActionState) { return false }
-    let unit = game.gameActionState.move?.loader?.target as Unit
-    if (!unit) { unit = game.gameActionState.selection[0].counter.target as Unit }
+    let unit = game.gameActionState.move?.loader?.unit as Unit
+    if (!unit) { unit = game.gameActionState.selection[0].counter.unit as Unit }
     return unit.canCarry(target)
 }
 
@@ -221,8 +221,8 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
   if (!lastPath) { return false }
   const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
   for (const c of counters) {
-    if (c.target.selected || c.target.loadedSelected || c.target.isFeature) { continue }
-    if (unit.canCarry(c.target as Unit)) { return true }
+    if (c.hasFeature || c.unit.selected || c.unit.loadedSelected) { continue }
+    if (unit.canCarry(c.unit)) { return true }
   }
   return false
 }
@@ -232,7 +232,7 @@ export function showLoadMove(game: Game): boolean {
   const selection = game.gameActionState?.selection
   if (!selection || move?.placingSmoke || move?.shortDropMove) { return false }
   for (const s of selection) {
-    if (canLoadUnit(game, s.counter.target as Unit)) { return true }
+    if (canLoadUnit(game, s.counter.unit)) { return true }
   }
   return false
 }

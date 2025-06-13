@@ -4,18 +4,38 @@ import {
   squarePath, TextArrayLayout
 } from "../../utilities/graphics"
 import Counter from "../Counter"
-import Marker from "../Marker"
 
 export function markerMoraleLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.isMarker || counter.target.type !== markerType.Pinned) { return false }
+  if (!counter.hasMarker || counter.marker.type !== markerType.Pinned) { return false }
   return {
     x: counter.x + 13, y: counter.y + 24, size: 16, value: "-1",
     tStyle: { fill: counterRed },
   }
 }
 
+export function markerBreakLayout(counter: Counter): CounterLayout | false {
+  if (!counter.hasMarker || counter.marker.type !== markerType.Jammed) { return false }
+
+  const loc = new Coordinate(counter.x + 40, counter.y + 14)
+  return {
+    path: circlePath(loc, 10),
+    style: { strokeWidth: 0, fill: counterRed }, tStyle: { fill: "white" },
+    x: loc.x, y: loc.y + 4.25, size: 16, value: "4",
+  }
+}
+
+export function markerFixLayout(counter: Counter): CounterLayout | false {
+  if (!counter.hasMarker || counter.marker.type !== markerType.Jammed) { return false }
+  const loc = new Coordinate(counter.x + 40, counter.y + 63)
+  return {
+    path: circlePath(loc, 8),
+    style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
+    x: loc.x, y: loc.y + 4.25, size: 16, value: "18",
+  }
+}
+
 export function markerFirepowerLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.isMarker || counter.target.type !== markerType.Pinned) { return false }
+  if (!counter.hasMarker || counter.marker.type !== markerType.Pinned) { return false }
   const loc = new Coordinate(counter.x + 16, counter.y + 67)
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
   const path = squarePath(loc)
@@ -26,7 +46,7 @@ export function markerFirepowerLayout(counter: Counter): CounterLayout | false {
 }
 
 export function markerRangeLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.isMarker || counter.target.type !== markerType.Pinned) { return false }
+  if (!counter.hasMarker || counter.marker.type !== markerType.Pinned) { return false }
   const loc = new Coordinate(counter.x + 40, counter.y + 67)
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
   const path = squarePath(loc)
@@ -37,7 +57,7 @@ export function markerRangeLayout(counter: Counter): CounterLayout | false {
 }
 
 export function markerMovementLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.isMarker || counter.target.type !== markerType.Pinned) { return false }
+  if (!counter.hasMarker || counter.marker.type !== markerType.Pinned) { return false }
   const loc = new Coordinate(counter.x + 64, counter.y + 67)
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
   const path = circlePath(loc, 10)
@@ -48,60 +68,60 @@ export function markerMovementLayout(counter: Counter): CounterLayout | false {
 }
 
 export function markerLayout(counter: Counter): MarkerLayout | false {
-  if (!counter.target.isMarker || counter.target.type === markerType.TrackedHull ||
-      counter.target.type === markerType.WheeledHull ||
-      counter.target.type === markerType.Initiative) {
+  if (!counter.hasMarker || counter.marker.type === markerType.TrackedHull ||
+      counter.marker.type === markerType.WheeledHull ||
+      counter.marker.type === markerType.Initiative) {
     return false
   }
   const loc = new Coordinate(counter.x + 40, counter.y + 40)
-  const target = counter.target as Marker
-  let size = (target.displayText[0] === "immobilized") ? 11 : 12
-  let ty = loc.y + 9 - 6 * target.displayText.length
-  if (counter.target.type === markerType.Wind || counter.target.type === markerType.Weather) {
+  const marker = counter.marker
+  let size = (marker.displayText[0] === "immobilized") ? 11 : 12
+  let ty = loc.y + 9 - 6 * marker.displayText.length
+  if (counter.marker.type === markerType.Wind || counter.marker.type === markerType.Weather) {
     size = 15
     ty += 1
-  } else if (counter.target.type === markerType.Turn) {
+  } else if (counter.marker.type === markerType.Turn) {
     size = 22
     ty -= 15
   }
-  const text = target.displayText.map((t, i) => {
+  const text = marker.displayText.map((t, i) => {
     return { x: loc.x, y: ty + size*i, value: t }
   })
-  if (counter.target.type === markerType.Turn) {
-    return { size: size, tStyle: { fill: counter.target.textColor }, text: text }
+  if (counter.marker.type === markerType.Turn) {
+    return { size: size, tStyle: { fill: counter.marker.textColor }, text: text }
   } else {
     return {
       path: [
         "M", loc.x-39.5, loc.y-14, "L", loc.x+39.5, loc.y-14, "L", loc.x+39.5, loc.y+14,
         "L", loc.x-39.5, loc.y+14, "L", loc.x-39.5, loc.y-14
       ].join(" "),
-      style: { fill: target.color }, size: size,
-      tStyle: { fill: target.textColor }, text: text
+      style: { fill: marker.color }, size: size,
+      tStyle: { fill: marker.textColor }, text: text
     }
   }
 }
 
 export function turnLayout(counter: Counter): CircleLayout[] | false {
-  if (!counter.target.isMarker || counter.target.type !== markerType.Turn ) { return false }
+  if (!counter.marker.isMarker || counter.marker.type !== markerType.Turn ) { return false }
   return [
     {
       x: counter.x + 22, y: counter.y + 50, r: 16,
       style: {
-        fill: `url(#nation-${counter.target.value}-16)`, strokeWidth: 1, stroke: "#000"
+        fill: `url(#nation-${counter.marker.value}-16)`, strokeWidth: 1, stroke: "#000"
       }
     },
     {
       x: counter.x + 58, y: counter.y + 50, r: 16,
       style: {
-        fill: `url(#nation-${counter.target.value2}-16)`, strokeWidth: 1, stroke: "#000"
+        fill: `url(#nation-${counter.marker.value2}-16)`, strokeWidth: 1, stroke: "#000"
       }
     }
   ]
 }
 
 export function windArrowLayout(counter: Counter): PathLayout | false {
-  if (!counter.target.isMarker) { return false }
-  if (counter.target.type !== markerType.Wind) { return false }
+  if (!counter.hasMarker) { return false }
+  if (counter.marker.type !== markerType.Wind) { return false }
 
   const x = counter.x + 40
   const y = counter.y + 5
@@ -114,8 +134,8 @@ export function windArrowLayout(counter: Counter): PathLayout | false {
 }
 
 export function markerSubLayout(counter: Counter): TextArrayLayout | false {
-  if (!counter.target.isMarker) { return false }
-  const target = counter.target as Marker
+  if (!counter.hasMarker) { return false }
+  const target = counter.marker
   if (!target.subText) { return false }
 
   const x = counter.x + 40

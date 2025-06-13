@@ -111,7 +111,7 @@ export default function DebugMap() {
     mapDebugData[id].features.forEach(data => {
       const unit = (units[data.u] as Feature).clone()
       if (data.f) { unit.facing = data.f }
-      map.addUnit(new Coordinate(data.x, data.y), unit)
+      map.addCounter(new Coordinate(data.x, data.y), unit)
     })
     mapDebugData[id].units.forEach(data => {
       const unit = (units[data.u] as Unit).clone()
@@ -123,7 +123,7 @@ export default function DebugMap() {
       if (data.brk) { unit.jammed = true }
       if (data.wpn) { unit.weaponBroken = true }
       if (data.trt) { unit.turretJammed = true }
-      map.addUnit(new Coordinate(data.x, data.y), unit)
+      map.addCounter(new Coordinate(data.x, data.y), unit)
     })
     organizeStacks(map)
     setHideCounters(false)

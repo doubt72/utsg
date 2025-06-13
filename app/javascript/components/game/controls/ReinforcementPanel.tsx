@@ -126,11 +126,11 @@ export default function ReinforcementPanel({
                     }
                     const r = map.game?.gameActionState
                     if (r && player === r.player && turn === r.deploy?.turn && j === r.deploy.index) {
-                      if (!counter.target.selected) {
-                        counter.target.select()
+                      if (!counter.containerUF.selected) {
+                        counter.containerUF.select()
                       }
-                    } else if (counter.target.selected) {
-                      counter.target.select()
+                    } else if (counter.containerUF.selected) {
+                      counter.containerUF.select()
                     }
                     counter.showDisabled = map.game?.phase !== gamePhaseType.Deployment ||
                       map.game.currentPlayer !== player || map.game.state !== 'in_progress' ||
@@ -139,8 +139,8 @@ export default function ReinforcementPanel({
                     const cb = () => { ovCallback({show: true, counters: [counter]})}
                     if (count < 1) {
                       counter.showDisabled = true
-                      if (counter.target.selected) {
-                        counter.target.select()
+                      if (counter.containerUF.selected) {
+                        counter.containerUF.select()
                       }
                       return (
                         <g key={j}>

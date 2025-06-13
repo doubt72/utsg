@@ -8,7 +8,6 @@ import IllegalMoveError from "./moves/IllegalMoveError";
 import WarningMoveError from "./moves/WarningMoveError";
 import Counter from "./Counter";
 import { normalDir } from "../utilities/utilities";
-import Unit from "./Unit";
 
 export type GameData = {
   id: number;
@@ -449,11 +448,11 @@ export default class Game {
     if (selection && selection.hex) {
       const loc = {
         x: selection.hex.x, y: selection.hex.y,
-        facing: selection.target.rotates ? selection.target.facing : undefined
+        facing: selection.unit.rotates ? selection.unit.facing : undefined
       }
       const units = selection.children
-      units.forEach(c => c.target.select())
-      const canSelect = selection.target.canCarrySupport && (units.length < 1 || !units[0].target.crewed)
+      units.forEach(c => c.unit.select())
+      const canSelect = selection.unit.canCarrySupport && (units.length < 1 || !units[0].unit.crewed)
       const allSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
       const initialSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
       units.forEach(u => {
@@ -467,7 +466,7 @@ export default class Game {
         selection: allSelection,
         move: {
           initialSelection, doneSelect: !canSelect, path: [loc], addActions: [],
-          finalTurretRotation: selection.target.facing, rotatingTurret: false,
+          finalTurretRotation: selection.unit.facing, rotatingTurret: false,
           placingSmoke: false, shortDropMove: false, loadingMove: false,
         }
       }
@@ -479,7 +478,7 @@ export default class Game {
     if (!this.gameActionState?.selection) { return }
     const selection = this.gameActionState.selection
     const move = this.gameActionState.move
-    const target = selection[0].counter.target
+    const target = selection[0].counter.unit
     const lastPath = this.lastPath as MovePath
     if (move.placingSmoke) {
       move.addActions.push({
@@ -548,10 +547,10 @@ export default class Game {
     const counters = this.scenario.map.countersAt(new Coordinate(this.lastPath.x, this.lastPath.y))
     let count = 0
     for (const c of counters) {
-      if (c.target.selected || c.target.isFeature) { continue }
+      if (c.hasFeature || c.unit.selected) { continue }
       for (const s of selection) {
-        const unit = s.counter.target as Unit
-        const target = c.target as Unit
+        const unit = s.counter.unit
+        const target = c.unit
         if (unit.canCarry(target)) { count++ }
       }
     }

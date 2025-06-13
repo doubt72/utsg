@@ -107,7 +107,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
 export function currSelection(game: Game, move: boolean): Unit | undefined {
   if (!game) { return undefined}
   if (game.gameActionState?.selection) {
-    const unit = game.gameActionState.selection[0].counter.target as Unit
+    const unit = game.gameActionState.selection[0].counter.unit
     if (move && unit.canHandle && unit.children.length > 0 && unit.children[0].crewed) {
       return unit.children[0]
     }
@@ -115,7 +115,7 @@ export function currSelection(game: Game, move: boolean): Unit | undefined {
   }
   const counters = game.scenario.map.currentSelection
   if (counters.length < 1) { return undefined }
-  return counters[0].target as Unit
+  return counters[0].unit
 }
 
 function canFire(unit: Unit | undefined): boolean {

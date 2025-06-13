@@ -1,6 +1,5 @@
 import { Direction, FeatureType, GhostData, NumberBoolean, featureType } from "../utilities/commonTypes";
 import { featureHelpText } from "./support/help";
-import Unit from "./Unit";
 
 // ft: feature
 // t: type, n: name, i: icon
@@ -13,7 +12,7 @@ import Unit from "./Unit";
 //    p: antitank, g: artillery, los: blocks LOS
 //    da: cover facing
 //        f: front, s: side, r: rear
-//    q: sniper
+//    q: sniper, ai: impassible, vi: impassible to vehicles
 // x: count
 
 export type FeatureData = {
@@ -28,7 +27,7 @@ export type FeatureData = {
   d?: number;
   o?: {
     p?: NumberBoolean; g?: NumberBoolean; q?: NumberBoolean; los?: NumberBoolean;
-    vi: NumberBoolean; ai: NumberBoolean;
+    vi?: NumberBoolean; ai?: NumberBoolean;
     da?: {
       f: number; s: number; r: number;
     }
@@ -93,89 +92,89 @@ export default class Feature {
     return new Feature(this.rawData)
   }
 
-  get children(): Unit[] { return [] }
-  parent = undefined
+  // get children(): Unit[] { return [] }
+  // parent = undefined
 
-  turreted = false
-  rotatingVehicleMount = false
-  backwardsMount = false
-  isWreck = false
-  isBroken = false
-  isPinned = false
-  isExhausted = false
-  isTired = false;
-  isActivated = false
-  jammed = false
-  weaponBroken = false
-  turretJammed = false
-  immobilized = false
-  turretFacing: Direction = 1
-  hullArmor = false
-  turretArmor = false
-  sponson = false
-  size = 0
-  towSize = undefined
-  canTow = false
-  transport = 0
-  smallName = 0
-  baseMorale = 0
-  currentMorale = 0
-  currentFirepower = 0
-  minimumRange = 0
-  breakWeaponRoll = 0
-  breakDestroysWeapon = false
-  breakdownRoll = 0
-  repairRoll = 0
-  currentGunHandling = 0
-  currentLeadership = 0
-  currentSmokeCapable = false
-  armored = false
-  topOpen = false
-  isTracked = false
-  isWheeled = false
-  amphibious = false
-  crewed = false;
-  offBoard = false
-  singleFire = false
-  assault = false
-  engineer = false
-  ignoreTerrain = false
-  targetedRange = false
-  rapidFire = false
-  noFire = false
-  rotatingMount = false;
-  fullIcon = false
-  isHull = false
+  // turreted = false
+  // rotatingVehicleMount = false
+  // backwardsMount = false
+  // isWreck = false
+  // isBroken = false
+  // isPinned = false
+  // isExhausted = false
+  // isTired = false;
+  // isActivated = false
+  // jammed = false
+  // weaponBroken = false
+  // turretJammed = false
+  // immobilized = false
+  // turretFacing: Direction = 1
+  // hullArmor = false
+  // turretArmor = false
+  // sponson = false
+  // size = 0
+  // towSize = undefined
+  // canTow = false
+  // transport = 0
+  // smallName = 0
+  // baseMorale = 0
+  // currentMorale = 0
+  // currentFirepower = 0
+  // minimumRange = 0
+  // breakWeaponRoll = 0
+  // breakDestroysWeapon = false
+  // breakdownRoll = 0
+  // repairRoll = 0
+  // currentGunHandling = 0
+  // currentLeadership = 0
+  // currentSmokeCapable = false
+  // armored = false
+  // topOpen = false
+  // isTracked = false
+  // isWheeled = false
+  // amphibious = false
+  // crewed = false;
+  // offBoard = false
+  // singleFire = false
+  // assault = false
+  // engineer = false
+  // ignoreTerrain = false
+  // targetedRange = false
+  // rapidFire = false
+  // noFire = false
+  // rotatingMount = false;
+  // fullIcon = false
+  // isHull = false
   selected = false
-  dropSelected = false
-  loaderSelected = false
-  loadedSelected = false
-  hideOverlayRotation = false
+  // dropSelected = false
+  // loaderSelected = false
+  // loadedSelected = false
+  // hideOverlayRotation = false
 
-  canHandle = false
-  canCarrySupport = false
-  uncrewedSW = false
+  // canHandle = false
+  // canCarrySupport = false
+  // uncrewedSW = false
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canTowUnit(_: Unit): boolean { return false }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  canTransportUnit(_: Unit): boolean { return false }
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // canTowUnit(_: Unit): boolean { return false }
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // canTransportUnit(_: Unit): boolean { return false }
 
   select() {
     this.selected = !this.selected
   }
 
-  dropSelect() {
-    this.dropSelected = !this.dropSelected
-  }
+  // dropSelect() {
+  //   this.dropSelected = !this.dropSelected
+  // }
 
-  loaderSelect() {
-    this.loaderSelected = !this.loaderSelected
-  }
+  // loaderSelect() {
+  //   this.loaderSelected = !this.loaderSelected
+  // }
 
-  loadedSelect() {
-    this.loadedSelected = !this.loadedSelected
-  }
+  // loadedSelect() {
+  //   this.loadedSelected = !this.loadedSelected
+  // }
 
   get isMarker(): boolean { return false }
 

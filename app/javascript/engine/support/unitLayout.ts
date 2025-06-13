@@ -1,156 +1,75 @@
-import { Coordinate, FeatureType, featureType, markerType } from "../../utilities/commonTypes"
+import { Coordinate, Direction, featureType } from "../../utilities/commonTypes"
 import {
-  baseCounterPath, circlePath, clearColor, counterElite, counterGreen, CounterLayout, counterRed,
-  dropSelectColor, hexPath, loadedSelectColor, loaderSelectColor, markerYellow, nationalColors,
-  selectColor, squarePath, SVGStyle
+  circlePath, clearColor, counterElite, counterGreen, CounterLayout, counterRed,
+  facingLayout, hexPath, markerYellow, squarePath, SVGPathArray
 } from "../../utilities/graphics"
+import { normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
-import Feature from "../Feature"
-import Unit from "../Unit"
-
-export function counterPath(counter: Counter, xOffset: number = 0, yOffset: number = 0): string {
-  return baseCounterPath(counter.x + xOffset, counter.y + yOffset)
-}
-
-export function counterStyle(counter: Counter): SVGStyle {
-  const color = counterColor(counter)
-  if (counter.target.isMarker && counter.target.type === markerType.Turn) {
-    return { fill: "#DFDFDF", stroke: "black", strokeWidth: 1 }
-  }
-  if (counter.target.selected) {
-    return { fill: color, stroke: selectColor, strokeWidth: 4 }
-  } else if (counter.target.dropSelected) {
-    return { fill: color, stroke: dropSelectColor, strokeWidth: 4 }
-  } else if (counter.target.loaderSelected) {
-    return { fill: color, stroke: loaderSelectColor, strokeWidth: 4 }
-  } else if (counter.target.loadedSelected) {
-    return { fill: color, stroke: loadedSelectColor, strokeWidth: 4 }
-  } else {
-    return { fill: color, stroke: "black", strokeWidth: 1 }
-  }
-}
-
-export function nameBackgroundPath(counter: Counter): string {
-  const x = counter.x
-  const y = counter.y
-  const corner = 4
-  return [
-    "M", x+corner, y,
-    "L", x+80-corner, y, "A", corner, corner, 0, 0, 1, x+80, y+corner,
-    "L", x+80, y+12.8, "L", x, y+12.8, "L", x, y+corner,
-    "A", corner, corner, 0, 0, 1, x+corner, y,
-  ].join(" ")
-}
-
-export function nameBackgroundStyle(counter: Counter): SVGStyle {
-  return { fill: reverseName(counter) ? "red" : clearColor }
-}
-
-export function shadowPath(counter: Counter): string | false {
-  if (counter.hideShadow) { return false }
-  const angle = counter.rotation ? counter.rotation.a : 0
-  return counterPath(
-    counter,
-    -counter.stackOffset * Math.sqrt(2) * Math.cos((angle + 45)/ 180 * Math.PI),
-    counter.stackOffset * Math.sqrt(2) * Math.sin((angle + 45) / 180 * Math.PI)
-  )
-}
-
-export function nameLayout(counter: Counter): CounterLayout {
-  let size = counter.target.isFeature ? 11 : 9
-  if (counter.target.smallName > 0) { size = 8.25 }
-  if (counter.target.smallName > 1) { size = 7.825 }
-  if (counter.target.smallName > 2) { size = 7.5 }
-  const y = counter.target.isFeature ? counter.y + 12 : counter.y + 10
-  return {
-    x: counter.x + 5, y: y, size: size, name: counter.target.name,
-    style: { fill: reverseName(counter) ? "white" : "black" }
-  }
-}
+import { counterColor } from "./counterLayout"
 
 export function moraleLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.baseMorale) { return false }
+  if (!counter.hasUnit || !counter.unit.baseMorale) { return false }
   return {
-    x: counter.x + 13, y: counter.y + 28, size: 18, value: counter.target.currentMorale,
-    style: { fill: counter.target.currentMorale === counter.target.baseMorale ? "black" : counterRed }
+    x: counter.x + 13, y: counter.y + 28, size: 18, value: counter.unit.currentMorale,
+    style: { fill: counter.unit.currentMorale === counter.unit.baseMorale ? "black" : counterRed }
   }
 }
 
 export function weaponBreakLayout(counter: Counter): CounterLayout | false {
-  if (counter.target.isWreck) { return false }
-  if (!counter.target.breakWeaponRoll) { return false }
+  if (!counter.hasUnit || counter.unit.isWreck) { return false }
+  if (!counter.unit.breakWeaponRoll) { return false }
 
   const x = counter.x + 14
   let y = counter.y + 25
-  if (counter.target.breakdownRoll) { y -= 3 }
-  const red = counter.target.breakDestroysWeapon || counter.target.jammed
+  if (counter.unit.breakdownRoll) { y -= 3 }
+  const red = counter.unit.breakDestroysWeapon || counter.unit.jammed
   let fill = red ? counterRed : markerYellow
   let textColor = red ? "white" : "black"
-  if (counter.target.weaponBroken) {
+  if (counter.unit.weaponBroken) {
     fill = "rgba(0,0,0,0)"
     textColor = "rgba(0,0,0,0)"
   }
   return {
     path: circlePath(new Coordinate(x, y), 8),
     style: { stroke: textColor, strokeWidth: 1, fill: fill }, tStyle: { fill: textColor },
-    x, y: y + 4.25, size: 15, value: counter.target.breakWeaponRoll,
+    x, y: y + 4.25, size: 15, value: counter.unit.breakWeaponRoll,
   }
 }
 
 export function weaponFixLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.repairRoll || !counter.target.jammed || counter.target.isWreck || counter.target.breakdownRoll) {
+  if (!counter.hasUnit || !counter.unit.repairRoll || !counter.unit.jammed ||
+      counter.unit.isWreck || counter.unit.breakdownRoll) {
     return false
   }
   const loc = new Coordinate(counter.x + 14, counter.y + 40)
   return {
     path: circlePath(loc, 8),
     style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
-    x: loc.x, y: loc.y + 4.25, size: 12, value: counter.target.repairRoll,
-  }
-}
-
-export function markerBreakLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.isMarker || counter.target.type !== markerType.Jammed) { return false }
-
-  const loc = new Coordinate(counter.x + 40, counter.y + 14)
-  return {
-    path: circlePath(loc, 10),
-    style: { strokeWidth: 0, fill: counterRed }, tStyle: { fill: "white" },
-    x: loc.x, y: loc.y + 4.25, size: 16, value: "4",
-  }
-}
-
-export function markerFixLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.isMarker || counter.target.type !== markerType.Jammed) { return false }
-  const loc = new Coordinate(counter.x + 40, counter.y + 63)
-  return {
-    path: circlePath(loc, 8),
-    style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
-    x: loc.x, y: loc.y + 4.25, size: 16, value: "18",
+    x: loc.x, y: loc.y + 4.25, size: 12, value: counter.unit.repairRoll,
   }
 }
 
 export function sizeLayout(counter: Counter): CounterLayout | false {
+  if (!counter.hasUnit || !counter.unit.size ) { return false }
   const x = counter.x + 66
   let y = counter.y + 23
-  if (counter.target.icon === "cav" || counter.target.icon === "cav-wheel") { y -= 3 }
-  if (!counter.target.size ) { return false }
-  const stroke = counter.target.armored && !counter.target.isWreck ? "black" : clearColor
-  const path = counter.target.armored && counter.target.topOpen ?
+  if (counter.unit.icon === "cav" || counter.unit.icon === "cav-wheel") { y -= 3 }
+  const stroke = counter.unit.armored && !counter.unit.isWreck ? "black" : clearColor
+  const path = counter.unit.armored && counter.unit.topOpen ?
     squarePath(new Coordinate(x, y)) :
     circlePath(new Coordinate(x, y), 10)
   return {
     path,
     style: { stroke, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
-    x: x, y: y + 5, size: 18, value: counter.target.size,
+    x: x, y: y + 5, size: 18, value: counter.unit.size,
   }
 }
 
 export function eliteLayout(counter: Counter): CounterLayout | false {
-  if (!counter.isUnit) { return false }
+  if (!counter.hasUnit) { return false }
   const showAllCounters = counter.onMap ? counter.map?.showAllCounters : counter.showAllCounters
-  const elite = (counter.target as Unit).eliteCrew
-  if (counter.target.isWreck || showAllCounters || elite === 0) {
+  const elite = counter.unit.eliteCrew
+  if (counter.unit.isWreck || showAllCounters || elite === 0) {
     return false
   }
   const color = elite > 0 ? counterElite : counterGreen
@@ -167,15 +86,15 @@ export function eliteLayout(counter: Counter): CounterLayout | false {
 }
 
 export function towLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.towSize) { return false }
+  if (!counter.hasUnit || !counter.unit.towSize) { return false }
   return {
     tStyle: { fill: "black" },
-    x: counter.x + 73, y: counter.y + 21, size: 12, value: counter.target.towSize,
+    x: counter.x + 73, y: counter.y + 21, size: 12, value: counter.unit.towSize,
   }
 }
 
 export function canTowLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.canTow) { return false }
+  if (!counter.hasUnit || !counter.unit.canTow) { return false }
   const x = counter.x + 66
   const y = counter.y + 30.5
   const size = 5
@@ -184,47 +103,47 @@ export function canTowLayout(counter: Counter): CounterLayout | false {
 }
 
 export function transportLLayout(counter: Counter): CounterLayout | false {
-  if (counter.target.transport !== 1 && counter.target.transport !== 3) { return false }
+  if (!counter.hasUnit || counter.unit.transport !== 1 && counter.unit.transport !== 3) { return false }
   const x = counter.x + 59
   let y = counter.y + 23
-  if (counter.target.icon === "cav" || counter.target.icon === "cav-wheel") { y -= 3 }
+  if (counter.unit.icon === "cav" || counter.unit.icon === "cav-wheel") { y -= 3 }
   const size = 2
   const path = circlePath(new Coordinate(x, y), size)
   return { x, y, size, path, style: { fill: "black" } }
 }
 
 export function transportRLayout(counter: Counter): CounterLayout | false {
-  if (counter.target.transport < 2) { return false }
+  if (!counter.hasUnit || counter.unit.transport < 2) { return false }
   const x = counter.x + 73
   let y = counter.y + 23
-  if (counter.target.icon === "cav" || counter.target.icon === "cav-wheel") { y -= 3 }
+  if (counter.unit.icon === "cav" || counter.unit.icon === "cav-wheel") { y -= 3 }
   const size = 2
   const path = circlePath(new Coordinate(x, y), size)
   return { x, y, size, path, style: { fill: "black" } }
 }
 
 export function leadershipLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.currentLeadership) { return false }
+  if (!counter.hasUnit || !counter.unit.currentLeadership) { return false }
   return {
     path: hexPath(new Coordinate(counter.x + 13, counter.y + 44), 10, true),
     style: { stroke: "black", strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
-    x: counter.x + 13, y: counter.y + 49, size: 18, value: counter.target.currentLeadership,
+    x: counter.x + 13, y: counter.y + 49, size: 18, value: counter.unit.currentLeadership,
   }
 }
 
 export function handlingLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.currentGunHandling) { return false }
+  if (!counter.hasUnit || !counter.unit.currentGunHandling) { return false }
   const loc = new Coordinate(counter.x + 13, counter.y + 42)
   const path = circlePath(loc, 8)
   return {
     path: path, style: { stroke: "black", strokeWidth: 1, fill: clearColor },
     tStyle: { fill: "black" },
-    x: loc.x, y: loc.y+4.25, size: 15, value: counter.target.currentGunHandling,
+    x: loc.x, y: loc.y+4.25, size: 15, value: counter.unit.currentGunHandling,
   }
 }
 
 export function breakdownLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.breakdownRoll || counter.target.immobilized || counter.target.isWreck) {
+  if (!counter.hasUnit || !counter.unit.breakdownRoll || counter.unit.immobilized || counter.unit.isWreck) {
     return false
   }
   const loc = new Coordinate(counter.x + 14, counter.y + 40)
@@ -232,35 +151,37 @@ export function breakdownLayout(counter: Counter): CounterLayout | false {
   return {
     path: path, style: { stroke: "black", strokeWidth: 1, fill: markerYellow },
     tStyle: { fill: "black" },
-    x: loc.x, y: loc.y+4.25, size: 15, value: counter.target.breakdownRoll,
+    x: loc.x, y: loc.y+4.25, size: 15, value: counter.unit.breakdownRoll,
   }
 }
 
 export function iconLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.icon) { return false }
-  const x = counter.x + (counter.target.fullIcon ? 0 : 20)
-  let y = counter.y + (counter.target.fullIcon ? 0 : 13)
-  if (counter.target.isFeature) {
+  if (!counter.container.icon) { return false }
+  const x = counter.x + ((counter.hasMarker && counter.marker.fullIcon) ? 0 : 20)
+  let y = counter.y + ((counter.hasMarker && counter.marker.fullIcon) ? 0 : 13)
+  if (counter.hasFeature) {
     y = counter.y + 15
   }
-  const size = counter.target.fullIcon ? 80 : 40
+  const size = (counter.hasMarker && counter.marker.fullIcon) ? 80 : 40
   return {
-    x: x, y: y, size: size, icon: counter.target.isWreck ? "wreck" : counter.target.icon
+    x: x, y: y, size: size,
+    icon: (counter.hasUnit && counter.unit.isWreck) ? "wreck" : counter.containerUF.icon
   }
 }
 
 export function centerLabelLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.sniperRoll) { return false }
+  if (!counter.hasFeature || !counter.feature.sniperRoll) { return false }
   const x = counter.x + 40
   const y = counter.y + 48
   return {
-    x: x, y: y, size: 40, value: counter.target.sniperRoll, style: { fill: counterRed }
+    x: x, y: y, size: 40, value: counter.feature.sniperRoll, style: { fill: counterRed }
   }
 }
 
 export function sponsonLayout(counter: Counter): CounterLayout | false {
-  const gun = counter.target.sponson as [number, number] | [number, number, string]
-  if (!gun || counter.target.isWreck) { return false }
+  if (!counter.hasUnit) { return false }
+  const gun = counter.unit.sponson as [number, number] | [number, number, string]
+  if (!gun || counter.unit.isWreck) { return false }
   const x = counter.x + 38
   const y = counter.y + 53
   const width = 12.8
@@ -281,8 +202,9 @@ export function sponsonLayout(counter: Counter): CounterLayout | false {
 }
 
 export function turretArmorLayout(counter: Counter): CounterLayout | false {
-  const armor = counter.target.turretArmor as [number, number, number]
-  if (!armor || counter.target.isWreck) { return false }
+  if (!counter.hasUnit) { return false }
+  const armor = counter.unit.turretArmor as [number, number, number]
+  if (!armor || counter.unit.isWreck) { return false }
   const x = counter.x + 65
   const y = counter.y + 43
   const value = armor.map((v: number) => v < 0 ? "X" : v).join("-")
@@ -290,8 +212,9 @@ export function turretArmorLayout(counter: Counter): CounterLayout | false {
 }
 
 export function hullArmorLayout(counter: Counter): CounterLayout | false {
-  const armor = counter.target.hullArmor as [number, number, number]
-  if (!armor || counter.target.isWreck) { return false }
+  if (!counter.hasUnit) { return false }
+  const armor = counter.unit.hullArmor as [number, number, number]
+  if (!armor || counter.unit.isWreck) { return false }
   const x = counter.x + 65
   const y = counter.y + 53
   const value = armor.map(v => v < 0 ? "X" : v).join("-")
@@ -299,51 +222,53 @@ export function hullArmorLayout(counter: Counter): CounterLayout | false {
 }
 
 export function firepowerLayout(counter: Counter): CounterLayout | false {
-  if (counter.target.isMarker) { return false }
-  const loc = new Coordinate(counter.x + 14 + (counter.target.minimumRange ? 0 : 2), counter.y + 67)
+  if (counter.hasMarker) { return false }
+  const loc = new Coordinate(
+    counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
+  )
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-  let value = counter.target.baseFirepower
+  let value = counter.containerUF.baseFirepower
   let color = "black"
   let path = squarePath(loc)
   let size = value === "½" ? 18 : attrSizeFor(value as number)
-  if (counter.target.noFire || counter.target.isPinned) {
+  if (counter.hasUnit && (counter.unit.noFire || counter.unit.isPinned)) {
     color = counterRed
-    value = counter.target.currentFirepower
+    value = counter.unit.currentFirepower
     size = 18
-  } else {
-    if (counter.target.antiTank || counter.target.fieldGun) {
+  } else if (counter.hasUnit) {
+    if (counter.unit.antiTank || counter.unit.fieldGun) {
       path = circlePath(loc, 10)
     }
-    if (counter.target.offBoard) {
+    if (counter.unit.offBoard) {
       path = hexPath(loc.yDelta(+0.5), 11, false)
       size = 12.5
     }
-    if (counter.target.antiTank || counter.target.singleFire ||
-        counter.target.assault || counter.target.offBoard) {
+    if (counter.unit.antiTank || counter.unit.singleFire ||
+        counter.unit.assault || counter.unit.offBoard) {
       style.stroke = "black"
     }
-    if (counter.target.singleFire && counter.target.ignoreTerrain) {
+    if (counter.unit.singleFire && counter.unit.ignoreTerrain) {
       style.stroke = "red"
       style.fill = "red"
-    } else if (counter.target.singleFire) {
+    } else if (counter.unit.singleFire) {
       style.stroke = "black"
       style.fill = "black"
-    } else if (counter.target.ignoreTerrain) {
+    } else if (counter.unit.ignoreTerrain) {
       style.stroke = markerYellow
       style.fill = markerYellow
     }
-    if (counter.target.fieldGun) {
+    if (counter.unit.fieldGun) {
       style.stroke = "black"
       style.fill = "white"
     }
-    if (counter.target.singleFire) { color = "white" }
+    if (counter.unit.singleFire) { color = "white" }
     if (value === 0) { value = "-" }
   }
-  if (counter.target.isFeature) {
-    if (!counter.target.fieldGun) {
+  if (counter.hasFeature) {
+    if (!counter.feature.fieldGun) {
       color = "white"
     }
-    if (counter.target.antiTank) {
+    if (counter.feature.antiTank) {
       style.stroke = "white"
     }
   }
@@ -355,64 +280,63 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
 }
 
 export function smokeLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.currentSmokeCapable) { return false }
+  if (!counter.hasUnit || !counter.unit.currentSmokeCapable) { return false }
   let x = counter.x + 16
   let y = counter.y + 57
   const size = 2
-  if (counter.target.assault || counter.target.targetedRange) { y -= 4 }
-  if (counter.target.offBoard) { y -= 3 }
-  if (counter.target.minimumRange) { x -= 2 }
+  if (counter.unit.assault || counter.unit.targetedRange) { y -= 4 }
+  if (counter.unit.offBoard) { y -= 3 }
+  if (counter.unit.minimumRange) { x -= 2 }
   const path = circlePath(new Coordinate(x, y), size)
   return { x, y, size, path, style: { fill: "black" } }
 }
 
 export function rangeLayout(counter: Counter): CounterLayout | false {
-  if (counter.target.isMarker) { return false }
-  if (counter.target.isFeature &&
-    [
+  if (counter.hasMarker) { return false }
+  if (counter.hasFeature && [
       featureType.Smoke, featureType.Fire, featureType.Bunker, featureType.Foxhole,
       featureType.Rubble,
-    ].includes(counter.target.type as FeatureType)) {
+    ].includes(counter.feature.type)) {
   return false
 }
   let loc = new Coordinate(counter.x + 40, counter.y + 67)
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-  let value: number | string = counter.target.currentRange
+  let value: number | string = counter.containerUF.currentRange
   let color = "black"
   let path = squarePath(loc)
   let size = attrSizeFor(value)
-  if (counter.target.noFire) {
+  if (counter.hasUnit && counter.unit.noFire) {
     color = counterRed
     size = 18
-  } else {
-    if (counter.target.targetedRange) { path = circlePath(loc, 10) }
-    if (counter.target.targetedRange || counter.target.rapidFire) { style.stroke = "black" }
-    if (counter.target.type === "sw" && counter.target.targetedRange) {
+  } else if (counter.hasUnit) {
+    if (counter.unit.targetedRange) { path = circlePath(loc, 10) }
+    if (counter.unit.targetedRange || counter.unit.rapidFire) { style.stroke = "black" }
+    if (counter.unit.type === "sw" && counter.unit.targetedRange) {
       style.stroke = "black"
       style.fill = "black"
       color = "white"
-    } else if (counter.target.turreted || counter.target.rotatingMount) {
+    } else if (counter.unit.turreted || counter.unit.rotatingMount) {
       style.stroke = "white"
       style.fill = "white"
     }
-    if (counter.target.targetedRange || counter.target.rapidFire) { style.stroke = "black" }
+    if (counter.unit.targetedRange || counter.unit.rapidFire) { style.stroke = "black" }
     if (value === 0) {
       style.stroke = clearColor
       value = "-"
     }
   }
-  if (counter.target.isFeature) {
+  if (counter.hasFeature) {
     color = "white"
   }
   if (size < 16) { loc.yShift(-0.5) }
-  if (counter.target.minimumRange) {
+  if (counter.hasUnit && counter.unit.minimumRange) {
     loc = new Coordinate(loc.x, counter.y + 65.25)
     path = [
       "M", loc.x-8, loc.y-4, "L", loc.x+8, loc.y-4,
       "A", 6, 6, 0, 0, 1, loc.x+8, loc.y+8,
       "L", loc.x-8, loc.y+8, "A", 6, 6, 0, 0, 1, loc.x-8, loc.y-4,
     ].join(" ")
-    value = `${counter.target.minimumRange}-${value}`
+    value = `${counter.unit.minimumRange}-${value}`
     size = 10.5
   }
   return {
@@ -422,7 +346,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
 }
 
 export function gunForwardsLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.rotatingVehicleMount) { return false }
+  if (!counter.hasUnit || !counter.unit.rotatingVehicleMount) { return false }
   const x = counter.x + 40
   const y = counter.y + 60
   const size = 7
@@ -431,7 +355,7 @@ export function gunForwardsLayout(counter: Counter): CounterLayout | false {
 }
 
 export function gunBackwardsLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.backwardsMount) { return false }
+  if (!counter.hasUnit || !counter.unit.backwardsMount) { return false }
   const x = counter.x + 40
   const y = counter.y + 74.5
   const size = 2
@@ -440,31 +364,33 @@ export function gunBackwardsLayout(counter: Counter): CounterLayout | false {
 }
 
 export function movementLayout(counter: Counter): CounterLayout | false {
-  if (counter.target.isMarker || counter.target.type === "rubble") { return false }
-  const loc = new Coordinate(counter.x + 66 - (counter.target.minimumRange ? 0 : 2), counter.y + 67)
+  if (counter.hasFeature || counter.feature.type === featureType.Rubble) { return false }
+  const loc = new Coordinate(
+    counter.x + 66 - ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
+  )
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-  let value = counter.target.currentMovement
+  let value = counter.containerUF.currentMovement
   let color = "black"
   const path = circlePath(loc, 10)
   const size = attrSizeFor(value as number)
-  if (counter.target.isBroken || counter.target.isPinned || counter.target.isTired ||
-      value as number < 0 || counter.target.immobilized || counter.target.isWreck) {
+  if (counter.hasUnit && (counter.unit.isBroken || counter.unit.isPinned || counter.unit.isTired ||
+      value as number < 0 || counter.unit.immobilized || counter.unit.isWreck)) {
     color = counterRed
-  } else {
-    if (counter.target.isTracked || counter.target.crewed || counter.target.isWheeled ) {
+  } else if (counter.hasUnit) {
+    if (counter.unit.isTracked || counter.unit.crewed || counter.unit.isWheeled ) {
       style.stroke = "black"
     }
-    if (counter.target.crewed) {
+    if (counter.unit.crewed) {
       style.fill = "black"
       color = "white"
-    } else if (counter.target.isWheeled) {
+    } else if (counter.unit.isWheeled) {
       style.fill = "white"
     }
     if (value === 0) { value = "-" }
   }
-  if (counter.target.isFeature) {
+  if (counter.hasFeature) {
     color = "white"
-    if ((counter.target as Feature).type === featureType.Roadblock) {
+    if (counter.feature.type === featureType.Roadblock) {
       style.stroke = "white"
       value = "0"
     }
@@ -477,7 +403,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
 }
 
 export function engineerLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.engineer) { return false }
+  if (!counter.hasUnit || !counter.unit.engineer) { return false }
   const x = counter.x + 64
   const y = counter.y + 57
   const size = 2
@@ -486,7 +412,7 @@ export function engineerLayout(counter: Counter): CounterLayout | false {
 }
 
 export function amphibiousLayout(counter: Counter): CounterLayout | false {
-  if (!counter.target.amphibious) { return false }
+  if (!counter.hasUnit || !counter.unit.amphibious) { return false }
   const x = counter.x + 64
   const y = counter.y + 74
   const size = 4
@@ -494,11 +420,35 @@ export function amphibiousLayout(counter: Counter): CounterLayout | false {
   return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
 }
 
-function counterColor(counter: Counter): string { return nationalColors[counter.target.nation] }
+export function facingLayout(counter: Counter): facingLayout | false {
+  const unit = counter.unit
+  if ((!unit.turreted && !unit.rotates) || unit.isWreck ||
+      unit.rotatingVehicleMount || unit.currentFirepower < 1) {
+    return false
+  }
+  let dir = unit.turreted ? unit.turretFacing : unit.facing
+  if (unit.backwardsMount) { dir = normalDir(dir + 3) }
+  const path = facingLine(counter, dir).concat(facingLine(counter, normalDir(dir - 1))).join(" ")
+  return {
+    path: path, dash: "4 4", style: {
+      fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(255,255,255,1)"
+    },
+    style2: {
+      fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(0,0,0,1)"
+    }
+  }
+}
 
-function reverseName(counter: Counter): boolean {
-  return counter.target.isBroken || counter.target.isWreck ||
-    (counter.target.jammed && !counter.target.hullArmor)
+function facingLine(counter: Counter, dir: Direction): SVGPathArray {
+  if (!counter.map || !counter.hex) { return [] }
+  const hex = counter.map.hexAt(counter.hex)
+  if (!hex) { return [] }
+  const x = hex.xCorner(dir)
+  const y = hex.yCorner(dir)
+  const len = counter.map.radius * (counter.map.height + counter.map.width)
+  const x2 = x - len * Math.cos((dir-0.5)/3 * Math.PI)
+  const y2 = y - len * Math.sin((dir-0.5)/3 * Math.PI)
+  return ["M", x, y, "L", x2, y2]
 }
 
 function attrSizeFor(n: number, circle: boolean = false): number {

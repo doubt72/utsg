@@ -23,11 +23,10 @@ export function openHexRotateOpen(map: Map, loc: Coordinate): boolean {
   if (!game?.gameActionState?.move) { return false }
   if (!game.gameActionState.selection) { return false }
   const counter = game.gameActionState.selection[0].counter
-  if (!counter.target.rotates && !(counter.children.length > 0 && counter.children[0].target.rotates)) {
+  if (!counter.unit.rotates && !(counter.children.length > 0 && counter.children[0].unit.rotates)) {
     return false
   }
-  const cost = movementCost(map, loc, loc, counter.target as Unit) +
-               movementPastCost(map, counter.target as Unit)
+  const cost = movementCost(map, loc, loc, counter.unit) + movementPastCost(map, counter.unit)
   const length = game.gameActionState.move.path.length
   const move = mapSelectMovement(game, true)
   return move >= cost || length === 1
@@ -48,11 +47,12 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
   const uf = player === 1 ?
     game.scenario.alliedReinforcements[turn][index].counter :
     game.scenario.axisReinforcements[turn][index].counter
+  const unit = uf as Unit
   if (!hex) { return false }
   if (!hex.terrain.move && !hex.road && !hex.railroad) { return false }
   if (!hex.terrain.vehicle && !(hex.road && hex.roadType !== roadType.Path) && !uf.isFeature &&
-      (uf.isTracked || uf.isWheeled)) {
-    if (hex.baseTerrain !== terrainType.Shallow || uf.isFeature || !uf.amphibious) {
+      (unit.isTracked || unit.isWheeled)) {
+    if (hex.baseTerrain !== terrainType.Shallow || uf.isFeature || !unit.amphibious) {
       return hexOpenType.Closed
     }
   }
@@ -60,16 +60,16 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
   if (uf.isFeature) {
     if (!hex.terrain.vehicle) { return hexOpenType.Closed }
     for (const f of map.countersAt(hex.coord)) {
-      if (f.target.isFeature) { return hexOpenType.Closed }
+      if (f.hasFeature) { return hexOpenType.Closed }
     }
     if ((uf.type === "mines" || uf.type === "wire") && map.victoryAt(hex.coord)) {
       return hexOpenType.Closed
     }
   } else {
     const size = map.countersAt(hex.coord).reduce((sum, c) => {
-      return c.target.isFeature ? sum : sum + c.target.size
+      return c.hasFeature ? sum : sum + c.unit.size
     }, 0)
-    if (uf.size + size > stackLimit) {
+    if (unit.size + size > stackLimit) {
       return hexOpenType.Closed
     }
   }
@@ -96,19 +96,21 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
     if (xMatch && yMatch) {
       let rc = hexOpenType.Open
       const list = map.units[hex.coord.y][hex.coord.x]
-      const last = list[list.length - 1]
-      if (uf.crewed) {
-        if (last && (last.canTow && last.size >= (uf.towSize ?? 0) ||
-            last.canHandle)) {
-          rc = hexOpenType.Green
-        } else {
-          rc = hexOpenType.Red
-        }
-      } else if (uf.uncrewedSW) {
-        if (last && last.canCarrySupport) {
-          rc = hexOpenType.Green
-        } else {
-          rc = hexOpenType.Red
+      const last = list[list.length - 1] as Unit
+      if (!last.isFeature) {
+        if (unit.crewed) {
+          if (last && (last.canTow && last.size >= (unit.towSize ?? 0) ||
+              last.canHandle)) {
+            rc = hexOpenType.Green
+          } else {
+            rc = hexOpenType.Red
+          }
+        } else if (unit.uncrewedSW) {
+          if (last && last.canCarrySupport) {
+            rc = hexOpenType.Green
+          } else {
+            rc = hexOpenType.Red
+          }
         }
       }
       return rc
