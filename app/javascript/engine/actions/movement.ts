@@ -30,7 +30,12 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       }
       if (check) { continue }
       const u = sel.counter.unit
-      const move = u.currentMovement as number
+      let move = u.currentMovement as number
+      if (u.children.length > 0) {
+        const child = u.children[0]
+        if (child.crewed) { move = child.baseMovement }
+        if (child.uncrewedSW) { move += child.baseMovement }
+      }
       if (u.canCarrySupport && u.type !== unitType.Leader && move < minInfMove) { minInfMove = move }
       if (u.type === unitType.Leader && move < minLdrMove) { minLdrMove = move }
     }
@@ -163,7 +168,7 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     cost += terrFrom.borderMove as number
   }
-  if (hexTo.border && hexTo.borderEdges?.includes(dir)) {
+  if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
     cost += terrTo.borderMove as number
   }
   if (hexFrom.river && !alongStream(hexFrom, hexTo, dir)) {

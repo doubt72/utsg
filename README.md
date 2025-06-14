@@ -1,6 +1,7 @@
 # README
 
-`.tool-versions` has current versions of ruby, nodejs, yarn used.  I use asdf to handle the installs.
+`.tool-versions` has current versions of ruby, nodejs, yarn used.  I use asdf to
+handle the installs.
 
 Postgresql needs to be installed.
 
@@ -14,9 +15,13 @@ rake db:migrate
 bin/dev
 ```
 
-There is a git hook in support (`pre-commit`) which runs the linters and specs.  Can just be put in `.git/hooks`.
+There is a git hook in support (`pre-commit`) which runs the linters and specs.
+Can just be put in `.git/hooks`.
 
-Probably could do a more to TS-ify the react code.  Some things were refactored when converting from JS to TS, but not everything.  But mostly leaving things that work alone.
+Probably could do a more to TS-ify the react code.  Some things were refactored
+when converting from JS to TS, but not everything.  But mostly leaving things
+that work alone, refactoring them as I refactor things to make continued
+development easier.
 
 WIP:
 

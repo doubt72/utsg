@@ -8,6 +8,7 @@ High Priority Features/Bug Fixes:
 Game Actions:
   - Moving
     (Now)
+      - Move with encumbering SW
       - Finishing/Syncing Move
         - Capture Victory points
 
