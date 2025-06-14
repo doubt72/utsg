@@ -1,4 +1,4 @@
-import Game from "./Game";
+import Game, { MovePath } from "./Game";
 import {
   BaseTerrainType, Coordinate, Direction, ExtendedDirection, GhostData, Player, VictoryHex,
   WeatherType, WindType, baseTerrainType, markerType, weatherType, windType,
@@ -366,6 +366,22 @@ export default class Map {
   get counters(): Counter[] {
     if (this.hideCounters) { return [] }
     return this.allCounters
+  }
+
+  get actionCounters(): Counter[] {
+    console.log("action counters!")
+    const move = this.game?.gameActionState?.move
+    if (!move) { return [] }
+    if (!move.doneSelect || move.shortDropMove || (move.loadingMove && this.game?.needPickUpDisambiguate)) {
+      const first = move.path[0]
+      return this.countersAt(new Coordinate(first.x, first.y))
+    }
+    if (move.loadingMove && !this.game?.needPickUpDisambiguate) {
+      const last = this.game?.lastPath as MovePath
+      return this.countersAt(new Coordinate(last.x, last.y))
+    }
+    console.log("what?")
+    return []
   }
 
   hexLos(start: Coordinate, end: Coordinate): TextLayout | boolean {

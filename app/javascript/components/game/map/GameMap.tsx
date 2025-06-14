@@ -58,6 +58,7 @@ export default function GameMap({
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
   const [hexDisplayOverlays, setHexDisplayOverlays] = useState<JSX.Element[]>([])
   const [counterDisplay, setCounterDisplay] = useState<JSX.Element[]>([])
+  const [actionCounterDisplay, setActionCounterDisplay] = useState<JSX.Element[]>([])
   const [overlay, setOverlay] = useState<{
     show: boolean, x: number, y: number, counters?: Counter[]
   }>({ show: false, x: -1, y: -1 })
@@ -236,6 +237,9 @@ export default function GameMap({
     setHexDisplayDetail(detailLoader)
     setHexDisplayOverlays(overlayLoader)
     setCounterDisplay(map.counters.map((counter, i) => {
+      return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+    }))
+    setActionCounterDisplay(map.actionCounters.map((counter, i) => {
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
     setWeather(() =>
@@ -505,20 +509,17 @@ export default function GameMap({
       }
       const xShift = (map?.previewXSize ?? 1) * xOffset
       const yShift = (map?.ySize ?? 1) * yOffset
-      const action = map?.game?.gameActionState
-      const early = action?.move &&
-        (!action.move.doneSelect || action.move.shortDropMove || action.move.loadingMove)
-      const late = !early && action
+      const action = !!map?.game?.gameActionState
       return (
         <svg x={0} y={yMapOffset + 50 / scale - 50} width={mWidth} height={mHeight}
              viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}>
           {hexDisplay}
           {hexDisplayDetail}
-          {early ? hexDisplayOverlays : ""}
           {counterDisplay}
           {losOverlay}
           {counterLosOverlay}
-          {late ? hexDisplayOverlays : ""}
+          {action ? hexDisplayOverlays : ""}
+          {actionCounterDisplay}
           {moveTrack}
           {directionSelectionOverlay}
         </svg>

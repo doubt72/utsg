@@ -2,7 +2,6 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
-  - Current Stack/Current Hex Only overlay when selecting
   - Fix "double" undo for stacked units, also handle resorting
     - Think we need to add a history to units/move ID to unwind
 
