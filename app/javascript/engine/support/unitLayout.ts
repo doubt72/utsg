@@ -262,11 +262,15 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
       style.fill = "white"
     }
     if (counter.unit.singleFire) { color = "white" }
-    if (value === 0) { value = "-" }
   }
+  if (value === 0) { value = "-" }
   if (counter.hasFeature) {
-    if (!counter.feature.fieldGun) {
-      color = "white"
+    path = circlePath(loc, 10)
+    color = "white"
+    if (counter.feature.fieldGun) {
+      style.stroke = "red"
+      style.fill = "white"
+      color = "red"
     }
     if (counter.feature.antiTank) {
       style.stroke = "white"
@@ -320,13 +324,13 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
       style.fill = "white"
     }
     if (counter.unit.targetedRange || counter.unit.rapidFire) { style.stroke = "black" }
-    if (value === 0) {
-      style.stroke = clearColor
-      value = "-"
-    }
   }
   if (counter.hasFeature) {
     color = "white"
+  }
+  if (value === 0) {
+    style.stroke = clearColor
+    value = "-"
   }
   if (size < 16) { loc.yShift(-0.5) }
   if (counter.hasUnit && counter.unit.minimumRange) {
@@ -364,7 +368,7 @@ export function gunBackwardsLayout(counter: Counter): CounterLayout | false {
 }
 
 export function movementLayout(counter: Counter): CounterLayout | false {
-  if (counter.hasFeature || counter.feature.type === featureType.Rubble) { return false }
+  if (counter.hasFeature && counter.feature.type === featureType.Rubble) { return false }
   const loc = new Coordinate(
     counter.x + 66 - ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
   )
@@ -372,7 +376,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
   let value = counter.containerUF.currentMovement
   let color = "black"
   const path = circlePath(loc, 10)
-  const size = attrSizeFor(value as number)
+  const size = value === "A" ? 18 : attrSizeFor(value as number)
   if (counter.hasUnit && (counter.unit.isBroken || counter.unit.isPinned || counter.unit.isTired ||
       value as number < 0 || counter.unit.immobilized || counter.unit.isWreck)) {
     color = counterRed
@@ -386,8 +390,8 @@ export function movementLayout(counter: Counter): CounterLayout | false {
     } else if (counter.unit.isWheeled) {
       style.fill = "white"
     }
-    if (value === 0) { value = "-" }
   }
+  if (value === 0) { value = "-" }
   if (counter.hasFeature) {
     color = "white"
     if (counter.feature.type === featureType.Roadblock) {
