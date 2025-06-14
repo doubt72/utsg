@@ -2,6 +2,7 @@ import React from "react";
 import Hex from "../../../engine/Hex";
 import { Direction, roadType } from "../../../utilities/commonTypes";
 import { MovePath } from "../../../engine/Game";
+import Unit from "../../../engine/Unit";
 
 interface DirectionSelectorProps {
   hex?: Hex;
@@ -17,13 +18,15 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
       const player = hex.map.game.gameActionState.player
       const turn = hex.map.game.gameActionState.deploy.turn
       const index = hex.map.game.gameActionState.deploy.index
-      const unit = player === 1 ?
+      const uf = player === 1 ?
         hex.map.game.scenario.alliedReinforcements[turn][index].counter :
         hex.map.game.scenario.axisReinforcements[turn][index].counter
-      if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
+      const unit = uf as Unit
+      if (!hex.terrain.vehicle && !uf.isFeature && (unit.isTracked || unit.isWheeled) &&
+          hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
-      if (hex.terrain.vehicle === "amph" && (unit.isTracked || unit.isWheeled) &&
+      if (hex.terrain.vehicle === "amph" && !uf.isFeature && (unit.isTracked || unit.isWheeled) &&
           !unit.amphibious && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
@@ -32,7 +35,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         const facing = hex.map.game.gameActionState.move.finalTurretRotation
         pointingDir = facing
       } else {
-        const unit = hex.map.game.gameActionState.selection[0].counter.target
+        const unit = hex.map.game.gameActionState.selection[0].counter.unit
         const lastPath = hex.map.game.lastPath as MovePath
         if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
           dirs = hex.roadDirections ?? []

@@ -21,6 +21,7 @@ Game Actions:
       - Engineering Tasks
   - Passing
   - Initiative check
+  - Firing
   - Reaction fire
   - Mines
   - Sniper check
