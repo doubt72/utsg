@@ -52,7 +52,10 @@ export default class DeployMove extends BaseMove {
     }
     if (uf.rotates) {
       uf.facing = this.orientation
-      uf.turretFacing = this.orientation
+      if (!uf.isFeature) {
+        const unit = uf as Unit
+        unit.turretFacing = this.orientation
+      }
     }
     map.addCounter(this.target, uf)
   }

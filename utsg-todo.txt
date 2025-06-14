@@ -3,7 +3,8 @@
 
 High Priority Features/Bug Fixes:
   Current Stack Only overlay when selecting / austomatically open overlay
-  Fix "double" undo for stacked units
+  Fix "double" undo for stacked units, also handle resorting
+    - Think we need to add a history to units/move ID to unwind
 
 Game Actions:
   - Moving

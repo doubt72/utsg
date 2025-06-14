@@ -157,7 +157,7 @@ function hexHelpText(hex: Hex): string[] {
 
 export function counterHelpLayout(counter: Counter, loc: Coordinate, max: Coordinate): HelpLayout {
   if (!counter.map) { return { path: "", size: 0, style: {} } }
-  const text = counter.target.helpText
+  const text = counter.container.helpText
   const size = 22
   let width = 24.4
   text.forEach(t => {
