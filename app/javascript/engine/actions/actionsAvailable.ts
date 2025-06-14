@@ -64,6 +64,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           if (showLoadMove(game)) {
             moves.push({ type: "move_load_toggle" })
           }
+          if (!action.doneSelect) {
+            moves.push({ type: "move_done_multiselect" })
+          }
           if (action.path.length + action.addActions.length > 1) {
             moves.push({ type: "move_finish" })
           }

@@ -23,6 +23,7 @@ import actionsAvailable from "../../../engine/actions/actionsAvailable";
 import MoveShortToggleButton from "./MoveShortToggleButton";
 import MoveSmokeToggleButton from "./MoveSmokeToggleButton";
 import MoveLoadToggleButton from "./MoveLoadToggleButton";
+import MoveDoneMultiselectButton from "./MoveDoneMultiselectButton";
 
 interface GameControlsProps {
   game: Game;
@@ -82,6 +83,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <MoveFinishButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_cancel") {
         return <MoveCancelButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "move_done_multiselect") {
+        return <MoveDoneMultiselectButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_rotate_toggle") {
         return <MoveRotateToggleButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_shortdrop_toggle") {

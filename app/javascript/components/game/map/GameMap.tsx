@@ -291,6 +291,15 @@ export default function GameMap({
         )
       })
     }
+    if (map.game?.openOverlay) {
+      setOverlay({ show: true, x: map.game.openOverlay.x, y: map.game.openOverlay.y })
+      map.game.openOverlay = undefined
+    }
+    if (map.game?.closeOverlay) {
+      setOverlay({ show: false, x: -1, y: -1 })
+      setCounterOverlay(undefined)
+      map.game.closeOverlay = false
+    }
   }, [
     map, showCoords, showStatusCounters, hideCounters, mapUpdate, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,

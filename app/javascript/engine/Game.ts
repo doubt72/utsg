@@ -109,6 +109,9 @@ export default class Game {
 
   closeReinforcementPanel: boolean = false;
 
+  openOverlay?: { x: number, y: number }
+  closeOverlay: boolean = false;
+
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
@@ -462,6 +465,9 @@ export default class Game {
         allSelection.push({ x: hex.x, y: hex.y, i: u.unitIndex as number, counter: u })
         initialSelection.push({ x: hex.x, y: hex.y, i: u.unitIndex as number, counter: u })
       })
+      if (canSelect) {
+        this.openOverlay = { x: selection.hex.x, y: selection.hex.y }
+      }
       this.gameActionState = {
         player: this.currentPlayer,
         currentAction: actionType.Move,
@@ -496,6 +502,7 @@ export default class Game {
       })
     }
     move.doneSelect = true
+    this.closeOverlay = true
   }
 
   rotateToggle() {
@@ -529,6 +536,10 @@ export default class Game {
   shortingMoveToggle() {
     if (!this.gameActionState?.move) { return }
     this.gameActionState.move.shortDropMove = !this.gameActionState.move.shortDropMove
+    if (this.gameActionState.move.shortDropMove) {
+      const first = this.gameActionState.move.path[0]
+      this.openOverlay = { x: first.x, y: first.y }
+    }
     this.gameActionState.move.loadingMove = false
     this.gameActionState.move.placingSmoke = false
   }
@@ -536,6 +547,17 @@ export default class Game {
   loadingMoveToggle() {
     if (!this.gameActionState?.move) { return }
     this.gameActionState.move.loadingMove = !this.gameActionState.move.loadingMove
+    if (this.gameActionState.move.loadingMove) {
+      if (this.needPickUpDisambiguate) {
+        const first = this.gameActionState.move.path[0]
+        this.openOverlay = { x: first.x, y: first.y }
+      } else {
+        const last = this.lastPath as MovePath
+        this.openOverlay = { x: last.x, y: last.y }
+      }
+      const last = this.lastPath as MovePath
+      this.openOverlay = { x: last.x, y: last.y }
+    }
     this.gameActionState.move.shortDropMove = false
     this.gameActionState.move.placingSmoke = false
   }

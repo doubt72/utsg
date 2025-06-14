@@ -35,6 +35,7 @@ export default function select(
         map.addGhost(new Coordinate(xx, yy), child.unit.clone() as Unit)
       }
       move.doneSelect = true
+      game.closeOverlay = true
     } else if (move.loadingMove) {
       if (game.needPickUpDisambiguate) {
         counter.unit.loaderSelect()
@@ -55,6 +56,7 @@ export default function select(
         }
         move.loadingMove = false
         move.doneSelect = true
+        game.closeOverlay = true
         move.addActions.push(
           { x: xx, y: yy, cost: 1, type: "load", meta: { fromIndex: index, toIndex }}
         )
