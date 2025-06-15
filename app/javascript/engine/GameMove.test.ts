@@ -120,8 +120,12 @@ describe("move integration test", () => {
     curretMoveData = {
       user: "two", player: 2,
       data: {
-        action: "phase", turn: [0, 0], phase: [gamePhaseType.Deployment, gamePhaseType.Deployment], player: 2
-      }
+        action: "phase",
+        phase_data: {
+          old_turn: 0, new_turn: 0, old_phase: gamePhaseType.Deployment, new_phase: gamePhaseType.Deployment,
+          new_player: 2,
+        },
+      },
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.lastMove?.stringValue).toBe("game started, begin Axis deployment")
@@ -130,7 +134,11 @@ describe("move integration test", () => {
     expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: {
+        action: "deploy",
+        path: [ { x: 4, y: 3, facing: 1 }],
+        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
@@ -152,8 +160,11 @@ describe("move integration test", () => {
 
     // Loading an undone move doesn't execute or increment last move
     curretMoveData = {
-      undone: true, user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3],
-      orientation: 1, turn: 0 }
+      undone: true, user: "two", player: 2, data: {
+        action: "deploy",
+        path: [ { x: 4, y: 3, facing: 1 }],
+        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
@@ -162,7 +173,11 @@ describe("move integration test", () => {
     expect(game.lastMoveIndex).toBe(index - 3)
 
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 4], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: {
+        action: "deploy",
+        path: [ { x: 4, y: 4, facing: 1 }],
+        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
@@ -176,7 +191,11 @@ describe("move integration test", () => {
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].unit.name).toBe("Rifle")
 
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", origin_index: 0, target: [4, 3], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: {
+        action: "deploy",
+        path: [ { x: 4, y: 3, facing: 1 }],
+        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
@@ -186,7 +205,11 @@ describe("move integration test", () => {
     expect(game.moves.length).toBe(index)
     expect(game.lastMoveIndex).toBe(index - 1)
     curretMoveData = {
-      user: "two", player: 2, data: { action: "deploy", origin_index: 1, target: [4, 1], orientation: 1, turn: 0 }
+      user: "two", player: 2, data: {
+        action: "deploy",
+        path: [ { x: 4, y: 1, facing: 1 }],
+        origin: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
@@ -219,35 +242,55 @@ describe("move integration test", () => {
     // { list: [rinf, rcrew, rmg, rldr, rgun]}
 
     curretMoveData = {
-      user: "one", player: 1, data: { action: "deploy", origin_index: 0, target: [0, 0], orientation: 1, turn: 0 }
+      user: "one", player: 1, data: {
+        action: "deploy",
+        path: [ { x: 0, y: 0, facing: 1 }],
+        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.moves.length).toBe(index)
     expect(game.lastMove?.stringValue).toBe("deployed unit: Guards SMG to A1")
 
     curretMoveData = {
-      user: "one", player: 1, data: { action: "deploy", origin_index: 1, target: [0, 1], orientation: 1, turn: 0 }
+      user: "one", player: 1, data: {
+        action: "deploy",
+        path: [ { x: 0, y: 1, facing: 1 }],
+        origin: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.moves.length).toBe(index)
     expect(game.lastMove?.stringValue).toBe("deployed unit: Crew to A2")
 
     curretMoveData = {
-      user: "one", player: 1, data: { action: "deploy", origin_index: 2, target: [0, 2], orientation: 1, turn: 0 }
+      user: "one", player: 1, data: {
+        action: "deploy",
+        path: [ { x: 0, y: 2, facing: 1 }],
+        origin: [ { turn: 0, index: 2, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.moves.length).toBe(index)
     expect(game.lastMove?.stringValue).toBe("deployed unit: DShK to A3")
 
     curretMoveData = {
-      user: "one", player: 1, data: { action: "deploy", origin_index: 3, target: [0, 3], orientation: 1, turn: 0 }
+      user: "one", player: 1, data: {
+        action: "deploy",
+        path: [ { x: 0, y: 3, facing: 1 }],
+        origin: [ { turn: 0, index: 3, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     expect(game.moves.length).toBe(index)
     expect(game.lastMove?.stringValue).toBe("deployed unit: Leader to A4")
 
     curretMoveData = {
-      user: "one", player: 1, data: { action: "deploy", origin_index: 4, target: [0, 4], orientation: 1, turn: 0 }
+      user: "one", player: 1, data: {
+        action: "deploy",
+        path: [ { x: 0, y: 4, facing: 1 }],
+        origin: [ { turn: 0, index: 4, id: `uf-${game.moves.length}` } ],
+      }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
     index += 9

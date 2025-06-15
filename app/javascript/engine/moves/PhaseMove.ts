@@ -14,15 +14,18 @@ export default class PhaseMove extends BaseMove {
   constructor(data: GameMoveData, game: Game, index: number) {
     super(data, game, index)
 
-    this.validate(data.data.phase)
-    this.validate(data.data.turn)
-    this.validate(data.data.player)
+    this.validate(data.data.phase_data?.old_phase)
+    this.validate(data.data.phase_data?.new_phase)
+    this.validate(data.data.phase_data?.old_turn)
+    this.validate(data.data.phase_data?.new_turn)
+    this.validate(data.data.phase_data?.new_player)
 
-    this.oldPhase = (data.data.phase ?? [gamePhaseType.Deployment])[0]
-    this.newPhase = (data.data.phase ?? [0, gamePhaseType.Deployment])[1]
-    this.oldTurn = (data.data.turn as [number, number])[0]
-    this.newTurn = (data.data.turn as [number, number])[1]
-    this.newPlayer = data.data.player as Player
+    // Validate will already error out if data is missing, but the linter can't tell
+    this.oldPhase = data.data.phase_data?.old_phase as GamePhase
+    this.newPhase = data.data.phase_data?.new_phase as GamePhase
+    this.oldTurn = data.data.phase_data?.old_turn as number
+    this.newTurn = data.data.phase_data?.new_turn as number
+    this.newPlayer = data.data.phase_data?.new_player as Player
   }
 
   get type(): string { return "phase" }

@@ -1,7 +1,7 @@
 import { Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
-import GameMove, { GameMoveData } from "./GameMove";
+import GameMove, { GameMoveData, GameMoveActionPath, GameMovePhaseChange } from "./GameMove";
 import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
 import IllegalMoveError from "./moves/IllegalMoveError";
@@ -45,10 +45,6 @@ export type DeployAction = {
   turn: number, index: number, needsDirection?: [number, number],
 }
 
-export type MovePath = {
-  x: number, y: number, facing?: Direction
-}
-
 export type addActionType = "smoke" | "shortdrop" | "load"
 export type MoveAddAction = {
   x: number, y: number, type: addActionType, cost: number,
@@ -61,7 +57,7 @@ export type MoveAddAction = {
 export type MoveAction = {
   initialSelection: ActionSelection[];
   doneSelect: boolean;
-  path: MovePath[],
+  path: GameMoveActionPath[],
   addActions: MoveAddAction[],
   finalTurretRotation: Direction
   rotatingTurret: boolean,
@@ -341,13 +337,17 @@ export default class Game {
 
   checkPhase(backendSync: boolean) {
     if (backendSync) { return }
-    const data: GameMoveData = {
-      player: this.currentPlayer, user: this.currentUser,
-      data: { action: "phase" }
-    }
     const oldPhase = this.phase
     const oldTurn = this.turn
-    if (this.phase == gamePhaseType.Deployment) {
+    const phaseData: GameMovePhaseChange = {
+      old_phase: oldPhase, new_phase: gamePhaseType.Deployment,
+      old_turn: oldTurn, new_turn: oldTurn, new_player: this.currentPlayer,
+    }
+    const data: GameMoveData = {
+      player: this.currentPlayer, user: this.currentUser,
+      data: { action: "phase", phase_data: phaseData }
+    }
+    if (oldPhase == gamePhaseType.Deployment) {
       const [count, initialCount] = this.reinforcementsCount
       if (count === 0) {
         if (initialCount === 0) {
@@ -357,26 +357,23 @@ export default class Game {
             }
           }, this, this.moves.length), backendSync)
         }
-        if (this.turn === 0) {
-          data.data.phase = [oldPhase, gamePhaseType.Deployment]
+        if (oldTurn === 0) {
+          phaseData.new_phase = gamePhaseType.Deployment
           if (this.currentPlayer === this.scenario.firstSetup) {
-            data.data.player = this.currentPlayer === 1 ? 2 : 1
-            data.data.turn = [oldTurn, 0]
+            phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
           } else {
-            data.data.player = this.scenario.firstMove
-            data.data.turn = [oldTurn, 1]
+            phaseData.new_player = this.scenario.firstMove
+            phaseData.new_turn = 1
           }
         } else {
-          data.data.player = this.currentPlayer === 1 ? 2 : 1
-          data.data.turn = [oldTurn, oldTurn]
-          data.data.phase = this.currentPlayer === this.scenario.firstMove ?
-            [oldPhase, gamePhaseType.Deployment] :
-            [oldPhase, gamePhaseType.Prep]
+          phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
+          phaseData.new_phase = this.currentPlayer === this.scenario.firstMove ?
+            gamePhaseType.Deployment : gamePhaseType.Prep
         }
         this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
         this.closeReinforcementPanel = true
       }
-    } else if (this.phase === gamePhaseType.Prep) {
+    } else if (oldPhase === gamePhaseType.Prep) {
       if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {
         return
       }
@@ -386,13 +383,12 @@ export default class Game {
         }
       }, this, this.moves.length), backendSync)
       // TODO: move this logic to something that can be reused for passing
-      data.data.turn = [oldTurn, oldTurn]
       if (this.currentPlayer === this.scenario.firstMove) {
-        data.data.player = this.currentPlayer === 1 ? 2 : 1
-        data.data.phase = [oldPhase, oldPhase]
+        phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
+        phaseData.new_phase = oldPhase
       } else {
-        data.data.player = this.currentPlayer === 1 ? 2 : 1
-        data.data.phase = [oldPhase, gamePhaseType.Main]
+        phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
+        phaseData.new_phase = gamePhaseType.Main
 
       }
       this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
@@ -425,24 +421,26 @@ export default class Game {
     x: number, y: number, counter: ReinforcementItem, d: Direction, callback: (game: Game) => void
   ) {
     if (this.gameActionState?.deploy) {
+      const id = `uf-${this.moves.length}`
       const move = new GameMove({
         user: this.currentUser,
         player: this.gameActionState.player,
         data: {
-          action: "deploy", origin_index: this.gameActionState.deploy.index,
-          target: [x, y], orientation: d, turn: this.turn
+          action: "deploy",
+          path: [{ x, y, facing: d }],
+          origin: [{ turn: this.turn, index: this.gameActionState.deploy.index, id }]
         }
       }, this, this.moves.length)
       this.executeMove(move, false)
       callback(this)
       this.gameActionState.deploy.needsDirection = undefined
-      if (counter.x == counter.used) {
+      if (counter.x === counter.used) {
         this.cancelAction()
       }
     }
   }
 
-  get lastPath(): MovePath | undefined {
+  get lastPath(): GameMoveActionPath | undefined {
     if (!this.gameActionState?.move) { return }
     const path = this.gameActionState.move.path
     return path[path.length - 1]
@@ -487,7 +485,7 @@ export default class Game {
     const selection = this.gameActionState.selection
     const move = this.gameActionState.move
     const target = selection[0].counter.unit
-    const lastPath = this.lastPath as MovePath
+    const lastPath = this.lastPath as GameMoveActionPath
     if (move.placingSmoke) {
       move.addActions.push({
         x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2,
@@ -552,10 +550,10 @@ export default class Game {
         const first = this.gameActionState.move.path[0]
         this.openOverlay = { x: first.x, y: first.y }
       } else {
-        const last = this.lastPath as MovePath
+        const last = this.lastPath as GameMoveActionPath
         this.openOverlay = { x: last.x, y: last.y }
       }
-      const last = this.lastPath as MovePath
+      const last = this.lastPath as GameMoveActionPath
       this.openOverlay = { x: last.x, y: last.y }
     }
     this.gameActionState.move.shortDropMove = false

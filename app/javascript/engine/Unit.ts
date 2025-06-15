@@ -54,6 +54,8 @@ export type UnitData = {
 }
 
 export default class Unit {
+  id: string;
+
   nation: string;
   playerNation: string;
   type: UnitType;
@@ -216,6 +218,8 @@ export default class Unit {
     this.rawData = data
 
     this.children = []
+
+    this.id = ""
   }
 
   clone(): Unit {

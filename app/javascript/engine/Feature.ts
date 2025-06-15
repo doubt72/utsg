@@ -39,6 +39,8 @@ export type FeatureData = {
 }
 
 export default class Feature {
+  id: string;
+
   type: FeatureType;
   nation = "none"
   playerNation = "none"
@@ -86,6 +88,8 @@ export default class Feature {
     this.facing = 1
 
     this.rawData = data
+
+    this.id = ""
   }
 
   clone(): Feature {

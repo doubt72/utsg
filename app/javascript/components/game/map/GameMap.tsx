@@ -24,8 +24,8 @@ import { normalDir } from "../../../utilities/utilities";
 import MoveTrackOverlay from "./MoveTrackOverlay";
 import openHex, { openHexRotateOpen } from "../../../engine/actions/openHex";
 import select from "../../../engine/actions/select";
-import { MovePath } from "../../../engine/Game";
 import Unit from "../../../engine/Unit";
+import { GameMoveActionPath } from "../../../engine/GameMove";
 
 interface GameMapProps {
   map?: Map;
@@ -89,7 +89,7 @@ export default function GameMap({
   }>({ error: "", timer: 0 })
 
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
-    if (!map) { return 999 }
+    if (!map) { return 9999 }
     if (preview || m?.preview) { return map.ySize * scale }
     const gc = guiCollapse ? 178 : 0
     const fill = m?.debug ? 16 : 408 - gc
@@ -97,7 +97,7 @@ export default function GameMap({
     return height - fill < available * scale ? available * scale : height - fill
   }
   const minWidth = (width: number, scale: number = 1, m?: Map) => {
-    if (!map) { return 999 }
+    if (!map) { return 9999 }
     if (preview || m?.preview) { return map.xSize * scale }
     let min = 705 + (m?.game?.scenario.turns ?? 0) * 90
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 280 }
@@ -370,7 +370,7 @@ export default function GameMap({
 
   useEffect(() => {
     if (map?.game?.gameActionState?.move) {
-      const lastPath = map.game.lastPath as MovePath
+      const lastPath = map.game.lastPath as GameMoveActionPath
       const coord = new Coordinate(lastPath.x, lastPath.y)
       if (openHexRotateOpen(map, coord) || map.game.gameActionState.move.rotatingTurret) {
         const hex = map.hexAt(coord)

@@ -134,7 +134,9 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     seq = last_sequence + 1
     GameMove.create!(sequence: seq, game: self, user:, player: 1, data: { action: "start" })
     GameMove.create!(sequence: seq + 1, game: self, user:, player: first_setup, data:
-      { action: "phase", turn: [0, 0], phase: [0, 0], player: first_setup })
+      { action: "phase", phase_data: {
+        old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_setup,
+      }, })
     in_progress!
     self
   end

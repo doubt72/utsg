@@ -2,7 +2,8 @@ import {
   Coordinate, hexOpenType, HexOpenType, roadType, terrainType, unitType
 } from "../../utilities/commonTypes"
 import { stackLimit } from "../../utilities/utilities"
-import { actionType, MovePath } from "../Game"
+import { actionType } from "../Game"
+import { GameMoveActionPath } from "../GameMove"
 import Map from "../Map"
 import Unit from "../Unit"
 import { mapSelectMovement, movementCost, movementPastCost, openHexMovement } from "./movement"
@@ -121,7 +122,7 @@ function openHexMove(map: Map, x: number, y: number): HexOpenType {
   const game = map.game
   if (!game?.gameActionState?.move) { return hexOpenType.Open }
   if (!game?.gameActionState?.selection) { return hexOpenType.Open }
-  const lastPath = game.lastPath as MovePath
+  const lastPath = game.lastPath as GameMoveActionPath
   const cost = openHexMovement(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
   if (cost === false) {
     return hexOpenType.Closed

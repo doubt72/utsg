@@ -1,8 +1,8 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
 import { Direction, roadType } from "../../../utilities/commonTypes";
-import { MovePath } from "../../../engine/Game";
 import Unit from "../../../engine/Unit";
+import { GameMoveActionPath } from "../../../engine/GameMove";
 
 interface DirectionSelectorProps {
   hex?: Hex;
@@ -36,7 +36,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         pointingDir = facing
       } else {
         const unit = hex.map.game.gameActionState.selection[0].counter.unit
-        const lastPath = hex.map.game.lastPath as MovePath
+        const lastPath = hex.map.game.lastPath as GameMoveActionPath
         if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
           dirs = hex.roadDirections ?? []
         }

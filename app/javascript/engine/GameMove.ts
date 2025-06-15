@@ -1,4 +1,4 @@
-import { Direction } from "../utilities/commonTypes";
+import { Direction, Player } from "../utilities/commonTypes";
 import Game, { GamePhase } from "./Game";
 import BaseMove from "./moves/BaseMove";
 import StateMove from "./moves/StateMove";
@@ -6,34 +6,50 @@ import PhaseMove from "./moves/PhaseMove";
 import DeployMove from "./moves/DeployMove";
 import InfoMove from "./moves/InfoMove";
 
-export type DiceResult = {
-  rawResult: number;
-  adjustment: number;
+export type GameMoveDiceResult = {
+  // TODO: flesh out as necessary
+  result: number;
+}
+
+export type GameMoveActionUnit = {
+  x: number, y: number, id: string,
+}
+
+export type GameMoveReinforcementUnit = {
+  turn: number, index: number, id: string,
+}
+
+export type GameMoveActionPath = {
+  x: number, y: number, facing?: Direction,
+}
+
+export type GameMovePhaseChange = {
+  old_phase: GamePhase, new_phase: GamePhase, old_turn: number, new_turn: number, new_player: Player,
 }
 
 export type GameMoveDetails = {
-  action: string;
-  message?: string;
-  origin?: [number, number];
-  origin_index?: number;
-  target?: [number, number];
-  target_index?: number;
-  path?: [number, number][];
-  orientation?: Direction;
-  dice_result?: DiceResult;
-  phase?: [GamePhase, GamePhase];
-  turn?: [number, number] | number;
-  player?: number;
+  action: string,
+  message?: string,
+
+  origin?: (GameMoveActionUnit | GameMoveReinforcementUnit)[],
+  target?: GameMoveActionUnit[],
+  path?: GameMoveActionPath[],
+
+  dice_result?: GameMoveDiceResult[],
+
+  phase_data?: GameMovePhaseChange,
 }
 
 export type GameMoveData = {
-  id?: number;
-  sequence?: number;
-  user: string;
-  player: number;
-  created_at?: string;
-  undone?: boolean;
-  data: GameMoveDetails;
+  id?: number,
+  sequence?: number,
+  user: string,
+  player: number,
+  created_at?: string,
+
+  undone?: boolean,
+
+  data: GameMoveDetails,
 };
 
 export default class GameMove {

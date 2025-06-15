@@ -18,9 +18,7 @@ import {
 export default function GameDisplay() {
   const { id } = useParams()
 
-  const [game, setGame] = useState<{ k?: Game, turn: number, state?: string }>({
-    turn: 0
-  })
+  const [game, setGame] = useState<{ k?: Game, turn: number, state?: string }>({ turn: 0 })
   const [map, setMap] = useState<Map | undefined>(undefined)
   const [moves, setMoves] = useState<JSX.Element | undefined>(undefined)
   const [turn, setTurn] = useState<JSX.Element | undefined>(undefined)

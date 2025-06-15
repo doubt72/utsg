@@ -1,4 +1,4 @@
-import Game, { MovePath } from "./Game";
+import Game from "./Game";
 import {
   BaseTerrainType, Coordinate, Direction, ExtendedDirection, GhostData, Player, VictoryHex,
   WeatherType, WindType, baseTerrainType, markerType, weatherType, windType,
@@ -13,6 +13,7 @@ import {
 import Feature from "./Feature";
 import WarningMoveError from "./moves/WarningMoveError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
+import { GameMoveActionPath } from "./GameMove";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -281,19 +282,28 @@ export default class Map {
     }
   }
 
-  deleteUnit(loc: Coordinate, index: number) {
-    const list = this.units[loc.y][loc.x]
-    list.splice(index, 1)
+  removeUnitFromList(list: (Unit | Feature)[], id: string): (Unit | Feature)[] {
+    let index = undefined
+    for (let i = 0; i < list.length; i++) {
+      const unit = list[i] as Unit
+      if (!unit.isFeature && unit.children.length > 0) {
+        unit.children = this.removeUnitFromList(unit.children, id) as Unit[]
+      }
+      if (list[i].id === id) { index = i}
+    }
+    if (index !== undefined) {
+      const unit = list[index] as Unit
+      list.splice(index, 1)
+      if (!unit.isFeature && unit.children.length > 0) {
+        return list.concat(unit.children)
+      }
+    }
+    return list
   }
 
-  popUnit(loc: Coordinate): Unit | Feature | undefined {
-    const list = this.units[loc.y][loc.x]
-    return list.pop()
-  }
-
-  shiftUnit(loc: Coordinate): Unit | Feature | undefined {
-    const list = this.units[loc.y][loc.x]
-    return list.shift()
+  removeUnit(loc: Coordinate, id: string) {
+    const newList = this.removeUnitFromList(this.units[loc.y][loc.x], id)
+    this.units[loc.y][loc.x] = newList
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {
@@ -376,7 +386,7 @@ export default class Map {
       return this.countersAt(new Coordinate(first.x, first.y))
     }
     if (move.loadingMove && !this.game?.needPickUpDisambiguate) {
-      const last = this.game?.lastPath as MovePath
+      const last = this.game?.lastPath as GameMoveActionPath
       return this.countersAt(new Coordinate(last.x, last.y))
     }
     return []
