@@ -23,6 +23,11 @@ export type GameMoveActionPath = {
   x: number, y: number, facing?: Direction,
 }
 
+export type addActionType = "smoke" | "shortdrop" | "load"
+export type GameMoveAdditionalAction = {
+  type: addActionType, x: number, y: number, facing?: Direction, fromId?: number, toId?: number,
+}
+
 export type GameMovePhaseChange = {
   old_phase: GamePhase, new_phase: GamePhase, old_turn: number, new_turn: number, new_player: Player,
 }
@@ -31,9 +36,12 @@ export type GameMoveDetails = {
   action: string,
   message?: string,
 
-  origin?: (GameMoveActionUnit | GameMoveReinforcementUnit)[],
-  target?: GameMoveActionUnit[],
+  deploy?: GameMoveReinforcementUnit[],
+  origin?: GameMoveActionUnit[],
   path?: GameMoveActionPath[],
+
+  target?: GameMoveActionUnit[],
+  add_action?: GameMoveAdditionalAction[],
 
   dice_result?: GameMoveDiceResult[],
 

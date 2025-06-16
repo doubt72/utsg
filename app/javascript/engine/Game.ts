@@ -1,7 +1,7 @@
 import { Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
-import GameMove, { GameMoveData, GameMoveActionPath, GameMovePhaseChange } from "./GameMove";
+import GameMove, { GameMoveData, GameMoveActionPath, GameMovePhaseChange, addActionType } from "./GameMove";
 import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
 import IllegalMoveError from "./moves/IllegalMoveError";
@@ -45,7 +45,6 @@ export type DeployAction = {
   turn: number, index: number, needsDirection?: [number, number],
 }
 
-export type addActionType = "smoke" | "shortdrop" | "load"
 export type MoveAddAction = {
   x: number, y: number, type: addActionType, cost: number,
   meta?: {
@@ -428,7 +427,7 @@ export default class Game {
         data: {
           action: "deploy",
           path: [{ x, y, facing: d }],
-          origin: [{ turn: this.turn, index: this.gameActionState.deploy.index, id }]
+          deploy: [{ turn: this.turn, index: this.gameActionState.deploy.index, id }]
         }
       }, this, this.moves.length)
       this.executeMove(move, false)

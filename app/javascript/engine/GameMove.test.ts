@@ -137,7 +137,7 @@ describe("move integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 3, facing: 1 }],
-        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -163,7 +163,7 @@ describe("move integration test", () => {
       undone: true, user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 3, facing: 1 }],
-        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -176,7 +176,7 @@ describe("move integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 4, facing: 1 }],
-        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -194,7 +194,7 @@ describe("move integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 3, facing: 1 }],
-        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -208,7 +208,7 @@ describe("move integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 1, facing: 1 }],
-        origin: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -245,7 +245,7 @@ describe("move integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 0, facing: 1 }],
-        origin: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -256,7 +256,7 @@ describe("move integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 1, facing: 1 }],
-        origin: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -267,7 +267,7 @@ describe("move integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 2, facing: 1 }],
-        origin: [ { turn: 0, index: 2, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 2, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -278,7 +278,7 @@ describe("move integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 3, facing: 1 }],
-        origin: [ { turn: 0, index: 3, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 3, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)
@@ -289,7 +289,7 @@ describe("move integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 4, facing: 1 }],
-        origin: [ { turn: 0, index: 4, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 4, id: `uf-${game.moves.length}` } ],
       }
     }
     game.executeMove(new GameMove(curretMoveData, game, index++), false)

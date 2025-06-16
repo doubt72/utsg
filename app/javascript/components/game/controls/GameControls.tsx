@@ -24,6 +24,7 @@ import MoveShortToggleButton from "./MoveShortToggleButton";
 import MoveSmokeToggleButton from "./MoveSmokeToggleButton";
 import MoveLoadToggleButton from "./MoveLoadToggleButton";
 import MoveDoneMultiselectButton from "./MoveDoneMultiselectButton";
+import UnselectButton from "./UnselectButton";
 
 interface GameControlsProps {
   game: Game;
@@ -61,6 +62,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <StartButton gameId={game.id} key={i} />
       } else if (a.type === "deploy") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>deploy units</div>
+      } else if (a.type === "unselect") {
+        return <UnselectButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "pass") {
         return <PassButton game={game} key={i} />
       } else if (a.type === "opportunity_fire") {

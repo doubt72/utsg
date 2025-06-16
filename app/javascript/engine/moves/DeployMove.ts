@@ -15,19 +15,19 @@ export default class DeployMove extends BaseMove {
   constructor(data: GameMoveData, game: Game, index: number) {
     super(data, game, index)
 
-    this.validate(data.data.origin)
+    this.validate(data.data.deploy)
     // Validate will already error out if data is missing, but the linter can't tell
-    const origin = data.data.origin as GameMoveReinforcementUnit[]
-    this.validate(origin[0])
+    const deploy = data.data.deploy as GameMoveReinforcementUnit[]
+    this.validate(deploy[0])
     this.validate(data.data.path)
     const path = data.data.path as GameMoveActionPath[]
     this.validate(path[0])
 
     this.target = new Coordinate(path[0].x, path[0].y)
     this.orientation = path[0].facing ?? 1
-    this.rIndex = origin[0].index
-    this.rTurn = origin[0].turn
-    this.rId = origin[0].id
+    this.rIndex = deploy[0].index
+    this.rTurn = deploy[0].turn
+    this.rId = deploy[0].id
   }
 
   get type(): string { return "deploy" }

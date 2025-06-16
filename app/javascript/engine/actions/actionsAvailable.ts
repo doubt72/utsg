@@ -99,6 +99,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (canRush(selection)) { moves.push({ type: "rush" }) }
         if (canAssaultMove(selection)) { moves.push({ type: "assault_move" }) }
         if (canRout(selection)) { moves.push({ type: "rout" }) }
+        moves.push({ type: "unselect" })
       }
     } else {
       moves.unshift({ type: "none", message: "waiting for opponent to move" })
