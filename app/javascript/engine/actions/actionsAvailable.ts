@@ -8,9 +8,6 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     return [{ type: "sync" }]
   }
   const moves = []
-  if (game.lastMove?.undoPossible && !game.moveInProgress) {
-    moves.push({ type: "undo" })
-  }
   if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
       return [{ type: "none", message: "waiting for player to join" }]
@@ -27,12 +24,19 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       return [{ type: "none", message: "waiting for game to start" }]
     }
   } else if (game.phase === gamePhaseType.Deployment) {
+    // TODO: limit undo to user who do'd
+    if (game.lastMove?.undoPossible && !game.moveInProgress) {
+      moves.push({ type: "undo" })
+    }
     moves.unshift({ type: "deploy" })
     return moves
   } else if (game.phase === gamePhaseType.Main) {
+    const selection = currSelection(game, false)
+    if (game.lastMove?.undoPossible && !game.moveInProgress && !selection) {
+      moves.push({ type: "undo" })
+    }
     if ((activePlayer === game.playerOneName && game.currentPlayer === 1) ||
         (activePlayer === game.playerTwoName && game.currentPlayer === 2)) {
-      const selection = currSelection(game, false)
       if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
         const moveSelect = currSelection(game, true)
         const action = game.gameActionState.move
@@ -95,7 +99,6 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (canRush(selection)) { moves.push({ type: "rush" }) }
         if (canAssaultMove(selection)) { moves.push({ type: "assault_move" }) }
         if (canRout(selection)) { moves.push({ type: "rout" }) }
-        moves.push({ type: "pass" })
       }
     } else {
       moves.unshift({ type: "none", message: "waiting for opponent to move" })

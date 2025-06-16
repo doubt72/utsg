@@ -455,7 +455,17 @@ export default class Game {
       }
       const units = selection.children
       units.forEach(c => c.unit.select())
-      const canSelect = selection.unit.canCarrySupport && (units.length < 1 || !units[0].unit.crewed)
+      let canSelect = selection.unit.canCarrySupport && (units.length < 1 || !units[0].unit.crewed)
+      if (canSelect) {
+        let check = false
+        this.scenario.map.countersAt(new Coordinate(selection.hex.x, selection.hex.y)).forEach(c => {
+          if (selection.unitIndex !== c.unitIndex && !c.unit.isFeature && c.unit.canCarrySupport &&
+              (c.children.length < 1 || !c.children[0].unit.crewed)) {
+            check = true
+          }
+        })
+        canSelect = check
+      }
       const allSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
       const initialSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
       units.forEach(u => {
@@ -595,6 +605,7 @@ export default class Game {
   cancelAction() {
     this.scenario.map.clearAllSelections()
     this.scenario.map.clearGhosts()
+    this.closeOverlay = true
     this.gameActionState = undefined
   }
 }

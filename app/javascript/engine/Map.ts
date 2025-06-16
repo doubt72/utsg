@@ -423,8 +423,9 @@ export default class Map {
       y1 += diff
       y2 += diff
     }
-    if (y1 < 50) {
-      const diff = 50 - y1
+    const top = 44 - shift.y
+    if (y1 < top) {
+      const diff = top - y1
       y1 += diff
       y2 += diff
     }
