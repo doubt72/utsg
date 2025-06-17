@@ -305,23 +305,24 @@ export default class Map {
     this.units[loc.y][loc.x] = newList
   }
 
-  moveUnit(from: Coordinate, to: Coordinate, id: string, facing?: Direction, insertId?: string) {
+  moveUnit(
+    from: Coordinate, to: Coordinate, id: string, facing?: Direction, turret?: Direction, insertId?: string
+  ) {
     const list = this.countersAt(from)
     let counter: Counter | undefined = undefined
     let insert: Counter | undefined = undefined
     for (const c of list) {
-      if (c.targetUF.id === id) { counter = c }
-      if (c.targetUF.id === insertId) { insert = c }
+      if (c.unit.id === id) { counter = c }
+      if (insertId !== undefined && c.unit.id === insertId) { insert = c }
     }
     if (!counter) { return }
-    if (facing) {
-      counter.targetUF.facing = facing
-    }
+    if (facing) { counter.unit.facing = facing }
+    if (turret) { counter.unit.turretFacing = turret }
     this.removeUnit(from, id)
     if (insert !== undefined) {
-      insert.children.push(counter)
+      insert.unit.children.push(counter.unit)
     } else {
-      this.units[to.y][to.x].unshift(counter.targetUF)
+      this.units[to.y][to.x].unshift(counter.unit)
     }
   }
 

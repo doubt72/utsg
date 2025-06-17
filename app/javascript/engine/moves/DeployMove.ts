@@ -36,7 +36,7 @@ export default class DeployMove extends BaseMove {
     const name = this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.rTurn][this.rIndex].counter.name :
       this.game.scenario.axisReinforcements[this.rTurn][this.rIndex].counter.name
-    return `deployed unit: ${name} to ${coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`;
+    return `deployed unit: ${name} to ${coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`
   }
 
   get undoPossible() { return true }

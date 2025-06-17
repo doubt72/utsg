@@ -21,7 +21,7 @@ export type GameMoveReinforcementUnit = {
 }
 
 export type GameMoveActionPath = {
-  x: number, y: number, facing?: Direction,
+  x: number, y: number, facing?: Direction, turret?: Direction,
 }
 
 export type addActionType = "smoke" | "shortdrop" | "load"

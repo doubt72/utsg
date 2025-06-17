@@ -35,8 +35,7 @@ class GameMove < ApplicationRecord
   end
 
   def undo(user)
-    return nil if user.id != user_id || undone
-    return nil unless undoable_actions.include?(data["action"])
+    return nil unless undoable?(user)
 
     update!(undone: true)
 
@@ -50,9 +49,13 @@ class GameMove < ApplicationRecord
 
   private
 
-  def undoable_actions
-    # "action" isn't actually used except for testing
-    %w[action deploy info phase]
+  def undoable?(user)
+    return false if user.id != user_id || undone
+    return false unless !data["dice_result"] || data["dice_result"].empty?
+    # action "action" isn't actually used except for testing
+    return false unless %w[action deploy info phase move].include?(data["action"])
+
+    true
   end
 
   def format_created

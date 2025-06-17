@@ -31,12 +31,11 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         dirs = hex.roadDirections ?? []
       }
     } else if (hex?.map.game?.gameActionState?.move && hex.map.game.gameActionState.selection) {
+      const lastPath = hex.map.game.lastPath as GameMoveActionPath
       if (hex.map.game.gameActionState.move.rotatingTurret) {
-        const facing = hex.map.game.gameActionState.move.finalTurretRotation
-        pointingDir = facing
+        pointingDir = lastPath.turret
       } else {
         const unit = hex.map.game.gameActionState.selection[0].counter.unit
-        const lastPath = hex.map.game.lastPath as GameMoveActionPath
         if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
           dirs = hex.roadDirections ?? []
         }

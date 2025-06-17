@@ -22,7 +22,7 @@ export default class MoveMove extends BaseMove {
 
     // Validate will already error out if data is missing, but the linter can't tell
     this.origin = data.data.origin as GameMoveActionUnit[]
-    this.path = data.data.origin as GameMoveActionPath[]
+    this.path = data.data.path as GameMoveActionPath[]
     this.addAction = data.data.add_action as GameMoveAddAction[]
     this.diceResults = data.data.dice_result as GameMoveDiceResult[]
   }
@@ -32,11 +32,11 @@ export default class MoveMove extends BaseMove {
   get stringValue(): string {
     // const map = this.game.scenario.map
     // name(s) moved to (coord), dropping off X, picking up X, smoking X
-    return "somebody moved"
+    return `somebody moved${this.undone ? " [cancelled]" : ""}`;
   }
 
   get undoPossible() {
-    return this.diceResults.length > 0
+    return this.diceResults.length < 1
   }
 
   mutateGame(): void {
@@ -45,9 +45,10 @@ export default class MoveMove extends BaseMove {
     const length = this.path.length
     const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
     const facing = this.path[length - 1].facing
+    const turret = this.path[length - 1].turret
 
     for (const u of this.origin) {
-      map.moveUnit(start, end, u.id, facing)
+      map.moveUnit(start, end, u.id, facing, turret)
     }
 
     let diceIndex = 0
@@ -56,7 +57,7 @@ export default class MoveMove extends BaseMove {
       if (a.type === "shortdrop") {
         map.moveUnit(end, mid, a.id as string)
       } else if (a.type === "load") {
-        map.moveUnit(mid, end, a.id as string, undefined, a.parent_id)
+        map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
       } else if (a.type === "smoke") {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
@@ -72,11 +73,12 @@ export default class MoveMove extends BaseMove {
     const length = this.path.length
     const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
     const facing = this.path[0].facing
+    const turret = this.path[0].turret
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
       if (a.type === "shortdrop") {
-        map.moveUnit(mid, end, a.id as string, undefined, a.parent_id)
+        map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
       } else if (a.type === "load") {
         map.moveUnit(end, mid, a.id as string)
       } else if (a.type === "smoke") {
@@ -86,7 +88,7 @@ export default class MoveMove extends BaseMove {
     }
 
     for (const u of this.origin) {
-      map.moveUnit(end, start, u.id, facing)
+      map.moveUnit(end, start, u.id, facing, turret)
     }
   }
 }

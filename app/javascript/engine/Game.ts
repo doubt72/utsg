@@ -56,7 +56,6 @@ export type MoveAction = {
   doneSelect: boolean;
   path: GameMoveActionPath[],
   addActions: MoveAddAction[],
-  finalTurretRotation: Direction
   rotatingTurret: boolean,
   placingSmoke: boolean,
   shortDropMove: boolean,
@@ -448,7 +447,8 @@ export default class Game {
     if (selection && selection.hex) {
       const loc = {
         x: selection.hex.x, y: selection.hex.y,
-        facing: selection.unit.rotates ? selection.unit.facing : undefined
+        facing: selection.unit.rotates ? selection.unit.facing : undefined,
+        turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
       }
       const units = selection.children
       units.forEach(c => c.unit.select())
@@ -479,8 +479,7 @@ export default class Game {
         selection: allSelection,
         move: {
           initialSelection, doneSelect: !canSelect, path: [loc], addActions: [],
-          finalTurretRotation: selection.unit.facing, rotatingTurret: false,
-          placingSmoke: false, shortDropMove: false, loadingMove: false,
+          rotatingTurret: false, placingSmoke: false, shortDropMove: false, loadingMove: false,
         }
       }
     }
@@ -504,6 +503,7 @@ export default class Game {
     } else {
       move.path.push({
         x, y, facing: target.rotates ? lastPath.facing : undefined,
+        turret: target.turreted ? lastPath.turret : undefined
       })
     }
     move.doneSelect = true
@@ -517,16 +517,17 @@ export default class Game {
 
   moveRotate(x: number, y: number, dir: Direction) {
     if (!this.gameActionState?.move) { return }
+    const last = this.lastPath as GameMoveActionPath
     if (this.gameActionState.move.rotatingTurret) {
-      this.gameActionState.move.finalTurretRotation = dir
+      last.turret = dir
     } else {
-      const lastDir = this.lastPath?.facing
-      if (lastDir) {
-        const lastTur = this.gameActionState.move.finalTurretRotation
-        this.gameActionState.move.finalTurretRotation = normalDir(lastTur + dir - lastDir)
+      const lastDir = last.facing
+      let turret = last.turret
+      if (lastDir && turret) {
+        turret = normalDir(turret + dir - lastDir)
       }
       this.gameActionState.move.path.push({
-        x: x, y: y, facing: dir,
+        x: x, y: y, facing: dir, turret,
       })
     }
   }
@@ -613,6 +614,7 @@ export default class Game {
     }, this, this.moves.length)
     this.executeMove(move, false)
     this.gameActionState = undefined
+    this.scenario.map.clearAllSelections()
   }
 
   executePass() {}
