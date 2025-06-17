@@ -65,7 +65,7 @@ export function nameLayout(counter: Counter): CounterLayout {
   if (counter.unit.smallName > 2) { size = 7.5 }
   const y = counter.hasFeature ? counter.y + 12 : counter.y + 10
   return {
-    x: counter.x + 5, y: y, size: size, name: counter.containerUF.name,
+    x: counter.x + 5, y: y, size: size, name: counter.targetUF.name,
     style: { fill: reverseName(counter) ? "white" : "black" }
   }
 }
@@ -119,10 +119,10 @@ export function counterInfoBadges(
   map: Map, x: number, y: number, maxY: number, counter: Counter, shift: number
 ): BadgeLayout[] {
   const badges: { text: string, color: string, tColor: string, arrow?: Direction}[] = []
-  if (counter.containerUF.rotates && !(counter.hasUnit && counter.unit.isWreck) &&
+  if (counter.targetUF.rotates && !(counter.hasUnit && counter.unit.isWreck) &&
       !(counter.hasMarker && counter.marker.hideOverlayRotation) && !counter.reinforcement) {
     const turret = counter.hasUnit && counter.unit.turreted && !counter.unit.isWreck
-    const dir = turret ? counter.unit.turretFacing : counter.containerUF.facing
+    const dir = turret ? counter.unit.turretFacing : counter.targetUF.facing
     badges.push({ text: `direction: ${dir}`, arrow: dir, color: "white", tColor: "black" })
   }
   if (counter.hasUnit && !counter.unit.isWreck) {
@@ -197,7 +197,7 @@ export function counterInfoBadges(
 }
 
 export function counterColor(counter: Counter): string {
-  return nationalColors[counter.containerUF.nation]
+  return nationalColors[counter.targetUF.nation]
 }
 
 function reverseName(counter: Counter): boolean {

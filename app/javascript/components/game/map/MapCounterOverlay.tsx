@@ -45,7 +45,7 @@ export default function MapCounterOverlay({
       <g>
         <path d={layout.path} style={layout.style as object} />
         { displayCounters.map((counter, i) => {
-          const cd = new Counter(undefined, counter.container, map)
+          const cd = new Counter(undefined, counter.target, map)
           if (counters) {
             cd.showDisabled = counter.showDisabled
             cd.reinforcement = counter.reinforcement

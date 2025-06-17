@@ -25,7 +25,7 @@ export default function select(
       counter.unit.dropSelect()
       const cost = counter.parent ? 1 : 0
       move.addActions.push(
-        { x: xx, y: yy, cost, type: "shortdrop", meta: { fromIndex: index } }
+        { x: xx, y: yy, cost, type: "shortdrop", id: counter.unit.id, parent_id: counter.unit.parent?.id }
       )
       map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
       if (counter.children.length === 1) {
@@ -44,30 +44,25 @@ export default function select(
         counter.unit.select()
         counter.unit.loadedSelect()
         const load = move.loader
-        let toIndex = 0
-        if (game.gameActionState.selection) {
-          toIndex = game.gameActionState.selection[0].counter.unitIndex
-        }
-        if (load) {
+        if (load) { // Should always exist in this situation, type notwithstanding
           load.unit.select()
           load.unit.loaderSelect()
-          toIndex = load.unitIndex
           move.loader = undefined
         }
         move.loadingMove = false
         move.doneSelect = true
         game.closeOverlay = true
         move.addActions.push(
-          { x: xx, y: yy, cost: 1, type: "load", meta: { fromIndex: index, toIndex }}
+          { x: xx, y: yy, cost: 1, type: "load", id: counter.unit.id, parent_id: load?.unit.id }
         )
       }
     } else {
       counter.children.forEach(c => c.unit.select())
       if (selected) {
-        removeActionSelection(game, x, y, index)
+        removeActionSelection(game, x, y, counter.unit.id)
       } else {
         game.gameActionState.selection?.push({
-          x, y, i: index, counter: counter,
+          x, y, id: counter.unit.id, counter: counter,
         })
       }
     }
@@ -150,7 +145,7 @@ function selectable(
           callback("all units moving together must start in same hex")
           return false
         }
-        if (selection.counter.unitIndex === s.i) { return false }
+        if (selection.counter.unit.id === s.id) { return false }
       }
       const counter = map.unitAtIndex(selection.target.xy, selection.counter.unitIndex)
       if (!canBeMoveMultiselected(map, counter as Counter, callback)) { return false }
@@ -160,10 +155,10 @@ function selectable(
   return true
 }
 
-function removeActionSelection(game: Game, x: number, y: number, index: number) {
+function removeActionSelection(game: Game, x: number, y: number, id: string) {
   if (!game?.gameActionState?.selection) { return }
   const selection = game.gameActionState.selection.filter(s =>
-    s.x !== x || s.y !== y || s.i !== index
+    s.x !== x || s.y !== y || s.id !== id
   )
   game.gameActionState.selection = selection
 }

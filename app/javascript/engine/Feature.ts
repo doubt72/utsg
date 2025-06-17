@@ -1,4 +1,4 @@
-import { Direction, FeatureType, GhostData, NumberBoolean, featureType } from "../utilities/commonTypes";
+import { Direction, FeatureType, NumberBoolean, featureType } from "../utilities/commonTypes";
 import { featureHelpText } from "./support/help";
 
 // ft: feature
@@ -62,7 +62,7 @@ export default class Feature {
 
   rawData: FeatureData;
   
-  ghost?: GhostData;
+  ghost?: boolean;
 
   constructor(data: FeatureData) {
     this.type = data.t

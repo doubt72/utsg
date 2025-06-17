@@ -1,13 +1,15 @@
 import { Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
-import GameMove, { GameMoveData, GameMoveActionPath, GameMovePhaseChange, addActionType } from "./GameMove";
+import GameMove, {
+  GameMoveData, GameMoveActionPath, GameMovePhaseChange, GameMoveDiceResult, addActionType
+} from "./GameMove";
 import Feature from "./Feature";
 import BaseMove from "./moves/BaseMove";
 import IllegalMoveError from "./moves/IllegalMoveError";
 import WarningMoveError from "./moves/WarningMoveError";
 import Counter from "./Counter";
-import { normalDir } from "../utilities/utilities";
+import { normalDir, rolld10 } from "../utilities/utilities";
 
 export type GameData = {
   id: number;
@@ -38,7 +40,7 @@ export const actionType: { [index: string]: ActionType } = {
 }
 
 export type ActionSelection = {
-  x: number, y: number, i: number, counter: Counter,
+  x: number, y: number, id: string, counter: Counter,
 }
 
 export type DeployAction = {
@@ -46,11 +48,7 @@ export type DeployAction = {
 }
 
 export type MoveAddAction = {
-  x: number, y: number, type: addActionType, cost: number,
-  meta?: {
-    fromIndex?: number,
-    toIndex?: number,
-  },
+  type: addActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
 }
 
 export type MoveAction = {
@@ -465,12 +463,12 @@ export default class Game {
         })
         canSelect = check
       }
-      const allSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
-      const initialSelection = [{ x: loc.x, y: loc.y, i: selection.unitIndex as number, counter: selection }]
+      const allSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+      const initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
       units.forEach(u => {
         const hex = u.hex as Coordinate
-        allSelection.push({ x: hex.x, y: hex.y, i: u.unitIndex as number, counter: u })
-        initialSelection.push({ x: hex.x, y: hex.y, i: u.unitIndex as number, counter: u })
+        allSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
+        initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
       })
       if (canSelect) {
         this.openOverlay = { x: selection.hex.x, y: selection.hex.y }
@@ -588,9 +586,33 @@ export default class Game {
     return count > 1
   }
 
-  addMoveAction(x: number, y: number, cost: number, type: addActionType, meta?: { fromIndex?: number }) {
+  finishMove() {
     if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.addActions.push({ x, y, cost, type, meta })
+    const dice: GameMoveDiceResult[] = []
+    for (const a of this.gameActionState.move.addActions) {
+      if (a.type === "smoke") { dice.push({ result: rolld10() }) }
+    }
+    const move = new GameMove({
+      user: this.currentUser,
+      player: this.gameActionState.player,
+      data: {
+        action: "move",
+        path: this.gameActionState.move.path,
+        origin: this.gameActionState.selection.map(s => {
+          return {
+            x: s.x, y: s.y, id: s.counter.unit.id
+          }
+        }),
+        add_action: this.gameActionState.move.addActions.map(a => {
+          return {
+            type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id,
+          }
+        }),
+        dice_result: dice,
+      }
+    }, this, this.moves.length)
+    this.executeMove(move, false)
+    this.gameActionState = undefined
   }
 
   executePass() {}

@@ -181,8 +181,3 @@ export type HexOpenType = true | false | "red" | "yellow" | "green" | "all" | nu
 export const hexOpenType: { [index: string]: HexOpenType } = {
   Open: true, Closed: false, Red: "red", Yellow: "yellow", Green: "green", All: "all",
 }
-
-export type GhostData = {
-  ghost: true,
-  fromIndex?: number,
-}

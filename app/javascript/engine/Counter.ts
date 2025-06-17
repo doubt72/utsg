@@ -9,7 +9,7 @@ export default class Counter {
   absolute: boolean = true;
   hex?: Coordinate;
   base?: Coordinate;
-  container: Unit | Marker | Feature;
+  target: Unit | Marker | Feature;
   map?: Map;
   stackingIndex: number;
   unitIndex: number;
@@ -40,7 +40,7 @@ export default class Counter {
         this.base = new Coordinate(3, 1)
       }
     }
-    this.container = target
+    this.target = target
     this.map = map
     this.stackingIndex = 0
     this.unitIndex = 0
@@ -52,34 +52,34 @@ export default class Counter {
   showDisabled = false;
 
   get hasUnit(): boolean {
-    return !this.container.isFeature && !this.container.isMarker
+    return !this.target.isFeature && !this.target.isMarker
   }
 
   get hasFeature(): boolean {
-    return this.container.isFeature
+    return this.target.isFeature
   }
 
   get hasMarker(): boolean {
-    return this.container.isMarker
+    return this.target.isMarker
   }
 
   get unit(): Unit {
-    return this.container as Unit
+    return this.target as Unit
   }
 
   get feature(): Feature {
-    return this.container as Feature
+    return this.target as Feature
   }
 
   get marker(): Marker {
-    return this.container as Marker
+    return this.target as Marker
   }
 
-  get containerUF(): Unit | Feature {
+  get targetUF(): Unit | Feature {
     if (this.hasUnit) {
-      return this.container as Unit
+      return this.target as Unit
     }
-    return this.container as Feature
+    return this.target as Feature
   }
 
   get stackOffset(): number { return this.onMap ? 5 : 3 }
@@ -87,10 +87,10 @@ export default class Counter {
   get y(): number { return (this.base?.y ?? 0) - this.stackingIndex * this.stackOffset }
   
   get rotation(): { a: number, x: number, y: number} | false {
-    if (!this.onMap || !this.container.rotates) {
+    if (!this.onMap || !this.target.rotates) {
       return false
     }
-    let facing = this.container.facing
+    let facing = this.target.facing
     if (this.hasUnit && this.unit.turreted && !this.unit.isWreck) { facing = this.unit.turretFacing }
     return { a: facing*60 - 150, x: this.x + 40, y: this.y + 40 }
   }

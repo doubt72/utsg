@@ -5,6 +5,7 @@ import StateMove from "./moves/StateMove";
 import PhaseMove from "./moves/PhaseMove";
 import DeployMove from "./moves/DeployMove";
 import InfoMove from "./moves/InfoMove";
+import MoveMove from "./moves/MoveMove";
 
 export type GameMoveDiceResult = {
   // TODO: flesh out as necessary
@@ -24,8 +25,8 @@ export type GameMoveActionPath = {
 }
 
 export type addActionType = "smoke" | "shortdrop" | "load"
-export type GameMoveAdditionalAction = {
-  type: addActionType, x: number, y: number, facing?: Direction, fromId?: number, toId?: number,
+export type GameMoveAddAction = {
+  type: addActionType, x: number, y: number, id?: string, parent_id?: string,
 }
 
 export type GameMovePhaseChange = {
@@ -41,7 +42,7 @@ export type GameMoveDetails = {
   path?: GameMoveActionPath[],
 
   target?: GameMoveActionUnit[],
-  add_action?: GameMoveAdditionalAction[],
+  add_action?: GameMoveAddAction[],
 
   dice_result?: GameMoveDiceResult[],
 
@@ -93,6 +94,9 @@ export default class GameMove {
     if (this.data.data.action === "deploy") {
       return new DeployMove(this.data, this.game, this.index);
     }
+    if (this.data.data.action === "move") {
+      return new MoveMove(this.data, this.game, this.index);
+    }
 
     // check initiative
     // rally check
@@ -101,7 +105,6 @@ export default class GameMove {
     // intensive fire
     // opportunity fire
     // intense opportunity fire
-    // move
     // rush
     // assault move
     // rout

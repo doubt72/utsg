@@ -1,6 +1,6 @@
 import Game from "./Game";
 import {
-  BaseTerrainType, Coordinate, Direction, ExtendedDirection, GhostData, Player, VictoryHex,
+  BaseTerrainType, Coordinate, Direction, ExtendedDirection, Player, VictoryHex,
   WeatherType, WindType, baseTerrainType, markerType, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
@@ -238,10 +238,9 @@ export default class Map {
     return undefined
   }
 
-  addGhost(loc: Coordinate, unit: Unit | Feature, meta?: { fromIndex?: number }) {
+  addGhost(loc: Coordinate, unit: Unit | Feature) {
     const list = this.ghosts[loc.y][loc.x]
-    const ghost: GhostData = { ghost: true }
-    if (meta) { Object.assign(ghost, meta) }
+    const ghost = true
     unit.ghost = ghost
     list.push(unit)
   }
@@ -304,6 +303,26 @@ export default class Map {
   removeUnit(loc: Coordinate, id: string) {
     const newList = this.removeUnitFromList(this.units[loc.y][loc.x], id)
     this.units[loc.y][loc.x] = newList
+  }
+
+  moveUnit(from: Coordinate, to: Coordinate, id: string, facing?: Direction, insertId?: string) {
+    const list = this.countersAt(from)
+    let counter: Counter | undefined = undefined
+    let insert: Counter | undefined = undefined
+    for (const c of list) {
+      if (c.targetUF.id === id) { counter = c }
+      if (c.targetUF.id === insertId) { insert = c }
+    }
+    if (!counter) { return }
+    if (facing) {
+      counter.targetUF.facing = facing
+    }
+    this.removeUnit(from, id)
+    if (insert !== undefined) {
+      insert.children.push(counter)
+    } else {
+      this.units[to.y][to.x].unshift(counter.targetUF)
+    }
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {

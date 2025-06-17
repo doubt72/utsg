@@ -103,4 +103,23 @@ export function nowUTCString(): string {
   return `${year}-${mon}-${day}T${hour}:${min}:${sec}Z`
 }
 
+export function rolld10(): number {
+  return Math.floor(Math.random() * 10) + 1
+}
+
+export function roll2d10(): number {
+  return rolld10() + rolld10()
+}
+
+export function rolld10x10(): number {
+  return rolld10() * rolld10()
+}
+
+export function smokeRoll(roll: number): number {
+  if (roll > 9) { return 4 }
+  if (roll > 7) { return 3 }
+  if (roll > 4) { return 2 }
+  return 1
+}
+
 export const stackLimit = 15

@@ -8,6 +8,9 @@ Game Actions:
     (Now)
       - Finishing/Syncing Move
         - Capture Victory points
+        - Show last move
+        - Do Initiative Check
+        - Show Reaction Options
 
     (Soon):
       - Consider adding road attributes / how base terrain affects it
@@ -17,7 +20,6 @@ Game Actions:
       - Wire/Obstacles
       - Engineering Tasks
   - Passing
-  - Initiative check
   - Firing
   - Reaction fire
   - Mines

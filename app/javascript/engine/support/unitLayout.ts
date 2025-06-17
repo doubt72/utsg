@@ -156,7 +156,7 @@ export function breakdownLayout(counter: Counter): CounterLayout | false {
 }
 
 export function iconLayout(counter: Counter): CounterLayout | false {
-  if (!counter.container.icon) { return false }
+  if (!counter.target.icon) { return false }
   const x = counter.x + ((counter.hasMarker && counter.marker.fullIcon) ? 0 : 20)
   let y = counter.y + ((counter.hasMarker && counter.marker.fullIcon) ? 0 : 13)
   if (counter.hasFeature) {
@@ -165,7 +165,7 @@ export function iconLayout(counter: Counter): CounterLayout | false {
   const size = (counter.hasMarker && counter.marker.fullIcon) ? 80 : 40
   return {
     x: x, y: y, size: size,
-    icon: (counter.hasUnit && counter.unit.isWreck) ? "wreck" : counter.containerUF.icon
+    icon: (counter.hasUnit && counter.unit.isWreck) ? "wreck" : counter.targetUF.icon
   }
 }
 
@@ -227,7 +227,7 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
   )
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-  let value = counter.containerUF.baseFirepower
+  let value = counter.targetUF.baseFirepower
   let color = "black"
   let path = squarePath(loc)
   let size = value === "½" ? 18 : attrSizeFor(value as number)
@@ -305,7 +305,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
 }
   let loc = new Coordinate(counter.x + 40, counter.y + 67)
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-  let value: number | string = counter.containerUF.currentRange
+  let value: number | string = counter.targetUF.currentRange
   let color = "black"
   let path = squarePath(loc)
   let size = attrSizeFor(value)
@@ -373,7 +373,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
     counter.x + 66 - ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
   )
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
-  let value = counter.containerUF.currentMovement
+  let value = counter.targetUF.currentMovement
   let color = "black"
   const path = circlePath(loc, 10)
   const size = value === "A" ? 18 : attrSizeFor(value as number)

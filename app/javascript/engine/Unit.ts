@@ -1,5 +1,5 @@
 import {
-  Direction, GhostData, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
+  Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
   NumberBoolean, SizeRange, UnitStatus, UnitType, movementType, unitStatus,
   unitType
 } from "../utilities/commonTypes";
@@ -125,7 +125,7 @@ export default class Unit {
 
   rawData: UnitData;
   
-  ghost?: GhostData;
+  ghost?: boolean;
   
   parent?: Unit;
   children: Unit[];
