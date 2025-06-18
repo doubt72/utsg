@@ -11,9 +11,9 @@ import {
   HelpButtonLayout, OverlayLayout, TextLayout, roundedRectangle, yMapOffset,
 } from "../utilities/graphics";
 import Feature from "./Feature";
-import WarningMoveError from "./moves/WarningMoveError";
+import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
-import { GameMoveActionPath } from "./GameMove";
+import { GameActionPath } from "./GameAction";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -263,7 +263,7 @@ export default class Map {
       list.push(counter)
       if (unit.uncrewedSW) {
         if (!last || !last.canCarrySupport) {
-          throw new WarningMoveError(
+          throw new WarningActionError(
             `${counter.name} is not assigned to an operator; it ` +
             "must be placed on a squad, team, or leader to be assigned."
           )
@@ -272,7 +272,7 @@ export default class Map {
       if (unit.crewed) {
         if (!last ||
           (!last.canHandle && !(last.canTow && last.size >= (unit.towSize ?? 0)))) {
-          throw new WarningMoveError(
+          throw new WarningActionError(
             `${counter.name} is not assigned to an operator or vehicle; it ` +
             "must be placed on a squad or team to be assigned, or on a vehicle large enough to tow it."
           )
@@ -406,7 +406,7 @@ export default class Map {
       return this.countersAt(new Coordinate(first.x, first.y))
     }
     if (move.loadingMove && !this.game?.needPickUpDisambiguate) {
-      const last = this.game?.lastPath as GameMoveActionPath
+      const last = this.game?.lastPath as GameActionPath
       return this.countersAt(new Coordinate(last.x, last.y))
     }
     return []

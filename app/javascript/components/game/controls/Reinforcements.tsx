@@ -82,7 +82,7 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
         {nationTwo(xx + 100, yy + 10)}
       </g>
     )
-  }, [xx, yy, update, map.game?.lastMoveIndex])
+  }, [xx, yy, update, map.game?.lastActionIndex])
 
   return (
     <g>

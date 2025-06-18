@@ -82,10 +82,10 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
       <div className="scenario-description-row">
         <div className="mr1em">Turns: <span className="red">{scenario.turns}</span></div>
         <div className="mr1em nowrap">
-          Sets up first: {scenario.firstSetup == 1 ? player1Pills : player2Pills}
+          Sets up first: {scenario.firstDeploy == 1 ? player1Pills : player2Pills}
         </div>
         <div className="mr1em nowrap">
-          Initiative: {scenario.firstMove == 1 ? player1Pills : player2Pills}
+          Initiative: {scenario.firstAction == 1 ? player1Pills : player2Pills}
         </div>
         <div className="flex-fill align-end">Author: <span className="green">{scenario.author}</span></div>
       </div>

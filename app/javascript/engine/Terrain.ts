@@ -155,9 +155,4 @@ export default class Terrain {
     }
     return { key: this.hex.border, text: text }
   }
-
-  // moveCost(hex1, hex2, dir, type) {
-  //   const opp = opposite(dir)
-  //   TODO calculate movement cost
-  // }
 }

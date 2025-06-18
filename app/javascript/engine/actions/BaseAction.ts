@@ -1,22 +1,22 @@
 import { Player } from "../../utilities/commonTypes";
 import { nowUTCString } from "../../utilities/utilities";
 import Game from "../Game"
-import { GameMoveData, GameMoveDetails } from "../GameMove"
+import { GameActionData, GameActionDetails } from "../GameAction"
 
-export default class BaseMove {
+export default class BaseAction {
   id?: number;
   sequence?: number;
   index: number;
   user: string;
   player: Player;
   createdAt: string;
-  data: GameMoveDetails;
+  data: GameActionDetails;
   game: Game;
 
   valid: boolean;
   undone: boolean;
 
-  constructor(data: GameMoveData, game: Game, index: number) {
+  constructor(data: GameActionData, game: Game, index: number) {
     this.id = data.id
     this.sequence = data.sequence
     this.index = index
@@ -54,7 +54,7 @@ export default class BaseMove {
   validate(term: unknown) {
     if (term === undefined) {
       this.valid = false
-      throw new Error("Bad data for move: " + JSON.stringify(this.data))
+      throw new Error("Bad data for action: " + JSON.stringify(this.data))
     }
   }
 }

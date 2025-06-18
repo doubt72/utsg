@@ -4,10 +4,10 @@ import { ScenarioData } from "./Scenario";
 import { MapData } from "./Map";
 import { Coordinate, baseTerrainType, weatherType, windType } from "../utilities/commonTypes";
 import { UnitData } from "./Unit";
-import GameMove, { GameMoveData } from "./GameMove";
+import GameAction, { GameActionData } from "./GameAction";
 import { FeatureData } from "./Feature";
 
-describe("move integration test", () => {
+describe("action integration test", () => {
   const mapData: MapData = {
     layout: [ 5, 5, "x" ],
     allied_dir: 4, axis_dir: 1,
@@ -58,8 +58,8 @@ describe("move integration test", () => {
       date: [1944, 6, 5],
       location: "anywhere",
       turns: 5,
-      first_setup: 2,
-      first_move: 1,
+      first_deploy: 2,
+      first_action: 1,
       allied_units: {
         0: { list: [rinf, rcrew, rmg, rldr, rgun]}
       },
@@ -79,45 +79,45 @@ describe("move integration test", () => {
   });
 
   test("validation", () => {
-    const moveData = { user: "two", player: 1, data: { action: "deploy" } }
+    const actionData = { user: "two", player: 1, data: { action: "deploy" } }
 
-    expect(() => new GameMove(moveData, game, 0).moveClass).toThrowError('Bad data for move')
+    expect(() => new GameAction(actionData, game, 0).actionClass).toThrowError('Bad data for action')
   })
 
   test("sequence", () => {
     let index = 0
-    let curretMoveData: GameMoveData = { user: "one", player: 1, data: { action: "create" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    let currentActionData: GameActionData = { user: "one", player: 1, data: { action: "create" } }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
 
     expect(game.playerOneName).toBe("one")
     expect(game.playerTwoName).toBe("")
     expect(game.state).toBe("needs_player")
-    curretMoveData = { user: "one", player: 1, data: { action: "join" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    currentActionData = { user: "one", player: 1, data: { action: "join" } }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerOneName).toBe("one")
     expect(game.state).toBe("needs_player")
 
     expect(game.playerTwoName).toBe("")
-    curretMoveData = { user: "two", player: 2, data: { action: "join" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    currentActionData = { user: "two", player: 2, data: { action: "join" } }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerTwoName).toBe("two")
     expect(game.state).toBe("ready")
 
-    curretMoveData = { user: "two", player: 2, data: { action: "leave" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    currentActionData = { user: "two", player: 2, data: { action: "leave" } }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerTwoName).toBe("")
     expect(game.state).toBe("needs_player")
 
-    curretMoveData = { user: "two", player: 2, data: { action: "join" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    currentActionData = { user: "two", player: 2, data: { action: "join" } }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerTwoName).toBe("two")
     expect(game.state).toBe("ready")
 
-    curretMoveData = { user: "one", player: 1, data: { action: "start" } }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    currentActionData = { user: "one", player: 1, data: { action: "start" } }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.state).toBe("in_progress")
 
-    curretMoveData = {
+    currentActionData = {
       user: "two", player: 2,
       data: {
         action: "phase",
@@ -127,179 +127,179 @@ describe("move integration test", () => {
         },
       },
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
-    expect(game.lastMove?.stringValue).toBe("game started, begin Axis deployment")
-    expect(game.lastMove?.undoPossible).toBe(false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.lastAction?.stringValue).toBe("game started, begin Axis deployment")
+    expect(game.lastAction?.undoPossible).toBe(false)
 
     expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
-    curretMoveData = {
+    currentActionData = {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
-    expect(game.moves[index - 1].stringValue).toBe("deployed unit: Rifle to E4")
+    expect(game.actions[index - 1].stringValue).toBe("deployed unit: Rifle to E4")
 
     expect(game.undoPossible).toBe(true)
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMoveIndex).toBe(index - 1)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastActionIndex).toBe(index - 1)
     game.executeUndo()
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
-    // Undone moves are just marked as undone
-    expect(game.moves.length).toBe(index)
-    // Otherwise moves are treated sort of as a stack, with lastMoveIndex as the
+    // Undone actions are just marked as undone
+    expect(game.actions.length).toBe(index)
+    // Otherwise actions are treated sort of as a stack, with lastActionIndex as the
     // "execution" pointer
-    expect(game.lastMoveIndex).toBe(index - 2)
-    expect(game.moves[index - 1].stringValue).toBe("deployed unit: Rifle to E4 [cancelled]")
+    expect(game.lastActionIndex).toBe(index - 2)
+    expect(game.actions[index - 1].stringValue).toBe("deployed unit: Rifle to E4 [cancelled]")
 
-    // Loading an undone move doesn't execute or increment last move
-    curretMoveData = {
+    // Loading an undone action doesn't execute or increment last action
+    currentActionData = {
       undone: true, user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMoveIndex).toBe(index - 3)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastActionIndex).toBe(index - 3)
 
-    curretMoveData = {
+    currentActionData = {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 4, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
 
     // Same unit, same spot
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4)).length).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].unit.name).toBe("Rifle")
 
-    curretMoveData = {
+    currentActionData = {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
     // Should trigger phase end
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMoveIndex).toBe(index - 1)
-    curretMoveData = {
+    expect(game.actions.length).toBe(index)
+    expect(game.lastActionIndex).toBe(index - 1)
+    currentActionData = {
       user: "two", player: 2, data: {
         action: "deploy",
         path: [ { x: 4, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 1, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
-    expect(game.lastMove?.stringValue).toBe("Axis deployment done, begin Allied deployment")
+    expect(game.lastAction?.stringValue).toBe("Axis deployment done, begin Allied deployment")
 
     index++
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMoveIndex).toBe(index - 1)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastActionIndex).toBe(index - 1)
     expect(game.currentPlayer).toBe(1)
 
     game.executeUndo()
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMoveIndex).toBe(index - 3)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastActionIndex).toBe(index - 3)
     expect(game.currentPlayer).toBe(2)
-    expect(game.lastMove?.stringValue).toBe("deployed unit: Rifle to E4")
-    expect(game.moves[game.moves.length-2].stringValue).toBe("deployed unit: Wire to E2 [cancelled]")
-    expect(game.moves[game.moves.length-1].stringValue).toBe(
+    expect(game.lastAction?.stringValue).toBe("deployed unit: Rifle to E4")
+    expect(game.actions[game.actions.length-2].stringValue).toBe("deployed unit: Wire to E2 [cancelled]")
+    expect(game.actions[game.actions.length-1].stringValue).toBe(
       "Axis deployment done, begin Allied deployment [cancelled]"
     )
 
     index++
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMoveIndex).toBe(index - 1)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastActionIndex).toBe(index - 1)
     expect(game.currentPlayer).toBe(1)
-    expect(game.lastMove?.stringValue).toBe("Axis deployment done, begin Allied deployment")
+    expect(game.lastAction?.stringValue).toBe("Axis deployment done, begin Allied deployment")
 
     // { list: [rinf, rcrew, rmg, rldr, rgun]}
 
-    curretMoveData = {
+    currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMove?.stringValue).toBe("deployed unit: Guards SMG to A1")
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastAction?.stringValue).toBe("deployed unit: Guards SMG to A1")
 
-    curretMoveData = {
+    currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, index: 1, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 1, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMove?.stringValue).toBe("deployed unit: Crew to A2")
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastAction?.stringValue).toBe("deployed unit: Crew to A2")
 
-    curretMoveData = {
+    currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 2, facing: 1 }],
-        deploy: [ { turn: 0, index: 2, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 2, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMove?.stringValue).toBe("deployed unit: DShK to A3")
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastAction?.stringValue).toBe("deployed unit: DShK to A3")
 
-    curretMoveData = {
+    currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 3, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 3, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
-    expect(game.moves.length).toBe(index)
-    expect(game.lastMove?.stringValue).toBe("deployed unit: Leader to A4")
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastAction?.stringValue).toBe("deployed unit: Leader to A4")
 
-    curretMoveData = {
+    currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy",
         path: [ { x: 0, y: 4, facing: 1 }],
-        deploy: [ { turn: 0, index: 4, id: `uf-${game.moves.length}` } ],
+        deploy: [ { turn: 0, index: 4, id: `uf-${game.actions.length}` } ],
       }
     }
-    game.executeMove(new GameMove(curretMoveData, game, index++), false)
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
     index += 9
-    expect(game.moves.length).toBe(index)
+    expect(game.actions.length).toBe(index)
     expect(game.currentPlayer).toBe(1)
-    expect(game.moves[index - 7].stringValue).toBe("Allied deployment done, begin Axis deployment")
-    expect(game.moves[index - 6].stringValue).toBe("no units to deploy, skipping phase")
-    expect(game.moves[index - 3].stringValue).toBe("Allied rally phase done, begin Axis rally phase")
-    expect(game.moves[index - 2].stringValue).toBe("no broken units or jammed weapons, skipping phase")
-    expect(game.lastMove?.stringValue).toBe("rally phase done, begin main phase")
+    expect(game.actions[index - 7].stringValue).toBe("Allied deployment done, begin Axis deployment")
+    expect(game.actions[index - 6].stringValue).toBe("no units to deploy, skipping phase")
+    expect(game.actions[index - 3].stringValue).toBe("Allied rally phase done, begin Axis rally phase")
+    expect(game.actions[index - 2].stringValue).toBe("no broken units or jammed weapons, skipping phase")
+    expect(game.lastAction?.stringValue).toBe("rally phase done, begin main phase")
   })
 });

@@ -1,11 +1,11 @@
 import Game from "../Game";
-import { GameMoveData } from "../GameMove";
-import BaseMove from "./BaseMove";
+import { GameActionData } from "../GameAction";
+import BaseAction from "./BaseAction";
 
-export default class InfoMove extends BaseMove {
+export default class InfoAction extends BaseAction {
   message: string;
 
-  constructor(data: GameMoveData, game: Game, index: number) {
+  constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
 
     this.validate(data.data.message)
@@ -20,7 +20,7 @@ export default class InfoMove extends BaseMove {
   }
 
   get undoPossible() {
-    return this.game.previousMoveUndoPossible(this.index)
+    return this.game.previousActionUndoPossible(this.index)
   }
 
   mutateGame(): void {

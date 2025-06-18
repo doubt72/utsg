@@ -1,26 +1,26 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes";
 import { coordinateToLable } from "../../utilities/utilities";
 import Game from "../Game";
-import { GameMoveActionPath, GameMoveData, GameMoveReinforcementUnit } from "../GameMove";
+import { GameActionPath, GameActionData, GameActionReinforcementUnit } from "../GameAction";
 import Unit from "../Unit";
-import BaseMove from "./BaseMove";
+import BaseAction from "./BaseAction";
 
-export default class DeployMove extends BaseMove {
+export default class DeployAction extends BaseAction {
   target: Coordinate;
   orientation: Direction;
   rTurn: number;
   rIndex: number;
   rId: string;
 
-  constructor(data: GameMoveData, game: Game, index: number) {
+  constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
 
     this.validate(data.data.deploy)
     // Validate will already error out if data is missing, but the linter can't tell
-    const deploy = data.data.deploy as GameMoveReinforcementUnit[]
+    const deploy = data.data.deploy as GameActionReinforcementUnit[]
     this.validate(deploy[0])
     this.validate(data.data.path)
-    const path = data.data.path as GameMoveActionPath[]
+    const path = data.data.path as GameActionPath[]
     this.validate(path[0])
 
     this.target = new Coordinate(path[0].x, path[0].y)

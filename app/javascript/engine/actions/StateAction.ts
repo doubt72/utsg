@@ -1,11 +1,11 @@
 import Game from "../Game";
-import { GameMoveData } from "../GameMove";
-import BaseMove from "./BaseMove";
+import { GameActionData } from "../GameAction";
+import BaseAction from "./BaseAction";
 
-export default class StateMove extends BaseMove {
+export default class StateAction extends BaseAction {
   description: string;
 
-  constructor(data: GameMoveData, game: Game, index: number, description: string) {
+  constructor(data: GameActionData, game: Game, index: number, description: string) {
     super(data, game, index)
     this.description = description
   }

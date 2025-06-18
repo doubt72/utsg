@@ -83,9 +83,9 @@ export default function DebugMap() {
       scenario: {
         id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p",
         metadata: {
-          author: "", description: [""], first_setup: 1, date: [1940, 1, 1], location: "here",
+          author: "", description: [""], first_deploy: 1, date: [1940, 1, 1], location: "here",
           turns: 8,
-          first_move: 1,
+          first_action: 1,
           allied_units: { 0: { list: [] }},
           axis_units: { 0: { list: [] }},
           map_data: {

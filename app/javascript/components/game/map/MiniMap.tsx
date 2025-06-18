@@ -74,7 +74,7 @@ export default function MiniMap(
               )} />
       </g>
     )
-  }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastMove])
+  }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastAction])
 
   useEffect(() => {
     widthCallback(width + xx + 16)

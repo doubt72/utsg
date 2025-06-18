@@ -2,16 +2,16 @@ import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Game from "../../engine/Game";
 
-interface MoveDisplayProps {
+interface ActionDisplayProps {
   game: Game;
-  callback: (moveId?: number) => void;
+  callback: (actionId?: number) => void;
   chatInput: boolean;
   collapse?: boolean;
 }
 
-export default function MoveDisplay({
+export default function ActionDisplay({
   game, callback, chatInput, collapse = false
-}: MoveDisplayProps) {
+}: ActionDisplayProps) {
   const [divClass, setDivClass] = useState<string>("")
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
@@ -21,7 +21,7 @@ export default function MoveDisplay({
   const subscribe = useCallback(() => {
     sendJsonMessage({
       command: "subscribe",
-      identifier: `{ "channel": "MoveChannel", "game_id": ${game.id} }`,
+      identifier: `{ "channel": "ActionChannel", "game_id": ${game.id} }`,
     })
   }, [game])
 
@@ -46,20 +46,20 @@ export default function MoveDisplay({
 
   useEffect(() => {
     setDivClass(
-      collapse ? "move-output move-output-collapse" :
-        ("move-output move-output-logged-" + (chatInput ? "in" : "out"))
+      collapse ? "action-output action-output-collapse" :
+        ("action-output action-output-logged-" + (chatInput ? "in" : "out"))
     )
   }, [collapse])
 
-  const moveList = (
+  const actionList = (
     <div className={divClass}>
       {
-        game.moves.map((move, i) => {
+        game.actions.map((action, i) => {
           return (
-            <div key={i} className="move-output-record">
-              <div className="move-output-date">{move.formattedDate}</div>
-              <div className="move-output-message">
-                <span className="move-output-username">{move.user}</span>{move.stringValue}
+            <div key={i} className="action-output-record">
+              <div className="action-output-date">{action.formattedDate}</div>
+              <div className="action-output-message">
+                <span className="action-output-username">{action.user}</span>{action.stringValue}
               </div>
             </div>
           )
@@ -70,7 +70,7 @@ export default function MoveDisplay({
 
   return (
     <div>
-      { moveList }
+      { actionList }
     </div>
   )
 }

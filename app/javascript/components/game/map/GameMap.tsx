@@ -22,10 +22,10 @@ import MiniMap from "./MiniMap";
 import { roundedRectangle, yMapOffset } from "../../../utilities/graphics";
 import { normalDir } from "../../../utilities/utilities";
 import MoveTrackOverlay from "./MoveTrackOverlay";
-import openHex, { openHexRotateOpen } from "../../../engine/actions/openHex";
-import select from "../../../engine/actions/select";
+import openHex, { openHexRotateOpen } from "../../../engine/control/openHex";
+import select from "../../../engine/control/select";
 import Unit from "../../../engine/Unit";
-import { GameMoveActionPath } from "../../../engine/GameMove";
+import { GameActionPath } from "../../../engine/GameAction";
 
 interface GameMapProps {
   map?: Map;
@@ -189,7 +189,7 @@ export default function GameMap({
                         xScale={xScale > 1 ? 1 : xScale} yScale={yScale > 1 ? 1 : yScale}
                         xOffset={xOffset} yOffset={yOffset} callback={minimapCallback}
                         widthCallback={setReinforcementOffset} />)
-  }, [map, mapScale, width, height, scale, xOffset, yOffset, map?.game?.lastMove])
+  }, [map, mapScale, width, height, scale, xOffset, yOffset, map?.game?.lastAction])
 
   useEffect(() => {
     if (!map || map.debug) { return }
@@ -308,7 +308,7 @@ export default function GameMap({
     map, showCoords, showStatusCounters, hideCounters, mapUpdate, showTerrain,
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
     map?.windSpeed, map?.windDirection, map?.windVariable, width, height, scale,
-    map?.game?.currentPlayer, map?.game?.lastMoveIndex, map?.game?.lastMove?.undone,
+    map?.game?.currentPlayer, map?.game?.lastActionIndex, map?.game?.lastAction?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore, forceUpdate,
     map?.game?.closeReinforcementPanel,
@@ -370,7 +370,7 @@ export default function GameMap({
 
   useEffect(() => {
     if (map?.game?.gameActionState?.move) {
-      const lastPath = map.game.lastPath as GameMoveActionPath
+      const lastPath = map.game.lastPath as GameActionPath
       const coord = new Coordinate(lastPath.x, lastPath.y)
       if (openHexRotateOpen(map, coord) || map.game.gameActionState.move.rotatingTurret) {
         const hex = map.hexAt(coord)

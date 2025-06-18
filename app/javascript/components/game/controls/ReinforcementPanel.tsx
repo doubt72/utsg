@@ -171,7 +171,7 @@ export default function ReinforcementPanel({
       </g>
     )
   }, [
-    xx, yy, shifted, map?.game?.gameActionState?.deploy, map?.game?.lastMove, map?.game?.lastMoveIndex,
+    xx, yy, shifted, map?.game?.gameActionState?.deploy, map?.game?.lastAction, map?.game?.lastActionIndex,
     forceUpdate
   ])
 

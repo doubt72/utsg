@@ -2,7 +2,7 @@ import React from "react";
 import Hex from "../../../engine/Hex";
 import { Direction, roadType } from "../../../utilities/commonTypes";
 import Unit from "../../../engine/Unit";
-import { GameMoveActionPath } from "../../../engine/GameMove";
+import { GameActionPath } from "../../../engine/GameAction";
 
 interface DirectionSelectorProps {
   hex?: Hex;
@@ -31,7 +31,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         dirs = hex.roadDirections ?? []
       }
     } else if (hex?.map.game?.gameActionState?.move && hex.map.game.gameActionState.selection) {
-      const lastPath = hex.map.game.lastPath as GameMoveActionPath
+      const lastPath = hex.map.game.lastPath as GameActionPath
       if (hex.map.game.gameActionState.move.rotatingTurret) {
         pointingDir = lastPath.turret
       } else {

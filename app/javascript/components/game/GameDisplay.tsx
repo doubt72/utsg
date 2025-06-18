@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import { getAPI } from "../../utilities/network";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
-import MoveDisplay from "./MoveDisplay";
+import ActionDisplay from "./ActionDisplay";
 import GameMap from "./map/GameMap";
 import GameControls from "./controls/GameControls";
 import Game from "../../engine/Game";
@@ -20,7 +20,7 @@ export default function GameDisplay() {
 
   const [game, setGame] = useState<{ k?: Game, turn: number, state?: string }>({ turn: 0 })
   const [map, setMap] = useState<Map | undefined>(undefined)
-  const [moves, setMoves] = useState<JSX.Element | undefined>(undefined)
+  const [actions, setActions] = useState<JSX.Element | undefined>(undefined)
   const [turn, setTurn] = useState<JSX.Element | undefined>(undefined)
   const [controls, setControls] = useState<JSX.Element | undefined>(undefined)
   const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>(undefined)
@@ -144,14 +144,14 @@ export default function GameDisplay() {
   }
 
   useEffect(() => {
-    if (!game.k || moves) { return }
-    setMoves(<MoveDisplay game={game.k} callback={moveNotification}
+    if (!game.k || actions) { return }
+    setActions(<ActionDisplay game={game.k} callback={actionNotification}
                           collapse={collapseLayout} chatInput={showInput()} />)
   }, [game.k])
 
   useEffect(() => {
     if (!game.k) { return }
-    setMoves(<MoveDisplay game={game.k} callback={moveNotification}
+    setActions(<ActionDisplay game={game.k} callback={actionNotification}
                           collapse={collapseLayout} chatInput={showInput()} />)
   }, [collapseLayout])
 
@@ -167,12 +167,12 @@ export default function GameDisplay() {
     if (game.k.state === "ready") { status += " - waiting for game to start"}
     setTurn(<>{status}</>)
   }, [
-    game.k?.state, game.k?.lastMove?.undone, game.k?.lastMove?.id,
+    game.k?.state, game.k?.lastAction?.undone, game.k?.lastAction?.id,
   ])
 
-  const moveNotification = (moveId?: number) => {
+  const actionNotification = (actionId?: number) => {
     if (game.k) {
-      game.k?.loadNewMoves(moveId)
+      game.k?.loadNewActions(actionId)
       gameNotification(game.k)
     }
   }
@@ -263,8 +263,8 @@ export default function GameDisplay() {
             <PlusCircle />
           </div>
           <div className="standard-body">
-            <div className="game-page-moves">
-              {moves}
+            <div className="game-page-actions">
+              {actions}
             </div>
             <div className="chat-section">
               <ChatDisplay gameId={Number(id)} collapse={true}
@@ -300,8 +300,8 @@ export default function GameDisplay() {
             </div>
           </div>
           <div className="standard-body">
-            <div className="game-page-moves">
-              {moves}
+            <div className="game-page-actions">
+              {actions}
             </div>
             <div className="chat-section">
               <ChatDisplay gameId={Number(id)}

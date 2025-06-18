@@ -1,13 +1,13 @@
 import { Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
-import GameMove, {
-  GameMoveData, GameMoveActionPath, GameMovePhaseChange, GameMoveDiceResult, addActionType
-} from "./GameMove";
+import GameAction, {
+  GameActionData, GameActionPath, GameActionPhaseChange, GameActionDiceResult, addActionType
+} from "./GameAction";
 import Feature from "./Feature";
-import BaseMove from "./moves/BaseMove";
-import IllegalMoveError from "./moves/IllegalMoveError";
-import WarningMoveError from "./moves/WarningMoveError";
+import BaseAction from "./actions/BaseAction";
+import IllegalActionError from "./actions/IllegalActionError";
+import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
 import { normalDir, rolld10 } from "../utilities/utilities";
 
@@ -47,15 +47,15 @@ export type DeployAction = {
   turn: number, index: number, needsDirection?: [number, number],
 }
 
-export type MoveAddAction = {
+export type AddAction = {
   type: addActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
 }
 
 export type MoveAction = {
   initialSelection: ActionSelection[];
   doneSelect: boolean;
-  path: GameMoveActionPath[],
-  addActions: MoveAddAction[],
+  path: GameActionPath[],
+  addActions: AddAction[],
   rotatingTurret: boolean,
   placingSmoke: boolean,
   shortDropMove: boolean,
@@ -89,8 +89,8 @@ export default class Game {
   phase: GamePhase;
   playerOnePoints: number = 0;
   playerTwoPoints: number = 0;
-  moves: BaseMove[] = [];
-  lastMoveIndex: number = -1;
+  actions: BaseAction[] = [];
+  lastActionIndex: number = -1;
   initiativePlayer: Player = 1;
   initiative: number = 0;
   alliedSniper?: Feature;
@@ -119,35 +119,35 @@ export default class Game {
       this.suppressNetwork = data.suppress_network
     }
 
-    // Initial state, moves will modify
-    this.currentPlayer = this.scenario.firstSetup || 1
+    // Initial state, actions will modify
+    this.currentPlayer = this.scenario.firstDeploy || 1
     this.turn = 0
     this.phase = gamePhaseType.Deployment
     this.playerOnePoints = 0
     this.playerTwoPoints = 0
-    this.loadAllMoves()
+    this.loadAllActions()
   }
 
-  loadAllMoves() {
+  loadAllActions() {
     if (this.suppressNetwork) { return }
 
-    getAPI(`/api/v1/game_moves?game_id=${this.id}`, {
+    getAPI(`/api/v1/game_actions?game_id=${this.id}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
-          const move = new GameMove(json[i], this, i)
-          this.executeMove(move, true)
+          const action = new GameAction(json[i], this, i)
+          this.executeAction(action, true)
         }
       })
     })
   }
 
-  loadNewMoves(moveId?: number) {
-    const limit = moveId ? moveId - 1 : this.moves[this.lastMoveIndex].id
-    getAPI(`/api/v1/game_moves?game_id=${this.id}&after_id=${limit}`, {
+  loadNewActions(actionId?: number) {
+    const limit = actionId ? actionId - 1 : this.actions[this.lastActionIndex].id
+    getAPI(`/api/v1/game_actions?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
-          const move = new GameMove(json[i], this, i)
-          this.executeMove(move, true)
+          const action = new GameAction(json[i], this, i)
+          this.executeAction(action, true)
         }
       })
     })
@@ -193,41 +193,41 @@ export default class Game {
     return this.playerTwoPoints + victoryHexes
   }
 
-  findBySequence(sequence: number): BaseMove | false {
-    for (const m of this.moves) {
+  findBySequence(sequence: number): BaseAction | false {
+    for (const m of this.actions) {
       if (m.sequence === sequence) { return m }
     }
     return false
   }
 
-  get lastMove(): BaseMove | undefined {
-    if (this.lastMoveIndex < 0) { return undefined }
-    return this.moves[this.lastMoveIndex]
+  get lastAction(): BaseAction | undefined {
+    if (this.lastActionIndex < 0) { return undefined }
+    return this.actions[this.lastActionIndex]
   }
 
   get opportunityFire(): boolean {
-    // TODO: check last move
+    // TODO: check last action
     return false
   }
 
   get reactionFire(): boolean {
-    // TODO: check last move
+    // TODO: check last action
     return false
   }
 
-  previousMoveUndoPossible(index: number): boolean {
+  previousActionUndoPossible(index: number): boolean {
     let check = index - 1
 
-    while(check >= 0 && this.moves[check].undone) {
+    while(check >= 0 && this.actions[check].undone) {
       check--
     }
 
     if (check < 0) { return false }
-    return this.moves[check].undoPossible
+    return this.actions[check].undoPossible
   }
 
-  executeMove(move: GameMove, backendSync: boolean) {
-    const m = move.moveClass
+  executeAction(action: GameAction, backendSync: boolean) {
+    const m = action.actionClass
     if (m.sequence) {
       const em = this.findBySequence(m.sequence)
       if (em) {
@@ -247,7 +247,7 @@ export default class Game {
         try {
           m.mutateGame()
         } catch(err) {
-          if (err instanceof WarningMoveError) {
+          if (err instanceof WarningActionError) {
             if (!m.id) {
               this.refreshCallback(this, ["warn", err.message])
             }
@@ -255,16 +255,16 @@ export default class Game {
             throw err
           }
         }
-        this.lastMoveIndex = move.index
+        this.lastActionIndex = action.index
       }
-      this.moves.push(m)
+      this.actions.push(m)
       if (!m.sequence) {
         this.currentSequence++
         m.sequence = this.currentSequence
       }
       if (!this.suppressNetwork && m.id === undefined) {
-        postAPI(`/api/v1/game_moves`, {
-          game_move: {
+        postAPI(`/api/v1/game_actions`, {
+          game_action: {
             sequence: m.sequence, game_id: this.id, player: m.player, undone: false,
             data: JSON.stringify(m.data),
           }
@@ -275,7 +275,7 @@ export default class Game {
       if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
       this.refreshCallback(this)
     } catch(err) {
-      if (err instanceof IllegalMoveError) {
+      if (err instanceof IllegalActionError) {
         this.refreshCallback(this, ["illegal", err.message])
       } else if (err instanceof Error) {
         this.refreshCallback(this, ["unknown", err.message])
@@ -284,25 +284,25 @@ export default class Game {
   }
 
   get undoPossible() {
-    if (!this.lastMove) { return false }
-    return this.lastMove.undoPossible
+    if (!this.lastAction) { return false }
+    return this.lastAction.undoPossible
   }
 
   executeUndo() {
     this.scenario.map.clearAllSelections()
-    if (!this.lastMove) { return }
-    const move = this.lastMove
-    move.undo()
+    if (!this.lastAction) { return }
+    const action = this.lastAction
+    action.undo()
 
-    while(this.lastMoveIndex >= 0 && this.lastMove.undone) {
-      this.lastMoveIndex--
+    while(this.lastActionIndex >= 0 && this.lastAction.undone) {
+      this.lastActionIndex--
     }
     if (!this.suppressNetwork) {
-      postAPI(`/api/v1/game_moves/${move.id}/undo`, {}, {
+      postAPI(`/api/v1/game_actions/${action.id}/undo`, {}, {
           ok: () => {}
       })
     }
-    if (move.lastUndoCascade) {
+    if (action.lastUndoCascade) {
       this.executeUndo()
     }
     this.refreshCallback(this)
@@ -335,11 +335,11 @@ export default class Game {
     if (backendSync) { return }
     const oldPhase = this.phase
     const oldTurn = this.turn
-    const phaseData: GameMovePhaseChange = {
+    const phaseData: GameActionPhaseChange = {
       old_phase: oldPhase, new_phase: gamePhaseType.Deployment,
       old_turn: oldTurn, new_turn: oldTurn, new_player: this.currentPlayer,
     }
-    const data: GameMoveData = {
+    const data: GameActionData = {
       player: this.currentPlayer, user: this.currentUser,
       data: { action: "phase", phase_data: phaseData }
     }
@@ -347,39 +347,39 @@ export default class Game {
       const [count, initialCount] = this.reinforcementsCount
       if (count === 0) {
         if (initialCount === 0) {
-          this.executeMove(new GameMove({
+          this.executeAction(new GameAction({
             player: this.currentPlayer, user: this.currentUser, data: {
               action: "info", message: "no units to deploy, skipping phase"
             }
-          }, this, this.moves.length), backendSync)
+          }, this, this.actions.length), backendSync)
         }
         if (oldTurn === 0) {
           phaseData.new_phase = gamePhaseType.Deployment
-          if (this.currentPlayer === this.scenario.firstSetup) {
+          if (this.currentPlayer === this.scenario.firstDeploy) {
             phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
           } else {
-            phaseData.new_player = this.scenario.firstMove
+            phaseData.new_player = this.scenario.firstAction
             phaseData.new_turn = 1
           }
         } else {
           phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
-          phaseData.new_phase = this.currentPlayer === this.scenario.firstMove ?
+          phaseData.new_phase = this.currentPlayer === this.scenario.firstAction ?
             gamePhaseType.Deployment : gamePhaseType.Prep
         }
-        this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
+        this.executeAction(new GameAction(data, this, this.actions.length), backendSync)
         this.closeReinforcementPanel = true
       }
     } else if (oldPhase === gamePhaseType.Prep) {
       if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {
         return
       }
-      this.executeMove(new GameMove({
+      this.executeAction(new GameAction({
         player: this.currentPlayer, user: this.currentUser, data: {
           action: "info", message: "no broken units or jammed weapons, skipping phase"
         }
-      }, this, this.moves.length), backendSync)
-      // TODO: move this logic to something that can be reused for passing
-      if (this.currentPlayer === this.scenario.firstMove) {
+      }, this, this.actions.length), backendSync)
+      // TODO: move this logic to something that can be reused for passing?
+      if (this.currentPlayer === this.scenario.firstAction) {
         phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
         phaseData.new_phase = oldPhase
       } else {
@@ -387,7 +387,7 @@ export default class Game {
         phaseData.new_phase = gamePhaseType.Main
 
       }
-      this.executeMove(new GameMove(data, this, this.moves.length), backendSync)
+      this.executeAction(new GameAction(data, this, this.actions.length), backendSync)
     }
   }
 
@@ -417,8 +417,8 @@ export default class Game {
     x: number, y: number, counter: ReinforcementItem, d: Direction, callback: (game: Game) => void
   ) {
     if (this.gameActionState?.deploy) {
-      const id = `uf-${this.moves.length}`
-      const move = new GameMove({
+      const id = `uf-${this.actions.length}`
+      const action = new GameAction({
         user: this.currentUser,
         player: this.gameActionState.player,
         data: {
@@ -426,8 +426,8 @@ export default class Game {
           path: [{ x, y, facing: d }],
           deploy: [{ turn: this.turn, index: this.gameActionState.deploy.index, id }]
         }
-      }, this, this.moves.length)
-      this.executeMove(move, false)
+      }, this, this.actions.length)
+      this.executeAction(action, false)
       callback(this)
       this.gameActionState.deploy.needsDirection = undefined
       if (counter.x === counter.used) {
@@ -436,13 +436,12 @@ export default class Game {
     }
   }
 
-  get lastPath(): GameMoveActionPath | undefined {
+  get lastPath(): GameActionPath | undefined {
     if (!this.gameActionState?.move) { return }
     const path = this.gameActionState.move.path
     return path[path.length - 1]
   }
 
-  // TODO: the other kind of move; made a mistake using move for actions
   startMove() {
     const selection = this.scenario.map.currentSelection[0]
     if (selection && selection.hex) {
@@ -492,7 +491,7 @@ export default class Game {
     const selection = this.gameActionState.selection
     const move = this.gameActionState.move
     const target = selection[0].counter.unit
-    const lastPath = this.lastPath as GameMoveActionPath
+    const lastPath = this.lastPath as GameActionPath
     if (move.placingSmoke) {
       move.addActions.push({
         x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2,
@@ -518,7 +517,7 @@ export default class Game {
 
   moveRotate(x: number, y: number, dir: Direction) {
     if (!this.gameActionState?.move) { return }
-    const last = this.lastPath as GameMoveActionPath
+    const last = this.lastPath as GameActionPath
     if (this.gameActionState.move.rotatingTurret) {
       last.turret = dir
     } else {
@@ -559,10 +558,10 @@ export default class Game {
         const first = this.gameActionState.move.path[0]
         this.openOverlay = { x: first.x, y: first.y }
       } else {
-        const last = this.lastPath as GameMoveActionPath
+        const last = this.lastPath as GameActionPath
         this.openOverlay = { x: last.x, y: last.y }
       }
-      const last = this.lastPath as GameMoveActionPath
+      const last = this.lastPath as GameActionPath
       this.openOverlay = { x: last.x, y: last.y }
     }
     this.gameActionState.move.shortDropMove = false
@@ -590,11 +589,11 @@ export default class Game {
 
   finishMove() {
     if (!this.gameActionState?.move) { return }
-    const dice: GameMoveDiceResult[] = []
+    const dice: GameActionDiceResult[] = []
     for (const a of this.gameActionState.move.addActions) {
       if (a.type === "smoke") { dice.push({ result: rolld10() }) }
     }
-    const move = new GameMove({
+    const move = new GameAction({
       user: this.currentUser,
       player: this.gameActionState.player,
       data: {
@@ -612,8 +611,8 @@ export default class Game {
         }),
         dice_result: dice,
       }
-    }, this, this.moves.length)
-    this.executeMove(move, false)
+    }, this, this.actions.length)
+    this.executeAction(move, false)
     this.gameActionState = undefined
     this.scenario.map.clearGhosts()
     this.scenario.map.clearAllSelections()
@@ -621,7 +620,7 @@ export default class Game {
 
   executePass() {}
 
-  get moveInProgress(): boolean {
+  get actionInProgress(): boolean {
     if (this.gameActionState?.deploy && this.gameActionState.deploy.needsDirection) { return true }
     if (this.gameActionState?.move) { return true }
     return false

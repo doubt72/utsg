@@ -89,7 +89,7 @@
   padding: 0.5em 1em;
 }
 
-// Chat/Move sections
+// Chat/Action sections
 
 .game-chat-output {
   height: 130px;
@@ -99,7 +99,7 @@
   height: 40px;
 }
 
-.game-page-moves {
+.game-page-actions {
   margin-right: 0.5em;
   width: 50%;
   padding: 0.5em;
@@ -107,7 +107,7 @@
   border-radius: 0.5em;
 }
 
-.move-output {
+.action-output {
   background-color: white;
   border-radius: 0.5em;
   padding: 0.5em;
@@ -117,24 +117,24 @@
   flex-direction: column-reverse;
 }
 
-.move-output-logged-in {
+.action-output-logged-in {
   height: calc(130px + 3em);
 }
 
-.move-output-logged-out {
+.action-output-logged-out {
   height: 130px;
 }
 
-.move-output-collapse {
+.action-output-collapse {
   height: 40px;
 }
 
-.move-output-record {
+.action-output-record {
   flex-direction: row;
   display: flex;
 }
 
-.move-output-date {
+.action-output-date {
   font-family: 'Courier Prime', monospace;
   position: relative;
   bottom: -2px;
@@ -142,11 +142,11 @@
   padding-right: 0.5em;
 }
 
-.move-output-message {
+.action-output-message {
   flex-grow: 1;
 }
 
-.move-output-username {
+.action-output-username {
   color: $darkish-green;
   font-weight: bold;
   padding-right: 0.5em;

@@ -17,8 +17,8 @@ export type ScenarioData = {
     date: [number, number, number];
     location: string;
     turns: number;
-    first_setup: Player;
-    first_move: Player;
+    first_deploy: Player;
+    first_action: Player;
     allied_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
     axis_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
     special_rules?: string[],
@@ -41,8 +41,8 @@ export default class Scenario {
   location: string;
   description: string[];
   turns: number;
-  firstMove: Player;
-  firstSetup: Player;
+  firstAction: Player;
+  firstDeploy: Player;
   alliedReinforcements: ReinforcementSchedule = {};
   axisReinforcements: ReinforcementSchedule = {};
   map: Map;
@@ -64,12 +64,12 @@ export default class Scenario {
     this.description = data.metadata.description
 
     this.turns = data.metadata.turns
-    this.firstMove = data.metadata.first_move
+    this.firstAction = data.metadata.first_action
     if (game) {
-      game.initiativePlayer = this.firstMove
+      game.initiativePlayer = this.firstAction
       game.initiative = 0
     }
-    this.firstSetup = data.metadata.first_setup
+    this.firstDeploy = data.metadata.first_deploy
 
     this.map = new Map(data.metadata.map_data, game)
   }

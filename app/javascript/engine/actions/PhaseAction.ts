@@ -1,17 +1,17 @@
 import { Player } from "../../utilities/commonTypes";
 import Game, { GamePhase, gamePhaseType } from "../Game";
-import { GameMoveData } from "../GameMove";
+import { GameActionData } from "../GameAction";
 import organizeStacks from "../support/organizeStacks";
-import BaseMove from "./BaseMove";
+import BaseAction from "./BaseAction";
 
-export default class PhaseMove extends BaseMove {
+export default class PhaseAction extends BaseAction {
   oldPhase: GamePhase;
   newPhase: GamePhase;
   oldTurn: number;
   newTurn: number;
   newPlayer: Player;
 
-  constructor(data: GameMoveData, game: Game, index: number) {
+  constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
 
     this.validate(data.data.phase_data?.old_phase)
@@ -40,10 +40,10 @@ export default class PhaseMove extends BaseMove {
   }
 
   get deploymentMessage(): string {
-    let first = this.game.scenario.firstMove
+    let first = this.game.scenario.firstAction
     let last = this.newTurn === 1 ? "setup finished" : "cleanup finished"
     if (this.newTurn === 0) {
-      first = this.game.scenario.firstSetup as Player
+      first = this.game.scenario.firstDeploy as Player
       last = "game started"
     }
     if (first === 1) {
@@ -62,7 +62,7 @@ export default class PhaseMove extends BaseMove {
   }
 
   get prepMessage(): string {
-    const first = this.game.scenario.firstMove
+    const first = this.game.scenario.firstAction
     if (first === 1) {
       if (this.newPlayer === 1) {
         return "deployment done, begin Allied rally phase"
@@ -87,7 +87,7 @@ export default class PhaseMove extends BaseMove {
   }
 
   get undoPossible() {
-    return this.game.previousMoveUndoPossible(this.index)
+    return this.game.previousActionUndoPossible(this.index)
   }
 
   mutateGame(): void {

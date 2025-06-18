@@ -2,17 +2,17 @@ import { Coordinate, featureType } from "../../utilities/commonTypes";
 import { smokeRoll } from "../../utilities/utilities";
 import Feature from "../Feature";
 import Game from "../Game";
-import { GameMoveActionPath, GameMoveActionUnit, GameMoveAddAction, GameMoveData, GameMoveDiceResult } from "../GameMove";
-import BaseMove from "./BaseMove";
-import IllegalMoveError from "./IllegalMoveError";
+import { GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult } from "../GameAction";
+import BaseAction from "./BaseAction";
+import IllegalActionError from "./IllegalActionError";
 
-export default class MoveMove extends BaseMove {
-  origin: GameMoveActionUnit[];
-  path: GameMoveActionPath[];
-  addAction: GameMoveAddAction[];
-  diceResults: GameMoveDiceResult[];
+export default class MoveAction extends BaseAction {
+  origin: GameActionUnit[];
+  path: GameActionPath[];
+  addAction: AddAction[];
+  diceResults: GameActionDiceResult[];
 
-  constructor(data: GameMoveData, game: Game, index: number) {
+  constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
 
     this.validate(data.data.origin)
@@ -21,10 +21,10 @@ export default class MoveMove extends BaseMove {
     this.validate(data.data.dice_result)
 
     // Validate will already error out if data is missing, but the linter can't tell
-    this.origin = data.data.origin as GameMoveActionUnit[]
-    this.path = data.data.path as GameMoveActionPath[]
-    this.addAction = data.data.add_action as GameMoveAddAction[]
-    this.diceResults = data.data.dice_result as GameMoveDiceResult[]
+    this.origin = data.data.origin as GameActionUnit[]
+    this.path = data.data.path as GameActionPath[]
+    this.addAction = data.data.add_action as AddAction[]
+    this.diceResults = data.data.dice_result as GameActionDiceResult[]
   }
 
   get type(): string { return "move" }
@@ -83,7 +83,7 @@ export default class MoveMove extends BaseMove {
         map.moveUnit(end, mid, a.id as string)
       } else if (a.type === "smoke") {
         // Shouldn't happen
-        throw new IllegalMoveError("can't undo smoke")
+        throw new IllegalActionError("can't undo smoke")
       }
     }
 

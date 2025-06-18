@@ -19,7 +19,7 @@ import RoutButton from "./RoutButton";
 import MoveFinishButton from "./MoveFinishButton";
 import MoveCancelButton from "./MoveCancelButton";
 import MoveRotateToggleButton from "./MoveRotateToggleButton";
-import actionsAvailable from "../../../engine/actions/actionsAvailable";
+import actionsAvailable from "../../../engine/control/actionsAvailable";
 import MoveShortToggleButton from "./MoveShortToggleButton";
 import MoveSmokeToggleButton from "./MoveSmokeToggleButton";
 import MoveLoadToggleButton from "./MoveLoadToggleButton";
@@ -38,7 +38,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
   useEffect(() => {
     if (!game.id) { return }
     displayActions()
-  }, [game, game.lastMoveIndex, update])
+  }, [game, game.lastActionIndex, update])
 
   const callAllBack = () => {
     setUpdate(s => s+1)
