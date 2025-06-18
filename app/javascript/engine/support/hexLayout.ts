@@ -230,7 +230,7 @@ export function riverStyle(hex: Hex): SVGStyle {
 }
 
 export function victoryLayout(hex: Hex): CircleLayout | false {
-  const victory = hex.map.victoryAt(hex.coord)
+  const victory = hex.map.victoryNationAt(hex.coord)
   if (!victory) { return false }
   const x = hex.xCorner(5, 20)
   const y = hex.yCorner(5, 20)

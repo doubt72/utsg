@@ -63,7 +63,7 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
     for (const f of map.countersAt(hex.coord)) {
       if (f.hasFeature) { return hexOpenType.Closed }
     }
-    if ((uf.type === "mines" || uf.type === "wire") && map.victoryAt(hex.coord)) {
+    if ((uf.type === "mines" || uf.type === "wire") && map.victoryNationAt(hex.coord)) {
       return hexOpenType.Closed
     }
   } else {

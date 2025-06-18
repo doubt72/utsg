@@ -16,7 +16,7 @@ import {
 } from "../utilities/commonTypes";
 import Feature, { FeatureData } from "../engine/Feature";
 import Unit, { UnitData } from "../engine/Unit";
-import { normalDir } from "../utilities/utilities";
+import { normalDir, togglePlayer } from "../utilities/utilities";
 import { getAPI } from "../utilities/network";
 import organizeStacks from "../engine/support/organizeStacks";
 
@@ -324,7 +324,7 @@ export default function DebugMap() {
         </div>
         <div className="custom-button normal-button" onClick={() => {
           if (map && map.game) {
-            map.game.initiativePlayer = map.game.initiativePlayer == 1 ? 2 : 1
+            map.game.initiativePlayer = togglePlayer(map.game.initiativePlayer)
             setInitiativePlayer(map.game.initiativePlayer ? "axis" : "allies")
           }
         }}>

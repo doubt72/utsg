@@ -1,4 +1,4 @@
-import { Coordinate, Direction } from "./commonTypes"
+import { Coordinate, Direction, Player } from "./commonTypes"
 
 export function alliedCodeToName(code: string): string {
   const lookup = [
@@ -113,6 +113,10 @@ export function roll2d10(): number {
 
 export function rolld10x10(): number {
   return rolld10() * rolld10()
+}
+
+export function togglePlayer(p: Player) {
+  return p === 1 ? 2 : 1
 }
 
 export function smokeRoll(roll: number): number {

@@ -54,7 +54,9 @@ export default class MoveAction extends BaseAction {
     let diceIndex = 0
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === "shortdrop") {
+      if (a.type === "vp") {
+        map.toggleVP(mid)
+      } else if (a.type === "shortdrop") {
         map.moveUnit(end, mid, a.id as string)
       } else if (a.type === "load") {
         map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
@@ -77,7 +79,9 @@ export default class MoveAction extends BaseAction {
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === "shortdrop") {
+      if (a.type === "vp") {
+        map.toggleVP(mid)
+      } else if (a.type === "shortdrop") {
         map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
       } else if (a.type === "load") {
         map.moveUnit(end, mid, a.id as string)

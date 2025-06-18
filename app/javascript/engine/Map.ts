@@ -14,6 +14,7 @@ import Feature from "./Feature";
 import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import { GameActionPath } from "./GameAction";
+import { togglePlayer } from "../utilities/utilities";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -155,19 +156,32 @@ export default class Map {
     return 1.5 * this.radius * (this.height + 0.3333) + 2
   }
 
-  victoryAt(loc: Coordinate): string | false {
+  victoryNationAt(loc: Coordinate): string | false {
     if (!this.game) { return false }
-    for (let i = 0; i < this.victoryHexes.length; i++) {
-      const v = this.victoryHexes[i]
+    const player = this.victoryAt(loc)
+    if (player === false) { return false }
+    if (player === 1) {
+      return this.game.playerOneNation
+    } else {
+      return this.game.playerTwoNation
+    }
+  }
+
+  victoryAt(loc: Coordinate): Player | false {
+    for (const v of this.victoryHexes) {
       if (v.x === loc.x && v.y === loc.y) {
-        if (v.player === 1) {
-          return this.game.playerOneNation
-        } else {
-          return this.game.playerTwoNation
-        }
+        return v.player
       }
     }
     return false
+  }
+
+  toggleVP(loc: Coordinate) {
+    for (const v of this.victoryHexes) {
+      if (v.x === loc.x && v.y === loc.y) {
+        v.player = togglePlayer(v.player)
+      }
+    }
   }
 
   hexAt(loc: Coordinate): Hex | undefined {

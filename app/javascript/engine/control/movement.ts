@@ -110,7 +110,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     }
     if (next && next.unit.crewed && !terrTo.borderGun) { return false }
   }
-  if (selection.unit.rotates || next.unit.crewed) {
+  if (selection.unit.rotates || (next && next.unit.crewed)) {
     if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
   }
 

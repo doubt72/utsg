@@ -9,7 +9,7 @@ import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
-import { normalDir, rolld10 } from "../utilities/utilities";
+import { normalDir, rolld10, togglePlayer } from "../utilities/utilities";
 
 export type GameData = {
   id: number;
@@ -91,6 +91,7 @@ export default class Game {
   playerTwoPoints: number = 0;
   actions: BaseAction[] = [];
   lastActionIndex: number = -1;
+  lastSignificantActionIndex?: number;
   initiativePlayer: Player = 1;
   initiative: number = 0;
   alliedSniper?: Feature;
@@ -356,13 +357,13 @@ export default class Game {
         if (oldTurn === 0) {
           phaseData.new_phase = gamePhaseType.Deployment
           if (this.currentPlayer === this.scenario.firstDeploy) {
-            phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
+            phaseData.new_player = togglePlayer(this.currentPlayer)
           } else {
             phaseData.new_player = this.scenario.firstAction
             phaseData.new_turn = 1
           }
         } else {
-          phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
+          phaseData.new_player = togglePlayer(this.currentPlayer)
           phaseData.new_phase = this.currentPlayer === this.scenario.firstAction ?
             gamePhaseType.Deployment : gamePhaseType.Prep
         }
@@ -380,10 +381,10 @@ export default class Game {
       }, this, this.actions.length), backendSync)
       // TODO: move this logic to something that can be reused for passing?
       if (this.currentPlayer === this.scenario.firstAction) {
-        phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
+        phaseData.new_player = togglePlayer(this.currentPlayer)
         phaseData.new_phase = oldPhase
       } else {
-        phaseData.new_player = this.currentPlayer === 1 ? 2 : 1
+        phaseData.new_player = togglePlayer(this.currentPlayer)
         phaseData.new_phase = gamePhaseType.Main
 
       }
@@ -505,6 +506,10 @@ export default class Game {
         x, y, facing: target.rotates ? lastPath.facing : undefined,
         turret: target.turreted ? lastPath.turret : undefined
       })
+      const vp = this.scenario.map.victoryAt(new Coordinate(x, y))
+      if (vp && vp !== this.currentPlayer) {
+        move.addActions.push({ x, y, type: "vp", cost: 0 })
+      }
     }
     move.doneSelect = true
     this.closeOverlay = true
@@ -616,6 +621,7 @@ export default class Game {
     this.gameActionState = undefined
     this.scenario.map.clearGhosts()
     this.scenario.map.clearAllSelections()
+    this.lastSignificantActionIndex = this.actions.length - 1
   }
 
   executePass() {}
