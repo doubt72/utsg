@@ -7,17 +7,10 @@ Game Actions:
   - Moving
     (Now)
       - Finishing/Syncing Move
-        - Show facing when moving
-        - Show Reaction Options
+        - Rewrite/Test movement options
+
+        - Show reaction options
         - Initiative
-        - Handle crewed move
-        - Handle crewed drop
-        - Handle crewed load
-        - Handle towed move/turn
-        - Handle towed drop
-        - Handle towed pick up
-        - Test picking up SWs
-        - Test dropping SWs
 
     (Soon):
       - Consider adding road attributes / how base terrain affects it
