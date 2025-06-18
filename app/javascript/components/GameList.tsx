@@ -18,8 +18,8 @@ export default function GameList() {
   useEffect(() => {
     if (tab === 0) {
       setGames({
-        notStarted: <GameListSection key="00" scope="needs_action" user="" />,
-        active: <GameListSection key="01" scope="needs_move" user="" />,
+        notStarted: <GameListSection key="00" scope="needs_player_start" user="" />,
+        active: <GameListSection key="01" scope="needs_action" user="" />,
         complete: ""
       })
     } else if (tab === 1) {

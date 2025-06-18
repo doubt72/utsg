@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :games_as_player_one, class_name: "Game", foreign_key: :player_one_id
   has_many :games_as_player_two, class_name: "Game", foreign_key: :player_two_id
   has_many :games_as_current_player, class_name: "Game", foreign_key: :current_player_id
-  has_many :game_moves, dependent: :nullify
+  has_many :game_actions, dependent: :nullify
 
   validates :username, presence: true, uniqueness: { case_sensitive: false }
   validates :email, presence: true, uniqueness: { case_sensitive: false }

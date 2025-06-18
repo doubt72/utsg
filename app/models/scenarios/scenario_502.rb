@@ -56,8 +56,8 @@ module Scenarios
       def generate
         {
           turns: 7,
-          first_setup: 1,
-          first_move: 2,
+          first_deploy: 1,
+          first_action: 2,
           date:,
           location: "Connage, France",
           author: "The Establishment",

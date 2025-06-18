@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GameMove < ApplicationRecord
+class GameAction < ApplicationRecord
   belongs_to :game
   belongs_to :user, optional: true
 
@@ -9,10 +9,10 @@ class GameMove < ApplicationRecord
   validates :sequence, uniqueness: { scope: :game_id }
   validates :player, presence: true, numericality: { in: 1..2 }
 
-  after_create :update_game_last_move
+  after_create :update_game_last_action
   after_create :broadcast
 
-  def self.create_move(params)
+  def self.create_action(params)
     game = Game.find_by(id: params[:game_id])
     user_id = params[:user_id]
     return nil unless game&.in_progress?
@@ -24,7 +24,7 @@ class GameMove < ApplicationRecord
 
     params[:data] = JSON.parse(params[:data])
 
-    GameMove.create!(params)
+    GameAction.create!(params)
   end
 
   def body
@@ -39,12 +39,12 @@ class GameMove < ApplicationRecord
 
     update!(undone: true)
 
-    ActionCable.server.broadcast("moves-#{game_id || 0}", { body: })
+    ActionCable.server.broadcast("actions-#{game_id || 0}", { body: })
     true
   end
 
-  def update_game_last_move
-    game.update!(last_move_id: id)
+  def update_game_last_action
+    game.update!(last_action_id: id)
   end
 
   private
@@ -63,6 +63,6 @@ class GameMove < ApplicationRecord
   end
 
   def broadcast
-    ActionCable.server.broadcast("moves-#{game_id || 0}", { body: })
+    ActionCable.server.broadcast("actions-#{game_id || 0}", { body: })
   end
 end

@@ -7,9 +7,9 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :current_player, class_name: "User", optional: true
   belongs_to :winner, class_name: "User", optional: true
 
-  has_many :moves, class_name: "GameMove", dependent: :destroy
+  has_many :actions, class_name: "GameAction", dependent: :destroy
   has_many :messages, dependent: :destroy
-  has_one :last_move, class_name: "GameMove", required: false
+  has_one :last_action, class_name: "GameAction", required: false
 
   validates :owner, presence: true
   validates :name, presence: true
@@ -24,7 +24,7 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # needs_player:   owner must choose side when creating game
   # ready:          players joined, start needs confirmation (but non-owner can drop back out)
   # in_progress:    game currently being played
-  #                 -> moves to needs_player if player deletes account (otherwise no quitting)
+  #                 -> changes to needs_player if player deletes account (otherwise no quitting)
   # complete:       game over
   enum state: { needs_player: 0, ready: 1, in_progress: 2, complete: 3 }
 
@@ -37,24 +37,24 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     where(state: [0, 1])
   end
 
-  def self.needs_action(user)
+  def self.needs_player_start(user)
     where(
       "state = ? AND owner_id = ? OR state = ? AND owner_id != ?", 1, user.id, 0, user.id
     )
   end
 
-  def self.needs_move(user)
+  def self.needs_action(user)
     where("current_player_id = ? AND state = ?", user.id, 2)
   end
 
   def self.create_game(params)
     game = Game.create(params)
     if game.persisted?
-      GameMove.create(sequence: 1, game:, user: game.owner, player: 1, data: { action: "create" })
-      GameMove.create(sequence: 2, game:, user: game.owner, player: game.player_one ? 1 : 2,
-                      data: { action: "join" })
+      GameAction.create(sequence: 1, game:, user: game.owner, player: 1, data: { action: "create" })
+      GameAction.create(sequence: 2, game:, user: game.owner, player: game.player_one ? 1 : 2,
+                        data: { action: "join" })
       if game.player_one && game.player_two
-        GameMove.create(sequence: 3, game:, user: game.owner, player: 2, data: { action: "join" })
+        GameAction.create(sequence: 3, game:, user: game.owner, player: 2, data: { action: "join" })
       end
     end
     game
@@ -69,7 +69,7 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
       current_player: current_player&.username,
       winner: winner&.username,
       created_at: created_at.iso8601,
-      updated_at: last_moved_at,
+      updated_at: last_action_at,
     }
   end
 
@@ -104,13 +104,13 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     else
       update(player_one_id: user.id)
     end
-    GameMove.create(
+    GameAction.create(
       sequence: last_sequence + 1, game: self, user:, player:, data: { action: "join" }
     )
     self
   end
 
-  def leave(user)
+  def leave(user) # rubocop:disable Metrics/MethodLength
     return nil unless game_full?
     return nil unless player_one_id == user.id || player_two_id == user.id
     return nil if owner_id == user.id
@@ -122,20 +122,22 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     else
       update(player_two: nil)
     end
-    GameMove.create(sequence: last_sequence, game: self, user:, player:, data: { action: "leave" })
+    GameAction.create(
+      sequence: last_sequence, game: self, user:, player:, data: { action: "leave" }
+    )
     self
   end
 
   def start(user)
     return nil unless owner_id == user.id && ready?
 
-    first_setup = Utility::Scenario.scenario_by_id(scenario)[:metadata][:first_setup]
-    update!(current_player: first_setup == 1 ? player_one : player_two)
+    first_deploy = Utility::Scenario.scenario_by_id(scenario)[:metadata][:first_deploy]
+    update!(current_player: first_deploy == 1 ? player_one : player_two)
     seq = last_sequence + 1
-    GameMove.create!(sequence: seq, game: self, user:, player: 1, data: { action: "start" })
-    GameMove.create!(sequence: seq + 1, game: self, user:, player: first_setup, data:
+    GameAction.create!(sequence: seq, game: self, user:, player: 1, data: { action: "start" })
+    GameAction.create!(sequence: seq + 1, game: self, user:, player: first_deploy, data:
       { action: "phase", phase_data: {
-        old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_setup,
+        old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_deploy,
       }, })
     in_progress!
     self
@@ -152,11 +154,11 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def last_sequence
     # Zero failover for testing
-    GameMove.where(game_id: id).pluck(:sequence).max || 0
+    GameAction.where(game_id: id).pluck(:sequence).max || 0
   end
 
-  def last_moved_at
-    last_move&.created_at&.iso8601 || updated_at.iso8601
+  def last_action_at
+    last_action&.created_at&.iso8601 || updated_at.iso8601
   end
 
   def valid_players

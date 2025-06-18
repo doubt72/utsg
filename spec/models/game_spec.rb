@@ -14,11 +14,11 @@ RSpec.describe Game do
   end
 
   before do
-    create(:game_move, sequence: 1, user: user1, game:)
-    create(:game_move, sequence: 2, user: user2, game:)
+    create(:game_action, sequence: 1, user: user1, game:)
+    create(:game_action, sequence: 2, user: user2, game:)
     create(:message, user: user1, game:)
     create(:message, user: user2, game:)
-    game.update!(last_move_id: GameMove.last)
+    game.update!(last_action_id: GameAction.last)
   end
 
   it "has body" do
@@ -34,7 +34,7 @@ RSpec.describe Game do
       winner: nil,
       metadata: game.metadata,
       created_at: game.created_at.iso8601,
-      updated_at: game.moves.last.created_at.iso8601,
+      updated_at: game.actions.last.created_at.iso8601,
     }
   end
 
@@ -42,7 +42,7 @@ RSpec.describe Game do
     game.destroy
 
     expect(Message.count).to be_zero
-    expect(GameMove.count).to be_zero
+    expect(GameAction.count).to be_zero
   end
 
   context "handles player deletions and additions" do

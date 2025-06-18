@@ -11,15 +11,15 @@ RSpec.describe Game do
              current_player: user2, name: "game", state: :in_progress
     )
   end
-  let!(:move1) { create(:game_move, sequence: 1, user:, game:) }
-  let!(:move2) { create(:game_move, sequence: 2, user: user2, game:) }
+  let!(:action1) { create(:game_action, sequence: 1, user:, game:) }
+  let!(:action2) { create(:game_action, sequence: 2, user: user2, game:) }
   let!(:game_message1) { create(:message, user:, game:) }
   let!(:game_message2) { create(:message, user: user2, game:) }
   let!(:global_message1) { create(:message, user:, game: nil) }
   let!(:global_message2) { create(:message, user: user2, game: nil) }
 
   before do
-    game.update!(last_move_id: GameMove.last)
+    game.update!(last_action_id: GameAction.last)
   end
 
   it "lookup finds usernames or emails regardless of case" do
@@ -38,9 +38,9 @@ RSpec.describe Game do
     expect(game.player_one).to be_nil
     expect(game.player_two).to be == user2
 
-    # Unlinks moves
-    expect(GameMove.count).to be == 2
-    expect(move1.reload.user).to be_nil
+    # Unlinks actions
+    expect(GameAction.count).to be == 2
+    expect(action1.reload.user).to be_nil
 
     # Cleans up global messages/unlinks game messages
     expect(Message.count).to be == 3
@@ -80,7 +80,7 @@ RSpec.describe Game do
 
       # Removes game completely
       expect(Game.find_by(id: game.id)).to be_nil
-      expect(GameMove.count).to be == 0
+      expect(GameAction.count).to be == 0
       expect(Message.count).to be == 1
     end
   end

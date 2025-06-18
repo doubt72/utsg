@@ -97,10 +97,10 @@ RSpec.describe Api::V1::GamesController do
       expect(json[0]["state"]).to be == "complete"
     end
 
-    it "can find need_action games" do
+    it "can find needs_player_start games" do
       login(user1)
 
-      get :index, params: { user: user2.username, scope: "needs_action" }
+      get :index, params: { user: user2.username, scope: "needs_player_start" }
 
       expect(response.status).to be == 200
 
@@ -110,10 +110,10 @@ RSpec.describe Api::V1::GamesController do
       expect(json[0]["state"]).to be == "ready"
     end
 
-    it "can find need_move games" do
+    it "can find needs_action games" do
       login(user2)
 
-      get :index, params: { user: user2.username, scope: "needs_move" }
+      get :index, params: { user: user2.username, scope: "needs_action" }
 
       expect(response.status).to be == 200
 
@@ -190,7 +190,7 @@ RSpec.describe Api::V1::GamesController do
       expect(Game.last.name).to be == "new game"
     end
 
-    it "creates initial moves" do
+    it "creates initial actions" do
       login(user1)
 
       expect do
@@ -200,10 +200,10 @@ RSpec.describe Api::V1::GamesController do
             metadata: '{ "turn": 2 }',
           },
         }
-      end.to change { GameMove.count }.by(2)
+      end.to change { GameAction.count }.by(2)
 
-      expect(GameMove.first.data["action"]).to be == "create"
-      expect(GameMove.last.data["action"]).to be == "join"
+      expect(GameAction.first.data["action"]).to be == "create"
+      expect(GameAction.last.data["action"]).to be == "join"
     end
 
     it "can't create bogus game" do
@@ -273,14 +273,14 @@ RSpec.describe Api::V1::GamesController do
       expect(game2.player_two).to be == user2
     end
 
-    it "creates join move" do
+    it "creates join action" do
       login(user2)
 
       expect do
         post :join, params: { id: game2.id }
-      end.to change { GameMove.count }.by(1)
+      end.to change { GameAction.count }.by(1)
 
-      expect(GameMove.last.data["action"]).to be == "join"
+      expect(GameAction.last.data["action"]).to be == "join"
     end
 
     it "doesn't allow player to join full game" do
@@ -317,14 +317,14 @@ RSpec.describe Api::V1::GamesController do
       expect(game2.player_two).to be_nil
     end
 
-    it "creates leave move" do
+    it "creates leave action" do
       login(user2)
 
       expect do
         post :leave, params: { id: game1.id }
-      end.to change { GameMove.count }.by(1)
+      end.to change { GameAction.count }.by(1)
 
-      expect(GameMove.last.data["action"]).to be == "leave"
+      expect(GameAction.last.data["action"]).to be == "leave"
     end
 
     it "doesn't allow player to leave game they own" do
@@ -367,15 +367,15 @@ RSpec.describe Api::V1::GamesController do
       expect(game3.state).to be == "in_progress"
     end
 
-    it "moves to first phase" do
+    it "advances to first phase" do
       login(user1)
 
       expect do
         post :start, params: { id: game3.id }
-      end.to change { GameMove.count }.by(2)
+      end.to change { GameAction.count }.by(2)
 
-      expect(GameMove.last.data["action"]).to be == "phase"
-      expect(GameMove.second_to_last.data["action"]).to be == "start"
+      expect(GameAction.last.data["action"]).to be == "phase"
+      expect(GameAction.second_to_last.data["action"]).to be == "start"
     end
 
     it "doesn't allow owner to start in progress game" do

@@ -73,7 +73,7 @@ module Api
       private
 
       def index_includes
-        %i[owner player_one player_two winner last_move]
+        %i[owner player_one player_two winner last_action]
       end
 
       def index_games(scope) # rubocop:disable Metrics/MethodLength
@@ -85,10 +85,10 @@ module Api
           games = games.in_progress
         when "complete"
           games = games.complete
+        when "needs_player_start"
+          games = games.needs_player_start(current_user)
         when "needs_action"
           games = games.needs_action(current_user)
-        when "needs_move"
-          games = games.needs_move(current_user)
         end
         games.order(created_at: :desc)
       end

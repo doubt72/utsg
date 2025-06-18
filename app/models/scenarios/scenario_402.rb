@@ -54,8 +54,8 @@ module Scenarios
       def generate
         {
           turns: 6,
-          first_setup: 1,
-          first_move: 2,
+          first_deploy: 1,
+          first_action: 2,
           date:,
           location: "Eora, Papua New Guinea",
           author: "The Establishment",

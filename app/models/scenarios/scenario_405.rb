@@ -37,8 +37,8 @@ module Scenarios
       def generate
         {
           turns: 7,
-          first_setup: 2,
-          first_move: 1,
+          first_deploy: 2,
+          first_action: 1,
           date:,
           location: "Guadalcanal, Solomon Islands",
           author: "The Establishment",

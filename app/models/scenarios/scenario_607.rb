@@ -71,8 +71,8 @@ module Scenarios
       def generate
         {
           turns: 9,
-          first_setup: 1,
-          first_move: 1,
+          first_deploy: 1,
+          first_action: 1,
           date:,
           location: "Shanghai, China",
           author: "The Establishment",

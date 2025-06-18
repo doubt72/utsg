@@ -125,8 +125,8 @@ RSpec.describe Utility::Scenario do
 
           metadata = scenario[:metadata]
           expect(metadata[:turns]).not_to be_nil
-          expect(metadata[:first_setup]).not_to be_nil
-          expect(metadata[:first_move]).not_to be_nil
+          expect(metadata[:first_deploy]).not_to be_nil
+          expect(metadata[:first_action]).not_to be_nil
           expect(metadata[:description]).not_to be_nil
           expect(metadata[:map_data]).not_to be_nil
           expect(metadata[:allied_units]).not_to be_nil

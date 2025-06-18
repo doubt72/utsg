@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :game_move do
+  factory :game_action do
     game
     user
     undone { false }

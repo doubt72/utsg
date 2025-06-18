@@ -24,7 +24,7 @@ Rails.application.routes.draw do
           post "complete"
         end
       end
-      resources :game_moves, only: %i[index create] do
+      resources :game_actions, only: %i[index create] do
         member do
           post "undo"
         end

@@ -14,19 +14,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "game_moves", force: :cascade do |t|
+  create_table "game_actions", force: :cascade do |t|
     t.bigint "game_id", null: false
     t.bigint "user_id"
     t.jsonb "data", null: false
     t.integer "player", default: 1, null: false
+    t.datetime "updated_at", null: false
     t.datetime "created_at", null: false
     t.boolean "undone", default: false, null: false
     t.integer "sequence", null: false
-    t.index ["created_at"], name: "index_game_moves_on_created_at"
-    t.index ["game_id"], name: "index_game_moves_on_game_id"
-    t.index ["id"], name: "index_game_moves_on_id"
-    t.index ["sequence", "game_id"], name: "index_game_moves_on_sequence_and_game_id", unique: true
-    t.index ["user_id"], name: "index_game_moves_on_user_id"
+    t.index ["created_at"], name: "index_game_actions_on_created_at"
+    t.index ["game_id"], name: "index_game_actions_on_game_id"
+    t.index ["id"], name: "index_game_actions_on_id"
+    t.index ["sequence", "game_id"], name: "index_game_actions_on_sequence_and_game_id", unique: true
+    t.index ["user_id"], name: "index_game_actions_on_user_id"
   end
 
   create_table "games", force: :cascade do |t|
@@ -35,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
     t.bigint "player_two_id"
     t.bigint "current_player_id"
     t.bigint "winner_id"
-    t.bigint "last_move_id"
+    t.bigint "last_action_id"
     t.string "name", null: false
     t.string "scenario", null: false
     t.integer "state", default: 0, null: false
@@ -45,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
     t.index ["created_at"], name: "index_games_on_created_at"
     t.index ["current_player_id"], name: "index_games_on_current_player_id"
     t.index ["id"], name: "index_games_on_id"
-    t.index ["last_move_id"], name: "index_games_on_last_move_id"
+    t.index ["last_action_id"], name: "index_games_on_last_action_id"
     t.index ["owner_id"], name: "index_games_on_owner_id"
     t.index ["player_one_id"], name: "index_games_on_player_one_id"
     t.index ["player_two_id"], name: "index_games_on_player_two_id"
@@ -80,9 +81,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
     t.index ["username"], name: "index_users_on_username"
   end
 
-  add_foreign_key "game_moves", "games", on_delete: :cascade
-  add_foreign_key "game_moves", "users"
-  add_foreign_key "games", "game_moves", column: "last_move_id"
+  add_foreign_key "game_actions", "games", on_delete: :cascade
+  add_foreign_key "game_actions", "users"
+  add_foreign_key "games", "game_actions", column: "last_action_id"
   add_foreign_key "games", "users", column: "current_player_id"
   add_foreign_key "games", "users", column: "owner_id"
   add_foreign_key "games", "users", column: "player_one_id"

@@ -62,8 +62,8 @@ module Scenarios
       def generate
         {
           turns: 10,
-          first_setup: 2,
-          first_move: 1,
+          first_deploy: 2,
+          first_action: 1,
           date:,
           location: "Highway 69, Netherlands",
           author: "The Establishment",
