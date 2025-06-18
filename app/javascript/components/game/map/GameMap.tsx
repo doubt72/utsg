@@ -361,12 +361,14 @@ export default function GameMap({
   }, [showLos])
 
   useEffect(() => {
-    if (map?.game?.gameActionState?.move) {
+    if (!map) { return }
+    const lastSigAction = map.game?.lastSignificatAction
+    if (map?.game?.gameActionState?.move || (lastSigAction && lastSigAction.data.action === "move")) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
       setMoveTrack(undefined)
     }
-  }, [mapUpdate, forceUpdate])
+  }, [map?.game?.lastSignificatAction, mapUpdate, forceUpdate])
 
   useEffect(() => {
     if (map?.game?.gameActionState?.move) {

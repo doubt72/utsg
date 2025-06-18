@@ -91,7 +91,6 @@ export default class Game {
   playerTwoPoints: number = 0;
   actions: BaseAction[] = [];
   lastActionIndex: number = -1;
-  lastSignificantActionIndex?: number;
   initiativePlayer: Player = 1;
   initiative: number = 0;
   alliedSniper?: Feature;
@@ -195,8 +194,8 @@ export default class Game {
   }
 
   findBySequence(sequence: number): BaseAction | false {
-    for (const m of this.actions) {
-      if (m.sequence === sequence) { return m }
+    for (const a of this.actions) {
+      if (a.sequence === sequence) { return a }
     }
     return false
   }
@@ -204,6 +203,17 @@ export default class Game {
   get lastAction(): BaseAction | undefined {
     if (this.lastActionIndex < 0) { return undefined }
     return this.actions[this.lastActionIndex]
+  }
+
+  get lastSignificatAction(): BaseAction | undefined {
+    for (let i = this.actions.length - 1; i >= 0; i--) {
+      const a = this.actions[i]
+      if (a.data.action === "move") {
+        return a
+      }
+      // TODO: when reaction passes, return undefined
+    }
+    return undefined
   }
 
   get opportunityFire(): boolean {
@@ -621,7 +631,6 @@ export default class Game {
     this.gameActionState = undefined
     this.scenario.map.clearGhosts()
     this.scenario.map.clearAllSelections()
-    this.lastSignificantActionIndex = this.actions.length - 1
   }
 
   executePass() {}

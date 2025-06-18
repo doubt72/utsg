@@ -10,17 +10,26 @@ interface MoveTrackOverlayProps {
 
 export default function MoveTrackOverlay({ map }: MoveTrackOverlayProps) {
   const hexes = (): Hex[] => {
-    if (!map.game?.gameActionState?.move) { return [] }
-    return map.game.gameActionState.move.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
+    if (map.game?.gameActionState?.move) {
+      return map.game.gameActionState.move.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
+    }
+    const lastSigAction = map.game?.lastSignificatAction
+    if (lastSigAction && lastSigAction.data.action === "move" && lastSigAction.data.path) {
+      return lastSigAction.data.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
+    }
+    return []
   }
 
   const hexCenters = () => {
+    let first = true
     return hexes().map((h, i) => {
       const offset = Math.max(map.counterDataAt(h.coord).length * 5 - 5, 0)
       const x = h.xOffset + offset
       const y = h.yOffset - offset
+      const fill = first ? "#AAA" : "#DDD"
+      first = false
       return <path key={`${i}-c`} d={circlePath(new Coordinate(x, y), 12)}
-                    style={{ fill: "#DDD", stroke: "#777", strokeWidth: 4 }} />
+                    style={{ fill, stroke: "#777", strokeWidth: 4 }} />
     })
   }
 
