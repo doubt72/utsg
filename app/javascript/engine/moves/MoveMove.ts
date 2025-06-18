@@ -90,5 +90,6 @@ export default class MoveMove extends BaseMove {
     for (const u of this.origin) {
       map.moveUnit(end, start, u.id, facing, turret)
     }
+    this.undone = true;
   }
 }
