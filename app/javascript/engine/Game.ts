@@ -208,6 +208,7 @@ export default class Game {
   get lastSignificatAction(): BaseAction | undefined {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
+      if (a.undone) { continue }
       if (a.data.action === "move") {
         return a
       }

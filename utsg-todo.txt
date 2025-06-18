@@ -7,7 +7,6 @@ Game Actions:
   - Moving
     (Now)
       - Finishing/Syncing Move
-        - Show last move
         - Show Reaction Options
         - Initiative
         - Handle crewed move
