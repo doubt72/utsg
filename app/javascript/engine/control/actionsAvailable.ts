@@ -47,7 +47,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
             } else {
               actions.unshift({ type: "none", message: "select unit to be picked up" })
             }
-          } else if (action.shortDropMove) {
+          } else if (action.droppingMove) {
             actions.unshift({ type: "none", message: "select unit to drop off" })
           } else if (action.placingSmoke) {
             actions.unshift({ type: "none", message: "select hex to place smoke" })

@@ -2,7 +2,8 @@ import { Coordinate, Direction, featureType, Player } from "../utilities/commonT
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction, {
-  GameActionData, GameActionPath, GameActionPhaseChange, GameActionDiceResult, addActionType
+  GameActionData, GameActionPath, GameActionPhaseChange, GameActionDiceResult, addActionType,
+  AddActionType
 } from "./GameAction";
 import Feature from "./Feature";
 import BaseAction from "./actions/BaseAction";
@@ -48,7 +49,7 @@ export type DeployAction = {
 }
 
 export type AddAction = {
-  type: addActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
+  type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
 }
 
 export type MoveAction = {
@@ -58,7 +59,7 @@ export type MoveAction = {
   addActions: AddAction[],
   rotatingTurret: boolean,
   placingSmoke: boolean,
-  shortDropMove: boolean,
+  droppingMove: boolean,
   loadingMove: boolean,
   loader?: Counter,
 }
@@ -457,9 +458,13 @@ export default class Game {
   startMove() {
     const selection = this.scenario.map.currentSelection[0]
     if (selection && selection.hex) {
+      let facing = selection.unit.rotates ? selection.unit.facing : undefined
+      if (selection.unit.canHandle && selection.unit.children.length > 0 &&
+          selection.unit.children[0].crewed) {
+        facing = selection.unit.children[0].facing
+      }
       const loc = {
-        x: selection.hex.x, y: selection.hex.y,
-        facing: selection.unit.rotates ? selection.unit.facing : undefined,
+        x: selection.hex.x, y: selection.hex.y, facing,
         turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
       }
       const units = selection.children
@@ -491,7 +496,7 @@ export default class Game {
         selection: allSelection,
         move: {
           initialSelection, doneSelect: !canSelect, path: [loc], addActions: [],
-          rotatingTurret: false, placingSmoke: false, shortDropMove: false, loadingMove: false,
+          rotatingTurret: false, placingSmoke: false, droppingMove: false, loadingMove: false,
         }
       }
     }
@@ -519,7 +524,7 @@ export default class Game {
       })
       const vp = this.scenario.map.victoryAt(new Coordinate(x, y))
       if (vp && vp !== this.currentPlayer) {
-        move.addActions.push({ x, y, type: "vp", cost: 0 })
+        move.addActions.push({ x, y, type: addActionType.VP, cost: 0 })
       }
     }
     move.doneSelect = true
@@ -552,13 +557,13 @@ export default class Game {
     if (!this.gameActionState?.move) { return }
     this.gameActionState.move.placingSmoke = !this.gameActionState.move.placingSmoke
     this.gameActionState.move.loadingMove = false
-    this.gameActionState.move.shortDropMove = false
+    this.gameActionState.move.droppingMove = false
   }
 
   shortingMoveToggle() {
     if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.shortDropMove = !this.gameActionState.move.shortDropMove
-    if (this.gameActionState.move.shortDropMove) {
+    this.gameActionState.move.droppingMove = !this.gameActionState.move.droppingMove
+    if (this.gameActionState.move.droppingMove) {
       const first = this.gameActionState.move.path[0]
       this.openOverlay = { x: first.x, y: first.y }
     }
@@ -580,7 +585,7 @@ export default class Game {
       const last = this.lastPath as GameActionPath
       this.openOverlay = { x: last.x, y: last.y }
     }
-    this.gameActionState.move.shortDropMove = false
+    this.gameActionState.move.droppingMove = false
     this.gameActionState.move.placingSmoke = false
   }
 
@@ -607,7 +612,7 @@ export default class Game {
     if (!this.gameActionState?.move) { return }
     const dice: GameActionDiceResult[] = []
     for (const a of this.gameActionState.move.addActions) {
-      if (a.type === "smoke") { dice.push({ result: rolld10() }) }
+      if (a.type === addActionType.Smoke) { dice.push({ result: rolld10() }) }
     }
     const move = new GameAction({
       user: this.currentUser,

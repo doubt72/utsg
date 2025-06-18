@@ -1,6 +1,7 @@
 import { Coordinate, Direction, hexOpenType, HexOpenType, roadType, unitType } from "../../utilities/commonTypes"
 import { hexDistance, normalDir, stackLimit } from "../../utilities/utilities"
 import Game from "../Game"
+import { addActionType } from "../GameAction"
 import Hex from "../Hex"
 import Map from "../Map"
 import Unit from "../Unit"
@@ -22,7 +23,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       let check = false
       if (game.gameActionState.move?.addActions) {
         for (const add of game.gameActionState.move.addActions) {
-          if (add.type === "shortdrop" && add.parent_id === sel.id) {
+          if (add.type === addActionType.Drop && add.parent_id === sel.id) {
             check = true
             continue
           }
@@ -53,7 +54,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   const game = map.game
   if (!game?.gameActionState?.move) { return false }
   const action = game?.gameActionState.move
-  if (action.shortDropMove) { return hexOpenType.Closed }
+  if (action.droppingMove) { return hexOpenType.Closed }
   if (action.loadingMove) { return hexOpenType.Closed }
   if (!game.gameActionState.selection) { return false }
   const selection = game.gameActionState.selection[0].counter
@@ -189,7 +190,7 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
 
 export function showDropSmoke(game: Game): boolean {
   const move = game.gameActionState?.move
-  if (move?.loadingMove || move?.shortDropMove) { return false }
+  if (move?.loadingMove || move?.droppingMove) { return false }
   const moveSelect = currSelection(game, true)
   if (!moveSelect) { return false }
   return moveSelect.smokeCapable && !moveSelect.targetedRange &&
@@ -207,7 +208,7 @@ export function showShortDropMove(game: Game): boolean {
   for (let i = 0; i < selection.length; i++) {
     let check = false
     for (const a of action.move.addActions) {
-      if (a.type === "shortdrop" && a.id === selection[i].id) { check = true }
+      if (a.type === addActionType.Drop && a.id === selection[i].id) { check = true }
     }
     if (!check) { return true }
   }
@@ -235,7 +236,7 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
 export function showLoadMove(game: Game): boolean {
   const move = game.gameActionState?.move
   const selection = game.gameActionState?.selection
-  if (!selection || move?.placingSmoke || move?.shortDropMove) { return false }
+  if (!selection || move?.placingSmoke || move?.droppingMove) { return false }
   for (const s of selection) {
     if (canLoadUnit(game, s.counter.unit)) { return true }
   }

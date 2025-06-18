@@ -415,7 +415,7 @@ export default class Map {
   get actionCounters(): Counter[] {
     const move = this.game?.gameActionState?.move
     if (!move) { return [] }
-    if (!move.doneSelect || move.shortDropMove || (move.loadingMove && this.game?.needPickUpDisambiguate)) {
+    if (!move.doneSelect || move.droppingMove || (move.loadingMove && this.game?.needPickUpDisambiguate)) {
       const first = move.path[0]
       return this.countersAt(new Coordinate(first.x, first.y))
     }

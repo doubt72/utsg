@@ -3,7 +3,7 @@ import {
 } from "../../utilities/commonTypes"
 import { stackLimit } from "../../utilities/utilities"
 import { actionType } from "../Game"
-import { GameActionPath } from "../GameAction"
+import { addActionType, GameActionPath } from "../GameAction"
 import Map from "../Map"
 import Unit from "../Unit"
 import { mapSelectMovement, movementCost, movementPastCost, openHexMovement } from "./movement"
@@ -19,14 +19,27 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
   return hexOpenType.Open
 }
 
-export function openHexRotateOpen(map: Map, loc: Coordinate): boolean {
+export function openHexRotateOpen(map: Map): boolean {
   const game = map.game
   if (!game?.gameActionState?.move) { return false }
   if (!game.gameActionState.selection) { return false }
   const counter = game.gameActionState.selection[0].counter
-  if (!counter.unit.rotates && !(counter.children.length > 0 && counter.children[0].unit.rotates)) {
-    return false
+  const child = counter.unit.children[0]
+  if (!counter.unit.rotates && !(child && child.rotates)) { return false }
+  if (counter.unit.canHandle && child && child.crewed) {
+    for (const a of game.gameActionState.move.addActions) {
+      if (a.type === addActionType.Drop && a.id === child.id) { return false }
+    }
   }
+  return true
+}
+
+export function openHexRotatePossible(map: Map): boolean {
+  const game = map.game
+  if (!game?.gameActionState?.move) { return false }
+  if (!game.gameActionState.selection) { return false }
+  const counter = game.gameActionState.selection[0].counter
+  const loc = counter.hex as Coordinate
   const cost = movementCost(map, loc, loc, counter.unit) + movementPastCost(map, counter.unit)
   const length = game.gameActionState.move.path.length
   const move = mapSelectMovement(game, true)

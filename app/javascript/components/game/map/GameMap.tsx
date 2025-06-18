@@ -374,7 +374,7 @@ export default function GameMap({
     if (map?.game?.gameActionState?.move) {
       const lastPath = map.game.lastPath as GameActionPath
       const coord = new Coordinate(lastPath.x, lastPath.y)
-      if (openHexRotateOpen(map, coord) || map.game.gameActionState.move.rotatingTurret) {
+      if (openHexRotateOpen(map) || map.game.gameActionState.move.rotatingTurret) {
         const hex = map.hexAt(coord)
         setDirectionSelectionOverlay(
           <DirectionSelector hex={hex} selectCallback={directionSelection} />

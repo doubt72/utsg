@@ -3,6 +3,7 @@ import Hex from "../../../engine/Hex";
 import { Direction, roadType } from "../../../utilities/commonTypes";
 import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
+import { openHexRotatePossible } from "../../../engine/control/openHex";
 
 interface DirectionSelectorProps {
   hex?: Hex;
@@ -12,15 +13,17 @@ interface DirectionSelectorProps {
 export default function DirectionSelector({ hex, selectCallback }: DirectionSelectorProps) {
 
   const directions = () => {
+    if (!hex?.map.game) { return undefined }
+    const game = hex.map.game
     let dirs: Direction[] = [1, 2, 3, 4, 5, 6]
     let pointingDir: Direction | undefined = undefined
-    if (hex?.map?.game?.gameActionState?.deploy) {
-      const player = hex.map.game.gameActionState.player
-      const turn = hex.map.game.gameActionState.deploy.turn
-      const index = hex.map.game.gameActionState.deploy.index
+    if (game.gameActionState?.deploy) {
+      const player = game.gameActionState.player
+      const turn = game.gameActionState.deploy.turn
+      const index = game.gameActionState.deploy.index
       const uf = player === 1 ?
-        hex.map.game.scenario.alliedReinforcements[turn][index].counter :
-        hex.map.game.scenario.axisReinforcements[turn][index].counter
+        game.scenario.alliedReinforcements[turn][index].counter :
+        game.scenario.axisReinforcements[turn][index].counter
       const unit = uf as Unit
       if (!hex.terrain.vehicle && !uf.isFeature && (unit.isTracked || unit.isWheeled) &&
           hex.roadType !== roadType.Path) {
@@ -30,30 +33,33 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
           !unit.amphibious && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
-    } else if (hex?.map.game?.gameActionState?.move && hex.map.game.gameActionState.selection) {
-      const lastPath = hex.map.game.lastPath as GameActionPath
-      if (hex.map.game.gameActionState.move.rotatingTurret) {
+    } else if (game.gameActionState?.move && game.gameActionState.selection) {
+      const lastPath = game.lastPath as GameActionPath
+      if (game.gameActionState.move.rotatingTurret) {
         pointingDir = lastPath.turret
       } else {
-        const unit = hex.map.game.gameActionState.selection[0].counter.unit
-        if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
-          dirs = hex.roadDirections ?? []
-        }
-        if (hex.terrain.vehicle === "amph" && (unit.isTracked || unit.isWheeled) &&
-            !unit.amphibious && hex.roadType !== roadType.Path) {
-          dirs = hex.roadDirections ?? []
+        if (openHexRotatePossible(hex.map)) {
+          const unit = game.gameActionState.selection[0].counter.unit
+          if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
+            dirs = hex.roadDirections ?? []
+          }
+          if (hex.terrain.vehicle === "amph" && (unit.isTracked || unit.isWheeled) &&
+              !unit.amphibious && hex.roadType !== roadType.Path) {
+            dirs = hex.roadDirections ?? []
+          }
+        } else {
+          dirs = [lastPath.facing as Direction]
         }
         pointingDir = lastPath.facing
       }
     }
 
     return dirs.map(v => {
-      if (!hex) { return undefined }
       const points = hex.directionSelectionCoords(v as Direction)
       const style = { fill: "#FFF", strokeWidth: 1, stroke: "#000" }
       const tStyle = { fill: "#000" }
       let callback = () => selectCallback(hex.coord.x, hex.coord.y, v as Direction)
-      if (hex.map.game?.gameActionState?.move?.rotatingTurret) {
+      if (game.gameActionState?.move?.rotatingTurret) {
         style.fill = "#FF0"
       }
       if (v === pointingDir) {

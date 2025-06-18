@@ -1,6 +1,7 @@
 import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
 import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
+import { addActionType } from "../GameAction"
 import Map from "../Map"
 import Unit from "../Unit"
 import { canBeLoaded, canLoadUnit } from "./movement"
@@ -21,11 +22,11 @@ export default function select(
     counter.unit.select()
     const xx = game.lastPath?.x ?? 0 // But should always exist, type notwithstanding
     const yy = game.lastPath?.y ?? 0
-    if (move.shortDropMove) {
+    if (move.droppingMove) {
       counter.unit.dropSelect()
       const cost = counter.parent ? 1 : 0
       move.addActions.push(
-        { x: xx, y: yy, cost, type: "shortdrop", id: counter.unit.id, parent_id: counter.unit.parent?.id }
+        { x: xx, y: yy, cost, type: addActionType.Drop, id: counter.unit.id, parent_id: counter.unit.parent?.id }
       )
       map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
       if (counter.children.length === 1) {
@@ -53,7 +54,7 @@ export default function select(
         move.doneSelect = true
         game.closeOverlay = true
         move.addActions.push(
-          { x: xx, y: yy, cost: 1, type: "load", id: counter.unit.id, parent_id: load?.unit.id }
+          { x: xx, y: yy, cost: 1, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id }
         )
       }
     } else {
@@ -105,9 +106,15 @@ function selectable(
       return false
     }
     if (game.gameActionState?.move) {
-      if (game.gameActionState.move.shortDropMove) {
+      if (game.gameActionState.move.droppingMove) {
+        const child = target.children[0]
         if (target.selected) {
-          return true
+          if (child && game.gameActionState.selection.length === 2) {
+            callback("must select unit being carried")
+            return false
+          } else {
+            return true
+          }
         } else {
           callback("must select unit that started move")
           return false

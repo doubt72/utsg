@@ -2,7 +2,7 @@ import { Coordinate, featureType } from "../../utilities/commonTypes";
 import { smokeRoll } from "../../utilities/utilities";
 import Feature from "../Feature";
 import Game from "../Game";
-import { GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult } from "../GameAction";
+import { GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType } from "../GameAction";
 import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
@@ -54,13 +54,13 @@ export default class MoveAction extends BaseAction {
     let diceIndex = 0
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === "vp") {
+      if (a.type === addActionType.VP) {
         map.toggleVP(mid)
-      } else if (a.type === "shortdrop") {
+      } else if (a.type === addActionType.Drop) {
         map.moveUnit(end, mid, a.id as string)
-      } else if (a.type === "load") {
+      } else if (a.type === addActionType.Load) {
         map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
-      } else if (a.type === "smoke") {
+      } else if (a.type === addActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
           { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance }
@@ -79,13 +79,13 @@ export default class MoveAction extends BaseAction {
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === "vp") {
+      if (a.type === addActionType.VP) {
         map.toggleVP(mid)
-      } else if (a.type === "shortdrop") {
+      } else if (a.type === addActionType.Drop) {
         map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
-      } else if (a.type === "load") {
+      } else if (a.type === addActionType.Load) {
         map.moveUnit(end, mid, a.id as string)
-      } else if (a.type === "smoke") {
+      } else if (a.type === addActionType.Smoke) {
         // Shouldn't happen
         throw new IllegalActionError("can't undo smoke")
       }
