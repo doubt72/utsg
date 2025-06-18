@@ -22,7 +22,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       let check = false
       if (game.gameActionState.move?.addActions) {
         for (const add of game.gameActionState.move.addActions) {
-          if (add.type === "shortdrop" && add.meta?.fromIndex === sel.i) {
+          if (add.type === "shortdrop" && add.parent_id === sel.id) {
             check = true
             continue
           }
@@ -110,7 +110,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     }
     if (next && next.unit.crewed && !terrTo.borderGun) { return false }
   }
-  if (selection.unit.rotates) {
+  if (selection.unit.rotates || next.unit.crewed) {
     if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
   }
 
@@ -207,7 +207,7 @@ export function showShortDropMove(game: Game): boolean {
   for (let i = 0; i < selection.length; i++) {
     let check = false
     for (const a of action.move.addActions) {
-      if (a.type === "shortdrop" && a.meta?.fromIndex === selection[i].i) { check = true }
+      if (a.type === "shortdrop" && a.id === selection[i].id) { check = true }
     }
     if (!check) { return true }
   }

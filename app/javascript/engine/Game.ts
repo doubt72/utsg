@@ -442,6 +442,7 @@ export default class Game {
     return path[path.length - 1]
   }
 
+  // TODO: the other kind of move; made a mistake using move for actions
   startMove() {
     const selection = this.scenario.map.currentSelection[0]
     if (selection && selection.hex) {
@@ -614,6 +615,7 @@ export default class Game {
     }, this, this.moves.length)
     this.executeMove(move, false)
     this.gameActionState = undefined
+    this.scenario.map.clearGhosts()
     this.scenario.map.clearAllSelections()
   }
 

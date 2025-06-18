@@ -2,6 +2,7 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
+  - Rename moves to be actions
 
 Game Actions:
   - Moving
@@ -9,9 +10,16 @@ Game Actions:
       - Finishing/Syncing Move
         - Capture Victory points
         - Show last move
-        - Initiative
         - Show Reaction Options
-        - Handle towed/crewed facing when moving
+        - Initiative
+        - Handle crewed move
+        - Handle crewed drop
+        - Handle crewed load
+        - Handle towed move/turn
+        - Handle towed drop
+        - Handle towed pick up
+        - Test picking up SWs
+        - Test dropping SWs
 
     (Soon):
       - Consider adding road attributes / how base terrain affects it

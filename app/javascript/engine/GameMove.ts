@@ -24,7 +24,7 @@ export type GameMoveActionPath = {
   x: number, y: number, facing?: Direction, turret?: Direction,
 }
 
-export type addActionType = "smoke" | "shortdrop" | "load"
+export type addActionType = "smoke" | "shortdrop" | "load" | "vp"
 export type GameMoveAddAction = {
   type: addActionType, x: number, y: number, id?: string, parent_id?: string,
 }
