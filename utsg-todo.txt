@@ -28,6 +28,8 @@ Game Actions:
 
 Future Features/Bug Fixes:
   - Fix flickering of control buttons
+  - Maybe switch CounterSelectionTarget to select by ID instead of index
+    - Only select uses that/map.unitAtIndex
   ? Terrain Info includes terrain in overlay
   - Fix hindrance bug
     - Through two fence corner intersections

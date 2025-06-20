@@ -31,7 +31,9 @@ export default function select(
           parent_id: counter.unit.parent?.id,
         }
       )
-      map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
+      if (xx !== x || yy !== y) {
+        map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
+      }
       if (counter.children.length === 1) {
         const child = counter.children[0]
         child.unit.select()

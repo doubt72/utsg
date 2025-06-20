@@ -625,6 +625,22 @@ describe("action integration test", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
 
+    // Testing drop at initial location and other locations
+    move.droppingMove = true
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    move.droppingMove = false
+    expect(move.addActions.length).toBe(1)
+    expect(map.ghosts[2][4].length).toBe(0)
+    map.clearGhosts()
+
+    // Reset to allow dropping at a different location
+    move.addActions.pop()
+    unit2.select()
+    unit2.dropSelect()
+
     game.move(3, 2)
 
     move.droppingMove = true
@@ -633,6 +649,8 @@ describe("action integration test", () => {
       target: { type: "map", xy: loc }
     }, () => {})
     move.droppingMove = false
+
+    expect(map.ghosts[2][3].length).toBe(1)
 
     expect(mapSelectMovement(game, false)).toBe(3)
     expect(mapSelectMovement(game, true)).toBe(3)
