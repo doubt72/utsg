@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { counterRed, roundedRectangle, roundedRectangleHole } from "../../../utilities/graphics";
-import GameMap from "./GameMap";
+import MapDisplay from "./MapDisplay";
 import { Coordinate } from "../../../utilities/commonTypes";
 
 interface MiniMapProps {
@@ -58,7 +58,7 @@ export default function MiniMap(
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "#EEE", strokeWidth: 4, stroke: "#670", fillRule: "evenodd" }} />
         <g transform={`translate(${xShift} ${yShift + extraShift})`}>
-          <GameMap map={map} scale={miniScale} preview={true} />
+          <MapDisplay map={map} scale={miniScale} preview={true} />
         </g>
         <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 5)}
               style={{ fill: "rgb(0,0,0,0.2)", strokeWidth: 0, stroke: "rgb(0,0,0,0)" }} />

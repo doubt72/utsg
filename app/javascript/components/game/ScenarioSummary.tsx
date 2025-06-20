@@ -1,6 +1,6 @@
 import React from "react";
 import CounterDisplay from "./CounterDisplay";
-import GameMap from "./map/GameMap";
+import MapDisplay from "./map/MapDisplay";
 import WeatherDisplay from "./map/WeatherDisplay";
 import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
 import Scenario, { ScenarioData } from "../../engine/Scenario";
@@ -99,7 +99,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         </div>
         <div>
           <div className="p05em corner-round edge-line">
-            <GameMap map={map} scale={scale()} preview={true} />
+            <MapDisplay map={map} scale={scale()} preview={true} />
           </div>
         </div>
       </div>

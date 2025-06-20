@@ -4,7 +4,7 @@ import { getAPI } from "../../utilities/network";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
 import ActionDisplay from "./ActionDisplay";
-import GameMap from "./map/GameMap";
+import MapDisplay from "./map/MapDisplay";
 import GameControls from "./controls/GameControls";
 import Game from "../../engine/Game";
 import Map from "../../engine/Map";
@@ -349,7 +349,7 @@ export default function GameDisplay() {
         </div>
       </div>
       <div className="game-map">
-        <GameMap map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
+        <MapDisplay map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
                  showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
                  hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
                  guiCollapse={collapseLayout} forceUpdate={update}

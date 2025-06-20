@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import GameMap from "../components/game/map/GameMap";
+import MapDisplay from "../components/game/map/MapDisplay";
 import Game, { gamePhaseType } from "../engine/Game";
 import { mapDebugData } from "./data";
 import Map from "../engine/Map";
@@ -45,11 +45,12 @@ export default function DebugMap() {
   const [initiative, setInitiative] = useState(0)
   const [initiativePlayer, setInitiativePlayer] = useState("")
 
-  const makeIndex = (unit: Unit | Feature) => {
-    if (unit.isFeature) {
-      if (unit.name === "Smoke") { return `f_Smoke_${unit.hindrance}`}
-      return `f_${unit.name}`
+  const makeIndex = (uf: Unit | Feature) => {
+    if (uf.isFeature) {
+      if (uf.name === "Smoke") { return `f_Smoke_${uf.hindrance}`}
+      return `f_${uf.name}`
     } else {
+      const unit = uf as Unit
       if (unit.name === "Leader") {
         return `${unit.nation}_Leader_ldr_${unit.baseMorale}_${unit.currentLeadership}`
       }
@@ -78,7 +79,7 @@ export default function DebugMap() {
   useEffect(() => {
     if (Object.keys(units).length === 0) { return }
     const game = new Game({
-      id: 1, name: "test", owner: "one", player_one: "one", player_two: "two",
+      id: 0, name: "test", owner: "one", player_one: "one", player_two: "two",
       current_player: "one", metadata: { turn: 0 },
       scenario: {
         id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p",
@@ -347,7 +348,7 @@ export default function DebugMap() {
           -1
         </div>
       </div>
-      <GameMap map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
+      <MapDisplay map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
                showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
                hexCallback={hexSelection} counterCallback={unitSelection} forceUpdate={0} />
     </div>

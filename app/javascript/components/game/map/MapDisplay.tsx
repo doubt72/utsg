@@ -27,7 +27,7 @@ import select from "../../../engine/control/select";
 import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
 
-interface GameMapProps {
+interface MapDisplayProps {
   map?: Map;
   scale: number;
   mapScale?: number;
@@ -46,12 +46,12 @@ interface GameMapProps {
   clearActionCallback?: () => void;
 }
 
-export default function GameMap({
+export default function MapDisplay({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
   hideCounters = false, showTerrain = false, preview, guiCollapse = false, forceUpdate,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
   clearActionCallback = () => {}
-}: GameMapProps) {
+}: MapDisplayProps) {
   const [mapUpdate, setMapUpdate] = useState(0)
 
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
