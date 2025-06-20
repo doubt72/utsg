@@ -15,6 +15,7 @@ import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import { GameActionPath } from "./GameAction";
 import { togglePlayer } from "../utilities/utilities";
+import BaseAction from "./actions/BaseAction";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -558,5 +559,25 @@ export default class Map {
       if (u.unit.selected) { rc.push(u) }
     }
     return rc
+  }
+
+  setLastSelection(move?: BaseAction) {
+    const units = this.allUnits
+    const ids: string[] = []
+    if (move) {
+      move.data.origin?.forEach(o =>ids.push(o.id))
+      move.data.add_action?.forEach(o => { if (o.id) { ids.push(o.id) } })
+    }
+    for (const u of units) {
+      if (move) {
+        if (ids.includes(u.targetUF.id)) {
+          if (!u.targetUF.lastSelected) { u.targetUF.lastSelect() }
+        } else {
+          if (u.targetUF.lastSelected) { u.targetUF.lastSelect() }
+        }
+      } else {
+        if (u.targetUF.lastSelected) { u.targetUF.lastSelect() }
+      }
+    }
   }
 }

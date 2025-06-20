@@ -65,6 +65,7 @@ export const selectColor = "#E00"
 export const dropSelectColor = "#999"
 export const loaderSelectColor = "#EE0"
 export const loadedSelectColor = "#EE0"
+export const lastSelectColor = "#55E"
 export const counterGreen = "#2F2"
 export const counterElite = "#070"
 

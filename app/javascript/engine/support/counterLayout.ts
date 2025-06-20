@@ -1,7 +1,7 @@
 import { Coordinate, Direction, markerType } from "../../utilities/commonTypes"
 import {
   BadgeLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, CounterLayout,
-  counterRed, dropSelectColor, loadedSelectColor, loaderSelectColor, markerYellow, nationalColors,
+  counterRed, dropSelectColor, lastSelectColor, loadedSelectColor, loaderSelectColor, markerYellow, nationalColors,
   selectColor, StatusLayout, SVGStyle
 } from "../../utilities/graphics"
 import Counter from "../Counter"
@@ -19,7 +19,7 @@ export function counterStyle(counter: Counter): SVGStyle {
   if (!counter.hasUnit) {
     return { fill: color, stroke: "black", strokeWidth: 1 }
   }
-  if (counter.unit.selected) {
+  if (counter.targetUF.selected) {
     return { fill: color, stroke: selectColor, strokeWidth: 4 }
   } else if (counter.unit.dropSelected) {
     return { fill: color, stroke: dropSelectColor, strokeWidth: 4 }
@@ -27,6 +27,8 @@ export function counterStyle(counter: Counter): SVGStyle {
     return { fill: color, stroke: loaderSelectColor, strokeWidth: 4 }
   } else if (counter.unit.loadedSelected) {
     return { fill: color, stroke: loadedSelectColor, strokeWidth: 4 }
+  } else if (counter.targetUF.lastSelected) {
+    return { fill: color, stroke: lastSelectColor, strokeWidth: 4 }
   } else {
     return { fill: color, stroke: "black", strokeWidth: 1 }
   }

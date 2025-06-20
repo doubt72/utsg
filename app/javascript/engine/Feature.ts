@@ -61,6 +61,8 @@ export default class Feature {
   facing: Direction = 1;
 
   rawData: FeatureData;
+
+  lastSelected: boolean;
   
   ghost?: boolean;
 
@@ -87,9 +89,10 @@ export default class Feature {
 
     this.facing = 1
 
-    this.rawData = data
+    this.id = data.id ?? ""
+    this.lastSelected = false
 
-    this.id = ""
+    this.rawData = data
   }
 
   clone(): Feature {
@@ -100,6 +103,10 @@ export default class Feature {
 
   select() {
     this.selected = !this.selected
+  }
+
+  lastSelect() {
+    this.lastSelected = !this.lastSelected
   }
 
   get isMarker(): boolean { return false }

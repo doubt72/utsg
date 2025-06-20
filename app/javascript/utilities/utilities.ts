@@ -63,7 +63,7 @@ export function getFormattedDate(date: [number, number, number]): string {
 }
 
 export function normalDir(dir: number): Direction {
-  if (dir > 6) { return dir - 6 as Direction }
+  if (dir > 6.5) { return dir - 6 as Direction }
   if (dir < 1) { return dir + 6 as Direction }
   return dir as Direction
 }

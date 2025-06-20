@@ -5,6 +5,7 @@ import {
 } from "../utilities/commonTypes";
 import { unitHelpText } from "./support/help";
 
+// id: ID
 // c: nation, t: type, n: name, i: icon, y: year
 // m: morale (2-6)
 // s: size (1-6)
@@ -120,6 +121,7 @@ export default class Unit {
   dropSelected: boolean;
   loaderSelected: boolean;
   loadedSelected: boolean;
+  lastSelected: boolean;
 
   smallName: number;
 
@@ -214,12 +216,13 @@ export default class Unit {
     this.dropSelected = false
     this.loaderSelected = false
     this.loadedSelected = false
+    this.lastSelected = false
 
     this.rawData = data
 
     this.children = []
 
-    this.id = ""
+    this.id = data.id ?? ""
   }
 
   clone(): Unit {
@@ -245,6 +248,10 @@ export default class Unit {
 
   loadedSelect() {
     this.loadedSelected = !this.loadedSelected
+  }
+
+  lastSelect() {
+    this.lastSelected = !this.lastSelected
   }
 
   get hindrance(): number { return 0 }

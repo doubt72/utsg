@@ -211,10 +211,12 @@ export default class Game {
       const a = this.actions[i]
       if (a.undone) { continue }
       if (a.data.action === "move") {
+        this.scenario.map.setLastSelection(a)
         return a
       }
       // TODO: when reaction passes, return undefined
     }
+    this.scenario.map.setLastSelection()
     return undefined
   }
 
@@ -508,8 +510,9 @@ export default class Game {
     const target = selection[0].counter.unit
     const lastPath = this.lastPath as GameActionPath
     if (move.placingSmoke) {
+      const id = `uf-${this.actions.length}-${move.addActions.length}`
       move.addActions.push({
-        x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2,
+        x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id
       })
       this.scenario.map.addGhost(
         new Coordinate(x, y),

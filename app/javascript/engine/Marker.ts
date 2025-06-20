@@ -6,6 +6,7 @@ import { markerHelpText } from "./support/help";
 // v: value
 
 export type MarkerData = {
+  id?: string;
   type: MarkerType;
   i?: string;
   subtype?: WeatherType | WindType;
@@ -21,6 +22,7 @@ export type MarkerData = {
 }
 
 export default class Marker {
+  id: string;
   type: MarkerType;
   nationalIcon?: string;
   subType?: WeatherType | WindType;
@@ -43,6 +45,8 @@ export default class Marker {
     this.playerNation = data.player_nation || this.nation
     this.facing = data.facing || 1
     this.rotates = !!data.rotates || false
+
+    this.id = data.id ?? ""
 
     this.rawData = data
   }

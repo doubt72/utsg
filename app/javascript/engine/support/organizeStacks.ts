@@ -48,7 +48,8 @@ function dataForUnit(
   if (!uf.isFeature && unit.turreted && !unit.isWreck) {
     const type = unit.isWheeled ? markerType.WheeledHull : markerType.TrackedHull
     rc.push({ loc: loc, i: index, u: new Marker({
-      type: type, nation: uf.nation, rotates: 1, facing: uf.facing, mk: 1, player_nation: uf.playerNation
+      id: uf.id, type: type, nation: uf.nation, rotates: 1, facing: uf.facing, mk: 1,
+      player_nation: uf.playerNation
     })})
   }
   rc.push({ loc: loc, u: uf, i: index++, pi: parent })
@@ -82,7 +83,9 @@ function addMarkers(loc: Coordinate, uf: Unit | Feature, index: number): MapCoun
     if (unit.isExhausted) { markerTypes.push(markerType.Exhausted) }
     if (unit.isActivated) { markerTypes.push(markerType.Activated) }
   }
-  markerTypes.forEach(t => rc.push({ loc: loc, u: new Marker({type: t, rotates, facing, mk: 1}), i: index }))
+  markerTypes.forEach(t => rc.push(
+    { loc: loc, u: new Marker({id: uf.id, type: t, rotates, facing, mk: 1}), i: index }
+  ))
   return rc
 }
 

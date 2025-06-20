@@ -68,7 +68,7 @@ export default class MoveAction extends BaseAction {
       } else if (a.type === addActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
-          { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance }
+          { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id }
         ))
       }
     }
