@@ -111,7 +111,9 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     if (next && next.unit.crewed && !terrTo.borderGun) { return false }
   }
   if (selection.unit.rotates || (next && next.unit.crewed)) {
-    if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
+    if (action.addActions.filter(a => a.id === next.unit.id).length < 1) {
+      if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
+    }
   }
 
   const length = action.path.length + action.addActions.length
@@ -211,10 +213,7 @@ export function showDropMove(game: Game): boolean {
   if (!action?.move) { return false }
   if (action.move.loadingMove || action.move.placingSmoke) { return false }
   const selection = action.selection
-  // Could do finer logic on whether or not something that we picked up can be
-  // dropped but right now, uh, just err on the side of allowing; this should be fine?
-  if ((!selection || selection.length === 1) &&
-      action.move.addActions.filter(a => a.type === "load").length < 1) { return false }
+  if ((!selection || selection.length === 1)) { return false }
   const unit = selection[0].counter.unit
   if (mapSelectMovement(game, true) <= movementPastCost(game.scenario.map, unit as Unit)) { return false }
 
@@ -239,6 +238,8 @@ export function canBeLoaded(game: Game, target: Unit): boolean {
   if (!game.gameActionState) { return false }
     let unit = game.gameActionState.move?.loader?.unit as Unit
     if (!unit) { unit = game.gameActionState.selection[0].counter.unit as Unit }
+    const path = game.gameActionState?.move?.path
+    if (target.crewed && path && path.length > 1) { return false }
     return unit.canCarry(target)
 }
 
@@ -248,7 +249,11 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
   const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
   for (const c of counters) {
     if (c.hasFeature || c.unit.selected || c.unit.loadedSelected) { continue }
-    if (unit.canCarry(c.unit)) { return true }
+    const path = game.gameActionState?.move?.path
+    if (c.unit.crewed && path && path.length > 1) { continue}
+    if (unit.canCarry(c.unit)) {
+      return true
+    }
   }
   return false
 }

@@ -140,7 +140,7 @@ function selectable(
       if (game.gameActionState.move.loadingMove) {
         if (game.needPickUpDisambiguate) {
           if (!target.selected) {
-            callback("must select unit that started move")
+            callback("must select unit that started move or hasn't already been dropped")
             return false
           }
           if (canLoadUnit(game, target)) {

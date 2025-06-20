@@ -31,6 +31,15 @@ export function countersFromUnits(
   return rc
 }
 
+export function sortStacks(map: Map) {
+  for (let x = 0; x < map.width; x++) {
+    for (let y = 0; y < map.height; y++) {
+      const list = map.units[y][x]
+      map.units[y][x] = sortStack(list)
+    }
+  }
+}
+
 function dataForUnit(
   loc: Coordinate, uf: Unit | Feature, index: number, showAllCounters: boolean, parent?: number
 ): [MapCounterData[], number] {

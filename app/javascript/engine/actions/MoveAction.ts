@@ -3,7 +3,7 @@ import { smokeRoll } from "../../utilities/utilities";
 import Feature from "../Feature";
 import Game from "../Game";
 import { GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType } from "../GameAction";
-import organizeStacks from "../support/organizeStacks";
+import { sortStacks } from "../support/organizeStacks";
 import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
@@ -72,7 +72,7 @@ export default class MoveAction extends BaseAction {
         ))
       }
     }
-    organizeStacks(map)
+    sortStacks(map)
   }
 
   undo(): void {
@@ -105,5 +105,6 @@ export default class MoveAction extends BaseAction {
       map.moveUnit(end, start, u.id, facing, turret)
     }
     this.undone = true;
+    sortStacks(map)
   }
 }
