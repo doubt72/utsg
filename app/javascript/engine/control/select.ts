@@ -14,8 +14,8 @@ export default function select(
   if (!selectable(map, selection, callback)) { return }
   const x = selection.target.xy.x
   const y = selection.target.xy.y
-  const index = selection.counter.unitIndex
-  const counter = map.unitAtIndex(new Coordinate(x, y), index) as Counter
+  const id = selection.counter.unit.id
+  const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
   if (game?.gameActionState?.move) {
     const selected = counter.unit.selected
     const move = game.gameActionState.move
@@ -84,7 +84,7 @@ export default function select(
       }
     }
   } else {
-    map.clearOtherSelections(x, y, index)
+    map.clearOtherSelections(x, y, id)
     counter.unit.select()
   }
   callback()
@@ -171,7 +171,7 @@ function selectable(
         }
         if (selection.counter.unit.id === s.id) { return false }
       }
-      const counter = map.unitAtIndex(selection.target.xy, selection.counter.unitIndex)
+      const counter = map.unitAtId(selection.target.xy, selection.counter.unit.id)
       if (!canBeMoveMultiselected(map, counter as Counter, callback)) { return false }
     }
   }

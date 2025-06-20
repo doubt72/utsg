@@ -415,14 +415,6 @@ export default class Map {
     return
   }
 
-  unitAtIndex(loc: Coordinate, index: number): Counter | undefined {
-    const counters = this.countersAt(loc)
-    for (const c of counters) {
-      if (c.hasUnit && c.unitIndex === index) { return c }
-    }
-    return
-  }
-
   get allCounters(): Counter[] {
     let c: Counter[] = []
     for (let y = 0; y < this.height; y++) {
@@ -548,10 +540,10 @@ export default class Map {
     }
   }
 
-  clearOtherSelections(x: number, y: number, index: number) {
+  clearOtherSelections(x: number, y: number, id: string) {
     const units = this.allUnits
     for (const u of units) {
-      if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unitIndex === index)) {
+      if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unit.id === id)) {
         continue
       }
       if (u.unit.selected) { u.unit.select() }
