@@ -9,7 +9,7 @@ import select from "./select"
 import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
-import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
+import { openHexRotateOpen as openHexShowRotate, openHexRotatePossible as openHexRotateOpen } from "./openHex"
 
 describe("action integration test", () => {
   const mapData: MapData = {
@@ -45,7 +45,7 @@ describe("action integration test", () => {
   }
 
   const ginf: UnitData = {
-    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0, x: 3
+    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
   }
   const gldr: UnitData = {
     c: "ger", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
@@ -60,9 +60,10 @@ describe("action integration test", () => {
     c: "ger", f: 8, i: "gun", n: "3.7cm Pak 36", o: {t: 1, j: 3, p: 1, c: 1, f: 18, tow: 2}, r: 16,
     t: "gun", v: 2, y: 36
   }
-  // const rinf: UnitData = {
-  //   c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
-  // }
+  const gtank: UnitData = {
+    t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
+    o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
+  };
   // const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
   const scenarioData: ScenarioData = {
@@ -729,8 +730,8 @@ describe("action integration test", () => {
     expect(showDropMove(game)).toBe(true)
     expect(showLoadMove(game)).toBe(false)
 
+    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
@@ -738,8 +739,8 @@ describe("action integration test", () => {
     game.move(2, 2)
 
     expect(move.path.length).toBe(2)
+    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -747,8 +748,8 @@ describe("action integration test", () => {
     game.moveRotate(2, 2, 2)
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
-    expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(false)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -803,8 +804,8 @@ describe("action integration test", () => {
     expect(move.doneSelect).toBe(true)
     expect(move.path[0].facing).toBe(2)
 
+    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
@@ -812,8 +813,8 @@ describe("action integration test", () => {
     game.move(3, 3)
 
     expect(move.path.length).toBe(2)
-    expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(false)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -869,8 +870,8 @@ describe("action integration test", () => {
     expect(move.doneSelect).toBe(true)
     expect(move.path[0].facing).toBe(2)
 
+    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
@@ -878,8 +879,8 @@ describe("action integration test", () => {
     game.move(3, 3)
 
     expect(move.path.length).toBe(2)
-    expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(false)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -1326,10 +1327,109 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(0)
   })
 
-  test("wire", () => {
-    
+  test("tank movement", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(gtank)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.turretFacing = 1
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(mapSelectMovement(game, false)).toBe(5)
+    expect(mapSelectMovement(game, true)).toBe(6)
+
+    expect(move.path[0].facing).toBe(1)
+    expect(move.path[0].turret).toBe(1)
+
+    expect(showLaySmoke(game)).toBe(false)
+    expect(showDropMove(game)).toBe(false)
+    expect(showLoadMove(game)).toBe(false)
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Open)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.moveRotate(3, 2, 2)
+    expect(move.path.length).toBe(3)
+    expect(move.path[2].facing).toBe(2)
+    expect(move.path[2].turret).toBe(2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(2, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 2))).toBe(hexOpenType.Open)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
+
+    move.rotatingTurret = true
+    game.moveRotate(2, 1, 6)
+    move.rotatingTurret = false
+    expect(move.path.length).toBe(4)
+    expect(move.path[3].facing).toBe(2)
+    expect(move.path[3].turret).toBe(6)
+
+    game.moveRotate(2, 1, 1)
+    expect(move.path.length).toBe(5)
+    expect(move.path[4].facing).toBe(1)
+    expect(move.path[4].turret).toBe(5)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
+
+    game.move(1, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    let all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].marker.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(1)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.facing).toBe(1)
+    expect(all[1].unit.turretFacing).toBe(5)
+
+    game.executeUndo()
+    all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].marker.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.facing).toBe(1)
+    expect(all[1].unit.turretFacing).toBe(1)
   })
 
-  // TODO: tank movement/turrets
-  // TODO: all the truck movement/loading/etc
+  // TODO: all the truck/wheeled movement/loading/etc
+  // TODO: wire/mines/engineering
 });
