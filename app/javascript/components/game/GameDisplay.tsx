@@ -234,6 +234,10 @@ export default function GameDisplay() {
       game.k.executeReinforcement(x, y, counter, d, gameNotification)
     } else if (game.k?.gameActionState?.move) {
       game.k.moveRotate(x, y, d)
+      setControls(gc => {
+        const key = Number(gc?.key ?? 0)
+        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+      })
     }
   }
 
