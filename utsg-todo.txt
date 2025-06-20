@@ -2,7 +2,11 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
- - Don't add ghost when dropping in initial hex
+  - Maybe switch CounterSelectionTarget to select by ID instead of index
+    - Only select uses that/map.unitAtIndex
+  - Maybe show ghost for entire move?
+    - Be kind of ugly though
+  - Highlight units from last move
 
 Game Actions:
   - Moving
@@ -28,8 +32,6 @@ Game Actions:
 
 Future Features/Bug Fixes:
   - Fix flickering of control buttons
-  - Maybe switch CounterSelectionTarget to select by ID instead of index
-    - Only select uses that/map.unitAtIndex
   ? Terrain Info includes terrain in overlay
   - Fix hindrance bug
     - Through two fence corner intersections

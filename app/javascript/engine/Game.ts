@@ -459,10 +459,8 @@ export default class Game {
     const selection = this.scenario.map.currentSelection[0]
     if (selection && selection.hex) {
       let facing = selection.unit.rotates ? selection.unit.facing : undefined
-      if (selection.unit.canHandle && selection.unit.children.length > 0 &&
-          selection.unit.children[0].crewed) {
-        facing = selection.unit.children[0].facing
-      }
+      const child = selection.unit.children[0]
+      if (selection.unit.canHandle && child && child.crewed) { facing = child.facing }
       const loc = {
         x: selection.hex.x, y: selection.hex.y, facing,
         turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
@@ -518,9 +516,11 @@ export default class Game {
         new Feature({ ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
       )
     } else {
+      let facing = target.rotates ? lastPath.facing : undefined
+      const child = target.children[0]
+      if (target.canHandle && child && child.crewed) { facing = child.facing }
       move.path.push({
-        x, y, facing: target.rotates ? lastPath.facing : undefined,
-        turret: target.turreted ? lastPath.turret : undefined
+        x, y, facing, turret: target.turreted ? lastPath.turret : undefined
       })
       const vp = this.scenario.map.victoryAt(new Coordinate(x, y))
       if (vp && vp !== this.currentPlayer) {

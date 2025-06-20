@@ -9,6 +9,7 @@ import select from "./select"
 import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
+import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 
 describe("action integration test", () => {
   const mapData: MapData = {
@@ -47,15 +48,15 @@ describe("action integration test", () => {
   const gmg: UnitData = {
     c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {r: 1, j: 3}
   }
+  const gcrew: UnitData = {
+    c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
+  }
+  const ggun: UnitData = {
+    c: "ger", f: 8, i: "gun", n: "3.7cm Pak 36", o: {t: 1, j: 3, p: 1, c: 1, f: 18, tow: 2}, r: 16,
+    t: "gun", v: 2, y: 36
+  }
   // const rinf: UnitData = {
   //   c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
-  // }
-  // const rcrew: UnitData = {
-  //   c: "ussr", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
-  // }
-  // const rgun: UnitData = {
-  //   c: "ussr", f: 16, i: "gun", n: "76mm M1927", o: {t: 1, j: 3, g: 1, s: 1, c: 1, tow: 3}, r: 16,
-  //   t: "gun", v: 1, y: 28
   // }
   // const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
@@ -690,8 +691,85 @@ describe("action integration test", () => {
     expect(all[1].unit.name).toBe("MG 08/15")
   })
 
-  test("move gun", () => {
-    
+  test.only("move gun", () => {
+    const game = createGame()
+    const map = game.scenario.map
+
+    const loc = new Coordinate(3, 2)
+    const unit = new Unit(gcrew)
+    unit.id = "test1"
+    unit.select()
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(ggun)
+    unit2.id = "test2"
+    unit2.facing = 1
+    map.addCounter(loc, unit2)
+    organizeStacks(map)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(state.selection.length).toBe(2)
+    expect(move.doneSelect).toBe(true)
+    expect(move.path[0].facing).toBe(1)
+
+    expect(mapSelectMovement(game, false)).toBe(2)
+    expect(mapSelectMovement(game, true)).toBe(2)
+
+    expect(showLaySmoke(game)).toBe(false)
+    expect(showDropMove(game)).toBe(true)
+    expect(showLoadMove(game)).toBe(false)
+
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(2, 2)
+
+    expect(move.path.length).toBe(2)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Open)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    game.moveRotate(2, 2, 2)
+    expect(move.path.length).toBe(3)
+    expect(move.path[2].facing).toBe(2)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.children.length).toBe(1)
+    expect(all[0].unit.name).toBe("Crew")
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.children.length).toBe(1)
+    expect(all[0].unit.name).toBe("Crew")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
   })
 
   test("turn gun", () => {
