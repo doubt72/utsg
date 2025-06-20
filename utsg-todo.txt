@@ -2,6 +2,7 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
+ - Don't add ghost when dropping in initial hex
 
 Game Actions:
   - Moving

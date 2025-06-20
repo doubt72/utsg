@@ -1,7 +1,7 @@
 import { GameAction, unitType } from "../../utilities/commonTypes"
 import Game, { actionType, gamePhaseType } from "../Game"
 import Unit from "../Unit"
-import { showDropSmoke, showLoadMove, showShortDropMove } from "./movement"
+import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
   if (game.lastAction?.id === undefined) {
@@ -59,10 +59,10 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           if (actionSelect.turreted) {
             actions.push({ type: "move_rotate_toggle" })
           }
-          if (showDropSmoke(game)) {
+          if (showLaySmoke(game)) {
             actions.push({ type: "move_smoke_toggle" })
           }
-          if (showShortDropMove(game)) {
+          if (showDropMove(game)) {
             actions.push({ type: "move_shortdrop_toggle" })
           }
           if (showLoadMove(game)) {

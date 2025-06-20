@@ -26,7 +26,10 @@ export default function select(
       counter.unit.dropSelect()
       const cost = counter.parent ? 1 : 0
       move.addActions.push(
-        { x: xx, y: yy, cost, type: addActionType.Drop, id: counter.unit.id, parent_id: counter.unit.parent?.id }
+        {
+          x: xx, y: yy, cost, type: addActionType.Drop, id: counter.unit.id,
+          parent_id: counter.unit.parent?.id,
+        }
       )
       map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
       if (counter.children.length === 1) {
@@ -44,17 +47,24 @@ export default function select(
       } else {
         counter.unit.select()
         counter.unit.loadedSelect()
-        const load = move.loader
-        if (load) { // Should always exist in this situation, type notwithstanding
-          load.unit.select()
-          load.unit.loaderSelect()
-          move.loader = undefined
-        }
+        let load = move.loader
+        if (!load) { load = game.getLoader[0] }
+        load.unit.select()
+        load.unit.loaderSelect()
+        move.loader = undefined
         move.loadingMove = false
         move.doneSelect = true
         game.closeOverlay = true
+        let cost = 1
+        if (load?.unit.canCarrySupport) {
+          if (counter.unit.crewed) {
+            cost = load.unit.baseMovement + 1
+          } else {
+            cost = 1 - counter.unit.baseMovement
+          }
+        }
         move.addActions.push(
-          { x: xx, y: yy, cost: 1, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id }
+          { x: xx, y: yy, cost, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id }
         )
       }
     } else {
@@ -64,6 +74,10 @@ export default function select(
       } else {
         game.gameActionState.selection?.push({
           x, y, id: counter.unit.id, counter: counter,
+        })
+        game.gameActionState.selection.sort((a, b) => {
+          if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
+          return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
         })
       }
     }
@@ -103,6 +117,7 @@ function selectable(
   if (game.phase === gamePhaseType.Prep) { return false } // Not supported yet
   if (game.phase === gamePhaseType.Main) {
     if (target.playerNation !== game.currentPlayerNation) {
+      // TODO: or gun/support weapon
       return false
     }
     if (game.gameActionState?.move) {

@@ -319,25 +319,54 @@ export default class Map {
     this.units[loc.y][loc.x] = newList
   }
 
-  moveUnit(
-    from: Coordinate, to: Coordinate, id: string, facing?: Direction, turret?: Direction, insertId?: string
-  ) {
+  // Moves unit and children from -> to
+  moveUnit(from: Coordinate, to: Coordinate, id: string, facing?: Direction, turret?: Direction) {
+    const list = this.units[from.y][from.x]
+    let unit: Unit | undefined = undefined
+    for (const u of list) {
+      if (u.id === id) { unit = u as Unit }
+    }
+    if (!unit) { return }
+    this.units[from.y][from.x] = this.units[from.y][from.x].filter(u => u.id !== id)
+    if (facing) { unit.facing = facing }
+    if (turret) { unit.turretFacing = turret }
+    this.units[to.y][to.x].unshift(unit)
+  }
+
+  dropUnit(from: Coordinate, to: Coordinate, id: string, facing?: Direction, turret?: Direction) {
+    const list = this.units[from.y][from.x]
+    let unit: Unit | undefined = undefined
+    for (const uf of list) {
+      if (uf.isFeature) { continue }
+      const u = uf as Unit
+      for (const c of u.children) {
+        if (c.id === id) { unit = c }
+      }
+    }
+    const parent = unit?.parent
+    if (!unit || !parent) { return }
+    if (facing) { unit.facing = facing }
+    if (turret) { unit.turretFacing = turret }
+    parent.children = parent.children.filter(u => u.id !== id)
+    unit.parent = undefined
+    this.units[to.y][to.x].unshift(unit)
+  }
+
+  loadUnit(from: Coordinate, to: Coordinate, id: string, insertId: string) {
     const list = this.countersAt(from)
     let counter: Counter | undefined = undefined
     let insert: Counter | undefined = undefined
     for (const c of list) {
       if (c.unit.id === id) { counter = c }
+    }
+    const list2 = this.countersAt(to)
+    for (const c of list2) {
       if (insertId !== undefined && c.unit.id === insertId) { insert = c }
     }
-    if (!counter) { return }
-    if (facing) { counter.unit.facing = facing }
-    if (turret) { counter.unit.turretFacing = turret }
-    this.removeUnit(from, id)
-    if (insert !== undefined) {
-      insert.unit.children.push(counter.unit)
-    } else {
-      this.units[to.y][to.x].unshift(counter.unit)
-    }
+    if (!counter || !insert) { return }
+    this.units[from.y][from.x] = this.units[from.y][from.x].filter(u => u.id !== id)
+    insert.unit.children.push(counter.unit)
+    counter.unit.parent = insert.unit
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {
@@ -376,6 +405,14 @@ export default class Map {
       rc.push(counter)
     }
     return rc
+  }
+
+  unitAtId(loc: Coordinate, id: string): Counter | undefined {
+    const counters = this.countersAt(loc)
+    for (const c of counters) {
+      if (c.hasUnit && c.unit.id === id) { return c }
+    }
+    return
   }
 
   unitAtIndex(loc: Coordinate, index: number): Counter | undefined {

@@ -5,7 +5,6 @@ import { addActionType } from "../GameAction"
 import Hex from "../Hex"
 import Map from "../Map"
 import Unit from "../Unit"
-import { currSelection } from "./actionsAvailable"
 
 export function mapSelectMovement(game: Game, roadMove: boolean): number {
   if (!game.gameActionState) { return 0 }
@@ -23,7 +22,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       let check = false
       if (game.gameActionState.move?.addActions) {
         for (const add of game.gameActionState.move.addActions) {
-          if (add.type === addActionType.Drop && add.parent_id === sel.id) {
+          if (add.type === addActionType.Drop && add.id === sel.id) {
             check = true
             continue
           }
@@ -188,29 +187,50 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   return cost
 }
 
-export function showDropSmoke(game: Game): boolean {
+export function showLaySmoke(game: Game): boolean {
   const move = game.gameActionState?.move
-  if (move?.loadingMove || move?.droppingMove) { return false }
-  const moveSelect = currSelection(game, true)
-  if (!moveSelect) { return false }
-  return moveSelect.smokeCapable && !moveSelect.targetedRange &&
-    movementPastCost(game.scenario.map, moveSelect) < mapSelectMovement(game, true)
+  const selection = game.gameActionState?.selection
+  if (!move || !selection) { return false }
+  if (move.loadingMove || move.droppingMove) { return false }
+  let smoke = false
+  for (const s of selection) {
+    if (s.counter.unit.smokeCapable && !s.counter.unit.targetedRange) {
+      smoke = true
+      break
+    }
+  }
+  if (!smoke) { return false }
+  if (movementPastCost(game.scenario.map, selection[0].counter.unit) >= mapSelectMovement(game, false)) {
+    return false
+  }
+  return true    
 }
 
-export function showShortDropMove(game: Game): boolean {
+export function showDropMove(game: Game): boolean {
   const action = game.gameActionState
   if (!action?.move) { return false }
   if (action.move.loadingMove || action.move.placingSmoke) { return false }
   const selection = action.selection
-  if (!selection || selection.length === 1) { return false }
+  // Could do finer logic on whether or not something that we picked up can be
+  // dropped but right now, uh, just err on the side of allowing; this should be fine?
+  if ((!selection || selection.length === 1) &&
+      action.move.addActions.filter(a => a.type === "load").length < 1) { return false }
   const unit = selection[0].counter.unit
   if (mapSelectMovement(game, true) <= movementPastCost(game.scenario.map, unit as Unit)) { return false }
-  for (let i = 0; i < selection.length; i++) {
-    let check = false
-    for (const a of action.move.addActions) {
-      if (a.type === addActionType.Drop && a.id === selection[i].id) { check = true }
-    }
-    if (!check) { return true }
+
+  for (const s of selection) {
+    if (s.counter.children.length > 0) { return true }
+  }
+  if (action.move.path.length === 1) { return false }
+  return true
+}
+
+export function showLoadMove(game: Game): boolean {
+  const move = game.gameActionState?.move
+  const selection = game.gameActionState?.selection
+  if (!selection || move?.placingSmoke || move?.droppingMove) { return false }
+  for (const s of selection) {
+    if (canLoadUnit(game, s.counter.unit)) { return true }
   }
   return false
 }
@@ -233,16 +253,6 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
   return false
 }
 
-export function showLoadMove(game: Game): boolean {
-  const move = game.gameActionState?.move
-  const selection = game.gameActionState?.selection
-  if (!selection || move?.placingSmoke || move?.droppingMove) { return false }
-  for (const s of selection) {
-    if (canLoadUnit(game, s.counter.unit)) { return true }
-  }
-  return false
-}
-
 function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selection: Unit): HexOpenType {
   const distance = hexDistance(from, to)
   const past = movementPastCost(map, selection)
@@ -255,6 +265,7 @@ function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selection: Uni
 function allAlongRoad(map: Map): boolean {
   const game = map.game
   if (!game?.gameActionState?.move) { return false }
+  if (game.gameActionState.move.addActions.filter(a => a.cost > 0).length > 0) { return false }
   const length = game.gameActionState.move.path.length
   for (let i = 0; i < length - 1; i++) {
     const p1 = game.gameActionState.move.path[i]

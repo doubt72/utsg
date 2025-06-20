@@ -44,7 +44,7 @@ export type ActionSelection = {
   x: number, y: number, id: string, counter: Counter,
 }
 
-export type DeployAction = {
+export type DeployActionState = {
   turn: number, index: number, needsDirection?: [number, number],
 }
 
@@ -52,7 +52,7 @@ export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
 }
 
-export type MoveAction = {
+export type MoveActionState = {
   initialSelection: ActionSelection[];
   doneSelect: boolean;
   path: GameActionPath[],
@@ -68,8 +68,8 @@ export type GameActionState = {
   player: Player,
   currentAction: ActionType,
   selection: ActionSelection[],
-  deploy?: DeployAction,
-  move?: MoveAction,
+  deploy?: DeployActionState,
+  move?: MoveActionState,
 }
 
 export default class Game {
@@ -404,11 +404,11 @@ export default class Game {
     }
   }
 
-  get currentReinforcementSelection(): DeployAction | undefined {
+  get currentReinforcementSelection(): DeployActionState | undefined {
     return this.gameActionState?.deploy
   }
 
-  setReinforcementSelection(player: Player, deploy: DeployAction | undefined) {
+  setReinforcementSelection(player: Player, deploy: DeployActionState | undefined) {
     if (!deploy) {
       this.cancelAction()
       return
@@ -589,23 +589,29 @@ export default class Game {
     this.gameActionState.move.placingSmoke = false
   }
 
-  get needPickUpDisambiguate(): boolean {
+  get getLoader(): Counter[] {
     const action = this.gameActionState
-    if (!action?.move) { return false }
-    if (action.move.loader) { return false }
+    if (!action?.move) { return [] }
     const selection = action.selection
-    if (!selection || !this.lastPath) { return false }
+    if (!selection || !this.lastPath) { return [] }
+    const rc: Counter[] = []
     const counters = this.scenario.map.countersAt(new Coordinate(this.lastPath.x, this.lastPath.y))
-    let count = 0
     for (const c of counters) {
       if (c.hasFeature || c.unit.selected) { continue }
       for (const s of selection) {
         const unit = s.counter.unit
         const target = c.unit
-        if (unit.canCarry(target)) { count++ }
+        if (unit.canCarry(target)) { rc.push(s.counter) }
       }
     }
-    return count > 1
+    return rc
+  }
+
+  get needPickUpDisambiguate(): boolean {
+    const action = this.gameActionState
+    if (!action?.move) { return false }
+    if (action.move.loader) { return false }
+    return this.getLoader.length > 1
   }
 
   finishMove() {

@@ -3,6 +3,7 @@ import { smokeRoll } from "../../utilities/utilities";
 import Feature from "../Feature";
 import Game from "../Game";
 import { GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType } from "../GameAction";
+import organizeStacks from "../support/organizeStacks";
 import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
@@ -57,9 +58,13 @@ export default class MoveAction extends BaseAction {
       if (a.type === addActionType.VP) {
         map.toggleVP(mid)
       } else if (a.type === addActionType.Drop) {
-        map.moveUnit(end, mid, a.id as string)
+        if (a.parent_id) {
+          map.dropUnit(end, mid, a.id as string)
+        } else {
+          map.moveUnit(end, mid, a.id as string)
+        }
       } else if (a.type === addActionType.Load) {
-        map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
+        map.loadUnit(mid, end, a.id as string, a.parent_id as string)
       } else if (a.type === addActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
@@ -67,6 +72,7 @@ export default class MoveAction extends BaseAction {
         ))
       }
     }
+    organizeStacks(map)
   }
 
   undo(): void {
@@ -82,12 +88,16 @@ export default class MoveAction extends BaseAction {
       if (a.type === addActionType.VP) {
         map.toggleVP(mid)
       } else if (a.type === addActionType.Drop) {
-        map.moveUnit(mid, end, a.id as string, undefined, undefined, a.parent_id)
+        if (a.parent_id) {
+          map.loadUnit(mid, end, a.id as string, a.parent_id as string)
+        } else {
+          map.moveUnit(mid, end, a.id as string)
+        }
       } else if (a.type === addActionType.Load) {
-        map.moveUnit(end, mid, a.id as string)
+        map.dropUnit(end, mid, a.id as string)
       } else if (a.type === addActionType.Smoke) {
         // Shouldn't happen
-        throw new IllegalActionError("can't undo smoke")
+        throw new IllegalActionError("internal error undoing smoke")
       }
     }
 
