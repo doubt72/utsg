@@ -14,9 +14,17 @@ export function counterPath(counter: Counter, xOffset: number = 0, yOffset: numb
 export function counterStyle(counter: Counter): SVGStyle {
   const color = counterColor(counter)
   if (counter.hasMarker && counter.marker.type === markerType.Turn) {
-    return { fill: "#DFDFDF", stroke: "black", strokeWidth: 1 }
+    return { fill: "#DFDFDF" }
   }
-  if (!counter.hasUnit) {
+  return { fill: color }
+}
+
+export function counterOutlineStyle(counter: Counter): SVGStyle {
+  const color = "rgba(0,0,0,0)"
+  if (counter.hasMarker && counter.marker.type === markerType.Turn) {
+    return { fill: color, stroke: "black", strokeWidth: 1 }
+  }
+  if (counter.hasMarker) {
     return { fill: color, stroke: "black", strokeWidth: 1 }
   }
   if (counter.targetUF.selected) {

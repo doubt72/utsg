@@ -2,37 +2,41 @@
   - Add more info on signup page mebbe
 
 High Priority Features/Bug Fixes:
-  - Highlight units from last move
+  - Live Documentation
+    - Counters
+    - Terrain
+    - Actions
+  - Terrain in overlay
+  - Tooltips for map controls
+    - buttons
+    - Reinforcement / Casualties
+    - Player Facing / Score
 
 Game Actions:
-  - Moving
-    (Now)
-        - Show reaction options
-        - Initiative
+  - Moved units marked
+  - Show reaction options
+    - Passing
+  - Initiative
+  - Rush
+  - Assault Move
 
-    (Soon):
-      - Consider adding road attributes / how base terrain affects it
+  - Move to/along RR / RR bridge?
+  - Verify Truck Moves Work / facing of towed guns
+  - Wire/Obstacles Moves
+  - Engineering Tasks / Removing
+    - Digging In
 
-    (As Needed):
-      - Move cost for RR / RR bridge?
-      - Trucks
-      - Wire/Obstacles
-      - Engineering Tasks
-        - Digging In
   - Passing
   - Firing
-  - Reaction fire
-  - Mines
+    - Reaction fire
   - Sniper check
 
 Future Features/Bug Fixes:
   - Fix flickering of control buttons
-  ? Terrain Info includes terrain in overlay
   - Fix hindrance bug
     - Through two fence corner intersections
     - Also for hindrance at higher elevation
   - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
-  - Tooltips for map controls
   - Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
     (So scenarios can be modified without breaking existing games)
   - Switch main page game status to websocket, not polling
@@ -40,6 +44,7 @@ Future Features/Bug Fixes:
   - Support mouse scroll on map
     - Much harder than it appears, need a way to intercept only scroll/wheel/key events
       but pass through all other mouse events
+  - Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 
 Long term projects:
   - Start working on Help/Manual / links to it

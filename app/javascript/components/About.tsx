@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import { ReturnButton } from "./utilities/buttons";
+import { AboutHelpButton, ReturnButton } from "./utilities/buttons";
 
 export default function About() {
   return (
@@ -12,7 +12,7 @@ export default function About() {
           <p>I mean, I&apos;m basically working on it.</p>
           <p>Might want to add some code of conduct here, and if so, link here from the signup page.</p>
           <div className="align-end">
-            <ReturnButton />
+            {AboutHelpButton("", 1)}<ReturnButton />
           </div>
         </div>
         <div className="about-logo">

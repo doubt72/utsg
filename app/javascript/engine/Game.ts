@@ -194,6 +194,10 @@ export default class Game {
     return this.playerTwoPoints + victoryHexes
   }
 
+  get currentHelpSection(): string {
+    return ""
+  }
+
   findBySequence(sequence: number): BaseAction | false {
     for (const a of this.actions) {
       if (a.sequence === sequence) { return a }

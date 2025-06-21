@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import {
   ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, Ban, BoxArrowInRight, BoxArrowRight,
   ChatText, Check2Square, CircleFill, Crosshair, Crosshair2, Hexagon, InfoCircle, PencilSquare, Person,
-  ShieldExclamation, Trash3, XCircle
+  QuestionCircle, ShieldExclamation, Trash3, XCircle
 } from "react-bootstrap-icons"
 
 interface ButtonTypeProps {
@@ -152,6 +152,17 @@ export const UpdateInfoButton = () => {
 
 export const VerifyButton = () => {
   return <CustomSubmitButton text="verify"><Check2Square /></CustomSubmitButton>
+}
+
+export const AboutHelpButton = (section: string, key: number) => {
+  return (
+    <button onClick={() => {
+      const url = `/help`
+      window.open(url)
+    }} key={key} className="custom-button custom-button-balance nowrap">
+      <QuestionCircle />
+    </button>
+  )
 }
 
 export const FireGlyph = () => {

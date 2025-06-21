@@ -25,6 +25,7 @@ import MoveSmokeToggleButton from "./MoveSmokeToggleButton";
 import MoveLoadToggleButton from "./MoveLoadToggleButton";
 import MoveDoneMultiselectButton from "./MoveDoneMultiselectButton";
 import UnselectButton from "./UnselectButton";
+import HelpButton from "./HelpButton";
 
 interface GameControlsProps {
   game: Game;
@@ -47,7 +48,9 @@ export default function GameControls({ game, callback }: GameControlsProps) {
 
   const displayActions = () => {
     const user = localStorage.getItem("username")
-    setControls(actionsAvailable(game, user as string).map((a, i) => {
+    const actions = actionsAvailable(game, user as string)
+    actions.push({ type: "help" })
+    setControls(actions.map((a, i) => {
       if (a.type === "sync") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing</div>
       } else if (a.type === "none") {
@@ -102,6 +105,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <AssaultMoveButton game={game} key={i} />
       } else if (a.type === "rout") {
         return <RoutButton game={game} key={i} />
+      } else if (a.type === "help") {
+        return <HelpButton game={game} key={i} />
       } else {
         return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>
       }

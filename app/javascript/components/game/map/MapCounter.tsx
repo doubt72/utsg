@@ -15,6 +15,7 @@ import {
 } from "../../../engine/support/markerLayout";
 import { featureLayout } from "../../../engine/support/featureLayout";
 import {
+  counterOutlineStyle,
   counterPath, counterStatusLayout, counterStyle, nameBackgroundPath, nameBackgroundStyle, nameLayout,
   shadowPath
 } from "../../../engine/support/counterLayout";
@@ -29,6 +30,10 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
 
   const counterBack = (
     <path d={counterPath(counter)} style={counterStyle(counter) as object} />
+  )
+
+  const counterOutline = (
+    <path d={counterPath(counter)} style={counterOutlineStyle(counter) as object} />
   )
 
   const showDisabled = () => {
@@ -498,6 +503,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {markerMorale()}{markerFirepower()}{markerRange()}{markerMovement()}
       {status()}
       {showDisabled()}
+      {counterOutline}
       {overlay()}
     </g>
   )

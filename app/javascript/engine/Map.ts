@@ -562,7 +562,7 @@ export default class Map {
   }
 
   setLastSelection(move?: BaseAction) {
-    const units = this.allUnits
+    const units = this.allCounters
     const ids: string[] = []
     if (move) {
       move.data.origin?.forEach(o =>ids.push(o.id))
