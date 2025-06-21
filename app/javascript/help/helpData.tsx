@@ -1,25 +1,22 @@
 import React from "react";
 import IntroSection from "./IntroSection";
 
-type HelpType = {
-  [index: string]:
-    { name: string, section?: JSX.Element, children?: HelpType }
-}
+export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
 
-export const helpIndex: HelpType = {
-  intro: { name: "Introduction", section: <IntroSection /> },
-  counter: { name: "Counters", section: undefined },
-  terrain: { name: "Terrain", section: undefined },
-  play: { name: "Game Play", section: undefined, children: {
-    setup: { name: "Setup", section: undefined, children: {
-      deployment: { name: "Deployment", section: undefined },
-      stacking: { name: "Counter Stacking", section: undefined },
-    }},
-    turn: { name: "Game Turn", section: undefined, children: {
-      deployment: { name: "Deployment Phase", section: undefined },
-      prep: { name: "Prep Phase", section: undefined },
-      main: { name: "Main Phase", section: undefined },
-      cleanup: { name: "Cleanup Phase", section: undefined },
-    }}
-  }}
-}
+export const helpIndex: HelpSection[] = [
+  { name: "Introduction", section: <IntroSection /> },
+  { name: "Counters", section: undefined },
+  { name: "Terrain", section: undefined },
+  { name: "Game Play", section: undefined, children: [
+    { name: "Setup", section: undefined, children: [
+      { name: "Deployment", section: undefined },
+      { name: "Counter Stacking", section: undefined },
+    ]},
+    { name: "Game Turn", section: undefined, children: [
+      { name: "Deployment Phase", section: undefined },
+      { name: "Prep Phase", section: undefined },
+      { name: "Main Phase", section: undefined },
+      { name: "Cleanup Phase", section: undefined },
+    ]},
+  ]},
+]
