@@ -459,3 +459,8 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   width: 170px;
   height: 33px;
 }
+
+div.counter-help-button-selected,button.help-button-selected {
+  background-color: $lightish-green;
+  color: white;
+}

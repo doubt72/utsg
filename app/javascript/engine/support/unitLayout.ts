@@ -241,7 +241,6 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     }
     if (counter.unit.areaFire) {
       style.stroke = "black"
-      style.fill = "white"
     }
     if (counter.unit.offBoard) {
       path = hexPath(loc.yDelta(+0.5), 11, false)
@@ -250,6 +249,9 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     if (counter.unit.antiTank || counter.unit.singleFire ||
         counter.unit.assault || counter.unit.offBoard) {
       style.stroke = "black"
+    }
+    if (counter.unit.antiTank) {
+      style.fill = "white"
     }
     if (counter.unit.singleFire && counter.unit.ignoreTerrain) {
       style.fill = counterRed
@@ -261,7 +263,6 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     }
     if (counter.unit.fieldGun) {
       style.stroke = "black"
-      style.fill = "white"
     }
     if (counter.unit.singleFire) { color = "white" }
   }
@@ -288,10 +289,17 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
 export function areaLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.areaFire) { return false }
   const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
-  const y = counter.y + 74.5
-  const size = 2
-  const path = circlePath(new Coordinate(x, y), size)
-  return { x, y, size, path, style: { fill: "black" } }
+  let y = counter.y + 59.75
+  let size = 6
+  if (counter.unit.currentFirepower > 9) { y += 1.25 } else { size -= 2 }
+  if (counter.unit.offBoard) { y += 1.25 }
+  const path = `M ${x - size} ${y} L ${x + size} ${y}`
+  return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
+  // const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
+  // const y = counter.y + 74.5
+  // const size = 2
+  // const path = circlePath(new Coordinate(x, y), size)
+  // return { x, y, size, path, style: { fill: "black" } }
 }
 
 export function smokeLayout(counter: Counter): CounterLayout | false {

@@ -423,6 +423,16 @@ export default function CounterSection() {
     )
   }
 
+  const counterButton = (name: string, unit: string, broken: boolean = false) => {
+    const outline = counterKey === unit ? "counter-help-button-selected" : ""
+    return (
+      <div className={`custom-button normal-button counter-help-button ${outline}`} onClick={
+           () => setCounterKeyStatus(unit, broken) }>
+        <span>{name}</span>
+      </div>
+    )
+  }
+
   useEffect(() => {
     if (!target) { return }
     const sections: JSX.Element[] = []
@@ -476,10 +486,16 @@ export default function CounterSection() {
           an action.
         </p>)
       }
+      if (feature.currentMovement === "A") {
+        sections.push(<p key={index++}>
+          <strong>All movement</strong>: uses all remaining movement to enter hex with this
+          feature.  Uses all movement to leave hex with this feature.
+        </p>)
+      }
       if (feature.baseFirepower) {
         if (feature.baseFirepower === "½") {
           sections.push(<p key={index++}>
-            <strong>Firepower</strong>: units fire at half power from wire.
+            <strong>Half firepower</strong>: units fire at half power from wire.
           </p>)
         } else {
           sections.push(<p key={index++}>
@@ -510,7 +526,7 @@ export default function CounterSection() {
         </p>)
       }
     } else if (!unit.isWreck) {
-      sections.push(<p>Clockwise from top:</p>)
+      sections.push(<p key={index++}>Clockwise from top:</p>)
       if (unit.turreted) {
         sections.push(<p key={index++}>
           <strong>Facing</strong> indicates direction turret is facing; a hull marker is used
@@ -594,7 +610,7 @@ export default function CounterSection() {
       } else if (unit.crewed) {
         sections.push(<p key={index++}>
           <strong>Black circled movement</strong> indicates that this is a crewed weapon and
-          must be maneuvered by its crew.
+          can&apos;t move by itself but must be maneuvered by its crew.
         </p>)
       } else if (unit.currentMovement) {
         sections.push(<p key={index++}>
@@ -604,7 +620,7 @@ export default function CounterSection() {
       if (unit.engineer) {
         sections.push(<p key={index++}>
           <strong>A dot above movement</strong> indicates that this unit is an engineer and may
-          be able to remove obstacles or build defensive features more quickly.
+          be able to remove obstacles or build limited defensive features more quickly.
         </p>)
       }
       if (unit.amphibious) {
@@ -612,7 +628,7 @@ export default function CounterSection() {
           <strong>Underlined movement</strong> indicates that this vehicle is amphibious.
         </p>)
       }
-      if (unit.rapidFire) {
+      if (unit.rapidFire && unit.currentRange) {
         sections.push(<p key={index++}>
           <strong>Boxed range</strong> indicates this unit has rapid fire.  Rapid fire weapons can shoot
           at multiple hexes in one firing action.  Non-vehicle rapid firing weapons an be combined with
@@ -645,8 +661,8 @@ export default function CounterSection() {
       }
       if (unit.rotatingVehicleMount) {
         sections.push(<p key={index++}>
-          <strong>A line above range</strong> indicates that this vehicle does not have an armored
-          turret but has a weapon that can be freely trained in any direction.
+          <strong>A line above range</strong> indicates that this vehicle has a weapon that can be
+          freely trained in any direction.
         </p>)
       }
       if (unit.backwardsMount) {
@@ -668,12 +684,12 @@ export default function CounterSection() {
         </p>)
       } else if (unit.antiTank) {
         sections.push(<p key={index++}>
-          <strong>Circled firepower</strong> indicates high-velocity anti-tank weapons.  These weapons
+          <strong>White circled firepower</strong> indicates high-velocity anti-tank weapons.  These weapons
           get full effect on armored targets but only get half effect on soft targets.
         </p>)
       } else if (unit.fieldGun) {
         sections.push(<p key={index++}>
-          <strong>White circled firepower</strong> indicates low-velocity, primarily anti-infantry weapons.
+          <strong>Circled firepower</strong> indicates low-velocity, primarily anti-infantry weapons.
           These weapons get full effect on soft targets but only get half effect on
           armored targets.
         </p>)
@@ -685,7 +701,7 @@ export default function CounterSection() {
         </p>)
       } else if (unit.areaFire) {
         sections.push(<p key={index++}>
-          <strong>Bottom-dotted white circled firepower</strong> indicates that this unit uses
+          <strong>Circled firepower with a line above</strong> indicates that this unit uses
           area fire, with full effect on soft targts and half effect on fully armored targets.
         </p>)
       } else if (unit.currentFirepower && !unit.ignoreTerrain) {
@@ -704,17 +720,20 @@ export default function CounterSection() {
         sections.push(<p key={index++}>
           <strong>Red filled firepower</strong> indicates that this weapon ignores terrain or
           defensive feature effects <strong>and</strong> this weapon can only be fired once before
-          it is removed, regardless of whether or not a hit is achieved.
+          it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
+          this unit may attack armored units with no penalty.
         </p>)
       } else if (unit.ignoreTerrain) {
         sections.push(<p key={index++}>
           <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
-          defensive feature effects.
+          defensive feature effects. Despite the lack of circle,
+          this unit may attack armored units with no penalty.
         </p>)
       } else if (unit.singleFire) {
         sections.push(<p key={index++}>
           <strong>Black filled firepower</strong> indicates that this weapon can only be fired once
-          before it is removed, regardless of whether or not a hit is achieved.
+          before it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
+          this unit may attack armored units with no penalty.
         </p>)
       }
       if (unit.breakdownRoll) {
@@ -755,14 +774,14 @@ export default function CounterSection() {
         </p>)
       }
       if (unit.type === "sqd") {
-        sections.push(
-          <p><strong>This icon</strong> indicates this unit is a squad.</p>
-        )
+        sections.push(<p key={index++}>
+          <strong>This icon</strong> (the filled circle on top, specifically) indicates this unit is a squad.
+        </p>)
       }
       if (unit.type === "tm") {
-        sections.push(
-          <p><strong>This icon</strong> indicates this unit is a team.</p>
-        )
+        sections.push(<p key={index++}>
+          <strong>This icon</strong> (the open circle on top, specifically) indicates this unit is a team.
+        </p>)
       }
     }
     setCounterHelp(sections)
@@ -821,7 +840,7 @@ export default function CounterSection() {
       </div>
       <h2 className="mt1em">Counter Layout</h2>
       <p>
-        Select the buttons on the right to see example explanations of various counter layouts.
+        Select the buttons on the right to see examples of various counter layouts.
         Additionally, an explanatory help overlay is available in-game by mousing over the
         question mark icon in the upper right corner of game counters.
       </p>
@@ -832,211 +851,51 @@ export default function CounterSection() {
                   style={{ stroke: "#DDD", strokeWidth: 0.5, fill: "#FFF" }}/>
             { counterDisplay() }
           </svg>
-          <div className="mr05em">
+          <div className="mr05em mt05em">
             { counterHelp }
           </div>
         </div>
         <div className="flex flex-wrap">
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ger_Pionier_sqd")
-          }>
-            <span>infantry</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ger_Tiger II_tank")
-          }>
-            <span>tank</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("uk_Vickers MG_sw")
-          }>
-            <span>machine gun</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("uk_QF 25-Pounder_gun")
-          }>
-            <span>gun</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("fra_Brandt M1935_sw")
-          }>
-            <span>mortar</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ussr_Leader_ldr_6_2")
-          }>
-            <span>leader</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ita_Crew_tm_2")
-          }>
-            <span>crew</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ussr_Guards Rifle_sqd", true)
-          }>
-            <span>broken unit</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("jap_Type 92 HMG_sw", true)
-          }>
-            <span>jammed mg</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_Flamethrower_sw")
-          }>
-            <span>flamethrower</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_Satchel Charge_sw")
-          }>
-            <span>satchel charge</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("fin_Molotov Cocktail_sw")
-          }>
-            <span>molotov coctail</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ussr_Radio 122mm_sw")
-          }>
-            <span>radio</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ger_8.8cm Pak 43/41_gun")
-          }>
-            <span>anti-tank gun</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("uk_M3 Grant_tank")
-          }>
-            <span>sponsoned tank</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_M3A1 Stuart FT_spg")
-          }>
-            <span>flame tank</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ger_Panther D_tank", true)
-          }>
-            <span>wreck</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ger_Marder III_spg")
-          }>
-            <span>self-propelled gun</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_M3A1 Scout Car_ac")
-          }>
-            <span>armored car</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ger_SdKfz 250/1_ht")
-          }>
-            <span>armored half-track</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_LVT-1_ht")
-          }>
-            <span>amtrac</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_T19/M21 MMC_ht")
-          }>
-            <span>mortar carrier</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_GMC CCKW_truck")
-          }>
-            <span>truck</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_GMC DUKW_truck")
-          }>
-            <span>duck</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("usa_Jeep_truck")
-          }>
-            <span>jeep</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("uk_Chevy C30 AT_truck")
-          }>
-            <span>technical</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("ger_Horse_cav")
-          }>
-            <span>cavalry</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("jap_Bicycle_cav")
-          }>
-            <span>wheeled cavalry</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_Hedgehog")
-          }>
-            <span>hedgehog</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_Wire")
-          }>
-            <span>wire</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_Foxhole")
-          }>
-            <span>foxhole</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_Pillbox")
-          }>
-            <span>pillbox</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_Minefield")
-          }>
-            <span>minefield</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_AP Minefield")
-          }>
-            <span>ap minefield</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_AT Minefield")
-          }>
-            <span>at minefield</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("f_Sniper_3")
-          }>
-            <span>sniper</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("m_0_ger")
-          }>
-            <span>tracked hull</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("m_1_ussr")
-          }>
-            <span>wheeled hull</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("m_9_1_true_undefined")
-          }>
-            <span>breeze</span>
-          </div>
-          <div className="custom-button normal-button counter-help-button" onClick={
-            () => setCounterKeyStatus("m_10_2_4_undefined")
-          }>
-            <span>rain</span>
-          </div>
+          { counterButton("infantry", "ger_Pionier_sqd") }
+          { counterButton("broken unit", "ussr_Guards Rifle_sqd", true) }
+          { counterButton("tank", "ger_Tiger II_tank") }
+          { counterButton("wreck", "ger_Panther D_tank", true) }
+          { counterButton("machine gun", "uk_Vickers MG_sw") }
+          { counterButton("jammed mg", "jap_Type 92 HMG_sw", true) }
+          { counterButton("gun", "uk_QF 25-Pounder_gun") }
+          { counterButton("mortar", "fra_Brandt M1935_sw") }
+          { counterButton("leader", "ussr_Leader_ldr_6_2") }
+          { counterButton("crew", "ita_Crew_tm_2") }
+          { counterButton("flamethrower", "usa_Flamethrower_sw") }
+          { counterButton("satchel charge", "usa_Satchel Charge_sw") }
+          { counterButton("molotov coctail", "fin_Molotov Cocktail_sw") }
+          { counterButton("radio", "ussr_Radio 122mm_sw") }
+          { counterButton("anti-tank gun", "ger_8.8cm Pak 43/41_gun") }
+          { counterButton("sponsoned tank", "uk_M3 Grant_tank") }
+          { counterButton("flame tank", "usa_M3A1 Stuart FT_spg") }
+          { counterButton("self-propelled gun", "ger_Marder III_spg") }
+          { counterButton("armored car", "usa_M3A1 Scout Car_ac") }
+          { counterButton("armored half-track", "ger_SdKfz 250/1_ht") }
+          { counterButton("amtrac", "usa_LVT-1_ht") }
+          { counterButton("mortar carrier", "usa_T19/M21 MMC_ht") }
+          { counterButton("truck", "usa_GMC CCKW_truck") }
+          { counterButton("duck", "usa_GMC DUKW_truck") }
+          { counterButton("jeep", "usa_Jeep_truck") }
+          { counterButton("technical", "uk_Chevy C30 AT_truck") }
+          { counterButton("cavalry", "ger_Horse_cav") }
+          { counterButton("bicycle", "jap_Bicycle_cav") }
+          { counterButton("hedgehog", "f_Hedgehog") }
+          { counterButton("wire", "f_Wire") }
+          { counterButton("foxhole", "f_Foxhole") }
+          { counterButton("pillbox", "f_Pillbox") }
+          { counterButton("minefield", "f_Minefield") }
+          { counterButton("ap minefield", "f_AP Minefield") }
+          { counterButton("at minefield", "f_AT Minefield") }
+          { counterButton("sniper", "f_Sniper_3") }
+          { counterButton("tracked hull", "m_0_ger") }
+          { counterButton("wheeled hull", "m_1_ussr") }
+          { counterButton("breeze", "m_9_1_true_undefined") }
+          { counterButton("rain", "m_10_2_4_undefined") }
         </div>
       </div>
     </div>

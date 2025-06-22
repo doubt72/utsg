@@ -6,6 +6,7 @@ import { helpIndex, HelpSection } from "../../help/helpData";
 export default function HelpDisplay() {
   const section: string = useParams().section ?? "1"
 
+  const [sectionKey, setSectionKey] = useState<number[]>([])
   const [currSection, setCurrSection] = useState<JSX.Element | undefined>()
   const [sectionList, setSectionList] = useState<JSX.Element | undefined>()
 
@@ -16,22 +17,34 @@ export default function HelpDisplay() {
       part = part.children[curr[i]]
     }
     setCurrSection(part.section)
+    setSectionKey(curr)
+  }
+
+  const compareList = (a: number[], b: number[]): boolean => {
+    console.log(`comparing ${a} with ${b}`)
+    if (a.length !== b.length) { return false }
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) { return false }
+    }
+    return true
   }
 
   const mapSections = (l: HelpSection[], ll: number[]): JSX.Element => {
     return (
       <div>{l.map((s, i) => {
+        const sec = ll.concat(i)
         return (
-          <div key={i} className="ml1em nowrap">
+          <div key={sec.join(".")} className="ml1em nowrap">
             <form onSubmit={(event: FormEvent) => {
                 event.preventDefault()
-                onSubmit(ll.concat(i))}
+                onSubmit(sec)}
               }>
-              <button type="submit" className="custom-button">
-                {ll.concat(i).map(n => n+1).join(".")}&nbsp; {s.name}
+              <button type="submit" className={
+                `custom-button${compareList(sec, sectionKey) ? " help-button-selected" : ""}`
+                }>{sec.map(n => n+1).join(".")}&nbsp; {s.name}
               </button>
             </form>
-            {s.children ? mapSections(s.children, ll.concat(i)) : undefined }
+            {s.children ? mapSections(s.children, sec) : undefined }
           </div>)}
         )
       }
@@ -41,8 +54,11 @@ export default function HelpDisplay() {
 
   useEffect(() => {
     onSubmit(section.split(".").map(n => Number(n)-1))
-    setSectionList(mapSections(helpIndex, []))
   }, [])
+
+  useEffect(() => {
+    setSectionList(mapSections(helpIndex, []))
+  }, [sectionKey])
 
   return (
     <div className="help-page">
