@@ -3,34 +3,41 @@
 
 High Priority Features/Bug Fixes:
   - Fix wreck size modifiers
-  - Live Documentation
-    - Counters
-    - Terrain
-    - Actions
-  - Terrain in overlay
   - Tooltips for map controls
     - buttons
     - Reinforcement / Casualties
     - Player Facing / Score
+  - Live Documentation
+    - Add missing sections
+    - Introduction (Come up with new name)
+    - Glossary
+    - Terrain (Live)
+    - Game Play
+      - All of Setup
+      - Main Phase
+        - Initiative
+        - Move
+    - Link to Section based on Game Context
 
 Game Actions:
   - Moved units marked
   - Show reaction options
     - Passing
   - Initiative
+  - Sniper check
   - Rush
   - Assault Move
 
   - Move to/along RR / RR bridge?
-  - Verify Truck Moves Work / facing of towed guns
-  - Wire/Obstacles Moves
-  - Engineering Tasks / Removing
+  - TEST: Verify Truck Moves Work / facing of towed guns
+  - TEST + Implement: Wire/Obstacles Moves
+  - TEST + Implement: Engineering Tasks / Removing
     - Digging In
 
   - Passing
+
   - Firing
     - Reaction fire
-  - Sniper check
 
 Future Features/Bug Fixes:
   - Fix flickering of control buttons
@@ -47,5 +54,3 @@ Future Features/Bug Fixes:
       but pass through all other mouse events
   - Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 
-Long term projects:
-  - Start working on Help/Manual / links to it

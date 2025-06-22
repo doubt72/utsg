@@ -10,35 +10,13 @@ import Counter from "../engine/Counter";
 import { markerType, unitStatus } from "../utilities/commonTypes";
 
 export default function CounterSection() {
-  const [counterKey, setCounterKey] = useState("ger_Pionier_sqd")
-  const [broken, setBroken] = useState(false)
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
-  const [target, setTarget] = useState<Unit | Feature | Marker | undefined>()
-  const [counter, setCounter] = useState<JSX.Element | undefined>()
-  const [counterHelp, setCounterHelp] = useState<JSX.Element[]>([])
 
-  const setCounterKeyStatus = (key: string, broke: boolean = false) => {
-    setBroken(broke)
-    setCounterKey(key)
-  }
+  const [unitFeature, setUnitFeature] = useState<{ key: string, broken: boolean }>(
+    { key: "ger_Pionier_sqd", broken: false }
+  )
 
-  useEffect(() => {
-    const unit = units[counterKey]
-    if (!unit) { return }
-    setTarget(unit)
-    const counter = new Counter(undefined, unit)
-    if (broken) {
-      if (counter.unit.type === "tank") {
-        counter.unit.status = unitStatus.Wreck
-      } else if (counter.unit.type === "sw") {
-        counter.unit.jammed = true
-      } else {
-        counter.unit.status = unitStatus.Broken
-      }
-    }
-    counter.hideShadow = true
-    setCounter(<MapCounter counter={counter} ovCallback={() => {}} />)
-  }, [units, counterKey, broken])
+  const [updateSection, setUpdateSection] = useState<JSX.Element | undefined>()
   
   const makeIndex = (target: Unit | Feature | Marker) => {
     if (target.isFeature) {
@@ -90,8 +68,8 @@ export default function CounterSection() {
     )
   }
 
-  const nameOverlay = () => {
-    if (!target || target.isMarker) { return }
+  const nameOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isMarker) { return }
     return (
       <g>
         <text x={64} y={19} fontSize={9} textAnchor="end">Name</text>
@@ -100,8 +78,8 @@ export default function CounterSection() {
     )
   }
 
-  const moraleOverlay = () => {
-    if (!target || target.isFeature || target.isMarker) { return }
+  const moraleOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isFeature || target.isMarker) { return }
     if (!(target as Unit).baseMorale) { return }
     return (
       <g>
@@ -111,8 +89,8 @@ export default function CounterSection() {
     )
   }
 
-  const breakdownOverlay = () => {
-    if (!target || target.isFeature || target.isMarker) { return }
+  const breakdownOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
     if (!unit.breakWeaponRoll || unit.isWreck) { return }
     const name = unit.breakDestroysWeapon || unit.jammed ? "Break Roll" : "Jam Roll"
@@ -137,8 +115,8 @@ export default function CounterSection() {
     )
   }
 
-  const iconOverlay = () => {
-    if (!target || target.isFeature || target.isMarker) { return }
+  const iconOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
     const offset = unit.breakWeaponRoll && !unit.breakdownRoll ? 3 : 0
     const swOffset = ["sw", "gun"].includes(unit.type) ? 5 : 0
@@ -152,8 +130,8 @@ export default function CounterSection() {
     )
   }
 
-  const sponsonOverlay = () => {
-    if (!target || target.isFeature || target.isMarker) { return }
+  const sponsonOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
     if (!unit.sponson) { return }
     return (
@@ -165,10 +143,10 @@ export default function CounterSection() {
     )
   }
 
-  const leadershipHandlingOverlay = () => {
-    if (!target || target.isFeature || target.isMarker) { return }
+  const leadershipHandlingOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
-    if (!unit.leadership && !unit.gunHandling) { return }
+    if ((!unit.leadership && !unit.gunHandling) || unit.isBroken) { return }
     const name = unit.leadership ? "Leadership" : "Gun Handling"
     return (
       <g>
@@ -178,8 +156,8 @@ export default function CounterSection() {
     )
   }
 
-  const firepowerOverlay = () => {
-    if (!target || target.isMarker) { return }
+  const firepowerOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isMarker) { return }
     const unit = target as Unit
     const add: string[] = []
     const y = 130
@@ -191,7 +169,7 @@ export default function CounterSection() {
       }
       if (feature.antiTank) { add.push("(anti-tank)"); x = 85 }
       if (feature.fieldGun) { add.push("(anti-tank capable)"); x = 85 }
-    } else if (!unit.isWreck) {
+    } else if (!unit.isWreck && !unit.isBroken && !unit.jammed) {
       if (unit.assault) { add.push("(assault bonus)"); x = 85 }
       if (unit.smokeCapable) { add.push("(smoke capable)") }
       if (unit.antiTank) { add.push("(anti-tank)"); x = 85 }
@@ -211,8 +189,8 @@ export default function CounterSection() {
     )
   }
 
-  const rangeOverlay = () => {
-    if (!target || target.isMarker) { return }
+  const rangeOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isMarker) { return }
     const unit = target as Unit
     const add: string[] = []
     let y1 = 136
@@ -222,7 +200,7 @@ export default function CounterSection() {
       if (!["Hedgehog", "Wire", "Minefield", "AP Minefield", "AT Minefield"].includes(feature.name)) {
         return
       }
-    } else if (!unit.isWreck && !unit.jammed) {
+    } else if (!unit.isWreck && !unit.isBroken && !unit.jammed) {
       if (unit.rapidFire) { add.push("(rapid fire)"); y2 = 117 }
       if (unit.targetedRange) { add.push("(targeted range)"); y2 = 117 }
       if (unit.type === "sw" && unit.targetedRange) { add.push("(no crew bonus)") }
@@ -241,8 +219,8 @@ export default function CounterSection() {
     )
   }
 
-  const movementOverlay = () => {
-    if (!target || target.isMarker) { return }
+  const movementOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isMarker) { return }
     const unit = target as Unit
     const add: string[] = []
     const y = 130
@@ -255,7 +233,7 @@ export default function CounterSection() {
       }
       if (feature.impassableToVehicles) { add.push("(impassable to vehicles)"); x = 157 }
       if (feature.currentMovement === "A") { add.push("(uses all movement)"); x = 153 }
-    } else if (!unit.isWreck) {
+    } else if (!unit.isWreck && !unit.isBroken) {
       if (unit.type === "sw") { name = "Encumbrance" }
       if (unit.engineer) { add.push("(engineer)") }
       if (unit.baseMovement < 0) { x = 155 }
@@ -274,8 +252,8 @@ export default function CounterSection() {
     )
   }
 
-  const armorOverlay = () => {
-    if (!target || target.isFeature || target.isMarker) { return }
+  const armorOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
     if (!unit.hullArmor || unit.isWreck) { return }
     const extra = unit.turretArmor ?
@@ -297,8 +275,8 @@ export default function CounterSection() {
     )
   }
 
-  const sizeOverlay = () => {
-    if (!target || target.isFeature || target.isMarker) { return }
+  const sizeOverlay = (target: Unit | Feature | Marker) => {
+    if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
     const add: string[] = []
     const y = 33
@@ -329,7 +307,7 @@ export default function CounterSection() {
     )
   }
 
-  const facingOverlay = () => {
+  const facingOverlay = (target: Unit | Feature | Marker) => {
     if (!target) { return }
     if (!target.rotates &&
         !(target.isMarker && (target.type === markerType.TrackedHull ||
@@ -345,8 +323,8 @@ export default function CounterSection() {
     )
   }
 
-  const sniperOverlay = () => {
-    if (!target || !target.isFeature) { return }
+  const sniperOverlay = (target: Unit | Feature | Marker) => {
+    if (!target.isFeature) { return }
     const feature = target as Feature
     if (!feature.sniperRoll) { return }
     return (
@@ -357,8 +335,8 @@ export default function CounterSection() {
     )
   }
 
-  const coverOverlay = () => {
-    if (!target || !target.isFeature) { return }
+  const coverOverlay = (target: Unit | Feature | Marker) => {
+    if (!target.isFeature) { return }
     const feature = target as Feature
     if (!feature.cover && !feature.coverSides) { return }
     const sub = feature.cover ? "(any direction)" : "(front, side, rear)"
@@ -371,8 +349,8 @@ export default function CounterSection() {
     )
   }
 
-  const weatherOverlay = () => {
-    if (!target || !target.isMarker) { return }
+  const weatherOverlay = (target: Unit | Feature | Marker) => {
+    if (!target.isMarker) { return }
     const marker = target as Marker
     if (marker.type !== markerType.Wind && marker.type !== markerType.Weather) { return }
     const fe = marker.type === markerType.Weather ?
@@ -397,44 +375,63 @@ export default function CounterSection() {
     )
   }
 
-  const counterDisplay = () => {
+  const counter = (broken: boolean) => {
+    const unit = units[unitFeature.key]
+    if (!unit) { return }
+    const counter = new Counter(undefined, unit)
+    counter.hideShadow = true
+    if (["tank", "spg", "ht", "ac", "truck"].includes(counter.unit.type)) {
+      counter.unit.status = broken ? unitStatus.Wreck : unitStatus.Normal
+    } else if (["gun", "sw"].includes(counter.unit.type)) {
+      counter.unit.jammed = broken
+    } else {
+      counter.unit.status = broken ? unitStatus.Broken : unitStatus.Normal
+    }
+    return <MapCounter counter={counter} ovCallback={() => {}} />
+  }
+
+  const counterDisplay = (target: Unit | Feature | Marker, broken: boolean): JSX.Element | undefined => {
     if (!target) { return }
     return (
       <g>
         <g transform="translate(78 38)">
-          {counter}
+          {counter(broken)}
         </g>
-        { nameOverlay() }
-        { moraleOverlay() }
-        { breakdownOverlay() }
-        { iconOverlay() }
-        { sponsonOverlay() }
-        { leadershipHandlingOverlay() }
-        { firepowerOverlay() }
-        { rangeOverlay() }
-        { movementOverlay() }
-        { armorOverlay() }
-        { sizeOverlay() }
-        { facingOverlay() }
-        { coverOverlay() }
-        { sniperOverlay() }
-        { weatherOverlay() }
+        { nameOverlay(target) }
+        { moraleOverlay(target) }
+        { breakdownOverlay(target) }
+        { iconOverlay(target) }
+        { sponsonOverlay(target) }
+        { leadershipHandlingOverlay(target) }
+        { firepowerOverlay(target) }
+        { rangeOverlay(target) }
+        { movementOverlay(target) }
+        { armorOverlay(target) }
+        { sizeOverlay(target) }
+        { facingOverlay(target) }
+        { coverOverlay(target) }
+        { sniperOverlay(target) }
+        { weatherOverlay(target) }
       </g>
     )
   }
 
-  const counterButton = (name: string, unit: string, broken: boolean = false) => {
-    const outline = counterKey === unit ? "counter-help-button-selected" : ""
+  const counterButton = (name: string, unit: string) => {
+    const selected = unitFeature.key === unit ? "counter-help-button-selected" : ""
     return (
-      <div className={`custom-button normal-button counter-help-button ${outline}`} onClick={
-           () => setCounterKeyStatus(unit, broken) }>
+      <div className={`custom-button normal-button counter-help-button ${selected}`} onClick={
+           () => setCounterKeyStatus(unit) }>
         <span>{name}</span>
       </div>
     )
   }
 
-  useEffect(() => {
-    if (!target) { return }
+  const setCounterKeyStatus = (key: string) => {
+    setUnitFeature({ key, broken: false })
+  }
+
+  const counterHelp = (target: Unit | Feature | Marker): JSX.Element[] => {
+    if (!target) { return [] }
     const sections: JSX.Element[] = []
     let index = 0
     const unit = target as Unit
@@ -525,7 +522,14 @@ export default function CounterSection() {
           <strong>Circled zero movement</strong> indicates impassible to vehicles.
         </p>)
       }
-    } else if (!unit.isWreck) {
+    } else if (unit.isWreck) {
+      sections.push(<p key={index++}>Clockwise from top:</p>)
+      if (unit.size) {
+        sections.push(<p key={index++}>
+          <strong>Size</strong> is the stacking size of the unit.
+        </p>)
+      }
+    } else {
       sections.push(<p key={index++}>Clockwise from top:</p>)
       if (unit.turreted) {
         sections.push(<p key={index++}>
@@ -617,124 +621,126 @@ export default function CounterSection() {
           <strong>Uncircled, unboxed movement</strong> indicates that is this unit moves by foot.
         </p>)
       }
-      if (unit.engineer) {
+      if (unit.engineer && !unit.isBroken) {
         sections.push(<p key={index++}>
           <strong>A dot above movement</strong> indicates that this unit is an engineer and may
           be able to remove obstacles or build limited defensive features more quickly.
         </p>)
       }
-      if (unit.amphibious) {
+      if (unit.amphibious && !unit.isWreck) {
         sections.push(<p key={index++}>
           <strong>Underlined movement</strong> indicates that this vehicle is amphibious.
         </p>)
       }
-      if (unit.rapidFire && unit.currentRange) {
-        sections.push(<p key={index++}>
-          <strong>Boxed range</strong> indicates this unit has rapid fire.  Rapid fire weapons can shoot
-          at multiple hexes in one firing action.  Non-vehicle rapid firing weapons an be combined with
-          other rapid firing units when a leader is present, or with other infantry units if carried or
-          a leader is present but without being able to target multiple hexes.
-        </p>)
-      } else if (unit.targetedRange) {
-        sections.push(<p key={index++}>
-          <strong>Circled range</strong> indicates this unit requires an additional targeting roll and
-          (unless an area fire weapon) can only target one unit.
-        </p>)
-      } else if (unit.currentRange) {
-        sections.push(<p key={index++}>
-          <strong>Uncircled, unboxed range</strong> indicates this unit targets all units in a single
-          hex, but can be combined with other like units, or rapid firing (non-vehicle) units if
-          carried or a leader is present.
-        </p>)
-      }
-      if (unit.minimumRange) {
-        sections.push(<p key={index++}>
-          <strong>Two ranges</strong> indicates minimum and maximum range.
-        </p>)
-      }
-      if (unit.turreted) {
-        sections.push(<p key={index++}>
-          <strong>White filled range</strong> indicates this vehicle has an armored turret that can be
-          oriented independently of the rest of the vehicle.  The unit counter is used to indicate
-          the direction of the turret, with a hull marker indicating the direction of the vehicle itself.
-        </p>)
-      }
-      if (unit.rotatingVehicleMount) {
-        sections.push(<p key={index++}>
-          <strong>A line above range</strong> indicates that this vehicle has a weapon that can be
-          freely trained in any direction.
-        </p>)
-      }
-      if (unit.backwardsMount) {
-        sections.push(<p key={index++}>
-          <strong>A dot below range</strong> indicates that this vehicle has its weapon mounted backwards.
-        </p>)
-      }
-      if (unit.type === "sw" && unit.targetedRange) {
-        sections.push(<p key={index++}>
-          <strong>Black filled range</strong> indicates that this weapon gets no crew bonus.
-        </p>)
-      }
-      if (unit.assault) {
-        sections.push(<p key={index++}>
-          <strong>Boxed firepower</strong> indicates that this unit gets a +2 bonus in close combat.
-          While only infantry units&apos; base firepower is used for close combat, infantry weapons&apos;
-          assault bonus can be included.  However, if the infantry weapons are single shot, they are
-          removed after combat.  This weapon has no effect on armored targets.
-        </p>)
-      } else if (unit.antiTank) {
-        sections.push(<p key={index++}>
-          <strong>White circled firepower</strong> indicates high-velocity anti-tank weapons.  These weapons
-          get full effect on armored targets but only get half effect on soft targets.
-        </p>)
-      } else if (unit.fieldGun) {
-        sections.push(<p key={index++}>
-          <strong>Circled firepower</strong> indicates low-velocity, primarily anti-infantry weapons.
-          These weapons get full effect on soft targets but only get half effect on
-          armored targets.
-        </p>)
-      } else if (unit.offBoard) {
-        sections.push(<p key={index++}>
-          <strong>Hexed firepower</strong> indicates that this is an off-board artillery unit with
-          special firing rules.  (This is also primarily an anti-infantry area weapon, so only has
-          half effect on fully armored targets.)
-        </p>)
-      } else if (unit.areaFire) {
-        sections.push(<p key={index++}>
-          <strong>Circled firepower with a line above</strong> indicates that this unit uses
-          area fire, with full effect on soft targts and half effect on fully armored targets.
-        </p>)
-      } else if (unit.currentFirepower && !unit.ignoreTerrain) {
-        sections.push(<p key={index++}>
-          <strong>Uncircled, unboxed firepower</strong> indicates that this
-          weapons has no effect on armored targets.
-        </p>)
-      }
-      if (unit.smokeCapable) {
-        sections.push(<p key={index++}>
-          <strong>A dot above firepower</strong> indicates that this unit can use smoke grenades
-          or fire smoke rounds.
-        </p>)
-      }
-      if (unit.ignoreTerrain && unit.singleFire) {
-        sections.push(<p key={index++}>
-          <strong>Red filled firepower</strong> indicates that this weapon ignores terrain or
-          defensive feature effects <strong>and</strong> this weapon can only be fired once before
-          it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
-          this unit may attack armored units with no penalty.
-        </p>)
-      } else if (unit.ignoreTerrain) {
-        sections.push(<p key={index++}>
-          <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
-          defensive feature effects. Despite the lack of circle,
-          this unit may attack armored units with no penalty.
-        </p>)
-      } else if (unit.singleFire) {
-        sections.push(<p key={index++}>
-          <strong>Black filled firepower</strong> indicates that this weapon can only be fired once
-          before it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
-          this unit may attack armored units with no penalty.
-        </p>)
+      if (!unit.isBroken && !unit.jammed) {
+        if (unit.rapidFire && unit.currentRange) {
+          sections.push(<p key={index++}>
+            <strong>Boxed range</strong> indicates this unit has rapid fire.  Rapid fire weapons can shoot
+            at multiple hexes in one firing action.  Non-vehicle rapid firing weapons an be combined with
+            other rapid firing units when a leader is present, or with other infantry units if carried or
+            a leader is present but without being able to target multiple hexes.
+          </p>)
+        } else if (unit.targetedRange) {
+          sections.push(<p key={index++}>
+            <strong>Circled range</strong> indicates this unit requires an additional targeting roll and
+            (unless an area fire weapon) can only target one unit.
+          </p>)
+        } else if (unit.currentRange) {
+          sections.push(<p key={index++}>
+            <strong>Uncircled, unboxed range</strong> indicates this unit targets all units in a single
+            hex, but can be combined with other like units, or rapid firing (non-vehicle) units if
+            carried or a leader is present.
+          </p>)
+        }
+        if (unit.minimumRange) {
+          sections.push(<p key={index++}>
+            <strong>Two ranges</strong> indicates minimum and maximum range.
+          </p>)
+        }
+        if (unit.turreted) {
+          sections.push(<p key={index++}>
+            <strong>White filled range</strong> indicates this vehicle has an armored turret that can be
+            oriented independently of the rest of the vehicle.  The unit counter is used to indicate
+            the direction of the turret, with a hull marker indicating the direction of the vehicle itself.
+          </p>)
+        }
+        if (unit.rotatingVehicleMount && !unit.isWreck) {
+          sections.push(<p key={index++}>
+            <strong>A line above range</strong> indicates that this vehicle has a weapon that can be
+            freely trained in any direction.
+          </p>)
+        }
+        if (unit.backwardsMount && !unit.isWreck) {
+          sections.push(<p key={index++}>
+            <strong>A dot below range</strong> indicates that this vehicle has its weapon mounted backwards.
+          </p>)
+        }
+        if (unit.type === "sw" && unit.targetedRange) {
+          sections.push(<p key={index++}>
+            <strong>Black filled range</strong> indicates that this weapon gets no crew bonus.
+          </p>)
+        }
+        if (unit.assault) {
+          sections.push(<p key={index++}>
+            <strong>Boxed firepower</strong> indicates that this unit gets a +2 bonus in close combat.
+            While only infantry units&apos; base firepower is used for close combat, infantry weapons&apos;
+            assault bonus can be included.  However, if the infantry weapons are single shot, they are
+            removed after combat.  This weapon has no effect on armored targets.
+          </p>)
+        } else if (unit.antiTank) {
+          sections.push(<p key={index++}>
+            <strong>White circled firepower</strong> indicates high-velocity anti-tank weapons.  These weapons
+            get full effect on armored targets but only get half effect on soft targets.
+          </p>)
+        } else if (unit.fieldGun) {
+          sections.push(<p key={index++}>
+            <strong>Circled firepower</strong> indicates low-velocity, primarily anti-infantry weapons.
+            These weapons get full effect on soft targets but only get half effect on
+            armored targets.
+          </p>)
+        } else if (unit.offBoard) {
+          sections.push(<p key={index++}>
+            <strong>Hexed firepower</strong> indicates that this is an off-board artillery unit with
+            special firing rules.  (This is also primarily an anti-infantry area weapon, so only has
+            half effect on fully armored targets.)
+          </p>)
+        } else if (unit.areaFire) {
+          sections.push(<p key={index++}>
+            <strong>Circled firepower with a line above</strong> indicates that this unit uses
+            area fire, with full effect on soft targts and half effect on fully armored targets.
+          </p>)
+        } else if (unit.currentFirepower && !unit.ignoreTerrain) {
+          sections.push(<p key={index++}>
+            <strong>Uncircled, unboxed firepower</strong> indicates that this
+            weapons has no effect on armored targets.
+          </p>)
+        }
+        if (unit.smokeCapable) {
+          sections.push(<p key={index++}>
+            <strong>A dot above firepower</strong> indicates that this unit can use smoke grenades
+            or fire smoke rounds.
+          </p>)
+        }
+        if (unit.ignoreTerrain && unit.singleFire) {
+          sections.push(<p key={index++}>
+            <strong>Red filled firepower</strong> indicates that this weapon ignores terrain or
+            defensive feature effects <strong>and</strong> this weapon can only be fired once before
+            it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
+            this unit may attack armored units with no penalty.
+          </p>)
+        } else if (unit.ignoreTerrain) {
+          sections.push(<p key={index++}>
+            <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
+            defensive feature effects. Despite the lack of circle,
+            this unit may attack armored units with no penalty.
+          </p>)
+        } else if (unit.singleFire) {
+          sections.push(<p key={index++}>
+            <strong>Black filled firepower</strong> indicates that this weapon can only be fired once
+            before it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
+            this unit may attack armored units with no penalty.
+          </p>)
+        }
       }
       if (unit.breakdownRoll) {
         sections.push(<p key={index++}>
@@ -751,17 +757,19 @@ export default function CounterSection() {
           <strong>A yellow circle</strong> indicates that this weapon may jam.
         </p>)
       }
-      if (unit.gunHandling) {
-        sections.push(<p key={index++}>
-          <strong>A circled number</strong> indicates that this unit has a bonus for operating
-          crewed guns.
-        </p>)
-      }
-      if (unit.leadership) {
-        sections.push(<p key={index++}>
-          <strong>A hexed nmber</strong> indicates that this unit has a leadership bonus that can
-          be applied to stacked units.  Also, units in that range can be combined in infantry arms attacks.
-        </p>)
+      if (!unit.isBroken) {
+        if (unit.gunHandling) {
+          sections.push(<p key={index++}>
+            <strong>A circled number</strong> indicates that this unit has a bonus for operating
+            crewed guns.
+          </p>)
+        }
+        if (unit.leadership) {
+          sections.push(<p key={index++}>
+            <strong>A hexed nmber</strong> indicates that this unit has a leadership bonus that can
+            be applied to stacked units.  Also, units in that range can be combined in infantry arms attacks.
+          </p>)
+        }
       }
       if (unit.baseMorale) {
         sections.push(<p key={index++}>
@@ -784,8 +792,89 @@ export default function CounterSection() {
         </p>)
       }
     }
-    setCounterHelp(sections)
-  }, [target])
+    return sections
+  }
+
+  useEffect(() => {
+    const ufm = units[unitFeature.key]
+    if (!ufm) { return }
+    const unit = ufm as Unit
+    const svg = counterDisplay(ufm, unitFeature.broken)
+    const help = counterHelp(ufm)
+    const brokenSelect = unitFeature.broken ? " counter-help-button-selected": ""
+    const showBreak = (!ufm.isFeature && !ufm.isMarker && !unit.breakDestroysWeapon && !unit.singleFire &&
+      unit.type !== "cav") || unit.type === "spg" || unit.type === "ht"
+    let breakName = "wreck unit"
+    if (showBreak) {
+      if (unit.canCarrySupport) { breakName = "break unit" }
+      if (["gun", "sw"].includes(unit.type)) { breakName = "jam weapon" }
+      if (unit.offBoard) { breakName = "break radio" }
+    }
+    setUpdateSection(
+      <div className="flex mb05em flex-align-start">
+        <div>
+          <svg width={600} height={400} viewBox='0 0 240 160' style={{ minWidth: 600 }}>
+            <path d={roundedRectangle(2,2,236,156,3)}
+                  style={{ stroke: "#DDD", strokeWidth: 0.5, fill: "#FFF" }}/>
+            { svg }
+          </svg>
+          <div className="mr05em mt05em">
+            { help }
+          </div>
+        </div>
+        <div>
+          <div className="flex flex-wrap">
+            { counterButton("infantry", "ger_Pionier_sqd") }
+            { counterButton("tank", "ger_Tiger II_tank") }
+            { counterButton("machine gun", "uk_Vickers MG_sw") }
+            { counterButton("gun", "uk_QF 25-Pounder_gun") }
+            { counterButton("mortar", "fra_Brandt M1935_sw") }
+            { counterButton("leader", "ussr_Leader_ldr_6_2") }
+            { counterButton("crew", "ita_Crew_tm_2") }
+            { counterButton("flamethrower", "usa_Flamethrower_sw") }
+            { counterButton("satchel charge", "usa_Satchel Charge_sw") }
+            { counterButton("molotov coctail", "fin_Molotov Cocktail_sw") }
+            { counterButton("radio", "ussr_Radio 122mm_sw") }
+            { counterButton("anti-tank gun", "ger_8.8cm Pak 43/41_gun") }
+            { counterButton("sponsoned tank", "uk_M3 Grant_tank") }
+            { counterButton("flame tank", "usa_M3A1 Stuart FT_spg") }
+            { counterButton("self-propelled gun", "ger_Marder III_spg") }
+            { counterButton("armored car", "usa_M3A1 Scout Car_ac") }
+            { counterButton("armored half-track", "ger_SdKfz 250/1_ht") }
+            { counterButton("amtrac", "usa_LVT-1_ht") }
+            { counterButton("mortar carrier", "usa_T19/M21 MMC_ht") }
+            { counterButton("truck", "usa_GMC CCKW_truck") }
+            { counterButton("duck", "usa_GMC DUKW_truck") }
+            { counterButton("jeep", "usa_Jeep_truck") }
+            { counterButton("technical", "uk_Chevy C30 AT_truck") }
+            { counterButton("cavalry", "ger_Horse_cav") }
+            { counterButton("bicycle", "jap_Bicycle_cav") }
+            { counterButton("hedgehog", "f_Hedgehog") }
+            { counterButton("wire", "f_Wire") }
+            { counterButton("foxhole", "f_Foxhole") }
+            { counterButton("pillbox", "f_Pillbox") }
+            { counterButton("minefield", "f_Minefield") }
+            { counterButton("ap minefield", "f_AP Minefield") }
+            { counterButton("at minefield", "f_AT Minefield") }
+            { counterButton("sniper", "f_Sniper_3") }
+            { counterButton("tracked hull", "m_0_ger") }
+            { counterButton("wheeled hull", "m_1_ussr") }
+            { counterButton("breeze", "m_9_1_true_undefined") }
+            { counterButton("rain", "m_10_2_4_undefined") }
+          </div>
+          { showBreak ?
+            <div className="mt2em">
+              <div className={
+                  `custom-button normal-button counter-help-button${brokenSelect}`
+                } onClick={
+                  () => setUnitFeature(s => { return { ...s, broken: !s.broken } }) }>
+                <span>{breakName}</span>
+              </div>
+            </div> : "" }
+        </div>
+      </div>
+    )
+  }, [units, unitFeature.key, unitFeature.broken])
 
   return (
     <div>
@@ -844,60 +933,7 @@ export default function CounterSection() {
         Additionally, an explanatory help overlay is available in-game by mousing over the
         question mark icon in the upper right corner of game counters.
       </p>
-      <div className="flex mb05em flex-align-start">
-        <div>
-          <svg width={600} height={400} viewBox='0 0 240 160' style={{ minWidth: 600 }}>
-            <path d={roundedRectangle(2,2,236,156,3)}
-                  style={{ stroke: "#DDD", strokeWidth: 0.5, fill: "#FFF" }}/>
-            { counterDisplay() }
-          </svg>
-          <div className="mr05em mt05em">
-            { counterHelp }
-          </div>
-        </div>
-        <div className="flex flex-wrap">
-          { counterButton("infantry", "ger_Pionier_sqd") }
-          { counterButton("broken unit", "ussr_Guards Rifle_sqd", true) }
-          { counterButton("tank", "ger_Tiger II_tank") }
-          { counterButton("wreck", "ger_Panther D_tank", true) }
-          { counterButton("machine gun", "uk_Vickers MG_sw") }
-          { counterButton("jammed mg", "jap_Type 92 HMG_sw", true) }
-          { counterButton("gun", "uk_QF 25-Pounder_gun") }
-          { counterButton("mortar", "fra_Brandt M1935_sw") }
-          { counterButton("leader", "ussr_Leader_ldr_6_2") }
-          { counterButton("crew", "ita_Crew_tm_2") }
-          { counterButton("flamethrower", "usa_Flamethrower_sw") }
-          { counterButton("satchel charge", "usa_Satchel Charge_sw") }
-          { counterButton("molotov coctail", "fin_Molotov Cocktail_sw") }
-          { counterButton("radio", "ussr_Radio 122mm_sw") }
-          { counterButton("anti-tank gun", "ger_8.8cm Pak 43/41_gun") }
-          { counterButton("sponsoned tank", "uk_M3 Grant_tank") }
-          { counterButton("flame tank", "usa_M3A1 Stuart FT_spg") }
-          { counterButton("self-propelled gun", "ger_Marder III_spg") }
-          { counterButton("armored car", "usa_M3A1 Scout Car_ac") }
-          { counterButton("armored half-track", "ger_SdKfz 250/1_ht") }
-          { counterButton("amtrac", "usa_LVT-1_ht") }
-          { counterButton("mortar carrier", "usa_T19/M21 MMC_ht") }
-          { counterButton("truck", "usa_GMC CCKW_truck") }
-          { counterButton("duck", "usa_GMC DUKW_truck") }
-          { counterButton("jeep", "usa_Jeep_truck") }
-          { counterButton("technical", "uk_Chevy C30 AT_truck") }
-          { counterButton("cavalry", "ger_Horse_cav") }
-          { counterButton("bicycle", "jap_Bicycle_cav") }
-          { counterButton("hedgehog", "f_Hedgehog") }
-          { counterButton("wire", "f_Wire") }
-          { counterButton("foxhole", "f_Foxhole") }
-          { counterButton("pillbox", "f_Pillbox") }
-          { counterButton("minefield", "f_Minefield") }
-          { counterButton("ap minefield", "f_AP Minefield") }
-          { counterButton("at minefield", "f_AT Minefield") }
-          { counterButton("sniper", "f_Sniper_3") }
-          { counterButton("tracked hull", "m_0_ger") }
-          { counterButton("wheeled hull", "m_1_ussr") }
-          { counterButton("breeze", "m_9_1_true_undefined") }
-          { counterButton("rain", "m_10_2_4_undefined") }
-        </div>
-      </div>
+      { updateSection }
     </div>
   )
 }

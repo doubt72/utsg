@@ -21,7 +21,6 @@ export default function HelpDisplay() {
   }
 
   const compareList = (a: number[], b: number[]): boolean => {
-    console.log(`comparing ${a} with ${b}`)
     if (a.length !== b.length) { return false }
     for (let i = 0; i < a.length; i++) {
       if (a[i] !== b[i]) { return false }
