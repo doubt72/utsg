@@ -1,0 +1,1044 @@
+import React, { useEffect, useState } from "react";
+import { CircleFill, Square, SquareFill, Stack } from "react-bootstrap-icons";
+import { getAPI } from "../utilities/network";
+import Unit, { UnitData } from "../engine/Unit";
+import Feature, { FeatureData } from "../engine/Feature";
+import Marker, { MarkerData } from "../engine/Marker";
+import { roundedRectangle } from "../utilities/graphics";
+import MapCounter from "../components/game/map/MapCounter";
+import Counter from "../engine/Counter";
+import { markerType, unitStatus } from "../utilities/commonTypes";
+
+export default function CounterSection() {
+  const [counterKey, setCounterKey] = useState("ger_Pionier_sqd")
+  const [broken, setBroken] = useState(false)
+  const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
+  const [target, setTarget] = useState<Unit | Feature | Marker | undefined>()
+  const [counter, setCounter] = useState<JSX.Element | undefined>()
+  const [counterHelp, setCounterHelp] = useState<JSX.Element[]>([])
+
+  const setCounterKeyStatus = (key: string, broke: boolean = false) => {
+    setBroken(broke)
+    setCounterKey(key)
+  }
+
+  useEffect(() => {
+    const unit = units[counterKey]
+    if (!unit) { return }
+    setTarget(unit)
+    const counter = new Counter(undefined, unit)
+    if (broken) {
+      if (counter.unit.type === "tank") {
+        counter.unit.status = unitStatus.Wreck
+      } else if (counter.unit.type === "sw") {
+        counter.unit.jammed = true
+      } else {
+        counter.unit.status = unitStatus.Broken
+      }
+    }
+    counter.hideShadow = true
+    setCounter(<MapCounter counter={counter} ovCallback={() => {}} />)
+  }, [units, counterKey, broken])
+  
+  const makeIndex = (target: Unit | Feature | Marker) => {
+    if (target.isFeature) {
+      const feature = target as Feature
+      if (feature.name === "Smoke") { return `f_Smoke_${feature.hindrance}`}
+      if (feature.name === "Sniper") { return `f_Sniper_${feature.sniperRoll}`}
+      return `f_${feature.name}`
+    } else if (target.isMarker) {
+      const marker = target as Marker
+      if (marker.type === markerType.TrackedHull || marker.type === markerType.WheeledHull) {
+        return `m_${marker.type}_${marker.nation}`
+      }
+      return `m_${marker.type}_${marker.subType}_${marker.value}_${marker.value2}`
+    } else {
+      const unit = target as Unit
+      if (unit.name === "Leader") {
+        return `${unit.nation}_Leader_ldr_${unit.baseMorale}_${unit.currentLeadership}`
+      }
+      if (unit.name === "Crew") {
+        return `${unit.nation}_Crew_tm_${unit.currentGunHandling}`
+      }
+      return `${unit.nation}_${unit.name}_${unit.type}`
+    }
+  }
+
+  useEffect(() => {
+    getAPI("/api/v1/scenarios/all_units", {
+      ok: response => response.json().then(json => {
+        const data: { [index: string]: Unit | Feature | Marker } = {}
+        Object.values(json).forEach(u => {
+          let target = undefined
+          if ((u as FeatureData).ft) {
+            target = new Feature(u as FeatureData)
+          } else if ((u as MarkerData).mk) {
+            target = new Marker(u as MarkerData)
+          } else {
+            target = new Unit(u as UnitData)
+          }
+          data[makeIndex(target)] = target
+        })
+        setUnits(data)
+      })
+    })
+  }, [])
+
+  const labelLine = (x1: number, y1: number, x2: number, y2: number) => {
+    return (
+      <line x1={x1} x2={x2} y1={y1} y2={y2} style={{ stroke: "#333", strokeWidth: 0.5 }}/>
+    )
+  }
+
+  const nameOverlay = () => {
+    if (!target || target.isMarker) { return }
+    return (
+      <g>
+        <text x={64} y={19} fontSize={9} textAnchor="end">Name</text>
+        { labelLine(65,20,85,44) }
+      </g>
+    )
+  }
+
+  const moraleOverlay = () => {
+    if (!target || target.isFeature || target.isMarker) { return }
+    if (!(target as Unit).baseMorale) { return }
+    return (
+      <g>
+        <text x={56} y={33} fontSize={9} textAnchor="end">Morale</text>
+        { labelLine(57,34,89,61) }
+      </g>
+    )
+  }
+
+  const breakdownOverlay = () => {
+    if (!target || target.isFeature || target.isMarker) { return }
+    const unit = target as Unit
+    if (!unit.breakWeaponRoll || unit.isWreck) { return }
+    const name = unit.breakDestroysWeapon || unit.jammed ? "Break Roll" : "Jam Roll"
+    const extra = unit.breakDestroysWeapon ?
+      <text x={56} y={39} fontSize={5} textAnchor="end">(destroys weapon)</text> : undefined
+    const extra2 = unit.jammed ?
+      <g>
+        <text x={56} y={100} fontSize={9} textAnchor="end">Repair Roll</text>
+        { labelLine(57,97,88,80) }
+      </g> : undefined
+    const extra3 = unit.breakdownRoll ?
+      <g>
+        <text x={72} y={94} fontSize={9} textAnchor="end">Breakdown Roll</text>
+        { labelLine(73,91,86,82) }
+      </g> : undefined
+    return (
+      <g>
+        <text x={56} y={33} fontSize={9} textAnchor="end">{name}</text>
+        { extra } { extra2 } { extra3 }
+        { labelLine(57,34,87, unit.breakdownRoll ? 56 : 58) }
+      </g>
+    )
+  }
+
+  const iconOverlay = () => {
+    if (!target || target.isFeature || target.isMarker) { return }
+    const unit = target as Unit
+    const offset = unit.breakWeaponRoll && !unit.breakdownRoll ? 3 : 0
+    const swOffset = ["sw", "gun"].includes(unit.type) ? 5 : 0
+    return (
+      <g>
+        <text x={40} y={66 + offset*2} fontSize={9} textAnchor="end">Icon</text>
+        <text x={40} y={72 + offset*2} fontSize={5} textAnchor="end">{unit.isWreck ? "" : "(unit type)"}</text>
+        { labelLine(41,66 + offset*2,(unit.canCarrySupport || unit.type === "cav" ? 103 : 105) + swOffset,
+                71 + offset) }
+      </g>
+    )
+  }
+
+  const sponsonOverlay = () => {
+    if (!target || target.isFeature || target.isMarker) { return }
+    const unit = target as Unit
+    if (!unit.sponson) { return }
+    return (
+      <g>
+        <text x={60} y={96} fontSize={9} textAnchor="end">Sponson</text>
+        <text x={60} y={102} fontSize={5} textAnchor="end">(firepower - range)</text>
+        { labelLine(61,94,105,89) }
+      </g>
+    )
+  }
+
+  const leadershipHandlingOverlay = () => {
+    if (!target || target.isFeature || target.isMarker) { return }
+    const unit = target as Unit
+    if (!unit.leadership && !unit.gunHandling) { return }
+    const name = unit.leadership ? "Leadership" : "Gun Handling"
+    return (
+      <g>
+        <text x={64} y={96} fontSize={9} textAnchor="end">{name}</text>
+        { labelLine(65,93,84,83) }
+      </g>
+    )
+  }
+
+  const firepowerOverlay = () => {
+    if (!target || target.isMarker) { return }
+    const unit = target as Unit
+    const add: string[] = []
+    const y = 130
+    let x = 90
+    if (target.isFeature) {
+      const feature = target as Feature
+      if (!["Hedgehog", "Wire", "Minefield", "AP Minefield", "AT Minefield", "Sniper"].includes(feature.name)) {
+        return
+      }
+      if (feature.antiTank) { add.push("(anti-tank)"); x = 85 }
+      if (feature.fieldGun) { add.push("(anti-tank capable)"); x = 85 }
+    } else if (!unit.isWreck) {
+      if (unit.assault) { add.push("(assault bonus)"); x = 85 }
+      if (unit.smokeCapable) { add.push("(smoke capable)") }
+      if (unit.antiTank) { add.push("(anti-tank)"); x = 85 }
+      if (unit.fieldGun) { add.push("(field gun)"); x = 85 }
+      if (unit.areaFire) { add.push("(area fire)"); x = 85 }
+      if (unit.ignoreTerrain) { add.push("(negates cover)"); x = 85 }
+      if (unit.singleFire) { add.push("(single fire)"); x = 85 }
+      if (unit.offBoard) { add.push("(off board)"); x = 84 }
+      if (unit.minimumRange) { x -= 2 }
+    }
+    return (
+      <g>
+        <text x={64} y={y} fontSize={9} textAnchor="end">Firepower</text>
+        { add.map((t, i) => <text x={64} y={y + 6 + i*6} fontSize={5} textAnchor="end" key={i}>{t}</text>)}
+        { labelLine(65,y - 3,x,109) }
+      </g>
+    )
+  }
+
+  const rangeOverlay = () => {
+    if (!target || target.isMarker) { return }
+    const unit = target as Unit
+    const add: string[] = []
+    let y1 = 136
+    let y2 = 113
+    if (target.isFeature) {
+      const feature = target as Feature
+      if (!["Hedgehog", "Wire", "Minefield", "AP Minefield", "AT Minefield"].includes(feature.name)) {
+        return
+      }
+    } else if (!unit.isWreck && !unit.jammed) {
+      if (unit.rapidFire) { add.push("(rapid fire)"); y2 = 117 }
+      if (unit.targetedRange) { add.push("(targeted range)"); y2 = 117 }
+      if (unit.type === "sw" && unit.targetedRange) { add.push("(no crew bonus)") }
+      if (unit.turreted) { add.push("(turret mounted)") }
+      if (unit.rotatingVehicleMount) { add.push("(unarmored rotating mount)") }
+      if (unit.backwardsMount) { add.push("(backwards firing)") }
+      if (unit.minimumRange) { add.push("(minimum range)"); y2 = 114 }
+    }
+    if (add.length > 2) { y1 -= 5 }
+    return (
+      <g>
+        <text x={121} y={y1} fontSize={9} textAnchor="middle">Range</text>
+        { add.map((t, i) => <text x={121} y={y1 + 6 + i*6} fontSize={5} textAnchor="middle" key={i}>{t}</text>)}
+        { labelLine(121,y1 - 7,121,y2) }
+      </g>
+    )
+  }
+
+  const movementOverlay = () => {
+    if (!target || target.isMarker) { return }
+    const unit = target as Unit
+    const add: string[] = []
+    const y = 130
+    let x = 151
+    let name = "Movement"
+    if (target.isFeature) {
+      const feature = target as Feature
+      if (!["Hedgehog", "Wire", "Minefield", "AP Minefield", "AT Minefield"].includes(feature.name)) {
+        return
+      }
+      if (feature.impassableToVehicles) { add.push("(impassable to vehicles)"); x = 157 }
+      if (feature.currentMovement === "A") { add.push("(uses all movement)"); x = 153 }
+    } else if (!unit.isWreck) {
+      if (unit.type === "sw") { name = "Encumbrance" }
+      if (unit.engineer) { add.push("(engineer)") }
+      if (unit.baseMovement < 0) { x = 155 }
+      if (unit.isTracked) { add.push("(tracked)"); x = 157 }
+      if (unit.isWheeled) { add.push("(wheeled)"); x = 157 }
+      if (unit.crewed) { add.push("(crewed weapon)"); x = 157 }
+      if (unit.amphibious) { add.push("(amphibious)") }
+      if (unit.minimumRange) { x += 2 }
+    }
+    return (
+      <g>
+        <text x={172} y={y} fontSize={9} textAnchor="start">{name}</text>
+        { add.map((t, i) => <text x={172} y={y + 6 + i*6} fontSize={5} textAnchor="start" key={i}>{t}</text>)}
+        { labelLine(171,y - 3,x,109) }
+      </g>
+    )
+  }
+
+  const armorOverlay = () => {
+    if (!target || target.isFeature || target.isMarker) { return }
+    const unit = target as Unit
+    if (!unit.hullArmor || unit.isWreck) { return }
+    const extra = unit.turretArmor ?
+      <g>
+        <text x={176} y={74} fontSize={9} textAnchor="start">Turret Armor</text>
+        { labelLine(175,74,158,79) }
+      </g> : undefined
+    const extra2 = unit.turretArmor ?
+      <text x={176} y={80} fontSize={5} textAnchor="start">(front, side, rear)</text> : undefined
+    const extra3 = unit.hullArmor && unit.hullArmor[2] === -1 ?
+      <text x={176} y={106} fontSize={5} textAnchor="start">(rear open)</text> : undefined
+    return (
+      <g>
+        <text x={176} y={94} fontSize={9} textAnchor="start">Hull Armor</text>
+        <text x={176} y={100} fontSize={5} textAnchor="start">(front, side, rear)</text>
+        { extra } { extra2 } { extra3 }
+        { labelLine(175,91,158,89) }
+      </g>
+    )
+  }
+
+  const sizeOverlay = () => {
+    if (!target || target.isFeature || target.isMarker) { return }
+    const unit = target as Unit
+    const add: string[] = []
+    const y = 33
+    let x = 152
+    if (!unit.isWreck) {
+      if (unit.armored) {
+        add.push("(armored)"); x = 157
+      } else if (!["sw", "gun"].includes(unit.type)) {
+        add.push("(unarmored)")
+      }
+      if (unit.towSize) { add.push("(towable)"); x = 157 }
+      if (unit.topOpen) { add.push("(incomplete armor)"); x = 159 }
+      if (unit.canTow) { add.push("(can tow)") }
+      if (unit.transport > 2) {
+        add.push("(can transport squad)")
+      } else if (unit.transport > 1) {
+        add.push("(can transport team)")
+      } else if (unit.transport) {
+        add.push("(can transport leader)")
+      }
+    }
+    return (
+      <g>
+        <text x={176} y={y} fontSize={9} textAnchor="start">Size</text>
+        { add.map((t, i) => <text x={176} y={y + 6 + i*6} fontSize={5} textAnchor="start" key={i}>{t}</text>)}
+        { labelLine(176,34,x,unit.type === "cav" ? 53 : 56) }
+      </g>
+    )
+  }
+
+  const facingOverlay = () => {
+    if (!target) { return }
+    if (!target.rotates &&
+        !(target.isMarker && (target.type === markerType.TrackedHull ||
+                              target.type === markerType.WheeledHull ||
+                              target.type === markerType.Wind))) {
+      return
+    }
+    const name = target.type === markerType.Wind ? "This Direction" : "Faces This Edge"
+    return (
+      <g>
+        <text x={121} y={36} fontSize={7} textAnchor="middle">{name}</text>
+      </g>
+    )
+  }
+
+  const sniperOverlay = () => {
+    if (!target || !target.isFeature) { return }
+    const feature = target as Feature
+    if (!feature.sniperRoll) { return }
+    return (
+      <g>
+        <text x={150} y={22} fontSize={9} textAnchor="start">Activation Roll</text>
+        { labelLine(172,24,129,65) }
+      </g>
+    )
+  }
+
+  const coverOverlay = () => {
+    if (!target || !target.isFeature) { return }
+    const feature = target as Feature
+    if (!feature.cover && !feature.coverSides) { return }
+    const sub = feature.cover ? "(any direction)" : "(front, side, rear)"
+    return (
+      <g>
+        <text x={160} y={141} fontSize={9} textAnchor="start">Cover</text>
+        <text x={160} y={147} fontSize={5} textAnchor="start">{sub}</text>
+        { labelLine(159,134,146,115) }
+      </g>
+    )
+  }
+
+  const weatherOverlay = () => {
+    if (!target || !target.isMarker) { return }
+    const marker = target as Marker
+    if (marker.type !== markerType.Wind && marker.type !== markerType.Weather) { return }
+    const fe = marker.type === markerType.Weather ?
+      <g>
+        <text x={150} y={22} fontSize={9} textAnchor="start">Fire Extinguished</text>
+        { labelLine(172,24,141,54) }
+      </g> : undefined
+    const fs = marker.type === markerType.Wind ?
+      <g>
+        <text x={70} y={110} fontSize={9} textAnchor="end">Fire Spread</text>
+        { labelLine(71,108,99,100) }
+      </g> : undefined
+    const sd = marker.type === markerType.Wind ?
+      <g>
+        <text x={155} y={141} fontSize={9} textAnchor="start">Smoke Dispersed</text>
+        { labelLine(154,136,139,116) }
+      </g> : undefined
+    return (
+      <g>
+        { fe }{ fs }{ sd }
+      </g>
+    )
+  }
+
+  const counterDisplay = () => {
+    if (!target) { return }
+    return (
+      <g>
+        <g transform="translate(78 38)">
+          {counter}
+        </g>
+        { nameOverlay() }
+        { moraleOverlay() }
+        { breakdownOverlay() }
+        { iconOverlay() }
+        { sponsonOverlay() }
+        { leadershipHandlingOverlay() }
+        { firepowerOverlay() }
+        { rangeOverlay() }
+        { movementOverlay() }
+        { armorOverlay() }
+        { sizeOverlay() }
+        { facingOverlay() }
+        { coverOverlay() }
+        { sniperOverlay() }
+        { weatherOverlay() }
+      </g>
+    )
+  }
+
+  useEffect(() => {
+    if (!target) { return }
+    const sections: JSX.Element[] = []
+    let index = 0
+    const unit = target as Unit
+    if (target.isMarker) {
+      const marker = target as Marker
+      if (marker.type === markerType.TrackedHull || marker.type === markerType.WheeledHull) {
+        sections.push(<p key={index++}>
+          <strong>Hull facing</strong> is the direction the vehicle itself is facing.
+        </p>)
+        sections.push(<p key={index++}>
+          <strong>Turret facing</strong> is indicated with the unit counter itself.
+        </p>)
+      }
+      if (marker.type === markerType.Weather) {
+        sections.push(<p key={index++}>
+          <strong>Fire extinguished</strong> is the chance fires will go out during the cleanup phase.
+        </p>)
+        sections.push(<p key={index++}>
+          <strong>Chance</strong> is the odds that there will be precipitation any given turn.
+        </p>)
+      }
+      if (marker.type === markerType.Wind) {
+        sections.push(<p key={index++}>
+          <strong>Variable</strong> wind is more likely to change direction or strength.
+        </p>)
+        sections.push(<p key={index++}>
+          <strong>Fire spread</strong> is the chance fires will spread during the cleanup phase.
+        </p>)
+        sections.push(<p key={index++}>
+          <strong>Smoke dispersed</strong> is the chance smoke markers will be removed during
+          the cleanup phase.
+        </p>)
+      }
+    } else if (target.isFeature) {
+      const feature = target as Feature
+      if (feature.cover) {
+        sections.push(<p key={index++}>
+          <strong>Cover</strong> protects all units in the hex from fire.
+        </p>)
+      }
+      if (feature.coverSides) {
+        sections.push(<p key={index++}>
+          <strong>Cover</strong> protects all units in the hex from fire from that direction.
+        </p>)
+      }
+      if (feature.sniperRoll) {
+        sections.push(<p key={index++}>
+          <strong>Activation roll</strong> is the chance a sniper will hit the unit after it takes
+          an action.
+        </p>)
+      }
+      if (feature.baseFirepower) {
+        if (feature.baseFirepower === "½") {
+          sections.push(<p key={index++}>
+            <strong>Firepower</strong>: units fire at half power from wire.
+          </p>)
+        } else {
+          sections.push(<p key={index++}>
+            <strong>Firepower</strong> is the strength of the attack.
+          </p>)
+        }          
+      }
+      if (feature.antiTank) {
+        sections.push(<p key={index++}>
+          <strong>Circled firepower</strong> has full effect on armored targets and has no effect
+          on soft targets.
+        </p>)
+      }
+      if (feature.fieldGun) {
+        sections.push(<p key={index++}>
+          <strong>White circled firepower</strong> has full effect on soft or armored targets.
+        </p>)
+      }
+      if (feature.baseFirepower && !feature.fieldGun && !feature.antiTank && feature.baseFirepower !== "½") {
+        sections.push(<p key={index++}>
+          <strong>Uncircled firepower</strong> has full effect on soft targets and has no effect
+          on armored targets.
+        </p>)
+      }
+      if (feature.impassableToVehicles) {
+        sections.push(<p key={index++}>
+          <strong>Circled zero movement</strong> indicates impassible to vehicles.
+        </p>)
+      }
+    } else if (!unit.isWreck) {
+      sections.push(<p>Clockwise from top:</p>)
+      if (unit.turreted) {
+        sections.push(<p key={index++}>
+          <strong>Facing</strong> indicates direction turret is facing; a hull marker is used
+          for the vehicle itself.
+        </p>)
+      } else if (unit.rotates) {
+        sections.push(<p key={index++}>
+          <strong>Facing</strong> indicates direction unit is facing.
+        </p>)
+      }
+      if (unit.size) {
+        sections.push(<p key={index++}>
+          <strong>Size</strong> is the stacking size of the unit.
+        </p>)
+      }
+      if (unit.armored && unit.topOpen) {
+        sections.push(<p key={index++}>
+          <strong>Boxed size</strong> indicates the unit is not completely armored, and vulnerable
+          to area fire (i.e., mortars or off-board artillery).
+        </p>)
+      } else if (unit.armored) {
+        sections.push(<p key={index++}>
+          <strong>Circled size</strong> indicates the unit is armored.
+        </p>)
+      } else if (!unit.crewed && !unit.uncrewedSW) {
+        sections.push(<p key={index++}>
+          <strong>Uncircled, unboxed size</strong> indicates the unit is soft (unarmored).
+        </p>)
+      }
+      if (unit.towSize) {
+        sections.push(<p key={index++}>
+          <strong>Size superscript</strong> is the minimum size of the vehicle needed to tow this unit.
+        </p>)
+      }
+      if (unit.canTow) {
+        sections.push(<p key={index++}>
+          <strong>Underlined size</strong> indicates that the vehicle can tow crewed weapons.
+        </p>)
+      }
+      if (unit.transport > 2) {
+        sections.push(<p key={index++}>
+          <strong>Two dots next to size</strong> indicates that the unit can carry a squad or a team,
+          as well as a leader and their infantry weapons.
+        </p>)
+      } else if (unit.transport > 1) {
+        sections.push(<p key={index++}>
+          <strong>A right dot next to size</strong> indicates that the unit can carry a team (not a full
+          squad), as well as a leader and their infantry weapons.
+        </p>)
+      } else if (unit.transport) {
+        sections.push(<p key={index++}>
+          <strong>A left dot next to size</strong> indicates that the unit can carry a leader and
+          their infantry weapon.  This may be useful for transporting artillery spotters.
+        </p>)
+      }
+      if (unit.turretArmor) {
+        sections.push(<p key={index++}>
+          <strong>Turret armor</strong> is used for hits on the front, side, or rear.  The weakest armor
+          is used for hits by area fire.
+        </p>)
+      }
+      if (unit.hullArmor) {
+        sections.push(<p key={index++}>
+          <strong>Hull armor</strong> is used for hits on the front, side, or rear.  The weakest armor
+          is used for hits by mines (treating unarmored as 0) or area fire.
+        </p>)
+      }
+      if (unit.uncrewedSW) {
+        sections.push(<p key={index++}>
+          <strong>Negative movement</strong> (if any) indicates the encumbrance, or how much to reduce the
+          movement of the unit carrying this infantry weapon.
+        </p>)
+      } else if (unit.isTracked) {
+        sections.push(<p key={index++}>
+          <strong>Circled movement</strong> indicates that this is a tracked vehicle.
+        </p>)
+      } else if (unit.isWheeled) {
+        sections.push(<p key={index++}>
+          <strong>White circled movement</strong> indicates that this is a wheeled vehicle.
+        </p>)
+      } else if (unit.crewed) {
+        sections.push(<p key={index++}>
+          <strong>Black circled movement</strong> indicates that this is a crewed weapon and
+          must be maneuvered by its crew.
+        </p>)
+      } else if (unit.currentMovement) {
+        sections.push(<p key={index++}>
+          <strong>Uncircled, unboxed movement</strong> indicates that is this unit moves by foot.
+        </p>)
+      }
+      if (unit.engineer) {
+        sections.push(<p key={index++}>
+          <strong>A dot above movement</strong> indicates that this unit is an engineer and may
+          be able to remove obstacles or build defensive features more quickly.
+        </p>)
+      }
+      if (unit.amphibious) {
+        sections.push(<p key={index++}>
+          <strong>Underlined movement</strong> indicates that this vehicle is amphibious.
+        </p>)
+      }
+      if (unit.rapidFire) {
+        sections.push(<p key={index++}>
+          <strong>Boxed range</strong> indicates this unit has rapid fire.  Rapid fire weapons can shoot
+          at multiple hexes in one firing action.  Non-vehicle rapid firing weapons an be combined with
+          other rapid firing units when a leader is present, or with other infantry units if carried or
+          a leader is present but without being able to target multiple hexes.
+        </p>)
+      } else if (unit.targetedRange) {
+        sections.push(<p key={index++}>
+          <strong>Circled range</strong> indicates this unit requires an additional targeting roll and
+          (unless an area fire weapon) can only target one unit.
+        </p>)
+      } else if (unit.currentRange) {
+        sections.push(<p key={index++}>
+          <strong>Uncircled, unboxed range</strong> indicates this unit targets all units in a single
+          hex, but can be combined with other like units, or rapid firing (non-vehicle) units if
+          carried or a leader is present.
+        </p>)
+      }
+      if (unit.minimumRange) {
+        sections.push(<p key={index++}>
+          <strong>Two ranges</strong> indicates minimum and maximum range.
+        </p>)
+      }
+      if (unit.turreted) {
+        sections.push(<p key={index++}>
+          <strong>White filled range</strong> indicates this vehicle has an armored turret that can be
+          oriented independently of the rest of the vehicle.  The unit counter is used to indicate
+          the direction of the turret, with a hull marker indicating the direction of the vehicle itself.
+        </p>)
+      }
+      if (unit.rotatingVehicleMount) {
+        sections.push(<p key={index++}>
+          <strong>A line above range</strong> indicates that this vehicle does not have an armored
+          turret but has a weapon that can be freely trained in any direction.
+        </p>)
+      }
+      if (unit.backwardsMount) {
+        sections.push(<p key={index++}>
+          <strong>A dot below range</strong> indicates that this vehicle has its weapon mounted backwards.
+        </p>)
+      }
+      if (unit.type === "sw" && unit.targetedRange) {
+        sections.push(<p key={index++}>
+          <strong>Black filled range</strong> indicates that this weapon gets no crew bonus.
+        </p>)
+      }
+      if (unit.assault) {
+        sections.push(<p key={index++}>
+          <strong>Boxed firepower</strong> indicates that this unit gets a +2 bonus in close combat.
+          While only infantry units&apos; base firepower is used for close combat, infantry weapons&apos;
+          assault bonus can be included.  However, if the infantry weapons are single shot, they are
+          removed after combat.  This weapon has no effect on armored targets.
+        </p>)
+      } else if (unit.antiTank) {
+        sections.push(<p key={index++}>
+          <strong>Circled firepower</strong> indicates high-velocity anti-tank weapons.  These weapons
+          get full effect on armored targets but only get half effect on soft targets.
+        </p>)
+      } else if (unit.fieldGun) {
+        sections.push(<p key={index++}>
+          <strong>White circled firepower</strong> indicates low-velocity, primarily anti-infantry weapons.
+          These weapons get full effect on soft targets but only get half effect on
+          armored targets.
+        </p>)
+      } else if (unit.offBoard) {
+        sections.push(<p key={index++}>
+          <strong>Hexed firepower</strong> indicates that this is an off-board artillery unit with
+          special firing rules.  (This is also primarily an anti-infantry area weapon, so only has
+          half effect on fully armored targets.)
+        </p>)
+      } else if (unit.areaFire) {
+        sections.push(<p key={index++}>
+          <strong>Bottom-dotted white circled firepower</strong> indicates that this unit uses
+          area fire, with full effect on soft targts and half effect on fully armored targets.
+        </p>)
+      } else if (unit.currentFirepower && !unit.ignoreTerrain) {
+        sections.push(<p key={index++}>
+          <strong>Uncircled, unboxed firepower</strong> indicates that this
+          weapons has no effect on armored targets.
+        </p>)
+      }
+      if (unit.smokeCapable) {
+        sections.push(<p key={index++}>
+          <strong>A dot above firepower</strong> indicates that this unit can use smoke grenades
+          or fire smoke rounds.
+        </p>)
+      }
+      if (unit.ignoreTerrain && unit.singleFire) {
+        sections.push(<p key={index++}>
+          <strong>Red filled firepower</strong> indicates that this weapon ignores terrain or
+          defensive feature effects <strong>and</strong> this weapon can only be fired once before
+          it is removed, regardless of whether or not a hit is achieved.
+        </p>)
+      } else if (unit.ignoreTerrain) {
+        sections.push(<p key={index++}>
+          <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
+          defensive feature effects.
+        </p>)
+      } else if (unit.singleFire) {
+        sections.push(<p key={index++}>
+          <strong>Black filled firepower</strong> indicates that this weapon can only be fired once
+          before it is removed, regardless of whether or not a hit is achieved.
+        </p>)
+      }
+      if (unit.breakdownRoll) {
+        sections.push(<p key={index++}>
+          <strong>A bottom yellow circle</strong> indicates that this vehicle has a chance of breaking
+          down.
+        </p>)
+      }
+      if (unit.breakWeaponRoll && (unit.breakDestroysWeapon || unit.jammed)) {
+        sections.push(<p key={index++}>
+          <strong>A red circle</strong> indicates that this weapon may break.
+        </p>)
+      } else if (unit.breakWeaponRoll) {
+        sections.push(<p key={index++}>
+          <strong>A yellow circle</strong> indicates that this weapon may jam.
+        </p>)
+      }
+      if (unit.gunHandling) {
+        sections.push(<p key={index++}>
+          <strong>A circled number</strong> indicates that this unit has a bonus for operating
+          crewed guns.
+        </p>)
+      }
+      if (unit.leadership) {
+        sections.push(<p key={index++}>
+          <strong>A hexed nmber</strong> indicates that this unit has a leadership bonus that can
+          be applied to stacked units.  Also, units in that range can be combined in infantry arms attacks.
+        </p>)
+      }
+      if (unit.baseMorale) {
+        sections.push(<p key={index++}>
+          <strong>Morale</strong> affects the chance of the unit breaking when hit.
+        </p>)
+      }
+      if (unit.sponson) {
+        sections.push(<p key={index++}>
+          <strong>Numbers across</strong> the bottom of the icon indicate a sponson weapon.
+        </p>)
+      }
+      if (unit.type === "sqd") {
+        sections.push(
+          <p><strong>This icon</strong> indicates this unit is a squad.</p>
+        )
+      }
+      if (unit.type === "tm") {
+        sections.push(
+          <p><strong>This icon</strong> indicates this unit is a team.</p>
+        )
+      }
+    }
+    setCounterHelp(sections)
+  }, [target])
+
+  return (
+    <div>
+      <h1>Game Counters</h1>
+      <p>
+        There are three kinds of on-map counters in the game: units, features,
+        and markers.  In addition there are a few additional off-map status markers.
+        Counter display (i.e., whether to show counters or the underlying map terrain)
+        can be toggled using the counters button:
+      </p>
+      <div className="flex mb05em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <SquareFill /> <span>counters</span>
+        </div>
+        <div className="mt05em">/</div>
+        <div className="custom-button normal-button">
+          <Square /> <span>counters</span>
+        </div>
+        <div className="flex-fill"></div>
+      </div>
+      <p>
+        Unit counters represent squads or teams, leaders, vehicles, and various guns or
+        other infantry equipment, and can be moved, fired, or otherwise
+        ordered.  Unit counters&apos; background color matches the color of the
+        faction they belong to.
+      </p>
+      <p>
+        Feature counters represent various on-map obstacles of various sorts such as
+        wire, mines, smoke, fires and such, as well as defensive fortifications.  Features
+        can&apos;t be ordered or moved (although they can be placed or removed under certain
+        circumstances).  Features generally have a white background.
+      </p>
+      <p>
+        Markers represent unit status on-map (such as fatigue, jammed weapons and such), or
+        game status off-map (e.g., marking the current turn, initiative, or indicating weather
+        conditions).  Markers are also used to indicate facing of tank or vehicle hulls if a
+        vehicle has a turret (in which case the unit counter indicates turret facing).  On-map
+        status markers can also be displayed via a badge over the unit instead of as separate
+        markers, which can be toggled with the status button:
+      </p>
+      <div className="flex mb05em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <CircleFill /> <span>status</span>
+        </div>
+        <div className="mt05em">/</div>
+        <div className="custom-button normal-button">
+          <Stack /> <span>status</span>
+        </div>
+        <div className="flex-fill"></div>
+      </div>
+      <h2 className="mt1em">Counter Layout</h2>
+      <p>
+        Select the buttons on the right to see example explanations of various counter layouts.
+        Additionally, an explanatory help overlay is available in-game by mousing over the
+        question mark icon in the upper right corner of game counters.
+      </p>
+      <div className="flex mb05em flex-align-start">
+        <div>
+          <svg width={600} height={400} viewBox='0 0 240 160' style={{ minWidth: 600 }}>
+            <path d={roundedRectangle(2,2,236,156,3)}
+                  style={{ stroke: "#DDD", strokeWidth: 0.5, fill: "#FFF" }}/>
+            { counterDisplay() }
+          </svg>
+          <div className="mr05em">
+            { counterHelp }
+          </div>
+        </div>
+        <div className="flex flex-wrap">
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ger_Pionier_sqd")
+          }>
+            <span>infantry</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ger_Tiger II_tank")
+          }>
+            <span>tank</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("uk_Vickers MG_sw")
+          }>
+            <span>machine gun</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("uk_QF 25-Pounder_gun")
+          }>
+            <span>gun</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("fra_Brandt M1935_sw")
+          }>
+            <span>mortar</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ussr_Leader_ldr_6_2")
+          }>
+            <span>leader</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ita_Crew_tm_2")
+          }>
+            <span>crew</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ussr_Guards Rifle_sqd", true)
+          }>
+            <span>broken unit</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("jap_Type 92 HMG_sw", true)
+          }>
+            <span>jammed mg</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_Flamethrower_sw")
+          }>
+            <span>flamethrower</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_Satchel Charge_sw")
+          }>
+            <span>satchel charge</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("fin_Molotov Cocktail_sw")
+          }>
+            <span>molotov coctail</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ussr_Radio 122mm_sw")
+          }>
+            <span>radio</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ger_8.8cm Pak 43/41_gun")
+          }>
+            <span>anti-tank gun</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("uk_M3 Grant_tank")
+          }>
+            <span>sponsoned tank</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_M3A1 Stuart FT_spg")
+          }>
+            <span>flame tank</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ger_Panther D_tank", true)
+          }>
+            <span>wreck</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ger_Marder III_spg")
+          }>
+            <span>self-propelled gun</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_M3A1 Scout Car_ac")
+          }>
+            <span>armored car</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ger_SdKfz 250/1_ht")
+          }>
+            <span>armored half-track</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_LVT-1_ht")
+          }>
+            <span>amtrac</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_T19/M21 MMC_ht")
+          }>
+            <span>mortar carrier</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_GMC CCKW_truck")
+          }>
+            <span>truck</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_GMC DUKW_truck")
+          }>
+            <span>duck</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("usa_Jeep_truck")
+          }>
+            <span>jeep</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("uk_Chevy C30 AT_truck")
+          }>
+            <span>technical</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("ger_Horse_cav")
+          }>
+            <span>cavalry</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("jap_Bicycle_cav")
+          }>
+            <span>wheeled cavalry</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_Hedgehog")
+          }>
+            <span>hedgehog</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_Wire")
+          }>
+            <span>wire</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_Foxhole")
+          }>
+            <span>foxhole</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_Pillbox")
+          }>
+            <span>pillbox</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_Minefield")
+          }>
+            <span>minefield</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_AP Minefield")
+          }>
+            <span>ap minefield</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_AT Minefield")
+          }>
+            <span>at minefield</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("f_Sniper_3")
+          }>
+            <span>sniper</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("m_0_ger")
+          }>
+            <span>tracked hull</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("m_1_ussr")
+          }>
+            <span>wheeled hull</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("m_9_1_true_undefined")
+          }>
+            <span>breeze</span>
+          </div>
+          <div className="custom-button normal-button counter-help-button" onClick={
+            () => setCounterKeyStatus("m_10_2_4_undefined")
+          }>
+            <span>rain</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

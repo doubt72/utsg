@@ -422,7 +422,7 @@ module Utility
             unit.each_with_index do |v, i|
               mortar[key[i]] = v
             end
-            mortar[:o].merge!({ t: 1, b: 3, g: 1 })
+            mortar[:o].merge!({ t: 1, b: 3, e: 1 })
             mortar[:s] = 3 if mortar[:o][:c]
             lu[:"#{mortar[:c]}_#{sanitize(mortar[:n])}"] = mortar
           end
@@ -463,7 +463,7 @@ module Utility
             unit.each_with_index do |v, i|
               radio[key[i]] = v
             end
-            radio.merge!({ r: 0, v: 0, o: { s: 1, o: 1, j: 3, f: 18 } })
+            radio.merge!({ r: 0, v: 0, o: { s: 1, o: 1, j: 3, f: 18, e: 1 } })
             lu[:"#{radio[:c]}_#{sanitize(radio[:n])}"] = radio
           end
           lu
@@ -848,7 +848,7 @@ module Utility
             ["fra", "Renault UE", 32, 3, 0, 0, 4, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, tr: 2, trg: 1 }],
             ["fra", "Lorraine 37L", 39, 3, 0, 0, 5, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, tr: 3, trg: 1 }],
             ["ger", "SdKfz 250/1", 41, 3, 8, 8, 6, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, tr: 2, trg: 1 }],
-            ["ger", "SdKfz 250/7", 41, 3, 20, 16, 6, { t: 1, m: 3, ha: { f: 1, s: 0, r: 0, t: -1 } }],
+            ["ger", "SdKfz 250/7", 41, 3, 20, 16, 6, { t: 1, m: 3, e: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/8", 41, 3, 16, 16, 6, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/9", 41, 3, 4, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
             ["ger", "SdKfz 250/10", 41, 3, 8, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
@@ -883,7 +883,7 @@ module Utility
             ["usa", "T12 GMC", 42, 3, 24, 20, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
             ["usa", "T19 GMC", 42, 3, 40, 24, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
             ["usa", "T48 GMC", 42, 3, 7, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["usa", "T19/M21 MMC", 42, 3, 20, 20, 6, { t: 1, m: 3, ha: { f: 1, s: 1, r: 0, t: -1 } }],
+            ["usa", "T19/M21 MMC", 42, 3, 20, 20, 6, { t: 1, m: 3, e: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
           ].each do |unit|
             ht = { t: "ht", i: "ht" }
             unit.each_with_index do |v, i|

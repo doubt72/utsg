@@ -35,6 +35,10 @@ button.custom-button-balance svg {
   margin: 0;
 }
 
+a.custom-button-balance svg {
+  margin: 0;
+}
+
 a.custom-button {
   padding: 0.33em 0.75em;
 }
@@ -422,4 +426,36 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
 .debug-unit-counter-stat {
   font-size: 12px;
   text-align: center;
+}
+
+.help-page {
+  display: flex;
+  padding: 1em;
+}
+
+.help-index {
+  background-color: $background-gray;
+  border-radius: 0.33em;
+  padding-bottom: 2em;
+  padding-right: 1em;
+}
+
+.help-index-header {
+  padding: 1em;
+}
+
+.help-body {
+  margin-left: 1em;
+  flex-grow: 1;
+  border-radius: 0.33em;
+}
+
+.help-body p {
+  margin-left: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.counter-help-button {
+  width: 170px;
+  height: 33px;
 }

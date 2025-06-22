@@ -55,7 +55,7 @@ export function nameBackgroundPath(counter: Counter): string {
 }
 
 export function nameBackgroundStyle(counter: Counter): SVGStyle {
-  return { fill: reverseName(counter) ? "red" : clearColor }
+  return { fill: reverseName(counter) ? counterRed : clearColor }
 }
 
 export function shadowPath(counter: Counter): string | false {

@@ -13,7 +13,7 @@ import { unitHelpText } from "./support/help";
 // r: range
 // v: movement
 // o: flags:
-//    l: leadership, a: assault, s: smoke, r: rapid fire, z: armored
+//    l: leadership, a: assault, s: smoke, r: rapid fire, z: armored, e: area fire,
 //    cw: crew skill, x: single shot, i: ignore terrain
 //    j: jam number, b: break number, bd: breakdown number
 //    t: targeted fire, m: minimum range, p: antitank, g: artillery, o: offboard artillery
@@ -37,6 +37,7 @@ export type UnitData = {
   f: number; r: number; v: number;
   o: {
     l?: LeadershipRange; a?: NumberBoolean; s?: NumberBoolean; r?: NumberBoolean;
+    e?: NumberBoolean;
     z?: NumberBoolean; cw?: GunHandlingRange; x?: NumberBoolean; i?: NumberBoolean;
     j?: number; b?: number; bd?: number; uu?: NumberBoolean; bw?: NumberBoolean;
     t?: NumberBoolean; m?: number; p?: NumberBoolean; g?: NumberBoolean;
@@ -86,6 +87,7 @@ export default class Unit {
   targetedRange: boolean;
   minimumRange?: number;
   fieldGun: boolean;
+  areaFire: boolean;
   antiTank: boolean;
   rotatingMount: boolean;
   crewed: boolean;
@@ -163,6 +165,7 @@ export default class Unit {
     this.targetedRange = !!data.o?.t
     this.minimumRange = data.o?.m
     this.fieldGun = !!data.o?.g
+    this.areaFire = !!data.o?.e
     this.antiTank = !!data.o?.p
     this.rotatingMount = !!data.o?.y
     this.crewed = !!data.o?.c

@@ -3,7 +3,7 @@ import MapHexPatterns from "./MapHexPatterns";
 import Counter from "../../../engine/Counter";
 import { CounterLayout, StatusLayout } from "../../../utilities/graphics";
 import {
-  amphibiousLayout, breakdownLayout, canTowLayout, centerLabelLayout, eliteLayout, engineerLayout,
+  amphibiousLayout, areaLayout, breakdownLayout, canTowLayout, centerLabelLayout, eliteLayout, engineerLayout,
   firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
   hullArmorLayout, iconLayout, leadershipLayout, moraleLayout, movementLayout, rangeLayout,
   sizeLayout, smokeLayout, sponsonLayout, towLayout, transportLLayout, transportRLayout, turretArmorLayout,
@@ -262,6 +262,13 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
     )
   }
 
+  const area = () => {
+    const layout = areaLayout(counter)
+    if (layout) return (
+      <path d={layout.path} style={layout.style as object} />
+    )
+  }
+
   const smoke = () => {
     const layout = smokeLayout(counter)
     if (layout) return (
@@ -495,7 +502,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}
       {firepower()}{range()}{movement()}
-      {smoke()}{gunForward()}{gunBackward()}{engineer()}{amphibious()}
+      {smoke()}{area()}{gunForward()}{gunBackward()}{engineer()}{amphibious()}
       {elite()}
       {tow()}{canTow()}{leftTransport()}{rightTransport()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}

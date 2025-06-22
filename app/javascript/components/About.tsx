@@ -12,7 +12,7 @@ export default function About() {
           <p>I mean, I&apos;m basically working on it.</p>
           <p>Might want to add some code of conduct here, and if so, link here from the signup page.</p>
           <div className="align-end">
-            {AboutHelpButton("", 1)}<ReturnButton />
+            {AboutHelpButton()}<ReturnButton />
           </div>
         </div>
         <div className="about-logo">

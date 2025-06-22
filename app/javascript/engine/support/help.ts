@@ -287,7 +287,7 @@ export function unitHelpText(unit: Unit): string[] {
     text.push("- firing expends weapon")
   }
   if (unit.ignoreTerrain) {
-    text.push("- ignores terrain")
+    text.push("- negates cover")
   }
   if (unit.currentSmokeCapable) {
     if (unit.targetedRange) {

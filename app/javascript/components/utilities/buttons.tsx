@@ -154,14 +154,11 @@ export const VerifyButton = () => {
   return <CustomSubmitButton text="verify"><Check2Square /></CustomSubmitButton>
 }
 
-export const AboutHelpButton = (section: string, key: number) => {
+export const AboutHelpButton = () => {
   return (
-    <button onClick={() => {
-      const url = `/help`
-      window.open(url)
-    }} key={key} className="custom-button custom-button-balance nowrap">
+    <Link to={"/help"} className="custom-button custom-button-balance nowrap">
       <QuestionCircle />
-    </button>
+    </Link>
   )
 }
 

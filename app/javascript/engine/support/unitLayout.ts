@@ -236,8 +236,12 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     value = counter.unit.currentFirepower
     size = 18
   } else if (counter.hasUnit) {
-    if (counter.unit.antiTank || counter.unit.fieldGun) {
+    if (counter.unit.antiTank || counter.unit.fieldGun || counter.unit.areaFire) {
       path = circlePath(loc, 10)
+    }
+    if (counter.unit.areaFire) {
+      style.stroke = "black"
+      style.fill = "white"
     }
     if (counter.unit.offBoard) {
       path = hexPath(loc.yDelta(+0.5), 11, false)
@@ -248,13 +252,11 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
       style.stroke = "black"
     }
     if (counter.unit.singleFire && counter.unit.ignoreTerrain) {
-      style.stroke = "red"
-      style.fill = "red"
+      style.fill = counterRed
     } else if (counter.unit.singleFire) {
       style.stroke = "black"
       style.fill = "black"
     } else if (counter.unit.ignoreTerrain) {
-      style.stroke = markerYellow
       style.fill = markerYellow
     }
     if (counter.unit.fieldGun) {
@@ -268,9 +270,9 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     path = circlePath(loc, 10)
     color = "white"
     if (counter.feature.fieldGun) {
-      style.stroke = "red"
+      style.stroke = counterRed
       style.fill = "white"
-      color = "red"
+      color = counterRed
     }
     if (counter.feature.antiTank) {
       style.stroke = "white"
@@ -281,6 +283,15 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     path: path, style: style, tStyle: { fill: color },
     x: loc.x, y: loc.y+5, size: size, value: value,
   }
+}
+
+export function areaLayout(counter: Counter): CounterLayout | false {
+  if (!counter.hasUnit || !counter.unit.areaFire) { return false }
+  const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
+  const y = counter.y + 74.5
+  const size = 2
+  const path = circlePath(new Coordinate(x, y), size)
+  return { x, y, size, path, style: { fill: "black" } }
 }
 
 export function smokeLayout(counter: Counter): CounterLayout | false {
@@ -301,8 +312,8 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
       featureType.Smoke, featureType.Fire, featureType.Bunker, featureType.Foxhole,
       featureType.Rubble,
     ].includes(counter.feature.type)) {
-  return false
-}
+    return false
+  }
   let loc = new Coordinate(counter.x + 40, counter.y + 67)
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
   let value: number | string = counter.targetUF.currentRange
