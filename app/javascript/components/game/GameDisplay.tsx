@@ -14,6 +14,7 @@ import {
   ArrowsCollapse, ArrowsExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
   GeoAltFill, Hexagon, HexagonFill, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -89,15 +90,24 @@ export default function GameDisplay() {
     }
   }
 
+  const scaleMinusTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      This is a helpful tooltip!
+    </Tooltip>
+  )
+
   useEffect(() => {
     setMapScaleMinusButton(
-      <div className={
-        mapScale > 0.52 ? "custom-button normal-button" :
-          "custom-button normal-button custom-button-ghost"
-      }
-           onClick={() => switchMapScale(-1)}>
-        <span>map</span> <DashCircle />
-      </div>
+      <OverlayTrigger placement="bottom" overlay={scaleMinusTooltip}
+                      delay={{ show: 250, hide: 400 }}>
+        <div className={
+          mapScale > 0.52 ? "custom-button normal-button" :
+            "custom-button normal-button custom-button-ghost"
+        }
+            onClick={() => switchMapScale(-1)}>
+          <span>map</span> <DashCircle />
+        </div>
+      </OverlayTrigger>
     )
     setMapScaleResetButton(
       <div className={

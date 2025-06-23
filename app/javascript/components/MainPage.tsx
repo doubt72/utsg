@@ -34,7 +34,7 @@ export default function MainPage() {
         <div>
           <div className={classes}>
             <p>
-              The UTSG server is still massively under construction.  If you&apos;re seeing this, you&apos;re
+              The STBO server is still massively under construction.  If you&apos;re seeing this, you&apos;re
               probably just looking at the github repo, nothing is actually out there being hosted
               anywhere yet.
 

@@ -8,7 +8,7 @@ export default function About() {
       <Header hideAbout="true" />
       <div className="standard-body">
         <div className="about-about">
-          <p>This is the Untitled TSG server.</p>
+          <p>This is the STB (Online) server.</p>
           <p>I mean, I&apos;m basically working on it.</p>
           <p>Might want to add some code of conduct here, and if so, link here from the signup page.</p>
           <div className="align-end">
@@ -16,7 +16,7 @@ export default function About() {
           </div>
         </div>
         <div className="about-logo">
-          <img src="/assets/utsg-160.png" alt="UTSG Logo" />
+          <img src="/assets/stbo-160.png" alt="STBO Logo" />
         </div>
       </div>
     </div>

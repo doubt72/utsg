@@ -5,7 +5,7 @@ export default function Logo() {
   return (
     <div className="header-logo">
       <Link to="/">
-        <img src="/assets/utsg-48.png" alt="UTSG Logo" />
+        <img src="/assets/stbo-48.png" alt="STBO Logo" />
       </Link>
     </div>
   )

@@ -145,7 +145,7 @@ export default function Signup() {
       </div>
       <div className="form-container">
         <div className="mb1em">
-          <p>Welcome to the Untitled TSG server.</p>
+          <p>Welcome to the STB (Online) server.</p>
           <p>Sign up for a new account here:</p>
         </div>
         <form onSubmit={onSubmit}>
