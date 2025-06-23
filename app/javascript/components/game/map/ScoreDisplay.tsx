@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
+import { mapHelpLayout } from "../../../engine/support/help";
+import { Coordinate } from "../../../utilities/commonTypes";
+import { HelpOverlay } from "./Help";
 
 ScoreDisplay.propTypes = {
   map: PropTypes.instanceOf(Map),
@@ -13,10 +16,14 @@ interface ScoreDisplayProps {
   map: Map;
   xx: number;
   yy: number;
+  maxX: number;
+  maxY: number;
+  scale: number;
 }
 
-export default function ScoreDisplay({ map, xx, yy }: ScoreDisplayProps) {
+export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDisplayProps) {
   const [base, setBase] = useState<JSX.Element | undefined>()
+  const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
 
   const nationOne = (size: number, stroke: number = 1) => {
     const n = map.game?.playerOneNation
@@ -30,6 +37,15 @@ export default function ScoreDisplay({ map, xx, yy }: ScoreDisplayProps) {
     return {
       fill: `url(#nation-${n}-${size})`, strokeWidth: stroke, stroke: "#000"
     }
+  }
+
+  const helpText = (x: number, y: number, side: string) => {
+    const text = [
+      `direction of ${side} advance`,
+      "units rout in opposite direction",
+    ]
+    const layout = mapHelpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY), text, scale)
+    setHelpDisplay(HelpOverlay(layout))
   }
 
   useEffect(() => {
@@ -60,8 +76,12 @@ export default function ScoreDisplay({ map, xx, yy }: ScoreDisplayProps) {
                     `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
                 style={{ fill: "rgba(0,0,0,0)", stroke: "#444", strokeWidth: 2 }}/>
         </g>
-        <circle cx={xl} cy={yd} r={12} style={nationOne(12, 1)}/>
-        <circle cx={xr} cy={yd} r={12} style={nationTwo(12, 1)}/>
+        <circle cx={xl} cy={yd} r={12} style={nationOne(12, 1)}
+                onMouseEnter={() => helpText(xl+4, yd+8, "allied")}
+                onMouseLeave={() => setHelpDisplay(undefined)}/>
+        <circle cx={xr} cy={yd} r={12} style={nationTwo(12, 1)}
+                onMouseEnter={() => helpText(xr+4, yd+8, "axis")}
+                onMouseLeave={() => setHelpDisplay(undefined)}/>
       </g>
     )
   }, [xx, yy, map.game?.playerOneScore, map.game?.playerTwoScore, map.alliedDir, map.axisDir])
@@ -69,6 +89,7 @@ export default function ScoreDisplay({ map, xx, yy }: ScoreDisplayProps) {
   return (
     <g>
       {base}
+      {helpDisplay}
     </g>
   )
 }

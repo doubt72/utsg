@@ -1,7 +1,7 @@
 import {
   baseTerrainType, Coordinate, Direction, markerType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
-import { HelpLayout } from "../../utilities/graphics"
+import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
 import { normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
 import Feature from "../Feature"
@@ -9,37 +9,11 @@ import Hex from "../Hex"
 import Marker from "../Marker"
 import Unit from "../Unit"
 
-export function hexHelpLayout(hex: Hex, loc: Coordinate, max: Coordinate): HelpLayout {
+export function hexHelpLayout(
+  hex: Hex, loc: Coordinate, max: Coordinate, scale: number
+): HelpLayout {
   const text = hexHelpText(hex)
-  const size = 22
-  let width = 24.4
-  text.forEach(t => {
-    const n = t.length * 9.6 + 16
-    if (n > width) { width = n }
-  })
-  let x1 = loc.x
-  let x2 = x1 + width
-  let y1 = loc.y
-  let y2 = y1 + text.length * size + size/2
-  if (x2 > max.x) {
-    const diff = - (width + 20)
-    x1 += diff
-    x2 += diff
-  }
-  if (y2 > max.y) {
-    const diff = y2 - max.y
-    y1 -= diff
-    y2 -= diff
-  }
-  const diff = size
-  return {
-    path: [
-      "M", x1, y1, "L", x2, y1, "L", x2, y2, "L", x1, y2, "L", x1, y1,
-    ].join(" "), style: { fill: "black", stroke: "white", strokeWidth: 2 },
-    size: size-6, texts: text.map((t, i) => {
-      return { x: x1+8, y: y1 + i*diff + size, value: t }
-    })
-  }
+  return mapHelpLayout(loc, max, text, scale)
 }
 
 function hexHelpText(hex: Hex): string[] {
@@ -155,38 +129,12 @@ function hexHelpText(hex: Hex): string[] {
   return text
 }
 
-export function counterHelpLayout(counter: Counter, loc: Coordinate, max: Coordinate): HelpLayout {
-  if (!counter.map) { return { path: "", size: 0, style: {} } }
+export function counterHelpLayout(
+  counter: Counter, loc: Coordinate, max: Coordinate, scale: number
+): HelpLayout {
+  if (!counter.map) { return { path: "", size: 0, style: {}, opacity: 0, tStyle: {}, texts: [] } }
   const text = counter.target.helpText
-  const size = 22
-  let width = 24.4
-  text.forEach(t => {
-    const n = t.length * 9.6 + 16
-    if (n > width) { width = n }
-  })
-  const loc2 = loc.delta(width, text.length * size + size/2)
-  if (loc2.x > max.x) {
-    const diff = - (width + 182.5)
-    loc.xShift(diff)
-    loc2.xShift(diff)
-  }
-  if (loc2.y > max.y) {
-    const diff = max.y - loc2.y
-    loc.yShift(diff)
-    loc2.yShift(diff)
-  }
-  const layout: HelpLayout = {
-    path: [
-      "M", loc.x, loc.y, "L", loc2.x, loc.y, "L", loc2.x, loc2.y,
-      "L", loc.x, loc2.y, "L", loc.x, loc.y,
-    ].join(" "), style: { fill: "black", stroke: "white", strokeWidth: 2 },
-    size: size-6
-  }
-  const diff = size
-  layout.texts = text.map((t, i) => {
-    return { x: loc.x+8, y: loc.y + i*diff + size, value: t }
-  })
-  return layout
+  return mapHelpLayout(loc, max, text, scale)
 }
 
 export function unitHelpText(unit: Unit): string[] {
@@ -443,4 +391,38 @@ export function markerHelpText(marker: Marker): string[] {
     })
   }
   return text.concat(variable)
+}
+
+export function mapHelpLayout(
+  loc: Coordinate, max: Coordinate, text: string[], scale: number
+): HelpLayout {
+  const size = 20 / scale
+  let width = 32
+  const char = 0.42 * size
+  const edge = 16 / scale
+  text.forEach(t => {
+    const n = t.length * char + edge
+    if (n > width) { width = n }
+  })
+  let x1 = loc.x
+  let x2 = x1 + width
+  let y1 = loc.y
+  let y2 = y1 + text.length * size + size/2
+  if (x2 > max.x) {
+    const diff = - (width + 20)
+    x1 += diff
+    x2 += diff
+  }
+  if (y2 > max.y) {
+    const diff = y2 - max.y
+    y1 -= diff
+    y2 -= diff
+  }
+  const diff = size
+  return {
+    path: roundedRectangle(x1, y1, x2 - x1, y2 - y1), style: { fill: "#450" },
+    opacity: 0.9, size: size-(6/scale), texts: text.map((t, i) => {
+      return { x: x1+(8/scale), y: y1 + i*diff + size - 1, value: t }
+    }), tStyle: { fill: "#CE7" }
+  }
 }

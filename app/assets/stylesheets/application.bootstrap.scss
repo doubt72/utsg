@@ -465,7 +465,25 @@ div.counter-help-button-selected,button.help-button-selected {
   color: white;
 }
 
+div.counter-help-button-selected:hover {
+  background-color: $darkish-green;
+  color: $light-green
+}
+
+.fade {
+  -webkit-transition: opacity 0.0s linear;
+  -o-transition: opacity 0.0s linear;
+  transition: opacity 0.0s linear;
+}
+
 .tooltip-game div.tooltip-inner {
   background-color: $dark-green;
   color: $light-green;
+  font-family: 'Courier Prime', monospace;
+  text-align: left;
+  max-width: 250px;
+}
+
+.tooltip-game div.tooltip-arrow::before {
+  border-bottom-color: $dark-green;
 }

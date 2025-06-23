@@ -7,6 +7,7 @@ import {
   roadPath, roadRotate, roadStyle, victoryLayout
 } from "../../../engine/support/hexLayout";
 import { hexHelpLayout } from "../../../engine/support/help";
+import { HelpOverlay } from "./Help";
 
 interface MapHexDetailProps {
   hex: Hex;
@@ -95,20 +96,9 @@ export default function MapHexDetail({
     if (showTerrain) {
       if (svgRef.current) {
         const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
-        const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10
-        const layout = hexHelpLayout(hex, new Coordinate(x, y), new Coordinate(maxX, maxY))
-        if (!layout.texts) { return }
-        terrainCallback(
-          <g>
-            <path d={layout.path} style={layout.style as object} />
-            {
-              layout.texts.map((t, i) => 
-                <text key={i} x={t.x} y={t.y} fontSize={layout.size} fontFamily="'Courier Prime', monospace"
-                      textAnchor="start" style={{ fill: "white" }}>{t.value}</text>
-              )
-            }
-          </g>
-        )
+        const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+        const layout = hexHelpLayout(hex, new Coordinate(x, y), new Coordinate(maxX, maxY), scale)
+        terrainCallback(HelpOverlay(layout))
       }
     } else {
       terrainCallback(undefined)

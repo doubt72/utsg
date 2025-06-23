@@ -3,6 +3,8 @@ import Map from "../../../engine/Map";
 import { counterRed, roundedRectangle, roundedRectangleHole } from "../../../utilities/graphics";
 import MapDisplay from "./MapDisplay";
 import { Coordinate } from "../../../utilities/commonTypes";
+import { mapHelpLayout } from "../../../engine/support/help";
+import { HelpOverlay } from "./Help";
 
 interface MiniMapProps {
   map: Map;
@@ -14,6 +16,9 @@ interface MiniMapProps {
   yScale: number;
   xOffset: number;
   yOffset: number;
+  maxX: number;
+  maxY: number;
+  svgRef: React.MutableRefObject<HTMLElement>;
   callback: (event: React.MouseEvent, calculated: {
     mapSize: Coordinate,
     scale: number
@@ -23,11 +28,26 @@ interface MiniMapProps {
 
 export default function MiniMap(
   {
-    map, xx, yy, scale, mapScale, xScale, yScale, xOffset, yOffset, callback, widthCallback
+    map, xx, yy, maxX, maxY, scale, mapScale, xScale, yScale, xOffset, yOffset, svgRef, callback, widthCallback
   }: MiniMapProps
 ) {
   const [minimap, setMinimap] = useState<JSX.Element | undefined>()
+  const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
   const [width, setWidth] = useState<number>(0)
+
+  const updateHelpOverlay = (e: React.MouseEvent) => {
+    const text = [
+      `minimap overview:`,
+      "click to recenter",
+    ]
+    if (svgRef.current) {
+      const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
+      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+      const layout = mapHelpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY), text, scale)
+      if (!layout.texts) { return }
+      setHelpDisplay(HelpOverlay(layout))
+    }
+  }
 
   useEffect(() => {
     const maxXSize = 245 // inner sizes
@@ -58,7 +78,7 @@ export default function MiniMap(
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "#EEE", strokeWidth: 4, stroke: "#670", fillRule: "evenodd" }} />
         <g transform={`translate(${xShift} ${yShift + extraShift})`}>
-          <MapDisplay map={map} scale={miniScale} preview={true} />
+          <MapDisplay map={map} scale={miniScale} preview={true} forceUpdate={0} />
         </g>
         <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 5)}
               style={{ fill: "rgb(0,0,0,0.2)", strokeWidth: 0, stroke: "rgb(0,0,0,0)" }} />
@@ -71,7 +91,9 @@ export default function MiniMap(
                   mapSize: new Coordinate(xMap, yMap),
                   scale: miniScale
                 }
-              )} />
+              )}
+              onMouseLeave={() => setHelpDisplay(undefined)}
+              onMouseMove={e => updateHelpOverlay(e)} />
       </g>
     )
   }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastAction])
@@ -80,5 +102,10 @@ export default function MiniMap(
     widthCallback(width + xx + 16)
   }, [width])
 
-  return minimap
+  return (
+    <g>
+     { minimap }
+     { helpDisplay }
+    </g>
+  )
 }

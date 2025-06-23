@@ -78,7 +78,7 @@ export default function MapCounterOverlay({
           })
           helpOverlays.push(
             <MapCounterOverlayHelp key={i} xx={layout.x + i*176+170} yy={layout.y+10} maxX={maxX} maxY={maxY}
-                                   map={map} counter={cd} setHelpDisplay={setHelpDisplay} />
+                                   map={map} scale={mapScale} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
           selectionOverlays.push(
             <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>

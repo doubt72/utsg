@@ -111,7 +111,7 @@ export default function GameDisplay() {
   useEffect(() => {
     setMapScaleMinusButton(
       <OverlayTrigger placement="bottom" overlay={scaleMinusTooltip}
-                      delay={{ show: 250, hide: 400 }}>
+                      delay={{ show: 0, hide: 0 }}>
         <div className={
           mapScale > 0.52 ? "custom-button normal-button" :
             "custom-button normal-button custom-button-ghost"
@@ -123,7 +123,7 @@ export default function GameDisplay() {
     )
     setMapScaleResetButton(
       <OverlayTrigger placement="bottom" overlay={scaleZeroTooltip}
-                      delay={{ show: 250, hide: 400 }}>
+                      delay={{ show: 0, hide: 0 }}>
         <div className={
           mapScale < 1 ? "custom-button normal-button" :
             "custom-button normal-button custom-button-ghost"
@@ -135,7 +135,7 @@ export default function GameDisplay() {
     )
     setMapScalePlusButton(
       <OverlayTrigger placement="bottom" overlay={scalePlusTooltip}
-                      delay={{ show: 250, hide: 400 }}>
+                      delay={{ show: 0, hide: 0 }}>
         <div className={
           mapScale < 1 ? "custom-button normal-button" :
             "custom-button normal-button custom-button-ghost"
@@ -300,7 +300,7 @@ export default function GameDisplay() {
       return (
         <div className="flex">
           <OverlayTrigger placement="bottom" overlay={expandTooltip}
-                          delay={{ show: 250, hide: 400 }}>
+                          delay={{ show: 0, hide: 0 }}>
           <div className="custom-button normal-button expand-button"
                onClick={() => {
                  setCollapseLayout(false)
@@ -325,7 +325,7 @@ export default function GameDisplay() {
         <div>
           <div className="flex">
             <OverlayTrigger placement="bottom" overlay={collapseTooltip}
-                            delay={{ show: 250, hide: 400 }}>
+                            delay={{ show: 0, hide: 0 }}>
             <div className="custom-button normal-button collapse-button"
                  onClick={() => {
                    setCollapseLayout(true)
@@ -372,7 +372,7 @@ export default function GameDisplay() {
 
   const coordsTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      toggles hex coordinate labels
+      toggles showing hex coordinate labels
     </Tooltip>
   )
 
@@ -390,13 +390,13 @@ export default function GameDisplay() {
 
   const countersTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      toggles between showing and hiding counters
+      toggles showing or hiding counters
     </Tooltip>
   )
 
   const terrainTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      toggles between showing and not showing terrain info overlay
+      toggles showing terrain info overlay
     </Tooltip>
   )
 
@@ -411,42 +411,42 @@ export default function GameDisplay() {
         {mapScaleResetButton}
         {mapScalePlusButton}
         <OverlayTrigger placement="bottom" overlay={controlSizeTooltip}
-                        delay={{ show: 250, hide: 400 }}>
+                        delay={{ show: 0, hide: 0 }}>
           <div className="custom-button normal-button"
               onClick={() => toggleInterfaceShrink()}>
             { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>interface</span>
           </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={coordsTooltip}
-                        delay={{ show: 250, hide: 400 }}>
+                        delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => toggleShowCoords()}>
           { coords ? <GeoAltFill /> : <GeoAlt /> } <span>coords</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={statusTooltip}
-                        delay={{ show: 250, hide: 400 }}>
+                        delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => toggleShowMarkers()}>
           { showStatusCounters ? <Stack /> : <CircleFill /> } <span>status</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={overlayTooltip}
-                        delay={{ show: 250, hide: 400 }}>
+                        delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => setShowLos(sl => !sl)}>
           { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={countersTooltip}
-                        delay={{ show: 250, hide: 400 }}>
+                        delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => setHideCounters(sc => !sc)}>
         { hideCounters ? <Square /> : <SquareFill /> } <span>counters</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={terrainTooltip}
-                        delay={{ show: 250, hide: 400 }}>
+                        delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => setShowTerrain(sc => !sc)}>
         { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain info</span>

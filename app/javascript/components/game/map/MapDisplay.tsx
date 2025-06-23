@@ -195,7 +195,8 @@ export default function MapDisplay({
     setMinimap(
       // <OverlayTrigger placement="bottom" overlay={minimapTooltip}
       //                 delay={{ show: 2000, hide: 400 }}>
-        <MiniMap map={map} xx={2} yy={5} scale={scale} mapScale={mapScale ?? 1}
+        <MiniMap map={map} xx={2} yy={5} maxX={width / scale} maxY={height / scale}
+                 scale={scale} mapScale={mapScale ?? 1} svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                  xScale={xScale > 1 ? 1 : xScale} yScale={yScale > 1 ? 1 : yScale}
                  xOffset={xOffset} yOffset={yOffset} callback={minimapCallback}
                  widthCallback={setReinforcementOffset} />
@@ -262,7 +263,8 @@ export default function MapDisplay({
     )
     setScore(() =>
       map.preview || preview ? undefined :
-        <ScoreDisplay map={map} xx={width / scale - 192} yy={280 + map?.yStatusSize + 50 / scale - 50}/>
+        <ScoreDisplay map={map} xx={width / scale - 192} yy={280 + map?.yStatusSize + 50 / scale - 50}
+                      maxX={width / scale} maxY={height / scale} scale={scale} />
     )
     setInitiative(() =>
       map.preview || preview ? undefined :
@@ -284,7 +286,9 @@ export default function MapDisplay({
     })
     setReinforcements(() =>
       map.preview || preview ? undefined :
-        <Reinforcements xx={reinforcementOffset} yy={52 + 50 / scale - 50} map={map}
+        <Reinforcements map={map} xx={reinforcementOffset} yy={52 + 50 / scale - 50}
+                        maxX={width / scale} maxY={height / scale} scale={scale}
+                        svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                         callback={showReinforcements} update={{key: true}}/>
     )
     if (map?.game?.closeReinforcementPanel) {

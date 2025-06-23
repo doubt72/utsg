@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { baseCounterPath, nationalColors, roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
-import { Player } from "../../../utilities/commonTypes";
+import { Coordinate, Player } from "../../../utilities/commonTypes";
 import { gamePhaseType } from "../../../engine/Game";
+import { mapHelpLayout } from "../../../engine/support/help";
+import { HelpOverlay } from "../map/Help";
 
 interface ReinforcementsProps {
   map: Map;
   xx: number;
   yy: number;
+  maxX: number;
+  maxY: number;
+  scale: number;
+  svgRef: React.MutableRefObject<HTMLElement>;
   callback: (x: number, y: number, player: Player) => void;
   update: { key: boolean };
 }
 
-export default function Reinforcements({ map, xx, yy, callback, update }: ReinforcementsProps) {
+export default function Reinforcements(
+  { map, xx, yy, maxX, maxY, scale, svgRef, callback, update }: ReinforcementsProps
+) {
   const [base, setBase] = useState<JSX.Element | undefined>()
+  const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
 
   const nation = (x: number, y: number, n: string, player: Player, enabled: boolean) => {
+    const faction = player === 1 ? "allied" : "axis"
     const overlay = enabled ? (
       <path className="svg-button-hover" d={baseCounterPath(x, y)}
-            onClick={() => callback(player === 1 ? x : x - 90, y, player)} />
+            onClick={() => callback(player === 1 ? x : x - 90, y, player)}
+            onMouseLeave={() => setHelpDisplay(undefined)}
+            onMouseMove={e => updateHelpOverlay(e, faction)} />
     ) : (
       <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0.33)" }}
-            onClick={() => callback(player === 1 ? x : x - 90, y, player)}/>
+            onClick={() => callback(player === 1 ? x : x - 90, y, player)}
+            onMouseLeave={() => setHelpDisplay(undefined)}
+            onMouseMove={e => updateHelpOverlay(e, faction)} />
     )
     return (
       <g>
@@ -43,6 +57,20 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
     const enabled = map.game?.phase === gamePhaseType.Deployment &&
       map.game.currentPlayer === 2 && map.game.state === "in_progress"
     return nation(x, y, map.game?.playerTwoNation as string, 2, enabled)
+  }
+
+  const updateHelpOverlay = (e: React.MouseEvent, side: string) => {
+    const text = [
+      `${side} units:`,
+      "reinforcements and casualties",
+    ]
+    if (svgRef.current) {
+      const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
+      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+      const layout = mapHelpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY), text, scale)
+      if (!layout.texts) { return }
+      setHelpDisplay(HelpOverlay(layout))
+    }
   }
 
   useEffect(() => {
@@ -87,6 +115,7 @@ export default function Reinforcements({ map, xx, yy, callback, update }: Reinfo
   return (
     <g>
       {base}
+      {helpDisplay}
     </g>
   )
 }
