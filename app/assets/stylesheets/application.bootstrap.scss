@@ -22,7 +22,7 @@ button.custom-button,a.custom-button,div.custom-button {
 }
 
 button.custom-button svg {
-  vertical-align: -2px;
+  vertical-align: -3.5px;
   margin-right: 5px;
 }
 
@@ -44,7 +44,7 @@ a.custom-button {
 }
 
 div.normal-button {
-  padding: 0.1em 0.75em 0.3em;
+  padding: 0.125em 0.75em 0.275em;
 }
 
 div.sort-button {
@@ -67,7 +67,7 @@ div.custom-button span {
 }
 
 button.custom-button {
-  padding: 0.155em 0.75em;
+  padding: 0.075em 0.75em 0.225em 0.75em;
 }
 
 button.custom-button:hover,a.custom-button:hover,div.custom-button:hover {
@@ -468,22 +468,4 @@ div.counter-help-button-selected,button.help-button-selected {
 div.counter-help-button-selected:hover {
   background-color: $darkish-green;
   color: $light-green
-}
-
-.fade {
-  -webkit-transition: opacity 0.0s linear;
-  -o-transition: opacity 0.0s linear;
-  transition: opacity 0.0s linear;
-}
-
-.tooltip-game div.tooltip-inner {
-  background-color: $dark-green;
-  color: $light-green;
-  font-family: 'Courier Prime', monospace;
-  text-align: left;
-  max-width: 250px;
-}
-
-.tooltip-game div.tooltip-arrow::before {
-  border-bottom-color: $dark-green;
 }

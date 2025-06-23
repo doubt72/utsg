@@ -24,11 +24,15 @@ export default function MapCounterOverlayHelp({
 
   useEffect(() => {
     const bl = map.counterHelpButtonLayout(new Coordinate(xx, yy), counter) as HelpButtonLayout
+    // const color = "#450"
+    // const textColor = "#CE7"
+    const color = "black"
+    const textColor = "white"
     setHelpButton(
       <g onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} >
-        <path d={bl.path} style={{ fill: "#450", stroke: "#CE7", strokeWidth: 2 }} />
+        <path d={bl.path} style={{ fill: color, stroke: textColor, strokeWidth: 2 }} />
         <text x={bl.x} y={bl.y} fontSize={bl.size} textAnchor="middle" fontFamily="'Courier Prime', monospace"
-              style={{ fill: "#CE7" }} cursor="default">?</text>
+              style={{ fill: textColor }} cursor="default">?</text>
       </g>
     )
   }, [xx, yy])

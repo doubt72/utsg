@@ -37,8 +37,8 @@ export default function MiniMap(
 
   const updateHelpOverlay = (e: React.MouseEvent) => {
     const text = [
-      `minimap overview:`,
-      "click to recenter",
+      "map overview:",
+      "click to recenter map",
     ]
     if (svgRef.current) {
       const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10

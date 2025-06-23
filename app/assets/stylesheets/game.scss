@@ -219,3 +219,28 @@
   right: 8px;
   bottom: 8px;
 }
+
+.fade {
+  -webkit-transition: opacity 0.0s linear;
+  -o-transition: opacity 0.0s linear;
+  transition: opacity 0.0s linear;
+}
+
+.tooltip.show {
+  opacity: 0.9;
+}
+
+.tooltip-game div.tooltip-inner {
+  // background-color: $dark-green;
+  // color: $light-green;
+  background-color: black;
+  color: white;
+  font-family: 'Courier Prime', monospace;
+  text-align: left;
+  max-width: 250px;
+}
+
+.tooltip-game div.tooltip-arrow::before {
+  // border-bottom-color: $dark-green;
+  border-bottom-color: black;
+}

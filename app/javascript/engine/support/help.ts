@@ -419,10 +419,14 @@ export function mapHelpLayout(
     y2 -= diff
   }
   const diff = size
+  // const color = "#450"
+  // const textColor = "#CE7"
+  const color = "black"
+  const textColor = "white"
   return {
-    path: roundedRectangle(x1, y1, x2 - x1, y2 - y1), style: { fill: "#450" },
+    path: roundedRectangle(x1, y1, x2 - x1, y2 - y1), style: { fill: color },
     opacity: 0.9, size: size-(6/scale), texts: text.map((t, i) => {
       return { x: x1+(8/scale), y: y1 + i*diff + size - 1, value: t }
-    }), tStyle: { fill: "#CE7" }
+    }), tStyle: { fill: textColor }
   }
 }

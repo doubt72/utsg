@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Tooltips for map controls
-    - Move text up slightly in Control Button
-    - Minimap
   - Live Documentation
     - Add missing sections
     - Introduction (Come up with new name)
