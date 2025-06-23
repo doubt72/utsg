@@ -265,6 +265,9 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     } else if (counter.unit.ignoreTerrain) {
       style.fill = markerYellow
     }
+    if ((counter.unit.singleFire || counter.unit.ignoreTerrain) && !counter.unit.assault) {
+      path = circlePath(loc, 10)
+    }
     if (counter.unit.fieldGun) {
       style.stroke = "black"
     }
@@ -300,11 +303,6 @@ export function areaLayout(counter: Counter): CounterLayout | false {
   if (counter.unit.offBoard) { y += 1.25 }
   const path = `M ${x - size} ${y} L ${x + size} ${y}`
   return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
-  // const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
-  // const y = counter.y + 74.5
-  // const size = 2
-  // const path = circlePath(new Coordinate(x, y), size)
-  // return { x, y, size, path, style: { fill: "black" } }
 }
 
 export function smokeLayout(counter: Counter): CounterLayout | false {

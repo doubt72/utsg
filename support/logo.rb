@@ -1,4 +1,4 @@
-#font = "Play"
+# font = "Play"
 font = "Special Elite"
 
 # This code is faintly ugly, but whatever.  Generates a logo in SVG
@@ -7,8 +7,9 @@ font = "Special Elite"
 puts "<!DOCTYPE html>"
 puts "<html>"
 puts "<head>"
-puts "  <link href=\"https://fonts.googleapis.com/css?family=#{font}\" " +
-     "rel=\"stylesheet\">"
+puts "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />"
+puts "  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin=\"anonymous\" />"
+puts "  <link href=\"https://fonts.googleapis.com/css2?family=Special+Elite%26display=swap\" rel=\"stylesheet\" />"
 puts "</head>"
 puts "<body>"
 
@@ -36,7 +37,7 @@ end
 
 hex_colors = %w(#450 #CE7 #450 #CE7)
 text_colors = %w(#CE7 #000 #CE7 #000)
-letters = %w(U T S G)
+letters = %w(S T B O)
 
 hex_size = []
 x = []
@@ -48,9 +49,7 @@ color = []
   y.push(size(82))
 end
 
-puts "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 #{size(614)} #{size(164)}\">"
-# puts "  <rect width=\"#{size(600)}\" height=\"#{size(160)}\" " +
-#       "style=\"stroke-width:1;stroke:#000;\" />"
+puts "<svg width=\"1200\" height=\"320\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 #{size(614)} #{size(164)}\">"
 
 0.upto(hex_size.length - 1) do |n|
   points = []
@@ -62,7 +61,7 @@ puts "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 #{size(614)} #{siz
   puts "<polygon points=\"#{points.join(" ")}\" " +
     "style=\"fill:#{hex_colors[n]};stroke-width:10;stroke:#450\" />"
   puts "<text " +
-    "x=\"#{x[n]-35}\" " +
+    "x=\"#{x[n]-43}\" " +
     "y=\"#{y[n]+55}\" " +
     "style=\"fill:#{text_colors[n]};" +
     "font-family:'#{font}';font-size:#{size(150)}px;\">#{letters[n]}</text>"

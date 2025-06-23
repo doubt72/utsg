@@ -731,7 +731,7 @@ export default function CounterSection() {
         } else if (unit.ignoreTerrain) {
           sections.push(<p key={index++}>
             <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
-            defensive feature effects. Despite the lack of circle,
+            defensive feature effects. With or without a circle,
             this unit may attack armored units with no penalty.
           </p>)
         } else if (unit.singleFire) {
@@ -847,7 +847,7 @@ export default function CounterSection() {
             { counterButton("duck", "usa_GMC DUKW_truck") }
             { counterButton("jeep", "usa_Jeep_truck") }
             { counterButton("technical", "uk_Chevy C30 AT_truck") }
-            { counterButton("cavalry", "ger_Horse_cav") }
+            { counterButton("cavalry", "alm_Horse_cav") }
             { counterButton("bicycle", "jap_Bicycle_cav") }
             { counterButton("hedgehog", "f_Hedgehog") }
             { counterButton("wire", "f_Wire") }

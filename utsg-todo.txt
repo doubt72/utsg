@@ -1,8 +1,4 @@
-- Come up with name (D-GOST?)
-  - Add more info on signup page mebbe
-
 High Priority Features/Bug Fixes:
-  - Fix wreck size modifiers
   - Tooltips for map controls
     - buttons
     - Reinforcement / Casualties
@@ -53,4 +49,3 @@ Future Features/Bug Fixes:
     - Much harder than it appears, need a way to intercept only scroll/wheel/key events
       but pass through all other mouse events
   - Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
-
