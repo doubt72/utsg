@@ -92,7 +92,19 @@ export default function GameDisplay() {
 
   const scaleMinusTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      This is a helpful tooltip!
+      make the map smaller
+    </Tooltip>
+  )
+
+  const scaleZeroTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      reset map size
+    </Tooltip>
+  )
+
+  const scalePlusTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      make the map larger
     </Tooltip>
   )
 
@@ -110,22 +122,28 @@ export default function GameDisplay() {
       </OverlayTrigger>
     )
     setMapScaleResetButton(
-      <div className={
-        mapScale < 1 ? "custom-button normal-button" :
-          "custom-button normal-button custom-button-ghost"
-      }
-           onClick={() => switchMapScale(0)}>
-        <Circle />
-      </div>
+      <OverlayTrigger placement="bottom" overlay={scaleZeroTooltip}
+                      delay={{ show: 250, hide: 400 }}>
+        <div className={
+          mapScale < 1 ? "custom-button normal-button" :
+            "custom-button normal-button custom-button-ghost"
+        }
+            onClick={() => switchMapScale(0)}>
+          <Circle />
+        </div>
+      </OverlayTrigger>
     )
     setMapScalePlusButton(
-      <div className={
-        mapScale < 1 ? "custom-button normal-button" :
-          "custom-button normal-button custom-button-ghost"
-      }
-           onClick={() => switchMapScale(1)}>
-        <PlusCircle /> <span>map</span>
-      </div>
+      <OverlayTrigger placement="bottom" overlay={scalePlusTooltip}
+                      delay={{ show: 250, hide: 400 }}>
+        <div className={
+          mapScale < 1 ? "custom-button normal-button" :
+            "custom-button normal-button custom-button-ghost"
+        }
+            onClick={() => switchMapScale(1)}>
+          <PlusCircle /> <span>map</span>
+        </div>
+      </OverlayTrigger>
     )
   }, [mapScale])
 
@@ -265,10 +283,24 @@ export default function GameDisplay() {
     setHideCounters(false)
   }
 
+  const expandTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      expands move and chat displays and allows sending chat messages
+    </Tooltip>
+  )
+
+  const collapseTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      collapses move and chat displays to make more room for the game map
+    </Tooltip>
+  )
+
   const layout = () => {
     if (collapseLayout) {
       return (
         <div className="flex">
+          <OverlayTrigger placement="bottom" overlay={expandTooltip}
+                          delay={{ show: 250, hide: 400 }}>
           <div className="custom-button normal-button expand-button"
                onClick={() => {
                  setCollapseLayout(false)
@@ -276,6 +308,7 @@ export default function GameDisplay() {
                }}>
             <PlusCircle />
           </div>
+          </OverlayTrigger>
           <div className="standard-body">
             <div className="game-page-actions">
               {actions}
@@ -291,6 +324,8 @@ export default function GameDisplay() {
       return (
         <div>
           <div className="flex">
+            <OverlayTrigger placement="bottom" overlay={collapseTooltip}
+                            delay={{ show: 250, hide: 400 }}>
             <div className="custom-button normal-button collapse-button"
                  onClick={() => {
                    setCollapseLayout(true)
@@ -298,6 +333,7 @@ export default function GameDisplay() {
                  }}>
               <DashCircle />
             </div>
+            </OverlayTrigger>
             <div className="game-control ml05em mr05em mt05em flex-fill">
               <div className="red monospace mr05em">
                 {game.k?.scenario?.code}:
@@ -327,6 +363,43 @@ export default function GameDisplay() {
     }
   }
 
+  const controlSizeTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      toggles the size of the map status overlays and the unzoomed size of the map
+      to best suit larger or smaller displays
+    </Tooltip>
+  )
+
+  const coordsTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      toggles hex coordinate labels
+    </Tooltip>
+  )
+
+  const statusTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      toggles between status badges and status markers
+    </Tooltip>
+  )
+
+  const overlayTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      toggles between counter overlays and line-of-sight overlay
+    </Tooltip>
+  )
+
+  const countersTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      toggles between showing and hiding counters
+    </Tooltip>
+  )
+
+  const terrainTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      toggles between showing and not showing terrain info overlay
+    </Tooltip>
+  )
+
   return (
     <div className="main-page">
       <Header />
@@ -337,30 +410,48 @@ export default function GameDisplay() {
         {mapScaleMinusButton}
         {mapScaleResetButton}
         {mapScalePlusButton}
-        <div className="custom-button normal-button"
-             onClick={() => toggleInterfaceShrink()}>
-          { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>controls</span>
-        </div>
+        <OverlayTrigger placement="bottom" overlay={controlSizeTooltip}
+                        delay={{ show: 250, hide: 400 }}>
+          <div className="custom-button normal-button"
+              onClick={() => toggleInterfaceShrink()}>
+            { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>interface</span>
+          </div>
+        </OverlayTrigger>
+        <OverlayTrigger placement="bottom" overlay={coordsTooltip}
+                        delay={{ show: 250, hide: 400 }}>
         <div className="custom-button normal-button"
              onClick={() => toggleShowCoords()}>
           { coords ? <GeoAltFill /> : <GeoAlt /> } <span>coords</span>
         </div>
+        </OverlayTrigger>
+        <OverlayTrigger placement="bottom" overlay={statusTooltip}
+                        delay={{ show: 250, hide: 400 }}>
         <div className="custom-button normal-button"
              onClick={() => toggleShowMarkers()}>
           { showStatusCounters ? <Stack /> : <CircleFill /> } <span>status</span>
         </div>
+        </OverlayTrigger>
+        <OverlayTrigger placement="bottom" overlay={overlayTooltip}
+                        delay={{ show: 250, hide: 400 }}>
         <div className="custom-button normal-button"
              onClick={() => setShowLos(sl => !sl)}>
           { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
         </div>
+        </OverlayTrigger>
+        <OverlayTrigger placement="bottom" overlay={countersTooltip}
+                        delay={{ show: 250, hide: 400 }}>
         <div className="custom-button normal-button"
              onClick={() => setHideCounters(sc => !sc)}>
         { hideCounters ? <Square /> : <SquareFill /> } <span>counters</span>
         </div>
+        </OverlayTrigger>
+        <OverlayTrigger placement="bottom" overlay={terrainTooltip}
+                        delay={{ show: 250, hide: 400 }}>
         <div className="custom-button normal-button"
              onClick={() => setShowTerrain(sc => !sc)}>
         { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain info</span>
         </div>
+        </OverlayTrigger>
       </div>
       <div className="game-map">
         <MapDisplay map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}

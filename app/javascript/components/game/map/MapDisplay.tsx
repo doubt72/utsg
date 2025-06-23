@@ -175,6 +175,13 @@ export default function MapDisplay({
     setYOffset(yRelative * (1 - yScale))
   }
 
+  // TODO: probably need to use react-svg-tooltip or something
+  // const minimapTooltip = (props: TooltipProps) => (
+  //   <Tooltip className="tooltip-game" {...props}>
+  //     minimap: click to move main map
+  //   </Tooltip>
+  // )
+
   useEffect(() => {
     if (!map || map.preview || preview) { return }
 
@@ -185,10 +192,15 @@ export default function MapDisplay({
     if (xOffset > 1 - xScale) { setXOffset(1 - xScale) }
     if (yOffset > 1 - yScale) { setYOffset(1 - yScale) }
 
-    setMinimap(<MiniMap map={map} xx={2} yy={5} scale={scale} mapScale={mapScale ?? 1}
-                        xScale={xScale > 1 ? 1 : xScale} yScale={yScale > 1 ? 1 : yScale}
-                        xOffset={xOffset} yOffset={yOffset} callback={minimapCallback}
-                        widthCallback={setReinforcementOffset} />)
+    setMinimap(
+      // <OverlayTrigger placement="bottom" overlay={minimapTooltip}
+      //                 delay={{ show: 2000, hide: 400 }}>
+        <MiniMap map={map} xx={2} yy={5} scale={scale} mapScale={mapScale ?? 1}
+                 xScale={xScale > 1 ? 1 : xScale} yScale={yScale > 1 ? 1 : yScale}
+                 xOffset={xOffset} yOffset={yOffset} callback={minimapCallback}
+                 widthCallback={setReinforcementOffset} />
+      // </OverlayTrigger>
+    )
   }, [map, mapScale, width, height, scale, xOffset, yOffset, map?.game?.lastAction])
 
   useEffect(() => {
