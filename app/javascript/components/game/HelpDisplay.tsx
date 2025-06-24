@@ -79,30 +79,34 @@ export default function HelpDisplay() {
     const prev = prevKey.map(n => n+1).join(".")
     const next = nextKey.map(n => n+1).join(".")
     setBottomNavigation(
-      <div className="help-bottom-navigation flex">
-        { prev.length > 0 ?
-        <div>
-          <form onSubmit={(event: FormEvent) => {
-              event.preventDefault()
-              onSubmit(prevKey)}
-            }>
-            <button type="submit" className="custom-button" >
-              {prev} &lt; prev
-            </button>
-          </form>
-        </div> : undefined }
+      <div className="flex">
         <div className="flex-fill"></div>
-        { next.length > 0 ?
-        <div>
-          <form onSubmit={(event: FormEvent) => {
-              event.preventDefault()
-              onSubmit(nextKey)}
-            }>
-            <button type="submit" className="custom-button" >
-              next &gt; {next}
-            </button>
-          </form>
-        </div> : undefined }
+        <div className="help-bottom-navigation flex">
+          { prev.length > 0 ?
+          <div>
+            <form onSubmit={(event: FormEvent) => {
+                event.preventDefault()
+                onSubmit(prevKey)}
+              }>
+              <button type="submit" className="custom-button" >
+                {prev} &lt; prev
+              </button>
+            </form>
+          </div> : <div style={{ minWidth: "60px" }}></div> }
+          <div className="flex-fill" style={{ minWidth: "100px" }}></div>
+          { next.length > 0 ?
+          <div>
+            <form onSubmit={(event: FormEvent) => {
+                event.preventDefault()
+                onSubmit(nextKey)}
+              }>
+              <button type="submit" className="custom-button" >
+                next &gt; {next}
+              </button>
+            </form>
+          </div> : <div style={{ minWidth: "60px" }}></div> }
+        </div>
+        <div className="flex-fill"></div>
       </div>
     )
   }, [sectionKey])

@@ -12,7 +12,7 @@ High Priority Features/Bug Fixes:
     - Link to Section based on Game Context
 
 Game Actions:
-  - Moved units marked
+  - Move text for history
   - Show reaction options
     - Passing
   - Initiative
