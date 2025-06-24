@@ -63,6 +63,7 @@ export default function Reinforcements(
     const text = [
       `${side} units:`,
       "reinforcements and casualties",
+      "click to open",
     ]
     if (svgRef.current) {
       const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10

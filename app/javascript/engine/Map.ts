@@ -569,6 +569,7 @@ export default class Map {
       move.data.add_action?.forEach(o => { if (o.id) { ids.push(o.id) } })
     }
     for (const u of units) {
+      if (u.hasMarker) { continue }
       if (move) {
         if (ids.includes(u.targetUF.id)) {
           if (!u.targetUF.lastSelected) { u.targetUF.lastSelect() }

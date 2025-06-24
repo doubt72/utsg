@@ -33,13 +33,11 @@ opacity = [1.0, 0.8, 0.6, 0.4]
 hex_size = []
 x = []
 y = []
-0.upto(3) do |n|
-  hex_size.push(size(90))
-  x.push(size(150 + n*50))
-  y.push(size(100))
-end
+hex_size.push(size(90))
+x.push(size(100))
+y.push(size(100))
 
-width = 400
+width = 200
 height = 200
 
 puts "<svg width=\"600\" height=\"200\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 #{size(width)} #{size(height)}\">"
@@ -62,9 +60,11 @@ end
 
 acen = 100
 awid = 25
-alef = 10
-amid = 60
-arig = 135
+
+shift = 0
+alef = 10 + shift
+amid = 60 + shift
+arig = 135 + shift
 
 style = "fill:#670;stroke-width:8;stroke:#000"
 path = [

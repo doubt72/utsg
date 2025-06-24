@@ -16,7 +16,7 @@ export default function About() {
           </div>
         </div>
         <div className="about-logo">
-          <img src="/assets/stbo-160.png" alt="STBO Logo" />
+          <img src="/assets/logo-120.png" alt="Logo" />
         </div>
       </div>
     </div>

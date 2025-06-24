@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Logo from "../Logo";
+import { Link, useParams } from "react-router-dom";
 import { helpIndex, HelpSection } from "../../help/helpData";
 
 export default function HelpDisplay() {
@@ -63,9 +62,13 @@ export default function HelpDisplay() {
     <div className="help-page">
       <div className="help-index">
         <div className="help-index-header">
-          <Logo />
+          <div className="header-logo">
+            <Link to="/">
+              <img src="/assets/logo-64.png" alt="Logo" />
+            </Link>
+          </div>
         </div>
-        <h3 className="ml075em mt1em">Table of Contents</h3>
+        <h3 className="ml075em">Table of Contents</h3>
         {sectionList}
       </div>
       <div className="help-body">
