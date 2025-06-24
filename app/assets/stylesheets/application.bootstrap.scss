@@ -201,6 +201,25 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   background-color: $gray-e;
 }
 
+.header-name {
+  white-space: nowrap;
+  margin-top: 10px;
+  height: 25px;
+  color: $dark-green;
+  font: small-caps 30px 'Special Elite', monospace
+}
+
+.header-name span {
+  font: small-caps 25px 'Courier', monospace
+}
+
+.header-subname {
+  white-space: nowrap;
+  color: $alert-orange;
+  height: 18px;
+  font: small-caps 20px 'Courier', monospace
+}
+
 .header-section {
   padding: 27.5px 0.25em 0em 0.25em;
 }
@@ -379,14 +398,36 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
 // About page layout
 .about-about {
   padding: 1em;
-  margin-right: 0.5em;
+  min-width: 500px;
   flex-grow: 1;
   background-color: $background-gray;
   border-radius: 0.5em;
+  max-width: 50%;
 }
 
 .about-logo {
-  padding: 1em;
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+}
+
+.about-name {
+  white-space: nowrap;
+  margin-top: 10px;
+  height: 27.5px;
+  color: $dark-green;
+  font: small-caps 36px 'Special Elite', monospace
+}
+
+.about-name span {
+  font: small-caps 27.5px 'Courier', monospace
+}
+
+.about-subname {
+  white-space: nowrap;
+  color: $alert-orange;
+  height: 21.6px;
+  font: small-caps 24px 'Courier', monospace
 }
 
 // Profile page layout
@@ -441,7 +482,7 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
 }
 
 .help-index-header {
-  padding: 1em;
+  padding: 1em 0 1em 1em;
 }
 
 .help-body {
@@ -455,6 +496,13 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   margin-bottom: 0.5em;
 }
 
+.help-bottom-navigation {
+  background-color: $gray-e;
+  margin: 1em 3em 0;
+  padding: 0.25em 1em 0.5em;
+  border-radius: 0.33em;
+}
+
 .counter-help-button {
   width: 170px;
   height: 33px;
@@ -465,7 +513,7 @@ div.counter-help-button-selected,button.help-button-selected {
   color: white;
 }
 
-div.counter-help-button-selected:hover {
+div.counter-help-button-selected:hover,button.help-button-selected:hover {
   background-color: $darkish-green;
   color: $light-green
 }

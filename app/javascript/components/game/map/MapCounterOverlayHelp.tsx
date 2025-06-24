@@ -5,6 +5,7 @@ import { Coordinate } from "../../../utilities/commonTypes";
 import { HelpButtonLayout } from "../../../utilities/graphics";
 import { counterHelpLayout } from "../../../engine/support/help";
 import { HelpOverlay } from "./Help";
+import { helpIndexByName } from "../../../help/helpData";
 
 interface MapCounterOverlayHelpProps {
   map: Map;
@@ -29,7 +30,10 @@ export default function MapCounterOverlayHelp({
     const color = "black"
     const textColor = "white"
     setHelpButton(
-      <g onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} >
+      <g onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} onClick = {() => {
+          const url = `/help/${helpIndexByName("Counters")}`
+          window.open(url)
+        }}>
         <path d={bl.path} style={{ fill: color, stroke: textColor, strokeWidth: 2 }} />
         <text x={bl.x} y={bl.y} fontSize={bl.size} textAnchor="middle" fontFamily="'Courier Prime', monospace"
               style={{ fill: textColor }} cursor="default">?</text>

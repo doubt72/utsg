@@ -187,3 +187,6 @@ export function counterOutline(counter: Counter, width: number, outline: number)
 }
 
 export const yMapOffset = 160
+
+export const titleName = "One More Hex"
+export const subtitleName = "Simple Tactical Combat"

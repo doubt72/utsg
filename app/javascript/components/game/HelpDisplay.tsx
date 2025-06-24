@@ -1,6 +1,8 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { helpIndex, HelpSection } from "../../help/helpData";
+import { useParams } from "react-router-dom";
+import { findHelpSection, flatHelpIndexes, helpIndex, HelpSection } from "../../help/helpData";
+import Logo from "../Logo";
+import { subtitleName, titleName } from "../../utilities/graphics";
 
 export default function HelpDisplay() {
   const section: string = useParams().section ?? "1"
@@ -8,16 +10,7 @@ export default function HelpDisplay() {
   const [sectionKey, setSectionKey] = useState<number[]>([])
   const [currSection, setCurrSection] = useState<JSX.Element | undefined>()
   const [sectionList, setSectionList] = useState<JSX.Element | undefined>()
-
-  const onSubmit = (curr: number[]) => {
-    let part = helpIndex[curr[0]]
-    for (let i = 1; i < curr.length; i++) {
-      if (!part.children) { break }
-      part = part.children[curr[i]]
-    }
-    setCurrSection(part.section)
-    setSectionKey(curr)
-  }
+  const [bottomNavigation, setBottomNavigation] = useState<JSX.Element | undefined>()
 
   const compareList = (a: number[], b: number[]): boolean => {
     if (a.length !== b.length) { return false }
@@ -25,6 +18,31 @@ export default function HelpDisplay() {
       if (a[i] !== b[i]) { return false }
     }
     return true
+  }
+
+  const prevSection = () => {
+    const sections = flatHelpIndexes()
+    for (let i = 0; i < sections.length; i++) {
+      if (compareList(sections[i], sectionKey)) {
+        return sections[i-1] ?? []
+      }
+    }
+    return []
+  }
+
+  const nextSection = () => {
+    const sections = flatHelpIndexes()
+    for (let i = 0; i < sections.length; i++) {
+      if (compareList(sections[i], sectionKey)) {
+        return sections[i+1] ?? []
+      }
+    }
+    return []
+  }
+
+  const onSubmit = (curr: number[]) => {
+    setCurrSection(findHelpSection(curr)?.section)
+    setSectionKey(curr)
   }
 
   const mapSections = (l: HelpSection[], ll: number[]): JSX.Element => {
@@ -56,16 +74,47 @@ export default function HelpDisplay() {
 
   useEffect(() => {
     setSectionList(mapSections(helpIndex, []))
+    const prevKey = prevSection()
+    const nextKey = nextSection()
+    const prev = prevKey.map(n => n+1).join(".")
+    const next = nextKey.map(n => n+1).join(".")
+    setBottomNavigation(
+      <div className="help-bottom-navigation flex">
+        { prev.length > 0 ?
+        <div>
+          <form onSubmit={(event: FormEvent) => {
+              event.preventDefault()
+              onSubmit(prevKey)}
+            }>
+            <button type="submit" className="custom-button" >
+              {prev} &lt; prev
+            </button>
+          </form>
+        </div> : undefined }
+        <div className="flex-fill"></div>
+        { next.length > 0 ?
+        <div>
+          <form onSubmit={(event: FormEvent) => {
+              event.preventDefault()
+              onSubmit(nextKey)}
+            }>
+            <button type="submit" className="custom-button" >
+              next &gt; {next}
+            </button>
+          </form>
+        </div> : undefined }
+      </div>
+    )
   }, [sectionKey])
 
   return (
     <div className="help-page">
       <div className="help-index">
-        <div className="help-index-header">
-          <div className="header-logo">
-            <Link to="/">
-              <img src="/assets/logo-64.png" alt="Logo" />
-            </Link>
+        <div className="help-index-header flex">
+          <Logo />
+          <div className="ml025em">
+            <div className="header-name">{ titleName }<span>:</span></div>
+            <div className="header-subname">{ subtitleName }</div>
           </div>
         </div>
         <h3 className="ml075em">Table of Contents</h3>
@@ -73,6 +122,7 @@ export default function HelpDisplay() {
       </div>
       <div className="help-body">
         {currSection}
+        {bottomNavigation}
       </div>
     </div>
   )

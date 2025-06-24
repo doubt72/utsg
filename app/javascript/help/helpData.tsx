@@ -51,3 +51,46 @@ export const helpIndex: HelpSection[] = [
     ]},
   ]},
 ]
+
+export function findHelpSection(curr: number[]): HelpSection | undefined {
+  let part = helpIndex[curr[0]]
+  for (let i = 1; i < curr.length; i++) {
+    if (!part.children) {
+      return
+    }
+    part = part.children[curr[i]]
+  }
+  return part
+}
+
+export function flatHelpIndexes(): number[][] {
+  return flatSubSections(helpIndex, [])
+}
+
+export function helpIndexByName(name: string): number[] {
+  return subSectionByIndex(helpIndex, [], name).map(n => n+1)
+}
+
+function flatSubSections(sections: HelpSection[], base: number[]) {
+  let keys: number[][] = []
+  for (let i = 0; i < sections.length; i++) {
+    const key = base.concat(i)
+    keys.push(key)
+    if (findHelpSection(key)?.children) {
+      keys = keys.concat(flatSubSections(sections[i].children as HelpSection[], key))
+    }
+  }
+  return keys
+}
+
+function subSectionByIndex(sections: HelpSection[], base: number[], name: string): number[] {
+  for (let i = 0; i < sections.length; i++) {
+    const key = base.concat(i)
+    if (sections[i].name === name) { return key }
+    if (sections[i].children) {
+      const sub = subSectionByIndex(sections[i].children as HelpSection[], key, name)
+      if (sub.length > 0) { return sub }
+    }
+  }
+  return []
+}

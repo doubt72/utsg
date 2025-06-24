@@ -155,10 +155,11 @@ Future Scenarios:
 
 - (South African), Slovakian, Croatian, (Bulgarian), Belgian, Dutch, (Yugoslavian)
 
+  - Need faction name overrides:
   7 Dien Bien Phu
   7 Korean War, Late Chinese Civil War, Indo-Pakistan War 1947/8, 1948 Palestene/Arab-Israeli War
-  8 Spanish Civil War, Ehiopia, Chaco War
-  8 Late Warlord, Early Chinese Civil War, Sino-Soviet Clash (1929), Manchuria
+  8 (5?) Spanish Civil War, (1?) Ehiopia, Chaco War
+  8 Late Warlord, Early Chinese Civil War, Sino-Soviet Clash (1929), Manchuria (probably all 6)
   9 Operation Olympic
   9 Sealion
   9 Patton's Charge
