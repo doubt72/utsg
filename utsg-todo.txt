@@ -8,7 +8,7 @@ High Priority Features/Bug Fixes:
       - Main Phase
         - Initiative
         - Move
-    - Link to Section based on Game Context
+    - Implement Help Button liking to game context
 
 Game Actions:
   - Move text for history

@@ -39,20 +39,20 @@ export default function TerrainSection() {
     debris: { m: "g", t: "x", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     water: { m: "g", t: "w", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     shallow: { m: "g", t: "y", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
-    road: { m: "g", t: "o", r: "t", s: undefined, rr: false },
-    dirt: { m: "g", t: "o", r: "d", s: undefined, rr: false },
-    path: { m: "g", t: "o", r: "p", s: undefined, rr: false },
-    air: { m: "g", t: "o", r: "a", s: undefined, rr: false },
-    rail: { m: "g", t: "o", r: undefined, s: undefined, rr: true },
-    fence: { m: "g", t: "o", b: "f" },
-    wall: { m: "g", t: "o", b: "w" },
-    bocage: { m: "g", t: "o", b: "b" },
-    cliff: { m: "g", t: "o", b: "c" },
-    stream: { m: "g", t: "o", s: "s", r: undefined, rr: false },
-    gully: { m: "g", t: "o", s: "g", r: undefined, rr: false },
-    trench: { m: "g", t: "o", s: "t", r: undefined, rr: false },
-    house: { m: "g", t: "o", sh: "l" },
-    silo: { m: "g", t: "o", sh: "c" },
+    road: { t: "o", r: "t", s: undefined, rr: false },
+    dirt: { t: "o", r: "d", s: undefined, rr: false },
+    path: { t: "o", r: "p", s: undefined, rr: false },
+    air: { t: "o", r: "a", s: undefined, rr: false },
+    rail: { t: "o", r: undefined, s: undefined, rr: true },
+    fence: { t: "o", b: "f" },
+    wall: { t: "o", b: "w" },
+    bocage: { t: "o", b: "b" },
+    cliff: { t: "o", b: "c" },
+    stream: { t: "o", s: "s", r: undefined, rr: false },
+    gully: { t: "o", s: "g", r: undefined, rr: false },
+    trench: { t: "o", s: "t", r: undefined, rr: false },
+    house: { t: "o", sh: "l" },
+    silo: { t: "o", sh: "c" },
   }
 
   useEffect(() => {
@@ -156,12 +156,12 @@ export default function TerrainSection() {
     }
     if (attr?.cover > 0 || battr?.cover > 0 || sattr?.cover > 0 || currentState.rr || currentState.sh) {
       sections.push(<p key={index++}>
-        <strong>Cover</strong> is a defensive bonus applied to infantry units occupying this terrain.
+        [<strong>Cover</strong> is a defensive bonus applied to infantry units occupying this terrain.]
       </p>)
     }
     if (attr?.hindrance > 0 || battr?.hindrance > 0) {
       sections.push(<p key={index++}>
-        <strong>Hindrance</strong> is an offensive penalty applied to attacks into or through this terrain.
+        [<strong>Hindrance</strong> is an offensive penalty applied to attacks into or through this terrain.]
       </p>)
     }
     return sections

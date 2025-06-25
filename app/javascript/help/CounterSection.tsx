@@ -8,6 +8,30 @@ import { roundedRectangle } from "../utilities/graphics";
 import MapCounter from "../components/game/map/MapCounter";
 import Counter from "../engine/Counter";
 import { markerType, unitStatus } from "../utilities/commonTypes";
+  
+export const makeIndex = (target: Unit | Feature | Marker) => {
+  if (target.isFeature) {
+    const feature = target as Feature
+    if (feature.name === "Smoke") { return `f_Smoke_${feature.hindrance}`}
+    if (feature.name === "Sniper") { return `f_Sniper_${feature.sniperRoll}`}
+    return `f_${feature.name}`
+  } else if (target.isMarker) {
+    const marker = target as Marker
+    if (marker.type === markerType.TrackedHull || marker.type === markerType.WheeledHull) {
+      return `m_${marker.type}_${marker.nation}`
+    }
+    return `m_${marker.type}_${marker.subType}_${marker.value}_${marker.value2}`
+  } else {
+    const unit = target as Unit
+    if (unit.name === "Leader") {
+      return `${unit.nation}_Leader_ldr_${unit.baseMorale}_${unit.currentLeadership}`
+    }
+    if (unit.name === "Crew") {
+      return `${unit.nation}_Crew_tm_${unit.currentGunHandling}`
+    }
+    return `${unit.nation}_${unit.name}_${unit.type}`
+  }
+}
 
 export default function CounterSection() {
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
@@ -17,30 +41,6 @@ export default function CounterSection() {
   )
 
   const [updateSection, setUpdateSection] = useState<JSX.Element | undefined>()
-  
-  const makeIndex = (target: Unit | Feature | Marker) => {
-    if (target.isFeature) {
-      const feature = target as Feature
-      if (feature.name === "Smoke") { return `f_Smoke_${feature.hindrance}`}
-      if (feature.name === "Sniper") { return `f_Sniper_${feature.sniperRoll}`}
-      return `f_${feature.name}`
-    } else if (target.isMarker) {
-      const marker = target as Marker
-      if (marker.type === markerType.TrackedHull || marker.type === markerType.WheeledHull) {
-        return `m_${marker.type}_${marker.nation}`
-      }
-      return `m_${marker.type}_${marker.subType}_${marker.value}_${marker.value2}`
-    } else {
-      const unit = target as Unit
-      if (unit.name === "Leader") {
-        return `${unit.nation}_Leader_ldr_${unit.baseMorale}_${unit.currentLeadership}`
-      }
-      if (unit.name === "Crew") {
-        return `${unit.nation}_Crew_tm_${unit.currentGunHandling}`
-      }
-      return `${unit.nation}_${unit.name}_${unit.type}`
-    }
-  }
 
   useEffect(() => {
     getAPI("/api/v1/scenarios/all_units", {
