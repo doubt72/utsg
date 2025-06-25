@@ -471,11 +471,22 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
 
 .help-page {
   display: flex;
+}
+
+.help-side {
+  flex-grow: 1;
+  background-color: $gray-d;
+}
+
+.help-main {
+  background-color: $gray-e;
+  display: flex;
   padding: 1em;
+  max-width: 1550px;
 }
 
 .help-index {
-  background-color: $gray-e;
+  background-color: white;
   border-radius: 0.33em;
   padding-bottom: 2em;
   padding-right: 1em;
@@ -485,19 +496,28 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   padding: 1em 0 1em 1em;
 }
 
-.help-body {
+.help-section {
+  display: flex;
+  flex-flow: column;
   margin-left: 1em;
-  flex-grow: 1;
+  flex-grow: 10;
   border-radius: 0.33em;
 }
 
-.help-body p {
-  margin-left: 0.5em;
+.help-section p {
+  margin-bottom: 1em;
+}
+
+.help-section h1 {
   margin-bottom: 0.5em;
 }
 
+.help-section-fill {
+  flex-grow: 1;
+}
+
 .help-bottom-navigation {
-  background-color: $gray-e;
+  background-color: $gray-d;
   margin: 1em 1em 0;
   padding: 0.25em 1em 0.5em;
   border-radius: 0.33em;
@@ -505,6 +525,11 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
 
 .counter-help-button {
   width: 170px;
+  height: 33px;
+}
+
+.terrain-help-button {
+  width: 140px;
   height: 33px;
 }
 
@@ -516,4 +541,10 @@ div.counter-help-button-selected,button.help-button-selected {
 div.counter-help-button-selected:hover,button.help-button-selected:hover {
   background-color: $darkish-green;
   color: $light-green
+}
+
+.glossary-term {
+  color: $dark-green;
+  font-size: 16px;
+  font-variant: small-caps;
 }

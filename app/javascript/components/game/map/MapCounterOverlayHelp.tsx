@@ -22,31 +22,31 @@ export default function MapCounterOverlayHelp({
   map, counter, xx, yy, maxX, maxY, scale, setHelpDisplay
 }: MapCounterOverlayHelpProps) {
   const [helpButton, setHelpButton] = useState<JSX.Element | undefined>()
+  const [backgroundColor, setBackgroundColor] = useState("black")
 
   useEffect(() => {
     const bl = map.counterHelpButtonLayout(new Coordinate(xx, yy), counter) as HelpButtonLayout
-    // const color = "#450"
-    // const textColor = "#CE7"
-    const color = "black"
     const textColor = "white"
     setHelpButton(
       <g onMouseOver={() => showHelp()} onMouseLeave={() => hideHelp()} onClick = {() => {
           const url = `/help/${helpIndexByName("Counters")}`
           window.open(url)
         }}>
-        <path d={bl.path} style={{ fill: color, stroke: textColor, strokeWidth: 2 }} />
+        <path d={bl.path} style={{ fill: backgroundColor, stroke: textColor, strokeWidth: 2 }} />
         <text x={bl.x} y={bl.y} fontSize={bl.size} textAnchor="middle" fontFamily="'Courier Prime', monospace"
               style={{ fill: textColor }} cursor="default">?</text>
       </g>
     )
-  }, [xx, yy])
+  }, [xx, yy, backgroundColor])
 
   const showHelp = () => {
     const layout = counterHelpLayout(counter, new Coordinate(xx + 10, yy + 5), new Coordinate(maxX, maxY), scale)
+    setBackgroundColor("#555")
     setHelpDisplay(HelpOverlay(layout))
   }
 
   const hideHelp = () => {
+    setBackgroundColor("black")
     setHelpDisplay(undefined)
   }
 

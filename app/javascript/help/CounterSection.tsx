@@ -94,7 +94,7 @@ export default function CounterSection() {
     const unit = target as Unit
     if (!unit.breakWeaponRoll || unit.isWreck) { return }
     const name = unit.breakDestroysWeapon || unit.jammed ? "Break Roll" : "Jam Roll"
-    const extra = unit.breakDestroysWeapon ?
+    const extra = unit.breakDestroysWeapon || unit.jammed ?
       <text x={56} y={39} fontSize={5} textAnchor="end">(destroys weapon)</text> : undefined
     const extra2 = unit.jammed ?
       <g>
@@ -885,7 +885,7 @@ export default function CounterSection() {
         Counter display (i.e., whether to show counters or the underlying map terrain)
         can be toggled using the counters button:
       </p>
-      <div className="flex mb05em">
+      <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
           <SquareFill /> <span>counters</span>
@@ -916,7 +916,7 @@ export default function CounterSection() {
         status markers can also be displayed via a badge over the unit instead of as separate
         markers, which can be toggled with the status button:
       </p>
-      <div className="flex mb05em">
+      <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
           <CircleFill /> <span>status</span>
@@ -927,10 +927,10 @@ export default function CounterSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
-      <h2 className="mt1em">Counter Layout</h2>
+      <h2 className="mt05em">Counter Layout</h2>
       <p>
         Select the buttons on the right to see examples of various counter layouts.
-        Additionally, an explanatory help overlay is available in-game by mousing over the
+        Additionally, a help tooltip is available in-game by mousing over the
         question mark icon in the upper right corner of game counters.
       </p>
       { updateSection }

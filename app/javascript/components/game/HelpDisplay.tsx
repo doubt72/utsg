@@ -112,22 +112,27 @@ export default function HelpDisplay() {
   }, [sectionKey])
 
   return (
-    <div className="help-page">
-      <div className="help-index">
-        <div className="help-index-header flex">
-          <Logo />
-          <div className="ml025em">
-            <div className="header-name">{ titleName }<span>:</span></div>
-            <div className="header-subname">{ subtitleName }</div>
+    <div className="help-page" style={{ minHeight: window.innerHeight }}>
+      <div className="help-side"></div>
+      <div className="help-main">
+        <div className="help-index">
+          <div className="help-index-header flex">
+            <Logo />
+            <div className="ml025em">
+              <div className="header-name">{ titleName }<span>:</span></div>
+              <div className="header-subname">{ subtitleName }</div>
+            </div>
           </div>
+          <h3 className="ml075em">Table of Contents</h3>
+          {sectionList}
         </div>
-        <h3 className="ml075em">Table of Contents</h3>
-        {sectionList}
+        <div className="help-section">
+          {currSection}
+          <div className="help-section-fill"></div>
+          {bottomNavigation}
+        </div>
       </div>
-      <div className="help-body">
-        {currSection}
-        {bottomNavigation}
-      </div>
+      <div className="help-side"></div>
     </div>
   )
 }

@@ -283,6 +283,8 @@ export function unitHelpText(unit: Unit): string[] {
       text.push("- half firepower vs. soft targets")
     }
   }
+  text.push("")
+  text.push("click for documentation")
   return text
 }
 

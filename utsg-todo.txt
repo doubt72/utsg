@@ -1,9 +1,8 @@
 High Priority Features/Bug Fixes:
   - Live Documentation
-    - Add missing sections
-    - Introduction (Come up with new name)
-    - Glossary
-    - Terrain (Live)
+    - Line-of-sight
+    - Elevation
+    - Stacking
     - Game Play
       - All of Setup
       - Main Phase
