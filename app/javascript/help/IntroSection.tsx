@@ -1,5 +1,5 @@
 import React from "react";
-import { subtitleName, titleName } from "../utilities/graphics";
+import { subtitleName, titleName } from "../utilities/utilities";
 
 export default function IntroSection() {
   return (

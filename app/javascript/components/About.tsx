@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import { AboutHelpButton, ReturnButton } from "./utilities/buttons";
-import { subtitleName, titleName } from "../utilities/graphics";
+import { subtitleName, titleName } from "../utilities/utilities";
 
 export default function About() {
   return (

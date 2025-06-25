@@ -1014,31 +1014,21 @@ export const mapDebugData: {
   },
   {
     // Minitest map, to visually verify LOS integration tests
-    x: 5,
-    y: 5,
+    x: 7,
+    y: 8,
     units: [
-      { u: testUnitData.ginf, x: 0, y: 0 },
-      { u: testUnitData.ginf, x: 2, y: 2 },
-      { u: testUnitData.ginf, x: 4, y: 4 },
+      { u: testUnitData.ginf, x: 3, y: 6, f: 1 },
     ],
     features: [],
     hexes: [
-      [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-      ],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
-      [
-        { t: "o" },
-        { t: "o", s: { d: [4, 6], t: "t" } },
-        { t: "o", s: { d: [1, 5], t: "t" } },
-        { t: "o" }, { t: "o" }
-      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
     ],
   },
 ]

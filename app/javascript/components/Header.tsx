@@ -1,7 +1,7 @@
 import React from "react";
 import Logo from "./Logo";
 import { AboutButton, LoginButton, LogoutButton, ProfileButton, SignupButton } from "./utilities/buttons";
-import { subtitleName, titleName } from "../utilities/graphics";
+import { subtitleName, titleName } from "../utilities/utilities";
 
 interface HeaderProps {
   hideAbout?: string;

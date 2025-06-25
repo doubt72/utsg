@@ -14,6 +14,7 @@ import InitiativeSection from "./InitiativeSection";
 import MovementSection from "./MovementSection";
 import CleanupPhaseSection from "./CleanupPhaseSection";
 import GlossarySection from "./GlossarySection";
+import CounterFacingSection from "./CounterFacingSection";
 
 export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
 
@@ -22,7 +23,7 @@ export const helpIndex: HelpSection[] = [
   { name: "Glossary", section: <GlossarySection /> },
   { name: "Counters", section: <CounterSection />, children: [
     { name: "Stacking", section: <CounterStackingSection /> },
-    { name: "Facing", section: <CounterStackingSection /> },
+    { name: "Facing", section: <CounterFacingSection /> },
   ] },
   { name: "Terrain", section: <TerrainSection />, children: [
     { name: "Line of Sight", section: undefined },

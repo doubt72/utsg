@@ -50,7 +50,7 @@ export default function CounterStackingSection() {
     if (!map || Object.keys(units).length < 1) { return }
     const units1 = [
       units["ussr_Rifle_sqd"].clone() as Unit,
-      units["ussr_Rifle_sqd"].clone() as Unit,
+      units["ussr_Rifle_tm"].clone() as Unit,
       units["ussr_DP-27_sw"].clone() as Unit,
       units["ussr_Leader_ldr_4_1"].clone() as Unit,
     ]

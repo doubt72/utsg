@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { findHelpSection, flatHelpIndexes, helpIndex, HelpSection } from "../../help/helpData";
 import Logo from "../Logo";
-import { subtitleName, titleName } from "../../utilities/graphics";
+import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function HelpDisplay() {
   const section: string = useParams().section ?? "1"

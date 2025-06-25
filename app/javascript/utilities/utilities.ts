@@ -126,4 +126,6 @@ export function smokeRoll(roll: number): number {
   return 1
 }
 
-export const stackLimit = 15
+export const stackLimit = 12
+export const titleName = "A Hex Too Far"
+export const subtitleName = "Simple Tactical System"

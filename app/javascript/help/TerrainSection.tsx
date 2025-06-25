@@ -91,9 +91,9 @@ export default function TerrainSection() {
     const battr = (map.hexAt(new Coordinate(0, 1)) as Hex).terrain.borderAttr
     const sattr = (map.hexAt(new Coordinate(1, 1)) as Hex).terrain.streamAttr
     sections.push(<p key={index++}>
-      The selected terrain is <strong>
+      The base terrain is <strong>
         {attr.name}{map.baseTerrain !== "g" ? ` (${map.baseTerrainName})`: ""}
-      </strong> which has a base movement cost of {map.baseTerrain !== "g" ? 2 : attr.move }
+      </strong> which has a movement cost of {map.baseTerrain !== "g" ? 2 : attr.move }
       {!attr.vehicle || attr.vehicle === "amph" ? ", and is impassible to vehicles" : ""}{attr.vehicle === "amph" ? " (except amphibious vehicles)" : ""}{!attr.gun ? " and crewed weapons" : ""}.
       {attr.gun === "back" ? " Crewed weapons can only be maneuvered backwards into this terrain." : ""}
       {attr.los ? " This terrain blocks line-of-sight" : ""}
