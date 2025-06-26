@@ -14,13 +14,13 @@ export default function GamePlaySection() {
       <li>
         Game Turn
         <ol>
-          <li>Deployment: place reinforcements (initiative player first)</li>
+          <li>Deployment: place reinforcements (starting initiative player first)</li>
           <li>Prep Phase: rally/repair units, housekeeping</li>
           <li>Main Phase: initiative player starts first action</li>
           <li>Cleanup Phase: close combat, housekeeping</li>
         </ol>
       </li>
-      <li>Game ends: calculate victory points</li>
+      <li>Game ends: calculate victory points, remember the dead</li>
     </ol>
   )
 

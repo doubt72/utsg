@@ -518,6 +518,15 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   flex-grow: 1;
 }
 
+.help-section a {
+  text-decoration: none;
+  color: $darkish-green;
+}
+
+.help-section a:hover {
+  color: $lightish-green;
+}
+
 .help-bottom-navigation {
   background-color: $gray-d;
   margin: 1em 1em 0;

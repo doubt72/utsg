@@ -4,7 +4,6 @@ import CounterSection from "./CounterSection";
 import TerrainSection from "./TerrainSection";
 import GamePlaySection from "./GamePlaySection";
 import SetupSection from "./SetupSection";
-import DeploymentSection from "./DeploymentSection";
 import CounterStackingSection from "./CounterStackingSection";
 import GameTurnSection from "./GameTurnSection";
 import DeploymentPhaseSection from "./DeploymentPhaseSection";
@@ -31,9 +30,7 @@ export const helpIndex: HelpSection[] = [
     { name: "Elevation", section: <ElevationSection /> },
   ] },
   { name: "Game Play", section: <GamePlaySection />, children: [
-    { name: "Setup", section: <SetupSection />, children: [
-      { name: "Deployment", section: <DeploymentSection /> },
-    ]},
+    { name: "Setup", section: <SetupSection /> },
     { name: "Game Turn", section: <GameTurnSection />, children: [
       { name: "Deployment Phase", section: <DeploymentPhaseSection /> },
       { name: "Prep Phase", section: <PrepPhaseSection />, children: [
