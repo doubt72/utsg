@@ -93,8 +93,9 @@ export default function TerrainSection() {
     sections.push(<p key={index++}>
       The base terrain is <strong>
         {attr.name}{map.baseTerrain !== "g" ? ` (${map.baseTerrainName})`: ""}
-      </strong> which has a movement cost of {map.baseTerrain !== "g" ? 2 : attr.move }
-      {!attr.vehicle || attr.vehicle === "amph" ? ", and is impassible to vehicles" : ""}{attr.vehicle === "amph" ? " (except amphibious vehicles)" : ""}{!attr.gun ? " and crewed weapons" : ""}.
+      </strong> which { attr.move === 0 ? "is impassble to all units": `has a movement cost of ${map.baseTerrain !== "g" ? 2 : attr.move }` }
+      {(!attr.vehicle || attr.vehicle === "amph") && attr.move !== 0 ? ", and is impassible to vehicles" : ""}
+      {attr.vehicle === "amph" ? " (except amphibious vehicles)" : ""}{!attr.gun && attr.move !== 0 ? " and crewed weapons" : ""}.
       {attr.gun === "back" ? " Crewed weapons can only be maneuvered backwards into this terrain." : ""}
       {attr.los ? " This terrain blocks line-of-sight" : ""}
       {attr.cover > 0 && attr.hindrance === 0 ? ` and has a cover of ${attr.cover}` : ""}
