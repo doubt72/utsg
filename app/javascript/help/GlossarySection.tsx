@@ -4,6 +4,14 @@ type GlossaryData = { name: string; desc: JSX.Element };
 
 const terms: GlossaryData[] = [
   {
+    name: "Elevation",
+    desc: (
+      <>
+        the height of terrain; affects movement, <strong>firing</strong>, and <strong>line-of-sight</strong>.
+      </>
+    ),
+  },
+  {
     name: "Soft",
     desc: (
       <>

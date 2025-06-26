@@ -65,7 +65,7 @@ export default function CounterFacingSection() {
       <div className="help-section-image">
         <svg width={414} height={360} viewBox='58 40 517.5 450' style={{ minWidth: 414 }}>
           <mask id="facing-mask">
-            <path d={roundedRectangle(59,41,516,450,8)} style={{ fill: "#FFF" }}/>
+            <path d={roundedRectangle(59,41,516,448,8)} style={{ fill: "#FFF" }}/>
           </mask>
           <g mask="url(#facing-mask)">
             { map.mapHexes.map((row, y) => row.map((hex, x) => <MapHex key={`h${x}-${y}`} hex={hex} />)) }
@@ -76,7 +76,7 @@ export default function CounterFacingSection() {
             <MapCounter counter={map.countersAt(new Coordinate(4, 2))[0]} ovCallback={() => {}} />
             <MapLosOverlay map={map} setOverlay={() => {}} xx={4} yy={2} />
           </g>
-          <path d={roundedRectangle(59,41,516,450,8)}
+          <path d={roundedRectangle(59,41,516,448,8)}
                 style={{ stroke: "#DDD", strokeWidth: 1, fill: "rgba(0,0,0,0)" }}/>
         </svg>
         <div className="help-section-image-caption">

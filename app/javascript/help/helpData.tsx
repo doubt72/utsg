@@ -15,6 +15,8 @@ import MovementSection from "./MovementSection";
 import CleanupPhaseSection from "./CleanupPhaseSection";
 import GlossarySection from "./GlossarySection";
 import CounterFacingSection from "./CounterFacingSection";
+import LineOfSightSection from "./LineOfSightSection";
+import ElevationSection from "./ElevationSection";
 
 export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
 
@@ -26,8 +28,8 @@ export const helpIndex: HelpSection[] = [
     { name: "Facing", section: <CounterFacingSection /> },
   ] },
   { name: "Terrain", section: <TerrainSection />, children: [
-    { name: "Line of Sight", section: undefined },
-    { name: "Elevation", section: undefined },
+    { name: "Line of Sight", section: <LineOfSightSection /> },
+    { name: "Elevation", section: <ElevationSection /> },
   ] },
   { name: "Game Play", section: <GamePlaySection />, children: [
     { name: "Setup", section: <SetupSection />, children: [

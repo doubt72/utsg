@@ -107,22 +107,24 @@ export default function CounterStackingSection() {
         to know how stacking works when first deploying units to the map so that weapons and units
         are operated or carried by the units the player actually intends.
       </p>
+      {stack1}
       <p>
         In general, a unit (typically a weapon) is carried or operated by the unit under it. For
         instance, a machine gun may be carried by an infantry unit, and this means that if the
-        player wants a particular machine gun (say) to be carried by a particular squad (say), the
-        machine gun should be placed immediately on top of the squad. Once the deployment is
-        finished, the relationship will formally be established by the server, this is indicated by
-        boxes surrounding the units in question, for instance:
+        player wants a particular machine gun to be carried by a particular squad, the machine gun
+        should be placed immediately on top of the squad. Once the deployment is finished, the
+        relationship will formally be established by the server, and is indicated by white boxes
+        surrounding the units in question.
       </p>
-      { stack1 }
       <div style={{ clear: "both" }}></div>
+      {stack2}
       <p>
         Units being towed and/or carried by vehicles work essentially the same way. Towed units
         should be placed immediately on top of a vehicle, and any infantry units placed on top of
-        that, with infantry weapons being placed on those infantry units. For instance:
+        that, with infantry weapons being placed on those infantry units. Once the game starts,
+        units being towed or carried will then have a white box around them and the unit carrying or
+        towing them, and all units being carried by a vehicle will have a dotted line around them.
       </p>
-      { stack2 }
       <div style={{ clear: "both" }}></div>
       <p>
         Once the game starts, units can be picked up or dropped via the move interface, and the game
