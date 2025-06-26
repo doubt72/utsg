@@ -21,6 +21,9 @@ export default function ElevationSection() {
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({});
   const [map, setMap] = useState<Map | undefined>();
 
+  const [showLines, setShowLines] = useState(true)
+  const [showLOS, setShowLOS] = useState(true)
+
   useEffect(() => {
     const map = new Map({
       layout: [8, 8, "x"],
@@ -158,14 +161,16 @@ export default function ElevationSection() {
       map.hexAt(new Coordinate(7, 4)) as Hex,
       ]
 
+    const lineSelect = showLines ? "counter-help-button-selected" : ""
+    const losSelect = showLOS ? "counter-help-button-selected" : ""
     setFacingDiagram(
       <div className="ml1em" style={{ float: "right" }}>
-        <svg width={644} height={560} viewBox="57 40 862 750" style={{ minWidth: 644 }}>
+        <svg width={646.5} height={562.5} viewBox="57 40 862 750" style={{ minWidth: 646.5 }}>
           <MapHexPatterns />
-          <mask id="facing-mask">
+          <mask id="elevation-mask">
             <path d={roundedRectangle(58, 41, 860, 748, 8)} style={{ fill: "#FFF" }} />
           </mask>
-          <g mask="url(#facing-mask)">
+          <g mask="url(#elevation-mask)">
             {map.mapHexes.map((row, y) =>
               row.map((hex, x) => <MapHex key={`h${x}-${y}`} hex={hex} />)
             )}
@@ -177,24 +182,35 @@ export default function ElevationSection() {
                 />
               ))
             )}
-            <MapLosOverlay map={map} setOverlay={() => {}} xx={6} yy={2} />
-            { hexes.map((h, i) => <g key={i}>
-              <line x1={x0} y1={y0} x2={hexes[i].xOffset} y2={hexes[i].yOffset}
-                    style={{ stroke: "#E00", strokeWidth: 2, strokeDasharray: "4 4" }} />
-              <circle cx={hexes[i].xOffset} cy={hexes[i].yOffset} r={12}
-                      style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
-              <text x={hexes[i].xOffset} y={hexes[i].yOffset+6} textAnchor="middle" fontSize={16}
-                      style={{ fill: "white" }}>{i + 1}</text>
-            </g>) }
+            { showLOS ? <MapLosOverlay map={map} setOverlay={() => {}} xx={6} yy={2} /> : "" }
+            { showLines ? hexes.map((h, i) => <g key={i}>
+                <line x1={x0} y1={y0} x2={hexes[i].xOffset} y2={hexes[i].yOffset}
+                      style={{ stroke: "#E00", strokeWidth: 2, strokeDasharray: "4 4" }} />
+                <circle cx={hexes[i].xOffset} cy={hexes[i].yOffset} r={12}
+                        style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
+                <text x={hexes[i].xOffset} y={hexes[i].yOffset+6} textAnchor="middle" fontSize={16}
+                        style={{ fill: "white" }}>{i + 1}</text>
+              </g>) : "" }
             <MapCounter counter={map.countersAt(new Coordinate(6, 2))[0]} ovCallback={() => {}} />
           </g>
           <path d={roundedRectangle(58, 41, 860, 748, 8)}
                 style={{ stroke: "#DDD", strokeWidth: 1, fill: "rgba(0,0,0,0)" }}
           />
         </svg>
+        <div className="flex mb05em">
+          <div className="flex-fill p05em align-end">toggle illustration:</div>
+          <div className={`custom-button normal-button terrain-help-button ${lineSelect}`} onClick={
+              () => setShowLines(s => !s) }>
+            <span>sightlines</span>
+          </div>
+          <div className={`custom-button normal-button terrain-help-button ${losSelect}`} onClick={
+              () => setShowLOS(s => !s) }>
+            <span>LOS overlay</span>
+          </div>
+        </div>
       </div>
     );
-  }, [map, units]);
+  }, [map, units, showLines, showLOS]);
 
   const redNumber = (n: number) => {
     return (
@@ -243,7 +259,7 @@ export default function ElevationSection() {
       </p>
       <p>
         {redNumber(2)}
-        Again, hexes at the same elevation block the view of hexes at lower elevations behind them.
+        Again, hexes at the same elevation block the view of any hexes at lower elevations behind them.
       </p>
       <p>
         {redNumber(3)}
@@ -254,12 +270,20 @@ export default function ElevationSection() {
         another 1) results in a shadow distance of 2:
       </p>
       <p>
+        <em>
+          distance to hex casting shadow ÷ (difference in elevation + 1) = length of shadow, rounded down
+        </em>
+      </p>
+      <p>
         <strong>4 ÷ (1 + 1) = 2</strong>
       </p>
       <p>
         {redNumber(4)}
-        Terrain that blocks line of sight is treated exactly as if it was an altitude one higher
-        than the base terrain beneath it.
+        Terrain that blocks line of sight is treated as if it was an altitude one higher
+        than the base terrain beneath it, except the shadow is calculated even if the altitude
+        of the observer is only one elevation above its base terrain (e.g., a building at an elevation
+        of 0 with a unit calculating LOS from an elevation of 1 would have a shadow equal to the
+        distance between them).
       </p>
       <p>
         {redNumber(5)}
@@ -272,8 +296,8 @@ export default function ElevationSection() {
       </p>
       <p>
         {redNumber(6)}
-        The hex casting this shadow is one hex closer to the unit (shadow lengths are rounded down)
-        than the two previous highlighted elevation hexes:
+        The hex casting this shadow is one hex closer to the unit
+        than the two previous highlighted elevation hexes.  Shadow lengths are rounded down:
       </p>
       <p>
         <strong>3 ÷ (1 + 1) = 1.5, rounded to 1</strong>
@@ -288,7 +312,7 @@ export default function ElevationSection() {
       </p>
       <p>
         {redNumber(8)}
-        Hindrances are also cast downhill.
+        Hindrances are also cast directly downhill.
       </p>
       <h2>Additional Rules</h2>
       <p>
@@ -298,8 +322,8 @@ export default function ElevationSection() {
       <p>
         Remember that line-of-sight is symmetrical, so if (and only if) the unit at the top of the
         hill can see a hex, a unit in that hex can see the unit at the top of the hill. Hindrance is
-        mostly symmetrical, except hindrance in the same hex (or fences bordering a hex) only affect
-        fire in, not fire out.
+        mostly symmetrical, except (terrain) hindrance in the same hex (or fences bordering a hex) only affect
+        fire in, not fire out (smoke is an exception, it affects both directions).
       </p>
     </div>
   );

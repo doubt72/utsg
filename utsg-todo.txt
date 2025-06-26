@@ -1,14 +1,11 @@
 High Priority Features/Bug Fixes:
   - Live Documentation
-    - Line-of-sight
-    - Elevation
-    - Stacking
     - Game Play
       - All of Setup
       - Main Phase
         - Initiative
         - Move
-    - Implement Help Button liking to game context
+    - Implement Help Button linking to game context
 
 Game Actions:
   - Move text for history
@@ -31,16 +28,18 @@ Game Actions:
     - Reaction fire
 
 Future Features/Bug Fixes:
-  - Fix flickering of control buttons
   - Fix hindrance bug
     - Through two fence corner intersections
     - Also for hindrance at higher elevation
   - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
   - Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
     (So scenarios can be modified without breaking existing games)
+  - Game ratings, scenario balance stats, user stats
   - Switch main page game status to websocket, not polling
+
+  - Fix flickering of control buttons?
   - Disable text selection on map/etc?
-  - Support mouse scroll on map
+  - Support mouse scroll on map?
     - Much harder than it appears, need a way to intercept only scroll/wheel/key events
       but pass through all other mouse events
   - Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?

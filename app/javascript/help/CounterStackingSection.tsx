@@ -9,6 +9,7 @@ import Map from "../engine/Map";
 import { Coordinate, weatherType, windType } from "../utilities/commonTypes";
 import organizeStacks from "../engine/support/organizeStacks";
 import MapCounterOverlay from "../components/game/map/MapCounterOverlay";
+import { stackLimit } from "../utilities/utilities";
 
 export default function CounterStackingSection() {
   const [stack1, setStack1] = useState<JSX.Element | undefined>()
@@ -68,7 +69,7 @@ export default function CounterStackingSection() {
 
     setStack1(
       <div className="help-section-image" >
-        <svg width={576} height={154} viewBox='0 0 720 192' style={{ minWidth: 576 }}>
+        <svg width={504} height={134} viewBox='0 0 720 192' style={{ minWidth: 504 }}>
           <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
                              counters={map.countersAt(new Coordinate(0,0))}  />
@@ -76,13 +77,13 @@ export default function CounterStackingSection() {
                 style={{ stroke: "rgba(0,0,0,0)", strokeWidth: 0.5, fill: "rgba(0,0,0,0)" }}/>
         </svg>
         <div className="help-section-image-caption">
-          two infantry units and a leader, one of which is carrying a leader
+          infantry in a stack carrying a machine gun
         </div>
       </div>
     )
     setStack2(
       <div className="help-section-image" >
-        <svg width={717} height={154} viewBox='0 0 896 192' style={{ minWidth: 717 }}>
+        <svg width={627} height={134} viewBox='0 0 896 192' style={{ minWidth: 627 }}>
           <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
                              counters={map.countersAt(new Coordinate(1,1))}  />
@@ -121,9 +122,12 @@ export default function CounterStackingSection() {
       <p>
         Units being towed and/or carried by vehicles work essentially the same way. Towed units
         should be placed immediately on top of a vehicle, and any infantry units placed on top of
-        that, with infantry weapons being placed on those infantry units. Once the game starts,
-        units being towed or carried will then have a white box around them and the unit carrying or
-        towing them, and all units being carried by a vehicle will have a dotted line around them.
+        that, with infantry weapons being placed on those infantry units. (Note that the infantry
+        units must be transportable — if the first infantry unit can&apos;t be carried, the game
+        won&apos;t &quot;search&quot; for a valid unit instead, it simply won&apos;t load the unit.)
+        Once the game starts, units being towed or carried will then have a white box around them
+        and the unit carrying or towing them, and all units being carried by a vehicle will have a
+        dotted line around them.
       </p>
       <div style={{ clear: "both" }}></div>
       <p>
@@ -133,6 +137,13 @@ export default function CounterStackingSection() {
         in the stack, leaders will be affected last (results will be evaluated from bottom-to-top of
         stacks) so that the leadership bonus won&apos;t be lost until after the entire attack is
         evaluated.
+      </p>
+      <p>
+        Finally, there is a stacking limit of {stackLimit}. That limit can never be exceeded except
+        when moving into an enemy-occupied hex. Stacking limits in that case are separate for each
+        player, and each player may exceed their stacking limit by moving more units into that hex.
+        However, after close combat is resolved, if either player (separately) exceeds the stacking
+        limit, they must remove units until the stacking limit is no longer exceeded.
       </p>
     </div>
   );

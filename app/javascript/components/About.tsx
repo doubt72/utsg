@@ -20,18 +20,14 @@ export default function About() {
             This is the <strong>{ titleName }: { subtitleName }</strong> server.
           </p>
           <p>
-            This site hosts an online implementation of the game, and
-            the game itself is a hex-and-counter, small unit tactical
-            wargame primarily meant to be suitable for engagements fought
-            during the Second World War, using a simple system
-            designed to model land combat across all major theaters and
-            phases of the war, from the early fighting in the Far East or
-            or even Spain to the closing battles in Germany and the
-            Pacific.  The game engine supports both small infantry formations
-            (squads and teams) and their support weapons, as well as individual vehicles
-            (armored and otherwise) in semi-turn-based engagements, and is meant
-            to strike a balance between historical authenticity and
-            simplicity, but leaning toward simplicity and streamlined game play.
+            <strong>{titleName}</strong> is a browser-based hex-and-counter wargame for simulating small
+            unit tactical combat. It is intended to model land engagement of the Second World War, using
+            a streamlined system designed to cover all major theaters and phases of the war, from China
+            and Spain in the late 30&apos;s to the final battles in Germany and the Pacific. The system
+            supports small infantry formations (squads and teams) and their support weapons, as well as
+            individual vehicles (armored and otherwise) in semi-turn-based engagements, and is meant to
+            strike a balance between historical authenticity and simplicity, though with the greater
+            emphasis on simplicity.
           </p>
           <p>
             There are a selection of scenarios available.  To get started, head to
@@ -71,7 +67,8 @@ export default function About() {
             Don&apos;t spam or derail it with off-topic commentary.  There are plenty of other
             places on the internet for that.  This doesn&apos;t apply to in-game chats — as those
             can only be seen by people watching the game, there&apos;s no real need to cut down
-            on noise.
+            on noise, so players can feel free to use them however they like (assuming the other
+            rules here are observed, obviously).
           </p>
           <p>
             <strong>5. Report, Don&apos;t Escalate</strong>: If you see someone violating the code

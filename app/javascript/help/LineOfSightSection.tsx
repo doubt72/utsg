@@ -20,6 +20,9 @@ export default function LineOfSightSection() {
 
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({});
   const [map, setMap] = useState<Map | undefined>();
+  
+  const [showLines, setShowLines] = useState(true)
+  const [showLOS, setShowLOS] = useState(true)
 
   useEffect(() => {
     const map = new Map({
@@ -90,14 +93,16 @@ export default function LineOfSightSection() {
       map.hexAt(new Coordinate(5, 7)) as Hex,
       ]
 
+    const lineSelect = showLines ? "counter-help-button-selected" : ""
+    const losSelect = showLOS ? "counter-help-button-selected" : ""
     setFacingDiagram(
       <div className="ml1em" style={{ float: "right" }}>
-        <svg width={644} height={600} viewBox="115 40 862 750" style={{ minWidth: 644 }}>
+        <svg width={604} height={562.5} viewBox="115 40 805 750" style={{ minWidth: 562.5 }}>
           <MapHexPatterns />
-          <mask id="facing-mask">
+          <mask id="los-mask">
             <path d={roundedRectangle(116, 41, 803, 748, 8)} style={{ fill: "#FFF" }} />
           </mask>
-          <g mask="url(#facing-mask)">
+          <g mask="url(#los-mask)">
             {map.mapHexes.map((row, y) =>
               row.map((hex, x) => <MapHex key={`h${x}-${y}`} hex={hex} />)
             )}
@@ -109,24 +114,35 @@ export default function LineOfSightSection() {
                 />
               ))
             )}
-            <MapLosOverlay map={map} setOverlay={() => {}} xx={4} yy={6} />
-            { hexes.map((h, i) => <g key={i}>
-              <line x1={x0} y1={y0} x2={hexes[i].xOffset} y2={hexes[i].yOffset}
-                    style={{ stroke: "#E00", strokeWidth: 2, strokeDasharray: "4 4" }} />
-              <circle cx={hexes[i].xOffset} cy={hexes[i].yOffset} r={12}
-                      style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
-              <text x={hexes[i].xOffset} y={hexes[i].yOffset+6} textAnchor="middle" fontSize={16}
-                      style={{ fill: "white" }}>{i + 1}</text>
-            </g>) }
+            { showLOS ? <MapLosOverlay map={map} setOverlay={() => {}} xx={4} yy={6} /> : "" }
+            { showLines ? hexes.map((h, i) => <g key={i}>
+                <line x1={x0} y1={y0} x2={hexes[i].xOffset} y2={hexes[i].yOffset}
+                      style={{ stroke: "#E00", strokeWidth: 2, strokeDasharray: "4 4" }} />
+                <circle cx={hexes[i].xOffset} cy={hexes[i].yOffset} r={12}
+                        style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
+                <text x={hexes[i].xOffset} y={hexes[i].yOffset+6} textAnchor="middle" fontSize={16}
+                        style={{ fill: "white" }}>{i + 1}</text>
+              </g>) : "" }
             <MapCounter counter={map.countersAt(new Coordinate(4, 6))[0]} ovCallback={() => {}} />
           </g>
           <path d={roundedRectangle(116, 41, 803, 748, 8)}
                 style={{ stroke: "#DDD", strokeWidth: 1, fill: "rgba(0,0,0,0)" }}
           />
         </svg>
+        <div className="flex mb05em">
+          <div className="flex-fill p05em align-end">toggle illustration:</div>
+          <div className={`custom-button normal-button terrain-help-button ${lineSelect}`} onClick={
+              () => setShowLines(s => !s) }>
+            <span>sightlines</span>
+          </div>
+          <div className={`custom-button normal-button terrain-help-button ${losSelect}`} onClick={
+              () => setShowLOS(s => !s) }>
+            <span>LOS overlay</span>
+          </div>
+        </div>
       </div>
     );
-  }, [map, units]);
+  }, [map, units, showLines, showLOS]);
 
   const redNumber = (n: number) => {
     return (
@@ -205,7 +221,7 @@ export default function LineOfSightSection() {
       </p>
       <p>
         { redNumber(5) }
-        The Forest blocks LOS, but any units in the first blocking hex are always visible.
+        The forest blocks LOS, but any units in the first blocking hex are always visible.
       </p>
       <p>
         { redNumber(6) }
@@ -219,6 +235,13 @@ export default function LineOfSightSection() {
       <p>
         { redNumber(8) }
         Sightlines along a wall block LOS to everything beyond them.
+      </p>
+      <h2>Additional Rules</h2>
+      <p>
+        Line-of-sight is symmetrical, so if (and only if) one unit one unit can see another unit,
+        that unit can be seen in turn. Hindrance is mostly symmetrical, except (terrain) hindrance
+        in the same hex (or fences bordering a hex) only affect fire in, not fire out (smoke is an
+        exception, it affects both directions).
       </p>
     </div>
   );

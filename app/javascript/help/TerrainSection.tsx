@@ -109,7 +109,7 @@ export default function TerrainSection() {
         which { battr.move > 0 ? `adds a movement cost of ${battr.move}` : "is impassible" }
         { battr.move > 0 && !battr.vehicle ? ", but is impassible to vehicles and crewed weapons" : ", and is impassible to crewed weapons" }
         { battr.move === 0 ? " (the terrain behind the cliff is at a higher elevation)." : "." }
-        { battr.cover > 0 && battr.los ? ` The ${battr.name} blocks line-of-sight and has a cover of ${battr.cover}.` : ""}
+        { battr.cover > 0 && battr.los ? ` The ${battr.name} blocks line-of-sight and has a cover of ${battr.cover} (for units immediately behind it, not distant units from fire coming from immediately behind it).` : ""}
         { battr.hindrance > 0 ? ` The ${battr.name} has a hindrance of ${battr.hindrance}.` : "" }
       </p>)
     }

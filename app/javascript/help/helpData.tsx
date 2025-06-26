@@ -22,7 +22,6 @@ export type HelpSection = { name: string, section?: JSX.Element, children?: Help
 
 export const helpIndex: HelpSection[] = [
   { name: "Introduction", section: <IntroSection /> },
-  { name: "Glossary", section: <GlossarySection /> },
   { name: "Counters", section: <CounterSection />, children: [
     { name: "Stacking", section: <CounterStackingSection /> },
     { name: "Facing", section: <CounterFacingSection /> },
@@ -58,6 +57,7 @@ export const helpIndex: HelpSection[] = [
       ]},
     ]},
   ]},
+  { name: "Glossary", section: <GlossarySection /> },
 ]
 
 export function findHelpSection(curr: number[]): HelpSection | undefined {
