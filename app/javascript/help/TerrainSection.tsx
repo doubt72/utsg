@@ -261,7 +261,7 @@ export default function TerrainSection() {
           <div>
             <svg width={320} height={263} viewBox='-10 -10 310 253' style={{ minWidth: 320 }}>
               <MapHexPatterns />
-              <path d={roundedRectangle(-8,-8,305,249,5)}
+              <path d={roundedRectangle(-8,-8,305,249,8)}
                     style={{ stroke: "#DDD", strokeWidth: 1, fill: "#FFF" }}/>
               <MapHex hex={hex1} />
               <MapHex hex={hex2} />

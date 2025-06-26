@@ -1,7 +1,91 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { EyeFill, Stack } from "react-bootstrap-icons";
+import Map from "../engine/Map";
+import { Coordinate, weatherType, windType } from "../utilities/commonTypes";
+import { roundedRectangle } from "../utilities/graphics";
+import MapHex from "../components/game/map/MapHex";
+import MapHexDetail from "../components/game/map/MapHexDetail";
+import { getAPI } from "../utilities/network";
+import Unit, { UnitData } from "../engine/Unit";
+import Feature, { FeatureData } from "../engine/Feature";
+import Marker, { MarkerData } from "../engine/Marker";
+import { makeIndex } from "./CounterSection";
+import MapCounter from "../components/game/map/MapCounter";
+import MapLosOverlay from "../components/game/map/MapLosOverlay";
 
 export default function CounterFacingSection() {
+  const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>()
+
+  const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
+  const [map, setMap] = useState<Map | undefined>()
+  
+  useEffect(() => {
+    const map = new Map({
+      layout: [5, 5, "x"], axis_dir: 4, allied_dir: 1,
+      start_weather: weatherType.Dry, base_weather: weatherType.Dry, precip: [0, weatherType.Rain],
+      wind: [windType.Calm, 1, false],
+      base_terrain: "g",
+      hexes: [
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ]
+    })
+    map.showCoords = false
+    setMap(map)
+
+    getAPI("/api/v1/scenarios/all_units", {
+      ok: response => response.json().then(json => {
+        const data: { [index: string]: Unit | Feature | Marker } = {}
+        Object.values(json).forEach(u => {
+          let target = undefined
+          if ((u as FeatureData).ft) {
+            target = new Feature(u as FeatureData)
+          } else if ((u as MarkerData).mk) {
+            target = new Marker(u as MarkerData)
+          } else {
+            target = new Unit(u as UnitData)
+          }
+          data[makeIndex(target)] = target
+        })
+        setUnits(data)
+      })
+    })
+  }, [])
+
+  useEffect(() => {
+    if (!map || Object.keys(units).length < 1) { return }
+    if (map.units[2][4].length < 1) {
+      map.addCounter(new Coordinate(4, 2),  units["ger_Tiger II_tank"].clone() as Unit)
+    }
+
+    setFacingDiagram(
+      <div className="help-section-image">
+        <svg width={414} height={360} viewBox='58 40 517.5 450' style={{ minWidth: 414 }}>
+          <mask id="facing-mask">
+            <path d={roundedRectangle(59,41,516,450,8)} style={{ fill: "#FFF" }}/>
+          </mask>
+          <g mask="url(#facing-mask)">
+            { map.mapHexes.map((row, y) => row.map((hex, x) => <MapHex key={`h${x}-${y}`} hex={hex} />)) }
+            { map.mapHexes.map((row, y) => row.map((hex, x) =>
+                <MapHexDetail key={`d${x}-${y}`} hex={hex} maxX={0} maxY={0} scale={1} showTerrain={false}
+                              selectCallback={() => {}} terrainCallback={() => {}}
+                              svgRef={null as unknown as React.MutableRefObject<HTMLElement>} />)) }
+            <MapCounter counter={map.countersAt(new Coordinate(4, 2))[0]} ovCallback={() => {}} />
+            <MapLosOverlay map={map} setOverlay={() => {}} xx={4} yy={2} />
+          </g>
+          <path d={roundedRectangle(59,41,516,450,8)}
+                style={{ stroke: "#DDD", strokeWidth: 1, fill: "rgba(0,0,0,0)" }}/>
+        </svg>
+        <div className="help-section-image-caption">
+          forward facing arc, as shown by the line-of-sight map overlay
+        </div>
+      </div>
+    )
+  }, [map, units])
+
   return (
     <div>
       <h1>Counter Facing</h1>
@@ -15,16 +99,7 @@ export default function CounterFacingSection() {
         facing is indicated with a hull marker, and the facing of the turret is indicated with the
         counter itself, placed on top of the hull.
       </p>
-      <div className="help-section-image">
-        <img
-          src="/assets/docs/facing.png"
-          alt="forward facing arc on the hex map"
-          style={{ height: 360 }}
-        />
-        <div className="help-section-image-caption">
-          forward facing arc, as shown by the line-of-sight map overlay
-        </div>
-      </div>
+      { facingDiagram }
       <p>
         Whenever the weapons with facing are firing, they must fire in the direction of the forward
         arc, as shown on the image here. The forward arc includes all the hexes that are between the
@@ -47,7 +122,7 @@ export default function CounterFacingSection() {
         side, and side armor applies.
       </p>
       <p>
-        Forward arcs can be seen on the map at any time by toggling the overlay button to show
+        Forward firing arcs can be seen on the map at any time by toggling the overlay button to show
         line-of-sight and mousing over unit counters — assuming the unit has a facing — see the Line
         of Sight section for more:
       </p>
