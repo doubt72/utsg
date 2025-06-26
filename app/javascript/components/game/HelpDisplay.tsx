@@ -1,10 +1,12 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { findHelpSection, flatHelpIndexes, helpIndex, HelpSection } from "../../help/helpData";
 import Logo from "../Logo";
 import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function HelpDisplay() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const section: string = useParams().section ?? "1"
 
   const [sectionKey, setSectionKey] = useState<number[]>([])
@@ -40,9 +42,14 @@ export default function HelpDisplay() {
     return []
   }
 
-  const onSubmit = (curr: number[]) => {
+  const changeSection = (curr: number[]) => {
     setCurrSection(findHelpSection(curr)?.section)
     setSectionKey(curr)
+  }
+
+  const onSubmit = (curr: number[]) => {
+    changeSection(curr)
+    navigate(`/help/${curr.map(n => n+1).join(".")}`)
   }
 
   const mapSections = (l: HelpSection[], ll: number[]): JSX.Element => {
@@ -69,8 +76,13 @@ export default function HelpDisplay() {
   }
 
   useEffect(() => {
-    onSubmit(section.split(".").map(n => Number(n)-1))
+    changeSection(section.split(".").map(n => Number(n)-1))
   }, [])
+
+  useEffect(() => {
+    console.log("got new location")
+    changeSection(section.split(".").map(n => Number(n)-1))
+  }, [location])
 
   useEffect(() => {
     setSectionList(mapSections(helpIndex, []))
