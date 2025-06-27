@@ -5,7 +5,6 @@ import { roundedRectangle } from "../../utilities/graphics";
 import InitiativeDisplay from "../game/map/InitiativeDisplay";
 import Game from "../../engine/Game";
 import MapHexPatterns from "../game/map/MapHexPatterns";
-import { alliedCodeToName, axisCodeToName } from "../../utilities/utilities";
 
 export default function InitiativeSection() {
   const [showInitiative, setShowInitiative] = useState<JSX.Element | undefined>()
@@ -70,8 +69,7 @@ export default function InitiativeSection() {
               game.initiativePlayer = (3 - player) as Player
               setPlayer(game.initiativePlayer)
             }}>
-            <span>{ game.initiativePlayer === 1 ? alliedCodeToName(game.scenario.alliedFactions[0]) :
-                                                  axisCodeToName(game.scenario.axisFactions[0]) }</span>
+            <span>flip</span>
           </div>
           <div className="custom-button normal-button" onClick={
             () => {

@@ -91,7 +91,7 @@ export default function TerrainSection() {
     const battr = (map.hexAt(new Coordinate(0, 1)) as Hex).terrain.borderAttr
     const sattr = (map.hexAt(new Coordinate(1, 1)) as Hex).terrain.streamAttr
     sections.push(<p key={index++}>
-      The base terrain is <strong>
+      The current base terrain is <strong>
         {attr.name}{map.baseTerrain !== "g" ? ` (${map.baseTerrainName})`: ""}
       </strong> which { attr.move === 0 ? "is impassble to all units": `has a movement cost of ${map.baseTerrain !== "g" ? 2 : attr.move }` }
       {(!attr.vehicle || attr.vehicle === "amph") && attr.move !== 0 ? ", and is impassible to vehicles" : ""}
