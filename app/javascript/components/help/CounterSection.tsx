@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { CircleFill, Square, SquareFill, Stack } from "react-bootstrap-icons";
-import { getAPI } from "../utilities/network";
-import Unit, { UnitData } from "../engine/Unit";
-import Feature, { FeatureData } from "../engine/Feature";
-import Marker, { MarkerData } from "../engine/Marker";
-import { roundedRectangle } from "../utilities/graphics";
-import MapCounter from "../components/game/map/MapCounter";
-import Counter from "../engine/Counter";
-import { markerType, unitStatus } from "../utilities/commonTypes";
+import { getAPI } from "../../utilities/network";
+import Unit, { UnitData } from "../../engine/Unit";
+import Feature, { FeatureData } from "../../engine/Feature";
+import Marker, { MarkerData } from "../../engine/Marker";
+import { roundedRectangle } from "../../utilities/graphics";
+import MapCounter from "../game/map/MapCounter";
+import Counter from "../../engine/Counter";
+import { markerType, unitStatus } from "../../utilities/commonTypes";
   
 export const makeIndex = (target: Unit | Feature | Marker) => {
   if (target.isFeature) {
@@ -843,9 +843,9 @@ export default function CounterSection() {
             { counterButton("armored half-track", "ger_SdKfz 250/1_ht") }
             { counterButton("amtrac", "usa_LVT-1_ht") }
             { counterButton("mortar carrier", "usa_T19/M21 MMC_ht") }
+            { counterButton("jeep", "usa_Jeep_truck") }
             { counterButton("truck", "usa_GMC CCKW_truck") }
             { counterButton("duck", "usa_GMC DUKW_truck") }
-            { counterButton("jeep", "usa_Jeep_truck") }
             { counterButton("technical", "uk_Chevy C30 AT_truck") }
             { counterButton("cavalry", "alm_Horse_cav") }
             { counterButton("bicycle", "jap_Bicycle_cav") }

@@ -5,7 +5,7 @@ import { Coordinate } from "../../../utilities/commonTypes";
 import { HelpButtonLayout } from "../../../utilities/graphics";
 import { counterHelpLayout } from "../../../engine/support/help";
 import { HelpOverlay } from "./Help";
-import { helpIndexByName } from "../../../help/helpData";
+import { helpIndexByName } from "../../help/helpData";
 
 interface MapCounterOverlayHelpProps {
   map: Map;

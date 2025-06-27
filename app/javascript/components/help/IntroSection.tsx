@@ -1,6 +1,6 @@
 import React from "react";
-import { subtitleNameStyle, titleNameStyle } from "../components/Utilities";
-import { subtitleName, titleName } from "../utilities/utilities";
+import { subtitleNameStyle, titleNameStyle } from "../Utilities";
+import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function IntroSection() {
   return (

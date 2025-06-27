@@ -1,6 +1,6 @@
 import React from "react";
 import { sequenceOfTurn } from "./GameTurnSection";
-import { titleNameStyle } from "../components/Utilities";
+import { titleNameStyle } from "../Utilities";
 
 export const sequenceOfPlay = (
   <ol>

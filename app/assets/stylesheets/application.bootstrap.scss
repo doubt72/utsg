@@ -490,7 +490,7 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   background-color: $gray-e;
   display: flex;
   padding: 1em;
-  max-width: 1550px;
+  max-width: 1380px;
 }
 
 .help-index {
@@ -526,7 +526,7 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
 
 .help-section a {
   text-decoration: none;
-  color: $darkish-green;
+  color: $alert-orange;
 }
 
 .help-section a:hover {
@@ -585,4 +585,8 @@ div.counter-help-button-selected:hover,button.help-button-selected:hover {
 .help-section-image-caption {
   font-size: 14px;
   text-align: center;
+}
+
+.custom-button span.help-button-deleteme {
+  color: $darkish-green;
 }

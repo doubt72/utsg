@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { findHelpSection, flatHelpIndexes, helpIndex, HelpSection } from "../../help/helpData";
+import { findHelpSection, flatHelpIndexes, helpIndex, HelpSection } from "../help/helpData";
 import Logo from "../Logo";
 import { subtitleName, titleName } from "../../utilities/utilities";
 
@@ -56,6 +56,8 @@ export default function HelpDisplay() {
     return (
       <div>{l.map((s, i) => {
         const sec = ll.concat(i)
+        // TODO: remove this (and the ***'s) once we have a full set of docs
+        const section = findHelpSection(sec)?.section
         return (
           <div key={sec.join(".")} className="ml1em nowrap">
             <form onSubmit={(event: FormEvent) => {
@@ -64,7 +66,7 @@ export default function HelpDisplay() {
               }>
               <button type="submit" className={
                 `custom-button${compareList(sec, sectionKey) ? " help-button-selected" : ""}`
-                }>{sec.map(n => n+1).join(".")}&nbsp; {s.name}
+                }>{sec.map(n => n+1).join(".")}&nbsp; { section ? s.name : <span className="help-button-deleteme">{ s.name }</span> }{  }
               </button>
             </form>
             {s.children ? mapSections(s.children, sec) : undefined }
@@ -80,7 +82,6 @@ export default function HelpDisplay() {
   }, [])
 
   useEffect(() => {
-    console.log("got new location")
     changeSection(section.split(".").map(n => Number(n)-1))
   }, [location])
 

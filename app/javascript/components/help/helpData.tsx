@@ -35,7 +35,6 @@ export const helpIndex: HelpSection[] = [
       { name: "Deployment Phase", section: <DeploymentPhaseSection /> },
       { name: "Prep Phase", section: <PrepPhaseSection />, children: [
         { name: "Rallying", section: undefined },
-        { name: "Precipitation", section: undefined },
       ]},
       { name: "Main Phase", section: <MainPhaseSection />, children: [
         { name: "Initiative", section: <InitiativeSection /> },
@@ -54,7 +53,7 @@ export const helpIndex: HelpSection[] = [
     ]},
   ]},
   { name: "Glossary", section: <GlossarySection /> },
-  { name: "Development Notes", section: <GlossarySection /> },
+  { name: "Dev Notes", section: undefined },
 ]
 
 export function findHelpSection(curr: number[]): HelpSection | undefined {

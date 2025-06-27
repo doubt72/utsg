@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { EyeFill, Stack } from "react-bootstrap-icons";
-import Map from "../engine/Map";
-import { Coordinate, weatherType, windType } from "../utilities/commonTypes";
-import { roundedRectangle } from "../utilities/graphics";
-import MapHex from "../components/game/map/MapHex";
-import MapHexDetail from "../components/game/map/MapHexDetail";
-import { getAPI } from "../utilities/network";
-import Unit, { UnitData } from "../engine/Unit";
-import Feature, { FeatureData } from "../engine/Feature";
-import Marker, { MarkerData } from "../engine/Marker";
+import Map from "../../engine/Map";
+import { Coordinate, weatherType, windType } from "../../utilities/commonTypes";
+import { roundedRectangle } from "../../utilities/graphics";
+import MapHex from "../game/map/MapHex";
+import MapHexDetail from "../game/map/MapHexDetail";
+import { getAPI } from "../../utilities/network";
+import Unit, { UnitData } from "../../engine/Unit";
+import Feature, { FeatureData } from "../../engine/Feature";
+import Marker, { MarkerData } from "../../engine/Marker";
 import { makeIndex } from "./CounterSection";
-import MapCounter from "../components/game/map/MapCounter";
-import MapLosOverlay from "../components/game/map/MapLosOverlay";
+import MapCounter from "../game/map/MapCounter";
+import MapLosOverlay from "../game/map/MapLosOverlay";
 
 export default function CounterFacingSection() {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>()

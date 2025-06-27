@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { EyeFill, Hexagon, HexagonFill, Stack } from "react-bootstrap-icons";
-import { roundedRectangle } from "../utilities/graphics";
-import Map from "../engine/Map";
+import { roundedRectangle } from "../../utilities/graphics";
+import Map from "../../engine/Map";
 import {
   BaseTerrainType, BorderType, BuildingShape, Coordinate, RoadType, StreamType, TerrainType, weatherType, windType
-} from "../utilities/commonTypes";
-import MapHex from "../components/game/map/MapHex";
-import Hex from "../engine/Hex";
-import MapHexDetail from "../components/game/map/MapHexDetail";
-import MapHexPatterns from "../components/game/map/MapHexPatterns";
+} from "../../utilities/commonTypes";
+import MapHex from "../game/map/MapHex";
+import Hex from "../../engine/Hex";
+import MapHexDetail from "../game/map/MapHexDetail";
+import MapHexPatterns from "../game/map/MapHexPatterns";
 
 type PickTerrain = {
   m?: BaseTerrainType, t?: TerrainType, b?: BorderType, r?: RoadType, s?: StreamType, rr?: boolean, sh?: BuildingShape,
@@ -282,7 +282,7 @@ export default function TerrainSection() {
                             svgRef={null as unknown as React.MutableRefObject<HTMLElement>} />
             </svg>
           </div>
-          <div>
+          <div className="mb05em">
             <div className="flex flex-wrap ml025em">
               { typeButton("open", "Open") }
               { typeButton("forest", "Forest") }

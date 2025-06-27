@@ -1,14 +1,11 @@
 High Priority Features/Bug Fixes:
   - Live Documentation
-    - Game Play
-      - All of Setup
-      - Main Phase
-        - Initiative
-        - Move
-    - Implement Help Button linking to game context
+  - Implement Help Button linking to game context
+  - Grab domain
 
 Game Actions:
   - Move text for history
+  - Breakdown check
   - Show reaction options
     - Passing
   - Initiative
@@ -36,6 +33,7 @@ Future Features/Bug Fixes:
     (So scenarios can be modified without breaking existing games)
   - Game ratings, scenario balance stats, user stats
   - Switch main page game status to websocket, not polling
+  - Change terminology for jamming in documentation to be more like breaking
 
   - Fix flickering of control buttons?
   - Disable text selection on map/etc?

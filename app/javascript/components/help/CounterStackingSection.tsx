@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { roundedRectangle } from "../utilities/graphics";
+import { roundedRectangle } from "../../utilities/graphics";
 import { makeIndex } from "./CounterSection";
-import Unit, { UnitData } from "../engine/Unit";
-import Feature, { FeatureData } from "../engine/Feature";
-import Marker, { MarkerData } from "../engine/Marker";
-import { getAPI } from "../utilities/network";
-import Map from "../engine/Map";
-import { Coordinate, weatherType, windType } from "../utilities/commonTypes";
-import organizeStacks from "../engine/support/organizeStacks";
-import MapCounterOverlay from "../components/game/map/MapCounterOverlay";
-import { stackLimit } from "../utilities/utilities";
+import Unit, { UnitData } from "../../engine/Unit";
+import Feature, { FeatureData } from "../../engine/Feature";
+import Marker, { MarkerData } from "../../engine/Marker";
+import { getAPI } from "../../utilities/network";
+import Map from "../../engine/Map";
+import { Coordinate, weatherType, windType } from "../../utilities/commonTypes";
+import organizeStacks from "../../engine/support/organizeStacks";
+import MapCounterOverlay from "../game/map/MapCounterOverlay";
+import { stackLimit } from "../../utilities/utilities";
 
 export default function CounterStackingSection() {
   const [stack1, setStack1] = useState<JSX.Element | undefined>()
