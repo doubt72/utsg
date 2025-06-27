@@ -4,6 +4,7 @@ import Logo from "../Logo";
 import { postAPI } from "../../utilities/network";
 import { PasswordTooltip, SignupEmailTooltip } from "../utilities/tooltips";
 import { CancelButton, SignupButton } from "../utilities/buttons";
+import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function Signup() {
   const navigate = useNavigate()
@@ -142,6 +143,10 @@ export default function Signup() {
     <div>
       <div className="header">
         <Logo />
+        <div className="ml025em mr1em">
+          <div className="header-name">{ titleName }</div>
+          <div className="header-subname">{ subtitleName }</div>
+        </div>
       </div>
       <div className="form-container">
         <div className="mb1em">

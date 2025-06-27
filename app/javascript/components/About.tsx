@@ -18,10 +18,10 @@ export default function About() {
             </div>
           </div>
           <p>
-            This is the <strong>{ titleNameStyle }: { subtitleNameStyle }</strong> server.
+            This is the { titleNameStyle }: { subtitleNameStyle }&#8201; server.
           </p>
           <p>
-            <strong>{titleNameStyle}</strong> is a browser-based hex-and-counter wargame for simulating small
+            {titleNameStyle} is a browser-based hex-and-counter wargame for simulating small
             unit tactical combat. It is intended to model land engagements of the Second World War, using
             a streamlined system designed to cover all major theaters and phases of the war, from China
             and Spain in the late 30&apos;s to the final battles in Germany and the Pacific. The system

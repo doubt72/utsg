@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import { postAPI } from "../../utilities/network";
 import { CancelButton, LoginButton, RecoverAccountButton } from "../utilities/buttons";
+import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function Login() {
   const navigate = useNavigate()
@@ -77,6 +78,10 @@ export default function Login() {
     <div>
       <div className="header">
         <Logo />
+        <div className="ml025em mr1em">
+          <div className="header-name">{ titleName }</div>
+          <div className="header-subname">{ subtitleName }</div>
+        </div>
       </div>
       <div className="form-container">
         <form onSubmit={onSubmit}>
