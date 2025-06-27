@@ -1,4 +1,5 @@
 import React from "react";
+import { subtitleNameStyle, titleNameStyle } from "../components/Utilities";
 import { subtitleName, titleName } from "../utilities/utilities";
 
 export default function IntroSection() {
@@ -10,7 +11,6 @@ export default function IntroSection() {
         <div className="ml025em">
           <div className="about-name">
             {titleName}
-            <span>:</span>
           </div>
           <div className="about-subname">{subtitleName}</div>
         </div>
@@ -18,12 +18,12 @@ export default function IntroSection() {
       <p>
         Welcome to the documentation for{" "}
         <strong>
-          {titleName}: {subtitleName}
+          {titleNameStyle}: {subtitleNameStyle}
         </strong>
         , covering both the server interface and the game rules as implemented.
       </p>
       <p>
-        <strong>{titleName}</strong> is a browser-based hex-and-counter wargame for simulating small
+        <strong>{titleNameStyle}</strong> is a browser-based hex-and-counter wargame for simulating small
         unit tactical combat. It is intended to model land engagements of the Second World War, using
         a streamlined system designed to cover all major theaters and phases of the war, from China
         and Spain in the late 30&apos;s to the final battles in Germany and the Pacific. The system

@@ -38,7 +38,7 @@ export default function Header({ hideAbout, hideProfile}: HeaderProps) {
     <div className="header">
       <Logo />
       <div className="ml025em mr1em">
-        <div className="header-name">{ titleName }<span>:</span></div>
+        <div className="header-name">{ titleName }</div>
         <div className="header-subname">{ subtitleName }</div>
       </div>
       { (hideAbout === "true") ? '' : headerSection }

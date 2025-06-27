@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import { AboutHelpButton, ReturnButton } from "./utilities/buttons";
+import { subtitleNameStyle, titleNameStyle } from "./Utilities";
 import { subtitleName, titleName } from "../utilities/utilities";
 
 export default function About() {
@@ -12,15 +13,15 @@ export default function About() {
           <div className="about-logo">
             <img src="/assets/logo-120.png" alt="Logo" />
             <div className="ml025em">
-              <div className="about-name">{ titleName }<span>:</span></div>
+              <div className="about-name">{ titleName }</div>
               <div className="about-subname">{ subtitleName }</div>
             </div>
           </div>
           <p>
-            This is the <strong>{ titleName }: { subtitleName }</strong> server.
+            This is the <strong>{ titleNameStyle }: { subtitleNameStyle }</strong> server.
           </p>
           <p>
-            <strong>{titleName}</strong> is a browser-based hex-and-counter wargame for simulating small
+            <strong>{titleNameStyle}</strong> is a browser-based hex-and-counter wargame for simulating small
             unit tactical combat. It is intended to model land engagements of the Second World War, using
             a streamlined system designed to cover all major theaters and phases of the war, from China
             and Spain in the late 30&apos;s to the final battles in Germany and the Pacific. The system

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ChatDisplay from "./ChatDisplay";
 import { CreateGameButton } from "./utilities/buttons";
 import GameList from "./GameList";
-import { titleName } from "../utilities/utilities";
+import { titleNameStyle } from "./Utilities";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function MainPage() {
         <div>
           <div className={classes}>
             <p>
-              The <strong>{titleName}</strong> server is still massively under construction. If
+              The <strong>{titleNameStyle}</strong> server is still massively under construction. If
               you&apos;re seeing this, you&apos;re probably just looking at the github repo, nothing
               is actually out there being hosted anywhere yet. There are, as yet, no announcements.
             </p>

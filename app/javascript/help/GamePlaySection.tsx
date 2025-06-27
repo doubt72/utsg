@@ -1,6 +1,6 @@
 import React from "react";
-import { titleName } from "../utilities/utilities";
 import { sequenceOfTurn } from "./GameTurnSection";
+import { titleNameStyle } from "../components/Utilities";
 
 export const sequenceOfPlay = (
   <ol>
@@ -26,7 +26,7 @@ export default function GamePlaySection() {
     <div>
       <h1>Game Play</h1>
       <p>
-        <strong>{titleName}</strong> games are played between two players, generally an Allied
+        <strong>{titleNameStyle}</strong> games are played between two players, generally an Allied
         player (player one) and an Axis player (player two). At a high level, each game has a setup
         (deployment) phase, then a fixed number of turns that are played out, mostly in the main
         phase as initiative goes back and forth between the players. When all of the turns have been

@@ -131,7 +131,7 @@ export default function HelpDisplay() {
           <div className="help-index-header flex">
             <Logo />
             <div className="ml025em">
-              <div className="header-name">{ titleName }<span>:</span></div>
+              <div className="header-name">{ titleName }</div>
               <div className="header-subname">{ subtitleName }</div>
             </div>
           </div>

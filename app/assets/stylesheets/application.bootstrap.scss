@@ -421,14 +421,20 @@ div.custom-button-ghost,div.custom-button-ghost:hover {
   font: small-caps 36px $title-font, monospace;
 }
 
-.about-name span {
-  font: small-caps 27.5px $subtitle-font, monospace;
-}
-
 .about-subname {
   white-space: nowrap;
   color: $alert-orange;
   margin-top: 0.1em;
+  font: small-caps 18px $subtitle-font, monospace;
+}
+
+.inline-game-title {
+  color: $dark-green;
+  font: small-caps 20px $title-font, monospace;
+}
+
+.inline-game-subtitle {
+  color: $alert-orange;
   font: small-caps 18px $subtitle-font, monospace;
 }
 
