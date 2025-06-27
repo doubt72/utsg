@@ -1,29 +1,27 @@
 import React from "react";
 import { titleName } from "../utilities/utilities";
+import { sequenceOfTurn } from "./GameTurnSection";
+
+export const sequenceOfPlay = (
+  <ol>
+    <li>
+      <strong>Setup</strong>
+      <ol>
+        <li><strong>First Setup Player</strong>: deploys units</li>
+        <li><strong>Second Setup Player</strong>: deploys units</li>
+      </ol>
+    </li>
+    <li>
+      <strong>Game Turn</strong>
+      { sequenceOfTurn }
+    </li>
+    <li>
+      <strong>Game Ends</strong>: calculate victory points, remember the dead
+    </li>
+  </ol>
+)
 
 export default function GamePlaySection() {
-  const sequenceOfPlay = (
-    <ol>
-      <li>
-        Setup
-        <ol>
-          <li>First setup player deploys units</li>
-          <li>Second setup player deploys units</li>
-        </ol>
-      </li>
-      <li>
-        Game Turn
-        <ol>
-          <li>Deployment: place reinforcements (starting initiative player first)</li>
-          <li>Prep Phase: rally/repair units, housekeeping</li>
-          <li>Main Phase: initiative player starts first action</li>
-          <li>Cleanup Phase: close combat, housekeeping</li>
-        </ol>
-      </li>
-      <li>Game ends: calculate victory points, remember the dead</li>
-    </ol>
-  )
-
   return (
     <div>
       <h1>Game Play</h1>

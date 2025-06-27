@@ -560,6 +560,17 @@ div.counter-help-button-selected:hover,button.help-button-selected:hover {
   font-variant: small-caps;
 }
 
+.help-section li::marker {
+  color: $dark-green;
+  font-family: monospace;
+}
+
+.help-section li strong {
+  color: $dark-green;
+  font-size: 16px;
+  font-variant: small-caps;
+}
+
 .help-section-image {
   float: right;
   padding: 0.5em 0 0.5em 0.5em;

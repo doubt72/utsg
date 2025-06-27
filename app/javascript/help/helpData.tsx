@@ -49,12 +49,12 @@ export const helpIndex: HelpSection[] = [
       ]},
       { name: "Cleanup Phase", section: <CleanupPhaseSection />, children: [
         { name: "Close Combat", section: undefined },
-        { name: "Smoke and Fires", section: undefined },
-        { name: "Variable Weather", section: undefined },
+        { name: "Housekeeping", section: undefined },
       ]},
     ]},
   ]},
   { name: "Glossary", section: <GlossarySection /> },
+  { name: "Development Notes", section: <GlossarySection /> },
 ]
 
 export function findHelpSection(curr: number[]): HelpSection | undefined {
