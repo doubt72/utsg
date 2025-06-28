@@ -45,6 +45,7 @@ export default function IntroSection() {
         use the link below to navigate to the next section.
       </p>
       <p>This server is a work-in-progress, Doug is still working on it.</p>
+      <p>These docs are even more in-progress.</p>
     </div>
   );
 }

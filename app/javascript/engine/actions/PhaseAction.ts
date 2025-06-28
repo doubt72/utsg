@@ -39,6 +39,14 @@ export default class PhaseAction extends BaseAction {
     return `problem parsing data ${this.data}`
   }
 
+  get alliedName(): string {
+    return this.game.alliedName
+  }
+
+  get axisName(): string {
+    return this.game.axisName
+  }
+
   get deploymentMessage(): string {
     let first = this.game.scenario.firstAction
     let last = this.newTurn === 1 ? "setup finished" : "cleanup finished"
@@ -48,15 +56,15 @@ export default class PhaseAction extends BaseAction {
     }
     if (first === 1) {
       if (this.newPlayer === 1) {
-        return last + ", begin Allied deployment"
+        return last + `, begin ${this.alliedName} deployment`
       } else {
-        return "Allied deployment done, begin Axis deployment"
+        return `${this.alliedName} deployment done, begin ${this.axisName} deployment`
       }
     } else {
       if (this.newPlayer === 1) {
-        return "Axis deployment done, begin Allied deployment"
+        return `${this.axisName} deployment done, begin ${this.alliedName} deployment`
       } else {
-        return last + ", begin Axis deployment"
+        return last + `, begin ${this.axisName} deployment`
       }
     }
   }
@@ -65,15 +73,15 @@ export default class PhaseAction extends BaseAction {
     const first = this.game.scenario.firstAction
     if (first === 1) {
       if (this.newPlayer === 1) {
-        return "deployment done, begin Allied rally phase"
+        return `deployment done, begin ${this.alliedName} rally phase`
       } else {
-        return "Allied rally phase done, begin Axis rally phase"
+        return `${this.alliedName} rally phase done, begin ${this.axisName} rally phase`
       }
     } else {
       if (this.newPlayer === 1) {
-        return "Axis rally phase done, begin Allied rally phase"
+        return `${this.axisName} rally phase done, begin ${this.alliedName} rally phase`
       } else {
-        return "deployment done, begin Axis rally phase"
+        return `deployment done, begin ${this.axisName} rally phase`
       }
     }
   }

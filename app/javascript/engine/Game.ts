@@ -10,7 +10,7 @@ import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
-import { normalDir, rolld10, togglePlayer } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, normalDir, rolld10, togglePlayer } from "../utilities/utilities";
 
 export type GameData = {
   id: number;
@@ -174,6 +174,18 @@ export default class Game {
 
   get otherPlayerNation(): string {
     return this.currentPlayer !== 1 ? this.playerOneNation : this.playerTwoNation
+  }
+
+  get alliedName(): string {
+    return alliedCodeToName(this.playerOneNation)
+  }
+
+  get axisName(): string {
+    return axisCodeToName(this.playerTwoNation)
+  }
+
+  nationNameForPlayer(player: Player): string {
+    return player === 1 ? this.alliedName : this.axisName
   }
 
   get playerOneScore(): number {

@@ -51,7 +51,7 @@ describe("action integration test", () => {
   const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
   const scenarioData: ScenarioData = {
-    id: "1", name: "test scenario", status: "b", allies: ["ger"], axis: ["ussr"],
+    id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
     metadata: {
       author: "The Establishment",
       description: ["This is a test scenario"],
@@ -128,7 +128,7 @@ describe("action integration test", () => {
       },
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.lastAction?.stringValue).toBe("game started, begin Axis deployment")
+    expect(game.lastAction?.stringValue).toBe("game started, begin German deployment")
     expect(game.lastAction?.undoPossible).toBe(false)
 
     expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
@@ -215,7 +215,7 @@ describe("action integration test", () => {
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
-    expect(game.lastAction?.stringValue).toBe("Axis deployment done, begin Allied deployment")
+    expect(game.lastAction?.stringValue).toBe("German deployment done, begin Soviet deployment")
 
     index++
     expect(game.actions.length).toBe(index)
@@ -229,7 +229,7 @@ describe("action integration test", () => {
     expect(game.lastAction?.stringValue).toBe("deployed unit: Rifle to E4")
     expect(game.actions[game.actions.length-2].stringValue).toBe("deployed unit: Wire to E2 [cancelled]")
     expect(game.actions[game.actions.length-1].stringValue).toBe(
-      "Axis deployment done, begin Allied deployment [cancelled]"
+      "German deployment done, begin Soviet deployment [cancelled]"
     )
 
     index++
@@ -237,7 +237,7 @@ describe("action integration test", () => {
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 1)
     expect(game.currentPlayer).toBe(1)
-    expect(game.lastAction?.stringValue).toBe("Axis deployment done, begin Allied deployment")
+    expect(game.lastAction?.stringValue).toBe("German deployment done, begin Soviet deployment")
 
     // { list: [rinf, rcrew, rmg, rldr, rgun]}
 
@@ -296,9 +296,9 @@ describe("action integration test", () => {
     index += 9
     expect(game.actions.length).toBe(index)
     expect(game.currentPlayer).toBe(1)
-    expect(game.actions[index - 7].stringValue).toBe("Allied deployment done, begin Axis deployment")
+    expect(game.actions[index - 7].stringValue).toBe("Soviet deployment done, begin German deployment")
     expect(game.actions[index - 6].stringValue).toBe("no units to deploy, skipping phase")
-    expect(game.actions[index - 3].stringValue).toBe("Allied rally phase done, begin Axis rally phase")
+    expect(game.actions[index - 3].stringValue).toBe("Soviet rally phase done, begin German rally phase")
     expect(game.actions[index - 2].stringValue).toBe("no broken units or jammed weapons, skipping phase")
     expect(game.lastAction?.stringValue).toBe("rally phase done, begin main phase")
   })

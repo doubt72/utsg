@@ -12,7 +12,7 @@ import { Direction } from "../../utilities/commonTypes";
 import ErrorDisplay from "./ErrorDisplay";
 import {
   ArrowsCollapse, ArrowsExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
-  GeoAltFill, Hexagon, HexagonFill, PlusCircle, Square, SquareFill, Stack
+  GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
@@ -29,7 +29,7 @@ export default function GameDisplay() {
   const [collapseLayout, setCollapseLayout] = useState<boolean>(false)
 
   const [mapScale, setMapScale] = useState(1)
-  const [interfaceShrink, setInterfaceShrink] = useState(false)
+  const [interfaceShrink, setInterfaceShrink] = useState(0)
   const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(false)
@@ -39,6 +39,9 @@ export default function GameDisplay() {
   const [mapScaleMinusButton, setMapScaleMinusButton] = useState<JSX.Element | undefined>()
   const [mapScaleResetButton, setMapScaleResetButton] = useState<JSX.Element | undefined>()
   const [mapScalePlusButton, setMapScalePlusButton] = useState<JSX.Element | undefined>()
+  const [largeInterfaceButton, setLargeInterfaceButton] = useState<JSX.Element | undefined>()
+  const [smallInterfaceButton, setSmallInterfaceButton] = useState<JSX.Element | undefined>()
+  const [mobileInterfaceButton, setMobileInterfaceButton] = useState<JSX.Element | undefined>()
 
   const [update, setUpdate] = useState(0)
 
@@ -62,7 +65,15 @@ export default function GameDisplay() {
     const collape = localStorage.getItem("mapCollapseLayout")
     const showCoords = localStorage.getItem("mapCoords")
     const showMarkers = localStorage.getItem("mapMarkers")
-    if (shrink !== null) { setInterfaceShrink(shrink === "true") }
+    if (shrink !== null) {
+      setInterfaceShrink(Number(shrink))
+    } else {
+      if (window.innerWidth < 1350) {
+        setInterfaceShrink(2)
+      } else if (window.innerWidth < 1800) {
+        setInterfaceShrink(1)
+      }
+    }
     if (mScale !== null) { setMapScale(Number(mScale)) }
     if (collape !== null) { setCollapseLayout(collape == "true") }
     if (showCoords !== null) { setCoords(showCoords == "true") }
@@ -108,6 +119,27 @@ export default function GameDisplay() {
     </Tooltip>
   )
 
+  const largeSizeTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      set the size of the map status overlays and the unzoomed size of the map
+      to best suit larger displays
+    </Tooltip>
+  )
+
+  const smallSizeTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      set the size of the map status overlays and the unzoomed size of the map
+      to best suit smaller displays
+    </Tooltip>
+  )
+
+  const mobileSizeTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      set the size of the map status overlays and the unzoomed size of the map
+      to best suit very small or mobile (tablet) displays
+    </Tooltip>
+  )
+
   useEffect(() => {
     setMapScaleMinusButton(
       <OverlayTrigger placement="bottom" overlay={scaleMinusTooltip}
@@ -146,10 +178,50 @@ export default function GameDisplay() {
       </OverlayTrigger>
     )
   }, [mapScale])
+  useEffect(() => {
+    setLargeInterfaceButton(
+      <OverlayTrigger placement="bottom" overlay={largeSizeTooltip}
+                      delay={{ show: 0, hide: 0 }}>
+        <div className={
+          interfaceShrink !== 0 ? "custom-button normal-button" :
+            "custom-button normal-button custom-button-ghost"
+        }
+            onClick={() => selectInterfaceShrink(0)}>
+          <ArrowsExpand />
+        </div>
+      </OverlayTrigger>
+    )
+    setSmallInterfaceButton(
+      <OverlayTrigger placement="bottom" overlay={smallSizeTooltip}
+                      delay={{ show: 0, hide: 0 }}>
+        <div className={
+          interfaceShrink !== 1 ? "custom-button normal-button" :
+            "custom-button normal-button custom-button-ghost"
+        }
+            onClick={() => selectInterfaceShrink(1)}>
+          <ArrowsCollapse />
+        </div>
+      </OverlayTrigger>
+    )
+    setMobileInterfaceButton(
+      <OverlayTrigger placement="bottom" overlay={mobileSizeTooltip}
+                      delay={{ show: 0, hide: 0 }}>
+        <div className={
+          interfaceShrink !== 2 ? "custom-button normal-button" :
+            "custom-button normal-button custom-button-ghost"
+        }
+            onClick={() => selectInterfaceShrink(2)}>
+          <Phone />
+        </div>
+      </OverlayTrigger>
+    )
+  }, [mapScale, interfaceShrink])
 
-  const toggleInterfaceShrink = () => {
-    setInterfaceShrink(is => {
-      const nv = !is
+  const selectInterfaceShrink = (setting: number) => {
+    setInterfaceShrink(() => {
+      let nv = setting
+      if (nv < 0) { nv = 0 }
+      if (nv > 2) { nv = 2 }
       localStorage.setItem("mapInterfaceShrink", String(nv))
       return nv
     })
@@ -363,13 +435,6 @@ export default function GameDisplay() {
     }
   }
 
-  const controlSizeTooltip = (props: TooltipProps) => (
-    <Tooltip className="tooltip-game" {...props}>
-      toggles the size of the map status overlays and the unzoomed size of the map
-      to best suit larger or smaller displays
-    </Tooltip>
-  )
-
   const coordsTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
       toggles showing hex coordinate labels
@@ -400,6 +465,8 @@ export default function GameDisplay() {
     </Tooltip>
   )
 
+  const shrinkScales = [1, 0.75, 0.625]
+
   return (
     <div className="main-page">
       <Header />
@@ -410,13 +477,9 @@ export default function GameDisplay() {
         {mapScaleMinusButton}
         {mapScaleResetButton}
         {mapScalePlusButton}
-        <OverlayTrigger placement="bottom" overlay={controlSizeTooltip}
-                        delay={{ show: 0, hide: 0 }}>
-          <div className="custom-button normal-button"
-              onClick={() => toggleInterfaceShrink()}>
-            { interfaceShrink ? <ArrowsCollapse /> : <ArrowsExpand /> } <span>interface</span>
-          </div>
-        </OverlayTrigger>
+        {largeInterfaceButton}
+        {smallInterfaceButton}
+        {mobileInterfaceButton}
         <OverlayTrigger placement="bottom" overlay={coordsTooltip}
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
@@ -454,7 +517,7 @@ export default function GameDisplay() {
         </OverlayTrigger>
       </div>
       <div className="game-map">
-        <MapDisplay map={map as Map} scale={interfaceShrink ? 0.75 : 1} mapScale={mapScale}
+        <MapDisplay map={map as Map} scale={shrinkScales[interfaceShrink]} mapScale={mapScale}
                  showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
                  hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
                  guiCollapse={collapseLayout} forceUpdate={update}

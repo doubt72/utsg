@@ -4,7 +4,7 @@ High Priority Features/Bug Fixes:
   - Grab domain
 
 Game Actions:
-  - Move text for history
+  - Move description text for history
   - Breakdown check
   - Show reaction options
     - Passing

@@ -49,6 +49,8 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
   }
 
   useEffect(() => {
+    if (!map.game) { return }
+    const game = map.game
     const radius = 21
     const size = 6
     const xl = xx + 26
@@ -77,10 +79,10 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
                 style={{ fill: "rgba(0,0,0,0)", stroke: "#444", strokeWidth: 2 }}/>
         </g>
         <circle cx={xl} cy={yd} r={12} style={nationOne(12, 1)}
-                onMouseEnter={() => helpText(xl+4, yd+8, "allied")}
+                onMouseEnter={() => helpText(xl+4, yd+8, game.alliedName)}
                 onMouseLeave={() => setHelpDisplay(undefined)}/>
         <circle cx={xr} cy={yd} r={12} style={nationTwo(12, 1)}
-                onMouseEnter={() => helpText(xr+4, yd+8, "axis")}
+                onMouseEnter={() => helpText(xr+4, yd+8, game.axisName)}
                 onMouseLeave={() => setHelpDisplay(undefined)}/>
       </g>
     )

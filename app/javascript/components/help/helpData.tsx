@@ -21,6 +21,7 @@ export type HelpSection = { name: string, section?: JSX.Element, children?: Help
 
 export const helpIndex: HelpSection[] = [
   { name: "Introduction", section: <IntroSection /> },
+  { name: "Game Interface", section: undefined },
   { name: "Counters", section: <CounterSection />, children: [
     { name: "Stacking", section: <CounterStackingSection /> },
     { name: "Facing", section: <CounterFacingSection /> },

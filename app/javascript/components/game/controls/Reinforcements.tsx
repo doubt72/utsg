@@ -25,7 +25,9 @@ export default function Reinforcements(
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
 
   const nation = (x: number, y: number, n: string, player: Player, enabled: boolean) => {
-    const faction = player === 1 ? "allied" : "axis"
+    if (!map.game) { return }
+    const game = map.game
+    const faction = game.nationNameForPlayer(player)
     const overlay = enabled ? (
       <path className="svg-button-hover" d={baseCounterPath(x, y)}
             onClick={() => callback(player === 1 ? x : x - 90, y, player)}
