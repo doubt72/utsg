@@ -143,7 +143,7 @@ describe("action integration test", () => {
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
-    expect(game.actions[index - 1].stringValue).toBe("deployed unit: Rifle to E4")
+    expect(game.actions[index - 1].stringValue).toBe("deployed German unit: Rifle to E4")
 
     expect(game.undoPossible).toBe(true)
     expect(game.actions.length).toBe(index)
@@ -156,7 +156,7 @@ describe("action integration test", () => {
     // Otherwise actions are treated sort of as a stack, with lastActionIndex as the
     // "execution" pointer
     expect(game.lastActionIndex).toBe(index - 2)
-    expect(game.actions[index - 1].stringValue).toBe("deployed unit: Rifle to E4 [cancelled]")
+    expect(game.actions[index - 1].stringValue).toBe("deployed German unit: Rifle to E4 [cancelled]")
 
     // Loading an undone action doesn't execute or increment last action
     currentActionData = {
@@ -226,8 +226,8 @@ describe("action integration test", () => {
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 3)
     expect(game.currentPlayer).toBe(2)
-    expect(game.lastAction?.stringValue).toBe("deployed unit: Rifle to E4")
-    expect(game.actions[game.actions.length-2].stringValue).toBe("deployed unit: Wire to E2 [cancelled]")
+    expect(game.lastAction?.stringValue).toBe("deployed German unit: Rifle to E4")
+    expect(game.actions[game.actions.length-2].stringValue).toBe("deployed German unit: Wire to E2 [cancelled]")
     expect(game.actions[game.actions.length-1].stringValue).toBe(
       "German deployment done, begin Soviet deployment [cancelled]"
     )
@@ -250,7 +250,7 @@ describe("action integration test", () => {
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.actions.length).toBe(index)
-    expect(game.lastAction?.stringValue).toBe("deployed unit: Guards SMG to A1")
+    expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: Guards SMG to A1")
 
     currentActionData = {
       user: "one", player: 1, data: {
@@ -261,7 +261,7 @@ describe("action integration test", () => {
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.actions.length).toBe(index)
-    expect(game.lastAction?.stringValue).toBe("deployed unit: Crew to A2")
+    expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: Crew to A2")
 
     currentActionData = {
       user: "one", player: 1, data: {
@@ -272,7 +272,7 @@ describe("action integration test", () => {
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.actions.length).toBe(index)
-    expect(game.lastAction?.stringValue).toBe("deployed unit: DShK to A3")
+    expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: DShK to A3")
 
     currentActionData = {
       user: "one", player: 1, data: {
@@ -283,7 +283,7 @@ describe("action integration test", () => {
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.actions.length).toBe(index)
-    expect(game.lastAction?.stringValue).toBe("deployed unit: Leader to A4")
+    expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: Leader to A4")
 
     currentActionData = {
       user: "one", player: 1, data: {

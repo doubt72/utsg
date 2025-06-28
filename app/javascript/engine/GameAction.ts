@@ -1,4 +1,4 @@
-import { Direction, Player } from "../utilities/commonTypes";
+import { Direction, Player, UnitStatus } from "../utilities/commonTypes";
 import Game, { GamePhase } from "./Game";
 import BaseAction from "./actions/BaseAction";
 import StateAction from "./actions/StateAction";
@@ -13,7 +13,7 @@ export type GameActionDiceResult = {
 }
 
 export type GameActionUnit = {
-  x: number, y: number, id: string,
+  x: number, y: number, id: string, status: UnitStatus,
 }
 
 export type GameActionReinforcementUnit = {

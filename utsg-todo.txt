@@ -1,24 +1,23 @@
 High Priority Features/Bug Fixes:
-  - Live Documentation
+  - Move Documentation
+  - Interface Documentation
   - Implement Help Button linking to game context
   - Grab domain
 
 Game Actions:
-  - Move description text for history
-  - Breakdown check
+  - Move
+    - TEST: Breakdown check
+    - TEST: Move to/along RR / RR bridge?
+    - TEST: Verify Truck Moves Work / facing of towed guns
+    - TEST + Implement: Wire/Obstacles Moves
+    - TEST + Implement: Engineering Tasks / Removing
+      - Digging In
   - Show reaction options
     - Passing
-  - Initiative
-  - Sniper check
+  - Sniper Check
+  - Initiative Check
   - Rush
   - Assault Move
-
-  - Move to/along RR / RR bridge?
-  - TEST: Verify Truck Moves Work / facing of towed guns
-  - TEST + Implement: Wire/Obstacles Moves
-  - TEST + Implement: Engineering Tasks / Removing
-    - Digging In
-
   - Passing
 
   - Firing

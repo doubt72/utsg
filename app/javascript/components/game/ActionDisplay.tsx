@@ -57,7 +57,7 @@ export default function ActionDisplay({
         game.actions.map((action, i) => {
           return (
             <div key={i} className="action-output-record">
-              <div className="action-output-date">{action.formattedDate}</div>
+              <div className="action-output-date nowrap">{action.formattedDate}</div>
               <div className="action-output-message">
                 <span className="action-output-username">{action.user}</span>{action.stringValue}
               </div>

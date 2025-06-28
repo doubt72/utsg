@@ -11,6 +11,7 @@ import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, normalDir, rolld10, togglePlayer } from "../utilities/utilities";
+import Unit from "./Unit";
 
 export type GameData = {
   id: number;
@@ -244,6 +245,12 @@ export default class Game {
   get reactionFire(): boolean {
     // TODO: check last action
     return false
+  }
+
+  findUnitById(id: string): Unit | undefined {
+    return this.scenario.map.findUnitById(id)
+    // TODO: handle units that have been eliminated
+    return undefined
   }
 
   previousActionUndoPossible(index: number): boolean {
@@ -647,7 +654,7 @@ export default class Game {
         path: this.gameActionState.move.path,
         origin: this.gameActionState.selection.map(s => {
           return {
-            x: s.x, y: s.y, id: s.counter.unit.id
+            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
           }
         }),
         add_action: this.gameActionState.move.addActions.map(a => {

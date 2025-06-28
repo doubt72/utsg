@@ -36,7 +36,8 @@ export default class DeployAction extends BaseAction {
     const name = this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.rTurn][this.rIndex].counter.name :
       this.game.scenario.axisReinforcements[this.rTurn][this.rIndex].counter.name
-    return `deployed unit: ${name} to ${coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`
+    return `deployed ${this.game.nationNameForPlayer(this.player)} unit: ${name} to ${
+      coordinateToLable(this.target)}${this.undone ? " [cancelled]" : ""}`
   }
 
   get undoPossible() { return true }

@@ -416,6 +416,14 @@ export default class Map {
     return
   }
 
+  findUnitById(id: string): Unit | undefined {
+    const counters = this.allCounters
+    for (const c of counters) {
+      if (c.hasUnit && c.unit.id === id) { return c.unit }
+    }
+    return
+  }
+
   get allCounters(): Counter[] {
     let c: Counter[] = []
     for (let y = 0; y < this.height; y++) {

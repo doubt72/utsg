@@ -1,5 +1,5 @@
 import { MapData } from "../Map"
-import { baseTerrainType, Coordinate, hexOpenType, weatherType, windType } from "../../utilities/commonTypes"
+import { baseTerrainType, Coordinate, hexOpenType, unitStatus, weatherType, windType } from "../../utilities/commonTypes"
 import { ScenarioData } from "../Scenario"
 import Unit, { UnitData } from "../Unit"
 import Game, { actionType, GameActionState, gamePhaseType, MoveActionState } from "../Game"
@@ -155,6 +155,75 @@ describe("action integration test", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
+  })
+
+  test("tired movement", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.status = unitStatus.Pinned
+    expect(unit.baseMovement).toBe(4)
+    expect(unit.currentMovement).toBe(0)
+    unit.status = unitStatus.Tired
+    expect(unit.currentMovement).toBe(2)
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    expect(state.player).toBe(2)
+    expect(state.currentAction).toBe(actionType.Move)
+    expect(state.selection[0].id).toBe("test1")
+
+    const move = state.move as MoveActionState
+
+    expect(move.path[0].x).toBe(4)
+    expect(move.path[0].y).toBe(2)
+    expect(move.doneSelect).toBe(true)
+    expect(move.placingSmoke).toBe(false)
+    expect(move.droppingMove).toBe(false)
+    expect(move.loadingMove).toBe(false)
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    expect(showLaySmoke(game)).toBe(true)
+    expect(showDropMove(game)).toBe(false)
+    expect(showLoadMove(game)).toBe(false)
+
+    game.move(3, 2)
+    expect(move.path.length).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(2, 2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
+
+    game.move(1, 2)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    let all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
+
+    game.executeUndo()
+    all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Tired)
   })
 
   test("smoke", () => {
