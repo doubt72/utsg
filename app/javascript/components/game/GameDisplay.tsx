@@ -117,7 +117,7 @@ export default function GameDisplay() {
             "custom-button normal-button custom-button-ghost"
         }
             onClick={() => switchMapScale(-1)}>
-          <span>map</span> <DashCircle />
+          <DashCircle />
         </div>
       </OverlayTrigger>
     )
@@ -141,7 +141,7 @@ export default function GameDisplay() {
             "custom-button normal-button custom-button-ghost"
         }
             onClick={() => switchMapScale(1)}>
-          <PlusCircle /> <span>map</span>
+          <PlusCircle />
         </div>
       </OverlayTrigger>
     )
@@ -449,7 +449,7 @@ export default function GameDisplay() {
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => setShowTerrain(sc => !sc)}>
-        { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain info</span>
+        { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain</span>
         </div>
         </OverlayTrigger>
       </div>

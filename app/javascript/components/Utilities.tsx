@@ -1,6 +1,7 @@
 import React from "react";
+import { subtitleName, titleName } from "../utilities/utilities";
 
-export const titleNameStyle = <span className="inline-game-title">A Hex Too Far</span>;
+export const titleNameStyle = <span className="inline-game-title">{ titleName }</span>;
 export const subtitleNameStyle = (
-  <span className="inline-game-subtitle">Light Tactical Battle System</span>
+  <span className="inline-game-subtitle">{ subtitleName }</span>
 );
