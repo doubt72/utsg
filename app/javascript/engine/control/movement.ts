@@ -67,9 +67,16 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   const hexTo = map.hexAt(to) as Hex;
   const terrFrom = hexFrom.terrain
   const terrTo = hexTo.terrain
-  if (!terrTo.move) { return false }
   const dir = map.relativeDirection(from, to)
   if (!dir) { return false }
+  const roadMove = alongRoad(hexFrom, hexTo, dir)
+  const railroadMove = alongRailroad(hexFrom, hexTo, dir)
+  if (!terrTo.move && !roadMove && !railroadMove) { return false }
+  const next = selection.children[0]
+  if (!terrTo.move && (roadMove || railroadMove)) {
+    if (selection.unit.isWheeled || selection.unit.isTracked) { return false }
+    if (next && next.unit.crewed) { return false }
+  }
 
   const countersAt = map.countersAt(to)
   const moveSize = game.gameActionState.selection.reduce(
@@ -83,12 +90,10 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return false }
   }
 
-  const roadMove = alongRoad(hexFrom, hexTo, dir)
   if (selection.unit.isWheeled || selection.unit.isTracked) {
     if (!terrTo.vehicle && !roadMove) { return false }
     if (terrTo.vehicle === "amph" && !roadMove && !selection.unit.amphibious) { return false }
   }
-  const next = selection.children[0]
   const facing = game.lastPath?.facing as Direction
   if (next && next.unit.crewed) {
     if (!terrTo.gun && !roadMove) { return false }
@@ -159,6 +164,7 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   const terrTo = hexTo.terrain
   let cost = terrTo.move as number
   const dir = map.relativeDirection(from, to) as Direction
+  if (!terrTo.move && alongRailroad(hexFrom, hexTo, dir)) { cost = 2 }
   const roadMove = alongRoad(hexFrom, hexTo, dir)
   if (target.isWheeled && roadMove) {
     cost = 0.5
@@ -173,15 +179,16 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
     cost += terrTo.borderMove as number
   }
-  if (hexFrom.river && !alongStream(hexFrom, hexTo, dir)) {
+  if (hexFrom.river && !alongStream(hexFrom, hexTo, dir) && !roadMove) {
     cost += hexTo.terrain.streamAttr.outMove
   }
-  if (hexTo.river && !alongStream(hexFrom, hexTo, dir)) {
+  if (hexTo.river && !alongStream(hexFrom, hexTo, dir) && !roadMove) {
     cost += hexTo.terrain.streamAttr.inMove
   }
   if (alongStream(hexFrom, hexTo, dir)) {
     cost += hexTo.terrain.streamAttr.alongMove
   }
+  console.log(`${terrFrom.name} -> ${terrTo.name}:${hexTo.railroad}, ${cost}`)
   if (hexTo.elevation > hexFrom.elevation) {
     cost += 1
   }
@@ -297,6 +304,21 @@ function alongRoad(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false):
     return false
   }
   return true
+}
+
+function alongRailroad(from: Hex, to: Hex, dir: Direction,): boolean {
+  if (from.coord.x === to.coord.x && from.coord.y === to.coord.y) { return true }
+  if (!from.railroad || !to.railroad || !to.railroadDirections || !from.railroadDirections) {
+    return false
+  }
+  for (const trr of to.railroadDirections) {
+    for (const frr of from.railroadDirections) {
+      if (trr.includes(normalDir(dir + 3)) && frr.includes(dir)) {
+        return true
+      }
+    }
+  }
+  return false
 }
 
 function alongStream(from: Hex, to: Hex, dir: Direction): boolean {

@@ -139,6 +139,7 @@ function canMove(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
   if (unit.type === unitType.SupportWeapon || unit.type === unitType.Gun) { return false }
   if (unit.currentMovement === 0) { return false }
+  // if (unit.isActivated || unit.isExhausted || unit.isBroken || unit.isWreck) { return false }
   return true
 }
 

@@ -85,10 +85,9 @@ export default class Terrain {
 
   get move(): number | false {
     if (this.baseAttr.move === 0) { return false }
-    let move = 0
-    move = this.baseAttr.move
+    let move = this.baseAttr.move
     if (this.hex.building) { move = 2 }
-    if (["s", "m"].includes(this.hex.map.baseTerrain) && !this.hex.road) {
+    if (["s", "m"].includes(this.hex.map.baseTerrain)) {
       move += 1
     }
     return move

@@ -7,7 +7,6 @@ High Priority Features/Bug Fixes:
 Game Actions:
   - Move
     - TEST: Breakdown check
-    - TEST: Move to/along RR / RR bridge?
     - TEST: Verify Truck Moves Work / facing of towed guns
     - TEST + Implement: Wire/Obstacles Moves
     - TEST + Implement: Engineering Tasks / Removing

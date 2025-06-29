@@ -331,16 +331,16 @@ export default function TerrainSection() {
         Terrain in the game affects a number of things: in particular, movement (i.e., movement cost),
         cover, and hindrances or line-of-sight.  Terrain also has elevations, which has further effects
         on movement and line-of-sight.  A help tooltip is available in-game by mousing over hexes, and can
-        be toggled on and off with the terrain info button:
+        be toggled on and off with the terrain button:
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
-          <Hexagon /> <span>terrain info</span>
+          <Hexagon /> <span>terrain</span>
         </div>
         <div className="mt05em">/</div>
         <div className="custom-button normal-button">
-          <HexagonFill /> <span>terrain info</span>
+          <HexagonFill /> <span>terrain</span>
         </div>
         <div className="flex-fill"></div>
       </div>

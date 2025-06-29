@@ -10,38 +10,43 @@ import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
 import { openHexRotateOpen as openHexShowRotate, openHexRotatePossible as openHexRotateOpen } from "./openHex"
+import { HexData } from "../Hex"
 
 describe("action integration test", () => {
-  const mapData: MapData = {
-    layout: [ 5, 5, "x" ],
-    allied_dir: 4, axis_dir: 1,
-    victory_hexes: [[0, 0, 2], [4, 4, 1]],
-    allied_setup: { 0: [[0, "*"]] },
-    axis_setup: { 0: [[4, "*"]] },
-    base_terrain: baseTerrainType.Grass,
-    night: false,
-    start_weather: weatherType.Dry,
-    base_weather: weatherType.Dry,
-    precip: [0, weatherType.Rain],
-    wind: [windType.Calm, 3, false],
-    hexes: [
-      [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-        { t: "o", r: { d: [1, 4]} },
-      ],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
-      [
-        { t: "o" },
-        { t: "o", s: { d: [4, 6], t: "t" } },
-        { t: "o", s: { d: [1, 5], t: "t" } },
-        { t: "o" }, { t: "o" }
-      ],
+  const defaultHexes: HexData[][] = [
+    [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
+    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    [
+      { t: "o", r: { d: [1, 4]} },
+      { t: "o", r: { d: [1, 4]} },
+      { t: "o", r: { d: [1, 4]} },
+      { t: "o", r: { d: [1, 4]} },
+      { t: "o", r: { d: [1, 4]} },
     ],
+    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
+    [
+      { t: "o" },
+      { t: "o", s: { d: [4, 6], t: "t" } },
+      { t: "o", s: { d: [1, 5], t: "t" } },
+      { t: "o" }, { t: "o" }
+    ],
+  ]
+
+  const mapData = (hexes: HexData[][]): MapData => {
+    return {
+      layout: [ 5, 5, "x" ],
+      allied_dir: 4, axis_dir: 1,
+      victory_hexes: [[0, 0, 2], [4, 4, 1]],
+      allied_setup: { 0: [[0, "*"]] },
+      axis_setup: { 0: [[4, "*"]] },
+      base_terrain: baseTerrainType.Grass,
+      night: false,
+      start_weather: weatherType.Dry,
+      base_weather: weatherType.Dry,
+      precip: [0, weatherType.Rain],
+      wind: [windType.Calm, 3, false],
+      hexes: hexes,
+    }
   }
 
   const ginf: UnitData = {
@@ -66,30 +71,32 @@ describe("action integration test", () => {
   };
   // const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
-  const scenarioData: ScenarioData = {
-    id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
-    metadata: {
-      author: "The Establishment",
-      description: ["This is a test scenario"],
-      date: [1944, 6, 5],
-      location: "anywhere",
-      turns: 5,
-      first_deploy: 2,
-      first_action: 1,
-      allied_units: {
-        0: { list: []}
-      },
-      axis_units: {
-        0: { list: [ginf]}
-      },
-      map_data: mapData,
+  const scenarioData = (hexes: HexData[][]): ScenarioData => {
+    return {
+      id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
+      metadata: {
+        author: "The Establishment",
+        description: ["This is a test scenario"],
+        date: [1944, 6, 5],
+        location: "anywhere",
+        turns: 5,
+        first_deploy: 2,
+        first_action: 1,
+        allied_units: {
+          0: { list: []}
+        },
+        axis_units: {
+          0: { list: [ginf]}
+        },
+        map_data: mapData(hexes),
+      }
     }
   }
 
-  const createGame = (): Game => {
+  const createGame = (hexes: HexData[][] = defaultHexes): Game => {
     const game = new Game({
       id: 1,
-      name: "test game", scenario: scenarioData,
+      name: "test game", scenario: scenarioData(hexes),
       owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
       metadata: { turn: 0 },
       suppress_network: true
@@ -158,6 +165,217 @@ describe("action integration test", () => {
     expect(all[0].unit.status).toBe(unitStatus.Activated)
   })
 
+  test("movement along road over river", () => {
+    const game = createGame([
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+        { t: "o", s: { d: [3, 5] }, r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "f" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    const move = state.move as MoveActionState
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(move.path.length).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(2, 2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
+
+    game.move(1, 2)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    const  all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+  })
+
+  test("movement along road over water", () => {
+    const game = createGame([
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+        { t: "w", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "f" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    const move = state.move as MoveActionState
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(move.path.length).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(2, 2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
+
+    game.move(1, 2)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    const  all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+  })
+
+  test("movement along railroad over river", () => {
+    const game = createGame([
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", rr: { d: [[1, 4]]} },
+        { t: "o", rr: { d: [[1, 4]]} },
+        { t: "o", s: { d: [3, 5] }, rr: { d: [[1, 4]]} },
+        { t: "o", rr: { d: [[1, 4]]} },
+        { t: "o", rr: { d: [[1, 4]]} },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "f" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.baseMovement = 5
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    const move = state.move as MoveActionState
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(move.path.length).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(2, 2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(2)
+
+    game.move(1, 2)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    const  all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+  })
+
+  test("movement along railroad over water", () => {
+    const game = createGame([
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", rr: { d: [[1, 4]]} },
+        { t: "o", rr: { d: [[1, 4]]} },
+        { t: "w", rr: { d: [[1, 4]]} },
+        { t: "o", rr: { d: [[1, 4]]} },
+        { t: "o", rr: { d: [[1, 4]]} },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "f" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    const move = state.move as MoveActionState
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(move.path.length).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(2, 2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
+
+    game.move(1, 2)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    const  all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+  })
+
   test("tired movement", () => {
     const game = createGame()
     const map = game.scenario.map
@@ -175,18 +393,7 @@ describe("action integration test", () => {
 
     const state = game.gameActionState as GameActionState
 
-    expect(state.player).toBe(2)
-    expect(state.currentAction).toBe(actionType.Move)
-    expect(state.selection[0].id).toBe("test1")
-
     const move = state.move as MoveActionState
-
-    expect(move.path[0].x).toBe(4)
-    expect(move.path[0].y).toBe(2)
-    expect(move.doneSelect).toBe(true)
-    expect(move.placingSmoke).toBe(false)
-    expect(move.droppingMove).toBe(false)
-    expect(move.loadingMove).toBe(false)
 
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)

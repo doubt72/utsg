@@ -228,16 +228,16 @@ export default function ElevationSection() {
         Elevation is indicated on the map by hex color (with higher elevations having darker
         brown colors).  Depressions (i.e., elevations below the rest of the map) and indicated
         with a dark green hex color.  Elevation is also shown on the terrain help tooltip
-        when toggled on with the terrain info button:
+        when toggled on with the terrain button:
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
-          <Hexagon /> <span>terrain info</span>
+          <Hexagon /> <span>terrain</span>
         </div>
         <div className="mt05em">/</div>
         <div className="custom-button normal-button">
-          <HexagonFill /> <span>terrain info</span>
+          <HexagonFill /> <span>terrain</span>
         </div>
         <div className="flex-fill"></div>
       </div>
