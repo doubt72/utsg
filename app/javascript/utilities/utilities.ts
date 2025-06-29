@@ -92,7 +92,6 @@ export function coordinateToLable(loc: Coordinate): string {
 
 // This is the format we get from the backend, in UTC
 export function nowUTCString(): string {
-  // TODO: maybe move this to utilities
   const date = new Date()
   const year = date.getUTCFullYear()
   const mon = ("0" + date.getUTCMonth()).slice(-2)

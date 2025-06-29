@@ -56,11 +56,17 @@ export default class MoveAction extends BaseAction {
           actions.push(`${child.name} stopped at ${label}`)
         }
       } else if (a.type === addActionType.Load) {
-        const child = this.game.findUnitById(a.id ?? "") as Unit
-        actions.push(`${child.name} picked up at ${label}`)
+        const unit = this.game.findUnitById(a.id ?? "") as Unit
+        actions.push(`${unit.name} picked up at ${label}`)
       } else if (a.type === addActionType.Smoke) {
-        const result = this.diceResults[diceIndex++].result
-        actions.push(`smoke level ${smokeRoll(result)} placed at ${label} (from d10 roll result of ${result})`)
+        const roll = this.diceResults[diceIndex++]
+        actions.push(`smoke level ${smokeRoll(roll.result)} placed at ${label} (from ${
+          roll.type} roll result of ${roll.result})`)
+      } else if (a.type === addActionType.Breakdown) {
+        const unit = this.game.findUnitById(a.id ?? "") as Unit
+        const roll = this.diceResults[diceIndex++]
+        actions.push(`breakdown check for ${unit.name} (${roll.type} roll result of ${roll.result}: ${
+          roll.result > (unit.breakdownRoll ?? 0) ? "passed" : "failed" })`)
       } else if (a.type !== addActionType.VP) {
         actions.push("unexpected action")
       }
@@ -104,6 +110,11 @@ export default class MoveAction extends BaseAction {
         }
       } else if (a.type === addActionType.Load) {
         map.loadUnit(mid, end, a.id as string, a.parent_id as string)
+      } else if (a.type === addActionType.Breakdown) {
+        const unit = this.game.scenario.map.unitAtId(end, a.id ?? "") as Counter
+        if (this.diceResults[diceIndex++].result <= (unit.unit.breakdownRoll ?? 0)) {
+          unit.unit.immobilized = true
+        }
       } else if (a.type === addActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
@@ -134,6 +145,9 @@ export default class MoveAction extends BaseAction {
         }
       } else if (a.type === addActionType.Load) {
         map.dropUnit(end, mid, a.id as string)
+      } else if (a.type === addActionType.Breakdown) {
+        // Shouldn't happen
+        throw new IllegalActionError("internal error undoing breakdown")
       } else if (a.type === addActionType.Smoke) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing smoke")
@@ -142,7 +156,7 @@ export default class MoveAction extends BaseAction {
 
     for (const u of this.origin) {
       map.moveUnit(end, start, u.id, facing, turret)
-      if (u.status) {
+      if (u.status !== undefined) {
         const unit = this.game.scenario.map.unitAtId(start, u.id) as Counter
         unit.unit.status = u.status
       }

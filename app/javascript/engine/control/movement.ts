@@ -188,11 +188,10 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   if (alongStream(hexFrom, hexTo, dir)) {
     cost += hexTo.terrain.streamAttr.alongMove
   }
-  console.log(`${terrFrom.name} -> ${terrTo.name}:${hexTo.railroad}, ${cost}`)
   if (hexTo.elevation > hexFrom.elevation) {
     cost += 1
   }
-  if (target.rotates && normalDir(dir + 3) === target.facing) { cost *= 2 }
+  if (target.rotates && normalDir(dir + 3) === map.game?.lastPath?.facing) { cost *= 2 }
   return cost
 }
 

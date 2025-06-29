@@ -8,8 +8,7 @@ import InfoAction from "./actions/InfoAction";
 import MoveAction from "./actions/MoveAction";
 
 export type GameActionDiceResult = {
-  // TODO: flesh out as necessary
-  result: number;
+  result: number, type: string,
 }
 
 export type GameActionUnit = {
@@ -24,9 +23,9 @@ export type GameActionPath = {
   x: number, y: number, facing?: Direction, turret?: Direction,
 }
 
-export type AddActionType = "smoke" | "drop" | "load" | "vp"
+export type AddActionType = "smoke" | "drop" | "load" | "vp" | "break"
 export const addActionType: { [index: string]: AddActionType } = {
-  Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp",
+  Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Breakdown: "break"
 }
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string,

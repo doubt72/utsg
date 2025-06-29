@@ -1,32 +1,30 @@
 High Priority Features/Bug Fixes:
-  - Move Documentation
-  - Interface Documentation
-  - Implement Help Button linking to game context
-  - Grab domain
-
-Game Actions:
-  - Move
-    - TEST: Breakdown check
-    - TEST: Verify Truck Moves Work / facing of towed guns
-    - TEST + Implement: Wire/Obstacles Moves
-    - TEST + Implement: Engineering Tasks / Removing
-      - Digging In
-  - Show reaction options
-    - Passing
-  - Sniper Check
+  - Finish move:
+    - Test for vehicle moves.  Loading/unloading/towing directions
+    - Test/Implement: wire/obstacles/mines
+    - Test/Implement: engineering remove wire/obstacles
+    - Test/Implement: digging in
+  - Sniper check
   - Initiative Check
-  - Rush
-  - Assault Move
+  - Show reaction but currently just allow passing
   - Passing
-
+  - Rush Move
+  - Assault Move
   - Firing
-    - Reaction fire
+  - Rout
+  - Close Combat
+  - Weather
+  
 
 Future Features/Bug Fixes:
+  - Move Documentation
+  - Interface Documentation / chat / buttons / undo or not
+  - Implement Help Button linking to game context
+  - Maybe split breakdown/smoke checks into additional "actions"
+  - Switch callbacks to a generic message queue
   - Fix hindrance bug
     - Through two fence corner intersections
     - Also for hindrance at higher elevation
-  - Improve layout of moves/chat on smaller screens (i.e., handle line breaks)
   - Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
     (So scenarios can be modified without breaking existing games)
   - Game ratings, scenario balance stats, user stats

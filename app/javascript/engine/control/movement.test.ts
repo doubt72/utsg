@@ -3,7 +3,7 @@ import { baseTerrainType, Coordinate, hexOpenType, unitStatus, weatherType, wind
 import { ScenarioData } from "../Scenario"
 import Unit, { UnitData } from "../Unit"
 import Game, { actionType, GameActionState, gamePhaseType, MoveActionState } from "../Game"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import { openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement } from "./movement"
 import select from "./select"
 import { addActionType } from "../GameAction"
@@ -11,6 +11,7 @@ import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
 import { openHexRotateOpen as openHexShowRotate, openHexRotatePossible as openHexRotateOpen } from "./openHex"
 import { HexData } from "../Hex"
+import IllegalActionError from "../actions/IllegalActionError"
 
 describe("action integration test", () => {
   const defaultHexes: HexData[][] = [
@@ -496,6 +497,13 @@ describe("action integration test", () => {
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(3)
     expect(all[1].feature.name).toBe("Smoke")
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a smoke roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
   })
 
   test("multi-select", () => {
@@ -1704,6 +1712,70 @@ describe("action integration test", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(1)
+  })
+
+  test("breakdown movement", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(gtank)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.turretFacing = 1
+    unit.breakdownRoll = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    game.moveRotate(3, 2, 2)
+    game.move(2, 1)
+    move.rotatingTurret = true
+    game.moveRotate(2, 1, 6)
+    move.rotatingTurret = false
+    game.moveRotate(2, 1, 1)
+
+    game.move(1, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+
+    game.finishMove()
+
+    Math.random = original
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].marker.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(1)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.facing).toBe(1)
+    expect(all[1].unit.turretFacing).toBe(5)
+    expect(all[1].unit.immobilized).toBe(true)
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a breakdown roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
   })
 
   // TODO: all the truck/wheeled movement/loading/etc

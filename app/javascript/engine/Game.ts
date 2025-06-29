@@ -10,7 +10,7 @@ import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
-import { alliedCodeToName, axisCodeToName, normalDir, rolld10, togglePlayer } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, normalDir, roll2d10, rolld10, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
 
 export type GameData = {
@@ -644,7 +644,15 @@ export default class Game {
     if (!this.gameActionState?.move) { return }
     const dice: GameActionDiceResult[] = []
     for (const a of this.gameActionState.move.addActions) {
-      if (a.type === addActionType.Smoke) { dice.push({ result: rolld10() }) }
+      if (a.type === addActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
+    }
+    const breakdown = this.gameActionState.selection[0].counter.unit
+    if (breakdown.breakdownRoll) {
+      dice.push({ result: roll2d10(), type: "2d10" })
+      this.gameActionState.move.addActions.push({
+        type: addActionType.Breakdown, x: this.lastPath?.x as number, y: this.lastPath?.y as number,
+        id: breakdown.id, cost: 0
+      })
     }
     const move = new GameAction({
       user: this.currentUser,
