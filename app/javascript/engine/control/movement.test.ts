@@ -12,6 +12,7 @@ import organizeStacks from "../support/organizeStacks"
 import { openHexRotateOpen as openHexShowRotate, openHexRotatePossible as openHexRotateOpen } from "./openHex"
 import { HexData } from "../Hex"
 import IllegalActionError from "../actions/IllegalActionError"
+import Feature, { FeatureData } from "../Feature"
 
 describe("action integration test", () => {
   const defaultHexes: HexData[][] = [
@@ -74,7 +75,7 @@ describe("action integration test", () => {
     t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
     o: { tr: 3, trg: 1, w: 1 },
   };
-  // const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
+  const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
   const scenarioData = (hexes: HexData[][]): ScenarioData => {
     return {
@@ -2450,5 +2451,75 @@ describe("action integration test", () => {
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
   })
 
-  // TODO: wire/mines/engineering/digging in
+  test("moving into wire", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    const feature = new Feature(wire)
+    feature.id = "wire"
+    map.addCounter(new Coordinate(3, 2), feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("Wire")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].feature.name).toBe("Rifle")
+  })
+
+  test("moving out of wire", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    const feature = new Feature(wire)
+    feature.id = "wire"
+    map.addCounter(new Coordinate(4, 2), feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.All)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.All)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("Wire")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].feature.name).toBe("Rifle")
+  })
+
+  test("moving into mines", () => {
+    // TODO: implement fire first
+  })
 });

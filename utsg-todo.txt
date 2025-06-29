@@ -1,28 +1,26 @@
 High Priority Features/Bug Fixes:
-  - Finish move:
-    - Test for vehicle moves.  Loading/unloading/towing directions
-    - Test/Implement: wire/obstacles/mines
-    - Test/Implement: engineering remove wire/obstacles
-    - Test/Implement: digging in
   - Combine size buttons
-  - Sniper check
+  - Maybe split breakdown checks into additional action
+  - Switch callback messages to a generic message queue
+  - Move Documentation
   - Initiative Check
   - Show reaction but currently just allow passing
   - Passing
   - Rush Move
   - Assault Move
+    - Test/Implement: engineering remove wire/obstacles
+    - Test/Implement: digging in
   - Firing
+    - Test/Implement: mine
+  - Sniper check
   - Rout
   - Close Combat
   - Weather
   
 
 Future Features/Bug Fixes:
-  - Move Documentation
   - Interface Documentation / chat / buttons / undo or not
   - Implement Help Button linking to game context
-  - Maybe split breakdown (probably not smoke) checks into additional action
-  - Switch callbacks to a generic message queue
   - Fix hindrance bug
     - Through two fence corner intersections
     - Also for hindrance at higher elevation

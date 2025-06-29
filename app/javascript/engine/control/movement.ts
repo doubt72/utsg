@@ -162,6 +162,9 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
     // all of these casts should have already been checked before we get here
     return hexFrom.terrain.move as number
   }
+  for (const f of map.countersAt(from)) {
+    if (f.hasFeature && f.feature.currentMovement === "A") { return 99 }
+  }
   const hexTo = map.hexAt(to) as Hex;
   const terrFrom = hexFrom.terrain
   const terrTo = hexTo.terrain
