@@ -11,7 +11,7 @@ import Map from "../../engine/Map";
 import { Direction } from "../../utilities/commonTypes";
 import ErrorDisplay from "./ErrorDisplay";
 import {
-  ArrowsCollapse, ArrowsExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
+  ArrowsAngleContract, ArrowsAngleExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
   GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
@@ -144,11 +144,8 @@ export default function GameDisplay() {
     setMapScaleMinusButton(
       <OverlayTrigger placement="bottom" overlay={scaleMinusTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={
-          mapScale > 0.52 ? "custom-button normal-button" :
-            "custom-button normal-button custom-button-ghost"
-        }
-            onClick={() => switchMapScale(-1)}>
+        <div className={`custom-button normal-button button-left${mapScale > 0.52 ? "" : " custom-button-ghost"}`}
+             onClick={() => switchMapScale(-1)}>
           <DashCircle />
         </div>
       </OverlayTrigger>
@@ -156,11 +153,8 @@ export default function GameDisplay() {
     setMapScaleResetButton(
       <OverlayTrigger placement="bottom" overlay={scaleZeroTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={
-          mapScale < 1 ? "custom-button normal-button" :
-            "custom-button normal-button custom-button-ghost"
-        }
-            onClick={() => switchMapScale(0)}>
+        <div className={`custom-button normal-button button-middle${mapScale < 1 ? "" : " custom-button-ghost"}`}
+             onClick={() => switchMapScale(0)}>
           <Circle />
         </div>
       </OverlayTrigger>
@@ -168,11 +162,8 @@ export default function GameDisplay() {
     setMapScalePlusButton(
       <OverlayTrigger placement="bottom" overlay={scalePlusTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={
-          mapScale < 1 ? "custom-button normal-button" :
-            "custom-button normal-button custom-button-ghost"
-        }
-            onClick={() => switchMapScale(1)}>
+        <div className={`custom-button normal-button button-right${mapScale < 1 ? "" : " custom-button-ghost"}`}
+             onClick={() => switchMapScale(1)}>
           <PlusCircle />
         </div>
       </OverlayTrigger>
@@ -182,35 +173,26 @@ export default function GameDisplay() {
     setLargeInterfaceButton(
       <OverlayTrigger placement="bottom" overlay={largeSizeTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={
-          interfaceShrink !== 0 ? "custom-button normal-button" :
-            "custom-button normal-button custom-button-ghost"
-        }
-            onClick={() => selectInterfaceShrink(0)}>
-          <ArrowsExpand />
+        <div className={ `custom-button normal-button button-left${interfaceShrink !== 0 ? "" : " custom-button-select"}` }
+             onClick={() => selectInterfaceShrink(0)}>
+          <ArrowsAngleExpand />
         </div>
       </OverlayTrigger>
     )
     setSmallInterfaceButton(
       <OverlayTrigger placement="bottom" overlay={smallSizeTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={
-          interfaceShrink !== 1 ? "custom-button normal-button" :
-            "custom-button normal-button custom-button-ghost"
-        }
-            onClick={() => selectInterfaceShrink(1)}>
-          <ArrowsCollapse />
+        <div className={ `custom-button normal-button button-middle${interfaceShrink !== 1 ? "" : " custom-button-select"}` }
+             onClick={() => selectInterfaceShrink(1)}>
+          <ArrowsAngleContract />
         </div>
       </OverlayTrigger>
     )
     setMobileInterfaceButton(
       <OverlayTrigger placement="bottom" overlay={mobileSizeTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={
-          interfaceShrink !== 2 ? "custom-button normal-button" :
-            "custom-button normal-button custom-button-ghost"
-        }
-            onClick={() => selectInterfaceShrink(2)}>
+        <div className={ `custom-button normal-button button-right${interfaceShrink !== 2 ? "" : " custom-button-select"}` }
+             onClick={() => selectInterfaceShrink(2)}>
           <Phone />
         </div>
       </OverlayTrigger>

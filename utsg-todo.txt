@@ -1,5 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Combine size buttons
   - Maybe split breakdown checks into additional action
   - Switch callback messages to a generic message queue
   - Move Documentation

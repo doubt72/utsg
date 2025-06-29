@@ -24,6 +24,24 @@ button.custom-button,a.custom-button,div.custom-button {
   user-select: none;
 }
 
+div.button-left {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-right: 0;
+}
+
+div.button-middle {
+  border-radius: 0;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+div.button-right {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: 0;
+}
+
 button.custom-button svg {
   vertical-align: -3.5px;
   margin-right: 5px;
@@ -80,6 +98,16 @@ button.custom-button:hover,a.custom-button:hover,div.custom-button:hover {
 
 div.custom-button-ghost,div.custom-button-ghost:hover {
   color: $darkish-green;
+}
+
+div.custom-button-select {
+  color: white;
+  background-color: $lightish-green;
+}
+
+div.custom-button-select:hover {
+  color: white;
+  background-color: $darkish-green;
 }
 
 .form-container {
