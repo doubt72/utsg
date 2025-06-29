@@ -28,7 +28,7 @@ export const addActionType: { [index: string]: AddActionType } = {
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Breakdown: "break"
 }
 export type AddAction = {
-  type: AddActionType, x: number, y: number, id?: string, parent_id?: string,
+  type: AddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
 }
 
 export type GameActionPhaseChange = {

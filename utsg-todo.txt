@@ -4,6 +4,7 @@ High Priority Features/Bug Fixes:
     - Test/Implement: wire/obstacles/mines
     - Test/Implement: engineering remove wire/obstacles
     - Test/Implement: digging in
+  - Combine size buttons
   - Sniper check
   - Initiative Check
   - Show reaction but currently just allow passing
@@ -20,7 +21,7 @@ Future Features/Bug Fixes:
   - Move Documentation
   - Interface Documentation / chat / buttons / undo or not
   - Implement Help Button linking to game context
-  - Maybe split breakdown/smoke checks into additional "actions"
+  - Maybe split breakdown (probably not smoke) checks into additional action
   - Switch callbacks to a generic message queue
   - Fix hindrance bug
     - Through two fence corner intersections

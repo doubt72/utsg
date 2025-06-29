@@ -290,7 +290,7 @@ export default class Unit {
   get rotates(): boolean {
     return ![
       unitType.SupportWeapon, unitType.Leader, unitType.Squad, unitType.Team,
-      unitType.Cavalry, unitType.Other
+      unitType.Cavalry, unitType.Other,
     ].includes(this.type)
   }
 

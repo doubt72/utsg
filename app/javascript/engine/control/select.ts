@@ -1,4 +1,5 @@
 import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
+import { normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
 import { addActionType } from "../GameAction"
@@ -25,10 +26,12 @@ export default function select(
     if (move.droppingMove) {
       counter.unit.dropSelect()
       const cost = counter.parent ? 1 : 0
+      const facing = counter.unit.crewed ? game.lastPath?.facing : undefined
       move.addActions.push(
         {
           x: xx, y: yy, cost, type: addActionType.Drop, id: counter.unit.id,
           parent_id: counter.unit.parent?.id,
+          facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing
         }
       )
       if (xx !== x || yy !== y) {
@@ -65,9 +68,10 @@ export default function select(
             cost = 1 - counter.unit.baseMovement
           }
         }
-        move.addActions.push(
-          { x: xx, y: yy, cost, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id }
-        )
+        const facing = counter.unit.rotates ? counter.unit.facing : undefined
+        move.addActions.push({
+          x: xx, y: yy, cost, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id, facing
+        })
       }
     } else {
       counter.children.forEach(c => c.unit.select())

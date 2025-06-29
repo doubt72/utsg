@@ -115,10 +115,13 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     }
     if (next && next.unit.crewed && !terrTo.borderGun) { return false }
   }
-  if (selection.unit.rotates || (next && next.unit.crewed)) {
+  if (selection.unit.canHandle && (next && next.unit.crewed)) {
     if (action.addActions.filter(a => a.id === next.unit.id).length < 1) {
       if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
     }
+  }
+  if (selection.unit.rotates) {
+    if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
   }
 
   const length = action.path.length + action.addActions.length
@@ -292,10 +295,15 @@ function allAlongRoad(map: Map): boolean {
   return true
 }
 
+function rotateRoads(hex: Hex) {
+  if (!hex.roadDirections) { return undefined }
+  return hex.roadDirections.map(d => normalDir(d + (hex.roadRotation ?? 0)))
+}
+
 function alongRoad(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
-  if (from.coord.x === to.coord.x && from.coord.y === to.coord.y) { return true }
-  if (!from.road || !to.road || !to.roadDirections?.includes(normalDir(dir + 3)) ||
-      !from.roadDirections?.includes(dir)) {
+  if (from.coord.x === to.coord.x && from.coord.y === to.coord.y && to.road) { return true }
+  if (!from.road || !to.road || !rotateRoads(to)?.includes(normalDir(dir + 3)) ||
+      !rotateRoads(from)?.includes(dir)) {
     return false
   }
   if (pathOk) { return true }

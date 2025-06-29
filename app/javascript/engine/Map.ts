@@ -353,7 +353,7 @@ export default class Map {
     this.units[to.y][to.x].unshift(unit)
   }
 
-  loadUnit(from: Coordinate, to: Coordinate, id: string, insertId: string) {
+  loadUnit(from: Coordinate, to: Coordinate, id: string, insertId: string, facing?: Direction) {
     const list = this.countersAt(from)
     let counter: Counter | undefined = undefined
     let insert: Counter | undefined = undefined
@@ -365,6 +365,7 @@ export default class Map {
       if (insertId !== undefined && c.unit.id === insertId) { insert = c }
     }
     if (!counter || !insert) { return }
+    if (facing) { counter.unit.facing = facing }
     this.units[from.y][from.x] = this.units[from.y][from.x].filter(u => u.id !== id)
     insert.unit.children.push(counter.unit)
     counter.unit.parent = insert.unit

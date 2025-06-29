@@ -53,7 +53,7 @@ export default function MapCounterOverlay({
           cd.hideShadow = true
           cd.showAllCounters = true
           cd.unitIndex = counter.unitIndex
-          const transport = counter.unit.transport && (counter.children.length > 2 ||
+          const transport = counter.unit.transport && (counter.children.length > 1 ||
             (counter.children.length === 1 && !counter.children[0].unit.crewed)) ?
             counter.children.reduce((sum, c) => sum + 1 + c.children.length, 0) : undefined
           const shiftBadges = transport || counter.parent?.unit.transport

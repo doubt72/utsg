@@ -1,5 +1,5 @@
 import { Coordinate, featureType, unitStatus } from "../../utilities/commonTypes";
-import { coordinateToLable, smokeRoll } from "../../utilities/utilities";
+import { coordinateToLable, normalDir, smokeRoll } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -94,6 +94,9 @@ export default class MoveAction extends BaseAction {
     for (const u of this.origin) {
       map.moveUnit(start, end, u.id, facing, turret)
       const unit = this.game.scenario.map.unitAtId(end, u.id) as Counter
+      if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
+        unit.unit.children[0].facing = normalDir(facing + 3)
+      }
       unit.unit.status = unitStatus.Activated
     }
 
@@ -104,12 +107,15 @@ export default class MoveAction extends BaseAction {
         map.toggleVP(mid)
       } else if (a.type === addActionType.Drop) {
         if (a.parent_id) {
-          map.dropUnit(end, mid, a.id as string)
+          map.dropUnit(end, mid, a.id as string, a.facing)
         } else {
           map.moveUnit(end, mid, a.id as string)
         }
       } else if (a.type === addActionType.Load) {
         map.loadUnit(mid, end, a.id as string, a.parent_id as string)
+        const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
+        const child = map.unitAtId(end, a.id ?? "") as Counter
+        if (child.unit.rotates && parent.unit.rotates) { child.unit.facing = normalDir(parent.unit.facing + 3) }
       } else if (a.type === addActionType.Breakdown) {
         const unit = this.game.scenario.map.unitAtId(end, a.id ?? "") as Counter
         if (this.diceResults[diceIndex++].result <= (unit.unit.breakdownRoll ?? 0)) {
@@ -138,13 +144,17 @@ export default class MoveAction extends BaseAction {
       if (a.type === addActionType.VP) {
         map.toggleVP(mid)
       } else if (a.type === addActionType.Drop) {
+        const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
+        const child = map.unitAtId(mid, a.id ?? "") as Counter
         if (a.parent_id) {
-          map.loadUnit(mid, end, a.id as string, a.parent_id as string)
+          map.loadUnit(mid, end, a.id as string, a.parent_id as string,
+            facing && parent.unit.rotates && child.unit.crewed ? normalDir(facing + 3) : undefined
+          )
         } else {
           map.moveUnit(mid, end, a.id as string)
         }
       } else if (a.type === addActionType.Load) {
-        map.dropUnit(end, mid, a.id as string)
+        map.dropUnit(end, mid, a.id as string, a.facing)
       } else if (a.type === addActionType.Breakdown) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing breakdown")
@@ -156,9 +166,12 @@ export default class MoveAction extends BaseAction {
 
     for (const u of this.origin) {
       map.moveUnit(end, start, u.id, facing, turret)
+      const unit = map.unitAtId(start, u.id) as Counter
       if (u.status !== undefined) {
-        const unit = this.game.scenario.map.unitAtId(start, u.id) as Counter
         unit.unit.status = u.status
+      }
+      if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
+        unit.unit.children[0].facing = normalDir(facing + 3)
       }
     }
     this.undone = true;

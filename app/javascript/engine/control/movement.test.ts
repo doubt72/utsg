@@ -4,7 +4,7 @@ import { ScenarioData } from "../Scenario"
 import Unit, { UnitData } from "../Unit"
 import Game, { actionType, GameActionState, gamePhaseType, MoveActionState } from "../Game"
 import { describe, expect, test, vi } from "vitest"
-import { openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement } from "./movement"
+import { openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost } from "./movement"
 import select from "./select"
 import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
@@ -69,6 +69,10 @@ describe("action integration test", () => {
   const gtank: UnitData = {
     t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
     o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
+  };
+  const gtruck: UnitData = {
+    t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
+    o: { tr: 3, trg: 1, w: 1 },
   };
   // const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
@@ -1778,6 +1782,673 @@ describe("action integration test", () => {
     }
   })
 
-  // TODO: all the truck/wheeled movement/loading/etc
+  test("truck movement", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const loc = new Coordinate(4, 2)
+
+    const unit = new Unit(gtruck)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.baseMovement = 2
+    unit.select()
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(ggun)
+    unit2.id = "test2"
+    unit2.facing = 4
+    map.addCounter(loc, unit2)
+
+    const unit3 = new Unit(gcrew)
+    unit3.id = "test3"
+    map.addCounter(loc, unit3)
+
+    organizeStacks(map)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(mapSelectMovement(game, false)).toBe(2)
+    expect(mapSelectMovement(game, true)).toBe(2)
+    expect(showLaySmoke(game)).toBe(false)
+    expect(showDropMove(game)).toBe(true)
+    expect(showLoadMove(game)).toBe(false)
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
+    expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    expect(movementPastCost(map, unit)).toBe(0.5)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    game.moveRotate(3, 2, 2)
+    expect(movementPastCost(map, unit)).toBe(1)
+    expect(move.path.length).toBe(3)
+    expect(move.path[2].facing).toBe(2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    game.move(2, 1)
+    expect(movementPastCost(map, unit)).toBe(2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(2)
+    expect(all[0].unit.facing).toBe(2)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(5)
+    expect(all[2].hex?.x).toBe(2)
+    expect(all[2].hex?.y).toBe(1)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(2)
+    expect(all[0].unit.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(4)
+    expect(all[2].hex?.x).toBe(4)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+  })
+
+  test("truck dropping gun pre-turn", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const loc = new Coordinate(4, 2)
+
+    const unit = new Unit(gtruck)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(ggun)
+    unit2.id = "test2"
+    unit2.facing = 4
+    map.addCounter(loc, unit2)
+
+    const unit3 = new Unit(gcrew)
+    unit3.id = "test3"
+    map.addCounter(loc, unit3)
+
+    organizeStacks(map)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(mapSelectMovement(game, false)).toBe(3)
+    expect(mapSelectMovement(game, true)).toBe(3)
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
+    expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    move.droppingMove = true
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    move.droppingMove = false
+    expect(move.addActions.length).toBe(1)
+    expect(move.addActions[0].facing).toBe(4)
+    expect(move.addActions[0].cost).toBe(1)
+    expect(map.ghosts[2][3].length).toBe(1)
+
+    game.moveRotate(3, 2, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    game.move(2, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(1)
+    expect(all[0].unit.facing).toBe(2)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("Crew")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("3.7cm Pak 36")
+    expect(all[2].unit.parent).toBe(undefined)
+    expect(all[2].unit.facing).toBe(4)
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(2)
+    expect(all[0].unit.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(4)
+    expect(all[2].hex?.x).toBe(4)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+  })
+
+  test("truck dropping gun post-turn", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const loc = new Coordinate(4, 2)
+
+    const unit = new Unit(gtruck)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(ggun)
+    unit2.id = "test2"
+    unit2.facing = 4
+    map.addCounter(loc, unit2)
+
+    const unit3 = new Unit(gcrew)
+    unit3.id = "test3"
+    map.addCounter(loc, unit3)
+
+    organizeStacks(map)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(mapSelectMovement(game, false)).toBe(3)
+    expect(mapSelectMovement(game, true)).toBe(3)
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
+    expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    game.moveRotate(3, 2, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    move.droppingMove = true
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    move.droppingMove = false
+    expect(move.addActions.length).toBe(1)
+    expect(move.addActions[0].facing).toBe(5)
+    expect(move.addActions[0].cost).toBe(1)
+    expect(map.ghosts[2][3].length).toBe(1)
+
+    game.move(2, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(1)
+    expect(all[0].unit.facing).toBe(2)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("Crew")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("3.7cm Pak 36")
+    expect(all[2].unit.parent).toBe(undefined)
+    expect(all[2].unit.facing).toBe(5)
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(2)
+    expect(all[0].unit.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(4)
+    expect(all[2].hex?.x).toBe(4)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+  })
+
+  test("truck dropping infantry", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const loc = new Coordinate(4, 2)
+
+    const unit = new Unit(gtruck)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(ggun)
+    unit2.id = "test2"
+    unit2.facing = 4
+    map.addCounter(loc, unit2)
+
+    const unit3 = new Unit(gcrew)
+    unit3.id = "test3"
+    map.addCounter(loc, unit3)
+
+    organizeStacks(map)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(mapSelectMovement(game, false)).toBe(3)
+    expect(mapSelectMovement(game, true)).toBe(3)
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
+    expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    game.moveRotate(3, 2, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    move.droppingMove = true
+    select(map, {
+      counter: map.countersAt(loc)[2],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    move.droppingMove = false
+    expect(move.addActions.length).toBe(1)
+    expect(move.addActions[0].facing).toBe(undefined)
+    expect(move.addActions[0].cost).toBe(1)
+    expect(map.ghosts[2][3].length).toBe(1)
+
+    game.move(2, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(1)
+    expect(all[0].unit.facing).toBe(2)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(5)
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent).toBe(undefined)
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(2)
+    expect(all[0].unit.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(4)
+    expect(all[2].hex?.x).toBe(4)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+  })
+
+  test("truck loading gun", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const loc = new Coordinate(4, 2)
+
+    const unit = new Unit(gtruck)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.baseMovement = 3
+    unit.select()
+
+    const unit2 = new Unit(ggun)
+    unit2.id = "test2"
+    unit2.facing = 1
+
+    const unit3 = new Unit(gcrew)
+    unit3.id = "test3"
+
+    try {
+      map.addCounter(loc, unit2)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof WarningActionError).toBe(true)
+    }
+    map.addCounter(loc, unit)
+    map.addCounter(loc, unit3)
+
+    organizeStacks(map)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(mapSelectMovement(game, false)).toBe(3)
+    expect(mapSelectMovement(game, true)).toBe(3)
+
+    move.loadingMove = true
+    select(map, {
+      counter: map.countersAt(loc)[0],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    move.loadingMove = false
+    expect(move.addActions.length).toBe(1)
+    expect(move.addActions[0].facing).toBe(1)
+    expect(move.addActions[0].cost).toBe(1)
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
+    expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    game.moveRotate(3, 2, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    game.move(2, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(2)
+    expect(all[0].unit.facing).toBe(2)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(5)
+    expect(all[2].hex?.x).toBe(2)
+    expect(all[2].hex?.y).toBe(1)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("3.7cm Pak 36")
+    expect(all[0].unit.children.length).toBe(0)
+    expect(all[0].unit.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.children.length).toBe(1)
+    expect(all[1].unit.name).toBe("Opel Blitz")
+    expect(all[1].unit.parent).toBe(undefined)
+    expect(all[1].unit.facing).toBe(1)
+    expect(all[2].hex?.x).toBe(4)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+  })
+
+  test("truck loading infantry", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const loc = new Coordinate(4, 2)
+
+    const unit = new Unit(gtruck)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.baseMovement = 3
+    unit.select()
+
+    const unit2 = new Unit(ggun)
+    unit2.id = "test2"
+    unit2.facing = 1
+
+    const unit3 = new Unit(gcrew)
+    unit3.id = "test3"
+
+    map.addCounter(loc, unit3)
+    map.addCounter(loc, unit)
+    map.addCounter(loc, unit2)
+
+    organizeStacks(map)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(mapSelectMovement(game, false)).toBe(3)
+    expect(mapSelectMovement(game, true)).toBe(3)
+
+    move.loadingMove = true
+    select(map, {
+      counter: map.countersAt(loc)[0],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    move.loadingMove = false
+    expect(move.addActions.length).toBe(1)
+    expect(move.addActions[0].facing).toBe(undefined)
+    expect(move.addActions[0].cost).toBe(1)
+
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
+    expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.move(3, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+
+    game.moveRotate(3, 2, 2)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    game.move(2, 1)
+    expect(openHexShowRotate(map)).toBe(true)
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(2)
+    expect(all[0].hex?.y).toBe(1)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Opel Blitz")
+    expect(all[0].unit.children.length).toBe(2)
+    expect(all[0].unit.facing).toBe(2)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(1)
+    expect(all[1].unit.children.length).toBe(0)
+    expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.facing).toBe(5)
+    expect(all[2].hex?.x).toBe(2)
+    expect(all[2].hex?.y).toBe(1)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("Crew")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.parent?.name).toBe(undefined)
+    expect(all[0].unit.name).toBe("Crew")
+    expect(all[0].unit.children.length).toBe(0)
+    expect(all[0].unit.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.children.length).toBe(1)
+    expect(all[1].unit.name).toBe("Opel Blitz")
+    expect(all[1].unit.parent).toBe(undefined)
+    expect(all[1].unit.facing).toBe(1)
+    expect(all[2].hex?.x).toBe(4)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.children.length).toBe(0)
+    expect(all[2].unit.name).toBe("3.7cm Pak 36")
+    expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+  })
+
   // TODO: wire/mines/engineering/digging in
 });

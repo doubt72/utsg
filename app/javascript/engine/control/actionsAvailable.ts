@@ -56,7 +56,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           } else {
             actions.unshift({ type: "none", message: "select addtional units or select hex to move" })
           }
-          if (actionSelect.turreted) {
+          if (actionSelect.turreted && !actionSelect.turretJammed) {
             actions.push({ type: "move_rotate_toggle" })
           }
           if (showLaySmoke(game)) {
@@ -139,6 +139,7 @@ function canMove(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
   if (unit.type === unitType.SupportWeapon || unit.type === unitType.Gun) { return false }
   if (unit.currentMovement === 0) { return false }
+  // Testing for now
   // if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
   return true
 }

@@ -51,6 +51,7 @@ export type DeployActionState = {
 
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
+  facing?: Direction,
 }
 
 export type MoveActionState = {
@@ -637,7 +638,7 @@ export default class Game {
     const action = this.gameActionState
     if (!action?.move) { return false }
     if (action.move.loader) { return false }
-    return this.getLoader.length > 1
+    return this.getLoader.length > 1 && !this.getLoader[0].unit.transport
   }
 
   finishMove() {
@@ -667,7 +668,7 @@ export default class Game {
         }),
         add_action: this.gameActionState.move.addActions.map(a => {
           return {
-            type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id,
+            type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id, facing: a.facing,
           }
         }),
         dice_result: dice,
