@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Terrain table / Move initiative into main phase
-  - Buttons for movement actions
   - Initiative Check
   - Show reaction
     - Just passing currently

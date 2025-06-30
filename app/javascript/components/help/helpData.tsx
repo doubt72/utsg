@@ -9,7 +9,6 @@ import GameTurnSection from "./GameTurnSection";
 import DeploymentPhaseSection from "./DeploymentPhaseSection";
 import PrepPhaseSection from "./PrepPhaseSection";
 import MainPhaseSection from "./MainPhaseSection";
-import InitiativeSection from "./InitiativeSection";
 import MovementSection from "./MovementSection";
 import CleanupPhaseSection from "./CleanupPhaseSection";
 import GlossarySection from "./GlossarySection";
@@ -38,7 +37,6 @@ export const helpIndex: HelpSection[] = [
         { name: "Rallying", section: undefined },
       ]},
       { name: "Main Phase", section: <MainPhaseSection />, children: [
-        { name: "Initiative", section: <InitiativeSection /> },
         { name: "Fire", section: undefined },
         { name: "Intensive Fire", section: undefined },
         { name: "Move", section: <MovementSection /> },

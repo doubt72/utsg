@@ -3,12 +3,13 @@ import { EyeFill, Hexagon, HexagonFill, Stack } from "react-bootstrap-icons";
 import { roundedRectangle } from "../../utilities/graphics";
 import Map from "../../engine/Map";
 import {
-  BaseTerrainType, BorderType, BuildingShape, Coordinate, RoadType, StreamType, TerrainType, weatherType, windType
+  BaseTerrainType, borderType, BorderType, BuildingShape, Coordinate, RoadType, streamType, StreamType, terrainType, TerrainType, weatherType, windType
 } from "../../utilities/commonTypes";
 import MapHex from "../game/map/MapHex";
 import Hex from "../../engine/Hex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import MapHexPatterns from "../game/map/MapHexPatterns";
+import { helpIndexByName } from "./helpData";
 
 type PickTerrain = {
   m?: BaseTerrainType, t?: TerrainType, b?: BorderType, r?: RoadType, s?: StreamType, rr?: boolean, sh?: BuildingShape,
@@ -18,6 +19,7 @@ export default function TerrainSection() {
   const [currentState, setCurrentState] = useState<PickTerrain>({ m: "g", t: "o" })
   const [currentTerrain, setCurrentTerrain] = useState<string>("open")
 
+  const [terrainTable, setTerrainTable] = useState<JSX.Element | undefined>()
   const [updateSection, setUpdateSection] = useState<JSX.Element | undefined>()
 
   const [map, setMap] = useState<Map | undefined>()
@@ -55,6 +57,26 @@ export default function TerrainSection() {
     silo: { t: "o", sh: "c" },
   }
 
+  const terrainTypes: TerrainType[] = [
+    terrainType.Open, terrainType.Forest, terrainType.Brush, terrainType.Grain, terrainType.Orchard,
+    terrainType.Rough, terrainType.Sand, terrainType.Jungle, terrainType.Palm,
+    terrainType.Marsh, terrainType.Soft, terrainType.Debris, terrainType.Water, terrainType.Shallow,
+    // house: { t: "o", sh: "l" },
+  ]
+
+  const borderTypes: BorderType[] = [
+    borderType.Fence, borderType.Wall, borderType.Bocage, borderType.Cliff,
+  ]
+
+  const roadTypes: RoadType[] = [
+    "t", "d", "p", "a",
+    // rail: { t: "o", r: undefined, s: undefined, rr: true },
+  ]
+
+  const streamTypes: StreamType[] = [
+    streamType.Stream, streamType.Gully, streamType.Trench
+  ]
+
   useEffect(() => {
     const map = new Map({
       layout: [2, 2, "x"], axis_dir: 4, allied_dir: 1,
@@ -66,6 +88,123 @@ export default function TerrainSection() {
     map.showCoords = false
     setMap(map)
   }, [])
+
+  useEffect(() => {
+    const map = new Map({
+      layout: [1, 1, "x"], axis_dir: 4, allied_dir: 1,
+      start_weather: weatherType.Dry, base_weather: weatherType.Dry, precip: [0, weatherType.Rain],
+      wind: [windType.Calm, 1, false],
+      base_terrain: "g",
+      hexes: [[{ t: "o" }]]
+    })
+    map.showCoords = false
+
+    let index = 0
+    const rows: JSX.Element[] = []
+    terrainTypes.forEach(t => {
+      const hex = new Hex(new Coordinate(0, 0), { t: t }, map)
+      rows.push(
+        <tr key={index++}>
+          <td className="nowrap"><strong>{hex.terrain.name}</strong></td>
+          <td className="nowrap">{ showHex(hex) }</td>
+          <td className="nowrap">{hex.terrain.cover ? `${hex.terrain.cover} cover` : ""}</td>
+          <td className="nowrap">{hex.terrain.hindrance ? `${hex.terrain.hindrance} hindrance` : ""}</td>
+          <td className="nowrap">{hex.terrain.los ? "blocks LOS" : ""}</td>
+          <td>
+            {hex.terrain.move ? `${hex.terrain.move} point${hex.terrain.move > 1 ? "s" : ""}` : "impassible" }
+            {!!hex.terrain.move && !hex.terrain.vehicle ? ", no vehicles" : "" }
+            {!!hex.terrain.move && hex.terrain.vehicle === "amph" ? ", amphibious vehicles only" : "" }
+            {!!hex.terrain.move && !hex.terrain.gun ? ", no crewed weapons" : "" }
+          </td>
+        </tr>
+      )
+      if (t === terrainType.Forest) {
+        const hex2 = new Hex(new Coordinate(0, 0), { t: "o", d: 1, st: { sh: "l", s: "u" } }, map)
+        rows.push(
+          <tr key={index++}>
+            <td className="nowrap"><strong>building</strong></td>
+            <td className="nowrap">{ showHex(hex2) }</td>
+            <td className="nowrap">{hex2.terrain.cover} cover</td>
+            <td className="nowrap"></td><td className="nowrap">blocks LOS</td>
+            <td>{hex.terrain.move} points, no vehicles, no crewed weapons</td>
+          </tr>
+        )
+      }
+    })
+    borderTypes.forEach(b => {
+      const hex = new Hex(new Coordinate(0, 0), { t: "o", b: b, be: [1, 2, 6] }, map)
+      rows.push(
+        <tr key={index++}>
+          <td className="nowrap"><strong>{hex.terrain.borderAttr.name}</strong></td>
+          <td className="nowrap">{ showHex(hex) }</td>
+          <td className="nowrap">{hex.terrain.borderAttr.cover ? `${hex.terrain.borderAttr.cover} cover` : ""}</td>
+          <td className="nowrap">{hex.terrain.borderAttr.hindrance ? `${hex.terrain.borderAttr.hindrance} hindrance` : ""}</td>
+          <td className="nowrap">{hex.terrain.borderAttr.los ? "blocks LOS" : ""}</td>
+          <td>
+            {hex.terrain.borderAttr.move ? `+${hex.terrain.borderAttr.move} point${hex.terrain.borderAttr.move > 1 ? "s" : ""}` : "impassible" }
+            {!!hex.terrain.borderAttr.move && !hex.terrain.borderAttr.vehicle ? ", no vehicles" : "" }
+            {!!hex.terrain.borderAttr.move && !hex.terrain.borderAttr.gun ? ", no crewed weapons" : "" }
+          </td>
+        </tr>
+      )
+    })
+    roadTypes.forEach(r => {
+      const hex = new Hex(new Coordinate(0, 0), { t: "o", r: { t: r, d: [2, 5] } }, map)
+      rows.push(
+        <tr key={index++}>
+          <td className="nowrap"><strong>{hex.terrain.roadAttr?.name}</strong></td>
+          <td className="nowrap">{ showHex(hex) }</td><td className="nowrap"></td><td className="nowrap"></td><td className="nowrap"></td>
+          <td>special: see <a href={`/help/${helpIndexByName("Move").join(".")}`}>movement</a> section</td>
+        </tr>
+      )
+    })
+    const hex = new Hex(new Coordinate(0, 0), { t: "o", rr: { d: [[2, 5]] } }, map)
+    rows.push(
+      <tr key={index++}>
+        <td className="nowrap"><strong>railroad</strong></td>
+        <td className="nowrap">{ showHex(hex) }</td>
+        <td className="nowrap">1 cover</td><td className="nowrap"></td><td className="nowrap"></td><td>same as base terrain</td>
+      </tr>
+    )
+    streamTypes.forEach(s => {
+    const hex = new Hex(new Coordinate(0, 0), { t: "o", s: { t: s, d: [2, 5] } }, map)
+      rows.push(
+        <tr key={index++}>
+          <td className="nowrap"><strong>{hex.terrain.streamAttr.name}</strong></td>
+          <td className="nowrap">{ showHex(hex) }</td>
+          <td className="nowrap">{hex.terrain.streamAttr.cover ? `${hex.terrain.streamAttr.cover} cover` : ""}</td>
+          <td className="nowrap"></td><td className="nowrap"></td>
+          <td>
+            {hex.terrain.streamAttr.inMove ? `+${hex.terrain.streamAttr.inMove} point in` : "" }
+            {hex.terrain.streamAttr.outMove ? `, +${hex.terrain.streamAttr.outMove} point out` : "" }
+            {hex.terrain.streamAttr.alongMove ? `, +${hex.terrain.streamAttr.alongMove} point along` : "" }
+          </td>
+        </tr>
+      )
+    })
+
+    setTerrainTable(
+      <table>
+        <tbody>
+          <tr>
+            <th>name</th><th>picture</th><th>cover</th><th>hindrance</th><th>line-of-sight</th><th>movement cost</th>
+          </tr>
+          { rows }
+        </tbody>
+      </table>
+    )
+  }, [])
+
+  const showHex = (hex: Hex): JSX.Element => {
+    return (
+      <svg width={100} height={115} viewBox="-5 -5 127 146">
+        <MapHex hex={hex} />
+        <MapHexDetail hex={hex} maxX={0} maxY={0} scale={1} showTerrain={false}
+                      svgRef={null as unknown as React.MutableRefObject<HTMLElement>}
+                      selectCallback={() => {}} terrainCallback={() => {}} />
+      </svg>
+    )
+  }
 
   useEffect(() => {
     setTerrain(currentTerrain)
@@ -359,11 +498,13 @@ export default function TerrainSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
-      <h2 className="mt05em">Terrain Types</h2>
+      <h2 className="mt05em">Illustrated</h2>
       <p>
-        Select the buttons on the right to see the different types of terrain:
+        Select the buttons on the right to see the different types of terrain on the illustration below:
       </p>
       { updateSection }
+      <h2 className="mt05em">Terrain Table</h2>
+      { terrainTable }
     </div>
   )
 }

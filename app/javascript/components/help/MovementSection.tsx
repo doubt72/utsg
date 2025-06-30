@@ -1,5 +1,7 @@
 import React from "react";
 import { helpIndexByName } from "./helpData";
+import { ArrowClockwise, BoxArrowDown, BoxArrowInUp, Clouds } from "react-bootstrap-icons";
+import { CancelGlyph, MoveGlyph } from "../utilities/buttons";
 
 export default function MovementSection() {
   return (
@@ -67,8 +69,19 @@ export default function MovementSection() {
       </p>
       <p>
         If a vehicle has an armored turret, it may be freely reoriented as part of a unit&apos;s
-        movement.
+        movement. Use the following button to toggle between that and regular turns:
       </p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <ArrowClockwise /> <span>rotating hull</span>
+        </div>
+        <div className="mt05em">/</div>
+        <div className="custom-button normal-button">
+          <ArrowClockwise /> <span>rotating turret</span>
+        </div>
+        <div className="flex-fill"></div>
+      </div>
       <p>
         When infantry units are moving in a group including a leader, the non-leaders may move one
         additional movement point. Infantry units moving in a group may drop units along the way,
@@ -91,7 +104,22 @@ export default function MovementSection() {
         well. Infantry weapons are not. Already activated units may not move, nor may exhausted,
         pinned, or broken units. Tired units get two less movement points.
       </p>
-      <h2>Additional Actions</h2>
+      <p>
+        Once a move has started, the following buttons can be used to commit or abandon a move
+        anytime during the movement action:
+      </p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          {MoveGlyph()} <span>finish move</span>
+        </div>
+        <div className="mt05em">/</div>
+        <div className="custom-button normal-button">
+          {CancelGlyph()} <span>cancel move</span>
+        </div>
+        <div className="flex-fill"></div>
+      </div>
+      <h2 className="mt1em">Additional Actions</h2>
       <p>
         Infantry units may pick up or drop infantry weapons for one movement point. If the weapon
         has an encumbrance movement, the infantry&apos;s movement is still reduced by that amount
@@ -118,15 +146,28 @@ export default function MovementSection() {
       </p>
       <p>
         No unit may be picked up if it has already been activated or is exhausted, nor if it has
-        been pinned or broken.  Except: broken (jammed) infantry weapons or crewed weapons may be picked
-        up or manned (in fact would have to be to be repaired).
+        been pinned or broken. Except: broken (jammed) infantry weapons or crewed weapons may be
+        picked up or manned (in fact would have to be to be repaired).
       </p>
       <p>
         Units may only be loaded (or manned or towed) or dropped (or unmanned or untowed) in the one
         turn, not both. Units may not &quot;pass&quot; infantry weapons to another unit, the
         infantry weapon must be dropped by the first unit and picked up by the second in separate
-        actions.
+        actions. The following buttons are used for all loading or dropping actions and will appear
+        when those actions are allowed:
       </p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <BoxArrowInUp />
+          <span> pick up a unit</span>
+        </div>
+        <div className="mt05em">/</div>
+        <div className="custom-button normal-button">
+          <BoxArrowDown /> <span>drop unit</span>
+        </div>
+        <div className="flex-fill"></div>
+      </div>
       <p>
         Units that are capable of laying smoke (i.e., smoke-capable infantry, not smoke-capable
         artillery and such that require a targeting roll) may lay smoke for two movement points in a
@@ -136,26 +177,50 @@ export default function MovementSection() {
         isn&apos;t checked until the end of the move). To determine the smoke quality, a d10 is
         rolled, and the following table is used:
       </p>
-      <table className="mb05em">
+      <table>
         <tbody>
           <tr>
-            <td><strong>1-4</strong></td>
+            <th>roll</th><th>result</th>
+          </tr>
+          <tr>
+            <td>
+              <strong>1-4</strong>
+            </td>
             <td>smoke hindrance 1</td>
           </tr>
           <tr>
-            <td><strong>5-7</strong></td>
+            <td>
+              <strong>5-7</strong>
+            </td>
             <td>smoke hindrance 2</td>
           </tr>
           <tr>
-            <td className="pr05em"><strong>8-9</strong></td>
+            <td className="pr05em">
+              <strong>8-9</strong>
+            </td>
             <td>smoke hindrance 3</td>
           </tr>
           <tr>
-            <td><strong>10</strong></td>
+            <td>
+              <strong>10</strong>
+            </td>
             <td>smoke hindrance 4</td>
           </tr>
         </tbody>
       </table>
+      <p>Use the following button to toggle laying smoke on and off:</p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <Clouds />
+          <span> lay smoke</span>
+        </div>
+        <div className="mt05em">/</div>
+        <div className="custom-button normal-button">
+          <Clouds /> <span>stop laying smoke</span>
+        </div>
+        <div className="flex-fill"></div>
+      </div>
       <p>
         There are two &quot;movement&quot; actions that are not part of a normal movement:
         engineering units clearing obstacles, and digging in. As those require the entire turn

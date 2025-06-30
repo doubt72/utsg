@@ -619,3 +619,19 @@ div.counter-help-button-selected:hover,button.help-button-selected:hover {
 .custom-button span.help-button-deleteme {
   color: $darkish-green;
 }
+
+.help-section table {
+  margin-bottom: 1em;
+}
+
+.help-section table th {
+  color: $dark-green;
+  font-variant: small-caps;
+}
+
+.help-section table th,td {
+  background-color: #DDD;
+  border: 2px solid #EEE;
+  padding: 0 8px;
+}
+
