@@ -36,9 +36,9 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
 }
 
-export type ActionType = "d" | "m"
+export type ActionType = "d" | "m" | "bd"
 export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Move: "m",
+  Deploy: "d", Move: "m", Breakdown: "bd",
 }
 
 export type ActionSelection = {
@@ -249,7 +249,12 @@ export default class Game {
   }
 
   findUnitById(id: string): Unit | undefined {
-    return this.scenario.map.findUnitById(id)
+    const counter = this.findCounterById(id)
+    return counter ? counter.unit : undefined
+  }
+
+  findCounterById(id: string): Counter | undefined {
+    return this.scenario.map.findCounterById(id)
     // TODO: handle units that have been eliminated
     return undefined
   }
@@ -277,6 +282,7 @@ export default class Game {
         if (m.undone && !em.undone) {
           this.executeUndo()
         }
+        this.checkFollowup(action)
         return
       }
       if (m.sequence > this.currentSequence) { this.currentSequence = m.sequence }
@@ -312,6 +318,7 @@ export default class Game {
         })
       }
       if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
+      this.checkFollowup(action)
       this.refreshCallback(this)
     } catch(err) {
       if (err instanceof IllegalActionError) {
@@ -344,6 +351,7 @@ export default class Game {
     if (action.lastUndoCascade) {
       this.executeUndo()
     }
+    this.gameActionState = undefined
     this.refreshCallback(this)
   }
 
@@ -368,6 +376,26 @@ export default class Game {
       const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
       const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
       return [count, initialCount]
+  }
+
+  checkFollowup(action: GameAction) {
+    if (action.index !== this.lastActionIndex) { return }
+    if (action.data.data.origin && action.data.data.origin.length > 0) {
+      const id = action.data.data.origin[0].id
+      const counter = this.findCounterById(id) as Counter
+      if (action.data.data.action === "move" && counter.unit.breakdownRoll) {
+        this.gameActionState = {
+          player: this.currentPlayer, currentAction: actionType.Breakdown,
+          selection: [{
+            x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, counter,
+          }]
+        }
+        counter.unit.select()
+      } else {
+        this.gameActionState = undefined
+        this.scenario.map.clearAllSelections()
+      }
+    }
   }
 
   checkPhase(backendSync: boolean) {
@@ -647,14 +675,6 @@ export default class Game {
     for (const a of this.gameActionState.move.addActions) {
       if (a.type === addActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
     }
-    const breakdown = this.gameActionState.selection[0].counter.unit
-    if (breakdown.breakdownRoll) {
-      dice.push({ result: roll2d10(), type: "2d10" })
-      this.gameActionState.move.addActions.push({
-        type: addActionType.Breakdown, x: this.lastPath?.x as number, y: this.lastPath?.y as number,
-        id: breakdown.id, cost: 0
-      })
-    }
     const move = new GameAction({
       user: this.currentUser,
       player: this.gameActionState.player,
@@ -674,9 +694,29 @@ export default class Game {
         dice_result: dice,
       }
     }, this, this.actions.length)
-    this.executeAction(move, false)
     this.gameActionState = undefined
     this.scenario.map.clearGhosts()
+    this.scenario.map.clearAllSelections()
+    this.executeAction(move, false)
+  }
+
+  executeBreakdown() {
+    if (!this.gameActionState || this.gameActionState.currentAction !== actionType.Breakdown) { return }
+    const bd = new GameAction({
+      user: this.currentUser,
+      player: this.gameActionState?.player,
+      data: {
+        action: "breakdown",
+        origin: this.gameActionState.selection.map(s => {
+          return {
+            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
+          }
+        }),
+        dice_result: [{ result: roll2d10(), type: "2d10" }]
+      },
+    }, this, this.actions.length)
+    this.executeAction(bd, false)
+    this.gameActionState = undefined
     this.scenario.map.clearAllSelections()
   }
 

@@ -317,7 +317,7 @@ export default function MapDisplay({
     map?.game?.currentPlayer, map?.game?.lastActionIndex, map?.game?.lastAction?.undone,
     map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore, forceUpdate,
-    map?.game?.closeReinforcementPanel,
+    map?.game?.closeReinforcementPanel, map?.game?.gameActionState?.currentAction,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games
   ])
 

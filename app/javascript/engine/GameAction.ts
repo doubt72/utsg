@@ -6,6 +6,7 @@ import PhaseAction from "./actions/PhaseAction";
 import DeployAction from "./actions/DeployAction";
 import InfoAction from "./actions/InfoAction";
 import MoveAction from "./actions/MoveAction";
+import BreakdownAction from "./actions/BreakdownAction";
 
 export type GameActionDiceResult = {
   result: number, type: string,
@@ -23,9 +24,9 @@ export type GameActionPath = {
   x: number, y: number, facing?: Direction, turret?: Direction,
 }
 
-export type AddActionType = "smoke" | "drop" | "load" | "vp" | "break"
+export type AddActionType = "smoke" | "drop" | "load" | "vp"
 export const addActionType: { [index: string]: AddActionType } = {
-  Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Breakdown: "break"
+  Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp"
 }
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
@@ -98,6 +99,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "move") {
       return new MoveAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "breakdown") {
+      return new BreakdownAction(this.data, this.game, this.index);
     }
 
     // check initiative

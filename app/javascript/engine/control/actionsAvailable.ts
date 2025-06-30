@@ -32,7 +32,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
-    if (game.lastAction?.undoPossible && !game.actionInProgress && !selection) {
+    if (game.lastAction?.undoPossible && !game.actionInProgress &&
+        (!selection || game.gameActionState?.currentAction === actionType.Breakdown)) {
       actions.push({ type: "undo" })
     }
     if ((activePlayer === game.playerOneName && game.currentPlayer === 1) ||
@@ -40,7 +41,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
         const actionSelect = currSelection(game, true)
         const action = game.gameActionState.move
-        if (actionSelect) {
+        if (actionSelect && action) {
           if (action.loadingMove) {
             if (game.needPickUpDisambiguate) {
               actions.unshift({ type: "none", message: "select unit to pick up unit" })
@@ -78,6 +79,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         } else {
           actions.unshift({ type: "none", message: "error: unexpected missing state" })
         }
+      } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
+        actions.push({type: "breakdown"})
       } else if (game.opportunityFire) {
         actions.unshift({ type: "none", message: "opportunity fire" })
         if (canFire(selection)) { actions.push({ type: "opportunity_fire" }) }
@@ -139,8 +142,7 @@ function canMove(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
   if (unit.type === unitType.SupportWeapon || unit.type === unitType.Gun) { return false }
   if (unit.currentMovement === 0) { return false }
-  // Testing for now
-  // if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
+  if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
   return true
 }
 

@@ -16,6 +16,9 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
   if (game?.gameActionState?.currentAction === actionType.Move) {
     return openHexMove(map, x, y)
   }
+  if (game?.gameActionState?.currentAction === actionType.Breakdown) {
+    return hexOpenType.Closed
+  }
   return hexOpenType.Open
 }
 

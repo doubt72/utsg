@@ -62,11 +62,6 @@ export default class MoveAction extends BaseAction {
         const roll = this.diceResults[diceIndex++]
         actions.push(`smoke level ${smokeRoll(roll.result)} placed at ${label} (from ${
           roll.type} roll result of ${roll.result})`)
-      } else if (a.type === addActionType.Breakdown) {
-        const unit = this.game.findUnitById(a.id ?? "") as Unit
-        const roll = this.diceResults[diceIndex++]
-        actions.push(`breakdown check for ${unit.name} (${roll.type} roll result of ${roll.result}: ${
-          roll.result > (unit.breakdownRoll ?? 0) ? "passed" : "failed" })`)
       } else if (a.type !== addActionType.VP) {
         actions.push("unexpected action")
       }
@@ -116,11 +111,6 @@ export default class MoveAction extends BaseAction {
         const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
         const child = map.unitAtId(end, a.id ?? "") as Counter
         if (child.unit.rotates && parent.unit.rotates) { child.unit.facing = normalDir(parent.unit.facing + 3) }
-      } else if (a.type === addActionType.Breakdown) {
-        const unit = this.game.scenario.map.unitAtId(end, a.id ?? "") as Counter
-        if (this.diceResults[diceIndex++].result <= (unit.unit.breakdownRoll ?? 0)) {
-          unit.unit.immobilized = true
-        }
       } else if (a.type === addActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
@@ -155,9 +145,6 @@ export default class MoveAction extends BaseAction {
         }
       } else if (a.type === addActionType.Load) {
         map.dropUnit(end, mid, a.id as string, a.facing)
-      } else if (a.type === addActionType.Breakdown) {
-        // Shouldn't happen
-        throw new IllegalActionError("internal error undoing breakdown")
       } else if (a.type === addActionType.Smoke) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing smoke")

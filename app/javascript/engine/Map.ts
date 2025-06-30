@@ -417,10 +417,10 @@ export default class Map {
     return
   }
 
-  findUnitById(id: string): Unit | undefined {
+  findCounterById(id: string): Counter | undefined {
     const counters = this.allCounters
     for (const c of counters) {
-      if (c.hasUnit && c.unit.id === id) { return c.unit }
+      if (c.hasUnit && c.unit.id === id) { return c }
     }
     return
   }

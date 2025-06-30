@@ -1756,13 +1756,7 @@ describe("action integration test", () => {
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
-
-    const original = Math.random
-    vi.spyOn(Math, "random").mockReturnValue(0.01)
-
     game.finishMove()
-
-    Math.random = original
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -1773,6 +1767,16 @@ describe("action integration test", () => {
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(5)
+    expect(all[1].unit.immobilized).toBe(false)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+
+    expect(game.gameActionState?.currentAction).toBe(actionType.Breakdown)
+    game.executeBreakdown()
+
+    Math.random = original
+
     expect(all[1].unit.immobilized).toBe(true)
 
     try {

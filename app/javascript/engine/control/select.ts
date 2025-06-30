@@ -1,7 +1,7 @@
 import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
 import { normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
-import Game, { gamePhaseType } from "../Game"
+import Game, { actionType, gamePhaseType } from "../Game"
 import { addActionType } from "../GameAction"
 import Map from "../Map"
 import Unit from "../Unit"
@@ -122,6 +122,7 @@ function selectable(
   if (game.phase === gamePhaseType.Deployment) { return false }
   if (game.phase === gamePhaseType.Prep) { return false } // Not supported yet
   if (game.phase === gamePhaseType.Main) {
+    if (game.gameActionState?.currentAction === actionType.Breakdown) { return false }
     if (target.playerNation !== game.currentPlayerNation) {
       // TODO: or gun/support weapon
       return false

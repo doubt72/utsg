@@ -26,6 +26,7 @@ import MoveLoadToggleButton from "./MoveLoadToggleButton";
 import MoveDoneMultiselectButton from "./MoveDoneMultiselectButton";
 import UnselectButton from "./UnselectButton";
 import HelpButton from "./HelpButton";
+import BreakdownButton from "./BreakdownButton";
 
 interface GameControlsProps {
   game: Game;
@@ -99,6 +100,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <MoveLoadToggleButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_smoke_toggle") {
         return <MoveSmokeToggleButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "breakdown") {
+        return <BreakdownButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rush") {
         return <RushButton game={game} key={i} />
       } else if (a.type === "assault_move") {
