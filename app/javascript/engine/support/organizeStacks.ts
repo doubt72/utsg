@@ -116,8 +116,8 @@ function pairCrewedWeapons(list: (Unit | Feature)[]): (Unit | Feature)[] {
     const unit = uf as Unit
     const next = list[index + 1] as Unit
     if (next && !next.isFeature &&
-        ((unit.canCarrySupport && next.uncrewedSW) || (unit.canHandle && next.crewed)) &&
-        unit.children.length === 0) {
+        ((unit.canCarrySupport && next.uncrewedSW && !(unit.type === "ldr" && next.baseMovement < 0)) ||
+        (unit.canHandle && next.crewed)) && unit.children.length === 0) {
       unit.children.push(next as Unit)
       next.parent = unit as Unit
       index++

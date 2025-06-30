@@ -35,6 +35,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
         const child = u.children[0]
         if (child.crewed) { move = child.baseMovement }
         if (child.uncrewedSW) { move += child.baseMovement }
+        if (child.uncrewedSW && u.type === "ldr") { move -= 1 }
       }
       if (u.canCarrySupport && u.type !== unitType.Leader && move < minInfMove) { minInfMove = move }
       if (u.type === unitType.Leader && move < minLdrMove) { minLdrMove = move }
@@ -79,11 +80,11 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   }
 
   const countersAt = map.countersAt(to)
-  const moveSize = game.gameActionState.selection.reduce(
-    (sum, u) => sum + u.counter.unit.size + u.counter.children.reduce((sum, u) => u.unit.size, 0), 0
+  const moveSize = game.gameActionState.selection.filter(u => !u.counter.unit.parent).reduce(
+    (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
   )
-  const toSize = countersAt.reduce(
-    (sum, u) => u.hasFeature ? sum : sum + u.unit.size + u.children.reduce((sum, u) => u.unit.size, 0), 0
+  const toSize = countersAt.filter(u => !u.hasFeature && !u.unit.parent).reduce(
+    (sum, u) => sum + u.unit.size + u.children.reduce((sum, u) => u.unit.size, 0), 0
   )
   if (moveSize + toSize > stackLimit) { return false }
   for (const c of countersAt) {
@@ -156,8 +157,7 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   const hexFrom = map.hexAt(from) as Hex;
   if (from.x === to.x && from.y === to.y) {  // When rotating in place
     if (hexFrom.road) {
-      if (target.isWheeled && hexFrom.roadType !== roadType.Path) { return 0.5 }
-      if (target.isTracked && hexFrom.roadType !== roadType.Path) { return 1 }
+      if ((target.isWheeled || target.isTracked) && hexFrom.roadType !== roadType.Path) { return 1 }
     }
     // all of these casts should have already been checked before we get here
     return hexFrom.terrain.move as number

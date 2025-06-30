@@ -171,6 +171,80 @@ describe("action integration test", () => {
     expect(all[0].unit.status).toBe(unitStatus.Activated)
   })
 
+  test("movement along path", () => {
+    const game = createGame([
+      [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", r: { d: [1, 4], t: "p" } },
+        { t: "o", r: { d: [1, 4], t: "p" } },
+        { t: "o", r: { d: [1, 4], t: "p" } },
+        { t: "f", r: { d: [1, 4], t: "p" } },
+        { t: "o", r: { d: [1, 4], t: "p" } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
+      [
+        { t: "o" },
+        { t: "o", s: { d: [4, 6], t: "t" } },
+        { t: "o", s: { d: [1, 5], t: "t" } },
+        { t: "o" }, { t: "o" }
+      ],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    expect(state.player).toBe(2)
+    expect(state.currentAction).toBe(actionType.Move)
+    expect(state.selection[0].id).toBe("test1")
+
+    const move = state.move as MoveActionState
+
+    expect(move.path[0].x).toBe(4)
+    expect(move.path[0].y).toBe(2)
+    expect(move.doneSelect).toBe(true)
+    expect(move.placingSmoke).toBe(false)
+    expect(move.droppingMove).toBe(false)
+    expect(move.loadingMove).toBe(false)
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    expect(showLaySmoke(game)).toBe(true)
+    expect(showDropMove(game)).toBe(false)
+    expect(showLoadMove(game)).toBe(false)
+
+    game.move(3, 2)
+    expect(move.path.length).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(2, 2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
+
+    game.move(1, 2)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+    const all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
+  })
+
   test("movement along road over river", () => {
     const game = createGame([
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
@@ -893,6 +967,119 @@ describe("action integration test", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe(undefined)
     expect(all[1].unit.name).toBe("MG 08/15")
+  })
+
+  test("leader carrying sw", () => {
+    const game = createGame()
+    const map = game.scenario.map
+
+    const unit = new Unit(gldr)
+    unit.id = "test1"
+    unit.baseMovement = 4
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(gmg)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    organizeStacks(map)
+    expect(unit.children.length).toBe(0)
+
+    map.units[2][4].reverse()
+    unit2.baseMovement = 0
+    organizeStacks(map)
+    expect(unit.children.length).toBe(1)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(state.selection.length).toBe(2)
+
+    expect(move.doneSelect).toBe(true)
+
+    expect(mapSelectMovement(game, false)).toBe(3)
+    expect(mapSelectMovement(game, true)).toBe(4)
+
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(move.path.length).toBe(2)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
+
+    game.move(2, 2)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
+
+    game.move(1, 2)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
+    expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
+
+    game.finishMove()
+
+    let all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.children.length).toBe(1)
+    expect(all[0].unit.name).toBe("Leader")
+    expect(all[1].hex?.x).toBe(1)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("MG 08/15")
+
+    game.executeUndo()
+
+    all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(4)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.children.length).toBe(1)
+    expect(all[0].unit.name).toBe("Leader")
+    expect(all[1].hex?.x).toBe(4)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("MG 08/15")
+  })
+
+  test("leader may not pick up encumbered sw", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(gldr)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(gmg)
+    unit2.id = "test2"
+    try {
+      map.addCounter(new Coordinate(3, 2), unit2)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof WarningActionError).toBe(true)
+    }
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    expect(showLoadMove(game)).toBe(false)
+
+    game.move(3, 2)
+    expect(showLoadMove(game)).toBe(false)
+    move.loadingMove = true
+    select(map, {
+      counter: map.countersAt(new Coordinate(3, 2))[0],
+      target: { type: "map", xy: new Coordinate(3, 2) }
+    }, () => {})
+    expect(move.addActions.length).toBe(0)
+    move.loadingMove = false
   })
 
   test("drop sw", () => {
@@ -1795,7 +1982,7 @@ describe("action integration test", () => {
     const unit = new Unit(gtruck)
     unit.id = "test1"
     unit.facing = 1
-    unit.baseMovement = 2
+    unit.baseMovement = 3
     unit.select()
     map.addCounter(loc, unit)
 
@@ -1815,8 +2002,8 @@ describe("action integration test", () => {
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
-    expect(mapSelectMovement(game, false)).toBe(2)
-    expect(mapSelectMovement(game, true)).toBe(2)
+    expect(mapSelectMovement(game, false)).toBe(3)
+    expect(mapSelectMovement(game, true)).toBe(3)
     expect(showLaySmoke(game)).toBe(false)
     expect(showDropMove(game)).toBe(true)
     expect(showLoadMove(game)).toBe(false)
@@ -1835,7 +2022,7 @@ describe("action integration test", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
     game.moveRotate(3, 2, 2)
-    expect(movementPastCost(map, unit)).toBe(1)
+    expect(movementPastCost(map, unit)).toBe(1.5)
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
     expect(openHexShowRotate(map)).toBe(true)
@@ -1844,7 +2031,7 @@ describe("action integration test", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
     game.move(2, 1)
-    expect(movementPastCost(map, unit)).toBe(2)
+    expect(movementPastCost(map, unit)).toBe(2.5)
     expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
@@ -1903,7 +2090,7 @@ describe("action integration test", () => {
     const unit = new Unit(gtruck)
     unit.id = "test1"
     unit.facing = 1
-    unit.baseMovement = 3
+    unit.baseMovement = 4
     unit.select()
     map.addCounter(loc, unit)
 
@@ -1923,8 +2110,8 @@ describe("action integration test", () => {
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
-    expect(mapSelectMovement(game, false)).toBe(3)
-    expect(mapSelectMovement(game, true)).toBe(3)
+    expect(mapSelectMovement(game, false)).toBe(4)
+    expect(mapSelectMovement(game, true)).toBe(4)
 
     expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
@@ -2236,7 +2423,7 @@ describe("action integration test", () => {
     const unit = new Unit(gtruck)
     unit.id = "test1"
     unit.facing = 1
-    unit.baseMovement = 3
+    unit.baseMovement = 4
     unit.select()
 
     const unit2 = new Unit(ggun)
@@ -2262,8 +2449,8 @@ describe("action integration test", () => {
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
-    expect(mapSelectMovement(game, false)).toBe(3)
-    expect(mapSelectMovement(game, true)).toBe(3)
+    expect(mapSelectMovement(game, false)).toBe(4)
+    expect(mapSelectMovement(game, true)).toBe(4)
 
     move.loadingMove = true
     select(map, {
@@ -2352,7 +2539,7 @@ describe("action integration test", () => {
     const unit = new Unit(gtruck)
     unit.id = "test1"
     unit.facing = 1
-    unit.baseMovement = 3
+    unit.baseMovement = 4
     unit.select()
 
     const unit2 = new Unit(ggun)
@@ -2373,8 +2560,8 @@ describe("action integration test", () => {
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
-    expect(mapSelectMovement(game, false)).toBe(3)
-    expect(mapSelectMovement(game, true)).toBe(3)
+    expect(mapSelectMovement(game, false)).toBe(4)
+    expect(mapSelectMovement(game, true)).toBe(4)
 
     move.loadingMove = true
     select(map, {

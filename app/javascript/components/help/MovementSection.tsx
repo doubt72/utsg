@@ -114,8 +114,12 @@ export default function MovementSection() {
       <p>
         Infantry units (with or without infantry weapons) may be loaded on or unloaded from a
         vehicle that can transport them for one movement point (of the vehicle, the infantry&apos;s
-        movement points are irrelevant for this. Infantry units can not have already moved before
-        being picked up).
+        movement points are irrelevant for this).
+      </p>
+      <p>
+        No unit may be picked up if it has already been activated or is exhausted, nor if it has
+        been pinned or broken.  Except: broken (jammed) infantry weapons or crewed weapons may be picked
+        up or manned (in fact would have to be to be repaired).
       </p>
       <p>
         Units may only be loaded (or manned or towed) or dropped (or unmanned or untowed) in the one
