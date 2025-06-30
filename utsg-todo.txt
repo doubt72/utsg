@@ -1,8 +1,16 @@
 High Priority Features/Bug Fixes:
-  - Move Documentation
+  - Check that paths don't have a movement bonus
+  - Fix but where units can be picked up after they already moved.
+  - Fix hindrance on leaders with support weapons
+  - Fix leaders cannot carry support weapons with hindrance
+  - Wheeled vehicles DON'T get 0.5 for turning on road
+  - Add activated for guns, transported units
+
+  - Terrain table / Move initiative into main phase
   - Initiative Check
-  - Show reaction but currently just allow passing
-  - Passing
+  - Show reaction
+    - Just passing currently
+  - Main Passing
   - Rush Move
   - Assault Move
     - Test/Implement: engineering remove wire/obstacles
