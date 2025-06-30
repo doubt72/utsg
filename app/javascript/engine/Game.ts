@@ -107,6 +107,8 @@ export default class Game {
   openOverlay?: { x: number, y: number }
   closeOverlay: boolean = false;
 
+  messageQueue: string[]
+
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
@@ -128,6 +130,7 @@ export default class Game {
     this.phase = gamePhaseType.Deployment
     this.playerOnePoints = 0
     this.playerTwoPoints = 0
+    this.messageQueue = []
     this.loadAllActions()
   }
 
@@ -154,6 +157,14 @@ export default class Game {
         }
       })
     })
+  }
+
+  addMessage(message: string) {
+    this.messageQueue.push(message)
+  }
+
+  getMessage() {
+    return this.messageQueue.pop()
   }
 
   get currentUser(): string {

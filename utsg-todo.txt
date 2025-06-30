@@ -1,5 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Switch callback messages to a generic message queue
   - Move Documentation
   - Initiative Check
   - Show reaction but currently just allow passing

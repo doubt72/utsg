@@ -8,11 +8,11 @@ import Unit from "../Unit"
 import { canBeLoaded, canLoadUnit } from "./movement"
 
 export default function select(
-  map: Map, selection: CounterSelectionTarget, callback: (error?: string) => void
+  map: Map, selection: CounterSelectionTarget, callback: () => void
 ) {
   const game = map.game
   if (selection.target.type === "reinforcement") { return } // shouldn't happen
-  if (!selectable(map, selection, callback)) { return }
+  if (!selectable(map, selection)) { return }
   const x = selection.target.xy.x
   const y = selection.target.xy.y
   const id = selection.counter.target.id
@@ -94,26 +94,24 @@ export default function select(
   callback()
 }
 
-function canBeMoveMultiselected(map: Map, counter: Counter, callback: (error?: string) => void): boolean {
+function canBeMoveMultiselected(map: Map, counter: Counter): boolean {
   if (!counter.unit.canCarrySupport) {
-    callback("only infantry units and leaders can move together")
+    map.game?.addMessage("only infantry units and leaders can move together")
     return false
   }
   const next = counter.children[0]
   if (next && next?.unit.crewed) {
-    callback("unit manning a crewed weapon cannot move with other infantry")
+    map.game?.addMessage("unit manning a crewed weapon cannot move with other infantry")
     return false
   }
   if (counter.parent) {
-    callback("unit being transported cannot move with other infantry")
+    map.game?.addMessage("unit being transported cannot move with other infantry")
     return false
   }
   return true
 }
 
-function selectable(
-  map: Map, selection: CounterSelectionTarget, callback: (error?: string) => void
-): boolean {
+function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   const game = map.game
   if (!game) { return false }
   const target = selection.counter.unit as Unit
@@ -132,37 +130,37 @@ function selectable(
         const child = target.children[0]
         if (target.selected) {
           if (child && game.gameActionState.selection.length === 2) {
-            callback("must select unit being carried")
+            map.game?.addMessage("must select unit being carried")
             return false
           } else {
             return true
           }
         } else {
-          callback("must select unit that started move")
+          map.game?.addMessage("must select unit that started move")
           return false
         }
       }
       if (game.gameActionState.move.loadingMove) {
         if (game.needPickUpDisambiguate) {
           if (!target.selected) {
-            callback("must select unit that started move or hasn't already been dropped")
+            map.game?.addMessage("must select unit that started move or hasn't already been dropped")
             return false
           }
           if (canLoadUnit(game, target)) {
             return true
           } else {
-            callback("can't carry/load any available units")
+            map.game?.addMessage("can't carry/load any available units")
             return false
           }
         } else {
           if (target.selected || target.loaderSelected) {
-            callback("unit is already selected")
+            map.game?.addMessage("unit is already selected")
             return false
           }
           if (canBeLoaded(game, target)) {
             return true
           } else {
-            callback("can't be carried/loaded onto selected unit")
+            map.game?.addMessage("can't be carried/loaded onto selected unit")
             return false
           }
         }
@@ -171,13 +169,13 @@ function selectable(
       if (selection.target.type !== "map") { return false }
       for (const s of game.gameActionState.move.initialSelection) {
         if (s.x !== selection.target.xy.x || s.y !== selection.target.xy.y) {
-          callback("all units moving together must start in same hex")
+          map.game?.addMessage("all units moving together must start in same hex")
           return false
         }
         if (selection.counter.target.id === s.id) { return false }
       }
       const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
-      if (!canBeMoveMultiselected(map, counter as Counter, callback)) { return false }
+      if (!canBeMoveMultiselected(map, counter as Counter)) { return false }
     }
   }
   if (game.phase === gamePhaseType.Cleanup) { return false } // Not supported yet

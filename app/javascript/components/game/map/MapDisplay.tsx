@@ -111,10 +111,14 @@ export default function MapDisplay({
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
 
   useEffect(() => {
-    if (!map) { return }
+    if (!map || !map.game) { return }
     const timer = notificationDetails.timer
     if (timer < 1) {
-      setNotification(undefined)
+      if (map.game.messageQueue.length > 0) {
+        setNotificationDetails({ error: map.game.getMessage() as string, timer: 200 })
+      } else {
+        setNotification(undefined)
+      }
       return
     }
     const alpha =  timer < 30 ? timer / 30 : 1
@@ -131,6 +135,13 @@ export default function MapDisplay({
     )
     setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 2 } }), 20)
   }, [notificationDetails])
+
+  useEffect(() => {
+    if (!map || !map.game || map.game.messageQueue.length < 1) { return }
+    if (notificationDetails.timer < 1) {
+      setNotificationDetails({ error: map.game.getMessage() as string, timer: 200 })
+    }
+  }, [map?.game?.messageQueue.length])
 
   useEffect(() => {
     const handleResize = () => {
@@ -437,12 +448,8 @@ export default function MapDisplay({
     }
   }
 
-  const handleSelect = (error?: string) => {
-    if (error) {
-      setNotificationDetails({ error, timer: 200 })
-    } else {
-      counterCallback()
-    }
+  const handleSelect = () => {
+    counterCallback()
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
