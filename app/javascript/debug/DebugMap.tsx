@@ -104,7 +104,7 @@ export default function DebugMap() {
     game.phase = gamePhaseType.Main
     setMap(game.scenario.map)
     game.scenario.map.debug = true
-    setInitiativePlayer(game.initiativePlayer ? "axis" : "allies")
+    setInitiativePlayer(game.currentPlayer === 1 ? "axis" : "allies")
   }, [units])
 
   useEffect(() => {
@@ -310,8 +310,8 @@ export default function DebugMap() {
         </div>
         <div className="custom-button normal-button" onClick={() => {
           if (map && map.game) {
-            map.game.initiativePlayer = togglePlayer(map.game.initiativePlayer)
-            setInitiativePlayer(map.game.initiativePlayer ? "axis" : "allies")
+            map.game.currentPlayer = togglePlayer(map.game.currentPlayer)
+            setInitiativePlayer(map.game.currentPlayer === 1 ? "axis" : "allies")
           }
         }}>
           i: {initiativePlayer} {initiative}

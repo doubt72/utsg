@@ -1,18 +1,22 @@
 import { MapData } from "../Map"
-import { baseTerrainType, Coordinate, hexOpenType, unitStatus, weatherType, windType } from "../../utilities/commonTypes"
+import {
+  baseTerrainType, Coordinate, hexOpenType, unitStatus, weatherType, windType
+} from "../../utilities/commonTypes"
 import { ScenarioData } from "../Scenario"
 import Unit, { UnitData } from "../Unit"
 import Game, { actionType, GameActionState, gamePhaseType, MoveActionState } from "../Game"
 import { describe, expect, test, vi } from "vitest"
-import { openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost } from "./movement"
+import {
+  openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost
+} from "./movement"
 import select from "./select"
 import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
-import { openHexRotateOpen as openHexShowRotate, openHexRotatePossible as openHexRotateOpen } from "./openHex"
 import { HexData } from "../Hex"
 import IllegalActionError from "../actions/IllegalActionError"
 import Feature, { FeatureData } from "../Feature"
+import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 
 describe("action integration test", () => {
   const defaultHexes: HexData[][] = [
@@ -1206,8 +1210,8 @@ describe("action integration test", () => {
     expect(showDropMove(game)).toBe(true)
     expect(showLoadMove(game)).toBe(false)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
@@ -1215,8 +1219,8 @@ describe("action integration test", () => {
     game.move(2, 2)
 
     expect(move.path.length).toBe(2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -1224,8 +1228,8 @@ describe("action integration test", () => {
     game.moveRotate(2, 2, 2)
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -1280,8 +1284,8 @@ describe("action integration test", () => {
     expect(move.doneSelect).toBe(true)
     expect(move.path[0].facing).toBe(2)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
@@ -1289,8 +1293,8 @@ describe("action integration test", () => {
     game.move(3, 3)
 
     expect(move.path.length).toBe(2)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -1346,8 +1350,8 @@ describe("action integration test", () => {
     expect(move.doneSelect).toBe(true)
     expect(move.path[0].facing).toBe(2)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
@@ -1355,8 +1359,8 @@ describe("action integration test", () => {
     game.move(3, 3)
 
     expect(move.path.length).toBe(2)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
@@ -1828,15 +1832,15 @@ describe("action integration test", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.Closed)
 
     game.move(3, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
@@ -1845,16 +1849,16 @@ describe("action integration test", () => {
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
     expect(move.path[2].turret).toBe(2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.move(2, 1)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 2))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
@@ -1870,15 +1874,15 @@ describe("action integration test", () => {
     expect(move.path.length).toBe(5)
     expect(move.path[4].facing).toBe(1)
     expect(move.path[4].turret).toBe(5)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
 
     game.move(1, 1)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
@@ -1922,8 +1926,8 @@ describe("action integration test", () => {
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.Closed)
@@ -1937,8 +1941,8 @@ describe("action integration test", () => {
     game.moveRotate(2, 1, 1)
 
     game.move(1, 1)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
@@ -1956,11 +1960,14 @@ describe("action integration test", () => {
     expect(all[1].unit.turretFacing).toBe(5)
     expect(all[1].unit.immobilized).toBe(false)
 
+    expect(game.breakdownCheck).toBe(true)
+
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
+    game.startBreakdown()
     expect(game.gameActionState?.currentAction).toBe(actionType.Breakdown)
-    game.executeBreakdown()
+    game.finishBreakdown()
 
     Math.random = original
 
@@ -2008,16 +2015,16 @@ describe("action integration test", () => {
     expect(showDropMove(game)).toBe(true)
     expect(showLoadMove(game)).toBe(false)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.move(3, 2)
     expect(movementPastCost(map, unit)).toBe(0.5)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
@@ -2025,15 +2032,15 @@ describe("action integration test", () => {
     expect(movementPastCost(map, unit)).toBe(1.5)
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
     game.move(2, 1)
     expect(movementPastCost(map, unit)).toBe(2.5)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
@@ -2113,15 +2120,15 @@ describe("action integration test", () => {
     expect(mapSelectMovement(game, false)).toBe(4)
     expect(mapSelectMovement(game, true)).toBe(4)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.move(3, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
@@ -2137,14 +2144,14 @@ describe("action integration test", () => {
     expect(map.ghosts[2][3].length).toBe(1)
 
     game.moveRotate(3, 2, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
     game.move(2, 1)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
@@ -2224,21 +2231,21 @@ describe("action integration test", () => {
     expect(mapSelectMovement(game, false)).toBe(3)
     expect(mapSelectMovement(game, true)).toBe(3)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.move(3, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
     game.moveRotate(3, 2, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
@@ -2254,8 +2261,8 @@ describe("action integration test", () => {
     expect(map.ghosts[2][3].length).toBe(1)
 
     game.move(2, 1)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
@@ -2335,21 +2342,21 @@ describe("action integration test", () => {
     expect(mapSelectMovement(game, false)).toBe(3)
     expect(mapSelectMovement(game, true)).toBe(3)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.move(3, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
     game.moveRotate(3, 2, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
@@ -2365,8 +2372,8 @@ describe("action integration test", () => {
     expect(map.ghosts[2][3].length).toBe(1)
 
     game.move(2, 1)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
@@ -2462,27 +2469,27 @@ describe("action integration test", () => {
     expect(move.addActions[0].facing).toBe(1)
     expect(move.addActions[0].cost).toBe(1)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.move(3, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
     game.moveRotate(3, 2, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
     game.move(2, 1)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
@@ -2573,27 +2580,27 @@ describe("action integration test", () => {
     expect(move.addActions[0].facing).toBe(undefined)
     expect(move.addActions[0].cost).toBe(1)
 
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(0.5)
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.move(3, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
     game.moveRotate(3, 2, 2)
-    expect(openHexShowRotate(map)).toBe(true)
     expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
     game.move(2, 1)
-    expect(openHexShowRotate(map)).toBe(true)
-    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 

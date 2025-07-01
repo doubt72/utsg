@@ -1,5 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Initiative Check
   - Show reaction
     - Just passing currently
   - Main Passing

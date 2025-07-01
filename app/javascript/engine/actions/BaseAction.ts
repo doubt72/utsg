@@ -17,6 +17,8 @@ export default class BaseAction {
   undone: boolean;
 
   constructor(data: GameActionData, game: Game, index: number) {
+    this.validate(data.data.old_initiative)
+
     this.id = data.id
     this.sequence = data.sequence
     this.index = index

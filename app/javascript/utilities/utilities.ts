@@ -125,6 +125,10 @@ export function smokeRoll(roll: number): number {
   return 1
 }
 
+export function initiativeThreshold(value: number): number {
+  return [0, 11, 14, 16, 17, 18, 19, 20][value] ?? 0
+}
+
 export const stackLimit = 12
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"

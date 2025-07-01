@@ -36,9 +36,9 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
 }
 
-export type ActionType = "d" | "m" | "bd"
+export type ActionType = "d" | "m" | "bd" | "i"
 export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Move: "m", Breakdown: "bd",
+  Deploy: "d", Move: "m", Breakdown: "bd", Initiative: "i",
 }
 
 export type ActionSelection = {
@@ -94,7 +94,6 @@ export default class Game {
   playerTwoPoints: number = 0;
   actions: BaseAction[] = [];
   lastActionIndex: number = -1;
-  initiativePlayer: Player = 1;
   initiative: number = 0;
   alliedSniper?: Feature;
   axisSniper?: Feature;
@@ -249,13 +248,32 @@ export default class Game {
     return undefined
   }
 
-  get opportunityFire(): boolean {
-    // TODO: check last action
+  get reactionFire(): boolean {
     return false
   }
 
-  get reactionFire(): boolean {
-    // TODO: check last action
+  get initiativeCheck(): boolean {
+    if (this.gameActionState) { return false }
+    let rc = false
+    for (const a of this.actions) {
+      if (a.type == "initiative") { rc = false }
+      if (["move", "rush", "assault move", "fire", "intensive fire", "rout", "rout all"].includes(a.type)) {
+        rc = true
+      }
+    }
+    return rc
+  }
+
+  get breakdownCheck(): boolean {
+    const action = this.lastAction
+    if (!action || this.gameActionState) { return false }
+    if (action.data.origin && action.data.origin.length > 0) {
+      const id = action.data.origin[0].id
+      const counter = this.findCounterById(id) as Counter
+      if (action.data.action === "move" && counter.unit.breakdownRoll) {
+        return true
+      }
+    }
     return false
   }
 
@@ -293,7 +311,6 @@ export default class Game {
         if (m.undone && !em.undone) {
           this.executeUndo()
         }
-        this.checkFollowup(action)
         return
       }
       if (m.sequence > this.currentSequence) { this.currentSequence = m.sequence }
@@ -329,7 +346,6 @@ export default class Game {
         })
       }
       if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
-      this.checkFollowup(action)
       this.refreshCallback(this)
     } catch(err) {
       if (err instanceof IllegalActionError) {
@@ -380,33 +396,13 @@ export default class Game {
   }
 
   get reinforcementsCount(): [number, number] {
-      const counters = this.currentPlayer === 1 ?
-        this.scenario.alliedReinforcements[this.turn] :
-        this.scenario.axisReinforcements[this.turn]
+    const counters = this.currentPlayer === 1 ?
+      this.scenario.alliedReinforcements[this.turn] :
+      this.scenario.axisReinforcements[this.turn]
 
-      const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
-      const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
-      return [count, initialCount]
-  }
-
-  checkFollowup(action: GameAction) {
-    if (action.index !== this.lastActionIndex) { return }
-    if (action.data.data.origin && action.data.data.origin.length > 0) {
-      const id = action.data.data.origin[0].id
-      const counter = this.findCounterById(id) as Counter
-      if (action.data.data.action === "move" && counter.unit.breakdownRoll) {
-        this.gameActionState = {
-          player: this.currentPlayer, currentAction: actionType.Breakdown,
-          selection: [{
-            x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, counter,
-          }]
-        }
-        counter.unit.select()
-      } else {
-        this.gameActionState = undefined
-        this.scenario.map.clearAllSelections()
-      }
-    }
+    const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
+    const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
+    return [count, initialCount]
   }
 
   checkPhase(backendSync: boolean) {
@@ -419,7 +415,7 @@ export default class Game {
     }
     const data: GameActionData = {
       player: this.currentPlayer, user: this.currentUser,
-      data: { action: "phase", phase_data: phaseData }
+      data: { action: "phase", phase_data: phaseData, old_initiative: this.initiative }
     }
     if (oldPhase == gamePhaseType.Deployment) {
       const [count, initialCount] = this.reinforcementsCount
@@ -427,7 +423,8 @@ export default class Game {
         if (initialCount === 0) {
           this.executeAction(new GameAction({
             player: this.currentPlayer, user: this.currentUser, data: {
-              action: "info", message: "no units to deploy, skipping phase"
+              action: "info", message: "no units to deploy, skipping phase",
+              old_initiative: this.initiative,
             }
           }, this, this.actions.length), backendSync)
         }
@@ -453,7 +450,8 @@ export default class Game {
       }
       this.executeAction(new GameAction({
         player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no broken units or jammed weapons, skipping phase"
+          action: "info", message: "no broken units or jammed weapons, skipping phase",
+          old_initiative: this.initiative,
         }
       }, this, this.actions.length), backendSync)
       // TODO: move this logic to something that can be reused for passing?
@@ -500,7 +498,7 @@ export default class Game {
         user: this.currentUser,
         player: this.gameActionState.player,
         data: {
-          action: "deploy",
+          action: "deploy", old_initiative: this.initiative,
           path: [{ x, y, facing: d }],
           deploy: [{ turn: this.turn, index: this.gameActionState.deploy.index, id }]
         }
@@ -690,7 +688,7 @@ export default class Game {
       user: this.currentUser,
       player: this.gameActionState.player,
       data: {
-        action: "move",
+        action: "move", old_initiative: this.initiative,
         path: this.gameActionState.move.path,
         origin: this.gameActionState.selection.map(s => {
           return {
@@ -711,13 +709,32 @@ export default class Game {
     this.executeAction(move, false)
   }
 
-  executeBreakdown() {
+  startBreakdown() {
+    const action = this.lastAction
+    if (!action || this.gameActionState?.currentAction === actionType.Breakdown) { return }
+    if (action.data.origin && action.data.origin.length > 0) {
+      const id = action.data.origin[0].id
+      const counter = this.findCounterById(id) as Counter
+      if (action.data.action === "move" && counter.unit.breakdownRoll) {
+        this.gameActionState = {
+          player: this.currentPlayer, currentAction: actionType.Breakdown,
+          selection: [{
+            x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, counter,
+          }]
+        }
+        counter.unit.select()
+        this.refreshCallback(this)
+      }
+    }
+  }
+
+  finishBreakdown() {
     if (!this.gameActionState || this.gameActionState.currentAction !== actionType.Breakdown) { return }
     const bd = new GameAction({
       user: this.currentUser,
       player: this.gameActionState?.player,
       data: {
-        action: "breakdown",
+        action: "breakdown", old_initiative: this.initiative,
         origin: this.gameActionState.selection.map(s => {
           return {
             x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
@@ -726,9 +743,39 @@ export default class Game {
         dice_result: [{ result: roll2d10(), type: "2d10" }]
       },
     }, this, this.actions.length)
-    this.executeAction(bd, false)
     this.gameActionState = undefined
     this.scenario.map.clearAllSelections()
+    this.executeAction(bd, false)
+  }
+
+  startInitiative() {
+    const action = this.lastAction
+    if (!action || this.gameActionState?.currentAction === actionType.Initiative) { return }
+    this.gameActionState = {
+      player: this.currentPlayer, currentAction: actionType.Initiative,
+      selection: []
+    }
+    this.refreshCallback(this)
+  }
+
+  finishInitiative() {
+    if (!this.gameActionState || this.gameActionState.currentAction !== actionType.Initiative) { return }
+    let result: GameActionDiceResult[] | undefined = undefined
+    if ((this.currentPlayer === 1 && this.initiative < 0) ||
+        (this.currentPlayer === 2 && this.initiative > 0)) {
+      result = [{ result: roll2d10(), type: "2d10" }]
+    }
+    const init = new GameAction({
+      user: this.currentUser,
+      player: this.gameActionState?.player,
+      data: {
+        action: "initiative", old_initiative: this.initiative,
+        dice_result: result,
+      },
+    }, this, this.actions.length)
+    this.gameActionState = undefined
+    this.scenario.map.clearAllSelections()
+    this.executeAction(init, false)
   }
 
   executePass() {}
@@ -744,6 +791,16 @@ export default class Game {
     this.scenario.map.clearGhosts()
     this.closeOverlay = true
     this.gameActionState = undefined
+  }
+
+  updateInitiative(amount: number) {
+    if (this.currentPlayer === 1) {
+      this.initiative -= amount
+    } else {
+      this.initiative += amount
+    }
+    if (this.initiative > 7) { this.initiative = 7 }
+    if (this.initiative < -7) { this.initiative = -7 }
   }
 }
 

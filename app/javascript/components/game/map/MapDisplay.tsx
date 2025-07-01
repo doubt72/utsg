@@ -326,7 +326,7 @@ export default function MapDisplay({
     map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
     map?.windSpeed, map?.windDirection, map?.windVariable, width, height, scale,
     map?.game?.currentPlayer, map?.game?.lastActionIndex, map?.game?.lastAction?.undone,
-    map?.game?.initiative, map?.game?.initiativePlayer, map?.game?.turn,
+    map?.game?.initiative, map?.game?.currentPlayer, map?.game?.turn,
     map?.game?.playerOneScore, map?.game?.playerTwoScore, forceUpdate,
     map?.game?.closeReinforcementPanel, map?.game?.gameActionState?.currentAction,
     map?.baseTerrain, map?.night // debugging only, don't change in actual games

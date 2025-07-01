@@ -5,6 +5,7 @@ import Map from "../../engine/Map";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import InitiativeDisplay from "../game/map/InitiativeDisplay";
 import { roundedRectangle } from "../../utilities/graphics";
+import { togglePlayer } from "../../utilities/utilities";
 
 export default function MainPhaseSection() {
   const [showInitiative, setShowInitiative] = useState<JSX.Element | undefined>()
@@ -66,8 +67,8 @@ export default function MainPhaseSection() {
           </div>
           <div className="custom-button normal-button" onClick={
             () => {
-              game.initiativePlayer = (3 - player) as Player
-              setPlayer(game.initiativePlayer)
+              game.currentPlayer = togglePlayer(game.currentPlayer)
+              setPlayer(game.currentPlayer)
             }}>
             <span>flip</span>
           </div>

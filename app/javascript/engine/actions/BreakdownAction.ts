@@ -23,7 +23,8 @@ export default class BreakdownAction extends BaseAction {
   get stringValue(): string {
     const unit = this.game.findUnitById(this.origin.id) as Unit
     const roll = this.diceResult
-    return `breakdown check for ${unit.name} (${roll.type} roll result of ${roll.result}: ${
+    return `breakdown check for ${this.game.nationNameForPlayer(this.player)} ${unit.name} (${
+      roll.type} roll result of ${roll.result}: ${
       roll.result > (unit.breakdownRoll ?? 0) ? "passed" : "failed" })`
   }
 

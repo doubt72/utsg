@@ -7,6 +7,7 @@ import DeployAction from "./actions/DeployAction";
 import InfoAction from "./actions/InfoAction";
 import MoveAction from "./actions/MoveAction";
 import BreakdownAction from "./actions/BreakdownAction";
+import InitiativeAction from "./actions/InitiativeAction";
 
 export type GameActionDiceResult = {
   result: number, type: string,
@@ -38,6 +39,7 @@ export type GameActionPhaseChange = {
 
 export type GameActionDetails = {
   action: string,
+  old_initiative: number;
   message?: string,
 
   deploy?: GameActionReinforcementUnit[],
@@ -96,6 +98,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "deploy") {
       return new DeployAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "initiative") {
+      return new InitiativeAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "move") {
       return new MoveAction(this.data, this.game, this.index);

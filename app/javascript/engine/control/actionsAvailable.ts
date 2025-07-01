@@ -4,6 +4,8 @@ import Unit from "../Unit"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
+  if (game.breakdownCheck) { game.startBreakdown() }
+  if (game.initiativeCheck) { game.startInitiative() }
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]
   }
@@ -81,11 +83,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         }
       } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
         actions.push({type: "breakdown"})
-      } else if (game.opportunityFire) {
-        actions.unshift({ type: "none", message: "opportunity fire" })
-        if (canFire(selection)) { actions.push({ type: "opportunity_fire" }) }
-        if (canIntensiveFire(selection)) { actions.push({ type: "opportunity_intensive_fire" }) }
-        actions.push({ type: "empty_pass" })
+      } else if (game.gameActionState?.currentAction === actionType.Initiative) {
+        actions.push({type: "initiative"})
       } else if (game.reactionFire) {
         actions.unshift({ type: "none", message: "reaction fire" })
         if (canFire(selection)) { actions.push({ type: "reaction_fire" }) }
@@ -116,7 +115,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
 
 export function currSelection(game: Game, move: boolean): Unit | undefined {
   if (!game) { return undefined}
-  if (game.gameActionState?.selection) {
+  if (game.gameActionState?.selection && game.gameActionState.selection.length > 0) {
     const unit = game.gameActionState.selection[0].counter.unit
     if (move && unit.canHandle && unit.children.length > 0 && unit.children[0].crewed) {
       return unit.children[0]

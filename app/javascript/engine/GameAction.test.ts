@@ -79,48 +79,50 @@ describe("action integration test", () => {
   });
 
   test("validation", () => {
-    const actionData = { user: "two", player: 1, data: { action: "deploy" } }
+    const actionData = { user: "two", player: 1, data: { action: "deploy", old_initiative: game.initiative } }
 
     expect(() => new GameAction(actionData, game, 0).actionClass).toThrowError('Bad data for action')
   })
 
   test("sequence", () => {
     let index = 0
-    let currentActionData: GameActionData = { user: "one", player: 1, data: { action: "create" } }
+    let currentActionData: GameActionData = {
+      user: "one", player: 1, data: { action: "create", old_initiative: game.initiative },
+    }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
 
     expect(game.playerOneName).toBe("one")
     expect(game.playerTwoName).toBe("")
     expect(game.state).toBe("needs_player")
-    currentActionData = { user: "one", player: 1, data: { action: "join" } }
+    currentActionData = { user: "one", player: 1, data: { action: "join", old_initiative: game.initiative } }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerOneName).toBe("one")
     expect(game.state).toBe("needs_player")
 
     expect(game.playerTwoName).toBe("")
-    currentActionData = { user: "two", player: 2, data: { action: "join" } }
+    currentActionData = { user: "two", player: 2, data: { action: "join", old_initiative: game.initiative } }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerTwoName).toBe("two")
     expect(game.state).toBe("ready")
 
-    currentActionData = { user: "two", player: 2, data: { action: "leave" } }
+    currentActionData = { user: "two", player: 2, data: { action: "leave", old_initiative: game.initiative } }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerTwoName).toBe("")
     expect(game.state).toBe("needs_player")
 
-    currentActionData = { user: "two", player: 2, data: { action: "join" } }
+    currentActionData = { user: "two", player: 2, data: { action: "join", old_initiative: game.initiative } }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.playerTwoName).toBe("two")
     expect(game.state).toBe("ready")
 
-    currentActionData = { user: "one", player: 1, data: { action: "start" } }
+    currentActionData = { user: "one", player: 1, data: { action: "start", old_initiative: game.initiative } }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.state).toBe("in_progress")
 
     currentActionData = {
       user: "two", player: 2,
       data: {
-        action: "phase",
+        action: "phase", old_initiative: game.initiative,
         phase_data: {
           old_turn: 0, new_turn: 0, old_phase: gamePhaseType.Deployment, new_phase: gamePhaseType.Deployment,
           new_player: 2,
@@ -135,7 +137,7 @@ describe("action integration test", () => {
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     currentActionData = {
       user: "two", player: 2, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
         deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
@@ -161,7 +163,7 @@ describe("action integration test", () => {
     // Loading an undone action doesn't execute or increment last action
     currentActionData = {
       undone: true, user: "two", player: 2, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
         deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
@@ -174,7 +176,7 @@ describe("action integration test", () => {
 
     currentActionData = {
       user: "two", player: 2, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 4, facing: 1 }],
         deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
@@ -192,7 +194,7 @@ describe("action integration test", () => {
 
     currentActionData = {
       user: "two", player: 2, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
         deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
@@ -206,7 +208,7 @@ describe("action integration test", () => {
     expect(game.lastActionIndex).toBe(index - 1)
     currentActionData = {
       user: "two", player: 2, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 1, facing: 1 }],
         deploy: [ { turn: 0, index: 1, id: `uf-${game.actions.length}` } ],
       }
@@ -243,7 +245,7 @@ describe("action integration test", () => {
 
     currentActionData = {
       user: "one", player: 1, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
         deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
       }
@@ -254,7 +256,7 @@ describe("action integration test", () => {
 
     currentActionData = {
       user: "one", player: 1, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 1, facing: 1 }],
         deploy: [ { turn: 0, index: 1, id: `uf-${game.actions.length}` } ],
       }
@@ -265,7 +267,7 @@ describe("action integration test", () => {
 
     currentActionData = {
       user: "one", player: 1, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 2, facing: 1 }],
         deploy: [ { turn: 0, index: 2, id: `uf-${game.actions.length}` } ],
       }
@@ -276,7 +278,7 @@ describe("action integration test", () => {
 
     currentActionData = {
       user: "one", player: 1, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 3, facing: 1 }],
         deploy: [ { turn: 0, index: 3, id: `uf-${game.actions.length}` } ],
       }
@@ -287,7 +289,7 @@ describe("action integration test", () => {
 
     currentActionData = {
       user: "one", player: 1, data: {
-        action: "deploy",
+        action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 4, facing: 1 }],
         deploy: [ { turn: 0, index: 4, id: `uf-${game.actions.length}` } ],
       }

@@ -119,6 +119,7 @@ export default class MoveAction extends BaseAction {
       }
     }
     sortStacks(map)
+    this.game.updateInitiative(2)
   }
 
   undo(): void {
@@ -163,5 +164,6 @@ export default class MoveAction extends BaseAction {
     }
     this.undone = true;
     sortStacks(map)
+    this.game.initiative = this.data.old_initiative
   }
 }

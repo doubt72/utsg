@@ -5,8 +5,6 @@ import LeaveButton from "./LeaveButton";
 import StartButton from "./StartButton";
 import UndoButton from "./UndoButton";
 import PassButton from "./PassButton";
-import OpportunityFireButton from "./OpportunityFireButton";
-import OpportunityIntensiveFireButton from "./OpportunityIntensiveFireButton";
 import ReactionFireButton from "./ReactionFireButton";
 import ReactionIntensiveFireButton from "./ReactionIntensiveFireButton";
 import EnemyRoutButton from "./EnemyRoutButton";
@@ -27,6 +25,7 @@ import MoveDoneMultiselectButton from "./MoveDoneMultiselectButton";
 import UnselectButton from "./UnselectButton";
 import HelpButton from "./HelpButton";
 import BreakdownButton from "./BreakdownButton";
+import InitiativeButton from "./InitiativeButton";
 
 interface GameControlsProps {
   game: Game;
@@ -70,10 +69,6 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <UnselectButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "pass") {
         return <PassButton game={game} key={i} />
-      } else if (a.type === "opportunity_fire") {
-        return <OpportunityFireButton game={game} key={i} />
-      } else if (a.type === "opportunity_intensive_fire") {
-        return <OpportunityIntensiveFireButton game={game} key={i} />
       } else if (a.type === "reaction_fire") {
         return <ReactionFireButton game={game} key={i} />
       } else if (a.type === "reaction_intensive_fire") {
@@ -84,6 +79,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <FireButton game={game} key={i} />
       } else if (a.type === "intensive_fire") {
         return <IntensiveFireButton game={game} key={i} />
+      } else if (a.type === "initiative") {
+        return <InitiativeButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move") {
         return <MoveButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_finish") {

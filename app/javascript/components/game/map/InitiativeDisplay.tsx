@@ -88,7 +88,7 @@ export default function InitiativeDisplay({
       setInitiative(undefined)
     } else {
       const game = map.game as Game
-      const nation = game.initiativePlayer === 1 ?
+      const nation = game.currentPlayer === 1 ?
         game.scenario.alliedFactions[0] :
         game.scenario.axisFactions[0]
       const index = game.initiative
@@ -101,7 +101,7 @@ export default function InitiativeDisplay({
       const cb = () => { ovCallback({ show: true, counters: [counter] }) }
       setInitiative(<MapCounter counter={counter} ovCallback={cb} />)
     }
-  }, [xx, yy, hideCounters, map.game?.initiative, map.game?.initiativePlayer])
+  }, [xx, yy, hideCounters, map.game?.initiative, map.game?.currentPlayer])
 
   return (
     <g>

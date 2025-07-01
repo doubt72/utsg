@@ -2,22 +2,22 @@ import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { Dice6 } from "react-bootstrap-icons";
 
-interface BreakdownButtonProps {
+interface InitiativeButtonProps {
   game: Game;
   callback: () => void;
 }
 
-export default function BreakdownButton({ game, callback }: BreakdownButtonProps) {
+export default function InitiativeButton({ game, callback }: InitiativeButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.finishBreakdown()
+    game.finishInitiative()
     callback()
   }
 
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><Dice6 />check for breakdown</button>
+        <button type="submit" className="custom-button nowrap"><Dice6 />initiative check</button>
       </div>
     </form>
   )

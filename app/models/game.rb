@@ -50,11 +50,13 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def self.create_game(params)
     game = Game.create(params)
     if game.persisted?
-      GameAction.create(sequence: 1, game:, user: game.owner, player: 1, data: { action: "create" })
+      GameAction.create(sequence: 1, game:, user: game.owner, player: 1,
+                        data: { action: "create", old_initiative: 0 })
       GameAction.create(sequence: 2, game:, user: game.owner, player: game.player_one ? 1 : 2,
-                        data: { action: "join" })
+                        data: { action: "join", old_initiative: 0 })
       if game.player_one && game.player_two
-        GameAction.create(sequence: 3, game:, user: game.owner, player: 2, data: { action: "join" })
+        GameAction.create(sequence: 3, game:, user: game.owner, player: 2,
+                          data: { action: "join", old_initiative: 0 })
       end
     end
     game
@@ -104,9 +106,8 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     else
       update(player_one_id: user.id)
     end
-    GameAction.create(
-      sequence: last_sequence + 1, game: self, user:, player:, data: { action: "join" }
-    )
+    GameAction.create(sequence: last_sequence + 1, game: self, user:, player:,
+                      data: { action: "join", old_initiative: 0 })
     self
   end
 
@@ -122,9 +123,8 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     else
       update(player_two: nil)
     end
-    GameAction.create(
-      sequence: last_sequence, game: self, user:, player:, data: { action: "leave" }
-    )
+    GameAction.create(sequence: last_sequence, game: self, user:, player:,
+                      data: { action: "leave", old_initiative: 0 })
     self
   end
 
@@ -134,9 +134,10 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     first_deploy = Utility::Scenario.scenario_by_id(scenario)[:metadata][:first_deploy]
     update!(current_player: first_deploy == 1 ? player_one : player_two)
     seq = last_sequence + 1
-    GameAction.create!(sequence: seq, game: self, user:, player: 1, data: { action: "start" })
+    GameAction.create!(sequence: seq, game: self, user:, player: 1,
+                       data: { action: "start", old_initiative: 0 })
     GameAction.create!(sequence: seq + 1, game: self, user:, player: first_deploy, data:
-      { action: "phase", phase_data: {
+      { action: "phase", old_initiative: 0, phase_data: {
         old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_deploy,
       }, })
     in_progress!
