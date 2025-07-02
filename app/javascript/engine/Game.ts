@@ -583,9 +583,9 @@ export default class Game {
 
   updateInitiative(amount: number) {
     if (this.currentPlayer === 1) {
-      this.initiative -= amount
-    } else {
       this.initiative += amount
+    } else {
+      this.initiative -= amount
     }
     if (this.initiative > 7) { this.initiative = 7 }
     if (this.initiative < -7) { this.initiative = -7 }

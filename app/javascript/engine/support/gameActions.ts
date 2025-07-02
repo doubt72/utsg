@@ -18,8 +18,8 @@ export function startInitiative(game: Game) {
 export function finishInitiative(game: Game) {
   if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Initiative) { return }
   let result: GameActionDiceResult[] | undefined = undefined
-  if ((game.currentPlayer === 1 && game.initiative < 0) ||
-      (game.currentPlayer === 2 && game.initiative > 0)) {
+  if ((game.currentPlayer === 1 && game.initiative > 0) ||
+      (game.currentPlayer === 2 && game.initiative < 0)) {
     result = [{ result: roll2d10(), type: "2d10" }]
   }
   const init = new GameAction({

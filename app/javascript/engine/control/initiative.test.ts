@@ -104,7 +104,7 @@ describe("action integration test", () => {
     game.move(1, 2)
     game.finishMove()
 
-    expect(game.initiative).toBe(2)
+    expect(game.initiative).toBe(-2)
 
     game.executeUndo()
 
