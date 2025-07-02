@@ -4,7 +4,7 @@ import Counter from "../Counter"
 import Game, { actionType, gamePhaseType } from "../Game"
 import { addActionType } from "../GameAction"
 import Map from "../Map"
-import { getLoader, needPickUpDisambiguate } from "../support/gameActions"
+import { getLoader, needPickUpDisambiguate } from "./gameActions"
 import Unit from "../Unit"
 import { canBeLoaded, canLoadUnit } from "./movement"
 

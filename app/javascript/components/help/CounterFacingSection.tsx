@@ -26,7 +26,7 @@ export default function CounterFacingSection() {
       layout: [5, 5, "x"], axis_dir: 4, allied_dir: 1,
       start_weather: weatherType.Dry, base_weather: weatherType.Dry, precip: [0, weatherType.Rain],
       wind: [windType.Calm, 1, false],
-      base_terrain: "g",
+      base_terrain: "s",
       hexes: [
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],

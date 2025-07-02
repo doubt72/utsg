@@ -11,7 +11,7 @@ import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
-import { finishBreakdown, finishInitiative, finishMove, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle, startBreakdown, startInitiative, startMove } from "./support/gameActions";
+import { finishBreakdown, finishInitiative, finishMove, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle, startBreakdown, startInitiative, startMove } from "./control/gameActions";
 
 export type GameData = {
   id: number;
