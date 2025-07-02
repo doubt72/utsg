@@ -15,12 +15,13 @@ import GlossarySection from "./GlossarySection";
 import CounterFacingSection from "./CounterFacingSection";
 import LineOfSightSection from "./LineOfSightSection";
 import ElevationSection from "./ElevationSection";
+import InterfaceSection from "./InterfaceSection";
 
 export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
 
 export const helpIndex: HelpSection[] = [
   { name: "Introduction", section: <IntroSection /> },
-  { name: "Game Interface", section: undefined },
+  { name: "Game Interface", section: <InterfaceSection /> },
   { name: "Counters", section: <CounterSection />, children: [
     { name: "Stacking", section: <CounterStackingSection /> },
     { name: "Facing", section: <CounterFacingSection /> },
@@ -54,6 +55,15 @@ export const helpIndex: HelpSection[] = [
   { name: "Glossary", section: <GlossarySection /> },
   { name: "Dev Notes", section: undefined },
 ]
+
+export function redNumber(n: number): JSX.Element {
+  return (
+    <svg width={20} height={20} viewBox="0 0 26 26" className="mr025em" style={{ verticalAlign: "-4px" }}>
+      <circle cx={13} cy={13} r={12} style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
+      <text x={13} y={19} textAnchor="middle" fontSize={16} style={{ fill: "white" }}>{n}</text>
+    </svg>
+  )
+}
 
 export function findHelpSection(curr: number[]): HelpSection | undefined {
   let part = helpIndex[curr[0]]

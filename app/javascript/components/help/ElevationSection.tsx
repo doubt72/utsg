@@ -14,6 +14,7 @@ import MapLosOverlay from "../game/map/MapLosOverlay";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import Hex from "../../engine/Hex";
 import { Hexagon, HexagonFill } from "react-bootstrap-icons";
+import { redNumber } from "./helpData";
 
 export default function ElevationSection() {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>();
@@ -211,15 +212,6 @@ export default function ElevationSection() {
       </div>
     );
   }, [map, units, showLines, showLOS]);
-
-  const redNumber = (n: number) => {
-    return (
-      <svg width={20} height={20} viewBox="0 0 26 26" className="mr025em" style={{ verticalAlign: "-4px" }}>
-        <circle cx={13} cy={13} r={12} style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
-        <text x={13} y={19} textAnchor="middle" fontSize={16} style={{ fill: "white" }}>{n}</text>
-      </svg>
-    )
-  }
 
   return (
     <div>

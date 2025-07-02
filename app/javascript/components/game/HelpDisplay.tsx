@@ -128,7 +128,7 @@ export default function HelpDisplay() {
     <div className="help-page" style={{ minHeight: window.innerHeight }}>
       <div className="help-side"></div>
       <div className="help-main">
-        <div className="help-index">
+        <div className="help-index" id="index-for-size">
           <div className="help-index-header flex">
             <Logo />
             <div className="ml025em">

@@ -222,7 +222,7 @@ export default class Game {
     return ""
   }
 
-  findBySequence(sequence: number): BaseAction | false {
+  findActionBySequence(sequence: number): BaseAction | false {
     for (const a of this.actions) {
       if (a.sequence === sequence) { return a }
     }
@@ -234,7 +234,7 @@ export default class Game {
     return this.actions[this.lastActionIndex]
   }
 
-  get lastSignificatAction(): BaseAction | undefined {
+  get lastSignificantAction(): BaseAction | undefined {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
@@ -302,7 +302,7 @@ export default class Game {
   executeAction(action: GameAction, backendSync: boolean) {
     const m = action.actionClass
     if (m.sequence) {
-      const em = this.findBySequence(m.sequence)
+      const em = this.findActionBySequence(m.sequence)
       if (em) {
         if (!em.id) {
           em.id = m.id

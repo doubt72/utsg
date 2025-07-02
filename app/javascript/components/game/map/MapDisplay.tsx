@@ -379,13 +379,13 @@ export default function MapDisplay({
 
   useEffect(() => {
     if (!map) { return }
-    const lastSigAction = map.game?.lastSignificatAction
+    const lastSigAction = map.game?.lastSignificantAction
     if (map?.game?.gameActionState?.move || (lastSigAction && lastSigAction.data.action === "move")) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
       setMoveTrack(undefined)
     }
-  }, [map?.game?.lastSignificatAction, mapUpdate, forceUpdate])
+  }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate])
 
   useEffect(() => {
     if (map?.game?.gameActionState?.move) {

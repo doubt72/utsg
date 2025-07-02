@@ -1,6 +1,5 @@
 High Priority Features/Bug Fixes:
-  - Show reaction
-    - Just passing currently
+  - Chat display visible?
   - Main Passing
   - Rush Move
   - Assault Move
@@ -8,6 +7,8 @@ High Priority Features/Bug Fixes:
     - Test/Implement: digging in
   - Firing
     - Test/Implement: mine
+  - Show reaction
+    - Just passing currently
   - Sniper check
   - Rout
   - Close Combat
