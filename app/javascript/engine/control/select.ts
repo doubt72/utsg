@@ -4,6 +4,7 @@ import Counter from "../Counter"
 import Game, { actionType, gamePhaseType } from "../Game"
 import { addActionType } from "../GameAction"
 import Map from "../Map"
+import { getLoader, needPickUpDisambiguate } from "../support/gameActions"
 import Unit from "../Unit"
 import { canBeLoaded, canLoadUnit } from "./movement"
 
@@ -46,14 +47,14 @@ export default function select(
       move.doneSelect = true
       game.closeOverlay = true
     } else if (move.loadingMove) {
-      if (game.needPickUpDisambiguate) {
+      if (needPickUpDisambiguate(game)) {
         counter.unit.loaderSelect()
         move.loader = counter
       } else {
         counter.unit.select()
         counter.unit.loadedSelect()
         let load = move.loader
-        if (!load) { load = game.getLoader[0] }
+        if (!load) { load = getLoader(game)[0] }
         load.unit.select()
         load.unit.loaderSelect()
         move.loader = undefined
@@ -141,7 +142,7 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
         }
       }
       if (game.gameActionState.move.loadingMove) {
-        if (game.needPickUpDisambiguate) {
+        if (needPickUpDisambiguate(game)) {
           if (!target.selected) {
             map.game?.addMessage("must select unit that started move or hasn't already been dropped")
             return false

@@ -25,7 +25,8 @@ export default class InitiativeAction extends BaseAction {
     if (roll) {
       const threshold = initiativeThreshold(Math.abs(this.data.old_initiative))
       result = `(${roll.type} roll result of ${roll.result}: ${
-        roll.result < threshold ? "failed, initiative flipped" : "passed, no change" })`
+        roll.result < threshold ? `failed, needed ${threshold}, initiative flipped` :
+        `passed, needed ${threshold}, no change` })`
     }
     return `${this.game.nationNameForPlayer(this.player)} initiative check, ${result}`
   }

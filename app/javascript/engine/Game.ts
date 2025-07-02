@@ -1,17 +1,17 @@
-import { Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
+import { Direction, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction, {
-  GameActionData, GameActionPath, GameActionPhaseChange, GameActionDiceResult, addActionType,
-  AddActionType
+  GameActionData, GameActionPath, GameActionPhaseChange, AddActionType
 } from "./GameAction";
 import Feature from "./Feature";
 import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
-import { alliedCodeToName, axisCodeToName, normalDir, roll2d10, rolld10, togglePlayer } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
+import { finishBreakdown, finishInitiative, finishMove, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle, startBreakdown, startInitiative, startMove } from "./support/gameActions";
 
 export type GameData = {
   id: number;
@@ -518,264 +518,52 @@ export default class Game {
     return path[path.length - 1]
   }
 
-  startMove() {
-    const selection = this.scenario.map.currentSelection[0]
-    if (selection && selection.hex) {
-      let facing = selection.unit.rotates ? selection.unit.facing : undefined
-      const child = selection.unit.children[0]
-      if (selection.unit.canHandle && child && child.crewed) { facing = child.facing }
-      const loc = {
-        x: selection.hex.x, y: selection.hex.y, facing,
-        turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
-      }
-      const units = selection.children
-      units.forEach(c => c.unit.select())
-      let canSelect = selection.unit.canCarrySupport && (units.length < 1 || !units[0].unit.crewed)
-      if (canSelect) {
-        let check = false
-        this.scenario.map.countersAt(new Coordinate(selection.hex.x, selection.hex.y)).forEach(c => {
-          if (selection.unitIndex !== c.unitIndex && !c.unit.isFeature && c.unit.canCarrySupport &&
-              (c.children.length < 1 || !c.children[0].unit.crewed)) {
-            check = true
-          }
-        })
-        canSelect = check
-      }
-      const allSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
-      const initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
-      units.forEach(u => {
-        const hex = u.hex as Coordinate
-        allSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
-        initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
-      })
-      if (canSelect) {
-        this.openOverlay = { x: selection.hex.x, y: selection.hex.y }
-      }
-      this.gameActionState = {
-        player: this.currentPlayer,
-        currentAction: actionType.Move,
-        selection: allSelection,
-        move: {
-          initialSelection, doneSelect: !canSelect, path: [loc], addActions: [],
-          rotatingTurret: false, placingSmoke: false, droppingMove: false, loadingMove: false,
-        }
-      }
-    }
-  }
-
-  move(x: number, y: number) {
-    if (!this.gameActionState?.move) { return }
-    if (!this.gameActionState?.selection) { return }
-    const selection = this.gameActionState.selection
-    const move = this.gameActionState.move
-    const target = selection[0].counter.unit
-    const lastPath = this.lastPath as GameActionPath
-    if (move.placingSmoke) {
-      const id = `uf-${this.actions.length}-${move.addActions.length}`
-      move.addActions.push({
-        x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id
-      })
-      this.scenario.map.addGhost(
-        new Coordinate(x, y),
-        new Feature({ ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
-      )
-    } else {
-      let facing = target.rotates ? lastPath.facing : undefined
-      const child = target.children[0]
-      if (target.canHandle && child && child.crewed) { facing = child.facing }
-      move.path.push({
-        x, y, facing, turret: target.turreted ? lastPath.turret : undefined
-      })
-      const vp = this.scenario.map.victoryAt(new Coordinate(x, y))
-      if (vp && vp !== this.currentPlayer) {
-        move.addActions.push({ x, y, type: addActionType.VP, cost: 0 })
-      }
-    }
-    move.doneSelect = true
-    this.closeOverlay = true
-  }
-
-  rotateToggle() {
-    if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.rotatingTurret = !this.gameActionState.move.rotatingTurret
-  }
-
-  moveRotate(x: number, y: number, dir: Direction) {
-    if (!this.gameActionState?.move) { return }
-    const last = this.lastPath as GameActionPath
-    if (this.gameActionState.move.rotatingTurret) {
-      last.turret = dir
-    } else {
-      const lastDir = last.facing
-      let turret = last.turret
-      if (lastDir && turret) {
-        turret = normalDir(turret + dir - lastDir)
-      }
-      this.gameActionState.move.path.push({
-        x: x, y: y, facing: dir, turret,
-      })
-    }
-  }
-
-  placeSmokeToggle() {
-    if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.placingSmoke = !this.gameActionState.move.placingSmoke
-    this.gameActionState.move.loadingMove = false
-    this.gameActionState.move.droppingMove = false
-  }
-
-  shortingMoveToggle() {
-    if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.droppingMove = !this.gameActionState.move.droppingMove
-    if (this.gameActionState.move.droppingMove) {
-      const first = this.gameActionState.move.path[0]
-      this.openOverlay = { x: first.x, y: first.y }
-    }
-    this.gameActionState.move.loadingMove = false
-    this.gameActionState.move.placingSmoke = false
-  }
-
-  loadingMoveToggle() {
-    if (!this.gameActionState?.move) { return }
-    this.gameActionState.move.loadingMove = !this.gameActionState.move.loadingMove
-    if (this.gameActionState.move.loadingMove) {
-      if (this.needPickUpDisambiguate) {
-        const first = this.gameActionState.move.path[0]
-        this.openOverlay = { x: first.x, y: first.y }
-      } else {
-        const last = this.lastPath as GameActionPath
-        this.openOverlay = { x: last.x, y: last.y }
-      }
-      const last = this.lastPath as GameActionPath
-      this.openOverlay = { x: last.x, y: last.y }
-    }
-    this.gameActionState.move.droppingMove = false
-    this.gameActionState.move.placingSmoke = false
-  }
-
-  get getLoader(): Counter[] {
-    const action = this.gameActionState
-    if (!action?.move) { return [] }
-    const selection = action.selection
-    if (!selection || !this.lastPath) { return [] }
-    const rc: Counter[] = []
-    const counters = this.scenario.map.countersAt(new Coordinate(this.lastPath.x, this.lastPath.y))
-    for (const c of counters) {
-      if (c.hasFeature || c.unit.selected) { continue }
-      for (const s of selection) {
-        const unit = s.counter.unit
-        const target = c.unit
-        if (unit.canCarry(target)) { rc.push(s.counter) }
-      }
-    }
-    return rc
-  }
-
-  get needPickUpDisambiguate(): boolean {
-    const action = this.gameActionState
-    if (!action?.move) { return false }
-    if (action.move.loader) { return false }
-    return this.getLoader.length > 1 && !this.getLoader[0].unit.transport
-  }
-
-  finishMove() {
-    if (!this.gameActionState?.move) { return }
-    const dice: GameActionDiceResult[] = []
-    for (const a of this.gameActionState.move.addActions) {
-      if (a.type === addActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
-    }
-    const move = new GameAction({
-      user: this.currentUser,
-      player: this.gameActionState.player,
-      data: {
-        action: "move", old_initiative: this.initiative,
-        path: this.gameActionState.move.path,
-        origin: this.gameActionState.selection.map(s => {
-          return {
-            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
-          }
-        }),
-        add_action: this.gameActionState.move.addActions.map(a => {
-          return {
-            type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id, facing: a.facing,
-          }
-        }),
-        dice_result: dice,
-      }
-    }, this, this.actions.length)
-    this.gameActionState = undefined
-    this.scenario.map.clearGhosts()
-    this.scenario.map.clearAllSelections()
-    this.executeAction(move, false)
-  }
-
-  startBreakdown() {
-    const action = this.lastAction
-    if (!action || this.gameActionState?.currentAction === actionType.Breakdown) { return }
-    if (action.data.origin && action.data.origin.length > 0) {
-      const id = action.data.origin[0].id
-      const counter = this.findCounterById(id) as Counter
-      if (action.data.action === "move" && counter.unit.breakdownRoll) {
-        this.gameActionState = {
-          player: this.currentPlayer, currentAction: actionType.Breakdown,
-          selection: [{
-            x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, counter,
-          }]
-        }
-        counter.unit.select()
-        this.refreshCallback(this)
-      }
-    }
-  }
-
-  finishBreakdown() {
-    if (!this.gameActionState || this.gameActionState.currentAction !== actionType.Breakdown) { return }
-    const bd = new GameAction({
-      user: this.currentUser,
-      player: this.gameActionState?.player,
-      data: {
-        action: "breakdown", old_initiative: this.initiative,
-        origin: this.gameActionState.selection.map(s => {
-          return {
-            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
-          }
-        }),
-        dice_result: [{ result: roll2d10(), type: "2d10" }]
-      },
-    }, this, this.actions.length)
-    this.gameActionState = undefined
-    this.scenario.map.clearAllSelections()
-    this.executeAction(bd, false)
-  }
-
   startInitiative() {
-    const action = this.lastAction
-    if (!action || this.gameActionState?.currentAction === actionType.Initiative) { return }
-    this.gameActionState = {
-      player: this.currentPlayer, currentAction: actionType.Initiative,
-      selection: []
-    }
-    this.refreshCallback(this)
+    startInitiative(this)
   }
 
   finishInitiative() {
-    if (!this.gameActionState || this.gameActionState.currentAction !== actionType.Initiative) { return }
-    let result: GameActionDiceResult[] | undefined = undefined
-    if ((this.currentPlayer === 1 && this.initiative < 0) ||
-        (this.currentPlayer === 2 && this.initiative > 0)) {
-      result = [{ result: roll2d10(), type: "2d10" }]
-    }
-    const init = new GameAction({
-      user: this.currentUser,
-      player: this.gameActionState?.player,
-      data: {
-        action: "initiative", old_initiative: this.initiative,
-        dice_result: result,
-      },
-    }, this, this.actions.length)
-    this.gameActionState = undefined
-    this.scenario.map.clearAllSelections()
-    this.executeAction(init, false)
+    finishInitiative(this)
+  }
+
+  startMove() {
+    startMove(this)
+  }
+
+  move(x: number, y: number) {
+    move(this, x, y)
+  }
+
+  moveRotate(x: number, y: number, dir: Direction) {
+    moveRotate(this, x, y, dir)
+  }
+
+  placeSmokeToggle() {
+    placeSmokeToggle(this)
+  }
+
+  shortingMoveToggle() {
+    shortingMoveToggle(this)
+  }
+
+  loadingMoveToggle() {
+    loadingMoveToggle(this)
+  }
+
+  rotateToggle() {
+    rotateToggle(this)
+  }
+
+  finishMove() {
+    finishMove(this)
+  }
+
+  startBreakdown() {
+    startBreakdown(this)
+  }
+
+  finishBreakdown() {
+    finishBreakdown(this)
   }
 
   executePass() {}
@@ -803,4 +591,3 @@ export default class Game {
     if (this.initiative < -7) { this.initiative = -7 }
   }
 }
-
