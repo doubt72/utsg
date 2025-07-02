@@ -18,8 +18,8 @@ export default function MovementSection() {
         Certain types of units can be carried by other units. Infantry units can carry infantry
         weapons such as machine guns, small mortars, flamethrowers, or other small weapons. Squads
         and teams can manhandle crewed units such as guns and large mortars. Certain vehicles can
-        carry infantry units. Finally certain vehicles (not always the same vehicles) can tow crewed
-        weapons. (See the section on{" "}
+        carry infantry units. Finally, certain vehicles (sometimes but not always the same vehicles)
+        can tow crewed weapons. (See the section on{" "}
         <a href={`/help/${helpIndexByName("Stacking").join(".")}`}>stacking</a> for how this is
         indicated in the game.)
       </p>
@@ -29,18 +29,19 @@ export default function MovementSection() {
         <a href={`/help/${helpIndexByName("Counters").join(".")}`}>counters</a> for more). Infantry
         units such as squads, crews, and leaders that can carry infantry weapons may have their
         movement reduced by the &quot;movement&quot; of those weapons, i.e., by their encumbrance,
-        which is indicated as a black - or red negative numbers. Infantry units that are manhandling
-        crewed weapons such as guns or large mortars instead have their movement lowered to the
-        movement factor of the crewed weapon. This is indicated with a black filled circle.
+        which is indicated by a black &quot;-&quot; (indicating no encumbrance) or red negative
+        numbers. Infantry units that are manhandling crewed weapons such as guns or large mortars
+        instead have their movement lowered to the movement factor of the crewed weapon. This is
+        indicated with a black filled circle.
       </p>
       <p>
         Leaders may not carry infantry weapons with a non-zero encumbrance, and the encumbrance of
-        weapons they can carry is considered to be -1.
+        weapons they can carry is always -2 instead of zero.
       </p>
       <p>
-        There are three main kinds of movement, foot (as indicated by an undecorated number),
-        tracked (as indicated by a circled number), and wheeled (as indicated by a white-filled
-        circle). Crewed weapons being manhandled are considered to be moving on foot.
+        There are three kinds of movement, foot (as indicated by an undecorated number), tracked (as
+        indicated by a circled number), and wheeled (as indicated by a white-filled circle). Crewed
+        weapons being manhandled are considered to be moving on foot.
       </p>
       <p>
         Every type of terrain has a movement cost for moving into that terrain. Not all terrain is
@@ -58,8 +59,8 @@ export default function MovementSection() {
         bonus of one additional hex.
       </p>
       <p>
-        Elevation costs +1 movement when going uphill. There is no reduction for going downhill.
-        Roads have no affect on this cost.
+        Elevation costs +1 movement when going uphill. There is no movement bonus for going
+        downhill. Roads have no affect on this cost.
       </p>
       <p>
         If a unit can turn, the unit must pay the cost of the terrain to change directions, and may
@@ -87,7 +88,7 @@ export default function MovementSection() {
         additional movement point. Infantry units moving in a group may drop units along the way,
         but they may not pick up any new infantry units to move with them. If the unit being dropped
         is a leader and the stack still moving no longer contains a leader, the leader bonus is lost
-        for the remaining units.
+        for the remainder of the move.
       </p>
       <p>
         If a unit has a breakdown number, the moving player must roll 2d10 after moving, and if the
@@ -97,7 +98,8 @@ export default function MovementSection() {
       <p>
         Units may not move into a hex occupied by an enemy unit. That requires{" "}
         <a href={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</a>. Units
-        may not exceed stacking limits at any point while moving.
+        may not exceed stacking limits at any point while moving, not even &quot;temporarily&quot;
+        when moving through hexes containing friendly units.
       </p>
       <p>
         Units are marked as activated after moving. Crewed weapons and transported units are as
@@ -136,8 +138,10 @@ export default function MovementSection() {
       <p>
         Transports that are towing crewed weapons can pick them up or drop them off for one movement
         point. Anytime a crewed weapon is carried, it faces in the opposite direction of the vehicle
-        transporting it, and maintains that facing when dropped. (So change the facing of the crewed
-        weapon when loading it, or when the vehicle turns.)
+        transporting it, and maintains that facing when dropped. (So the facing of the crewed weapon
+        may change when it is loaded for &quot;free&quot;, i.e. rotating the crewed weapon happens
+        automatically at no additional movement cost. Crewed weapons also rotate when the vehicle
+        rotates when being towed.)
       </p>
       <p>
         Infantry units (with or without infantry weapons) may be loaded on or unloaded from a
@@ -150,11 +154,11 @@ export default function MovementSection() {
         picked up or manned (in fact would have to be to be repaired).
       </p>
       <p>
-        Units may only be loaded (or manned or towed) or dropped (or unmanned or untowed) in the one
-        turn, not both. Units may not &quot;pass&quot; infantry weapons to another unit, the
-        infantry weapon must be dropped by the first unit and picked up by the second in separate
-        actions. The following buttons are used for all loading or dropping actions and will appear
-        when those actions are allowed:
+        Units may either be loaded (or manned or towed) or dropped (or unmanned or untowed) in a
+        single turn, but not both. Units may not &quot;pass&quot; infantry weapons to another unit,
+        the infantry weapon must be dropped by the first unit and picked up by the second in
+        separate actions. The following buttons are used for all loading or dropping actions and
+        will appear when those actions are allowed:
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
@@ -172,15 +176,16 @@ export default function MovementSection() {
         Units that are capable of laying smoke (i.e., smoke-capable infantry, not smoke-capable
         artillery and such that require a targeting roll) may lay smoke for two movement points in a
         neighboring hex, or one movement point in the current hex. The quality of the smoke is
-        determined at the end of the move on the game server, ghost markers are used until the move
-        is finished (as there are dice rolls involved, these moves cannot be undone, so the smoke
-        isn&apos;t checked until the end of the move). To determine the smoke quality, a d10 is
-        rolled, and the following table is used:
+        determined by a d10 die roll (see the table below). On the server, this happens after the
+        move is committed, and the entire move may be cancelled up to that point, but may not be
+        undone afterwards (as die rolls are involved). The locations that will get smoke counters
+        are indicated by ghost counters on the map until then.
       </p>
       <table>
         <tbody>
           <tr>
-            <th>roll</th><th>result</th>
+            <th>roll</th>
+            <th>result</th>
           </tr>
           <tr>
             <td>

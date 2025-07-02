@@ -60,7 +60,7 @@ export default function MainPhaseSection() {
           <div className="flex-fill"></div>
           <div className="custom-button normal-button" onClick={
             () => {
-              if (game.initiative > -7) { game.initiative -= 1 }
+              game.updateInitiative(1)
               setInitiative(game.initiative)
             }}>
             <span>-</span>
@@ -74,7 +74,7 @@ export default function MainPhaseSection() {
           </div>
           <div className="custom-button normal-button" onClick={
             () => {
-              if (game.initiative < 7) { game.initiative += 1 }
+              game.updateInitiative(-1)
               setInitiative(game.initiative)
             }}>
             <span>+</span>
@@ -98,7 +98,8 @@ export default function MainPhaseSection() {
       </p>
       <p>
         If there is a sniper in play (i.e., the opposing player has a sniper), sniper checks are
-        made immediately after actions before the initiative check.
+        made immediately after actions but before the initiative check.  Breakdown checks are also
+        made immediately after moves but before the initiative check.
       </p>
       {showInitiative}
       <p>These are all of the actions that can be performed by the player with initiative:</p>
@@ -106,7 +107,8 @@ export default function MainPhaseSection() {
         <li>
           <strong>Pass</strong> (-1): a player may choose (or be forced to choose if no other
           options are available) to pass and take no action. Initiative is passed to the other
-          player. Two passes in a row (one by each player) ends the Main Phase.
+          player. Two passes in a row (one by each player) ends the Main Phase.  This is the
+          only &quot;action&quot; that is not followed by an initiative check.
         </li>
         <li>
           <strong>Fire</strong> (2): a ranged attack from one or more of a player&apos;s units on
@@ -137,7 +139,7 @@ export default function MainPhaseSection() {
           units to retreat. Units can only be (successfully) routed once per turn.
         </li>
         <li>
-          <strong>Opportunity Fire</strong> (2): the opposing player may choose to take a firing (or
+          <strong>Reaction Fire</strong> (2): the opposing player may choose to take a firing (or
           intensive firing action) in response to any enemy action except routing or assault moves.
           There is no opportunity fire if the acting player fails their initiative check, in that
           case the player may make a normal firing action instead.

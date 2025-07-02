@@ -467,7 +467,7 @@ export default function TerrainSection() {
     <div>
       <h1>Map Terrain</h1>
       <p>
-        Terrain in the game affects a number of things: in particular, movement (i.e., movement cost),
+        <strong>Terrain</strong> affects a number of things: in particular, movement (i.e., movement cost),
         cover, and hindrances or line-of-sight.  Terrain also has elevations, which has further effects
         on movement and line-of-sight.  A help tooltip is available in-game by mousing over hexes, and can
         be toggled on and off with the terrain button:
@@ -484,7 +484,7 @@ export default function TerrainSection() {
         <div className="flex-fill"></div>
       </div>
       <p>
-        In addition, line-of-sight and hindrance effects can be viewed by toggling the overlay button, which
+        Line-of-sight and hindrance effects can be viewed by toggling the overlay button, which
         toggles between the counter selection overlay and the line-of-sight map overlay:
       </p>
       <div className="flex mb1em">

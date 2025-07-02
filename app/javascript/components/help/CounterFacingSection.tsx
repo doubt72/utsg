@@ -12,12 +12,14 @@ import Marker, { MarkerData } from "../../engine/Marker";
 import { makeIndex } from "./CounterSection";
 import MapCounter from "../game/map/MapCounter";
 import MapLosOverlay from "../game/map/MapLosOverlay";
+import { helpIndexByName } from "./helpData";
 
 export default function CounterFacingSection() {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>()
 
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
   const [map, setMap] = useState<Map | undefined>()
+  const [map2, setMap2] = useState<Map | undefined>()
   
   useEffect(() => {
     const map = new Map({
@@ -35,6 +37,21 @@ export default function CounterFacingSection() {
     })
     map.showCoords = false
     setMap(map)
+    const map2 = new Map({
+      layout: [5, 5, "x"], axis_dir: 4, allied_dir: 1,
+      start_weather: weatherType.Dry, base_weather: weatherType.Dry, precip: [0, weatherType.Rain],
+      wind: [windType.Calm, 1, false],
+      base_terrain: "d",
+      hexes: [
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ]
+    })
+    map2.showCoords = false
+    setMap2(map2)
 
     getAPI("/api/v1/scenarios/all_units", {
       ok: response => response.json().then(json => {
@@ -56,10 +73,14 @@ export default function CounterFacingSection() {
   }, [])
 
   useEffect(() => {
-    if (!map || Object.keys(units).length < 1) { return }
+    if (!map || !map2 || Object.keys(units).length < 1) { return }
     if (map.units[2][4].length < 1) {
       map.addCounter(new Coordinate(4, 2),  units["ger_Tiger II_tank"].clone() as Unit)
     }
+
+    map.mapHexes.forEach(row => row.forEach(hex => {
+      if (4 - hex.coord.x > Math.abs(2 - hex.coord.y)) { hex.map = map2}
+    }))
 
     setFacingDiagram(
       <div className="help-section-image">
@@ -80,26 +101,26 @@ export default function CounterFacingSection() {
                 style={{ stroke: "#DDD", strokeWidth: 1, fill: "rgba(0,0,0,0)" }}/>
         </svg>
         <div className="help-section-image-caption">
-          forward facing arc, as shown by the line-of-sight map overlay
+          forward facing arc, with included hexes highlighted
         </div>
       </div>
     )
-  }, [map, units])
+  }, [map, map2, units])
 
   return (
     <div>
       <h1>Counter Facing</h1>
       <p>
         Some units have <strong>facing</strong>, i.e., they are always pointed in some particular
-        direction. This applies to vehicles and guns in particular, but not infantry or infantry
-        weapons. The forward direction (or facing) of any unit is indicated by the direction the top
-        of the counter, i.e., if the top of the counter points left, the unit&apos;s facing and
-        forward arc is to the left. Some armored units have armored turrets, in which case the
-        facing of the turret and the hull can be oriented independently; in this case the hull
-        facing is indicated with a hull marker, and the facing of the turret is indicated with the
-        counter itself, placed on top of the hull.
+        direction. This applies to vehicles and guns, not infantry or infantry weapons. The forward
+        direction (or facing) of any unit is indicated by the direction the top of the counter,
+        i.e., if the top of the counter points left, the unit&apos;s facing and forward arc is to
+        the left. Some armored units have armored turrets, in which case the facing of the turret
+        and the hull can be oriented independently; in this case the hull facing is indicated with a
+        hull marker, and the facing of the turret is indicated with the counter itself, placed on
+        top of the hull.
       </p>
-      { facingDiagram }
+      {facingDiagram}
       <p>
         Whenever the weapons with facing are firing, they must fire in the direction of the forward
         arc, as shown on the image here. The forward arc includes all the hexes that are between the
@@ -122,9 +143,10 @@ export default function CounterFacingSection() {
         side, and side armor applies.
       </p>
       <p>
-        Forward firing arcs can be seen on the map at any time by toggling the overlay button to show
-        line-of-sight and mousing over unit counters — assuming the unit has a facing — see the Line
-        of Sight section for more:
+        Forward firing arcs can be seen on the map at any time by toggling the overlay button to
+        show line-of-sight and mousing over unit counters — assuming the unit has a facing (see the{" "}
+        <a href={`/help/${helpIndexByName("Line of Sight").join(".")}`}>line-of-sight</a> section
+        for more):
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>

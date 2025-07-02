@@ -1,4 +1,6 @@
 High Priority Features/Bug Fixes:
+  - Break up tests
+  - Break out actions from game
   - Show reaction
     - Just passing currently
   - Main Passing

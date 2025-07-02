@@ -125,8 +125,10 @@ export function smokeRoll(roll: number): number {
   return 1
 }
 
+export const initiativeRolls = [8, 11, 14, 16, 18, 19, 20]
+
 export function initiativeThreshold(value: number): number {
-  return [0, 11, 14, 16, 17, 18, 19, 20][value] ?? 0
+  return [0, ...initiativeRolls][value] ?? 0
 }
 
 export const stackLimit = 12

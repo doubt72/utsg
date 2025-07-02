@@ -6,6 +6,7 @@ import Marker from "../../../engine/Marker";
 import { Coordinate, markerType } from "../../../utilities/commonTypes";
 import Counter from "../../../engine/Counter";
 import Game from "../../../engine/Game";
+import { initiativeRolls } from "../../../utilities/utilities";
 
 interface InitiativeDisplayProps {
   map: Map;
@@ -47,7 +48,7 @@ export default function InitiativeDisplay({
   }
 
   const roll = (i: number) => {
-    return ["-", 11, 14, 16, 17, 18, 19, 20][Math.abs(i)]
+    return ["-", ...initiativeRolls][Math.abs(i)]
   }
 
   useEffect(() => {

@@ -624,7 +624,7 @@ export default function CounterSection() {
       if (unit.engineer && !unit.isBroken) {
         sections.push(<p key={index++}>
           <strong>A dot above movement</strong> indicates that this unit is an engineer and may
-          be able to remove obstacles or build limited defensive features more quickly.
+          be able to do engineering tasks such as removing obstacles like wire or mines.
         </p>)
       }
       if (unit.amphibious && !unit.isWreck) {
@@ -773,7 +773,7 @@ export default function CounterSection() {
       }
       if (unit.baseMorale) {
         sections.push(<p key={index++}>
-          <strong>Morale</strong> affects the chance of the unit breaking when hit.
+          <strong>Morale</strong> affects the chance of the unit breaking when hit, or being eliminated if broken.
         </p>)
       }
       if (unit.sponson) {
@@ -880,10 +880,10 @@ export default function CounterSection() {
     <div>
       <h1>Game Counters</h1>
       <p>
-        There are three kinds of on-map counters in the game: units, features,
-        and markers.  In addition there are a few additional off-map status markers.
-        Counter display (i.e., whether to show counters or the underlying map terrain)
-        can be toggled using the counters button:
+        There are three kinds of on-map <strong>counters</strong> in the game:{" "}
+        <strong>units</strong>, <strong>features</strong>, and <strong>markers</strong>. In addition
+        there are a few additional off-map status markers. Counter display (i.e., whether to show
+        counters or the underlying map terrain) can be toggled using the counters button:
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
@@ -897,24 +897,23 @@ export default function CounterSection() {
         <div className="flex-fill"></div>
       </div>
       <p>
-        Unit counters represent squads or teams, leaders, vehicles, and various guns or
-        other infantry equipment, and can be moved, fired, or otherwise
-        ordered.  Unit counters&apos; background color matches the color of the
-        faction they belong to.
+        <strong>Unit</strong> counters represent squads or teams, leaders, vehicles, and various
+        guns or other infantry equipment, and can be moved, fired, or otherwise ordered. Unit
+        counters&apos; background color matches the color of the country or faction they belong to.
       </p>
       <p>
-        Feature counters represent various on-map obstacles of various sorts such as
-        wire, mines, smoke, fires and such, as well as defensive fortifications.  Features
+        <strong>Feature</strong> counters represent various on-map obstacles of various sorts such
+        as wire, mines, smoke, fires and such, as well as defensive fortifications. Features
         can&apos;t be ordered or moved (although they can be placed or removed under certain
-        circumstances).  Features generally have a white background.
+        circumstances). Features generally have a white background.
       </p>
       <p>
-        Markers represent unit status on-map (such as fatigue, jammed weapons and such), or
-        game status off-map (e.g., marking the current turn, initiative, or indicating weather
-        conditions).  Markers are also used to indicate facing of tank or vehicle hulls if a
-        vehicle has a turret (in which case the unit counter indicates turret facing).  On-map
-        status markers can also be displayed via a badge over the unit instead of as separate
-        markers, which can be toggled with the status button:
+        <strong>Markers</strong> represent unit status on-map (such as fatigue, jammed weapons and
+        such), or game status off-map (e.g., marking the current turn, initiative, or indicating
+        weather conditions). Markers are also used to indicate facing of tank or vehicle hulls if a
+        vehicle has a turret (in which case the unit counter indicates turret facing). On-map status
+        markers can also be displayed via a badge over the unit instead of as separate markers,
+        which can be toggled with the status button:
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
@@ -929,11 +928,11 @@ export default function CounterSection() {
       </div>
       <h2 className="mt05em">Counter Layout</h2>
       <p>
-        Select the buttons on the right to see examples of various counter layouts.
-        Additionally, a help tooltip is available in-game by mousing over the
-        question mark icon in the upper right corner of game counters.
+        Select the buttons on the right to see examples of various counter layouts. Additionally, a
+        help tooltip is available in-game by mousing over the question mark icon in the upper right
+        corner of game counters.
       </p>
-      { updateSection }
+      {updateSection}
     </div>
-  )
+  );
 }

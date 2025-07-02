@@ -103,6 +103,16 @@ const terms: GlossaryData[] = [
     ),
   },
   {
+    name: "Encumbrance",
+    desc: (
+      <>
+        the &quot;<strong>movement</strong>&quot; value of <strong>infantry weapons</strong>,
+        indicated by red negative number or a black &quot;-&quot; indicating no encumbrance.  Any
+        <strong>infantry</strong> unit carrying the weapon has their movement reduced by the value.
+      </>
+    ),
+  },
+  {
     name: "Hindrance",
     desc: (
       <>
@@ -118,7 +128,7 @@ const terms: GlossaryData[] = [
       <>
         the ability for <strong>units</strong> to see other units, and hence
         whether or not they can perform the <strong>fire</strong> action. Unlike
-        many other hex-and-counter games, line of sight is blocked by the entire
+        many other hex-and-counter games, line-of-sight is blocked by the entire
         hex if the terrain type or a feature blocks LOS, not just the subset of
         the hex containing the blocking obstacle.
       </>

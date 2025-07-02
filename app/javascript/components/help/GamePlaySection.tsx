@@ -16,7 +16,7 @@ export const sequenceOfPlay = (
       { sequenceOfTurn }
     </li>
     <li>
-      <strong>Game Ends</strong>: calculate victory points, remember the dead
+      <strong>Game Ends</strong>: calculate victory points, bury the dead
     </li>
   </ol>
 )
@@ -38,6 +38,9 @@ export default function GamePlaySection() {
         each turn and phase.
       </p>
       <h2>Sequence of Play</h2>
+      <p>
+        The sequence of play is as follows:
+      </p>
       { sequenceOfPlay }
     </div>
   );

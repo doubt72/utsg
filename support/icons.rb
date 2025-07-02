@@ -1596,7 +1596,7 @@ File.open('team.svg', 'w') do |file|
   ], file, false)
   write_path([["M", 10, 90], ["L", 90, 30]], file, false)
   write_path([["M", 10, 30], ["L", 90, 90]], file, false)
-  write_circle(50, 16, 10, file, false)
+  write_circle(50, 17, 10, file, false)
   # helmet_paths.each do |path|
   #   write_path(scale_path(path, 0, -2.5, 0.575), file)
   # end
@@ -1616,7 +1616,7 @@ File.open('squad.svg', 'w') do |file|
   ], file, false)
   write_path([["M", 10, 90], ["L", 90, 30]], file, false)
   write_path([["M", 10, 30], ["L", 90, 90]], file, false)
-  write_circle(50, 16, 12, file)
+  write_circle(50, 17, 12, file)
   # helmet_paths.each do |path|
   #   write_path(scale_path(path, -2.5, -2.5, 0.45), file)
   # end

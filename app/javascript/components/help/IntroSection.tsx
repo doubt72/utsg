@@ -35,7 +35,7 @@ export default function IntroSection() {
       <p>
         The game system as implemented is meant to be suitable both for tabletop and online play.
         That is, the intent is to streamline some things to keep things moving for possibly
-        asynchronous online play while maintaining the transparent logic of tabletop rules, that is,
+        asynchronous online play while maintaining the transparent logic of tabletop rules, i.e.,
         without depending on opaque internal logic or simulation sometimes found in hex-and-counter
         computer war games (not that there&apos;s anything wrong with that, this just isn&apos;t
         that sort of game).

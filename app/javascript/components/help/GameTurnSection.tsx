@@ -67,6 +67,9 @@ export default function GameTurnSection() {
         each turn and phase.
       </p>
       <h2>Turn Sequence</h2>
+      <p>
+        The turn sequence is as follows:
+      </p>
       {sequenceOfTurn}
     </div>
   );

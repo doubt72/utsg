@@ -979,7 +979,7 @@ describe("action integration test", () => {
 
     const unit = new Unit(gldr)
     unit.id = "test1"
-    unit.baseMovement = 4
+    unit.baseMovement = 5
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)

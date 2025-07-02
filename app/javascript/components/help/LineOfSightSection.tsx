@@ -14,6 +14,7 @@ import MapCounter from "../game/map/MapCounter";
 import MapLosOverlay from "../game/map/MapLosOverlay";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import Hex from "../../engine/Hex";
+import { helpIndexByName } from "./helpData";
 
 export default function LineOfSightSection() {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>();
@@ -158,12 +159,13 @@ export default function LineOfSightSection() {
       <h1>Line of Sight and Hindrance</h1>
       <p>
         Whenever a player would like one of their units to fire at the other player&apos;s units,
-        that unit must have a clear line-of-sight (LOS) to the other unit for the attack to take
+        that unit must have a clear <strong>line-of-sight</strong> (LOS) to the other unit for the attack to take
         place, and that line-of-sight may be blocked by various obstacles such as buildings, forest,
         or other terrain, as well as features like fire or rubble. Line-of-sight may also be blocked
-        by elevated terrain, but that will be covered in the <strong>elevation</strong> section of
-        the documentation. Line-of-sight is determined by all of the hexes that are intersected by
-        the sightline from the center of one hex to the center of the target hex.
+        by elevated terrain, but that will be covered in the{" "}
+        <a href={`/help/${helpIndexByName("Elevation").join(".")}`}>elevation</a> section of the
+        documentation. Line-of-sight is determined by all of the hexes that are intersected by the
+        sightline from the center of one hex to the center of the target hex.
       </p>
       <p>
         Fire attacks may also be increased in difficulty by a similar concept called{" "}
@@ -176,9 +178,9 @@ export default function LineOfSightSection() {
         Unlike many other small unit tactics hex-and-counter wargames, hindrance and line-of-sight
         are not determined by the shape of the blocking or hindering terrain in hexes, but by the
         entire hex that contains those obstacles. In other words, if the hex contains a building,
-        any line of sight that intersects any part of the hex, not just the building itself, is
+        any line-of-sight that intersects any part of the hex, not just the building itself, is
         affected. A line-of-sight map overlay may be toggled on and off using the overlay button,
-        when the button shows the eye icon, mousing over units will show the line of sight for those
+        when the button shows the eye icon, mousing over units will show the line-of-sight for those
         units:
       </p>
       <div className="flex mb1em">
@@ -193,11 +195,9 @@ export default function LineOfSightSection() {
         <div className="flex-fill"></div>
       </div>
       {facingDiagram}
+      <p>Here are some example sightlines in the illustration to the right:</p>
       <p>
-        Here are some example sightlines in the illustration to the right:
-      </p>
-      <p>
-        { redNumber(1) }
+        {redNumber(1)}
         Fences normally have a hindrance of 1, but that hindrance is negated if firing from
         immediately behind the fence. There is, however a hindrance coming in from the other
         direction — hindrance is not symmetrical. Similarly, when a unit is in a hex that has
@@ -207,33 +207,33 @@ export default function LineOfSightSection() {
         next to the unit, it would not block LOS at all (as is seen below).
       </p>
       <p>
-        { redNumber(2) }
-        Sightlines along a fence have the same hindrance as crossing a fence. Also, the building does
-        not block LOS along the edge of its hex.
+        {redNumber(2)}
+        Sightlines along a fence have the same hindrance as crossing a fence. Also, the building
+        does not block LOS along the edge of its hex.
       </p>
       <p>
-        { redNumber(3) }
+        {redNumber(3)}
         Each hex of the field add 1 to the total hindrance.
       </p>
       <p>
-        { redNumber(4) }
+        {redNumber(4)}
         The forest does not block LOS along the edge of its hex.
       </p>
       <p>
-        { redNumber(5) }
+        {redNumber(5)}
         The forest blocks LOS, but any units in the first blocking hex are always visible.
       </p>
       <p>
-        { redNumber(6) }
+        {redNumber(6)}
         This sightline clips a forest hex, so LOS is blocked.
       </p>
       <p>
-        { redNumber(7) }
+        {redNumber(7)}
         Unlike the fence on the other side, the fence father away from the player add a hindrance.
         Similarly, the wall next to the unit <em>does not</em> block LOS.
       </p>
       <p>
-        { redNumber(8) }
+        {redNumber(8)}
         Sightlines along a wall block LOS to everything beyond them.
       </p>
       <h2>Additional Rules</h2>

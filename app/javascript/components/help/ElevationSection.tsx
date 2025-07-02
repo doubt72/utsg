@@ -225,7 +225,7 @@ export default function ElevationSection() {
     <div>
       <h1>Elevation</h1>
       <p>
-        Elevation is indicated on the map by hex color (with higher elevations having darker
+        <strong>Elevation</strong> is indicated on the map by hex color (with higher elevations having darker
         brown colors).  Depressions (i.e., elevations below the rest of the map) and indicated
         with a dark green hex color.  Elevation is also shown on the terrain help tooltip
         when toggled on with the terrain button:
@@ -279,7 +279,7 @@ export default function ElevationSection() {
       </p>
       <p>
         {redNumber(4)}
-        Terrain that blocks line of sight is treated as if it was an altitude one higher
+        Terrain that blocks line-of-sight is treated as if it was an altitude one higher
         than the base terrain beneath it, except the shadow is calculated even if the altitude
         of the observer is only one elevation above its base terrain (e.g., a building at an elevation
         of 0 with a unit calculating LOS from an elevation of 1 would have a shadow equal to the
