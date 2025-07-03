@@ -5,6 +5,7 @@ class User < ApplicationRecord
   # before_destroy hooks)
   has_many :games, foreign_key: :owner_id
   has_many :messages
+  has_many :ratings
 
   has_many :games_as_player_one, class_name: "Game", foreign_key: :player_one_id
   has_many :games_as_player_two, class_name: "Game", foreign_key: :player_two_id

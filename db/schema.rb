@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_02_085909) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,6 +66,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "scenario", null: false
+    t.integer "rating", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scenario"], name: "index_ratings_on_scenario"
+    t.index ["user_id", "scenario"], name: "index_ratings_on_user_id_and_scenario", unique: true
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username", null: false
     t.string "email", null: false
@@ -91,4 +102,5 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_12_040846) do
   add_foreign_key "games", "users", column: "winner_id"
   add_foreign_key "messages", "games", on_delete: :cascade
   add_foreign_key "messages", "users"
+  add_foreign_key "ratings", "users"
 end
