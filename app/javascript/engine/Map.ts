@@ -14,8 +14,9 @@ import Feature from "./Feature";
 import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import { GameActionPath } from "./GameAction";
-import { togglePlayer } from "../utilities/utilities";
 import BaseAction from "./actions/BaseAction";
+import { togglePlayer } from "../utilities/utilities";
+import { needPickUpDisambiguate } from "./control/gameActions";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -453,12 +454,12 @@ export default class Map {
 
   get actionCounters(): Counter[] {
     const move = this.game?.gameActionState?.move
-    if (!move) { return [] }
-    if (!move.doneSelect || move.droppingMove || (move.loadingMove && this.game?.needPickUpDisambiguate)) {
+    if (!this.game || !move) { return [] }
+    if (!move.doneSelect || move.droppingMove || (move.loadingMove && needPickUpDisambiguate(this.game))) {
       const first = move.path[0]
       return this.countersAt(new Coordinate(first.x, first.y))
     }
-    if (move.loadingMove && !this.game?.needPickUpDisambiguate) {
+    if (move.loadingMove && !needPickUpDisambiguate(this.game)) {
       const last = this.game?.lastPath as GameActionPath
       return this.countersAt(new Coordinate(last.x, last.y))
     }

@@ -100,15 +100,15 @@ export default class PhaseAction extends BaseAction {
 
   mutateGame(): void {
     this.game.phase = this.newPhase
-    this.game.turn = this.newTurn
-    this.game.currentPlayer = this.newPlayer
+    this.game.setTurn(this.newTurn)
+    this.game.setCurrentPlayer(this.newPlayer)
     organizeStacks(this.game.scenario.map)
   }
   
   undo(): void {
     this.game.phase = this.oldPhase
-    this.game.turn = this.oldTurn
-    this.game.currentPlayer = this.player
+    this.game.setTurn(this.oldTurn)
+    this.game.setCurrentPlayer(this.player)
     this.undone = true;
   }
 

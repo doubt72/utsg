@@ -1,5 +1,5 @@
 import { Direction, Player } from "../utilities/commonTypes";
-import { getAPI, postAPI } from "../utilities/network";
+import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction, {
   GameActionData, GameActionPath, GameActionPhaseChange, AddActionType
@@ -86,9 +86,9 @@ export default class Game {
 
   refreshCallback: (g: Game, error?: [string, string]) => void;
 
-  currentPlayer: Player;
+  iCurrentPlayer: Player;
   winner?: Player;
-  turn: number = 0;
+  iTurn: number = 0;
   phase: GamePhase;
   playerOnePoints: number = 0;
   playerTwoPoints: number = 0;
@@ -124,8 +124,8 @@ export default class Game {
     }
 
     // Initial state, actions will modify
-    this.currentPlayer = this.scenario.firstDeploy || 1
-    this.turn = 0
+    this.iCurrentPlayer = this.scenario.firstDeploy || 1
+    this.iTurn = 0
     this.phase = gamePhaseType.Deployment
     this.playerOnePoints = 0
     this.playerTwoPoints = 0
@@ -140,7 +140,9 @@ export default class Game {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
           const action = new GameAction(json[i], this, i)
+          this.suppressNetwork = true
           this.executeAction(action, true)
+          this.suppressNetwork = false
         }
       })
     })
@@ -152,7 +154,9 @@ export default class Game {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
           const action = new GameAction(json[i], this, i)
+          this.suppressNetwork = true
           this.executeAction(action, true)
+          this.suppressNetwork = false
         }
       })
     })
@@ -164,6 +168,38 @@ export default class Game {
 
   getMessage() {
     return this.messageQueue.pop()
+  }
+
+  get currentPlayer(): Player {
+    return this.iCurrentPlayer
+  }
+
+  setCurrentPlayer(player: Player) {
+    if (player !== this.iCurrentPlayer) {
+      this.iCurrentPlayer = player
+      if (this.suppressNetwork) { return }
+      putAPI(`/api/v1/games/${this.id}`, { game: { current_player: this.currentUser } }, {
+        ok: () => {}
+      })
+    }
+  }
+
+  togglePlayer() {
+    this.setCurrentPlayer(togglePlayer(this.currentPlayer))
+  }
+
+  get turn(): number {
+    return this.iTurn
+  }
+
+  setTurn(turn: number) {
+    if (turn !== this.iTurn) {
+      this.iTurn = turn
+      if (this.suppressNetwork) { return }
+      putAPI(`/api/v1/games/${this.id}`, { game: { metadata: JSON.stringify({ turn: turn }) } }, {
+        ok: () => {}
+      })
+    }
   }
 
   get currentUser(): string {

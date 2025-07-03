@@ -43,6 +43,12 @@ module Utility
 
         ::Scenarios.const_get(name).full_record
       end
+
+      def stats(id)
+        one = Game.where("player_one_id = winner_id AND scenario = ?", id).count
+        two = Game.where("player_one_id = winner_id AND scenario = ?", id).count
+        { one:, two: }
+      end
     end
   end
 end

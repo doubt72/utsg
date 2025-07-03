@@ -112,9 +112,9 @@ describe("action integration test", () => {
       suppress_network: true
     });
 
-    game.turn = 1
+    game.setTurn(1)
     game.phase = gamePhaseType.Main
-    game.currentPlayer = 2
+    game.setCurrentPlayer(2)
     return game
   }
 

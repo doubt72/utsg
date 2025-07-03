@@ -14,6 +14,9 @@ Rails.application.routes.draw do
           post "set_recovery"
           post "password_reset"
         end
+        member do
+          get "stats"
+        end
       end
       resources :messages, only: %i[index create]
       resources :games, only: %i[index show create update] do
@@ -34,6 +37,9 @@ Rails.application.routes.draw do
           get "allied_factions"
           get "axis_factions"
           get "all_units"
+        end
+        member do
+          get "stats"
         end
       end
       resources :ratings, only: %i[create] do

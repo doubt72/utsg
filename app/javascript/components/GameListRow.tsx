@@ -64,16 +64,12 @@ export default function GameListRow({ data }: GameListRowProps) {
         return <div className={cn}>{icon} ready to start</div>
       case "in_progress": {
         if (currentUser === data.current_player) { icon = <CircleFill /> }
-        let currentSide = "player one"
-        if (data.player_two === data.current_player) {
-          currentSide = "player two"
-        }
         if (data.summary_metadata.turn === 0) {
-          return <div className={cn}>{icon} {currentSide} initial setup</div>
+          return <div className={cn}>{icon} {data.current_player} initial setup</div>
         } else {
           return (
             <div className={cn}>
-              {icon} {currentSide} turn {data.summary_metadata.turn}/
+              {icon} {data.current_player} turn {data.summary_metadata.turn}/
               {data.summary_metadata.scenario_turns}
             </div>
           )

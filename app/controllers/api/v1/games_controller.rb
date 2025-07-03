@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class GamesController < ApplicationController # rubocop:disable Metrics/ClassLength
+    class GamesController < ApplicationController
       skip_before_action :authenticate_user!, only: %i[index show]
 
       def index
@@ -114,7 +114,7 @@ module Api
       def update_params
         p = params.require(:game).permit(:current_player, :metadata)
         p[:metadata] = JSON.parse(p[:metadata]) if p[:metadata]
-        translate(p, "current_player")
+        p[:current_player] ? translate(p, "current_player") : p
       end
 
       def translate(pars, player)

@@ -2,14 +2,12 @@
 
 require "rails_helper"
 
-RSpec.describe Game do
+RSpec.describe User do
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
-  let(:game) do
-    create(
-      :game, owner: user, player_one: user, player_two: user2,
-             current_player: user2, name: "game", state: :in_progress
-    )
+  let!(:game) do
+    create(:game, owner: user, player_one: user, player_two: user2,
+                  current_player: user2, name: "game", state: :in_progress)
   end
   let!(:action1) { create(:game_action, sequence: 1, user:, game:) }
   let!(:action2) { create(:game_action, sequence: 2, user: user2, game:) }
@@ -82,6 +80,31 @@ RSpec.describe Game do
       expect(Game.find_by(id: game.id)).to be_nil
       expect(GameAction.count).to be == 0
       expect(Message.count).to be == 1
+    end
+  end
+
+  context "game stats" do
+    before :each do
+      create(:game, owner: user, player_one: user, player_two: user2,
+                    current_player: user, name: "game", state: :in_progress)
+      create(:game, owner: user, player_one: user, player_two: user2,
+                    current_player: user, name: "game", state: :in_progress, updated_at: 8.days.ago)
+      create(:game, owner: user, player_one: user, player_two: user2, winner: user,
+                    current_player: user2, name: "game", state: :complete)
+      create(:game, owner: user, player_one: user, player_two: user2, winner: user2,
+                    current_player: user, name: "game", state: :complete)
+      create(:game, owner: user, player_one: user, player_two: user, winner: user,
+                    current_player: user, name: "game", state: :complete)
+    end
+
+    it "produces good output" do
+      expect(User.stats(user.username).keys.length).to be == 2
+      expect(User.stats(user.username)[:all]).to be == {
+        count: 5, win: 1, loss: 1, wait: 1, abandoned: 1,
+      }
+      expect(User.stats(user.username)["001"]).to be == {
+        count: 5, win: 1, loss: 1, wait: 1, abandoned: 1,
+      }
     end
   end
 end

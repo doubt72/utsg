@@ -22,6 +22,7 @@ Metrics/BlockLength:
     - 'config/routes.rb'
 
 Metrics/ClassLength:
+  Max: 150
   Exclude:
     - 'spec/**/*'
     - 'app/models/scenarios/**/*'

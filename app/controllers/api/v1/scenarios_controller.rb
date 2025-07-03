@@ -31,6 +31,10 @@ module Api
         render json: Utility::Scenario::Units.lookup_data, status: :ok
       end
 
+      def stats
+        render json: Utility::Scenario.stats(params[:id]), status: :ok
+      end
+
       private
 
       def paginate(data)

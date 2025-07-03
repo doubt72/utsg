@@ -67,6 +67,15 @@ module Api
         end
       end
 
+      def stats
+        stats = User.stats(params[:username])
+        if stats
+          render json: stats, status: :ok
+        else
+          render json: {}, status: :not_found
+        end
+      end
+
       private
 
       def create_params

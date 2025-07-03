@@ -40,6 +40,41 @@ class User < ApplicationRecord
     def generate_confirmation_code(length = 6)
       (1..length).map { [*(0..9), *("A".."Z")][rand(36)].to_s }.join
     end
+
+    def stats(username)
+      user = lookup(username)
+      return unless user
+
+      games = {}
+      Game.where("(player_one_id = ? OR player_two_id = ?) AND player_one_id <> player_two_id",
+                 user.id, user.id).each do |game|
+        add_game(user, game, games)
+      end
+      games.merge(all: all_games(games))
+    end
+
+    private
+
+    def add_game(user, game, games)
+      curr = games[game.scenario] ||= { count: 0, win: 0, loss: 0, wait: 0, abandoned: 0 }
+      curr[:count] += 1
+      if game.winner_id
+        game.winner_id == user.id ? curr[:win] += 1 : curr[:loss] += 1
+      elsif game.current_player_id == user.id
+        game.updated_at < 7.days.ago ? curr[:wait] += 1 : curr[:abandoned] += 1
+      end
+    end
+
+    def all_games(games)
+      games.map { |g| g[1] }.reduce(
+        { count: 0, win: 0, loss: 0, wait: 0, abandoned: 0 }
+      ) do |sum, s|
+        {
+          count: sum[:count] + s[:count], win: sum[:win] + s[:win], loss: sum[:loss] + s[:loss],
+          wait: sum[:wait] + s[:wait], abandoned: sum[:abandoned] + s[:abandoned],
+        }
+      end
+    end
   end
 
   def reset_confirmation_code

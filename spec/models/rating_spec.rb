@@ -5,11 +5,7 @@ require "rails_helper"
 RSpec.describe Rating do
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
-  let(:rating) { create(:rating, user:, scenario: "001", rating: 4) }
-
-  before do
-    expect(rating.user_id).to be == user.id
-  end
+  let!(:rating) { create(:rating, user:, scenario: "001", rating: 4) }
 
   it "has body" do
     expect(rating.show_body).to be == {

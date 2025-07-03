@@ -317,4 +317,32 @@ RSpec.describe Api::V1::ScenariosController do
       expect(body["ger_rifle_s"]["n"]).to be == "Rifle"
     end
   end
+
+  describe "stats" do
+    it "handles no data" do
+      get :stats, params: { id: "000" }
+
+      expect(response.status).to be == 200
+      body = JSON.parse(response.body)
+      expect(body["one"]).to be == 0
+      expect(body["two"]).to be == 0
+    end
+
+    it "handles data" do
+      game1 = create(:game, scenario: "001")
+      game1.winner = game1.player_one
+      game1.save!
+
+      game2 = create(:game, scenario: "001")
+      game2.winner = game2.player_two
+      game2.save!
+
+      get :stats, params: { id: "001" }
+
+      expect(response.status).to be == 200
+      body = JSON.parse(response.body)
+      expect(body["one"]).to be == 1
+      expect(body["two"]).to be == 1
+    end
+  end
 end

@@ -1,4 +1,4 @@
-import { initiativeThreshold, togglePlayer } from "../../utilities/utilities";
+import { initiativeThreshold } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -39,7 +39,7 @@ export default class InitiativeAction extends BaseAction {
     const roll = this.diceResult
     if (roll) {
       if (roll.result < initiativeThreshold(Math.abs(this.data.old_initiative))) {
-        this.game.currentPlayer = togglePlayer(this.game.currentPlayer)
+        this.game.togglePlayer()
       }
     }
   }

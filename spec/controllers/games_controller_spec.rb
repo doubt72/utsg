@@ -247,6 +247,18 @@ RSpec.describe Api::V1::GamesController do
       expect(game1.current_player).to be == user1
     end
 
+    it "can update metadata" do
+      login(user1)
+
+      expect(JSON.parse(game1.metadata)["turn"]).to be == 1
+
+      expect do
+        put :update, params: { id: game1.id, game: { metadata: '{ "turn": 2 }' } }
+      end.to change { game1.reload.metadata }
+
+      expect(response.status).to be == 200
+    end
+
     it "can't update a game if not player" do
       user3 = create(:user)
 
