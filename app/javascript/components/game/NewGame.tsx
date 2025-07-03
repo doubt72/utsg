@@ -375,7 +375,7 @@ export default function NewGame() {
               <CustomCheckbox onClick={() => setPlayer(0)} selected={ formInput.player === 0 }/>
               <span className="font11em">hotseat / solo</span>
             </div>
-            <div className="align-end">
+            <div className="mt1em align-end">
               <CreateGameButton type="confirm" />
             </div>
           </div>

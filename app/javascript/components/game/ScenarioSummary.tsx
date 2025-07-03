@@ -4,6 +4,48 @@ import MapDisplay from "./map/MapDisplay";
 import WeatherDisplay from "./map/WeatherDisplay";
 import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
 import Scenario, { ScenarioData } from "../../engine/Scenario";
+import { starPath } from "../../utilities/graphics";
+import { Coordinate } from "../../utilities/commonTypes";
+
+export function ratingStars(rating: number) {
+  const stars: number[] = []
+  for (let i = 0; i < 5; i++) {
+    stars.push(i+1 < rating ? 1 : (i < rating ? rating - i : 0))
+  }
+  return (
+    <svg className="scenario-row-rating" width={80} height={16} viewBox="0 0 500 100">
+      { stars.map((s, i) => <g key={i}>
+        <mask id={`star-mask-${i}`}>
+          <path d={starPath(new Coordinate(50 + 100*i, 55), 50)} style={{ fill: "#FFF" }}/>
+        </mask>
+        <path d={starPath(new Coordinate(50 + 100*i, 55), 50)}
+              style={({ stroke: "#450", strokeWidth: 5, fill: "#450", strokeLinejoin: "round" })} />
+        <rect x={10 + 100*i} y={0} width={s*80} height={100} mask={`url(#star-mask-${i})`}
+              style={{ fill: "#CE7" }} />
+        <path d={starPath(new Coordinate(50 + 100*i, 55), 50)}
+              style={({ stroke: "#000", strokeWidth: 5, fill: "rgba(0,0,0,0)", strokeLinejoin: "round" })} />
+      </g>)}
+    </svg>
+  )
+}
+
+export function myRatingStars(rating: number) {
+  return (
+    <svg className="scenario-row-rating" width={80} height={16} viewBox="0 0 500 100">
+      { [0, 1, 2, 3, 4].map(s => <g key={s}>
+        <mask id={`star-mask-${s}`}>
+          <path d={starPath(new Coordinate(50 + 100*s, 55), 50)} style={{ fill: "#FFF" }}/>
+        </mask>
+        <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
+              style={({ stroke: "#540", strokeWidth: 5, fill: "#540", strokeLinejoin: "round" })} />
+        { rating >= s+1 ? <rect x={10 + 100*s} y={0} width={80} height={100} mask={`url(#star-mask-${s})`}
+                              style={{ fill: "#EB0" }} /> : "" }
+        <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
+              style={({ stroke: "#000", strokeWidth: 5, fill: "rgba(0,0,0,0)", strokeLinejoin: "round" })} />
+      </g>)}
+    </svg>
+  )
+}
 
 interface ScenarioSummaryProps {
   data: ScenarioData
@@ -99,7 +141,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         </div>
         <div>
           <div className="p05em corner-round edge-line">
-            <MapDisplay map={map} scale={scale()} preview={true} />
+            <MapDisplay map={map} scale={scale()} preview={true} forceUpdate={0} />
           </div>
         </div>
       </div>
@@ -139,6 +181,23 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
               }
             })}
           </div>
+        </div>
+      </div>
+      <div className="scenario-description-row background-gray corner-round mt1em">
+        <div className="mr05em">Wins: {player1Pills} 105</div>
+        <div className="mr05em">{player2Pills} 78</div>
+        <div className="ml1em">
+          <span className="red">{Math.round(105 / (105 + 78) * 100)}%</span> player one
+        </div>
+        <div className="flex-fill"></div>
+        <div className="ml1em nowrap green">
+          my rating: {myRatingStars(4)}
+        </div>
+        <div className="ml1em nowrap red">
+          avg rating: {ratingStars(3.5)} <span className="scenario-row-rating-number red">{3.5}</span>
+        </div>
+        <div className="ml025em nowrap">
+          - <span className="scenario-row-rating-number">{151}</span> ratings
         </div>
       </div>
     </div>

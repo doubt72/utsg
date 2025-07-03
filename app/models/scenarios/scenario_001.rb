@@ -6,7 +6,7 @@ module Scenarios
     NAME = "A Straightforward Proposition"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
 
     DATE = [1944, 6, 25].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,8 +16,9 @@ module Scenarios
       "0": { list: [
         :ussr_leader_6_2,
         :ussr_leader_4_1,
-        [6, :ussr_rifle_s],
         [3, :ussr_smg_s],
+        [3, :ussr_rifle_s],
+        [3, :ussr_rifle_t],
         [2, :ussr_dp_27],
         :ussr_dshk,
       ] },
@@ -27,7 +28,8 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_1,
         :ger_leader_4_1,
-        [6, :ger_rifle_s],
+        [4, :ger_rifle_s],
+        [2, :ger_rifle_t],
         [2, :ger_mg_42],
       ] },
     }.freeze

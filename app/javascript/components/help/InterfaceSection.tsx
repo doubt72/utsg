@@ -136,7 +136,7 @@ export default function InterfaceSection() {
   return (
     <div>
       <h1>Game Interface</h1>
-      <p>There is a standard interface used when playing the game.</p>
+      <p>This is the main interface of the game, showing a scenario in progress:</p>
       {gameInterface}
       <p>
         {redNumber(1)}

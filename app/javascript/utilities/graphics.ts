@@ -186,4 +186,18 @@ export function counterOutline(counter: Counter, width: number, outline: number)
   ].join(" ")
 }
 
+export function starPath(loc: Coordinate, r: number): string {
+  const path: (string | number)[] = []
+  for (let i = 0; i < 5; i++) {
+    path.push(i === 0 ? "M" : "L")
+    path.push(Math.sin(i * 72 / 180 * Math.PI) * r + loc.x)
+    path.push(-Math.cos(i * 72 / 180 * Math.PI) * r + loc.y)
+    path.push("L")
+    path.push(Math.sin((i * 72 + 36) / 180 * Math.PI) * r*0.382 + loc.x)
+    path.push(-Math.cos((i * 72 + 36) / 180 * Math.PI) * r*0.382 + loc.y)
+  }
+  path.push("z")
+  return path.join(" ")
+}
+
 export const yMapOffset = 160

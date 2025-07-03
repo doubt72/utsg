@@ -16,7 +16,8 @@
 
 // Create game page layout
 .scenario-form-container {
-  min-width: 400px;
+  min-width: max(320px, 25%);
+  flex-grow: 2;
   padding: 1em;
   margin-right: 0.5em;
   border: 2px solid $border-color-light-gray;
@@ -26,8 +27,8 @@
 .scenario-list-container {
   display: flex;
   flex-wrap: wrap;
-  padding: 1em 0 1em 1em;
   flex-grow: 1;
+  padding: 1em 0 1em 1em;
   background-color: $background-gray;
   border-radius: 0.5em;
 }
@@ -61,6 +62,19 @@
 
 .scenario-row-selected {
   background-color: white;
+}
+
+.scenario-row-percentage {
+  min-width: 40px;
+}
+
+.scenario-row-rating {
+  vertical-align: -2px;
+}
+
+.scenario-row-rating-number {
+  font-size: 14px;
+  font-family: monospace;
 }
 
 .scenario-row-code {

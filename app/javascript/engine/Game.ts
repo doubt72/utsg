@@ -255,7 +255,7 @@ export default class Game {
   get initiativeCheck(): boolean {
     if (this.gameActionState) { return false }
     let rc = false
-    for (const a of this.actions) {
+    for (const a of this.actions.filter(a => !a.undone)) {
       if (a.type == "initiative") { rc = false }
       if (["move", "rush", "assault move", "fire", "intensive fire", "rout", "rout all"].includes(a.type)) {
         rc = true

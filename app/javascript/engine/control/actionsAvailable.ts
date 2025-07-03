@@ -1,6 +1,7 @@
 import { GameAction, unitType } from "../../utilities/commonTypes"
 import Game, { actionType, gamePhaseType } from "../Game"
 import Unit from "../Unit"
+import { needPickUpDisambiguate } from "./gameActions"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
@@ -9,7 +10,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]
   }
-  const actions = []
+  const actions: GameAction[] = []
   if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
       return [{ type: "none", message: "waiting for player to join" }]
@@ -25,86 +26,81 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     } else {
       return [{ type: "none", message: "waiting for game to start" }]
     }
+  } else if (checkPlayer(game, activePlayer, actions)) {
+    return actions
   } else if (game.phase === gamePhaseType.Deployment) {
-    // TODO: limit undo to user who do'd
-    if (game.lastAction?.undoPossible && !game.actionInProgress) {
-      actions.push({ type: "undo" })
+    if (!game.actionInProgress) {
+      addUndo(game, activePlayer, actions)
     }
     actions.unshift({ type: "deploy" })
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
-    if (game.lastAction?.undoPossible && !game.actionInProgress &&
-        (!selection || game.gameActionState?.currentAction === actionType.Breakdown)) {
-      actions.push({ type: "undo" })
+    if (!game.actionInProgress && (!selection || game.gameActionState?.currentAction === actionType.Breakdown)) {
+      addUndo(game, activePlayer, actions)
     }
-    if ((activePlayer === game.playerOneName && game.currentPlayer === 1) ||
-        (activePlayer === game.playerTwoName && game.currentPlayer === 2)) {
-      if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
-        const actionSelect = currSelection(game, true)
-        const action = game.gameActionState.move
-        if (actionSelect && action) {
-          if (action.loadingMove) {
-            if (game.needPickUpDisambiguate) {
-              actions.unshift({ type: "none", message: "select unit to pick up unit" })
-            } else {
-              actions.unshift({ type: "none", message: "select unit to be picked up" })
-            }
-          } else if (action.droppingMove) {
-            actions.unshift({ type: "none", message: "select unit to drop off" })
-          } else if (action.placingSmoke) {
-            actions.unshift({ type: "none", message: "select hex to place smoke" })
-          } else if (action.doneSelect) {
-            actions.unshift({ type: "none", message: "select hex to move" })
+    if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
+      const actionSelect = currSelection(game, true)
+      const action = game.gameActionState.move
+      if (actionSelect && action) {
+        if (action.loadingMove) {
+          if (needPickUpDisambiguate(game)) {
+            actions.unshift({ type: "none", message: "select unit to pick up unit" })
           } else {
-            actions.unshift({ type: "none", message: "select addtional units or select hex to move" })
+            actions.unshift({ type: "none", message: "select unit to be picked up" })
           }
-          if (actionSelect.turreted && !actionSelect.turretJammed) {
-            actions.push({ type: "move_rotate_toggle" })
-          }
-          if (showLaySmoke(game)) {
-            actions.push({ type: "move_smoke_toggle" })
-          }
-          if (showDropMove(game)) {
-            actions.push({ type: "move_shortdrop_toggle" })
-          }
-          if (showLoadMove(game)) {
-            actions.push({ type: "move_load_toggle" })
-          }
-          if (!action.doneSelect) {
-            actions.push({ type: "move_done_multiselect" })
-          }
-          if (action.path.length + action.addActions.length > 1) {
-            actions.push({ type: "move_finish" })
-          }
-          actions.push({ type: "move_cancel" })
+        } else if (action.droppingMove) {
+          actions.unshift({ type: "none", message: "select unit to drop off" })
+        } else if (action.placingSmoke) {
+          actions.unshift({ type: "none", message: "select hex to place smoke" })
+        } else if (action.doneSelect) {
+          actions.unshift({ type: "none", message: "select hex to move" })
         } else {
-          actions.unshift({ type: "none", message: "error: unexpected missing state" })
+          actions.unshift({ type: "none", message: "select addtional units or select hex to move" })
         }
-      } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
-        actions.push({type: "breakdown"})
-      } else if (game.gameActionState?.currentAction === actionType.Initiative) {
-        actions.push({type: "initiative"})
-      } else if (game.reactionFire) {
-        actions.unshift({ type: "none", message: "reaction fire" })
-        if (canFire(selection)) { actions.push({ type: "reaction_fire" }) }
-        if (canIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
-        actions.push({ type: "empty_pass" })
-      } else if (!selection) {
-        actions.unshift({ type: "none", message: "select units to activate" })
-        actions.push({ type: "enemy_rout" })
-        actions.push({ type: "pass" })
+        if (actionSelect.turreted && !actionSelect.turretJammed) {
+          actions.push({ type: "move_rotate_toggle" })
+        }
+        if (showLaySmoke(game)) {
+          actions.push({ type: "move_smoke_toggle" })
+        }
+        if (showDropMove(game)) {
+          actions.push({ type: "move_shortdrop_toggle" })
+        }
+        if (showLoadMove(game)) {
+          actions.push({ type: "move_load_toggle" })
+        }
+        if (!action.doneSelect) {
+          actions.push({ type: "move_done_multiselect" })
+        }
+        if (action.path.length + action.addActions.length > 1) {
+          actions.push({ type: "move_finish" })
+        }
+        actions.push({ type: "move_cancel" })
       } else {
-        if (canFire(selection)) { actions.push({ type: "fire" }) }
-        if (canIntensiveFire(selection)) { actions.push({ type: "intensive_fire" }) }
-        if (canMove(selection)) { actions.push({ type: "move" }) }
-        if (canRush(selection)) { actions.push({ type: "rush" }) }
-        if (canAssaultMove(selection)) { actions.push({ type: "assault_move" }) }
-        if (canRout(selection)) { actions.push({ type: "rout" }) }
-        actions.push({ type: "unselect" })
+        actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
+    } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
+      actions.push({type: "breakdown"})
+    } else if (game.gameActionState?.currentAction === actionType.Initiative) {
+      actions.push({type: "initiative"})
+    } else if (game.reactionFire) {
+      actions.unshift({ type: "none", message: "reaction fire" })
+      if (canFire(selection)) { actions.push({ type: "reaction_fire" }) }
+      if (canIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
+      actions.push({ type: "empty_pass" })
+    } else if (!selection) {
+      actions.unshift({ type: "none", message: "select units to activate" })
+      actions.push({ type: "enemy_rout" })
+      actions.push({ type: "pass" })
     } else {
-      actions.unshift({ type: "none", message: "waiting for opponent to move" })
+      if (canFire(selection)) { actions.push({ type: "fire" }) }
+      if (canIntensiveFire(selection)) { actions.push({ type: "intensive_fire" }) }
+      if (canMove(selection)) { actions.push({ type: "move" }) }
+      if (canRush(selection)) { actions.push({ type: "rush" }) }
+      if (canAssaultMove(selection)) { actions.push({ type: "assault_move" }) }
+      if (canRout(selection)) { actions.push({ type: "rout" }) }
+      actions.push({ type: "unselect" })
     }
     return actions
   } else {
@@ -125,6 +121,26 @@ export function currSelection(game: Game, move: boolean): Unit | undefined {
   const counters = game.scenario.map.currentSelection
   if (counters.length < 1) { return undefined }
   return counters[0].unit
+}
+
+function checkPlayer(game: Game, activePlayer: string, actions: GameAction[]): boolean {
+  if ((activePlayer === game.playerOneName && game.lastAction?.player === 1) ||
+      (activePlayer === game.playerTwoName && game.lastAction?.player === 2)) {
+    return false
+  } else if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) {
+    actions.unshift({ type: "none", message: "waiting for player to move" })
+    return true
+  }
+  actions.unshift({ type: "none", message: "waiting for opponent to move" })
+  return true
+}
+
+function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {
+  if (!game.lastAction?.undoPossible) { return }
+  if ((activePlayer === game.playerOneName && game.lastAction.player === 1) ||
+      (activePlayer === game.playerTwoName && game.lastAction.player === 2)) {
+    actions.push({ type: "undo" })
+  }
 }
 
 function canFire(unit: Unit | undefined): boolean {
