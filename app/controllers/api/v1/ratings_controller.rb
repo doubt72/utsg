@@ -3,13 +3,13 @@
 module Api
   module V1
     class RatingsController < ApplicationController
-      skip_before_action :authenticate_user!, only: [:index]
+      skip_before_action :authenticate_user!, only: [:average]
 
-      def index
-        render json: Rating.average_rating(params[:scenario_id]), status: :ok
+      def average
+        render json: Rating.average_rating(params[:scenario]), status: :ok
       end
 
-      def show
+      def single
         if current_rating
           render json: current_rating.show_body, status: :ok
         else
@@ -20,7 +20,7 @@ module Api
       def create
         rating = Rating.create_or_update(create_params)
         if rating.persisted?
-          render json: rating.show_body, status: :ok
+          render json: rating.show_body, status: :created
         else
           render json: rating.errors, status: :unprocessable_entity
         end
@@ -35,8 +35,8 @@ module Api
       end
 
       def create_params
-        params[:rating].merge!(user_id: current_user.id)
-        params.require(:rating).permit(:user_id, :scenario, :rating)
+        params.merge!(user_id: current_user.id)
+        params.permit(:user_id, :scenario, :rating)
       end
     end
   end

@@ -36,6 +36,12 @@ Rails.application.routes.draw do
           get "all_units"
         end
       end
+      resources :ratings, only: %i[create] do
+        collection do
+          get "single"
+          get "average"
+        end
+      end
     end
   end
   root "home#index"

@@ -19,6 +19,7 @@ class Rating < ApplicationRecord
     if rec
       rec.rating = params[:rating]
       rec.save!
+      rec
     else
       create(params)
     end
