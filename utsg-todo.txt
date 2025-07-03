@@ -1,7 +1,5 @@
 High Priority Features/Bug Fixes:
   - Clean up squads/teams for all scenarios
-  - Some way to resign
-  - Ability to kick players
   - Main Passing
   - Rush Move
   - Assault Move
@@ -17,6 +15,8 @@ High Priority Features/Bug Fixes:
   - Weather
 
 Future Features/Bug Fixes:
+  - Some way to resign
+  - Ability to kick players
   - Implement Help Button linking to game context
   - Change terminology for jamming in documentation to be more like breaking
   - Fix hindrance bug

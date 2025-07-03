@@ -201,6 +201,87 @@ RSpec.describe Api::V1::ScenariosController do
         last = unit_count
       end
     end
+
+    context "balance sorting" do
+      before :each do
+        game1 = create(:game, scenario: "005")
+        game1.winner = game1.player_one
+        game1.save!
+
+        game2 = create(:game, scenario: "007", player_two: create(:user))
+        game2.winner = game2.player_two
+        game2.save!
+      end
+
+      it "gets data in correct order with default sorting" do
+        get :index, params: { status: "*", sort: "b", sort_dir: "asc" }
+
+        expect(response.status).to be == 200
+        data = JSON.parse(response.body)["data"]
+
+        last = 0.0
+        data.each do |d|
+          one = d["wins"]["one"] + 1
+          two = d["wins"]["two"] + 1
+          pct = ((one.to_f / (one + two)) - 0.5).abs
+          expect(pct).to be >= last
+          last = pct
+        end
+      end
+
+      it "gets data in correct order with reverse sorting" do
+        get :index, params: { status: "*", sort: "b", sort_dir: "desc" }
+
+        expect(response.status).to be == 200
+        data = JSON.parse(response.body)["data"]
+
+        last = 0.5
+        data.each do |d|
+          one = d["wins"]["one"] + 1
+          two = d["wins"]["two"] + 1
+          pct = ((one.to_f / (one + two)) - 0.5).abs
+          expect(pct).to be <= last
+          last = pct
+        end
+      end
+    end
+
+    context "rating sorting" do
+      before :each do
+        create(:rating, scenario: "005", rating: 1)
+        create(:rating, scenario: "007", rating: 5)
+      end
+
+      it "gets data in correct order with default sorting" do
+        get :index, params: { status: "*", sort: "r", sort_dir: "asc" }
+
+        expect(response.status).to be == 200
+        data = JSON.parse(response.body)["data"]
+
+        expect(data[0]["id"]).to be == "007"
+
+        last = 5
+        data.each do |d|
+          expect(d["rating"]["average"]).to be <= last
+          last = d["rating"]["average"]
+        end
+      end
+
+      it "gets data in correct order with reverse sorting" do
+        get :index, params: { status: "*", sort: "r", sort_dir: "desc" }
+
+        expect(response.status).to be == 200
+        data = JSON.parse(response.body)["data"]
+
+        expect(data[0]["id"]).to be == "005"
+
+        last = 0
+        data.each do |d|
+          expect(d["rating"]["average"]).to be >= last
+          last = d["rating"]["average"]
+        end
+      end
+    end
   end
 
   describe "filters" do
