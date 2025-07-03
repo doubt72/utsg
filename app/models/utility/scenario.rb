@@ -45,9 +45,20 @@ module Utility
       end
 
       def stats(id)
-        one = Game.where("player_one_id = winner_id AND scenario = ?", id).count
-        two = Game.where("player_one_id = winner_id AND scenario = ?", id).count
+        one = Game.where("player_one_id = winner_id AND scenario = ?", id).count + 1
+        two = Game.where("player_two_id = winner_id AND scenario = ?", id).count + 1
         { one:, two: }
+      end
+
+      def all_stats(data)
+        ids = data[:data].map { |s| s[:id] }
+        p1 = Game.where("player_one_id = winner_id AND scenario IN (?)", ids).group(:scenario).count
+        p2 = Game.where("player_two_id = winner_id AND scenario IN (?)", ids).group(:scenario).count
+        {
+          page: data[:page], more: data[:more], data: data[:data].map do |s|
+            s.merge(wins: { one: p1[s[:id]].to_i + 1, two: p2[s[:id]].to_i + 1 })
+          end,
+        }
       end
     end
   end

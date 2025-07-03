@@ -1,8 +1,5 @@
 High Priority Features/Bug Fixes:
   - Clean up squads/teams for all scenarios
-  - Game ratings, scenario balance stats, user stats
-    - All scenarios, win/loss/abandoned
-    - Total wins, total losses, total abandoned games
   - Some way to resign
   - Ability to kick players
   - Main Passing

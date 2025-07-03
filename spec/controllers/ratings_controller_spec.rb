@@ -17,8 +17,8 @@ RSpec.describe Api::V1::RatingsController do
 
       expect(response.status).to be == 200
       json = JSON.parse(response.body)
-      expect(json["num"]).to be == 1
-      expect(json["avg"]).to be == 4
+      expect(json["count"]).to be == 2
+      expect(json["average"]).to be == 4
     end
 
     it "can get average with more records" do
@@ -28,8 +28,8 @@ RSpec.describe Api::V1::RatingsController do
 
       expect(response.status).to be == 200
       json = JSON.parse(response.body)
-      expect(json["num"]).to be == 2
-      expect(json["avg"]).to be_within(0.01).of(3.5)
+      expect(json["count"]).to be == 3
+      expect(json["average"]).to be_within(0.01).of(3.333)
     end
 
     it "can get average of nothing" do
@@ -37,8 +37,8 @@ RSpec.describe Api::V1::RatingsController do
 
       expect(response.status).to be == 200
       json = JSON.parse(response.body)
-      expect(json["num"]).to be == 0
-      expect(json["avg"]).to be == 0
+      expect(json["count"]).to be == 1
+      expect(json["average"]).to be == 4
     end
   end
 
@@ -76,7 +76,7 @@ RSpec.describe Api::V1::RatingsController do
       expect(json["scenario"]).to be == "002"
       expect(json["rating"]).to be == 3
 
-      expect(Rating.average_rating("002")).to be == { num: 1, avg: 3 }
+      expect(Rating.average_rating("002")).to be == { count: 2, average: 3.5 }
     end
 
     it "can create additional rating" do
@@ -91,7 +91,8 @@ RSpec.describe Api::V1::RatingsController do
       expect(json["scenario"]).to be == "001"
       expect(json["rating"]).to be == 3
 
-      expect(Rating.average_rating("001")).to be == { num: 2, avg: 3.5 }
+      expect(Rating.average_rating("001")[:count]).to be == 3
+      expect(Rating.average_rating("001")[:average]).to be_within(0.01).of(3.333)
     end
 
     it "can update rating" do
@@ -106,7 +107,7 @@ RSpec.describe Api::V1::RatingsController do
       expect(json["scenario"]).to be == "001"
       expect(json["rating"]).to be == 3
 
-      expect(Rating.average_rating("001")).to be == { num: 1, avg: 3 }
+      expect(Rating.average_rating("001")).to be == { count: 2, average: 3.5 }
     end
   end
 end

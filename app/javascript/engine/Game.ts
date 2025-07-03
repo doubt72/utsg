@@ -107,6 +107,7 @@ export default class Game {
   closeOverlay: boolean = false;
 
   messageQueue: string[]
+  updateTimer: NodeJS.Timeout | undefined
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -178,9 +179,19 @@ export default class Game {
     if (player !== this.iCurrentPlayer) {
       this.iCurrentPlayer = player
       if (this.suppressNetwork) { return }
-      putAPI(`/api/v1/games/${this.id}`, { game: { current_player: this.currentUser } }, {
-        ok: () => {}
-      })
+      if (this.updateTimer) { clearTimeout(this.updateTimer) }
+      // Avoid doing a bunch of updates at the same time when (say) cycling
+      // through skipped phases, this makes sure that only the last change goes
+      // to the DB (i.e., that irregular network delays don't cause the updates
+      // to happen out of order and have the wrong user change being the last
+      // change stored).  This isn't needed for turns, those changes happen
+      // infrequently.
+      this.updateTimer = setTimeout(() => {
+        this.updateTimer = undefined
+        putAPI(`/api/v1/games/${this.id}`, { game: { current_player: this.currentUser } }, {
+          ok: () => {}
+        })
+      }, 1000)
     }
   }
 

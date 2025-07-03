@@ -31,7 +31,7 @@ RSpec.describe Rating do
   end
 
   it "can get average" do
-    expect(Rating.average_rating("001")).to be == { num: 1, avg: 4.0 }
+    expect(Rating.average_rating("001")).to be == { count: 2, average: 4.0 }
   end
 
   it "can update average" do
@@ -39,10 +39,11 @@ RSpec.describe Rating do
       Rating.create_or_update({ user_id: user2.id, scenario: "001", rating: 3 })
     end.to change { Rating.count }.by(1)
 
-    expect(Rating.average_rating("001")).to be == { num: 2, avg: 3.5 }
+    expect(Rating.average_rating("001")[:count]).to be == 3
+    expect(Rating.average_rating("001")[:average]).to be_within(0.01).of(3.333)
   end
 
   it "handles average of no records" do
-    expect(Rating.average_rating("002")).to be == { num: 0, avg: 0.0 }
+    expect(Rating.average_rating("002")).to be == { count: 1, average: 4.0 }
   end
 end

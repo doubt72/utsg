@@ -5,12 +5,15 @@ import Game from "./Game"
 import Map, { MapData } from "./Map";
 import Unit, { UnitData } from "./Unit";
 
-export type ScenarioData = {
+type ScenarioBaseData = {
   id: string;
   name: string;
   status: string;
   allies: string[];
   axis: string[];
+}
+
+export type ScenarioData = ScenarioBaseData & {
   metadata: {
     author: string;
     description: string[];
@@ -24,6 +27,11 @@ export type ScenarioData = {
     special_rules?: string[],
     map_data: MapData;
   }
+}
+
+export type ScenarioListData = ScenarioBaseData & {
+  wins: { one: number, two: number }
+  rating: { average: number, count: number }
 }
 
 export type ReinforcementItem = {x: number, used: number, id?: string, counter: Unit | Feature}
@@ -66,7 +74,6 @@ export default class Scenario {
     this.turns = data.metadata.turns
     this.firstAction = data.metadata.first_action
     if (game) {
-      game.initiativePlayer = this.firstAction
       game.initiative = 0
     }
     this.firstDeploy = data.metadata.first_deploy

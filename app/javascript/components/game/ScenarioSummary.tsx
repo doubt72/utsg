@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CounterDisplay from "./CounterDisplay";
 import MapDisplay from "./map/MapDisplay";
 import WeatherDisplay from "./map/WeatherDisplay";
@@ -6,6 +6,7 @@ import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
 import Scenario, { ScenarioData } from "../../engine/Scenario";
 import { starPath } from "../../utilities/graphics";
 import { Coordinate } from "../../utilities/commonTypes";
+import { getAPI, postAPI } from "../../utilities/network";
 
 export function ratingStars(rating: number) {
   const stars: number[] = []
@@ -29,29 +30,92 @@ export function ratingStars(rating: number) {
   )
 }
 
-export function myRatingStars(rating: number) {
-  return (
-    <svg className="scenario-row-rating" width={80} height={16} viewBox="0 0 500 100">
-      { [0, 1, 2, 3, 4].map(s => <g key={s}>
-        <mask id={`star-mask-${s}`}>
-          <path d={starPath(new Coordinate(50 + 100*s, 55), 50)} style={{ fill: "#FFF" }}/>
-        </mask>
-        <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
-              style={({ stroke: "#540", strokeWidth: 5, fill: "#540", strokeLinejoin: "round" })} />
-        { rating >= s+1 ? <rect x={10 + 100*s} y={0} width={80} height={100} mask={`url(#star-mask-${s})`}
-                              style={{ fill: "#EB0" }} /> : "" }
-        <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
-              style={({ stroke: "#000", strokeWidth: 5, fill: "rgba(0,0,0,0)", strokeLinejoin: "round" })} />
-      </g>)}
-    </svg>
-  )
-}
-
 interface ScenarioSummaryProps {
   data: ScenarioData
 }
 
 export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
+  const [rating, setRating] = useState<number>(0)
+  const [ratingDisplay, setRatingDisplay] = useState<JSX.Element | undefined>()
+  const [ratingCount, setRatingCount] = useState<number>(0)
+  const [ratingCountDisplay, setRatingCountDisplay] = useState<JSX.Element | undefined>()
+  const [myRating, setMyRating] = useState<number>(0)
+  const [myRatingDisplay, setMyRatingDisplay] = useState<JSX.Element | undefined>()
+
+  const [wins, setWins] = useState<{ one: number, two: number }>({ one: 0, two: 0 })
+  const [oneDisplay, setOneDisplay] = useState<JSX.Element | undefined>()
+  const [twoDisplay, setTwoDisplay] = useState<JSX.Element | undefined>()
+  const [percentDisplay, setPercentDisplay] = useState<JSX.Element | undefined>()
+
+  useEffect(() => {
+    getAPI(`/api/v1/ratings/average?scenario=${data.id}`, {
+      ok: response => response.json().then(json => {
+        setRating(json.average)
+        setRatingCount(json.count)
+      })
+    })
+  }, [data.id, myRating])
+
+  useEffect(() => {
+    getAPI(`/api/v1/ratings/single?scenario=${data.id}`, {
+      ok: response => response.json().then(json => {
+        setMyRating(json.rating)
+      })
+    })
+    getAPI(`/api/v1/scenarios/${data.id}/stats`, {
+      ok: response => response.json().then(json => {
+        setWins(json)
+      })
+    })
+  }, [data.id])
+
+  useEffect(() => {
+    setRatingDisplay(<div className="ml1em nowrap red">
+      avg rating: {ratingStars(rating)} <span className="scenario-row-rating-number red">{rating.toFixed(1)}</span>
+    </div>)
+    setRatingCountDisplay(<div className="ml025em nowrap">
+      - <span className="scenario-row-rating-number">{ratingCount}</span> ratings
+    </div>)
+  }, [rating, ratingCount])
+
+  useEffect(() => {
+    setMyRatingDisplay(
+    <div className="ml1em nowrap green">
+      my rating: {myRatingStars(myRating)}
+    </div>)
+  }, [myRating])
+
+  useEffect(() => {
+    setOneDisplay(<div className="mr05em">Wins: {player1Pills} { wins.one }</div>)
+    setTwoDisplay(<div className="mr05em">{player2Pills} { wins.two }</div>)
+    setPercentDisplay(<div className="ml1em">
+      <span className="red">{Math.round(wins.one / (wins.one + wins.two) * 100)}%</span> player one
+    </div>)
+  }, [wins])
+
+  const myRatingStars = (rating: number) => {
+    return (
+      <svg className="scenario-row-rating" width={80} height={16} viewBox="0 0 500 100">
+        { [0, 1, 2, 3, 4].map(s => <g key={s}>
+          <mask id={`star-mask-${s}`}>
+            <path d={starPath(new Coordinate(50 + 100*s, 55), 50)} style={{ fill: "#FFF" }}/>
+          </mask>
+          <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
+                style={({ stroke: "#540", strokeWidth: 5, fill: "#540", strokeLinejoin: "round" })} />
+          { rating >= s+1 ? <rect x={10 + 100*s} y={0} width={80} height={100} mask={`url(#star-mask-${s})`}
+                                style={{ fill: "#EB0" }} /> : "" }
+          <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
+                style={({ stroke: "#000", strokeWidth: 5, fill: "rgba(0,0,0,0)", strokeLinejoin: "round" })}
+                onClick={() => {
+                  postAPI("/api/v1/ratings", { scenario: data.id, rating: s+1 }, {
+                    ok: () => setMyRating(s+1)
+                  })
+                }} />
+        </g>)}
+      </svg>
+    )
+  }
+
   const scenario = new Scenario(data)
   const map = scenario.map
   map.preview = true
@@ -184,21 +248,13 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         </div>
       </div>
       <div className="scenario-description-row background-gray corner-round mt1em">
-        <div className="mr05em">Wins: {player1Pills} 105</div>
-        <div className="mr05em">{player2Pills} 78</div>
-        <div className="ml1em">
-          <span className="red">{Math.round(105 / (105 + 78) * 100)}%</span> player one
-        </div>
+        { oneDisplay }
+        { twoDisplay }
+        { percentDisplay }
         <div className="flex-fill"></div>
-        <div className="ml1em nowrap green">
-          my rating: {myRatingStars(4)}
-        </div>
-        <div className="ml1em nowrap red">
-          avg rating: {ratingStars(3.5)} <span className="scenario-row-rating-number red">{3.5}</span>
-        </div>
-        <div className="ml025em nowrap">
-          - <span className="scenario-row-rating-number">{151}</span> ratings
-        </div>
+        { myRatingDisplay }
+        { ratingDisplay }
+        { ratingCountDisplay }
       </div>
     </div>
   )

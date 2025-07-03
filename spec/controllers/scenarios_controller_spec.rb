@@ -38,6 +38,46 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 10
     end
+
+    it "gets correct winner data" do
+      game1 = create(:game, scenario: "001")
+      game1.winner = game1.player_one
+      game1.save!
+
+      game2 = create(:game, scenario: "001", player_two: create(:user))
+      game2.winner = game2.player_two
+      game2.save!
+
+      get :index, params: { status: "*", sort: "n", sort_dir: "asc" }
+
+      expect(response.status).to be == 200
+      expect(JSON.parse(response.body)["data"].length).to be == 10
+      expect(JSON.parse(response.body)["data"][1]["id"]).to be == "001"
+      expect(JSON.parse(response.body)["data"][1]["wins"]["one"]).to be == 2
+      expect(JSON.parse(response.body)["data"][1]["wins"]["two"]).to be == 2
+      expect(JSON.parse(response.body)["data"][2]["id"]).to be == "002"
+      expect(JSON.parse(response.body)["data"][2]["wins"]["one"]).to be == 1
+      expect(JSON.parse(response.body)["data"][2]["wins"]["two"]).to be == 1
+    end
+
+    it "gets correct rating data" do
+      create(:rating, scenario: "001", rating: 1)
+      create(:rating, scenario: "002", rating: 5)
+
+      get :index, params: { status: "*", sort: "n", sort_dir: "asc" }
+
+      expect(response.status).to be == 200
+      expect(JSON.parse(response.body)["data"].length).to be == 10
+      expect(JSON.parse(response.body)["data"][1]["id"]).to be == "001"
+      expect(JSON.parse(response.body)["data"][1]["rating"]["count"]).to be == 2
+      expect(JSON.parse(response.body)["data"][1]["rating"]["average"]).to be_within(0.01).of(2.5)
+      expect(JSON.parse(response.body)["data"][2]["id"]).to be == "002"
+      expect(JSON.parse(response.body)["data"][2]["rating"]["count"]).to be == 2
+      expect(JSON.parse(response.body)["data"][2]["rating"]["average"]).to be_within(0.01).of(4.5)
+      expect(JSON.parse(response.body)["data"][3]["id"]).to be == "003"
+      expect(JSON.parse(response.body)["data"][3]["rating"]["count"]).to be == 1
+      expect(JSON.parse(response.body)["data"][3]["rating"]["average"]).to be == 4
+    end
   end
 
   describe "sorting" do
@@ -324,8 +364,8 @@ RSpec.describe Api::V1::ScenariosController do
 
       expect(response.status).to be == 200
       body = JSON.parse(response.body)
-      expect(body["one"]).to be == 0
-      expect(body["two"]).to be == 0
+      expect(body["one"]).to be == 1
+      expect(body["two"]).to be == 1
     end
 
     it "handles data" do
@@ -333,7 +373,7 @@ RSpec.describe Api::V1::ScenariosController do
       game1.winner = game1.player_one
       game1.save!
 
-      game2 = create(:game, scenario: "001")
+      game2 = create(:game, scenario: "001", player_two: create(:user))
       game2.winner = game2.player_two
       game2.save!
 
@@ -341,8 +381,8 @@ RSpec.describe Api::V1::ScenariosController do
 
       expect(response.status).to be == 200
       body = JSON.parse(response.body)
-      expect(body["one"]).to be == 1
-      expect(body["two"]).to be == 1
+      expect(body["one"]).to be == 2
+      expect(body["two"]).to be == 2
     end
   end
 end

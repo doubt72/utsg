@@ -39,7 +39,7 @@ export default function InterfaceSection() {
   useEffect(() => {
     window.addEventListener("resize", handleResize);
 
-    // A hack to deal with the layout settling down after load; resize will
+    // A hack to deal with the layout sizes changing after load; resize will
     // settle after loading images, but the time that takes will vary depending
     // on how slow the network is, shouldn't be anywhere approaching the slowest
     // time here (should typically be under 100ms), but no re-renders will occur

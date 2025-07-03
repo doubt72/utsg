@@ -138,13 +138,13 @@ RSpec.describe Utility::Scenario do
 
   context "stats" do
     it "handles no games" do
-      expect(Utility::Scenario.stats("001")).to be == { one: 0, two: 0 }
+      expect(Utility::Scenario.stats("001")).to be == { one: 1, two: 1 }
     end
 
     it "handles games but no winners" do
       create(:game, scenario: "001")
 
-      expect(Utility::Scenario.stats("001")).to be == { one: 0, two: 0 }
+      expect(Utility::Scenario.stats("001")).to be == { one: 1, two: 1 }
     end
 
     it "handles games" do
@@ -152,11 +152,11 @@ RSpec.describe Utility::Scenario do
       game1.winner = game1.player_one
       game1.save!
 
-      game2 = create(:game, scenario: "001")
+      game2 = create(:game, scenario: "001", player_two: create(:user))
       game2.winner = game2.player_two
       game2.save!
 
-      expect(Utility::Scenario.stats("001")).to be == { one: 1, two: 1 }
+      expect(Utility::Scenario.stats("001")).to be == { one: 2, two: 2 }
     end
   end
 end

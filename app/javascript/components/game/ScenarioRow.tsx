@@ -1,15 +1,16 @@
 import React from "react";
 import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
-import { ScenarioData } from "../../engine/Scenario";
+import { ScenarioListData } from "../../engine/Scenario";
 import { ratingStars } from "./ScenarioSummary";
 
 interface ScenarioRowProps {
   onClick: (a: string) => void;
   selected: boolean;
-  data: ScenarioData;
+  data: ScenarioListData;
 }
 
 export default function ScenarioRow({ onClick, selected, data }: ScenarioRowProps) {
+
   const allies = data.allies.map(a => alliedCodeToPill(a))
   const axis = data.axis.map(a => axisCodeToPill(a))
 
@@ -30,8 +31,10 @@ export default function ScenarioRow({ onClick, selected, data }: ScenarioRowProp
       <div className="green flex-fill">{data.name} {statusCode()}</div>
       <div className="ml05em nowrap">{allies}</div>
       <div className="ml05em nowrap">{axis}</div>
-      <div className="ml05em nowrap scenario-row-percentage">50%</div>
-      <div className="ml05em nowrap">{ratingStars(3.5)}</div>
+      <div className="ml05em nowrap scenario-row-percentage">
+        {Math.round(data.wins.one / (data.wins.one + data.wins.two) * 100)}%
+      </div>
+      <div className="ml05em nowrap">{ratingStars(data.rating.average)}</div>
     </div>
   )
 }

@@ -8,20 +8,36 @@ class Rating < ApplicationRecord
   validates :rating, numericality: { only_integer: true, in: 1..5 }
   validates_uniqueness_of :scenario, scope: :user_id
 
-  def self.average_rating(scenario)
-    avg = where(scenario:).average(:rating).to_f
-    num = where(scenario:).count
-    { num:, avg: }
-  end
+  class << self
+    def average_rating(scenario)
+      count = where(scenario:).count + 1
+      average = (where(scenario:).average(:rating).to_f * (count - 1) / count) + (4 / count)
+      { count:, average: }
+    end
 
-  def self.create_or_update(params)
-    rec = find_by(user_id: params[:user_id], scenario: params[:scenario])
-    if rec
-      rec.rating = params[:rating]
-      rec.save!
-      rec
-    else
-      create(params)
+    def all_averages(data) # rubocop:disable Metrics/AbcSize
+      ids = data[:data].map { |s| s[:id] }
+      counts = where(scenario: ids).group(:scenario).count
+      averages = where(scenario: ids).group(:scenario).average(:rating)
+      {
+        page: data[:page], more: data[:more], data: data[:data].map do |s|
+          count = counts[s[:id]].to_i + 1
+          s.merge(
+            rating: { count:, average: (averages[s[:id]].to_f * (count - 1) / count) + (4 / count) }
+          )
+        end,
+      }
+    end
+
+    def create_or_update(params)
+      rec = find_by(user_id: params[:user_id], scenario: params[:scenario])
+      if rec
+        rec.rating = params[:rating]
+        rec.save!
+        rec
+      else
+        create(params)
+      end
     end
   end
 

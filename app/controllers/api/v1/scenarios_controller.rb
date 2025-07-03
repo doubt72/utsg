@@ -12,7 +12,11 @@ module Api
             string allies axis status theater type size sort sort_dir
           ].include? key
         end
-        render json: paginate(Utility::Scenario.all_scenarios(options)), status: :ok
+        render json: Rating.all_averages(
+          Utility::Scenario.all_stats(
+            paginate(Utility::Scenario.all_scenarios(options))
+          )
+        ), status: :ok
       end
 
       def show

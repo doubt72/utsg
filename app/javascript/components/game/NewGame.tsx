@@ -7,7 +7,7 @@ import { ArrowDownCircle, ArrowUpCircle, CaretDownFill, CaretUp, CaretUpFill } f
 import ScenarioRow from "./ScenarioRow";
 import ScenarioSummary from "./ScenarioSummary";
 import { Player } from "../../utilities/commonTypes";
-import { ScenarioData } from "../../engine/Scenario";
+import { ScenarioListData } from "../../engine/Scenario";
 
 export default function NewGame() {
   const navigate = useNavigate()
@@ -315,7 +315,7 @@ export default function NewGame() {
 
   const scenarioDisplayList = (
     scenarioList.length < 1 ? <div className="red mt05em">no scenarios match search</div> :
-    scenarioList.map((row: ScenarioData, i) => {
+    scenarioList.map((row: ScenarioListData, i) => {
       return (
         <ScenarioRow key={i} onClick={setScenario}
                      selected={formInput.scenario === row.id} data={row} />
