@@ -22,7 +22,8 @@ Rails.application.routes.draw do
           post "join"
           post "leave"
           post "start"
-          post "complete"
+          post "finish"
+          post "resign"
         end
       end
       resources :game_actions, only: %i[index create] do

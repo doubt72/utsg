@@ -71,8 +71,8 @@ export default function Profile() {
             </p> : "" }
           { localStorage.getItem("username") === username ? 
             <p>
-              Your game stats:
-            </p> : <p>Games stats:</p> }
+              Your game stats (does not include hotseat games):
+            </p> : <p>Games stats (does not include hotseat games):</p> }
           { statDisplay }
           <div className="align-end">
             <ReturnButton />

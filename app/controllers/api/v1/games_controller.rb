@@ -62,8 +62,17 @@ module Api
         end
       end
 
-      def complete
-        if current_game&.complete(current_user)
+      def resign
+        if current_game&.resign(current_user)
+          render json: current_game.show_body, status: :ok
+        else
+          render json: {}, status: :forbidden
+        end
+      end
+
+      def finish
+        # TODO: need to tweak this so can be executed by winner or non-winner
+        if current_game&.finish(current_user)
           render json: current_game.show_body, status: :ok
         else
           render json: {}, status: :forbidden

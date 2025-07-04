@@ -108,6 +108,7 @@ export default class Game {
 
   messageQueue: string[]
   updateTimer: NodeJS.Timeout | undefined
+  resignationLevel: number;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -130,7 +131,10 @@ export default class Game {
     this.phase = gamePhaseType.Deployment
     this.playerOnePoints = 0
     this.playerTwoPoints = 0
+
     this.messageQueue = []
+    this.resignationLevel = 0
+
     this.loadAllActions()
   }
 
@@ -161,6 +165,19 @@ export default class Game {
         }
       })
     })
+  }
+
+  increaseResignation() {
+    this.resignationLevel += 1
+    if (this.resignationLevel > 2) {
+      postAPI(`/api/v1/games/${this.id}/resign`, {}, {
+        ok: () => {}
+      })
+    } 
+  }
+
+  clearResignation() {
+    this.resignationLevel = 0
   }
 
   addMessage(message: string) {

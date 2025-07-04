@@ -11,7 +11,10 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     return [{ type: "sync" }]
   }
   const actions: GameAction[] = []
-  if (game.state === "needs_player") {
+  console.log(game.state)
+  if (game.state === "complete") {
+      return [{ type: "none", message: "game over" }]
+  } else if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
       return [{ type: "none", message: "waiting for player to join" }]
     } else {

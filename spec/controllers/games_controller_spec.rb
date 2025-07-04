@@ -421,12 +421,66 @@ RSpec.describe Api::V1::GamesController do
     end
   end
 
+  describe "resign" do
+    it "allows player to end game" do
+      login(user2)
+
+      expect do
+        post :resign, params: { id: game1.id }
+      end.to change { game1.reload.state }
+
+      expect(response.status).to be == 200
+      expect(game1.reload.state).to be == "complete"
+      expect(game1.winner.id).to be == user1.id
+      expect(game1.last_action.data["action"]).to be == "resign"
+    end
+
+    it "does not allow player to resign if waiting for player" do
+      login(user1)
+
+      expect do
+        post :resign, params: { id: game2.id }
+      end.not_to change { game2.reload.state }
+
+      expect(response.status).to be == 403
+      expect(game2.reload.state).to be == "needs_player"
+      expect(game2.winner).to be_nil
+    end
+
+    it "does not allow player to resign if already over" do
+      login(user1)
+
+      game2.update(winner: user1)
+      game2.complete!
+
+      expect do
+        post :resign, params: { id: game2.id }
+      end.not_to change { game2.reload.state }
+
+      expect(response.status).to be == 403
+      expect(game2.reload.state).to be == "complete"
+      expect(game2.winner.id).to be == user1.id
+    end
+
+    it "doesn't allow non-player to end game" do
+      user3 = create(:user)
+
+      login(user3)
+
+      expect do
+        post :resign, params: { id: game1.id }
+      end.not_to change { game1.reload.state }
+
+      expect(response.status).to be == 403
+    end
+  end
+
   describe "end_game" do
     it "allows player to end game" do
       login(user2)
 
       expect do
-        post :complete, params: { id: game1.id }
+        post :finish, params: { id: game1.id }
       end.to change { game1.reload.state }
 
       expect(response.status).to be == 200
@@ -437,11 +491,12 @@ RSpec.describe Api::V1::GamesController do
       login(user1)
 
       expect do
-        post :complete, params: { id: game2.id }
-      end.to change { game2.reload.state }
+        post :finish, params: { id: game2.id }
+      end.not_to change { game2.reload.state }
 
-      expect(response.status).to be == 200
-      expect(game2.reload.state).to be == "complete"
+      expect(response.status).to be == 403
+      expect(game2.reload.state).to be == "needs_player"
+      expect(game2.winner).to be_nil
     end
 
     it "doesn't allow non-player to end game" do
@@ -450,7 +505,7 @@ RSpec.describe Api::V1::GamesController do
       login(user3)
 
       expect do
-        post :complete, params: { id: game1.id }
+        post :finish, params: { id: game1.id }
       end.not_to change { game1.reload.state }
 
       expect(response.status).to be == 403

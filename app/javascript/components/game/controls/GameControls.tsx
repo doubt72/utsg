@@ -26,6 +26,8 @@ import UnselectButton from "./UnselectButton";
 import HelpButton from "./HelpButton";
 import BreakdownButton from "./BreakdownButton";
 import InitiativeButton from "./InitiativeButton";
+import ResignButton from "./ResignButton";
+import ResignCancelButton from "./ResignCancelButton";
 
 interface GameControlsProps {
   game: Game;
@@ -116,7 +118,15 @@ export default function GameControls({ game, callback }: GameControlsProps) {
   return (
     <div className="game-control ml05em mr05em">
       {controls}
-      <div className="mt05em mb05em mr05em transparent">O</div>
+      <div className="flex-fill"></div>
+      { game.state === "complete" ? "" : game.resignationLevel > 0 ? <div className="flex nowrap">
+        <div className="mt05em mb05em mr05em ml05em" >
+          { game.resignationLevel > 1 ? "Are you really sure? " : "Are you sure you want to resign? " }
+        </div>
+        <ResignButton game={game} callback={callAllBack} />
+        <ResignCancelButton game={game} callback={callAllBack} />
+      </div> : <div><ResignButton game={game} callback={callAllBack} /></div>
+      }
     </div>
   )
 }

@@ -106,8 +106,18 @@ class Game < ApplicationRecord
     else
       update(player_one_id: user.id)
     end
-    GameAction.create(sequence: last_sequence + 1, game: self, user:, player:,
-                      data: { action: "join", old_initiative: 0 })
+    GameAction.create!(sequence: last_sequence + 1, game: self, user:, player:,
+                       data: { action: "join", old_initiative: 0 })
+    self
+  end
+
+  def resign(user)
+    return nil unless finish(user)
+
+    player = user.id == player_one_id ? 1 : 2
+
+    GameAction.create!(sequence: last_sequence + 1, game: self, user:, player:,
+                       data: { action: "resign", old_initiative: 0 })
     self
   end
 
@@ -123,8 +133,8 @@ class Game < ApplicationRecord
     else
       update(player_two: nil)
     end
-    GameAction.create(sequence: last_sequence, game: self, user:, player:,
-                      data: { action: "leave", old_initiative: 0 })
+    GameAction.create!(sequence: last_sequence + 1, game: self, user:, player:,
+                       data: { action: "leave", old_initiative: 0 })
     self
   end
 
@@ -144,8 +154,11 @@ class Game < ApplicationRecord
     self
   end
 
-  def complete(user)
+  def finish(user)
     return nil unless [player_one_id, player_two_id].include? user.id
+    return nil unless state == "in_progress"
+
+    update(winner: user.id == player_one_id ? player_two : player_one)
 
     complete!
     self

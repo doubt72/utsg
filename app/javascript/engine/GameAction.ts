@@ -93,6 +93,9 @@ export default class GameAction {
     if (this.data.data.action === "leave") {
       return new StateAction(this.data, this.game, this.index, "left game");
     }
+    if (this.data.data.action === "resign") {
+      return new StateAction(this.data, this.game, this.index, "resigned game");
+    }
     if (this.data.data.action === "phase") {
       return new PhaseAction(this.data, this.game, this.index)
     }

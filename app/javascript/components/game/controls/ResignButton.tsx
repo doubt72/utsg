@@ -1,23 +1,23 @@
 import React, { FormEvent } from "react";
+import { XCircle } from "react-bootstrap-icons";
 import Game from "../../../engine/Game";
-import { CancelGlyph } from "../../utilities/buttons";
 
-interface UnselectButtonProps {
+interface ResignButtonProps {
   game: Game;
   callback: () => void;
 }
 
-export default function UnselectButton({ game, callback }: UnselectButtonProps) {
+export default function ResignButton({ game, callback }: ResignButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.scenario.map.clearAllSelections()
+    game.increaseResignation()
     callback()
   }
 
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{CancelGlyph()}clear selection</button>
+        <button type="submit" className="custom-button nowrap"><XCircle/>resign</button>
       </div>
     </form>
   )

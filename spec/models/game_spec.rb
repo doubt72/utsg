@@ -87,5 +87,23 @@ RSpec.describe Game do
         expect(game.reload).to be_ready
       end
     end
+
+    it "handles resignation" do
+      game.resign(user1)
+      expect(game.reload).to be_complete
+
+      expect(game.winner.id).to be == user2.id
+    end
+
+    it "can't re-resign" do
+      game.resign(user1)
+      expect(game.reload).to be_complete
+
+      expect(game.winner.id).to be == user2.id
+
+      game2 = Game.find(game.id)
+      game2.resign(user2)
+      expect(game2.reload.winner.id).to be == user2.id
+    end
   end
 end

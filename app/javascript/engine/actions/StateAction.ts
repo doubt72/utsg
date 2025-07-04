@@ -37,6 +37,9 @@ export default class StateAction extends BaseAction {
         this.game.playerTwoName = ""
       }
       this.game.state = "needs_player"
+    } else if (this.data.action === "resign") {
+      this.game.winner = this.player
+      this.game.state = "complete"
     }
   }
 }
