@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :usa_leader_5_1,
           [2, :usa_leader_4_1],
-          [12, :usa_rifle_s],
+          [7, :usa_rifle_s],
+          [5, :usa_rifle_t],
           [4, :usa_m1918_bar],
           :usa_m1_mortar,
           :usa_radio_155mm,
@@ -31,7 +32,8 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           :ger_leader_4_1,
-          [6, :ger_rifle_s],
+          [3, :ger_rifle_s],
+          [3, :ger_rifle_t],
           [4, :ger_crew_t],
           [3, :ger_mg_42],
           [2, :ger_7_5cm_leig_18],

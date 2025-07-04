@@ -15,7 +15,8 @@ module Scenarios
       "0": {
         list: [
           :usa_leader_3_1,
-          [4, :usa_green_s],
+          [2, :usa_green_s],
+          [2, :usa_green_t],
           :usa_m1918_bar,
           :usa_m2_browning,
           [4, :usa_t12_gmc],
@@ -38,7 +39,8 @@ module Scenarios
       "0": {
         list: [
           :ger_leader_6_2,
-          [4, :ger_rifle_s],
+          [2, :ger_rifle_s],
+          [2, :ger_rifle_t],
           [2, :ger_mg_42],
           [4, :ger_pzkpfw_iv_f2],
           [2, :ger_sdkfz_251_1],

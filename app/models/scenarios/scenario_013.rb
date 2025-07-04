@@ -16,8 +16,9 @@ module Scenarios
         list: [
           :ussr_leader_5_1,
           :ussr_leader_4_1,
-          [4, :ussr_guards_rifle_s],
           [2, :ussr_guards_smg_s],
+          [2, :ussr_guards_rifle_s],
+          [2, :ussr_guards_rifle_t],
           [2, :ussr_dp_27],
           [3, :ussr_is_2],
           [3, :ussr_t_34_m42_m43],
@@ -31,7 +32,8 @@ module Scenarios
         list: [
           :ger_leader_5_2,
           :ger_leader_4_1,
-          [6, :ger_rifle_s],
+          [4, :ger_rifle_s],
+          [2, :ger_rifle_t],
           [2, :ger_mg_42],
           [4, :ger_tiger_ii],
           [2, :ger_stug_iii_f_g],

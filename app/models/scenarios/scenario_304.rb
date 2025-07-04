@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :uk_leader_6_2,
           :uk_engineer_s,
-          [9, :uk_airborne_s],
+          [7, :uk_airborne_s],
+          [2, :uk_airborne_t],
           :uk_bren_lmg,
           :uk_piat,
         ],
@@ -33,7 +34,8 @@ module Scenarios
       "0": {
         list: [
           :ger_leader_4_1,
-          [4, :ger_rifle_s],
+          [3, :ger_rifle_s],
+          :ger_rifle_t,
           :ger_mg_34,
           [2, :ger_pzkpfw_iv_g],
         ],
@@ -41,7 +43,8 @@ module Scenarios
       "2": {
         list: [
           :ger_leader_4_1,
-          [4, :ger_rifle_s],
+          [3, :ger_rifle_s],
+          :ger_rifle_t,
           :ger_mg_34,
           :ger_marder_iii,
         ],
@@ -49,7 +52,8 @@ module Scenarios
       "4": {
         list: [
           :ger_leader_4_1,
-          [6, :ger_rifle_s],
+          [4, :ger_rifle_s],
+          [2, :ger_rifle_t],
           :ger_mg_34,
           :ger_8cm_grw_34,
           :ger_pzkpfw_iv_g,

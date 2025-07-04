@@ -16,12 +16,14 @@ module Scenarios
         :usa_leader_5_1,
         :usa_leader_4_1,
         [2, :usa_engineer_s],
-        [6, :usa_rifle_s],
+        [4, :usa_rifle_s],
+        [2, :usa_rifle_t],
         [2, :usa_m1918_bar],
       ] },
       "2": { list: [
         :usa_leader_5_1,
-        [3, :usa_rifle_s],
+        [2, :usa_rifle_s],
+        [1, :usa_rifle_t],
         [1, :usa_m1918_bar],
       ] },
     }.freeze
@@ -29,7 +31,8 @@ module Scenarios
     AXIS_UNITS = {
       "0": { list: [
         [2, :ger_leader_4_1],
-        [4, :ger_volksgrenadier_s],
+        [2, :ger_volksgrenadier_s],
+        [2, :ger_volksgrenadier_t],
         [2, :ger_mg_42],
         [8, :wire],
         [2, :pillbox],

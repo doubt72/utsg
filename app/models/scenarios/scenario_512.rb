@@ -15,8 +15,8 @@ module Scenarios
       "0": {
         list: [
           :alm_leader_5_1,
-          [4, :alm_regular_s],
-          [2, :alm_regular_t],
+          [2, :alm_regular_s],
+          [4, :alm_regular_t],
           [2, :alm_vickers_mg],
           [2, :alm_75mm_gun],
           [3, :strongpoint],
@@ -29,7 +29,8 @@ module Scenarios
         list: [
           :ger_leader_6_1,
           :ger_leader_5_1,
-          [10, :ger_gebirgsjager_s],
+          [5, :ger_gebirgsjager_s],
+          [5, :ger_gebirgsjager_t],
           [4, :ger_mg_34],
           :ger_5cm_legrw_36,
           :ger_radio_15cm,

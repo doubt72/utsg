@@ -16,8 +16,10 @@ module Scenarios
         list: [
           :fra_leader_5_1,
           :fra_leader_4_1,
-          [3, :fra_legionnaire_s],
-          [3, :fra_colonial_s],
+          [2, :fra_legionnaire_s],
+          :fra_colonial_s,
+          :fra_legionnaire_t,
+          [2, :fra_colonial_t],
           [2, :fra_crew_t],
           :fra_fm_24_29,
           :fra_m1915_hotchkiss,
@@ -37,7 +39,8 @@ module Scenarios
         list: [
           :ita_leader_4_1,
           [2, :ita_leader_3_1],
-          [12, :ita_bersaglieri_s],
+          [7, :ita_bersaglieri_s],
+          [5, :ita_bersaglieri_t],
           [4, :ita_breda_30],
           :ita_brixia_m35,
           :ita_radio_100mm,

@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :usa_leader_6_1,
           [2, :usa_leader_5_1],
-          [10, :usa_paratroop_s],
+          [6, :usa_paratroop_s],
+          [4, :usa_paratroop_t],
           [3, :usa_m1918_bar],
           :usa_m2_mortar,
           :usa_radio_155mm,
@@ -29,7 +30,8 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           :ger_leader_4_1,
-          [6, :ger_fallschirmjager_s],
+          [4, :ger_fallschirmjager_s],
+          [2, :ger_fallschirmjager_t],
           :ger_crew_t,
           [2, :ger_mg_42],
           :ger_radio_10_5cm,

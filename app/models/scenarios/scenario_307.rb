@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :uk_leader_5_1,
           [2, :uk_leader_4_1],
-          [10, :uk_line_s],
+          [5, :uk_line_s],
+          [5, :uk_line_t],
           :uk_crew_t,
           [3, :uk_bren_lmg],
           [2, :uk_piat],
@@ -30,7 +31,8 @@ module Scenarios
       "1": {
         list: [
           :uk_leader_4_1,
-          [2, :uk_line_s],
+          :uk_line_s,
+          :uk_line_t,
           :uk_bren_lmg,
           :uk_radio_152mm,
           [2, :uk_bedford_ql],
@@ -44,7 +46,8 @@ module Scenarios
         list: [
           :ger_leader_6_1,
           :ger_leader_4_1,
-          [6, :ger_ss_s],
+          [4, :ger_ss_s],
+          [2, :ger_ss_t],
           [2, :ger_mg_42],
           [3, :ger_tiger_i],
           [5, :ger_pzkpfw_iv_g],

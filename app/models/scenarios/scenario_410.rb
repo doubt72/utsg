@@ -15,7 +15,8 @@ module Scenarios
       "0": {
         list: [
           :usa_leader_5_1,
-          [6, :usa_marine_rifle_s],
+          [3, :usa_marine_rifle_s],
+          [3, :usa_marine_rifle_t],
           :usa_crew_t,
           :usa_m2_browning,
           [2, :usa_m1a1_bazooka],
@@ -30,7 +31,8 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_4_1,
-          [5, :jap_b_division_s],
+          [4, :jap_b_division_s],
+          :jap_b_division_t,
           :jap_type_99_lmg,
           [4, :jap_type_97_chi_ha],
           [4, :jap_type_95_ha_go],

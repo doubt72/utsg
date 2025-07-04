@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :uk_leader_5_1,
           :uk_leader_4_1,
-          [6, :uk_line_s],
+          [4, :uk_line_s],
+          [2, :uk_line_t],
           [2, :uk_bren_lmg],
           [6, :uk_matilda_i],
           [2, :uk_matilda_ii],
@@ -29,7 +30,8 @@ module Scenarios
         list: [
           :ger_leader_6_1,
           :ger_leader_4_1,
-          [6, :ger_rifle_s],
+          [4, :ger_rifle_s],
+          [2, :ger_rifle_t],
           [2, :ger_crew_t],
           [2, :ger_mg_34],
           [2, :ger_3_7cm_pak_36],

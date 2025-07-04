@@ -16,8 +16,10 @@ module Scenarios
         list: [
           :uk_leader_6_1,
           :uk_leader_5_1,
-          [4, :uk_gurkha_s],
-          [4, :uk_indian_s],
+          [2, :uk_gurkha_s],
+          [2, :uk_indian_s],
+          [2, :uk_gurkha_t],
+          [2, :uk_indian_t],
           [2, :uk_bren_lmg],
           :uk_2inch_mortar,
           :uk_ft,
@@ -29,7 +31,8 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_5_1,
-          [6, :jap_b_division_s],
+          [4, :jap_b_division_s],
+          [2, :jap_b_division_t],
           [2, :jap_type_92_hmg],
         ],
       },

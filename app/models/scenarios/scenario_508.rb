@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :alm_leader_5_1,
           [2, :alm_elite_s],
-          [8, :alm_conscript_s],
+          [6, :alm_conscript_s],
+          [2, :alm_conscript_t],
           [2, :alm_colt_m_29],
         ],
       },
@@ -27,7 +28,8 @@ module Scenarios
         list: [
           :ger_leader_6_1,
           :ger_leader_5_1,
-          [9, :ger_fallschirmjager_s],
+          [6, :ger_fallschirmjager_s],
+          [3, :ger_fallschirmjager_t],
           [3, :ger_mg_34],
         ],
       },

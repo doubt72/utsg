@@ -15,7 +15,8 @@ module Scenarios
       "0": { list: [
         :usa_leader_5_1,
         :usa_leader_4_1,
-        [7, :usa_rifle_s],
+        [6, :usa_rifle_s],
+        :usa_rifle_t,
         :usa_m1917_browning,
         :usa_radio_105mm,
       ] },
@@ -25,7 +26,8 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_1,
         :ger_leader_4_1,
-        [5, :ger_volksgrenadier_s],
+        [3, :ger_volksgrenadier_s],
+        [2, :ger_volksgrenadier_t],
         [2, :ger_mg_42],
       ] },
     }.freeze

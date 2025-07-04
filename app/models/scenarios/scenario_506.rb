@@ -16,8 +16,8 @@ module Scenarios
         list: [
           :alm_leader_5_1,
           :alm_leader_4_1,
-          [9, :alm_regular_s],
-          :alm_regular_t,
+          [7, :alm_regular_s],
+          [3, :alm_regular_t],
           :alm_vickers_mg,
           :alm_81mm_mortar,
           :alm_75mm_gun,
@@ -31,7 +31,8 @@ module Scenarios
         list: [
           :ita_leader_4_1,
           :ita_leader_3_1,
-          [7, :ita_fucilieri_s],
+          [5, :ita_fucilieri_s],
+          [2, :ita_fucilieri_t],
           [2, :ita_breda_m37],
           [4, :ita_l3_35],
           [2, :ita_m13_40],

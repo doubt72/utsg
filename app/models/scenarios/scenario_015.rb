@@ -15,7 +15,8 @@ module Scenarios
       "0": {
         list: [
           :ussr_leader_5_1,
-          [6, :ussr_rifle_s],
+          [5, :ussr_rifle_s],
+          :ussr_rifle_t,
           [2, :ussr_crew_t],
           :ussr_dp_27,
           [2, :ussr_45mm_53_k],
@@ -29,7 +30,8 @@ module Scenarios
         list: [
           :ger_leader_4_1,
           :ger_leader_6_1,
-          [9, :ger_rifle_s],
+          [6, :ger_rifle_s],
+          [3, :ger_rifle_t],
           [3, :ger_mg_34],
           [6, :ger_pzkpfw_iv_e],
         ],

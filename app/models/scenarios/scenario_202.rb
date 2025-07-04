@@ -15,7 +15,8 @@ module Scenarios
       "0": {
         list: [
           [2, :usa_leader_5_1],
-          [10, :usa_rifle_s],
+          [5, :usa_rifle_s],
+          [5, :usa_rifle_t],
           :usa_crew_t,
           [3, :usa_m1919_browning],
           :usa_m2_browning,
@@ -31,7 +32,8 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           :ger_leader_4_1,
-          [8, :ger_rifle_s],
+          [5, :ger_rifle_s],
+          [3, :ger_rifle_t],
           :ger_crew_t,
           [3, :ger_mg_42],
           :ger_7_5cm_leig_18,

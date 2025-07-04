@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :usa_leader_5_1,
           :usa_leader_4_1,
-          [10, :usa_rifle_s],
+          [6, :usa_rifle_s],
+          [4, :usa_rifle_t],
           [2, :usa_m2_browning],
           [2, :usa_m1_mortar],
           :usa_radio_105mm,
@@ -28,8 +29,8 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_4_1,
-          [6, :jap_b_division_s],
-          :jap_b_division_t,
+          [4, :jap_b_division_s],
+          [3, :jap_b_division_t],
           [2, :jap_type_92_hmg],
           :jap_70mm_type_92,
           :jap_radio_7_5cm,

@@ -15,7 +15,8 @@ module Scenarios
       "0": { list: [
         :uk_leader_5_1,
         :uk_leader_4_1,
-        [5, :uk_gurkha_s],
+        [3, :uk_gurkha_s],
+        [2, :uk_gurkha_t],
         [4, :uk_crew_t],
         [2, :uk_vickers_mg],
         [2, :uk_qf_25_pounder],
@@ -34,7 +35,8 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_2,
         :ger_leader_5_1,
-        [6, :ger_rifle_s],
+        [4, :ger_rifle_s],
+        [2, :ger_rifle_t],
         [2, :ger_mg_34],
         [2, :ger_sdkfz_250_1],
         :ger_sdkfz_221,

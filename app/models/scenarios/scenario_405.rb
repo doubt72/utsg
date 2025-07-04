@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :usa_leader_6_2,
           :usa_leader_5_1,
-          [8, :usa_marine_rifle_s],
+          [7, :usa_marine_rifle_s],
+          :usa_marine_rifle_t,
           :usa_m1918_bar,
         ],
       },
@@ -27,7 +28,8 @@ module Scenarios
         list: [
           :jap_leader_4_1,
           :jap_leader_3_1,
-          [6, :jap_b_division_s],
+          [4, :jap_b_division_s],
+          [2, :jap_b_division_t],
           [2, :jap_type_99_lmg],
         ],
       },

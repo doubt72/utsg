@@ -15,7 +15,8 @@ module Scenarios
       "0": {
         list: [
           :uk_leader_4_1,
-          [3, :uk_indian_s],
+          [2, :uk_indian_s],
+          :uk_indian_t,
           :uk_bren_lmg,
           [4, :uk_m3_lee],
         ],
@@ -26,7 +27,8 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_6_1,
-          [6, :jap_a_division_s],
+          [4, :jap_a_division_s],
+          [2, :jap_a_division_t],
           [2, :jap_type_99_lmg],
           [4, :jap_type_95_ha_go],
         ],

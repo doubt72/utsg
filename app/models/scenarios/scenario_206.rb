@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :usa_leader_5_1,
           [2, :usa_leader_4_1],
-          [10, :usa_green_s],
+          [7, :usa_green_s],
+          [3, :usa_green_t],
           [3, :usa_m1918_bar],
           :usa_radio_155mm,
           [3, :usa_m4_sherman],
@@ -29,8 +30,8 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           :ger_leader_4_1,
-          [6, :ger_conscript_s],
-          [2, :ger_conscript_t],
+          [4, :ger_conscript_s],
+          [4, :ger_conscript_t],
           [2, :ger_mg_42],
           :ger_7_5cm_leig_18,
           :ger_7_5cm_pak_40,

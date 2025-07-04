@@ -17,7 +17,8 @@ module Scenarios
           :usa_leader_6_2,
           :usa_leader_5_1,
           [2, :usa_leader_4_1],
-          [12, :usa_marine_rifle_s],
+          [8, :usa_marine_rifle_s],
+          [4, :usa_marine_rifle_t],
           [4, :usa_m1918_bar],
           :usa_radio_8inch,
           [2, :usa_lvt_1],
@@ -27,7 +28,8 @@ module Scenarios
       "2": {
         list: [
           :usa_leader_5_1,
-          [4, :usa_marine_rifle_s],
+          [2, :usa_marine_rifle_s],
+          [2, :usa_marine_rifle_t],
           [2, :usa_m1918_bar],
           [3, :usa_lvt_1],
           :usa_lvt_2,
@@ -39,7 +41,8 @@ module Scenarios
       "0": {
         list: [
           [3, :jap_leader_4_1],
-          [12, :jap_snlf_s],
+          [8, :jap_snlf_s],
+          [4, :jap_snlf_t],
           [2, :jap_crew_t],
           [4, :jap_type_92_hmg],
           [2, :jap_70mm_type_92],

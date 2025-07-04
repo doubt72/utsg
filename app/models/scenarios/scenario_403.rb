@@ -16,7 +16,8 @@ module Scenarios
         list: [
           :uk_leader_4_1,
           :uk_leader_3_1,
-          [10, :uk_territorial_s],
+          [9, :uk_territorial_s],
+          :uk_territorial_t,
           :uk_vickers_mg,
         ],
       },
@@ -27,7 +28,8 @@ module Scenarios
         list: [
           :jap_leader_5_1,
           :jap_leader_4_1,
-          [10, :jap_snlf_s],
+          [6, :jap_snlf_s],
+          [4, :jap_snlf_t],
           :jap_crew_t,
           [2, :jap_type_92_hmg],
           [2, :jap_type_97_81mm],
