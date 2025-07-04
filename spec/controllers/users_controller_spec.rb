@@ -50,37 +50,39 @@ RSpec.describe Api::V1::UsersController do
     end
 
     it "returns stats for user" do
-      get :stats, params: { username: user.username }
+      get :stats, params: { id: user.username }
 
       expect(response.status).to be == 200
 
       body = JSON.parse(response.body)
       expect(body.keys.length).to be == 2
       expect(body["all"]).to be == {
-        "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 1,
+        "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 1, "name" => "total",
       }
       expect(body["001"]).to be == {
+        "name" => "A Straightforward Proposition",
         "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 1,
       }
     end
 
     it "produces no stats for no user" do
-      get :stats, params: { username: "no body" }
+      get :stats, params: { id: "no body" }
 
       expect(response.status).to be == 404
     end
 
     it "can read other user" do
-      get :stats, params: { username: user2.username }
+      get :stats, params: { id: user2.username }
 
       expect(response.status).to be == 200
 
       body = JSON.parse(response.body)
       expect(body.keys.length).to be == 2
       expect(body["all"]).to be == {
-        "count" => 5, "win" => 1, "loss" => 1, "wait" => 0, "abandoned" => 1,
+        "count" => 5, "win" => 1, "loss" => 1, "wait" => 0, "abandoned" => 1, "name" => "total",
       }
       expect(body["001"]).to be == {
+        "name" => "A Straightforward Proposition",
         "count" => 5, "win" => 1, "loss" => 1, "wait" => 0, "abandoned" => 1,
       }
     end

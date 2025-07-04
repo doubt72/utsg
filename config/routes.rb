@@ -13,8 +13,6 @@ Rails.application.routes.draw do
           post "check_conflict"
           post "set_recovery"
           post "password_reset"
-        end
-        member do
           get "stats"
         end
       end

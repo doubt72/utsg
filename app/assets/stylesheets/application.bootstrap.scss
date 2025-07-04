@@ -479,6 +479,25 @@ div.custom-button-select:hover {
   border-radius: 0.5em;
 }
 
+.profile-main table {
+  margin-bottom: 1em;
+}
+
+.profile-main table th {
+  min-width: 80px;
+  color: $dark-green;
+  background-color: #EEE;
+  border: 2px solid #DDD;
+  padding: 0 8px;
+  font-variant: small-caps;
+}
+
+.profile-main table td {
+  background-color: #EEE;
+  border: 2px solid #DDD;
+  padding: 0 8px;
+}
+
 .profile-form {
   width: 500px;
   padding: 1em;

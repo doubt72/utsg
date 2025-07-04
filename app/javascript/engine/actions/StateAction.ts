@@ -27,7 +27,7 @@ export default class StateAction extends BaseAction {
       } else {
         this.game.playerTwoName = this.user
       }
-      if (this.game.playerOneName !== "" && this.game.playerTwoName !== "") {
+      if (this.game.playerOneName && this.game.playerTwoName) {
         this.game.state = "ready"
       }
     } else if (this.data.action === "leave") {

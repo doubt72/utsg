@@ -48,15 +48,18 @@ class User < ApplicationRecord
       games = {}
       Game.where("(player_one_id = ? OR player_two_id = ?) AND player_one_id <> player_two_id",
                  user.id, user.id).each do |game|
-        add_game(user, game, games)
+        game_record(user, game, games)
       end
-      games.merge(all: all_games(games))
+      games.merge(all: total_record(games))
     end
 
     private
 
-    def add_game(user, game, games)
-      curr = games[game.scenario] ||= { count: 0, win: 0, loss: 0, wait: 0, abandoned: 0 }
+    def game_record(user, game, games)
+      curr = games[game.scenario] ||= {
+        name: Utility::Scenario.scenario_by_id(game.scenario)[:name],
+        count: 0, win: 0, loss: 0, wait: 0, abandoned: 0,
+      }
       curr[:count] += 1
       if game.winner_id
         game.winner_id == user.id ? curr[:win] += 1 : curr[:loss] += 1
@@ -65,12 +68,13 @@ class User < ApplicationRecord
       end
     end
 
-    def all_games(games)
+    def total_record(games)
       games.map { |g| g[1] }.reduce(
-        { count: 0, win: 0, loss: 0, wait: 0, abandoned: 0 }
+        { name: "total", count: 0, win: 0, loss: 0, wait: 0, abandoned: 0 }
       ) do |sum, s|
         {
-          count: sum[:count] + s[:count], win: sum[:win] + s[:win], loss: sum[:loss] + s[:loss],
+          name: "total", count: sum[:count] + s[:count],
+          win: sum[:win] + s[:win], loss: sum[:loss] + s[:loss],
           wait: sum[:wait] + s[:wait], abandoned: sum[:abandoned] + s[:abandoned],
         }
       end

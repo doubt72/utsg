@@ -100,9 +100,10 @@ RSpec.describe User do
     it "produces good output" do
       expect(User.stats(user.username).keys.length).to be == 2
       expect(User.stats(user.username)[:all]).to be == {
-        count: 5, win: 1, loss: 1, wait: 1, abandoned: 1,
+        name: "total", count: 5, win: 1, loss: 1, wait: 1, abandoned: 1,
       }
       expect(User.stats(user.username)["001"]).to be == {
+        name: "A Straightforward Proposition",
         count: 5, win: 1, loss: 1, wait: 1, abandoned: 1,
       }
     end

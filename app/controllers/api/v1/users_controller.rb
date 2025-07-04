@@ -68,7 +68,7 @@ module Api
       end
 
       def stats
-        stats = User.stats(params[:username])
+        stats = User.stats(params[:id])
         if stats
           render json: stats, status: :ok
         else
