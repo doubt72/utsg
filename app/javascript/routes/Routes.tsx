@@ -47,7 +47,7 @@ export default function Routes() {
         { path: "/verify_account", element: <VerifyAccount /> },
         { path: "/delete_account", element: <DeleteAccount /> },
         { path: "/logout", element: <Logout /> },
-        { path: "/profile", element: <Profile /> },
+        { path: "/profile/:username", element: <Profile /> },
 
         { path: "/debug/", element: <DebugIndex /> },
         { path: "/debug/markers", element: <DebugMarkers /> },

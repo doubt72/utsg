@@ -302,6 +302,7 @@ div.custom-button-select:hover {
 }
 
 .main-page-list-tab {
+  font-variant: small-caps;
   border-top-left-radius: 1em;
   border-top-right-radius: 1em;
   padding: 0.4em 1em 0.2em;
@@ -473,7 +474,6 @@ div.custom-button-select:hover {
 // Profile page layout
 .profile-main {
   padding: 1em;
-  margin-right: 0.5em;
   flex-grow: 1;
   background-color: $background-gray;
   border-radius: 0.5em;
@@ -658,3 +658,12 @@ div.counter-help-button-selected:hover,button.help-button-selected:hover {
   padding: 0 8px;
 }
 
+.user-link {
+  font-weight: bold;
+  text-decoration: none;
+  color: $darkish-green;
+}
+
+.user-link:hover {
+  color: $alert-orange;
+}

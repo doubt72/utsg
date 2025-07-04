@@ -13,6 +13,7 @@ import { makeIndex } from "./CounterSection";
 import MapCounter from "../game/map/MapCounter";
 import MapLosOverlay from "../game/map/MapLosOverlay";
 import { helpIndexByName } from "./helpData";
+import { Link } from "react-router-dom";
 
 export default function CounterFacingSection() {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>()
@@ -145,7 +146,7 @@ export default function CounterFacingSection() {
       <p>
         Forward firing arcs can be seen on the map at any time by toggling the overlay button to
         show line-of-sight and mousing over unit counters — assuming the unit has a facing (see the{" "}
-        <a href={`/help/${helpIndexByName("Line of Sight").join(".")}`}>line-of-sight</a> section
+        <Link to={`/help/${helpIndexByName("Line of Sight").join(".")}`}>line-of-sight</Link> section
         for more):
       </p>
       <div className="flex mb1em">

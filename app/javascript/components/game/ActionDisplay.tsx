@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import Game from "../../engine/Game";
+import { Link } from "react-router-dom";
 
 interface ActionDisplayProps {
   game: Game;
@@ -59,7 +60,9 @@ export default function ActionDisplay({
             <div key={i} className="action-output-record">
               <div className="action-output-date nowrap">{action.formattedDate}</div>
               <div className="action-output-message">
-                <span className="action-output-username">{action.user}</span>{action.stringValue}
+                <span className="action-output-username">
+                  <Link className="user-link" to={`/profile/${action.user}`} >{action.user}</Link>
+                </span>{action.stringValue}
               </div>
             </div>
           )

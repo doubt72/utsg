@@ -79,11 +79,11 @@ RSpec.describe Api::V1::UsersController do
       body = JSON.parse(response.body)
       expect(body.keys.length).to be == 2
       expect(body["all"]).to be == {
-        "count" => 5, "win" => 1, "loss" => 1, "wait" => 0, "abandoned" => 1, "name" => "total",
+        "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 0, "name" => "total",
       }
       expect(body["001"]).to be == {
         "name" => "A Straightforward Proposition",
-        "count" => 5, "win" => 1, "loss" => 1, "wait" => 0, "abandoned" => 1,
+        "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 0,
       }
     end
   end

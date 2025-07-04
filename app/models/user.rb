@@ -64,7 +64,7 @@ class User < ApplicationRecord
       if game.winner_id
         game.winner_id == user.id ? curr[:win] += 1 : curr[:loss] += 1
       elsif game.current_player_id == user.id
-        game.updated_at < 7.days.ago ? curr[:wait] += 1 : curr[:abandoned] += 1
+        game.updated_at > 7.days.ago ? curr[:wait] += 1 : curr[:abandoned] += 1
       end
     end
 

@@ -2,6 +2,7 @@ import React from "react";
 import { helpIndexByName } from "./helpData";
 import { ArrowClockwise, BoxArrowDown, BoxArrowInUp, Clouds } from "react-bootstrap-icons";
 import { CancelGlyph, MoveGlyph } from "../utilities/buttons";
+import { Link } from "react-router-dom";
 
 export default function MovementSection() {
   return (
@@ -20,13 +21,13 @@ export default function MovementSection() {
         and teams can manhandle crewed units such as guns and large mortars. Certain vehicles can
         carry infantry units. Finally, certain vehicles (sometimes but not always the same vehicles)
         can tow crewed weapons. (See the section on{" "}
-        <a href={`/help/${helpIndexByName("Stacking").join(".")}`}>stacking</a> for how this is
+        <Link to={`/help/${helpIndexByName("Stacking").join(".")}`}>stacking</Link> for how this is
         indicated in the game.)
       </p>
       <p>
         Each unit (which can be moved on its own) has a movement value, as marked on the bottom
         right of the unit&apos;s counter (see the section on{" "}
-        <a href={`/help/${helpIndexByName("Counters").join(".")}`}>counters</a> for more). Infantry
+        <Link to={`/help/${helpIndexByName("Counters").join(".")}`}>counters</Link> for more). Infantry
         units such as squads, crews, and leaders that can carry infantry weapons may have their
         movement reduced by the &quot;movement&quot; of those weapons, i.e., by their encumbrance,
         which is indicated by a black &quot;-&quot; (indicating no encumbrance) or red negative
@@ -47,7 +48,7 @@ export default function MovementSection() {
         Every type of terrain has a movement cost for moving into that terrain. Not all terrain is
         passable to all types of units. (E.g., vehicles can&apos;t move through buildings.) There
         are also certain terrain features that add additional cost, such as fences or streams. For
-        more details, see the <a href={`/help/${helpIndexByName("Terrain").join(".")}`}>terrain</a>{" "}
+        more details, see the <Link to={`/help/${helpIndexByName("Terrain").join(".")}`}>terrain</Link>{" "}
         section.
       </p>
       <p>
@@ -97,7 +98,7 @@ export default function MovementSection() {
       </p>
       <p>
         Units may not move into a hex occupied by an enemy unit. That requires{" "}
-        <a href={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</a>. Units
+        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link>. Units
         may not exceed stacking limits at any point while moving, not even &quot;temporarily&quot;
         when moving through hexes containing friendly units.
       </p>
@@ -230,7 +231,7 @@ export default function MovementSection() {
         There are two &quot;movement&quot; actions that are not part of a normal movement:
         engineering units clearing obstacles, and digging in. As those require the entire turn
         (i.e., they exhaust units completely), they are part of{" "}
-        <a href={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</a> instead.
+        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link> instead.
       </p>
     </div>
   );

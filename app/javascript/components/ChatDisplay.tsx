@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { getAPI, postAPI } from "../utilities/network";
 import { ChatButton } from "./utilities/buttons";
+import { Link } from "react-router-dom";
 
 type ChatMessage = {
   user: string;
@@ -110,7 +111,9 @@ export default function ChatDisplay({ gameId, showInput, collapse = false }: Cha
             <div key={i} className="chat-output-record">
               <div className={dateClass}>{time}</div>
               <div className="chat-output-message">
-                <span className={nameClass}>{msg.user}</span>{msg.value}
+                <span className={nameClass}>
+                  <Link className="user-link" to={`/profile/${msg.user}`} >{msg.user}</Link>
+                </span>{msg.value}
               </div>
             </div>
           )

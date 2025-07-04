@@ -1,4 +1,5 @@
 High Priority Features/Bug Fixes:
+  - Some way to resign the game
   - Main Passing
   - Rush Move
   - Assault Move
@@ -15,8 +16,6 @@ High Priority Features/Bug Fixes:
 
 Future Features/Bug Fixes:
   - Ability to kick players
-  - Show other profiles/link to other users (in chat, moves)
-  - Some way to resign the game
   - Implement Help Button linking to game context
   - Change terminology for jamming in documentation to be more like breaking
   - Fix hindrance bug

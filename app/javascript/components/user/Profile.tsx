@@ -4,17 +4,20 @@ import ProfileEditInfo from "./ProfileEditInfo"
 import ProfileEditPassword from "./ProfileEditPassword"
 import { ReturnButton } from "../utilities/buttons";
 import { getAPI } from "../../utilities/network";
+import { useParams } from "react-router-dom";
 
 type GameStats = {
   name: string, count: number, win: number, loss: number, wait: number, abandoned: number
 }
 
 export default function Profile() {
+  const username: string | undefined = useParams().username
+
   const [stats, setStats] = useState<{ [index: string]: GameStats }>({})
   const [statDisplay, setStatDisplay] = useState<JSX.Element | undefined>()
 
   useEffect(() => {
-    getAPI(`/api/v1/user/stats?id=${localStorage.getItem("username")}`, {
+    getAPI(`/api/v1/user/stats?id=${username}`, {
       ok: response => response.json().then(json => {
         setStats(json)
       })
@@ -44,11 +47,11 @@ export default function Profile() {
             return (
               <tr key={i} >
                 <td className="red nowrap">{ k }: { stats[k].name }</td>
-                <td>{ stats[k].count }</td>
                 <td>{ stats[k].wait }</td>
+                <td>{ stats[k].abandoned }</td>
                 <td>{ stats[k].win }</td>
                 <td>{ stats[k].loss }</td>
-                <td>{ stats[k].abandoned }</td>
+                <td>{ stats[k].count }</td>
               </tr>
             )
           }) }
@@ -62,19 +65,21 @@ export default function Profile() {
       <Header hideProfile="true" />
       <div className="standard-body">
         <div className="profile-main">
-          <p>
-            Hello {localStorage.getItem("username")}!
-          </p>
-          <p>
-            Your games:
-          </p>
+          { localStorage.getItem("username") === username ? 
+            <p>
+              Hello {username}!
+            </p> : "" }
+          { localStorage.getItem("username") === username ? 
+            <p>
+              Your game stats:
+            </p> : <p>Games stats:</p> }
           { statDisplay }
           <div className="align-end">
             <ReturnButton />
           </div>
         </div>
-        <ProfileEditInfo />
-        <ProfileEditPassword />
+        { localStorage.getItem("username") === username ? <ProfileEditInfo /> : "" }
+        { localStorage.getItem("username") === username ? <ProfileEditPassword /> : "" }
       </div>
     </div>
   )

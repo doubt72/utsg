@@ -119,7 +119,7 @@ export const CreateGameButton = ({ type }: ButtonTypeProps) => {
 }
 
 export const ProfileButton = () => {
-  return <CustomLink url="/profile" text="profile"><Person /></CustomLink>
+  return <CustomLink url={`/profile/${localStorage.getItem("username")}`} text="profile"><Person /></CustomLink>
 }
 
 export const RecoverAccountButton = ({ type }: ButtonTypeProps) => {

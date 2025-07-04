@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Circle, CircleFill, XCircle } from "react-bootstrap-icons";
 
 interface GameListRowProps {
@@ -26,16 +26,19 @@ export default function GameListRow({ data }: GameListRowProps) {
   const navigate = useNavigate()
 
   const onClick = (event: React.MouseEvent) => {
-    event.preventDefault()
-    if (empty) { return false }
-    navigate(`/game/${data.id}`, { replace: true })
+    if ((event.target as unknown as Element).className !== 'user-link') {
+      if (empty) { return false }
+      navigate(`/game/${data.id}`, { replace: true })
+    }
   }
 
   const players = () => {
     const players = []
     if (data.player_one) { players.push(data.player_one) }
     if (data.player_two) { players.push(data.player_two) }
-    const values = players.map((p, i) => <span key={i} className="bold green">{p}</span>)
+    const values = players.map((p, i) => <span key={i}>
+      <Link className="user-link" to={`/profile/${p}`} >{p}</Link>
+    </span>)
     if (values.length === 1) {
       return ["started by: ", values[0]]
     } else if (players[0] === players[1]) {

@@ -15,6 +15,7 @@ import MapLosOverlay from "../game/map/MapLosOverlay";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import Hex from "../../engine/Hex";
 import { helpIndexByName, redNumber } from "./helpData";
+import { Link } from "react-router-dom";
 
 export default function LineOfSightSection() {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>();
@@ -154,7 +155,7 @@ export default function LineOfSightSection() {
         place, and that line-of-sight may be blocked by various obstacles such as buildings, forest,
         or other terrain, as well as features like fire or rubble. Line-of-sight may also be blocked
         by elevated terrain, but that will be covered in the{" "}
-        <a href={`/help/${helpIndexByName("Elevation").join(".")}`}>elevation</a> section of the
+        <Link to={`/help/${helpIndexByName("Elevation").join(".")}`}>elevation</Link> section of the
         documentation. Line-of-sight is determined by all of the hexes that are intersected by the
         sightline from the center of one hex to the center of the target hex.
       </p>
