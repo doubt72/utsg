@@ -29,7 +29,6 @@ export default class InfoAction extends BaseAction {
   
   undo(): void {
     // does nothing
-    this.undone = true;
   }
 
   get lastUndoCascade(): boolean { return true }

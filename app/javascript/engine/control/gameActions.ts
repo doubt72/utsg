@@ -35,6 +35,27 @@ export function finishInitiative(game: Game) {
   game.executeAction(init, false)
 }
 
+export function startPass(game: Game) {
+  if (game.gameActionState) { return }
+  game.gameActionState = {
+    player: game.currentPlayer, currentAction: actionType.Pass,
+    selection: []
+  }
+  game.refreshCallback(game)
+}
+
+export function finishPass(game: Game) {
+  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Pass) { return }
+  const pass = new GameAction({
+    user: game.currentUser,
+    player: game.gameActionState?.player,
+    data: { action: "pass", old_initiative: game.initiative },
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearAllSelections()
+  game.executeAction(pass, false)
+}
+
 export function startMove(game: Game) {
   const selection = game.scenario.map.currentSelection[0]
   if (selection && selection.hex) {

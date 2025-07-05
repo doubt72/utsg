@@ -11,7 +11,6 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     return [{ type: "sync" }]
   }
   const actions: GameAction[] = []
-  console.log(game.state)
   if (game.state === "complete") {
       return [{ type: "none", message: "game over" }]
   } else if (game.state === "needs_player") {
@@ -87,6 +86,10 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({type: "breakdown"})
     } else if (game.gameActionState?.currentAction === actionType.Initiative) {
       actions.push({type: "initiative"})
+    } else if (game.gameActionState?.currentAction === actionType.Pass) {
+      actions.unshift({ type: "none", message: "are you sure?" })
+      actions.push({type: "pass"})
+      actions.push({type: "pass_cancel"})
     } else if (game.reactionFire) {
       actions.unshift({ type: "none", message: "reaction fire" })
       if (canFire(selection)) { actions.push({ type: "reaction_fire" }) }
@@ -94,7 +97,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({ type: "empty_pass" })
     } else if (!selection) {
       actions.unshift({ type: "none", message: "select units to activate" })
-      actions.push({ type: "enemy_rout" })
+      if (canEnemyRout()) { actions.push({ type: "enemy_rout" }) }
       actions.push({ type: "pass" })
     } else {
       if (canFire(selection)) { actions.push({ type: "fire" }) }
@@ -177,5 +180,9 @@ function canAssaultMove(unit: Unit | undefined): boolean {
 
 function canRout(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
+  return false
+}
+
+function canEnemyRout(): boolean {
   return false
 }

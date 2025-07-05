@@ -28,6 +28,7 @@ import BreakdownButton from "./BreakdownButton";
 import InitiativeButton from "./InitiativeButton";
 import ResignButton from "./ResignButton";
 import ResignCancelButton from "./ResignCancelButton";
+import PassCancelButton from "./PassCancelButton";
 
 interface GameControlsProps {
   game: Game;
@@ -70,7 +71,9 @@ export default function GameControls({ game, callback }: GameControlsProps) {
       } else if (a.type === "unselect") {
         return <UnselectButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "pass") {
-        return <PassButton game={game} key={i} />
+        return <PassButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "pass_cancel") {
+        return <PassCancelButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "reaction_fire") {
         return <ReactionFireButton game={game} key={i} />
       } else if (a.type === "reaction_intensive_fire") {

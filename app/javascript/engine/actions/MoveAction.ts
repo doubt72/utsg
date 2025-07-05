@@ -162,7 +162,6 @@ export default class MoveAction extends BaseAction {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
     }
-    this.undone = true;
     sortStacks(map)
     this.game.initiative = this.data.old_initiative
   }

@@ -11,7 +11,7 @@ import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
-import { finishBreakdown, finishInitiative, finishMove, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle, startBreakdown, startInitiative, startMove } from "./control/gameActions";
+import { finishBreakdown, finishInitiative, finishMove, finishPass, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle, startBreakdown, startInitiative, startMove, startPass } from "./control/gameActions";
 
 export type GameData = {
   id: number;
@@ -36,9 +36,9 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
 }
 
-export type ActionType = "d" | "m" | "bd" | "i"
+export type ActionType = "d" | "m" | "bd" | "i" | "ip"
 export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Move: "m", Breakdown: "bd", Initiative: "i",
+  Deploy: "d", Move: "m", Breakdown: "bd", Initiative: "i", Pass: "ip",
 }
 
 export type ActionSelection = {
@@ -430,6 +430,7 @@ export default class Game {
     if (!this.lastAction) { return }
     const action = this.lastAction
     action.undo()
+    action.undone = true
 
     while(this.lastActionIndex >= 0 && this.lastAction.undone) {
       this.lastActionIndex--
@@ -528,6 +529,22 @@ export default class Game {
 
       }
       this.executeAction(new GameAction(data, this, this.actions.length), backendSync)
+    } else if (oldPhase === gamePhaseType.Main) {
+      let index = this.lastActionIndex - 1
+      let previousAction = this.actions[index--]
+      while (previousAction && previousAction.undone) {
+        previousAction = this.actions[index--]
+      }
+      if (this.lastAction?.type === "pass" && previousAction?.type === "pass") {
+        this.executeAction(new GameAction({
+          player: this.currentPlayer, user: this.currentUser, data: {
+            action: "info", message: "both players have passed, ending phase",
+            old_initiative: this.initiative,
+          }
+        }, this, this.actions.length), backendSync)
+        phaseData.new_phase = gamePhaseType.Cleanup
+        this.executeAction(new GameAction(data, this, this.actions.length), backendSync)
+      }
     }
   }
 
@@ -590,6 +607,14 @@ export default class Game {
     finishInitiative(this)
   }
 
+  startPass() {
+    startPass(this)
+  }
+
+  finishPass() {
+    finishPass(this)
+  }
+
   startMove() {
     startMove(this)
   }
@@ -635,6 +660,7 @@ export default class Game {
   get actionInProgress(): boolean {
     if (this.gameActionState?.deploy && this.gameActionState.deploy.needsDirection) { return true }
     if (this.gameActionState?.move) { return true }
+    if (this.gameActionState?.currentAction === actionType.Pass) { return true }
     return false
   }
 

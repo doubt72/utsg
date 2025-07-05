@@ -109,7 +109,6 @@ export default class PhaseAction extends BaseAction {
     this.game.phase = this.oldPhase
     this.game.setTurn(this.oldTurn)
     this.game.setCurrentPlayer(this.player)
-    this.undone = true;
   }
 
   get lastUndoCascade(): boolean { return true }

@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Some way to resign the game
-  - Main Passing
   - Rush Move
   - Assault Move
     - Test/Implement: engineering remove wire/obstacles

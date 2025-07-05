@@ -148,7 +148,7 @@ RSpec.describe Utility::Scenario do
     end
 
     it "handles games" do
-      game1 = create(:game, scenario: "001")
+      game1 = create(:game, scenario: "001", player_two: create(:user))
       game1.winner = game1.player_one
       game1.save!
 

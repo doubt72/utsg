@@ -40,7 +40,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct winner data" do
-      game1 = create(:game, scenario: "001")
+      game1 = create(:game, scenario: "001", player_two: create(:user))
       game1.winner = game1.player_one
       game1.save!
 
@@ -450,7 +450,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "handles data" do
-      game1 = create(:game, scenario: "001")
+      game1 = create(:game, scenario: "001", player_two: create(:user))
       game1.winner = game1.player_one
       game1.save!
 
