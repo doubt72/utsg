@@ -132,6 +132,7 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   if (game.phase === gamePhaseType.Prep) { return false } // Not supported yet
   if (game.phase === gamePhaseType.Main) {
     if (game.gameActionState?.currentAction === actionType.Breakdown) { return false }
+    if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
     if (target.playerNation !== game.currentPlayerNation) {
       // TODO: or gun/support weapon
       return false

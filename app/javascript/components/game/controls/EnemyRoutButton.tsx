@@ -4,12 +4,14 @@ import { RoutGlyph } from "../../utilities/buttons";
 
 interface EnemyRoutButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function EnemyRoutButton({ game }: EnemyRoutButtonProps) {
+export default function EnemyRoutButton({ game, callback }: EnemyRoutButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.rushing // just to do something with game
+    callback()
   }
 
   return (

@@ -59,7 +59,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
       } else if (a.type === "none") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
       } else if (a.type === "undo") {
-        return <UndoButton game={game} key={i} />
+        return <UndoButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "join") {
         return <JoinButton gameId={game.id} key={i} />
       } else if (a.type === "leave") {
@@ -75,15 +75,15 @@ export default function GameControls({ game, callback }: GameControlsProps) {
       } else if (a.type === "pass_cancel") {
         return <PassCancelButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "reaction_fire") {
-        return <ReactionFireButton game={game} key={i} />
+        return <ReactionFireButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "reaction_intensive_fire") {
-        return <ReactionIntensiveFireButton game={game} key={i} />
+        return <ReactionIntensiveFireButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "enemy_rout") {
-        return <EnemyRoutButton game={game} key={i} />
+        return <EnemyRoutButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "fire") {
-        return <FireButton game={game} key={i} />
+        return <FireButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "intensive_fire") {
-        return <IntensiveFireButton game={game} key={i} />
+        return <IntensiveFireButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "initiative") {
         return <InitiativeButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move") {

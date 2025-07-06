@@ -4,12 +4,14 @@ import { FireGlyph } from "../../utilities/buttons";
 
 interface FireButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function FireButton({ game }: FireButtonProps) {
+export default function FireButton({ game, callback }: FireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.rushing // just to do something with game
+    callback()
   }
 
   return (

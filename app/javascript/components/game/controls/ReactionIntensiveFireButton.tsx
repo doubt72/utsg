@@ -4,12 +4,14 @@ import { FireIntenseGlyph } from "../../utilities/buttons";
 
 interface ReactionIntensiveFireButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function ReactionIntensiveFireButton({ game }: ReactionIntensiveFireButtonProps) {
+export default function ReactionIntensiveFireButton({ game, callback }: ReactionIntensiveFireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.rushing // just to do something with game
+    callback()
   }
 
   return (

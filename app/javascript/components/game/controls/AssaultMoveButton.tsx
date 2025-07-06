@@ -11,7 +11,6 @@ export default function AssaultMoveButton({ game, callback }: AssaultMoveButtonP
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.rushing // just to do something with game
-    // game.executeUndo()
     callback()
   }
 

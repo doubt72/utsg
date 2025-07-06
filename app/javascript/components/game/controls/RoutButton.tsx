@@ -11,7 +11,6 @@ export default function RoutButton({ game, callback }: RoutButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.rushing // just to do something with game
-    // game.executeUndo()
     callback()
   }
 

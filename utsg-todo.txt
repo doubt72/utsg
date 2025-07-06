@@ -1,5 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Rush Move
   - Assault Move
     - Test/Implement: engineering remove wire/obstacles
     - Test/Implement: digging in
@@ -11,8 +10,10 @@ High Priority Features/Bug Fixes:
   - Rout
   - Close Combat
   - Weather
+  - Rally/Fix
 
 Future Features/Bug Fixes:
+  - Improved move validation/synchronization to block duplicate/illegal moves
   - Ability to kick players
   - Implement Help Button linking to game context
   - Change terminology for jamming in documentation to be more like breaking
@@ -22,6 +23,7 @@ Future Features/Bug Fixes:
   - Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
     (So scenarios can be modified without breaking existing games)
   - Switch main page game status to websocket, not polling
+  - Fix stacking parent/children indicators when showing markers
 
   - Break up tests / large files
   - Fix flickering of control buttons?

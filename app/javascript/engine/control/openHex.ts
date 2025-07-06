@@ -12,11 +12,9 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
   const game = map.game
   if (game?.gameActionState?.currentAction === actionType.Deploy) {
     return openHexReinforcement(map, x, y)
-  }
-  if (game?.gameActionState?.currentAction === actionType.Move) {
+  } else if (game?.gameActionState?.currentAction === actionType.Move) {
     return openHexMove(map, x, y)
-  }
-  if (game?.gameActionState?.currentAction === actionType.Breakdown) {
+  } else if (game?.gameActionState?.currentAction === actionType.Breakdown) {
     return hexOpenType.Closed
   }
   return hexOpenType.Open

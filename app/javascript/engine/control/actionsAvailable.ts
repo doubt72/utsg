@@ -187,7 +187,10 @@ function canRush(unit: Unit | undefined): boolean {
 
 function canAssaultMove(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
-  return false
+  if (!canMoveAny(unit)) { return false }
+  if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
+  if (unit.children.length > 0 && unit.children[0].crewed) { return false }
+  return true
 }
 
 function canRout(unit: Unit | undefined): boolean {

@@ -35,6 +35,8 @@ export default class MoveAction extends BaseAction {
 
   get type(): string { return this.rush ? "rush" : "move" }
 
+  get moveString(): string { return this.rush ? "rushes" : "moves" }
+
   get stringValue(): string {
     // const map = this.game.scenario.map
     // name(s) moved to (coord), dropping off X, picking up X, smoking X
@@ -43,8 +45,8 @@ export default class MoveAction extends BaseAction {
     const nation = this.game.nationNameForPlayer(this.player)
     const units = this.origin.map(u => (this.game.findUnitById(u.id) as Unit).name).join(", ")
     const actions = [this.path.length > 1 ?
-      `${nation} ${units} ${this.type}s from ${coordinateToLable(start)} to ${coordinateToLable(end)}` :
-      `${nation} ${units} ${this.type}s at ${coordinateToLable(start)}`
+      `${nation} ${units} ${this.moveString} from ${coordinateToLable(start)} to ${coordinateToLable(end)}` :
+      `${nation} ${units} ${this.moveString} at ${coordinateToLable(start)}`
     ]
     let diceIndex = 0
     this.addAction.forEach(a => {

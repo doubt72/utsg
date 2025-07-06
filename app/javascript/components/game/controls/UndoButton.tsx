@@ -4,12 +4,14 @@ import Game from "../../../engine/Game";
 
 interface UndoButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function UndoButton({ game }: UndoButtonProps) {
+export default function UndoButton({ game, callback }: UndoButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.executeUndo()
+    callback()
   }
 
   return (
