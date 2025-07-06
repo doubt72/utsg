@@ -23,7 +23,7 @@ Future Features/Bug Fixes:
     (So scenarios can be modified without breaking existing games)
   - Switch main page game status to websocket, not polling
 
-  - Break up tests
+  - Break up tests / large files
   - Fix flickering of control buttons?
   - Disable text selection on map/etc?
   - Support mouse scroll on map?

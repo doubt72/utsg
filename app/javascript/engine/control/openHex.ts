@@ -117,13 +117,13 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
       if (unit.crewed) {
         if ((last && !last.isFeature) &&
             ((last.canTow && last.size >= (unit.towSize ?? 0)) || last.canHandle)) {
-          rc = hexOpenType.Green
+          rc = hexOpenType.Open
         } else {
           rc = hexOpenType.Red
         }
       } else if (unit.uncrewedSW) {
         if ((last && !last.isFeature) && last.canCarrySupport) {
-          rc = hexOpenType.Green
+          rc = hexOpenType.Open
         } else {
           rc = hexOpenType.Red
         }

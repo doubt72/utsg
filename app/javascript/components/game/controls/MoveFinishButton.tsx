@@ -17,7 +17,9 @@ export default function MoveFinishButton({ game, callback }: MoveFinishButtonPro
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{MoveGlyph()}finish move</button>
+        <button type="submit" className="custom-button nowrap">{MoveGlyph()}
+          finish { game.rushing ? "rush" : "move" }
+        </button>
       </div>
     </form>
   )

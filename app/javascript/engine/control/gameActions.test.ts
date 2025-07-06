@@ -9,7 +9,9 @@ import IllegalActionError from "../actions/IllegalActionError"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 import { openHexMovement } from "./movement"
 
-describe("action integration test", () => {
+// TODO: add passing tests 
+
+describe("game action tests", () => {
   const defaultHexes: HexData[][] = [
     [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
     [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
@@ -259,5 +261,36 @@ describe("action integration test", () => {
       // Can't roll back a breakdown roll
       expect(err instanceof IllegalActionError).toBe(true)
     }
+  })
+
+  test("passing", () => {
+    const game = createGame()
+    expect(game.initiative).toBe(0)
+    expect(game.currentPlayer).toBe(2)
+    expect(game.phase).toBe(gamePhaseType.Main)
+
+    game.startPass()
+    expect(game.gameActionState?.currentAction).toBe(actionType.Pass)
+    expect(game.initiative).toBe(0)
+    expect(game.currentPlayer).toBe(2)
+    expect(game.phase).toBe(gamePhaseType.Main)
+
+    game.finishPass()
+    expect(game.gameActionState).toBe(undefined)
+    expect(game.initiative).toBe(-1)
+    expect(game.currentPlayer).toBe(1)
+    expect(game.phase).toBe(gamePhaseType.Main)
+
+    game.startPass()
+    expect(game.gameActionState?.currentAction).toBe(actionType.Pass)
+    expect(game.initiative).toBe(-1)
+    expect(game.currentPlayer).toBe(1)
+    expect(game.phase).toBe(gamePhaseType.Main)
+
+    game.finishPass()
+    expect(game.gameActionState).toBe(undefined)
+    expect(game.initiative).toBe(0)
+    expect(game.currentPlayer).toBe(2)
+    expect(game.phase).toBe(gamePhaseType.Cleanup)
   })
 });

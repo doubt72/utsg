@@ -59,7 +59,9 @@ RSpec.describe Api::V1::RatingsController do
 
       get :single, params: { scenario: "002" }
 
-      expect(response.status).to be == 404
+      expect(response.status).to be == 200
+      json = JSON.parse(response.body)
+      expect(json["rating"]).to be == 0
     end
   end
 

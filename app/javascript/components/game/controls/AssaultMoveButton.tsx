@@ -4,12 +4,15 @@ import { MoveRushGlyph } from "../../utilities/buttons";
 
 interface AssaultMoveButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function AssaultMoveButton({ game }: AssaultMoveButtonProps) {
+export default function AssaultMoveButton({ game, callback }: AssaultMoveButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.rushing // just to do something with game
+    // game.executeUndo()
+    callback()
   }
 
   return (

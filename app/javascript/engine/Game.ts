@@ -1,4 +1,4 @@
-import { Direction, Player } from "../utilities/commonTypes";
+import { Direction, Player, UnitStatus } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction, {
@@ -51,7 +51,7 @@ export type DeployActionState = {
 
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
-  facing?: Direction,
+  facing?: Direction, status?: UnitStatus
 }
 
 export type MoveActionState = {
@@ -302,7 +302,7 @@ export default class Game {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
-      if (a.data.action === "move") {
+      if (["move", "rush", "assault"].includes(a.data.action)) {
         this.scenario.map.setLastSelection(a)
         return a
       }
@@ -338,6 +338,14 @@ export default class Game {
         return true
       }
     }
+    return false
+  }
+
+  get rushing(): boolean {
+    if (!this.gameActionState || !this.gameActionState.move ||
+        this.gameActionState.selection.length < 1) { return false }
+    const unit = this.gameActionState.selection[0].counter.unit
+    if (unit.isActivated) { return true }
     return false
   }
 

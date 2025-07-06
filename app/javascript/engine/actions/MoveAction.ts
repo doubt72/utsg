@@ -15,13 +15,16 @@ export default class MoveAction extends BaseAction {
   addAction: AddAction[];
   diceResults: GameActionDiceResult[];
 
-  constructor(data: GameActionData, game: Game, index: number) {
+  rush: boolean;
+
+  constructor(data: GameActionData, game: Game, index: number, rush: boolean) {
     super(data, game, index)
 
     this.validate(data.data.origin)
     this.validate(data.data.path)
     this.validate(data.data.add_action)
     this.validate(data.data.dice_result)
+    this.rush = rush
 
     // Validate will already error out if data is missing, but the linter can't tell
     this.origin = data.data.origin as GameActionUnit[]
@@ -30,7 +33,7 @@ export default class MoveAction extends BaseAction {
     this.diceResults = data.data.dice_result as GameActionDiceResult[]
   }
 
-  get type(): string { return "move" }
+  get type(): string { return this.rush ? "rush" : "move" }
 
   get stringValue(): string {
     // const map = this.game.scenario.map
@@ -40,8 +43,8 @@ export default class MoveAction extends BaseAction {
     const nation = this.game.nationNameForPlayer(this.player)
     const units = this.origin.map(u => (this.game.findUnitById(u.id) as Unit).name).join(", ")
     const actions = [this.path.length > 1 ?
-      `${nation} ${units} moves from ${coordinateToLable(start)} to ${coordinateToLable(end)}` :
-      `${nation} ${units} moves at ${coordinateToLable(start)}`
+      `${nation} ${units} ${this.type}s from ${coordinateToLable(start)} to ${coordinateToLable(end)}` :
+      `${nation} ${units} ${this.type}s at ${coordinateToLable(start)}`
     ]
     let diceIndex = 0
     this.addAction.forEach(a => {
@@ -92,7 +95,7 @@ export default class MoveAction extends BaseAction {
       if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
-      unit.unit.status = unitStatus.Activated
+      unit.unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
     }
 
     let diceIndex = 0
@@ -106,11 +109,15 @@ export default class MoveAction extends BaseAction {
         } else {
           map.moveUnit(end, mid, a.id as string)
         }
+        const unit = this.game.findUnitById(a.id as string) as Unit
+        unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
       } else if (a.type === addActionType.Load) {
         map.loadUnit(mid, end, a.id as string, a.parent_id as string)
         const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
         const child = map.unitAtId(end, a.id ?? "") as Counter
         if (child.unit.rotates && parent.unit.rotates) { child.unit.facing = normalDir(parent.unit.facing + 3) }
+        const unit = this.game.findUnitById(a.id as string) as Unit
+        unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
       } else if (a.type === addActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
@@ -144,8 +151,12 @@ export default class MoveAction extends BaseAction {
         } else {
           map.moveUnit(mid, end, a.id as string)
         }
+        const unit = this.game.findUnitById(a.id as string) as Unit
+        if (a.status !== undefined) { unit.status = a.status }
       } else if (a.type === addActionType.Load) {
         map.dropUnit(end, mid, a.id as string, a.facing)
+        const unit = this.game.findUnitById(a.id as string) as Unit
+        if (a.status !== undefined) { unit.status = a.status }
       } else if (a.type === addActionType.Smoke) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing smoke")

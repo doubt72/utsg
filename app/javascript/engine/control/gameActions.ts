@@ -201,7 +201,7 @@ export function finishMove(game: Game) {
     user: game.currentUser,
     player: game.gameActionState.player,
     data: {
-      action: "move", old_initiative: game.initiative,
+      action: game.rushing ? "rush" : "move", old_initiative: game.initiative,
       path: game.gameActionState.move.path,
       origin: game.gameActionState.selection.map(s => {
         return {
@@ -211,6 +211,7 @@ export function finishMove(game: Game) {
       add_action: game.gameActionState.move.addActions.map(a => {
         return {
           type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id, facing: a.facing,
+          status: a.status,
         }
       }),
       dice_result: dice,

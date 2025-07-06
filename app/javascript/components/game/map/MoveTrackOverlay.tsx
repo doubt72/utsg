@@ -14,7 +14,8 @@ export default function MoveTrackOverlay({ map }: MoveTrackOverlayProps) {
       return map.game.gameActionState.move.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
     const lastSigAction = map.game?.lastSignificantAction
-    if (lastSigAction && lastSigAction.data.action === "move" && lastSigAction.data.path) {
+    if (lastSigAction && ["move", "rush", "assault"].includes(lastSigAction.data.action) &&
+        lastSigAction.data.path) {
       return lastSigAction.data.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
     return []

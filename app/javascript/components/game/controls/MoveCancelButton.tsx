@@ -17,7 +17,9 @@ export default function MoveCancelButton({ game, callback }: MoveCancelButtonPro
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{CancelGlyph()}cancel move</button>
+        <button type="submit" className="custom-button nowrap">
+          {CancelGlyph()}cancel { game.rushing ? "rush" : "move" }
+        </button>
       </div>
     </form>
   )

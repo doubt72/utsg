@@ -4,12 +4,14 @@ import { MoveRushGlyph } from "../../utilities/buttons";
 
 interface RushButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function RushButton({ game }: RushButtonProps) {
+export default function RushButton({ game, callback }: RushButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.startMove()
+    callback()
   }
 
   return (

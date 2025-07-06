@@ -18,110 +18,110 @@ import IllegalActionError from "../actions/IllegalActionError"
 import Feature, { FeatureData } from "../Feature"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 
-describe("action integration test", () => {
-  const defaultHexes: HexData[][] = [
-    [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
-    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-    [
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-    ],
-    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
-    [
-      { t: "o" },
-      { t: "o", s: { d: [4, 6], t: "t" } },
-      { t: "o", s: { d: [1, 5], t: "t" } },
-      { t: "o" }, { t: "o" }
-    ],
-  ]
+const defaultTestHexes: HexData[][] = [
+  [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
+  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+  [
+    { t: "o", r: { d: [1, 4]} },
+    { t: "o", r: { d: [1, 4]} },
+    { t: "o", r: { d: [1, 4]} },
+    { t: "o", r: { d: [1, 4]} },
+    { t: "o", r: { d: [1, 4]} },
+  ],
+  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
+  [
+    { t: "o" },
+    { t: "o", s: { d: [4, 6], t: "t" } },
+    { t: "o", s: { d: [1, 5], t: "t" } },
+    { t: "o" }, { t: "o" }
+  ],
+]
 
-  const mapData = (hexes: HexData[][]): MapData => {
-    return {
-      layout: [ 5, 5, "x" ],
-      allied_dir: 4, axis_dir: 1,
-      victory_hexes: [[0, 0, 2], [4, 4, 1]],
-      allied_setup: { 0: [[0, "*"]] },
-      axis_setup: { 0: [[4, "*"]] },
-      base_terrain: baseTerrainType.Grass,
-      night: false,
-      start_weather: weatherType.Dry,
-      base_weather: weatherType.Dry,
-      precip: [0, weatherType.Rain],
-      wind: [windType.Calm, 3, false],
-      hexes: hexes,
+const mapTestData = (hexes: HexData[][]): MapData => {
+  return {
+    layout: [ 5, 5, "x" ],
+    allied_dir: 4, axis_dir: 1,
+    victory_hexes: [[0, 0, 2], [4, 4, 1]],
+    allied_setup: { 0: [[0, "*"]] },
+    axis_setup: { 0: [[4, "*"]] },
+    base_terrain: baseTerrainType.Grass,
+    night: false,
+    start_weather: weatherType.Dry,
+    base_weather: weatherType.Dry,
+    precip: [0, weatherType.Rain],
+    wind: [windType.Calm, 3, false],
+    hexes: hexes,
+  }
+}
+
+export const testGInf: UnitData = {
+  c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
+}
+export const testGLdr: UnitData = {
+  c: "ger", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
+}
+export const testGMG: UnitData = {
+  c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {r: 1, j: 3}
+}
+export const testGCrew: UnitData = {
+  c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
+}
+export const testGGun: UnitData = {
+  c: "ger", f: 8, i: "gun", n: "3.7cm Pak 36", o: {t: 1, j: 3, p: 1, c: 1, f: 18, tow: 2}, r: 16,
+  t: "gun", v: 2, y: 36
+}
+const testGTank: UnitData = {
+  t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
+  o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
+};
+const testGTruck: UnitData = {
+  t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
+  o: { tr: 3, trg: 1, w: 1 },
+};
+const testWire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
+
+const scenarioTestData = (hexes: HexData[][]): ScenarioData => {
+  return {
+    id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
+    metadata: {
+      author: "The Establishment",
+      description: ["This is a test scenario"],
+      date: [1944, 6, 5],
+      location: "anywhere",
+      turns: 5,
+      first_deploy: 2,
+      first_action: 1,
+      allied_units: {
+        0: { list: []}
+      },
+      axis_units: {
+        0: { list: [testGInf]}
+      },
+      map_data: mapTestData(hexes),
     }
   }
+}
 
-  const ginf: UnitData = {
-    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
-  }
-  const gldr: UnitData = {
-    c: "ger", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
-  }
-  const gmg: UnitData = {
-    c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {r: 1, j: 3}
-  }
-  const gcrew: UnitData = {
-    c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
-  }
-  const ggun: UnitData = {
-    c: "ger", f: 8, i: "gun", n: "3.7cm Pak 36", o: {t: 1, j: 3, p: 1, c: 1, f: 18, tow: 2}, r: 16,
-    t: "gun", v: 2, y: 36
-  }
-  const gtank: UnitData = {
-    t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
-    o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
-  };
-  const gtruck: UnitData = {
-    t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
-    o: { tr: 3, trg: 1, w: 1 },
-  };
-  const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
+export const createTestGame = (hexes: HexData[][] = defaultTestHexes): Game => {
+  const game = new Game({
+    id: 1,
+    name: "test game", scenario: scenarioTestData(hexes),
+    owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
+    metadata: { turn: 0 },
+    suppress_network: true
+  });
 
-  const scenarioData = (hexes: HexData[][]): ScenarioData => {
-    return {
-      id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
-      metadata: {
-        author: "The Establishment",
-        description: ["This is a test scenario"],
-        date: [1944, 6, 5],
-        location: "anywhere",
-        turns: 5,
-        first_deploy: 2,
-        first_action: 1,
-        allied_units: {
-          0: { list: []}
-        },
-        axis_units: {
-          0: { list: [ginf]}
-        },
-        map_data: mapData(hexes),
-      }
-    }
-  }
+  game.setTurn(1)
+  game.phase = gamePhaseType.Main
+  game.setCurrentPlayer(2)
+  return game
+}
 
-  const createGame = (hexes: HexData[][] = defaultHexes): Game => {
-    const game = new Game({
-      id: 1,
-      name: "test game", scenario: scenarioData(hexes),
-      owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
-      metadata: { turn: 0 },
-      suppress_network: true
-    });
-
-    game.setTurn(1)
-    game.phase = gamePhaseType.Main
-    game.setCurrentPlayer(2)
-    return game
-  }
-
+describe("movement tests", () => {
   test("movement along road", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -176,7 +176,7 @@ describe("action integration test", () => {
   })
 
   test("movement along path", () => {
-    const game = createGame([
+    const game = createTestGame([
       [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [
@@ -195,7 +195,7 @@ describe("action integration test", () => {
       ],
     ])
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -250,7 +250,7 @@ describe("action integration test", () => {
   })
 
   test("movement along road over river", () => {
-    const game = createGame([
+    const game = createTestGame([
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
       [
@@ -264,7 +264,7 @@ describe("action integration test", () => {
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
     ])
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -303,7 +303,7 @@ describe("action integration test", () => {
   })
 
   test("movement along road over water", () => {
-    const game = createGame([
+    const game = createTestGame([
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [
@@ -317,7 +317,7 @@ describe("action integration test", () => {
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
     ])
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -356,7 +356,7 @@ describe("action integration test", () => {
   })
 
   test("movement along railroad over river", () => {
-    const game = createGame([
+    const game = createTestGame([
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
       [
@@ -370,7 +370,7 @@ describe("action integration test", () => {
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
     ])
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 5
     unit.select()
@@ -409,7 +409,7 @@ describe("action integration test", () => {
   })
 
   test("movement along railroad over water", () => {
-    const game = createGame([
+    const game = createTestGame([
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [
@@ -423,7 +423,7 @@ describe("action integration test", () => {
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
     ])
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
@@ -461,9 +461,9 @@ describe("action integration test", () => {
   })
 
   test("tired movement", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.status = unitStatus.Pinned
     expect(unit.baseMovement).toBe(4)
@@ -518,9 +518,9 @@ describe("action integration test", () => {
   })
 
   test("smoke", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -590,9 +590,9 @@ describe("action integration test", () => {
   })
 
   test("multi-select", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.smokeCapable = false // any unit in stack is enough for smoke
@@ -600,7 +600,7 @@ describe("action integration test", () => {
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ginf)
+    const unit2 = new Unit(testGInf)
     unit2.id = "test2"
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
@@ -659,15 +659,17 @@ describe("action integration test", () => {
     expect(all[0].hex?.x).toBe(0)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(0)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
   })
 
   test("multi-select drop-off", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.smokeCapable = false // any unit in stack is enough for smoke
@@ -675,7 +677,7 @@ describe("action integration test", () => {
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ginf)
+    const unit2 = new Unit(testGInf)
     unit2.id = "test2"
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
@@ -742,9 +744,11 @@ describe("action integration test", () => {
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(0)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -759,16 +763,16 @@ describe("action integration test", () => {
   })
 
   test("multiselect with leader", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 2
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(gldr)
+    const unit2 = new Unit(testGLdr)
     unit2.id = "test2"
     map.addCounter(loc, unit2)
 
@@ -822,22 +826,24 @@ describe("action integration test", () => {
     expect(all[0].hex?.x).toBe(0)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(0)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Leader")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
   })
 
   test("carrying sw", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
 
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(gmg)
+    const unit2 = new Unit(testGMG)
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     organizeStacks(map)
@@ -884,9 +890,11 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(1)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -896,21 +904,23 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
   })
 
   test("pick up sw", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(gmg)
+    const unit2 = new Unit(testGMG)
     unit2.id = "test2"
     try {
       map.addCounter(new Coordinate(3, 2), unit2)
@@ -954,10 +964,12 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe("Rifle")
     expect(all[1].unit.name).toBe("MG 08/15")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -967,24 +979,26 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(0)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe(undefined)
     expect(all[1].unit.name).toBe("MG 08/15")
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
   })
 
   test("leader carrying sw", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
 
-    const unit = new Unit(gldr)
+    const unit = new Unit(testGLdr)
     unit.id = "test1"
     unit.baseMovement = 5
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(gmg)
+    const unit2 = new Unit(testGMG)
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     organizeStacks(map)
@@ -1051,15 +1065,15 @@ describe("action integration test", () => {
   })
 
   test("leader may not pick up encumbered sw", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(gldr)
+    const unit = new Unit(testGLdr)
     unit.id = "test1"
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(gmg)
+    const unit2 = new Unit(testGMG)
     unit2.id = "test2"
     try {
       map.addCounter(new Coordinate(3, 2), unit2)
@@ -1087,16 +1101,16 @@ describe("action integration test", () => {
   })
 
   test("drop sw", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
 
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(gmg)
+    const unit2 = new Unit(testGMG)
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     organizeStacks(map)
@@ -1159,10 +1173,12 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.parent?.name).toBe(undefined)
     expect(all[0].unit.name).toBe("MG 08/15")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Rifle")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -1172,23 +1188,25 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe("Rifle")
     expect(all[1].unit.name).toBe("MG 08/15")
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
   })
 
   test("move gun", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
 
     const loc = new Coordinate(3, 2)
-    const unit = new Unit(gcrew)
+    const unit = new Unit(testGCrew)
     unit.id = "test1"
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 1
     map.addCounter(loc, unit2)
@@ -1242,9 +1260,11 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Crew")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -1254,22 +1274,24 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Crew")
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
   })
 
   test("move gun into trees", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
 
     const loc = new Coordinate(3, 2)
-    const unit = new Unit(gcrew)
+    const unit = new Unit(testGCrew)
     unit.id = "test1"
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 2
     map.addCounter(loc, unit2)
@@ -1325,16 +1347,16 @@ describe("action integration test", () => {
   })
 
   test("move gun into all move trees", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
 
     const loc = new Coordinate(3, 2)
-    const unit = new Unit(gcrew)
+    const unit = new Unit(testGCrew)
     unit.id = "test1"
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 2
     unit2.baseMovement = 1
@@ -1391,14 +1413,14 @@ describe("action integration test", () => {
   })
 
   test("can't pick up gun", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(gcrew)
+    const unit = new Unit(testGCrew)
     unit.id = "test1"
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 1
     try {
@@ -1427,12 +1449,12 @@ describe("action integration test", () => {
   })
 
   test("pick up gun", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(gcrew)
+    const unit = new Unit(testGCrew)
     const loc = new Coordinate(3, 2)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 1
     try {
@@ -1474,10 +1496,12 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Crew")
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe("Crew")
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -1487,23 +1511,25 @@ describe("action integration test", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.parent?.name).toBe(undefined)
     expect(all[0].unit.name).toBe("3.7cm Pak 36")
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Crew")
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
   })
 
   test("drop gun", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(3, 2)
 
-    const unit = new Unit(gcrew)
+    const unit = new Unit(testGCrew)
     unit.id = "test1"
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 1
     map.addCounter(loc, unit2)
@@ -1563,15 +1589,15 @@ describe("action integration test", () => {
   })
 
   test("picking up opponenet sw", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(gmg)
+    const unit2 = new Unit(testGMG)
     unit2.nation = "ussr"
     unit2.id = "test2"
     try {
@@ -1629,12 +1655,12 @@ describe("action integration test", () => {
   })
 
   test("picking up opponenet gun", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(gcrew)
+    const unit = new Unit(testGCrew)
     const loc = new Coordinate(3, 2)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.nation = "ussr"
     unit2.facing = 1
@@ -1697,10 +1723,10 @@ describe("action integration test", () => {
   })
 
   test("snow movement", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     map.baseTerrain = baseTerrainType.Snow
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -1737,10 +1763,10 @@ describe("action integration test", () => {
   })
 
   test("stream movement", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(3, 4)
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     map.addCounter(loc, unit)
@@ -1772,10 +1798,10 @@ describe("action integration test", () => {
   })
 
   test("fence movement", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(3, 0)
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -1808,9 +1834,9 @@ describe("action integration test", () => {
   })
 
   test("tank movement", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(gtank)
+    const unit = new Unit(testGTank)
     unit.id = "test1"
     unit.facing = 1
     unit.turretFacing = 1
@@ -1897,6 +1923,7 @@ describe("action integration test", () => {
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(5)
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
     all = map.allCounters
@@ -1908,26 +1935,27 @@ describe("action integration test", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(1)
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
   })
 
   test("truck movement", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
-    const unit = new Unit(gtruck)
+    const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 3
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 4
     map.addCounter(loc, unit2)
 
-    const unit3 = new Unit(gcrew)
+    const unit3 = new Unit(testGCrew)
     unit3.id = "test3"
     map.addCounter(loc, unit3)
 
@@ -1983,17 +2011,20 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(1)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -2005,37 +2036,40 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(1)
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(4)
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Normal)
   })
 
   test("truck dropping gun pre-turn", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
-    const unit = new Unit(gtruck)
+    const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 4
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 4
     map.addCounter(loc, unit2)
 
-    const unit3 = new Unit(gcrew)
+    const unit3 = new Unit(testGCrew)
     unit3.id = "test3"
     map.addCounter(loc, unit3)
 
@@ -2094,17 +2128,20 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.facing).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Crew")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
     expect(all[2].hex?.x).toBe(3)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("3.7cm Pak 36")
     expect(all[2].unit.parent).toBe(undefined)
     expect(all[2].unit.facing).toBe(4)
+    expect(all[2].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -2116,37 +2153,40 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(1)
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(4)
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Normal)
   })
 
   test("truck dropping gun post-turn", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
-    const unit = new Unit(gtruck)
+    const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 3
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 4
     map.addCounter(loc, unit2)
 
-    const unit3 = new Unit(gcrew)
+    const unit3 = new Unit(testGCrew)
     unit3.id = "test3"
     map.addCounter(loc, unit3)
 
@@ -2241,23 +2281,23 @@ describe("action integration test", () => {
   })
 
   test("truck dropping infantry", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
-    const unit = new Unit(gtruck)
+    const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 3
     unit.select()
     map.addCounter(loc, unit)
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 4
     map.addCounter(loc, unit2)
 
-    const unit3 = new Unit(gcrew)
+    const unit3 = new Unit(testGCrew)
     unit3.id = "test3"
     map.addCounter(loc, unit3)
 
@@ -2316,17 +2356,20 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.facing).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
     expect(all[2].hex?.x).toBe(3)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent).toBe(undefined)
+    expect(all[2].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -2338,35 +2381,38 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(1)
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(4)
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Normal)
   })
 
   test("truck loading gun", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
-    const unit = new Unit(gtruck)
+    const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 4
     unit.select()
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 1
 
-    const unit3 = new Unit(gcrew)
+    const unit3 = new Unit(testGCrew)
     unit3.id = "test3"
 
     try {
@@ -2432,17 +2478,20 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(1)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -2454,35 +2503,38 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("3.7cm Pak 36")
     expect(all[0].unit.children.length).toBe(0)
     expect(all[0].unit.facing).toBe(1)
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(1)
     expect(all[1].unit.name).toBe("Opel Blitz")
     expect(all[1].unit.parent).toBe(undefined)
     expect(all[1].unit.facing).toBe(1)
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Normal)
   })
 
   test("truck loading infantry", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
-    const unit = new Unit(gtruck)
+    const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 4
     unit.select()
 
-    const unit2 = new Unit(ggun)
+    const unit2 = new Unit(testGGun)
     unit2.id = "test2"
     unit2.facing = 1
 
-    const unit3 = new Unit(gcrew)
+    const unit3 = new Unit(testGCrew)
     unit3.id = "test3"
 
     map.addCounter(loc, unit3)
@@ -2543,17 +2595,20 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(2)
+    expect(all[0].unit.status).toBe(unitStatus.Activated)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
+    expect(all[1].unit.status).toBe(unitStatus.Activated)
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(1)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Activated)
 
     game.executeUndo()
 
@@ -2565,28 +2620,31 @@ describe("action integration test", () => {
     expect(all[0].unit.name).toBe("Crew")
     expect(all[0].unit.children.length).toBe(0)
     expect(all[0].unit.facing).toBe(1)
+    expect(all[0].unit.status).toBe(unitStatus.Normal)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(1)
     expect(all[1].unit.name).toBe("Opel Blitz")
     expect(all[1].unit.parent).toBe(undefined)
     expect(all[1].unit.facing).toBe(1)
+    expect(all[1].unit.status).toBe(unitStatus.Normal)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("3.7cm Pak 36")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
+    expect(all[2].unit.status).toBe(unitStatus.Normal)
   })
 
   test("moving into wire", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    const feature = new Feature(wire)
+    const feature = new Feature(testWire)
     feature.id = "wire"
     map.addCounter(new Coordinate(3, 2), feature)
 
@@ -2613,14 +2671,14 @@ describe("action integration test", () => {
   })
 
   test("moving out of wire", () => {
-    const game = createGame()
+    const game = createTestGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    const feature = new Feature(wire)
+    const feature = new Feature(testWire)
     feature.id = "wire"
     map.addCounter(new Coordinate(4, 2), feature)
 

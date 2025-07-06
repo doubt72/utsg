@@ -380,7 +380,8 @@ export default function MapDisplay({
   useEffect(() => {
     if (!map) { return }
     const lastSigAction = map.game?.lastSignificantAction
-    if (map?.game?.gameActionState?.move || (lastSigAction && lastSigAction.data.action === "move")) {
+    if (map?.game?.gameActionState?.move ||
+        (lastSigAction && ["move", "rush", "assault"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
       setMoveTrack(undefined)

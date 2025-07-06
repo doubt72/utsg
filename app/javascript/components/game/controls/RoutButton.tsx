@@ -4,12 +4,15 @@ import { RoutGlyph } from "../../utilities/buttons";
 
 interface RoutButtonProps {
   game: Game;
+  callback: () => void;
 }
 
-export default function RoutButton({ game }: RoutButtonProps) {
+export default function RoutButton({ game, callback }: RoutButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.rushing // just to do something with game
+    // game.executeUndo()
+    callback()
   }
 
   return (

@@ -32,6 +32,7 @@ export const addActionType: { [index: string]: AddActionType } = {
 }
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
+  status?: UnitStatus,
 }
 
 export type GameActionPhaseChange = {
@@ -110,7 +111,10 @@ export default class GameAction {
       return new InitiativePassAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "move") {
-      return new MoveAction(this.data, this.game, this.index);
+      return new MoveAction(this.data, this.game, this.index, false);
+    }
+    if (this.data.data.action === "rush") {
+      return new MoveAction(this.data, this.game, this.index, true);
     }
     if (this.data.data.action === "breakdown") {
       return new BreakdownAction(this.data, this.game, this.index);

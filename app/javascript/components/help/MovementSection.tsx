@@ -49,7 +49,8 @@ export default function MovementSection() {
         passable to all types of units. (E.g., vehicles can&apos;t move through buildings.) There
         are also certain terrain features that add additional cost, such as fences or streams. For
         more details, see the <Link to={`/help/${helpIndexByName("Terrain").join(".")}`}>terrain</Link>{" "}
-        section.
+        section.  Units (with movement greater than zero) can always move at least one hex, even
+        if the movement cost of the terrain cost exceeds the unit&apos;s total movement points.
       </p>
       <p>
         Roads are a special kind of terrain. Roads allow units to move into otherwise impassible

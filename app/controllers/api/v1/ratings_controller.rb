@@ -13,7 +13,7 @@ module Api
         if current_rating
           render json: current_rating.show_body, status: :ok
         else
-          render json: {}, status: :not_found
+          render json: { rating: 0 }, status: :ok
         end
       end
 

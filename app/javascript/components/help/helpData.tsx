@@ -16,6 +16,7 @@ import CounterFacingSection from "./CounterFacingSection";
 import LineOfSightSection from "./LineOfSightSection";
 import ElevationSection from "./ElevationSection";
 import InterfaceSection from "./InterfaceSection";
+import RushSection from "./RushSection";
 
 export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
 
@@ -41,7 +42,7 @@ export const helpIndex: HelpSection[] = [
         { name: "Fire", section: undefined },
         { name: "Intensive Fire", section: undefined },
         { name: "Move", section: <MovementSection /> },
-        { name: "Rush", section: undefined },
+        { name: "Rush", section: <RushSection /> },
         { name: "Assault Move", section: undefined },
         { name: "Rout", section: undefined },
         { name: "Opportunity Fire", section: undefined },

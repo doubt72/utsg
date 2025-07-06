@@ -159,18 +159,30 @@ function canIntensiveFire(unit: Unit | undefined): boolean {
   return false
 }
 
-function canMove(unit: Unit | undefined): boolean {
-  if (unit === undefined) { return false }
+function canMoveAny(unit: Unit): boolean {
   if (unit.type === unitType.SupportWeapon || unit.type === unitType.Gun) { return false }
   if (unit.currentMovement === 0) { return false }
   if (unit.parent) { return false }
+  return true
+}
+
+function canMove(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  if (!canMoveAny(unit)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
   return true
 }
 
 function canRush(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
-  return false
+  if (!canMoveAny(unit)) { return false }
+  if (!unit.isActivated) { return false }
+  if (!unit.canCarrySupport) { return false }
+  if (unit.children.length > 0 && unit.children[0].crewed) { return false }
+  if (unit.children.length > 0 &&unit.children[0].baseMovement + Math.floor(unit.currentMovement/2) <= 0) {
+    return false
+  }
+  return true
 }
 
 function canAssaultMove(unit: Unit | undefined): boolean {

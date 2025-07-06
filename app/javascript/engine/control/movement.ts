@@ -14,7 +14,9 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
   const next = selection.children[0]
   const allRoad = road && roadMove && !selection.unit.isWheeled &&
                   !(next && next.unit.crewed) ? 1 : 0
-  let move = selection.unit.currentMovement as number + allRoad
+  let move = selection.unit.currentMovement as number
+  if (game.rushing) { move = Math.floor(move / 2) }
+  move += allRoad
   if (selection.unit.canCarrySupport) {
     let minLdrMove = 99
     let minInfMove = 99
@@ -30,15 +32,16 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       }
       if (check) { continue }
       const u = sel.counter.unit
-      let move = u.currentMovement as number
+      let iMove = u.currentMovement as number
+      if (game.rushing) { iMove = Math.floor(iMove / 2) }
       if (u.children.length > 0) {
         const child = u.children[0]
-        if (child.crewed) { move = child.baseMovement }
-        if (child.uncrewedSW) { move += child.baseMovement }
-        if (child.uncrewedSW && u.type === "ldr") { move -= 2 }
+        if (child.crewed) { iMove = child.baseMovement }
+        if (child.uncrewedSW) { iMove += child.baseMovement }
+        if (child.uncrewedSW && u.type === "ldr") { iMove -= 2 }
       }
-      if (u.canCarrySupport && u.type !== unitType.Leader && move < minInfMove) { minInfMove = move }
-      if (u.type === unitType.Leader && move < minLdrMove) { minLdrMove = move }
+      if (u.canCarrySupport && u.type !== unitType.Leader && iMove < minInfMove) { minInfMove = iMove }
+      if (u.type === unitType.Leader && iMove < minLdrMove) { minLdrMove = iMove }
     }
     if (minLdrMove === 99) {
       move = minInfMove + allRoad
@@ -47,6 +50,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       move = (minInfMove < minLdrMove ? minInfMove : minLdrMove) + allRoad
     }
   }
+  if (allRoad === 1 && move === 1) { return 0 }
   return move
 }
 
@@ -129,6 +133,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   const cost = movementCost(map, from, to, selection.unit)
   const pastCost = movementPastCost(map, selection.unit)
   const move = mapSelectMovement(game, roadMove)
+  if (move === 0) { return false }
   if (move < cost + pastCost && length > 1) { return false }
   for (const p of action.path) {
     if (to.x === p.x && to.y === p.y ) { return hexOpenType.Open }
@@ -237,6 +242,7 @@ export function showDropMove(game: Game): boolean {
 }
 
 export function showLoadMove(game: Game): boolean {
+  if (game.rushing) { return false }
   const move = game.gameActionState?.move
   const selection = game.gameActionState?.selection
   if (!selection || move?.placingSmoke || move?.droppingMove) { return false }

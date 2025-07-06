@@ -31,7 +31,7 @@ export default function select(
       move.addActions.push(
         {
           x: xx, y: yy, cost, type: addActionType.Drop, id: counter.unit.id,
-          parent_id: counter.unit.parent?.id,
+          parent_id: counter.unit.parent?.id, status: counter.unit.status,
           facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing
         }
       )
@@ -71,7 +71,8 @@ export default function select(
         }
         const facing = counter.unit.rotates ? counter.unit.facing : undefined
         move.addActions.push({
-          x: xx, y: yy, cost, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id, facing
+          x: xx, y: yy, cost, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id,
+          facing, status: counter.unit.status,
         })
       }
     } else {
@@ -108,6 +109,15 @@ function canBeMoveMultiselected(map: Map, counter: Counter): boolean {
   if (counter.parent) {
     map.game?.addMessage("unit being transported cannot move with other infantry")
     return false
+  }
+  if (counter.unit.isBroken) {
+    map.game?.addMessage("cannot move a broken unit")
+  }
+  if (counter.unit.isExhausted) {
+    map.game?.addMessage("cannot move an exhausted unit")
+  }
+  if (!map.game?.rushing && counter.unit.isActivated) {
+    map.game?.addMessage("cannot move an activated unit")
   }
   return true
 }

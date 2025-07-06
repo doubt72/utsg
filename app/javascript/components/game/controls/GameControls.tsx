@@ -105,11 +105,11 @@ export default function GameControls({ game, callback }: GameControlsProps) {
       } else if (a.type === "breakdown") {
         return <BreakdownButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rush") {
-        return <RushButton game={game} key={i} />
+        return <RushButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "assault_move") {
-        return <AssaultMoveButton game={game} key={i} />
+        return <AssaultMoveButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rout") {
-        return <RoutButton game={game} key={i} />
+        return <RoutButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {
