@@ -52,6 +52,9 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         }
         pointingDir = lastPath.facing
       }
+    } else if (game.gameActionState?.assault && game.gameActionState.selection) {
+      const lastPath = game.lastPath as GameActionPath
+      pointingDir = lastPath.turret
     }
 
     return dirs.map(v => {
@@ -59,7 +62,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
       const style = { fill: "#FFF", strokeWidth: 1, stroke: "#000" }
       const tStyle = { fill: "#000" }
       let callback = () => selectCallback(hex.coord.x, hex.coord.y, v as Direction)
-      if (game.gameActionState?.move?.rotatingTurret) {
+      if (game.gameActionState?.move?.rotatingTurret || game.gameActionState?.assault) {
         style.fill = "#FF0"
       }
       if (v === pointingDir) {
@@ -81,7 +84,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
   }
 
   const overlay = () => {
-    if (!hex?.map?.game?.gameActionState?.move) { return }
+    if (!hex?.map?.game?.gameActionState?.move && !hex?.map?.game?.gameActionState?.assault) { return }
     return (
       <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }} />
     )

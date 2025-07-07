@@ -53,7 +53,7 @@ class GameAction < ApplicationRecord
     return false if user.id != user_id || undone
     return false unless !data["dice_result"] || data["dice_result"].empty?
     # action "action" isn't actually used except for testing
-    return false unless %w[action deploy info phase move].include?(data["action"])
+    return false unless %w[action deploy info phase move assault_move].include?(data["action"])
 
     true
   end

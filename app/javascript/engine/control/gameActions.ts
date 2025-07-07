@@ -306,17 +306,17 @@ export function assaultEntrench(game: Game) {
 }
 
 export function finishAssault(game: Game) {
-  if (!game.gameActionState?.move) { return }
+  if (!game.gameActionState?.assault) { return }
   const assault = new GameAction({
     user: game.currentUser,
     player: game.gameActionState.player,
     data: {
       action: "assault_move", old_initiative: game.initiative,
-      path: game.gameActionState.move.path,
+      path: game.gameActionState.assault.path,
       origin: game.gameActionState.selection.map(s => {
         return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
-      add_action: game.gameActionState.move.addActions.map(a => {
+      add_action: game.gameActionState.assault.addActions.map(a => {
         return { type: a.type, x: a.x, y: a.y, id: a.id }
       }),
     }

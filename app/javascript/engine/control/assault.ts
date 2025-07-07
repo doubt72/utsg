@@ -1,7 +1,7 @@
 import {
   baseTerrainType, Coordinate, featureType, hexOpenType, HexOpenType, terrainType
 } from "../../utilities/commonTypes"
-import { normalDir } from "../../utilities/utilities"
+import { normalDir, stackLimit } from "../../utilities/utilities"
 import Game from "../Game"
 import Hex from "../Hex"
 import Map from "../Map"
@@ -45,7 +45,21 @@ export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): H
       return hexOpenType.Closed
     }
   }
-  if (action.path.length + action.addActions.length > 1) { return hexOpenType.Closed }
+
+  const countersAt = map.countersAt(to)
+  const moveSize = game.gameActionState.selection.filter(u => !u.counter.unit.parent).reduce(
+    (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
+  )
+  const toSize = countersAt.filter(u => !u.hasFeature && !u.unit.parent).reduce(
+    (sum, u) => sum + u.unit.size + u.children.reduce((sum, u) => u.unit.size, 0), 0
+  )
+  let check = false
+  for (const c of countersAt) {
+    if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { check = true }
+  }
+  if (moveSize + toSize > stackLimit && !check) { return hexOpenType.Closed }
+
+    if (action.path.length + action.addActions.length > 1) { return hexOpenType.Closed }
   if (assaultMovement(game) === 0) { return hexOpenType.Closed }
   return hexOpenType.All
 }

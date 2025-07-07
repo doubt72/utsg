@@ -390,10 +390,10 @@ export default function MapDisplay({
   }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate])
 
   useEffect(() => {
-    if (map?.game?.gameActionState?.move) {
+    if (map?.game?.gameActionState?.move || map?.game?.gameActionState?.assault) {
       const lastPath = map.game.lastPath as GameActionPath
       const coord = new Coordinate(lastPath.x, lastPath.y)
-      if (openHexRotateOpen(map) || map.game.gameActionState.move.rotatingTurret) {
+      if (openHexRotateOpen(map) || map.game.gameActionState.move?.rotatingTurret) {
         const hex = map.hexAt(coord)
         setDirectionSelectionOverlay(
           <DirectionSelector hex={hex} selectCallback={directionSelection} />

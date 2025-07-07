@@ -9,6 +9,7 @@ import MoveAction from "./actions/MoveAction";
 import BreakdownAction from "./actions/BreakdownAction";
 import InitiativeAction from "./actions/InitiativeAction";
 import InitiativePassAction from "./actions/InitiativePassAction";
+import AssaultMoveAction from "./actions/AssaultAction";
 
 export type GameActionDiceResult = {
   result: number, type: string,
@@ -115,6 +116,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "rush") {
       return new MoveAction(this.data, this.game, this.index, true);
+    }
+    if (this.data.data.action === "assault_move") {
+      return new AssaultMoveAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "breakdown") {
       return new BreakdownAction(this.data, this.game, this.index);
