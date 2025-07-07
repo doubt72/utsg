@@ -27,13 +27,13 @@ export default function MovementSection() {
       <p>
         Each unit (which can be moved on its own) has a movement value, as marked on the bottom
         right of the unit&apos;s counter (see the section on{" "}
-        <Link to={`/help/${helpIndexByName("Counters").join(".")}`}>counters</Link> for more). Infantry
-        units such as squads, crews, and leaders that can carry infantry weapons may have their
-        movement reduced by the &quot;movement&quot; of those weapons, i.e., by their encumbrance,
-        which is indicated by a black &quot;-&quot; (indicating no encumbrance) or red negative
-        numbers. Infantry units that are manhandling crewed weapons such as guns or large mortars
-        instead have their movement lowered to the movement factor of the crewed weapon. This is
-        indicated with a black filled circle.
+        <Link to={`/help/${helpIndexByName("Counters").join(".")}`}>counters</Link> for more).
+        Infantry units such as squads, crews, and leaders that can carry infantry weapons may have
+        their movement reduced by the &quot;movement&quot; of those weapons, i.e., by their
+        encumbrance, which is indicated by a black &quot;-&quot; (indicating no encumbrance) or red
+        negative numbers. Infantry units that are manhandling crewed weapons such as guns or large
+        mortars instead have their movement lowered to the movement factor of the crewed weapon.
+        This is indicated with a black filled circle.
       </p>
       <p>
         Leaders may not carry infantry weapons with a non-zero encumbrance, and the encumbrance of
@@ -48,9 +48,10 @@ export default function MovementSection() {
         Every type of terrain has a movement cost for moving into that terrain. Not all terrain is
         passable to all types of units. (E.g., vehicles can&apos;t move through buildings.) There
         are also certain terrain features that add additional cost, such as fences or streams. For
-        more details, see the <Link to={`/help/${helpIndexByName("Terrain").join(".")}`}>terrain</Link>{" "}
-        section.  Units (with movement greater than zero) can always move at least one hex, even
-        if the movement cost of the terrain cost exceeds the unit&apos;s total movement points.
+        more details, see the{" "}
+        <Link to={`/help/${helpIndexByName("Terrain").join(".")}`}>terrain</Link> section. Units
+        (with movement greater than zero) can always move at least one hex, even if the movement
+        cost of the terrain cost exceeds the unit&apos;s total movement points.
       </p>
       <p>
         Roads are a special kind of terrain. Roads allow units to move into otherwise impassible
@@ -99,9 +100,9 @@ export default function MovementSection() {
       </p>
       <p>
         Units may not move into a hex occupied by an enemy unit. That requires{" "}
-        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link>. Units
-        may not exceed stacking limits at any point while moving, not even &quot;temporarily&quot;
-        when moving through hexes containing friendly units.
+        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link>.
+        Units may not exceed stacking limits at any point while moving, not even
+        &quot;temporarily&quot; when moving through hexes containing friendly units.
       </p>
       <p>
         Units are marked as activated after moving. Crewed weapons and transported units are as
@@ -177,11 +178,12 @@ export default function MovementSection() {
       <p>
         Units that are capable of laying smoke (i.e., smoke-capable infantry, not smoke-capable
         artillery and such that require a targeting roll) may lay smoke for two movement points in a
-        neighboring hex, or one movement point in the current hex. The quality of the smoke is
-        determined by a d10 die roll (see the table below). On the server, this happens after the
-        move is committed, and the entire move may be cancelled up to that point, but may not be
-        undone afterwards (as die rolls are involved). The locations that will get smoke counters
-        are indicated by ghost counters on the map until then.
+        neighboring hex, or one movement point in the current hex. Smoke-capable units are marked
+        with a dot over their firepower. The quality of the smoke is determined by a d10 die roll
+        (see the table below). On the server, this happens after the move is committed, and the
+        entire move may be cancelled up to that point, but may not be undone afterwards (as die
+        rolls are involved). The locations that will get smoke counters are indicated by ghost
+        counters on the map until then.
       </p>
       <table>
         <tbody>
@@ -232,7 +234,8 @@ export default function MovementSection() {
         There are two &quot;movement&quot; actions that are not part of a normal movement:
         engineering units clearing obstacles, and digging in. As those require the entire turn
         (i.e., they exhaust units completely), they are part of{" "}
-        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link> instead.
+        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link>{" "}
+        instead.
       </p>
     </div>
   );

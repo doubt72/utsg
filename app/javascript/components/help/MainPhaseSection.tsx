@@ -161,6 +161,9 @@ export default function MainPhaseSection() {
         center or on the player&apos;s side of the track, the check automatically passes.
       </p>
       <p>
+        Initiative checks are not undoable, regardless of whether or not the result was automatic.
+      </p>
+      <p>
         Most actions cost two initiative points, or move the marker two spaces on the track.  Some
         cost one or three.  Passing moves the initiative one space in the other direction towards
         the player&apos;s side but flips the marker to the other player.

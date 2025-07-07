@@ -1,10 +1,12 @@
 High Priority Features/Bug Fixes:
   - Assault Move
     - Tests
+    - Fix bug where assault move out of forest does not need to follow road
+    - Fix shell scrape bug
+    - Icons for shell scrape and clearing obstacles
     - Test/Implement: engineering remove wire/obstacles
     - Test/Implement: digging in
     - Can't assault if movement 0
-    - Docs
   - Firing
     - Test/Implement: mine
   - Show reaction
