@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
-import { CircleSquare } from "react-bootstrap-icons";
+import { ShieldFill } from "react-bootstrap-icons";
 
 interface AssaultMoveEntrenchButtonProps {
   game: Game;
@@ -17,7 +17,7 @@ export default function AssaultMoveEntrenchButton({ game, callback }: AssaultMov
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><CircleSquare />entrench</button>
+        <button type="submit" className="custom-button nowrap"><ShieldFill />entrench</button>
       </div>
     </form>
   )

@@ -332,7 +332,7 @@ export default class Unit {
 
   canCarry(unit: Unit): boolean {
     if (![unitStatus.Normal, unitStatus.Tired].includes(unit.status) && this.status) { return false }
-    if (this.type === "ldr" && unit.uncrewedSW && unit.baseMovement < 0) { return false }
+    if (this.type === unitType.Leader && unit.uncrewedSW && unit.baseMovement < 0) { return false }
     return this.canTransportUnit(unit) || this.canTowUnit(unit) || (this.children.length < 1 &&
       ((this.canCarrySupport && unit.uncrewedSW) || (this.canHandle && unit.crewed)))
   }

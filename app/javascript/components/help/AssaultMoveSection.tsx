@@ -1,7 +1,7 @@
 import React from "react";
 import { helpIndexByName } from "./helpData";
 import { Link } from "react-router-dom";
-import { Clouds } from "react-bootstrap-icons";
+import { ShieldFill, XLg } from "react-bootstrap-icons";
 
 export default function AssaultMoveSection() {
   return (
@@ -60,7 +60,7 @@ export default function AssaultMoveSection() {
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
-          <Clouds />
+          <XLg />
           <span> clear obstacles</span>
         </div>
       </div>
@@ -69,12 +69,12 @@ export default function AssaultMoveSection() {
         brush, orchards, fields, or palm trees. Entrenchment is not possible in any other terrain,
         or if the base terrain is snow. Entrenchment is also not possible if other features
         (including both defensive features and obstacles) are present. No dice roll is required,
-        success is automatic. Place a shell scrap in the hex beneath the unit(s) and end the move.
+        success is automatic. Place a shell scrape in the hex beneath the unit(s) and end the move.
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
-          <Clouds />
+          <ShieldFill />
           <span> entrench</span>
         </div>
       </div>

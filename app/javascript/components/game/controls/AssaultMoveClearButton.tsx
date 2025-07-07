@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
-import { CircleSquare } from "react-bootstrap-icons";
+import { XLg } from "react-bootstrap-icons";
 
 interface AssaultMoveClearButtonProps {
   game: Game;
@@ -17,7 +17,7 @@ export default function AssaultMoveClearButton({ game, callback }: AssaultMoveCl
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><CircleSquare />clear obstacle</button>
+        <button type="submit" className="custom-button nowrap"><XLg />clear obstacle</button>
       </div>
     </form>
   )

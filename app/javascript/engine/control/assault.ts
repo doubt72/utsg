@@ -1,5 +1,6 @@
 import {
-  baseTerrainType, Coordinate, featureType, hexOpenType, HexOpenType, terrainType
+  baseTerrainType, Coordinate, featureType, hexOpenType, HexOpenType, terrainType,
+  unitType
 } from "../../utilities/commonTypes"
 import { normalDir, stackLimit } from "../../utilities/utilities"
 import Game from "../Game"
@@ -65,10 +66,10 @@ export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): H
 }
 
 export function showClearObstacles(game: Game): boolean {
-  const move = game.gameActionState?.assault
+  const assault = game.gameActionState?.assault
   const selection = game.gameActionState?.selection
-  if (!move || !selection) { return false }
-  if (move.path.length + move.addActions.length > 1) { return false }
+  if (!assault || !selection) { return false }
+  if (assault.path.length + assault.addActions.length > 1) { return false }
   let eng = false
   for (const s of selection) {
     if (s.counter.unit.engineer) {
@@ -83,15 +84,15 @@ export function showClearObstacles(game: Game): boolean {
       return true
     }
   }
-  return false
+  return true
 }
 
 export function showEntrench(game: Game): boolean {
-  const move = game.gameActionState?.assault
+  const assault = game.gameActionState?.assault
   const selection = game.gameActionState?.selection
-  if (!move || !selection) { return false }
-  if (!["sqd", "tm"].includes(selection[0].counter.unit.type)) { return false }
-  if (move.path.length + move.addActions.length > 1) { return false }
+  if (!assault || !selection) { return false }
+  if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
+  if (assault.path.length + assault.addActions.length > 1) { return false }
   if (game.scenario.map.baseTerrain === baseTerrainType.Snow) { return false }
   const loc = new Coordinate(selection[0].x, selection[0].y)
   const hex = game.scenario.map.hexAt(loc) as Hex
@@ -101,26 +102,26 @@ export function showEntrench(game: Game): boolean {
   for (const f of features) {
     if (f.hasFeature) { return false }
   }
-  return false
+  return true
 }
 
 function assaultMovement(game: Game): number {
   if (!game.gameActionState) { return 0 }
   const selection = game.gameActionState.selection[0].counter
-  let move = selection.unit.currentMovement as number
+  let assault = selection.unit.currentMovement as number
   if (selection.unit.canCarrySupport) {
     let minMove = 99
     for(const sel of game.gameActionState.selection) {
       const u = sel.counter.unit
-      let iMove = u.currentMovement as number
+      let move = u.currentMovement as number
       if (u.children.length > 0) {
         const child = u.children[0]
-        if (child.uncrewedSW) { iMove += child.baseMovement }
-        if (child.uncrewedSW && u.type === "ldr") { iMove -= 2 }
+        if (child.uncrewedSW) { move += child.baseMovement }
+        if (child.uncrewedSW && u.type === unitType.Leader) { move -= 2 }
       }
-      if (u.canCarrySupport && iMove < minMove) { minMove = iMove }
+      if (u.canCarrySupport && move < minMove) { minMove = move }
     }
-    move = minMove
+    assault = minMove
   }
-  return move
+  return assault
 }

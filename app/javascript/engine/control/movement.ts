@@ -38,7 +38,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
         const child = u.children[0]
         if (child.crewed) { iMove = child.baseMovement }
         if (child.uncrewedSW) { iMove += child.baseMovement }
-        if (child.uncrewedSW && u.type === "ldr") { iMove -= 2 }
+        if (child.uncrewedSW && u.type === unitType.Leader) { iMove -= 2 }
       }
       if (u.canCarrySupport && u.type !== unitType.Leader && iMove < minInfMove) { minInfMove = iMove }
       if (u.type === unitType.Leader && iMove < minLdrMove) { minLdrMove = iMove }
