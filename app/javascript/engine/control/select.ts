@@ -89,6 +89,21 @@ export default function select(
         })
       }
     }
+  } else if (game?.gameActionState?.assault) {
+    const selected = counter.unit.selected
+    counter.unit.select()
+    counter.children.forEach(c => c.unit.select())
+    if (selected) {
+      removeActionSelection(game, x, y, counter.unit.id)
+    } else {
+      game.gameActionState.selection?.push({
+        x, y, id: counter.unit.id, counter: counter,
+      })
+      game.gameActionState.selection.sort((a, b) => {
+        if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
+        return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
+      })
+    }
   } else {
     map.clearOtherSelections(x, y, id)
     counter.unit.select()
@@ -182,6 +197,18 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
       for (const s of game.gameActionState.move.initialSelection) {
         if (s.x !== selection.target.xy.x || s.y !== selection.target.xy.y) {
           map.game?.addMessage("all units moving together must start in same hex")
+          return false
+        }
+        if (selection.counter.target.id === s.id) { return false }
+      }
+      const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
+      if (!canBeMoveMultiselected(map, counter as Counter)) { return false }
+    } else if (game.gameActionState?.assault) {
+      if (game.gameActionState.assault.doneSelect) { return false }
+      if (selection.target.type !== "map") { return false }
+      for (const s of game.gameActionState.assault.initialSelection) {
+        if (s.x !== selection.target.xy.x || s.y !== selection.target.xy.y) {
+          map.game?.addMessage("all units assaulting together must start in same hex")
           return false
         }
         if (selection.counter.target.id === s.id) { return false }

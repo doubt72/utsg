@@ -3,7 +3,9 @@ import { coordinateToLable, normalDir, smokeRoll } from "../../utilities/utiliti
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
-import { GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType } from "../GameAction";
+import {
+  GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType
+} from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
@@ -38,8 +40,6 @@ export default class MoveAction extends BaseAction {
   get moveString(): string { return this.rush ? "rushes" : "moves" }
 
   get stringValue(): string {
-    // const map = this.game.scenario.map
-    // name(s) moved to (coord), dropping off X, picking up X, smoking X
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const end = new Coordinate(this.lastPath.x, this.lastPath.y)
     const nation = this.game.nationNameForPlayer(this.player)

@@ -26,9 +26,9 @@ export type GameActionPath = {
   x: number, y: number, facing?: Direction, turret?: Direction,
 }
 
-export type AddActionType = "smoke" | "drop" | "load" | "vp"
+export type AddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
 export const addActionType: { [index: string]: AddActionType } = {
-  Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp"
+  Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
 }
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,

@@ -294,7 +294,7 @@ export default function GameDisplay() {
           return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
         })
       }
-    } else if (game.k?.gameActionState?.move) {
+    } else if (game.k?.gameActionState?.move || game.k?.gameActionState?.assault) {
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
@@ -316,6 +316,12 @@ export default function GameDisplay() {
       game.k.executeReinforcement(x, y, counter, d, gameNotification)
     } else if (game.k?.gameActionState?.move) {
       game.k.moveRotate(x, y, d)
+      setControls(gc => {
+        const key = Number(gc?.key ?? 0)
+        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+      })
+    } else if (game.k?.gameActionState?.assault) {
+      game.k.assaultRotate(x, y, d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />

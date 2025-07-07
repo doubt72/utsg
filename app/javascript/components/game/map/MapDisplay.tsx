@@ -240,7 +240,8 @@ export default function MapDisplay({
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
-        if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move) {
+        if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move ||
+            map.game?.gameActionState?.assault) {
           const shaded = openHex(map, x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
@@ -380,8 +381,8 @@ export default function MapDisplay({
   useEffect(() => {
     if (!map) { return }
     const lastSigAction = map.game?.lastSignificantAction
-    if (map?.game?.gameActionState?.move ||
-        (lastSigAction && ["move", "rush", "assault"].includes(lastSigAction.data.action))) {
+    if (map.game?.gameActionState?.move || map.game?.gameActionState?.assault ||
+        (lastSigAction && ["move", "rush", "assault_move"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
       setMoveTrack(undefined)
@@ -443,6 +444,8 @@ export default function MapDisplay({
         }
       } else if (map.game?.gameActionState?.move) {
         map.game.move(x, y)
+      } else if (map.game?.gameActionState?.assault) {
+        map.game.assault(x, y)
       }
       setMapUpdate(s => s + 1)
       if (doCallback) { hexCallback(x, y) }
@@ -485,7 +488,8 @@ export default function MapDisplay({
   const directionSelection = (x: number, y: number, d: Direction) => {
     if (!map) { return }
     directionCallback(x, y, d)
-    if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move) {
+    if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move ||
+        map.game?.gameActionState?.assault) {
       setMapUpdate(s => s+1)
     }
   }

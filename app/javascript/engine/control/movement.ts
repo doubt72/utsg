@@ -56,31 +56,27 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
 
 export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): HexOpenType {
   const game = map.game
-  if (!game?.gameActionState?.move) { return false }
+  if (!game?.gameActionState?.move) { return hexOpenType.Closed }
   const action = game?.gameActionState.move
   if (action.droppingMove) { return hexOpenType.Closed }
   if (action.loadingMove) { return hexOpenType.Closed }
-  if (!game.gameActionState.selection) { return false }
+  if (!game.gameActionState.selection) { return hexOpenType.Closed }
   const selection = game.gameActionState.selection[0].counter
-  if (action.placingSmoke) {
-    return smokeOpenHex(map, from, to, selection.unit)
-  }
-  if (from.x === to.x && from.y === to.y) {
-    return false;
-  }
+  if (action.placingSmoke) { return smokeOpenHex(map, from, to, selection.unit) }
+  if (from.x === to.x && from.y === to.y) { return hexOpenType.Closed }
   const hexFrom = map.hexAt(from) as Hex;
   const hexTo = map.hexAt(to) as Hex;
   const terrFrom = hexFrom.terrain
   const terrTo = hexTo.terrain
   const dir = map.relativeDirection(from, to)
-  if (!dir) { return false }
+  if (!dir) { return hexOpenType.Closed }
   const roadMove = alongRoad(hexFrom, hexTo, dir)
   const railroadMove = alongRailroad(hexFrom, hexTo, dir)
-  if (!terrTo.move && !roadMove && !railroadMove) { return false }
+  if (!terrTo.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
   const next = selection.children[0]
-  if (!terrTo.move && (roadMove || railroadMove)) {
-    if (selection.unit.isWheeled || selection.unit.isTracked) { return false }
-    if (next && next.unit.crewed) { return false }
+  if (!terrTo.move && railroadMove) {
+    if (selection.unit.isWheeled || selection.unit.isTracked) { return hexOpenType.Closed }
+    if (next && next.unit.crewed) { return hexOpenType.Closed }
   }
 
   const countersAt = map.countersAt(to)
@@ -90,43 +86,41 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   const toSize = countersAt.filter(u => !u.hasFeature && !u.unit.parent).reduce(
     (sum, u) => sum + u.unit.size + u.children.reduce((sum, u) => u.unit.size, 0), 0
   )
-  if (moveSize + toSize > stackLimit) { return false }
+  if (moveSize + toSize > stackLimit) { return hexOpenType.Closed }
   for (const c of countersAt) {
-    if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return false }
+    if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return hexOpenType.Closed }
   }
 
   if (selection.unit.isWheeled || selection.unit.isTracked) {
-    if (!terrTo.vehicle && !roadMove) { return false }
-    if (terrTo.vehicle === "amph" && !roadMove && !selection.unit.amphibious) { return false }
+    if (!terrTo.vehicle && !roadMove) { return hexOpenType.Closed }
+    if (terrTo.vehicle === "amph" && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
   }
   const facing = game.lastPath?.facing as Direction
   if (next && next.unit.crewed) {
-    if (!terrTo.gun && !roadMove) { return false }
-    if (terrTo.gun === "back" && dir !== normalDir(facing + 3)) {
-      return false
-    }
+    if (!terrTo.gun && !roadMove) { return hexOpenType.Closed }
+    if (terrTo.gun === "back" && dir !== normalDir(facing + 3)) { return hexOpenType.Closed }
   }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
-    if (!terrFrom.borderMove) { return false }
+    if (!terrFrom.borderMove) { return hexOpenType.Closed }
     if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrFrom.borderVehicle) {
-      return false
+      return hexOpenType.Closed
     }
-    if (next && next.unit.crewed && !terrFrom.borderGun) { return false }
+    if (next && next.unit.crewed && !terrFrom.borderGun) { return hexOpenType.Closed }
   }
-  if (hexTo.border && hexTo.borderEdges?.includes(dir)) {
-    if (!terrTo.borderMove) { return false }
+  if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
+    if (!terrTo.borderMove) { return hexOpenType.Closed }
     if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrTo.borderVehicle) {
-      return false
+      return hexOpenType.Closed
     }
-    if (next && next.unit.crewed && !terrTo.borderGun) { return false }
+    if (next && next.unit.crewed && !terrTo.borderGun) { return hexOpenType.Closed }
   }
   if (selection.unit.canHandle && (next && next.unit.crewed)) {
     if (action.addActions.filter(a => a.id === next.unit.id).length < 1) {
-      if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
+      if (normalDir(dir + 3) !== facing && dir !== facing) { return hexOpenType.Closed }
     }
   }
   if (selection.unit.rotates) {
-    if (normalDir(dir + 3) !== facing && dir !== facing) { return false }
+    if (normalDir(dir + 3) !== facing && dir !== facing) { return hexOpenType.Closed }
   }
 
   const length = action.path.length + action.addActions.length
@@ -138,7 +132,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   for (const p of action.path) {
     if (to.x === p.x && to.y === p.y ) { return hexOpenType.Open }
   }
-  return move >= cost + pastCost ? cost : "all"
+  return move >= cost + pastCost ? cost : hexOpenType.All
 }
 
 export function movementPastCost(map: Map, target: Unit): number {
@@ -276,6 +270,34 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
   return false
 }
 
+export function alongRoad(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
+  if (from.coord.x === to.coord.x && from.coord.y === to.coord.y && to.road) { return true }
+  if (!from.road || !to.road || !rotateRoads(to)?.includes(normalDir(dir + 3)) ||
+      !rotateRoads(from)?.includes(dir)) {
+    return false
+  }
+  if (pathOk) { return true }
+  if (from.roadType === roadType.Path || to.roadType === roadType.Path) {
+    return false
+  }
+  return true
+}
+
+export function alongRailroad(from: Hex, to: Hex, dir: Direction,): boolean {
+  if (from.coord.x === to.coord.x && from.coord.y === to.coord.y) { return true }
+  if (!from.railroad || !to.railroad || !to.railroadDirections || !from.railroadDirections) {
+    return false
+  }
+  for (const trr of to.railroadDirections) {
+    for (const frr of from.railroadDirections) {
+      if (trr.includes(normalDir(dir + 3)) && frr.includes(dir)) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
 function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selection: Unit): HexOpenType {
   const distance = hexDistance(from, to)
   const past = movementPastCost(map, selection)
@@ -307,34 +329,6 @@ function allAlongRoad(map: Map): boolean {
 function rotateRoads(hex: Hex) {
   if (!hex.roadDirections) { return undefined }
   return hex.roadDirections.map(d => normalDir(d + (hex.roadRotation ?? 0)))
-}
-
-function alongRoad(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
-  if (from.coord.x === to.coord.x && from.coord.y === to.coord.y && to.road) { return true }
-  if (!from.road || !to.road || !rotateRoads(to)?.includes(normalDir(dir + 3)) ||
-      !rotateRoads(from)?.includes(dir)) {
-    return false
-  }
-  if (pathOk) { return true }
-  if (from.roadType === roadType.Path || to.roadType === roadType.Path) {
-    return false
-  }
-  return true
-}
-
-function alongRailroad(from: Hex, to: Hex, dir: Direction,): boolean {
-  if (from.coord.x === to.coord.x && from.coord.y === to.coord.y) { return true }
-  if (!from.railroad || !to.railroad || !to.railroadDirections || !from.railroadDirections) {
-    return false
-  }
-  for (const trr of to.railroadDirections) {
-    for (const frr of from.railroadDirections) {
-      if (trr.includes(normalDir(dir + 3)) && frr.includes(dir)) {
-        return true
-      }
-    }
-  }
-  return false
 }
 
 function alongStream(from: Hex, to: Hex, dir: Direction): boolean {

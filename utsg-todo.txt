@@ -1,7 +1,10 @@
 High Priority Features/Bug Fixes:
   - Assault Move
+    - Tests
     - Test/Implement: engineering remove wire/obstacles
     - Test/Implement: digging in
+    - Can't assault if movement 0
+    - Docs
   - Firing
     - Test/Implement: mine
   - Show reaction
@@ -11,6 +14,7 @@ High Priority Features/Bug Fixes:
   - Close Combat
   - Weather
   - Rally/Fix
+  - Show Eliminated Units
 
 Future Features/Bug Fixes:
   - Improved move validation/synchronization to block duplicate/illegal moves

@@ -29,6 +29,10 @@ import InitiativeButton from "./InitiativeButton";
 import ResignButton from "./ResignButton";
 import ResignCancelButton from "./ResignCancelButton";
 import PassCancelButton from "./PassCancelButton";
+import AssaultMoveCancelButton from "./AssaultMoveCancelButton";
+import AssaultMoveFinishButton from "./AssaultMoveFinishButton";
+import AssaultMoveEntrenchButton from "./AssaultMoveEntrenchButton";
+import AssaultMoveClearButton from "./AssaultMoveClearButton";
 
 interface GameControlsProps {
   game: Game;
@@ -108,6 +112,14 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <RushButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "assault_move") {
         return <AssaultMoveButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "assault_move_cancel") {
+        return <AssaultMoveCancelButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "assault_move_finish") {
+        return <AssaultMoveFinishButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "assault_move_clear") {
+        return <AssaultMoveClearButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "assault_move_entrench") {
+        return <AssaultMoveEntrenchButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rout") {
         return <RoutButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {

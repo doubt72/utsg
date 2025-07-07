@@ -1,6 +1,7 @@
 import { GameAction, unitType } from "../../utilities/commonTypes"
 import Game, { actionType, gamePhaseType } from "../Game"
 import Unit from "../Unit"
+import { showClearObstacles, showEntrench } from "./assault"
 import { needPickUpDisambiguate } from "./gameActions"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 
@@ -79,6 +80,25 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           actions.push({ type: "move_finish" })
         }
         actions.push({ type: "move_cancel" })
+      } else {
+        actions.unshift({ type: "none", message: "error: unexpected missing state" })
+      }
+    } else if (game.gameActionState?.currentAction === actionType.Assault) {
+      const action = game.gameActionState.assault
+      if (action) {
+        if (showClearObstacles(game)) {
+          actions.push({ type: "assault_move_clear" })
+        }
+        if (showEntrench(game)) {
+          actions.push({ type: "assault_move_entrench" })
+        }
+        if (action.path.length + action.addActions.length > 1) {
+          actions.push({ type: "assault_move_finish" })
+        }
+        if (!action.doneSelect) {
+          actions.push({ type: "move_done_multiselect" })
+        }
+        actions.push({type: "assault_move_cancel"})
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }

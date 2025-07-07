@@ -2,22 +2,24 @@ import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { MoveRushGlyph } from "../../utilities/buttons";
 
-interface AssaultMoveButtonProps {
+interface AssaultMoveFinishButtonProps {
   game: Game;
   callback: () => void;
 }
 
-export default function AssaultMoveButton({ game, callback }: AssaultMoveButtonProps) {
+export default function AssaultMoveFinishButton({ game, callback }: AssaultMoveFinishButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.startAssault()
+    game.finishAssault()
     callback()
   }
 
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{MoveRushGlyph()}assault move (3)</button>
+        <button type="submit" className="custom-button nowrap">{MoveRushGlyph()}
+          finish assault move
+        </button>
       </div>
     </form>
   )

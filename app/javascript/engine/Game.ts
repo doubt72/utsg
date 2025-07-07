@@ -11,7 +11,11 @@ import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
-import { finishBreakdown, finishInitiative, finishMove, finishPass, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle, startBreakdown, startInitiative, startMove, startPass } from "./control/gameActions";
+import {
+  assault, assaultClear, assaultEntrench, assaultRotate, finishAssault, finishBreakdown, finishInitiative, finishMove,
+  finishPass, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
+  startAssault, startBreakdown, startInitiative, startMove, startPass
+} from "./control/gameActions";
 
 export type GameData = {
   id: number;
@@ -36,9 +40,9 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
 }
 
-export type ActionType = "d" | "m" | "bd" | "i" | "ip"
+export type ActionType = "d" | "m" | "am" | "bd" | "i" | "ip"
 export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Move: "m", Breakdown: "bd", Initiative: "i", Pass: "ip",
+  Deploy: "d", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
 }
 
 export type ActionSelection = {
@@ -66,12 +70,20 @@ export type MoveActionState = {
   loader?: Counter,
 }
 
+export type AssaultMoveActionState = {
+  initialSelection: ActionSelection[];
+  doneSelect: boolean;
+  path: GameActionPath[],
+  addActions: AddAction[],
+}
+
 export type GameActionState = {
   player: Player,
   currentAction: ActionType,
   selection: ActionSelection[],
   deploy?: DeployActionState,
   move?: MoveActionState,
+  assault?: AssaultMoveActionState,
 }
 
 export default class Game {
@@ -83,6 +95,8 @@ export default class Game {
   playerTwoName: string = "";
   state?: string;
   currentSequence = 1;
+
+  eliminatedUnits: (Unit | Feature)[]
 
   refreshCallback: (g: Game, error?: [string, string]) => void;
 
@@ -118,6 +132,8 @@ export default class Game {
     this.playerOneName = data.player_one
     this.playerTwoName = data.player_two
     this.state = data.state
+
+    this.eliminatedUnits = []
 
     this.refreshCallback = refreshCallback
 
@@ -302,7 +318,7 @@ export default class Game {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
-      if (["move", "rush", "assault"].includes(a.data.action)) {
+      if (["move", "rush", "assault_move"].includes(a.data.action)) {
         this.scenario.map.setLastSelection(a)
         return a
       }
@@ -321,7 +337,7 @@ export default class Game {
     let rc = false
     for (const a of this.actions.filter(a => !a.undone)) {
       if (a.type == "initiative") { rc = false }
-      if (["move", "rush", "assault move", "fire", "intensive fire", "rout", "rout all"].includes(a.type)) {
+      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout", "rout_all"].includes(a.type)) {
         rc = true
       }
     }
@@ -334,7 +350,7 @@ export default class Game {
     if (action.data.origin && action.data.origin.length > 0) {
       const id = action.data.origin[0].id
       const counter = this.findCounterById(id) as Counter
-      if (action.data.action === "move" && counter.unit.breakdownRoll) {
+      if (["move", "assault_move"].includes(action.data.action) && counter.unit.breakdownRoll) {
         return true
       }
     }
@@ -358,6 +374,14 @@ export default class Game {
     return this.scenario.map.findCounterById(id)
     // TODO: handle units that have been eliminated
     return undefined
+  }
+
+  addEliminatedCounter(c: Unit | Feature) {
+    this.eliminatedUnits.push(c)
+  }
+
+  removeEliminatedCounter(id: string) {
+    this.eliminatedUnits = this.eliminatedUnits.filter(c => c.id !== id)
   }
 
   previousActionUndoPossible(index: number): boolean {
@@ -602,9 +626,13 @@ export default class Game {
   }
 
   get lastPath(): GameActionPath | undefined {
-    if (!this.gameActionState?.move) { return }
-    const path = this.gameActionState.move.path
-    return path[path.length - 1]
+    if (this.gameActionState?.move) {
+      const path = this.gameActionState.move.path
+      return path[path.length - 1]
+    } else if (this.gameActionState?.assault) {
+      const path = this.gameActionState.assault.path
+      return path[path.length - 1]
+    }
   }
 
   startInitiative() {
@@ -653,6 +681,31 @@ export default class Game {
 
   finishMove() {
     finishMove(this)
+  }
+
+  startAssault() {
+    startAssault(this)
+  }
+
+  assault(x: number, y: number) {
+    assault(this, x, y)
+  }
+
+  assaultRotate(x: number, y: number, dir: Direction) {
+    assaultRotate(this, x, y, dir)
+  }
+
+  assaultClear() {
+    assaultClear(this)
+  }
+
+  assaultEntrench() {
+    assaultEntrench(this)
+  }
+
+
+  finishAssault() {
+    finishAssault(this)
   }
 
   startBreakdown() {

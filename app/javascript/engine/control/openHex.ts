@@ -6,6 +6,7 @@ import { actionType } from "../Game"
 import { addActionType, GameActionPath } from "../GameAction"
 import Map from "../Map"
 import Unit from "../Unit"
+import { openHexAssaulting } from "./assault"
 import { mapSelectMovement, movementCost, movementPastCost, openHexMovement } from "./movement"
 
 export default function openHex(map: Map, x: number, y: number): HexOpenType {
@@ -14,6 +15,8 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
     return openHexReinforcement(map, x, y)
   } else if (game?.gameActionState?.currentAction === actionType.Move) {
     return openHexMove(map, x, y)
+  } else if (game?.gameActionState?.currentAction === actionType.Assault) {
+    return openHexAssault(map, x, y)
   } else if (game?.gameActionState?.currentAction === actionType.Breakdown) {
     return hexOpenType.Closed
   }
@@ -22,29 +25,37 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
 
 export function openHexRotateOpen(map: Map): boolean {
   const game = map.game
-  if (!game?.gameActionState?.move) { return false }
-  if (!game.gameActionState.selection) { return false }
+  if (!game?.gameActionState?.selection) { return false }
   const counter = game.gameActionState.selection[0].counter
-  const child = counter.unit.children[0]
-  if (!counter.unit.rotates && !(child && child.rotates)) { return false }
-  if (counter.unit.canHandle && child && child.crewed) {
-    for (const a of game.gameActionState.move.addActions) {
-      if (a.type === addActionType.Drop && a.id === child.id) { return false }
+  if (game.gameActionState.move) {
+    const child = counter.unit.children[0]
+    if (!counter.unit.rotates && !(child && child.rotates)) { return false }
+    if (counter.unit.canHandle && child && child.crewed) {
+      for (const a of game.gameActionState.move.addActions) {
+        if (a.type === addActionType.Drop && a.id === child.id) { return false }
+      }
     }
+    return true
+  } else if (game.gameActionState.assault && game.gameActionState.assault.path.length > 1) {
+    if (counter.unit.turreted && !counter.unit.turretJammed) { return true }
   }
-  return true
+  return false
 }
 
 export function openHexRotatePossible(map: Map): boolean {
   const game = map.game
-  if (!game?.gameActionState?.move) { return false }
-  if (!game.gameActionState.selection) { return false }
+  if (!game?.gameActionState?.selection) { return false }
   const counter = game.gameActionState.selection[0].counter
-  const loc = counter.hex as Coordinate
-  const cost = movementCost(map, loc, loc, counter.unit) + movementPastCost(map, counter.unit)
-  const length = game.gameActionState.move.path.length
-  const move = mapSelectMovement(game, true)
-  return move >= cost || length === 1
+  if (game.gameActionState.move) {
+    const loc = counter.hex as Coordinate
+    const cost = movementCost(map, loc, loc, counter.unit) + movementPastCost(map, counter.unit)
+    const length = game.gameActionState.move.path.length
+    const move = mapSelectMovement(game, true)
+    return move >= cost || length === 1
+  } else if (game.gameActionState.assault && game.gameActionState.assault.path.length > 1) {
+    if (counter.unit.turreted && !counter.unit.turretJammed) { return true }
+  }
+  return false
 }
 
 function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
@@ -137,10 +148,13 @@ function openHexMove(map: Map, x: number, y: number): HexOpenType {
   if (!game?.gameActionState?.move) { return hexOpenType.Open }
   if (!game?.gameActionState?.selection) { return hexOpenType.Open }
   const lastPath = game.lastPath as GameActionPath
-  const cost = openHexMovement(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
-  if (cost === false) {
-    return hexOpenType.Closed
-  } else {
-    return cost
-  }
+  return openHexMovement(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
+}
+
+function openHexAssault(map: Map, x: number, y: number): HexOpenType {
+  const game = map.game
+  if (!game?.gameActionState?.assault) { return hexOpenType.Open }
+  if (!game?.gameActionState?.selection) { return hexOpenType.Open }
+  const lastPath = game.lastPath as GameActionPath
+  return openHexAssaulting(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
 }

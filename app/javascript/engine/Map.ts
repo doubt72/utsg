@@ -297,12 +297,20 @@ export default class Map {
     }
   }
 
-  removeUnitFromList(list: (Unit | Feature)[], id: string): (Unit | Feature)[] {
+  eliminateCounter(loc: Coordinate, id: string) {
+    if (!this.game) { return }
+    const counter = this.findCounterById(id) as Counter
+    const newList = this.removeCounterFromList(this.units[loc.y][loc.x], id)
+    this.units[loc.y][loc.x] = newList
+    this.game.addEliminatedCounter(counter.hasFeature ? counter.feature : counter.unit)
+  }
+
+  removeCounterFromList(list: (Unit | Feature)[], id: string): (Unit | Feature)[] {
     let index = undefined
     for (let i = 0; i < list.length; i++) {
       const unit = list[i] as Unit
       if (!unit.isFeature && unit.children.length > 0) {
-        unit.children = this.removeUnitFromList(unit.children, id) as Unit[]
+        unit.children = this.removeCounterFromList(unit.children, id) as Unit[]
       }
       if (list[i].id === id) { index = i}
     }
@@ -316,8 +324,8 @@ export default class Map {
     return list
   }
 
-  removeUnit(loc: Coordinate, id: string) {
-    const newList = this.removeUnitFromList(this.units[loc.y][loc.x], id)
+  removeCounter(loc: Coordinate, id: string) {
+    const newList = this.removeCounterFromList(this.units[loc.y][loc.x], id)
     this.units[loc.y][loc.x] = newList
   }
 

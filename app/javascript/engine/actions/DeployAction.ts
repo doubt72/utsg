@@ -74,6 +74,6 @@ export default class DeployAction extends BaseAction {
     } else {
       scenario.replaceAxisReinforcement(this.rTurn, this.rIndex)
     }
-    map.removeUnit(this.target, this.rId)
+    map.removeCounter(this.target, this.rId)
   }
 }

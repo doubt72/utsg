@@ -204,9 +204,7 @@ export function finishMove(game: Game) {
       action: game.rushing ? "rush" : "move", old_initiative: game.initiative,
       path: game.gameActionState.move.path,
       origin: game.gameActionState.selection.map(s => {
-        return {
-          x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
-        }
+        return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
       add_action: game.gameActionState.move.addActions.map(a => {
         return {
@@ -221,6 +219,111 @@ export function finishMove(game: Game) {
   game.scenario.map.clearGhosts()
   game.scenario.map.clearAllSelections()
   game.executeAction(move, false)
+}
+
+export function startAssault(game: Game) {
+  const selection = game.scenario.map.currentSelection[0]
+  if (selection && selection.hex) {
+    const loc = {
+      x: selection.hex.x, y: selection.hex.y,
+      facing: selection.unit.rotates ? selection.unit.facing : undefined ,
+      turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
+    }
+    const units = selection.children
+    units.forEach(c => c.unit.select())
+    let canSelect = selection.unit.canCarrySupport
+    if (canSelect) {
+      let check = false
+      game.scenario.map.countersAt(new Coordinate(selection.hex.x, selection.hex.y)).forEach(c => {
+        if (selection.unitIndex !== c.unitIndex && !c.unit.isFeature && c.unit.canCarrySupport &&
+            (c.children.length < 1 || !c.children[0].unit.crewed)) {
+          check = true
+        }
+      })
+      canSelect = check
+    }
+    const allSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+    const initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+    units.forEach(u => {
+      const hex = u.hex as Coordinate
+      allSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
+      initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
+    })
+    if (canSelect) {
+      game.openOverlay = { x: selection.hex.x, y: selection.hex.y }
+    }
+    game.gameActionState = {
+      player: game.currentPlayer, currentAction: actionType.Assault, selection: allSelection,
+      assault: { initialSelection, doneSelect: !canSelect, path: [loc], addActions: [] }
+    }
+  }
+}
+
+export function assault(game: Game, x: number, y: number) {
+  if (!game.gameActionState?.assault) { return }
+  if (!game.gameActionState?.selection) { return }
+  const selection = game.gameActionState.selection
+  const assault = game.gameActionState.assault
+  const target = selection[0].counter.unit
+  const path = assault.path[0]
+  const facing = game.scenario.map.relativeDirection(
+    new Coordinate(path.x, path.y), new Coordinate(x, y)) ?? 1
+  assault.path.push({
+    x, y, facing, turret: target.turreted ?
+      normalDir(target.turretFacing - selection[0].counter.unit.facing + facing) : undefined
+  })
+  const vp = game.scenario.map.victoryAt(new Coordinate(x, y))
+  if (vp && vp !== game.currentPlayer) {
+    assault.addActions.push({ x, y, type: addActionType.VP, cost: 0 })
+  }
+  assault.doneSelect = true
+  game.closeOverlay = true
+}
+
+export function assaultRotate(game: Game, x: number, y: number, dir: Direction) {
+  if (!game.gameActionState?.assault) { return }
+  const last = game.lastPath as GameActionPath
+  last.turret = dir
+}
+
+export function assaultClear(game: Game) {
+  if (!game.gameActionState?.assault) { return }
+  const assault = game.gameActionState.assault
+  const x = game.gameActionState.selection[0].x
+  const y = game.gameActionState.selection[0].y
+  const f = game.scenario.map.countersAt(new Coordinate(x, y)).filter(c => c.hasFeature)[0]
+  assault.addActions.push({ x, y, type: addActionType.Clear, cost: 0, id: f.feature.id })
+  game.closeOverlay = true
+}
+
+export function assaultEntrench(game: Game) {
+  if (!game.gameActionState?.assault) { return }
+  const assault = game.gameActionState.assault
+  const x = game.gameActionState.selection[0].x
+  const y = game.gameActionState.selection[0].y
+  assault.addActions.push({ x, y, type: addActionType.Entrench, cost: 0 })
+  game.closeOverlay = true
+}
+
+export function finishAssault(game: Game) {
+  if (!game.gameActionState?.move) { return }
+  const assault = new GameAction({
+    user: game.currentUser,
+    player: game.gameActionState.player,
+    data: {
+      action: "assault_move", old_initiative: game.initiative,
+      path: game.gameActionState.move.path,
+      origin: game.gameActionState.selection.map(s => {
+        return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
+      }),
+      add_action: game.gameActionState.move.addActions.map(a => {
+        return { type: a.type, x: a.x, y: a.y, id: a.id }
+      }),
+    }
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearAllSelections()
+  game.executeAction(assault, false)
 }
 
 export function startBreakdown(game: Game) {

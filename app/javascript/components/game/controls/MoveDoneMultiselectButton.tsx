@@ -1,5 +1,5 @@
 import React, { FormEvent } from "react";
-import Game from "../../../engine/Game";
+import Game, { AssaultMoveActionState, MoveActionState } from "../../../engine/Game";
 import { MoveGlyph } from "../../utilities/buttons";
 
 interface MoveDoneMultiselectButtonProps {
@@ -10,7 +10,8 @@ interface MoveDoneMultiselectButtonProps {
 export default function MoveDoneMultiselectButton({ game, callback }: MoveDoneMultiselectButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    const move = game.gameActionState?.move
+    let move: MoveActionState | AssaultMoveActionState | undefined = game.gameActionState?.move
+    if (!move) { move = game.gameActionState?.assault }
     if (move) { move.doneSelect = true }
     game.closeOverlay = true
     callback()
