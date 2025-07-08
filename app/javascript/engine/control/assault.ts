@@ -31,8 +31,8 @@ export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): H
     if (selection.unit.isWheeled || selection.unit.isTracked) { return hexOpenType.Closed }
   }
   if (selection.unit.isWheeled || selection.unit.isTracked) {
-    if (!terrTo.vehicle && !roadMove) { return hexOpenType.Closed }
-    if (terrTo.vehicle === "amph" && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
+    if ((!terrTo.vehicle || !terrFrom.vehicle) && !roadMove) { return hexOpenType.Closed }
+    if ((terrTo.vehicle === "amph") && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
   }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     if (!terrFrom.borderMove) { return hexOpenType.Closed }

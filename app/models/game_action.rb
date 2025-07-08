@@ -54,6 +54,11 @@ class GameAction < ApplicationRecord
     return false unless !data["dice_result"] || data["dice_result"].empty?
     # action "action" isn't actually used except for testing
     return false unless %w[action deploy info phase move assault_move].include?(data["action"])
+    if GameAction.where(
+      "game_id = ? AND sequence > ? AND undone = false", game_id, sequence
+    ).count.positive?
+      return false
+    end
 
     true
   end

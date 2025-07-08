@@ -89,14 +89,14 @@ RSpec.describe Api::V1::GameActionsController do
 
   describe "undo" do
     it "can undo action" do
-      login(user1)
+      login(user2)
 
       expect do
-        post :undo, params: { id: action1.id }
-      end.to change { action1.reload.undone }
+        post :undo, params: { id: action2.id }
+      end.to change { action2.reload.undone }
 
       expect(response.status).to be == 200
-      expect(action1.undone).to be == true
+      expect(action2.undone).to be == true
     end
 
     it "can't undo other user's action" do

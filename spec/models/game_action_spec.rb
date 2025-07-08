@@ -62,4 +62,13 @@ RSpec.describe GameAction do
     action.undo(user)
     expect(action.reload.undone).to be == false
   end
+
+  it "can't undo previous actions" do
+    action = GameAction.create!({ game:, sequence: 1, user:, data: { action: "action" } })
+    GameAction.create!({ game:, sequence: 2, user:, data: { action: "action" } })
+
+    expect(action.undone).to be == false
+    action.undo(user)
+    expect(action.reload.undone).to be == false
+  end
 end

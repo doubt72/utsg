@@ -511,6 +511,40 @@ describe("assault movement tests", () => {
     expect(all[1].unit.status).toBe(unitStatus.Normal)
   })
 
+  test("tank can't assault from impassible terrain without road", () => {
+    const game = createTestGame([
+      [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+        { t: "f", r: { d: [1, 4]} },
+        { t: "o", r: { d: [1, 4]} },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
+      [
+        { t: "o" },
+        { t: "o", s: { d: [4, 6], t: "t" } },
+        { t: "o", s: { d: [1, 5], t: "t" } },
+        { t: "o" }, { t: "o" }
+      ],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.select()
+    map.addCounter(new Coordinate(3, 2), unit)
+
+    game.startAssault()
+
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotatePossible(map)).toBe(false)
+    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
+    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 1))).toBe(hexOpenType.Closed)
+    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+  })
+
   test("truck assault", () => {
     const game = createTestGame()
     const map = game.scenario.map

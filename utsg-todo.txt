@@ -1,9 +1,6 @@
 High Priority Features/Bug Fixes:
-  - Assault Move
-    - Tests
-    - Fix bug where assault move out of forest does not need to follow road
-  - Undo BE only when no higher sequence not undone
   - Firing
+    - Intensive Firing
     - Test/Implement: mine
   - Show reaction
     - Just passing currently
