@@ -371,8 +371,11 @@ export default class Game {
   }
 
   findCounterById(id: string): Counter | undefined {
-    return this.scenario.map.findCounterById(id)
-    // TODO: handle units that have been eliminated
+    const counter = this.scenario.map.findCounterById(id)
+    if (counter) { return counter }
+    for (const c of this.eliminatedUnits) {
+      if (c.id === id) { return new Counter(undefined, c) }
+    }
     return undefined
   }
 

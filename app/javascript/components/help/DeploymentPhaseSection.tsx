@@ -21,7 +21,7 @@ export const deploymentRulesSection = (phase: string) => {
           Obstacle features such as mines and wire cannot be placed in victory hexes. Placing
           fortifications in such hexes is fine, however. Neither fortifications or obstacle features
           can be placed in the same hex as a building, forest, or other terrain that is impassible
-          to vehicles.
+          to vehicles.  Only one feature can be placed in any hex.
         </p>
       ) : (
         ""
@@ -33,7 +33,8 @@ export const deploymentRulesSection = (phase: string) => {
       <p>
         Finally, players should be aware of how stacking works when placing units so that units are
         loaded on vehicles or weapons are carried or operated by units as expected (though the
-        deployment map will attempt to show valid options if possible, and will show a warning if a
+        deployment map will attempt to show valid options if possible — i.e., hexes that would result
+        in no crew or operator are shaded red — and will show a warning if a
         weapon has no operator); see the section on{" "}
         <Link to={`/help/${helpIndexByName("Stacking").join(".")}`}>stacking counters</Link> for more
         information.

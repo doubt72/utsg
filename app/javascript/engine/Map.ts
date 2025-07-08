@@ -430,6 +430,7 @@ export default class Map {
     const counters = this.allCounters
     for (const c of counters) {
       if (c.hasUnit && c.unit.id === id) { return c }
+      if (c.hasFeature && c.feature.id === id) { return c }
     }
     return
   }

@@ -449,18 +449,18 @@ export function amphibiousLayout(counter: Counter): CounterLayout | false {
   return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
 }
 
-export function facingLayout(counter: Counter): facingLayout | false {
+export function facingLayout(counter: Counter, hull: boolean = false): facingLayout | false {
   const unit = counter.unit
   if ((!unit.turreted && !unit.rotates) || unit.isWreck ||
       unit.rotatingVehicleMount || unit.currentFirepower < 1) {
     return false
   }
-  let dir = unit.turreted ? unit.turretFacing : unit.facing
+  let dir = unit.turreted && !hull ? unit.turretFacing : unit.facing
   if (unit.backwardsMount) { dir = normalDir(dir + 3) }
   const path = facingLine(counter, dir).concat(facingLine(counter, normalDir(dir - 1))).join(" ")
   return {
     path: path, dash: "4 4", style: {
-      fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(255,255,255,1)"
+      fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: hull ? "rgba(255,255,0,1)" : "rgba(255,255,255,1)"
     },
     style2: {
       fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(0,0,0,1)"

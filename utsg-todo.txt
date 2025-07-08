@@ -2,6 +2,7 @@ High Priority Features/Bug Fixes:
   - Assault Move
     - Tests
     - Fix bug where assault move out of forest does not need to follow road
+  - Undo BE only when no higher sequence not undone
   - Firing
     - Test/Implement: mine
   - Show reaction
@@ -14,7 +15,6 @@ High Priority Features/Bug Fixes:
   - Show Eliminated Units
 
 Future Features/Bug Fixes:
-  - Improved move validation/synchronization to block duplicate/illegal moves
   - Ability to kick players
   - Implement Help Button linking to game context
   - Change terminology for jamming in documentation to be more like breaking
@@ -26,6 +26,7 @@ Future Features/Bug Fixes:
   - Switch main page game status to websocket, not polling
   - Fix stacking parent/children indicators when showing markers
 
+  - Improved move validation/synchronization to block duplicate/illegal moves
   - Break up tests / large files
   - Fix flickering of control buttons?
   - Disable text selection on map/etc?

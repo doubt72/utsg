@@ -57,6 +57,9 @@ const mapTestData = (hexes: HexData[][]): MapData => {
 export const testGInf: UnitData = {
   c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
 }
+export const testRInf: UnitData = {
+  c: "ussr", f: 7, i: "squad", m: 3, n: "Rifle", r: 3, s: 6, t: "sqd", v: 4, y: 0, o: {}
+}
 export const testGLdr: UnitData = {
   c: "ger", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
 }
@@ -70,15 +73,15 @@ export const testGGun: UnitData = {
   c: "ger", f: 8, i: "gun", n: "3.7cm Pak 36", o: {t: 1, j: 3, p: 1, c: 1, f: 18, tow: 2}, r: 16,
   t: "gun", v: 2, y: 36
 }
-const testGTank: UnitData = {
+export const testGTank: UnitData = {
   t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
   o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
 };
-const testGTruck: UnitData = {
+export const testGTruck: UnitData = {
   t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
   o: { tr: 3, trg: 1, w: 1 },
 };
-const testWire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
+export const testWire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
 const scenarioTestData = (hexes: HexData[][]): ScenarioData => {
   return {
@@ -664,6 +667,44 @@ describe("movement tests", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
     expect(all[1].unit.status).toBe(unitStatus.Activated)
+  })
+
+  test ("can't move overstack or into enemy", () => {
+    const game = createTestGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+
+    const unit3 = new Unit(testGInf)
+    unit3.id = "test3"
+    map.addCounter(new Coordinate(3, 3), unit3)
+
+    const unit4 = new Unit(testRInf)
+    unit4.id = "test4"
+    map.addCounter(new Coordinate(3, 2), unit4)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+    const move = state.move as MoveActionState
+
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(state.selection.length).toBe(2)
+    expect(move.doneSelect).toBe(false)
+
+    expect(openHexMovement(map, loc, new Coordinate(3, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, loc, new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
   })
 
   test("multi-select drop-off", () => {

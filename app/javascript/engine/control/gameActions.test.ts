@@ -8,6 +8,7 @@ import { HexData } from "../Hex"
 import IllegalActionError from "../actions/IllegalActionError"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 import { openHexMovement } from "./movement"
+import { openHexAssaulting } from "./assault"
 
 // TODO: add passing tests 
 
@@ -240,6 +241,66 @@ describe("game action tests", () => {
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(5)
+    expect(all[1].unit.immobilized).toBe(false)
+
+    expect(game.breakdownCheck).toBe(true)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+
+    game.startBreakdown()
+    expect(game.gameActionState?.currentAction).toBe(actionType.Breakdown)
+    game.finishBreakdown()
+
+    Math.random = original
+
+    expect(all[1].unit.immobilized).toBe(true)
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a breakdown roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("breakdown assault movement", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(gtank)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.turretFacing = 1
+    unit.breakdownRoll = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startAssault()
+
+    expect(openHexRotateOpen(map)).toBe(false)
+    expect(openHexRotatePossible(map)).toBe(false)
+    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.All)
+    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.All)
+    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    game.assault(3, 2)
+    expect(openHexRotateOpen(map)).toBe(true)
+    expect(openHexRotatePossible(map)).toBe(true)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+
+    game.finishAssault()
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].marker.facing).toBe(1)
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.facing).toBe(1)
+    expect(all[1].unit.turretFacing).toBe(1)
     expect(all[1].unit.immobilized).toBe(false)
 
     expect(game.breakdownCheck).toBe(true)

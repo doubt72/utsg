@@ -76,6 +76,11 @@ export default class AssaultMoveAction extends BaseAction {
         }
         unit.unit.status = unitStatus.Exhausted
       }
+    } else {
+      for (const u of this.origin) {
+        const unit = this.game.scenario.map.unitAtId(start, u.id) as Counter
+        unit.unit.status = unitStatus.Exhausted
+      }
     }
 
     for (const a of this.addAction) {
@@ -127,6 +132,11 @@ export default class AssaultMoveAction extends BaseAction {
         if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
           unit.unit.children[0].facing = normalDir(facing + 3)
         }
+      }
+    } else {
+      for (const u of this.origin) {
+        const unit = this.game.scenario.map.unitAtId(start, u.id) as Counter
+        unit.unit.status = u.status
       }
     }
     sortStacks(map)

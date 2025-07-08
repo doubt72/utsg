@@ -97,6 +97,7 @@ export function showEntrench(game: Game): boolean {
   const loc = new Coordinate(selection[0].x, selection[0].y)
   const hex = game.scenario.map.hexAt(loc) as Hex
   if (!hex.terrain.vehicle || [terrainType.Sand, terrainType.Shallow].includes(hex.baseTerrain)) { return false }
+  if (hex.river || hex.railroad) { return false }
   if (hex.building) { return false }
   const features = game.scenario.map.countersAt(loc)
   for (const f of features) {

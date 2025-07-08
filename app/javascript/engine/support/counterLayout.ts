@@ -73,6 +73,8 @@ export function nameLayout(counter: Counter): CounterLayout {
   if (counter.unit.smallName > 0) { size = 8.25 }
   if (counter.unit.smallName > 1) { size = 7.825 }
   if (counter.unit.smallName > 2) { size = 7.5 }
+  if (counter.unit.smallName > 3) { size = 7.175 }
+  if (counter.unit.smallName > 3) { size = 6.85 }
   const y = counter.hasFeature ? counter.y + 12 : counter.y + 10
   return {
     x: counter.x + 5, y: y, size: size, name: counter.targetUF.name,

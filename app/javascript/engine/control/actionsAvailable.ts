@@ -199,7 +199,7 @@ function canRush(unit: Unit | undefined): boolean {
   if (!unit.isActivated) { return false }
   if (!unit.canCarrySupport) { return false }
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
-  if (unit.children.length > 0 &&unit.children[0].baseMovement + Math.floor(unit.currentMovement/2) <= 0) {
+  if (unit.children.length > 0 && unit.children[0].baseMovement + Math.floor(unit.currentMovement/2) <= 0) {
     return false
   }
   return true
@@ -210,6 +210,8 @@ function canAssaultMove(unit: Unit | undefined): boolean {
   if (!canMoveAny(unit)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
+  if (unit.canCarrySupport && unit.children.length > 0 &&
+      unit.children[0].baseMovement + unit.currentMovement <= 0) { return false }
   return true
 }
 

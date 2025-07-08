@@ -205,7 +205,8 @@ export default function InterfaceSection() {
         The size of the interface is controlled with these buttons, which switch between a large
         interfact suitable for large displays, a smaller interface suitable for smaller displays or
         to make room for larger maps, and an even smaller interface suitable for mobile devices such
-        as tablets (the game is basically unusable on phones):
+        as tablets (the game is not meant for phones, and essentially unusable on anything smaller
+        than a tablet):
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>

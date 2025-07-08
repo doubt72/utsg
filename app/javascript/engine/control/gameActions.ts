@@ -332,7 +332,7 @@ export function startBreakdown(game: Game) {
   if (action.data.origin && action.data.origin.length > 0) {
     const id = action.data.origin[0].id
     const counter = game.findCounterById(id) as Counter
-    if (action.data.action === "move" && counter.unit.breakdownRoll) {
+    if (["move", "assault_move"].includes(action.data.action) && counter.unit.breakdownRoll) {
       game.gameActionState = {
         player: game.currentPlayer, currentAction: actionType.Breakdown,
         selection: [{

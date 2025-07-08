@@ -589,12 +589,12 @@ export default function CounterSection() {
       if (unit.turretArmor) {
         sections.push(<p key={index++}>
           <strong>Turret armor</strong> is used for hits on the front, side, or rear.  The weakest armor
-          is used for hits by area fire.
+          (hull or turret) is used for hits by area fire.
         </p>)
       }
       if (unit.hullArmor) {
         sections.push(<p key={index++}>
-          <strong>Hull armor</strong> is used for hits on the front, side, or rear.  The weakest armor
+          <strong>Hull armor</strong> is used for hits on the front, side, or rear.  The weakest (hull) armor
           is used for hits by mines (treating unarmored as 0) or area fire.
         </p>)
       }

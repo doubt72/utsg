@@ -65,7 +65,8 @@ export default function MapLosOverlay({
         {map.countersAt(new Coordinate(xx, yy)).map((c, i) => {
           if (!c.hasUnit) { return "" }
           const fl = facingLayout(c)
-          if (!fl) { return "" }
+          const fl2 = facingLayout(c, !!c.unit.sponson)
+          if (!fl || !fl2) { return "" }
           return (
             <g key={i}>
               <defs>
@@ -73,10 +74,12 @@ export default function MapLosOverlay({
                   <rect x="0" y="0" width={map.previewXSize} height={map.ySize}></rect>
                 </clipPath>
               </defs>
-              {fl ? <path d={fl.path} style={fl.style2 as object}
-                          clipPath="url(#map-clip-firing-arc)"/> : ""}
-              {fl ? <path d={fl.path} style={fl.style as object} strokeDasharray={fl.dash}
-                          clipPath="url(#map-clip-firing-arc)"/> : ""}
+              <path d={fl2.path} style={fl2.style2 as object} clipPath="url(#map-clip-firing-arc)" />
+              <path d={fl2.path} style={fl2.style as object} strokeDasharray={fl2.dash}
+                    clipPath="url(#map-clip-firing-arc)" />
+              <path d={fl.path} style={fl.style2 as object} clipPath="url(#map-clip-firing-arc)"/>
+              <path d={fl.path} style={fl.style as object} strokeDasharray={fl.dash}
+                    clipPath="url(#map-clip-firing-arc)"/>
             </g>
           )
         })}
