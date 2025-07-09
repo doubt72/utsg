@@ -12,6 +12,7 @@ High Priority Features/Bug Fixes:
   - Show Eliminated Units
 
 Future Features/Bug Fixes:
+  - Handle scale and such settings gone wrong
   - More sophisticated multiselect detection for firing
   - Ability to kick players
   - Implement Help Button linking to game context

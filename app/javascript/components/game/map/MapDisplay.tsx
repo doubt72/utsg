@@ -241,7 +241,7 @@ export default function MapDisplay({
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move ||
-            map.game?.gameActionState?.assault) {
+            map.game?.gameActionState?.assault || map.game?.gameActionState?.fire) {
           const shaded = openHex(map, x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
@@ -390,7 +390,9 @@ export default function MapDisplay({
   }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate])
 
   useEffect(() => {
-    if (map?.game?.gameActionState?.move || map?.game?.gameActionState?.assault) {
+    if (map?.game?.gameActionState?.move || map?.game?.gameActionState?.assault ||
+        map?.game?.gameActionState?.fire
+    ) {
       const lastPath = map.game.lastPath as GameActionPath
       const coord = new Coordinate(lastPath.x, lastPath.y)
       if (openHexRotateOpen(map) || map.game.gameActionState.move?.rotatingTurret) {
@@ -488,8 +490,8 @@ export default function MapDisplay({
   const directionSelection = (x: number, y: number, d: Direction) => {
     if (!map) { return }
     directionCallback(x, y, d)
-    if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move ||
-        map.game?.gameActionState?.assault) {
+    if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.fire ||
+        map.game?.gameActionState?.move || map.game?.gameActionState?.assault) {
       setMapUpdate(s => s+1)
     }
   }

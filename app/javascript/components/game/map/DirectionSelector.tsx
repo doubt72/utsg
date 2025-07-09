@@ -33,6 +33,9 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
           !unit.amphibious && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
+    } else if (game.gameActionState?.fire && game.gameActionState.selection) {
+      const lastPath = game.lastPath as GameActionPath
+      pointingDir = lastPath.turret
     } else if (game.gameActionState?.move && game.gameActionState.selection) {
       const lastPath = game.lastPath as GameActionPath
       if (game.gameActionState.move.rotatingTurret) {

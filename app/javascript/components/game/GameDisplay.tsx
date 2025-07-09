@@ -314,6 +314,13 @@ export default function GameDisplay() {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
         game.k.gameActionState.deploy.index]
       game.k.executeReinforcement(x, y, counter, d, gameNotification)
+    } else if (game.k?.gameActionState?.fire) {
+      const path = game.k.gameActionState.fire.path
+      if (path.length > 1) {
+        path[1].turret = d
+      } else {
+        path.push({ x, y, turret: d })
+      }
     } else if (game.k?.gameActionState?.move) {
       game.k.moveRotate(x, y, d)
       setControls(gc => {

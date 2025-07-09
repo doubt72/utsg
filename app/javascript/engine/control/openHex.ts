@@ -13,6 +13,8 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
   const game = map.game
   if (game?.gameActionState?.currentAction === actionType.Deploy) {
     return openHexReinforcement(map, x, y)
+  } else if (game?.gameActionState?.currentAction === actionType.Fire) {
+    return openHexFire(map, x, y)
   } else if (game?.gameActionState?.currentAction === actionType.Move) {
     return openHexMove(map, x, y)
   } else if (game?.gameActionState?.currentAction === actionType.Assault) {
@@ -27,7 +29,11 @@ export function openHexRotateOpen(map: Map): boolean {
   const game = map.game
   if (!game?.gameActionState?.selection) { return false }
   const counter = game.gameActionState.selection[0].counter
-  if (game.gameActionState.move) {
+  if (game.gameActionState.fire) {
+    if (!game.gameActionState.fire.doneRotating) {
+      return true
+    }
+  } else if (game.gameActionState.move) {
     const child = counter.unit.children[0]
     if (!counter.unit.rotates && !(child && child.rotates)) { return false }
     if (counter.unit.canHandle && child && child.crewed) {
@@ -46,7 +52,11 @@ export function openHexRotatePossible(map: Map): boolean {
   const game = map.game
   if (!game?.gameActionState?.selection) { return false }
   const counter = game.gameActionState.selection[0].counter
-  if (game.gameActionState.move) {
+  if (game.gameActionState.fire) {
+    if (!game.gameActionState.fire.doneRotating) {
+      return true
+    }
+  } else if (game.gameActionState.move) {
     const loc = counter.hex as Coordinate
     const cost = movementCost(map, loc, loc, counter.unit) + movementPastCost(map, counter.unit)
     const length = game.gameActionState.move.path.length
@@ -157,4 +167,16 @@ function openHexAssault(map: Map, x: number, y: number): HexOpenType {
   if (!game?.gameActionState?.selection) { return hexOpenType.Open }
   const lastPath = game.lastPath as GameActionPath
   return openHexAssaulting(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
+}
+
+function openHexFire(map: Map, x: number, y: number): HexOpenType {
+  const game = map.game
+  if (!game?.gameActionState?.selection) { return hexOpenType.Open }
+  if (!game?.gameActionState?.fire) { return hexOpenType.Open }
+  if (!game?.gameActionState?.selection) { return hexOpenType.Open }
+  if (!game.gameActionState.fire.doneRotating) { return hexOpenType.Closed }
+  x + y
+  // const lastPath = game.lastPath as GameActionPath
+  // return openHexAssaulting(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
+  return hexOpenType.Open
 }

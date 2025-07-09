@@ -639,7 +639,10 @@ export default class Game {
   }
 
   get lastPath(): GameActionPath | undefined {
-    if (this.gameActionState?.move) {
+    if (this.gameActionState?.fire) {
+      const path = this.gameActionState.fire.path
+      return path[path.length - 1]
+    } else if (this.gameActionState?.move) {
       const path = this.gameActionState.move.path
       return path[path.length - 1]
     } else if (this.gameActionState?.assault) {
