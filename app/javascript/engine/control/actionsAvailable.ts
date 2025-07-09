@@ -42,7 +42,21 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     if (!game.actionInProgress && (!selection || game.gameActionState?.currentAction === actionType.Breakdown)) {
       addUndo(game, activePlayer, actions)
     }
-    if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
+    if (game.gameActionState?.currentAction === actionType.Fire && game.gameActionState.fire) {
+      const action = game.gameActionState.fire
+      if (action) {
+        if (!action.doneSelect) {
+          actions.push({ type: "finish_multiselect" })
+        } else if (!action.doneRotating) {
+          actions.push({ type: "finish_rotation" })
+        } else {
+          actions.push({ type: "none", message: "select target" })
+        }
+        actions.push({ type: "cancel_action" })
+      } else {
+        actions.unshift({ type: "none", message: "error: unexpected missing state" })
+      }
+    } else if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
       const actionSelect = currSelection(game, true)
       const action = game.gameActionState.move
       if (actionSelect && action) {
@@ -74,12 +88,12 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           actions.push({ type: "move_load_toggle" })
         }
         if (!action.doneSelect) {
-          actions.push({ type: "move_done_multiselect" })
+          actions.push({ type: "finish_multiselect" })
         }
         if (action.path.length + action.addActions.length > 1) {
           actions.push({ type: "move_finish" })
         }
-        actions.push({ type: "move_cancel" })
+        actions.push({ type: "cancel_action" })
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
@@ -96,9 +110,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           actions.push({ type: "assault_move_finish" })
         }
         if (!action.doneSelect) {
-          actions.push({ type: "move_done_multiselect" })
+          actions.push({ type: "finish_multiselect" })
         }
-        actions.push({type: "assault_move_cancel"})
+        actions.push({type: "cancel_action"})
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
@@ -171,7 +185,11 @@ function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {
 
 function canFire(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
-  return false
+  if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
+  if (unit.weaponBroken || unit.jammed || unit.currentFirepower <= 0) { return false }
+  if (unit.children.length > 0 && unit.children[0].crewed) { return false }
+  if (unit.parent && (unit.parent.isPinned || unit.parent.isBroken)) { return false }
+  return true
 }
 
 function canIntensiveFire(unit: Unit | undefined): boolean {

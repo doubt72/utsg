@@ -56,6 +56,36 @@ export function finishPass(game: Game) {
   game.executeAction(pass, false)
 }
 
+export function startFire(game: Game) {
+  const selection = game.scenario.map.currentSelection[0]
+  if (selection && selection.hex) {
+    const loc = {
+      x: selection.hex.x, y: selection.hex.y,
+      facing: selection.unit.rotates ? selection.unit.facing : undefined,
+      turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
+    }
+    const canSelect = !selection.unit.targetedRange && !selection.unit.isTracked && !selection.unit.isWheeled
+    const allSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+    const initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+    if (canSelect) {
+      game.openOverlay = { x: selection.hex.x, y: selection.hex.y }
+    }
+    game.gameActionState = {
+      player: game.currentPlayer,
+      currentAction: actionType.Fire,
+      selection: allSelection,
+      fire: {
+        initialSelection, doneSelect: !canSelect, path: [loc], targetSelection: [],
+        doneRotating: !selection.unit.turreted,
+      }
+    }
+  }
+}
+
+export function finishFire(game: Game) {
+  game.actionInProgress
+}
+
 export function startMove(game: Game) {
   const selection = game.scenario.map.currentSelection[0]
   if (selection && selection.hex) {

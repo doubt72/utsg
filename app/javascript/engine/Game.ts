@@ -12,9 +12,9 @@ import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
 import {
-  assault, assaultClear, assaultEntrench, assaultRotate, finishAssault, finishBreakdown, finishInitiative, finishMove,
+  assault, assaultClear, assaultEntrench, assaultRotate, finishAssault, finishBreakdown, finishFire, finishInitiative, finishMove,
   finishPass, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
-  startAssault, startBreakdown, startInitiative, startMove, startPass
+  startAssault, startBreakdown, startFire, startInitiative, startMove, startPass
 } from "./control/gameActions";
 
 export type GameData = {
@@ -40,9 +40,9 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
 }
 
-export type ActionType = "d" | "m" | "am" | "bd" | "i" | "ip"
+export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip"
 export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
+  Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
 }
 
 export type ActionSelection = {
@@ -56,6 +56,15 @@ export type DeployActionState = {
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
   facing?: Direction, status?: UnitStatus
+}
+
+export type FireActionState = {
+  initialSelection: ActionSelection[];
+  targetSelection: ActionSelection[];
+  // For turret facing/changes:
+  path: GameActionPath[];
+  doneSelect: boolean;
+  doneRotating: boolean;
 }
 
 export type MoveActionState = {
@@ -82,6 +91,7 @@ export type GameActionState = {
   currentAction: ActionType,
   selection: ActionSelection[],
   deploy?: DeployActionState,
+  fire?: FireActionState,
   move?: MoveActionState,
   assault?: AssaultMoveActionState,
 }
@@ -652,6 +662,14 @@ export default class Game {
 
   finishPass() {
     finishPass(this)
+  }
+
+  startFire() {
+    startFire(this)
+  }
+
+  finishFire() {
+    finishFire(this)
   }
 
   startMove() {

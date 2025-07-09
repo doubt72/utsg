@@ -15,13 +15,13 @@ import RushButton from "./RushButton";
 import AssaultMoveButton from "./AssaultMoveButton";
 import RoutButton from "./RoutButton";
 import MoveFinishButton from "./MoveFinishButton";
-import MoveCancelButton from "./MoveCancelButton";
+import CancelActionButton from "./CancelActionButton";
 import MoveRotateToggleButton from "./MoveRotateToggleButton";
 import actionsAvailable from "../../../engine/control/actionsAvailable";
 import MoveShortToggleButton from "./MoveShortToggleButton";
 import MoveSmokeToggleButton from "./MoveSmokeToggleButton";
 import MoveLoadToggleButton from "./MoveLoadToggleButton";
-import MoveDoneMultiselectButton from "./MoveDoneMultiselectButton";
+import FinishMultiselectButton from "./FinishMultiselectButton";
 import UnselectButton from "./UnselectButton";
 import HelpButton from "./HelpButton";
 import BreakdownButton from "./BreakdownButton";
@@ -29,10 +29,10 @@ import InitiativeButton from "./InitiativeButton";
 import ResignButton from "./ResignButton";
 import ResignCancelButton from "./ResignCancelButton";
 import PassCancelButton from "./PassCancelButton";
-import AssaultMoveCancelButton from "./AssaultMoveCancelButton";
 import AssaultMoveFinishButton from "./AssaultMoveFinishButton";
 import AssaultMoveEntrenchButton from "./AssaultMoveEntrenchButton";
 import AssaultMoveClearButton from "./AssaultMoveClearButton";
+import FinishRotationButton from "./FinishRotationButton";
 
 interface GameControlsProps {
   game: Game;
@@ -94,10 +94,6 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <MoveButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_finish") {
         return <MoveFinishButton game={game} key={i} callback={callAllBack} />
-      } else if (a.type === "move_cancel") {
-        return <MoveCancelButton game={game} key={i} callback={callAllBack} />
-      } else if (a.type === "move_done_multiselect") {
-        return <MoveDoneMultiselectButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_rotate_toggle") {
         return <MoveRotateToggleButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_shortdrop_toggle") {
@@ -112,14 +108,18 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <RushButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "assault_move") {
         return <AssaultMoveButton game={game} key={i} callback={callAllBack} />
-      } else if (a.type === "assault_move_cancel") {
-        return <AssaultMoveCancelButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "assault_move_finish") {
         return <AssaultMoveFinishButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "assault_move_clear") {
         return <AssaultMoveClearButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "assault_move_entrench") {
         return <AssaultMoveEntrenchButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "finish_multiselect") {
+        return <FinishMultiselectButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "finish_rotation") {
+        return <FinishRotationButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "cancel_action") {
+        return <CancelActionButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rout") {
         return <RoutButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {

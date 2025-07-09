@@ -10,7 +10,7 @@ interface FireButtonProps {
 export default function FireButton({ game, callback }: FireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.rushing // just to do something with game
+    game.startFire()
     callback()
   }
 
