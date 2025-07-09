@@ -22,7 +22,7 @@ module Scenarios
           [2, :usa_m1918_bar],
           :usa_radio_105mm,
           [5, :usa_m10],
-          [2, :usa_t12_gmc],
+          [2, :usa_m3_gmc],
         ],
       },
     }.freeze

@@ -49,6 +49,7 @@ export default function DebugUnitStats() {
     const cs: { [index: string]: number } = {}
     for (const s of scenarios) {
       for (const ri of s.alliedUnitList) {
+        console.log(s.code)
         const key = counterKey(ri.counter)
         cu[key] === undefined ? cu[key] = ri.x : cu[key] += ri.x
         cs[key] === undefined ? cs[key] = 1 : cs[key]++
@@ -65,9 +66,11 @@ export default function DebugUnitStats() {
 
   const counterKey = (c: Unit | Feature) => {
     let extra = c.type === "ldr" ? `${c.baseMorale}-${c.leadership}` : c.type
-    if (c.name === "Crew") { extra = `${c.currentGunHandling}` }
-    if (c.name === "Sniper") { extra = `${c.sniperRoll}` }
-    return `${c.isFeature ? "feature": c.nation}-${c.name.toLowerCase()}-${extra}`
+    const f = c as Feature
+    const u = c as Unit
+    if (c.name === "Crew") { extra = `${u.currentGunHandling}` }
+    if (c.name === "Sniper") { extra = `${f.sniperRoll}` }
+    return `${c.isFeature ? "feature" : c.nation}-${c.name.toLowerCase()}-${extra}`
   }
 
   const cells = () => {

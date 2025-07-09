@@ -19,7 +19,7 @@ module Scenarios
           [2, :usa_green_t],
           :usa_m1918_bar,
           :usa_m2_browning,
-          [4, :usa_t12_gmc],
+          [4, :usa_m3_gmc],
           [2, :foxhole],
         ],
       },

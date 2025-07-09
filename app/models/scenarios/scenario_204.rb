@@ -21,7 +21,7 @@ module Scenarios
           [4, :usa_m1918_bar],
           :usa_m1_mortar,
           :usa_radio_155mm,
-          [2, :usa_t12_gmc],
+          [2, :usa_m3_gmc],
           [4, :usa_m4_sherman],
         ],
       },

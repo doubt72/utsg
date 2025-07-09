@@ -46,8 +46,8 @@ module Scenarios
       def generate
         {
           turns: 6,
-          allied_dir: 1,
-          axis_dir: 4,
+          first_deploy: 2,
+          first_action: 1,
           date:,
           location: "Arracourt, France",
           author: "The Establishment",

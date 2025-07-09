@@ -65,13 +65,13 @@ RSpec.describe Utility::Scenario do
 
   context "validate all records" do
     it "there are no duplicate IDs" do
-      scenarios = described_class.all_scenarios
+      scenarios = described_class.all_scenarios({ "status" => "*" })
       all_ids = scenarios.map { |s| s[:id] }
 
       expect(all_ids.length).to be == all_ids.sort.uniq.length
     end
 
-    described_class.all_scenarios.each do |scenario|
+    described_class.all_scenarios({ "status" => "*" }).each do |scenario|
       describe "scenario #{scenario[:id]}" do
         it "has valid attributes" do
           expect(scenario[:id]).not_to be_empty
@@ -92,7 +92,9 @@ RSpec.describe Utility::Scenario do
         it "has valid axis forces" do
           expect(scenario[:axis].length).to be > 0
           scenario[:axis].each do |force|
-            axis = described_class::Definitions::AVAILABLE_AXIS_FACTIONS.map { |f| f[:code] }
+            axis = described_class::Definitions::AVAILABLE_AXIS_FACTIONS.map do |f|
+              f[:nations]
+            end.flatten
             expect(axis.include?(force)).to be true
           end
         end

@@ -65,7 +65,8 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
       const style = { fill: "#FFF", strokeWidth: 1, stroke: "#000" }
       const tStyle = { fill: "#000" }
       let callback = () => selectCallback(hex.coord.x, hex.coord.y, v as Direction)
-      if (game.gameActionState?.move?.rotatingTurret || game.gameActionState?.assault) {
+      if (game.gameActionState?.move?.rotatingTurret || game.gameActionState?.assault ||
+          game.gameActionState?.fire) {
         style.fill = "#FF0"
       }
       if (v === pointingDir) {

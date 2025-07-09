@@ -1,5 +1,5 @@
-import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
-import { normalDir } from "../../utilities/utilities"
+import { Coordinate, CounterSelectionTarget, unitType } from "../../utilities/commonTypes"
+import { hexDistance, normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
 import Game, { actionType, gamePhaseType } from "../Game"
 import { addActionType } from "../GameAction"
@@ -18,7 +18,23 @@ export default function select(
   const y = selection.target.xy.y
   const id = selection.counter.target.id
   const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
-  if (game?.gameActionState?.move) {
+  if (game?.gameActionState?.fire) {
+    const selected = counter.unit.selected
+    counter.unit.select()
+    if (!game.gameActionState.fire.doneSelect) {
+      if (selected) {
+        removeActionSelection(game, x, y, counter.unit.id)
+        clearUnrangedSelection(game)
+      } else {
+        game.gameActionState.selection?.push({
+          x, y, id: counter.unit.id, counter: counter,
+        })
+      }
+    } else {
+      // Add/remove targets
+      // All units in hex if area or untargeted
+    }
+  } else if (game?.gameActionState?.move) {
     const selected = counter.unit.selected
     const move = game.gameActionState.move
     counter.unit.select()
@@ -111,6 +127,95 @@ export default function select(
   callback()
 }
 
+export function leadershipRange(game: Game): number | false {
+  if (!game?.gameActionState?.fire) { return false }
+  const init = game.gameActionState.fire.initialSelection[0]
+  let leadership = -1
+  for (const sel of game.gameActionState.selection) {
+    const unit = sel.counter.unit
+    if (unit.type === unitType.Leader && sel.x === init.x && sel.y === init.y) {
+      if (unit.currentLeadership > leadership) { leadership = unit.currentLeadership }
+    }
+  }
+  return leadership < 0 ? false : leadership
+}
+
+function clearUnrangedSelection(game: Game) {
+  if (!game?.gameActionState?.fire) { return }
+  const init = game.gameActionState.fire.initialSelection[0]
+  const leadership = leadershipRange(game)
+  const selection = game.gameActionState.selection
+  for (let i = selection.length - 1; i >= 0; i--) {
+    const sel = selection[i]
+    if (leadership === false) {
+      const child = init.counter.unit.children[0]
+      if (sel.id !== init.id && (child && child.id !== sel.id)) {
+        sel.counter.unit.select()
+        removeActionSelection(game, sel.x, sel.y, sel.id)
+      }
+    } else {
+      if (hexDistance(new Coordinate(init.x, init.y), new Coordinate(sel.x, sel.y)) > leadership) {
+        sel.counter.unit.select()
+        removeActionSelection(game, sel.x, sel.y, sel.id)
+      }
+    }
+  }
+}
+
+function canBeFireMultiselected(map: Map, counter: Counter): boolean {
+  if (!map.game?.gameActionState?.fire) { return false }
+  if (counter.unit.isBroken) {
+    map.game.addMessage("cannot fire a broken unit")
+    return false
+  }
+  if (counter.unit.isExhausted) {
+    map.game.addMessage("cannot fire an exhausted unit")
+    return false
+  }
+  if (counter.unit.isActivated) {
+    map.game.addMessage("cannot fire an activated unit")
+    return false
+  }
+  if (counter.unit.targetedRange) {
+    map.game.addMessage("targeted weapons cannot fire with other units")
+    return false
+  }
+  if (counter.unit.isWheeled || counter.unit.isTracked) {
+    map.game.addMessage("vehicles cannot fire with other units")
+    return false
+  }
+  if (counter.parent && (counter.parent.unit.isWheeled || counter.parent.unit.isTracked)) {
+    map.game.addMessage("unit being transported cannot fire with other units")
+    return false
+  }
+  const next = counter.children[0]
+  if (next && next?.unit.crewed) {
+    map.game.addMessage("unit manning a crewed weapon cannot fire with other units")
+    return false
+  }
+  const init = map.game.gameActionState.fire.initialSelection[0]
+  if (counter.parent && counter.parent?.unit.id === init.counter.unit.id) {
+    return true
+  }
+  const coord = counter.hex as Coordinate
+  if (counter.unit.type === unitType.Leader && coord.x === init.x && coord.y === init.y) {
+    return true
+  }
+  const leadership = leadershipRange(map.game)
+  if (leadership === false) {
+    map.game.addMessage("can't combine fire of units without a leader")
+    return false
+  } else {
+    const distance = hexDistance(new Coordinate(init.x, init.y), new Coordinate(coord.x, coord.y))
+    if (distance > leadership) {
+      map.game.addMessage("unit outside of leadership range")
+      return false
+    } else {
+      return true
+    }
+  }
+}
+
 function canBeMoveMultiselected(map: Map, counter: Counter): boolean {
   if (!counter.unit.canCarrySupport) {
     map.game?.addMessage("only infantry units and leaders can move together")
@@ -150,7 +255,20 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
     if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
     if (target.playerNation !== game.currentPlayerNation) {
       // TODO: or gun/support weapon
+      // Unless targeting
       return false
+    }
+    if (game.gameActionState?.fire) {
+      if (game.gameActionState.fire.doneSelect) {
+        // Handle targets
+      } else {
+        if (selection.target.type !== "map") { return false }
+        for (const s of game.gameActionState.fire.initialSelection) {
+          if (selection.counter.target.id === s.id) { return false }
+        }
+        const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
+        if (!canBeFireMultiselected(map, counter as Counter)) { return false }
+      }
     }
     if (game.gameActionState?.move) {
       if (game.gameActionState.move.droppingMove) {

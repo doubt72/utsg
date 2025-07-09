@@ -15,8 +15,9 @@ import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import { GameActionPath } from "./GameAction";
 import BaseAction from "./actions/BaseAction";
-import { togglePlayer } from "../utilities/utilities";
+import { hexDistance, togglePlayer } from "../utilities/utilities";
 import { needPickUpDisambiguate } from "./control/gameActions";
+import { leadershipRange } from "./control/select";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -462,15 +463,48 @@ export default class Map {
   }
 
   get actionCounters(): Counter[] {
+    if (!this.game) { return [] }
     const move = this.game?.gameActionState?.move
-    if (!this.game || !move) { return [] }
-    if (!move.doneSelect || move.droppingMove || (move.loadingMove && needPickUpDisambiguate(this.game))) {
-      const first = move.path[0]
-      return this.countersAt(new Coordinate(first.x, first.y))
+    if (move) {
+      if (!move.doneSelect || move.droppingMove || (move.loadingMove && needPickUpDisambiguate(this.game))) {
+        const first = move.path[0]
+        return this.countersAt(new Coordinate(first.x, first.y))
+      }
+      if (move.loadingMove && !needPickUpDisambiguate(this.game)) {
+        const last = this.game?.lastPath as GameActionPath
+        return this.countersAt(new Coordinate(last.x, last.y))
+      }
     }
-    if (move.loadingMove && !needPickUpDisambiguate(this.game)) {
-      const last = this.game?.lastPath as GameActionPath
-      return this.countersAt(new Coordinate(last.x, last.y))
+    const assault = this.game.gameActionState?.assault
+    if (assault) {
+      if (!assault.doneSelect) {
+        const first = assault.path[0]
+        return this.countersAt(new Coordinate(first.x, first.y))
+      }
+    }
+    const fire = this.game.gameActionState?.fire
+    if (fire) {
+      const first = fire.path[0]
+      if (!fire.doneRotating) {
+        return []
+      } else if (!fire.doneSelect) {
+        const leadership = leadershipRange(this.game)
+        if (leadership === false) {
+          return this.countersAt(new Coordinate(first.x, first.y))
+        } else {
+          const counters = this.allCounters
+          const rc = []
+          for (const c of counters) {
+            const hex = c.hex as Coordinate
+            if (hexDistance(new Coordinate(hex.x, hex.y), new Coordinate(first.x, first.y)) <= leadership) {
+              rc.push(c)
+            }
+          }
+          return rc
+        }
+      } else {
+        // Shooter hexes and possible targets
+      }
     }
     return []
   }

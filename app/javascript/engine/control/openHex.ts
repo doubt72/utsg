@@ -7,6 +7,7 @@ import { addActionType, GameActionPath } from "../GameAction"
 import Map from "../Map"
 import Unit from "../Unit"
 import { openHexAssaulting } from "./assault"
+import { openHexFiring } from "./fire"
 import { mapSelectMovement, movementCost, movementPastCost, openHexMovement } from "./movement"
 
 export default function openHex(map: Map, x: number, y: number): HexOpenType {
@@ -174,9 +175,7 @@ function openHexFire(map: Map, x: number, y: number): HexOpenType {
   if (!game?.gameActionState?.selection) { return hexOpenType.Open }
   if (!game?.gameActionState?.fire) { return hexOpenType.Open }
   if (!game?.gameActionState?.selection) { return hexOpenType.Open }
-  if (!game.gameActionState.fire.doneRotating) { return hexOpenType.Closed }
-  x + y
-  // const lastPath = game.lastPath as GameActionPath
-  // return openHexAssaulting(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
+  const lastPath = game.lastPath as GameActionPath
+  return openHexFiring(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
   return hexOpenType.Open
 }
