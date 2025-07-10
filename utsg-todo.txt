@@ -1,5 +1,8 @@
 High Priority Features/Bug Fixes:
   - Firing
+    - Handle armored selection
+    - Handle offboard artillery
+    - Handle smoke
     - Regular Shot
     - Intensive Firing
     - Test/Implement: mine
@@ -14,6 +17,8 @@ High Priority Features/Bug Fixes:
   - Show Eliminated Units
 
 Future Features/Bug Fixes:
+  - Fix fire selection starting with leader
+  - Fix Move Bug for carried weapons, don't push initial selection, add status to children
   - Handle scale and such settings gone wrong
   - Ability to kick players
   - Implement Help Button linking to game context

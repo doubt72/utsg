@@ -27,6 +27,7 @@ import select from "../../../engine/control/select";
 import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
 import FireTrackOverlay from "./FireTrackOverlay";
+import FireHindranceOverlay from "./FireHindranceOverlay";
 
 interface MapDisplayProps {
   map?: Map;
@@ -84,6 +85,7 @@ export default function MapDisplay({
 
   const [moveTrack, setMoveTrack] = useState<JSX.Element | undefined>()
   const [fireTrack, setFireTrack] = useState<JSX.Element | undefined>()
+  const [fireHindrance, setFireHindrance] = useState<JSX.Element | undefined>()
 
   const [notification, setNotification] = useState<JSX.Element | undefined>()
   const [notificationDetails, setNotificationDetails] = useState<{
@@ -388,13 +390,20 @@ export default function MapDisplay({
         (lastSigAction && ["move", "rush", "assault_move"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
       setFireTrack(undefined)
+      setFireHindrance(undefined)
     } else if (map.game?.gameActionState?.fire ||
               (lastSigAction && ["fire"].includes(lastSigAction.data.action))) {
       setFireTrack(<FireTrackOverlay map={map} />)
+      if (map.game?.gameActionState?.fire) {
+        setFireHindrance(<FireHindranceOverlay map={map} />)
+      } else {
+        setFireHindrance(undefined)
+      }
       setMoveTrack(undefined)
     } else {
       setMoveTrack(undefined)
       setFireTrack(undefined)
+      setFireHindrance(undefined)
     }
   }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate])
 
@@ -553,6 +562,7 @@ export default function MapDisplay({
           {action ? hexDisplayOverlays : ""}
           {actionCounterDisplay}
           {moveTrack}
+          {fireHindrance}
           {directionSelectionOverlay}
         </svg>
       )

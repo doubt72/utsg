@@ -6,7 +6,6 @@ interface FireTrackOverlayProps {
 }
 
 export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
-
   const hexTracks = () => {
     if (!map.game) { return }
     const rc: JSX.Element[] = []
@@ -22,10 +21,8 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
           const y1 = map.yOffset(sel.y)
           const x2 = map.xOffset(targ.x, targ.y)
           const y2 = map.yOffset(targ.y)
-          rc.push(<g key={`${i}-${j}`}>
-            <line x1={x1} y1={y1} x2={x2} y2={y2}
-                  style={{ stroke: "#E00", strokeWidth: 4, strokeDasharray: "5, 5" }} />
-          </g>)
+          rc.push(<line key={`${i}-${j}`} x1={x1} y1={y1} x2={x2} y2={y2}
+                        style={{ stroke: "#E00", strokeWidth: 4, strokeDasharray: "5, 5" }} />)
         }
       }
     }

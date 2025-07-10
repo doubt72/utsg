@@ -98,6 +98,7 @@ export default class MoveAction extends BaseAction {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
       unit.unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
+      // ALSO CHILLINS
     }
 
     let diceIndex = 0

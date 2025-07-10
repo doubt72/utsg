@@ -57,6 +57,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (!action.doneRotating && !game.sponsonFire) {
           actions.push({ type: "finish_rotation" })
         }
+        if (action.targetSelection.length > 0) {
+          actions.push({ type: "fire_finish" })
+        }
         actions.push({ type: "cancel_action" })
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })

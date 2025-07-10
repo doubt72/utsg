@@ -123,6 +123,24 @@ export function refreshTargetSelection(game: Game) {
   game.gameActionState.fire.targetSelection = targets
 }
 
+export function fireHindrance(game: Game): boolean | number {
+  if (!game.gameActionState?.fire) { return false }
+  const selection = game.gameActionState.selection
+  const targets = game.gameActionState.fire.targetSelection
+  let hindrance = -1
+  for (let i = 0; i < selection.length; i++) {
+    const sel = selection[i]
+    for (let j = 0; j < targets.length; j++) {
+      const targ = targets[j]
+      const check = los(game.scenario.map, new Coordinate(sel.x, sel.y), new Coordinate(targ.x, targ.y))
+      if (check !== true && check !== false && Number(check.value) > hindrance) {
+        hindrance = Number(check.value)
+      }
+    }
+  }
+  return hindrance < 0 ? false : hindrance
+}
+
 function inRange(game: Game, to: Coordinate): boolean {
   if (!game?.gameActionState?.fire) { return false }
   let leaderRange = true
@@ -131,7 +149,7 @@ function inRange(game: Game, to: Coordinate): boolean {
     const unit = sel.counter.unit
     const from = sel.counter.hex as Coordinate
     if (from.x === to.x && from.y === to.y) { return false }
-    if (!los(game.scenario.map, from, to)) { return false }
+    if (los(game.scenario.map, from, to) === false) { return false }
     if (unit.type !== unitType.Leader) {
       if (unit.currentRange < hexDistance(from, to)) { return false }
       if (!inFiringArc(game, sel.counter, to)) { return false }
