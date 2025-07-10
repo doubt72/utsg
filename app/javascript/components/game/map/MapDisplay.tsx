@@ -26,6 +26,7 @@ import openHex, { openHexRotateOpen } from "../../../engine/control/openHex";
 import select from "../../../engine/control/select";
 import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
+import FireTrackOverlay from "./FireTrackOverlay";
 
 interface MapDisplayProps {
   map?: Map;
@@ -82,6 +83,7 @@ export default function MapDisplay({
   const [reinforcementOffset, setReinforcementOffset] = useState<number>(269)
 
   const [moveTrack, setMoveTrack] = useState<JSX.Element | undefined>()
+  const [fireTrack, setFireTrack] = useState<JSX.Element | undefined>()
 
   const [notification, setNotification] = useState<JSX.Element | undefined>()
   const [notificationDetails, setNotificationDetails] = useState<{
@@ -385,8 +387,14 @@ export default function MapDisplay({
     if (map.game?.gameActionState?.move || map.game?.gameActionState?.assault ||
         (lastSigAction && ["move", "rush", "assault_move"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
+      setFireTrack(undefined)
+    } else if (map.game?.gameActionState?.fire ||
+              (lastSigAction && ["fire"].includes(lastSigAction.data.action))) {
+      setFireTrack(<FireTrackOverlay map={map} />)
+      setMoveTrack(undefined)
     } else {
       setMoveTrack(undefined)
+      setFireTrack(undefined)
     }
   }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate])
 
@@ -538,6 +546,7 @@ export default function MapDisplay({
              viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}>
           {hexDisplay}
           {hexDisplayDetail}
+          {fireTrack}
           {counterDisplay}
           {losOverlay}
           {counterLosOverlay}

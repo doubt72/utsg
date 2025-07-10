@@ -196,7 +196,7 @@ export function sponsonLayout(counter: Counter): CounterLayout | false {
   if (gun.length > 2) {
     if (gun[2] === "ft") {
       style.fill = markerYellow
-    } else if (gun[2] === "g") {
+    } else if (gun[2] === "p") {
       style.fill = "white"
     }
   }

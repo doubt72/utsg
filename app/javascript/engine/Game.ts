@@ -331,11 +331,10 @@ export default class Game {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
-      if (["move", "rush", "assault_move"].includes(a.data.action)) {
+      if (["move", "rush", "assault_move", "fire"].includes(a.data.action)) {
         this.scenario.map.setLastSelection(a)
         return a
       }
-      // TODO: when reaction passes, return undefined
     }
     this.scenario.map.setLastSelection()
     return undefined

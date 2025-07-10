@@ -13,6 +13,7 @@ export default function ToggleSponsonButton({ game, callback }: ToggleSponsonBut
     if (!game.gameActionState?.fire) { return }
     game.sponsonFire = !game.sponsonFire
     game.gameActionState.fire.targetSelection = []
+    game.scenario.map.clearAllTargetSelections()
     if (game.sponsonFire) {
       game.gameActionState.fire.path = [game.gameActionState.fire.path[0]]
       game.gameActionState.fire.doneRotating = true

@@ -778,7 +778,8 @@ export default function CounterSection() {
       }
       if (unit.sponson) {
         sections.push(<p key={index++}>
-          <strong>Numbers across</strong> the bottom of the icon indicate a sponson weapon.
+          <strong>Numbers across</strong> the bottom of the icon indicate a sponson weapon. A white background
+          indicates anti-tank (transparent would be anti-infantry gun, yellow ignores terrain).
         </p>)
       }
       if (unit.type === "sqd") {

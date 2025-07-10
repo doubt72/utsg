@@ -1,9 +1,10 @@
 High Priority Features/Bug Fixes:
-  - Handle move (for reaction fire)
   - Firing
+    - Regular Shot
     - Intensive Firing
     - Test/Implement: mine
   - Show reaction
+    - Handle move (for reaction fire)
     - Just passing currently
   - Sniper check
   - Rout

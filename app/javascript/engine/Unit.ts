@@ -24,7 +24,7 @@ import { unitHelpText } from "./support/help";
 //    ta: turret armor
 //        f: front, s: side, r: rear, t: top (if zero)
 //    sg: sponson mounted gun
-//        f: firepower, r: range, t: type=g/ft
+//        f: firepower, r: range, t: type=p/g/ft
 //    sn: small names, bv: broken movement, f: fix number, eng: engineering,
 //    tow: size truck needed for towing, tr: transport, trg: can tow, amp: amphibious
 // x: count
