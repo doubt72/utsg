@@ -133,6 +133,7 @@ export default class Game {
   messageQueue: string[]
   updateTimer: NodeJS.Timeout | undefined
   resignationLevel: number;
+  sponsonFire: boolean;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -160,6 +161,8 @@ export default class Game {
 
     this.messageQueue = []
     this.resignationLevel = 0
+
+    this.sponsonFire = false
 
     this.loadAllActions()
   }

@@ -1,6 +1,7 @@
 import { Coordinate, hexOpenType, HexOpenType, unitStatus, unitType } from "../../utilities/commonTypes";
 import { los } from "../../utilities/los";
 import { hexDistance } from "../../utilities/utilities";
+import Counter from "../Counter";
 import Game from "../Game";
 import Map from "../Map";
 import Unit from "../Unit";
@@ -8,9 +9,6 @@ import Unit from "../Unit";
 export function openHexFiring(map: Map, from: Coordinate, to: Coordinate): HexOpenType {
   if (!map.game?.gameActionState?.fire) { return hexOpenType.Closed }
   const fire = map.game.gameActionState.fire
-  if (!fire.doneRotating) {
-    return hexOpenType.Closed
-  }
   if (!fire.doneSelect) {
     const leadership = leadershipRange(map.game)
     if (!leadership) {
@@ -19,7 +17,6 @@ export function openHexFiring(map: Map, from: Coordinate, to: Coordinate): HexOp
       if (hexDistance(from, to) <= leadership) { return hexOpenType.Open }
     }
   } else {
-    // Show red if all area or untargeted
     if (inRange(map.game, to)) { return hexOpenType.Open }
   }
   return hexOpenType.Closed
@@ -137,10 +134,26 @@ function inRange(game: Game, to: Coordinate): boolean {
     if (!los(game.scenario.map, from, to)) { return false }
     if (unit.type !== unitType.Leader) {
       if (unit.currentRange < hexDistance(from, to)) { return false }
+      if (!inFiringArc(game, sel.counter, to)) { return false }
       leaderOnly = false
     } else {
       if (unit.currentRange < hexDistance(from, to)) { leaderRange = false }
     }
   }
   return leaderOnly ? leaderRange : true
+}
+
+function inFiringArc(game: Game, counter: Counter, to: Coordinate): boolean {
+  if (!counter.unit.rotates) { return true }
+  const map = game.scenario.map
+  const from = counter.hex as Coordinate
+  const start = new Coordinate(map.xOffset(from.x, from.y), map.yOffset(from.y))
+  const end = new Coordinate(map.xOffset(to.x, to.y), map.yOffset(to.y))
+  const dx = start.x - end.x
+  const dy = end.y - start.y
+  const last = game.lastPath
+  const facing = (counter.unit.turreted && !game.sponsonFire ? last?.turret : counter.unit.facing) ?? 1
+  const a = (Math.atan2(dy,dx) * 180 / Math.PI + facing * 60) % 360
+  if (a > 29.99 && a < 90.01) { return true }
+  return false
 }

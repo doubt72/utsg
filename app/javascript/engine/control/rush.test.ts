@@ -138,7 +138,7 @@ describe("rush tests", () => {
     expect(move.addActions.length).toBe(0)
     game.move(3, 3)
     expect(move.addActions.length).toBe(1)
-    expect(map.ghosts[3][3].length).toBe(1)
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(1)
     expect(move.path.length).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
@@ -152,7 +152,7 @@ describe("rush tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     game.finishMove()
-    expect(map.ghosts[3][3].length).toBe(0)
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(0)
 
     const all = map.allCounters
     expect(all.length).toBe(2)

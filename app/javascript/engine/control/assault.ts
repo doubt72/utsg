@@ -69,6 +69,7 @@ export function showClearObstacles(game: Game): boolean {
   const assault = game.gameActionState?.assault
   const selection = game.gameActionState?.selection
   if (!assault || !selection) { return false }
+  if (selection.length > 1) { return false }
   if (assault.path.length + assault.addActions.length > 1) { return false }
   let eng = false
   for (const s of selection) {
@@ -91,6 +92,7 @@ export function showEntrench(game: Game): boolean {
   const assault = game.gameActionState?.assault
   const selection = game.gameActionState?.selection
   if (!assault || !selection) { return false }
+  if (selection.length > 1) { return false }
   if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
   if (assault.path.length + assault.addActions.length > 1) { return false }
   if (game.scenario.map.baseTerrain === baseTerrainType.Snow) { return false }

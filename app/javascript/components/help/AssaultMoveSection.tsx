@@ -73,6 +73,10 @@ export default function AssaultMoveSection() {
           <span> entrench</span>
         </div>
       </div>
+      <p>
+        Only one unit should be selected when clearing obstacles or entrenching (only one unit is
+        needed to perform the action).
+      </p>
     </div>
   );
 }

@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Limit to firing arc
-  - Allow to continue without turret button
   - Handle move (for reaction fire)
   - Firing
     - Intensive Firing

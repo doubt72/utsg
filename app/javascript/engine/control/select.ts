@@ -20,6 +20,7 @@ export default function select(
   const id = selection.counter.target.id
   const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
   if (game?.gameActionState?.fire) {
+    if (!game.gameActionState.fire.doneRotating) { game.gameActionState.fire.doneRotating = true }
     const selected = counter.unit.selected
     counter.unit.select()
     if (!game.gameActionState.fire.doneSelect) {

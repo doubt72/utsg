@@ -59,6 +59,7 @@ export function finishPass(game: Game) {
 
 export function startFire(game: Game) {
   const selection = game.scenario.map.currentSelection[0]
+  game.sponsonFire = false
   if (selection && selection.hex) {
     const loc = {
       x: selection.hex.x, y: selection.hex.y,
@@ -332,6 +333,9 @@ export function assaultEntrench(game: Game) {
   const assault = game.gameActionState.assault
   const x = game.gameActionState.selection[0].x
   const y = game.gameActionState.selection[0].y
+  game.scenario.map.unshiftGhost(new Coordinate(x, y), new Feature({
+    ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
+  }))
   assault.addActions.push({ x, y, type: addActionType.Entrench, cost: 0 })
   game.closeOverlay = true
 }
@@ -353,6 +357,7 @@ export function finishAssault(game: Game) {
     }
   }, game, game.actions.length)
   game.gameActionState = undefined
+  game.scenario.map.clearGhosts()
   game.scenario.map.clearAllSelections()
   game.executeAction(assault, false)
 }

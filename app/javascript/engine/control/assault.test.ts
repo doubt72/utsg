@@ -770,11 +770,15 @@ describe("assault movement tests", () => {
 
     game.assaultEntrench()
 
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
+
     expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
     expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
     game.finishAssault()
+
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(0)
 
     let all = map.allCounters
     expect(all.length).toBe(2)

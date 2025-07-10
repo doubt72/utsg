@@ -552,7 +552,7 @@ describe("movement tests", () => {
     expect(move.addActions.length).toBe(0)
     game.move(3, 3)
     expect(move.addActions.length).toBe(1)
-    expect(map.ghosts[3][3].length).toBe(1)
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(1)
     expect(move.path.length).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
@@ -573,7 +573,7 @@ describe("movement tests", () => {
     expect(showLaySmoke(game)).toBe(false)
 
     game.finishMove()
-    expect(map.ghosts[3][3].length).toBe(0)
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(0)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -1176,7 +1176,7 @@ describe("movement tests", () => {
     }, () => {})
     move.droppingMove = false
     expect(move.addActions.length).toBe(1)
-    expect(map.ghosts[2][4].length).toBe(0)
+    expect(map.units[2][4].filter(u => u.ghost).length).toBe(0)
     map.clearGhosts()
 
     // Reset to allow dropping at a different location
@@ -1193,7 +1193,7 @@ describe("movement tests", () => {
     }, () => {})
     move.droppingMove = false
 
-    expect(map.ghosts[2][3].length).toBe(1)
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
     expect(mapSelectMovement(game, false)).toBe(3)
     expect(mapSelectMovement(game, true)).toBe(3)
@@ -1589,7 +1589,7 @@ describe("movement tests", () => {
     move.droppingMove = false
     expect(move.addActions.length).toBe(1)
 
-    expect(map.ghosts[2][3].length).toBe(0)
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(0)
 
     expect(mapSelectMovement(game, false)).toBe(2)
     expect(mapSelectMovement(game, true)).toBe(2)
@@ -2145,7 +2145,7 @@ describe("movement tests", () => {
     expect(move.addActions.length).toBe(1)
     expect(move.addActions[0].facing).toBe(4)
     expect(move.addActions[0].cost).toBe(1)
-    expect(map.ghosts[2][3].length).toBe(1)
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
     game.moveRotate(3, 2, 2)
     expect(openHexRotateOpen(map)).toBe(true)
@@ -2268,7 +2268,7 @@ describe("movement tests", () => {
     expect(move.addActions.length).toBe(1)
     expect(move.addActions[0].facing).toBe(5)
     expect(move.addActions[0].cost).toBe(1)
-    expect(map.ghosts[2][3].length).toBe(1)
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
     game.move(2, 1)
     expect(openHexRotateOpen(map)).toBe(true)
@@ -2379,7 +2379,7 @@ describe("movement tests", () => {
     expect(move.addActions.length).toBe(1)
     expect(move.addActions[0].facing).toBe(undefined)
     expect(move.addActions[0].cost).toBe(1)
-    expect(map.ghosts[2][3].length).toBe(1)
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
     game.move(2, 1)
     expect(openHexRotateOpen(map)).toBe(true)

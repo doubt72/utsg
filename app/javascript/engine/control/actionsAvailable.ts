@@ -47,10 +47,15 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       if (action) {
         if (!action.doneSelect) {
           actions.push({ type: "finish_multiselect" })
-        } else if (!action.doneRotating) {
-          actions.push({ type: "finish_rotation" })
         } else {
           actions.push({ type: "none", message: "select target" })
+        }
+        const sponson = !!game.gameActionState.selection[0].counter.unit.sponson
+        if (sponson) {
+          actions.push({ type: "fire_toggle_sponson" })
+        }
+        if (!action.doneRotating && !game.sponsonFire) {
+          actions.push({ type: "finish_rotation" })
         }
         actions.push({ type: "cancel_action" })
       } else {

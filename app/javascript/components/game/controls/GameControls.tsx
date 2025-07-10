@@ -33,6 +33,7 @@ import AssaultMoveFinishButton from "./AssaultMoveFinishButton";
 import AssaultMoveEntrenchButton from "./AssaultMoveEntrenchButton";
 import AssaultMoveClearButton from "./AssaultMoveClearButton";
 import FinishRotationButton from "./FinishRotationButton";
+import ToggleSponsonButton from "./ToggleSponsonButton";
 
 interface GameControlsProps {
   game: Game;
@@ -86,6 +87,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <EnemyRoutButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "fire") {
         return <FireButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_toggle_sponson") {
+        return <ToggleSponsonButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "intensive_fire") {
         return <IntensiveFireButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "initiative") {

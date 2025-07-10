@@ -54,7 +54,6 @@ export default class Map {
   mapHexes: Hex[][] = [];
 
   units: (Unit | Feature)[][][];
-  ghosts: (Unit | Feature)[][][];
 
   baseTerrain: BaseTerrainType;
   night?: boolean;
@@ -89,16 +88,12 @@ export default class Map {
     this.loadMap(data.hexes)
 
     this.units = []
-    this.ghosts = []
     for (let i = 0; i < this.height; i++) {
       const array: Unit[][] = []
-      const array2: Unit[][] = []
       for (let j = 0; j < this.width; j++) {
         array.push([])
-        array2.push([])
       }
       this.units.push(array)
-      this.ghosts.push(array2)
     }
 
     this.baseTerrain = data.base_terrain || baseTerrainType.Grass
@@ -257,16 +252,21 @@ export default class Map {
   }
 
   addGhost(loc: Coordinate, unit: Unit | Feature) {
-    const list = this.ghosts[loc.y][loc.x]
-    const ghost = true
-    unit.ghost = ghost
+    const list = this.units[loc.y][loc.x]
+    unit.ghost = true
     list.push(unit)
+  }
+
+  unshiftGhost(loc: Coordinate, unit: Unit | Feature) {
+    const list = this.units[loc.y][loc.x]
+    unit.ghost = true
+    list.unshift(unit)
   }
 
   clearGhosts() {
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
-        this.ghosts[y][x] = []
+        this.units[y][x] = this.units[y][x].filter(u => !u.ghost)
       }
     }
   }
@@ -389,7 +389,6 @@ export default class Map {
 
   countersAt(loc: Coordinate): Counter[] {
     const rc: Counter[] = []
-    let index = 0
     const lu: { [index: number]: Counter } = {}
     const data = this.counterDataAt(loc)
     for (let i = 0; i < data.length; i++) {
@@ -401,20 +400,12 @@ export default class Map {
           lu[unitIndex] = counter
         }
         counter.unitIndex = unitIndex
-        index = unitIndex
       }
       const parent = data[i].pi
       if (parent !== undefined) {
         lu[parent].children.push(counter)
         counter.parent = lu[parent]
       }
-      rc.push(counter)
-    }
-    const ghosts = this.ghosts[loc.y][loc.x]
-    for (let i = 0; i < ghosts.length; i++) {
-      const counter = new Counter(loc, ghosts[i], this)
-      counter.stackingIndex = data.length + i
-      counter.unitIndex = index++
       rc.push(counter)
     }
     return rc
@@ -486,9 +477,7 @@ export default class Map {
     const fire = this.game.gameActionState.fire
     if (fire) {
       const first = fire.path[0]
-      if (!fire.doneRotating) {
-        return []
-      } else if (!fire.doneSelect) {
+      if (!fire.doneSelect) {
         const leadership = leadershipRange(this.game)
         if (leadership === false) {
           return this.countersAt(new Coordinate(first.x, first.y))
@@ -518,6 +507,7 @@ export default class Map {
               }
             }
             for (const sel of this.game.gameActionState.selection) {
+              if (!fire.doneRotating) { break }
               if (sel.x === x && sel.y === y) {
                 check = true
                 break
