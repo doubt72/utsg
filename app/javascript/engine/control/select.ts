@@ -7,6 +7,7 @@ import Map from "../Map"
 import { getLoader, needPickUpDisambiguate } from "./gameActions"
 import Unit from "../Unit"
 import { canBeLoaded, canLoadUnit } from "./movement"
+import { areaFire, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "./fire"
 
 export default function select(
   map: Map, selection: CounterSelectionTarget, callback: () => void
@@ -31,8 +32,25 @@ export default function select(
         })
       }
     } else {
-      // Add/remove targets
-      // All units in hex if area or untargeted
+      counter.unit.select()
+      const ts = counter.unit.targetSelected
+      if (ts) {
+        map.clearAllTargetSelections()
+      } else {
+        const rapid = rapidFire(game)
+        if (rapid || areaFire(game)) {
+          map.targetSelectAllAt(x, y, true)
+          if (rapid) {
+            unTargetSelectExceptChain(game, x, y)
+          } else {
+            map.unTargetSelectAllExcept(x, y)
+          }
+        } else {
+          counter.unit.targetSelect()
+          map.clearOtherTargetSelections(x, y, counter.unit.id)
+        }
+      }
+      refreshTargetSelection(game)
     }
   } else if (game?.gameActionState?.move) {
     const selected = counter.unit.selected
@@ -127,29 +145,15 @@ export default function select(
   callback()
 }
 
-export function leadershipRange(game: Game): number | false {
-  if (!game?.gameActionState?.fire) { return false }
-  const init = game.gameActionState.fire.initialSelection[0]
-  let leadership = -1
-  for (const sel of game.gameActionState.selection) {
-    const unit = sel.counter.unit
-    if (unit.type === unitType.Leader && sel.x === init.x && sel.y === init.y) {
-      if (unit.currentLeadership > leadership) { leadership = unit.currentLeadership }
-    }
-  }
-  return leadership < 0 ? false : leadership
-}
-
 function clearUnrangedSelection(game: Game) {
   if (!game?.gameActionState?.fire) { return }
   const init = game.gameActionState.fire.initialSelection[0]
   const leadership = leadershipRange(game)
-  const selection = game.gameActionState.selection
-  for (let i = selection.length - 1; i >= 0; i--) {
-    const sel = selection[i]
+  console.log(leadership)
+  for (const sel of game.gameActionState.selection) {
     if (leadership === false) {
       const child = init.counter.unit.children[0]
-      if (sel.id !== init.id && (child && child.id !== sel.id)) {
+      if (sel.id !== init.id && (!child || child.id !== sel.id)) {
         sel.counter.unit.select()
         removeActionSelection(game, sel.x, sel.y, sel.id)
       }
@@ -253,14 +257,18 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   if (game.phase === gamePhaseType.Main) {
     if (game.gameActionState?.currentAction === actionType.Breakdown) { return false }
     if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
-    if (target.playerNation !== game.currentPlayerNation) {
-      // TODO: or gun/support weapon
-      // Unless targeting
+    if (target.playerNation !== game.currentPlayerNation &&
+        !(game.gameActionState?.fire && game.gameActionState.fire.doneSelect)) {
+      // TODO: handle gun/support weapons when picking up or for firing, etc.
       return false
     }
     if (game.gameActionState?.fire) {
       if (game.gameActionState.fire.doneSelect) {
-        // Handle targets
+        if (target.playerNation === game.currentPlayerNation) { return false }
+        if (target.crewed || target.uncrewedSW) {
+          game.addMessage("can't target weapons, only operators")
+          return false
+        }
       } else {
         if (selection.target.type !== "map") { return false }
         for (const s of game.gameActionState.fire.initialSelection) {

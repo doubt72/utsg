@@ -124,7 +124,8 @@ export default function MapDisplay({
     const alpha =  timer < 30 ? timer / 30 : 1
     const error = notificationDetails.error
     const twidth = error.length * 9.6 + 24
-    const x = width / scale - 216 - twidth
+    const x = (map.previewXSize * (mapScale ?? 1) - 76 < width / scale - 216 ?
+              map.previewXSize * (mapScale ?? 1) - 76 : width / scale - 216) - twidth
     const y = 50 + map?.yStatusSize + 50 / scale - 50
     setNotification(
       <g>

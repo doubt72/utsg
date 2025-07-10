@@ -120,6 +120,7 @@ export default class Unit {
   facing: Direction;
   turretFacing: Direction;
   selected: boolean;
+  targetSelected: boolean;
   dropSelected: boolean;
   loaderSelected: boolean;
   loadedSelected: boolean;
@@ -216,6 +217,7 @@ export default class Unit {
     this.facing = 1
     this.turretFacing = 1
     this.selected = false
+    this.targetSelected = false
     this.dropSelected = false
     this.loaderSelected = false
     this.loadedSelected = false
@@ -239,6 +241,10 @@ export default class Unit {
 
   select() {
     this.selected = !this.selected
+  }
+
+  targetSelect() {
+    this.targetSelected = !this.targetSelected
   }
 
   dropSelect() {

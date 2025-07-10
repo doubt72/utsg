@@ -1,8 +1,8 @@
 import { Coordinate, Direction, markerType } from "../../utilities/commonTypes"
 import {
   BadgeLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, CounterLayout,
-  counterRed, dropSelectColor, lastSelectColor, loadedSelectColor, loaderSelectColor, markerYellow, nationalColors,
-  selectColor, StatusLayout, SVGStyle
+  counterRed, dropSelectColor, lastSelectColor, loadedSelectColor, loaderSelectColor, markerYellow,
+  nationalColors, selectColor, StatusLayout, SVGStyle, targetSelectColor
 } from "../../utilities/graphics"
 import Counter from "../Counter"
 import Map from "../Map"
@@ -29,6 +29,8 @@ export function counterOutlineStyle(counter: Counter): SVGStyle {
   }
   if (counter.targetUF.selected) {
     return { fill: color, stroke: selectColor, strokeWidth: 4 }
+  } else if (counter.hasUnit && counter.unit.targetSelected) {
+    return { fill: color, stroke: targetSelectColor, strokeWidth: 4 }
   } else if (counter.unit.dropSelected) {
     return { fill: color, stroke: dropSelectColor, strokeWidth: 4 }
   } else if (counter.unit.loaderSelected) {

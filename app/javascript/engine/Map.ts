@@ -17,7 +17,8 @@ import { GameActionPath } from "./GameAction";
 import BaseAction from "./actions/BaseAction";
 import { hexDistance, togglePlayer } from "../utilities/utilities";
 import { needPickUpDisambiguate } from "./control/gameActions";
-import { leadershipRange } from "./control/select";
+import { leadershipRange } from "./control/fire";
+import openHex from "./control/openHex";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -463,8 +464,8 @@ export default class Map {
   }
 
   get actionCounters(): Counter[] {
-    if (!this.game) { return [] }
-    const move = this.game?.gameActionState?.move
+    if (!this.game || !this.game.gameActionState) { return [] }
+    const move = this.game.gameActionState.move
     if (move) {
       if (!move.doneSelect || move.droppingMove || (move.loadingMove && needPickUpDisambiguate(this.game))) {
         const first = move.path[0]
@@ -475,14 +476,14 @@ export default class Map {
         return this.countersAt(new Coordinate(last.x, last.y))
       }
     }
-    const assault = this.game.gameActionState?.assault
+    const assault = this.game.gameActionState.assault
     if (assault) {
       if (!assault.doneSelect) {
         const first = assault.path[0]
         return this.countersAt(new Coordinate(first.x, first.y))
       }
     }
-    const fire = this.game.gameActionState?.fire
+    const fire = this.game.gameActionState.fire
     if (fire) {
       const first = fire.path[0]
       if (!fire.doneRotating) {
@@ -503,7 +504,29 @@ export default class Map {
           return rc
         }
       } else {
-        // Shooter hexes and possible targets
+        let rc: Counter[] = []
+        for (let y = 0; y < this.height; y++) {
+          for (let x = this.width - 1; x >= 0; x--) {
+            let check = false
+            const counters = this.countersAt(new Coordinate(x, y))
+            if (openHex(this, x, y)) {
+              for (const c of counters) {
+                if (c.hasUnit && c.unit.nation !== this.game.currentPlayerNation) {
+                  check = true
+                  break
+                }
+              }
+            }
+            for (const sel of this.game.gameActionState.selection) {
+              if (sel.x === x && sel.y === y) {
+                check = true
+                break
+              }
+            }
+            if (check) { rc = rc.concat(counters) }
+          }
+        }
+        return rc
       }
     }
     return []
@@ -588,6 +611,7 @@ export default class Map {
     const units = this.allUnits
     for (const u of units) {
       if (u.unit.selected) { u.unit.select() }
+      if (u.unit.targetSelected) { u.unit.targetSelect() }
       if (u.unit.dropSelected) { u.unit.dropSelect() }
       if (u.unit.loaderSelected) { u.unit.loaderSelect() }
       if (u.unit.loadedSelected) { u.unit.loadedSelect() }
@@ -632,6 +656,39 @@ export default class Map {
       } else {
         if (u.targetUF.lastSelected) { u.targetUF.lastSelect() }
       }
+    }
+  }
+
+  targetSelectAllAt(x: number, y: number, select: boolean) {
+    const counters = this.countersAt(new Coordinate(x, y))
+    for (const c of counters) {
+      if (c.hasUnit && (c.unit.crewed || c.unit.uncrewedSW)) { continue }
+      if (c.hasUnit && c.unit.targetSelected !== select) { c.unit.targetSelect() }
+    }
+  }
+
+  unTargetSelectAllExcept(x: number, y: number) {
+    const units = this.allUnits
+    for (const u of units) {
+      const hex = u.hex as Coordinate
+      if (hex.x !== x && hex.y !== y && u.hasUnit && u.unit.targetSelected) { u.unit.targetSelect() }
+    }
+  }
+
+  clearOtherTargetSelections(x: number, y: number, id: string) {
+    const units = this.allUnits
+    for (const u of units) {
+      if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unit.id === id)) {
+        continue
+      }
+      if (u.unit.targetSelected) { u.unit.targetSelect() }
+    }
+  }
+
+  clearAllTargetSelections() {
+    const units = this.allUnits
+    for (const u of units) {
+      if (u.unit.targetSelected) { u.unit.targetSelect() }
     }
   }
 }

@@ -4,6 +4,7 @@ import Feature from "../Feature"
 import Game, { actionType } from "../Game"
 import GameAction, { addActionType, GameActionDiceResult, GameActionPath } from "../GameAction"
 import Counter from "../Counter"
+import { canMultiSelectFire } from "./fire"
 
 export function startInitiative(game: Game) {
   const action = game.lastAction
@@ -64,7 +65,7 @@ export function startFire(game: Game) {
       facing: selection.unit.rotates ? selection.unit.facing : undefined,
       turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
     }
-    const canSelect = !selection.unit.targetedRange && !selection.unit.isTracked && !selection.unit.isWheeled
+    const canSelect = canMultiSelectFire(game, loc.x, loc.y, selection.unit)
     const allSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
     const initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
     if (canSelect) {

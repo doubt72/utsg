@@ -1,4 +1,7 @@
 High Priority Features/Bug Fixes:
+  - Limit to firing arc
+  - Allow to continue without turret button
+  - Handle move (for reaction fire)
   - Firing
     - Intensive Firing
     - Test/Implement: mine
@@ -13,7 +16,6 @@ High Priority Features/Bug Fixes:
 
 Future Features/Bug Fixes:
   - Handle scale and such settings gone wrong
-  - More sophisticated multiselect detection for firing
   - Ability to kick players
   - Implement Help Button linking to game context
   - Change terminology for jamming in documentation to be more like breaking
