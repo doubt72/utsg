@@ -167,15 +167,21 @@ export function firePower(source: ActionSelection[], targets: ActionSelection[],
     if (tunit.armored && sunit.fieldGun) {
       fp = Math.floor(fp/2)
     }
+    if (sunit.immobilized && (!sunit.turreted || sponson)) {
+      fp = Math.floor(fp/2)
+    }
+    if (sunit.turreted && sunit.turretJammed && !sponson) {
+      fp = Math.floor(fp/2)
+    }
   }
   return fp
 }
 
 export function untargetedModifiers(
-  game: Game, source: ActionSelection[], targets: ActionSelection[], opp: boolean
+  game: Game, source: ActionSelection[], targets: ActionSelection[], react: boolean
 ): {
   modifier: number, gthalf: boolean, adj: boolean, elev: number, pinned: boolean,
-  tired: boolean, rapid: boolean, intense: boolean, opp: boolean
+  tired: boolean, rapid: boolean, intense: boolean, react: boolean
 } {
   let modifier = 0
   let gthalf = false
@@ -212,16 +218,15 @@ export function untargetedModifiers(
   if (adj) { modifier -= 1 }
   if (elev > 0 ) { modifier += 1 }
   if (elev < 0 ) { modifier -= 1 }
-  if (pinned) { modifier += 1 }
-  if (tired) { modifier += 1 }
+  if (pinned || tired) { modifier += 1 }
   if (rapid) { modifier += 2 }
-  if (opp) { modifier += 1 }
+  if (react) { modifier += 1 }
   if (intense) { modifier += 2 }
-  return { modifier, gthalf, adj, elev, pinned, tired, rapid, intense, opp }
+  return { modifier, gthalf, adj, elev, pinned, tired, rapid, intense, react }
 }
 
 export function rangeMultiplier(
-  map: Map, source: Counter, target: Coordinate, sponson: boolean,
+  map: Map, source: Counter, target: Coordinate, sponson: boolean, turretMoved: boolean,
 ): { mult: number, why: string[] } {
   const why: string[] = []
   let mult = 3
@@ -264,7 +269,7 @@ export function rangeMultiplier(
   // Weather/night here
   const eFrom = (map.hexAt(source.hex as Coordinate) as Hex).elevation
   const eTo = (map.hexAt(target) as Hex).elevation
-  if (eFrom > eTo) {
+  if (eFrom > eTo && !source.unit.offBoard) {
     if (source.unit.areaFire) {
       mult += 1
       why.push("plus 1 for different elevation")
@@ -273,7 +278,7 @@ export function rangeMultiplier(
       why.push("minus 1 for firing downhill")
     }
   }
-  if (eFrom < eTo) {
+  if (eFrom < eTo && !source.unit.offBoard) {
       mult += 1
       why.push("plus 1 for firing uphill")
   }
@@ -281,6 +286,11 @@ export function rangeMultiplier(
       mult += 1
       why.push("plus 1 for intensive fire")
   }
+  if (turretMoved) {
+      mult += 1
+      why.push("plus 1 for moving the turret")
+  }
+  // Turret moved?
   return { mult, why }
 }
 

@@ -1,10 +1,25 @@
 High Priority Features/Bug Fixes:
   - Firing
-    - Targeted still targets all infantry in hex
-    - Untargeted targets all non-armored (and non-weapon)
     - Handle offboard artillery
+    - Add turret move to targeting check
+    - Handle single-shot
+    - Handle ignore terrain
     - Handle smoke
-    - Tests
+
+  - Test/check:
+    - Targeted still targets all infantry in hex
+    - Untargeted targets all non-armored (and non-weapon), except when unarmored
+    - Crewed or support weapons cannot be fired if operating unit is pinned or broken
+    - Crewed weapons may not fire if crew is activated
+    - Flamethrowers and molotov coctails can't be grouped
+    - Make sure leader hindrance isn't counted if out of range
+    - Fix fire selection starting with leader
+    - Make sure machine gun selection can add handler
+    - Change hindrance for rapid fire to be separate per hex
+    - Go back to square for fire tanks
+    - Add area fire to flame throwers and charges
+    - Broken vehicles if sponson
+    - Check wreck stacking
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing
@@ -20,7 +35,6 @@ High Priority Features/Bug Fixes:
 
 Future Features/Bug Fixes:
   - Remove strong points, nerf other fortifications
-  - Fix fire selection starting with leader
   - Fix Move Bug for carried weapons, don't push initial selection, add status to children
   - Handle scale and such settings gone wrong
   - Ability to kick players
