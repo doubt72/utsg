@@ -131,18 +131,13 @@ export default class GameAction {
       return new BreakdownAction(this.data, this.game, this.index);
     }
 
-    // check initiative
     // rally check
     // pass rally phase
-    // fire
     // intensive fire
     // opportunity fire
     // intense opportunity fire
-    // rush
-    // assault move
     // rout
     // reaction fire
-    // pass main phase
     // cleanup unit
     // close combat
 

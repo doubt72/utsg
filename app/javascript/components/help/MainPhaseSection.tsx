@@ -127,7 +127,7 @@ export default function MainPhaseSection() {
         </li>
         <li>
           <strong>Assault Move</strong> (3): a special kind of move of a single hex that may move
-          units into an enemy hex and does not give an opponent the chance to take opportunity fire.
+          units into an enemy hex and does not give an opponent the chance to take reaction fire.
         </li>
         <li>
           <strong>Rout</strong> (1): a retreat move by one of a player&apos;s broken units. May be
@@ -140,7 +140,7 @@ export default function MainPhaseSection() {
         <li>
           <strong>Reaction Fire</strong> (2): the opposing player may choose to take a firing (or
           intensive firing action) in response to any enemy action except routing or assault moves.
-          There is no opportunity fire if the acting player fails their initiative check, in that
+          There is no reaction fire if the acting player fails their initiative check, in that
           case the player may make a normal firing action instead.
         </li>
       </ol>

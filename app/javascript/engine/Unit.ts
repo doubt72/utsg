@@ -423,7 +423,7 @@ export default class Unit {
 
   get currentFirepower(): number {
     // TODO: there's some nuance here depending on type and state; SW have different rules
-    // depending on carrying unit state + opportunity fire, implement this later, also target
+    // depending on carrying unit state + reaction fire, implement this later, also target
     if (this.noFire) {
       return 0
     } else if (this.isPinned) {

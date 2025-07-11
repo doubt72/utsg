@@ -10,8 +10,8 @@ export default function FireSection() {
         Firing is the act of one (or more) units attacking one (or more) opponent units, possibly
         breaking, reducing, or eliminating them. The rules for firing,{" "}
         <Link to={`/help/${helpIndexByName("Intensive Fire").join(".")}`}>intensive fire</Link>, and{" "}
-        <Link to={`/help/${helpIndexByName("Opportunity Fire").join(".")}`}>opportunity fire</Link>{" "}
-        are the same, the only difference is a few modifiers and the status of the units or when the
+        <Link to={`/help/${helpIndexByName("Reaction Fire").join(".")}`}>reaction fire</Link> are
+        the same, the only difference is a few modifiers and the status of the units or when the
         units may fire.
       </p>
       <p>
@@ -108,12 +108,12 @@ export default function FireSection() {
           vehicles.
         </li>
         <li>
-          <strong>Incindiary</strong>: indicated with yellow (or red) square; negates cover for
+          <strong>incendiary</strong>: indicated with yellow (or red) square; negates cover for
           infantry and may target armored vehicles (and ignores armor on hit).
         </li>
         <li>
           <strong>Single-Shot</strong>: indicated with black square or circle; weapon is removed
-          after use (whether it hits or not). Red square indicates both this and incindiary weapons
+          after use (whether it hits or not). Red square indicates both this and incendiary weapons
           that ignore terrain.
         </li>
       </ul>
@@ -153,7 +153,7 @@ export default function FireSection() {
               Add one if firing from a jammed turret, or firing a sponsoned or hull-mounted weapon
               on an immobilized vehicle.
             </li>
-            <li>Add one if this is intensive fire.</li>
+            <li>Add one if intensive fire.</li>
             <li>Add one if raining, sand or dust, two if snowing or fog.</li>
           </ol>
         </li>
@@ -276,9 +276,10 @@ export default function FireSection() {
             <li>Add one to the break check number if intensive fire.</li>
             <li>Add one to the break check number if firing an opponent&apos;s weapon.</li>
           </ol>
-          If the weapon is incindiary and breaks, reduce the unit carrying it.
+          If the weapon is incendiary and breaks, reduce the unit carrying it.
         </li>
       </ol>
+      <p>When fire is complete, mark all firing units as activated.</p>
       <h2>Offboard Artillery</h2>
       <p>
         Unlike other weapons, offboard artillery (radios) can be targeted at hexes with no units.
@@ -367,22 +368,24 @@ export default function FireSection() {
           </ol>
         </li>
         <li>
-          If firing area weapons (mortors, offboard artillery or satchel charges), infantry are
+          If firing area weapons (mortars, offboard artillery or satchel charges), infantry are
           targeted separately from vehicles. For all of the infantry, use a single check for effect
           (i.e., use the firepower chart as if it was an infantry attack but no modifiers). Then for
           each fully-armored units, fire as targeted fire above (don&apos;t forget to halve
           firepower), but don&apos;t check for turret or hull hit, use lowest armor value (whether
-          turret or hull). Ties immobilize vehicle. Unarmored or partially armored vehicles are destroyed.
+          turret or hull). Ties immobilize vehicle. Unarmored or partially armored vehicles are
+          destroyed.
         </li>
         <li>
-          If firing incindiary weapons, perform a normal infantry fire roll, but cover doesn&apos;t
-          apply to morale checks, vehicles are handled separately like other area attacks, all armor is
-          considered zero, and unarmored or partially armored vehicles are automatically destroyed.
+          If firing incendiary weapons, perform a normal infantry fire roll, but cover doesn&apos;t
+          apply to morale checks, vehicles are handled separately like other area attacks, all armor
+          is considered zero, and unarmored or partially armored vehicles are automatically
+          destroyed.
         </li>
       </ul>
       <p>
         Infantry and crewed weapons are not damaged or eliminated when units carrying them or
-        crewing them are eliminated (except incindiary weapons which are removed with their carrying
+        crewing them are eliminated (except incendiary weapons which are removed with their carrying
         unit). Weapons are left on the map and can be picked up by other units (of either side).
       </p>
       <p>
@@ -401,24 +404,24 @@ export default function FireSection() {
         <li>
           If there are any (unbroken) leaders in the same hex, subtract the highest leadership.
         </li>
-        <li>Subtract cover (unless the attack was from an incindiary weapon).</li>
+        <li>Subtract cover (unless the attack was from an incendiary weapon).</li>
         <li>Add one if pinned.</li>
         <li>
           Roll 2d10. If the result is equal to the modified check, pin the unit, unless it was
-          opportunity fire, then break it. If the result is less than the modified check, break it.
-          If the unit was already broken, reduce it (i.e., if the unit is a squad, replace with a
+          reaction fire, then break it. If the result is less than the modified check, break it. If
+          the unit was already broken, reduce it (i.e., if the unit is a squad, replace with a
           broken team. If the unit was a team or a leader, eliminate it). A roll of 2 always fails.
           A roll of 20 always succeeds.
         </li>
-        <li>A unit carrying an incindiary weapon is also reduced if it breaks.</li>
+        <li>A unit carrying an incendiary weapon is also reduced if it breaks.</li>
       </ol>
       <h2>Smoke</h2>
       <p>
         If a targeted fire weapon can fire smoke (indicated by a dot over the firepower), they may
         choose to do so instead of firing on an enemy unit. Instead of choosing an enemy unit as a
-        target, choose a hex (occupied or not) and the target roll proceeds normally. On
-        success, roll d10 to determine how heavy the resulting smoke is, and a smoke marker
-        is placed in the hex:
+        target, choose a hex (occupied or not) and the target roll proceeds normally. On success,
+        roll d10 to determine how heavy the resulting smoke is, and a smoke marker is placed in the
+        hex:
       </p>
       <table>
         <tbody>
@@ -458,15 +461,18 @@ export default function FireSection() {
       </p>
       <h2>Blazes</h2>
       <p>
-        If a vehicle is destroyed, or an area attack occurs in a hex, there is a chance of a fire
-        (blaze) starting. If the base terrain is snow or mud, or it&apos;s foggy, raining, or
-        snowing, or if the hex being checked is marsh, soft ground, or water, there&apos;s no chance
-        of a fire starting, so skip this check. Otherwise, roll d10. For forest, building, brush,
-        field, or orchard terrain, fires start on a 1 or 2. For all other terrain, on a 1. If there
-        are any units in the hex, the player chooses another (single) hex to move them to (if both
-        players have units, both players can choose a hex, initiative player first. They don&apos;t
-        need to be the same hex). If the hex contained smoke, it is removed, but all other features
-        remain in the same hex, as do wrecks, dropped infantry weapons, or unmanned crewed weapons.
+        If a vehicle is destroyed, or an incendiary or area attack (mortar or offboard artillery or
+        satchel charges) occurs in a hex, there is a chance of a fire (blaze) starting. If the base
+        terrain is snow or mud, or it&apos;s foggy, raining, or snowing, or if the hex being checked
+        is marsh, soft ground, or water, there&apos;s no chance of a fire starting, so skip this
+        check. Otherwise, roll d10. For forest, building, brush, field, or orchard terrain, fires
+        start on a 1 or 2. For all other terrain, on a 1. Add one to fire check number if incendiary
+        attack (i.e., fires start in buildings on a 1, 2, or 3). If the vehicle being destroyed has
+        an indendiary attack, add two to the fire check number. If there are any units in the hex,
+        the player chooses another (single) hex to move them to (if both players have units, both
+        players can choose a hex, initiative player first. They don&apos;t need to be the same hex).
+        If the hex contained smoke, it is removed, but all other features remain in the same hex, as
+        do wrecks, dropped infantry weapons, or unmanned crewed weapons.
       </p>
     </div>
   );

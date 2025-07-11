@@ -19,6 +19,8 @@ import InterfaceSection from "./InterfaceSection";
 import RushSection from "./RushSection";
 import AssaultMoveSection from "./AssaultMoveSection";
 import FireSection from "./FireSection";
+import IntensiveFireSection from "./IntensiveFireSection";
+import ReactionFireSection from "./ReactionFireSection";
 
 export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
 
@@ -42,12 +44,12 @@ export const helpIndex: HelpSection[] = [
       ]},
       { name: "Main Phase", section: <MainPhaseSection />, children: [
         { name: "Fire", section: <FireSection /> },
-        { name: "Intensive Fire", section: undefined },
+        { name: "Intensive Fire", section: <IntensiveFireSection /> },
         { name: "Move", section: <MovementSection /> },
         { name: "Rush", section: <RushSection /> },
         { name: "Assault Move", section: <AssaultMoveSection /> },
         { name: "Rout", section: undefined },
-        { name: "Opportunity Fire", section: undefined },
+        { name: "Reaction Fire", section: <ReactionFireSection /> },
       ]},
       { name: "Cleanup Phase", section: <CleanupPhaseSection />, children: [
         { name: "Close Combat", section: undefined },
