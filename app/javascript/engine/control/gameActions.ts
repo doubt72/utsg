@@ -1,10 +1,66 @@
-import { Coordinate, Direction, featureType } from "../../utilities/commonTypes"
-import { normalDir, roll2d10, rolld10 } from "../../utilities/utilities"
+import { Coordinate, Direction, featureType, Player, UnitStatus } from "../../utilities/commonTypes"
+import { normalDir, roll2d10, rolld10, rolld10x10 } from "../../utilities/utilities"
 import Feature from "../Feature"
-import Game, { actionType } from "../Game"
-import GameAction, { addActionType, GameActionDiceResult, GameActionPath } from "../GameAction"
+import Game from "../Game"
+import GameAction, { AddActionType, addActionType, GameActionDiceResult, GameActionPath } from "../GameAction"
 import Counter from "../Counter"
 import { canMultiSelectFire } from "./fire"
+
+export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip"
+export const actionType: { [index: string]: ActionType } = {
+  Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
+}
+
+export type ActionSelection = {
+  x: number, y: number, id: string, counter: Counter,
+}
+
+export type DeployActionState = {
+  turn: number, index: number, needsDirection?: [number, number],
+}
+
+export type AddAction = {
+  type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
+  facing?: Direction, status?: UnitStatus
+}
+
+export type FireActionState = {
+  initialSelection: ActionSelection[];
+  targetSelection: ActionSelection[];
+  // For turret facing/changes:
+  path: GameActionPath[];
+  doneSelect: boolean;
+  doneRotating: boolean;
+}
+
+export type MoveActionState = {
+  initialSelection: ActionSelection[];
+  doneSelect: boolean;
+  path: GameActionPath[],
+  addActions: AddAction[],
+  rotatingTurret: boolean,
+  placingSmoke: boolean,
+  droppingMove: boolean,
+  loadingMove: boolean,
+  loader?: Counter,
+}
+
+export type AssaultMoveActionState = {
+  initialSelection: ActionSelection[];
+  doneSelect: boolean;
+  path: GameActionPath[],
+  addActions: AddAction[],
+}
+
+export type GameActionState = {
+  player: Player,
+  currentAction: ActionType,
+  selection: ActionSelection[],
+  deploy?: DeployActionState,
+  fire?: FireActionState,
+  move?: MoveActionState,
+  assault?: AssaultMoveActionState,
+}
 
 export function startInitiative(game: Game) {
   const action = game.lastAction
@@ -85,7 +141,32 @@ export function startFire(game: Game) {
 }
 
 export function finishFire(game: Game) {
-  game.actionInProgress
+  if (!game.gameActionState?.fire) { return }
+  const dice: GameActionDiceResult[] = []
+  if (game.gameActionState.selection[0].counter.unit.targetedRange) {
+    dice.push({ result: rolld10x10(), type: "d10x10" })
+  }
+  dice.push({ result: roll2d10(), type: "2d10" })
+  // TODO: need to add roll for each hex targeted
+  const fire = new GameAction({
+    user: game.currentUser,
+    player: game.gameActionState.player,
+    data: {
+      action: "fire", old_initiative: game.initiative,
+      path: game.gameActionState.fire.path,
+      origin: game.gameActionState.selection.map(s => {
+        return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
+      }),
+      target: game.gameActionState.fire.targetSelection.map(t => {
+        return { x: t.x, y: t.y, id: t.counter.unit.id, status: t.counter.unit.status }
+      }),
+      dice_result: dice,
+    }
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearGhosts()
+  game.scenario.map.clearAllSelections()
+  game.executeAction(fire, false)
 }
 
 export function startMove(game: Game) {

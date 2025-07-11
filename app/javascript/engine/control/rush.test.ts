@@ -1,6 +1,5 @@
 import { Coordinate, hexOpenType, unitStatus } from "../../utilities/commonTypes"
 import Unit from "../Unit"
-import { actionType, GameActionState, MoveActionState } from "../Game"
 import { describe, expect, test } from "vitest"
 import {
   openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement
@@ -10,6 +9,7 @@ import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
 import { createTestGame, testGCrew, testGGun, testGInf, testGLdr, testGMG } from "./movement.test"
+import { actionType, GameActionState, MoveActionState } from "./gameActions"
 
 describe("rush tests", () => {
   test("rush along road", () => {

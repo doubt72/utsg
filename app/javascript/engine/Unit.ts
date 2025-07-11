@@ -1,6 +1,6 @@
 import {
   Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
-  NumberBoolean, SizeRange, UnitStatus, UnitType, movementType, unitStatus,
+  NumberBoolean, SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus,
   unitType
 } from "../utilities/commonTypes";
 import { unitHelpText } from "./support/help";
@@ -45,7 +45,7 @@ export type UnitData = {
     c?: NumberBoolean; y?: NumberBoolean; v?: number,
     ha?: { f: number; s: number; r: number; t?: -1}
     ta?: { f: number; s: number; r: number; t?: -1}
-    sg?: { f: number; r: number; t?: string }
+    sg?: { f: number; r: number; t?: SponsonType }
     sn?: number; bv?: number; f?: number; tow?: SizeRange; tr?: number;
     amp?: NumberBoolean; eng?: NumberBoolean; trg?: NumberBoolean;
   }
@@ -109,7 +109,7 @@ export default class Unit {
   armored: boolean = false;
   topOpen: boolean = false;
 
-  sponson?: [number, number] | [number, number, string];
+  sponson?: { firepower: number, range: number, type: SponsonType };
 
   status: UnitStatus;
   tired: boolean;
@@ -203,8 +203,7 @@ export default class Unit {
       this.topOpen = this.topOpen || (data.o.ta.t !== undefined || data.o.ta.r < 0)
     }
     if (data.o?.sg !== undefined) {
-      this.sponson = data.o.sg.t ? [data.o.sg.f, data.o.sg.r, data.o.sg.t] :
-        [data.o.sg.f, data.o.sg.r]      
+      this.sponson = { firepower: data.o.sg.f, range: data.o.sg.r, type: data.o.sg.t ?? sponsonType.Gun }      
     }
 
     this.status = unitStatus.Normal

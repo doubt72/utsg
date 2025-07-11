@@ -3,8 +3,10 @@ import { los } from "../../utilities/los";
 import { hexDistance } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Game from "../Game";
+import Hex from "../Hex";
 import Map from "../Map";
 import Unit from "../Unit";
+import { ActionSelection } from "./gameActions";
 
 export function openHexFiring(map: Map, from: Coordinate, to: Coordinate): HexOpenType {
   if (!map.game?.gameActionState?.fire) { return hexOpenType.Closed }
@@ -49,7 +51,7 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
 export function rapidFire(game: Game): boolean {
   if (!game?.gameActionState?.fire) { return false }
   for (const sel of game.gameActionState.selection) {
-    if (!sel.counter.unit.rapidFire) { return false }
+    if (!sel.counter.unit.rapidFire && sel.counter.unit.type !== unitType.Leader) { return false }
   }
   return true
 }
@@ -123,22 +125,163 @@ export function refreshTargetSelection(game: Game) {
   game.gameActionState.fire.targetSelection = targets
 }
 
-export function fireHindrance(game: Game): boolean | number {
-  if (!game.gameActionState?.fire) { return false }
-  const selection = game.gameActionState.selection
-  const targets = game.gameActionState.fire.targetSelection
+export function fireHindrance(
+  game: Game, source: ActionSelection[], targets: ActionSelection[]
+): boolean | number {
   let hindrance = -1
-  for (let i = 0; i < selection.length; i++) {
-    const sel = selection[i]
+  for (let i = 0; i < source.length; i++) {
+    const sel = source[i]
     for (let j = 0; j < targets.length; j++) {
       const targ = targets[j]
       const check = los(game.scenario.map, new Coordinate(sel.x, sel.y), new Coordinate(targ.x, targ.y))
       if (check !== true && check !== false && Number(check.value) > hindrance) {
         hindrance = Number(check.value)
       }
+      if (check === true && hindrance < 0) { hindrance = 0 }
     }
   }
   return hindrance < 0 ? false : hindrance
+}
+
+export function firePower(source: ActionSelection[], targets: ActionSelection[], sponson: boolean): number {
+  let fp = 0
+  for (let i = 0; i < source.length; i++) {
+    const sel = source[i]
+    const sunit = sel.counter.unit
+    for (let j = 0; j < targets.length; j++) {
+      const targ = targets[j]
+      const dist = hexDistance(new Coordinate(sel.x, sel.y), new Coordinate(targ.x, targ.y))
+      if (sponson && sunit.sponson) {
+        if (sunit.sponson.range <= dist) { fp += sunit.sponson.firepower}
+      } else {
+        if (sunit.currentRange <= dist) { fp += sunit.currentFirepower }
+      }
+    }
+  }
+  if (source.length === 0) {
+    const sunit = source[0].counter.unit
+    const tunit = targets[0].counter.unit
+    if (sunit.antiTank && (targets.length > 1 || tunit.canCarrySupport)) {
+      fp = Math.floor(fp/2)
+    }
+    if (tunit.armored && sunit.fieldGun) {
+      fp = Math.floor(fp/2)
+    }
+  }
+  return fp
+}
+
+export function untargetedModifiers(
+  game: Game, source: ActionSelection[], targets: ActionSelection[], opp: boolean
+): {
+  modifier: number, gthalf: boolean, adj: boolean, elev: number, pinned: boolean,
+  tired: boolean, rapid: boolean, intense: boolean, opp: boolean
+} {
+  let modifier = 0
+  let gthalf = false
+  let adj = true
+  let elev = -1
+  let pinned = false
+  let tired = false
+  let rapid = false
+  let intense = false
+  const map = game.scenario.map
+  const first = targets[0].counter.hex as Coordinate
+  for (let i = 0; i < source.length; i++) {
+    const sel = source[i]
+    const sunit = sel.counter.unit
+    for (let j = 0; j < targets.length; j++) {
+      const targ = targets[j]
+      const from = new Coordinate(sel.x, sel.y)
+      const to = new Coordinate(targ.x, targ.y)
+      const dist = hexDistance(from, to)
+      if (dist > sunit.currentRange/2 && sunit.type !== unitType.Leader) { gthalf = true }
+      if (dist > 1) { adj = false }
+      const check = (map.hexAt(to) as Hex).elevation - (map.hexAt(from) as Hex).elevation
+      if (check === 0 && elev < 0) { elev = 0 }
+      if (check > 0) { elev = 1}
+      if (sunit.isPinned) { pinned = true }
+      if (sunit.isTired) { tired = true }
+      if (sunit.isActivated) { intense = true }
+      if (j > 0 && !rapid) {
+        if (to.x !== first.x || to.y !== first.y) { rapid = true }
+      }
+    }
+  }
+  if (gthalf) { modifier += 1 }
+  if (adj) { modifier -= 1 }
+  if (elev > 0 ) { modifier += 1 }
+  if (elev < 0 ) { modifier -= 1 }
+  if (pinned) { modifier += 1 }
+  if (tired) { modifier += 1 }
+  if (rapid) { modifier += 2 }
+  if (opp) { modifier += 1 }
+  if (intense) { modifier += 2 }
+  return { modifier, gthalf, adj, elev, pinned, tired, rapid, intense, opp }
+}
+
+export function rangeMultiplier(
+  map: Map, source: Counter, target: Coordinate, sponson: boolean,
+): { mult: number, why: string[] } {
+  const why: string[] = []
+  let mult = 3
+  if (source.unit.offBoard) {
+    mult = 4
+    why.push("base multiplier 4")
+    const leadership = source.unit.parent?.leadership ? source.unit.parent.leadership : undefined
+    if (leadership) {
+      mult -= leadership
+      why.push(`minus leadership ${leadership}`)
+    }
+  } else if (source.unit.type === unitType.SupportWeapon && source.unit.targetedRange) {
+    mult = 3
+    why.push("base multiplier 3")
+  } else if (source.unit.crewed) {
+    mult = 4
+    why.push("base multiplier 4")
+    const handling = source.unit.parent?.gunHandling ? source.unit.parent.gunHandling : undefined
+    if (handling) {
+      mult -= handling
+      why.push(`minus gun handling ${handling}`)
+    }
+  } else { why.push("base multiplier 3") }
+  if (source.unit.turreted && !sponson) {
+    if (source.unit.turretJammed) {
+      mult += 1
+      why.push("plus 1 for jammed turret")
+    }
+  } else {
+    if (source.unit.immobilized) {
+      mult += 1
+      why.push("plus 1 for immobilized")
+    }
+  }
+  if (source.unit.eliteCrew) {
+    mult -= source.unit.eliteCrew
+    if (source.unit.eliteCrew > 0) { why.push("minus 1 for elite crew") }
+    if (source.unit.eliteCrew < 0) { why.push("plus 1 for green crew") }
+  }
+  // Weather/night here
+  const eFrom = (map.hexAt(source.hex as Coordinate) as Hex).elevation
+  const eTo = (map.hexAt(target) as Hex).elevation
+  if (eFrom > eTo) {
+    if (source.unit.areaFire) {
+      mult += 1
+      why.push("plus 1 for different elevation")
+    } else {
+      mult -= 1
+      why.push("minus 1 for firing downhill")
+    }
+  }
+  if (eFrom < eTo) {
+      mult += 1
+      why.push("plus 1 for firing uphill")
+  }
+  if (source.unit.isActivated) {
+      mult += 1
+      why.push("plus 1 for intensive fire")
+  }
+  return { mult, why }
 }
 
 function inRange(game: Game, to: Coordinate): boolean {

@@ -10,6 +10,7 @@ import BreakdownAction from "./actions/BreakdownAction";
 import InitiativeAction from "./actions/InitiativeAction";
 import InitiativePassAction from "./actions/InitiativePassAction";
 import AssaultMoveAction from "./actions/AssaultAction";
+import FireAction from "./actions/FireAction";
 
 export type GameActionDiceResult = {
   result: number, type: string,
@@ -110,6 +111,12 @@ export default class GameAction {
     }
     if (this.data.data.action === "pass") {
       return new InitiativePassAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "fire") {
+      return new FireAction(this.data, this.game, this.index, false);
+    }
+    if (this.data.data.action === "intensive_fire") {
+      return new FireAction(this.data, this.game, this.index, true);
     }
     if (this.data.data.action === "move") {
       return new MoveAction(this.data, this.game, this.index, false);

@@ -2,12 +2,12 @@ import {
   Coordinate, hexOpenType, HexOpenType, roadType, terrainType, unitType
 } from "../../utilities/commonTypes"
 import { stackLimit } from "../../utilities/utilities"
-import { actionType } from "../Game"
 import { addActionType, GameActionPath } from "../GameAction"
 import Map from "../Map"
 import Unit from "../Unit"
 import { openHexAssaulting } from "./assault"
 import { openHexFiring } from "./fire"
+import { actionType } from "./gameActions"
 import { mapSelectMovement, movementCost, movementPastCost, openHexMovement } from "./movement"
 
 export default function openHex(map: Map, x: number, y: number): HexOpenType {

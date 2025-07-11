@@ -148,10 +148,15 @@ export const movementType: { [index: string]: MovementType } = {
 
 export type UnitType = "ldr" | "sqd" | "tm" | "sw" | "gun" |
   "tank" | "spg" | "ht" | "ac" | "truck" | "cav" | "other"
-export const unitType: { [index: string]: UnitType} = {
+export const unitType: { [index: string]: UnitType } = {
   Leader: "ldr", Squad: "sqd", Team: "tm", SupportWeapon: "sw", Gun: "gun", Tank: "tank",
   SelfPropelledGun: "spg", HalfTrack: "ht", ArmoredCar: "ac", Truck: "truck", Cavalry: "cav",
   Other: "other",
+}
+
+export type SponsonType = "g" | "p" | "ft"
+export const sponsonType: { [index: string]: SponsonType } = {
+  Gun: "g", AntiArmor: "p", Flame: "ft",
 }
 
 export type MarkerType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15

@@ -1,4 +1,4 @@
-import { Coordinate, Direction, featureType } from "../../utilities/commonTypes"
+import { Coordinate, Direction, featureType, sponsonType, SponsonType, unitType } from "../../utilities/commonTypes"
 import {
   circlePath, clearColor, counterElite, counterGreen, CounterLayout, counterRed,
   facingLayout, hexPath, markerYellow, squarePath, SVGPathArray
@@ -184,7 +184,7 @@ export function centerLabelLayout(counter: Counter): CounterLayout | false {
 
 export function sponsonLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit) { return false }
-  const gun = counter.unit.sponson as [number, number] | [number, number, string]
+  const gun = counter.unit.sponson as { firepower: number, range: number, type: SponsonType }
   if (!gun || counter.unit.isWreck) { return false }
   const x = counter.x + 38
   const y = counter.y + 53
@@ -193,15 +193,13 @@ export function sponsonLayout(counter: Counter): CounterLayout | false {
     "M", x-width, y-9, "L", x+width, y-9, "L", x+width, y+3, "L", x-width, y+3, "L", x-width, y-9
   ].join(" ")
   const style = { fill: counterColor(counter) }
-  if (gun.length > 2) {
-    if (gun[2] === "ft") {
-      style.fill = markerYellow
-    } else if (gun[2] === "p") {
-      style.fill = "white"
-    }
+  if (gun.type === sponsonType.Flame) {
+    style.fill = markerYellow
+  } else if (gun.type === sponsonType.AntiArmor) {
+    style.fill = "white"
   }
   return {
-    path: path, x: x, y: y, size: 9.5, style: style, value: `${gun[0]}-${gun[1]}`
+    path: path, x: x, y: y, size: 9.5, style: style, value: `${gun.firepower}-${gun.range}`
   }
 }
 
@@ -337,7 +335,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
   } else if (counter.hasUnit) {
     if (counter.unit.targetedRange) { path = circlePath(loc, 10) }
     if (counter.unit.targetedRange || counter.unit.rapidFire) { style.stroke = "black" }
-    if (counter.unit.type === "sw" && counter.unit.targetedRange) {
+    if (counter.unit.type === unitType.SupportWeapon && counter.unit.targetedRange) {
       style.stroke = "black"
       style.fill = "black"
       color = "white"

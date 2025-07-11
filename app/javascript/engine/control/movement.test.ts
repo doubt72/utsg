@@ -4,7 +4,7 @@ import {
 } from "../../utilities/commonTypes"
 import { ScenarioData } from "../Scenario"
 import Unit, { UnitData } from "../Unit"
-import Game, { actionType, GameActionState, gamePhaseType, MoveActionState } from "../Game"
+import Game, { gamePhaseType } from "../Game"
 import { describe, expect, test } from "vitest"
 import {
   openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost
@@ -17,6 +17,7 @@ import { HexData } from "../Hex"
 import IllegalActionError from "../actions/IllegalActionError"
 import Feature, { FeatureData } from "../Feature"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
+import { actionType, GameActionState, MoveActionState } from "./gameActions"
 
 const defaultTestHexes: HexData[][] = [
   [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],

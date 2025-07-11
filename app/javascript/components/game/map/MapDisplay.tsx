@@ -389,23 +389,22 @@ export default function MapDisplay({
     if (map.game?.gameActionState?.move || map.game?.gameActionState?.assault ||
         (lastSigAction && ["move", "rush", "assault_move"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
-      setFireTrack(undefined)
-      setFireHindrance(undefined)
-    } else if (map.game?.gameActionState?.fire ||
-              (lastSigAction && ["fire"].includes(lastSigAction.data.action))) {
+    } else {
+      setMoveTrack(undefined)
+    }
+    if (map.game?.gameActionState?.fire ||
+        (lastSigAction && ["fire"].includes(lastSigAction.data.action))) {
       setFireTrack(<FireTrackOverlay map={map} />)
-      if (map.game?.gameActionState?.fire) {
+      if (map.game?.gameActionState?.fire && map.game.gameActionState.fire.targetSelection.length > 0) {
         setFireHindrance(<FireHindranceOverlay map={map} />)
       } else {
         setFireHindrance(undefined)
       }
-      setMoveTrack(undefined)
     } else {
-      setMoveTrack(undefined)
       setFireTrack(undefined)
       setFireHindrance(undefined)
     }
-  }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate])
+  }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate, map?.game?.gameActionState])
 
   useEffect(() => {
     if (map?.game?.gameActionState?.move || map?.game?.gameActionState?.assault ||

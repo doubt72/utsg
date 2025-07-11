@@ -1,12 +1,14 @@
 High Priority Features/Bug Fixes:
   - Firing
-    - Handle armored selection
+    - Targeted still targets all infantry in hex
+    - Untargeted targets all non-armored (and non-weapon)
     - Handle offboard artillery
     - Handle smoke
-    - Regular Shot
-    - Intensive Firing
-    - Test/Implement: mine
+    - Tests
+  - Test/Implement: mine
   - Show reaction
+  - Intensive Firing
+  - Reaction Firing
     - Handle move (for reaction fire)
     - Just passing currently
   - Sniper check
@@ -17,6 +19,7 @@ High Priority Features/Bug Fixes:
   - Show Eliminated Units
 
 Future Features/Bug Fixes:
+  - Remove strong points, nerf other fortifications
   - Fix fire selection starting with leader
   - Fix Move Bug for carried weapons, don't push initial selection, add status to children
   - Handle scale and such settings gone wrong

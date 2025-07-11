@@ -1,8 +1,8 @@
-import { Direction, Player, UnitStatus } from "../utilities/commonTypes";
+import { Direction, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction, {
-  GameActionData, GameActionPath, GameActionPhaseChange, AddActionType
+  GameActionData, GameActionPath, GameActionPhaseChange
 } from "./GameAction";
 import Feature from "./Feature";
 import BaseAction from "./actions/BaseAction";
@@ -12,8 +12,9 @@ import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
 import {
-  assault, assaultClear, assaultEntrench, assaultRotate, finishAssault, finishBreakdown, finishFire, finishInitiative, finishMove,
-  finishPass, loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
+  actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
+  finishBreakdown, finishFire, finishInitiative, finishMove, finishPass, GameActionState,
+  loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
   startAssault, startBreakdown, startFire, startInitiative, startMove, startPass
 } from "./control/gameActions";
 
@@ -38,62 +39,6 @@ export type GameData = {
 export type GamePhase = 0 | 1 | 2 | 3
 export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
-}
-
-export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip"
-export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
-}
-
-export type ActionSelection = {
-  x: number, y: number, id: string, counter: Counter,
-}
-
-export type DeployActionState = {
-  turn: number, index: number, needsDirection?: [number, number],
-}
-
-export type AddAction = {
-  type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
-  facing?: Direction, status?: UnitStatus
-}
-
-export type FireActionState = {
-  initialSelection: ActionSelection[];
-  targetSelection: ActionSelection[];
-  // For turret facing/changes:
-  path: GameActionPath[];
-  doneSelect: boolean;
-  doneRotating: boolean;
-}
-
-export type MoveActionState = {
-  initialSelection: ActionSelection[];
-  doneSelect: boolean;
-  path: GameActionPath[],
-  addActions: AddAction[],
-  rotatingTurret: boolean,
-  placingSmoke: boolean,
-  droppingMove: boolean,
-  loadingMove: boolean,
-  loader?: Counter,
-}
-
-export type AssaultMoveActionState = {
-  initialSelection: ActionSelection[];
-  doneSelect: boolean;
-  path: GameActionPath[],
-  addActions: AddAction[],
-}
-
-export type GameActionState = {
-  player: Player,
-  currentAction: ActionType,
-  selection: ActionSelection[],
-  deploy?: DeployActionState,
-  fire?: FireActionState,
-  move?: MoveActionState,
-  assault?: AssaultMoveActionState,
 }
 
 export default class Game {
@@ -401,11 +346,9 @@ export default class Game {
 
   previousActionUndoPossible(index: number): boolean {
     let check = index - 1
-
     while(check >= 0 && this.actions[check].undone) {
       check--
     }
-
     if (check < 0) { return false }
     return this.actions[check].undoPossible
   }

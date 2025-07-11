@@ -2,7 +2,6 @@ import {
   baseTerrainType, Coordinate, hexOpenType, unitStatus
 } from "../../utilities/commonTypes"
 import Unit from "../Unit"
-import { actionType, GameActionState, AssaultMoveActionState } from "../Game"
 import { describe, expect, test } from "vitest"
 import select from "./select"
 import organizeStacks from "../support/organizeStacks"
@@ -12,6 +11,7 @@ import {
 } from "./movement.test"
 import { openHexAssaulting, showClearObstacles, showEntrench } from "./assault"
 import Feature from "../Feature"
+import { actionType, AssaultMoveActionState, GameActionState } from "./gameActions"
 
 describe("assault movement tests", () => {
   test("along road", () => {

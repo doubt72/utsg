@@ -1,8 +1,8 @@
 import { GameAction, unitType } from "../../utilities/commonTypes"
-import Game, { actionType, gamePhaseType } from "../Game"
+import Game, { gamePhaseType } from "../Game"
 import Unit from "../Unit"
 import { showClearObstacles, showEntrench } from "./assault"
-import { needPickUpDisambiguate } from "./gameActions"
+import { actionType, needPickUpDisambiguate } from "./gameActions"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {

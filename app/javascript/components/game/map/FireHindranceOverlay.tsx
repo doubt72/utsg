@@ -3,6 +3,7 @@ import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { circlePath, counterRed } from "../../../utilities/graphics";
 import { fireHindrance } from "../../../engine/control/fire";
+import { FireActionState } from "../../../engine/control/gameActions";
 
 interface FireHindranceOverlayProps {
   map: Map;
@@ -13,10 +14,12 @@ export default function FireHindranceOverlay({ map }: FireHindranceOverlayProps)
     if (!map.game) { return }
     const rc: JSX.Element[] = []
     if (map.game.gameActionState?.fire) {
-      const hindrance = fireHindrance(map.game)
+      const action = map.game.gameActionState
+      const fire = action.fire as FireActionState
+      const hindrance = fireHindrance(map.game, action.selection, fire.targetSelection)
       if (hindrance !== false) {
-        const x = map.game.gameActionState.selection[0].x
-        const y = map.game.gameActionState.selection[0].y
+        const x = action.selection[0].x
+        const y = action.selection[0].y
         const offset = Math.max(map.countersAt(new Coordinate(x, y)).length * 5 - 5, 0)
         const x0 = map.xOffset(x, y) + offset
         const y0 = map.yOffset(y) - offset

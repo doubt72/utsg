@@ -2,13 +2,14 @@ import { MapData } from "../Map"
 import { baseTerrainType, Coordinate, hexOpenType, weatherType, windType } from "../../utilities/commonTypes"
 import { ScenarioData } from "../Scenario"
 import Unit, { UnitData } from "../Unit"
-import Game, { actionType, GameActionState, gamePhaseType, MoveActionState } from "../Game"
+import Game, { gamePhaseType } from "../Game"
 import { describe, expect, test, vi } from "vitest"
 import { HexData } from "../Hex"
 import IllegalActionError from "../actions/IllegalActionError"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 import { openHexMovement } from "./movement"
 import { openHexAssaulting } from "./assault"
+import { actionType, GameActionState, MoveActionState } from "./gameActions"
 
 // TODO: add passing tests 
 

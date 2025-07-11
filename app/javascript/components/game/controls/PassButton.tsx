@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import { ArrowClockwise } from "react-bootstrap-icons";
-import Game, { actionType } from "../../../engine/Game";
+import Game from "../../../engine/Game";
+import { actionType } from "../../../engine/control/gameActions";
 
 interface PassButtonProps {
   game: Game;
