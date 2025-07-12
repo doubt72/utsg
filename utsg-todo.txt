@@ -39,6 +39,7 @@ High Priority Features/Bug Fixes:
 Future Features/Bug Fixes:
   - Remove strong points, nerf other fortifications
   - Handle map scale and such settings gone wrong
+  - Show Terrain in counter overlay
   - Ability to kick players
   - Implement Help Button linking to game context
   - Change terminology for jamming in documentation to be more like breaking

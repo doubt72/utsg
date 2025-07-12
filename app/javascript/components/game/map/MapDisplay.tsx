@@ -370,13 +370,15 @@ export default function MapDisplay({
       setCounterOverlay(
         <MapCounterOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} maxX={width / scale} maxY={height / scale}
-                           shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1}/>
+                           shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
+                           svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
       )
     } else if (!showLos) {
       setCounterOverlay(
         <MapCounterOverlay counters={overlay.counters} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} maxX={width / scale} maxY={height / scale}
-                           shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} />
+                           shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
+                           svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
       )
     }
   }, [overlay.show, overlay.x, overlay.y, overlay.counters, map?.debugLos])

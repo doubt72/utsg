@@ -134,17 +134,27 @@ function hexHelpText(hex: Hex): string[] {
 }
 
 export function counterHelpLayout(
-  game: Game, counter: Counter, loc: Coordinate, hex: Coordinate, max: Coordinate, scale: number
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number
 ): HelpLayout {
   if (!counter.map) { return { path: "", size: 0, style: {}, opacity: 0, tStyle: {}, texts: [] } }
-  console.log(hex)
-  const text = counter.target.helpText(game, hex)
+  const text = counter.target.helpText
   return mapHelpLayout(loc, max, text, scale)
 }
 
-export function unitHelpText(game: Game, hex: Coordinate, unit: Unit): string[] {
-  let text = fireHelpText(game, hex, unit)
-  text.push(unit.name)
+export function counterFireHelpLayout(
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
+): HelpLayout {
+  const noHelp = { path: "", size: 0, style: {}, opacity: 0, tStyle: {}, texts: [] }
+  if (!game.gameActionState?.fire) { return noHelp }
+  if (!game.gameActionState.fire.targetSelection.map(s => s.id).includes(counter.unit.id)) {
+    return noHelp
+  }
+  const text = counter.unit.fireHelpText(game, hex)
+  return mapHelpLayout(loc, max, text, scale)
+}
+
+export function unitHelpText(unit: Unit): string[] {
+  let text = [unit.name]
   text = text.concat(unitTypeName(unit))
   text.push("")
   text.push("[from name, clockwise]")
@@ -294,6 +304,57 @@ export function unitHelpText(game: Game, hex: Coordinate, unit: Unit): string[] 
   return text
 }
 
+export function fireHelpText(game: Game, to: Coordinate, unit: Unit): string[] {
+  if (!game.gameActionState?.fire) { return [] }
+  if (game.gameActionState.fire.targetSelection.length < 1) { return [] }
+  let rc: string[] = []
+  const firing = game.gameActionState.selection
+  const targets = game.gameActionState.fire.targetSelection
+  let check = false
+  let target = targets[0].counter.unit
+  for (const t of targets) {
+    if (t.id === unit.id) {
+      check = true
+      target = t.counter.unit
+    }
+  }
+  if (!check) { return [] }
+  const from = new Coordinate(firing[0].x, firing[0].y)
+  rc.push("attack rolls:")
+  const fp = firepower(firing, target, to, game.sponsonFire)
+  const hindrance = fireHindrance(game, firing, to)
+  if (firing[0].counter.unit.targetedRange) {
+    const rotated = game.gameActionState.fire.path.length > 1
+    const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
+    const range = hexDistance(from, to)
+    const roll = hindrance === true ? range * mult.mult :
+      (range + (hindrance as number)) * mult.mult 
+    rc.push(`-> targeting roll (d10x10): ${roll}`)
+    rc.push(`range: ${range}`)
+    if (hindrance !== true && hindrance !== false && hindrance > 0) {
+      rc.push(`hindrance: ${hindrance}`)
+    }
+    rc.push(`multiplier: ${mult.mult}`)
+    if (mult.why.length > 1) { rc = rc.concat(mult.why) }
+  } else {
+    // TODO: Detect reaction fire
+    const basehit = baseToHit(fp)
+    const mods = untargetedModifiers(game, firing, targets, false)
+    const tohit = basehit + mods.mod + (hindrance !== true && hindrance !== false && hindrance > 0 ? hindrance : 0)
+    rc.push(`-> to hit (2d10): ${tohit}`)
+    rc.push(`firepower: ${fp}`)
+    if (mods.why.length > 0 || (hindrance !== true && hindrance !== false && hindrance > 0)) {
+      rc.push(`- base to hit: ${basehit}`)
+      if (hindrance !== true && hindrance !== false && hindrance > 0) {
+        rc.push(`- hindrance ${hindrance}`)
+      }
+      rc = rc.concat(mods.why)
+    }
+  }
+  rc.push("")
+  return rc
+}
+
 export function featureHelpText(feature: Feature): string[] {
   const text = [feature.name]
   if (feature.hindrance) {
@@ -403,8 +464,6 @@ export function mapHelpLayout(
     y2 -= diff
   }
   const diff = size
-  // const color = "#450"
-  // const textColor = "#CE7"
   const color = "black"
   const textColor = "white"
   return {
@@ -413,57 +472,6 @@ export function mapHelpLayout(
       return { x: x1+(8/scale), y: y1 + i*diff + size - 1, value: t }
     }), tStyle: { fill: textColor }
   }
-}
-
-function fireHelpText(game: Game, to: Coordinate, unit: Unit): string[] {
-  if (!game.gameActionState?.fire) { return [] }
-  if (game.gameActionState.fire.targetSelection.length < 1) { return [] }
-  let rc: string[] = []
-  const firing = game.gameActionState.selection
-  const targets = game.gameActionState.fire.targetSelection
-  let check = false
-  let target = targets[0].counter.unit
-  for (const t of targets) {
-    if (t.id === unit.id) {
-      check = true
-      target = t.counter.unit
-    }
-  }
-  if (!check) { return [] }
-  const from = new Coordinate(firing[0].x, firing[0].y)
-  rc.push("fire details:")
-  const fp = firepower(firing, target, to, game.sponsonFire)
-  const hindrance = fireHindrance(game, firing, to)
-  if (firing[0].counter.unit.targetedRange) {
-    const rotated = game.gameActionState.fire.path.length > 1
-    const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
-    const range = hexDistance(from, to)
-    const roll = hindrance === true ? range * mult.mult :
-      (range + (hindrance as number)) * mult.mult 
-    rc.push(`-> targeting roll: ${roll}`)
-    rc.push(`range: ${range}`)
-    if (hindrance !== true && hindrance !== false && hindrance > 0) {
-      rc.push(`hindrance: ${hindrance}`)
-    }
-    rc.push(`target multiplier: ${mult.mult}`)
-    if (mult.why.length > 1) { rc = rc.concat(mult.why) }
-  } else {
-    // Detect reaction fire
-    const basehit = baseToHit(fp)
-    const mods = untargetedModifiers(game, firing, targets, false)
-    const tohit = basehit + mods.mod + (hindrance !== true && hindrance !== false && hindrance > 0 ? hindrance : 0)
-    rc.push(`-> to hit: ${tohit}`)
-    rc.push(`firepower: ${fp}`)
-    if (mods.why.length > 0 || (hindrance !== true && hindrance !== false && hindrance > 0)) {
-      rc.push(`- base to hit: ${basehit}`)
-      if (hindrance !== true && hindrance !== false && hindrance > 0) {
-        rc.push(`- hindrance ${hindrance}`)
-      }
-      rc = rc.concat(mods.why)
-    }
-  }
-  rc.push("")
-  return rc
 }
 
 function unitTypeName(unit: Unit): string[] {

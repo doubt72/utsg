@@ -15,13 +15,11 @@ interface MapCounterOverlayHelpProps {
   maxX: number;
   maxY: number;
   scale: number;
-  hexX?: number;
-  hexY?: number;
   setHelpDisplay: (a: JSX.Element | undefined) => void;
 }
 
 export default function MapCounterOverlayHelp({
-  map, counter, xx, yy, maxX, maxY, hexX, hexY, scale, setHelpDisplay
+  map, counter, xx, yy, maxX, maxY, scale, setHelpDisplay
 }: MapCounterOverlayHelpProps) {
   const [helpButton, setHelpButton] = useState<JSX.Element | undefined>()
   const [backgroundColor, setBackgroundColor] = useState("black")
@@ -44,8 +42,7 @@ export default function MapCounterOverlayHelp({
   const showHelp = () => {
     if (!map.game) { return }
     const layout = counterHelpLayout(
-      map.game, counter, new Coordinate(xx + 10, yy + 5), new Coordinate(hexX ?? -1, hexY ?? -1),
-      new Coordinate(maxX, maxY), scale
+      map.game, counter, new Coordinate(xx + 10, yy + 5), new Coordinate(maxX, maxY), scale
     )
     setBackgroundColor("#555")
     setHelpDisplay(HelpOverlay(layout))

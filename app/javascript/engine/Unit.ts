@@ -5,7 +5,7 @@ import {
   unitType
 } from "../utilities/commonTypes";
 import Game from "./Game";
-import { unitHelpText } from "./support/help";
+import { fireHelpText, unitHelpText } from "./support/help";
 
 // id: ID
 // c: nation, t: type, n: name, i: icon, y: year
@@ -455,7 +455,11 @@ export default class Unit {
     }
   }
 
-  helpText(game: Game, hex: Coordinate): string[] {
-    return unitHelpText(game, hex, this)
+  get helpText(): string[] {
+    return unitHelpText(this)
+  }
+
+  fireHelpText(game: Game, hex: Coordinate): string[] {
+    return fireHelpText(game, hex, this)
   }
 }

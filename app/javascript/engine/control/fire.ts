@@ -167,10 +167,10 @@ export function firepower(source: ActionSelection[], target: Unit, to: Coordinat
     if (sponson && sunit.sponson) {
       if (sunit.sponson.range >= dist) { fp += sunit.sponson.firepower}
     } else {
+      // TODO: Include leadership
       if (sunit.currentRange >= dist) { fp += sunit.currentFirepower }
     }
   }
-  console.log(fp)
   if (source.length === 1) {
     const sunit = source[0].counter.unit
     if (sunit.antiTank && (target.canCarrySupport)) {
@@ -192,7 +192,7 @@ export function firepower(source: ActionSelection[], target: Unit, to: Coordinat
 export function untargetedModifiers(
   game: Game, source: ActionSelection[], targets: ActionSelection[], react: boolean
 ): { mod: number, why: string[] } {
-  // Break down by location
+  // TODO: Break down by location
   const why: string[] = []
   let mod = 0
   let gthalf = false

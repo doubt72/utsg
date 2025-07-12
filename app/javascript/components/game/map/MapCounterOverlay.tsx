@@ -6,6 +6,8 @@ import { Coordinate, markerType, unitType } from "../../../utilities/commonTypes
 import Map from "../../../engine/Map";
 import { counterOutline } from "../../../utilities/graphics";
 import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
+import { HelpOverlay } from "./Help";
+import { counterFireHelpLayout } from "../../../engine/support/help";
 
 interface MapCounterOverlayProps {
   map: Map;
@@ -16,19 +18,36 @@ interface MapCounterOverlayProps {
   xx?: number;
   yy?: number;
   mapScale: number;
+  scale: number;
   shiftX: number;
   shiftY: number;
   maxX: number;
   maxY: number;
+  svgRef: React.MutableRefObject<HTMLElement>;
   counters?: Counter[];
 }
 
 export default function MapCounterOverlay({
-  map, setOverlay, selectionCallback, xx, yy, mapScale, shiftX, shiftY, maxX, maxY, counters
+  map, setOverlay, selectionCallback, xx, yy, mapScale, scale, shiftX, shiftY, maxX, maxY, counters, svgRef
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
+  const [fireHelpDisplay, setFireHelpDisplay] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState(0)
+
+  const showFireHelp = (e: React.MouseEvent, counter: Counter) => {
+    if (counter.hasUnit && counter.unit.targetSelected) {
+      if (!map.game) { return }
+      const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
+      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+      const loc = new Coordinate(x, y)
+      setFireHelpDisplay(HelpOverlay(counterFireHelpLayout(
+          map.game, counter, loc, new Coordinate(maxX, maxY), scale, new Coordinate(xx ?? -1, yy ?? -1)
+      )))
+    } else {
+      setFireHelpDisplay(undefined)
+    }
+  }
 
   useEffect(() => {
     // Either counters or a number makes for iffy typing
@@ -78,18 +97,18 @@ export default function MapCounterOverlay({
           })
           helpOverlays.push(
             <MapCounterOverlayHelp key={i} xx={layout.x + i*176+170} yy={layout.y+10} maxX={maxX} maxY={maxY}
-                                   hexX={xx} hexY={yy} map={map} scale={mapScale} counter={cd}
-                                   setHelpDisplay={setHelpDisplay} />
+                                   map={map} scale={mapScale} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
           selectionOverlays.push(
             <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
               <path d={counterPath(cd)} style={{ fill: "rgba(0,0,0,0)" }}
-                    onClick={() => {
+                    onClick={(e: React.MouseEvent) => {
                       if (xx !== undefined && yy !== undefined) {
                         selectionCallback({
                           target: { type: "map", xy: new Coordinate(xx, yy) },
                           counter: cd,
                         })
+                        showFireHelp(e, cd)
                       } else if (counter.reinforcement) {
                         selectionCallback({
                           target: {
@@ -102,7 +121,9 @@ export default function MapCounterOverlay({
                         })
                       }
                       setUpdate(s => s + 1)
-                    }} />              
+                    }}
+                    onMouseMove={(e: React.MouseEvent) => { showFireHelp(e, cd) }}
+                    onMouseLeave={() => { setFireHelpDisplay(undefined) }}/>
             </g>
           )
           return (
@@ -140,6 +161,7 @@ export default function MapCounterOverlay({
     <g>
       {overlayDisplay}
       {helpDisplay}
+      {fireHelpDisplay}
     </g>
   )
 }
