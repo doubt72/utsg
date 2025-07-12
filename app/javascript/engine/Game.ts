@@ -17,6 +17,7 @@ import {
   loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
   startAssault, startBreakdown, startFire, startInitiative, startMove, startPass
 } from "./control/gameActions";
+import Hex from "./Hex";
 
 export type GameData = {
   id: number;
@@ -72,7 +73,7 @@ export default class Game {
 
   closeReinforcementPanel: boolean = false;
 
-  openOverlay?: { x: number, y: number }
+  openOverlay?: Hex;
   closeOverlay: boolean = false;
 
   messageQueue: string[]

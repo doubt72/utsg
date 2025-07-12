@@ -62,7 +62,7 @@ export default function MapDisplay({
   const [counterDisplay, setCounterDisplay] = useState<JSX.Element[]>([])
   const [actionCounterDisplay, setActionCounterDisplay] = useState<JSX.Element[]>([])
   const [overlay, setOverlay] = useState<{
-    show: boolean, x: number, y: number, counters?: Counter[]
+    show: boolean, x: number, y: number, counters?: Counter[],
   }>({ show: false, x: -1, y: -1 })
   const [losOverlay, setLosOverlay] = useState<JSX.Element | undefined>()
   const [counterLosOverlay, setCounterLosOverlay] = useState<JSX.Element[] | undefined>()
@@ -319,7 +319,9 @@ export default function MapDisplay({
       })
     }
     if (map.game?.openOverlay) {
-      setOverlay({ show: true, x: map.game.openOverlay.x, y: map.game.openOverlay.y })
+      setOverlay({
+        show: true, x: map.game.openOverlay.coord.x, y: map.game.openOverlay.coord.y,
+      })
       map.game.openOverlay = undefined
     }
     if (map.game?.closeOverlay) {

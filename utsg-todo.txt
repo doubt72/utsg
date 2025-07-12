@@ -1,4 +1,8 @@
 High Priority Features/Bug Fixes:
+  - Change hindrance for rapid fire to be separate per hex
+  - Targeted still targets all infantry in hex
+  - Fix Move Bug for carried weapons, don't push initial selection, add status to children
+  - Unit panel controls hover
   - Pin doc sidebar to top
   - Firing
     - Handle offboard artillery
@@ -8,7 +12,6 @@ High Priority Features/Bug Fixes:
     - Handle smoke
 
   - Test/check:
-    - Targeted still targets all infantry in hex
     - Untargeted targets all non-armored (and non-weapon), except when unarmored
     - Crewed or support weapons cannot be fired if operating unit is pinned or broken
     - Crewed weapons may not fire if crew is activated
@@ -16,10 +19,9 @@ High Priority Features/Bug Fixes:
     - Make sure leader hindrance isn't counted if out of range
     - Fix fire selection starting with leader
     - Make sure machine gun selection can add handler
-    - Change hindrance for rapid fire to be separate per hex
     - Go back to square for fire tanks
     - Add area fire to flame throwers and charges
-    - Broken vehicles if sponson
+    - Broken sponson weapon
     - Check wreck stacking
   - Test/Implement: mine
   - Show reaction
@@ -36,8 +38,7 @@ High Priority Features/Bug Fixes:
 
 Future Features/Bug Fixes:
   - Remove strong points, nerf other fortifications
-  - Fix Move Bug for carried weapons, don't push initial selection, add status to children
-  - Handle scale and such settings gone wrong
+  - Handle map scale and such settings gone wrong
   - Ability to kick players
   - Implement Help Button linking to game context
   - Change terminology for jamming in documentation to be more like breaking

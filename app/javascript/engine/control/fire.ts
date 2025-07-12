@@ -125,7 +125,7 @@ export function refreshTargetSelection(game: Game) {
   game.gameActionState.fire.targetSelection = targets
 }
 
-export function fireHindrance(
+export function fireHindranceAll(
   game: Game, source: ActionSelection[], targets: ActionSelection[]
 ): boolean | number {
   let hindrance = -1
@@ -143,28 +143,40 @@ export function fireHindrance(
   return hindrance < 0 ? false : hindrance
 }
 
-export function firepower(source: ActionSelection[], targets: ActionSelection[], sponson: boolean): number {
+export function fireHindrance(
+  game: Game, source: ActionSelection[], to: Coordinate
+): boolean | number {
+  let hindrance = -1
+  for (let i = 0; i < source.length; i++) {
+    const sel = source[i]
+    const check = los(game.scenario.map, new Coordinate(sel.x, sel.y), to)
+    if (check !== true && check !== false && Number(check.value) > hindrance) {
+      hindrance = Number(check.value)
+    }
+    if (check === true && hindrance < 0) { hindrance = 0 }
+  }
+  return hindrance < 0 ? false : hindrance
+}
+
+export function firepower(source: ActionSelection[], target: Unit, to: Coordinate, sponson: boolean): number {
   let fp = 0
   for (let i = 0; i < source.length; i++) {
     const sel = source[i]
     const sunit = sel.counter.unit
-    for (let j = 0; j < targets.length; j++) {
-      const targ = targets[j]
-      const dist = hexDistance(new Coordinate(sel.x, sel.y), new Coordinate(targ.x, targ.y))
-      if (sponson && sunit.sponson) {
-        if (sunit.sponson.range <= dist) { fp += sunit.sponson.firepower}
-      } else {
-        if (sunit.currentRange <= dist) { fp += sunit.currentFirepower }
-      }
+    const dist = hexDistance(new Coordinate(sel.x, sel.y), to)
+    if (sponson && sunit.sponson) {
+      if (sunit.sponson.range >= dist) { fp += sunit.sponson.firepower}
+    } else {
+      if (sunit.currentRange >= dist) { fp += sunit.currentFirepower }
     }
   }
+  console.log(fp)
   if (source.length === 1) {
     const sunit = source[0].counter.unit
-    const tunit = targets[0].counter.unit
-    if (sunit.antiTank && (targets.length > 1 || tunit.canCarrySupport)) {
+    if (sunit.antiTank && (target.canCarrySupport)) {
       fp = Math.floor(fp/2)
     }
-    if (tunit.armored && sunit.fieldGun) {
+    if (target.armored && sunit.fieldGun) {
       fp = Math.floor(fp/2)
     }
     if (sunit.immobilized && (!sunit.turreted || sponson)) {
@@ -179,12 +191,10 @@ export function firepower(source: ActionSelection[], targets: ActionSelection[],
 
 export function untargetedModifiers(
   game: Game, source: ActionSelection[], targets: ActionSelection[], react: boolean
-): {
-  modifier: number, gthalf: boolean, adj: boolean, elev: number, pinned: boolean,
-  tired: boolean, rapid: boolean, intense: boolean, react: boolean
-} {
+): { mod: number, why: string[] } {
   // Break down by location
-  let modifier = 0
+  const why: string[] = []
+  let mod = 0
   let gthalf = false
   let adj = true
   let elev = -1
@@ -215,15 +225,43 @@ export function untargetedModifiers(
       }
     }
   }
-  if (gthalf) { modifier += 1 }
-  if (adj) { modifier -= 1 }
-  if (elev > 0 ) { modifier += 1 }
-  if (elev < 0 ) { modifier -= 1 }
-  if (pinned || tired) { modifier += 1 }
-  if (rapid) { modifier += 2 }
-  if (react) { modifier += 1 }
-  if (intense) { modifier += 2 }
-  return { modifier, gthalf, adj, elev, pinned, tired, rapid, intense, react }
+  if (gthalf) {
+    mod += 1
+    why.push("- plus 1 for more than half range")
+  }
+  if (adj) {
+    mod -= 1
+    why.push("- minus 1 for adjacent")
+  }
+  if (elev > 0 ) {
+    mod += 1
+    why.push("- plus 1 for firing uphill")
+  }
+  if (elev < 0 ) {
+    mod -= 1
+    why.push("- minus 1 for firing downhill")
+  }
+  if (pinned || tired) {
+    mod += 1
+    if (pinned) {
+      why.push("- plus 1 for pinned")
+    } else {
+      why.push("- plus 1 for tired")
+    }
+  }
+  if (rapid) {
+    mod += 2
+    why.push("- plus 2 for rapid fire")
+  }
+  if (react) {
+    mod += 1
+    why.push("- plus 1 for reaction fire")
+  }
+  if (intense) {
+    mod += 2
+    why.push("- plus 2 intensive fire")
+  }
+  return { mod, why }
 }
 
 export function rangeMultiplier(

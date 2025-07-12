@@ -194,7 +194,7 @@ export default class Marker {
   }
 
   // eslint-disable-next-line
-  helpText(_game: Game, _loc: Coordinate): string[] {
+  helpText(_game: Game, _hex: Coordinate): string[] {
     return markerHelpText(this)
   }
 }

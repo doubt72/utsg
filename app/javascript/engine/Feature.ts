@@ -119,7 +119,7 @@ export default class Feature {
   }
 
   // eslint-disable-next-line
-  helpText(_game: Game, _loc: Coordinate): string[] {
+  helpText(_game: Game, _hex: Coordinate): string[] {
     return featureHelpText(this)
   }
 }

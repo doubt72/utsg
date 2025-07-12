@@ -126,7 +126,7 @@ export function startFire(game: Game) {
     const allSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
     const initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
     if (canSelect) {
-      game.openOverlay = { x: selection.hex.x, y: selection.hex.y }
+      game.openOverlay = game.scenario.map.hexAt(selection.hex)
     }
     game.gameActionState = {
       player: game.currentPlayer,
@@ -200,7 +200,7 @@ export function startMove(game: Game) {
       initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
     })
     if (canSelect) {
-      game.openOverlay = { x: selection.hex.x, y: selection.hex.y }
+      game.openOverlay = game.scenario.map.hexAt(selection.hex)
     }
     game.gameActionState = {
       player: game.currentPlayer,
@@ -280,7 +280,7 @@ export function shortingMoveToggle(game: Game) {
   game.gameActionState.move.droppingMove = !game.gameActionState.move.droppingMove
   if (game.gameActionState.move.droppingMove) {
     const first = game.gameActionState.move.path[0]
-    game.openOverlay = { x: first.x, y: first.y }
+    game.openOverlay = game.scenario.map.hexAt(new Coordinate(first.x, first.y))
   }
   game.gameActionState.move.loadingMove = false
   game.gameActionState.move.placingSmoke = false
@@ -292,13 +292,13 @@ export function loadingMoveToggle(game: Game) {
   if (game.gameActionState.move.loadingMove) {
     if (needPickUpDisambiguate(game)) {
       const first = game.gameActionState.move.path[0]
-      game.openOverlay = { x: first.x, y: first.y }
+      game.openOverlay = game.scenario.map.hexAt(new Coordinate(first.x, first.y))
     } else {
       const last = game.lastPath as GameActionPath
-      game.openOverlay = { x: last.x, y: last.y }
+      game.openOverlay = game.scenario.map.hexAt(new Coordinate(last.x, last.y))
     }
     const last = game.lastPath as GameActionPath
-    game.openOverlay = { x: last.x, y: last.y }
+    game.openOverlay = game.scenario.map.hexAt(new Coordinate(last.x, last.y))
   }
   game.gameActionState.move.droppingMove = false
   game.gameActionState.move.placingSmoke = false
@@ -363,7 +363,7 @@ export function startAssault(game: Game) {
       initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
     })
     if (canSelect) {
-      game.openOverlay = { x: selection.hex.x, y: selection.hex.y }
+      game.openOverlay = game.scenario.map.hexAt(selection.hex)
     }
     game.gameActionState = {
       player: game.currentPlayer, currentAction: actionType.Assault, selection: allSelection,

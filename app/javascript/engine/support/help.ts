@@ -2,9 +2,9 @@ import {
   baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
-import { hexDistance, normalDir } from "../../utilities/utilities"
+import { baseToHit, hexDistance, normalDir } from "../../utilities/utilities"
 import {
-  fireHindrance, firepower, rangeMultiplier//, untargetedModifiers
+  fireHindrance, firepower, rangeMultiplier, untargetedModifiers
 } from "../control/fire"
 import Counter from "../Counter"
 import Feature from "../Feature"
@@ -134,15 +134,16 @@ function hexHelpText(hex: Hex): string[] {
 }
 
 export function counterHelpLayout(
-  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number
+  game: Game, counter: Counter, loc: Coordinate, hex: Coordinate, max: Coordinate, scale: number
 ): HelpLayout {
   if (!counter.map) { return { path: "", size: 0, style: {}, opacity: 0, tStyle: {}, texts: [] } }
-  const text = counter.target.helpText(game, loc)
+  console.log(hex)
+  const text = counter.target.helpText(game, hex)
   return mapHelpLayout(loc, max, text, scale)
 }
 
-export function unitHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
-  let text = fireHelpText(game, loc, unit)
+export function unitHelpText(game: Game, hex: Coordinate, unit: Unit): string[] {
+  let text = fireHelpText(game, hex, unit)
   text.push(unit.name)
   text = text.concat(unitTypeName(unit))
   text.push("")
@@ -414,32 +415,32 @@ export function mapHelpLayout(
   }
 }
 
-function fireHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
+function fireHelpText(game: Game, to: Coordinate, unit: Unit): string[] {
   if (!game.gameActionState?.fire) { return [] }
   if (game.gameActionState.fire.targetSelection.length < 1) { return [] }
   let rc: string[] = []
   const firing = game.gameActionState.selection
   const targets = game.gameActionState.fire.targetSelection
   let check = false
-  for (const f of firing) {
-    if (f.id === unit.id) { check = true }
-  }
+  let target = targets[0].counter.unit
   for (const t of targets) {
-    if (t.id === unit.id) { check = true }
+    if (t.id === unit.id) {
+      check = true
+      target = t.counter.unit
+    }
   }
   if (!check) { return [] }
   const from = new Coordinate(firing[0].x, firing[0].y)
-  const to = new Coordinate(targets[0].x, targets[0].y)
-  rc.push("fire:")
-  const fp = firepower(firing, targets, game.sponsonFire)
-  const rotated = game.gameActionState.fire.path.length > 1
+  rc.push("fire details:")
+  const fp = firepower(firing, target, to, game.sponsonFire)
+  const hindrance = fireHindrance(game, firing, to)
   if (firing[0].counter.unit.targetedRange) {
+    const rotated = game.gameActionState.fire.path.length > 1
     const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
     const range = hexDistance(from, to)
-    const hindrance = fireHindrance(game, firing, targets)
     const roll = hindrance === true ? range * mult.mult :
       (range + (hindrance as number)) * mult.mult 
-    rc.push(`targeting roll: ${roll}`)
+    rc.push(`-> targeting roll: ${roll}`)
     rc.push(`range: ${range}`)
     if (hindrance !== true && hindrance !== false && hindrance > 0) {
       rc.push(`hindrance: ${hindrance}`)
@@ -448,8 +449,18 @@ function fireHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
     if (mult.why.length > 1) { rc = rc.concat(mult.why) }
   } else {
     // Detect reaction fire
-    // const mods = untargetedModifiers(game, firing, targets, false)
-    rc.push(`firepower ${fp}`)
+    const basehit = baseToHit(fp)
+    const mods = untargetedModifiers(game, firing, targets, false)
+    const tohit = basehit + mods.mod + (hindrance !== true && hindrance !== false && hindrance > 0 ? hindrance : 0)
+    rc.push(`-> to hit: ${tohit}`)
+    rc.push(`firepower: ${fp}`)
+    if (mods.why.length > 0 || (hindrance !== true && hindrance !== false && hindrance > 0)) {
+      rc.push(`- base to hit: ${basehit}`)
+      if (hindrance !== true && hindrance !== false && hindrance > 0) {
+        rc.push(`- hindrance ${hindrance}`)
+      }
+      rc = rc.concat(mods.why)
+    }
   }
   rc.push("")
   return rc

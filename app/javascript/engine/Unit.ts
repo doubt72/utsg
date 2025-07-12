@@ -455,7 +455,7 @@ export default class Unit {
     }
   }
 
-  helpText(game: Game, loc: Coordinate): string[] {
-    return unitHelpText(game, loc, this)
+  helpText(game: Game, hex: Coordinate): string[] {
+    return unitHelpText(game, hex, this)
   }
 }
