@@ -40,7 +40,10 @@ export default function MapCounterOverlayHelp({
   }, [xx, yy, backgroundColor])
 
   const showHelp = () => {
-    const layout = counterHelpLayout(counter, new Coordinate(xx + 10, yy + 5), new Coordinate(maxX, maxY), scale)
+    if (!map.game) { return }
+    const layout = counterHelpLayout(
+      map.game, counter, new Coordinate(xx + 10, yy + 5), new Coordinate(maxX, maxY), scale
+    )
     setBackgroundColor("#555")
     setHelpDisplay(HelpOverlay(layout))
   }

@@ -1,10 +1,12 @@
 import {
-  baseTerrainType, Coordinate, Direction, markerType, streamType, weatherType, windType
+  baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
 import { normalDir } from "../../utilities/utilities"
+import { rangeMultiplier } from "../control/fire"
 import Counter from "../Counter"
 import Feature from "../Feature"
+import Game from "../Game"
 import Hex from "../Hex"
 import Marker from "../Marker"
 import Unit from "../Unit"
@@ -130,15 +132,17 @@ function hexHelpText(hex: Hex): string[] {
 }
 
 export function counterHelpLayout(
-  counter: Counter, loc: Coordinate, max: Coordinate, scale: number
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number
 ): HelpLayout {
   if (!counter.map) { return { path: "", size: 0, style: {}, opacity: 0, tStyle: {}, texts: [] } }
-  const text = counter.target.helpText
+  const text = counter.target.helpText(game, loc)
   return mapHelpLayout(loc, max, text, scale)
 }
 
-export function unitHelpText(unit: Unit): string[] {
-  let text = [unit.name]
+export function unitHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
+  // let text = fireHelpText(game, loc, unit)
+  let text = fireHelpText(game)
+  text.push(unit.name)
   text = text.concat(unitTypeName(unit))
   text.push("")
   text.push("[from name, clockwise]")
@@ -268,16 +272,16 @@ export function unitHelpText(unit: Unit): string[] {
   }
   if (unit.sponson) {
     text.push("center / symbol bottom:")
-    if (unit.sponson[2] === "ft") {
+    if (unit.sponson.type === sponsonType.Flame) {
       text.push("flamethrower mounted")
       text.push("- forward arc only")
-      text.push(`- firepower ${unit.sponson[0]}`)
-      text.push(`- range ${unit.sponson[1]}`)
+      text.push(`- firepower ${unit.sponson.firepower}`)
+      text.push(`- range ${unit.sponson.range}`)
       text.push("- ignores terrain")
     } else {
       text.push("sponson gun - forward arc only")
-      text.push(`- firepower ${unit.sponson[0]}`)
-      text.push(`- range ${unit.sponson[1]}`)
+      text.push(`- firepower ${unit.sponson.firepower}`)
+      text.push(`- range ${unit.sponson.range}`)
       text.push("- target roll required")
       text.push("- anti-armor capable")
       text.push("- half firepower vs. soft targets")
@@ -286,30 +290,6 @@ export function unitHelpText(unit: Unit): string[] {
   text.push("")
   text.push("click for documentation")
   return text
-}
-
-function unitTypeName(unit: Unit): string[] {
-  const names: { [index: string]: string[] } = {
-    ac: ["armored car"], antitank: ["anti-tank rifle"], atgun: ["anit-tank gun"],
-    crew: ["trained gun crew"], explosive: ["explosive"], flamethrower: ["flame thrower"],
-    gun: ["field gun"], ht: ["infantry fighting vehicle"],
-    htat: ["infantry fighting vehicle", "w/anti-tank gun"],
-    htft: ["infantry fighting vehicle", "w/flame thrower"],
-    htgun: ["infantry fighting vehicle", "w/mounted field gun"],
-    htmtr: ["infantry fighting vehicle", "w/mounted mortar"],
-    leader: ["leader"], mg: ["machine gun"], mortar: ["mortar"], radio: ["radio"],
-    rocket: ["anti-tank rocket"], spat: ["tank destroyer"], spft: ["flame-thrower tank"],
-    spg: ["self-propelled gun"], spgmg: ["armored vehicle"], squad: ["infantry squad"],
-    "tank-amp": ["amphibious tank"], tank: ["tank"], team: ["infantry team"],
-    "ht-amp": ["infantry fighting vehicle", "(amphibious)"],
-    "htat-amp": ["infantry fighting vehicle", "(amphibious)"],
-    "htgun-amp": ["infantry fighting vehicle", "(amphibious w/gun)"],
-    truck: ["transport"], cav: ["horse transport"], "cav-wheel": ["light transport"],
-    "truck-amp": ["amphibious transport"], acav: ["armored vehicle"],
-    car: ["light vehicle"], supply: ["supply unit"],
-  }
-  if (unit.icon === "mortar" && unit.baseMovement > 0) { return ["crewed mortar"] }
-  return names[unit.icon]
 }
 
 export function featureHelpText(feature: Feature): string[] {
@@ -431,4 +411,54 @@ export function mapHelpLayout(
       return { x: x1+(8/scale), y: y1 + i*diff + size - 1, value: t }
     }), tStyle: { fill: textColor }
   }
+}
+
+// function fireHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
+function fireHelpText(game: Game): string[] {
+  if (!game.gameActionState?.fire) { return [] }
+  if (game.gameActionState.fire.targetSelection.length < 1) { return [] }
+  let rc: string[] = []
+  const firing = game.gameActionState.selection
+  const target = game.gameActionState.fire.targetSelection
+  // const from = new Coordinate(firing[0].x, firing[0].y)
+  const to = new Coordinate(target[0].x, target[0].y)
+  rc.push("fire action details:")
+  // Show firepower
+  const rotated = game.gameActionState.fire.path.length > 1
+  if (firing[0].counter.unit.targetedRange) {
+    const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
+    // Add target roll
+    rc.push(`target multiplier: ${mult.mult}`)
+    rc = rc.concat(mult.why)
+    // Range + hindrance
+  } else {
+    // Detect reaction fire
+    // const mods = untargetedModifiers(game, firing, target, false)
+  }
+  rc.push("")
+  return rc
+}
+
+function unitTypeName(unit: Unit): string[] {
+  const names: { [index: string]: string[] } = {
+    ac: ["armored car"], antitank: ["anti-tank rifle"], atgun: ["anit-tank gun"],
+    crew: ["trained gun crew"], explosive: ["explosive"], flamethrower: ["flame thrower"],
+    gun: ["field gun"], ht: ["infantry fighting vehicle"],
+    htat: ["infantry fighting vehicle", "w/anti-tank gun"],
+    htft: ["infantry fighting vehicle", "w/flame thrower"],
+    htgun: ["infantry fighting vehicle", "w/mounted field gun"],
+    htmtr: ["infantry fighting vehicle", "w/mounted mortar"],
+    leader: ["leader"], mg: ["machine gun"], mortar: ["mortar"], radio: ["radio"],
+    rocket: ["anti-tank rocket"], spat: ["tank destroyer"], spft: ["flame-thrower tank"],
+    spg: ["self-propelled gun"], spgmg: ["armored vehicle"], squad: ["infantry squad"],
+    "tank-amp": ["amphibious tank"], tank: ["tank"], team: ["infantry team"],
+    "ht-amp": ["infantry fighting vehicle", "(amphibious)"],
+    "htat-amp": ["infantry fighting vehicle", "(amphibious)"],
+    "htgun-amp": ["infantry fighting vehicle", "(amphibious w/gun)"],
+    truck: ["transport"], cav: ["horse transport"], "cav-wheel": ["light transport"],
+    "truck-amp": ["amphibious transport"], acav: ["armored vehicle"],
+    car: ["light vehicle"], supply: ["supply unit"],
+  }
+  if (unit.icon === "mortar" && unit.baseMovement > 0) { return ["crewed mortar"] }
+  return names[unit.icon]
 }

@@ -1,4 +1,5 @@
-import { Direction, FeatureType, NumberBoolean, featureType } from "../utilities/commonTypes";
+import { Coordinate, Direction, FeatureType, NumberBoolean, featureType } from "../utilities/commonTypes";
+import Game from "./Game";
 import { featureHelpText } from "./support/help";
 
 // ft: feature
@@ -117,7 +118,8 @@ export default class Feature {
     return [featureType.Bunker].includes(this.type)
   }
 
-  get helpText(): string[] {
+  // eslint-disable-next-line
+  helpText(_game: Game, _loc: Coordinate): string[] {
     return featureHelpText(this)
   }
 }

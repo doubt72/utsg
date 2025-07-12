@@ -1,5 +1,6 @@
-import { Direction, MarkerType, NumberBoolean, WeatherType, WindType, markerType, weatherType, windType } from "../utilities/commonTypes"
+import { Coordinate, Direction, MarkerType, NumberBoolean, WeatherType, WindType, markerType, weatherType, windType } from "../utilities/commonTypes"
 import { counterElite, counterGreen, counterRed, markerYellow } from "../utilities/graphics";
+import Game from "./Game";
 import { markerHelpText } from "./support/help";
 
 // mk: marker
@@ -192,7 +193,8 @@ export default class Marker {
     return true
   }
 
-  get helpText(): string[] {
+  // eslint-disable-next-line
+  helpText(_game: Game, _loc: Coordinate): string[] {
     return markerHelpText(this)
   }
 }

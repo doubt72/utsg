@@ -1,8 +1,10 @@
 import {
+  Coordinate,
   Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
   NumberBoolean, SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus,
   unitType
 } from "../utilities/commonTypes";
+import Game from "./Game";
 import { unitHelpText } from "./support/help";
 
 // id: ID
@@ -453,7 +455,7 @@ export default class Unit {
     }
   }
 
-  get helpText(): string[] {
-    return unitHelpText(this)
+  helpText(game: Game, loc: Coordinate): string[] {
+    return unitHelpText(game, loc, this)
   }
 }

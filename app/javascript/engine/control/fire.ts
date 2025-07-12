@@ -183,6 +183,7 @@ export function untargetedModifiers(
   modifier: number, gthalf: boolean, adj: boolean, elev: number, pinned: boolean,
   tired: boolean, rapid: boolean, intense: boolean, react: boolean
 } {
+  // Break down by location
   let modifier = 0
   let gthalf = false
   let adj = true
@@ -232,65 +233,65 @@ export function rangeMultiplier(
   let mult = 3
   if (source.unit.offBoard) {
     mult = 4
-    why.push("base multiplier 4")
+    why.push("  base multiplier 4")
     const leadership = source.unit.parent?.leadership ? source.unit.parent.leadership : undefined
     if (leadership) {
       mult -= leadership
-      why.push(`minus leadership ${leadership}`)
+      why.push(`  minus leadership ${leadership}`)
     }
   } else if (source.unit.type === unitType.SupportWeapon && source.unit.targetedRange) {
     mult = 3
-    why.push("base multiplier 3")
+    why.push("  base multiplier 3")
   } else if (source.unit.crewed) {
     mult = 4
-    why.push("base multiplier 4")
+    why.push("  base multiplier 4")
     const handling = source.unit.parent?.gunHandling ? source.unit.parent.gunHandling : undefined
     if (handling) {
       mult -= handling
-      why.push(`minus gun handling ${handling}`)
+      why.push(`  minus gun handling ${handling}`)
     }
-  } else { why.push("base multiplier 3") }
+  } else { why.push("  base multiplier 3") }
   if (source.unit.turreted && !sponson) {
     if (source.unit.turretJammed) {
       mult += 1
-      why.push("plus 1 for jammed turret")
+      why.push("  plus 1 for jammed turret")
     }
   } else {
     if (source.unit.immobilized) {
       mult += 1
-      why.push("plus 1 for immobilized")
+      why.push("  plus 1 for immobilized")
     }
   }
   if (source.unit.eliteCrew) {
     mult -= source.unit.eliteCrew
-    if (source.unit.eliteCrew > 0) { why.push("minus 1 for elite crew") }
-    if (source.unit.eliteCrew < 0) { why.push("plus 1 for green crew") }
+    if (source.unit.eliteCrew > 0) { why.push("  minus 1 for elite crew") }
+    if (source.unit.eliteCrew < 0) { why.push("  plus 1 for green crew") }
   }
-  // Weather/night here
   const eFrom = (map.hexAt(source.hex as Coordinate) as Hex).elevation
   const eTo = (map.hexAt(target) as Hex).elevation
   if (eFrom > eTo && !source.unit.offBoard) {
     if (source.unit.areaFire) {
       mult += 1
-      why.push("plus 1 for different elevation")
+      why.push("  plus 1 for different elevation")
     } else {
       mult -= 1
-      why.push("minus 1 for firing downhill")
+      why.push("  minus 1 for firing downhill")
     }
   }
   if (eFrom < eTo && !source.unit.offBoard) {
       mult += 1
-      why.push("plus 1 for firing uphill")
+      why.push("  plus 1 for firing uphill")
   }
   if (source.unit.isActivated) {
       mult += 1
-      why.push("plus 1 for intensive fire")
+      why.push("  plus 1 for intensive fire")
   }
   if (turretMoved) {
       mult += 1
-      why.push("plus 1 for moving the turret")
+      why.push("  plus 1 for moving the turret")
   }
-  // Turret moved?
+  // Weather/night here
+  if (mult < 1) { mult = 1 }
   return { mult, why }
 }
 
