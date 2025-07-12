@@ -2,8 +2,10 @@ import {
   baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
-import { normalDir } from "../../utilities/utilities"
-import { rangeMultiplier } from "../control/fire"
+import { hexDistance, normalDir } from "../../utilities/utilities"
+import {
+  fireHindrance, firepower, rangeMultiplier//, untargetedModifiers
+} from "../control/fire"
 import Counter from "../Counter"
 import Feature from "../Feature"
 import Game from "../Game"
@@ -140,8 +142,7 @@ export function counterHelpLayout(
 }
 
 export function unitHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
-  // let text = fireHelpText(game, loc, unit)
-  let text = fireHelpText(game)
+  let text = fireHelpText(game, loc, unit)
   text.push(unit.name)
   text = text.concat(unitTypeName(unit))
   text.push("")
@@ -413,27 +414,42 @@ export function mapHelpLayout(
   }
 }
 
-// function fireHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
-function fireHelpText(game: Game): string[] {
+function fireHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
   if (!game.gameActionState?.fire) { return [] }
   if (game.gameActionState.fire.targetSelection.length < 1) { return [] }
   let rc: string[] = []
   const firing = game.gameActionState.selection
-  const target = game.gameActionState.fire.targetSelection
-  // const from = new Coordinate(firing[0].x, firing[0].y)
-  const to = new Coordinate(target[0].x, target[0].y)
-  rc.push("fire action details:")
-  // Show firepower
+  const targets = game.gameActionState.fire.targetSelection
+  let check = false
+  for (const f of firing) {
+    if (f.id === unit.id) { check = true }
+  }
+  for (const t of targets) {
+    if (t.id === unit.id) { check = true }
+  }
+  if (!check) { return [] }
+  const from = new Coordinate(firing[0].x, firing[0].y)
+  const to = new Coordinate(targets[0].x, targets[0].y)
+  rc.push("fire:")
+  const fp = firepower(firing, targets, game.sponsonFire)
   const rotated = game.gameActionState.fire.path.length > 1
   if (firing[0].counter.unit.targetedRange) {
     const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
-    // Add target roll
+    const range = hexDistance(from, to)
+    const hindrance = fireHindrance(game, firing, targets)
+    const roll = hindrance === true ? range * mult.mult :
+      (range + (hindrance as number)) * mult.mult 
+    rc.push(`targeting roll: ${roll}`)
+    rc.push(`range: ${range}`)
+    if (hindrance !== true && hindrance !== false && hindrance > 0) {
+      rc.push(`hindrance: ${hindrance}`)
+    }
     rc.push(`target multiplier: ${mult.mult}`)
-    rc = rc.concat(mult.why)
-    // Range + hindrance
+    if (mult.why.length > 1) { rc = rc.concat(mult.why) }
   } else {
     // Detect reaction fire
-    // const mods = untargetedModifiers(game, firing, target, false)
+    // const mods = untargetedModifiers(game, firing, targets, false)
+    rc.push(`firepower ${fp}`)
   }
   rc.push("")
   return rc
