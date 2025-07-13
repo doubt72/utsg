@@ -75,7 +75,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   if (!terrTo.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
   const next = selection.children[0]
   if (!terrTo.move && railroadMove) {
-    if (selection.unit.isWheeled || selection.unit.isTracked) { return hexOpenType.Closed }
+    if (selection.unit.isVehicle) { return hexOpenType.Closed }
     if (next && next.unit.crewed) { return hexOpenType.Closed }
   }
 
@@ -91,7 +91,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return hexOpenType.Closed }
   }
 
-  if (selection.unit.isWheeled || selection.unit.isTracked) {
+  if (selection.unit.isVehicle) {
     if (!terrTo.vehicle && !roadMove) { return hexOpenType.Closed }
     if (terrTo.vehicle === "amph" && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
   }
@@ -102,14 +102,14 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
   }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     if (!terrFrom.borderMove) { return hexOpenType.Closed }
-    if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrFrom.borderVehicle) {
+    if (selection.unit.isVehicle && !terrFrom.borderVehicle) {
       return hexOpenType.Closed
     }
     if (next && next.unit.crewed && !terrFrom.borderGun) { return hexOpenType.Closed }
   }
   if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
     if (!terrTo.borderMove) { return hexOpenType.Closed }
-    if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrTo.borderVehicle) {
+    if (selection.unit.isVehicle && !terrTo.borderVehicle) {
       return hexOpenType.Closed
     }
     if (next && next.unit.crewed && !terrTo.borderGun) { return hexOpenType.Closed }
@@ -156,7 +156,7 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
   const hexFrom = map.hexAt(from) as Hex;
   if (from.x === to.x && from.y === to.y) {  // When rotating in place
     if (hexFrom.road) {
-      if ((target.isWheeled || target.isTracked) && hexFrom.roadType !== roadType.Path) { return 1 }
+      if (target.isVehicle && hexFrom.roadType !== roadType.Path) { return 1 }
     }
     // all of these casts should have already been checked before we get here
     return hexFrom.terrain.move as number

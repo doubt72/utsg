@@ -88,7 +88,7 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
   if (!hex) { return false }
   if (!hex.terrain.move && !hex.road && !hex.railroad) { return false }
   if (!hex.terrain.vehicle && !(hex.road && hex.roadType !== roadType.Path) && !uf.isFeature &&
-      (unit.isTracked || unit.isWheeled)) {
+      unit.isVehicle) {
     if (hex.baseTerrain !== terrainType.Shallow || uf.isFeature || !unit.amphibious) {
       return hexOpenType.Closed
     }

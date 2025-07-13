@@ -649,11 +649,18 @@ export default class Map {
     }
   }
 
-  targetSelectAllAt(x: number, y: number, select: boolean) {
+  targetSelectAllAt(x: number, y: number, vehicles: boolean, armored: boolean) {
     const counters = this.countersAt(new Coordinate(x, y))
     for (const c of counters) {
-      if (c.hasUnit && (c.unit.crewed || c.unit.uncrewedSW)) { continue }
-      if (c.hasUnit && c.unit.targetSelected !== select) { c.unit.targetSelect() }
+      if (!c.hasUnit) { continue }
+      if (c.unit.crewed || c.unit.uncrewedSW) { continue }
+      if (c.unit.armored) {
+        if (armored && !c.unit.targetSelected) { c.unit.targetSelect() }
+      } else if (c.unit.isVehicle) {
+        if (vehicles && !c.unit.targetSelected) { c.unit.targetSelect() }
+      } else {
+        if (!c.unit.targetSelected) { c.unit.targetSelect() }
+      }
     }
   }
 

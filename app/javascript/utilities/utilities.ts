@@ -141,6 +141,23 @@ export function baseToHit(fp: number): number {
   return 2
 }
 
+export function chance2D10(check: number): number {
+  if (check > 19) { return 0 }
+  if (check < 3) { return 99}
+  return [97, 94, 90, 85, 79, 72, 64, 55, 45, 36, 28, 21, 15, 10, 6, 3, 1][check - 3];
+}
+
+export function chanceD10x10(check: number): number {
+  if (check > 99) { return 0 }
+  if (check < 1) { return 100 }
+  return [
+    99, 97, 95, 92, 90, 86, 84, 80, 77, 73, 73, 69, 69, 67, 65, 62, 62, 58, 58, 54, 52, 52, 52, 48,
+    47, 47, 45, 43, 43, 39, 39, 37, 37, 37, 35, 32, 32, 32, 32, 28, 28, 26, 26, 26, 24, 24, 24, 22,
+    21, 19, 19, 19, 19, 17, 17, 15, 15, 15, 15, 13, 13, 13, 11, 10, 10, 10, 10, 10, 10, 8, 8, 6, 6,
+    6, 6, 6, 6, 6, 6, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  ][check - 1];
+}
+
 export function driftRoll(roll: number): number {
   if (roll > 6) { return roll - 3 }
   if (roll > 4) { return 3 }
@@ -162,5 +179,6 @@ export function initiativeThreshold(value: number): number {
 }
 
 export const stackLimit = 12
+export const baseMorale = 15
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"

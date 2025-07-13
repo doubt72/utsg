@@ -376,6 +376,10 @@ export default class Unit {
     return this.movementType === movementType.Wheeled
   }
 
+  get isVehicle(): boolean {
+    return this.isWheeled || this.isTracked
+  }
+
   get noFire(): boolean {
     // Turret Jams and Immobile assault guns can fire at penalties in facing dir
     if (this.isBroken || this.isWreck || this.jammed || this.weaponBroken) {

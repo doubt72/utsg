@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { roundedRectangle } from "../../utilities/graphics";
 import { makeIndex } from "./CounterSection";
 import Unit, { UnitData } from "../../engine/Unit";
@@ -17,6 +17,8 @@ export default function CounterStackingSection() {
   
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
   const [map, setMap] = useState<Map | undefined>()
+
+  const svgRef = useRef<HTMLElement | SVGSVGElement>()
     
   useEffect(() => {
     const map = new Map({
@@ -72,7 +74,8 @@ export default function CounterStackingSection() {
         <svg width={504} height={134} viewBox='0 0 720 192' style={{ minWidth: 504 }}>
           <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
-                             counters={map.countersAt(new Coordinate(0,0))}  />
+                             counters={map.countersAt(new Coordinate(0,0))} scale={1}
+                             svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
           <path d={roundedRectangle(0,0,736,192,0)}
                 style={{ stroke: "rgba(0,0,0,0)", strokeWidth: 0.5, fill: "rgba(0,0,0,0)" }}/>
         </svg>
@@ -86,7 +89,8 @@ export default function CounterStackingSection() {
         <svg width={627} height={134} viewBox='0 0 896 192' style={{ minWidth: 627 }}>
           <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
-                             counters={map.countersAt(new Coordinate(1,1))}  />
+                             counters={map.countersAt(new Coordinate(1,1))} scale={1}
+                             svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
           <path d={roundedRectangle(0,0,896,192,0)}
                 style={{ stroke: "rgba(0,0,0,0)", strokeWidth: 0.5, fill: "rgba(0,0,0,0)" }}/>
         </svg>

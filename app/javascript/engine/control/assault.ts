@@ -28,21 +28,21 @@ export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): H
 
   if (!terrTo.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
   if (!terrTo.move && railroadMove) {
-    if (selection.unit.isWheeled || selection.unit.isTracked) { return hexOpenType.Closed }
+    if (selection.unit.isVehicle) { return hexOpenType.Closed }
   }
-  if (selection.unit.isWheeled || selection.unit.isTracked) {
+  if (selection.unit.isVehicle) {
     if ((!terrTo.vehicle || !terrFrom.vehicle) && !roadMove) { return hexOpenType.Closed }
     if ((terrTo.vehicle === "amph") && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
   }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     if (!terrFrom.borderMove) { return hexOpenType.Closed }
-    if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrFrom.borderVehicle) {
+    if (selection.unit.isVehicle && !terrFrom.borderVehicle) {
       return hexOpenType.Closed
     }
   }
   if (hexTo.border && hexTo.borderEdges?.includes(normalDir(dir+3))) {
     if (!terrTo.borderMove) { return hexOpenType.Closed }
-    if ((selection.unit.isWheeled || selection.unit.isTracked) && !terrTo.borderVehicle) {
+    if (selection.unit.isVehicle && !terrTo.borderVehicle) {
       return hexOpenType.Closed
     }
   }

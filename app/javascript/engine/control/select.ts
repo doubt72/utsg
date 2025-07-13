@@ -40,7 +40,8 @@ export default function select(
       } else {
         const rapid = rapidFire(game)
         if (rapid || areaFire(game)) {
-          map.targetSelectAllAt(x, y, true)
+          // TODO: deal with true area fire vs infantry fire
+          map.targetSelectAllAt(x, y, true, false)
           if (rapid) {
             unTargetSelectExceptChain(game, x, y)
           } else {
@@ -49,6 +50,9 @@ export default function select(
         } else {
           counter.unit.targetSelect()
           map.clearOtherTargetSelections(x, y, counter.unit.id)
+          if (!counter.unit.isVehicle) {
+            map.targetSelectAllAt(x, y, false, false)
+          }
         }
       }
       refreshTargetSelection(game)
@@ -185,11 +189,11 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     map.game.addMessage("targeted weapons cannot fire with other units")
     return false
   }
-  if (counter.unit.isWheeled || counter.unit.isTracked) {
+  if (counter.unit.isVehicle) {
     map.game.addMessage("vehicles cannot fire with other units")
     return false
   }
-  if (counter.parent && (counter.parent.unit.isWheeled || counter.parent.unit.isTracked)) {
+  if (counter.parent && counter.parent.unit.isVehicle) {
     map.game.addMessage("unit being transported cannot fire with other units")
     return false
   }

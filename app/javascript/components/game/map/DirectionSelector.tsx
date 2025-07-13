@@ -25,11 +25,10 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         game.scenario.alliedReinforcements[turn][index].counter :
         game.scenario.axisReinforcements[turn][index].counter
       const unit = uf as Unit
-      if (!hex.terrain.vehicle && !uf.isFeature && (unit.isTracked || unit.isWheeled) &&
-          hex.roadType !== roadType.Path) {
+      if (!hex.terrain.vehicle && !uf.isFeature && unit.isVehicle && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
-      if (hex.terrain.vehicle === "amph" && !uf.isFeature && (unit.isTracked || unit.isWheeled) &&
+      if (hex.terrain.vehicle === "amph" && !uf.isFeature && unit.isVehicle &&
           !unit.amphibious && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
@@ -43,10 +42,10 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
       } else {
         if (openHexRotatePossible(hex.map)) {
           const unit = game.gameActionState.selection[0].counter.unit
-          if (!hex.terrain.vehicle && (unit.isTracked || unit.isWheeled) && hex.roadType !== roadType.Path) {
+          if (!hex.terrain.vehicle && unit.isVehicle && hex.roadType !== roadType.Path) {
             dirs = hex.roadDirections ?? []
           }
-          if (hex.terrain.vehicle === "amph" && (unit.isTracked || unit.isWheeled) &&
+          if (hex.terrain.vehicle === "amph" && unit.isVehicle &&
               !unit.amphibious && hex.roadType !== roadType.Path) {
             dirs = hex.roadDirections ?? []
           }

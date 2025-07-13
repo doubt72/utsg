@@ -2,9 +2,11 @@ import {
   baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
-import { baseToHit, hexDistance, normalDir } from "../../utilities/utilities"
+import { baseMorale, baseToHit, chance2D10, chanceD10x10, hexDistance, normalDir } from "../../utilities/utilities"
 import {
-  fireHindrance, firepower, rangeMultiplier, untargetedModifiers
+  armorAtArc,
+  armorHitModifiers,
+  fireHindrance, firepower, moraleModifiers, rangeMultiplier, untargetedModifiers
 } from "../control/fire"
 import Counter from "../Counter"
 import Feature from "../Feature"
@@ -304,45 +306,86 @@ export function unitHelpText(unit: Unit): string[] {
   return text
 }
 
-export function fireHelpText(game: Game, to: Coordinate, unit: Unit): string[] {
+export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[] {
   if (!game.gameActionState?.fire) { return [] }
   if (game.gameActionState.fire.targetSelection.length < 1) { return [] }
   let rc: string[] = []
   const firing = game.gameActionState.selection
   const targets = game.gameActionState.fire.targetSelection
   let check = false
-  let target = targets[0].counter.unit
   for (const t of targets) {
-    if (t.id === unit.id) {
-      check = true
-      target = t.counter.unit
-    }
+    if (t.id === target.id) { check = true }
   }
   if (!check) { return [] }
   const from = new Coordinate(firing[0].x, firing[0].y)
   rc.push("attack rolls:")
-  const fp = firepower(firing, target, to, game.sponsonFire)
+  const fp = firepower(game, firing, target, to, game.sponsonFire)
   const hindrance = fireHindrance(game, firing, to)
+  const source = firing[0].counter.unit
   if (firing[0].counter.unit.targetedRange) {
     const rotated = game.gameActionState.fire.path.length > 1
     const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
     const range = hexDistance(from, to)
     const roll = hindrance === true ? range * mult.mult :
       (range + (hindrance as number)) * mult.mult 
-    rc.push(`-> targeting roll (d10x10): ${roll}`)
+    rc.push(`-> targeting roll (d10x10): ${roll} (${chanceD10x10(roll)}%)`)
     rc.push(`range: ${range}`)
     if (hindrance !== true && hindrance !== false && hindrance > 0) {
       rc.push(`hindrance: ${hindrance}`)
     }
     rc.push(`multiplier: ${mult.mult}`)
     if (mult.why.length > 1) { rc = rc.concat(mult.why) }
+    rc.push("")
+    if (target.canCarrySupport) {
+      const tohit = baseToHit(fp.fp)
+      rc.push(`-> roll for effect (2d10): ${tohit} (${chance2D10(tohit)}%)`)
+      rc.push(`firepower: ${fp.fp}`)
+      if (fp.why.length > 1) {
+        rc = rc.concat(fp.why)
+      }
+    } else if (target.armored) {
+      if (target.turreted) {
+        rc.push(`-> roll to hit turret (d10): 1-3`)
+        rc.push("otherwise hull hit")
+        rc.push("")
+      }
+      const hullBasehit = baseToHit(fp.fp)
+      const hullArmor = armorAtArc(game, target, from, to, false)
+      const hullMods = armorHitModifiers(game, source, target, from, to, false)
+      const hullKill = hullBasehit + hullArmor + hullMods.mod
+      if (hullArmor >= 0) {
+        rc.push(`-> hit roll (2d10): ${hullKill} (${chance2D10(hullKill)}%)`)
+        rc.push(`firepower: ${fp.fp}`)
+        rc.push(`base to hit: ${hullBasehit}`)
+        rc.push(`armor factor: ${hullArmor}`)
+        rc = rc.concat(hullMods.why)
+      } else {
+        rc.push(`-> hull hit destroys`)
+      }
+      if (target.turreted) {
+        rc.push("")
+        const turretBasehit = baseToHit(fp.fp)
+        const turretArmor = armorAtArc(game, target, from, to, true)
+        const turretMods = armorHitModifiers(game, source, target, from, to, true)
+        const turretKill = turretBasehit + turretArmor + turretMods.mod
+        if (turretArmor >= 0) {
+          rc.push(`-> hit roll (2d10): ${turretKill} (${chance2D10(turretKill)}%)`)
+          rc.push(`firepower: ${fp.fp}`)
+          rc.push(`base to hit: ${turretBasehit}`)
+          rc.push(`armor factor: ${turretArmor}`)
+          rc = rc.concat(turretMods.why)
+        } else {
+          rc.push(`-> turret hit destroys`)
+        }
+      }
+    }
   } else {
     // TODO: Detect reaction fire
-    const basehit = baseToHit(fp)
+    const basehit = baseToHit(fp.fp)
     const mods = untargetedModifiers(game, firing, targets, false)
     const tohit = basehit + mods.mod + (hindrance !== true && hindrance !== false && hindrance > 0 ? hindrance : 0)
-    rc.push(`-> to hit (2d10): ${tohit}`)
-    rc.push(`firepower: ${fp}`)
+    rc.push(`-> to hit (2d10): ${tohit} (${chance2D10(tohit)}%)`)
+    rc.push(`firepower: ${fp.fp}`)
     if (mods.why.length > 0 || (hindrance !== true && hindrance !== false && hindrance > 0)) {
       rc.push(`- base to hit: ${basehit}`)
       if (hindrance !== true && hindrance !== false && hindrance > 0) {
@@ -351,7 +394,17 @@ export function fireHelpText(game: Game, to: Coordinate, unit: Unit): string[] {
       rc = rc.concat(mods.why)
     }
   }
-  rc.push("")
+  if (target.canCarrySupport) {
+    rc.push("")
+    const mods = moraleModifiers(game, source, target, from, to)
+    const moraleCheck = baseMorale + mods.mod
+    rc.push(`-> morale check (2d10): ${moraleCheck} (${chance2D10(moraleCheck)}%)`)
+    rc.push(`base roll of ${baseMorale}`)
+    rc = rc.concat(mods.why)
+  } else if (!target.armored) {
+    rc.push("")
+    rc.push("-> hit destroys vehicle")
+  }
   return rc
 }
 

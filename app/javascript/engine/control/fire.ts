@@ -1,7 +1,8 @@
-import { Coordinate, hexOpenType, HexOpenType, unitStatus, unitType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, hexOpenType, HexOpenType, unitStatus, unitType } from "../../utilities/commonTypes";
 import { los } from "../../utilities/los";
 import { hexDistance } from "../../utilities/utilities";
 import Counter from "../Counter";
+import Feature from "../Feature";
 import Game from "../Game";
 import Hex from "../Hex";
 import Map from "../Map";
@@ -38,7 +39,7 @@ export function leadershipRange(game: Game): number | false {
 }
 
 export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit): boolean {
-  if (unit.targetedRange || unit.isTracked || unit.isWheeled) { return false }
+  if (unit.targetedRange || unit.isVehicle) { return false }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
       unit.children[0].status === unitStatus.Normal) { return true }
   const counters = game.scenario.map.countersAt(new Coordinate(x, y))
@@ -158,7 +159,10 @@ export function fireHindrance(
   return hindrance < 0 ? false : hindrance
 }
 
-export function firepower(source: ActionSelection[], target: Unit, to: Coordinate, sponson: boolean): number {
+export function firepower(
+  game: Game, source: ActionSelection[], target: Unit, to: Coordinate, sponson: boolean
+): { fp: number, why: string[] } {
+  const why: string[] = []
   let fp = 0
   for (let i = 0; i < source.length; i++) {
     const sel = source[i]
@@ -167,26 +171,45 @@ export function firepower(source: ActionSelection[], target: Unit, to: Coordinat
     if (sponson && sunit.sponson) {
       if (sunit.sponson.range >= dist) { fp += sunit.sponson.firepower}
     } else {
-      // TODO: Include leadership
-      if (sunit.currentRange >= dist) { fp += sunit.currentFirepower }
+      const leadership = leadershipAt(game, new Coordinate(sel.x, sel.y))
+      if (sunit.currentRange >= dist) { fp += sunit.currentFirepower + leadership }
     }
   }
+  why.push(`base firepower ${fp}`)
   if (source.length === 1) {
     const sunit = source[0].counter.unit
     if (sunit.antiTank && (target.canCarrySupport)) {
       fp = Math.floor(fp/2)
+      why.push("- halved: antitank vs. soft target")
     }
     if (target.armored && sunit.fieldGun) {
       fp = Math.floor(fp/2)
+      why.push("- halved: high-explosive vs. armor")
     }
     if (sunit.immobilized && (!sunit.turreted || sponson)) {
       fp = Math.floor(fp/2)
+      why.push("- halved: vehicle immobilized")
     }
     if (sunit.turreted && sunit.turretJammed && !sponson) {
       fp = Math.floor(fp/2)
+      why.push("- halved: turret jammed")
     }
   }
-  return fp
+  return { fp, why }
+}
+
+function leadershipAt(game: Game, at: Coordinate): number {
+  if (!game?.gameActionState?.fire) { return 0 }
+  const counters = game.scenario.map.countersAt(at)
+  let leadership = 0
+  for (const c of counters) {
+    if (!c.hasUnit) { continue }
+    const unit = c.unit
+    if (unit.type === unitType.Leader) {
+      if (unit.currentLeadership > leadership) { leadership = unit.currentLeadership }
+    }
+  }
+  return leadership
 }
 
 export function untargetedModifiers(
@@ -331,6 +354,96 @@ export function rangeMultiplier(
   // Weather/night here
   if (mult < 1) { mult = 1 }
   return { mult, why }
+}
+
+export function armorAtArc(
+  game: Game, target: Unit, from: Coordinate, to: Coordinate, turret: boolean
+): number {
+  if (!target.rotates || !target.armored) { return -1 }
+  const armor = turret ? target.turretArmor as number[] : target.hullArmor as number[]
+  return armor[hitFromArc(game, target, from, to, turret)]
+}
+
+export function armorHitModifiers(
+  game: Game, source: Unit, target: Unit, from: Coordinate, to: Coordinate, turret: boolean
+): { mod: number, why: string[] } {
+  const why: string[] = []
+  let mod = 0
+  if (hitFromArc(game, target, from, to, turret) === 1 && !turret) {
+    mod -= 1
+    why.push("- minus 1 for targeting side of hull")
+  }
+  if (target.immobilized) {
+    mod -= 1
+    why.push("- minus 1 for target immobilized")
+  }
+  const dist = hexDistance(from, to)
+  if (dist > Math.ceil(source.currentRange/2) ) {
+    mod += 1
+    why.push("- plus 1 for more than half range")
+  }
+  return { mod, why }
+}
+
+export function moraleModifiers(
+  game: Game, source: Unit, target: Unit, from: Coordinate, to: Coordinate
+): { mod: number, why: string[] } {
+  const why: string[] = []
+  let mod = -target.currentMorale
+  why.push(`- minus morale ${target.currentMorale}`)
+  if (target.type !== unitType.Leader) {
+    const leadership = leadershipAt(game, to)
+    if (leadership > 0) {
+      mod -= leadership
+      why.push(`- minus leadership ${leadership}`)
+    }
+  }
+  if (!source.ignoreTerrain) {
+    const counters = game.scenario.map.countersAt(to)
+    let check = false
+    for (const c of counters) {
+      if (c.hasFeature) {
+        if (c.feature.type === featureType.Foxhole) {
+          mod -= c.feature.cover as number
+          why.push(`- minus cover ${c.feature.cover}`)
+          check = true
+        } else if (c.feature.type === featureType.Bunker) {
+          const dir = hitFromArc(game, c.feature, from, to, false)
+          const cover = (c.feature.coverSides as number[])[dir]
+          mod -= cover
+          why.push(`- minus cover ${cover}`)
+          check = true
+        }
+      }
+    }
+    if (!check) {
+      const terrain = (game.scenario.map.hexAt(to) as Hex).terrain
+      if (terrain.cover !== false && terrain.cover > 0) {
+        mod -= terrain.cover
+        why.push(`- minus cover ${terrain.cover}`)
+      }
+    }
+  }
+  if (target.isPinned) {
+    mod += 1
+    why.push(` - plus 1 for being pinned`)
+  }
+  return { mod, why }
+}
+
+function hitFromArc(
+  game: Game, target: Unit | Feature, from: Coordinate, to: Coordinate, turret: boolean
+): 0 | 1 | 2 {
+  const map = game.scenario.map
+  const start = new Coordinate(map.xOffset(from.x, from.y), map.yOffset(from.y))
+  const end = new Coordinate(map.xOffset(to.x, to.y), map.yOffset(to.y))
+  const dx = start.x - end.x
+  const dy = end.y - start.y
+  const facing = turret && !target.isFeature ? (target as Unit).turretFacing : target.facing
+  const a = (Math.atan2(dy,dx) * 180 / Math.PI + facing * 60) % 360
+  if (a > 29.99 && a < 90.01) { return 0 }
+  if (a > 209.99 && a < 270.01) { return 2 }
+  return 1
 }
 
 function inRange(game: Game, to: Coordinate): boolean {
