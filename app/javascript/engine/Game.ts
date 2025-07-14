@@ -1,4 +1,4 @@
-import { Direction, Player } from "../utilities/commonTypes";
+import { Coordinate, Direction, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction, {
@@ -81,7 +81,7 @@ export default class Game {
   resignationLevel: number;
   sponsonFire: boolean;
 
-  moraleChecksNeeded: string[];
+  moraleChecksNeeded: { id: string, from: Coordinate[], to: Coordinate, ignoreTerrain?: boolean }[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id

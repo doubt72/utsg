@@ -482,13 +482,14 @@ module Utility
             ["usa", "M1 Bazooka", 42, 8, 4, 0, { b: 5 }],
             ["usa", "M1A1 Bazooka", 43, 10, 4, 0, { b: 4 }],
             ["usa", "M9 Bazooka", 43, 10, 4, 0, { b: 4 }],
-            ["ussr", "Ampulomet", 41, 12, 6, -1, { b: 5 }],
+            ["ussr", "Ampulomet", 41, 4, 6, -1, { b: 5, i: 1, e: 1 }],
           ].each do |unit|
             rocket = { t: "sw", i: "rocket" }
             unit.each_with_index do |v, i|
               rocket[key[i]] = v
             end
-            rocket[:o].merge!({ t: 1, p: 1 })
+            rocket[:o].merge!({ t: 1 })
+            rocket[:o].merge!({ p: 1 }) unless rocket[:n] == "Ampulomet"
             lu[:"#{rocket[:c]}_#{sanitize(rocket[:n])}"] = rocket
           end
           [
@@ -514,17 +515,17 @@ module Utility
             i = "flamethrower"
             n = i.capitalize
             y = 15
-            lu[:"#{c}_ft"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 4 } }
+            lu[:"#{c}_ft"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, i: 1, b: 4, e: 1 } }
             n = "Satchel Charge"
             i = "explosive"
             y = 36
-            lu[:"#{c}_sc"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { a: 1, x: 1, t: 1 } }
+            lu[:"#{c}_sc"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, o: { x: 1, t: 1, e: 1 } }
           end
           %w[fin ussr].each do |c|
             n = "Molotov Cocktail"
             i = "explosive"
             y = 39
-            lu[:"#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, a: 1, x: 1, t: 1, sn: 1 } }
+            lu[:"#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, o: { i: 1, x: 1, t: 1, sn: 1, e: 1 } }
           end
           lu
         end

@@ -119,25 +119,24 @@ export function togglePlayer(p: Player) {
 }
 
 export function baseToHit(fp: number): number {
-  if (fp <= 1) { return 20 }
-  if (fp <= 2) { return 19 }
-  if (fp <= 3) { return 18 }
-  if (fp <= 4) { return 17 }
-  if (fp <= 5) { return 16 }
-  if (fp <= 6) { return 15 }
-  if (fp <= 8) { return 14 }
-  if (fp <= 10) { return 13 }
-  if (fp <= 12) { return 12 }
-  if (fp <= 16) { return 11 }
-  if (fp <= 20) { return 10 }
-  if (fp <= 24) { return 9 }
-  if (fp <= 32) { return 8 }
-  if (fp <= 40) { return 7 }
-  if (fp <= 48) { return 6 }
-  if (fp <= 64) { return 5 }
-  if (fp <= 80) { return 4 }
-  if (fp <= 96) { return 3 }
-  if (fp <= 128) { return 2 }
+  if (fp < 2) { return 20 }
+  if (fp < 3) { return 19 }
+  if (fp < 4) { return 18 }
+  if (fp < 5) { return 17 }
+  if (fp < 6) { return 16 }
+  if (fp < 8) { return 15 }
+  if (fp < 10) { return 14 }
+  if (fp < 12) { return 13 }
+  if (fp < 16) { return 12 }
+  if (fp < 20) { return 11 }
+  if (fp < 24) { return 10 }
+  if (fp < 32) { return 9 }
+  if (fp < 40) { return 8 }
+  if (fp < 48) { return 7 }
+  if (fp < 64) { return 6 }
+  if (fp < 80) { return 5 }
+  if (fp < 96) { return 4 }
+  if (fp < 128) { return 3 }
   return 2
 }
 

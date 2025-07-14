@@ -276,7 +276,8 @@ export default function FireSection() {
             <li>Add one to the break check number if intensive fire.</li>
             <li>Add one to the break check number if firing an opponent&apos;s weapon.</li>
           </ol>
-          If the weapon is incendiary and breaks, reduce the unit carrying it.
+          If the weapon is incendiary and breaks, the unit carrying it must pass a morale check
+          to avoid breaking.
         </li>
       </ol>
       <p>When fire is complete, mark all firing units as activated.</p>
@@ -395,7 +396,8 @@ export default function FireSection() {
       </p>
       <h2>Morale Checks</h2>
       <p>
-        If any infantry units are hit, they must perform morale checks. To perform a morale check,
+        If any infantry units are hit (or is carrying an incendiary weapon that breaks during the
+        firing action), they must perform morale checks. To perform a morale check,
         use the following process:
       </p>
       <ol>
@@ -409,11 +411,9 @@ export default function FireSection() {
         <li>
           Roll 2d10. If the result is equal to the modified check, pin the unit, unless it was
           reaction fire, then break it. If the result is less than the modified check, break it. If
-          the unit was already broken, reduce it (i.e., if the unit is a squad, replace with a
-          broken team. If the unit was a team or a leader, eliminate it). A roll of 2 always fails.
+          the unit was already broken, eliminate it. A roll of 2 always fails.
           A roll of 20 always succeeds.
         </li>
-        <li>A unit carrying an incendiary weapon is also reduced if it breaks.</li>
       </ol>
       <h2>Smoke</h2>
       <p>

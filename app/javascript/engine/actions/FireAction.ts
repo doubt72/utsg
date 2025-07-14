@@ -62,8 +62,8 @@ export default class FireAction extends BaseAction {
   mutateGame(): void {
     // Generate dice on the fly if we need them; this will be sent to the
     // backend after being executed, so we can do this just-in-time if this is
-    // the first time this has been run.  If this is already set, 
-    const needDice = this.diceResults.length > 0
+    // the first time this has been run.
+    const needDice = this.diceResults.length === 0
     let diceIndex = 0
 
     const map = this.game.scenario.map
@@ -131,7 +131,8 @@ export default class FireAction extends BaseAction {
             hitRoll.description = `roll for effect (2d10): needed ${hitCheck}, got ${hitRoll.result}: `
           }
           if (hitRoll.result > hitCheck) {
-            targets.forEach(t => this.game.moraleChecksNeeded.push(t.counter.unit.id))
+            targets.forEach(t => this.game.moraleChecksNeeded.push(
+              { id: t.counter.unit.id, from: [from], to  }))
             if (needDice) { hitRoll.description += "hit"}
           } else if (needDice) { hitRoll.description += "miss"}
         }
@@ -141,10 +142,21 @@ export default class FireAction extends BaseAction {
       const mods = untargetedModifiers(this.game, this.convertAToA(firing), this.convertAToA(targets), false)
       const coords: Coordinate[] = []
       for (const t of targets) {
+        let check = false
+        const hex = t.counter.hex as Coordinate
         for (const c of coords) {
-          const hex = t.counter.hex as Coordinate
-          if (c.x !== hex.x || c.y !== hex.y) { coords.push(hex)}
+          if (c.x === hex.x && c.y === hex.y) { check = true }
         }
+        if (!check) { coords.push(hex) }
+      }
+      const fcoords: Coordinate[] = []
+      for (const f of firing) {
+        let check = false
+        const hex = f.counter.hex as Coordinate
+        for (const c of fcoords) {
+          if (c.x === hex.x && c.y === hex.y) { check = true }
+        }
+        if (!check) { fcoords.push(hex) }
       }
       for (const c of coords) {
         const hindrance = fireHindrance(this.game, this.convertAToA(firing), c)
@@ -159,7 +171,13 @@ export default class FireAction extends BaseAction {
         if (hitRoll.result > hitCheck) {
           targets.forEach(t => {
             const hex = t.counter.hex as Coordinate
-            if (hex.x === c.x && hex.y === c.y) { this.game.moraleChecksNeeded.push(t.counter.unit.id) }
+            if (hex.x === c.x && hex.y === c.y) {
+              if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
+                map.eliminateCounter(c, t.counter.unit.id)
+              } else {
+                this.game.moraleChecksNeeded.push({ id: t.counter.unit.id, from: fcoords, to: c })
+              }
+            }
           })
           if (needDice) { hitRoll.description += "hit" }
         } else if (needDice) { hitRoll.description += "miss" }

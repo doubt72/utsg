@@ -41,7 +41,6 @@ export default function select(
       } else {
         const rapid = rapidFire(game)
         if (rapid || areaFire(game)) {
-          // TODO: deal with true area fire vs infantry fire
           map.targetSelectAllAt(x, y, true, false)
           if (rapid) {
             unTargetSelectExceptChain(game, x, y)
@@ -213,6 +212,10 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     return true
   }
   const leadership = leadershipRange(map.game)
+  if (init.counter.unit.uncrewedSW && init.counter.unit.parent &&
+      init.counter.unit.parent.id === counter.unit.id) {
+    return true
+  }
   if (leadership === false) {
     map.game.addMessage("can't combine fire of units without a leader")
     return false
@@ -269,6 +272,8 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
       return false
     }
     if (game.gameActionState?.fire) {
+      if (target.isPinned || (target.parent && target.parent.isPinned)) { return false }
+      if (target.isBroken || (target.parent && target.parent.isBroken)) { return false }
       if (target.playerNation === game.currentPlayerNation && game.gameActionState.fire.doneSelect) {
         return false
       }
@@ -281,12 +286,18 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
         if (!canBeFireMultiselected(map, counter as Counter)) { return false }
       }
       if (target.crewed || target.uncrewedSW) {
-        game.addMessage("can't target weapons, only operators")
-        return false
+        if (!target.parent || target.parent.playerNation !== game.currentPlayerNation) {
+          game.addMessage("can't target weapons, only operators")
+          return false
+        }
       }
       const select = game.gameActionState.selection[0]
       const sc = select.counter
       const tc = map.findCounterById(target.id) as Counter
+      if (sc.unit.canCarrySupport && tc.unit.ignoreTerrain) {
+        game.addMessage("can't combine infantry and incendiary attacks")
+        return false
+      }
       if (sc.unit.canCarrySupport && tc.unit.armored) {
         game.addMessage("light weapons can't damage armored units")
         return false

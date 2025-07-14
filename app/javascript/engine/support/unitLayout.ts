@@ -238,18 +238,17 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     value = counter.unit.currentFirepower
     size = 18
   } else if (counter.hasUnit) {
-    if (counter.unit.antiTank || counter.unit.fieldGun || counter.unit.areaFire) {
+    if (counter.unit.targetedRange) {
       path = circlePath(loc, 10)
     }
-    if (counter.unit.areaFire) {
+    if (counter.unit.areaFire && !counter.unit.ignoreTerrain && !counter.unit.singleFire) {
       style.stroke = "black"
     }
     if (counter.unit.offBoard) {
       path = hexPath(loc.yDelta(+0.5), 11, false)
       size = 12.5
     }
-    if (counter.unit.antiTank || counter.unit.singleFire ||
-        counter.unit.assault || counter.unit.offBoard) {
+    if (counter.unit.antiTank || counter.unit.assault || counter.unit.offBoard) {
       style.stroke = "black"
     }
     if (counter.unit.antiTank) {
@@ -258,13 +257,9 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     if (counter.unit.singleFire && counter.unit.ignoreTerrain) {
       style.fill = counterRed
     } else if (counter.unit.singleFire) {
-      style.stroke = "black"
       style.fill = "black"
     } else if (counter.unit.ignoreTerrain) {
       style.fill = markerYellow
-    }
-    if ((counter.unit.singleFire || counter.unit.ignoreTerrain) && !counter.unit.assault) {
-      path = circlePath(loc, 10)
     }
     if (counter.unit.fieldGun) {
       style.stroke = "black"
@@ -297,10 +292,12 @@ export function areaLayout(counter: Counter): CounterLayout | false {
   const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
   let y = counter.y + 59.75
   let size = 6
+  const stroke = counter.unit.singleFire ? "white" : "black"
   if (counter.unit.currentFirepower > 9) { y += 1.25 } else { size -= 2 }
+  if (counter.unit.assault) { size += 1; y -= 0.5 }
   if (counter.unit.offBoard) { y += 1.25 }
   const path = `M ${x - size} ${y} L ${x + size} ${y}`
-  return { x, y, size, path, style: { stroke: "black", strokeWidth: 1 } }
+  return { x, y, size, path, style: { stroke, strokeWidth: 1 } }
 }
 
 export function smokeLayout(counter: Counter): CounterLayout | false {

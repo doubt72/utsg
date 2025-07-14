@@ -1,24 +1,15 @@
 High Priority Features/Bug Fixes:
-  - Remove references to reduction
+  - Redo docs for satchel charges / molotov Coctail
   - Firing
     - Handle area fire
     - Handle offboard artillery
     - Handle single-shot
     - Handle ignore terrain
     - Handle smoke
-
-  - Test/check:
-    - Untargeted targets all non-armored (and non-weapon), except when unarmored
     - Crewed or support weapons cannot be fired if operating unit is pinned or broken
     - Crewed weapons may not fire if crew is activated
-    - Flamethrowers and molotov coctails can't be grouped
-    - Make sure leader hindrance isn't counted if out of range
-    - Fix fire selection starting with leader
-    - Make sure machine gun selection can add handler
-    - Go back to square for fire tanks
-    - Add area fire to flame throwers and charges
-    - Broken sponson weapon
-    - Check wreck stacking
+  - Check wreck stacking
+
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing
@@ -33,6 +24,7 @@ High Priority Features/Bug Fixes:
   - Show Eliminated Units
 
 Future Features/Bug Fixes:
+  - Broken sponson weapon
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel
   - Ability to drag main map
