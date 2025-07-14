@@ -24,6 +24,8 @@ export default function ReinforcementPanel({
   map, player, xx, yy, shifted, closeCallback, shiftCallback, ovCallback, forceUpdate,
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
+  const [shiftButtonHover, setShiftButtonHover] = useState<boolean>(false)
+  const [closeButtonHover, setCloseButtonHover] = useState<boolean>(false)
 
   const allUnits = (): ReinforcementSchedule | undefined => {
     if (!map) { return }
@@ -45,25 +47,28 @@ export default function ReinforcementPanel({
     const closeX = !units || Object.keys(units).length == 0 ? x + 210 : x + maxWidth(units) - 15
     const closeY = yy + 18
     const ff = Math.sin(45 * Math.PI / 180) * 8
-    const close = (
+    const cStroke = closeButtonHover ? "#F77" : "#F55"
+    const cFill = closeButtonHover ? "#EEE" : "#CCC"
+    const closeButton = (
       <g>
-        <circle cx={closeX} cy={closeY} r={8}
-          style={{ fill: "#CCC", stroke: "#F55", strokeWidth: 2 }}
-          onClick={closeCallback}/>
+        <circle cx={closeX} cy={closeY} r={8} style={{ fill: cFill, stroke: cStroke, strokeWidth: 2 }} />
         <line x1={closeX - ff} y1={closeY - ff} x2={closeX + ff} y2={closeY + ff}
-          style={{ stroke: "#F55", strokeWidth: 2 }}
-          onClick={closeCallback}/>
+              style={{ stroke: cStroke, strokeWidth: 2 }}
+              onClick={closeCallback}/>
         <line x1={closeX - ff} y1={closeY + ff} x2={closeX + ff} y2={closeY - ff}
-          style={{ stroke: "#F55", strokeWidth: 2 }}
-          onClick={closeCallback}/>
+              style={{ stroke: cStroke, strokeWidth: 2 }}
+              onClick={closeCallback}/>
+        <circle cx={closeX} cy={closeY} r={8} style={{ fill: "rgba(0,0,0,0)" }}
+                onClick={closeCallback} onMouseEnter={() => setCloseButtonHover(true)}
+                onMouseLeave={() => setCloseButtonHover(false)} />
       </g>
     )
-    const fill = "rgba(143,143,143,0.95)"
+    const mainFill = "rgba(143,143,143,0.95)"
     if (!units || Object.keys(units).length === 0) {
       setBase(
         <g>
           <path d={roundedRectangle(x, yy, 225, 100)}
-                style={{ fill: fill, stroke: "#777", strokeWidth: 1 }}/>
+                style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }}/>
           <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
             available units:
@@ -72,7 +77,7 @@ export default function ReinforcementPanel({
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
             (all units deployed)
           </text>
-          {close}
+          {closeButton}
         </g>
       )
       return
@@ -84,28 +89,30 @@ export default function ReinforcementPanel({
     const sX12 = sX2 - (shifted ? 4 : 12)
     const sX21 = sX2 - (shifted ? 12 : 4)
     const path = `M ${sX1} ${sY1} L ${sX2} ${sY1} L ${sX2} ${sY2} L ${sX1} ${sY2} Z`
+    const sStroke = shiftButtonHover ? "#3A3" : "#070"
+    const pFill = shiftButtonHover ? "#EEE" : "#CCC"
     const shiftButton = (
       <g>
-        <path d={path} style={{ fill: "#CCC", stroke: "#070", strokeWidth: 2 }}
-          onClick={shiftCallback}/>
-        <line x1={sX12} y1={sY1} x2={sX21} y2={closeY}
-          style={{ stroke: "#070", strokeWidth: 2 }}
-          onClick={shiftCallback}/>
-        <line x1={sX12} y1={sY2} x2={sX21} y2={closeY}
-          style={{ stroke: "#070", strokeWidth: 2 }}
-          onClick={shiftCallback}/>
+        <path d={path} style={{ fill: pFill, stroke: sStroke, strokeWidth: 2 }} />
+        <line x1={sX12} y1={sY1} x2={sX21} y2={closeY} style={{ stroke: sStroke, strokeWidth: 2 }}
+              onClick={shiftCallback}/>
+        <line x1={sX12} y1={sY2} x2={sX21} y2={closeY} style={{ stroke: sStroke, strokeWidth: 2 }}
+              onClick={shiftCallback}/>
+        <path d={path} style={{ fill: "rgba(0,0,0,0)" }} onClick={shiftCallback}
+              onMouseEnter={() => setShiftButtonHover(true)}
+              onMouseLeave={() => setShiftButtonHover(false)}/>
       </g>
     )
     setBase(
       <g>
         <path d={roundedRectangle(x, yy, maxWidth(units), Object.keys(units).length * 106 + 44)}
-              style={{ fill: fill, stroke: "#777", strokeWidth: 1 }}/>
+              style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }} />
         <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
           available units:
         </text>
         {shiftButton}
-        {close}
+        {closeButton}
         {
           Object.entries(units).map((pair, i) => {
             const turn = Number(pair[0])
@@ -172,7 +179,7 @@ export default function ReinforcementPanel({
     )
   }, [
     xx, yy, shifted, map?.game?.gameActionState?.deploy, map?.game?.lastAction, map?.game?.lastActionIndex,
-    forceUpdate
+    forceUpdate, closeButtonHover, shiftButtonHover
   ])
 
   return (

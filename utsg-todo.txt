@@ -1,11 +1,7 @@
 High Priority Features/Bug Fixes:
-  - Fix select but when starting with leader for fire actions
-  - Fix move Bug for carried weapons, don't push initial selection, add status to children
-  - Reinforcement panel controls hover effect
   - Pin doc sidebar to top
   - Firing
     - Handle offboard artillery
-    - Add turret move to targeting check
     - Handle single-shot
     - Handle ignore terrain
     - Handle smoke
@@ -36,6 +32,8 @@ High Priority Features/Bug Fixes:
   - Show Eliminated Units
 
 Future Features/Bug Fixes:
+  - Ability to drag reinforcement panel
+  - Ability to drag main map
   - Remove strong points, nerf other fortifications
   - Handle map scale and such settings gone wrong
   - Show Terrain in counter overlay

@@ -349,27 +349,13 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
         rc.push("otherwise hull hit")
         rc.push("")
       }
-      const hullBasehit = baseToHit(fp.fp)
-      const hullArmor = armorAtArc(game, target, from, to, false)
-      const hullMods = armorHitModifiers(game, source, target, from, to, false)
-      const hullKill = hullBasehit + hullArmor + hullMods.mod
-      if (hullArmor >= 0) {
-        rc.push(`-> hit roll (2d10): ${hullKill} (${chance2D10(hullKill)}%)`)
-        rc.push(`firepower: ${fp.fp}`)
-        rc.push(`base to hit: ${hullBasehit}`)
-        rc.push(`armor factor: ${hullArmor}`)
-        rc = rc.concat(hullMods.why)
-      } else {
-        rc.push(`-> hull hit destroys`)
-      }
       if (target.turreted) {
-        rc.push("")
         const turretBasehit = baseToHit(fp.fp)
         const turretArmor = armorAtArc(game, target, from, to, true)
         const turretMods = armorHitModifiers(game, source, target, from, to, true)
         const turretKill = turretBasehit + turretArmor + turretMods.mod
         if (turretArmor >= 0) {
-          rc.push(`-> hit roll (2d10): ${turretKill} (${chance2D10(turretKill)}%)`)
+          rc.push(`-> turret penetration roll (2d10): ${turretKill} (${chance2D10(turretKill)}%)`)
           rc.push(`firepower: ${fp.fp}`)
           rc.push(`base to hit: ${turretBasehit}`)
           rc.push(`armor factor: ${turretArmor}`)
@@ -377,6 +363,20 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
         } else {
           rc.push(`-> turret hit destroys`)
         }
+        rc.push("")
+      }
+      const hullBasehit = baseToHit(fp.fp)
+      const hullArmor = armorAtArc(game, target, from, to, false)
+      const hullMods = armorHitModifiers(game, source, target, from, to, false)
+      const hullKill = hullBasehit + hullArmor + hullMods.mod
+      if (hullArmor >= 0) {
+        rc.push(`-> hull penetration roll (2d10): ${hullKill} (${chance2D10(hullKill)}%)`)
+        rc.push(`firepower: ${fp.fp}`)
+        rc.push(`base to hit: ${hullBasehit}`)
+        rc.push(`armor factor: ${hullArmor}`)
+        rc = rc.concat(hullMods.why)
+      } else {
+        rc.push(`-> hull hit destroys`)
       }
     }
   } else {

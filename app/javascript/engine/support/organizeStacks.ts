@@ -183,13 +183,9 @@ function sortValues(unit: Unit | Feature): number {
   if (unit.isFeature) { return 0 }
   const u = unit as Unit
   return {
-    sw: 1, gun: 1,
-    sqd: 2, tm: 2,
-    ldr: 3,
-    cav: 4, ht: 4, truck: 4,
-    tank: 5, spg: 5, ac: 5,
-    other: 6,
-  }[(u).type] ?? 9
+    other: 0, sw: 1, gun: 2, sqd: 3, tm: 4, ldr: 5, cav: 6, truck: 7, ht: 8, ac: 9,
+    spg: 10, tank: 11,
+  }[(u).type] ?? 99
 }
 
 function sortStack(list: (Unit | Feature)[]): (Unit | Feature)[] {

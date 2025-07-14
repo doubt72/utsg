@@ -14,6 +14,16 @@ export default function HelpDisplay() {
   const [sectionList, setSectionList] = useState<JSX.Element | undefined>()
   const [bottomNavigation, setBottomNavigation] = useState<JSX.Element | undefined>()
 
+  const [padTop, setPadTop] = useState<number>(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setPadTop(window.scrollY)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   const compareList = (a: number[], b: number[]): boolean => {
     if (a.length !== b.length) { return false }
     for (let i = 0; i < a.length; i++) {
@@ -129,6 +139,7 @@ export default function HelpDisplay() {
       <div className="help-side"></div>
       <div className="help-main">
         <div className="help-index" id="index-for-size">
+          <div style={{ minHeight: padTop }}></div>
           <div className="help-index-header flex">
             <Logo />
             <div className="ml025em">

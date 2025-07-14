@@ -40,6 +40,7 @@ export function leadershipRange(game: Game): number | false {
 
 export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit): boolean {
   if (unit.targetedRange || unit.isVehicle) { return false }
+  if (unit.type === unitType.Leader) { return true }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
       unit.children[0].status === unitStatus.Normal) { return true }
   const counters = game.scenario.map.countersAt(new Coordinate(x, y))

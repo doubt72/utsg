@@ -118,10 +118,11 @@ export default function select(
       counter.children.forEach(c => c.unit.select())
       if (selected) {
         removeActionSelection(game, x, y, counter.unit.id)
+        counter.children.forEach(c => removeActionSelection(game, x, y, c.unit.id))
       } else {
-        game.gameActionState.selection?.push({
-          x, y, id: counter.unit.id, counter: counter,
-        })
+        const sel = game.gameActionState.selection
+        sel.push({ x, y, id: counter.unit.id, counter: counter })
+        counter.children.forEach(c => sel.push({ x, y, id: c.unit.id, counter: c }))
         game.gameActionState.selection.sort((a, b) => {
           if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
           return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
@@ -272,6 +273,13 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
         if (target.playerNation === game.currentPlayerNation) { return false }
         if (target.crewed || target.uncrewedSW) {
           game.addMessage("can't target weapons, only operators")
+          return false
+        }
+        const select = game.gameActionState.selection[0]
+        const sc = select.counter
+        const tc = map.findCounterById(target.id) as Counter
+        if (sc.unit.canCarrySupport && tc.unit.armored) {
+          game.addMessage("light weapons can't damage armored units")
           return false
         }
       } else {
