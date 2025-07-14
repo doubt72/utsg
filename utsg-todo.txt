@@ -1,6 +1,7 @@
 High Priority Features/Bug Fixes:
-  - Pin doc sidebar to top
+  - Remove references to reduction
   - Firing
+    - Handle area fire
     - Handle offboard artillery
     - Handle single-shot
     - Handle ignore terrain
@@ -32,6 +33,7 @@ High Priority Features/Bug Fixes:
   - Show Eliminated Units
 
 Future Features/Bug Fixes:
+  - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel
   - Ability to drag main map
   - Remove strong points, nerf other fortifications

@@ -1,5 +1,5 @@
 import { Coordinate, featureType, unitStatus } from "../../utilities/commonTypes";
-import { coordinateToLable, normalDir, smokeRoll } from "../../utilities/utilities";
+import { coordinateToLabel, normalDir, smokeRoll } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -45,13 +45,13 @@ export default class MoveAction extends BaseAction {
     const nation = this.game.nationNameForPlayer(this.player)
     const units = this.origin.map(u => (this.game.findUnitById(u.id) as Unit).name).join(", ")
     const actions = [this.path.length > 1 ?
-      `${nation} ${units} ${this.moveString} from ${coordinateToLable(start)} to ${coordinateToLable(end)}` :
-      `${nation} ${units} ${this.moveString} at ${coordinateToLable(start)}`
+      `${nation} ${units} ${this.moveString} from ${coordinateToLabel(start)} to ${coordinateToLabel(end)}` :
+      `${nation} ${units} ${this.moveString} at ${coordinateToLabel(start)}`
     ]
     let diceIndex = 0
     this.addAction.forEach(a => {
       const mid = new Coordinate(a.x, a.y)
-      const label = coordinateToLable(mid)
+      const label = coordinateToLabel(mid)
       if (a.type === addActionType.Drop) {
         const parent = this.game.findUnitById(a.parent_id ?? "")
         const child = this.game.findUnitById(a.id ?? "") as Unit

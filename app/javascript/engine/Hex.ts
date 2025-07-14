@@ -9,7 +9,7 @@ import {
 import Map from "./Map"
 import Terrain from "./Terrain"
 import { baseHexCoords } from "../utilities/graphics";
-import { coordinateToLable, normalDir } from "../utilities/utilities";
+import { coordinateToLabel, normalDir } from "../utilities/utilities";
 
 export type HexData = {
   t?: TerrainType;         // terrain
@@ -221,7 +221,7 @@ export default class Hex {
 
   get label(): string {
     if (!this.map.showCoords) { return "" }
-    return coordinateToLable(this.coord)
+    return coordinateToLabel(this.coord)
   }
 
   // When generating the continuous paths, we want to be able to start anywhere

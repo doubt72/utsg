@@ -79,7 +79,7 @@ export function hexDistance(hex0: Coordinate, hex1: Coordinate): number {
   return Math.max(Math.abs(x00 - x11), Math.abs(hex0.y - hex1.y), Math.abs(z0 - z1));
 }
 
-export function coordinateToLable(loc: Coordinate): string {
+export function coordinateToLabel(loc: Coordinate): string {
   // handle up to 52 for now, easy to extend if we need it, but at 1" hexes,
   // 52 would be a somewhat ludicrous seven 8.5x11" pages wide
   const letters = [

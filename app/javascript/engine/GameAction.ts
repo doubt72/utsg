@@ -13,11 +13,11 @@ import AssaultMoveAction from "./actions/AssaultAction";
 import FireAction from "./actions/FireAction";
 
 export type GameActionDiceResult = {
-  result: number, type: string,
+  result: number, type: string, description?: string
 }
 
 export type GameActionUnit = {
-  x: number, y: number, id: string, status: UnitStatus,
+  x: number, y: number, id: string, status: UnitStatus, sponson?: boolean
 }
 
 export type GameActionReinforcementUnit = {

@@ -76,10 +76,12 @@ export default class Game {
   openOverlay?: Hex;
   closeOverlay: boolean = false;
 
-  messageQueue: string[]
-  updateTimer: NodeJS.Timeout | undefined
+  messageQueue: string[];
+  updateTimer: NodeJS.Timeout | undefined;
   resignationLevel: number;
   sponsonFire: boolean;
+
+  moraleChecksNeeded: string[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -109,6 +111,7 @@ export default class Game {
     this.resignationLevel = 0
 
     this.sponsonFire = false
+    this.moraleChecksNeeded = []
 
     this.loadAllActions()
   }

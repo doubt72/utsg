@@ -46,9 +46,10 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       const action = game.gameActionState.fire
       if (action) {
         if (!action.doneSelect) {
+          actions.unshift({ type: "none", message: "select fire group" })
           actions.push({ type: "finish_multiselect" })
         } else {
-          actions.push({ type: "none", message: "select target" })
+          actions.unshift({ type: "none", message: "select target" })
         }
         const sponson = !!game.gameActionState.selection[0].counter.unit.sponson
         if (sponson) {

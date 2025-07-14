@@ -1,9 +1,23 @@
+import { Coordinate } from "../../utilities/commonTypes";
+import {
+  baseToHit, coordinateToLabel, hexDistance, roll2d10, rolld10, rolld10x10
+} from "../../utilities/utilities";
+import {
+  armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
+} from "../control/fire";
+import { ActionSelection } from "../control/gameActions";
+import Counter from "../Counter";
 import Game from "../Game";
 import {
   GameActionPath, GameActionUnit, GameActionData, GameActionDiceResult,
 } from "../GameAction";
+import { sortStacks } from "../support/organizeStacks";
 import BaseAction from "./BaseAction";
+import IllegalActionError from "./IllegalActionError";
 
+type FireActionActor = {
+  counter: Counter, sponson?: boolean,
+}
 export default class FireAction extends BaseAction {
   origin: GameActionUnit[];
   path: GameActionPath[];
@@ -30,148 +44,133 @@ export default class FireAction extends BaseAction {
 
   get type(): string { return this.intensive ? "fire" : "intensive_fire" }
 
-  // get moveString(): string { return this.rush ? "rushes" : "moves" }
-
   get stringValue(): string {
-    
     return ""
-    // const start = new Coordinate(this.path[0].x, this.path[0].y)
-    // const end = new Coordinate(this.lastPath.x, this.lastPath.y)
-    // const nation = this.game.nationNameForPlayer(this.player)
-    // const units = this.origin.map(u => (this.game.findUnitById(u.id) as Unit).name).join(", ")
-    // const actions = [this.path.length > 1 ?
-    //   `${nation} ${units} ${this.moveString} from ${coordinateToLable(start)} to ${coordinateToLable(end)}` :
-    //   `${nation} ${units} ${this.moveString} at ${coordinateToLable(start)}`
-    // ]
-    // let diceIndex = 0
-    // this.addAction.forEach(a => {
-    //   const mid = new Coordinate(a.x, a.y)
-    //   const label = coordinateToLable(mid)
-    //   if (a.type === addActionType.Drop) {
-    //     const parent = this.game.findUnitById(a.parent_id ?? "")
-    //     const child = this.game.findUnitById(a.id ?? "") as Unit
-    //     if (parent) {
-    //       actions.push(`${child.name} dropped at ${label}`)
-    //     } else {
-    //       actions.push(`${child.name} stopped at ${label}`)
-    //     }
-    //   } else if (a.type === addActionType.Load) {
-    //     const unit = this.game.findUnitById(a.id ?? "") as Unit
-    //     actions.push(`${unit.name} picked up at ${label}`)
-    //   } else if (a.type === addActionType.Smoke) {
-    //     const roll = this.diceResults[diceIndex++]
-    //     actions.push(`smoke level ${smokeRoll(roll.result)} placed at ${label} (from ${
-    //       roll.type} roll result of ${roll.result})`)
-    //   } else if (a.type !== addActionType.VP) {
-    //     actions.push("unexpected action")
-    //   }
-    // })
-    // return `${actions.join(", ")}${this.undone ? " [cancelled]" : ""}`;
   }
-
-  // get lastPath(): GameActionPath {
-  //   const length = this.path.length
-  //   return this.path[length - 1]
-  // }
 
   get undoPossible() {
     return false
   }
 
+  convertAToA(actor: FireActionActor[]): ActionSelection[] {
+    return actor.map(a => {
+      const hex = a.counter.hex as Coordinate
+      return { x: hex.x, y: hex.y, id: a.counter.unit.id, counter: a.counter }
+    })
+  }
+
   mutateGame(): void {
-    // const map = this.game.scenario.map
-    // const start = new Coordinate(this.path[0].x, this.path[0].y)
-    // const length = this.path.length
-    // const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
-    // const facing = this.path[length - 1].facing
-    // const turret = this.path[length - 1].turret
+    // Generate dice on the fly if we need them; this will be sent to the
+    // backend after being executed, so we can do this just-in-time if this is
+    // the first time this has been run.  If this is already set, 
+    const needDice = this.diceResults.length > 0
+    let diceIndex = 0
 
-    // for (const u of this.origin) {
-    //   map.moveUnit(start, end, u.id, facing, turret)
-    //   const unit = this.game.scenario.map.unitAtId(end, u.id) as Counter
-    //   if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
-    //     unit.unit.children[0].facing = normalDir(facing + 3)
-    //   }
-    //   unit.unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
-    //   // ALSO CHILLINS
-    // }
-
-    // let diceIndex = 0
-    // for (const a of this.addAction) {
-    //   const mid = new Coordinate(a.x, a.y)
-    //   if (a.type === addActionType.VP) {
-    //     map.toggleVP(mid)
-    //   } else if (a.type === addActionType.Drop) {
-    //     if (a.parent_id) {
-    //       map.dropUnit(end, mid, a.id as string, a.facing)
-    //     } else {
-    //       map.moveUnit(end, mid, a.id as string)
-    //     }
-    //     const unit = this.game.findUnitById(a.id as string) as Unit
-    //     unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
-    //   } else if (a.type === addActionType.Load) {
-    //     map.loadUnit(mid, end, a.id as string, a.parent_id as string)
-    //     const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
-    //     const child = map.unitAtId(end, a.id ?? "") as Counter
-    //     if (child.unit.rotates && parent.unit.rotates) { child.unit.facing = normalDir(parent.unit.facing + 3) }
-    //     const unit = this.game.findUnitById(a.id as string) as Unit
-    //     unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
-    //   } else if (a.type === addActionType.Smoke) {
-    //     const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
-    //     map.addCounter(mid, new Feature(
-    //       { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id }
-    //     ))
-    //   }
-    // }
-    // sortStacks(map)
-    // this.game.updateInitiative(2)
+    const map = this.game.scenario.map
+    const firing: FireActionActor[] = this.origin.map(o => {
+      return { counter: this.game.findCounterById(o.id) as Counter, sponson: o.sponson }
+    })
+    const targets: FireActionActor[] = this.target.map(t => {
+      return { counter: this.game.findCounterById(t.id) as Counter }
+    })
+    const firing0 = firing[0].counter
+    const target0 = targets[0].counter
+    const to = target0.hex as Coordinate
+    const sponson = !!firing[0].sponson
+    const fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson)
+    if (firing0.unit.targetedRange) {
+      const rotated = this.path.length > 1
+      const from = firing0.hex as Coordinate
+      const mult = rangeMultiplier(map, firing0, to, sponson, rotated)
+      const range = hexDistance(from, to)
+      const hindrance = fireHindrance(this.game, this.convertAToA(firing), to)
+      const targetCheck = (range + hindrance) * mult.mult
+      if (needDice) { this.diceResults.push({ result: rolld10x10(), type: "d10x10" }) }
+      const targetRoll = this.diceResults[diceIndex++]
+      if (needDice) {
+        targetRoll.description = `targeting roll (d10x10): needed ${targetCheck}, got ${targetRoll.result}: `
+      }
+      if (targetRoll.result > targetCheck) {
+        if (needDice) { targetRoll.description += "hit" }
+        if (target0.unit.isVehicle && !target0.unit.armored) {
+          map.eliminateCounter(to, target0.unit.id)
+          if (needDice) { targetRoll.description += ", vehicle destroyed" }
+        } else if (target0.unit.isVehicle) {
+          let turretHit = false
+          if (target0.unit.turreted) {
+            if (needDice) { this.diceResults.push({ result: rolld10(), type: "d10" }) }
+            const location = this.diceResults[diceIndex++]
+            if (location.result < 4) { turretHit = true }
+            if (needDice) {
+              location.description = `hit location roll (d10): ${location.result} (${ turretHit ? "turret" : "hull" })`
+            }
+          }
+          const baseHit = baseToHit(fp.fp)
+          const armor = armorAtArc(this.game, target0.unit, from, to, turretHit)
+          const mods = armorHitModifiers(this.game, firing0.unit, target0.unit, from, to, turretHit)
+          const hitCheck = baseHit + armor + mods.mod
+          if (armor >= 0) {
+            if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
+            const hitRoll = this.diceResults[diceIndex++]
+            if (needDice) {
+              hitRoll.description = `penetration roll (2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+            }
+            if (hitRoll.result > hitCheck) {
+              map.eliminateCounter(to, target0.unit.id)
+              if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
+            } else if (needDice) { hitRoll.description += "failed" }
+          } else {
+            map.eliminateCounter(to, target0.unit.id)
+            targetRoll.description += ", no armor on side hit, vehicle destroyed"
+          }
+        } else {
+          const hitCheck = baseToHit(fp.fp)
+          if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
+          const hitRoll = this.diceResults[diceIndex++]
+          if (needDice) {
+            hitRoll.description = `roll for effect (2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+          }
+          if (hitRoll.result > hitCheck) {
+            targets.forEach(t => this.game.moraleChecksNeeded.push(t.counter.unit.id))
+            if (needDice) { hitRoll.description += "hit"}
+          } else if (needDice) { hitRoll.description += "miss"}
+        }
+      } else if (needDice) { targetRoll.description += "miss" }
+    } else {
+      const basehit = baseToHit(fp.fp)
+      const mods = untargetedModifiers(this.game, this.convertAToA(firing), this.convertAToA(targets), false)
+      const coords: Coordinate[] = []
+      for (const t of targets) {
+        for (const c of coords) {
+          const hex = t.counter.hex as Coordinate
+          if (c.x !== hex.x || c.y !== hex.y) { coords.push(hex)}
+        }
+      }
+      for (const c of coords) {
+        const hindrance = fireHindrance(this.game, this.convertAToA(firing), c)
+        const hitCheck = basehit + mods.mod + hindrance
+        if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
+        const hitRoll = this.diceResults[diceIndex++]
+        if (needDice) {
+          hitRoll.description = `hit roll ${
+            coords.length > 1 ? `for ${coordinateToLabel(c)} ` : ""
+          }(2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+        }
+        if (hitRoll.result > hitCheck) {
+          targets.forEach(t => {
+            const hex = t.counter.hex as Coordinate
+            if (hex.x === c.x && hex.y === c.y) { this.game.moraleChecksNeeded.push(t.counter.unit.id) }
+          })
+          if (needDice) { hitRoll.description += "hit" }
+        } else if (needDice) { hitRoll.description += "miss" }
+      }
+    }
+    if (needDice) { this.data.dice_result = this.diceResults }
+    sortStacks(map)
+    this.game.updateInitiative(2)
   }
 
   undo(): void {
-    // const map = this.game.scenario.map
-    // const start = new Coordinate(this.path[0].x, this.path[0].y)
-    // const length = this.path.length
-    // const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
-    // const facing = this.path[0].facing
-    // const turret = this.path[0].turret
-
-    // for (const a of this.addAction) {
-    //   const mid = new Coordinate(a.x, a.y)
-    //   if (a.type === addActionType.VP) {
-    //     map.toggleVP(mid)
-    //   } else if (a.type === addActionType.Drop) {
-    //     const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
-    //     const child = map.unitAtId(mid, a.id ?? "") as Counter
-    //     if (a.parent_id) {
-    //       map.loadUnit(mid, end, a.id as string, a.parent_id as string,
-    //         facing && parent.unit.rotates && child.unit.crewed ? normalDir(facing + 3) : undefined
-    //       )
-    //     } else {
-    //       map.moveUnit(mid, end, a.id as string)
-    //     }
-    //     const unit = this.game.findUnitById(a.id as string) as Unit
-    //     if (a.status !== undefined) { unit.status = a.status }
-    //   } else if (a.type === addActionType.Load) {
-    //     map.dropUnit(end, mid, a.id as string, a.facing)
-    //     const unit = this.game.findUnitById(a.id as string) as Unit
-    //     if (a.status !== undefined) { unit.status = a.status }
-    //   } else if (a.type === addActionType.Smoke) {
-    //     // Shouldn't happen
-    //     throw new IllegalActionError("internal error undoing smoke")
-    //   }
-    // }
-
-    // for (const u of this.origin) {
-    //   map.moveUnit(end, start, u.id, facing, turret)
-    //   const unit = map.unitAtId(start, u.id) as Counter
-    //   if (u.status !== undefined) {
-    //     unit.unit.status = u.status
-    //   }
-    //   if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
-    //     unit.unit.children[0].facing = normalDir(facing + 3)
-    //   }
-    // }
-    // sortStacks(map)
-    // this.game.initiative = this.data.old_initiative
+    throw new IllegalActionError("internal error undoing fire action")
   }
 }

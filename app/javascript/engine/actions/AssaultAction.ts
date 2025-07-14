@@ -1,5 +1,5 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
-import { coordinateToLable, normalDir } from "../../utilities/utilities";
+import { coordinateToLabel, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -34,8 +34,8 @@ export default class AssaultMoveAction extends BaseAction {
     const nation = this.game.nationNameForPlayer(this.player)
     const units = this.origin.map(u => (this.game.findUnitById(u.id) as Unit).name).join(", ")
     const actions = [this.path.length > 1 ?
-      `${nation} ${units} assault moved from ${coordinateToLable(start)} to ${coordinateToLable(end)}` :
-      `${nation} ${units} at ${coordinateToLable(start)}`
+      `${nation} ${units} assault moved from ${coordinateToLabel(start)} to ${coordinateToLabel(end)}` :
+      `${nation} ${units} at ${coordinateToLabel(start)}`
     ]
     this.addAction.forEach(a => {
       const feature = this.game.findCounterById(a.id ?? "") as Counter

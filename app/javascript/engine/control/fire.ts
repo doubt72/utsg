@@ -147,7 +147,7 @@ export function fireHindranceAll(
 
 export function fireHindrance(
   game: Game, source: ActionSelection[], to: Coordinate
-): boolean | number {
+): number {
   let hindrance = -1
   for (let i = 0; i < source.length; i++) {
     const sel = source[i]
@@ -157,7 +157,7 @@ export function fireHindrance(
     }
     if (check === true && hindrance < 0) { hindrance = 0 }
   }
-  return hindrance < 0 ? false : hindrance
+  return hindrance < 0 ? 0 : hindrance
 }
 
 export function firepower(

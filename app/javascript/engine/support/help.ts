@@ -326,13 +326,10 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
     const rotated = game.gameActionState.fire.path.length > 1
     const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
     const range = hexDistance(from, to)
-    const roll = hindrance === true ? range * mult.mult :
-      (range + (hindrance as number)) * mult.mult 
+    const roll = (range + hindrance) * mult.mult 
     rc.push(`-> targeting roll (d10x10): ${roll} (${chanceD10x10(roll)}%)`)
     rc.push(`range: ${range}`)
-    if (hindrance !== true && hindrance !== false && hindrance > 0) {
-      rc.push(`hindrance: ${hindrance}`)
-    }
+    if (hindrance > 0) { rc.push(`hindrance: ${hindrance}`) }
     rc.push(`multiplier: ${mult.mult}`)
     if (mult.why.length > 1) { rc = rc.concat(mult.why) }
     rc.push("")
@@ -383,12 +380,12 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
     // TODO: Detect reaction fire
     const basehit = baseToHit(fp.fp)
     const mods = untargetedModifiers(game, firing, targets, false)
-    const tohit = basehit + mods.mod + (hindrance !== true && hindrance !== false && hindrance > 0 ? hindrance : 0)
+    const tohit = basehit + mods.mod + hindrance
     rc.push(`-> to hit (2d10): ${tohit} (${chance2D10(tohit)}%)`)
     rc.push(`firepower: ${fp.fp}`)
-    if (mods.why.length > 0 || (hindrance !== true && hindrance !== false && hindrance > 0)) {
+    if (mods.why.length > 0 || hindrance > 0) {
       rc.push(`- base to hit: ${basehit}`)
-      if (hindrance !== true && hindrance !== false && hindrance > 0) {
+      if (hindrance > 0) {
         rc.push(`- hindrance ${hindrance}`)
       }
       rc = rc.concat(mods.why)
