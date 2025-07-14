@@ -23,7 +23,7 @@ export default function select(
     if (!game.gameActionState.fire.doneRotating) { game.gameActionState.fire.doneRotating = true }
     const selected = counter.unit.selected
     counter.unit.select()
-    if (!game.gameActionState.fire.doneSelect) {
+    if (!game.gameActionState.fire.doneSelect && counter.unit.playerNation === game.currentPlayerNation) {
       if (selected) {
         removeActionSelection(game, x, y, counter.unit.id)
         clearUnrangedSelection(game)
@@ -33,6 +33,7 @@ export default function select(
         })
       }
     } else {
+      game.gameActionState.fire.doneSelect = true
       counter.unit.select()
       const ts = counter.unit.targetSelected
       if (ts) {
@@ -263,32 +264,32 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   if (game.phase === gamePhaseType.Main) {
     if (game.gameActionState?.currentAction === actionType.Breakdown) { return false }
     if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
-    if (target.playerNation !== game.currentPlayerNation &&
-        !(game.gameActionState?.fire && game.gameActionState.fire.doneSelect)) {
+    if (target.playerNation !== game.currentPlayerNation && !game.gameActionState?.fire) {
       // TODO: handle gun/support weapons when picking up or for firing, etc.
       return false
     }
     if (game.gameActionState?.fire) {
-      if (game.gameActionState.fire.doneSelect) {
-        if (target.playerNation === game.currentPlayerNation) { return false }
-        if (target.crewed || target.uncrewedSW) {
-          game.addMessage("can't target weapons, only operators")
-          return false
-        }
-        const select = game.gameActionState.selection[0]
-        const sc = select.counter
-        const tc = map.findCounterById(target.id) as Counter
-        if (sc.unit.canCarrySupport && tc.unit.armored) {
-          game.addMessage("light weapons can't damage armored units")
-          return false
-        }
-      } else {
+      if (target.playerNation === game.currentPlayerNation && game.gameActionState.fire.doneSelect) {
+        return false
+      }
+      if (!game.gameActionState.fire.doneSelect && target.playerNation === game.currentPlayerNation) {
         if (selection.target.type !== "map") { return false }
         for (const s of game.gameActionState.fire.initialSelection) {
           if (selection.counter.target.id === s.id) { return false }
         }
         const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
         if (!canBeFireMultiselected(map, counter as Counter)) { return false }
+      }
+      if (target.crewed || target.uncrewedSW) {
+        game.addMessage("can't target weapons, only operators")
+        return false
+      }
+      const select = game.gameActionState.selection[0]
+      const sc = select.counter
+      const tc = map.findCounterById(target.id) as Counter
+      if (sc.unit.canCarrySupport && tc.unit.armored) {
+        game.addMessage("light weapons can't damage armored units")
+        return false
       }
     }
     if (game.gameActionState?.move) {

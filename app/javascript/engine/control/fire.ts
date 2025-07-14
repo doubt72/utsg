@@ -19,9 +19,8 @@ export function openHexFiring(map: Map, from: Coordinate, to: Coordinate): HexOp
     } else {
       if (hexDistance(from, to) <= leadership) { return hexOpenType.Open }
     }
-  } else {
-    if (inRange(map.game, to)) { return hexOpenType.Open }
   }
+  if (inRange(map.game, to)) { return hexOpenType.Open }
   return hexOpenType.Closed
 }
 

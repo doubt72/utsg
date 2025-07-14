@@ -476,48 +476,45 @@ export default class Map {
     }
     const fire = this.game.gameActionState.fire
     if (fire) {
+      let rc: Counter[] = []
       const first = fire.path[0]
       if (!fire.doneSelect) {
         const leadership = leadershipRange(this.game)
         if (leadership === false) {
-          return this.countersAt(new Coordinate(first.x, first.y))
+          rc = this.countersAt(new Coordinate(first.x, first.y))
         } else {
           const counters = this.allCounters
-          const rc = []
           for (const c of counters) {
             const hex = c.hex as Coordinate
             if (hexDistance(new Coordinate(hex.x, hex.y), new Coordinate(first.x, first.y)) <= leadership) {
               rc.push(c)
             }
           }
-          return rc
         }
-      } else {
-        let rc: Counter[] = []
-        for (let y = 0; y < this.height; y++) {
-          for (let x = this.width - 1; x >= 0; x--) {
-            let check = false
-            const counters = this.countersAt(new Coordinate(x, y))
-            if (openHex(this, x, y)) {
-              for (const c of counters) {
-                if (c.hasUnit && c.unit.nation !== this.game.currentPlayerNation) {
-                  check = true
-                  break
-                }
-              }
-            }
-            for (const sel of this.game.gameActionState.selection) {
-              if (!fire.doneRotating) { break }
-              if (sel.x === x && sel.y === y) {
+      }
+      for (let y = 0; y < this.height; y++) {
+        for (let x = this.width - 1; x >= 0; x--) {
+          let check = false
+          const counters = this.countersAt(new Coordinate(x, y))
+          if (openHex(this, x, y)) {
+            for (const c of counters) {
+              if (c.hasUnit && c.unit.nation !== this.game.currentPlayerNation) {
                 check = true
                 break
               }
             }
-            if (check) { rc = rc.concat(counters) }
           }
+          for (const sel of this.game.gameActionState.selection) {
+            if (!fire.doneRotating) { break }
+            if (sel.x === x && sel.y === y) {
+              check = true
+              break
+            }
+          }
+          if (check) { rc = rc.concat(counters) }
         }
-        return rc
       }
+      return rc
     }
     return []
   }
