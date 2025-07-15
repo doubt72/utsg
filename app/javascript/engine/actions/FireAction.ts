@@ -1,4 +1,4 @@
-import { Coordinate } from "../../utilities/commonTypes";
+import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import {
   baseToHit, coordinateToLabel, hexDistance, roll2d10, rolld10, rolld10x10
 } from "../../utilities/utilities";
@@ -12,6 +12,7 @@ import {
   GameActionPath, GameActionUnit, GameActionData, GameActionDiceResult,
 } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
+import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
@@ -45,7 +46,43 @@ export default class FireAction extends BaseAction {
   get type(): string { return this.intensive ? "fire" : "intensive_fire" }
 
   get stringValue(): string {
-    return ""
+    const rc: string[] = []
+    let coords = [new Coordinate(this.origin[0].x, this.origin[0].y)]
+    let part = ""
+    for (const o of this.origin) {
+      let check = false
+      for (const c of coords) {
+        if (o.x === c.x && o.y === c.y) { check = true }
+      }
+      if (!check) { coords.push(new Coordinate(o.x, o.y)) }
+    }
+    for (const c of coords) {
+      const names = this.origin.filter(o => o.x === c.x && o.y === c.y).map(o => {
+        const unit = this.game.findUnitById(o.id) as Unit
+        return unit.name
+      })
+      part += names.join(", ")
+      part += ` at ${coordinateToLabel(c)} fired at `
+    }
+    coords = [new Coordinate(this.target[0].x, this.target[0].y)]
+    for (const t of this.target) {
+      let check = false
+      for (const c of coords) {
+        if (t.x === c.x && t.y === c.y) { check = true }
+      }
+      if (!check) { coords.push(new Coordinate(t.x, t.y)) }
+    }
+    for (const c of coords) {
+      const names = this.target.filter(t => t.x === c.x && t.y === c.y).map(t => {
+        const unit = this.game.findUnitById(t.id) as Unit
+        return unit.name
+      })
+      part += names.join(", ")
+      part += ` at ${coordinateToLabel(c)}`
+    }
+    rc.push(part)
+    this.diceResults.forEach(dr => rc.push(dr.description as string))
+    return rc.join("; ")
   }
 
   get undoPossible() {
@@ -88,7 +125,7 @@ export default class FireAction extends BaseAction {
       if (needDice) { this.diceResults.push({ result: rolld10x10(), type: "d10x10" }) }
       const targetRoll = this.diceResults[diceIndex++]
       if (needDice) {
-        targetRoll.description = `targeting roll (d10x10): needed ${targetCheck}, got ${targetRoll.result}: `
+        targetRoll.description = `targeting roll (d10x10): target ${targetCheck}, rolled ${targetRoll.result}: `
       }
       if (targetRoll.result > targetCheck) {
         if (needDice) { targetRoll.description += "hit" }
@@ -108,7 +145,7 @@ export default class FireAction extends BaseAction {
             if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
             const hitRoll = this.diceResults[diceIndex++]
             if (needDice) {
-              hitRoll.description = `infantry effect roll (2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+              hitRoll.description = `infantry effect roll (2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
             }
             if (hitRoll.result > hitCheck) {
               if (needDice) { hitRoll.description += "succeeded" }
@@ -135,7 +172,7 @@ export default class FireAction extends BaseAction {
               if (needDice) {
                 hitRoll.description = `penetration roll ${
                   targets.length > 1 ? `for ${t.counter.unit.name} ` : ""
-                }(2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+                }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
               }
               if (hitRoll.result > hitCheck) {
                 map.eliminateCounter(to, t.counter.unit.id)
@@ -165,7 +202,7 @@ export default class FireAction extends BaseAction {
             if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
             const hitRoll = this.diceResults[diceIndex++]
             if (needDice) {
-              hitRoll.description = `penetration roll (2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+              hitRoll.description = `penetration roll (2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
             }
             if (hitRoll.result > hitCheck) {
               map.eliminateCounter(to, target0.unit.id)
@@ -181,7 +218,7 @@ export default class FireAction extends BaseAction {
           if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
           const hitRoll = this.diceResults[diceIndex++]
           if (needDice) {
-            hitRoll.description = `roll for effect (2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+            hitRoll.description = `roll for effect (2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
           }
           if (hitRoll.result > hitCheck) {
             targets.forEach(t => this.game.moraleChecksNeeded.push(
@@ -245,7 +282,7 @@ export default class FireAction extends BaseAction {
         if (needDice) {
           hitRoll.description = `hit roll ${
             coords.length > 1 ? `for ${coordinateToLabel(c)} ` : ""
-          }(2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+          }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
         }
         if (hitRoll.result > hitCheck) {
           targets.forEach(t => {
@@ -289,6 +326,10 @@ export default class FireAction extends BaseAction {
           }
         }
       }
+    }
+    for (const o of this.origin) {
+      const counter = map.findCounterById(o.id) as Counter
+      counter.unit.status = unitStatus.Activated
     }
     if (needDice) { this.data.dice_result = this.diceResults }
     sortStacks(map)

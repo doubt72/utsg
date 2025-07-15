@@ -1,14 +1,11 @@
 High Priority Features/Bug Fixes:
+  - Switch move to sliding scale
   - Redo docs for satchel charges / molotov Coctail
-  - Deal with ties on fire
+  - Deal with ties on penetration fire
   - Firing
-    - Handle area fire
-    - Handle offboard artillery
     - Handle single-shot
     - Handle ignore terrain
     - Handle smoke
-    - Crewed or support weapons cannot be fired if operating unit is pinned or broken
-    - Crewed weapons may not fire if crew is activated
   - Check wreck stacking
   - Show eliminated units; scoring
 

@@ -185,7 +185,7 @@ export function firepower(
       fp = Math.floor(fp/2)
       why.push("- halved: antitank vs. soft target")
     }
-    if (target.armored && sunit.fieldGun) {
+    if (target.armored && (sunit.fieldGun || sunit.areaFire)) {
       fp = Math.floor(fp/2)
       why.push("- halved: high-explosive vs. armor")
     }

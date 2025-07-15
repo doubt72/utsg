@@ -8,11 +8,12 @@ import { ScenarioData } from "../Scenario"
 import Game, { gamePhaseType } from "../Game"
 import { ActionSelection, actionType, FireActionState, GameActionState } from "./gameActions"
 import select from "./select"
-import { fireHindrance, firepower, untargetedModifiers } from "./fire"
+import { fireHindrance, firepower, rangeMultiplier, untargetedModifiers } from "./fire"
 import Counter from "../Counter"
 import IllegalActionError from "../actions/IllegalActionError"
 import organizeStacks from "../support/organizeStacks"
 import { testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTruck, testRInf } from "./movement.test"
+import { GameActionDiceResult } from "../GameAction"
 
 const defaultTestHexes: HexData[][] = [
   [{ t: "o" }, { t: "o" }, { t: "o", b: "w", be: [5] }, { t: "o" }, { t: "o" }],
@@ -193,6 +194,8 @@ describe("fire tests", () => {
       expect(game.moraleChecksNeeded).toStrictEqual(
         [{ id: "target1", from: [floc], to: tloc }]
       )
+
+      expect(firing.isActivated).toBe(true)
 
       try {
         game.executeUndo()
@@ -856,6 +859,10 @@ describe("fire tests", () => {
       expect(game.moraleChecksNeeded).toStrictEqual(
         [{ id: "target1", from: [floc, floc2], to: tloc }]
       )
+
+      expect(firing.isActivated).toBe(true)
+      expect(firing2.isActivated).toBe(true)
+      expect(firing3.isActivated).toBe(true)
     })
 
     test("infantry fire can't target armored", () => {
@@ -1370,6 +1377,23 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(14)
+
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      expect(fp2.fp).toBe(4)
+      expect(fp2.why.length).toBe(2)
+      expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
+      expect(baseToHit(fp2.fp)).toBe(17)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.finishFire()
@@ -1379,10 +1403,12 @@ describe("fire tests", () => {
         { id: "target1", from: [floc], to: tloc },
         { id: "target2", from: [floc], to: tloc },
       ])
-      expect(game.eliminatedUnits[0].id).toBe("target3")
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
+        "penetration roll for T-34 M40 (2d10): target 20, rolled 20: failed"
+      )
     })
 
-    test.only("offboard artillery", () => {
+    test("offboard artillery", () => {
       const game = createTestGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
@@ -1420,6 +1446,23 @@ describe("fire tests", () => {
       expect(target2.targetSelected).toBe(true)
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      expect(fp.fp).toBe(24)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(9)
+
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      expect(fp2.fp).toBe(12)
+      expect(fp2.why.length).toBe(2)
+      expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
+      expect(baseToHit(fp2.fp)).toBe(12)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(4)
+      expect(mult.why.length).toBe(1)
+
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
