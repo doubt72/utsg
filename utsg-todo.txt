@@ -1,5 +1,6 @@
 High Priority Features/Bug Fixes:
   - Redo docs for satchel charges / molotov Coctail
+  - Deal with ties on fire
   - Firing
     - Handle area fire
     - Handle offboard artillery
@@ -30,6 +31,8 @@ High Priority Features/Bug Fixes:
   - Weather
   - Rally/Fix
   - Show Eliminated Units
+  - Blazes
+  - Sniper Docs
 
 Future Features/Bug Fixes:
   - Broken sponson weapon

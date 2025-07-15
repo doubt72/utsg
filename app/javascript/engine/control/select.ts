@@ -41,7 +41,7 @@ export default function select(
       } else {
         const rapid = rapidFire(game)
         if (rapid || areaFire(game)) {
-          map.targetSelectAllAt(x, y, true, false)
+          map.targetSelectAllAt(x, y, true, game.gameActionState.fire.initialSelection[0].counter.unit.areaFire)
           if (rapid) {
             unTargetSelectExceptChain(game, x, y)
           } else {

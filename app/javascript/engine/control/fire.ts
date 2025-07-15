@@ -40,6 +40,7 @@ export function leadershipRange(game: Game): number | false {
 export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit): boolean {
   if (unit.targetedRange || unit.isVehicle || unit.incendiary) { return false }
   if (unit.type === unitType.Leader) { return true }
+  if (unit.areaFire) { return false }
   if (unit.uncrewedSW && unit.parent) { return true }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
       unit.children[0].status === unitStatus.Normal) { return true }
@@ -172,8 +173,9 @@ export function firepower(
     if (sponson && sunit.sponson) {
       if (sunit.sponson.range >= dist) { fp += sunit.sponson.firepower}
     } else {
-      const leadership = leadershipAt(game, new Coordinate(sel.x, sel.y))
-      if (sunit.currentRange >= dist) { fp += sunit.currentFirepower + leadership }
+      const leadership = sunit.targetedRange && !sunit.isVehicle ? 0 :
+        leadershipAt(game, new Coordinate(sel.x, sel.y))
+      if (sunit.currentRange >= dist || sunit.offBoard) { fp += sunit.currentFirepower + leadership }
     }
   }
   why.push(`base firepower ${fp}`)
@@ -449,6 +451,7 @@ function hitFromArc(
 
 function inRange(game: Game, to: Coordinate): boolean {
   if (!game?.gameActionState?.fire) { return false }
+  if (game.gameActionState.fire.initialSelection[0].counter.unit.offBoard) { return true }
   let leaderRange = true
   let leaderOnly = true
   for (const sel of game.gameActionState.selection) {

@@ -348,6 +348,21 @@ export default class Unit {
       ((this.canCarrySupport && unit.uncrewedSW) || (this.canHandle && unit.crewed)))
   }
 
+  get lowestArmor(): number {
+    let armor = 99
+    if (this.turreted && this.turretArmor) {
+      this.turretArmor.forEach(a => {
+        if (a < armor) { armor = a }
+      })
+    }
+    if (this.hullArmor) {
+      this.hullArmor.forEach(a => {
+        if (a < armor) { armor = a }
+      })
+    }
+    return armor
+  }
+
   get isActivated(): boolean {
     return this.status === unitStatus.Activated
   }

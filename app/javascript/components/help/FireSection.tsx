@@ -276,8 +276,8 @@ export default function FireSection() {
             <li>Add one to the break check number if intensive fire.</li>
             <li>Add one to the break check number if firing an opponent&apos;s weapon.</li>
           </ol>
-          If the weapon is incendiary and breaks, the unit carrying it must pass a morale check
-          to avoid breaking.
+          If the weapon is incendiary and breaks, the unit carrying it must pass a morale check to
+          avoid breaking.
         </li>
       </ol>
       <p>When fire is complete, mark all firing units as activated.</p>
@@ -374,8 +374,8 @@ export default function FireSection() {
           (i.e., use the firepower chart as if it was an infantry attack but no modifiers). Then for
           each fully-armored units, fire as targeted fire above (don&apos;t forget to halve
           firepower), but don&apos;t check for turret or hull hit, use lowest armor value (whether
-          turret or hull). Ties immobilize vehicle. Unarmored or partially armored vehicles are
-          destroyed.
+          turret or hull) and no other modifiers. Ties immobilize vehicle. Unarmored or partially
+          armored vehicles are destroyed.
         </li>
         <li>
           If firing incendiary weapons, perform a normal infantry fire roll, but cover doesn&apos;t
@@ -397,8 +397,8 @@ export default function FireSection() {
       <h2>Morale Checks</h2>
       <p>
         If any infantry units are hit (or is carrying an incendiary weapon that breaks during the
-        firing action), they must perform morale checks. To perform a morale check,
-        use the following process:
+        firing action), they must perform morale checks. To perform a morale check, use the
+        following process:
       </p>
       <ol>
         <li>The base check is 15.</li>
@@ -411,8 +411,8 @@ export default function FireSection() {
         <li>
           Roll 2d10. If the result is equal to the modified check, pin the unit, unless it was
           reaction fire, then break it. If the result is less than the modified check, break it. If
-          the unit was already broken, eliminate it. A roll of 2 always fails.
-          A roll of 20 always succeeds.
+          the unit was already broken, eliminate it. A roll of 2 always fails. A roll of 20 always
+          succeeds.
         </li>
       </ol>
       <h2>Smoke</h2>

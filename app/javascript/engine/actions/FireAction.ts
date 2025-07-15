@@ -77,8 +77,8 @@ export default class FireAction extends BaseAction {
     const target0 = targets[0].counter
     const to = target0.hex as Coordinate
     const sponson = !!firing[0].sponson
-    const fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson)
-    if (firing0.unit.targetedRange) {
+    let fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson)
+    if (firing0.unit.targetedRange || firing0.unit.offBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
       const mult = rangeMultiplier(map, firing0, to, sponson, rotated)
@@ -92,7 +92,58 @@ export default class FireAction extends BaseAction {
       }
       if (targetRoll.result > targetCheck) {
         if (needDice) { targetRoll.description += "hit" }
-        if (target0.unit.isVehicle && !target0.unit.armored) {
+        if (firing0.unit.areaFire) {
+          let infantry = false
+          let unit = target0.unit
+          for (const t of targets) {
+            if (t.counter.unit.canCarrySupport) {
+              infantry = true
+              unit = t.counter.unit
+            }
+          }
+          if (infantry) {
+            fp = firepower(this.game, this.convertAToA(firing), unit, to, sponson)
+            let hitCheck = baseToHit(fp.fp)
+            if (hitCheck < 2) { hitCheck = 2 }
+            if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
+            const hitRoll = this.diceResults[diceIndex++]
+            if (needDice) {
+              hitRoll.description = `infantry effect roll (2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+            }
+            if (hitRoll.result > hitCheck) {
+              if (needDice) { hitRoll.description += "succeeded" }
+              for (const t of targets) {
+                if (t.counter.unit.canCarrySupport) {
+                  this.game.moraleChecksNeeded.push({id: t.counter.unit.id, from: [from], to })
+                }
+              }
+            } else if (needDice) { hitRoll.description += "failed" }
+          }
+          for (const t of targets) {
+            if (t.counter.unit.canCarrySupport) { continue }
+            if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
+              map.eliminateCounter(to, t.counter.unit.id)
+              if (needDice) { targetRoll.description += `, ${t.counter.unit.name} destroyed` }
+            } else if (t.counter.unit.isVehicle) {
+              fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, sponson)
+              const baseHit = baseToHit(fp.fp)
+              const armor = t.counter.unit.lowestArmor
+              let hitCheck = baseHit + armor
+              if (hitCheck < 2) { hitCheck = 2 }
+              if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
+              const hitRoll = this.diceResults[diceIndex++]
+              if (needDice) {
+                hitRoll.description = `penetration roll ${
+                  targets.length > 1 ? `for ${t.counter.unit.name} ` : ""
+                }(2d10): needed ${hitCheck}, got ${hitRoll.result}: `
+              }
+              if (hitRoll.result > hitCheck) {
+                map.eliminateCounter(to, t.counter.unit.id)
+                if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
+              } else if (needDice) { hitRoll.description += "failed" }
+            }
+          }
+        } else if (target0.unit.isVehicle && !target0.unit.armored) {
           map.eliminateCounter(to, target0.unit.id)
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
         } else if (target0.unit.isVehicle) {
@@ -122,7 +173,7 @@ export default class FireAction extends BaseAction {
             } else if (needDice) { hitRoll.description += "failed" }
           } else {
             map.eliminateCounter(to, target0.unit.id)
-            targetRoll.description += ", no armor on side hit, vehicle destroyed"
+            targetRoll.description += ", no armor on hit side, vehicle destroyed"
           }
         } else {
           let hitCheck = baseToHit(fp.fp)

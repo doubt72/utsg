@@ -54,6 +54,16 @@ const testGSC: UnitData = {
   o: { x: 1, t: 1, e: 1 },
 }
 
+const testGMortar: UnitData = {
+  t: "sw", i: "mortar", c: "ger", n: "5cm leGrW 36", y: 36, f: 8, r: 11, v: 0,
+  o: { m: 2, t: 1, b: 3, e: 1 },
+}
+
+const testGRadio: UnitData = {
+  t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 24, r: 0, v: 0,
+  o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
+}
+
 const testRTank: UnitData = {
   t: "tank", i: "tank", c: "ussr", n: "T-34 M40", y: 40, s: 5, f: 24, r: 22, v: 6,
   o: { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, j: 3, f: 18, u: 1, k: 1 },
@@ -1322,9 +1332,105 @@ describe("fire tests", () => {
     })
 
     test("area fire", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMortar)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { id: "target1", from: [floc], to: tloc },
+        { id: "target2", from: [floc], to: tloc },
+      ])
+      expect(game.eliminatedUnits[0].id).toBe("target3")
     })
 
-    test("offboard artillery", () => {
+    test.only("offboard artillery", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadio)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { id: "target1", from: [floc], to: tloc },
+        { id: "target2", from: [floc], to: tloc },
+      ])
+      expect(game.eliminatedUnits[0].id).toBe("target3")
     })
 
     test("single shot", () => {
