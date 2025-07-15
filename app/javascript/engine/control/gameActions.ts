@@ -4,11 +4,13 @@ import Feature from "../Feature"
 import Game from "../Game"
 import GameAction, { AddActionType, addActionType, GameActionDiceResult, GameActionPath } from "../GameAction"
 import Counter from "../Counter"
-import { canMultiSelectFire } from "./fire"
+import { canMultiSelectFire, moraleModifiers } from "./fire"
+import Unit from "../Unit"
 
-export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip"
+export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc"
 export const actionType: { [index: string]: ActionType } = {
   Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
+  MoraleCheck: "mc",
 }
 
 export type ActionSelection = {
@@ -31,6 +33,10 @@ export type FireActionState = {
   path: GameActionPath[];
   doneSelect: boolean;
   doneRotating: boolean;
+}
+
+export type MoraleCheckState = {
+  modifiers: { mod: number, why: string[] },
 }
 
 export type MoveActionState = {
@@ -58,6 +64,7 @@ export type GameActionState = {
   selection: ActionSelection[],
   deploy?: DeployActionState,
   fire?: FireActionState,
+  moraleCheck?: MoraleCheckState,
   move?: MoveActionState,
   assault?: AssaultMoveActionState,
 }
@@ -161,6 +168,43 @@ export function finishFire(game: Game) {
   game.scenario.map.clearGhosts()
   game.scenario.map.clearAllSelections()
   game.executeAction(fire, false)
+}
+
+export function startMoraleCheck(game: Game) {
+  if (game.gameActionState || game.moraleChecksNeeded.length < 1) { return }
+  const check = game.moraleChecksNeeded[game.moraleChecksNeeded.length - 1] as {
+    unit: Unit, from: Coordinate[], to: Coordinate, incendiary?: boolean
+  }
+  const modifiers = moraleModifiers(game, check.unit, check.from, check.to, !!check.incendiary)
+  const player = check.unit.playerNation === game.currentPlayerNation ?
+    game.currentPlayer : game.opponentPlayer
+  game.gameActionState = {
+    player, currentAction: actionType.MoraleCheck,
+    selection: [{
+      x: check.to.x, y: check.to.y, id: check.unit.id, counter: game.findCounterById(check.unit.id) as Counter
+    }], moraleCheck: { modifiers }
+  }
+  game.gameActionState.selection[0].counter.unit.select()
+  game.refreshCallback(game)
+}
+
+export function finishMoraleCheck(game: Game) {
+  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.MoraleCheck) { return }
+  const sel = game.gameActionState.selection[0]
+  const pass = new GameAction({
+    user: game.currentPlayer === game.gameActionState.player ?
+      game.currentPlayerNation : game.opponentPlayerNation,
+    player: game.gameActionState?.player,
+    data: {
+      action: "morale_check", old_initiative: game.initiative,
+      dice_result: [{ result: roll2d10(), type: "2d10" }],
+      morale_data: game.gameActionState.moraleCheck?.modifiers,
+      target: [{ x: sel.x, y: sel.y, id: sel.id, status: sel.counter.unit.status }],
+    },
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearAllSelections()
+  game.executeAction(pass, false)
 }
 
 export function startMove(game: Game) {

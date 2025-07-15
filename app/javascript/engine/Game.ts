@@ -13,9 +13,9 @@ import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/uti
 import Unit from "./Unit";
 import {
   actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
-  finishBreakdown, finishFire, finishInitiative, finishMove, finishPass, GameActionState,
+  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, GameActionState,
   loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
-  startAssault, startBreakdown, startFire, startInitiative, startMove, startPass
+  startAssault, startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass
 } from "./control/gameActions";
 import Hex from "./Hex";
 
@@ -81,7 +81,7 @@ export default class Game {
   resignationLevel: number;
   sponsonFire: boolean;
 
-  moraleChecksNeeded: { id: string, from: Coordinate[], to: Coordinate, ignoreTerrain?: boolean }[];
+  moraleChecksNeeded: { unit: Unit, from: Coordinate[], to: Coordinate, incendiary?: boolean }[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -170,6 +170,10 @@ export default class Game {
     return this.iCurrentPlayer
   }
 
+  get opponentPlayer(): Player {
+    return togglePlayer(this.iCurrentPlayer)
+  }
+
   setCurrentPlayer(player: Player) {
     if (player !== this.iCurrentPlayer) {
       this.iCurrentPlayer = player
@@ -226,7 +230,7 @@ export default class Game {
     return this.currentPlayer === 1 ? this.playerOneNation : this.playerTwoNation
   }
 
-  get otherPlayerNation(): string {
+  get opponentPlayerNation(): string {
     return this.currentPlayer !== 1 ? this.playerOneNation : this.playerTwoNation
   }
 
@@ -623,6 +627,15 @@ export default class Game {
   finishFire() {
     finishFire(this)
   }
+
+  startMoraleCheck() {
+    startMoraleCheck(this)
+  }
+
+  finishMoraleCheck() {
+    finishMoraleCheck(this)
+  }
+
 
   startMove() {
     startMove(this)

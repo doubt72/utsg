@@ -1,6 +1,6 @@
 import { Coordinate, featureType, hexOpenType, HexOpenType, unitStatus, unitType } from "../../utilities/commonTypes";
-import { los } from "../../utilities/los";
-import { hexDistance } from "../../utilities/utilities";
+import { los, losHexPath } from "../../utilities/los";
+import { hexDistance, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -389,7 +389,7 @@ export function armorHitModifiers(
 }
 
 export function moraleModifiers(
-  game: Game, source: Unit, target: Unit, from: Coordinate, to: Coordinate
+  game: Game, target: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean
 ): { mod: number, why: string[] } {
   const why: string[] = []
   let mod = -target.currentMorale
@@ -401,30 +401,11 @@ export function moraleModifiers(
       why.push(`- minus leadership ${leadership}`)
     }
   }
-  if (!source.incendiary) {
-    const counters = game.scenario.map.countersAt(to)
-    let check = false
-    for (const c of counters) {
-      if (c.hasFeature) {
-        if (c.feature.type === featureType.Foxhole) {
-          mod -= c.feature.cover as number
-          why.push(`- minus cover ${c.feature.cover}`)
-          check = true
-        } else if (c.feature.type === featureType.Bunker) {
-          const dir = hitFromArc(game, c.feature, from, to, false)
-          const cover = (c.feature.coverSides as number[])[dir]
-          mod -= cover
-          why.push(`- minus cover ${cover}`)
-          check = true
-        }
-      }
-    }
-    if (!check) {
-      const terrain = (game.scenario.map.hexAt(to) as Hex).terrain
-      if (terrain.cover !== false && terrain.cover > 0) {
-        mod -= terrain.cover
-        why.push(`- minus cover ${terrain.cover}`)
-      }
+  if (!incendiary) {
+    const cover = fireCover(game, from, to)
+    if (cover > 0) {
+      mod -= cover
+      why.push(`- minus cover ${cover}`)
     }
   }
   if (target.isPinned) {
@@ -432,6 +413,48 @@ export function moraleModifiers(
     why.push(` - plus 1 for being pinned`)
   }
   return { mod, why }
+}
+
+function fireCover(
+  game: Game, from: Coordinate[], to: Coordinate
+): number {
+  const map = game.scenario.map
+  let cover = 0
+  const counters = map.countersAt(to)
+  let check = false
+  for (const c of counters) {
+    if (c.hasFeature) {
+      if (c.feature.type === featureType.Foxhole) {
+        cover = c.feature.cover as number
+        check = true
+      } else if (c.feature.type === featureType.Bunker) {
+        let minCover = 99
+        for (const fc of from) {
+          const dir = hitFromArc(game, c.feature, fc, to, false)
+          const cover = (c.feature.coverSides as number[])[dir]
+          if (cover < minCover) { minCover = cover }
+        }
+        cover = minCover
+        check = true
+      }
+    }
+  }
+  if (!check) {
+    const toHex = map.hexAt(to) as Hex
+    const terrain = toHex.terrain
+    cover = !terrain.cover ? 0 : terrain.cover
+    for (const c of from) {
+      const fromHex = map.hexAt(c) as Hex
+      const path = losHexPath(map, toHex, fromHex)
+      if (path[0].edgeHex?.border && path[0].edgeHex.borderEdges?.includes(path[0].edge ?? 1)) {
+        cover += path[0].edgeHex.terrain.borderAttr.cover
+      }
+      if (path[1].hex?.border && path[1].hex.borderEdges?.includes(normalDir((path[0].edge ?? 1) + 3))) {
+        cover += path[1].hex.terrain.borderAttr.cover
+      }
+    }
+  }
+  return cover
 }
 
 function hitFromArc(

@@ -1,4 +1,5 @@
-import { GameAction, unitType } from "../../utilities/commonTypes"
+import { Coordinate, GameAction, unitType } from "../../utilities/commonTypes"
+import { coordinateToLabel } from "../../utilities/utilities"
 import Game, { gamePhaseType } from "../Game"
 import Unit from "../Unit"
 import { showClearObstacles, showEntrench } from "./assault"
@@ -6,8 +7,11 @@ import { actionType, needPickUpDisambiguate } from "./gameActions"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
-  if (game.breakdownCheck) { game.startBreakdown() }
-  if (game.initiativeCheck) { game.startInitiative() }
+  if (game.breakdownCheck) {
+    game.startBreakdown()
+  } else if (game.moraleChecksNeeded.length > 0) {
+    game.startMoraleCheck()
+  } else if (game.initiativeCheck) { game.startInitiative() }
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]
   }
@@ -121,18 +125,27 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (!action.doneSelect) {
           actions.push({ type: "finish_multiselect" })
         }
-        actions.push({type: "cancel_action"})
+        actions.push({ type: "cancel_action" })
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
     } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
-      actions.push({type: "breakdown"})
+      actions.push({ type: "breakdown" })
+    } else if (game.gameActionState?.currentAction === actionType.MoraleCheck) {
+      const select = game.gameActionState
+      const counter = game.gameActionState.selection[0].counter
+      const hex = counter.hex as Coordinate
+      actions.unshift({
+        type: "none",
+        message: `${game.nationNameForPlayer(select.player)} ${counter.unit.name} at ${coordinateToLabel(hex)}:`
+      })
+      actions.push({ type: "morale_check" })
     } else if (game.gameActionState?.currentAction === actionType.Initiative) {
-      actions.push({type: "initiative"})
+      actions.push({ type: "initiative" })
     } else if (game.gameActionState?.currentAction === actionType.Pass) {
       actions.unshift({ type: "none", message: "are you sure?" })
-      actions.push({type: "pass"})
-      actions.push({type: "pass_cancel"})
+      actions.push({ type: "pass" })
+      actions.push({ type: "pass_cancel" })
     } else if (game.reactionFire) {
       actions.unshift({ type: "none", message: "reaction fire" })
       if (canFire(selection)) { actions.push({ type: "reaction_fire" }) }

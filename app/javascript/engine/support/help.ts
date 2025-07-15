@@ -377,7 +377,6 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
       }
     }
   } else {
-    // TODO: Detect reaction fire
     const basehit = baseToHit(fp.fp)
     const mods = untargetedModifiers(game, firing, targets, false)
     const tohit = basehit + mods.mod + hindrance
@@ -393,7 +392,8 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
   }
   if (target.canCarrySupport) {
     rc.push("")
-    const mods = moraleModifiers(game, source, target, from, to)
+    const froms = firing.map(f => new Coordinate(f.x, f.y))
+    const mods = moraleModifiers(game, target, froms, to, source.incendiary)
     const moraleCheck = baseMorale + mods.mod
     rc.push(`-> morale check (2d10): ${moraleCheck} (${chance2D10(moraleCheck)}%)`)
     rc.push(`base roll of ${baseMorale}`)

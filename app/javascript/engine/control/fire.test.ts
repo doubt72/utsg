@@ -8,17 +8,18 @@ import { ScenarioData } from "../Scenario"
 import Game, { gamePhaseType } from "../Game"
 import { ActionSelection, actionType, FireActionState, GameActionState } from "./gameActions"
 import select from "./select"
-import { fireHindrance, firepower, rangeMultiplier, untargetedModifiers } from "./fire"
+import { fireHindrance, firepower, moraleModifiers, rangeMultiplier, untargetedModifiers } from "./fire"
 import Counter from "../Counter"
 import IllegalActionError from "../actions/IllegalActionError"
 import organizeStacks from "../support/organizeStacks"
 import { testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTruck, testRInf } from "./movement.test"
 import { GameActionDiceResult } from "../GameAction"
+import Feature, { FeatureData } from "../Feature"
 
 const defaultTestHexes: HexData[][] = [
   [{ t: "o" }, { t: "o" }, { t: "o", b: "w", be: [5] }, { t: "o" }, { t: "o" }],
   [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
+  [{ t: "f" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
   [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
   [
     { t: "o" },
@@ -74,6 +75,11 @@ const testRTruck: UnitData = {
   t: "truck", c: "ussr", n: "Studebaker US6", i: "truck", y: 41, s: 4, f: 0, r: 0, v: 5,
   o: { sn: 1, tr: 3, trg: 1, w: 1 },
 }
+
+const testPill: FeatureData = {
+  ft: 1, n: "Bunker", t: "bunker", i: "bunker",
+  o: { da: { f: 4, s: 4, r: 1 } },
+};
 
 const scenarioTestData = (hexes: HexData[][]): ScenarioData => {
   return {
@@ -192,7 +198,7 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
 
       expect(firing.isActivated).toBe(true)
@@ -243,7 +249,7 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -278,13 +284,18 @@ describe("fire tests", () => {
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
 
+      const mc = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mc.mod).toBe(-3)
+      expect(mc.why.length).toBe(1)
+      expect(mc.why[0]).toBe("- minus morale 3")
+
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.finishFire()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -319,13 +330,19 @@ describe("fire tests", () => {
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
 
+      const mc = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mc.mod).toBe(-6)
+      expect(mc.why.length).toBe(2)
+      expect(mc.why[0]).toBe("- minus morale 3")
+      expect(mc.why[1]).toBe("- minus cover 3")
+
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.finishFire()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -361,13 +378,19 @@ describe("fire tests", () => {
       expect(mods.why.length).toBe(1)
       expect(mods.why[0]).toBe("- plus 1 for more than half range")
 
+      const mc = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mc.mod).toBe(-4)
+      expect(mc.why.length).toBe(2)
+      expect(mc.why[0]).toBe("- minus morale 3")
+      expect(mc.why[1]).toBe("- minus cover 1")
+
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.finishFire()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -402,13 +425,138 @@ describe("fire tests", () => {
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
 
+      const mc = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mc.mod).toBe(-4)
+      expect(mc.why.length).toBe(2)
+      expect(mc.why[0]).toBe("- minus morale 3")
+      expect(mc.why[1]).toBe("- minus cover 1")
+
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.finishFire()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
+      )
+    })
+
+    test("wall flip", () => {
+      const game = createTestGame([
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o", b: "w", be: [2] }, { t: "o" }, { t: "o" }],
+        [{ t: "f" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
+        [
+          { t: "o" },
+          { t: "o", s: { d: [4, 6], t: "t" } },
+          { t: "o", s: { d: [1, 5], t: "t" } },
+          { t: "o" }, { t: "b" }
+        ],
+      ])
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(2, 0)
+      map.addCounter(tloc, target)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      expect(fp.fp).toBe(7)
+      expect(baseToHit(fp.fp)).toBe(15)
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+      const mods = untargetedModifiers(
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+      )
+      expect(mods.mod).toBe(0)
+      expect(mods.why.length).toBe(0)
+
+      const mc = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mc.mod).toBe(-4)
+      expect(mc.why.length).toBe(2)
+      expect(mc.why[0]).toBe("- minus morale 3")
+      expect(mc.why[1]).toBe("- minus cover 1")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual(
+        [{ unit: target, from: [floc], to: tloc }]
+      )
+    })
+
+    test("bunker", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(0, 4)
+      map.addCounter(tloc, target)
+      const pill = new Feature(testPill)
+      pill.id = "pillbox"
+      map.addCounter(tloc, pill)
+      organizeStacks(map)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(tloc)[1],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      expect(fp.fp).toBe(7)
+      expect(baseToHit(fp.fp)).toBe(15)
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+      const mods = untargetedModifiers(
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+      )
+      expect(mods.mod).toBe(1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- plus 1 for more than half range")
+
+      const mc = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mc.mod).toBe(-7)
+      expect(mc.why.length).toBe(2)
+      expect(mc.why[0]).toBe("- minus morale 3")
+      expect(mc.why[1]).toBe("- minus cover 4")
+
+      pill.facing = 3
+
+      const mc2 = moraleModifiers(game, target, [floc], tloc, false)
+      expect(mc2.mod).toBe(-4)
+      expect(mc2.why.length).toBe(2)
+      expect(mc2.why[0]).toBe("- minus morale 3")
+      expect(mc2.why[1]).toBe("- minus cover 1")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual(
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -521,7 +669,7 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -857,7 +1005,7 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc, floc2], to: tloc }]
+        [{ unit: target, from: [floc, floc2], to: tloc }]
       )
 
       expect(firing.isActivated).toBe(true)
@@ -998,7 +1146,7 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -1061,8 +1209,8 @@ describe("fire tests", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual(
         [
-          { id: "target1", from: [floc], to: tloc },
-          { id: "target2", from: [floc], to: tloc2 },
+          { unit: target, from: [floc], to: tloc },
+          { unit: target2, from: [floc], to: tloc2 },
         ]
       )
     })
@@ -1150,8 +1298,8 @@ describe("fire tests", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual(
         [
-          { id: "target1", from: [floc, floc2], to: tloc },
-          { id: "target2", from: [floc, floc2], to: tloc2 },
+          { unit: target, from: [floc, floc2], to: tloc },
+          { unit: target2, from: [floc, floc2], to: tloc2 },
         ]
       )
     })
@@ -1254,7 +1402,7 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ id: "target1", from: [floc], to: tloc }]
+        [{ unit: target, from: [floc], to: tloc }]
       )
     })
 
@@ -1400,8 +1548,8 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { id: "target1", from: [floc], to: tloc },
-        { id: "target2", from: [floc], to: tloc },
+        { unit: target, from: [floc], to: tloc },
+        { unit: target2, from: [floc], to: tloc },
       ])
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
         "penetration roll for T-34 M40 (2d10): target 20, rolled 20: failed"
@@ -1470,8 +1618,8 @@ describe("fire tests", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { id: "target1", from: [floc], to: tloc },
-        { id: "target2", from: [floc], to: tloc },
+        { unit: target, from: [floc], to: tloc },
+        { unit: target2, from: [floc], to: tloc },
       ])
       expect(game.eliminatedUnits[0].id).toBe("target3")
     })

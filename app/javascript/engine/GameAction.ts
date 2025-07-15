@@ -11,6 +11,7 @@ import InitiativeAction from "./actions/InitiativeAction";
 import InitiativePassAction from "./actions/InitiativePassAction";
 import AssaultMoveAction from "./actions/AssaultAction";
 import FireAction from "./actions/FireAction";
+import MoraleCheckAction from "./actions/MoraleCheckAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -49,13 +50,14 @@ export type GameActionDetails = {
   deploy?: GameActionReinforcementUnit[],
   origin?: GameActionUnit[],
   path?: GameActionPath[],
-
   target?: GameActionUnit[],
   add_action?: AddAction[],
 
   dice_result?: GameActionDiceResult[],
 
   phase_data?: GameActionPhaseChange,
+
+  morale_data?: { mod: number, why: string[] }
 }
 
 export type GameActionData = {
@@ -117,6 +119,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "intensive_fire") {
       return new FireAction(this.data, this.game, this.index, true);
+    }
+    if (this.data.data.action === "morale_check") {
+      return new MoraleCheckAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "move") {
       return new MoveAction(this.data, this.game, this.index, false);

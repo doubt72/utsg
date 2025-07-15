@@ -1,13 +1,11 @@
 High Priority Features/Bug Fixes:
   - Switch move to sliding scale
-  - Redo docs for satchel charges / molotov Coctail
+  - Morale Check
   - Deal with ties on penetration fire
-  - Firing
-    - Handle single-shot
-    - Handle ignore terrain
-    - Handle smoke
-  - Check wreck stacking
+  - Check wreck stacking / Abstract stacking checks
   - Show eliminated units; scoring
+  - Firing
+    - Finish tests
 
   - Test Map Show
     - MG broken
@@ -32,7 +30,8 @@ High Priority Features/Bug Fixes:
   - Sniper Docs
 
 Future Features/Bug Fixes:
-  - Broken sponson weapon
+  - Redo docs for satchel charges / molotov cocktail
+  - Disable sponson switch with broken sponson weapon
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel
   - Ability to drag main map
@@ -46,7 +45,7 @@ Future Features/Bug Fixes:
     - Through two fence corner intersections
     - Also for hindrance at higher elevation
   - Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
-    (So scenarios can be modified without breaking existing games)
+      (So scenarios can be modified without breaking existing games)
   - Switch main page game status to websocket, not polling
   - Fix stacking parent/children indicators when showing markers
 

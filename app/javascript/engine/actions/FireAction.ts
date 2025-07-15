@@ -1,6 +1,7 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import {
-  baseToHit, coordinateToLabel, hexDistance, roll2d10, rolld10, rolld10x10
+  baseToHit, coordinateToLabel, hexDistance, roll2d10, rolld10, rolld10x10,
+  togglePlayer
 } from "../../utilities/utilities";
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
@@ -56,13 +57,16 @@ export default class FireAction extends BaseAction {
       }
       if (!check) { coords.push(new Coordinate(o.x, o.y)) }
     }
-    for (const c of coords) {
+    for (let i = 0; i < coords.length; i++) {
+      const c = coords[i]
       const names = this.origin.filter(o => o.x === c.x && o.y === c.y).map(o => {
         const unit = this.game.findUnitById(o.id) as Unit
         return unit.name
       })
-      part += names.join(", ")
-      part += ` at ${coordinateToLabel(c)} fired at `
+      if (i > 0) { part += "and " }
+      part += `${ this.game.nationNameForPlayer(this.player) } ${names.join(", ")}`
+      part += ` at ${coordinateToLabel(c)} `
+      if (i === coords.length - 1) { part += "fired at " }
     }
     coords = [new Coordinate(this.target[0].x, this.target[0].y)]
     for (const t of this.target) {
@@ -77,7 +81,7 @@ export default class FireAction extends BaseAction {
         const unit = this.game.findUnitById(t.id) as Unit
         return unit.name
       })
-      part += names.join(", ")
+      part += `${ this.game.nationNameForPlayer(togglePlayer(this.player)) } ${names.join(", ")}`
       part += ` at ${coordinateToLabel(c)}`
     }
     rc.push(part)
@@ -151,7 +155,7 @@ export default class FireAction extends BaseAction {
               if (needDice) { hitRoll.description += "succeeded" }
               for (const t of targets) {
                 if (t.counter.unit.canCarrySupport) {
-                  this.game.moraleChecksNeeded.push({id: t.counter.unit.id, from: [from], to })
+                  this.game.moraleChecksNeeded.push({unit: t.counter.unit, from: [from], to })
                 }
               }
             } else if (needDice) { hitRoll.description += "failed" }
@@ -222,7 +226,7 @@ export default class FireAction extends BaseAction {
           }
           if (hitRoll.result > hitCheck) {
             targets.forEach(t => this.game.moraleChecksNeeded.push(
-              { id: t.counter.unit.id, from: [from], to  }))
+              { unit: t.counter.unit, from: [from], to  }))
             if (needDice) { hitRoll.description += "hit"}
           } else if (needDice) { hitRoll.description += "miss"}
         }
@@ -291,7 +295,7 @@ export default class FireAction extends BaseAction {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
                 map.eliminateCounter(c, t.counter.unit.id)
               } else {
-                this.game.moraleChecksNeeded.push({ id: t.counter.unit.id, from: fcoords, to: c })
+                this.game.moraleChecksNeeded.push({ unit: t.counter.unit, from: fcoords, to: c })
               }
             }
           })

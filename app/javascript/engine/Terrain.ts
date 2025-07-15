@@ -69,8 +69,10 @@ export default class Terrain {
 
   get cover(): number | false {
     if (!this.baseAttr.move) { return false }
-    if (this.hex.building) { return 2 }
-    return this.baseAttr.cover
+    let rc = this.baseAttr.cover
+    if (this.hex.building) { rc += 2 }
+    if (this.hex.river) { rc += this.streamAttr.cover }
+    return rc
   }
 
   get hindrance(): number | false {

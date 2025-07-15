@@ -339,13 +339,13 @@ describe("game action tests", () => {
 
     game.finishPass()
     expect(game.gameActionState).toBe(undefined)
-    expect(game.initiative).toBe(-1)
+    expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
 
     game.startPass()
     expect(game.gameActionState?.currentAction).toBe(actionType.Pass)
-    expect(game.initiative).toBe(-1)
+    expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
 
