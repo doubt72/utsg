@@ -25,7 +25,10 @@ export function weaponBreakLayout(counter: Counter): CounterLayout | false {
   const red = counter.unit.breakDestroysWeapon || counter.unit.jammed
   let fill = red ? counterRed : markerYellow
   let textColor = red ? "white" : "black"
-  if (counter.unit.weaponBroken) {
+  if (counter.unit.sponson && counter.unit.sponson.type === sponsonType.Flame) {
+    textColor = counterRed
+  }
+  if (counter.unit.jammed && counter.unit.breakDestroysWeapon) {
     fill = "rgba(0,0,0,0)"
     textColor = "rgba(0,0,0,0)"
   }
@@ -224,6 +227,7 @@ export function hullArmorLayout(counter: Counter): CounterLayout | false {
 }
 
 export function firepowerLayout(counter: Counter): CounterLayout | false {
+  // This is a mess.  Maybe clean this up.
   if (counter.hasMarker) { return false }
   const loc = new Coordinate(
     counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
@@ -238,10 +242,10 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     value = counter.unit.currentFirepower
     size = 18
   } else if (counter.hasUnit) {
-    if (counter.unit.targetedRange) {
-      path = circlePath(loc, 10)
+    if (counter.unit.areaFire || counter.unit.antiTank || counter.unit.fieldGun || counter.unit.incendiary) {
+      if (!counter.unit.assault) { path = circlePath(loc, 10) }
     }
-    if (counter.unit.areaFire && !counter.unit.ignoreTerrain && !counter.unit.singleFire) {
+    if (counter.unit.areaFire && !counter.unit.incendiary && !counter.unit.singleFire) {
       style.stroke = "black"
     }
     if (counter.unit.offBoard) {
@@ -253,12 +257,15 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     }
     if (counter.unit.antiTank) {
       style.fill = "white"
+      if (counter.unit.singleFire) {
+        style.stroke = "white"
+      }
     }
-    if (counter.unit.singleFire && counter.unit.ignoreTerrain) {
+    if (counter.unit.singleFire && counter.unit.incendiary) {
       style.fill = counterRed
     } else if (counter.unit.singleFire) {
       style.fill = "black"
-    } else if (counter.unit.ignoreTerrain) {
+    } else if (counter.unit.incendiary) {
       style.fill = markerYellow
     }
     if (counter.unit.fieldGun) {
@@ -287,8 +294,7 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
 }
 
 export function areaLayout(counter: Counter): CounterLayout | false {
-  if (!counter.hasUnit || !counter.unit.areaFire || counter.unit.isWreck ||
-      counter.unit.weaponBroken || counter.unit.jammed) { return false }
+  if (!counter.hasUnit || !counter.unit.areaFire || counter.unit.isWreck || counter.unit.jammed) { return false }
   const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
   let y = counter.y + 59.75
   let size = 6
@@ -350,7 +356,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
     value = "-"
   }
   if (size < 16) { loc.yShift(-0.5) }
-  if (counter.hasUnit && counter.unit.minimumRange && !counter.unit.isWreck && !counter.unit.weaponBroken) {
+  if (counter.hasUnit && counter.unit.minimumRange && !counter.unit.isWreck && !counter.unit.jammed) {
     loc = new Coordinate(loc.x, counter.y + 65.25)
     path = [
       "M", loc.x-8, loc.y-4, "L", loc.x+8, loc.y-4,

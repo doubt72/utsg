@@ -198,6 +198,8 @@ function canFire(unit: Unit | undefined): boolean {
   if (unit.weaponBroken || unit.jammed || unit.currentFirepower <= 0) { return false }
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
   if (unit.parent && (unit.parent.isPinned || unit.parent.isBroken)) { return false }
+  if (unit.parent && unit.parent.isVehicle) { return false }
+  if (!unit.parent && unit.crewed || unit.uncrewedSW) { return false }
   return true
 }
 

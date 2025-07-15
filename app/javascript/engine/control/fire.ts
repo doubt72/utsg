@@ -38,7 +38,7 @@ export function leadershipRange(game: Game): number | false {
 }
 
 export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit): boolean {
-  if (unit.targetedRange || unit.isVehicle || unit.ignoreTerrain) { return false }
+  if (unit.targetedRange || unit.isVehicle || unit.incendiary) { return false }
   if (unit.type === unitType.Leader) { return true }
   if (unit.uncrewedSW && unit.parent) { return true }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
@@ -399,7 +399,7 @@ export function moraleModifiers(
       why.push(`- minus leadership ${leadership}`)
     }
   }
-  if (!source.ignoreTerrain) {
+  if (!source.incendiary) {
     const counters = game.scenario.map.countersAt(to)
     let check = false
     for (const c of counters) {
@@ -457,7 +457,9 @@ function inRange(game: Game, to: Coordinate): boolean {
     if (from.x === to.x && from.y === to.y) { return false }
     if (los(game.scenario.map, from, to) === false) { return false }
     if (unit.type !== unitType.Leader) {
-      if (unit.currentRange < hexDistance(from, to)) { return false }
+      const dist = hexDistance(from, to)
+      if (unit.currentRange < dist) { return false }
+      if ((unit.minimumRange ?? 0) > dist) { return false }
       if (!inFiringArc(game, sel.counter, to)) { return false }
       leaderOnly = false
     } else {

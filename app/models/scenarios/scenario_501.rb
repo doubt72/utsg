@@ -29,7 +29,7 @@ module Scenarios
         [5, :fin_sissi_s],
         [3, :fin_sissi_t],
         [2, :fin_ls_26],
-        :fin_14_mm_pst_kiv_37,
+        :fin_14mm_pst_kiv_37,
       ] },
     }.freeze
 

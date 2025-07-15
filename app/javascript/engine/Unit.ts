@@ -84,7 +84,7 @@ export default class Unit {
 
   rapidFire: boolean;
   singleFire: boolean;
-  ignoreTerrain: boolean;
+  incendiary: boolean;
 
   targetedRange: boolean;
   minimumRange?: number;
@@ -116,7 +116,7 @@ export default class Unit {
   status: UnitStatus;
   tired: boolean;
   jammed: boolean;
-  weaponBroken: boolean;
+  sponsonJammed: boolean;
   turretJammed: boolean;
   immobilized: boolean;
   facing: Direction;
@@ -163,7 +163,7 @@ export default class Unit {
 
     this.rapidFire = !!data.o?.r
     this.singleFire = !!data.o?.x
-    this.ignoreTerrain = !!data.o?.i
+    this.incendiary = !!data.o?.i
 
     this.targetedRange = !!data.o?.t
     this.minimumRange = data.o?.m
@@ -211,7 +211,7 @@ export default class Unit {
     this.status = unitStatus.Normal
     this.tired = false
     this.jammed = false
-    this.weaponBroken = false
+    this.sponsonJammed = false
     this.turretJammed = false
     this.immobilized = false
 
@@ -262,6 +262,10 @@ export default class Unit {
 
   lastSelect() {
     this.lastSelected = !this.lastSelected
+  }
+
+  get breakDestroysSponson(): boolean {
+    return !!this.sponson && this.sponson.type === sponsonType.Flame
   }
 
   get hindrance(): number { return 0 }
@@ -381,10 +385,9 @@ export default class Unit {
   }
 
   get noFire(): boolean {
-    // Turret Jams and Immobile assault guns can fire at penalties in facing dir
-    if (this.isBroken || this.isWreck || this.jammed || this.weaponBroken) {
-      return true
-    }
+    if (this.isBroken || this.isWreck) { return true }
+    if (this.sponson && this.jammed && this.sponsonJammed) { return true }
+    if (!this.sponson && this.jammed) { return true }
     return false
   }
 

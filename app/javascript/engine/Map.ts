@@ -665,16 +665,16 @@ export default class Map {
     const units = this.allUnits
     for (const u of units) {
       const hex = u.hex as Coordinate
-      if (hex.x !== x && hex.y !== y && u.hasUnit && u.unit.targetSelected) { u.unit.targetSelect() }
+      if (hex.x === x && hex.y === y) { continue }
+      if (u.unit.targetSelected) { u.unit.targetSelect() }
     }
   }
 
   clearOtherTargetSelections(x: number, y: number, id: string) {
     const units = this.allUnits
     for (const u of units) {
-      if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unit.id === id)) {
-        continue
-      }
+      const hex = u.hex as Coordinate
+      if (hex.x === x && hex.y === y && u.unit.id === id) { continue }
       if (u.unit.targetSelected) { u.unit.targetSelect() }
     }
   }

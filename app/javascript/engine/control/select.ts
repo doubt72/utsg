@@ -294,7 +294,7 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
       const select = game.gameActionState.selection[0]
       const sc = select.counter
       const tc = map.findCounterById(target.id) as Counter
-      if (sc.unit.canCarrySupport && tc.unit.ignoreTerrain) {
+      if (sc.unit.canCarrySupport && tc.unit.incendiary) {
         game.addMessage("can't combine infantry and incendiary attacks")
         return false
       }

@@ -9,7 +9,15 @@ High Priority Features/Bug Fixes:
     - Crewed or support weapons cannot be fired if operating unit is pinned or broken
     - Crewed weapons may not fire if crew is activated
   - Check wreck stacking
+  - Show eliminated units; scoring
 
+  - Test Map Show
+    - MG broken
+    - Gun Broken
+    - Tank Gun Broken
+    - Tank Gun Destroyed
+    - Sponson Broken
+    - Sponson Destroyed
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing

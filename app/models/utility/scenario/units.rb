@@ -498,8 +498,8 @@ module Utility
             ["alm", "wz. 35 AT Rifle", 38, 3, 4, 0, { j: 3 }],
             ["chi", "Boys AT Rifle", 44, 3, 6, -1, { j: 3 }],
             ["fin", "Lahti L-39", 40, 4, 6, -2, { j: 3 }],
-            ["fin", "14 mm pst kiv/37", 37, 3, 6, -1, { j: 3, sn: 1 }],
-            ["fin", "8 mm pst kiv/38", 38, 3, 4, 0, { j: 3 }],
+            ["fin", "14mm pst kiv/37", 37, 3, 6, -1, { j: 3, sn: 1 }],
+            ["fin", "8mm pst kiv/38", 38, 3, 4, 0, { j: 3 }],
             ["jap", "Type 97 AC", 35, 3, 5, -2, { j: 3 }],
             ["uk", "Boys AT Rifle", 37, 3, 6, -1, { j: 3 }],
           ].each do |unit|
@@ -550,7 +550,7 @@ module Utility
             ["uk", "QF 25Pdr Short", 43, 16, 15, { tow: 3 }],
             ["uk", "QF 4.5inch", 8, 32, 20, { tow: 3 }],
             ["usa", "75mm M1 Pack", 27, 16, 16, { tow: 3 }],
-            ["usa", "75mm M1897", 40, 24, 20, { tow: 3 }],
+            ["usa", "75mm M1897", 40, 16, 16, { tow: 3 }],
             ["ussr", "76mm M1927", 28, 16, 16, { tow: 3 }],
           ].each do |unit|
             gun = { t: "gun", i: "gun", v: 1, s: 3 }
@@ -558,6 +558,7 @@ module Utility
               gun[key[i]] = v
             end
             gun[:v] = 2 if gun[:f] < 10
+            gun[:s] = 2 if gun[:f] < 10
             gun[:o].merge!({ t: 1, j: 3, f: 18, g: 1, s: 1, c: 1 })
             lu[:"#{gun[:c]}_#{sanitize(gun[:n])}"] = gun
           end
@@ -612,6 +613,7 @@ module Utility
               at[key[i]] = v
             end
             at[:v] = 2 if at[:f] < 10
+            at[:s] = 2 if at[:f] < 10
             at[:o].merge!({ t: 1, j: 3, f: 18, p: 1, c: 1 })
             lu[:"#{at[:c]}_#{sanitize(at[:n])}"] = at
           end
@@ -808,7 +810,7 @@ module Utility
             ["uk", "Matilda II CS", 39, 5, 16, 12, 4, { t: 1, g: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 }, bd: 3, s: 1 }],
             ["uk", "Matilda Frog", 44, 5, 24, 1, 4, { i: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 } }],
             ["uk", "Valentine III CS", 40, 4, 16, 12, 5, { t: 1, g: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 }, s: 1 }],
-            ["uk", "Churchill Crocodile", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 }, sn: 3, sg: { f: 24, r: 1, t: "ft" } }],
+            ["uk", "Churchill Crocodile", 44, 6, 24, 16, 4, { j: 4, t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 }, sn: 3, sg: { f: 24, r: 1, t: "ft" } }],
             ["usa", "M3A1 Stuart FT", 44, 3, 24, 1, 5, { i: 1, ha: { f: 4, s: 3, r: 3 } }],
             ["usa", "M4A3R5 Sherman", 44, 5, 24, 1, 5, { i: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 2 }],
             ["usa", "M10", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2, t: -1 } }],
@@ -836,10 +838,11 @@ module Utility
             spg[:i] = "spgmg" if spg[:o][:r]
             spg[:i] = "spat" if spg[:o][:p]
             spg[:i] = "spft" if spg[:o][:i] || spg[:o][:sg]
-            spg[:o][:b] = 4 if spg[:o][:i] || spg[:o][:sg]
+            spg[:o][:b] = 4 if spg[:o][:i]
             spg[:o][:u] = 1 if spg[:o][:ta]
-            spg[:o].merge!({ j: 3, f: 18, k: 1 })
-            spg[:o].delete(:j) if spg[:o][:i] || spg[:o][:sg]
+            spg[:o].merge!({ k: 1 })
+            spg[:o].merge!({ j: 3, f: 18 }) unless spg[:o][:sg]
+            spg[:o].delete(:j) if spg[:o][:i]
             lu[:"#{spg[:c]}_#{sanitize(spg[:n])}"] = spg
           end
           lu
@@ -901,7 +904,7 @@ module Utility
             ht[:i] = "htft" if ht[:o][:i]
             ht[:i] += "-amp" if ht[:o][:amp]
             ht[:o].merge!({ k: 1 })
-            ht[:o][:m] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3, f: 18 })
+            ht[:o][:m] || ht[:o][:i] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3, f: 18 })
             lu[:"#{ht[:c]}_#{sanitize(ht[:n])}"] = ht
           end
           lu

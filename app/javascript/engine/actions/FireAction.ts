@@ -108,7 +108,8 @@ export default class FireAction extends BaseAction {
           const baseHit = baseToHit(fp.fp)
           const armor = armorAtArc(this.game, target0.unit, from, to, turretHit)
           const mods = armorHitModifiers(this.game, firing0.unit, target0.unit, from, to, turretHit)
-          const hitCheck = baseHit + armor + mods.mod
+          let hitCheck = baseHit + armor + mods.mod
+          if (hitCheck < 2) { hitCheck = 2 }
           if (armor >= 0) {
             if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
             const hitRoll = this.diceResults[diceIndex++]
@@ -124,7 +125,8 @@ export default class FireAction extends BaseAction {
             targetRoll.description += ", no armor on side hit, vehicle destroyed"
           }
         } else {
-          const hitCheck = baseToHit(fp.fp)
+          let hitCheck = baseToHit(fp.fp)
+          if (hitCheck < 2) { hitCheck = 2 }
           if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
           const hitRoll = this.diceResults[diceIndex++]
           if (needDice) {
@@ -137,6 +139,31 @@ export default class FireAction extends BaseAction {
           } else if (needDice) { hitRoll.description += "miss"}
         }
       } else if (needDice) { targetRoll.description += "miss" }
+      if (firing0.unit.breakWeaponRoll && targetRoll.result <= firing0.unit.breakWeaponRoll) {
+        if (firing0.unit.isVehicle) {
+          if (sponson) {
+            firing0.unit.sponsonJammed = true
+            if (firing0.unit.breakDestroysSponson) {
+              if (needDice) { targetRoll.description += ", firing weapon destroyed" }
+            } else {
+              if (needDice) { targetRoll.description += ", firing weapon broken" }
+            }
+          } else {
+            firing0.unit.jammed = true
+            if (firing0.unit.breakDestroysWeapon) {
+              if (needDice) { targetRoll.description += ", firing weapon destroyed" }
+            } else {
+              if (needDice) { targetRoll.description += ", firing weapon broken" }
+            }
+          }
+        } else if (firing0.unit.breakDestroysWeapon) {
+          map.eliminateCounter(from, firing0.unit.id)
+          if (needDice) { targetRoll.description += ", firing weapon destroyed" }
+        } else {
+          firing0.unit.jammed
+          if (needDice) { targetRoll.description += ", firing weapon broken" }
+        }
+      }
     } else {
       const basehit = baseToHit(fp.fp)
       const mods = untargetedModifiers(this.game, this.convertAToA(firing), this.convertAToA(targets), false)
@@ -160,7 +187,8 @@ export default class FireAction extends BaseAction {
       }
       for (const c of coords) {
         const hindrance = fireHindrance(this.game, this.convertAToA(firing), c)
-        const hitCheck = basehit + mods.mod + hindrance
+        let hitCheck = basehit + mods.mod + hindrance
+        if (hitCheck < 2) { hitCheck = 2 }
         if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
         const hitRoll = this.diceResults[diceIndex++]
         if (needDice) {
@@ -181,6 +209,34 @@ export default class FireAction extends BaseAction {
           })
           if (needDice) { hitRoll.description += "hit" }
         } else if (needDice) { hitRoll.description += "miss" }
+        for (const f of firing) {
+          if (f.counter.unit.breakWeaponRoll && hitRoll.result <= f.counter.unit.breakWeaponRoll) {
+            if (f.counter.unit.isVehicle) {
+              if (sponson) {
+                f.counter.unit.sponsonJammed = true
+                if (f.counter.unit.breakDestroysSponson) {
+                  if (needDice) { hitRoll.description += ", firing weapon destroyed" }
+                } else {
+                  if (needDice) { hitRoll.description += ", firing weapon broken" }
+                }
+              } else {
+                f.counter.unit.jammed = true
+                if (f.counter.unit.breakDestroysWeapon) {
+                  if (needDice) { hitRoll.description += ", firing weapon destroyed" }
+                } else {
+                  if (needDice) { hitRoll.description += ", firing weapon broken" }
+                }
+              }
+            } else if (f.counter.unit.breakDestroysWeapon) {
+              const hex = f.counter.hex as Coordinate
+              map.eliminateCounter(hex, f.counter.unit.id)
+              if (needDice) { hitRoll.description += `, ${f.counter.unit.name} destroyed` }
+            } else {
+              f.counter.unit.jammed = true
+              if (needDice) { hitRoll.description += `, ${f.counter.unit.name} broken` }
+            }
+          }
+        }
       }
     }
     if (needDice) { this.data.dice_result = this.diceResults }

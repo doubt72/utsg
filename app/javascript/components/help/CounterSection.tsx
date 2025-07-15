@@ -175,7 +175,7 @@ export default function CounterSection() {
       if (unit.antiTank) { add.push("(anti-tank)"); x = 85 }
       if (unit.fieldGun) { add.push("(field gun)"); x = 85 }
       if (unit.areaFire) { add.push("(area fire)"); x = 85 }
-      if (unit.ignoreTerrain) { add.push("(negates cover)"); x = 85 }
+      if (unit.incendiary) { add.push("(negates cover)"); x = 85 }
       if (unit.singleFire) { add.push("(single fire)"); x = 85 }
       if (unit.offBoard) { add.push("(off board)"); x = 84 }
       if (unit.minimumRange) { x -= 2 }
@@ -709,7 +709,7 @@ export default function CounterSection() {
             <strong>Circled firepower with a line above</strong> indicates that this unit uses
             area fire, with full effect on soft targts and half effect on fully armored targets.
           </p>)
-        } else if (unit.currentFirepower && !unit.ignoreTerrain) {
+        } else if (unit.currentFirepower && !unit.incendiary) {
           sections.push(<p key={index++}>
             <strong>Uncircled, unboxed firepower</strong> indicates that this
             weapons has no effect on armored targets.
@@ -721,14 +721,14 @@ export default function CounterSection() {
             or fire smoke rounds.
           </p>)
         }
-        if (unit.ignoreTerrain && unit.singleFire) {
+        if (unit.incendiary && unit.singleFire) {
           sections.push(<p key={index++}>
             <strong>Red filled firepower</strong> indicates that this weapon ignores terrain or
             defensive feature effects <strong>and</strong> this weapon can only be fired once before
             it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
             this unit may attack armored units with no penalty.
           </p>)
-        } else if (unit.ignoreTerrain) {
+        } else if (unit.incendiary) {
           sections.push(<p key={index++}>
             <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
             defensive feature effects. With or without a circle,
