@@ -185,7 +185,7 @@ export function firepower(
       fp = Math.floor(fp/2)
       why.push("- halved: antitank vs. soft target")
     }
-    if (target.armored && (sunit.fieldGun || sunit.areaFire)) {
+    if (target.armored && (sunit.fieldGun || sunit.areaFire) && !sunit.incendiary) {
       fp = Math.floor(fp/2)
       why.push("- halved: high-explosive vs. armor")
     }
@@ -196,6 +196,10 @@ export function firepower(
     if (sunit.turreted && sunit.turretJammed && !sponson) {
       fp = Math.floor(fp/2)
       why.push("- halved: turret jammed")
+    }
+    if (sunit.isPinned) {
+      fp = Math.floor(fp/2)
+      why.push("- halved: pinned")
     }
   }
   return { fp, why }
@@ -224,7 +228,6 @@ export function untargetedModifiers(
   let gthalf = false
   let adj = true
   let elev = -1
-  let pinned = false
   let tired = false
   let rapid = false
   let intense = false
@@ -243,7 +246,6 @@ export function untargetedModifiers(
       const check = (map.hexAt(to) as Hex).elevation - (map.hexAt(from) as Hex).elevation
       if (check === 0 && elev < 0) { elev = 0 }
       if (check > 0) { elev = 1}
-      if (sunit.isPinned) { pinned = true }
       if (sunit.isTired) { tired = true }
       if (sunit.isActivated) { intense = true }
       if (j > 0 && !rapid) {
@@ -267,13 +269,9 @@ export function untargetedModifiers(
     mod -= 1
     why.push("- minus 1 for firing downhill")
   }
-  if (pinned || tired) {
+  if (tired) {
     mod += 1
-    if (pinned) {
-      why.push("- plus 1 for pinned")
-    } else {
-      why.push("- plus 1 for tired")
-    }
+    why.push("- plus 1 for tired")
   }
   if (rapid) {
     mod += 1

@@ -339,7 +339,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
     color = counterRed
     size = 18
   } else if (counter.hasUnit) {
-    if (counter.unit.targetedRange) { path = circlePath(loc, 10) }
+    if (counter.unit.targetedRange || counter.unit.offBoard) { path = circlePath(loc, 10) }
     if (counter.unit.targetedRange || counter.unit.rapidFire) { style.stroke = "black" }
     if (counter.unit.type === unitType.SupportWeapon && counter.unit.targetedRange) {
       style.stroke = "black"
@@ -349,7 +349,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
       style.stroke = "white"
       style.fill = "white"
     }
-    if (counter.unit.targetedRange || counter.unit.rapidFire) { style.stroke = "black" }
+    if (counter.unit.targetedRange || counter.unit.rapidFire || counter.unit.offBoard) { style.stroke = "black" }
   }
   if (counter.hasFeature) {
     color = "white"

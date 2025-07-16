@@ -1,7 +1,7 @@
 import Game from "./Game";
 import {
   BaseTerrainType, Coordinate, Direction, ExtendedDirection, Player, VictoryHex,
-  WeatherType, WindType, baseTerrainType, markerType, weatherType, windType,
+  WeatherType, WindType, baseTerrainType, markerType, unitStatus, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
 import Unit from "./Unit";
@@ -304,6 +304,22 @@ export default class Map {
     const counter = this.findCounterById(id) as Counter
     const newList = this.removeCounterFromList(this.units[loc.y][loc.x], id)
     this.units[loc.y][loc.x] = newList
+    if (counter.hasUnit) {
+      const unit = counter.unit
+      if (unit.parent) {
+        unit.parent.children = unit.parent.children.filter(c => c.id !== unit.id)
+        unit.parent = undefined
+      }
+      if (unit.children.length > 0) {
+        for (const c of unit.children) {
+          c.parent = undefined
+          if (c.canCarrySupport) {
+            c.status = unitStatus.Broken
+          }
+        }
+        unit.children = []
+      }
+    }
     this.game.addEliminatedCounter(counter.hasFeature ? counter.feature : counter.unit)
   }
 

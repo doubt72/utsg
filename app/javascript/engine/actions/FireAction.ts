@@ -121,6 +121,9 @@ export default class FireAction extends BaseAction {
     const to = target0.hex as Coordinate
     const sponson = !!firing[0].sponson
     let fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson)
+    if (firing0.unit.crewed && firing0.unit.parent) {
+      firing0.unit.parent.status = unitStatus.Activated
+    }
     if (firing0.unit.targetedRange || firing0.unit.offBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
@@ -157,7 +160,9 @@ export default class FireAction extends BaseAction {
               if (needDice) { hitRoll.description += "succeeded" }
               for (const t of targets) {
                 if (t.counter.unit.canCarrySupport) {
-                  this.game.moraleChecksNeeded.push({unit: t.counter.unit, from: [from], to })
+                  this.game.moraleChecksNeeded.push({
+                    unit: t.counter.unit, from: [from], to, incendiary: firing0.unit.incendiary
+                  })
                 }
               }
             } else if (needDice) { hitRoll.description += "failed" }
@@ -170,7 +175,7 @@ export default class FireAction extends BaseAction {
             } else if (t.counter.unit.isVehicle) {
               fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, sponson)
               const baseHit = baseToHit(fp.fp)
-              const armor = t.counter.unit.lowestArmor
+              const armor = firing0.unit.incendiary ? 0 : t.counter.unit.lowestArmor
               let hitCheck = baseHit + armor
               if (hitCheck < 2) { hitCheck = 2 }
               if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
@@ -183,10 +188,10 @@ export default class FireAction extends BaseAction {
               if (hitRoll.result > hitCheck) {
                 t.counter.unit.status = unitStatus.Wreck
                 if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
-              } else if (hitRoll.result === hitCheck) {
+              } else if (hitRoll.result === hitCheck && !firing0.unit.incendiary) {
                 t.counter.unit.immobilized = true
                 if (needDice) { hitRoll.description += "tie, vehicle immobilized" }
-              }else if (needDice) { hitRoll.description += "failed" }
+              } else if (needDice) { hitRoll.description += "failed" }
             }
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
@@ -239,7 +244,7 @@ export default class FireAction extends BaseAction {
           }
           if (hitRoll.result > hitCheck) {
             targets.forEach(t => this.game.moraleChecksNeeded.push(
-              { unit: t.counter.unit, from: [from], to  }))
+              { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary }))
             if (needDice) { hitRoll.description += "hit"}
           } else if (needDice) { hitRoll.description += "miss"}
         }
@@ -247,23 +252,28 @@ export default class FireAction extends BaseAction {
       if (firing0.unit.breakWeaponRoll && targetRoll.result <= firing0.unit.breakWeaponRoll) {
         if (firing0.unit.isVehicle) {
           if (sponson) {
-            firing0.unit.sponsonJammed = true
             if (firing0.unit.breakDestroysSponson) {
               if (needDice) { targetRoll.description += ", firing weapon destroyed" }
               firing0.unit.sponsonDestroyed = true
             } else {
               if (needDice) { targetRoll.description += ", firing weapon broken" }
+              firing0.unit.sponsonJammed = true
             }
           } else {
-            firing0.unit.jammed = true
             if (firing0.unit.breakDestroysWeapon) {
               if (needDice) { targetRoll.description += ", firing weapon destroyed" }
               firing0.unit.weaponDestroyed = true
             } else {
               if (needDice) { targetRoll.description += ", firing weapon broken" }
+              firing0.unit.jammed = true
             }
           }
         } else if (firing0.unit.breakDestroysWeapon) {
+          if (firing0.unit.incendiary && firing0.unit.parent) {
+            this.game.moraleChecksNeeded.push({
+              unit: firing0.unit.parent, from: [], to, incendiary: true
+            })
+          }
           map.eliminateCounter(from, firing0.unit.id)
           if (needDice) { targetRoll.description += ", firing weapon destroyed" }
         } else {
@@ -311,8 +321,25 @@ export default class FireAction extends BaseAction {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
                 t.counter.unit.status = unitStatus.Wreck
                 if (needDice) { hitRoll.description += `, ${t.counter.unit.name} destroyed` }
+              } else if (t.counter.unit.isVehicle && firing0.unit.incendiary) {
+                fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false)
+                let hitCheck = baseToHit(fp.fp)
+                if (hitCheck < 2) { hitCheck = 2 }
+                if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
+                const hitRoll = this.diceResults[diceIndex++]
+                if (needDice) {
+                  hitRoll.description = `penetration roll ${
+                    targets.length > 1 ? `for ${t.counter.unit.name} ` : ""
+                  }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
+                }
+                if (hitRoll.result > hitCheck) {
+                  t.counter.unit.status = unitStatus.Wreck
+                  if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
+                } else if (needDice) { hitRoll.description += "failed" }
               } else {
-                this.game.moraleChecksNeeded.push({ unit: t.counter.unit, from: fcoords, to: c })
+                this.game.moraleChecksNeeded.push({
+                  unit: t.counter.unit, from: fcoords, to: c, incendiary: firing0.unit.incendiary
+                })
               }
             }
           })
@@ -321,22 +348,29 @@ export default class FireAction extends BaseAction {
           if (f.counter.unit.breakWeaponRoll && hitRoll.result <= f.counter.unit.breakWeaponRoll) {
             if (f.counter.unit.isVehicle) {
               if (sponson) {
-                f.counter.unit.sponsonJammed = true
                 if (f.counter.unit.breakDestroysSponson) {
+                  f.counter.unit.sponsonDestroyed = true
                   if (needDice) { hitRoll.description += ", firing weapon destroyed" }
                 } else {
+                  f.counter.unit.sponsonJammed = true
                   if (needDice) { hitRoll.description += ", firing weapon broken" }
                 }
               } else {
-                f.counter.unit.jammed = true
                 if (f.counter.unit.breakDestroysWeapon) {
+                  f.counter.unit.weaponDestroyed = true
                   if (needDice) { hitRoll.description += ", firing weapon destroyed" }
                 } else {
+                  f.counter.unit.jammed = true
                   if (needDice) { hitRoll.description += ", firing weapon broken" }
                 }
               }
             } else if (f.counter.unit.breakDestroysWeapon) {
               const hex = f.counter.hex as Coordinate
+              if (f.counter.unit.incendiary && f.counter.unit.parent) {
+                this.game.moraleChecksNeeded.push({
+                  unit: f.counter.unit.parent, from: [], to: hex, incendiary: true
+                })
+              }
               map.eliminateCounter(hex, f.counter.unit.id)
               if (needDice) { hitRoll.description += `, ${f.counter.unit.name} destroyed` }
             } else {
@@ -348,11 +382,14 @@ export default class FireAction extends BaseAction {
       }
     }
     for (const o of this.origin) {
-      const counter = map.findCounterById(o.id) as Counter
-      if (!counter.unit.jammed || counter.unit.isVehicle) { counter.unit.status = unitStatus.Activated }
-    }
-    if (firing0.unit.crewed && firing0.unit.parent) {
-      firing0.unit.parent.status = unitStatus.Activated
+      const counter = map.findCounterById(o.id)
+      if (counter) {
+        counter.unit.status = unitStatus.Activated
+        if (counter.unit.singleFire) {
+          const hex = counter.hex as Coordinate
+          map.eliminateCounter(hex, counter.unit.id)
+        }
+      }
     }
     if (needDice) { this.data.dice_result = this.diceResults }
     sortStacks(map)

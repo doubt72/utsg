@@ -1,6 +1,7 @@
 High Priority Features/Bug Fixes:
   - Firing
     - Finish tests
+    - Artillery Drift
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing
@@ -22,6 +23,7 @@ Future Features/Bug Fixes:
     - Update docs for rapid fire -1, point-blank -1
     - Remove reaction fire penalty from docs
     - Change terminology for jamming in documentation to be more like breaking
+    - Pinned half, not -1
 
   - Disable sponson switch with broken sponson weapon
   - Don't unselect first initial selection when cancelling move/fire/assault

@@ -80,7 +80,7 @@ export default class Game {
   resignationLevel: number;
   sponsonFire: boolean;
 
-  moraleChecksNeeded: { unit: Unit, from: Coordinate[], to: Coordinate, incendiary?: boolean }[];
+  moraleChecksNeeded: { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
