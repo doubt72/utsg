@@ -1,3 +1,5 @@
+import Feature from "../engine/Feature"
+import Unit from "../engine/Unit"
 import { Coordinate, Direction, Player } from "./commonTypes"
 
 export function alliedCodeToName(code: string): string {
@@ -175,6 +177,15 @@ export const initiativeRolls = [8, 11, 14, 16, 18, 19, 20]
 
 export function initiativeThreshold(value: number): number {
   return [0, ...initiativeRolls][value] ?? 0
+}
+
+export function counterKey(c: Unit | Feature): string {
+  let extra = c.type === "ldr" ? `${c.baseMorale}-${c.leadership}` : c.type
+  const f = c as Feature
+  const u = c as Unit
+  if (c.name === "Crew") { extra = `${u.currentGunHandling}` }
+  if (c.name === "Sniper") { extra = `${f.sniperRoll}` }
+  return `${c.isFeature ? "feature" : c.nation}-${c.name.toLowerCase()}-${extra}`
 }
 
 export const stackLimit = 12

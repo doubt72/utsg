@@ -28,8 +28,16 @@ export default function ReinforcementPanel({
   const [closeButtonHover, setCloseButtonHover] = useState<boolean>(false)
 
   const allUnits = (): ReinforcementSchedule | undefined => {
-    if (!map) { return }
-    return map.game?.availableReinforcements(player)
+    if (!map || !map.game) { return }
+    const rc: ReinforcementSchedule = {}
+    const reinf = map.game.availableReinforcements(player)
+    for (const key in reinf) {
+      const n = Number(key)
+      rc[n] = reinf[n]
+    }
+    const last = map.game.sortedCasualties(player)
+    if (last.length > 0) { rc[99] = last }
+    return rc
   }
 
   const maxWidth = (units: object) => {
@@ -37,7 +45,7 @@ export default function ReinforcementPanel({
     for (const value of Object.values(units)) {
       if (value.length > length) { length = value.length }
     }
-    return length == 1 ? 225 : length * 90 + 80
+    return length == 1 ? 225 : length * 90 + 84
   }
 
   useEffect(() => {
@@ -71,7 +79,7 @@ export default function ReinforcementPanel({
                 style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }}/>
           <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-            available units:
+            available units, losses:
           </text>
           <text x={x + 15} y={yy + 60} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
@@ -109,22 +117,23 @@ export default function ReinforcementPanel({
               style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }} />
         <text x={x + 10} y={yy + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-          available units:
+          available units{ units[99] ? ", losses" : "" }:
         </text>
         {shiftButton}
         {closeButton}
         {
           Object.entries(units).map((pair, i) => {
             const turn = Number(pair[0])
+            const label = turn > 98 ? "losses" : (turn > 0 ? `turn ${turn}` : "setup")
             return (
               <g key={i}>
                 <text x={x + 10} y={yy + 100 + 106*i} fontSize={16} textAnchor="start"
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-                  {turn > 0 ? `turn ${turn}` : "setup"}
+                  {label}
                 </text>
                 {
                   pair[1].map((u, j) => {
-                    const x0 = x + 80 + 90*j
+                    const x0 = x + 84 + 90*j
                     const y = yy + 52 + 106*i
                     const counter = new Counter(new Coordinate(x0, y+5), u.counter, map, true)
                     counter.onMap = false
@@ -139,9 +148,9 @@ export default function ReinforcementPanel({
                     } else if (counter.targetUF.selected) {
                       counter.targetUF.select()
                     }
-                    counter.showDisabled = map.game?.phase !== gamePhaseType.Deployment ||
+                    counter.showDisabled = (map.game?.phase !== gamePhaseType.Deployment ||
                       map.game.currentPlayer !== player || map.game.state !== 'in_progress' ||
-                      map.game.turn !== turn
+                      map.game.turn !== turn) && turn !== 99
                     const count = (u.x || 1) - (u.used || 0)
                     const cb = () => { ovCallback({show: true, counters: [counter]})}
                     if (count < 1) {

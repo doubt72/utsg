@@ -96,8 +96,6 @@ export default function MapDisplay({
     if (!m) { return false }
     const turn = m?.game?.turn ?? 0
     const turns = m?.game?.scenario.turns ?? 1
-    console.log(turn)
-    console.log(turns)
     return turn > 2 && turn < turns - 2
   }
 

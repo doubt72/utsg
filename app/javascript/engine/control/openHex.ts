@@ -103,10 +103,7 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
       return hexOpenType.Closed
     }
   } else {
-    const size = map.countersAt(hex.coord).reduce((sum, c) => {
-      return c.hasFeature ? sum : sum + c.unit.size
-    }, 0)
-    if (unit.size + size > stackLimit) {
+    if (unit.size + map.sizeAt(hex.coord) > stackLimit) {
       return hexOpenType.Closed
     }
   }

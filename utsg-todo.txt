@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Check wreck stacking / Abstract stacking checks
-  - Show eliminated units; scoring
   - Firing
     - Finish tests
 
@@ -11,6 +9,7 @@ High Priority Features/Bug Fixes:
     - Tank Gun Destroyed
     - Sponson Broken
     - Sponson Destroyed
+    - Routed Unit
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing

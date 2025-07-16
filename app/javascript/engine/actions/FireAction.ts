@@ -165,7 +165,7 @@ export default class FireAction extends BaseAction {
           for (const t of targets) {
             if (t.counter.unit.canCarrySupport) { continue }
             if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
-              map.eliminateCounter(to, t.counter.unit.id)
+              t.counter.unit.status = unitStatus.Wreck
               if (needDice) { targetRoll.description += `, ${t.counter.unit.name} destroyed` }
             } else if (t.counter.unit.isVehicle) {
               fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, sponson)
@@ -181,7 +181,7 @@ export default class FireAction extends BaseAction {
                 }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
               }
               if (hitRoll.result > hitCheck) {
-                map.eliminateCounter(to, t.counter.unit.id)
+                t.counter.unit.status = unitStatus.Wreck
                 if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
               } else if (hitRoll.result === hitCheck) {
                 t.counter.unit.immobilized = true
@@ -190,7 +190,7 @@ export default class FireAction extends BaseAction {
             }
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
-          map.eliminateCounter(to, target0.unit.id)
+          target0.unit.status = unitStatus.Wreck
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
         } else if (target0.unit.isVehicle) {
           let turretHit = false
@@ -214,7 +214,7 @@ export default class FireAction extends BaseAction {
               hitRoll.description = `penetration roll (2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
             }
             if (hitRoll.result > hitCheck) {
-              map.eliminateCounter(to, target0.unit.id)
+              target0.unit.status = unitStatus.Wreck
               if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
             } else if (hitRoll.result === hitCheck) {
               if (turretHit) {
@@ -226,7 +226,7 @@ export default class FireAction extends BaseAction {
               }
             } else if (needDice) { hitRoll.description += "failed" }
           } else {
-            map.eliminateCounter(to, target0.unit.id)
+            target0.unit.status = unitStatus.Wreck
             targetRoll.description += ", no armor on hit side, vehicle destroyed"
           }
         } else {
@@ -302,17 +302,18 @@ export default class FireAction extends BaseAction {
           }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
         }
         if (hitRoll.result > hitCheck) {
+          if (needDice) { hitRoll.description += "hit" }
           targets.forEach(t => {
             const hex = t.counter.hex as Coordinate
             if (hex.x === c.x && hex.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
-                map.eliminateCounter(c, t.counter.unit.id)
+                t.counter.unit.status = unitStatus.Wreck
+                if (needDice) { hitRoll.description += `, ${t.counter.unit.name} destroyed` }
               } else {
                 this.game.moraleChecksNeeded.push({ unit: t.counter.unit, from: fcoords, to: c })
               }
             }
           })
-          if (needDice) { hitRoll.description += "hit" }
         } else if (needDice) { hitRoll.description += "miss" }
         for (const f of firing) {
           if (f.counter.unit.breakWeaponRoll && hitRoll.result <= f.counter.unit.breakWeaponRoll) {

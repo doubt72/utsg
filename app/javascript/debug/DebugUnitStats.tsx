@@ -6,6 +6,7 @@ import { MarkerData } from "../engine/Marker";
 import Feature, { FeatureData } from "../engine/Feature";
 import Scenario from "../engine/Scenario";
 import { useParams } from "react-router-dom";
+import { counterKey } from "../utilities/utilities";
 
 // Yes, I could have put all this on the backend, but (1) the backend is largely
 // a big dumb JSON blob store WRT to any game logic, and (2) while this is super
@@ -63,15 +64,6 @@ export default function DebugUnitStats() {
     setCountUnits(() => cu)
     setCountScenarios(() => cs)
   }, [scenarios])
-
-  const counterKey = (c: Unit | Feature) => {
-    let extra = c.type === "ldr" ? `${c.baseMorale}-${c.leadership}` : c.type
-    const f = c as Feature
-    const u = c as Unit
-    if (c.name === "Crew") { extra = `${u.currentGunHandling}` }
-    if (c.name === "Sniper") { extra = `${f.sniperRoll}` }
-    return `${c.isFeature ? "feature" : c.nation}-${c.name.toLowerCase()}-${extra}`
-  }
 
   const cells = () => {
     return Object.values(units).filter(u => {

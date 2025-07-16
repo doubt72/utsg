@@ -40,6 +40,15 @@ export function sortStacks(map: Map) {
   }
 }
 
+export function sortValues(unit: Unit | Feature): number {
+  if (unit.isFeature) { return 0 }
+  const u = unit as Unit
+  return {
+    other: 0, sw: 1, gun: 2, sqd: 3, tm: 4, ldr: 5, cav: 6, truck: 7, ht: 8, ac: 9,
+    spg: 10, tank: 11,
+  }[(u).type] ?? 99
+}
+
 function dataForUnit(
   loc: Coordinate, uf: Unit | Feature, index: number, showAllCounters: boolean, parent?: number
 ): [MapCounterData[], number] {
@@ -177,15 +186,6 @@ function loadVehicles(list: (Unit | Feature)[]): (Unit | Feature)[] {
     newList.push(unit)
   }
   return newList
-}
-
-function sortValues(unit: Unit | Feature): number {
-  if (unit.isFeature) { return 0 }
-  const u = unit as Unit
-  return {
-    other: 0, sw: 1, gun: 2, sqd: 3, tm: 4, ldr: 5, cav: 6, truck: 7, ht: 8, ac: 9,
-    spg: 10, tank: 11,
-  }[(u).type] ?? 99
 }
 
 function sortStack(list: (Unit | Feature)[]): (Unit | Feature)[] {

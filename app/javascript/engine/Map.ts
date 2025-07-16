@@ -411,6 +411,12 @@ export default class Map {
     return rc
   }
 
+  sizeAt(loc: Coordinate): number {
+    return this.countersAt(loc).reduce((sum, c) => {
+      return c.hasFeature ? sum : sum + c.unit.size
+    }, 0)
+  }
+
   unitAtId(loc: Coordinate, id: string): Counter | undefined {
     const counters = this.countersAt(loc)
     for (const c of counters) {

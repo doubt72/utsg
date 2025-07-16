@@ -33,7 +33,7 @@ const mapTestData = (hexes: HexData[][]): MapData => {
   return {
     layout: [ 5, 5, "x" ],
     allied_dir: 4, axis_dir: 1,
-    victory_hexes: [[0, 0, 2], [4, 4, 1]],
+    victory_hexes: [[0, 0, 2], [0, 1, 1]],
     allied_setup: { 0: [[0, "*"]] },
     axis_setup: { 0: [[4, "*"]] },
     base_terrain: baseTerrainType.Grass,
@@ -1083,12 +1083,18 @@ describe("fire tests", () => {
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
 
+      expect(game.playerTwoScore).toBe(10)
+
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.finishFire()
       Math.random = original
 
-      expect(game.eliminatedUnits[0].id).toBe("target1")
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "hit roll (2d10): target 15, rolled 20: hit, Studebaker US6 destroyed"
+      )
+      expect(game.playerTwoScore).toBe(14)
     })
 
     test("can combine unit and carried mg", () => {
@@ -1683,6 +1689,7 @@ describe("fire tests", () => {
       expect(mult.why.length).toBe(1)
 
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+      expect(game.playerTwoScore).toBe(10)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1693,7 +1700,8 @@ describe("fire tests", () => {
         { unit: target, from: [floc], to: tloc },
         { unit: target2, from: [floc], to: tloc },
       ])
-      expect(game.eliminatedUnits[0].id).toBe("target3")
+      expect(target3.isWreck).toBe(true)
+      expect(game.playerTwoScore).toBe(15)
     })
 
     test("single shot", () => {

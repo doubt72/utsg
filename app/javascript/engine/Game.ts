@@ -1,6 +1,6 @@
-import { Coordinate, Direction, Player } from "../utilities/commonTypes";
+import { Coordinate, Direction, Player, unitType } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
-import Scenario, { ReinforcementItem, ReinforcementSchedule, ScenarioData } from "./Scenario";
+import Scenario, { ReinforcementItem, ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction, {
   GameActionData, GameActionPath, GameActionPhaseChange
 } from "./GameAction";
@@ -9,7 +9,7 @@ import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
-import { alliedCodeToName, axisCodeToName, togglePlayer } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
 import {
   actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
@@ -18,6 +18,7 @@ import {
   startAssault, startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass
 } from "./control/gameActions";
 import Hex from "./Hex";
+import { sortValues } from "./support/organizeStacks";
 
 export type GameData = {
   id: number;
@@ -60,8 +61,6 @@ export default class Game {
   winner?: Player;
   iTurn: number = 0;
   phase: GamePhase;
-  playerOnePoints: number = 0;
-  playerTwoPoints: number = 0;
   actions: BaseAction[] = [];
   lastActionIndex: number = -1;
   initiative: number = 0;
@@ -104,8 +103,6 @@ export default class Game {
     this.iCurrentPlayer = this.scenario.firstDeploy || 1
     this.iTurn = 0
     this.phase = gamePhaseType.Deployment
-    this.playerOnePoints = 0
-    this.playerTwoPoints = 0
 
     this.messageQueue = []
     this.resignationLevel = 0
@@ -247,21 +244,47 @@ export default class Game {
   }
 
   get playerOneScore(): number {
-    let victoryHexes = 0
+    let points = 0
     for (let i = 0; i < this.scenario.map.victoryHexes.length; i++) {
       const vh = this.scenario.map.victoryHexes[i]
-      if (vh.player === 1) { victoryHexes += 10 }
+      if (vh.player === 1) { points += 10 }
     }
-    return this.playerOnePoints + victoryHexes
+    for (const u of this.eliminatedUnits) {
+      if (u.isFeature || u.nation === this.playerOneNation) { continue }
+      const unit = u as Unit
+      if (unit.type === unitType.Leader) {
+        points += 6
+      } else if (!unit.uncrewedSW && !unit.crewed) {
+        points += unit.size
+      }
+    }
+    for (const u of this.scenario.map.allUnits) {
+      if (u.hasFeature || u.unit.nation === this.playerOneNation) { continue }
+      if (u.unit.isWreck) { points += u.unit.size }
+    }
+    return points
   }
 
   get playerTwoScore(): number {
-    let victoryHexes = 0
+    let points = 0
     for (let i = 0; i < this.scenario.map.victoryHexes.length; i++) {
       const vh = this.scenario.map.victoryHexes[i]
-      if (vh.player === 2) { victoryHexes += 10 }
+      if (vh.player === 2) { points += 10 }
     }
-    return this.playerTwoPoints + victoryHexes
+    for (const u of this.eliminatedUnits) {
+      if (u.isFeature || u.nation === this.playerTwoNation) { continue }
+      const unit = u as Unit
+      if (unit.type === unitType.Leader) {
+        points += 6
+      } else if (!unit.uncrewedSW && !unit.crewed) {
+        points += unit.size
+      }
+    }
+    for (const u of this.scenario.map.allUnits) {
+      if (u.hasFeature || u.unit.nation === this.playerTwoNation) { continue }
+      if (u.unit.isWreck) { points += u.unit.size }
+    }
+    return points
   }
 
   get currentHelpSection(): string {
@@ -350,6 +373,37 @@ export default class Game {
 
   removeEliminatedCounter(id: string) {
     this.eliminatedUnits = this.eliminatedUnits.filter(c => c.id !== id)
+  }
+
+  sortedCasualties(player: Player): ReinforcementList {
+    const set: { [index: string]: { x: number, c: Unit } } = {}
+    for (const c of this.eliminatedUnits) {
+      if (c.isFeature || c.nation !== (player === 1 ? this.playerOneNation : this.playerTwoNation)) {
+        continue
+      }
+      const key = counterKey(c)
+      if (set[key] === undefined) {
+        set[key] = { x: 1, c: c as Unit }
+      } else {
+        set[key].x++
+      }
+    }
+    const rc: ReinforcementList = []
+    for (const key in set) {
+      rc.push({ x: set[key].x, used: 0, counter: set[key].c })
+    }
+    return rc.sort((a, b) => {
+      let an = a.counter.name
+      an = String(99 - sortValues(a.counter)) + an
+      an = String(99 - (a.counter as Unit).size) + an
+      an = a.counter.type === unitType.Leader ? "0" : "1" + an
+      let bn = b.counter.name
+      bn = String(99 - sortValues(b.counter)) + bn
+      bn = String(99 - (b.counter as Unit).size) + bn
+      bn = b.counter.type === unitType.Leader ? "0" : "1" + bn
+      if (an === bn) { return 0 }
+      return an > bn ? 1 : -1
+    })
   }
 
   previousActionUndoPossible(index: number): boolean {
@@ -560,10 +614,13 @@ export default class Game {
         deploy.index === current.deploy?.index) {
       this.cancelAction()
     } else {
-      const counter = this.availableReinforcements(player)[deploy.turn][deploy.index]
-      if (counter.x > counter.used) {
-        this.gameActionState = { player, currentAction: actionType.Deploy, selection: [] }
-        this.gameActionState.deploy = deploy
+      const list = this.availableReinforcements(player)[deploy.turn]
+      if (list) {
+        const counter = list[deploy.index]
+        if (counter.x > counter.used) {
+          this.gameActionState = { player, currentAction: actionType.Deploy, selection: [] }
+          this.gameActionState.deploy = deploy
+        }
       }
     }
   }

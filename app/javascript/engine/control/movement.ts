@@ -79,13 +79,11 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     if (next && next.unit.crewed) { return hexOpenType.Closed }
   }
 
-  const countersAt = map.countersAt(to)
   const moveSize = game.gameActionState.selection.filter(u => !u.counter.unit.parent).reduce(
     (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
   )
-  const toSize = countersAt.filter(u => !u.hasFeature && !u.unit.parent).reduce(
-    (sum, u) => sum + u.unit.size + u.children.reduce((sum, u) => u.unit.size, 0), 0
-  )
+  const toSize = map.sizeAt(to)
+  const countersAt = map.countersAt(to)
   if (moveSize + toSize > stackLimit) { return hexOpenType.Closed }
   for (const c of countersAt) {
     if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return hexOpenType.Closed }
