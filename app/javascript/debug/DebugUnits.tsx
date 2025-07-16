@@ -174,7 +174,7 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       versions.push(svgContainer(unit4, key*11+3))
 
       const unit5 = new Unit(data)
-      unit5.weaponBroken = true
+      unit5.weaponDestroyed = true
       versions.push(svgContainer(unit5, key*11+4))
 
       const unit6 = new Unit(data)
@@ -188,20 +188,20 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
 
       const unit8 = new Unit(data)
       unit8.status = unitStatus.Exhausted
-      unit8.weaponBroken = true
+      unit8.weaponDestroyed = true
       unit8.immobilized = true
       versions.push(svgContainer(unit8, key*11+7))
 
       const unit9 = new Unit(data)
       unit9.status = unitStatus.Exhausted
-      unit9.weaponBroken = true
+      unit9.weaponDestroyed = true
       unit9.immobilized = true
       unit9.eliteCrew = -1
       versions.push(svgContainer(unit9, key*11+8))
 
       const unit10 = new Unit(data)
       unit10.status = unitStatus.Exhausted
-      unit10.weaponBroken = true
+      unit10.weaponDestroyed = true
       unit10.immobilized = true
       unit10.eliteCrew = 1
       versions.push(svgContainer(unit10, key*11+9))

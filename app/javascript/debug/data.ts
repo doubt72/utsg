@@ -19,7 +19,7 @@ const testUnitData: { [index: string]: string } = {
   usgun: "usa_75mm M1 Pack_gun", usat: "usa_37mm M3_gun", usac: "usa_M3A1 Scout Car_ac",
   ustank: "usa_M4 Sherman_tank", ussg: "usa_M3 Lee_tank", usspg: "usa_M8 Scott_spg",
   usspat: "usa_M18 Hellcat_spg", usftt: "usa_M3A1 Stuart FT_spg", usftt2: "usa_M4A3R5 Sherman_spg",
-  usht: "usa_M2 Half-track_ht", usht2: "usa_T12 GMC_ht", usht3: "usa_T19/M21 MMC_ht",
+  usht: "usa_M2 Half-track_ht", usht2: "usa_M3 GMC_ht", usht3: "usa_T19/M21 MMC_ht",
   usht4: "usa_LVT-1_ht", usht5: "usa_LVT-2_ht", usht6: "usa_LVT(A)-4_ht", ustruck: "usa_GMC CCKW_truck",
   ustruck2: "usa_GMC DUKW_truck", usjeep: "usa_Jeep_truck", usjeep2: "usa_Jeep .50 MG_truck",
   usmoto: "usa_H-D WLA_cav", hcav: "ger_Horse_cav", bcav: "jap_Bicycle_cav", htm: "ger_Kettenkrad_truck",
@@ -40,7 +40,8 @@ export const mapDebugData: {
   features: { u: string, x: number, y: number, f?: Direction }[],
   units: {
     u: string, x: number, y: number, f?: Direction, tf?: Direction, v?: number,
-    imm?: boolean, trt?: boolean, st?: UnitStatus, brk?: boolean, wpn?: boolean,
+    st?: UnitStatus, imm?: boolean, trt?: boolean, brk?: boolean, spn?: boolean,
+    wpnD?: boolean, spnD?: boolean, rtd?: boolean,
   }[],
   hexes: HexData[][]
 }[] = [
@@ -85,7 +86,7 @@ export const mapDebugData: {
       { u: testUnitData.gldr, x: 6, y: 4 },
       { u: testUnitData.gtank, x: 4, y: 4, f: 5, tf: 5, imm: true },
       { u: testUnitData.gtank, x: 2, y: 3, f: 3, tf: 3, trt: true },
-      { u: testUnitData.gtank, x: 2, y: 7, f: 3, tf: 4, wpn: true },
+      { u: testUnitData.gtank, x: 2, y: 7, f: 3, tf: 4, brk: true },
       {
         u: testUnitData.rtank, x: 10, y: 5, f: 1, tf: 1, imm: true, st: unitStatus.Activated,
         brk: true, trt: true
@@ -767,6 +768,19 @@ export const mapDebugData: {
       { u: testUnitData.usat, x: 3, y: 13, f: 1 },
       { u: testUnitData.uscrew, x: 3, y: 13 },
       { u: testUnitData.usldr, x: 3, y: 13 },
+      { u: testUnitData.usinf, x: 5, y: 5 },
+      { u: testUnitData.usmg, x: 5, y: 5, brk: true },
+      { u: testUnitData.uscrew, x: 6, y: 5 },
+      { u: testUnitData.usgun, x: 6, y: 5, f: 2, brk: true },
+      { u: testUnitData.ustank, x: 7, y: 5, f: 2, tf: 2, imm: true },
+      { u: testUnitData.ustank, x: 8, y: 5, f: 2, tf: 2, trt: true },
+      { u: testUnitData.ustank, x: 9, y: 5, f: 2, tf: 2, brk: true },
+      { u: testUnitData.ustank, x: 10, y: 5, f: 2, tf: 2, wpnD: true },
+      { u: testUnitData.ussg, x: 11, y: 5, f: 2, tf: 2, spn: true },
+      { u: testUnitData.ussg, x: 12, y: 5, f: 2, tf: 2, spnD: true },
+      { u: testUnitData.usinf, x: 13, y: 5, brk: true, rtd: true },
+      { u: testUnitData.usinf, x: 5, y: 4, st: unitStatus.Pinned },
+      { u: testUnitData.ustank, x: 6, y: 4, f: 2, tf: 2, st: unitStatus.Wreck },
     ],
     hexes: [
       [

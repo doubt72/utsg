@@ -14,8 +14,9 @@ export function markerMoraleLayout(counter: Counter): CounterLayout | false {
 }
 
 export function markerBreakLayout(counter: Counter): CounterLayout | false {
-  if (!counter.hasMarker || counter.marker.type !== markerType.Jammed) { return false }
-
+  if (!counter.hasMarker || ![markerType.Jammed, markerType.SponsonJammed].includes(counter.marker.type)) {
+    return false
+  }
   const loc = new Coordinate(counter.x + 40, counter.y + 14)
   return {
     path: circlePath(loc, 10),
@@ -25,7 +26,9 @@ export function markerBreakLayout(counter: Counter): CounterLayout | false {
 }
 
 export function markerFixLayout(counter: Counter): CounterLayout | false {
-  if (!counter.hasMarker || counter.marker.type !== markerType.Jammed) { return false }
+  if (!counter.hasMarker || ![markerType.Jammed, markerType.SponsonJammed].includes(counter.marker.type)) {
+    return false
+  }
   const loc = new Coordinate(counter.x + 40, counter.y + 63)
   return {
     path: circlePath(loc, 8),

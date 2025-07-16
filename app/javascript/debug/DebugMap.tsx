@@ -110,20 +110,25 @@ export default function DebugMap() {
   useEffect(() => {
     if (!map) { return }
     mapDebugData[id].features.forEach(data => {
+      if (!units[data.u]) { console.log(data.u) }
       const unit = (units[data.u] as Feature).clone()
       if (data.f) { unit.facing = data.f }
       map.addCounter(new Coordinate(data.x, data.y), unit)
     })
     mapDebugData[id].units.forEach(data => {
+      if (!units[data.u]) { console.log(data.u) }
       const unit = (units[data.u] as Unit).clone()
       if (data.f) { unit.facing = data.f }
       if (data.tf) { unit.turretFacing = data.tf }
       if (data.v) { unit.eliteCrew = data.v }
       if (data.st) { unit.status = data.st }
       if (data.imm) { unit.immobilized = true }
-      if (data.brk) { unit.jammed = true }
-      if (data.wpn) { unit.weaponBroken = true }
       if (data.trt) { unit.turretJammed = true }
+      if (data.brk) { unit.jammed = true }
+      if (data.spn) { unit.sponsonJammed = true }
+      if (data.wpnD) { unit.weaponDestroyed = true }
+      if (data.spnD) { unit.sponsonDestroyed = true }
+      if (data.rtd) { unit.routed = true }
       map.addCounter(new Coordinate(data.x, data.y), unit)
     })
     organizeStacks(map)

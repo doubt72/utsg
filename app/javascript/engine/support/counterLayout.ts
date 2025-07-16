@@ -94,7 +94,8 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   const style = { fill: markerYellow, stroke: "black", strokeWidth: 2 }
   const fStyle = { fill: "black" }
   if (counter.unit.isPinned || counter.unit.immobilized || counter.unit.turretJammed ||
-      (counter.unit.jammed && counter.unit.hullArmor) || counter.unit.weaponBroken) {
+      (counter.unit.jammed && counter.unit.isVehicle) || counter.unit.weaponDestroyed ||
+      counter.unit.sponsonJammed || counter.unit.sponsonDestroyed || counter.unit.routed) {
     style.fill = counterRed
     style.stroke = "white"
     fStyle.fill = "white"
@@ -106,8 +107,11 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   if (counter.unit.isTired) { text.push("TRD") }
   if (counter.unit.immobilized) { text.push("IMM") }
   if (counter.unit.turretJammed) { text.push("TRT") }
-  if (counter.unit.jammed && counter.unit.hullArmor) { text.push("JAM") }
-  if (counter.unit.weaponBroken) { text.push("WPN") }
+  if (counter.unit.jammed && counter.unit.isVehicle) { text.push("WPB") }
+  if (counter.unit.weaponDestroyed) { text.push("WPD") }
+  if (counter.unit.sponsonJammed) { text.push("SPB") }
+  if (counter.unit.sponsonDestroyed) { text.push("SPD") }
+  if (counter.unit.routed) { text.push("RTD") }
   if (text.length === 0) { return false }
   if (text.length === 2) {
     size = 15
@@ -160,12 +164,22 @@ export function counterInfoBadges(
     if (u.turretJammed && s) {
       badges.push({ text: "turret jammed", color: counterRed, tColor: "white" })
     }
-    if (u.jammed && u.turreted && s) {
-      badges.push({ text: "weapon jammed", color: counterRed, tColor: "white" })
-    } else if (u.jammed && !u.turreted) {
-      badges.push({ text: "broken", color: counterRed, tColor: "white" })
-    } else if (u.weaponBroken && s) {
+    if (u.jammed && u.isVehicle && s) {
       badges.push({ text: "weapon broken", color: counterRed, tColor: "white" })
+    } else if (u.jammed && s) {
+      badges.push({ text: "broken", color: counterRed, tColor: "white" })
+    }
+    if (u.weaponDestroyed && s) {
+      badges.push({ text: "weapon destr.", color: counterRed, tColor: "white" })
+    }
+    if (u.sponsonJammed && s) {
+      badges.push({ text: "sponson brok.", color: counterRed, tColor: "white" })
+    }
+    if (u.sponsonDestroyed && s) {
+      badges.push({ text: "sponson dest.", color: counterRed, tColor: "white" })
+    }
+    if (u.routed && s) {
+      badges.push({ text: "routed", color: counterRed, tColor: "white" })
     }
     if (u.isTired && s) {
       badges.push({ text: "tired", color: markerYellow, tColor: "black" })

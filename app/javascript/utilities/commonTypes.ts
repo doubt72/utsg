@@ -159,11 +159,13 @@ export const sponsonType: { [index: string]: SponsonType } = {
   Gun: "g", AntiArmor: "p", Flame: "ft",
 }
 
-export type MarkerType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
+export type MarkerType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+  16 | 17 | 18
 export const markerType: { [index: string]: MarkerType } = {
   TrackedHull: 0, WheeledHull: 1, Tired: 2, Pinned: 3, Activated: 4, Exhausted: 5,
   Jammed: 6, TurretJammed: 7, Immobilized: 8, Wind: 9, Weather: 10, Initiative: 11,
-  Turn: 12, EliteCrew: 13, GreenCrew: 14, WeaponBroken: 15
+  Turn: 12, EliteCrew: 13, GreenCrew: 14, WeaponBroken: 15, SponsonJammed: 16,
+  SponsonBroken: 17, Routed: 18
 }
 
 export type FeatureType = "bunker" | "pillbox" | "foxhole" | "trench" | "scrape" |

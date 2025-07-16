@@ -1,15 +1,6 @@
 High Priority Features/Bug Fixes:
   - Firing
     - Finish tests
-
-  - Test Map Show
-    - MG broken
-    - Gun Broken
-    - Tank Gun Broken
-    - Tank Gun Destroyed
-    - Sponson Broken
-    - Sponson Destroyed
-    - Routed Unit
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing
@@ -27,10 +18,10 @@ High Priority Features/Bug Fixes:
 
 Future Features/Bug Fixes:
   - Redo docs for satchel charges / molotov cocktail
-  - Add crew activated on fire to docs
-  - Update docs for rapid fire -1, point-blank -1
-  - Remove reaction fire penalty from docs
-  - Change terminology for jamming in documentation to be more like breaking
+    - Add crew activated on fire to docs
+    - Update docs for rapid fire -1, point-blank -1
+    - Remove reaction fire penalty from docs
+    - Change terminology for jamming in documentation to be more like breaking
 
   - Disable sponson switch with broken sponson weapon
   - Don't unselect first initial selection when cancelling move/fire/assault
@@ -47,6 +38,7 @@ Future Features/Bug Fixes:
       (So scenarios can be modified without breaking existing games)
   - Switch main page game status to websocket, not polling
   - Fix stacking parent/children indicators when showing markers
+    - Including hull
 
   - Improved move validation/synchronization to block duplicate/illegal moves
   - Break up tests / large files

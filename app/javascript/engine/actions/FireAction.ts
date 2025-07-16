@@ -250,6 +250,7 @@ export default class FireAction extends BaseAction {
             firing0.unit.sponsonJammed = true
             if (firing0.unit.breakDestroysSponson) {
               if (needDice) { targetRoll.description += ", firing weapon destroyed" }
+              firing0.unit.sponsonDestroyed = true
             } else {
               if (needDice) { targetRoll.description += ", firing weapon broken" }
             }
@@ -257,6 +258,7 @@ export default class FireAction extends BaseAction {
             firing0.unit.jammed = true
             if (firing0.unit.breakDestroysWeapon) {
               if (needDice) { targetRoll.description += ", firing weapon destroyed" }
+              firing0.unit.weaponDestroyed = true
             } else {
               if (needDice) { targetRoll.description += ", firing weapon broken" }
             }
@@ -265,7 +267,7 @@ export default class FireAction extends BaseAction {
           map.eliminateCounter(from, firing0.unit.id)
           if (needDice) { targetRoll.description += ", firing weapon destroyed" }
         } else {
-          firing0.unit.jammed
+          firing0.unit.jammed = true
           if (needDice) { targetRoll.description += ", firing weapon broken" }
         }
       }
@@ -347,7 +349,7 @@ export default class FireAction extends BaseAction {
     }
     for (const o of this.origin) {
       const counter = map.findCounterById(o.id) as Counter
-      counter.unit.status = unitStatus.Activated
+      if (!counter.unit.jammed || counter.unit.isVehicle) { counter.unit.status = unitStatus.Activated }
     }
     if (firing0.unit.crewed && firing0.unit.parent) {
       firing0.unit.parent.status = unitStatus.Activated

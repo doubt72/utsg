@@ -85,8 +85,11 @@ function addMarkers(loc: Coordinate, uf: Unit | Feature, index: number): MapCoun
     if (unit.eliteCrew < 0) { markerTypes.push(markerType.GreenCrew) }
     if (unit.immobilized) { markerTypes.push(markerType.Immobilized) }
     if (unit.turretJammed) { markerTypes.push(markerType.TurretJammed) }
-    if (unit.jammed && unit.turreted) { markerTypes.push(markerType.Jammed) }
-    if (unit.weaponBroken) { markerTypes.push(markerType.WeaponBroken) }
+    if (unit.jammed && unit.isVehicle) { markerTypes.push(markerType.Jammed) }
+    if (unit.weaponDestroyed) { markerTypes.push(markerType.WeaponBroken) }
+    if (unit.sponsonJammed) { markerTypes.push(markerType.SponsonJammed) }
+    if (unit.sponsonDestroyed) { markerTypes.push(markerType.SponsonBroken) }
+    if (unit.routed) { markerTypes.push(markerType.Routed) }
     if (unit.isTired) { markerTypes.push(markerType.Tired) }
     if (unit.isPinned) { markerTypes.push(markerType.Pinned) }
     if (unit.isExhausted) { markerTypes.push(markerType.Exhausted) }

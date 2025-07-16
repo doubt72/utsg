@@ -117,8 +117,12 @@ export default class Unit {
   tired: boolean;
   jammed: boolean;
   sponsonJammed: boolean;
+  weaponDestroyed: boolean;
+  sponsonDestroyed: boolean;
   turretJammed: boolean;
   immobilized: boolean;
+  routed: boolean;
+
   facing: Direction;
   turretFacing: Direction;
   selected: boolean;
@@ -212,8 +216,11 @@ export default class Unit {
     this.tired = false
     this.jammed = false
     this.sponsonJammed = false
+    this.weaponDestroyed = false
+    this.sponsonDestroyed = false
     this.turretJammed = false
     this.immobilized = false
+    this.routed = false
 
     this.facing = 1
     this.turretFacing = 1
@@ -234,11 +241,6 @@ export default class Unit {
   clone(): Unit {
     return new Unit(this.rawData)
   }
-
-  // fullIcon = false
-  // isHull = false
-  // sniperRoll = 0
-  // hideOverlayRotation = false
 
   select() {
     this.selected = !this.selected
@@ -401,8 +403,9 @@ export default class Unit {
 
   get noFire(): boolean {
     if (this.isBroken || this.isWreck) { return true }
-    if (this.sponson && this.jammed && this.sponsonJammed) { return true }
-    if (!this.sponson && this.jammed) { return true }
+    if (this.sponson && (this.jammed || this.weaponDestroyed) &&
+        (this.sponsonJammed || this.sponsonDestroyed)) { return true }
+    if (!this.sponson && (this.jammed || this.weaponDestroyed )) { return true }
     return false
   }
 

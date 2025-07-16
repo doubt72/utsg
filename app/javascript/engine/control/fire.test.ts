@@ -1765,5 +1765,9 @@ describe("fire tests", () => {
     test("sponson breakdown destroy roll", () => {
 
     })
+
+    test("firing from wire", () => {
+      
+    })
   })
 })

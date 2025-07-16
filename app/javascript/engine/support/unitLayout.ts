@@ -54,7 +54,8 @@ export function weaponFixLayout(counter: Counter): CounterLayout | false {
 
 export function sizeLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.size ) { return false }
-  const x = counter.x + 66
+  let x = counter.x + 66
+  if (counter.unit.isWreck) { x += 3 }
   let y = counter.y + 23
   if (counter.unit.icon === "cav" || counter.unit.icon === "cav-wheel") { y -= 3 }
   const stroke = counter.unit.armored && !counter.unit.isWreck ? "black" : clearColor
@@ -195,6 +196,7 @@ export function sponsonLayout(counter: Counter): CounterLayout | false {
   const path = [
     "M", x-width, y-9, "L", x+width, y-9, "L", x+width, y+3, "L", x-width, y+3, "L", x-width, y-9
   ].join(" ")
+  const tfill = counter.unit.sponsonJammed || counter.unit.sponsonDestroyed ? counterRed : "black"
   const style = { fill: counterColor(counter) }
   if (gun.type === sponsonType.Flame) {
     style.fill = markerYellow
@@ -202,7 +204,8 @@ export function sponsonLayout(counter: Counter): CounterLayout | false {
     style.fill = "white"
   }
   return {
-    path: path, x: x, y: y, size: 9.5, style: style, value: `${gun.firepower}-${gun.range}`
+    path: path, x: x, y: y, size: 9.5, style: style, value: `${gun.firepower}-${gun.range}`,
+    tStyle: { fill: tfill }
   }
 }
 
