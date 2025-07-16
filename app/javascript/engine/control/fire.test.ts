@@ -187,7 +187,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -237,7 +237,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
@@ -279,7 +279,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(2)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -325,7 +325,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -372,7 +372,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -420,7 +420,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -478,7 +478,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -530,7 +530,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -658,7 +658,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -994,7 +994,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, firingIDs), makeAction(game, ["target1"]), false
+        game, makeAction(game, firingIDs), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1078,7 +1078,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]), false
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1135,7 +1135,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, firingIDs), makeAction(game, ["target1"]), false
+        game, makeAction(game, firingIDs), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1196,11 +1196,11 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing2"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing2"]), makeAction(game, ["target1", "target2"]), false
+        game, makeAction(game, ["firing2"]), makeAction(game, ["target1", "target2"])
       )
-      expect(mods.mod).toBe(2)
+      expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 2 for rapid fire")
+      expect(mods.why[0]).toBe("- plus 1 for rapid fire")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1285,11 +1285,11 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(10)
       expect(fireHindrance(game, makeAction(game, ["firing2", "firing5"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing2", "firing5"]), makeAction(game, ["target1", "target2"]), false
+        game, makeAction(game, ["firing2", "firing5"]), makeAction(game, ["target1", "target2"])
       )
-      expect(mods.mod).toBe(2)
+      expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 2 for rapid fire")
+      expect(mods.why[0]).toBe("- plus 1 for rapid fire")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1391,7 +1391,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, firingIDs), makeAction(game, ["target1"]), false
+        game, makeAction(game, firingIDs), makeAction(game, ["target1"])
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1486,7 +1486,7 @@ describe("fire tests", () => {
       expect(game.eliminatedUnits[0].id).toBe("firing2")
     })
 
-    test("area fire", () => {
+    test("area fire (tie, immobilized vehicle)", () => {
       const game = createTestGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
@@ -1551,8 +1551,80 @@ describe("fire tests", () => {
         { unit: target, from: [floc], to: tloc },
         { unit: target2, from: [floc], to: tloc },
       ])
+      expect(target3.immobilized).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 20, rolled 20: failed"
+        "penetration roll for T-34 M40 (2d10): target 20, rolled 20: tie, vehicle immobilized"
+      )
+    })
+
+    test("area fire (miss)", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMortar)
+      firing2.baseFirepower /= 2
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      expect(fp.fp).toBe(4)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(17)
+
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      expect(fp2.fp).toBe(2)
+      expect(fp2.why.length).toBe(2)
+      expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
+      expect(baseToHit(fp2.fp)).toBe(19)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target, from: [floc], to: tloc },
+        { unit: target2, from: [floc], to: tloc },
+      ])
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
+        "penetration roll for T-34 M40 (2d10): target 22, rolled 20: failed"
       )
     })
 

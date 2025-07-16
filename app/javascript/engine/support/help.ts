@@ -378,7 +378,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
     }
   } else {
     const basehit = baseToHit(fp.fp)
-    const mods = untargetedModifiers(game, firing, targets, false)
+    const mods = untargetedModifiers(game, firing, targets)
     const tohit = basehit + mods.mod + hindrance
     rc.push(`-> to hit (2d10): ${tohit} (${chance2D10(tohit)}%)`)
     rc.push(`firepower: ${fp.fp}`)

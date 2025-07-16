@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Switch move to sliding scale
-  - Morale Check
-  - Deal with ties on penetration fire
   - Check wreck stacking / Abstract stacking checks
   - Show eliminated units; scoring
   - Firing
@@ -31,16 +28,19 @@ High Priority Features/Bug Fixes:
 
 Future Features/Bug Fixes:
   - Redo docs for satchel charges / molotov cocktail
+  - Add crew activated on fire to docs
+  - Update docs for rapid fire -1, point-blank -1
+  - Remove reaction fire penalty from docs
+  - Change terminology for jamming in documentation to be more like breaking
+
   - Disable sponson switch with broken sponson weapon
   - Don't unselect first initial selection when cancelling move/fire/assault
-  - Ability to drag reinforcement panel
-  - Ability to drag main map
+  - Ability to drag reinforcement panel, main map, minimap
   - Remove strong points, nerf other fortifications
   - Handle map scale and such settings gone wrong
   - Show Terrain in counter overlay
   - Ability to kick players
   - Implement Help Button linking to game context
-  - Change terminology for jamming in documentation to be more like breaking
   - Fix hindrance bug
     - Through two fence corner intersections
     - Also for hindrance at higher elevation
@@ -53,7 +53,7 @@ Future Features/Bug Fixes:
   - Break up tests / large files
   - Fix flickering of control buttons?
   - Disable text selection on map/etc?
-  - Support mouse scroll on map?
+  - Support mouse scroll on map (use for zoom?)
     - Much harder than it appears, need a way to intercept only scroll/wheel/key events
       but pass through all other mouse events
   - Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?

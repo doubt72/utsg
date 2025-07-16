@@ -216,7 +216,7 @@ function leadershipAt(game: Game, at: Coordinate): number {
 }
 
 export function untargetedModifiers(
-  game: Game, source: ActionSelection[], targets: ActionSelection[], react: boolean
+  game: Game, source: ActionSelection[], targets: ActionSelection[]
 ): { mod: number, why: string[] } {
   // TODO: Break down by location
   const why: string[] = []
@@ -276,12 +276,8 @@ export function untargetedModifiers(
     }
   }
   if (rapid) {
-    mod += 2
-    why.push("- plus 2 for rapid fire")
-  }
-  if (react) {
     mod += 1
-    why.push("- plus 1 for reaction fire")
+    why.push("- plus 1 for rapid fire")
   }
   if (intense) {
     mod += 2
@@ -384,6 +380,10 @@ export function armorHitModifiers(
   if (dist > Math.ceil(source.currentRange/2) ) {
     mod += 1
     why.push("- plus 1 for more than half range")
+  }
+  if (dist < 2 ) {
+    mod -= 1
+    why.push("- minus 1 for point-blank range")
   }
   return { mod, why }
 }

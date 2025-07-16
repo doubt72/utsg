@@ -106,7 +106,6 @@ export default class FireAction extends BaseAction {
     // the first time this has been run.
     const needDice = this.diceResults.length === 0
     let diceIndex = 0
-
     const map = this.game.scenario.map
     const firing: FireActionActor[] = this.origin.map(o => {
       return { counter: this.game.findCounterById(o.id) as Counter, sponson: o.sponson }
@@ -115,6 +114,9 @@ export default class FireAction extends BaseAction {
       return { counter: this.game.findCounterById(t.id) as Counter }
     })
     const firing0 = firing[0].counter
+    if (this.path.length > 1) {
+      firing0.unit.turretFacing = this.path[1].turret ?? 1
+    }
     const target0 = targets[0].counter
     const to = target0.hex as Coordinate
     const sponson = !!firing[0].sponson
@@ -181,7 +183,10 @@ export default class FireAction extends BaseAction {
               if (hitRoll.result > hitCheck) {
                 map.eliminateCounter(to, t.counter.unit.id)
                 if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
-              } else if (needDice) { hitRoll.description += "failed" }
+              } else if (hitRoll.result === hitCheck) {
+                t.counter.unit.immobilized = true
+                if (needDice) { hitRoll.description += "tie, vehicle immobilized" }
+              }else if (needDice) { hitRoll.description += "failed" }
             }
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
@@ -211,6 +216,14 @@ export default class FireAction extends BaseAction {
             if (hitRoll.result > hitCheck) {
               map.eliminateCounter(to, target0.unit.id)
               if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
+            } else if (hitRoll.result === hitCheck) {
+              if (turretHit) {
+                if (needDice) { hitRoll.description += "tie, turret jammed" }
+                target0.unit.turretJammed = true
+              } else {
+                if (needDice) { hitRoll.description += "tie, vehicle immobilized" }
+                target0.unit.immobilized = true
+              }
             } else if (needDice) { hitRoll.description += "failed" }
           } else {
             map.eliminateCounter(to, target0.unit.id)
@@ -258,7 +271,7 @@ export default class FireAction extends BaseAction {
       }
     } else {
       const basehit = baseToHit(fp.fp)
-      const mods = untargetedModifiers(this.game, this.convertAToA(firing), this.convertAToA(targets), false)
+      const mods = untargetedModifiers(this.game, this.convertAToA(firing), this.convertAToA(targets))
       const coords: Coordinate[] = []
       for (const t of targets) {
         let check = false
@@ -334,6 +347,9 @@ export default class FireAction extends BaseAction {
     for (const o of this.origin) {
       const counter = map.findCounterById(o.id) as Counter
       counter.unit.status = unitStatus.Activated
+    }
+    if (firing0.unit.crewed && firing0.unit.parent) {
+      firing0.unit.parent.status = unitStatus.Activated
     }
     if (needDice) { this.data.dice_result = this.diceResults }
     sortStacks(map)

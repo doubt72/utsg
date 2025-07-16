@@ -92,18 +92,29 @@ export default function MapDisplay({
     error: string, timer: number
   }>({ error: "", timer: 0 })
 
+  const checkMin = (m?: Map): boolean => {
+    if (!m) { return false }
+    const turn = m?.game?.turn ?? 0
+    const turns = m?.game?.scenario.turns ?? 1
+    console.log(turn)
+    console.log(turns)
+    return turn > 2 && turn < turns - 2
+  }
+
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
     if (!map) { return 9999 }
     if (preview || m?.preview) { return map.ySize * scale }
     const gc = guiCollapse ? 178 : 0
     const fill = m?.debug ? 16 : 408 - gc
-    const available = 1254 + 50 / scale - 50
+    const available = 1144 + 50 / scale - 50
     return height - fill < available * scale ? available * scale : height - fill
   }
+
   const minWidth = (width: number, scale: number = 1, m?: Map) => {
     if (!map) { return 9999 }
     if (preview || m?.preview) { return map.xSize * scale }
-    let min = 705 + (m?.game?.scenario.turns ?? 0) * 90
+    let min = 1274
+    if (checkMin(m)) { min += 15 }
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 280 }
     return width - 24 < min * scale ? min * scale : width - 24
   }
@@ -265,27 +276,27 @@ export default function MapDisplay({
     setWeather(() =>
       map.preview || preview ? undefined :
         <WeatherDisplay preview={false} map={map} hideCounters={hideCounters}
-                        xx={width / scale - 192} yy={2 + map?.yStatusSize + 50 / scale - 50}
+                        xx={width / scale - 192} yy={52 + 50 / scale - 50}
                         ovCallback={setOverlay} />
     )
     setScore(() =>
       map.preview || preview ? undefined :
-        <ScoreDisplay map={map} xx={width / scale - 192} yy={280 + map?.yStatusSize + 50 / scale - 50}
+        <ScoreDisplay map={map} xx={width / scale - 192} yy={330 + 50 / scale - 50}
                       maxX={width / scale} maxY={height / scale} scale={scale} />
     )
     setInitiative(() =>
       map.preview || preview ? undefined :
         <InitiativeDisplay map={map} ovCallback={setOverlay} hideCounters={hideCounters}
-                           xx={width / scale - 192} yy={342 + map?.yStatusSize + 50 / scale - 50} />
+                           xx={width / scale - 192} yy={392 + 50 / scale - 50} />
     )
     setTurn(() =>
       map.preview || preview ? undefined :
-        <TurnDisplay xx={width / scale - 102 - (map?.game?.scenario.turns ?? 0) * 90}
+        <TurnDisplay xx={width / scale - 677 - (checkMin(map) ? 15 : 0)}
                      yy={52 + 50 / scale - 50} hideCounters={hideCounters} map={map}
                      ovCallback={setOverlay}/>
     )
     setSniper(() => {
-      const x = width / scale - 384 - (map.game?.scenario.turns ?? 0) * 90
+      const x = width / scale - 959 - (checkMin(map) ? 15 : 0)
       return map.preview || preview || (!map?.game?.alliedSniper && !map?.game?.axisSniper) ?
         undefined :
         <SniperDisplay xx={x} yy={52 + 50 / scale - 50} hideCounters={hideCounters} map={map}
