@@ -240,6 +240,32 @@ export default class Map {
     return this.hexNeighbors(loc)[dir - 1]
   }
 
+  neightborCoordinate(loc: Coordinate, dir: number): Coordinate {
+    const offset = loc.y%2
+    return [
+      new Coordinate(loc.x - 1, loc.y),
+      new Coordinate(loc.x - 1 + offset, loc.y - 1),
+      new Coordinate(loc.x + offset, loc.y - 1),
+      new Coordinate(loc.x + 1, loc.y),
+      new Coordinate(loc.x + offset, loc.y + 1),
+      new Coordinate(loc.x - 1 + offset, loc.y + 1),
+    ][dir + 1]
+  }
+
+  driftHex(start: Coordinate, dir: number, distance: number): false | Coordinate {
+    let rc = start
+    // Honestly, which this is theoretically slower (but never actually slow in
+    // practice), it's simpler than calculating the hex in one step since each
+    // direction has a different calculation.  Well, there's probably a generic
+    // cubic version that's marginally simpler, but I'm too lazy to work it out
+    // right now
+    for (let i = 0; i < distance; i++) {
+      rc = this.neightborCoordinate(rc, dir)
+    }
+    if (rc.x < 0 || rc.y < 0 || rc.x > this.width || rc.y > this.width) { return false }
+    return rc
+  }
+
   relativeDirection(from: Coordinate, to: Coordinate): Direction | undefined {
     const offset = from.y%2
     if (from.x - 1 === to.x && from.y === to.y) { return 1 }

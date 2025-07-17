@@ -1669,74 +1669,82 @@ describe("fire tests", () => {
       expect(game.playerTwoScore).toBe(15)
     })
 
-    test("offboard artillery miss", () => {
-      // const game = createTestGame()
-      // const map = game.scenario.map
-      // const firing = new Unit(testGInf)
-      // firing.id = "firing1"
-      // const floc = new Coordinate(3, 2)
-      // map.addCounter(floc, firing)
-      // const firing2 = new Unit(testGRadio)
-      // firing2.id = "firing2"
-      // firing2.select()
-      // map.addCounter(floc, firing2)
+    test.only("offboard artillery miss", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadio)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
 
-      // const target = new Unit(testRInf)
-      // target.id = "target1"
-      // const tloc = new Coordinate(4, 0)
-      // map.addCounter(tloc, target)
-      // const target2 = new Unit(testRInf)
-      // target2.id = "target2"
-      // map.addCounter(tloc, target2)
-      // const target3 = new Unit(testRTank)
-      // target3.id = "target3"
-      // map.addCounter(tloc, target3)
-      // organizeStacks(map)
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
 
-      // game.startFire()
+      game.startFire()
 
-      // const state = game.gameActionState as GameActionState
-      // const fire = state.fire as FireActionState
-      // expect(fire.doneSelect).toBe(true)
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
 
-      // select(map, {
-      //   counter: map.countersAt(tloc)[0],
-      //   target: { type: "map", xy: tloc }
-      // }, () => {})
-      // expect(target.targetSelected).toBe(true)
-      // expect(target2.targetSelected).toBe(true)
-      // expect(target3.targetSelected).toBe(true)
-      // expect(fire.doneSelect).toBe(true)
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
 
-      // const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
-      // expect(fp.fp).toBe(24)
-      // expect(fp.why.length).toBe(1)
-      // expect(baseToHit(fp.fp)).toBe(9)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      expect(fp.fp).toBe(24)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(9)
 
-      // const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
-      // expect(fp2.fp).toBe(12)
-      // expect(fp2.why.length).toBe(2)
-      // expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
-      // expect(baseToHit(fp2.fp)).toBe(12)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      expect(fp2.fp).toBe(12)
+      expect(fp2.why.length).toBe(2)
+      expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
+      expect(baseToHit(fp2.fp)).toBe(12)
 
-      // const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
-      // expect(mult.mult).toBe(4)
-      // expect(mult.why.length).toBe(1)
+      const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(4)
+      expect(mult.why.length).toBe(1)
 
-      // expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
-      // expect(game.playerTwoScore).toBe(10)
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+      expect(game.playerTwoScore).toBe(10)
 
-      // const original = Math.random
-      // vi.spyOn(Math, "random").mockReturnValue(0.01)
-      // game.finishFire()
-      // Math.random = original
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
 
       // expect(game.moraleChecksNeeded).toStrictEqual([
       //   { unit: target, from: [floc], to: tloc, incendiary: false },
       //   { unit: target2, from: [floc], to: tloc, incendiary: false },
       // ])
       // expect(target3.isWreck).toBe(true)
-      // expect(game.playerTwoScore).toBe(15)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 8, rolled 1: miss, drifts, firing weapon broken"
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
+        "direction roll (d6): 1"
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
+        "distance roll (d10): 1 for 1 hexes, drifted off map"
+      )
     })
 
     test("single shot", () => {

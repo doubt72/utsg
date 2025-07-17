@@ -1,6 +1,7 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import {
-  baseToHit, coordinateToLabel, hexDistance, roll2d10, rolld10, rolld10x10,
+  baseToHit, coordinateToLabel, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
+  rolld6,
   togglePlayer
 } from "../../utilities/utilities";
 import {
@@ -100,6 +101,9 @@ export default class FireAction extends BaseAction {
     })
   }
 
+  // TODO: this is a mess.  Probably worth refactoring.  Someday.  Though it's
+  // mostly a lot of special cases; it'd only be slightly simpler if abstracted,
+  // albeit much more comprehensible.
   mutateGame(): void {
     // Generate dice on the fly if we need them; this will be sent to the
     // backend after being executed, so we can do this just-in-time if this is
@@ -136,19 +140,51 @@ export default class FireAction extends BaseAction {
       if (needDice) {
         targetRoll.description = `targeting roll (d10x10): target ${targetCheck}, rolled ${targetRoll.result}: `
       }
-      if (targetRoll.result > targetCheck) {
-        if (needDice) { targetRoll.description += "hit" }
+      if (targetRoll.result > targetCheck || firing0.unit.offBoard) {
+        let dTo = to
+        let dTargets = targets
+        if (targetRoll.result <= targetCheck && firing0.unit.offBoard) {
+          if (needDice) {
+            targetRoll.description += "miss, drifts"
+            this.diceResults.push({ result: rolld6(), type: "d6" })
+            this.diceResults.push({ result: rolld10(), type: "d10" })
+          }
+          const dirRoll = this.diceResults[diceIndex++]
+          const drift = this.diceResults[diceIndex++]
+          const dist = driftRoll(drift.result)
+          if (needDice) {
+            dirRoll.description = `direction roll (d6): ${dirRoll.result}`
+            drift.description = `distance roll (d10): ${drift.result} for ${dist} hexes`
+          }
+          const loc = map.driftHex(to, dirRoll.result, dist)
+          if (loc !== false) {
+            dTo = loc
+            drift.description += `, drifted to ${coordinateToLabel(loc)}`
+            dTargets = map.countersAt(loc).filter(c => c.hasUnit).map(u => {
+              return { counter: u }
+            })
+            if (dTargets.length < 1) {
+              drift.description += ", no units in hex"
+            }
+          } else {
+            dTargets = []
+            drift.description += ", drifted off map"
+          }
+        } else {
+          if (needDice) { targetRoll.description += "hit" }
+        }
         if (firing0.unit.areaFire) {
+          const dTarget0 = dTargets[0]?.counter || target0
           let infantry = false
-          let unit = target0.unit
-          for (const t of targets) {
+          let unit = dTarget0.unit
+          for (const t of dTargets) {
             if (t.counter.unit.canCarrySupport) {
               infantry = true
               unit = t.counter.unit
             }
           }
           if (infantry) {
-            fp = firepower(this.game, this.convertAToA(firing), unit, to, sponson)
+            fp = firepower(this.game, this.convertAToA(firing), unit, dTo, sponson)
             let hitCheck = baseToHit(fp.fp)
             if (hitCheck < 2) { hitCheck = 2 }
             if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
@@ -158,22 +194,22 @@ export default class FireAction extends BaseAction {
             }
             if (hitRoll.result > hitCheck) {
               if (needDice) { hitRoll.description += "succeeded" }
-              for (const t of targets) {
+              for (const t of dTargets) {
                 if (t.counter.unit.canCarrySupport) {
                   this.game.moraleChecksNeeded.push({
-                    unit: t.counter.unit, from: [from], to, incendiary: firing0.unit.incendiary
+                    unit: t.counter.unit, from: [from], to: dTo, incendiary: firing0.unit.incendiary
                   })
                 }
               }
             } else if (needDice) { hitRoll.description += "failed" }
           }
-          for (const t of targets) {
+          for (const t of dTargets) {
             if (t.counter.unit.canCarrySupport) { continue }
             if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
               t.counter.unit.status = unitStatus.Wreck
               if (needDice) { targetRoll.description += `, ${t.counter.unit.name} destroyed` }
             } else if (t.counter.unit.isVehicle) {
-              fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, sponson)
+              fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, dTo, sponson)
               const baseHit = baseToHit(fp.fp)
               const armor = firing0.unit.incendiary ? 0 : t.counter.unit.lowestArmor
               let hitCheck = baseHit + armor
@@ -182,7 +218,7 @@ export default class FireAction extends BaseAction {
               const hitRoll = this.diceResults[diceIndex++]
               if (needDice) {
                 hitRoll.description = `penetration roll ${
-                  targets.length > 1 ? `for ${t.counter.unit.name} ` : ""
+                  dTargets.length > 1 ? `for ${t.counter.unit.name} ` : ""
                 }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
               }
               if (hitRoll.result > hitCheck) {

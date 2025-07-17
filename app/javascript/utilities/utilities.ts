@@ -104,6 +104,10 @@ export function nowUTCString(): string {
   return `${year}-${mon}-${day}T${hour}:${min}:${sec}Z`
 }
 
+export function rolld6(): number {
+  return Math.floor(Math.random() * 6) + 1
+}
+
 export function rolld10(): number {
   return Math.floor(Math.random() * 10) + 1
 }
