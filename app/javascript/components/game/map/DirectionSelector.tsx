@@ -4,6 +4,7 @@ import { Direction, roadType } from "../../../utilities/commonTypes";
 import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
 import { openHexRotatePossible } from "../../../engine/control/openHex";
+import { clearColor } from "../../../utilities/graphics";
 
 interface DirectionSelectorProps {
   hex?: Hex;
@@ -80,7 +81,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
           <text x={points[1][0]} y={points[1][1]} fontSize={22.5} textAnchor="middle"
                 transform={`rotate(${v * 60 - 150} ${points[1][0]} ${points[1][1]}) translate(0 6)`}
                 fontFamily="'Courier Prime', monospace" style={tStyle}>{v}</text>
-          <path d={points[0]} style={{ fill: "rgba(0,0,0,0)"}} onClick={callback} />
+          <path d={points[0]} style={{ fill: clearColor}} onClick={callback} />
         </g>
       )
     })
@@ -89,7 +90,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
   const overlay = () => {
     if (!hex?.map?.game?.gameActionState?.move && !hex?.map?.game?.gameActionState?.assault) { return }
     return (
-      <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }} />
+      <polygon points={hex.hexCoords} style={{ fill: clearColor }} />
     )
   }
 

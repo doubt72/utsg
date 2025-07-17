@@ -1,7 +1,7 @@
 import {
   baseTerrainType, Direction, RoadCenterType, roadType, streamType, terrainType
 } from "../../utilities/commonTypes"
-import { CircleLayout, PathLayout, SVGPathArray, SVGStyle } from "../../utilities/graphics"
+import { CircleLayout, clearColor, PathLayout, SVGPathArray, SVGStyle } from "../../utilities/graphics"
 import { hexBuildingBuildingDisplay } from "../../utilities/hexBuilding"
 import { normalDir } from "../../utilities/utilities"
 import Hex from "../Hex"
@@ -112,7 +112,7 @@ export function roadPath(hex: Hex): string {
 export function roadOutlineStyle(hex: Hex): SVGStyle {
   const width = hex.roadType === "p" ? 10 : 28
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: (["j", "f", "b"].includes(hex.baseTerrain) || hex.river) ? width : 0,
     stroke: elevationStyles(hex)[hex.elevation || 0]["fill"],
     strokeLinejoin: "round",
@@ -121,7 +121,7 @@ export function roadOutlineStyle(hex: Hex): SVGStyle {
 
 export function bridgeStyle(hex: Hex): SVGStyle {
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: 28,
     stroke: hex.roadType === "t" ? "#BBB" : "#975",
   }
@@ -133,7 +133,7 @@ export function roadEdgeStyle(hex: Hex): SVGStyle {
   let width = hex.roadType === roadType.Path ? 0 : 16
   if (hex.roadType === roadType.Airfield) { width = 64 }
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: width,
     stroke: stroke,
     strokeLinejoin: hex.roadType === roadType.Airfield ? "miter" : "round",
@@ -152,7 +152,7 @@ export function roadStyle(hex: Hex): SVGStyle {
     width = 56
   }
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: width,
     stroke,
     strokeDasharray: hex.roadType === roadType.Path ? [5, 5] : undefined,
@@ -172,7 +172,7 @@ export function railroadPath(hex: Hex): string {
 
 export function railroadBedStyle(): SVGStyle {
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: 28,
     stroke: "rgba(127,63,0,0.25)",
     strokeLinejoin: "round",
@@ -181,7 +181,7 @@ export function railroadBedStyle(): SVGStyle {
 
 export function railroadBridgeStyle(): SVGStyle {
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: 22,
     stroke: "#DDD",
   }
@@ -189,7 +189,7 @@ export function railroadBridgeStyle(): SVGStyle {
 
 export function railroadtieStyle(): SVGStyle {
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: 16,
     stroke: "#777",
     strokeDasharray: [3, 20],
@@ -199,7 +199,7 @@ export function railroadtieStyle(): SVGStyle {
 
 export function railroadTrackStyle(): SVGStyle {
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: 6,
     stroke: "#777",
     strokeLinejoin: "round",
@@ -221,7 +221,7 @@ export function riverStyle(hex: Hex): SVGStyle {
     dash = [18, 5]
   }
   return {
-    fill: "rgba(0,0,0,0)",
+    fill: clearColor,
     strokeWidth: 10,
     stroke: color,
     strokeDasharray: dash,
@@ -285,8 +285,8 @@ const borderStyles: { [index: string]: SVGStyle } = {
 const borderDecorationStyles: { [index: string]: SVGStyle } = {
   f: { stroke: "#963", strokeWidth: 8, strokeDasharray: [2, 11.1] },
   w: { stroke: "#888", strokeWidth: 8, strokeDasharray: [2, 2] },
-  b: { stroke: "rgba(0,0,0,0)" },
-  c: { stroke: "rgba(0,0,0,0)" },
+  b: { stroke: clearColor },
+  c: { stroke: clearColor },
 }
 
 // Used for "isolated" terrain hexes (e.g., summits)

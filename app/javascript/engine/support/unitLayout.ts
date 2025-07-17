@@ -29,8 +29,8 @@ export function weaponBreakLayout(counter: Counter): CounterLayout | false {
     textColor = counterRed
   }
   if (counter.unit.jammed && counter.unit.breakDestroysWeapon) {
-    fill = "rgba(0,0,0,0)"
-    textColor = "rgba(0,0,0,0)"
+    fill = clearColor
+    textColor = clearColor
   }
   return {
     path: circlePath(new Coordinate(x, y), 8),
@@ -47,7 +47,7 @@ export function weaponFixLayout(counter: Counter): CounterLayout | false {
   const loc = new Coordinate(counter.x + 14, counter.y + 40)
   return {
     path: circlePath(loc, 8),
-    style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
+    style: { stroke: clearColor, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
     x: loc.x, y: loc.y + 4.25, size: 12, value: counter.unit.repairRoll,
   }
 }
@@ -464,10 +464,10 @@ export function facingLayout(counter: Counter, hull: boolean = false): facingLay
   const path = facingLine(counter, dir).concat(facingLine(counter, normalDir(dir - 1))).join(" ")
   return {
     path: path, dash: "4 4", style: {
-      fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: hull ? "rgba(255,255,0,1)" : "rgba(255,255,255,1)"
+      fill: clearColor, strokeWidth: 4, stroke: hull ? "rgba(255,255,0,1)" : "rgba(255,255,255,1)"
     },
     style2: {
-      fill: "rgba(0,0,0,0)", strokeWidth: 4, stroke: "rgba(0,0,0,1)"
+      fill: clearColor, strokeWidth: 4, stroke: "rgba(0,0,0,1)"
     }
   }
 }
@@ -486,7 +486,7 @@ function facingLine(counter: Counter, dir: Direction): SVGPathArray {
 
 function attrSizeFor(n: number, circle: boolean = false): number {
   if (n > 9 || n < 0) {
-    return circle ? 12.5 : 15
+    return circle ? 12 : 14
   } else {
     return 18
   }

@@ -1,17 +1,16 @@
 import React from "react";
-import { nationalControlBackgrounds } from "../../../utilities/graphics";
+import { clearColor, nationalControlBackgrounds } from "../../../utilities/graphics";
 
 export default function MapHexPatterns() {
-  const clear = "rgba(0,0,0,0)"
   const darkStyle = { fill: "rgba(0,0,0,0.16)" }
   const darkerStyle = { fill: "rgba(0,0,0,0.33)" }
   const forestStyle = { fill: "#070" }
-  const brushStyle = { stroke: "#7B7", fill: clear, strokeWidth: 0.2 }
-  const jungleStyle = { fill: clear, stroke: "#282", strokeWidth: 0.16 }
+  const brushStyle = { stroke: "#7B7", fill: clearColor, strokeWidth: 0.2 }
+  const jungleStyle = { fill: clearColor, stroke: "#282", strokeWidth: 0.16 }
   const palmStyle = { fill: "#3A3", stroke: "#3A3", strokeLineJoin: "miter", strokeWidth: 0.16 }
-  const marshStyle = { fill: clear, stroke: "#282", strokeWidth: 0.33 }
-  const frozenMarshStyle = { fill: clear, stroke: "#CDC", strokeWidth: 0.33 }
-  const darkStrokeStyle = { fill: clear, stroke: "rgba(0,0,0,0.33)", strokewidth: 0.33 }
+  const marshStyle = { fill: clearColor, stroke: "#282", strokeWidth: 0.33 }
+  const frozenMarshStyle = { fill: clearColor, stroke: "#CDC", strokeWidth: 0.33 }
+  const darkStrokeStyle = { fill: clearColor, stroke: "rgba(0,0,0,0.33)", strokewidth: 0.33 }
 
   const triangle = (cx: number, cy: number) => {
     let path: (number | string)[] = []

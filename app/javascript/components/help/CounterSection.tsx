@@ -555,7 +555,7 @@ export default function CounterSection() {
         sections.push(<p key={index++}>
           <strong>Circled size</strong> indicates the unit is armored.
         </p>)
-      } else if (!unit.crewed && !unit.uncrewedSW) {
+      } else if (!unit.operated) {
         sections.push(<p key={index++}>
           <strong>Uncircled, unboxed size</strong> indicates the unit is soft (unarmored).
         </p>)

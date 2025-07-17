@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { roundedRectangle } from "../../../utilities/graphics";
+import { clearColor, roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
 import { mapHelpLayout } from "../../../engine/support/help";
 import { Coordinate } from "../../../utilities/commonTypes";
@@ -71,12 +71,12 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
         <g transform={`rotate(${(map.alliedDir - 1)*60} ${xl} ${yd})`}>
           <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                     `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
-                style={{ fill: "rgba(0,0,0,0)", stroke: "#444", strokeWidth: 2 }}/>
+                style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
         </g>
         <g transform={`rotate(${(map.axisDir - 1)*60} ${xr} ${yd})`}>
           <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
                     `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
-                style={{ fill: "rgba(0,0,0,0)", stroke: "#444", strokeWidth: 2 }}/>
+                style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
         </g>
         <circle cx={xl} cy={yd} r={12} style={nationOne(12, 1)}
                 onMouseEnter={() => helpText(xl+4, yd+8, game.alliedName)}

@@ -20,7 +20,7 @@ export function counterStyle(counter: Counter): SVGStyle {
 }
 
 export function counterOutlineStyle(counter: Counter): SVGStyle {
-  const color = "rgba(0,0,0,0)"
+  const color = clearColor
   if (counter.hasMarker && counter.marker.type === markerType.Turn) {
     return { fill: color, stroke: "black", strokeWidth: 1 }
   }

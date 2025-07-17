@@ -4,7 +4,7 @@ import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
 import Counter from "../../../engine/Counter";
 import { Coordinate, markerType, unitType } from "../../../utilities/commonTypes";
 import Map from "../../../engine/Map";
-import { counterOutline } from "../../../utilities/graphics";
+import { clearColor, counterOutline } from "../../../utilities/graphics";
 import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
 import { HelpOverlay } from "./Help";
 import { counterFireHelpLayout } from "../../../engine/support/help";
@@ -101,7 +101,7 @@ export default function MapCounterOverlay({
           )
           selectionOverlays.push(
             <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
-              <path d={counterPath(cd)} style={{ fill: "rgba(0,0,0,0)" }}
+              <path d={counterPath(cd)} style={{ fill: clearColor }}
                     onClick={(e: React.MouseEvent) => {
                       if (xx !== undefined && yy !== undefined) {
                         selectionCallback({
@@ -140,7 +140,7 @@ export default function MapCounterOverlay({
                 {
                   transport ?
                     <path d={counterOutline(cd, transport + 1, 4)}
-                          style={{ fill: "rgba(0,0,0,0)", stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
+                          style={{ fill: clearColor, stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
                 }
                 <MapCounter counter={cd} ovCallback={() => {}} />
               </g>
@@ -149,7 +149,7 @@ export default function MapCounterOverlay({
           )
         })}
         <g onMouseLeave={() => setOverlay({ show: false, x: 0, y: 0 })} >
-          <path d={layout.path} style={{ fill: "rgba(0,0,0,0)"}} />
+          <path d={layout.path} style={{ fill: clearColor}} />
           {selectionOverlays}
           {helpOverlays.reverse()}
         </g>

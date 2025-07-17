@@ -1,7 +1,7 @@
 import React from "react";
 import MapHexPatterns from "./MapHexPatterns";
 import Counter from "../../../engine/Counter";
-import { CounterLayout, StatusLayout } from "../../../utilities/graphics";
+import { clearColor, CounterLayout, StatusLayout } from "../../../utilities/graphics";
 import {
   amphibiousLayout, areaLayout, breakdownLayout, canTowLayout, centerLabelLayout, eliteLayout, engineerLayout,
   firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
@@ -478,7 +478,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   
   const overlay = () => {
     return (
-      <path d={counterPath(counter)} style={{ fill: "rgba(0,0,0,0)" }}
+      <path d={counterPath(counter)} style={{ fill: clearColor }}
             onMouseEnter={() => ovCallback(
               { show: true, x: counter.hex?.x, y: counter.hex?.y }
             )} />

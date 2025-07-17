@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import MapCounter from "../map/MapCounter";
-import { roundedRectangle } from "../../../utilities/graphics";
+import { clearColor, roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
 import { Coordinate, Player } from "../../../utilities/commonTypes";
 import Counter from "../../../engine/Counter";
@@ -66,7 +66,7 @@ export default function ReinforcementPanel({
         <line x1={closeX - ff} y1={closeY + ff} x2={closeX + ff} y2={closeY - ff}
               style={{ stroke: cStroke, strokeWidth: 2 }}
               onClick={closeCallback}/>
-        <circle cx={closeX} cy={closeY} r={8} style={{ fill: "rgba(0,0,0,0)" }}
+        <circle cx={closeX} cy={closeY} r={8} style={{ fill: clearColor }}
                 onClick={closeCallback} onMouseEnter={() => setCloseButtonHover(true)}
                 onMouseLeave={() => setCloseButtonHover(false)} />
       </g>
@@ -106,7 +106,7 @@ export default function ReinforcementPanel({
               onClick={shiftCallback}/>
         <line x1={sX12} y1={sY2} x2={sX21} y2={closeY} style={{ stroke: sStroke, strokeWidth: 2 }}
               onClick={shiftCallback}/>
-        <path d={path} style={{ fill: "rgba(0,0,0,0)" }} onClick={shiftCallback}
+        <path d={path} style={{ fill: clearColor }} onClick={shiftCallback}
               onMouseEnter={() => setShiftButtonHover(true)}
               onMouseLeave={() => setShiftButtonHover(false)}/>
       </g>

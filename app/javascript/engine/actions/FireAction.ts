@@ -421,7 +421,7 @@ export default class FireAction extends BaseAction {
     for (const o of this.origin) {
       const counter = map.findCounterById(o.id)
       if (counter) {
-        counter.unit.status = unitStatus.Activated
+        if (!counter.unit.operated && !counter.unit.jammed) { counter.unit.status = unitStatus.Activated }
         if (counter.unit.singleFire) {
           const hex = counter.hex as Coordinate
           map.eliminateCounter(hex, counter.unit.id)

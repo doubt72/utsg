@@ -67,7 +67,7 @@ const testGMortar: UnitData = {
 }
 
 const testGRadio: UnitData = {
-  t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 24, r: 0, v: 0,
+  t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 24, r: 99, v: 0,
   o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
 }
 

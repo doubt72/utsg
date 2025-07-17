@@ -62,7 +62,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (!action.doneRotating && !game.sponsonFire) {
           actions.push({ type: "finish_rotation" })
         }
-        if (action.targetSelection.length > 0) {
+        if (action.targetHexes.length > 0) {
           actions.push({ type: "fire_finish" })
         }
         actions.push({ type: "cancel_action" })
@@ -214,7 +214,7 @@ function canFire(unit: Unit | undefined): boolean {
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
   if (unit.parent && (unit.parent.isPinned || unit.parent.isBroken)) { return false }
   if (unit.parent && unit.parent.isVehicle) { return false }
-  if (!unit.parent && (unit.crewed || unit.uncrewedSW)) { return false }
+  if (!unit.parent && (unit.operated)) { return false }
   return true
 }
 

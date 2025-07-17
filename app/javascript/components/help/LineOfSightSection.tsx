@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { EyeFill, Stack } from "react-bootstrap-icons";
 import Map from "../../engine/Map";
 import { Coordinate, weatherType, windType } from "../../utilities/commonTypes";
-import { roundedRectangle } from "../../utilities/graphics";
+import { clearColor, roundedRectangle } from "../../utilities/graphics";
 import MapHex from "../game/map/MapHex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import { getAPI } from "../../utilities/network";
@@ -128,7 +128,7 @@ export default function LineOfSightSection() {
             <MapCounter counter={map.countersAt(new Coordinate(4, 6))[0]} ovCallback={() => {}} />
           </g>
           <path d={roundedRectangle(116, 41, 803, 748, 8)}
-                style={{ stroke: "#DDD", strokeWidth: 1, fill: "rgba(0,0,0,0)" }}
+                style={{ stroke: "#DDD", strokeWidth: 1, fill: clearColor }}
           />
         </svg>
         <div className="flex mb05em">

@@ -466,7 +466,7 @@ module Utility
             unit.each_with_index do |v, i|
               radio[key[i]] = v
             end
-            radio.merge!({ r: 0, v: 0, o: { s: 1, o: 1, j: 3, f: 18, e: 1 } })
+            radio.merge!({ r: 99, v: 0, o: { s: 1, o: 1, j: 3, f: 18, e: 1 } })
             lu[:"#{radio[:c]}_#{sanitize(radio[:n])}"] = radio
           end
           lu

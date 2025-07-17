@@ -30,7 +30,7 @@ export function leadershipRange(game: Game): number | false {
   let leadership = -1
   for (const sel of game.gameActionState.selection) {
     const unit = sel.counter.unit
-    if (unit.type === unitType.Leader && sel.x === init.x && sel.y === init.y) {
+    if (unit.leader && sel.x === init.x && sel.y === init.y) {
       if (unit.currentLeadership > leadership) { leadership = unit.currentLeadership }
     }
   }
@@ -39,14 +39,14 @@ export function leadershipRange(game: Game): number | false {
 
 export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit): boolean {
   if (unit.targetedRange || unit.isVehicle || unit.incendiary) { return false }
-  if (unit.type === unitType.Leader) { return true }
+  if (unit.leader) { return true }
   if (unit.areaFire) { return false }
   if (unit.uncrewedSW && unit.parent) { return true }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
       unit.children[0].status === unitStatus.Normal) { return true }
   const counters = game.scenario.map.countersAt(new Coordinate(x, y))
   for (const c of counters) {
-    if (c.hasUnit && c.unit.id !== unit.id && c.unit.type === unitType.Leader) { return true }
+    if (c.hasUnit && c.unit.id !== unit.id && c.unit.leader) { return true }
   }
   return false
 }
@@ -54,7 +54,7 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
 export function rapidFire(game: Game): boolean {
   if (!game?.gameActionState?.fire) { return false }
   for (const sel of game.gameActionState.selection) {
-    if (!sel.counter.unit.rapidFire && sel.counter.unit.type !== unitType.Leader) { return false }
+    if (!sel.counter.unit.rapidFire && !sel.counter.unit.leader) { return false }
   }
   return true
 }
@@ -118,25 +118,32 @@ export function unTargetSelectExceptChain(game: Game, x: number, y: number) {
 export function refreshTargetSelection(game: Game) {
   if (!game?.gameActionState?.fire) { return false }
   const targets = []
+  const coords = []
   const units = game.scenario.map.allUnits
   for (const u of units) {
     const hex = u.hex as Coordinate
     if (u.unit.targetSelected) {
       targets.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
+      let check = false
+      for (const c of coords) {
+        if (c.x === hex.x && c.y === hex.y) { check = true; break }
+      }
+      if (!check) { coords.push(new Coordinate(hex.x, hex.y)) }
     }
   }
   game.gameActionState.fire.targetSelection = targets
+  game.gameActionState.fire.targetHexes = coords
 }
 
 export function fireHindranceAll(
-  game: Game, source: ActionSelection[], targets: ActionSelection[]
+  game: Game, source: ActionSelection[], targetHexes: Coordinate[],
 ): boolean | number {
   let hindrance = -1
   for (let i = 0; i < source.length; i++) {
     const sel = source[i]
-    for (let j = 0; j < targets.length; j++) {
-      const targ = targets[j]
-      const check = los(game.scenario.map, new Coordinate(sel.x, sel.y), new Coordinate(targ.x, targ.y))
+    for (let j = 0; j < targetHexes.length; j++) {
+      const targ = targetHexes[j]
+      const check = los(game.scenario.map, new Coordinate(sel.x, sel.y), targ)
       if (check !== true && check !== false && Number(check.value) > hindrance) {
         hindrance = Number(check.value)
       }
@@ -212,7 +219,7 @@ function leadershipAt(game: Game, at: Coordinate): number {
   for (const c of counters) {
     if (!c.hasUnit) { continue }
     const unit = c.unit
-    if (unit.type === unitType.Leader) {
+    if (unit.leader) {
       if (unit.currentLeadership > leadership) { leadership = unit.currentLeadership }
     }
   }
@@ -241,7 +248,7 @@ export function untargetedModifiers(
       const from = new Coordinate(sel.x, sel.y)
       const to = new Coordinate(targ.x, targ.y)
       const dist = hexDistance(from, to)
-      if (dist > sunit.currentRange/2 && sunit.type !== unitType.Leader) { gthalf = true }
+      if (dist > sunit.currentRange/2 && !sunit.leader) { gthalf = true }
       if (dist > 1) { adj = false }
       const check = (map.hexAt(to) as Hex).elevation - (map.hexAt(from) as Hex).elevation
       if (check === 0 && elev < 0) { elev = 0 }
@@ -392,7 +399,7 @@ export function moraleModifiers(
   const why: string[] = []
   let mod = -target.currentMorale
   why.push(`- minus morale ${target.currentMorale}`)
-  if (target.type !== unitType.Leader) {
+  if (!target.leader) {
     const leadership = leadershipAt(game, to)
     if (leadership > 0) {
       mod -= leadership
@@ -472,7 +479,6 @@ function hitFromArc(
 
 function inRange(game: Game, to: Coordinate): boolean {
   if (!game?.gameActionState?.fire) { return false }
-  if (game.gameActionState.fire.initialSelection[0].counter.unit.offBoard) { return true }
   let leaderRange = true
   let leaderOnly = true
   for (const sel of game.gameActionState.selection) {
@@ -480,7 +486,7 @@ function inRange(game: Game, to: Coordinate): boolean {
     const from = sel.counter.hex as Coordinate
     if (from.x === to.x && from.y === to.y) { return false }
     if (los(game.scenario.map, from, to) === false) { return false }
-    if (unit.type !== unitType.Leader) {
+    if (!unit.leader) {
       const dist = hexDistance(from, to)
       if (unit.currentRange < dist) { return false }
       if ((unit.minimumRange ?? 0) > dist) { return false }

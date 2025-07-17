@@ -4,6 +4,7 @@ import { Coordinate } from "../../../utilities/commonTypes";
 import { losHexPath } from "../../../utilities/los";
 import Hex from "../../../engine/Hex";
 import { hexEdgeCoords } from "../../../engine/support/hexLayout";
+import { clearColor } from "../../../utilities/graphics";
 
 interface MapLosDebugOverlayProps {
   map: Map;
@@ -48,7 +49,7 @@ export default function MapLosDebugOverlay({
             return <polygon key={i} points={p.hex.hexCoords} style={{ fill: "rgba(255,0,0,0.5)" }} />
           } else if (p.edge) {
             return <path key={i} d={hexEdgeCoords(p.edgeHex as Hex, p.edge)}
-                    style={{ fill: "rgba(0,0,0,0)", strokeWidth: 12, stroke: "rgba(255,0,0,0.5)" }} />
+                    style={{ fill: clearColor, strokeWidth: 12, stroke: "rgba(255,0,0,0.5)" }} />
           }
         }
         )}
@@ -64,7 +65,7 @@ export default function MapLosDebugOverlay({
           map.mapHexes.map((row, y) =>
             row.map((hex, x) => {
               const key = `${x}-${y}`
-              return <polygon key={key} points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }}
+              return <polygon key={key} points={hex.hexCoords} style={{ fill: clearColor }}
                               onMouseEnter={() => setTarget({ x: x, y: y })}
                               onClick={() => setOverlay({ show: false, x: 0, y: 0 })} />
             })

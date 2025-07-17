@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, unitType } from "../../utilities/commonTypes"
+import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
 import { hexDistance, normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
@@ -186,7 +186,7 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     map.game.addMessage("cannot fire an activated unit")
     return false
   }
-  if (counter.unit.targetedRange) {
+  if (counter.unit.targetedRange || counter.unit.offBoard) {
     map.game.addMessage("targeted weapons cannot fire with other units")
     return false
   }
@@ -208,7 +208,7 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     return true
   }
   const coord = counter.hex as Coordinate
-  if (counter.unit.type === unitType.Leader && coord.x === init.x && coord.y === init.y) {
+  if (counter.unit.leader && coord.x === init.x && coord.y === init.y) {
     return true
   }
   const leadership = leadershipRange(map.game)
@@ -286,7 +286,7 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
         const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
         if (!canBeFireMultiselected(map, counter as Counter)) { return false }
       }
-      if (target.crewed || target.uncrewedSW) {
+      if (target.operated) {
         if (!target.parent || target.parent.playerNation !== game.currentPlayerNation) {
           game.addMessage("can't target weapons, only operators")
           return false

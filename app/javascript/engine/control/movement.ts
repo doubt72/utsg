@@ -1,4 +1,4 @@
-import { Coordinate, Direction, hexOpenType, HexOpenType, roadType, unitType } from "../../utilities/commonTypes"
+import { Coordinate, Direction, hexOpenType, HexOpenType, roadType } from "../../utilities/commonTypes"
 import { hexDistance, normalDir, stackLimit } from "../../utilities/utilities"
 import Game from "../Game"
 import { addActionType } from "../GameAction"
@@ -38,10 +38,10 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
         const child = u.children[0]
         if (child.crewed) { iMove = child.baseMovement }
         if (child.uncrewedSW) { iMove += child.baseMovement }
-        if (child.uncrewedSW && u.type === unitType.Leader) { iMove -= 2 }
+        if (child.uncrewedSW && u.leader) { iMove -= 2 }
       }
-      if (u.canCarrySupport && u.type !== unitType.Leader && iMove < minInfMove) { minInfMove = iMove }
-      if (u.type === unitType.Leader && iMove < minLdrMove) { minLdrMove = iMove }
+      if (u.canCarrySupport && !u.leader && iMove < minInfMove) { minInfMove = iMove }
+      if (u.leader && iMove < minLdrMove) { minLdrMove = iMove }
     }
     if (minLdrMove === 99) {
       move = minInfMove + allRoad

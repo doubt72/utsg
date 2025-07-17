@@ -252,9 +252,9 @@ export default class Game {
     for (const u of this.eliminatedUnits) {
       if (u.isFeature || u.nation === this.playerOneNation) { continue }
       const unit = u as Unit
-      if (unit.type === unitType.Leader) {
+      if (unit.leader) {
         points += 6
-      } else if (!unit.uncrewedSW && !unit.crewed) {
+      } else if (!unit.operated) {
         points += unit.size
       }
     }
@@ -274,9 +274,9 @@ export default class Game {
     for (const u of this.eliminatedUnits) {
       if (u.isFeature || u.nation === this.playerTwoNation) { continue }
       const unit = u as Unit
-      if (unit.type === unitType.Leader) {
+      if (unit.leader) {
         points += 6
-      } else if (!unit.uncrewedSW && !unit.crewed) {
+      } else if (!unit.operated) {
         points += unit.size
       }
     }

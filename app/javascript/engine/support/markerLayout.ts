@@ -32,7 +32,7 @@ export function markerFixLayout(counter: Counter): CounterLayout | false {
   const loc = new Coordinate(counter.x + 40, counter.y + 63)
   return {
     path: circlePath(loc, 8),
-    style: { stroke: "rgba(0,0,0,0)", strokeWidth: 1, fill: "rgba(0,0,0,0)" }, tStyle: { fill: "black" },
+    style: { stroke: clearColor, strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
     x: loc.x, y: loc.y + 4.25, size: 16, value: "18",
   }
 }

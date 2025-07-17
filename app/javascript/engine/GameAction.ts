@@ -57,7 +57,7 @@ export type GameActionDetails = {
 
   phase_data?: GameActionPhaseChange,
 
-  drift_data?: { x: number, y: number }
+  fire_data?: { x: number, y: number }[]
   morale_data?: { mod: number, why: string[] }
 }
 

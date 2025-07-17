@@ -313,6 +313,14 @@ export default class Unit {
     return true
   }
 
+  get operated(): boolean {
+    return this.crewed || this.uncrewedSW
+  }
+
+  get leader(): boolean {
+    return this.type === unitType.Leader
+  }
+
   canTowUnit(unit: Unit): boolean {
     if (!unit.crewed) { return false }
     if (!this.canTow) { return false }
@@ -325,14 +333,14 @@ export default class Unit {
 
   canTransportUnit(unit: Unit): boolean {
     if (!this.transport) { return false }
-    if (this.transport === 1 && unit.type !== unitType.Leader) { return false }
+    if (this.transport === 1 && !unit.leader) { return false }
     if (this.transport === 2 && ![unitType.Team, unitType.Leader].includes(unit.type)) {
       return false
     }
     if (![unitType.Squad, unitType.Team, unitType.Leader].includes(unit.type)) { return false }
-    if (unit.type === unitType.Leader) {
+    if (unit.leader) {
       for (let i = 0; i < this.children.length; i++) {
-        if (this.children[i].type === unitType.Leader) { return false }
+        if (this.children[i].leader) { return false }
       }
     }
     if ([unitType.Team, unitType.Squad].includes(unit.type)) {
@@ -345,7 +353,7 @@ export default class Unit {
 
   canCarry(unit: Unit): boolean {
     if (![unitStatus.Normal, unitStatus.Tired].includes(unit.status) && this.status) { return false }
-    if (this.type === unitType.Leader && unit.uncrewedSW && unit.baseMovement < 0) { return false }
+    if (this.leader && unit.uncrewedSW && unit.baseMovement < 0) { return false }
     return this.canTransportUnit(unit) || this.canTowUnit(unit) || (this.children.length < 1 &&
       ((this.canCarrySupport && unit.uncrewedSW) || (this.canHandle && unit.crewed)))
   }

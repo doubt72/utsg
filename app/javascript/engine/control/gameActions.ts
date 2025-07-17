@@ -33,6 +33,7 @@ export type FireActionState = {
   path: GameActionPath[];
   doneSelect: boolean;
   doneRotating: boolean;
+  targetHexes: Coordinate[];
 }
 
 export type MoraleCheckState = {
@@ -141,7 +142,7 @@ export function startFire(game: Game) {
       selection: allSelection,
       fire: {
         initialSelection, doneSelect: !canSelect, path: [loc], targetSelection: [],
-        doneRotating: !selection.unit.turreted,
+        doneRotating: !selection.unit.turreted, targetHexes: []
       }
     }
   }

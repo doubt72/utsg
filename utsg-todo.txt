@@ -1,4 +1,5 @@
 High Priority Features/Bug Fixes:
+  - No Bunkers on streams
   - Firing
     - Show Drift
     - Allow Target Hex
@@ -20,6 +21,7 @@ High Priority Features/Bug Fixes:
   - Sniper Docs
 
 Future Features/Bug Fixes:
+  - Undo getting out of sync (maybe remove ID?)
   - Redo docs for satchel charges / molotov cocktail
     - Add crew activated on fire to docs
     - Update docs for rapid fire -1, point-blank -1

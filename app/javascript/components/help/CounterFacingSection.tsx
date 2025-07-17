@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { EyeFill, Stack } from "react-bootstrap-icons";
 import Map from "../../engine/Map";
 import { Coordinate, weatherType, windType } from "../../utilities/commonTypes";
-import { roundedRectangle } from "../../utilities/graphics";
+import { clearColor, roundedRectangle } from "../../utilities/graphics";
 import MapHex from "../game/map/MapHex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import { getAPI } from "../../utilities/network";
@@ -99,7 +99,7 @@ export default function CounterFacingSection() {
             <MapLosOverlay map={map} setOverlay={() => {}} xx={4} yy={2} />
           </g>
           <path d={roundedRectangle(59,41,516,448,8)}
-                style={{ stroke: "#DDD", strokeWidth: 1, fill: "rgba(0,0,0,0)" }}/>
+                style={{ stroke: "#DDD", strokeWidth: 1, fill: clearColor }}/>
         </svg>
         <div className="help-section-image-caption">
           forward facing arc, with included hexes highlighted

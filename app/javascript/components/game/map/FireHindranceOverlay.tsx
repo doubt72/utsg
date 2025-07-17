@@ -16,7 +16,7 @@ export default function FireHindranceOverlay({ map }: FireHindranceOverlayProps)
     if (map.game.gameActionState?.fire) {
       const action = map.game.gameActionState
       const fire = action.fire as FireActionState
-      const hindrance = fireHindranceAll(map.game, action.selection, fire.targetSelection)
+      const hindrance = fireHindranceAll(map.game, action.selection, fire.targetHexes)
       if (hindrance !== false) {
         const x = action.selection[0].x
         const y = action.selection[0].y

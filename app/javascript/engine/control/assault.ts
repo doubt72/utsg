@@ -118,7 +118,7 @@ function assaultMovement(game: Game): number {
       if (u.children.length > 0) {
         const child = u.children[0]
         if (child.uncrewedSW) { move += child.baseMovement }
-        if (child.uncrewedSW && u.type === unitType.Leader) { move -= 2 }
+        if (child.uncrewedSW && u.leader) { move -= 2 }
       }
       if (u.canCarrySupport && move < minMove) { minMove = move }
     }

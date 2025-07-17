@@ -4,7 +4,7 @@ import MapDisplay from "./map/MapDisplay";
 import WeatherDisplay from "./map/WeatherDisplay";
 import { alliedCodeToPill, axisCodeToPill } from "../utilities/pills";
 import Scenario, { ScenarioData } from "../../engine/Scenario";
-import { starPath } from "../../utilities/graphics";
+import { clearColor, starPath } from "../../utilities/graphics";
 import { Coordinate } from "../../utilities/commonTypes";
 import { getAPI, postAPI } from "../../utilities/network";
 
@@ -24,7 +24,7 @@ export function ratingStars(rating: number) {
         <rect x={10 + 100*i} y={0} width={s*80} height={100} mask={`url(#star-mask-${i})`}
               style={{ fill: "#CE7" }} />
         <path d={starPath(new Coordinate(50 + 100*i, 55), 50)}
-              style={({ stroke: "#000", strokeWidth: 5, fill: "rgba(0,0,0,0)", strokeLinejoin: "round" })} />
+              style={({ stroke: "#000", strokeWidth: 5, fill: clearColor, strokeLinejoin: "round" })} />
       </g>)}
     </svg>
   )
@@ -105,7 +105,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           { rating >= s+1 ? <rect x={10 + 100*s} y={0} width={80} height={100} mask={`url(#star-mask-${s})`}
                                 style={{ fill: "#EB0" }} /> : "" }
           <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
-                style={({ stroke: "#000", strokeWidth: 5, fill: "rgba(0,0,0,0)", strokeLinejoin: "round" })}
+                style={({ stroke: "#000", strokeWidth: 5, fill: clearColor, strokeLinejoin: "round" })}
                 onClick={() => {
                   postAPI("/api/v1/ratings", { scenario: data.id, rating: s+1 }, {
                     ok: () => setMyRating(s+1)

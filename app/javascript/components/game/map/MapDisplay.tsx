@@ -28,6 +28,8 @@ import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
 import FireTrackOverlay from "./FireTrackOverlay";
 import FireHindranceOverlay from "./FireHindranceOverlay";
+import MapTargetHexSelection from "./MapTargetHexSelection";
+import Hex from "../../../engine/Hex";
 
 interface MapDisplayProps {
   map?: Map;
@@ -85,6 +87,7 @@ export default function MapDisplay({
 
   const [moveTrack, setMoveTrack] = useState<JSX.Element | undefined>()
   const [fireTrack, setFireTrack] = useState<JSX.Element | undefined>()
+  const [fireTargets, setFireTargets] = useState<JSX.Element[]>([])
   const [fireHindrance, setFireHindrance] = useState<JSX.Element | undefined>()
 
   const [notification, setNotification] = useState<JSX.Element | undefined>()
@@ -265,6 +268,17 @@ export default function MapDisplay({
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setHexDisplayOverlays(overlayLoader)
+    if (map.game?.gameActionState?.fire) {
+      const hexes: JSX.Element[] = []
+      for (const c of map.game.gameActionState.fire.targetHexes) {
+        const target = map.units[c.y][c.x].length < 1
+        const hex = map.hexAt(c) as Hex
+        hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} />)
+      }
+      setFireTargets(hexes)
+    } else {
+      setFireTargets([])
+    }
     setCounterDisplay(map.counters.map((counter, i) => {
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
@@ -408,7 +422,7 @@ export default function MapDisplay({
     if (map.game?.gameActionState?.fire ||
         (lastSigAction && ["fire"].includes(lastSigAction.data.action))) {
       setFireTrack(<FireTrackOverlay map={map} />)
-      if (map.game?.gameActionState?.fire && map.game.gameActionState.fire.targetSelection.length > 0) {
+      if (map.game?.gameActionState?.fire && map.game.gameActionState.fire.targetHexes.length > 0) {
         setFireHindrance(<FireHindranceOverlay map={map} />)
       } else {
         setFireHindrance(undefined)
@@ -567,6 +581,7 @@ export default function MapDisplay({
              viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}>
           {hexDisplay}
           {hexDisplayDetail}
+          {fireTargets}
           {fireTrack}
           {counterDisplay}
           {losOverlay}

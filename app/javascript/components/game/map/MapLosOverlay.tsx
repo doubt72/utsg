@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
-import { circlePath } from "../../../utilities/graphics";
+import { circlePath, clearColor } from "../../../utilities/graphics";
 import { facingLayout } from "../../../engine/support/unitLayout";
 
 interface MapLosOverlayProps {
@@ -27,7 +27,7 @@ export default function MapLosOverlay({
               const value = map.hexLos(new Coordinate(xx, yy), new Coordinate(x, y))
               if (value === true) {
                 return <polygon key={key} points={hex.hexCoords}
-                                style={{ fill: "rgba(0,0,0,0)" }}
+                                style={{ fill: clearColor }}
                                 onMouseEnter={() => setOverlay({ show: false, x: 0, y: 0 })} />
               }
               if (value === false) {
@@ -55,7 +55,7 @@ export default function MapLosOverlay({
                   <text x={value.x} y={value.y + 15} fontSize={value.size}
                         textAnchor="middle" fontFamily="'Courier Prime', monospace"
                         style={value.style as object}>{value.value}</text>
-                  <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }}
+                  <polygon points={hex.hexCoords} style={{ fill: clearColor }}
                            onMouseEnter={() => setOverlay({ show: false, x: 0, y: 0 })} />
                 </g>
               )

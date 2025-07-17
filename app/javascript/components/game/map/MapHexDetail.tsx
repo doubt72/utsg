@@ -8,6 +8,7 @@ import {
 } from "../../../engine/support/hexLayout";
 import { hexHelpLayout } from "../../../engine/support/help";
 import { HelpOverlay } from "./Help";
+import { clearColor } from "../../../utilities/graphics";
 
 interface MapHexDetailProps {
   hex: Hex;
@@ -89,7 +90,7 @@ export default function MapHexDetail({
 
   const outline = (
     <polygon points={hex.hexCoords}
-             style={{ strokeWidth: 1, stroke: "rgba(0,0,0,0.16)", fill: "rgba(0,0,0,0)" }} />
+             style={{ strokeWidth: 1, stroke: "rgba(0,0,0,0.16)", fill: clearColor }} />
   )
 
   const updateTerrainInfo = (e: React.MouseEvent) => {
@@ -106,7 +107,7 @@ export default function MapHexDetail({
   }
 
   const interactionOverly = (
-    <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0)" }}
+    <polygon points={hex.hexCoords} style={{ fill: clearColor }}
              onClick={() => selectCallback(hex.coord.x, hex.coord.y)}
              onMouseLeave={() => terrainCallback(undefined)}
              onMouseMove={e => updateTerrainInfo(e)} />

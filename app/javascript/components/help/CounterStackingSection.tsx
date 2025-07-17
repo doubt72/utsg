@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { roundedRectangle } from "../../utilities/graphics";
+import { clearColor, roundedRectangle } from "../../utilities/graphics";
 import { makeIndex } from "./CounterSection";
 import Unit, { UnitData } from "../../engine/Unit";
 import Feature, { FeatureData } from "../../engine/Feature";
@@ -77,7 +77,7 @@ export default function CounterStackingSection() {
                              counters={map.countersAt(new Coordinate(0,0))} scale={1}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
           <path d={roundedRectangle(0,0,736,192,0)}
-                style={{ stroke: "rgba(0,0,0,0)", strokeWidth: 0.5, fill: "rgba(0,0,0,0)" }}/>
+                style={{ stroke: clearColor, strokeWidth: 0.5, fill: clearColor }}/>
         </svg>
         <div className="help-section-image-caption">
           infantry in a stack carrying a machine gun
@@ -92,7 +92,7 @@ export default function CounterStackingSection() {
                              counters={map.countersAt(new Coordinate(1,1))} scale={1}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
           <path d={roundedRectangle(0,0,896,192,0)}
-                style={{ stroke: "rgba(0,0,0,0)", strokeWidth: 0.5, fill: "rgba(0,0,0,0)" }}/>
+                style={{ stroke: clearColor, strokeWidth: 0.5, fill: clearColor }}/>
         </svg>
         <div className="help-section-image-caption">
           a vehicle carrying several units
