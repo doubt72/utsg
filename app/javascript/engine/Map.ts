@@ -237,7 +237,7 @@ export default class Map {
   }
 
   neighborAt(loc: Coordinate, dir: Direction): Hex | undefined {
-    return this.hexNeighbors(loc)[dir - 1]
+    return this.hexAt(this.neightborCoordinate(loc, dir))
   }
 
   neightborCoordinate(loc: Coordinate, dir: number): Coordinate {
@@ -249,7 +249,7 @@ export default class Map {
       new Coordinate(loc.x + 1, loc.y),
       new Coordinate(loc.x + offset, loc.y + 1),
       new Coordinate(loc.x - 1 + offset, loc.y + 1),
-    ][dir + 1]
+    ][dir - 1]
   }
 
   driftHex(start: Coordinate, dir: number, distance: number): false | Coordinate {

@@ -174,7 +174,7 @@ export default class FireAction extends BaseAction {
           if (needDice) { targetRoll.description += "hit" }
         }
         if (firing0.unit.areaFire) {
-          const dTarget0 = dTargets[0]?.counter || target0
+          const dTarget0 = dTargets[0]?.counter ?? target0
           let infantry = false
           let unit = dTarget0.unit
           for (const t of dTargets) {
@@ -183,6 +183,7 @@ export default class FireAction extends BaseAction {
               unit = t.counter.unit
             }
           }
+          console.log(`infantry: ${infantry}`)
           if (infantry) {
             fp = firepower(this.game, this.convertAToA(firing), unit, dTo, sponson)
             let hitCheck = baseToHit(fp.fp)

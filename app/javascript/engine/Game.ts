@@ -464,11 +464,13 @@ export default class Game {
       if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
       this.refreshCallback(this)
     } catch(err) {
-      console.log(err)
       if (err instanceof IllegalActionError) {
         this.refreshCallback(this, ["illegal", err.message])
       } else if (err instanceof Error) {
         this.refreshCallback(this, ["unknown", err.message])
+      }
+      if (!backendSync) {
+        throw err
       }
     }
   }

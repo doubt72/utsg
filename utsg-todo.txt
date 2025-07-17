@@ -1,7 +1,9 @@
 High Priority Features/Bug Fixes:
   - Firing
+    - Show Drift
+    - Allow Target Hex
+    - Disable sponson switch with broken sponson weapon
     - Finish tests
-    - Artillery Drift
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing
@@ -25,7 +27,6 @@ Future Features/Bug Fixes:
     - Change terminology for jamming in documentation to be more like breaking
     - Pinned half, not -1
 
-  - Disable sponson switch with broken sponson weapon
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel, main map, minimap
   - Remove strong points, nerf other fortifications

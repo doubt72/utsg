@@ -1669,7 +1669,7 @@ describe("fire tests", () => {
       expect(game.playerTwoScore).toBe(15)
     })
 
-    test.only("offboard artillery miss", () => {
+    test("offboard artillery miss", () => {
       const game = createTestGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
@@ -1683,7 +1683,7 @@ describe("fire tests", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      const tloc = new Coordinate(4, 0)
+      const tloc = new Coordinate(4, 2)
       map.addCounter(tloc, target)
       const target2 = new Unit(testRInf)
       target2.id = "target2"
@@ -1731,20 +1731,29 @@ describe("fire tests", () => {
       game.finishFire()
       Math.random = original
 
-      // expect(game.moraleChecksNeeded).toStrictEqual([
-      //   { unit: target, from: [floc], to: tloc, incendiary: false },
-      //   { unit: target2, from: [floc], to: tloc, incendiary: false },
-      // ])
-      // expect(target3.isWreck).toBe(true)
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target3.isWreck).toBe(false)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 8, rolled 1: miss, drifts, firing weapon broken"
+        "targeting roll (d10x10): target 4, rolled 1: miss, drifts, firing weapon broken"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
         "direction roll (d6): 1"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "distance roll (d10): 1 for 1 hexes, drifted off map"
+        "distance roll (d10): 1 for 1 hexes, drifted to D3"
       )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[3].description).toBe(
+        "infantry effect roll (2d10): target 9, rolled 2: failed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(5)
+      expect(all[0].unit.id).toBe("target1")
+      expect(all[1].unit.id).toBe("target2")
+      expect(all[2].unit.id).toBe("target3")
+      expect(all[3].unit.id).toBe("firing1")
+      expect(all[4].unit.id).toBe("firing2")
+      expect(all[4].unit.jammed).toBe(true)
     })
 
     test("single shot", () => {
