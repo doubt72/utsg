@@ -1,5 +1,5 @@
 import {
-  Coordinate, hexOpenType, HexOpenType, roadType, terrainType, unitType
+  Coordinate, featureType, hexOpenType, HexOpenType, roadType, terrainType, unitType
 } from "../../utilities/commonTypes"
 import { stackLimit } from "../../utilities/utilities"
 import { addActionType, GameActionPath } from "../GameAction"
@@ -96,10 +96,11 @@ function openHexReinforcement(map: Map, x: number, y: number): HexOpenType {
   if (hex.terrain.gun === false && !uf.isFeature && (uf.type === unitType.Gun)) { return false }
   if (uf.isFeature) {
     if (!hex.terrain.vehicle) { return hexOpenType.Closed }
+    if (hex.river && (featureType.Bunker || featureType.Foxhole)) { return hexOpenType.Closed}
     for (const f of map.countersAt(hex.coord)) {
       if (f.hasFeature) { return hexOpenType.Closed }
     }
-    if ((uf.type === "mines" || uf.type === "wire") && map.victoryNationAt(hex.coord)) {
+    if ((uf.type === featureType.Mines || uf.type === featureType.Wire) && map.victoryNationAt(hex.coord)) {
       return hexOpenType.Closed
     }
   } else {

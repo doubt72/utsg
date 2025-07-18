@@ -126,6 +126,9 @@ export function startFire(game: Game) {
   const selection = game.scenario.map.currentSelection[0]
   game.sponsonFire = false
   if (selection && selection.hex) {
+    if (selection.unit.sponson && (selection.unit.jammed || selection.unit.weaponDestroyed)) {
+      game.sponsonFire = true
+    }
     const loc = {
       x: selection.hex.x, y: selection.hex.y,
       facing: selection.unit.rotates ? selection.unit.facing : undefined,
@@ -143,7 +146,7 @@ export function startFire(game: Game) {
       selection: allSelection,
       fire: {
         initialSelection, doneSelect: !canSelect, path: [loc], targetSelection: [],
-        firingSmoke: false, doneRotating: !selection.unit.turreted, targetHexes: []
+        firingSmoke: false, doneRotating: !selection.unit.turreted || game.sponsonFire, targetHexes: []
       }
     }
   }
@@ -154,6 +157,35 @@ export function fireAtHex(game: Game, x: number, y: number) {
   if (game.gameActionState.selection[0].counter.unit.offBoard ||
       game.gameActionState.fire.firingSmoke) {
     game.gameActionState.fire.targetHexes = [new Coordinate(x, y)]
+  }
+}
+
+export function fireRotate(game: Game, dir: Direction) {
+  if (!game.gameActionState?.fire) { return }
+  const path = game.gameActionState.fire.path
+  const x = path[0].x
+  const y = path[0].y
+  const origDir = path[0].turret
+  if (dir === origDir) {
+    game.gameActionState.fire.path = [path[0]]
+  } else if (path.length > 1) {
+    path[1].turret = dir
+  } else {
+    path.push({ x, y, turret: dir })
+  }
+}
+
+export function fireSponsonToggle(game: Game) {
+  if (!game.gameActionState?.fire) { return }
+  game.sponsonFire = !game.sponsonFire
+  game.gameActionState.fire.targetSelection = []
+  game.gameActionState.fire.targetHexes = []
+  game.scenario.map.clearAllTargetSelections()
+  if (game.sponsonFire) {
+    game.gameActionState.fire.path = [game.gameActionState.fire.path[0]]
+    game.gameActionState.fire.doneRotating = true
+  } else {
+    game.gameActionState.fire.doneRotating = false
   }
 }
 
@@ -178,7 +210,10 @@ export function finishFire(game: Game) {
       action: "fire", old_initiative: game.initiative,
       path: game.gameActionState.fire.path,
       origin: game.gameActionState.selection.map(s => {
-        return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status, sponson: game.sponsonFire }
+        return {
+          x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status,
+          sponson: game.sponsonFire, wire: game.scenario.map.wireAt(new Coordinate(s.x, s.y))
+        }
       }),
       target: game.gameActionState.fire.targetSelection.map(t => {
         return { x: t.x, y: t.y, id: t.counter.unit.id, status: t.counter.unit.status }

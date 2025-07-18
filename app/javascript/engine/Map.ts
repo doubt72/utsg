@@ -1,7 +1,7 @@
 import Game from "./Game";
 import {
   BaseTerrainType, Coordinate, Direction, ExtendedDirection, Player, VictoryHex,
-  WeatherType, WindType, baseTerrainType, markerType, unitStatus, weatherType, windType,
+  WeatherType, WindType, baseTerrainType, featureType, markerType, unitStatus, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
 import Unit from "./Unit";
@@ -453,6 +453,14 @@ export default class Map {
     return rc
   }
 
+  wireAt(loc: Coordinate): boolean {
+    const counters = this.countersAt(loc)
+    for (const c of counters) {
+      if (c.hasFeature && c.feature.type === featureType.Wire) { return true }
+    }
+    return false
+  }
+
   sizeAt(loc: Coordinate): number {
     return this.countersAt(loc).reduce((sum, c) => {
       return c.hasFeature ? sum : sum + c.unit.size
@@ -540,26 +548,28 @@ export default class Map {
           }
         }
       }
-      for (let y = 0; y < this.height; y++) {
-        for (let x = this.width - 1; x >= 0; x--) {
-          let check = false
-          const counters = this.countersAt(new Coordinate(x, y))
-          if (openHex(this, x, y)) {
-            for (const c of counters) {
-              if (c.hasUnit && c.unit.nation !== this.game.currentPlayerNation) {
+      if (!fire.firingSmoke) {
+        for (let y = 0; y < this.height; y++) {
+          for (let x = this.width - 1; x >= 0; x--) {
+            let check = false
+            const counters = this.countersAt(new Coordinate(x, y))
+            if (openHex(this, x, y)) {
+              for (const c of counters) {
+                if (c.hasUnit && c.unit.nation !== this.game.currentPlayerNation) {
+                  check = true
+                  break
+                }
+              }
+            }
+            for (const sel of this.game.gameActionState.selection) {
+              if (!fire.doneRotating) { break }
+              if (sel.x === x && sel.y === y) {
                 check = true
                 break
               }
             }
+            if (check) { rc = rc.concat(counters) }
           }
-          for (const sel of this.game.gameActionState.selection) {
-            if (!fire.doneRotating) { break }
-            if (sel.x === x && sel.y === y) {
-              check = true
-              break
-            }
-          }
-          if (check) { rc = rc.concat(counters) }
         }
       }
       return rc

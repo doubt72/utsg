@@ -146,9 +146,6 @@ module Utility
             bunker: {
               ft: 1, n: "Bunker", t: "bunker", i: "bunker", o: { da: { f: 5, s: 5, r: 1 } },
             },
-            strongpoint: {
-              ft: 1, n: "Strong Point", t: "bunker", i: "bunker", o: { da: { f: 6, s: 6, r: 1 } },
-            },
             sniper2: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 2 } },
             sniper3: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 3 } },
             sniper4: { ft: 1, n: "Sniper", t: "sniper", f: 8, r: 0, v: 0, o: { q: 4 } },

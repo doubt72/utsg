@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
+import { Coordinate, CounterSelectionTarget, unitStatus } from "../../utilities/commonTypes"
 import { hexDistance, normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
@@ -182,7 +182,8 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     map.game.addMessage("cannot fire an exhausted unit")
     return false
   }
-  if (counter.unit.isActivated) {
+  const status = map.game.gameActionState.fire.initialSelection[0].counter.unit.status
+  if (counter.unit.isActivated && status !== unitStatus.Activated) {
     map.game.addMessage("cannot fire an activated unit")
     return false
   }
@@ -195,6 +196,10 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     return false
   }
   if (counter.parent && counter.parent.unit.isVehicle) {
+    map.game.addMessage("unit being transported cannot fire with other units")
+    return false
+  }
+  if (counter.unit.operated && counter.parent?.parent && counter.parent.parent.unit.isVehicle) {
     map.game.addMessage("unit being transported cannot fire with other units")
     return false
   }

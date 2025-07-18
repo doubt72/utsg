@@ -2,7 +2,7 @@ import { describe, expect, test, vi } from "vitest"
 import { baseToHit, chance2D10, chanceD10x10 } from "../../utilities/utilities"
 import { HexData } from "../Hex"
 import { MapData } from "../Map"
-import { baseTerrainType, Coordinate, unitStatus, weatherType, windType } from "../../utilities/commonTypes"
+import { baseTerrainType, Coordinate, sponsonType, unitStatus, weatherType, windType } from "../../utilities/commonTypes"
 import Unit, { UnitData } from "../Unit"
 import { ScenarioData } from "../Scenario"
 import Game, { gamePhaseType } from "../Game"
@@ -12,8 +12,8 @@ import { armorHitModifiers, fireHindrance, firepower, moraleModifiers, rangeMult
 import Counter from "../Counter"
 import IllegalActionError from "../actions/IllegalActionError"
 import organizeStacks from "../support/organizeStacks"
-import { testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTruck, testRInf } from "./movement.test"
-import { GameActionDiceResult } from "../GameAction"
+import { testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testRInf, testWire } from "./movement.test"
+import { GameActionDiceResult, GameActionPath } from "../GameAction"
 import Feature, { FeatureData } from "../Feature"
 
 const defaultTestHexes: HexData[][] = [
@@ -71,6 +71,11 @@ const testGRadio: UnitData = {
   o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
 }
 
+const testGAC: UnitData = {
+  t: "ac", i: "ac", c: "ger", n: "SdKfz 221", y: 35, s: 3, f: 8, r: 8, v: 5,
+  o: { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1, j: 3, f: 18, u: 1, w: 1 },
+}
+
 const testRTank: UnitData = {
   t: "tank", i: "tank", c: "ussr", n: "T-34 M40", y: 40, s: 5, f: 24, r: 22, v: 6,
   o: { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, j: 3, f: 18, u: 1, k: 1 },
@@ -79,6 +84,14 @@ const testRTank: UnitData = {
 const testRTruck: UnitData = {
   t: "truck", c: "ussr", n: "Studebaker US6", i: "truck", y: 41, s: 4, f: 0, r: 0, v: 5,
   o: { sn: 1, tr: 3, trg: 1, w: 1 },
+}
+
+const testITank: UnitData = {
+  t: "tank", i: "tank", c: "ita", n: "M11/39", y: 39, s: 3, f: 5, r: 7, v: 4,
+  o: {
+    r: 1, ha: { f: 3, s: 1, r: 0 }, ta: { f: 3, s: 3, r: 3 }, sg: { f: 8, r: 12, t: "p" },
+    j: 3, f: 18, u: 1, k: 1
+  },
 }
 
 const testPill: FeatureData = {
@@ -187,12 +200,13 @@ describe("fire tests", () => {
       expect(target.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -237,12 +251,13 @@ describe("fire tests", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
@@ -279,12 +294,13 @@ describe("fire tests", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(2)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -325,12 +341,13 @@ describe("fire tests", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -372,12 +389,13 @@ describe("fire tests", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -420,12 +438,13 @@ describe("fire tests", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -478,12 +497,13 @@ describe("fire tests", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -530,12 +550,13 @@ describe("fire tests", () => {
       }, () => {})
       expect(target.targetSelected).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -623,7 +644,7 @@ describe("fire tests", () => {
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
-      let fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      let fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(9)
 
       select(map, {
@@ -640,7 +661,7 @@ describe("fire tests", () => {
       expect(firing3.selected).toBe(true)
       expect(fire.doneSelect).toBe(false)
 
-      fp = firepower(game, makeAction(game, ["firing1", "firing3"]), target, tloc, false)
+      fp = firepower(game, makeAction(game, ["firing1", "firing3"]), target, tloc, false, [false])
       expect(fp.fp).toBe(9)
 
       select(map, {
@@ -650,7 +671,7 @@ describe("fire tests", () => {
       expect(firing2.selected).toBe(true)
       expect(fire.doneSelect).toBe(false)
 
-      fp = firepower(game, makeAction(game, ["firing1", "firing3", "firing2"]), target, tloc, false)
+      fp = firepower(game, makeAction(game, ["firing1", "firing3", "firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(18)
 
       select(map, {
@@ -663,7 +684,8 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -944,6 +966,140 @@ describe("fire tests", () => {
       expect(fire.doneSelect).toBe(false)
     })
 
+    test("can't add activated units when not activated", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.status = unitStatus.Activated
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMG)
+      firing2.id = "firing2"
+      firing2.status = unitStatus.Activated
+      map.addCounter(floc, firing2)
+      const firing3 = new Unit(testGLdr)
+      firing3.id = "firing3"
+      firing3.select()
+      map.addCounter(floc, firing3)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(floc)[0],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing.selected).toBe(false)
+      expect(fire.doneSelect).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(floc)[1],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing2.selected).toBe(false)
+      expect(fire.doneSelect).toBe(false)
+    })
+
+    test("can add activated units when activated (intensive fire)", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.status = unitStatus.Activated
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMG)
+      firing2.id = "firing2"
+      firing2.status = unitStatus.Activated
+      map.addCounter(floc, firing2)
+      const firing3 = new Unit(testGLdr)
+      firing3.id = "firing3"
+      firing3.status = unitStatus.Activated
+      firing3.select()
+      map.addCounter(floc, firing3)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(floc)[0],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing.selected).toBe(true)
+      expect(fire.doneSelect).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(floc)[1],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing2.selected).toBe(true)
+      expect(fire.doneSelect).toBe(false)
+    })
+
+    test("can't add exhausted units", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.status = unitStatus.Exhausted
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMG)
+      firing2.id = "firing2"
+      firing2.status = unitStatus.Exhausted
+      map.addCounter(floc, firing2)
+      const firing3 = new Unit(testGLdr)
+      firing3.id = "firing3"
+      firing3.status = unitStatus.Activated
+      firing3.select()
+      map.addCounter(floc, firing3)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(floc)[0],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing.selected).toBe(false)
+      expect(fire.doneSelect).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(floc)[1],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing2.selected).toBe(false)
+      expect(fire.doneSelect).toBe(false)
+    })
+
     test("multiselect multiple hexes", () => {
       const game = createTestGame()
       const map = game.scenario.map
@@ -994,12 +1150,13 @@ describe("fire tests", () => {
       expect(fire.doneSelect).toBe(true)
 
       const firingIDs = ["firing1", "firing2", "firing3"]
-      const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false)
+      const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
       expect(fp.fp).toBe(16)
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, firingIDs), makeAction(game, ["target1"])
+        game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1078,12 +1235,13 @@ describe("fire tests", () => {
       expect(target.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
       expect(baseToHit(fp.fp)).toBe(15)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"])
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1141,12 +1299,13 @@ describe("fire tests", () => {
       expect(fire.doneSelect).toBe(true)
 
       const firingIDs = ["firing1", "firing2"]
-      const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false)
+      const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
       expect(fp.fp).toBe(17)
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, firingIDs), makeAction(game, ["target1"])
+        game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1202,12 +1361,13 @@ describe("fire tests", () => {
       }, () => {})
       expect(target2.targetSelected).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(10)
       expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing2"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing2"]), makeAction(game, ["target1", "target2"])
+        game, makeAction(game, ["firing2"]), makeAction(game, ["target1", "target2"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -1291,12 +1451,13 @@ describe("fire tests", () => {
       }, () => {})
       expect(target2.targetSelected).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2", "firing5"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2", "firing5"]), target, tloc, false, [false])
       expect(fp.fp).toBe(22)
       expect(baseToHit(fp.fp)).toBe(10)
       expect(fireHindrance(game, makeAction(game, ["firing2", "firing5"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, ["firing2", "firing5"]), makeAction(game, ["target1", "target2"])
+        game, makeAction(game, ["firing2", "firing5"]), makeAction(game, ["target1", "target2"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -1397,12 +1558,13 @@ describe("fire tests", () => {
       expect(fire.doneSelect).toBe(true)
 
       const firingIDs = ["firing1", "firing2"]
-      const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false)
+      const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
       expect(fp.fp).toBe(17)
       expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
-        game, makeAction(game, firingIDs), makeAction(game, ["target1"])
+        game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1496,12 +1658,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(14)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(4)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
@@ -1568,12 +1730,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(4)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(17)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(2)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
@@ -1638,12 +1800,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(9)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(12)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
@@ -1708,12 +1870,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(9)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(12)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
@@ -1980,12 +2142,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(9)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(12)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
@@ -2064,12 +2226,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(9)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(24)
       expect(fp2.why.length).toBe(1)
       expect(baseToHit(fp2.fp)).toBe(9)
@@ -2132,12 +2294,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(9)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(24)
       expect(fp2.why.length).toBe(1)
       expect(baseToHit(fp2.fp)).toBe(9)
@@ -2210,12 +2372,12 @@ describe("fire tests", () => {
       expect(target3.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false)
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(4)
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(17)
 
-      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false)
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(4)
       expect(fp2.why.length).toBe(1)
       expect(baseToHit(fp2.fp)).toBe(17)
@@ -2314,42 +2476,722 @@ describe("fire tests", () => {
     })
 
     test("ranged vehicle breakdown roll", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(false)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 3, rolled 1: miss, firing weapon broken"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1") // Wreck
+      expect(all[1].unit.id).toBe("firing1")
+      expect(all[1].unit.jammed).toBe(true)
+      expect(all[1].unit.weaponDestroyed).toBe(false)
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("ranged vehicle breakdown destroys roll", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.breakDestroysWeapon = true
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(false)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 3, rolled 1: miss, firing weapon destroyed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1") // Wreck
+      expect(all[1].unit.id).toBe("firing1")
+      expect(all[1].unit.jammed).toBe(false)
+      expect(all[1].unit.weaponDestroyed).toBe(true)
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("ranged fire against infantry", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(false)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(4)
+      expect(fp.why.length).toBe(2)
+      expect(fp.why[1]).toBe("- halved: antitank vs. soft target")
+      expect(baseToHit(fp.fp)).toBe(17)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+      const mods = armorHitModifiers(game, firing, target3, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target, from: [floc], to: tloc, incendiary: false },
+        { unit: target2, from: [floc], to: tloc, incendiary: false },
+      ])
+      expect(target3.isWreck).toBe(false)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
+        "roll for effect (2d10): target 17, rolled 20: hit"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(4)
+      expect(all[0].unit.id).toBe("target1")
+      expect(all[1].unit.id).toBe("target2")
+      expect(all[2].unit.id).toBe("target3")
+      expect(all[3].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("ranged fire against armored vehicle", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.turretFacing = 4
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+
+      game.fireRotate(1)
+      game.fireRotate(4) // rotate to original rotation
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(14)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 3, rolled 100: hit"
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
+        "penetration roll (2d10): target 16, rolled 20: succeeded, vehicle destroyed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1") // Wreck
+      expect(all[1].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("ranged fire against unarmored vehicle", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTruck)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 3, rolled 100: hit, vehicle destroyed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1") // Wreck
+      expect(all[1].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("ranged fire after moving turret", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+      game.fireRotate(4)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(14)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, true)
+      expect(mult.mult).toBe(4)
+      expect(mult.why.length).toBe(2)
+      expect(mult.why[1]).toBe("- plus 1 for moving the turret")
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 4, rolled 100: hit"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1") // Wreck
+      expect(all[1].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("vehicle machine gun", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGAC)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(true)
+      game.fireRotate(4)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(14)
+      const mods = untargetedModifiers(
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.gameActionState?.fire?.path as GameActionPath[]
+      )
+      expect(mods.mod).toBe(0)
+      expect(mods.why.length).toBe(2)
+      expect(mods.why[0]).toBe("- minus 1 for adjacent")
+      expect(mods.why[1]).toBe("- plus 1 for moving the turret")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target, from: [floc], to: tloc, incendiary: false },
+      ])
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "hit roll (2d10): target 14, rolled 20: hit"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1")
+      expect(all[1].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
-    test("can't fire infantry from tranpsort", () => {
-    })
+    test("can't fire from tranpsort", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGTruck)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      const firing3 = new Unit(testGGun)
+      firing3.id = "firing3"
+      map.addCounter(floc, firing3)
+      const firing4 = new Unit(testGInf)
+      firing4.id = "firing4"
+      map.addCounter(floc, firing4)
+      const firing5 = new Unit(testGMG)
+      firing5.id = "firing5"
+      map.addCounter(floc, firing5)
+      const firing6 = new Unit(testGLdr)
+      firing6.id = "firing6"
+      firing6.select()
+      map.addCounter(floc, firing6)
 
-    test("can't fire support weapon from tranpsort", () => {
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      const state = game.gameActionState as GameActionState
+      const fire = state.fire as FireActionState
+      expect(fire.doneSelect).toBe(false)
+
+      select(map, {
+        counter: map.countersAt(floc)[1],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing2.selected).toBe(false)
+      expect(game.messageQueue[0]).toBe("vehicles cannot fire with other units")
+
+      select(map, {
+        counter: map.countersAt(floc)[2],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing3.selected).toBe(false)
+      expect(game.messageQueue[1]).toBe("targeted weapons cannot fire with other units")
+
+      select(map, {
+        counter: map.countersAt(floc)[3],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing4.selected).toBe(false)
+      expect(game.messageQueue[2]).toBe("unit being transported cannot fire with other units")
+
+      select(map, {
+        counter: map.countersAt(floc)[4],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing5.selected).toBe(false)
+      expect(game.messageQueue[3]).toBe("unit being transported cannot fire with other units")
     })
 
     test("firing with sponson", () => {
+      const game = createTestGame()
+      expect(game.scenario.axisFactions).toStrictEqual(["ger"])
+      game.scenario.axisFactions = ["ita"]
+      expect(game.scenario.axisFactions).toStrictEqual(["ita"])
+      const map = game.scenario.map
+      const firing = new Unit(testITank)
+      firing.id = "firing1"
+      firing.facing = 4
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireSponsonToggle()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, true, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(14)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, true, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 3, rolled 100: hit"
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
+        "hit location roll (d10): 10 (hull)"
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
+        "penetration roll (2d10): target 16, rolled 20: succeeded, vehicle destroyed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1") // Wreck
+      expect(all[1].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("sponson breakdown roll", () => {
+      const game = createTestGame()
+      expect(game.scenario.axisFactions).toStrictEqual(["ger"])
+      game.scenario.axisFactions = ["ita"]
+      expect(game.scenario.axisFactions).toStrictEqual(["ita"])
+      const map = game.scenario.map
+      const firing = new Unit(testITank)
+      firing.id = "firing1"
+      firing.facing = 4
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireSponsonToggle()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, true, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(14)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, true, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(false)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 3, rolled 1: miss, firing weapon broken"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1")
+      expect(all[1].unit.id).toBe("firing1")
+      expect(all[1].unit.sponsonJammed).toBe(true)
+      expect(all[1].unit.sponsonDestroyed).toBe(false)
     })
 
     test("sponson breakdown destroy roll", () => {
+      const game = createTestGame()
+      expect(game.scenario.axisFactions).toStrictEqual(["ger"])
+      game.scenario.axisFactions = ["ita"]
+      expect(game.scenario.axisFactions).toStrictEqual(["ita"])
+      const map = game.scenario.map
+      const firing = new Unit(testITank)
+      firing.id = "firing1"
+      firing.facing = 4
+      firing.sponson = { firepower: 24, range: 1, type: sponsonType.Flame }
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testGInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireSponsonToggle()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, true, [false])
+      expect(fp.fp).toBe(24)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(9)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, true, false)
+      expect(mult.mult).toBe(3)
+      expect(mult.why.length).toBe(1)
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(false)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "hit roll (2d10): target 8, rolled 2: miss, firing weapon destroyed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1")
+      expect(all[1].unit.id).toBe("firing1")
+      expect(all[1].unit.sponsonJammed).toBe(false)
+      expect(all[1].unit.sponsonDestroyed).toBe(true)
     })
 
     test("firing from wire", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.turretFacing = 4
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const wire = new Feature(testWire)
+      wire.id = "wire1"
+      map.addCounter(floc, wire)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [true])
+      expect(fp.fp).toBe(4)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(17)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 3, rolled 100: hit"
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
+        "penetration roll (2d10): target 19, rolled 20: succeeded, vehicle destroyed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1") // Wreck
+      expect(all[1].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
   })
 })

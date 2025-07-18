@@ -56,7 +56,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           actions.unshift({ type: "none", message: "select target" })
         }
         const sponson = !!game.gameActionState.selection[0].counter.unit.sponson
-        if (sponson) {
+        if (sponson && !(selection?.sponsonJammed || selection?.sponsonDestroyed ||
+                         selection?.jammed || selection?.weaponDestroyed)) {
           actions.push({ type: "fire_toggle_sponson" })
         }
         if (!action.doneRotating && !game.sponsonFire) {

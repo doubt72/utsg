@@ -18,7 +18,7 @@ export type GameActionDiceResult = {
 }
 
 export type GameActionUnit = {
-  x: number, y: number, id: string, status: UnitStatus, sponson?: boolean
+  x: number, y: number, id: string, status: UnitStatus, sponson?: boolean, wire?: boolean
 }
 
 export type GameActionReinforcementUnit = {

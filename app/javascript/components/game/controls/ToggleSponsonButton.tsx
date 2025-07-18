@@ -10,17 +10,7 @@ interface ToggleSponsonButtonProps {
 export default function ToggleSponsonButton({ game, callback }: ToggleSponsonButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    if (!game.gameActionState?.fire) { return }
-    game.sponsonFire = !game.sponsonFire
-    game.gameActionState.fire.targetSelection = []
-    game.gameActionState.fire.targetHexes = []
-    game.scenario.map.clearAllTargetSelections()
-    if (game.sponsonFire) {
-      game.gameActionState.fire.path = [game.gameActionState.fire.path[0]]
-      game.gameActionState.fire.doneRotating = true
-    } else {
-      game.gameActionState.fire.doneRotating = false
-    }
+    game.fireSponsonToggle()
     callback()
   }
 

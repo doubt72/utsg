@@ -1,9 +1,10 @@
-import { Coordinate, featureType, hexOpenType, HexOpenType, unitStatus, unitType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, hexOpenType, HexOpenType, sponsonType, unitStatus, unitType } from "../../utilities/commonTypes";
 import { los, losHexPath } from "../../utilities/los";
 import { hexDistance, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
+import { GameActionPath } from "../GameAction";
 import Hex from "../Hex";
 import Map from "../Map";
 import Unit from "../Unit";
@@ -54,7 +55,11 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
 export function rapidFire(game: Game): boolean {
   if (!game?.gameActionState?.fire) { return false }
   for (const sel of game.gameActionState.selection) {
-    if (!sel.counter.unit.rapidFire && !sel.counter.unit.leader) { return false }
+    if (sel.counter.unit.sponson && game.sponsonFire) {
+      return false
+    } else {
+      if (!sel.counter.unit.rapidFire && !sel.counter.unit.leader) { return false }
+    }
   }
   return true
 }
@@ -62,8 +67,12 @@ export function rapidFire(game: Game): boolean {
 export function areaFire(game: Game) {
   if (!game?.gameActionState?.fire) { return false }
   const init = game.gameActionState.fire.initialSelection[0]
-  if (init.counter.unit.areaFire) { return true }
-  if (init.counter.unit.targetedRange) { return false }
+  if (init.counter.unit.sponson && game.sponsonFire) {
+    if (init.counter.unit.sponson.type !== sponsonType.Flame) { return false }
+  } else {
+    if (init.counter.unit.areaFire) { return true }
+    if (init.counter.unit.targetedRange) { return false }
+  }
   return true
 }
 
@@ -169,7 +178,7 @@ export function fireHindrance(
 }
 
 export function firepower(
-  game: Game, source: ActionSelection[], target: Unit, to: Coordinate, sponson: boolean
+  game: Game, source: ActionSelection[], target: Unit, to: Coordinate, sponson: boolean, wire: boolean[]
 ): { fp: number, why: string[] } {
   const why: string[] = []
   let fp = 0
@@ -182,7 +191,9 @@ export function firepower(
     } else {
       const leadership = sunit.targetedRange && !sunit.isVehicle ? 0 :
         leadershipAt(game, new Coordinate(sel.x, sel.y))
-      if (sunit.currentRange >= dist || sunit.offBoard) { fp += sunit.currentFirepower + leadership }
+      if (sunit.currentRange >= dist || sunit.offBoard) {
+        fp += sunit.currentFirepower / (wire[i] ? 2 : 1) + leadership
+      }
     }
   }
   why.push(`base firepower ${fp}`)
@@ -227,7 +238,7 @@ function leadershipAt(game: Game, at: Coordinate): number {
 }
 
 export function untargetedModifiers(
-  game: Game, source: ActionSelection[], targets: ActionSelection[]
+  game: Game, source: ActionSelection[], targets: ActionSelection[], path: GameActionPath[]
 ): { mod: number, why: string[] } {
   // TODO: Break down by location
   const why: string[] = []
@@ -287,6 +298,10 @@ export function untargetedModifiers(
   if (intense) {
     mod += 2
     why.push("- plus 2 intensive fire")
+  }
+  if (source[0].counter.unit.turreted && path.length > 1) {
+    mod += 1
+    why.push("- plus 1 for moving the turret")
   }
   return { mod, why }
 }

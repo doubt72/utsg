@@ -19,7 +19,7 @@ module Scenarios
           [4, :alm_regular_t],
           [2, :alm_vickers_mg],
           [2, :alm_75mm_gun],
-          [3, :strongpoint],
+          [3, :bunker],
         ],
       },
     }.freeze

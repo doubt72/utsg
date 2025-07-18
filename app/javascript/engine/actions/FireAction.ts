@@ -1,4 +1,4 @@
-import { Coordinate, featureType, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate, featureType, sponsonType, unitStatus } from "../../utilities/commonTypes";
 import {
   baseToHit, coordinateToLabel, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
   rolld6,
@@ -21,7 +21,7 @@ import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
 type FireActionActor = {
-  counter: Counter, sponson?: boolean,
+  counter: Counter, sponson?: boolean, wire?: boolean
 }
 export default class FireAction extends BaseAction {
   origin: GameActionUnit[];
@@ -123,7 +123,7 @@ export default class FireAction extends BaseAction {
     let diceIndex = 0
     const map = this.game.scenario.map
     const firing: FireActionActor[] = this.origin.map(o => {
-      return { counter: this.game.findCounterById(o.id) as Counter, sponson: o.sponson }
+      return { counter: this.game.findCounterById(o.id) as Counter, sponson: o.sponson, wire: o.wire }
     })
     const targets: FireActionActor[] = this.target.map(t => {
       return { counter: this.game.findCounterById(t.id) as Counter }
@@ -136,10 +136,11 @@ export default class FireAction extends BaseAction {
     let to = new Coordinate(-1, -1)
     let fp = { fp: 0, why: [] as string[] }
     const sponson = !!firing[0].sponson
+    const wire = !!firing[0].wire
     let smoke = false
     if (target0) {
       to = target0.hex as Coordinate
-      fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson)
+      fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson, [wire])
     } else {
       const hex = this.fireHex.start[0] as { x: number, y: number, smoke: boolean }
       smoke = hex.smoke
@@ -150,7 +151,9 @@ export default class FireAction extends BaseAction {
     }
     // Also generate final target hexes
     this.fireHex.final = this.fireHex.start
-    if (firing0.unit.targetedRange || firing0.unit.offBoard) {
+    const tRange = sponson ? firing0.unit.sponson?.type !== sponsonType.Flame : firing0.unit.targetedRange
+    const oBoard = firing0.unit.offBoard
+    if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
       const mult = rangeMultiplier(map, firing0, to, sponson, rotated)
@@ -162,10 +165,10 @@ export default class FireAction extends BaseAction {
       if (needDice) {
         targetRoll.description = `targeting roll (d10x10): target ${targetCheck}, rolled ${targetRoll.result}: `
       }
-      if (targetRoll.result > targetCheck || firing0.unit.offBoard) {
+      if (targetRoll.result > targetCheck || oBoard) {
         let dTo = to
         let dTargets = targets
-        if (targetRoll.result <= targetCheck && firing0.unit.offBoard) {
+        if (targetRoll.result <= targetCheck && oBoard) {
           if (needDice) {
             targetRoll.description += "miss, drifts"
             this.diceResults.push({ result: rolld6(), type: "d6" })
@@ -218,7 +221,7 @@ export default class FireAction extends BaseAction {
               }
             }
             if (infantry) {
-              fp = firepower(this.game, this.convertAToA(firing), unit, dTo, sponson)
+              fp = firepower(this.game, this.convertAToA(firing), unit, dTo, sponson, [wire])
               let hitCheck = baseToHit(fp.fp)
               if (hitCheck < 2) { hitCheck = 2 }
               if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
@@ -243,7 +246,8 @@ export default class FireAction extends BaseAction {
                 t.counter.unit.status = unitStatus.Wreck
                 if (needDice) { targetRoll.description += `, ${t.counter.unit.name} destroyed` }
               } else if (t.counter.unit.isVehicle) {
-                fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, dTo, sponson)
+                const fwire = firing.map(f => f.wire ?? false)
+                fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, dTo, sponson, fwire)
                 const baseHit = baseToHit(fp.fp)
                 const armor = firing0.unit.incendiary ? 0 : t.counter.unit.lowestArmor
                 let hitCheck = baseHit + armor
@@ -354,7 +358,9 @@ export default class FireAction extends BaseAction {
       }
     } else {
       const basehit = baseToHit(fp.fp)
-      const mods = untargetedModifiers(this.game, this.convertAToA(firing), this.convertAToA(targets))
+      const mods = untargetedModifiers(
+        this.game, this.convertAToA(firing), this.convertAToA(targets), this.path
+      )
       const coords: Coordinate[] = []
       for (const t of targets) {
         let check = false
@@ -393,7 +399,7 @@ export default class FireAction extends BaseAction {
                 t.counter.unit.status = unitStatus.Wreck
                 if (needDice) { hitRoll.description += `, ${t.counter.unit.name} destroyed` }
               } else if (t.counter.unit.isVehicle && firing0.unit.incendiary) {
-                fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false)
+                fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false, [wire])
                 let hitCheck = baseToHit(fp.fp)
                 if (hitCheck < 2) { hitCheck = 2 }
                 if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }

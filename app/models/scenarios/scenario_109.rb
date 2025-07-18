@@ -28,8 +28,7 @@ module Scenarios
           :fra_47mm_atx,
           [12, :wire],
           [4, :mines8],
-          [2, :bunker],
-          [2, :strongpoint],
+          [4, :bunker],
         ],
       },
     }.freeze

@@ -1,8 +1,4 @@
 High Priority Features/Bug Fixes:
-  - No Bunkers on streams
-  - Firing
-    - Disable sponson switch with broken sponson weapon
-    - Finish tests
   - Test/Implement: mine
   - Show reaction
   - Intensive Firing
@@ -20,16 +16,17 @@ High Priority Features/Bug Fixes:
 
 Future Features/Bug Fixes:
   - Undo getting out of sync (maybe remove ID?)
+    - Automatically undo excessive deployments
   - Redo docs for satchel charges / molotov cocktail
     - Add crew activated on fire to docs
     - Update docs for rapid fire -1, point-blank -1
     - Remove reaction fire penalty from docs
     - Change terminology for jamming in documentation to be more like breaking
     - Pinned half, not -1
+    - Machine gun turret +1
 
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel, main map, minimap
-  - Remove strong points, nerf other fortifications
   - Handle map scale and such settings gone wrong
   - Show Terrain in counter overlay
   - Ability to kick players

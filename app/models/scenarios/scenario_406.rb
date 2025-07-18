@@ -46,7 +46,7 @@ module Scenarios
           [2, :jap_crew_t],
           [4, :jap_type_92_hmg],
           [2, :jap_70mm_type_92],
-          [5, :strongpoint],
+          [5, :bunker],
         ],
       },
     }.freeze
