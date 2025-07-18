@@ -1,8 +1,6 @@
 High Priority Features/Bug Fixes:
   - No Bunkers on streams
   - Firing
-    - Show Drift
-    - Allow Target Hex
     - Disable sponson switch with broken sponson weapon
     - Finish tests
   - Test/Implement: mine

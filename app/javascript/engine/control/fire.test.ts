@@ -1756,6 +1756,191 @@ describe("fire tests", () => {
       expect(all[4].unit.jammed).toBe(true)
     })
 
+    test("offboard artillery hex", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadio)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireAtHex(4, 2)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(game.lastAction?.stringValue).toBe(
+        "German Radio 10.5cm at D3 fired at E3; targeting roll (d10x10): target 4, rolled 1: miss, " +
+        "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
+        "drifted to D3; infantry effect roll (2d10): target 9, rolled 2: failed"
+      )
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].unit.id).toBe("firing2")
+    })
+
+    test("offboard artillery firing smoke", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadio)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireSmokeToggle()
+      game.fireAtHex(4, 2)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(game.lastAction?.stringValue).toBe(
+        "German Radio 10.5cm at D3 fired smoke at E3; targeting roll (d10x10): target 4, rolled 1: miss, " +
+        "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
+        "drifted to D3; smoke roll (d10): rolled 1, smoke level 1"
+      )
+
+      const all = map.allCounters
+      expect(all.length).toBe(3)
+      expect(all[0].unit.id).toBe("0-smoke")
+      expect(all[0].hex?.x).toBe(3)
+      expect(all[0].hex?.y).toBe(2)
+      expect(all[1].unit.id).toBe("firing1")
+      expect(all[2].unit.id).toBe("firing2")
+    })
+
+    test("mortar firing smoke", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMortar)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireSmokeToggle()
+      game.fireAtHex(0, 2)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(game.lastAction?.stringValue).toBe(
+        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll (d10x10): target 9, rolled 100: hit; " +
+        "smoke roll (d10): rolled 10, smoke level 4"
+      )
+
+      const all = map.allCounters
+      expect(all.length).toBe(3)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].unit.id).toBe("firing2")
+      expect(all[2].unit.id).toBe("0-smoke")
+      expect(all[2].hex?.x).toBe(0)
+      expect(all[2].hex?.y).toBe(2)
+    })
+
+    test("gun firing smoke", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGGun)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireSmokeToggle()
+      game.fireAtHex(0, 2)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(game.lastAction?.stringValue).toBe(
+        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll (d10x10): target 12, rolled 100: hit; " +
+        "smoke roll (d10): rolled 10, smoke level 4"
+      )
+
+      const all = map.allCounters
+      expect(all.length).toBe(3)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].unit.id).toBe("firing2")
+      expect(all[2].unit.id).toBe("0-smoke")
+      expect(all[2].hex?.x).toBe(0)
+      expect(all[2].hex?.y).toBe(2)
+    })
+
+    test("gun firing smoke miss", () => {
+      const game = createTestGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGGun)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+      organizeStacks(map)
+
+      game.startFire()
+
+      game.fireSmokeToggle()
+      game.fireAtHex(0, 2)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(game.lastAction?.stringValue).toBe(
+        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll (d10x10): target 12, rolled 1: miss, " +
+        "firing weapon broken"
+      )
+
+      const all = map.allCounters
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].unit.id).toBe("firing2")
+    })
+
     test("single shot", () => {
       const game = createTestGame()
       const map = game.scenario.map
@@ -2128,28 +2313,10 @@ describe("fire tests", () => {
       expect((game.eliminatedUnits[0] as Unit).children.length).toBe(0)
     })
 
-    test("smoke", () => {
-    })
-
-    test("ranged fire", () => {
-    })
-
-    test("gun can't fire if crewed is", () => {
-    })
-
-    test("ranged fire", () => {
-    })
-
-    test("ranged breakdown roll", () => {
-
-    })
-
     test("ranged vehicle breakdown roll", () => {
-
     })
 
     test("ranged vehicle breakdown destroys roll", () => {
-
     })
 
     test("ranged fire against infantry", () => {
@@ -2177,15 +2344,12 @@ describe("fire tests", () => {
     })
 
     test("sponson breakdown roll", () => {
-
     })
 
     test("sponson breakdown destroy roll", () => {
-
     })
 
     test("firing from wire", () => {
-
     })
   })
 })

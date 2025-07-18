@@ -13,7 +13,7 @@ import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../u
 import Unit from "./Unit";
 import {
   actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
-  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, GameActionState,
+  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, fireAtHex, fireSmokeToggle, GameActionState,
   loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
   startAssault, startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass
 } from "./control/gameActions";
@@ -682,6 +682,14 @@ export default class Game {
 
   startFire() {
     startFire(this)
+  }
+
+  fireAtHex(x: number, y: number) {
+    fireAtHex(this, x, y)
+  }
+
+  fireSmokeToggle() {
+    fireSmokeToggle(this)
   }
 
   finishFire() {

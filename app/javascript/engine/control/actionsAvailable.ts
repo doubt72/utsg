@@ -62,6 +62,10 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (!action.doneRotating && !game.sponsonFire) {
           actions.push({ type: "finish_rotation" })
         }
+        if (selection?.smokeCapable && (selection.targetedRange || selection.offBoard)) {
+          actions.push({ type: "fire_smoke" })
+        }
+        console.log(action.targetHexes.length)
         if (action.targetHexes.length > 0) {
           actions.push({ type: "fire_finish" })
         }

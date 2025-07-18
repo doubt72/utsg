@@ -299,6 +299,14 @@ export default function GameDisplay() {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
       })
+    } else if (game.k?.gameActionState?.fire) {
+      const state = game.k.gameActionState
+      if (state.selection[0].counter.unit.offBoard || state.fire?.firingSmoke) {
+        setControls(gc => {
+          const key = Number(gc?.key ?? 0)
+          return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+        })
+      }
     }
   }
 

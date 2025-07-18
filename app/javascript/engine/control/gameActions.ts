@@ -33,6 +33,7 @@ export type FireActionState = {
   path: GameActionPath[];
   doneSelect: boolean;
   doneRotating: boolean;
+  firingSmoke: boolean;
   targetHexes: Coordinate[];
 }
 
@@ -142,10 +143,30 @@ export function startFire(game: Game) {
       selection: allSelection,
       fire: {
         initialSelection, doneSelect: !canSelect, path: [loc], targetSelection: [],
-        doneRotating: !selection.unit.turreted, targetHexes: []
+        firingSmoke: false, doneRotating: !selection.unit.turreted, targetHexes: []
       }
     }
   }
+}
+
+export function fireAtHex(game: Game, x: number, y: number) {
+  if (!game.gameActionState?.fire) { return }
+  if (game.gameActionState.selection[0].counter.unit.offBoard ||
+      game.gameActionState.fire.firingSmoke) {
+    game.gameActionState.fire.targetHexes = [new Coordinate(x, y)]
+  }
+}
+
+export function fireSmokeToggle(game: Game) {
+  if (!game.gameActionState?.fire) { return }
+  if (game.gameActionState.fire.firingSmoke) {
+    game.gameActionState.fire.firingSmoke = false
+  } else {
+    game.gameActionState.fire.firingSmoke = true
+  }
+  game.gameActionState.fire.targetHexes = []
+  game.gameActionState.fire.targetSelection = []
+  game.scenario.map.clearAllTargetSelections()
 }
 
 export function finishFire(game: Game) {
@@ -162,6 +183,12 @@ export function finishFire(game: Game) {
       target: game.gameActionState.fire.targetSelection.map(t => {
         return { x: t.x, y: t.y, id: t.counter.unit.id, status: t.counter.unit.status }
       }),
+      fire_hex_data: {
+        start: game.gameActionState.fire.targetHexes.map(h => {
+          return { x: h.x, y: h.y, smoke: !!game.gameActionState?.fire?.firingSmoke }
+        }),
+        final: []
+      },
       dice_result: [],
     }
   }, game, game.actions.length)

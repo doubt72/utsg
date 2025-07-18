@@ -36,6 +36,7 @@ import FinishRotationButton from "./FinishRotationButton";
 import ToggleSponsonButton from "./ToggleSponsonButton";
 import FireFinishButton from "./FireFinishButton";
 import MoraleCheckButton from "./MoraleCheckButton";
+import FireSmokeButton from "./FireSmokeButton";
 
 interface GameControlsProps {
   game: Game;
@@ -93,6 +94,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <FireFinishButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "fire_toggle_sponson") {
         return <ToggleSponsonButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_smoke") {
+        return <FireSmokeButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "intensive_fire") {
         return <IntensiveFireButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "morale_check") {

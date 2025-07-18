@@ -29,6 +29,11 @@ export type GameActionPath = {
   x: number, y: number, facing?: Direction, turret?: Direction,
 }
 
+export type GameActionFireHexData = {
+  start: { x: number, y: number, smoke: boolean }[],
+  final: { x: number, y: number, smoke: boolean }[],
+}
+
 export type AddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
 export const addActionType: { [index: string]: AddActionType } = {
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
@@ -57,7 +62,7 @@ export type GameActionDetails = {
 
   phase_data?: GameActionPhaseChange,
 
-  fire_data?: { x: number, y: number }[]
+  fire_hex_data?: GameActionFireHexData,
   morale_data?: { mod: number, why: string[] }
 }
 

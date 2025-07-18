@@ -322,7 +322,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
   const fp = firepower(game, firing, target, to, game.sponsonFire)
   const hindrance = fireHindrance(game, firing, to)
   const source = firing[0].counter.unit
-  if (firing[0].counter.unit.targetedRange) {
+  if (firing[0].counter.unit.targetedRange || firing[0].counter.unit.offBoard) {
     const rotated = game.gameActionState.fire.path.length > 1
     const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
     const range = hexDistance(from, to)

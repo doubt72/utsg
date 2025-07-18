@@ -273,7 +273,15 @@ export default function MapDisplay({
       for (const c of map.game.gameActionState.fire.targetHexes) {
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(c) as Hex
-        hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} />)
+        hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true} />)
+      }
+      setFireTargets(hexes)
+    } else if (map.game?.lastSignificantAction?.data.fire_hex_data) {
+      const hexes: JSX.Element[] = []
+      for (const c of map.game.lastSignificantAction.data.fire_hex_data.final) {
+        const target = map.units[c.y][c.x].length < 1
+        const hex = map.hexAt(new Coordinate(c.x, c.y)) as Hex
+        hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false} />)
       }
       setFireTargets(hexes)
     } else {
@@ -492,6 +500,8 @@ export default function MapDisplay({
         map.game.move(x, y)
       } else if (map.game?.gameActionState?.assault) {
         map.game.assault(x, y)
+      } else if (map.game?.gameActionState?.fire) {
+        map.game.fireAtHex(x, y)
       }
       setMapUpdate(s => s + 1)
       if (doCallback) { hexCallback(x, y) }
