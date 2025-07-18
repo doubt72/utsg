@@ -218,7 +218,7 @@ export function finishFire(game: Game) {
       target: game.gameActionState.fire.targetSelection.map(t => {
         return { x: t.x, y: t.y, id: t.counter.unit.id, status: t.counter.unit.status }
       }),
-      fire_hex_data: {
+      fire_data: {
         start: game.gameActionState.fire.targetHexes.map(h => {
           return { x: h.x, y: h.y, smoke: !!game.gameActionState?.fire?.firingSmoke }
         }),
@@ -407,7 +407,26 @@ export function loadingMoveToggle(game: Game) {
 
 export function finishMove(game: Game) {
   if (!game.gameActionState?.move) { return }
+  const lastPath = game.lastPath as GameActionPath
+  const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
+  let check = undefined
+  for (const c of counters) {
+    if (c.hasFeature && c.feature.type === featureType.Mines) { check = c.feature; break }
+  }
+  const moveData = check ? { mines:
+    {
+      firepower: check.baseFirepower as number, infantry: !check.antiTank,
+      antitank: check.fieldGun || check.antiTank
+    }
+   } : undefined
   const dice: GameActionDiceResult[] = []
+  if (moveData) {
+    const unit = game.gameActionState.selection[0].counter.unit
+    const mines = moveData.mines
+    if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
+      dice.push({ result: roll2d10(), type: "2d10" })
+    }
+  }
   for (const a of game.gameActionState.move.addActions) {
     if (a.type === addActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
   }
@@ -426,6 +445,7 @@ export function finishMove(game: Game) {
           status: a.status,
         }
       }),
+      move_data: moveData,
       dice_result: dice,
     }
   }, game, game.actions.length)

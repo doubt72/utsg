@@ -276,9 +276,9 @@ export default function MapDisplay({
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true} />)
       }
       setFireTargets(hexes)
-    } else if (map.game?.lastSignificantAction?.data.fire_hex_data) {
+    } else if (map.game?.lastSignificantAction?.data.fire_data) {
       const hexes: JSX.Element[] = []
-      for (const c of map.game.lastSignificantAction.data.fire_hex_data.final) {
+      for (const c of map.game.lastSignificantAction.data.fire_data.final) {
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(new Coordinate(c.x, c.y)) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false} />)

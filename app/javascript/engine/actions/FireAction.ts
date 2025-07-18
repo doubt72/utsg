@@ -13,7 +13,7 @@ import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
 import {
-  GameActionPath, GameActionUnit, GameActionData, GameActionDiceResult, GameActionFireHexData,
+  GameActionPath, GameActionUnit, GameActionData, GameActionDiceResult, GameActionFireData,
 } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
@@ -27,7 +27,7 @@ export default class FireAction extends BaseAction {
   origin: GameActionUnit[];
   path: GameActionPath[];
   target: GameActionUnit[];
-  fireHex: GameActionFireHexData;
+  fireHex: GameActionFireData;
   diceResults: GameActionDiceResult[];
 
   intensive: boolean;
@@ -38,7 +38,7 @@ export default class FireAction extends BaseAction {
     this.validate(data.data.origin)
     this.validate(data.data.path)
     this.validate(data.data.target)
-    this.validate(data.data.fire_hex_data)
+    this.validate(data.data.fire_data)
     this.validate(data.data.dice_result)
     this.intensive = intensive
 
@@ -46,7 +46,7 @@ export default class FireAction extends BaseAction {
     this.origin = data.data.origin as GameActionUnit[]
     this.path = data.data.path as GameActionPath[]
     this.target = data.data.target as GameActionUnit[]
-    this.fireHex = data.data.fire_hex_data as GameActionFireHexData
+    this.fireHex = data.data.fire_data as GameActionFireData
     this.diceResults = data.data.dice_result as GameActionDiceResult[]
   }
 

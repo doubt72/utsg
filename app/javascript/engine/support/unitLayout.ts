@@ -281,12 +281,12 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     path = circlePath(loc, 10)
     color = "white"
     if (counter.feature.fieldGun) {
+      style.stroke = "white"
+    }
+    if (counter.feature.antiTank) {
       style.stroke = counterRed
       style.fill = "white"
       color = counterRed
-    }
-    if (counter.feature.antiTank) {
-      style.stroke = "white"
     }
   }
   if (size < 16) { loc.yShift(-0.5) }

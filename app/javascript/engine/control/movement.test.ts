@@ -1,11 +1,11 @@
 import { MapData } from "../Map"
 import {
-  baseTerrainType, Coordinate, hexOpenType, unitStatus, weatherType, windType
+  baseTerrainType, Coordinate, hexOpenType, markerType, unitStatus, weatherType, windType
 } from "../../utilities/commonTypes"
 import { ScenarioData } from "../Scenario"
 import Unit, { UnitData } from "../Unit"
 import Game, { gamePhaseType } from "../Game"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import {
   openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost
 } from "./movement"
@@ -58,31 +58,51 @@ const mapTestData = (hexes: HexData[][]): MapData => {
 export const testGInf: UnitData = {
   c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
 }
+
 export const testRInf: UnitData = {
   c: "ussr", f: 7, i: "squad", m: 3, n: "Rifle", r: 3, s: 6, t: "sqd", v: 4, y: 0, o: {}
 }
+
 export const testGLdr: UnitData = {
   c: "ger", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
 }
+
 export const testGMG: UnitData = {
   c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {r: 1, j: 3}
 }
+
 export const testGCrew: UnitData = {
   c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
 }
+
 export const testGGun: UnitData = {
   c: "ger", f: 8, i: "gun", n: "3.7cm Pak 36", o: {t: 1, j: 3, p: 1, c: 1, f: 18, tow: 2}, r: 16,
   t: "gun", v: 2, y: 36
 }
+
 export const testGTank: UnitData = {
   t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
   o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
 };
+
 export const testGTruck: UnitData = {
   t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
   o: { tr: 3, trg: 1, w: 1 },
 };
+
 export const testWire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
+
+export const testMine: FeatureData = {
+  ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A", o: { g: 1 }
+}
+
+export const testMineAP: FeatureData = {
+  ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A"
+}
+
+export const testMineAT: FeatureData = {
+  ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A", o: { p: 1 }
+}
 
 const scenarioTestData = (hexes: HexData[][]): ScenarioData => {
   return {
@@ -2747,6 +2767,314 @@ describe("movement tests", () => {
   })
 
   test("moving into mines", () => {
-    // TODO: implement fire first
+    const game = createTestGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+
+    const feature = new Feature(testMine)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, floc, new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, floc, new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.finishMove()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit, from: [tloc], to: tloc, incendiary: true },
+    ])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Rifle moves from E3 to D3, mine roll (2d10): target 14, rolled 20, hit"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a mine roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("moving into AT mines", () => {
+    const game = createTestGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+
+    const feature = new Feature(testMineAP)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, floc, new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, floc, new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.finishMove()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit, from: [tloc], to: tloc, incendiary: true },
+    ])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Rifle moves from E3 to D3, mine roll (2d10): target 14, rolled 20, hit"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AP Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a mine roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("moving into AT mines", () => {
+    const game = createTestGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+
+    const feature = new Feature(testMineAT)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
+    expect(openHexMovement(map, floc, new Coordinate(4, 3))).toBe(1)
+    expect(openHexMovement(map, floc, new Coordinate(3, 3))).toBe(2)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.finishMove()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Rifle moves from E3 to D3, AT mines have no effect"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AT Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+
+    game.executeUndo()
+  })
+
+  test("vehicle moving into mines", () => {
+    const game = createTestGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.select()
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+
+    const feature = new Feature(testMine)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.finishMove()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+    expect(unit.isWreck).toBe(true)
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German PzKpfw 35(t) moves from E3 to D3, mine roll (2d10): target 15, rolled 20, vehicle destroyed"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("PzKpfw 35(t)")
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a mine roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("vehicle moving into AP mines", () => {
+    const game = createTestGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.select()
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+
+    const feature = new Feature(testMineAP)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.finishMove()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+    expect(unit.isWreck).toBe(false)
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German PzKpfw 35(t) moves from E3 to D3, AP mines have no effect"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AP Minefield")
+    expect(all[1].marker.type).toBe(markerType.TrackedHull)
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(2)
+    expect(all[2].unit.name).toBe("PzKpfw 35(t)")
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a mine roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("vehicle moving into AT mines", () => {
+    const game = createTestGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.select()
+    const floc = new Coordinate(4, 2)
+    map.addCounter(floc, unit)
+
+    const feature = new Feature(testMineAT)
+    feature.id = "mine"
+    const tloc = new Coordinate(3, 2)
+    map.addCounter(tloc, feature)
+
+    game.startMove()
+
+    expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
+
+    game.move(3, 2)
+    expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    expect(openHexMovement(map, tloc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.finishMove()
+    Math.random = original
+
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+    expect(unit.isWreck).toBe(true)
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German PzKpfw 35(t) moves from E3 to D3, mine roll (2d10): target 15, rolled 20, vehicle destroyed"
+    )
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].feature.name).toBe("AT Minefield")
+    expect(all[1].hex?.x).toBe(3)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("PzKpfw 35(t)")
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a mine roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
   })
 });

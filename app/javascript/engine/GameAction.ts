@@ -29,9 +29,17 @@ export type GameActionPath = {
   x: number, y: number, facing?: Direction, turret?: Direction,
 }
 
-export type GameActionFireHexData = {
+export type GameActionFireData = {
   start: { x: number, y: number, smoke: boolean }[],
   final: { x: number, y: number, smoke: boolean }[],
+}
+
+export type GameActionMoveData = {
+  mines?: { firepower: number, infantry: boolean, antitank: boolean },
+}
+
+export type GameActionMoraleData = {
+  mod: number, why: string[],
 }
 
 export type AddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
@@ -40,7 +48,7 @@ export const addActionType: { [index: string]: AddActionType } = {
 }
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
-  status?: UnitStatus,
+  status?: UnitStatus
 }
 
 export type GameActionPhaseChange = {
@@ -62,8 +70,9 @@ export type GameActionDetails = {
 
   phase_data?: GameActionPhaseChange,
 
-  fire_hex_data?: GameActionFireHexData,
-  morale_data?: { mod: number, why: string[] }
+  fire_data?: GameActionFireData,
+  move_data?: GameActionMoveData,
+  morale_data?: GameActionMoraleData,
 }
 
 export type GameActionData = {

@@ -1,8 +1,7 @@
 High Priority Features/Bug Fixes:
-  - Test/Implement: mine
+  - Intensive Fire test (exhausted)
   - Show reaction
-  - Intensive Firing
-  - Reaction Firing
+    - Reaction Firing
     - Handle move (for reaction fire)
     - Just passing currently
   - Sniper check
@@ -10,7 +9,6 @@ High Priority Features/Bug Fixes:
   - Close Combat
   - Weather
   - Rally/Fix
-  - Show Eliminated Units
   - Blazes
   - Sniper Docs
 
@@ -24,6 +22,7 @@ Future Features/Bug Fixes:
     - Change terminology for jamming in documentation to be more like breaking
     - Pinned half, not -1
     - Machine gun turret +1
+    - Mine docs / assault careful
 
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel, main map, minimap
@@ -44,6 +43,8 @@ Future Features/Bug Fixes:
   - Break up tests / large files
   - Fix flickering of control buttons?
   - Disable text selection on map/etc?
+  - Refactor fire, simplify firing action
+  - Show ALL for movement into mines or wire
   - Support mouse scroll on map (use for zoom?)
     - Much harder than it appears, need a way to intercept only scroll/wheel/key events
       but pass through all other mouse events

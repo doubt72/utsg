@@ -1,10 +1,11 @@
 import { Coordinate, featureType, unitStatus } from "../../utilities/commonTypes";
-import { coordinateToLabel, normalDir, smokeRoll } from "../../utilities/utilities";
+import { baseToHit, coordinateToLabel, normalDir, smokeRoll } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
 import {
-  GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType
+  GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType,
+  GameActionMoveData
 } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
@@ -15,6 +16,7 @@ export default class MoveAction extends BaseAction {
   origin: GameActionUnit[];
   path: GameActionPath[];
   addAction: AddAction[];
+  moveData?: GameActionMoveData
   diceResults: GameActionDiceResult[];
 
   rush: boolean;
@@ -32,6 +34,7 @@ export default class MoveAction extends BaseAction {
     this.origin = data.data.origin as GameActionUnit[]
     this.path = data.data.path as GameActionPath[]
     this.addAction = data.data.add_action as AddAction[]
+    this.moveData = data.data.move_data
     this.diceResults = data.data.dice_result as GameActionDiceResult[]
   }
 
@@ -49,6 +52,42 @@ export default class MoveAction extends BaseAction {
       `${nation} ${units} ${this.moveString} at ${coordinateToLabel(start)}`
     ]
     let diceIndex = 0
+    let mineAction = undefined
+    if (this.moveData?.mines) {
+      const mines = this.moveData.mines
+      const hitCheck = baseToHit(mines.firepower)
+      const unit = this.game.findUnitById(this.origin[0].id) as Unit
+      let hitRoll = 0
+      if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
+        hitRoll = this.diceResults[diceIndex++].result
+      }
+      if (unit.isVehicle && !unit.armored) {
+        mineAction = ", vehicle destroyed by mines"
+      } else if (unit.isVehicle) {
+        if (mines.antitank) {
+        const armor = unit.lowestArmor < 0 ? 0 : unit.lowestArmor
+          mineAction = `, mine roll (2d10): target ${hitCheck + armor}, rolled ${hitRoll}, `
+          if (hitRoll > hitCheck + armor) {
+            mineAction += "vehicle destroyed"
+          } else {
+            mineAction += "no effect"
+          }
+        } else {
+          mineAction = ", AP mines have no effect"
+        }
+      } else {
+        if (mines.infantry) {
+          mineAction = `, mine roll (2d10): target ${hitCheck}, rolled ${hitRoll}, `
+          if (hitRoll > hitCheck) {
+            mineAction += "hit"
+          } else {
+            mineAction += "missed"
+          }
+        } else {
+          mineAction = ", AT mines have no effect"
+        }
+      }
+    }
     this.addAction.forEach(a => {
       const mid = new Coordinate(a.x, a.y)
       const label = coordinateToLabel(mid)
@@ -71,7 +110,7 @@ export default class MoveAction extends BaseAction {
         actions.push("unexpected action")
       }
     })
-    return `${actions.join(", ")}${this.undone ? " [cancelled]" : ""}`;
+    return `${actions.join(", ")}${ mineAction ? mineAction : "" }${this.undone ? " [cancelled]" : ""}`;
   }
 
   get lastPath(): GameActionPath {
@@ -91,6 +130,17 @@ export default class MoveAction extends BaseAction {
     const facing = this.path[length - 1].facing
     const turret = this.path[length - 1].turret
 
+    let diceIndex = 0
+    let hitCheck = 0
+    let hitRoll = 0
+    if (this.moveData?.mines) {
+      const mines = this.moveData.mines
+      hitCheck = baseToHit(mines.firepower)
+      const unit = this.game.findUnitById(this.origin[0].id) as Unit
+      if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
+        hitRoll = this.diceResults[diceIndex++].result
+      }
+    }
     for (const u of this.origin) {
       map.moveUnit(start, end, u.id, facing, turret)
       const unit = this.game.scenario.map.unitAtId(end, u.id) as Counter
@@ -98,9 +148,22 @@ export default class MoveAction extends BaseAction {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
       unit.unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
+      if (this.moveData?.mines) {
+        if (unit.unit.isVehicle && !unit.unit.armored) {
+          unit.unit.status = unitStatus.Wreck
+        } else if (unit.unit.isVehicle) {
+          const armor = unit.unit.lowestArmor < 0 ? 0 : unit.unit.lowestArmor
+          if (hitRoll > hitCheck + armor) {
+            unit.unit.status = unitStatus.Wreck
+          }
+        } else {
+          if (hitRoll > hitCheck) {
+            this.game.moraleChecksNeeded.push({ unit: unit.unit, from: [end], to: end, incendiary: true })
+          }
+        }
+      }
     }
 
-    let diceIndex = 0
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
       if (a.type === addActionType.VP) {
@@ -138,6 +201,8 @@ export default class MoveAction extends BaseAction {
     const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
     const facing = this.path[0].facing
     const turret = this.path[0].turret
+
+    if (this.diceResults.length > 0) { throw new IllegalActionError("internal error undoing move dice") }
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)

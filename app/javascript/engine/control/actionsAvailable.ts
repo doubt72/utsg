@@ -210,9 +210,8 @@ function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {
   }
 }
 
-function canFire(unit: Unit | undefined): boolean {
-  if (unit === undefined) { return false }
-  if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
+function checkFire(unit: Unit): boolean {
+  if (unit.isExhausted || unit.isBroken) { return false }
   if (unit.currentFirepower <= 0) { return false }
   if (unit.jammed && !unit.sponson) { return false }
   if (unit.sponson && unit.jammed && unit.sponsonJammed) { return false }
@@ -223,9 +222,15 @@ function canFire(unit: Unit | undefined): boolean {
   return true
 }
 
+function canFire(unit: Unit | undefined): boolean {
+  if (unit === undefined) { return false }
+  if (unit.isActivated) { return false }
+  return checkFire(unit)
+}
+
 function canIntensiveFire(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
-  return false
+  return checkFire(unit)
 }
 
 function canMoveAny(unit: Unit): boolean {
