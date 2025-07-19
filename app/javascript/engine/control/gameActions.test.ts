@@ -1,7 +1,7 @@
 import { MapData } from "../Map"
 import { baseTerrainType, Coordinate, hexOpenType, weatherType, windType } from "../../utilities/commonTypes"
 import { ScenarioData } from "../Scenario"
-import Unit, { UnitData } from "../Unit"
+import Unit from "../Unit"
 import Game, { gamePhaseType } from "../Game"
 import { describe, expect, test, vi } from "vitest"
 import { HexData } from "../Hex"
@@ -10,6 +10,10 @@ import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 import { openHexMovement } from "./movement"
 import { openHexAssaulting } from "./assault"
 import { actionType, GameActionState, MoveActionState } from "./gameActions"
+import { testGInf, testGTank } from "./movement.test"
+import organizeStacks from "../support/organizeStacks"
+import { testRTank } from "./fire.test"
+import select from "./select"
 
 // TODO: add passing tests 
 
@@ -50,14 +54,6 @@ describe("game action tests", () => {
     }
   }
 
-  const ginf: UnitData = {
-    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
-  }
-  const gtank: UnitData = {
-    t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
-    o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
-  };
-
   const scenarioData = (hexes: HexData[][]): ScenarioData => {
     return {
       id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
@@ -73,7 +69,7 @@ describe("game action tests", () => {
           0: { list: []}
         },
         axis_units: {
-          0: { list: [ginf]}
+          0: { list: [testGInf]}
         },
         map_data: mapData(hexes),
       }
@@ -98,7 +94,7 @@ describe("game action tests", () => {
   test("initiative changes", () => {
     const game = createGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -120,7 +116,7 @@ describe("game action tests", () => {
   test("initiative changes player", () => {
     const game = createGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -163,7 +159,7 @@ describe("game action tests", () => {
   test("initiative doesn't change player", () => {
     const game = createGame()
     const map = game.scenario.map
-    const unit = new Unit(ginf)
+    const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
     unit.select()
@@ -206,7 +202,7 @@ describe("game action tests", () => {
   test("after breakdown", () => {
     const game = createGame()
     const map = game.scenario.map
-    const unit = new Unit(gtank)
+    const unit = new Unit(testGTank)
     unit.id = "test1"
     unit.facing = 1
     unit.turretFacing = 1
@@ -247,7 +243,7 @@ describe("game action tests", () => {
   test("breakdown movement", () => {
     const game = createGame()
     const map = game.scenario.map
-    const unit = new Unit(gtank)
+    const unit = new Unit(testGTank)
     unit.id = "test1"
     unit.facing = 1
     unit.turretFacing = 1
@@ -321,7 +317,7 @@ describe("game action tests", () => {
   test("breakdown assault movement", () => {
     const game = createGame()
     const map = game.scenario.map
-    const unit = new Unit(gtank)
+    const unit = new Unit(testGTank)
     unit.id = "test1"
     unit.facing = 1
     unit.turretFacing = 1
@@ -411,5 +407,151 @@ describe("game action tests", () => {
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Cleanup)
     expect(game.reactionFireCheck).toBe(false)
+  })
+
+  test("reaction fire after move", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    const other = new Unit(testRTank)
+    other.id = "target1"
+    other.facing = 4
+    other.turretFacing = 4
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.startMove()
+    game.move(3, 2)
+    game.move(2, 2)
+    game.move(1, 2)
+    game.finishMove()
+
+    expect(game.breakdownCheck).toBe(false)
+    expect(game.initiativeCheck).toBe(true)
+    expect(game.reactionFireCheck).toBe(false)
+
+    game.startInitiative()
+
+    expect(game.initiativeCheck).toBe(false)
+    expect(game.reactionFireCheck).toBe(false)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+
+    expect(game.currentPlayer).toBe(2)
+    game.finishInitiative()
+    expect(game.currentPlayer).toBe(2)
+
+    Math.random = original
+
+    expect(game.reactionFireCheck).toBe(true)
+
+    game.startReaction()
+
+    expect(game.reactionFire).toBe(true)
+    other.select()
+
+    game.startFire()
+
+    expect(game.reactionFire).toBe(true)
+    expect(game.reactionFireHexes).toStrictEqual([
+      new Coordinate(3, 2), new Coordinate(2, 2), new Coordinate(1, 2),
+    ])
+
+    select(map, {
+      counter: map.countersAt(new Coordinate(1, 2))[0],
+      target: { type: "map", xy: new Coordinate(1, 2) }
+    }, () => {})
+    expect(unit.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.finishFire()
+    Math.random = original
+
+    expect(game.reactionFire).toBe(false)
+    expect(game.lastAction?.type).toBe("reaction_fire")
+
+    expect(game.initiativeCheck).toBe(false)
+  })
+
+  test("reaction fire after move", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.turretFacing = 1
+    unit.facing = 1
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    const other = new Unit(testRTank)
+    other.id = "target1"
+    other.facing = 4
+    other.turretFacing = 4
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.startFire()
+    select(map, {
+      counter: map.countersAt(oloc)[0],
+      target: { type: "map", xy: oloc }
+    }, () => {})
+    expect(other.targetSelected).toBe(true)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.finishFire()
+    Math.random = original
+
+    expect(game.breakdownCheck).toBe(false)
+    expect(game.initiativeCheck).toBe(true)
+    expect(game.reactionFireCheck).toBe(false)
+
+    game.startInitiative()
+
+    expect(game.initiativeCheck).toBe(false)
+    expect(game.reactionFireCheck).toBe(false)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    expect(game.currentPlayer).toBe(2)
+    game.finishInitiative()
+    expect(game.currentPlayer).toBe(2)
+
+    Math.random = original
+
+    expect(game.reactionFireCheck).toBe(true)
+
+    game.startReaction()
+
+    expect(game.reactionFire).toBe(true)
+    other.select()
+
+    game.startFire()
+
+    expect(game.reactionFire).toBe(true)
+    expect(game.reactionFireHexes).toStrictEqual([
+      new Coordinate(4, 2),
+    ])
+
+    select(map, {
+      counter: map.countersAt(new Coordinate(4, 2))[0],
+      target: { type: "map", xy: new Coordinate(4, 2) }
+    }, () => {})
+    expect(unit.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.finishFire()
+    Math.random = original
+
+    expect(game.reactionFire).toBe(false)
+    expect(game.lastAction?.type).toBe("reaction_fire")
+
+    expect(game.initiativeCheck).toBe(false)
   })
 });

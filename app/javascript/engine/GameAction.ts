@@ -130,10 +130,16 @@ export default class GameAction {
       return new InitiativePassAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "fire") {
-      return new FireAction(this.data, this.game, this.index, false);
+      return new FireAction(this.data, this.game, this.index, false, false);
     }
     if (this.data.data.action === "intensive_fire") {
-      return new FireAction(this.data, this.game, this.index, true);
+      return new FireAction(this.data, this.game, this.index, true, false);
+    }
+    if (this.data.data.action === "reaction_fire") {
+      return new FireAction(this.data, this.game, this.index, false, true);
+    }
+    if (this.data.data.action === "reaction_intensive_fire") {
+      return new FireAction(this.data, this.game, this.index, true, true);
     }
     if (this.data.data.action === "reaction_pass") {
       return new ReactionPassAction(this.data, this.game, this.index);

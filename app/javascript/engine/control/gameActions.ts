@@ -203,11 +203,13 @@ export function fireSmokeToggle(game: Game) {
 
 export function finishFire(game: Game) {
   if (!game.gameActionState?.fire) { return }
+  const action = game.reactionFire ? (game.intensiveFiring ? "reaction_intensive_fire" : "reaction_fire" ) :
+    (game.intensiveFiring ? "intensive_fire" : "fire" )
   const fire = new GameAction({
     user: game.currentUser,
     player: game.gameActionState.player,
     data: {
-      action: game.intensiveFiring ? "intensive_fire" : "fire", old_initiative: game.initiative,
+      action, old_initiative: game.initiative,
       path: game.gameActionState.fire.path,
       origin: game.gameActionState.selection.map(s => {
         return {

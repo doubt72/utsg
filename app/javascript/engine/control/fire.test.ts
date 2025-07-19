@@ -76,7 +76,7 @@ const testGAC: UnitData = {
   o: { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1, j: 3, f: 18, u: 1, w: 1 },
 }
 
-const testRTank: UnitData = {
+export const testRTank: UnitData = {
   t: "tank", i: "tank", c: "ussr", n: "T-34 M40", y: 40, s: 5, f: 24, r: 22, v: 6,
   o: { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, j: 3, f: 18, u: 1, k: 1 },
 }

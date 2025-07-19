@@ -319,7 +319,8 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
   if (!check) { return [] }
   const from = new Coordinate(firing[0].x, firing[0].y)
   rc.push("attack rolls:")
-  const fp = firepower(game, firing, target, to, game.sponsonFire)
+  const wire = firing.map(f => game.scenario.map.wireAt(new Coordinate(f.x, f.y)))
+  const fp = firepower(game, firing, target, to, game.sponsonFire, wire)
   const hindrance = fireHindrance(game, firing, to)
   const source = firing[0].counter.unit
   if (firing[0].counter.unit.targetedRange || firing[0].counter.unit.offBoard) {
@@ -378,7 +379,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
     }
   } else {
     const basehit = baseToHit(fp.fp)
-    const mods = untargetedModifiers(game, firing, targets)
+    const mods = untargetedModifiers(game, firing, targets, game.gameActionState.fire.path)
     const tohit = basehit + mods.mod + hindrance
     rc.push(`-> to hit (2d10): ${tohit} (${chance2D10(tohit)}%)`)
     rc.push(`firepower: ${fp.fp}`)

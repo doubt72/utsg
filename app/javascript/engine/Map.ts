@@ -19,6 +19,7 @@ import { hexDistance, togglePlayer } from "../utilities/utilities";
 import { needPickUpDisambiguate } from "./control/gameActions";
 import { leadershipRange } from "./control/fire";
 import openHex from "./control/openHex";
+import { samePlayer } from "./control/select";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -555,9 +556,12 @@ export default class Map {
             const counters = this.countersAt(new Coordinate(x, y))
             if (openHex(this, x, y)) {
               for (const c of counters) {
-                if (c.hasUnit && c.unit.nation !== this.game.currentPlayerNation) {
-                  check = true
-                  break
+                if (c.hasUnit && !samePlayer(this.game, c.unit)) {
+                  if (this.game.reactionFire) {
+                    for (const h of this.game.reactionFireHexes) {
+                      if (h.x === x && h.y === y) { check = true }
+                    }
+                  } else { check = true }
                 }
               }
             }

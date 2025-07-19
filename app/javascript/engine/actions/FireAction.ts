@@ -31,8 +31,9 @@ export default class FireAction extends BaseAction {
   diceResults: GameActionDiceResult[];
 
   intensive: boolean;
+  reaction: boolean;
 
-  constructor(data: GameActionData, game: Game, index: number, intensive: boolean) {
+  constructor(data: GameActionData, game: Game, index: number, intensive: boolean, reaction: boolean) {
     super(data, game, index)
 
     this.validate(data.data.origin)
@@ -41,6 +42,7 @@ export default class FireAction extends BaseAction {
     this.validate(data.data.fire_data)
     this.validate(data.data.dice_result)
     this.intensive = intensive
+    this.reaction = reaction
 
     // Validate will already error out if data is missing, but the linter can't tell
     this.origin = data.data.origin as GameActionUnit[]
@@ -50,7 +52,10 @@ export default class FireAction extends BaseAction {
     this.diceResults = data.data.dice_result as GameActionDiceResult[]
   }
 
-  get type(): string { return this.intensive ? "fire" : "intensive_fire" }
+  get type(): string {
+    return this.reaction ? (this.intensive ? "reaction_intensive_fire" : "reaction_fire") :
+      (this.intensive ? "intensive_fire" : "fire")
+  }
 
   get stringValue(): string {
     const rc: string[] = []
