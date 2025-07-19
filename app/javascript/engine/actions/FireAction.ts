@@ -149,6 +149,10 @@ export default class FireAction extends BaseAction {
     if (firing0.unit.crewed && firing0.unit.parent) {
       firing0.unit.parent.status = unitStatus.Activated
     }
+    let newStatus = unitStatus.Activated
+    for (const f of firing) {
+      if (f.counter.unit.isActivated) { newStatus = unitStatus.Exhausted }
+    }
     // Also generate final target hexes
     this.fireHex.final = this.fireHex.start
     const tRange = sponson ? firing0.unit.sponson?.type !== sponsonType.Flame : firing0.unit.targetedRange
@@ -461,8 +465,8 @@ export default class FireAction extends BaseAction {
     for (const o of this.origin) {
       const counter = map.findCounterById(o.id)
       if (counter) {
-        if (counter.unit.operated && !counter.unit.jammed) { counter.unit.status = unitStatus.Activated }
-        if (!counter.unit.operated) { counter.unit.status = unitStatus.Activated }
+        if (counter.unit.operated && !counter.unit.jammed) { counter.unit.status = newStatus }
+        if (!counter.unit.operated) { counter.unit.status = newStatus }
         if (counter.unit.singleFire) {
           const hex = counter.hex as Coordinate
           map.eliminateCounter(hex, counter.unit.id)

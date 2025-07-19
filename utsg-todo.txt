@@ -1,9 +1,8 @@
 High Priority Features/Bug Fixes:
-  - Intensive Fire test (exhausted)
   - Show reaction
     - Reaction Firing
-    - Handle move (for reaction fire)
-    - Just passing currently
+    - Handle move ghosts (for reaction fire)
+    - Passing
   - Sniper check
   - Rout
   - Close Combat
