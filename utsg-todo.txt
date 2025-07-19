@@ -1,8 +1,8 @@
 High Priority Features/Bug Fixes:
+  - Selection on fire targeting stopped updating
   - Show reaction
     - Reaction Firing
     - Handle move ghosts (for reaction fire)
-    - Passing
   - Sniper check
   - Rout
   - Close Combat
@@ -42,7 +42,7 @@ Future Features/Bug Fixes:
   - Break up tests / large files
   - Fix flickering of control buttons?
   - Disable text selection on map/etc?
-  - Refactor fire, simplify firing action
+  - Refactor, simplify firing action
   - Show ALL for movement into mines or wire
   - Support mouse scroll on map (use for zoom?)
     - Much harder than it appears, need a way to intercept only scroll/wheel/key events

@@ -14,8 +14,9 @@ import Unit from "./Unit";
 import {
   actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
   finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, fireAtHex, fireRotate, fireSmokeToggle, fireSponsonToggle, GameActionState,
-  loadingMoveToggle, move, moveRotate, placeSmokeToggle, rotateToggle, shortingMoveToggle,
-  startAssault, startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass
+  loadingMoveToggle, move, moveRotate, passReaction, placeSmokeToggle, rotateToggle, shortingMoveToggle,
+  startAssault, startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass,
+  startRection
 } from "./control/gameActions";
 import Hex from "./Hex";
 import { sortValues } from "./support/organizeStacks";
@@ -79,6 +80,7 @@ export default class Game {
   updateTimer: NodeJS.Timeout | undefined;
   resignationLevel: number;
   sponsonFire: boolean;
+  reactionFire: boolean;
 
   moraleChecksNeeded: { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }[];
 
@@ -108,6 +110,7 @@ export default class Game {
     this.resignationLevel = 0
 
     this.sponsonFire = false
+    this.reactionFire = false
     this.moraleChecksNeeded = []
 
     this.loadAllActions()
@@ -316,15 +319,11 @@ export default class Game {
     return undefined
   }
 
-  get reactionFire(): boolean {
-    return false
-  }
-
   get initiativeCheck(): boolean {
     if (this.gameActionState) { return false }
     let rc = false
     for (const a of this.actions.filter(a => !a.undone)) {
-      if (a.type == "initiative") { rc = false }
+      if (a.type === "initiative") { rc = false }
       if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout", "rout_all"].includes(a.type)) {
         rc = true
       }
@@ -345,8 +344,31 @@ export default class Game {
     return false
   }
 
+  get reactionFireCheck(): boolean {
+    if (this.gameActionState) { return false }
+    let rc = false
+    let last = ""
+    let player = this.currentPlayer
+    for (const a of this.actions.filter(a => !a.undone)) {
+      rc = a.type === "initiative"
+      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout", "rout_all"].includes(a.type)) {
+        last = a.type
+        player = a.player
+      }
+    }
+    return rc && ["move", "rush", "fire", "intensive_fire"].includes(last) && player === this.currentPlayer
+  }
+
   get rushing(): boolean {
     if (!this.gameActionState || !this.gameActionState.move ||
+        this.gameActionState.selection.length < 1) { return false }
+    const unit = this.gameActionState.selection[0].counter.unit
+    if (unit.isActivated) { return true }
+    return false
+  }
+
+  get intensiveFiring(): boolean {
+    if (!this.gameActionState || !this.gameActionState.fire ||
         this.gameActionState.selection.length < 1) { return false }
     const unit = this.gameActionState.selection[0].counter.unit
     if (unit.isActivated) { return true }
@@ -702,6 +724,14 @@ export default class Game {
 
   finishFire() {
     finishFire(this)
+  }
+
+  startReaction() {
+    startRection(this)
+  }
+
+  passReaction() {
+    passReaction(this)
   }
 
   startMoraleCheck() {

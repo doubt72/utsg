@@ -117,7 +117,7 @@ describe("game action tests", () => {
     expect(game.initiative).toBe(0)
   })
 
-  test("initiative changes", () => {
+  test("initiative changes player", () => {
     const game = createGame()
     const map = game.scenario.map
     const unit = new Unit(ginf)
@@ -134,10 +134,12 @@ describe("game action tests", () => {
 
     expect(game.breakdownCheck).toBe(false)
     expect(game.initiativeCheck).toBe(true)
+    expect(game.reactionFireCheck).toBe(false)
 
     game.startInitiative()
 
     expect(game.initiativeCheck).toBe(false)
+    expect(game.reactionFireCheck).toBe(false)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -147,6 +149,51 @@ describe("game action tests", () => {
     expect(game.currentPlayer).toBe(1)
 
     Math.random = original
+
+    expect(game.reactionFireCheck).toBe(false)
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a breakdown roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("initiative doesn't change player", () => {
+    const game = createGame()
+    const map = game.scenario.map
+    const unit = new Unit(ginf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.startMove()
+    game.move(3, 2)
+    game.move(2, 2)
+    game.move(1, 2)
+    game.finishMove()
+
+    expect(game.breakdownCheck).toBe(false)
+    expect(game.initiativeCheck).toBe(true)
+    expect(game.reactionFireCheck).toBe(false)
+
+    game.startInitiative()
+
+    expect(game.initiativeCheck).toBe(false)
+    expect(game.reactionFireCheck).toBe(false)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+
+    expect(game.currentPlayer).toBe(2)
+    game.finishInitiative()
+    expect(game.currentPlayer).toBe(2)
+
+    Math.random = original
+
+    expect(game.reactionFireCheck).toBe(true)
 
     try {
       game.executeUndo()
@@ -183,15 +230,18 @@ describe("game action tests", () => {
     game.finishMove()
 
     expect(game.breakdownCheck).toBe(true)
+    expect(game.reactionFireCheck).toBe(false)
 
     game.startBreakdown()
 
     expect(game.initiativeCheck).toBe(false)
+    expect(game.reactionFireCheck).toBe(false)
 
     game.finishBreakdown()
 
     expect(game.breakdownCheck).toBe(false)
     expect(game.initiativeCheck).toBe(true)
+    expect(game.reactionFireCheck).toBe(false)
   })
   
   test("breakdown movement", () => {
@@ -243,6 +293,7 @@ describe("game action tests", () => {
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(5)
     expect(all[1].unit.immobilized).toBe(false)
+    expect(game.reactionFireCheck).toBe(false)
 
     expect(game.breakdownCheck).toBe(true)
 
@@ -250,8 +301,10 @@ describe("game action tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
     game.startBreakdown()
+    expect(game.reactionFireCheck).toBe(false)
     expect(game.gameActionState?.currentAction).toBe(actionType.Breakdown)
     game.finishBreakdown()
+    expect(game.reactionFireCheck).toBe(false)
 
     Math.random = original
 
@@ -336,23 +389,27 @@ describe("game action tests", () => {
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Main)
+    expect(game.reactionFireCheck).toBe(false)
 
     game.finishPass()
     expect(game.gameActionState).toBe(undefined)
     expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
+    expect(game.reactionFireCheck).toBe(false)
 
     game.startPass()
     expect(game.gameActionState?.currentAction).toBe(actionType.Pass)
     expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
+    expect(game.reactionFireCheck).toBe(false)
 
     game.finishPass()
     expect(game.gameActionState).toBe(undefined)
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Cleanup)
+    expect(game.reactionFireCheck).toBe(false)
   })
 });

@@ -1,5 +1,5 @@
 import { Coordinate, Direction, featureType, Player, UnitStatus } from "../../utilities/commonTypes"
-import { normalDir, roll2d10, rolld10 } from "../../utilities/utilities"
+import { normalDir, roll2d10, rolld10, togglePlayer } from "../../utilities/utilities"
 import Feature from "../Feature"
 import Game from "../Game"
 import GameAction, { AddActionType, addActionType, GameActionDiceResult, GameActionPath } from "../GameAction"
@@ -207,7 +207,7 @@ export function finishFire(game: Game) {
     user: game.currentUser,
     player: game.gameActionState.player,
     data: {
-      action: "fire", old_initiative: game.initiative,
+      action: game.intensiveFiring ? "intensive_fire" : "fire", old_initiative: game.initiative,
       path: game.gameActionState.fire.path,
       origin: game.gameActionState.selection.map(s => {
         return {
@@ -228,9 +228,26 @@ export function finishFire(game: Game) {
     }
   }, game, game.actions.length)
   game.gameActionState = undefined
+  game.reactionFire = false
   game.scenario.map.clearGhosts()
   game.scenario.map.clearAllSelections()
   game.executeAction(fire, false)
+}
+
+export function startRection(game: Game) {
+  game.reactionFire = true
+}
+
+export function passReaction(game: Game) {
+  if (game.gameActionState) { return }
+  const pass = new GameAction({
+    user: game.currentUser,
+    player: togglePlayer(game.currentPlayer),
+    data: { action: "reaction_pass", old_initiative: game.initiative },
+  }, game, game.actions.length)
+  game.scenario.map.clearAllSelections()
+  game.executeAction(pass, false)
+
 }
 
 export function startMoraleCheck(game: Game) {

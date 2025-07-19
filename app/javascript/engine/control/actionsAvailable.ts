@@ -11,7 +11,11 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.startBreakdown()
   } else if (game.moraleChecksNeeded.length > 0) {
     game.startMoraleCheck()
-  } else if (game.initiativeCheck) { game.startInitiative() }
+  } else if (game.initiativeCheck) {
+    game.startInitiative()
+  } else if (game.reactionFireCheck) {
+    game.startReaction()
+  }
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]
   }
@@ -155,7 +159,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.unshift({ type: "none", message: "reaction fire" })
       if (canFire(selection)) { actions.push({ type: "reaction_fire" }) }
       if (canIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
-      actions.push({ type: "empty_pass" })
+      actions.push({ type: "reaction_pass" })
     } else if (!selection) {
       actions.unshift({ type: "none", message: "select units to activate" })
       if (canEnemyRout()) { actions.push({ type: "enemy_rout" }) }
@@ -230,6 +234,8 @@ function canFire(unit: Unit | undefined): boolean {
 
 function canIntensiveFire(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
+  if (!unit.isActivated) { return false }
+  if (unit.offBoard || unit.crewed) { return false }
   return checkFire(unit)
 }
 

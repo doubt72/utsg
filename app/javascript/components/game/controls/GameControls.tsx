@@ -37,6 +37,7 @@ import ToggleSponsonButton from "./ToggleSponsonButton";
 import FireFinishButton from "./FireFinishButton";
 import MoraleCheckButton from "./MoraleCheckButton";
 import FireSmokeButton from "./FireSmokeButton";
+import ReactionPassButton from "./ReactionPassButton";
 
 interface GameControlsProps {
   game: Game;
@@ -86,6 +87,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <ReactionFireButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "reaction_intensive_fire") {
         return <ReactionIntensiveFireButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "reaction_pass") {
+        return <ReactionPassButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "enemy_rout") {
         return <EnemyRoutButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "fire") {

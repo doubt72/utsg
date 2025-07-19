@@ -19,14 +19,22 @@ export default class InitiativeAction extends BaseAction {
 
   get type(): string { return "initiative" }
 
+  get passed(): boolean {
+    const roll = this.diceResult
+    if (roll) {
+      const threshold = initiativeThreshold(Math.abs(this.data.old_initiative))
+      return roll.result >= threshold
+    }
+    return true
+  }
+
   get stringValue(): string {
     const roll = this.diceResult
     let result = "(automatic pass — no change)"
     if (roll) {
       const threshold = initiativeThreshold(Math.abs(this.data.old_initiative))
       result = `(${roll.type}): target ${threshold}, rolled ${roll.result}: ${
-        roll.result < threshold ? `failed, initiative flipped` :
-        `passed, no change` }`
+        this.passed ? `passed, no change` : `failed, initiative flipped` }`
     }
     return `${this.game.nationNameForPlayer(this.player)} initiative check ${result}`
   }
@@ -45,6 +53,6 @@ export default class InitiativeAction extends BaseAction {
   }
   
   undo(): void {
-    throw new IllegalActionError("internal error undoing breakdown")
+    throw new IllegalActionError("internal error undoing initiative")
   }
 }

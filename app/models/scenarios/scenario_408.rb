@@ -34,7 +34,6 @@ module Scenarios
           [2, :jap_type_92_hmg],
           :jap_70mm_type_92,
           :jap_radio_7_5cm,
-          [2, :bunker],
         ],
       },
     }.freeze

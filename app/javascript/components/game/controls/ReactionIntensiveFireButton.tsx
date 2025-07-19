@@ -10,7 +10,7 @@ interface ReactionIntensiveFireButtonProps {
 export default function ReactionIntensiveFireButton({ game, callback }: ReactionIntensiveFireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.rushing // just to do something with game
+    game.startFire()
     callback()
   }
 
