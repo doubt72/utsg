@@ -216,6 +216,10 @@ export default class Game {
     return this.currentPlayer === 1 ? this.playerOneName : this.playerTwoName
   }
 
+  get opponentUser(): string {
+    return this.currentPlayer === 1 ? this.playerTwoName : this.playerOneName
+  }
+
   get playerOneNation(): string {
     if (!this.scenario.alliedFactions) { return "" }
     return this.scenario.alliedFactions[0]
@@ -357,38 +361,6 @@ export default class Game {
       }
     }
     return rc && ["move", "rush", "fire", "intensive_fire"].includes(last) && player === this.currentPlayer
-  }
-
-  get reactionFireHexes(): Coordinate[] {
-    // assumes the (above) check is true
-    const rc: Coordinate[] = []
-    let last = this.actions[0]
-    for (const a of this.actions.filter(a => !a.undone)) {
-      if (["move", "rush", "fire", "intensive_fire"].includes(a.type)) {
-        last = a
-      }
-    }
-    if (["move", "rush"].includes(last.type)) {
-      if (last.data.path) {
-        for (let i = 1; i < last.data.path.length; i++) {
-          const s = last.data.path[i]
-          let check = false
-          for (const c of rc) {
-            if (c.x === s.x && c.y === s.y) { check = true }
-          }
-          if (!check) { rc.push(new Coordinate(s.x, s.y)) }
-        }
-      }
-    } else if (["fire", "intensive_fire"].includes(last.type)) {
-      last.data.origin?.forEach(s => {
-        let check = false
-        for (const c of rc) {
-          if (c.x === s.x && c.y === s.y) { check = true }
-        }
-        if (!check) { rc.push(new Coordinate(s.x, s.y)) }
-      })
-    }
-    return rc
   }
 
   get rushing(): boolean {

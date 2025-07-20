@@ -71,7 +71,8 @@ export default function select(
         {
           x: xx, y: yy, cost, type: addActionType.Drop, id: counter.unit.id,
           parent_id: counter.unit.parent?.id, status: counter.unit.status,
-          facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing
+          facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing,
+          index: move.path.length,
         }
       )
       if (xx !== x || yy !== y) {
@@ -111,7 +112,7 @@ export default function select(
         const facing = counter.unit.rotates ? counter.unit.facing : undefined
         move.addActions.push({
           x: xx, y: yy, cost, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id,
-          facing, status: counter.unit.status,
+          facing, status: counter.unit.status, index: move.path.length,
         })
       }
     } else {

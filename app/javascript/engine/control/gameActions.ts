@@ -6,6 +6,7 @@ import GameAction, { AddActionType, addActionType, GameActionDiceResult, GameAct
 import Counter from "../Counter"
 import { canMultiSelectFire, moraleModifiers } from "./fire"
 import Unit from "../Unit"
+import { placeReactionFireGhosts } from "./reactionFire"
 
 export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc"
 export const actionType: { [index: string]: ActionType } = {
@@ -23,7 +24,7 @@ export type DeployActionState = {
 
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
-  facing?: Direction, status?: UnitStatus
+  facing?: Direction, status?: UnitStatus, index: number
 }
 
 export type FireActionState = {
@@ -125,6 +126,9 @@ export function finishPass(game: Game) {
 export function startFire(game: Game) {
   const selection = game.scenario.map.currentSelection[0]
   game.sponsonFire = false
+  if (game.reactionFire) {
+    placeReactionFireGhosts(game)
+  }
   if (selection && selection.hex) {
     if (selection.unit.sponson && (selection.unit.jammed || selection.unit.weaponDestroyed)) {
       game.sponsonFire = true
@@ -141,7 +145,7 @@ export function startFire(game: Game) {
       game.openOverlay = game.scenario.map.hexAt(selection.hex)
     }
     game.gameActionState = {
-      player: game.currentPlayer,
+      player: game.reactionFire ? game.opponentPlayer : game.currentPlayer,
       currentAction: actionType.Fire,
       selection: allSelection,
       fire: {
@@ -206,7 +210,7 @@ export function finishFire(game: Game) {
   const action = game.reactionFire ? (game.intensiveFiring ? "reaction_intensive_fire" : "reaction_fire" ) :
     (game.intensiveFiring ? "intensive_fire" : "fire" )
   const fire = new GameAction({
-    user: game.currentUser,
+    user: game.reactionFire ? game.opponentUser : game.currentUser,
     player: game.gameActionState.player,
     data: {
       action, old_initiative: game.initiative,
@@ -254,7 +258,7 @@ export function passReaction(game: Game) {
 
 export function startMoraleCheck(game: Game) {
   if (game.gameActionState || game.moraleChecksNeeded.length < 1) { return }
-  const check = game.moraleChecksNeeded[game.moraleChecksNeeded.length - 1] as {
+  const check = game.moraleChecksNeeded[0] as {
     unit: Unit, from: Coordinate[], to: Coordinate, incendiary?: boolean
   }
   const modifiers = moraleModifiers(game, check.unit, check.from, check.to, !!check.incendiary)
@@ -344,7 +348,8 @@ export function move(game: Game, x: number, y: number) {
   if (move.placingSmoke) {
     const id = `uf-${game.actions.length}-${move.addActions.length}`
     move.addActions.push({
-      x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id
+      x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id,
+      index: game.gameActionState.move.path.length
     })
     game.scenario.map.addGhost(
       new Coordinate(x, y),
@@ -359,7 +364,8 @@ export function move(game: Game, x: number, y: number) {
     })
     const vp = game.scenario.map.victoryAt(new Coordinate(x, y))
     if (vp && vp !== game.currentPlayer) {
-      move.addActions.push({ x, y, type: addActionType.VP, cost: 0 })
+      move.addActions.push({ x, y, type: addActionType.VP, cost: 0,
+      index: game.gameActionState.move.path.length })
     }
   }
   move.doneSelect = true
@@ -461,7 +467,7 @@ export function finishMove(game: Game) {
       add_action: game.gameActionState.move.addActions.map(a => {
         return {
           type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id, facing: a.facing,
-          status: a.status,
+          status: a.status, index: a.index,
         }
       }),
       move_data: moveData,
@@ -527,7 +533,7 @@ export function assault(game: Game, x: number, y: number) {
   })
   const vp = game.scenario.map.victoryAt(new Coordinate(x, y))
   if (vp && vp !== game.currentPlayer) {
-    assault.addActions.push({ x, y, type: addActionType.VP, cost: 0 })
+    assault.addActions.push({ x, y, type: addActionType.VP, cost: 0, index: 0 })
   }
   assault.doneSelect = true
   game.closeOverlay = true
@@ -545,7 +551,7 @@ export function assaultClear(game: Game) {
   const x = game.gameActionState.selection[0].x
   const y = game.gameActionState.selection[0].y
   const f = game.scenario.map.countersAt(new Coordinate(x, y)).filter(c => c.hasFeature)[0]
-  assault.addActions.push({ x, y, type: addActionType.Clear, cost: 0, id: f.feature.id })
+  assault.addActions.push({ x, y, type: addActionType.Clear, cost: 0, id: f.feature.id, index: 0 })
   game.closeOverlay = true
 }
 
@@ -557,7 +563,7 @@ export function assaultEntrench(game: Game) {
   game.scenario.map.unshiftGhost(new Coordinate(x, y), new Feature({
     ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
   }))
-  assault.addActions.push({ x, y, type: addActionType.Entrench, cost: 0 })
+  assault.addActions.push({ x, y, type: addActionType.Entrench, cost: 0, index: 0 })
   game.closeOverlay = true
 }
 
@@ -573,7 +579,7 @@ export function finishAssault(game: Game) {
         return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
       add_action: game.gameActionState.assault.addActions.map(a => {
-        return { type: a.type, x: a.x, y: a.y, id: a.id }
+        return { type: a.type, x: a.x, y: a.y, id: a.id, index: a.index }
       }),
     }
   }, game, game.actions.length)

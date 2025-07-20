@@ -49,7 +49,7 @@ export const addActionType: { [index: string]: AddActionType } = {
 }
 export type AddAction = {
   type: AddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
-  status?: UnitStatus
+  status?: UnitStatus, index: number
 }
 
 export type GameActionPhaseChange = {

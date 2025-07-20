@@ -49,7 +49,7 @@ export default class MoraleCheckAction extends BaseAction {
   }
 
   mutateGame(): void {
-    this.game.moraleChecksNeeded.pop()
+    this.game.moraleChecksNeeded.shift()
     const unit = this.game.findUnitById(this.target.id) as Unit
     const check = 15 + this.moraleMods.mod
     const roll = this.diceResult

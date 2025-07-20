@@ -20,6 +20,7 @@ import { needPickUpDisambiguate } from "./control/gameActions";
 import { leadershipRange } from "./control/fire";
 import openHex from "./control/openHex";
 import { samePlayer } from "./control/select";
+import { reactionFireHexes } from "./control/reactionFire";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -558,7 +559,7 @@ export default class Map {
               for (const c of counters) {
                 if (c.hasUnit && !samePlayer(this.game, c.unit)) {
                   if (this.game.reactionFire) {
-                    for (const h of this.game.reactionFireHexes) {
+                    for (const h of reactionFireHexes(this.game)) {
                       if (h.x === x && h.y === y) { check = true }
                     }
                   } else { check = true }

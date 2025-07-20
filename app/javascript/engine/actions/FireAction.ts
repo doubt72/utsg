@@ -21,7 +21,7 @@ import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
 type FireActionActor = {
-  counter: Counter, sponson?: boolean, wire?: boolean
+  x: number, y: number, counter: Counter, sponson?: boolean, wire?: boolean
 }
 export default class FireAction extends BaseAction {
   origin: GameActionUnit[];
@@ -92,6 +92,7 @@ export default class FireAction extends BaseAction {
       for (const c of coords) {
         const names = this.target.filter(t => t.x === c.x && t.y === c.y).map(t => {
           const unit = this.game.findUnitById(t.id) as Unit
+          console.log(`uh ${t.id}`)
           return unit.name
         })
         part += `${ this.game.nationNameForPlayer(togglePlayer(this.player)) } ${names.join(", ")}`
@@ -112,8 +113,7 @@ export default class FireAction extends BaseAction {
 
   convertAToA(actor: FireActionActor[]): ActionSelection[] {
     return actor.map(a => {
-      const hex = a.counter.hex as Coordinate
-      return { x: hex.x, y: hex.y, id: a.counter.unit.id, counter: a.counter }
+      return { x: a.x, y: a.y, id: a.counter.unit.id, counter: a.counter }
     })
   }
 
@@ -128,10 +128,13 @@ export default class FireAction extends BaseAction {
     let diceIndex = 0
     const map = this.game.scenario.map
     const firing: FireActionActor[] = this.origin.map(o => {
-      return { counter: this.game.findCounterById(o.id) as Counter, sponson: o.sponson, wire: o.wire }
+      return {
+        x: o.x, y: o.y, counter: this.game.findCounterById(o.id) as Counter,
+        sponson: o.sponson, wire: o.wire
+      }
     })
     const targets: FireActionActor[] = this.target.map(t => {
-      return { counter: this.game.findCounterById(t.id) as Counter }
+      return { x: t.x, y: t.y, counter: this.game.findCounterById(t.id) as Counter }
     })
     const firing0 = firing[0].counter
     if (this.path.length > 1) {
@@ -144,7 +147,7 @@ export default class FireAction extends BaseAction {
     const wire = !!firing[0].wire
     let smoke = false
     if (target0) {
-      to = target0.hex as Coordinate
+      to = new Coordinate(targets[0].x, targets[0].y)
       fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson, [wire])
     } else {
       const hex = this.fireHex.start[0] as { x: number, y: number, smoke: boolean }
@@ -192,7 +195,7 @@ export default class FireAction extends BaseAction {
             drift.description += `, drifted to ${coordinateToLabel(loc)}`
             this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
             dTargets = map.countersAt(loc).filter(c => c.hasUnit).map(u => {
-              return { counter: u }
+              return { x: loc.x, y: loc.y, counter: u }
             })
             if (dTargets.length < 1 && !smoke) {
               drift.description += ", no units in hex"
@@ -369,20 +372,18 @@ export default class FireAction extends BaseAction {
       const coords: Coordinate[] = []
       for (const t of targets) {
         let check = false
-        const hex = t.counter.hex as Coordinate
         for (const c of coords) {
-          if (c.x === hex.x && c.y === hex.y) { check = true }
+          if (c.x === t.x && c.y === t.y) { check = true }
         }
-        if (!check) { coords.push(hex) }
+        if (!check) { coords.push(new Coordinate(t.x, t.y)) }
       }
       const fcoords: Coordinate[] = []
       for (const f of firing) {
         let check = false
-        const hex = f.counter.hex as Coordinate
         for (const c of fcoords) {
-          if (c.x === hex.x && c.y === hex.y) { check = true }
+          if (c.x === f.x && c.y === f.y) { check = true }
         }
-        if (!check) { fcoords.push(hex) }
+        if (!check) { fcoords.push(new Coordinate(f.x, f.y)) }
       }
       for (const c of coords) {
         const hindrance = fireHindrance(this.game, this.convertAToA(firing), c)
@@ -398,8 +399,7 @@ export default class FireAction extends BaseAction {
         if (hitRoll.result > hitCheck) {
           if (needDice) { hitRoll.description += "hit" }
           targets.forEach(t => {
-            const hex = t.counter.hex as Coordinate
-            if (hex.x === c.x && hex.y === c.y) {
+            if (t.x === c.x && t.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
                 t.counter.unit.status = unitStatus.Wreck
                 if (needDice) { hitRoll.description += `, ${t.counter.unit.name} destroyed` }
@@ -447,7 +447,7 @@ export default class FireAction extends BaseAction {
                 }
               }
             } else if (f.counter.unit.breakDestroysWeapon) {
-              const hex = f.counter.hex as Coordinate
+              const hex = new Coordinate(f.x, f.y)
               if (f.counter.unit.incendiary && f.counter.unit.parent) {
                 this.game.moraleChecksNeeded.push({
                   unit: f.counter.unit.parent, from: [], to: hex, incendiary: true
@@ -473,7 +473,7 @@ export default class FireAction extends BaseAction {
           counter.unit.status = this.intensive ? unitStatus.Exhausted : unitStatus.Activated
         }
         if (counter.unit.singleFire) {
-          const hex = counter.hex as Coordinate
+          const hex = new Coordinate(o.x, o.y)
           map.eliminateCounter(hex, counter.unit.id)
         }
       }

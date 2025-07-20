@@ -1,7 +1,5 @@
 High Priority Features/Bug Fixes:
-  - Selection on fire targeting stopped updating
   - Show reaction
-    - Reaction Firing
     - Handle move ghosts (for reaction fire)
   - Sniper check
   - Rout
