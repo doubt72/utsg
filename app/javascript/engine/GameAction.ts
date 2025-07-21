@@ -40,7 +40,7 @@ export type GameActionMoveData = {
 }
 
 export type GameActionMoraleData = {
-  mod: number, why: string[],
+  mod: number, why: string[], short: boolean,
 }
 
 export type AddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"

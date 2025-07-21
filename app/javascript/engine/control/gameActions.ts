@@ -2,7 +2,7 @@ import { Coordinate, Direction, featureType, Player, UnitStatus } from "../../ut
 import { normalDir, roll2d10, rolld10, togglePlayer } from "../../utilities/utilities"
 import Feature from "../Feature"
 import Game from "../Game"
-import GameAction, { AddActionType, addActionType, GameActionDiceResult, GameActionPath } from "../GameAction"
+import GameAction, { AddActionType, addActionType, GameActionDiceResult, GameActionMoraleData, GameActionPath } from "../GameAction"
 import Counter from "../Counter"
 import { canMultiSelectFire, moraleModifiers } from "./fire"
 import Unit from "../Unit"
@@ -38,10 +38,6 @@ export type FireActionState = {
   targetHexes: Coordinate[];
 }
 
-export type MoraleCheckState = {
-  modifiers: { mod: number, why: string[] },
-}
-
 export type MoveActionState = {
   initialSelection: ActionSelection[];
   doneSelect: boolean;
@@ -67,7 +63,7 @@ export type GameActionState = {
   selection: ActionSelection[],
   deploy?: DeployActionState,
   fire?: FireActionState,
-  moraleCheck?: MoraleCheckState,
+  moraleCheck?: GameActionMoraleData,
   move?: MoveActionState,
   assault?: AssaultMoveActionState,
 }
@@ -264,13 +260,16 @@ export function startMoraleCheck(game: Game) {
   const modifiers = moraleModifiers(game, check.unit, check.from, check.to, !!check.incendiary)
   const player = check.unit.playerNation === game.currentPlayerNation ?
     game.currentPlayer : game.opponentPlayer
+  const counter = game.findCounterById(check.unit.id) as Counter
   game.gameActionState = {
     player, currentAction: actionType.MoraleCheck,
-    selection: [{
-      x: check.to.x, y: check.to.y, id: check.unit.id, counter: game.findCounterById(check.unit.id) as Counter
-    }], moraleCheck: { modifiers }
+    selection: [{ x: check.to.x, y: check.to.y, id: check.unit.id, counter }],
+    moraleCheck: {
+      mod: modifiers.mod, why: modifiers.why,
+      short: check.to.x !== counter.hex?.x || check.to.y !== counter.hex?.y,
+    }
   }
-  game.gameActionState.selection[0].counter.unit.select()
+  check.unit.select()
   game.refreshCallback(game)
 }
 
@@ -284,7 +283,7 @@ export function finishMoraleCheck(game: Game) {
     data: {
       action: "morale_check", old_initiative: game.initiative,
       dice_result: [{ result: roll2d10(), type: "2d10" }],
-      morale_data: game.gameActionState.moraleCheck?.modifiers,
+      morale_data: game.gameActionState.moraleCheck,
       target: [{ x: sel.x, y: sel.y, id: sel.id, status: sel.counter.unit.status }],
     },
   }, game, game.actions.length)

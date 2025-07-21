@@ -37,6 +37,8 @@ export default class Marker {
 
   rawData: MarkerData;
 
+  ghost?: boolean;
+
   constructor(data: MarkerData) {
     this.type = data.type
     this.nationalIcon = data.i

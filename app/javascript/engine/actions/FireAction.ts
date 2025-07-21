@@ -252,6 +252,10 @@ export default class FireAction extends BaseAction {
               if (t.counter.unit.canCarrySupport) { continue }
               if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
                 t.counter.unit.status = unitStatus.Wreck
+                const hex = t.counter.hex as Coordinate
+                if (hex.x != dTo.x || hex.y !== dTo.y) {
+                  this.game.scenario.map.moveUnit(hex, dTo, t.counter.unit.id)
+                }
                 if (needDice) { targetRoll.description += `, ${t.counter.unit.name} destroyed` }
               } else if (t.counter.unit.isVehicle) {
                 const fwire = firing.map(f => f.wire ?? false)
@@ -269,16 +273,29 @@ export default class FireAction extends BaseAction {
                 }
                 if (hitRoll.result > hitCheck) {
                   t.counter.unit.status = unitStatus.Wreck
+                  const hex = t.counter.hex as Coordinate
+                  if (hex.x != dTo.x || hex.y !== dTo.y) {
+                    this.game.scenario.map.moveUnit(hex, dTo, t.counter.unit.id)
+                  }
                   if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
                 } else if (hitRoll.result === hitCheck && !firing0.unit.incendiary) {
                   t.counter.unit.immobilized = true
                   if (needDice) { hitRoll.description += "tie, vehicle immobilized" }
+                  const hex = t.counter.hex as Coordinate
+                  if (hex.x != dTo.x || hex.y !== dTo.y) {
+                    this.game.scenario.map.moveUnit(hex, dTo, t.counter.unit.id)
+                    if (needDice) { hitRoll.description += `, move short at ${coordinateToLabel(dTo)}` }
+                  }
                 } else if (needDice) { hitRoll.description += "failed" }
               }
             }
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
           target0.unit.status = unitStatus.Wreck
+          const hex = target0.hex as Coordinate
+          if (hex.x != dTo.x || hex.y !== dTo.y) {
+            this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+          }
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
         } else if (target0.unit.isVehicle) {
           let turretHit = false
@@ -303,6 +320,10 @@ export default class FireAction extends BaseAction {
             }
             if (hitRoll.result > hitCheck) {
               target0.unit.status = unitStatus.Wreck
+              const hex = target0.hex as Coordinate
+              if (hex.x != dTo.x || hex.y !== dTo.y) {
+                this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+              }
               if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
             } else if (hitRoll.result === hitCheck) {
               if (turretHit) {
@@ -310,11 +331,20 @@ export default class FireAction extends BaseAction {
                 target0.unit.turretJammed = true
               } else {
                 if (needDice) { hitRoll.description += "tie, vehicle immobilized" }
+                const hex = target0.hex as Coordinate
+                if (hex.x != dTo.x || hex.y !== dTo.y) {
+                  this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+                  if (needDice) { hitRoll.description += `, move short at ${coordinateToLabel(dTo)}` }
+                }
                 target0.unit.immobilized = true
               }
             } else if (needDice) { hitRoll.description += "failed" }
           } else {
             target0.unit.status = unitStatus.Wreck
+            const hex = target0.hex as Coordinate
+            if (hex.x != dTo.x || hex.y !== dTo.y) {
+              this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+            }
             targetRoll.description += ", no armor on hit side, vehicle destroyed"
           }
         } else {
@@ -402,6 +432,10 @@ export default class FireAction extends BaseAction {
             if (t.x === c.x && t.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
                 t.counter.unit.status = unitStatus.Wreck
+                const hex = t.counter.hex as Coordinate
+                if (hex.x != t.x || hex.y !== t.y) {
+                  this.game.scenario.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
+                }
                 if (needDice) { hitRoll.description += `, ${t.counter.unit.name} destroyed` }
               } else if (t.counter.unit.isVehicle && firing0.unit.incendiary) {
                 fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false, [wire])
@@ -416,6 +450,10 @@ export default class FireAction extends BaseAction {
                 }
                 if (hitRoll.result > hitCheck) {
                   t.counter.unit.status = unitStatus.Wreck
+                  const hex = t.counter.hex as Coordinate
+                  if (hex.x != t.x || hex.y !== t.y) {
+                    this.game.scenario.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
+                  }
                   if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
                 } else if (needDice) { hitRoll.description += "failed" }
               } else {

@@ -491,7 +491,7 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
   }
 
   return (
-    <g transform={`rotate(${rotation()})`} opacity={counter.targetUF.ghost ? 0.7 : 1}>
+    <g transform={`rotate(${rotation()})`} opacity={counter.target.ghost ? 0.7 : 1}>
       {shadow()}
       {counterBack}
       {nameBackground()}{name()}

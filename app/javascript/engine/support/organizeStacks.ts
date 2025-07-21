@@ -56,10 +56,12 @@ function dataForUnit(
   const unit = uf as Unit
   if (!uf.isFeature && unit.turreted && !unit.isWreck) {
     const type = unit.isWheeled ? markerType.WheeledHull : markerType.TrackedHull
-    rc.push({ loc: loc, i: index, u: new Marker({
+    const marker = new Marker({
       id: uf.id, type: type, nation: uf.nation, rotates: 1, facing: uf.facing, mk: 1,
       player_nation: uf.playerNation
-    })})
+    })
+    if (unit.ghost) { marker.ghost = true }
+    rc.push({ loc: loc, i: index, u: marker })
   }
   rc.push({ loc: loc, u: uf, i: index++, pi: parent })
   if (showAllCounters) { rc = rc.concat(addMarkers(loc, uf, index)) }
