@@ -1,140 +1,23 @@
 import { describe, expect, test, vi } from "vitest"
 import { baseToHit, chance2D10, chanceD10x10 } from "../../utilities/utilities"
-import { HexData } from "../Hex"
-import { MapData } from "../Map"
-import { baseTerrainType, Coordinate, sponsonType, unitStatus, weatherType, windType } from "../../utilities/commonTypes"
-import Unit, { UnitData } from "../Unit"
-import { ScenarioData } from "../Scenario"
-import Game, { gamePhaseType } from "../Game"
+import { Coordinate, featureType, sponsonType, unitStatus } from "../../utilities/commonTypes"
+import Unit from "../Unit"
+import Game from "../Game"
 import { ActionSelection, actionType, FireActionState, GameActionState } from "./gameActions"
 import select from "./select"
-import { armorHitModifiers, fireHindrance, firepower, moraleModifiers, rangeMultiplier, untargetedModifiers } from "./fire"
+import {
+  armorHitModifiers, fireHindrance, firepower, moraleModifiers, rangeMultiplier, untargetedModifiers
+} from "./fire"
 import Counter from "../Counter"
 import IllegalActionError from "../actions/IllegalActionError"
 import organizeStacks from "../support/organizeStacks"
-import { testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testRInf, testWire } from "./movement.test"
 import { GameActionDiceResult, GameActionPath } from "../GameAction"
-import Feature, { FeatureData } from "../Feature"
-
-const defaultTestHexes: HexData[][] = [
-  [{ t: "o" }, { t: "o" }, { t: "o", b: "w", be: [5] }, { t: "o" }, { t: "o" }],
-  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-  [{ t: "f" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
-  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
-  [
-    { t: "o" },
-    { t: "o", s: { d: [4, 6], t: "t" } },
-    { t: "o", s: { d: [1, 5], t: "t" } },
-    { t: "o" }, { t: "b" }
-  ],
-]
-
-const mapTestData = (hexes: HexData[][]): MapData => {
-  return {
-    layout: [ 5, 5, "x" ],
-    allied_dir: 4, axis_dir: 1,
-    victory_hexes: [[0, 0, 2], [0, 1, 1]],
-    allied_setup: { 0: [[0, "*"]] },
-    axis_setup: { 0: [[4, "*"]] },
-    base_terrain: baseTerrainType.Grass,
-    night: false,
-    start_weather: weatherType.Dry,
-    base_weather: weatherType.Dry,
-    precip: [0, weatherType.Rain],
-    wind: [windType.Calm, 3, false],
-    hexes: hexes,
-  }
-}
-
-const testGFT: UnitData = {
-  c: "ger", t: "sw", n: "Flamethrower", y: 15, i: "flamethrower", f: 24, r: 1, v: 0,
-  o: { a: 1, i: 1, b: 4, e: 1 },
-}
-
-const testGSC: UnitData = {
-  c: "ger", t: "sw", n: "Satchel Charge", y: 36, i: "explosive", f: 24, r: 1, v: 0,
-  o: { x: 1, t: 1, e: 1 },
-}
-
-const testGMC: UnitData = {
-  c: "ger", t: "sw", n: "Molotov Cocktail", y: 39, i: "explosive", f: 4, r: 1, v: 0,
-  o: { i: 1, x: 1, t: 1, sn: 1, e: 1 },
-};
-
-const testGMortar: UnitData = {
-  t: "sw", i: "mortar", c: "ger", n: "5cm leGrW 36", y: 36, f: 8, r: 11, v: 0,
-  o: { m: 2, t: 1, b: 3, e: 1 },
-}
-
-const testGRadio: UnitData = {
-  t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 24, r: 99, v: 0,
-  o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
-}
-
-const testGAC: UnitData = {
-  t: "ac", i: "ac", c: "ger", n: "SdKfz 221", y: 35, s: 3, f: 8, r: 8, v: 5,
-  o: { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1, j: 3, f: 18, u: 1, w: 1 },
-}
-
-export const testRTank: UnitData = {
-  t: "tank", i: "tank", c: "ussr", n: "T-34 M40", y: 40, s: 5, f: 24, r: 22, v: 6,
-  o: { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, j: 3, f: 18, u: 1, k: 1 },
-}
-
-const testRTruck: UnitData = {
-  t: "truck", c: "ussr", n: "Studebaker US6", i: "truck", y: 41, s: 4, f: 0, r: 0, v: 5,
-  o: { sn: 1, tr: 3, trg: 1, w: 1 },
-}
-
-const testITank: UnitData = {
-  t: "tank", i: "tank", c: "ita", n: "M11/39", y: 39, s: 3, f: 5, r: 7, v: 4,
-  o: {
-    r: 1, ha: { f: 3, s: 1, r: 0 }, ta: { f: 3, s: 3, r: 3 }, sg: { f: 8, r: 12, t: "p" },
-    j: 3, f: 18, u: 1, k: 1
-  },
-}
-
-const testPill: FeatureData = {
-  ft: 1, n: "Bunker", t: "bunker", i: "bunker",
-  o: { da: { f: 4, s: 4, r: 1 } },
-};
-
-const scenarioTestData = (hexes: HexData[][]): ScenarioData => {
-  return {
-    id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
-    metadata: {
-      author: "The Establishment",
-      description: ["This is a test scenario"],
-      date: [1944, 6, 5],
-      location: "anywhere",
-      turns: 5,
-      first_deploy: 2,
-      first_action: 1,
-      allied_units: {
-        0: { list: []}
-      },
-      axis_units: {
-        0: { list: [testGInf]}
-      },
-      map_data: mapTestData(hexes),
-    }
-  }
-}
-
-const createTestGame = (hexes: HexData[][] = defaultTestHexes): Game => {
-  const game = new Game({
-    id: 1,
-    name: "test game", scenario: scenarioTestData(hexes),
-    owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
-    metadata: { turn: 0 },
-    suppress_network: true
-  });
-
-  game.setTurn(1)
-  game.phase = gamePhaseType.Main
-  game.setCurrentPlayer(2)
-  return game
-}
+import Feature from "../Feature"
+import {
+  createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr, testGMC, testGMG,
+  testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill, testRInf, testRTank,
+  testRTruck, testWire
+} from "./testHelpers"
 
 describe("fire tests", () => {
   describe("probability checks", () => {
@@ -171,7 +54,7 @@ describe("fire tests", () => {
 
   describe("fire action", () => {
     test("can fire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -231,7 +114,7 @@ describe("fire tests", () => {
     })
 
     test("fire2", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -241,6 +124,7 @@ describe("fire tests", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
+      target.status = unitStatus.Pinned
       const tloc = new Coordinate(4, 2)
       map.addCounter(tloc, target)
 
@@ -250,6 +134,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
+      expect(target.targetSelect).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -274,7 +159,7 @@ describe("fire tests", () => {
     })
 
     test("fire3", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -284,6 +169,7 @@ describe("fire tests", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
+      target.status = unitStatus.Activated
       const tloc = new Coordinate(4, 4)
       map.addCounter(tloc, target)
 
@@ -293,6 +179,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
+      expect(target.targetSelect).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -321,7 +208,7 @@ describe("fire tests", () => {
     })
 
     test("fire4", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -331,6 +218,7 @@ describe("fire tests", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
+      target.status = unitStatus.Exhausted
       const tloc = new Coordinate(2, 4)
       map.addCounter(tloc, target)
 
@@ -340,6 +228,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
+      expect(target.targetSelect).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -369,7 +258,7 @@ describe("fire tests", () => {
     })
 
     test("fire5", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -379,6 +268,7 @@ describe("fire tests", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
+      target.status = unitStatus.Tired
       const tloc = new Coordinate(0, 2)
       map.addCounter(tloc, target)
 
@@ -388,6 +278,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
+      expect(target.targetSelect).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -417,8 +308,8 @@ describe("fire tests", () => {
       )
     })
 
-    test("fire6", () => {
-      const game = createTestGame()
+    test.only("fire6", () => {
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -428,6 +319,7 @@ describe("fire tests", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
+      target.status = unitStatus.Broken
       const tloc = new Coordinate(2, 0)
       map.addCounter(tloc, target)
 
@@ -437,6 +329,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
+      expect(target.targetSelected).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -450,9 +343,9 @@ describe("fire tests", () => {
       expect(mods.why.length).toBe(0)
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
-      expect(mc.mod).toBe(-4)
+      expect(mc.mod).toBe(-2)
       expect(mc.why.length).toBe(2)
-      expect(mc.why[0]).toBe("- minus morale 3")
+      expect(mc.why[0]).toBe("- minus morale 1")
       expect(mc.why[1]).toBe("- minus cover 1")
 
       const original = Math.random
@@ -466,7 +359,7 @@ describe("fire tests", () => {
     })
 
     test("wall flip", () => {
-      const game = createTestGame([
+      const game = createFireGame([
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         [{ t: "o" }, { t: "o" }, { t: "o", b: "w", be: [2] }, { t: "o" }, { t: "o" }],
         [{ t: "f" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
@@ -525,7 +418,7 @@ describe("fire tests", () => {
     })
 
     test("bunker", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -587,7 +480,7 @@ describe("fire tests", () => {
     })
 
     test("doesn't multiselection without leader", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -618,7 +511,7 @@ describe("fire tests", () => {
     })
 
     test("multiselect with leader", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -701,7 +594,7 @@ describe("fire tests", () => {
     })
 
     test("manning infantry can't be added to fire group", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -754,7 +647,7 @@ describe("fire tests", () => {
     })
 
     test("can't combine vehicle with group", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -797,7 +690,7 @@ describe("fire tests", () => {
     })
 
     test("can't combine flamethrower with group", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -839,7 +732,7 @@ describe("fire tests", () => {
     })
 
     test("can't combine satchel charge with group", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -881,7 +774,7 @@ describe("fire tests", () => {
     })
 
     test("mg with pinned unit can't fire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -912,7 +805,7 @@ describe("fire tests", () => {
         counter: map.countersAt(floc)[0],
         target: { type: "map", xy: floc }
       }, () => {})
-      expect(firing.selected).toBe(false)
+      expect(firing.selected).toBe(true)
       expect(fire.doneSelect).toBe(false)
 
       select(map, {
@@ -924,7 +817,7 @@ describe("fire tests", () => {
     })
 
     test("mg with broken unit can't fire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -967,7 +860,7 @@ describe("fire tests", () => {
     })
 
     test("can't add activated units when not activated", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1011,7 +904,7 @@ describe("fire tests", () => {
     })
 
     test("can add activated units when activated (intensive fire)", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1056,7 +949,7 @@ describe("fire tests", () => {
     })
 
     test("can't add exhausted units", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1101,7 +994,7 @@ describe("fire tests", () => {
     })
 
     test("multiselect multiple hexes", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1176,7 +1069,7 @@ describe("fire tests", () => {
     })
 
     test("infantry fire can't target armored", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1206,7 +1099,7 @@ describe("fire tests", () => {
     })
 
     test("attack against unarmored vehicle", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1261,7 +1154,7 @@ describe("fire tests", () => {
     })
 
     test("can combine unit and carried mg", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1321,7 +1214,7 @@ describe("fire tests", () => {
     })
 
     test("rapid fire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1387,7 +1280,7 @@ describe("fire tests", () => {
     })
 
     test("rapid group fire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1477,7 +1370,7 @@ describe("fire tests", () => {
     })
 
     test("rapid fire can't target armored", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1519,7 +1412,7 @@ describe("fire tests", () => {
     })
 
     test("can fire opponent's weapon", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1580,7 +1473,7 @@ describe("fire tests", () => {
     })
 
     test("breakdown roll", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1620,7 +1513,7 @@ describe("fire tests", () => {
     })
 
     test("area fire (tie, immobilized vehicle)", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1691,7 +1584,7 @@ describe("fire tests", () => {
     })
 
     test("area fire (miss)", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1762,7 +1655,7 @@ describe("fire tests", () => {
     })
 
     test("offboard artillery", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1832,7 +1725,7 @@ describe("fire tests", () => {
     })
 
     test("offboard artillery miss", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1919,7 +1812,7 @@ describe("fire tests", () => {
     })
 
     test("offboard artillery hex", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1954,7 +1847,7 @@ describe("fire tests", () => {
     })
 
     test("offboard artillery firing smoke", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -1993,7 +1886,7 @@ describe("fire tests", () => {
     })
 
     test("mortar firing smoke", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2031,7 +1924,7 @@ describe("fire tests", () => {
     })
 
     test("gun firing smoke", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2071,7 +1964,7 @@ describe("fire tests", () => {
     })
 
     test("gun firing smoke miss", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2106,7 +1999,7 @@ describe("fire tests", () => {
     })
 
     test("single shot", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2190,7 +2083,7 @@ describe("fire tests", () => {
     })
 
     test("incendiary", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2258,7 +2151,7 @@ describe("fire tests", () => {
     })
 
     test("incendiary breaks", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2336,7 +2229,7 @@ describe("fire tests", () => {
     })
 
     test("targeted incendiary single shot", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2415,7 +2308,7 @@ describe("fire tests", () => {
     })
 
     test("destroying vehicle breaks children", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTruck)
       firing.id = "firing1"
@@ -2453,7 +2346,7 @@ describe("fire tests", () => {
     })
 
     test("eliminated infantry drops weapon", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2478,7 +2371,7 @@ describe("fire tests", () => {
     })
 
     test("ranged vehicle breakdown roll", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -2522,7 +2415,7 @@ describe("fire tests", () => {
     })
 
     test("ranged vehicle breakdown destroys roll", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -2567,7 +2460,7 @@ describe("fire tests", () => {
     })
 
     test("ranged fire against infantry", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -2641,7 +2534,7 @@ describe("fire tests", () => {
     })
 
     test("ranged fire against armored vehicle", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -2708,7 +2601,7 @@ describe("fire tests", () => {
     })
 
     test("ranged fire against unarmored vehicle", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -2763,7 +2656,7 @@ describe("fire tests", () => {
     })
 
     test("ranged fire after moving turret", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -2825,7 +2718,7 @@ describe("fire tests", () => {
     })
 
     test("vehicle machine gun", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGAC)
       firing.id = "firing1"
@@ -2887,7 +2780,7 @@ describe("fire tests", () => {
     })
 
     test("can't fire from tranpsort", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2952,7 +2845,7 @@ describe("fire tests", () => {
     })
 
     test("firing with sponson", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       expect(game.scenario.axisFactions).toStrictEqual(["ger"])
       game.scenario.axisFactions = ["ita"]
       expect(game.scenario.axisFactions).toStrictEqual(["ita"])
@@ -3019,7 +2912,7 @@ describe("fire tests", () => {
     })
 
     test("sponson breakdown roll", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       expect(game.scenario.axisFactions).toStrictEqual(["ger"])
       game.scenario.axisFactions = ["ita"]
       expect(game.scenario.axisFactions).toStrictEqual(["ita"])
@@ -3080,7 +2973,7 @@ describe("fire tests", () => {
     })
 
     test("sponson breakdown destroy roll", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       expect(game.scenario.axisFactions).toStrictEqual(["ger"])
       game.scenario.axisFactions = ["ita"]
       expect(game.scenario.axisFactions).toStrictEqual(["ita"])
@@ -3142,7 +3035,7 @@ describe("fire tests", () => {
     })
 
     test("firing from wire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -3197,7 +3090,7 @@ describe("fire tests", () => {
     })
 
     test("intensive infantry fire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -3270,7 +3163,7 @@ describe("fire tests", () => {
     })
 
     test("intensive ranged fire", () => {
-      const game = createTestGame()
+      const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
@@ -3337,6 +3230,129 @@ describe("fire tests", () => {
       expect(all[1].unit.status).toBe(unitStatus.Exhausted)
 
       expect(game.eliminatedUnits.length).toBe(0)
+    })
+
+    test("infantry fire triggers sniper", () => {
+      const game = createFireGame()
+      game.alliedSniper = new Feature({
+        t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      })
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGLdr)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      const firing3 = new Unit(testGInf)
+      firing3.id = "firing3"
+      const floc2 = new Coordinate(4, 2)
+      map.addCounter(floc2, firing3)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(floc)[1],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing2.selected).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(floc2)[0],
+        target: { type: "map", xy: floc2 }
+      }, () => {})
+      expect(firing3.selected).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.sniperNeeded).toStrictEqual([
+        {unit: firing, loc: floc }, { unit: firing2, loc: floc }, { unit: firing3, loc: floc2 }
+      ])
+    })
+
+    test("same nation sniper doesn't trigger", () => {
+      const game = createFireGame()
+      game.axisSniper = new Feature({
+        t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      })
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.sniperNeeded).toStrictEqual([])
+    })
+
+    test("vehicle doesn't trigger sniper", () => {
+      const game = createFireGame()
+      game.alliedSniper = new Feature({
+        t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      })
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.startFire()
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.finishFire()
+      Math.random = original
+
+      expect(game.sniperNeeded).toStrictEqual([])
     })
   })
 })

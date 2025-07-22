@@ -9,6 +9,8 @@ import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
   if (game.breakdownCheck) {
     game.startBreakdown()
+  } else if (game.sniperNeeded.length > 0) {
+    game.startSniper()
   } else if (game.moraleChecksNeeded.length > 0) {
     game.startMoraleCheck()
   } else if (game.initiativeCheck) {

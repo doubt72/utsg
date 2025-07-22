@@ -1,94 +1,17 @@
-import { MapData } from "../Map"
-import { baseTerrainType, Coordinate, weatherType, windType } from "../../utilities/commonTypes"
-import { ScenarioData } from "../Scenario"
+import { Coordinate, featureType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
-import Game, { gamePhaseType } from "../Game"
 import { describe, expect, test, vi } from "vitest"
-import { HexData } from "../Hex"
-import { testGInf, testGMG, testGTank } from "./movement.test"
 import organizeStacks from "../support/organizeStacks"
-import { testRTank } from "./fire.test"
 import select from "./select"
 import { reactionFireHexes } from "./reactionFire"
 import { GameActionState, MoveActionState } from "./gameActions"
 import WarningActionError from "../actions/WarningActionError"
+import Feature from "../Feature"
+import { createFireGame, testGInf, testGMG, testGTank, testRInf, testRTank } from "./testHelpers"
 
 describe("reaction fire tests", () => {
-  const defaultHexes: HexData[][] = [
-    [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
-    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-    [
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-    ],
-    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
-    [
-      { t: "o" },
-      { t: "o", s: { d: [4, 6], t: "t" } },
-      { t: "o", s: { d: [1, 5], t: "t" } },
-      { t: "o" }, { t: "o" }
-    ],
-  ]
-
-  const mapData = (hexes: HexData[][]): MapData => {
-    return {
-      layout: [ 5, 5, "x" ],
-      allied_dir: 4, axis_dir: 1,
-      victory_hexes: [[0, 0, 2], [4, 4, 1]],
-      allied_setup: { 0: [[0, "*"]] },
-      axis_setup: { 0: [[4, "*"]] },
-      base_terrain: baseTerrainType.Grass,
-      night: false,
-      start_weather: weatherType.Dry,
-      base_weather: weatherType.Dry,
-      precip: [0, weatherType.Rain],
-      wind: [windType.Calm, 3, false],
-      hexes: hexes,
-    }
-  }
-
-  const scenarioData = (hexes: HexData[][]): ScenarioData => {
-    return {
-      id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
-      metadata: {
-        author: "The Establishment",
-        description: ["This is a test scenario"],
-        date: [1944, 6, 5],
-        location: "anywhere",
-        turns: 5,
-        first_deploy: 2,
-        first_action: 1,
-        allied_units: {
-          0: { list: []}
-        },
-        axis_units: {
-          0: { list: [testGInf]}
-        },
-        map_data: mapData(hexes),
-      }
-    }
-  }
-
-  const createGame = (hexes: HexData[][] = defaultHexes): Game => {
-    const game = new Game({
-      id: 1,
-      name: "test game", scenario: scenarioData(hexes),
-      owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
-      metadata: { turn: 0 },
-      suppress_network: true
-    });
-
-    game.setTurn(1)
-    game.phase = gamePhaseType.Main
-    game.setCurrentPlayer(2)
-    return game
-  }
-
   test("reaction fire after fire", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -164,7 +87,7 @@ describe("reaction fire tests", () => {
   })
 
   test("reaction fire after move", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -246,7 +169,7 @@ describe("reaction fire tests", () => {
   })
 
   test("reaction fire mid move", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -331,7 +254,7 @@ describe("reaction fire tests", () => {
   })
 
   test("multiple units moving", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -427,7 +350,7 @@ describe("reaction fire tests", () => {
   })
 
   test("multiple units moving, plus extra targeting", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -529,7 +452,7 @@ describe("reaction fire tests", () => {
   })
 
   test("ghosts for dropping are correct", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -612,7 +535,7 @@ describe("reaction fire tests", () => {
   })
 
   test("ghosts for loading are correct", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -707,7 +630,7 @@ describe("reaction fire tests", () => {
   })
 
   test("hit, morale check shorts move for unit", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -781,7 +704,7 @@ describe("reaction fire tests", () => {
   })
 
   test("ghost directions are correct, and vehicle is removed", () => {
-    const game = createGame()
+    const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -880,6 +803,126 @@ describe("reaction fire tests", () => {
     const counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)
     expect(counter?.hex?.y).toBe(2)
+  })
+
+  test("reaction fire triggers correct sniper", () => {
+    const game = createFireGame()
+    game.axisSniper = new Feature({
+      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const uloc = new Coordinate(4, 2)
+    map.addCounter(uloc, unit)
+
+    const other = new Unit(testRInf)
+    other.id = "target1"
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.startFire()
+    select(map, {
+      counter: map.countersAt(oloc)[0],
+      target: { type: "map", xy: oloc }
+    }, () => {})
+    expect(other.targetSelected).toBe(true)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.finishFire()
+    Math.random = original
+
+    expect(game.sniperNeeded).toStrictEqual([])
+
+    game.startInitiative()
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    expect(game.currentPlayer).toBe(2)
+    game.finishInitiative()
+    expect(game.currentPlayer).toBe(2)
+
+    Math.random = original
+
+    game.startReaction()
+    other.select()
+
+    game.startFire()
+
+    select(map, {
+      counter: map.countersAt(uloc)[0],
+      target: { type: "map", xy: uloc }
+    }, () => {})
+    expect(unit.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.finishFire()
+    Math.random = original
+
+    expect(game.sniperNeeded).toStrictEqual([
+      { unit: other, loc: oloc },
+    ])
+  })
+
+  test("reaction fire doesn't trigger other sniper", () => {
+    const game = createFireGame()
+    game.alliedSniper = new Feature({
+      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const uloc = new Coordinate(4, 2)
+    map.addCounter(uloc, unit)
+
+    const other = new Unit(testRInf)
+    other.id = "target1"
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.startFire()
+    select(map, {
+      counter: map.countersAt(oloc)[0],
+      target: { type: "map", xy: oloc }
+    }, () => {})
+    expect(other.targetSelected).toBe(true)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.finishFire()
+    Math.random = original
+
+    game.sniperNeeded = []
+
+    game.startInitiative()
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    expect(game.currentPlayer).toBe(2)
+    game.finishInitiative()
+    expect(game.currentPlayer).toBe(2)
+
+    Math.random = original
+
+    game.startReaction()
+    other.select()
+
+    game.startFire()
+
+    select(map, {
+      counter: map.countersAt(uloc)[0],
+      target: { type: "map", xy: uloc }
+    }, () => {})
+    expect(unit.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.finishFire()
+    Math.random = original
+
+    expect(game.sniperNeeded).toStrictEqual([])
   })
 
   test("defer smoke", () => {

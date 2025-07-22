@@ -87,6 +87,6 @@ export default class MoraleCheckAction extends BaseAction {
   }
   
   undo(): void {
-    throw new IllegalActionError("internal error undoing breakdown")
+    throw new IllegalActionError("internal error undoing morale check")
   }
 }

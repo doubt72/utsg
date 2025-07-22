@@ -92,7 +92,6 @@ export default class FireAction extends BaseAction {
       for (const c of coords) {
         const names = this.target.filter(t => t.x === c.x && t.y === c.y).map(t => {
           const unit = this.game.findUnitById(t.id) as Unit
-          console.log(`uh ${t.id}`)
           return unit.name
         })
         part += `${ this.game.nationNameForPlayer(togglePlayer(this.player)) } ${names.join(", ")}`
@@ -119,7 +118,10 @@ export default class FireAction extends BaseAction {
 
   // TODO: this is a mess.  Probably worth refactoring.  Someday.  Though it's
   // mostly a lot of special cases; it'd only be slightly simpler if abstracted,
-  // albeit much more comprehensible.
+  // albeit much more comprehensible.  It's probably not quite well-tested
+  // enough to do haphazardly, and also not quite well-tested enough to be sure
+  // the current version is particularly close to bug-free, but is already
+  // well-tested enough to be possible with moderate care.
   mutateGame(): void {
     // Generate dice on the fly if we need them; this will be sent to the
     // backend after being executed, so we can do this just-in-time if this is
@@ -517,8 +519,14 @@ export default class FireAction extends BaseAction {
       }
     }
     if (needDice) { this.data.dice_result = this.diceResults }
+    if (this.player === 1 ? this.game.axisSniper : this.game.alliedSniper) {
+      this.origin.forEach(o => {
+        const unit = this.game.findUnitById(o.id)
+        if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc: new Coordinate(o.x, o.y) }) }
+      })
+    }
     sortStacks(map)
-    this.game.updateInitiative(2)
+    this.game.updateInitiative(this.reaction ? -2 : 2)
   }
 
   undo(): void {

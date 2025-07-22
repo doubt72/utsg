@@ -1,6 +1,7 @@
 import Game from "../Game";
 import { GameActionData } from "../GameAction";
 import BaseAction from "./BaseAction";
+import IllegalActionError from "./IllegalActionError";
 
 export default class InitiativePassAction extends BaseAction {
   constructor(data: GameActionData, game: Game, index: number) {
@@ -23,7 +24,6 @@ export default class InitiativePassAction extends BaseAction {
   }
   
   undo(): void {
-    this.game.togglePlayer()
-    this.game.initiative = this.data.old_initiative
+    throw new IllegalActionError("internal error undoing initiative pass")
   }
 }

@@ -192,6 +192,24 @@ export default class MoveAction extends BaseAction {
     }
     sortStacks(map)
     this.game.updateInitiative(2)
+    if (this.player === 1 ? this.game.axisSniper : this.game.alliedSniper) {
+      this.origin.forEach(o => {
+        const unit = this.game.findUnitById(o.id)
+        let loc = new Coordinate(this.lastPath.x, this.lastPath.y)
+        this.addAction.forEach(a => {
+          if (a.type === addActionType.Drop && a.id === o.id) {
+            loc = new Coordinate(a.x, a.y)
+          }
+        })
+        if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc }) }
+      })
+      this.addAction.forEach(a => {
+        if (!a.id || a.type !== addActionType.Load) { return }
+        const unit = this.game.findUnitById(a.id)
+        const loc = new Coordinate(this.lastPath.x, this.lastPath.y)
+        if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc }) }
+      })
+    }
   }
 
   undo(): void {

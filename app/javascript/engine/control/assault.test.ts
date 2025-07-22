@@ -6,16 +6,16 @@ import { describe, expect, test } from "vitest"
 import select from "./select"
 import organizeStacks from "../support/organizeStacks"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
-import {
-  createTestGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testRInf, testWire
-} from "./movement.test"
 import { openHexAssaulting, showClearObstacles, showEntrench } from "./assault"
 import Feature from "../Feature"
 import { actionType, AssaultMoveActionState, GameActionState } from "./gameActions"
+import {
+  createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testRInf, testWire 
+} from "./testHelpers"
 
 describe("assault movement tests", () => {
   test("along road", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -56,7 +56,7 @@ describe("assault movement tests", () => {
   })
 
   test("along road over water", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [
@@ -96,7 +96,7 @@ describe("assault movement tests", () => {
   })
 
   test("along railroad over water", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [
@@ -135,7 +135,7 @@ describe("assault movement tests", () => {
   })
 
   test("tired assault", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -170,7 +170,7 @@ describe("assault movement tests", () => {
   })
 
   test("multi-select", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -220,7 +220,7 @@ describe("assault movement tests", () => {
   })
 
   test ("can't assault overstack, can into enemy", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -258,7 +258,7 @@ describe("assault movement tests", () => {
   })
 
   test("multiselect with leader", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -306,7 +306,7 @@ describe("assault movement tests", () => {
   })
 
   test("carrying sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const unit = new Unit(testGInf)
@@ -365,7 +365,7 @@ describe("assault movement tests", () => {
   })
 
   test("leader carrying sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const loc = new Coordinate(3, 2)
@@ -421,7 +421,7 @@ describe("assault movement tests", () => {
   })
 
   test("snow assault", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     map.baseTerrain = baseTerrainType.Snow
     const unit = new Unit(testGInf)
@@ -453,7 +453,7 @@ describe("assault movement tests", () => {
   })
 
   test("tank assault", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -512,7 +512,7 @@ describe("assault movement tests", () => {
   })
 
   test("tank can't assault from impassible terrain without road", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [
@@ -546,7 +546,7 @@ describe("assault movement tests", () => {
   })
 
   test("truck assault", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(3, 2)
 
@@ -639,7 +639,7 @@ describe("assault movement tests", () => {
   })
 
   test("assaulting into wire", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -674,7 +674,7 @@ describe("assault movement tests", () => {
   })
 
   test("assaulting out of wire", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -710,7 +710,7 @@ describe("assault movement tests", () => {
   })
 
   test("clearing wire", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -756,7 +756,7 @@ describe("assault movement tests", () => {
   })
 
   test("entrenching", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -801,7 +801,7 @@ describe("assault movement tests", () => {
   })
 
   test("can't entrench in sand", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "s" }, { t: "s" }, { t: "s" }, { t: "s" }, { t: "s" }],
       [{ t: "s" }, { t: "s" }, { t: "s" }, { t: "s" }, { t: "s" }],
       [{ t: "s" }, { t: "s" }, { t: "s" }, { t: "s" }, { t: "s" }],
@@ -822,7 +822,7 @@ describe("assault movement tests", () => {
   })
 
   test("can't entrench in snow", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     map.baseTerrain = "s"
     const unit = new Unit(testGInf)

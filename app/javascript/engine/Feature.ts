@@ -26,13 +26,12 @@ export type FeatureData = {
   h?: number;
   d?: number;
   o?: {
-    p?: NumberBoolean; g?: NumberBoolean; q?: NumberBoolean; los?: NumberBoolean;
+    p?: NumberBoolean; g?: NumberBoolean; q?: number; los?: NumberBoolean;
     vi?: NumberBoolean; ai?: NumberBoolean;
     da?: {
       f: number; s: number; r: number;
     }
   }
-
   x?: number;
   ft: 1;
   mk?: 0;

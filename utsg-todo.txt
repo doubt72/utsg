@@ -1,13 +1,12 @@
 High Priority Features/Bug Fixes:
-  - Show reaction
-    - Handle move ghosts (for reaction fire)
-  - Sniper check
+  - Fix sniper markers
+  - Can select broken infantry when firing
+  - test sniper results
   - Rout
+  - Rally/Fix
   - Close Combat
   - Weather
-  - Rally/Fix
   - Blazes
-  - Sniper Docs
 
 Future Features/Bug Fixes:
   - Undo getting out of sync (maybe remove ID?)
@@ -20,6 +19,7 @@ Future Features/Bug Fixes:
     - Pinned half, not -1
     - Machine gun turret +1
     - Mine docs / assault careful
+    - Sniper
 
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel, main map, minimap

@@ -195,6 +195,22 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     map.game.addMessage("cannot fire an activated unit")
     return false
   }
+      console.log("hiA")
+  if (counter.unit.parent) {
+      console.log("hiB")
+    if (counter.unit.parent.isBroken) {
+      map.game.addMessage("cannot fire a unit if parent is broken")
+      return false
+    }
+    if (counter.unit.parent.isExhausted) {
+      map.game.addMessage("cannot fire a unit if parent is exhausted")
+      return false
+    }
+    if (counter.unit.parent.isPinned) {
+      map.game.addMessage("cannot fire a unit if parent is pinned")
+      return false
+    }
+  }
   if (counter.unit.targetedRange || counter.unit.offBoard) {
     map.game.addMessage("targeted weapons cannot fire with other units")
     return false
@@ -280,45 +296,39 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   if (game.phase === gamePhaseType.Main) {
     if (game.gameActionState?.currentAction === actionType.Breakdown) { return false }
     if (game.gameActionState?.currentAction === actionType.MoraleCheck) { return false }
+    if (game.gameActionState?.currentAction === actionType.Sniper) { return false }
     if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
     const same = samePlayer(game, target)
-    if (!same && !game.gameActionState?.fire) {
-      // TODO: handle gun/support weapons when picking up or for firing, etc.
-      return false
-    }
     if (game.gameActionState?.fire) {
-      if (target.isPinned || (target.parent && target.parent.isPinned)) { return false }
-      if (target.isBroken || (target.parent && target.parent.isBroken)) { return false }
-      if (same && game.gameActionState.fire.doneSelect) {
-        return false
-      }
-      if (!game.gameActionState.fire.doneSelect && same) {
-        if (selection.target.type !== "map") { return false }
+      if (selection.target.type !== "map") { return false }
+      const select = game.gameActionState.selection[0]
+      const sc = select.counter
+      const tc = map.findCounterById(target.id) as Counter
+      if (same) {
+        if (game.gameActionState.fire.doneSelect) { return false }
         for (const s of game.gameActionState.fire.initialSelection) {
           if (selection.counter.target.id === s.id) { return false }
         }
         const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
         if (!canBeFireMultiselected(map, counter as Counter)) { return false }
-      }
-      if (target.operated) {
-        if (!target.parent || !samePlayer(game, target.parent)) {
-          game.addMessage("can't target weapons, only operators")
+        if (sc.unit.canCarrySupport && tc.unit.incendiary) {
+          game.addMessage("can't combine infantry and incendiary attacks")
           return false
         }
+      } else {
+        if (sc.unit.canCarrySupport && tc.unit.armored) {
+          game.addMessage("light weapons can't damage armored units")
+          return false
+        }
+        if (target.operated) {
+          if (!target.parent || !samePlayer(game, target.parent)) {
+            game.addMessage("can't target weapons, only operators")
+            return false
+          }
+        }
       }
-      const select = game.gameActionState.selection[0]
-      const sc = select.counter
-      const tc = map.findCounterById(target.id) as Counter
-      if (sc.unit.canCarrySupport && tc.unit.incendiary) {
-        game.addMessage("can't combine infantry and incendiary attacks")
-        return false
-      }
-      if (sc.unit.canCarrySupport && tc.unit.armored) {
-        game.addMessage("light weapons can't damage armored units")
-        return false
-      }
-    }
-    if (game.gameActionState?.move) {
+    } else if (game.gameActionState?.move) {
+      if (!same) {return false}
       if (game.gameActionState.move.droppingMove) {
         const child = target.children[0]
         if (target.selected) {
@@ -370,6 +380,7 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
       const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
       if (!canBeMoveMultiselected(map, counter as Counter)) { return false }
     } else if (game.gameActionState?.assault) {
+      if (!same) {return false}
       if (game.gameActionState.assault.doneSelect) { return false }
       if (selection.target.type !== "map") { return false }
       for (const s of game.gameActionState.assault.initialSelection) {

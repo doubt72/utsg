@@ -8,10 +8,10 @@ import { canMultiSelectFire, moraleModifiers } from "./fire"
 import Unit from "../Unit"
 import { placeReactionFireGhosts } from "./reactionFire"
 
-export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc"
+export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s"
 export const actionType: { [index: string]: ActionType } = {
   Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
-  MoraleCheck: "mc",
+  MoraleCheck: "mc", Sniper: "s",
 }
 
 export type ActionSelection = {
@@ -249,7 +249,37 @@ export function passReaction(game: Game) {
   }, game, game.actions.length)
   game.scenario.map.clearAllSelections()
   game.executeAction(pass, false)
+}
 
+export function startSniper(game: Game) {
+  if (game.gameActionState || game.sniperNeeded.length < 1) { return }
+  game.gameActionState = {
+    player: game.currentPlayer, currentAction: actionType.Sniper,
+    selection: game.sniperNeeded.map(s => {
+      s.unit.select()
+      return {
+        x: s.loc.x, y: s.loc.y, id: s.unit.id,counter: game.findCounterById(s.unit.id) as Counter
+      }
+    })
+  }
+}
+
+export function finishSniper(game: Game) {
+  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Sniper) { return }
+  const snipe = new GameAction({
+    user: game.currentUser,
+    player: game.gameActionState?.player,
+    data: {
+      action: "sniper", old_initiative: game.initiative,
+      dice_result: [{ result: roll2d10(), type: "2d10" }],
+      target: game.gameActionState.selection.map(s => {
+        return { x: s.x, y: s.y, id: s.id, status: s.counter.unit.status }
+      }),
+    },
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearAllSelections()
+  game.executeAction(snipe, false)
 }
 
 export function startMoraleCheck(game: Game) {
@@ -278,7 +308,7 @@ export function finishMoraleCheck(game: Game) {
   const sel = game.gameActionState.selection[0]
   const pass = new GameAction({
     user: game.currentPlayer === game.gameActionState.player ?
-      game.currentPlayerNation : game.opponentPlayerNation,
+      game.currentUser : game.opponentUser,
     player: game.gameActionState?.player,
     data: {
       action: "morale_check", old_initiative: game.initiative,

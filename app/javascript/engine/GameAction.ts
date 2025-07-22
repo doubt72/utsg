@@ -13,6 +13,7 @@ import AssaultMoveAction from "./actions/AssaultAction";
 import FireAction from "./actions/FireAction";
 import MoraleCheckAction from "./actions/MoraleCheckAction";
 import ReactionPassAction from "./actions/PassReactionAction";
+import SniperAction from "./actions/SniperAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -146,6 +147,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "morale_check") {
       return new MoraleCheckAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "sniper") {
+      return new SniperAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "move") {
       return new MoveAction(this.data, this.game, this.index, false);

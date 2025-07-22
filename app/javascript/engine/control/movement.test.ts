@@ -1,10 +1,7 @@
-import { MapData } from "../Map"
 import {
-  baseTerrainType, Coordinate, hexOpenType, markerType, unitStatus, weatherType, windType
+  baseTerrainType, Coordinate, featureType, hexOpenType, markerType, unitStatus,
 } from "../../utilities/commonTypes"
-import { ScenarioData } from "../Scenario"
-import Unit, { UnitData } from "../Unit"
-import Game, { gamePhaseType } from "../Game"
+import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import {
   openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost
@@ -13,137 +10,18 @@ import select from "./select"
 import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
-import { HexData } from "../Hex"
 import IllegalActionError from "../actions/IllegalActionError"
-import Feature, { FeatureData } from "../Feature"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 import { actionType, GameActionState, MoveActionState } from "./gameActions"
-
-const defaultTestHexes: HexData[][] = [
-  [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
-  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-  [
-    { t: "o", r: { d: [1, 4]} },
-    { t: "o", r: { d: [1, 4]} },
-    { t: "o", r: { d: [1, 4]} },
-    { t: "o", r: { d: [1, 4]} },
-    { t: "o", r: { d: [1, 4]} },
-  ],
-  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
-  [
-    { t: "o" },
-    { t: "o", s: { d: [4, 6], t: "t" } },
-    { t: "o", s: { d: [1, 5], t: "t" } },
-    { t: "o" }, { t: "o" }
-  ],
-]
-
-const mapTestData = (hexes: HexData[][]): MapData => {
-  return {
-    layout: [ 5, 5, "x" ],
-    allied_dir: 4, axis_dir: 1,
-    victory_hexes: [[0, 0, 2], [4, 4, 1]],
-    allied_setup: { 0: [[0, "*"]] },
-    axis_setup: { 0: [[4, "*"]] },
-    base_terrain: baseTerrainType.Grass,
-    night: false,
-    start_weather: weatherType.Dry,
-    base_weather: weatherType.Dry,
-    precip: [0, weatherType.Rain],
-    wind: [windType.Calm, 3, false],
-    hexes: hexes,
-  }
-}
-
-export const testGInf: UnitData = {
-  c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
-}
-
-export const testRInf: UnitData = {
-  c: "ussr", f: 7, i: "squad", m: 3, n: "Rifle", r: 3, s: 6, t: "sqd", v: 4, y: 0, o: {}
-}
-
-export const testGLdr: UnitData = {
-  c: "ger", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
-}
-
-export const testGMG: UnitData = {
-  c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {r: 1, j: 3}
-}
-
-export const testGCrew: UnitData = {
-  c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
-}
-
-export const testGGun: UnitData = {
-  c: "ger", f: 8, i: "gun", n: "3.7cm Pak 36", o: {t: 1, j: 3, p: 1, c: 1, f: 18, tow: 2}, r: 16,
-  t: "gun", v: 2, y: 36
-}
-
-export const testGTank: UnitData = {
-  t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
-  o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
-};
-
-export const testGTruck: UnitData = {
-  t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
-  o: { tr: 3, trg: 1, w: 1 },
-};
-
-export const testWire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
-
-export const testMine: FeatureData = {
-  ft: 1, n: "Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A", o: { g: 1 }
-}
-
-export const testMineAP: FeatureData = {
-  ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A"
-}
-
-export const testMineAT: FeatureData = {
-  ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A", o: { p: 1 }
-}
-
-const scenarioTestData = (hexes: HexData[][]): ScenarioData => {
-  return {
-    id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
-    metadata: {
-      author: "The Establishment",
-      description: ["This is a test scenario"],
-      date: [1944, 6, 5],
-      location: "anywhere",
-      turns: 5,
-      first_deploy: 2,
-      first_action: 1,
-      allied_units: {
-        0: { list: []}
-      },
-      axis_units: {
-        0: { list: [testGInf]}
-      },
-      map_data: mapTestData(hexes),
-    }
-  }
-}
-
-export const createTestGame = (hexes: HexData[][] = defaultTestHexes): Game => {
-  const game = new Game({
-    id: 1,
-    name: "test game", scenario: scenarioTestData(hexes),
-    owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
-    metadata: { turn: 0 },
-    suppress_network: true
-  });
-
-  game.setTurn(1)
-  game.phase = gamePhaseType.Main
-  game.setCurrentPlayer(2)
-  return game
-}
+import {
+  createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testMine,
+  testMineAP, testMineAT, testRInf, testWire
+} from "./testHelpers"
+import Feature from "../Feature"
 
 describe("movement tests", () => {
   test("movement along road", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -200,7 +78,7 @@ describe("movement tests", () => {
   })
 
   test("movement along path", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [
@@ -274,7 +152,7 @@ describe("movement tests", () => {
   })
 
   test("movement along road over river", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
       [
@@ -327,7 +205,7 @@ describe("movement tests", () => {
   })
 
   test("movement along road over water", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [
@@ -380,7 +258,7 @@ describe("movement tests", () => {
   })
 
   test("movement along railroad over river", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
       [
@@ -433,7 +311,7 @@ describe("movement tests", () => {
   })
 
   test("movement along railroad over water", () => {
-    const game = createTestGame([
+    const game = createMoveGame([
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
       [
@@ -485,7 +363,7 @@ describe("movement tests", () => {
   })
 
   test("tired movement", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -542,7 +420,7 @@ describe("movement tests", () => {
   })
 
   test("smoke", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -614,7 +492,7 @@ describe("movement tests", () => {
   })
 
   test("multi-select", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -691,7 +569,7 @@ describe("movement tests", () => {
   })
 
   test ("can't move overstack or into enemy", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -729,7 +607,7 @@ describe("movement tests", () => {
   })
 
   test("multi-select drop-off", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -825,7 +703,7 @@ describe("movement tests", () => {
   })
 
   test("multiselect with leader", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -896,7 +774,7 @@ describe("movement tests", () => {
   })
 
   test("carrying sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const unit = new Unit(testGInf)
@@ -974,7 +852,7 @@ describe("movement tests", () => {
   })
 
   test("pick up sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -1050,7 +928,7 @@ describe("movement tests", () => {
   })
 
   test("leader carrying sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const unit = new Unit(testGLdr)
@@ -1127,7 +1005,7 @@ describe("movement tests", () => {
   })
 
   test("leader may not pick up encumbered sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGLdr)
     unit.id = "test1"
@@ -1163,7 +1041,7 @@ describe("movement tests", () => {
   })
 
   test("drop sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const unit = new Unit(testGInf)
@@ -1259,7 +1137,7 @@ describe("movement tests", () => {
   })
 
   test("move gun", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const loc = new Coordinate(3, 2)
@@ -1344,7 +1222,7 @@ describe("movement tests", () => {
   })
 
   test("move gun into trees", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const loc = new Coordinate(3, 2)
@@ -1409,7 +1287,7 @@ describe("movement tests", () => {
   })
 
   test("move gun into all move trees", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const loc = new Coordinate(3, 2)
@@ -1475,7 +1353,7 @@ describe("movement tests", () => {
   })
 
   test("can't pick up gun", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
     unit.id = "test1"
@@ -1511,7 +1389,7 @@ describe("movement tests", () => {
   })
 
   test("pick up gun", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
     const loc = new Coordinate(3, 2)
@@ -1582,7 +1460,7 @@ describe("movement tests", () => {
   })
 
   test("drop gun", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(3, 2)
 
@@ -1651,7 +1529,7 @@ describe("movement tests", () => {
   })
 
   test("picking up opponenet sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -1717,7 +1595,7 @@ describe("movement tests", () => {
   })
 
   test("picking up opponenet gun", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
     const loc = new Coordinate(3, 2)
@@ -1785,7 +1663,7 @@ describe("movement tests", () => {
   })
 
   test("snow movement", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     map.baseTerrain = baseTerrainType.Snow
     const unit = new Unit(testGInf)
@@ -1825,7 +1703,7 @@ describe("movement tests", () => {
   })
 
   test("stream movement", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(3, 4)
     const unit = new Unit(testGInf)
@@ -1860,7 +1738,7 @@ describe("movement tests", () => {
   })
 
   test("fence movement", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(3, 0)
     const unit = new Unit(testGInf)
@@ -1896,7 +1774,7 @@ describe("movement tests", () => {
   })
 
   test("tank movement", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -2001,7 +1879,7 @@ describe("movement tests", () => {
   })
 
   test("truck movement", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
@@ -2115,7 +1993,7 @@ describe("movement tests", () => {
   })
 
   test("truck dropping gun pre-turn", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
@@ -2232,7 +2110,7 @@ describe("movement tests", () => {
   })
 
   test("truck dropping gun post-turn", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
@@ -2343,7 +2221,7 @@ describe("movement tests", () => {
   })
 
   test("truck dropping infantry", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
@@ -2460,7 +2338,7 @@ describe("movement tests", () => {
   })
 
   test("truck loading gun", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
@@ -2582,7 +2460,7 @@ describe("movement tests", () => {
   })
 
   test("truck loading infantry", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const loc = new Coordinate(4, 2)
 
@@ -2699,7 +2577,7 @@ describe("movement tests", () => {
   })
 
   test("moving into wire", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -2733,7 +2611,7 @@ describe("movement tests", () => {
   })
 
   test("moving out of wire", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -2767,7 +2645,7 @@ describe("movement tests", () => {
   })
 
   test("moving into mines", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -2822,7 +2700,7 @@ describe("movement tests", () => {
   })
 
   test("moving into AT mines", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -2877,7 +2755,7 @@ describe("movement tests", () => {
   })
 
   test("moving into AT mines", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -2925,7 +2803,7 @@ describe("movement tests", () => {
   })
 
   test("vehicle moving into mines", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -2976,7 +2854,7 @@ describe("movement tests", () => {
   })
 
   test("vehicle moving into AP mines", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -3028,7 +2906,7 @@ describe("movement tests", () => {
   })
 
   test("vehicle moving into AT mines", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -3076,5 +2954,127 @@ describe("movement tests", () => {
       // Can't roll back a mine roll
       expect(err instanceof IllegalActionError).toBe(true)
     }
+  })
+
+  test("movement triggers sniper", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    game.alliedSniper = new Feature({
+      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 8, o: { q: 3 }, ft: 1
+    })
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    unit2.baseMovement = 3
+    map.addCounter(loc, unit2)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(state.selection.length).toBe(2)
+
+    game.move(3, 2)
+    game.move(2, 2)
+    game.move(1, 2)
+    game.move(0, 2)
+    game.finishMove()
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(0)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.name).toBe("Rifle")
+    expect(all[1].hex?.x).toBe(0)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+
+    const loc2 = new Coordinate(0, 2)
+    expect(game.sniperNeeded).toStrictEqual([
+      { unit, loc: loc2 }, { unit: unit2, loc: loc2 }
+    ])
+  })
+
+  test("same nation sniper move doesn't trigger", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    game.axisSniper = new Feature({
+      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    unit2.baseMovement = 3
+    map.addCounter(loc, unit2)
+
+    game.startMove()
+
+    const state = game.gameActionState as GameActionState
+
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(state.selection.length).toBe(2)
+
+    game.move(3, 2)
+    game.move(2, 2)
+    game.move(1, 2)
+    game.move(0, 2)
+    game.finishMove()
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(0)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.name).toBe("Rifle")
+    expect(all[1].hex?.x).toBe(0)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+
+    expect(game.sniperNeeded).toStrictEqual([])
+  })
+
+  test("vehicle move doesn't trigger sniper", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    game.alliedSniper = new Feature({
+      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+
+    game.startMove()
+    game.move(3, 2)
+    game.move(2, 2)
+    game.move(1, 2)
+    game.move(0, 2)
+    game.finishMove()
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(0)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].hasMarker).toBe(true)
+    expect(all[1].hex?.x).toBe(0)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("PzKpfw 35(t)")
+
+    expect(game.sniperNeeded).toStrictEqual([])
   })
 });

@@ -13,10 +13,11 @@ import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../u
 import Unit from "./Unit";
 import {
   actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
-  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, fireAtHex, fireRotate, fireSmokeToggle, fireSponsonToggle, GameActionState,
-  loadingMoveToggle, move, moveRotate, passReaction, placeSmokeToggle, rotateToggle, shortingMoveToggle,
-  startAssault, startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass,
-  startRection
+  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, finishSniper,
+  fireAtHex, fireRotate, fireSmokeToggle, fireSponsonToggle, GameActionState, loadingMoveToggle, move,
+  moveRotate, passReaction, placeSmokeToggle, rotateToggle, shortingMoveToggle, startAssault,
+  startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass, startRection,
+  startSniper
 } from "./control/gameActions";
 import Hex from "./Hex";
 import { sortValues } from "./support/organizeStacks";
@@ -83,6 +84,7 @@ export default class Game {
   reactionFire: boolean;
 
   moraleChecksNeeded: { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }[];
+  sniperNeeded: { unit: Unit, loc: Coordinate }[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -112,6 +114,7 @@ export default class Game {
     this.sponsonFire = false
     this.reactionFire = false
     this.moraleChecksNeeded = []
+    this.sniperNeeded = []
 
     this.loadAllActions()
   }
@@ -736,6 +739,14 @@ export default class Game {
 
   passReaction() {
     passReaction(this)
+  }
+
+  startSniper() {
+    startSniper(this)
+  }
+
+  finishSniper() {
+    finishSniper(this)
   }
 
   startMoraleCheck() {

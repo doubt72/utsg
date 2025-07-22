@@ -8,12 +8,12 @@ import select from "./select"
 import { addActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
-import { createTestGame, testGCrew, testGGun, testGInf, testGLdr, testGMG } from "./movement.test"
 import { actionType, GameActionState, MoveActionState } from "./gameActions"
+import { createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG } from "./testHelpers"
 
 describe("rush tests", () => {
   test("rush along road", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -70,7 +70,7 @@ describe("rush tests", () => {
   })
 
   test("can't rush when sw reduces move to zero", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const unit = new Unit(testGInf)
@@ -104,7 +104,7 @@ describe("rush tests", () => {
   })
 
   test("smoke", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -165,7 +165,7 @@ describe("rush tests", () => {
   })
 
   test("multi-select", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -236,7 +236,7 @@ describe("rush tests", () => {
   })
 
   test("multi-select drop-off", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -321,7 +321,7 @@ describe("rush tests", () => {
   })
 
   test("multiselect with leader", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -359,7 +359,7 @@ describe("rush tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
     // Check if dropping leader reduces total movement
-    move.addActions.push({ x: 3, y: 2, type: addActionType.Drop, cost: 0, id: "test2" })
+    move.addActions.push({ x: 3, y: 2, type: addActionType.Drop, cost: 0, id: "test2", index: 0 })
     expect(mapSelectMovement(game, false)).toBe(2)
     expect(mapSelectMovement(game, true)).toBe(3)
     // Undo
@@ -405,7 +405,7 @@ describe("rush tests", () => {
   })
 
   test("cannot pick up sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -432,7 +432,7 @@ describe("rush tests", () => {
   })
 
   test("leader carrying sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const unit = new Unit(testGLdr)
@@ -509,7 +509,7 @@ describe("rush tests", () => {
   })
 
   test("drop sw", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
 
     const unit = new Unit(testGInf)
@@ -581,7 +581,7 @@ describe("rush tests", () => {
   })
 
   test("can't pick up gun", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
     unit.id = "test1"
@@ -609,7 +609,7 @@ describe("rush tests", () => {
   })
 
   test("can't pick up gun even from same hex", () => {
-    const game = createTestGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
     unit.status = unitStatus.Activated

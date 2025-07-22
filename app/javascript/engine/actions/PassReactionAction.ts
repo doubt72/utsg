@@ -23,6 +23,6 @@ export default class ReactionPassAction extends BaseAction {
   }
   
   undo(): void {
-    throw new IllegalActionError("internal error undoing passing")
+    throw new IllegalActionError("internal error undoing reaction pass")
   }
 }

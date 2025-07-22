@@ -1,93 +1,18 @@
-import { MapData } from "../Map"
-import { baseTerrainType, Coordinate, hexOpenType, weatherType, windType } from "../../utilities/commonTypes"
-import { ScenarioData } from "../Scenario"
+import { Coordinate, featureType, hexOpenType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
-import Game, { gamePhaseType } from "../Game"
+import { gamePhaseType } from "../Game"
 import { describe, expect, test, vi } from "vitest"
-import { HexData } from "../Hex"
 import IllegalActionError from "../actions/IllegalActionError"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
 import { openHexMovement } from "./movement"
 import { openHexAssaulting } from "./assault"
 import { actionType, GameActionState, MoveActionState } from "./gameActions"
-import { testGInf, testGTank } from "./movement.test"
+import Feature from "../Feature"
+import { createMoveGame, testGInf, testGTank } from "./testHelpers"
 
 describe("game action tests", () => {
-  const defaultHexes: HexData[][] = [
-    [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [4] }, { t: "o" }, { t: "o" }],
-    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-    [
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-      { t: "o", r: { d: [1, 4]} },
-    ],
-    [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
-    [
-      { t: "o" },
-      { t: "o", s: { d: [4, 6], t: "t" } },
-      { t: "o", s: { d: [1, 5], t: "t" } },
-      { t: "o" }, { t: "o" }
-    ],
-  ]
-
-  const mapData = (hexes: HexData[][]): MapData => {
-    return {
-      layout: [ 5, 5, "x" ],
-      allied_dir: 4, axis_dir: 1,
-      victory_hexes: [[0, 0, 2], [4, 4, 1]],
-      allied_setup: { 0: [[0, "*"]] },
-      axis_setup: { 0: [[4, "*"]] },
-      base_terrain: baseTerrainType.Grass,
-      night: false,
-      start_weather: weatherType.Dry,
-      base_weather: weatherType.Dry,
-      precip: [0, weatherType.Rain],
-      wind: [windType.Calm, 3, false],
-      hexes: hexes,
-    }
-  }
-
-  const scenarioData = (hexes: HexData[][]): ScenarioData => {
-    return {
-      id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
-      metadata: {
-        author: "The Establishment",
-        description: ["This is a test scenario"],
-        date: [1944, 6, 5],
-        location: "anywhere",
-        turns: 5,
-        first_deploy: 2,
-        first_action: 1,
-        allied_units: {
-          0: { list: []}
-        },
-        axis_units: {
-          0: { list: [testGInf]}
-        },
-        map_data: mapData(hexes),
-      }
-    }
-  }
-
-  const createGame = (hexes: HexData[][] = defaultHexes): Game => {
-    const game = new Game({
-      id: 1,
-      name: "test game", scenario: scenarioData(hexes),
-      owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
-      metadata: { turn: 0 },
-      suppress_network: true
-    });
-
-    game.setTurn(1)
-    game.phase = gamePhaseType.Main
-    game.setCurrentPlayer(2)
-    return game
-  }
-
   test("initiative changes", () => {
-    const game = createGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -109,7 +34,7 @@ describe("game action tests", () => {
   })
 
   test("initiative changes player", () => {
-    const game = createGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -152,7 +77,7 @@ describe("game action tests", () => {
   })
 
   test("initiative doesn't change player", () => {
-    const game = createGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -195,7 +120,7 @@ describe("game action tests", () => {
   })
   
   test("after breakdown", () => {
-    const game = createGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -236,7 +161,7 @@ describe("game action tests", () => {
   })
   
   test("breakdown movement", () => {
-    const game = createGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -310,7 +235,7 @@ describe("game action tests", () => {
   })
 
   test("breakdown assault movement", () => {
-    const game = createGame()
+    const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
@@ -370,7 +295,7 @@ describe("game action tests", () => {
   })
 
   test("passing", () => {
-    const game = createGame()
+    const game = createMoveGame()
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Main)
@@ -402,5 +327,33 @@ describe("game action tests", () => {
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Cleanup)
     expect(game.reactionFireCheck).toBe(false)
+  })
+
+  test("sniper", () => {
+    const game = createMoveGame()
+    game.alliedSniper = new Feature({
+      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const map = game.scenario.map
+    const firing = new Unit(testGInf)
+    firing.id = "firing1"
+    firing.select()
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, firing)
+
+    game.sniperNeeded = [{unit: firing, loc: floc }]
+
+    game.startSniper()
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.finishSniper()
+    Math.random = original
+
+    // expect(game.moraleChecksNeeded).toStrictEqual([
+    //   { unit: firing, from: [floc], to: floc, incendiary: false },
+    // ])
+    expect(game.lastAction?.type).toBe("sniper")
+    expect(game.lastAction?.stringValue).toBe("Soviet sniper check (2d10): target 1, rolled 20, no effect")
   })
 });
