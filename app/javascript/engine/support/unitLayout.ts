@@ -288,6 +288,9 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
       style.fill = "white"
       color = counterRed
     }
+    if (counter.feature.type === featureType.Sniper) {
+      value = "X"
+    }
   }
   if (size < 16) { loc.yShift(-0.5) }
   return {

@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Fix sniper markers
-  - Can select broken infantry when firing
-  - test sniper results
   - Rout
   - Rally/Fix
   - Close Combat
