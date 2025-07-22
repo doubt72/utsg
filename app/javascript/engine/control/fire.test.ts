@@ -134,7 +134,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
-      expect(target.targetSelect).toBe(true)
+      expect(target.targetSelected).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -179,7 +179,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
-      expect(target.targetSelect).toBe(true)
+      expect(target.targetSelected).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -228,7 +228,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
-      expect(target.targetSelect).toBe(true)
+      expect(target.targetSelected).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -278,7 +278,7 @@ describe("fire tests", () => {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
-      expect(target.targetSelect).toBe(true)
+      expect(target.targetSelected).toBe(true)
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
@@ -308,7 +308,7 @@ describe("fire tests", () => {
       )
     })
 
-    test.only("fire6", () => {
+    test("fire6", () => {
       const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)

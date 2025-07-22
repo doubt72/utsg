@@ -216,10 +216,6 @@ export function firepower(
       fp = Math.floor(fp/2)
       why.push("- halved: turret jammed")
     }
-    if (sunit.isPinned) {
-      fp = Math.floor(fp/2)
-      why.push("- halved: pinned")
-    }
   }
   return { fp, why }
 }

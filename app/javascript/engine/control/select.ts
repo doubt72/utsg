@@ -299,6 +299,7 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
     if (game.gameActionState?.currentAction === actionType.Sniper) { return false }
     if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
     const same = samePlayer(game, target)
+    if (!same && !game.gameActionState) { return false }
     if (game.gameActionState?.fire) {
       if (selection.target.type !== "map") { return false }
       const select = game.gameActionState.selection[0]

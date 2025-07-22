@@ -279,7 +279,8 @@ function canAssaultMove(unit: Unit | undefined): boolean {
 
 function canRout(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
-  return false
+  if (!unit.isBroken) { return false }
+  return true
 }
 
 function canEnemyRout(): boolean {
