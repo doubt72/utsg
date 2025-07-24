@@ -321,13 +321,28 @@ export default class Game {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
-      if (["move", "rush", "assault_move", "fire", "rout_self", "rout_move"].includes(a.data.action)) {
+      if ([
+        "move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_move",
+        "reaction_fire", "intensive_reaction_fire",
+      ].includes(a.data.action)) {
         this.scenario.map.setLastSelection(a)
         return a
       }
     }
     this.scenario.map.setLastSelection()
     return undefined
+  }
+
+  checkLastSAIsRush(player: Player): boolean {
+    for (let i = this.actions.length - 1; i >= 0; i--) {
+      const a = this.actions[i]
+      if (a.undone || a.player !== player) { continue }
+      if ([
+        "move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "pass",
+      ].includes(a.data.action)) { return false }
+      if (a.data.action === "rout_all") { return true }
+    }
+    return false
   }
 
   get initiativeCheck(): boolean {

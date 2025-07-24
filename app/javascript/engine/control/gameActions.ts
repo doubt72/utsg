@@ -672,7 +672,7 @@ export function finishBreakdown(game: Game) {
 export function startRoutAll(game: Game) {
   const counters: Counter[] = []
   game.scenario.map.allUnits.forEach(c => {
-    if (c.unit.isBroken && c.unit.playerNation !== game.currentPlayerNation) {
+    if (c.unit.isBroken && !c.unit.routed && c.unit.playerNation !== game.currentPlayerNation) {
       counters.push(c)
     }
   })
