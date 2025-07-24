@@ -17,7 +17,7 @@ export default class MoraleCheckAction extends BaseAction {
 
     this.validate(data.data.target as GameActionUnit[])
     this.validate(data.data.dice_result as GameActionDiceResult[])
-    this.validate(data.data.morale_data as { mod: number, why: string[] })
+    this.validate(data.data.morale_data as GameActionMoraleData)
     
     this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
     this.target = (data.data.target as GameActionUnit[])[0]

@@ -296,8 +296,9 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
     if (game.gameActionState?.currentAction === actionType.Sniper) { return false }
     if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
     if (game.gameActionState?.currentAction === actionType.Pass) { return false }
+    if (game.gameActionState?.currentAction === actionType.RoutAll) { return false }
+    if (game.gameActionState?.currentAction === actionType.RoutCheck) { return false }
     if (game.gameActionState?.currentAction === actionType.Rout) { return false }
-    // if (game.gameActionState?.currentAction === actionType.RoutAll) { return false }
     const same = samePlayer(game, target)
     if (!same && !game.gameActionState) { return false }
     if (game.gameActionState?.fire) {

@@ -1,5 +1,6 @@
 High Priority Features/Bug Fixes:
   - Rout
+    - Disable rout all if last action
   - Rally/Fix
   - Close Combat
   - Weather

@@ -447,9 +447,14 @@ function fireCover(
       } else if (c.feature.type === featureType.Bunker) {
         let minCover = 99
         for (const fc of from) {
-          const dir = hitFromArc(game, c.feature, fc, to, false)
-          const cover = (c.feature.coverSides as number[])[dir]
-          if (cover < minCover) { minCover = cover }
+          if (fc.x === to.x && fc.y === to.y) {
+            const cover = (c.feature.coverSides as number[])[2]
+            if (cover < minCover) { minCover = cover }
+          } else {
+            const dir = hitFromArc(game, c.feature, fc, to, false)
+            const cover = (c.feature.coverSides as number[])[dir]
+            if (cover < minCover) { minCover = cover }
+          }
         }
         cover = minCover
         check = true
@@ -461,13 +466,15 @@ function fireCover(
     const terrain = toHex.terrain
     cover = !terrain.cover ? 0 : terrain.cover
     for (const c of from) {
-      const fromHex = map.hexAt(c) as Hex
-      const path = losHexPath(map, toHex, fromHex)
-      if (path[0].edgeHex?.border && path[0].edgeHex.borderEdges?.includes(path[0].edge ?? 1)) {
-        cover += path[0].edgeHex.terrain.borderAttr.cover
-      }
-      if (path[1].hex?.border && path[1].hex.borderEdges?.includes(normalDir((path[0].edge ?? 1) + 3))) {
-        cover += path[1].hex.terrain.borderAttr.cover
+      if (c.x !== to.x || c.y !== to.y) {
+        const fromHex = map.hexAt(c) as Hex
+        const path = losHexPath(map, toHex, fromHex)
+        if (path[0].edgeHex?.border && path[0].edgeHex.borderEdges?.includes(path[0].edge ?? 1)) {
+          cover += path[0].edgeHex.terrain.borderAttr.cover
+        }
+        if (path[1].hex?.border && path[1].hex.borderEdges?.includes(normalDir((path[0].edge ?? 1) + 3))) {
+          cover += path[1].hex.terrain.borderAttr.cover
+        }
       }
     }
   }

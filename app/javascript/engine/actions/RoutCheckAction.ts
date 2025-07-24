@@ -1,55 +1,41 @@
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { coordinateToLabel } from "../../utilities/utilities";
-import Counter from "../Counter";
 import Game from "../Game";
-import { GameActionData, GameActionDiceResult, GameActionMoraleData, GameActionUnit } from "../GameAction";
+import { GameActionData, GameActionDiceResult, GameActionRoutData, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
 export default class RoutCheckAction extends BaseAction {
-  diceResult: GameActionDiceResult;
   target: GameActionUnit
-  moraleMods: GameActionMoraleData
+  diceResult: GameActionDiceResult;
+  routCheckMods: GameActionRoutData
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
 
     this.validate(data.data.target as GameActionUnit[])
     this.validate(data.data.dice_result as GameActionDiceResult[])
-    this.validate(data.data.morale_data as { mod: number, why: string[] })
+    this.validate(data.data.rout_check_data as GameActionRoutData)
 
-    this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
     this.target = (data.data.target as GameActionUnit[])[0]
-    this.moraleMods = data.data.morale_data as GameActionMoraleData
+    this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
+    this.routCheckMods = data.data.rout_check_data as GameActionRoutData
   }
 
   get type(): string { return "rout_check" }
 
   get stringValue(): string {
-    let rc = ""
+    const nation = this.game.nationNameForPlayer(this.player)
     const unit = this.game.findUnitById(this.target.id) as Unit
-    const check = 15 + this.moraleMods.mod
-    let short = false
-    const roll = this.diceResult
-    rc += `${
-      this.game.nationNameForPlayer(this.player)
-    } morale check for ${unit.name} (2d10): target ${check}, rolled ${roll.result}`
-    if (roll.result < check) {
-      if (this.target.status === unitStatus.Broken) {
-        rc += ", unit eliminated"
-      } else {
-        rc += ", unit breaks"
-        short = true
-      }
-    } else if (roll.result == check) {
-      if (this.target.status !== unitStatus.Broken) {
-        rc += ", unit is pinned"
-        short = true
-      }
-    }
-    if (this.moraleMods.short && short) {
-      rc += `, move short at ${coordinateToLabel(new Coordinate(this.target.x, this.target.y))}`
+    const loc = coordinateToLabel(new Coordinate(this.target.x, this.target.y))
+    const check = 15 + this.routCheckMods.mod
+    const roll = this.diceResult.result
+    let rc = `${nation} ${unit.name} rout morale check at ${loc} (2d10): target ${check}, rolled ${roll}, `
+    if (roll < check) {
+      rc += 'failed, unit routs'
+    } else {
+      rc += 'passed, no effect'
     }
     return rc
   }
@@ -59,34 +45,16 @@ export default class RoutCheckAction extends BaseAction {
   }
 
   mutateGame(): void {
-    this.game.moraleChecksNeeded.shift()
-    const counter = this.game.findCounterById(this.target.id) as Counter
-    const check = 15 + this.moraleMods.mod
+    this.game.routCheckNeeded.shift()
+    const unit = this.game.findUnitById(this.target.id) as Unit
+    const check = 15 + this.routCheckMods.mod
     const roll = this.diceResult
     if (roll.result < check) {
-      if (counter.unit.isBroken) {
-        this.game.scenario.map.eliminateCounter(counter.hex as Coordinate, this.target.id)
-      } else {
-        counter.unit.status = unitStatus.Broken
-        const hex = counter.hex as Coordinate
-        if (hex.x != this.target.x || hex.y !== this.target.y) {
-          this.game.scenario.map.moveUnit(
-            hex, new Coordinate(this.target.x, this.target.y), this.target.id
-          )
-        }
-      }
-    } else if (roll.result == check) {
-      if (!counter.unit.isBroken) { counter.unit.pinned = true }
-        const hex = counter.hex as Coordinate
-        if (hex.x != this.target.x || hex.y !== this.target.y) {
-          this.game.scenario.map.moveUnit(
-            hex, new Coordinate(this.target.x, this.target.y), this.target.id
-          )
-        }
+      this.game.routNeeded.push({ unit, loc: new Coordinate(this.target.x, this.target.y) })
     }
   }
   
   undo(): void {
-    throw new IllegalActionError("internal error undoing morale check")
+    throw new IllegalActionError("internal error undoing rout check")
   }
 }

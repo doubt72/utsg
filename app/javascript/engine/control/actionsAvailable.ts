@@ -1,6 +1,7 @@
 import { Coordinate, GameAction, unitType } from "../../utilities/commonTypes"
 import { coordinateToLabel } from "../../utilities/utilities"
 import Game, { gamePhaseType } from "../Game"
+import Map from "../Map"
 import Unit from "../Unit"
 import { showClearObstacles, showEntrench } from "./assault"
 import { actionType, needPickUpDisambiguate } from "./gameActions"
@@ -13,6 +14,11 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.startSniper()
   } else if (game.moraleChecksNeeded.length > 0) {
     game.startMoraleCheck()
+  } else if (game.routNeeded.length > 0) {
+    game.routNeeded[0].unit.select()
+    game.startRout(false)
+  } else if (game.routCheckNeeded.length > 0) {
+    game.startRoutCheck()
   } else if (game.initiativeCheck) {
     game.startInitiative()
   } else if (game.reactionFireCheck) {
@@ -141,11 +147,17 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       }
     } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
       actions.push({ type: "breakdown" })
+    } else if (game.gameActionState?.currentAction === actionType.RoutAll) {
+        actions.unshift({ type: "none", message: "enemy rout" })
+        actions.push({ type: "enemy_rout" })
+        actions.push({ type: "cancel_action" })
+    } else if (game.gameActionState?.currentAction === actionType.RoutCheck) {
+        actions.push({ type: "rout_check" })
     } else if (game.gameActionState?.currentAction === actionType.Rout) {
       if (game.gameActionState.rout?.optional && !game.gameActionState.rout.routPathTree) {
         actions.unshift({ type: "none", message: "can't rout unit without eliminating it" })
       } else if (!game.gameActionState.rout?.routPathTree) {
-        actions.unshift({ type: "none", message: "can't rout, will be eliminated" })
+        actions.unshift({ type: "none", message: "unit has no legal move" })
         actions.push({ type: "rout_eliminate" })
       } else {
         actions.unshift({ type: "none", message: "select location to rout to" })
@@ -175,7 +187,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({ type: "reaction_pass" })
     } else if (!selection) {
       actions.unshift({ type: "none", message: "select units to activate" })
-      if (canEnemyRout()) { actions.push({ type: "enemy_rout" }) }
+      if (canEnemyRout(game.scenario.map)) { actions.push({ type: "enemy_rout" }) }
       actions.push({ type: "pass" })
     } else {
       if (canFire(selection)) { actions.push({ type: "fire" }) }
@@ -239,13 +251,13 @@ function checkFire(unit: Unit): boolean {
   return true
 }
 
-function canFire(unit: Unit | undefined): boolean {
+function canFire(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (unit.isActivated) { return false }
   return checkFire(unit)
 }
 
-function canIntensiveFire(unit: Unit | undefined): boolean {
+function canIntensiveFire(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (!unit.isActivated) { return false }
   if (unit.offBoard || unit.crewed || unit.areaFire) { return false }
@@ -259,14 +271,14 @@ function canMoveAny(unit: Unit): boolean {
   return true
 }
 
-function canMove(unit: Unit | undefined): boolean {
+function canMove(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
   return true
 }
 
-function canRush(unit: Unit | undefined): boolean {
+function canRush(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
   if (!unit.isActivated) { return false }
@@ -278,7 +290,7 @@ function canRush(unit: Unit | undefined): boolean {
   return true
 }
 
-function canAssaultMove(unit: Unit | undefined): boolean {
+function canAssaultMove(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
@@ -288,12 +300,17 @@ function canAssaultMove(unit: Unit | undefined): boolean {
   return true
 }
 
-function canRout(unit: Unit | undefined): boolean {
+function canRout(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (!unit.isBroken || unit.routed) { return false }
   return true
 }
 
-function canEnemyRout(): boolean {
+function canEnemyRout(map?: Map): boolean {
+  if (!map) { return false }
+  const units = map.allUnits
+  for (const u of units) {
+    if (u.unit.nation !== map.game?.currentPlayerNation && u.unit.isBroken) { return true }
+  }
   return false
 }

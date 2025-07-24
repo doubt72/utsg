@@ -2,17 +2,20 @@ import { Coordinate, Direction, featureType, Player, UnitStatus } from "../../ut
 import { normalDir, roll2d10, rolld10, togglePlayer } from "../../utilities/utilities"
 import Feature from "../Feature"
 import Game from "../Game"
-import GameAction, { GameActionAddAction, GameActionAddActionType, gameActionAddActionType, GameActionDiceResult, GameActionMoraleData, GameActionPath } from "../GameAction"
+import GameAction, {
+  GameActionAddAction, GameActionAddActionType, gameActionAddActionType, GameActionDiceResult,
+  GameActionMoraleData, GameActionPath, GameActionRoutData
+} from "../GameAction"
 import Counter from "../Counter"
 import { canMultiSelectFire, moraleModifiers } from "./fire"
 import Unit from "../Unit"
 import { placeReactionFireGhosts } from "./reactionFire"
 import { findRoutPathTree, routPaths } from "./rout"
 
-export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s" | "r" //| "ra" | "rc"
+export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s" | "r" | "ra" | "rc"
 export const actionType: { [index: string]: ActionType } = {
   Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
-  MoraleCheck: "mc", Sniper: "s", Rout: "r", //RoutAll: "ra", RoutCheck: "rc",
+  MoraleCheck: "mc", Sniper: "s", Rout: "r", RoutAll: "ra", RoutCheck: "rc",
 }
 
 export type ActionSelection = {
@@ -73,6 +76,7 @@ export type GameActionState = {
   deploy?: DeployActionState,
   fire?: FireActionState,
   moraleCheck?: GameActionMoraleData,
+  routCheck?: GameActionRoutData,
   move?: MoveActionState,
   assault?: AssaultMoveActionState,
   rout?: RoutActionState,
@@ -316,7 +320,7 @@ export function startMoraleCheck(game: Game) {
 export function finishMoraleCheck(game: Game) {
   if (!game.gameActionState || game.gameActionState.currentAction !== actionType.MoraleCheck) { return }
   const sel = game.gameActionState.selection[0]
-  const pass = new GameAction({
+  const mc = new GameAction({
     user: game.currentPlayer === game.gameActionState.player ?
       game.currentUser : game.opponentUser,
     player: game.gameActionState?.player,
@@ -329,7 +333,7 @@ export function finishMoraleCheck(game: Game) {
   }, game, game.actions.length)
   game.gameActionState = undefined
   game.scenario.map.clearAllSelections()
-  game.executeAction(pass, false)
+  game.executeAction(mc, false)
 }
 
 export function startMove(game: Game) {
@@ -663,6 +667,76 @@ export function finishBreakdown(game: Game) {
   game.gameActionState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(bd, false)
+}
+
+export function startRoutAll(game: Game) {
+  const counters: Counter[] = []
+  game.scenario.map.allUnits.forEach(c => {
+    if (c.unit.isBroken && c.unit.playerNation !== game.currentPlayerNation) {
+      counters.push(c)
+    }
+  })
+  game.gameActionState = {
+    player: game.currentPlayer, currentAction: actionType.RoutAll,
+    selection: counters.map(c => {
+      const hex = c.hex as Coordinate
+      c.unit.select()
+      return { x: hex.x, y: hex.y, id: c.unit.id, counter: c }
+    })
+  }
+  game.refreshCallback(game)
+}
+
+export function finishRoutAll(game: Game) {
+  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.RoutAll) { return }
+  const ra = new GameAction({
+    user: game.currentUser,
+    player: game.gameActionState?.player,
+    data: {
+      action: "rout_all", old_initiative: game.initiative,
+      target: game.gameActionState.selection.map(s => {
+        return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
+      }),
+    },
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearAllSelections()
+  game.executeAction(ra, false)
+  game.refreshCallback(game)
+}
+
+export function startRoutCheck(game: Game) {
+  if (game.gameActionState || game.routCheckNeeded.length < 1) { return }
+  const check = game.routCheckNeeded[0] as { unit: Unit, loc: Coordinate }
+  const modifiers = moraleModifiers(game, check.unit, [check.loc], check.loc, false)
+  const player = game.opponentPlayer
+  const counter = game.findCounterById(check.unit.id) as Counter
+  game.gameActionState = {
+    player, currentAction: actionType.RoutCheck,
+    selection: [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, counter }],
+    routCheck: { mod: modifiers.mod, why: modifiers.why }
+  }
+  check.unit.select()
+  game.refreshCallback(game)
+}
+
+export function finishRoutCheck(game: Game) {
+  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.RoutCheck) { return }
+  const sel = game.gameActionState.selection[0]
+  const rc = new GameAction({
+    user: game.currentPlayer === game.gameActionState.player ?
+      game.currentUser : game.opponentUser,
+    player: game.gameActionState?.player,
+    data: {
+      action: "rout_check", old_initiative: game.initiative,
+      dice_result: [{ result: roll2d10(), type: "2d10" }],
+      rout_check_data: game.gameActionState.routCheck,
+      target: [{ x: sel.x, y: sel.y, id: sel.id, status: sel.counter.unit.status }],
+    },
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearAllSelections()
+  game.executeAction(rc, false)
 }
 
 export function startRout(game: Game, optional: boolean) {

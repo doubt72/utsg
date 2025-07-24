@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { CancelGlyph } from "../../utilities/buttons";
+import { actionType } from "../../../engine/control/gameActions";
 
 interface CancelActionButtonProps {
   game: Game;
@@ -21,7 +22,7 @@ export default function CancelActionButton({ game, callback }: CancelActionButto
       return `cancel ${game.rushing ? "rush" : "move"}`
     } else if (game.gameActionState?.assault) {
       return "cancel assault move"
-    } else if (game.gameActionState?.rout) {
+    } else if (game.gameActionState?.rout || game.gameActionState?.currentAction === actionType.RoutAll) {
       return "cancel rout"
     } else {
       return "unexpected action"

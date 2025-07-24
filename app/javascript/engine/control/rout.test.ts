@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { createBlankGame, testGGun, testGInf, testGMG, testRInf, testWire } from "./testHelpers";
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import Unit from "../Unit";
@@ -413,18 +413,35 @@ describe("rout tests", () => {
       const unit = new Unit(testRInf)
       unit.status = unitStatus.Broken
       unit.id = "test1"
-      unit.select()
       const loc = new Coordinate(4, 2)
       map.addCounter(loc, unit)
       organizeStacks(map)
 
+      expect(game.initiative).toBe(0)
+      game.startRoutAll()
+      expect(game.routCheckNeeded.length).toBe(0)
+      game.finishRoutAll()
+      expect(game.routCheckNeeded.length).toBe(1)
+      expect(game.initiative).toBe(-3)
+
+      game.startRoutCheck()
+      expect(game.gameActionState?.selection[0]?.id).toBe(unit.id)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishRoutCheck()
+      Math.random = original
+      expect(game.routNeeded[0].unit.name).toBe("Rifle")
+
+      unit.select()
       game.startRout(false)
       const tree = game.gameActionState?.rout?.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(0, 2)])
 
-      expect(game.initiative).toBe(0)
+      expect(game.initiative).toBe(-3)
       game.finishRout(0, 2)
-      expect(game.initiative).toBe(0)
+      expect(game.routNeeded.length).toBe(0)
+      expect(game.initiative).toBe(-3)
 
       const all = map.allCounters
       expect(all.length).toBe(1)
@@ -451,10 +468,26 @@ describe("rout tests", () => {
       map.addCounter(loc, unit)
       organizeStacks(map)
 
+      game.startRoutAll()
+      expect(game.routCheckNeeded.length).toBe(0)
+      game.finishRoutAll()
+      expect(game.routCheckNeeded.length).toBe(1)
+
+      game.startRoutCheck()
+      expect(game.gameActionState?.selection[0]?.id).toBe(unit.id)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.finishRoutCheck()
+      Math.random = original
+      expect(game.routNeeded[0].unit.name).toBe("Rifle")
+
+      unit.select()
       game.startRout(false)
       expect(game.gameActionState?.rout?.routPathTree).toBe(false)
 
       game.finishRout()
+      expect(game.routNeeded.length).toBe(0)
 
       const all = map.allCounters
       expect(all.length).toBe(0)

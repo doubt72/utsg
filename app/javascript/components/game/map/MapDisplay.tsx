@@ -31,6 +31,7 @@ import FireHindranceOverlay from "./FireHindranceOverlay";
 import MapTargetHexSelection from "./MapTargetHexSelection";
 import Hex from "../../../engine/Hex";
 import RoutTrackOverlay from "./RoutTrackOverlay";
+import { actionType } from "../../../engine/control/gameActions";
 
 interface MapDisplayProps {
   map?: Map;
@@ -259,9 +260,9 @@ export default function MapDisplay({
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
-        if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move ||
-            map.game?.gameActionState?.assault || map.game?.gameActionState?.fire ||
-            map.game?.gameActionState?.rout) {
+        const state = map.game?.gameActionState
+        if (state && (state.deploy || state.move || state.assault || state.fire || state.rout ||
+            [actionType.RoutAll, actionType.RoutCheck, actionType.MoraleCheck].includes(state.currentAction))) {
           const shaded = openHex(map, x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)

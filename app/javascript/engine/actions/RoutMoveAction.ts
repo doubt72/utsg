@@ -69,7 +69,11 @@ export default class RouteMoveAction extends BaseAction {
       this.game.scenario.map.eliminateCounter(start, this.target.id)
     }
     sortStacks(map)
-    if (this.optional) { this.game.updateInitiative(1) }
+    if (this.optional) {
+      this.game.updateInitiative(1)
+    } else {
+      this.game.routNeeded.shift()
+    }
   }
   
   undo(): void {

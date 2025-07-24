@@ -23,6 +23,12 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
     return openHexAssault(map, x, y)
   } else if (game?.gameActionState?.currentAction === actionType.Rout) {
     return openHexRout(map, x, y)
+  } else if (game?.gameActionState?.currentAction === actionType.RoutAll) {
+    return hexOpenType.Closed
+  } else if (game?.gameActionState?.currentAction === actionType.RoutCheck) {
+    return hexOpenType.Closed
+  } else if (game?.gameActionState?.currentAction === actionType.MoraleCheck) {
+    return hexOpenType.Closed
   } else if (game?.gameActionState?.currentAction === actionType.Breakdown) {
     return hexOpenType.Closed
   }

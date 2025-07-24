@@ -10,7 +10,7 @@ interface RoutCheckButtonProps {
 export default function RoutCheckButton({ game, callback }: RoutCheckButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game // game.startRout(true)
+    game.finishRoutCheck()
     callback()
   }
 

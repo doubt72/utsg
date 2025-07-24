@@ -47,6 +47,10 @@ export type GameActionMoraleData = {
   mod: number, why: string[], short: boolean,
 }
 
+export type GameActionRoutData = {
+  mod: number, why: string[],
+}
+
 export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
 export const gameActionAddActionType: { [index: string]: GameActionAddActionType } = {
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
@@ -76,6 +80,7 @@ export type GameActionDetails = {
   fire_data?: GameActionFireData,
   move_data?: GameActionMoveData,
   morale_data?: GameActionMoraleData,
+  rout_check_data?: GameActionRoutData,
   phase_data?: GameActionPhaseChange,
 }
 

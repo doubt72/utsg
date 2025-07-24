@@ -16,7 +16,7 @@ import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import { GameActionPath } from "./GameAction";
 import BaseAction from "./actions/BaseAction";
 import { hexDistance, togglePlayer } from "../utilities/utilities";
-import { needPickUpDisambiguate } from "./control/gameActions";
+import { actionType, needPickUpDisambiguate } from "./control/gameActions";
 import { leadershipRange } from "./control/fire";
 import openHex from "./control/openHex";
 import { samePlayer } from "./control/select";
@@ -580,9 +580,25 @@ export default class Map {
       return rc
     }
     const rout = this.game.gameActionState.rout
-    if (rout) {
+    const routCheck = this.game.gameActionState.currentAction === actionType.RoutCheck
+    const moraleCheck = this.game.gameActionState.currentAction === actionType.MoraleCheck
+    if (rout || routCheck || moraleCheck) {
       const first = this.game.gameActionState.selection[0]
       return this.countersAt(new Coordinate(first.x, first.y))
+    }
+    const routAll = this.game.gameActionState.currentAction === actionType.RoutAll
+    if (routAll) {
+      let rc: Counter[] = []
+      for (const s of this.game.gameActionState.selection) {
+        const counters = this.countersAt(new Coordinate(s.x, s.y))
+        for (const c of counters) {
+          if (c.unit.isBroken && c.unit.playerNation !== this.game.currentPlayerNation) {
+            rc = rc.concat(counters)
+            break
+          }
+        }
+      }
+      return rc
     }
     return []
   }
