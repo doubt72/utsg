@@ -579,6 +579,11 @@ export default class Map {
       }
       return rc
     }
+    const rout = this.game.gameActionState.rout
+    if (rout) {
+      const first = this.game.gameActionState.selection[0]
+      return this.countersAt(new Coordinate(first.x, first.y))
+    }
     return []
   }
 
@@ -688,16 +693,20 @@ export default class Map {
     return rc
   }
 
-  setLastSelection(move?: BaseAction) {
+  setLastSelection(action?: BaseAction) {
     const units = this.allCounters
     const ids: string[] = []
-    if (move) {
-      move.data.origin?.forEach(o =>ids.push(o.id))
-      move.data.add_action?.forEach(o => { if (o.id) { ids.push(o.id) } })
+    if (action) {
+      if (["rout_self", "rout_move"].includes(action.type)) {
+        action.data.target?.forEach(o =>ids.push(o.id))
+      } else {
+        action.data.origin?.forEach(o =>ids.push(o.id))
+      }
+      action.data.add_action?.forEach(o => { if (o.id) { ids.push(o.id) } })
     }
     for (const u of units) {
       if (u.hasMarker) { continue }
-      if (move) {
+      if (action) {
         if (ids.includes(u.targetUF.id)) {
           if (!u.targetUF.lastSelected) { u.targetUF.lastSelect() }
         } else {

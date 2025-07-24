@@ -16,7 +16,8 @@ export default function MoveTrackOverlay({ map }: MoveTrackOverlayProps) {
       return map.game.gameActionState.assault.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
     const lastSigAction = map.game?.lastSignificantAction
-    if (lastSigAction && ["move", "rush", "assault_move"].includes(lastSigAction.data.action) &&
+    if (lastSigAction &&
+        ["move", "rush", "assault_move", "rout_move", "rout_self"].includes(lastSigAction.data.action) &&
         lastSigAction.data.path) {
       return lastSigAction.data.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
@@ -24,13 +25,15 @@ export default function MoveTrackOverlay({ map }: MoveTrackOverlayProps) {
   }
 
   const hexCenters = () => {
+    const routing = map.game?.lastSignificantAction?.data.action === "rout_move" ||
+                    map.game?.lastSignificantAction?.data.action === "rout_self"
     let first = true
     return hexes().map((h, i) => {
       const offset = Math.max(map.counterDataAt(h.coord).length * 5 - 5, 0)
       const x = h.xOffset + offset
       const y = h.yOffset - offset
       const fill = first ? "#AAA" : "#DDD"
-      first = false
+      if (!routing) { first = false }
       return <path key={`${i}-c`} d={circlePath(new Coordinate(x, y), 12)}
                     style={{ fill, stroke: "#777", strokeWidth: 4 }} />
     })

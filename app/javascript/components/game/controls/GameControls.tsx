@@ -38,6 +38,8 @@ import FireFinishButton from "./FireFinishButton";
 import MoraleCheckButton from "./MoraleCheckButton";
 import FireSmokeButton from "./FireSmokeButton";
 import ReactionPassButton from "./ReactionPassButton";
+import RoutEliminateButton from "./RoutEliminateButton";
+import RoutCheckButton from "./RoutCheckButton";
 
 interface GameControlsProps {
   game: Game;
@@ -137,6 +139,10 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <CancelActionButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rout") {
         return <RoutButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "rout_eliminate") {
+        return <RoutEliminateButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "rout_check") {
+        return <RoutCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {

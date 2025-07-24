@@ -2,7 +2,7 @@ import { Coordinate, CounterSelectionTarget, unitStatus } from "../../utilities/
 import { hexDistance, normalDir } from "../../utilities/utilities"
 import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
-import { addActionType } from "../GameAction"
+import { gameActionAddActionType } from "../GameAction"
 import Map from "../Map"
 import { actionType, getLoader, needPickUpDisambiguate } from "./gameActions"
 import Unit from "../Unit"
@@ -69,7 +69,7 @@ export default function select(
       const facing = counter.unit.crewed ? game.lastPath?.facing : undefined
       move.addActions.push(
         {
-          x: xx, y: yy, cost, type: addActionType.Drop, id: counter.unit.id,
+          x: xx, y: yy, cost, type: gameActionAddActionType.Drop, id: counter.unit.id,
           parent_id: counter.unit.parent?.id, status: counter.unit.status,
           facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing,
           index: move.path.length,
@@ -111,7 +111,7 @@ export default function select(
         }
         const facing = counter.unit.rotates ? counter.unit.facing : undefined
         move.addActions.push({
-          x: xx, y: yy, cost, type: addActionType.Load, id: counter.unit.id, parent_id: load?.unit.id,
+          x: xx, y: yy, cost, type: gameActionAddActionType.Load, id: counter.unit.id, parent_id: load?.unit.id,
           facing, status: counter.unit.status, index: move.path.length,
         })
       }
@@ -163,7 +163,6 @@ function clearUnrangedSelection(game: Game) {
   if (!game?.gameActionState?.fire) { return }
   const init = game.gameActionState.fire.initialSelection[0]
   const leadership = leadershipRange(game)
-  console.log(leadership)
   for (const sel of game.gameActionState.selection) {
     if (leadership === false) {
       const child = init.counter.unit.children[0]
@@ -195,9 +194,7 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     map.game.addMessage("cannot fire an activated unit")
     return false
   }
-      console.log("hiA")
   if (counter.unit.parent) {
-      console.log("hiB")
     if (counter.unit.parent.isBroken) {
       map.game.addMessage("cannot fire a unit if parent is broken")
       return false
@@ -206,7 +203,7 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
       map.game.addMessage("cannot fire a unit if parent is exhausted")
       return false
     }
-    if (counter.unit.parent.isPinned) {
+    if (counter.unit.parent.pinned) {
       map.game.addMessage("cannot fire a unit if parent is pinned")
       return false
     }
@@ -298,6 +295,9 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
     if (game.gameActionState?.currentAction === actionType.MoraleCheck) { return false }
     if (game.gameActionState?.currentAction === actionType.Sniper) { return false }
     if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
+    if (game.gameActionState?.currentAction === actionType.Pass) { return false }
+    if (game.gameActionState?.currentAction === actionType.Rout) { return false }
+    // if (game.gameActionState?.currentAction === actionType.RoutAll) { return false }
     const same = samePlayer(game, target)
     if (!same && !game.gameActionState) { return false }
     if (game.gameActionState?.fire) {

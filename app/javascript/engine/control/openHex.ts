@@ -2,13 +2,14 @@ import {
   Coordinate, featureType, hexOpenType, HexOpenType, roadType, terrainType, unitType
 } from "../../utilities/commonTypes"
 import { stackLimit } from "../../utilities/utilities"
-import { addActionType, GameActionPath } from "../GameAction"
+import { gameActionAddActionType, GameActionPath } from "../GameAction"
 import Map from "../Map"
 import Unit from "../Unit"
 import { openHexAssaulting } from "./assault"
 import { openHexFiring } from "./fire"
 import { actionType } from "./gameActions"
 import { mapSelectMovement, movementCost, movementPastCost, openHexMovement } from "./movement"
+import { routEnds } from "./rout"
 
 export default function openHex(map: Map, x: number, y: number): HexOpenType {
   const game = map.game
@@ -20,6 +21,8 @@ export default function openHex(map: Map, x: number, y: number): HexOpenType {
     return openHexMove(map, x, y)
   } else if (game?.gameActionState?.currentAction === actionType.Assault) {
     return openHexAssault(map, x, y)
+  } else if (game?.gameActionState?.currentAction === actionType.Rout) {
+    return openHexRout(map, x, y)
   } else if (game?.gameActionState?.currentAction === actionType.Breakdown) {
     return hexOpenType.Closed
   }
@@ -39,7 +42,7 @@ export function openHexRotateOpen(map: Map): boolean {
     if (!counter.unit.rotates && !(child && child.rotates)) { return false }
     if (counter.unit.canHandle && child && child.crewed) {
       for (const a of game.gameActionState.move.addActions) {
-        if (a.type === addActionType.Drop && a.id === child.id) { return false }
+        if (a.type === gameActionAddActionType.Drop && a.id === child.id) { return false }
       }
     }
     return true
@@ -175,5 +178,15 @@ function openHexFire(map: Map, x: number, y: number): HexOpenType {
   if (!game?.gameActionState?.selection) { return hexOpenType.Open }
   const lastPath = game.lastPath as GameActionPath
   return openHexFiring(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
-  return hexOpenType.Open
+}
+
+function openHexRout(map: Map, x: number, y: number): HexOpenType {
+  const game = map.game
+  if (!game?.gameActionState?.rout) { return hexOpenType.Closed }
+  if (!game.gameActionState.rout.routPathTree) { return hexOpenType.Closed }
+  const hexes = routEnds(game.gameActionState.rout.routPathTree)
+  for (const h of hexes) {
+    if (h.x === x && h.y === y) { return hexOpenType.Open }
+  }
+  return hexOpenType.Closed
 }

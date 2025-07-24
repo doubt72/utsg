@@ -8,6 +8,8 @@ High Priority Features/Bug Fixes:
 Future Features/Bug Fixes:
   - Undo getting out of sync (maybe remove ID?)
     - Automatically undo excessive deployments
+    - Handle undo after too late
+    - Handle action after undo happens
   - Redo docs for satchel charges / molotov cocktail
     - Add crew activated on fire to docs
     - Update docs for rapid fire -1, point-blank -1
@@ -17,7 +19,11 @@ Future Features/Bug Fixes:
     - Machine gun turret +1
     - Mine docs / assault careful
     - Sniper
+    - Can't rout into wire or mines
+    - Somewhere mention pinned reduces morale by 1
+    - Change pinned to suppressed?
 
+  - Skip reaction fire when no LOS
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel, main map, minimap
   - Handle map scale and such settings gone wrong

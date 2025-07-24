@@ -240,7 +240,7 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
   let color = "black"
   let path = squarePath(loc)
   let size = value === "½" ? 18 : attrSizeFor(value as number)
-  if (counter.hasUnit && (counter.unit.noFire || counter.unit.isPinned)) {
+  if (counter.hasUnit && (counter.unit.noFire || counter.unit.pinned)) {
     color = counterRed
     value = counter.unit.currentFirepower
     size = 18
@@ -407,7 +407,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
   let color = "black"
   const path = circlePath(loc, 10)
   const size = value === "A" ? 18 : attrSizeFor(value as number)
-  if (counter.hasUnit && (counter.unit.isBroken || counter.unit.isPinned || counter.unit.isTired ||
+  if (counter.hasUnit && (counter.unit.isBroken || counter.unit.pinned || counter.unit.isTired ||
       value as number < 0 || counter.unit.immobilized || counter.unit.isWreck)) {
     color = counterRed
   } else if (counter.hasUnit) {

@@ -497,6 +497,7 @@ export default class FireAction extends BaseAction {
               if (needDice) { hitRoll.description += `, ${f.counter.unit.name} destroyed` }
             } else {
               f.counter.unit.jammed = true
+              f.counter.unit.status = unitStatus.Normal
               if (needDice) { hitRoll.description += `, ${f.counter.unit.name} broken` }
             }
           }

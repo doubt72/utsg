@@ -121,6 +121,7 @@ export default class Unit {
   sponsonDestroyed: boolean;
   turretJammed: boolean;
   immobilized: boolean;
+  pinned: boolean;
   routed: boolean;
 
   facing: Direction;
@@ -220,6 +221,7 @@ export default class Unit {
     this.sponsonDestroyed = false
     this.turretJammed = false
     this.immobilized = false
+    this.pinned = false
     this.routed = false
 
     this.facing = 1
@@ -385,10 +387,6 @@ export default class Unit {
     return this.status === unitStatus.Tired
   }
 
-  get isPinned(): boolean {
-    return this.status === unitStatus.Pinned
-  }
-
   get isBroken(): boolean {
     return this.status === unitStatus.Broken
   }
@@ -429,7 +427,7 @@ export default class Unit {
   get currentMorale(): MoraleRange {
     if (this.isBroken) {
       return this.baseMorale - 2 as MoraleRange
-    } else if (this.isPinned) {
+    } else if (this.pinned) {
       return this.baseMorale - 1 as MoraleRange
     } else {
       return this.baseMorale
@@ -445,7 +443,7 @@ export default class Unit {
   }
 
   get currentGunHandling(): GunHandlingRange {
-    if (this.isBroken || this.isPinned) {
+    if (this.isBroken || this.pinned) {
       return 0
     } else {
       return this.gunHandling
@@ -461,7 +459,7 @@ export default class Unit {
     // depending on carrying unit state + reaction fire, implement this later, also target
     if (this.noFire) {
       return 0
-    } else if (this.isPinned) {
+    } else if (this.pinned) {
       return Math.floor(this.baseFirepower / 2)
     } else {
       return this.baseFirepower
@@ -479,7 +477,7 @@ export default class Unit {
   get currentMovement(): number {
     if (this.isBroken) {
       return this.brokenMovement
-    } else if (this.isPinned || this.immobilized || this.isWreck) {
+    } else if (this.pinned || this.immobilized || this.isWreck) {
       return 0
     } else if (this.isTired) {
       return this.baseMovement - 2

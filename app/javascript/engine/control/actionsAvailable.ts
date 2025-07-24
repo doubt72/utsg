@@ -72,7 +72,6 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (selection?.smokeCapable && (selection.targetedRange || selection.offBoard)) {
           actions.push({ type: "fire_smoke" })
         }
-        console.log(action.targetHexes.length)
         if (action.targetHexes.length > 0) {
           actions.push({ type: "fire_finish" })
         }
@@ -142,6 +141,18 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       }
     } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
       actions.push({ type: "breakdown" })
+    } else if (game.gameActionState?.currentAction === actionType.Rout) {
+      if (game.gameActionState.rout?.optional && !game.gameActionState.rout.routPathTree) {
+        actions.unshift({ type: "none", message: "can't rout unit without eliminating it" })
+      } else if (!game.gameActionState.rout?.routPathTree) {
+        actions.unshift({ type: "none", message: "can't rout, will be eliminated" })
+        actions.push({ type: "rout_eliminate" })
+      } else {
+        actions.unshift({ type: "none", message: "select location to rout to" })
+      }
+      if (game.gameActionState.rout?.optional) {
+        actions.push({ type: "cancel_action" })
+      }
     } else if (game.gameActionState?.currentAction === actionType.MoraleCheck) {
       const select = game.gameActionState
       const counter = game.gameActionState.selection[0].counter
@@ -222,7 +233,7 @@ function checkFire(unit: Unit): boolean {
   if (unit.jammed && !unit.sponson) { return false }
   if (unit.sponson && unit.jammed && unit.sponsonJammed) { return false }
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
-  if (unit.parent && (unit.parent.isPinned || unit.parent.isBroken)) { return false }
+  if (unit.parent && (unit.parent.pinned || unit.parent.isBroken)) { return false }
   if (unit.parent && unit.parent.isVehicle) { return false }
   if (!unit.parent && (unit.operated)) { return false }
   return true
@@ -237,7 +248,7 @@ function canFire(unit: Unit | undefined): boolean {
 function canIntensiveFire(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
   if (!unit.isActivated) { return false }
-  if (unit.offBoard || unit.crewed) { return false }
+  if (unit.offBoard || unit.crewed || unit.areaFire) { return false }
   return checkFire(unit)
 }
 
@@ -279,7 +290,7 @@ function canAssaultMove(unit: Unit | undefined): boolean {
 
 function canRout(unit: Unit | undefined): boolean {
   if (unit === undefined) { return false }
-  if (!unit.isBroken) { return false }
+  if (!unit.isBroken || unit.routed) { return false }
   return true
 }
 

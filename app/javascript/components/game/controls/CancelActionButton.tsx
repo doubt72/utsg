@@ -21,6 +21,8 @@ export default function CancelActionButton({ game, callback }: CancelActionButto
       return `cancel ${game.rushing ? "rush" : "move"}`
     } else if (game.gameActionState?.assault) {
       return "cancel assault move"
+    } else if (game.gameActionState?.rout) {
+      return "cancel rout"
     } else {
       return "unexpected action"
     }

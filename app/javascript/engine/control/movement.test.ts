@@ -7,7 +7,7 @@ import {
   openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement, movementPastCost
 } from "./movement"
 import select from "./select"
-import { addActionType } from "../GameAction"
+import { gameActionAddActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
@@ -198,7 +198,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
     game.finishMove()
-    const  all = map.allCounters
+    const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
@@ -251,7 +251,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
     game.finishMove()
-    const  all = map.allCounters
+    const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
@@ -304,7 +304,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
     game.finishMove()
-    const  all = map.allCounters
+    const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
@@ -356,7 +356,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
     game.finishMove()
-    const  all = map.allCounters
+    const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
@@ -367,9 +367,10 @@ describe("movement tests", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.status = unitStatus.Pinned
+    unit.pinned = true
     expect(unit.baseMovement).toBe(4)
     expect(unit.currentMovement).toBe(0)
+    unit.pinned = false
     unit.status = unitStatus.Tired
     expect(unit.currentMovement).toBe(2)
     unit.select()
@@ -741,7 +742,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
     // Check if dropping leader reduces total movement
-    move.addActions.push({ x: 3, y: 2, type: addActionType.Drop, cost: 0, id: "test2", index: 2 })
+    move.addActions.push({ x: 3, y: 2, type: gameActionAddActionType.Drop, cost: 0, id: "test2", index: 2 })
     expect(mapSelectMovement(game, false)).toBe(2)
     expect(mapSelectMovement(game, true)).toBe(3)
     // Undo

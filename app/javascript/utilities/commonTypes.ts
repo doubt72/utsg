@@ -136,9 +136,9 @@ export type StreamAttributes = {
   name: string;
 }
 
-export type UnitStatus = 0 | 1 | 2 | 3 | 4 | 5 | 6
+export type UnitStatus = 0 | 1 | 2 | 3 | 4 | 5
 export const unitStatus: { [index: string]: UnitStatus } = {
-  Normal: 0, Tired: 1, Pinned: 2, Broken: 3, Activated: 4, Exhausted: 5, Wreck: 6
+  Normal: 0, Tired: 1, Broken: 2, Activated: 3, Exhausted: 4, Wreck: 5
 }
 
 export type MovementType = 0 | 1 | 2 | 3

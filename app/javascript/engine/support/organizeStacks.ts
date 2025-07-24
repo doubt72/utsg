@@ -93,7 +93,7 @@ function addMarkers(loc: Coordinate, uf: Unit | Feature, index: number): MapCoun
     if (unit.sponsonDestroyed) { markerTypes.push(markerType.SponsonBroken) }
     if (unit.routed) { markerTypes.push(markerType.Routed) }
     if (unit.isTired) { markerTypes.push(markerType.Tired) }
-    if (unit.isPinned) { markerTypes.push(markerType.Pinned) }
+    if (unit.pinned) { markerTypes.push(markerType.Pinned) }
     if (unit.isExhausted) { markerTypes.push(markerType.Exhausted) }
     if (unit.isActivated) { markerTypes.push(markerType.Activated) }
   }

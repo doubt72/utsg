@@ -13,10 +13,11 @@ import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../u
 import Unit from "./Unit";
 import {
   actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
-  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, finishSniper,
+  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, finishRout, finishSniper,
   fireAtHex, fireRotate, fireSmokeToggle, fireSponsonToggle, GameActionState, loadingMoveToggle, move,
   moveRotate, passReaction, placeSmokeToggle, rotateToggle, shortingMoveToggle, startAssault,
   startBreakdown, startFire, startInitiative, startMoraleCheck, startMove, startPass, startRection,
+  startRout,
   startSniper
 } from "./control/gameActions";
 import Hex from "./Hex";
@@ -317,7 +318,7 @@ export default class Game {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
-      if (["move", "rush", "assault_move", "fire"].includes(a.data.action)) {
+      if (["move", "rush", "assault_move", "fire", "rout_self", "rout_move"].includes(a.data.action)) {
         this.scenario.map.setLastSelection(a)
         return a
       }
@@ -331,7 +332,7 @@ export default class Game {
     let rc = false
     for (const a of this.actions.filter(a => !a.undone)) {
       if (a.type === "initiative") { rc = false }
-      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout", "rout_all"].includes(a.type)) {
+      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_all"].includes(a.type)) {
         rc = true
       }
     }
@@ -358,7 +359,7 @@ export default class Game {
     let player = this.currentPlayer
     for (const a of this.actions.filter(a => !a.undone)) {
       rc = a.type === "initiative"
-      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout", "rout_all"].includes(a.type)) {
+      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_all"].includes(a.type)) {
         last = a.type
         player = a.player
       }
@@ -757,7 +758,6 @@ export default class Game {
     finishMoraleCheck(this)
   }
 
-
   startMove() {
     startMove(this)
   }
@@ -810,7 +810,6 @@ export default class Game {
     assaultEntrench(this)
   }
 
-
   finishAssault() {
     finishAssault(this)
   }
@@ -821,6 +820,14 @@ export default class Game {
 
   finishBreakdown() {
     finishBreakdown(this)
+  }
+
+  startRout(optional: boolean) {
+    startRout(this, optional)
+  }
+
+  finishRout(x?: number, y?: number) {
+    finishRout(this, x, y)
   }
 
   executePass() {}

@@ -123,6 +123,7 @@ export default function DebugMap() {
       if (data.v) { unit.eliteCrew = data.v }
       if (data.st) { unit.status = data.st }
       if (data.imm) { unit.immobilized = true }
+      if (data.pin) { unit.pinned = true }
       if (data.trt) { unit.turretJammed = true }
       if (data.brk) { unit.jammed = true }
       if (data.spn) { unit.sponsonJammed = true }

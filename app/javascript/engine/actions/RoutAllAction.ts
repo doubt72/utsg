@@ -7,7 +7,7 @@ import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 import IllegalActionError from "./IllegalActionError";
 
-export default class MoraleCheckAction extends BaseAction {
+export default class RoutAllAction extends BaseAction {
   diceResult: GameActionDiceResult;
   target: GameActionUnit
   moraleMods: GameActionMoraleData
@@ -18,13 +18,13 @@ export default class MoraleCheckAction extends BaseAction {
     this.validate(data.data.target as GameActionUnit[])
     this.validate(data.data.dice_result as GameActionDiceResult[])
     this.validate(data.data.morale_data as { mod: number, why: string[] })
-    
+
     this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
     this.target = (data.data.target as GameActionUnit[])[0]
     this.moraleMods = data.data.morale_data as GameActionMoraleData
   }
 
-  get type(): string { return "morale_check" }
+  get type(): string { return "rout_all" }
 
   get stringValue(): string {
     let rc = ""
@@ -76,7 +76,7 @@ export default class MoraleCheckAction extends BaseAction {
         }
       }
     } else if (roll.result == check) {
-      if (!counter.unit.isBroken) { counter.unit.pinned = true }
+      if (!counter.unit.isBroken) { counter.unit.pinned }
         const hex = counter.hex as Coordinate
         if (hex.x != this.target.x || hex.y !== this.target.y) {
           this.game.scenario.map.moveUnit(

@@ -14,6 +14,9 @@ import FireAction from "./actions/FireAction";
 import MoraleCheckAction from "./actions/MoraleCheckAction";
 import ReactionPassAction from "./actions/PassReactionAction";
 import SniperAction from "./actions/SniperAction";
+import RouteMoveAction from "./actions/RoutMoveAction";
+import RoutCheckAction from "./actions/RoutCheckAction";
+import RoutAllAction from "./actions/RoutAllAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -44,12 +47,12 @@ export type GameActionMoraleData = {
   mod: number, why: string[], short: boolean,
 }
 
-export type AddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
-export const addActionType: { [index: string]: AddActionType } = {
+export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
+export const gameActionAddActionType: { [index: string]: GameActionAddActionType } = {
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
 }
-export type AddAction = {
-  type: AddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
+export type GameActionAddAction = {
+  type: GameActionAddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
   status?: UnitStatus, index: number
 }
 
@@ -65,7 +68,7 @@ export type GameActionDetails = {
   origin?: GameActionUnit[],
   deploy?: GameActionReinforcementUnit[],
   path?: GameActionPath[],
-  add_action?: AddAction[],
+  add_action?: GameActionAddAction[],
   target?: GameActionUnit[],
 
   dice_result?: GameActionDiceResult[],
@@ -160,17 +163,24 @@ export default class GameAction {
     if (this.data.data.action === "assault_move") {
       return new AssaultMoveAction(this.data, this.game, this.index);
     }
+    if (this.data.data.action === "rout_all") {
+      return new RoutAllAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "rout_check") {
+      return new RoutCheckAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "rout_move") {
+      return new RouteMoveAction(this.data, this.game, this.index, false);
+    }
+    if (this.data.data.action === "rout_self") {
+      return new RouteMoveAction(this.data, this.game, this.index, true);
+    }
     if (this.data.data.action === "breakdown") {
       return new BreakdownAction(this.data, this.game, this.index);
     }
 
     // rally check
     // pass rally phase
-    // intensive fire
-    // opportunity fire
-    // intense opportunity fire
-    // rout
-    // reaction fire
     // cleanup unit
     // close combat
 

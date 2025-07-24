@@ -2,16 +2,17 @@ import { Coordinate, Direction, featureType, Player, UnitStatus } from "../../ut
 import { normalDir, roll2d10, rolld10, togglePlayer } from "../../utilities/utilities"
 import Feature from "../Feature"
 import Game from "../Game"
-import GameAction, { AddActionType, addActionType, GameActionDiceResult, GameActionMoraleData, GameActionPath } from "../GameAction"
+import GameAction, { GameActionAddAction, GameActionAddActionType, gameActionAddActionType, GameActionDiceResult, GameActionMoraleData, GameActionPath } from "../GameAction"
 import Counter from "../Counter"
 import { canMultiSelectFire, moraleModifiers } from "./fire"
 import Unit from "../Unit"
 import { placeReactionFireGhosts } from "./reactionFire"
+import { findRoutPathTree, routPaths } from "./rout"
 
-export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s"
+export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s" | "r" //| "ra" | "rc"
 export const actionType: { [index: string]: ActionType } = {
   Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
-  MoraleCheck: "mc", Sniper: "s",
+  MoraleCheck: "mc", Sniper: "s", Rout: "r", //RoutAll: "ra", RoutCheck: "rc",
 }
 
 export type ActionSelection = {
@@ -23,7 +24,7 @@ export type DeployActionState = {
 }
 
 export type AddAction = {
-  type: AddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
+  type: GameActionAddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
   facing?: Direction, status?: UnitStatus, index: number
 }
 
@@ -57,6 +58,14 @@ export type AssaultMoveActionState = {
   addActions: AddAction[],
 }
 
+export type RoutPathTree = {
+  x: number, y: number, children: RoutPathTree[],
+}
+
+export type RoutActionState = {
+  optional: boolean, routPathTree: RoutPathTree | false,
+}
+
 export type GameActionState = {
   player: Player,
   currentAction: ActionType,
@@ -66,6 +75,7 @@ export type GameActionState = {
   moraleCheck?: GameActionMoraleData,
   move?: MoveActionState,
   assault?: AssaultMoveActionState,
+  rout?: RoutActionState,
 }
 
 export function startInitiative(game: Game) {
@@ -393,7 +403,7 @@ export function move(game: Game, x: number, y: number) {
     })
     const vp = game.scenario.map.victoryAt(new Coordinate(x, y))
     if (vp && vp !== game.currentPlayer) {
-      move.addActions.push({ x, y, type: addActionType.VP, cost: 0,
+      move.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0,
       index: game.gameActionState.move.path.length })
     }
   }
@@ -482,7 +492,7 @@ export function finishMove(game: Game) {
     }
   }
   for (const a of game.gameActionState.move.addActions) {
-    if (a.type === addActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
+    if (a.type === gameActionAddActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
   }
   const move = new GameAction({
     user: game.currentUser,
@@ -562,7 +572,7 @@ export function assault(game: Game, x: number, y: number) {
   })
   const vp = game.scenario.map.victoryAt(new Coordinate(x, y))
   if (vp && vp !== game.currentPlayer) {
-    assault.addActions.push({ x, y, type: addActionType.VP, cost: 0, index: 0 })
+    assault.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 })
   }
   assault.doneSelect = true
   game.closeOverlay = true
@@ -580,7 +590,7 @@ export function assaultClear(game: Game) {
   const x = game.gameActionState.selection[0].x
   const y = game.gameActionState.selection[0].y
   const f = game.scenario.map.countersAt(new Coordinate(x, y)).filter(c => c.hasFeature)[0]
-  assault.addActions.push({ x, y, type: addActionType.Clear, cost: 0, id: f.feature.id, index: 0 })
+  assault.addActions.push({ x, y, type: gameActionAddActionType.Clear, cost: 0, id: f.feature.id, index: 0 })
   game.closeOverlay = true
 }
 
@@ -592,7 +602,7 @@ export function assaultEntrench(game: Game) {
   game.scenario.map.unshiftGhost(new Coordinate(x, y), new Feature({
     ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
   }))
-  assault.addActions.push({ x, y, type: addActionType.Entrench, cost: 0, index: 0 })
+  assault.addActions.push({ x, y, type: gameActionAddActionType.Entrench, cost: 0, index: 0 })
   game.closeOverlay = true
 }
 
@@ -629,7 +639,7 @@ export function startBreakdown(game: Game) {
         player: game.currentPlayer, currentAction: actionType.Breakdown,
         selection: [{
           x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, counter,
-        }]
+        }],
       }
       counter.unit.select()
       game.refreshCallback(game)
@@ -645,16 +655,74 @@ export function finishBreakdown(game: Game) {
     data: {
       action: "breakdown", old_initiative: game.initiative,
       origin: game.gameActionState.selection.map(s => {
-        return {
-          x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
-        }
+        return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
-      dice_result: [{ result: roll2d10(), type: "2d10" }]
+      dice_result: [{ result: roll2d10(), type: "2d10" }],
     },
   }, game, game.actions.length)
   game.gameActionState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(bd, false)
+}
+
+export function startRout(game: Game, optional: boolean) {
+  const selection = game.scenario.map.currentSelection[0]
+  const player = selection.unit.playerNation === game.currentPlayerNation ?
+    game.currentPlayer : game.opponentPlayer
+  const hex = selection.hex as Coordinate
+  game.gameActionState = {
+    player, currentAction: actionType.Rout,
+    selection: [{ x: hex.x, y: hex.y, id: selection.unit.id, counter: selection }],
+    rout: {
+      optional: optional,
+      routPathTree: findRoutPathTree(game, hex, selection.unit.currentMovement, player, selection.unit),
+    }
+  }
+  game.refreshCallback(game)
+}
+
+export function finishRout(game: Game, x?: number, y?: number) {
+  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Rout) { return }
+  let path: Coordinate[] = []
+  if (x !== undefined && y !== undefined) {
+    if (!game.gameActionState.rout?.routPathTree) { return }
+    const paths = routPaths(game.gameActionState.rout.routPathTree)
+    for (const p of paths) {
+      const last = p[p.length - 1]
+      if (last.x === x && last.y === y) {
+        path = p
+        break
+      }
+    }
+  } else if (game.gameActionState.rout?.routPathTree) { return }
+  const addAction: GameActionAddAction[] = []
+  const counter = game.gameActionState.selection[0].counter
+  if (counter.unit.children.length > 0) {
+    const hex = counter.hex as Coordinate
+    const child = counter.unit.children[0]
+    const facing = child.rotates ? child.facing : undefined
+    addAction.push({
+      type: gameActionAddActionType.Drop, x: hex.x, y: hex.y, id: child.id, index: 0, facing
+    })
+  }
+  const rout = new GameAction({
+    user: game.currentUser,
+    player: game.gameActionState?.player,
+    data: {
+      action: game.gameActionState.rout?.optional ? "rout_self" : "rout_move",
+      old_initiative: game.initiative,
+      path: path.map(c => { return { x: c.x, y: c.y } }),
+      target: game.gameActionState.selection.map(s => {
+        return {
+          x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
+        }
+      }),
+      add_action: addAction,
+    },
+  }, game, game.actions.length)
+  game.gameActionState = undefined
+  game.scenario.map.clearAllSelections()
+  game.executeAction(rout, false)
 }
 
 export function needPickUpDisambiguate(game: Game): boolean {

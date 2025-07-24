@@ -30,6 +30,7 @@ import FireTrackOverlay from "./FireTrackOverlay";
 import FireHindranceOverlay from "./FireHindranceOverlay";
 import MapTargetHexSelection from "./MapTargetHexSelection";
 import Hex from "../../../engine/Hex";
+import RoutTrackOverlay from "./RoutTrackOverlay";
 
 interface MapDisplayProps {
   map?: Map;
@@ -89,6 +90,7 @@ export default function MapDisplay({
   const [fireTrack, setFireTrack] = useState<JSX.Element | undefined>()
   const [fireTargets, setFireTargets] = useState<JSX.Element[]>([])
   const [fireHindrance, setFireHindrance] = useState<JSX.Element | undefined>()
+  const [routTrack, setRoutTrack] = useState<JSX.Element | undefined>()
 
   const [notification, setNotification] = useState<JSX.Element | undefined>()
   const [notificationDetails, setNotificationDetails] = useState<{
@@ -258,7 +260,8 @@ export default function MapDisplay({
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         if (map.game?.gameActionState?.deploy || map.game?.gameActionState?.move ||
-            map.game?.gameActionState?.assault || map.game?.gameActionState?.fire) {
+            map.game?.gameActionState?.assault || map.game?.gameActionState?.fire ||
+            map.game?.gameActionState?.rout) {
           const shaded = openHex(map, x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
@@ -422,7 +425,8 @@ export default function MapDisplay({
     if (!map) { return }
     const lastSigAction = map.game?.lastSignificantAction
     if (map.game?.gameActionState?.move || map.game?.gameActionState?.assault ||
-        (lastSigAction && ["move", "rush", "assault_move"].includes(lastSigAction.data.action))) {
+        (lastSigAction &&
+         ["move", "rush", "assault_move", "rout_move", "rout_self"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
       setMoveTrack(undefined)
@@ -438,6 +442,11 @@ export default function MapDisplay({
     } else {
       setFireTrack(undefined)
       setFireHindrance(undefined)
+    }
+    if (map.game?.gameActionState?.rout) {
+      setRoutTrack(<RoutTrackOverlay map={map} />)
+    } else {
+      setRoutTrack(undefined)
     }
   }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate, map?.game?.gameActionState])
 
@@ -502,6 +511,8 @@ export default function MapDisplay({
         map.game.assault(x, y)
       } else if (map.game?.gameActionState?.fire) {
         map.game.fireAtHex(x, y)
+      } else if (map.game?.gameActionState?.rout) {
+        map.game.finishRout(x, y)
       }
       setMapUpdate(s => s + 1)
       if (doCallback) { hexCallback(x, y) }
@@ -599,6 +610,7 @@ export default function MapDisplay({
           {action ? hexDisplayOverlays : ""}
           {actionCounterDisplay}
           {moveTrack}
+          {routTrack}
           {fireHindrance}
           {directionSelectionOverlay}
         </svg>

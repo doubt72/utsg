@@ -116,6 +116,10 @@ export const createFireGame = (hexes: HexData[][] = fireTestHexes): Game => {
   return createTestGame(hexes)
 }
 
+export const createBlankGame = (hexes: HexData[][] = plainTestHexes): Game => {
+  return createTestGame(hexes)
+}
+
 const createTestGame = (hexes: HexData[][]): Game => {
   const game = new Game({
     id: 1,
@@ -200,4 +204,12 @@ const fireTestHexes: HexData[][] = [
     { t: "o", s: { d: [1, 5], t: "t" } },
     { t: "o" }, { t: "b" }
   ],
+]
+
+const plainTestHexes: HexData[][] = [
+  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+  [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
 ]

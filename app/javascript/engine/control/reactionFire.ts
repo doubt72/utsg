@@ -1,7 +1,7 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes"
 import BaseAction from "../actions/BaseAction"
 import Game from "../Game"
-import { addActionType, GameActionPath } from "../GameAction"
+import { gameActionAddActionType, GameActionPath } from "../GameAction"
 import Unit from "../Unit"
 
 export function reactionFireHexes(game: Game): GameActionPath[] {
@@ -38,10 +38,10 @@ export function placeReactionFireGhosts(game: Game) {
   const path = reactionFireHexes(game)
   if (action.data.origin && action.data.add_action) {
     const ids = action.data.origin.map(o => { return { id: o.id, min: 0, max: path.length - 1 } })
-    const drops = action.data.add_action.filter(a => a.type === addActionType.Drop).map(a => {
+    const drops = action.data.add_action.filter(a => a.type === gameActionAddActionType.Drop).map(a => {
       return { id: a.id, index: a.index - 2 }
     })
-    const loads = action.data.add_action.filter(a => a.type === addActionType.Load).map(a => {
+    const loads = action.data.add_action.filter(a => a.type === gameActionAddActionType.Load).map(a => {
       ids.push({ id: a.id ?? "", min: 0, max: path.length - 1 })
       return { id: a.id, index: a.index - 1 }
     })

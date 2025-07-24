@@ -5,7 +5,7 @@ import {
   openHexMovement, showLaySmoke, showLoadMove, showDropMove, mapSelectMovement
 } from "./movement"
 import select from "./select"
-import { addActionType } from "../GameAction"
+import { gameActionAddActionType } from "../GameAction"
 import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
 import { actionType, GameActionState, MoveActionState } from "./gameActions"
@@ -359,7 +359,7 @@ describe("rush tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
     // Check if dropping leader reduces total movement
-    move.addActions.push({ x: 3, y: 2, type: addActionType.Drop, cost: 0, id: "test2", index: 0 })
+    move.addActions.push({ x: 3, y: 2, type: gameActionAddActionType.Drop, cost: 0, id: "test2", index: 0 })
     expect(mapSelectMovement(game, false)).toBe(2)
     expect(mapSelectMovement(game, true)).toBe(3)
     // Undo

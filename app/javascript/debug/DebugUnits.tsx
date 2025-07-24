@@ -72,7 +72,7 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       versions.push(svgContainer(unit3, key*5+2))
 
       const unit4 = new Unit(data)
-      unit4.status = unitStatus.Pinned
+      unit4.pinned = true
       versions.push(svgContainer(unit4, key*5+3))
 
       const unit5 = new Unit(data)

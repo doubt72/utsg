@@ -41,7 +41,7 @@ export const mapDebugData: {
   units: {
     u: string, x: number, y: number, f?: Direction, tf?: Direction, v?: number,
     st?: UnitStatus, imm?: boolean, trt?: boolean, brk?: boolean, spn?: boolean,
-    wpnD?: boolean, spnD?: boolean, rtd?: boolean,
+    wpnD?: boolean, spnD?: boolean, rtd?: boolean, pin?: boolean,
   }[],
   hexes: HexData[][]
 }[] = [
@@ -94,7 +94,7 @@ export const mapDebugData: {
       { u: testUnitData.rinf, x: 11, y: 6, st: unitStatus.Activated },
       { u: testUnitData.ginf, x: 7, y: 6, st: unitStatus.Broken },
       { u: testUnitData.rm2cs, x: 14, y: 7, f: 1, tf: 1 },
-      { u: testUnitData.ginf, x: 6, y: 7, st: unitStatus.Pinned },
+      { u: testUnitData.ginf, x: 6, y: 7, pin: true },
       { u: testUnitData.gspg, x: 0, y: 7, f: 4 },
       { u: testUnitData.ginf, x: 6, y: 8, st: unitStatus.Tired },
       { u: testUnitData.gscout, x: 4, y: 8, f: 4, tf: 3 },
@@ -778,8 +778,8 @@ export const mapDebugData: {
       { u: testUnitData.ustank, x: 10, y: 5, f: 2, tf: 2, wpnD: true },
       { u: testUnitData.ussg, x: 11, y: 5, f: 2, tf: 2, spn: true },
       { u: testUnitData.ussg, x: 12, y: 5, f: 2, tf: 2, spnD: true },
-      { u: testUnitData.usinf, x: 13, y: 5, brk: true, rtd: true },
-      { u: testUnitData.usinf, x: 5, y: 4, st: unitStatus.Pinned },
+      { u: testUnitData.usinf, x: 13, y: 5, st: unitStatus.Broken, rtd: true },
+      { u: testUnitData.usinf, x: 5, y: 4, pin: true },
       { u: testUnitData.ustank, x: 6, y: 4, f: 2, tf: 2, st: unitStatus.Wreck },
     ],
     hexes: [

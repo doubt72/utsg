@@ -3,7 +3,7 @@ import { coordinateToLabel, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
-import { GameActionPath, GameActionUnit, AddAction, GameActionData, addActionType } from "../GameAction";
+import { GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, gameActionAddActionType } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
@@ -11,7 +11,7 @@ import BaseAction from "./BaseAction";
 export default class AssaultMoveAction extends BaseAction {
   origin: GameActionUnit[];
   path: GameActionPath[];
-  addAction: AddAction[];
+  addAction: GameActionAddAction[];
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -23,7 +23,7 @@ export default class AssaultMoveAction extends BaseAction {
     // Validate will already error out if data is missing, but the linter can't tell
     this.origin = data.data.origin as GameActionUnit[]
     this.path = data.data.path as GameActionPath[]
-    this.addAction = data.data.add_action as AddAction[]
+    this.addAction = data.data.add_action as GameActionAddAction[]
   }
 
   get type(): string { return "assault_move" }
@@ -39,11 +39,11 @@ export default class AssaultMoveAction extends BaseAction {
     ]
     this.addAction.forEach(a => {
       const feature = this.game.findCounterById(a.id ?? "") as Counter
-      if (a.type === addActionType.Clear) {
+      if (a.type === gameActionAddActionType.Clear) {
         actions.push(`cleared ${feature.feature.name}`)
-      } else if (a.type === addActionType.Entrench) {
+      } else if (a.type === gameActionAddActionType.Entrench) {
         actions.push("dug in")
-      } else if (a.type !== addActionType.VP) {
+      } else if (a.type !== gameActionAddActionType.VP) {
         actions.push("unexpected action")
       }
     })
@@ -85,11 +85,11 @@ export default class AssaultMoveAction extends BaseAction {
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === addActionType.VP) {
+      if (a.type === gameActionAddActionType.VP) {
         map.toggleVP(mid)
-      } else if (a.type === addActionType.Clear) {
+      } else if (a.type === gameActionAddActionType.Clear) {
         map.eliminateCounter(mid, a.id as string)
-      } else if (a.type === addActionType.Entrench) {
+      } else if (a.type === gameActionAddActionType.Entrench) {
         const feature = new Feature({
           ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
         })
@@ -110,13 +110,13 @@ export default class AssaultMoveAction extends BaseAction {
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === addActionType.VP) {
+      if (a.type === gameActionAddActionType.VP) {
         map.toggleVP(mid)
-      } else if (a.type === addActionType.Clear) {
+      } else if (a.type === gameActionAddActionType.Clear) {
         const counter = this.game.findCounterById(a.id as string) as Counter
         map.addCounter(mid, counter.feature)
         this.game.removeEliminatedCounter(a.id as string)
-      } else if (a.type === addActionType.Entrench) {
+      } else if (a.type === gameActionAddActionType.Entrench) {
         map.removeCounter(mid, `scrap-${mid.x}-${mid.y}` as string)
       }
     }

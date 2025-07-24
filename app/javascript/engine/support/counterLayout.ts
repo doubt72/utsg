@@ -87,13 +87,13 @@ export function nameLayout(counter: Counter): CounterLayout {
 export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   if (!counter.hasUnit) { return false }
   const showAllCounters = counter.onMap ? counter.map?.showAllCounters : counter.showAllCounters
-  if (counter.unit.isBroken || counter.unit.isWreck || showAllCounters) { return false }
+  if (counter.unit.isWreck || showAllCounters) { return false }
   const loc = new Coordinate(counter.x + 40, counter.y + 46)
   let size = 20
   const path = circlePath(loc.yDelta(-6), 22)
   const style = { fill: markerYellow, stroke: "black", strokeWidth: 2 }
   const fStyle = { fill: "black" }
-  if (counter.unit.isPinned || counter.unit.immobilized || counter.unit.turretJammed ||
+  if (counter.unit.pinned || counter.unit.immobilized || counter.unit.turretJammed ||
       (counter.unit.jammed && counter.unit.isVehicle) || counter.unit.weaponDestroyed ||
       counter.unit.sponsonJammed || counter.unit.sponsonDestroyed || counter.unit.routed) {
     style.fill = counterRed
@@ -103,7 +103,7 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   let text = []
   if (counter.unit.isActivated) { text.push("ACT") }
   if (counter.unit.isExhausted) { text.push("EXH") }
-  if (counter.unit.isPinned) { text.push("PIN") }
+  if (counter.unit.pinned) { text.push("PIN") }
   if (counter.unit.isTired) { text.push("TRD") }
   if (counter.unit.immobilized) { text.push("IMM") }
   if (counter.unit.turretJammed) { text.push("TRT") }
@@ -184,7 +184,7 @@ export function counterInfoBadges(
     if (u.isTired && s) {
       badges.push({ text: "tired", color: markerYellow, tColor: "black" })
     }
-    if (u.isPinned && s) {
+    if (u.pinned && s) {
       badges.push({ text: "pinned", color: counterRed, tColor: "white" })
     }
     if (u.isExhausted && s) {

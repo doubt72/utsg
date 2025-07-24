@@ -1,7 +1,7 @@
 import { Coordinate, Direction, hexOpenType, HexOpenType, roadType } from "../../utilities/commonTypes"
 import { hexDistance, normalDir, stackLimit } from "../../utilities/utilities"
 import Game from "../Game"
-import { addActionType } from "../GameAction"
+import { gameActionAddActionType } from "../GameAction"
 import Hex from "../Hex"
 import Map from "../Map"
 import Unit from "../Unit"
@@ -24,7 +24,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       let check = false
       if (game.gameActionState.move?.addActions) {
         for (const add of game.gameActionState.move.addActions) {
-          if (add.type === addActionType.Drop && add.id === sel.id) {
+          if (add.type === gameActionAddActionType.Drop && add.id === sel.id) {
             check = true
             continue
           }
@@ -296,6 +296,14 @@ export function alongRailroad(from: Hex, to: Hex, dir: Direction,): boolean {
   return false
 }
 
+export function alongStream(from: Hex, to: Hex, dir: Direction): boolean {
+  if (!from.river || !to.river || !to.riverDirections?.includes(normalDir(dir + 3)) ||
+      !from.riverDirections?.includes(dir)) {
+    return false
+  }
+  return true
+}
+
 function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selection: Unit): HexOpenType {
   const distance = hexDistance(from, to)
   const past = movementPastCost(map, selection)
@@ -327,12 +335,4 @@ function allAlongRoad(map: Map): boolean {
 function rotateRoads(hex: Hex) {
   if (!hex.roadDirections) { return undefined }
   return hex.roadDirections.map(d => normalDir(d + (hex.roadRotation ?? 0)))
-}
-
-function alongStream(from: Hex, to: Hex, dir: Direction): boolean {
-  if (!from.river || !to.river || !to.riverDirections?.includes(normalDir(dir + 3)) ||
-      !from.riverDirections?.includes(dir)) {
-    return false
-  }
-  return true
 }

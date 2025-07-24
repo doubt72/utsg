@@ -4,7 +4,7 @@ import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
 import {
-  GameActionPath, GameActionUnit, AddAction, GameActionData, GameActionDiceResult, addActionType,
+  GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, GameActionDiceResult, gameActionAddActionType,
   GameActionMoveData
 } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -15,7 +15,7 @@ import IllegalActionError from "./IllegalActionError";
 export default class MoveAction extends BaseAction {
   origin: GameActionUnit[];
   path: GameActionPath[];
-  addAction: AddAction[];
+  addAction: GameActionAddAction[];
   moveData?: GameActionMoveData
   diceResults: GameActionDiceResult[];
 
@@ -33,7 +33,7 @@ export default class MoveAction extends BaseAction {
     // Validate will already error out if data is missing, but the linter can't tell
     this.origin = data.data.origin as GameActionUnit[]
     this.path = data.data.path as GameActionPath[]
-    this.addAction = data.data.add_action as AddAction[]
+    this.addAction = data.data.add_action as GameActionAddAction[]
     this.moveData = data.data.move_data
     this.diceResults = data.data.dice_result as GameActionDiceResult[]
   }
@@ -91,7 +91,7 @@ export default class MoveAction extends BaseAction {
     this.addAction.forEach(a => {
       const mid = new Coordinate(a.x, a.y)
       const label = coordinateToLabel(mid)
-      if (a.type === addActionType.Drop) {
+      if (a.type === gameActionAddActionType.Drop) {
         const parent = this.game.findUnitById(a.parent_id ?? "")
         const child = this.game.findUnitById(a.id ?? "") as Unit
         if (parent) {
@@ -99,14 +99,14 @@ export default class MoveAction extends BaseAction {
         } else {
           actions.push(`${child.name} stopped at ${label}`)
         }
-      } else if (a.type === addActionType.Load) {
+      } else if (a.type === gameActionAddActionType.Load) {
         const unit = this.game.findUnitById(a.id ?? "") as Unit
         actions.push(`${unit.name} picked up at ${label}`)
-      } else if (a.type === addActionType.Smoke) {
+      } else if (a.type === gameActionAddActionType.Smoke) {
         const roll = this.diceResults[diceIndex++]
         actions.push(`smoke level ${smokeRoll(roll.result)} placed at ${label} (from ${
           roll.type} roll result of ${roll.result})`)
-      } else if (a.type !== addActionType.VP) {
+      } else if (a.type !== gameActionAddActionType.VP) {
         actions.push("unexpected action")
       }
     })
@@ -166,9 +166,9 @@ export default class MoveAction extends BaseAction {
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === addActionType.VP) {
+      if (a.type === gameActionAddActionType.VP) {
         map.toggleVP(mid)
-      } else if (a.type === addActionType.Drop) {
+      } else if (a.type === gameActionAddActionType.Drop) {
         if (a.parent_id) {
           map.dropUnit(end, mid, a.id as string, a.facing)
         } else {
@@ -176,14 +176,14 @@ export default class MoveAction extends BaseAction {
         }
         const unit = this.game.findUnitById(a.id as string) as Unit
         unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
-      } else if (a.type === addActionType.Load) {
+      } else if (a.type === gameActionAddActionType.Load) {
         map.loadUnit(mid, end, a.id as string, a.parent_id as string)
         const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
         const child = map.unitAtId(end, a.id ?? "") as Counter
         if (child.unit.rotates && parent.unit.rotates) { child.unit.facing = normalDir(parent.unit.facing + 3) }
         const unit = this.game.findUnitById(a.id as string) as Unit
         unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
-      } else if (a.type === addActionType.Smoke) {
+      } else if (a.type === gameActionAddActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         map.addCounter(mid, new Feature(
           { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id }
@@ -197,14 +197,14 @@ export default class MoveAction extends BaseAction {
         const unit = this.game.findUnitById(o.id)
         let loc = new Coordinate(this.lastPath.x, this.lastPath.y)
         this.addAction.forEach(a => {
-          if (a.type === addActionType.Drop && a.id === o.id) {
+          if (a.type === gameActionAddActionType.Drop && a.id === o.id) {
             loc = new Coordinate(a.x, a.y)
           }
         })
         if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc }) }
       })
       this.addAction.forEach(a => {
-        if (!a.id || a.type !== addActionType.Load) { return }
+        if (!a.id || a.type !== gameActionAddActionType.Load) { return }
         const unit = this.game.findUnitById(a.id)
         const loc = new Coordinate(this.lastPath.x, this.lastPath.y)
         if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc }) }
@@ -224,9 +224,9 @@ export default class MoveAction extends BaseAction {
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
-      if (a.type === addActionType.VP) {
+      if (a.type === gameActionAddActionType.VP) {
         map.toggleVP(mid)
-      } else if (a.type === addActionType.Drop) {
+      } else if (a.type === gameActionAddActionType.Drop) {
         const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
         const child = map.unitAtId(mid, a.id ?? "") as Counter
         if (a.parent_id) {
@@ -238,11 +238,11 @@ export default class MoveAction extends BaseAction {
         }
         const unit = this.game.findUnitById(a.id as string) as Unit
         if (a.status !== undefined) { unit.status = a.status }
-      } else if (a.type === addActionType.Load) {
+      } else if (a.type === gameActionAddActionType.Load) {
         map.dropUnit(end, mid, a.id as string, a.facing)
         const unit = this.game.findUnitById(a.id as string) as Unit
         if (a.status !== undefined) { unit.status = a.status }
-      } else if (a.type === addActionType.Smoke) {
+      } else if (a.type === gameActionAddActionType.Smoke) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing smoke")
       }

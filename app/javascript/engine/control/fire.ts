@@ -425,7 +425,7 @@ export function moraleModifiers(
       why.push(`- minus cover ${cover}`)
     }
   }
-  if (target.isPinned) {
+  if (target.pinned) {
     mod += 1
     why.push(` - plus 1 for being pinned`)
   }

@@ -124,7 +124,7 @@ describe("fire tests", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      target.status = unitStatus.Pinned
+      target.pinned = true
       const tloc = new Coordinate(4, 2)
       map.addCounter(tloc, target)
 
@@ -778,7 +778,7 @@ describe("fire tests", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.status = unitStatus.Pinned
+      firing.pinned = true
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
