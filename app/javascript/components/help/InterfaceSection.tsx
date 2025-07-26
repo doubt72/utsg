@@ -60,16 +60,16 @@ export default function InterfaceSection() {
       { x: 800, y: 50 },
       { x: 200, y: 200 },
       { x: 1700, y: 200 },
-      { x: 600, y: 555 },
-      { x: 80, y: 690 },
-      { x: 450, y: 750 },
-      { x: 1270, y: 660 },
-      { x: 1430, y: 750 },
-      { x: 1780, y: 750 },
-      { x: 2720, y: 900 },
-      { x: 2720, y: 1300 },
-      { x: 2720, y: 1410 },
-      { x: 740, y: 1500 },
+      { x: 1020, y: 550 },
+      { x: 90, y: 690 },
+      { x: 450, y: 742 },
+      { x: 1270, y: 653 },
+      { x: 1632, y: 742 },
+      { x: 1995, y: 742 },
+      { x: 2720, y: 740 },
+      { x: 2720, y: 1140 },
+      { x: 2720, y: 1250 },
+      { x: 570, y: 1520 },
     ];
     setGameInterface(
       <div style={{ float: "right" }}>
@@ -164,10 +164,11 @@ export default function InterfaceSection() {
         {redNumber(5)}
         <strong>Control bar</strong>: this shows all of game actions currently available to the
         player. The game will only present options that are currently possible. There is always a
-        help button to the right here that will go to a relevant section of the documentation. Note
-        that many but not all actions may be undone; in general, if any dice rolls are involved,
-        there is no undoing it. Also, actions can generally be cancelled until finished, any dice
-        rolls involved will be deferred until the action is &quot;committed.&quot;
+        help button here that will go to a relevant section of the documentation. Note that many but
+        not all actions may be undone; in general, if any dice rolls are involved, there is no
+        undoing it, nor can actions that pass control to the opponent generally be undone. Also,
+        actions can usually be cancelled until finished, any dice rolls involved will be deferred
+        until the action is &quot;committed.&quot;
       </p>
       <p>
         {redNumber(6)}
@@ -299,11 +300,13 @@ export default function InterfaceSection() {
       <p>
         {redNumber(10)}
         <strong>Turn track</strong>: shows the current turn. When the last turn is over, the
-        scenario ends.
+        scenario ends.  The turn track is compressed to fit the display, but the last turn is always shown
+        so it&apos;s always possible to see how many turns are left.
       </p>
       <p>
         {redNumber(11)}
-        <strong>Weather display</strong>: shows the current weather conditions.
+        <strong>Weather display</strong>: shows the current weather conditions, and if there&apos;s a
+        chance of precipitation, etc.
       </p>
       <p>
         {redNumber(12)}

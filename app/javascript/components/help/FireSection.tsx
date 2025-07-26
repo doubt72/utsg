@@ -20,7 +20,8 @@ export default function FireSection() {
         or exhausted units may not fire — if you plan to use intensive fire separately with a
         machine gun and the unit carrying it, fire the machine gun first. Crewed weapons may not
         fire if operator is activated. Crews manning crewed weapons may not fire (the crewed weapon
-        must be fired instead, until and unless the crew unmans the weapon).
+        must be fired instead, until and unless the crew unmans the weapon). Crews will be activated
+        when the weapon is fired.
       </p>
       <p>
         Both crewed weapons and infantry weapons cannot be targeted (or directly destroyed) by fire.
@@ -75,9 +76,9 @@ export default function FireSection() {
         </li>
         <li>
           <strong>Area Fire</strong>: area fire is another sort of targeted fire performed by
-          mortars, indicated by a line above the firepower number, and it affects all units in a
-          hex. Units that are not fully armored are treated as non-armored units for the purposes of
-          area fire, and otherwise armor penetration checks are required.
+          mortars or a few other weapons, indicated by a line above the firepower number, and it
+          affects all units in a hex. Units that are not fully armored are treated as non-armored
+          units for the purposes of area fire, and otherwise armor penetration checks are required.
         </li>
         <li>
           <strong>Offboard Artillery</strong>: another sort of area fire called in from offboard by
@@ -233,27 +234,24 @@ export default function FireSection() {
         <li>
           To determine a hit on units in a hex (this process is repeated for each hex targeted by
           rapid fire), first add up all firepower of the firing units (or if only one unit is
-          firing, just that unit&apos;s firepower). If there is a leader in the same hex, increase
-          the firepower of each unit in the hex by the leader&apos;s leadership, or the highest
-          leadership if more than one. This applies to either single or group fire. Find the base
-          to-hit for the first total FP equal to or below the combined firepower. Leaders out of
-          range are not included. E.g., if the firepower adds up to 11, use the base below 10, i.e.,
-          the base to-hit is 13.
+          firing, just that unit&apos;s firepower). Pinned units only get half firepower, rounded
+          down. If there is a leader in the same hex, increase the firepower of each unit in the hex
+          by the leader&apos;s leadership, or the highest leadership if more than one. This applies
+          to either single or group fire. Find the base to-hit for the first total FP equal to or
+          below the combined firepower. Leaders out of range are not included. E.g., if the
+          firepower adds up to 11, use the base below 10, i.e., the base to-hit is 13.
           <ol className="mt05em mb05em">
             <li>
               Add the maximum hindrance between any of the firing units and the target hex to the
               base to-hit.
             </li>
             <li>Add one if the distance is more than half the range of any of the firing units.</li>
+            <li>Add one if any of the firing units are tired.</li>
             <li>
-              Add one if any of the firing units are pinned or tired. (Only add one even if there
-              are both.)
-            </li>
-            <li>Add one if reaction fire.</li>
-            <li>
-              Add two if rapid fire (rapid fire <b>must</b> target multiple hexes, otherwise
+              Add one if rapid fire (rapid fire <b>must</b> target multiple hexes, otherwise
               consider the action to be infantry fire).
             </li>
+            <li>Add one if firing from a turret and the turret has moved.</li>
             <li>Add two if intensive fire.</li>
             <li>Subtract one if all firing units are at a higher elevation than the target.</li>
             <li>Add one if any firing units are at a lower elevation than the target.</li>
@@ -274,7 +272,10 @@ export default function FireSection() {
           checking for a break, the following may apply:
           <ol className="mt05em mb05em">
             <li>Add one to the break check number if intensive fire.</li>
-            <li>Add one to the break check number if firing an opponent&apos;s weapon.</li>
+            <li>
+              Add one to the break check number if firing an opponent&apos;s weapon; breaking an
+              opponent&apos;s weapon destroys it and it is removed from play.
+            </li>
           </ol>
           If the weapon is incendiary and breaks, the unit carrying it must pass a morale check to
           avoid breaking.
@@ -355,6 +356,7 @@ export default function FireSection() {
               base to-hit.
             </li>
             <li>Subtract one if targeting the side of the hull.</li>
+            <li>Subtract one if point-blank range (i.e., firing from an adjacent hex).</li>
             <li>Subtract one if target is immobilized.</li>
             <li>
               Add one if range is greater than half weapon range (rounded up, i.e., unit with range

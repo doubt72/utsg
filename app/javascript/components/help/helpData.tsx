@@ -21,6 +21,11 @@ import AssaultMoveSection from "./AssaultMoveSection";
 import FireSection from "./FireSection";
 import IntensiveFireSection from "./IntensiveFireSection";
 import ReactionFireSection from "./ReactionFireSection";
+import RallySection from "./RallySection";
+import RoutSection from "./RoutSection";
+import CloseCombatSection from "./CloseCombatSection";
+import HousekeepingSection from "./HousekeepingSection";
+import DevNotesSection from "./DevNotesSection";
 
 export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
 
@@ -40,7 +45,7 @@ export const helpIndex: HelpSection[] = [
     { name: "Game Turn", section: <GameTurnSection />, children: [
       { name: "Deployment Phase", section: <DeploymentPhaseSection /> },
       { name: "Prep Phase", section: <PrepPhaseSection />, children: [
-        { name: "Rallying", section: undefined },
+        { name: "Rallying", section: <RallySection /> },
       ]},
       { name: "Main Phase", section: <MainPhaseSection />, children: [
         { name: "Fire", section: <FireSection /> },
@@ -48,17 +53,17 @@ export const helpIndex: HelpSection[] = [
         { name: "Move", section: <MovementSection /> },
         { name: "Rush", section: <RushSection /> },
         { name: "Assault Move", section: <AssaultMoveSection /> },
-        { name: "Rout", section: undefined },
+        { name: "Rout", section: <RoutSection /> },
         { name: "Reaction Fire", section: <ReactionFireSection /> },
       ]},
       { name: "Cleanup Phase", section: <CleanupPhaseSection />, children: [
-        { name: "Close Combat", section: undefined },
-        { name: "Housekeeping", section: undefined },
+        { name: "Close Combat", section: <CloseCombatSection /> },
+        { name: "Housekeeping", section: <HousekeepingSection /> },
       ]},
     ]},
   ]},
   { name: "Glossary", section: <GlossarySection /> },
-  { name: "Dev Notes", section: undefined },
+  { name: "Dev Notes", section: <DevNotesSection /> },
 ]
 
 export function redNumber(n: number): JSX.Element {

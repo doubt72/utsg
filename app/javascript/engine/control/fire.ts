@@ -410,7 +410,8 @@ export function moraleModifiers(
 ): { mod: number, why: string[] } {
   const why: string[] = []
   let mod = -target.currentMorale
-  why.push(`- minus morale ${target.currentMorale}`)
+  // Calculated live as part of current morale, but display help slightly differently
+  why.push(`- minus morale ${target.currentMorale + (target.pinned ? 1 : 0)}`)
   if (!target.leader) {
     const leadership = leadershipAt(game, to)
     if (leadership > 0) {
@@ -426,7 +427,6 @@ export function moraleModifiers(
     }
   }
   if (target.pinned) {
-    mod += 1
     why.push(` - plus 1 for being pinned`)
   }
   return { mod, why }

@@ -152,7 +152,7 @@ export default class MoveAction extends BaseAction {
         if (unit.unit.isVehicle && !unit.unit.armored) {
           unit.unit.status = unitStatus.Wreck
         } else if (unit.unit.isVehicle) {
-          const armor = unit.unit.lowestArmor < 0 ? 0 : unit.unit.lowestArmor
+          const armor = unit.unit.lowestHullArmor < 0 ? 0 : unit.unit.lowestHullArmor
           if (hitRoll > hitCheck + armor) {
             unit.unit.status = unitStatus.Wreck
           }

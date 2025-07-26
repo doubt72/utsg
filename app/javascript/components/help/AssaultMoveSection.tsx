@@ -39,6 +39,9 @@ export default function AssaultMoveSection() {
         unit has a breakdown roll, perform a breakdown check before the initiative check.
       </p>
       <p>
+        Units performing assault moves are unaffected by minefields.
+      </p>
+      <p>
         Activated, exhausted, or broken units may not assault move. Pinned or immobilized units or
         units that otherwise have no movement points (i.e., tired and encumbered units with a
         resulting combined movement of zero) may not assault move. Mark units as exhausted after an

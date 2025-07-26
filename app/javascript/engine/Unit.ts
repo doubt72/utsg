@@ -375,6 +375,16 @@ export default class Unit {
     return armor
   }
 
+  get lowestHullArmor(): number {
+    let armor = 99
+    if (this.hullArmor) {
+      this.hullArmor.forEach(a => {
+        if (a < armor) { armor = a }
+      })
+    }
+    return armor
+  }
+
   get isActivated(): boolean {
     return this.status === unitStatus.Activated
   }

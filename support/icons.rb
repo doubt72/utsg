@@ -1578,7 +1578,7 @@ File.open('crew.svg', 'w') do |file|
   ], file, false)
   write_path([["M", 10, 90], ["L", 90, 30]], file, false)
   write_path([["M", 10, 30], ["L", 90, 90]], file, false)
-  write_circle(50, 16, 10, file, false)
+  write_circle(50, 17, 10, file, false)
   write_text(50, 88, 1.33, "WPN", file)
   # helmet_paths.each do |path|
   #   write_path(scale_path(path, 0, 0, 0.625), file)

@@ -21,7 +21,8 @@ export const deploymentRulesSection = (phase: string) => {
           Obstacle features such as mines and wire cannot be placed in victory hexes. Placing
           fortifications in such hexes is fine, however. Neither fortifications or obstacle features
           can be placed in the same hex as a building, forest, or other terrain that is impassible
-          to vehicles.  Only one feature can be placed in any hex.
+          to vehicles.  Fortifications also cannot be placed in streams, gullies, or trenches.
+          Only one feature can be placed in any hex.
         </p>
       ) : (
         ""

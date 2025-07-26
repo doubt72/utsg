@@ -93,7 +93,7 @@ export default function CounterSection() {
     if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
     if (!unit.breakWeaponRoll || unit.isWreck) { return }
-    const name = unit.breakDestroysWeapon || unit.jammed ? "Break Roll" : "Jam Roll"
+    const name = "Break Roll"
     const extra = unit.breakDestroysWeapon || unit.jammed ?
       <text x={56} y={39} fontSize={5} textAnchor="end">(destroys weapon)</text> : undefined
     const extra2 = unit.jammed ?
@@ -489,10 +489,14 @@ export default function CounterSection() {
           feature.  Uses all movement to leave hex with this feature.
         </p>)
       }
-      if (feature.baseFirepower) {
+      if (feature.baseFirepower || feature.sniperRoll) {
         if (feature.baseFirepower === "½") {
           sections.push(<p key={index++}>
             <strong>Half firepower</strong>: units fire at half power from wire.
+          </p>)
+        } else if (feature.sniperRoll) {
+          sections.push(<p key={index++}>
+            <strong>Firepower</strong>: hits automatically if activated.
           </p>)
         } else {
           sections.push(<p key={index++}>
@@ -640,7 +644,7 @@ export default function CounterSection() {
             other rapid firing units when a leader is present, or with other infantry units if carried or
             a leader is present but without being able to target multiple hexes.
           </p>)
-        } else if (unit.targetedRange) {
+        } else if (unit.targetedRange || unit.offBoard) {
           sections.push(<p key={index++}>
             <strong>Circled range</strong> indicates this unit requires an additional targeting roll and
             (unless an area fire weapon) can only target one unit.
@@ -648,8 +652,9 @@ export default function CounterSection() {
         } else if (unit.currentRange) {
           sections.push(<p key={index++}>
             <strong>Uncircled, unboxed range</strong> indicates this unit targets all units in a single
-            hex, but can be combined with other like units, or rapid firing (non-vehicle) units if
-            carried or a leader is present.
+            hex{ unit.incendiary ? "." :
+            ", but can be combined with other like units, or rapid firing (non-vehicle) units if carried " +
+            "or a leader is present." }
           </p>)
         }
         if (unit.minimumRange) {
@@ -684,8 +689,7 @@ export default function CounterSection() {
           sections.push(<p key={index++}>
             <strong>Boxed firepower</strong> indicates that this unit gets a +2 bonus in close combat.
             While only infantry units&apos; base firepower is used for close combat, infantry weapons&apos;
-            assault bonus can be included.  However, if the infantry weapons are single shot, they are
-            removed after combat.  This weapon has no effect on armored targets.
+            assault bonus can be included.{ unit.incendiary ? "" : " This weapon has no effect on armored targets." }
           </p>)
         } else if (unit.antiTank) {
           sections.push(<p key={index++}>
@@ -693,47 +697,58 @@ export default function CounterSection() {
             get full effect on armored targets but only get half effect on soft targets.
           </p>)
         } else if (unit.fieldGun) {
-          sections.push(<p key={index++}>
-            <strong>Circled firepower</strong> indicates low-velocity, primarily anti-infantry weapons.
-            These weapons get full effect on soft targets but only get half effect on
-            armored targets.
-          </p>)
+          sections.push(
+            <p key={index++}>
+              <strong>Circled firepower</strong> indicates high-explosive, low-velocity, primarily
+              anti-infantry weapons. These weapons get full effect on soft targets but only get half
+              effect on armored targets.
+            </p>
+          );
         } else if (unit.offBoard) {
           sections.push(<p key={index++}>
             <strong>Hexed firepower</strong> indicates that this is an off-board artillery unit with
-            special firing rules.  (This is also primarily an anti-infantry area weapon, so only has
-            half effect on fully armored targets.)
+            special firing rules.  (This is also primarily an anti-infantry area weapon, so affects all units
+            in a hex and only has half effect on fully armored targets.)
           </p>)
         } else if (unit.areaFire) {
-          sections.push(<p key={index++}>
-            <strong>Circled firepower with a line above</strong> indicates that this unit uses
-            area fire, with full effect on soft targts and half effect on fully armored targets.
-          </p>)
+          sections.push(
+            <p key={index++}>
+              <strong>Circled firepower with a line above</strong> indicates that this unit uses
+              area fire which targets all units in a single hex{ unit.incendiary ? "." :
+              ", with full effect on soft targts and half effect on fully armored targets."}
+            </p>
+          );
         } else if (unit.currentFirepower && !unit.incendiary) {
           sections.push(<p key={index++}>
             <strong>Uncircled, unboxed firepower</strong> indicates that this
-            weapons has no effect on armored targets.
+            weapon has no effect on armored targets.
           </p>)
         }
         if (unit.smokeCapable) {
-          sections.push(<p key={index++}>
-            <strong>A dot above firepower</strong> indicates that this unit can use smoke grenades
-            or fire smoke rounds.
-          </p>)
+          sections.push(
+            <p key={index++}>
+              <strong>A dot above firepower</strong> indicates that this unit can use smoke grenades
+              (if it doesn&apos;t require a targeting roll) or fire smoke rounds (if it does).
+            </p>
+          );
         }
         if (unit.incendiary && unit.singleFire) {
-          sections.push(<p key={index++}>
-            <strong>Red filled firepower</strong> indicates that this weapon ignores terrain or
-            defensive feature effects <strong>and</strong> this weapon can only be fired once before
-            it is removed, regardless of whether or not a hit is achieved.  Despite the lack of circle,
-            this unit may attack armored units with no penalty.
-          </p>)
+          sections.push(
+            <p key={index++}>
+              <strong>Red filled firepower</strong> indicates that this weapon ignores terrain or
+              defensive feature effects <strong>and</strong> this weapon can only be fired once
+              before it is removed, regardless of whether or not a hit is achieved. This unit may
+              attack armored units and negates armor.
+            </p>
+          );
         } else if (unit.incendiary) {
-          sections.push(<p key={index++}>
-            <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
-            defensive feature effects. With or without a circle,
-            this unit may attack armored units with no penalty.
-          </p>)
+          sections.push(
+            <p key={index++}>
+              <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
+              defensive feature effects. This unit may attack armored units and negates armor. Line
+              above indicates that this unit uses area fire which targets all units in a single hex.
+            </p>
+          );
         } else if (unit.singleFire) {
           sections.push(<p key={index++}>
             <strong>Black filled firepower</strong> indicates that this weapon can only be fired once
@@ -745,16 +760,16 @@ export default function CounterSection() {
       if (unit.breakdownRoll) {
         sections.push(<p key={index++}>
           <strong>A bottom yellow circle</strong> indicates that this vehicle has a chance of breaking
-          down.
+          down and becoming immobilized.
         </p>)
       }
       if (unit.breakWeaponRoll && (unit.breakDestroysWeapon || unit.jammed)) {
         sections.push(<p key={index++}>
-          <strong>A red circle</strong> indicates that this weapon may break.
+          <strong>A red circle</strong> indicates that this weapon may be destroyed.
         </p>)
       } else if (unit.breakWeaponRoll) {
         sections.push(<p key={index++}>
-          <strong>A yellow circle</strong> indicates that this weapon may jam.
+          <strong>A yellow circle</strong> indicates that this weapon may break.
         </p>)
       }
       if (!unit.isBroken) {
@@ -808,7 +823,7 @@ export default function CounterSection() {
     let breakName = "wreck unit"
     if (showBreak) {
       if (unit.canCarrySupport) { breakName = "break unit" }
-      if (["gun", "sw"].includes(unit.type)) { breakName = "jam weapon" }
+      if (["gun", "sw"].includes(unit.type)) { breakName = "break weapon" }
       if (unit.offBoard) { breakName = "break radio" }
     }
     setUpdateSection(

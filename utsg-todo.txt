@@ -1,4 +1,7 @@
 High Priority Features/Bug Fixes:
+  - Add one to break check if intensive fire
+  - Add one to break check if opponent's weapon/destroyed
+  - Can flamethrowers reaction fire?  Update docs to match
   - Rally/Fix
   - Close Combat
   - Weather
@@ -9,18 +12,13 @@ Future Features/Bug Fixes:
     - Automatically undo excessive deployments
     - Handle undo after too late
     - Handle action after undo happens
-  - Redo docs for satchel charges / molotov cocktail
-    - Add crew activated on fire to docs
-    - Update docs for rapid fire -1, point-blank -1
-    - Remove reaction fire penalty from docs
-    - Change terminology for jamming in documentation to be more like breaking
-    - Pinned half, not -1
-    - Machine gun turret +1
-    - Mine docs / assault careful
-    - Sniper
+  - Docs
     - Can't rout into wire or mines
-    - Somewhere mention pinned reduces morale by 1
-    - Change pinned to suppressed?
+    - Prep Phase
+      - Rallying
+    - Cleanup Phase
+      - Close Combat
+      - Housekeeping
 
   - Skip reaction fire when no LOS
   - Don't unselect first initial selection when cancelling move/fire/assault

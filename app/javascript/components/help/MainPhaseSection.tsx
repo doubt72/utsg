@@ -5,6 +5,8 @@ import Map from "../../engine/Map";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import InitiativeDisplay from "../game/map/InitiativeDisplay";
 import { roundedRectangle } from "../../utilities/graphics";
+import { Link } from "react-router-dom";
+import { helpIndexByName } from "./helpData";
 
 export default function MainPhaseSection() {
   const [showInitiative, setShowInitiative] = useState<JSX.Element | undefined>()
@@ -97,7 +99,7 @@ export default function MainPhaseSection() {
       </p>
       <p>
         If there is a sniper in play (i.e., the opposing player has a sniper), sniper checks are
-        made immediately after actions but before the initiative check.  Breakdown checks are also
+        made immediately after actions but before the initiative check. Breakdown checks are also
         made immediately after moves but before the initiative check.
       </p>
       {showInitiative}
@@ -106,8 +108,8 @@ export default function MainPhaseSection() {
         <li>
           <strong>Pass</strong> (-1): a player may choose (or be forced to choose if no other
           options are available) to pass and take no action. Initiative is passed to the other
-          player. Two passes in a row (one by each player) ends the Main Phase.  This is the
-          only &quot;action&quot; that is not followed by an initiative check.
+          player. Two passes in a row (one by each player) ends the Main Phase. This is the only
+          &quot;action&quot; that is not followed by an initiative check.
         </li>
         <li>
           <strong>Fire</strong> (2): a ranged attack from one or more of a player&apos;s units on
@@ -140,8 +142,8 @@ export default function MainPhaseSection() {
         <li>
           <strong>Reaction Fire</strong> (2): the opposing player may choose to take a firing (or
           intensive firing action) in response to any enemy action except routing or assault moves.
-          There is no reaction fire if the acting player fails their initiative check, in that
-          case the player may make a normal firing action instead.
+          There is no reaction fire if the acting player fails their initiative check, in that case
+          the player may make a normal firing action instead.
         </li>
       </ol>
       <h2>Initiative</h2>
@@ -164,9 +166,19 @@ export default function MainPhaseSection() {
         Initiative checks are not undoable, regardless of whether or not the result was automatic.
       </p>
       <p>
-        Most actions cost two initiative points, or move the marker two spaces on the track.  A few
-        cost one or three.  Passing moves the initiative one space in the other direction towards
-        the player&apos;s side but flips the marker to the other player.
+        Most actions cost two initiative points, or move the marker two spaces on the track. A few
+        cost one or three. Passing moves the initiative one space in the other direction towards the
+        player&apos;s side but flips the marker to the other player.
+      </p>
+      <h2>Snipers</h2>
+      <p>
+        If either player has a sniper, and the other player moves or fires an infantry unit, there
+        will be a sniper check after the action (assualt and rout actions don&apos;t trigger snipers). The
+        player rolls two ten-sided dice, adding the total together (2d10), and if the number is
+        equal or below the sniper roll on the marker, the player must make a morale check for any of
+        their infantry units involved in the action (see Morale Checks in the{" "}
+        <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire section</Link> of the
+        docs).
       </p>
     </div>
   );

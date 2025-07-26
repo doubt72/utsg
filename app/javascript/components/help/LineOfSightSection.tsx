@@ -78,7 +78,7 @@ export default function LineOfSightSection() {
     if (!map || Object.keys(units).length < 1) {
       return;
     }
-    if (map.units[4][6].length < 1) {
+    if (map.units[6][4].length < 1) {
       map.addCounter(new Coordinate(4, 6), units["ger_Rifle_sqd"].clone() as Unit);
     }
     const hex = map.hexAt(new Coordinate(4, 6)) as Hex
@@ -144,7 +144,7 @@ export default function LineOfSightSection() {
         </div>
       </div>
     );
-  }, [map, units, showLines, showLOS]);
+  }, [map, units, showLines, showLOS])
 
   return (
     <div>
