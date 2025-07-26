@@ -40,7 +40,7 @@ export default function ReactionFireSection() {
         never reaction fire).
       </p>
       <p>
-        Area fire weapons (mortars and offboard artillery/radios) may not perform reaction fire.
+        Area fire weapons (mortars, offboard artillery/radios, etc.) may not perform reaction fire.
       </p>
       <p>
         Certain penalties may apply to certain types of reaction fire, those penalties are listed in

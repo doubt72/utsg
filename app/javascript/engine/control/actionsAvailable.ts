@@ -182,8 +182,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({ type: "pass_cancel" })
     } else if (game.reactionFire) {
       actions.unshift({ type: "none", message: "reaction fire" })
-      if (canFire(selection)) { actions.push({ type: "reaction_fire" }) }
-      if (canIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
+      if (canReactionFire(selection)) { actions.push({ type: "reaction_fire" }) }
+      if (canReactionIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
       actions.push({ type: "reaction_pass" })
     } else if (!selection) {
       actions.unshift({ type: "none", message: "select units to activate" })
@@ -262,6 +262,17 @@ function canIntensiveFire(unit?: Unit): boolean {
   if (!unit.isActivated) { return false }
   if (unit.offBoard || unit.crewed || unit.areaFire) { return false }
   return checkFire(unit)
+}
+
+function canReactionFire(unit?: Unit): boolean {
+  if (unit === undefined) { return false }
+  if (unit.areaFire) { return false }
+  return canFire(unit)
+}
+
+function canReactionIntensiveFire(unit?: Unit): boolean {
+  if (unit === undefined) { return false }
+  return canIntensiveFire(unit)
 }
 
 function canMoveAny(unit: Unit): boolean {

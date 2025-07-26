@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Add one to break check if intensive fire
-  - Add one to break check if opponent's weapon/destroyed
-  - Can flamethrowers reaction fire?  Update docs to match
   - Rally/Fix
   - Close Combat
   - Weather
@@ -13,7 +10,6 @@ Future Features/Bug Fixes:
     - Handle undo after too late
     - Handle action after undo happens
   - Docs
-    - Can't rout into wire or mines
     - Prep Phase
       - Rallying
     - Cleanup Phase
@@ -21,6 +17,7 @@ Future Features/Bug Fixes:
       - Housekeeping
 
   - Skip reaction fire when no LOS
+  - Maybe always reaction fire, loss of initiative or not (after moves?)
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Ability to drag reinforcement panel, main map, minimap
   - Handle map scale and such settings gone wrong

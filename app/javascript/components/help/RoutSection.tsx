@@ -108,12 +108,12 @@ export default function RoutSection() {
 
     const map2 = createTestGame(7, 7, [
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "f" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "f" }, { t: "f" }, { t: "o" }, { t: "b" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "f" }, { t: "f" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "f" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "f" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o", h: 1 }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o", h: 1 }, { t: "o", h: 1 }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }],
+      [{ t: "o", h: 2 }, { t: "o", h: 1 }, { t: "o" }, { t: "m" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [{ t: "o", h: 2 }, { t: "o", h: 2 }, { t: "o", h: 1 }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o", h: 2 }, { t: "o", h: 1 }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o", h: 2 }, { t: "o", h: 1 }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
     ]).scenario.map
     map2.showCoords = false
     setMap2(map2)
@@ -175,7 +175,7 @@ export default function RoutSection() {
                   style={{ stroke: "#E00", strokeWidth: 2, strokeDasharray: "4 4", fill: clearColor }} />
             <circle cx={x2} cy={y2} r={12} style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
             <MapCounter counter={map.countersAt(new Coordinate(1, 1))[0]} ovCallback={() => {}} />
-            { arrow(145, 70, 0) }
+            { arrow(175, 80, 0) }
           </g>
           <path d={roundedRectangle(116, 41, 687, 348, 8)}
                 style={{ stroke: "#DDD", strokeWidth: 1, fill: clearColor }}
@@ -191,8 +191,6 @@ export default function RoutSection() {
     if (map2.units[1][3].length < 1) {
       map2.addCounter(new Coordinate(3, 1), unit);
       unit.status = unitStatus.Broken
-      const wire = units["f_Wire"].clone() as Feature
-      map2.addCounter(new Coordinate(4, 3), wire)
     }
 
     const paths = routPaths(findRoutPathTree(map2.game as Game, new Coordinate(3, 1), 4, 2, unit) as RoutPathTree)
@@ -234,8 +232,7 @@ export default function RoutSection() {
               )
             })}
             <MapCounter counter={map2.countersAt(new Coordinate(3, 1))[0]} ovCallback={() => {}} />
-            <MapCounter counter={map2.countersAt(new Coordinate(4, 3))[0]} ovCallback={() => {}} />
-            { arrow(145, 70, 90) }
+            { arrow(175, 80, 90) }
           </g>
           <path d={roundedRectangle(116, 41, 687, 648, 8)}
                 style={{ stroke: "#DDD", strokeWidth: 1, fill: clearColor }}
@@ -257,37 +254,40 @@ export default function RoutSection() {
       </p>
       <p>
         Attempting to rout all of an opponent&apos;s units is not automatic. Each broken unit makes
-        a standard morale check (using all the normal morale check modifiers), except: ties result in
-        no rout (see &quot;Morale Checks&quot; in the{" "}
+        a standard morale check (using all the normal morale check modifiers), except: ties result
+        in no rout (see &quot;Morale Checks&quot; in the{" "}
         <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire section</Link> of the
-        documents).  If the unit fails that morale check, it will rout.
+        documents). If the unit fails that morale check, it will rout.
       </p>
-      { routDiagram }
-      { routDiagram2 }
+      {routDiagram}
+      {routDiagram2}
       <p>
-        A unit that routs must use all of their movement and must move backwards.  When the advance
-        direction is between two of the six &quot;cardinal&quot; directions, movement to the hex
-        on either side of the opposite of that direction is legal.  When the advance direction is one
-        of those six cardinal directions, only movement direction in the opposite direction is legal.
-        However, in that case, if the direct direction is blocked, a unit may rout one hex to the left
-        or right.  The only exception to needing to use all movement is if all possible further movement
-        directions cost more movement than the unit has left and the hexes are not otherwise blocked.
+        A unit that routs must use all of their movement and must move backwards. The cost of
+        movement through each hex is the same as normal movement, and any terrain that blocks
+        movement blocks routs as well. When the advance direction is between two of the six
+        &quot;cardinal&quot; directions, movement to the hex on either side of the opposite of that
+        direction is legal. When the advance direction is one of those six cardinal directions, only
+        movement direction in the opposite direction is legal. However, in that case, if the direct
+        direction is blocked, a unit may rout one hex to either side. The only exception to needing
+        to use all movement is if all possible further movement directions cost more movement than
+        the unit has left and the hexes are not otherwise blocked.
       </p>
       <p>
-        Units may not rout into a hex where it would exceed the stacking limit with friendly units, or
-        hexes containing any opponent units.  Units also may not rout into hexes containing mines or
-        wires (though they may rout out of a hex containing wire or mines, using all of their movement).
-        Units that can&apos;t use all of their movement (with the exception from the previous paragraph)
-        without being blocked or going off the map are eliminated.
+        Units may not rout into a hex where it would exceed the stacking limit with friendly units,
+        or hexes containing any opponent units. Units also may not rout into hexes containing mines
+        or wires (though they may rout out of a hex containing wire or mines, using all of their
+        movement). Units that can&apos;t use all of their movement (with the exception from the
+        previous paragraph) without being blocked or going off the map are eliminated.
       </p>
       <p>
         Only broken units may rout, and a unit may only rout once per turn; after it routs it is
         marked with a &quot;routed&quot; marker.
       </p>
       <p>
-        A player may not attempt to rout all enemy units two actions in a row, they must make some
-        other action the next time they make an action (inluding passing).  I.e., if no other actions
-        are available and the other player passes, only one rout enemy will be possible.
+        If the last action a player took was to rout all enemy units, a player may not attempt to
+        rout all enemy units again, they must make some other action (passing included). I.e., if no
+        other actions are available and the other player passes, only one rout enemy will be
+        possible before the main phase ends.
       </p>
     </div>
   );

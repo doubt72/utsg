@@ -364,7 +364,9 @@ export default class FireAction extends BaseAction {
           } else if (needDice) { hitRoll.description += "miss"}
         }
       } else if (needDice) { targetRoll.description += "miss" }
-      if (firing0.unit.breakWeaponRoll && targetRoll.result <= firing0.unit.breakWeaponRoll) {
+      const breakmod = 0 + (this.intensive ? 1 : 0) +
+        (firing0.unit.parent && firing0.unit.nation !== firing0.unit.parent.nation ? 1 : 0)
+      if (firing0.unit.breakWeaponRoll && targetRoll.result <= firing0.unit.breakWeaponRoll + breakmod) {
         if (firing0.unit.isVehicle) {
           if (sponson) {
             if (firing0.unit.breakDestroysSponson) {
@@ -383,7 +385,8 @@ export default class FireAction extends BaseAction {
               firing0.unit.jammed = true
             }
           }
-        } else if (firing0.unit.breakDestroysWeapon) {
+        } else if (firing0.unit.breakDestroysWeapon ||
+                   (firing0.unit.parent && firing0.unit.nation !== firing0.unit.parent.nation)) {
           if (firing0.unit.incendiary && firing0.unit.parent) {
             this.game.moraleChecksNeeded.push({
               unit: firing0.unit.parent, from: [], to, incendiary: true
@@ -467,7 +470,9 @@ export default class FireAction extends BaseAction {
           })
         } else if (needDice) { hitRoll.description += "miss" }
         for (const f of firing) {
-          if (f.counter.unit.breakWeaponRoll && hitRoll.result <= f.counter.unit.breakWeaponRoll) {
+          const breakmod = 0 + (this.intensive ? 1 : 0) +
+            (f.counter.unit.parent && f.counter.unit.nation !== f.counter.unit.parent.nation ? 1 : 0)
+          if (f.counter.unit.breakWeaponRoll && hitRoll.result <= f.counter.unit.breakWeaponRoll + breakmod) {
             if (f.counter.unit.isVehicle) {
               if (sponson) {
                 if (f.counter.unit.breakDestroysSponson) {
@@ -486,7 +491,8 @@ export default class FireAction extends BaseAction {
                   if (needDice) { hitRoll.description += ", firing weapon broken" }
                 }
               }
-            } else if (f.counter.unit.breakDestroysWeapon) {
+            } else if (f.counter.unit.breakDestroysWeapon ||
+                       (firing0.unit.parent && firing0.unit.nation !== firing0.unit.parent.nation)) {
               const hex = new Coordinate(f.x, f.y)
               if (f.counter.unit.incendiary && f.counter.unit.parent) {
                 this.game.moraleChecksNeeded.push({
