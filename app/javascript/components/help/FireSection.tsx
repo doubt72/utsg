@@ -467,9 +467,9 @@ export default function FireSection() {
         satchel charges) occurs in a hex, there is a chance of a fire (blaze) starting. If the base
         terrain is snow or mud, or it&apos;s foggy, raining, or snowing, or if the hex being checked
         is marsh, soft ground, or water, there&apos;s no chance of a fire starting, so skip this
-        check. Otherwise, roll d10. For forest, building, brush, field, or orchard terrain, fires
-        start on a 1 or 2. For all other terrain, on a 1. Add one to fire check number if incendiary
-        attack (i.e., fires start in buildings on a 1, 2, or 3). If the vehicle being destroyed has
+        check. Otherwise, roll 2d10. For forest, building, brush, field, or orchard terrain, fires
+        start on a 3 or less. For all other terrain, on a 2. Add two to the fire check number if incendiary
+        attack (i.e., fires start in buildings on a 5 or less). If the vehicle being destroyed has
         an indendiary attack, add two to the fire check number. If there are any units in the hex,
         the player chooses another (single) hex to move them to (if both players have units, both
         players can choose a hex, initiative player first. They don&apos;t need to be the same hex).

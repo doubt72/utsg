@@ -1,7 +1,7 @@
 High Priority Features/Bug Fixes:
-  - Rally/Fix
   - Close Combat
   - Weather
+  - Rally/Fix
   - Blazes
 
 Future Features/Bug Fixes:
