@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
-import Game, { AssaultMoveActionState, FireActionState, MoveActionState } from "../../../engine/Game";
+import Game from "../../../engine/Game";
 import { CheckSquare } from "react-bootstrap-icons";
+import { AssaultMoveActionState, FireActionState, MoveActionState } from "../../../engine/control/mainActions";
 
 interface FinishMultiselectButtonProps {
   game: Game;

@@ -1,86 +1,17 @@
-import { Coordinate, Direction, featureType, Player, UnitStatus } from "../../utilities/commonTypes"
+import { Coordinate, Direction, featureType } from "../../utilities/commonTypes"
 import { normalDir, roll2d10, rolld10, togglePlayer } from "../../utilities/utilities"
 import Feature from "../Feature"
 import Game from "../Game"
 import GameAction, {
-  GameActionAddAction, GameActionAddActionType, gameActionAddActionType, GameActionDiceResult,
-  GameActionMoraleData, GameActionPath, GameActionRoutData
+  GameActionAddAction, gameActionAddActionType, GameActionDiceResult, GameActionPath
 } from "../GameAction"
 import Counter from "../Counter"
 import { canMultiSelectFire, moraleModifiers } from "./fire"
 import Unit from "../Unit"
 import { placeReactionFireGhosts } from "./reactionFire"
 import { findRoutPathTree, routPaths } from "./rout"
-
-export type ActionType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s" | "r" | "ra" | "rc"
-export const actionType: { [index: string]: ActionType } = {
-  Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i", Pass: "ip",
-  MoraleCheck: "mc", Sniper: "s", Rout: "r", RoutAll: "ra", RoutCheck: "rc",
-}
-
-export type ActionSelection = {
-  x: number, y: number, id: string, counter: Counter,
-}
-
-export type DeployActionState = {
-  turn: number, index: number, needsDirection?: [number, number],
-}
-
-export type AddAction = {
-  type: GameActionAddActionType, x: number, y: number, id?: string, parent_id?: string, cost: number,
-  facing?: Direction, status?: UnitStatus, index: number
-}
-
-export type FireActionState = {
-  initialSelection: ActionSelection[];
-  targetSelection: ActionSelection[];
-  // For turret facing/changes:
-  path: GameActionPath[];
-  doneSelect: boolean;
-  doneRotating: boolean;
-  firingSmoke: boolean;
-  targetHexes: Coordinate[];
-}
-
-export type MoveActionState = {
-  initialSelection: ActionSelection[];
-  doneSelect: boolean;
-  path: GameActionPath[],
-  addActions: AddAction[],
-  rotatingTurret: boolean,
-  placingSmoke: boolean,
-  droppingMove: boolean,
-  loadingMove: boolean,
-  loader?: Counter,
-}
-
-export type AssaultMoveActionState = {
-  initialSelection: ActionSelection[];
-  doneSelect: boolean;
-  path: GameActionPath[],
-  addActions: AddAction[],
-}
-
-export type RoutPathTree = {
-  x: number, y: number, children: RoutPathTree[],
-}
-
-export type RoutActionState = {
-  optional: boolean, routPathTree: RoutPathTree | false,
-}
-
-export type GameActionState = {
-  player: Player,
-  currentAction: ActionType,
-  selection: ActionSelection[],
-  deploy?: DeployActionState,
-  fire?: FireActionState,
-  moraleCheck?: GameActionMoraleData,
-  routCheck?: GameActionRoutData,
-  move?: MoveActionState,
-  assault?: AssaultMoveActionState,
-  rout?: RoutActionState,
-}
+import { intensiveFiring, rushing } from "./checks"
+import { actionType } from "./actionState"
 
 export function startInitiative(game: Game) {
   const action = game.lastAction
@@ -217,8 +148,8 @@ export function fireSmokeToggle(game: Game) {
 
 export function finishFire(game: Game) {
   if (!game.gameActionState?.fire) { return }
-  const action = game.reactionFire ? (game.intensiveFiring ? "reaction_intensive_fire" : "reaction_fire" ) :
-    (game.intensiveFiring ? "intensive_fire" : "fire" )
+  const action = game.reactionFire ? (intensiveFiring(game) ? "reaction_intensive_fire" : "reaction_fire" ) :
+    (intensiveFiring(game) ? "intensive_fire" : "fire" )
   const fire = new GameAction({
     user: game.reactionFire ? game.opponentUser : game.currentUser,
     player: game.gameActionState.player,
@@ -250,7 +181,7 @@ export function finishFire(game: Game) {
   game.executeAction(fire, false)
 }
 
-export function startRection(game: Game) {
+export function startReaction(game: Game) {
   game.reactionFire = true
 }
 
@@ -381,7 +312,7 @@ export function startMove(game: Game) {
   }
 }
 
-export function move(game: Game, x: number, y: number) {
+export function doMove(game: Game, x: number, y: number) {
   if (!game.gameActionState?.move) { return }
   if (!game.gameActionState?.selection) { return }
   const selection = game.gameActionState.selection
@@ -502,7 +433,7 @@ export function finishMove(game: Game) {
     user: game.currentUser,
     player: game.gameActionState.player,
     data: {
-      action: game.rushing ? "rush" : "move", old_initiative: game.initiative,
+      action: rushing(game) ? "rush" : "move", old_initiative: game.initiative,
       path: game.gameActionState.move.path,
       origin: game.gameActionState.selection.map(s => {
         return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
@@ -561,7 +492,7 @@ export function startAssault(game: Game) {
   }
 }
 
-export function assault(game: Game, x: number, y: number) {
+export function doAssault(game: Game, x: number, y: number) {
   if (!game.gameActionState?.assault) { return }
   if (!game.gameActionState?.selection) { return }
   const selection = game.gameActionState.selection

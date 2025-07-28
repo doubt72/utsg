@@ -11,16 +11,9 @@ import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../utilities/utilities";
 import Unit from "./Unit";
-import {
-  actionType, assault, assaultClear, assaultEntrench, assaultRotate, DeployActionState, finishAssault,
-  finishBreakdown, finishFire, finishInitiative, finishMoraleCheck, finishMove, finishPass, finishRout,
-  finishRoutAll, finishRoutCheck, finishSniper, fireAtHex, fireRotate, fireSmokeToggle, fireSponsonToggle,
-  GameActionState, loadingMoveToggle, move, moveRotate, passReaction, placeSmokeToggle, rotateToggle,
-  shortingMoveToggle, startAssault, startBreakdown, startFire, startInitiative, startMoraleCheck,
-  startMove, startPass, startRection, startRout, startRoutAll, startRoutCheck, startSniper
-} from "./control/gameActions";
 import Hex from "./Hex";
 import { sortValues } from "./support/organizeStacks";
+import { actionType, DeployActionState, GameActionState } from "./control/actionState";
 
 export type GameData = {
   id: number;
@@ -345,62 +338,6 @@ export default class Game {
     return false
   }
 
-  get initiativeCheck(): boolean {
-    if (this.gameActionState) { return false }
-    let rc = false
-    for (const a of this.actions.filter(a => !a.undone)) {
-      if (a.type === "initiative") { rc = false }
-      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_all"].includes(a.type)) {
-        rc = true
-      }
-    }
-    return rc
-  }
-
-  get breakdownCheck(): boolean {
-    const action = this.lastAction
-    if (!action || this.gameActionState) { return false }
-    if (action.data.origin && action.data.origin.length > 0) {
-      const id = action.data.origin[0].id
-      const counter = this.findCounterById(id) as Counter
-      if (["move", "assault_move"].includes(action.data.action) && counter.unit.breakdownRoll) {
-        return true
-      }
-    }
-    return false
-  }
-
-  get reactionFireCheck(): boolean {
-    if (this.gameActionState) { return false }
-    let rc = false
-    let last = ""
-    let player = this.currentPlayer
-    for (const a of this.actions.filter(a => !a.undone)) {
-      rc = a.type === "initiative"
-      if (["move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_all"].includes(a.type)) {
-        last = a.type
-        player = a.player
-      }
-    }
-    return rc && ["move", "rush", "fire", "intensive_fire"].includes(last) && player === this.currentPlayer
-  }
-
-  get rushing(): boolean {
-    if (!this.gameActionState || !this.gameActionState.move ||
-        this.gameActionState.selection.length < 1) { return false }
-    const unit = this.gameActionState.selection[0].counter.unit
-    if (unit.isActivated) { return true }
-    return false
-  }
-
-  get intensiveFiring(): boolean {
-    if (!this.gameActionState || !this.gameActionState.fire ||
-        this.gameActionState.selection.length < 1) { return false }
-    const unit = this.gameActionState.selection[0].counter.unit
-    if (unit.isActivated) { return true }
-    return false
-  }
-
   findUnitById(id: string): Unit | undefined {
     const counter = this.findCounterById(id)
     return counter ? counter.unit : undefined
@@ -622,7 +559,6 @@ export default class Game {
           old_initiative: this.initiative,
         }
       }, this, this.actions.length), backendSync)
-      // TODO: move this logic to something that can be reused for passing?
       if (this.currentPlayer === this.scenario.firstAction) {
         phaseData.new_player = togglePlayer(this.currentPlayer)
         phaseData.new_phase = oldPhase
@@ -711,160 +647,6 @@ export default class Game {
       return path[path.length - 1]
     }
   }
-
-  startInitiative() {
-    startInitiative(this)
-  }
-
-  finishInitiative() {
-    finishInitiative(this)
-  }
-
-  startPass() {
-    startPass(this)
-  }
-
-  finishPass() {
-    finishPass(this)
-  }
-
-  startFire() {
-    startFire(this)
-  }
-
-  fireAtHex(x: number, y: number) {
-    fireAtHex(this, x, y)
-  }
-
-  fireRotate(dir: Direction) {
-    fireRotate(this, dir)
-  }
-
-  fireSponsonToggle() {
-    fireSponsonToggle(this)
-  }
-
-  fireSmokeToggle() {
-    fireSmokeToggle(this)
-  }
-
-  finishFire() {
-    finishFire(this)
-  }
-
-  startReaction() {
-    startRection(this)
-  }
-
-  passReaction() {
-    passReaction(this)
-  }
-
-  startSniper() {
-    startSniper(this)
-  }
-
-  finishSniper() {
-    finishSniper(this)
-  }
-
-  startMoraleCheck() {
-    startMoraleCheck(this)
-  }
-
-  finishMoraleCheck() {
-    finishMoraleCheck(this)
-  }
-
-  startMove() {
-    startMove(this)
-  }
-
-  move(x: number, y: number) {
-    move(this, x, y)
-  }
-
-  moveRotate(x: number, y: number, dir: Direction) {
-    moveRotate(this, x, y, dir)
-  }
-
-  placeSmokeToggle() {
-    placeSmokeToggle(this)
-  }
-
-  shortingMoveToggle() {
-    shortingMoveToggle(this)
-  }
-
-  loadingMoveToggle() {
-    loadingMoveToggle(this)
-  }
-
-  rotateToggle() {
-    rotateToggle(this)
-  }
-
-  finishMove() {
-    finishMove(this)
-  }
-
-  startAssault() {
-    startAssault(this)
-  }
-
-  assault(x: number, y: number) {
-    assault(this, x, y)
-  }
-
-  assaultRotate(x: number, y: number, dir: Direction) {
-    assaultRotate(this, x, y, dir)
-  }
-
-  assaultClear() {
-    assaultClear(this)
-  }
-
-  assaultEntrench() {
-    assaultEntrench(this)
-  }
-
-  finishAssault() {
-    finishAssault(this)
-  }
-
-  startBreakdown() {
-    startBreakdown(this)
-  }
-
-  finishBreakdown() {
-    finishBreakdown(this)
-  }
-
-  startRoutAll() {
-    startRoutAll(this)
-  }
-
-  finishRoutAll() {
-    finishRoutAll(this)
-  }
-
-  startRoutCheck() {
-    startRoutCheck(this)
-  }
-
-  finishRoutCheck() {
-    finishRoutCheck(this)
-  }
-
-  startRout(optional: boolean) {
-    startRout(this, optional)
-  }
-
-  finishRout(x?: number, y?: number) {
-    finishRout(this, x, y)
-  }
-
-  executePass() {}
 
   get actionInProgress(): boolean {
     if (this.gameActionState?.deploy && this.gameActionState.deploy.needsDirection) { return true }

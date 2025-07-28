@@ -2,6 +2,7 @@ import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { BoxArrowInUp } from "react-bootstrap-icons";
 import { MoveGlyph } from "../../utilities/buttons";
+import { loadingMoveToggle } from "../../../engine/control/mainActions";
 
 interface MoveLoadToggleButtonProps {
   game: Game;
@@ -11,7 +12,7 @@ interface MoveLoadToggleButtonProps {
 export default function MoveLoadToggleButton({ game, callback }: MoveLoadToggleButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.loadingMoveToggle()
+    loadingMoveToggle(game)
     callback()
   }
 

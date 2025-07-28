@@ -15,6 +15,7 @@ import {
   GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
+import { assaultRotate, fireRotate, moveRotate } from "../../engine/control/mainActions";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -323,15 +324,15 @@ export default function GameDisplay() {
         game.k.gameActionState.deploy.index]
       game.k.executeReinforcement(x, y, counter, d, gameNotification)
     } else if (game.k?.gameActionState?.fire) {
-      game.k.fireRotate(d)
+      fireRotate(game.k, d)
     } else if (game.k?.gameActionState?.move) {
-      game.k.moveRotate(x, y, d)
+      moveRotate(game.k, x, y, d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
       })
     } else if (game.k?.gameActionState?.assault) {
-      game.k.assaultRotate(x, y, d)
+      assaultRotate(game.k, x, y, d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />

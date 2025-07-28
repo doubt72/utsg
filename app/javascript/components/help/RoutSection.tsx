@@ -14,7 +14,7 @@ import MapHex from "../game/map/MapHex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import MapCounter from "../game/map/MapCounter";
 import { findRoutPathTree, routPaths } from "../../engine/control/rout";
-import { RoutPathTree } from "../../engine/control/gameActions";
+import { RoutPathTree } from "../../engine/control/mainActions";
 import Game, { gamePhaseType } from "../../engine/Game";
 import { HexData } from "../../engine/Hex";
 import { ScenarioData } from "../../engine/Scenario";

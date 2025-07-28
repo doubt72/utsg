@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { ArrowClockwise } from "react-bootstrap-icons";
+import { rotateToggle } from "../../../engine/control/mainActions";
 
 interface MoveRotateToggleButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface MoveRotateToggleButtonProps {
 export default function MoveRotateToggleButton({ game, callback }: MoveRotateToggleButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.rotateToggle()
+    rotateToggle(game)
     callback()
   }
 

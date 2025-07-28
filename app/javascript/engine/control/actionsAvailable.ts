@@ -3,26 +3,34 @@ import { coordinateToLabel } from "../../utilities/utilities"
 import Game, { gamePhaseType } from "../Game"
 import Map from "../Map"
 import Unit from "../Unit"
+import { actionType } from "./actionState"
 import { showClearObstacles, showEntrench } from "./assault"
-import { actionType, needPickUpDisambiguate } from "./gameActions"
+import { breakdownCheck, closeCombatCheck, initiativeCheck, reactionFireCheck } from "./checks"
+import { startCloseCombatSelection } from "./cleanupActions"
+import {
+  needPickUpDisambiguate, startBreakdown, startInitiative, startMoraleCheck, startReaction,
+  startRout, startRoutCheck, startSniper
+} from "./mainActions"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
-  if (game.breakdownCheck) {
-    game.startBreakdown()
+  if (breakdownCheck(game)) {
+    startBreakdown(game)
   } else if (game.sniperNeeded.length > 0) {
-    game.startSniper()
+    startSniper(game)
   } else if (game.moraleChecksNeeded.length > 0) {
-    game.startMoraleCheck()
+    startMoraleCheck(game)
   } else if (game.routNeeded.length > 0) {
     game.routNeeded[0].unit.select()
-    game.startRout(false)
+    startRout(game, false)
   } else if (game.routCheckNeeded.length > 0) {
-    game.startRoutCheck()
-  } else if (game.initiativeCheck) {
-    game.startInitiative()
-  } else if (game.reactionFireCheck) {
-    game.startReaction()
+    startRoutCheck(game)
+  } else if (initiativeCheck(game)) {
+    startInitiative(game)
+  } else if (reactionFireCheck(game)) {
+    startReaction(game)
+  } else if (closeCombatCheck(game)) {
+    startCloseCombatSelection(game)
   }
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]

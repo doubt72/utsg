@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { RoutGlyph } from "../../utilities/buttons";
+import { startRout } from "../../../engine/control/mainActions";
 
 interface RoutButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface RoutButtonProps {
 export default function RoutButton({ game, callback }: RoutButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.startRout(true)
+    startRout(game, true)
     callback()
   }
 

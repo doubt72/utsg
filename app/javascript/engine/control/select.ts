@@ -4,10 +4,12 @@ import Counter from "../Counter"
 import Game, { gamePhaseType } from "../Game"
 import { gameActionAddActionType } from "../GameAction"
 import Map from "../Map"
-import { actionType, getLoader, needPickUpDisambiguate } from "./gameActions"
+import { getLoader, needPickUpDisambiguate } from "./mainActions"
 import Unit from "../Unit"
 import { canBeLoaded, canLoadUnit } from "./movement"
 import { areaFire, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "./fire"
+import { actionType } from "./actionState"
+import { rushing } from "./checks"
 
 export default function select(
   map: Map, selection: CounterSelectionTarget, callback: () => void
@@ -276,7 +278,7 @@ function canBeMoveMultiselected(map: Map, counter: Counter): boolean {
   if (counter.unit.isExhausted) {
     map.game?.addMessage("cannot move an exhausted unit")
   }
-  if (!map.game?.rushing && counter.unit.isActivated) {
+  if (!rushing(map.game as Game) && counter.unit.isActivated) {
     map.game?.addMessage("cannot move an activated unit")
   }
   return true

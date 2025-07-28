@@ -3,7 +3,7 @@ import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { circlePath, counterRed } from "../../../utilities/graphics";
 import { fireHindranceAll } from "../../../engine/control/fire";
-import { FireActionState } from "../../../engine/control/gameActions";
+import { FireActionState } from "../../../engine/control/mainActions";
 
 interface FireHindranceOverlayProps {
   map: Map;

@@ -8,7 +8,7 @@ import {
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
 } from "../control/fire";
-import { ActionSelection } from "../control/gameActions";
+import { ActionSelection } from "../control/mainActions";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";

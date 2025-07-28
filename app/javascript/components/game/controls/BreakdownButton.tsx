@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { Dice6 } from "react-bootstrap-icons";
+import { finishBreakdown } from "../../../engine/control/mainActions";
 
 interface BreakdownButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface BreakdownButtonProps {
 export default function BreakdownButton({ game, callback }: BreakdownButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.finishBreakdown()
+    finishBreakdown(game)
     callback()
   }
 

@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { FireGlyph } from "../../utilities/buttons";
+import { fireSponsonToggle } from "../../../engine/control/mainActions";
 
 interface ToggleSponsonButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface ToggleSponsonButtonProps {
 export default function ToggleSponsonButton({ game, callback }: ToggleSponsonButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.fireSponsonToggle()
+    fireSponsonToggle(game)
     callback()
   }
 

@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { CancelGlyph } from "../../utilities/buttons";
-import { actionType } from "../../../engine/control/gameActions";
+import { actionType } from "../../../engine/control/mainActions";
 
 interface CancelActionButtonProps {
   game: Game;

@@ -5,6 +5,7 @@ import { gameActionAddActionType } from "../GameAction"
 import Hex from "../Hex"
 import Map from "../Map"
 import Unit from "../Unit"
+import { rushing } from "./checks"
 
 export function mapSelectMovement(game: Game, roadMove: boolean): number {
   if (!game.gameActionState) { return 0 }
@@ -15,7 +16,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
   const allRoad = road && roadMove && !selection.unit.isWheeled &&
                   !(next && next.unit.crewed) ? 1 : 0
   let move = selection.unit.currentMovement as number
-  if (game.rushing) { move = Math.floor(move / 2) }
+  if (rushing(game)) { move = Math.floor(move / 2) }
   move += allRoad
   if (selection.unit.canCarrySupport) {
     let minLdrMove = 99
@@ -33,7 +34,7 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
       if (check) { continue }
       const u = sel.counter.unit
       let iMove = u.currentMovement as number
-      if (game.rushing) { iMove = Math.floor(iMove / 2) }
+      if (rushing(game)) { iMove = Math.floor(iMove / 2) }
       if (u.children.length > 0) {
         const child = u.children[0]
         if (child.crewed) { iMove = child.baseMovement }
@@ -234,7 +235,7 @@ export function showDropMove(game: Game): boolean {
 }
 
 export function showLoadMove(game: Game): boolean {
-  if (game.rushing) { return false }
+  if (rushing(game)) { return false }
   const move = game.gameActionState?.move
   const selection = game.gameActionState?.selection
   if (!selection || move?.placingSmoke || move?.droppingMove) { return false }

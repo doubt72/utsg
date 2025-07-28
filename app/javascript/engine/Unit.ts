@@ -123,6 +123,7 @@ export default class Unit {
   immobilized: boolean;
   pinned: boolean;
   routed: boolean;
+  closeCombatDone: boolean;
 
   facing: Direction;
   turretFacing: Direction;
@@ -223,6 +224,7 @@ export default class Unit {
     this.immobilized = false
     this.pinned = false
     this.routed = false
+    this.closeCombatDone = false
 
     this.facing = 1
     this.turretFacing = 1

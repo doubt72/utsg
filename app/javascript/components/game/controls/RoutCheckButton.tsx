@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { RoutGlyph } from "../../utilities/buttons";
+import { finishRoutCheck } from "../../../engine/control/mainActions";
 
 interface RoutCheckButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface RoutCheckButtonProps {
 export default function RoutCheckButton({ game, callback }: RoutCheckButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.finishRoutCheck()
+    finishRoutCheck(game)
     callback()
   }
 

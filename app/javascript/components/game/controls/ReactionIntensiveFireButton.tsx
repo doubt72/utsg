@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { FireIntenseGlyph } from "../../utilities/buttons";
+import { startFire } from "../../../engine/control/mainActions";
 
 interface ReactionIntensiveFireButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface ReactionIntensiveFireButtonProps {
 export default function ReactionIntensiveFireButton({ game, callback }: ReactionIntensiveFireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.startFire()
+    startFire(game)
     callback()
   }
 

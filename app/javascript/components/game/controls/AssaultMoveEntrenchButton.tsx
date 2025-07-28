@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { ShieldFill } from "react-bootstrap-icons";
+import { assaultEntrench } from "../../../engine/control/mainActions";
 
 interface AssaultMoveEntrenchButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface AssaultMoveEntrenchButtonProps {
 export default function AssaultMoveEntrenchButton({ game, callback }: AssaultMoveEntrenchButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.assaultEntrench()
+    assaultEntrench(game)
     callback()
   }
 

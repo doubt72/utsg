@@ -12,12 +12,13 @@ import WarningActionError from "../actions/WarningActionError"
 import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
 import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
-import { actionType, GameActionState, MoveActionState } from "./gameActions"
 import {
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testMine,
   testMineAP, testMineAT, testRInf, testWire
 } from "./testHelpers"
 import Feature from "../Feature"
+import { doMove, finishMove, moveRotate, placeSmokeToggle, startMove } from "./mainActions"
+import { actionType, GameActionState, MoveActionState } from "./actionState"
 
 describe("movement tests", () => {
   test("movement along road", () => {
@@ -29,7 +30,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -55,21 +56,21 @@ describe("movement tests", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -103,7 +104,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -129,21 +130,21 @@ describe("movement tests", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -172,7 +173,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -183,21 +184,21 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -225,7 +226,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -236,21 +237,21 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -278,7 +279,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -289,21 +290,21 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(2)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -330,7 +331,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -341,21 +342,21 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -376,7 +377,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -391,21 +392,21 @@ describe("movement tests", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     let all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -429,8 +430,8 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
-    game.placeSmokeToggle()
+    startMove(game)
+    placeSmokeToggle(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -450,7 +451,7 @@ describe("movement tests", () => {
     expect(showLoadMove(game)).toBe(false)
 
     expect(move.addActions.length).toBe(0)
-    game.move(3, 3)
+    doMove(game, 3, 3)
     expect(move.addActions.length).toBe(1)
     expect(map.units[3][3].filter(u => u.ghost).length).toBe(1)
     expect(move.path.length).toBe(1)
@@ -458,7 +459,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.placeSmokeToggle()
+    placeSmokeToggle(game)
     expect(showLaySmoke(game)).toBe(true)
     expect(move.placingSmoke).toBe(false)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
@@ -466,13 +467,13 @@ describe("movement tests", () => {
     // Laying smoke cancels road bonus
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
     expect(showLaySmoke(game)).toBe(false)
 
-    game.finishMove()
+    finishMove(game)
     expect(map.units[3][3].filter(u => u.ghost).length).toBe(0)
 
     const all = map.allCounters
@@ -508,7 +509,7 @@ describe("movement tests", () => {
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -535,7 +536,7 @@ describe("movement tests", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.doneSelect).toBe(true)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
@@ -543,19 +544,19 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
     expect(showDropMove(game)).toBe(true)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.move(0, 2)
+    doMove(game, 0, 2)
     expect(openHexMovement(map, new Coordinate(0, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(showDropMove(game)).toBe(false)
 
-    game.finishMove()
+    finishMove(game)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -590,7 +591,7 @@ describe("movement tests", () => {
     unit4.id = "test4"
     map.addCounter(new Coordinate(3, 2), unit4)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -623,7 +624,7 @@ describe("movement tests", () => {
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -650,7 +651,7 @@ describe("movement tests", () => {
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.doneSelect).toBe(true)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
@@ -666,19 +667,19 @@ describe("movement tests", () => {
     move.droppingMove = false
     expect(move.addActions.length).toBe(1)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.move(0, 2)
+    doMove(game, 0, 2)
     expect(openHexMovement(map, new Coordinate(0, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(showDropMove(game)).toBe(false)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -717,7 +718,7 @@ describe("movement tests", () => {
     unit2.id = "test2"
     map.addCounter(loc, unit2)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -735,7 +736,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
@@ -748,19 +749,19 @@ describe("movement tests", () => {
     // Undo
     move.addActions.pop()
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.move(0, 2)
+    doMove(game, 0, 2)
     expect(openHexMovement(map, new Coordinate(0, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(showDropMove(game)).toBe(false)
 
-    game.finishMove()
+    finishMove(game)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -789,7 +790,7 @@ describe("movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -809,21 +810,21 @@ describe("movement tests", () => {
     expect(showDropMove(game)).toBe(true)
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -870,14 +871,14 @@ describe("movement tests", () => {
       expect(err instanceof WarningActionError).toBe(true)
     }
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(showLoadMove(game)).toBe(true)
     move.loadingMove = true
     select(map, {
@@ -894,10 +895,10 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -950,7 +951,7 @@ describe("movement tests", () => {
     organizeStacks(map)
     expect(unit.children.length).toBe(1)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -966,21 +967,21 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(1)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1023,14 +1024,14 @@ describe("movement tests", () => {
       expect(err instanceof WarningActionError).toBe(true)
     }
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(showLoadMove(game)).toBe(false)
     move.loadingMove = true
     select(map, {
@@ -1056,7 +1057,7 @@ describe("movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1084,7 +1085,7 @@ describe("movement tests", () => {
     unit2.select()
     unit2.dropSelect()
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
 
     move.droppingMove = true
     select(map, {
@@ -1102,11 +1103,11 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1153,7 +1154,7 @@ describe("movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1175,7 +1176,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
 
     expect(move.path.length).toBe(2)
     expect(openHexRotateOpen(map)).toBe(true)
@@ -1184,7 +1185,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.moveRotate(2, 2, 2)
+    moveRotate(game, 2, 2, 2)
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
     expect(openHexRotateOpen(map)).toBe(true)
@@ -1193,7 +1194,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1238,7 +1239,7 @@ describe("movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1253,7 +1254,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 3)
+    doMove(game, 3, 3)
 
     expect(move.path.length).toBe(2)
     expect(openHexRotateOpen(map)).toBe(true)
@@ -1262,7 +1263,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1304,7 +1305,7 @@ describe("movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1319,7 +1320,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
 
-    game.move(3, 3)
+    doMove(game, 3, 3)
 
     expect(move.path.length).toBe(2)
     expect(openHexRotateOpen(map)).toBe(true)
@@ -1328,7 +1329,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1371,7 +1372,7 @@ describe("movement tests", () => {
       expect(err instanceof WarningActionError).toBe(true)
     }
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1379,7 +1380,7 @@ describe("movement tests", () => {
     expect(showLoadMove(game)).toBe(false)
 
     // Can't load after moving
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(showLoadMove(game)).toBe(false)
     move.loadingMove = true
     select(map, {
@@ -1409,7 +1410,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(loc, unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1429,7 +1430,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1476,7 +1477,7 @@ describe("movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1498,11 +1499,11 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(1)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1548,14 +1549,14 @@ describe("movement tests", () => {
       expect(err instanceof WarningActionError).toBe(true)
     }
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(false)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(showLoadMove(game)).toBe(true)
     move.loadingMove = true
     select(map, {
@@ -1568,7 +1569,7 @@ describe("movement tests", () => {
     expect(move.addActions[0].parent_id).toBe("test1")
     move.loadingMove = false
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1616,7 +1617,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(loc, unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1636,7 +1637,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -1673,7 +1674,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1682,21 +1683,21 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(2)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(3)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(2, 2)
+    doMove(game, 2, 2)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
 
-    game.move(1, 2)
+    doMove(game, 1, 2)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(1, 2), new Coordinate(0, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -1712,7 +1713,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(loc, unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1721,17 +1722,17 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 4))).toBe(2)
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(1)
 
-    game.move(2, 4)
+    doMove(game, 2, 4)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(2, 4), new Coordinate(1, 4))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 4), new Coordinate(3, 4))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(2, 4), new Coordinate(2, 3))).toBe(2)
 
-    game.move(1, 4)
+    doMove(game, 1, 4)
     expect(openHexMovement(map, new Coordinate(1, 4), new Coordinate(2, 4))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(1, 4), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -1748,7 +1749,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(loc, unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1757,17 +1758,17 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 0))).toBe(2)
     expect(openHexMovement(map, loc, new Coordinate(3, 1))).toBe(1)
 
-    game.move(2, 0)
+    doMove(game, 2, 0)
     expect(move.path.length).toBe(2)
     expect(openHexMovement(map, new Coordinate(2, 0), new Coordinate(1, 0))).toBe(1)
     expect(openHexMovement(map, new Coordinate(2, 0), new Coordinate(3, 0))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 0), new Coordinate(2, 1))).toBe(1)
 
-    game.move(1, 0)
+    doMove(game, 1, 0)
     expect(openHexMovement(map, new Coordinate(1, 0), new Coordinate(1, 0))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 0), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
@@ -1784,7 +1785,7 @@ describe("movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1805,14 +1806,14 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(4, 2))).toBe(hexOpenType.Open)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.moveRotate(3, 2, 2)
+    moveRotate(game, 3, 2, 2)
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
     expect(move.path[2].turret).toBe(2)
@@ -1823,7 +1824,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(2, 1)
+    doMove(game, 2, 1)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(1)
@@ -1831,13 +1832,13 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
 
     move.rotatingTurret = true
-    game.moveRotate(2, 1, 6)
+    moveRotate(game, 2, 1, 6)
     move.rotatingTurret = false
     expect(move.path.length).toBe(4)
     expect(move.path[3].facing).toBe(2)
     expect(move.path[3].turret).toBe(6)
 
-    game.moveRotate(2, 1, 1)
+    moveRotate(game, 2, 1, 1)
     expect(move.path.length).toBe(5)
     expect(move.path[4].facing).toBe(1)
     expect(move.path[4].turret).toBe(5)
@@ -1847,14 +1848,14 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
 
-    game.move(1, 1)
+    doMove(game, 1, 1)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     let all = map.allCounters
     expect(all.length).toBe(2)
     expect(all[0].hex?.x).toBe(1)
@@ -1902,7 +1903,7 @@ describe("movement tests", () => {
 
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -1919,14 +1920,14 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(movementPastCost(map, unit)).toBe(0.5)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.moveRotate(3, 2, 2)
+    moveRotate(game, 3, 2, 2)
     expect(movementPastCost(map, unit)).toBe(1.5)
     expect(move.path.length).toBe(3)
     expect(move.path[2].facing).toBe(2)
@@ -1935,14 +1936,14 @@ describe("movement tests", () => {
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
-    game.move(2, 1)
+    doMove(game, 2, 1)
     expect(movementPastCost(map, unit)).toBe(2.5)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(3)
@@ -2016,7 +2017,7 @@ describe("movement tests", () => {
 
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -2030,7 +2031,7 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
@@ -2047,19 +2048,19 @@ describe("movement tests", () => {
     expect(move.addActions[0].cost).toBe(1)
     expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
-    game.moveRotate(3, 2, 2)
+    moveRotate(game, 3, 2, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
-    game.move(2, 1)
+    doMove(game, 2, 1)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(3)
@@ -2133,7 +2134,7 @@ describe("movement tests", () => {
 
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -2147,13 +2148,13 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.moveRotate(3, 2, 2)
+    moveRotate(game, 3, 2, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
@@ -2170,13 +2171,13 @@ describe("movement tests", () => {
     expect(move.addActions[0].cost).toBe(1)
     expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
-    game.move(2, 1)
+    doMove(game, 2, 1)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(3)
@@ -2244,7 +2245,7 @@ describe("movement tests", () => {
 
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -2258,13 +2259,13 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.moveRotate(3, 2, 2)
+    moveRotate(game, 3, 2, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
@@ -2281,13 +2282,13 @@ describe("movement tests", () => {
     expect(move.addActions[0].cost).toBe(1)
     expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
-    game.move(2, 1)
+    doMove(game, 2, 1)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(3)
@@ -2367,7 +2368,7 @@ describe("movement tests", () => {
 
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -2391,25 +2392,25 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.moveRotate(3, 2, 2)
+    moveRotate(game, 3, 2, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
-    game.move(2, 1)
+    doMove(game, 2, 1)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(3)
@@ -2484,7 +2485,7 @@ describe("movement tests", () => {
 
     organizeStacks(map)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
     const move = state.move as MoveActionState
@@ -2508,25 +2509,25 @@ describe("movement tests", () => {
     expect(openHexMovement(map, loc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(0.5)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
 
-    game.moveRotate(3, 2, 2)
+    moveRotate(game, 3, 2, 2)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(true)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 1))).toBe(1)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
 
-    game.move(2, 1)
+    doMove(game, 2, 1)
     expect(openHexRotateOpen(map)).toBe(true)
     expect(openHexRotatePossible(map)).toBe(false)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(1, 1))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(2, 1), new Coordinate(2, 0))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
 
     let all = map.allCounters
     expect(all.length).toBe(3)
@@ -2589,18 +2590,18 @@ describe("movement tests", () => {
     feature.id = "wire"
     map.addCounter(new Coordinate(3, 2), feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(2)
     expect(all[0].hex?.x).toBe(3)
@@ -2623,18 +2624,18 @@ describe("movement tests", () => {
     feature.id = "wire"
     map.addCounter(new Coordinate(4, 2), feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.All)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.All)
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
-    game.finishMove()
+    finishMove(game)
     const all = map.allCounters
     expect(all.length).toBe(2)
     expect(all[0].hex?.x).toBe(4)
@@ -2659,20 +2660,20 @@ describe("movement tests", () => {
     const tloc = new Coordinate(3, 2)
     map.addCounter(tloc, feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
     expect(openHexMovement(map, floc, new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, floc, new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.finishMove()
+    finishMove(game)
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2714,20 +2715,20 @@ describe("movement tests", () => {
     const tloc = new Coordinate(3, 2)
     map.addCounter(tloc, feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
     expect(openHexMovement(map, floc, new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, floc, new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.finishMove()
+    finishMove(game)
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2769,20 +2770,20 @@ describe("movement tests", () => {
     const tloc = new Coordinate(3, 2)
     map.addCounter(tloc, feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
     expect(openHexMovement(map, floc, new Coordinate(4, 3))).toBe(1)
     expect(openHexMovement(map, floc, new Coordinate(3, 3))).toBe(2)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(2, 3))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.finishMove()
+    finishMove(game)
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2817,17 +2818,17 @@ describe("movement tests", () => {
     const tloc = new Coordinate(3, 2)
     map.addCounter(tloc, feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.finishMove()
+    finishMove(game)
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2868,17 +2869,17 @@ describe("movement tests", () => {
     const tloc = new Coordinate(3, 2)
     map.addCounter(tloc, feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.finishMove()
+    finishMove(game)
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2920,17 +2921,17 @@ describe("movement tests", () => {
     const tloc = new Coordinate(3, 2)
     map.addCounter(tloc, feature)
 
-    game.startMove()
+    startMove(game)
 
     expect(openHexMovement(map, floc, new Coordinate(3, 2))).toBe(1)
 
-    game.move(3, 2)
+    doMove(game, 3, 2)
     expect(openHexMovement(map, tloc, new Coordinate(2, 2))).toBe(hexOpenType.Closed)
     expect(openHexMovement(map, tloc, new Coordinate(4, 2))).toBe(hexOpenType.Closed)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.finishMove()
+    finishMove(game)
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2973,7 +2974,7 @@ describe("movement tests", () => {
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -2983,11 +2984,11 @@ describe("movement tests", () => {
     }, () => {})
     expect(state.selection.length).toBe(2)
 
-    game.move(3, 2)
-    game.move(2, 2)
-    game.move(1, 2)
-    game.move(0, 2)
-    game.finishMove()
+    doMove(game, 3, 2)
+    doMove(game, 2, 2)
+    doMove(game, 1, 2)
+    doMove(game, 0, 2)
+    finishMove(game)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -3020,7 +3021,7 @@ describe("movement tests", () => {
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
 
-    game.startMove()
+    startMove(game)
 
     const state = game.gameActionState as GameActionState
 
@@ -3030,11 +3031,11 @@ describe("movement tests", () => {
     }, () => {})
     expect(state.selection.length).toBe(2)
 
-    game.move(3, 2)
-    game.move(2, 2)
-    game.move(1, 2)
-    game.move(0, 2)
-    game.finishMove()
+    doMove(game, 3, 2)
+    doMove(game, 2, 2)
+    doMove(game, 1, 2)
+    doMove(game, 0, 2)
+    finishMove(game)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -3060,12 +3061,12 @@ describe("movement tests", () => {
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
-    game.startMove()
-    game.move(3, 2)
-    game.move(2, 2)
-    game.move(1, 2)
-    game.move(0, 2)
-    game.finishMove()
+    startMove(game)
+    doMove(game, 3, 2)
+    doMove(game, 2, 2)
+    doMove(game, 1, 2)
+    doMove(game, 0, 2)
+    finishMove(game)
 
     const all = map.allCounters
     expect(all.length).toBe(2)

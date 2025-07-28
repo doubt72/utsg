@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { FireGlyph } from "../../utilities/buttons";
+import { startFire } from "../../../engine/control/mainActions";
 
 interface ReactionFireButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface ReactionFireButtonProps {
 export default function ReactionFireButton({ game, callback }: ReactionFireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.startFire()
+    startFire(game)
     callback()
   }
 

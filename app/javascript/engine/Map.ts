@@ -16,11 +16,12 @@ import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import { GameActionPath } from "./GameAction";
 import BaseAction from "./actions/BaseAction";
 import { hexDistance, togglePlayer } from "../utilities/utilities";
-import { actionType, needPickUpDisambiguate } from "./control/gameActions";
+import { needPickUpDisambiguate } from "./control/mainActions";
 import { leadershipRange } from "./control/fire";
 import openHex from "./control/openHex";
 import { samePlayer } from "./control/select";
 import { reactionFireHexes } from "./control/reactionFire";
+import { actionType } from "./control/actionState";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }

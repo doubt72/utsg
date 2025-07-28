@@ -7,7 +7,7 @@ import Map from "../Map"
 import Unit from "../Unit"
 import { openHexAssaulting } from "./assault"
 import { openHexFiring } from "./fire"
-import { actionType } from "./gameActions"
+import { actionType } from "./mainActions"
 import { mapSelectMovement, movementCost, movementPastCost, openHexMovement } from "./movement"
 import { routEnds } from "./rout"
 

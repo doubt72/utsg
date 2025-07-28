@@ -31,7 +31,8 @@ import FireHindranceOverlay from "./FireHindranceOverlay";
 import MapTargetHexSelection from "./MapTargetHexSelection";
 import Hex from "../../../engine/Hex";
 import RoutTrackOverlay from "./RoutTrackOverlay";
-import { actionType } from "../../../engine/control/gameActions";
+import { actionType } from "../../../engine/control/actionState";
+import { doAssault, finishRout, fireAtHex, doMove } from "../../../engine/control/mainActions";
 
 interface MapDisplayProps {
   map?: Map;
@@ -507,13 +508,13 @@ export default function MapDisplay({
           }
         }
       } else if (map.game?.gameActionState?.move) {
-        map.game.move(x, y)
+        doMove(map.game, x, y)
       } else if (map.game?.gameActionState?.assault) {
-        map.game.assault(x, y)
+        doAssault(map.game, x, y)
       } else if (map.game?.gameActionState?.fire) {
-        map.game.fireAtHex(x, y)
+        fireAtHex(map.game, x, y)
       } else if (map.game?.gameActionState?.rout) {
-        map.game.finishRout(x, y)
+        finishRout(map.game, x, y)
       }
       setMapUpdate(s => s + 1)
       if (doCallback) { hexCallback(x, y) }

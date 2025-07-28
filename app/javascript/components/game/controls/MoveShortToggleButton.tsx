@@ -2,6 +2,8 @@ import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { BoxArrowDown } from "react-bootstrap-icons";
 import { MoveGlyph } from "../../utilities/buttons";
+import { shortingMoveToggle } from "../../../engine/control/mainActions";
+import { rushing } from "../../../engine/control/checks";
 
 interface MoveShortToggleButtonProps {
   game: Game;
@@ -11,13 +13,13 @@ interface MoveShortToggleButtonProps {
 export default function MoveShortToggleButton({ game, callback }: MoveShortToggleButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.shortingMoveToggle()
+    shortingMoveToggle(game)
     callback()
   }
 
   const text = () => {
     if (game.gameActionState?.move?.droppingMove === true) {
-      return `continue ${ game.rushing ? "rushing" : "moving" }`
+      return `continue ${ rushing(game) ? "rushing" : "moving" }`
     }
     return "drop unit"
   }

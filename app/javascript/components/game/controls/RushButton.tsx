@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { MoveRushGlyph } from "../../utilities/buttons";
+import { startMove } from "../../../engine/control/mainActions";
 
 interface RushButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface RushButtonProps {
 export default function RushButton({ game, callback }: RushButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.startMove()
+    startMove(game)
     callback()
   }
 

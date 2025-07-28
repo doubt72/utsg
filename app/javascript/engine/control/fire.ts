@@ -8,7 +8,7 @@ import { GameActionPath } from "../GameAction";
 import Hex from "../Hex";
 import Map from "../Map";
 import Unit from "../Unit";
-import { ActionSelection } from "./gameActions";
+import { ActionSelection } from "./mainActions";
 
 export function openHexFiring(map: Map, from: Coordinate, to: Coordinate): HexOpenType {
   if (!map.game?.gameActionState?.fire) { return hexOpenType.Closed }

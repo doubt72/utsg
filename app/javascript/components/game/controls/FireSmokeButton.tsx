@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { Clouds, CloudSlash } from "react-bootstrap-icons";
+import { fireSmokeToggle } from "../../../engine/control/mainActions";
 
 interface FireSmokeButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface FireSmokeButtonProps {
 export default function FireSmokeButton({ game, callback }: FireSmokeButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.fireSmokeToggle()
+    fireSmokeToggle(game)
     callback()
   }
   

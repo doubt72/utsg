@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import { ArrowClockwise } from "react-bootstrap-icons";
 import Game from "../../../engine/Game";
-import { actionType } from "../../../engine/control/gameActions";
+import { actionType, finishPass, startPass } from "../../../engine/control/mainActions";
 
 interface PassButtonProps {
   game: Game;
@@ -12,9 +12,9 @@ export default function PassButton({ game, callback }: PassButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     if (game.gameActionState?.currentAction === actionType.Pass) {
-      game.finishPass()
+      finishPass(game)
     } else {
-      game.startPass()
+      startPass(game)
     }
     callback()
   }

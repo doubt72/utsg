@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { MoveGlyph } from "../../utilities/buttons";
+import { startMove } from "../../../engine/control/mainActions";
 
 interface MoveButtonProps {
   game: Game;
@@ -10,7 +11,7 @@ interface MoveButtonProps {
 export default function MoveButton({ game, callback }: MoveButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.startMove()
+    startMove(game)
     callback()
   }
 
