@@ -32,7 +32,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     expect(state.player).toBe(2)
     expect(state.currentAction).toBe(actionType.Move)
@@ -106,7 +106,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     expect(state.player).toBe(2)
     expect(state.currentAction).toBe(actionType.Move)
@@ -175,7 +175,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     const move = state.move as MoveActionState
 
@@ -228,7 +228,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     const move = state.move as MoveActionState
 
@@ -281,7 +281,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     const move = state.move as MoveActionState
 
@@ -333,7 +333,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     const move = state.move as MoveActionState
 
@@ -379,7 +379,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     const move = state.move as MoveActionState
 
@@ -433,7 +433,7 @@ describe("movement tests", () => {
     startMove(game)
     placeSmokeToggle(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(move.doneSelect).toBe(true)
@@ -511,7 +511,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(move.doneSelect).toBe(false)
@@ -593,7 +593,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     select(map, {
@@ -626,7 +626,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(move.doneSelect).toBe(false)
@@ -720,7 +720,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     select(map, {
@@ -792,7 +792,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(state.selection.length).toBe(2)
@@ -873,7 +873,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(false)
@@ -953,7 +953,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(state.selection.length).toBe(2)
@@ -1026,7 +1026,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(false)
@@ -1059,7 +1059,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(3)
@@ -1156,7 +1156,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(state.selection.length).toBe(2)
@@ -1241,7 +1241,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(state.selection.length).toBe(2)
@@ -1307,7 +1307,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(state.selection.length).toBe(2)
@@ -1374,7 +1374,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(false)
@@ -1412,7 +1412,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(true)
@@ -1479,7 +1479,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     move.droppingMove = true
@@ -1551,7 +1551,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(false)
@@ -1619,7 +1619,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(showLoadMove(game)).toBe(true)
@@ -1676,7 +1676,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
@@ -1715,7 +1715,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(openHexMovement(map, loc, new Coordinate(4, 4))).toBe(1)
@@ -1751,7 +1751,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(openHexMovement(map, loc, new Coordinate(4, 0))).toBe(1)
@@ -1787,7 +1787,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(5)
@@ -1905,7 +1905,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(3)
@@ -2019,7 +2019,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(4)
@@ -2136,7 +2136,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(3)
@@ -2247,7 +2247,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(3)
@@ -2370,7 +2370,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(4)
@@ -2487,7 +2487,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(4)
@@ -2976,7 +2976,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     select(map, {
       counter: map.countersAt(loc)[1],
@@ -3023,7 +3023,7 @@ describe("movement tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     select(map, {
       counter: map.countersAt(loc)[1],

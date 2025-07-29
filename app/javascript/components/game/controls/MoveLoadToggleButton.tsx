@@ -17,12 +17,12 @@ export default function MoveLoadToggleButton({ game, callback }: MoveLoadToggleB
   }
 
   const text = () => {
-    if (game.gameActionState?.move?.loadingMove === true) { return "continue moving" }
+    if (game.gameState?.move?.loadingMove === true) { return "continue moving" }
     return "pick up unit"
   }
   
   const icon = () => {
-    if (game.gameActionState?.move?.loadingMove === true) { return MoveGlyph() }
+    if (game.gameState?.move?.loadingMove === true) { return MoveGlyph() }
     return <BoxArrowInUp />
   }
 

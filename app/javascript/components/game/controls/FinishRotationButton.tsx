@@ -10,7 +10,7 @@ interface FinishRotationButtonProps {
 export default function FinishRotationButton({ game, callback }: FinishRotationButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    const action = game.gameActionState?.fire
+    const action = game.gameState?.fire
     if (action) { action.doneRotating = true }
     callback()
   }

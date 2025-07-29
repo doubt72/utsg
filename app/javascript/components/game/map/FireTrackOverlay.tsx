@@ -10,13 +10,13 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
     if (!map.game) { return }
     const rc: JSX.Element[] = []
     // TODO: handle last action, see move track
-    if (map.game.gameActionState?.fire) {
-      const selection = map.game.gameActionState.selection
-      const targets = map.game.gameActionState.fire.targetHexes
+    if (map.game.gameState?.fire) {
+      const selection = map.game.gameState.selection
+      const targets = map.game.gameState.fire.targetHexes
       for (let i = 0; i < selection.length; i++) {
         const sel = selection[i]
         for (let j = 0; j < targets.length; j++) {
-          const targ = map.game.gameActionState.fire.targetHexes[j]
+          const targ = map.game.gameState.fire.targetHexes[j]
           const x1 = map.xOffset(sel.x, sel.y)
           const y1 = map.yOffset(sel.y)
           const x2 = map.xOffset(targ.x, targ.y)

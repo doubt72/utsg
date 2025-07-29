@@ -11,9 +11,9 @@ interface FinishMultiselectButtonProps {
 export default function FinishMultiselectButton({ game, callback }: FinishMultiselectButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    let action: MoveActionState | AssaultMoveActionState | FireActionState | undefined = game.gameActionState?.fire
-    if (!action) { action = game.gameActionState?.move }
-    if (!action) { action = game.gameActionState?.assault }
+    let action: MoveActionState | AssaultMoveActionState | FireActionState | undefined = game.gameState?.fire
+    if (!action) { action = game.gameState?.move }
+    if (!action) { action = game.gameState?.assault }
     if (action) { action.doneSelect = true }
     game.closeOverlay = true
     callback()

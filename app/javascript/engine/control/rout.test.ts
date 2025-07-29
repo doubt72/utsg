@@ -275,7 +275,7 @@ describe("rout tests", () => {
       organizeStacks(map)
 
       startRout(game, true)
-      expect(game.gameActionState?.rout?.routPathTree).toBe(false)
+      expect(game.gameState?.rout?.routPathTree).toBe(false)
       // Can't optionally rout off map
     })
 
@@ -291,7 +291,7 @@ describe("rout tests", () => {
       organizeStacks(map)
 
       startRout(game, true)
-      const tree = game.gameActionState?.rout?.routPathTree as RoutPathTree
+      const tree = game.gameState?.rout?.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
       expect(game.initiative).toBe(0)
@@ -328,7 +328,7 @@ describe("rout tests", () => {
       organizeStacks(map)
 
       startRout(game, true)
-      const tree = game.gameActionState?.rout?.routPathTree as RoutPathTree
+      const tree = game.gameState?.rout?.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
       finishRout(game, 4, 2)
@@ -375,7 +375,7 @@ describe("rout tests", () => {
       organizeStacks(map)
 
       startRout(game, true)
-      const tree = game.gameActionState?.rout?.routPathTree as RoutPathTree
+      const tree = game.gameState?.rout?.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
       finishRout(game, 4, 2)
@@ -426,7 +426,7 @@ describe("rout tests", () => {
       expect(game.initiative).toBe(-3)
 
       startRoutCheck(game)
-      expect(game.gameActionState?.selection[0]?.id).toBe(unit.id)
+      expect(game.gameState?.selection[0]?.id).toBe(unit.id)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -436,7 +436,7 @@ describe("rout tests", () => {
 
       unit.select()
       startRout(game, false)
-      const tree = game.gameActionState?.rout?.routPathTree as RoutPathTree
+      const tree = game.gameState?.rout?.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(0, 2)])
 
       expect(game.initiative).toBe(-3)
@@ -475,7 +475,7 @@ describe("rout tests", () => {
       expect(game.routCheckNeeded.length).toBe(1)
 
       startRoutCheck(game)
-      expect(game.gameActionState?.selection[0]?.id).toBe(unit.id)
+      expect(game.gameState?.selection[0]?.id).toBe(unit.id)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -485,7 +485,7 @@ describe("rout tests", () => {
 
       unit.select()
       startRout(game, false)
-      expect(game.gameActionState?.rout?.routPathTree).toBe(false)
+      expect(game.gameState?.rout?.routPathTree).toBe(false)
 
       finishRout(game, )
       expect(game.routNeeded.length).toBe(0)

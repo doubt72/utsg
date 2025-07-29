@@ -16,12 +16,12 @@ export default function FireSmokeButton({ game, callback }: FireSmokeButtonProps
   }
   
     const text = () => {
-      if (game.gameActionState?.fire?.firingSmoke === true) { return "cancel smoke round" }
+      if (game.gameState?.fire?.firingSmoke === true) { return "cancel smoke round" }
       return "smoke round"
     }
   
     const icon = () => {
-      if (game.gameActionState?.fire?.firingSmoke === true) { return <CloudSlash /> }
+      if (game.gameState?.fire?.firingSmoke === true) { return <CloudSlash /> }
       return <Clouds />
     }
 

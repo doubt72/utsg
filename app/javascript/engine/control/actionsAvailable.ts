@@ -63,11 +63,11 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
-    if (!game.actionInProgress && (!selection || game.gameActionState?.currentAction === actionType.Breakdown)) {
+    if (!game.actionInProgress && (!selection || game.gameState?.currentAction === actionType.Breakdown)) {
       addUndo(game, activePlayer, actions)
     }
-    if (game.gameActionState?.currentAction === actionType.Fire && game.gameActionState.fire) {
-      const action = game.gameActionState.fire
+    if (game.gameState?.currentAction === actionType.Fire && game.gameState.fire) {
+      const action = game.gameState.fire
       if (action) {
         if (!action.doneSelect) {
           actions.unshift({ type: "none", message: "select fire group" })
@@ -75,7 +75,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         } else {
           actions.unshift({ type: "none", message: "select target" })
         }
-        const sponson = !!game.gameActionState.selection[0].counter.unit.sponson
+        const sponson = !!game.gameState.selection[0].counter.unit.sponson
         if (sponson && !(selection?.sponsonJammed || selection?.sponsonDestroyed ||
                          selection?.jammed || selection?.weaponDestroyed)) {
           actions.push({ type: "fire_toggle_sponson" })
@@ -93,9 +93,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
-    } else if (game.gameActionState?.currentAction === actionType.Move && game.gameActionState.move) {
+    } else if (game.gameState?.currentAction === actionType.Move && game.gameState.move) {
       const actionSelect = currSelection(game, true)
-      const action = game.gameActionState.move
+      const action = game.gameState.move
       if (actionSelect && action) {
         if (action.loadingMove) {
           if (needPickUpDisambiguate(game)) {
@@ -134,8 +134,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
-    } else if (game.gameActionState?.currentAction === actionType.Assault) {
-      const action = game.gameActionState.assault
+    } else if (game.gameState?.currentAction === actionType.Assault) {
+      const action = game.gameState.assault
       if (action) {
         if (showClearObstacles(game)) {
           actions.push({ type: "assault_move_clear" })
@@ -153,38 +153,38 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
-    } else if (game.gameActionState?.currentAction === actionType.Breakdown) {
+    } else if (game.gameState?.currentAction === actionType.Breakdown) {
       actions.push({ type: "breakdown" })
-    } else if (game.gameActionState?.currentAction === actionType.RoutAll) {
+    } else if (game.gameState?.currentAction === actionType.RoutAll) {
         actions.unshift({ type: "none", message: "enemy rout" })
         actions.push({ type: "enemy_rout" })
         actions.push({ type: "cancel_action" })
-    } else if (game.gameActionState?.currentAction === actionType.RoutCheck) {
+    } else if (game.gameState?.currentAction === actionType.RoutCheck) {
         actions.push({ type: "rout_check" })
-    } else if (game.gameActionState?.currentAction === actionType.Rout) {
-      if (game.gameActionState.rout?.optional && !game.gameActionState.rout.routPathTree) {
+    } else if (game.gameState?.currentAction === actionType.Rout) {
+      if (game.gameState.rout?.optional && !game.gameState.rout.routPathTree) {
         actions.unshift({ type: "none", message: "can't rout unit without eliminating it" })
-      } else if (!game.gameActionState.rout?.routPathTree) {
+      } else if (!game.gameState.rout?.routPathTree) {
         actions.unshift({ type: "none", message: "unit has no legal move" })
         actions.push({ type: "rout_eliminate" })
       } else {
         actions.unshift({ type: "none", message: "select location to rout to" })
       }
-      if (game.gameActionState.rout?.optional) {
+      if (game.gameState.rout?.optional) {
         actions.push({ type: "cancel_action" })
       }
-    } else if (game.gameActionState?.currentAction === actionType.MoraleCheck) {
-      const select = game.gameActionState
-      const counter = game.gameActionState.selection[0].counter
+    } else if (game.gameState?.currentAction === actionType.MoraleCheck) {
+      const select = game.gameState
+      const counter = game.gameState.selection[0].counter
       const hex = counter.hex as Coordinate
       actions.unshift({
         type: "none",
         message: `${game.nationNameForPlayer(select.player)} ${counter.unit.name} at ${coordinateToLabel(hex)}:`
       })
       actions.push({ type: "morale_check" })
-    } else if (game.gameActionState?.currentAction === actionType.Initiative) {
+    } else if (game.gameState?.currentAction === actionType.Initiative) {
       actions.push({ type: "initiative" })
-    } else if (game.gameActionState?.currentAction === actionType.Pass) {
+    } else if (game.gameState?.currentAction === actionType.Pass) {
       actions.unshift({ type: "none", message: "are you sure?" })
       actions.push({ type: "pass" })
       actions.push({ type: "pass_cancel" })
@@ -215,8 +215,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
 
 export function currSelection(game: Game, move: boolean): Unit | undefined {
   if (!game) { return undefined}
-  if (game.gameActionState?.selection && game.gameActionState.selection.length > 0) {
-    const unit = game.gameActionState.selection[0].counter.unit
+  if (game.gameState?.selection && game.gameState.selection.length > 0) {
+    const unit = game.gameState.selection[0].counter.unit
     if (move && unit.canHandle && unit.children.length > 0 && unit.children[0].crewed) {
       return unit.children[0]
     }

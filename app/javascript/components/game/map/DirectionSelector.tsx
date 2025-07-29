@@ -18,10 +18,10 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
     const game = hex.map.game
     let dirs: Direction[] = [1, 2, 3, 4, 5, 6]
     let pointingDir: Direction | undefined = undefined
-    if (game.gameActionState?.deploy) {
-      const player = game.gameActionState.player
-      const turn = game.gameActionState.deploy.turn
-      const index = game.gameActionState.deploy.index
+    if (game.gameState?.deploy) {
+      const player = game.gameState.player
+      const turn = game.gameState.deploy.turn
+      const index = game.gameState.deploy.index
       const uf = player === 1 ?
         game.scenario.alliedReinforcements[turn][index].counter :
         game.scenario.axisReinforcements[turn][index].counter
@@ -33,16 +33,16 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
           !unit.amphibious && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
-    } else if (game.gameActionState?.fire && game.gameActionState.selection) {
+    } else if (game.gameState?.fire && game.gameState.selection) {
       const lastPath = game.lastPath as GameActionPath
       pointingDir = lastPath.turret
-    } else if (game.gameActionState?.move && game.gameActionState.selection) {
+    } else if (game.gameState?.move && game.gameState.selection) {
       const lastPath = game.lastPath as GameActionPath
-      if (game.gameActionState.move.rotatingTurret) {
+      if (game.gameState.move.rotatingTurret) {
         pointingDir = lastPath.turret
       } else {
         if (openHexRotatePossible(hex.map)) {
-          const unit = game.gameActionState.selection[0].counter.unit
+          const unit = game.gameState.selection[0].counter.unit
           if (!hex.terrain.vehicle && unit.isVehicle && hex.roadType !== roadType.Path) {
             dirs = hex.roadDirections ?? []
           }
@@ -55,7 +55,7 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         }
         pointingDir = lastPath.facing
       }
-    } else if (game.gameActionState?.assault && game.gameActionState.selection) {
+    } else if (game.gameState?.assault && game.gameState.selection) {
       const lastPath = game.lastPath as GameActionPath
       pointingDir = lastPath.turret
     }
@@ -65,8 +65,8 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
       const style = { fill: "#FFF", strokeWidth: 1, stroke: "#000" }
       const tStyle = { fill: "#000" }
       let callback = () => selectCallback(hex.coord.x, hex.coord.y, v as Direction)
-      if (game.gameActionState?.move?.rotatingTurret || game.gameActionState?.assault ||
-          game.gameActionState?.fire) {
+      if (game.gameState?.move?.rotatingTurret || game.gameState?.assault ||
+          game.gameState?.fire) {
         style.fill = "#FF0"
       }
       if (v === pointingDir) {
@@ -88,14 +88,14 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
   }
 
   const overlay = () => {
-    if (!hex?.map?.game?.gameActionState?.move && !hex?.map?.game?.gameActionState?.assault) { return }
+    if (!hex?.map?.game?.gameState?.move && !hex?.map?.game?.gameState?.assault) { return }
     return (
       <polygon points={hex.hexCoords} style={{ fill: clearColor }} />
     )
   }
 
   const text = () => {
-    if (!hex?.map?.game?.gameActionState?.deploy) { return }
+    if (!hex?.map?.game?.gameState?.deploy) { return }
     const y = hex ? hex?.yOffset : 0
     return (
       <text x={hex?.xOffset} y={y + 2} fontSize={13.5} textAnchor="middle"

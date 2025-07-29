@@ -63,7 +63,7 @@ export default class Game {
   axisSniper?: Feature;
 
   suppressNetwork: boolean = false;
-  gameActionState?: GameActionState;
+  gameState?: GameActionState;
 
   closeReinforcementPanel: boolean = false;
 
@@ -483,7 +483,7 @@ export default class Game {
     if (action.lastUndoCascade) {
       this.executeUndo()
     }
-    this.gameActionState = undefined
+    this.gameState = undefined
     this.refreshCallback(this)
   }
 
@@ -588,7 +588,7 @@ export default class Game {
   }
 
   get currentReinforcementSelection(): DeployActionState | undefined {
-    return this.gameActionState?.deploy
+    return this.gameState?.deploy
   }
 
   setReinforcementSelection(player: Player, deploy: DeployActionState | undefined) {
@@ -596,7 +596,7 @@ export default class Game {
       this.cancelAction()
       return
     }
-    const current = this.gameActionState
+    const current = this.gameState
     if (player === current?.player && deploy.turn === current.deploy?.turn &&
         deploy.index === current.deploy?.index) {
       this.cancelAction()
@@ -605,8 +605,8 @@ export default class Game {
       if (list) {
         const counter = list[deploy.index]
         if (counter.x > counter.used) {
-          this.gameActionState = { player, currentAction: actionType.Deploy, selection: [] }
-          this.gameActionState.deploy = deploy
+          this.gameState = { player, currentAction: actionType.Deploy, selection: [] }
+          this.gameState.deploy = deploy
         }
       }
     }
@@ -615,20 +615,20 @@ export default class Game {
   executeReinforcement(
     x: number, y: number, counter: ReinforcementItem, d: Direction, callback: (game: Game) => void
   ) {
-    if (this.gameActionState?.deploy) {
+    if (this.gameState?.deploy) {
       const id = `uf-${this.actions.length}`
       const action = new GameAction({
         user: this.currentUser,
-        player: this.gameActionState.player,
+        player: this.gameState.player,
         data: {
           action: "deploy", old_initiative: this.initiative,
           path: [{ x, y, facing: d }],
-          deploy: [{ turn: this.turn, index: this.gameActionState.deploy.index, id }]
+          deploy: [{ turn: this.turn, index: this.gameState.deploy.index, id }]
         }
       }, this, this.actions.length)
       this.executeAction(action, false)
       callback(this)
-      this.gameActionState.deploy.needsDirection = undefined
+      this.gameState.deploy.needsDirection = undefined
       if (counter.x === counter.used) {
         this.cancelAction()
       }
@@ -636,22 +636,22 @@ export default class Game {
   }
 
   get lastPath(): GameActionPath | undefined {
-    if (this.gameActionState?.fire) {
-      const path = this.gameActionState.fire.path
+    if (this.gameState?.fire) {
+      const path = this.gameState.fire.path
       return path[path.length - 1]
-    } else if (this.gameActionState?.move) {
-      const path = this.gameActionState.move.path
+    } else if (this.gameState?.move) {
+      const path = this.gameState.move.path
       return path[path.length - 1]
-    } else if (this.gameActionState?.assault) {
-      const path = this.gameActionState.assault.path
+    } else if (this.gameState?.assault) {
+      const path = this.gameState.assault.path
       return path[path.length - 1]
     }
   }
 
   get actionInProgress(): boolean {
-    if (this.gameActionState?.deploy && this.gameActionState.deploy.needsDirection) { return true }
-    if (this.gameActionState?.move) { return true }
-    if (this.gameActionState?.currentAction === actionType.Pass) { return true }
+    if (this.gameState?.deploy && this.gameState.deploy.needsDirection) { return true }
+    if (this.gameState?.move) { return true }
+    if (this.gameState?.currentAction === actionType.Pass) { return true }
     return false
   }
 
@@ -659,7 +659,7 @@ export default class Game {
     this.scenario.map.clearAllSelections()
     this.scenario.map.clearGhosts()
     this.closeOverlay = true
-    this.gameActionState = undefined
+    this.gameState = undefined
   }
 
   updateInitiative(amount: number) {

@@ -11,8 +11,8 @@ import Unit from "../Unit";
 import { ActionSelection } from "./mainActions";
 
 export function openHexFiring(map: Map, from: Coordinate, to: Coordinate): HexOpenType {
-  if (!map.game?.gameActionState?.fire) { return hexOpenType.Closed }
-  const fire = map.game.gameActionState.fire
+  if (!map.game?.gameState?.fire) { return hexOpenType.Closed }
+  const fire = map.game.gameState.fire
   if (!fire.doneSelect) {
     const leadership = leadershipRange(map.game)
     if (!leadership) {
@@ -26,10 +26,10 @@ export function openHexFiring(map: Map, from: Coordinate, to: Coordinate): HexOp
 }
 
 export function leadershipRange(game: Game): number | false {
-  if (!game?.gameActionState?.fire) { return false }
-  const init = game.gameActionState.fire.initialSelection[0]
+  if (!game?.gameState?.fire) { return false }
+  const init = game.gameState.fire.initialSelection[0]
   let leadership = -1
-  for (const sel of game.gameActionState.selection) {
+  for (const sel of game.gameState.selection) {
     const unit = sel.counter.unit
     if (unit.leader && sel.x === init.x && sel.y === init.y) {
       if (unit.currentLeadership > leadership) { leadership = unit.currentLeadership }
@@ -54,8 +54,8 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
 }
 
 export function rapidFire(game: Game): boolean {
-  if (!game?.gameActionState?.fire) { return false }
-  for (const sel of game.gameActionState.selection) {
+  if (!game?.gameState?.fire) { return false }
+  for (const sel of game.gameState.selection) {
     if (sel.counter.unit.sponson && game.sponsonFire) {
       return false
     } else {
@@ -66,8 +66,8 @@ export function rapidFire(game: Game): boolean {
 }
 
 export function areaFire(game: Game) {
-  if (!game?.gameActionState?.fire) { return false }
-  const init = game.gameActionState.fire.initialSelection[0]
+  if (!game?.gameState?.fire) { return false }
+  const init = game.gameState.fire.initialSelection[0]
   if (init.counter.unit.sponson && game.sponsonFire) {
     if (init.counter.unit.sponson.type !== sponsonType.Flame) { return false }
   } else {
@@ -78,7 +78,7 @@ export function areaFire(game: Game) {
 }
 
 export function unTargetSelectExceptChain(game: Game, x: number, y: number) {
-  if (!game?.gameActionState?.fire) { return false }
+  if (!game?.gameState?.fire) { return false }
   const hexes = [new Coordinate(x, y)]
 
   let check = true
@@ -89,7 +89,7 @@ export function unTargetSelectExceptChain(game: Game, x: number, y: number) {
       break
     }
     check = false
-    for (const sel of game.gameActionState.fire.targetSelection) {
+    for (const sel of game.gameState.fire.targetSelection) {
       let hexCheck = false
       for (const hex of hexes) {
         if (hex.x === sel.x && hex.y === sel.y) {
@@ -126,7 +126,7 @@ export function unTargetSelectExceptChain(game: Game, x: number, y: number) {
 }
 
 export function refreshTargetSelection(game: Game) {
-  if (!game?.gameActionState?.fire) { return false }
+  if (!game?.gameState?.fire) { return false }
   const targets = []
   const coords = []
   const units = game.scenario.map.allUnits
@@ -141,8 +141,8 @@ export function refreshTargetSelection(game: Game) {
       if (!check) { coords.push(new Coordinate(hex.x, hex.y)) }
     }
   }
-  game.gameActionState.fire.targetSelection = targets
-  game.gameActionState.fire.targetHexes = coords
+  game.gameState.fire.targetSelection = targets
+  game.gameState.fire.targetHexes = coords
 }
 
 export function fireHindranceAll(
@@ -221,7 +221,7 @@ export function firepower(
 }
 
 function leadershipAt(game: Game, at: Coordinate): number {
-  if (!game?.gameActionState?.fire) { return 0 }
+  if (!game?.gameState?.fire) { return 0 }
   const counters = game.scenario.map.countersAt(at)
   let leadership = 0
   for (const c of counters) {
@@ -497,10 +497,10 @@ function hitFromArc(
 }
 
 function inRange(game: Game, to: Coordinate): boolean {
-  if (!game?.gameActionState?.fire) { return false }
+  if (!game?.gameState?.fire) { return false }
   let leaderRange = true
   let leaderOnly = true
-  for (const sel of game.gameActionState.selection) {
+  for (const sel of game.gameState.selection) {
     const unit = sel.counter.unit
     const from = sel.counter.hex as Coordinate
     if (from.x === to.x && from.y === to.y) { return false }

@@ -14,10 +14,10 @@ import MapHex from "../game/map/MapHex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import MapCounter from "../game/map/MapCounter";
 import { findRoutPathTree, routPaths } from "../../engine/control/rout";
-import { RoutPathTree } from "../../engine/control/mainActions";
 import Game, { gamePhaseType } from "../../engine/Game";
 import { HexData } from "../../engine/Hex";
 import { ScenarioData } from "../../engine/Scenario";
+import { RoutPathTree } from "../../engine/control/actionState";
 
 export default function RoutSection() {
   const [routDiagram, setRoutDiagram] = useState<JSX.Element | undefined>();
@@ -45,7 +45,7 @@ export default function RoutSection() {
   const mapTestData = (x: number, y: number, hexes: HexData[][]): MapData => {
     return {
       layout: [ x, y, "x" ],
-      allied_dir: 5.5, axis_dir: 2.5,
+      allied_dir: 4, axis_dir: 1,
       victory_hexes: [],
       allied_setup: { 0: [[0, "*"]] },
       axis_setup: { 0: [[4, "*"]] },
@@ -140,17 +140,13 @@ export default function RoutSection() {
 
   useEffect(() => {
     if (!map || Object.keys(units).length < 1) { return }
+    map.axisDir = 1
+    const unit = units["ger_Rifle_sqd"].clone() as Unit
     if (map.units[1][1].length < 1) {
-      const unit = units["ger_Rifle_sqd"].clone() as Unit
       map.addCounter(new Coordinate(1, 1), unit);
       unit.status = unitStatus.Broken
     }
-    const x0 = map.xOffset(1, 1)
-    const y0 = map.yOffset(1)
-    const x1 = map.xOffset(4, 1)
-    const y1 = map.yOffset(1)
-    const x2 = map.xOffset(5, 2)
-    const y2 = map.yOffset(2)
+    const paths = routPaths(findRoutPathTree(map.game as Game, new Coordinate(1, 1), 4, 2, unit) as RoutPathTree)
 
     setRoutDiagram(
       <div className="ml1em" style={{ float: "right" }}>
@@ -171,9 +167,21 @@ export default function RoutSection() {
                 />
               ))
             )}
-            <path d={`M ${x0} ${y0} L ${x1} ${y1} L ${x2} ${y2}`}
-                  style={{ stroke: "#E00", strokeWidth: 2, strokeDasharray: "4 4", fill: clearColor }} />
-            <circle cx={x2} cy={y2} r={12} style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
+            { paths.map((path, i) => {
+              const last = path[path.length - 1]
+              const zx = map.xOffset(last.x, last.y)
+              const zy = map.yOffset(last.y)
+              let index = 0
+              const dpath = path.map(p => {
+                return `${ index++ ? "L" : "M" } ${map.xOffset(p.x, p.y)} ${map.yOffset(p.y)}`
+              }).join(" ")
+              return (
+                <g key={`${i}-path`}>
+                  <path d={dpath} style={{ stroke: "#E00", strokeWidth: 2, strokeDasharray: "4 4", fill: clearColor }} />
+                  <circle cx={zx} cy={zy} r={12} style={{ fill: "#E00", stroke: "white", strokeWidth: 2 }} />
+                </g>
+              )
+            })}
             <MapCounter counter={map.countersAt(new Coordinate(1, 1))[0]} ovCallback={() => {}} />
             { arrow(175, 80, 0) }
           </g>
@@ -187,12 +195,12 @@ export default function RoutSection() {
 
   useEffect(() => {
     if (!map2 || Object.keys(units).length < 1) { return }
+    map2.axisDir = 2.5
     const unit = units["ger_Rifle_sqd"].clone() as Unit
     if (map2.units[1][3].length < 1) {
       map2.addCounter(new Coordinate(3, 1), unit);
       unit.status = unitStatus.Broken
     }
-
     const paths = routPaths(findRoutPathTree(map2.game as Game, new Coordinate(3, 1), 4, 2, unit) as RoutPathTree)
 
     setRoutDiagram2(
@@ -216,8 +224,6 @@ export default function RoutSection() {
             )}
             { paths.map((path, i) => {
               const last = path[path.length - 1]
-              console.log(i)
-              console.log(last)
               const zx = map2.xOffset(last.x, last.y)
               const zy = map2.yOffset(last.y)
               let index = 0

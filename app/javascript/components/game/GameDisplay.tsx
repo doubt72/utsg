@@ -284,10 +284,10 @@ export default function GameDisplay() {
   }
 
   const hexSelection = (x: number, y: number) => {
-    if (game.k?.gameActionState?.deploy) {
+    if (game.k?.gameState?.deploy) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
-        game.k.gameActionState.deploy.index]
-      if (!counter.counter.rotates || !game.k.gameActionState.deploy.needsDirection) {
+        game.k.gameState.deploy.index]
+      if (!counter.counter.rotates || !game.k.gameState.deploy.needsDirection) {
         game.k.executeReinforcement(x, y, counter, 1, gameNotification)
       } else {
         setControls(gc => {
@@ -295,13 +295,13 @@ export default function GameDisplay() {
           return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
         })
       }
-    } else if (game.k?.gameActionState?.move || game.k?.gameActionState?.assault) {
+    } else if (game.k?.gameState?.move || game.k?.gameState?.assault) {
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
       })
-    } else if (game.k?.gameActionState?.fire) {
-      const state = game.k.gameActionState
+    } else if (game.k?.gameState?.fire) {
+      const state = game.k.gameState
       if (state.selection[0].counter.unit.offBoard || state.fire?.firingSmoke) {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
@@ -319,19 +319,19 @@ export default function GameDisplay() {
   }
 
   const directionSelection = (x: number, y: number, d: Direction) => {
-    if (game.k?.gameActionState?.deploy) {
+    if (game.k?.gameState?.deploy) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
-        game.k.gameActionState.deploy.index]
+        game.k.gameState.deploy.index]
       game.k.executeReinforcement(x, y, counter, d, gameNotification)
-    } else if (game.k?.gameActionState?.fire) {
+    } else if (game.k?.gameState?.fire) {
       fireRotate(game.k, d)
-    } else if (game.k?.gameActionState?.move) {
+    } else if (game.k?.gameState?.move) {
       moveRotate(game.k, x, y, d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
       })
-    } else if (game.k?.gameActionState?.assault) {
+    } else if (game.k?.gameState?.assault) {
       assaultRotate(game.k, x, y, d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)

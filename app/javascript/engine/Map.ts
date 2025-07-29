@@ -514,8 +514,8 @@ export default class Map {
   }
 
   get actionCounters(): Counter[] {
-    if (!this.game || !this.game.gameActionState) { return [] }
-    const move = this.game.gameActionState.move
+    if (!this.game || !this.game.gameState) { return [] }
+    const move = this.game.gameState.move
     if (move) {
       if (!move.doneSelect || move.droppingMove || (move.loadingMove && needPickUpDisambiguate(this.game))) {
         const first = move.path[0]
@@ -526,14 +526,14 @@ export default class Map {
         return this.countersAt(new Coordinate(last.x, last.y))
       }
     }
-    const assault = this.game.gameActionState.assault
+    const assault = this.game.gameState.assault
     if (assault) {
       if (!assault.doneSelect) {
         const first = assault.path[0]
         return this.countersAt(new Coordinate(first.x, first.y))
       }
     }
-    const fire = this.game.gameActionState.fire
+    const fire = this.game.gameState.fire
     if (fire) {
       let rc: Counter[] = []
       const first = fire.path[0]
@@ -567,7 +567,7 @@ export default class Map {
                 }
               }
             }
-            for (const sel of this.game.gameActionState.selection) {
+            for (const sel of this.game.gameState.selection) {
               if (!fire.doneRotating) { break }
               if (sel.x === x && sel.y === y) {
                 check = true
@@ -580,17 +580,17 @@ export default class Map {
       }
       return rc
     }
-    const rout = this.game.gameActionState.rout
-    const routCheck = this.game.gameActionState.currentAction === actionType.RoutCheck
-    const moraleCheck = this.game.gameActionState.currentAction === actionType.MoraleCheck
+    const rout = this.game.gameState.rout
+    const routCheck = this.game.gameState.currentAction === actionType.RoutCheck
+    const moraleCheck = this.game.gameState.currentAction === actionType.MoraleCheck
     if (rout || routCheck || moraleCheck) {
-      const first = this.game.gameActionState.selection[0]
+      const first = this.game.gameState.selection[0]
       return this.countersAt(new Coordinate(first.x, first.y))
     }
-    const routAll = this.game.gameActionState.currentAction === actionType.RoutAll
+    const routAll = this.game.gameState.currentAction === actionType.RoutAll
     if (routAll) {
       let rc: Counter[] = []
-      for (const s of this.game.gameActionState.selection) {
+      for (const s of this.game.gameState.selection) {
         const counters = this.countersAt(new Coordinate(s.x, s.y))
         for (const c of counters) {
           if (c.unit.isBroken && c.unit.playerNation !== this.game.currentPlayerNation) {

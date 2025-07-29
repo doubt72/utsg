@@ -8,10 +8,10 @@ import Unit from "../Unit"
 import { rushing } from "./checks"
 
 export function mapSelectMovement(game: Game, roadMove: boolean): number {
-  if (!game.gameActionState) { return 0 }
+  if (!game.gameState) { return 0 }
   const map = game.scenario.map
   const road = allAlongRoad(map)
-  const selection = game.gameActionState.selection[0].counter
+  const selection = game.gameState.selection[0].counter
   const next = selection.children[0]
   const allRoad = road && roadMove && !selection.unit.isWheeled &&
                   !(next && next.unit.crewed) ? 1 : 0
@@ -21,10 +21,10 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
   if (selection.unit.canCarrySupport) {
     let minLdrMove = 99
     let minInfMove = 99
-    for(const sel of game.gameActionState.selection) {
+    for(const sel of game.gameState.selection) {
       let check = false
-      if (game.gameActionState.move?.addActions) {
-        for (const add of game.gameActionState.move.addActions) {
+      if (game.gameState.move?.addActions) {
+        for (const add of game.gameState.move.addActions) {
           if (add.type === gameActionAddActionType.Drop && add.id === sel.id) {
             check = true
             continue
@@ -57,12 +57,12 @@ export function mapSelectMovement(game: Game, roadMove: boolean): number {
 
 export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): HexOpenType {
   const game = map.game
-  if (!game?.gameActionState?.move) { return hexOpenType.Closed }
-  const action = game?.gameActionState.move
+  if (!game?.gameState?.move) { return hexOpenType.Closed }
+  const action = game?.gameState.move
   if (action.droppingMove) { return hexOpenType.Closed }
   if (action.loadingMove) { return hexOpenType.Closed }
-  if (!game.gameActionState.selection) { return hexOpenType.Closed }
-  const selection = game.gameActionState.selection[0].counter
+  if (!game.gameState.selection) { return hexOpenType.Closed }
+  const selection = game.gameState.selection[0].counter
   if (action.placingSmoke) { return smokeOpenHex(map, from, to, selection.unit) }
   if (from.x === to.x && from.y === to.y) { return hexOpenType.Closed }
   const hexFrom = map.hexAt(from) as Hex;
@@ -80,7 +80,7 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
     if (next && next.unit.crewed) { return hexOpenType.Closed }
   }
 
-  const moveSize = game.gameActionState.selection.filter(u => !u.counter.unit.parent).reduce(
+  const moveSize = game.gameState.selection.filter(u => !u.counter.unit.parent).reduce(
     (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
   )
   const toSize = map.sizeAt(to)
@@ -136,8 +136,8 @@ export function openHexMovement(map: Map, from: Coordinate, to: Coordinate): Hex
 
 export function movementPastCost(map: Map, target: Unit): number {
   const game = map.game
-  if (!game?.gameActionState?.move) { return 0 }
-  const move = game.gameActionState.move
+  if (!game?.gameState?.move) { return 0 }
+  const move = game.gameState.move
   const length = move.path.length
   let pastCost = 0
   move.addActions.forEach(a => pastCost += a.cost)
@@ -200,8 +200,8 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
 }
 
 export function showLaySmoke(game: Game): boolean {
-  const move = game.gameActionState?.move
-  const selection = game.gameActionState?.selection
+  const move = game.gameState?.move
+  const selection = game.gameState?.selection
   if (!move || !selection) { return false }
   if (move.loadingMove || move.droppingMove) { return false }
   let smoke = false
@@ -219,7 +219,7 @@ export function showLaySmoke(game: Game): boolean {
 }
 
 export function showDropMove(game: Game): boolean {
-  const action = game.gameActionState
+  const action = game.gameState
   if (!action?.move) { return false }
   if (action.move.loadingMove || action.move.placingSmoke) { return false }
   const selection = action.selection
@@ -236,8 +236,8 @@ export function showDropMove(game: Game): boolean {
 
 export function showLoadMove(game: Game): boolean {
   if (rushing(game)) { return false }
-  const move = game.gameActionState?.move
-  const selection = game.gameActionState?.selection
+  const move = game.gameState?.move
+  const selection = game.gameState?.selection
   if (!selection || move?.placingSmoke || move?.droppingMove) { return false }
   for (const s of selection) {
     if (canLoadUnit(game, s.counter.unit)) { return true }
@@ -246,10 +246,10 @@ export function showLoadMove(game: Game): boolean {
 }
 
 export function canBeLoaded(game: Game, target: Unit): boolean {
-  if (!game.gameActionState) { return false }
-    let unit = game.gameActionState.move?.loader?.unit as Unit
-    if (!unit) { unit = game.gameActionState.selection[0].counter.unit as Unit }
-    const path = game.gameActionState?.move?.path
+  if (!game.gameState) { return false }
+    let unit = game.gameState.move?.loader?.unit as Unit
+    if (!unit) { unit = game.gameState.selection[0].counter.unit as Unit }
+    const path = game.gameState?.move?.path
     if (target.crewed && path && path.length > 1) { return false }
     return unit.canCarry(target)
 }
@@ -260,7 +260,7 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
   const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
   for (const c of counters) {
     if (c.hasFeature || c.unit.selected || c.unit.loadedSelected) { continue }
-    const path = game.gameActionState?.move?.path
+    const path = game.gameState?.move?.path
     if (c.unit.crewed && path && path.length > 1) { continue}
     if (unit.canCarry(c.unit)) {
       return true
@@ -316,12 +316,12 @@ function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selection: Uni
 
 function allAlongRoad(map: Map): boolean {
   const game = map.game
-  if (!game?.gameActionState?.move) { return false }
-  if (game.gameActionState.move.addActions.filter(a => a.cost > 0).length > 0) { return false }
-  const length = game.gameActionState.move.path.length
+  if (!game?.gameState?.move) { return false }
+  if (game.gameState.move.addActions.filter(a => a.cost > 0).length > 0) { return false }
+  const length = game.gameState.move.path.length
   for (let i = 0; i < length - 1; i++) {
-    const p1 = game.gameActionState.move.path[i]
-    const p2 = game.gameActionState.move.path[i+1]
+    const p1 = game.gameState.move.path[i]
+    const p2 = game.gameState.move.path[i+1]
     const loc1 = new Coordinate(p1.x, p1.y)
     const loc2 = new Coordinate(p2.x, p2.y)
     if (!alongRoad(

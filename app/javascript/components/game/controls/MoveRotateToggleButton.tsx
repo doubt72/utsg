@@ -16,7 +16,7 @@ export default function MoveRotateToggleButton({ game, callback }: MoveRotateTog
   }
 
   const text = () => {
-    if (game.gameActionState?.move?.rotatingTurret === true) { return "rotating turret" }
+    if (game.gameState?.move?.rotatingTurret === true) { return "rotating turret" }
     return "rotating hull"
   }
 

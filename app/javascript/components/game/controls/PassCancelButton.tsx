@@ -10,7 +10,7 @@ interface PassCancelButtonProps {
 export default function PassCancelButton({ game, callback }: PassCancelButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameActionState = undefined
+    game.gameState = undefined
     callback()
   }
 

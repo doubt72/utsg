@@ -25,7 +25,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     expect(state.player).toBe(2)
     expect(state.currentAction).toBe(actionType.Assault)
@@ -186,7 +186,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     select(map, {
@@ -243,7 +243,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     select(map, {
@@ -273,7 +273,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     select(map, {
@@ -323,7 +323,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
@@ -383,7 +383,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
@@ -432,7 +432,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.All)
@@ -465,7 +465,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     expect(assault.path[0].facing).toBe(1)
@@ -570,7 +570,7 @@ describe("assault movement tests", () => {
 
     startAssault(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const assault = state.assault as AssaultMoveActionState
 
     expect(assault.path[0].facing).toBe(1)

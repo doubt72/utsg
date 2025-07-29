@@ -134,7 +134,7 @@ describe("game action tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     doMove(game, 3, 2)
@@ -175,7 +175,7 @@ describe("game action tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(openHexRotateOpen(map)).toBe(true)
@@ -220,7 +220,7 @@ describe("game action tests", () => {
 
     startBreakdown(game)
     expect(reactionFireCheck(game)).toBe(false)
-    expect(game.gameActionState?.currentAction).toBe(actionType.Breakdown)
+    expect(game.gameState?.currentAction).toBe(actionType.Breakdown)
     finishBreakdown(game)
     expect(reactionFireCheck(game)).toBe(false)
 
@@ -281,7 +281,7 @@ describe("game action tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
     startBreakdown(game)
-    expect(game.gameActionState?.currentAction).toBe(actionType.Breakdown)
+    expect(game.gameState?.currentAction).toBe(actionType.Breakdown)
     finishBreakdown(game)
 
     Math.random = original
@@ -303,28 +303,28 @@ describe("game action tests", () => {
     expect(game.phase).toBe(gamePhaseType.Main)
 
     startPass(game)
-    expect(game.gameActionState?.currentAction).toBe(actionType.Pass)
+    expect(game.gameState?.currentAction).toBe(actionType.Pass)
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Main)
     expect(reactionFireCheck(game)).toBe(false)
 
     finishPass(game)
-    expect(game.gameActionState).toBe(undefined)
+    expect(game.gameState).toBe(undefined)
     expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
     expect(reactionFireCheck(game)).toBe(false)
 
     startPass(game)
-    expect(game.gameActionState?.currentAction).toBe(actionType.Pass)
+    expect(game.gameState?.currentAction).toBe(actionType.Pass)
     expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
     expect(reactionFireCheck(game)).toBe(false)
 
     finishPass(game)
-    expect(game.gameActionState).toBe(undefined)
+    expect(game.gameState).toBe(undefined)
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Cleanup)

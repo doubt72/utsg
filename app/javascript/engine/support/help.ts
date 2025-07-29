@@ -147,8 +147,8 @@ export function counterFireHelpLayout(
   game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
 ): HelpLayout {
   const noHelp = { path: "", size: 0, style: {}, opacity: 0, tStyle: {}, texts: [] }
-  if (!game.gameActionState?.fire) { return noHelp }
-  if (!game.gameActionState.fire.targetSelection.map(s => s.id).includes(counter.unit.id)) {
+  if (!game.gameState?.fire) { return noHelp }
+  if (!game.gameState.fire.targetSelection.map(s => s.id).includes(counter.unit.id)) {
     return noHelp
   }
   const text = counter.unit.fireHelpText(game, hex)
@@ -307,11 +307,11 @@ export function unitHelpText(unit: Unit): string[] {
 }
 
 export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[] {
-  if (!game.gameActionState?.fire) { return [] }
-  if (game.gameActionState.fire.targetSelection.length < 1) { return [] }
+  if (!game.gameState?.fire) { return [] }
+  if (game.gameState.fire.targetSelection.length < 1) { return [] }
   let rc: string[] = []
-  const firing = game.gameActionState.selection
-  const targets = game.gameActionState.fire.targetSelection
+  const firing = game.gameState.selection
+  const targets = game.gameState.fire.targetSelection
   let check = false
   for (const t of targets) {
     if (t.id === target.id) { check = true }
@@ -324,7 +324,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
   const hindrance = fireHindrance(game, firing, to)
   const source = firing[0].counter.unit
   if (firing[0].counter.unit.targetedRange || firing[0].counter.unit.offBoard) {
-    const rotated = game.gameActionState.fire.path.length > 1
+    const rotated = game.gameState.fire.path.length > 1
     const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.sponsonFire, rotated)
     const range = hexDistance(from, to)
     const roll = (range + hindrance) * mult.mult 
@@ -379,7 +379,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
     }
   } else {
     const basehit = baseToHit(fp.fp)
-    const mods = untargetedModifiers(game, firing, targets, game.gameActionState.fire.path)
+    const mods = untargetedModifiers(game, firing, targets, game.gameState.fire.path)
     const tohit = basehit + mods.mod + hindrance
     rc.push(`-> to hit (2d10): ${tohit} (${chance2D10(tohit)}%)`)
     rc.push(`firepower: ${fp.fp}`)

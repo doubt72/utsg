@@ -18,14 +18,14 @@ export default function MoveShortToggleButton({ game, callback }: MoveShortToggl
   }
 
   const text = () => {
-    if (game.gameActionState?.move?.droppingMove === true) {
+    if (game.gameState?.move?.droppingMove === true) {
       return `continue ${ rushing(game) ? "rushing" : "moving" }`
     }
     return "drop unit"
   }
   
   const icon = () => {
-    if (game.gameActionState?.move?.droppingMove === true) { return MoveGlyph() }
+    if (game.gameState?.move?.droppingMove === true) { return MoveGlyph() }
     return <BoxArrowDown />
   }
 

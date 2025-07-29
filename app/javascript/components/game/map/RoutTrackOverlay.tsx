@@ -10,9 +10,9 @@ interface RoutTrackOverlayProps {
 
 export default function RoutTrackOverlay({ map }: RoutTrackOverlayProps) {
   const hexTracks = () => {
-    if (!map.game?.gameActionState?.rout?.routPathTree) { return }
+    if (!map.game?.gameState?.rout?.routPathTree) { return }
     const rc: JSX.Element[] = []
-    const paths = routPaths(map.game.gameActionState.rout.routPathTree)
+    const paths = routPaths(map.game.gameState.rout.routPathTree)
     for (let i = 0; i < paths.length; i++) {
       const path = paths[i]
       for (let j = 1; j < path.length; j++) {
@@ -39,9 +39,9 @@ export default function RoutTrackOverlay({ map }: RoutTrackOverlayProps) {
   }
 
   const hexEnds = () => {
-    if (!map.game?.gameActionState?.rout?.routPathTree) { return }
+    if (!map.game?.gameState?.rout?.routPathTree) { return }
     const rc: JSX.Element[] = []
-    const ends = routEnds(map.game.gameActionState.rout.routPathTree)
+    const ends = routEnds(map.game.gameState.rout.routPathTree)
     for (let i = 0; i < ends.length; i++) {
       const loc = ends[i]
       const offset1 = Math.max(map.counterDataAt(loc).length * 5 - 5, 0)

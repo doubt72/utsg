@@ -15,8 +15,8 @@ import { actionType } from "./actionState"
 
 export function startInitiative(game: Game) {
   const action = game.lastAction
-  if (!action || game.gameActionState?.currentAction === actionType.Initiative) { return }
-  game.gameActionState = {
+  if (!action || game.gameState?.currentAction === actionType.Initiative) { return }
+  game.gameState = {
     player: game.currentPlayer, currentAction: actionType.Initiative,
     selection: []
   }
@@ -24,7 +24,7 @@ export function startInitiative(game: Game) {
 }
 
 export function finishInitiative(game: Game) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Initiative) { return }
+  if (!game.gameState || game.gameState.currentAction !== actionType.Initiative) { return }
   let result: GameActionDiceResult[] | undefined = undefined
   if ((game.currentPlayer === 1 && game.initiative > 0) ||
       (game.currentPlayer === 2 && game.initiative < 0)) {
@@ -32,20 +32,20 @@ export function finishInitiative(game: Game) {
   }
   const init = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: {
       action: "initiative", old_initiative: game.initiative,
       dice_result: result,
     },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(init, false)
 }
 
 export function startPass(game: Game) {
-  if (game.gameActionState) { return }
-  game.gameActionState = {
+  if (game.gameState) { return }
+  game.gameState = {
     player: game.currentPlayer, currentAction: actionType.Pass,
     selection: []
   }
@@ -53,13 +53,13 @@ export function startPass(game: Game) {
 }
 
 export function finishPass(game: Game) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Pass) { return }
+  if (!game.gameState || game.gameState.currentAction !== actionType.Pass) { return }
   const pass = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: { action: "pass", old_initiative: game.initiative },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(pass, false)
 }
@@ -85,7 +85,7 @@ export function startFire(game: Game) {
     if (canSelect) {
       game.openOverlay = game.scenario.map.hexAt(selection.hex)
     }
-    game.gameActionState = {
+    game.gameState = {
       player: game.reactionFire ? game.opponentPlayer : game.currentPlayer,
       currentAction: actionType.Fire,
       selection: allSelection,
@@ -98,21 +98,21 @@ export function startFire(game: Game) {
 }
 
 export function fireAtHex(game: Game, x: number, y: number) {
-  if (!game.gameActionState?.fire) { return }
-  if (game.gameActionState.selection[0].counter.unit.offBoard ||
-      game.gameActionState.fire.firingSmoke) {
-    game.gameActionState.fire.targetHexes = [new Coordinate(x, y)]
+  if (!game.gameState?.fire) { return }
+  if (game.gameState.selection[0].counter.unit.offBoard ||
+      game.gameState.fire.firingSmoke) {
+    game.gameState.fire.targetHexes = [new Coordinate(x, y)]
   }
 }
 
 export function fireRotate(game: Game, dir: Direction) {
-  if (!game.gameActionState?.fire) { return }
-  const path = game.gameActionState.fire.path
+  if (!game.gameState?.fire) { return }
+  const path = game.gameState.fire.path
   const x = path[0].x
   const y = path[0].y
   const origDir = path[0].turret
   if (dir === origDir) {
-    game.gameActionState.fire.path = [path[0]]
+    game.gameState.fire.path = [path[0]]
   } else if (path.length > 1) {
     path[1].turret = dir
   } else {
@@ -121,60 +121,60 @@ export function fireRotate(game: Game, dir: Direction) {
 }
 
 export function fireSponsonToggle(game: Game) {
-  if (!game.gameActionState?.fire) { return }
+  if (!game.gameState?.fire) { return }
   game.sponsonFire = !game.sponsonFire
-  game.gameActionState.fire.targetSelection = []
-  game.gameActionState.fire.targetHexes = []
+  game.gameState.fire.targetSelection = []
+  game.gameState.fire.targetHexes = []
   game.scenario.map.clearAllTargetSelections()
   if (game.sponsonFire) {
-    game.gameActionState.fire.path = [game.gameActionState.fire.path[0]]
-    game.gameActionState.fire.doneRotating = true
+    game.gameState.fire.path = [game.gameState.fire.path[0]]
+    game.gameState.fire.doneRotating = true
   } else {
-    game.gameActionState.fire.doneRotating = false
+    game.gameState.fire.doneRotating = false
   }
 }
 
 export function fireSmokeToggle(game: Game) {
-  if (!game.gameActionState?.fire) { return }
-  if (game.gameActionState.fire.firingSmoke) {
-    game.gameActionState.fire.firingSmoke = false
+  if (!game.gameState?.fire) { return }
+  if (game.gameState.fire.firingSmoke) {
+    game.gameState.fire.firingSmoke = false
   } else {
-    game.gameActionState.fire.firingSmoke = true
+    game.gameState.fire.firingSmoke = true
   }
-  game.gameActionState.fire.targetHexes = []
-  game.gameActionState.fire.targetSelection = []
+  game.gameState.fire.targetHexes = []
+  game.gameState.fire.targetSelection = []
   game.scenario.map.clearAllTargetSelections()
 }
 
 export function finishFire(game: Game) {
-  if (!game.gameActionState?.fire) { return }
+  if (!game.gameState?.fire) { return }
   const action = game.reactionFire ? (intensiveFiring(game) ? "reaction_intensive_fire" : "reaction_fire" ) :
     (intensiveFiring(game) ? "intensive_fire" : "fire" )
   const fire = new GameAction({
     user: game.reactionFire ? game.opponentUser : game.currentUser,
-    player: game.gameActionState.player,
+    player: game.gameState.player,
     data: {
       action, old_initiative: game.initiative,
-      path: game.gameActionState.fire.path,
-      origin: game.gameActionState.selection.map(s => {
+      path: game.gameState.fire.path,
+      origin: game.gameState.selection.map(s => {
         return {
           x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status,
           sponson: game.sponsonFire, wire: game.scenario.map.wireAt(new Coordinate(s.x, s.y))
         }
       }),
-      target: game.gameActionState.fire.targetSelection.map(t => {
+      target: game.gameState.fire.targetSelection.map(t => {
         return { x: t.x, y: t.y, id: t.counter.unit.id, status: t.counter.unit.status }
       }),
       fire_data: {
-        start: game.gameActionState.fire.targetHexes.map(h => {
-          return { x: h.x, y: h.y, smoke: !!game.gameActionState?.fire?.firingSmoke }
+        start: game.gameState.fire.targetHexes.map(h => {
+          return { x: h.x, y: h.y, smoke: !!game.gameState?.fire?.firingSmoke }
         }),
         final: []
       },
       dice_result: [],
     }
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.reactionFire = false
   game.scenario.map.clearGhosts()
   game.scenario.map.clearAllSelections()
@@ -186,7 +186,7 @@ export function startReaction(game: Game) {
 }
 
 export function passReaction(game: Game) {
-  if (game.gameActionState) { return }
+  if (game.gameState) { return }
   const pass = new GameAction({
     user: game.currentUser,
     player: togglePlayer(game.currentPlayer),
@@ -197,8 +197,8 @@ export function passReaction(game: Game) {
 }
 
 export function startSniper(game: Game) {
-  if (game.gameActionState || game.sniperNeeded.length < 1) { return }
-  game.gameActionState = {
+  if (game.gameState || game.sniperNeeded.length < 1) { return }
+  game.gameState = {
     player: game.currentPlayer, currentAction: actionType.Sniper,
     selection: game.sniperNeeded.map(s => {
       s.unit.select()
@@ -210,25 +210,25 @@ export function startSniper(game: Game) {
 }
 
 export function finishSniper(game: Game) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Sniper) { return }
+  if (!game.gameState || game.gameState.currentAction !== actionType.Sniper) { return }
   const snipe = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: {
       action: "sniper", old_initiative: game.initiative,
       dice_result: [{ result: roll2d10(), type: "2d10" }],
-      target: game.gameActionState.selection.map(s => {
+      target: game.gameState.selection.map(s => {
         return { x: s.x, y: s.y, id: s.id, status: s.counter.unit.status }
       }),
     },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(snipe, false)
 }
 
 export function startMoraleCheck(game: Game) {
-  if (game.gameActionState || game.moraleChecksNeeded.length < 1) { return }
+  if (game.gameState || game.moraleChecksNeeded.length < 1) { return }
   const check = game.moraleChecksNeeded[0] as {
     unit: Unit, from: Coordinate[], to: Coordinate, incendiary?: boolean
   }
@@ -236,7 +236,7 @@ export function startMoraleCheck(game: Game) {
   const player = check.unit.playerNation === game.currentPlayerNation ?
     game.currentPlayer : game.opponentPlayer
   const counter = game.findCounterById(check.unit.id) as Counter
-  game.gameActionState = {
+  game.gameState = {
     player, currentAction: actionType.MoraleCheck,
     selection: [{ x: check.to.x, y: check.to.y, id: check.unit.id, counter }],
     moraleCheck: {
@@ -249,20 +249,20 @@ export function startMoraleCheck(game: Game) {
 }
 
 export function finishMoraleCheck(game: Game) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.MoraleCheck) { return }
-  const sel = game.gameActionState.selection[0]
+  if (!game.gameState || game.gameState.currentAction !== actionType.MoraleCheck) { return }
+  const sel = game.gameState.selection[0]
   const mc = new GameAction({
-    user: game.currentPlayer === game.gameActionState.player ?
+    user: game.currentPlayer === game.gameState.player ?
       game.currentUser : game.opponentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: {
       action: "morale_check", old_initiative: game.initiative,
       dice_result: [{ result: roll2d10(), type: "2d10" }],
-      morale_data: game.gameActionState.moraleCheck,
+      morale_data: game.gameState.moraleCheck,
       target: [{ x: sel.x, y: sel.y, id: sel.id, status: sel.counter.unit.status }],
     },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(mc, false)
 }
@@ -300,7 +300,7 @@ export function startMove(game: Game) {
     if (canSelect) {
       game.openOverlay = game.scenario.map.hexAt(selection.hex)
     }
-    game.gameActionState = {
+    game.gameState = {
       player: game.currentPlayer,
       currentAction: actionType.Move,
       selection: allSelection,
@@ -313,17 +313,17 @@ export function startMove(game: Game) {
 }
 
 export function doMove(game: Game, x: number, y: number) {
-  if (!game.gameActionState?.move) { return }
-  if (!game.gameActionState?.selection) { return }
-  const selection = game.gameActionState.selection
-  const move = game.gameActionState.move
+  if (!game.gameState?.move) { return }
+  if (!game.gameState?.selection) { return }
+  const selection = game.gameState.selection
+  const move = game.gameState.move
   const target = selection[0].counter.unit
   const lastPath = game.lastPath as GameActionPath
   if (move.placingSmoke) {
     const id = `uf-${game.actions.length}-${move.addActions.length}`
     move.addActions.push({
       x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id,
-      index: game.gameActionState.move.path.length
+      index: game.gameState.move.path.length
     })
     game.scenario.map.addGhost(
       new Coordinate(x, y),
@@ -339,7 +339,7 @@ export function doMove(game: Game, x: number, y: number) {
     const vp = game.scenario.map.victoryAt(new Coordinate(x, y))
     if (vp && vp !== game.currentPlayer) {
       move.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0,
-      index: game.gameActionState.move.path.length })
+      index: game.gameState.move.path.length })
     }
   }
   move.doneSelect = true
@@ -347,14 +347,14 @@ export function doMove(game: Game, x: number, y: number) {
 }
 
 export function rotateToggle(game: Game) {
-  if (!game.gameActionState?.move) { return }
-  game.gameActionState.move.rotatingTurret = !game.gameActionState.move.rotatingTurret
+  if (!game.gameState?.move) { return }
+  game.gameState.move.rotatingTurret = !game.gameState.move.rotatingTurret
 }
 
 export function moveRotate(game: Game, x: number, y: number, dir: Direction) {
-  if (!game.gameActionState?.move) { return }
+  if (!game.gameState?.move) { return }
   const last = game.lastPath as GameActionPath
-  if (game.gameActionState.move.rotatingTurret) {
+  if (game.gameState.move.rotatingTurret) {
     last.turret = dir
   } else {
     const lastDir = last.facing
@@ -362,36 +362,36 @@ export function moveRotate(game: Game, x: number, y: number, dir: Direction) {
     if (lastDir && turret) {
       turret = normalDir(turret + dir - lastDir)
     }
-    game.gameActionState.move.path.push({
+    game.gameState.move.path.push({
       x: x, y: y, facing: dir, turret,
     })
   }
 }
 
 export function placeSmokeToggle(game: Game) {
-  if (!game.gameActionState?.move) { return }
-  game.gameActionState.move.placingSmoke = !game.gameActionState.move.placingSmoke
-  game.gameActionState.move.loadingMove = false
-  game.gameActionState.move.droppingMove = false
+  if (!game.gameState?.move) { return }
+  game.gameState.move.placingSmoke = !game.gameState.move.placingSmoke
+  game.gameState.move.loadingMove = false
+  game.gameState.move.droppingMove = false
 }
 
 export function shortingMoveToggle(game: Game) {
-  if (!game.gameActionState?.move) { return }
-  game.gameActionState.move.droppingMove = !game.gameActionState.move.droppingMove
-  if (game.gameActionState.move.droppingMove) {
-    const first = game.gameActionState.move.path[0]
+  if (!game.gameState?.move) { return }
+  game.gameState.move.droppingMove = !game.gameState.move.droppingMove
+  if (game.gameState.move.droppingMove) {
+    const first = game.gameState.move.path[0]
     game.openOverlay = game.scenario.map.hexAt(new Coordinate(first.x, first.y))
   }
-  game.gameActionState.move.loadingMove = false
-  game.gameActionState.move.placingSmoke = false
+  game.gameState.move.loadingMove = false
+  game.gameState.move.placingSmoke = false
 }
 
 export function loadingMoveToggle(game: Game) {
-  if (!game.gameActionState?.move) { return }
-  game.gameActionState.move.loadingMove = !game.gameActionState.move.loadingMove
-  if (game.gameActionState.move.loadingMove) {
+  if (!game.gameState?.move) { return }
+  game.gameState.move.loadingMove = !game.gameState.move.loadingMove
+  if (game.gameState.move.loadingMove) {
     if (needPickUpDisambiguate(game)) {
-      const first = game.gameActionState.move.path[0]
+      const first = game.gameState.move.path[0]
       game.openOverlay = game.scenario.map.hexAt(new Coordinate(first.x, first.y))
     } else {
       const last = game.lastPath as GameActionPath
@@ -400,12 +400,12 @@ export function loadingMoveToggle(game: Game) {
     const last = game.lastPath as GameActionPath
     game.openOverlay = game.scenario.map.hexAt(new Coordinate(last.x, last.y))
   }
-  game.gameActionState.move.droppingMove = false
-  game.gameActionState.move.placingSmoke = false
+  game.gameState.move.droppingMove = false
+  game.gameState.move.placingSmoke = false
 }
 
 export function finishMove(game: Game) {
-  if (!game.gameActionState?.move) { return }
+  if (!game.gameState?.move) { return }
   const lastPath = game.lastPath as GameActionPath
   const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
   let check = undefined
@@ -420,25 +420,25 @@ export function finishMove(game: Game) {
    } : undefined
   const dice: GameActionDiceResult[] = []
   if (moveData) {
-    const unit = game.gameActionState.selection[0].counter.unit
+    const unit = game.gameState.selection[0].counter.unit
     const mines = moveData.mines
     if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
       dice.push({ result: roll2d10(), type: "2d10" })
     }
   }
-  for (const a of game.gameActionState.move.addActions) {
+  for (const a of game.gameState.move.addActions) {
     if (a.type === gameActionAddActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
   }
   const move = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState.player,
+    player: game.gameState.player,
     data: {
       action: rushing(game) ? "rush" : "move", old_initiative: game.initiative,
-      path: game.gameActionState.move.path,
-      origin: game.gameActionState.selection.map(s => {
+      path: game.gameState.move.path,
+      origin: game.gameState.selection.map(s => {
         return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
-      add_action: game.gameActionState.move.addActions.map(a => {
+      add_action: game.gameState.move.addActions.map(a => {
         return {
           type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id, facing: a.facing,
           status: a.status, index: a.index,
@@ -448,7 +448,7 @@ export function finishMove(game: Game) {
       dice_result: dice,
     }
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearGhosts()
   game.scenario.map.clearAllSelections()
   game.executeAction(move, false)
@@ -485,7 +485,7 @@ export function startAssault(game: Game) {
     if (canSelect) {
       game.openOverlay = game.scenario.map.hexAt(selection.hex)
     }
-    game.gameActionState = {
+    game.gameState = {
       player: game.currentPlayer, currentAction: actionType.Assault, selection: allSelection,
       assault: { initialSelection, doneSelect: !canSelect, path: [loc], addActions: [] }
     }
@@ -493,10 +493,10 @@ export function startAssault(game: Game) {
 }
 
 export function doAssault(game: Game, x: number, y: number) {
-  if (!game.gameActionState?.assault) { return }
-  if (!game.gameActionState?.selection) { return }
-  const selection = game.gameActionState.selection
-  const assault = game.gameActionState.assault
+  if (!game.gameState?.assault) { return }
+  if (!game.gameState?.selection) { return }
+  const selection = game.gameState.selection
+  const assault = game.gameState.assault
   const target = selection[0].counter.unit
   const path = assault.path[0]
   const facing = game.scenario.map.relativeDirection(
@@ -514,26 +514,26 @@ export function doAssault(game: Game, x: number, y: number) {
 }
 
 export function assaultRotate(game: Game, x: number, y: number, dir: Direction) {
-  if (!game.gameActionState?.assault) { return }
+  if (!game.gameState?.assault) { return }
   const last = game.lastPath as GameActionPath
   last.turret = dir
 }
 
 export function assaultClear(game: Game) {
-  if (!game.gameActionState?.assault) { return }
-  const assault = game.gameActionState.assault
-  const x = game.gameActionState.selection[0].x
-  const y = game.gameActionState.selection[0].y
+  if (!game.gameState?.assault) { return }
+  const assault = game.gameState.assault
+  const x = game.gameState.selection[0].x
+  const y = game.gameState.selection[0].y
   const f = game.scenario.map.countersAt(new Coordinate(x, y)).filter(c => c.hasFeature)[0]
   assault.addActions.push({ x, y, type: gameActionAddActionType.Clear, cost: 0, id: f.feature.id, index: 0 })
   game.closeOverlay = true
 }
 
 export function assaultEntrench(game: Game) {
-  if (!game.gameActionState?.assault) { return }
-  const assault = game.gameActionState.assault
-  const x = game.gameActionState.selection[0].x
-  const y = game.gameActionState.selection[0].y
+  if (!game.gameState?.assault) { return }
+  const assault = game.gameState.assault
+  const x = game.gameState.selection[0].x
+  const y = game.gameState.selection[0].y
   game.scenario.map.unshiftGhost(new Coordinate(x, y), new Feature({
     ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
   }))
@@ -542,22 +542,22 @@ export function assaultEntrench(game: Game) {
 }
 
 export function finishAssault(game: Game) {
-  if (!game.gameActionState?.assault) { return }
+  if (!game.gameState?.assault) { return }
   const assault = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState.player,
+    player: game.gameState.player,
     data: {
       action: "assault_move", old_initiative: game.initiative,
-      path: game.gameActionState.assault.path,
-      origin: game.gameActionState.selection.map(s => {
+      path: game.gameState.assault.path,
+      origin: game.gameState.selection.map(s => {
         return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
-      add_action: game.gameActionState.assault.addActions.map(a => {
+      add_action: game.gameState.assault.addActions.map(a => {
         return { type: a.type, x: a.x, y: a.y, id: a.id, index: a.index }
       }),
     }
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearGhosts()
   game.scenario.map.clearAllSelections()
   game.executeAction(assault, false)
@@ -565,12 +565,12 @@ export function finishAssault(game: Game) {
 
 export function startBreakdown(game: Game) {
   const action = game.lastAction
-  if (!action || game.gameActionState?.currentAction === actionType.Breakdown) { return }
+  if (!action || game.gameState?.currentAction === actionType.Breakdown) { return }
   if (action.data.origin && action.data.origin.length > 0) {
     const id = action.data.origin[0].id
     const counter = game.findCounterById(id) as Counter
     if (["move", "assault_move"].includes(action.data.action) && counter.unit.breakdownRoll) {
-      game.gameActionState = {
+      game.gameState = {
         player: game.currentPlayer, currentAction: actionType.Breakdown,
         selection: [{
           x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, counter,
@@ -583,19 +583,19 @@ export function startBreakdown(game: Game) {
 }
 
 export function finishBreakdown(game: Game) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Breakdown) { return }
+  if (!game.gameState || game.gameState.currentAction !== actionType.Breakdown) { return }
   const bd = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: {
       action: "breakdown", old_initiative: game.initiative,
-      origin: game.gameActionState.selection.map(s => {
+      origin: game.gameState.selection.map(s => {
         return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
       dice_result: [{ result: roll2d10(), type: "2d10" }],
     },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(bd, false)
 }
@@ -607,7 +607,7 @@ export function startRoutAll(game: Game) {
       counters.push(c)
     }
   })
-  game.gameActionState = {
+  game.gameState = {
     player: game.currentPlayer, currentAction: actionType.RoutAll,
     selection: counters.map(c => {
       const hex = c.hex as Coordinate
@@ -619,30 +619,30 @@ export function startRoutAll(game: Game) {
 }
 
 export function finishRoutAll(game: Game) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.RoutAll) { return }
+  if (!game.gameState || game.gameState.currentAction !== actionType.RoutAll) { return }
   const ra = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: {
       action: "rout_all", old_initiative: game.initiative,
-      target: game.gameActionState.selection.map(s => {
+      target: game.gameState.selection.map(s => {
         return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
       }),
     },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(ra, false)
   game.refreshCallback(game)
 }
 
 export function startRoutCheck(game: Game) {
-  if (game.gameActionState || game.routCheckNeeded.length < 1) { return }
+  if (game.gameState || game.routCheckNeeded.length < 1) { return }
   const check = game.routCheckNeeded[0] as { unit: Unit, loc: Coordinate }
   const modifiers = moraleModifiers(game, check.unit, [check.loc], check.loc, false)
   const player = game.opponentPlayer
   const counter = game.findCounterById(check.unit.id) as Counter
-  game.gameActionState = {
+  game.gameState = {
     player, currentAction: actionType.RoutCheck,
     selection: [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, counter }],
     routCheck: { mod: modifiers.mod, why: modifiers.why }
@@ -652,20 +652,20 @@ export function startRoutCheck(game: Game) {
 }
 
 export function finishRoutCheck(game: Game) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.RoutCheck) { return }
-  const sel = game.gameActionState.selection[0]
+  if (!game.gameState || game.gameState.currentAction !== actionType.RoutCheck) { return }
+  const sel = game.gameState.selection[0]
   const rc = new GameAction({
-    user: game.currentPlayer === game.gameActionState.player ?
+    user: game.currentPlayer === game.gameState.player ?
       game.currentUser : game.opponentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: {
       action: "rout_check", old_initiative: game.initiative,
       dice_result: [{ result: roll2d10(), type: "2d10" }],
-      rout_check_data: game.gameActionState.routCheck,
+      rout_check_data: game.gameState.routCheck,
       target: [{ x: sel.x, y: sel.y, id: sel.id, status: sel.counter.unit.status }],
     },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(rc, false)
 }
@@ -675,7 +675,7 @@ export function startRout(game: Game, optional: boolean) {
   const player = selection.unit.playerNation === game.currentPlayerNation ?
     game.currentPlayer : game.opponentPlayer
   const hex = selection.hex as Coordinate
-  game.gameActionState = {
+  game.gameState = {
     player, currentAction: actionType.Rout,
     selection: [{ x: hex.x, y: hex.y, id: selection.unit.id, counter: selection }],
     rout: {
@@ -687,11 +687,11 @@ export function startRout(game: Game, optional: boolean) {
 }
 
 export function finishRout(game: Game, x?: number, y?: number) {
-  if (!game.gameActionState || game.gameActionState.currentAction !== actionType.Rout) { return }
+  if (!game.gameState || game.gameState.currentAction !== actionType.Rout) { return }
   let path: Coordinate[] = []
   if (x !== undefined && y !== undefined) {
-    if (!game.gameActionState.rout?.routPathTree) { return }
-    const paths = routPaths(game.gameActionState.rout.routPathTree)
+    if (!game.gameState.rout?.routPathTree) { return }
+    const paths = routPaths(game.gameState.rout.routPathTree)
     for (const p of paths) {
       const last = p[p.length - 1]
       if (last.x === x && last.y === y) {
@@ -699,9 +699,9 @@ export function finishRout(game: Game, x?: number, y?: number) {
         break
       }
     }
-  } else if (game.gameActionState.rout?.routPathTree) { return }
+  } else if (game.gameState.rout?.routPathTree) { return }
   const addAction: GameActionAddAction[] = []
-  const counter = game.gameActionState.selection[0].counter
+  const counter = game.gameState.selection[0].counter
   if (counter.unit.children.length > 0) {
     const hex = counter.hex as Coordinate
     const child = counter.unit.children[0]
@@ -712,12 +712,12 @@ export function finishRout(game: Game, x?: number, y?: number) {
   }
   const rout = new GameAction({
     user: game.currentUser,
-    player: game.gameActionState?.player,
+    player: game.gameState?.player,
     data: {
-      action: game.gameActionState.rout?.optional ? "rout_self" : "rout_move",
+      action: game.gameState.rout?.optional ? "rout_self" : "rout_move",
       old_initiative: game.initiative,
       path: path.map(c => { return { x: c.x, y: c.y } }),
-      target: game.gameActionState.selection.map(s => {
+      target: game.gameState.selection.map(s => {
         return {
           x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
         }
@@ -725,20 +725,20 @@ export function finishRout(game: Game, x?: number, y?: number) {
       add_action: addAction,
     },
   }, game, game.actions.length)
-  game.gameActionState = undefined
+  game.gameState = undefined
   game.scenario.map.clearAllSelections()
   game.executeAction(rout, false)
 }
 
 export function needPickUpDisambiguate(game: Game): boolean {
-  const action = game.gameActionState
+  const action = game.gameState
   if (!action?.move) { return false }
   if (action.move.loader) { return false }
   return getLoader(game).length > 1 && !getLoader(game)[0].unit.transport
 }
 
 export function getLoader(game: Game): Counter[] {
-  const action = game.gameActionState
+  const action = game.gameState
   if (!action?.move) { return [] }
   const selection = action.selection
   if (!selection || !game.lastPath) { return [] }

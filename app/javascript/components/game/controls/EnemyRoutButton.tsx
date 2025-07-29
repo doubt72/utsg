@@ -1,7 +1,8 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { RoutGlyph } from "../../utilities/buttons";
-import { actionType, finishRoutAll, startRoutAll } from "../../../engine/control/mainActions";
+import { finishRoutAll, startRoutAll } from "../../../engine/control/mainActions";
+import { actionType } from "../../../engine/control/actionState";
 
 interface EnemyRoutButtonProps {
   game: Game;
@@ -11,7 +12,7 @@ interface EnemyRoutButtonProps {
 export default function EnemyRoutButton({ game, callback }: EnemyRoutButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    if (game.gameActionState?.currentAction === actionType.RoutAll) {
+    if (game.gameState?.currentAction === actionType.RoutAll) {
       finishRoutAll(game)
     } else {
       startRoutAll(game)
@@ -20,7 +21,7 @@ export default function EnemyRoutButton({ game, callback }: EnemyRoutButtonProps
   }
 
   const text = () => {
-    if (game.gameActionState?.currentAction === actionType.RoutAll) {
+    if (game.gameState?.currentAction === actionType.RoutAll) {
       return "confirm rout enemy"
     } else {
       return "rout enemy (3)"

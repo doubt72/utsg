@@ -25,7 +25,7 @@ describe("rush tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
 
     expect(state.player).toBe(2)
     expect(state.currentAction).toBe(actionType.Move)
@@ -89,7 +89,7 @@ describe("rush tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(state.selection.length).toBe(2)
@@ -116,7 +116,7 @@ describe("rush tests", () => {
     startMove(game)
     placeSmokeToggle(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(move.doneSelect).toBe(true)
@@ -183,7 +183,7 @@ describe("rush tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     select(map, {
@@ -255,7 +255,7 @@ describe("rush tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(move.doneSelect).toBe(false)
@@ -337,7 +337,7 @@ describe("rush tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     select(map, {
@@ -457,7 +457,7 @@ describe("rush tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(state.selection.length).toBe(2)
@@ -527,7 +527,7 @@ describe("rush tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     expect(mapSelectMovement(game, false)).toBe(1)

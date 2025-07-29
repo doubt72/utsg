@@ -10,8 +10,8 @@ import { alongRailroad, alongRoad } from "./movement"
 
 export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): HexOpenType {
   const game = map.game
-  if (!game?.gameActionState?.assault) { return hexOpenType.Closed }
-  if (!game.gameActionState.selection) { return hexOpenType.Closed }
+  if (!game?.gameState?.assault) { return hexOpenType.Closed }
+  if (!game.gameState.selection) { return hexOpenType.Closed }
   if (from.x === to.x && from.y === to.y) {return hexOpenType.Closed }
 
   const hexFrom = map.hexAt(from) as Hex;
@@ -19,8 +19,8 @@ export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): H
   const dir = map.relativeDirection(from, to)
   if (!dir) { return hexOpenType.Closed }
 
-  const action = game?.gameActionState.assault
-  const selection = game.gameActionState.selection[0].counter
+  const action = game?.gameState.assault
+  const selection = game.gameState.selection[0].counter
   const terrFrom = hexFrom.terrain
   const terrTo = hexTo.terrain
   const roadMove = alongRoad(hexFrom, hexTo, dir)
@@ -47,7 +47,7 @@ export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): H
     }
   }
 
-  const moveSize = game.gameActionState.selection.filter(u => !u.counter.unit.parent).reduce(
+  const moveSize = game.gameState.selection.filter(u => !u.counter.unit.parent).reduce(
     (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
   )
   const toSize = map.sizeAt(to)
@@ -64,8 +64,8 @@ export function openHexAssaulting(map: Map, from: Coordinate, to: Coordinate): H
 }
 
 export function showClearObstacles(game: Game): boolean {
-  const assault = game.gameActionState?.assault
-  const selection = game.gameActionState?.selection
+  const assault = game.gameState?.assault
+  const selection = game.gameState?.selection
   if (!assault || !selection) { return false }
   if (selection.length > 1) { return false }
   if (assault.path.length + assault.addActions.length > 1) { return false }
@@ -87,8 +87,8 @@ export function showClearObstacles(game: Game): boolean {
 }
 
 export function showEntrench(game: Game): boolean {
-  const assault = game.gameActionState?.assault
-  const selection = game.gameActionState?.selection
+  const assault = game.gameState?.assault
+  const selection = game.gameState?.selection
   if (!assault || !selection) { return false }
   if (selection.length > 1) { return false }
   if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
@@ -107,12 +107,12 @@ export function showEntrench(game: Game): boolean {
 }
 
 function assaultMovement(game: Game): number {
-  if (!game.gameActionState) { return 0 }
-  const selection = game.gameActionState.selection[0].counter
+  if (!game.gameState) { return 0 }
+  const selection = game.gameState.selection[0].counter
   let assault = selection.unit.currentMovement as number
   if (selection.unit.canCarrySupport) {
     let minMove = 99
-    for(const sel of game.gameActionState.selection) {
+    for(const sel of game.gameState.selection) {
       const u = sel.counter.unit
       let move = u.currentMovement as number
       if (u.children.length > 0) {

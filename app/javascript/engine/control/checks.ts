@@ -2,7 +2,7 @@ import Counter from "../Counter"
 import Game from "../Game"
 
 export function initiativeCheck(game: Game): boolean {
-  if (game.gameActionState) { return false }
+  if (game.gameState) { return false }
   let rc = false
   for (const a of game.actions.filter(a => !a.undone)) {
     if (a.type === "initiative") { rc = false }
@@ -15,7 +15,7 @@ export function initiativeCheck(game: Game): boolean {
 
 export function breakdownCheck(game: Game): boolean {
   const action = game.lastAction
-  if (!action || game.gameActionState) { return false }
+  if (!action || game.gameState) { return false }
   if (action.data.origin && action.data.origin.length > 0) {
     const id = action.data.origin[0].id
     const counter = game.findCounterById(id) as Counter
@@ -27,7 +27,7 @@ export function breakdownCheck(game: Game): boolean {
 }
 
 export function reactionFireCheck(game: Game): boolean {
-  if (game.gameActionState) { return false }
+  if (game.gameState) { return false }
   let rc = false
   let last = ""
   let player = game.currentPlayer
@@ -47,17 +47,17 @@ export function closeCombatCheck(game: Game): boolean {
 }
 
 export function rushing(game: Game): boolean {
-  if (!game.gameActionState || !game.gameActionState.move ||
-      game.gameActionState.selection.length < 1) { return false }
-  const unit = game.gameActionState.selection[0].counter.unit
+  if (!game.gameState || !game.gameState.move ||
+      game.gameState.selection.length < 1) { return false }
+  const unit = game.gameState.selection[0].counter.unit
   if (unit.isActivated) { return true }
   return false
 }
 
 export function intensiveFiring(game: Game): boolean {
-  if (!game.gameActionState || !game.gameActionState.fire ||
-      game.gameActionState.selection.length < 1) { return false }
-  const unit = game.gameActionState.selection[0].counter.unit
+  if (!game.gameState || !game.gameState.fire ||
+      game.gameState.selection.length < 1) { return false }
+  const unit = game.gameState.selection[0].counter.unit
   if (unit.isActivated) { return true }
   return false
 }

@@ -21,21 +21,21 @@ export default function select(
   const y = selection.target.xy.y
   const id = selection.counter.target.id
   const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
-  if (game?.gameActionState?.fire) {
-    if (!game.gameActionState.fire.doneRotating) { game.gameActionState.fire.doneRotating = true }
+  if (game?.gameState?.fire) {
+    if (!game.gameState.fire.doneRotating) { game.gameState.fire.doneRotating = true }
     const selected = counter.unit.selected
     counter.unit.select()
-    if (!game.gameActionState.fire.doneSelect && samePlayer(game, counter.unit)) {
+    if (!game.gameState.fire.doneSelect && samePlayer(game, counter.unit)) {
       if (selected) {
         removeActionSelection(game, x, y, counter.unit.id)
         clearUnrangedSelection(game)
       } else {
-        game.gameActionState.selection?.push({
+        game.gameState.selection?.push({
           x, y, id: counter.unit.id, counter: counter,
         })
       }
     } else {
-      game.gameActionState.fire.doneSelect = true
+      game.gameState.fire.doneSelect = true
       counter.unit.select()
       const ts = counter.unit.targetSelected
       if (ts) {
@@ -43,7 +43,7 @@ export default function select(
       } else {
         const rapid = rapidFire(game)
         if (rapid || areaFire(game)) {
-          map.targetSelectAllAt(x, y, true, game.gameActionState.fire.initialSelection[0].counter.unit.areaFire)
+          map.targetSelectAllAt(x, y, true, game.gameState.fire.initialSelection[0].counter.unit.areaFire)
           if (rapid) {
             unTargetSelectExceptChain(game, x, y)
           } else {
@@ -59,9 +59,9 @@ export default function select(
       }
       refreshTargetSelection(game)
     }
-  } else if (game?.gameActionState?.move) {
+  } else if (game?.gameState?.move) {
     const selected = counter.unit.selected
-    const move = game.gameActionState.move
+    const move = game.gameState.move
     counter.unit.select()
     const xx = game.lastPath?.x ?? 0 // But should always exist, type notwithstanding
     const yy = game.lastPath?.y ?? 0
@@ -123,26 +123,26 @@ export default function select(
         removeActionSelection(game, x, y, counter.unit.id)
         counter.children.forEach(c => removeActionSelection(game, x, y, c.unit.id))
       } else {
-        const sel = game.gameActionState.selection
+        const sel = game.gameState.selection
         sel.push({ x, y, id: counter.unit.id, counter: counter })
         counter.children.forEach(c => sel.push({ x, y, id: c.unit.id, counter: c }))
-        game.gameActionState.selection.sort((a, b) => {
+        game.gameState.selection.sort((a, b) => {
           if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
           return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
         })
       }
     }
-  } else if (game?.gameActionState?.assault) {
+  } else if (game?.gameState?.assault) {
     const selected = counter.unit.selected
     counter.unit.select()
     counter.children.forEach(c => c.unit.select())
     if (selected) {
       removeActionSelection(game, x, y, counter.unit.id)
     } else {
-      game.gameActionState.selection?.push({
+      game.gameState.selection?.push({
         x, y, id: counter.unit.id, counter: counter,
       })
-      game.gameActionState.selection.sort((a, b) => {
+      game.gameState.selection.sort((a, b) => {
         if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
         return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
       })
@@ -162,10 +162,10 @@ export function samePlayer(game: Game, target: Unit) {
 }
 
 function clearUnrangedSelection(game: Game) {
-  if (!game?.gameActionState?.fire) { return }
-  const init = game.gameActionState.fire.initialSelection[0]
+  if (!game?.gameState?.fire) { return }
+  const init = game.gameState.fire.initialSelection[0]
   const leadership = leadershipRange(game)
-  for (const sel of game.gameActionState.selection) {
+  for (const sel of game.gameState.selection) {
     if (leadership === false) {
       const child = init.counter.unit.children[0]
       if (sel.id !== init.id && (!child || child.id !== sel.id)) {
@@ -182,7 +182,7 @@ function clearUnrangedSelection(game: Game) {
 }
 
 function canBeFireMultiselected(map: Map, counter: Counter): boolean {
-  if (!map.game?.gameActionState?.fire) { return false }
+  if (!map.game?.gameState?.fire) { return false }
   if (counter.unit.isBroken) {
     map.game.addMessage("cannot fire a broken unit")
     return false
@@ -191,7 +191,7 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     map.game.addMessage("cannot fire an exhausted unit")
     return false
   }
-  const status = map.game.gameActionState.fire.initialSelection[0].counter.unit.status
+  const status = map.game.gameState.fire.initialSelection[0].counter.unit.status
   if (counter.unit.isActivated && status !== unitStatus.Activated) {
     map.game.addMessage("cannot fire an activated unit")
     return false
@@ -231,7 +231,7 @@ function canBeFireMultiselected(map: Map, counter: Counter): boolean {
     map.game.addMessage("unit manning a crewed weapon cannot fire with other units")
     return false
   }
-  const init = map.game.gameActionState.fire.initialSelection[0]
+  const init = map.game.gameState.fire.initialSelection[0]
   if (counter.parent && counter.parent?.unit.id === init.counter.unit.id) {
     return true
   }
@@ -293,24 +293,24 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   if (game.phase === gamePhaseType.Deployment) { return false }
   if (game.phase === gamePhaseType.Prep) { return false } // Not supported yet
   if (game.phase === gamePhaseType.Main) {
-    if (game.gameActionState?.currentAction === actionType.Breakdown) { return false }
-    if (game.gameActionState?.currentAction === actionType.MoraleCheck) { return false }
-    if (game.gameActionState?.currentAction === actionType.Sniper) { return false }
-    if (game.gameActionState?.currentAction === actionType.Initiative) { return false }
-    if (game.gameActionState?.currentAction === actionType.Pass) { return false }
-    if (game.gameActionState?.currentAction === actionType.RoutAll) { return false }
-    if (game.gameActionState?.currentAction === actionType.RoutCheck) { return false }
-    if (game.gameActionState?.currentAction === actionType.Rout) { return false }
+    if (game.gameState?.currentAction === actionType.Breakdown) { return false }
+    if (game.gameState?.currentAction === actionType.MoraleCheck) { return false }
+    if (game.gameState?.currentAction === actionType.Sniper) { return false }
+    if (game.gameState?.currentAction === actionType.Initiative) { return false }
+    if (game.gameState?.currentAction === actionType.Pass) { return false }
+    if (game.gameState?.currentAction === actionType.RoutAll) { return false }
+    if (game.gameState?.currentAction === actionType.RoutCheck) { return false }
+    if (game.gameState?.currentAction === actionType.Rout) { return false }
     const same = samePlayer(game, target)
-    if (!same && !game.gameActionState) { return false }
-    if (game.gameActionState?.fire) {
+    if (!same && !game.gameState) { return false }
+    if (game.gameState?.fire) {
       if (selection.target.type !== "map") { return false }
-      const select = game.gameActionState.selection[0]
+      const select = game.gameState.selection[0]
       const sc = select.counter
       const tc = map.findCounterById(target.id) as Counter
       if (same) {
-        if (game.gameActionState.fire.doneSelect) { return false }
-        for (const s of game.gameActionState.fire.initialSelection) {
+        if (game.gameState.fire.doneSelect) { return false }
+        for (const s of game.gameState.fire.initialSelection) {
           if (selection.counter.target.id === s.id) { return false }
         }
         const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
@@ -331,12 +331,12 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
           }
         }
       }
-    } else if (game.gameActionState?.move) {
+    } else if (game.gameState?.move) {
       if (!same) {return false}
-      if (game.gameActionState.move.droppingMove) {
+      if (game.gameState.move.droppingMove) {
         const child = target.children[0]
         if (target.selected) {
-          if (child && game.gameActionState.selection.length === 2) {
+          if (child && game.gameState.selection.length === 2) {
             map.game?.addMessage("must select unit being carried")
             return false
           } else {
@@ -347,7 +347,7 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
           return false
         }
       }
-      if (game.gameActionState.move.loadingMove) {
+      if (game.gameState.move.loadingMove) {
         if (needPickUpDisambiguate(game)) {
           if (!target.selected) {
             map.game?.addMessage("must select unit that started move or hasn't already been dropped")
@@ -372,9 +372,9 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
           }
         }
       }
-      if (game.gameActionState.move.doneSelect) { return false }
+      if (game.gameState.move.doneSelect) { return false }
       if (selection.target.type !== "map") { return false }
-      for (const s of game.gameActionState.move.initialSelection) {
+      for (const s of game.gameState.move.initialSelection) {
         if (s.x !== selection.target.xy.x || s.y !== selection.target.xy.y) {
           map.game?.addMessage("all units moving together must start in same hex")
           return false
@@ -383,11 +383,11 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
       }
       const counter = map.unitAtId(selection.target.xy, selection.counter.target.id)
       if (!canBeMoveMultiselected(map, counter as Counter)) { return false }
-    } else if (game.gameActionState?.assault) {
+    } else if (game.gameState?.assault) {
       if (!same) {return false}
-      if (game.gameActionState.assault.doneSelect) { return false }
+      if (game.gameState.assault.doneSelect) { return false }
       if (selection.target.type !== "map") { return false }
-      for (const s of game.gameActionState.assault.initialSelection) {
+      for (const s of game.gameState.assault.initialSelection) {
         if (s.x !== selection.target.xy.x || s.y !== selection.target.xy.y) {
           map.game?.addMessage("all units assaulting together must start in same hex")
           return false
@@ -403,9 +403,9 @@ function selectable(map: Map, selection: CounterSelectionTarget): boolean {
 }
 
 function removeActionSelection(game: Game, x: number, y: number, id: string) {
-  if (!game?.gameActionState?.selection) { return }
-  const selection = game.gameActionState.selection.filter(s =>
+  if (!game?.gameState?.selection) { return }
+  const selection = game.gameState.selection.filter(s =>
     s.x !== x || s.y !== y || s.id !== id
   )
-  game.gameActionState.selection = selection
+  game.gameState.selection = selection
 }

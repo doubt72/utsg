@@ -70,7 +70,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       expect(state.currentAction).toBe(actionType.Fire)
       expect(state.selection[0].id).toBe("firing1")
 
@@ -90,7 +90,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -143,7 +143,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
@@ -188,7 +188,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(2)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -237,7 +237,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -287,7 +287,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -338,7 +338,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -397,7 +397,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -450,7 +450,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -500,7 +500,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -534,7 +534,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -579,7 +579,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -623,7 +623,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -671,7 +671,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -713,7 +713,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -755,7 +755,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -798,7 +798,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -841,7 +841,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -885,7 +885,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -930,7 +930,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -975,7 +975,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1018,7 +1018,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1050,7 +1050,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1085,7 +1085,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       expect(state.currentAction).toBe(actionType.Fire)
       expect(state.selection[0].id).toBe("firing1")
 
@@ -1115,7 +1115,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       expect(state.currentAction).toBe(actionType.Fire)
       expect(state.selection[0].id).toBe("firing1")
 
@@ -1135,7 +1135,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1174,7 +1174,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1199,7 +1199,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1238,7 +1238,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1261,7 +1261,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing2"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing2"]), makeAction(game, ["target1", "target2"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -1314,7 +1314,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1351,7 +1351,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, ["firing2", "firing5"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing2", "firing5"]), makeAction(game, ["target1", "target2"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(1)
@@ -1394,7 +1394,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1433,7 +1433,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1458,7 +1458,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
@@ -1493,7 +1493,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -1539,7 +1539,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -1611,7 +1611,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -1681,7 +1681,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -1751,7 +1751,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2025,7 +2025,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2109,7 +2109,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2177,7 +2177,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2255,7 +2255,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2483,7 +2483,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2552,7 +2552,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2618,7 +2618,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 
@@ -2673,7 +2673,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
       fireRotate(game, 4)
@@ -2735,7 +2735,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
       fireRotate(game, 4)
@@ -2753,7 +2753,7 @@ describe("fire tests", () => {
       expect(baseToHit(fp.fp)).toBe(14)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(2)
@@ -2812,7 +2812,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -3112,7 +3112,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(false)
 
@@ -3137,7 +3137,7 @@ describe("fire tests", () => {
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
-        game.gameActionState?.fire?.path as GameActionPath[]
+        game.gameState?.fire?.path as GameActionPath[]
       )
       expect(mods.mod).toBe(2)
       expect(mods.why.length).toBe(1)
@@ -3182,7 +3182,7 @@ describe("fire tests", () => {
 
       startFire(game)
 
-      const state = game.gameActionState as GameActionState
+      const state = game.gameState as GameActionState
       const fire = state.fire as FireActionState
       expect(fire.doneSelect).toBe(true)
 

@@ -13,8 +13,8 @@ export default function FireHindranceOverlay({ map }: FireHindranceOverlayProps)
   const hindrance = () => {
     if (!map.game) { return }
     const rc: JSX.Element[] = []
-    if (map.game.gameActionState?.fire) {
-      const action = map.game.gameActionState
+    if (map.game.gameState?.fire) {
+      const action = map.game.gameState
       const fire = action.fire as FireActionState
       const hindrance = fireHindranceAll(map.game, action.selection, fire.targetHexes)
       if (hindrance !== false) {

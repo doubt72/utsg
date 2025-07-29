@@ -474,7 +474,7 @@ describe("reaction fire tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     doMove(game, 3, 2)
@@ -562,7 +562,7 @@ describe("reaction fire tests", () => {
 
     startMove(game)
 
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
 
     doMove(game, 3, 2)
@@ -725,7 +725,7 @@ describe("reaction fire tests", () => {
     expect(unit.turretFacing).toBe(2)
 
     startMove(game)
-    const state = game.gameActionState as GameActionState
+    const state = game.gameState as GameActionState
     const move = state.move as MoveActionState
     expect(move.path.length).toBe(1)
     expect(move.path[0]).toStrictEqual({ x: 4, y: 2, facing: 1, turret: 2 })
