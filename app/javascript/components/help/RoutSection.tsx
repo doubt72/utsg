@@ -17,7 +17,7 @@ import { findRoutPathTree, routPaths } from "../../engine/control/rout";
 import Game, { gamePhaseType } from "../../engine/Game";
 import { HexData } from "../../engine/Hex";
 import { ScenarioData } from "../../engine/Scenario";
-import { RoutPathTree } from "../../engine/control/actionState";
+import { RoutPathTree } from "../../engine/control/state/RoutState";
 
 export default function RoutSection() {
   const [routDiagram, setRoutDiagram] = useState<JSX.Element | undefined>();

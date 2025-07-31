@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { ArrowClockwise } from "react-bootstrap-icons";
-import { rotateToggle } from "../../../engine/control/mainActions";
 
 interface MoveRotateToggleButtonProps {
   game: Game;
@@ -11,12 +10,12 @@ interface MoveRotateToggleButtonProps {
 export default function MoveRotateToggleButton({ game, callback }: MoveRotateToggleButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    rotateToggle(game)
+    game.moveState.rotateToggle()
     callback()
   }
 
   const text = () => {
-    if (game.gameState?.move?.rotatingTurret === true) { return "rotating turret" }
+    if (game.moveState.rotatingTurret === true) { return "rotating turret" }
     return "rotating hull"
   }
 

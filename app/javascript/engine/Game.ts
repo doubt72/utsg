@@ -1,9 +1,7 @@
-import { Coordinate, Direction, Player, unitType } from "../utilities/commonTypes";
+import { Coordinate, Player, unitType } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
-import Scenario, { ReinforcementItem, ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
-import GameAction, {
-  GameActionData, GameActionPath, GameActionPhaseChange
-} from "./GameAction";
+import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
+import GameAction, { GameActionData, GameActionPhaseChange } from "./GameAction";
 import Feature from "./Feature";
 import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
@@ -13,7 +11,12 @@ import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../u
 import Unit from "./Unit";
 import Hex from "./Hex";
 import { sortValues } from "./support/organizeStacks";
-import { actionType, DeployActionState, GameActionState } from "./control/actionState";
+import BaseState from "./control/state/BaseState";
+import FireState from "./control/state/FireState";
+import MoveState from "./control/state/MoveState";
+import AssaultState from "./control/state/AssaultState";
+import RoutState from "./control/state/RoutState";
+import DeployState from "./control/state/DeployState";
 
 export type GameData = {
   id: number;
@@ -37,6 +40,9 @@ export type GamePhase = 0 | 1 | 2 | 3
 export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
 }
+
+export type SimpleCheck = { unit: Unit, loc: Coordinate }
+export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
 
 export default class Game {
   id: number;
@@ -63,7 +69,7 @@ export default class Game {
   axisSniper?: Feature;
 
   suppressNetwork: boolean = false;
-  gameState?: GameActionState;
+  gameState?: BaseState;
 
   closeReinforcementPanel: boolean = false;
 
@@ -73,13 +79,11 @@ export default class Game {
   messageQueue: string[];
   updateTimer: NodeJS.Timeout | undefined;
   resignationLevel: number;
-  sponsonFire: boolean;
-  reactionFire: boolean;
 
-  moraleChecksNeeded: { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }[];
-  sniperNeeded: { unit: Unit, loc: Coordinate }[];
-  routCheckNeeded: { unit: Unit, loc: Coordinate }[];
-  routNeeded: { unit: Unit, loc: Coordinate }[];
+  moraleChecksNeeded: ComplexCheck[];
+  sniperNeeded: SimpleCheck[];
+  routCheckNeeded: SimpleCheck[];
+  routNeeded: SimpleCheck[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -105,9 +109,6 @@ export default class Game {
 
     this.messageQueue = []
     this.resignationLevel = 0
-
-    this.sponsonFire = false
-    this.reactionFire = false
     this.moraleChecksNeeded = []
     this.sniperNeeded = []
     this.routCheckNeeded = []
@@ -248,6 +249,26 @@ export default class Game {
 
   nationNameForPlayer(player: Player): string {
     return player === 1 ? this.alliedName : this.axisName
+  }
+
+  get deployState(): DeployState {
+    return this.gameState as DeployState
+  }
+
+  get fireState(): FireState {
+    return this.gameState as FireState
+  }
+
+  get moveState(): MoveState {
+    return this.gameState as MoveState
+  }
+
+  get assaultState(): AssaultState {
+    return this.gameState as AssaultState
+  }
+
+  get routState(): RoutState {
+    return this.gameState as RoutState
   }
 
   get playerOneScore(): number {
@@ -531,7 +552,7 @@ export default class Game {
               action: "info", message: "no units to deploy, skipping phase",
               old_initiative: this.initiative,
             }
-          }, this, this.actions.length), backendSync)
+          }, this), backendSync)
         }
         if (oldTurn === 0) {
           phaseData.new_phase = gamePhaseType.Deployment
@@ -546,7 +567,7 @@ export default class Game {
           phaseData.new_phase = this.currentPlayer === this.scenario.firstAction ?
             gamePhaseType.Deployment : gamePhaseType.Prep
         }
-        this.executeAction(new GameAction(data, this, this.actions.length), backendSync)
+        this.executeAction(new GameAction(data, this), backendSync)
         this.closeReinforcementPanel = true
       }
     } else if (oldPhase === gamePhaseType.Prep) {
@@ -558,7 +579,7 @@ export default class Game {
           action: "info", message: "no broken units or jammed weapons, skipping phase",
           old_initiative: this.initiative,
         }
-      }, this, this.actions.length), backendSync)
+      }, this), backendSync)
       if (this.currentPlayer === this.scenario.firstAction) {
         phaseData.new_player = togglePlayer(this.currentPlayer)
         phaseData.new_phase = oldPhase
@@ -567,7 +588,7 @@ export default class Game {
         phaseData.new_phase = gamePhaseType.Main
 
       }
-      this.executeAction(new GameAction(data, this, this.actions.length), backendSync)
+      this.executeAction(new GameAction(data, this), backendSync)
     } else if (oldPhase === gamePhaseType.Main) {
       let index = this.lastActionIndex - 1
       let previousAction = this.actions[index--]
@@ -580,80 +601,16 @@ export default class Game {
             action: "info", message: "both players have passed, ending phase",
             old_initiative: this.initiative,
           }
-        }, this, this.actions.length), backendSync)
+        }, this), backendSync)
         phaseData.new_phase = gamePhaseType.Cleanup
-        this.executeAction(new GameAction(data, this, this.actions.length), backendSync)
+        this.executeAction(new GameAction(data, this), backendSync)
       }
     }
   }
 
-  get currentReinforcementSelection(): DeployActionState | undefined {
-    return this.gameState?.deploy
-  }
-
-  setReinforcementSelection(player: Player, deploy: DeployActionState | undefined) {
-    if (!deploy) {
-      this.cancelAction()
-      return
-    }
-    const current = this.gameState
-    if (player === current?.player && deploy.turn === current.deploy?.turn &&
-        deploy.index === current.deploy?.index) {
-      this.cancelAction()
-    } else {
-      const list = this.availableReinforcements(player)[deploy.turn]
-      if (list) {
-        const counter = list[deploy.index]
-        if (counter.x > counter.used) {
-          this.gameState = { player, currentAction: actionType.Deploy, selection: [] }
-          this.gameState.deploy = deploy
-        }
-      }
-    }
-  }
-
-  executeReinforcement(
-    x: number, y: number, counter: ReinforcementItem, d: Direction, callback: (game: Game) => void
-  ) {
-    if (this.gameState?.deploy) {
-      const id = `uf-${this.actions.length}`
-      const action = new GameAction({
-        user: this.currentUser,
-        player: this.gameState.player,
-        data: {
-          action: "deploy", old_initiative: this.initiative,
-          path: [{ x, y, facing: d }],
-          deploy: [{ turn: this.turn, index: this.gameState.deploy.index, id }]
-        }
-      }, this, this.actions.length)
-      this.executeAction(action, false)
-      callback(this)
-      this.gameState.deploy.needsDirection = undefined
-      if (counter.x === counter.used) {
-        this.cancelAction()
-      }
-    }
-  }
-
-  get lastPath(): GameActionPath | undefined {
-    if (this.gameState?.fire) {
-      const path = this.gameState.fire.path
-      return path[path.length - 1]
-    } else if (this.gameState?.move) {
-      const path = this.gameState.move.path
-      return path[path.length - 1]
-    } else if (this.gameState?.assault) {
-      const path = this.gameState.assault.path
-      return path[path.length - 1]
-    }
-  }
-
-  get actionInProgress(): boolean {
-    if (this.gameState?.deploy && this.gameState.deploy.needsDirection) { return true }
-    if (this.gameState?.move) { return true }
-    if (this.gameState?.currentAction === actionType.Pass) { return true }
-    return false
-  }
+  // get currentReinforcementSelection(): DeployActionState | undefined {
+  //   return this.gameObsoleteState?.deploy
+  // }
 
   cancelAction() {
     this.scenario.map.clearAllSelections()

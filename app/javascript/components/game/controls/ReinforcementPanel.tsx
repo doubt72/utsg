@@ -140,8 +140,8 @@ export default function ReinforcementPanel({
                     if (player === map.game?.currentPlayer) {
                       counter.reinforcement = { player, turn, index: j }
                     }
-                    const r = map.game?.gameState
-                    if (r && player === r.player && turn === r.deploy?.turn && j === r.deploy.index) {
+                    const r = map.game?.deployState
+                    if (r && player === r.player && turn === r.turn && j === r.index) {
                       if (!counter.targetUF.selected) {
                         counter.targetUF.select()
                       }
@@ -187,7 +187,7 @@ export default function ReinforcementPanel({
       </g>
     )
   }, [
-    xx, yy, shifted, map?.game?.gameState?.deploy, map?.game?.lastAction, map?.game?.lastActionIndex,
+    xx, yy, shifted, map?.game?.gameState, map?.game?.lastAction, map?.game?.lastActionIndex,
     forceUpdate, closeButtonHover, shiftButtonHover
   ])
 

@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import { ArrowClockwise } from "react-bootstrap-icons";
 import Game from "../../../engine/Game";
-import { passReaction } from "../../../engine/control/mainActions";
 
 interface ReactionPassButtonProps {
   game: Game;
@@ -11,7 +10,7 @@ interface ReactionPassButtonProps {
 export default function ReactionPassButton({ game, callback }: ReactionPassButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    passReaction(game)
+    game.gameState?.finish()
     callback()
   }
 

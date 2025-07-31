@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { MoveRushGlyph } from "../../utilities/buttons";
-import { finishAssault } from "../../../engine/control/mainActions";
 
 interface AssaultMoveFinishButtonProps {
   game: Game;
@@ -11,7 +10,7 @@ interface AssaultMoveFinishButtonProps {
 export default function AssaultMoveFinishButton({ game, callback }: AssaultMoveFinishButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    finishAssault(game)
+    game.gameState?.finish()
     callback()
   }
 

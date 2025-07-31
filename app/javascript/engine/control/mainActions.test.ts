@@ -3,14 +3,16 @@ import Unit from "../Unit"
 import { gamePhaseType } from "../Game"
 import { describe, expect, test, vi } from "vitest"
 import IllegalActionError from "../actions/IllegalActionError"
-import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
-import { openHexMovement } from "./movement"
-import { openHexAssaulting } from "./assault"
 import Feature from "../Feature"
 import { createMoveGame, testGInf, testGTank } from "./testHelpers"
-import { doAssault, doMove, finishAssault, finishBreakdown, finishInitiative, finishMove, finishPass, finishSniper, moveRotate, startAssault, startBreakdown, startInitiative, startMove, startPass, startSniper } from "./mainActions"
-import { breakdownCheck, initiativeCheck, reactionFireCheck } from "./checks"
-import { actionType, GameActionState, MoveActionState } from "./actionState"
+import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
+import PassState from "./state/PassState"
+import { stateType } from "./state/BaseState"
+import { reactionFireCheck } from "./state/ReactionState"
+import MoveState from "./state/MoveState"
+import AssaultState from "./state/AssaultState"
+import SniperState from "./state/SniperState"
+import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 
 describe("game action tests", () => {
   test("initiative changes", () => {
@@ -22,11 +24,11 @@ describe("game action tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startMove(game)
-    doMove(game, 3, 2)
-    doMove(game, 2, 2)
-    doMove(game, 1, 2)
-    finishMove(game)
+    game.gameState = new MoveState(game)
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.gameState.finish()
 
     expect(game.initiative).toBe(-2)
 
@@ -44,17 +46,17 @@ describe("game action tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startMove(game)
-    doMove(game, 3, 2)
-    doMove(game, 2, 2)
-    doMove(game, 1, 2)
-    finishMove(game)
+    game.gameState = new MoveState(game)
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.gameState.finish()
 
     expect(breakdownCheck(game)).toBe(false)
     expect(initiativeCheck(game)).toBe(true)
     expect(reactionFireCheck(game)).toBe(false)
 
-    startInitiative(game)
+    game.gameState = new InitiativeState(game)
 
     expect(initiativeCheck(game)).toBe(false)
     expect(reactionFireCheck(game)).toBe(false)
@@ -63,7 +65,7 @@ describe("game action tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
     expect(game.currentPlayer).toBe(2)
-    finishInitiative(game)
+    game.gameState.finish()
     expect(game.currentPlayer).toBe(1)
 
     Math.random = original
@@ -87,17 +89,17 @@ describe("game action tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startMove(game)
-    doMove(game, 3, 2)
-    doMove(game, 2, 2)
-    doMove(game, 1, 2)
-    finishMove(game)
+    game.gameState = new MoveState(game)
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.gameState.finish()
 
     expect(breakdownCheck(game)).toBe(false)
     expect(initiativeCheck(game)).toBe(true)
     expect(reactionFireCheck(game)).toBe(false)
 
-    startInitiative(game)
+    game.gameState = new InitiativeState(game)
 
     expect(initiativeCheck(game)).toBe(false)
     expect(reactionFireCheck(game)).toBe(false)
@@ -106,7 +108,7 @@ describe("game action tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99)
 
     expect(game.currentPlayer).toBe(2)
-    finishInitiative(game)
+    game.gameState.finish()
     expect(game.currentPlayer).toBe(2)
 
     Math.random = original
@@ -132,30 +134,27 @@ describe("game action tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startMove(game)
+    game.gameState = new MoveState(game)
 
-    const state = game.gameState as GameActionState
-    const move = state.move as MoveActionState
-
-    doMove(game, 3, 2)
-    moveRotate(game, 3, 2, 2)
-    doMove(game, 2, 1)
-    move.rotatingTurret = true
-    moveRotate(game, 2, 1, 6)
-    move.rotatingTurret = false
-    moveRotate(game, 2, 1, 1)
-    doMove(game, 1, 1)
-    finishMove(game)
+    game.moveState.move(3, 2)
+    game.moveState.rotate(2)
+    game.moveState.move(2, 1)
+    game.moveState.rotatingTurret = true
+    game.moveState.rotate(6)
+    game.moveState.rotatingTurret = false
+    game.moveState.rotate(1)
+    game.moveState.move(1, 1)
+    game.gameState.finish()
 
     expect(breakdownCheck(game)).toBe(true)
     expect(reactionFireCheck(game)).toBe(false)
 
-    startBreakdown(game)
+    game.gameState = new BreakdownState(game)
 
     expect(initiativeCheck(game)).toBe(false)
     expect(reactionFireCheck(game)).toBe(false)
 
-    finishBreakdown(game)
+    game.gameState.finish()
 
     expect(breakdownCheck(game)).toBe(false)
     expect(initiativeCheck(game)).toBe(true)
@@ -173,33 +172,30 @@ describe("game action tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startMove(game)
+    game.gameState = new MoveState(game)
 
-    const state = game.gameState as GameActionState
-    const move = state.move as MoveActionState
+    expect(game.gameState.rotateOpen).toBe(true)
+    expect(game.gameState.rotatePossible).toBe(true)
+    expect(game.gameState.openHex(0, 0)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 2)).toBe(1)
+    expect(game.gameState.openHex(4, 3)).toBe(hexOpenType.Closed)
 
-    expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(true)
-    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
-    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(1)
-    expect(openHexMovement(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.Closed)
+    game.moveState.move(3, 2)
+    game.moveState.rotate(2)
+    game.moveState.move(2, 1)
+    game.moveState.rotatingTurret = true
+    game.moveState.rotate(6)
+    game.moveState.rotatingTurret = false
+    game.moveState.rotate(1)
 
-    doMove(game, 3, 2)
-    moveRotate(game, 3, 2, 2)
-    doMove(game, 2, 1)
-    move.rotatingTurret = true
-    moveRotate(game, 2, 1, 6)
-    move.rotatingTurret = false
-    moveRotate(game, 2, 1, 1)
+    game.moveState.move(1, 1)
+    expect(game.gameState.rotateOpen).toBe(true)
+    expect(game.gameState.rotatePossible).toBe(false)
+    expect(game.gameState.openHex(0, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.Closed)
 
-    doMove(game, 1, 1)
-    expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(false)
-    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
-    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
-    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
-
-    finishMove(game)
+    game.gameState.finish()
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -218,10 +214,10 @@ describe("game action tests", () => {
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
-    startBreakdown(game)
+    game.gameState = new BreakdownState(game)
     expect(reactionFireCheck(game)).toBe(false)
-    expect(game.gameState?.currentAction).toBe(actionType.Breakdown)
-    finishBreakdown(game)
+    expect(game.gameState.type).toBe(stateType.Breakdown)
+    game.gameState.finish()
     expect(reactionFireCheck(game)).toBe(false)
 
     Math.random = original
@@ -247,22 +243,22 @@ describe("game action tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    expect(openHexRotateOpen(map)).toBe(false)
-    expect(openHexRotatePossible(map)).toBe(false)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+    expect(game.gameState.rotateOpen).toBe(false)
+    expect(game.gameState.rotatePossible).toBe(false)
+    expect(game.gameState.openHex(3, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(4, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 3, 2)
-    expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(true)
-    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(0, 1))).toBe(hexOpenType.Closed)
-    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
-    expect(openHexMovement(map, new Coordinate(1, 1), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
+    game.assaultState.move(3, 2)
+    expect(game.gameState.rotateOpen).toBe(true)
+    expect(game.gameState.rotatePossible).toBe(true)
+    expect(game.gameState.openHex(0, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -280,9 +276,9 @@ describe("game action tests", () => {
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
-    startBreakdown(game)
-    expect(game.gameState?.currentAction).toBe(actionType.Breakdown)
-    finishBreakdown(game)
+    game.gameState = new BreakdownState(game)
+    expect(game.gameState.type).toBe(stateType.Breakdown)
+    game.gameState.finish()
 
     Math.random = original
 
@@ -302,28 +298,28 @@ describe("game action tests", () => {
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Main)
 
-    startPass(game)
-    expect(game.gameState?.currentAction).toBe(actionType.Pass)
+    game.gameState = new PassState(game)
+    expect(game.gameState.type).toBe(stateType.Pass)
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
     expect(game.phase).toBe(gamePhaseType.Main)
     expect(reactionFireCheck(game)).toBe(false)
 
-    finishPass(game)
+    game.gameState.finish()
     expect(game.gameState).toBe(undefined)
     expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
     expect(reactionFireCheck(game)).toBe(false)
 
-    startPass(game)
-    expect(game.gameState?.currentAction).toBe(actionType.Pass)
+    game.gameState = new PassState(game)
+    expect(game.gameState.type).toBe(stateType.Pass)
     expect(game.initiative).toBe(1)
     expect(game.currentPlayer).toBe(1)
     expect(game.phase).toBe(gamePhaseType.Main)
     expect(reactionFireCheck(game)).toBe(false)
 
-    finishPass(game)
+    game.gameState.finish()
     expect(game.gameState).toBe(undefined)
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
@@ -345,11 +341,11 @@ describe("game action tests", () => {
 
     game.sniperNeeded = [{unit: firing, loc: floc }]
 
-    startSniper(game)
+    game.gameState = new SniperState(game)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    finishSniper(game)
+    game.gameState.finish()
     Math.random = original
 
     expect(game.lastAction?.type).toBe("sniper")

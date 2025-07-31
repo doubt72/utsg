@@ -8,7 +8,7 @@ import {
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
 } from "../control/fire";
-import { ActionSelection } from "../control/mainActions";
+import { StateSelection } from "../control/state/BaseState";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -110,7 +110,7 @@ export default class FireAction extends BaseAction {
     return false
   }
 
-  convertAToA(actor: FireActionActor[]): ActionSelection[] {
+  convertAToA(actor: FireActionActor[]): StateSelection[] {
     return actor.map(a => {
       return { x: a.x, y: a.y, id: a.counter.unit.id, counter: a.counter }
     })

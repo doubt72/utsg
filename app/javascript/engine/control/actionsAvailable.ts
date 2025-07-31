@@ -3,35 +3,36 @@ import { coordinateToLabel } from "../../utilities/utilities"
 import Game, { gamePhaseType } from "../Game"
 import Map from "../Map"
 import Unit from "../Unit"
-import { actionType } from "./actionState"
 import { showClearObstacles, showEntrench } from "./assault"
-import { breakdownCheck, closeCombatCheck, initiativeCheck, reactionFireCheck } from "./checks"
-import { startCloseCombatSelection } from "./cleanupActions"
-import {
-  needPickUpDisambiguate, startBreakdown, startInitiative, startMoraleCheck, startReaction,
-  startRout, startRoutCheck, startSniper
-} from "./mainActions"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
+import { stateType } from "./state/BaseState"
+import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
+import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
+import MoraleCheckState from "./state/MoraleCheckState"
+import ReactionState, { reactionFireCheck } from "./state/ReactionState"
+import RoutCheckState from "./state/RoutCheckState"
+import RoutState from "./state/RoutState"
+import SniperState from "./state/SniperState"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
   if (breakdownCheck(game)) {
-    startBreakdown(game)
+    game.gameState = new BreakdownState(game)
   } else if (game.sniperNeeded.length > 0) {
-    startSniper(game)
+    game.gameState = new SniperState(game)
   } else if (game.moraleChecksNeeded.length > 0) {
-    startMoraleCheck(game)
+    game.gameState = new MoraleCheckState(game)
   } else if (game.routNeeded.length > 0) {
     game.routNeeded[0].unit.select()
-    startRout(game, false)
+    game.gameState = new RoutState(game, false)
   } else if (game.routCheckNeeded.length > 0) {
-    startRoutCheck(game)
+    game.gameState = new RoutCheckState(game)
   } else if (initiativeCheck(game)) {
-    startInitiative(game)
+    game.gameState = new InitiativeState(game)
   } else if (reactionFireCheck(game)) {
-    startReaction(game)
-  } else if (closeCombatCheck(game)) {
-    startCloseCombatSelection(game)
-  }
+    game.gameState = new ReactionState(game)
+  }// else if (closeCombatCheck(game)) {
+  //   startCloseCombatSelection(game)
+  // }
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]
   }
@@ -56,18 +57,18 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   } else if (checkPlayer(game, activePlayer, actions)) {
     return actions
   } else if (game.phase === gamePhaseType.Deployment) {
-    if (!game.actionInProgress) {
+    if (!game.gameState?.actionInProgress) {
       addUndo(game, activePlayer, actions)
     }
     actions.unshift({ type: "deploy" })
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
-    if (!game.actionInProgress && (!selection || game.gameState?.currentAction === actionType.Breakdown)) {
+    if (!game.gameState?.actionInProgress) {
       addUndo(game, activePlayer, actions)
     }
-    if (game.gameState?.currentAction === actionType.Fire && game.gameState.fire) {
-      const action = game.gameState.fire
+    if (game.gameState?.type === stateType.Fire) {
+      const action = game.fireState
       if (action) {
         if (!action.doneSelect) {
           actions.unshift({ type: "none", message: "select fire group" })
@@ -75,12 +76,12 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         } else {
           actions.unshift({ type: "none", message: "select target" })
         }
-        const sponson = !!game.gameState.selection[0].counter.unit.sponson
+        const sponson = !!action.selection[0].counter.unit.sponson
         if (sponson && !(selection?.sponsonJammed || selection?.sponsonDestroyed ||
                          selection?.jammed || selection?.weaponDestroyed)) {
           actions.push({ type: "fire_toggle_sponson" })
         }
-        if (!action.doneRotating && !game.sponsonFire) {
+        if (!action.doneRotating && !game.fireState.sponson) {
           actions.push({ type: "finish_rotation" })
         }
         if (selection?.smokeCapable && (selection.targetedRange || selection.offBoard)) {
@@ -93,19 +94,19 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
-    } else if (game.gameState?.currentAction === actionType.Move && game.gameState.move) {
+    } else if (game.gameState?.type === stateType.Move) {
       const actionSelect = currSelection(game, true)
-      const action = game.gameState.move
+      const action = game.moveState
       if (actionSelect && action) {
-        if (action.loadingMove) {
-          if (needPickUpDisambiguate(game)) {
+        if (action.loading) {
+          if (action.needPickUpDisambiguate) {
             actions.unshift({ type: "none", message: "select unit to pick up unit" })
           } else {
             actions.unshift({ type: "none", message: "select unit to be picked up" })
           }
-        } else if (action.droppingMove) {
+        } else if (action.dropping) {
           actions.unshift({ type: "none", message: "select unit to drop off" })
-        } else if (action.placingSmoke) {
+        } else if (action.smoke) {
           actions.unshift({ type: "none", message: "select hex to place smoke" })
         } else if (action.doneSelect) {
           actions.unshift({ type: "none", message: "select hex to move" })
@@ -134,8 +135,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
-    } else if (game.gameState?.currentAction === actionType.Assault) {
-      const action = game.gameState.assault
+    } else if (game.gameState?.type === stateType.Assault) {
+      const action = game.assaultState
       if (action) {
         if (showClearObstacles(game)) {
           actions.push({ type: "assault_move_clear" })
@@ -153,42 +154,42 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       } else {
         actions.unshift({ type: "none", message: "error: unexpected missing state" })
       }
-    } else if (game.gameState?.currentAction === actionType.Breakdown) {
+    } else if (game.gameState?.type === stateType.Breakdown) {
       actions.push({ type: "breakdown" })
-    } else if (game.gameState?.currentAction === actionType.RoutAll) {
+    } else if (game.gameState?.type === stateType.RoutAll) {
         actions.unshift({ type: "none", message: "enemy rout" })
         actions.push({ type: "enemy_rout" })
         actions.push({ type: "cancel_action" })
-    } else if (game.gameState?.currentAction === actionType.RoutCheck) {
+    } else if (game.gameState?.type === stateType.RoutCheck) {
         actions.push({ type: "rout_check" })
-    } else if (game.gameState?.currentAction === actionType.Rout) {
-      if (game.gameState.rout?.optional && !game.gameState.rout.routPathTree) {
+    } else if (game.gameState?.type === stateType.Rout) {
+      if (game.routState.optional && !game.routState.routPathTree) {
         actions.unshift({ type: "none", message: "can't rout unit without eliminating it" })
-      } else if (!game.gameState.rout?.routPathTree) {
+      } else if (!game.routState.routPathTree) {
         actions.unshift({ type: "none", message: "unit has no legal move" })
         actions.push({ type: "rout_eliminate" })
       } else {
         actions.unshift({ type: "none", message: "select location to rout to" })
       }
-      if (game.gameState.rout?.optional) {
+      if (game.routState.optional) {
         actions.push({ type: "cancel_action" })
       }
-    } else if (game.gameState?.currentAction === actionType.MoraleCheck) {
-      const select = game.gameState
+    } else if (game.gameState?.type === stateType.MoraleCheck) {
       const counter = game.gameState.selection[0].counter
       const hex = counter.hex as Coordinate
       actions.unshift({
         type: "none",
-        message: `${game.nationNameForPlayer(select.player)} ${counter.unit.name} at ${coordinateToLabel(hex)}:`
+        message: `${game.nationNameForPlayer(game.gameState.player)} ${counter.unit.name} ` +
+          `at ${coordinateToLabel(hex)}:`
       })
       actions.push({ type: "morale_check" })
-    } else if (game.gameState?.currentAction === actionType.Initiative) {
+    } else if (game.gameState?.type === stateType.Initiative) {
       actions.push({ type: "initiative" })
-    } else if (game.gameState?.currentAction === actionType.Pass) {
+    } else if (game.gameState?.type === stateType.Pass) {
       actions.unshift({ type: "none", message: "are you sure?" })
       actions.push({ type: "pass" })
       actions.push({ type: "pass_cancel" })
-    } else if (game.reactionFire) {
+    } else if (game.fireState.reaction) {
       actions.unshift({ type: "none", message: "reaction fire" })
       if (canReactionFire(selection)) { actions.push({ type: "reaction_fire" }) }
       if (canReactionIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
@@ -215,7 +216,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
 
 export function currSelection(game: Game, move: boolean): Unit | undefined {
   if (!game) { return undefined}
-  if (game.gameState?.selection && game.gameState.selection.length > 0) {
+  if (game.gameState && game.gameState.selection.length > 0) {
     const unit = game.gameState.selection[0].counter.unit
     if (move && unit.canHandle && unit.children.length > 0 && unit.children[0].crewed) {
       return unit.children[0]

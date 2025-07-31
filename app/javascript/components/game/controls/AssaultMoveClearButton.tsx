@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { XLg } from "react-bootstrap-icons";
-import { assaultClear } from "../../../engine/control/mainActions";
 
 interface AssaultMoveClearButtonProps {
   game: Game;
@@ -11,7 +10,7 @@ interface AssaultMoveClearButtonProps {
 export default function AssaultMoveClearButton({ game, callback }: AssaultMoveClearButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    assaultClear(game)
+    game.assaultState.clear()
     callback()
   }
 

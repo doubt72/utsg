@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { Dice6 } from "react-bootstrap-icons";
-import { finishInitiative } from "../../../engine/control/mainActions";
 
 interface InitiativeButtonProps {
   game: Game;
@@ -11,7 +10,7 @@ interface InitiativeButtonProps {
 export default function InitiativeButton({ game, callback }: InitiativeButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    finishInitiative(game)
+    game.gameState?.finish()
     callback()
   }
 

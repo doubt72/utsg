@@ -19,7 +19,7 @@ export default class ReactionPassAction extends BaseAction {
   }
 
   mutateGame(): void {
-    this.game.reactionFire = false
+    this.game.gameState = undefined
   }
   
   undo(): void {

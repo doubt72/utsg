@@ -22,7 +22,6 @@ import MiniMap from "./MiniMap";
 import { roundedRectangle, yMapOffset } from "../../../utilities/graphics";
 import { normalDir } from "../../../utilities/utilities";
 import MoveTrackOverlay from "./MoveTrackOverlay";
-import openHex, { openHexRotateOpen } from "../../../engine/control/openHex";
 import select from "../../../engine/control/select";
 import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
@@ -31,11 +30,11 @@ import FireHindranceOverlay from "./FireHindranceOverlay";
 import MapTargetHexSelection from "./MapTargetHexSelection";
 import Hex from "../../../engine/Hex";
 import RoutTrackOverlay from "./RoutTrackOverlay";
-import { actionType } from "../../../engine/control/actionState";
-import { doAssault, finishRout, fireAtHex, doMove } from "../../../engine/control/mainActions";
+import { stateType } from "../../../engine/control/state/BaseState";
+import DeployState from "../../../engine/control/state/DeployState";
 
 interface MapDisplayProps {
-  map?: Map;
+  map: Map;
   scale: number;
   mapScale?: number;
   showCoords?: boolean;
@@ -48,7 +47,7 @@ interface MapDisplayProps {
   forceUpdate: number;
   hexCallback?: (x: number, y: number) => void;
   counterCallback?: () => void;
-  directionCallback?: (x: number, y: number, d: Direction) => void;
+  directionCallback?: (d: Direction) => void;
   resetCallback?: () => void;
   clearActionCallback?: () => void;
 }
@@ -107,7 +106,6 @@ export default function MapDisplay({
   }
 
   const minHeight = (height: number, scale: number = 1, m?: Map) => {
-    if (!map) { return 9999 }
     if (preview || m?.preview) { return map.ySize * scale }
     const gc = guiCollapse ? 178 : 0
     const fill = m?.debug ? 16 : 408 - gc
@@ -116,7 +114,6 @@ export default function MapDisplay({
   }
 
   const minWidth = (width: number, scale: number = 1, m?: Map) => {
-    if (!map) { return 9999 }
     if (preview || m?.preview) { return map.xSize * scale }
     let min = 1274
     if (checkMin(m)) { min += 15 }
@@ -131,7 +128,7 @@ export default function MapDisplay({
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
 
   useEffect(() => {
-    if (!map || !map.game) { return }
+    if (!map.game) { return }
     const timer = notificationDetails.timer
     if (timer < 1) {
       if (map.game.messageQueue.length > 0) {
@@ -146,7 +143,7 @@ export default function MapDisplay({
     const twidth = error.length * 9.6 + 24
     const x = (map.previewXSize * (mapScale ?? 1) - 76 < width / scale - 216 ?
               map.previewXSize * (mapScale ?? 1) - 76 : width / scale - 216) - twidth
-    const y = 50 + map?.yStatusSize + 50 / scale - 50
+    const y = 50 + map.yStatusSize + 50 / scale - 50
     setNotification(
       <g>
         <path d={roundedRectangle(x, y, twidth, 32)} style={{ fill: `rgba(221,221,221,${alpha})` }}/>
@@ -158,11 +155,11 @@ export default function MapDisplay({
   }, [notificationDetails])
 
   useEffect(() => {
-    if (!map || !map.game || map.game.messageQueue.length < 1) { return }
+    if (!map.game || map.game.messageQueue.length < 1) { return }
     if (notificationDetails.timer < 1) {
       setNotificationDetails({ error: map.game.getMessage() as string, timer: 200 })
     }
-  }, [map?.game?.messageQueue.length])
+  }, [map.game?.messageQueue.length])
 
   useEffect(() => {
     const handleResize = () => {
@@ -181,7 +178,6 @@ export default function MapDisplay({
   const minimapCallback = (event: React.MouseEvent, calculated: {
     mapSize: Coordinate, scale: number
   }) => {
-    if (!map) { return }
     const element = event.target as SVGPathElement
     const rect = element.getBoundingClientRect()
     const x = event.clientX - rect.x;
@@ -208,7 +204,7 @@ export default function MapDisplay({
   }
 
   useEffect(() => {
-    if (!map || map.preview || preview) { return }
+    if (map.preview || preview) { return }
 
     let xScale = (width - 200 * scale) / map.previewXSize / scale / (mapScale ?? 1)
     let yScale = (height + 50 - 50 / scale - yMapOffset * scale) / map.ySize / scale / (mapScale ?? 1)
@@ -224,10 +220,10 @@ export default function MapDisplay({
                 xOffset={xOffset} yOffset={yOffset} callback={minimapCallback}
                 widthCallback={setReinforcementOffset} />
     )
-  }, [map, mapScale, width, height, scale, xOffset, yOffset, map?.game?.lastAction])
+  }, [map, mapScale, width, height, scale, xOffset, yOffset, map.game?.lastAction])
 
   useEffect(() => {
-    if (!map || map.debug) { return }
+    if (map.debug) { return }
     if (hideCounters || showLos) {
       if (map.game?.gameState) {
         map.game.cancelAction()
@@ -238,14 +234,13 @@ export default function MapDisplay({
   }, [hideCounters, showLos])
 
   useEffect(() => {
-    if (!map?.game) { return }
+    if (!map.game) { return }
     map.game.cancelAction()
     clearActionCallback()
     setReinforcementsOverlay(undefined)
   }, [showTerrain])
 
   useEffect(() => {
-    if (!map) { return }
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
     const overlayLoader: JSX.Element[] = []
@@ -262,9 +257,8 @@ export default function MapDisplay({
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         const state = map.game?.gameState
-        if (state && (state.deploy || state.move || state.assault || state.fire || state.rout ||
-            [actionType.RoutAll, actionType.RoutCheck, actionType.MoraleCheck].includes(state.currentAction))) {
-          const shaded = openHex(map, x, y)
+        if (state) {
+          const shaded = state.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
         }
@@ -273,9 +267,9 @@ export default function MapDisplay({
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setHexDisplayOverlays(overlayLoader)
-    if (map.game?.gameState?.fire) {
+    if (map.game?.gameState?.type === stateType.Fire) {
       const hexes: JSX.Element[] = []
-      for (const c of map.game.gameState.fire.targetHexes) {
+      for (const c of map.game.fireState.targetHexes) {
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(c) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true} />)
@@ -295,9 +289,13 @@ export default function MapDisplay({
     setCounterDisplay(map.counters.map((counter, i) => {
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
-    setActionCounterDisplay(map.actionCounters.map((counter, i) => {
-      return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
-    }))
+    if (map.game?.gameState) {
+      setActionCounterDisplay(map.game.gameState.activeCounters.map((counter, i) => {
+        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+      }))
+    } else {
+      setActionCounterDisplay([])
+    }
     setWeather(() =>
       map.preview || preview ? undefined :
         <WeatherDisplay preview={false} map={map} hideCounters={hideCounters}
@@ -322,7 +320,7 @@ export default function MapDisplay({
     )
     setSniper(() => {
       const x = width / scale - 959 - (checkMin(map) ? 15 : 0)
-      return map.preview || preview || (!map?.game?.alliedSniper && !map?.game?.axisSniper) ?
+      return map.preview || preview || (!map.game?.alliedSniper && !map.game?.axisSniper) ?
         undefined :
         <SniperDisplay xx={x} yy={52 + 50 / scale - 50} hideCounters={hideCounters} map={map}
                        ovCallback={setOverlay}/>
@@ -334,7 +332,7 @@ export default function MapDisplay({
                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                         callback={showReinforcements} update={{key: true}}/>
     )
-    if (map?.game?.closeReinforcementPanel) {
+    if (map.game?.closeReinforcementPanel) {
       setReinforcementsOverlay(undefined)
       map.game.closeReinforcementPanel = false
     } else {
@@ -347,7 +345,9 @@ export default function MapDisplay({
           <ReinforcementPanel map={map} xx={xx} yy={yy} player={player}
                               closeCallback={() => {
                                 setReinforcementsOverlay(undefined)
-                                map.game?.setReinforcementSelection(1, undefined)
+                                if (map.game) {
+                                  map.game.gameState = undefined
+                                }
                               }}
                               shifted={rp?.props.shifted ?? false} shiftCallback={shift}
                               ovCallback={setOverlay} forceUpdate={mapUpdate} />
@@ -367,17 +367,16 @@ export default function MapDisplay({
     }
   }, [
     map, showCoords, showStatusCounters, hideCounters, mapUpdate, showTerrain,
-    map?.currentWeather, map?.baseWeather, map?.precip, map?.precipChance,
-    map?.windSpeed, map?.windDirection, map?.windVariable, width, height, scale,
-    map?.game?.currentPlayer, map?.game?.lastActionIndex, map?.game?.lastAction?.undone,
-    map?.game?.initiative, map?.game?.currentPlayer, map?.game?.turn,
-    map?.game?.playerOneScore, map?.game?.playerTwoScore, forceUpdate,
-    map?.game?.closeReinforcementPanel, map?.game?.gameState?.currentAction,
-    map?.baseTerrain, map?.night // debugging only, don't change in actual games
+    map.currentWeather, map.baseWeather, map.precip, map.precipChance,
+    map.windSpeed, map.windDirection, map.windVariable, width, height, scale,
+    map.game?.currentPlayer, map.game?.lastActionIndex, map.game?.lastAction?.undone,
+    map.game?.initiative, map.game?.currentPlayer, map.game?.turn,
+    map.game?.playerOneScore, map.game?.playerTwoScore, forceUpdate,
+    map.game?.closeReinforcementPanel, map.game?.gameState?.type,
+    map.baseTerrain, map.night // debugging only, don't change in actual games
   ])
 
   useEffect(() => {
-    if (!map) { return }
     if (overlay.x < 0) { return }
     if (!overlay.show) {
       setLosOverlay(undefined)
@@ -385,8 +384,8 @@ export default function MapDisplay({
       setCounterOverlay(undefined)
       return
     }
-    const xShift = (map?.previewXSize ?? 1) * xOffset
-    const yShift = (map?.ySize ?? 1) * yOffset - 50 / scale + 50
+    const xShift = (map.previewXSize ?? 1) * xOffset
+    const yShift = (map.ySize ?? 1) * yOffset - 50 / scale + 50
     if (showLos && !overlay.counters) {
       const counters = map.counterDataAt(new Coordinate(overlay.x, overlay.y)).filter(c => !c.u.isFeature)
       if (counters.length < 1) { return }
@@ -417,26 +416,25 @@ export default function MapDisplay({
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
       )
     }
-  }, [overlay.show, overlay.x, overlay.y, overlay.counters, map?.debugLos])
+  }, [overlay.show, overlay.x, overlay.y, overlay.counters, map.debugLos])
 
   useEffect(() => {
     setOverlay({ show: false, x: -1, y: -1 })
   }, [showLos])
 
   useEffect(() => {
-    if (!map) { return }
     const lastSigAction = map.game?.lastSignificantAction
-    if (map.game?.gameState?.move || map.game?.gameState?.assault ||
+    if (map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault ||
         (lastSigAction &&
          ["move", "rush", "assault_move", "rout_move", "rout_self"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
       setMoveTrack(undefined)
     }
-    if (map.game?.gameState?.fire ||
+    if (map.game?.gameState?.type === stateType.Fire ||
         (lastSigAction && ["fire"].includes(lastSigAction.data.action))) {
       setFireTrack(<FireTrackOverlay map={map} />)
-      if (map.game?.gameState?.fire && map.game.gameState.fire.targetHexes.length > 0) {
+      if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.targetHexes.length > 0) {
         setFireHindrance(<FireHindranceOverlay map={map} />)
       } else {
         setFireHindrance(undefined)
@@ -445,31 +443,37 @@ export default function MapDisplay({
       setFireTrack(undefined)
       setFireHindrance(undefined)
     }
-    if (map.game?.gameState?.rout) {
+    if (map.game?.gameState?.type === stateType.Rout) {
       setRoutTrack(<RoutTrackOverlay map={map} />)
     } else {
       setRoutTrack(undefined)
     }
-  }, [map?.game?.lastSignificantAction, mapUpdate, forceUpdate, map?.game?.gameState])
+  }, [map.game?.lastSignificantAction, mapUpdate, forceUpdate, map.game?.gameState])
 
   useEffect(() => {
-    if (map?.game?.gameState?.move || map?.game?.gameState?.assault ||
-        map?.game?.gameState?.fire
-    ) {
-      const lastPath = map.game.lastPath as GameActionPath
+    if (map.game?.gameState?.type === stateType.Move &&
+        (map.game.moveState.rotateOpen || map.game.moveState.rotatingTurret)) {
+      const lastPath = map.game.moveState.lastPath as GameActionPath
       const coord = new Coordinate(lastPath.x, lastPath.y)
-      if (openHexRotateOpen(map) || map.game.gameState.move?.rotatingTurret) {
-        const hex = map.hexAt(coord)
-        setDirectionSelectionOverlay(
-          <DirectionSelector hex={hex} selectCallback={directionSelection} />
-        )
-      } else {
-        setDirectionSelectionOverlay(undefined)
-      }
-    } else if (map?.game?.gameState?.deploy) {
-      if (map.game.gameState.deploy.needsDirection) {
-        const [x, y] = map.game.gameState.deploy.needsDirection
-        setDirectionSelectionOverlay(<DirectionSelector hex={map.hexAt(new Coordinate(x, y))}
+      setDirectionSelectionOverlay(
+        <DirectionSelector hex={map.hexAt(coord)} selectCallback={directionSelection} />
+      )
+    } else if (map.game?.gameState?.type === stateType.Assault && map.game.assaultState.rotateOpen) {
+      const lastPath = map.game.assaultState.lastPath as GameActionPath
+      const coord = new Coordinate(lastPath.x, lastPath.y)
+      setDirectionSelectionOverlay(
+        <DirectionSelector hex={map.hexAt(coord)} selectCallback={directionSelection} />
+      )
+    } else if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.rotateOpen) {
+      const lastPath = map.game.fireState.lastPath as GameActionPath
+      const coord = new Coordinate(lastPath.x, lastPath.y)
+      setDirectionSelectionOverlay(
+        <DirectionSelector hex={map.hexAt(coord)} selectCallback={directionSelection} />
+      )
+    } else if (map.game?.gameState?.type === stateType.Deploy) {
+      if (map.game.deployState.needsDirection) {
+        const loc = map.game.deployState.location as Coordinate
+        setDirectionSelectionOverlay(<DirectionSelector hex={map.hexAt(loc)}
                                                         selectCallback={directionSelection} />)
       } else {
         setDirectionSelectionOverlay(undefined)
@@ -478,8 +482,7 @@ export default function MapDisplay({
       setDirectionSelectionOverlay(undefined)
     }
   }, [
-    map?.game?.gameState?.deploy, map?.game?.gameState?.deploy?.needsDirection,
-    mapUpdate, forceUpdate
+    map.game?.gameState, mapUpdate, forceUpdate, map.game?.deployState?.needsDirection,
   ])
 
   const shift = () => {
@@ -492,29 +495,29 @@ export default function MapDisplay({
   }
 
   const hexSelection = (x: number, y: number) => {
-    if (!map) { return }
     if (hexCallback) {
       let doCallback = true
-      if (map.game?.gameState?.deploy) {
+      if (map.game?.gameState?.type === stateType.Deploy) {
         const counter = map.game.availableReinforcements(map.game.currentPlayer)[
-          map.game.turn][map.game.gameState.deploy.index]
-        if (counter.counter.rotates && !map.game.gameState.deploy.needsDirection) {
-          map.game.gameState.deploy.needsDirection = [x, y]
+          map.game.turn][map.game.deployState.index]
+        if (counter.counter.rotates && !map.game.deployState.needsDirection) {
+          map.game.deployState.needsDirection = true
+          map.game.deployState.toHex(x, y)
           const list = map.units[y][x]
           const last = list[list.length - 1] as Unit
           if (last && last.canTow) {
-            directionCallback(x, y, normalDir(last.facing + 3))
+            directionCallback(normalDir(last.facing + 3))
             doCallback = false
           }
         }
-      } else if (map.game?.gameState?.move) {
-        doMove(map.game, x, y)
-      } else if (map.game?.gameState?.assault) {
-        doAssault(map.game, x, y)
-      } else if (map.game?.gameState?.fire) {
-        fireAtHex(map.game, x, y)
-      } else if (map.game?.gameState?.rout) {
-        finishRout(map.game, x, y)
+      } else if (map.game?.gameState?.type === stateType.Move) {
+        map.game.moveState.move(x, y)
+      } else if (map.game?.gameState?.type === stateType.Assault) {
+        map.game.assaultState.move(x, y)
+      } else if (map.game?.gameState?.type === stateType.Fire) {
+        map.game.fireState.toHex(x, y)
+      } else if (map.game?.gameState?.type === stateType.Rout) {
+        map.game.routState.finishXY(x, y)
       }
       setMapUpdate(s => s + 1)
       if (doCallback) { hexCallback(x, y) }
@@ -526,26 +529,24 @@ export default function MapDisplay({
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
-    if (!map) { return }
     if (selection.target.type === "map") {
       select(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
-      if (map.game.gameState?.deploy &&
-          map.game.gameState.deploy.index !== selection.target.index) {
-        map.game.gameState.deploy.needsDirection = undefined
+      if (map.game.gameState?.type === stateType.Deploy &&
+          map.game.deployState.index !== selection.target.index) {
+        map.game.deployState.needsDirection = false
       }
       const player = selection.target.player
-      map.game.setReinforcementSelection(player, {
-        turn: selection.target.turn,
-        index: selection.target.index,
-      })
+      map.game.gameState = new DeployState(map.game, selection.target.turn, selection.target.index)
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
       setReinforcementsOverlay(rp =>
         <ReinforcementPanel map={map} xx={x} yy={y} player={player}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
-                              map.game?.setReinforcementSelection(1, undefined)
+                              if (map.game) {
+                                map.game.gameState = undefined
+                              }
                             }}
                             shifted={rp?.props.shifted ?? false} shiftCallback={shift}
                             ovCallback={setOverlay} forceUpdate={mapUpdate} />
@@ -554,11 +555,10 @@ export default function MapDisplay({
     setMapUpdate(s => s + 1)
   }
 
-  const directionSelection = (x: number, y: number, d: Direction) => {
-    if (!map) { return }
-    directionCallback(x, y, d)
-    if (map.game?.gameState?.deploy || map.game?.gameState?.fire ||
-        map.game?.gameState?.move || map.game?.gameState?.assault) {
+  const directionSelection = (d: Direction) => {
+    directionCallback(d)
+    if (map.game?.gameState?.type === stateType.Deploy || map.game?.gameState?.type === stateType.Fire ||
+        map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault) {
       setMapUpdate(s => s+1)
     }
   }
@@ -581,7 +581,7 @@ export default function MapDisplay({
   }
 
   const mapDisplay = () => {
-    if (map?.preview || preview) {
+    if (map.preview || preview) {
       return (
         <g>
           {hexDisplay}
@@ -596,9 +596,8 @@ export default function MapDisplay({
         if (mWidth > map.previewXSize) { mWidth = map.previewXSize }
         if (mHeight > map.ySize) { mHeight = map.ySize }
       }
-      const xShift = (map?.previewXSize ?? 1) * xOffset
-      const yShift = (map?.ySize ?? 1) * yOffset
-      const action = !!map?.game?.gameState
+      const xShift = (map.previewXSize ?? 1) * xOffset
+      const yShift = (map.ySize ?? 1) * yOffset
       return (
         <svg x={0} y={yMapOffset + 50 / scale - 50} width={mWidth} height={mHeight}
              viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}>
@@ -609,7 +608,7 @@ export default function MapDisplay({
           {counterDisplay}
           {losOverlay}
           {counterLosOverlay}
-          {action ? hexDisplayOverlays : ""}
+          {hexDisplayOverlays}
           {actionCounterDisplay}
           {moveTrack}
           {routTrack}

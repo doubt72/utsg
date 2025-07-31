@@ -3,6 +3,7 @@ import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
 import Hex from "../../../engine/Hex";
 import { circlePath } from "../../../utilities/graphics";
+import { stateType } from "../../../engine/control/state/BaseState";
 
 interface MoveTrackOverlayProps {
   map: Map;
@@ -10,10 +11,10 @@ interface MoveTrackOverlayProps {
 
 export default function MoveTrackOverlay({ map }: MoveTrackOverlayProps) {
   const hexes = (): Hex[] => {
-    if (map.game?.gameState?.move) {
-      return map.game.gameState.move.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
-    } else if (map.game?.gameState?.assault) {
-      return map.game.gameState.assault.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
+    if (map.game?.gameState?.type === stateType.Move) {
+      return map.game.moveState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
+    } else if (map.game?.gameState?.type === stateType.Assault) {
+      return map.game.assaultState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
     const lastSigAction = map.game?.lastSignificantAction
     if (lastSigAction &&

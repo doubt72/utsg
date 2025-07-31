@@ -1,8 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { MoveGlyph } from "../../utilities/buttons";
-import { finishMove } from "../../../engine/control/mainActions";
-import { rushing } from "../../../engine/control/checks";
 
 interface MoveFinishButtonProps {
   game: Game;
@@ -12,7 +10,7 @@ interface MoveFinishButtonProps {
 export default function MoveFinishButton({ game, callback }: MoveFinishButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    finishMove(game)
+    game.gameState?.finish()
     callback()
   }
 
@@ -20,7 +18,7 @@ export default function MoveFinishButton({ game, callback }: MoveFinishButtonPro
     <form onSubmit={onSubmit}>
       <div className="mb025em">
         <button type="submit" className="custom-button nowrap">{MoveGlyph()}
-          finish { rushing(game) ? "rush" : "move" }
+          finish { game.moveState.rushing ? "rush" : "move" }
         </button>
       </div>
     </form>

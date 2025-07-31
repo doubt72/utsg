@@ -101,10 +101,10 @@ export default class GameAction {
   game: Game;
   index: number;
 
-  constructor(data: GameActionData, game: Game, index: number) {
+  constructor(data: GameActionData, game: Game, index?: number) {
     this.data = data
     this.game = game
-    this.index = index
+    this.index = index ? index : this.game.actions.length
   }
 
   get actionClass(): BaseAction {

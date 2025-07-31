@@ -32,7 +32,6 @@ export function reactionFireHexes(game: Game): GameActionPath[] {
 }
 
 export function placeReactionFireGhosts(game: Game) {
-  if (!game.reactionFire) { return }
   const action = reactionFireAction(game)
   if (!["move", "rush"].includes(action.type)) { return }
   const path = reactionFireHexes(game)

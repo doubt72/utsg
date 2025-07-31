@@ -4,8 +4,8 @@ import Game from "../Game";
 import Hex from "../Hex";
 import Map from "../Map";
 import Unit from "../Unit";
-import { RoutPathTree } from "./mainActions";
 import { alongRailroad, alongStream } from "./movement";
+import { RoutPathTree } from "./state/RoutState";
 
 export function findRoutPathTree(
   game: Game, loc: Coordinate, move: number, player: Player, unit: Unit

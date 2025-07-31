@@ -5,14 +5,13 @@ import Unit from "../Unit"
 import { describe, expect, test } from "vitest"
 import select from "./select"
 import organizeStacks from "../support/organizeStacks"
-import { openHexRotateOpen, openHexRotatePossible } from "./openHex"
-import { openHexAssaulting, showClearObstacles, showEntrench } from "./assault"
+import { showClearObstacles, showEntrench } from "./assault"
 import Feature from "../Feature"
 import {
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testRInf, testWire 
 } from "./testHelpers"
-import { assaultClear, assaultEntrench, assaultRotate, doAssault, finishAssault, startAssault } from "./mainActions"
-import { actionType, AssaultMoveActionState, GameActionState } from "./actionState"
+import AssaultState from "./state/AssaultState"
+import { stateType } from "./state/BaseState"
 
 describe("assault movement tests", () => {
   test("along road", () => {
@@ -23,32 +22,28 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    const state = game.gameState as GameActionState
+    expect(game.gameState.player).toBe(2)
+    expect(game.gameState.type).toBe(stateType.Assault)
+    expect(game.gameState.selection[0].id).toBe("test1")
 
-    expect(state.player).toBe(2)
-    expect(state.currentAction).toBe(actionType.Assault)
-    expect(state.selection[0].id).toBe("test1")
+    expect(game.assaultState.path[0].x).toBe(4)
+    expect(game.assaultState.path[0].y).toBe(2)
+    expect(game.assaultState.doneSelect).toBe(true)
 
-    const assault = state.assault as AssaultMoveActionState
+    expect(game.gameState.openHex(0, 0)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(4, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
 
-    expect(assault.path[0].x).toBe(4)
-    expect(assault.path[0].y).toBe(2)
-    expect(assault.doneSelect).toBe(true)
+    game.assaultState.move(3, 2)
+    expect(game.assaultState.path.length).toBe(2)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
 
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(0, 0))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-
-    doAssault(game, 3, 2)
-    expect(assault.path.length).toBe(2)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
-
-    finishAssault(game)
+    game.gameState.finish()
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(3)
@@ -77,18 +72,18 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 2, 2)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(2, 2)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(2)
@@ -116,18 +111,18 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 2, 2)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(2, 2)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(2)
@@ -144,18 +139,18 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.All)
 
-    doAssault(game, 2, 2)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(2, 2)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
     let all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(2)
@@ -184,29 +179,26 @@ describe("assault movement tests", () => {
     unit2.id = "test2"
     map.addCounter(loc, unit2)
 
-    startAssault(game)
-
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    game.gameState = new AssaultState(game)
 
     select(map, {
       counter: map.countersAt(loc)[1],
       target: { type: "map", xy: loc }
     }, () => {})
-    expect(state.selection.length).toBe(2)
-    expect(assault.doneSelect).toBe(false)
+    expect(game.gameState.selection.length).toBe(2)
+    expect(game.assaultState.doneSelect).toBe(false)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.All)
 
-    doAssault(game, 2, 2)
-    expect(assault.doneSelect).toBe(true)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(2, 2)
+    expect(game.assaultState.doneSelect).toBe(true)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -241,21 +233,18 @@ describe("assault movement tests", () => {
     unit4.id = "test4"
     map.addCounter(new Coordinate(3, 2), unit4)
 
-    startAssault(game)
-
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    game.gameState = new AssaultState(game)
 
     select(map, {
       counter: map.countersAt(loc)[1],
       target: { type: "map", xy: loc }
     }, () => {})
-    expect(state.selection.length).toBe(2)
-    expect(assault.doneSelect).toBe(false)
+    expect(game.gameState.selection.length).toBe(2)
+    expect(game.assaultState.doneSelect).toBe(false)
 
-    expect(openHexAssaulting(map, loc, new Coordinate(3, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, loc, new Coordinate(4, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, loc, new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(4, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
   })
 
   test("multiselect with leader", () => {
@@ -271,28 +260,25 @@ describe("assault movement tests", () => {
     unit2.id = "test2"
     map.addCounter(loc, unit2)
 
-    startAssault(game)
-
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    game.gameState = new AssaultState(game)
 
     select(map, {
       counter: map.countersAt(loc)[1],
       target: { type: "map", xy: loc }
     }, () => {})
-    expect(state.selection.length).toBe(2)
+    expect(game.gameState.selection.length).toBe(2)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.All)
 
-    doAssault(game, 2, 2)
-    expect(assault.doneSelect).toBe(true)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(2, 2)
+    expect(game.assaultState.doneSelect).toBe(true)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -321,22 +307,19 @@ describe("assault movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.All)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.All)
+    game.assaultState.move(2, 2)
+    expect(game.assaultState.doneSelect).toBe(true)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 2, 2)
-    expect(assault.doneSelect).toBe(true)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
-
-    finishAssault(game)
+    game.gameState.finish()
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -381,22 +364,19 @@ describe("assault movement tests", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.All)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.All)
+    game.assaultState.move(2, 2)
+    expect(game.assaultState.doneSelect).toBe(true)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 2, 2)
-    expect(assault.doneSelect).toBe(true)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
-
-    finishAssault(game)
+    game.gameState.finish()
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -430,22 +410,19 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    expect(game.gameState.openHex(3, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(4, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
 
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(4, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(4, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
+    game.assaultState.move(3, 2)
+    expect(game.assaultState.path.length).toBe(2)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 3, 2)
-    expect(assault.path.length).toBe(2)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
-
-    finishAssault(game)
+    game.gameState.finish()
     const all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(3)
@@ -463,30 +440,27 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    expect(game.assaultState.path[0].facing).toBe(1)
+    expect(game.assaultState.path[0].turret).toBe(1)
 
-    expect(assault.path[0].facing).toBe(1)
-    expect(assault.path[0].turret).toBe(1)
+    expect(game.gameState.rotateOpen).toBe(false)
+    expect(game.gameState.rotatePossible).toBe(false)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 1)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
 
-    expect(openHexRotateOpen(map)).toBe(false)
-    expect(openHexRotatePossible(map)).toBe(false)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 1))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(3, 1)
+    expect(game.gameState.rotateOpen).toBe(true)
+    expect(game.gameState.rotatePossible).toBe(true)
+    expect(game.gameState.openHex(2, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(4, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 2)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 3, 1)
-    expect(openHexRotateOpen(map)).toBe(true)
-    expect(openHexRotatePossible(map)).toBe(true)
-    expect(openHexAssaulting(map, new Coordinate(3, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 1), new Coordinate(4, 1))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 1), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
+    game.assaultState.rotate(2)
 
-    assaultRotate(game, 3, 1, 2)
-
-    finishAssault(game)
+    game.gameState.finish()
 
     let all = map.allCounters
     expect(all.length).toBe(2)
@@ -537,13 +511,13 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    expect(openHexRotateOpen(map)).toBe(false)
-    expect(openHexRotatePossible(map)).toBe(false)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 1))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+    expect(game.gameState.rotateOpen).toBe(false)
+    expect(game.gameState.rotatePossible).toBe(false)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
   })
 
   test("truck assault", () => {
@@ -568,27 +542,24 @@ describe("assault movement tests", () => {
 
     organizeStacks(map)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    const state = game.gameState as GameActionState
-    const assault = state.assault as AssaultMoveActionState
+    expect(game.assaultState.path[0].facing).toBe(1)
 
-    expect(assault.path[0].facing).toBe(1)
+    expect(game.gameState.rotateOpen).toBe(false)
+    expect(game.gameState.rotatePossible).toBe(false)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 1)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
 
-    expect(openHexRotateOpen(map)).toBe(false)
-    expect(openHexRotatePossible(map)).toBe(false)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 1))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(3, 1)
+    expect(game.gameState.rotateOpen).toBe(false)
+    expect(game.gameState.rotatePossible).toBe(false)
+    expect(game.gameState.openHex(2, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(4, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 2)).toBe(hexOpenType.Closed)
 
-    doAssault(game, 3, 1)
-    expect(openHexRotateOpen(map)).toBe(false)
-    expect(openHexRotatePossible(map)).toBe(false)
-    expect(openHexAssaulting(map, new Coordinate(3, 1), new Coordinate(2, 1))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 1), new Coordinate(4, 1))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 1), new Coordinate(3, 2))).toBe(hexOpenType.Closed)
-
-    finishAssault(game)
+    game.gameState.finish()
 
     let all = map.allCounters
     expect(all.length).toBe(3)
@@ -651,18 +622,18 @@ describe("assault movement tests", () => {
     feature.id = "wire"
     map.addCounter(new Coordinate(2, 2), feature)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.All)
 
-    doAssault(game, 2, 2)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(2, 2)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -686,18 +657,18 @@ describe("assault movement tests", () => {
     feature.id = "wire"
     map.addCounter(new Coordinate(3, 2), feature)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.All)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.All)
 
-    doAssault(game, 2, 2)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(1, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(2, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    game.assaultState.move(2, 2)
+    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -722,19 +693,19 @@ describe("assault movement tests", () => {
     feature.id = "wire"
     map.addCounter(new Coordinate(3, 2), feature)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
     expect(showClearObstacles(game)).toBe(false)
     unit.engineer = true
     expect(showClearObstacles(game)).toBe(true)
 
-    assaultClear(game)
+    game.assaultState.clear()
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
 
     let all = map.allCounters
     expect(all.length).toBe(1)
@@ -764,20 +735,20 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
     expect(showClearObstacles(game)).toBe(false)
     expect(showEntrench(game)).toBe(true)
 
-    assaultEntrench(game)
+    game.assaultState.entrench()
 
     expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
 
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 2))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(3, 3))).toBe(hexOpenType.Closed)
-    expect(openHexAssaulting(map, new Coordinate(3, 2), new Coordinate(2, 3))).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 3)).toBe(hexOpenType.Closed)
 
-    finishAssault(game)
+    game.gameState.finish()
 
     expect(map.units[2][3].filter(u => u.ghost).length).toBe(0)
 
@@ -815,7 +786,7 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
     expect(showClearObstacles(game)).toBe(false)
     expect(showEntrench(game)).toBe(false)
@@ -831,7 +802,7 @@ describe("assault movement tests", () => {
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
-    startAssault(game)
+    game.gameState = new AssaultState(game)
 
     expect(showClearObstacles(game)).toBe(false)
     expect(showEntrench(game)).toBe(false)

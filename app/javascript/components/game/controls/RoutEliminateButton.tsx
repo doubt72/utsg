@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { RoutGlyph } from "../../utilities/buttons";
-import { finishRout } from "../../../engine/control/mainActions";
 
 interface RoutEliminateButtonProps {
   game: Game;
@@ -11,7 +10,7 @@ interface RoutEliminateButtonProps {
 export default function RoutEliminateButton({ game, callback }: RoutEliminateButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    finishRout(game)
+    game.gameState?.finish()
     callback()
   }
 

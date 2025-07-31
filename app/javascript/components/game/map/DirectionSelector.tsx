@@ -3,12 +3,12 @@ import Hex from "../../../engine/Hex";
 import { Direction, roadType } from "../../../utilities/commonTypes";
 import Unit from "../../../engine/Unit";
 import { GameActionPath } from "../../../engine/GameAction";
-import { openHexRotatePossible } from "../../../engine/control/openHex";
 import { clearColor } from "../../../utilities/graphics";
+import { stateType } from "../../../engine/control/state/BaseState";
 
 interface DirectionSelectorProps {
   hex?: Hex;
-  selectCallback: (x: number, y: number, d: Direction) => void;
+  selectCallback: (d: Direction) => void;
 }
 
 export default function DirectionSelector({ hex, selectCallback }: DirectionSelectorProps) {
@@ -18,10 +18,10 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
     const game = hex.map.game
     let dirs: Direction[] = [1, 2, 3, 4, 5, 6]
     let pointingDir: Direction | undefined = undefined
-    if (game.gameState?.deploy) {
+    if (game.gameState?.type === stateType.Deploy) {
       const player = game.gameState.player
-      const turn = game.gameState.deploy.turn
-      const index = game.gameState.deploy.index
+      const turn = game.deployState.turn
+      const index = game.deployState.index
       const uf = player === 1 ?
         game.scenario.alliedReinforcements[turn][index].counter :
         game.scenario.axisReinforcements[turn][index].counter
@@ -33,16 +33,16 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
           !unit.amphibious && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []
       }
-    } else if (game.gameState?.fire && game.gameState.selection) {
-      const lastPath = game.lastPath as GameActionPath
+    } else if (game.gameState?.type === stateType.Fire) {
+      const lastPath = game.fireState.lastPath as GameActionPath
       pointingDir = lastPath.turret
-    } else if (game.gameState?.move && game.gameState.selection) {
-      const lastPath = game.lastPath as GameActionPath
-      if (game.gameState.move.rotatingTurret) {
+    } else if (game.gameState?.type === stateType.Move) {
+      const lastPath = game.moveState.lastPath as GameActionPath
+      if (game.moveState.rotatingTurret) {
         pointingDir = lastPath.turret
       } else {
-        if (openHexRotatePossible(hex.map)) {
-          const unit = game.gameState.selection[0].counter.unit
+        if (game.moveState.rotatePossible) {
+          const unit = game.moveState.selection[0].counter.unit
           if (!hex.terrain.vehicle && unit.isVehicle && hex.roadType !== roadType.Path) {
             dirs = hex.roadDirections ?? []
           }
@@ -55,8 +55,8 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
         }
         pointingDir = lastPath.facing
       }
-    } else if (game.gameState?.assault && game.gameState.selection) {
-      const lastPath = game.lastPath as GameActionPath
+    } else if (game.gameState?.type === stateType.Assault) {
+      const lastPath = game.assaultState.lastPath as GameActionPath
       pointingDir = lastPath.turret
     }
 
@@ -64,9 +64,10 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
       const points = hex.directionSelectionCoords(v as Direction)
       const style = { fill: "#FFF", strokeWidth: 1, stroke: "#000" }
       const tStyle = { fill: "#000" }
-      let callback = () => selectCallback(hex.coord.x, hex.coord.y, v as Direction)
-      if (game.gameState?.move?.rotatingTurret || game.gameState?.assault ||
-          game.gameState?.fire) {
+      let callback = () => selectCallback(v as Direction)
+      const type = game.gameState?.type
+      if (type && ([stateType.Fire, stateType.Assault].includes(type) ||
+          (type === stateType.Move && game.moveState.rotatingTurret))) {
         style.fill = "#FF0"
       }
       if (v === pointingDir) {
@@ -88,14 +89,15 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
   }
 
   const overlay = () => {
-    if (!hex?.map?.game?.gameState?.move && !hex?.map?.game?.gameState?.assault) { return }
+    const type = hex?.map?.game?.gameState?.type
+    if (type && ![stateType.Move, stateType.Assault].includes(type)) { return }
     return (
-      <polygon points={hex.hexCoords} style={{ fill: clearColor }} />
+      <polygon points={hex?.hexCoords} style={{ fill: clearColor }} />
     )
   }
 
   const text = () => {
-    if (!hex?.map?.game?.gameState?.deploy) { return }
+    if (hex?.map?.game?.gameState?.type !== stateType.Deploy) { return }
     const y = hex ? hex?.yOffset : 0
     return (
       <text x={hex?.xOffset} y={y + 2} fontSize={13.5} textAnchor="middle"

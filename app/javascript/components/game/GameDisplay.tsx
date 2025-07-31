@@ -15,17 +15,18 @@ import {
   GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
-import { assaultRotate, fireRotate, moveRotate } from "../../engine/control/mainActions";
+import { stateType } from "../../engine/control/state/BaseState";
 
 export default function GameDisplay() {
   const { id } = useParams()
 
   const [game, setGame] = useState<{ k?: Game, turn: number, state?: string }>({ turn: 0 })
-  const [map, setMap] = useState<Map | undefined>(undefined)
-  const [actions, setActions] = useState<JSX.Element | undefined>(undefined)
-  const [turn, setTurn] = useState<JSX.Element | undefined>(undefined)
-  const [controls, setControls] = useState<JSX.Element | undefined>(undefined)
-  const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>(undefined)
+  const [map, setMap] = useState<Map | undefined>()
+  const [mapDisplay, setMapDisplay] = useState<JSX.Element | undefined>()
+  const [actions, setActions] = useState<JSX.Element | undefined>()
+  const [turn, setTurn] = useState<JSX.Element | undefined>()
+  const [controls, setControls] = useState<JSX.Element | undefined>()
+  const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>()
 
   const [collapseLayout, setCollapseLayout] = useState<boolean>(false)
 
@@ -80,6 +81,19 @@ export default function GameDisplay() {
     if (showCoords !== null) { setCoords(showCoords == "true") }
     if (showMarkers !== null) { setShowStatusCounters(showMarkers == "true") }
   }, [])
+
+  useEffect(() => {
+    if (!map) { return }
+    setMapDisplay(
+      <MapDisplay map={map} scale={shrinkScales[interfaceShrink]} mapScale={mapScale}
+                showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
+                hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
+                guiCollapse={collapseLayout} forceUpdate={update}
+                hexCallback={hexSelection} counterCallback={unitSelection}
+                directionCallback={directionSelection} resetCallback={resetDisplay}
+                clearActionCallback={clearAction} />
+    )
+  }, [map])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {
@@ -284,25 +298,26 @@ export default function GameDisplay() {
   }
 
   const hexSelection = (x: number, y: number) => {
-    if (game.k?.gameState?.deploy) {
+    if (game.k?.gameState?.type === stateType.Deploy) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
-        game.k.gameState.deploy.index]
-      if (!counter.counter.rotates || !game.k.gameState.deploy.needsDirection) {
-        game.k.executeReinforcement(x, y, counter, 1, gameNotification)
+        game.k.deployState.index]
+      if (!counter.counter.rotates || !game.k.deployState.needsDirection) {
+        game.k.deployState.toHex(x, y)
+        game.k.gameState.finish()
       } else {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
           return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
         })
       }
-    } else if (game.k?.gameState?.move || game.k?.gameState?.assault) {
+    } else if (game.k?.gameState?.type === stateType.Move || game.k?.gameState?.type === stateType.Assault) {
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
       })
-    } else if (game.k?.gameState?.fire) {
-      const state = game.k.gameState
-      if (state.selection[0].counter.unit.offBoard || state.fire?.firingSmoke) {
+    } else if (game.k?.gameState?.type === stateType.Fire) {
+      const fire = game.k.fireState
+      if (fire.selection[0].counter.unit.offBoard || fire.smoke) {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
           return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
@@ -318,21 +333,20 @@ export default function GameDisplay() {
     })
   }
 
-  const directionSelection = (x: number, y: number, d: Direction) => {
-    if (game.k?.gameState?.deploy) {
-      const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
-        game.k.gameState.deploy.index]
-      game.k.executeReinforcement(x, y, counter, d, gameNotification)
-    } else if (game.k?.gameState?.fire) {
-      fireRotate(game.k, d)
-    } else if (game.k?.gameState?.move) {
-      moveRotate(game.k, x, y, d)
+  const directionSelection = (d: Direction) => {
+    if (game.k?.gameState?.type === stateType.Deploy) {
+      game.k.deployState.dir(d)
+      game.k.gameState.finish()
+    } else if (game.k?.gameState?.type === stateType.Fire) {
+      game.k.fireState.rotate(d)
+    } else if (game.k?.gameState?.type === stateType.Move) {
+      game.k.moveState.rotate(d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
       })
-    } else if (game.k?.gameState?.assault) {
-      assaultRotate(game.k, x, y, d)
+    } else if (game.k?.gameState?.type === stateType.Assault) {
+      game.k.assaultState.rotate(d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
@@ -516,13 +530,7 @@ export default function GameDisplay() {
         </OverlayTrigger>
       </div>
       <div className="game-map">
-        <MapDisplay map={map as Map} scale={shrinkScales[interfaceShrink]} mapScale={mapScale}
-                 showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
-                 hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
-                 guiCollapse={collapseLayout} forceUpdate={update}
-                 hexCallback={hexSelection} counterCallback={unitSelection}
-                 directionCallback={directionSelection} resetCallback={resetDisplay}
-                 clearActionCallback={clearAction} />
+        { mapDisplay }
       </div>
       {errorWindow}
     </div>

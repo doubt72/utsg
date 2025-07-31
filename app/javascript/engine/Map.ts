@@ -13,15 +13,8 @@ import {
 import Feature from "./Feature";
 import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
-import { GameActionPath } from "./GameAction";
 import BaseAction from "./actions/BaseAction";
-import { hexDistance, togglePlayer } from "../utilities/utilities";
-import { needPickUpDisambiguate } from "./control/mainActions";
-import { leadershipRange } from "./control/fire";
-import openHex from "./control/openHex";
-import { samePlayer } from "./control/select";
-import { reactionFireHexes } from "./control/reactionFire";
-import { actionType } from "./control/actionState";
+import { togglePlayer } from "../utilities/utilities";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -513,96 +506,22 @@ export default class Map {
     return this.allCounters
   }
 
-  get actionCounters(): Counter[] {
-    if (!this.game || !this.game.gameState) { return [] }
-    const move = this.game.gameState.move
-    if (move) {
-      if (!move.doneSelect || move.droppingMove || (move.loadingMove && needPickUpDisambiguate(this.game))) {
-        const first = move.path[0]
-        return this.countersAt(new Coordinate(first.x, first.y))
-      }
-      if (move.loadingMove && !needPickUpDisambiguate(this.game)) {
-        const last = this.game?.lastPath as GameActionPath
-        return this.countersAt(new Coordinate(last.x, last.y))
-      }
-    }
-    const assault = this.game.gameState.assault
-    if (assault) {
-      if (!assault.doneSelect) {
-        const first = assault.path[0]
-        return this.countersAt(new Coordinate(first.x, first.y))
-      }
-    }
-    const fire = this.game.gameState.fire
-    if (fire) {
-      let rc: Counter[] = []
-      const first = fire.path[0]
-      if (!fire.doneSelect) {
-        const leadership = leadershipRange(this.game)
-        if (leadership === false) {
-          rc = this.countersAt(new Coordinate(first.x, first.y))
-        } else {
-          const counters = this.allCounters
-          for (const c of counters) {
-            const hex = c.hex as Coordinate
-            if (hexDistance(new Coordinate(hex.x, hex.y), new Coordinate(first.x, first.y)) <= leadership) {
-              rc.push(c)
-            }
-          }
-        }
-      }
-      if (!fire.firingSmoke) {
-        for (let y = 0; y < this.height; y++) {
-          for (let x = this.width - 1; x >= 0; x--) {
-            let check = false
-            const counters = this.countersAt(new Coordinate(x, y))
-            if (openHex(this, x, y)) {
-              for (const c of counters) {
-                if (c.hasUnit && !samePlayer(this.game, c.unit)) {
-                  if (this.game.reactionFire) {
-                    for (const h of reactionFireHexes(this.game)) {
-                      if (h.x === x && h.y === y) { check = true }
-                    }
-                  } else { check = true }
-                }
-              }
-            }
-            for (const sel of this.game.gameState.selection) {
-              if (!fire.doneRotating) { break }
-              if (sel.x === x && sel.y === y) {
-                check = true
-                break
-              }
-            }
-            if (check) { rc = rc.concat(counters) }
-          }
-        }
-      }
-      return rc
-    }
-    const rout = this.game.gameState.rout
-    const routCheck = this.game.gameState.currentAction === actionType.RoutCheck
-    const moraleCheck = this.game.gameState.currentAction === actionType.MoraleCheck
-    if (rout || routCheck || moraleCheck) {
-      const first = this.game.gameState.selection[0]
-      return this.countersAt(new Coordinate(first.x, first.y))
-    }
-    const routAll = this.game.gameState.currentAction === actionType.RoutAll
-    if (routAll) {
-      let rc: Counter[] = []
-      for (const s of this.game.gameState.selection) {
-        const counters = this.countersAt(new Coordinate(s.x, s.y))
-        for (const c of counters) {
-          if (c.unit.isBroken && c.unit.playerNation !== this.game.currentPlayerNation) {
-            rc = rc.concat(counters)
-            break
-          }
-        }
-      }
-      return rc
-    }
-    return []
-  }
+  // get actionCounters(): Counter[] {
+  //   if (!this.game) { return [] }
+  //   if (this.game.gameState) { return this.game.gameState.activeCounters() }
+  //   if (!this.game.gameObsoleteState) { return [] }
+  //   const rout = this.game.gameObsoleteState.rout
+  //   const routCheck = this.game.gameObsoleteState.currentAction === actionType.RoutCheck
+  //   const moraleCheck = this.game.gameObsoleteState.currentAction === actionType.MoraleCheck
+  //   if (rout || routCheck || moraleCheck) {
+  //     const first = this.game.gameObsoleteState.selection[0]
+  //     return this.countersAt(new Coordinate(first.x, first.y))
+  //   }
+  //   const routAll = this.game.gameObsoleteState.currentAction === actionType.RoutAll
+  //   if (routAll) {
+  //   }
+  //   return []
+  // }
 
   hexLos(start: Coordinate, end: Coordinate): TextLayout | boolean {
     // TODO: Consider decoupling "layout" from value here

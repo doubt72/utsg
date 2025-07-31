@@ -1,7 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { FireGlyph } from "../../utilities/buttons";
-import { finishFire } from "../../../engine/control/mainActions";
 
 interface FireFinishButtonProps {
   game: Game;
@@ -11,7 +10,7 @@ interface FireFinishButtonProps {
 export default function FireFinishButton({ game, callback }: FireFinishButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    finishFire(game)
+    game.gameState?.finish()
     callback()
   }
 

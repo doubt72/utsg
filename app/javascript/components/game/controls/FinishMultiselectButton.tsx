@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { CheckSquare } from "react-bootstrap-icons";
-import { AssaultMoveActionState, FireActionState, MoveActionState } from "../../../engine/control/mainActions";
+import { stateType } from "../../../engine/control/state/BaseState";
 
 interface FinishMultiselectButtonProps {
   game: Game;
@@ -11,10 +11,9 @@ interface FinishMultiselectButtonProps {
 export default function FinishMultiselectButton({ game, callback }: FinishMultiselectButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    let action: MoveActionState | AssaultMoveActionState | FireActionState | undefined = game.gameState?.fire
-    if (!action) { action = game.gameState?.move }
-    if (!action) { action = game.gameState?.assault }
-    if (action) { action.doneSelect = true }
+    if (game.gameState?.type === stateType.Fire) { game.fireState.doneSelect = true }
+    if (game.gameState?.type === stateType.Move) { game.moveState.doneSelect = true }
+    if (game.gameState?.type === stateType.Assault) { game.assaultState.doneSelect = true }
     game.closeOverlay = true
     callback()
   }

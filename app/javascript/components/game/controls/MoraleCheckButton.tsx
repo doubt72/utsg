@@ -1,8 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../engine/Game";
 import { Dice6 } from "react-bootstrap-icons";
-import { finishMoraleCheck } from "../../../engine/control/mainActions";
-
 interface MoraleCheckButtonProps {
   game: Game;
   callback: () => void;
@@ -11,7 +9,7 @@ interface MoraleCheckButtonProps {
 export default function MoraleCheckButton({ game, callback }: MoraleCheckButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    finishMoraleCheck(game)
+    game.gameState?.finish()
     callback()
   }
 
