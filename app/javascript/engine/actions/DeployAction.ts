@@ -48,9 +48,8 @@ export default class DeployAction extends BaseAction {
 
     const turn = this.rTurn
 
-    const uf = this.player === 1 ?
-      scenario.takeAlliedReinforcement(turn, this.rIndex) :
-      scenario.takeAxisReinforcement(turn, this.rIndex)
+    const uf = this.player === 1 ? scenario.takeAlliedReinforcement(turn, this.rIndex) :
+                                   scenario.takeAxisReinforcement(turn, this.rIndex)
     if (!uf.isFeature) {
       (uf as Unit).playerNation = this.player === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]
     }

@@ -608,8 +608,8 @@ export default function MapDisplay({
           {counterDisplay}
           {losOverlay}
           {counterLosOverlay}
-          {hexDisplayOverlays}
-          {actionCounterDisplay}
+          { map.game?.gameState?.showOverlays ? hexDisplayOverlays : "" }
+          { map.game?.gameState?.showOverlays ? actionCounterDisplay : "" }
           {moveTrack}
           {routTrack}
           {fireHindrance}

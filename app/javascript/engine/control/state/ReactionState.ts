@@ -1,6 +1,9 @@
+import { Coordinate, CounterSelectionTarget, hexOpenType } from "../../../utilities/commonTypes";
 import { togglePlayer } from "../../../utilities/utilities";
+import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
+import Unit from "../../Unit";
 import BaseState, { stateType } from "./BaseState";
 
 export function reactionFireCheck(game: Game): boolean {
@@ -21,6 +24,34 @@ export function reactionFireCheck(game: Game): boolean {
 export default class ReactionState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.Reaction, game.currentPlayer)
+  }
+
+  get showOverlays(): boolean {
+    return false
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  openHex(x: number, y: number) {
+    return hexOpenType.Open
+  }
+
+  select(selection: CounterSelectionTarget, callback: () => void) {
+    if (selection.target.type === "reinforcement") { return }
+    const map = this.game.scenario.map
+    const x = selection.target.xy.x
+    const y = selection.target.xy.y
+    const id = selection.counter.target.id
+    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+    map.clearOtherSelections(x, y, id)
+    counter.unit.select()
+    callback()
+  }
+
+  selectable(selection: CounterSelectionTarget): boolean {
+    const target = selection.counter.unit as Unit
+    const same = this.samePlayer(target)
+    if (same) { return false }
+    return true
   }
 
   finish() {

@@ -32,6 +32,10 @@ export default class BreakdownState extends BaseState {
     game.refreshCallback(game)
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const action = new GameAction({
       user: this.game.currentUser,

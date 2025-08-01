@@ -608,10 +608,6 @@ export default class Game {
     }
   }
 
-  // get currentReinforcementSelection(): DeployActionState | undefined {
-  //   return this.gameObsoleteState?.deploy
-  // }
-
   cancelAction() {
     this.scenario.map.clearAllSelections()
     this.scenario.map.clearGhosts()

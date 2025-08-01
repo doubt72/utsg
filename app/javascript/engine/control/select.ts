@@ -11,9 +11,9 @@ export default function select(
   map: Map, selection: CounterSelectionTarget, callback: () => void
 ) {
   const game = map.game
-  if (selection.target.type === "reinforcement") { return } // shouldn't happen
+  if (selection.target.type === "reinforcement") { return }
   if (!selectable(map, selection)) { return }
-  if (game?.gameState) { return game.gameState.select(map, selection, callback) }
+  if (game?.gameState) { return game.gameState.select(selection, callback) }
   const x = selection.target.xy.x
   const y = selection.target.xy.y
   const id = selection.counter.target.id
@@ -21,13 +21,6 @@ export default function select(
   map.clearOtherSelections(x, y, id)
   counter.unit.select()
   callback()
-}
-
-export function samePlayer(game: Game, target: Unit) {
-  if (game.gameState?.type === stateType.Fire && game.fireState.reaction) {
-    return target.playerNation !== game.currentPlayerNation
-  }
-  return target.playerNation === game.currentPlayerNation
 }
 
 export function clearUnrangedSelection(game: Game) {
@@ -67,14 +60,14 @@ export function removeStateSelection(game: Game, x: number, y: number, id: strin
 function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   const game = map.game
   if (!game) { return false }
-  if (game.gameState) { return game.gameState.selectable(selection) }
   const target = selection.counter.unit as Unit
   if (target.isFeature) { return false }
   if (map.debug) { return true }
+  if (game.gameState) { return game.gameState.selectable(selection) }
   if (game.phase === gamePhaseType.Deployment) { return false }
   if (game.phase === gamePhaseType.Prep) { return false } // Not supported yet
   if (game.phase === gamePhaseType.Main) {
-    const same = samePlayer(game, target)
+    const same = target.playerNation === game.currentPlayerNation
     if (!same && !game.gameState) { return false }
   }
   if (game.phase === gamePhaseType.Cleanup) { return false } // Not supported yet

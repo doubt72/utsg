@@ -86,14 +86,14 @@ export default function GameDisplay() {
     if (!map) { return }
     setMapDisplay(
       <MapDisplay map={map} scale={shrinkScales[interfaceShrink]} mapScale={mapScale}
-                showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
-                hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
-                guiCollapse={collapseLayout} forceUpdate={update}
-                hexCallback={hexSelection} counterCallback={unitSelection}
-                directionCallback={directionSelection} resetCallback={resetDisplay}
-                clearActionCallback={clearAction} />
+                  showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
+                  hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
+                  guiCollapse={collapseLayout} forceUpdate={update}
+                  hexCallback={hexSelection} counterCallback={unitSelection}
+                  directionCallback={directionSelection} resetCallback={resetDisplay}
+                  clearActionCallback={clearAction} />
     )
-  }, [map])
+  }, [map, update])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {
@@ -283,6 +283,7 @@ export default function GameDisplay() {
       )
       return
     }
+    setUpdate(s => s + 1)
     setGame({
       k: g,
       turn: g.turn,

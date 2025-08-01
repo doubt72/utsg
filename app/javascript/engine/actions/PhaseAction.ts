@@ -95,7 +95,8 @@ export default class PhaseAction extends BaseAction {
   }
 
   get undoPossible() {
-    return this.game.previousActionUndoPossible(this.index)
+    // return this.game.previousActionUndoPossible(this.index)
+    return false
   }
 
   mutateGame(): void {

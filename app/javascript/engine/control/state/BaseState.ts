@@ -2,7 +2,7 @@ import { CounterSelectionTarget, Direction, hexOpenType, Player, UnitStatus } fr
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionAddActionType } from "../../GameAction";
-import Map from "../../Map";
+import Unit from "../../Unit";
 
 export type StateType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s" | "r" |
   "ra" | "rc" | "rf"
@@ -30,13 +30,13 @@ export default class BaseState {
   constructor (game: Game, type: StateType, player: Player) {
     this.game = game
 
-    if (this.game.gameState) {
-      throw Error("attempt to initiate state when state already in progress")
-    }
-
     this.type = type
     this.player = player
     this.selection = []
+  }
+
+  get showOverlays(): boolean {
+    return true
   }
 
   get actionInProgress(): boolean {
@@ -57,7 +57,7 @@ export default class BaseState {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  select( map: Map, selection: CounterSelectionTarget, callback: () => void) { }
+  select(selection: CounterSelectionTarget, callback: () => void) { }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   selectable(selection: CounterSelectionTarget): boolean {
@@ -69,6 +69,10 @@ export default class BaseState {
   }
 
   finish() { throw new Error("needs local implementation") }
+
+  samePlayer(target: Unit) {
+    return target.playerNation === this.game.currentPlayerNation
+  }
 
   execute(action: GameAction) {
     this.game.gameState = undefined

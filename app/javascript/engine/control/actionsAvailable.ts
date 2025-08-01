@@ -81,7 +81,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
                          selection?.jammed || selection?.weaponDestroyed)) {
           actions.push({ type: "fire_toggle_sponson" })
         }
-        if (!action.doneRotating && !game.fireState.sponson) {
+        if (!action.doneRotating && !action.sponson) {
           actions.push({ type: "finish_rotation" })
         }
         if (selection?.smokeCapable && (selection.targetedRange || selection.offBoard)) {
@@ -189,7 +189,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.unshift({ type: "none", message: "are you sure?" })
       actions.push({ type: "pass" })
       actions.push({ type: "pass_cancel" })
-    } else if (game.fireState.reaction) {
+    } else if (game.gameState?.type === stateType.Reaction) {
       actions.unshift({ type: "none", message: "reaction fire" })
       if (canReactionFire(selection)) { actions.push({ type: "reaction_fire" }) }
       if (canReactionIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }

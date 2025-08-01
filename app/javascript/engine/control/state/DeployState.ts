@@ -127,9 +127,10 @@ export default class DeployState extends BaseState {
     const counter = this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.turn][this.index] :
       this.game.scenario.axisReinforcements[this.turn][this.index]
+    this.game.executeAction(action, false)
     if (counter.x === counter.used) {
+      console.log("full")
       this.game.cancelAction()
     }
-    this.game.executeAction(action, false)
   }
 }

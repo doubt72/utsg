@@ -506,23 +506,6 @@ export default class Map {
     return this.allCounters
   }
 
-  // get actionCounters(): Counter[] {
-  //   if (!this.game) { return [] }
-  //   if (this.game.gameState) { return this.game.gameState.activeCounters() }
-  //   if (!this.game.gameObsoleteState) { return [] }
-  //   const rout = this.game.gameObsoleteState.rout
-  //   const routCheck = this.game.gameObsoleteState.currentAction === actionType.RoutCheck
-  //   const moraleCheck = this.game.gameObsoleteState.currentAction === actionType.MoraleCheck
-  //   if (rout || routCheck || moraleCheck) {
-  //     const first = this.game.gameObsoleteState.selection[0]
-  //     return this.countersAt(new Coordinate(first.x, first.y))
-  //   }
-  //   const routAll = this.game.gameObsoleteState.currentAction === actionType.RoutAll
-  //   if (routAll) {
-  //   }
-  //   return []
-  // }
-
   hexLos(start: Coordinate, end: Coordinate): TextLayout | boolean {
     // TODO: Consider decoupling "layout" from value here
     return los(this, start, end)

@@ -3,11 +3,10 @@ import { hexDistance } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionPath } from "../../GameAction";
-import Map from "../../Map";
 import Unit from "../../Unit";
 import { areaFire, canMultiSelectFire, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
 import { placeReactionFireGhosts, reactionFireHexes } from "../reactionFire";
-import { clearUnrangedSelection, removeStateSelection, samePlayer } from "../select";
+import { clearUnrangedSelection, removeStateSelection } from "../select";
 import BaseState, { StateSelection, stateType } from "./BaseState";
 
 export default class FireState extends BaseState {
@@ -84,8 +83,9 @@ export default class FireState extends BaseState {
     return !this.doneRotating
   }
 
-  select(map: Map, selection: CounterSelectionTarget, callback: () => void) {
+  select(selection: CounterSelectionTarget, callback: () => void) {
     if (selection.target.type === "reinforcement") { return }
+    const map = this.game.scenario.map
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
@@ -93,7 +93,7 @@ export default class FireState extends BaseState {
     if (!this.doneRotating) { this.doneRotating = true }
     const selected = counter.unit.selected
     counter.unit.select()
-    if (!this.doneSelect && samePlayer(this.game, counter.unit)) {
+    if (!this.doneSelect && this.samePlayer(counter.unit)) {
       if (selected) {
         removeStateSelection(this.game, x, y, counter.unit.id)
         clearUnrangedSelection(this.game)
@@ -133,7 +133,7 @@ export default class FireState extends BaseState {
   selectable(selection: CounterSelectionTarget): boolean {
     if (selection.target.type !== "map") { return false }
     const target = selection.counter.unit as Unit
-    const same = samePlayer(this.game, target)
+    const same = this.samePlayer(target)
     const select = this.selection[0]
     const sc = select.counter
     const map = this.game.scenario.map
@@ -155,7 +155,7 @@ export default class FireState extends BaseState {
         return false
       }
       if (target.operated) {
-        if (!target.parent || !samePlayer(this.game, target.parent)) {
+        if (!target.parent || !this.samePlayer(target.parent)) {
           this.game.addMessage("can't target weapons, only operators")
           return false
         }
@@ -189,7 +189,7 @@ export default class FireState extends BaseState {
           const counters = map.countersAt(new Coordinate(x, y))
           if (this.openHex(x, y)) {
             for (const c of counters) {
-              if (c.hasUnit && !samePlayer(this.game, c.unit)) {
+              if (c.hasUnit && !this.samePlayer(c.unit)) {
                 if (this.game.fireState.reaction) {
                   for (const h of reactionFireHexes(this.game)) {
                     if (h.x === x && h.y === y) { check = true }
@@ -281,6 +281,13 @@ export default class FireState extends BaseState {
       }
     }, this.game)
     this.execute(action)
+  }
+
+  samePlayer(target: Unit) {
+    if (this.reaction) {
+      return target.playerNation !== this.game.currentPlayerNation
+    }
+    return target.playerNation === this.game.currentPlayerNation
   }
   
   canBeMultiselected(counter: Counter): boolean {

@@ -5,11 +5,10 @@ import Feature from "../../Feature";
 import Game from "../../Game";
 import GameAction, { gameActionAddActionType, GameActionPath } from "../../GameAction";
 import Hex from "../../Hex";
-import Map from "../../Map";
 import Unit from "../../Unit";
 import { assaultMovement } from "../assault";
 import { alongRailroad, alongRoad } from "../movement";
-import { removeStateSelection, samePlayer } from "../select";
+import { removeStateSelection } from "../select";
 import BaseState, { StateAddAction, StateSelection, stateType } from "./BaseState";
 
 export default class AssaultState extends BaseState {
@@ -130,12 +129,12 @@ export default class AssaultState extends BaseState {
     return false
   }
 
-  select( map: Map, selection: CounterSelectionTarget, callback: () => void) {
+  select(selection: CounterSelectionTarget, callback: () => void) {
     if (selection.target.type === "reinforcement") { return }
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+    const counter = this.game.scenario.map.unitAtId(new Coordinate(x, y), id) as Counter
     const selected = counter.unit.selected
     counter.unit.select()
     counter.children.forEach(c => c.unit.select())
@@ -155,7 +154,7 @@ export default class AssaultState extends BaseState {
 
   selectable(selection: CounterSelectionTarget): boolean {
     const target = selection.counter.unit as Unit
-    const same = samePlayer(this.game, target)
+    const same = this.samePlayer(target)
     const map = this.game.scenario.map
     if (!same) {return false}
     if (this.doneSelect) { return false }

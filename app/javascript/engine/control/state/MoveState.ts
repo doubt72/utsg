@@ -5,10 +5,9 @@ import Feature from "../../Feature";
 import Game from "../../Game";
 import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionPath } from "../../GameAction";
 import Hex from "../../Hex";
-import Map from "../../Map";
 import Unit from "../../Unit";
 import { alongRailroad, alongRoad, canBeLoaded, canLoadUnit, mapSelectMovement, movementCost, movementPastCost, smokeOpenHex } from "../movement";
-import { removeStateSelection, samePlayer } from "../select";
+import { removeStateSelection } from "../select";
 import BaseState, { StateAddAction, StateSelection, stateType } from "./BaseState";
 
 export default class MoveState extends BaseState {
@@ -175,8 +174,9 @@ export default class MoveState extends BaseState {
     return move >= cost || length === 1
   }
   
-  select( map: Map, selection: CounterSelectionTarget, callback: () => void) {
+  select(selection: CounterSelectionTarget, callback: () => void) {
     if (selection.target.type === "reinforcement") { return }
+    const map = this.game.scenario.map
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
@@ -257,7 +257,7 @@ export default class MoveState extends BaseState {
 
   selectable(selection: CounterSelectionTarget): boolean {
     const target = selection.counter.unit as Unit
-    const same = samePlayer(this.game, target)
+    const same = this.samePlayer(target)
     if (!same) {return false}
     if (this.dropping) {
       const child = target.children[0]
