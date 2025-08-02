@@ -93,7 +93,10 @@ export default function GameDisplay() {
                   directionCallback={directionSelection} resetCallback={resetDisplay}
                   clearActionCallback={clearAction} />
     )
-  }, [map, update])
+  }, [
+    map, update, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
+    hideCounters, showTerrain, collapseLayout
+  ])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {
