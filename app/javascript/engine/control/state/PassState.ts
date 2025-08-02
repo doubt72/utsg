@@ -9,11 +9,11 @@ export default class PassState extends BaseState {
   }
 
   finish() {
-  const action = new GameAction({
-    user: this.game.currentUser,
-    player: this.player,
-    data: { action: "pass", old_initiative: this.game.initiative },
-  }, this.game)
+    const action = new GameAction({
+      user: this.game.currentUser,
+      player: this.player,
+      data: { action: "pass", old_initiative: this.game.initiative },
+    }, this.game)
     this.execute(action)
   }
 }
