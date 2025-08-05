@@ -5,7 +5,6 @@ import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionMoraleData, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
-import IllegalActionError from "./IllegalActionError";
 
 export default class MoraleCheckAction extends BaseAction {
   diceResult: GameActionDiceResult;
@@ -84,9 +83,5 @@ export default class MoraleCheckAction extends BaseAction {
           )
         }
     }
-  }
-  
-  undo(): void {
-    throw new IllegalActionError("internal error undoing morale check")
   }
 }

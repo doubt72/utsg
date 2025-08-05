@@ -2,6 +2,7 @@ import { Player } from "../../utilities/commonTypes";
 import { nowUTCString } from "../../utilities/utilities";
 import Game from "../Game"
 import { GameActionData, GameActionDetails } from "../GameAction"
+import IllegalActionError from "./IllegalActionError";
 
 export default class BaseAction {
   id?: number;
@@ -49,7 +50,7 @@ export default class BaseAction {
 
   mutateGame(): void { throw new Error("needs local implementation") }
 
-  undo(): void { throw new Error("can't be undone") }
+  undo(): void { throw new IllegalActionError(`${this.type} can't be undone`) }
 
   get lastUndoCascade(): boolean { return false }
 

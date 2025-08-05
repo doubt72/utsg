@@ -4,7 +4,6 @@ import Game from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
-import IllegalActionError from "./IllegalActionError";
 
 export default class RoutAllAction extends BaseAction {
   target: GameActionUnit[]
@@ -43,9 +42,5 @@ export default class RoutAllAction extends BaseAction {
       this.game.routCheckNeeded.push({ unit, loc })
     }
     this.game.updateInitiative(3)
-  }
-  
-  undo(): void {
-    throw new IllegalActionError("internal error undoing rout all")
   }
 }

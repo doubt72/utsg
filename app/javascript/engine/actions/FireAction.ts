@@ -18,7 +18,6 @@ import {
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
-import IllegalActionError from "./IllegalActionError";
 
 type FireActionActor = {
   x: number, y: number, counter: Counter, sponson?: boolean, wire?: boolean
@@ -534,9 +533,5 @@ export default class FireAction extends BaseAction {
     }
     sortStacks(map)
     this.game.updateInitiative(this.reaction ? -2 : 2)
-  }
-
-  undo(): void {
-    throw new IllegalActionError("internal error undoing fire action")
   }
 }

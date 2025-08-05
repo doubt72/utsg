@@ -41,8 +41,14 @@ export const gamePhaseType: { [index: string]: GamePhase } = {
   Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
 }
 
+export type CloseProgress = "nr" | "nc" | "d"
+export const closeProgress: { [index: string]: CloseProgress } = {
+  NeedsRoll: "nr", NeedsCasualties: "nc", Done: "d",
+}
+
 export type SimpleCheck = { unit: Unit, loc: Coordinate }
 export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
+export type closeCheck = { loc: Coordinate, state: CloseProgress, iReduce: number, oReduce: number }
 
 export default class Game {
   id: number;
@@ -84,6 +90,7 @@ export default class Game {
   sniperNeeded: SimpleCheck[];
   routCheckNeeded: SimpleCheck[];
   routNeeded: SimpleCheck[];
+  closeNeeded: closeCheck[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -113,6 +120,7 @@ export default class Game {
     this.sniperNeeded = []
     this.routCheckNeeded = []
     this.routNeeded = []
+    this.closeNeeded = []
 
     this.loadAllActions()
   }

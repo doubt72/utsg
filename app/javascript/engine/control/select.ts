@@ -58,18 +58,16 @@ export function removeStateSelection(game: Game, x: number, y: number, id: strin
 }
 
 function selectable(map: Map, selection: CounterSelectionTarget): boolean {
+  if (map.debug) { return true }
   const game = map.game
   if (!game) { return false }
   const target = selection.counter.unit as Unit
   if (target.isFeature) { return false }
-  if (map.debug) { return true }
   if (game.gameState) { return game.gameState.selectable(selection) }
-  if (game.phase === gamePhaseType.Deployment) { return false }
-  if (game.phase === gamePhaseType.Prep) { return false } // Not supported yet
   if (game.phase === gamePhaseType.Main) {
     const same = target.playerNation === game.currentPlayerNation
     if (!same && !game.gameState) { return false }
+    return true
   }
-  if (game.phase === gamePhaseType.Cleanup) { return false } // Not supported yet
-  return true
+  return false
 }

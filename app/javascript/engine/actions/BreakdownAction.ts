@@ -2,7 +2,6 @@ import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
-import IllegalActionError from "./IllegalActionError";
 
 export default class BreakdownAction extends BaseAction {
   origin: GameActionUnit;
@@ -37,9 +36,5 @@ export default class BreakdownAction extends BaseAction {
     if (this.diceResult.result <= (unit.breakdownRoll ?? 0)) {
       unit.immobilized = true
     }
-  }
-  
-  undo(): void {
-    throw new IllegalActionError("internal error undoing breakdown")
   }
 }

@@ -637,6 +637,15 @@ export default class Map {
     }
   }
 
+  selectAllAt(x: number, y: number) {
+    const counters = this.countersAt(new Coordinate(x, y))
+    for (const c of counters) {
+      if (!c.hasUnit) { continue }
+      if (c.unit.operated) { continue }
+      if (!c.unit.selected) { c.unit.select() }
+    }
+  }
+
   targetSelectAllAt(x: number, y: number, vehicles: boolean, armored: boolean) {
     const counters = this.countersAt(new Coordinate(x, y))
     for (const c of counters) {

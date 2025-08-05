@@ -4,7 +4,6 @@ import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionRoutData, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
-import IllegalActionError from "./IllegalActionError";
 
 export default class RoutCheckAction extends BaseAction {
   target: GameActionUnit
@@ -52,9 +51,5 @@ export default class RoutCheckAction extends BaseAction {
     if (roll.result < check) {
       this.game.routNeeded.push({ unit, loc: new Coordinate(this.target.x, this.target.y) })
     }
-  }
-  
-  undo(): void {
-    throw new IllegalActionError("internal error undoing rout check")
   }
 }

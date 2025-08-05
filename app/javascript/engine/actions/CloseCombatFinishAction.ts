@@ -2,15 +2,15 @@ import Game from "../Game";
 import { GameActionData } from "../GameAction";
 import BaseAction from "./BaseAction";
 
-export default class ReactionPassAction extends BaseAction {
+export default class CloseCombatFinishAction extends BaseAction {
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
   }
 
-  get type(): string { return "reaction_pass" }
+  get type(): string { return "close_combat_finish" }
 
   get stringValue(): string {
-    return `${this.game.nationNameForPlayer(this.player)} reaction fire skipped by player`
+    return this.data.count ? "close combat complete" : "skipping: no combat to resolve"
   }
 
   get undoPossible() {
@@ -18,6 +18,6 @@ export default class ReactionPassAction extends BaseAction {
   }
 
   mutateGame(): void {
-    this.game.gameState = undefined
+    this.game.closeNeeded = []
   }
 }

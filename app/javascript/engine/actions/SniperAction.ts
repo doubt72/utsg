@@ -4,7 +4,6 @@ import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
-import IllegalActionError from "./IllegalActionError";
 
 export default class SniperAction extends BaseAction {
   diceResult: GameActionDiceResult;
@@ -48,9 +47,5 @@ export default class SniperAction extends BaseAction {
         this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false })
       }
     }
-  }
-  
-  undo(): void {
-    throw new IllegalActionError("internal error undoing sniper")
   }
 }

@@ -17,6 +17,10 @@ import SniperAction from "./actions/SniperAction";
 import RouteMoveAction from "./actions/RoutMoveAction";
 import RoutCheckAction from "./actions/RoutCheckAction";
 import RoutAllAction from "./actions/RoutAllAction";
+import CloseCombatStartAction from "./actions/CloseCombatStartAction";
+import CloseCombatRollAction from "./actions/CloseCombatRollAction";
+import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
+import CloseCombatFinishAction from "./actions/CloseCombatFinishAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -51,6 +55,10 @@ export type GameActionRoutData = {
   mod: number, why: string[],
 }
 
+export type GameActionCCData = {
+  o_base: number, t_base: number,
+}
+
 export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
 export const gameActionAddActionType: { [index: string]: GameActionAddActionType } = {
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
@@ -81,7 +89,10 @@ export type GameActionDetails = {
   move_data?: GameActionMoveData,
   morale_data?: GameActionMoraleData,
   rout_check_data?: GameActionRoutData,
+  cc_data?: GameActionCCData,
   phase_data?: GameActionPhaseChange,
+
+  count?: number
 }
 
 export type GameActionData = {
@@ -183,11 +194,22 @@ export default class GameAction {
     if (this.data.data.action === "breakdown") {
       return new BreakdownAction(this.data, this.game, this.index);
     }
+    if (this.data.data.action === "close_combat_start") {
+      return new CloseCombatStartAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "close_combat_roll") {
+      return new CloseCombatRollAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "close_combat_reduce") {
+      return new CloseCombatReduceAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "close_combat_finish") {
+      return new CloseCombatFinishAction(this.data, this.game, this.index);
+    }
 
     // rally check
     // pass rally phase
     // cleanup unit
-    // close combat
 
     return new StateAction(this.data, this.game, this.index, "unhandled action type");
   }

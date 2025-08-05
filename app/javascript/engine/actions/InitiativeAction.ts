@@ -2,7 +2,6 @@ import { initiativeThreshold } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult } from "../GameAction";
 import BaseAction from "./BaseAction";
-import IllegalActionError from "./IllegalActionError";
 
 export default class InitiativeAction extends BaseAction {
   diceResult: GameActionDiceResult | undefined;
@@ -50,9 +49,5 @@ export default class InitiativeAction extends BaseAction {
         this.game.togglePlayer()
       }
     }
-  }
-  
-  undo(): void {
-    throw new IllegalActionError("internal error undoing initiative")
   }
 }

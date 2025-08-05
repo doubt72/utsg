@@ -7,6 +7,7 @@ import { showClearObstacles, showEntrench } from "./assault"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 import { stateType } from "./state/BaseState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
+import CloseCombatState, { closeCombatCheck } from "./state/CloseCombatState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
 import ReactionState, { reactionFireCheck } from "./state/ReactionState"
@@ -30,9 +31,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.gameState = new InitiativeState(game)
   } else if (reactionFireCheck(game)) {
     game.gameState = new ReactionState(game)
-  }// else if (closeCombatCheck(game)) {
-  //   startCloseCombatSelection(game)
-  // }
+  } else if (closeCombatCheck(game)) {
+    game.gameState = new CloseCombatState(game)
+  }
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]
   }
