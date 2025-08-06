@@ -18,10 +18,12 @@ export function closeCombatCheck(game: Game): boolean {
 }
 
 export function closeCombatDone(game: Game): boolean {
+  if (game.gameState?.type !== stateType.CloseCombat) { return false }
   return game.closeNeeded.filter(cn => cn.state !== closeProgress.Done).length < 1
 }
 
 export function closeCombatCasualyNeeded(game: Game): Coordinate | false {
+  if (game.gameState?.type !== stateType.CloseCombat) { return false }
   const casualty = game.closeNeeded.filter(cn => cn.state === closeProgress.NeedsCasualties)
   if (casualty.length < 1) { return false }
   return casualty[0].loc

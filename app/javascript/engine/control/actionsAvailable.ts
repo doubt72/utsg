@@ -7,7 +7,7 @@ import { showClearObstacles, showEntrench } from "./assault"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 import { stateType } from "./state/BaseState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
-import CloseCombatState, { closeCombatCheck } from "./state/CloseCombatState"
+import CloseCombatState, { closeCombatCasualyNeeded, closeCombatCheck, closeCombatDone } from "./state/CloseCombatState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
 import ReactionState, { reactionFireCheck } from "./state/ReactionState"
@@ -33,6 +33,11 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.gameState = new ReactionState(game)
   } else if (closeCombatCheck(game)) {
     game.gameState = new CloseCombatState(game)
+    if (closeCombatDone(game)) {
+      game.gameState.finish()
+    }
+  } else if (closeCombatDone(game)) {
+    game.gameState?.finish()
   }
   if (game.lastAction?.id === undefined) {
     return [{ type: "sync" }]
@@ -62,6 +67,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       addUndo(game, activePlayer, actions)
     }
     actions.unshift({ type: "deploy" })
+    return actions
+  } else if (game.phase === gamePhaseType.Prep) {
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
@@ -207,6 +214,26 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       if (canAssaultMove(selection)) { actions.push({ type: "assault_move" }) }
       if (canRout(selection)) { actions.push({ type: "rout" }) }
       actions.push({ type: "unselect" })
+    }
+    return actions
+  } else if (game.phase === gamePhaseType.Cleanup) {
+    const selection = currSelection(game, false)
+    if (game.gameState?.type === stateType.CloseCombat) {
+      if (selection) {
+        if (closeCombatCasualyNeeded(game)) {
+          actions.push({ type: "close_combat_reduce" })
+        } else {
+          actions.push({ type: "close_combat_select" })
+        }
+      } else {
+        if (closeCombatCasualyNeeded(game)) {
+          actions.unshift({ type: "none", message: "select unit to reduce" })
+        } else {
+          actions.unshift({ type: "none", message: "select close combat to resolve" })
+        }
+      }
+    } else {
+      actions.unshift({ type: "none", message: "error: unexpected missing state" })
     }
     return actions
   } else {
