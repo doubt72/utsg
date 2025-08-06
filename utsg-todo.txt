@@ -1,5 +1,10 @@
 High Priority Features/Bug Fixes:
-  - Close Combat
+  - Move area fire to bottom
+  - Add exhausted to units after CloseCombat
+    - But clear if still in contact
+  - Disable move if in contact
+  - Assault move still possible if in contact
+    - Special activities not, though
   - Weather
   - Rally/Fix
   - Blazes

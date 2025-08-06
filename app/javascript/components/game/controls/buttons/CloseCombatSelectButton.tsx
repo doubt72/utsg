@@ -1,22 +1,23 @@
 import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
 import { DiceGlyph } from "../../../utilities/buttons";
-interface MoraleCheckButtonProps {
+
+interface CloseCombatSelectButtonProps {
   game: Game;
   callback: () => void;
 }
 
-export default function MoraleCheckButton({ game, callback }: MoraleCheckButtonProps) {
+export default function CloseCombatSelectButton({ game, callback }: CloseCombatSelectButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState?.finish()
+    game.closeCombatState.rollForCombat()
     callback()
   }
 
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{DiceGlyph()}morale check</button>
+        <button type="submit" className="custom-button nowrap">{DiceGlyph()}resolve close combat</button>
       </div>
     </form>
   )

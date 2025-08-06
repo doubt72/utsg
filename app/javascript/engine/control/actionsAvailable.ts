@@ -33,10 +33,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.gameState = new ReactionState(game)
   } else if (closeCombatCheck(game)) {
     game.gameState = new CloseCombatState(game)
-    if (closeCombatDone(game)) {
-      game.gameState.finish()
-    }
-  } else if (closeCombatDone(game)) {
+  }
+  if (closeCombatDone(game)) {
     game.gameState?.finish()
   }
   if (game.lastAction?.id === undefined) {

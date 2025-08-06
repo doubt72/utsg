@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
-import { Dice6 } from "react-bootstrap-icons";
+import { DiceGlyph } from "../../../utilities/buttons";
 
 interface BreakdownButtonProps {
   game: Game;
@@ -17,7 +17,7 @@ export default function BreakdownButton({ game, callback }: BreakdownButtonProps
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><Dice6 />check for breakdown</button>
+        <button type="submit" className="custom-button nowrap">{DiceGlyph()} check for breakdown</button>
       </div>
     </form>
   )

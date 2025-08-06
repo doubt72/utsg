@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
-import { Dice6 } from "react-bootstrap-icons";
+import { DiceGlyph } from "../../../utilities/buttons";
 
 interface InitiativeButtonProps {
   game: Game;
@@ -17,7 +17,7 @@ export default function InitiativeButton({ game, callback }: InitiativeButtonPro
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><Dice6 />sniper check</button>
+        <button type="submit" className="custom-button nowrap">{DiceGlyph()}sniper check</button>
       </div>
     </form>
   )
