@@ -10,7 +10,7 @@ export default class CloseCombatFinishAction extends BaseAction {
   get type(): string { return "close_combat_finish" }
 
   get stringValue(): string {
-    return this.data.count ? "close combat complete" : "skipping: no combat to resolve"
+    return this.data.cc_data?.count ? "close combat complete" : "skipping: no combat to resolve"
   }
 
   get undoPossible() {

@@ -7,6 +7,7 @@ import { closeCombatFirepower } from "../closeCombat";
 import BaseState, { stateType } from "./BaseState";
 
 export function closeCombatCheck(game: Game): boolean {
+  if (game.gameState) { return false }
   if (game.phase !== gamePhaseType.Cleanup) { return false }
   for (let i = game.lastActionIndex; i >= 0; i--) {
     const action = game.actions[i]
@@ -14,6 +15,16 @@ export function closeCombatCheck(game: Game): boolean {
     if (action.type === "phase") { return true }
   }
   return false
+}
+
+export function closeCombatDone(game: Game): boolean {
+  return game.closeNeeded.filter(cn => cn.state !== closeProgress.Done).length < 1
+}
+
+export function closeCombatCasualyNeeded(game: Game): Coordinate | false {
+  const casualty = game.closeNeeded.filter(cn => cn.state === closeProgress.NeedsCasualties)
+  if (casualty.length < 1) { return false }
+  return casualty[0].loc
 }
 
 export default class CloseCombatState extends BaseState {
@@ -33,10 +44,9 @@ export default class CloseCombatState extends BaseState {
     if (counter.unit.selected) {
       map.clearAllSelections()
     } else {
-      const casualty = this.game.closeNeeded.filter(
-        cn => cn.state === closeProgress.NeedsCasualties
-      ).length > 0
+      const casualty = closeCombatCasualyNeeded(this.game)
       if (casualty) {
+        counter.unit.select()
         map.clearOtherSelections(x, y, id)
       } else {
         map.selectAllAt(x, y)
@@ -50,6 +60,7 @@ export default class CloseCombatState extends BaseState {
     const xy = selection.target.xy
     for (const cn of this.game.closeNeeded) {
       if (cn.state === closeProgress.NeedsCasualties) {
+        if (selection.counter.unit.operated) { return false }
         if (this.samePlayer(selection.counter.unit) && cn.iReduce === 0) { return false }
         if (!this.samePlayer(selection.counter.unit) && cn.iReduce > 0) { return false }
         return cn.loc.x === xy.x && cn.loc.y === xy.y
@@ -127,7 +138,7 @@ export default class CloseCombatState extends BaseState {
       user: this.game.currentUser, player: this.game.currentPlayer,
       data: {
         action: "close_combat_finish", old_initiative: this.game.initiative,
-        count: this.game.closeNeeded.length
+        cc_data: { count: this.game.closeNeeded.length },
       }
     }, this.game)
     this.execute(action)

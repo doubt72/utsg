@@ -22,6 +22,10 @@ export const testGMG: UnitData = {
   c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {r: 1, j: 3}
 }
 
+export const testRMG: UnitData = {
+  c: "ussr", t: "sw", i: "mg", n: "DP-27", y: 28, f: 4, r: 6, v: 0, o: {r: 1, j: 3, a: 1}
+}
+
 export const testGCrew: UnitData = {
   c: "ger", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
 }

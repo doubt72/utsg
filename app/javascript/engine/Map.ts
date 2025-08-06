@@ -641,7 +641,7 @@ export default class Map {
     const counters = this.countersAt(new Coordinate(x, y))
     for (const c of counters) {
       if (!c.hasUnit) { continue }
-      if (c.unit.operated) { continue }
+      if (c.unit.crewed || (c.unit.operated && !c.unit.parent)) { continue }
       if (!c.unit.selected) { c.unit.select() }
     }
   }

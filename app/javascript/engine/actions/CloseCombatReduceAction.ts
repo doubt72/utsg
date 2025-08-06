@@ -20,7 +20,7 @@ export default class CloseCombatReduceAction extends BaseAction {
   get stringValue(): string {
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (unit.isVehicle || this.target.status === unitStatus.Broken) {
-      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} removed`
+      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} eliminated`
     } else {
       return `${this.game.nationNameForPlayer(this.player)} ${unit.name} broken`
     }
@@ -32,8 +32,10 @@ export default class CloseCombatReduceAction extends BaseAction {
 
   mutateGame(): void {
     const unit = this.game.findUnitById(this.target.id) as Unit
-    if (unit.isVehicle || unit.status === unitStatus.Broken) {
-      this.game.scenario.map.removeCounter(new Coordinate(this.target.x, this.target.y), this.target.id)
+    if (unit.isVehicle) {
+      unit.status = unitStatus.Wreck
+    } else if (unit.status === unitStatus.Broken) {
+      this.game.scenario.map.eliminateCounter(new Coordinate(this.target.x, this.target.y), this.target.id)
     } else {
       unit.status = unitStatus.Broken
     }

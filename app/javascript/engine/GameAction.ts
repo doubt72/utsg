@@ -56,7 +56,7 @@ export type GameActionRoutData = {
 }
 
 export type GameActionCCData = {
-  o_base: number, t_base: number,
+  o_base?: number, t_base?: number, count?: number
 }
 
 export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
@@ -91,8 +91,6 @@ export type GameActionDetails = {
   rout_check_data?: GameActionRoutData,
   cc_data?: GameActionCCData,
   phase_data?: GameActionPhaseChange,
-
-  count?: number
 }
 
 export type GameActionData = {

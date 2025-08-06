@@ -17,6 +17,7 @@ import MoveState from "./control/state/MoveState";
 import AssaultState from "./control/state/AssaultState";
 import RoutState from "./control/state/RoutState";
 import DeployState from "./control/state/DeployState";
+import CloseCombatState from "./control/state/CloseCombatState";
 
 export type GameData = {
   id: number;
@@ -277,6 +278,10 @@ export default class Game {
 
   get routState(): RoutState {
     return this.gameState as RoutState
+  }
+
+  get closeCombatState(): CloseCombatState {
+    return this.gameState as CloseCombatState
   }
 
   get playerOneScore(): number {
