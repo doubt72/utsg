@@ -20,6 +20,7 @@ export default class CloseCombatStartAction extends BaseAction {
   }
 
   mutateGame(): void {
+    this.game.closeNeeded = []
     const map = this.game.scenario.map
     for (let y = 0; y < map.height; y++) {
       for (let x = 0; x < map.width; x++) {

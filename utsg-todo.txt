@@ -1,12 +1,17 @@
 High Priority Features/Bug Fixes:
+  - Housekeeping
+    - Overstacking
+    - Status updates
+    - Smoke
+    - Weather
+  - Rally/Fix
   - Move area fire to bottom
   - Add exhausted to units after CloseCombat
     - But clear if still in contact
   - Disable move if in contact
-  - Assault move still possible if in contact
+    - Assault move still possible if in contact
     - Special activities not, though
-  - Weather
-  - Rally/Fix
+  - Display CC Hexes
   - Blazes
 
 Future Features/Bug Fixes:
