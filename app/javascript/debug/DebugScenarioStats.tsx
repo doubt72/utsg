@@ -342,9 +342,9 @@ export default function DebugScenarioStats() {
         Day/Night:
         {displayStat(countNight, {})}
         Start Weather:
-        {displayStat(countStartWeather, { 0: "Dry", 1: "Fog" })}
+        {displayStat(countStartWeather, { 0: "Dry", 1: "Fog", 2: "Rain", 3: "Snow", 4: "Sand", 5: "Dust" })}
         Base Weather:
-        {displayStat(countBaseWeather, { 0: "Dry", 1: "Fog" })}
+        {displayStat(countBaseWeather, { 0: "Dry", 1: "Fog", 2: "Rain", 3: "Snow", 4: "Sand", 5: "Dust" })}
         Precip Type:
         {displayStat(countPrecip, { 2: "Rain", 3: "Snow" })}
         Precip Chance:

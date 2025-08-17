@@ -31,7 +31,7 @@ const testUnitData: { [index: string]: string } = {
 const testFeatureData: { [index: string]: string } = {
   smoke: "f_Smoke_2", fire: "f_Blaze", wire: "f_Wire", apmines: "f_AP Minefield", mixedmines: "f_Minefield",
   atmines: "f_AT Minefield", fox: "f_Foxhole", pillbox: "f_Pillbox", bunker: "f_Bunker",
-  strongpoint: "f_Strong Point", trench: "f_Trench", scrape: "f_Shell Scrape", roadblock: "f_Road Block",
+  trench: "f_Trench", scrape: "f_Shell Scrape", roadblock: "f_Road Block",
   rubble: "f_Rubble", tanktrap: "f_Hedgehog",
 }
 
@@ -57,7 +57,7 @@ export const mapDebugData: {
       { u: testFeatureData.fox, x: 7, y: 6 },
       { u: testFeatureData.pillbox, x: 0, y: 13, f: 2 },
       { u: testFeatureData.bunker, x: 7, y: 14, f: 2 },
-      { u: testFeatureData.strongpoint, x: 3, y: 14, f: 3 },
+      { u: testFeatureData.pillbox, x: 3, y: 14, f: 3 },
     ],
     units: [
       { u: testUnitData.ginf, x: 6, y: 0 },

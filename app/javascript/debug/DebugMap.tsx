@@ -339,9 +339,11 @@ export default function DebugMap() {
           -1
         </div>
       </div>
-      <MapDisplay map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
-               showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
-               hexCallback={hexSelection} counterCallback={unitSelection} forceUpdate={0} />
+      { map ?
+          <MapDisplay map={map as Map} scale={scale} showCoords={coords} showStatusCounters={showStatusCounters}
+                      showLos={showLos} hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
+                      hexCallback={hexSelection} counterCallback={unitSelection} forceUpdate={0} /> :
+        "" }
     </div>
   )
 }

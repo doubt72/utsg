@@ -202,7 +202,7 @@ export default function CounterSection() {
       }
     } else if (!unit.isWreck && !unit.isBroken && !unit.jammed) {
       if (unit.rapidFire) { add.push("(rapid fire)"); y2 = 117 }
-      if (unit.targetedRange) { add.push("(targeted range)"); y2 = 117 }
+      if (unit.targetedRange || unit.offBoard) { add.push("(targeted range)"); y2 = 117 }
       if (unit.type === "sw" && unit.targetedRange) { add.push("(no crew bonus)") }
       if (unit.turreted) { add.push("(turret mounted)") }
       if (unit.rotatingVehicleMount) { add.push("(unarmored rotating mount)") }
@@ -707,13 +707,13 @@ export default function CounterSection() {
         } else if (unit.offBoard) {
           sections.push(<p key={index++}>
             <strong>Hexed firepower</strong> indicates that this is an off-board artillery unit with
-            special firing rules.  (This is also primarily an anti-infantry area weapon, so affects all units
-            in a hex and only has half effect on fully armored targets.)
+            special firing rules.  (This is also primarily an anti-infantry area weapon, indicated with a line
+            below, so affects all units in a hex and only has half effect on fully armored targets.)
           </p>)
         } else if (unit.areaFire) {
           sections.push(
             <p key={index++}>
-              <strong>Circled firepower with a line above</strong> indicates that this unit uses
+              <strong>Circled firepower with a line below</strong> indicates that this unit uses
               area fire which targets all units in a single hex{ unit.incendiary ? "." :
               ", with full effect on soft targts and half effect on fully armored targets."}
             </p>
@@ -746,7 +746,7 @@ export default function CounterSection() {
             <p key={index++}>
               <strong>Yellow filled firepower</strong> indicates that this weapon ignores terrain or
               defensive feature effects. This unit may attack armored units and negates armor. Line
-              above indicates that this unit uses area fire which targets all units in a single hex.
+              below indicates that this unit uses area fire which targets all units in a single hex.
             </p>
           );
         } else if (unit.singleFire) {

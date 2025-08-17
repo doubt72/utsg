@@ -5,7 +5,6 @@ High Priority Features/Bug Fixes:
     - Smoke
     - Weather
   - Rally/Fix
-  - Move area fire to bottom
   - Add exhausted to units after CloseCombat
     - But clear if still in contact
   - Disable move if in contact

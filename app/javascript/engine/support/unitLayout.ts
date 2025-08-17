@@ -302,12 +302,11 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
 export function areaLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.areaFire || counter.unit.isWreck || counter.unit.jammed) { return false }
   const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
-  let y = counter.y + 59.75
+  let y = counter.y + 74
   let size = 6
   const stroke = counter.unit.singleFire ? "white" : "black"
-  if (counter.unit.currentFirepower > 9) { y += 1.25 } else { size -= 2 }
-  if (counter.unit.assault) { size += 1; y -= 0.5 }
-  if (counter.unit.offBoard) { y += 1.25 }
+  if (counter.unit.currentFirepower > 9) { y -= 0.75 } else { size -= 2 }
+  if (counter.unit.assault) { size += 1; y += 0.5 }
   const path = `M ${x - size} ${y} L ${x + size} ${y}`
   return { x, y, size, path, style: { stroke, strokeWidth: 1 } }
 }
