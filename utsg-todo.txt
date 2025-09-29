@@ -25,6 +25,7 @@ Future Features/Bug Fixes:
       - Close Combat
       - Housekeeping
 
+  - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
   - Skip reaction fire when no LOS
   - Maybe always reaction fire, loss of initiative or not (after moves?)
   - Don't unselect first initial selection when cancelling move/fire/assault

@@ -103,7 +103,7 @@ module Scenarios
           },
           axis_setup: {
             "0": 0.upto(22).map do |y|
-              0.upto((((y - 12).abs / 2) + 1)).map { |x| [x, y] }
+              0.upto(((y - 12).abs / 2) + 1).map { |x| [x, y] }
             end.flatten(1),
           },
           base_terrain: "d",

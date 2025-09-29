@@ -57,7 +57,7 @@ class GameAction < ApplicationRecord
                         .include?(data["action"])
     if GameAction.where(
       "game_id = ? AND sequence > ? AND undone = false", game_id, sequence
-    ).count.positive?
+    ).any?
       return false
     end
 

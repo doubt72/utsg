@@ -26,7 +26,7 @@ module Utility
 
         nations = nations_by_key(key, options[key])
         scenarios.filter! do |s|
-          !s[key.to_sym].intersection(nations).empty?
+          s[key.to_sym].intersect?(nations)
         end
       end
 

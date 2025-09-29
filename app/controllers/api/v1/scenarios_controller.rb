@@ -43,7 +43,7 @@ module Api
 
       def paginate(data)
         page_size = params[:page_size] ? params[:page_size].to_i : 10
-        page = params[:page].to_i || 0
+        page = (params[:page] || 0).to_i
         count = data.length
         {
           data: data[(page * page_size)..((page_size * (page + 1)) - 1)],
