@@ -16,25 +16,35 @@ module Utility
             json[:r] = data[:range]
             json[:v] = data[:move] if move
             json[:s] = data[:size] if move
+            json[:o] = json[:o] || {}
             json[:o][:a] = 1 if data[:assault]
             json[:o][:r] = 1 if data[:rapid]
+            json[:o][:s] = 1 if data[:smoke]
+            json[:o][:o] = 1 if data[:offboard]
+            json[:o][:e] = 1 if data[:area]
             json[:o][:j] = data[:break] || 3
             json[:o][:f] = data[:fix] || 16
           end
 
           def translate_names
             {
+              # Machine Guns
               colt_m_29: :m1917_browning,
               mg_30t: :zb_vz__30,
               czeck_lmg: :zb_vz__26,
               fn_m1930: :m1918_bar,
               type_24_maxim: :mg_08_15,
               type_triple_ten: :m1917_browning,
+              # Artillery
+              radio_7_5cm: :radio_75mm,
+              radio_10cm: :radio_100mm,
+              radio_10_5cm: :radio_105mm,
             }
           end
 
           def weapon_data
             {
+              # Machine Guns
               zb_vz__26: { fire: 4, range: 10, move: 0, assault: true, rapid: true, size: 1 },
               zb_vz__30: { fire: 4, range: 10, move: 0, assault: true, rapid: true, size: 1 },
               ls_26: { fire: 4, range: 5, move: 0, assault: true, rapid: true, size: 1 },
@@ -66,6 +76,24 @@ module Utility
               dp_27: { fire: 4, range: 8, move: 0, assault: true, rapid: true, size: 1 },
               sg_43: { fire: 6, range: 10, move: -1, assault: false, rapid: true, size: 1 },
               dshk: { fire: 24, range: 16, move: -2, assault: false, rapid: true, size: 1 },
+              # Artillery
+              radio_75mm: { fire: 24, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_76mm: { fire: 24, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_85mm: { fire: 32, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_88mm: { fire: 32, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_100mm: { fire: 40, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_105mm: { fire: 40, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_114mm: { fire: 48, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_122mm: { fire: 48, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_140mm: { fire: 64, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_149mm: { fire: 64, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_15cm: { fire: 64, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_152mm: { fire: 64, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_155mm: { fire: 80, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_17cm: { fire: 80, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_183mm: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_8inch: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              radio_21cm: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
             }
           end
           # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity

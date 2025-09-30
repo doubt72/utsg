@@ -1079,12 +1079,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_radio_105mm]).to be == {
-            t: "sw", i: "radio", c: "fra", n: "Radio 105mm", y: 13, f: 24, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "fra", n: "Radio 105mm", y: 13, f: 40, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:fra_radio_155mm]).to be == {
-            t: "sw", i: "radio", c: "fra", n: "Radio 155mm", y: 17, f: 48, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "fra", n: "Radio 155mm", y: 17, f: 80, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
@@ -1149,17 +1149,17 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_radio_10_5cm]).to be == {
-            t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 24, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 40, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:ger_radio_15cm]).to be == {
-            t: "sw", i: "radio", c: "ger", n: "Radio 15cm", y: 34, f: 48, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ger", n: "Radio 15cm", y: 34, f: 64, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:ger_radio_17cm]).to be == {
-            t: "sw", i: "radio", c: "ger", n: "Radio 17cm", y: 41, f: 64, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ger", n: "Radio 17cm", y: 41, f: 80, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
@@ -1214,17 +1214,17 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_radio_100mm]).to be == {
-            t: "sw", i: "radio", c: "ita", n: "Radio 100mm", y: 14, f: 24, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ita", n: "Radio 100mm", y: 14, f: 40, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:ita_radio_149mm]).to be == {
-            t: "sw", i: "radio", c: "ita", n: "Radio 149mm", y: 14, f: 48, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ita", n: "Radio 149mm", y: 14, f: 64, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:ita_radio_75mm]).to be == {
-            t: "sw", i: "radio", c: "ita", n: "Radio 75mm", y: 37, f: 12, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ita", n: "Radio 75mm", y: 37, f: 24, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
@@ -1244,17 +1244,17 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_radio_10cm]).to be == {
-            t: "sw", i: "radio", c: "jap", n: "Radio 10cm", y: 31, f: 24, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "jap", n: "Radio 10cm", y: 31, f: 40, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:jap_radio_15cm]).to be == {
-            t: "sw", i: "radio", c: "jap", n: "Radio 15cm", y: 37, f: 48, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "jap", n: "Radio 15cm", y: 37, f: 64, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:jap_radio_7_5cm]).to be == {
-            t: "sw", i: "radio", c: "jap", n: "Radio 7.5cm", y: 36, f: 12, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "jap", n: "Radio 7.5cm", y: 36, f: 24, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
@@ -1364,27 +1364,27 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_radio_114mm]).to be == {
-            t: "sw", i: "radio", c: "uk", n: "Radio 114mm", y: 38, f: 32, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "uk", n: "Radio 114mm", y: 38, f: 48, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:uk_radio_140mm]).to be == {
-            t: "sw", i: "radio", c: "uk", n: "Radio 140mm", y: 41, f: 40, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "uk", n: "Radio 140mm", y: 41, f: 64, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:uk_radio_152mm]).to be == {
-            t: "sw", i: "radio", c: "uk", n: "Radio 152mm", y: 16, f: 48, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "uk", n: "Radio 152mm", y: 16, f: 64, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:uk_radio_183mm]).to be == {
-            t: "sw", i: "radio", c: "uk", n: "Radio 183mm", y: 40, f: 80, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "uk", n: "Radio 183mm", y: 40, f: 96, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:uk_radio_88mm]).to be == {
-            t: "sw", i: "radio", c: "uk", n: "Radio 88mm", y: 40, f: 24, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "uk", n: "Radio 88mm", y: 40, f: 32, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
@@ -1459,17 +1459,17 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_radio_105mm]).to be == {
-            t: "sw", i: "radio", c: "usa", n: "Radio 105mm", y: 41, f: 24, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "usa", n: "Radio 105mm", y: 41, f: 40, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:usa_radio_155mm]).to be == {
-            t: "sw", i: "radio", c: "usa", n: "Radio 155mm", y: 42, f: 48, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "usa", n: "Radio 155mm", y: 42, f: 80, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:usa_radio_75mm]).to be == {
-            t: "sw", i: "radio", c: "usa", n: "Radio 75mm", y: 32, f: 12, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "usa", n: "Radio 75mm", y: 32, f: 24, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
@@ -1534,22 +1534,22 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_radio_122mm]).to be == {
-            t: "sw", i: "radio", c: "ussr", n: "Radio 122mm", y: 39, f: 32, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ussr", n: "Radio 122mm", y: 39, f: 48, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:ussr_radio_152mm]).to be == {
-            t: "sw", i: "radio", c: "ussr", n: "Radio 152mm", y: 37, f: 48, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ussr", n: "Radio 152mm", y: 37, f: 64, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:ussr_radio_76mm]).to be == {
-            t: "sw", i: "radio", c: "ussr", n: "Radio 76mm", y: 37, f: 12, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ussr", n: "Radio 76mm", y: 37, f: 24, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }
           expect(defs[:ussr_radio_85mm]).to be == {
-            t: "sw", i: "radio", c: "ussr", n: "Radio 85mm", y: 43, f: 16, r: 99, v: 0, s: 1, o: {
+            t: "sw", i: "radio", c: "ussr", n: "Radio 85mm", y: 43, f: 32, r: 99, v: 0, s: 1, o: {
               s: 1, o: 1, j: 3, f: 18, e: 1,
             },
           }

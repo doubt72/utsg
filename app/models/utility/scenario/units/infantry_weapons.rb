@@ -111,39 +111,31 @@ module Utility
 
           def radios
             lu = {}
-            key = %i[c n y f]
+            key = %i[c n y]
             [
-              ["fra", "Radio 105mm", 13, 24],
-              ["fra", "Radio 155mm", 17, 48],
-              ["ger", "Radio 10.5cm", 35, 24],
-              ["ger", "Radio 15cm", 34, 48],
-              ["ger", "Radio 17cm", 41, 64],
-              ["ger", "Radio 21cm", 39, 96],
-              ["ita", "Radio 75mm", 37, 12],
-              ["ita", "Radio 100mm", 14, 24],
-              ["ita", "Radio 149mm", 14, 48],
-              ["jap", "Radio 7.5cm", 36, 12],
-              ["jap", "Radio 10cm", 31, 24],
-              ["jap", "Radio 15cm", 37, 48],
-              ["uk", "Radio 88mm", 40, 24],
-              ["uk", "Radio 114mm", 38, 32],
-              ["uk", "Radio 140mm", 41, 40],
-              ["uk", "Radio 152mm", 16, 48],
-              ["uk", "Radio 183mm", 40, 80],
-              ["usa", "Radio 75mm", 32, 12],
-              ["usa", "Radio 105mm", 41, 24],
-              ["usa", "Radio 155mm", 42, 48],
-              ["usa", "Radio 8inch", 42, 96],
-              ["ussr", "Radio 76mm", 37, 12],
-              ["ussr", "Radio 85mm", 43, 16],
-              ["ussr", "Radio 122mm", 39, 32],
-              ["ussr", "Radio 152mm", 37, 48],
+              ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],
+
+              ["ger", "Radio 10.5cm", 35], ["ger", "Radio 15cm", 34], ["ger", "Radio 17cm", 41],
+              ["ger", "Radio 21cm", 39],
+
+              ["ita", "Radio 75mm", 37], ["ita", "Radio 100mm", 14], ["ita", "Radio 149mm", 14],
+
+              ["jap", "Radio 7.5cm", 36], ["jap", "Radio 10cm", 31], ["jap", "Radio 15cm", 37],
+
+              ["uk", "Radio 88mm", 40], ["uk", "Radio 114mm", 38], ["uk", "Radio 140mm", 41],
+              ["uk", "Radio 152mm", 16], ["uk", "Radio 183mm", 40],
+
+              ["usa", "Radio 75mm", 32], ["usa", "Radio 105mm", 41], ["usa", "Radio 155mm", 42],
+              ["usa", "Radio 8inch", 42],
+
+              ["ussr", "Radio 76mm", 37], ["ussr", "Radio 85mm", 43], ["ussr", "Radio 122mm", 39],
+              ["ussr", "Radio 152mm", 37],
             ].each do |unit|
               radio = { t: "sw", i: "radio" }
               unit.each_with_index do |v, i|
                 radio[key[i]] = v
               end
-              radio.merge!({ r: 99, v: 0, s: 1, o: { s: 1, o: 1, j: 3, f: 18, e: 1 } })
+              Definitions.populate_gun_data(Units.sanitize(radio[:n]).to_sym, radio, move: true)
               lu[:"#{radio[:c]}_#{Units.sanitize(radio[:n])}"] = radio
             end
             lu
