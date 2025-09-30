@@ -12,34 +12,39 @@ module Utility
 
           def infantry_guns
             lu = {}
-            key = %i[c n y f r o]
+            key = %i[c n y o]
             [
-              ["alm", "75mm Gun", 32, 16, 16, { tow: 3 }],
-              ["chi", "Bofors 75mm", 23, 16, 16, { tow: 3 }],
-              ["chi", "75mm M1 Pack", 42, 16, 16, { tow: 3 }],
-              ["chi", "75mm Gun", 32, 16, 16, { tow: 3 }],
-              ["fra", "75mm M1897", 0, 16, 16, { tow: 3 }],
-              ["fra", "37mm M1916", 16, 4, 12, { tow: 2 }],
-              ["ger", "7.5cm leIG 18", 32, 16, 14, { tow: 3 }],
-              ["ger", "15cm sIG 33", 36, 64, 18, { tow: 4 }],
-              ["ita", "Cannone da 65/17", 13, 12, 12, { sn: 2, tow: 3 }],
-              ["ita", "Obice da 75/18", 34, 16, 14, { tow: 3 }],
-              ["ita", "Obice da 100/17", 14, 32, 16, { tow: 4 }],
-              ["jap", "70mm Type 92", 32, 12, 14, { tow: 3 }],
-              ["uk", "QF 25-Pounder", 40, 20, 16, { tow: 3 }],
-              ["uk", "QF 25Pdr Short", 43, 16, 15, { tow: 3 }],
-              ["uk", "QF 4.5inch", 8, 32, 20, { tow: 3 }],
-              ["usa", "75mm M1 Pack", 27, 16, 16, { tow: 3 }],
-              ["usa", "75mm M1897", 40, 16, 16, { tow: 3 }],
-              ["ussr", "76mm M1927", 28, 16, 16, { tow: 3 }],
+              ["alm", "75mm Gun", 32, {}],
+
+              ["axm", "75mm Gun", 32, {}],
+
+              ["chi", "Bofors 75mm", 23, {}], ["chi", "75mm M1 Pack", 42, {}],
+              ["chi", "75mm Gun", 32, {}],
+
+              ["fin", "75mm Gun", 32, {}],
+
+              ["fra", "75mm M1897", 0, {}], ["fra", "37mm M1916", 16, {}],
+
+              ["ger", "7.5cm leIG 18", 32, {}], ["ger", "7.5cm GebG 36", 38, {}],
+              ["ger", "10.5cm GebH 40", 42, { sn: 1 }], ["ger", "15cm sIG 33", 36, {}],
+
+              ["ita", "Cannone da 65/17", 13, { sn: 2 }], ["ita", "Obice da 75/18", 34, {}],
+              ["ita", "Obice da 100/17", 14, {}],
+
+              ["jap", "70mm Type 92", 32, {}],
+
+              ["uk", "QF 25-Pounder", 40, {}], ["uk", "QF 25Pdr Short", 43, {}],
+              ["uk", "QF 4.5inch", 8, {}],
+
+              ["usa", "75mm M1 Pack", 27, {}], ["usa", "75mm M1897", 40, {}],
+
+              ["ussr", "76mm ZiS-3", 28, {}],
             ].each do |unit|
-              gun = { t: "gun", i: "gun", v: 1, s: 3 }
+              gun = { t: "gun", i: "gun" }
               unit.each_with_index do |v, i|
                 gun[key[i]] = v
               end
-              gun[:v] = 2 if gun[:f] < 10
-              gun[:s] = 2 if gun[:f] < 10
-              gun[:o].merge!({ t: 1, j: 3, f: 18, g: 1, s: 1, c: 1 })
+              Definitions.populate_gun_data(Units.sanitize(gun[:n]).to_sym, gun, move: true)
               lu[:"#{gun[:c]}_#{Units.sanitize(gun[:n])}"] = gun
             end
             lu

@@ -10,12 +10,14 @@ module Utility
           def populate_gun_data(key, json, move: false)
             translated_key = translate_names[key] || key
             data = weapon_data[translated_key]
-            raise "key missing: #{key}" unless data
+            raise "key missing: #{translated_key}" unless data
 
             json[:f] = data[:fire]
             json[:r] = data[:range]
             json[:v] = data[:move] if move
             json[:s] = data[:size] if move
+            json[:o][:tow] = data[:tow] if data[:tow] && move
+            json[:o][:c] = 1 if data[:crewed] && move
             json[:o] = json[:o] || {}
             json[:o][:a] = 1 if data[:assault]
             json[:o][:r] = 1 if data[:rapid]
@@ -23,9 +25,8 @@ module Utility
             json[:o][:o] = 1 if data[:offboard]
             json[:o][:e] = 1 if data[:area]
             json[:o][:m] = data[:minrange] if data[:minrange]
-            json[:o][:c] = 1 if data[:crewed]
             json[:o][:t] = 1 if data[:targeted]
-            json[:o][:tow] = data[:tow] if data[:tow]
+            json[:o][:g] = 1 if data[:gun]
             json[:o][:j] = data[:jam] || 3 unless data[:break]
             json[:o][:f] = data[:fix] || 16 unless data[:break]
             json[:o][:b] = data[:break] if data[:break]
@@ -50,6 +51,8 @@ module Utility
               radio_7_5cm: :radio_75mm,
               radio_10cm: :radio_100mm,
               radio_10_5cm: :radio_105mm,
+              # Field Gun
+              "75mm_gun": :"75mm_m1897",
             }
           end
 
@@ -130,6 +133,23 @@ module Utility
               radio_183mm: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
               radio_8inch: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
               radio_21cm: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
+              # Field Gun
+              bofors_75mm: { fire: 16, range: 20, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "75mm_m1897": { fire: 16, range: 24, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "37mm_m1916": { fire: 6, range: 14, move: 2, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 2, tow: 2 },
+              "7_5cm_gebg_36": { fire: 16, range: 20, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "7_5cm_leig_18": { fire: 16, range: 20, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "10_5cm_gebh_40": { fire: 24, range: 32, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "15cm_sig_33": { fire: 48, range: 24, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              cannone_da_65_17: { fire: 12, range: 20, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              obice_da_75_18: { fire: 16, range: 24, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              obice_da_100_17: { fire: 24, range: 32, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "70mm_type_92": { fire: 16, range: 16, move: 2, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 2, tow: 2 },
+              qf_25_pounder: { fire: 20, range: 32, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              qf_25pdr_short: { fire: 20, range: 20, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              qf_4_5inch: { fire: 32, range: 24, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "75mm_m1_pack": { fire: 16, range: 20, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              "76mm_zis_3": { fire: 16, range: 28, move: 1, targeted: true, jam: 3, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
             }
           end
           # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity

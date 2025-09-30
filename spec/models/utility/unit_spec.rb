@@ -1576,7 +1576,7 @@ RSpec.describe Utility::Scenario::Units do
       context "allied minors" do
         it "has static definitions" do
           expect(defs[:alm_75mm_gun]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "alm", n: "75mm Gun", y: 32, f: 16, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "alm", n: "75mm Gun", y: 32, f: 16, r: 24, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1588,6 +1588,11 @@ RSpec.describe Utility::Scenario::Units do
           expect(defs[:axm_3_7cm_pak_36]).to be == {
             t: "gun", i: "atgun", v: 2, s: 2, c: "axm", n: "3.7cm Pak 36", y: 36, f: 8, r: 16, o: {
               tow: 2, t: 1, j: 3, f: 18, p: 1, c: 1,
+            },
+          }
+          expect(defs[:axm_75mm_gun]).to be == {
+            t: "gun", i: "gun", v: 1, s: 3, c: "axm", n: "75mm Gun", y: 32, f: 16, r: 24, o: {
+              tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
         end
@@ -1606,17 +1611,17 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:chi_75mm_gun]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "chi", n: "75mm Gun", y: 32, f: 16, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "chi", n: "75mm Gun", y: 32, f: 16, r: 24, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
           expect(defs[:chi_75mm_m1_pack]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "chi", n: "75mm M1 Pack", y: 42, f: 16, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "chi", n: "75mm M1 Pack", y: 42, f: 16, r: 20, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
           expect(defs[:chi_bofors_75mm]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "chi", n: "Bofors 75mm", y: 23, f: 16, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "chi", n: "Bofors 75mm", y: 23, f: 16, r: 20, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1630,7 +1635,11 @@ RSpec.describe Utility::Scenario::Units do
 
       context "finland" do
         it "has static definitions" do
-          # NOP
+          expect(defs[:fin_75mm_gun]).to be == {
+            t: "gun", i: "gun", v: 1, s: 3, c: "fin", n: "75mm Gun", y: 32, f: 16, r: 24, o: {
+              tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
+            },
+          }
         end
       end
 
@@ -1642,7 +1651,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_37mm_m1916]).to be == {
-            t: "gun", i: "gun", v: 2, s: 2, c: "fra", n: "37mm M1916", y: 16, f: 4, r: 12, o: {
+            t: "gun", i: "gun", v: 2, s: 2, c: "fra", n: "37mm M1916", y: 16, f: 6, r: 14, o: {
               tow: 2, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1652,7 +1661,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_75mm_m1897]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "fra", n: "75mm M1897", y: 0, f: 16, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "fra", n: "75mm M1897", y: 0, f: 16, r: 24, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1667,8 +1676,13 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_15cm_sig_33]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "ger", n: "15cm sIG 33", y: 36, f: 64, r: 18, o: {
-              tow: 4, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
+            t: "gun", i: "gun", v: 1, s: 3, c: "ger", n: "15cm sIG 33", y: 36, f: 48, r: 24, o: {
+              tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
+            },
+          }
+          expect(defs[:ger_10_5cm_gebh_40]).to be == {
+            t: "gun", i: "gun", v: 1, s: 3, c: "ger", n: "10.5cm GebH 40", y: 42, f: 24, r: 32, o: {
+              tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1, sn: 1,
             },
           }
           expect(defs[:ger_2_8cm_spzb_41]).to be == {
@@ -1687,7 +1701,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_7_5cm_leig_18]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "ger", n: "7.5cm leIG 18", y: 32, f: 16, r: 14, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "ger", n: "7.5cm leIG 18", y: 32, f: 16, r: 20, o: {
+              tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
+            },
+          }
+          expect(defs[:ger_7_5cm_gebg_36]).to be == {
+            t: "gun", i: "gun", v: 1, s: 3, c: "ger", n: "7.5cm GebG 36", y: 38, f: 16, r: 20, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1732,7 +1751,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_cannone_da_65_17]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "ita", n: "Cannone da 65/17", y: 13, f: 12, r: 12, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "ita", n: "Cannone da 65/17", y: 13, f: 12, r: 20, o: {
               sn: 2, tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1747,12 +1766,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_obice_da_100_17]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "ita", n: "Obice da 100/17", y: 14, f: 32, r: 16, o: {
-              tow: 4, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
+            t: "gun", i: "gun", v: 1, s: 3, c: "ita", n: "Obice da 100/17", y: 14, f: 24, r: 32, o: {
+              tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
           expect(defs[:ita_obice_da_75_18]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "ita", n: "Obice da 75/18", y: 34, f: 16, r: 14, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "ita", n: "Obice da 75/18", y: 34, f: 16, r: 24, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1777,8 +1796,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_70mm_type_92]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "jap", n: "70mm Type 92", y: 32, f: 12, r: 14, o: {
-              tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
+            t: "gun", i: "gun", v: 2, s: 2, c: "jap", n: "70mm Type 92", y: 32, f: 16, r: 16, o: {
+              tow: 2, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
           expect(defs[:jap_75mm_type_90]).to be == {
@@ -1797,12 +1816,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_qf_25_pounder]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "uk", n: "QF 25-Pounder", y: 40, f: 20, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "uk", n: "QF 25-Pounder", y: 40, f: 20, r: 32, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
           expect(defs[:uk_qf_25pdr_short]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "uk", n: "QF 25Pdr Short", y: 43, f: 16, r: 15, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "uk", n: "QF 25Pdr Short", y: 43, f: 20, r: 20, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1812,7 +1831,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_qf_4_5inch]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "uk", n: "QF 4.5inch", y: 8, f: 32, r: 20, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "uk", n: "QF 4.5inch", y: 8, f: 32, r: 24, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1852,12 +1871,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_75mm_m1897]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "usa", n: "75mm M1897", y: 40, f: 16, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "usa", n: "75mm M1897", y: 40, f: 16, r: 24, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
           expect(defs[:usa_75mm_m1_pack]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "usa", n: "75mm M1 Pack", y: 27, f: 16, r: 16, o: {
+            t: "gun", i: "gun", v: 1, s: 3, c: "usa", n: "75mm M1 Pack", y: 27, f: 16, r: 20, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
@@ -1896,8 +1915,8 @@ RSpec.describe Utility::Scenario::Units do
               tow: 3, t: 1, j: 3, f: 18, p: 1, c: 1,
             },
           }
-          expect(defs[:ussr_76mm_m1927]).to be == {
-            t: "gun", i: "gun", v: 1, s: 3, c: "ussr", n: "76mm M1927", y: 28, f: 16, r: 16, o: {
+          expect(defs[:ussr_76mm_zis_3]).to be == {
+            t: "gun", i: "gun", v: 1, s: 3, c: "ussr", n: "76mm ZiS-3", y: 28, f: 16, r: 28, o: {
               tow: 3, t: 1, j: 3, f: 18, g: 1, s: 1, c: 1,
             },
           }
