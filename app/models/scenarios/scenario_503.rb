@@ -17,7 +17,7 @@ module Scenarios
         :alm_leader_4_1,
         [4, :alm_regular_s],
         [4, :alm_regular_t],
-        [2, :alm_rkm_wz__1928],
+        [2, :alm_rkm_wz__28],
         [2, :alm_wz__35_at_rifle],
       ] },
     }.freeze
