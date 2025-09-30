@@ -8,9 +8,9 @@ module Utility
           # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
           # rubocop:disable Metrics/PerceivedComplexity, Layout/LineLength
           def populate_gun_data(key, json, move: false)
-            translated_key = translate_names[key] || key
-            data = weapon_data[translated_key]
-            raise "key missing: #{translated_key}" unless data
+            actual_key = aliases[key] || key
+            data = weapon_data[actual_key]
+            raise "key missing: #{actual_key}" unless data
 
             json[:f] = data[:fire]
             json[:r] = data[:range]
@@ -35,7 +35,7 @@ module Utility
             json[:o][:b] = data[:break] if data[:break]
           end
 
-          def translate_names
+          def aliases
             {
               # Machine Guns
               colt_m_29: :m1917_browning,
@@ -57,8 +57,11 @@ module Utility
               radio_7_5cm: :radio_75mm,
               radio_10cm: :radio_100mm,
               radio_10_5cm: :radio_105mm,
-              # Field Gun
+              # Field Guns
               "75mm_gun": :"75mm_m1897",
+              # AT Guns
+              type_30_at: :"3_7cm_pak_36",
+              "57mm_m1": :qf_6pdr_mk_iv,
             }
           end
 
@@ -153,7 +156,7 @@ module Utility
               radio_183mm: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
               radio_8inch: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
               radio_21cm: { fire: 96, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
-              # Field Gun
+              # Field Guns
               bofors_75mm: { fire: 16, range: 20, move: 1, targeted: true, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
               "75mm_m1897": { fire: 16, range: 24, move: 1, targeted: true, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
               "37mm_m1916": { fire: 6, range: 14, move: 2, targeted: true, fix: 18, gun: true, smoke: true, crewed: true, size: 2, tow: 2 },
@@ -170,6 +173,38 @@ module Utility
               qf_4_5inch: { fire: 32, range: 24, move: 1, targeted: true, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
               "75mm_m1_pack": { fire: 16, range: 20, move: 1, targeted: true, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
               "76mm_zis_3": { fire: 16, range: 28, move: 1, targeted: true, fix: 18, gun: true, smoke: true, crewed: true, size: 3, tow: 3 },
+              # AT Guns
+              "25mm_hotchkiss": { fire: 4, range: 12, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              "47mm_apx": { fire: 12, range: 16, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "2_8cm_spzb_41": { fire: 10, range: 8, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              "3_7cm_pak_36": { fire: 6, range: 12, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              "5cm_pak_38": { fire: 24, range: 24, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "7_5cm_pak_97_38": { fire: 12, range: 12, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "7_5cm_pak_40": { fire: 40, range: 32, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "8_8cm_pak_43": { fire: 64, range: 32, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              "8_8cm_flak_36": { fire: 40, range: 32, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              "12_8cm_pak_44": { fire: 96, range: 40, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              cannone_da_47_32: { fire: 6, range: 12, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              cannone_da_47_40: { fire: 12, range: 16, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              cannone_da_75_46: { fire: 24, range: 24, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              cannone_da_90_53: { fire: 48, range: 32, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              "37mm_type_94": { fire: 5, range: 12, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              "37mm_type_1": { fire: 6, range: 12, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              "47mm_type_1": { fire: 12, range: 16, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "75mm_type_90": { fire: 20, range: 20, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              qf_2_pounder: { fire: 8, range: 12, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              qf_6pdr_mk_ii: { fire: 16, range: 20, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              qf_6pdr_mk_iv: { fire: 20, range: 24, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              qf_17_pounder: { fire: 40, range: 32, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              "37mm_m3": { fire: 8, range: 12, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
+              "3inch_m5": { fire: 24, range: 24, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              "45mm_19_k": { fire: 8, range: 12, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "45mm_53_k": { fire: 8, range: 12, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "45mm_m_42": { fire: 12, range: 16, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "57mm_zis_2": { fire: 24, range: 24, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 3 },
+              "76mm_f_22": { fire: 20, range: 24, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              "100mm_bs_3": { fire: 64, range: 40, move: 1, targeted: true, fix: 18, at: true, crewed: true, size: 3, tow: 4 },
+              bofors_37mm_at: { fire: 8, range: 12, move: 2, targeted: true, fix: 18, at: true, crewed: true, size: 2, tow: 2 },
             }
           end
           # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity

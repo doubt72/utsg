@@ -25,7 +25,7 @@ module Scenarios
           :fra_m1915_hotchkiss,
           :fra_brandt_m27_31,
           :fra_75mm_m1897,
-          :fra_47mm_atx,
+          :fra_47mm_apx,
           [12, :wire],
           [4, :mines8],
           [4, :bunker],

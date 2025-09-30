@@ -23,7 +23,7 @@ module Scenarios
           [2, :fra_m1915_hotchkiss],
           :fra_brandt_m27_31,
           [2, :fra_25mm_hotchkiss],
-          :fra_47mm_atx,
+          :fra_47mm_apx,
           [2, :fra_hotchkiss_h35_39],
           [2, :fra_amr_33],
         ],
