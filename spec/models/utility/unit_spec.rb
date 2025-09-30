@@ -754,7 +754,7 @@ RSpec.describe Utility::Scenario::Units do
       context "allied minors" do
         it "has static definitions" do
           expect(defs[:alm_81mm_mortar]).to be == {
-            t: "sw", i: "mortar", c: "alm", n: "81mm Mortar", y: 27, f: 20, r: 24, v: -2, s: 1, o: {
+            t: "sw", i: "mortar", c: "alm", n: "81mm Mortar", y: 27, f: 20, r: 17, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -824,7 +824,7 @@ RSpec.describe Utility::Scenario::Units do
       context "axis minors" do
         it "has static definitions" do
           expect(defs[:axm_81mm_mortar]).to be == {
-            t: "sw", i: "mortar", c: "axm", n: "81mm Mortar", y: 27, f: 20, r: 24, v: -2, s: 1, o: {
+            t: "sw", i: "mortar", c: "axm", n: "81mm Mortar", y: 27, f: 20, r: 17, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -924,12 +924,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:chi_m2_4_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "M2 4.2inch Mortar", y: 43, f: 32, r: 32, v: 1, o: {
-              sn: 2, s: 1, m: 4, c: 1, tow: 3, t: 1, b: 3, e: 1,
-            }, s: 3,
+            t: "sw", i: "mortar", c: "chi", n: "M2 4.2inch Mortar", y: 43, f: 24, r: 28, v: 2, o: {
+              sn: 2, s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
+            }, s: 2,
           }
-          expect(defs[:chi_m2_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "M2 Mortar", y: 42, f: 10, r: 16, v: -1, s: 1, o: {
+          expect(defs[:chi_type_31_mortar]).to be == {
+            t: "sw", i: "mortar", c: "chi", n: "Type 31 Mortar", y: 42, f: 12, r: 16, v: -1, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -939,12 +939,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:chi_type_15_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "Type 15 Mortar", y: 33, f: 16, r: 16, v: -1, s: 1, o: {
+            t: "sw", i: "mortar", c: "chi", n: "Type 15 Mortar", y: 33, f: 20, r: 24, v: -2, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
           expect(defs[:chi_type_20_mortar]).to be == {
-            t: "sw", i: "mortar", c: "chi", n: "Type 20 Mortar", y: 27, f: 20, r: 24, v: -2, s: 1, o: {
+            t: "sw", i: "mortar", c: "chi", n: "Type 20 Mortar", y: 27, f: 20, r: 17, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -968,8 +968,8 @@ RSpec.describe Utility::Scenario::Units do
               j: 3, sn: 1, t: 1, p: 1,
             },
           }
-          expect(defs[:fin_81mm_tampelia]).to be == {
-            t: "sw", i: "mortar", c: "fin", n: "81mm Tampelia", y: 27, f: 20, r: 24, v: -2, s: 1, o: {
+          expect(defs[:fin_81mm_tampella]).to be == {
+            t: "sw", i: "mortar", c: "fin", n: "81mm Tampella", y: 27, f: 20, r: 17, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -1029,12 +1029,12 @@ RSpec.describe Utility::Scenario::Units do
       context "france" do
         it "has static definitions" do
           expect(defs[:fra_brandt_m1935]).to be == {
-            t: "sw", i: "mortar", c: "fra", n: "Brandt M1935", y: 35, f: 10, r: 16, v: -1, s: 1, o: {
+            t: "sw", i: "mortar", c: "fra", n: "Brandt M1935", y: 35, f: 20, r: 15, v: -1, s: 1, o: {
               m: 3, t: 1, b: 3, e: 1,
             },
           }
           expect(defs[:fra_brandt_m27_31]).to be == {
-            t: "sw", i: "mortar", c: "fra", n: "Brandt M27/31", y: 27, f: 20, r: 24, v: -2, s: 1, o: {
+            t: "sw", i: "mortar", c: "fra", n: "Brandt M27/31", y: 27, f: 20, r: 17, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -1064,8 +1064,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_m1917_fabry]).to be == {
-            t: "sw", i: "mortar", c: "fra", n: "M1917 Fabry", y: 18, f: 64, r: 32, v: 1, o: {
-              s: 1, m: 4, c: 1, tow: 4, t: 1, b: 3, e: 1,
+            t: "sw", i: "mortar", c: "fra", n: "M1917 Fabry", y: 18, f: 48, r: 20, v: 1, o: {
+              s: 1, m: 6, c: 1, tow: 3, t: 1, b: 3, e: 1,
             }, s: 3,
           }
           expect(defs[:fra_m1918_bar]).to be == {
@@ -1099,17 +1099,17 @@ RSpec.describe Utility::Scenario::Units do
       context "german" do
         it "has static definitions" do
           expect(defs[:ger_12cm_grw_42]).to be == {
-            t: "sw", i: "mortar", c: "ger", n: "12cm GrW 42", y: 43, f: 40, r: 32, v: 1, o: {
-              s: 1, m: 4, c: 1, tow: 4, t: 1, b: 3, e: 1,
-            }, s: 3,
+            t: "sw", i: "mortar", c: "ger", n: "12cm GrW 42", y: 43, f: 32, r: 32, v: 2, o: {
+              s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
+            }, s: 2,
           }
           expect(defs[:ger_5cm_legrw_36]).to be == {
-            t: "sw", i: "mortar", c: "ger", n: "5cm leGrW 36", y: 36, f: 8, r: 11, v: 0, s: 1, o: {
+            t: "sw", i: "mortar", c: "ger", n: "5cm leGrW 36", y: 36, f: 8, r: 12, v: 0, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }
           expect(defs[:ger_8cm_grw_34]).to be == {
-            t: "sw", i: "mortar", c: "ger", n: "8cm GrW 34", y: 37, f: 20, r: 17, v: -2, s: 1, o: {
+            t: "sw", i: "mortar", c: "ger", n: "8cm GrW 34", y: 37, f: 16, r: 17, v: -2, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -1119,7 +1119,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_kz_8cm_grw_42]).to be == {
-            t: "sw", i: "mortar", c: "ger", n: "kz 8cm GrW 42", y: 41, f: 20, r: 16, v: -1, s: 1, o: {
+            t: "sw", i: "mortar", c: "ger", n: "kz 8cm GrW 42", y: 41, f: 16, r: 16, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -1184,7 +1184,7 @@ RSpec.describe Utility::Scenario::Units do
       context "italy" do
         it "has static definitions" do
           expect(defs[:ita_81_14_m35]).to be == {
-            t: "sw", i: "mortar", c: "ita", n: "81/14 M35", y: 35, f: 20, r: 16, v: -2, s: 1, o: {
+            t: "sw", i: "mortar", c: "ita", n: "81/14 M35", y: 35, f: 20, r: 18, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
@@ -1199,7 +1199,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_brixia_m35]).to be == {
-            t: "sw", i: "mortar", c: "ita", n: "Brixia M35", y: 35, f: 6, r: 11, v: -1, s: 1, o: {
+            t: "sw", i: "mortar", c: "ita", n: "Brixia M35", y: 35, f: 8, r: 12, v: 0, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -1264,7 +1264,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_10_gren_l]).to be == {
-            t: "sw", i: "mortar", c: "jap", n: "Type 10 Gren.L", y: 21, f: 6, r: 6, v: 0, s: 1, o: {
+            t: "sw", i: "mortar", c: "jap", n: "Type 10 Gren.L", y: 21, f: 8, r: 7, v: 0, s: 1, o: {
               s: 1, m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -1279,7 +1279,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_89_gren_l]).to be == {
-            t: "sw", i: "mortar", c: "jap", n: "Type 89 Gren.L", y: 29, f: 8, r: 11, v: 0, s: 1, o: {
+            t: "sw", i: "mortar", c: "jap", n: "Type 89 Gren.L", y: 29, f: 8, r: 8, v: 0, s: 1, o: {
               s: 1, m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -1289,9 +1289,9 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_94_90mm]).to be == {
-            t: "sw", i: "mortar", c: "jap", n: "Type 94 90mm", y: 34, f: 24, r: 24, v: 1, o: {
-              s: 1, m: 3, c: 1, tow: 3, t: 1, b: 3, e: 1,
-            }, s: 3,
+            t: "sw", i: "mortar", c: "jap", n: "Type 94 90mm", y: 34, f: 20, r: 27, v: 2, o: {
+              s: 1, m: 4, c: 1, tow: 2, t: 1, b: 3, e: 1,
+            }, s: 2,
           }
           expect(defs[:jap_type_96_lmg]).to be == {
             t: "sw", i: "mg", c: "jap", n: "Type 96 LMG", y: 36, f: 4, r: 8, v: 0, s: 1, o: {
@@ -1299,14 +1299,14 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_97_81mm]).to be == {
-            t: "sw", i: "mortar", c: "jap", n: "Type 97 81mm", y: 37, f: 20, r: 24, v: -3, s: 1, o: {
+            t: "sw", i: "mortar", c: "jap", n: "Type 97 81mm", y: 37, f: 20, r: 17, v: -2, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
           expect(defs[:jap_type_97_90mm]).to be == {
-            t: "sw", i: "mortar", c: "jap", n: "Type 97 90mm", y: 37, f: 24, r: 24, v: 1, o: {
-              s: 1, m: 3, c: 1, tow: 3, t: 1, b: 3, e: 1,
-            }, s: 3,
+            t: "sw", i: "mortar", c: "jap", n: "Type 97 90mm", y: 37, f: 20, r: 27, v: -2, o: {
+              s: 1, m: 4, t: 1, b: 3, e: 1,
+            }, s: 1,
           }
           expect(defs[:jap_type_97_ac]).to be == {
             t: "sw", i: "antitank", c: "jap", n: "Type 97 AC", y: 35, f: 3, r: 5, v: -2, s: 1, o: {
@@ -1324,7 +1324,7 @@ RSpec.describe Utility::Scenario::Units do
       context "united kingdom" do
         it "has static definitions" do
           expect(defs[:uk_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "uk", n: "2inch Mortar", y: 37, f: 7, r: 10, v: 0, s: 1, o: {
+            t: "sw", i: "mortar", c: "uk", n: "2inch Mortar", y: 37, f: 10, r: 15, v: 0, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -1349,14 +1349,14 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_ml_3inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "uk", n: "ML 3inch Mortar", y: 33, f: 20, r: 17, v: -1, s: 1, o: {
+            t: "sw", i: "mortar", c: "uk", n: "ML 3inch Mortar", y: 33, f: 20, r: 18, v: -1, s: 1, o: {
               s: 1, m: 3, t: 1, b: 3, e: 1,
             },
           }
           expect(defs[:uk_ml_4_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "uk", n: "ML 4.2inch Mortar", y: 40, f: 32, r: 32, v: 1, o: {
-              s: 1, m: 4, c: 1, sn: 2, tow: 3, t: 1, b: 3, e: 1,
-            }, s: 3,
+            t: "sw", i: "mortar", c: "uk", n: "ML 4.2inch Mortar", y: 40, f: 24, r: 26, v: 2, o: {
+              sn: 2, s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
+            }, s: 2,
           }
           expect(defs[:uk_piat]).to be == {
             t: "sw", i: "rocket", c: "uk", n: "PIAT", y: 42, f: 8, r: 3, v: 0, s: 1, o: {
@@ -1439,9 +1439,9 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m2_4_2inch_mortar]).to be == {
-            t: "sw", i: "mortar", c: "usa", n: "M2 4.2inch Mortar", y: 43, f: 32, r: 32, v: 1, o: {
-              sn: 2, s: 1, m: 4, c: 1, tow: 3, t: 1, b: 3, e: 1,
-            }, s: 3,
+            t: "sw", i: "mortar", c: "usa", n: "M2 4.2inch Mortar", y: 43, f: 24, r: 28, v: 2, o: {
+              sn: 2, s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
+            }, s: 2,
           }
           expect(defs[:usa_m2_browning]).to be == {
             t: "sw", i: "mg", c: "usa", n: "M2 Browning", y: 33, f: 20, r: 15, v: -2, s: 1, o: {
@@ -1449,7 +1449,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m2_mortar]).to be == {
-            t: "sw", i: "mortar", c: "usa", n: "M2 Mortar", y: 40, f: 10, r: 16, v: -1, s: 1, o: {
+            t: "sw", i: "mortar", c: "usa", n: "M2 Mortar", y: 40, f: 12, r: 16, v: -1, s: 1, o: {
               m: 2, t: 1, b: 3, e: 1,
             },
           }
@@ -1489,9 +1489,9 @@ RSpec.describe Utility::Scenario::Units do
       context "soviet union" do
         it "has static definitions" do
           expect(defs[:ussr_120_pm_38]).to be == {
-            t: "sw", i: "mortar", c: "ussr", n: "120-PM-38", y: 39, f: 40, r: 32, v: 1, o: {
-              s: 1, m: 4, c: 1, tow: 4, t: 1, b: 3, e: 1,
-            }, s: 3,
+            t: "sw", i: "mortar", c: "ussr", n: "120-PM-38", y: 39, f: 32, r: 32, v: 2, o: {
+              s: 1, m: 5, c: 1, tow: 2, t: 1, b: 3, e: 1,
+            }, s: 2,
           }
           expect(defs[:ussr_82_bm_37]).to be == {
             t: "sw", i: "mortar", c: "ussr", n: "82-BM-37", y: 37, f: 20, r: 24, v: -2, s: 1, o: {

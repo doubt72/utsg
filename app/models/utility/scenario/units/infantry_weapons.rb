@@ -62,81 +62,45 @@ module Utility
 
           def mortars
             lu = {}
-            key = %i[c n y f r v o]
+            key = %i[c n y o]
             [
-              ["alm", "81mm Mortar", 27, 20, 24, -2, { s: 1, m: 3 }],
-              ["axm", "81mm Mortar", 27, 20, 24, -2, { s: 1, m: 3 }],
-              ["chi", "Type 15 Mortar", 33, 16, 16, -1, { s: 1, m: 3 }],
-              ["chi", "Type 20 Mortar", 27, 20, 24, -2, { s: 1, m: 3 }],
-              ["chi", "M1 Mortar", 42, 20, 24, -2, { s: 1, m: 3 }],
-              ["chi", "M2 Mortar", 42, 10, 16, -1, { m: 2 }],
-              ["chi", "M2 4.2inch Mortar", 43, 32, 32, 1, { sn: 2, s: 1, m: 4, c: 1, tow: 3 }],
-              ["fin", "81mm Tampelia", 27, 20, 24, -2, { s: 1, m: 3 }],
-              ["fra", "Brandt M1935", 35, 10, 16, -1, { m: 3 }],
-              ["fra", "Brandt M27/31", 27, 20, 24, -2, { s: 1, m: 3 }],
-              ["fra", "M1917 Fabry", 18, 64, 32, 1, { s: 1, m: 4, c: 1, tow: 4 }],
-              ["ger", "5cm leGrW 36", 36, 8, 11, 0, { m: 2 }],
-              ["ger", "8cm GrW 34", 37, 20, 17, -2, { s: 1, m: 3 }],
-              ["ger", "kz 8cm GrW 42", 41, 20, 16, -1, { s: 1, m: 3 }],
-              ["ger", "12cm GrW 42", 43, 40, 32, 1, { s: 1, m: 4, c: 1, tow: 4 }],
-              ["ita", "Brixia M35", 35, 6, 11, -1, { m: 2 }],
-              ["ita", "81/14 M35", 35, 20, 16, -2, { s: 1, m: 3 }],
-              ["jap", "Type 10 Gren.L", 21, 6, 6, 0, { s: 1, m: 2 }],
-              ["jap", "Type 89 Gren.L", 29, 8, 11, 0, { s: 1, m: 2 }],
-              ["jap", "Type 97 81mm", 37, 20, 24, -3, { s: 1, m: 3 }],
-              ["jap", "Type 97 90mm", 37, 24, 24, 1, { s: 1, m: 3, c: 1, tow: 3 }],
-              ["jap", "Type 94 90mm", 34, 24, 24, 1, { s: 1, m: 3, c: 1, tow: 3 }],
-              ["uk", "2inch Mortar", 37, 7, 10, 0, { m: 2 }],
-              ["uk", "ML 3inch Mortar", 33, 20, 17, -1, { s: 1, m: 3 }],
-              ["uk", "ML 4.2inch Mortar", 40, 32, 32, 1, { s: 1, m: 4, c: 1, sn: 2, tow: 3 }],
-              ["usa", "M2 Mortar", 40, 10, 16, -1, { m: 2 }],
-              ["usa", "M1 Mortar", 35, 20, 24, -2, { s: 1, m: 3 }],
-              ["usa", "M2 4.2inch Mortar", 43, 32, 32, 1, { sn: 2, s: 1, m: 4, c: 1, tow: 3 }],
-              ["ussr", "RM-38", 38, 8, 14, 0, { m: 2 }],
-              ["ussr", "82-BM-37", 37, 20, 24, -2, { s: 1, m: 3 }],
-              ["ussr", "82-PM-41", 41, 20, 24, -2, { s: 1, m: 3 }],
-              ["ussr", "120-PM-38", 39, 40, 32, 1, { s: 1, m: 4, c: 1, tow: 4 }],
+              ["alm", "81mm Mortar", 27, {}],
+
+              ["axm", "81mm Mortar", 27, {}],
+
+              ["chi", "Type 15 Mortar", 33, {}], ["chi", "Type 20 Mortar", 27, {}],
+              ["chi", "M1 Mortar", 42, {}], ["chi", "Type 31 Mortar", 42, {}],
+              ["chi", "M2 4.2inch Mortar", 43, { sn: 2 }],
+
+              ["fin", "81mm Tampella", 27, {}],
+
+              ["fra", "Brandt M1935", 35, {}], ["fra", "Brandt M27/31", 27, {}],
+              ["fra", "M1917 Fabry", 18, {}],
+
+              ["ger", "5cm leGrW 36", 36, {}], ["ger", "8cm GrW 34", 37, {}],
+              ["ger", "kz 8cm GrW 42", 41, {}], ["ger", "12cm GrW 42", 43, {}],
+
+              ["ita", "Brixia M35", 35, {}], ["ita", "81/14 M35", 35, {}],
+
+              ["jap", "Type 10 Gren.L", 21, {}], ["jap", "Type 89 Gren.L", 29, {}],
+              ["jap", "Type 97 81mm", 37, {}], ["jap", "Type 97 90mm", 37, {}],
+              ["jap", "Type 94 90mm", 34, {}],
+
+              ["uk", "2inch Mortar", 37, {}], ["uk", "ML 3inch Mortar", 33, {}],
+              ["uk", "ML 4.2inch Mortar", 40, { sn: 2 }],
+
+              ["usa", "M2 Mortar", 40, {}], ["usa", "M1 Mortar", 35, {}],
+              ["usa", "M2 4.2inch Mortar", 43, { sn: 2 }],
+
+              ["ussr", "RM-38", 38, {}], ["ussr", "82-BM-37", 37, {}], ["ussr", "82-PM-41", 41, {}],
+              ["ussr", "120-PM-38", 39, {}],
             ].each do |unit|
               mortar = { t: "sw", i: "mortar" }
               unit.each_with_index do |v, i|
                 mortar[key[i]] = v
               end
-              mortar[:o].merge!({ t: 1, b: 3, e: 1 })
-              mortar[:s] = 1
-              mortar[:s] = 3 if mortar[:o][:c]
+              Definitions.populate_gun_data(Units.sanitize(mortar[:n]).to_sym, mortar, move: true)
               lu[:"#{mortar[:c]}_#{Units.sanitize(mortar[:n])}"] = mortar
-            end
-            lu
-          end
-
-          def radios
-            lu = {}
-            key = %i[c n y]
-            [
-              ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],
-
-              ["ger", "Radio 10.5cm", 35], ["ger", "Radio 15cm", 34], ["ger", "Radio 17cm", 41],
-              ["ger", "Radio 21cm", 39],
-
-              ["ita", "Radio 75mm", 37], ["ita", "Radio 100mm", 14], ["ita", "Radio 149mm", 14],
-
-              ["jap", "Radio 7.5cm", 36], ["jap", "Radio 10cm", 31], ["jap", "Radio 15cm", 37],
-
-              ["uk", "Radio 88mm", 40], ["uk", "Radio 114mm", 38], ["uk", "Radio 140mm", 41],
-              ["uk", "Radio 152mm", 16], ["uk", "Radio 183mm", 40],
-
-              ["usa", "Radio 75mm", 32], ["usa", "Radio 105mm", 41], ["usa", "Radio 155mm", 42],
-              ["usa", "Radio 8inch", 42],
-
-              ["ussr", "Radio 76mm", 37], ["ussr", "Radio 85mm", 43], ["ussr", "Radio 122mm", 39],
-              ["ussr", "Radio 152mm", 37],
-            ].each do |unit|
-              radio = { t: "sw", i: "radio" }
-              unit.each_with_index do |v, i|
-                radio[key[i]] = v
-              end
-              Definitions.populate_gun_data(Units.sanitize(radio[:n]).to_sym, radio, move: true)
-              lu[:"#{radio[:c]}_#{Units.sanitize(radio[:n])}"] = radio
             end
             lu
           end
@@ -185,30 +149,63 @@ module Utility
             lu
           end
 
+          def radios
+            lu = {}
+            key = %i[c n y]
+            [
+              ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],
+
+              ["ger", "Radio 10.5cm", 35], ["ger", "Radio 15cm", 34], ["ger", "Radio 17cm", 41],
+              ["ger", "Radio 21cm", 39],
+
+              ["ita", "Radio 75mm", 37], ["ita", "Radio 100mm", 14], ["ita", "Radio 149mm", 14],
+
+              ["jap", "Radio 7.5cm", 36], ["jap", "Radio 10cm", 31], ["jap", "Radio 15cm", 37],
+
+              ["uk", "Radio 88mm", 40], ["uk", "Radio 114mm", 38], ["uk", "Radio 140mm", 41],
+              ["uk", "Radio 152mm", 16], ["uk", "Radio 183mm", 40],
+
+              ["usa", "Radio 75mm", 32], ["usa", "Radio 105mm", 41], ["usa", "Radio 155mm", 42],
+              ["usa", "Radio 8inch", 42],
+
+              ["ussr", "Radio 76mm", 37], ["ussr", "Radio 85mm", 43], ["ussr", "Radio 122mm", 39],
+              ["ussr", "Radio 152mm", 37],
+            ].each do |unit|
+              radio = { t: "sw", i: "radio" }
+              unit.each_with_index do |v, i|
+                radio[key[i]] = v
+              end
+              Definitions.populate_gun_data(Units.sanitize(radio[:n]).to_sym, radio, move: true)
+              lu[:"#{radio[:c]}_#{Units.sanitize(radio[:n])}"] = radio
+            end
+            lu
+          end
+
           def flamethrowers_and_satchels
             lu = {}
-            t = "sw"
             Units.all_factions.each do |c|
-              i = "flamethrower"
-              n = i.capitalize
-              y = 15
-              lu[:"#{c}_ft"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, s: 1, o: { a: 1, i: 1, b: 4, e: 1 } }
-              n = "Satchel Charge"
-              i = "explosive"
-              y = 36
-              lu[:"#{c}_sc"] = { c:, t:, n:, y:, i:, f: 24, r: 1, v: 0, s: 1, o: { x: 1, t: 1, e: 1 } }
+              lu[:"#{c}_ft"] = {
+                c:, t: "sw", n: "Flamethrower", y: 15, i: "flamethrower", f: 24, r: 1, v: 0, s: 1, o: {
+                  a: 1, i: 1, b: 4, e: 1,
+                },
+              }
+              lu[:"#{c}_sc"] = {
+                c:, t: "sw", n: "Satchel Charge", y: 36, i: "explosive", f: 24, r: 1, v: 0, s: 1, o: {
+                  x: 1, t: 1, e: 1,
+                },
+              }
             end
             lu
           end
 
           def molotov_coctails
             lu = {}
-            t = "sw"
             %w[fin ussr].each do |c|
-              n = "Molotov Cocktail"
-              i = "explosive"
-              y = 39
-              lu[:"#{c}_mc"] = { c:, t:, n:, y:, i:, f: 4, r: 1, v: 0, s: 1, o: { i: 1, x: 1, t: 1, sn: 1, e: 1 } }
+              lu[:"#{c}_mc"] = {
+                c:, t: "sw", n: "Molotov Cocktail", y: 39, i: "explosive", f: 4, r: 1, v: 0, s: 1, o: {
+                  i: 1, x: 1, t: 1, sn: 1, e: 1,
+                },
+              }
             end
             lu
           end
