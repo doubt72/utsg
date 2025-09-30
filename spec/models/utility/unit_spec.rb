@@ -789,7 +789,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:alm_piat]).to be == {
-            t: "sw", i: "rocket", c: "alm", n: "PIAT", y: 42, f: 8, r: 3, v: 0, s: 1, o: {
+            t: "sw", i: "rocket", c: "alm", n: "PIAT", y: 42, f: 10, r: 3, v: 0, s: 1, o: {
               b: 4, t: 1, p: 1,
             },
           }
@@ -1074,7 +1074,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_piat]).to be == {
-            t: "sw", i: "rocket", c: "fra", n: "PIAT", y: 42, f: 8, r: 3, v: 0, s: 1, o: {
+            t: "sw", i: "rocket", c: "fra", n: "PIAT", y: 42, f: 10, r: 3, v: 0, s: 1, o: {
               b: 4, t: 1, p: 1,
             },
           }
@@ -1124,6 +1124,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_mg_08_15]).to be == {
+
             t: "sw", i: "mg", c: "ger", n: "MG 08/15", y: 17, f: 8, r: 12, v: -1, s: 1, o: {
               r: 1, j: 3, f: 16,
             },
@@ -1139,12 +1140,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_panzerfaust]).to be == {
-            t: "sw", i: "rocket", c: "ger", n: "Panzerfaust", y: 43, f: 16, r: 1, v: 0, s: 1, o: {
+            t: "sw", i: "rocket", c: "ger", n: "Panzerfaust", y: 43, f: 20, r: 1, v: 0, s: 1, o: {
               x: 1, t: 1, p: 1,
             },
           }
           expect(defs[:ger_panzerschreck]).to be == {
-            t: "sw", i: "rocket", c: "ger", n: "Panzerschreck", y: 43, f: 12, r: 3, v: 0, s: 1, o: {
+            t: "sw", i: "rocket", c: "ger", n: "Panzerschreck", y: 43, f: 12, r: 4, v: 0, s: 1, o: {
               b: 4, t: 1, p: 1,
             },
           }
@@ -1359,7 +1360,7 @@ RSpec.describe Utility::Scenario::Units do
             }, s: 2,
           }
           expect(defs[:uk_piat]).to be == {
-            t: "sw", i: "rocket", c: "uk", n: "PIAT", y: 42, f: 8, r: 3, v: 0, s: 1, o: {
+            t: "sw", i: "rocket", c: "uk", n: "PIAT", y: 42, f: 10, r: 3, v: 0, s: 1, o: {
               b: 4, t: 1, p: 1,
             },
           }
@@ -1504,7 +1505,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_ampulomet]).to be == {
-            t: "sw", i: "rocket", c: "ussr", n: "Ampulomet", y: 41, f: 4, r: 6, v: -1, s: 1, o: {
+            t: "sw", i: "rocket", c: "ussr", n: "Ampulomet", y: 41, f: 16, r: 7, v: -1, s: 1, o: {
               b: 5, i: 1, e: 1, t: 1,
             },
           }

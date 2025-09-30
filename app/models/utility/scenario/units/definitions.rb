@@ -19,16 +19,19 @@ module Utility
             json[:o][:tow] = data[:tow] if data[:tow] && move
             json[:o][:c] = 1 if data[:crewed] && move
             json[:o] = json[:o] || {}
+            json[:o][:x] = 1 if data[:single]
             json[:o][:a] = 1 if data[:assault]
             json[:o][:r] = 1 if data[:rapid]
             json[:o][:s] = 1 if data[:smoke]
+            json[:o][:i] = 1 if data[:incendiary]
             json[:o][:o] = 1 if data[:offboard]
             json[:o][:e] = 1 if data[:area]
             json[:o][:m] = data[:minrange] if data[:minrange]
             json[:o][:t] = 1 if data[:targeted]
             json[:o][:g] = 1 if data[:gun]
-            json[:o][:j] = data[:jam] || 3 unless data[:break]
-            json[:o][:f] = data[:fix] || 16 unless data[:break]
+            json[:o][:p] = 1 if data[:at]
+            json[:o][:j] = data[:jam] || 3 unless data[:break] || data[:single]
+            json[:o][:f] = data[:fix] || 16 unless data[:break] || data[:single]
             json[:o][:b] = data[:break] if data[:break]
           end
 
@@ -115,6 +118,14 @@ module Utility
               "82_bm_37": { fire: 20, range: 24, minrange: 3, move: -2, smoke: true, targeted: true, break: 3, area: true, size: 1 },
               "82_pm_41": { fire: 20, range: 24, minrange: 3, move: -2, smoke: true, targeted: true, break: 3, area: true, size: 1 },
               "120_pm_38": { fire: 32, range: 32, minrange: 5, move: 2, smoke: true, crewed: true, tow: 2, targeted: true, break: 3, area: true, size: 2 },
+              # HE AT
+              panzerfaust: { fire: 20, range: 1, move: 0, targeted: true, size: 1, single: true, at: true },
+              panzerschreck: { fire: 12, range: 4, move: 0, targeted: true, size: 1, break: 4, at: true },
+              piat: { fire: 10, range: 3, move: 0, targeted: true, size: 1, break: 4, at: true },
+              m1_bazooka: { fire: 8, range: 4, move: 0, targeted: true, size: 1, break: 5, at: true },
+              m1a1_bazooka: { fire: 10, range: 4, move: 0, targeted: true, size: 1, break: 4, at: true },
+              m9_bazooka: { fire: 10, range: 4, move: 0, targeted: true, size: 1, break: 4, at: true },
+              ampulomet: { fire: 16, range: 7, move: -1, targeted: true, size: 1, break: 5, incendiary: true, area: true },
               # Artillery
               radio_75mm: { fire: 24, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },
               radio_76mm: { fire: 24, range: 99, move: 0, smoke: true, offboard: true, area: true, fix: 18, size: 1 },

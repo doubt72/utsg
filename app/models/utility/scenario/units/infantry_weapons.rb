@@ -107,27 +107,29 @@ module Utility
 
           def support_weapons
             lu = {}
-            key = %i[c n y f r v o]
+            key = %i[c n y]
             [
-              ["alm", "PIAT", 42, 8, 3, 0, { b: 4 }],
-              ["chi", "M1A1 Bazooka", 43, 10, 4, 0, { b: 4 }],
-              ["fra", "PIAT", 42, 8, 3, 0, { b: 4 }],
-              ["ger", "Panzerfaust", 43, 16, 1, 0, { x: 1 }],
-              ["ger", "Panzerschreck", 43, 12, 3, 0, { b: 4 }],
-              ["uk", "PIAT", 42, 8, 3, 0, { b: 4 }],
-              ["usa", "M1 Bazooka", 42, 8, 4, 0, { b: 5 }],
-              ["usa", "M1A1 Bazooka", 43, 10, 4, 0, { b: 4 }],
-              ["usa", "M9 Bazooka", 43, 10, 4, 0, { b: 4 }],
-              ["ussr", "Ampulomet", 41, 4, 6, -1, { b: 5, i: 1, e: 1 }],
+              ["alm", "PIAT", 42],
+
+              ["chi", "M1A1 Bazooka", 43],
+
+              ["fra", "PIAT", 42],
+
+              ["ger", "Panzerfaust", 43], ["ger", "Panzerschreck", 43],
+
+              ["uk", "PIAT", 42],
+
+              ["usa", "M1 Bazooka", 42], ["usa", "M1A1 Bazooka", 43], ["usa", "M9 Bazooka", 43],
+              ["ussr", "Ampulomet", 41],
             ].each do |unit|
               rocket = { t: "sw", i: "rocket", s: 1 }
               unit.each_with_index do |v, i|
                 rocket[key[i]] = v
               end
-              rocket[:o].merge!({ t: 1 })
-              rocket[:o].merge!({ p: 1 }) unless rocket[:n] == "Ampulomet"
+              Definitions.populate_gun_data(Units.sanitize(rocket[:n]).to_sym, rocket, move: true)
               lu[:"#{rocket[:c]}_#{Units.sanitize(rocket[:n])}"] = rocket
             end
+            key = %i[c n y f r v o]
             [
               ["axm", "S-18/100", 34, 4, 6, -2, { j: 3 }],
               ["alm", "Boys AT Rifle", 37, 3, 6, -1, { j: 3 }],
