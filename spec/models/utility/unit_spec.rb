@@ -759,8 +759,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:alm_boys_at_rifle]).to be == {
-            t: "sw", i: "antitank", c: "alm", n: "Boys AT Rifle", y: 37, f: 3, r: 6, v: -1, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "alm", n: "Boys AT Rifle", y: 37, f: 3, r: 4, v: -1, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:alm_bren_lmg]).to be == {
@@ -809,8 +809,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:alm_wz__35_at_rifle]).to be == {
-            t: "sw", i: "antitank", c: "alm", n: "wz. 35 AT Rifle", y: 38, f: 3, r: 4, v: 0, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "alm", n: "wz. 35 AT Rifle", y: 38, f: 2, r: 4, v: 0, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:alm_zb_vz__30]).to be == {
@@ -854,8 +854,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:axm_s_18_100]).to be == {
-            t: "sw", i: "antitank", c: "axm", n: "S-18/100", y: 34, f: 4, r: 6, v: -2, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "axm", n: "S-18/100", y: 34, f: 3, r: 6, v: -2, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:axm_sc]).to be == {
@@ -879,8 +879,8 @@ RSpec.describe Utility::Scenario::Units do
       context "china" do
         it "has static definitions" do
           expect(defs[:chi_boys_at_rifle]).to be == {
-            t: "sw", i: "antitank", c: "chi", n: "Boys AT Rifle", y: 44, f: 3, r: 6, v: -1, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "chi", n: "Boys AT Rifle", y: 44, f: 3, r: 4, v: -1, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:chi_bren_lmg]).to be == {
@@ -964,8 +964,8 @@ RSpec.describe Utility::Scenario::Units do
       context "finland" do
         it "has static definitions" do
           expect(defs[:fin_14mm_pst_kiv_37]).to be == {
-            t: "sw", i: "antitank", c: "fin", n: "14mm pst kiv/37", y: 37, f: 3, r: 6, v: -1, s: 1, o: {
-              j: 3, sn: 1, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "fin", n: "14mm pst kiv/37", y: 37, f: 3, r: 4, v: -1, s: 1, o: {
+              f: 18, j: 3, sn: 1, t: 1, p: 1,
             },
           }
           expect(defs[:fin_81mm_tampella]).to be == {
@@ -974,8 +974,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fin_8mm_pst_kiv_38]).to be == {
-            t: "sw", i: "antitank", c: "fin", n: "8mm pst kiv/38", y: 38, f: 3, r: 4, v: 0, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "fin", n: "8mm pst kiv/38", y: 38, f: 2, r: 4, v: 0, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:fin_dp_27]).to be == {
@@ -989,8 +989,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fin_lahti_l_39]).to be == {
-            t: "sw", i: "antitank", c: "fin", n: "Lahti L-39", y: 40, f: 4, r: 6, v: -2, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "fin", n: "Lahti L-39", y: 40, f: 3, r: 6, v: -2, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:fin_ls_26]).to be == {
@@ -1310,8 +1310,8 @@ RSpec.describe Utility::Scenario::Units do
             }, s: 1,
           }
           expect(defs[:jap_type_97_ac]).to be == {
-            t: "sw", i: "antitank", c: "jap", n: "Type 97 AC", y: 35, f: 3, r: 5, v: -2, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "jap", n: "Type 97 AC", y: 35, f: 3, r: 4, v: -2, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:jap_type_99_lmg]).to be == {
@@ -1330,8 +1330,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_boys_at_rifle]).to be == {
-            t: "sw", i: "antitank", c: "uk", n: "Boys AT Rifle", y: 37, f: 3, r: 6, v: -1, s: 1, o: {
-              j: 3, t: 1, p: 1,
+            t: "sw", i: "antitank", c: "uk", n: "Boys AT Rifle", y: 37, f: 3, r: 4, v: -1, s: 1, o: {
+              f: 18, j: 3, t: 1, p: 1,
             },
           }
           expect(defs[:uk_bren_lmg]).to be == {

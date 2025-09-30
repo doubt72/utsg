@@ -129,23 +129,26 @@ module Utility
               Definitions.populate_gun_data(Units.sanitize(rocket[:n]).to_sym, rocket, move: true)
               lu[:"#{rocket[:c]}_#{Units.sanitize(rocket[:n])}"] = rocket
             end
-            key = %i[c n y f r v o]
+            key = %i[c n y o]
             [
-              ["axm", "S-18/100", 34, 4, 6, -2, { j: 3 }],
-              ["alm", "Boys AT Rifle", 37, 3, 6, -1, { j: 3 }],
-              ["alm", "wz. 35 AT Rifle", 38, 3, 4, 0, { j: 3 }],
-              ["chi", "Boys AT Rifle", 44, 3, 6, -1, { j: 3 }],
-              ["fin", "Lahti L-39", 40, 4, 6, -2, { j: 3 }],
-              ["fin", "14mm pst kiv/37", 37, 3, 6, -1, { j: 3, sn: 1 }],
-              ["fin", "8mm pst kiv/38", 38, 3, 4, 0, { j: 3 }],
-              ["jap", "Type 97 AC", 35, 3, 5, -2, { j: 3 }],
-              ["uk", "Boys AT Rifle", 37, 3, 6, -1, { j: 3 }],
+              ["axm", "S-18/100", 34, {}],
+
+              ["alm", "Boys AT Rifle", 37, {}], ["alm", "wz. 35 AT Rifle", 38, {}],
+
+              ["chi", "Boys AT Rifle", 44, {}],
+
+              ["fin", "Lahti L-39", 40, {}], ["fin", "14mm pst kiv/37", 37, { sn: 1 }],
+              ["fin", "8mm pst kiv/38", 38, {}],
+
+              ["jap", "Type 97 AC", 35, {}],
+
+              ["uk", "Boys AT Rifle", 37, {}],
             ].each do |unit|
-              at = { t: "sw", i: "antitank", s: 1 }
+              at = { t: "sw", i: "antitank" }
               unit.each_with_index do |v, i|
                 at[key[i]] = v
               end
-              at[:o].merge!({ t: 1, p: 1 })
+              Definitions.populate_gun_data(Units.sanitize(at[:n]).to_sym, at, move: true)
               lu[:"#{at[:c]}_#{Units.sanitize(at[:n])}"] = at
             end
             lu
