@@ -74,10 +74,9 @@ export function nameLayout(counter: Counter): CounterLayout {
   let size = counter.hasFeature ? 11 : 9
   if (counter.unit.smallName > 0) { size = 8.25 }
   if (counter.unit.smallName > 1) { size = 7.825 }
-  if (counter.unit.smallName > 2) { size = 7.5 }
-  if (counter.unit.smallName > 3) { size = 7.175 }
+  if (counter.unit.smallName > 2) { size = 7.4 }
   if (counter.unit.smallName > 3) { size = 6.85 }
-  const y = counter.hasFeature ? counter.y + 12 : counter.y + 10
+  const y = (counter.hasFeature ? counter.y + 12 : counter.y + 10) + size/2 - 4.125
   return {
     x: counter.x + 5, y: y, size: size, name: counter.targetUF.name,
     style: { fill: reverseName(counter) ? "white" : "black" }

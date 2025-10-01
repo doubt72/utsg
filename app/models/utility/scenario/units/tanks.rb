@@ -114,6 +114,7 @@ module Utility
               ["uk", "M4(76) Sherman", 43, { sn: 1 }],
               ["uk", "Sherman Firefly", 43, {}],
 
+              ["usa", "M-H CTLS-4", 43, {}],
               ["usa", "M2A4", 35, {}],
               ["usa", "M3 Stuart", 41, {}],
               ["usa", "M5 Stuart", 42, {}],
@@ -123,7 +124,7 @@ module Utility
               ["usa", "M4(105) Sherman", 42, { sn: 2 }],
               ["usa", "M4(76) Sherman", 43, { sn: 1 }],
               ["usa", "M4 Sherman Jumbo", 44, { sn: 4 }],
-              ["usa", "M4(76) Sher. Jumbo", 44, { sn: 4 }],
+              ["usa", "M4(76) Sher Jumbo", 44, { sn: 4 }],
               ["usa", "M26 Pershing", 44, {}],
 
               ["ussr", "BT-5", 32, {}],

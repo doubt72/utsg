@@ -29,7 +29,7 @@ module Utility
               ["ger", "10.5cm GebH 40", 42, { sn: 1 }], ["ger", "15cm sIG 33", 36, {}],
 
               ["ita", "Cannone da 65/17", 13, { sn: 2 }], ["ita", "Obice da 75/18", 34, {}],
-              ["ita", "Obice da 100/17", 14, {}],
+              ["ita", "Obice da 100/17", 14, { sn: 1 }],
 
               ["jap", "70mm Type 92", 32, {}],
 

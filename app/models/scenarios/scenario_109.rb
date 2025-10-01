@@ -45,7 +45,7 @@ module Scenarios
           :ita_radio_100mm,
           [3, :ita_m13_40],
           [3, :ita_l3_35],
-          :ita_sv_da_75_18,
+          :ita_semovente_da_75_18,
         ],
       },
     }.freeze

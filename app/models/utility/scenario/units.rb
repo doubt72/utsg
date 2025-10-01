@@ -14,7 +14,7 @@ module Utility
                           .merge(Weapons.weapons)
                           .merge(Guns.guns)
                           .merge(Tanks.tanks)
-                          .merge(sp_guns)
+                          .merge(SpGuns.sp_guns)
                           .merge(half_tracks)
                           .merge(armored_cars)
                           .merge(trucks)
@@ -41,85 +41,6 @@ module Utility
 
         def all_factions
           %w[ger ita jap fin axm ussr usa uk fra chi alm]
-        end
-
-        def sp_guns # rubocop:disable Metrics/PerceivedComplexity
-          lu = {}
-          key = %i[c n y s f r v o]
-          [
-            # Hungarian
-            ["axm", "Fiat L3", 35, 3, 10, 8, 6, { r: 1, ha: { f: 1, s: 1, r: -1 } }],
-            ["fra", "AMR 35 ZT3", 36, 3, 4, 12, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 } }],
-            ["ger", "PzKpfw II Flamm", 40, 3, 24, 1, 6, { i: 1, ha: { f: 3, s: 1, r: 1 }, e: 1 }],
-            ["ger", "StuG III-A", 40, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: 1 }, bd: 3 }],
-            ["ger", "StuG III-B/E", 40, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: 1 } }],
-            ["ger", "StuG III-F/G", 42, 4, 32, 24, 5, { t: 1, p: 1, ha: { f: 6, s: 1, r: 1 } }],
-            ["ger", "StuH 42", 42, 4, 32, 24, 5, { t: 1, g: 1, ha: { f: 6, s: 1, r: 1 } }],
-            ["ger", "StuG IV", 43, 4, 32, 24, 5, { t: 1, p: 1, ha: { f: 6, s: 1, r: 1 } }],
-            ["ger", "SdKfz 166", 42, 5, 64, 20, 4, { t: 1, g: 1, ha: { f: 7, s: 1, r: 1 } }],
-            ["ger", "Panzerjäger I", 40, 3, 12, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: -1 } }],
-            ["ger", "Marder I", 42, 3, 32, 24, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: -1 } }],
-            ["ger", "Marder II", 42, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: -1 } }],
-            ["ger", "Marder III", 42, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 1, r: -1 } }],
-            ["ger", "Marder III-H/M", 43, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 1, r: -1 } }],
-            ["ger", "Nashorn", 42, 5, 64, 32, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: -1 } }],
-            ["ger", "Elefant", 42, 8, 64, 32, 4, { t: 1, p: 1, ha: { f: 9, s: 3, r: 3 } }],
-            ["ger", "Jagdpanzer IV", 43, 5, 40, 32, 5, { t: 1, p: 1, ha: { f: 6, s: 3, r: 2 } }],
-            ["ger", "Hetzer", 44, 4, 40, 32, 4, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 } }],
-            ["ger", "Jagdpanther", 44, 6, 64, 32, 6, { t: 1, p: 1, ha: { f: 6, s: 4, r: 3 } }],
-            ["ger", "Jagdtiger", 44, 8, 96, 40, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 6 } }],
-            ["ita", "L3/33", 33, 3, 3, 6, 6, { r: 1, ha: { f: 1, s: 1, r: -1 } }],
-            ["ita", "L3/35", 35, 3, 10, 8, 6, { r: 1, ha: { f: 1, s: 1, r: -1 } }],
-            ["ita", "L3/38", 38, 3, 10, 10, 6, { r: 1, ha: { f: 1, s: 1, r: -1 } }],
-            ["ita", "Sv da 47/32", 42, 3, 12, 14, 4, { t: 1, p: 1, ha: { f: 3, s: 1, r: -1 } }],
-            ["ita", "Sv da 75/18", 42, 3, 16, 14, 5, { t: 1, g: 1, ha: { f: 3, s: 2, r: 2 } }],
-            ["jap", "Type 97 Chi-Ha FT", 41, 3, 24, 1, 5, { i: 1, ha: { f: 2, s: 1, r: 1 }, e: 1, sn: 3 }],
-            ["jap", "Type 1 Ho-Ni I", 42, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 2, s: 2, r: -1 } }],
-            ["jap", "Type 1 Ho-Ni II", 43, 4, 32, 20, 5, { t: 1, g: 1, ha: { f: 2, s: 2, r: -1 } }],
-            ["jap", "Type 1 Ho-Ni III", 44, 4, 32, 20, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 1 } }],
-            ["uk", "Cruiser Mk I CS", 38, 3, 24, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3, s: 1 }],
-            ["uk", "Cruiser Mk II CS", 40, 3, 24, 16, 4, { t: 1, g: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, s: 1 }],
-            ["uk", "Crusader I CS", 41, 4, 16, 12, 6, { t: 1, g: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 }, bd: 3, s: 1 }],
-            ["uk", "Crusader II CS", 42, 4, 16, 12, 6, { t: 1, g: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 }, bd: 3, s: 1 }],
-            ["uk", "Matilda II CS", 39, 5, 16, 12, 4, { t: 1, g: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 }, bd: 3, s: 1 }],
-            ["uk", "Matilda Frog", 44, 5, 24, 1, 4, { i: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 }, e: 1 }],
-            ["uk", "Valentine III CS", 40, 4, 16, 12, 5, { t: 1, g: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 }, s: 1 }],
-            ["uk", "Churchill Crocodile", 44, 6, 24, 16, 4, { j: 4, t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 }, sn: 3, sg: { f: 24, r: 1, t: "ft" } }],
-            ["usa", "M3A1 Stuart FT", 44, 3, 24, 1, 5, { i: 1, ha: { f: 4, s: 3, r: 3 }, e: 1 }],
-            ["usa", "M4A3R5 Sherman", 44, 5, 24, 1, 5, { i: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, e: 1, sn: 2 }],
-            ["usa", "M10", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2, t: -1 } }],
-            ["usa", "M10A1", 43, 5, 32, 20, 6, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2, t: -1 } }],
-            ["usa", "M18 Hellcat", 43, 4, 40, 24, 7, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1, t: -1 } }],
-            ["usa", "M8 Scott", 42, 4, 24, 20, 5, { t: 1, g: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["usa", "M36 Jackson", 44, 5, 48, 32, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 5, s: 3, r: 3, t: -1 } }],
-            ["fra", "M10", 43, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2, t: -1 } }],
-            ["uk", "M10 Achilles", 42, 5, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2, t: -1 } }],
-            ["uk", "M10 Achilles C", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 2, r: 2, t: -1 } }],
-            ["ussr", "SU-76", 42, 3, 16, 22, 5, { t: 1, g: 1, ha: { f: 3, s: 1, r: 1 }, bd: 4 }],
-            ["ussr", "SU-76M", 42, 3, 16, 22, 5, { t: 1, g: 1, ha: { f: 3, s: 1, r: -1 } }],
-            ["ussr", "SU-85", 43, 5, 48, 28, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 } }],
-            ["ussr", "SU-100", 44, 5, 80, 30, 6, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 } }],
-            ["ussr", "SU-122", 42, 5, 40, 30, 6, { t: 1, g: 1, ha: { f: 3, s: 3, r: 3 } }],
-            ["ussr", "SU-152", 43, 6, 64, 32, 5, { t: 1, g: 1, ha: { f: 5, s: 4, r: 3 } }],
-            ["ussr", "ISU-122", 44, 6, 96, 32, 5, { t: 1, p: 1, ha: { f: 8, s: 6, r: 6 } }],
-            ["ussr", "ISU-152", 43, 7, 64, 32, 5, { t: 1, g: 1, ha: { f: 8, s: 6, r: 6 } }],
-          ].each do |unit|
-            spg = { t: "spg" }
-            unit.each_with_index do |v, i|
-              spg[key[i]] = v
-            end
-            spg[:i] = "spg" if spg[:o][:g]
-            spg[:i] = "spgmg" if spg[:o][:r]
-            spg[:i] = "spat" if spg[:o][:p]
-            spg[:i] = "spft" if spg[:o][:i] || spg[:o][:sg]
-            spg[:o][:b] = 4 if spg[:o][:i]
-            spg[:o][:u] = 1 if spg[:o][:ta]
-            spg[:o].merge!({ k: 1 })
-            spg[:o].merge!({ j: 3, f: 18 }) unless spg[:o][:sg]
-            spg[:o].delete(:j) if spg[:o][:i]
-            lu[:"#{spg[:c]}_#{sanitize(spg[:n])}"] = spg
-          end
-          lu
         end
 
         def half_tracks

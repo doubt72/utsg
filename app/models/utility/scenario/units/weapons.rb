@@ -44,8 +44,8 @@ module Utility
 
               ["uk", "Bren LMG", 35, {}], ["uk", "Lewis Gun", 14, {}], ["uk", "Vickers MG", 12, {}],
 
-              ["usa", "M1918 BAR", 18, {}], ["usa", "M1919 Browning", 19, {}], ["usa", "M1917 Browning", 17, {}],
-              ["usa", "M2 Browning", 33, {}],
+              ["usa", "M1918 BAR", 18, {}], ["usa", "M1919 Browning", 19, { sn: 1 }],
+              ["usa", "M1917 Browning", 17, { sn: 1 }], ["usa", "M2 Browning", 33, {}],
 
               ["ussr", "DP-27", 28, {}], ["ussr", "SG-43", 43, {}], ["ussr", "PM M1910", 10, {}],
               ["ussr", "DShK", 38, {}],
@@ -70,7 +70,7 @@ module Utility
 
               ["chi", "Type 15 Mortar", 33, {}], ["chi", "Type 20 Mortar", 27, {}],
               ["chi", "M1 Mortar", 42, {}], ["chi", "Type 31 Mortar", 42, {}],
-              ["chi", "M2 4.2inch Mortar", 43, { sn: 2 }],
+              ["chi", "M2 4.2inch Mortar", 43, { sn: 3 }],
 
               ["fin", "81mm Tampella", 27, {}],
 
@@ -86,11 +86,11 @@ module Utility
               ["jap", "Type 97 81mm", 37, {}], ["jap", "Type 97 90mm", 37, {}],
               ["jap", "Type 94 90mm", 34, {}],
 
-              ["uk", "2inch Mortar", 37, {}], ["uk", "ML 3inch Mortar", 33, {}],
-              ["uk", "ML 4.2inch Mortar", 40, { sn: 2 }],
+              ["uk", "2inch Mortar", 37, {}], ["uk", "ML 3inch Mortar", 33, { sn: 1 }],
+              ["uk", "ML 4.2inch Mortar", 40, { sn: 3 }],
 
               ["usa", "M2 Mortar", 40, {}], ["usa", "M1 Mortar", 35, {}],
-              ["usa", "M2 4.2inch Mortar", 43, { sn: 2 }],
+              ["usa", "M2 4.2inch Mortar", 43, { sn: 3 }],
 
               ["ussr", "RM-38", 38, {}], ["ussr", "82-BM-37", 37, {}], ["ussr", "82-PM-41", 41, {}],
               ["ussr", "120-PM-38", 39, {}],
