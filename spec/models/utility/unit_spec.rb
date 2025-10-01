@@ -1940,7 +1940,7 @@ RSpec.describe Utility::Scenario::Units do
       context "axis minors" do
         it "has static definitions" do
           expect(defs[:axm_38m_toldi_i]).to be == {
-            t: "tank", i: "tank", c: "axm", n: "38M Toldi I", y: 39, s: 3, f: 3, r: 8, v: 6, o: {
+            t: "tank", i: "tank", c: "axm", n: "38M Toldi I", y: 39, s: 3, f: 3, r: 6, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 0,
               }, ta: {
@@ -1949,7 +1949,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:axm_42m_toldi_ii]).to be == {
-            t: "tank", i: "tank", c: "axm", n: "42M Toldi II", y: 42, s: 3, f: 3, r: 8, v: 6, o: {
+            t: "tank", i: "tank", c: "axm", n: "42M Toldi II", y: 42, s: 3, f: 3, r: 6, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 1, r: 1,
               }, ta: {
@@ -1958,7 +1958,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:axm_42m_toldi_iia]).to be == {
-            t: "tank", i: "tank", c: "axm", n: "42M Toldi IIA", y: 43, s: 3, f: 8, r: 12, v: 6, o: {
+            t: "tank", i: "tank", c: "axm", n: "42M Toldi IIA", y: 43, s: 3, f: 4, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 1, r: 1,
               }, ta: {
@@ -1967,7 +1967,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:axm_r_2]).to be == {
-            t: "tank", i: "tank", c: "axm", n: "R-2", y: 38, s: 3, f: 8, r: 12, v: 5, o: {
+            t: "tank", i: "tank", c: "axm", n: "R-2", y: 38, s: 3, f: 5, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 1, r: 1,
               }, ta: {
@@ -1976,29 +1976,29 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:axm_t_3]).to be == {
-            t: "tank", i: "tank", c: "axm", n: "T-3", y: 42, s: 4, f: 16, r: 16, v: 5, o: {
-              t: 1, g: 1, ha: {
-                f: 4, s: 4, r: 4,
+            t: "tank", i: "tank", c: "axm", n: "T-3", y: 42, s: 4, f: 8, r: 12, v: 5, o: {
+              p: 1, t: 1, ha: {
+                f: 3, s: 3, r: 3,
               }, ta: {
-                f: 4, s: 4, r: 4,
+                f: 3, s: 3, r: 3,
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:axm_t_38]).to be == {
-            t: "tank", i: "tank", c: "axm", n: "T-38", y: 40, s: 3, f: 8, r: 14, v: 5, o: {
+            t: "tank", i: "tank", c: "axm", n: "T-38", y: 40, s: 3, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
-                f: 4, s: 1, r: 1,
+                f: 2, s: 1, r: 1,
               }, ta: {
-                f: 4, s: 1, r: 1,
-              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
+                f: 2, s: 1, r: 1,
+              }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:axm_t_4]).to be == {
-            t: "tank", i: "tank", c: "axm", n: "T-4", y: 43, s: 4, f: 32, r: 20, v: 5, o: {
-              t: 1, p: 1, ha: {
-                f: 6, s: 3, r: 2,
+            t: "tank", i: "tank", c: "axm", n: "T-4", y: 43, s: 4, f: 16, r: 24, v: 5, o: {
+              t: 1, g: 1, ha: {
+                f: 4, s: 3, r: 2,
               }, ta: {
-                f: 4, s: 3, r: 3,
+                f: 3, s: 2, r: 2,
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
@@ -2008,7 +2008,7 @@ RSpec.describe Utility::Scenario::Units do
       context "china" do
         it "has static definitions" do
           expect(defs[:chi_m3_stuart]).to be == {
-            t: "tank", i: "tank", c: "chi", n: "M3 Stuart", y: 42, s: 3, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "chi", n: "M3 Stuart", y: 42, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2017,16 +2017,16 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:chi_m4_sherman]).to be == {
-            t: "tank", i: "tank", c: "chi", n: "M4 Sherman", y: 43, s: 5, f: 24, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "chi", n: "M4 Sherman", y: 43, s: 5, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
-                f: 5, s: 3, r: 3,
+                f: 4, s: 3, r: 3,
               }, ta: {
-                f: 6, s: 5, r: 5,
+                f: 5, s: 4, r: 4,
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:chi_t_26]).to be == {
-            t: "tank", i: "tank", c: "chi", n: "T-26", y: 38, s: 3, f: 12, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "chi", n: "T-26", y: 38, s: 3, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2035,7 +2035,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:chi_vickers_6_ton]).to be == {
-            t: "tank", i: "tank", c: "chi", n: "Vickers 6-Ton", y: 34, s: 3, f: 8, r: 8, v: 4, o: {
+            t: "tank", i: "tank", c: "chi", n: "Vickers 6-Ton", y: 34, s: 3, f: 5, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2055,7 +2055,7 @@ RSpec.describe Utility::Scenario::Units do
       context "france" do
         it "has static definitions" do
           expect(defs[:fra_amc_35]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "AMC 35", y: 38, s: 3, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "fra", n: "AMC 35", y: 38, s: 3, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 2, r: 2,
               }, ta: {
@@ -2064,30 +2064,30 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_amr_33]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "AMR 33", y: 33, s: 3, f: 4, r: 8, v: 6, o: {
-              r: 1, ha: {
+            t: "tank", i: "tank", c: "fra", n: "AMR 33", y: 33, s: 3, f: 6, r: 10, v: 6, o: {
+              bd: 4, r: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
                 f: 1, s: 1, r: 1,
-              }, j: 3, f: 18, u: 1, k: 1,
+              }, j: 3, f: 16, u: 1, k: 1,
             },
           }
           expect(defs[:fra_amr_35_13_2mg]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "AMR 35 (13.2MG)", y: 36, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "tank", i: "tank", c: "fra", n: "AMR 35 (13.2MG)", y: 36, s: 3, f: 16, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
                 f: 1, s: 1, r: 1,
-              }, sn: 2, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 2, j: 3, f: 16, u: 1, k: 1,
             },
           }
           expect(defs[:fra_amr_35_7_5mg]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "AMR 35 (7.5MG)", y: 36, s: 3, f: 4, r: 8, v: 6, o: {
+            t: "tank", i: "tank", c: "fra", n: "AMR 35 (7.5MG)", y: 36, s: 3, f: 6, r: 10, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
                 f: 1, s: 1, r: 1,
-              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 1, j: 3, f: 16, u: 1, k: 1,
             },
           }
           expect(defs[:fra_amr_35_zt2]).to be == {
@@ -2100,29 +2100,29 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_char_b1]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "Char B1", y: 35, s: 5, f: 10, r: 12, v: 3, o: {
+            t: "tank", i: "tank", c: "fra", n: "Char B1", y: 35, s: 5, f: 6, r: 12, v: 3, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
                 f: 3, s: 3, r: 3,
               }, sg: {
-                f: 20, r: 12, t: "p",
+                f: 16, r: 24, t: "g",
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:fra_char_b1_bis]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "Char B1 bis", y: 37, s: 5, f: 12, r: 12, v: 3, o: {
+            t: "tank", i: "tank", c: "fra", n: "Char B1 bis", y: 37, s: 5, f: 6, r: 12, v: 3, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 4, r: 4,
               }, ta: {
                 f: 3, s: 3, r: 3,
               }, sg: {
-                f: 20, r: 12, t: "p",
+                f: 16, r: 24, t: "g",
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:fra_char_d2]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "Char D2", y: 36, s: 4, f: 16, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "fra", n: "Char D2", y: 36, s: 4, f: 6, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2131,7 +2131,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_fcm_36]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "FCM 36", y: 38, s: 3, f: 8, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "fra", n: "FCM 36", y: 38, s: 3, f: 4, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2140,7 +2140,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_hotchkiss_h35]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "Hotchkiss H35", y: 36, s: 3, f: 8, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "fra", n: "Hotchkiss H35", y: 36, s: 3, f: 4, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2149,25 +2149,25 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_hotchkiss_h35_39]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "Hotchkiss H35/39", y: 39, s: 3, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "fra", n: "Hotchkiss H35/39", y: 39, s: 3, f: 4, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
                 f: 3, s: 3, r: 3,
-              }, sn: 3, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 2, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:fra_m4_sherman]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "M4 Sherman", y: 43, s: 5, f: 24, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "fra", n: "M4 Sherman", y: 43, s: 5, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
-                f: 5, s: 3, r: 3,
+                f: 4, s: 3, r: 3,
               }, ta: {
-                f: 6, s: 5, r: 5,
+                f: 5, s: 4, r: 4,
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:fra_renault_r35]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "Renault R35", y: 36, s: 3, f: 8, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "fra", n: "Renault R35", y: 36, s: 3, f: 4, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2176,7 +2176,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_renault_r40]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "Renault R40", y: 36, s: 3, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "fra", n: "Renault R40", y: 36, s: 3, f: 4, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2185,7 +2185,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_somua_s35]).to be == {
-            t: "tank", i: "tank", c: "fra", n: "SOMUA S35", y: 35, s: 4, f: 16, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "fra", n: "SOMUA S35", y: 35, s: 4, f: 6, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
@@ -2217,7 +2217,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_35t]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 5, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 1, r: 1,
               }, ta: {
@@ -2226,34 +2226,34 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_38t_a_d]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw 38(t) A/D", y: 39, s: 3, f: 8, r: 14, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw 38(t) A/D", y: 39, s: 3, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 1, r: 1,
               }, ta: {
                 f: 2, s: 1, r: 1,
-              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 2, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:ger_pzkpfw_38t_e_g]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw 38(t) E/G", y: 40, s: 3, f: 8, r: 14, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw 38(t) E/G", y: 40, s: 3, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 1, r: 1,
               }, ta: {
                 f: 4, s: 1, r: 1,
-              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 2, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:ger_pzkpfw_i]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw I", y: 34, s: 3, f: 8, r: 8, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw I", y: 34, s: 3, f: 5, r: 8, v: 5, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
                 f: 1, s: 1, r: 1,
-              }, j: 3, f: 18, u: 1, k: 1,
+              }, j: 3, f: 16, u: 1, k: 1,
             },
           }
           expect(defs[:ger_pzkpfw_ii_a_e]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw II-A/E", y: 37, s: 3, f: 3, r: 10, v: 6, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw II-A/E", y: 37, s: 3, f: 4, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2262,7 +2262,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_ii_f]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw II-F", y: 41, s: 3, f: 3, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw II-F", y: 41, s: 3, f: 4, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 1, r: 1,
               }, ta: {
@@ -2271,7 +2271,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_ii_luchs]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw II Luchs", y: 43, s: 3, f: 4, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw II Luchs", y: 43, s: 3, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2280,7 +2280,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iii__39]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw III ('39)", y: 39, s: 4, f: 8, r: 14, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw III ('39)", y: 39, s: 4, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2289,7 +2289,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iii__40]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw III ('40)", y: 40, s: 4, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw III ('40)", y: 40, s: 4, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2298,7 +2298,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iii_j]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw III-J", y: 41, s: 4, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw III-J", y: 41, s: 4, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 4, r: 4,
               }, ta: {
@@ -2307,7 +2307,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iii_l]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw III-L", y: 41, s: 4, f: 24, r: 20, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw III-L", y: 41, s: 4, f: 12, r: 16, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 4, r: 4,
               }, ta: {
@@ -2316,7 +2316,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iii_n]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw III-N", y: 42, s: 4, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw III-N", y: 42, s: 4, f: 16, r: 24, v: 5, o: {
               t: 1, g: 1, ha: {
                 f: 4, s: 4, r: 4,
               }, ta: {
@@ -2325,7 +2325,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_a]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-A", y: 39, s: 4, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-A", y: 39, s: 4, f: 16, r: 24, v: 5, o: {
               t: 1, g: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2334,7 +2334,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_b_c]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-B/C", y: 39, s: 4, f: 16, r: 16, v: 6, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-B/C", y: 39, s: 4, f: 16, r: 24, v: 6, o: {
               t: 1, g: 1, ha: {
                 f: 3, s: 1, r: 1,
               }, ta: {
@@ -2343,7 +2343,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_d]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-D", y: 39, s: 4, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-D", y: 39, s: 4, f: 16, r: 24, v: 5, o: {
               t: 1, g: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2352,7 +2352,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_e]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-E", y: 40, s: 4, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-E", y: 40, s: 4, f: 16, r: 24, v: 5, o: {
               t: 1, g: 1, ha: {
                 f: 4, s: 3, r: 2,
               }, ta: {
@@ -2361,7 +2361,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_f1]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-F1", y: 41, s: 4, f: 16, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-F1", y: 41, s: 4, f: 16, r: 24, v: 5, o: {
               t: 1, g: 1, ha: {
                 f: 4, s: 3, r: 2,
               }, ta: {
@@ -2370,7 +2370,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_f2]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-F2", y: 42, s: 4, f: 32, r: 20, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-F2", y: 42, s: 4, f: 24, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 2,
               }, ta: {
@@ -2379,7 +2379,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_g]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-G", y: 43, s: 4, f: 32, r: 20, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-G", y: 43, s: 4, f: 24, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 6, s: 3, r: 2,
               }, ta: {
@@ -2388,7 +2388,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_pzkpfw_iv_h_j]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-H/J", y: 43, s: 5, f: 32, r: 24, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "PzKpfw IV-H/J", y: 43, s: 5, f: 40, r: 32, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 6, s: 3, r: 2,
               }, ta: {
@@ -2397,7 +2397,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_tiger_i]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "Tiger I", y: 42, s: 7, f: 48, r: 32, v: 5, o: {
+            t: "tank", i: "tank", c: "ger", n: "Tiger I", y: 42, s: 7, f: 48, r: 40, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 4, r: 4,
               }, ta: {
@@ -2406,7 +2406,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ger_tiger_ii]).to be == {
-            t: "tank", i: "tank", c: "ger", n: "Tiger II", y: 44, s: 8, f: 64, r: 32, v: 4, o: {
+            t: "tank", i: "tank", c: "ger", n: "Tiger II", y: 44, s: 8, f: 80, r: 40, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 9, s: 6, r: 6,
               }, ta: {
@@ -2420,16 +2420,16 @@ RSpec.describe Utility::Scenario::Units do
       context "italy" do
         it "has static definitions" do
           expect(defs[:ita_l5_30]).to be == {
-            t: "tank", i: "tank", c: "ita", n: "L5/30", y: 30, s: 3, f: 10, r: 8, v: 4, o: {
+            t: "tank", i: "tank", c: "ita", n: "L5/30", y: 30, s: 3, f: 4, r: 10, v: 4, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0,
               }, ta: {
                 f: 1, s: 1, r: 1,
-              }, j: 3, f: 18, u: 1, k: 1,
+              }, j: 4, f: 17, u: 1, k: 1,
             },
           }
           expect(defs[:ita_l6_40]).to be == {
-            t: "tank", i: "tank", c: "ita", n: "L6/40", y: 40, s: 3, f: 3, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "ita", n: "L6/40", y: 40, s: 3, f: 2, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 1, r: 0,
               }, ta: {
@@ -2438,18 +2438,18 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_m11_39]).to be == {
-            t: "tank", i: "tank", c: "ita", n: "M11/39", y: 39, s: 3, f: 5, r: 7, v: 4, o: {
+            t: "tank", i: "tank", c: "ita", n: "M11/39", y: 39, s: 3, f: 8, r: 10, v: 4, o: {
               r: 1, ha: {
                 f: 3, s: 1, r: 0,
               }, ta: {
                 f: 3, s: 3, r: 3,
               }, sg: {
-                f: 8, r: 12, t: "p",
-              }, j: 3, f: 18, u: 1, k: 1,
+                f: 4, r: 12, t: "p",
+              }, j: 3, f: 16, u: 1, k: 1,
             },
           }
           expect(defs[:ita_m13_40]).to be == {
-            t: "tank", i: "tank", c: "ita", n: "M13/40", y: 40, s: 3, f: 12, r: 14, v: 4, o: {
+            t: "tank", i: "tank", c: "ita", n: "M13/40", y: 40, s: 3, f: 6, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2458,7 +2458,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_m14_41]).to be == {
-            t: "tank", i: "tank", c: "ita", n: "M14/41", y: 41, s: 3, f: 12, r: 14, v: 4, o: {
+            t: "tank", i: "tank", c: "ita", n: "M14/41", y: 41, s: 3, f: 6, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2467,7 +2467,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_m15_42]).to be == {
-            t: "tank", i: "tank", c: "ita", n: "M15/42", y: 43, s: 4, f: 12, r: 14, v: 5, o: {
+            t: "tank", i: "tank", c: "ita", n: "M15/42", y: 43, s: 4, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 2, r: 2,
               }, ta: {
@@ -2475,8 +2475,8 @@ RSpec.describe Utility::Scenario::Units do
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
-          expect(defs[:ita_m26_40]).to be == {
-            t: "tank", i: "tank", c: "ita", n: "M26/40", y: 43, s: 5, f: 24, r: 16, v: 5, o: {
+          expect(defs[:ita_p26_40]).to be == {
+            t: "tank", i: "tank", c: "ita", n: "P26/40", y: 43, s: 5, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
@@ -2490,7 +2490,7 @@ RSpec.describe Utility::Scenario::Units do
       context "japan" do
         it "has static definitions" do
           expect(defs[:jap_type_2_ka_mi]).to be == {
-            t: "tank", i: "tank-amp", c: "jap", n: "Type 2 Ka-Mi", y: 41, s: 3, f: 8, r: 14, v: 4, o: {
+            t: "tank", i: "tank-amp", c: "jap", n: "Type 2 Ka-Mi", y: 41, s: 3, f: 6, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
@@ -2499,7 +2499,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_89_i_go]).to be == {
-            t: "tank", i: "tank", c: "jap", n: "Type 89 I-Go", y: 31, s: 3, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "jap", n: "Type 89 I-Go", y: 31, s: 3, f: 12, r: 20, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
@@ -2508,16 +2508,16 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_94]).to be == {
-            t: "tank", i: "tank", c: "jap", n: "Type 94", y: 34, s: 3, f: 4, r: 8, v: 4, o: {
+            t: "tank", i: "tank", c: "jap", n: "Type 94", y: 34, s: 3, f: 4, r: 10, v: 4, o: {
               r: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
                 f: 1, s: 0, r: 0,
-              }, j: 3, f: 18, u: 1, k: 1,
+              }, j: 3, f: 16, u: 1, k: 1,
             },
           }
           expect(defs[:jap_type_95_ha_go]).to be == {
-            t: "tank", i: "tank", c: "jap", n: "Type 95 Ha-Go", y: 33, s: 3, f: 4, r: 12, v: 6, o: {
+            t: "tank", i: "tank", c: "jap", n: "Type 95 Ha-Go", y: 33, s: 3, f: 5, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2526,25 +2526,25 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_97_chi_ha]).to be == {
-            t: "tank", i: "tank", c: "jap", n: "Type 97 Chi-Ha", y: 38, s: 3, f: 10, r: 12, v: 5, o: {
+            t: "tank", i: "tank", c: "jap", n: "Type 97 Chi-Ha", y: 38, s: 3, f: 12, r: 16, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 1, r: 1,
               }, ta: {
                 f: 2, s: 1, r: 1,
-              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
+              }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:jap_type_97_kai]).to be == {
-            t: "tank", i: "tank", c: "jap", n: "Type 97 Kai", y: 39, s: 4, f: 16, r: 14, v: 4, o: {
+            t: "tank", i: "tank", c: "jap", n: "Type 97 Kai", y: 39, s: 4, f: 12, r: 16, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 2, r: 2,
               }, ta: {
                 f: 3, s: 2, r: 2,
-              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
+              }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:jap_type_97_te_ke]).to be == {
-            t: "tank", i: "tank", c: "jap", n: "Type 97 Te-Ke", y: 38, s: 3, f: 8, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "jap", n: "Type 97 Te-Ke", y: 38, s: 3, f: 5, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
@@ -2553,12 +2553,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:jap_type_97_te_ke_mg]).to be == {
-            t: "tank", i: "tank", c: "jap", n: "Type 97 Te-Ke MG", y: 30, s: 3, f: 4, r: 8, v: 4, o: {
+            t: "tank", i: "tank", c: "jap", n: "Type 97 Te-Ke MG", y: 30, s: 3, f: 8, r: 10, v: 4, o: {
               r: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
                 f: 1, s: 1, r: 1,
-              }, sn: 2, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 3, j: 3, f: 16, u: 1, k: 1,
             },
           }
         end
@@ -2567,7 +2567,7 @@ RSpec.describe Utility::Scenario::Units do
       context "united kingdom" do
         it "has static definitions" do
           expect(defs[:uk_centaur]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Centaur", y: 44, s: 5, f: 24, r: 16, v: 7, o: {
+            t: "tank", i: "tank", c: "uk", n: "Centaur", y: 44, s: 5, f: 16, r: 24, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2576,7 +2576,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_challenger]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Challenger", y: 44, s: 5, f: 48, r: 32, v: 6, o: {
+            t: "tank", i: "tank", c: "uk", n: "Challenger", y: 44, s: 5, f: 40, r: 32, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2585,7 +2585,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_churchill_i_ii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Churchill I-II", y: 41, s: 6, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "uk", n: "Churchill I-II", y: 41, s: 6, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 5, r: 4,
               }, ta: {
@@ -2594,7 +2594,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_churchill_iii_iv]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Churchill III-IV", y: 42, s: 6, f: 20, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "uk", n: "Churchill III-IV", y: 42, s: 6, f: 16, r: 20, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 5, r: 4,
               }, ta: {
@@ -2603,8 +2603,8 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_churchill_v_vi]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Churchill V-VI", y: 43, s: 6, f: 24, r: 16, v: 4, o: {
-              t: 1, p: 1, ha: {
+            t: "tank", i: "tank", c: "uk", n: "Churchill V-VI", y: 43, s: 6, f: 24, r: 24, v: 4, o: {
+              t: 1, g: 1, ha: {
                 f: 7, s: 5, r: 4,
               }, ta: {
                 f: 6, s: 5, r: 5,
@@ -2612,16 +2612,16 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_churchill_vii_viii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Churchill VII-VIII", y: 44, s: 6, f: 24, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "uk", n: "Churchill VII-VIII", y: 44, s: 6, f: 16, r: 24, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 9, s: 6, r: 4,
               }, ta: {
                 f: 9, s: 6, r: 6,
-              }, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:uk_comet]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Comet", y: 44, s: 6, f: 40, r: 28, v: 6, o: {
+            t: "tank", i: "tank", c: "uk", n: "Comet", y: 44, s: 6, f: 48, r: 32, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2630,7 +2630,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_cromwell]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Cromwell", y: 44, s: 5, f: 24, r: 16, v: 7, o: {
+            t: "tank", i: "tank", c: "uk", n: "Cromwell", y: 44, s: 5, f: 16, r: 24, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2639,7 +2639,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_cruiser_mk_i]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk I", y: 38, s: 3, f: 10, r: 12, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk I", y: 38, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2648,7 +2648,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_cruiser_mk_ii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk II", y: 40, s: 3, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk II", y: 40, s: 3, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 2, r: 2,
               }, ta: {
@@ -2657,7 +2657,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_cruiser_mk_iii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk III", y: 40, s: 3, f: 10, r: 12, v: 7, o: {
+            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk III", y: 40, s: 3, f: 8, r: 12, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2666,7 +2666,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_cruiser_mk_iv]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk IV", y: 40, s: 3, f: 10, r: 12, v: 7, o: {
+            t: "tank", i: "tank", c: "uk", n: "Cruiser Mk IV", y: 40, s: 3, f: 8, r: 12, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 2, r: 2,
               }, ta: {
@@ -2675,7 +2675,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_crusader_i]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Crusader I", y: 41, s: 4, f: 10, r: 12, v: 6, o: {
+            t: "tank", i: "tank", c: "uk", n: "Crusader I", y: 41, s: 4, f: 8, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -2684,7 +2684,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_crusader_ii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Crusader II", y: 41, s: 4, f: 10, r: 12, v: 6, o: {
+            t: "tank", i: "tank", c: "uk", n: "Crusader II", y: 41, s: 4, f: 8, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
@@ -2693,7 +2693,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_crusader_iii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Crusader III", y: 42, s: 4, f: 20, r: 16, v: 6, o: {
+            t: "tank", i: "tank", c: "uk", n: "Crusader III", y: 42, s: 4, f: 16, r: 20, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
@@ -2702,16 +2702,16 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_light_tank_mk_vi]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Light Tank Mk VI", y: 36, s: 3, f: 8, r: 12, v: 6, o: {
+            t: "tank", i: "tank", c: "uk", n: "Light Tank Mk VI", y: 36, s: 3, f: 6, r: 15, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
                 f: 1, s: 1, r: 1,
-              }, sn: 1, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 1, j: 2, f: 15, u: 1, k: 1,
             },
           }
           expect(defs[:uk_m22_locust]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "M22 Locust", y: 42, s: 3, f: 7, r: 10, v: 7, o: {
+            t: "tank", i: "tank", c: "uk", n: "M22 Locust", y: 42, s: 3, f: 8, r: 12, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
@@ -2720,7 +2720,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_m24_chaffee]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "M24 Chaffee", y: 44, s: 4, f: 24, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "M24 Chaffee", y: 44, s: 4, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2729,29 +2729,29 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_m3_grant]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "M3 Grant", y: 41, s: 5, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "M3 Grant", y: 41, s: 5, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
                 f: 4, s: 4, r: 4,
               }, sg: {
-                f: 20, r: 12, t: "p",
+                f: 16, r: 24, t: "p",
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:uk_m3_lee]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "M3 Lee", y: 41, s: 5, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "M3 Lee", y: 41, s: 5, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
                 f: 4, s: 4, r: 4,
               }, sg: {
-                f: 20, r: 12, t: "p",
+                f: 16, r: 24, t: "p",
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:uk_m3_stuart]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "M3 Stuart", y: 41, s: 3, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "M3 Stuart", y: 41, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2760,7 +2760,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_m476_sherman]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "M4(76) Sherman", y: 43, s: 5, f: 40, r: 24, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "M4(76) Sherman", y: 43, s: 5, f: 32, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2769,7 +2769,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_m4_sherman]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "M4 Sherman", y: 42, s: 5, f: 24, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "M4 Sherman", y: 42, s: 5, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
@@ -2778,16 +2778,16 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_matilda_i]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Matilda I", y: 38, s: 3, f: 8, r: 12, v: 3, o: {
+            t: "tank", i: "tank", c: "uk", n: "Matilda I", y: 38, s: 3, f: 6, r: 15, v: 3, o: {
               r: 1, ha: {
                 f: 4, s: 2, r: 2,
               }, ta: {
                 f: 4, s: 3, r: 3,
-              }, j: 3, f: 18, u: 1, k: 1,
+              }, j: 2, f: 15, u: 1, k: 1,
             },
           }
           expect(defs[:uk_matilda_ii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Matilda II", y: 39, s: 5, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "uk", n: "Matilda II", y: 39, s: 5, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 6, s: 5, r: 4,
               }, ta: {
@@ -2796,7 +2796,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_sherman_firefly]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Sherman Firefly", y: 43, s: 5, f: 40, r: 24, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "Sherman Firefly", y: 43, s: 5, f: 40, r: 32, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2805,7 +2805,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_tetrarch]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Tetrarch", y: 38, s: 3, f: 10, r: 12, v: 7, o: {
+            t: "tank", i: "tank", c: "uk", n: "Tetrarch", y: 38, s: 3, f: 8, r: 12, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0,
               }, ta: {
@@ -2814,7 +2814,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_valentine_i_vii]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Valentine I-VII", y: 40, s: 4, f: 10, r: 12, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "Valentine I-VII", y: 40, s: 4, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 4, r: 4,
               }, ta: {
@@ -2823,7 +2823,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_valentine_ix_x]).to be == {
-            t: "tank", i: "tank", c: "uk", n: "Valentine IX-X", y: 43, s: 4, f: 20, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "uk", n: "Valentine IX-X", y: 43, s: 4, f: 16, r: 20, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 4, r: 4,
               }, ta: {
@@ -2837,7 +2837,7 @@ RSpec.describe Utility::Scenario::Units do
       context "united states" do
         it "has static definitions" do
           expect(defs[:usa_m24_chaffee]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M24 Chaffee", y: 44, s: 4, f: 24, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M24 Chaffee", y: 44, s: 4, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2846,7 +2846,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m26_pershing]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M26 Pershing", y: 44, s: 6, f: 48, r: 32, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M26 Pershing", y: 44, s: 6, f: 40, r: 32, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 5, r: 5,
               }, ta: {
@@ -2855,7 +2855,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m2a4]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M2A4", y: 35, s: 3, f: 6, r: 8, v: 7, o: {
+            t: "tank", i: "tank", c: "usa", n: "M2A4", y: 35, s: 3, f: 8, r: 12, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 2, r: 2,
               }, ta: {
@@ -2864,18 +2864,18 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m3_lee]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M3 Lee", y: 41, s: 5, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M3 Lee", y: 41, s: 5, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
                 f: 4, s: 4, r: 4,
               }, sg: {
-                f: 20, r: 12, t: "p",
+                f: 16, r: 24, t: "p",
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:usa_m3_stuart]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M3 Stuart", y: 41, s: 3, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M3 Stuart", y: 41, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2884,7 +2884,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m4105_sherman]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M4(105) Sherman", y: 42, s: 5, f: 32, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M4(105) Sherman", y: 42, s: 5, f: 24, r: 32, v: 5, o: {
               t: 1, g: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
@@ -2893,7 +2893,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m476_sherman]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M4(76) Sherman", y: 43, s: 5, f: 40, r: 24, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M4(76) Sherman", y: 43, s: 5, f: 32, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2902,7 +2902,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_m4_sherman]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M4 Sherman", y: 42, s: 5, f: 24, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M4 Sherman", y: 42, s: 5, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
@@ -2910,26 +2910,26 @@ RSpec.describe Utility::Scenario::Units do
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
-          expect(defs[:usa_m4a3e2_sherman]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M4A3E2 Sherman", y: 44, s: 6, f: 24, r: 16, v: 4, o: {
+          expect(defs[:usa_m4_sherman_jumbo]).to be == {
+            t: "tank", i: "tank", c: "usa", n: "M4 Sherman Jumbo", y: 44, s: 6, f: 16, r: 24, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 5, r: 5,
               }, ta: {
                 f: 9, s: 9, r: 9,
-              }, sn: 2, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 4, j: 3, f: 18, u: 1, k: 1,
             },
           }
-          expect(defs[:usa_m4a3e8_sherman]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M4A3E8 Sherman", y: 44, s: 6, f: 40, r: 24, v: 4, o: {
+          expect(defs[:usa_m476_sher__jumbo]).to be == {
+            t: "tank", i: "tank", c: "usa", n: "M4(76) Sher. Jumbo", y: 44, s: 6, f: 32, r: 24, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 5, r: 5,
               }, ta: {
                 f: 9, s: 9, r: 9,
-              }, sn: 2, j: 3, f: 18, u: 1, k: 1,
+              }, sn: 4, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:usa_m5_stuart]).to be == {
-            t: "tank", i: "tank", c: "usa", n: "M5 Stuart", y: 42, s: 3, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "usa", n: "M5 Stuart", y: 42, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -2943,7 +2943,7 @@ RSpec.describe Utility::Scenario::Units do
       context "soviet union" do
         it "has static definitions" do
           expect(defs[:ussr_bt_5]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "BT-5", y: 32, s: 3, f: 12, r: 16, v: 9, o: {
+            t: "tank", i: "tank", c: "ussr", n: "BT-5", y: 32, s: 3, f: 8, r: 12, v: 9, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2952,7 +2952,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_bt_7]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "BT-7", y: 35, s: 3, f: 12, r: 16, v: 9, o: {
+            t: "tank", i: "tank", c: "ussr", n: "BT-7", y: 35, s: 3, f: 8, r: 12, v: 9, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -2961,7 +2961,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_churchill_ii]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "Churchill II", y: 41, s: 6, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "ussr", n: "Churchill II", y: 41, s: 6, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 5, r: 4,
               }, ta: {
@@ -2970,7 +2970,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_churchill_iii]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "Churchill III", y: 42, s: 6, f: 20, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "ussr", n: "Churchill III", y: 42, s: 6, f: 16, r: 20, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 5, r: 4,
               }, ta: {
@@ -2979,7 +2979,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_is_2]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "IS-2", y: 44, s: 6, f: 96, r: 32, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "IS-2", y: 44, s: 6, f: 80, r: 40, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 6, r: 6,
               }, ta: {
@@ -2988,7 +2988,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_kv_1_m39]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "KV-1 M39", y: 39, s: 6, f: 24, r: 22, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "KV-1 M39", y: 39, s: 6, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -2997,7 +2997,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_kv_1_m40]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "KV-1 M40", y: 40, s: 6, f: 24, r: 22, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "KV-1 M40", y: 40, s: 6, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 4, r: 4,
               }, ta: {
@@ -3006,7 +3006,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_kv_1_m41]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "KV-1 M41", y: 41, s: 6, f: 24, r: 22, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "KV-1 M41", y: 41, s: 6, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 6, s: 4, r: 4,
               }, ta: {
@@ -3015,7 +3015,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_kv_1_m42]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "KV-1 M42", y: 42, s: 6, f: 32, r: 24, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "KV-1 M42", y: 42, s: 6, f: 20, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 8, s: 5, r: 5,
               }, ta: {
@@ -3024,7 +3024,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_kv_1s]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "KV-1S", y: 42, s: 6, f: 32, r: 24, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "KV-1S", y: 42, s: 6, f: 20, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 6, s: 4, r: 4,
               }, ta: {
@@ -3033,7 +3033,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_kv_2]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "KV-2", y: 40, s: 7, f: 64, r: 32, v: 4, o: {
+            t: "tank", i: "tank", c: "ussr", n: "KV-2", y: 40, s: 7, f: 48, r: 32, v: 4, o: {
               t: 1, g: 1, ha: {
                 f: 7, s: 4, r: 4,
               }, ta: {
@@ -3042,7 +3042,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_kv_85]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "KV-85", y: 43, s: 6, f: 48, r: 28, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "KV-85", y: 43, s: 6, f: 32, r: 32, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 7, s: 4, r: 4,
               }, ta: {
@@ -3051,18 +3051,18 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_m3_grant]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "M3 Grant", y: 41, s: 5, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "M3 Grant", y: 41, s: 5, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 4, s: 3, r: 3,
               }, ta: {
                 f: 4, s: 4, r: 4,
               }, bd: 4, sg: {
-                f: 20, r: 12, t: "p",
+                f: 16, r: 24, t: "p",
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:ussr_m3_stuart]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "M3 Stuart", y: 41, s: 3, f: 7, r: 10, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "M3 Stuart", y: 41, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 2, r: 2,
               }, ta: {
@@ -3071,7 +3071,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_m476_sherman]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "M4(76) Sherman", y: 44, s: 5, f: 40, r: 24, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "M4(76) Sherman", y: 44, s: 5, f: 32, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 3, r: 3,
               }, ta: {
@@ -3080,16 +3080,16 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_m4_sherman]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "M4 Sherman", y: 43, s: 5, f: 24, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "M4 Sherman", y: 43, s: 5, f: 16, r: 24, v: 5, o: {
               t: 1, p: 1, ha: {
-                f: 5, s: 3, r: 3,
+                f: 4, s: 3, r: 3,
               }, ta: {
-                f: 6, s: 5, r: 5,
+                f: 5, s: 4, r: 4,
               }, j: 3, f: 18, u: 1, k: 1,
             },
           }
           expect(defs[:ussr_matilda_ii]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "Matilda II", y: 41, s: 5, f: 10, r: 12, v: 4, o: {
+            t: "tank", i: "tank", c: "ussr", n: "Matilda II", y: 41, s: 5, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 6, s: 5, r: 4,
               }, ta: {
@@ -3098,7 +3098,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_26_m38]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-26 M38", y: 38, s: 3, f: 12, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-26 M38", y: 38, s: 3, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -3107,7 +3107,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_26_m39]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-26 M39", y: 39, s: 3, f: 12, r: 16, v: 4, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-26 M39", y: 39, s: 3, f: 8, r: 12, v: 4, o: {
               t: 1, p: 1, ha: {
                 f: 2, s: 1, r: 1,
               }, ta: {
@@ -3116,7 +3116,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_34_85]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-34-85", y: 43, s: 5, f: 48, r: 28, v: 6, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-34-85", y: 43, s: 5, f: 32, r: 32, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -3125,7 +3125,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_34_85_m44]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-34-85 M44", y: 44, s: 5, f: 48, r: 28, v: 6, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-34-85 M44", y: 44, s: 5, f: 32, r: 32, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -3134,7 +3134,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_34_m40]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-34 M40", y: 40, s: 5, f: 24, r: 22, v: 6, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-34 M40", y: 40, s: 5, f: 16, r: 24, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -3143,7 +3143,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_34_m41]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-34 M41", y: 41, s: 5, f: 32, r: 24, v: 6, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-34 M41", y: 41, s: 5, f: 20, r: 24, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -3152,7 +3152,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_34_m42_m43]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-34 M42/M43", y: 42, s: 5, f: 32, r: 24, v: 6, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-34 M42/M43", y: 42, s: 5, f: 20, r: 24, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -3161,7 +3161,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_t_70]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "T-70", y: 42, s: 3, f: 12, r: 16, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "T-70", y: 42, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 3, s: 3, r: 3,
               }, ta: {
@@ -3170,7 +3170,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_valentine]).to be == {
-            t: "tank", i: "tank", c: "ussr", n: "Valentine", y: 41, s: 4, f: 10, r: 12, v: 5, o: {
+            t: "tank", i: "tank", c: "ussr", n: "Valentine", y: 41, s: 4, f: 16, r: 20, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 5, s: 4, r: 4,
               }, ta: {

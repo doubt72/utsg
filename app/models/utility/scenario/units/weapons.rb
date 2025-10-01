@@ -3,10 +3,10 @@
 module Utility
   class Scenario
     module Units
-      module InfantryWeapons # rubocop:disable Metrics/ModuleLength
+      module Weapons # rubocop:disable Metrics/ModuleLength
         class << self
           # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Layout/LineLength
-          def infantry_weapons
+          def weapons
             machine_guns.merge(mortars).merge(radios).merge(support_weapons)
                         .merge(flamethrowers_and_satchels).merge(molotov_coctails)
           end

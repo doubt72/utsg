@@ -11,9 +11,9 @@ module Utility
           @@lu ||= Markers.markers
                           .merge(Features.features)
                           .merge(Infantry.infantry)
-                          .merge(InfantryWeapons.infantry_weapons)
+                          .merge(Weapons.weapons)
                           .merge(Guns.guns)
-                          .merge(tanks)
+                          .merge(Tanks.tanks)
                           .merge(sp_guns)
                           .merge(half_tracks)
                           .merge(armored_cars)
@@ -41,155 +41,6 @@ module Utility
 
         def all_factions
           %w[ger ita jap fin axm ussr usa uk fra chi alm]
-        end
-
-        def tanks
-          lu = {}
-          key = %i[c n y s f r v o]
-          [
-            # Romanian
-            ["axm", "R-2", 38, 3, 8, 12, 5, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 2 } }],
-            ["axm", "T-3", 42, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 } }],
-            ["axm", "T-4", 43, 4, 32, 20, 5, { t: 1, p: 1, ha: { f: 6, s: 3, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["axm", "T-38", 40, 3, 8, 14, 5, { t: 1, p: 1, ha: { f: 4, s: 1, r: 1 }, ta: { f: 4, s: 1, r: 1 }, sn: 1 }],
-            # Hungarian
-            ["axm", "38M Toldi I", 39, 3, 3, 8, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 0 }, ta: { f: 1, s: 1, r: 0 }, bd: 4 }],
-            ["axm", "42M Toldi II", 42, 3, 3, 8, 6, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 } }],
-            ["axm", "42M Toldi IIA", 43, 3, 8, 12, 6, { t: 1, p: 1, ha: { f: 3, s: 1, r: 1 }, ta: { f: 3, s: 1, r: 1 } }],
-            ["chi", "T-26", 38, 3, 12, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["chi", "Vickers 6-Ton", 34, 3, 8, 8, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["fra", "Char B1", 35, 5, 10, 12, 3, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, sg: { f: 20, r: 12, t: "p" } }],
-            ["fra", "Char B1 bis", 37, 5, 12, 12, 3, { t: 1, p: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 3, s: 3, r: 3 }, sg: { f: 20, r: 12, t: "p" } }],
-            ["fra", "AMR 33", 33, 3, 4, 8, 6, { r: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["fra", "AMR 35 (7.5MG)", 36, 3, 4, 8, 6, { r: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, sn: 1 }],
-            ["fra", "AMR 35 (13.2MG)", 36, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, sn: 2 }],
-            ["fra", "AMR 35 ZT2", 36, 3, 4, 12, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["fra", "FCM 36", 38, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["fra", "Hotchkiss H35", 36, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["fra", "Hotchkiss H35/39", 39, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, sn: 3 }],
-            ["fra", "Renault R35", 36, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, bd: 3 }],
-            ["fra", "Renault R40", 36, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["fra", "AMC 35", 38, 3, 16, 16, 5, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, bd: 4 }],
-            ["fra", "Char D2", 36, 4, 16, 16, 4, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["fra", "SOMUA S35", 35, 4, 16, 16, 4, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["ger", "PzKpfw I", 34, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ger", "PzKpfw II-A/E", 37, 3, 3, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ger", "PzKpfw II-F", 41, 3, 3, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ger", "PzKpfw II Luchs", 43, 3, 4, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
-            ["ger", "PzKpfw 35(t)", 38, 3, 8, 12, 5, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 2 } }],
-            ["ger", "PzKpfw 38(t) A/D", 39, 3, 8, 14, 5, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 }, sn: 1 }],
-            ["ger", "PzKpfw 38(t) E/G", 40, 3, 8, 14, 5, { t: 1, p: 1, ha: { f: 4, s: 1, r: 1 }, ta: { f: 4, s: 1, r: 1 }, sn: 1 }],
-            ["ger", "PzKpfw III ('39)", 39, 4, 8, 14, 5, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["ger", "PzKpfw III ('40)", 40, 4, 16, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["ger", "PzKpfw III-J", 41, 4, 16, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 } }],
-            ["ger", "PzKpfw III-L", 41, 4, 24, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 } }],
-            ["ger", "PzKpfw III-N", 42, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 4, r: 4 }, ta: { f: 4, s: 4, r: 4 } }],
-            ["ger", "PzKpfw IV-A", 39, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 } }],
-            ["ger", "PzKpfw IV-B/C", 39, 4, 16, 16, 6, { t: 1, g: 1, ha: { f: 3, s: 1, r: 1 }, ta: { f: 3, s: 1, r: 1 } }],
-            ["ger", "PzKpfw IV-D", 39, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 } }],
-            ["ger", "PzKpfw IV-E", 40, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 3, r: 2 }, ta: { f: 3, s: 2, r: 2 } }],
-            ["ger", "PzKpfw IV-F1", 41, 4, 16, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 3, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["ger", "PzKpfw IV-F2", 42, 4, 32, 20, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["ger", "PzKpfw IV-G", 43, 4, 32, 20, 5, { t: 1, p: 1, ha: { f: 6, s: 3, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["ger", "PzKpfw IV-H/J", 43, 5, 32, 24, 5, { t: 1, p: 1, ha: { f: 6, s: 3, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["ger", "Panther D", 43, 6, 40, 32, 5, { t: 1, p: 1, ha: { f: 6, s: 3, r: 3 }, ta: { f: 7, s: 4, r: 4 }, bd: 3 }],
-            ["ger", "Panther A/G", 43, 6, 40, 32, 6, { t: 1, p: 1, ha: { f: 6, s: 3, r: 3 }, ta: { f: 7, s: 4, r: 4 } }],
-            ["ger", "Tiger I", 42, 7, 48, 32, 5, { t: 1, p: 1, ha: { f: 7, s: 4, r: 4 }, ta: { f: 8, s: 6, r: 6 }, bd: 3 }],
-            ["ger", "Tiger II", 44, 8, 64, 32, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 6 }, ta: { f: 9, s: 6, r: 6 }, bd: 4 }],
-            ["ita", "L5/30", 30, 3, 10, 8, 4, { r: 1, ha: { f: 1, s: 1, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ita", "L6/40", 40, 3, 3, 12, 4, { t: 1, p: 1, ha: { f: 3, s: 1, r: 0 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["ita", "M11/39", 39, 3, 5, 7, 4, { r: 1, ha: { f: 3, s: 1, r: 0 }, ta: { f: 3, s: 3, r: 3 }, sg: { f: 8, r: 12, t: "p" } }],
-            ["ita", "M13/40", 40, 3, 12, 14, 4, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["ita", "M14/41", 41, 3, 12, 14, 4, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["ita", "M15/42", 43, 4, 12, 14, 5, { t: 1, p: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["ita", "M26/40", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["jap", "Type 94", 34, 3, 4, 8, 4, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 0, r: 0 } }],
-            ["jap", "Type 97 Te-Ke", 38, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["jap", "Type 97 Te-Ke MG", 30, 3, 4, 8, 4, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, sn: 2 }],
-            ["jap", "Type 95 Ha-Go", 33, 3, 4, 12, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["jap", "Type 89 I-Go", 31, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 0, r: 0 } }],
-            ["jap", "Type 97 Chi-Ha", 38, 3, 10, 12, 5, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 }, sn: 1 }],
-            ["jap", "Type 97 Kai", 39, 4, 16, 14, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 }, sn: 1 }],
-            ["jap", "Type 2 Ka-Mi", 41, 3, 8, 14, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, amp: 1 }],
-            ["uk", "Light Tank Mk VI", 36, 3, 8, 12, 6, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, sn: 1 }],
-            ["uk", "Tetrarch", 38, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["uk", "Cruiser Mk I", 38, 3, 10, 12, 5, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
-            ["uk", "Cruiser Mk II", 40, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
-            ["uk", "Cruiser Mk III", 40, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, bd: 3 }],
-            ["uk", "Cruiser Mk IV", 40, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, bd: 3 }],
-            ["uk", "Crusader I", 41, 4, 10, 12, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, bd: 3 }],
-            ["uk", "Crusader II", 41, 4, 10, 12, 6, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 3, r: 3 }, bd: 3 }],
-            ["uk", "Crusader III", 42, 4, 20, 16, 6, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 3, r: 3 }, bd: 3 }],
-            ["uk", "Centaur", 44, 5, 24, 16, 7, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 4, r: 4 } }],
-            ["uk", "Cromwell", 44, 5, 24, 16, 7, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 4, r: 4 } }],
-            ["uk", "Challenger", 44, 5, 48, 32, 6, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 5, s: 3, r: 3 } }],
-            ["uk", "Comet", 44, 6, 40, 28, 6, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 7, s: 4, r: 4 } }],
-            ["uk", "Matilda I", 38, 3, 8, 12, 3, { r: 1, ha: { f: 4, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["uk", "Matilda II", 39, 5, 10, 12, 4, { t: 1, p: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 } }],
-            ["ussr", "Matilda II", 41, 5, 10, 12, 4, { t: 1, p: 1, ha: { f: 6, s: 5, r: 4 }, ta: { f: 5, s: 5, r: 5 } }],
-            ["uk", "Valentine I-VII", 40, 4, 10, 12, 5, { t: 1, p: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 } }],
-            ["uk", "Valentine IX-X", 43, 4, 20, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 } }],
-            ["ussr", "Valentine", 41, 4, 10, 12, 5, { t: 1, p: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 5, s: 4, r: 4 } }],
-            ["uk", "Churchill I-II", 41, 6, 10, 12, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["uk", "Churchill III-IV", 42, 6, 20, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["uk", "Churchill V-VI", 43, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["uk", "Churchill VII-VIII", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 9, s: 6, r: 4 }, ta: { f: 9, s: 6, r: 6 } }],
-            ["ussr", "Churchill II", 41, 6, 10, 12, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["ussr", "Churchill III", 42, 6, 20, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 4 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["usa", "M2A4", 35, 3, 6, 8, 7, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 } }],
-            ["usa", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["chi", "M3 Stuart", 42, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["usa", "M5 Stuart", 42, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["uk", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["ussr", "M3 Stuart", 41, 3, 7, 10, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 4, s: 3, r: 3 }, bd: 4 }],
-            ["uk", "M22 Locust", 42, 3, 7, 10, 7, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 0, r: 0 } }],
-            ["usa", "M24 Chaffee", 44, 4, 24, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 } }],
-            ["uk", "M24 Chaffee", 44, 4, 24, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 2, r: 2 }, ta: { f: 3, s: 2, r: 2 } }],
-            ["usa", "M3 Lee", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 20, r: 12, t: "p" } }],
-            ["uk", "M3 Lee", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 20, r: 12, t: "p" } }],
-            ["uk", "M3 Grant", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, sg: { f: 20, r: 12, t: "p" } }],
-            ["ussr", "M3 Grant", 41, 5, 7, 10, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 4 }, bd: 4, sg: { f: 20, r: 12, t: "p" } }],
-            ["usa", "M4 Sherman", 42, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 5, s: 4, r: 4 } }],
-            ["usa", "M4(105) Sherman", 42, 5, 32, 16, 5, { t: 1, g: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 5, s: 4, r: 4 }, sn: 2 }],
-            ["usa", "M4(76) Sherman", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 1 }],
-            ["usa", "M4A3E2 Sherman", 44, 6, 24, 16, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 5 }, ta: { f: 9, s: 9, r: 9 }, sn: 2 }],
-            ["usa", "M4A3E8 Sherman", 44, 6, 40, 24, 4, { t: 1, p: 1, ha: { f: 7, s: 5, r: 5 }, ta: { f: 9, s: 9, r: 9 }, sn: 2 }],
-            ["chi", "M4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["fra", "M4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["uk", "M4 Sherman", 42, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 4, s: 3, r: 3 }, ta: { f: 5, s: 4, r: 4 } }],
-            ["uk", "M4(76) Sherman", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 1 }],
-            ["uk", "Sherman Firefly", 43, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["ussr", "M4 Sherman", 43, 5, 24, 16, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 } }],
-            ["ussr", "M4(76) Sherman", 44, 5, 40, 24, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 6, s: 5, r: 5 }, sn: 1 }],
-            ["usa", "M26 Pershing", 44, 6, 48, 32, 5, { t: 1, p: 1, ha: { f: 5, s: 5, r: 5 }, ta: { f: 7, s: 5, r: 5 }, bd: 3 }],
-            ["ussr", "BT-5", 32, 3, 12, 16, 9, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ussr", "BT-7", 35, 3, 12, 16, 9, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ussr", "T-26 M38", 38, 3, 12, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 } }],
-            ["ussr", "T-26 M39", 39, 3, 12, 16, 4, { t: 1, p: 1, ha: { f: 2, s: 1, r: 1 }, ta: { f: 2, s: 1, r: 1 } }],
-            ["ussr", "T-70", 42, 3, 12, 16, 5, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 4, s: 3, r: 3 } }],
-            ["ussr", "T-34 M40", 40, 5, 24, 22, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 } }],
-            ["ussr", "T-34 M41", 41, 5, 32, 24, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 4, s: 4, r: 3 } }],
-            ["ussr", "T-34 M42/M43", 42, 5, 32, 24, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 6, s: 4, r: 3 } }],
-            ["ussr", "T-34-85", 43, 5, 48, 28, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 6, s: 4, r: 3 } }],
-            ["ussr", "T-34-85 M44", 44, 5, 48, 28, 6, { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 8, s: 4, r: 3 } }],
-            ["ussr", "KV-1 M39", 39, 6, 24, 22, 5, { t: 1, p: 1, ha: { f: 5, s: 3, r: 3 }, ta: { f: 4, s: 3, r: 3 }, bd: 4 }],
-            ["ussr", "KV-1 M40", 40, 6, 24, 22, 5, { t: 1, p: 1, ha: { f: 5, s: 4, r: 4 }, ta: { f: 6, s: 4, r: 4 }, bd: 3 }],
-            ["ussr", "KV-1 M41", 41, 6, 24, 22, 5, { t: 1, p: 1, ha: { f: 6, s: 4, r: 4 }, ta: { f: 6, s: 4, r: 4 }, bd: 3 }],
-            ["ussr", "KV-1 M42", 42, 6, 32, 24, 5, { t: 1, p: 1, ha: { f: 8, s: 5, r: 5 }, ta: { f: 8, s: 5, r: 5 }, bd: 3 }],
-            ["ussr", "KV-1S", 42, 6, 32, 24, 5, { t: 1, p: 1, ha: { f: 6, s: 4, r: 4 }, ta: { f: 6, s: 4, r: 4 } }],
-            ["ussr", "KV-2", 40, 7, 64, 32, 4, { t: 1, g: 1, ha: { f: 7, s: 4, r: 4 }, ta: { f: 7, s: 4, r: 4 }, bd: 3 }],
-            ["ussr", "KV-85", 43, 6, 48, 28, 5, { t: 1, p: 1, ha: { f: 7, s: 4, r: 4 }, ta: { f: 7, s: 4, r: 4 } }],
-            ["ussr", "IS-2", 44, 6, 96, 32, 5, { t: 1, p: 1, ha: { f: 7, s: 6, r: 6 }, ta: { f: 8, s: 6, r: 6 } }],
-          ].each do |unit|
-            tank = { t: "tank", i: "tank" }
-            unit.each_with_index do |v, i|
-              tank[key[i]] = v
-            end
-            tank[:i] = "tank-amp" if tank[:o][:amp]
-            tank[:o].merge!({ j: 3, f: 18, u: 1, k: 1 })
-            lu[:"#{tank[:c]}_#{sanitize(tank[:n])}"] = tank
-          end
-          lu
         end
 
         def sp_guns # rubocop:disable Metrics/PerceivedComplexity
