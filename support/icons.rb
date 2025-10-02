@@ -1897,6 +1897,20 @@ File.open('car.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('truck-at.svg', 'w') do |file|
+  file.puts header
+  write_path([["M", 35, 15], ["L", 45, 3], ["L", 55, 15]], file, false, 2)
+  write_path([["M", 45, 20], ["L", 45, 3]], file, false, 2)
+  write_path([
+    ["M", 15, 3], ["L", 15, 98], ["L", 75, 98], ["L", 75, 3], ["L", 15, 3], ["L", 15, 98],
+  ], file, false)
+  write_path([["M", 15, 98], ["L", 45, 50], ["L", 75, 98]], file, false)
+  write_circle(58, 89.5, 5, file, false)
+  write_circle(45, 89.5, 5, file, false)
+  write_circle(32, 89.5, 5, file, false)
+  file.puts footer
+end
+
 File.open('cav.svg', 'w') do |file|
   file.puts header
   write_path([

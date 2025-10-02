@@ -110,13 +110,13 @@ export default function DebugMap() {
   useEffect(() => {
     if (!map) { return }
     mapDebugData[id].features.forEach(data => {
-      if (!units[data.u]) { console.log(data.u) }
+      if (!units[data.u]) { throw new Error(`missing key ${data.u}`) }
       const unit = (units[data.u] as Feature).clone()
       if (data.f) { unit.facing = data.f }
       map.addCounter(new Coordinate(data.x, data.y), unit)
     })
     mapDebugData[id].units.forEach(data => {
-      if (!units[data.u]) { console.log(data.u) }
+      if (!units[data.u]) { throw new Error(`missing key ${data.u}`) }
       const unit = (units[data.u] as Unit).clone()
       if (data.f) { unit.facing = data.f }
       if (data.tf) { unit.turretFacing = data.tf }

@@ -6,7 +6,9 @@ require "rails_helper"
 RSpec.describe Utility::Scenario::Units do
   let(:defs) { Utility::Scenario::Units.lookup_data }
 
-  context "all units" do
+  # TODO: replace with better tests
+  # Refactor done, don't need this anymore
+  xcontext "all units" do
     # This is extraordinarily pedandic, since it requires tests to change every
     # time any unit definition changes, but we're using it for major refactoring
     # and definition integrity

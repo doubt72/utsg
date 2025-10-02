@@ -42,7 +42,7 @@ describe("action integration test", () => {
     c: "ussr", t: "sw", i: "mg", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3}
   }
   const rgun: UnitData = {
-    c: "ussr", f: 16, i: "gun", n: "76mm M1927", o: {t: 1, j: 3, g: 1, s: 1, c: 1, tow: 3}, r: 16,
+    c: "ussr", f: 16, i: "gun", n: "76mm ZiS-3", o: {t: 1, j: 3, g: 1, s: 1, c: 1, tow: 3}, r: 16,
     t: "gun", v: 1, y: 28
   }
   const rldr: UnitData = {

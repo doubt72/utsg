@@ -65,9 +65,16 @@ export default function DebugUnitStats() {
     setCountScenarios(() => cs)
   }, [scenarios])
 
-  const cells = () => {
+  const cells = (check?: boolean) => {
     return Object.values(units).filter(u => {
-      if (nation && nation != u.c) { return false }
+      if (nation && nation != u.c && nation !== "yes" && nation !== "no") { return false }
+      const counter = makeUnit(u)
+      if (!counter) { return false }
+      const key = counterKey(counter)
+      if (nation === "yes" && !countScenarios[key]) { return false }
+      if (nation === "no" && countScenarios[key]) { return false }
+      if (check === true && !countScenarios[key]) { return false }
+      if (check === false && countScenarios[key]) { return false }
       return true
     }).map(u => {
       const counter = makeUnit(u)
@@ -98,7 +105,14 @@ export default function DebugUnitStats() {
 
   return (
     <div className="p1em flex flex-wrap">
-      {cells()}
+      {nation && nation !== "yes" && nation !== "no" ?
+        <>
+          <div key="match" className="debug-unit-counter-type">YES</div>
+          { cells(true) }
+          <div key="match" className="debug-unit-counter-type">NO</div>
+          { cells(false) }
+        </>
+        : cells() }
     </div>
   )
 }

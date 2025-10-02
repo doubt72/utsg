@@ -118,6 +118,8 @@ export default function DebugIndex() {
         Unit Statistics:
         <ul>
           <li><Link to={"/debug/stats/units"}>all</Link></li>
+          <li><Link to={"/debug/stats/units/yes"}>used</Link></li>
+          <li><Link to={"/debug/stats/units/no"}>unused</Link></li>
         </ul>
         Countries:
         <ul>
