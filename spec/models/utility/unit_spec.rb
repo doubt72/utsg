@@ -4339,7 +4339,7 @@ RSpec.describe Utility::Scenario::Units do
       context "allied minors" do
         it "has static definitions" do
           expect(defs[:alm_polski_fiat_621]).to be == {
-            t: "truck", c: "alm", n: "Polski Fiat 621", i: "truck", y: 35, s: 3, f: 0, r: 0, v: 5, o: {
+            t: "truck", c: "alm", n: "Polski Fiat 621", i: "truck", y: 35, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4367,12 +4367,12 @@ RSpec.describe Utility::Scenario::Units do
       context "france" do
         it "has static definitions" do
           expect(defs[:fra_citroen_u23]).to be == {
-            t: "truck", c: "fra", n: "Citroen U23", i: "truck", y: 35, s: 4, f: 0, r: 0, v: 5, o: {
+            t: "truck", c: "fra", n: "Citroen U23", i: "truck", y: 35, s: 3, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
-          expect(defs[:fra_dodge_wc]).to be == {
-            t: "truck", c: "fra", n: "Dodge WC", i: "truck", y: 41, s: 3, f: 0, r: 0, v: 5, o: {
+          expect(defs[:fra_dodge_wc_51]).to be == {
+            t: "truck", c: "fra", n: "Dodge WC-51", i: "truck", y: 41, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4382,7 +4382,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_laffly_s20]).to be == {
-            t: "truck", c: "fra", n: "Laffly S20", i: "truck", y: 37, s: 3, f: 0, r: 0, v: 5, o: {
+            t: "truck", c: "fra", n: "Laffly S20", i: "truck", y: 37, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4401,8 +4401,8 @@ RSpec.describe Utility::Scenario::Units do
               tr: 1, trg: 1, k: 1,
             },
           }
-          expect(defs[:ger_l3000]).to be == {
-            t: "truck", c: "ger", n: "L3000", i: "truck", y: 38, s: 4, f: 0, r: 0, v: 5, o: {
+          expect(defs[:ger_m__benz_l3000]).to be == {
+            t: "truck", c: "ger", n: "M.-Benz L3000", i: "truck", y: 38, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4482,7 +4482,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ita_alfa_romeo_800]).to be == {
-            t: "truck", c: "ita", n: "Alfa Romeo 800", i: "truck", y: 40, s: 5, f: 0, r: 0, v: 5, o: {
+            t: "truck", c: "ita", n: "Alfa Romeo 800", i: "truck", y: 40, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4498,8 +4498,8 @@ RSpec.describe Utility::Scenario::Units do
       context "united kingdom" do
         it "has static definitions" do
           expect(defs[:uk_aec_mk_i_deacon]).to be == {
-            t: "truck", c: "uk", n: "AEC Mk I Deacon", i: "truck", y: 42, s: 4, f: 20, r: 16, v: 5, o: {
-              t: 1, p: 1, j: 3, f: 16, sn: 1, w: 1,
+            t: "truck", c: "uk", n: "AEC Mk I Deacon", i: "truck", y: 42, s: 3, f: 16, r: 20, v: 5, o: {
+              t: 1, p: 1, j: 3, f: 18, sn: 1, w: 1,
             },
           }
           expect(defs[:uk_bedford_mw]).to be == {
@@ -4523,12 +4523,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:uk_chevy_c30_at]).to be == {
-            t: "truck", c: "uk", n: "Chevy C30 AT", i: "truck", y: 39, s: 4, f: 7, r: 10, v: 5, o: {
-              bw: 1, t: 1, p: 1, j: 3, f: 16, tr: 3, trg: 1, w: 1,
+            t: "truck", c: "uk", n: "Chevy C30 AT", i: "truck", y: 39, s: 4, f: 8, r: 12, v: 5, o: {
+              bw: 1, t: 1, p: 1, j: 3, f: 18, tr: 3, trg: 1, w: 1,
             },
           }
           expect(defs[:uk_chevy_c30_mg]).to be == {
-            t: "truck", c: "uk", n: "Chevy C30 MG", i: "truck", y: 39, s: 4, f: 7, r: 10, v: 5, o: {
+            t: "truck", c: "uk", n: "Chevy C30 MG", i: "truck", y: 39, s: 4, f: 4, r: 8, v: 5, o: {
               uu: 1, r: 1, j: 3, f: 16, tr: 3, trg: 1, w: 1,
             },
           }
@@ -4537,8 +4537,8 @@ RSpec.describe Utility::Scenario::Units do
               tr: 3, trg: 1, w: 1,
             },
           }
-          expect(defs[:uk_dodge_wc]).to be == {
-            t: "truck", c: "uk", n: "Dodge WC", i: "truck", y: 41, s: 3, f: 0, r: 0, v: 5, o: {
+          expect(defs[:uk_dodge_wc_51]).to be == {
+            t: "truck", c: "uk", n: "Dodge WC-51", i: "truck", y: 41, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4547,18 +4547,13 @@ RSpec.describe Utility::Scenario::Units do
               tr: 3, trg: 1, w: 1,
             },
           }
-          expect(defs[:uk_gmc_dukw]).to be == {
-            t: "truck", c: "uk", n: "GMC DUKW", i: "truck-amp", y: 42, s: 4, f: 0, r: 0, v: 5, o: {
-              amp: 1, tr: 3, w: 1,
-            },
-          }
           expect(defs[:uk_jeep]).to be == {
             t: "truck", c: "uk", n: "Jeep", i: "car", y: 41, s: 2, f: 0, r: 0, v: 5, o: {
               tr: 1, trg: 1, w: 1,
             },
           }
           expect(defs[:uk_jeep_mg]).to be == {
-            t: "truck", c: "uk", n: "Jeep MG", i: "car", y: 41, s: 2, f: 7, r: 10, v: 5, o: {
+            t: "truck", c: "uk", n: "Jeep MG", i: "car", y: 41, s: 2, f: 4, r: 8, v: 5, o: {
               r: 1, j: 3, f: 16, trg: 1, w: 1,
             },
           }
@@ -4567,13 +4562,13 @@ RSpec.describe Utility::Scenario::Units do
 
       context "united states" do
         it "has static definitions" do
-          expect(defs[:usa_dodge_vc]).to be == {
-            t: "truck", c: "usa", n: "Dodge VC", i: "truck", y: 40, s: 3, f: 0, r: 0, v: 5, o: {
-              tr: 3, trg: 1, w: 1,
+          expect(defs[:usa_dodge_vc_g_505]).to be == {
+            t: "truck", c: "usa", n: "Dodge VC G-505", i: "truck", y: 40, s: 3, f: 0, r: 0, v: 5, o: {
+              tr: 3, trg: 1, w: 1, sn: 1,
             },
           }
-          expect(defs[:usa_dodge_wc]).to be == {
-            t: "truck", c: "usa", n: "Dodge WC", i: "truck", y: 41, s: 3, f: 0, r: 0, v: 5, o: {
+          expect(defs[:usa_dodge_wc_51]).to be == {
+            t: "truck", c: "usa", n: "Dodge WC-51", i: "truck", y: 41, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4593,12 +4588,12 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:usa_jeep__50_mg]).to be == {
-            t: "truck", c: "usa", n: "Jeep .50 MG", i: "car", y: 41, s: 2, f: 10, r: 15, v: 5, o: {
+            t: "truck", c: "usa", n: "Jeep .50 MG", i: "car", y: 41, s: 2, f: 20, r: 12, v: 5, o: {
               r: 1, j: 3, f: 16, trg: 1, w: 1,
             },
           }
           expect(defs[:usa_m6_gmc]).to be == {
-            t: "truck", c: "usa", n: "M6 GMC", i: "truck", y: 42, s: 3, f: 7, r: 10, v: 5, o: {
+            t: "truck", c: "usa", n: "M6 GMC", i: "truck", y: 42, s: 3, f: 8, r: 12, v: 5, o: {
               t: 1, j: 3, f: 18, p: 1, bw: 1, w: 1,
             },
           }
@@ -4607,8 +4602,8 @@ RSpec.describe Utility::Scenario::Units do
 
       context "soviet union" do
         it "has static definitions" do
-          expect(defs[:ussr_dodge_wc]).to be == {
-            t: "truck", c: "ussr", n: "Dodge WC", i: "truck", y: 42, s: 3, f: 0, r: 0, v: 5, o: {
+          expect(defs[:ussr_dodge_wc_51]).to be == {
+            t: "truck", c: "ussr", n: "Dodge WC-51", i: "truck", y: 42, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4623,7 +4618,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_gaz_aaa]).to be == {
-            t: "truck", c: "ussr", n: "GAZ-AAA", i: "truck", y: 36, s: 3, f: 0, r: 0, v: 5, o: {
+            t: "truck", c: "ussr", n: "GAZ-AAA", i: "truck", y: 36, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4643,7 +4638,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_zis_5]).to be == {
-            t: "truck", c: "ussr", n: "ZIS-5", i: "truck", y: 34, s: 3, f: 0, r: 0, v: 5, o: {
+            t: "truck", c: "ussr", n: "ZIS-5", i: "truck", y: 34, s: 4, f: 0, r: 0, v: 5, o: {
               tr: 3, trg: 1, w: 1,
             },
           }
@@ -4761,8 +4756,8 @@ RSpec.describe Utility::Scenario::Units do
 
       context "united states" do
         it "has static definitions" do
-          expect(defs[:usa_h_d_wla]).to be == {
-            t: "cav", c: "usa", n: "H-D WLA", i: "cav-wheel", y: 40, s: 3, f: 0, r: 0, v: 6, o: {
+          expect(defs[:usa_harley_d__wla]).to be == {
+            t: "cav", c: "usa", n: "Harley-D. WLA", i: "cav-wheel", y: 40, s: 3, f: 0, r: 0, v: 6, o: {
               tr: 3, w: 1,
             },
           }
@@ -4782,7 +4777,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:ussr_pmz_a_750]).to be == {
-            t: "cav", c: "ussr", n: "PMZ-A-750", i: "cav-wheel", y: 34, s: 3, f: 0, r: 0, v: 5, o: {
+            t: "cav", c: "ussr", n: "PMZ-A-750", i: "cav-wheel", y: 34, s: 3, f: 0, r: 0, v: 6, o: {
               tr: 3, w: 1,
             },
           }

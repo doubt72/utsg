@@ -32,11 +32,12 @@ module Utility
             end
             json[:o][:bd] = data[:bd] if data[:bd]
             json[:o][:tr] = data[:trn] if data[:trn]
-            json[:o][:tr] = data[:trn] if data[:trn]
             json[:o][:amp] = 1 if data[:amp]
             json[:o][:uu] = 1 if data[:rot]
             json[:o][:trg] = 1 if data[:ctw]
+            json[:o][:bw] = 1 if data[:bw]
             data[:whl] ? json[:o][:w] = 1 : json[:o][:k] = 1
+            json[:o].delete(:k) if data[:ft]
             if data[:wpn]
               populate_gun_data(data[:wpn], json)
             else
@@ -333,7 +334,7 @@ module Utility
           end
 
           def vehicle_data
-            {
+            { # rubocop:disable Metric/CollectionLiteralLength
               # French Armored Vehicles
               "char_b1": { sz: 5, mv: 3, wpn: :"47mm_sa_35", spn: :"75mm_gun", arm: [3, 3, 3], trt: [3, 3, 3] },
               "char_b1_bis": { sz: 5, mv: 3, wpn: :"47mm_sa_35", spn: :"75mm_gun", arm: [4, 4, 4], trt: [3, 3, 3] },
@@ -567,6 +568,60 @@ module Utility
               "ba_20": { sz: 3, mv: 5, wpn: :"dp_27", whl: true, trn: 1, arm: [0, 0, 0], trt: [0, 0, 0] },
               "ba_64": { sz: 3, mv: 5, wpn: :"dp_27", whl: true, trn: 1, arm: [1, 0, 0], trt: [0, 0, 0] },
               # Unarmored Vehicles
+              "laffly_s20": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "citroen_u23": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "kettenkrad": { sz: 2, mv: 5, trn: 1, ctw: true },
+              "maultier": { sz: 3, mv: 5, trn: 3, ctw: true },
+              "sdkfz_6": { sz: 4, mv: 5, trn: 3, ctw: true },
+              "sdkfz_7": { sz: 3, mv: 5, trn: 2, ctw: true },
+              "sdkfz_8": { sz: 5, mv: 5, trn: 3, ctw: true },
+              "sdkfz_9": { sz: 5, mv: 5, trn: 3, ctw: true },
+              "sdkfz_10": { sz: 4, mv: 5, trn: 2, ctw: true },
+              "sdkfz_11": { sz: 4, mv: 5, trn: 2, ctw: true },
+              "m__benz_l3000": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "opel_blitz": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "bmw_325": { sz: 2, mv: 5, whl: true, trn: 2, ctw: true },
+              "vw_kubelwagen": { sz: 2, mv: 5, whl: true, trn: 1 },
+              "m__e__pkw": { sz: 2, mv: 5, whl: true, trn: 2, ctw: true },
+              "s__e__pkw": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "le__gl__lkw": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "alfa_romeo_430": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "alfa_romeo_500": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "alfa_romeo_800": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "polski_fiat_621": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "bedford_mw": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "bedford_oy": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "bedford_ql": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "ford_f15": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "dodge_d60": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "chevy_c30": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "chevy_c30_mg": { sz: 4, mv: 5, wpn: :"lewis_gun", whl: true, trn: 3, ctw: true, rot: true },
+              "chevy_c30_at": { sz: 4, mv: 5, wpn: :"bofors_37mm_at", whl: true, trn: 3, ctw: true, bw: true },
+              "aec_mk_i_deacon": { sz: 3, mv: 5, wpn: :"qf_6_pounder", whl: true },
+              "jeep_mg": { sz: 2, mv: 5, wpn: :"lewis_gun", whl: true, ctw: true },
+              "dodge_vc_g_505": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "dodge_wc_51": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "gmc_cckw": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "jeep": { sz: 2, mv: 5, whl: true, trn: 1, ctw: true },
+              "jeep__50_mg": { sz: 2, mv: 5, wpn: :"m2_browning", whl: true, ctw: true },
+              "m6_gmc": { sz: 3, mv: 5, wpn: :"37mm_m3", whl: true, bw: true },
+              "gmc_dukw": { sz: 4, mv: 5, whl: true, amp: true, trn: 3 },
+              "studebaker_us6": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "gaz_67": { sz: 2, mv: 5, whl: true, trn: 1, ctw: true },
+              "gaz_aa": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "gaz_aaa": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              "gaz_mm": { sz: 3, mv: 5, whl: true, trn: 3, ctw: true },
+              "zis_5": { sz: 4, mv: 5, whl: true, trn: 3, ctw: true },
+              # Cavalry
+              "bmw_r75": { sz: 3, mv: 6, whl: true, trn: 3 },
+              "zundapp_ks_750": { sz: 3, mv: 6, whl: true, trn: 3 },
+              "bmw_r17": { sz: 3, mv: 6, whl: true, trn: 3 },
+              "bicycle": { sz: 3, mv: 4, whl: true, trn: 3 },
+              "sokol_1000": { sz: 3, mv: 6, whl: true, trn: 3 },
+              "harley_d__wla": { sz: 3, mv: 6, whl: true, trn: 3 },
+              "pmz_a_750": { sz: 3, mv: 6, whl: true, trn: 3 },
+              "dnepr_m_72": { sz: 3, mv: 6, whl: true, trn: 3 },
+              "horse": { sz: 3, mv: 7, ft: true, trn: 3 },
             }
           end
           # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
