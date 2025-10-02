@@ -11,12 +11,10 @@ module Utility
           @@lu ||= Markers.markers
                           .merge(Features.features)
                           .merge(Infantry.infantry)
-                          .merge(Weapons.weapons)
+                          .merge(InfantryWeapons.infantry_weapons)
                           .merge(Guns.guns)
-                          .merge(Tanks.tanks)
-                          .merge(SpGuns.sp_guns)
+                          .merge(ArmoredFightingVehicles.armored_fighting_vehicles)
                           .merge(half_tracks)
-                          .merge(armored_cars)
                           .merge(trucks)
                           .merge(other)
           # rubocop: enable Style/ClassVars
@@ -101,63 +99,6 @@ module Utility
             ht[:o].merge!({ k: 1 })
             ht[:o][:m] || ht[:o][:i] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3, f: 18 })
             lu[:"#{ht[:c]}_#{sanitize(ht[:n])}"] = ht
-          end
-          lu
-        end
-
-        def armored_cars
-          # Except one half-track
-          lu = {}
-          key = %i[c n y s f r v o]
-          [
-            ["fra", "Schneider P16", 28, 3, 8, 12, 5, { t: 1, p: 1, ha: { f: 1, s: 1, r: 1 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["fra", "White AM AC", 15, 3, 8, 12, 4, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, tr: 1 }],
-            ["fra", "Panhard 178", 37, 3, 4, 12, 5, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, tr: 1 }],
-            ["ger", "SdKfz 221", 35, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["ger", "SdKfz 222", 37, 3, 3, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["ger", "SdKfz 234/1", 43, 3, 4, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 0, r: 0 }, tr: 1 }],
-            ["ger", "SdKfz 234/2", 43, 3, 24, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 }, tr: 1 }],
-            ["ger", "SdKfz 234/3", 44, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 }, tr: 1 }],
-            ["ger", "SdKfz 234/4", 44, 3, 32, 24, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 0, r: 0 }, tr: 1 }],
-            ["ita", "Autoblinda 41", 41, 3, 3, 12, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["jap", "Chiyoda AC", 31, 3, 4, 8, 4, { r: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, tr: 1 }],
-            ["jap", "Sumida Type 91", 33, 3, 4, 8, 3, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, tr: 1 }],
-            ["uk", "AEC AC I", 41, 3, 10, 12, 3, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 5, s: 4, r: 4 }, tr: 1 }],
-            ["uk", "AEC AC II", 42, 3, 20, 16, 4, { t: 1, p: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, tr: 1 }],
-            ["uk", "AEC AC II CS", 42, 3, 16, 12, 4, { t: 1, g: 1, ha: { f: 2, s: 2, r: 2 }, ta: { f: 2, s: 2, r: 2 }, tr: 1 }],
-            ["uk", "Daimler AC", 41, 3, 10, 12, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["uk", "Daimler AC CS", 41, 3, 16, 12, 4, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["uk", "Humber AC I", 40, 3, 12, 12, 4, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["uk", "Humber AC IV", 42, 3, 24, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, tr: 1 }],
-            ["uk", "T17E1 Staghound", 44, 3, 24, 16, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 3, s: 1, r: 1 }, sn: 1, tr: 1 }],
-            ["uk", "Humber LRC", 40, 3, 2, 8, 8, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, tr: 1 }],
-            ["usa", "M3A1 Scout Car", 39, 3, 10, 12, 5, { r: 1, ha: { f: 1, s: 1, r: 1, t: -1 }, tr: 1 }],
-            ["usa", "M8 Greyhound", 43, 3, 7, 10, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2, t: -1 }, bd: 3, tr: 1 }],
-            ["usa", "M20 Greyhound", 43, 3, 10, 12, 4, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, tr: 1 }],
-            ["chi", "M3A1 Scout Car", 39, 3, 10, 12, 5, { r: 1, ha: { f: 1, s: 1, r: 1, t: -1 }, tr: 1 }],
-            ["fra", "M8 Greyhound", 43, 3, 7, 10, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 2, s: 2, r: 2, t: -1 }, bd: 3, tr: 1 }],
-            ["uk", "M3A1 Scout Car", 39, 3, 10, 12, 5, { r: 1, ha: { f: 1, s: 1, r: 1, t: -1 }, tr: 1 }],
-            ["uk", "M8 Greyhound", 43, 3, 7, 10, 4, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, ta: { f: 2, s: 2, r: 2, t: -1 }, bd: 3, tr: 1 }],
-            ["ussr", "M3A1 Scout Car", 39, 3, 10, 15, 5, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 1 }],
-            ["ussr", "BA-10", 38, 3, 12, 16, 3, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 1, s: 1, r: 1 }, bd: 3, tr: 1 }],
-            ["ussr", "BA-20", 36, 3, 4, 6, 5, { r: 1, ha: { f: 0, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, tr: 1 }],
-            ["ussr", "BA-64", 42, 3, 4, 6, 5, { r: 1, ha: { f: 1, s: 0, r: 0 }, ta: { f: 0, s: 0, r: 0 }, tr: 1 }],
-          ].each do |unit|
-            ac = { t: "ac", i: "ac" }
-            unit.each_with_index do |v, i|
-              ac[key[i]] = v
-            end
-            if ["M20 Greyhound", "M3A1 Scout Car"].include?(ac[:n])
-              ac[:o].merge!({ j: 3, f: 18, uu: 1, w: 1 })
-            else
-              ac[:o].merge!({ j: 3, f: 18, u: 1, w: 1 })
-            end
-            if ac[:n] == "Schneider P16"
-              ac[:o].delete(:w)
-              ac[:o][:k] = 1
-              ac[:i] = "acav"
-            end
-            lu[:"#{ac[:c]}_#{sanitize(ac[:n])}"] = ac
           end
           lu
         end

@@ -35,7 +35,7 @@ module Scenarios
           [6, :ita_blackshirt_s],
           [2, :ita_blackshirt_t],
           [2, :ita_fiat_revelli_1935],
-          :ita_autoblinda_41,
+          :ita_autoblindo_41,
         ],
       },
     }.freeze
