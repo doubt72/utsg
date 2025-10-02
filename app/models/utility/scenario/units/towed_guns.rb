@@ -3,10 +3,10 @@
 module Utility
   class Scenario
     module Units
-      module Guns
+      module TowedGuns
         class << self
           # rubocop:disable Metrics/MethodLength
-          def guns
+          def towed_guns
             infantry_guns.merge(at_guns)
           end
 

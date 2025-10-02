@@ -3724,7 +3724,7 @@ RSpec.describe Utility::Scenario::Units do
             },
           }
           expect(defs[:fra_amc_schneider_p16]).to be == {
-            t: "ac", i: "acav", c: "fra", n: "AMC Schneider P16", y: 28, s: 3, f: 4, r: 12, v: 5, o: {
+            t: "ac", i: "acav", c: "fra", n: "AMC Schneider P16", y: 28, s: 3, f: 4, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 1,
               }, ta: {
@@ -4026,10 +4026,10 @@ RSpec.describe Utility::Scenario::Units do
       context "china" do
         it "has static definitions" do
           expect(defs[:chi_m5_half_track]).to be == {
-            t: "ht", i: "ht", c: "chi", n: "M5 Half-track", y: 42, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "ht", i: "ht", c: "chi", n: "M5 Half-track", y: 42, s: 3, f: 20, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
         end
@@ -4045,23 +4045,23 @@ RSpec.describe Utility::Scenario::Units do
         it "has static definitions" do
           expect(defs[:fra_lorraine_37l]).to be == {
             t: "ht", i: "ht", c: "fra", n: "Lorraine 37L", y: 39, s: 3, f: 0, r: 0, v: 5, o: {
-              r: 1, ha: {
+              ha: {
                 f: 0, s: 0, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1,
             },
           }
           expect(defs[:fra_m9_half_track]).to be == {
-            t: "ht", i: "ht", c: "fra", n: "M9 Half-track", y: 41, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "ht", i: "ht", c: "fra", n: "M9 Half-track", y: 41, s: 3, f: 20, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:fra_renault_ue]).to be == {
             t: "ht", i: "ht", c: "fra", n: "Renault UE", y: 32, s: 3, f: 0, r: 0, v: 4, o: {
-              r: 1, ha: {
+              ha: {
                 f: 0, s: 0, r: 0, t: -1,
-              }, tr: 2, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 2, trg: 1, k: 1,
             },
           }
         end
@@ -4070,56 +4070,56 @@ RSpec.describe Utility::Scenario::Units do
       context "german" do
         it "has static definitions" do
           expect(defs[:ger_sdkfz_250_1]).to be == {
-            t: "ht", i: "ht", c: "ger", n: "SdKfz 250/1", y: 41, s: 3, f: 8, r: 8, v: 6, o: {
+            t: "ht", i: "ht", c: "ger", n: "SdKfz 250/1", y: 41, s: 3, f: 5, r: 8, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
-              }, tr: 2, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 2, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:ger_sdkfz_250_10]).to be == {
-            t: "ht", i: "htat", c: "ger", n: "SdKfz 250/10", y: 41, s: 3, f: 8, r: 16, v: 6, o: {
+            t: "ht", i: "htat", c: "ger", n: "SdKfz 250/10", y: 41, s: 3, f: 6, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
             },
           }
           expect(defs[:ger_sdkfz_250_11]).to be == {
-            t: "ht", i: "htat", c: "ger", n: "SdKfz 250/11", y: 41, s: 3, f: 8, r: 10, v: 6, o: {
+            t: "ht", i: "htat", c: "ger", n: "SdKfz 250/11", y: 41, s: 3, f: 10, r: 8, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
             },
           }
           expect(defs[:ger_sdkfz_250_7]).to be == {
-            t: "ht", i: "htmtr", c: "ger", n: "SdKfz 250/7", y: 41, s: 3, f: 20, r: 16, v: 6, o: {
+            t: "ht", i: "htmtr", c: "ger", n: "SdKfz 250/7", y: 41, s: 3, f: 20, r: 17, v: 6, o: {
               t: 1, m: 3, e: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
-              }, k: 1, b: 3,
+              }, k: 1, b: 3, s: 1,
             },
           }
           expect(defs[:ger_sdkfz_250_8]).to be == {
-            t: "ht", i: "htgun", c: "ger", n: "SdKfz 250/8", y: 41, s: 3, f: 16, r: 16, v: 6, o: {
+            t: "ht", i: "htgun", c: "ger", n: "SdKfz 250/8", y: 41, s: 3, f: 16, r: 24, v: 6, o: {
               t: 1, g: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
             },
           }
           expect(defs[:ger_sdkfz_250_9]).to be == {
-            t: "ht", i: "htat", c: "ger", n: "SdKfz 250/9", y: 41, s: 3, f: 4, r: 10, v: 6, o: {
+            t: "ht", i: "htat", c: "ger", n: "SdKfz 250/9", y: 41, s: 3, f: 6, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
             },
           }
           expect(defs[:ger_sdkfz_251_1]).to be == {
-            t: "ht", i: "ht", c: "ger", n: "SdKfz 251/1", y: 39, s: 3, f: 8, r: 8, v: 5, o: {
+            t: "ht", i: "ht", c: "ger", n: "SdKfz 251/1", y: 39, s: 3, f: 5, r: 8, v: 5, o: {
               r: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:ger_sdkfz_251_10]).to be == {
-            t: "ht", i: "htat", c: "ger", n: "SdKfz 251/10", y: 39, s: 3, f: 8, r: 16, v: 5, o: {
+            t: "ht", i: "htat", c: "ger", n: "SdKfz 251/10", y: 39, s: 3, f: 6, r: 12, v: 5, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
@@ -4127,13 +4127,13 @@ RSpec.describe Utility::Scenario::Units do
           }
           expect(defs[:ger_sdkfz_251_16]).to be == {
             t: "ht", i: "htft", c: "ger", n: "SdKfz 251/16", y: 39, s: 3, f: 24, r: 1, v: 5, o: {
-              i: 1, ha: {
+              i: 1, e: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
-              }, k: 1, b: 3,
+              }, k: 1, b: 4,
             },
           }
           expect(defs[:ger_sdkfz_251_9]).to be == {
-            t: "ht", i: "htgun", c: "ger", n: "SdKfz 251/9", y: 39, s: 3, f: 16, r: 16, v: 5, o: {
+            t: "ht", i: "htgun", c: "ger", n: "SdKfz 251/9", y: 39, s: 3, f: 16, r: 24, v: 5, o: {
               t: 1, g: 1, ha: {
                 f: 1, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
@@ -4152,23 +4152,23 @@ RSpec.describe Utility::Scenario::Units do
         it "has static definitions" do
           expect(defs[:jap_type_100_te_re]).to be == {
             t: "ht", i: "ht", c: "jap", n: "Type 100 Te-Re", y: 40, s: 3, f: 0, r: 0, v: 5, o: {
-              r: 1, ha: {
+              ha: {
                 f: 0, s: 0, r: 0, t: -1,
-              }, tr: 1, k: 1, j: 3, f: 18,
+              }, tr: 1, k: 1,
             },
           }
           expect(defs[:jap_type_1_ho_ha]).to be == {
-            t: "ht", i: "ht", c: "jap", n: "Type 1 Ho-Ha", y: 44, s: 3, f: 4, r: 8, v: 6, o: {
+            t: "ht", i: "ht", c: "jap", n: "Type 1 Ho-Ha", y: 44, s: 3, f: 6, r: 8, v: 6, o: {
               r: 1, ha: {
                 f: 0, s: 0, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:jap_type_98_so_da]).to be == {
             t: "ht", i: "ht", c: "jap", n: "Type 98 So-Da", y: 41, s: 3, f: 0, r: 0, v: 5, o: {
-              r: 1, ha: {
+              ha: {
                 f: 1, s: 1, r: 1, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1,
             },
           }
         end
@@ -4178,34 +4178,27 @@ RSpec.describe Utility::Scenario::Units do
         it "has static definitions" do
           expect(defs[:uk_loyd_carrier]).to be == {
             t: "ht", i: "ht", c: "uk", n: "Loyd Carrier", y: 39, s: 3, f: 0, r: 0, v: 6, o: {
-              r: 1, ha: {
+              ha: {
                 f: 0, s: 0, r: 0, t: -1,
-              }, tr: 2, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 2, trg: 1, k: 1,
             },
           }
           expect(defs[:uk_m5_half_track]).to be == {
-            t: "ht", i: "ht", c: "uk", n: "M5 Half-track", y: 42, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "ht", i: "ht", c: "uk", n: "M5 Half-track", y: 42, s: 3, f: 20, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
-            },
-          }
-          expect(defs[:uk_t48_gmc]).to be == {
-            t: "ht", i: "htat", c: "uk", n: "T48 GMC", y: 42, s: 3, f: 20, r: 16, v: 6, o: {
-              t: 1, p: 1, ha: {
-                f: 1, s: 1, r: 0, t: -1,
-              }, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:uk_u_carrier_2pdr]).to be == {
-            t: "ht", i: "htat", c: "uk", n: "U Carrier 2Pdr", y: 41, s: 3, f: 10, r: 12, v: 7, o: {
+            t: "ht", i: "htat", c: "uk", n: "U Carrier 2Pdr", y: 41, s: 3, f: 8, r: 12, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 0, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
             },
           }
           expect(defs[:uk_u_carrier_6pdr]).to be == {
-            t: "ht", i: "htat", c: "uk", n: "U Carrier 6Pdr", y: 41, s: 3, f: 20, r: 16, v: 7, o: {
+            t: "ht", i: "htat", c: "uk", n: "U Carrier 6Pdr", y: 41, s: 3, f: 16, r: 20, v: 7, o: {
               t: 1, p: 1, ha: {
                 f: 0, s: 0, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
@@ -4213,16 +4206,16 @@ RSpec.describe Utility::Scenario::Units do
           }
           expect(defs[:uk_u_carrier_wasp]).to be == {
             t: "ht", i: "htft", c: "uk", n: "U Carrier Wasp", y: 41, s: 3, f: 24, r: 1, v: 7, o: {
-              i: 1, ha: {
+              i: 1, e: 1, ha: {
                 f: 0, s: 0, r: 0, t: -1,
-              }, k: 1, b: 3,
+              }, k: 1, b: 4,
             },
           }
           expect(defs[:uk_universal_carrier]).to be == {
             t: "ht", i: "ht", c: "uk", n: "Universal Carrier", y: 40, s: 3, f: 3, r: 6, v: 7, o: {
               r: 1, ha: {
                 f: 0, s: 0, r: 0, t: -1,
-              }, sn: 1, tr: 2, trg: 1, k: 1, j: 3, f: 18,
+              }, sn: 1, tr: 2, trg: 1, k: 1, j: 3, f: 16,
             },
           }
         end
@@ -4231,87 +4224,85 @@ RSpec.describe Utility::Scenario::Units do
       context "united states" do
         it "has static definitions" do
           expect(defs[:usa_lvt_1]).to be == {
-            t: "ht", i: "ht-amp", c: "usa", n: "LVT-1", y: 42, s: 4, f: 10, r: 12, v: 5, o: {
-              r: 1, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 18,
-            },
-          }
-          expect(defs[:usa_lvt_1_armor]).to be == {
-            t: "ht", i: "ht-amp", c: "usa", n: "LVT-1 Armor", y: 43, s: 4, f: 10, r: 12, v: 5, o: {
-              r: 1, ha: {
-                f: 1, s: 0, r: 0, t: -1,
-              }, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 18,
+            t: "ht", i: "ht-amp", c: "usa", n: "LVT-1", y: 41, s: 4, f: 20, r: 12, v: 4, o: {
+              r: 1, amp: 1, tr: 3, bd: 4, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:usa_lvt_2]).to be == {
-            t: "ht", i: "htat-amp", c: "usa", n: "LVT-2", y: 42, s: 4, f: 7, r: 10, v: 5, o: {
-              t: 1, p: 1, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 18,
+            t: "ht", i: "ht-amp", c: "usa", n: "LVT-2", y: 43, s: 4, f: 20, r: 12, v: 5, o: {
+              r: 1, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 16,
             },
           }
-          expect(defs[:usa_lvt_2_armor]).to be == {
-            t: "ht", i: "htat-amp", c: "usa", n: "LVT-2 Armor", y: 43, s: 4, f: 7, r: 10, v: 5, o: {
-              t: 1, p: 1, ha: {
-                f: 1, s: 0, r: 0, t: -1,
-              }, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 18,
+          expect(defs[:usa_lvt_4]).to be == {
+            t: "ht", i: "ht-amp", c: "usa", n: "LVT-4", y: 44, s: 5, f: 20, r: 12, v: 5, o: {
+              r: 1, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:usa_lvta_1]).to be == {
-            t: "ht", i: "htgun-amp", c: "usa", n: "LVT(A)-1", y: 44, s: 4, f: 7, r: 10, v: 5, o: {
+            t: "ht", i: "htat-amp", c: "usa", n: "LVT(A)-1", y: 41, s: 4, f: 8, r: 12, v: 5, o: {
+              u: 1, t: 1, p: 1, ha: {
+                f: 1, s: 0, r: 0,
+              }, ta: {
+                f: 4, s: 3, r: 3,
+              }, amp: 1, tr: 3, bd: 4, k: 1, j: 3, f: 18,
+            },
+          }
+          expect(defs[:usa_lvta_2]).to be == {
+            t: "ht", i: "ht-amp", c: "usa", n: "LVT(A)-2", y: 43, s: 4, f: 20, r: 12, v: 5, o: {
+              r: 1, ha: {
+                f: 1, s: 0, r: 0, t: -1,
+              }, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 16,
+            },
+          }
+          expect(defs[:usa_lvta_4]).to be == {
+            t: "ht", i: "htgun-amp", c: "usa", n: "LVT(A)-4", y: 44, s: 5, f: 16, r: 24, v: 5, o: {
               u: 1, t: 1, g: 1, ha: {
-                f: 3, s: 0, r: 0,
+                f: 1, s: 0, r: 0,
               }, ta: {
                 f: 4, s: 3, r: 3,
               }, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 18,
             },
           }
-          expect(defs[:usa_lvta_4]).to be == {
-            t: "ht", i: "htgun-amp", c: "usa", n: "LVT(A)-4", y: 44, s: 4, f: 24, r: 20, v: 5, o: {
-              u: 1, t: 1, g: 1, ha: {
-                f: 3, s: 0, r: 0,
-              }, ta: {
-                f: 3, s: 2, r: 2, t: -1,
-              }, amp: 1, tr: 3, bd: 3, k: 1, j: 3, f: 18,
-            },
-          }
           expect(defs[:usa_m2_half_track]).to be == {
-            t: "ht", i: "ht", c: "usa", n: "M2 Half-track", y: 41, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "ht", i: "ht", c: "usa", n: "M2 Half-track", y: 41, s: 3, f: 20, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:usa_m3_gmc]).to be == {
-            t: "ht", i: "htgun", c: "usa", n: "M3 GMC", y: 42, s: 3, f: 24, r: 20, v: 6, o: {
+            t: "ht", i: "htgun", c: "usa", n: "M3 GMC", y: 42, s: 3, f: 16, r: 24, v: 6, o: {
               t: 1, g: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
             },
           }
           expect(defs[:usa_m3_half_track]).to be == {
-            t: "ht", i: "ht", c: "usa", n: "M3 Half-track", y: 41, s: 3, f: 6, r: 8, v: 6, o: {
+            t: "ht", i: "ht", c: "usa", n: "M3 Half-track", y: 41, s: 3, f: 8, r: 8, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:usa_m3a1_half_track]).to be == {
-            t: "ht", i: "ht", c: "usa", n: "M3A1 Half-track", y: 42, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "ht", i: "ht", c: "usa", n: "M3A1 Half-track", y: 42, s: 3, f: 20, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
-          expect(defs[:usa_t19_gmc]).to be == {
-            t: "ht", i: "htgun", c: "usa", n: "T19 GMC", y: 42, s: 3, f: 40, r: 24, v: 6, o: {
+          expect(defs[:usa_t19_hmc]).to be == {
+            t: "ht", i: "htgun", c: "usa", n: "T19 HMC", y: 42, s: 3, f: 24, r: 32, v: 6, o: {
               t: 1, g: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,
             },
           }
           expect(defs[:usa_t19_m21_mmc]).to be == {
-            t: "ht", i: "htmtr", c: "usa", n: "T19/M21 MMC", y: 42, s: 3, f: 20, r: 20, v: 6, o: {
+            t: "ht", i: "htmtr", c: "usa", n: "T19/M21 MMC", y: 42, s: 3, f: 20, r: 17, v: 6, o: {
               t: 1, m: 3, e: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, k: 1, b: 3,
+              }, k: 1, b: 3, s: 1,
             },
           }
         end
@@ -4320,21 +4311,21 @@ RSpec.describe Utility::Scenario::Units do
       context "soviet union" do
         it "has static definitions" do
           expect(defs[:ussr_m5_half_track]).to be == {
-            t: "ht", i: "ht", c: "ussr", n: "M5 Half-track", y: 42, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "ht", i: "ht", c: "ussr", n: "M5 Half-track", y: 42, s: 3, f: 20, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:ussr_m9_half_track]).to be == {
-            t: "ht", i: "ht", c: "ussr", n: "M9 Half-track", y: 41, s: 3, f: 10, r: 12, v: 6, o: {
+            t: "ht", i: "ht", c: "ussr", n: "M9 Half-track", y: 41, s: 3, f: 20, r: 12, v: 6, o: {
               r: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
-              }, tr: 3, trg: 1, k: 1, j: 3, f: 18,
+              }, tr: 3, trg: 1, k: 1, j: 3, f: 16,
             },
           }
           expect(defs[:ussr_t48_gmc]).to be == {
-            t: "ht", i: "htat", c: "ussr", n: "T48 GMC", y: 42, s: 3, f: 20, r: 16, v: 6, o: {
+            t: "ht", i: "htat", c: "ussr", n: "T48 GMC", y: 42, s: 3, f: 8, r: 12, v: 6, o: {
               t: 1, p: 1, ha: {
                 f: 1, s: 1, r: 0, t: -1,
               }, k: 1, j: 3, f: 18,

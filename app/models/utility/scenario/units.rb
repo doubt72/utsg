@@ -4,18 +4,15 @@ module Utility
   class Scenario
     module Units # rubocop:disable Metrics/ModuleLength
       class << self
-        # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity, Layout/LineLength
         def lookup_data
           # rubocop: disable Style/ClassVars
           @@lu ||= Markers.markers
                           .merge(Features.features)
                           .merge(Infantry.infantry)
                           .merge(InfantryWeapons.infantry_weapons)
-                          .merge(Guns.guns)
+                          .merge(TowedGuns.towed_guns)
                           .merge(ArmoredFightingVehicles.armored_fighting_vehicles)
-                          .merge(half_tracks)
-                          .merge(trucks)
+                          .merge(UtilityVehicles.utility_vehicles)
                           .merge(other)
           # rubocop: enable Style/ClassVars
         end
@@ -41,69 +38,8 @@ module Utility
           %w[ger ita jap fin axm ussr usa uk fra chi alm]
         end
 
-        def half_tracks
-          # Usually carriers (or base), sometimes fully tracked, some infantry, some more for artillery
-          lu = {}
-          key = %i[c n y s f r v o]
-          [
-            ["fra", "Renault UE", 32, 3, 0, 0, 4, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, tr: 2, trg: 1 }],
-            ["fra", "Lorraine 37L", 39, 3, 0, 0, 5, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["ger", "SdKfz 250/1", 41, 3, 8, 8, 6, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, tr: 2, trg: 1 }],
-            ["ger", "SdKfz 250/7", 41, 3, 20, 16, 6, { t: 1, m: 3, e: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 250/8", 41, 3, 16, 16, 6, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 250/9", 41, 3, 4, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 250/10", 41, 3, 8, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 250/11", 41, 3, 8, 10, 6, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 251/1", 39, 3, 8, 8, 5, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["ger", "SdKfz 251/9", 39, 3, 16, 16, 5, { t: 1, g: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 251/10", 39, 3, 8, 16, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["ger", "SdKfz 251/16", 39, 3, 24, 1, 5, { i: 1, ha: { f: 1, s: 0, r: 0, t: -1 } }],
-            ["jap", "Type 98 So-Da", 41, 3, 0, 0, 5, { r: 1, ha: { f: 1, s: 1, r: 1, t: -1 }, tr: 3, trg: 1 }],
-            ["jap", "Type 100 Te-Re", 40, 3, 0, 0, 5, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, tr: 1 }],
-            ["jap", "Type 1 Ho-Ha", 44, 3, 4, 8, 6, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["uk", "Loyd Carrier", 39, 3, 0, 0, 6, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, tr: 2, trg: 1 }],
-            ["uk", "Universal Carrier", 40, 3, 3, 6, 7, { r: 1, ha: { f: 0, s: 0, r: 0, t: -1 }, sn: 1, tr: 2, trg: 1 }],
-            ["uk", "U Carrier 2Pdr", 41, 3, 10, 12, 7, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
-            ["uk", "U Carrier 6Pdr", 41, 3, 20, 16, 7, { t: 1, p: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
-            ["uk", "U Carrier Wasp", 41, 3, 24, 1, 7, { i: 1, ha: { f: 0, s: 0, r: 0, t: -1 } }],
-            ["usa", "M2 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["usa", "M3 Half-track", 41, 3, 6, 8, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["usa", "M3A1 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["uk", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["ussr", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["chi", "M5 Half-track", 42, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["ussr", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["fra", "M9 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["usa", "M2 Half-track", 41, 3, 10, 12, 6, { r: 1, ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1 }],
-            ["usa", "LVT-1", 42, 4, 10, 12, 5, { r: 1, amp: 1, tr: 3, bd: 3 }],
-            ["usa", "LVT-2", 42, 4, 7, 10, 5, { t: 1, p: 1, amp: 1, tr: 3, bd: 3 }],
-            ["usa", "LVT(A)-1", 44, 4, 7, 10, 5, { u: 1, t: 1, g: 1, ha: { f: 3, s: 0, r: 0 }, ta: { f: 4, s: 3, r: 3 }, amp: 1, tr: 3, bd: 3 }],
-            ["usa", "LVT(A)-4", 44, 4, 24, 20, 5, { u: 1, t: 1, g: 1, ha: { f: 3, s: 0, r: 0 }, ta: { f: 3, s: 2, r: 2, t: -1 }, amp: 1, tr: 3, bd: 3 }],
-            ["usa", "LVT-1 Armor", 43, 4, 10, 12, 5, { r: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, amp: 1, tr: 3, bd: 3 }],
-            ["usa", "LVT-2 Armor", 43, 4, 7, 10, 5, { t: 1, p: 1, ha: { f: 1, s: 0, r: 0, t: -1 }, amp: 1, tr: 3, bd: 3 }],
-            ["usa", "M3 GMC", 42, 3, 24, 20, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["usa", "T19 GMC", 42, 3, 40, 24, 6, { t: 1, g: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["uk", "T48 GMC", 42, 3, 20, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["ussr", "T48 GMC", 42, 3, 20, 16, 6, { t: 1, p: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-            ["usa", "T19/M21 MMC", 42, 3, 20, 20, 6, { t: 1, m: 3, e: 1, ha: { f: 1, s: 1, r: 0, t: -1 } }],
-          ].each do |unit|
-            ht = { t: "ht", i: "ht" }
-            unit.each_with_index do |v, i|
-              ht[key[i]] = v
-            end
-            ht[:i] = "htgun" if ht[:o][:g]
-            ht[:i] = "htat" if ht[:o][:p]
-            ht[:i] = "htmtr" if ht[:o][:m]
-            ht[:i] = "htft" if ht[:o][:i]
-            ht[:i] += "-amp" if ht[:o][:amp]
-            ht[:o].merge!({ k: 1 })
-            ht[:o][:m] || ht[:o][:i] ? ht[:o].merge!({ b: 3 }) : ht[:o].merge!({ j: 3, f: 18 })
-            lu[:"#{ht[:c]}_#{sanitize(ht[:n])}"] = ht
-          end
-          lu
-        end
-
-        def trucks
+        def trucks # rubocop:disable Metrics/MethodLength
+          # rubocop:disable Layout/LineLength
           lu = {}
           key = %i[c n i y s f r v o]
           [
@@ -184,8 +120,9 @@ module Utility
             end
             truck[:o].merge!({ w: 1 }) if truck[:n] != "Horse" && !truck[:o][:k]
             truck[:t] = "cav" if %w[cav cav-wheel].include?(truck[:i])
-            lu[:"#{truck[:c]}_#{sanitize(truck[:n])}"] = truck
+            lu[:"#{truck[:c]}_#{Units.sanitize(truck[:n])}"] = truck
           end
+          # rubocop:enable Layout/LineLength
           lu
         end
 
@@ -203,10 +140,6 @@ module Utility
           end
           lu
         end
-
-        # rubocop:enable Metrics/PerceivedComplexity
-        # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
-        # rubocop:enable Layout/LineLength
       end
     end
   end
