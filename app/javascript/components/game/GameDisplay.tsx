@@ -341,6 +341,7 @@ export default function GameDisplay() {
     if (game.k?.gameState?.type === stateType.Deploy) {
       game.k.deployState.dir(d)
       game.k.gameState.finish()
+      game.k.deployState.needsDirection = false
     } else if (game.k?.gameState?.type === stateType.Fire) {
       game.k.fireState.rotate(d)
     } else if (game.k?.gameState?.type === stateType.Move) {

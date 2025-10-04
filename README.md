@@ -31,15 +31,13 @@ sometimes.
 WIP:
 
 ![picture of the game screen](support/game.png)
-
-LOS:
-
 ![picture of the game screen](support/game2.png)
+![picture of the game screen](support/game3.png)
+![picture of the game screen](support/game4.png)
 
 Some counter debug list displays:
 
 ![all German counters](support/counters-ger.png)
-
 ![USA counters by year](support/counters-usa.png)
-
+![USA counters by year](support/counters.png)
 ![markers](support/markers.png)

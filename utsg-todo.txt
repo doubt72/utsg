@@ -1,4 +1,7 @@
 High Priority Features/Bug Fixes:
+  - Terrain / Hit Info incorrect location
+  - Increase size of counter help
+
   - Housekeeping
     - Overstacking
     - Status updates
