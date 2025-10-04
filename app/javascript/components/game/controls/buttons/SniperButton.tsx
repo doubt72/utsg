@@ -2,12 +2,12 @@ import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
 import { DiceGlyph } from "../../../utilities/buttons";
 
-interface InitiativeButtonProps {
+interface SniperButtonProps {
   game: Game;
   callback: () => void;
 }
 
-export default function InitiativeButton({ game, callback }: InitiativeButtonProps) {
+export default function SniperButton({ game, callback }: SniperButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.gameState?.finish()

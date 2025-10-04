@@ -42,6 +42,7 @@ import RoutEliminateButton from "./buttons/RoutEliminateButton";
 import RoutCheckButton from "./buttons/RoutCheckButton";
 import CloseCombatSelectButton from "./buttons/CloseCombatSelectButton";
 import CloseCombatReduceButton from "./buttons/CloseCombatReduceButton";
+import SniperButton from "./buttons/SniperButton";
 
 interface GameControlsProps {
   game: Game;
@@ -109,6 +110,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <MoraleCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "initiative") {
         return <InitiativeButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "sniper") {
+        return <SniperButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move") {
         return <MoveButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_finish") {

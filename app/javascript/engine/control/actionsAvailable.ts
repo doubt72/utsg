@@ -191,6 +191,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({ type: "morale_check" })
     } else if (game.gameState?.type === stateType.Initiative) {
       actions.push({ type: "initiative" })
+    } else if (game.gameState?.type === stateType.Sniper) {
+      actions.push({ type: "sniper" })
     } else if (game.gameState?.type === stateType.Pass) {
       actions.unshift({ type: "none", message: "are you sure?" })
       actions.push({ type: "pass" })

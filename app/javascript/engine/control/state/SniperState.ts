@@ -1,3 +1,4 @@
+import { Coordinate } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -14,6 +15,26 @@ export default class SniperState extends BaseState {
       }
     })
     game.refreshCallback(game)
+  }
+
+  get activeCounters(): Counter[] {
+    const map = this.game.scenario.map
+    const hexes: { x: number, y: number }[] = []
+    for (const s of this.selection) {
+      let found = false
+      for (const h of hexes) {
+        if (h.x === s.x && h.y === s.y) {
+          found = true
+          break
+        }
+      }
+      if (!found) { hexes.push({ x: s.x, y: s.y }) }
+    }
+    let rc: Counter[] = []
+    for (const h of hexes) {
+      rc = rc.concat(map.countersAt(new Coordinate(h.x, h.y)))
+    }
+    return rc
   }
 
   finish() {
