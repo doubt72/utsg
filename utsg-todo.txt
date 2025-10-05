@@ -1,6 +1,6 @@
 High Priority Features/Bug Fixes:
-  - Terrain / Hit Info incorrect location
-  - Increase size of counter help
+  - Drag map
+    - Reinforcement panel, main map, minimap
 
   - Housekeeping
     - Overstacking
@@ -28,12 +28,11 @@ Future Features/Bug Fixes:
       - Close Combat
       - Housekeeping
 
-  - Tanks with 1 man turrets/things like that
+  - Tanks with 1 man turrets/things like that ?
   - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
   - Skip reaction fire when no LOS
-  - Maybe always reaction fire, loss of initiative or not (after moves?)
+  - Always reaction fire, loss of initiative or not (after moves?)
   - Don't unselect first initial selection when cancelling move/fire/assault
-  - Ability to drag reinforcement panel, main map, minimap
   - Handle map scale and such settings gone wrong
   - Show Terrain in counter overlay
   - Ability to kick players

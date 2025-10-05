@@ -96,8 +96,8 @@ export default function MapHexDetail({
   const updateTerrainInfo = (e: React.MouseEvent) => {
     if (showTerrain) {
       if (svgRef.current) {
-        const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
-        const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+        const x = (e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
+        const y = (e.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
         const layout = hexHelpLayout(hex, new Coordinate(x, y), new Coordinate(maxX, maxY), scale)
         terrainCallback(HelpOverlay(layout))
       }

@@ -38,8 +38,8 @@ export default function MapCounterOverlay({
   const showFireHelp = (e: React.MouseEvent, counter: Counter) => {
     if (counter.hasUnit && counter.unit.targetSelected) {
       if (!map.game) { return }
-      const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
-      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+      const x = (e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
+      const y = (e.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
       const loc = new Coordinate(x, y)
       setFireHelpDisplay(HelpOverlay(counterFireHelpLayout(
           map.game, counter, loc, new Coordinate(maxX, maxY), scale, new Coordinate(xx ?? -1, yy ?? -1)
@@ -97,7 +97,7 @@ export default function MapCounterOverlay({
           })
           helpOverlays.push(
             <MapCounterOverlayHelp key={i} xx={layout.x + i*176+170} yy={layout.y+10} maxX={maxX} maxY={maxY}
-                                   map={map} scale={mapScale} counter={cd} setHelpDisplay={setHelpDisplay} />
+                                   map={map} scale={scale} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
           selectionOverlays.push(
             <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>

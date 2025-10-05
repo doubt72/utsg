@@ -161,7 +161,7 @@ export default function RoutSection() {
             )}
             {map.mapHexes.map((row, y) =>
               row.map((hex, x) => (
-                <MapHexDetail key={`d${x}-${y}`} hex={hex} maxX={0} maxY={0} scale={1}
+                <MapHexDetail key={`d${x}-${y}`} hex={hex} maxX={0} maxY={0} scale={1} mapScale={1}
                   showTerrain={false} selectCallback={() => {}} terrainCallback={() => {}}
                   svgRef={null as unknown as React.MutableRefObject<HTMLElement>}
                 />
@@ -216,7 +216,7 @@ export default function RoutSection() {
             )}
             {map2.mapHexes.map((row, y) =>
               row.map((hex, x) => (
-                <MapHexDetail key={`d${x}-${y}`} hex={hex} maxX={0} maxY={0} scale={1}
+                <MapHexDetail key={`d${x}-${y}`} hex={hex} maxX={0} maxY={0} scale={1} mapScale={1}
                   showTerrain={false} selectCallback={() => {}} terrainCallback={() => {}}
                   svgRef={null as unknown as React.MutableRefObject<HTMLElement>}
                 />
