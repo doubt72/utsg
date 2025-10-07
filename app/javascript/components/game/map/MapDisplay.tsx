@@ -58,6 +58,7 @@ export default function MapDisplay({
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
   clearActionCallback = () => {}
 }: MapDisplayProps) {
+  const [mouseDown, setMouseDown] = useState<boolean>(false)
   const [mapUpdate, setMapUpdate] = useState(0)
 
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
@@ -201,6 +202,24 @@ export default function MapDisplay({
     
     setXOffset(xRelative * (1 - xScale))
     setYOffset(yRelative * (1 - yScale))
+  }
+
+  const dragCallback = (event: React.MouseEvent) => {
+    const x = -event.movementX
+    const y = -event.movementY
+
+    setXOffset(o => {
+      let xNew = x / scale / (mapScale ?? 1) / map.previewXSize + o
+      if (xNew < 0) { xNew = 0 }
+      if (xNew > 0.999) { xNew = 0.999 }
+      return xNew
+    })
+    setYOffset(o => {
+      let yNew = y / scale / (mapScale ?? 1) / map.ySize + o
+      if (yNew < 0) { yNew = 0 }
+      if (yNew > 0.999) { yNew = 0.999 }
+      return yNew
+    })
   }
 
   useEffect(() => {
@@ -600,15 +619,21 @@ export default function MapDisplay({
       const yShift = (map.ySize ?? 1) * yOffset
       return (
         <svg x={0} y={yMapOffset + 50 / scale - 50} width={mWidth} height={mHeight}
-             viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}>
+             viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}
+             onMouseDown={() => setMouseDown(true)}
+             onMouseUp={() => setMouseDown(false)}
+             onMouseLeave={() => setMouseDown(false)}
+             onMouseMove={(event) => {
+               if (mouseDown && event.buttons === 1) { dragCallback(event) }
+             }} >
           {hexDisplay}
           {hexDisplayDetail}
           {fireTargets}
           {fireTrack}
           {counterDisplay}
+          { map.game?.gameState?.showOverlays ? hexDisplayOverlays : "" }
           {losOverlay}
           {counterLosOverlay}
-          { map.game?.gameState?.showOverlays ? hexDisplayOverlays : "" }
           { map.game?.gameState?.showOverlays ? actionCounterDisplay : "" }
           {moveTrack}
           {routTrack}
