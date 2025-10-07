@@ -34,6 +34,7 @@ export default function MiniMap(
   const [minimap, setMinimap] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
   const [width, setWidth] = useState<number>(0)
+  const [mouseDown, setMouseDown] = useState<boolean>(false)
 
   const updateHelpOverlay = (e: React.MouseEvent) => {
     const text = [
@@ -86,14 +87,31 @@ export default function MiniMap(
               style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: counterRed }} />
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: "#rgb(0,0,0,0)" }}
-              onClick={event => callback(
-                event, {
-                  mapSize: new Coordinate(xMap, yMap),
-                  scale: miniScale
+              onMouseDown={event => {
+                setMouseDown(true)
+                callback(
+                  event, {
+                    mapSize: new Coordinate(xMap, yMap),
+                    scale: miniScale
+                  }
+                )
+              }}
+              onMouseUp={() => setMouseDown(false)}
+              onMouseLeave={() => {
+                setMouseDown(false)
+                setHelpDisplay(undefined)
+              }}
+              onMouseMove={event => {
+                updateHelpOverlay(event)
+                if (mouseDown && event.buttons === 1) {
+                  callback(
+                    event, {
+                      mapSize: new Coordinate(xMap, yMap),
+                      scale: miniScale
+                    }
+                  )
                 }
-              )}
-              onMouseLeave={() => setHelpDisplay(undefined)}
-              onMouseMove={e => updateHelpOverlay(e)} />
+              }} />
       </g>
     )
   }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastAction])
