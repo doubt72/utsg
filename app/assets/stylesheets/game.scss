@@ -58,6 +58,7 @@
   margin-top: 1px;
   border: 2px solid $gray-c;
   border-radius: 0.33em;
+  user-select: none;
 }
 
 .scenario-row-selected {
@@ -184,6 +185,7 @@
 
 .game-map {
   margin: 0.5em 0.5em 0.5em 0.5em;
+  user-select: none;
 }
 
 .game-error {

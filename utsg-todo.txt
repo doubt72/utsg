@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Drag map
-    - Reinforcement panel, main map, minimap
-
   - Housekeeping
     - Overstacking
     - Status updates
@@ -49,7 +46,6 @@ Future Features/Bug Fixes:
   - Improved move validation/synchronization to block duplicate/illegal moves
   - Break up tests / large files
   - Fix flickering of control buttons?
-  - Disable text selection on map/etc?
   - Refactor, simplify firing action
   - Show ALL for movement into mines or wire
   - Support mouse scroll on map (use for zoom?)

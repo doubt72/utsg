@@ -379,7 +379,6 @@ export default function MapDisplay({
                                   map.game.gameState = undefined
                                 }
                               }}
-                              shifted={rp?.props.shifted ?? false} shiftCallback={shift}
                               ovCallback={setOverlay} forceUpdate={mapUpdate} />
         )
       })
@@ -515,15 +514,6 @@ export default function MapDisplay({
     map.game?.gameState, mapUpdate, forceUpdate, map.game?.deployState?.needsDirection,
   ])
 
-  const shift = () => {
-    setReinforcementsOverlay(rp => 
-      <ReinforcementPanel map={map} xx={rp?.props.xx} yy={rp?.props.yy} player={rp?.props.player}
-                          closeCallback={() => setReinforcementsOverlay(undefined)}
-                          shifted={!rp?.props.shifted} shiftCallback={shift}
-                          ovCallback={setOverlay} forceUpdate={mapUpdate} />
-    )
-  }
-
   const hexSelection = (x: number, y: number) => {
     if (hexCallback) {
       let doCallback = true
@@ -570,7 +560,7 @@ export default function MapDisplay({
       map.game.gameState = new DeployState(map.game, selection.target.turn, selection.target.index)
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
-      setReinforcementsOverlay(rp =>
+      setReinforcementsOverlay(
         <ReinforcementPanel map={map} xx={x} yy={y} player={player}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
@@ -578,7 +568,6 @@ export default function MapDisplay({
                                 map.game.gameState = undefined
                               }
                             }}
-                            shifted={rp?.props.shifted ?? false} shiftCallback={shift}
                             ovCallback={setOverlay} forceUpdate={mapUpdate} />
       )
     }
@@ -600,7 +589,6 @@ export default function MapDisplay({
         return (
           <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
                               closeCallback={() => setReinforcementsOverlay(undefined)}
-                              shifted={false} shiftCallback={shift}
                               ovCallback={setOverlay} forceUpdate={mapUpdate} />
         )
       } else {
