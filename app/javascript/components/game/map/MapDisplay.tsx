@@ -222,6 +222,17 @@ export default function MapDisplay({
     })
   }
 
+  const scrollCallback = (event: React.WheelEvent) => {
+    const y = event.deltaY / 2
+
+    setYOffset(o => {
+      let yNew = y / map.ySize + o
+      if (yNew < 0) { yNew = 0 }
+      if (yNew > 0.999) { yNew = 0.999 }
+      return yNew
+    })
+  }
+
   useEffect(() => {
     if (map.preview || preview) { return }
 
@@ -625,7 +636,8 @@ export default function MapDisplay({
              onMouseLeave={() => setMouseDown(false)}
              onMouseMove={(event) => {
                if (mouseDown && event.buttons === 1) { dragCallback(event) }
-             }} >
+             }}
+             onWheel={(event) => { scrollCallback(event) } } >
           {hexDisplay}
           {hexDisplayDetail}
           {fireTargets}
