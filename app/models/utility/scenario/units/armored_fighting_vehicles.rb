@@ -161,7 +161,7 @@ module Utility
               ["uk", "AEC AC I", 41], ["uk", "AEC AC II", 42], ["uk", "AEC AC II CS", 42],
               ["uk", "Daimler AC", 41], ["uk", "Daimler AC CS", 41], ["uk", "Humber AC I", 40],
               ["uk", "Humber AC IV", 42], ["uk", "T17E1 Staghound", 44, { sn: 1 }],
-              ["uk", "Humber LRC", 40], ["uk", "M3A1 Scout Car", 39, { sn: 1 }],
+              ["uk", "Humber LRC", 40], ["uk", "White Scout Car", 39, { sn: 1 }],
               ["uk", "M8 Greyhound", 43],
 
               ["usa", "M3A1 Scout Car", 39, { sn: 1 }], ["usa", "M8 Greyhound", 43],

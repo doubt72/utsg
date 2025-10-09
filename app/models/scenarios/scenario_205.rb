@@ -19,7 +19,7 @@ module Scenarios
           [3, :uk_line_t],
           [3, :uk_bren_lmg],
           :uk_radio_152mm,
-          :uk_m3a1_scout_car,
+          :uk_white_scout_car,
         ],
       },
     }.freeze
