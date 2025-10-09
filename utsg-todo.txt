@@ -25,10 +25,9 @@ Future Features/Bug Fixes:
       - Close Combat
       - Housekeeping
 
-  - Tanks with 1 man turrets/things like that ?
-  - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
-  - Skip reaction fire when no LOS
+  - Update sponson -> hull mounted
   - Always reaction fire, loss of initiative or not (after moves?)
+  - Skip reaction fire when no LOS
   - Don't unselect first initial selection when cancelling move/fire/assault
   - Handle map scale and such settings gone wrong
   - Show Terrain in counter overlay
@@ -42,13 +41,14 @@ Future Features/Bug Fixes:
   - Switch main page game status to websocket, not polling
   - Fix stacking parent/children indicators when showing markers
     - Including hull
+  - Tanks with 1 man turrets/things like that ?
+  - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
+  - Rejigger half-tracks and scout car capacities/open turret
 
   - Improved move validation/synchronization to block duplicate/illegal moves
   - Break up tests / large files
-  - Fix flickering of control buttons?
-  - Refactor, simplify firing action
-  - Show ALL for movement into mines or wire
-  - Support mouse scroll on map (use for zoom?)
-    - Much harder than it appears, need a way to intercept only scroll/wheel/key events
-      but pass through all other mouse events
-  - Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
+
+  - ?? Fix flickering of control buttons?
+  - ?? Refactor, simplify firing action
+  - ?? Show ALL for movement into mines or wire
+  - ?? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
