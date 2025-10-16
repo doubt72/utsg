@@ -1,0 +1,19 @@
+Using DO rails droplet (specifically)
+
+- rvm is installed, add ruby 3.2.2
+- yarn is fine, but need node 22
+  - install nvm/build node 22
+    Why it doesn't work with 20.15.0 like it does in dev, no idea.
+- bundle install
+- <secret stored in secret location> for master.key
+- set RAILS_ENV=production
+- set AHTF_DATABASE_PASSWORD=<secret stored in secret location>
+- install redis/redis-cli
+- run 'rake db:create'
+- run 'rake db:migrate'
+- run 'rake assets:precompile'
+- copy app/assets/images(/units) to /public/assets
+  - Figure out how to deal with fingerprinting of images?  Or how not to fingerprint them at all
+
+- rails.service to /etc/systemd/system/
+- rails-nginx (as rails) to /etc/nginx/sites-available/
