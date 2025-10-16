@@ -108,8 +108,8 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   if (counter.unit.turretJammed) { text.push("TRT") }
   if (counter.unit.jammed && counter.unit.isVehicle) { text.push("WPB") }
   if (counter.unit.weaponDestroyed) { text.push("WPD") }
-  if (counter.unit.sponsonJammed) { text.push("SPB") }
-  if (counter.unit.sponsonDestroyed) { text.push("SPD") }
+  if (counter.unit.sponsonJammed) { text.push("HWB") }
+  if (counter.unit.sponsonDestroyed) { text.push("HWD") }
   if (counter.unit.routed) { text.push("RTD") }
   if (text.length === 0) { return false }
   if (text.length === 2) {
@@ -169,13 +169,13 @@ export function counterInfoBadges(
       badges.push({ text: "broken", color: counterRed, tColor: "white" })
     }
     if (u.weaponDestroyed && s) {
-      badges.push({ text: "weapon destr.", color: counterRed, tColor: "white" })
+      badges.push({ text: "weapon destr", color: counterRed, tColor: "white" })
     }
     if (u.sponsonJammed && s) {
-      badges.push({ text: "sponson brok.", color: counterRed, tColor: "white" })
+      badges.push({ text: "hull wpn brok", color: counterRed, tColor: "white" })
     }
     if (u.sponsonDestroyed && s) {
-      badges.push({ text: "sponson dest.", color: counterRed, tColor: "white" })
+      badges.push({ text: "hull wpn dest", color: counterRed, tColor: "white" })
     }
     if (u.routed && s) {
       badges.push({ text: "routed", color: counterRed, tColor: "white" })

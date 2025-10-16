@@ -129,7 +129,6 @@ export default class DeployState extends BaseState {
       this.game.scenario.axisReinforcements[this.turn][this.index]
     this.game.executeAction(action, false)
     if (counter.x === counter.used) {
-      console.log("full")
       this.game.cancelAction()
     }
   }

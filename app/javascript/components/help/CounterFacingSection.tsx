@@ -42,7 +42,7 @@ export default function CounterFacingSection() {
       layout: [5, 5, "x"], axis_dir: 4, allied_dir: 1,
       start_weather: weatherType.Dry, base_weather: weatherType.Dry, precip: [0, weatherType.Rain],
       wind: [windType.Calm, 1, false],
-      base_terrain: "d",
+      base_terrain: "g",
       hexes: [
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
@@ -80,7 +80,7 @@ export default function CounterFacingSection() {
     }
 
     map.mapHexes.forEach(row => row.forEach(hex => {
-      if (4 - hex.coord.x > Math.abs(2 - hex.coord.y)) { hex.map = map2}
+      if (4 - hex.coord.x > Math.abs(2 - hex.coord.y)) { hex.map = map2 }
     }))
 
     setFacingDiagram(
@@ -127,7 +127,7 @@ export default function CounterFacingSection() {
         arc, as shown on the image here. The forward arc includes all the hexes that are between the
         lines, even if only partially (i.e., it includes all of the hexes that the lines pass
         through). If a unit is not in the forward arc of the hull of an un-turreted vehicle (or the
-        forward arc of the hull if a sponsoned weapon), it cannot be targeted. The same applies to
+        forward arc of the hull if a hull-mounted weapon), it cannot be targeted. The same applies to
         the forward arc of the turrets of turreted vehicles.
       </p>
       <p>

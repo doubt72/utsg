@@ -120,7 +120,7 @@ export default function FireSection() {
       </ul>
       <p>
         Firepower is also halved if using a turreted weapon and the turret is jammed, or using a
-        sponsoned or hull-mounted weapon and the unit is immobilized.
+        hull-mounted weapon and the unit is immobilized.
       </p>
       <h2>Firing Process</h2>
       <p>
@@ -151,7 +151,7 @@ export default function FireSection() {
             <li>Add one if vehicle has a green crew, subtract one if vehicle crew is elite.</li>
             <li>Add one if firing from a turret that was moved before firing.</li>
             <li>
-              Add one if firing from a jammed turret, or firing a sponsoned or hull-mounted weapon
+              Add one if firing from a jammed turret, or firing a hull-mounted weapon
               on an immobilized vehicle.
             </li>
             <li>Add one if intensive fire.</li>

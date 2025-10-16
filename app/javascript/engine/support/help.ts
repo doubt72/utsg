@@ -292,7 +292,7 @@ export function unitHelpText(unit: Unit): string[] {
       text.push(`- range ${unit.sponson.range}`)
       text.push("- ignores terrain")
     } else {
-      text.push("sponson gun - forward arc only")
+      text.push("hull-mounted gun - forward arc only")
       text.push(`- firepower ${unit.sponson.firepower}`)
       text.push(`- range ${unit.sponson.range}`)
       text.push("- target roll required")

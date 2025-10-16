@@ -136,7 +136,7 @@ export default function CounterSection() {
     if (!unit.sponson) { return }
     return (
       <g>
-        <text x={60} y={96} fontSize={9} textAnchor="end">Sponson</text>
+        <text x={60} y={96} fontSize={9} textAnchor="end">Hull Gun</text>
         <text x={60} y={102} fontSize={5} textAnchor="end">(firepower - range)</text>
         { labelLine(61,94,105,89) }
       </g>
@@ -793,7 +793,7 @@ export default function CounterSection() {
       }
       if (unit.sponson) {
         sections.push(<p key={index++}>
-          <strong>Numbers across</strong> the bottom of the icon indicate a sponson weapon. A white background
+          <strong>Numbers across</strong> the bottom of the icon indicate a hull-mounted weapon. A white background
           indicates anti-tank (transparent would be anti-infantry gun, yellow ignores terrain).
         </p>)
       }
@@ -851,8 +851,8 @@ export default function CounterSection() {
             { counterButton("satchel charge", "usa_Satchel Charge_sw") }
             { counterButton("molotov coctail", "fin_Molotov Cocktail_sw") }
             { counterButton("radio", "ussr_Radio 122mm_sw") }
-            { counterButton("anti-tank gun", "ger_8.8cm Pak 43/41_gun") }
-            { counterButton("sponsoned tank", "uk_M3 Grant_tank") }
+            { counterButton("anti-tank gun", "ger_8.8cm Pak 43_gun") }
+            { counterButton("tank with sponson", "uk_M3 Grant_tank") }
             { counterButton("flame tank", "usa_M3A1 Stuart FT_spg") }
             { counterButton("self-propelled gun", "ger_Marder III_spg") }
             { counterButton("armored car", "usa_M3A1 Scout Car_ac") }

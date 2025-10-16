@@ -25,7 +25,6 @@ Future Features/Bug Fixes:
       - Close Combat
       - Housekeeping
 
-  - Update sponson -> hull mounted
   - Always reaction fire, loss of initiative or not (after moves?)
   - Skip reaction fire when no LOS
   - Don't unselect first initial selection when cancelling move/fire/assault

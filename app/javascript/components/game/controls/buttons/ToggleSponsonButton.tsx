@@ -15,7 +15,7 @@ export default function ToggleSponsonButton({ game, callback }: ToggleSponsonBut
   }
 
   const text = () => {
-    return game.fireState.sponson ? "use turret" : "use sponson"
+    return game.fireState.sponson ? "use turret" : "use hull gun"
   }
 
   return (
