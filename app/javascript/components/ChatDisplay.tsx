@@ -20,8 +20,10 @@ export default function ChatDisplay({ gameId, showInput, collapse = false }: Cha
   const [message, setMessage] = useState("")
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
 
+  const host = window.location.host
+  const protocol = host === "ahextoofar.games" ? "wss" : "ws"
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
-    "ws://localhost:3000/cable"
+    `${protocol}://${host}/cable`
   )
 
   const onChange = (value: string) => {

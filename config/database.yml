@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: ahtf_production
-  username: ahtf
+  username: rails
   password: <%= ENV["AHTF_DATABASE_PASSWORD"] %>

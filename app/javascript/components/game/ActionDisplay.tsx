@@ -15,8 +15,10 @@ export default function ActionDisplay({
 }: ActionDisplayProps) {
   const [divClass, setDivClass] = useState<string>("")
 
+  const host = window.location.host
+  const protocol = host === "ahextoofar.games" ? "wss" : "ws"
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
-    "ws://localhost:3000/cable"
+    `${protocol}://${host}/cable`
   )
 
   const subscribe = useCallback(() => {
