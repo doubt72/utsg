@@ -572,10 +572,6 @@ div.custom-button-select:hover {
   margin-bottom: 0.5em;
 }
 
-.help-section-fill {
-  flex-grow: 1;
-}
-
 .help-section a {
   text-decoration: none;
   color: $alert-orange;
@@ -583,13 +579,6 @@ div.custom-button-select:hover {
 
 .help-section a:hover {
   color: $lightish-green;
-}
-
-.help-bottom-navigation {
-  background-color: $gray-d;
-  margin: 1em 1em 0;
-  padding: 0.25em 1em 0.5em;
-  border-radius: 0.33em;
 }
 
 .counter-help-button {
@@ -610,6 +599,26 @@ div.counter-help-button-selected,button.help-button-selected {
 div.counter-help-button-selected:hover,button.help-button-selected:hover {
   background-color: $darkish-green;
   color: $light-green
+}
+
+button.help-section-selected {
+  background-color: $lightish-green;
+  color: white;
+}
+
+button.help-section-selected:hover {
+  background-color: $darkish-green;
+  color: $light-green
+}
+
+button.help-section-unselected {
+  background-color: $gray-d;
+  color: black;
+}
+
+button.help-section-unselected:hover {
+  background-color: $gray-a;
+  color: white;
 }
 
 .glossary-term {

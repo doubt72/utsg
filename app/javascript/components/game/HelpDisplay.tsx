@@ -1,28 +1,16 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { findHelpSection, flatHelpIndexes, helpIndex, HelpSection } from "../help/helpData";
+import { useNavigate, useParams } from "react-router-dom";
+import { findHelpSection, helpIndex, HelpSection } from "../help/helpData";
 import Logo from "../Logo";
 import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function HelpDisplay() {
   const navigate = useNavigate()
-  const location = useLocation()
   const section: string = useParams().section ?? "1"
 
   const [sectionKey, setSectionKey] = useState<number[]>([])
-  const [currSection, setCurrSection] = useState<JSX.Element | undefined>()
+  const [allSections, setAllSections] = useState<JSX.Element[]>([])
   const [sectionList, setSectionList] = useState<JSX.Element | undefined>()
-  const [bottomNavigation, setBottomNavigation] = useState<JSX.Element | undefined>()
-
-  const [padTop, setPadTop] = useState<number>(0)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setPadTop(window.scrollY)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   const compareList = (a: number[], b: number[]): boolean => {
     if (a.length !== b.length) { return false }
@@ -32,28 +20,7 @@ export default function HelpDisplay() {
     return true
   }
 
-  const prevSection = () => {
-    const sections = flatHelpIndexes()
-    for (let i = 0; i < sections.length; i++) {
-      if (compareList(sections[i], sectionKey)) {
-        return sections[i-1] ?? []
-      }
-    }
-    return []
-  }
-
-  const nextSection = () => {
-    const sections = flatHelpIndexes()
-    for (let i = 0; i < sections.length; i++) {
-      if (compareList(sections[i], sectionKey)) {
-        return sections[i+1] ?? []
-      }
-    }
-    return []
-  }
-
   const changeSection = (curr: number[]) => {
-    setCurrSection(findHelpSection(curr)?.section)
     setSectionKey(curr)
   }
 
@@ -75,7 +42,7 @@ export default function HelpDisplay() {
                 onSubmit(sec)}
               }>
               <button type="submit" className={
-                `custom-button${compareList(sec, sectionKey) ? " help-button-selected" : ""}`
+                `custom-button ${compareList(sec, sectionKey) ? "help-section-selected" : "help-section-unselected"}`
                 }>{sec.map(n => n+1).join(".")}&nbsp; { section ? s.name : <span className="help-button-deleteme">{ s.name }</span> }{  }
               </button>
             </form>
@@ -87,8 +54,32 @@ export default function HelpDisplay() {
     )
   }
 
+  const allMapSections = (help: HelpSection[], ll: number[]): JSX.Element[] => {
+    let sections: JSX.Element[] = []
+    help.forEach((sec, i) => {
+      const key = ll.concat(i + 1)
+      const keyName = key.join(".")
+      if (sec.section) {
+        const header = `${keyName}. ${sec.fullName}`
+        sections.push(
+          <div key={keyName} id={keyName}>
+            { ll.length === 0 ?
+                <h1>{ header }</h1> :
+                <h2>{ header }</h2> }
+            { sec.section }
+          </div>
+        )
+        if (sec.children) {
+          sections = sections.concat(allMapSections(sec.children, key))
+        }
+      }
+    })
+    return sections
+  }
+
   useEffect(() => {
     changeSection(section.split(".").map(n => Number(n)-1))
+    setAllSections(allMapSections(helpIndex, []))
   }, [])
 
   useEffect(() => {
@@ -97,41 +88,6 @@ export default function HelpDisplay() {
 
   useEffect(() => {
     setSectionList(mapSections(helpIndex, []))
-    const prevKey = prevSection()
-    const nextKey = nextSection()
-    const prev = prevKey.map(n => n+1).join(".")
-    const next = nextKey.map(n => n+1).join(".")
-    setBottomNavigation(
-      <div className="flex">
-        <div className="flex-fill"></div>
-        <div className="help-bottom-navigation flex">
-          { prev.length > 0 ?
-          <div>
-            <form onSubmit={(event: FormEvent) => {
-                event.preventDefault()
-                onSubmit(prevKey)}
-              }>
-              <button type="submit" className="custom-button" >
-                {prev} &lt; prev
-              </button>
-            </form>
-          </div> : <div style={{ minWidth: "60px" }}></div> }
-          <div className="flex-fill" style={{ minWidth: "100px" }}></div>
-          { next.length > 0 ?
-          <div>
-            <form onSubmit={(event: FormEvent) => {
-                event.preventDefault()
-                onSubmit(nextKey)}
-              }>
-              <button type="submit" className="custom-button" >
-                next &gt; {next}
-              </button>
-            </form>
-          </div> : <div style={{ minWidth: "60px" }}></div> }
-        </div>
-        <div className="flex-fill"></div>
-      </div>
-    )
   }, [sectionKey])
 
   return (
@@ -139,7 +95,6 @@ export default function HelpDisplay() {
       <div className="help-side"></div>
       <div className="help-main">
         <div className="help-index" id="index-for-size">
-          <div style={{ minHeight: padTop }}></div>
           <div className="help-index-header flex">
             <Logo />
             <div className="ml025em">
@@ -151,9 +106,7 @@ export default function HelpDisplay() {
           {sectionList}
         </div>
         <div className="help-section">
-          {currSection}
-          <div className="help-section-fill"></div>
-          {bottomNavigation}
+          {allSections}
         </div>
       </div>
       <div className="help-side"></div>

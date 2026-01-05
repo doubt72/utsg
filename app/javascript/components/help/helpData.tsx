@@ -27,43 +27,48 @@ import CloseCombatSection from "./CloseCombatSection";
 import HousekeepingSection from "./HousekeepingSection";
 import DevNotesSection from "./DevNotesSection";
 
-export type HelpSection = { name: string, section?: JSX.Element, children?: HelpSection[] }
+export type HelpSection = {
+  name: string,
+  fullName: string,
+  section?: JSX.Element,
+  children?: HelpSection[]
+}
 
 export const helpIndex: HelpSection[] = [
-  { name: "Introduction", section: <IntroSection /> },
-  { name: "Game Interface", section: <InterfaceSection /> },
-  { name: "Counters", section: <CounterSection />, children: [
-    { name: "Stacking", section: <CounterStackingSection /> },
-    { name: "Facing", section: <CounterFacingSection /> },
+  { name: "Introduction", fullName: "Introduction", section: <IntroSection /> },
+  { name: "Game Interface", fullName: "Game Interface", section: <InterfaceSection /> },
+  { name: "Counters", fullName: "Counters", section: <CounterSection />, children: [
+    { name: "Stacking", fullName: "Stacking", section: <CounterStackingSection /> },
+    { name: "Facing", fullName: "Facing", section: <CounterFacingSection /> },
   ] },
-  { name: "Terrain", section: <TerrainSection />, children: [
-    { name: "Line of Sight", section: <LineOfSightSection /> },
-    { name: "Elevation", section: <ElevationSection /> },
+  { name: "Terrain", fullName: "Terrain", section: <TerrainSection />, children: [
+    { name: "Line of Sight", fullName: "Line of Sight", section: <LineOfSightSection /> },
+    { name: "Elevation", fullName: "Elevation", section: <ElevationSection /> },
   ] },
-  { name: "Game Play", section: <GamePlaySection />, children: [
-    { name: "Setup", section: <SetupSection /> },
-    { name: "Game Turn", section: <GameTurnSection />, children: [
-      { name: "Deployment Phase", section: <DeploymentPhaseSection /> },
-      { name: "Prep Phase", section: <PrepPhaseSection />, children: [
-        { name: "Rallying", section: <RallySection /> },
+  { name: "Game Play", fullName: "Game Play", section: <GamePlaySection />, children: [
+    { name: "Setup", fullName: "Setup", section: <SetupSection /> },
+    { name: "Game Turn", fullName: "Game Turn", section: <GameTurnSection />, children: [
+      { name: "Deployment Phase", fullName: "Deployment Phase", section: <DeploymentPhaseSection /> },
+      { name: "Prep Phase", fullName: "Prep Phase", section: <PrepPhaseSection />, children: [
+        { name: "Rallying", fullName: "Rallying", section: <RallySection /> },
       ]},
-      { name: "Main Phase", section: <MainPhaseSection />, children: [
-        { name: "Fire", section: <FireSection /> },
-        { name: "Intensive Fire", section: <IntensiveFireSection /> },
-        { name: "Move", section: <MovementSection /> },
-        { name: "Rush", section: <RushSection /> },
-        { name: "Assault Move", section: <AssaultMoveSection /> },
-        { name: "Rout", section: <RoutSection /> },
-        { name: "Reaction Fire", section: <ReactionFireSection /> },
+      { name: "Main Phase", fullName: "Main Phase", section: <MainPhaseSection />, children: [
+        { name: "Fire", fullName: "Fire", section: <FireSection /> },
+        { name: "Intensive Fire", fullName: "Intensive Fire", section: <IntensiveFireSection /> },
+        { name: "Move", fullName: "Move", section: <MovementSection /> },
+        { name: "Rush", fullName: "Rush", section: <RushSection /> },
+        { name: "Assault Move", fullName: "Assault Move", section: <AssaultMoveSection /> },
+        { name: "Rout", fullName: "Rout", section: <RoutSection /> },
+        { name: "Reaction Fire", fullName: "Reaction Fire", section: <ReactionFireSection /> },
       ]},
-      { name: "Cleanup Phase", section: <CleanupPhaseSection />, children: [
-        { name: "Close Combat", section: <CloseCombatSection /> },
-        { name: "Housekeeping", section: <HousekeepingSection /> },
+      { name: "Cleanup Phase", fullName: "Cleanup Phase", section: <CleanupPhaseSection />, children: [
+        { name: "Close Combat", fullName: "Close Combat", section: <CloseCombatSection /> },
+        { name: "Housekeeping", fullName: "Housekeeping", section: <HousekeepingSection /> },
       ]},
     ]},
   ]},
-  { name: "Glossary", section: <GlossarySection /> },
-  { name: "Dev Notes", section: <DevNotesSection /> },
+  { name: "Glossary", fullName: "Glossary", section: <GlossarySection /> },
+  { name: "Dev Notes", fullName: "Dev Notes", section: <DevNotesSection /> },
 ]
 
 export function redNumber(n: number): JSX.Element {
@@ -86,24 +91,8 @@ export function findHelpSection(curr: number[]): HelpSection | undefined {
   return part
 }
 
-export function flatHelpIndexes(): number[][] {
-  return flatSubSections(helpIndex, [])
-}
-
 export function helpIndexByName(name: string): number[] {
   return subSectionByIndex(helpIndex, [], name).map(n => n+1)
-}
-
-function flatSubSections(sections: HelpSection[], base: number[]) {
-  let keys: number[][] = []
-  for (let i = 0; i < sections.length; i++) {
-    const key = base.concat(i)
-    keys.push(key)
-    if (findHelpSection(key)?.children) {
-      keys = keys.concat(flatSubSections(sections[i].children as HelpSection[], key))
-    }
-  }
-  return keys
 }
 
 function subSectionByIndex(sections: HelpSection[], base: number[], name: string): number[] {
