@@ -103,7 +103,6 @@ export default function CounterStackingSection() {
 
   return (
     <div>
-      <h1>Stacking Counters</h1>
       <p>
         Counter stacking order is used to represent the relationship between counters. This is
         generally handled by the server once units are placed — the game preserves the relationships

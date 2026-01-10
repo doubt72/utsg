@@ -423,7 +423,6 @@ const sortedTerms = (): GlossaryData[] => {
 export default function GlossarySection() {
   return (
     <div>
-      <h1>Glossary</h1>
       <p>
         Herein is found a list of terms used by the game, along with brief explanations of each:
       </p>

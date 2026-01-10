@@ -37,16 +37,16 @@ export type HelpSection = {
 export const helpIndex: HelpSection[] = [
   { name: "Introduction", fullName: "Introduction", section: <IntroSection /> },
   { name: "Game Interface", fullName: "Game Interface", section: <InterfaceSection /> },
-  { name: "Counters", fullName: "Counters", section: <CounterSection />, children: [
-    { name: "Stacking", fullName: "Stacking", section: <CounterStackingSection /> },
-    { name: "Facing", fullName: "Facing", section: <CounterFacingSection /> },
+  { name: "Counters", fullName: "Game Counters", section: <CounterSection />, children: [
+    { name: "Stacking", fullName: "Stacking Counters", section: <CounterStackingSection /> },
+    { name: "Facing", fullName: "Counter Facing", section: <CounterFacingSection /> },
   ] },
-  { name: "Terrain", fullName: "Terrain", section: <TerrainSection />, children: [
-    { name: "Line of Sight", fullName: "Line of Sight", section: <LineOfSightSection /> },
+  { name: "Terrain", fullName: "Map Terrain", section: <TerrainSection />, children: [
+    { name: "Line of Sight", fullName: "Line of Sight and Hindrance", section: <LineOfSightSection /> },
     { name: "Elevation", fullName: "Elevation", section: <ElevationSection /> },
   ] },
   { name: "Game Play", fullName: "Game Play", section: <GamePlaySection />, children: [
-    { name: "Setup", fullName: "Setup", section: <SetupSection /> },
+    { name: "Setup", fullName: "Game Setup", section: <SetupSection /> },
     { name: "Game Turn", fullName: "Game Turn", section: <GameTurnSection />, children: [
       { name: "Deployment Phase", fullName: "Deployment Phase", section: <DeploymentPhaseSection /> },
       { name: "Prep Phase", fullName: "Prep Phase", section: <PrepPhaseSection />, children: [
@@ -55,10 +55,10 @@ export const helpIndex: HelpSection[] = [
       { name: "Main Phase", fullName: "Main Phase", section: <MainPhaseSection />, children: [
         { name: "Fire", fullName: "Fire", section: <FireSection /> },
         { name: "Intensive Fire", fullName: "Intensive Fire", section: <IntensiveFireSection /> },
-        { name: "Move", fullName: "Move", section: <MovementSection /> },
-        { name: "Rush", fullName: "Rush", section: <RushSection /> },
-        { name: "Assault Move", fullName: "Assault Move", section: <AssaultMoveSection /> },
-        { name: "Rout", fullName: "Rout", section: <RoutSection /> },
+        { name: "Movement", fullName: "Movement", section: <MovementSection /> },
+        { name: "Rush Move", fullName: "Rush Movement", section: <RushSection /> },
+        { name: "Assault Move", fullName: "Assault Movement", section: <AssaultMoveSection /> },
+        { name: "Routing", fullName: "Routing Units", section: <RoutSection /> },
         { name: "Reaction Fire", fullName: "Reaction Fire", section: <ReactionFireSection /> },
       ]},
       { name: "Cleanup Phase", fullName: "Cleanup Phase", section: <CleanupPhaseSection />, children: [
@@ -68,7 +68,7 @@ export const helpIndex: HelpSection[] = [
     ]},
   ]},
   { name: "Glossary", fullName: "Glossary", section: <GlossarySection /> },
-  { name: "Dev Notes", fullName: "Dev Notes", section: <DevNotesSection /> },
+  { name: "Dev Notes", fullName: "Developer Notes", section: <DevNotesSection /> },
 ]
 
 export function redNumber(n: number): JSX.Element {

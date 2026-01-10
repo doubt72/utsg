@@ -47,7 +47,6 @@ export const deploymentRulesSection = (phase: string) => {
 export default function DeploymentPhaseSection() {
   return (
     <div>
-      <h1>Deployment Phase</h1>
       <p>
         During the deployment phase, each player places any available reinforcement, initiative
         player first. If no reinforcements are available for the current turn, the phase is skipped

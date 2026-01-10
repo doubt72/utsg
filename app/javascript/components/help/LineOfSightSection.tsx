@@ -18,6 +18,7 @@ import { helpIndexByName, redNumber } from "./helpData";
 import { Link } from "react-router-dom";
 
 export default function LineOfSightSection() {
+  const section = "4.1"
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>();
 
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({});
@@ -148,7 +149,6 @@ export default function LineOfSightSection() {
 
   return (
     <div>
-      <h1>Line of Sight and Hindrance</h1>
       <p>
         Whenever a player would like one of their units to fire at the other player&apos;s units,
         that unit must have a clear <strong>line-of-sight</strong> (LOS) to the other unit for the attack to take
@@ -228,7 +228,7 @@ export default function LineOfSightSection() {
         {redNumber(8)}
         Sightlines along a wall block LOS to everything beyond them.
       </p>
-      <h2>Additional Rules</h2>
+      <h3>{section}.1. Additional Rules</h3>
       <p>
         Line-of-sight is symmetrical, so if (and only if) one unit one unit can see another unit,
         that unit can be seen in turn. Hindrance is mostly symmetrical, except (terrain) hindrance

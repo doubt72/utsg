@@ -1,11 +1,10 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { findHelpSection, helpIndex, HelpSection } from "../help/helpData";
 import Logo from "../Logo";
 import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function HelpDisplay() {
-  const navigate = useNavigate()
   const section: string = useParams().section ?? "1"
 
   const [sectionKey, setSectionKey] = useState<number[]>([])
@@ -22,18 +21,17 @@ export default function HelpDisplay() {
 
   const changeSection = (curr: number[]) => {
     setSectionKey(curr)
+    document.querySelector(`#s${curr.map(n => n+1).join("-")}`)?.scrollIntoView()
   }
 
   const onSubmit = (curr: number[]) => {
     changeSection(curr)
-    navigate(`/help/${curr.map(n => n+1).join(".")}`)
   }
 
   const mapSections = (l: HelpSection[], ll: number[]): JSX.Element => {
     return (
       <div>{l.map((s, i) => {
         const sec = ll.concat(i)
-        // TODO: remove this (and the ***'s) once we have a full set of docs
         const section = findHelpSection(sec)?.section
         return (
           <div key={sec.join(".")} className="ml1em nowrap">
@@ -58,11 +56,11 @@ export default function HelpDisplay() {
     let sections: JSX.Element[] = []
     help.forEach((sec, i) => {
       const key = ll.concat(i + 1)
-      const keyName = key.join(".")
+      const keyName = key.join("-")
       if (sec.section) {
-        const header = `${keyName}. ${sec.fullName}`
+        const header = `${key.join(".")}. ${sec.fullName}`
         sections.push(
-          <div key={keyName} id={keyName}>
+          <div key={keyName} id={`s${keyName}`}>
             { ll.length === 0 ?
                 <h1>{ header }</h1> :
                 <h2>{ header }</h2> }
@@ -78,13 +76,15 @@ export default function HelpDisplay() {
   }
 
   useEffect(() => {
-    changeSection(section.split(".").map(n => Number(n)-1))
     setAllSections(allMapSections(helpIndex, []))
+    const delays = [0, 75, 150, 250, 500, 1000]
+    // AFAIK there's no way to actually know when all the subcomponents are done
+    // rendering, so keep getting closer and closer until correct (the last few
+    // values should just invisibly navigate to the same place)
+    for (const delay of delays) {
+      setTimeout(() => changeSection(section.split(".").map(n => Number(n)-1)), delay)
+    }
   }, [])
-
-  useEffect(() => {
-    changeSection(section.split(".").map(n => Number(n)-1))
-  }, [location])
 
   useEffect(() => {
     setSectionList(mapSections(helpIndex, []))
@@ -105,7 +105,7 @@ export default function HelpDisplay() {
           <h3 className="ml075em">Table of Contents</h3>
           {sectionList}
         </div>
-        <div className="help-section">
+        <div className="help-sections">
           {allSections}
         </div>
       </div>

@@ -5,7 +5,6 @@ import { subtitleName, titleName } from "../../utilities/utilities";
 export default function IntroSection() {
   return (
     <div>
-      <h1>Introduction</h1>
       <div className="about-logo">
         <img src="/assets/logo-120.png" alt="Logo" />
         <div className="ml025em">

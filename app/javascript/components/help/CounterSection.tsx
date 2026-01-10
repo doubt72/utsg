@@ -34,6 +34,7 @@ export const makeIndex = (target: Unit | Feature | Marker) => {
 }
 
 export default function CounterSection() {
+  const section = "3.0"
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
 
   const [unitFeature, setUnitFeature] = useState<{ key: string, broken: boolean }>(
@@ -894,7 +895,6 @@ export default function CounterSection() {
 
   return (
     <div>
-      <h1>Game Counters</h1>
       <p>
         There are three kinds of on-map <strong>counters</strong> in the game:{" "}
         <strong>units</strong>, <strong>features</strong>, and <strong>markers</strong>. In addition
@@ -942,7 +942,7 @@ export default function CounterSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
-      <h2 className="mt05em">Counter Layout</h2>
+      <h3 className="mt05em">{section}.1. Counter Layout</h3>
       <p>
         Select the buttons on the right to see examples of various counter layouts. Additionally, a
         help tooltip is available in-game by mousing over the question mark icon in the upper right

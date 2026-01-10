@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { helpIndexByName } from "./helpData";
 
 export default function MainPhaseSection() {
+  const section = "5.2.3.0"
   const [showInitiative, setShowInitiative] = useState<JSX.Element | undefined>()
 
   const [player, setPlayer] = useState<Player>(1)
@@ -88,7 +89,6 @@ export default function MainPhaseSection() {
 
   return (
     <div>
-      <h1>Main Phase</h1>
       <p>
         During the main phase of each turn, the player with initiative can take various actions with
         their units (see the list below). Each action moves the marker on the initiative track, and
@@ -146,7 +146,7 @@ export default function MainPhaseSection() {
           the player may make a normal firing action instead.
         </li>
       </ol>
-      <h2>Initiative</h2>
+      <h3>{section}.1. Initiative</h3>
       <p>
         Initiative refers to two closely connected concepts: first, whichever player currently has
         the initiative is the player allowed to take the next action. Actions also cost a certain
@@ -170,7 +170,7 @@ export default function MainPhaseSection() {
         cost one or three. Passing moves the initiative one space in the other direction towards the
         player&apos;s side but flips the marker to the other player.
       </p>
-      <h2>Snipers</h2>
+      <h3>{section}.2. Snipers</h3>
       <p>
         If either player has a sniper, and the other player moves or fires an infantry unit, there
         will be a sniper check after the action (assualt and rout actions don&apos;t trigger snipers). The

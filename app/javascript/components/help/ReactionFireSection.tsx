@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 export default function ReactionFireSection() {
   return (
     <div>
-      <h1>Reaction Fire</h1>
       <p>
         Reaction fire follows all the same rules as{" "}
         <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire</Link>, but the action is

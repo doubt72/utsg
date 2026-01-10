@@ -17,6 +17,7 @@ import { Hexagon, HexagonFill } from "react-bootstrap-icons";
 import { redNumber } from "./helpData";
 
 export default function ElevationSection() {
+  const section = "4.2"
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>();
 
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({});
@@ -215,7 +216,6 @@ export default function ElevationSection() {
 
   return (
     <div>
-      <h1>Elevation</h1>
       <p>
         <strong>Elevation</strong> is indicated on the map by hex color (with higher elevations having darker
         brown colors).  Depressions (i.e., elevations below the rest of the map) and indicated
@@ -306,7 +306,7 @@ export default function ElevationSection() {
         {redNumber(8)}
         Hindrances are also cast directly downhill.
       </p>
-      <h2>Additional Rules</h2>
+      <h3>{section}.1. Additional Rules</h3>
       <p>
         Smoke is considered to have unlimited height, so always causes hindrance. Fire also always
         blocks line-of-sight, regardless of elevation difference.

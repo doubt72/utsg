@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 export default function IntensiveFireSection() {
   return (
     <div>
-      <h1>Intensive Fire</h1>
       <p>
         Intensive fire follows all the same rules as{" "}
         <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire</Link>, with the following

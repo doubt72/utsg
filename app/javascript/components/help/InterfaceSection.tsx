@@ -33,7 +33,7 @@ export default function InterfaceSection() {
       windowWidth = 1180;
     }
     const otherWidth = document.getElementById("index-for-size")?.offsetWidth;
-    setInnerWidth(windowWidth - (otherWidth ? otherWidth : 0) - 48);
+    setInnerWidth(windowWidth - (otherWidth ? otherWidth : 0) - 64);
   };
 
   useEffect(() => {
@@ -135,7 +135,6 @@ export default function InterfaceSection() {
 
   return (
     <div>
-      <h1>Game Interface</h1>
       <p>This is the main interface of the game, showing a scenario in progress:</p>
       {gameInterface}
       <p>

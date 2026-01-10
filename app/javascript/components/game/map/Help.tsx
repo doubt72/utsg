@@ -1,6 +1,10 @@
 import React from "react";
 import { HelpLayout } from "../../../utilities/graphics";
 
+export interface HelpSectionProps {
+  section: string[];
+}
+
 export function HelpOverlay(layout: HelpLayout): JSX.Element | undefined {
   return (
     <g>

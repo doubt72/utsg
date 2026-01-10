@@ -17,6 +17,7 @@ type PickTerrain = {
 }
 
 export default function TerrainSection() {
+  const section = "4.0"
   const [currentState, setCurrentState] = useState<PickTerrain>({ m: "g", t: "o" })
   const [currentTerrain, setCurrentTerrain] = useState<string>("open")
 
@@ -466,7 +467,6 @@ export default function TerrainSection() {
 
   return (
     <div>
-      <h1>Map Terrain</h1>
       <p>
         <strong>Terrain</strong> affects a number of things: in particular, movement (i.e., movement cost),
         cover, and hindrances or line-of-sight.  Terrain also has elevations, which has further effects
@@ -499,12 +499,12 @@ export default function TerrainSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
-      <h2 className="mt05em">Illustrated</h2>
+      <h3 className="mt05em">{section}.1. Illustrated</h3>
       <p>
         Select the buttons on the right to see the different types of terrain on the illustration below:
       </p>
       { updateSection }
-      <h2 className="mt05em">Terrain Table</h2>
+      <h3 className="mt05em">{section}.2. Terrain Table</h3>
       { terrainTable }
     </div>
   )

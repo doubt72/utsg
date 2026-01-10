@@ -3,9 +3,9 @@ import { helpIndexByName } from "./helpData";
 import { Link } from "react-router-dom";
 
 export default function FireSection() {
+  const section = "5.2.3.1"
   return (
     <div>
-      <h1>Fire</h1>
       <p>
         Firing is the act of one (or more) units attacking one (or more) opponent units, possibly
         breaking, reducing, or eliminating them. The rules for firing,{" "}
@@ -45,7 +45,7 @@ export default function FireSection() {
         require a targeting roll or ignores terrain) may be combine its attack with the unit
         carrying it, e.g., an infantry squad could combine its attack with a machine gun it carries.
       </p>
-      <h2>Types of Fire</h2>
+      <h3>{section}.1. Types of Fire</h3>
       <p>There are five basic types of fire actions:</p>
       <ul>
         <li>
@@ -122,7 +122,7 @@ export default function FireSection() {
         Firepower is also halved if using a turreted weapon and the turret is jammed, or using a
         hull-mounted weapon and the unit is immobilized.
       </p>
-      <h2>Firing Process</h2>
+      <h3>{section}.2. Firing Process</h3>
       <p>
         After choosing firing unit(s) and target(s), first determine if a targeting roll is needed
         (i.e., if the firepower is circled). Targets must be in range and if the weapon has a facing
@@ -282,7 +282,7 @@ export default function FireSection() {
         </li>
       </ol>
       <p>When fire is complete, mark all firing units as activated.</p>
-      <h2>Offboard Artillery</h2>
+      <h3>{section}.3. Offboard Artillery</h3>
       <p>
         Unlike other weapons, offboard artillery (radios) can be targeted at hexes with no units.
       </p>
@@ -322,7 +322,7 @@ export default function FireSection() {
         </tbody>
       </table>
       <p>Wherever the drift lands, treat that hex as being hit by regular area fire.</p>
-      <h2>Hit Effects</h2>
+      <h3>{section}.4. Hit Effects</h3>
       <p>The effect of fire varies by target.</p>
       <ul>
         <li>
@@ -396,7 +396,7 @@ export default function FireSection() {
         are unaffected). Vehicles are replaced with wrecks with the same size (flip the counter).
         Wrecks affect stacking (for both sides) but otherwise have no other effects.
       </p>
-      <h2>Morale Checks</h2>
+      <h3>{section}.5. Morale Checks</h3>
       <p>
         If any infantry units are hit (or is carrying an incendiary weapon that breaks during the
         firing action), they must perform morale checks. To perform a morale check, use the
@@ -417,7 +417,7 @@ export default function FireSection() {
           succeeds.
         </li>
       </ol>
-      <h2>Smoke</h2>
+      <h3>{section}.6. Smoke</h3>
       <p>
         If a targeted fire weapon can fire smoke (indicated by a dot over the firepower), they may
         choose to do so instead of firing on an enemy unit. Instead of choosing an enemy unit as a
@@ -461,7 +461,7 @@ export default function FireSection() {
         Offboard artillery firing smoke works the same way, except on a miss, smoke is placed in the
         drift hex.
       </p>
-      <h2>Blazes</h2>
+      <h3>{section}.7. Blazes</h3>
       <p>
         If a vehicle is destroyed, or an incendiary or area attack (mortar or offboard artillery or
         satchel charges) occurs in a hex, there is a chance of a fire (blaze) starting. If the base

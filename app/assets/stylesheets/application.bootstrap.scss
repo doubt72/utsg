@@ -540,7 +540,7 @@ div.custom-button-select:hover {
 .help-main {
   background-color: $gray-e;
   display: flex;
-  padding: 1em;
+  padding: 1em 0 1em 1em;
   max-width: 1380px;
   min-width: 1180px;
 }
@@ -550,34 +550,43 @@ div.custom-button-select:hover {
   border-radius: 0.33em;
   padding-bottom: 2em;
   padding-right: 1em;
+  height: calc(100vh - 32px);
+  min-width: 350px;
+  scroll-behavior: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .help-index-header {
   padding: 1em 0 1em 1em;
 }
 
-.help-section {
+.help-sections {
   display: flex;
   flex-flow: column;
-  margin-left: 1em;
+  padding: 0 1em;
   flex-grow: 10;
   border-radius: 0.33em;
+  height: calc(100vh - 32px);
+  scroll-behavior: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.help-section p {
+.help-sections p {
   margin-bottom: 1em;
 }
 
-.help-section h1 {
+.help-sections h1 {
   margin-bottom: 0.5em;
 }
 
-.help-section a {
+.help-sections a {
   text-decoration: none;
   color: $alert-orange;
 }
 
-.help-section a:hover {
+.help-sections a:hover {
   color: $lightish-green;
 }
 
@@ -627,12 +636,12 @@ button.help-section-unselected:hover {
   font-variant: small-caps;
 }
 
-.help-section li::marker {
+.help-sections li::marker {
   color: $dark-green;
   font-family: monospace;
 }
 
-.help-section li strong {
+.help-sections li strong {
   color: $dark-green;
   font-size: 16px;
   font-variant: small-caps;
@@ -652,16 +661,16 @@ button.help-section-unselected:hover {
   color: $darkish-green;
 }
 
-.help-section table {
+.help-sections table {
   margin-bottom: 1em;
 }
 
-.help-section table th {
+.help-sections table th {
   color: $dark-green;
   font-variant: small-caps;
 }
 
-.help-section table th,td {
+.help-sections table th,td {
   background-color: #DDD;
   border: 2px solid #EEE;
   padding: 0 8px;

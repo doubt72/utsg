@@ -54,9 +54,9 @@ export const sequenceOfTurn = (
 );
 
 export default function GameTurnSection() {
+  const section = "5.2.0"
   return (
     <div>
-      <h1>Game Turn</h1>
       <p>
         Each game has a fixed number of turns, mostly in the main phase as initiative goes back and
         forth between the players. When all of the turns have been completed, the winner is
@@ -66,7 +66,7 @@ export default function GameTurnSection() {
         The following sections of the documentation go into the details of the rules for how to play
         each turn and phase.
       </p>
-      <h2>Turn Sequence</h2>
+      <h3>{section}.1. Turn Sequence</h3>
       <p>
         The turn sequence is as follows:
       </p>

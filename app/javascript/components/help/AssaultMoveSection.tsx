@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { ShieldFill, XLg } from "react-bootstrap-icons";
 
 export default function AssaultMoveSection() {
+  const section = "5.2.3.5"
   return (
     <div>
-      <h1>Assault Movement</h1>
       <p>
         Assault movement is a special form of{" "}
         <Link to={`/help/${helpIndexByName("Move").join(".")}`}>movement</Link>, i.e., an action
@@ -47,7 +47,7 @@ export default function AssaultMoveSection() {
         resulting combined movement of zero) may not assault move. Mark units as exhausted after an
         assault move.
       </p>
-      <h2>Additional Actions</h2>
+      <h3>{section}.1. Additional Actions</h3>
       <p>
         Engineering units (marked with a dot over their movement) may clear obstacles such as mines
         or wire if they start in the same turn with them. No dice roll is required, success is

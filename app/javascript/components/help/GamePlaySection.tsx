@@ -22,9 +22,9 @@ export const sequenceOfPlay = (
 )
 
 export default function GamePlaySection() {
+  const section = "5.0"
   return (
     <div>
-      <h1>Game Play</h1>
       <p>
         <strong>{titleNameStyle}</strong> games are played between two players, generally an Allied
         player (player one) and an Axis player (player two). At a high level, each game has a setup
@@ -37,7 +37,7 @@ export default function GamePlaySection() {
         The following sections of the documentation go into the details of the rules for how to play
         each turn and phase.
       </p>
-      <h2>Sequence of Play</h2>
+      <h3>{section}.1. Sequence of Play</h3>
       <p>
         The sequence of play is as follows:
       </p>

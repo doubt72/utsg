@@ -110,7 +110,6 @@ export default function CounterFacingSection() {
 
   return (
     <div>
-      <h1>Counter Facing</h1>
       <p>
         Some units have <strong>facing</strong>, i.e., they are always pointed in some particular
         direction. This applies to vehicles and guns, not infantry or infantry weapons. The forward

@@ -5,9 +5,9 @@ import { CancelGlyph, MoveGlyph } from "../utilities/buttons";
 import { Link } from "react-router-dom";
 
 export default function MovementSection() {
+  const section = "5.2.3.3"
   return (
     <div>
-      <h1>Movement</h1>
       <p>
         Movement is the action of moving a unit from one hex to another, or (if a unit rotates) the
         action of rotating in a hex, or performing other additional actions, or some combination of
@@ -124,7 +124,7 @@ export default function MovementSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
-      <h2 className="mt1em">Additional Actions</h2>
+      <h3 className="mt1em">{section}.1. Additional Actions</h3>
       <p>
         Infantry units may pick up or drop infantry weapons for one movement point. If the weapon
         has an encumbrance movement, the infantry&apos;s movement is still reduced by that amount
@@ -237,7 +237,7 @@ export default function MovementSection() {
         <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link>{" "}
         instead.
       </p>
-      <h2>Minefields</h2>
+      <h3>{section}.2. Minefields</h3>
       <p>
         If moving into a minefield, all movement must stop, and an attack occurs (the attack is
         skipped if infantry are moving into an antitank minefield, or vehicles move into an

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 export default function RushSection() {
   return (
     <div>
-      <h1>Rush Movement</h1>
       <p>
         Rush movement follows all the same rules as{" "}
         <Link to={`/help/${helpIndexByName("Move").join(".")}`}>movement</Link>, with the following
