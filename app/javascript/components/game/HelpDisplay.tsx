@@ -1,15 +1,49 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { findHelpSection, helpIndex, HelpSection } from "../help/helpData";
 import Logo from "../Logo";
 import { subtitleName, titleName } from "../../utilities/utilities";
+import { useOnInView } from "react-intersection-observer";
+
+interface SectionComponentProps {
+  id: string,
+  header: string,
+  ll: number[],
+  section: JSX.Element,
+  setState: React.Dispatch<React.SetStateAction<{ [index: string]: boolean }>>
+}
+
+function SectionComponent({ id, header, ll, section, setState }: SectionComponentProps) {
+  const obRef = useOnInView(
+    (ob) => {
+      if (ob) {
+        setState(s => { return { ...s, [id]: true } })
+      } else {
+        setState(s => { return { ...s, [id]: false } })
+      }
+    }
+  )
+
+  return (
+    <div id={`s${id}`} ref={o => {obRef(o)}}>
+      { ll.length === 0 ?
+          <h1>{ header }</h1> :
+          <h2>{ header }</h2> }
+      { section }
+    </div>
+  )
+}
 
 export default function HelpDisplay() {
+  const navigate = useNavigate()
   const section: string = useParams().section ?? "1"
 
   const [sectionKey, setSectionKey] = useState<number[]>([])
   const [allSections, setAllSections] = useState<JSX.Element[]>([])
   const [sectionList, setSectionList] = useState<JSX.Element | undefined>()
+  const [visible, setVisible] = useState<{ [index: string]: boolean }>({})
+
+
 
   const compareList = (a: number[], b: number[]): boolean => {
     if (a.length !== b.length) { return false }
@@ -26,6 +60,7 @@ export default function HelpDisplay() {
 
   const onSubmit = (curr: number[]) => {
     changeSection(curr)
+    navigate(`/help/${curr.map(n => n+1).join(".")}`)
   }
 
   const mapSections = (l: HelpSection[], ll: number[]): JSX.Element => {
@@ -60,12 +95,9 @@ export default function HelpDisplay() {
       if (sec.section) {
         const header = `${key.join(".")}. ${sec.fullName}`
         sections.push(
-          <div key={keyName} id={`s${keyName}`}>
-            { ll.length === 0 ?
-                <h1>{ header }</h1> :
-                <h2>{ header }</h2> }
-            { sec.section }
-          </div>
+          <SectionComponent key={keyName} id={keyName} header={header} ll={ll} section={sec.section}
+                            setState={setVisible}>
+          </SectionComponent>
         )
         if (sec.children) {
           sections = sections.concat(allMapSections(sec.children, key))
@@ -76,11 +108,13 @@ export default function HelpDisplay() {
   }
 
   useEffect(() => {
-    setAllSections(allMapSections(helpIndex, []))
+    const sections = allMapSections(helpIndex, [])
+    setAllSections(sections)
     const delays = [0, 75, 150, 250, 500, 1000]
     // AFAIK there's no way to actually know when all the subcomponents are done
     // rendering, so keep getting closer and closer until correct (the last few
-    // values should just invisibly navigate to the same place)
+    // values should just invisibly navigate to the same place, even on slower
+    // machines most browsers should get there by ~200ms)
     for (const delay of delays) {
       setTimeout(() => changeSection(section.split(".").map(n => Number(n)-1)), delay)
     }
@@ -89,6 +123,14 @@ export default function HelpDisplay() {
   useEffect(() => {
     setSectionList(mapSections(helpIndex, []))
   }, [sectionKey])
+
+  useEffect(() => {
+    const sections: string[] = []
+    for (const key in visible) {
+      if (visible[key]) { sections.push(key)}
+    }
+    if (sections.length > 0) { setSectionKey(sections.sort()[0].split("-").map(n => Number(n) - 1)) }
+  }, [visible])
 
   return (
     <div className="help-page" style={{ minHeight: window.innerHeight }}>
