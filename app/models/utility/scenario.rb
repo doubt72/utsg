@@ -44,6 +44,13 @@ module Utility
         ::Scenarios.const_get(name).full_record
       end
 
+      # Used for version validation
+      def checksum(id)
+        scenario = scenario_by_id(id)
+        version = scenario[:version] + scenario[:status]
+        "#{version}-#{Digest::MD5.hexdigest(scenario.to_json)}"
+      end
+
       def stats(id)
         one = Game.where(
           "player_one_id = winner_id AND player_one_id <> player_two_id AND scenario = ?", id

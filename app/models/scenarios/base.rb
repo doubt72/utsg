@@ -3,7 +3,8 @@
 module Scenarios
   class Base
     ID = ""
-    STATUS = nil
+    STATUS = ""
+    VERSION = "0.1"
 
     class << self
       def index_record
@@ -11,6 +12,7 @@ module Scenarios
           id: self::ID,
           name: self::NAME,
           status: self::STATUS,
+          version: self::VERSION,
           string: self::NAME.downcase,
           allies: self::ALLIES,
           axis: self::AXIS,
