@@ -6,6 +6,7 @@ module Utility
       include Utility::Scenario::Definitions
       include Utility::Scenario::Filter
       include Utility::Scenario::Sort
+      include Utility::Scenario::Cache
 
       def all_scenarios(options = {})
         scenarios = ::Scenarios.constants.reject { |k| %i[Base Scenario999].include?(k) }

@@ -181,7 +181,7 @@ RSpec.describe Api::V1::GamesController do
       expect do
         post :create, params: {
           game: {
-            name: "new game", scenario: "E01", player_one: user1.username,
+            name: "new game", scenario: "001", player_one: user1.username,
             metadata: '{ "turn": 2 }',
           },
         }
@@ -190,13 +190,31 @@ RSpec.describe Api::V1::GamesController do
       expect(Game.last.name).to be == "new game"
     end
 
+    it "caches scenario version data on creation" do
+      login(user1)
+
+      expect do
+        post :create, params: {
+          game: {
+            name: "new game", scenario: "001", player_one: user1.username,
+            metadata: '{ "turn": 2 }',
+          },
+        }
+      end.to change { ScenarioVersion.count }.by(1)
+
+      version = ScenarioVersion.last
+      expect(version.scenario).to be == "001"
+      expect(version.version).to be == Scenarios::Scenario001::VERSION
+      expect(version.data[0..17]).to be == "{:id=>\"001\", :name"
+    end
+
     it "creates initial actions" do
       login(user1)
 
       expect do
         post :create, params: {
           game: {
-            name: "new game", scenario: "E01", player_one: user1.username,
+            name: "new game", scenario: "001", player_one: user1.username,
             metadata: '{ "turn": 2 }',
           },
         }

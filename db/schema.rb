@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_02_085909) do
+ActiveRecord::Schema[7.0].define(version: 2026_01_16_082452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_02_085909) do
     t.jsonb "metadata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "scenario_version", null: false
     t.index ["created_at"], name: "index_games_on_created_at"
     t.index ["current_player_id"], name: "index_games_on_current_player_id"
     t.index ["id"], name: "index_games_on_id"
@@ -75,6 +76,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_07_02_085909) do
     t.index ["scenario"], name: "index_ratings_on_scenario"
     t.index ["user_id", "scenario"], name: "index_ratings_on_user_id_and_scenario", unique: true
     t.index ["user_id"], name: "index_ratings_on_user_id"
+  end
+
+  create_table "scenario_versions", force: :cascade do |t|
+    t.string "scenario", null: false
+    t.string "version", null: false
+    t.string "data", null: false
+    t.index ["scenario", "version"], name: "index_scenario_versions_on_scenario_and_version", unique: true
   end
 
   create_table "users", force: :cascade do |t|

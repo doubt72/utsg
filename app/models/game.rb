@@ -14,6 +14,7 @@ class Game < ApplicationRecord
   validates :owner, presence: true
   validates :name, presence: true
   validates :scenario, presence: true
+  validates :scenario_version, presence: true
   validates :state, presence: true
 
   validate :valid_players
@@ -48,7 +49,7 @@ class Game < ApplicationRecord
   end
 
   def self.create_game(params)
-    game = Game.create(params)
+    game = ::Utility::Scenario.create_game_with_version(params)
     if game.persisted?
       GameAction.create(sequence: 1, game:, user: game.owner, player: 1,
                         data: { action: "create", old_initiative: 0 })
@@ -64,7 +65,7 @@ class Game < ApplicationRecord
 
   def body
     {
-      id:, name:, scenario:, state:,
+      id:, name:, scenario:, scenario_version:, state:,
       owner: owner.username,
       player_one: player_one&.username,
       player_two: player_two&.username,
