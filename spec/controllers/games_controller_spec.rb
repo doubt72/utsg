@@ -205,7 +205,7 @@ RSpec.describe Api::V1::GamesController do
       version = ScenarioVersion.last
       expect(version.scenario).to be == "001"
       expect(version.version).to be == Scenarios::Scenario001::VERSION
-      expect(version.data[0..17]).to be == "{:id=>\"001\", :name"
+      expect(version.data[..18]).to be == "{\"id\":\"001\",\"name\":"
     end
 
     it "creates initial actions" do
