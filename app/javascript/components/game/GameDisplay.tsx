@@ -51,7 +51,8 @@ export default function GameDisplay() {
     getAPI(`/api/v1/games/${id}`, {
       ok: response => response.json().then(json => {
         const code = json.scenario
-        getAPI(`/api/v1/scenarios/${code}`, {
+        const version = json.scenario_version
+        getAPI(`/api/v1/scenarios/${code}?version=${version}`, {
           ok: response => response.json().then(scenario => {
             json.scenario = scenario
             const g = new Game(json, gameNotification)

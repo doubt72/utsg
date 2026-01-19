@@ -9,6 +9,7 @@ type ScenarioBaseData = {
   id: string;
   name: string;
   status: string;
+  version: string;
   allies: string[];
   axis: string[];
 }
@@ -43,6 +44,7 @@ export default class Scenario {
   name: string;
   author: string;
   status: string;
+  version: string;
   alliedFactions: string[];
   axisFactions: string[];
   date: [number, number, number];
@@ -61,6 +63,7 @@ export default class Scenario {
     this.name = data.name
     this.author = data.metadata.author
     this.status = data.status ?? "p"
+    this.version = data.version
 
     this.alliedFactions = data.allies
     this.axisFactions = data.axis

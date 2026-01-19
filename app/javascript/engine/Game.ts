@@ -23,6 +23,7 @@ export type GameData = {
   id: number;
   name: string;
   scenario: ScenarioData;
+  scenario_version: string;
   owner: string;
 
   state?: string;
@@ -55,6 +56,7 @@ export default class Game {
   id: number;
   name: string;
   scenario: Scenario;
+  scenarioVersion: string;
   ownerName: string;
   playerOneName: string = "";
   playerTwoName: string = "";
@@ -97,6 +99,7 @@ export default class Game {
     this.id = data.id
     this.name = data.name
     this.scenario = new Scenario(data.scenario, this)
+    this.scenarioVersion = this.scenario.version
     this.ownerName = data.owner
     this.playerOneName = data.player_one
     this.playerTwoName = data.player_two
