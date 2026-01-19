@@ -14,6 +14,14 @@ module Utility
         end
         Game.create(params.merge(scenario_version:))
       end
+
+      def scenario_by_version_id(id, version)
+        if version
+          data = ScenarioVersion.find_by(scenario: id, version:)&.data
+          data = JSON.parse(data) if data
+        end
+        data || scenario_by_id(id)
+      end
     end
   end
 end

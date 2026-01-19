@@ -20,7 +20,9 @@ module Api
       end
 
       def show
-        render json: Utility::Scenario.scenario_by_id(params[:id]), status: :ok
+        render json: Utility::Scenario.scenario_by_version_id(
+          params[:id], params[:version]
+        ), status: :ok
       end
 
       def allied_factions

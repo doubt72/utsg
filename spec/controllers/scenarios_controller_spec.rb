@@ -4,6 +4,7 @@ require "rails_helper"
 
 RSpec.describe Api::V1::ScenariosController do
   let(:scenario_name) { "xxx Spec Test xxx" }
+  let(:real_scenario_name) { "A Straightforward Proposition" }
 
   before :all do
     unless defined?(Scenarios::Scenario000)
@@ -162,6 +163,7 @@ RSpec.describe Api::V1::ScenariosController do
         scenario = Utility::Scenario.scenario_by_id(d["id"])
         x, y = scenario[:metadata][:map_data][:layout]
         size = x + y
+        expect(last <=> size).to be >= 0
         last = size
       end
     end
@@ -393,6 +395,31 @@ RSpec.describe Api::V1::ScenariosController do
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["name"]).to be == scenario_name
+    end
+
+    it "gets versioned scenario" do
+      get :show, params: { id: "001", version: "0.1" }
+
+      expect(response.status).to be == 200
+      json = JSON.parse(response.body)
+      expect(json["name"]).to be == real_scenario_name
+      expect(json["version"]).to be == "0.1"
+    end
+
+    it "gets cached scenario" do
+      test_data = Utility::Scenario.scenario_by_id("001")
+      test_data[:name] = "new name"
+      test_data[:version] = "0.01"
+      ScenarioVersion.create(
+        scenario: "001", version: "0.01", data: test_data.to_json
+      )
+
+      get :show, params: { id: "001", version: "0.01" }
+
+      expect(response.status).to be == 200
+      json = JSON.parse(response.body)
+      expect(json["name"]).to be == "new name"
+      expect(json["version"]).to be == "0.01"
     end
   end
 
