@@ -21,7 +21,7 @@ function SectionComponent({ id, header, ll, section, setState }: SectionComponen
       } else {
         setState(s => { return { ...s, [id]: false } })
       }
-    }
+    }, { threshold: 0.02 }
   )
 
   return (
@@ -42,8 +42,6 @@ export default function HelpDisplay() {
   const [allSections, setAllSections] = useState<JSX.Element[]>([])
   const [sectionList, setSectionList] = useState<JSX.Element | undefined>()
   const [visible, setVisible] = useState<{ [index: string]: boolean }>({})
-
-
 
   const compareList = (a: number[], b: number[]): boolean => {
     if (a.length !== b.length) { return false }
