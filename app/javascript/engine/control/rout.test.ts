@@ -277,7 +277,11 @@ describe("rout tests", () => {
 
       game.gameState = new RoutState(game, true)
       expect(game.routState.routPathTree).toBe(false)
-      // Can't optionally rout off map
+      game.routState.finish()
+      expect(game.initiative).toBe(-1)
+
+      const all = map.allCounters
+      expect(all.length).toBe(0)
     })
 
     test("complete rout action", () => {

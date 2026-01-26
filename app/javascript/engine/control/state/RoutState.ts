@@ -38,6 +38,25 @@ export default class RoutState extends BaseState {
     return this.game.scenario.map.countersAt(new Coordinate(first.x, first.y))
   }
 
+  finish() {
+    const action = new GameAction({
+      user: this.game.currentUser,
+      player: this.player,
+      data: {
+        action: this.optional ? "rout_self" : "rout_move",
+        old_initiative: this.game.initiative,
+        path: [],
+        target: this.selection.map(s => {
+          return {
+            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
+          }
+        }),
+        add_action: [],
+      },
+    }, this.game)
+    this.execute(action)
+  }
+
   finishXY(x?: number, y?: number) {
     let path: Coordinate[] = []
     if (x !== undefined && y !== undefined) {
