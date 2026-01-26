@@ -1,4 +1,6 @@
 High Priority Features/Bug Fixes:
+  - Switch main page game status to websocket, not polling
+
   - Housekeeping
     - Overstacking
     - Status updates
@@ -18,35 +20,29 @@ Future Features/Bug Fixes:
     - Automatically undo excessive deployments
     - Handle undo after too late
     - Handle action after undo happens
-  - Docs
-    - Prep Phase
-      - Rallying
-    - Cleanup Phase
-      - Close Combat
-      - Housekeeping
 
+  - Bug on successful rout (unknown crash)
+  - Fix dragging of reinforcement panel on scaled display
   - Always reaction fire, loss of initiative or not (after moves?)
   - Skip reaction fire when no LOS
   - Don't unselect first initial selection when cancelling move/fire/assault
-  - Handle map scale and such settings gone wrong
+
+  - Handle map scale and such settings gone wrong (reset button in prefs?)
+
   - Show Terrain in counter overlay
   - Ability to kick players
   - Implement Help Button linking to game context
   - Fix hindrance bug
     - Through two fence corner intersections
     - Also for hindrance at higher elevation
-  - Add Scenario Versioning, support games, copy new versions to DB, load scenarios from DB
-      (So scenarios can be modified without breaking existing games)
-  - Switch main page game status to websocket, not polling
   - Fix stacking parent/children indicators when showing markers
     - Including hull
-  - Automate deploys
+  - Automate deploys (open automatically?)
+
   - Tanks with 1 man turrets/things like that ?
   - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
-
   - Improved move validation/synchronization to block duplicate/illegal moves
   - Break up tests / large files
-
   - ?? Fix flickering of control buttons?
   - ?? Refactor, simplify firing action
   - ?? Show ALL for movement into mines or wire

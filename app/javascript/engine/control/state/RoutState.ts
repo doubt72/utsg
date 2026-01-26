@@ -14,13 +14,13 @@ export default class RoutState extends BaseState {
   routPathTree: RoutPathTree | false;
 
   constructor(game: Game, optional: boolean) {
-    const selection = game.scenario.map.currentSelection[0]
-    const player = selection.unit.playerNation === game.currentPlayerNation ?
-      game.currentPlayer : game.opponentPlayer
+    const unit = game.routNeeded[0].unit
+    const counter = game.scenario.map.findCounterById(unit.id) as Counter
+    const player = unit.playerNation === game.currentPlayerNation ? game.currentPlayer : game.opponentPlayer
     super(game, stateType.Rout, player)
-    const hex = selection.hex as Coordinate
-    this.selection = [{ x: hex.x, y: hex.y, id: selection.unit.id, counter: selection }]
-    this.routPathTree = findRoutPathTree(game, hex, selection.unit.currentMovement, player, selection.unit)
+    const hex = game.routNeeded[0].loc
+    this.selection = [{ x: hex.x, y: hex.y, id: unit.id, counter }]
+    this.routPathTree = findRoutPathTree(game, hex, unit.currentMovement, player, unit)
     this.optional = optional
   }
 

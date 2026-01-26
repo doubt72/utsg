@@ -270,9 +270,9 @@ describe("rout tests", () => {
       const unit = new Unit(testGInf)
       unit.status = unitStatus.Broken
       unit.id = "test1"
-      unit.select()
       const loc = new Coordinate(4, 2)
       map.addCounter(loc, unit)
+      game.routNeeded.push({ unit, loc })
       organizeStacks(map)
 
       game.gameState = new RoutState(game, true)
@@ -286,8 +286,8 @@ describe("rout tests", () => {
       const unit = new Unit(testGInf)
       unit.status = unitStatus.Broken
       unit.id = "test1"
-      unit.select()
       const loc = new Coordinate(0, 2)
+      game.routNeeded.push({ unit, loc })
       map.addCounter(loc, unit)
       organizeStacks(map)
 
@@ -320,8 +320,8 @@ describe("rout tests", () => {
       const unit = new Unit(testGInf)
       unit.status = unitStatus.Broken
       unit.id = "test1"
-      unit.select()
       const loc = new Coordinate(0, 2)
+      game.routNeeded.push({ unit, loc })
       map.addCounter(loc, unit)
       const unit2 = new Unit(testGMG)
       unit2.id = "test2"
@@ -366,8 +366,8 @@ describe("rout tests", () => {
       const unit = new Unit(testGInf)
       unit.status = unitStatus.Broken
       unit.id = "test1"
-      unit.select()
       const loc = new Coordinate(0, 2)
+      game.routNeeded.push({ unit, loc })
       map.addCounter(loc, unit)
       const unit2 = new Unit(testGGun)
       unit2.id = "test2"
