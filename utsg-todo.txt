@@ -21,7 +21,6 @@ Future Features/Bug Fixes:
     - Handle undo after too late
     - Handle action after undo happens
 
-  - Bug on successful rout (unknown crash)
   - Fix dragging of reinforcement panel on scaled display
   - Always reaction fire, loss of initiative or not (after moves?)
   - Skip reaction fire when no LOS

@@ -318,6 +318,40 @@ describe("rout tests", () => {
       expect(all[0].unit.routed).toBe(false)
     })
 
+    test("complete self rout action", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.status = unitStatus.Broken
+      unit.id = "test1"
+      unit.select()
+      const loc = new Coordinate(0, 2)
+      map.addCounter(loc, unit)
+      organizeStacks(map)
+
+      game.gameState = new RoutState(game, true)
+      const tree = game.routState.routPathTree as RoutPathTree
+      expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
+
+      expect(game.initiative).toBe(0)
+      game.routState.finishXY(4, 2)
+      expect(game.initiative).toBe(-1)
+
+      let all = map.allCounters
+      expect(all.length).toBe(1)
+      expect(all[0].hex?.x).toBe(4)
+      expect(all[0].hex?.y).toBe(2)
+      expect(all[0].unit.routed).toBe(true)
+
+      game.executeUndo()
+      expect(game.initiative).toBe(0)
+      all = map.allCounters
+      expect(all.length).toBe(1)
+      expect(all[0].hex?.x).toBe(0)
+      expect(all[0].hex?.y).toBe(2)
+      expect(all[0].unit.routed).toBe(false)
+    })
+
     test("rout drops weapon", () => {
       const game = createBlankGame()
       const map = game.scenario.map
