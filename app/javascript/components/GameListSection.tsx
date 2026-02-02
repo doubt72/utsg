@@ -8,9 +8,8 @@ interface GameListSectionProps {
   user?: string;
 }
 
-export default function GameListSection({ scope, user}: GameListSectionProps) {
+export default function GameListSection({ scope, user }: GameListSectionProps) {
   const [page, setPage] = useState(0)
-  const [reload, setReload] = useState(0)
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [games, setGames] = useState([])
 
@@ -34,15 +33,7 @@ export default function GameListSection({ scope, user}: GameListSectionProps) {
         })
       }
     })
-  }, [page, reload])
-
-  const pollTime = 10000 // 10 seconds
-  useEffect(() => {
-    setInterval(() => {
-      // TODO switch this to a cable, this could be a lot of requests
-      setReload(r => r + 1)
-    }, pollTime)
-  }, [])
+  }, [page])
 
   const scrollUp = scroll.up ?
     <div onClick={() => setPage(page - 1)}><CaretUpFill /></div> :

@@ -39,7 +39,7 @@ class GameAction < ApplicationRecord
 
     update!(undone: true)
 
-    ActionCable.server.broadcast("actions-#{game_id || 0}", { body: })
+    broadcast
     true
   end
 

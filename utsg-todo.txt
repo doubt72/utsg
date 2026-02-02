@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Switch main page game status to websocket, not polling
-
   - Housekeeping
     - Overstacking
     - Status updates
@@ -21,6 +19,7 @@ Future Features/Bug Fixes:
     - Handle undo after too late
     - Handle action after undo happens
 
+  - Hotkeys and context buttons
   - Fix dragging of reinforcement panel on scaled display
   - Always reaction fire, loss of initiative or not (after moves?)
   - Skip reaction fire when no LOS
