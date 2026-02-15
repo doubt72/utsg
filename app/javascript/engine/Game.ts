@@ -38,9 +38,19 @@ export type GameData = {
   suppress_network?: boolean;
 }
 
-export type GamePhase = 0 | 1 | 2 | 3
+export type GamePhase = "deploy" | "prep" | "main" | "cleanup"
 export const gamePhaseType: { [index: string]: GamePhase } = {
-  Deployment: 0, Prep: 1, Main: 2, Cleanup: 3,
+  Deployment: "deploy", Prep: "prep", Main: "main", Cleanup: "cleanup",
+}
+
+export type PrepSubphase = "rally" | "precip"
+export const prepSubphaseType: { [index: string]: PrepSubphase } = {
+  Rally: "rally", Precip: "precip"
+}
+
+export type CleanupSubphase = "overstack" | "status" | "smoke" | "fire" | "weather"
+export const cleanupSubphaseType: { [index: string]: CleanupSubphase } = {
+  Overstack: "overstack", Status: "status", Smoke: "smoke", Fire: "fire", Weather: "weather"
 }
 
 export type CloseProgress = "nr" | "nc" | "d"
@@ -50,7 +60,7 @@ export const closeProgress: { [index: string]: CloseProgress } = {
 
 export type SimpleCheck = { unit: Unit, loc: Coordinate }
 export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
-export type closeCheck = { loc: Coordinate, state: CloseProgress, iReduce: number, oReduce: number }
+export type CloseCheck = { loc: Coordinate, state: CloseProgress, iReduce: number, oReduce: number }
 
 export default class Game {
   id: number;
@@ -93,7 +103,10 @@ export default class Game {
   sniperNeeded: SimpleCheck[];
   routCheckNeeded: SimpleCheck[];
   routNeeded: SimpleCheck[];
-  closeNeeded: closeCheck[];
+  closeNeeded: CloseCheck[];
+  overstackNeeded: SimpleCheck[];
+  smokeCheckNeeded: SimpleCheck[];
+  fireCheckNeeded: SimpleCheck[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -125,6 +138,9 @@ export default class Game {
     this.routCheckNeeded = []
     this.routNeeded = []
     this.closeNeeded = []
+    this.overstackNeeded = []
+    this.smokeCheckNeeded = []
+    this.fireCheckNeeded = []
 
     this.loadAllActions()
   }
@@ -587,6 +603,7 @@ export default class Game {
         this.closeReinforcementPanel = true
       }
     } else if (oldPhase === gamePhaseType.Prep) {
+      // TODO: refactor for subphrases
       if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {
         return
       }
@@ -612,6 +629,7 @@ export default class Game {
         previousAction = this.actions[index--]
       }
       if (this.lastAction?.type === "pass" && previousAction?.type === "pass") {
+        // TODO: refactor for subphases
         this.executeAction(new GameAction({
           player: this.currentPlayer, user: this.currentUser, data: {
             action: "info", message: "both players have passed, ending phase",

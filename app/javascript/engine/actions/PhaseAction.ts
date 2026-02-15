@@ -7,6 +7,7 @@ import BaseAction from "./BaseAction";
 export default class PhaseAction extends BaseAction {
   oldPhase: GamePhase;
   newPhase: GamePhase;
+  // TODO: refactor for subphases
   oldTurn: number;
   newTurn: number;
   newPlayer: Player;

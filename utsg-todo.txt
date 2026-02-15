@@ -1,10 +1,16 @@
 High Priority Features/Bug Fixes:
-  - Housekeeping
-    - Overstacking
-    - Status updates
-    - Smoke
-    - Weather
-  - Rally/Fix
+  - Subphases for phase action
+  - State/check for overstacking
+  - State/check for smoke
+  - State/check for fire
+  - Action/Test overstacking
+  - Action/Test status updates
+  - Action/Test smoke
+  - Action/Test fire
+  - Action/Test weather
+  - Action/Test rally
+  - Action/Test precip
+
   - Add exhausted to units after CloseCombat
     - But clear if still in contact
   - Disable move if in contact
@@ -22,7 +28,8 @@ Future Features/Bug Fixes:
   - Hotkeys and context buttons
   - Fix dragging of reinforcement panel on scaled display
   - Always reaction fire, loss of initiative or not (after moves?)
-  - Skip reaction fire when no LOS
+    - Skip reaction fire when no LOS
+    - Exclude Area fire
   - Don't unselect first initial selection when cancelling move/fire/assault
 
   - Handle map scale and such settings gone wrong (reset button in prefs?)

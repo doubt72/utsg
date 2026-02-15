@@ -5,11 +5,12 @@ import GameAction, { GameActionAddActionType } from "../../GameAction";
 import Unit from "../../Unit";
 
 export type StateType = "d" | "f" | "m" | "am" | "bd" | "i" | "ip" | "mc" | "s" | "r" |
-  "ra" | "rc" | "rf" | "cc"
+  "ra" | "rc" | "rf" | "cc" | "os" | "sc" | "fc" | "vw"
 export const stateType: { [index: string]: StateType } = {
   Deploy: "d", Fire: "f", Move: "m", Assault: "am", Breakdown: "bd", Initiative: "i",
   Pass: "ip", MoraleCheck: "mc", Sniper: "s", Rout: "r", RoutAll: "ra", RoutCheck: "rc",
-  Reaction: "rf", CloseCombat: "cc",
+  Reaction: "rf", CloseCombat: "cc", Overstack: "os", SmokeCheck: "sc", FireCheck: "fc",
+  VariableWeather: "vw"
 }
 
 export type StateSelection = {
