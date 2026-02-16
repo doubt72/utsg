@@ -38,19 +38,11 @@ export type GameData = {
   suppress_network?: boolean;
 }
 
-export type GamePhase = "deploy" | "prep" | "main" | "cleanup"
+export type GamePhase = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 export const gamePhaseType: { [index: string]: GamePhase } = {
-  Deployment: "deploy", Prep: "prep", Main: "main", Cleanup: "cleanup",
-}
-
-export type PrepSubphase = "rally" | "precip"
-export const prepSubphaseType: { [index: string]: PrepSubphase } = {
-  Rally: "rally", Precip: "precip"
-}
-
-export type CleanupSubphase = "overstack" | "status" | "smoke" | "fire" | "weather"
-export const cleanupSubphaseType: { [index: string]: CleanupSubphase } = {
-  Overstack: "overstack", Status: "status", Smoke: "smoke", Fire: "fire", Weather: "weather"
+  Deployment: 0, PrepRally: 1, PrepPrecip: 2, Main: 3, CleanupCloseCombat: 4,
+  CleanupOverstack: 5, CleanupStatus: 6, CleanupSmoke: 7, CleanupFire: 8,
+  CleanupWeather: 9,
 }
 
 export type CloseProgress = "nr" | "nc" | "d"
@@ -597,19 +589,38 @@ export default class Game {
         } else {
           phaseData.new_player = togglePlayer(this.currentPlayer)
           phaseData.new_phase = this.currentPlayer === this.scenario.firstAction ?
-            gamePhaseType.Deployment : gamePhaseType.Prep
+            gamePhaseType.Deployment : gamePhaseType.PrepRally
         }
         this.executeAction(new GameAction(data, this), backendSync)
         this.closeReinforcementPanel = true
       }
-    } else if (oldPhase === gamePhaseType.Prep) {
-      // TODO: refactor for subphrases
+    } else if (oldPhase === gamePhaseType.PrepRally) {
       if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {
         return
       }
       this.executeAction(new GameAction({
         player: this.currentPlayer, user: this.currentUser, data: {
           action: "info", message: "no broken units or jammed weapons, skipping phase",
+          old_initiative: this.initiative,
+        }
+      }, this), backendSync)
+      if (this.currentPlayer === this.scenario.firstAction) {
+        // TODO: switch to initiative player
+        phaseData.new_player = togglePlayer(this.currentPlayer)
+        phaseData.new_phase = oldPhase
+      } else {
+        phaseData.new_player = togglePlayer(this.currentPlayer)
+        phaseData.new_phase = gamePhaseType.PrepPrecip
+      }
+      this.executeAction(new GameAction(data, this), backendSync)
+    } else if (oldPhase === gamePhaseType.PrepPrecip) {
+      // TODO: implement precipitation
+      // if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {
+      //   return
+      // }
+      this.executeAction(new GameAction({
+        player: this.currentPlayer, user: this.currentUser, data: {
+          action: "info", message: "preciptiation not implemented, skipping phase",
           old_initiative: this.initiative,
         }
       }, this), backendSync)
@@ -636,7 +647,7 @@ export default class Game {
             old_initiative: this.initiative,
           }
         }, this), backendSync)
-        phaseData.new_phase = gamePhaseType.Cleanup
+        phaseData.new_phase = gamePhaseType.CleanupCloseCombat
         this.executeAction(new GameAction(data, this), backendSync)
       }
     }

@@ -323,7 +323,7 @@ describe("game action tests", () => {
     expect(game.gameState).toBe(undefined)
     expect(game.initiative).toBe(0)
     expect(game.currentPlayer).toBe(2)
-    expect(game.phase).toBe(gamePhaseType.Cleanup)
+    expect(game.phase).toBe(gamePhaseType.CleanupCloseCombat)
     expect(reactionFireCheck(game)).toBe(false)
   })
 

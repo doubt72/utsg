@@ -66,7 +66,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     }
     actions.unshift({ type: "deploy" })
     return actions
-  } else if (game.phase === gamePhaseType.Prep) {
+  } else if (game.phase === gamePhaseType.PrepRally) {
+    return actions
+  } else if (game.phase === gamePhaseType.PrepPrecip) {
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)

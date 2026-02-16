@@ -8,7 +8,7 @@ import BaseState, { stateType } from "./BaseState";
 
 export function closeCombatCheck(game: Game): boolean {
   if (game.gameState) { return false }
-  if (game.phase !== gamePhaseType.Cleanup) { return false }
+  if (game.phase !== gamePhaseType.CleanupCloseCombat) { return false }
   for (let i = game.lastActionIndex; i >= 0; i--) {
     const action = game.actions[i]
     if (action.type === "close_combat_finish") { return false }

@@ -51,7 +51,8 @@ describe("action integration test", () => {
   const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
   const scenarioData: ScenarioData = {
-    id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
+    id: "1", name: "test scenario", status: "b", version: "0.01",
+    allies: ["ussr"], axis: ["ger"],
     metadata: {
       author: "The Establishment",
       description: ["This is a test scenario"],
@@ -72,7 +73,7 @@ describe("action integration test", () => {
 
   const game = new Game({
     id: 1,
-    name: "test game", scenario: scenarioData,
+    name: "test game", scenario: scenarioData, scenario_version: "0.01",
     owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
     metadata: { turn: 0 },
     suppress_network: true
@@ -295,13 +296,14 @@ describe("action integration test", () => {
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    index += 9
+    index += 13
     expect(game.actions.length).toBe(index)
     expect(game.currentPlayer).toBe(1)
-    expect(game.actions[index - 7].stringValue).toBe("Soviet deployment done, begin German deployment")
-    expect(game.actions[index - 6].stringValue).toBe("no units to deploy, skipping phase")
-    expect(game.actions[index - 3].stringValue).toBe("Soviet rally phase done, begin German rally phase")
-    expect(game.actions[index - 2].stringValue).toBe("no broken units or jammed weapons, skipping phase")
-    expect(game.lastAction?.stringValue).toBe("rally phase done, begin main phase")
+    expect(game.actions[index - 11].stringValue).toBe("Soviet deployment done, begin German deployment")
+    expect(game.actions[index - 10].stringValue).toBe("no units to deploy, skipping phase")
+    expect(game.actions[index - 7].stringValue).toBe("Soviet rally done, begin German rally")
+    expect(game.actions[index - 6].stringValue).toBe("no broken units or jammed weapons, skipping phase")
+    expect(game.actions[index - 5].stringValue).toBe("rally done, checking precipitation")
+    expect(game.lastAction?.stringValue).toBe("done checking precipitation, begin main phase")
   })
 });

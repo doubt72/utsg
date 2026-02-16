@@ -25,7 +25,7 @@ describe("close combat tests", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.Cleanup, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
         },
       },
     }, game), false)
@@ -131,7 +131,7 @@ describe("close combat tests", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.Cleanup, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
         },
       },
     }, game), false)
@@ -238,7 +238,7 @@ describe("close combat tests", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.Cleanup, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
         },
       },
     }, game), false)
@@ -346,7 +346,7 @@ describe("close combat tests", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.Cleanup, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
         },
       },
     }, game), false)
@@ -482,7 +482,7 @@ describe("close combat tests", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.Cleanup, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
         },
       },
     }, game), false)
@@ -572,7 +572,7 @@ describe("close combat tests", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.Cleanup, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
         },
       },
     }, game), false)
