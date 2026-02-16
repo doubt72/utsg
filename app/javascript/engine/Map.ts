@@ -581,6 +581,37 @@ export default class Map {
     return false
   }
 
+  anyPrecip(): boolean {
+    return false
+  }
+
+  anyCloseCombat(): boolean {
+    return true
+  }
+
+  anyOverstackedUnits(player: Player): boolean {
+    if (player > 1 && player < 1) {
+      console.log("whatever") // NOP to keep linter happy
+    }
+    return false
+  }
+
+  needsStatusUpdate(): boolean {
+    return false
+  }
+
+  anySmoke(): boolean {
+    return false
+  }
+
+  anyFire(): boolean {
+    return false
+  }
+
+  anyVariableWeather(): boolean {
+    return false
+  }
+
   clearAllSelections() {
     const units = this.allUnits
     for (const u of units) {
@@ -684,5 +715,9 @@ export default class Map {
     for (const u of units) {
       if (u.unit.targetSelected) { u.unit.targetSelect() }
     }
+  }
+
+  updateHousekeepingUnitStatus() {
+    // TODO: implement
   }
 }

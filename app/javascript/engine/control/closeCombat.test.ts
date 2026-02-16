@@ -8,6 +8,7 @@ import GameAction from "../GameAction";
 import select from "./select";
 import organizeStacks from "../support/organizeStacks";
 
+// TODO: fix tests when things implemented
 describe("close combat tests", () => {
   test("basic close combat", () => {
     const game = createBlankGame()
@@ -47,10 +48,12 @@ describe("close combat tests", () => {
     expect(two.selected).toBe(true)
     expect(closeCombatCasualyNeeded(game)).toBe(false)
 
+    console.log(game.actions.length)
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     game.closeCombatState.rollForCombat()
     Math.random = original
+    console.log(game.actions.length)
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -583,7 +586,8 @@ describe("close combat tests", () => {
     expect(closeCombatCheck(game)).toBe(false)
     expect(closeCombatCasualyNeeded(game)).toBe(false)
     expect(closeCombatDone(game)).toBe(true)
+    const index = game.actions.length
     game.gameState.finish()
-    expect(game.lastAction?.stringValue).toBe("skipping: no combat to resolve")
+    expect(game.actions[index].stringValue).toBe("skipping: no combat to resolve")
   })
 })

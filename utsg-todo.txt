@@ -1,5 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Subphases for phase action
   - State/check for overstacking
   - State/check for smoke
   - State/check for fire
