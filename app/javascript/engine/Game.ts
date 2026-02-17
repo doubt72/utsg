@@ -19,6 +19,7 @@ import RoutState from "./control/state/RoutState";
 import DeployState from "./control/state/DeployState";
 import CloseCombatState from "./control/state/CloseCombatState";
 import { checkPhase, GamePhase, gamePhaseType } from "./support/gamePhase";
+import PrecipCheckState from "./control/state/PrecipCheckState";
 
 export type GameData = {
   id: number;
@@ -267,6 +268,10 @@ export default class Game {
 
   get deployState(): DeployState {
     return this.gameState as DeployState
+  }
+
+  get precipCheckState(): PrecipCheckState {
+    return this.gameState as PrecipCheckState
   }
 
   get fireState(): FireState {

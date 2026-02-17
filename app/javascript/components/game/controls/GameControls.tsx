@@ -43,6 +43,7 @@ import RoutCheckButton from "./buttons/RoutCheckButton";
 import CloseCombatSelectButton from "./buttons/CloseCombatSelectButton";
 import CloseCombatReduceButton from "./buttons/CloseCombatReduceButton";
 import SniperButton from "./buttons/SniperButton";
+import PrecipCheckButton from "./buttons/PrecipCheckButton";
 
 interface GameControlsProps {
   game: Game;
@@ -82,6 +83,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <StartButton gameId={game.id} key={i} />
       } else if (a.type === "deploy") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>deploy units</div>
+      } else if (a.type === "precip_check") {
+        return <PrecipCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "unselect") {
         return <UnselectButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "pass") {

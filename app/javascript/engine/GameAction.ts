@@ -1,5 +1,5 @@
 import { Direction, Player, UnitStatus } from "../utilities/commonTypes";
-import Game, { GamePhase } from "./Game";
+import Game from "./Game";
 import BaseAction from "./actions/BaseAction";
 import StateAction from "./actions/StateAction";
 import PhaseAction from "./actions/PhaseAction";
@@ -21,6 +21,8 @@ import CloseCombatStartAction from "./actions/CloseCombatStartAction";
 import CloseCombatRollAction from "./actions/CloseCombatRollAction";
 import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
 import CloseCombatFinishAction from "./actions/CloseCombatFinishAction";
+import PrecipCheckAction from "./actions/PrecipCheckAction";
+import { GamePhase } from "./support/gamePhase";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -140,6 +142,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "deploy") {
       return new DeployAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "precipitation_check") {
+      return new PrecipCheckAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "initiative") {
       return new InitiativeAction(this.data, this.game, this.index);

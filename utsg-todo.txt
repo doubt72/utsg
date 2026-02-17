@@ -8,7 +8,6 @@ High Priority Features/Bug Fixes:
   - Action/Test fire
   - Action/Test weather
   - Action/Test rally
-  - Action/Test precip
 
   - Add exhausted to units after CloseCombat
     - But clear if still in contact

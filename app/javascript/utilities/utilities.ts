@@ -1,6 +1,6 @@
 import Feature from "../engine/Feature"
 import Unit from "../engine/Unit"
-import { Coordinate, Direction, Player } from "./commonTypes"
+import { Coordinate, Direction, Player, WeatherType } from "./commonTypes"
 
 export function alliedCodeToName(code: string): string {
   const lookup = [
@@ -53,6 +53,14 @@ export function axisCodeToName(code: string): string {
   }
 
   return "Unknown"
+}
+
+export function weatherDescription(weather: WeatherType): string {
+  const lookup = {
+    0: "clear", 1: "foggy", 2: "raining", 3: "snowing", 4: "blowing sand", 5: "blowing dust"
+  }
+
+  return lookup[weather] ?? "unknown"
 }
 
 export function getFormattedDate(date: [number, number, number]): string {

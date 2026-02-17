@@ -1,7 +1,8 @@
 import { Coordinate, GameAction, unitType } from "../../utilities/commonTypes"
 import { coordinateToLabel } from "../../utilities/utilities"
-import Game, { gamePhaseType } from "../Game"
+import Game from "../Game"
 import Map from "../Map"
+import { gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
 import { showClearObstacles, showEntrench } from "./assault"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
@@ -42,7 +43,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   }
   const actions: GameAction[] = []
   if (game.state === "complete") {
-      return [{ type: "none", message: "game over" }]
+    return [{ type: "none", message: "game over" }]
   } else if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
       return [{ type: "none", message: "waiting for player to join" }]
@@ -69,6 +70,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   } else if (game.phase === gamePhaseType.PrepRally) {
     return actions
   } else if (game.phase === gamePhaseType.PrepPrecip) {
+    actions.unshift({ type: "precip_check" })
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
