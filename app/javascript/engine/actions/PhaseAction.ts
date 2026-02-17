@@ -1,6 +1,7 @@
 import { Player } from "../../utilities/commonTypes";
-import Game, { GamePhase, gamePhaseType } from "../Game";
+import Game from "../Game";
 import { GameActionData } from "../GameAction";
+import { GamePhase, gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
 import BaseAction from "./BaseAction";
 

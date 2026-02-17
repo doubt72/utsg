@@ -1,9 +1,10 @@
 import { baseTerrainType, weatherType, windType } from "../../utilities/commonTypes"
 import { FeatureData } from "../Feature"
-import Game, { gamePhaseType } from "../Game"
+import Game from "../Game"
 import { HexData } from "../Hex"
 import { MapData } from "../Map"
 import { ScenarioData } from "../Scenario"
+import { gamePhaseType } from "../support/gamePhase"
 import { UnitData } from "../Unit"
 
 export const testGInf: UnitData = {
@@ -127,7 +128,7 @@ export const createBlankGame = (hexes: HexData[][] = plainTestHexes): Game => {
 const createTestGame = (hexes: HexData[][]): Game => {
   const game = new Game({
     id: 1,
-    name: "test game", scenario: scenarioTestData(hexes),
+    name: "test game", scenario: scenarioTestData(hexes), scenario_version: "0.01",
     owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
     metadata: { turn: 0 },
     suppress_network: true
@@ -158,7 +159,7 @@ const mapTestData = (hexes: HexData[][]): MapData => {
 
 const scenarioTestData = (hexes: HexData[][]): ScenarioData => {
   return {
-    id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
+    id: "1", name: "test scenario", status: "b", version: "0.01", allies: ["ussr"], axis: ["ger"],
     metadata: {
       author: "The Establishment",
       description: ["This is a test scenario"],

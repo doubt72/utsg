@@ -582,7 +582,7 @@ export default class Map {
   }
 
   anyPrecip(): boolean {
-    return false
+    return this.precipChance > 0
   }
 
   anyCloseCombat(): boolean {

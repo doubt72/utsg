@@ -1,6 +1,5 @@
 import { Coordinate, featureType, hexOpenType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
-import { gamePhaseType } from "../Game"
 import { describe, expect, test, vi } from "vitest"
 import IllegalActionError from "../actions/IllegalActionError"
 import Feature from "../Feature"
@@ -13,6 +12,7 @@ import MoveState from "./state/MoveState"
 import AssaultState from "./state/AssaultState"
 import SniperState from "./state/SniperState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
+import { gamePhaseType } from "../support/gamePhase"
 
 describe("game action tests", () => {
   test("initiative changes", () => {

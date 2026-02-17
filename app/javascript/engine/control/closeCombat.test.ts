@@ -2,11 +2,12 @@ import { describe, expect, test, vi } from "vitest";
 import { createBlankGame, testGGun, testGInf, testGTank, testGTruck, testRInf, testRMG } from "./testHelpers";
 import Unit from "../Unit";
 import { Coordinate } from "../../utilities/commonTypes";
-import { closeProgress, gamePhaseType } from "../Game";
+import { closeProgress } from "../Game";
 import CloseCombatState, { closeCombatCasualyNeeded, closeCombatCheck, closeCombatDone } from "./state/CloseCombatState";
 import GameAction from "../GameAction";
 import select from "./select";
 import organizeStacks from "../support/organizeStacks";
+import { gamePhaseType } from "../support/gamePhase";
 
 // TODO: fix tests when things implemented
 describe("close combat tests", () => {
@@ -26,7 +27,8 @@ describe("close combat tests", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
+          old_turn: 1, new_turn: 1, new_player: 2,
         },
       },
     }, game), false)
@@ -48,12 +50,10 @@ describe("close combat tests", () => {
     expect(two.selected).toBe(true)
     expect(closeCombatCasualyNeeded(game)).toBe(false)
 
-    console.log(game.actions.length)
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     game.closeCombatState.rollForCombat()
     Math.random = original
-    console.log(game.actions.length)
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({

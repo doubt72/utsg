@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MapDisplay from "../components/game/map/MapDisplay";
-import Game, { gamePhaseType } from "../engine/Game";
+import Game from "../engine/Game";
 import { mapDebugData } from "./data";
 import Map from "../engine/Map";
 import {
@@ -19,6 +19,7 @@ import Unit, { UnitData } from "../engine/Unit";
 import { normalDir } from "../utilities/utilities";
 import { getAPI } from "../utilities/network";
 import organizeStacks from "../engine/support/organizeStacks";
+import { gamePhaseType } from "../engine/support/gamePhase";
 
 export default function DebugMap() {
   const id: number = Number(useParams().id)
@@ -80,9 +81,9 @@ export default function DebugMap() {
     if (Object.keys(units).length === 0) { return }
     const game = new Game({
       id: 0, name: "test", owner: "one", player_one: "one", player_two: "two",
-      current_player: "one", metadata: { turn: 0 },
+      current_player: "one", metadata: { turn: 0 }, scenario_version: "0.01",
       scenario: {
-        id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p",
+        id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p", version: "0.01",
         metadata: {
           author: "", description: [""], first_deploy: 1, date: [1940, 1, 1], location: "here",
           turns: 8,

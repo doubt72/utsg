@@ -1,8 +1,9 @@
 import { Coordinate, CounterSelectionTarget } from "../../../utilities/commonTypes";
 import { rolld10, togglePlayer } from "../../../utilities/utilities";
 import Counter from "../../Counter";
-import Game, { closeProgress, gamePhaseType } from "../../Game";
+import Game, { closeProgress } from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
+import { gamePhaseType } from "../../support/gamePhase";
 import { closeCombatFirepower } from "../closeCombat";
 import BaseState, { stateType } from "./BaseState";
 

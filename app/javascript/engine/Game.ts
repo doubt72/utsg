@@ -1,7 +1,7 @@
 import { Coordinate, Player, unitType } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
-import GameAction, { GameActionData, GameActionPhaseChange } from "./GameAction";
+import GameAction from "./GameAction";
 import Feature from "./Feature";
 import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
@@ -17,6 +17,8 @@ import MoveState from "./control/state/MoveState";
 import AssaultState from "./control/state/AssaultState";
 import RoutState from "./control/state/RoutState";
 import DeployState from "./control/state/DeployState";
+import CloseCombatState from "./control/state/CloseCombatState";
+import { checkPhase, GamePhase, gamePhaseType } from "./support/gamePhase";
 
 export type GameData = {
   id: number;
@@ -35,13 +37,6 @@ export type GameData = {
   }
 
   suppress_network?: boolean;
-}
-
-export type GamePhase = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
-export const gamePhaseType: { [index: string]: GamePhase } = {
-  Deployment: 0, PrepRally: 1, PrepPrecip: 2, Main: 3, CleanupCloseCombat: 4,
-  CleanupOverstack: 5, CleanupStatus: 6, CleanupSmoke: 7, CleanupFire: 8,
-  CleanupWeather: 9,
 }
 
 export type CloseProgress = "nr" | "nc" | "d"
@@ -490,7 +485,7 @@ export default class Game {
           ok: () => {},
         })
       }
-      if (m.type !== "info" && m.type !== "state") { this.checkPhase(backendSync) }
+      if (m.type !== "info" && m.type !== "state") { checkPhase(this, backendSync) }
       this.refreshCallback(this)
     } catch(err) {
       if (err instanceof IllegalActionError) {
@@ -552,191 +547,6 @@ export default class Game {
     const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
     const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
     return [count, initialCount]
-  }
-
-  checkPhase(backendSync: boolean) {
-    if (backendSync) { return }
-    const oldPhase = this.phase
-    const oldTurn = this.turn
-    const phaseData: GameActionPhaseChange = {
-      old_phase: oldPhase, new_phase: gamePhaseType.Deployment,
-      old_turn: oldTurn, new_turn: oldTurn, new_player: this.currentPlayer,
-    }
-    const data: GameActionData = {
-      player: this.currentPlayer, user: this.currentUser,
-      data: { action: "phase", phase_data: phaseData, old_initiative: this.initiative }
-    }
-    if (oldPhase == gamePhaseType.Deployment) {
-      const [count, initialCount] = this.reinforcementsCount
-      if (count === 0) {
-        if (initialCount === 0) {
-          this.executeAction(new GameAction({
-            player: this.currentPlayer, user: this.currentUser, data: {
-              action: "info", message: "no units to deploy, skipping phase",
-              old_initiative: this.initiative,
-            }
-          }, this), backendSync)
-        }
-        if (oldTurn === 0) {
-          phaseData.new_phase = gamePhaseType.Deployment
-          if (this.currentPlayer === this.scenario.firstDeploy) {
-            phaseData.new_player = togglePlayer(this.currentPlayer)
-          } else {
-            phaseData.new_player = this.scenario.firstAction
-            phaseData.new_turn = 1
-          }
-        } else {
-          phaseData.new_player = togglePlayer(this.currentPlayer)
-          phaseData.new_phase = this.currentPlayer === this.scenario.firstAction ?
-            gamePhaseType.Deployment : gamePhaseType.PrepRally
-        }
-        this.executeAction(new GameAction(data, this), backendSync)
-        this.closeReinforcementPanel = true
-      }
-    } else if (oldPhase === gamePhaseType.PrepRally) {
-      if (this.scenario.map.anyBrokenUnits(this.currentPlayer)) {
-        return
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no broken units or jammed weapons, skipping phase",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      if (this.currentPlayer === this.scenario.firstAction) {
-        // TODO: switch to initiative player
-        phaseData.new_player = togglePlayer(this.currentPlayer)
-        phaseData.new_phase = oldPhase
-      } else {
-        phaseData.new_player = togglePlayer(this.currentPlayer)
-        phaseData.new_phase = gamePhaseType.PrepPrecip
-      }
-      this.executeAction(new GameAction(data, this), backendSync)
-    } else if (oldPhase === gamePhaseType.PrepPrecip) {
-      if (this.scenario.map.anyPrecip()) {
-        return
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no precipitation in this scenario, skipping check",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      if (this.currentPlayer === this.scenario.firstAction) {
-        phaseData.new_player = togglePlayer(this.currentPlayer)
-        phaseData.new_phase = oldPhase
-      } else {
-        phaseData.new_player = togglePlayer(this.currentPlayer)
-        phaseData.new_phase = gamePhaseType.Main
-
-      }
-      this.executeAction(new GameAction(data, this), backendSync)
-    } else if (oldPhase === gamePhaseType.Main) {
-      let index = this.lastActionIndex - 1
-      let previousAction = this.actions[index--]
-      while (previousAction && previousAction.undone) {
-        previousAction = this.actions[index--]
-      }
-      if (this.lastAction?.type === "pass" && previousAction?.type === "pass") {
-        this.executeAction(new GameAction({
-          player: this.currentPlayer, user: this.currentUser, data: {
-            action: "info", message: "both players have passed, ending phase",
-            old_initiative: this.initiative,
-          }
-        }, this), backendSync)
-        phaseData.new_phase = gamePhaseType.CleanupCloseCombat
-        this.executeAction(new GameAction(data, this), backendSync)
-      }
-    } else if (oldPhase === gamePhaseType.CleanupCloseCombat) {
-      if (this.scenario.map.anyCloseCombat()) {
-        return
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no units in contact, skipping close combat",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      phaseData.new_phase = gamePhaseType.CleanupOverstack
-      this.executeAction(new GameAction(data, this), backendSync)
-    } else if (oldPhase === gamePhaseType.CleanupOverstack) {
-      if (this.scenario.map.anyOverstackedUnits(this.currentPlayer)) {
-        return
-      }
-      phaseData.new_player = togglePlayer(this.currentPlayer)
-      if (this.currentPlayer === this.initiative) {
-        phaseData.new_phase = oldPhase
-      } else {
-        phaseData.new_phase = gamePhaseType.CleanupStatus
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no units overstacked, skipping overstack reduction",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      phaseData.new_phase = gamePhaseType.CleanupStatus
-      this.executeAction(new GameAction(data, this), backendSync)
-    } else if (oldPhase === gamePhaseType.CleanupStatus) {
-      if (this.scenario.map.needsStatusUpdate()) {
-        this.executeAction(new GameAction({
-          player: this.currentPlayer, user: this.currentUser, data: {
-            action: "update_status", old_initiative: this.initiative,
-          }
-        }, this), backendSync)
-        return
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "done updating status",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      phaseData.new_phase = gamePhaseType.CleanupSmoke
-      this.executeAction(new GameAction(data, this), backendSync)
-    } else if (oldPhase === gamePhaseType.CleanupSmoke) {
-      if (this.scenario.map.anySmoke()) {
-        return
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no smoke on map, skipping smoke dissapation check",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      phaseData.new_phase = gamePhaseType.CleanupFire
-      this.executeAction(new GameAction(data, this), backendSync)
-    } else if (oldPhase === gamePhaseType.CleanupFire) {
-      if (this.scenario.map.anyFire()) {
-        return
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no units in contact, skipping close combat",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      phaseData.new_phase = gamePhaseType.CleanupWeather
-      this.executeAction(new GameAction(data, this), backendSync)
-    } else if (oldPhase === gamePhaseType.CleanupWeather) {
-      if (this.scenario.map.anyVariableWeather()) {
-        return
-      }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no units in contact, skipping close combat",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-      if (oldTurn === this.scenario.turns) {
-        // TODO: finish game
-      } else {
-        phaseData.new_phase = gamePhaseType.Deployment
-        phaseData.new_player = this.scenario.firstDeploy
-        phaseData.new_turn = oldTurn + 1
-        this.executeAction(new GameAction(data, this), backendSync)
-      }
-    }
   }
 
   cancelAction() {

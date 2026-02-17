@@ -1,11 +1,12 @@
 import { describe, expect, test } from "vitest";
-import Game, { gamePhaseType } from "./Game";
+import Game from "./Game";
 import { ScenarioData } from "./Scenario";
 import { MapData } from "./Map";
 import { Coordinate, baseTerrainType, weatherType, windType } from "../utilities/commonTypes";
 import { UnitData } from "./Unit";
 import GameAction, { GameActionData } from "./GameAction";
 import { FeatureData } from "./Feature";
+import { gamePhaseType } from "./support/gamePhase";
 
 describe("action integration test", () => {
   const mapData: MapData = {
