@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { baseCounterPath, nationalColors, roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
 import { Coordinate, Player } from "../../../utilities/commonTypes";
-import { gamePhaseType } from "../../../engine/Game";
 import { mapHelpLayout } from "../../../engine/support/help";
 import { HelpOverlay } from "../map/Help";
+import { gamePhaseType } from "../../../engine/support/gamePhase";
 
 interface ReinforcementsProps {
   map: Map;

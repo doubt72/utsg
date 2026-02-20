@@ -421,6 +421,9 @@ export default class Map {
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {
+    if (loc.x < 0 || loc.y < 0 || loc.x >= this.width || loc.y >= this.height) {
+      return []
+    }
     const list = this.units[loc.y][loc.x]
     return countersFromUnits(loc, list, this.showAllCounters)
   }
@@ -565,17 +568,25 @@ export default class Map {
   }
 
   anyBrokenUnits(player: Player): boolean {
-    for (const listX of this.units) {
-      for (const listY of listX) {
-        for (const u of listY) {
-          if (!u.isFeature) {
-            const unit = u as Unit
+    let rally = false
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        let unbrokerLeader = false
+        for (const c of this.countersAt(new Coordinate(x, y))) {
+          const unit = c.unit as Unit
+          if (!unit.isFeature) {
             const unitPlayer = unit.nation === this.game?.playerOneNation ? 1 : 2
-            if (player === unitPlayer && (unit.isBroken || unit.jammed)) {
-              return true
+            if (player === unitPlayer) {
+              if (unit.isBroken || unit.jammed) {
+                rally = true
+              }
+              if (!unit.isBroken && unit.leader) {
+                unbrokerLeader = true
+              }
             }
           }
         }
+        if (rally && (unbrokerLeader || this.game?.freeRally)) { return true }
       }
     }
     return false

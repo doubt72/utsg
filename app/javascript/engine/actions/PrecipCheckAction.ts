@@ -9,6 +9,7 @@ export default class PrecipCheckAction extends BaseAction {
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
 
+    this.validate(data.data.dice_result)
     this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
   }
 

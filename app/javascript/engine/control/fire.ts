@@ -200,7 +200,7 @@ export function firepower(
   return { fp, why }
 }
 
-function leadershipAt(game: Game, at: Coordinate): number {
+export function leadershipAt(game: Game, at: Coordinate): number {
   const counters = game.scenario.map.countersAt(at)
   let leadership = 0
   for (const c of counters) {

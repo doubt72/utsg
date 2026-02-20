@@ -1,4 +1,5 @@
 import { togglePlayer } from "../../utilities/utilities"
+import RallyState from "../control/state/RallyState"
 import Game from "../Game"
 import GameAction, { GameActionData, GameActionPhaseChange } from "../GameAction"
 
@@ -78,12 +79,14 @@ function Deployment(game: Game, backendSync: boolean, data: GameActionData): voi
 function PrepRally(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = game.phase
-  if (game.scenario.map.anyBrokenUnits(game.currentPlayer)) {
+  if (game.scenario.map.anyBrokenUnits(game.currentPlayer) &&
+    game.lastAction?.type !== "rally_pass") {
+    game.gameState = new RallyState(game)
     return
   }
   game.executeAction(new GameAction({
     player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no broken units or jammed weapons, skipping phase",
+      action: "info", message: "no rallyable broken units or jammed weapons, skipping phase",
       old_initiative: game.initiative,
     }
   }, game), backendSync)

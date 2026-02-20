@@ -5,7 +5,7 @@ import Map from "../../../engine/Map";
 import { Coordinate, Player } from "../../../utilities/commonTypes";
 import Counter from "../../../engine/Counter";
 import { ReinforcementSchedule } from "../../../engine/Scenario";
-import { gamePhaseType } from "../../../engine/Game";
+import { gamePhaseType } from "../../../engine/support/gamePhase";
 
 interface ReinforcementPanelProps {
   map?: Map;
@@ -143,7 +143,7 @@ export default function ReinforcementPanel({
                       counter.targetUF.select()
                     }
                     counter.showDisabled = (map.game?.phase !== gamePhaseType.Deployment ||
-                      map.game.currentPlayer !== player || map.game.state !== 'in_progress' ||
+                      map.game?.currentPlayer !== player || map.game.state !== 'in_progress' ||
                       map.game.turn !== turn) && turn !== 99
                     const count = (u.x || 1) - (u.used || 0)
                     const cb = () => { ovCallback({show: true, counters: [counter]})}

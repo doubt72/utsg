@@ -20,6 +20,8 @@ import DeployState from "./control/state/DeployState";
 import CloseCombatState from "./control/state/CloseCombatState";
 import { checkPhase, GamePhase, gamePhaseType } from "./support/gamePhase";
 import PrecipCheckState from "./control/state/PrecipCheckState";
+import RallyState from "./control/state/RallyState";
+import RallyAction from "./actions/RallyAction";
 
 export type GameData = {
   id: number;
@@ -292,6 +294,19 @@ export default class Game {
 
   get closeCombatState(): CloseCombatState {
     return this.gameState as CloseCombatState
+  }
+
+  get rallyState(): RallyState {
+    return this.gameState as RallyState
+  }
+
+  get freeRally(): boolean {
+    for (let i = this.actions.length - 1; i >= 0; i--) {
+      const action = this.actions[i] as RallyAction
+      if (action.type === "phase") { break }
+      if (action.type === "rally" && action.freeRally) { return false }
+    }
+    return true
   }
 
   get playerOneScore(): number {

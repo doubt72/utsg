@@ -14,10 +14,11 @@ import MapHex from "../game/map/MapHex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import MapCounter from "../game/map/MapCounter";
 import { findRoutPathTree, routPaths } from "../../engine/control/rout";
-import Game, { gamePhaseType } from "../../engine/Game";
 import { HexData } from "../../engine/Hex";
 import { ScenarioData } from "../../engine/Scenario";
 import { RoutPathTree } from "../../engine/control/state/RoutState";
+import Game from "../../engine/Game";
+import { gamePhaseType } from "../../engine/support/gamePhase";
 
 export default function RoutSection() {
   const [routDiagram, setRoutDiagram] = useState<JSX.Element | undefined>();
@@ -31,7 +32,8 @@ export default function RoutSection() {
     const game = new Game({
       id: 1,
       name: "test game", scenario: scenarioTestData(x, y, hexes),
-      owner: "one", state: "ready", player_one: "one", player_two: "", current_player: "",
+      owner: "one", state: "ready", scenario_version: "0.01",
+      player_one: "one", player_two: "", current_player: "",
       metadata: { turn: 0 },
       suppress_network: true
     });
@@ -61,7 +63,8 @@ export default function RoutSection() {
   
   const scenarioTestData = (x: number, y: number, hexes: HexData[][]): ScenarioData => {
     return {
-      id: "1", name: "test scenario", status: "b", allies: ["ussr"], axis: ["ger"],
+      id: "1", name: "test scenario", status: "b", version: "0.01",
+      allies: ["ussr"], axis: ["ger"],
       metadata: {
         author: "The Establishment",
         description: ["This is a test scenario"],
