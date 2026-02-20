@@ -68,9 +68,15 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     actions.unshift({ type: "deploy" })
     return actions
   } else if (game.phase === gamePhaseType.PrepRally) {
+    actions.unshift({ type: "none", message: "select unit to rally" })
+    const select = currSelection(game, false)
+    if (select) {
+      actions.push({ type: "rally" })
+    }
+    actions.push({ type: "rally_pass" })
     return actions
   } else if (game.phase === gamePhaseType.PrepPrecip) {
-    actions.unshift({ type: "precip_check" })
+    actions.push({ type: "precip_check" })
     return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
