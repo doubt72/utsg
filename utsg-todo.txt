@@ -1,13 +1,15 @@
 High Priority Features/Bug Fixes:
-  - Rally actions
   - State/check for overstacking
   - State/check for smoke
-  - State/check for fire
   - Action/Test overstacking
   - Action/Test status updates
   - Action/Test smoke
-  - Action/Test fire
   - Action/Test weather
+
+  - Implement fire checks for dead tanks and area fire
+  - Fire displacement
+  - State/check for fire
+  - Action/Test fire
 
   - Add exhausted to units after CloseCombat
     - But clear if still in contact
