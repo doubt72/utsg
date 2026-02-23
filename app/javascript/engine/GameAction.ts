@@ -25,13 +25,15 @@ import PrecipCheckAction from "./actions/PrecipCheckAction";
 import { GamePhase } from "./support/gamePhase";
 import RallyAction from "./actions/RallyAction";
 import RallyPassAction from "./actions/RallyPassAction";
+import OverstackReduceAction from "./actions/OverstackReduceAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
 }
 
 export type GameActionUnit = {
-  x: number, y: number, id: string, status: UnitStatus, sponson?: boolean, wire?: boolean
+  x: number, y: number, id: string, status: UnitStatus,
+  sponson?: boolean, wire?: boolean, parent?: string, children?: string[]
 }
 
 export type GameActionReinforcementUnit = {
@@ -224,6 +226,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "close_combat_finish") {
       return new CloseCombatFinishAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "overstack_reduce") {
+      return new OverstackReduceAction(this.data, this.game, this.index);
     }
 
     // rally check

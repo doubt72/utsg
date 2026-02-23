@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, unitStatus } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType, unitStatus } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import RallyAction from "../../actions/RallyAction";
 import Counter from "../../Counter";
@@ -14,7 +14,7 @@ export default class RallyState extends BaseState {
     game.refreshCallback(game)
   }
 
-  openHex(x: number, y: number) {
+  openHex(x: number, y: number): HexOpenType {
     const map = this.game.scenario.map
     const counters = map.countersAt(new Coordinate(x, y))
     const unbrokerLeader = this.leaderAtHex(x, y)
@@ -25,12 +25,12 @@ export default class RallyState extends BaseState {
         if (this.samePlayer(unit)) {
           if ((unit.isBroken || unit.jammed) &&
             (this.game.freeRally || unbrokerLeader)) {
-            return true
+            return hexOpenType.Open
           }
         }
       }
     }
-    return false;
+    return hexOpenType.Closed;
   }
 
   select(selection: CounterSelectionTarget, callback: () => void) {

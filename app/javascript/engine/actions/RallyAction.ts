@@ -32,13 +32,13 @@ export default class RallyAction extends BaseAction {
 
   get type(): string { return "rally" }
 
-  get needed(): number {
+  get rollNeeded(): number {
     return 15 - this.leaderMod - this.terrainMod + (this.nextToEnemy ? 1 : 0)
   }
 
   get passed(): boolean {
     if (this.diceResult.result === 2) { return false }
-    return this.diceResult.result >= this.needed || this.diceResult.result === 20
+    return this.diceResult.result >= this.rollNeeded || this.diceResult.result === 20
   }
 
   get stringValue(): string {
@@ -48,7 +48,7 @@ export default class RallyAction extends BaseAction {
     const result = `${this.passed ? "passed" : "failed"}: ` +
       `${unit?.name} ${this.passed ? succeed : fail}`
     return `rally check at ${coordinateToLabel(new Coordinate(this.target.x, this.target.y))}` +
-      `: needed ${this.needed}, got ${this.diceResult.result}, ${result}`
+      `: needed ${this.rollNeeded}, got ${this.diceResult.result}, ${result}`
   }
 
   get undoPossible() {
