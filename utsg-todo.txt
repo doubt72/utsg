@@ -1,7 +1,5 @@
 High Priority Features/Bug Fixes:
-  - State/check for overstacking
   - State/check for smoke
-  - Action/Test overstacking
   - Action/Test status updates
   - Action/Test smoke
   - Action/Test weather

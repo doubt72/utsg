@@ -308,8 +308,9 @@ describe("close combat tests", () => {
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.Done, iReduce: 0, oReduce: 0,
     })
-    expect(game.lastAction?.type).toBe("close_combat_reduce")
-    expect(game.lastAction?.stringValue).toBe("Soviet Rifle eliminated")
+    const action = game.actions[4]
+    expect(action.type).toBe("close_combat_reduce")
+    expect(action.stringValue).toBe("Soviet Rifle eliminated")
     expect(two.isBroken).toBe(true)
     expect(closeCombatCasualyNeeded(game)).toBe(false)
     expect(closeCombatDone(game)).toBe(true)
@@ -580,7 +581,7 @@ describe("close combat tests", () => {
       },
     }, game), false)
 
-    expect(closeCombatCheck(game)).toBe(true)
+    expect(closeCombatCheck(game)).toBe(false)
     game.gameState = new CloseCombatState(game)
 
     expect(closeCombatCheck(game)).toBe(false)

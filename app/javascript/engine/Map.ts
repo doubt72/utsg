@@ -16,7 +16,6 @@ import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
 import { togglePlayer } from "../utilities/utilities";
 import OverstackState from "./control/state/OverstackState";
-import { gamePhaseType } from "./support/gamePhase";
 import { stateType } from "./control/state/BaseState";
 
 type MapLayout = [ number, number, "x" | "y" ];
@@ -578,7 +577,7 @@ export default class Map {
         for (const c of this.countersAt(new Coordinate(x, y))) {
           const unit = c.unit as Unit
           if (!unit.isFeature) {
-            const unitPlayer = unit.nation === this.game?.playerOneNation ? 1 : 2
+            const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
             if (player === unitPlayer) {
               if (unit.isBroken || unit.jammed) {
                 rally = true
@@ -600,12 +599,25 @@ export default class Map {
   }
 
   anyCloseCombat(): boolean {
-    return true
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        let one = false;
+        let two = false;
+        for (const c of this.countersAt(new Coordinate(x, y))) {
+          const unit = c.unit as Unit
+          if (!unit.isFeature && !unit.isWreck) {
+            if (unit.playerNation === this.game?.currentPlayerNation) { one = true }
+            if (unit.playerNation !== this.game?.currentPlayerNation) { two = true }
+          }
+        }
+        if (one && two) { return true }
+      }
+    }
+    return false
   }
 
   anyOverstackedUnits(): boolean {
-    if (this.game?.phase !== gamePhaseType.CleanupOverstack) { return false }
-    if (this.game.gameState?.type !== stateType.Overstack) { return false }
+    if (this.game?.gameState?.type !== stateType.Overstack) { return false }
     const state = this.game?.gameState as OverstackState
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
