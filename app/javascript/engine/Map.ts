@@ -15,6 +15,8 @@ import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
 import { togglePlayer } from "../utilities/utilities";
+import OverstackState from "./control/state/OverstackState";
+import { gamePhaseType } from "./support/gamePhase";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -600,9 +602,13 @@ export default class Map {
     return true
   }
 
-  anyOverstackedUnits(player: Player): boolean {
-    if (player > 1 && player < 1) {
-      console.log("whatever") // NOP to keep linter happy
+  anyOverstackedUnits(): boolean {
+    const state = this.game?.gameState as OverstackState
+    if (!state || this.game?.phase !== gamePhaseType.CleanupOverstack) { return false }
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        if (state.overstackAt(x, y)) { return true }
+      }
     }
     return false
   }

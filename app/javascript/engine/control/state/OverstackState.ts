@@ -35,8 +35,12 @@ export default class OverstackState extends BaseState {
     let total = 0
     const counters = this.game.scenario.map.countersAt(new Coordinate(x, y))
     for (const c of counters) {
-      if (c.unit.isFeature || this.samePlayer(c.unit)) { continue }
-      total += c.unit.size
+      if (c.unit.isFeature) { continue }
+      if (!this.samePlayer(c.unit) && !c.unit.isWreck) {
+        return false
+      } else {
+        total += c.unit.size
+      }
     }
     return total > stackLimit
   }

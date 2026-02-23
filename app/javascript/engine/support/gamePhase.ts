@@ -161,7 +161,7 @@ function CleanupCloseCombat(game: Game, backendSync: boolean, data: GameActionDa
 function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = game.phase
-  if (game.scenario.map.anyOverstackedUnits(game.currentPlayer)) {
+  if (game.scenario.map.anyOverstackedUnits()) {
     return
   }
   phaseData.new_player = togglePlayer(game.currentPlayer)

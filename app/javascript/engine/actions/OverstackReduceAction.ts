@@ -37,15 +37,11 @@ export default class OverstackReduceAction extends BaseAction {
     this.game.removeEliminatedCounter(this.target.id)
     map.addCounter(loc, unit)
     if (this.target.parent) {
-      const parent = map.unitAtId(loc, this.target.parent)?.unit as Unit
-      unit.parent = parent
-      parent.children.push(unit)
+      map.loadUnit(loc, loc, unit.id, this.target.parent)
     }
     if (this.target.children) {
       for (const id of this.target.children) {
-        const child = map.unitAtId(loc, id)?.unit as Unit
-        unit.children.push(child)
-        child.parent = unit
+        map.loadUnit(loc, loc, id, unit.id)
       }
     }
     organizeStacks(map)
@@ -55,6 +51,14 @@ export default class OverstackReduceAction extends BaseAction {
     const map = this.game.scenario.map
     const loc = new Coordinate(this.target.x, this.target.y)
     const unit = map.unitAtId(loc, this.target.id)?.unit as Unit
+    if (unit.parent) {
+      map.dropUnit(loc, loc, unit.id)
+    }
+    if (this.target.children) {
+      for (const id of this.target.children) {
+        map.dropUnit(loc, loc, id)
+      }
+    }
     map.eliminateCounter(loc, this.target.id)
     this.game.addEliminatedCounter(unit)
     organizeStacks(map)
