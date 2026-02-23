@@ -1,4 +1,5 @@
 import { togglePlayer } from "../../utilities/utilities"
+import OverstackState from "../control/state/OverstackState"
 import RallyState from "../control/state/RallyState"
 import Game from "../Game"
 import GameAction, { GameActionData, GameActionPhaseChange } from "../GameAction"
@@ -162,6 +163,7 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = game.phase
   if (game.scenario.map.anyOverstackedUnits()) {
+    game.gameState = new OverstackState(game)
     return
   }
   phaseData.new_player = togglePlayer(game.currentPlayer)

@@ -10,12 +10,12 @@ High Priority Features/Bug Fixes:
   - Action/Test fire
 
   - Add exhausted to units after CloseCombat
-    - But clear if still in contact
-  - Disable move if in contact
+  - Check/Disable move if in contact
     - Assault move still possible if in contact
     - Special activities not, though
-  - Display CC Hexes
-  - Blazes
+
+  - Run through game
+  - Possibly separate initiative from current player in non-main phases
 
 Future Features/Bug Fixes:
   - Undo getting out of sync (maybe remove ID?)
