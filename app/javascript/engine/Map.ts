@@ -17,6 +17,7 @@ import BaseAction from "./actions/BaseAction";
 import { togglePlayer } from "../utilities/utilities";
 import OverstackState from "./control/state/OverstackState";
 import { gamePhaseType } from "./support/gamePhase";
+import { stateType } from "./control/state/BaseState";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -603,8 +604,9 @@ export default class Map {
   }
 
   anyOverstackedUnits(): boolean {
+    if (this.game?.phase !== gamePhaseType.CleanupOverstack) { return false }
+    if (this.game.gameState?.type !== stateType.Overstack) { return false }
     const state = this.game?.gameState as OverstackState
-    if (!state || this.game?.phase !== gamePhaseType.CleanupOverstack) { return false }
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         if (state.overstackAt(x, y)) { return true }

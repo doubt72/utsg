@@ -4,7 +4,7 @@ import BaseState, { stateType } from "./BaseState";
 // Handle smoke dispersion
 export default class SmokeCheckState extends BaseState {
   constructor(game: Game) {
-    super(game, stateType.Pass, game.currentPlayer)
+    super(game, stateType.SmokeCheck, game.currentPlayer)
     game.refreshCallback(game)
   }
 

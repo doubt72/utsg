@@ -4,7 +4,7 @@ import BaseState, { stateType } from "./BaseState";
 // Update Unit Status
 export default class StatusUpdateState extends BaseState {
   constructor(game: Game) {
-    super(game, stateType.Pass, game.currentPlayer)
+    super(game, stateType.StatusCheck, game.currentPlayer)
     game.refreshCallback(game)
   }
 

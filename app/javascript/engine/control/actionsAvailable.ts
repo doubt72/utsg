@@ -66,7 +66,6 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       addUndo(game, activePlayer, actions)
     }
     actions.unshift({ type: "deploy" })
-    return actions
   } else if (game.phase === gamePhaseType.PrepRally) {
     actions.unshift({ type: "none", message: "select unit to rally" })
     const select = currSelection(game, false)
@@ -74,10 +73,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({ type: "rally" })
     }
     actions.push({ type: "rally_pass" })
-    return actions
   } else if (game.phase === gamePhaseType.PrepPrecip) {
     actions.push({ type: "precip_check" })
-    return actions
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
     if (!game.gameState?.actionInProgress) {
@@ -225,8 +222,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       if (canRout(selection)) { actions.push({ type: "rout" }) }
       actions.push({ type: "unselect" })
     }
-    return actions
-  } else if (game.phase === gamePhaseType.Cleanup) {
+  } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
     const selection = currSelection(game, false)
     if (game.gameState?.type === stateType.CloseCombat) {
       if (selection) {
@@ -245,11 +241,16 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     } else {
       actions.unshift({ type: "none", message: "error: unexpected missing state" })
     }
-    return actions
+  } else if (game.gameState?.type === stateType.Overstack) {
+    actions.unshift({ type: "none", message: "overstacked units; select unit to remove" })
+    const select = currSelection(game, false)
+    if (select) {
+      actions.push({ type: "overstack_reduce" })
+    }
   } else {
     actions.unshift({ type: "none", message: "not implemented yet" })
-    return actions
   }
+  return actions
 }
 
 export function currSelection(game: Game, move: boolean): Unit | undefined {

@@ -165,7 +165,7 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
     return
   }
   phaseData.new_player = togglePlayer(game.currentPlayer)
-  if (game.currentPlayer === game.initiative) {
+  if (game.currentPlayer !== game.initiative) {
     phaseData.new_phase = oldPhase
   } else {
     phaseData.new_phase = gamePhaseType.CleanupStatus

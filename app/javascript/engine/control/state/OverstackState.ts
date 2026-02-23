@@ -7,7 +7,7 @@ import BaseState, { stateType } from "./BaseState";
 
 export default class OverstackState extends BaseState {
   constructor(game: Game) {
-    super(game, stateType.Pass, game.currentPlayer)
+    super(game, stateType.Overstack, game.currentPlayer)
     game.refreshCallback(game)
   }
 

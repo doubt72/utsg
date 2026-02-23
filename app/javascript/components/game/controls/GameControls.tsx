@@ -46,6 +46,7 @@ import SniperButton from "./buttons/SniperButton";
 import PrecipCheckButton from "./buttons/PrecipCheckButton";
 import RallyButton from "./buttons/RallyButton";
 import RallyPassButton from "./buttons/RallyPassButton";
+import OverstackReduceButton from "./buttons/OverstackReduceButton";
 
 interface GameControlsProps {
   game: Game;
@@ -161,6 +162,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <CloseCombatSelectButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "close_combat_reduce") {
         return <CloseCombatReduceButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "overstack_reduce") {
+        return <OverstackReduceButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {
