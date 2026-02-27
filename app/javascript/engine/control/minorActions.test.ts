@@ -1,11 +1,12 @@
 import { describe, expect, test, vi } from "vitest";
-import { createBlankGame, testFire, testSmoke } from "./testHelpers";
+import { createBlankGame, testFire, testGInf, testSmoke } from "./testHelpers";
 import { checkPhase, gamePhaseType } from "../support/gamePhase";
 import PrecipCheckState from "./state/PrecipCheckState";
 import SmokeCheckState from "./state/SmokeCheckState";
-import { Coordinate, featureType, windType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, unitStatus, windType } from "../../utilities/commonTypes";
 import Feature from "../Feature";
 import FireCheckState from "./state/FireCheckState";
+import Unit from "../Unit";
 
 describe("precipitation", () => {
   test("skips no chance", () => {
@@ -65,7 +66,7 @@ describe("precipitation", () => {
     )
   })
 
-  test("doesn't change from base on 'fail'", () => {
+  test("doesn't change weather from base on 'fail'", () => {
     const game = createBlankGame()
     const map = game.scenario.map
     map.precipChance = 3
@@ -84,6 +85,44 @@ describe("precipitation", () => {
     expect(game.lastAction?.stringValue).toBe(
       "checking for precipitation, rolled (d10), precipitation on 3 or less, got 10: this turn it will be clear"
     )
+  })
+
+  test("status updates", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+
+    const unit1 = new Unit(testGInf)
+    unit1.id = "test1"
+    unit1.status = unitStatus.Activated
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, unit1)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    unit2.status = unitStatus.Exhausted
+    map.addCounter(loc, unit2)
+
+    game.phase = gamePhaseType.CleanupStatus
+
+    checkPhase(game, false)
+
+    let units = map.countersAt(loc)
+    expect(units.length).toBe(2)
+    expect(units[0].unit.status).toBe(unitStatus.Normal)
+    expect(units[1].unit.status).toBe(unitStatus.Tired)
+
+    const action = game.actions[0]
+    expect(action.type).toBe("status_update")
+    expect(action.stringValue).toBe(
+      "update all unit statuses, activated units lose activated status, " +
+        "exhausted units become tired"
+    )
+
+    action.undo()
+
+    units = map.countersAt(loc)
+    expect(units.length).toBe(2)
+    expect(units[0].unit.status).toBe(unitStatus.Activated)
+    expect(units[1].unit.status).toBe(unitStatus.Exhausted)
   })
 
   test("smoke disperses", () => {

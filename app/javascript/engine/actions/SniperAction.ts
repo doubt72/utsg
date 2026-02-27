@@ -14,7 +14,7 @@ export default class SniperAction extends BaseAction {
 
     this.validate(data.data.target as GameActionUnit[])
     this.validate(data.data.dice_result as GameActionDiceResult[])
-    
+
     this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
     this.target = (data.data.target as GameActionUnit[])
   }

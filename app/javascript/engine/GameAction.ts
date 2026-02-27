@@ -29,17 +29,18 @@ import OverstackReduceAction from "./actions/OverstackReduceAction";
 import SmokeCheckAction from "./actions/SmokeCheckAction";
 import FireOutAction from "./actions/FireOutAction";
 import FireSpreadAction from "./actions/FireSpreadAction";
+import StatusUpdateAction from "./actions/StatusUpdateAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
 }
 
 export type GameActionUnit = {
-  x: number, y: number, id: string, status: UnitStatus,
+  x: number, y: number, id: string, status: UnitStatus, new_status?: UnitStatus,
   sponson?: boolean, wire?: boolean, parent?: string, children?: string[]
 }
 
-export type GameActionFeature= {
+export type GameActionFeature = {
   x: number, y: number, id: string
 }
 
@@ -237,6 +238,9 @@ export default class GameAction {
     if (this.data.data.action === "overstack_reduce") {
       return new OverstackReduceAction(this.data, this.game, this.index);
     }
+    if (this.data.data.action === "status_update") {
+      return new StatusUpdateAction(this.data, this.game, this.index);
+    }
     if (this.data.data.action === "smoke_check") {
       return new SmokeCheckAction(this.data, this.game, this.index);
     }
@@ -246,11 +250,6 @@ export default class GameAction {
     if (this.data.data.action === "fire_spread_check") {
       return new FireSpreadAction(this.data, this.game, this.index);
     }
-
-    // rally check
-    // pass rally phase
-    // cleanup unit
-
     return new StateAction(this.data, this.game, this.index, "unhandled action type");
   }
 }

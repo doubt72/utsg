@@ -184,9 +184,12 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
 
 function CleanupStatus(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
+  if (game.lastAction?.type === "status_update") { return }
+  const targets = game.scenario.map.allStatusChanges()
   game.executeAction(new GameAction({
     player: game.currentPlayer, user: game.currentUser, data: {
-      action: "update_status", old_initiative: game.initiative,
+      action: "status_update", old_initiative: game.initiative,
+      target: targets,
     }
   }, game), backendSync)
   phaseData.new_phase = gamePhaseType.CleanupSmoke

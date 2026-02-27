@@ -17,6 +17,7 @@ import BaseAction from "./actions/BaseAction";
 import { togglePlayer } from "../utilities/utilities";
 import OverstackState from "./control/state/OverstackState";
 import { stateType } from "./control/state/BaseState";
+import { GameActionUnit } from "./GameAction";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -736,8 +737,24 @@ export default class Map {
     }
   }
 
-  updateHousekeepingUnitStatus() {
-    // TODO: implement
+  allStatusChanges(): GameActionUnit[] {
+    const rc: GameActionUnit[] = []
+    const units = this.allUnits
+    for (const u of units) {
+      const loc = u.hex as Coordinate
+      if (u.unit.status === unitStatus.Activated) {
+        rc.push({
+          x: loc.x, y: loc.y, id: u.unit.id, status: unitStatus.Activated,
+          new_status: unitStatus.Normal
+        })
+      } else if (u.unit.status === unitStatus.Exhausted) {
+        rc.push({
+          x: loc.x, y: loc.y, id: u.unit.id, status: unitStatus.Exhausted,
+          new_status: unitStatus.Tired
+        })
+      }
+    }
+    return rc
   }
 
   smokeCheckTarget(): number {
