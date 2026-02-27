@@ -628,10 +628,6 @@ export default class Map {
     return false
   }
 
-  anyVariableWeather(): boolean {
-    return false
-  }
-
   clearAllSelections() {
     const units = this.allUnits
     for (const u of units) {

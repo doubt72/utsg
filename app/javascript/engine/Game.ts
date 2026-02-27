@@ -24,6 +24,7 @@ import RallyState from "./control/state/RallyState";
 import RallyAction from "./actions/RallyAction";
 import SmokeCheckState from "./control/state/SmokeCheckState";
 import FireCheckState from "./control/state/FireCheckState";
+import WeatherState from "./control/state/WeatherState";
 
 export type GameData = {
   id: number;
@@ -99,6 +100,8 @@ export default class Game {
   smokeCheckNeeded: SimpleFeatureCheck[];
   fireOutCheckNeeded: SimpleFeatureCheck[];
   fireSpreadCheckNeeded: SimpleFeatureCheck[];
+  checkWindDirection: boolean;
+  checkWindSpeed: boolean;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -133,6 +136,8 @@ export default class Game {
     this.smokeCheckNeeded = []
     this.fireOutCheckNeeded = []
     this.fireSpreadCheckNeeded = []
+    this.checkWindDirection = false
+    this.checkWindSpeed = false
 
     this.loadAllActions()
   }
@@ -451,6 +456,21 @@ export default class Game {
       }, this), backendSync)
     } else {
       this.gameState = new FireCheckState(this)
+    }
+  }
+
+  checkForWind(backendSync: boolean): void {
+    if (this.scenario.map.windVariable) {
+      this.checkWindDirection = true
+      this.checkWindSpeed = true
+      this.gameState = new WeatherState(this)
+    } else {
+      this.executeAction(new GameAction({
+        player: this.currentPlayer, user: this.currentUser, data: {
+          action: "info", message: "wind not variable, skipping checks",
+          old_initiative: this.initiative,
+        }
+      }, this), backendSync)
     }
   }
 

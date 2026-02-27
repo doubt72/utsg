@@ -213,21 +213,16 @@ function CleanupFire(game: Game, backendSync: boolean, data: GameActionData): vo
     return
   }
   phaseData.new_phase = gamePhaseType.CleanupWeather
+  game.checkForWind(backendSync)
   game.executeAction(new GameAction(data, game), backendSync)
 }
 
 function CleanupWeather(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldTurn = game.turn
-  if (game.scenario.map.anyVariableWeather()) {
+  if (game.checkWindDirection || game.checkWindSpeed) {
     return
   }
-  game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no units in contact, skipping close combat",
-      old_initiative: game.initiative,
-    }
-  }, game), backendSync)
   if (oldTurn === game.scenario.turns) {
     // TODO: finish game
   } else {
