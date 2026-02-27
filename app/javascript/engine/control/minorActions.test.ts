@@ -1,7 +1,11 @@
 import { describe, expect, test, vi } from "vitest";
-import { createBlankGame } from "./testHelpers";
+import { createBlankGame, testFire, testSmoke } from "./testHelpers";
 import { checkPhase, gamePhaseType } from "../support/gamePhase";
 import PrecipCheckState from "./state/PrecipCheckState";
+import SmokeCheckState from "./state/SmokeCheckState";
+import { Coordinate, featureType, windType } from "../../utilities/commonTypes";
+import Feature from "../Feature";
+import FireCheckState from "./state/FireCheckState";
 
 describe("precipitation", () => {
   test("skips no chance", () => {
@@ -80,5 +84,210 @@ describe("precipitation", () => {
     expect(game.lastAction?.stringValue).toBe(
       "checking for precipitation, rolled (d10), precipitation on 3 or less, got 10: this turn it will be clear"
     )
+  })
+
+  test("smoke disperses", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+
+    const smoke = new Feature(testSmoke)
+    smoke.id = "smoke"
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, smoke)
+
+    game.checkForSmoke(false)
+    expect(game.smokeCheckNeeded.length).toBe(1)
+    const state = game.gameState as SmokeCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    state.finish()
+    Math.random = original
+
+    expect(game.smokeCheckNeeded.length).toBe(0)
+    const units = map.countersAt(loc)
+    expect(units.length).toBe(0)
+
+    const action = game.actions[0]
+    expect(action.type).toBe("smoke_check")
+    expect(action.stringValue).toBe(
+      "smoke dispersion check for A1: dissipate on 2 or less, rolled 1, smoke dissipates"
+    )
+  })
+
+  test("smoke doesn't disperse", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+
+    const smoke = new Feature(testSmoke)
+    smoke.id = "smoke"
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, smoke)
+
+    game.checkForSmoke(false)
+    expect(game.smokeCheckNeeded.length).toBe(1)
+    const state = game.gameState as SmokeCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+    Math.random = original
+
+    expect(game.smokeCheckNeeded.length).toBe(0)
+    const units = map.countersAt(loc)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Smoke)
+
+    const action = game.actions[0]
+    expect(action.type).toBe("smoke_check")
+    expect(action.stringValue).toBe(
+      "smoke dispersion check for A1: dissipate on 2 or less, rolled 10, no effect"
+    )
+  })
+
+  test("fire goes out", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+
+    const smoke = new Feature(testFire)
+    smoke.id = "fire"
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, smoke)
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(1)
+    const state = game.gameState as FireCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    state.finish()
+    Math.random = original
+
+    expect(game.fireOutCheckNeeded.length).toBe(0)
+    const units = map.countersAt(loc)
+    expect(units.length).toBe(0)
+
+    const action = game.actions[0]
+    expect(action.type).toBe("fire_out_check")
+    expect(action.stringValue).toBe(
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 1, fire goes out"
+    )
+  })
+
+  test("fire doesn't go out", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+
+    const smoke = new Feature(testFire)
+    smoke.id = "fire"
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, smoke)
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(1)
+    const state = game.gameState as FireCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+    Math.random = original
+
+    expect(game.fireOutCheckNeeded.length).toBe(0)
+    const units = map.countersAt(loc)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
+
+    const action = game.actions[0]
+    expect(action.type).toBe("fire_out_check")
+    expect(action.stringValue).toBe(
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10, no effect"
+    )
+  })
+
+  test("fire spreads", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windSpeed = windType.Moderate
+    map.windDirection = 4
+
+    const smoke = new Feature(testFire)
+    smoke.id = "fire"
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, smoke)
+
+    game.checkForFire(false)
+    game.fireOutCheckNeeded = []
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+    const state = game.gameState as FireCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    state.finish()
+    Math.random = original
+
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+    let units = map.countersAt(loc)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
+    units = map.countersAt(new Coordinate(1, 0))
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
+
+    const action = game.actions[0]
+    expect(action.type).toBe("fire_spread_check")
+    expect(action.stringValue).toBe(
+      "fire spread check for A1: fire spreads on 2 or less, rolled 1, fire spreads"
+    )
+  })
+
+  test("fire doesn't spread", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windSpeed = windType.Moderate
+    map.windDirection = 4
+
+    const smoke = new Feature(testFire)
+    smoke.id = "fire"
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, smoke)
+
+    game.checkForFire(false)
+    game.fireOutCheckNeeded = []
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+    const state = game.gameState as FireCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+    Math.random = original
+
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+    let units = map.countersAt(loc)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
+    units = map.countersAt(new Coordinate(1, 0))
+    expect(units.length).toBe(0)
+
+    const action = game.actions[0]
+    expect(action.type).toBe("fire_spread_check")
+    expect(action.stringValue).toBe(
+      "fire spread check for A1: fire spreads on 2 or less, rolled 10, no effect"
+    )
+  })
+
+  test("fire doesn't spread off map", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windSpeed = windType.Moderate
+    map.windDirection = 1
+
+    const smoke = new Feature(testFire)
+    smoke.id = "fire"
+    const loc = new Coordinate(0,0)
+    map.addCounter(loc, smoke)
+
+    game.checkForFire(false)
+    game.fireOutCheckNeeded = []
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
   })
 })

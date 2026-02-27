@@ -26,6 +26,9 @@ import { GamePhase } from "./support/gamePhase";
 import RallyAction from "./actions/RallyAction";
 import RallyPassAction from "./actions/RallyPassAction";
 import OverstackReduceAction from "./actions/OverstackReduceAction";
+import SmokeCheckAction from "./actions/SmokeCheckAction";
+import FireOutAction from "./actions/FireOutAction";
+import FireSpreadAction from "./actions/FireSpreadAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -34,6 +37,10 @@ export type GameActionDiceResult = {
 export type GameActionUnit = {
   x: number, y: number, id: string, status: UnitStatus,
   sponson?: boolean, wire?: boolean, parent?: string, children?: string[]
+}
+
+export type GameActionFeature= {
+  x: number, y: number, id: string
 }
 
 export type GameActionReinforcementUnit = {
@@ -94,7 +101,7 @@ export type GameActionDetails = {
   deploy?: GameActionReinforcementUnit[],
   path?: GameActionPath[],
   add_action?: GameActionAddAction[],
-  target?: GameActionUnit[],
+  target?: GameActionUnit[] | GameActionFeature[],
 
   dice_result?: GameActionDiceResult[],
 
@@ -229,6 +236,15 @@ export default class GameAction {
     }
     if (this.data.data.action === "overstack_reduce") {
       return new OverstackReduceAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "smoke_check") {
+      return new SmokeCheckAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "fire_out_check") {
+      return new FireOutAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "fire_spread_check") {
+      return new FireSpreadAction(this.data, this.game, this.index);
     }
 
     // rally check

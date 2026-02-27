@@ -60,7 +60,6 @@ export default class OverstackReduceAction extends BaseAction {
       }
     }
     map.eliminateCounter(loc, this.target.id)
-    this.game.addEliminatedCounter(unit)
     organizeStacks(map)
   }
 }

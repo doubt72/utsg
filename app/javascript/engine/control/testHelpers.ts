@@ -113,6 +113,14 @@ export const testPill: FeatureData = {
   o: { da: { f: 4, s: 4, r: 1 } },
 };
 
+export const testSmoke: FeatureData = {
+  ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2
+}
+
+export const testFire: FeatureData = {
+  ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1, ai: 1 }
+}
+
 export const createMoveGame = (hexes: HexData[][] = movementTestHexes): Game => {
   return createTestGame(hexes)
 }

@@ -1,7 +1,7 @@
 import { Coordinate } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
-import Game, { SimpleCheck } from "../../Game";
+import Game, { SimpleUnitCheck } from "../../Game";
 import GameAction, { GameActionRoutData } from "../../GameAction";
 import { moraleModifiers } from "../fire";
 import BaseState, { stateType } from "./BaseState";
@@ -11,7 +11,7 @@ export default class RoutCheckState extends BaseState {
 
   constructor(game: Game) {
     super(game, stateType.RoutCheck, game.opponentPlayer)
-    const check = game.routCheckNeeded[0] as SimpleCheck
+    const check = game.routCheckNeeded[0] as SimpleUnitCheck
     const modifiers = moraleModifiers(game, check.unit, [check.loc], check.loc, false)
     const counter = game.findCounterById(check.unit.id) as Counter
     this.selection = [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, counter }]

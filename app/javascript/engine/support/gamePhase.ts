@@ -184,50 +184,31 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
 
 function CleanupStatus(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  if (game.scenario.map.needsStatusUpdate()) {
-    game.executeAction(new GameAction({
-      player: game.currentPlayer, user: game.currentUser, data: {
-        action: "update_status", old_initiative: game.initiative,
-      }
-    }, game), backendSync)
-    return
-  }
   game.executeAction(new GameAction({
     player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "done updating status",
-      old_initiative: game.initiative,
+      action: "update_status", old_initiative: game.initiative,
     }
   }, game), backendSync)
   phaseData.new_phase = gamePhaseType.CleanupSmoke
+  game.checkForSmoke(backendSync)
   game.executeAction(new GameAction(data, game), backendSync)
 }
 
 function CleanupSmoke(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  if (game.scenario.map.anySmoke()) {
+  if (game.smokeCheckNeeded.length > 0) {
     return
   }
-  game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no smoke on map, skipping smoke dissapation check",
-      old_initiative: game.initiative,
-    }
-  }, game), backendSync)
   phaseData.new_phase = gamePhaseType.CleanupFire
+  game.checkForFire(backendSync)
   game.executeAction(new GameAction(data, game), backendSync)
 }
 
 function CleanupFire(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  if (game.scenario.map.anyFire()) {
+  if (game.fireOutCheckNeeded.length > 0 || game.fireSpreadCheckNeeded.length > 0) {
     return
   }
-  game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no units in contact, skipping close combat",
-      old_initiative: game.initiative,
-    }
-  }, game), backendSync)
   phaseData.new_phase = gamePhaseType.CleanupWeather
   game.executeAction(new GameAction(data, game), backendSync)
 }

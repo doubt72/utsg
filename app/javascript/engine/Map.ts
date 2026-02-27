@@ -627,18 +627,6 @@ export default class Map {
     return false
   }
 
-  needsStatusUpdate(): boolean {
-    return false
-  }
-
-  anySmoke(): boolean {
-    return false
-  }
-
-  anyFire(): boolean {
-    return false
-  }
-
   anyVariableWeather(): boolean {
     return false
   }
@@ -750,5 +738,40 @@ export default class Map {
 
   updateHousekeepingUnitStatus() {
     // TODO: implement
+  }
+
+  smokeCheckTarget(): number {
+    if (this.windSpeed === windType.Breeze) { return 4 }
+    if (this.windSpeed === windType.Moderate) { return 7 }
+    if (this.windSpeed === windType.Strong) { return 9 }
+    return 2
+  }
+
+  fireOutTarget(): number {
+    if (this.currentWeather === weatherType.Fog) { return 3 }
+    if (this.currentWeather === weatherType.Rain) { return 6 }
+    if (this.currentWeather === weatherType.Snow) { return 4 }
+    if (this.currentWeather === weatherType.Sand) { return 3 }
+    return 1
+  }
+
+  fireSpreadTarget(): number {
+    let rc = 0
+    if (this.windSpeed === windType.Breeze) { rc = 1 }
+    if (this.windSpeed === windType.Moderate) { rc = 2 }
+    if (this.windSpeed === windType.Strong) { rc = 4 }
+    if (this.currentWeather === weatherType.Dust) { rc += 1 }
+    return rc
+  }
+
+  addFire(loc: Coordinate) {
+    this.addCounter(loc, new Feature({
+      ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1, ai: 1 }
+    }))
+  }
+
+  spreadFire(loc: Coordinate) {
+    const newLoc = this.neightborCoordinate(loc, this.windDirection)
+    this.addFire(newLoc)
   }
 }

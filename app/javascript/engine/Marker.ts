@@ -158,7 +158,7 @@ export default class Marker {
       if (this.subType === weatherType.Dry) { return ["10% fe", "", ""] }
       if (this.subType === weatherType.Fog) { return ["30% fe", "", ""] }
       if (this.subType === weatherType.Sand) { return ["30% fe", "", ""] }
-      if (this.subType === weatherType.Dust) { return ["", "+10% fs", ""] }
+      if (this.subType === weatherType.Dust) { return ["10% fe", "+10% fs", ""] }
       const fe = this.subType === weatherType.Rain ? "60% fe" : "40% fe"
       if (!this.value) { return [fe, "", ""] }
       return [fe, `${this.value}0% chance`, ""]
@@ -178,7 +178,7 @@ export default class Marker {
         text.push("40% sd")
       } else if (this.subType === windType.Moderate) {
         text.push("20% fs")
-        text.push("60% sd")
+        text.push("70% sd")
       } else if (this.subType === windType.Strong) {
         text.push("40% fs")
         text.push("90% sd")

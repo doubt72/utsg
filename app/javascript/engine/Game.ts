@@ -1,4 +1,4 @@
-import { Coordinate, Player, unitType } from "../utilities/commonTypes";
+import { Coordinate, featureType, Player, unitType } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction from "./GameAction";
@@ -22,6 +22,8 @@ import { checkPhase, GamePhase, gamePhaseType } from "./support/gamePhase";
 import PrecipCheckState from "./control/state/PrecipCheckState";
 import RallyState from "./control/state/RallyState";
 import RallyAction from "./actions/RallyAction";
+import SmokeCheckState from "./control/state/SmokeCheckState";
+import FireCheckState from "./control/state/FireCheckState";
 
 export type GameData = {
   id: number;
@@ -47,7 +49,8 @@ export const closeProgress: { [index: string]: CloseProgress } = {
   NeedsRoll: "nr", NeedsCasualties: "nc", Done: "d",
 }
 
-export type SimpleCheck = { unit: Unit, loc: Coordinate }
+export type SimpleUnitCheck = { unit: Unit, loc: Coordinate }
+export type SimpleFeatureCheck = { feature: Feature, loc: Coordinate }
 export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
 export type CloseCheck = { loc: Coordinate, state: CloseProgress, iReduce: number, oReduce: number }
 
@@ -89,13 +92,13 @@ export default class Game {
   resignationLevel: number;
 
   moraleChecksNeeded: ComplexCheck[];
-  sniperNeeded: SimpleCheck[];
-  routCheckNeeded: SimpleCheck[];
-  routNeeded: SimpleCheck[];
+  sniperNeeded: SimpleUnitCheck[];
+  routCheckNeeded: SimpleUnitCheck[];
+  routNeeded: SimpleUnitCheck[];
   closeNeeded: CloseCheck[];
-  overstackNeeded: SimpleCheck[];
-  smokeCheckNeeded: SimpleCheck[];
-  fireCheckNeeded: SimpleCheck[];
+  smokeCheckNeeded: SimpleFeatureCheck[];
+  fireOutCheckNeeded: SimpleFeatureCheck[];
+  fireSpreadCheckNeeded: SimpleFeatureCheck[];
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -127,9 +130,9 @@ export default class Game {
     this.routCheckNeeded = []
     this.routNeeded = []
     this.closeNeeded = []
-    this.overstackNeeded = []
     this.smokeCheckNeeded = []
-    this.fireCheckNeeded = []
+    this.fireOutCheckNeeded = []
+    this.fireSpreadCheckNeeded = []
 
     this.loadAllActions()
   }
@@ -397,6 +400,60 @@ export default class Game {
     return false
   }
 
+  checkForSmoke(backendSync: boolean): void {
+    const map = this.scenario.map
+    for (let x = 0; x < map.width; x++) {
+      for (let y = 0; y < map.height; y++) {
+        const loc = new Coordinate(x, y)
+        const counters = map.countersAt(loc)
+        for (const c of counters) {
+          if (c.feature.isFeature && c.feature.type === featureType.Smoke) {
+            this.smokeCheckNeeded.push({ feature: c.feature, loc })
+          }
+        }
+      }
+    }
+    if (this.smokeCheckNeeded.length < 1) {
+      this.executeAction(new GameAction({
+        player: this.currentPlayer, user: this.currentUser, data: {
+          action: "info", message: "no smoke to check, skipping smoke dissapation check",
+          old_initiative: this.initiative,
+        }
+      }, this), backendSync)
+    } else {
+      this.gameState = new SmokeCheckState(this)
+    }
+  }
+
+  checkForFire(backendSync: boolean): void {
+    const map = this.scenario.map
+    for (let x = 0; x < map.width; x++) {
+      for (let y = 0; y < map.height; y++) {
+        const loc = new Coordinate(x, y)
+        const counters = map.countersAt(loc)
+        for (const c of counters) {
+          if (c.feature.isFeature && c.feature.type === featureType.Fire) {
+            this.fireOutCheckNeeded.push({ feature: c.feature, loc })
+            if (this.scenario.map.fireSpreadTarget() > 0) {
+              const nat = map.neighborAt(loc, map.windDirection)
+              if (nat) { this.fireSpreadCheckNeeded.push({ feature: c.feature, loc }) }
+            }
+          }
+        }
+      }
+    }
+    if (this.fireOutCheckNeeded.length < 1) {
+      this.executeAction(new GameAction({
+        player: this.currentPlayer, user: this.currentUser, data: {
+          action: "info", message: "no fire to check, skipping fire spread/dissipation check",
+          old_initiative: this.initiative,
+        }
+      }, this), backendSync)
+    } else {
+      this.gameState = new FireCheckState(this)
+    }
+  }
+
   findUnitById(id: string): Unit | undefined {
     const counter = this.findCounterById(id)
     return counter ? counter.unit : undefined
@@ -412,6 +469,9 @@ export default class Game {
   }
 
   addEliminatedCounter(c: Unit | Feature) {
+    if (c.isFeature && (c.type === featureType.Smoke || c.type === featureType.Fire)) {
+      return
+    }
     this.eliminatedUnits.push(c)
   }
 
