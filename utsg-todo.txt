@@ -1,13 +1,9 @@
 High Priority Features/Bug Fixes:
-  - State/check for smoke
   - Action/Test status updates
-  - Action/Test smoke
   - Action/Test weather
 
   - Implement fire checks for dead tanks and area fire
   - Fire displacement
-  - State/check for fire
-  - Action/Test fire
 
   - Add exhausted to units after CloseCombat
   - Check/Disable move if in contact

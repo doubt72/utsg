@@ -111,7 +111,7 @@ describe("precipitation", () => {
     const action = game.actions[0]
     expect(action.type).toBe("smoke_check")
     expect(action.stringValue).toBe(
-      "smoke dispersion check for A1: dissipate on 2 or less, rolled 1, smoke dissipates"
+      "smoke dispersion check for A1: dissipates on 2 or less, rolled 1, smoke dissipates"
     )
   })
 
@@ -141,7 +141,7 @@ describe("precipitation", () => {
     const action = game.actions[0]
     expect(action.type).toBe("smoke_check")
     expect(action.stringValue).toBe(
-      "smoke dispersion check for A1: dissipate on 2 or less, rolled 10, no effect"
+      "smoke dispersion check for A1: dissipates on 2 or less, rolled 10, no effect"
     )
   })
 

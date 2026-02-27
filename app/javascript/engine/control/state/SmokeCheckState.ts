@@ -27,7 +27,7 @@ export default class SmokeCheckState extends BaseState {
         action: "smoke_check", target: [{ x: loc.x, y: loc.y, id: feature.id }],
         dice_result: [{
           result, type: "d10",
-          description: `dissipate on ${need} or less, rolled ${result}, ${
+          description: `dissipates on ${need} or less, rolled ${result}, ${
             result > need ? "no effect" : "smoke dissipates"
           }`
         }],

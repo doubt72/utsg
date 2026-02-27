@@ -47,6 +47,9 @@ import PrecipCheckButton from "./buttons/PrecipCheckButton";
 import RallyButton from "./buttons/RallyButton";
 import RallyPassButton from "./buttons/RallyPassButton";
 import OverstackReduceButton from "./buttons/OverstackReduceButton";
+import SmokeCheckButton from "./buttons/SmokeCheckButton";
+import FireOutCheckButton from "./buttons/FireOutCheckButton";
+import FireSpreadCheckButton from "./buttons/FireSpreadCheckButton";
 
 interface GameControlsProps {
   game: Game;
@@ -164,6 +167,12 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <CloseCombatReduceButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "overstack_reduce") {
         return <OverstackReduceButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "smoke_check") {
+        return <SmokeCheckButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_out_check") {
+        return <FireOutCheckButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_spread_check") {
+        return <FireSpreadCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {

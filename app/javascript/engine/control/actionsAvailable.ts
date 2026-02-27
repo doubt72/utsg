@@ -247,6 +247,15 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     if (select) {
       actions.push({ type: "overstack_reduce" })
     }
+  } else if (game.smokeCheckNeeded.length > 0) {
+    actions.unshift({ type: "none", message: "checking smoke dispersion" })
+    actions.unshift({ type: "smoke_check" })
+  } else if (game.fireOutCheckNeeded.length > 0) {
+    actions.unshift({ type: "none", message: "checking if fires extinguish" })
+    actions.unshift({ type: "fire_out_check" })
+  } else if (game.fireSpreadCheckNeeded.length > 0) {
+    actions.unshift({ type: "none", message: "checking if fires spread" })
+    actions.unshift({ type: "fire_spread_check" })
   } else {
     actions.unshift({ type: "none", message: "not implemented yet" })
   }
