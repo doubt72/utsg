@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Action/Test weather
-
   - Switch status so that broken units maintain activated/exhausted status
     - Substitute pinned
   - Implement fire checks for dead tanks and area fire

@@ -50,6 +50,7 @@ import OverstackReduceButton from "./buttons/OverstackReduceButton";
 import SmokeCheckButton from "./buttons/SmokeCheckButton";
 import FireOutCheckButton from "./buttons/FireOutCheckButton";
 import FireSpreadCheckButton from "./buttons/FireSpreadCheckButton";
+import WeatherCheckButton from "./buttons/SmokeCheckButton copy";
 
 interface GameControlsProps {
   game: Game;
@@ -173,6 +174,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <FireOutCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "fire_spread_check") {
         return <FireSpreadCheckButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "weather_check") {
+        return <WeatherCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {

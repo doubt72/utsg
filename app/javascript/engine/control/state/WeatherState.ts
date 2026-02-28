@@ -17,6 +17,7 @@ export default class WeatherState extends BaseState {
         user: this.game.currentUser, player: this.player,
         data: {
           action: "wind_direction",
+          wind_data: { speed: this.game.scenario.map.windSpeed },
           dice_result: [{ result: roll, type: "d10" }],
           old_initiative: this.game.initiative,
         },
@@ -28,6 +29,7 @@ export default class WeatherState extends BaseState {
         user: this.game.currentUser, player: this.player,
         data: {
           action: "wind_speed",
+          wind_data: { speed: this.game.scenario.map.windSpeed },
           dice_result: [{ result: roll, type: "d10" }],
           old_initiative: this.game.initiative,
         },

@@ -256,6 +256,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   } else if (game.fireSpreadCheckNeeded.length > 0) {
     actions.unshift({ type: "none", message: "checking if fires spread" })
     actions.unshift({ type: "fire_spread_check" })
+  } else if (game.checkWindDirection || game.checkWindSpeed) {
+    actions.unshift({ type: "none", message: "variable weather" })
+    actions.unshift({ type: "weather_check" })
   } else {
     actions.unshift({ type: "none", message: "not implemented yet" })
   }

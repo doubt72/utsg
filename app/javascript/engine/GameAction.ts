@@ -1,4 +1,4 @@
-import { Direction, Player, UnitStatus } from "../utilities/commonTypes";
+import { Direction, Player, UnitStatus, WindType } from "../utilities/commonTypes";
 import Game from "./Game";
 import BaseAction from "./actions/BaseAction";
 import StateAction from "./actions/StateAction";
@@ -30,6 +30,8 @@ import SmokeCheckAction from "./actions/SmokeCheckAction";
 import FireOutAction from "./actions/FireOutAction";
 import FireSpreadAction from "./actions/FireSpreadAction";
 import StatusUpdateAction from "./actions/StatusUpdateAction";
+import WindDirectionAction from "./actions/WindDirectionAction";
+import WindSpeedAction from "./actions/WindSpeedAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -93,6 +95,10 @@ export type GameActionPhaseChange = {
   old_phase: GamePhase, new_phase: GamePhase, old_turn: number, new_turn: number, new_player: Player,
 }
 
+export type GameActionWindData = {
+  speed: WindType,
+}
+
 export type GameActionDetails = {
   action: string,
   old_initiative: number;
@@ -113,6 +119,7 @@ export type GameActionDetails = {
   rout_check_data?: GameActionRoutData,
   cc_data?: GameActionCCData,
   phase_data?: GameActionPhaseChange,
+  wind_data?: GameActionWindData,
 }
 
 export type GameActionData = {
@@ -249,6 +256,12 @@ export default class GameAction {
     }
     if (this.data.data.action === "fire_spread_check") {
       return new FireSpreadAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "wind_direction") {
+      return new WindDirectionAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "wind_speed") {
+      return new WindSpeedAction(this.data, this.game, this.index);
     }
     return new StateAction(this.data, this.game, this.index, "unhandled action type");
   }

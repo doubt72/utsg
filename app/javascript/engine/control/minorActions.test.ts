@@ -7,6 +7,7 @@ import { Coordinate, featureType, unitStatus, windType } from "../../utilities/c
 import Feature from "../Feature";
 import FireCheckState from "./state/FireCheckState";
 import Unit from "../Unit";
+import WeatherState from "./state/WeatherState";
 
 describe("precipitation", () => {
   test("skips no chance", () => {
@@ -328,5 +329,45 @@ describe("precipitation", () => {
     game.checkForFire(false)
     game.fireOutCheckNeeded = []
     expect(game.fireSpreadCheckNeeded.length).toBe(0)
+  })
+
+  test("variable wind changes", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windVariable = true
+    map.windDirection = 1
+    map.windSpeed = windType.Strong
+
+    game.checkForWind(false)
+    const state = game.gameState as WeatherState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    state.finish()
+    state.finish()
+    Math.random = original
+
+    expect(map.windDirection).toBe(6)
+    expect(map.windSpeed).toBe(windType.Moderate)
+  })
+
+  test("variable wind doesn't change", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windVariable = true
+    map.windDirection = 1
+    map.windSpeed = windType.Strong
+
+    game.checkForWind(false)
+    const state = game.gameState as WeatherState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.5)
+    state.finish()
+    state.finish()
+    Math.random = original
+
+    expect(map.windDirection).toBe(1)
+    expect(map.windSpeed).toBe(windType.Strong)
   })
 })
