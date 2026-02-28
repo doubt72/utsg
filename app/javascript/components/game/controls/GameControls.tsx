@@ -50,7 +50,7 @@ import OverstackReduceButton from "./buttons/OverstackReduceButton";
 import SmokeCheckButton from "./buttons/SmokeCheckButton";
 import FireOutCheckButton from "./buttons/FireOutCheckButton";
 import FireSpreadCheckButton from "./buttons/FireSpreadCheckButton";
-import WeatherCheckButton from "./buttons/SmokeCheckButton copy";
+import WeatherCheckButton from "./buttons/WeatherCheckButton";
 
 interface GameControlsProps {
   game: Game;

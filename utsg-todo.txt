@@ -1,10 +1,9 @@
 High Priority Features/Bug Fixes:
-  - Switch status so that broken units maintain activated/exhausted status
-    - Substitute pinned
+  - Switch jammed to status
   - Implement fire checks for dead tanks and area fire
   - Fire displacement
+  - Add exhausted to units after CloseCombat / only if combat over
 
-  - Add exhausted to units after CloseCombat
   - Check/Disable move if in contact
     - Assault move still possible if in contact
     - Special activities not, though
@@ -12,36 +11,41 @@ High Priority Features/Bug Fixes:
   - Run through game
   - Possibly separate initiative from current player in non-main phases
 
-Future Features/Bug Fixes:
+  - Finish Docs
+  - Fix dragging of reinforcement panel on scaled display
+  - Hotkeys and context buttons
+
+  - Always reaction fire, loss of initiative or not (after moves?)
+    - Skip reaction fire when no LOS
+    - Exclude Area fire
+
+  - Show Terrain in counter overlay ?
+  - Ability to kick players
+  - Implement Help Button linking to game phase
+
+  - Fix hindrance bug
+    - Through two fence corner intersections
+
+  - Fix stacking parent/children indicators when showing markers
+    - Including hull
+
+  - Automate deploys (open automatically?)
+  - Email Notifications
+
+Keep an Eye out for:
+  - Improved move validation/synchronization to block duplicate/illegal moves
   - Undo getting out of sync (maybe remove ID?)
     - Automatically undo excessive deployments
     - Handle undo after too late
     - Handle action after undo happens
-
-  - Hotkeys and context buttons
-  - Fix dragging of reinforcement panel on scaled display
-  - Always reaction fire, loss of initiative or not (after moves?)
-    - Skip reaction fire when no LOS
-    - Exclude Area fire
   - Don't unselect first initial selection when cancelling move/fire/assault
-
   - Handle map scale and such settings gone wrong (reset button in prefs?)
-
-  - Show Terrain in counter overlay
-  - Ability to kick players
-  - Implement Help Button linking to game context
   - Fix hindrance bug
-    - Through two fence corner intersections
     - Also for hindrance at higher elevation
-  - Fix stacking parent/children indicators when showing markers
-    - Including hull
-  - Automate deploys (open automatically?)
-
-  - Tanks with 1 man turrets/things like that ?
-  - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
-  - Improved move validation/synchronization to block duplicate/illegal moves
   - Break up tests / large files
-  - ?? Fix flickering of control buttons?
-  - ?? Refactor, simplify firing action
   - ?? Show ALL for movement into mines or wire
   - ?? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
+
+Think about:
+  - Tanks with 1 man turrets/things like that ?
+    - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
