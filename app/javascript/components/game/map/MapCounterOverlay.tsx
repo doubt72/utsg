@@ -61,7 +61,7 @@ export default function MapCounterOverlay({
         rc += getLength(unit.children[0], false)
       }
     }
-    if (unit.turreted) { console.log("TURRET") ; rc += 1 } else { console.log("NO TURRET") }
+    if (unit.turreted) { rc += 1 }
     if (map.showAllCounters) {
       if (unit.isVehicle) {
         if (unit.immobilized) { rc += 1 }
@@ -75,7 +75,6 @@ export default function MapCounterOverlay({
         if (unit.pinned) { rc += 1 }
       }
     }
-    console.log(`${unit.name} - ${rc}`)
     return rc
   }
 

@@ -1,10 +1,19 @@
 High Priority Features/Bug Fixes:
-  - Fix dragging of reinforcement panel on scaled display
+  - Fix scaled dragging of reinforcement panel on scaled display
   -   Also minimap / reinforcement tooltips
+
+  - Automate unit deploy/open panel automatically
 
   - Implement fire checks for dead tanks and area fire
 
   - Finish Docs
+    - Read through everything
+    - Prep phase
+    - Close combat
+    - Housekeeping
+    - Rewrite Reaction Fire
+    - Rewrite Blaze Section
+    - Add Some Developer Notes
   - Implement Help Button linking to game phase
 
   - Separate sides not hotseat
@@ -18,7 +27,7 @@ High Priority Features/Bug Fixes:
     - Skip reaction fire when no LOS
     - Exclude Area fire
 
-  - Run through game
+  - Run through game / Finish 001 (description / balance)
   - Possibly separate initiative from current player in non-main phases
   - Hotkeys and context buttons
 
@@ -29,10 +38,13 @@ High Priority Features/Bug Fixes:
   - Fix hindrance bug
     - Through two fence corner intersections
 
-  - Automate unit deploys (open panel automatically?)
-  - Email Notifications
-
   - Overlay both fire and displacement
+
+  - Remove TODO on about page, still working and probably always will be
+  - Change announcements
+    - Patreon?
+  - Email Notifications
+    - Note to admins under code of contact
 
 Keep an Eye out for:
   - Improved move validation/synchronization to block duplicate/illegal moves
