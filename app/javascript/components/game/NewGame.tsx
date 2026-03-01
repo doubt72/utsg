@@ -15,7 +15,7 @@ export default function NewGame() {
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
 
   const [scenarioSearch, setScenarioSearch] = useState({
-    sort: "r", sortDir: "asc", string: "", allies: "", axis: "", theater: "", status: "*",
+    sort: "r", sortDir: "asc", string: "", allies: "", axis: "", theater: "", status: "",
     type: "", size: "", page: 0,
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
@@ -215,11 +215,16 @@ export default function NewGame() {
     </select>
   )
 
-  const statuses = [
+  const statuses = localStorage.getItem("proto") === "true" ? [
     { code: "", name: "Ready"},
     { code: "b", name: "Beta Test"},
     { code: "a", name: "Alpha Test"},
     { code: "p", name: "Prototype"},
+    { code: "p*", name: "[ any ]"},
+  ] : [
+    { code: "", name: "Ready"},
+    { code: "b", name: "Beta Test"},
+    { code: "a", name: "Alpha Test"},
     { code: "*", name: "[ any ]"},
   ]
 

@@ -16,6 +16,7 @@ RSpec.describe Utility::Scenario do
         LAYOUT = [15, 23, "x"].freeze
         ALLIED_UNITS = {}.freeze
         AXIS_UNITS = {}.freeze
+        STATUS = "p"
 
         class << self
           def generate
@@ -33,17 +34,22 @@ RSpec.describe Utility::Scenario do
   describe "all_scenarios" do
     it "gets all scenarios with no filters" do
       scenarios = described_class.all_scenarios({ "status" => "*" })
+      expect(scenarios.length).to be == 1
+    end
+
+    it "gets all scenarios with no filters (admin view)" do
+      scenarios = described_class.all_scenarios({ "status" => "p*" })
       expect(scenarios.length).to be == Scenarios.constants.length - 2
     end
 
     it "gets spec scenario when filtering by string" do
-      scenarios = described_class.all_scenarios({ "string" => scenario_name, "status" => "*" })
+      scenarios = described_class.all_scenarios({ "string" => scenario_name, "status" => "p*" })
       expect(scenarios.length).to be == 1
       expect(scenarios.first[:id]).to be == "000"
     end
 
     it "gets correct scenarios with allies filter" do
-      scenarios = described_class.all_scenarios({ "allies" => "usa", "status" => "*" })
+      scenarios = described_class.all_scenarios({ "allies" => "usa", "status" => "p*" })
       scenarios.each do |s|
         expect(s[:allies].include?("usa") || s[:allies].include?("bra")).to be true
       end
@@ -53,7 +59,7 @@ RSpec.describe Utility::Scenario do
     end
 
     it "gets correct scenarios with axis filter" do
-      scenarios = described_class.all_scenarios({ "axis" => "ger", "status" => "*" })
+      scenarios = described_class.all_scenarios({ "axis" => "ger", "status" => "p*" })
       scenarios.each do |s|
         expect(s[:axis].include?("ger")).to be true
       end
@@ -65,13 +71,13 @@ RSpec.describe Utility::Scenario do
 
   context "validate all records" do
     it "there are no duplicate IDs" do
-      scenarios = described_class.all_scenarios({ "status" => "*" })
+      scenarios = described_class.all_scenarios({ "status" => "p*" })
       all_ids = scenarios.map { |s| s[:id] }
 
       expect(all_ids.length).to be == all_ids.sort.uniq.length
     end
 
-    described_class.all_scenarios({ "status" => "*" }).each do |scenario|
+    described_class.all_scenarios({ "status" => "p*" }).each do |scenario|
       describe "scenario #{scenario[:id]}" do
         it "has valid attributes" do
           expect(scenario[:id]).not_to be_empty
@@ -176,7 +182,7 @@ RSpec.describe Utility::Scenario do
 
       # If any of these change, scenario needs to be updated with a new version,
       # then update test with new version/checksum
-      expect(Utility::Scenario.checksum("001")).to be == "0.1a-fe9fd0700c4d4bcb1f2d6fa4a4673db9"
+      expect(Utility::Scenario.checksum("001")).to be == "1.0-a5287d684749f588a1311b2f010063d1"
       expect(Utility::Scenario.checksum("002")).to be == "0.1p-9537dbcad109de34d0571b809cdc788a"
       expect(Utility::Scenario.checksum("003")).to be == "0.1p-b317de64247fd333bcafe4e26ecd4fae"
       expect(Utility::Scenario.checksum("004")).to be == "0.1p-aae1f3e72204f045041ef21c4169a632"

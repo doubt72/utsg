@@ -112,6 +112,8 @@ class User < ApplicationRecord
   end
 
   def body
+    return { username:, email:, proto: true } if admin
+
     { username:, email: }
   end
 

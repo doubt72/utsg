@@ -6,7 +6,8 @@ module Scenarios
     NAME = "A Straightforward Proposition"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 6, 25].freeze
     LAYOUT = [15, 11, "x"].freeze

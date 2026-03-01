@@ -31,9 +31,13 @@ module Utility
       end
 
       def filter_status(scenarios, status)
-        return if status == "*"
+        return if status == "p*"
 
-        if status
+        if status == "*"
+          scenarios.filter! do |s|
+            s[:status] != "p"
+          end
+        elsif status
           scenarios.filter! { |s| s[:status] == status }
         else
           scenarios.filter! do |s|

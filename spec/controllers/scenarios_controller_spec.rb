@@ -34,7 +34,7 @@ RSpec.describe Api::V1::ScenariosController do
 
   describe "index" do
     it "gets first page of scenarios with no filters and default sorting" do
-      get :index, params: { status: "*" }
+      get :index, params: { status: "p*" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 10
@@ -49,7 +49,7 @@ RSpec.describe Api::V1::ScenariosController do
       game2.winner = game2.player_two
       game2.save!
 
-      get :index, params: { status: "*", sort: "n", sort_dir: "asc" }
+      get :index, params: { status: "p*", sort: "n", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 10
@@ -65,7 +65,7 @@ RSpec.describe Api::V1::ScenariosController do
       create(:rating, scenario: "001", rating: 1)
       create(:rating, scenario: "002", rating: 5)
 
-      get :index, params: { status: "*", sort: "n", sort_dir: "asc" }
+      get :index, params: { status: "p*", sort: "n", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 10
@@ -83,7 +83,7 @@ RSpec.describe Api::V1::ScenariosController do
 
   describe "sorting" do
     it "gets data in correct order with default sorting" do
-      get :index, params: { status: "*", sort: "n", sort_dir: "asc" }
+      get :index, params: { status: "p*", sort: "n", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -96,7 +96,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets data in correct order with reverse sorting" do
-      get :index, params: { status: "*", sort: "n", sort_dir: "desc" }
+      get :index, params: { status: "p*", sort: "n", sort_dir: "desc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -109,7 +109,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets data in correct order with date sorting" do
-      get :index, params: { status: "*", sort: "d", sort_dir: "asc" }
+      get :index, params: { status: "p*", sort: "d", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -123,7 +123,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets data in correct order with reverse date sorting" do
-      get :index, params: { status: "*", sort: "d", sort_dir: "desc" }
+      get :index, params: { status: "p*", sort: "d", sort_dir: "desc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -137,7 +137,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets data in correct order with map size sorting" do
-      get :index, params: { status: "*", sort: "m", sort_dir: "asc" }
+      get :index, params: { status: "p*", sort: "m", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -153,7 +153,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets data in correct order with reverse map size sorting" do
-      get :index, params: { status: "*", sort: "m", sort_dir: "desc" }
+      get :index, params: { status: "p*", sort: "m", sort_dir: "desc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -169,7 +169,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets data in correct order with unit count sorting" do
-      get :index, params: { status: "*", sort: "u", sort_dir: "asc" }
+      get :index, params: { status: "p*", sort: "u", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -187,7 +187,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets data in correct order with reverse unit count sorting" do
-      get :index, params: { status: "*", sort: "u", sort_dir: "desc" }
+      get :index, params: { status: "p*", sort: "u", sort_dir: "desc" }
 
       expect(response.status).to be == 200
       data = JSON.parse(response.body)["data"]
@@ -216,7 +216,7 @@ RSpec.describe Api::V1::ScenariosController do
       end
 
       it "gets data in correct order with default sorting" do
-        get :index, params: { status: "*", sort: "b", sort_dir: "asc" }
+        get :index, params: { status: "p*", sort: "b", sort_dir: "asc" }
 
         expect(response.status).to be == 200
         data = JSON.parse(response.body)["data"]
@@ -232,7 +232,7 @@ RSpec.describe Api::V1::ScenariosController do
       end
 
       it "gets data in correct order with reverse sorting" do
-        get :index, params: { status: "*", sort: "b", sort_dir: "desc" }
+        get :index, params: { status: "p*", sort: "b", sort_dir: "desc" }
 
         expect(response.status).to be == 200
         data = JSON.parse(response.body)["data"]
@@ -255,7 +255,7 @@ RSpec.describe Api::V1::ScenariosController do
       end
 
       it "gets data in correct order with default sorting" do
-        get :index, params: { status: "*", sort: "r", sort_dir: "asc" }
+        get :index, params: { status: "p*", sort: "r", sort_dir: "asc" }
 
         expect(response.status).to be == 200
         data = JSON.parse(response.body)["data"]
@@ -270,7 +270,7 @@ RSpec.describe Api::V1::ScenariosController do
       end
 
       it "gets data in correct order with reverse sorting" do
-        get :index, params: { status: "*", sort: "r", sort_dir: "desc" }
+        get :index, params: { status: "p*", sort: "r", sort_dir: "desc" }
 
         expect(response.status).to be == 200
         data = JSON.parse(response.body)["data"]
@@ -288,7 +288,7 @@ RSpec.describe Api::V1::ScenariosController do
 
   describe "filters" do
     it "gets spec scenario when filtering by string" do
-      get :index, params: { string: scenario_name, status: "*" }
+      get :index, params: { string: scenario_name, status: "p*" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 1
@@ -296,7 +296,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with allies filter" do
-      get :index, params: { allies: "usa", status: "*", sort_dir: "asc" }
+      get :index, params: { allies: "usa", status: "p*", sort_dir: "asc" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -309,7 +309,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with axis filter" do
-      get :index, params: { axis: "ger", status: "*" }
+      get :index, params: { axis: "ger", status: "p*" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -339,7 +339,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with theater filter" do
-      get :index, params: { status: "*", theater: "1" }
+      get :index, params: { status: "p*", theater: "1" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -349,7 +349,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with size filter" do
-      get :index, params: { status: "*", size: "2x1" }
+      get :index, params: { status: "p*", size: "2x1" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -357,7 +357,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with infantry filter" do
-      get :index, params: { status: "*", type: "inf" }
+      get :index, params: { status: "p*", type: "inf" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -365,7 +365,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with artillery filter" do
-      get :index, params: { status: "*", type: "art" }
+      get :index, params: { status: "p*", type: "art" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -373,7 +373,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with tank filter" do
-      get :index, params: { status: "*", type: "tank" }
+      get :index, params: { status: "p*", type: "tank" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -381,7 +381,7 @@ RSpec.describe Api::V1::ScenariosController do
     end
 
     it "gets correct scenarios with no_feat filter" do
-      get :index, params: { status: "*", type: "no_feat" }
+      get :index, params: { status: "p*", type: "no_feat" }
 
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
@@ -403,7 +403,7 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       json = JSON.parse(response.body)
       expect(json["name"]).to be == real_scenario_name
-      expect(json["version"]).to be == "0.1"
+      expect(json["version"]).to be == "1.0"
     end
 
     it "gets cached scenario" do

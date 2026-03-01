@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { adminUsers, getAPI } from "../utilities/network";
+import { getAPI } from "../utilities/network";
 
 export function ProtectedRoute() {
   const navigate = useNavigate()
@@ -13,6 +13,7 @@ export function ProtectedRoute() {
     const path = window.location.pathname
     localStorage.removeItem("username")
     localStorage.removeItem("email")
+    localStorage.removeItem("proto")
     localStorage.removeItem("validationNeeded")
     if (path !== '/') {
       navigate("/", { replace: true })
@@ -20,6 +21,8 @@ export function ProtectedRoute() {
   }
 
   useEffect(() => {
+    localStorage.removeItem("proto")
+
     const path = window.location.pathname
     getAPI("/api/v1/session/auth", {
       ok: response => {
@@ -28,7 +31,8 @@ export function ProtectedRoute() {
             unauthorized()
           } else {
             localStorage.removeItem("validationNeeded")
-            if (path.includes("debug") && !adminUsers.includes(body.username)) {
+            if (body.proto) { localStorage.setItem("proto", "true") }
+            if (path.includes("debug") && !body.proto) {
               navigate("/", { replace: true })
             }
           }
