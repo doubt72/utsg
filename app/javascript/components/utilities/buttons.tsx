@@ -3,7 +3,8 @@ import { Link } from "react-router-dom"
 import {
   ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, Ban, BoxArrowInRight, BoxArrowRight,
   ChatText, Check2Square, CircleFill, Crosshair, Crosshair2, Dice6, Hexagon, InfoCircle, PencilSquare, Person,
-  QuestionCircle, ShieldExclamation, Trash3, XCircle
+  QuestionCircle, ShieldExclamation, Trash3, XCircle,
+  XSquare
 } from "react-bootstrap-icons"
 
 interface ButtonTypeProps {
@@ -188,4 +189,8 @@ export const CancelGlyph = () => {
 
 export const DiceGlyph = () => {
   return <Dice6 />
+}
+
+export const EliminateGlyph = () => {
+  return <XSquare />
 }

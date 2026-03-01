@@ -15,19 +15,23 @@ export default function MoveTrackOverlay({ map }: MoveTrackOverlayProps) {
       return map.game.moveState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     } else if (map.game?.gameState?.type === stateType.Assault) {
       return map.game.assaultState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
+    } else if (map.game?.gameState?.type === stateType.FireDisplace) {
+      return map.game.assaultState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
     const lastSigAction = map.game?.lastSignificantAction
     if (lastSigAction &&
-        ["move", "rush", "assault_move", "rout_move", "rout_self"].includes(lastSigAction.data.action) &&
-        lastSigAction.data.path) {
+        ["move", "rush", "assault_move", "rout_move", "rout_self"].
+          includes(lastSigAction.data.action) && lastSigAction.data.path) {
       return lastSigAction.data.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
+    // TODO: if last sig action was fire, check for displace
     return []
   }
 
   const hexCenters = () => {
-    const routing = map.game?.lastSignificantAction?.data.action === "rout_move" ||
-                    map.game?.lastSignificantAction?.data.action === "rout_self"
+    const action = map.game?.lastSignificantAction?.data.action ?? ""
+    // TODO: if last sig action was fire, check for displace here
+    const routing = ["rout_move", "rout_self"].includes(action)
     let first = true
     return hexes().map((h, i) => {
       const offset = Math.max(map.counterDataAt(h.coord).length * 5 - 5, 0)

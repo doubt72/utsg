@@ -1,11 +1,12 @@
 High Priority Features/Bug Fixes:
   - Finish Docs
+  - Implement Help Button linking to game phase
 
   - Implement fire checks for dead tanks and area fire
-  - Fire displacement
   - Add exhausted to units after CloseCombat / only if combat over
 
   - Separate sides not hotseat
+  - Cleanup undo (only active player) / allow across phases
 
   - Check/Disable move if in contact
     - Assault move still possible if in contact
@@ -22,7 +23,6 @@ High Priority Features/Bug Fixes:
 
   - Show Terrain in counter overlay ?
   - Ability to kick players
-  - Implement Help Button linking to game phase
 
   - Fix hindrance bug
     - Through two fence corner intersections
@@ -32,6 +32,8 @@ High Priority Features/Bug Fixes:
 
   - Automate deploys (open automatically?)
   - Email Notifications
+
+  - Overlay both fire and displacement
 
 Keep an Eye out for:
   - Improved move validation/synchronization to block duplicate/illegal moves

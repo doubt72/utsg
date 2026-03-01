@@ -1,7 +1,7 @@
 import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
-import { XSquare } from "react-bootstrap-icons";
 import OverstackState from "../../../../engine/control/state/OverstackState";
+import { EliminateGlyph } from "../../../utilities/buttons";
 
 interface OverstackReduceButtonProps {
   game: Game;
@@ -19,7 +19,7 @@ export default function OverstackReduceButton({ game, callback }: OverstackReduc
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><XSquare />rally</button>
+        <button type="submit" className="custom-button nowrap">{ EliminateGlyph() }reduce</button>
       </div>
     </form>
   )

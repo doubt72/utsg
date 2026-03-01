@@ -454,10 +454,12 @@ export default function MapDisplay({
   useEffect(() => {
     const lastSigAction = map.game?.lastSignificantAction
     if (map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault ||
+      map.game?.gameState?.type === stateType.FireDisplace ||
         (lastSigAction &&
          ["move", "rush", "assault_move", "rout_move", "rout_self"].includes(lastSigAction.data.action))) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
+      // TODO: if last sig action was fire, check for displace
       setMoveTrack(undefined)
     }
     if (map.game?.gameState?.type === stateType.Fire ||
@@ -538,6 +540,8 @@ export default function MapDisplay({
         map.game.fireState.toHex(x, y)
       } else if (map.game?.gameState?.type === stateType.Rout) {
         map.game.routState.finishXY(x, y)
+      } else if (map.game?.gameState?.type === stateType.FireDisplace) {
+        map.game.fireDisplaceState.move(x, y)
       }
       setMapUpdate(s => s + 1)
       if (doCallback) { hexCallback(x, y) }

@@ -51,6 +51,9 @@ import SmokeCheckButton from "./buttons/SmokeCheckButton";
 import FireOutCheckButton from "./buttons/FireOutCheckButton";
 import FireSpreadCheckButton from "./buttons/FireSpreadCheckButton";
 import WeatherCheckButton from "./buttons/WeatherCheckButton";
+import FireDisplaceEliminateButton from "./buttons/FireDisplaceEliminateButton";
+import FireDisplaceConfirmButton from "./buttons/FireDisplaceConfirmButton";
+import FireDisplaceCancelButton from "./buttons/FireDisplaceCancelButton";
 
 interface GameControlsProps {
   game: Game;
@@ -176,6 +179,12 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <FireSpreadCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "weather_check") {
         return <WeatherCheckButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_displace_eliminate") {
+        return <FireDisplaceEliminateButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_displace_confirm") {
+        return <FireDisplaceConfirmButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_displace_cancel") {
+        return <FireDisplaceCancelButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {

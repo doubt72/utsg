@@ -9,6 +9,7 @@ import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 import { stateType } from "./state/BaseState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import CloseCombatState, { closeCombatCasualyNeeded, closeCombatCheck, closeCombatDone } from "./state/CloseCombatState"
+import FireDisplaceState from "./state/FireDisplaceState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
 import ReactionState, { reactionFireCheck } from "./state/ReactionState"
@@ -28,6 +29,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.gameState = new RoutState(game, false)
   } else if (game.routCheckNeeded.length > 0) {
     game.gameState = new RoutCheckState(game)
+  } else if (game.fireDisplaceNeeded.length > 0) {
+    game.gameState = new FireDisplaceState(game)
   } else if (initiativeCheck(game)) {
     game.gameState = new InitiativeState(game)
   } else if (reactionFireCheck(game)) {
@@ -75,6 +78,14 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     actions.push({ type: "rally_pass" })
   } else if (game.phase === gamePhaseType.PrepPrecip) {
     actions.push({ type: "precip_check" })
+  } else if (game.gameState?.type === stateType.FireDisplace) {
+    actions.unshift({ type: "none", message: "fire displaces unit" })
+    if (game.fireDisplaceState.remove || game.fireDisplaceState.path.length > 1) {
+      actions.push({ type: "fire_displace_confirm" })
+      actions.push({ type: "fire_displace_cancel" })
+    } else {
+      actions.push({ type: "fire_displace_eliminate" })
+    }
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
     if (!game.gameState?.actionInProgress) {
@@ -249,16 +260,16 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     }
   } else if (game.smokeCheckNeeded.length > 0) {
     actions.unshift({ type: "none", message: "checking smoke dispersion" })
-    actions.unshift({ type: "smoke_check" })
+    actions.push({ type: "smoke_check" })
   } else if (game.fireOutCheckNeeded.length > 0) {
     actions.unshift({ type: "none", message: "checking if fires extinguish" })
-    actions.unshift({ type: "fire_out_check" })
+    actions.push({ type: "fire_out_check" })
   } else if (game.fireSpreadCheckNeeded.length > 0) {
     actions.unshift({ type: "none", message: "checking if fires spread" })
-    actions.unshift({ type: "fire_spread_check" })
+    actions.push({ type: "fire_spread_check" })
   } else if (game.checkWindDirection || game.checkWindSpeed) {
     actions.unshift({ type: "none", message: "variable weather" })
-    actions.unshift({ type: "weather_check" })
+    actions.push({ type: "weather_check" })
   } else {
     actions.unshift({ type: "none", message: "not implemented yet" })
   }

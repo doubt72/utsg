@@ -63,6 +63,7 @@ export default class FireDisplaceState extends BaseState {
   }
 
   openHex(x: number, y: number): HexOpenType {
+    if (this.remove) { return hexOpenType.Closed }
     for (const h of this.availableHexes) {
       if (h.coord.x === x && h.coord.y === y) {
         return hexOpenType.Open
@@ -92,6 +93,7 @@ export default class FireDisplaceState extends BaseState {
   }
 
   cancel(): void {
+    this.remove = false
     if (this.path.length !== 2) { return }
     this.path.pop()
   }
