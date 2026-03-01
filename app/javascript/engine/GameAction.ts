@@ -32,6 +32,7 @@ import FireSpreadAction from "./actions/FireSpreadAction";
 import StatusUpdateAction from "./actions/StatusUpdateAction";
 import WindDirectionAction from "./actions/WindDirectionAction";
 import WindSpeedAction from "./actions/WindSpeedAction";
+import FireDisplaceAction from "./actions/FireDisplaceAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -262,6 +263,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "wind_speed") {
       return new WindSpeedAction(this.data, this.game, this.index);
+    }
+    if (this.data.data.action === "fire_displace") {
+      return new FireDisplaceAction(this.data, this.game, this.index);
     }
     return new StateAction(this.data, this.game, this.index, "unhandled action type");
   }

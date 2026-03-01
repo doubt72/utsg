@@ -1,8 +1,11 @@
 High Priority Features/Bug Fixes:
-  - Switch jammed to status
+  - Finish Docs
+
   - Implement fire checks for dead tanks and area fire
   - Fire displacement
   - Add exhausted to units after CloseCombat / only if combat over
+
+  - Separate sides not hotseat
 
   - Check/Disable move if in contact
     - Assault move still possible if in contact
@@ -10,8 +13,6 @@ High Priority Features/Bug Fixes:
 
   - Run through game
   - Possibly separate initiative from current player in non-main phases
-
-  - Finish Docs
   - Fix dragging of reinforcement panel on scaled display
   - Hotkeys and context buttons
 

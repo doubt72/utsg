@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Direction, featureType, HexOpenType, hexOpenType } from "../../../utilities/commonTypes";
 import { normalDir, roll2d10, rolld10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
@@ -74,7 +74,7 @@ export default class MoveState extends BaseState {
 
   get lastPath() { return this.path[this.path.length - 1] }
 
-  openHex(x: number, y: number) {
+  openHex(x: number, y: number): HexOpenType {
     const map = this.game.scenario.map
     const from = new Coordinate(this.lastPath.x, this.lastPath.y)
     const to = new Coordinate(x, y)

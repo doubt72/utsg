@@ -781,6 +781,12 @@ export default class Map {
     this.addCounter(loc, new Feature({
       ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1, ai: 1 }
     }))
+    const counters = this.countersAt(loc)
+    for (const c of counters) {
+      if (!c.hasFeature && !c.hasMarker && !c.unit.isWreck && !c.unit.parent) {
+        this.game?.fireDisplaceNeeded.push({ loc, unit: c.unit })
+      }
+    }
   }
 
   spreadFire(loc: Coordinate) {

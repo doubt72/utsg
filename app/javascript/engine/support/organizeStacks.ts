@@ -1,4 +1,4 @@
-import { Coordinate, markerType, MarkerType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, markerType, MarkerType } from "../../utilities/commonTypes";
 import Feature from "../Feature";
 import Map from "../Map";
 import Marker from "../Marker";
@@ -41,6 +41,7 @@ export function sortStacks(map: Map) {
 }
 
 export function sortValues(unit: Unit | Feature): number {
+  if (unit.isFeature && unit.type === featureType.Fire) { return 99 }
   if (unit.isFeature) { return 0 }
   const u = unit as Unit
   return {

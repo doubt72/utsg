@@ -25,6 +25,7 @@ import RallyAction from "./actions/RallyAction";
 import SmokeCheckState from "./control/state/SmokeCheckState";
 import FireCheckState from "./control/state/FireCheckState";
 import WeatherState from "./control/state/WeatherState";
+import FireDisplaceState from "./control/state/FireDisplaceState";
 
 export type GameData = {
   id: number;
@@ -96,6 +97,7 @@ export default class Game {
   sniperNeeded: SimpleUnitCheck[];
   routCheckNeeded: SimpleUnitCheck[];
   routNeeded: SimpleUnitCheck[];
+  fireDisplaceNeeded: SimpleUnitCheck[];
   closeNeeded: CloseCheck[];
   smokeCheckNeeded: SimpleFeatureCheck[];
   fireOutCheckNeeded: SimpleFeatureCheck[];
@@ -132,6 +134,7 @@ export default class Game {
     this.sniperNeeded = []
     this.routCheckNeeded = []
     this.routNeeded = []
+    this.fireDisplaceNeeded = []
     this.closeNeeded = []
     this.smokeCheckNeeded = []
     this.fireOutCheckNeeded = []
@@ -306,6 +309,10 @@ export default class Game {
 
   get rallyState(): RallyState {
     return this.gameState as RallyState
+  }
+
+  get fireDisplaceState(): FireDisplaceState {
+    return this.gameState as FireDisplaceState
   }
 
   get freeRally(): boolean {

@@ -133,7 +133,7 @@ export const createBlankGame = (hexes: HexData[][] = plainTestHexes): Game => {
   return createTestGame(hexes)
 }
 
-const createTestGame = (hexes: HexData[][]): Game => {
+export const createTestGame = (hexes: HexData[][]): Game => {
   const game = new Game({
     id: 1,
     name: "test game", scenario: scenarioTestData(hexes), scenario_version: "0.01",
