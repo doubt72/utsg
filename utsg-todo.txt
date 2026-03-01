@@ -1,9 +1,13 @@
 High Priority Features/Bug Fixes:
-  - Finish Docs
-  - Implement Help Button linking to game phase
+  - Fix stacking parent/children indicators when showing markers
+    - Including hull
+  - Fix dragging of reinforcement panel on scaled display
+  -   Also minimap / reinforcement tooltips
 
   - Implement fire checks for dead tanks and area fire
-  - Add exhausted to units after CloseCombat / only if combat over
+
+  - Finish Docs
+  - Implement Help Button linking to game phase
 
   - Separate sides not hotseat
   - Cleanup undo (only active player) / allow across phases
@@ -12,24 +16,20 @@ High Priority Features/Bug Fixes:
     - Assault move still possible if in contact
     - Special activities not, though
 
-  - Run through game
-  - Possibly separate initiative from current player in non-main phases
-  - Fix dragging of reinforcement panel on scaled display
-  -   Also minimap / reinforcement tooltips
-  - Hotkeys and context buttons
-
   - Always reaction fire, loss of initiative or not (after moves?)
     - Skip reaction fire when no LOS
     - Exclude Area fire
 
+  - Run through game
+  - Possibly separate initiative from current player in non-main phases
+  - Hotkeys and context buttons
+
   - Show Terrain in counter overlay ?
   - Ability to kick players
 
+  - Add exhausted to units after CloseCombat / only if combat over
   - Fix hindrance bug
     - Through two fence corner intersections
-
-  - Fix stacking parent/children indicators when showing markers
-    - Including hull
 
   - Automate unit deploys (open panel automatically?)
   - Email Notifications

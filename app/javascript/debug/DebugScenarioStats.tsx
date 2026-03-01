@@ -59,8 +59,14 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
   const [countStream, setCountStream] = useState<Lookup>({})
   const [countStreamPresent, setCountStreamPresent] = useState<Lookup>({})
 
+  const allied = (code: string): boolean => {
+    return ["ussr", "uk", "usa", "fra", "chi", "alm"].includes(code)
+  }
+
   useEffect(() => {
-    const url = `/api/v1/scenarios?page=0&page_size=999&status=${ proto ? "p*" : "*"}`
+    const url = `/api/v1/scenarios?page=0&page_size=999&status=${ proto ? "p*" : "*"}${
+      nation ? (allied(nation) ? `&allies=${nation}` : `&axis=${nation}`) : ""
+    }`
     getAPI(url, {
       ok: response => {
         response.json().then(json => {
@@ -130,7 +136,6 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
     const cs: Lookup = { all: 0 }
     const csp: Lookup = { all: 0 }
     for (const s of scenarios) {
-      if (nation && !s.axisFactions.includes(nation) && !s.alliedFactions.includes(nation)) { continue }
       incrementAllOne([
         cst, cal, cax, cy, cm, ctn, cl, cv, calu, caxu, csr, cbt, cn, csw, cbw, cp, cpp, cwt, cwd, cwv,
         ctp, cep, crp, crrp, cbp, cbdp, csp
