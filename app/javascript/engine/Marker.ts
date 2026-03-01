@@ -3,6 +3,7 @@ import {
 } from "../utilities/commonTypes"
 import { counterElite, counterGreen, counterRed, markerYellow } from "../utilities/graphics";
 import { markerHelpText } from "./support/help";
+import Unit from "./Unit";
 
 // mk: marker
 // v: value
@@ -34,6 +35,7 @@ export default class Marker {
   playerNation: string;
   facing: Direction;
   rotates: boolean;
+  turret?: Unit;
 
   rawData: MarkerData;
 

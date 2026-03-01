@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import MapCounter from "./MapCounter";
 import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
 import Counter from "../../../engine/Counter";
-import { Coordinate, markerType, unitType } from "../../../utilities/commonTypes";
+import { Coordinate, markerType, unitStatus, unitType } from "../../../utilities/commonTypes";
 import Map from "../../../engine/Map";
 import { clearColor, counterOutline } from "../../../utilities/graphics";
 import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
 import { HelpOverlay } from "./Help";
 import { counterFireHelpLayout } from "../../../engine/support/help";
+import Unit from "../../../engine/Unit";
 
 interface MapCounterOverlayProps {
   map: Map;
@@ -49,6 +50,35 @@ export default function MapCounterOverlay({
     }
   }
 
+  const getLength = (unit: Unit, outer: boolean): number => {
+    let rc = 1
+    if (outer || !unit.isVehicle) {
+      if (unit.children) {
+        for (const c of unit.children) { rc += getLength(c, false) }
+      }
+    } else {
+      if (unit.children && unit.children.length > 0 && unit.children[0].crewed) {
+        rc += getLength(unit.children[0], false)
+      }
+    }
+    if (unit.turreted) { console.log("TURRET") ; rc += 1 } else { console.log("NO TURRET") }
+    if (map.showAllCounters) {
+      if (unit.isVehicle) {
+        if (unit.immobilized) { rc += 1 }
+        if (unit.weaponDestroyed || unit.jammed ) { rc += 1 }
+        if (unit.sponsonDestroyed || unit.sponsonJammed ) { rc += 1 }
+        if (unit.turretJammed) { rc += 1 }
+        if (unit.status !== unitStatus.Normal ) { rc += 1 }
+        if (unit.eliteCrew !== 0) { rc += 1 }
+      } else {
+        if (unit.status !== unitStatus.Normal && unit.status !== unitStatus.Broken ) { rc += 1 }
+        if (unit.pinned) { rc += 1 }
+      }
+    }
+    console.log(`${unit.name} - ${rc}`)
+    return rc
+  }
+
   useEffect(() => {
     // Either counters or a number makes for iffy typing
     const displayCounters = counters ? counters :
@@ -74,7 +104,7 @@ export default function MapCounterOverlay({
           cd.unitIndex = counter.unitIndex
           const transport = counter.unit.transport && (counter.children.length > 1 ||
             (counter.children.length === 1 && !counter.children[0].unit.crewed)) ?
-            counter.children.reduce((sum, c) => sum + 1 + c.children.length, 0) : undefined
+            getLength(counter.unit, true) : undefined
           const shiftBadges = transport || counter.parent?.unit.transport
           const badges = counterInfoBadges(
             map, layout.x+i*176 + 32, layout.y2 + 4 + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 0)
@@ -126,22 +156,24 @@ export default function MapCounterOverlay({
                     onMouseLeave={() => { setFireHelpDisplay(undefined) }}/>
             </g>
           )
+          let unit: Unit | undefined = undefined
+          if ([markerType.TrackedHull, markerType.WheeledHull].includes(counter.marker.type)) {
+            unit = counter.marker.turret
+          }
+          if ((counter.children.length > 0 && [
+              unitType.SupportWeapon, unitType.Gun
+            ].includes(counter.children[0].unit.type))) {
+            unit = counter.unit
+          }
+          const outerLine = transport ?
+            <path d={counterOutline(cd, transport, 4)}
+                  style={{ fill: clearColor, stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
           return (
             <g key={i} >
               <g transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
-                {
-                  [markerType.TrackedHull, markerType.WheeledHull].includes(counter.marker.type) ||
-                    (counter.children.length > 0 && [unitType.SupportWeapon, unitType.Gun].includes(
-                      counter.children[0].unit.type
-                    )) ?
-                    <path d={counterOutline(cd, 2, 1)}
-                          style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} />  : ""
-                }
-                {
-                  transport ?
-                    <path d={counterOutline(cd, transport + 1, 4)}
-                          style={{ fill: clearColor, stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
-                }
+                { unit ? <path d={counterOutline(cd, getLength(unit, false), 1)}
+                                style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} /> : "" }
+                { outerLine }
                 <MapCounter counter={cd} ovCallback={() => {}} />
               </g>
               {badges}

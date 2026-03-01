@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Fix stacking parent/children indicators when showing markers
-    - Including hull
   - Fix dragging of reinforcement panel on scaled display
   -   Also minimap / reinforcement tooltips
 

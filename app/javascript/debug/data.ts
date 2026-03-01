@@ -781,6 +781,18 @@ export const mapDebugData: {
       { u: testUnitData.usinf, x: 13, y: 5, st: unitStatus.Broken, rtd: true },
       { u: testUnitData.usinf, x: 5, y: 4, pin: true },
       { u: testUnitData.ustank, x: 6, y: 4, f: 2, tf: 2, st: unitStatus.Wreck },
+      { u: testUnitData.ustruck, x: 6, y: 13, f: 4, imm: true },
+      { u: testUnitData.usat, x: 6, y: 13, f: 1 },
+      { u: testUnitData.usinf, x: 6, y: 13, pin: true },
+      { u: testUnitData.usmg, x: 6, y: 13 },
+      { u: testUnitData.usldr, x: 6, y: 13, st: unitStatus.Activated },
+      { u: testUnitData.usradio, x: 6, y: 13 },
+      { u: testUnitData.usinf, x: 7, y: 13, pin: true },
+      { u: testUnitData.usmg, x: 7, y: 13 },
+      { u: testUnitData.ustruck, x: 7, y: 13, f: 4, imm: true },
+      { u: testUnitData.usat, x: 7, y: 13, f: 1 },
+      { u: testUnitData.usldr, x: 7, y: 13, st: unitStatus.Activated },
+      { u: testUnitData.usradio, x: 7, y: 13 },
     ],
     hexes: [
       [

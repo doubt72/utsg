@@ -61,6 +61,7 @@ function dataForUnit(
       id: uf.id, type: type, nation: uf.nation, rotates: 1, facing: uf.facing, mk: 1,
       player_nation: uf.playerNation
     })
+    marker.turret = unit
     if (unit.ghost) { marker.ghost = true }
     rc.push({ loc: loc, i: index, u: marker })
   }
