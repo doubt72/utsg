@@ -15,6 +15,7 @@ High Priority Features/Bug Fixes:
   - Run through game
   - Possibly separate initiative from current player in non-main phases
   - Fix dragging of reinforcement panel on scaled display
+  -   Also minimap / reinforcement tooltips
   - Hotkeys and context buttons
 
   - Always reaction fire, loss of initiative or not (after moves?)
@@ -30,7 +31,7 @@ High Priority Features/Bug Fixes:
   - Fix stacking parent/children indicators when showing markers
     - Including hull
 
-  - Automate deploys (open automatically?)
+  - Automate unit deploys (open panel automatically?)
   - Email Notifications
 
   - Overlay both fire and displacement

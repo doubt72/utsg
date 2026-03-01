@@ -14,7 +14,59 @@ export default function DebugIndex() {
         </ul>
         Scenario Statistics:
         <ul>
-          <li><Link to={"/debug/stats/scenarios"}>page</Link></li>
+          <li>
+            <Link to={"/debug/stats/scenarios"}>page</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p"}>proto</Link> ]
+          </li>
+        </ul>
+        Scenario Statistics by Nation:
+        <ul>
+          <li>
+            <Link to={"/debug/stats/scenarios/ussr"}>soviet</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/ussr"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/uk"}>commonwealth</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/uk"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/usa"}>american</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/usa"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/fra"}>french</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/fra"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/chi"}>chinese</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/chi"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/alm"}>allied minors</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/alm"}>proto</Link> ]
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <Link to={"/debug/stats/scenarios/ger"}>german</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/ger"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/ita"}>italian</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/ita"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/jap"}>japanese</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/jap"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/fin"}>finnish</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/fin"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/scenarios/axm"}>axis minors</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/axm"}>proto</Link> ]
+          </li>
         </ul>
       </div>
       <div className="p1em">
@@ -117,25 +169,59 @@ export default function DebugIndex() {
       <div className="p1em">
         Unit Statistics:
         <ul>
-          <li><Link to={"/debug/stats/units"}>all</Link></li>
-          <li><Link to={"/debug/stats/units/yes"}>used</Link></li>
-          <li><Link to={"/debug/stats/units/no"}>unused</Link></li>
+          <li>
+            <Link to={"/debug/stats/units"}>all</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p"}>proto</Link> ]
+          </li>
         </ul>
         Countries:
         <ul>
-          <li><Link to={"/debug/stats/units/ussr"}>soviet</Link></li>
-          <li><Link to={"/debug/stats/units/uk"}>commonwealth</Link></li>
-          <li><Link to={"/debug/stats/units/usa"}>american</Link></li>
-          <li><Link to={"/debug/stats/units/fra"}>french</Link></li>
-          <li><Link to={"/debug/stats/units/chi"}>chinese</Link></li>
-          <li><Link to={"/debug/stats/units/alm"}>allied minors</Link></li>
+          <li>
+            <Link to={"/debug/stats/units/ussr"}>soviet</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/ussr"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/uk"}>commonwealth</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/uk"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/usa"}>american</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/usa"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/fra"}>french</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/fra"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/chi"}>chinese</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/chi"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/alm"}>allied minors</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/alm"}>proto</Link> ]
+          </li>
         </ul>
         <ul>
-          <li><Link to={"/debug/stats/units/ger"}>german</Link></li>
-          <li><Link to={"/debug/stats/units/ita"}>italian</Link></li>
-          <li><Link to={"/debug/stats/units/jap"}>japanese</Link></li>
-          <li><Link to={"/debug/stats/units/fin"}>finnish</Link></li>
-          <li><Link to={"/debug/stats/units/axm"}>axis minors</Link></li>
+          <li>
+            <Link to={"/debug/stats/units/ger"}>german</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/ger"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/ita"}>italian</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/ita"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/jap"}>japanese</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/jap"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/fin"}>finnish</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/fin"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/axm"}>axis minors</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/axm"}>proto</Link> ]
+          </li>
         </ul>
       </div>
     </div>

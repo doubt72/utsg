@@ -15,7 +15,11 @@ import { counterKey } from "../utilities/utilities";
 // analysis" easier, not as some sort of text report (being able to see the
 // counters adds context).
 
-export default function DebugUnitStats() {
+interface DebugUnitStatsProps {
+  proto: boolean;
+}
+
+export default function DebugUnitStats({ proto = false }: DebugUnitStatsProps) {
   const nation: string | undefined = useParams().nation
   const [units, setUnits] = useState<{ [index: string]: UnitData }>({})
   const [scenarios, setScenarios] = useState<Scenario[]>([])
@@ -26,7 +30,7 @@ export default function DebugUnitStats() {
     getAPI("/api/v1/scenarios/all_units", {
       ok: respons => respons.json().then(json => { setUnits(json) })
     })
-    const url = "/api/v1/scenarios?page=0&page_size=999&status=*"
+    const url = `/api/v1/scenarios?page=0&page_size=999&status=${ proto ? "p*" : "*"}`
     getAPI(url, {
       ok: response => {
         response.json().then(json => {
@@ -66,12 +70,10 @@ export default function DebugUnitStats() {
 
   const cells = (check?: boolean) => {
     return Object.values(units).filter(u => {
-      if (nation && nation != u.c && nation !== "yes" && nation !== "no") { return false }
+      if (nation && nation != u.c) { return false }
       const counter = makeUnit(u)
       if (!counter) { return false }
       const key = counterKey(counter)
-      if (nation === "yes" && !countScenarios[key]) { return false }
-      if (nation === "no" && countScenarios[key]) { return false }
       if (check === true && !countScenarios[key]) { return false }
       if (check === false && countScenarios[key]) { return false }
       return true
@@ -104,14 +106,10 @@ export default function DebugUnitStats() {
 
   return (
     <div className="p1em flex flex-wrap">
-      {nation && nation !== "yes" && nation !== "no" ?
-        <>
-          <div key="match" className="debug-unit-counter-type">YES</div>
-          { cells(true) }
-          <div key="match" className="debug-unit-counter-type">NO</div>
-          { cells(false) }
-        </>
-        : cells() }
+      <div key="label-yes" className="debug-unit-counter-type">YES</div>
+      { cells(true) }
+      <div key="label-no" className="debug-unit-counter-type">NO</div>
+      { cells(false) }
     </div>
   )
 }

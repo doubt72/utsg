@@ -12,9 +12,13 @@ import { hexBuildingNames } from "../utilities/hexBuilding";
 // analysis" easier, not as some sort of text report (plus it uses the same
 // code/text conversions as the engine uses for help/etc).
 
+interface DebugScenarioStatsProps {
+  proto: boolean;
+}
+
 type Lookup = { [index: string]: number }
 
-export default function DebugScenarioStats() {
+export default function DebugScenarioStats({ proto = false }: DebugScenarioStatsProps) {
   const nation: string | undefined = useParams().nation
   const [scenarios, setScenarios] = useState<Scenario[]>([])
 
@@ -56,7 +60,7 @@ export default function DebugScenarioStats() {
   const [countStreamPresent, setCountStreamPresent] = useState<Lookup>({})
 
   useEffect(() => {
-    const url = "/api/v1/scenarios?page=0&page_size=999&status=*"
+    const url = `/api/v1/scenarios?page=0&page_size=999&status=${ proto ? "p*" : "*"}`
     getAPI(url, {
       ok: response => {
         response.json().then(json => {
