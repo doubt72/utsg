@@ -102,7 +102,7 @@ export default function CounterFacingSection() {
                 style={{ stroke: "#DDD", strokeWidth: 1, fill: clearColor }}/>
         </svg>
         <div className="help-section-image-caption">
-          forward facing arc, with included hexes highlighted
+          forward facing arc with included hexes highlighted
         </div>
       </div>
     )

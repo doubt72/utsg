@@ -80,7 +80,7 @@ export default function CounterStackingSection() {
                 style={{ stroke: clearColor, strokeWidth: 0.5, fill: clearColor }}/>
         </svg>
         <div className="help-section-image-caption">
-          infantry in a stack carrying a machine gun
+          infantry in a stack, one squad carrying a machine gun
         </div>
       </div>
     )
@@ -95,7 +95,7 @@ export default function CounterStackingSection() {
                 style={{ stroke: clearColor, strokeWidth: 0.5, fill: clearColor }}/>
         </svg>
         <div className="help-section-image-caption">
-          a vehicle carrying several units
+          a vehicle carrying two infantry units, towing a gun
         </div>
       </div>
     )

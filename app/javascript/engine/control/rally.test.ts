@@ -39,7 +39,9 @@ describe("rally test", () => {
       { user: "", player: 1,
         data: {
           old_initiative: 1, action: "rally", rally_data: {
-            freeRally: true, leaderMod: 0, terrainMod: 0, nextToEnemy: false,
+            free_rally: true, infantry: {
+              morale_base: 2, leader_mod: 0, terrain_mod: 0, next_to_enemy: false,
+            },
           }, dice_result: [ { result: 0, type: "2d10" } ],
           target: [ { x: 0, y: 0, id: "test", status: unitStatus.Broken } ]
         }
@@ -75,7 +77,7 @@ describe("rally test", () => {
     const index = game.actions.length - 7
     expect(game.actions[index].type).toBe("rally")
     expect(game.actions[index].stringValue).toBe(
-      "rally check at A1: needed 15, got 20, passed: Rifle rallies"
+      "rally check at A1: needed 14, got 20, passed: Rifle rallies"
     )
     expect(map.anyBrokenUnits(2)).toBe(false)
     expect(game.lastAction?.type).toBe("phase")
@@ -106,7 +108,7 @@ describe("rally test", () => {
     const index = game.actions.length - 1
     expect(game.actions[index].type).toBe("rally")
     expect(game.actions[index].stringValue).toBe(
-      "rally check at A1: needed 15, got 2, failed: Rifle fails to rally"
+      "rally check at A1: needed 14, got 2, failed: Rifle fails to rally"
     )
     expect(map.anyBrokenUnits(2)).toBe(true)
   })
@@ -140,7 +142,7 @@ describe("rally test", () => {
     const index = game.actions.length - 7
     expect(game.actions[index].type).toBe("rally")
     expect(game.actions[index].stringValue).toBe(
-      "rally check at A1: needed 15, got 20, passed: MG 08/15 unbroken"
+      "attempt to fix weapon at A1: needed 15, got 20, passed: MG 08/15 repaired"
     )
     expect(map.anyBrokenUnits(2)).toBe(false)
   })
@@ -170,13 +172,13 @@ describe("rally test", () => {
     game.gameState.finish()
     Math.random = original
 
-    expect(unit1.status).toBe(unitStatus.Normal)
-    const index = game.actions.length - 1
-    expect(game.actions[index].type).toBe("rally")
-    expect(game.actions[index].stringValue).toBe(
-      "rally check at A1: needed 15, got 2, failed: MG 08/15 remains broken"
+    expect(map.countersAt(new Coordinate(0,0)).length).toBe(1)
+    const action = game.actions[0]
+    expect(action.type).toBe("rally")
+    expect(action.stringValue).toBe(
+      "attempt to fix weapon at A1: needed 15, got 2, catastrophic failure: MG 08/15 is destroyed"
     )
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyBrokenUnits(2)).toBe(false)
   })
 
   test("rally with leader doesn't use free rally", () => {
@@ -213,7 +215,7 @@ describe("rally test", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 13, got 20, passed: Rifle rallies"
+      "rally check at A1: needed 12, got 20, passed: Rifle rallies"
     )
     expect(map.anyBrokenUnits(2)).toBe(true)
     expect(game.lastAction?.type).toBe("rally")
@@ -253,7 +255,7 @@ describe("rally test", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 13, got 2, failed: Rifle fails to rally"
+      "rally check at A1: needed 12, got 2, failed: Rifle fails to rally"
     )
     expect(map.anyBrokenUnits(2)).toBe(true)
 

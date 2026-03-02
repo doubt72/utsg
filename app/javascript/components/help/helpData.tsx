@@ -26,6 +26,7 @@ import RoutSection from "./RoutSection";
 import CloseCombatSection from "./CloseCombatSection";
 import HousekeepingSection from "./HousekeepingSection";
 import DevNotesSection from "./DevNotesSection";
+import PrecipCheckSection from "./PrecipCheckSection";
 
 export type HelpSection = {
   name: string,
@@ -51,6 +52,7 @@ export const helpIndex: HelpSection[] = [
       { name: "Deployment Phase", fullName: "Deployment Phase", section: <DeploymentPhaseSection /> },
       { name: "Prep Phase", fullName: "Prep Phase", section: <PrepPhaseSection />, children: [
         { name: "Rallying", fullName: "Rallying", section: <RallySection /> },
+        { name: "Precipitation Check", fullName: "Precipitation Check", section: <PrecipCheckSection /> },
       ]},
       { name: "Main Phase", fullName: "Main Phase", section: <MainPhaseSection />, children: [
         { name: "Fire", fullName: "Fire", section: <FireSection /> },

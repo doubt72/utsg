@@ -56,10 +56,17 @@ export type GameActionPath = {
 }
 
 export type GameActionRallyData = {
-  freeRally: boolean,
-  leaderMod: number,
-  terrainMod: number,
-  nextToEnemy: boolean,
+  infantry?: {
+    morale_base: number,
+    leader_mod: number,
+    terrain_mod: number,
+    next_to_enemy: boolean,
+  },
+  weapon?: {
+    break_roll: number,
+    fix_roll: number,
+  },
+  free_rally: boolean,
 }
 
 export type GameActionFireData = {

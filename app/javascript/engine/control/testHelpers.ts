@@ -20,7 +20,7 @@ export const testGLdr: UnitData = {
 }
 
 export const testGMG: UnitData = {
-  c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {r: 1, j: 3}
+  c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {f: 15, r: 1, j: 3}
 }
 
 export const testRMG: UnitData = {

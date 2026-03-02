@@ -1,6 +1,5 @@
 import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType, unitStatus } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
-import RallyAction from "../../actions/RallyAction";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
@@ -56,8 +55,8 @@ export default class RallyState extends BaseState {
 
   alreadyRallied(id: string): boolean {
     for (let i = this.game.actions.length - 1; i >= 0; i--) {
-      const action = this.game.actions[i] as RallyAction
-      if (action.type !== "rally") { continue }
+      const action = this.game.actions[i]
+      if (action.type === "phase") { break }
       if ((action.data.target as GameActionUnit[])[0].id === id) { return true }
     }
     return false
@@ -106,18 +105,28 @@ export default class RallyState extends BaseState {
     const dice = [{ result: roll2d10(), type: "2d10" }]
     const counter = map.currentSelection[0]
     const hex = counter.hex as Coordinate
+    const data = counter.unit.canCarrySupport ? {
+      infantry: {
+        morale_base: counter.unit.currentMorale,
+        leader_mod: leadershipAt(this.game, hex),
+        terrain_mod: map.hexAt(hex)?.terrain.cover as number,
+        next_to_enemy: this.nextToEnemy(hex),
+      },
+      free_rally: this.leaderAtHex(hex.x, hex.y),
+    } : {
+      weapon: {
+        fix_roll: counter.unit.repairRoll as number,
+        break_roll: counter.unit.breakWeaponRoll as number,
+      },
+      free_rally: this.leaderAtHex(hex.x, hex.y),
+    }
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
         action: "rally", target: [
           { x: hex.x, y: hex.y, id: counter.unit.id, status: counter.unit.status }
         ],
-        rally_data: {
-          freeRally: this.leaderAtHex(hex.x, hex.y),
-          leaderMod: leadershipAt(this.game, hex),
-          terrainMod: map.hexAt(hex)?.terrain.cover as number,
-          nextToEnemy: this.nextToEnemy(hex),
-        },
+        rally_data: data,
         old_initiative: this.game.initiative,
         dice_result: dice,
       },

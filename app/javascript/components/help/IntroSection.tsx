@@ -43,8 +43,7 @@ export default function IntroSection() {
         The links in the table of contents can be used to navigate throughout the documentation, or
         use the link below to navigate to the next section.
       </p>
-      <p>This server is a work-in-progress, Doug is still working on it.</p>
-      <p>These docs are even more in-progress.</p>
+      <p>This server is a work-in-progress, Doug is still working on it and probably always will be.</p>
     </div>
   );
 }
