@@ -31,22 +31,31 @@ export default class CloseCombatReduceAction extends BaseAction {
   }
 
   mutateGame(): void {
+    const loc = new Coordinate(this.target.x, this.target.y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (unit.isVehicle) {
       unit.status = unitStatus.Wreck
-    } else if (unit.status === unitStatus.Broken) {
-      this.game.scenario.map.eliminateCounter(new Coordinate(this.target.x, this.target.y), this.target.id)
+    } else if (unit.isBroken) {
+      this.game.scenario.map.eliminateCounter(loc, this.target.id)
     } else {
       unit.status = unitStatus.Broken
     }
     const current = this.game.closeNeeded.filter(cn => cn.loc.x === this.target.x && cn.loc.y === this.target.y)[0]
     if (this.player === this.game.currentPlayer) {
-      current.iReduce -= 1
-    } else {
       current.oReduce -= 1
+    } else {
+      current.tReduce -= 1
     }
-    if (current.iReduce < 1 && current.oReduce < 1) {
+    if (current.oReduce < 1 && current.tReduce < 1) {
       current.state = closeProgress.Done
+      const counters = this.game.scenario.map.countersAt(loc)
+      if (!this.map.contactAt(loc)) {
+        for (const c of counters) {
+          if (c.hasUnit && !c.unit.isWreck && !c.unit.isBroken && (c.unit.isVehicle || c.unit.canCarrySupport) ) {
+            c.unit.status = unitStatus.Exhausted
+          }
+        }
+      }
     }
   }
 }

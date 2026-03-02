@@ -31,36 +31,34 @@ export default class OverstackReduceAction extends BaseAction {
   }
 
   undo(): void {
-    const map = this.game.scenario.map
     const loc = new Coordinate(this.target.x, this.target.y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     this.game.removeEliminatedCounter(this.target.id)
-    map.addCounter(loc, unit)
+    this.map.addCounter(loc, unit)
     if (this.target.parent) {
-      map.loadUnit(loc, loc, unit.id, this.target.parent)
+      this.map.loadUnit(loc, loc, unit.id, this.target.parent)
     }
     if (this.target.children) {
       for (const id of this.target.children) {
-        map.loadUnit(loc, loc, id, unit.id)
+        this.map.loadUnit(loc, loc, id, unit.id)
       }
     }
-    organizeStacks(map)
+    organizeStacks(this.map)
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const loc = new Coordinate(this.target.x, this.target.y)
-    const unit = map.unitAtId(loc, this.target.id)?.unit as Unit
+    const unit = this.map.unitAtId(loc, this.target.id)?.unit as Unit
     if (unit.parent) {
-      map.dropUnit(loc, loc, unit.id)
+      this.map.dropUnit(loc, loc, unit.id)
     }
     if (this.target.children) {
       for (const id of this.target.children) {
-        map.dropUnit(loc, loc, id)
+        this.map.dropUnit(loc, loc, id)
       }
     }
     unit.status = unitStatus.Normal
-    map.eliminateCounter(loc, this.target.id)
-    organizeStacks(map)
+    this.map.eliminateCounter(loc, this.target.id)
+    organizeStacks(this.map)
   }
 }

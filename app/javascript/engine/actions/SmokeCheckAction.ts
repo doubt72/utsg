@@ -29,10 +29,9 @@ export default class SmokeCheckAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const loc = new Coordinate(this.target.x, this.target.y)
-    if (this.diceResult.result <= map.smokeCheckTarget()) {
-      map.eliminateCounter(loc, this.target.id)
+    if (this.diceResult.result <= this.map.smokeCheckTarget()) {
+      this.map.eliminateCounter(loc, this.target.id)
     }
   }
 }

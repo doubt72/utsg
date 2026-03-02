@@ -29,10 +29,9 @@ export default class FireOutAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const loc = new Coordinate(this.target.x, this.target.y)
-    if (this.diceResult.result <= map.fireOutTarget()) {
-      map.eliminateCounter(loc, this.target.id)
+    if (this.diceResult.result <= this.map.fireOutTarget()) {
+      this.map.eliminateCounter(loc, this.target.id)
     }
   }
 }

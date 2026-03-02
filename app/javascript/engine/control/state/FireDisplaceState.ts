@@ -26,12 +26,11 @@ export default class FireDisplaceState extends BaseState {
 
   get availableHexes(): Hex[] {
     const hexes: Hex[] = []
-    const map = this.game.scenario.map
     const loc = new Coordinate(this.path[0].x, this.path[0].y)
-    const thisHex = map.hexAt(loc) as Hex
+    const thisHex = this.map.hexAt(loc) as Hex
     const unit = this.selection[0].counter.unit
     for (let dir = 0; dir < 6; dir++) {
-      const hex = map.neighborAt(loc, normalDir(dir))
+      const hex = this.map.neighborAt(loc, normalDir(dir))
       if (!hex) { continue }
       if (!hex.terrain.move) { continue }
       if (!hex.terrain.vehicle && unit.isVehicle) { continue }
@@ -43,7 +42,7 @@ export default class FireDisplaceState extends BaseState {
         if (!hex.terrain.borderMove) { continue }
         if (!hex.terrain.borderVehicle && unit.isVehicle) { continue }
       }
-      const counters = map.countersAt(hex.coord)
+      const counters = this.map.countersAt(hex.coord)
       let ok = true
       let total = unit.size
       for (const c of counters) {
@@ -78,7 +77,7 @@ export default class FireDisplaceState extends BaseState {
     const target = selection.target.xy
     if (target.x === loc.x && target.y === loc.y) { return true }
     for (let dir = 0; dir < 6; dir++) {
-      const hexes = this.game.scenario.map.hexNeighbors(loc)
+      const hexes = this.map.hexNeighbors(loc)
       for (const h of hexes) {
         if (!h) { continue }
         if (h.coord.x === target.x && h.coord.y === target.y) { return true }

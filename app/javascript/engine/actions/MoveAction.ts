@@ -123,7 +123,6 @@ export default class MoveAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const length = this.path.length
     const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
@@ -142,8 +141,8 @@ export default class MoveAction extends BaseAction {
       }
     }
     for (const u of this.origin) {
-      map.moveUnit(start, end, u.id, facing, turret)
-      const unit = this.game.scenario.map.unitAtId(end, u.id) as Counter
+      this.map.moveUnit(start, end, u.id, facing, turret)
+      const unit = this.map.unitAtId(end, u.id) as Counter
       if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
@@ -167,30 +166,30 @@ export default class MoveAction extends BaseAction {
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
       if (a.type === gameActionAddActionType.VP) {
-        map.toggleVP(mid)
+        this.map.toggleVP(mid)
       } else if (a.type === gameActionAddActionType.Drop) {
         if (a.parent_id) {
-          map.dropUnit(end, mid, a.id as string, a.facing)
+          this.map.dropUnit(end, mid, a.id as string, a.facing)
         } else {
-          map.moveUnit(end, mid, a.id as string)
+          this.map.moveUnit(end, mid, a.id as string)
         }
         const unit = this.game.findUnitById(a.id as string) as Unit
         unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
       } else if (a.type === gameActionAddActionType.Load) {
-        map.loadUnit(mid, end, a.id as string, a.parent_id as string)
-        const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
-        const child = map.unitAtId(end, a.id ?? "") as Counter
+        this.map.loadUnit(mid, end, a.id as string, a.parent_id as string)
+        const parent = this.map.unitAtId(end, a.parent_id ?? "") as Counter
+        const child = this.map.unitAtId(end, a.id ?? "") as Counter
         if (child.unit.rotates && parent.unit.rotates) { child.unit.facing = normalDir(parent.unit.facing + 3) }
         const unit = this.game.findUnitById(a.id as string) as Unit
         unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
       } else if (a.type === gameActionAddActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
-        map.addCounter(mid, new Feature(
+        this.map.addCounter(mid, new Feature(
           { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id }
         ))
       }
     }
-    sortStacks(map)
+    sortStacks(this.map)
     this.game.updateInitiative(2)
     if (this.player === 1 ? this.game.axisSniper : this.game.alliedSniper) {
       this.origin.forEach(o => {
@@ -213,7 +212,6 @@ export default class MoveAction extends BaseAction {
   }
 
   undo(): void {
-    const map = this.game.scenario.map
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const length = this.path.length
     const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
@@ -225,21 +223,21 @@ export default class MoveAction extends BaseAction {
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
       if (a.type === gameActionAddActionType.VP) {
-        map.toggleVP(mid)
+        this.map.toggleVP(mid)
       } else if (a.type === gameActionAddActionType.Drop) {
-        const parent = map.unitAtId(end, a.parent_id ?? "") as Counter
-        const child = map.unitAtId(mid, a.id ?? "") as Counter
+        const parent = this.map.unitAtId(end, a.parent_id ?? "") as Counter
+        const child = this.map.unitAtId(mid, a.id ?? "") as Counter
         if (a.parent_id) {
-          map.loadUnit(mid, end, a.id as string, a.parent_id as string,
+          this.map.loadUnit(mid, end, a.id as string, a.parent_id as string,
             facing && parent.unit.rotates && child.unit.crewed ? normalDir(facing + 3) : undefined
           )
         } else {
-          map.moveUnit(mid, end, a.id as string)
+          this.map.moveUnit(mid, end, a.id as string)
         }
         const unit = this.game.findUnitById(a.id as string) as Unit
         if (a.status !== undefined) { unit.status = a.status }
       } else if (a.type === gameActionAddActionType.Load) {
-        map.dropUnit(end, mid, a.id as string, a.facing)
+        this.map.dropUnit(end, mid, a.id as string, a.facing)
         const unit = this.game.findUnitById(a.id as string) as Unit
         if (a.status !== undefined) { unit.status = a.status }
       } else if (a.type === gameActionAddActionType.Smoke) {
@@ -249,8 +247,8 @@ export default class MoveAction extends BaseAction {
     }
 
     for (const u of this.origin) {
-      map.moveUnit(end, start, u.id, facing, turret)
-      const unit = map.unitAtId(start, u.id) as Counter
+      this.map.moveUnit(end, start, u.id, facing, turret)
+      const unit = this.map.unitAtId(start, u.id) as Counter
       if (u.status !== undefined) {
         unit.unit.status = u.status
       }
@@ -258,7 +256,7 @@ export default class MoveAction extends BaseAction {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
     }
-    sortStacks(map)
+    sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }
 }

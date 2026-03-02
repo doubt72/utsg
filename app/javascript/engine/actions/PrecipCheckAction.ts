@@ -16,13 +16,12 @@ export default class PrecipCheckAction extends BaseAction {
   get type(): string { return "precipitation_check" }
 
   get passed(): boolean {
-    return this.diceResult.result <= this.game.scenario.map.precipChance
+    return this.diceResult.result <= this.map.precipChance
   }
 
   get stringValue(): string {
-    const map = this.game.scenario.map
-    const result = this.passed ? map.precip : map.baseWeather
-    return `checking for precipitation, rolled (d10), precipitation on ${map.precipChance} or less, ` +
+    const result = this.passed ? this.map.precip : this.map.baseWeather
+    return `checking for precipitation, rolled (d10), precipitation on ${this.map.precipChance} or less, ` +
       `got ${this.diceResult.result}: this turn it will be ${weatherDescription(result)}`
   }
 
@@ -31,11 +30,10 @@ export default class PrecipCheckAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     if (this.passed) {
-      map.currentWeather = map.precip
+      this.map.currentWeather = this.map.precip
     } else {
-      map.currentWeather = map.baseWeather
+      this.map.currentWeather = this.map.baseWeather
     }
   }
 }

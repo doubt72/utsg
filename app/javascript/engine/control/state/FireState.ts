@@ -85,11 +85,10 @@ export default class FireState extends BaseState {
 
   select(selection: CounterSelectionTarget, callback: () => void) {
     if (selection.target.type === "reinforcement") { return }
-    const map = this.game.scenario.map
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!this.doneRotating) { this.doneRotating = true }
     const selected = counter.unit.selected
     counter.unit.select()
@@ -107,21 +106,21 @@ export default class FireState extends BaseState {
       counter.unit.select()
       const ts = counter.unit.targetSelected
       if (ts) {
-        map.clearAllTargetSelections()
+        this.map.clearAllTargetSelections()
       } else {
         const rapid = rapidFire(this.game)
         if (rapid || areaFire(this.game)) {
-          map.targetSelectAllAt(x, y, true, this.initialSelection[0].counter.unit.areaFire)
+          this.map.targetSelectAllAt(x, y, true, this.initialSelection[0].counter.unit.areaFire)
           if (rapid) {
             unTargetSelectExceptChain(this.game, x, y)
           } else {
-            map.unTargetSelectAllExcept(x, y)
+            this.map.unTargetSelectAllExcept(x, y)
           }
         } else {
           counter.unit.targetSelect()
-          map.clearOtherTargetSelections(x, y, counter.unit.id)
+          this.map.clearOtherTargetSelections(x, y, counter.unit.id)
           if (!counter.unit.isVehicle) {
-            map.targetSelectAllAt(x, y, false, false)
+            this.map.targetSelectAllAt(x, y, false, false)
           }
         }
       }
@@ -136,14 +135,13 @@ export default class FireState extends BaseState {
     const same = this.samePlayer(target)
     const select = this.selection[0]
     const sc = select.counter
-    const map = this.game.scenario.map
-    const tc = map.findCounterById(target.id) as Counter
+    const tc = this.map.findCounterById(target.id) as Counter
     if (same) {
       if (this.doneSelect) { return false }
       for (const s of this.initialSelection) {
         if (selection.counter.target.id === s.id) { return false }
       }
-      const counter = map.unitAtId(selection.target.xy, selection.counter.target.id) as Counter
+      const counter = this.map.unitAtId(selection.target.xy, selection.counter.target.id) as Counter
       if (!this.canBeMultiselected(counter)) { return false }
       if (sc.unit.canCarrySupport && tc.unit.incendiary) {
         this.game.addMessage("can't combine infantry and incendiary attacks")
@@ -167,13 +165,12 @@ export default class FireState extends BaseState {
   get activeCounters(): Counter[] {
     let rc: Counter[] = []
     const first = this.path[0]
-    const map = this.game.scenario.map
     if (!this.doneSelect) {
       const leadership = leadershipRange(this.game)
       if (leadership === false) {
-        rc = map.countersAt(new Coordinate(first.x, first.y))
+        rc = this.map.countersAt(new Coordinate(first.x, first.y))
       } else {
-        const counters = map.allCounters
+        const counters = this.map.allCounters
         for (const c of counters) {
           const hex = c.hex as Coordinate
           if (hexDistance(new Coordinate(hex.x, hex.y), new Coordinate(first.x, first.y)) <= leadership) {
@@ -183,10 +180,10 @@ export default class FireState extends BaseState {
       }
     }
     if (!this.smoke) {
-      for (let y = 0; y < map.height; y++) {
-        for (let x = map.width - 1; x >= 0; x--) {
+      for (let y = 0; y < this.map.height; y++) {
+        for (let x = this.map.width - 1; x >= 0; x--) {
           let check = false
-          const counters = map.countersAt(new Coordinate(x, y))
+          const counters = this.map.countersAt(new Coordinate(x, y))
           if (this.openHex(x, y)) {
             for (const c of counters) {
               if (c.hasUnit && !this.samePlayer(c.unit)) {
@@ -235,7 +232,7 @@ export default class FireState extends BaseState {
     this.sponson = !this.sponson
     this.targetSelection = []
     this.targetHexes = []
-    this.game.scenario.map.clearAllTargetSelections()
+    this.map.clearAllTargetSelections()
     if (this.sponson) {
       this.path = [this.path[0]]
       this.doneRotating = true
@@ -248,7 +245,7 @@ export default class FireState extends BaseState {
     this.smoke = !this.smoke
     this.targetHexes = []
     this.targetSelection = []
-    this.game.scenario.map.clearAllTargetSelections()
+    this.map.clearAllTargetSelections()
   }
 
   finish() {
@@ -265,7 +262,7 @@ export default class FireState extends BaseState {
           return {
             x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status,
             sponson: this.sponson,
-            wire: this.game.scenario.map.wireAt(new Coordinate(s.x, s.y))
+            wire: this.map.wireAt(new Coordinate(s.x, s.y))
           }
         }),
         target: this.targetSelection.map(t => {

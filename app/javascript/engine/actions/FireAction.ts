@@ -127,7 +127,6 @@ export default class FireAction extends BaseAction {
     // the first time this has been run.
     const needDice = this.diceResults.length === 0
     let diceIndex = 0
-    const map = this.game.scenario.map
     const firing: FireActionActor[] = this.origin.map(o => {
       return {
         x: o.x, y: o.y, counter: this.game.findCounterById(o.id) as Counter,
@@ -165,7 +164,7 @@ export default class FireAction extends BaseAction {
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
-      const mult = rangeMultiplier(map, firing0, to, sponson, rotated)
+      const mult = rangeMultiplier(this.map, firing0, to, sponson, rotated)
       const range = hexDistance(from, to)
       const hindrance = fireHindrance(this.game, this.convertAToA(firing), to)
       const targetCheck = (range + hindrance) * mult.mult
@@ -190,12 +189,12 @@ export default class FireAction extends BaseAction {
             dirRoll.description = `direction roll (d6): ${dirRoll.result}`
             drift.description = `distance roll (d10): ${drift.result} for ${dist} hexes`
           }
-          const loc = map.driftHex(to, dirRoll.result, dist)
+          const loc = this.map.driftHex(to, dirRoll.result, dist)
           if (loc !== false) {
             dTo = loc
             drift.description += `, drifted to ${coordinateToLabel(loc)}`
             this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
-            dTargets = map.countersAt(loc).filter(c => c.hasUnit).map(u => {
+            dTargets = this.map.countersAt(loc).filter(c => c.hasUnit).map(u => {
               return { x: loc.x, y: loc.y, counter: u }
             })
             if (dTargets.length < 1 && !smoke) {
@@ -216,7 +215,7 @@ export default class FireAction extends BaseAction {
             if (needDice) {
               smoke.description = `smoke roll (d10): rolled ${smoke.result}, smoke level ${smokeValue}`
             }
-            map.addCounter(dTo, new Feature(
+            this.map.addCounter(dTo, new Feature(
               { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: smokeValue, id: `${this.index}-smoke` }
             ))
           } else {
@@ -255,7 +254,7 @@ export default class FireAction extends BaseAction {
                 t.counter.unit.status = unitStatus.Wreck
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
-                  this.game.scenario.map.moveUnit(hex, dTo, t.counter.unit.id)
+                  this.map.moveUnit(hex, dTo, t.counter.unit.id)
                 }
                 if (needDice) { targetRoll.description += `, ${t.counter.unit.name} destroyed` }
               } else if (t.counter.unit.isVehicle) {
@@ -276,7 +275,7 @@ export default class FireAction extends BaseAction {
                   t.counter.unit.status = unitStatus.Wreck
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != dTo.x || hex.y !== dTo.y) {
-                    this.game.scenario.map.moveUnit(hex, dTo, t.counter.unit.id)
+                    this.map.moveUnit(hex, dTo, t.counter.unit.id)
                   }
                   if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
                 } else if (hitRoll.result === hitCheck && !firing0.unit.incendiary) {
@@ -284,7 +283,7 @@ export default class FireAction extends BaseAction {
                   if (needDice) { hitRoll.description += "tie, vehicle immobilized" }
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != dTo.x || hex.y !== dTo.y) {
-                    this.game.scenario.map.moveUnit(hex, dTo, t.counter.unit.id)
+                    this.map.moveUnit(hex, dTo, t.counter.unit.id)
                     if (needDice) { hitRoll.description += `, move short at ${coordinateToLabel(dTo)}` }
                   }
                 } else if (needDice) { hitRoll.description += "failed" }
@@ -295,7 +294,7 @@ export default class FireAction extends BaseAction {
           target0.unit.status = unitStatus.Wreck
           const hex = target0.hex as Coordinate
           if (hex.x != dTo.x || hex.y !== dTo.y) {
-            this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+            this.map.moveUnit(hex, dTo, target0.unit.id)
           }
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
         } else if (target0.unit.isVehicle) {
@@ -323,7 +322,7 @@ export default class FireAction extends BaseAction {
               target0.unit.status = unitStatus.Wreck
               const hex = target0.hex as Coordinate
               if (hex.x != dTo.x || hex.y !== dTo.y) {
-                this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+                this.map.moveUnit(hex, dTo, target0.unit.id)
               }
               if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
             } else if (hitRoll.result === hitCheck) {
@@ -334,7 +333,7 @@ export default class FireAction extends BaseAction {
                 if (needDice) { hitRoll.description += "tie, vehicle immobilized" }
                 const hex = target0.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
-                  this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+                  this.map.moveUnit(hex, dTo, target0.unit.id)
                   if (needDice) { hitRoll.description += `, move short at ${coordinateToLabel(dTo)}` }
                 }
                 target0.unit.immobilized = true
@@ -344,7 +343,7 @@ export default class FireAction extends BaseAction {
             target0.unit.status = unitStatus.Wreck
             const hex = target0.hex as Coordinate
             if (hex.x != dTo.x || hex.y !== dTo.y) {
-              this.game.scenario.map.moveUnit(hex, dTo, target0.unit.id)
+              this.map.moveUnit(hex, dTo, target0.unit.id)
             }
             targetRoll.description += ", no armor on hit side, vehicle destroyed"
           }
@@ -391,7 +390,7 @@ export default class FireAction extends BaseAction {
               unit: firing0.unit.parent, from: [], to, incendiary: true
             })
           }
-          map.eliminateCounter(from, firing0.unit.id)
+          this.map.eliminateCounter(from, firing0.unit.id)
           if (needDice) { targetRoll.description += ", firing weapon destroyed" }
         } else {
           firing0.unit.jammed = true
@@ -438,7 +437,7 @@ export default class FireAction extends BaseAction {
                 t.counter.unit.status = unitStatus.Wreck
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != t.x || hex.y !== t.y) {
-                  this.game.scenario.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
+                  this.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
                 }
                 if (needDice) { hitRoll.description += `, ${t.counter.unit.name} destroyed` }
               } else if (t.counter.unit.isVehicle && firing0.unit.incendiary) {
@@ -456,7 +455,7 @@ export default class FireAction extends BaseAction {
                   t.counter.unit.status = unitStatus.Wreck
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != t.x || hex.y !== t.y) {
-                    this.game.scenario.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
+                    this.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
                   }
                   if (needDice) { hitRoll.description += "succeeded, vehicle destroyed" }
                 } else if (needDice) { hitRoll.description += "failed" }
@@ -498,7 +497,7 @@ export default class FireAction extends BaseAction {
                   unit: f.counter.unit.parent, from: [], to: hex, incendiary: true
                 })
               }
-              map.eliminateCounter(hex, f.counter.unit.id)
+              this.map.eliminateCounter(hex, f.counter.unit.id)
               if (needDice) { hitRoll.description += `, ${f.counter.unit.name} destroyed` }
             } else {
               f.counter.unit.jammed = true
@@ -510,7 +509,7 @@ export default class FireAction extends BaseAction {
       }
     }
     for (const o of this.origin) {
-      const counter = map.findCounterById(o.id)
+      const counter = this.map.findCounterById(o.id)
       if (counter) {
         if (counter.unit.operated && !counter.unit.jammed) {
           counter.unit.status = this.intensive ? unitStatus.Exhausted : unitStatus.Activated
@@ -520,7 +519,7 @@ export default class FireAction extends BaseAction {
         }
         if (counter.unit.singleFire) {
           const hex = new Coordinate(o.x, o.y)
-          map.eliminateCounter(hex, counter.unit.id)
+          this.map.eliminateCounter(hex, counter.unit.id)
         }
       }
     }
@@ -531,7 +530,7 @@ export default class FireAction extends BaseAction {
         if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc: new Coordinate(o.x, o.y) }) }
       })
     }
-    sortStacks(map)
+    sortStacks(this.map)
     this.game.updateInitiative(this.reaction ? -2 : 2)
   }
 }

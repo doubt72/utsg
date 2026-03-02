@@ -1,36 +1,40 @@
 High Priority Features/Bug Fixes:
-  - Implement fire checks for dead tanks and area fire
+  - Tweak -- no voluntary elimination for blaze displace
+    - Check/Test order of blaze displace
+  - Check/test close combat power to match docs
+  - Check/test exhausted to units after CloseCombat / only if combat over
 
+  - Check/test that vehicles can't assault into enemy hex / don't ignore minefields
+  - Check/test Disabled move if in contact
+    - Assault move still possible if in contact
+    - Special activities not, though
+  - Check/test weather effects on ranged fire
+    - Weather effects on infantry fire
+  - Change always reaction fire, loss of initiative or not
+    - Skip reaction fire when no LOS
+    - Exclude Area fire
+  - Don't unselect first initial selection when cancelling move/fire/assault
+
+  - Implement fire checks for dead tanks and area fire
   - Implement Help Button linking to game phase
 
   - Separate sides not hotseat
   - Cleanup undo (only active player) / allow across phases
 
-  - Check/Disable move if in contact
-    - Assault move still possible if in contact
-    - Special activities not, though
-  - Check that vehicles can't assault into enemy hex / don't ignore minefields
-
-  - Always reaction fire, loss of initiative or not (after moves?)
-    - Skip reaction fire when no LOS
-    - Exclude Area fire
-
   - Run through game / Finish 001 (description / balance)
   - Possibly separate initiative from current player in non-main phases
-  - Hotkeys and context buttons
+    (initiative should only shift during main phase)
 
+  - Hotkeys and context buttons ?
   - Show Terrain in counter overlay ?
+
   - Ability to kick players
 
-  - Add exhausted to units after CloseCombat / only if combat over
   - Fix hindrance bug
     - Through two fence corner intersections
-
   - Overlay both fire and displacement
-  - Tweak -- no voluntary elimination
 
-  - Double-check weather effects on ranged fire; weather effects on infantry fire
-
+  - Add changelog page
   - Remove TODO on about page, still working and probably always will be
   - Add Some Developer Notes
   - Change announcements
@@ -38,16 +42,17 @@ High Priority Features/Bug Fixes:
   - Email Notifications
     - Note to admins under code of contact
 
+  - Start testing other scenarios, add optional rules
+  - Admin pages for game/user summaries
+    - Remove/ban players (FE only security inadequate for this, validate on BE)
+
 Keep an Eye out for:
   - Improved move validation/synchronization to block duplicate/illegal moves
   - Undo getting out of sync (maybe remove ID?)
     - Automatically undo excessive deployments
     - Handle undo after too late
     - Handle action after undo happens
-  - Don't unselect first initial selection when cancelling move/fire/assault
   - Handle map scale and such settings gone wrong (reset button in prefs?)
-  - Fix hindrance bug
-    - Also for hindrance at higher elevation
   - Break up tests / large files
   - ?? Show ALL for movement into mines or wire
   - ?? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?

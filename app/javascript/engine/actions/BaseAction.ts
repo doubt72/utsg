@@ -2,6 +2,7 @@ import { Player } from "../../utilities/commonTypes";
 import { nowUTCString } from "../../utilities/utilities";
 import Game from "../Game"
 import { GameActionData, GameActionDetails } from "../GameAction"
+import Map from "../Map";
 import IllegalActionError from "./IllegalActionError";
 
 export default class BaseAction {
@@ -34,6 +35,8 @@ export default class BaseAction {
   }
 
   get type(): string { throw new Error("must implement type") }
+
+  get map(): Map { return this.game.scenario.map }
 
   get formattedDate() {
     const date = new Date(this.createdAt)

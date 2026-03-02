@@ -53,22 +53,21 @@ export default class RouteMoveAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const start = new Coordinate(this.target.x, this.target.y)
     if (this.addAction) {
-      map.dropUnit(start, start, this.addAction.id as string, this.addAction.facing)
+      this.map.dropUnit(start, start, this.addAction.id as string, this.addAction.facing)
     }
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (this.path.length > 0) {
       const last = this.path.length - 1
       const end = new Coordinate(this.path[last].x, this.path[last].y)
-      map.moveUnit(start, end, this.target.id)
+      this.map.moveUnit(start, end, this.target.id)
       unit.routed = true
     } else {
       unit.status = unitStatus.Normal
-      map.eliminateCounter(start, this.target.id)
+      this.map.eliminateCounter(start, this.target.id)
     }
-    sortStacks(map)
+    sortStacks(this.map)
     if (this.optional) {
       this.game.updateInitiative(1)
     } else {
@@ -78,21 +77,20 @@ export default class RouteMoveAction extends BaseAction {
   
   undo(): void {
     if (!this.optional) { throw new IllegalActionError("internal error undoing rout") }
-    const map = this.game.scenario.map
     const start = new Coordinate(this.target.x, this.target.y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (this.path.length > 0) {
       const last = this.path.length - 1
       const end = new Coordinate(this.path[last].x, this.path[last].y)
-      map.moveUnit(end, start, this.target.id)
+      this.map.moveUnit(end, start, this.target.id)
       unit.routed = false
     } else {
       throw new IllegalActionError("rout elimination undo should happen")
     }
     if (this.addAction) {
-      map.loadUnit(start, start, this.addAction.id as string, unit.id, this.addAction.facing)
+      this.map.loadUnit(start, start, this.addAction.id as string, unit.id, this.addAction.facing)
     }
-    sortStacks(map)
+    sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }
 }

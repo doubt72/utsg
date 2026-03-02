@@ -21,12 +21,11 @@ export default class CloseCombatStartAction extends BaseAction {
 
   mutateGame(): void {
     this.game.closeNeeded = []
-    const map = this.game.scenario.map
-    for (let y = 0; y < map.height; y++) {
-      for (let x = 0; x < map.width; x++) {
+    for (let y = 0; y < this.map.height; y++) {
+      for (let x = 0; x < this.map.width; x++) {
         let one = false
         let two = false
-        map.units[y][x].forEach(uf => {
+        this.map.units[y][x].forEach(uf => {
           if (uf.isFeature) { return }
           const u = uf as Unit
           if (u.operated) { return }
@@ -35,7 +34,7 @@ export default class CloseCombatStartAction extends BaseAction {
         })
         if (one && two) {
           this.game.closeNeeded.push({
-            loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, iReduce: 0, oReduce: 0,
+            loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
           })
         }
       }

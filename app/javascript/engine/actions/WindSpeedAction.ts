@@ -31,12 +31,11 @@ export default class WindSpeedAction extends BaseAction {
     }
   
     mutateGame(): void {
-      const map = this.game.scenario.map
       const result = this.diceResult.result
       if (result === 10 && this.windSpeed !== windType.Strong) {
-        map.windSpeed += 1
+        this.map.windSpeed += 1
       } else if (result === 1 && this.windSpeed !== windType.Calm) {
-        map.windSpeed -= 1
+        this.map.windSpeed -= 1
       }
     }
 }

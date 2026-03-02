@@ -18,7 +18,6 @@ export default class SniperState extends BaseState {
   }
 
   get activeCounters(): Counter[] {
-    const map = this.game.scenario.map
     const hexes: { x: number, y: number }[] = []
     for (const s of this.selection) {
       let found = false
@@ -32,7 +31,7 @@ export default class SniperState extends BaseState {
     }
     let rc: Counter[] = []
     for (const h of hexes) {
-      rc = rc.concat(map.countersAt(new Coordinate(h.x, h.y)))
+      rc = rc.concat(this.map.countersAt(new Coordinate(h.x, h.y)))
     }
     return rc
   }

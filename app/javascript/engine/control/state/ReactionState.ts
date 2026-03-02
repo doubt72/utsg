@@ -37,12 +37,11 @@ export default class ReactionState extends BaseState {
 
   select(selection: CounterSelectionTarget, callback: () => void) {
     if (selection.target.type === "reinforcement") { return }
-    const map = this.game.scenario.map
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
-    map.clearOtherSelections(x, y, id)
+    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
+    this.map.clearOtherSelections(x, y, id)
     counter.unit.select()
     callback()
   }

@@ -19,12 +19,11 @@ export default class FireCheckState extends BaseState {
   }
 
   finish() {
-    const map = this.game.scenario.map
     const out = this.game.fireOutCheckNeeded.length > 0
     const feature = out ? this.game.fireOutCheckNeeded[0].feature :
       this.game.fireSpreadCheckNeeded[0].feature
     const loc = out ? this.game.fireOutCheckNeeded[0].loc : this.game.fireSpreadCheckNeeded[0].loc
-    const need = out ? map.fireOutTarget() : map.fireSpreadTarget()
+    const need = out ? this.map.fireOutTarget() : this.map.fireSpreadTarget()
     const result = rolld10()
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,

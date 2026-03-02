@@ -60,15 +60,13 @@ export default class AssaultState extends BaseState {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   openHex(x: number, y: number) {
-    // return openHexAssaulting(map, new Coordinate(lastPath.x, lastPath.y), new Coordinate(x, y))
-    const map = this.game.scenario.map
     const from = new Coordinate(this.lastPath.x, this.lastPath.y)
     const to = new Coordinate(x, y)
     if (from.x === to.x && from.y === to.y) {return hexOpenType.Closed }
 
-    const hexFrom = map.hexAt(from) as Hex;
-    const hexTo = map.hexAt(to) as Hex;
-    const dir = map.relativeDirection(from, to)
+    const hexFrom = this.map.hexAt(from) as Hex;
+    const hexTo = this.map.hexAt(to) as Hex;
+    const dir = this.map.relativeDirection(from, to)
     if (!dir) { return hexOpenType.Closed }
 
     const selection = this.selection[0].counter
@@ -101,8 +99,8 @@ export default class AssaultState extends BaseState {
     const moveSize = this.selection.filter(u => !u.counter.unit.parent).reduce(
       (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
     )
-    const toSize = map.sizeAt(to)
-    const countersAt = map.countersAt(to)
+    const toSize = this.map.sizeAt(to)
+    const countersAt = this.map.countersAt(to)
     let check = false
     for (const c of countersAt) {
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { check = true }
@@ -134,7 +132,7 @@ export default class AssaultState extends BaseState {
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = this.game.scenario.map.unitAtId(new Coordinate(x, y), id) as Counter
+    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     const selected = counter.unit.selected
     counter.unit.select()
     counter.children.forEach(c => c.unit.select())
@@ -155,7 +153,6 @@ export default class AssaultState extends BaseState {
   selectable(selection: CounterSelectionTarget): boolean {
     const target = selection.counter.unit as Unit
     const same = this.samePlayer(target)
-    const map = this.game.scenario.map
     if (!same) {return false}
     if (this.doneSelect) { return false }
     if (selection.target.type !== "map") { return false }
@@ -166,7 +163,7 @@ export default class AssaultState extends BaseState {
       }
       if (selection.counter.target.id === s.id) { return false }
     }
-    const counter = map.unitAtId(selection.target.xy, selection.counter.target.id) as Counter
+    const counter = this.map.unitAtId(selection.target.xy, selection.counter.target.id) as Counter
     if (!this.canBeMultiselected(counter)) { return false }
     return true
   }
@@ -174,22 +171,21 @@ export default class AssaultState extends BaseState {
   get activeCounters(): Counter[] {
     if (!this.doneSelect) {
       const first = this.path[0]
-      return this.game.scenario.map.countersAt(new Coordinate(first.x, first.y))
+      return this.map.countersAt(new Coordinate(first.x, first.y))
     }
     return []
   }
 
   move(x: number, y: number) {
-    const map = this.game.scenario.map
     const target = this.selection[0].counter.unit
     const path = this.path[0]
-    const facing = map.relativeDirection(
+    const facing = this.map.relativeDirection(
       new Coordinate(path.x, path.y), new Coordinate(x, y)) ?? 1
     this.path.push({
       x, y, facing, turret: target.turreted ?
         normalDir(target.turretFacing - this.selection[0].counter.unit.facing + facing) : undefined
     })
-    const vp = map.victoryAt(new Coordinate(x, y))
+    const vp = this.map.victoryAt(new Coordinate(x, y))
     if (vp && vp !== this.game.currentPlayer) {
       this.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 })
     }
@@ -205,7 +201,7 @@ export default class AssaultState extends BaseState {
   clear() {
     const x = this.selection[0].x
     const y = this.selection[0].y
-    const f = this.game.scenario.map.countersAt(new Coordinate(x, y)).filter(c => c.hasFeature)[0]
+    const f = this.map.countersAt(new Coordinate(x, y)).filter(c => c.hasFeature)[0]
     this.addActions.push({ x, y, type: gameActionAddActionType.Clear, cost: 0, id: f.feature.id, index: 0 })
     this.game.closeOverlay = true
   }
@@ -213,7 +209,7 @@ export default class AssaultState extends BaseState {
   entrench() {
     const x = this.selection[0].x
     const y = this.selection[0].y
-    this.game.scenario.map.unshiftGhost(new Coordinate(x, y), new Feature({
+    this.map.unshiftGhost(new Coordinate(x, y), new Feature({
       ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
     }))
     this.addActions.push({ x, y, type: gameActionAddActionType.Entrench, cost: 0, index: 0 })

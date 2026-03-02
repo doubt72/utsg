@@ -17,15 +17,14 @@ export default class OverstackState extends BaseState {
 
   select(selection: CounterSelectionTarget, callback: () => void): void {
     if (selection.target.type === "reinforcement") { return }
-    const map = this.game.scenario.map
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
       if (this.overstackAt(x, y)) {
         counter.unit.select()
-        map.clearOtherTargetSelections(x, y, counter.unit.id)
+        this.map.clearOtherTargetSelections(x, y, counter.unit.id)
       }
     }
     callback()
@@ -46,8 +45,7 @@ export default class OverstackState extends BaseState {
   }
 
   finish() {
-    const map = this.game.scenario.map
-    const counter = map.currentSelection[0]
+    const counter = this.map.currentSelection[0]
     const hex = counter.hex as Coordinate
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,

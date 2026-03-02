@@ -33,8 +33,9 @@ export default function CloseCombatSection() {
       <p>
         Each player adds up their combat power, which is the cumulative total of the firepower of
         any infantry unit (squad, team, or leader) plus 2 for any infantry units with an assault
-        bonus, plus the highest leadership of any leader in the stack for that player. Vehicles
-        count as 2. Infantry support weapons add 2 if they have an assault bonus, otherwise 0.
+        bonus, plus the highest leadership of any leader in the stack for that player added to each
+        non-leader infantry unit. Vehicles count as 2. Infantry support weapons add 2 if they have
+        an assault bonus, otherwise 0.
       </p>
       <p>Each player rolls a single d10 and adds it to their combat power.</p>
       <p>
@@ -45,7 +46,7 @@ export default function CloseCombatSection() {
         and any units remain).
       </p>
       <p>
-        If only one player remains after close combat, their units are exhausted.  Otherwise, the
+        If only one player remains after close combat, their units are exhausted. Otherwise, the
         close combat may occur again next turn (unless one of the sides assault moves out of contact
         or are destroyed before the next close combat phase by some other means).
       </p>
@@ -67,14 +68,14 @@ export default function CloseCombatSection() {
         </div>
       </div>
       <p>
-        For instance, if player one has a total combat power of 12 and rolls a 6, and player two has
-        a total combat power of 8 and rolls a 4, the total result for player one is 18, and the
+        For instance, if player one has a total combat power of 13 and rolls a 6, and player two has
+        a total combat power of 8 and rolls a 4, the total result for player one is 19, and the
         total result for player two is 12. Player two must reduce one unit, and because the
-        difference in rolls is 6, they must reduce one more. (If the difference was 10 or greater,
-        they would have had to reduce two more, or three more if it was 15 or greater, etc.
-        If the difference was less than five, player two would only have to reduce the one total
-        unit).  Since player two only has one unit and must perform two reductions, the unit breaks
-        and is then eliminated.  Player one&apos;s units are then marked as exhausted.
+        difference in rolls is 7, they must reduce one more. (If the difference was 10 or greater,
+        they would have had to reduce two more, or three more if it was 15 or greater, etc. If the
+        difference was less than five, player two would only have to reduce the one total unit).
+        Since player two only has one unit and must perform two reductions, the unit breaks and is
+        then eliminated. Player one&apos;s units are then marked as exhausted.
       </p>
     </div>
   );

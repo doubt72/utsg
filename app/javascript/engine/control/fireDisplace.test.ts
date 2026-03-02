@@ -109,6 +109,40 @@ describe("precipitation", () => {
     expect(game.gameState.openHex(0, 1)).toBe(hexOpenType.Closed)
   })
 
+  test("units displace in correct order", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit1 = new Unit(testGInf)
+    unit1.id = "test1"
+    const loc = new Coordinate(1, 1)
+    map.addCounter(loc, unit1)
+    const unit2 = new Unit(testRInf)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+
+    map.addFire(loc)
+    expect(game.fireDisplaceNeeded.length).toBe(2)
+
+    expect(game.fireDisplaceNeeded[0].unit.playerNation).toBe(game.currentPlayerNation)
+  })
+
+  test("units displace in correct order when reversed", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit1 = new Unit(testRInf)
+    unit1.id = "test1"
+    const loc = new Coordinate(1, 1)
+    map.addCounter(loc, unit1)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+
+    map.addFire(loc)
+    expect(game.fireDisplaceNeeded.length).toBe(2)
+
+    expect(game.fireDisplaceNeeded[0].unit.playerNation).toBe(game.currentPlayerNation)
+  })
+
   test("vehicle displacing with illegal terrain", () => {
     const game = createTestGame([
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],

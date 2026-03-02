@@ -83,7 +83,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     if (game.fireDisplaceState.remove || game.fireDisplaceState.path.length > 1) {
       actions.push({ type: "fire_displace_confirm" })
       actions.push({ type: "fire_displace_cancel" })
-    } else {
+    } else if (game.fireDisplaceState.availableHexes.length < 1) {
       actions.push({ type: "fire_displace_eliminate" })
     }
   } else if (game.phase === gamePhaseType.Main) {

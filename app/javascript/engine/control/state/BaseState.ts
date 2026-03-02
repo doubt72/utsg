@@ -2,6 +2,7 @@ import { CounterSelectionTarget, Direction, hexOpenType, Player, UnitStatus } fr
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionAddActionType } from "../../GameAction";
+import Map from "../../Map";
 import Unit from "../../Unit";
 
 export type StateType = "deploy" | "rally" | "precip" | "fire" | "move" | "assault" |
@@ -39,6 +40,8 @@ export default class BaseState {
     this.player = player
     this.selection = []
   }
+
+  get map(): Map { return this.game.scenario.map }
 
   get showOverlays(): boolean {
     return true

@@ -75,19 +75,18 @@ export default class MoveState extends BaseState {
   get lastPath() { return this.path[this.path.length - 1] }
 
   openHex(x: number, y: number): HexOpenType {
-    const map = this.game.scenario.map
     const from = new Coordinate(this.lastPath.x, this.lastPath.y)
     const to = new Coordinate(x, y)
     if (this.dropping) { return hexOpenType.Closed }
     if (this.loading) { return hexOpenType.Closed }
     const selection = this.selection[0].counter
-    if (this.smoke) { return smokeOpenHex(map, from, to, selection.unit) }
+    if (this.smoke) { return smokeOpenHex(this.map, from, to, selection.unit) }
     if (from.x === to.x && from.y === to.y) { return hexOpenType.Closed }
-    const hexFrom = map.hexAt(from) as Hex;
-    const hexTo = map.hexAt(to) as Hex;
+    const hexFrom = this.map.hexAt(from) as Hex;
+    const hexTo = this.map.hexAt(to) as Hex;
     const terrFrom = hexFrom.terrain
     const terrTo = hexTo.terrain
-    const dir = map.relativeDirection(from, to)
+    const dir = this.map.relativeDirection(from, to)
     if (!dir) { return hexOpenType.Closed }
     const roadMove = alongRoad(hexFrom, hexTo, dir)
     const railroadMove = alongRailroad(hexFrom, hexTo, dir)
@@ -101,8 +100,8 @@ export default class MoveState extends BaseState {
     const moveSize = this.selection.filter(u => !u.counter.unit.parent).reduce(
       (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
     )
-    const toSize = map.sizeAt(to)
-    const countersAt = map.countersAt(to)
+    const toSize = this.map.sizeAt(to)
+    const countersAt = this.map.countersAt(to)
     if (moveSize + toSize > stackLimit) { return hexOpenType.Closed }
     for (const c of countersAt) {
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return hexOpenType.Closed }
@@ -141,8 +140,8 @@ export default class MoveState extends BaseState {
     }
   
     const length = this.path.length + this.addActions.length
-    const cost = movementCost(map, from, to, selection.unit)
-    const pastCost = movementPastCost(map, selection.unit)
+    const cost = movementCost(this.map, from, to, selection.unit)
+    const pastCost = movementPastCost(this.map, selection.unit)
     const move = mapSelectMovement(this.game, roadMove)
     if (move === 0) { return false }
     if (move < cost + pastCost && length > 1) { return false }
@@ -165,10 +164,9 @@ export default class MoveState extends BaseState {
   }
 
   get rotatePossible(): boolean {
-    const map = this.game.scenario.map
     const counter = this.selection[0].counter
     const loc = counter.hex as Coordinate
-    const cost = movementCost(map, loc, loc, counter.unit) + movementPastCost(map, counter.unit)
+    const cost = movementCost(this.map, loc, loc, counter.unit) + movementPastCost(this.map, counter.unit)
     const length = this.path.length
     const move = mapSelectMovement(this.game, true)
     return move >= cost || length === 1
@@ -176,11 +174,10 @@ export default class MoveState extends BaseState {
   
   select(selection: CounterSelectionTarget, callback: () => void) {
     if (selection.target.type === "reinforcement") { return }
-    const map = this.game.scenario.map
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     const selected = counter.unit.selected
     counter.unit.select()
     const xx = this.lastPath?.x ?? 0 // But should always exist, type notwithstanding
@@ -198,13 +195,13 @@ export default class MoveState extends BaseState {
         }
       )
       if (xx !== x || yy !== y) {
-        map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
+        this.map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
       }
       if (counter.children.length === 1) {
         const child = counter.children[0]
         child.unit.select()
         child.unit.dropSelect()
-        map.addGhost(new Coordinate(xx, yy), child.unit.clone() as Unit)
+        this.map.addGhost(new Coordinate(xx, yy), child.unit.clone() as Unit)
       }
       this.doneSelect = true
       this.game.closeOverlay = true
@@ -307,7 +304,7 @@ export default class MoveState extends BaseState {
       }
       if (selection.counter.target.id === s.id) { return false }
     }
-    const counter = this.game.scenario.map.unitAtId(
+    const counter = this.map.unitAtId(
       selection.target.xy, selection.counter.target.id
     ) as Counter
     if (!this.canBeMultiselected(counter)) { return false }
@@ -315,15 +312,14 @@ export default class MoveState extends BaseState {
   }
 
   get activeCounters(): Counter[] {
-    const map = this.game.scenario.map
     if (!this.doneSelect || this.dropping ||
         (this.loading && this.needPickUpDisambiguate)) {
       const first = this.path[0]
-      return map.countersAt(new Coordinate(first.x, first.y))
+      return this.map.countersAt(new Coordinate(first.x, first.y))
     }
     if (this.loading && !this.needPickUpDisambiguate) {
       const last = this.lastPath as GameActionPath
-      return map.countersAt(new Coordinate(last.x, last.y))
+      return this.map.countersAt(new Coordinate(last.x, last.y))
     }
     return []
   }
@@ -331,14 +327,13 @@ export default class MoveState extends BaseState {
   move(x: number, y: number) {
     const target = this.selection[0].counter.unit
     const lastPath = this.lastPath as GameActionPath
-    const map = this.game.scenario.map
     if (this.smoke) {
       const id = `uf-${this.game.actions.length}-${this.addActions.length}`
       this.addActions.push({
         x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id,
         index: this.path.length
       })
-      map.addGhost(
+      this.map.addGhost(
         new Coordinate(x, y),
         new Feature({ ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
       )
@@ -349,7 +344,7 @@ export default class MoveState extends BaseState {
       this.path.push({
         x, y, facing, turret: target.turreted ? lastPath.turret : undefined
       })
-      const vp = map.victoryAt(new Coordinate(x, y))
+      const vp = this.map.victoryAt(new Coordinate(x, y))
       if (vp && vp !== this.game.currentPlayer) {
         this.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0,
         index: this.path.length })
@@ -389,25 +384,24 @@ export default class MoveState extends BaseState {
     this.dropping = !this.dropping
     if (this.dropping) {
       const first = this.path[0]
-      this.game.openOverlay = this.game.scenario.map.hexAt(new Coordinate(first.x, first.y))
+      this.game.openOverlay = this.map.hexAt(new Coordinate(first.x, first.y))
     }
     this.loading = false
     this.smoke = false
   }
   
   loadToggle() {
-    const map = this.game.scenario.map
     this.loading = !this.loading
     if (this.loading) {
       if (this.needPickUpDisambiguate) {
         const first = this.path[0]
-        this.game.openOverlay = map.hexAt(new Coordinate(first.x, first.y))
+        this.game.openOverlay = this.map.hexAt(new Coordinate(first.x, first.y))
       } else {
         const last = this.lastPath as GameActionPath
-        this.game.openOverlay = map.hexAt(new Coordinate(last.x, last.y))
+        this.game.openOverlay = this.map.hexAt(new Coordinate(last.x, last.y))
       }
       const last = this.lastPath as GameActionPath
-      this.game.openOverlay = map.hexAt(new Coordinate(last.x, last.y))
+      this.game.openOverlay = this.map.hexAt(new Coordinate(last.x, last.y))
     }
     this.dropping = false
     this.smoke = false
@@ -415,7 +409,7 @@ export default class MoveState extends BaseState {
 
   finish() {
     const lastPath = this.lastPath as GameActionPath
-    const counters = this.game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
+    const counters = this.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
     let check = undefined
     for (const c of counters) {
       if (c.hasFeature && c.feature.type === featureType.Mines) { check = c.feature; break }
@@ -498,7 +492,7 @@ export default class MoveState extends BaseState {
   get getLoader(): Counter[] {
     const lastPath = this.lastPath as GameActionPath
     const rc: Counter[] = []
-    const counters = this.game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
+    const counters = this.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
     for (const c of counters) {
       if (c.hasFeature || c.unit.selected) { continue }
       for (const s of this.selection) {

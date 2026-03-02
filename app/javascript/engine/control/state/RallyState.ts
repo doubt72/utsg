@@ -14,8 +14,7 @@ export default class RallyState extends BaseState {
   }
 
   openHex(x: number, y: number): HexOpenType {
-    const map = this.game.scenario.map
-    const counters = map.countersAt(new Coordinate(x, y))
+    const counters = this.map.countersAt(new Coordinate(x, y))
     const unbrokerLeader = this.leaderAtHex(x, y)
     for (const c of counters) {
       const u = c.unit
@@ -34,11 +33,10 @@ export default class RallyState extends BaseState {
 
   select(selection: CounterSelectionTarget, callback: () => void) {
     if (selection.target.type === "reinforcement") { return }
-    const map = this.game.scenario.map
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
       if ((counter.unit.isBroken || counter.unit.jammed) &&
         (this.game.freeRally || this.leaderAtHex(x, y))) {
@@ -46,7 +44,7 @@ export default class RallyState extends BaseState {
           this.game.addMessage("unit already attempted to rally")
         } else {
           counter.unit.select()
-          map.clearOtherTargetSelections(x, y, counter.unit.id)
+          this.map.clearOtherTargetSelections(x, y, counter.unit.id)
         }
       }
     }
@@ -63,8 +61,7 @@ export default class RallyState extends BaseState {
   }
 
   leaderAtHex(x: number, y: number): boolean {
-    const map = this.game.scenario.map
-    const counters = map.countersAt(new Coordinate(x, y))
+    const counters = this.map.countersAt(new Coordinate(x, y))
     for (const c of counters) {
       const u = c.unit
       if (!u.isFeature) {
@@ -80,10 +77,9 @@ export default class RallyState extends BaseState {
   }
 
   nextToEnemy(loc: Coordinate): boolean {
-    const map = this.game.scenario.map
     for (let d = 1; d <= 6; d++) {
-      const hex = map.neightborCoordinate(loc, d)
-      const counters = map.countersAt(hex)
+      const hex = this.map.neightborCoordinate(loc, d)
+      const counters = this.map.countersAt(hex)
       for (const c of counters) {
         if (!c.unit.isFeature && c.unit.status !== unitStatus.Broken &&
           !this.samePlayer(c.unit)) { return true }
@@ -101,15 +97,14 @@ export default class RallyState extends BaseState {
   }
 
   finish() {
-    const map = this.game.scenario.map
     const dice = [{ result: roll2d10(), type: "2d10" }]
-    const counter = map.currentSelection[0]
+    const counter = this.map.currentSelection[0]
     const hex = counter.hex as Coordinate
     const data = counter.unit.canCarrySupport ? {
       infantry: {
         morale_base: counter.unit.currentMorale,
         leader_mod: leadershipAt(this.game, hex),
-        terrain_mod: map.hexAt(hex)?.terrain.cover as number,
+        terrain_mod: this.map.hexAt(hex)?.terrain.cover as number,
         next_to_enemy: this.nextToEnemy(hex),
       },
       free_rally: this.leaderAtHex(hex.x, hex.y),

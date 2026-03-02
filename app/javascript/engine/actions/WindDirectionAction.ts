@@ -28,12 +28,11 @@ export default class WindDirectionAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const result = this.diceResult.result
     if (result < 3) {
-      map.windDirection = normalDir(map.windDirection - 1)
+      this.map.windDirection = normalDir(this.map.windDirection - 1)
     } else if (result > 7) {
-      map.windDirection = normalDir(map.windDirection - 1)
+      this.map.windDirection = normalDir(this.map.windDirection - 1)
     }
   }
 }

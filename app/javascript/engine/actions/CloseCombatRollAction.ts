@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { togglePlayer } from "../../utilities/utilities";
+import { maxCCCasualties } from "../control/state/CloseCombatState";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -29,6 +30,7 @@ export default class CloseCombatRollAction extends BaseAction {
   get type(): string { return "close_combat_roll" }
 
   get stringValue(): string {
+    const loc = new Coordinate(this.origin[0].x, this.origin[0].y)
     const ip = this.base.o_base + this.diceResult[0].result
     const op = this.base.t_base + this.diceResult[1].result
     const iName = this.game.nationNameForPlayer(this.player)
@@ -48,11 +50,17 @@ export default class CloseCombatRollAction extends BaseAction {
     if (ip === op) {
       rc += "each player reduces 1 unit"
     } else if (ip > op) {
-      const num = Math.floor((ip - op)/5) + 1
+      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.origin[0].id)?.playerNation ?? "")
+      const reduce = Math.floor((ip - op)/5) + 1
+      const num = max < reduce ? max : reduce
       rc += `${oName} player reduces ${num} unit${num > 1 ? "s" : ""}`
+      if (max < reduce) { rc += ` (all units)` }
     } else {
-      const num = Math.floor((op - ip)/5) + 1
+      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.origin[0].id)?.playerNation ?? "")
+      const reduce = Math.floor((op - ip)/5) + 1
+      const num = max < reduce ? max : reduce
       rc += `${iName} player reduces ${num} unit${num > 1 ? "s" : ""}`
+      if (max < reduce) { rc += ` (all units)` }
     }
     return rc
   }
@@ -63,27 +71,31 @@ export default class CloseCombatRollAction extends BaseAction {
 
   mutateGame(): void {
     const loc = new Coordinate(this.origin[0].x, this.origin[0].y)
-    const counters = this.game.scenario.map.countersAt(loc)
+    const counters = this.map.countersAt(loc)
     counters.forEach(c => {
       if (c.unit.canCarrySupport && c.unit.parent) {
         c.unit.parent.children = c.unit.parent.children.filter(u => u.id !== c.unit.id)
         c.unit.parent = undefined
-        this.game.scenario.map.addCounter(loc, c.unit)
+        this.map.addCounter(loc, c.unit)
       }
     })
-    sortStacks(this.game.scenario.map)
-    const ip = this.base.o_base + this.diceResult[0].result
-    const op = this.base.t_base + this.diceResult[1].result
+    sortStacks(this.map)
+    const op = this.base.o_base + this.diceResult[0].result
+    const tp = this.base.t_base + this.diceResult[1].result
     const current = this.game.closeNeeded.filter(
       cn => cn.loc.x === this.target[0].x && cn.loc.y === this.target[0].y
     )[0]
-    if (ip === op) {
-      current.iReduce = 1
+    if (op === tp) {
       current.oReduce = 1
-    } else if (ip > op) {
-      current.oReduce = Math.floor((ip - op)/5) + 1
+      current.tReduce = 1
+    } else if (op > tp) {
+      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.target[0].id)?.playerNation ?? "")
+      const reduce = Math.floor((op - tp)/5) + 1
+      current.tReduce = max < reduce ? max : reduce
     } else {
-      current.iReduce = Math.floor((op - ip)/5) + 1
+      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.origin[0].id)?.playerNation ?? "")
+      const reduce = Math.floor((tp - op)/5) + 1
+      current.oReduce = max < reduce ? max : reduce
     }
     current.state = closeProgress.NeedsCasualties
   }

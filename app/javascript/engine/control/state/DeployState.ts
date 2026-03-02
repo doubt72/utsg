@@ -31,8 +31,7 @@ export default class DeployState extends BaseState {
     if (this.needsDirection) {
       return hexOpenType.Closed
     }
-    const map = this.game.scenario.map
-    const hex = map.hexAt(new Coordinate(x, y)) as Hex
+    const hex = this.map.hexAt(new Coordinate(x, y)) as Hex
     const uf = this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.turn][this.index].counter :
       this.game.scenario.axisReinforcements[this.turn][this.index].counter
@@ -48,20 +47,20 @@ export default class DeployState extends BaseState {
     if (uf.isFeature) {
       if (!hex.terrain.vehicle) { return hexOpenType.Closed }
       if (hex.river && (featureType.Bunker || featureType.Foxhole)) { return hexOpenType.Closed}
-      for (const f of map.countersAt(hex.coord)) {
+      for (const f of this.map.countersAt(hex.coord)) {
         if (f.hasFeature) { return hexOpenType.Closed }
       }
-      if ((uf.type === featureType.Mines || uf.type === featureType.Wire) && map.victoryNationAt(hex.coord)) {
+      if ((uf.type === featureType.Mines || uf.type === featureType.Wire) && this.map.victoryNationAt(hex.coord)) {
         return hexOpenType.Closed
       }
     } else {
-      if (unit.size + map.sizeAt(hex.coord) > stackLimit) {
+      if (unit.size + this.map.sizeAt(hex.coord) > stackLimit) {
         return hexOpenType.Closed
       }
     }
     const ts = `${this.turn}`
-    if (!map.alliedSetupHexes || !map.axisSetupHexes) { return hexOpenType.Closed }
-    const hexes = this.player === 1 ? map.alliedSetupHexes[ts] : map.axisSetupHexes[ts]
+    if (!this.map.alliedSetupHexes || !this.map.axisSetupHexes) { return hexOpenType.Closed }
+    const hexes = this.player === 1 ? this.map.alliedSetupHexes[ts] : this.map.axisSetupHexes[ts]
     for (const h of hexes) {
       let xMatch = false
       let yMatch = false
@@ -81,7 +80,7 @@ export default class DeployState extends BaseState {
 
       if (xMatch && yMatch) {
         let rc = hexOpenType.Open
-        const list = map.units[hex.coord.y][hex.coord.x]
+        const list = this.map.units[hex.coord.y][hex.coord.x]
         const last = list[list.length - 1] as Unit
         if (unit.crewed) {
           if ((last && !last.isFeature) &&

@@ -345,6 +345,13 @@ export default class Map {
         unit.children = []
       }
     }
+    if (counter.hasUnit) {
+      counter.unit.pinned = false
+      counter.unit.routed = false
+      counter.unit.status = unitStatus.Normal
+    }
+    if (counter.hasFeature && (counter.feature.type === featureType.Fire ||
+      counter.feature.type === featureType.Smoke)) { return }
     this.game.addEliminatedCounter(counter.hasFeature ? counter.feature : counter.unit)
   }
 
@@ -599,6 +606,17 @@ export default class Map {
     return this.precipChance > 0
   }
 
+  contactAt(loc: Coordinate): boolean {
+    let playerOne = false
+    let playerTwo = false
+    for (const c of this.countersAt(loc)) {
+      if (c.hasUnit && !c.unit.isWreck) {
+        c.unit.playerNation === this.game?.playerOneNation ? playerOne = true : playerTwo = true
+      }
+    }
+    return playerOne && playerTwo
+  }
+
   anyCloseCombat(): boolean {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
@@ -793,6 +811,10 @@ export default class Map {
         this.game?.fireDisplaceNeeded.push({ loc, unit: c.unit })
       }
     }
+    this.game?.fireDisplaceNeeded.sort((a, b) => {
+      if (a.unit.playerNation === b.unit.playerNation) { return 0 }
+      return a.unit.playerNation === this.game?.currentPlayerNation ? -1 : 1
+    })
   }
 
   spreadFire(loc: Coordinate) {

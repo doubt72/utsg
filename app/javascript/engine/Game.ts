@@ -54,7 +54,7 @@ export const closeProgress: { [index: string]: CloseProgress } = {
 export type SimpleUnitCheck = { unit: Unit, loc: Coordinate }
 export type SimpleFeatureCheck = { feature: Feature, loc: Coordinate }
 export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
-export type CloseCheck = { loc: Coordinate, state: CloseProgress, iReduce: number, oReduce: number }
+export type CloseCheck = { loc: Coordinate, state: CloseProgress, oReduce: number, tReduce: number }
 
 export default class Game {
   id: number;
@@ -525,12 +525,12 @@ export default class Game {
     }
     return rc.sort((a, b) => {
       let an = a.counter.name
-      an = String(99 - sortValues(a.counter)) + an
-      an = String(99 - (a.counter as Unit).size) + an
+      an = String(999 - sortValues(this, a.counter)) + an
+      an = String(999 - (a.counter as Unit).size) + an
       an = a.counter.type === unitType.Leader ? "0" : "1" + an
       let bn = b.counter.name
-      bn = String(99 - sortValues(b.counter)) + bn
-      bn = String(99 - (b.counter as Unit).size) + bn
+      bn = String(999 - sortValues(this, b.counter)) + bn
+      bn = String(999 - (b.counter as Unit).size) + bn
       bn = b.counter.type === unitType.Leader ? "0" : "1" + bn
       if (an === bn) { return 0 }
       return an > bn ? 1 : -1

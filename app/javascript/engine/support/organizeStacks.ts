@@ -1,5 +1,6 @@
 import { Coordinate, featureType, markerType, MarkerType } from "../../utilities/commonTypes";
 import Feature from "../Feature";
+import Game from "../Game";
 import Map from "../Map";
 import Marker from "../Marker";
 import Unit from "../Unit";
@@ -12,7 +13,7 @@ export default function organizeStacks(map: Map) {
   for (let x = 0; x < map.width; x++) {
     for (let y = 0; y < map.height; y++) {
       const list = map.units[y][x]
-      map.units[y][x] = renormalize(list)
+      map.units[y][x] = renormalize(map.game as Game, list)
     }
   }
 }
@@ -35,19 +36,20 @@ export function sortStacks(map: Map) {
   for (let x = 0; x < map.width; x++) {
     for (let y = 0; y < map.height; y++) {
       const list = map.units[y][x]
-      map.units[y][x] = sortStack(list)
+      map.units[y][x] = sortStack(map.game as Game, list)
     }
   }
 }
 
-export function sortValues(unit: Unit | Feature): number {
-  if (unit.isFeature && unit.type === featureType.Fire) { return 99 }
+export function sortValues(game: Game, unit: Unit | Feature): number {
+  if (unit.isFeature && unit.type === featureType.Fire) { return 999 }
   if (unit.isFeature) { return 0 }
+  const side = unit.playerNation === game.playerOneNation ? 0 : 100
   const u = unit as Unit
-  return {
+  return ({
     other: 0, sw: 1, gun: 2, sqd: 3, tm: 4, ldr: 5, cav: 6, truck: 7, ht: 8, ac: 9,
     spg: 10, tank: 11,
-  }[(u).type] ?? 99
+  }[(u).type] ?? 99) + side
 }
 
 function dataForUnit(
@@ -105,8 +107,8 @@ function addMarkers(loc: Coordinate, uf: Unit | Feature, index: number): MapCoun
   return rc
 }
 
-function renormalize(list: (Unit | Feature)[]): (Unit | Feature)[] {
-  return sortStack(
+function renormalize(game: Game, list: (Unit | Feature)[]): (Unit | Feature)[] {
+  return sortStack(game,
     loadVehicles(
       pairTowedWeapons(
         pairCrewedWeapons(
@@ -195,15 +197,15 @@ function loadVehicles(list: (Unit | Feature)[]): (Unit | Feature)[] {
   return newList
 }
 
-function sortStack(list: (Unit | Feature)[]): (Unit | Feature)[] {
+function sortStack(game: Game, list: (Unit | Feature)[]): (Unit | Feature)[] {
   list.forEach(u => {
     if (u.isFeature) { return }
     const unit = u as Unit
-    sortStack(unit.children)
+    sortStack(game, unit.children)
   })
   return list.sort((a, b) => {
-    const av = sortValues(a)
-    const bv = sortValues(b)
+    const av = sortValues(game, a)
+    const bv = sortValues(game, b)
     if (bv === av) { return 0 }
     return av > bv ? 1 : -1
   })

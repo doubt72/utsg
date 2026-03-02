@@ -16,10 +16,9 @@ export default class SmokeCheckState extends BaseState {
   }
 
   finish() {
-    const map = this.game.scenario.map
     const feature = this.game.smokeCheckNeeded[0].feature
     const loc = this.game.smokeCheckNeeded[0].loc
-    const need = map.smokeCheckTarget()
+    const need = this.map.smokeCheckTarget()
     const result = rolld10()
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,

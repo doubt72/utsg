@@ -49,41 +49,39 @@ export default class FireDisplaceAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const start = new Coordinate(this.target.x, this.target.y)
     if (this.addAction) {
-      map.dropUnit(start, start, this.addAction.id as string, this.addAction.facing)
+      this.map.dropUnit(start, start, this.addAction.id as string, this.addAction.facing)
     }
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (this.path.length > 1) {
       const end = new Coordinate(this.path[1].x, this.path[1].y)
-      map.moveUnit(start, end, this.target.id)
+      this.map.moveUnit(start, end, this.target.id)
     } else {
       unit.status = unitStatus.Normal
-      map.eliminateCounter(start, this.target.id)
+      this.map.eliminateCounter(start, this.target.id)
     }
-    sortStacks(map)
+    sortStacks(this.map)
   }
   
   undo(): void {
-    const map = this.game.scenario.map
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (this.path.length > 1) {
       const end = new Coordinate(this.path[1].x, this.path[1].y)
-      map.moveUnit(end, start, this.target.id)
+      this.map.moveUnit(end, start, this.target.id)
       unit.routed = false
     } else {
       unit.status = this.target.status
-      map.addCounter(
+      this.map.addCounter(
         new Coordinate(this.path[0].x, this.path[0].y), this.game.findUnitById(this.target.id) as Unit
       )
       this.game.removeEliminatedCounter(this.target.id)
     }
     if (this.addAction) {
-      map.loadUnit(start, start, this.addAction.id as string, unit.id, this.addAction.facing)
+      this.map.loadUnit(start, start, this.addAction.id as string, unit.id, this.addAction.facing)
     }
-    sortStacks(map)
+    sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }
 }

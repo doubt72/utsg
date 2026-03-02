@@ -29,10 +29,9 @@ export default class FireSpreadAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const loc = new Coordinate(this.target.x, this.target.y)
-    if (this.diceResult.result <= map.fireSpreadTarget()) {
-      map.spreadFire(loc)
+    if (this.diceResult.result <= this.map.fireSpreadTarget()) {
+      this.map.spreadFire(loc)
     }
   }
 }

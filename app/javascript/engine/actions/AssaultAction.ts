@@ -60,7 +60,6 @@ export default class AssaultMoveAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const map = this.game.scenario.map
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const length = this.path.length
 
@@ -69,8 +68,8 @@ export default class AssaultMoveAction extends BaseAction {
       const facing = this.path[1].facing
       const turret = this.path[1].turret
       for (const u of this.origin) {
-        map.moveUnit(start, end, u.id, facing, turret)
-        const unit = this.game.scenario.map.unitAtId(end, u.id) as Counter
+        this.map.moveUnit(start, end, u.id, facing, turret)
+        const unit = this.map.unitAtId(end, u.id) as Counter
         if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
           unit.unit.children[0].facing = normalDir(facing + 3)
         }
@@ -78,7 +77,7 @@ export default class AssaultMoveAction extends BaseAction {
       }
     } else {
       for (const u of this.origin) {
-        const unit = this.game.scenario.map.unitAtId(start, u.id) as Counter
+        const unit = this.map.unitAtId(start, u.id) as Counter
         unit.unit.status = unitStatus.Exhausted
       }
     }
@@ -86,23 +85,22 @@ export default class AssaultMoveAction extends BaseAction {
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
       if (a.type === gameActionAddActionType.VP) {
-        map.toggleVP(mid)
+        this.map.toggleVP(mid)
       } else if (a.type === gameActionAddActionType.Clear) {
-        map.eliminateCounter(mid, a.id as string)
+        this.map.eliminateCounter(mid, a.id as string)
       } else if (a.type === gameActionAddActionType.Entrench) {
         const feature = new Feature({
           ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
         })
         feature.id = `scrap-${mid.x}-${mid.y}`
-        map.addCounter(mid, feature)
+        this.map.addCounter(mid, feature)
       }
     }
-    sortStacks(map)
+    sortStacks(this.map)
     this.game.updateInitiative(3)
   }
 
   undo(): void {
-    const map = this.game.scenario.map
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const length = this.path.length
     const facing = this.path[0].facing
@@ -111,21 +109,21 @@ export default class AssaultMoveAction extends BaseAction {
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
       if (a.type === gameActionAddActionType.VP) {
-        map.toggleVP(mid)
+        this.map.toggleVP(mid)
       } else if (a.type === gameActionAddActionType.Clear) {
         const counter = this.game.findCounterById(a.id as string) as Counter
-        map.addCounter(mid, counter.feature)
+        this.map.addCounter(mid, counter.feature)
         this.game.removeEliminatedCounter(a.id as string)
       } else if (a.type === gameActionAddActionType.Entrench) {
-        map.removeCounter(mid, `scrap-${mid.x}-${mid.y}` as string)
+        this.map.removeCounter(mid, `scrap-${mid.x}-${mid.y}` as string)
       }
     }
 
     if (length > 1) {
       const end = new Coordinate(this.path[1].x, this.path[1].y)
       for (const u of this.origin) {
-        map.moveUnit(end, start, u.id, facing, turret)
-        const unit = map.unitAtId(start, u.id) as Counter
+        this.map.moveUnit(end, start, u.id, facing, turret)
+        const unit = this.map.unitAtId(start, u.id) as Counter
         if (u.status !== undefined) {
           unit.unit.status = u.status
         }
@@ -135,11 +133,11 @@ export default class AssaultMoveAction extends BaseAction {
       }
     } else {
       for (const u of this.origin) {
-        const unit = this.game.scenario.map.unitAtId(start, u.id) as Counter
+        const unit = this.map.unitAtId(start, u.id) as Counter
         unit.unit.status = u.status
       }
     }
-    sortStacks(map)
+    sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }
 }

@@ -94,6 +94,26 @@ export const testITank: UnitData = {
   },
 }
 
+export const testUSMarine: UnitData = {
+  t: "sqd", i: "squad", s: 6, c: "usa", n: "Marine Rifle", y: 0, m: 4, f: 7, r: 6, v: 5, o: { a: 1 },
+};
+
+export const testUSMarineTeam: UnitData = {
+  t: "tm", i: "team", s: 3, c: "usa", n: "Marine Rifle", y: 0, m: 4, f: 3, r: 6, v: 5, o: {},
+};
+
+export const testUSMG: UnitData = {
+  t: "sw", i: "mg", c: "usa", n: "M1918 BAR", y: 18, o: { a: 1, r: 1, j: 3, f: 16 }, f: 5, r: 8, v: 0, s: 1,
+};
+
+export const testUSLdr: UnitData = {
+  c: "usa", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: { l: 2 },
+};
+
+export const testJapSNLF: UnitData = {
+  t: "sqd", i: "squad", s: 6, c: "jap", n: "SNLF", y: 0, m: 3, f: 6, r: 4, v: 4, o: { a: 1 },
+};
+
 export const testWire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
 export const testMine: FeatureData = {

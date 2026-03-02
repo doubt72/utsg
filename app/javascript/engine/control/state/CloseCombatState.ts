@@ -1,8 +1,9 @@
-import { Coordinate, CounterSelectionTarget } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, unitStatus } from "../../../utilities/commonTypes";
 import { rolld10, togglePlayer } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { closeProgress } from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
+import Map from "../../Map";
 import { gamePhaseType } from "../../support/gamePhase";
 import { closeCombatFirepower } from "../closeCombat";
 import BaseState, { stateType } from "./BaseState";
@@ -16,6 +17,23 @@ export function closeCombatCheck(game: Game): boolean {
     if (action.type === "phase") { return true }
   }
   return false
+}
+
+export function maxCCCasualties(map: Map, loc: Coordinate, playerNation: string): number {
+  const counters = map.countersAt(loc)
+  let total = 0
+  for (const c of counters) {
+    if (c.hasUnit && c.unit.playerNation === playerNation) {
+      if (c.unit.isVehicle && !c.unit.isWreck) {
+        total += 1
+      } else if (c.unit.canCarrySupport && c.unit.status === unitStatus.Broken) {
+        total += 1
+      } else if (c.unit.canCarrySupport) {
+        total += 2
+      }
+    }
+  }
+  return total
 }
 
 export function closeCombatDone(game: Game): boolean {
@@ -42,17 +60,16 @@ export default class CloseCombatState extends BaseState {
     const x = selection.target.xy.x
     const y = selection.target.xy.y
     const id = selection.counter.target.id
-    const map = this.game.scenario.map
-    const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+    const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (counter.unit.selected) {
-      map.clearAllSelections()
+      this.map.clearAllSelections()
     } else {
       const casualty = closeCombatCasualyNeeded(this.game)
       if (casualty) {
         counter.unit.select()
-        map.clearOtherSelections(x, y, id)
+        this.map.clearOtherSelections(x, y, id)
       } else {
-        map.selectAllAt(x, y)
+        this.map.selectAllAt(x, y)
       }
     }
     callback()
@@ -64,8 +81,8 @@ export default class CloseCombatState extends BaseState {
     for (const cn of this.game.closeNeeded) {
       if (cn.state === closeProgress.NeedsCasualties) {
         if (selection.counter.unit.operated) { return false }
-        if (this.samePlayer(selection.counter.unit) && cn.iReduce === 0) { return false }
-        if (!this.samePlayer(selection.counter.unit) && cn.iReduce > 0) { return false }
+        if (this.samePlayer(selection.counter.unit) && cn.oReduce === 0) { return false }
+        if (!this.samePlayer(selection.counter.unit) && cn.oReduce > 0) { return false }
         return cn.loc.x === xy.x && cn.loc.y === xy.y
       }
     }
@@ -80,7 +97,7 @@ export default class CloseCombatState extends BaseState {
   get activeCounters(): Counter[] {
     let rc: Counter[] = []
     for (const cn of this.game.closeNeeded) {
-      const counters = this.game.scenario.map.countersAt(cn.loc)
+      const counters = this.map.countersAt(cn.loc)
       if (cn.state === closeProgress.NeedsCasualties) {
         return counters
       }
@@ -95,7 +112,7 @@ export default class CloseCombatState extends BaseState {
     const dice = [{ result: rolld10(), type: "d10" }, { result: rolld10(), type: "d10" }]
     const origin: GameActionUnit[] = []
     const target: GameActionUnit[] = []
-    const counters = this.game.scenario.map.currentSelection
+    const counters = this.map.currentSelection
     counters.forEach(c => {
       const hex = c.hex as Coordinate
       if (this.samePlayer(c.unit)) {
@@ -115,12 +132,12 @@ export default class CloseCombatState extends BaseState {
         dice_result: dice, origin, target, cc_data: { o_base: oBase, t_base: tBase },
       }
     }, this.game)
-    this.game.scenario.map.clearAllSelections()
+    this.map.clearAllSelections()
     this.game.executeAction(action, false)
   }
 
   reduceUnit() {
-    const counter = this.game.scenario.map.currentSelection[0]
+    const counter = this.map.currentSelection[0]
     const hex = counter.hex as Coordinate
     const player = counter.unit.nation === this.game.currentPlayerNation ? this.game.currentPlayer :
       this.game.opponentPlayer
@@ -132,7 +149,7 @@ export default class CloseCombatState extends BaseState {
         target: [{ x: hex.x, y: hex.y, id: counter.unit.id, status: counter.unit.status }],
       }
     }, this.game)
-    this.game.scenario.map.clearAllSelections()
+    this.map.clearAllSelections()
     this.game.executeAction(action, false)
   }
 
