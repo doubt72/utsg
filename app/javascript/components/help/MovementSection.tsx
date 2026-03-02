@@ -94,7 +94,7 @@ export default function MovementSection() {
         for the remainder of the move.
       </p>
       <p>
-        If a unit has a breakdown number, the moving player must roll 2d10 after moving, and if the
+        If a unit has a breakdown number, the moving player must roll 2d10 (added together) after moving, and if the
         total is less than or equal to the breakdown number, the unit is immobilized for the rest of
         the scenario.
       </p>

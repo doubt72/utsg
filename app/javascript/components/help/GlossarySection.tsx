@@ -4,6 +4,15 @@ type GlossaryData = { name: string; desc: JSX.Element };
 
 const terms: GlossaryData[] = [
   {
+    name: "Dice",
+    desc: (
+      <>
+        Six-sided dice (d6) are used to determine directions.  Everything else uses
+        ten-sided dice (d10), numbered one to ten.
+      </>
+    ),
+  },
+  {
     name: "Elevation",
     desc: (
       <>

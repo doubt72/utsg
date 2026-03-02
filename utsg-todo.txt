@@ -3,7 +3,6 @@ High Priority Features/Bug Fixes:
 
   - Finish Docs
     - Read through everything
-    - Prep phase
     - Close combat
     - Housekeeping
     - Rewrite Reaction Fire

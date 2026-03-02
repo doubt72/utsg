@@ -162,7 +162,7 @@ export default function FireSection() {
         <li>Add any hindrance between the firing unit and the target to the above distance.</li>
         <li>Multiply the modifier by the result: this is the range check.</li>
         <li>
-          Roll two d10 (dice with 1-10 are used by the game), multiply them together. If result is
+          Roll two d10 and multiply them together. If result is
           greater than the range check, the result is success, and the fire hits the target.
         </li>
         <li>
@@ -411,7 +411,7 @@ export default function FireSection() {
         <li>Subtract cover (unless the attack was from an incendiary weapon).</li>
         <li>Add one if pinned.</li>
         <li>
-          Roll 2d10. If the result is equal to the modified check, pin the unit, unless it was
+          Roll 2d10 (add them together). If the result is equal to the modified check, pin the unit, unless it was
           reaction fire, then break it. If the result is less than the modified check, break it. If
           the unit was already broken, eliminate it. A roll of 2 always fails. A roll of 20 always
           succeeds.

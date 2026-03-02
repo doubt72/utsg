@@ -27,14 +27,14 @@ export default function RallySection() {
         </ol>
       </p>
       <p>
-        The player then rolls two d10 (dice with 1-10 are used by the game) and
+        The player then rolls two d10 and
         adds them together. If the total is greater than the number calculated
         above, the unit rallies, otherwise the unit fails to rally. Units may
         not attempt to rally more than once per turn.
       </p>
       <p>
         Repair checks for jammed/broken weapons are slightly simpler: the player
-        rolls two d10 and add them together. If the roll is greater than the fix
+        rolls two d10 and adds them together. If the roll is greater than the fix
         number on counter, the weapon is repaired. If the roll is less than the
         break number on the counter, the weapon is removed from the game.
       </p>
