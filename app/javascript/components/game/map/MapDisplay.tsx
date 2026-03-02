@@ -32,6 +32,7 @@ import Hex from "../../../engine/Hex";
 import RoutTrackOverlay from "./RoutTrackOverlay";
 import { stateType } from "../../../engine/control/state/BaseState";
 import DeployState from "../../../engine/control/state/DeployState";
+import { gamePhaseType } from "../../../engine/support/gamePhase";
 
 interface MapDisplayProps {
   map: Map;
@@ -72,6 +73,7 @@ export default function MapDisplay({
   const [losOverlay, setLosOverlay] = useState<JSX.Element | undefined>()
   const [counterLosOverlay, setCounterLosOverlay] = useState<JSX.Element[] | undefined>()
   const [counterOverlay, setCounterOverlay] = useState<JSX.Element | undefined>()
+  const [gamePhase, setGamePhase] = useState<{ phase: number, player: number }>({ phase: -1, player: -1 })
   const [terrainInfoOverlay, setTerrainInfoOverlay] = useState<JSX.Element | undefined>()
   const [reinforcementsOverlay, setReinforcementsOverlay] = useState<JSX.Element | undefined>()
   const [directionSelectionOverlay, setDirectionSelectionOverlay] = useState<JSX.Element | undefined>()
@@ -127,6 +129,20 @@ export default function MapDisplay({
 
   // IDEK what I'm doing with types here
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
+
+  useEffect(() => {
+    if (!map.game || map.game.state !== "in_progress" || map.debug || preview) { return }
+    if (map.game.phase !== gamePhase.phase || map.game.currentPlayer !== gamePhase.player) {
+      setGamePhase({ phase: map.game.phase, player: map.game.currentPlayer })
+      if (map.game.phase !== gamePhaseType.Deployment) { return }
+      setTimeout(() => {
+        if (!map.game ) { return }
+        showReinforcements(
+          reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer
+        )
+      }, 500)
+    }
+  }, [map.game?.phase, map.game?.currentPlayer, map.game?.state])
 
   useEffect(() => {
     if (!map.game) { return }
