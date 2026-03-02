@@ -19,7 +19,7 @@ export default class WindDirectionAction extends BaseAction {
     let dir = "no change"
     const result = this.diceResult.result
     if (result < 3) { dir = "shifts counter-clockwise" }
-    if (result > 7) { dir = "shifts clockwise" }
+    if (result > 8) { dir = "shifts clockwise" }
     return `variable wind direction check: rolled ${result} (d10), ${dir}`
   }
 

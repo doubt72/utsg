@@ -1,6 +1,5 @@
 import React from "react";
-import { helpIndexByName } from "./helpData";
-import { Link } from "react-router-dom";
+import { helpLink } from "./helpData";
 
 export default function FireSection() {
   const section = "5.2.3.1"
@@ -9,8 +8,8 @@ export default function FireSection() {
       <p>
         Firing is the act of one (or more) units attacking one (or more) opponent units, possibly
         breaking, reducing, or eliminating them. The rules for firing,{" "}
-        <Link to={`/help/${helpIndexByName("Intensive Fire").join(".")}`}>intensive fire</Link>, and{" "}
-        <Link to={`/help/${helpIndexByName("Reaction Fire").join(".")}`}>reaction fire</Link> are
+        { helpLink("Intensive Fire", "intensive fire") }, and{" "}
+        { helpLink("Reaction Fire", "reaction fire") } are
         the same, the only difference is a few modifiers and the status of the units or when the
         units may fire.
       </p>
@@ -127,7 +126,7 @@ export default function FireSection() {
         After choosing firing unit(s) and target(s), first determine if a targeting roll is needed
         (i.e., if the firepower is circled). Targets must be in range and if the weapon has a facing
         (i.e., guns and weapons mounted on vehicles or turrets), the target must be in the firing
-        arc. See <Link to={`/help/${helpIndexByName("Facing").join(".")}`}>facing</Link> for more. A
+        arc. See { helpLink("Facing", "facing") } for more. A
         targeting roll is performed in the following manner:
       </p>
       <ol>
@@ -403,7 +402,7 @@ export default function FireSection() {
         following process:
       </p>
       <ol>
-        <li>The base check is 15.</li>
+        <li>The base check is 14.</li>
         <li>Subtract the unit&apos;s morale.</li>
         <li>
           If there are any (unbroken) leaders in the same hex, subtract the highest leadership.

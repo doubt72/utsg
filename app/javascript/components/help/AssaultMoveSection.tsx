@@ -1,7 +1,6 @@
 import React from "react";
-import { helpIndexByName } from "./helpData";
-import { Link } from "react-router-dom";
 import { ShieldFill, XLg } from "react-bootstrap-icons";
+import { helpLink } from "./helpData";
 
 export default function AssaultMoveSection() {
   const section = "5.2.3.5"
@@ -9,7 +8,7 @@ export default function AssaultMoveSection() {
     <div>
       <p>
         Assault movement is a special form of{" "}
-        <Link to={`/help/${helpIndexByName("Move").join(".")}`}>movement</Link>, i.e., an action
+        { helpLink("Move", "movement") }, i.e., an action
         that allows units to move from one hex to another or perform other actions. It has very
         different rules than ordinary movement, however.
       </p>

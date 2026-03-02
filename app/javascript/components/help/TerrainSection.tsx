@@ -9,8 +9,7 @@ import MapHex from "../game/map/MapHex";
 import Hex from "../../engine/Hex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import MapHexPatterns from "../game/map/MapHexPatterns";
-import { helpIndexByName } from "./helpData";
-import { Link } from "react-router-dom";
+import { helpLink } from "./helpData";
 
 type PickTerrain = {
   m?: BaseTerrainType, t?: TerrainType, b?: BorderType, r?: RoadType, s?: StreamType, rr?: boolean, sh?: BuildingShape,
@@ -156,7 +155,7 @@ export default function TerrainSection() {
         <tr key={index++}>
           <td className="nowrap"><strong>{hex.terrain.roadAttr?.name}</strong></td>
           <td className="nowrap">{ showHex(hex) }</td><td className="nowrap"></td><td className="nowrap"></td><td className="nowrap"></td>
-          <td>special: see <Link to={`/help/${helpIndexByName("Move").join(".")}`}>movement</Link> section</td>
+          <td>special: see { helpLink("Move", "movement") } section</td>
         </tr>
       )
     })

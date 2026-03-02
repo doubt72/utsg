@@ -27,6 +27,7 @@ import CloseCombatSection from "./CloseCombatSection";
 import HousekeepingSection from "./HousekeepingSection";
 import DevNotesSection from "./DevNotesSection";
 import PrecipCheckSection from "./PrecipCheckSection";
+import { Link } from "react-router-dom";
 
 export type HelpSection = {
   name: string,
@@ -95,6 +96,17 @@ export function findHelpSection(curr: number[]): HelpSection | undefined {
 
 export function helpIndexByName(name: string): number[] {
   return subSectionByIndex(helpIndex, [], name).map(n => n+1)
+}
+
+export function helpLink(section: string, text: string) {
+  const key = helpIndexByName(section).join(".")
+  return (
+    <Link to={`/help/${key}`}
+          onClick={(event) => {
+            event.preventDefault()
+            document.querySelector(`#s${key}`)?.scrollIntoView()
+          }}>{text}</Link>
+  )
 }
 
 function subSectionByIndex(sections: HelpSection[], base: number[], name: string): number[] {

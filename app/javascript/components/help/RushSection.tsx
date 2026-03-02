@@ -1,13 +1,12 @@
 import React from "react";
-import { helpIndexByName } from "./helpData";
-import { Link } from "react-router-dom";
+import { helpLink } from "./helpData";
 
 export default function RushSection() {
   return (
     <div>
       <p>
         Rush movement follows all the same rules as{" "}
-        <Link to={`/help/${helpIndexByName("Move").join(".")}`}>movement</Link>, with the following
+        { helpLink("Move", "movement") }, with the following
         differences:
       </p>
       <p>Only infantry units may rush. Units manning crewed weapons may not rush.</p>

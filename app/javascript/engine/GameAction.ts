@@ -40,7 +40,7 @@ export type GameActionDiceResult = {
 
 export type GameActionUnit = {
   x: number, y: number, id: string, status: UnitStatus, new_status?: UnitStatus,
-  sponson?: boolean, wire?: boolean, parent?: string, children?: string[]
+  sponson?: boolean, wire?: boolean, parent?: string, children?: string[], unpin?: boolean, unrout?: boolean,
 }
 
 export type GameActionFeature = {

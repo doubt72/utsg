@@ -40,7 +40,7 @@ export default class RallyAction extends BaseAction {
   get rollNeeded(): number {
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (!unit.canCarrySupport) { return this.fixRoll }
-    return 15 - this.moraleBase - this.leaderMod - this.terrainMod +
+    return 12 - this.moraleBase - this.leaderMod - this.terrainMod +
       (this.nextToEnemy ? 1 : 0)
   }
 

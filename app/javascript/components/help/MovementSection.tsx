@@ -1,8 +1,7 @@
 import React from "react";
-import { helpIndexByName } from "./helpData";
 import { ArrowClockwise, BoxArrowDown, BoxArrowInUp, Clouds } from "react-bootstrap-icons";
 import { CancelGlyph, MoveGlyph } from "../utilities/buttons";
-import { Link } from "react-router-dom";
+import { helpLink } from "./helpData";
 
 export default function MovementSection() {
   const section = "5.2.3.3"
@@ -21,13 +20,13 @@ export default function MovementSection() {
         and teams can manhandle crewed units such as guns and large mortars. Certain vehicles can
         carry infantry units. Finally, certain vehicles (sometimes but not always the same vehicles)
         can tow crewed weapons. (See the section on{" "}
-        <Link to={`/help/${helpIndexByName("Stacking").join(".")}`}>stacking</Link> for how this is
+        { helpLink("Stacking", "stacking") } for how this is
         indicated in the game.)
       </p>
       <p>
         Each unit (which can be moved on its own) has a movement value, as marked on the bottom
         right of the unit&apos;s counter (see the section on{" "}
-        <Link to={`/help/${helpIndexByName("Counters").join(".")}`}>counters</Link> for more).
+        { helpLink("Counters", "counters") } for more).
         Infantry units such as squads, crews, and leaders that can carry infantry weapons may have
         their movement reduced by the &quot;movement&quot; of those weapons, i.e., by their
         encumbrance, which is indicated by a black &quot;-&quot; (indicating no encumbrance) or red
@@ -49,7 +48,7 @@ export default function MovementSection() {
         passable to all types of units. (E.g., vehicles can&apos;t move through buildings.) There
         are also certain terrain features that add additional cost, such as fences or streams. For
         more details, see the{" "}
-        <Link to={`/help/${helpIndexByName("Terrain").join(".")}`}>terrain</Link> section. Units
+        { helpLink("Terrain", "terrain") } section. Units
         (with movement greater than zero) can always move at least one hex, even if the movement
         cost of the terrain cost exceeds the unit&apos;s total movement points.
       </p>
@@ -100,7 +99,7 @@ export default function MovementSection() {
       </p>
       <p>
         Units may not move into a hex occupied by an enemy unit. That requires{" "}
-        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link>.
+        { helpLink("Assault Move", "assault movement") }.
         Units may not exceed stacking limits at any point while moving, not even
         &quot;temporarily&quot; when moving through hexes containing friendly units.
       </p>
@@ -234,7 +233,7 @@ export default function MovementSection() {
         There are two &quot;movement&quot; actions that are not part of a normal movement:
         engineering units clearing obstacles, and digging in. As those require the entire turn
         (i.e., they exhaust units completely), they are part of{" "}
-        <Link to={`/help/${helpIndexByName("Assault Move").join(".")}`}>assault movement</Link>{" "}
+        { helpLink("Assault Move", "assault movement") }{" "}
         instead.
       </p>
       <h3>{section}.2. Minefields</h3>
@@ -244,7 +243,7 @@ export default function MovementSection() {
         anitpersonnel minefield. Other minefields attack both). Roll two ten-sided dice, adding the
         total together (2d10): if attacking infantry and the roll is above the base to-hit value for
         the firepower in the fire table (see the{" "}
-        <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire</Link>) section of the docs,
+        { helpLink("Fire", "fire") }) section of the docs,
         morale checks are required (with no cover modifiers, also see the same section for those). If
         attacking vehicles, take the lowest hull armor (or zero if not completely armored), add it to
         the base to-hit value, and if the roll was above that number, the vehicle is destroyed. All

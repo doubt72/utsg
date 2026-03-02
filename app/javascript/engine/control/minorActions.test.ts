@@ -95,6 +95,7 @@ describe("precipitation", () => {
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
     unit1.status = unitStatus.Activated
+    unit1.pinned = true
     const loc = new Coordinate(0,0)
     map.addCounter(loc, unit1)
     const unit2 = new Unit(testGInf)
@@ -109,13 +110,14 @@ describe("precipitation", () => {
     let units = map.countersAt(loc)
     expect(units.length).toBe(2)
     expect(units[0].unit.status).toBe(unitStatus.Normal)
+    expect(units[0].unit.pinned).toBe(false)
     expect(units[1].unit.status).toBe(unitStatus.Tired)
 
     const action = game.actions[0]
     expect(action.type).toBe("status_update")
+    expect(action.data.target?.length).toBe(3)
     expect(action.stringValue).toBe(
-      "update all unit statuses, activated units lose activated status, " +
-        "exhausted units become tired"
+      "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units become tired"
     )
 
     action.undo()
@@ -123,6 +125,7 @@ describe("precipitation", () => {
     units = map.countersAt(loc)
     expect(units.length).toBe(2)
     expect(units[0].unit.status).toBe(unitStatus.Activated)
+    expect(units[0].unit.pinned).toBe(true)
     expect(units[1].unit.status).toBe(unitStatus.Exhausted)
   })
 

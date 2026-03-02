@@ -5,8 +5,7 @@ import Map from "../../engine/Map";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import InitiativeDisplay from "../game/map/InitiativeDisplay";
 import { roundedRectangle } from "../../utilities/graphics";
-import { Link } from "react-router-dom";
-import { helpIndexByName } from "./helpData";
+import { helpLink } from "./helpData";
 
 export default function MainPhaseSection() {
   const section = "5.2.3.0"
@@ -19,10 +18,10 @@ export default function MainPhaseSection() {
   
   useEffect(() => {
     const game = new Game({
-      id: 0, name: "test", owner: "one", player_one: "one", player_two: "two",
+      id: 0, name: "test", owner: "one", player_one: "one", player_two: "two", scenario_version: "0.01",
       current_player: "one", metadata: { turn: 0 },
       scenario: {
-        id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p",
+        id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p", version: "0.01",
         metadata: {
           author: "", description: [""], first_deploy: 1, date: [1940, 1, 1], location: "here",
           turns: 8,
@@ -177,7 +176,7 @@ export default function MainPhaseSection() {
         player rolls two ten-sided dice, adding the total together (2d10), and if the number is
         equal or below the sniper roll on the marker, the player must make a morale check for any of
         their infantry units involved in the action (see Morale Checks in the{" "}
-        <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire section</Link> of the
+        { helpLink("Fire", "fire section") } of the
         docs).
       </p>
     </div>

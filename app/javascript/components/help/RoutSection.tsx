@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { helpIndexByName } from "./helpData";
-import { Link } from "react-router-dom";
 import Unit, { UnitData } from "../../engine/Unit";
 import Feature, { FeatureData } from "../../engine/Feature";
 import Marker, { MarkerData } from "../../engine/Marker";
@@ -19,6 +17,7 @@ import { ScenarioData } from "../../engine/Scenario";
 import { RoutPathTree } from "../../engine/control/state/RoutState";
 import Game from "../../engine/Game";
 import { gamePhaseType } from "../../engine/support/gamePhase";
+import { helpLink } from "./helpData";
 
 export default function RoutSection() {
   const [routDiagram, setRoutDiagram] = useState<JSX.Element | undefined>();
@@ -264,7 +263,7 @@ export default function RoutSection() {
         Attempting to rout all of an opponent&apos;s units is not automatic. Each broken unit makes
         a standard morale check (using all the normal morale check modifiers), except: ties result
         in no rout (see &quot;Morale Checks&quot; in the{" "}
-        <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire section</Link> of the
+        { helpLink("Fire", "fire section") } of the
         documents). If the unit fails that morale check, it will rout.
       </p>
       {routDiagram}

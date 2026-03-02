@@ -28,7 +28,7 @@ export default class MoraleCheckAction extends BaseAction {
   get stringValue(): string {
     let rc = ""
     const unit = this.game.findUnitById(this.target.id) as Unit
-    const check = 15 + this.moraleMods.mod
+    const check = 14 + this.moraleMods.mod
     let short = false
     const roll = this.diceResult
     rc += `${

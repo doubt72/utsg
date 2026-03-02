@@ -17,8 +17,8 @@ export default class StatusUpdateAction extends BaseAction {
   get type(): string { return "status_update" }
 
   get stringValue(): string {
-    return "update all unit statuses, activated units lose activated status, " +
-      `exhausted units become tired${this.undone ? " [cancelled]" : ""}`
+    return "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units " +
+      `become tired${this.undone ? " [cancelled]" : ""}`
   }
 
   get undoPossible() {
@@ -28,14 +28,22 @@ export default class StatusUpdateAction extends BaseAction {
   undo(): void {
     for (const t of this.targets) {
       const c = this.game.findCounterById(t.id) as Counter
-      c.unit.status = t.status as UnitStatus
+      if (t.new_status !== undefined) {
+        c.unit.status = t.status as UnitStatus
+      }
+      if (t.unpin) { c.unit.pinned = true }
+      if (t.unrout) { c.unit.routed = true }
     }
   }
 
   mutateGame(): void {
     for (const t of this.targets) {
       const c = this.game.findCounterById(t.id) as Counter
-      c.unit.status = t.new_status as UnitStatus
+      if (t.new_status !== undefined) {
+        c.unit.status = t.new_status as UnitStatus
+      }
+      if (t.unpin) { c.unit.pinned = false }
+      if (t.unrout) { c.unit.routed = false }
     }
   }
 }

@@ -77,7 +77,7 @@ describe("rally test", () => {
     const index = game.actions.length - 7
     expect(game.actions[index].type).toBe("rally")
     expect(game.actions[index].stringValue).toBe(
-      "rally check at A1: needed 14, got 20, passed: Rifle rallies"
+      "rally check at A1: needed 11, got 20, passed: Rifle rallies"
     )
     expect(map.anyBrokenUnits(2)).toBe(false)
     expect(game.lastAction?.type).toBe("phase")
@@ -108,7 +108,7 @@ describe("rally test", () => {
     const index = game.actions.length - 1
     expect(game.actions[index].type).toBe("rally")
     expect(game.actions[index].stringValue).toBe(
-      "rally check at A1: needed 14, got 2, failed: Rifle fails to rally"
+      "rally check at A1: needed 11, got 2, failed: Rifle fails to rally"
     )
     expect(map.anyBrokenUnits(2)).toBe(true)
   })
@@ -215,7 +215,7 @@ describe("rally test", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 12, got 20, passed: Rifle rallies"
+      "rally check at A1: needed 9, got 20, passed: Rifle rallies"
     )
     expect(map.anyBrokenUnits(2)).toBe(true)
     expect(game.lastAction?.type).toBe("rally")
@@ -255,7 +255,7 @@ describe("rally test", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 12, got 2, failed: Rifle fails to rally"
+      "rally check at A1: needed 9, got 2, failed: Rifle fails to rally"
     )
     expect(map.anyBrokenUnits(2)).toBe(true)
 

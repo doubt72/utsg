@@ -1,6 +1,5 @@
 import React from "react";
-import { helpIndexByName } from "./helpData";
-import { Link } from "react-router-dom";
+import { helpLink } from "./helpData";
 
 export const deploymentRulesSection = (phase: string) => {
   return (
@@ -37,7 +36,7 @@ export const deploymentRulesSection = (phase: string) => {
         deployment map will attempt to show valid options if possible — i.e., hexes that would result
         in no crew or operator are shaded red — and will show a warning if a
         weapon has no operator); see the section on{" "}
-        <Link to={`/help/${helpIndexByName("Stacking").join(".")}`}>stacking counters</Link> for more
+        { helpLink("Stacking", "stacking counters") } for more
         information.
       </p>
     </>

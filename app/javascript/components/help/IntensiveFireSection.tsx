@@ -1,13 +1,12 @@
 import React from "react";
-import { helpIndexByName } from "./helpData";
-import { Link } from "react-router-dom";
+import { helpLink } from "./helpData";
 
 export default function IntensiveFireSection() {
   return (
     <div>
       <p>
         Intensive fire follows all the same rules as{" "}
-        <Link to={`/help/${helpIndexByName("Fire").join(".")}`}>fire</Link>, with the following
+        { helpLink("Fire", "fire") }, with the following
         differences:
       </p>
       <p>

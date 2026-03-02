@@ -749,6 +749,12 @@ export default class Map {
           new_status: unitStatus.Tired
         })
       }
+      if (u.unit.pinned) {
+        rc.push({ x: loc.x, y: loc.y, id: u.unit.id, status: u.unit.status, unpin: true })
+      }
+      if (u.unit.routed) {
+        rc.push({ x: loc.x, y: loc.y, id: u.unit.id, status: u.unit.status, unrout: true })
+      }
     }
     return rc
   }
