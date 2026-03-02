@@ -373,6 +373,7 @@ export default function MapDisplay({
         const player = rp.props.player
         return (
           <ReinforcementPanel map={map} xx={xx} yy={yy} player={player}
+                              scale={scale ?? 1} mapScale={mapScale ?? 1}
                               closeCallback={() => {
                                 setReinforcementsOverlay(undefined)
                                 if (map.game) {
@@ -566,6 +567,7 @@ export default function MapDisplay({
       const y = reinforcementsOverlay?.props.yy
       setReinforcementsOverlay(
         <ReinforcementPanel map={map} xx={x} yy={y} player={player}
+                            scale={scale ?? 1} mapScale={mapScale ?? 1}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
                               if (map.game) {
@@ -592,6 +594,7 @@ export default function MapDisplay({
       if (!rp || rp.props.player !== player) {
         return (
           <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
+                              scale={scale ?? 1} mapScale={mapScale ?? 1}
                               closeCallback={() => setReinforcementsOverlay(undefined)}
                               ovCallback={setOverlay} forceUpdate={mapUpdate} />
         )

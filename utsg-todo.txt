@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Fix scaled dragging of reinforcement panel on scaled display
-  -   Also minimap / reinforcement tooltips
-
   - Automate unit deploy/open panel automatically
 
   - Implement fire checks for dead tanks and area fire
