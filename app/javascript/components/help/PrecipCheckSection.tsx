@@ -27,7 +27,7 @@ export default function PrecipCheckSection() {
       </div>
       <p>
         For example, if the base weather is dry and there&apos;s a 10% chance of rain, a roll of 1
-        means it will be raining during that turn. Any other roll results in clear weather.
+        means it will be raining during that turn. Any other roll results in dry weather.
       </p>
     </div>
   );

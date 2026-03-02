@@ -4,7 +4,7 @@ export default function DevNotesSection() {
   return (
     <div>
       <p>
-        Nothing here yet, really.
+        Nothing here yet.
       </p>
     </div>
   );

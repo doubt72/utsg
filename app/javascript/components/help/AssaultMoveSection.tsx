@@ -32,13 +32,13 @@ export default function AssaultMoveSection() {
         being exceeded unless entering an enemy occupied hex (in which case both players can exceed
         their own stacking limits).
       </p>
-      <p>Unlike regular movement, units may enter enemy occupied hexes.</p>
+      <p>Unlike regular movement, infantry units (not vehicles) may enter enemy occupied hexes.</p>
       <p>
         There is no reaction fire after an assault move, only a regular initiative check. If the
         unit has a breakdown roll, perform a breakdown check before the initiative check.
       </p>
       <p>
-        Units performing assault moves are unaffected by minefields.
+        Infantry units (not vehicles) performing assault moves are unaffected by minefields.
       </p>
       <p>
         Activated, exhausted, or broken units may not assault move. Pinned or immobilized units or

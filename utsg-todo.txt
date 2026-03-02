@@ -1,13 +1,6 @@
 High Priority Features/Bug Fixes:
   - Implement fire checks for dead tanks and area fire
 
-  - Finish Docs
-    - Read through everything
-    - Close combat
-    - Housekeeping
-    - Rewrite Reaction Fire
-    - Rewrite Blaze Section
-    - Add Some Developer Notes
   - Implement Help Button linking to game phase
 
   - Separate sides not hotseat
@@ -16,6 +9,7 @@ High Priority Features/Bug Fixes:
   - Check/Disable move if in contact
     - Assault move still possible if in contact
     - Special activities not, though
+  - Check that vehicles can't assault into enemy hex / don't ignore minefields
 
   - Always reaction fire, loss of initiative or not (after moves?)
     - Skip reaction fire when no LOS
@@ -33,8 +27,12 @@ High Priority Features/Bug Fixes:
     - Through two fence corner intersections
 
   - Overlay both fire and displacement
+  - Tweak -- no voluntary elimination
+
+  - Double-check weather effects on ranged fire; weather effects on infantry fire
 
   - Remove TODO on about page, still working and probably always will be
+  - Add Some Developer Notes
   - Change announcements
     - Patreon?
   - Email Notifications

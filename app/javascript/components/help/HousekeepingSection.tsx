@@ -4,6 +4,8 @@ import CounterDisplay from "../game/CounterDisplay";
 import Marker from "../../engine/Marker";
 
 export default function HousekeepingSection() {
+  const section = "5.2.4.2"
+
   const wind1 = new Marker({ mk: 1, type: 9, subtype: 0 })
   const wind2 = new Marker({ mk: 1, type: 9, subtype: 1 })
   const wind3 = new Marker({ mk: 1, type: 9, subtype: 2 })
@@ -24,20 +26,21 @@ export default function HousekeepingSection() {
   return (
     <div>
       <p>There are several turn-end tasks in the the housekeeping sub-phase.</p>
-      <h3>Checking Stacking</h3>
+      <h3>{section}.1. Checking Stacking</h3>
       <p>
         Any units not remaining in close combat must be under the stacking limit of {stackLimit}. If
-        this is the case in any hex, then units must be removed until the stacking limit is
-        observed. The only way this can happen is if more than the stacking limit worth of units are
-        fed into a close combat, which is legal, if perhaps unwise. Wrecked vehicles (including both
-        friendly and enemy wrecked units) count towards the total stacking size in a hex.
+        this is the case in any hex, then units must be removed until in compliance with the
+        stacking limit. The only way this can happen is if more than the stacking limit worth of
+        units are fed into a close combat, which is legal, if perhaps unwise. Wrecked vehicles
+        (including both friendly and enemy wrecked units) count towards the total stacking size in a
+        hex.
       </p>
-      <h3>Updating Unit Status</h3>
+      <h3>{section}.2. Updating Unit Status</h3>
       <p>
         At this point, all activated, pinned, and routed markers are removed, and any exhausted
         markers are replaced with tired markers.
       </p>
-      <h3>Checking for Smoke Dispersion</h3>
+      <h3>{section}.3. Checking for Smoke Dispersion</h3>
       <p>
         If any hexes contain smoke markers, they may be dispersed. The chance of dispersion depends
         upon the wind speed.
@@ -64,7 +67,11 @@ export default function HousekeepingSection() {
         smoke is checked separately: a single d10 is rolled, and if ten times the result is less
         than or equal to the <strong>sd</strong> value, the smoke counter is removed from the map.
       </p>
-      <h3>Checking for Blazes Being Extinguished or Spreading</h3>
+      <p>
+        For example, if the wind was moderate and a 7 was rolled, the smoke marker being checked
+        would be removed.
+      </p>
+      <h3>{section}.4. Checking for Blazes Being Extinguished or Spreading</h3>
       <p>
         There are two parts of the fire check, first to see if the fire is extinguished, then to see
         if the fire spreads.
@@ -101,6 +108,10 @@ export default function HousekeepingSection() {
         removed from the map.
       </p>
       <p>
+        For example, if it was raining and a 6 was rolled, the blaze marker being checked would be
+        removed.
+      </p>
+      <p>
         After checking to see if the blazes remain, a check is made to see if the blazes spread.
         Fire spread depends on the <strong>fs</strong> percentage on the current wind speed. Each
         hex containing a blaze is checked separately: a single d10 is rolled, and if ten times the
@@ -108,7 +119,11 @@ export default function HousekeepingSection() {
         direction of the wind. Note that fires will not spread in calm winds, and dust increases the
         chance of spreading by 10% (even in calm winds).
       </p>
-      <h3>Variable Weather</h3>
+      <p>
+        For example, if the wind was moderate, the weather was dry and a 2 was rolled, a new blaze
+        marker would be placed in the direction the wind is blowing from the marker being checked.
+      </p>
+      <h3>{section}.5. Variable Weather</h3>
       <p>If the wind is variable, there is a chance of the wind direction and/or speed changing.</p>
       <div className={"flex mb1em"}>
         <div>
@@ -127,7 +142,7 @@ export default function HousekeepingSection() {
           <CounterDisplay unit={vwind4} />
         </div>
       </div>
-      <p>Direction is checked first.  Roll a single d10 and consult the following table:</p>
+      <p>Direction is checked first. Roll a single d10 and consult the following table:</p>
       <table>
         <tbody>
           <tr>
@@ -144,7 +159,7 @@ export default function HousekeepingSection() {
           </tr>
         </tbody>
       </table>
-      <p>Strength is checked next.  Roll a single d10 and consult the following table:</p>
+      <p>Strength is checked next. Roll a single d10 and consult the following table:</p>
       <table>
         <tbody>
           <tr>
@@ -161,9 +176,10 @@ export default function HousekeepingSection() {
           </tr>
         </tbody>
       </table>
-      <p>Weaken or strengthen results in the wind being changed to the next weaker or stronger of
-        calm, breeze, moderate, or strong.  If the wind is already calm, it cannot weaken further
-        so that result has no effect.  Similarly the wind cannot strengthen if already strong.
+      <p>
+        Weaken or strengthen results in the wind being changed to the next weaker or stronger of
+        calm, breeze, moderate, or strong. If the wind is already calm, it cannot weaken further so
+        that result has no effect. Similarly the wind cannot strengthen if already strong.
       </p>
     </div>
   );

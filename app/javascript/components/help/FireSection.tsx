@@ -8,10 +8,9 @@ export default function FireSection() {
       <p>
         Firing is the act of one (or more) units attacking one (or more) opponent units, possibly
         breaking, reducing, or eliminating them. The rules for firing,{" "}
-        { helpLink("Intensive Fire", "intensive fire") }, and{" "}
-        { helpLink("Reaction Fire", "reaction fire") } are
-        the same, the only difference is a few modifiers and the status of the units or when the
-        units may fire.
+        {helpLink("Intensive Fire", "intensive fire")}, and{" "}
+        {helpLink("Reaction Fire", "reaction fire")} are the same, the only difference is a few
+        modifiers and the status of the units or when the units may fire.
       </p>
       <p>
         Any non-activated, non-exhausted, or non-broken unit with firepower above zero may fire.
@@ -126,8 +125,8 @@ export default function FireSection() {
         After choosing firing unit(s) and target(s), first determine if a targeting roll is needed
         (i.e., if the firepower is circled). Targets must be in range and if the weapon has a facing
         (i.e., guns and weapons mounted on vehicles or turrets), the target must be in the firing
-        arc. See { helpLink("Facing", "facing") } for more. A
-        targeting roll is performed in the following manner:
+        arc. See {helpLink("Facing", "facing")} for more. A targeting roll is performed in the
+        following manner:
       </p>
       <ol>
         <li>
@@ -150,8 +149,8 @@ export default function FireSection() {
             <li>Add one if vehicle has a green crew, subtract one if vehicle crew is elite.</li>
             <li>Add one if firing from a turret that was moved before firing.</li>
             <li>
-              Add one if firing from a jammed turret, or firing a hull-mounted weapon
-              on an immobilized vehicle.
+              Add one if firing from a jammed turret, or firing a hull-mounted weapon on an
+              immobilized vehicle.
             </li>
             <li>Add one if intensive fire.</li>
             <li>Add one if raining, sand or dust, two if snowing or fog.</li>
@@ -161,8 +160,8 @@ export default function FireSection() {
         <li>Add any hindrance between the firing unit and the target to the above distance.</li>
         <li>Multiply the modifier by the result: this is the range check.</li>
         <li>
-          Roll two d10 and multiply them together. If result is
-          greater than the range check, the result is success, and the fire hits the target.
+          Roll two d10 and multiply them together. If result is greater than the range check, the
+          result is success, and the fire hits the target.
         </li>
         <li>
           Regardless of whether the result is a hit, if the result is less than or equal to the
@@ -410,10 +409,10 @@ export default function FireSection() {
         <li>Subtract cover (unless the attack was from an incendiary weapon).</li>
         <li>Add one if pinned.</li>
         <li>
-          Roll 2d10 (add them together). If the result is equal to the modified check, pin the unit, unless it was
-          reaction fire, then break it. If the result is less than the modified check, break it. If
-          the unit was already broken, eliminate it. A roll of 2 always fails. A roll of 20 always
-          succeeds.
+          Roll 2d10 (add them together). If the result is equal to the modified check, pin the unit,
+          unless it was reaction fire, then break it. If the result is less than the modified check,
+          break it. If the unit was already broken, eliminate it. A roll of 2 always fails. A roll
+          of 20 always succeeds.
         </li>
       </ol>
       <h3>{section}.6. Smoke</h3>
@@ -466,14 +465,21 @@ export default function FireSection() {
         satchel charges) occurs in a hex, there is a chance of a fire (blaze) starting. If the base
         terrain is snow or mud, or it&apos;s foggy, raining, or snowing, or if the hex being checked
         is marsh, soft ground, or water, there&apos;s no chance of a fire starting, so skip this
-        check. Otherwise, roll 2d10. For forest, building, brush, field, or orchard terrain, fires
-        start on a 3 or less. For all other terrain, on a 2. Add two to the fire check number if incendiary
+        check. Otherwise, roll 2d10. For destroyed vehicles, fires start on 4 or less. With no
+        destroyed vehicle, in forest, building, brush, field, or orchard terrain, fires start on a 3
+        or less. For all other terrain, on a 2. Add two to the fire check number if incendiary
         attack (i.e., fires start in buildings on a 5 or less). If the vehicle being destroyed has
         an indendiary attack, add two to the fire check number. If there are any units in the hex,
-        the player chooses another (single) hex to move them to (if both players have units, both
-        players can choose a hex, initiative player first. They don&apos;t need to be the same hex).
-        If the hex contained smoke, it is removed, but all other features remain in the same hex, as
-        do wrecks, dropped infantry weapons, or unmanned crewed weapons.
+        the player chooses another hex to move them to (if both players have units, both players can
+        choose a hex, initiative player first. Units don&apos;t need to be all be displaced to the
+        same hex). If the hex contained smoke, it is removed, but all other features remain in the
+        same hex, as do wrecks, dropped infantry weapons, or unmanned crewed weapons.  If a unit is
+        manning a crewed weapon, it is abandoned.
+      </p>
+      <p>
+        Units are eliminated if they have nowhere legal to displace; i.e., they cannot cross or
+        enter forbidden terrain, enter hexes with enemy units, or cause the stacking limit to be
+        exceeded.
       </p>
     </div>
   );
