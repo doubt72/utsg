@@ -141,8 +141,6 @@ export default function MainPhaseSection() {
         <li>
           <strong>Reaction Fire</strong> (2): the opposing player may choose to take a firing (or
           intensive firing action) in response to any enemy action except routing or assault moves.
-          There is no reaction fire if the acting player fails their initiative check, in that case
-          the player may make a normal firing action instead.
         </li>
       </ol>
       <h3>{section}.1. Initiative</h3>

@@ -35,6 +35,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.gameState = new InitiativeState(game)
   } else if (reactionFireCheck(game)) {
     game.gameState = new ReactionState(game)
+    game.reactionState.checkAvailable()
   } else if (closeCombatCheck(game)) {
     game.gameState = new CloseCombatState(game)
   }

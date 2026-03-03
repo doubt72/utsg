@@ -26,6 +26,7 @@ import SmokeCheckState from "./control/state/SmokeCheckState";
 import FireCheckState from "./control/state/FireCheckState";
 import WeatherState from "./control/state/WeatherState";
 import FireDisplaceState from "./control/state/FireDisplaceState";
+import ReactionState from "./control/state/ReactionState";
 
 export type GameData = {
   id: number;
@@ -301,6 +302,10 @@ export default class Game {
 
   get routState(): RoutState {
     return this.gameState as RoutState
+  }
+
+  get reactionState(): ReactionState {
+    return this.gameState as ReactionState
   }
 
   get closeCombatState(): CloseCombatState {

@@ -3,11 +3,11 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import IllegalActionError from "../actions/IllegalActionError"
 import Feature from "../Feature"
-import { createMoveGame, testGInf, testGTank } from "./testHelpers"
+import { createMoveGame, testGInf, testGTank, testRInf } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import PassState from "./state/PassState"
 import { stateType } from "./state/BaseState"
-import { reactionFireCheck } from "./state/ReactionState"
+import ReactionState, { reactionFireCheck } from "./state/ReactionState"
 import MoveState from "./state/MoveState"
 import AssaultState from "./state/AssaultState"
 import SniperState from "./state/SniperState"
@@ -70,7 +70,7 @@ describe("game action tests", () => {
 
     Math.random = original
 
-    expect(reactionFireCheck(game)).toBe(false)
+    expect(reactionFireCheck(game)).toBe(true)
 
     try {
       game.executeUndo()
@@ -114,6 +114,59 @@ describe("game action tests", () => {
     Math.random = original
 
     expect(reactionFireCheck(game)).toBe(true)
+
+    try {
+      game.executeUndo()
+    } catch(err) {
+      // Can't roll back a breakdown roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("no reaction unless los", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(0, 3), unit)
+
+    const unit2 = new Unit(testRInf)
+    unit2.id = "test2"
+    map.addCounter(new Coordinate(4, 3), unit2)
+
+    game.gameState = new MoveState(game)
+    game.moveState.move(1, 3)
+    game.moveState.move(2, 3)
+    game.gameState.finish()
+
+    expect(breakdownCheck(game)).toBe(false)
+    expect(initiativeCheck(game)).toBe(true)
+    expect(reactionFireCheck(game)).toBe(false)
+
+    game.gameState = new InitiativeState(game)
+
+    expect(initiativeCheck(game)).toBe(false)
+    expect(reactionFireCheck(game)).toBe(false)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+
+    expect(game.currentPlayer).toBe(2)
+    game.gameState.finish()
+    expect(game.currentPlayer).toBe(1)
+
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(true)
+    game.gameState = new ReactionState(game)
+    game.reactionState.checkAvailable()
+    expect(reactionFireCheck(game)).toBe(false)
+
+    const action = game.lastAction
+    expect(action?.type).toBe("info")
+    expect(action?.stringValue).toBe("no valid units have line-of-sight, skipping reaction fire")
 
     try {
       game.executeUndo()
