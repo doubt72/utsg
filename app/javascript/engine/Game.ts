@@ -23,7 +23,7 @@ import PrecipCheckState from "./control/state/PrecipCheckState";
 import RallyState from "./control/state/RallyState";
 import RallyAction from "./actions/RallyAction";
 import SmokeCheckState from "./control/state/SmokeCheckState";
-import FireCheckState from "./control/state/FireCheckState";
+import FireExtinguishState from "./control/state/FireExtinguishState";
 import WeatherState from "./control/state/WeatherState";
 import FireDisplaceState from "./control/state/FireDisplaceState";
 import ReactionState from "./control/state/ReactionState";
@@ -54,6 +54,9 @@ export const closeProgress: { [index: string]: CloseProgress } = {
 
 export type SimpleUnitCheck = { unit: Unit, loc: Coordinate }
 export type SimpleFeatureCheck = { feature: Feature, loc: Coordinate }
+export type SimpleHexCheck = {
+  loc: Coordinate, vehicle?: boolean, incendiary?: boolean, vehicle_incendiary?: boolean,
+}
 export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
 export type CloseCheck = { loc: Coordinate, state: CloseProgress, oReduce: number, tReduce: number }
 
@@ -101,6 +104,7 @@ export default class Game {
   fireDisplaceNeeded: SimpleUnitCheck[];
   closeNeeded: CloseCheck[];
   smokeCheckNeeded: SimpleFeatureCheck[];
+  fireStartCheckNeeded: SimpleHexCheck | undefined;
   fireOutCheckNeeded: SimpleFeatureCheck[];
   fireSpreadCheckNeeded: SimpleFeatureCheck[];
   checkWindDirection: boolean;
@@ -138,6 +142,7 @@ export default class Game {
     this.fireDisplaceNeeded = []
     this.closeNeeded = []
     this.smokeCheckNeeded = []
+    this.fireStartCheckNeeded = undefined
     this.fireOutCheckNeeded = []
     this.fireSpreadCheckNeeded = []
     this.checkWindDirection = false
@@ -467,7 +472,7 @@ export default class Game {
         }
       }, this), backendSync)
     } else {
-      this.gameState = new FireCheckState(this)
+      this.gameState = new FireExtinguishState(this)
     }
   }
 
@@ -689,5 +694,10 @@ export default class Game {
     }
     if (this.initiative > 7) { this.initiative = 7 }
     if (this.initiative < -7) { this.initiative = -7 }
+  }
+
+  endTurnInitiative() {
+    if (this.initiative > 3) { this.initiative = 3 }
+    if (this.initiative < -3) { this.initiative = -3 }
   }
 }

@@ -15,7 +15,7 @@ export default function CleanupPhaseSection() {
           <strong>Housekeeping</strong>:
             <ol>
               <li><strong>Check Stacking</strong>: remove overstacked units</li>
-              <li><strong>Unit Status</strong>: update status markers</li>
+              <li><strong>Unit Status/Initiative Check</strong>: update status markers</li>
               <li><strong>Smoke Check</strong>: check smoke dispersion</li>
               <li><strong>Fire Check</strong>: check if fire spreads or is extinguished</li>
               <li><strong>Weather</strong>: check variable weather</li>

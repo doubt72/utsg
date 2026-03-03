@@ -5,9 +5,9 @@ import GameAction from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
 
 // Handle fire spreading/extinguish
-export default class FireCheckState extends BaseState {
+export default class FireExtinguishState extends BaseState {
   constructor(game: Game) {
-    super(game, stateType.FireCheck, game.currentPlayer)
+    super(game, stateType.FireExtinguish, game.currentPlayer)
     game.refreshCallback(game)
   }
 

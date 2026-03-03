@@ -36,10 +36,13 @@ export default function HousekeepingSection() {
         (including both friendly and enemy wrecked units) count towards the total stacking size in a
         hex.
       </p>
-      <h3>{section}.2. Updating Unit Status</h3>
+      <h3>{section}.2. Updating Unit Status and Initiative</h3>
       <p>
         At this point, all activated, pinned, and routed markers are removed, and any exhausted
         markers are replaced with tired markers.
+      </p>
+      <p>
+        Also, if initiative value is greater than 14, it is reduced to 14 on the same side.
       </p>
       <h3>{section}.3. Checking for Smoke Dispersion</h3>
       <p>

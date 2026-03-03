@@ -26,6 +26,7 @@ export default class StatusUpdateAction extends BaseAction {
   }
 
   undo(): void {
+    this.game.initiative = this.data.old_initiative
     for (const t of this.targets) {
       const c = this.game.findCounterById(t.id) as Counter
       if (t.new_status !== undefined) {
@@ -37,6 +38,7 @@ export default class StatusUpdateAction extends BaseAction {
   }
 
   mutateGame(): void {
+    this.game.endTurnInitiative()
     for (const t of this.targets) {
       const c = this.game.findCounterById(t.id) as Counter
       if (t.new_status !== undefined) {

@@ -33,6 +33,7 @@ import StatusUpdateAction from "./actions/StatusUpdateAction";
 import WindDirectionAction from "./actions/WindDirectionAction";
 import WindSpeedAction from "./actions/WindSpeedAction";
 import FireDisplaceAction from "./actions/FireDisplaceAction";
+import FireStartAction from "./actions/FireStartAction";
 
 export type GameActionDiceResult = {
   result: number, type: string, description?: string
@@ -72,6 +73,10 @@ export type GameActionRallyData = {
 export type GameActionFireData = {
   start: { x: number, y: number, smoke: boolean }[],
   final: { x: number, y: number, smoke: boolean }[],
+}
+
+export type GameActionFireStartData = {
+  vehicle: boolean, incendiary: boolean, vehicle_incendiary: boolean,
 }
 
 export type GameActionMoveData = {
@@ -122,6 +127,7 @@ export type GameActionDetails = {
 
   rally_data?: GameActionRallyData,
   fire_data?: GameActionFireData,
+  fire_start_data?: GameActionFireStartData,
   move_data?: GameActionMoveData,
   morale_data?: GameActionMoraleData,
   rout_check_data?: GameActionRoutData,
@@ -204,6 +210,9 @@ export default class GameAction {
     }
     if (this.data.data.action === "reaction_intensive_fire") {
       return new FireAction(this.data, this.game, this.index, true, true);
+    }
+    if (this.data.data.action === "fire_start") {
+      return new FireStartAction(this.data, this.game, this.index);
     }
     if (this.data.data.action === "reaction_pass") {
       return new ReactionPassAction(this.data, this.game, this.index);

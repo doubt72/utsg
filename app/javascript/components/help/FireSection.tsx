@@ -467,10 +467,13 @@ export default function FireSection() {
         terrain is snow or mud, or it&apos;s foggy, raining, or snowing, or if the hex being checked
         is marsh, soft ground, or water, there&apos;s no chance of a fire starting, so skip this
         check. Otherwise, roll 2d10. For destroyed vehicles, fires start on 4 or less. With no
-        destroyed vehicle, in forest, building, brush, field, or orchard terrain, fires start on a 3
-        or less. For all other terrain, on a 2. Add two to the fire check number if incendiary
+        destroyed vehicle, in forest, building, brush, palm trees, field, or orchard terrain, fires start on a 3
+        or less. On sand (either sandy terrain or open terrain on a desert map), on a base of 1 (i.e., no non-incendiary attacks can start fires).  For all other terrain, on a 2. Add two to the fire check number if incendiary
         attack (i.e., fires start in buildings on a 5 or less). If the vehicle being destroyed has
-        an indendiary attack, add two to the fire check number. If there are any units in the hex,
+        an indendiary attack, add two to the fire check number.
+      </p>
+      <p>
+        If a fire starts and there are any units in the hex,
         the player chooses another hex to move them to (if both players have units, both players can
         choose a hex, initiative player first. Units don&apos;t need to be all be displaced to the
         same hex). If the hex contained smoke, it is removed, but all other features remain in the

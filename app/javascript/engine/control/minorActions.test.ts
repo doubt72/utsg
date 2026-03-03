@@ -5,7 +5,7 @@ import PrecipCheckState from "./state/PrecipCheckState";
 import SmokeCheckState from "./state/SmokeCheckState";
 import { Coordinate, featureType, unitStatus, windType } from "../../utilities/commonTypes";
 import Feature from "../Feature";
-import FireCheckState from "./state/FireCheckState";
+import FireExtinguishState from "./state/FireExtinguishState";
 import Unit from "../Unit";
 import WeatherState from "./state/WeatherState";
 
@@ -91,6 +91,7 @@ describe("precipitation", () => {
   test("status updates", () => {
     const game = createBlankGame()
     const map = game.scenario.map
+    game.initiative = -5
 
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
@@ -119,6 +120,7 @@ describe("precipitation", () => {
     expect(action.stringValue).toBe(
       "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units become tired"
     )
+    expect(game.initiative).toBe(-3)
 
     action.undo()
 
@@ -127,6 +129,7 @@ describe("precipitation", () => {
     expect(units[0].unit.status).toBe(unitStatus.Activated)
     expect(units[0].unit.pinned).toBe(true)
     expect(units[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(game.initiative).toBe(-5)
   })
 
   test("smoke disperses", () => {
@@ -199,7 +202,7 @@ describe("precipitation", () => {
 
     game.checkForFire(false)
     expect(game.fireOutCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireCheckState
+    const state = game.gameState as FireExtinguishState
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -228,7 +231,7 @@ describe("precipitation", () => {
 
     game.checkForFire(false)
     expect(game.fireOutCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireCheckState
+    const state = game.gameState as FireExtinguishState
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -261,7 +264,7 @@ describe("precipitation", () => {
     game.checkForFire(false)
     game.fireOutCheckNeeded = []
     expect(game.fireSpreadCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireCheckState
+    const state = game.gameState as FireExtinguishState
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -297,7 +300,7 @@ describe("precipitation", () => {
     game.checkForFire(false)
     game.fireOutCheckNeeded = []
     expect(game.fireSpreadCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireCheckState
+    const state = game.gameState as FireExtinguishState
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)

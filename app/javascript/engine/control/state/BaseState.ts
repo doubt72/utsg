@@ -7,15 +7,15 @@ import Unit from "../../Unit";
 
 export type StateType = "deploy" | "rally" | "precip" | "fire" | "move" | "assault" |
   "breakdown" | "init" | "pass" | "morale" | "sniper" | "rout" | "routall" |
-  "routcheck" | "reaction" | "close" | "overstack" | "status" | "smoke" | "fire" |
-  "displace" | "weather"
+  "routcheck" | "reaction" | "close" | "overstack" | "status" | "smoke" | "fire_extinguish" |
+  "displace" | "weather" | "fire_start"
 export const stateType: { [index: string]: StateType } = {
   Deploy: "deploy", Rally: "rally", PrecipCheck: "precip", Fire: "fire", Move: "move",
   Assault: "assault", Breakdown: "breakdown", Initiative: "init", Pass: "pass",
   MoraleCheck: "morale", Sniper: "sniper", Rout: "rout", RoutAll: "routall",
-  RoutCheck: "routcheck", Reaction: "reaction", CloseCombat: "close",
+  RoutCheck: "routcheck", Reaction: "reaction", CloseCombat: "close", FireStart: "fire_start",
   Overstack: "overstack", StatusCheck: "status", SmokeCheck: "smoke",
-  FireCheck: "fire", FireDisplace: "displace", VariableWeather: "weather",
+  FireExtinguish: "fire_extinguish", FireDisplace: "displace", VariableWeather: "weather",
 }
 
 export type StateSelection = {
