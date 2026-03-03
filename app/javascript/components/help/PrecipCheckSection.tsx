@@ -1,10 +1,11 @@
 import React from "react";
 import CounterDisplay from "../game/CounterDisplay";
 import Marker from "../../engine/Marker";
+import { markerType, weatherType } from "../../utilities/commonTypes";
 
 export default function PrecipCheckSection() {
-  const clear = new Marker({ mk: 1, type: 10, subtype: 0 })
-  const rain = new Marker({ mk: 1, type: 10, subtype: 2, v: 1 })
+  const clear = new Marker({ mk: 1, type: markerType.weather, subtype: weatherType.Dry })
+  const rain = new Marker({ mk: 1, type: markerType.weather, subtype: weatherType.Rain, v: 1 })
 
   return (
     <div>

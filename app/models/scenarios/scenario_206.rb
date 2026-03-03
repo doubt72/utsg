@@ -83,10 +83,10 @@ module Scenarios
 
       def map_data
         {
-          start_weather: 0,
-          base_weather: 0,
-          precip: [3, 2],
-          wind: [0, 4, true],
+          start_weather: "dry",
+          base_weather: "dry",
+          precip: [3, "rain"],
+          wind: [1, 4, true],
           hexes:,
           layout:,
           allied_dir: 2.5,

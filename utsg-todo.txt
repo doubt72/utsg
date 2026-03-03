@@ -20,13 +20,6 @@ High Priority Features/Bug Fixes:
     - Through two fence corner intersections
   - Overlay both fire and displacement
 
-  - Never use 0 for numeric types [ requires redoing all the scenarios and markers, etc. ]
-    - Unit Status
-    - Movement Type
-    - Marker Type
-      - Wind
-      - Weather
-
   - Add changelog page
   - Remove TODO on about page, still working and probably always will be
   - Add Some Developer Notes

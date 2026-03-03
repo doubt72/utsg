@@ -158,14 +158,14 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         addOne(csr, r)
       }
       addOne(cbt, s.map.baseTerrain)
-      addOne(cn, s.map.night ? "Night" : "Day")
-      addOne(csw, String(s.map.currentWeather))
-      addOne(cbw, String(s.map.baseWeather))
-      addOne(cp, String(s.map.precipChance > 0 ? s.map.precip : "None"))
+      addOne(cn, s.map.night ? "night" : "day")
+      addOne(csw, s.map.currentWeather)
+      addOne(cbw, s.map.baseWeather)
+      addOne(cp, s.map.precipChance > 0 ? s.map.precip : "none")
       addOne(cpp, String(s.map.precipChance))
       addOne(cwt, String(s.map.windSpeed))
       addOne(cwd, String(s.map.windDirection))
-      addOne(cwv, s.map.windVariable ? "Variable" : "Steady")
+      addOne(cwv, s.map.windVariable ? "variable" : "steady")
 
       const terrains: Lookup = {}
       const elevations: Lookup = {}
@@ -346,20 +346,20 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         {displayStat(countLayout, {})}
         Base Terrain:
         {displayStat(countBaseTerrain, {
-          g: "Grass", d: "Sand", s: "Snow", m: "Mud", u: "Urban",
+          g: "grass", d: "sand", s: "snow", m: "mud", u: "urban",
         })}
         Day/Night:
         {displayStat(countNight, {})}
         Start Weather:
-        {displayStat(countStartWeather, { 0: "Dry", 1: "Fog", 2: "Rain", 3: "Snow", 4: "Sand", 5: "Dust" })}
+        {displayStat(countStartWeather, {})}
         Base Weather:
-        {displayStat(countBaseWeather, { 0: "Dry", 1: "Fog", 2: "Rain", 3: "Snow", 4: "Sand", 5: "Dust" })}
+        {displayStat(countBaseWeather, {})}
         Precip Type:
-        {displayStat(countPrecip, { 2: "Rain", 3: "Snow" })}
+        {displayStat(countPrecip, {})}
         Precip Chance:
-        {displayStat(countPrecipPercent, { 0: "None", 1: "10%", 2: "20%", 3: "30%" })}
+        {displayStat(countPrecipPercent, { 0: "none", 1: "10%", 2: "20%", 3: "30%" })}
         Wind Strength:
-        {displayStat(countWindType, { 0: "Calm", 1: "Breeze", 2: "Moderate", 3: "Strong" })}
+        {displayStat(countWindType, { 1: "calm", 2: "breeze", 3: "moderate", 4: "strong" })}
         Wind Direction:
         {displayStat(countWindDirection, {})}
         Variable:

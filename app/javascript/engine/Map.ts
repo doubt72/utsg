@@ -32,8 +32,8 @@ export type MapData = {
   hexes: HexData[][];
   base_terrain: BaseTerrainType;
   night?: boolean;
-  start_weather: WeatherType;
-  base_weather: WeatherType;
+  start_weather?: WeatherType;
+  base_weather?: WeatherType;
   precip: [number, WeatherType];
   wind: [WindType, Direction, boolean];
 }
@@ -98,14 +98,14 @@ export default class Map {
     this.baseTerrain = data.base_terrain || baseTerrainType.Grass
     this.night = data.night
 
-    this.currentWeather = data.start_weather || 0
-    this.baseWeather = data.base_weather || 0
+    this.currentWeather = data.start_weather || weatherType.Dry
+    this.baseWeather = data.base_weather || weatherType.Dry
     const precip = data.precip
     this.precip = precip ? precip[1] : 2
     this.precipChance = precip ? precip[0] : 0
 
     const wind = data.wind
-    this.windSpeed = wind ? wind[0] : 0
+    this.windSpeed = wind ? wind[0] : windType.Calm
     this.windDirection = wind ? wind[1] : 1
     this.windVariable = wind ? wind[2] : false
   }

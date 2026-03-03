@@ -57,7 +57,12 @@ export function axisCodeToName(code: string): string {
 
 export function weatherDescription(weather: WeatherType): string {
   const lookup = {
-    0: "clear", 1: "foggy", 2: "raining", 3: "snowing", 4: "blowing sand", 5: "blowing dust"
+    "dry": "clear",
+    "fog": "foggy",
+    "rain": "raining",
+    "snow": "snowing",
+    "sand": "blowing sand",
+    "dust": "blowing dust",
   }
 
   return lookup[weather] ?? "unknown"

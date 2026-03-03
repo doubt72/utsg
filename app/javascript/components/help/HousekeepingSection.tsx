@@ -2,26 +2,27 @@ import React from "react";
 import { stackLimit } from "../../utilities/utilities";
 import CounterDisplay from "../game/CounterDisplay";
 import Marker from "../../engine/Marker";
+import { markerType, weatherType, windType } from "../../utilities/commonTypes";
 
 export default function HousekeepingSection() {
   const section = "5.2.4.2"
 
-  const wind1 = new Marker({ mk: 1, type: 9, subtype: 0 })
-  const wind2 = new Marker({ mk: 1, type: 9, subtype: 1 })
-  const wind3 = new Marker({ mk: 1, type: 9, subtype: 2 })
-  const wind4 = new Marker({ mk: 1, type: 9, subtype: 3 })
+  const wind1 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Calm })
+  const wind2 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Breeze })
+  const wind3 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Moderate })
+  const wind4 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Strong })
 
-  const vwind1 = new Marker({ mk: 1, type: 9, subtype: 0, v: "true" })
-  const vwind2 = new Marker({ mk: 1, type: 9, subtype: 1, v: "true" })
-  const vwind3 = new Marker({ mk: 1, type: 9, subtype: 2, v: "true" })
-  const vwind4 = new Marker({ mk: 1, type: 9, subtype: 3, v: "true" })
+  const vwind1 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Calm, v: "true" })
+  const vwind2 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Breeze, v: "true" })
+  const vwind3 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Moderate, v: "true" })
+  const vwind4 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Strong, v: "true" })
 
-  const dry = new Marker({ mk: 1, type: 10, subtype: 0 })
-  const fog = new Marker({ mk: 1, type: 10, subtype: 1 })
-  const rain = new Marker({ mk: 1, type: 10, subtype: 2 })
-  const snow = new Marker({ mk: 1, type: 10, subtype: 3 })
-  const sand = new Marker({ mk: 1, type: 10, subtype: 4 })
-  const dust = new Marker({ mk: 1, type: 10, subtype: 5 })
+  const dry = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Dry })
+  const fog = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Fog })
+  const rain = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Rain })
+  const snow = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Snow })
+  const sand = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Sand })
+  const dust = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Dust })
 
   return (
     <div>

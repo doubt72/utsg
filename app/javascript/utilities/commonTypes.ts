@@ -57,14 +57,14 @@ export type CounterSelectionTarget = {
   counter: Counter;
 }
 
-export type WindType = 0 | 1 | 2 | 3
+export type WindType = 1 | 2 | 3 | 4
 export const windType: { [index: string]: WindType } = {
-  Calm: 0, Breeze: 1, Moderate: 2, Strong: 3
+  Calm: 1, Breeze: 2, Moderate: 3, Strong: 4
 }
 
-export type WeatherType = 0 | 1 | 2 | 3 | 4 | 5
+export type WeatherType = "dry" | "fog" | "rain" | "snow" | "sand" | "dust"
 export const weatherType: { [index: string]: WeatherType } = {
-  Dry: 0, Fog: 1, Rain: 2, Snow: 3, Sand: 4, Dust: 5
+  Dry: "dry", Fog: "fog", Rain: "rain", Snow: "snow", Sand: "sand", Dust: "dust"
 }
 
 export type BaseTerrainType = "d" | "m" | "g" | "u" | "s";
@@ -136,14 +136,14 @@ export type StreamAttributes = {
   name: string;
 }
 
-export type UnitStatus = 0 | 1 | 2 | 3 | 4 | 5
+export type UnitStatus = 1 | 2 | 3 | 4 | 5 | 6
 export const unitStatus: { [index: string]: UnitStatus } = {
-  Normal: 0, Tired: 1, Broken: 2, Activated: 3, Exhausted: 4, Wreck: 5
+  Normal: 1, Tired: 2, Broken: 3, Activated: 4, Exhausted: 5, Wreck: 6
 }
 
-export type MovementType = 0 | 1 | 2 | 3
+export type MovementType = 1 | 2 | 3 | 4
 export const movementType: { [index: string]: MovementType } = {
-  Foot: 0, Tracked: 1, Wheeled: 2, Gun: 3
+  Foot: 1, Tracked: 2, Wheeled: 3, Gun: 4
 }
 
 export type UnitType = "ldr" | "sqd" | "tm" | "sw" | "gun" |
@@ -159,13 +159,16 @@ export const sponsonType: { [index: string]: SponsonType } = {
   Gun: "g", AntiArmor: "p", Flame: "ft",
 }
 
-export type MarkerType = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
-  16 | 17 | 18
+export type MarkerType = "tracked_hull" | "wheeled_hull" | "tired" | "pinned" | "activated" |
+  "exhausted" | "jammed" | "turret_jammed" | "immobilized" | "wind" | "weather" | "initiative" |
+  "turn" | "elite_crew" | "green_crew" | "weapon_broken" | "sponson_jammed" | "sponson_broken" |
+  "routed"
 export const markerType: { [index: string]: MarkerType } = {
-  TrackedHull: 0, WheeledHull: 1, Tired: 2, Pinned: 3, Activated: 4, Exhausted: 5,
-  Jammed: 6, TurretJammed: 7, Immobilized: 8, Wind: 9, Weather: 10, Initiative: 11,
-  Turn: 12, EliteCrew: 13, GreenCrew: 14, WeaponBroken: 15, SponsonJammed: 16,
-  SponsonBroken: 17, Routed: 18
+  TrackedHull: "tracked_hull", WheeledHull: "wheeled_hull", Tired: "tired", Pinned: "pinned",
+  Activated: "activated", Exhausted: "exhausted", Jammed: "jammed", TurretJammed: "turret_jammed",
+  Immobilized: "immobilized", Wind: "wind", Weather: "weather", Initiative: "initiative",
+  Turn: "turn", EliteCrew: "elite_crew", GreenCrew: "green_crew", WeaponBroken: "weapon_broken",
+  SponsonJammed: "sponson_jammed", SponsonBroken: "sponson_broken", Routed: "routed"
 }
 
 export type FeatureType = "bunker" | "pillbox" | "foxhole" | "trench" | "scrape" |
