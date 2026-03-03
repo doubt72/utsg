@@ -104,7 +104,9 @@ export default class MoveState extends BaseState {
     const countersAt = this.map.countersAt(to)
     if (moveSize + toSize > stackLimit) { return hexOpenType.Closed }
     for (const c of countersAt) {
-      if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { return hexOpenType.Closed }
+      if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck) {
+        return hexOpenType.Closed
+      }
     }
   
     if (selection.unit.isVehicle) {

@@ -13,7 +13,7 @@ import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
 import {
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testMine,
-  testMineAP, testMineAT, testRInf, testWire
+  testMineAP, testMineAT, testRInf, testRTank, testWire
 } from "./testHelpers"
 import Feature from "../Feature"
 import MoveState from "./state/MoveState"
@@ -535,7 +535,7 @@ describe("movement tests", () => {
     expect(all[1].unit.status).toBe(unitStatus.Activated)
   })
 
-  test ("can't move overstack or into enemy", () => {
+  test("can't move overstack or into enemy", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
@@ -568,6 +568,31 @@ describe("movement tests", () => {
     expect(game.gameState.openHex(3, 2)).toBe(hexOpenType.Closed)
     expect(game.gameState.openHex(4, 3)).toBe(1)
     expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
+  })
+
+  test("can move into wreck", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+
+    const unit5 = new Unit(testRTank)
+    unit5.status = unitStatus.Wreck
+    unit5.id = "test5"
+    map.addCounter(new Coordinate(4, 3), unit5)
+
+    game.gameState = new MoveState(game)
+
+    select(map, {
+      counter: map.countersAt(loc)[0],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(game.gameState.selection.length).toBe(1)
+
+    expect(game.gameState.openHex(4, 3)).toBe(1)
   })
 
   test("multi-select drop-off", () => {

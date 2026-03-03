@@ -8,7 +8,8 @@ import organizeStacks from "../support/organizeStacks"
 import { showClearObstacles, showEntrench } from "./assault"
 import Feature from "../Feature"
 import {
-  createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testRInf, testWire 
+  createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck,
+  testMineAT, testRInf, testRTank, testWire
 } from "./testHelpers"
 import AssaultState from "./state/AssaultState"
 import { stateType } from "./state/BaseState"
@@ -484,6 +485,40 @@ describe("assault movement tests", () => {
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(1)
     expect(all[1].unit.status).toBe(unitStatus.Normal)
+  })
+
+  test("tank can't assault into enemy or mines", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit1 = new Unit(testGTank)
+    unit1.id = "test1"
+    unit1.facing = 1
+    unit1.turretFacing = 1
+    unit1.select()
+    map.addCounter(new Coordinate(3, 2), unit1)
+
+    const unit2 = new Unit(testRInf)
+    unit2.id = "test2"
+    map.addCounter(new Coordinate(2, 2), unit2)
+    const unit3 = new Unit(testRTank)
+    unit3.status = unitStatus.Wreck
+    unit3.id = "test3"
+    map.addCounter(new Coordinate(3, 1), unit3)
+    const mine = new Feature(testMineAT)
+    mine.id = "test2"
+    map.addCounter(new Coordinate(4, 2), mine)
+
+    game.gameState = new AssaultState(game)
+
+    expect(game.assaultState.path[0].facing).toBe(1)
+    expect(game.assaultState.path[0].turret).toBe(1)
+
+    expect(game.gameState.rotateOpen).toBe(false)
+    expect(game.gameState.rotatePossible).toBe(false)
+    expect(game.gameState.openHex(3, 1)).toBe(hexOpenType.All)
+    expect(game.gameState.openHex(4, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(2, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState.openHex(3, 3)).toBe(hexOpenType.Closed)
   })
 
   test("tank can't assault from impassible terrain without road", () => {

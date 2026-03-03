@@ -484,6 +484,19 @@ export default class Map {
     return
   }
 
+  locForId(id: string): Coordinate | undefined {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = this.width - 1; x >= 0; x--) {
+        const units = this.units[y][x]
+        for (const u of units) {
+          if (u.id === id) {
+            return new Coordinate(x, y)
+          }
+        }
+      }
+    }
+  }
+
   findCounterById(id: string): Counter | undefined {
     const counters = this.allCounters
     for (const c of counters) {

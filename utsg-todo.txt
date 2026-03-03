@@ -1,13 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Tweak -- no voluntary elimination for blaze displace
-    - Check/Test order of blaze displace
-  - Check/test close combat power to match docs
-  - Check/test exhausted to units after CloseCombat / only if combat over
-
-  - Check/test that vehicles can't assault into enemy hex / don't ignore minefields
-  - Check/test Disabled move if in contact
-    - Assault move still possible if in contact
-    - Special activities not, though
   - Check/test weather effects on ranged fire
     - Weather effects on infantry fire
   - Change always reaction fire, loss of initiative or not

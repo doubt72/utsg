@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, Direction, hexOpenType } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType } from "../../../utilities/commonTypes";
 import { normalDir, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
@@ -82,6 +82,15 @@ export default class AssaultState extends BaseState {
     if (selection.unit.isVehicle) {
       if ((!terrTo.vehicle || !terrFrom.vehicle) && !roadMove) { return hexOpenType.Closed }
       if ((terrTo.vehicle === "amph") && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
+      const countersAt = this.map.countersAt(to)
+      for (const c of countersAt) {
+        if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck) {
+          return hexOpenType.Closed
+        }
+        if (c.hasFeature && c.feature.type === featureType.Mines && c.feature.antiTank) {
+          return hexOpenType.Closed
+        }
+      }
     }
     if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
       if (!terrFrom.borderMove) { return hexOpenType.Closed }

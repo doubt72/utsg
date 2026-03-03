@@ -227,8 +227,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     } else {
       if (canFire(selection)) { actions.push({ type: "fire" }) }
       if (canIntensiveFire(selection)) { actions.push({ type: "intensive_fire" }) }
-      if (canMove(selection)) { actions.push({ type: "move" }) }
-      if (canRush(selection)) { actions.push({ type: "rush" }) }
+      if (canMove(selection, game.scenario.map)) { actions.push({ type: "move" }) }
+      if (canRush(selection, game.scenario.map)) { actions.push({ type: "rush" }) }
       if (canAssaultMove(selection)) { actions.push({ type: "assault_move" }) }
       if (canRout(selection)) { actions.push({ type: "rout" }) }
       actions.push({ type: "unselect" })
@@ -353,16 +353,24 @@ function canMoveAny(unit: Unit): boolean {
   return true
 }
 
-function canMove(unit?: Unit): boolean {
+function contact(unit: Unit, map: Map): boolean {
+  const loc = map.locForId(unit.id)
+  if (loc === undefined) { return false }
+  return map.contactAt(loc)
+}
+
+function canMove(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
+  if (contact(unit, map)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
   return true
 }
 
-function canRush(unit?: Unit): boolean {
+function canRush(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
+  if (contact(unit, map)) { return false }
   if (!unit.isActivated) { return false }
   if (!unit.canCarrySupport) { return false }
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
