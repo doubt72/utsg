@@ -1,10 +1,9 @@
 High Priority Features/Bug Fixes:
-  - Check/test weather effects on ranged fire
-    - Weather effects on infantry fire
   - Change always reaction fire, loss of initiative or not
     - Skip reaction fire when no LOS
     - Exclude Area fire
   - Don't unselect first initial selection when cancelling move/fire/assault
+  - Never use 0 for numeric types [ requires redoing all the scenarios and markers, etc. ]
 
   - Implement fire checks for dead tanks and area fire
   - Implement Help Button linking to game phase

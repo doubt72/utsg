@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest"
 import { baseToHit, chance2D10, chanceD10x10 } from "../../utilities/utilities"
-import { Coordinate, featureType, sponsonType, unitStatus } from "../../utilities/commonTypes"
+import { Coordinate, featureType, sponsonType, unitStatus, weatherType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import Game from "../Game"
 import select from "./select"
@@ -144,9 +144,9 @@ describe("fire tests", () => {
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-2)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for adjacent")
+      expect(mods.why[0]).toBe("- minus 2 for adjacent")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -355,6 +355,109 @@ describe("fire tests", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual(
         [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+      )
+    })
+
+    test("firing with weather", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      map.baseWeather = weatherType.Fog
+      map.currentWeather = weatherType.Fog
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.type).toBe(stateType.Fire)
+      expect(fire.selection[0].id).toBe("firing1")
+
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const mods = untargetedModifiers(
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.fireState.path as GameActionPath[]
+      )
+      expect(mods.mod).toBe(2)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- plus 2 for current weather")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual(
+        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "hit roll (2d10): target 17, rolled 20: hit"
+      )
+    })
+
+    test("firing with night", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      map.night = true
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.type).toBe(stateType.Fire)
+      expect(fire.selection[0].id).toBe("firing1")
+
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const mods = untargetedModifiers(
+        game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
+        game.fireState.path as GameActionPath[]
+      )
+      expect(mods.mod).toBe(1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- plus 1 for night")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual(
+        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+      )
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "hit roll (2d10): target 16, rolled 20: hit"
       )
     })
 
@@ -2186,7 +2289,7 @@ describe("fire tests", () => {
       ])
       expect(target3.isWreck).toBe(false)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 9, rolled 2: miss, Flamethrower destroyed"
+        "hit roll (2d10): target 8, rolled 2: miss, Flamethrower destroyed"
       )
 
       const all = map.allUnits
@@ -2624,6 +2727,107 @@ describe("fire tests", () => {
       expect(game.eliminatedUnits.length).toBe(0)
     })
 
+    test("weather affects ranged fire", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      map.baseWeather = weatherType.Fog
+      map.currentWeather = weatherType.Fog
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTruck)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(5)
+      expect(mult.why.length).toBe(2)
+      expect(mult.why[0]).toBe("- base multiplier 3")
+      expect(mult.why[1]).toBe("- plus 2 for current weather")
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 5, rolled 100: hit, vehicle destroyed"
+      )
+    })
+
+    test("night affects ranged fire", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      map.night = true
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTruck)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
+      expect(mult.mult).toBe(4)
+      expect(mult.why.length).toBe(2)
+      expect(mult.why[0]).toBe("- base multiplier 3")
+      expect(mult.why[1]).toBe("- plus 1 for night")
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 4, rolled 100: hit, vehicle destroyed"
+      )
+    })
+
     test("ranged fire after moving turret", () => {
       const game = createFireGame()
       const map = game.scenario.map
@@ -2721,9 +2925,9 @@ describe("fire tests", () => {
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
+      expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(2)
-      expect(mods.why[0]).toBe("- minus 1 for adjacent")
+      expect(mods.why[0]).toBe("- minus 2 for adjacent")
       expect(mods.why[1]).toBe("- plus 1 for moving the turret")
 
       const original = Math.random
@@ -2735,7 +2939,7 @@ describe("fire tests", () => {
         { unit: target, from: [floc], to: tloc, incendiary: false },
       ])
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 14, rolled 20: hit"
+        "hit roll (2d10): target 13, rolled 20: hit"
       )
 
       const all = map.allUnits
@@ -2973,14 +3177,6 @@ describe("fire tests", () => {
       expect(fp.why.length).toBe(1)
       expect(baseToHit(fp.fp)).toBe(9)
 
-      const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, true, false)
-      expect(mult.mult).toBe(3)
-      expect(mult.why.length).toBe(1)
-      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
-
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
       game.gameState.finish()
@@ -2989,7 +3185,7 @@ describe("fire tests", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 8, rolled 2: miss, firing weapon destroyed"
+        "hit roll (2d10): target 7, rolled 2: miss, firing weapon destroyed"
       )
 
       const all = map.allUnits

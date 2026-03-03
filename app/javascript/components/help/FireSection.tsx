@@ -154,6 +154,7 @@ export default function FireSection() {
             </li>
             <li>Add one if intensive fire.</li>
             <li>Add one if raining, sand or dust, two if snowing or fog.</li>
+            <li>Add one if night.</li>
           </ol>
         </li>
         <li>Determine the distance from the firing unit to the target(s).</li>
@@ -253,7 +254,9 @@ export default function FireSection() {
             <li>Add two if intensive fire.</li>
             <li>Subtract one if all firing units are at a higher elevation than the target.</li>
             <li>Add one if any firing units are at a lower elevation than the target.</li>
-            <li>Subtract one if all units are adjacent to the target.</li>
+            <li>Subtract two if all units are adjacent to the target.</li>
+            <li>Add one if raining, sand or dust, two if snowing or fog.</li>
+            <li>Add one if night.</li>
           </ol>
         </li>
         <li>

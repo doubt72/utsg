@@ -1,4 +1,4 @@
-import { Coordinate, featureType, sponsonType, unitStatus, unitType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, sponsonType, unitStatus, unitType, weatherType } from "../../utilities/commonTypes";
 import { los, losHexPath } from "../../utilities/los";
 import { hexDistance, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
@@ -251,8 +251,8 @@ export function untargetedModifiers(
     why.push("- plus 1 for more than half range")
   }
   if (adj) {
-    mod -= 1
-    why.push("- minus 1 for adjacent")
+    mod -= 2
+    why.push("- minus 2 for adjacent")
   }
   if (elev > 0 ) {
     mod += 1
@@ -277,6 +277,21 @@ export function untargetedModifiers(
   if (source[0].counter.unit.turreted && path.length > 1) {
     mod += 1
     why.push("- plus 1 for moving the turret")
+  }
+  if ([weatherType.Rain, weatherType.Sand, weatherType.Dust].includes(map.currentWeather)) {
+    console.log("bad weather")
+    mod += 1
+    why.push("- plus 1 for current weather")
+  }
+  if ([weatherType.Snow, weatherType.Fog].includes(map.currentWeather)) {
+    console.log("very bad weather")
+    mod += 2
+    why.push("- plus 2 for current weather")
+  }
+  if (map.night) {
+    console.log("night")
+    mod += 1
+    why.push("- plus 1 for night")
   }
   return { mod, why }
 }
@@ -345,7 +360,21 @@ export function rangeMultiplier(
       mult += 1
       why.push("- plus 1 for moving the turret")
   }
-  // Weather/night here
+  if ([weatherType.Rain, weatherType.Sand, weatherType.Dust].includes(map.currentWeather)) {
+    console.log("bad weather")
+    mult += 1
+    why.push("- plus 1 for current weather")
+  }
+  if ([weatherType.Snow, weatherType.Fog].includes(map.currentWeather)) {
+    console.log("very bad weather")
+    mult += 2
+    why.push("- plus 2 for current weather")
+  }
+  if (map.night) {
+    console.log("night")
+    mult += 1
+    why.push("- plus 1 for night")
+  }
   if (mult < 1) { mult = 1 }
   return { mult, why }
 }
