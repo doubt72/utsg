@@ -134,13 +134,16 @@ export default function MapDisplay({
     if (!map.game || map.game.state !== "in_progress" || map.debug || preview) { return }
     if (map.game.phase !== gamePhase.phase || map.game.currentPlayer !== gamePhase.player) {
       setGamePhase({ phase: map.game.phase, player: map.game.currentPlayer })
-      if (map.game.phase !== gamePhaseType.Deployment) { return }
-      setTimeout(() => {
-        if (!map.game ) { return }
-        showReinforcements(
-          reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer
-        )
-      }, 500)
+      if (map.game.phase !== gamePhaseType.Deployment) {
+        return
+      } else {
+        setTimeout(() => {
+          if (!map.game || map.game.phase !== gamePhaseType.Deployment) { return }
+          showReinforcements(
+            reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer
+          )
+        }, 500)
+      }
     }
   }, [map.game?.phase, map.game?.currentPlayer, map.game?.state])
 

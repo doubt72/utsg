@@ -11,7 +11,7 @@ import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../u
 import Unit from "./Unit";
 import Hex from "./Hex";
 import { sortValues } from "./support/organizeStacks";
-import BaseState from "./control/state/BaseState";
+import BaseState, { stateType } from "./control/state/BaseState";
 import FireState from "./control/state/FireState";
 import MoveState from "./control/state/MoveState";
 import AssaultState from "./control/state/AssaultState";
@@ -662,7 +662,20 @@ export default class Game {
   }
 
   cancelAction() {
-    this.scenario.map.clearAllSelections()
+    let select: Unit | undefined = undefined
+    if (this.gameState?.type === stateType.Move) {
+      select = this.moveState.initialSelection[0].counter.unit
+      this.scenario.map.clearAllSelections()
+    } else if (this.gameState?.type === stateType.Assault) {
+      select = this.assaultState.initialSelection[0].counter.unit
+      this.scenario.map.clearAllSelections()
+    } else if (this.gameState?.type === stateType.Fire) {
+      select = this.fireState.initialSelection[0].counter.unit
+      this.scenario.map.clearAllSelections()
+    }
+    if (select) {
+      select.select()
+    }
     this.scenario.map.clearGhosts()
     this.closeOverlay = true
     this.gameState = undefined

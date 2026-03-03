@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Don't unselect first initial selection when cancelling move/fire/assault
-
   - Implement fire checks for dead tanks and area fire
   - Implement Help Button linking to game phase
 

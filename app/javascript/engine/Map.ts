@@ -101,7 +101,7 @@ export default class Map {
     this.currentWeather = data.start_weather || weatherType.Dry
     this.baseWeather = data.base_weather || weatherType.Dry
     const precip = data.precip
-    this.precip = precip ? precip[1] : 2
+    this.precip = precip ? precip[1] : weatherType.Rain
     this.precipChance = precip ? precip[0] : 0
 
     const wind = data.wind
@@ -189,7 +189,7 @@ export default class Map {
     return this.mapHexes[loc.y][loc.x]
   }
 
-  weatherName(w: number): string | undefined {
+  weatherName(w: string): string | undefined {
     for (const index in weatherType) {
       if (weatherType[index] === w) {
         return index.toLowerCase()
