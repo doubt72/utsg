@@ -279,17 +279,14 @@ export function untargetedModifiers(
     why.push("- plus 1 for moving the turret")
   }
   if ([weatherType.Rain, weatherType.Sand, weatherType.Dust].includes(map.currentWeather)) {
-    console.log("bad weather")
     mod += 1
     why.push("- plus 1 for current weather")
   }
   if ([weatherType.Snow, weatherType.Fog].includes(map.currentWeather)) {
-    console.log("very bad weather")
     mod += 2
     why.push("- plus 2 for current weather")
   }
   if (map.night) {
-    console.log("night")
     mod += 1
     why.push("- plus 1 for night")
   }
@@ -361,17 +358,14 @@ export function rangeMultiplier(
       why.push("- plus 1 for moving the turret")
   }
   if ([weatherType.Rain, weatherType.Sand, weatherType.Dust].includes(map.currentWeather)) {
-    console.log("bad weather")
     mult += 1
     why.push("- plus 1 for current weather")
   }
   if ([weatherType.Snow, weatherType.Fog].includes(map.currentWeather)) {
-    console.log("very bad weather")
     mult += 2
     why.push("- plus 2 for current weather")
   }
   if (map.night) {
-    console.log("night")
     mult += 1
     why.push("- plus 1 for night")
   }

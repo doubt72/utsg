@@ -79,7 +79,6 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
       }
     }
   }
-  console.log(rc.length)
   return rc
 }
 

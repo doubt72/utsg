@@ -54,6 +54,7 @@ import WeatherCheckButton from "./buttons/WeatherCheckButton";
 import FireDisplaceEliminateButton from "./buttons/FireDisplaceEliminateButton";
 import FireDisplaceConfirmButton from "./buttons/FireDisplaceConfirmButton";
 import FireDisplaceCancelButton from "./buttons/FireDisplaceCancelButton";
+import FireStartCheckButton from "./buttons/FireStartCheckButton";
 
 interface GameControlsProps {
   game: Game;
@@ -127,6 +128,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <MoraleCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "initiative") {
         return <InitiativeButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "fire_start_check") {
+        return <FireStartCheckButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "sniper") {
         return <SniperButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move") {

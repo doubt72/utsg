@@ -10,6 +10,7 @@ import { stateType } from "./state/BaseState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import CloseCombatState, { closeCombatCasualyNeeded, closeCombatCheck, closeCombatDone } from "./state/CloseCombatState"
 import FireDisplaceState from "./state/FireDisplaceState"
+import FireStartState from "./state/FireStartState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
 import ReactionState, { reactionFireCheck } from "./state/ReactionState"
@@ -20,6 +21,8 @@ import SniperState from "./state/SniperState"
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
   if (breakdownCheck(game)) {
     game.gameState = new BreakdownState(game)
+  } else if (game.fireStartCheckNeeded !== undefined) {
+    game.gameState = new FireStartState(game)
   } else if (game.sniperNeeded.length > 0) {
     game.gameState = new SniperState(game)
   } else if (game.moraleChecksNeeded.length > 0) {
@@ -87,6 +90,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     } else if (game.fireDisplaceState.availableHexes.length < 1) {
       actions.push({ type: "fire_displace_eliminate" })
     }
+  } else if (game.gameState?.type === stateType.FireStart) {
+    actions.unshift({ type: "none", message: "checking to see if attack starts fire" })
+    actions.push({ type: "fire_start_check" })
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
     if (!game.gameState?.actionInProgress) {
