@@ -1,8 +1,8 @@
 High Priority Features/Bug Fixes:
-  - Implement fire checks for dead tanks and area fire
   - Implement Help Button linking to game phase
 
   - Separate sides not hotseat
+    - Refactor available actions
   - Cleanup undo (only active player) / allow across phases
 
   - Run through game / Finish 001 (description / balance)

@@ -4,8 +4,8 @@ import Marker from "../../engine/Marker";
 import { markerType, weatherType } from "../../utilities/commonTypes";
 
 export default function PrecipCheckSection() {
-  const clear = new Marker({ mk: 1, type: markerType.weather, subtype: weatherType.Dry })
-  const rain = new Marker({ mk: 1, type: markerType.weather, subtype: weatherType.Rain, v: 1 })
+  const clear = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Dry })
+  const rain = new Marker({ mk: 1, type: markerType.Weather, subtype: weatherType.Rain, v: 1 })
 
   return (
     <div>
