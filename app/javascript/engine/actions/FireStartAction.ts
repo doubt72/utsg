@@ -16,7 +16,7 @@ export default class FireStartAction extends BaseAction {
     this.validate(data.data.dice_result)
     this.validate(data.data.path)
     this.validate(data.data.fire_start_data)
-    this.hex = (data.data.target as GameActionPath[])[0]
+    this.hex = (data.data.path as GameActionPath[])[0]
     this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
     this.startData = data.data.fire_start_data as GameActionFireStartData
   }
@@ -37,7 +37,7 @@ export default class FireStartAction extends BaseAction {
     if (hex.baseTerrain === terrainType.Sand) { check = 1 }
     if (this.startData.vehicle) { check = 4 }
     if (this.startData.incendiary) { check += 2 }
-    if (this.startData.vehicle_incendiary) { check += 2 }
+    if (this.startData.vehicle && this.startData.vehicle_incendiary) { check += 2 }
     return check
   }
 

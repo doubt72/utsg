@@ -19,6 +19,7 @@ import {
 } from "./testHelpers"
 import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
+import FireStartState from "./state/FireStartState"
 
 describe("fire tests", () => {
   describe("probability checks", () => {
@@ -1242,6 +1243,105 @@ describe("fire tests", () => {
       expect(game.playerTwoScore).toBe(14)
     })
 
+    test("destroyed vehicle may start fire", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTruck)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.type).toBe(stateType.Fire)
+      expect(fire.selection[0].id).toBe("firing1")
+
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(target.isWreck).toBe(true)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "hit roll (2d10): target 15, rolled 20: hit, Studebaker US6 destroyed"
+      )
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+        vehicle_incendiary: false,
+      })
+
+      game.gameState = new FireStartState(game)
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.lastAction?.stringValue).toBe(
+        "checking to see if blaze starts in E1 (2d10): need 4, got 2: blaze starts"
+      )
+      const counters = map.countersAt(new Coordinate(4, 0))
+      expect(counters.length).toBe(2)
+      expect(counters[1].feature.name).toBe("Blaze")
+    })
+
+    test("non-destroyed vehicle won't check to start fire", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      firing.select()
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+
+      const target = new Unit(testRTruck)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.type).toBe(stateType.Fire)
+      expect(fire.selection[0].id).toBe("firing1")
+
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(target.isWreck).toBe(false)
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "hit roll (2d10): target 15, rolled 2: miss"
+      )
+
+      expect(game.fireStartCheckNeeded).toBe(undefined)
+    })
+
     test("can combine unit and carried mg", () => {
       const game = createFireGame()
       const map = game.scenario.map
@@ -1735,6 +1835,119 @@ describe("fire tests", () => {
       )
     })
 
+    test("fire start check after area fire", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMortar)
+      firing2.baseFirepower /= 2
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+
+      const target = new Unit(testRTank)
+      target.id = "target3"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
+        "penetration roll (2d10): target 22, rolled 20: failed"
+      )
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 0), vehicle: false, incendiary: false,
+        vehicle_incendiary: false,
+      })
+
+      game.gameState = new FireStartState(game)
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.lastAction?.stringValue).toBe(
+        "checking to see if blaze starts in E1 (2d10): need 2, got 20: no effect"
+      )
+    })
+
+    test("fire start check after area fire destroys vehicle", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMortar)
+      firing2.baseFirepower /= 2
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+
+      const target = new Unit(testRTruck)
+      target.id = "target3"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.gameState = new FireState(game, false)
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState.finish()
+      Math.random = original
+
+      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
+        "targeting roll (d10x10): target 6, rolled 100: hit, Studebaker US6 destroyed"
+      )
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+        vehicle_incendiary: false,
+      })
+
+      game.gameState = new FireStartState(game)
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.lastAction?.stringValue).toBe(
+        "checking to see if blaze starts in E1 (2d10): need 4, got 2: blaze starts"
+      )
+      const counters = map.countersAt(new Coordinate(4, 0))
+      expect(counters.length).toBe(2)
+      expect(counters[1].feature.name).toBe("Blaze")
+    })
+
     test("offboard artillery", () => {
       const game = createFireGame()
       const map = game.scenario.map
@@ -1802,6 +2015,11 @@ describe("fire tests", () => {
       ])
       expect(target3.isWreck).toBe(true)
       expect(game.playerTwoScore).toBe(15)
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+        vehicle_incendiary: false,
+      })
     })
 
     test("offboard artillery miss", () => {
@@ -1888,6 +2106,13 @@ describe("fire tests", () => {
       expect(all[3].unit.id).toBe("firing1")
       expect(all[4].unit.id).toBe("firing2")
       expect(all[4].unit.jammed).toBe(true)
+
+      expect(firing2.incendiary).toBe(false)
+      expect(firing2.sponson?.type).toBe(undefined)
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(3, 2), vehicle: false, incendiary: false,
+        vehicle_incendiary: false,
+      })
     })
 
     test("offboard artillery hex", () => {
@@ -1962,6 +2187,8 @@ describe("fire tests", () => {
       expect(all[0].hex?.y).toBe(2)
       expect(all[1].unit.id).toBe("firing1")
       expect(all[2].unit.id).toBe("firing2")
+
+      expect(game.fireStartCheckNeeded).toStrictEqual(undefined)
     })
 
     test("mortar firing smoke", () => {
@@ -2225,6 +2452,25 @@ describe("fire tests", () => {
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
         "penetration roll for T-34 M40 (2d10): target 9, rolled 20: succeeded, vehicle destroyed"
       )
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 2), vehicle: true, incendiary: true,
+        vehicle_incendiary: false,
+      })
+
+      game.gameState = new FireStartState(game)
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState.finish()
+      Math.random = original
+
+      expect(game.lastAction?.stringValue).toBe(
+        "checking to see if blaze starts in E3 (2d10): need 6, got 2: blaze starts"
+      )
+      const counters = map.countersAt(new Coordinate(4, 2))
+      expect(counters.length).toBe(4)
+      expect(counters[2].unit.name).toBe("T-34 M40")
+      expect(counters[2].unit.isWreck).toBe(true)
+      expect(counters[3].feature.name).toBe("Blaze")
     })
 
     test("incendiary breaks", () => {
@@ -2302,6 +2548,11 @@ describe("fire tests", () => {
 
       expect(game.eliminatedUnits[0].id).toBe("firing2")
       expect((game.eliminatedUnits[0] as Unit).parent).toBe(undefined)
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 2), vehicle: false, incendiary: true,
+        vehicle_incendiary: false,
+      })
     })
 
     test("targeted incendiary single shot", () => {

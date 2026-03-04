@@ -12,7 +12,7 @@ import {
 } from "../utilities/graphics";
 import Feature from "./Feature";
 import WarningActionError from "./actions/WarningActionError";
-import { countersFromUnits, MapCounterData } from "./support/organizeStacks";
+import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
 import { togglePlayer } from "../utilities/utilities";
 import OverstackState from "./control/state/OverstackState";
@@ -828,6 +828,7 @@ export default class Map {
       if (a.unit.playerNation === b.unit.playerNation) { return 0 }
       return a.unit.playerNation === this.game?.currentPlayerNation ? -1 : 1
     })
+    sortStacks(this)
   }
 
   spreadFire(loc: Coordinate) {

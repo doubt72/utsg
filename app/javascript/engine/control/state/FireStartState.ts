@@ -1,5 +1,5 @@
 import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
-import { rolld10 } from "../../../utilities/utilities";
+import { roll2d10 } from "../../../utilities/utilities";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
@@ -18,7 +18,7 @@ export default class FireStartState extends BaseState {
 
   finish() {
     const loc = this.game.fireStartCheckNeeded?.loc as Coordinate
-    const dice = [{ result: rolld10(), type: "d10" }]
+    const dice = [{ result: roll2d10(), type: "2d10" }]
     const action = new GameAction({
       user: this.game.currentUser, player: this.game.currentPlayer,
       data: {

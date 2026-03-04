@@ -137,6 +137,10 @@ export default class FireAction extends BaseAction {
       return { x: t.x, y: t.y, counter: this.game.findCounterById(t.id) as Counter }
     })
     const firing0 = firing[0].counter
+    let fireStart = false
+    let fireStartVehicle: Unit | undefined = undefined
+    let fireStartIncendiary = false
+    let fireStartVehicleIncendiary = false
     if (this.path.length > 1) {
       firing0.unit.turretFacing = this.path[1].turret ?? 1
     }
@@ -157,10 +161,17 @@ export default class FireAction extends BaseAction {
     if (firing0.unit.crewed && firing0.unit.parent) {
       firing0.unit.parent.status = unitStatus.Activated
     }
+    if (firing0.unit.incendiary || firing0.unit.sponson?.type === sponsonType.Flame) {
+      fireStartIncendiary = true
+    }
     // Also generate final target hexes
     this.fireHex.final = this.fireHex.start
     const tRange = sponson ? firing0.unit.sponson?.type !== sponsonType.Flame : firing0.unit.targetedRange
     const oBoard = firing0.unit.offBoard
+    if (firing0.unit.areaFire || oBoard) {
+      fireStart = true
+    }
+    const fireStartHex = new Coordinate(to.x, to.y)
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
@@ -193,6 +204,8 @@ export default class FireAction extends BaseAction {
           if (loc !== false) {
             dTo = loc
             drift.description += `, drifted to ${coordinateToLabel(loc)}`
+            fireStartHex.x = loc.x
+            fireStartHex.y = loc.y
             this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
             dTargets = this.map.countersAt(loc).filter(c => c.hasUnit).map(u => {
               return { x: loc.x, y: loc.y, counter: u }
@@ -203,6 +216,7 @@ export default class FireAction extends BaseAction {
           } else {
             dTargets = []
             drift.description += ", drifted off map"
+            fireStart = false
           }
         } else {
           if (needDice) { targetRoll.description += "hit" }
@@ -210,10 +224,10 @@ export default class FireAction extends BaseAction {
         if (firing0.unit.areaFire || smoke) {
           if (smoke) {
             if (needDice) { this.diceResults.push({ result: rolld10(), type: "d10" }) }
-            const smoke = this.diceResults[diceIndex++]
-            const smokeValue = smokeRoll(smoke.result)
+            const smokeDice = this.diceResults[diceIndex++]
+            const smokeValue = smokeRoll(smokeDice.result)
             if (needDice) {
-              smoke.description = `smoke roll (d10): rolled ${smoke.result}, smoke level ${smokeValue}`
+              smokeDice.description = `smoke roll (d10): rolled ${smokeDice.result}, smoke level ${smokeValue}`
             }
             this.map.addCounter(dTo, new Feature(
               { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: smokeValue, id: `${this.index}-smoke` }
@@ -252,6 +266,7 @@ export default class FireAction extends BaseAction {
               if (t.counter.unit.canCarrySupport) { continue }
               if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
                 t.counter.unit.status = unitStatus.Wreck
+                fireStartVehicle = t.counter.unit
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
                   this.map.moveUnit(hex, dTo, t.counter.unit.id)
@@ -273,6 +288,7 @@ export default class FireAction extends BaseAction {
                 }
                 if (hitRoll.result > hitCheck) {
                   t.counter.unit.status = unitStatus.Wreck
+                  fireStartVehicle = t.counter.unit
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != dTo.x || hex.y !== dTo.y) {
                     this.map.moveUnit(hex, dTo, t.counter.unit.id)
@@ -292,6 +308,8 @@ export default class FireAction extends BaseAction {
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
           target0.unit.status = unitStatus.Wreck
+          fireStart = true
+          fireStartVehicle = target0.unit
           const hex = target0.hex as Coordinate
           if (hex.x != dTo.x || hex.y !== dTo.y) {
             this.map.moveUnit(hex, dTo, target0.unit.id)
@@ -320,6 +338,8 @@ export default class FireAction extends BaseAction {
             }
             if (hitRoll.result > hitCheck) {
               target0.unit.status = unitStatus.Wreck
+              fireStart = true
+              fireStartVehicle = target0.unit
               const hex = target0.hex as Coordinate
               if (hex.x != dTo.x || hex.y !== dTo.y) {
                 this.map.moveUnit(hex, dTo, target0.unit.id)
@@ -341,6 +361,8 @@ export default class FireAction extends BaseAction {
             } else if (needDice) { hitRoll.description += "failed" }
           } else {
             target0.unit.status = unitStatus.Wreck
+            fireStart = true
+            fireStartVehicle = target0.unit
             const hex = target0.hex as Coordinate
             if (hex.x != dTo.x || hex.y !== dTo.y) {
               this.map.moveUnit(hex, dTo, target0.unit.id)
@@ -435,6 +457,8 @@ export default class FireAction extends BaseAction {
             if (t.x === c.x && t.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
                 t.counter.unit.status = unitStatus.Wreck
+                fireStart = true
+                fireStartVehicle = t.counter.unit
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != t.x || hex.y !== t.y) {
                   this.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
@@ -453,6 +477,8 @@ export default class FireAction extends BaseAction {
                 }
                 if (hitRoll.result > hitCheck) {
                   t.counter.unit.status = unitStatus.Wreck
+                  fireStart = true
+                  fireStartVehicle = t.counter.unit
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != t.x || hex.y !== t.y) {
                     this.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
@@ -529,6 +555,17 @@ export default class FireAction extends BaseAction {
         const unit = this.game.findUnitById(o.id)
         if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc: new Coordinate(o.x, o.y) }) }
       })
+    }
+    if (fireStartVehicle && (fireStartVehicle.incendiary ||
+        fireStartVehicle.sponson?.type === sponsonType.Flame)) {
+      fireStartVehicleIncendiary = true
+    }
+    if (fireStart && !smoke) {
+      this.game.fireStartCheckNeeded = {
+        loc: fireStartHex, vehicle: fireStartVehicle !== undefined,
+        incendiary: fireStartIncendiary,
+        vehicle_incendiary: fireStartVehicleIncendiary,
+      }
     }
     sortStacks(this.map)
     this.game.updateInitiative(this.reaction ? -2 : 2)

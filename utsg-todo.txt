@@ -18,6 +18,7 @@ High Priority Features/Bug Fixes:
     - Through two fence corner intersections
   - Overlay both fire and displacement
 
+  - Refactor firing action (currently an unmaintainable mess)
   - Add changelog page
   - Remove TODO on about page, still working and probably always will be
   - Add Some Developer Notes
