@@ -1,13 +1,11 @@
 High Priority Features/Bug Fixes:
-  - Implement Help Button linking to game phase
-
   - Separate sides not hotseat
     - Refactor available actions
+  - Separate initiative from current player in non-main phases
+      (initiative should only shift during main phase)
   - Cleanup undo (only active player) / allow across phases
 
   - Run through game / Finish 001 (description / balance)
-  - Possibly separate initiative from current player in non-main phases
-    (initiative should only shift during main phase)
 
   - Hotkeys and context buttons ?
   - Show Terrain in counter overlay ?

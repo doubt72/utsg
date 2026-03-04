@@ -27,6 +27,7 @@ import FireExtinguishState from "./control/state/FireExtinguishState";
 import WeatherState from "./control/state/WeatherState";
 import FireDisplaceState from "./control/state/FireDisplaceState";
 import ReactionState from "./control/state/ReactionState";
+import { helpIndexByName } from "../components/help/helpData";
 
 export type GameData = {
   id: number;
@@ -379,6 +380,46 @@ export default class Game {
   }
 
   get currentHelpSection(): string {
+    if (this.gameState?.type === stateType.Fire ||
+        this.gameState?.type === stateType.FireStart ||
+        this.gameState?.type === stateType.MoraleCheck) {
+      return helpIndexByName("Fire").join(".")
+    } else if (this.gameState?.type === stateType.Move) {
+      if (this.moveState.rushing) {
+        return helpIndexByName("Rush Move").join(".")
+      } else {
+        return helpIndexByName("Movement").join(".")
+      }
+    } else if (this.gameState?.type === stateType.Breakdown) {
+      if (this.lastSignificantAction?.type === "assault_move") {
+        return helpIndexByName("Assault Move").join(".")
+      } else {
+        return helpIndexByName("Movement").join(".")
+      }
+    } else if (this.gameState?.type === stateType.Assault) {
+      return helpIndexByName("Assault Move").join(".")
+    } else if (this.gameState?.type === stateType.Rout ||
+               this.gameState?.type === stateType.RoutAll ||
+               this.gameState?.type === stateType.RoutCheck) {
+      return helpIndexByName("Routing").join(".")
+    } else if (this.gameState?.type === stateType.Reaction) {
+      return helpIndexByName("Reaction Fire").join(".")
+    } else if (this.phase === gamePhaseType.Deployment) {
+      return helpIndexByName("Deployment Phase").join(".")
+    } else if (this.phase === gamePhaseType.PrepRally) {
+      return helpIndexByName("Rallying").join(".")
+    } else if (this.phase === gamePhaseType.PrepPrecip) {
+      return helpIndexByName("Precip Check").join(".")
+    } else if (this.phase === gamePhaseType.Main) {
+      return helpIndexByName("Main Phase").join(".")
+    } else if (this.phase === gamePhaseType.CleanupCloseCombat) {
+      return helpIndexByName("Close Combat").join(".")
+    } else if ([
+          gamePhaseType.CleanupOverstack, gamePhaseType.CleanupStatus, gamePhaseType.CleanupSmoke,
+          gamePhaseType.CleanupFire, gamePhaseType.CleanupWeather,
+        ].includes(this.phase)) {
+      return helpIndexByName("Housekeeping").join(".")
+    }
     return ""
   }
 
