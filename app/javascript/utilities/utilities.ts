@@ -133,7 +133,7 @@ export function rolld10x10(): number {
   return rolld10() * rolld10()
 }
 
-export function togglePlayer(p: Player) {
+export function otherPlayer(p: Player) {
   return p === 1 ? 2 : 1
 }
 

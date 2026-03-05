@@ -1,5 +1,5 @@
 import { Coordinate, CounterSelectionTarget, unitStatus } from "../../../utilities/commonTypes";
-import { rolld10, togglePlayer } from "../../../utilities/utilities";
+import { rolld10, otherPlayer } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { closeProgress } from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
@@ -123,7 +123,7 @@ export default class CloseCombatState extends BaseState {
     })
     const p0 = this.player === 1 ? 1 : 2
     const oBase = closeCombatFirepower(this.game, counters[0].hex as Coordinate, p0)
-    const tBase = closeCombatFirepower(this.game, counters[0].hex as Coordinate, togglePlayer(p0))
+    const tBase = closeCombatFirepower(this.game, counters[0].hex as Coordinate, otherPlayer(p0))
     const action = new GameAction({
       user: this.game.currentPlayer === this.player ? this.game.currentUser : this.game.opponentUser,
       player: this.player,

@@ -1,4 +1,4 @@
-import { togglePlayer } from "../../utilities/utilities"
+import { otherPlayer } from "../../utilities/utilities"
 import OverstackState from "../control/state/OverstackState"
 import RallyState from "../control/state/RallyState"
 import Game from "../Game"
@@ -62,13 +62,13 @@ function Deployment(game: Game, backendSync: boolean, data: GameActionData): voi
     if (oldTurn === 0) {
       phaseData.new_phase = gamePhaseType.Deployment
       if (game.currentPlayer === game.scenario.firstDeploy) {
-        phaseData.new_player = togglePlayer(game.currentPlayer)
+        phaseData.new_player = otherPlayer(game.currentPlayer)
       } else {
         phaseData.new_player = game.scenario.firstAction
         phaseData.new_turn = 1
       }
     } else {
-      phaseData.new_player = togglePlayer(game.currentPlayer)
+      phaseData.new_player = otherPlayer(game.currentPlayer)
       phaseData.new_phase = game.currentPlayer === game.scenario.firstAction ?
         gamePhaseType.Deployment : gamePhaseType.PrepRally
     }
@@ -93,10 +93,10 @@ function PrepRally(game: Game, backendSync: boolean, data: GameActionData): void
   }, game), backendSync)
   if (game.currentPlayer === game.scenario.firstAction) {
     // TODO: switch to initiative player
-    phaseData.new_player = togglePlayer(game.currentPlayer)
+    phaseData.new_player = otherPlayer(game.currentPlayer)
     phaseData.new_phase = oldPhase
   } else {
-    phaseData.new_player = togglePlayer(game.currentPlayer)
+    phaseData.new_player = otherPlayer(game.currentPlayer)
     phaseData.new_phase = gamePhaseType.PrepPrecip
   }
   game.executeAction(new GameAction(data, game), backendSync)
@@ -115,10 +115,10 @@ function PrepPrecip(game: Game, backendSync: boolean, data: GameActionData): voi
     }
   }, game), backendSync)
   if (game.currentPlayer === game.scenario.firstAction) {
-    phaseData.new_player = togglePlayer(game.currentPlayer)
+    phaseData.new_player = otherPlayer(game.currentPlayer)
     phaseData.new_phase = oldPhase
   } else {
-    phaseData.new_player = togglePlayer(game.currentPlayer)
+    phaseData.new_player = otherPlayer(game.currentPlayer)
     phaseData.new_phase = gamePhaseType.Main
 
   }
@@ -166,7 +166,7 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
     game.gameState = new OverstackState(game)
     return
   }
-  phaseData.new_player = togglePlayer(game.currentPlayer)
+  phaseData.new_player = otherPlayer(game.currentPlayer)
   if (game.currentPlayer !== game.initiative) {
     phaseData.new_phase = oldPhase
   } else {

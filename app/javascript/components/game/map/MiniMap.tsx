@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { counterRed, roundedRectangle, roundedRectangleHole } from "../../../utilities/graphics";
 import MapDisplay from "./MapDisplay";
@@ -23,7 +23,7 @@ interface MiniMapProps {
     mapSize: Coordinate,
     scale: number
   }) => void;
-  widthCallback: (x: number) => void
+  widthCallback: Dispatch<SetStateAction<number>>
 }
 
 export default function MiniMap(
@@ -43,7 +43,7 @@ export default function MiniMap(
     ]
     if (svgRef.current) {
       const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
-      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 375 / scale + 375
       const layout = mapHelpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY), text, scale)
       if (!layout.texts) { return }
       setHelpDisplay(HelpOverlay(layout))
@@ -117,7 +117,10 @@ export default function MiniMap(
   }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastAction])
 
   useEffect(() => {
-    widthCallback(width + xx + 16)
+    widthCallback(v => {
+      const newV = width + xx + 16
+      return v > newV ? v : newV
+    })
   }, [width])
 
   return (

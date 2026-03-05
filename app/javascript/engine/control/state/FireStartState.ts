@@ -16,6 +16,10 @@ export default class FireStartState extends BaseState {
     return loc.x === x && loc.y === y ? hexOpenType.Open : hexOpenType.Closed
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const loc = this.game.fireStartCheckNeeded?.loc as Coordinate
     const dice = [{ result: roll2d10(), type: "2d10" }]

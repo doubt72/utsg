@@ -15,6 +15,10 @@ export default class SmokeCheckState extends BaseState {
     return loc.x === x && loc.y === y ? hexOpenType.Open : hexOpenType.Closed
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const feature = this.game.smokeCheckNeeded[0].feature
     const loc = this.game.smokeCheckNeeded[0].loc

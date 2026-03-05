@@ -10,6 +10,10 @@ export default class PrecipCheckState extends BaseState {
     game.refreshCallback(game)
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const dice = [{ result: rolld10(), type: "d10" }]
     const action = new GameAction({

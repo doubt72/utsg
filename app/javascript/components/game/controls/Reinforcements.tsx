@@ -68,8 +68,9 @@ export default function Reinforcements(
       "click to open",
     ]
     if (svgRef.current) {
+      console.log(scale)
       const x = e.clientX / scale - svgRef.current.getBoundingClientRect().x + 10
-      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 200 / scale + 200
+      const y = e.clientY / scale - svgRef.current.getBoundingClientRect().y + 10 - 375 / scale + 375
       const layout = mapHelpLayout(new Coordinate(x, y), new Coordinate(maxX, maxY), text, scale)
       if (!layout.texts) { return }
       setHelpDisplay(HelpOverlay(layout))

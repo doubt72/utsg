@@ -68,7 +68,7 @@ export default function MainPhaseSection() {
           </div>
           <div className="custom-button normal-button" onClick={
             () => {
-              game.togglePlayer()
+              game.toggleInitiative()
               setPlayer(game.currentPlayer)
             }}>
             <span>flip</span>

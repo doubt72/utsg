@@ -81,7 +81,9 @@ export default function GameControls({ game, callback }: GameControlsProps) {
     actions.push({ type: "help" })
     setControls(actions.map((a, i) => {
       if (a.type === "sync") {
-        return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing</div>
+        return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing (you may need to reload this page)</div>
+      } else if (a.type === "wait") {
+        return <div className="mt05em mb05em mr05em ml05em" key={i}>waiting for opponent</div>
       } else if (a.type === "none") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
       } else if (a.type === "undo") {

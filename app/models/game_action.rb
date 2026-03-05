@@ -50,11 +50,13 @@ class GameAction < ApplicationRecord
   private
 
   def undoable?(user)
-    return false if user.id != user_id || undone
+    return false if undone
+    return false unless [game.player_one.id, game.player_two.id].include?(user.id)
     return false unless !data["dice_result"] || data["dice_result"].empty?
+    # Not going to whitelist actions for now; dice results should be enough for the moment
     # action "action" isn't actually used except for testing
-    return false unless %w[action deploy info phase move assault_move rout_self]
-                        .include?(data["action"])
+    # return false unless %w[action deploy info phase move assault_move rout_self]
+    #                     .include?(data["action"])
     if GameAction.where(
       "game_id = ? AND sequence > ? AND undone = false", game_id, sequence
     ).any?

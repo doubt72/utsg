@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { togglePlayer } from "../../utilities/utilities";
+import { otherPlayer } from "../../utilities/utilities";
 import { maxCCCasualties } from "../control/state/CloseCombatState";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -34,7 +34,7 @@ export default class CloseCombatRollAction extends BaseAction {
     const ip = this.base.o_base + this.diceResult[0].result
     const op = this.base.t_base + this.diceResult[1].result
     const iName = this.game.nationNameForPlayer(this.player)
-    const oName = this.game.nationNameForPlayer(togglePlayer(this.player))
+    const oName = this.game.nationNameForPlayer(otherPlayer(this.player))
     let rc = `${iName} `
     rc += this.origin.map(o => {
       const unit = this.game.findUnitById(o.id) as Unit

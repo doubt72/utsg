@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { togglePlayer } from "../../utilities/utilities";
+import { otherPlayer } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -22,7 +22,7 @@ export default class SniperAction extends BaseAction {
   get type(): string { return "sniper" }
 
   get stringValue(): string {
-    const nation = this.game.nationNameForPlayer(togglePlayer(this.player))
+    const nation = this.game.nationNameForPlayer(otherPlayer(this.player))
     const roll = this.diceResult.result
     const check = this.player === 1 ? this.game.axisSniper?.sniperRoll ?? 0 :
       this.game.alliedSniper?.sniperRoll ?? 0

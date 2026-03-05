@@ -36,6 +36,10 @@ export default class SniperState extends BaseState {
     return rc
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const action = new GameAction({
       user: this.game.currentUser,

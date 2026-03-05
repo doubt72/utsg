@@ -97,6 +97,10 @@ export default class FireDisplaceState extends BaseState {
     this.path.pop()
   }
 
+  get actionInProgress(): boolean {
+    return this.path.length > 0
+  }
+
   finish() {
     if (this.availableHexes.length > 0 && !this.remove && this.path.length < 2) { return }
     const unit = this.selection[0].counter.unit

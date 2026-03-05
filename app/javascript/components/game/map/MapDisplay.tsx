@@ -101,6 +101,8 @@ export default function MapDisplay({
     error: string, timer: number
   }>({ error: "", timer: 0 })
 
+  const user = localStorage.getItem("username")
+
   const checkMin = (m?: Map): boolean => {
     if (!m) { return false }
     const turn = m?.game?.turn ?? 0
@@ -138,7 +140,10 @@ export default function MapDisplay({
         return
       } else {
         setTimeout(() => {
-          if (!map.game || map.game.phase !== gamePhaseType.Deployment) { return }
+          if (!map.game || map.game.phase !== gamePhaseType.Deployment ||
+            map.game.currentUser !== user) {
+            return
+          }
           showReinforcements(
             reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer
           )
@@ -306,7 +311,7 @@ export default function MapDisplay({
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         const state = map.game?.gameState
-        if (state) {
+        if (state && map.game?.currentUser === user) {
           const shaded = state.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
                                             selectCallback={hexSelection} shaded={shaded} />)
@@ -573,6 +578,7 @@ export default function MapDisplay({
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
+    if (map.game?.currentUser !== user) { return }
     if (selection.target.type === "map") {
       select(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {

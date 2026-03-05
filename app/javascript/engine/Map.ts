@@ -14,7 +14,7 @@ import Feature from "./Feature";
 import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
-import { togglePlayer } from "../utilities/utilities";
+import { otherPlayer } from "../utilities/utilities";
 import OverstackState from "./control/state/OverstackState";
 import { stateType } from "./control/state/BaseState";
 import { GameActionUnit } from "./GameAction";
@@ -177,7 +177,7 @@ export default class Map {
   toggleVP(loc: Coordinate) {
     for (const v of this.victoryHexes) {
       if (v.x === loc.x && v.y === loc.y) {
-        v.player = togglePlayer(v.player)
+        v.player = otherPlayer(v.player)
       }
     }
   }

@@ -7,7 +7,7 @@ import BaseAction from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
-import { alliedCodeToName, axisCodeToName, counterKey, togglePlayer } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, counterKey, otherPlayer } from "../utilities/utilities";
 import Unit from "./Unit";
 import Hex from "./Hex";
 import { sortValues } from "./support/organizeStacks";
@@ -76,7 +76,8 @@ export default class Game {
 
   refreshCallback: (g: Game, error?: [string, string]) => void;
 
-  iCurrentPlayer: Player;
+  internalCurrentPlayer: Player;
+  internalInitiativePlayer: Player;
   winner?: Player;
   iTurn: number = 0;
   phase: GamePhase;
@@ -130,7 +131,8 @@ export default class Game {
     }
 
     // Initial state, actions will modify
-    this.iCurrentPlayer = this.scenario.firstDeploy || 1
+    this.internalCurrentPlayer = this.scenario.firstDeploy || 1
+    this.internalInitiativePlayer = this.scenario.firstAction || 1
     this.iTurn = 0
     this.phase = gamePhaseType.Deployment
 
@@ -203,16 +205,20 @@ export default class Game {
   }
 
   get currentPlayer(): Player {
-    return this.iCurrentPlayer
+    return this.internalCurrentPlayer
   }
 
   get opponentPlayer(): Player {
-    return togglePlayer(this.iCurrentPlayer)
+    return otherPlayer(this.internalCurrentPlayer)
+  }
+
+  get currentInitiativePlayer(): Player {
+    return this.internalInitiativePlayer
   }
 
   setCurrentPlayer(player: Player) {
-    if (player !== this.iCurrentPlayer) {
-      this.iCurrentPlayer = player
+    if (player !== this.internalCurrentPlayer) {
+      this.internalCurrentPlayer = player
       if (this.suppressNetwork) { return }
       if (this.updateTimer) { clearTimeout(this.updateTimer) }
       // Avoid doing a bunch of updates at the same time when (say) cycling
@@ -230,8 +236,17 @@ export default class Game {
     }
   }
 
+  setCurrentInitiativePlayer(player: Player) {
+    if (player !== this.internalInitiativePlayer) { this.internalInitiativePlayer = player }
+  }
+
   togglePlayer() {
-    this.setCurrentPlayer(togglePlayer(this.currentPlayer))
+    this.setCurrentPlayer(otherPlayer(this.currentPlayer))
+  }
+
+  toggleInitiative() {
+    this.setCurrentInitiativePlayer(otherPlayer(this.currentInitiativePlayer))
+    this.setCurrentPlayer(otherPlayer(this.currentPlayer))
   }
 
   get turn(): number {

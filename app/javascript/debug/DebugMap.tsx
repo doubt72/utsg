@@ -36,8 +36,8 @@ export default function DebugMap() {
   const [debugLos, setDebugLos] = useState(false)
   const [baseTerrain, setBaseTerrain] = useState(baseTerrainType.Grass)
   const [night, setNight] = useState(false)
-  const [currentWeather, setCurrentWeather] = useState(0)
-  const [baseWeather, setBaseWeather] = useState(0)
+  const [currentWeather, setCurrentWeather] = useState(weatherType.Dry)
+  const [baseWeather, setBaseWeather] = useState(weatherType.Dry)
   const [precipType, setPrecipType] = useState(weatherType.Rain)
   const [precipChance, setPrecipChance] = useState(0)
   const [wind, setWind] = useState(windType.Calm)
@@ -160,11 +160,12 @@ export default function DebugMap() {
   }
 
   const nextWeather = (w: WeatherType, precip = false): WeatherType => {
-    let type = w + 1
-    if (precip) {
-      if (type > 3) { type = 2 }
-    } else {
-      if (type > 5) { type = 0 }
+    const next = {
+      dry: "fog", fog: "rain", rain: "snow", snow: "sand", sand: "dust", dust: "dry",
+    }
+    let type = next[w]
+    if (precip && type === "sand") {
+      type = "rain"
     }
     return type as WeatherType
   }
@@ -317,7 +318,7 @@ export default function DebugMap() {
         </div>
         <div className="custom-button normal-button" onClick={() => {
           if (map && map.game) {
-            map.game.togglePlayer()
+            map.game.toggleInitiative()
             setInitiativePlayer(map.game.currentPlayer === 1 ? "axis" : "allies")
           }
         }}>

@@ -1,9 +1,7 @@
 import { Coordinate, featureType, sponsonType, unitStatus } from "../../utilities/commonTypes";
 import {
   baseToHit, coordinateToLabel, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
-  rolld6,
-  smokeRoll,
-  togglePlayer
+  rolld6, smokeRoll, otherPlayer
 } from "../../utilities/utilities";
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
@@ -93,7 +91,7 @@ export default class FireAction extends BaseAction {
           const unit = this.game.findUnitById(t.id) as Unit
           return unit.name
         })
-        part += `${ this.game.nationNameForPlayer(togglePlayer(this.player)) } ${names.join(", ")}`
+        part += `${ this.game.nationNameForPlayer(otherPlayer(this.player)) } ${names.join(", ")}`
         part += ` at ${coordinateToLabel(c)}`
       }
     } else {

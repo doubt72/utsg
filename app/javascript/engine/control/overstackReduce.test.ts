@@ -32,9 +32,9 @@ describe("overstack reduce", () => {
     unit3.id = "test3"
     map.addCounter(new Coordinate(0,0), unit3)
 
-    game.iCurrentPlayer = 1
+    game.internalCurrentPlayer = 1
     expect(map.anyOverstackedUnits()).toBe(false)
-    game.iCurrentPlayer = 2
+    game.internalCurrentPlayer = 2
     expect(map.anyOverstackedUnits()).toBe(true)
   })
 
@@ -54,9 +54,9 @@ describe("overstack reduce", () => {
     unit3.status = unitStatus.Wreck
     map.addCounter(new Coordinate(0,0), unit3)
 
-    game.iCurrentPlayer = 1
+    game.internalCurrentPlayer = 1
     expect(map.anyOverstackedUnits()).toBe(false)
-    game.iCurrentPlayer = 2
+    game.internalCurrentPlayer = 2
     expect(map.anyOverstackedUnits()).toBe(true)
   })
 
@@ -75,9 +75,9 @@ describe("overstack reduce", () => {
     unit3.id = "test3"
     map.addCounter(new Coordinate(0,0), unit3)
 
-    game.iCurrentPlayer = 1
+    game.internalCurrentPlayer = 1
     expect(map.anyOverstackedUnits()).toBe(false)
-    game.iCurrentPlayer = 2
+    game.internalCurrentPlayer = 2
     expect(map.anyOverstackedUnits()).toBe(false)
   })
 
@@ -85,7 +85,7 @@ describe("overstack reduce", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
     game.gameState = new OverstackState(game)
-    game.iCurrentPlayer = 2
+    game.internalCurrentPlayer = 2
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
@@ -127,7 +127,7 @@ describe("overstack reduce", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
     game.gameState = new OverstackState(game)
-    game.iCurrentPlayer = 2
+    game.internalCurrentPlayer = 2
     const map = game.scenario.map
     const unit1 = new Unit(testGTruck)
     unit1.id = "truck"

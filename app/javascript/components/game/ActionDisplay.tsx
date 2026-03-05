@@ -48,11 +48,12 @@ export default function ActionDisplay({
   }, [lastMessage])
 
   useEffect(() => {
+    console.log(`class: ${collapse} ${chatInput}`)
     setDivClass(
       collapse ? "action-output action-output-collapse" :
         ("action-output action-output-logged-" + (chatInput ? "in" : "out"))
     )
-  }, [collapse])
+  }, [collapse, chatInput])
 
   const actionList = (
     <div className={divClass}>

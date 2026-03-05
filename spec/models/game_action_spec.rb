@@ -50,13 +50,26 @@ RSpec.describe GameAction do
   it "can undo action" do
     action = GameAction.create!({ game:, sequence: 1, user:, data: { action: "action" } })
 
+    game.player_one = user
+    game.player_two = user
+
     expect(action.undone).to be == false
     action.undo(user)
     expect(action.reload.undone).to be == true
   end
 
-  it "can't undo certain actions" do
-    action = GameAction.create!({ game:, sequence: 1, user:, data: { action: "initiative" } })
+  it "can't undo actions with dice" do
+    action = GameAction.create!(
+      {
+        game:, sequence: 1, user:, data: {
+          action: "initiative",
+          dice_result: [{ result: "11", type: "2d10" }],
+        },
+      }
+    )
+
+    game.player_one = user
+    game.player_two = user
 
     expect(action.undone).to be == false
     action.undo(user)
@@ -66,6 +79,9 @@ RSpec.describe GameAction do
   it "can't undo previous actions" do
     action = GameAction.create!({ game:, sequence: 1, user:, data: { action: "action" } })
     GameAction.create!({ game:, sequence: 2, user:, data: { action: "action" } })
+
+    game.player_one = user
+    game.player_two = user
 
     expect(action.undone).to be == false
     action.undo(user)

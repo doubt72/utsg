@@ -18,7 +18,7 @@ export default class InitiativePassAction extends BaseAction {
   }
 
   mutateGame(): void {
-    this.game.togglePlayer()
+    this.game.toggleInitiative()
     this.game.updateInitiative(1)
   }
 }

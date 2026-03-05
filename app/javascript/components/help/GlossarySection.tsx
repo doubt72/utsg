@@ -1,4 +1,5 @@
 import React from "react";
+import { stackLimit } from "../../utilities/utilities";
 
 type GlossaryData = { name: string; desc: JSX.Element };
 
@@ -411,10 +412,11 @@ const terms: GlossaryData[] = [
     name: "Stacking Limit",
     desc: (
       <>
-        the total size of <strong>units</strong> in a hex cannot exceed the stacking limit. Can be
+        the total size of <strong>units</strong> in a hex cannot exceed the stacking
+        limit ({ stackLimit }). Can be
         temporarily exceeded when engaging in <strong>close combat</strong> — limit applies only to
         each player&apos;s units, not the combined total, and players can overstack before combat,
-        but each side&apos;s units must be reduced to the stacking limit after combat.
+        but the surviving side&apos;s units must be reduced to the stacking limit after combat.
       </>
     ),
   },

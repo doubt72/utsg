@@ -44,6 +44,10 @@ export default class OverstackState extends BaseState {
     return total > stackLimit
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const counter = this.map.currentSelection[0]
     const hex = counter.hex as Coordinate

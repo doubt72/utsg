@@ -1,6 +1,6 @@
 import { Coordinate, CounterSelectionTarget, hexOpenType } from "../../../utilities/commonTypes";
 import { los } from "../../../utilities/los";
-import { hexDistance, togglePlayer } from "../../../utilities/utilities";
+import { hexDistance, otherPlayer } from "../../../utilities/utilities";
 import FireAction from "../../actions/FireAction";
 import MoveAction from "../../actions/MoveAction";
 import Counter from "../../Counter";
@@ -124,7 +124,7 @@ export default class ReactionState extends BaseState {
   finish() {
     const action = new GameAction({
       user: this.game.currentUser,
-      player: togglePlayer(this.game.currentPlayer),
+      player: otherPlayer(this.game.currentPlayer),
       data: { action: "reaction_pass", old_initiative: this.game.initiative },
     }, this.game)
     this.execute(action)

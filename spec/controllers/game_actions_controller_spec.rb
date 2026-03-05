@@ -5,6 +5,7 @@ require "rails_helper"
 RSpec.describe Api::V1::GameActionsController do
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
+  let(:user3) { create(:user) }
   let(:game) do
     create(
       :game, owner: user1, player_one: user1, player_two: user2,
@@ -100,7 +101,7 @@ RSpec.describe Api::V1::GameActionsController do
     end
 
     it "can't undo other user's action" do
-      login(user1)
+      login(user3)
 
       expect do
         post :undo, params: { id: action2.id }

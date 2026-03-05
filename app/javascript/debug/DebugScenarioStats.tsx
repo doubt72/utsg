@@ -309,7 +309,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
     <div className="flex flex-wrap">
       <div className="p1em">
         Dev Status:
-        {displayStat(countStatus, { a: "Alpha", b: "Beta", p: "Prototype", r: "Ready" })}
+        {displayStat(countStatus, { a: "Alpha", b: "Beta", p: "Prototype", "": "Ready" })}
         Allied Faction:
         {displayStat(
           countAllies,

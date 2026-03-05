@@ -1,9 +1,6 @@
 High Priority Features/Bug Fixes:
-  - Separate sides not hotseat
-    - Refactor available actions
-  - Separate initiative from current player in non-main phases
-      (initiative should only shift during main phase)
-  - Cleanup undo (only active player) / allow across phases
+  - Undo bug across phases (not even sure what's going on)
+  - Precipitation check failure
 
   - Run through game / Finish 001 (description / balance)
 

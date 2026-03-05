@@ -18,6 +18,10 @@ export default class FireExtinguishState extends BaseState {
     return loc.x === x && loc.y === y ? hexOpenType.Open : hexOpenType.Closed
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const out = this.game.fireOutCheckNeeded.length > 0
     const feature = out ? this.game.fireOutCheckNeeded[0].feature :

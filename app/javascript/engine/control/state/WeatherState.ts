@@ -10,6 +10,10 @@ export default class WeatherState extends BaseState {
     game.refreshCallback(game)
   }
 
+  get actionInProgress(): boolean {
+    return false
+  }
+
   finish() {
     const roll = rolld10()
     if (this.game.checkWindDirection) {

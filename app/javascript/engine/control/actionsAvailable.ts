@@ -19,6 +19,30 @@ import RoutState from "./state/RoutState"
 import SniperState from "./state/SniperState"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
+  if (game.state === "needs_player") {
+    if (game.ownerName === activePlayer || !activePlayer) {
+      return [{ type: "none", message: "waiting for player to join" }]
+    } else {
+      return [{ type: "join" }]
+    }
+  } else if (game.state === "ready") {
+    if (game.ownerName === activePlayer) {
+      return [{ type: "start" }]
+    } else if (activePlayer &&
+      (game.playerOneName === activePlayer || game.playerTwoName === activePlayer)) {
+      return [{ type: "leave" }]
+    } else {
+      return [{ type: "none", message: "waiting for game to start" }]
+    }
+  }
+  if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) { return [] }
+  if (activePlayer !== game.currentUser) { return [{ type: "wait" }] }
+  if (game.lastAction?.id === undefined) { return [{ type: "sync" }] }
+  const actions: GameAction[] = []
+  addUndo(game, activePlayer, actions)
+  if (game.state === "complete") {
+    return [{ type: "none", message: "game over" }]
+  }
   if (breakdownCheck(game)) {
     game.gameState = new BreakdownState(game)
   } else if (game.fireStartCheckNeeded !== undefined) {
@@ -42,36 +66,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   } else if (closeCombatCheck(game)) {
     game.gameState = new CloseCombatState(game)
   }
-  if (closeCombatDone(game)) {
-    game.gameState?.finish()
-  }
-  if (game.lastAction?.id === undefined) {
-    return [{ type: "sync" }]
-  }
-  const actions: GameAction[] = []
-  if (game.state === "complete") {
-    return [{ type: "none", message: "game over" }]
-  } else if (game.state === "needs_player") {
-    if (game.ownerName === activePlayer || !activePlayer) {
-      return [{ type: "none", message: "waiting for player to join" }]
-    } else {
-      return [{ type: "join" }]
-    }
-  } else if (game.state === "ready") {
-    if (game.ownerName === activePlayer) {
-      return [{ type: "start" }]
-    } else if (activePlayer &&
-      (game.playerOneName === activePlayer || game.playerTwoName === activePlayer)) {
-      return [{ type: "leave" }]
-    } else {
-      return [{ type: "none", message: "waiting for game to start" }]
-    }
-  } else if (checkPlayer(game, activePlayer, actions)) {
-    return actions
-  } else if (game.phase === gamePhaseType.Deployment) {
-    if (!game.gameState?.actionInProgress) {
-      addUndo(game, activePlayer, actions)
-    }
+  if (closeCombatDone(game)) { game.gameState?.finish() }
+  if (game.phase === gamePhaseType.Deployment) {
     actions.unshift({ type: "deploy" })
   } else if (game.phase === gamePhaseType.PrepRally) {
     actions.unshift({ type: "none", message: "select unit to rally" })
@@ -95,9 +91,6 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     actions.push({ type: "fire_start_check" })
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
-    if (!game.gameState?.actionInProgress) {
-      addUndo(game, activePlayer, actions)
-    }
     if (game.gameState?.type === stateType.Fire) {
       const action = game.fireState
       if (action) {
@@ -297,22 +290,9 @@ export function currSelection(game: Game, move: boolean): Unit | undefined {
   return counters[0].unit
 }
 
-function checkPlayer(game: Game, activePlayer: string, actions: GameAction[]): boolean {
-  if ((activePlayer === game.playerOneName && game.lastAction?.player === 1) ||
-      (activePlayer === game.playerTwoName && game.lastAction?.player === 2)) {
-    return false
-  } else if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) {
-    actions.unshift({ type: "none", message: "waiting for player to move" })
-    return true
-  }
-  actions.unshift({ type: "none", message: "waiting for opponent to move" })
-  return true
-}
-
 function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {
   if (!game.lastAction?.undoPossible) { return }
-  if ((activePlayer === game.playerOneName && game.lastAction.player === 1) ||
-      (activePlayer === game.playerTwoName && game.lastAction.player === 2)) {
+  if (!game.gameState?.actionInProgress) {
     actions.push({ type: "undo" })
   }
 }
