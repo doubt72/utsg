@@ -147,7 +147,7 @@ export default function MapDisplay({
           showReinforcements(
             reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer
           )
-        }, 500)
+        }, 200)
       }
     }
   }, [map.game?.phase, map.game?.currentPlayer, map.game?.state])

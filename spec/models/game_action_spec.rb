@@ -58,6 +58,19 @@ RSpec.describe GameAction do
     expect(action.reload.undone).to be == true
   end
 
+  it "undoes set when action earlier" do
+    action1 = GameAction.create!({ game:, sequence: 1, user:, data: { action: "action" } })
+    action2 = GameAction.create!({ game:, sequence: 2, user:, data: { action: "action" } })
+
+    game.player_one = user
+    game.player_two = user
+
+    expect(action1.undone).to be == false
+    action1.undo(user)
+    expect(action1.reload.undone).to be == true
+    expect(action2.reload.undone).to be == true
+  end
+
   it "can't undo actions with dice" do
     action = GameAction.create!(
       {
@@ -76,15 +89,30 @@ RSpec.describe GameAction do
     expect(action.reload.undone).to be == false
   end
 
-  it "can't undo previous actions" do
-    action = GameAction.create!({ game:, sequence: 1, user:, data: { action: "action" } })
-    GameAction.create!({ game:, sequence: 2, user:, data: { action: "action" } })
+  it "can't undo future dice" do
+    action1 = GameAction.create!(
+      {
+        game:, sequence: 1, user:, data: {
+          action: "initiative",
+          dice_result: [{ result: "11", type: "2d10" }],
+        },
+      }
+    )
+    action2 = GameAction.create!(
+      {
+        game:, sequence: 2, user:, data: {
+          action: "initiative",
+          dice_result: [{ result: "11", type: "2d10" }],
+        },
+      }
+    )
 
     game.player_one = user
     game.player_two = user
 
-    expect(action.undone).to be == false
-    action.undo(user)
-    expect(action.reload.undone).to be == false
+    expect(action1.undone).to be == false
+    action1.undo(user)
+    expect(action1.reload.undone).to be == false
+    expect(action2.reload.undone).to be == false
   end
 end

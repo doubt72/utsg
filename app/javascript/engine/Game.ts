@@ -683,17 +683,17 @@ export default class Game {
     const action = this.lastAction
     action.undo()
     action.undone = true
+    this.lastActionIndex--
 
     while(this.lastActionIndex >= 0 && this.lastAction.undone) {
       this.lastActionIndex--
     }
-    if (!this.suppressNetwork) {
-      postAPI(`/api/v1/game_actions/${action.id}/undo`, {}, {
-          ok: () => {}
-      })
-    }
     if (action.lastUndoCascade) {
       this.executeUndo()
+    } else {
+      if (!this.suppressNetwork) {
+        postAPI(`/api/v1/game_actions/${action.id}/undo`, {}, { ok: () => {} })
+      }
     }
     this.gameState = undefined
     this.refreshCallback(this)

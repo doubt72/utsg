@@ -10,6 +10,7 @@ class GameAction < ApplicationRecord
   validates :player, presence: true, numericality: { in: 1..2 }
 
   after_create :update_game_last_action
+  after_update :broadcast_if_undone
   after_create :broadcast
 
   def self.create_action(params)
@@ -37,9 +38,10 @@ class GameAction < ApplicationRecord
   def undo(user)
     return nil unless undoable?(user)
 
-    update!(undone: true)
-
-    broadcast
+    records = GameAction.where("game_id = ? AND sequence >= ?", game_id, sequence)
+    records.each do |a|
+      a.update!(undone: true)
+    end
     true
   end
 
@@ -52,16 +54,16 @@ class GameAction < ApplicationRecord
   def undoable?(user)
     return false if undone
     return false unless [game.player_one.id, game.player_two.id].include?(user.id)
-    return false unless !data["dice_result"] || data["dice_result"].empty?
-    # Not going to whitelist actions for now; dice results should be enough for the moment
+
+    # (not going to whitelist actions for now; dice results should be enough for the moment)
     # action "action" isn't actually used except for testing
     # return false unless %w[action deploy info phase move assault_move rout_self]
     #                     .include?(data["action"])
-    if GameAction.where(
-      "game_id = ? AND sequence > ? AND undone = false", game_id, sequence
-    ).any?
-      return false
+
+    records = GameAction.where("game_id = ? AND sequence >= ?", game_id, sequence).filter do |a|
+      a.data["dice_result"]&.present?
     end
+    return false if records.any?
 
     true
   end
@@ -72,5 +74,9 @@ class GameAction < ApplicationRecord
 
   def broadcast
     ActionCable.server.broadcast("actions-#{game_id || 0}", { body: })
+  end
+
+  def broadcast_if_undone
+    broadcast if undone
   end
 end
