@@ -104,24 +104,17 @@ function PrepRally(game: Game, backendSync: boolean, data: GameActionData): void
 
 function PrepPrecip(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  const oldPhase = game.phase
   if (game.scenario.map.anyPrecip()) {
     return
   }
   game.executeAction(new GameAction({
     player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no precipitation in game.scenario, skipping check",
+      action: "info", message: "no precipitation in scenario, skipping check",
       old_initiative: game.initiative,
     }
   }, game), backendSync)
-  if (game.currentPlayer === game.scenario.firstAction) {
-    phaseData.new_player = otherPlayer(game.currentPlayer)
-    phaseData.new_phase = oldPhase
-  } else {
-    phaseData.new_player = otherPlayer(game.currentPlayer)
-    phaseData.new_phase = gamePhaseType.Main
-
-  }
+  phaseData.new_player = game.currentInitiativePlayer
+  phaseData.new_phase = gamePhaseType.Main
   game.executeAction(new GameAction(data, game), backendSync)
 }
 

@@ -616,6 +616,7 @@ export default class Map {
   }
 
   anyPrecip(): boolean {
+    if (this.game?.lastAction?.type === "precipitation_check") { return false }
     return this.precipChance > 0
   }
 

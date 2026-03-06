@@ -245,16 +245,10 @@ export default function GameDisplay() {
   }
 
   useEffect(() => {
-    if (!game.k || actions) { return }
-    setActions(<ActionDisplay game={game.k} callback={actionNotification}
-                          collapse={collapseLayout} chatInput={showInput()} />)
-  }, [game.k, game.k?.playerOneName, game.k?.playerTwoName])
-
-  useEffect(() => {
     if (!game.k) { return }
     setActions(<ActionDisplay game={game.k} callback={actionNotification}
                           collapse={collapseLayout} chatInput={showInput()} />)
-  }, [collapseLayout])
+  }, [game.k, game.k?.playerOneName, game.k?.playerTwoName, collapseLayout])
 
   useEffect(() => {
     if (!game.k) { return }

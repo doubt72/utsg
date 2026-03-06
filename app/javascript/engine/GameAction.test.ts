@@ -297,14 +297,14 @@ describe("action integration test", () => {
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    index += 13
+    index += 11
     expect(game.actions.length).toBe(index)
     expect(game.currentPlayer).toBe(1)
-    expect(game.actions[index - 11].stringValue).toBe("Soviet deployment done, begin German deployment")
-    expect(game.actions[index - 10].stringValue).toBe("no units to deploy, skipping phase")
-    expect(game.actions[index - 7].stringValue).toBe("Soviet rally done, begin German rally")
-    expect(game.actions[index - 6].stringValue).toBe("no rallyable broken units or jammed weapons, skipping phase")
-    expect(game.actions[index - 5].stringValue).toBe("rally done, checking precipitation")
+    expect(game.actions[index - 9].stringValue).toBe("Soviet deployment done, begin German deployment")
+    expect(game.actions[index - 8].stringValue).toBe("no units to deploy, skipping phase")
+    expect(game.actions[index - 5].stringValue).toBe("Soviet rally done, begin German rally")
+    expect(game.actions[index - 4].stringValue).toBe("no rallyable broken units or jammed weapons, skipping phase")
+    expect(game.actions[index - 3].stringValue).toBe("rally done, checking precipitation")
     expect(game.lastAction?.stringValue).toBe("done checking precipitation, begin main phase")
   })
 });

@@ -74,9 +74,9 @@ describe("rally test", () => {
     Math.random = original
 
     expect(unit.status).toBe(unitStatus.Normal)
-    const index = game.actions.length - 7
-    expect(game.actions[index].type).toBe("rally")
-    expect(game.actions[index].stringValue).toBe(
+    const action = game.actions[0]
+    expect(action.type).toBe("rally")
+    expect(action.stringValue).toBe(
       "rally check at A1: needed 11, got 20, passed: Rifle rallies"
     )
     expect(map.anyBrokenUnits(2)).toBe(false)
@@ -139,9 +139,9 @@ describe("rally test", () => {
     Math.random = original
 
     expect(unit1.status).toBe(unitStatus.Normal)
-    const index = game.actions.length - 7
-    expect(game.actions[index].type).toBe("rally")
-    expect(game.actions[index].stringValue).toBe(
+    const action = game.actions[0]
+    expect(action.type).toBe("rally")
+    expect(action.stringValue).toBe(
       "attempt to fix weapon at A1: needed 15, got 20, passed: MG 08/15 repaired"
     )
     expect(map.anyBrokenUnits(2)).toBe(false)
@@ -285,9 +285,9 @@ describe("rally test", () => {
     const state = game.gameState as RallyState
     state.pass()
 
-    const index = game.actions.length - 7
-    expect(game.actions[index].type).toBe("rally_pass")
-    expect(game.actions[index].stringValue).toBe(
+    const action = game.actions[0]
+    expect(action.type).toBe("rally_pass")
+    expect(action.stringValue).toBe(
       "German passed additional rally checks"
     )
     expect(game.lastAction?.type).toBe("phase")

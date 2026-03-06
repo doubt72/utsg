@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Undo bug across phases (not even sure what's going on)
-  - Precipitation check failure
-
   - Run through game / Finish 001 (description / balance)
 
   - Hotkeys and context buttons ?

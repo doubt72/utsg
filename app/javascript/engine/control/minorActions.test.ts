@@ -20,7 +20,7 @@ describe("precipitation", () => {
     checkPhase(game, false)
     expect(game.phase).toBe(gamePhaseType.Main)
     expect(game.actions[game.actions.length - 2].stringValue).toBe(
-      "no precipitation in game.scenario, skipping check"
+      "no precipitation in scenario, skipping check"
     )
   })
 

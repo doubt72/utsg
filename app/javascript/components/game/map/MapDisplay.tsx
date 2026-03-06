@@ -84,6 +84,7 @@ export default function MapDisplay({
   const [turn, setTurn] = useState<JSX.Element | undefined>()
   const [sniper, setSniper] = useState<JSX.Element | undefined>()
   const [reinforcements, setReinforcements] = useState<JSX.Element | undefined>()
+  const [reinforecmentTimout, setReinforcementTimeout] = useState<NodeJS.Timeout | undefined>()
   const [minimap, setMinimap] = useState<JSX.Element | undefined>()
 
   const [xOffset, setXOffset] = useState<number>(0)
@@ -136,18 +137,25 @@ export default function MapDisplay({
     if (!map.game || map.game.state !== "in_progress" || map.debug || preview) { return }
     if (map.game.phase !== gamePhase.phase || map.game.currentPlayer !== gamePhase.player) {
       setGamePhase({ phase: map.game.phase, player: map.game.currentPlayer })
-      if (map.game.phase !== gamePhaseType.Deployment) {
+      if (map.game.phase !== gamePhaseType.Deployment || map.game.currentUser !== user) {
+        if (reinforecmentTimout) {
+          clearTimeout(reinforecmentTimout)
+          setReinforcementTimeout(undefined)
+        }
+        console.log(`${map.game?.phase !== gamePhaseType.Deployment} ${map.game?.currentUser !== user}`)
         return
       } else {
-        setTimeout(() => {
+        const to = setTimeout(() => {
           if (!map.game || map.game.phase !== gamePhaseType.Deployment ||
             map.game.currentUser !== user) {
+            console.log(`${map.game?.phase !== gamePhaseType.Deployment} ${map.game?.currentUser !== user}`)
             return
           }
           showReinforcements(
             reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer
           )
-        }, 200)
+        }, 1000)
+        setReinforcementTimeout(to)
       }
     }
   }, [map.game?.phase, map.game?.currentPlayer, map.game?.state])

@@ -69,10 +69,6 @@ RSpec.describe Api::V1::GameActionsController do
       login(user1)
 
       expect do
-        post :create, params: { game_action: { game_id: game.id, data: '{ "2d6": 7 }', player: 2 } }
-      end.not_to change { GameAction.count }
-
-      expect do
         post :create, params: { game_action: { game_id: 0, data: '{ "2d6": 7 }', player: 1 } }
       end.not_to change { GameAction.count }
 

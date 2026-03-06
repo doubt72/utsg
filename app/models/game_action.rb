@@ -17,11 +17,7 @@ class GameAction < ApplicationRecord
     game = Game.find_by(id: params[:game_id])
     user_id = params[:user_id]
     return nil unless game&.in_progress?
-
-    if (params[:player].to_i == 1 && game.player_one.id != user_id) ||
-       (params[:player].to_i == 2 && game.player_two.id != user_id)
-      return nil
-    end
+    return nil if game.player_one.id != user_id.to_i && game.player_two.id != user_id.to_i
 
     params[:data] = JSON.parse(params[:data])
 
