@@ -44,27 +44,26 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     return [{ type: "none", message: "game over" }]
   }
   if (breakdownCheck(game)) {
-    game.gameState = new BreakdownState(game)
+    game.setGameState(new BreakdownState(game))
   } else if (game.fireStartCheckNeeded !== undefined) {
-    game.gameState = new FireStartState(game)
+    game.setGameState(new FireStartState(game))
   } else if (game.sniperNeeded.length > 0) {
-    game.gameState = new SniperState(game)
+    game.setGameState(new SniperState(game))
   } else if (game.moraleChecksNeeded.length > 0) {
-    game.gameState = new MoraleCheckState(game)
+    game.setGameState(new MoraleCheckState(game))
   } else if (game.routNeeded.length > 0) {
     game.routNeeded[0].unit.select()
-    game.gameState = new RoutState(game, false)
+    game.setGameState(new RoutState(game, false))
   } else if (game.routCheckNeeded.length > 0) {
-    game.gameState = new RoutCheckState(game)
+    game.setGameState(new RoutCheckState(game))
   } else if (game.fireDisplaceNeeded.length > 0) {
-    game.gameState = new FireDisplaceState(game)
+    game.setGameState(new FireDisplaceState(game))
   } else if (initiativeCheck(game)) {
-    game.gameState = new InitiativeState(game)
+    game.setGameState(new InitiativeState(game))
   } else if (reactionFireCheck(game)) {
-    game.gameState = new ReactionState(game)
-    game.reactionState.checkAvailable()
+    game.setGameState(new ReactionState(game))
   } else if (closeCombatCheck(game)) {
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
   }
   if (closeCombatDone(game)) { game.gameState?.finish() }
   if (game.phase === gamePhaseType.Deployment) {

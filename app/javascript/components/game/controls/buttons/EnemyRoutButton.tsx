@@ -15,7 +15,7 @@ export default function EnemyRoutButton({ game, callback }: EnemyRoutButtonProps
     if (game.gameState?.type === stateType.RoutAll) {
       game.gameState?.finish()
     } else {
-      game.gameState = new RoutAllState(game)
+      game.setGameState(new RoutAllState(game))
     }
     callback()
   }

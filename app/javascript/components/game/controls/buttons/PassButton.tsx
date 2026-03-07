@@ -15,7 +15,7 @@ export default function PassButton({ game, callback }: PassButtonProps) {
     if (game.gameState?.type === stateType.Pass) {
       game.gameState.finish()
     } else {
-      game.gameState = new PassState(game)
+      game.setGameState(new PassState(game))
     }
     callback()
   }

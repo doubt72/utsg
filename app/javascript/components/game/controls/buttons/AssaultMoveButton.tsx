@@ -11,7 +11,7 @@ interface AssaultMoveButtonProps {
 export default function AssaultMoveButton({ game, callback }: AssaultMoveButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState = new AssaultState(game)
+    game.setGameState(new AssaultState(game))
     callback()
   }
 

@@ -64,13 +64,13 @@ describe("rally test", () => {
 
     expect(map.anyBrokenUnits(2)).toBe(true)
 
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
 
     unit.select()
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.gameState.finish()
+    game.gameState?.finish()
     Math.random = original
 
     expect(unit.status).toBe(unitStatus.Normal)
@@ -95,13 +95,13 @@ describe("rally test", () => {
 
     expect(map.anyBrokenUnits(2)).toBe(true)
 
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
 
     unit.select()
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
-    game.gameState.finish()
+    game.gameState?.finish()
     Math.random = original
 
     expect(unit.status).toBe(unitStatus.Broken)
@@ -129,13 +129,13 @@ describe("rally test", () => {
 
     expect(map.anyBrokenUnits(2)).toBe(true)
 
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
 
     unit2.select()
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.gameState.finish()
+    game.gameState?.finish()
     Math.random = original
 
     expect(unit1.status).toBe(unitStatus.Normal)
@@ -163,13 +163,13 @@ describe("rally test", () => {
 
     expect(map.anyBrokenUnits(2)).toBe(true)
 
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
 
     unit2.select()
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
-    game.gameState.finish()
+    game.gameState?.finish()
     Math.random = original
 
     expect(map.countersAt(new Coordinate(0,0)).length).toBe(1)
@@ -201,13 +201,13 @@ describe("rally test", () => {
 
     expect(map.anyBrokenUnits(2)).toBe(true)
 
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
 
     unit1.select()
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
-    game.gameState.finish()
+    game.gameState?.finish()
     Math.random = original
 
     expect(unit1.status).toBe(unitStatus.Normal)
@@ -241,13 +241,13 @@ describe("rally test", () => {
 
     expect(map.anyBrokenUnits(2)).toBe(true)
 
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
 
     unit1.select()
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
-    game.gameState.finish()
+    game.gameState?.finish()
     Math.random = original
 
     expect(unit1.status).toBe(unitStatus.Broken)
@@ -260,8 +260,8 @@ describe("rally test", () => {
     expect(map.anyBrokenUnits(2)).toBe(true)
 
     expect(unit1.selected).toBe(false)
-    game.gameState = new RallyState(game)
-    game.gameState.select({
+    game.setGameState(new RallyState(game))
+    game.gameState?.select({
       target: { type: "map", xy: new Coordinate(0,0) },
       counter: new Counter(new Coordinate(0,0), unit1)
     }, () => {})
@@ -281,7 +281,7 @@ describe("rally test", () => {
 
     expect(map.anyBrokenUnits(2)).toBe(true)
 
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
     const state = game.gameState as RallyState
     state.pass()
 

@@ -275,7 +275,7 @@ describe("rout tests", () => {
       game.routNeeded.push({ unit, loc })
       organizeStacks(map)
 
-      game.gameState = new RoutState(game, true)
+      game.setGameState(new RoutState(game, true))
       expect(game.routState.routPathTree).toBe(false)
       game.routState.finish()
       expect(game.initiative).toBe(-1)
@@ -295,7 +295,7 @@ describe("rout tests", () => {
       map.addCounter(loc, unit)
       organizeStacks(map)
 
-      game.gameState = new RoutState(game, true)
+      game.setGameState(new RoutState(game, true))
       const tree = game.routState.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
@@ -329,7 +329,7 @@ describe("rout tests", () => {
       map.addCounter(loc, unit)
       organizeStacks(map)
 
-      game.gameState = new RoutState(game, true)
+      game.setGameState(new RoutState(game, true))
       const tree = game.routState.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
@@ -366,7 +366,7 @@ describe("rout tests", () => {
       map.addCounter(loc, unit2)
       organizeStacks(map)
 
-      game.gameState = new RoutState(game, true)
+      game.setGameState(new RoutState(game, true))
       const tree = game.routState.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
@@ -413,7 +413,7 @@ describe("rout tests", () => {
       map.addCounter(loc, unit2)
       organizeStacks(map)
 
-      game.gameState = new RoutState(game, true)
+      game.setGameState(new RoutState(game, true))
       const tree = game.routState.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
@@ -458,23 +458,23 @@ describe("rout tests", () => {
       organizeStacks(map)
 
       expect(game.initiative).toBe(0)
-      game.gameState = new RoutAllState(game)
+      game.setGameState(new RoutAllState(game))
       expect(game.routCheckNeeded.length).toBe(0)
-      game.gameState.finish()
+      game.gameState?.finish()
       expect(game.routCheckNeeded.length).toBe(1)
       expect(game.initiative).toBe(-3)
 
-      game.gameState = new RoutCheckState(game)
-      expect(game.gameState.selection[0]?.id).toBe(unit.id)
+      game.setGameState(new RoutCheckState(game))
+      expect(game.gameState?.selection[0]?.id).toBe(unit.id)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
       expect(game.routNeeded[0].unit.name).toBe("Rifle")
 
       unit.select()
-      game.gameState = new RoutState(game, false)
+      game.setGameState(new RoutState(game, false))
       const tree = game.routState.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(0, 2)])
 
@@ -508,22 +508,22 @@ describe("rout tests", () => {
       map.addCounter(loc, unit)
       organizeStacks(map)
 
-      game.gameState = new RoutAllState(game)
+      game.setGameState(new RoutAllState(game))
       expect(game.routCheckNeeded.length).toBe(0)
-      game.gameState.finish()
+      game.gameState?.finish()
       expect(game.routCheckNeeded.length).toBe(1)
 
-      game.gameState = new RoutCheckState(game)
-      expect(game.gameState.selection[0]?.id).toBe(unit.id)
+      game.setGameState(new RoutCheckState(game))
+      expect(game.gameState?.selection[0]?.id).toBe(unit.id)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
       expect(game.routNeeded[0].unit.name).toBe("Rifle")
 
       unit.select()
-      game.gameState = new RoutState(game, false)
+      game.setGameState(new RoutState(game, false))
       expect(game.routState.routPathTree).toBe(false)
 
       game.routState.finishXY()

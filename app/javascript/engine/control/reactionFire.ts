@@ -1,5 +1,5 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes"
-import BaseAction from "../actions/BaseAction"
+import BaseAction, { significantActions } from "../actions/BaseAction"
 import Game from "../Game"
 import { gameActionAddActionType, GameActionPath } from "../GameAction"
 import Unit from "../Unit"
@@ -75,11 +75,10 @@ export function placeReactionFireGhosts(game: Game) {
 
 function reactionFireAction(game: Game): BaseAction {
   // assumes Game->reactionFireCheck check is true and has been checked
-  let last = game.actions[0]
-  for (const a of game.actions.filter(a => !a.undone)) {
-    if (["move", "rush", "fire", "intensive_fire"].includes(a.type)) {
-      last = a
-    }
+  for (let i = game.actions.length - 1; i >= 0; i--) {
+    const a = game.actions[i]
+    if (a.undone) { continue }
+    if (significantActions.includes(a.type)) { return a }
   }
-  return last
+  return game.actions[0] // Something went horribly wrong
 }

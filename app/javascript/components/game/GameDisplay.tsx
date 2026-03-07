@@ -37,6 +37,8 @@ export default function GameDisplay() {
   const [hideCounters, setHideCounters] = useState(false)
   const [showTerrain, setShowTerrain] = useState(false)
   const [showLos, setShowLos] = useState(false)
+  const [checkCancelHideLOS, setCheckCancelHideLOS] = useState<number>(0)
+  const [checkCancelTerrain, setCheckCancelTerrain] = useState<number>(0)
 
   const [mapScaleMinusButton, setMapScaleMinusButton] = useState<JSX.Element | undefined>()
   const [mapScaleResetButton, setMapScaleResetButton] = useState<JSX.Element | undefined>()
@@ -92,7 +94,8 @@ export default function GameDisplay() {
                   guiCollapse={collapseLayout} forceUpdate={update}
                   hexCallback={hexSelection} counterCallback={unitSelection}
                   directionCallback={directionSelection} resetCallback={resetDisplay}
-                  clearActionCallback={clearAction} />
+                  clearActionCallback={clearAction}
+                  checkCancelHideLOS={checkCancelHideLOS} checkCancelTerrain={checkCancelTerrain} />
     )
   }, [
     map, update, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
@@ -510,21 +513,21 @@ export default function GameDisplay() {
         <OverlayTrigger placement="bottom" overlay={overlayTooltip}
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
-             onClick={() => setShowLos(sl => !sl)}>
+             onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
           { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={countersTooltip}
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
-             onClick={() => setHideCounters(sc => !sc)}>
+             onClick={() => { setHideCounters(sc => !sc); setCheckCancelHideLOS(s => s+1) }}>
         { hideCounters ? <Square /> : <SquareFill /> } <span>counters</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={terrainTooltip}
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
-             onClick={() => setShowTerrain(sc => !sc)}>
+             onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
         { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain</span>
         </div>
         </OverlayTrigger>

@@ -32,7 +32,7 @@ describe("precipitation", () => {
     expect(map.anyPrecip()).toBe(true)
     expect(map.currentWeather).toBe(map.baseWeather)
 
-    game.gameState = new PrecipCheckState(game)
+    game.setGameState(new PrecipCheckState(game))
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -54,7 +54,7 @@ describe("precipitation", () => {
     expect(map.anyPrecip()).toBe(true)
     expect(map.currentWeather).toBe(map.precip)
 
-    game.gameState = new PrecipCheckState(game)
+    game.setGameState(new PrecipCheckState(game))
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -75,7 +75,7 @@ describe("precipitation", () => {
     expect(map.anyPrecip()).toBe(true)
     expect(map.currentWeather).toBe(map.baseWeather)
 
-    game.gameState = new PrecipCheckState(game)
+    game.setGameState(new PrecipCheckState(game))
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)

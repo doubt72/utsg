@@ -11,7 +11,7 @@ interface ReactionFireButtonProps {
 export default function ReactionFireButton({ game, callback }: ReactionFireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState = new FireState(game, true)
+    game.setGameState(new FireState(game, true))
     callback()
   }
 

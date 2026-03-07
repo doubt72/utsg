@@ -11,7 +11,7 @@ interface RushButtonProps {
 export default function RushButton({ game, callback }: RushButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState = new MoveState(game)
+    game.setGameState(new MoveState(game))
     callback()
   }
 

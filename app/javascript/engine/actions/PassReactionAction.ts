@@ -18,6 +18,6 @@ export default class ReactionPassAction extends BaseAction {
   }
 
   mutateGame(): void {
-    this.game.gameState = undefined
+    this.game.clearGameState()
   }
 }

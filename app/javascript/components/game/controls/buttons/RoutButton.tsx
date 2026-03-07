@@ -11,7 +11,7 @@ interface RoutButtonProps {
 export default function RoutButton({ game, callback }: RoutButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState = new RoutState(game, true)
+    game.setGameState(new RoutState(game, true))
     callback()
   }
 

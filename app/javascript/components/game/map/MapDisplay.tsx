@@ -24,7 +24,6 @@ import { normalDir } from "../../../utilities/utilities";
 import MoveTrackOverlay from "./MoveTrackOverlay";
 import select from "../../../engine/control/select";
 import Unit from "../../../engine/Unit";
-import { GameActionPath } from "../../../engine/GameAction";
 import FireTrackOverlay from "./FireTrackOverlay";
 import FireHindranceOverlay from "./FireHindranceOverlay";
 import MapTargetHexSelection from "./MapTargetHexSelection";
@@ -33,6 +32,8 @@ import RoutTrackOverlay from "./RoutTrackOverlay";
 import { stateType } from "../../../engine/control/state/BaseState";
 import DeployState from "../../../engine/control/state/DeployState";
 import { gamePhaseType } from "../../../engine/support/gamePhase";
+import { fireActions, moveActions } from "../../../engine/actions/BaseAction";
+import { GameActionPath } from "../../../engine/GameAction";
 
 interface MapDisplayProps {
   map: Map;
@@ -51,13 +52,15 @@ interface MapDisplayProps {
   directionCallback?: (d: Direction) => void;
   resetCallback?: () => void;
   clearActionCallback?: () => void;
+  checkCancelHideLOS: number;
+  checkCancelTerrain: number;
 }
 
 export default function MapDisplay({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
   hideCounters = false, showTerrain = false, preview, guiCollapse = false, forceUpdate,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
-  clearActionCallback = () => {}
+  clearActionCallback = () => {}, checkCancelHideLOS, checkCancelTerrain,
 }: MapDisplayProps) {
   const [mouseDown, setMouseDown] = useState<boolean>(false)
   const [mapUpdate, setMapUpdate] = useState(0)
@@ -142,18 +145,13 @@ export default function MapDisplay({
           clearTimeout(reinforecmentTimout)
           setReinforcementTimeout(undefined)
         }
-        console.log(`${map.game?.phase !== gamePhaseType.Deployment} ${map.game?.currentUser !== user}`)
         return
       } else {
         const to = setTimeout(() => {
-          if (!map.game || map.game.phase !== gamePhaseType.Deployment ||
-            map.game.currentUser !== user) {
-            console.log(`${map.game?.phase !== gamePhaseType.Deployment} ${map.game?.currentUser !== user}`)
+          if (!map.game || map.game.phase !== gamePhaseType.Deployment || map.game.currentUser !== user) {
             return
           }
-          showReinforcements(
-            reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer
-          )
+          showReinforcements(reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer)
         }, 1000)
         setReinforcementTimeout(to)
       }
@@ -285,6 +283,7 @@ export default function MapDisplay({
   }, [map, mapScale, width, height, scale, xOffset, yOffset, map.game?.lastAction])
 
   useEffect(() => {
+    if (!checkCancelHideLOS) { return }
     if (map.debug) { return }
     if (hideCounters || showLos) {
       if (map.game?.gameState) {
@@ -293,14 +292,15 @@ export default function MapDisplay({
       }
       setReinforcementsOverlay(undefined)
     }
-  }, [hideCounters, showLos])
+  }, [checkCancelHideLOS])
 
   useEffect(() => {
+    if (!checkCancelTerrain) { return }
     if (!map.game) { return }
     map.game.cancelAction()
     clearActionCallback()
     setReinforcementsOverlay(undefined)
-  }, [showTerrain])
+  }, [checkCancelTerrain])
 
   useEffect(() => {
     const hexLoader: JSX.Element[] = []
@@ -408,9 +408,7 @@ export default function MapDisplay({
                               scale={scale ?? 1} mapScale={mapScale ?? 1}
                               closeCallback={() => {
                                 setReinforcementsOverlay(undefined)
-                                if (map.game) {
-                                  map.game.gameState = undefined
-                                }
+                                if (map.game) { map.game.clearGameState() }
                               }}
                               ovCallback={setOverlay} forceUpdate={mapUpdate} />
         )
@@ -485,18 +483,15 @@ export default function MapDisplay({
   }, [showLos])
 
   useEffect(() => {
-    const lastSigAction = map.game?.lastSignificantAction
+    const action = map.game?.lastSignificantAction
     if (map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault ||
-      map.game?.gameState?.type === stateType.FireDisplace ||
-        (lastSigAction &&
-         ["move", "rush", "assault_move", "rout_move", "rout_self"].includes(lastSigAction.data.action))) {
+      map.game?.gameState?.type === stateType.FireDisplace || moveActions.includes(action?.type ?? "")) {
       setMoveTrack(<MoveTrackOverlay map={map} />)
     } else {
       // TODO: if last sig action was fire, check for displace
       setMoveTrack(undefined)
     }
-    if (map.game?.gameState?.type === stateType.Fire ||
-        (lastSigAction && ["fire"].includes(lastSigAction.data.action))) {
+    if (map.game?.gameState?.type === stateType.Fire || fireActions.includes(action?.type ?? "")) {
       setFireTrack(<FireTrackOverlay map={map} />)
       if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.targetHexes.length > 0) {
         setFireHindrance(<FireHindranceOverlay map={map} />)
@@ -595,7 +590,7 @@ export default function MapDisplay({
         map.game.deployState.needsDirection = false
       }
       const player = selection.target.player
-      map.game.gameState = new DeployState(map.game, selection.target.turn, selection.target.index)
+      map.game.setGameState(new DeployState(map.game, selection.target.turn, selection.target.index))
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
       setReinforcementsOverlay(
@@ -603,9 +598,7 @@ export default function MapDisplay({
                             scale={scale ?? 1} mapScale={mapScale ?? 1}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
-                              if (map.game) {
-                                map.game.gameState = undefined
-                              }
+                              if (map.game) { map.game.clearGameState() }
                             }}
                             ovCallback={setOverlay} forceUpdate={mapUpdate} />
       )

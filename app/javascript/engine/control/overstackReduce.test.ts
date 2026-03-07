@@ -11,7 +11,7 @@ describe("overstack reduce", () => {
   test("skips if nothing overstacked", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
-    game.gameState = new OverstackState(game)
+    game.setGameState(new OverstackState(game))
     const map = game.scenario.map
 
     expect(map.anyOverstackedUnits()).toBe(false)
@@ -20,7 +20,7 @@ describe("overstack reduce", () => {
   test("doesn't skip if units overstacked", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
-    game.gameState = new OverstackState(game)
+    game.setGameState(new OverstackState(game))
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
@@ -41,7 +41,7 @@ describe("overstack reduce", () => {
   test("wreck counts towards stacking", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
-    game.gameState = new OverstackState(game)
+    game.setGameState(new OverstackState(game))
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
@@ -63,7 +63,7 @@ describe("overstack reduce", () => {
   test("close combat stacks not overstacked", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
-    game.gameState = new OverstackState(game)
+    game.setGameState(new OverstackState(game))
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
@@ -84,7 +84,7 @@ describe("overstack reduce", () => {
   test("reduction removes unit", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
-    game.gameState = new OverstackState(game)
+    game.setGameState(new OverstackState(game))
     game.internalCurrentPlayer = 2
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
@@ -126,7 +126,7 @@ describe("overstack reduce", () => {
   test("undo replaces unit with parents/children correctly", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack
-    game.gameState = new OverstackState(game)
+    game.setGameState(new OverstackState(game))
     game.internalCurrentPlayer = 2
     const map = game.scenario.map
     const unit1 = new Unit(testGTruck)

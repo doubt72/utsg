@@ -34,7 +34,7 @@ describe("close combat tests", () => {
     }, game), false)
 
     expect(closeCombatCheck(game)).toBe(true)
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
@@ -99,7 +99,7 @@ describe("close combat tests", () => {
     expect(two.isBroken).toBe(true)
     expect(closeCombatDone(game)).toBe(true)
 
-    game.gameState.finish()
+    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
     expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
@@ -140,7 +140,7 @@ describe("close combat tests", () => {
     }, game), false)
 
     expect(closeCombatCheck(game)).toBe(true)
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
@@ -212,7 +212,7 @@ describe("close combat tests", () => {
     expect(two.isBroken).toBe(true)
     expect(closeCombatDone(game)).toBe(true)
 
-    game.gameState.finish()
+    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
     expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
@@ -263,7 +263,7 @@ describe("close combat tests", () => {
     }, game), false)
 
     expect(closeCombatCheck(game)).toBe(true)
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
@@ -364,7 +364,7 @@ describe("close combat tests", () => {
     }, game), false)
 
     expect(closeCombatCheck(game)).toBe(true)
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
@@ -431,7 +431,7 @@ describe("close combat tests", () => {
     expect(closeCombatCasualyNeeded(game)).toBe(false)
     expect(closeCombatDone(game)).toBe(true)
 
-    game.gameState.finish()
+    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
     expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
@@ -472,7 +472,7 @@ describe("close combat tests", () => {
     }, game), false)
 
     expect(closeCombatCheck(game)).toBe(true)
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
@@ -567,7 +567,7 @@ describe("close combat tests", () => {
     expect(closeCombatDone(game)).toBe(true)
     expect(closeCombatCasualyNeeded(game)).toBe(false)
 
-    game.gameState.finish()
+    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
     expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
@@ -612,7 +612,7 @@ describe("close combat tests", () => {
     expect(one3.parent?.name).toBe("Opel Blitz")
 
     expect(closeCombatCheck(game)).toBe(true)
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
@@ -667,7 +667,7 @@ describe("close combat tests", () => {
     expect(one3.isBroken).toBe(true)
     expect(closeCombatDone(game)).toBe(true)
 
-    game.gameState.finish()
+    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
     expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
@@ -698,13 +698,13 @@ describe("close combat tests", () => {
     }, game), false)
 
     expect(closeCombatCheck(game)).toBe(false)
-    game.gameState = new CloseCombatState(game)
+    game.setGameState(new CloseCombatState(game))
 
     expect(closeCombatCheck(game)).toBe(false)
     expect(closeCombatCasualyNeeded(game)).toBe(false)
     expect(closeCombatDone(game)).toBe(true)
     const index = game.actions.length
-    game.gameState.finish()
+    game.gameState?.finish()
     expect(game.actions[index].stringValue).toBe("skipping: no combat to resolve")
   })
 })

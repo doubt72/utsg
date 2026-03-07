@@ -5,6 +5,15 @@ import { GameActionData, GameActionDetails } from "../GameAction"
 import Map from "../Map";
 import IllegalActionError from "./IllegalActionError";
 
+export const significantActions = [
+  "move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_move",
+  "reaction_fire", "intensive_reaction_fire",
+]
+
+export const moveActions = [ "move", "rush", "assault_move", "rout_move", "rout_self" ]
+
+export const fireActions = [ "fire", "intensive_fire" ]
+
 export default class BaseAction {
   id?: number;
   sequence?: number;

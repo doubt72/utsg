@@ -11,7 +11,7 @@ interface MoveButtonProps {
 export default function MoveButton({ game, callback }: MoveButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState = new MoveState(game)
+    game.setGameState(new MoveState(game))
     callback()
   }
 

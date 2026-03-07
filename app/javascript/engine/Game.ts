@@ -3,7 +3,7 @@ import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction from "./GameAction";
 import Feature from "./Feature";
-import BaseAction from "./actions/BaseAction";
+import BaseAction, { significantActions } from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
@@ -88,7 +88,7 @@ export default class Game {
   axisSniper?: Feature;
 
   suppressNetwork: boolean = false;
-  gameState?: BaseState;
+  currentState?: BaseState;
 
   closeReinforcementPanel: boolean = false;
 
@@ -301,6 +301,18 @@ export default class Game {
     return player === 1 ? this.alliedName : this.axisName
   }
 
+  get gameState(): BaseState | undefined {
+    return this.currentState
+  }
+
+  setGameState(state: BaseState): void {
+    this.currentState = state
+  }
+
+  clearGameState(): void {
+    this.currentState = undefined
+  }
+
   get deployState(): DeployState {
     return this.gameState as DeployState
   }
@@ -454,10 +466,7 @@ export default class Game {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
-      if ([
-        "move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_move",
-        "reaction_fire", "intensive_reaction_fire",
-      ].includes(a.data.action)) {
+      if (significantActions.includes(a.data.action)) {
         this.scenario.map.setLastSelection(a)
         return a
       }
@@ -499,7 +508,7 @@ export default class Game {
         }
       }, this), backendSync)
     } else {
-      this.gameState = new SmokeCheckState(this)
+      this.setGameState(new SmokeCheckState(this))
     }
   }
 
@@ -528,7 +537,7 @@ export default class Game {
         }
       }, this), backendSync)
     } else {
-      this.gameState = new FireExtinguishState(this)
+      this.setGameState(new FireExtinguishState(this))
     }
   }
 
@@ -536,7 +545,7 @@ export default class Game {
     if (this.scenario.map.windVariable) {
       this.checkWindDirection = true
       this.checkWindSpeed = true
-      this.gameState = new WeatherState(this)
+      this.setGameState(new WeatherState(this))
     } else {
       this.executeAction(new GameAction({
         player: this.currentPlayer, user: this.currentUser, data: {
@@ -695,7 +704,7 @@ export default class Game {
         postAPI(`/api/v1/game_actions/${action.id}/undo`, {}, { ok: () => {} })
       }
     }
-    this.gameState = undefined
+    this.clearGameState()
     this.refreshCallback(this)
   }
 
@@ -739,7 +748,7 @@ export default class Game {
     }
     this.scenario.map.clearGhosts()
     this.closeOverlay = true
-    this.gameState = undefined
+    this.clearGameState()
   }
 
   updateInitiative(amount: number) {

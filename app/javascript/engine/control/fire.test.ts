@@ -69,7 +69,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.type).toBe(stateType.Fire)
@@ -97,7 +97,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -129,7 +129,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 2)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -151,7 +151,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -174,7 +174,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 4)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -200,7 +200,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -223,7 +223,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(2, 4)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -250,7 +250,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -273,7 +273,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(0, 2)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -301,7 +301,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -324,7 +324,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(2, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -351,7 +351,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -375,7 +375,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.type).toBe(stateType.Fire)
@@ -400,7 +400,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -426,7 +426,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.type).toBe(stateType.Fire)
@@ -451,7 +451,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -487,7 +487,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(2, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -513,7 +513,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -539,7 +539,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, pill)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[1],
@@ -575,7 +575,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -601,7 +601,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -634,7 +634,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -687,7 +687,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -722,7 +722,7 @@ describe("fire tests", () => {
 
       expect(firing4.parent).toBe(firing3)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -769,7 +769,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -810,7 +810,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -851,7 +851,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -893,7 +893,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -935,7 +935,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -978,7 +978,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1022,7 +1022,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1066,7 +1066,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1108,7 +1108,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1148,7 +1148,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -1174,7 +1174,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.type).toBe(stateType.Fire)
@@ -1203,7 +1203,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.type).toBe(stateType.Fire)
@@ -1233,7 +1233,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(target.isWreck).toBe(true)
@@ -1257,7 +1257,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.type).toBe(stateType.Fire)
@@ -1274,7 +1274,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(target.isWreck).toBe(true)
@@ -1287,9 +1287,9 @@ describe("fire tests", () => {
         vehicle_incendiary: false,
       })
 
-      game.gameState = new FireStartState(game)
+      game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
@@ -1314,7 +1314,7 @@ describe("fire tests", () => {
       const tloc = new Coordinate(4, 0)
       map.addCounter(tloc, target)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.type).toBe(stateType.Fire)
@@ -1331,7 +1331,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(target.isWreck).toBe(false)
@@ -1360,7 +1360,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1393,7 +1393,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -1423,7 +1423,7 @@ describe("fire tests", () => {
       map.addCounter(tloc2, target2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1455,7 +1455,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -1498,7 +1498,7 @@ describe("fire tests", () => {
       map.addCounter(tloc2, target2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1544,7 +1544,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -1577,7 +1577,7 @@ describe("fire tests", () => {
       map.addCounter(tloc2, target2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1615,7 +1615,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1648,7 +1648,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -1674,7 +1674,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -1688,7 +1688,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -1719,7 +1719,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -1752,7 +1752,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -1790,7 +1790,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -1823,7 +1823,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -1854,7 +1854,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -1868,7 +1868,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
@@ -1880,9 +1880,9 @@ describe("fire tests", () => {
         vehicle_incendiary: false,
       })
 
-      game.gameState = new FireStartState(game)
+      game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
@@ -1909,7 +1909,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -1923,7 +1923,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
@@ -1935,9 +1935,9 @@ describe("fire tests", () => {
         vehicle_incendiary: false,
       })
 
-      game.gameState = new FireStartState(game)
+      game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
@@ -1972,7 +1972,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2006,7 +2006,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2046,7 +2046,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2080,7 +2080,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2128,13 +2128,13 @@ describe("fire tests", () => {
       map.addCounter(floc, firing2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.toHex(4, 2)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2163,14 +2163,14 @@ describe("fire tests", () => {
       map.addCounter(floc, firing2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.smokeToggle()
       game.fireState.toHex(4, 2)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2204,14 +2204,14 @@ describe("fire tests", () => {
       map.addCounter(floc, firing2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.smokeToggle()
       game.fireState.toHex(0, 2)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2242,14 +2242,14 @@ describe("fire tests", () => {
       map.addCounter(floc, firing2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.smokeToggle()
       game.fireState.toHex(0, 2)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2282,14 +2282,14 @@ describe("fire tests", () => {
       map.addCounter(floc, firing2)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.smokeToggle()
       game.fireState.toHex(0, 2)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2328,7 +2328,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2363,7 +2363,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2411,7 +2411,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2441,7 +2441,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2458,9 +2458,9 @@ describe("fire tests", () => {
         vehicle_incendiary: false,
       })
 
-      game.gameState = new FireStartState(game)
+      game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
@@ -2497,7 +2497,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2527,7 +2527,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2579,7 +2579,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2609,7 +2609,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2711,7 +2711,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -2721,7 +2721,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2756,7 +2756,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -2766,7 +2766,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2806,7 +2806,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target3)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2836,7 +2836,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2874,7 +2874,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2904,7 +2904,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2939,7 +2939,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -2961,7 +2961,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -2995,7 +2995,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -3019,7 +3019,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3045,7 +3045,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -3069,7 +3069,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3094,7 +3094,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -3123,7 +3123,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3155,7 +3155,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -3183,7 +3183,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -3231,7 +3231,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -3284,7 +3284,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.sponsonToggle()
 
@@ -3309,7 +3309,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3351,7 +3351,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.sponsonToggle()
 
@@ -3376,7 +3376,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3413,7 +3413,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       game.fireState.sponsonToggle()
 
@@ -3430,7 +3430,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3467,7 +3467,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -3482,7 +3482,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3522,7 +3522,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(false)
@@ -3556,7 +3556,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
@@ -3591,7 +3591,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       const fire = game.gameState as FireState
       expect(fire.doneSelect).toBe(true)
@@ -3622,7 +3622,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -3668,7 +3668,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(floc)[1],
@@ -3690,7 +3690,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.sniperNeeded).toStrictEqual([
@@ -3716,7 +3716,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -3726,7 +3726,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.sniperNeeded).toStrictEqual([])
@@ -3750,7 +3750,7 @@ describe("fire tests", () => {
       map.addCounter(tloc, target)
       organizeStacks(map)
 
-      game.gameState = new FireState(game, false)
+      game.setGameState(new FireState(game, false))
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -3760,7 +3760,7 @@ describe("fire tests", () => {
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
-      game.gameState.finish()
+      game.gameState?.finish()
       Math.random = original
 
       expect(game.sniperNeeded).toStrictEqual([])

@@ -82,7 +82,7 @@ function PrepRally(game: Game, backendSync: boolean, data: GameActionData): void
   const oldPhase = game.phase
   if (game.scenario.map.anyBrokenUnits(game.currentPlayer) &&
     game.lastAction?.type !== "rally_pass") {
-    game.gameState = new RallyState(game)
+    game.setGameState(new RallyState(game))
     return
   }
   game.executeAction(new GameAction({
@@ -156,7 +156,7 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = game.phase
   if (game.scenario.map.anyOverstackedUnits()) {
-    game.gameState = new OverstackState(game)
+    game.setGameState(new OverstackState(game))
     return
   }
   phaseData.new_player = otherPlayer(game.currentPlayer)

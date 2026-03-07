@@ -35,19 +35,19 @@ describe("precipitation", () => {
     map.addFire(loc)
     expect(game.fireDisplaceNeeded.length).toBe(1)
 
-    game.gameState = new FireDisplaceState(game)
-    expect(game.gameState.player).toBe(2)
-    expect(game.gameState.type).toBe(stateType.FireDisplace)
-    expect(game.gameState.selection[0].id).toBe("test")
+    game.setGameState(new FireDisplaceState(game))
+    expect(game.gameState?.player).toBe(2)
+    expect(game.gameState?.type).toBe(stateType.FireDisplace)
+    expect(game.gameState?.selection[0].id).toBe("test")
     expect(game.fireDisplaceState.availableHexes.length).toBe(3)
 
-    expect(game.gameState.openHex(loc.x, loc.y)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(fireLoc.x, fireLoc.y)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(stackLoc.x, stackLoc.y)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(4, 4)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(loc.x, loc.y)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(fireLoc.x, fireLoc.y)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(stackLoc.x, stackLoc.y)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(4, 4)).toBe(hexOpenType.Closed)
 
     const escapeLoc = new Coordinate(2, 0)
-    expect(game.gameState.openHex(escapeLoc.x, escapeLoc.y)).toBe(hexOpenType.Open)
+    expect(game.gameState?.openHex(escapeLoc.x, escapeLoc.y)).toBe(hexOpenType.Open)
 
     expect(game.fireDisplaceState.path[0].x).toBe(loc.x)
     expect(game.fireDisplaceState.path[0].y).toBe(loc.y)
@@ -57,7 +57,7 @@ describe("precipitation", () => {
     expect(game.fireDisplaceState.path[1].x).toBe(escapeLoc.x)
     expect(game.fireDisplaceState.path[1].y).toBe(escapeLoc.y)
 
-    game.gameState.finish()
+    game.gameState?.finish()
 
     let counters = map.countersAt(loc)
     expect(counters.length).toBe(1)
@@ -99,14 +99,14 @@ describe("precipitation", () => {
     map.addFire(loc)
     expect(game.fireDisplaceNeeded.length).toBe(1)
 
-    game.gameState = new FireDisplaceState(game)
-    expect(game.gameState.player).toBe(2)
-    expect(game.gameState.type).toBe(stateType.FireDisplace)
-    expect(game.gameState.selection[0].id).toBe("test")
+    game.setGameState(new FireDisplaceState(game))
+    expect(game.gameState?.player).toBe(2)
+    expect(game.gameState?.type).toBe(stateType.FireDisplace)
+    expect(game.gameState?.selection[0].id).toBe("test")
 
-    expect(game.gameState.openHex(loc.x, loc.y)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(2, 1)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(0, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(loc.x, loc.y)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(2, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(0, 1)).toBe(hexOpenType.Closed)
   })
 
   test("units displace in correct order", () => {
@@ -162,15 +162,15 @@ describe("precipitation", () => {
 
     expect(game.fireDisplaceNeeded.length).toBe(1)
 
-    game.gameState = new FireDisplaceState(game)
-    expect(game.gameState.player).toBe(2)
-    expect(game.gameState.type).toBe(stateType.FireDisplace)
-    expect(game.gameState.selection[0].id).toBe("test")
+    game.setGameState(new FireDisplaceState(game))
+    expect(game.gameState?.player).toBe(2)
+    expect(game.gameState?.type).toBe(stateType.FireDisplace)
+    expect(game.gameState?.selection[0].id).toBe("test")
 
-    expect(game.gameState.openHex(loc.x, loc.y)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(2, 1)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(0, 1)).toBe(hexOpenType.Closed)
-    expect(game.gameState.openHex(1, 2)).toBe(hexOpenType.Open)
+    expect(game.gameState?.openHex(loc.x, loc.y)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(2, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(0, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(1, 2)).toBe(hexOpenType.Open)
   })
 
   test("unit manning gun displaced", () => {
@@ -188,12 +188,12 @@ describe("precipitation", () => {
     map.addFire(loc)
     expect(game.fireDisplaceNeeded.length).toBe(1)
 
-    game.gameState = new FireDisplaceState(game)
+    game.setGameState(new FireDisplaceState(game))
 
     const escapeLoc = new Coordinate(0, 2)
     game.fireDisplaceState.move(escapeLoc.x, escapeLoc.y)
 
-    game.gameState.finish()
+    game.gameState?.finish()
 
     let counters = map.countersAt(loc)
     expect(counters.length).toBe(2)
@@ -229,7 +229,7 @@ describe("precipitation", () => {
 
     map.addFire(loc)
 
-    game.gameState = new FireDisplaceState(game)
+    game.setGameState(new FireDisplaceState(game))
 
     const escapeLoc = new Coordinate(0, 1)
     game.fireDisplaceState.move(escapeLoc.x, escapeLoc.y)
@@ -253,14 +253,14 @@ describe("precipitation", () => {
     map.addFire(loc)
     expect(game.fireDisplaceNeeded.length).toBe(1)
 
-    game.gameState = new FireDisplaceState(game)
+    game.setGameState(new FireDisplaceState(game))
     expect(game.fireDisplaceState.availableHexes.length).toBe(1)
 
-    game.gameState.finish()
+    game.gameState?.finish()
     expect(game.actions.length).toBe(0)
 
     game.fireDisplaceState.remove = true
-    game.gameState.finish()
+    game.gameState?.finish()
 
     let counters = map.countersAt(loc)
     expect(counters.length).toBe(1)
@@ -300,10 +300,10 @@ describe("precipitation", () => {
     map.addFire(loc)
     expect(game.fireDisplaceNeeded.length).toBe(1)
 
-    game.gameState = new FireDisplaceState(game)
+    game.setGameState(new FireDisplaceState(game))
     expect(game.fireDisplaceState.availableHexes.length).toBe(0)
 
-    game.gameState.finish()
+    game.gameState?.finish()
 
     const counters = map.countersAt(loc)
     expect(counters.length).toBe(1)

@@ -11,7 +11,7 @@ interface IntensiveFireButtonProps {
 export default function IntensiveFireButton({ game, callback }: IntensiveFireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState = new FireState(game, false)
+    game.setGameState(new FireState(game, false))
     callback()
   }
 

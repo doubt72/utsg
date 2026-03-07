@@ -83,7 +83,7 @@ export default class BaseState {
   }
 
   execute(action: GameAction) {
-    this.game.gameState = undefined
+    this.game.clearGameState()
     this.game.scenario.map.clearGhosts()
     this.game.scenario.map.clearAllSelections()
     this.game.executeAction(action, false)

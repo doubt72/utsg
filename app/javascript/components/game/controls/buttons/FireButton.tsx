@@ -11,7 +11,7 @@ interface FireButtonProps {
 export default function FireButton({ game, callback }: FireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.gameState = new FireState(game, false)
+    game.setGameState(new FireState(game, false))
     callback()
   }
 
