@@ -566,6 +566,7 @@ export default class FireAction extends BaseAction {
       }
     }
     sortStacks(this.map)
-    this.game.updateInitiative(this.reaction ? -2 : 2)
+    this.game.updateInitiative(2)
+    if (this.game.moraleChecksNeeded.length > 0) { this.game.togglePlayer() }
   }
 }

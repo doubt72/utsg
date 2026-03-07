@@ -1,8 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Refactor reaction fire
-    - Only show available units
-    - Fix player confusion if initiative flipped
-
   - Run through game / Finish 001 (description / balance)
 
   - Hotkeys and context buttons ?

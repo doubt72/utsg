@@ -47,10 +47,10 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.setGameState(new BreakdownState(game))
   } else if (game.fireStartCheckNeeded !== undefined) {
     game.setGameState(new FireStartState(game))
-  } else if (game.sniperNeeded.length > 0) {
-    game.setGameState(new SniperState(game))
   } else if (game.moraleChecksNeeded.length > 0) {
     game.setGameState(new MoraleCheckState(game))
+  } else if (game.sniperNeeded.length > 0) {
+    game.setGameState(new SniperState(game))
   } else if (game.routNeeded.length > 0) {
     game.routNeeded[0].unit.select()
     game.setGameState(new RoutState(game, false))

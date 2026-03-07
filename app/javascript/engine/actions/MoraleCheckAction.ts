@@ -83,5 +83,12 @@ export default class MoraleCheckAction extends BaseAction {
           )
         }
     }
+    if (this.game.moraleChecksNeeded.length < 1) {
+      if ((this.game.sniperNeeded.length < 1 && this.game.currentPlayer !== this.game.currentInitiativePlayer) ||
+          (this.game.sniperNeeded.length > 0 &&
+            this.game.sniperNeeded[0].unit.playerNation !== this.game.currentPlayerNation)) {
+        this.game.togglePlayer()
+      }
+    }
   }
 }

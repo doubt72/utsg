@@ -143,7 +143,8 @@ export default class FireState extends BaseState {
       }
       const counter = this.map.unitAtId(selection.target.xy, selection.counter.target.id) as Counter
       if (!this.canBeMultiselected(counter)) { return false }
-      if (this.reaction && !reactionFireInRange(this.game, counter.unit, selection.target.xy)) {
+      if (this.reaction && !reactionFireInRange(this.game, counter.unit, selection.target.xy) &&
+          !counter.unit.leader) {
         this.game.addMessage("unit out of range")
         return false
       }
