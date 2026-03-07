@@ -117,11 +117,12 @@ describe("game action tests", () => {
 
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
     expect(reactionFireCheck(game)).toBe(true)
+    expect(game.currentPlayer).toBe(1)
 
     try {
       game.executeUndo()
@@ -170,8 +171,9 @@ describe("game action tests", () => {
     expect(reactionFireCheck(game)).toBe(false)
 
     const action = game.lastAction
-    expect(action?.type).toBe("info")
+    expect(action?.type).toBe("reaction_pass")
     expect(action?.stringValue).toBe("no valid units have line-of-sight, skipping reaction fire")
+    expect(game.currentPlayer).toBe(2)
 
     try {
       game.executeUndo()

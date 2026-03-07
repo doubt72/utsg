@@ -5,7 +5,7 @@ import Game from "../../Game";
 import GameAction, { GameActionPath } from "../../GameAction";
 import Unit from "../../Unit";
 import { areaFire, canMultiSelectFire, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
-import { placeReactionFireGhosts, reactionFireHexes } from "../reactionFire";
+import { placeReactionFireGhosts, reactionFireHexes, reactionFireInRange } from "../reactionFire";
 import { clearUnrangedSelection, removeStateSelection } from "../select";
 import BaseState, { StateSelection, stateType } from "./BaseState";
 
@@ -23,7 +23,7 @@ export default class FireState extends BaseState {
   targetHexes: Coordinate[];
 
   constructor(game: Game, reaction: boolean) {
-    super(game, stateType.Fire, reaction ? game.opponentPlayer : game.currentPlayer)
+    super(game, stateType.Fire, game.currentPlayer)
     this.reaction = reaction
 
     const selection = game.scenario.map.currentSelection[0]
@@ -143,6 +143,10 @@ export default class FireState extends BaseState {
       }
       const counter = this.map.unitAtId(selection.target.xy, selection.counter.target.id) as Counter
       if (!this.canBeMultiselected(counter)) { return false }
+      if (this.reaction && !reactionFireInRange(this.game, counter.unit, selection.target.xy)) {
+        this.game.addMessage("unit out of range")
+        return false
+      }
       if (sc.unit.canCarrySupport && tc.unit.incendiary) {
         this.game.addMessage("can't combine infantry and incendiary attacks")
         return false
@@ -253,8 +257,7 @@ export default class FireState extends BaseState {
       (this.intensiveFiring ? "reaction_intensive_fire" : "reaction_fire" ) :
       (this.intensiveFiring ? "intensive_fire" : "fire" )
     const action = new GameAction({
-      user: this.reaction ? this.game.opponentUser : this.game.currentUser,
-      player: this.player,
+      user: this.game.currentUser, player: this.player,
       data: {
         action: type, old_initiative: this.game.initiative,
         path: this.path,
@@ -278,13 +281,6 @@ export default class FireState extends BaseState {
       }
     }, this.game)
     this.execute(action)
-  }
-
-  samePlayer(target: Unit) {
-    if (this.reaction) {
-      return target.playerNation !== this.game.currentPlayerNation
-    }
-    return target.playerNation === this.game.currentPlayerNation
   }
   
   canBeMultiselected(counter: Counter): boolean {

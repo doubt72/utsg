@@ -1,6 +1,6 @@
 import { Coordinate, CounterSelectionTarget, HexOpenType, hexOpenType } from "../../../utilities/commonTypes";
 import { los } from "../../../utilities/los";
-import { hexDistance, otherPlayer } from "../../../utilities/utilities";
+import { hexDistance } from "../../../utilities/utilities";
 import { significantActions } from "../../actions/BaseAction";
 import MoveAction from "../../actions/MoveAction";
 import Counter from "../../Counter";
@@ -8,7 +8,7 @@ import Game from "../../Game";
 import GameAction from "../../GameAction";
 import { gamePhaseType } from "../../support/gamePhase";
 import Unit from "../../Unit";
-import { reactionFireHexes } from "../reactionFire";
+import { reactionFireHexes, reactionFireInRange } from "../reactionFire";
 import BaseState, { stateType } from "./BaseState";
 
 const reactionActions = ["move", "rush", "fire", "intensive_fire"]
@@ -16,7 +16,7 @@ const reactionActions = ["move", "rush", "fire", "intensive_fire"]
 export function reactionFireCheck(game: Game): boolean {
   if (game.gameState !== undefined) { return false }
   if (game.phase !== gamePhaseType.Main) { return false }
-  if (game.lastAction?.type === "info") { return false }
+  if (game.lastAction?.type === "reaction_pass") { return false }
   let rc = false
   let last = ""
   for (let i = game.actions.length - 1; i >= 0; i--) {
@@ -30,10 +30,10 @@ export function reactionFireCheck(game: Game): boolean {
       if (game.lastAction?.type !== "info") {
         const base = new BaseState(game, "reaction", 1)
         base.execute(new GameAction({
-          player: game.currentPlayer, user: game.currentUser, data: {
-            action: "info", message: "no valid units have line-of-sight, skipping reaction fire",
-            old_initiative: game.initiative,
-          }
+          user: game.currentUser, player: game.currentPlayer, data: {
+            action: "reaction_pass", old_initiative: game.initiative,
+            message: "no valid units have line-of-sight, skipping reaction fire",
+          },
         }, game))
       }
     } else { return true }
@@ -108,12 +108,8 @@ export default class ReactionState extends BaseState {
     const target = selection.counter.unit as Unit
     const loc = new Coordinate(selection.target.xy.x, selection.target.xy.y)
     if (this.openHex(loc.x, loc.y) !== hexOpenType.Open) { return false }
-    let range = false
-    for (const hex of reactionFireHexes(this.game)) {
-      if (hexDistance(loc, new Coordinate(hex.x, hex.y)) <= target.currentRange) { range = true; break }
-    }
-    if (!range) {
-      this.game.addMessage("unit doesn't have sufficient range")
+    if (!reactionFireInRange(this.game, target, loc)) {
+      this.game.addMessage("unit out of range")
       return false
     }
     return true
@@ -121,8 +117,7 @@ export default class ReactionState extends BaseState {
 
   finish() {
     const action = new GameAction({
-      user: this.game.currentUser,
-      player: otherPlayer(this.game.currentPlayer),
+      user: this.game.currentUser, player: this.game.currentPlayer,
       data: { action: "reaction_pass", old_initiative: this.game.initiative },
     }, this.game)
     this.execute(action)

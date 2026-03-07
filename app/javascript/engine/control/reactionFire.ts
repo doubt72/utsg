@@ -1,4 +1,5 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes"
+import { hexDistance } from "../../utilities/utilities"
 import BaseAction, { significantActions } from "../actions/BaseAction"
 import Game from "../Game"
 import { gameActionAddActionType, GameActionPath } from "../GameAction"
@@ -6,6 +7,7 @@ import Unit from "../Unit"
 
 export function reactionFireHexes(game: Game): GameActionPath[] {
   const action = reactionFireAction(game)
+  if (!action) { return [] }
   const rc: GameActionPath[] = []
   if (["move", "rush"].includes(action.type)) {
     if (action.data.path) {
@@ -33,6 +35,7 @@ export function reactionFireHexes(game: Game): GameActionPath[] {
 
 export function placeReactionFireGhosts(game: Game) {
   const action = reactionFireAction(game)
+  if (!action) { return }
   if (!["move", "rush"].includes(action.type)) { return }
   const path = reactionFireHexes(game)
   if (action.data.origin && action.data.add_action) {
@@ -73,12 +76,18 @@ export function placeReactionFireGhosts(game: Game) {
   }
 }
 
-function reactionFireAction(game: Game): BaseAction {
+export function reactionFireInRange(game: Game, unit: Unit, loc: Coordinate): boolean {
+  for (const hex of reactionFireHexes(game)) {
+    if (hexDistance(loc, new Coordinate(hex.x, hex.y)) <= unit.currentRange) { return true }
+  }
+  return false
+}
+
+function reactionFireAction(game: Game): BaseAction | undefined {
   // assumes Game->reactionFireCheck check is true and has been checked
   for (let i = game.actions.length - 1; i >= 0; i--) {
     const a = game.actions[i]
     if (a.undone) { continue }
     if (significantActions.includes(a.type)) { return a }
   }
-  return game.actions[0] // Something went horribly wrong
 }

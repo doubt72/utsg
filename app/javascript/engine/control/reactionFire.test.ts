@@ -57,7 +57,7 @@ describe("reaction fire tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99)
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -122,7 +122,7 @@ describe("reaction fire tests", () => {
 
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -199,7 +199,7 @@ describe("reaction fire tests", () => {
 
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -289,7 +289,7 @@ describe("reaction fire tests", () => {
 
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -383,7 +383,7 @@ describe("reaction fire tests", () => {
 
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -481,7 +481,7 @@ describe("reaction fire tests", () => {
 
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -562,7 +562,7 @@ describe("reaction fire tests", () => {
 
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -802,7 +802,7 @@ describe("reaction fire tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99)
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 
@@ -862,7 +862,7 @@ describe("reaction fire tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99)
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     Math.random = original
 

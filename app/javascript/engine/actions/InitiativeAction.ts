@@ -47,6 +47,8 @@ export default class InitiativeAction extends BaseAction {
     if (roll) {
       if (roll.result < initiativeThreshold(Math.abs(this.data.old_initiative))) {
         this.game.toggleInitiative()
+      } else {
+        this.game.togglePlayer()
       }
     }
   }
