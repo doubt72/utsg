@@ -47,9 +47,5 @@ export default class SniperAction extends BaseAction {
         this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false })
       }
     }
-    if (this.game.sniperNeeded.length < 1 && this.game.moraleChecksNeeded.length < 1 &&
-        this.game.currentPlayer !== this.game.currentInitiativePlayer) {
-      this.game.togglePlayer()
-    }
   }
 }

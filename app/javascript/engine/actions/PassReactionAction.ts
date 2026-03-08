@@ -19,9 +19,7 @@ export default class ReactionPassAction extends BaseAction {
   }
 
   mutateGame(): void {
-    if (this.game.currentPlayer !== this.game.currentInitiativePlayer) {
-      this.game.togglePlayer()
-    }
+    this.game.resetCurrentPlayer()
     this.game.clearGameState()
   }
 }

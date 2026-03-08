@@ -51,5 +51,8 @@ export default class RoutCheckAction extends BaseAction {
     if (roll.result < check) {
       this.game.routNeeded.push({ unit, loc: new Coordinate(this.target.x, this.target.y) })
     }
+    if (this.game.routCheckNeeded.length < 1 && this.game.routNeeded.length < 1) {
+      this.game.resetCurrentPlayer()
+    }
   }
 }

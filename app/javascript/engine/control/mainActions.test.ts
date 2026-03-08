@@ -116,13 +116,16 @@ describe("game action tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99)
 
     expect(game.currentPlayer).toBe(2)
+    expect(game.currentInitiativePlayer).toBe(2)
     game.gameState?.finish()
     expect(game.currentPlayer).toBe(1)
+    expect(game.currentInitiativePlayer).toBe(2)
 
     Math.random = original
 
     expect(reactionFireCheck(game)).toBe(true)
     expect(game.currentPlayer).toBe(1)
+    expect(game.currentInitiativePlayer).toBe(2)
 
     try {
       game.executeUndo()
@@ -163,8 +166,10 @@ describe("game action tests", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
     expect(game.currentPlayer).toBe(2)
+    expect(game.currentInitiativePlayer).toBe(2)
     game.gameState?.finish()
     expect(game.currentPlayer).toBe(1)
+    expect(game.currentInitiativePlayer).toBe(1)
 
     Math.random = original
 
@@ -173,7 +178,7 @@ describe("game action tests", () => {
     const action = game.lastAction
     expect(action?.type).toBe("reaction_pass")
     expect(action?.stringValue).toBe("no valid units have line-of-sight, skipping reaction fire")
-    expect(game.currentPlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
 
     try {
       game.executeUndo()

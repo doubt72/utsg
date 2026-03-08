@@ -95,10 +95,12 @@ describe("fire tests", () => {
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(0)
 
+      expect(game.currentPlayer).toBe(2)
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.gameState?.finish()
       Math.random = original
+      expect(game.currentPlayer).toBe(1)
 
       expect(game.moraleChecksNeeded).toStrictEqual(
         [{ unit: target, from: [floc], to: tloc, incendiary: false }]
@@ -1231,10 +1233,12 @@ describe("fire tests", () => {
 
       expect(game.playerTwoScore).toBe(10)
 
+      expect(game.currentPlayer).toBe(2)
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.gameState?.finish()
       Math.random = original
+      expect(game.currentPlayer).toBe(2)
 
       expect(target.isWreck).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(

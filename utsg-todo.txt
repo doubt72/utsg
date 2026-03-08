@@ -1,8 +1,8 @@
 High Priority Features/Bug Fixes:
-  - Run through game / Finish 001 (description / balance)
+  - Make messages bigger
+  - Turn indication / player side indication
 
-  - Hotkeys and context buttons ?
-  - Show Terrain in counter overlay ?
+  - Run through game / Finish 001 (description / balance)
 
   - Ability to kick players
 
@@ -18,6 +18,9 @@ High Priority Features/Bug Fixes:
     - Patreon?
   - Email Notifications
     - Note to admins under code of contact
+
+  - Hotkeys and context buttons ?
+  - Show Terrain in counter overlay ?
 
   - Start testing other scenarios, add optional rules
   - Admin pages for game/user summaries

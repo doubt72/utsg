@@ -42,5 +42,8 @@ export default class RoutAllAction extends BaseAction {
       this.game.routCheckNeeded.push({ unit, loc })
     }
     this.game.updateInitiative(3)
+    if (this.game.routCheckNeeded.length > 0) {
+      this.game.togglePlayer()
+    }
   }
 }

@@ -142,15 +142,15 @@ export const testFire: FeatureData = {
 }
 
 export const createMoveGame = (hexes: HexData[][] = movementTestHexes): Game => {
-  return createTestGame(hexes)
+  return createInProgressGame(hexes)
 }
 
 export const createFireGame = (hexes: HexData[][] = fireTestHexes): Game => {
-  return createTestGame(hexes)
+  return createInProgressGame(hexes)
 }
 
 export const createBlankGame = (hexes: HexData[][] = plainTestHexes): Game => {
-  return createTestGame(hexes)
+  return createInProgressGame(hexes)
 }
 
 export const createTestGame = (hexes: HexData[][]): Game => {
@@ -161,10 +161,22 @@ export const createTestGame = (hexes: HexData[][]): Game => {
     metadata: { turn: 0 },
     suppress_network: true
   });
+  return game
+}
+
+export const createInProgressGame = (hexes: HexData[][]): Game => {
+  const game = new Game({
+    id: 1,
+    name: "test game", scenario: scenarioTestData(hexes), scenario_version: "0.01",
+    owner: "one", state: "in_progress", player_one: "one", player_two: "two", current_player: "two",
+    metadata: { turn: 1 },
+    suppress_network: true
+  });
 
   game.setTurn(1)
   game.phase = gamePhaseType.Main
   game.setCurrentPlayer(2)
+  game.setCurrentInitiativePlayer(2)
   return game
 }
 

@@ -216,6 +216,12 @@ export default class Game {
     return this.internalInitiativePlayer
   }
 
+  resetCurrentPlayer(): void {
+    if (this.currentPlayer !== this.currentInitiativePlayer) {
+      this.togglePlayer()
+    }
+  }
+
   setCurrentPlayer(player: Player) {
     if (player !== this.internalCurrentPlayer) {
       this.internalCurrentPlayer = player
