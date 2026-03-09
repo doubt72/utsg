@@ -13,7 +13,7 @@ import FireDisplaceState from "./state/FireDisplaceState"
 import FireStartState from "./state/FireStartState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
-import ReactionState, { reactionFireCheck } from "./state/ReactionState"
+import ReactionState, { reactionFireCheck, reactionFireJustCheck } from "./state/ReactionState"
 import RoutCheckState from "./state/RoutCheckState"
 import RoutState from "./state/RoutState"
 import SniperState from "./state/SniperState"
@@ -36,7 +36,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     }
   }
   if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) { return [] }
-  if (activePlayer !== game.currentUser) { return [{ type: "wait" }] }
+  if (activePlayer !== game.currentUser) {
+    return [{ type: "wait", message: currentEnemyAction(game) }] }
   if (game.lastAction?.id === undefined) { return [{ type: "sync" }] }
   const actions: GameAction[] = []
   addUndo(game, activePlayer, actions)
@@ -287,6 +288,52 @@ export function currSelection(game: Game, move: boolean): Unit | undefined {
   const counters = game.scenario.map.currentSelection
   if (counters.length < 1) { return undefined }
   return counters[0].unit
+}
+
+function currentEnemyAction(game: Game): string {
+  if (breakdownCheck(game)) {
+    return "waiting for opponent breakdown check"
+  } else if (game.fireStartCheckNeeded !== undefined) {
+    return "waiting for opponent fire check"
+  } else if (game.moraleChecksNeeded.length > 0) {
+    return "waiting for opponent morale check"
+  } else if (game.sniperNeeded.length > 0) {
+    return "waiting for opponent sniper check"
+  } else if (game.routNeeded.length > 0) {
+    return "waiting for opponent to rout unit"
+  } else if (game.routCheckNeeded.length > 0) {
+    return "waiting for opponent rout check"
+  } else if (game.fireDisplaceNeeded.length > 0) {
+    return "waiting for opponent move displaced unit"
+  } else if (initiativeCheck(game)) {
+    return "waiting for opponent initiative check"
+  } else if (reactionFireJustCheck(game)) {
+    return "waiting for opponent reaction fire"
+  }
+  if (game.phase === gamePhaseType.Deployment) {
+    return "waiting for opponent to deploy units"
+  } else if (game.phase === gamePhaseType.PrepRally) {
+    return "waiting for opponent to attempt to rally units"
+  } else if (game.phase === gamePhaseType.PrepPrecip) {
+    return "waiting for opponent to check for precipitation"
+  } else if (game.gameState?.type === stateType.FireDisplace) {
+    return "waiting for opponent to move displaced unit"
+  } else if (game.gameState?.type === stateType.FireStart) {
+    return "waiting for opponent to move displaced unit"
+  } else if (game.phase === gamePhaseType.Main) {
+    return "waiting for opponent to take an action"
+  } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
+    return "waiting for opponent to choose close combat to resolve"
+  } else if (game.phase === gamePhaseType.CleanupOverstack) {
+    return "waiting for opponent to choose overstacked unit to reduce"
+  } else if (game.phase === gamePhaseType.CleanupSmoke) {
+    return "waiting for opponent to check smoke"
+  } else if (game.phase === gamePhaseType.CleanupFire) {
+    return "waiting for opponent to check fire"
+  } else if (game.phase === gamePhaseType.CleanupWeather) {
+    return "waiting for opponent to check weather"
+  }
+  return "unknown enemy action"
 }
 
 function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {

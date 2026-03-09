@@ -22,6 +22,7 @@ export default function InitiativeDisplay({
 }: InitiativeDisplayProps) {
   const [base, setBase] = useState<JSX.Element | undefined>()
   const [initiative, setInitiative] = useState<JSX.Element | undefined>()
+  const [playerPointer, setPLayerPointer] = useState<JSX.Element | undefined>()
 
   const nationOne = () => {
     const n = map.game?.playerOneNation
@@ -104,10 +105,27 @@ export default function InitiativeDisplay({
     }
   }, [xx, yy, hideCounters, map.game?.initiative, map.game?.currentInitiativePlayer])
 
+  useEffect(() => {
+    if (!map || !map.game) { return }
+    if (map.game.state !== "in_progress") { return }
+    const y1 = yy + 52
+    const y2 = yy + 92
+    const x = xx + (map.game.currentPlayer === 1 ? 26 : 164)
+    setPLayerPointer(
+      <g>
+        <path d={`M ${x} ${y1} L ${x-8.5} ${y1-12} L ${x+8.5} ${y1-12} L ${x} ${y1}`}
+              style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
+        <path d={`M ${x} ${y2} L ${x-8.5} ${y2+12} L ${x+8.5} ${y2+12} L ${x} ${y2}`}
+              style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
+      </g>
+    )
+  }, [xx, yy, map.game?.currentPlayer])
+
   return (
     <g>
       {base}
       {initiative}
+      {playerPointer}
     </g>
   )
 }

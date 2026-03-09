@@ -171,14 +171,14 @@ export default function MapDisplay({
     }
     const alpha =  timer < 30 ? timer / 30 : 1
     const error = notificationDetails.error
-    const twidth = error.length * 9.6 + 24
+    const twidth = error.length * 19.2 + 24
     const x = (map.previewXSize * (mapScale ?? 1) - 76 < width / scale - 216 ?
               map.previewXSize * (mapScale ?? 1) - 76 : width / scale - 216) - twidth
     const y = 50 + map.yStatusSize + 50 / scale - 50
     setNotification(
       <g>
         <path d={roundedRectangle(x, y, twidth, 32)} style={{ fill: `rgba(221,221,221,${alpha})` }}/>
-        <text x={x + 12} y={y + 20} fontSize={16} fontFamily="'Courier Prime', monospace"
+        <text x={x + 12} y={y + 24} fontSize={32} fontFamily="'Courier Prime', monospace"
                   textAnchor="start" style={{ fill: `rgba(0,0,0,${alpha})` }}>{error}</text>
       </g>
     )

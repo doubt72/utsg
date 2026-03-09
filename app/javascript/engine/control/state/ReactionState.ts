@@ -14,17 +14,7 @@ import BaseState, { stateType } from "./BaseState";
 const reactionActions = ["move", "rush", "fire", "intensive_fire"]
 
 export function reactionFireCheck(game: Game): boolean {
-  if (game.gameState !== undefined) { return false }
-  if (game.phase !== gamePhaseType.Main) { return false }
-  if (game.lastAction?.type === "reaction_pass") { return false }
-  let rc = false
-  let last = ""
-  for (let i = game.actions.length - 1; i >= 0; i--) {
-    const a = game.actions[i]
-    if (a.undone) { continue }
-    if (a.type === "initiative") { rc = true }
-    if (significantActions.includes(a.type)) { last = a.type; break }
-  }
+  const { rc, last } = reactionFireJustCheckInternal(game)
   if (rc && reactionActions.includes(last)) {
     if (reactionAvailableCoords(game).length < 1) {
       if (game.lastAction?.type !== "info") {
@@ -39,6 +29,29 @@ export function reactionFireCheck(game: Game): boolean {
     } else { return true }
   }
   return false
+}
+
+export function reactionFireJustCheck(game: Game): boolean {
+  const { rc, last } = reactionFireJustCheckInternal(game)
+  if (rc && reactionActions.includes(last)) {
+    if (reactionAvailableCoords(game).length > 0) { return true }
+  }
+  return false
+}
+
+function reactionFireJustCheckInternal(game: Game): { rc: boolean, last: string } {
+  if (game.gameState !== undefined) { return { rc: false, last: "" } }
+  if (game.phase !== gamePhaseType.Main) { return { rc: false, last: "" } }
+  if (game.lastAction?.type === "reaction_pass") { return { rc: false, last: "" } }
+  let rc = false
+  let last = ""
+  for (let i = game.actions.length - 1; i >= 0; i--) {
+    const a = game.actions[i]
+    if (a.undone) { continue }
+    if (a.type === "initiative") { rc = true }
+    if (significantActions.includes(a.type)) { last = a.type; break }
+  }
+  return { rc, last }
 }
 
 export function reactionAvailableCoords(game: Game): Coordinate[] {

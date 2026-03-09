@@ -62,6 +62,7 @@ interface GameControlsProps {
 }
 
 export default function GameControls({ game, callback }: GameControlsProps) {
+  const [playerNation, setPlayerNation] = useState<JSX.Element>()
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [update, setUpdate] = useState(0)
 
@@ -69,6 +70,30 @@ export default function GameControls({ game, callback }: GameControlsProps) {
     if (!game.id) { return }
     displayActions()
   }, [game, game.lastActionIndex, update])
+
+  useEffect(() => {
+    if (!game.id) { return }
+    const user = localStorage.getItem("username") ?? ""
+    let nation: string | undefined = undefined
+    if (game.playerOneName === game.playerTwoName && game.playerOneName === user) {
+      nation = game.currentPlayerNation
+    } else if (user === game.playerOneName) {
+      nation = game.playerOneNation
+    } else if (user === game.playerTwoName) {
+      nation = game.playerTwoNation
+    }
+    if (nation) {
+      const fill = `url(#nation-${nation}-16)`
+      setPlayerNation(
+        <div style={{ paddingTop: 3 }}>
+          <svg width={34} height={34} viewBox="0 0 34 34" style={{ minWidth: 32 }}>
+            <circle cx={17} cy={17} r={16}
+                    style={{ fill, strokeWidth: 1, stroke: "black" }}/>
+          </svg>
+        </div>
+      )
+    }
+  }, [game])
 
   const callAllBack = () => {
     setUpdate(s => s+1)
@@ -83,7 +108,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
       if (a.type === "sync") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing (you may need to reload this page)</div>
       } else if (a.type === "wait") {
-        return <div className="mt05em mb05em mr05em ml05em" key={i}>waiting for opponent</div>
+        return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
       } else if (a.type === "none") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
       } else if (a.type === "undo") {
@@ -200,6 +225,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
 
   return (
     <div className="game-control ml05em mr05em">
+      {playerNation}
       {controls}
       <div className="flex-fill"></div>
       { game.state === "complete" ? "" : game.resignationLevel > 0 ? <div className="flex nowrap">

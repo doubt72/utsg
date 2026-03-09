@@ -167,7 +167,9 @@ export default function InterfaceSection() {
         not all actions may be undone; in general, if any dice rolls are involved, there is no
         undoing it, nor can actions that pass control to the opponent generally be undone. Also,
         actions can usually be cancelled until finished, any dice rolls involved will be deferred
-        until the action is &quot;committed.&quot;
+        until the action is &quot;committed.&quot;  This also indicates (with a national icon
+        on the far left) which player you&apos;re playing (or currently playing in a hotseat
+        game).
       </p>
       <p>
         {redNumber(6)}
@@ -319,7 +321,10 @@ export default function InterfaceSection() {
         <strong>Initiative track</strong>: shows the player who currently has initiative (i.e.,
         which side the marker is displaying), and the roll required for the initiative player would
         need to roll after an action if when the marker moves to the opponent&apos;s side of the
-        track. Game actions taken by the players move the marker along the track.
+        track. Game actions taken by the players move the marker along the track.  The currently
+        active player (not always the same as initiative player, e.g., when the opposing player
+        needs to make checks after the inititive player takes an action, etc.) is indicated by
+        black arrows above and below the national icon of the current player.
       </p>
       <p>
         {redNumber(14)}

@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Make messages bigger
-  - Turn indication / player side indication
-
   - Run through game / Finish 001 (description / balance)
 
   - Ability to kick players
@@ -11,7 +8,7 @@ High Priority Features/Bug Fixes:
   - Overlay both fire and displacement
 
   - Refactor firing action (currently an unmaintainable mess)
-  - Add changelog page
+  - Add changelog page / server version
   - Remove TODO on about page, still working and probably always will be
   - Add Some Developer Notes
   - Change announcements

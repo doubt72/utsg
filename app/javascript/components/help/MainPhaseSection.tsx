@@ -11,7 +11,7 @@ export default function MainPhaseSection() {
   const section = "5.2.3.0"
   const [showInitiative, setShowInitiative] = useState<JSX.Element | undefined>()
 
-  const [player, setPlayer] = useState<Player>(1)
+  const [initiativePlayer, setInitiativePlayer] = useState<Player>(1)
   const [initiative, setInitiative] = useState<number>(0)
 
   const [map, setMap] = useState<Map | undefined>()
@@ -19,7 +19,7 @@ export default function MainPhaseSection() {
   useEffect(() => {
     const game = new Game({
       id: 0, name: "test", owner: "one", player_one: "one", player_two: "two", scenario_version: "0.01",
-      current_player: "one", metadata: { turn: 0 },
+      current_player: "one", metadata: { turn: 0 }, suppress_network: true, state: "in_progress",
       scenario: {
         id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p", version: "0.01",
         metadata: {
@@ -42,6 +42,8 @@ export default function MainPhaseSection() {
       }
     })
     game.scenario.map.showCoords = false
+    game.setCurrentInitiativePlayer(1)
+    game.setCurrentPlayer(1)
     setMap(game.scenario.map)
   }, [])
 
@@ -69,7 +71,7 @@ export default function MainPhaseSection() {
           <div className="custom-button normal-button" onClick={
             () => {
               game.toggleInitiative()
-              setPlayer(game.currentPlayer)
+              setInitiativePlayer(game.currentInitiativePlayer)
             }}>
             <span>flip</span>
           </div>
@@ -84,7 +86,7 @@ export default function MainPhaseSection() {
         </div>
       </div>
     )
-  }, [map, player, initiative])
+  }, [map, initiativePlayer, initiative])
 
   return (
     <div>
