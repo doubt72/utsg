@@ -13,7 +13,7 @@ import FireDisplaceState from "./state/FireDisplaceState"
 import FireStartState from "./state/FireStartState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
-import ReactionState, { reactionFireCheck, reactionFireJustCheck } from "./state/ReactionState"
+import ReactionState, { reactionFireCheck } from "./state/ReactionState"
 import RoutCheckState from "./state/RoutCheckState"
 import RoutState from "./state/RoutState"
 import SniperState from "./state/SniperState"
@@ -318,10 +318,9 @@ function currentEnemyAction(game: Game): string {
     return "waiting for opponent move displaced unit"
   } else if (initiativeCheck(game)) {
     return "waiting for opponent initiative check"
-  } else if (reactionFireJustCheck(game)) {
+  } else if (reactionFireCheck(game, false)) {
     return "waiting for opponent reaction fire"
-  }
-  if (game.phase === gamePhaseType.Deployment) {
+  } else if (game.phase === gamePhaseType.Deployment) {
     return "waiting for opponent to deploy units"
   } else if (game.phase === gamePhaseType.PrepRally) {
     return "waiting for opponent to attempt to rally units"
