@@ -55,6 +55,7 @@ import FireDisplaceEliminateButton from "./buttons/FireDisplaceEliminateButton";
 import FireDisplaceConfirmButton from "./buttons/FireDisplaceConfirmButton";
 import FireDisplaceCancelButton from "./buttons/FireDisplaceCancelButton";
 import FireStartCheckButton from "./buttons/FireStartCheckButton";
+import KickButton from "./buttons/KickButton";
 
 interface GameControlsProps {
   game: Game;
@@ -62,7 +63,7 @@ interface GameControlsProps {
 }
 
 export default function GameControls({ game, callback }: GameControlsProps) {
-  const [playerNation, setPlayerNation] = useState<JSX.Element>()
+  const [playerNation, setPlayerNation] = useState<JSX.Element | undefined>()
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [update, setUpdate] = useState(0)
 
@@ -73,6 +74,10 @@ export default function GameControls({ game, callback }: GameControlsProps) {
 
   useEffect(() => {
     if (!game.id) { return }
+    if (game.state !== "in_progress") {
+      setPlayerNation(undefined)
+      return
+    }
     const user = localStorage.getItem("username") ?? ""
     let nation: string | undefined = undefined
     if (game.playerOneName === game.playerTwoName && game.playerOneName === user) {
@@ -85,7 +90,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
     if (nation) {
       const fill = `url(#nation-${nation}-16)`
       setPlayerNation(
-        <div style={{ paddingTop: 3 }}>
+        <div style={{ paddingTop: 3, paddingRight: 2 }}>
           <svg width={34} height={34} viewBox="0 0 34 34" style={{ minWidth: 32 }}>
             <circle cx={17} cy={17} r={16}
                     style={{ fill, strokeWidth: 1, stroke: "black" }}/>
@@ -93,7 +98,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         </div>
       )
     }
-  }, [game])
+  }, [game, game.state, game.currentPlayer])
 
   const callAllBack = () => {
     setUpdate(s => s+1)
@@ -119,6 +124,8 @@ export default function GameControls({ game, callback }: GameControlsProps) {
         return <LeaveButton gameId={game.id} key={i} />
       } else if (a.type === "start") {
         return <StartButton gameId={game.id} key={i} />
+      } else if (a.type === "kick") {
+        return <KickButton gameId={game.id} key={i} />
       } else if (a.type === "deploy") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>deploy units</div>
       } else if (a.type === "rally") {

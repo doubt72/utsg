@@ -22,6 +22,7 @@ Rails.application.routes.draw do
           post "join"
           post "leave"
           post "start"
+          post "kick"
           post "finish"
           post "resign"
         end

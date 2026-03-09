@@ -62,6 +62,14 @@ module Api
         end
       end
 
+      def kick
+        if current_game&.kick(current_user)
+          render json: current_game.show_body, status: :ok
+        else
+          render json: {}, status: :forbidden
+        end
+      end
+
       def resign
         if current_game&.resign(current_user)
           render json: current_game.show_body, status: :ok

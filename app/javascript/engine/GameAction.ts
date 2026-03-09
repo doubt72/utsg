@@ -175,6 +175,9 @@ export default class GameAction {
     if (this.data.data.action === "leave") {
       return new StateAction(this.data, this.game, this.index, "left game");
     }
+    if (this.data.data.action === "kick") {
+      return new StateAction(this.data, this.game, this.index, "kicked player out of game");
+    }
     if (this.data.data.action === "resign") {
       return new StateAction(this.data, this.game, this.index, "resigned game");
     }

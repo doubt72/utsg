@@ -27,6 +27,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     }
   } else if (game.state === "ready") {
     if (game.ownerName === activePlayer) {
+      if (game.playerOneName !== game.playerTwoName) {
+        return [{ type: "start" }, { type: "kick" }]
+      }
       return [{ type: "start" }]
     } else if (activePlayer &&
       (game.playerOneName === activePlayer || game.playerTwoName === activePlayer)) {

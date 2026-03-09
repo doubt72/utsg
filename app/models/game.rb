@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Game < ApplicationRecord
+class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :owner, class_name: "User"
   belongs_to :player_one, class_name: "User", optional: true
   belongs_to :player_two, class_name: "User", optional: true
@@ -136,6 +136,22 @@ class Game < ApplicationRecord
     end
     GameAction.create!(sequence: last_sequence + 1, game: self, user:, player:,
                        data: { action: "leave", old_initiative: 0 })
+    self
+  end
+
+  def kick(user)
+    return nil unless game_full? && owner_id == user.id
+    return nil unless player_one_id == user.id || player_two_id == user.id
+
+    player = 2
+    if player_one == user
+      update(player_two: nil)
+    else
+      update(player_one: nil)
+      player = 1
+    end
+    GameAction.create!(sequence: last_sequence + 1, game: self, user:, player:,
+                       data: { action: "kick", old_initiative: 0 })
     self
   end
 

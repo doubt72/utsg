@@ -1,8 +1,6 @@
 High Priority Features/Bug Fixes:
   - Run through game / Finish 001 (description / balance)
 
-  - Ability to kick players
-
   - Fix hindrance bug
     - Through two fence corner intersections
   - Overlay both fire and displacement
