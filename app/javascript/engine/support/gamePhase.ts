@@ -69,7 +69,7 @@ function Deployment(game: Game, backendSync: boolean, data: GameActionData): voi
       }
     } else {
       phaseData.new_player = otherPlayer(game.currentPlayer)
-      phaseData.new_phase = game.currentPlayer === game.scenario.firstAction ?
+      phaseData.new_phase = game.currentPlayer === game.currentInitiativePlayer ?
         gamePhaseType.Deployment : gamePhaseType.PrepRally
     }
     game.executeAction(new GameAction(data, game), backendSync)
@@ -91,8 +91,7 @@ function PrepRally(game: Game, backendSync: boolean, data: GameActionData): void
       old_initiative: game.initiative,
     }
   }, game), backendSync)
-  if (game.currentPlayer === game.scenario.firstAction) {
-    // TODO: switch to initiative player
+  if (game.currentPlayer === game.currentInitiativePlayer) {
     phaseData.new_player = otherPlayer(game.currentPlayer)
     phaseData.new_phase = oldPhase
   } else {
@@ -107,12 +106,14 @@ function PrepPrecip(game: Game, backendSync: boolean, data: GameActionData): voi
   if (game.scenario.map.anyPrecip()) {
     return
   }
-  game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no precipitation in scenario, skipping check",
-      old_initiative: game.initiative,
-    }
-  }, game), backendSync)
+  if (game.lastAction?.type !== "info") {
+    game.executeAction(new GameAction({
+      player: game.currentPlayer, user: game.currentUser, data: {
+        action: "info", message: "no precipitation in scenario, skipping check",
+        old_initiative: game.initiative,
+      }
+    }, game), backendSync)
+  }
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.Main
   game.executeAction(new GameAction(data, game), backendSync)
@@ -132,6 +133,7 @@ function Main(game: Game, backendSync: boolean, data: GameActionData): void {
         old_initiative: game.initiative,
       }
     }, game), backendSync)
+    phaseData.new_player = game.currentInitiativePlayer
     phaseData.new_phase = gamePhaseType.CleanupCloseCombat
     game.executeAction(new GameAction(data, game), backendSync)
   }
@@ -148,6 +150,7 @@ function CleanupCloseCombat(game: Game, backendSync: boolean, data: GameActionDa
       old_initiative: game.initiative,
     }
   }, game), backendSync)
+  phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupOverstack
   game.executeAction(new GameAction(data, game), backendSync)
 }
@@ -160,17 +163,18 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
     return
   }
   phaseData.new_player = otherPlayer(game.currentPlayer)
-  if (game.currentPlayer !== game.initiative) {
+  if (game.currentPlayer !== game.internalInitiativePlayer) {
     phaseData.new_phase = oldPhase
   } else {
     phaseData.new_phase = gamePhaseType.CleanupStatus
   }
   game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
+    player: game.currentInitiativePlayer, user: game.currentUser, data: {
       action: "info", message: "no units overstacked, skipping overstack reduction",
       old_initiative: game.initiative,
     }
   }, game), backendSync)
+  phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupStatus
   game.executeAction(new GameAction(data, game), backendSync)
 }
@@ -185,34 +189,37 @@ function CleanupStatus(game: Game, backendSync: boolean, data: GameActionData): 
       target: targets,
     }
   }, game), backendSync)
+  phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupSmoke
-  game.checkForSmoke(backendSync)
   game.executeAction(new GameAction(data, game), backendSync)
 }
 
 function CleanupSmoke(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
+  game.checkForSmoke(backendSync)
   if (game.smokeCheckNeeded.length > 0) {
     return
   }
+  phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupFire
-  game.checkForFire(backendSync)
   game.executeAction(new GameAction(data, game), backendSync)
 }
 
 function CleanupFire(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
+  game.checkForFire(backendSync)
   if (game.fireOutCheckNeeded.length > 0 || game.fireSpreadCheckNeeded.length > 0) {
     return
   }
+  phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupWeather
-  game.checkForWind(backendSync)
   game.executeAction(new GameAction(data, game), backendSync)
 }
 
 function CleanupWeather(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldTurn = game.turn
+  game.checkForWind(backendSync)
   if (game.checkWindDirection || game.checkWindSpeed) {
     return
   }
@@ -220,7 +227,7 @@ function CleanupWeather(game: Game, backendSync: boolean, data: GameActionData):
     // TODO: finish game
   } else {
     phaseData.new_phase = gamePhaseType.Deployment
-    phaseData.new_player = game.scenario.firstDeploy
+    phaseData.new_player = game.scenario.firstAction
     phaseData.new_turn = oldTurn + 1
     game.executeAction(new GameAction(data, game), backendSync)
   }

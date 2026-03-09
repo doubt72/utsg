@@ -77,7 +77,7 @@ export default class PhaseAction extends BaseAction {
   }
 
   get prepRallyMessage(): string {
-    const first = this.game.scenario.firstAction
+    const first = this.game.currentInitiativePlayer
     if (first === 1) {
       if (this.newPlayer === 1) {
         return `deployment done, begin prep phase, ${this.alliedName} rally`

@@ -23,11 +23,14 @@ import PrecipCheckState from "./control/state/PrecipCheckState";
 import RallyState from "./control/state/RallyState";
 import RallyAction from "./actions/RallyAction";
 import SmokeCheckState from "./control/state/SmokeCheckState";
-import FireExtinguishState from "./control/state/FireExtinguishState";
+import FireCheckState from "./control/state/FireCheckState";
 import WeatherState from "./control/state/WeatherState";
 import FireDisplaceState from "./control/state/FireDisplaceState";
 import ReactionState from "./control/state/ReactionState";
 import { helpIndexByName } from "../components/help/helpData";
+import SmokeCheckAction from "./actions/SmokeCheckAction";
+import FireOutAction from "./actions/FireOutAction";
+import FireSpreadAction from "./actions/FireSpreadAction";
 
 export type GameData = {
   id: number;
@@ -493,23 +496,38 @@ export default class Game {
     return false
   }
 
-  checkForSmoke(backendSync: boolean): void {
+  checkForSmoke(backendSync: boolean, action: boolean = true): void {
+    const done = []
+    for (let i = this.lastActionIndex; i >= 0; i--) {
+      const action = this.actions[i]
+      if (action.type === "phase") { break }
+      if (action.type === "smoke_check") {
+        const smoke = action as SmokeCheckAction
+        done.push(new Coordinate(smoke.target.x, smoke.target.y))
+      }
+    }
     const map = this.scenario.map
+    this.smokeCheckNeeded = []
     for (let x = 0; x < map.width; x++) {
       for (let y = 0; y < map.height; y++) {
         const loc = new Coordinate(x, y)
         const counters = map.countersAt(loc)
         for (const c of counters) {
           if (c.feature.isFeature && c.feature.type === featureType.Smoke) {
-            this.smokeCheckNeeded.push({ feature: c.feature, loc })
+            let found = false
+            for (const d of done) {
+              if (d.x === x && d.y === y) { found = true; break }
+            }
+            if (!found) { this.smokeCheckNeeded.push({ feature: c.feature, loc }) }
           }
         }
       }
     }
     if (this.smokeCheckNeeded.length < 1) {
+      if (!action || done.length < 1) { return }
       this.executeAction(new GameAction({
         player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no smoke to check, skipping smoke dissapation check",
+          action: "info", message: "no smoke to check, skipping",
           old_initiative: this.initiative,
         }
       }, this), backendSync)
@@ -518,24 +536,51 @@ export default class Game {
     }
   }
 
-  checkForFire(backendSync: boolean): void {
+  checkForFire(backendSync: boolean, action: boolean = true): void {
+    const out_done = []
+    const spread_done = []
+    for (let i = this.lastActionIndex; i >= 0; i--) {
+      const action = this.actions[i]
+      if (action.type === "phase") { break }
+      if (action.type === "fire_out_check") {
+        const fire = action as FireOutAction
+        out_done.push(new Coordinate(fire.target.x, fire.target.y))
+      } else if (action.type === "fire_spread_check") {
+        const fire = action as FireSpreadAction
+        spread_done.push(new Coordinate(fire.target.x, fire.target.y))
+      }
+    }
     const map = this.scenario.map
+    this.fireOutCheckNeeded = []
+    this.fireSpreadCheckNeeded = []
     for (let x = 0; x < map.width; x++) {
       for (let y = 0; y < map.height; y++) {
         const loc = new Coordinate(x, y)
         const counters = map.countersAt(loc)
         for (const c of counters) {
           if (c.feature.isFeature && c.feature.type === featureType.Fire) {
-            this.fireOutCheckNeeded.push({ feature: c.feature, loc })
-            if (this.scenario.map.fireSpreadTarget() > 0) {
-              const nat = map.neighborAt(loc, map.windDirection)
-              if (nat) { this.fireSpreadCheckNeeded.push({ feature: c.feature, loc }) }
+            let foundOut = false
+            for (const d of out_done) {
+              if (d.x === x && d.y === y) { foundOut = true; break }
+            }
+            if (!foundOut && spread_done.length < 1) {
+              this.fireOutCheckNeeded.push({ feature: c.feature, loc })
+            } else if (foundOut) {
+              let foundSpread = false
+              for (const d of spread_done) {
+                if (d.x === x && d.y === y) { foundSpread = true; break }
+              }
+              if (!foundSpread && this.scenario.map.fireSpreadTarget() > 0) {
+                const nat = map.neighborAt(loc, map.windDirection)
+                if (nat) { this.fireSpreadCheckNeeded.push({ feature: c.feature, loc }) }
+              }
             }
           }
         }
       }
     }
-    if (this.fireOutCheckNeeded.length < 1) {
+    if (this.fireOutCheckNeeded.length < 1 && this.fireSpreadCheckNeeded.length < 1) {
+      if (!action || out_done.length < 1) { return }
       this.executeAction(new GameAction({
         player: this.currentPlayer, user: this.currentUser, data: {
           action: "info", message: "no fire to check, skipping fire spread/dissipation check",
@@ -543,16 +588,18 @@ export default class Game {
         }
       }, this), backendSync)
     } else {
-      this.setGameState(new FireExtinguishState(this))
+      this.setGameState(new FireCheckState(this))
     }
   }
 
-  checkForWind(backendSync: boolean): void {
+  checkForWind(backendSync: boolean, action: boolean = true): void {
+    if (this.lastAction?.type === "wind_speed") { return }
     if (this.scenario.map.windVariable) {
-      this.checkWindDirection = true
+      if (this.lastAction?.type !== "wind_direction") { this.checkWindDirection = true }
       this.checkWindSpeed = true
       this.setGameState(new WeatherState(this))
     } else {
+      if (!action) { return }
       this.executeAction(new GameAction({
         player: this.currentPlayer, user: this.currentUser, data: {
           action: "info", message: "wind not variable, skipping checks",

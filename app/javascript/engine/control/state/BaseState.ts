@@ -15,7 +15,7 @@ export const stateType: { [index: string]: StateType } = {
   MoraleCheck: "morale", Sniper: "sniper", Rout: "rout", RoutAll: "routall",
   RoutCheck: "routcheck", Reaction: "reaction", CloseCombat: "close", FireStart: "fire_start",
   Overstack: "overstack", StatusCheck: "status", SmokeCheck: "smoke",
-  FireExtinguish: "fire_extinguish", FireDisplace: "displace", VariableWeather: "weather",
+  FireCheck: "fire_extinguish", FireDisplace: "displace", VariableWeather: "weather",
 }
 
 export type StateSelection = {

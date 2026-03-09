@@ -68,6 +68,12 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.setGameState(new ReactionState(game))
   } else if (closeCombatCheck(game)) {
     game.setGameState(new CloseCombatState(game))
+  } else if (game.phase === gamePhaseType.CleanupSmoke) {
+    game.checkForSmoke(false, false)
+  } else if (game.phase === gamePhaseType.CleanupFire) {
+    game.checkForFire(false, false)
+  } else if (game.phase === gamePhaseType.CleanupWeather) {
+    game.checkForSmoke(false, false)
   }
   if (closeCombatDone(game)) { game.gameState?.finish() }
   if (game.phase === gamePhaseType.Deployment) {
@@ -261,16 +267,18 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     if (select) {
       actions.push({ type: "overstack_reduce" })
     }
-  } else if (game.smokeCheckNeeded.length > 0) {
+  } else if (game.gameState?.type === stateType.SmokeCheck) {
     actions.unshift({ type: "none", message: "checking smoke dispersion" })
     actions.push({ type: "smoke_check" })
-  } else if (game.fireOutCheckNeeded.length > 0) {
-    actions.unshift({ type: "none", message: "checking if fires extinguish" })
-    actions.push({ type: "fire_out_check" })
-  } else if (game.fireSpreadCheckNeeded.length > 0) {
-    actions.unshift({ type: "none", message: "checking if fires spread" })
-    actions.push({ type: "fire_spread_check" })
-  } else if (game.checkWindDirection || game.checkWindSpeed) {
+  } else if (game.gameState?.type === stateType.fireStartCheckNeeded) {
+    if (game.fireOutCheckNeeded.length > 0) {
+      actions.unshift({ type: "none", message: "checking if fires extinguish" })
+      actions.push({ type: "fire_out_check" })
+    } else if (game.fireSpreadCheckNeeded.length > 0) {
+      actions.unshift({ type: "none", message: "checking if fires spread" })
+      actions.push({ type: "fire_spread_check" })
+    }
+  } else if (game.gameState?.type === stateType.VariableWeather) {
     actions.unshift({ type: "none", message: "variable weather" })
     actions.push({ type: "weather_check" })
   } else {

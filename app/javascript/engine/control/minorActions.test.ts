@@ -5,9 +5,10 @@ import PrecipCheckState from "./state/PrecipCheckState";
 import SmokeCheckState from "./state/SmokeCheckState";
 import { Coordinate, featureType, unitStatus, windType } from "../../utilities/commonTypes";
 import Feature from "../Feature";
-import FireExtinguishState from "./state/FireExtinguishState";
+import FireCheckState from "./state/FireCheckState";
 import Unit from "../Unit";
 import WeatherState from "./state/WeatherState";
+import BaseAction from "../actions/BaseAction";
 
 describe("precipitation", () => {
   test("skips no chance", () => {
@@ -191,18 +192,59 @@ describe("precipitation", () => {
     )
   })
 
+  test("smoke doesn't get checked twice", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windSpeed = windType.Moderate
+    map.windDirection = 4
+
+    const smoke1 = new Feature(testSmoke)
+    smoke1.id = "smoke1"
+    const loc1 = new Coordinate(0,0)
+    map.addCounter(loc1, smoke1)
+    const smoke2 = new Feature(testSmoke)
+    smoke2.id = "smoke2"
+    const loc2 = new Coordinate(0,1)
+    map.addCounter(loc2, smoke2)
+
+    game.checkForSmoke(false)
+    expect(game.smokeCheckNeeded.length).toBe(2)
+    const state = game.gameState as SmokeCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+
+    game.checkForSmoke(false)
+    expect(game.smokeCheckNeeded.length).toBe(1)
+    state.finish()
+
+    game.checkForSmoke(false)
+    expect(game.smokeCheckNeeded.length).toBe(0)
+
+    Math.random = original
+
+    let units = map.countersAt(loc1)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Smoke)
+    units = map.countersAt(loc2)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Smoke)
+    units = map.countersAt(new Coordinate(1, 1))
+  })
+
   test("fire goes out", () => {
     const game = createBlankGame()
     const map = game.scenario.map
 
-    const smoke = new Feature(testFire)
-    smoke.id = "fire"
+    const fire = new Feature(testFire)
+    fire.id = "fire"
     const loc = new Coordinate(0,0)
-    map.addCounter(loc, smoke)
+    map.addCounter(loc, fire)
 
     game.checkForFire(false)
     expect(game.fireOutCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireExtinguishState
+    const state = game.gameState as FireCheckState
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -224,14 +266,14 @@ describe("precipitation", () => {
     const game = createBlankGame()
     const map = game.scenario.map
 
-    const smoke = new Feature(testFire)
-    smoke.id = "fire"
+    const fire = new Feature(testFire)
+    fire.id = "fire"
     const loc = new Coordinate(0,0)
-    map.addCounter(loc, smoke)
+    map.addCounter(loc, fire)
 
     game.checkForFire(false)
     expect(game.fireOutCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireExtinguishState
+    const state = game.gameState as FireCheckState
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -256,17 +298,32 @@ describe("precipitation", () => {
     map.windSpeed = windType.Moderate
     map.windDirection = 4
 
-    const smoke = new Feature(testFire)
-    smoke.id = "fire"
+    const fire = new Feature(testFire)
+    fire.id = "fire"
     const loc = new Coordinate(0,0)
-    map.addCounter(loc, smoke)
+    map.addCounter(loc, fire)
 
     game.checkForFire(false)
-    game.fireOutCheckNeeded = []
-    expect(game.fireSpreadCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireExtinguishState
+    expect(game.fireOutCheckNeeded.length).toBe(1)
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+
+    const state = game.gameState as FireCheckState
 
     const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+
+    let action = game.actions[0]
+    expect(action.type).toBe("fire_out_check")
+    expect(action.stringValue).toBe(
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10, no effect"
+    )
+    expect(game.actions.length).toBe(1)
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(0)
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     state.finish()
     Math.random = original
@@ -279,7 +336,7 @@ describe("precipitation", () => {
     expect(units.length).toBe(1)
     expect(units[0].feature.type).toBe(featureType.Fire)
 
-    const action = game.actions[0]
+    action = game.actions[1]
     expect(action.type).toBe("fire_spread_check")
     expect(action.stringValue).toBe(
       "fire spread check for A1: fire spreads on 2 or less, rolled 1, fire spreads"
@@ -292,18 +349,31 @@ describe("precipitation", () => {
     map.windSpeed = windType.Moderate
     map.windDirection = 4
 
-    const smoke = new Feature(testFire)
-    smoke.id = "fire"
+    const fire = new Feature(testFire)
+    fire.id = "fire"
     const loc = new Coordinate(0,0)
-    map.addCounter(loc, smoke)
+    map.addCounter(loc, fire)
 
     game.checkForFire(false)
-    game.fireOutCheckNeeded = []
-    expect(game.fireSpreadCheckNeeded.length).toBe(1)
-    const state = game.gameState as FireExtinguishState
+    expect(game.fireOutCheckNeeded.length).toBe(1)
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+    const state = game.gameState as FireCheckState
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+
+    let action = game.lastAction as BaseAction
+    expect(action.type).toBe("fire_out_check")
+    expect(action.stringValue).toBe(
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10, no effect"
+    )
+    expect(game.actions.length).toBe(1)
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(0)
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+
     state.finish()
     Math.random = original
 
@@ -314,7 +384,7 @@ describe("precipitation", () => {
     units = map.countersAt(new Coordinate(1, 0))
     expect(units.length).toBe(0)
 
-    const action = game.actions[0]
+    action = game.actions[1]
     expect(action.type).toBe("fire_spread_check")
     expect(action.stringValue).toBe(
       "fire spread check for A1: fire spreads on 2 or less, rolled 10, no effect"
@@ -327,14 +397,73 @@ describe("precipitation", () => {
     map.windSpeed = windType.Moderate
     map.windDirection = 1
 
-    const smoke = new Feature(testFire)
-    smoke.id = "fire"
+    const fire = new Feature(testFire)
+    fire.id = "fire"
     const loc = new Coordinate(0,0)
-    map.addCounter(loc, smoke)
+    map.addCounter(loc, fire)
 
     game.checkForFire(false)
     game.fireOutCheckNeeded = []
     expect(game.fireSpreadCheckNeeded.length).toBe(0)
+  })
+
+  test("fire doesn't get checked twice", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windSpeed = windType.Moderate
+    map.windDirection = 4
+
+    const fire1 = new Feature(testFire)
+    fire1.id = "fire1"
+    const loc1 = new Coordinate(0,0)
+    map.addCounter(loc1, fire1)
+    const fire2 = new Feature(testFire)
+    fire2.id = "fire2"
+    const loc2 = new Coordinate(0,1)
+    map.addCounter(loc2, fire2)
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(2)
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+    const state = game.gameState as FireCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(1)
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+    state.finish()
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(0)
+    expect(game.fireSpreadCheckNeeded.length).toBe(2)
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    state.finish()
+
+    game.checkForFire(false)
+    expect(game.fireOutCheckNeeded.length).toBe(0)
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+    state.finish()
+
+    Math.random = original
+
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+
+    let units = map.countersAt(loc1)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
+    units = map.countersAt(new Coordinate(1, 0))
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
+    units = map.countersAt(loc2)
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
+    units = map.countersAt(new Coordinate(1, 1))
+    expect(units.length).toBe(1)
+    expect(units[0].feature.type).toBe(featureType.Fire)
   })
 
   test("variable wind changes", () => {
@@ -375,5 +504,30 @@ describe("precipitation", () => {
 
     expect(map.windDirection).toBe(1)
     expect(map.windSpeed).toBe(windType.Strong)
+  })
+
+  test("running checkForWind doesn't do checks twice", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windVariable = true
+    map.windDirection = 1
+    map.windSpeed = windType.Strong
+
+    game.checkForWind(false)
+    expect(game.checkWindDirection).toBe(true)
+    expect(game.checkWindSpeed).toBe(true)
+
+    const state = game.gameState as WeatherState
+    state.finish()
+
+    game.checkForWind(false)
+    expect(game.checkWindDirection).toBe(false)
+    expect(game.checkWindSpeed).toBe(true)
+
+    state.finish()
+
+    game.checkForWind(false)
+    expect(game.checkWindDirection).toBe(false)
+    expect(game.checkWindSpeed).toBe(false)
   })
 })
