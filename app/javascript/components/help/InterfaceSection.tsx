@@ -56,20 +56,20 @@ export default function InterfaceSection() {
     const shrink = (innerWidth - 1) / width;
     const buttonSelect = showNumbers ? "counter-help-button-selected" : "";
     const coords: { x: number; y: number }[] = [
-      { x: 80, y: 80 },
+      { x: 92, y: 90 },
       { x: 800, y: 50 },
       { x: 200, y: 200 },
       { x: 1700, y: 200 },
-      { x: 1020, y: 550 },
-      { x: 90, y: 690 },
-      { x: 450, y: 742 },
-      { x: 1270, y: 653 },
-      { x: 1632, y: 742 },
-      { x: 1995, y: 742 },
-      { x: 2720, y: 740 },
-      { x: 2720, y: 1140 },
-      { x: 2720, y: 1250 },
-      { x: 570, y: 1520 },
+      { x: 1070, y: 550 },
+      { x: 92, y: 690 },
+      { x: 700, y: 730 },
+      { x: 1265, y: 655 },
+      { x: 1555, y: 730 },
+      { x: 1990, y: 730 },
+      { x: 2715, y: 730 },
+      { x: 2715, y: 1130 },
+      { x: 2715, y: 1230 },
+      { x: 625, y: 1575 },
     ];
     setGameInterface(
       <div style={{ float: "right" }}>
