@@ -4,6 +4,7 @@ Using DO rails droplet (specifically)
 - yarn is fine, but need node 22
   - install nvm/build node 22
     Why it doesn't work with 20.15.0 like it does in dev, no idea.
+    20.19.0 seems fine, though it's goddamn dev stuff that's the issue
 - bundle install
 - <secret stored in secret location> for master.key
 - set RAILS_ENV=production

@@ -25,7 +25,7 @@ export function reactionFireHexes(game: Game): GameActionPath[] {
     action.data.origin?.forEach(s => {
       let check = false
       for (const c of rc) {
-        if (c.x === s.x && c.y === s.y) { check = true }
+        if (c.x === s.x && c.y === s.y) { check = true; break }
       }
       if (!check) { rc.push(new Coordinate(s.x, s.y)) }
     })

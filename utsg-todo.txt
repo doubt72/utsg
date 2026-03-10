@@ -1,11 +1,20 @@
 High Priority Features/Bug Fixes:
+  - Redo smoke
+    - Can smoke same hex multiple times
+      - Flatter odds (2-4)
+    - Exits smoke laying after one smoke action
+    - Disappate minus wind speed (1-4) + check (0-2 additional)
+
+  - Refactor firing action (currently an unmaintainable mess)
+    - Currently reaction fire is broken
+
   - Run through game / Finish 001 (description / balance)
+    - Rally / Close Combat focus
 
   - Fix hindrance bug
     - Through two fence corner intersections
   - Overlay both fire and displacement
 
-  - Refactor firing action (currently an unmaintainable mess)
   - Add changelog page / server version
   - Remove TODO on about page, still working and probably always will be
   - Add Some Developer Notes
