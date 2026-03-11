@@ -192,30 +192,25 @@ export default function MovementSection() {
           </tr>
           <tr>
             <td>
-              <strong>1-4</strong>
-            </td>
-            <td>smoke hindrance 1</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>5-7</strong>
+              <strong>1-5</strong>
             </td>
             <td>smoke hindrance 2</td>
           </tr>
           <tr>
-            <td className="pr05em">
-              <strong>8-9</strong>
+            <td>
+              <strong>6-8</strong>
             </td>
             <td>smoke hindrance 3</td>
           </tr>
           <tr>
-            <td>
-              <strong>10</strong>
+            <td className="pr05em">
+              <strong>9-10</strong>
             </td>
             <td>smoke hindrance 4</td>
           </tr>
         </tbody>
       </table>
+      <p>Laying additional smoke in the same hex will add to existing smoke in that hex.</p>
       <p>Use the following button to toggle laying smoke on and off:</p>
       <div className="flex mb1em">
         <div className="ml1em"></div>

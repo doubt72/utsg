@@ -184,10 +184,15 @@ export function driftRoll(roll: number): number {
 }
 
 export function smokeRoll(roll: number): number {
-  if (roll > 9) { return 4 }
-  if (roll > 7) { return 3 }
-  if (roll > 4) { return 2 }
-  return 1
+  if (roll > 8) { return 4 }
+  if (roll > 5) { return 3 }
+  return 2
+}
+
+export function smokeReduceRoll(roll: number): number {
+  if (roll > 8) { return 2 }
+  if (roll > 2) { return 1 }
+  return 0
 }
 
 export const initiativeRolls = [8, 11, 14, 16, 18, 19, 20]

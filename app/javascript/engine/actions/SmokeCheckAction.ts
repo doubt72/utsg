@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { coordinateToLabel, smokeReduceRoll } from "../../utilities/utilities";
+import Counter from "../Counter";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -30,8 +31,12 @@ export default class SmokeCheckAction extends BaseAction {
 
   mutateGame(): void {
     const loc = new Coordinate(this.target.x, this.target.y)
-    if (this.diceResult.result <= this.map.smokeCheckTarget()) {
+    const reduce = this.map.smokeCheckBase() + smokeReduceRoll(this.diceResult.result)
+    const feature = this.map.findCounterById(this.target.id) as Counter
+    if (reduce >= (feature.feature.hindrance ?? 99)) {
       this.map.eliminateCounter(loc, this.target.id)
+    } else {
+      (feature.feature.hindrance as number) -= reduce
     }
   }
 }

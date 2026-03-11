@@ -1,5 +1,5 @@
 import { hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
-import { rolld10 } from "../../../utilities/utilities";
+import { rolld10, smokeReduceRoll } from "../../../utilities/utilities";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
@@ -22,16 +22,16 @@ export default class SmokeCheckState extends BaseState {
   finish() {
     const feature = this.game.smokeCheckNeeded[0].feature
     const loc = this.game.smokeCheckNeeded[0].loc
-    const need = this.map.smokeCheckTarget()
     const result = rolld10()
+    const reduce = this.map.smokeCheckBase() + smokeReduceRoll(result)
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
         action: "smoke_check", target: [{ x: loc.x, y: loc.y, id: feature.id }],
         dice_result: [{
           result, type: "d10",
-          description: `dissipates on ${need} or less, rolled ${result}, ${
-            result > need ? "no effect" : "smoke dissipates"
+          description: `rolled ${result}, reduces smoke by ${reduce}${
+            reduce >= (feature.hindrance ?? 99) ? ", smoke eliminated" : ""
           }`
         }],
         old_initiative: this.game.initiative,

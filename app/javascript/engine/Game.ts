@@ -10,7 +10,7 @@ import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, counterKey, otherPlayer } from "../utilities/utilities";
 import Unit from "./Unit";
 import Hex from "./Hex";
-import { sortValues } from "./support/organizeStacks";
+import organizeStacks, { sortValues } from "./support/organizeStacks";
 import BaseState, { stateType } from "./control/state/BaseState";
 import FireState from "./control/state/FireState";
 import MoveState from "./control/state/MoveState";
@@ -721,6 +721,7 @@ export default class Game {
         })
       }
       if (m.type !== "info" && m.type !== "state") { checkPhase(this, backendSync) }
+      organizeStacks(this.scenario.map)
       this.refreshCallback(this)
     } catch(err) {
       if (err instanceof IllegalActionError) {

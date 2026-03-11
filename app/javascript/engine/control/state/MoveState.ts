@@ -339,6 +339,7 @@ export default class MoveState extends BaseState {
         new Coordinate(x, y),
         new Feature({ ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
       )
+      this.smoke = false
     } else {
       let facing = target.rotates ? lastPath.facing : undefined
       const child = target.children[0]

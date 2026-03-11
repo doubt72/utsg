@@ -174,16 +174,16 @@ export default class Marker {
       }
       if (this.subType === windType.Calm) {
         text.push("")
-        text.push("20% sd")
+        text.push("sd 1/2/3")
       } else if (this.subType === windType.Breeze) {
         text.push("10% fs")
-        text.push("40% sd")
+        text.push("sd 2/3/4")
       } else if (this.subType === windType.Moderate) {
         text.push("20% fs")
-        text.push("70% sd")
+        text.push("sd 3/4/5")
       } else if (this.subType === windType.Strong) {
         text.push("40% fs")
-        text.push("90% sd")
+        text.push("sd 4/5/6")
       }
       return text
     }

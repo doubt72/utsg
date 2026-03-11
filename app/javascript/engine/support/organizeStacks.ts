@@ -112,11 +112,26 @@ function renormalize(game: Game, list: (Unit | Feature)[]): (Unit | Feature)[] {
     loadVehicles(
       pairTowedWeapons(
         pairCrewedWeapons(
-          unshiftFeatures(list)
+          unshiftFeatures(
+            collapseSmoke(list) // irreversable, but okay since only happens when laying smoke
+          )
         )
       )
     )
   )
+}
+
+function collapseSmoke(list: (Unit | Feature)[]): (Unit | Feature)[] {
+  const totalSmoke = list.filter(u => u.isFeature && u.name === "Smoke").reduce((sum, s) => {
+    return sum + (s.hindrance ?? 0)
+  }, 0)
+  const newList: (Unit | Feature)[] = list.filter(u => !u.isFeature || u.name !== "Smoke")
+  if (totalSmoke === 0) { return newList }
+
+  const id = list.filter(u => u.isFeature && u.name === "Smoke")[0].id
+  return newList.concat([new Feature(
+    { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: totalSmoke, id }
+  )])
 }
 
 function unshiftFeatures(list: (Unit | Feature)[]): (Unit | Feature)[] {

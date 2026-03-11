@@ -15,7 +15,7 @@ import Feature from "../Feature"
 import {
   createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr, testGMC, testGMG,
   testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill, testRInf, testRTank,
-  testRTruck, testWire
+  testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
@@ -2181,7 +2181,7 @@ describe("fire tests", () => {
       expect(game.lastAction?.stringValue).toBe(
         "German Radio 10.5cm at D3 fired smoke at E3; targeting roll (d10x10): target 4, rolled 1: miss, " +
         "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
-        "drifted to D3; smoke roll (d10): rolled 1, smoke level 1"
+        "drifted to D3; smoke roll (d10): rolled 1, smoke level 2"
       )
 
       const all = map.allCounters
@@ -2193,6 +2193,46 @@ describe("fire tests", () => {
       expect(all[2].unit.id).toBe("firing2")
 
       expect(game.fireStartCheckNeeded).toStrictEqual(undefined)
+    })
+
+    test("offboard artillery firing smoke adds onto existing smoke", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadio)
+      firing2.id = "firing2"
+      firing2.select()
+      map.addCounter(floc, firing2)
+
+      const smoke = new Feature(testSmoke)
+      smoke.id = "smoke1"
+      map.addCounter(new Coordinate(1, 2), smoke)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      game.fireState.smokeToggle()
+      game.fireState.toHex(2, 2)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(game.lastAction?.stringValue).toBe(
+        "German Radio 10.5cm at D3 fired smoke at C3; targeting roll (d10x10): target 4, rolled 1: miss, " +
+        "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
+        "drifted to B3; smoke roll (d10): rolled 1, smoke level 2"
+      )
+
+      const counters = map.countersAt(new Coordinate(1, 2))
+      expect(counters.length).toBe(1)
+      expect(counters[0].unit.id).toBe("0-smoke")
+      expect(counters[0].feature.hindrance).toBe(4)
     })
 
     test("mortar firing smoke", () => {

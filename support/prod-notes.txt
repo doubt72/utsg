@@ -6,15 +6,31 @@ Using DO rails droplet (specifically)
     Why it doesn't work with 20.15.0 like it does in dev, no idea.
     20.19.0 seems fine, though it's goddamn dev stuff that's the issue
 - bundle install
-- <secret stored in secret location> for master.key
+- <secret stored in secret location> for config/master.key
+  - EDITOR=vi rails credentials:edit
 - set RAILS_ENV=production
 - set AHTF_DATABASE_PASSWORD=<secret stored in secret location>
 - install redis/redis-cli
 - run 'rake db:create'
 - run 'rake db:migrate'
-- run 'rake assets:precompile'
+- run 'rake assets:precompile' (rake assets:clobber)
 - copy app/assets/images(/units) to /public/assets
   - Figure out how to deal with fingerprinting of images?  Or how not to fingerprint them at all
 
 - rails.service to /etc/systemd/system/
 - rails-nginx (as rails) to /etc/nginx/sites-available/
+
+root# systemctl stop nginx
+root# systemctl stop rails
+rails# git pull
+rails# yarn
+rails# bundle install
+rails# rake assets:clobber
+rails# rake assets:precompile
+rails# cp -r app/assets/images/* public/assets/
+root# systemctl start rails
+root# systemctl start nginx
+
+Fingerprinting just not working with images, and may not be possible to support with current
+configuration since react has no idea what the hashes are (they aren't MD5 or SHA256); remember
+to use new names if images do change or they will never come out of cache.

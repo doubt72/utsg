@@ -13,7 +13,7 @@ import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
 import {
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testMine,
-  testMineAP, testMineAT, testRInf, testRTank, testWire
+  testMineAP, testMineAT, testRInf, testRTank, testSmoke, testWire
 } from "./testHelpers"
 import Feature from "../Feature"
 import MoveState from "./state/MoveState"
@@ -420,16 +420,12 @@ describe("movement tests", () => {
 
     expect(game.moveState.addActions.length).toBe(0)
     game.moveState.move(3, 3)
+    expect(showLaySmoke(game)).toBe(true)
+    expect(game.moveState.smoke).toBe(false)
     expect(game.moveState.addActions.length).toBe(1)
     expect(map.units[3][3].filter(u => u.ghost).length).toBe(1)
     expect(game.moveState.path.length).toBe(1)
-    expect(game.gameState?.openHex(4, 2)).toBe(1)
-    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.Closed)
-    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
 
-    game.moveState.smokeToggle()
-    expect(showLaySmoke(game)).toBe(true)
-    expect(game.moveState.smoke).toBe(false)
     expect(game.gameState?.openHex(3, 2)).toBe(1)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
     // Laying smoke cancels road bonus
@@ -459,6 +455,53 @@ describe("movement tests", () => {
       // Can't roll back a smoke roll
       expect(err instanceof IllegalActionError).toBe(true)
     }
+  })
+
+  test("double smoke", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    const smoke = new Feature(testSmoke)
+    smoke.id = "smoke1"
+    map.addCounter(new Coordinate(3, 3), smoke)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.smokeToggle()
+
+    expect(game.moveState.doneSelect).toBe(true)
+    expect(game.moveState.smoke).toBe(true)
+    expect(game.moveState.dropping).toBe(false)
+    expect(game.moveState.loading).toBe(false)
+
+    expect(game.gameState?.openHex(0, 0)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(4, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(2)
+    expect(game.gameState?.openHex(3, 3)).toBe(2)
+
+    expect(showLaySmoke(game)).toBe(true)
+    expect(showDropMove(game)).toBe(false)
+    expect(showLoadMove(game)).toBe(false)
+
+    expect(game.moveState.addActions.length).toBe(0)
+    game.moveState.move(3, 3)
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(1)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(0)
+
+    const counters = map.countersAt(new Coordinate(3, 3))
+    expect(counters.length).toBe(1)
+    expect(counters[0].feature.id).toBe("uf-0-0")
+    expect(counters[0].feature.hindrance).toBe(6)
   })
 
   test("multi-select", () => {

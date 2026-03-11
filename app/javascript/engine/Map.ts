@@ -791,11 +791,11 @@ export default class Map {
     return rc
   }
 
-  smokeCheckTarget(): number {
-    if (this.windSpeed === windType.Breeze) { return 4 }
-    if (this.windSpeed === windType.Moderate) { return 7 }
-    if (this.windSpeed === windType.Strong) { return 9 }
-    return 2
+  smokeCheckBase(): number {
+    if (this.windSpeed === windType.Breeze) { return 2 }
+    if (this.windSpeed === windType.Moderate) { return 3 }
+    if (this.windSpeed === windType.Strong) { return 4 }
+    return 1
   }
 
   fireOutTarget(): number {

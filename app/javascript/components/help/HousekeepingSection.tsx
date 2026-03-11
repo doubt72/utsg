@@ -2,7 +2,8 @@ import React from "react";
 import { stackLimit } from "../../utilities/utilities";
 import CounterDisplay from "../game/CounterDisplay";
 import Marker from "../../engine/Marker";
-import { markerType, weatherType, windType } from "../../utilities/commonTypes";
+import { featureType, markerType, weatherType, windType } from "../../utilities/commonTypes";
+import Feature from "../../engine/Feature";
 
 export default function HousekeepingSection() {
   const section = "5.2.4.2"
@@ -11,6 +12,8 @@ export default function HousekeepingSection() {
   const wind2 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Breeze })
   const wind3 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Moderate })
   const wind4 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Strong })
+
+  const smoke1 = new Feature({ ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 4, id: "smoke1" })
 
   const vwind1 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Calm, v: "true" })
   const vwind2 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Breeze, v: "true" })
@@ -46,7 +49,7 @@ export default function HousekeepingSection() {
       </p>
       <h3>{section}.3. Checking for Smoke Dispersion</h3>
       <p>
-        If any hexes contain smoke markers, they may be dispersed. The chance of dispersion depends
+        If any hexes contain smoke markers, they will disperse. The amount of dispersion depends
         upon the wind speed.
       </p>
       <div className={"flex mb1em"}>
@@ -67,13 +70,44 @@ export default function HousekeepingSection() {
         </div>
       </div>
       <p>
-        The <strong>sd</strong> percentage is the chance of smoke dispersion. Each hex containing
-        smoke is checked separately: a single d10 is rolled, and if ten times the result is less
-        than or equal to the <strong>sd</strong> value, the smoke counter is removed from the map.
+        The <strong>sd</strong> numbers are the amount of smoke in a hex that may disperse. Each hex containing
+        smoke is checked separately: a single d10 is rolled, and the following table is checked:
       </p>
+      <table>
+        <tbody>
+          <tr>
+            <th>roll</th>
+            <th>result</th>
+          </tr>
+          <tr>
+            <td>
+              <strong>1-2</strong>
+            </td>
+            <td>low number</td>
+          </tr>
+          <tr>
+            <td>
+              <strong>3-8</strong>
+            </td>
+            <td>middle number</td>
+          </tr>
+          <tr>
+            <td className="pr05em">
+              <strong>9-10</strong>
+            </td>
+            <td>high number</td>
+          </tr>
+        </tbody>
+      </table>
+      <div className={"flex mb1em"}>
+        <div>
+          <CounterDisplay unit={smoke1} />
+        </div>
+      </div>
       <p>
-        For example, if the wind was moderate and a 7 was rolled, the smoke marker being checked
-        would be removed.
+        For example, if the wind was moderate and a 2 was rolled, the a smoke marker would be reduced by 3.
+        If the current hindrance of the smoke marker was 4, it would be reduced to 1; anything hindrance
+        lower than that would be removed from the board completely.
       </p>
       <h3>{section}.4. Checking for Blazes Being Extinguished or Spreading</h3>
       <p>

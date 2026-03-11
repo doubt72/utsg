@@ -147,7 +147,7 @@ describe("precipitation", () => {
     const state = game.gameState as SmokeCheckState
 
     const original = Math.random
-    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
     state.finish()
     Math.random = original
 
@@ -158,7 +158,7 @@ describe("precipitation", () => {
     const action = game.actions[0]
     expect(action.type).toBe("smoke_check")
     expect(action.stringValue).toBe(
-      "smoke dispersion check for A1: dissipates on 2 or less, rolled 1, smoke dissipates"
+      "smoke dispersion check for A1: rolled 10, reduces smoke by 3, smoke eliminated"
     )
   })
 
@@ -176,7 +176,7 @@ describe("precipitation", () => {
     const state = game.gameState as SmokeCheckState
 
     const original = Math.random
-    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
     state.finish()
     Math.random = original
 
@@ -184,18 +184,19 @@ describe("precipitation", () => {
     const units = map.countersAt(loc)
     expect(units.length).toBe(1)
     expect(units[0].feature.type).toBe(featureType.Smoke)
+    expect(units[0].feature.hindrance).toBe(1)
 
     const action = game.actions[0]
     expect(action.type).toBe("smoke_check")
     expect(action.stringValue).toBe(
-      "smoke dispersion check for A1: dissipates on 2 or less, rolled 10, no effect"
+      "smoke dispersion check for A1: rolled 1, reduces smoke by 1"
     )
   })
 
   test("smoke doesn't get checked twice", () => {
     const game = createBlankGame()
     const map = game.scenario.map
-    map.windSpeed = windType.Moderate
+    map.windSpeed = windType.Calm
     map.windDirection = 4
 
     const smoke1 = new Feature(testSmoke)
@@ -212,7 +213,7 @@ describe("precipitation", () => {
     const state = game.gameState as SmokeCheckState
 
     const original = Math.random
-    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
     state.finish()
 
     game.checkForSmoke(false)
@@ -227,9 +228,11 @@ describe("precipitation", () => {
     let units = map.countersAt(loc1)
     expect(units.length).toBe(1)
     expect(units[0].feature.type).toBe(featureType.Smoke)
+    expect(units[0].feature.hindrance).toBe(1)
     units = map.countersAt(loc2)
     expect(units.length).toBe(1)
     expect(units[0].feature.type).toBe(featureType.Smoke)
+    expect(units[0].feature.hindrance).toBe(1)
     units = map.countersAt(new Coordinate(1, 1))
   })
 
