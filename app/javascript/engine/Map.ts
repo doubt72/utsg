@@ -800,9 +800,9 @@ export default class Map {
 
   fireOutTarget(): number {
     if (this.currentWeather === weatherType.Fog) { return 3 }
-    if (this.currentWeather === weatherType.Rain) { return 6 }
-    if (this.currentWeather === weatherType.Snow) { return 4 }
-    if (this.currentWeather === weatherType.Sand) { return 3 }
+    if (this.currentWeather === weatherType.Rain) { return 8 }
+    if (this.currentWeather === weatherType.Snow) { return 5 }
+    if (this.currentWeather === weatherType.Sand) { return 4 }
     return 1
   }
 
@@ -810,7 +810,7 @@ export default class Map {
     let rc = 0
     if (this.windSpeed === windType.Breeze) { rc = 1 }
     if (this.windSpeed === windType.Moderate) { rc = 2 }
-    if (this.windSpeed === windType.Strong) { rc = 4 }
+    if (this.windSpeed === windType.Strong) { rc = 3 }
     if (this.currentWeather === weatherType.Dust) { rc += 1 }
     return rc
   }

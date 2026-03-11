@@ -498,7 +498,7 @@ export default function TerrainSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
-      <h3 className="mt05em">{section}.1. Illustrated</h3>
+      <h3 className="mt05em">{section}.1. Terrain Illustrated</h3>
       <p>
         Select the buttons on the right to see the different types of terrain on the illustration below:
       </p>

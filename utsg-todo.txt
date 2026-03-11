@@ -1,10 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Redo smoke
-    - Can smoke same hex multiple times
-      - Flatter odds (2-4)
-    - Exits smoke laying after one smoke action
-    - Disappate minus wind speed (1-4) + check (0-2 additional)
-
   - Refactor firing action (currently an unmaintainable mess)
     - Currently reaction fire is broken
 

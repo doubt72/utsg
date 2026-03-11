@@ -31,6 +31,11 @@ rails# cp -r app/assets/images/* public/assets/
 root# systemctl start rails
 root# systemctl start nginx
 
+systemctl stop nginx && systemctl stop rails
+git pull && yarn && bundle install
+rake assets:clobber && rake assets:precompile && cp -r app/assets/images/* public/assets/
+systemctl start rails && systemctl start nginx
+
 Fingerprinting just not working with images, and may not be possible to support with current
 configuration since react has no idea what the hashes are (they aren't MD5 or SHA256); remember
 to use new names if images do change or they will never come out of cache.

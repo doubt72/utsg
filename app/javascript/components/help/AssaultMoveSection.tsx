@@ -8,7 +8,7 @@ export default function AssaultMoveSection() {
     <div>
       <p>
         Assault movement is a special form of{" "}
-        { helpLink("Move", "movement") }, i.e., an action
+        { helpLink("Movement", "movement") }, i.e., an action
         that allows units to move from one hex to another or perform other actions. It has very
         different rules than ordinary movement, however.
       </p>

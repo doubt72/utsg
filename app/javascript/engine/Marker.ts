@@ -159,9 +159,9 @@ export default class Marker {
     if (this.type === markerType.Weather) {
       if (this.subType === weatherType.Dry) { return ["10% fe", "", ""] }
       if (this.subType === weatherType.Fog) { return ["30% fe", "", ""] }
-      if (this.subType === weatherType.Sand) { return ["30% fe", "", ""] }
+      if (this.subType === weatherType.Sand) { return ["40% fe", "", ""] }
       if (this.subType === weatherType.Dust) { return ["10% fe", "+10% fs", ""] }
-      const fe = this.subType === weatherType.Rain ? "60% fe" : "40% fe"
+      const fe = this.subType === weatherType.Rain ? "80% fe" : "50% fe"
       if (!this.value) { return [fe, "", ""] }
       return [fe, `${this.value}0% chance`, ""]
     }
@@ -182,7 +182,7 @@ export default class Marker {
         text.push("20% fs")
         text.push("sd 3/4/5")
       } else if (this.subType === windType.Strong) {
-        text.push("40% fs")
+        text.push("30% fs")
         text.push("sd 4/5/6")
       }
       return text

@@ -49,8 +49,8 @@ export default function HousekeepingSection() {
       </p>
       <h3>{section}.3. Checking for Smoke Dispersion</h3>
       <p>
-        If any hexes contain smoke markers, they will disperse. The amount of dispersion depends
-        upon the wind speed.
+        If any hexes contain a smoke marker, the smoke will disperse at least a little every turn.
+        The amount of dispersion depends on the wind speed along with a small random factor.
       </p>
       <div className={"flex mb1em"}>
         <div>
@@ -70,8 +70,9 @@ export default function HousekeepingSection() {
         </div>
       </div>
       <p>
-        The <strong>sd</strong> numbers are the amount of smoke in a hex that may disperse. Each hex containing
-        smoke is checked separately: a single d10 is rolled, and the following table is checked:
+        The <strong>sd</strong> numbers on the current wind marker are the total hindrance of smoke in a hex that
+        may disperse. Each hex containing smoke is checked separately: a single d10 is rolled, and the
+        following table is checked:
       </p>
       <table>
         <tbody>
@@ -105,9 +106,9 @@ export default function HousekeepingSection() {
         </div>
       </div>
       <p>
-        For example, if the wind was moderate and a 2 was rolled, the a smoke marker would be reduced by 3.
-        If the current hindrance of the smoke marker was 4, it would be reduced to 1; anything hindrance
-        lower than that would be removed from the board completely.
+        For example, if the wind was moderate and a 2 was rolled smoke in a given hex, the a smoke marker
+        would be reduced by 3.  If the current hindrance of the smoke marker was 4, it would be reduced to 1;
+        any smoke with a hindrance lower than that would be removed from the board completely.
       </p>
       <h3>{section}.4. Checking for Blazes Being Extinguished or Spreading</h3>
       <p>
@@ -215,9 +216,10 @@ export default function HousekeepingSection() {
         </tbody>
       </table>
       <p>
-        Weaken or strengthen results in the wind being changed to the next weaker or stronger of
-        calm, breeze, moderate, or strong. If the wind is already calm, it cannot weaken further so
-        that result has no effect. Similarly the wind cannot strengthen if already strong.
+        Weaken results in the wind being changed to the next weaker of calm, breeze, moderate,
+        or strong.  Strengthen results in the wind being changed in the opposite order.
+        If the wind is already calm, it cannot weaken further so that result has no effect.
+        Similarly the wind cannot strengthen if it is already strong.
       </p>
     </div>
   );

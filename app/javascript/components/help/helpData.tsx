@@ -100,11 +100,12 @@ export function helpIndexByName(name: string): number[] {
 
 export function helpLink(section: string, text: string) {
   const key = helpIndexByName(section).join(".")
+  const idKey = helpIndexByName(section).join("-")
   return (
     <Link to={`/help/${key}`}
           onClick={(event) => {
             event.preventDefault()
-            document.querySelector(`#s${key}`)?.scrollIntoView()
+            document.querySelector(`#s${idKey}`)?.scrollIntoView()
           }}>{text}</Link>
   )
 }
