@@ -1,8 +1,9 @@
-import { Coordinate, Direction } from "../../utilities/commonTypes"
+import { Coordinate, Direction, markerType } from "../../utilities/commonTypes"
 import { hexDistance } from "../../utilities/utilities"
 import BaseAction, { significantActions } from "../actions/BaseAction"
 import Game from "../Game"
 import { gameActionAddActionType, GameActionPath } from "../GameAction"
+import Marker from "../Marker"
 import Unit from "../Unit"
 
 export function reactionFireHexes(game: Game): GameActionPath[] {
@@ -17,7 +18,7 @@ export function reactionFireHexes(game: Game): GameActionPath[] {
         for (const c of rc) {
           if (c.x === s.x && c.y === s.y) { check = true }
         }
-        if (!check) { rc.push(s) }
+        if (!check) { rc.push({ x: s.x, y: s.y, facing: s.facing, turret: s.turret }) }
       }
     }
     rc.reverse()
@@ -27,7 +28,7 @@ export function reactionFireHexes(game: Game): GameActionPath[] {
       for (const c of rc) {
         if (c.x === s.x && c.y === s.y) { check = true; break }
       }
-      if (!check) { rc.push(new Coordinate(s.x, s.y)) }
+      if (!check) { rc.push({ x: s.x, y: s.y }) }
     })
   }
   return rc
@@ -78,7 +79,12 @@ export function placeReactionFireGhosts(game: Game) {
 
 export function reactionFireInRange(game: Game, unit: Unit, loc: Coordinate): boolean {
   for (const hex of reactionFireHexes(game)) {
-    if (hexDistance(loc, new Coordinate(hex.x, hex.y)) <= unit.currentRange) { return true }
+    const range = hexDistance(loc, new Coordinate(hex.x, hex.y))
+    const actualUnit = unit.isMarker && (unit as unknown as Marker).type === markerType.TrackedHull ?
+      (unit as unknown as Marker).turret as Unit : unit
+    if (range <= actualUnit.currentRange) { return true }
+    if (actualUnit.sponson && !(actualUnit.sponsonJammed || actualUnit.sponsonDestroyed) &&
+        range <= actualUnit.sponson.range) { return true }
   }
   return false
 }

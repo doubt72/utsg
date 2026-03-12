@@ -35,6 +35,7 @@ export function reactionFireCheck(game: Game, action: boolean = true): boolean {
             message: "no valid units have line-of-sight, skipping reaction fire",
           },
         }, game))
+        game.resetCurrentPlayer()
       }
     } else { return true }
   }
@@ -106,7 +107,7 @@ export default class ReactionState extends BaseState {
   selectable(selection: CounterSelectionTarget): boolean {
     if (selection.target.type === "reinforcement") { return false }
     const target = selection.counter.unit as Unit
-    const loc = new Coordinate(selection.target.xy.x, selection.target.xy.y)
+    const loc = selection.target.xy
     if (this.openHex(loc.x, loc.y) !== hexOpenType.Open) { return false }
     if (!reactionFireInRange(this.game, target, loc)) {
       this.game.addMessage("unit out of range")

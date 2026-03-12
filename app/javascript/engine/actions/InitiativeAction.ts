@@ -50,6 +50,8 @@ export default class InitiativeAction extends BaseAction {
       } else {
         this.game.togglePlayer()
       }
+    } else {
+      this.game.togglePlayer()
     }
   }
 }

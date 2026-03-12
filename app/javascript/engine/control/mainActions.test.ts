@@ -68,8 +68,10 @@ describe("game action tests", () => {
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
 
+    expect(game.currentInitiativePlayer).toBe(2)
     expect(game.currentPlayer).toBe(2)
     game.gameState?.finish()
+    expect(game.currentInitiativePlayer).toBe(1)
     expect(game.currentPlayer).toBe(1)
 
     Math.random = original
@@ -168,12 +170,12 @@ describe("game action tests", () => {
     expect(game.currentPlayer).toBe(2)
     expect(game.currentInitiativePlayer).toBe(2)
     game.gameState?.finish()
+    expect(reactionFireCheck(game)).toBe(false)
     expect(game.currentPlayer).toBe(1)
     expect(game.currentInitiativePlayer).toBe(1)
 
     Math.random = original
 
-    expect(reactionFireCheck(game)).toBe(false)
 
     const action = game.lastAction
     expect(action?.type).toBe("reaction_pass")

@@ -107,6 +107,7 @@ Future Scenarios:
 - 0 Velikiye Luki/Stalingrad of the North
   0 Fight Over Bridge in Gully Somewhere
   0 Mass Assualt on Hill
+  0 Mass City assault
   0 the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
       Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
       Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
