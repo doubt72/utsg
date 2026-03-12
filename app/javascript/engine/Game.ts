@@ -684,7 +684,7 @@ export default class Game {
           this.refreshCallback(this)
         }
         if (m.undone && !em.undone) {
-          this.executeUndo()
+          this.executeUndo(backendSync, m.sequence)
         }
         return
       }
@@ -720,7 +720,7 @@ export default class Game {
           ok: () => {},
         })
       }
-      if (m.type !== "info" && m.type !== "state") { checkPhase(this, backendSync) }
+      if (m.type !== "info" && m.type !== "state" && !backendSync) { checkPhase(this, backendSync) }
       organizeStacks(this.scenario.map)
       this.refreshCallback(this)
     } catch(err) {
@@ -740,21 +740,20 @@ export default class Game {
     return this.lastAction.undoPossible
   }
 
-  executeUndo() {
+  executeUndo(backendSync: boolean, seq?: number) {
     this.scenario.map.clearAllSelections()
     if (!this.lastAction) { return }
-    const action = this.lastAction
+    const sequence = seq === undefined ? this.lastAction.sequence as number : seq
+    const action = this.findActionBySequence(sequence)
+    if (!action) { return }
     action.undo()
     action.undone = true
-    this.lastActionIndex--
+    if (this.lastActionIndex >= action.index) { this.lastActionIndex = action.index - 1 }
 
-    while(this.lastActionIndex >= 0 && this.lastAction.undone) {
-      this.lastActionIndex--
-    }
     if (action.lastUndoCascade) {
-      this.executeUndo()
+      this.executeUndo(backendSync, sequence - 1)
     } else {
-      if (!this.suppressNetwork) {
+      if (!this.suppressNetwork && !backendSync) {
         postAPI(`/api/v1/game_actions/${action.id}/undo`, {}, { ok: () => {} })
       }
     }

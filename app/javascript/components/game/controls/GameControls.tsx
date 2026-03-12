@@ -59,18 +59,19 @@ import KickButton from "./buttons/KickButton";
 
 interface GameControlsProps {
   game: Game;
+  update: number;
   callback: () => void;
 }
 
-export default function GameControls({ game, callback }: GameControlsProps) {
+export default function GameControls({ game, callback, update }: GameControlsProps) {
   const [playerNation, setPlayerNation] = useState<JSX.Element | undefined>()
   const [controls, setControls] = useState<JSX.Element[]>([])
-  const [update, setUpdate] = useState(0)
+  const [internalUpdate, setInternalUpdate] = useState(0)
 
   useEffect(() => {
     if (!game.id) { return }
     displayActions()
-  }, [game, game.lastActionIndex, update])
+  }, [game, game.lastActionIndex, internalUpdate, update])
 
   useEffect(() => {
     if (!game.id) { return }
@@ -101,7 +102,7 @@ export default function GameControls({ game, callback }: GameControlsProps) {
   }, [game, game.state, game.currentPlayer])
 
   const callAllBack = () => {
-    setUpdate(s => s+1)
+    setInternalUpdate(s => s+1)
     callback()
   }
 

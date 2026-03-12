@@ -16,7 +16,7 @@ export default class InfoAction extends BaseAction {
   get type(): string { return "info" }
 
   get stringValue(): string {
-    return this.message
+    return `${this.message}${ this.undone ? " [cancelled]" : "" }`
   }
 
   get undoPossible() {

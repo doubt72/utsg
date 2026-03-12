@@ -10,7 +10,7 @@ interface UndoButtonProps {
 export default function UndoButton({ game, callback }: UndoButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    game.executeUndo()
+    game.executeUndo(false)
     callback()
   }
 

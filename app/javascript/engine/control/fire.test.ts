@@ -109,7 +109,7 @@ describe("fire tests", () => {
       expect(firing.isActivated).toBe(true)
 
       try {
-        game.executeUndo()
+        game.executeUndo(false)
       } catch(err) {
         // Can't roll back a smoke roll
         expect(err instanceof IllegalActionError).toBe(true)

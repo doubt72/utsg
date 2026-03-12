@@ -54,7 +54,7 @@ describe("rush tests", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.status).toBe(unitStatus.Exhausted)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(1)
@@ -205,7 +205,7 @@ describe("rush tests", () => {
     expect(all[1].unit.name).toBe("Rifle")
     expect(all[1].unit.status).toBe(unitStatus.Exhausted)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -287,7 +287,7 @@ describe("rush tests", () => {
     expect(all[1].unit.name).toBe("Rifle")
     expect(all[1].unit.status).toBe(unitStatus.Exhausted)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -370,7 +370,7 @@ describe("rush tests", () => {
     expect(all[1].unit.name).toBe("Leader")
     expect(all[1].unit.status).toBe(unitStatus.Exhausted)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -470,7 +470,7 @@ describe("rush tests", () => {
     expect(all[1].unit.name).toBe("MG 08/15")
     expect(all[1].unit.status).toBe(unitStatus.Exhausted)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -538,7 +538,7 @@ describe("rush tests", () => {
     expect(all[1].unit.name).toBe("Rifle")
     expect(all[1].unit.status).toBe(unitStatus.Exhausted)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)

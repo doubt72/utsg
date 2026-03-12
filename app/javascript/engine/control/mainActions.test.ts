@@ -32,7 +32,7 @@ describe("game action tests", () => {
 
     expect(game.initiative).toBe(-2)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     expect(game.initiative).toBe(0)
   })
@@ -79,7 +79,7 @@ describe("game action tests", () => {
     expect(reactionFireCheck(game)).toBe(true)
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a breakdown roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -130,7 +130,7 @@ describe("game action tests", () => {
     expect(game.currentInitiativePlayer).toBe(2)
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a breakdown roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -183,7 +183,7 @@ describe("game action tests", () => {
     expect(game.currentPlayer).toBe(1)
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a breakdown roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -292,7 +292,7 @@ describe("game action tests", () => {
     expect(all[1].unit.immobilized).toBe(true)
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a breakdown roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -352,7 +352,7 @@ describe("game action tests", () => {
     expect(all[1].unit.immobilized).toBe(true)
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a breakdown roll
       expect(err instanceof IllegalActionError).toBe(true)

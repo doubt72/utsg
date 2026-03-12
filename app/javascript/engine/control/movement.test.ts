@@ -384,7 +384,7 @@ describe("movement tests", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
     all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(4)
@@ -450,7 +450,7 @@ describe("movement tests", () => {
     expect(all[1].feature.name).toBe("Smoke")
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a smoke roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -719,7 +719,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("Rifle")
     expect(all[1].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -859,7 +859,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("MG 08/15")
     expect(all[1].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -931,7 +931,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("MG 08/15")
     expect(all[1].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1008,7 +1008,7 @@ describe("movement tests", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1131,7 +1131,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("Rifle")
     expect(all[1].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1214,7 +1214,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1278,7 +1278,7 @@ describe("movement tests", () => {
     expect(all[1].hex?.y).toBe(3)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1341,7 +1341,7 @@ describe("movement tests", () => {
     expect(all[1].hex?.y).toBe(3)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1439,7 +1439,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1507,7 +1507,7 @@ describe("movement tests", () => {
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Crew")
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1570,7 +1570,7 @@ describe("movement tests", () => {
     expect(all[1].unit.parent?.name).toBe("Rifle")
     expect(all[1].unit.name).toBe("MG 08/15")
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1635,7 +1635,7 @@ describe("movement tests", () => {
     expect(all[1].unit.parent?.name).toBe("Crew")
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(2)
@@ -1840,7 +1840,7 @@ describe("movement tests", () => {
     expect(all[1].unit.turretFacing).toBe(5)
     expect(all[1].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
     all = map.allCounters
     expect(all.length).toBe(2)
     expect(all[0].hex?.x).toBe(4)
@@ -1938,7 +1938,7 @@ describe("movement tests", () => {
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
     expect(all[2].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(3)
@@ -2052,7 +2052,7 @@ describe("movement tests", () => {
     expect(all[2].unit.facing).toBe(4)
     expect(all[2].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(3)
@@ -2163,7 +2163,7 @@ describe("movement tests", () => {
     expect(all[2].unit.parent).toBe(undefined)
     expect(all[2].unit.facing).toBe(5)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(3)
@@ -2274,7 +2274,7 @@ describe("movement tests", () => {
     expect(all[2].unit.parent).toBe(undefined)
     expect(all[2].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(3)
@@ -2393,7 +2393,7 @@ describe("movement tests", () => {
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
     expect(all[2].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(3)
@@ -2507,7 +2507,7 @@ describe("movement tests", () => {
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
     expect(all[2].unit.status).toBe(unitStatus.Activated)
 
-    game.executeUndo()
+    game.executeUndo(false)
 
     all = map.allCounters
     expect(all.length).toBe(3)
@@ -2649,7 +2649,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("Rifle")
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a mine roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -2704,7 +2704,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("Rifle")
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a mine roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -2756,7 +2756,7 @@ describe("movement tests", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
 
-    game.executeUndo()
+    game.executeUndo(false)
   })
 
   test("vehicle moving into mines", () => {
@@ -2803,7 +2803,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("PzKpfw 35(t)")
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a mine roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -2855,7 +2855,7 @@ describe("movement tests", () => {
     expect(all[2].unit.name).toBe("PzKpfw 35(t)")
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a mine roll
       expect(err instanceof IllegalActionError).toBe(true)
@@ -2906,7 +2906,7 @@ describe("movement tests", () => {
     expect(all[1].unit.name).toBe("PzKpfw 35(t)")
 
     try {
-      game.executeUndo()
+      game.executeUndo(false)
     } catch(err) {
       // Can't roll back a mine roll
       expect(err instanceof IllegalActionError).toBe(true)

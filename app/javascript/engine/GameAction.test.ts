@@ -152,7 +152,7 @@ describe("action integration test", () => {
     expect(game.undoPossible).toBe(true)
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 1)
-    game.executeUndo()
+    game.executeUndo(false)
     expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
     // Undone actions are just marked as undone
@@ -226,7 +226,7 @@ describe("action integration test", () => {
     expect(game.lastActionIndex).toBe(index - 1)
     expect(game.currentPlayer).toBe(1)
 
-    game.executeUndo()
+    game.executeUndo(false)
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 3)
     expect(game.currentPlayer).toBe(2)

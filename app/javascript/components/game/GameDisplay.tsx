@@ -59,7 +59,7 @@ export default function GameDisplay() {
             json.scenario = scenario
             const g = new Game(json, gameNotification)
             setGame({k: g, turn: g.turn, state: g.state})
-            setControls(<GameControls game={g} callback={() => setUpdate(s => s+1)} />)
+            setControls(<GameControls game={g} callback={() => setUpdate(s => s+1)} update={update} />)
             setMap(g.scenario.map)
           })
         })
@@ -94,7 +94,7 @@ export default function GameDisplay() {
                   guiCollapse={collapseLayout} forceUpdate={update}
                   hexCallback={hexSelection} counterCallback={unitSelection}
                   directionCallback={directionSelection} resetCallback={resetDisplay}
-                  clearActionCallback={clearAction}
+                  clearActionCallback={clearAction} updateCallback={() => setUpdate(s => s+1)}
                   checkCancelHideLOS={checkCancelHideLOS} checkCancelTerrain={checkCancelTerrain} />
     )
   }, [
@@ -257,7 +257,8 @@ export default function GameDisplay() {
     if (!game.k) { return }
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
-      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                           update={update} />
     })
 
     let status = game.k.turn > 0 ? <span>turn {game.k.turn}/{game.k.scenario.turns}</span> : "initial setup"
@@ -309,20 +310,23 @@ export default function GameDisplay() {
       } else {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
-          return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+          return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                               update={update} />
         })
       }
     } else if (game.k?.gameState?.type === stateType.Move || game.k?.gameState?.type === stateType.Assault) {
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
-        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                             update={update} />
       })
     } else if (game.k?.gameState?.type === stateType.Fire) {
       const fire = game.k.fireState
       if (fire.selection[0].counter.unit.offBoard || fire.smoke) {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
-          return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+          return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                               update={update} />
         })
       }
     }
@@ -331,7 +335,8 @@ export default function GameDisplay() {
   const unitSelection = () => {
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
-      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                           update={update} />
     })
   }
 
@@ -346,13 +351,15 @@ export default function GameDisplay() {
       game.k.moveState.rotate(d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
-        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                             update={update} />
       })
     } else if (game.k?.gameState?.type === stateType.Assault) {
       game.k.assaultState.rotate(d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
-        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+        return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                             update={update} />
       })
     }
   }
@@ -361,7 +368,8 @@ export default function GameDisplay() {
     map?.clearAllSelections()
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
-      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)} />
+      return <GameControls key={key + 1} game={game.k as Game} callback={() => setUpdate(s => s+1)}
+                           update={update} />
     })
     setUpdate(s => s+1)
   }

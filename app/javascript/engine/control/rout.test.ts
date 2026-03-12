@@ -309,7 +309,7 @@ describe("rout tests", () => {
       expect(all[0].hex?.y).toBe(2)
       expect(all[0].unit.routed).toBe(true)
 
-      game.executeUndo()
+      game.executeUndo(false)
       expect(game.initiative).toBe(0)
       all = map.allCounters
       expect(all.length).toBe(1)
@@ -343,7 +343,7 @@ describe("rout tests", () => {
       expect(all[0].hex?.y).toBe(2)
       expect(all[0].unit.routed).toBe(true)
 
-      game.executeUndo()
+      game.executeUndo(false)
       expect(game.initiative).toBe(0)
       all = map.allCounters
       expect(all.length).toBe(1)
@@ -384,7 +384,7 @@ describe("rout tests", () => {
       expect(all[1].unit.name).toBe("MG 08/15")
       expect(all[1].unit.parent?.name).toBe(undefined)
 
-      game.executeUndo()
+      game.executeUndo(false)
       all = map.allCounters
       expect(all.length).toBe(2)
       expect(all[0].hex?.x).toBe(0)
@@ -432,7 +432,7 @@ describe("rout tests", () => {
       expect(all[1].unit.facing).toBe(4)
       expect(all[1].unit.parent?.name).toBe(undefined)
 
-      game.executeUndo()
+      game.executeUndo(false)
       all = map.allCounters
       expect(all.length).toBe(2)
       expect(all[0].hex?.x).toBe(0)
@@ -490,7 +490,7 @@ describe("rout tests", () => {
       expect(all[0].unit.routed).toBe(true)
 
       try {
-        game.executeUndo()
+        game.executeUndo(false)
       } catch(err) {
         // Can't roll involuntary rout
         expect(err instanceof IllegalActionError).toBe(true)

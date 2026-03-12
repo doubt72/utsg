@@ -52,6 +52,7 @@ interface MapDisplayProps {
   directionCallback?: (d: Direction) => void;
   resetCallback?: () => void;
   clearActionCallback?: () => void;
+  updateCallback?: () => void;
   checkCancelHideLOS: number;
   checkCancelTerrain: number;
 }
@@ -60,7 +61,7 @@ export default function MapDisplay({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
   hideCounters = false, showTerrain = false, preview, guiCollapse = false, forceUpdate,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
-  clearActionCallback = () => {}, checkCancelHideLOS, checkCancelTerrain,
+  clearActionCallback = () => {}, updateCallback = () => {}, checkCancelHideLOS, checkCancelTerrain,
 }: MapDisplayProps) {
   const [mouseDown, setMouseDown] = useState<boolean>(false)
   const [mapUpdate, setMapUpdate] = useState(0)
@@ -137,6 +138,7 @@ export default function MapDisplay({
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
 
   useEffect(() => {
+    updateCallback()
     if (!map.game || map.game.state !== "in_progress" || map.debug || preview) { return }
     if (map.game.phase !== gamePhase.phase || map.game.currentPlayer !== gamePhase.player) {
       setGamePhase({ phase: map.game.phase, player: map.game.currentPlayer })

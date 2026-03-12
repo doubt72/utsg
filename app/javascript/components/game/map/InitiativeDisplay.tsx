@@ -119,7 +119,7 @@ export default function InitiativeDisplay({
               style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
       </g>
     )
-  }, [xx, yy, map.game?.currentPlayer])
+  }, [xx, yy, map.game?.currentPlayer, map.game?.state])
 
   return (
     <g>
