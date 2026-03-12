@@ -1,4 +1,5 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -41,7 +42,7 @@ export default class CloseCombatReduceAction extends BaseAction {
       unit.status = unitStatus.Broken
     }
     const current = this.game.closeNeeded.filter(cn => cn.loc.x === this.target.x && cn.loc.y === this.target.y)[0]
-    if (this.player === this.game.currentPlayer) {
+    if (this.game.currentPlayer === current.oPlayer) {
       current.oReduce -= 1
     } else {
       current.tReduce -= 1
@@ -57,5 +58,6 @@ export default class CloseCombatReduceAction extends BaseAction {
         }
       }
     }
+    setCCPlayer(this.game, current)
   }
 }

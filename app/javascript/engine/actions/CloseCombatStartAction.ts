@@ -35,9 +35,12 @@ export default class CloseCombatStartAction extends BaseAction {
         if (one && two) {
           this.game.closeNeeded.push({
             loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+            oPlayer: 1, tPlayer: 2,
           })
         }
       }
     }
+    console.log("resetting")
+    this.game.resetCurrentPlayer()
   }
 }

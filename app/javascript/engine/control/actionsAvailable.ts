@@ -5,7 +5,7 @@ import Map from "../Map"
 import { gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
 import { showClearObstacles, showEntrench } from "./assault"
-import { closeCombatCasualyNeeded, closeCombatDone } from "./closeCombat"
+import { closeCombatCasualtyNeeded, closeCombatDone } from "./closeCombat"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 import { reactionFireCheck } from "./reactionFire"
 import { stateType } from "./state/BaseState"
@@ -248,13 +248,13 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     const selection = currSelection(game, false)
     if (game.gameState?.type === stateType.CloseCombat) {
       if (selection) {
-        if (closeCombatCasualyNeeded(game)) {
+        if (closeCombatCasualtyNeeded(game)) {
           actions.push({ type: "close_combat_reduce" })
         } else {
           actions.push({ type: "close_combat_select" })
         }
       } else {
-        if (closeCombatCasualyNeeded(game)) {
+        if (closeCombatCasualtyNeeded(game)) {
           actions.unshift({ type: "none", message: "select unit to reduce" })
         } else {
           actions.unshift({ type: "none", message: "select close combat to resolve" })
@@ -335,7 +335,7 @@ function currentEnemyAction(game: Game): string {
   } else if (game.phase === gamePhaseType.Main) {
     return "waiting for opponent to take an action"
   } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
-    if (closeCombatCasualyNeeded(game)) {
+    if (closeCombatCasualtyNeeded(game)) {
       return "waiting for opponent to choose unit to reduce"
     }
     return "waiting for opponent to choose close combat to resolve"

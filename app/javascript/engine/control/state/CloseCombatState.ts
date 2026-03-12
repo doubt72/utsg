@@ -3,7 +3,7 @@ import { rolld10, otherPlayer } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { closeProgress } from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
-import { closeCombatCasualyNeeded, closeCombatFirepower } from "../closeCombat";
+import { closeCombatCasualtyNeeded, closeCombatFirepower } from "../closeCombat";
 import BaseState, { stateType } from "./BaseState";
 
 export default class CloseCombatState extends BaseState {
@@ -14,8 +14,14 @@ export default class CloseCombatState extends BaseState {
   }
 
   openHex(x: number, y: number): HexOpenType {
+    let needsCasualties = false
     for (const cn of this.game.closeNeeded) {
-      if (cn.loc.x === x && cn.loc.y === y) { return hexOpenType.Open }
+      if (cn.state === closeProgress.NeedsCasualties) { needsCasualties = true }
+      if (cn.loc.x === x && cn.loc.y === y && cn.state === closeProgress.NeedsCasualties ) { return hexOpenType.Open }
+    }
+    if (needsCasualties) { return hexOpenType.Closed }
+    for (const cn of this.game.closeNeeded) {
+      if (cn.loc.x === x && cn.loc.y === y && cn.state !== closeProgress.Done ) { return hexOpenType.Open }
     }
     return hexOpenType.Closed
   }
@@ -29,7 +35,7 @@ export default class CloseCombatState extends BaseState {
     if (counter.unit.selected) {
       this.map.clearAllSelections()
     } else {
-      const casualty = closeCombatCasualyNeeded(this.game)
+      const casualty = closeCombatCasualtyNeeded(this.game)
       if (casualty) {
         counter.unit.select()
         this.map.clearOtherSelections(x, y, id)
@@ -46,8 +52,8 @@ export default class CloseCombatState extends BaseState {
     for (const cn of this.game.closeNeeded) {
       if (cn.state === closeProgress.NeedsCasualties) {
         if (selection.counter.unit.operated) { return false }
-        if (this.samePlayer(selection.counter.unit) && cn.oReduce === 0) { return false }
-        if (!this.samePlayer(selection.counter.unit) && cn.oReduce > 0) { return false }
+        // if (this.samePlayer(selection.counter.unit) && cn.oReduce === 0) { return false }
+        if (!this.samePlayer(selection.counter.unit)) { return false }
         return cn.loc.x === xy.x && cn.loc.y === xy.y
       }
     }

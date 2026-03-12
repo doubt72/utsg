@@ -62,7 +62,10 @@ export type SimpleHexCheck = {
   loc: Coordinate, vehicle?: boolean, incendiary?: boolean, vehicle_incendiary?: boolean,
 }
 export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
-export type CloseCheck = { loc: Coordinate, state: CloseProgress, oReduce: number, tReduce: number }
+export type CloseCheck = {
+  loc: Coordinate, state: CloseProgress, oReduce: number, tReduce: number,
+  oPlayer: Player, tPlayer: Player,
+}
 
 export default class Game {
   id: number;

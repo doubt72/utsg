@@ -1,5 +1,5 @@
 import { Coordinate, Player, unitStatus, unitType } from "../../utilities/commonTypes";
-import Game, { closeProgress } from "../Game";
+import Game, { CloseCheck, closeProgress } from "../Game";
 import Map from "../Map";
 import { stateType } from "./state/BaseState";
 
@@ -25,7 +25,7 @@ export function closeCombatDone(game: Game): boolean {
   return game.closeNeeded.filter(cn => cn.state !== closeProgress.Done).length < 1
 }
 
-export function closeCombatCasualyNeeded(game: Game): Coordinate | false {
+export function closeCombatCasualtyNeeded(game: Game): Coordinate | false {
   if (game.gameState?.type !== stateType.CloseCombat) { return false }
   const casualty = game.closeNeeded.filter(cn => cn.state === closeProgress.NeedsCasualties)
   if (casualty.length < 1) { return false }
@@ -55,4 +55,14 @@ export function closeCombatFirepower(game: Game, loc: Coordinate, player: Player
     }
   }
   return rc
+}
+
+export function setCCPlayer(game: Game, current: CloseCheck) {
+  if (current.oReduce > 0 && game.currentPlayer !== current.oPlayer) {
+    game.togglePlayer()
+  } else if (current.tReduce > 0 && game.currentPlayer !== current.tPlayer) {
+    game.togglePlayer()
+  } else if (current.oReduce < 1 && current.tReduce < 1) {
+    game.resetCurrentPlayer()
+  }
 }

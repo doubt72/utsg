@@ -1,6 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { otherPlayer } from "../../utilities/utilities";
-import { maxCCCasualties } from "../control/closeCombat";
+import { maxCCCasualties, setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -85,18 +85,23 @@ export default class CloseCombatRollAction extends BaseAction {
     const current = this.game.closeNeeded.filter(
       cn => cn.loc.x === this.target[0].x && cn.loc.y === this.target[0].y
     )[0]
+    const origin = this.game.findUnitById(this.origin[0].id)
+    const target = this.game.findUnitById(this.target[0].id)
     if (op === tp) {
       current.oReduce = 1
       current.tReduce = 1
     } else if (op > tp) {
-      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.target[0].id)?.playerNation ?? "")
+      const max = maxCCCasualties(this.map, loc, target?.playerNation ?? "")
       const reduce = Math.floor((op - tp)/5) + 1
       current.tReduce = max < reduce ? max : reduce
     } else {
-      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.origin[0].id)?.playerNation ?? "")
+      const max = maxCCCasualties(this.map, loc, origin?.playerNation ?? "")
       const reduce = Math.floor((tp - op)/5) + 1
       current.oReduce = max < reduce ? max : reduce
     }
+    current.oPlayer = origin?.playerNation === this.game.playerOneNation ? 1 : 2
+    current.tPlayer = target?.playerNation === this.game.playerOneNation ? 1 : 2
     current.state = closeProgress.NeedsCasualties
+    setCCPlayer(this.game, current)
   }
 }

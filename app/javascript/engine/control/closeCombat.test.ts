@@ -7,7 +7,7 @@ import GameAction from "../GameAction";
 import select from "./select";
 import organizeStacks from "../support/organizeStacks";
 import { gamePhaseType } from "../support/gamePhase";
-import { closeCombatCasualyNeeded, closeCombatDone } from "./closeCombat";
+import { closeCombatCasualtyNeeded, closeCombatDone } from "./closeCombat";
 import CloseCombatState from "./state/CloseCombatState";
 
 // TODO: fix tests when things implemented
@@ -37,7 +37,7 @@ describe("close combat tests", () => {
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0, oPlayer: 1, tPlayer: 2,
     })
     expect(game.lastAction?.type).toBe("close_combat_start")
     expect(closeCombatDone(game)).toBe(false)
@@ -48,7 +48,7 @@ describe("close combat tests", () => {
     }, () => {})
     expect(one.selected).toBe(true)
     expect(two.selected).toBe(true)
-    expect(closeCombatCasualyNeeded(game)).toBe(false)
+    expect(closeCombatCasualtyNeeded(game)).toBe(false)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -57,7 +57,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 1,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 1, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
@@ -65,24 +65,9 @@ describe("close combat tests", () => {
       "Soviet player rolls 1 plus 7 firepower; each player reduces 1 unit"
     )
     expect(closeCombatDone(game)).toBe(false)
-    expect(closeCombatCasualyNeeded(game)).toStrictEqual(loc)
+    expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc}
-    }, () => {})
-    expect(one.selected).toBe(true)
-    game.closeCombatState.reduceUnit()
-
-    expect(game.closeNeeded.length).toBe(1)
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 1,
-    })
-    expect(game.lastAction?.type).toBe("close_combat_reduce")
-    expect(game.lastAction?.stringValue).toBe("German Rifle broken")
-    expect(one.isBroken).toBe(true)
-    expect(closeCombatDone(game)).toBe(false)
-
+    expect(game.currentPlayer).toBe(1)
     select(map, {
       counter: map.countersAt(loc)[0],
       target: { type: "map", xy: loc}
@@ -92,11 +77,28 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle broken")
     expect(two.isBroken).toBe(true)
+    expect(closeCombatDone(game)).toBe(false)
+
+    expect(game.currentPlayer).toBe(2)
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc}
+    }, () => {})
+    expect(one.selected).toBe(true)
+    game.closeCombatState.reduceUnit()
+
+    expect(game.closeNeeded.length).toBe(1)
+    expect(game.closeNeeded[0]).toStrictEqual({
+      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0, oPlayer: 2, tPlayer: 1,
+    })
+    expect(game.lastAction?.type).toBe("close_combat_reduce")
+    expect(game.lastAction?.stringValue).toBe("German Rifle broken")
+    expect(one.isBroken).toBe(true)
     expect(closeCombatDone(game)).toBe(true)
 
     game.gameState?.finish()
@@ -141,7 +143,7 @@ describe("close combat tests", () => {
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0, oPlayer: 1, tPlayer: 2,
     })
     expect(game.lastAction?.type).toBe("close_combat_start")
     expect(closeCombatDone(game)).toBe(false)
@@ -162,7 +164,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 1,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 1, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
@@ -171,24 +173,9 @@ describe("close combat tests", () => {
       "Soviet player rolls 1 plus 11 firepower; each player reduces 1 unit"
     )
     expect(closeCombatDone(game)).toBe(false)
-    expect(closeCombatCasualyNeeded(game)).toStrictEqual(loc)
+    expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
-    select(map, {
-      counter: map.countersAt(loc)[4],
-      target: { type: "map", xy: loc}
-    }, () => {})
-    expect(one2.selected).toBe(true)
-    game.closeCombatState.reduceUnit()
-
-    expect(game.closeNeeded.length).toBe(1)
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 1,
-    })
-    expect(game.lastAction?.type).toBe("close_combat_reduce")
-    expect(game.lastAction?.stringValue).toBe("German PzKpfw 35(t) eliminated")
-    expect(one2.isWreck).toBe(true)
-    expect(closeCombatDone(game)).toBe(false)
-
+    expect(game.currentPlayer).toBe(1)
     select(map, {
       counter: map.countersAt(loc)[2],
       target: { type: "map", xy: loc}
@@ -203,11 +190,28 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle broken")
     expect(two.isBroken).toBe(true)
+    expect(closeCombatDone(game)).toBe(false)
+
+    expect(game.currentPlayer).toBe(2)
+    select(map, {
+      counter: map.countersAt(loc)[4],
+      target: { type: "map", xy: loc}
+    }, () => {})
+    expect(one2.selected).toBe(true)
+    game.closeCombatState.reduceUnit()
+
+    expect(game.closeNeeded.length).toBe(1)
+    expect(game.closeNeeded[0]).toStrictEqual({
+      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0, oPlayer: 2, tPlayer: 1,
+    })
+    expect(game.lastAction?.type).toBe("close_combat_reduce")
+    expect(game.lastAction?.stringValue).toBe("German PzKpfw 35(t) eliminated")
+    expect(one2.isWreck).toBe(true)
     expect(closeCombatDone(game)).toBe(true)
 
     game.gameState?.finish()
@@ -262,7 +266,7 @@ describe("close combat tests", () => {
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0, oPlayer: 1, tPlayer: 2,
     })
     expect(game.lastAction?.type).toBe("close_combat_start")
     expect(closeCombatDone(game)).toBe(false)
@@ -284,7 +288,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 2, tReduce: 0,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 2, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
@@ -293,7 +297,7 @@ describe("close combat tests", () => {
         "Japanese player reduces 2 units (all units)"
     )
     expect(closeCombatDone(game)).toBe(false)
-    expect(closeCombatCasualyNeeded(game)).toStrictEqual(loc)
+    expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
     select(map, {
       counter: map.countersAt(loc)[4],
@@ -304,7 +308,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Japanese SNLF broken")
@@ -321,7 +325,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.actions[index].type).toBe("close_combat_reduce")
     expect(game.actions[index].stringValue).toBe("Japanese SNLF eliminated")
@@ -368,7 +372,7 @@ describe("close combat tests", () => {
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0, oPlayer: 1, tPlayer: 2,
     })
     expect(game.lastAction?.type).toBe("close_combat_start")
     expect(closeCombatDone(game)).toBe(false)
@@ -388,7 +392,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 2,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 2, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
@@ -397,8 +401,9 @@ describe("close combat tests", () => {
       "Soviet player rolls 1 plus 7 firepower; Soviet player reduces 2 units"
     )
     expect(closeCombatDone(game)).toBe(false)
-    expect(closeCombatCasualyNeeded(game)).toStrictEqual(loc)
+    expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
+    expect(game.currentPlayer).toBe(1)
     select(map, {
       counter: map.countersAt(loc)[0],
       target: { type: "map", xy: loc}
@@ -408,13 +413,14 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 1,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 1, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle broken")
     expect(closeCombatDone(game)).toBe(false)
-    expect(closeCombatCasualyNeeded(game)).toStrictEqual(loc)
+    expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
+    expect(game.currentPlayer).toBe(1)
     select(map, {
       counter: map.countersAt(loc)[0],
       target: { type: "map", xy: loc}
@@ -424,12 +430,12 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     const action = game.actions[4]
     expect(action.type).toBe("close_combat_reduce")
     expect(action.stringValue).toBe("Soviet Rifle eliminated")
-    expect(closeCombatCasualyNeeded(game)).toBe(false)
+    expect(closeCombatCasualtyNeeded(game)).toBe(false)
     expect(closeCombatDone(game)).toBe(true)
 
     game.gameState?.finish()
@@ -475,7 +481,7 @@ describe("close combat tests", () => {
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0, oPlayer: 1, tPlayer: 2,
     })
     expect(game.lastAction?.type).toBe("close_combat_start")
     expect(closeCombatDone(game)).toBe(false)
@@ -496,7 +502,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 1,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 0, tReduce: 1, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
@@ -505,7 +511,7 @@ describe("close combat tests", () => {
       "Soviet player rolls 1 plus 7 firepower; Soviet player reduces 1 unit"
     )
     expect(closeCombatDone(game)).toBe(false)
-    expect(closeCombatCasualyNeeded(game)).toStrictEqual(loc)
+    expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
     select(map, {
       counter: map.countersAt(loc)[0],
       target: { type: "map", xy: loc}
@@ -515,10 +521,10 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.closeNeeded[1]).toStrictEqual({
-      loc: loc2, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+      loc: loc2, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0, oPlayer: 1, tPlayer: 2,
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle broken")
@@ -540,7 +546,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[1]).toStrictEqual({
-      loc: loc2, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0,
+      loc: loc2, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
@@ -549,7 +555,7 @@ describe("close combat tests", () => {
       "Soviet player rolls 10 plus 9 firepower; German player reduces 1 unit"
     )
     expect(closeCombatDone(game)).toBe(false)
-    expect(closeCombatCasualyNeeded(game)).toStrictEqual(loc2)
+    expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc2)
     select(map, {
       counter: map.countersAt(loc2)[1],
       target: { type: "map", xy: loc2}
@@ -559,13 +565,13 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[1]).toStrictEqual({
-      loc: loc2, state: closeProgress.Done, oReduce: 0, tReduce: 0,
+      loc: loc2, state: closeProgress.Done, oReduce: 0, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle broken")
     expect(one2.isBroken).toBe(true)
     expect(closeCombatDone(game)).toBe(true)
-    expect(closeCombatCasualyNeeded(game)).toBe(false)
+    expect(closeCombatCasualtyNeeded(game)).toBe(false)
 
     game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
@@ -613,7 +619,7 @@ describe("close combat tests", () => {
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.NeedsRoll, oReduce: 0, tReduce: 0, oPlayer: 1, tPlayer: 2,
     })
     expect(game.lastAction?.type).toBe("close_combat_start")
     expect(closeCombatDone(game)).toBe(false)
@@ -635,7 +641,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0,
+      loc, state: closeProgress.NeedsCasualties, oReduce: 1, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
@@ -658,7 +664,7 @@ describe("close combat tests", () => {
 
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0,
+      loc, state: closeProgress.Done, oReduce: 0, tReduce: 0, oPlayer: 2, tPlayer: 1,
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle broken")
@@ -696,7 +702,7 @@ describe("close combat tests", () => {
 
     game.setGameState(new CloseCombatState(game))
 
-    expect(closeCombatCasualyNeeded(game)).toBe(false)
+    expect(closeCombatCasualtyNeeded(game)).toBe(false)
     expect(closeCombatDone(game)).toBe(true)
     const index = game.actions.length
     game.gameState?.finish()
