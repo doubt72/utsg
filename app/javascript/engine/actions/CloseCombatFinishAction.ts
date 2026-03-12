@@ -19,5 +19,6 @@ export default class CloseCombatFinishAction extends BaseAction {
 
   mutateGame(): void {
     this.game.closeNeeded = []
+    this.game.clearGameState()
   }
 }

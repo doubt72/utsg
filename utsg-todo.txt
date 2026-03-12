@@ -3,7 +3,8 @@ High Priority Features/Bug Fixes:
     - Rally / Close Combat focus
 
   - Add help overlay for close combat
-  - Add help overlay for rally checks
+  - Add help overlay for rally/rout/morale checks
+  - Automatically open CC stack for casualties
 
   - Fix hindrance bug
     - Through two fence corner intersections

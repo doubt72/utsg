@@ -40,7 +40,6 @@ export default class CloseCombatStartAction extends BaseAction {
         }
       }
     }
-    console.log("resetting")
     this.game.resetCurrentPlayer()
   }
 }
