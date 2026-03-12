@@ -7,12 +7,12 @@ import { createMoveGame, testGInf, testGTank, testRInf } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import PassState from "./state/PassState"
 import { stateType } from "./state/BaseState"
-import { reactionFireCheck } from "./state/ReactionState"
 import MoveState from "./state/MoveState"
 import AssaultState from "./state/AssaultState"
 import SniperState from "./state/SniperState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import { gamePhaseType } from "../support/gamePhase"
+import { reactionFireCheck } from "./reactionFire"
 
 describe("game action tests", () => {
   test("initiative changes", () => {

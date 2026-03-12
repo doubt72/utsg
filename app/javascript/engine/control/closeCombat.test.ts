@@ -3,11 +3,12 @@ import { createBlankGame, testGGun, testGInf, testGTank, testGTruck, testJapSNLF
 import Unit from "../Unit";
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import { closeProgress } from "../Game";
-import CloseCombatState, { closeCombatCasualyNeeded, closeCombatCheck, closeCombatDone } from "./state/CloseCombatState";
 import GameAction from "../GameAction";
 import select from "./select";
 import organizeStacks from "../support/organizeStacks";
 import { gamePhaseType } from "../support/gamePhase";
+import { closeCombatCasualyNeeded, closeCombatDone } from "./closeCombat";
+import CloseCombatState from "./state/CloseCombatState";
 
 // TODO: fix tests when things implemented
 describe("close combat tests", () => {
@@ -33,7 +34,6 @@ describe("close combat tests", () => {
       },
     }, game), false)
 
-    expect(closeCombatCheck(game)).toBe(true)
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -101,9 +101,8 @@ describe("close combat tests", () => {
 
     game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
-    expect(game.lastAction?.stringValue).toBe("close combat complete")
+    expect(game.actions[5].stringValue).toBe("close combat complete")
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -139,7 +138,6 @@ describe("close combat tests", () => {
       },
     }, game), false)
 
-    expect(closeCombatCheck(game)).toBe(true)
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -214,7 +212,6 @@ describe("close combat tests", () => {
 
     game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
@@ -262,7 +259,6 @@ describe("close combat tests", () => {
       },
     }, game), false)
 
-    expect(closeCombatCheck(game)).toBe(true)
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -331,12 +327,18 @@ describe("close combat tests", () => {
     expect(game.actions[index].stringValue).toBe("Japanese SNLF eliminated")
     expect(closeCombatDone(game)).toBe(true)
 
-    const all = map.allCounters
+    let all = map.allCounters
     expect(all.length).toBe(4)
     expect(all[0].unit.name).toBe("Marine Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Tired) // Phase finished, exhausted -> tired
+    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
     expect(game.eliminatedUnits.length).toBe(1)
     expect((game.eliminatedUnits[0] as Unit).status).toBe(unitStatus.Normal)
+
+    game.closeCombatState.finish()
+    all = map.allCounters
+    expect(all.length).toBe(4)
+    expect(all[0].unit.name).toBe("Marine Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Tired)
   })
 
   test("handles multiple losses", () => {
@@ -363,7 +365,6 @@ describe("close combat tests", () => {
       },
     }, game), false)
 
-    expect(closeCombatCheck(game)).toBe(true)
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -471,7 +472,6 @@ describe("close combat tests", () => {
       },
     }, game), false)
 
-    expect(closeCombatCheck(game)).toBe(true)
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -569,7 +569,6 @@ describe("close combat tests", () => {
 
     game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
@@ -611,7 +610,6 @@ describe("close combat tests", () => {
     expect(one2.parent?.name).toBe("Opel Blitz")
     expect(one3.parent?.name).toBe("Opel Blitz")
 
-    expect(closeCombatCheck(game)).toBe(true)
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -669,7 +667,6 @@ describe("close combat tests", () => {
 
     game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.gameState).toBe(undefined)
     expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
@@ -697,10 +694,8 @@ describe("close combat tests", () => {
       },
     }, game), false)
 
-    expect(closeCombatCheck(game)).toBe(false)
     game.setGameState(new CloseCombatState(game))
 
-    expect(closeCombatCheck(game)).toBe(false)
     expect(closeCombatCasualyNeeded(game)).toBe(false)
     expect(closeCombatDone(game)).toBe(true)
     const index = game.actions.length

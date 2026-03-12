@@ -141,15 +141,9 @@ function Main(game: Game, backendSync: boolean, data: GameActionData): void {
 
 function CleanupCloseCombat(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  if (game.scenario.map.anyCloseCombat()) {
+  if (game.lastAction?.type !== "close_combat_finish") {
     return
   }
-  game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no units in contact, skipping close combat",
-      old_initiative: game.initiative,
-    }
-  }, game), backendSync)
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupOverstack
   game.executeAction(new GameAction(data, game), backendSync)

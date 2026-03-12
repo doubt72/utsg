@@ -1,7 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Refactor firing action (currently an unmaintainable mess)
-    - Currently reaction fire is broken
-
   - Run through game / Finish 001 (description / balance)
     - Rally / Close Combat focus
 
@@ -25,12 +22,11 @@ High Priority Features/Bug Fixes:
     - Remove/ban players (FE only security inadequate for this, validate on BE)
 
 Keep an Eye out for:
+  - Refactor firing action (currently an unmaintainable mess, though fairly well-tested)
   - Improved move validation/synchronization to block duplicate/illegal moves
-  - Undo getting out of sync (maybe remove ID?)
-    - Automatically undo excessive deployments
-    - Handle undo after too late
-    - Handle action after undo happens
+  - Undo getting out of sync / Automatically undo excessive deployments
   - Handle map scale and such settings gone wrong (reset button in prefs?)
+
   - Break up tests / large files
   - ?? Show ALL for movement into mines or wire
   - ?? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?

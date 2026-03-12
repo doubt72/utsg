@@ -1,4 +1,5 @@
 import { initiativeThreshold } from "../../utilities/utilities";
+import { reactionActions } from "../control/reactionFire";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -44,13 +45,14 @@ export default class InitiativeAction extends BaseAction {
 
   mutateGame(): void {
     const roll = this.diceResult
+    const action = this.game.lastSignificantAction
     if (roll) {
       if (roll.result < initiativeThreshold(Math.abs(this.data.old_initiative))) {
         this.game.toggleInitiative()
-      } else {
+      } else if (reactionActions.includes(action?.type ?? "")) {
         this.game.togglePlayer()
       }
-    } else {
+    } else if (reactionActions.includes(action?.type ?? "")) {
       this.game.togglePlayer()
     }
   }

@@ -1,6 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { otherPlayer } from "../../utilities/utilities";
-import { maxCCCasualties } from "../control/state/CloseCombatState";
+import { maxCCCasualties } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";

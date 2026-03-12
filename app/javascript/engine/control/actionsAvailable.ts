@@ -5,15 +5,17 @@ import Map from "../Map"
 import { gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
 import { showClearObstacles, showEntrench } from "./assault"
+import { closeCombatCasualyNeeded, closeCombatDone } from "./closeCombat"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
+import { reactionFireCheck } from "./reactionFire"
 import { stateType } from "./state/BaseState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
-import CloseCombatState, { closeCombatCasualyNeeded, closeCombatCheck, closeCombatDone } from "./state/CloseCombatState"
+import CloseCombatState from "./state/CloseCombatState"
 import FireDisplaceState from "./state/FireDisplaceState"
 import FireStartState from "./state/FireStartState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
-import ReactionState, { reactionFireCheck } from "./state/ReactionState"
+import ReactionState from "./state/ReactionState"
 import RoutCheckState from "./state/RoutCheckState"
 import RoutState from "./state/RoutState"
 import SniperState from "./state/SniperState"
@@ -66,7 +68,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.setGameState(new InitiativeState(game))
   } else if (reactionFireCheck(game)) {
     game.setGameState(new ReactionState(game))
-  } else if (closeCombatCheck(game)) {
+  } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
     game.setGameState(new CloseCombatState(game))
   } else if (game.phase === gamePhaseType.CleanupSmoke) {
     game.checkForSmoke(false, false)
@@ -226,7 +228,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({ type: "pass_cancel" })
     } else if (game.gameState?.type === stateType.Reaction) {
       actions.unshift({ type: "none", message: "reaction fire" })
-      if (canReactionFire(selection)) { actions.push({ type: "reaction_fire" }) }
+      if (canReactionFire(selection, game.scenario.map)) { actions.push({ type: "reaction_fire" }) }
       if (canReactionIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
       actions.push({ type: "reaction_pass" })
     } else if (!selection) {
@@ -234,7 +236,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       if (canEnemyRout(game.scenario.map)) { actions.push({ type: "enemy_rout" }) }
       actions.push({ type: "pass" })
     } else {
-      if (canFire(selection)) { actions.push({ type: "fire" }) }
+      if (canFire(selection, game.scenario.map)) { actions.push({ type: "fire" }) }
       if (canIntensiveFire(selection)) { actions.push({ type: "intensive_fire" }) }
       if (canMove(selection, game.scenario.map)) { actions.push({ type: "move" }) }
       if (canRush(selection, game.scenario.map)) { actions.push({ type: "rush" }) }
@@ -333,6 +335,9 @@ function currentEnemyAction(game: Game): string {
   } else if (game.phase === gamePhaseType.Main) {
     return "waiting for opponent to take an action"
   } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
+    if (closeCombatCasualyNeeded(game)) {
+      return "waiting for opponent to choose unit to reduce"
+    }
     return "waiting for opponent to choose close combat to resolve"
   } else if (game.phase === gamePhaseType.CleanupOverstack) {
     return "waiting for opponent to choose overstacked unit to reduce"
@@ -365,9 +370,10 @@ function checkFire(unit: Unit): boolean {
   return true
 }
 
-function canFire(unit?: Unit): boolean {
+function canFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (unit.isActivated) { return false }
+  if (contact(unit, map)) { return false }
   return checkFire(unit)
 }
 
@@ -378,10 +384,10 @@ function canIntensiveFire(unit?: Unit): boolean {
   return checkFire(unit)
 }
 
-function canReactionFire(unit?: Unit): boolean {
+function canReactionFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (unit.areaFire) { return false }
-  return canFire(unit)
+  return canFire(unit, map)
 }
 
 function canReactionIntensiveFire(unit?: Unit): boolean {

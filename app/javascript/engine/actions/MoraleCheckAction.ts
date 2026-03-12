@@ -46,6 +46,8 @@ export default class MoraleCheckAction extends BaseAction {
         rc += ", unit is pinned"
         short = true
       }
+    } else {
+      rc += ", no effect"
     }
     if (this.moraleMods.short && short) {
       rc += `, move short at ${coordinateToLabel(new Coordinate(this.target.x, this.target.y))}`

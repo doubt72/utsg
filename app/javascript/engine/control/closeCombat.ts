@@ -1,5 +1,36 @@
-import { Coordinate, Player, unitType } from "../../utilities/commonTypes";
-import Game from "../Game";
+import { Coordinate, Player, unitStatus, unitType } from "../../utilities/commonTypes";
+import Game, { closeProgress } from "../Game";
+import Map from "../Map";
+import { stateType } from "./state/BaseState";
+
+export function maxCCCasualties(map: Map, loc: Coordinate, playerNation: string): number {
+  const counters = map.countersAt(loc)
+  let total = 0
+  for (const c of counters) {
+    if (c.hasUnit && c.unit.playerNation === playerNation) {
+      if (c.unit.isVehicle && !c.unit.isWreck) {
+        total += 1
+      } else if (c.unit.canCarrySupport && c.unit.status === unitStatus.Broken) {
+        total += 1
+      } else if (c.unit.canCarrySupport) {
+        total += 2
+      }
+    }
+  }
+  return total
+}
+
+export function closeCombatDone(game: Game): boolean {
+  if (game.gameState?.type !== stateType.CloseCombat) { return false }
+  return game.closeNeeded.filter(cn => cn.state !== closeProgress.Done).length < 1
+}
+
+export function closeCombatCasualyNeeded(game: Game): Coordinate | false {
+  if (game.gameState?.type !== stateType.CloseCombat) { return false }
+  const casualty = game.closeNeeded.filter(cn => cn.state === closeProgress.NeedsCasualties)
+  if (casualty.length < 1) { return false }
+  return casualty[0].loc
+}
 
 export function closeCombatFirepower(game: Game, loc: Coordinate, player: Player): number {
   let rc = 0

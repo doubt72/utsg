@@ -631,24 +631,6 @@ export default class Map {
     return playerOne && playerTwo
   }
 
-  anyCloseCombat(): boolean {
-    for (let x = 0; x < this.width; x++) {
-      for (let y = 0; y < this.height; y++) {
-        let one = false;
-        let two = false;
-        for (const c of this.countersAt(new Coordinate(x, y))) {
-          const unit = c.unit as Unit
-          if (!unit.isFeature && !unit.isWreck) {
-            if (unit.playerNation === this.game?.currentPlayerNation) { one = true }
-            if (unit.playerNation !== this.game?.currentPlayerNation) { two = true }
-          }
-        }
-        if (one && two) { return true }
-      }
-    }
-    return false
-  }
-
   anyOverstackedUnits(): boolean {
     if (this.game?.gameState?.type !== stateType.Overstack) { return false }
     const state = this.game?.gameState as OverstackState
@@ -778,7 +760,7 @@ export default class Map {
       } else if (u.unit.status === unitStatus.Exhausted) {
         rc.push({
           x: loc.x, y: loc.y, id: u.unit.id, status: unitStatus.Exhausted,
-          new_status: unitStatus.Tired
+          new_status: this.contactAt(loc) ? unitStatus.Normal : unitStatus.Tired
         })
       }
       if (u.unit.pinned) {

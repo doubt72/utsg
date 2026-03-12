@@ -1,58 +1,23 @@
-import { Coordinate, CounterSelectionTarget, unitStatus } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { rolld10, otherPlayer } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { closeProgress } from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
-import Map from "../../Map";
-import { gamePhaseType } from "../../support/gamePhase";
-import { closeCombatFirepower } from "../closeCombat";
+import { closeCombatCasualyNeeded, closeCombatFirepower } from "../closeCombat";
 import BaseState, { stateType } from "./BaseState";
-
-export function closeCombatCheck(game: Game): boolean {
-  if (game.gameState) { return false }
-  if (game.phase !== gamePhaseType.CleanupCloseCombat) { return false }
-  for (let i = game.lastActionIndex; i >= 0; i--) {
-    const action = game.actions[i]
-    if (action.type === "close_combat_finish") { return false }
-    if (action.type === "phase") { return true }
-  }
-  return false
-}
-
-export function maxCCCasualties(map: Map, loc: Coordinate, playerNation: string): number {
-  const counters = map.countersAt(loc)
-  let total = 0
-  for (const c of counters) {
-    if (c.hasUnit && c.unit.playerNation === playerNation) {
-      if (c.unit.isVehicle && !c.unit.isWreck) {
-        total += 1
-      } else if (c.unit.canCarrySupport && c.unit.status === unitStatus.Broken) {
-        total += 1
-      } else if (c.unit.canCarrySupport) {
-        total += 2
-      }
-    }
-  }
-  return total
-}
-
-export function closeCombatDone(game: Game): boolean {
-  if (game.gameState?.type !== stateType.CloseCombat) { return false }
-  return game.closeNeeded.filter(cn => cn.state !== closeProgress.Done).length < 1
-}
-
-export function closeCombatCasualyNeeded(game: Game): Coordinate | false {
-  if (game.gameState?.type !== stateType.CloseCombat) { return false }
-  const casualty = game.closeNeeded.filter(cn => cn.state === closeProgress.NeedsCasualties)
-  if (casualty.length < 1) { return false }
-  return casualty[0].loc
-}
 
 export default class CloseCombatState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.CloseCombat, game.currentPlayer)
     this.startIfNotStarted()
     game.refreshCallback(game)
+  }
+
+  openHex(x: number, y: number): HexOpenType {
+    for (const cn of this.game.closeNeeded) {
+      if (cn.loc.x === x && cn.loc.y === y) { return hexOpenType.Open }
+    }
+    return hexOpenType.Closed
   }
 
   select(selection: CounterSelectionTarget, callback: () => void) {
@@ -174,10 +139,17 @@ export default class CloseCombatState extends BaseState {
       if (action.type === "close_combat_start") { return }
       if (action.type === "phase") { break }
     }
-    const startAction = new GameAction({
+    this.game.executeAction(new GameAction({
       user: this.game.currentUser, player: this.game.currentPlayer,
       data: { action: "close_combat_start", old_initiative: this.game.initiative }
-    }, this.game)
-    this.game.executeAction(startAction, false)
+    }, this.game), false)
+    if (this.game.closeNeeded.length < 1) {
+      this.game.executeAction(new GameAction({
+        player: this.game.currentPlayer, user: this.game.currentUser, data: {
+          action: "info", message: "no units in contact, skipping close combat",
+          old_initiative: this.game.initiative,
+        }
+      }, this.game), false)
+    }
   }
 }

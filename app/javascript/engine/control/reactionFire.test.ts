@@ -3,16 +3,16 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import organizeStacks from "../support/organizeStacks"
 import select from "./select"
-import { reactionFireHexes } from "./reactionFire"
+import { reactionFireCheck, reactionFireHexes } from "./reactionFire"
 import WarningActionError from "../actions/WarningActionError"
 import Feature from "../Feature"
 import { createFireGame, testGInf, testGMG, testGTank, testRInf, testRTank } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import FireState from "./state/FireState"
-import ReactionState, { reactionFireCheck } from "./state/ReactionState"
 import MoveState from "./state/MoveState"
 import { breakdownCheck } from "./state/BreakdownState"
 import MoraleCheckState from "./state/MoraleCheckState"
+import ReactionState from "./state/ReactionState"
 
 describe("reaction fire tests", () => {
   test("reaction fire after fire", () => {
