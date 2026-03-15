@@ -21,7 +21,7 @@ import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
 import FireStartState from "./state/FireStartState"
 
-describe("fire tests", () => {
+describe("ranged fire attacks", () => {
   describe("probability checks", () => {
     test("chance2D10", () => {
       expect(chance2D10(0)).toBe(99)

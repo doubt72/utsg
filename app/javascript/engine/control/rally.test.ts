@@ -8,7 +8,7 @@ import { gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
 import Counter from "../Counter";
 
-describe("rally test", () => {
+describe("rallying", () => {
   test("skips if no broken units", () => {
     const game = createBlankGame()
     const map = game.scenario.map

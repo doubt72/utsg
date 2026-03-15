@@ -14,7 +14,7 @@ import { breakdownCheck } from "./state/BreakdownState"
 import MoraleCheckState from "./state/MoraleCheckState"
 import ReactionState from "./state/ReactionState"
 
-describe("reaction fire tests", () => {
+describe("reaction fire attacks", () => {
   test("reaction fire after fire", () => {
     const game = createFireGame()
     const map = game.scenario.map

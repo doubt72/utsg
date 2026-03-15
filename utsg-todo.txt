@@ -1,10 +1,11 @@
 High Priority Features/Bug Fixes:
+  - Deal with simultaneous actions being loaded out of order
+
   - Run through game / Finish 001 (description / balance)
-    - Rally / Close Combat focus
 
   - Add help overlay for close combat
-  - Add help overlay for rally/rout/morale checks
-  - Automatically open CC stack for casualties
+  - Add help overlay for rally/rout/morale/sniper checks
+  - Automatically open CC stack for casualties / rout / morale checks / sniper check
 
   - Fix hindrance bug
     - Through two fence corner intersections

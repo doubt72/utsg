@@ -7,7 +7,7 @@ import { gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
 import OverstackReduceAction from "../actions/OverstackReduceAction";
 
-describe("overstack reduce", () => {
+describe("overstack reduction", () => {
   test("skips if nothing overstacked", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.CleanupOverstack

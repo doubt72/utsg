@@ -21,6 +21,7 @@ import RoutState from "./state/RoutState"
 import SniperState from "./state/SniperState"
 
 export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
+  if (!game.fullySynced || game.needsRectify) { return [{ type: "sync" }] }
   if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
       return [{ type: "none", message: "waiting for player to join" }]

@@ -14,7 +14,7 @@ import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import { gamePhaseType } from "../support/gamePhase"
 import { reactionFireCheck } from "./reactionFire"
 
-describe("game action tests", () => {
+describe("game actions", () => {
   test("initiative changes", () => {
     const game = createMoveGame()
     const map = game.scenario.map

@@ -11,7 +11,7 @@ import { closeCombatCasualtyNeeded, closeCombatDone } from "./closeCombat";
 import CloseCombatState from "./state/CloseCombatState";
 
 // TODO: fix tests when things implemented
-describe("close combat tests", () => {
+describe("close combat", () => {
   test("basic close combat", () => {
     const game = createBlankGame()
     const map = game.scenario.map

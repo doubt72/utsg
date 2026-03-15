@@ -180,13 +180,87 @@ export default class Game {
     getAPI(`/api/v1/game_actions?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
-          const action = new GameAction(json[i], this, i)
+          const action = new GameAction(json[i], this)
           this.suppressNetwork = true
           this.executeAction(action, true)
           this.suppressNetwork = false
         }
       })
     })
+  }
+
+  sortActions() {
+    this.actions = this.sortedActions()
+    for (let i = 0; i < this.actions.length; i++) { this.actions[i].index = i }
+  }
+
+  sortedActions(): BaseAction[] {
+    return this.actions.sort((a, b) => {
+      if (a.sequence !== undefined && b.sequence !== undefined) { return a.sequence - b.sequence }
+      if (a.id !== undefined && b.id !== undefined) { return a.id - b.id }
+      return a.index - b.index // fallback to current order
+    })
+  }
+
+  get fullySynced(): boolean {
+    const actions = this.sortedActions()
+    let lastSequence = 0
+    let lastUndone = false
+    for (let i = 0; i < actions.length; i++) {
+      const action = actions[i]
+      if (lastSequence !== (action.sequence ?? 0) - 1) { return false }
+      if (lastUndone && !action.undone) { return false }
+      lastSequence = action.sequence as number
+      lastUndone = action.undone
+    }
+    return true
+  }
+
+  get needsRectify(): boolean {
+    if (!this.fullySynced) { return false }
+    const actions = this.sortedActions()
+    for (let i = 0; i < actions.length; i++) {
+      const action = actions[i]
+      if (!action.executed || (action.undone && !action.executedUndo)) { return true }
+    }
+    return false
+  }
+
+  canExecute(sequence: number): boolean {
+    const actions = this.sortedActions()
+    if (actions.length < 1) { return true }
+    for (let i = 0; i < actions.length; i++) {
+      if (actions[i].executed && actions[i].sequence === sequence - 1) { return true }
+    }
+    return false
+  }
+
+  canExecuteUndo(sequence: number): boolean {
+    const actions = this.sortedActions()
+    if (actions[actions.length - 1].sequence === sequence) { return true }
+    for (let i = actions.length - 1; i >= 0; i--) {
+      if (actions[i].undone && actions[i].executedUndo && actions[i].sequence === sequence + 1) {
+        return true
+      }
+    }
+    return false
+  }
+
+  rectifyActions(backendSync: boolean) {
+    if (!this.fullySynced) { return }
+    this.sortActions()
+    for (let i = 0; i < this.actions.length; i++) {
+      const action = this.actions[i]
+      if (!action.executed && this.canExecute(action.sequence ?? 0)) {
+        this.executeAction(new GameAction(action, this), backendSync, false)
+      }
+    }
+    for (let i = this.actions.length - 1; i >= 0 ; i--) {
+      const action = this.actions[i]
+      if (action.undone && !action.executedUndo && this.canExecuteUndo(action.sequence ?? 0)) {
+        this.executeUndo(backendSync, action.sequence)
+      }
+    }
   }
 
   increaseResignation() {
@@ -677,7 +751,7 @@ export default class Game {
     return this.actions[check].undoPossible
   }
 
-  executeAction(action: GameAction, backendSync: boolean) {
+  executeAction(action: GameAction, backendSync: boolean, checkRectify: boolean = true) {
     const m = action.actionClass
     if (m.sequence) {
       const em = this.findActionBySequence(m.sequence)
@@ -687,7 +761,14 @@ export default class Game {
           this.refreshCallback(this)
         }
         if (m.undone && !em.undone) {
-          this.executeUndo(backendSync, m.sequence)
+          if (this.canExecuteUndo(m.sequence)) {
+            this.executeUndo(backendSync, m.sequence)
+          } else { em.undone = true }
+        }
+        if (checkRectify && this.needsRectify) { this.rectifyActions(backendSync) }
+        if (!m.undone && this.canExecute(m.sequence ?? this.currentSequence + 1)) {
+          em.mutateGame()
+          em.executed = true
         }
         return
       }
@@ -696,23 +777,25 @@ export default class Game {
     try {
       if (!m.undone) {
         try {
-          m.mutateGame()
+          if (this.canExecute(m.sequence ?? this.currentSequence + 1)) {
+            m.mutateGame()
+            m.executed = true
+            this.lastActionIndex = action.index
+          }
         } catch(err) {
           if (err instanceof WarningActionError) {
-            if (!m.id) {
-              this.refreshCallback(this, ["warn", err.message])
-            }
-          } else {
-            throw err
-          }
+            if (!m.id) { this.refreshCallback(this, ["ea warn", err.message]) }
+            m.executed = true
+            this.lastActionIndex = action.index
+          } else { throw err }
         }
-        this.lastActionIndex = action.index
       }
       this.actions.push(m)
       if (!m.sequence) {
         this.currentSequence++
         m.sequence = this.currentSequence
       }
+      if (checkRectify && this.needsRectify) { this.rectifyActions(backendSync) }
       if (!this.suppressNetwork && m.id === undefined) {
         postAPI(`/api/v1/game_actions`, {
           game_action: {
@@ -751,6 +834,7 @@ export default class Game {
     if (!action) { return }
     action.undo()
     action.undone = true
+    action.executedUndo = true
     if (this.lastActionIndex >= action.index) { this.lastActionIndex = action.index - 1 }
 
     if (action.lastUndoCascade) {

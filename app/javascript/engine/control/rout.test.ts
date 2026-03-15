@@ -10,7 +10,7 @@ import RoutState, { RoutPathTree } from "./state/RoutState";
 import RoutAllState from "./state/RoutAllState";
 import RoutCheckState from "./state/RoutCheckState";
 
-describe("rout tests", () => {
+describe("routing", () => {
   describe("rout trees", () => {
     test("map edge rout path", () => {
       const game = createBlankGame()

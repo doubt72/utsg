@@ -10,7 +10,7 @@ import Unit from "../Unit";
 import WeatherState from "./state/WeatherState";
 import BaseAction from "../actions/BaseAction";
 
-describe("precipitation", () => {
+describe("minor actions", () => {
   test("skips no chance", () => {
     const game = createBlankGame()
     const map = game.scenario.map

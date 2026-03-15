@@ -10,7 +10,7 @@ import { createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG } from
 import MoveState from "./state/MoveState"
 import { stateType } from "./state/BaseState"
 
-describe("rush tests", () => {
+describe("rush movement", () => {
   test("rush along road", () => {
     const game = createMoveGame()
     const map = game.scenario.map

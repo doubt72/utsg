@@ -270,13 +270,13 @@ describe("action integration test", () => {
     currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
-        path: [ { x: 0, y: 2, facing: 1 }],
+        path: [ { x: 0, y: 1, facing: 1 }],
         deploy: [ { turn: 0, index: 2, id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.actions.length).toBe(index)
-    expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: DShK to A3")
+    expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: DShK to A2")
 
     currentActionData = {
       user: "one", player: 1, data: {
@@ -292,7 +292,7 @@ describe("action integration test", () => {
     currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
-        path: [ { x: 0, y: 4, facing: 1 }],
+        path: [ { x: 0, y: 0, facing: 1 }],
         deploy: [ { turn: 0, index: 4, id: `uf-${game.actions.length}` } ],
       }
     }
@@ -300,6 +300,7 @@ describe("action integration test", () => {
     index += 11
     expect(game.actions.length).toBe(index)
     expect(game.currentPlayer).toBe(1)
+    expect(game.actions[index - 12].stringValue).toBe("deployed Soviet unit: 76mm ZiS-3 to A1")
     expect(game.actions[index - 9].stringValue).toBe("Soviet deployment done, begin German deployment")
     expect(game.actions[index - 8].stringValue).toBe("no units to deploy, skipping phase")
     expect(game.actions[index - 5].stringValue).toBe("Soviet rally done, begin German rally")

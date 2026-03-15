@@ -19,7 +19,7 @@ import Feature from "../Feature"
 import MoveState from "./state/MoveState"
 import { stateType } from "./state/BaseState"
 
-describe("movement tests", () => {
+describe("movement", () => {
   test("movement along road", () => {
     const game = createMoveGame()
     const map = game.scenario.map

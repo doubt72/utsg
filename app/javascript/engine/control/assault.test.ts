@@ -14,7 +14,7 @@ import {
 import AssaultState from "./state/AssaultState"
 import { stateType } from "./state/BaseState"
 
-describe("assault movement tests", () => {
+describe("assault movement", () => {
   test("along road", () => {
     const game = createMoveGame()
     const map = game.scenario.map

@@ -6,7 +6,7 @@ import organizeStacks from "../support/organizeStacks";
 import { createBlankGame, createTestGame, testGCrew, testGGun, testGInf, testGTank, testRInf } from "./testHelpers";
 import { Coordinate, hexOpenType } from "../../utilities/commonTypes";
 
-describe("precipitation", () => {
+describe("fire/blaze displacement", () => {
   test("unit displace by fire", () => {
     const game = createBlankGame()
     const map = game.scenario.map

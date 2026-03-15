@@ -26,6 +26,8 @@ export default class BaseAction {
 
   valid: boolean;
   undone: boolean;
+  executed: boolean;
+  executedUndo: boolean;
 
   constructor(data: GameActionData, game: Game, index: number) {
     this.validate(data.data.old_initiative)
@@ -41,6 +43,8 @@ export default class BaseAction {
 
     this.valid = true
     this.undone = !!data.undone;
+    this.executed = this.undone
+    this.executedUndo = false
   }
 
   get type(): string { throw new Error("must implement type") }
