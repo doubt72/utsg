@@ -202,7 +202,7 @@ function CleanupSmoke(game: Game, backendSync: boolean, data: GameActionData): v
 function CleanupFire(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   game.checkForFire(backendSync)
-  if (game.fireOutCheckNeeded.length > 0 || game.fireSpreadCheckNeeded.length > 0) {
+  if ((game.fireOutCheckNeeded.length > 0 || game.fireSpreadCheckNeeded.length > 0)) {
     return
   }
   phaseData.new_player = game.currentInitiativePlayer
@@ -214,11 +214,15 @@ function CleanupWeather(game: Game, backendSync: boolean, data: GameActionData):
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldTurn = game.turn
   game.checkForWind(backendSync)
-  if (game.checkWindDirection || game.checkWindSpeed) {
+  if ((game.checkWindDirection || game.checkWindSpeed) && game.turn !== game.scenario.turns) {
     return
   }
   if (oldTurn === game.scenario.turns) {
-    // TODO: finish game
+    game.executeAction(new GameAction({
+      player: game.currentPlayer, user: game.currentUser, data: {
+        action: "finish", old_initiative: game.initiative,
+      }
+    }, game), backendSync)
   } else {
     phaseData.new_phase = gamePhaseType.Deployment
     phaseData.new_player = game.scenario.firstAction

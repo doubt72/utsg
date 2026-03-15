@@ -47,6 +47,13 @@ export default class StateAction extends BaseAction {
     } else if (this.data.action === "resign") {
       this.game.winner = this.player
       this.game.state = "complete"
+    } else if (this.data.action === "finish") {
+      if (this.game.playerOneScore === this.game.playerTwoScore) {
+        this.game.winner = this.game.currentInitiativePlayer
+      } else {
+        this.game.winner = this.game.playerOneScore > this.game.playerTwoScore ? 1 : 2
+      }
+      this.game.state = "complete"
     }
   }
 }

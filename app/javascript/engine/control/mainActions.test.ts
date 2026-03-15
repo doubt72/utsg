@@ -3,7 +3,7 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import IllegalActionError from "../actions/IllegalActionError"
 import Feature from "../Feature"
-import { createMoveGame, testGInf, testGTank, testRInf } from "./testHelpers"
+import { createBlankGame, createMoveGame, testGInf, testGTank, testRInf } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import PassState from "./state/PassState"
 import { stateType } from "./state/BaseState"
@@ -13,6 +13,7 @@ import SniperState from "./state/SniperState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import { gamePhaseType } from "../support/gamePhase"
 import { reactionFireCheck } from "./reactionFire"
+import CloseCombatState from "./state/CloseCombatState"
 
 describe("game actions", () => {
   test("initiative changes", () => {
@@ -414,5 +415,59 @@ describe("game actions", () => {
 
     expect(game.lastAction?.type).toBe("sniper")
     expect(game.lastAction?.stringValue).toBe("Soviet sniper check (2d10): target 1, rolled 20, no effect")
+  })
+
+  test("game end", () => {
+    const game = createBlankGame()
+    game.scenario.map.windVariable = true
+    game.setTurn(5)
+    expect(game.phase).toBe(gamePhaseType.Main)
+
+    game.setGameState(new PassState(game))
+    game.gameState?.finish()
+    expect(game.phase).toBe(gamePhaseType.Main)
+
+    game.setGameState(new PassState(game))
+    game.gameState?.finish()
+
+    game.setGameState(new CloseCombatState(game))
+    game.gameState?.finish()
+
+    expect(game.actions[0]?.type).toBe("pass")
+    expect(game.actions[1]?.type).toBe("pass")
+    expect(game.actions[2]?.type).toBe("info")
+    expect(game.actions[2]?.stringValue).toBe("both players have passed, ending phase")
+    expect(game.actions[3]?.type).toBe("phase")
+    expect(game.actions[3]?.stringValue).toBe("main phase done, begin cleanup phase, checking for close combat")
+    expect(game.actions[4]?.type).toBe("close_combat_start")
+    expect(game.actions[4]?.stringValue).toBe("resolving close combat")
+    expect(game.actions[5]?.type).toBe("info")
+    expect(game.actions[5]?.stringValue).toBe("no units in contact, skipping close combat")
+    expect(game.actions[6]?.type).toBe("close_combat_finish")
+    expect(game.actions[6]?.stringValue).toBe("skipping: no combat to resolve")
+    expect(game.actions[7]?.type).toBe("phase")
+    expect(game.actions[7]?.stringValue).toBe("close combat done, begin housekeeping, checking for overstacking")
+    expect(game.actions[8]?.type).toBe("info")
+    expect(game.actions[8]?.stringValue).toBe("no units overstacked, skipping overstack reduction")
+    expect(game.actions[9]?.type).toBe("phase")
+    expect(game.actions[9]?.stringValue).toBe("done checking for overstacking, updating unit status")
+    expect(game.actions[10]?.type).toBe("status_update")
+    expect(game.actions[10]?.stringValue).toBe(
+      "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units become tired"
+    )
+    expect(game.actions[11]?.type).toBe("phase")
+    expect(game.actions[11]?.stringValue).toBe("done updating unit status, checking smoke")
+    expect(game.actions[12]?.type).toBe("phase")
+    expect(game.actions[12]?.stringValue).toBe("done checking smoke, checking blazes")
+    expect(game.actions[13]?.type).toBe("phase")
+    expect(game.actions[13]?.stringValue).toBe("done checking blazes, checking for variable weather")
+
+    expect(game.actions.length).toBe(15)
+
+    expect(game.lastAction?.type).toBe("state")
+    expect(game.lastAction?.stringValue).toBe("last turn complete, game over")
+
+    expect(game.state).toBe("complete")
+    expect(game.winner).toBe(2)
   })
 });

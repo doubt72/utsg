@@ -181,6 +181,9 @@ export default class GameAction {
     if (this.data.data.action === "resign") {
       return new StateAction(this.data, this.game, this.index, "resigned game");
     }
+    if (this.data.data.action === "finish") {
+      return new StateAction(this.data, this.game, this.index, "last turn complete, game over");
+    }
     if (this.data.data.action === "phase") {
       return new PhaseAction(this.data, this.game, this.index)
     }

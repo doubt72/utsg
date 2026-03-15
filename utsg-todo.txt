@@ -1,4 +1,6 @@
 High Priority Features/Bug Fixes:
+  - Cancel selection of broken unit for assault
+  - Finish game?
   - Run through game / Finish 001 (description / balance)
 
   - Add help overlay for close combat
