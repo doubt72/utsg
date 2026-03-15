@@ -205,13 +205,9 @@ export default class Game {
   get fullySynced(): boolean {
     const actions = this.sortedActions()
     let lastSequence = 0
-    let lastUndone = false
     for (let i = 0; i < actions.length; i++) {
-      const action = actions[i]
-      if (lastSequence !== (action.sequence ?? 0) - 1) { return false }
-      if (lastUndone && !action.undone) { return false }
-      lastSequence = action.sequence as number
-      lastUndone = action.undone
+      if (lastSequence !== (actions[i].sequence ?? 0) - 1) { return false }
+      lastSequence = actions[i].sequence as number
     }
     return true
   }
@@ -220,8 +216,7 @@ export default class Game {
     if (!this.fullySynced) { return false }
     const actions = this.sortedActions()
     for (let i = 0; i < actions.length; i++) {
-      const action = actions[i]
-      if (!action.executed || (action.undone && !action.executedUndo)) { return true }
+      if (!actions[i].executed) { return true }
     }
     return false
   }
@@ -229,6 +224,7 @@ export default class Game {
   canExecute(sequence: number): boolean {
     const actions = this.sortedActions()
     if (actions.length < 1) { return true }
+    if ((this.findActionBySequence(sequence) as BaseAction).executed) { return false }
     for (let i = 0; i < actions.length; i++) {
       if (actions[i].executed && actions[i].sequence === sequence - 1) { return true }
     }
@@ -253,12 +249,6 @@ export default class Game {
       const action = this.actions[i]
       if (!action.executed && this.canExecute(action.sequence ?? 0)) {
         this.executeAction(new GameAction(action, this), backendSync, false)
-      }
-    }
-    for (let i = this.actions.length - 1; i >= 0 ; i--) {
-      const action = this.actions[i]
-      if (action.undone && !action.executedUndo && this.canExecuteUndo(action.sequence ?? 0)) {
-        this.executeUndo(backendSync, action.sequence)
       }
     }
   }
@@ -769,6 +759,8 @@ export default class Game {
         if (!m.undone && this.canExecute(m.sequence ?? this.currentSequence + 1)) {
           em.mutateGame()
           em.executed = true
+          organizeStacks(this.scenario.map)
+          this.refreshCallback(this)
         }
         return
       }
