@@ -18,6 +18,7 @@ import { otherPlayer } from "../utilities/utilities";
 import OverstackState from "./control/state/OverstackState";
 import { stateType } from "./control/state/BaseState";
 import { GameActionUnit } from "./GameAction";
+import { alreadyRallied } from "./control/state/RallyState";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -590,17 +591,18 @@ export default class Map {
     ].join(" "), x: loc.x, y: loc.y+5, size: size-8 }
   }
 
-  anyBrokenUnits(player: Player): boolean {
-    let rally = false
+  anyUnitsCanRally(player: Player): boolean {
+    if (!this.game) { return false }
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
+        let rally = false
         let unbrokerLeader = false
         for (const c of this.countersAt(new Coordinate(x, y))) {
           const unit = c.unit as Unit
           if (!unit.isFeature) {
             const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
             if (player === unitPlayer) {
-              if (unit.isBroken || unit.jammed) {
+              if ((unit.isBroken && !alreadyRallied(this.game, unit.id)) || unit.jammed) {
                 rally = true
               }
               if (!unit.isBroken && unit.leader) {
@@ -609,7 +611,7 @@ export default class Map {
             }
           }
         }
-        if (rally && (unbrokerLeader || this.game?.freeRally)) { return true }
+        if (rally && (unbrokerLeader || this.game?.freeRallyAvailable)) { return true }
       }
     }
     return false

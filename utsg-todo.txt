@@ -1,6 +1,4 @@
 High Priority Features/Bug Fixes:
-  - Deal with simultaneous actions being loaded out of order
-
   - Run through game / Finish 001 (description / balance)
 
   - Add help overlay for close combat

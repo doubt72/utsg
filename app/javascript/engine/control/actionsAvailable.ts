@@ -15,6 +15,7 @@ import FireDisplaceState from "./state/FireDisplaceState"
 import FireStartState from "./state/FireStartState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
+import RallyState from "./state/RallyState"
 import ReactionState from "./state/ReactionState"
 import RoutCheckState from "./state/RoutCheckState"
 import RoutState from "./state/RoutState"
@@ -69,6 +70,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.setGameState(new InitiativeState(game))
   } else if (reactionFireCheck(game)) {
     game.setGameState(new ReactionState(game))
+  } else if (game.phase === gamePhaseType.PrepRally) {
+    game.setGameState(new RallyState(game))
   } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
     game.setGameState(new CloseCombatState(game))
   } else if (game.phase === gamePhaseType.CleanupSmoke) {
@@ -84,10 +87,11 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   } else if (game.phase === gamePhaseType.PrepRally) {
     actions.unshift({ type: "none", message: "select unit to rally" })
     const select = currSelection(game, false)
-    if (select) {
+    if (select !== undefined) {
       actions.push({ type: "rally" })
+    } else {
+      actions.push({ type: "rally_pass" })
     }
-    actions.push({ type: "rally_pass" })
   } else if (game.phase === gamePhaseType.PrepPrecip) {
     actions.push({ type: "precip_check" })
   } else if (game.gameState?.type === stateType.FireDisplace) {

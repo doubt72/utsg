@@ -78,5 +78,6 @@ export default class RallyAction extends BaseAction {
         new Coordinate(this.target.x, this.target.y), this.target.id
       )
     }
+    this.game.clearGameState()
   }
 }

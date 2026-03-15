@@ -429,11 +429,11 @@ export default class Game {
     return this.gameState as FireDisplaceState
   }
 
-  get freeRally(): boolean {
+  get freeRallyAvailable(): boolean {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const action = this.actions[i] as RallyAction
       if (action.type === "phase") { break }
-      if (action.type === "rally" && action.freeRally) { return false }
+      if (action.type === "rally" && !action.freeRally) { return false }
     }
     return true
   }

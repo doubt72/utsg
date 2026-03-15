@@ -19,7 +19,7 @@ export default function RallyPassButton({ game, callback }: RallyPassButtonProps
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><ArrowClockwise/>rally</button>
+        <button type="submit" className="custom-button nowrap"><ArrowClockwise/>pass</button>
       </div>
     </form>
   )

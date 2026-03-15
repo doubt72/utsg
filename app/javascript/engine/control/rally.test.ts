@@ -13,7 +13,7 @@ describe("rallying", () => {
     const game = createBlankGame()
     const map = game.scenario.map
 
-    expect(map.anyBrokenUnits(1)).toBe(false)
+    expect(map.anyUnitsCanRally(1)).toBe(false)
   })
 
   test("doesn't skip if unit broken", () => {
@@ -24,7 +24,7 @@ describe("rallying", () => {
     unit.status = unitStatus.Broken
     map.addCounter(new Coordinate(0,0), unit)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
   })
 
   test("skips if free rally used", () => {
@@ -49,7 +49,7 @@ describe("rallying", () => {
       game, game.actions.length
     )
     game.actions.push(action)
-    expect(map.anyBrokenUnits(2)).toBe(false)
+    expect(map.anyUnitsCanRally(2)).toBe(false)
   })
 
   test("rally succeeds", () => {
@@ -62,7 +62,7 @@ describe("rallying", () => {
     unit.status = unitStatus.Broken
     map.addCounter(new Coordinate(0,0), unit)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
 
@@ -79,7 +79,7 @@ describe("rallying", () => {
     expect(action.stringValue).toBe(
       "rally check at A1: needed 11, got 20, passed: Rifle rallies"
     )
-    expect(map.anyBrokenUnits(2)).toBe(false)
+    expect(map.anyUnitsCanRally(2)).toBe(false)
     expect(game.lastAction?.type).toBe("phase")
   })
 
@@ -93,7 +93,7 @@ describe("rallying", () => {
     unit.status = unitStatus.Broken
     map.addCounter(new Coordinate(0,0), unit)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
 
@@ -105,12 +105,11 @@ describe("rallying", () => {
     Math.random = original
 
     expect(unit.status).toBe(unitStatus.Broken)
-    const index = game.actions.length - 1
-    expect(game.actions[index].type).toBe("rally")
-    expect(game.actions[index].stringValue).toBe(
+    expect(game.actions[0].type).toBe("rally")
+    expect(game.actions[0].stringValue).toBe(
       "rally check at A1: needed 11, got 2, failed: Rifle fails to rally"
     )
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(game.actions[1].stringValue).toBe("no more rallies possible, done with phase")
   })
 
   test("rally succeeds for mg", () => {
@@ -127,7 +126,7 @@ describe("rallying", () => {
     map.addCounter(new Coordinate(0,0), unit2)
     organizeStacks(map)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
 
@@ -144,7 +143,7 @@ describe("rallying", () => {
     expect(action.stringValue).toBe(
       "attempt to fix weapon at A1: needed 15, got 20, passed: MG 08/15 repaired"
     )
-    expect(map.anyBrokenUnits(2)).toBe(false)
+    expect(map.anyUnitsCanRally(2)).toBe(false)
   })
 
   test("rally fails for mg", () => {
@@ -161,7 +160,7 @@ describe("rallying", () => {
     map.addCounter(new Coordinate(0,0), unit2)
     organizeStacks(map)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
 
@@ -178,7 +177,7 @@ describe("rallying", () => {
     expect(action.stringValue).toBe(
       "attempt to fix weapon at A1: needed 15, got 2, catastrophic failure: MG 08/15 is destroyed"
     )
-    expect(map.anyBrokenUnits(2)).toBe(false)
+    expect(map.anyUnitsCanRally(2)).toBe(false)
   })
 
   test("rally with leader doesn't use free rally", () => {
@@ -199,9 +198,11 @@ describe("rallying", () => {
     map.addCounter(new Coordinate(0,0), unit3)
     organizeStacks(map)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
+    const state = game.rallyState
+    expect(state.leaderAtHex(0, 0)).toBe(true)
 
     unit1.select()
 
@@ -217,8 +218,46 @@ describe("rallying", () => {
     expect(action.stringValue).toBe(
       "rally check at A1: needed 9, got 20, passed: Rifle rallies"
     )
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
     expect(game.lastAction?.type).toBe("rally")
+  })
+
+  test("rally without leader uses free rally", () => {
+    const game = createBlankGame()
+    game.phase = gamePhaseType.PrepRally
+    game.setCurrentPlayer(2)
+    const map = game.scenario.map
+    const unit1 = new Unit(testGInf)
+    unit1.id = "test1"
+    unit1.status = unitStatus.Broken
+    map.addCounter(new Coordinate(0,0), unit1)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    unit2.status = unitStatus.Broken
+    map.addCounter(new Coordinate(0,0), unit2)
+    organizeStacks(map)
+
+    expect(map.anyUnitsCanRally(2)).toBe(true)
+
+    game.setGameState(new RallyState(game))
+    const state = game.rallyState
+    expect(state.leaderAtHex(0, 0)).toBe(false)
+
+    unit1.select()
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(unit1.status).toBe(unitStatus.Normal)
+    const action = game.actions[0] as RallyAction
+    expect(action.type).toBe("rally")
+    expect(action.freeRally).toBe(false)
+    expect(action.stringValue).toBe(
+      "rally check at A1: needed 11, got 20, passed: Rifle rallies"
+    )
+    expect(game.actions[1].stringValue).toBe("no more rallies possible, done with phase")
   })
 
   test("can't rally twice", () => {
@@ -239,7 +278,7 @@ describe("rallying", () => {
     map.addCounter(new Coordinate(0,0), unit3)
     organizeStacks(map)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
 
@@ -257,7 +296,7 @@ describe("rallying", () => {
     expect(action.stringValue).toBe(
       "rally check at A1: needed 9, got 2, failed: Rifle fails to rally"
     )
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     expect(unit1.selected).toBe(false)
     game.setGameState(new RallyState(game))
@@ -279,7 +318,7 @@ describe("rallying", () => {
     unit.status = unitStatus.Broken
     map.addCounter(new Coordinate(0,0), unit)
 
-    expect(map.anyBrokenUnits(2)).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
     const state = game.gameState as RallyState

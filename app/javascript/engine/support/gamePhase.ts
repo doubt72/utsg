@@ -1,6 +1,5 @@
 import { otherPlayer } from "../../utilities/utilities"
 import OverstackState from "../control/state/OverstackState"
-import RallyState from "../control/state/RallyState"
 import Game from "../Game"
 import GameAction, { GameActionData, GameActionPhaseChange } from "../GameAction"
 
@@ -80,15 +79,16 @@ function Deployment(game: Game, backendSync: boolean, data: GameActionData): voi
 function PrepRally(game: Game, backendSync: boolean, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = game.phase
-  if (game.scenario.map.anyBrokenUnits(game.currentPlayer) &&
+  if (game.scenario.map.anyUnitsCanRally(game.currentPlayer) &&
     game.lastAction?.type !== "rally_pass") {
-    game.setGameState(new RallyState(game))
     return
   }
+  const message = ["rally", "rally_pass"].includes(game.lastAction?.type ?? "") ?
+    "no more rallies possible, done with phase" :
+    "no rallyable broken units or jammed weapons, skipping phase"
   game.executeAction(new GameAction({
     player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message: "no rallyable broken units or jammed weapons, skipping phase",
-      old_initiative: game.initiative,
+      action: "info", message, old_initiative: game.initiative,
     }
   }, game), backendSync)
   if (game.currentPlayer === game.currentInitiativePlayer) {

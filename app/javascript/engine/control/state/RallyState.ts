@@ -3,13 +3,26 @@ import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
+import { checkPhase } from "../../support/gamePhase";
 import Unit from "../../Unit";
 import { leadershipAt } from "../fire";
 import BaseState, { stateType } from "./BaseState";
 
+export function alreadyRallied(game: Game, id: string): boolean {
+  for (let i = game.actions.length - 1; i >= 0; i--) {
+    const action = game.actions[i]
+    if (action.type !== "rally") { break }
+    if ((action.data.target as GameActionUnit[])[0].id === id) {
+      return true
+    }
+  }
+  return false
+}
+
 export default class RallyState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.Rally, game.currentPlayer)
+    if (!game.scenario.map.anyUnitsCanRally(game.currentPlayer)) { checkPhase(game, false) }
     game.refreshCallback(game)
   }
 
@@ -22,7 +35,7 @@ export default class RallyState extends BaseState {
         const unit = u as Unit
         if (this.samePlayer(unit)) {
           if ((unit.isBroken || unit.jammed) &&
-            (this.game.freeRally || unbrokerLeader)) {
+            (this.game.freeRallyAvailable || unbrokerLeader)) {
             return hexOpenType.Open
           }
         }
@@ -39,8 +52,8 @@ export default class RallyState extends BaseState {
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
       if ((counter.unit.isBroken || counter.unit.jammed) &&
-        (this.game.freeRally || this.leaderAtHex(x, y))) {
-        if (this.alreadyRallied(id)) {
+        (this.game.freeRallyAvailable || this.leaderAtHex(x, y))) {
+        if (alreadyRallied(this.game, id)) {
           this.game.addMessage("unit already attempted to rally")
         } else {
           counter.unit.select()
@@ -51,13 +64,21 @@ export default class RallyState extends BaseState {
     callback()
   }
 
-  alreadyRallied(id: string): boolean {
-    for (let i = this.game.actions.length - 1; i >= 0; i--) {
-      const action = this.game.actions[i]
-      if (action.type === "phase") { break }
-      if ((action.data.target as GameActionUnit[])[0].id === id) { return true }
+  selectable(selection: CounterSelectionTarget): boolean {
+    if (selection.target.type !== "map") { return false }
+    const unit = selection.counter.unit
+    if (this.samePlayer(unit) && (unit.status === unitStatus.Broken || unit.jammed || unit.sponsonJammed)) {
+      return true
+    } else { return false }
+  }
+
+  get activeCounters(): Counter[] {
+    const rc: Counter[] = []
+    for (const c of this.game.scenario.map.allCounters) {
+      const hex = c.hex as Coordinate
+      if (this.openHex(hex.x, hex.y)) { rc.push(c) }
     }
-    return false
+    return rc
   }
 
   leaderAtHex(x: number, y: number): boolean {
