@@ -1,7 +1,13 @@
 High Priority Features/Bug Fixes:
   - Bugs
-    - Do not allow selection of broken unit to join assault move
-      - Add test
+    - Skip reaction/no hex fire if mg can't fire (broken or no parent)
+      - Also if in contact
+    - Free rally doesn't include already rallied
+    - Are tired markers not being removed?
+    - Don't hide map when initiative check (but no selections)
+    - Can't selected jammed weapons on fire attack (or broken units?)
+    - Fix double reaction fire after move
+    - Tired has effect on close combat
     - Rout check open unit overlay
     - Morale check open unit overlay
     - CC Reduce open unit overlay
