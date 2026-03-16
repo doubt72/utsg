@@ -880,7 +880,7 @@ describe("reaction fire attacks", () => {
     Math.random = original
 
     expect(game.lastAction?.stringValue).toBe(
-      "German morale check for Rifle (2d10): target 11, rolled 2, unit breaks, move short at C3")
+      "German morale check for Rifle (2d10): target 12, rolled 2, unit breaks, move short at C3")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     const counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)

@@ -1,11 +1,16 @@
 High Priority Features/Bug Fixes:
-  - Cancel selection of broken unit for assault
-  - Finish game?
+  - Bugs
+    - Do not allow selection of broken unit to join assault move
+      - Add test
+    - Rout check open unit overlay
+    - Morale check open unit overlay
+    - CC Reduce open unit overlay
+    - Sniper check open unit overlay
+
   - Run through game / Finish 001 (description / balance)
 
   - Add help overlay for close combat
   - Add help overlay for rally/rout/morale/sniper checks
-  - Automatically open CC stack for casualties / rout / morale checks / sniper check
 
   - Fix hindrance bug
     - Through two fence corner intersections

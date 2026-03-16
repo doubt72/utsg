@@ -1,5 +1,5 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { baseMorale, coordinateToLabel } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionMoraleData, GameActionUnit } from "../GameAction";
@@ -28,7 +28,7 @@ export default class MoraleCheckAction extends BaseAction {
   get stringValue(): string {
     let rc = ""
     const unit = this.game.findUnitById(this.target.id) as Unit
-    const check = 14 + this.moraleMods.mod
+    const check = baseMorale + this.moraleMods.mod
     let short = false
     const roll = this.diceResult
     rc += `${
@@ -62,7 +62,7 @@ export default class MoraleCheckAction extends BaseAction {
   mutateGame(): void {
     this.game.moraleChecksNeeded.shift()
     const counter = this.game.findCounterById(this.target.id) as Counter
-    const check = 15 + this.moraleMods.mod
+    const check = baseMorale + this.moraleMods.mod
     const roll = this.diceResult
     if (roll.result < check) {
       if (counter.unit.isBroken) {
@@ -76,7 +76,7 @@ export default class MoraleCheckAction extends BaseAction {
           )
         }
       }
-    } else if (roll.result == check) {
+    } else if (roll.result === check) {
       if (!counter.unit.isBroken) { counter.unit.pinned = true }
         const hex = counter.hex as Coordinate
         if (hex.x != this.target.x || hex.y !== this.target.y) {

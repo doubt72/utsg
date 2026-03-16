@@ -1,5 +1,6 @@
 import React from "react";
 import { helpLink } from "./helpData";
+import { baseMorale } from "../../utilities/utilities";
 
 export default function FireSection() {
   const section = "5.2.3.1"
@@ -402,7 +403,7 @@ export default function FireSection() {
         following process:
       </p>
       <ol>
-        <li>The base check is 14.</li>
+        <li>The base check is {baseMorale}.</li>
         <li>Subtract the unit&apos;s morale.</li>
         <li>
           If there are any (unbroken) leaders in the same hex, subtract the highest leadership.

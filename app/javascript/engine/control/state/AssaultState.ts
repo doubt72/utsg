@@ -259,12 +259,15 @@ export default class AssaultState extends BaseState {
     }
     if (counter.unit.isBroken) {
       this.game.addMessage("cannot assault with a broken unit")
+      return false
     }
     if (counter.unit.isExhausted) {
       this.game.addMessage("cannot assault with an exhausted unit")
+      return false
     }
     if (counter.unit.isActivated) {
       this.game.addMessage("cannot assault with an activated unit")
+      return false
     }
     return true
   }

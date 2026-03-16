@@ -213,6 +213,57 @@ describe("assault movement", () => {
     expect(all[1].unit.status).toBe(unitStatus.Exhausted)
   })
 
+  test("can't multi-select broken", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.smokeCapable = false // any unit in stack is enough for smoke
+    unit.select()
+    const loc = new Coordinate(3, 2)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(testGInf)
+    unit2.status = unitStatus.Broken
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+
+    game.setGameState(new AssaultState(game))
+
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(game.messageQueue.length).toBe(1)
+    expect(game.messageQueue[0]).toBe("cannot assault with a broken unit")
+    expect(game.gameState?.selection.length).toBe(1)
+    expect(unit2.selected).toBe(false)
+    expect(game.assaultState.doneSelect).toBe(false)
+
+    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.All)
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState?.openHex(2, 3)).toBe(hexOpenType.All)
+
+    game.assaultState.move(2, 2)
+    expect(game.assaultState.doneSelect).toBe(true)
+    expect(game.gameState?.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(1, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(2, 3)).toBe(hexOpenType.Closed)
+
+    game.gameState?.finish()
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.status).toBe(unitStatus.Broken)
+    expect(all[1].hex?.x).toBe(2)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+  })
+
   test ("can't assault overstack, can into enemy", () => {
     const game = createMoveGame()
     const map = game.scenario.map
