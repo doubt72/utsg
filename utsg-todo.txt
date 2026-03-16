@@ -1,7 +1,7 @@
 High Priority Features/Bug Fixes:
   - Bugs
-    - Skip reaction/no hex fire if mg can't fire (broken or no parent)
-      - Also if in contact
+    + Skip reaction/no hex fire if mg can't fire (broken or no parent)
+      + Also if in contact
     - Free rally doesn't include already rallied
     - Are tired markers not being removed?
     - Don't hide map when initiative check (but no selections)

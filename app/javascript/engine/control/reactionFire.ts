@@ -50,12 +50,17 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
   for (let x = 0; x < map.width; x++) {
     for (let y = 0; y < map.height; y++) {
       const loc = new Coordinate(x, y)
+      if (map.contactAt(loc)) { continue }
       const counters = map.countersAt(loc)
       for (const c of counters) {
         if (c.hasUnit) {
           let added = false
           if (c.unit.playerNation === otherNation) { continue }
           if (c.unit.areaFire || c.unit.isBroken) { continue }
+          if (c.unit.uncrewedSW) {
+            if (c.unit.parent === undefined) { continue }
+            if (c.unit.parent.isBroken || c.unit.parent.isExhausted) { continue }
+          }
           if (c.unit.isExhausted) { continue }
           for (const t of targets) {
             const toc = new Coordinate(t.x, t.y)
