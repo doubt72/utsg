@@ -132,6 +132,7 @@ export default function Signup() {
           response.json().then(json => {
             localStorage.setItem("username", json.username)
             localStorage.setItem("email", json.email)
+            localStorage.setItem("validationNeeded", "true")
             navigate("/verify_account", { replace: true })
           })
         }
@@ -150,7 +151,7 @@ export default function Signup() {
       </div>
       <div className="form-container">
         <div className="mb1em">
-          <p>Welcome to the STB (Online) server.</p>
+          <p>Welcome!</p>
           <p>Sign up for a new account here:</p>
         </div>
         <form onSubmit={onSubmit}>

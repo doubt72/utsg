@@ -48,16 +48,17 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     where("current_player_id = ? AND state = ?", user.id, 2)
   end
 
-  def self.create_game(params)
+  def self.create_game(params) # rubocop:disable Metrics/MethodLength
     game = ::Utility::Scenario.create_game_with_version(params)
     if game.persisted?
-      GameAction.create(sequence: 1, game:, user: game.owner, player: 1,
-                        data: { action: "create", old_initiative: 0 })
-      GameAction.create(sequence: 2, game:, user: game.owner, player: game.player_one ? 1 : 2,
-                        data: { action: "join", old_initiative: 0 })
+      GameAction.create!(sequence: 1, game:, user: game.owner, player: 1,
+                         data: { action: "create", old_initiative: 0 })
+      GameAction.create!(sequence: 2, game:, user: game.owner, player: game.player_one ? 1 : 2,
+                         data: { action: "join", old_initiative: 0 })
       if game.player_one && game.player_two
-        GameAction.create(sequence: 3, game:, user: game.owner, player: 2,
-                          data: { action: "join", old_initiative: 0 })
+        GameAction.create!(sequence: 3, game:, user: game.owner, player: 2,
+                           data: { action: "join", old_initiative: 0 })
+        game.start(game.owner)
       end
     end
     game

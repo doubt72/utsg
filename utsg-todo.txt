@@ -12,8 +12,13 @@ High Priority Features/Bug Fixes:
     - Morale check open unit overlay
     - CC Reduce open unit overlay
     - Sniper check open unit overlay
+    - Undo hangs up on status(?)
+    + Autostart hotseat games
+    + Prevent new games until verified (fix initial navigation)
 
   - Run through game / Finish 001 (description / balance)
+
+  - Add tutorial
 
   - Add help overlay for close combat
   - Add help overlay for rally/rout/morale/sniper checks
