@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType, unitStatus } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -28,7 +28,7 @@ export default class RallyState extends BaseState {
 
   openHex(x: number, y: number): HexOpenType {
     const counters = this.map.countersAt(new Coordinate(x, y))
-    const unbrokerLeader = this.leaderAtHex(x, y)
+    const unbrokerLeader = this.leaderAtHex(x, y, undefined)
     for (const c of counters) {
       const u = c.unit
       if (!u.isFeature) {
@@ -52,7 +52,7 @@ export default class RallyState extends BaseState {
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
       if ((counter.unit.isBroken || counter.unit.jammed) &&
-        (this.game.freeRallyAvailable || this.leaderAtHex(x, y))) {
+        (this.game.freeRallyAvailable || this.leaderAtHex(x, y, counter.unit))) {
         if (alreadyRallied(this.game, id)) {
           this.game.addMessage("unit already attempted to rally")
         } else {
@@ -67,7 +67,7 @@ export default class RallyState extends BaseState {
   selectable(selection: CounterSelectionTarget): boolean {
     if (selection.target.type !== "map") { return false }
     const unit = selection.counter.unit
-    if (this.samePlayer(unit) && (unit.status === unitStatus.Broken || unit.jammed || unit.sponsonJammed)) {
+    if (this.samePlayer(unit) && (unit.isBroken || unit.jammed || unit.sponsonJammed)) {
       return true
     } else { return false }
   }
@@ -81,16 +81,14 @@ export default class RallyState extends BaseState {
     return rc
   }
 
-  leaderAtHex(x: number, y: number): boolean {
+  leaderAtHex(x: number, y: number, checkedUnit?: Unit): boolean {
     const counters = this.map.countersAt(new Coordinate(x, y))
     for (const c of counters) {
       const u = c.unit
       if (!u.isFeature) {
         const unit = u as Unit
-        if (unit.nation === this.game.currentPlayerNation) {
-          if (!unit.isBroken && unit.leader) {
-            return true
-          }
+        if (unit.nation === this.game.currentPlayerNation && unit.id !== checkedUnit?.id) {
+          if (!unit.isBroken && unit.leader) { return true }
         }
       }
     }
@@ -102,7 +100,7 @@ export default class RallyState extends BaseState {
       const hex = this.map.neightborCoordinate(loc, d)
       const counters = this.map.countersAt(hex)
       for (const c of counters) {
-        if (!c.unit.isFeature && c.unit.status !== unitStatus.Broken &&
+        if (!c.unit.isFeature && !c.unit.isBroken &&
           !this.samePlayer(c.unit)) { return true }
       }
     }
@@ -128,13 +126,13 @@ export default class RallyState extends BaseState {
         terrain_mod: this.map.hexAt(hex)?.terrain.cover as number,
         next_to_enemy: this.nextToEnemy(hex),
       },
-      free_rally: this.leaderAtHex(hex.x, hex.y),
+      free_rally: this.leaderAtHex(hex.x, hex.y, counter.unit),
     } : {
       weapon: {
         fix_roll: counter.unit.repairRoll as number,
         break_roll: counter.unit.breakWeaponRoll as number,
       },
-      free_rally: this.leaderAtHex(hex.x, hex.y),
+      free_rally: this.leaderAtHex(hex.x, hex.y, counter.unit),
     }
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,

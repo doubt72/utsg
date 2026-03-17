@@ -602,7 +602,7 @@ export default class Map {
           if (!unit.isFeature) {
             const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
             if (player === unitPlayer) {
-              if ((unit.isBroken && !alreadyRallied(this.game, unit.id)) || unit.jammed) {
+              if ((unit.isBroken || unit.jammed) && !alreadyRallied(this.game, unit.id)) {
                 rally = true
               }
               if (!unit.isBroken && unit.leader) {
@@ -754,12 +754,12 @@ export default class Map {
     const units = this.allUnits
     for (const u of units) {
       const loc = u.hex as Coordinate
-      if (u.unit.status === unitStatus.Activated) {
+      if (u.unit.isActivated || u.unit.isTired) {
         rc.push({
           x: loc.x, y: loc.y, id: u.unit.id, status: unitStatus.Activated,
           new_status: unitStatus.Normal
         })
-      } else if (u.unit.status === unitStatus.Exhausted) {
+      } else if (u.unit.isExhausted) {
         rc.push({
           x: loc.x, y: loc.y, id: u.unit.id, status: unitStatus.Exhausted,
           new_status: this.contactAt(loc) ? unitStatus.Normal : unitStatus.Tired

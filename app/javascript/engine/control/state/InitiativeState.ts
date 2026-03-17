@@ -25,6 +25,11 @@ export default class InitiativeState extends BaseState {
     return false
   }
 
+  get showOverlays(): boolean {
+    return false
+  }
+
+
   finish() {
     let result: GameActionDiceResult[] | undefined = undefined
     if ((this.game.currentPlayer === 1 && this.game.initiative > 0) ||

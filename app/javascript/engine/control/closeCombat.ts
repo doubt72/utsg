@@ -1,4 +1,4 @@
-import { Coordinate, Player, unitStatus, unitType } from "../../utilities/commonTypes";
+import { Coordinate, Player, unitType } from "../../utilities/commonTypes";
 import Game, { CloseCheck, closeProgress } from "../Game";
 import Map from "../Map";
 import { stateType } from "./state/BaseState";
@@ -10,7 +10,7 @@ export function maxCCCasualties(map: Map, loc: Coordinate, playerNation: string)
     if (c.hasUnit && c.unit.playerNation === playerNation) {
       if (c.unit.isVehicle && !c.unit.isWreck) {
         total += 1
-      } else if (c.unit.canCarrySupport && c.unit.status === unitStatus.Broken) {
+      } else if (c.unit.canCarrySupport && c.unit.isBroken) {
         total += 1
       } else if (c.unit.canCarrySupport) {
         total += 2

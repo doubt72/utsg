@@ -71,7 +71,7 @@ export default function MapCounterOverlay({
         if (unit.status !== unitStatus.Normal ) { rc += 1 }
         if (unit.eliteCrew !== 0) { rc += 1 }
       } else {
-        if (unit.status !== unitStatus.Normal && unit.status !== unitStatus.Broken ) { rc += 1 }
+        if (unit.status !== unitStatus.Normal && !unit.isBroken ) { rc += 1 }
         if (unit.pinned) { rc += 1 }
       }
     }

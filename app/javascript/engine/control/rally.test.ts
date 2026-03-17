@@ -308,6 +308,65 @@ describe("rallying", () => {
     expect(game.messageQueue[0]).toBe("unit already attempted to rally")
   })
 
+  test("failed 'free' rally doesn't count for rally check", () => {
+    const game = createBlankGame()
+    game.phase = gamePhaseType.PrepRally
+    game.setCurrentPlayer(2)
+    const map = game.scenario.map
+    const unit1 = new Unit(testGInf)
+    unit1.id = "test1"
+    unit1.status = unitStatus.Broken
+    map.addCounter(new Coordinate(0,0), unit1)
+    const unit2 = new Unit(testGLdr)
+    unit2.id = "test2"
+    map.addCounter(new Coordinate(0,0), unit2)
+    const unit3 = new Unit(testGInf)
+    unit3.id = "test3"
+    unit3.status = unitStatus.Broken
+    map.addCounter(new Coordinate(1,0), unit3)
+    const unit4 = new Unit(testGInf)
+    unit4.id = "test4"
+    unit4.status = unitStatus.Broken
+    map.addCounter(new Coordinate(2,0), unit4)
+    organizeStacks(map)
+
+    expect(map.anyUnitsCanRally(2)).toBe(true)
+
+    game.setGameState(new RallyState(game))
+
+    unit4.select()
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    let action = game.actions[0] as RallyAction
+    expect(action.type).toBe("rally")
+    expect(action.freeRally).toBe(false)
+    expect(action.stringValue).toBe("rally check at C1: needed 11, got 20, passed: Rifle rallies")
+
+    expect(unit4.status).toBe(unitStatus.Normal)
+
+    expect(map.anyUnitsCanRally(2)).toBe(true)
+    game.setGameState(new RallyState(game))
+
+    unit1.select()
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(unit1.status).toBe(unitStatus.Broken)
+
+    action = game.actions[1] as RallyAction
+    expect(action.type).toBe("rally")
+    expect(action.freeRally).toBe(true)
+    expect(action.stringValue).toBe("rally check at A1: needed 9, got 2, failed: Rifle fails to rally")
+
+    expect(game.actions[2].stringValue).toBe("no more rallies possible, done with phase")
+  })
+
   test("advances on pass", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.PrepRally
