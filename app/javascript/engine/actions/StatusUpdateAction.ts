@@ -22,19 +22,19 @@ export default class StatusUpdateAction extends BaseAction {
   }
 
   get undoPossible() {
-    return true
+    return false
   }
 
   undo(): void {
-    this.game.initiative = this.data.old_initiative
-    for (const t of this.targets) {
-      const c = this.game.findCounterById(t.id) as Counter
-      if (t.new_status !== undefined) {
-        c.unit.status = t.status as UnitStatus
-      }
-      if (t.unpin) { c.unit.pinned = true }
-      if (t.unrout) { c.unit.routed = true }
-    }
+    // this.game.initiative = this.data.old_initiative
+    // for (const t of this.targets) {
+    //   const c = this.game.findCounterById(t.id) as Counter
+    //   if (t.new_status !== undefined) {
+    //     c.unit.status = t.status as UnitStatus
+    //   }
+    //   if (t.unpin) { c.unit.pinned = true }
+    //   if (t.unrout) { c.unit.routed = true }
+    // }
   }
 
   mutateGame(): void {

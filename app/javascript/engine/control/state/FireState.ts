@@ -285,7 +285,7 @@ export default class FireState extends BaseState {
   }
   
   canBeMultiselected(counter: Counter): boolean {
-    if (counter.unit.isBroken) {
+    if (counter.unit.isBroken || counter.unit.jammed) {
       this.game.addMessage("cannot fire a broken unit")
       return false
     }

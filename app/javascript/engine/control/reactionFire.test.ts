@@ -13,6 +13,7 @@ import MoveState from "./state/MoveState"
 import { breakdownCheck } from "./state/BreakdownState"
 import MoraleCheckState from "./state/MoraleCheckState"
 import ReactionState from "./state/ReactionState"
+import { checkPhase } from "../support/gamePhase"
 
 describe("reaction fire attacks", () => {
   test("reaction fire after fire", () => {
@@ -100,8 +101,10 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.stringValue).toBe(
       "Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at E3; targeting roll (d10x10): target 15, " +
       "rolled 1: miss, firing weapon broken")
-    expect(game.moraleChecksNeeded).toStrictEqual([])
 
+    checkPhase(game, false)
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+    expect(reactionFireCheck(game, false)).toBe(false)
     expect(initiativeCheck(game)).toBe(false)
   })
 
@@ -196,6 +199,7 @@ describe("reaction fire attacks", () => {
       "rolled 1: miss, firing weapon broken")
     expect(game.moraleChecksNeeded).toStrictEqual([])
 
+    expect(reactionFireCheck(game, false)).toBe(false)
     expect(initiativeCheck(game)).toBe(false)
   })
 
@@ -286,6 +290,7 @@ describe("reaction fire attacks", () => {
       "rolled 1: miss, firing weapon broken")
     expect(game.moraleChecksNeeded).toStrictEqual([])
 
+    expect(reactionFireCheck(game, false)).toBe(false)
     expect(initiativeCheck(game)).toBe(false)
   })
 
@@ -380,6 +385,7 @@ describe("reaction fire attacks", () => {
       "rolled 1: miss, firing weapon broken")
     expect(game.moraleChecksNeeded).toStrictEqual([])
 
+    expect(reactionFireCheck(game, false)).toBe(false)
     expect(initiativeCheck(game)).toBe(false)
   })
 

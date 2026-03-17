@@ -109,7 +109,7 @@ describe("minor actions", () => {
 
     checkPhase(game, false)
 
-    let units = map.countersAt(loc)
+    const units = map.countersAt(loc)
     expect(units.length).toBe(2)
     expect(units[0].unit.status).toBe(unitStatus.Normal)
     expect(units[0].unit.pinned).toBe(false)
@@ -122,15 +122,6 @@ describe("minor actions", () => {
       "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units become tired"
     )
     expect(game.initiative).toBe(-3)
-
-    action.undo()
-
-    units = map.countersAt(loc)
-    expect(units.length).toBe(2)
-    expect(units[0].unit.status).toBe(unitStatus.Activated)
-    expect(units[0].unit.pinned).toBe(true)
-    expect(units[1].unit.status).toBe(unitStatus.Exhausted)
-    expect(game.initiative).toBe(-5)
   })
 
   test("smoke disperses", () => {
