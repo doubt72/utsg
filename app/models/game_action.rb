@@ -17,7 +17,9 @@ class GameAction < ApplicationRecord
   def self.create_action(params)
     game = Game.find_by(id: params[:game_id])
     user_id = params[:user_id]
-    return nil unless game&.in_progress?
+    # Sometimes the moves get recorded out-of-order when zooming through unused
+    # phases, and it can happen at the end:
+    return nil unless game&.in_progress? || game&.complete?
     return nil if game.player_one.id != user_id.to_i && game.player_two.id != user_id.to_i
 
     params[:data] = JSON.parse(params[:data])

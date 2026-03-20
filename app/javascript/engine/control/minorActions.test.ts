@@ -119,7 +119,7 @@ describe("minor actions", () => {
     expect(action.type).toBe("status_update")
     expect(action.data.target?.length).toBe(3)
     expect(action.stringValue).toBe(
-      "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units become tired"
+      "update all unit statuses: remove all pinned, routed, tired, and activated markers; exhausted units become tired"
     )
     expect(game.initiative).toBe(-3)
   })

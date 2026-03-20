@@ -17,7 +17,7 @@ export default class StatusUpdateAction extends BaseAction {
   get type(): string { return "status_update" }
 
   get stringValue(): string {
-    return "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units " +
+    return "update all unit statuses: remove all pinned, routed, tired, and activated markers; exhausted units " +
       `become tired${this.undone ? " [cancelled]" : ""}`
   }
 

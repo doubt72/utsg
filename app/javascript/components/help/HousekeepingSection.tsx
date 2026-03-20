@@ -41,7 +41,7 @@ export default function HousekeepingSection() {
       </p>
       <h3>{section}.2. Updating Unit Status and Initiative</h3>
       <p>
-        At this point, all activated, pinned, and routed markers are removed, and any exhausted
+        At this point, all activated, pinned, tired, and routed markers are removed, and any exhausted
         markers are replaced with tired markers.
       </p>
       <p>

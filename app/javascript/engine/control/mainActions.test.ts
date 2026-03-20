@@ -453,7 +453,7 @@ describe("game actions", () => {
     expect(game.actions[9]?.stringValue).toBe("done checking for overstacking, updating unit status")
     expect(game.actions[10]?.type).toBe("status_update")
     expect(game.actions[10]?.stringValue).toBe(
-      "update all unit statuses: remove all pinned, routed, and activated markers; exhausted units become tired"
+      "update all unit statuses: remove all pinned, routed, tired, and activated markers; exhausted units become tired"
     )
     expect(game.actions[11]?.type).toBe("phase")
     expect(game.actions[11]?.stringValue).toBe("done updating unit status, checking smoke")
