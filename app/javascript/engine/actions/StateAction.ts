@@ -47,6 +47,12 @@ export default class StateAction extends BaseAction {
     } else if (this.data.action === "resign") {
       this.game.winner = this.player
       this.game.state = "complete"
+      const title = "Game over"
+      const message = `${ this.game.winner === 1 ? this.game.playerTwoName : this.game.playerOneName } has resigned.`
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
     } else if (this.data.action === "finish") {
       if (this.game.playerOneScore === this.game.playerTwoScore) {
         this.game.winner = this.game.currentInitiativePlayer
@@ -54,6 +60,12 @@ export default class StateAction extends BaseAction {
         this.game.winner = this.game.playerOneScore > this.game.playerTwoScore ? 1 : 2
       }
       this.game.state = "complete"
+      const title = "Game over"
+      const message = `${ this.game.winner === 1 ? this.game.playerOneName : this.game.playerTwoName } has won the game.`
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
     }
   }
 }

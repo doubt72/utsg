@@ -117,6 +117,8 @@ export default class Game {
   fireSpreadCheckNeeded: SimpleFeatureCheck[];
   checkWindDirection: boolean;
   checkWindSpeed: boolean;
+  playerOneNotification: [string, string] | undefined;
+  playerTwoNotification: [string, string] | undefined;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
@@ -371,6 +373,10 @@ export default class Game {
 
   get axisName(): string {
     return axisCodeToName(this.playerTwoNation)
+  }
+
+  get currentInitiativeNationName(): string {
+    return this.currentInitiativePlayer === 1 ? this.alliedName : this.axisName
   }
 
   nationNameForPlayer(player: Player): string {
@@ -776,7 +782,7 @@ export default class Game {
           }
         } catch(err) {
           if (err instanceof WarningActionError) {
-            if (!m.id) { this.refreshCallback(this, ["ea warn", err.message]) }
+            if (!m.id) { this.refreshCallback(this, ["warn", err.message]) }
             m.executed = true
             this.lastActionIndex = action.index
           } else { throw err }

@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { stateType } from "../../engine/control/state/BaseState";
+import NotificationWindow from "./NotificationWindow";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -46,6 +47,8 @@ export default function GameDisplay() {
   const [largeInterfaceButton, setLargeInterfaceButton] = useState<JSX.Element | undefined>()
   const [smallInterfaceButton, setSmallInterfaceButton] = useState<JSX.Element | undefined>()
   const [mobileInterfaceButton, setMobileInterfaceButton] = useState<JSX.Element | undefined>()
+
+  const [notificationTimeout, setNotificationTimeout] = useState<NodeJS.Timeout | undefined>()
 
   const [update, setUpdate] = useState(0)
 
@@ -101,6 +104,46 @@ export default function GameDisplay() {
     map, update, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
     hideCounters, showTerrain, collapseLayout
   ])
+
+  useEffect(() => {
+    if (game.k === undefined) { return }
+    if (localStorage.getItem("username") !== game.k.playerOneName) { return }
+    const oldTimeout = notificationTimeout
+    if (oldTimeout) {
+      clearTimeout(oldTimeout)
+    }
+    const to = setTimeout(() => {
+      if (game.k?.playerOneNotification === undefined) { return }
+      const message = game.k.playerOneNotification
+      setErrorWindow(
+        <NotificationWindow title={message[0]} message={message[1]} callBack={
+          () => setErrorWindow(undefined)
+        } />
+      )
+      game.k.playerOneNotification = undefined
+    }, 200)
+    setNotificationTimeout(to)
+  }, [game.k?.playerOneNotification])
+
+  useEffect(() => {
+    if (game.k === undefined) { return }
+    if (localStorage.getItem("username") !== game.k.playerTwoName) { return }
+    const oldTimeout = notificationTimeout
+    if (oldTimeout) {
+      clearTimeout(oldTimeout)
+    }
+    const to = setTimeout(() => {
+      if (game.k?.playerTwoNotification === undefined) { return }
+      const message = game.k.playerTwoNotification
+      setErrorWindow(
+        <NotificationWindow title={message[0]} message={message[1]} callBack={
+          () => setErrorWindow(undefined)
+        } />
+      )
+      game.k.playerTwoNotification = undefined
+    }, 200)
+    setNotificationTimeout(to)
+  }, [game.k?.playerTwoNotification])
 
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {

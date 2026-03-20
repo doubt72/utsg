@@ -188,18 +188,25 @@
   user-select: none;
 }
 
-.game-error {
+.game-error, .game-notification {
   position: absolute;
   top: 0px;
   left: 0px;
   background-color: rgba(0,0,0,0.2);
-  padding: 500px calc(50% - 250px);
   margin: 0px;
   width: 100%;
   height: 100%;
 }
 
-.game-error-window {
+.game-error {
+  padding: 500px calc(50% - 250px);
+}
+
+.game-notification {
+  padding: 575px calc(50% - 250px);
+}
+
+.game-error-window, .game-notification-window {
   position: relative;
   width: 500px;
   height: 250px;
@@ -209,19 +216,31 @@
   border: 2px solid $darkish-green;
 }
 
-.game-error-window-inner {
+.game-notification-title {
+  padding: 0.2em 0.5em 0 0.5em;
+  font-size: 1.5em;
+}
+
+.game-error-window-inner, .game-notification-window-inner {
   display: flex;
 }
 
-.game-error-icon {
+.game-error-icon, .game-notification-icon {
   position: static;
   display: block;
-  font-size: 3em;
   height: 150px;
   padding-left: 0.25em;
 }
 
-.game-error-text {
+.game-error-icon {
+  font-size: 3em;
+}
+
+.game-notification-icon {
+  font-size: 2em;
+}
+
+.game-error-text, .game-notification-text {
   position: relative;
   display: block;
   flex-grow: 5;
@@ -230,7 +249,7 @@
   height: 150px;
 }
 
-.game-error-button {
+.game-error-button, .game-notification-button {
   position: absolute;
   right: 8px;
   bottom: 8px;

@@ -133,6 +133,7 @@ export default class PhaseAction extends BaseAction {
     this.game.phase = this.newPhase
     this.game.setTurn(this.newTurn)
     this.game.setCurrentPlayer(this.newPlayer)
+    this.phaseNotification()
     organizeStacks(this.game.scenario.map)
   }
   
@@ -143,4 +144,98 @@ export default class PhaseAction extends BaseAction {
   }
 
   get lastUndoCascade(): boolean { return true }
+
+  phaseNotification() {
+    if (this.newPhase === gamePhaseType.Deployment || this.newPhase === gamePhaseType.PrepRally) {
+      const selectMessage = this.newPhase === gamePhaseType.Deployment ?
+        "Select units to deploy in the units panel and click on the map to deploy them." :
+        "Select unit on map to attempt to rally/fix."
+      const oppMessage = `Opponent is ${
+        this.newPhase === gamePhaseType.Deployment ? "deploying" : "rallying"
+      } their units.`
+      const action = this.newPhase === gamePhaseType.Deployment ? "deployment" : "rally"
+      if (this.game.playerOneName === this.game.playerTwoName) {
+        this.game.playerOneNotification = [
+          `Begin ${ this.newPlayer === 1 ? this.game.alliedName : this.game.axisName } ${action}`,
+          selectMessage,
+        ]
+      } else if (this.newPlayer === 1) {
+        const title = `Begin ${this.game.alliedName} ${action}`
+        this.game.playerOneNotification = [title, selectMessage]
+        this.game.playerTwoNotification = [title, oppMessage]
+      } else {
+        const title = `Begin ${this.game.axisName} ${action}`
+        this.game.playerOneNotification = [title, oppMessage]
+        this.game.playerTwoNotification = [title, selectMessage]
+      }
+    } else if (this.newPhase === gamePhaseType.CleanupOverstack) {
+      const selectMessage = "Units are overstacked, select units to remove to comply with stacking limits."
+      const oppMessage = "Opponent is removing overstacked units."
+      if (this.game.playerOneName === this.game.playerTwoName) {
+        this.game.playerOneNotification = [
+          `${ this.newPlayer === 1 ? this.game.alliedName : this.game.axisName } are overstacked`,
+          selectMessage,
+        ]
+      } else if (this.newPlayer === 1) {
+        const title = `${this.game.alliedName} are overstacked`
+        this.game.playerOneNotification = [title, selectMessage]
+        this.game.playerTwoNotification = [title, oppMessage]
+      } else {
+        const title = `${this.game.axisName} are overstacked`
+        this.game.playerOneNotification = [title, oppMessage]
+        this.game.playerTwoNotification = [title, selectMessage]
+      }
+    } else if (this.newPhase === gamePhaseType.Main) {
+      const title = `Turn ${this.newTurn}: main phase`
+      const message = `Main phase has begun, the ${this.game.currentInitiativeNationName} player has initiative ` +
+        "and gets to take the first action."
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
+    } else if (this.newPhase === gamePhaseType.CleanupCloseCombat) {
+      const title = "Resolve close combat"
+      const message = `Resolving close combat, the ${this.game.currentInitiativeNationName} player has initiative ` +
+        "and chooses order of battles."
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
+    } else if (this.newPhase === gamePhaseType.PrepPrecip) {
+      const title = "Precipitation check"
+      const message = `Checking precipitation, the ${this.game.currentInitiativeNationName} player has initiative ` +
+        "and handles rolls."
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
+    } else if (this.newPhase === gamePhaseType.CleanupSmoke) {
+      const title = "Smoke check"
+      const message = `Checking for smoke dispersion, the ${this.game.currentInitiativeNationName} ` +
+        "player has initiative and handles rolls."
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
+    } else if (this.newPhase === gamePhaseType.CleanupFire) {
+      const title = "Fire check"
+      const message = "Checking for blazes extinguishing or spreading, " +
+        `the ${this.game.currentInitiativeNationName} player has initiative and handles rolls.`
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
+    } else if (this.newPhase === gamePhaseType.CleanupWeather) {
+      const title = "Variable weather"
+      const message = `Checking variable weather, the ${this.game.currentInitiativeNationName} ` +
+        "player has initiative and handles rolls."
+      this.game.playerOneNotification = [title, message]
+      if (this.game.playerOneName !== this.game.playerTwoName) {
+        this.game.playerTwoNotification = [title, message]
+      }
+    } else {
+      this.game.playerOneNotification = undefined
+      this.game.playerTwoNotification = undefined
+    }
+  }
 }
