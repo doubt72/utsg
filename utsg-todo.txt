@@ -6,15 +6,21 @@ High Priority Features/Bug Fixes:
     ? Fix double reaction fire after move
       - Test didn't find issue, don't think it's fixed;
         need to see it again to be able to figure out what's going on
-    ? Can't click on circle for rout
 
-    - Add notification for phase change
-    - Rout check open unit overlay
-    - Morale check open unit overlay
+    + Can't click on circle for rout
+    + Add notification for phase change
+    + Rout check open unit overlay
+    + Morale check open unit overlay
+    - Rout path should be on top with multiple routs
+
     - CC Reduce open unit overlay
     - Sniper check open unit overlay
-    - Add help overlay for close combat
-    - Add help overlay for rally/rout/morale/sniper checks
+
+    - Add help overlay for close combat selections
+    - Add help overlay for rally checks
+    - Add help overlay for rout checks
+    - Add help overlay for morale checks
+    - Add help overlay for sniper checks
 
   - Run through game / Finish 001 (description / balance)
 

@@ -1,4 +1,4 @@
-import { Coordinate } from "../../../utilities/commonTypes";
+import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { ComplexCheck } from "../../Game";
@@ -22,7 +22,13 @@ export default class MoraleCheckState extends BaseState {
       short: check.to.x !== counter.hex?.x || check.to.y !== counter.hex?.y,
     }
     check.unit.select()
+    game.openOverlay = game.scenario.map.hexAt(check.to)
     game.refreshCallback(game)
+  }
+
+  openHex(x: number, y: number): HexOpenType {
+    const first = this.selection[0]
+    return x === first.x && y === first.y ? hexOpenType.Open : hexOpenType.Closed
   }
 
   get activeCounters(): Counter[] {

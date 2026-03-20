@@ -31,7 +31,7 @@ export function reactionFireCheck(game: Game, action: boolean = true): boolean {
         base.execute(new GameAction({
           user: game.currentUser, player: game.currentPlayer, data: {
             action: "reaction_pass", old_initiative: game.initiative,
-            message: "no valid units have line-of-sight, skipping reaction fire",
+            message: "no valid units have range and line-of-sight, skipping reaction fire",
           },
         }, game))
         game.resetCurrentPlayer()

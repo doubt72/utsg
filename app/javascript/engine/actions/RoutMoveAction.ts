@@ -72,6 +72,7 @@ export default class RouteMoveAction extends BaseAction {
       this.game.updateInitiative(1)
     } else {
       this.game.routNeeded.shift()
+      if (this.game.routNeeded.length < 1 && this.game.routCheckNeeded.length < 1) { this.game.togglePlayer() }
     }
   }
   

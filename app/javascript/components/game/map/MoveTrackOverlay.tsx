@@ -40,7 +40,7 @@ export default function MoveTrackOverlay({ map }: MoveTrackOverlayProps) {
       const fill = first ? "#AAA" : "#DDD"
       if (!routing) { first = false }
       return <path key={`${i}-c`} d={circlePath(new Coordinate(x, y), 12)}
-                    style={{ fill, stroke: "#777", strokeWidth: 4 }} />
+                   style={{ fill, stroke: "#777", strokeWidth: 4 }} />
     })
   }
 

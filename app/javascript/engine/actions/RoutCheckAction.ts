@@ -54,5 +54,6 @@ export default class RoutCheckAction extends BaseAction {
     if (this.game.routCheckNeeded.length < 1 && this.game.routNeeded.length < 1) {
       this.game.resetCurrentPlayer()
     }
+    this.game.closeOverlay = true
   }
 }

@@ -1,4 +1,4 @@
-import { Coordinate } from "../../../utilities/commonTypes";
+import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { SimpleUnitCheck } from "../../Game";
@@ -17,7 +17,13 @@ export default class RoutCheckState extends BaseState {
     this.selection = [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, counter }]
     this.routCheck = { mod: modifiers.mod, why: modifiers.why }
     check.unit.select()
+    game.openOverlay = game.scenario.map.hexAt(check.loc)
     game.refreshCallback(game)
+  }
+
+  openHex(x: number, y: number): HexOpenType {
+    const first = this.selection[0]
+    return x === first.x && y === first.y ? hexOpenType.Open : hexOpenType.Closed
   }
 
   get activeCounters(): Counter[] {

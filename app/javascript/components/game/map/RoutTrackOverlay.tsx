@@ -6,9 +6,10 @@ import { routEnds, routPaths } from "../../../engine/control/rout";
 
 interface RoutTrackOverlayProps {
   map: Map;
+  callback: (x: number, y: number) => void
 }
 
-export default function RoutTrackOverlay({ map }: RoutTrackOverlayProps) {
+export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProps) {
   const hexTracks = () => {
     if (!map.game?.routState?.routPathTree) { return }
     const rc: JSX.Element[] = []
@@ -49,7 +50,8 @@ export default function RoutTrackOverlay({ map }: RoutTrackOverlayProps) {
       const y = map.yOffset(loc.y) - offset1
       rc.push(
         <path key={`${i}-end`} d={circlePath(new Coordinate(x, y), 12)}
-              style={{ fill: "#DDD", stroke: "#E00", strokeWidth: 4 }} />
+              style={{ fill: "#DDD", stroke: "#E00", strokeWidth: 4 }}
+              onClick={() => callback(loc.x, loc.y)}/>
       )
     }
     return rc

@@ -88,5 +88,6 @@ export default class MoraleCheckAction extends BaseAction {
     if (this.game.moraleChecksNeeded.length < 1) {
       this.game.resetCurrentPlayer()
     }
+    this.game.closeOverlay = true
   }
 }

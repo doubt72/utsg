@@ -763,6 +763,8 @@ export default class Game {
         }
         if (checkRectify && this.needsRectify) { this.rectifyActions(backendSync) }
         if (!m.undone && this.canExecute(m.sequence ?? this.currentSequence + 1)) {
+          this.playerOneNotification = undefined
+          this.playerTwoNotification = undefined
           em.mutateGame()
           em.executed = true
           organizeStacks(this.scenario.map)
@@ -776,6 +778,8 @@ export default class Game {
       if (!m.undone) {
         try {
           if (this.canExecute(m.sequence ?? this.currentSequence + 1)) {
+            this.playerOneNotification = undefined
+            this.playerTwoNotification = undefined
             m.mutateGame()
             m.executed = true
             this.lastActionIndex = action.index

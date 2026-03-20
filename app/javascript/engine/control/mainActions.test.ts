@@ -180,7 +180,7 @@ describe("game actions", () => {
 
     const action = game.lastAction
     expect(action?.type).toBe("reaction_pass")
-    expect(action?.stringValue).toBe("no valid units have line-of-sight, skipping reaction fire")
+    expect(action?.stringValue).toBe("no valid units have range and line-of-sight, skipping reaction fire")
     expect(game.currentPlayer).toBe(1)
 
     try {

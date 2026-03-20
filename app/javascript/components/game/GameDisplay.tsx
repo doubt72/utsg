@@ -109,40 +109,50 @@ export default function GameDisplay() {
     if (game.k === undefined) { return }
     if (localStorage.getItem("username") !== game.k.playerOneName) { return }
     const oldTimeout = notificationTimeout
-    if (oldTimeout) {
+    if (oldTimeout !== undefined) {
       clearTimeout(oldTimeout)
+      setNotificationTimeout(undefined)
+      setErrorWindow(undefined)
     }
-    const to = setTimeout(() => {
-      if (game.k?.playerOneNotification === undefined) { return }
-      const message = game.k.playerOneNotification
-      setErrorWindow(
-        <NotificationWindow title={message[0]} message={message[1]} callBack={
-          () => setErrorWindow(undefined)
-        } />
-      )
-      game.k.playerOneNotification = undefined
-    }, 200)
-    setNotificationTimeout(to)
+    if (game.k.playerOneNotification !== undefined) {
+      const to = setTimeout(() => {
+        if (game.k?.playerOneNotification === undefined) { return }
+        const message = game.k.playerOneNotification
+        setErrorWindow(
+          <NotificationWindow title={message[0]} message={message[1]} callBack={
+            () => setErrorWindow(undefined)
+          } />
+        )
+        game.k.playerOneNotification = undefined
+        setNotificationTimeout(undefined)
+      }, 200)
+      setNotificationTimeout(to)
+    }
   }, [game.k?.playerOneNotification])
 
   useEffect(() => {
     if (game.k === undefined) { return }
     if (localStorage.getItem("username") !== game.k.playerTwoName) { return }
     const oldTimeout = notificationTimeout
-    if (oldTimeout) {
+    if (oldTimeout !== undefined) {
       clearTimeout(oldTimeout)
+      setNotificationTimeout(undefined)
+      setErrorWindow(undefined)
     }
-    const to = setTimeout(() => {
-      if (game.k?.playerTwoNotification === undefined) { return }
-      const message = game.k.playerTwoNotification
-      setErrorWindow(
-        <NotificationWindow title={message[0]} message={message[1]} callBack={
-          () => setErrorWindow(undefined)
-        } />
-      )
-      game.k.playerTwoNotification = undefined
-    }, 200)
-    setNotificationTimeout(to)
+    if (game.k.playerTwoNotification !== undefined) {
+      const to = setTimeout(() => {
+        if (game.k?.playerTwoNotification === undefined) { return }
+        const message = game.k.playerTwoNotification
+        setErrorWindow(
+          <NotificationWindow title={message[0]} message={message[1]} callBack={
+            () => setErrorWindow(undefined)
+          } />
+        )
+        game.k.playerTwoNotification = undefined
+        setNotificationTimeout(undefined)
+      }, 200)
+      setNotificationTimeout(to)
+    }
   }, [game.k?.playerTwoNotification])
 
   const switchMapScale = (set: -1 | 0 | 1) => {

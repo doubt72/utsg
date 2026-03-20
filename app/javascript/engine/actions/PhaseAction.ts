@@ -194,7 +194,7 @@ export default class PhaseAction extends BaseAction {
         this.game.playerTwoNotification = [title, message]
       }
     } else if (this.newPhase === gamePhaseType.CleanupCloseCombat) {
-      const title = "Resolve close combat"
+      const title = `Turn ${this.newTurn}: close combat`
       const message = `Resolving close combat, the ${this.game.currentInitiativeNationName} player has initiative ` +
         "and chooses order of battles."
       this.game.playerOneNotification = [title, message]
@@ -202,7 +202,7 @@ export default class PhaseAction extends BaseAction {
         this.game.playerTwoNotification = [title, message]
       }
     } else if (this.newPhase === gamePhaseType.PrepPrecip) {
-      const title = "Precipitation check"
+      const title = `Turn ${this.newTurn}: preciptitation`
       const message = `Checking precipitation, the ${this.game.currentInitiativeNationName} player has initiative ` +
         "and handles rolls."
       this.game.playerOneNotification = [title, message]
@@ -210,7 +210,7 @@ export default class PhaseAction extends BaseAction {
         this.game.playerTwoNotification = [title, message]
       }
     } else if (this.newPhase === gamePhaseType.CleanupSmoke) {
-      const title = "Smoke check"
+      const title = `Turn ${this.newTurn}: smoke check`
       const message = `Checking for smoke dispersion, the ${this.game.currentInitiativeNationName} ` +
         "player has initiative and handles rolls."
       this.game.playerOneNotification = [title, message]
@@ -218,7 +218,7 @@ export default class PhaseAction extends BaseAction {
         this.game.playerTwoNotification = [title, message]
       }
     } else if (this.newPhase === gamePhaseType.CleanupFire) {
-      const title = "Fire check"
+      const title = `Turn ${this.newTurn}: fire check`
       const message = "Checking for blazes extinguishing or spreading, " +
         `the ${this.game.currentInitiativeNationName} player has initiative and handles rolls.`
       this.game.playerOneNotification = [title, message]
@@ -226,7 +226,7 @@ export default class PhaseAction extends BaseAction {
         this.game.playerTwoNotification = [title, message]
       }
     } else if (this.newPhase === gamePhaseType.CleanupWeather) {
-      const title = "Variable weather"
+      const title = `Turn ${this.newTurn}: variable weather`
       const message = `Checking variable weather, the ${this.game.currentInitiativeNationName} ` +
         "player has initiative and handles rolls."
       this.game.playerOneNotification = [title, message]

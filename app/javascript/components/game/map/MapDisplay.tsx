@@ -417,10 +417,13 @@ export default function MapDisplay({
       })
     }
     if (map.game?.openOverlay) {
-      setOverlay({
-        show: true, x: map.game.openOverlay.coord.x, y: map.game.openOverlay.coord.y,
-      })
-      map.game.openOverlay = undefined
+      setTimeout(() => {
+        if (!map.game?.openOverlay) { return }
+        setOverlay({
+          show: true, x: map.game.openOverlay.coord.x, y: map.game.openOverlay.coord.y,
+        })
+        map.game.openOverlay = undefined
+      }, 250);
     }
     if (map.game?.closeOverlay) {
       setOverlay({ show: false, x: -1, y: -1 })
@@ -505,7 +508,7 @@ export default function MapDisplay({
       setFireHindrance(undefined)
     }
     if (map.game?.gameState?.type === stateType.Rout) {
-      setRoutTrack(<RoutTrackOverlay map={map} />)
+      setRoutTrack(<RoutTrackOverlay map={map} callback={hexSelection} />)
     } else {
       setRoutTrack(undefined)
     }
