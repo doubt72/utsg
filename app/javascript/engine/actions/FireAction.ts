@@ -58,7 +58,7 @@ export default class FireAction extends BaseAction {
     const rc: string[] = []
     const smoke = this.fireHex.start[0].smoke
     let coords = [new Coordinate(this.origin[0].x, this.origin[0].y)]
-    let part = ""
+    let part = this.reaction ? "reaction fire: " : ""
     for (const o of this.origin) {
       let check = false
       for (const c of coords) {

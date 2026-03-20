@@ -884,6 +884,8 @@ export default class Game {
     } else if (this.gameState?.type === stateType.Fire) {
       select = this.fireState.initialSelection[0].counter.unit
       this.scenario.map.clearAllSelections()
+    } else if (this.gameState?.type === stateType.RoutAll) {
+      this.scenario.map.clearAllSelections()
     }
     if (select) {
       select.select()
