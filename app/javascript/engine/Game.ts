@@ -253,14 +253,23 @@ export default class Game {
         this.executeAction(new GameAction(action, this), backendSync, false)
       }
     }
+    this.refreshCallback(this)
   }
 
   increaseResignation() {
     this.resignationLevel += 1
     if (this.resignationLevel > 2) {
-      postAPI(`/api/v1/games/${this.id}/resign`, {}, {
-        ok: () => {}
-      })
+      const user = localStorage.getItem("username") as string
+      let winner = user === this.playerOneName ? 2 : 1
+      if (this.playerOneName === this.playerTwoName) {
+        winner = otherPlayer(this.currentPlayer)
+      }
+      this.executeAction(new GameAction({
+        player: winner, user, data: {
+          action: "resign", old_initiative: this.initiative,
+        }
+      }, this), false)
+      this.refreshCallback(this)
     } 
   }
 
@@ -763,8 +772,10 @@ export default class Game {
         }
         if (checkRectify && this.needsRectify) { this.rectifyActions(backendSync) }
         if (!m.undone && this.canExecute(m.sequence ?? this.currentSequence + 1)) {
-          this.playerOneNotification = undefined
-          this.playerTwoNotification = undefined
+          if (em.type !== "close_combat_start") {
+            this.playerOneNotification = undefined
+            this.playerTwoNotification = undefined
+          }
           em.mutateGame()
           em.executed = true
           organizeStacks(this.scenario.map)
@@ -778,8 +789,10 @@ export default class Game {
       if (!m.undone) {
         try {
           if (this.canExecute(m.sequence ?? this.currentSequence + 1)) {
-            this.playerOneNotification = undefined
-            this.playerTwoNotification = undefined
+            if (m.type !== "close_combat_start") {
+              this.playerOneNotification = undefined
+              this.playerTwoNotification = undefined
+            }
             m.mutateGame()
             m.executed = true
             this.lastActionIndex = action.index

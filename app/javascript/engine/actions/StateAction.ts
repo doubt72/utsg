@@ -54,11 +54,7 @@ export default class StateAction extends BaseAction {
         this.game.playerTwoNotification = [title, message]
       }
     } else if (this.data.action === "finish") {
-      if (this.game.playerOneScore === this.game.playerTwoScore) {
-        this.game.winner = this.game.currentInitiativePlayer
-      } else {
-        this.game.winner = this.game.playerOneScore > this.game.playerTwoScore ? 1 : 2
-      }
+      this.game.winner = this.player
       this.game.state = "complete"
       const title = "Game over"
       const message = `${ this.game.winner === 1 ? this.game.playerOneName : this.game.playerTwoName } has won the game.`

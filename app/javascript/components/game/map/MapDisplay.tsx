@@ -416,9 +416,9 @@ export default function MapDisplay({
         )
       })
     }
-    if (map.game?.openOverlay) {
+    if (map.game?.openOverlay !== undefined) {
       setTimeout(() => {
-        if (!map.game?.openOverlay) { return }
+        if (map.game?.openOverlay === undefined) { return }
         setOverlay({
           show: true, x: map.game.openOverlay.coord.x, y: map.game.openOverlay.coord.y,
         })

@@ -115,4 +115,44 @@ RSpec.describe GameAction do
     expect(action1.reload.undone).to be == false
     expect(action2.reload.undone).to be == false
   end
+
+  it "resignation finishes game" do
+    expect(game.actions.length).to be == 0
+    expect(game.last_action).to be_nil
+
+    action = GameAction.create!({ game:, sequence: 1, user:, data: { action: "action" } })
+
+    expect(game.reload.actions.length).to be == 1
+    expect(game.last_action).to be == action
+
+    GameAction.create!(
+      { game:, sequence: 2, user:, data: { action: "resign", turn: [], player: 1 } }
+    )
+
+    expect(game.reload.actions.length).to be == 2
+    # Load directly to defeat AR cacheing
+    expect(GameAction.find(game.last_action_id).data["action"]).to be == "resign"
+    expect(game.winner_id).to be == game.player_one_id
+    expect(game.complete?).to be == true
+  end
+
+  it "finish finishes game" do
+    expect(game.actions.length).to be == 0
+    expect(game.last_action).to be_nil
+
+    action = GameAction.create!({ game:, sequence: 1, user:, data: { action: "action" } })
+
+    expect(game.reload.actions.length).to be == 1
+    expect(game.last_action).to be == action
+
+    GameAction.create!(
+      { game:, sequence: 2, user:, data: { action: "finish", turn: [], player: 1 } }
+    )
+
+    expect(game.reload.actions.length).to be == 2
+    # Load directly to defeat AR cacheing
+    expect(GameAction.find(game.last_action_id).data["action"]).to be == "finish"
+    expect(game.winner_id).to be == game.player_one_id
+    expect(game.complete?).to be == true
+  end
 end

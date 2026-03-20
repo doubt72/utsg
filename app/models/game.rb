@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Game < ApplicationRecord
   belongs_to :owner, class_name: "User"
   belongs_to :player_one, class_name: "User", optional: true
   belongs_to :player_two, class_name: "User", optional: true
@@ -113,16 +113,6 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     self
   end
 
-  def resign(user)
-    return nil unless finish(user)
-
-    player = user.id == player_one_id ? 1 : 2
-
-    GameAction.create!(sequence: last_sequence + 1, game: self, user:, player:,
-                       data: { action: "resign", old_initiative: 0 })
-    self
-  end
-
   def leave(user) # rubocop:disable Metrics/MethodLength
     return nil unless game_full?
     return nil unless player_one_id == user.id || player_two_id == user.id
@@ -169,16 +159,6 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
         old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_deploy,
       }, })
     in_progress!
-    self
-  end
-
-  def finish(user)
-    return nil unless [player_one_id, player_two_id].include? user.id
-    return nil unless state == "in_progress"
-
-    update(winner: user.id == player_one_id ? player_two : player_one)
-
-    complete!
     self
   end
 

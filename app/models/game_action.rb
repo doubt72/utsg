@@ -10,6 +10,7 @@ class GameAction < ApplicationRecord
   validates :player, presence: true, numericality: { in: 1..2 }
 
   after_create :update_game_last_action
+  after_create :check_status
   after_update :broadcast_if_undone
   after_create :broadcast
 
@@ -41,10 +42,6 @@ class GameAction < ApplicationRecord
     true
   end
 
-  def update_game_last_action
-    game.update!(last_action_id: id)
-  end
-
   private
 
   def undoable?(user)
@@ -66,6 +63,18 @@ class GameAction < ApplicationRecord
 
   def format_created
     created_at.iso8601
+  end
+
+  def update_game_last_action
+    game.update!(last_action_id: id)
+  end
+
+  def check_status
+    return unless %w[resign finish].include?(data["action"])
+
+    game = Game.find(game_id)
+    game.update!(winner: player == 1 ? game.player_one : game.player_two)
+    game.complete!
   end
 
   def broadcast

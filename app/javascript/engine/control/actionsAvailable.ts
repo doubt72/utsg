@@ -44,6 +44,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   }
   if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) { return [] }
   if (activePlayer !== game.currentUser) {
+    if (game.state === "complete") {
+      return [{ type: "none", message: "game over" }]
+    }
     return [{ type: "wait", message: currentEnemyAction(game) }] }
   if (game.lastAction?.id === undefined) { return [{ type: "sync" }] }
   const actions: GameAction[] = []
@@ -259,7 +262,9 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
           actions.push({ type: "close_combat_select" })
         }
       } else {
-        if (closeCombatCasualtyNeeded(game)) {
+        const loc = closeCombatCasualtyNeeded(game)
+        if (loc) {
+          setTimeout(() => { game.openOverlay = game.scenario.map.hexAt(loc) }, 400);
           actions.unshift({ type: "none", message: "select unit to reduce" })
         } else {
           actions.unshift({ type: "none", message: "select close combat to resolve" })

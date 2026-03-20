@@ -218,8 +218,12 @@ function CleanupWeather(game: Game, backendSync: boolean, data: GameActionData):
     return
   }
   if (oldTurn === game.scenario.turns) {
+    let winner = game.currentInitiativePlayer
+    if (game.playerOneScore !== game.playerTwoScore) {
+      winner = game.playerOneScore > game.playerTwoScore ? 1 : 2
+    }
     game.executeAction(new GameAction({
-      player: game.currentPlayer, user: game.currentUser, data: {
+      player: winner, user: game.currentUser, data: {
         action: "finish", old_initiative: game.initiative,
       }
     }, game), backendSync)

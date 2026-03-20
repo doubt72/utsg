@@ -6,7 +6,6 @@ High Priority Features/Bug Fixes:
 
     - Rout path should be on top with multiple routs
 
-    - CC Reduce open unit overlay
     - Sniper check open unit overlay
 
     - Add help overlay for close combat selections
