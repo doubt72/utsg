@@ -2,11 +2,13 @@ import {
   baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
-import { baseMorale, baseToHit, chance2D10, chanceD10x10, hexDistance, normalDir } from "../../utilities/utilities"
+import { baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
+import { closeCombatFirepower } from "../control/closeCombat"
 import {
-  armorAtArc, armorHitModifiers, fireHindrance, firepower, moraleModifiers, rangeMultiplier,
+  armorAtArc, armorHitModifiers, fireHindrance, firepower, leadershipAt, moraleModifiers, rangeMultiplier,
   untargetedModifiers
 } from "../control/fire"
+import { nextToEnemy } from "../control/state/RallyState"
 import Counter from "../Counter"
 import Feature from "../Feature"
 import Game from "../Game"
@@ -142,6 +144,13 @@ export function counterHelpLayout(
   return mapHelpLayout(loc, max, text, scale)
 }
 
+export function counterRallyHelpLayout(
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
+): HelpLayout {
+  const text = counter.unit.rallyHelpText(game, hex)
+  return mapHelpLayout(loc, max, text, scale)
+}
+
 export function counterFireHelpLayout(
   game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
 ): HelpLayout {
@@ -151,6 +160,27 @@ export function counterFireHelpLayout(
     return noHelp
   }
   const text = counter.unit.fireHelpText(game, hex)
+  return mapHelpLayout(loc, max, text, scale)
+}
+
+export function counterRoutHelpLayout(
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
+): HelpLayout {
+  const text = counter.unit.routHelpText(game, hex)
+  return mapHelpLayout(loc, max, text, scale)
+}
+
+export function counterMoraleHelpLayout(
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
+): HelpLayout {
+  const text = counter.unit.moraleHelpText(game, hex)
+  return mapHelpLayout(loc, max, text, scale)
+}
+
+export function counterCloseCombatHelpLayout(
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
+): HelpLayout {
+  const text = counter.unit.closeCombatHelpText(game, hex)
   return mapHelpLayout(loc, max, text, scale)
 }
 
@@ -305,6 +335,39 @@ export function unitHelpText(unit: Unit): string[] {
   return text
 }
 
+export function rallyHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
+  const rc: string[] = []
+  if (unit.jammed || unit.sponsonJammed) {
+    rc.push("repair roll:")
+    rc.push("")
+    rc.push(`repair on: ${unit.repairRoll} (${chance2D10(unit.repairRoll ?? 0)}%)`)
+    rc.push(`destroyed on: ${unit.breakWeaponRoll} (${chance2D10(unit.breakWeaponRoll ?? 0)}%)`)
+  } else if (unit.isBroken) {
+    rc.push("rally roll:")
+    rc.push(`- base of ${baseRally}`)
+    rc.push(`- minus unit morale ${unit.currentMorale}`)
+    let toRally = baseRally - unit.currentMorale
+    const leadership = leadershipAt(game, loc)
+    if (leadership > 0) {
+      rc.push(`- minus minus leadership ${leadership}`)
+      toRally -= leadership
+    }
+    const cover = game.scenario.map.hexAt(loc)?.terrain.cover as number
+    if (cover > 0) {
+      rc.push(`- minus terrain cover ${cover}`)
+      toRally -= cover
+    }
+    const contact = nextToEnemy(game, loc)
+    if (contact) {
+      rc.push("- plus 1 for being next to enemy units")
+      toRally -= 1
+    }
+    rc.push("")
+    rc.push(`target to rally: ${toRally} (${chance2D10(toRally)}%)`)
+  }
+  return rc
+}
+
 export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[] {
   if (!game.gameState) { return [] }
   if (game.fireState.targetSelection.length < 1) { return [] }
@@ -401,6 +464,51 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
   } else if (!target.armored) {
     rc.push("")
     rc.push("-> hit destroys vehicle")
+  }
+  return rc
+}
+
+export function routHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
+  const rc: string[] = []
+  rc.push("rout check roll:")
+  rc.push(`- base of ${baseMorale}`)
+  let toRout = baseMorale
+  const modifiers = moraleModifiers(game, unit, [loc], loc, false)
+  toRout += modifiers.mod
+  for (const m of modifiers.why) { rc.push(m) }
+  rc.push("")
+  rc.push(`target to avoid rout: ${toRout} (${chance2D10(toRout)}%)`)
+  return rc
+}
+
+export function moraleHelpText(game: Game, loc: Coordinate, unit: Unit): string[] {
+  const rc: string[] = []
+  const check = game.moraleChecksNeeded[0]
+  rc.push("morale check roll:")
+  rc.push(`- base of ${baseMorale}`)
+  let moraleCheck = baseMorale
+  const modifiers = moraleModifiers(game, unit, check.from, check.to, !!check.incendiary)
+  moraleCheck += modifiers.mod
+  for (const m of modifiers.why) { rc.push(m) }
+  rc.push("")
+  rc.push(`morale check pass: ${moraleCheck} (${chance2D10(moraleCheck)}%)`)
+  if (!unit.isBroken) {
+    rc.push(`unit pinned on exact roll (${exact2D10(moraleCheck)}%)`)
+  }
+  return rc
+}
+
+export function closeCombatHelpText(game: Game, loc: Coordinate): string[] {
+  const rc: string[] = []
+  const fp1 = closeCombatFirepower(game, loc, 1)
+  const fp2 = closeCombatFirepower(game, loc, 2)
+  rc.push(`${game.alliedName} firepower ${fp1}`)
+  rc.push(`${game.axisName} firepower ${fp2}`)
+  rc.push("")
+  rc.push("close combat odds:")
+  const odds = chanceCC(fp1 -fp2, game.alliedName, game.axisName)
+  for (const o of odds) {
+    rc.push(`${o[0]}% ${o[1]}`)
   }
   return rc
 }

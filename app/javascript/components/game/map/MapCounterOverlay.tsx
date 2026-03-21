@@ -7,8 +7,12 @@ import Map from "../../../engine/Map";
 import { clearColor, counterOutline } from "../../../utilities/graphics";
 import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
 import { HelpOverlay } from "./Help";
-import { counterFireHelpLayout } from "../../../engine/support/help";
+import {
+  counterCloseCombatHelpLayout, counterFireHelpLayout, counterMoraleHelpLayout, counterRallyHelpLayout,
+  counterRoutHelpLayout } from "../../../engine/support/help";
 import Unit from "../../../engine/Unit";
+import { gamePhaseType } from "../../../engine/support/gamePhase";
+import { closeProgress } from "../../../engine/Game";
 
 interface MapCounterOverlayProps {
   map: Map;
@@ -33,20 +37,37 @@ export default function MapCounterOverlay({
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
-  const [fireHelpDisplay, setFireHelpDisplay] = useState<JSX.Element | undefined>()
+  const [actionHelpDisplay, setActionHelpDisplay] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState(0)
 
-  const showFireHelp = (e: React.MouseEvent, counter: Counter) => {
-    if (counter.hasUnit && counter.unit.targetSelected) {
-      if (!map.game) { return }
-      const x = (e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
-      const y = (e.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
-      const loc = new Coordinate(x, y)
-      setFireHelpDisplay(HelpOverlay(counterFireHelpLayout(
-          map.game, counter, loc, new Coordinate(maxX, maxY), scale, new Coordinate(xx ?? -1, yy ?? -1)
-      )))
+  const showActionHelp = (e: React.MouseEvent, counter: Counter) => {
+    if (!map.game) { return }
+    console.log("hello")
+    const x = (e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
+    const y = (e.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
+    const loc = new Coordinate(x, y)
+
+    const rallyCheck = map.game.phase === gamePhaseType.PrepRally && counter.hasUnit && counter.unit.selected
+    const fireCheck = counter.hasUnit && counter.unit.targetSelected
+    const routCheck = map.game.routCheckNeeded.length > 0 && counter.hasUnit && counter.unit.selected
+    const moraleCheck = map.game.moraleChecksNeeded.length > 0 && counter.hasUnit && counter.unit.selected
+    const hex = new Coordinate(xx ?? -1, yy ?? -1)
+    const cCCheck = counter.hasUnit && map.contactAt(hex) &&
+      !(map.game.closeNeeded[0]?.state === closeProgress.NeedsCasualties)
+    const max = new Coordinate(maxX, maxY)
+    console.log(`${hex.x},${hex.y} ra:${rallyCheck} fi:${fireCheck} ro:${routCheck} mo:${moraleCheck} cc:${cCCheck}`)
+    if (rallyCheck) {
+      setActionHelpDisplay(HelpOverlay(counterRallyHelpLayout(map.game, counter, loc, max, scale, hex)))
+    } else if (fireCheck) {
+      setActionHelpDisplay(HelpOverlay(counterFireHelpLayout(map.game, counter, loc, max, scale, hex)))
+    } else if (routCheck) {
+      setActionHelpDisplay(HelpOverlay(counterRoutHelpLayout(map.game, counter, loc, max, scale, hex)))
+    } else if (moraleCheck) {
+      setActionHelpDisplay(HelpOverlay(counterMoraleHelpLayout(map.game, counter, loc, max, scale, hex)))
+    } else if (cCCheck) {
+      setActionHelpDisplay(HelpOverlay(counterCloseCombatHelpLayout(map.game, counter, loc, max, scale, hex)))
     } else {
-      setFireHelpDisplay(undefined)
+      setActionHelpDisplay(undefined)
     }
   }
 
@@ -137,7 +158,7 @@ export default function MapCounterOverlay({
                           target: { type: "map", xy: new Coordinate(xx, yy) },
                           counter: cd,
                         })
-                        showFireHelp(e, cd)
+                        showActionHelp(e, cd)
                       } else if (counter.reinforcement) {
                         selectionCallback({
                           target: {
@@ -151,8 +172,8 @@ export default function MapCounterOverlay({
                       }
                       setUpdate(s => s + 1)
                     }}
-                    onMouseMove={(e: React.MouseEvent) => { showFireHelp(e, cd) }}
-                    onMouseLeave={() => { setFireHelpDisplay(undefined) }}/>
+                    onMouseMove={(e: React.MouseEvent) => { showActionHelp(e, cd) }}
+                    onMouseLeave={() => { setActionHelpDisplay(undefined) }}/>
             </g>
           )
           let unit: Unit | undefined = undefined
@@ -192,7 +213,7 @@ export default function MapCounterOverlay({
     <g>
       {overlayDisplay}
       {helpDisplay}
-      {fireHelpDisplay}
+      {actionHelpDisplay}
     </g>
   )
 }

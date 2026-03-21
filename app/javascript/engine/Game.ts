@@ -444,6 +444,13 @@ export default class Game {
     return this.gameState as FireDisplaceState
   }
 
+  addSniper(unit: SimpleUnitCheck): void {
+    this.sniperNeeded.push(unit)
+    if (!this.suppressNetwork && this.currentUser === localStorage.getItem("username")) {
+      setTimeout(() => { this.openOverlay = this.scenario.map.hexAt(unit.loc) }, 400);
+    }
+  }
+
   get freeRallyAvailable(): boolean {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const action = this.actions[i] as RallyAction

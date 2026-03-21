@@ -3,6 +3,7 @@ import CounterDisplay from "../game/CounterDisplay";
 import Unit from "../../engine/Unit";
 import { unitStatus } from "../../utilities/commonTypes";
 import { helpLink } from "./helpData";
+import { baseRally } from "../../utilities/utilities";
 
 export default function RallySection() {
   const infantry = new Unit({
@@ -37,7 +38,7 @@ export default function RallySection() {
       <p>Rally checks for broken infantry units and leaders are calculated as so (see the
         ({ helpLink("Counters", "counters") } and { helpLink("Terrain", "terrain") } sections for more on finding these values):</p>
       <ol>
-        <li>start with a base of 12</li>
+        <li>start with a base of { baseRally }</li>
         <li>subtract the unit&apos;s morale</li>
         <li>subtract the highest leadership of any leaders in the hex in the hex</li>
         <li>subtract the cover of the terrain in the hex</li>

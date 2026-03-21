@@ -47,5 +47,6 @@ export default class SniperAction extends BaseAction {
         this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false })
       }
     }
+    this.game.closeOverlay = true
   }
 }

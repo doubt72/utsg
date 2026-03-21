@@ -200,13 +200,13 @@ export default class MoveAction extends BaseAction {
             loc = new Coordinate(a.x, a.y)
           }
         })
-        if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc }) }
+        if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
       })
       this.addAction.forEach(a => {
         if (!a.id || a.type !== gameActionAddActionType.Load) { return }
         const unit = this.game.findUnitById(a.id)
         const loc = new Coordinate(this.lastPath.x, this.lastPath.y)
-        if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc }) }
+        if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
       })
     }
   }

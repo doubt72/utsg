@@ -9,9 +9,35 @@ import organizeStacks from "../support/organizeStacks";
 import { gamePhaseType } from "../support/gamePhase";
 import { closeCombatCasualtyNeeded, closeCombatDone } from "./closeCombat";
 import CloseCombatState from "./state/CloseCombatState";
+import { chanceCC } from "../../utilities/utilities";
 
-// TODO: fix tests when things implemented
 describe("close combat", () => {
+  test("odds display", () => {
+    expect(chanceCC(0, "Allied", "Axis")).toStrictEqual([
+      [15, "Axis player reduces 2"],
+      [30, "Axis player reduces 1"],
+      [10, "both players reduce 1"],
+      [30, "Allied player reduces 1"],
+      [15, "Allied player reduces 2"],
+    ])
+
+    expect(chanceCC(5, "Allied", "Axis")).toStrictEqual([
+      [15, "Axis player reduces 3"],
+      [40, "Axis player reduces 2"],
+      [30, "Axis player reduces 1"],
+      [5, "both players reduce 1"],
+      [10, "Allied player reduces 1"],
+    ])
+
+    expect(chanceCC(-5, "Allied", "Axis")).toStrictEqual([
+      [10, "Axis player reduces 1"],
+      [5, "both players reduce 1"],
+      [30, "Allied player reduces 1"],
+      [40, "Allied player reduces 2"],
+      [15, "Allied player reduces 3"],
+    ])
+  })
+
   test("basic close combat", () => {
     const game = createBlankGame()
     const map = game.scenario.map

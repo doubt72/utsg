@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { baseMorale, coordinateToLabel } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionRoutData, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -28,7 +28,7 @@ export default class RoutCheckAction extends BaseAction {
     const nation = this.game.nationNameForPlayer(this.player)
     const unit = this.game.findUnitById(this.target.id) as Unit
     const loc = coordinateToLabel(new Coordinate(this.target.x, this.target.y))
-    const check = 15 + this.routCheckMods.mod
+    const check = baseMorale + this.routCheckMods.mod
     const roll = this.diceResult.result
     let rc = `${nation} ${unit.name} rout morale check at ${loc} (2d10): target ${check}, rolled ${roll}, `
     if (roll < check) {
@@ -46,7 +46,7 @@ export default class RoutCheckAction extends BaseAction {
   mutateGame(): void {
     this.game.routCheckNeeded.shift()
     const unit = this.game.findUnitById(this.target.id) as Unit
-    const check = 15 + this.routCheckMods.mod
+    const check = baseMorale + this.routCheckMods.mod
     const roll = this.diceResult
     if (roll.result < check) {
       this.game.routNeeded.push({ unit, loc: new Coordinate(this.target.x, this.target.y) })

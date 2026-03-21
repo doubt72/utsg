@@ -1,5 +1,5 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { baseRally, coordinateToLabel } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -40,7 +40,7 @@ export default class RallyAction extends BaseAction {
   get rollNeeded(): number {
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (!unit.canCarrySupport) { return this.fixRoll }
-    return 12 - this.moraleBase - this.leaderMod - this.terrainMod +
+    return baseRally - this.moraleBase - this.leaderMod - this.terrainMod +
       (this.nextToEnemy ? 1 : 0)
   }
 

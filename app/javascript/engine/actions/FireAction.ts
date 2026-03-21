@@ -551,7 +551,7 @@ export default class FireAction extends BaseAction {
     if (this.player === 1 ? this.game.axisSniper : this.game.alliedSniper && !this.reaction) {
       this.origin.forEach(o => {
         const unit = this.game.findUnitById(o.id)
-        if (unit?.canCarrySupport) { this.game.sniperNeeded.push( { unit, loc: new Coordinate(o.x, o.y) }) }
+        if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc: new Coordinate(o.x, o.y) }) }
       })
     }
     if (fireStartVehicle && (fireStartVehicle.incendiary ||

@@ -19,6 +19,19 @@ export function alreadyRallied(game: Game, id: string): boolean {
   return false
 }
 
+export function nextToEnemy(game: Game, loc: Coordinate): boolean {
+  const map = game.scenario.map
+  for (let d = 1; d <= 6; d++) {
+    const hex = map.neightborCoordinate(loc, d)
+    const counters = map.countersAt(hex)
+    for (const c of counters) {
+      if (!c.unit.isFeature && !c.unit.isBroken &&
+        c.unit.playerNation !== game.currentPlayerNation) { return true }
+    }
+  }
+  return false
+}
+
 export default class RallyState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.Rally, game.currentPlayer)
@@ -95,18 +108,6 @@ export default class RallyState extends BaseState {
     return false
   }
 
-  nextToEnemy(loc: Coordinate): boolean {
-    for (let d = 1; d <= 6; d++) {
-      const hex = this.map.neightborCoordinate(loc, d)
-      const counters = this.map.countersAt(hex)
-      for (const c of counters) {
-        if (!c.unit.isFeature && !c.unit.isBroken &&
-          !this.samePlayer(c.unit)) { return true }
-      }
-    }
-    return false
-  }
-
   pass() {
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
@@ -124,7 +125,7 @@ export default class RallyState extends BaseState {
         morale_base: counter.unit.currentMorale,
         leader_mod: leadershipAt(this.game, hex),
         terrain_mod: this.map.hexAt(hex)?.terrain.cover as number,
-        next_to_enemy: this.nextToEnemy(hex),
+        next_to_enemy: nextToEnemy(this.game, hex),
       },
       free_rally: this.leaderAtHex(hex.x, hex.y, counter.unit),
     } : {

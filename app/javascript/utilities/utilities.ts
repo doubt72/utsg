@@ -159,10 +159,42 @@ export function baseToHit(fp: number): number {
   return 2
 }
 
+export function chanceCC(diff: number, playerOne: string, playerTwo: string): [number, string][] {
+  const rc: [number, string][] = []
+  if (diff > 20) {
+    rc.push([100, `${playerTwo} player will reduce at least 3`])
+  } else if (diff < -20) {
+    rc.push([100, `${playerOne} player will reduce at least 3`])
+  } else {
+    const odds = new Array(20 - diff).fill(0).concat(
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+    ).concat(new Array(20 + diff).fill(0))
+    rc.push([odds.slice(0, 5).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 6`])
+    rc.push([odds.slice(5, 10).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 5`])
+    rc.push([odds.slice(10, 15).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 4`])
+    rc.push([odds.slice(15, 20).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 3`])
+    rc.push([odds.slice(20, 25).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 2`])
+    rc.push([odds.slice(25, 29).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 1`])
+    rc.push([odds[29], `both players reduce 1`])
+    rc.push([odds.slice(30, 34).reduce((a,n) => a + n, 0), `${playerOne} player reduces 1`])
+    rc.push([odds.slice(34, 39).reduce((a,n) => a + n, 0), `${playerOne} player reduces 2`])
+    rc.push([odds.slice(39, 44).reduce((a,n) => a + n, 0), `${playerOne} player reduces 3`])
+    rc.push([odds.slice(44, 49).reduce((a,n) => a + n, 0), `${playerOne} player reduces 4`])
+    rc.push([odds.slice(49, 54).reduce((a,n) => a + n, 0), `${playerOne} player reduces 5`])
+    rc.push([odds.slice(54, 59).reduce((a,n) => a + n, 0), `${playerOne} player reduces 6`])
+  }
+  return rc.filter(n => n[0] > 0)
+}
+
 export function chance2D10(check: number): number {
   if (check > 19) { return 0 }
   if (check < 3) { return 99}
   return [97, 94, 90, 85, 79, 72, 64, 55, 45, 36, 28, 21, 15, 10, 6, 3, 1][check - 3];
+}
+
+export function exact2D10(check: number): number {
+  if (check > 20 || check < 2) { return 0 }
+  return 10 - Math.abs(check - 11)
 }
 
 export function chanceD10x10(check: number): number {
@@ -212,5 +244,6 @@ export function counterKey(c: Unit | Feature): string {
 
 export const stackLimit = 12
 export const baseMorale = 15
+export const baseRally = 12
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"

@@ -1,5 +1,6 @@
 import { hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { rolld10, smokeReduceRoll } from "../../../utilities/utilities";
+import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
@@ -13,6 +14,11 @@ export default class SmokeCheckState extends BaseState {
   openHex(x: number, y: number): HexOpenType {
     const loc = this.game.smokeCheckNeeded[0].loc
     return loc.x === x && loc.y === y ? hexOpenType.Open : hexOpenType.Closed
+  }
+
+  get activeCounters(): Counter[] {
+    const loc = this.game.smokeCheckNeeded[0].loc
+    return this.map.countersAt(loc)
   }
 
   get actionInProgress(): boolean {

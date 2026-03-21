@@ -1,4 +1,4 @@
-import { Coordinate } from "../../../utilities/commonTypes";
+import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -15,6 +15,13 @@ export default class SniperState extends BaseState {
       }
     })
     game.refreshCallback(game)
+  }
+
+  openHex(x: number, y: number): HexOpenType {
+    for (const s of this.selection) {
+      if (s.x === x && s.y === y) { return hexOpenType.Open }
+    }
+    return hexOpenType.Closed
   }
 
   get activeCounters(): Counter[] {

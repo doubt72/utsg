@@ -428,7 +428,7 @@ export function moraleModifiers(
     }
   }
   if (target.pinned) {
-    why.push(` - plus 1 for being pinned`)
+    why.push(`- plus 1 for being pinned`)
   }
   return { mod, why }
 }

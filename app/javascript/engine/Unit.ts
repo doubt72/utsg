@@ -5,7 +5,7 @@ import {
   unitType
 } from "../utilities/commonTypes";
 import Game from "./Game";
-import { fireHelpText, unitHelpText } from "./support/help";
+import { closeCombatHelpText, fireHelpText, moraleHelpText, rallyHelpText, routHelpText, unitHelpText } from "./support/help";
 
 // id: ID
 // c: nation, t: type, n: name, i: icon, y: year
@@ -502,7 +502,23 @@ export default class Unit {
     return unitHelpText(this)
   }
 
+  rallyHelpText(game: Game, hex: Coordinate): string[] {
+    return rallyHelpText(game, hex, this)
+  }
+
   fireHelpText(game: Game, hex: Coordinate): string[] {
     return fireHelpText(game, hex, this)
+  }
+
+  routHelpText(game: Game, hex: Coordinate): string[] {
+    return routHelpText(game, hex, this)
+  }
+
+  moraleHelpText(game: Game, hex: Coordinate): string[] {
+    return moraleHelpText(game, hex, this)
+  }
+
+  closeCombatHelpText(game: Game, hex: Coordinate): string[] {
+    return closeCombatHelpText(game, hex)
   }
 }
