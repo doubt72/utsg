@@ -423,7 +423,7 @@ export default function MapDisplay({
           show: true, x: map.game.openOverlay.coord.x, y: map.game.openOverlay.coord.y,
         })
         map.game.openOverlay = undefined
-      }, 250);
+      }, 500);
     }
     if (map.game?.closeOverlay) {
       setOverlay({ show: false, x: -1, y: -1 })

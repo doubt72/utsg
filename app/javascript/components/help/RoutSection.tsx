@@ -261,7 +261,8 @@ export default function RoutSection() {
       </p>
       <p>
         Attempting to rout all of an opponent&apos;s units is not automatic. Each broken unit makes
-        a standard morale check (using all the normal morale check modifiers), except: ties result
+        a standard morale check (using all the normal morale check modifiers, plus an additiona -2
+        modifier), except: ties result
         in no rout (see &quot;Morale Checks&quot; in the{" "}
         { helpLink("Fire", "fire section") } of the
         documents). If the unit fails that morale check, it will rout.

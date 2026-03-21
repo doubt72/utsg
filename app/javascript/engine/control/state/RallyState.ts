@@ -21,10 +21,15 @@ export function alreadyRallied(game: Game, id: string): boolean {
 
 export function nextToEnemy(game: Game, loc: Coordinate): boolean {
   const map = game.scenario.map
+  const counters = map.countersAt(loc)
+  for (const c of counters) {
+    if (!c.unit.isFeature && !c.unit.isBroken &&
+      c.unit.playerNation !== game.currentPlayerNation) { return true }
+  }
   for (let d = 1; d <= 6; d++) {
     const hex = map.neightborCoordinate(loc, d)
-    const counters = map.countersAt(hex)
-    for (const c of counters) {
+    const hexCounters = map.countersAt(hex)
+    for (const c of hexCounters) {
       if (!c.unit.isFeature && !c.unit.isBroken &&
         c.unit.playerNation !== game.currentPlayerNation) { return true }
     }

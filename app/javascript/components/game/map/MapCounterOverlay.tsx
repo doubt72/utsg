@@ -42,7 +42,6 @@ export default function MapCounterOverlay({
 
   const showActionHelp = (e: React.MouseEvent, counter: Counter) => {
     if (!map.game) { return }
-    console.log("hello")
     const x = (e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
     const y = (e.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
     const loc = new Coordinate(x, y)
@@ -55,7 +54,6 @@ export default function MapCounterOverlay({
     const cCCheck = counter.hasUnit && map.contactAt(hex) &&
       !(map.game.closeNeeded[0]?.state === closeProgress.NeedsCasualties)
     const max = new Coordinate(maxX, maxY)
-    console.log(`${hex.x},${hex.y} ra:${rallyCheck} fi:${fireCheck} ro:${routCheck} mo:${moraleCheck} cc:${cCCheck}`)
     if (rallyCheck) {
       setActionHelpDisplay(HelpOverlay(counterRallyHelpLayout(map.game, counter, loc, max, scale, hex)))
     } else if (fireCheck) {

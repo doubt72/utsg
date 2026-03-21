@@ -7,7 +7,7 @@ import IllegalActionError from "./IllegalActionError";
 
 export const significantActions = [
   "move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "rout_move",
-  "reaction_fire", "reaction_intensive_fire", "pass",
+  "reaction_fire", "reaction_intensive_fire", "pass", "rout_all",
 ]
 
 export const moveActions = [ "move", "rush", "assault_move", "rout_move", "rout_self" ]

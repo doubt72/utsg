@@ -360,7 +360,7 @@ export function rallyHelpText(game: Game, loc: Coordinate, unit: Unit): string[]
     const contact = nextToEnemy(game, loc)
     if (contact) {
       rc.push("- plus 1 for being next to enemy units")
-      toRally -= 1
+      toRally += 1
     }
     rc.push("")
     rc.push(`target to rally: ${toRally} (${chance2D10(toRally)}%)`)
@@ -472,12 +472,13 @@ export function routHelpText(game: Game, loc: Coordinate, unit: Unit): string[] 
   const rc: string[] = []
   rc.push("rout check roll:")
   rc.push(`- base of ${baseMorale}`)
-  let toRout = baseMorale
+  rc.push("- minus 2 for rout check")
+  let toRout = baseMorale - 2
   const modifiers = moraleModifiers(game, unit, [loc], loc, false)
   toRout += modifiers.mod
   for (const m of modifiers.why) { rc.push(m) }
   rc.push("")
-  rc.push(`target to avoid rout: ${toRout} (${chance2D10(toRout)}%)`)
+  rc.push(`target to avoid rout: ${toRout} (${chance2D10(toRout - 1)}%)`)
   return rc
 }
 

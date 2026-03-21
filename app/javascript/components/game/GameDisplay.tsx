@@ -125,7 +125,7 @@ export default function GameDisplay() {
         )
         game.k.playerOneNotification = undefined
         setNotificationTimeout(undefined)
-      }, 200)
+      }, 1000)
       setNotificationTimeout(to)
     }
   }, [game.k?.playerOneNotification])
@@ -150,7 +150,7 @@ export default function GameDisplay() {
         )
         game.k.playerTwoNotification = undefined
         setNotificationTimeout(undefined)
-      }, 200)
+      }, 1000)
       setNotificationTimeout(to)
     }
   }, [game.k?.playerTwoNotification])
