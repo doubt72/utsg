@@ -95,7 +95,7 @@ export default function TurnDisplay({
         }
       </g>
     )
-  }, [xx, yy, map.game?.scenario.turns])
+  }, [xx, yy, map.game?.scenario.turns, map.game?.turn])
 
   useEffect(() => {
     if (!map || !map.game) { return }

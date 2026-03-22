@@ -602,7 +602,8 @@ export default class Map {
           if (!unit.isFeature) {
             const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
             if (player === unitPlayer) {
-              if ((unit.isBroken || unit.jammed) && !alreadyRallied(this.game, unit.id)) {
+              if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed)&& !unit.isWreck)) &&
+                  !alreadyRallied(this.game, unit.id)) {
                 rally = true
               }
               if (!unit.isBroken && unit.leader) {
@@ -620,6 +621,29 @@ export default class Map {
   anyPrecip(): boolean {
     if (this.game?.lastAction?.type === "precipitation_check") { return false }
     return this.precipChance > 0
+  }
+
+  anySmoke(): boolean {
+    for (const c of this.allCounters) {
+      if (c.hasFeature && c.feature.type === featureType.Smoke) { return true }
+    }
+    return false
+  }
+
+  anyFire(): boolean {
+    for (const c of this.allCounters) {
+      if (c.hasFeature && c.feature.type === featureType.Fire) { return true }
+    }
+    return false
+  }
+
+  anyContact(): boolean {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = 0; x < this.width; x++) {
+        if (this.contactAt(new Coordinate(x, y))) { return true }
+      }
+    }
+    return false
   }
 
   contactAt(loc: Coordinate): boolean {

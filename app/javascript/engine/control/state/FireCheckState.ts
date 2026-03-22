@@ -1,5 +1,6 @@
 import { hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { rolld10 } from "../../../utilities/utilities";
+import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
@@ -16,6 +17,13 @@ export default class FireCheckState extends BaseState {
       this.game.fireOutCheckNeeded[0].loc :
       this.game.fireSpreadCheckNeeded[0].loc
     return loc.x === x && loc.y === y ? hexOpenType.Open : hexOpenType.Closed
+  }
+
+  get activeCounters(): Counter[] {
+    const loc = this.game.fireOutCheckNeeded.length > 0 ?
+      this.game.fireOutCheckNeeded[0].loc :
+      this.game.fireSpreadCheckNeeded[0].loc
+    return this.map.countersAt(loc)
   }
 
   get actionInProgress(): boolean {

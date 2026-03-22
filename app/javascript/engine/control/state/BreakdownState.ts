@@ -1,3 +1,4 @@
+import { Coordinate, HexOpenType, hexOpenType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
 import BaseAction from "../../actions/BaseAction";
 import Counter from "../../Counter";
@@ -32,8 +33,16 @@ export default class BreakdownState extends BaseState {
     game.refreshCallback(game)
   }
 
+  openHex(x: number, y: number): HexOpenType {
+    return this.selection[0].x === x && this.selection[0].y === y ? hexOpenType.Open : hexOpenType.Closed
+  }
+
   get actionInProgress(): boolean {
     return false
+  }
+
+  get activeCounters(): Counter[] {
+    return this.game.scenario.map.countersAt(new Coordinate(this.selection[0].x, this.selection[0].y))
   }
 
   finish() {

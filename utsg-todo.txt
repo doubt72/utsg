@@ -6,7 +6,13 @@ High Priority Features/Bug Fixes:
       need to see it again to be able to figure out what's going on
   - Overlay both fire and displacement
 
-  - Run through game / Finish 001 (description / balance)
+  - Test scenarios
+    002, 003, 004, 005, 006, 007, 011
+    201
+    301, 303, 305, 308
+    401, 406, 408
+    501, 503, 508, 509, 510
+    601, 603, 604
 
   - Add tutorial
 

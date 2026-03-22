@@ -56,7 +56,7 @@ module Scenarios
         [
           "Operation Bagration was a massive Soviet offensive conducted in
           June, July, and August of 1944 across Byelorussia.  Expecting the main
-          Allied pressure in the south, the German high command had weakened
+          Soviet advance to be elsewhere, the German high command had weakened
           Army Group Center, transferring roughly a third of its artillery,
           half of its tank destroyers, and most of its armored forces to
           reinforce Army Group South.",

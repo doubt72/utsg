@@ -56,5 +56,6 @@ export default class FireStartAction extends BaseAction {
     if (this.diceResult.result <= this.needed) {
       this.map.addFire(loc)
     }
+    this.game.fireStartCheckNeeded = undefined
   }
 }

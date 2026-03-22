@@ -6,28 +6,29 @@ module Scenarios
     NAME = "A Brief Encounter"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 5, 13].freeze
     LAYOUT = [23, 11, "x"].freeze
 
     ALLIED_UNITS = {
       "0": { list: [
-        [8, :uk_cruiser_mk_iv],
+        [6, :uk_cruiser_mk_iv],
       ] },
     }.freeze
 
     AXIS_UNITS = {
       "0": { list: [
         [3, :ger_pzkpfw_iii__40],
-        [3, :ger_pzkpfw_iv_e],
+        [2, :ger_pzkpfw_iv_e],
       ] },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 5,
+          turns: 4,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -42,16 +43,23 @@ module Scenarios
 
       def description
         [
-          "Operation Brevity was a limited offensive by the British in 1941 as a
-          prelude to larger offensive to relieve Tobruk, in hopes of depleting
-          the thin German and Italian forces defending the front from attack.
-          Due to limited available troops due to recent losses as Rommel
-          rampaged across Libya to Tobruk and the Egyptian border, the
-          attacking force was limited to three columns.",
-          "The attack was temporarily successful, as the objectives of Halfaya
-          Pass and Fort Capuzzo were captured, and in the deeper desert, elements of the
-          4th Royal Tank Regiment encountered German Panzer IIIs and IVs, and
-          battle was joined.",
+          "Operation Brevity was a limited British offensive launched in May
+          1941. Conceived as a preliminary move ahead of a larger effort to
+          relieve the besieged port of Tobruk, its primary aim was to probe
+          Axis defenses, seize key terrain, and weaken the already thin German
+          and Italian forces holding the frontier. However, the British were
+          operating under significant constraints. Recent setbacks had
+          depleted the forces available to British, and as a result, the
+          attacking force was organized into three relatively small columns
+          tasked with advancing along separate axes.",
+          "Despite these limitations, the opening phase of the operation
+          achieved some success. British forces captured the
+          strategically vital Halfaya Pass and secured Fort Capuzzo, both key
+          positions controlling movement along the frontier. Meanwhile,
+          farther inland in the open desert, elements of the 4th Royal Tank
+          Regiment encountered German armored units, including Panzer III and
+          Panzer IV tanks. A sharp engagement followed, marking one of the
+          earliest clashes between British and German armor in the campaign.",
         ]
       end
 

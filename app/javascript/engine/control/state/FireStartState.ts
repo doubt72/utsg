@@ -36,7 +36,6 @@ export default class FireStartState extends BaseState {
         dice_result: dice
       }
     }, this.game)
-    this.game.fireStartCheckNeeded = undefined
     this.game.state = undefined
     this.execute(action)
   }

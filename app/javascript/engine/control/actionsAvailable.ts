@@ -88,7 +88,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   if (game.phase === gamePhaseType.Deployment) {
     actions.unshift({ type: "deploy" })
   } else if (game.phase === gamePhaseType.PrepRally) {
-    actions.unshift({ type: "none", message: "select unit to rally" })
+    actions.unshift({ type: "none", message: "select unit to rally/repair" })
     const select = currSelection(game, false)
     if (select !== undefined) {
       actions.push({ type: "rally" })
@@ -282,7 +282,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   } else if (game.gameState?.type === stateType.SmokeCheck) {
     actions.unshift({ type: "none", message: "checking smoke dispersion" })
     actions.push({ type: "smoke_check" })
-  } else if (game.gameState?.type === stateType.fireStartCheckNeeded) {
+  } else if (game.gameState?.type === stateType.FireCheck) {
     if (game.fireOutCheckNeeded.length > 0) {
       actions.unshift({ type: "none", message: "checking if fires extinguish" })
       actions.push({ type: "fire_out_check" })

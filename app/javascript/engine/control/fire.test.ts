@@ -13,6 +13,7 @@ import organizeStacks from "../support/organizeStacks"
 import { GameActionDiceResult, GameActionPath } from "../GameAction"
 import Feature from "../Feature"
 import {
+  createBlankGame,
   createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr, testGMC, testGMG,
   testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill, testRInf, testRTank,
   testRTruck, testSmoke, testWire
@@ -524,7 +525,7 @@ describe("ranged fire attacks", () => {
     })
 
     test("bunker", () => {
-      const game = createFireGame()
+      const game = createBlankGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -534,9 +535,10 @@ describe("ranged fire attacks", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      const tloc = new Coordinate(0, 4)
+      const tloc = new Coordinate(0, 2)
       map.addCounter(tloc, target)
       const pill = new Feature(testPill)
+      pill.facing = 4
       pill.id = "pillbox"
       map.addCounter(tloc, pill)
       organizeStacks(map)
@@ -567,7 +569,7 @@ describe("ranged fire attacks", () => {
       expect(mc.why[0]).toBe("- minus morale 3")
       expect(mc.why[1]).toBe("- minus cover 4")
 
-      pill.facing = 3
+      pill.facing = 1
 
       const mc2 = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc2.mod).toBe(-4)
@@ -2401,9 +2403,9 @@ describe("ranged fire attacks", () => {
       expect(mult.mult).toBe(3)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing2, target3, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -2874,9 +2876,9 @@ describe("ranged fire attacks", () => {
       expect(mult.mult).toBe(3)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target3, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -2942,9 +2944,9 @@ describe("ranged fire attacks", () => {
       expect(mult.mult).toBe(3)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -2957,7 +2959,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 3, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 16, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 14, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -2999,9 +3001,9 @@ describe("ranged fire attacks", () => {
       expect(mult.mult).toBe(3)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3057,9 +3059,9 @@ describe("ranged fire attacks", () => {
       expect(mult.why[0]).toBe("- base multiplier 3")
       expect(mult.why[1]).toBe("- plus 2 for current weather")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3107,9 +3109,9 @@ describe("ranged fire attacks", () => {
       expect(mult.why[0]).toBe("- base multiplier 3")
       expect(mult.why[1]).toBe("- plus 1 for night")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3161,9 +3163,9 @@ describe("ranged fire attacks", () => {
       expect(mult.why.length).toBe(2)
       expect(mult.why[1]).toBe("- plus 1 for moving the turret")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3347,9 +3349,9 @@ describe("ranged fire attacks", () => {
       expect(mult.mult).toBe(3)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3365,7 +3367,7 @@ describe("ranged fire attacks", () => {
         "hit location roll (d10): 10 (hull)"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 16, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 14, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3414,9 +3416,9 @@ describe("ranged fire attacks", () => {
       expect(mult.mult).toBe(3)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -3535,7 +3537,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 3, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 19, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 17, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3660,9 +3662,9 @@ describe("ranged fire attacks", () => {
       expect(mult.why.length).toBe(2)
       expect(mult.why[1]).toBe("- plus 1 for intensive fire")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for point-blank range")
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3675,7 +3677,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 4, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 16, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 14, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits

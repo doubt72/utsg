@@ -387,21 +387,20 @@ export function armorHitModifiers(
   const why: string[] = []
   let mod = 0
   if (hitFromArc(game, target, from, to, turret) === 1 && !turret) {
-    mod -= 1
-    why.push("- minus 1 for targeting side of hull")
+    mod -= 2
+    why.push("- minus 2 for targeting side of hull")
   }
   if (target.immobilized) {
-    mod -= 1
-    why.push("- minus 1 for target immobilized")
+    mod -= 2
+    why.push("- minus 2 for target immobilized")
   }
   const dist = hexDistance(from, to)
-  if (dist > Math.ceil(source.currentRange/2) ) {
-    mod += 1
-    why.push("- plus 1 for more than half range")
-  }
   if (dist < 2 ) {
+    mod -= 3
+    why.push("- minus 3 for point-blank range")
+  } else if (dist <= Math.floor(source.currentRange/2) ) {
     mod -= 1
-    why.push("- minus 1 for point-blank range")
+    why.push("- minus 1 for less than half range")
   }
   return { mod, why }
 }
@@ -512,7 +511,8 @@ function hitFromArc(
   const dx = start.x - end.x
   const dy = end.y - start.y
   const facing = turret && !target.isFeature ? (target as Unit).turretFacing : target.facing
-  const a = (Math.atan2(dy,dx) * 180 / Math.PI + facing * 60) % 360
+  let a = (Math.atan2(-dy,-dx) * 180 / Math.PI + facing * 60) % 360
+  if (a < 0) { a += 360 }
   if (a > 29.99 && a < 90.01) { return 0 }
   if (a > 209.99 && a < 270.01) { return 2 }
   return 1
@@ -528,7 +528,8 @@ function inFiringArc(game: Game, counter: Counter, to: Coordinate): boolean {
   const dy = end.y - start.y
   const last = game.fireState.lastPath
   const facing = (counter.unit.turreted && !game.fireState.sponson ? last?.turret : counter.unit.facing) ?? 1
-  const a = (Math.atan2(dy,dx) * 180 / Math.PI + facing * 60) % 360
+  let a = (Math.atan2(dy,dx) * 180 / Math.PI + facing * 60) % 360
+  if (a < 0) { a += 360 }
   if (a > 29.99 && a < 90.01) { return true }
   return false
 }

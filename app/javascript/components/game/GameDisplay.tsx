@@ -125,7 +125,7 @@ export default function GameDisplay() {
         )
         game.k.playerOneNotification = undefined
         setNotificationTimeout(undefined)
-      }, 1000)
+      }, 400)
       setNotificationTimeout(to)
     }
   }, [game.k?.playerOneNotification])
@@ -150,7 +150,7 @@ export default function GameDisplay() {
         )
         game.k.playerTwoNotification = undefined
         setNotificationTimeout(undefined)
-      }, 1000)
+      }, 400)
       setNotificationTimeout(to)
     }
   }, [game.k?.playerTwoNotification])
@@ -396,8 +396,8 @@ export default function GameDisplay() {
   const directionSelection = (d: Direction) => {
     if (game.k?.gameState?.type === stateType.Deploy) {
       game.k.deployState.dir(d)
-      game.k.gameState.finish()
       game.k.deployState.needsDirection = false
+      game.k.gameState.finish()
     } else if (game.k?.gameState?.type === stateType.Fire) {
       game.k.fireState.rotate(d)
     } else if (game.k?.gameState?.type === stateType.Move) {

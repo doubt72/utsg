@@ -14,10 +14,11 @@ export default function RallyButton({ game, callback }: RallyButtonProps) {
     callback()
   }
 
+  const type = game.scenario.map.currentSelection[0].unit.isBroken ? "rally" : "repair"
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{DiceGlyph()}rally</button>
+        <button type="submit" className="custom-button nowrap">{DiceGlyph()}{ type }</button>
       </div>
     </form>
   )

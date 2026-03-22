@@ -1090,7 +1090,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at C3; targeting roll (d10x10): " +
-      "target 6, rolled 100: hit; hit location roll (d10): 10 (hull); penetration roll (2d10): target 9, " +
+      "target 6, rolled 100: hit; hit location roll (d10): 10 (hull); penetration roll (2d10): target 7, " +
       "rolled 20: succeeded, vehicle destroyed")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     expect(unit.isWreck).toBe(true)

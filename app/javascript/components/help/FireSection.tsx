@@ -355,12 +355,12 @@ export default function FireSection() {
               is unarmored, the vehicle is destroyed. Otherwise add the relevant armor factor to the
               base to-hit.
             </li>
-            <li>Subtract one if targeting the side of the hull.</li>
-            <li>Subtract one if point-blank range (i.e., firing from an adjacent hex).</li>
-            <li>Subtract one if target is immobilized.</li>
+            <li>Subtract two if target is immobilized.</li>
+            <li>Subtract two if targeting the side of the hull.</li>
+            <li>Subtract three if point-blank range (i.e., firing from an adjacent hex).</li>
             <li>
-              Add one if range is greater than half weapon range (rounded up, i.e., unit with range
-              of one is never affected by this modifier).
+              Subtract one if range is less than half weapon range, but not point blank (rounded down,
+              i.e., a weapon range of 5 firing at a range of 3 does not subtract one).
             </li>
             <li>
               Roll 2d10 (add the two dice together). If the roll is higher than the adjusted to-hit,
