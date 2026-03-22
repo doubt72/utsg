@@ -1,4 +1,4 @@
-import { Coordinate, featureType, Player, unitType } from "../utilities/commonTypes";
+import { baseTerrainType, Coordinate, featureType, Player, unitType } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction from "./GameAction";
@@ -696,6 +696,18 @@ export default class Game {
         }
       }, this), backendSync)
     }
+  }
+
+  get specialRulesNegateTerrain(): boolean {
+    const check = this.scenario.map.baseTerrain === baseTerrainType.Snow &&
+      this.scenario.specialRules.includes("axis_ignore_snow")
+    if (this.playerOneName === this.playerTwoName || this.suppressNetwork) {
+      if (this.currentPlayer === 2 && check) { return true }
+    } else {
+      const player = localStorage.getItem("username") === this.playerOneName ? 1 : 2
+      if (player === 2 && check) { return true }
+    }
+    return false
   }
 
   findUnitById(id: string): Unit | undefined {

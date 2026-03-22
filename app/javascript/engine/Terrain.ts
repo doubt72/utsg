@@ -2,6 +2,8 @@ import { BorderType, Direction, StreamAttributes, TerrainAttributes } from "../u
 import { normalDir } from "../utilities/utilities";
 import Hex from "./Hex"
 
+export const buildingCover = 3
+
 export default class Terrain {
   hex: Hex;
 
@@ -13,7 +15,7 @@ export default class Terrain {
   get baseAttr(): TerrainAttributes {
     return {
       o: { move: 1, hindrance: 0, cover: 0, los: false, vehicle: true,  gun: true,   name: "open" },
-      f: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: "back", name: "forest" },
+      f: { move: 2, hindrance: 0, cover: 2, los: true,  vehicle: false, gun: "back", name: "forest" },
       b: { move: 2, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "brush" },
       d: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "orchard" },
       g: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "field" },
@@ -23,7 +25,7 @@ export default class Terrain {
       p: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: true,   name: "palm trees" },
       r: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "rough" },
       t: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "soft ground" },
-      x: { move: 2, hindrance: 1, cover: 1, los: false, vehicle: false, gun: false,  name: "debris" },
+      x: { move: 2, hindrance: 1, cover: 2, los: false, vehicle: false, gun: false,  name: "debris" },
       w: { move: 0, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "water" },
       y: { move: 3, hindrance: 0, cover: 0, los: false, vehicle: "amph", gun: false,  name: "shallow water" },
     }[this.hex.baseTerrain]
@@ -32,8 +34,8 @@ export default class Terrain {
   get borderAttr(): TerrainAttributes {
     return {
       f: { move: 1, hindrance: 1, cover: 0, los: false, vehicle: true,  gun: false, name: "fence" },
-      w: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "wall" },
-      b: { move: 2, hindrance: 0, cover: 1, los: true,  vehicle: false, gun: false, name: "bocage" },
+      w: { move: 2, hindrance: 0, cover: 2, los: true,  vehicle: false, gun: false, name: "wall" },
+      b: { move: 2, hindrance: 0, cover: 2, los: true,  vehicle: false, gun: false, name: "bocage" },
       c: { move: 0, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false, name: "cliff" },
     }[this.hex.border as BorderType]
   }
@@ -70,7 +72,7 @@ export default class Terrain {
   get cover(): number | false {
     if (!this.baseAttr.move) { return false }
     let rc = this.baseAttr.cover
-    if (this.hex.building) { rc += 2 }
+    if (this.hex.building) { rc += buildingCover }
     if (this.hex.river) { rc += this.streamAttr.cover }
     return rc
   }
@@ -89,7 +91,7 @@ export default class Terrain {
     let move = this.baseAttr.move
     if (move === 0) { return false }
     if (this.hex.building) { move = 2 }
-    if (["s", "m"].includes(this.hex.map.baseTerrain)) {
+    if (["s", "m"].includes(this.hex.map.baseTerrain) && !this.hex.map.game?.specialRulesNegateTerrain) {
       move += 1
     }
     return move

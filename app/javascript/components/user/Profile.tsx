@@ -42,7 +42,7 @@ export default function Profile() {
           </tr>
           { Object.keys(stats).filter(a => a !== "all").sort((a, b) => {
             if (stats[a].count === stats[b].count) { return 0 }
-            return stats[a].count > stats[b].count ? 1 : -1
+            return stats[a].count > stats[b].count ? -1 : 1
           }).map((k, i) => {
             return (
               <tr key={i} >

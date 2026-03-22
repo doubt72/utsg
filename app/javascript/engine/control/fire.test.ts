@@ -297,10 +297,10 @@ describe("ranged fire attacks", () => {
       expect(mods.why[0]).toBe("- plus 1 for more than half range")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
-      expect(mc.mod).toBe(-4)
+      expect(mc.mod).toBe(-5)
       expect(mc.why.length).toBe(2)
       expect(mc.why[0]).toBe("- minus morale 3")
-      expect(mc.why[1]).toBe("- minus cover 1")
+      expect(mc.why[1]).toBe("- minus cover 2")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -347,10 +347,10 @@ describe("ranged fire attacks", () => {
       expect(mods.why.length).toBe(0)
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
-      expect(mc.mod).toBe(-2)
+      expect(mc.mod).toBe(-3)
       expect(mc.why.length).toBe(2)
       expect(mc.why[0]).toBe("- minus morale 1")
-      expect(mc.why[1]).toBe("- minus cover 1")
+      expect(mc.why[1]).toBe("- minus cover 2")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -509,10 +509,10 @@ describe("ranged fire attacks", () => {
       expect(mods.why.length).toBe(0)
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
-      expect(mc.mod).toBe(-4)
+      expect(mc.mod).toBe(-5)
       expect(mc.why.length).toBe(2)
       expect(mc.why[0]).toBe("- minus morale 3")
-      expect(mc.why[1]).toBe("- minus cover 1")
+      expect(mc.why[1]).toBe("- minus cover 2")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)

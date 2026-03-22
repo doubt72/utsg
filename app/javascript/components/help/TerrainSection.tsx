@@ -10,6 +10,7 @@ import Hex from "../../engine/Hex";
 import MapHexDetail from "../game/map/MapHexDetail";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import { helpLink } from "./helpData";
+import { buildingCover } from "../../engine/Terrain";
 
 type PickTerrain = {
   m?: BaseTerrainType, t?: TerrainType, b?: BorderType, r?: RoadType, s?: StreamType, rr?: boolean, sh?: BuildingShape,
@@ -292,7 +293,7 @@ export default function TerrainSection() {
       sections.push(<p key={index++}>
         There is a <strong>building{currentState.sh === "c" ? " (silo)": "" }</strong>, which has a
         movement cost of 2 (instead of base movement), but is impassible to vehicles and crewed weapons.
-        It blocks line-of-sight, and has a cover of 2.
+        It blocks line-of-sight, and has a cover of { buildingCover }.
       </p>)
     }
     if (attr?.cover > 0 || battr?.cover > 0 || sattr?.cover > 0 || currentState.rr || currentState.sh) {

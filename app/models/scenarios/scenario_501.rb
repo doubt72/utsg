@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Raate Road"
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1940, 1, 1].freeze
     LAYOUT = [23, 11, "x"].freeze
@@ -46,7 +47,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
-          special_rules: ["winter", "axis_ignore_snow"],
+          special_rules: ["axis_ignore_snow"],
         }
       end
 
