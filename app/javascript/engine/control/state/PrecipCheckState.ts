@@ -10,6 +10,10 @@ export default class PrecipCheckState extends BaseState {
     game.refreshCallback(game)
   }
 
+  get showOverlays(): boolean {
+    return false
+  }
+
   get actionInProgress(): boolean {
     return false
   }

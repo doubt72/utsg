@@ -15,6 +15,7 @@ import FireDisplaceState from "./state/FireDisplaceState"
 import FireStartState from "./state/FireStartState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import MoraleCheckState from "./state/MoraleCheckState"
+import PrecipCheckState from "./state/PrecipCheckState"
 import RallyState from "./state/RallyState"
 import ReactionState from "./state/ReactionState"
 import RoutCheckState from "./state/RoutCheckState"
@@ -75,6 +76,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     game.setGameState(new ReactionState(game))
   } else if (game.phase === gamePhaseType.PrepRally) {
     game.setGameState(new RallyState(game))
+  } else if (game.phase === gamePhaseType.PrepPrecip) {
+    game.setGameState(new PrecipCheckState(game))
   } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
     game.setGameState(new CloseCombatState(game))
   } else if (game.phase === gamePhaseType.CleanupSmoke) {
@@ -95,7 +98,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     } else {
       actions.push({ type: "rally_pass" })
     }
-  } else if (game.phase === gamePhaseType.PrepPrecip) {
+  } else if (game.gameState?.type === stateType.PrecipCheck) {
     actions.push({ type: "precip_check" })
   } else if (game.gameState?.type === stateType.FireDisplace) {
     actions.unshift({ type: "none", message: "fire displaces unit" })

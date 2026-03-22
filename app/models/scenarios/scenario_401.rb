@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Fields of Lyte"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.1"
 
     DATE = [1944, 10, 31].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -20,7 +21,6 @@ module Scenarios
           [2, :usa_rifle_t],
           [2, :usa_m1919_browning],
           :usa_radio_105mm,
-          :usa_m4_sherman,
         ],
       },
     }.freeze

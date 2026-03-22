@@ -170,7 +170,7 @@ export function firepower(
     if (sponson && sunit.sponson) {
       if (sunit.sponson.range >= dist) { fp += sunit.sponson.firepower}
     } else {
-      const leadership = sunit.targetedRange && !sunit.isVehicle ? 0 :
+      const leadership = (sunit.targetedRange || sunit.offBoard) && !sunit.isVehicle ? 0 :
         leadershipAt(game, new Coordinate(sel.x, sel.y))
       if (sunit.currentRange >= dist || sunit.offBoard) {
         fp += sunit.currentFirepower / (wire[i] ? 2 : 1) + leadership

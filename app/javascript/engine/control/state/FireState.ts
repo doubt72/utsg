@@ -216,7 +216,19 @@ export default class FireState extends BaseState {
   
   toHex(x: number, y: number) {
     if (this.selection[0].counter.unit.offBoard || this.smoke) {
-      this.targetHexes = [new Coordinate(x, y)]
+      for (const t of this.targetSelection) {
+        t.counter.unit.targetSelect()
+      }
+      this.targetSelection = []
+      const loc = new Coordinate(x, y)
+      const counters = this.game.scenario.map.countersAt(loc)
+      for (const c of counters) {
+        if (this.selectable({ target: { type: "map", xy: loc }, counter: c })) {
+          this.select({ target: { type: "map", xy: loc }, counter: c }, () => {})
+          break;
+        }
+      }
+      if (this.targetSelection.length < 1) { this.targetHexes = [loc] }
     }
   }
   

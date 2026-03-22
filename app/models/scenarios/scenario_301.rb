@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -75,8 +75,8 @@ module Scenarios
           wind: [2, 3, false],
           hexes:,
           layout:,
-          allied_dir: 4,
-          axis_dir: 1,
+          allied_dir: 5.5,
+          axis_dir: 2.5,
           victory_hexes: [
             [4, 3, 1], [4, 7, 1], [6, 5, 1], [8, 4, 1], [9, 6, 1],
           ],

@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1944, 6, 25].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -66,7 +66,7 @@ module Scenarios
           German assumptions about where the main attack would fall, Soviet
           forces shattered the defenses of Army Group Center and rapidly
           recaptured all of Byelorussia.",
-          "This scenario represents a Soviet clearing operation against a
+          "This scenario depicts a Soviet clearing operation against a
           localized German force concentration during the Vitebsk-Orsha
           Offensive, one of the opening phases of Operation Bagration.",
         ]
