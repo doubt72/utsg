@@ -5,14 +5,25 @@ High Priority Features/Bug Fixes:
     - Test didn't find issue, don't think it's fixed;
       need to see it again to be able to figure out what's going on
   - Overlay both fire and displacement
+  - Moving into CC doesn't own victory point
+  - Moving out of CC maybe changes victory point
+  - Eliminating opponing in CC maybe changes victory point
 
   - Test scenarios
-    002, 003, 004, 005, 006, 007, 011
-    201
-    301, 303, 305, 308
-    401, 406, 408
+    002, 003, 005, 007, 011
+    303, 308
+    401
     501, 503, 508, 509, 510
-    601, 603, 604
+    601, 603
+
+  - Beta scenarios
+    004, 006
+    102
+    201
+    302, 305
+    406, 408
+    502, 504
+    604
 
   - Add tutorial
 

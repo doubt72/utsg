@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Rally Point"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -15,7 +16,7 @@ module Scenarios
       "0": { list: [
         :usa_leader_6_2,
         :usa_leader_5_1,
-        [4, :usa_paratroop_s],
+        [3, :usa_paratroop_s],
         [2, :usa_paratroop_t],
         [2, :usa_m1918_bar],
       ] },
@@ -25,7 +26,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_4_1,
         :ger_leader_3_1,
-        [8, :ger_volksgrenadier_s],
+        [9, :ger_volksgrenadier_s],
         [2, :ger_volksgrenadier_t],
         [2, :ger_mg_42],
       ] },
@@ -60,6 +61,9 @@ module Scenarios
           to capture many of their objectives, disrupt German defenses and tie
           down significant enemy forces, contributing to the success of the
           Normandy invasion.",
+          "In this scenario, a freshly captured position at a crossroads is
+          now defended by outnumbered American paratroopers as they attempt to
+          prevent its recapture by counter-attacking German forces.",
         ]
       end
 

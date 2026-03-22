@@ -646,6 +646,16 @@ export default class Map {
     return false
   }
 
+  enemyAt(loc: Coordinate, player: number): boolean {
+    const nation = player === 1 ? this.game?.playerOneNation : this.game?.playerTwoNation
+    for (const c of this.countersAt(loc)) {
+      if (c.hasUnit && !c.unit.isWreck) {
+        if (c.unit.playerNation !== nation) { return true }
+      }
+    }
+    return false
+  }
+
   contactAt(loc: Coordinate): boolean {
     let playerOne = false
     let playerTwo = false

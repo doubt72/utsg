@@ -312,4 +312,29 @@ describe("fire/blaze displacement", () => {
     expect(game.eliminatedUnits.length).toBe(1)
     expect(game.eliminatedUnits[0].name).toBe("Rifle")
   })
+
+  test("unit displace captures VP", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test"
+    const loc = new Coordinate(3, 4)
+    map.addCounter(loc, unit)
+
+    const vloc = new Coordinate(4, 4)
+    expect(game.scenario.map.victoryAt(vloc)).toBe(1)
+
+    map.addFire(loc)
+    expect(game.fireDisplaceNeeded.length).toBe(1)
+
+    game.setGameState(new FireDisplaceState(game))
+    expect(game.gameState?.openHex(vloc.x, vloc.y)).toBe(hexOpenType.Open)
+
+    game.fireDisplaceState.move(vloc.x, vloc.y)
+    game.gameState?.finish()
+
+    expect(map.countersAt(loc)[0].unit.name).toBe("Blaze")
+    expect(map.countersAt(vloc)[0].unit.id).toBe("test")
+    expect(game.scenario.map.victoryAt(vloc)).toBe(2)
+  })
 })

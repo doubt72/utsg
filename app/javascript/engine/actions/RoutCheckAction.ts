@@ -25,8 +25,8 @@ export default class RoutCheckAction extends BaseAction {
   get type(): string { return "rout_check" }
 
   get stringValue(): string {
-    const nation = this.game.nationNameForPlayer(this.player)
     const unit = this.game.findUnitById(this.target.id) as Unit
+    const nation = this.game.nationNameForPlayer(unit.playerNation === this.game.playerOneNation ? 1 : 2)
     const loc = coordinateToLabel(new Coordinate(this.target.x, this.target.y))
     const check = baseMorale + this.routCheckMods.mod - 2
     const roll = this.diceResult.result

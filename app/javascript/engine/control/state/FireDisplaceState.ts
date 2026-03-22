@@ -4,10 +4,11 @@ import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionAddAction, gameActionAddActionType, GameActionPath } from "../../GameAction";
 import Hex from "../../Hex";
-import BaseState, { stateType } from "./BaseState";
+import BaseState, { StateAddAction, stateType } from "./BaseState";
 
 export default class FireDisplaceState extends BaseState {
   path: GameActionPath[];
+  addAction: StateAddAction | undefined;
   remove: boolean;
 
   constructor(game: Game) {
@@ -89,6 +90,11 @@ export default class FireDisplaceState extends BaseState {
   move(x: number, y: number): void {
     if (this.path.length !== 1) { return }
     this.path.push({ x, y })
+    const loc = new Coordinate(x, y)
+    const vp = this.map.victoryAt(loc)
+    if (vp && vp !== this.game.currentPlayer && !this.game.scenario.map.enemyAt(loc, this.game.currentPlayer)) {
+      this.addAction = { x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 }
+    }
   }
 
   cancel(): void {
@@ -111,6 +117,12 @@ export default class FireDisplaceState extends BaseState {
       const facing = child.facing
       addAction.push({
         type: gameActionAddActionType.Drop, x: loc.x, y: loc.y, id: child.id, facing, index: 0
+      })
+    }
+    if (this.addAction) {
+      addAction.push({
+        type: this.addAction.type, x: this.addAction.x, y: this.addAction.y,
+        id: this.addAction.id, index: this.addAction.index
       })
     }
     const action = new GameAction({

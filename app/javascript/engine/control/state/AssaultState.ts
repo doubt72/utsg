@@ -188,15 +188,33 @@ export default class AssaultState extends BaseState {
   move(x: number, y: number) {
     const target = this.selection[0].counter.unit
     const path = this.path[0]
-    const facing = this.map.relativeDirection(
-      new Coordinate(path.x, path.y), new Coordinate(x, y)) ?? 1
+    const map = this.game.scenario.map
+    const old = new Coordinate(path.x, path.y)
+    const loc = new Coordinate(x, y)
+    const facing = this.map.relativeDirection(old, loc) ?? 1
     this.path.push({
       x, y, facing, turret: target.turreted ?
         normalDir(target.turretFacing - this.selection[0].counter.unit.facing + facing) : undefined
     })
-    const vp = this.map.victoryAt(new Coordinate(x, y))
-    if (vp && vp !== this.game.currentPlayer) {
+    const vp = this.map.victoryAt(loc)
+    if (vp && vp !== this.game.currentPlayer && !map.enemyAt(loc, this.game.currentPlayer)) {
       this.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 })
+    }
+    const vp2 = this.map.victoryAt(old)
+    if (vp2 && vp2 === this.game.currentPlayer && map.enemyAt(old, this.game.currentPlayer)) {
+      let any = false
+      for (const c of map.countersAt(old)) {
+        if (c.hasUnit && c.unit.playerNation === this.game.currentPlayerNation) {
+          let check = false
+          for (const s of this.selection) {
+            if (s.counter.unit.id === c.unit.id) { check = true; break }
+          }
+          if (!check) { any = true; break }
+        }
+      }
+      if (!any) {
+        this.addActions.push({ x: path.x, y: path.y, type: gameActionAddActionType.VP, cost: 0, index: 0 })
+      }
     }
     this.doneSelect = true
     this.game.closeOverlay = true

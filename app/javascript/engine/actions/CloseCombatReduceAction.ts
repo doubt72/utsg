@@ -1,4 +1,5 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { coordinateToLabel } from "../../utilities/utilities";
 import { setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
@@ -19,11 +20,12 @@ export default class CloseCombatReduceAction extends BaseAction {
   get type(): string { return "close_combat_reduce" }
 
   get stringValue(): string {
+    const loc = new Coordinate(this.target.x, this.target.y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (unit.isVehicle || this.target.status === unitStatus.Broken) {
-      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} eliminated`
+      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} at ${coordinateToLabel(loc)} eliminated`
     } else {
-      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} broken`
+      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} at ${coordinateToLabel(loc)} broken`
     }
   }
 
@@ -56,8 +58,11 @@ export default class CloseCombatReduceAction extends BaseAction {
             c.unit.status = unitStatus.Exhausted
           }
         }
+        const vp = this.map.victoryAt(loc)
+        if (vp && vp === this.game.currentPlayer) { this.map.toggleVP(loc) }
       }
     }
     setCCPlayer(this.game, current)
+    this.game.closeOverlay = true
   }
 }

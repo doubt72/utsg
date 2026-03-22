@@ -34,7 +34,12 @@ RSpec.describe Utility::Scenario do
   describe "all_scenarios" do
     it "gets all scenarios with no filters" do
       scenarios = described_class.all_scenarios({ "status" => "*" })
-      expect(scenarios.length).to be == 2
+
+      length = described_class.all_scenarios({ "status" => "p*" }).filter do |s|
+        s[:status] != "p"
+      end.length
+
+      expect(scenarios.length).to be == length
     end
 
     it "gets all scenarios with no filters (admin view)" do
@@ -217,7 +222,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("205")).to be == "0.1p-fd341bcd099f4fbf433c6d9ad583a34f"
       expect(Utility::Scenario.checksum("206")).to be == "0.1p-84e277d07c094ae1dbaf627a85b7b0fe"
 
-      expect(Utility::Scenario.checksum("301")).to be == "0.1p-562f7be06ca32a413784412ecd220c48"
+      expect(Utility::Scenario.checksum("301")).to be == "1.0-09cb8700b089d53dae1657e87e339deb"
       expect(Utility::Scenario.checksum("302")).to be == "0.1p-6407e7d02b047a0b501d10bf578cf8ea"
       expect(Utility::Scenario.checksum("303")).to be == "0.1p-84465c18d80c59f6a9fdf665ea234cb2"
       expect(Utility::Scenario.checksum("304")).to be == "0.1p-919b084d6f2b4bfeb898502c33d2d3ec"

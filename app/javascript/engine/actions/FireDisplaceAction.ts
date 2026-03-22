@@ -1,7 +1,7 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import { coordinateToLabel } from "../../utilities/utilities";
 import Game from "../Game";
-import { GameActionAddAction, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
+import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
@@ -9,7 +9,7 @@ import BaseAction from "./BaseAction";
 export default class FireDisplaceAction extends BaseAction {
   target: GameActionUnit
   path: GameActionPath[]
-  addAction: GameActionAddAction | undefined
+  addActions: GameActionAddAction[]
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -20,7 +20,7 @@ export default class FireDisplaceAction extends BaseAction {
 
     this.target = (data.data.target as GameActionUnit[])[0]
     this.path = data.data.path as GameActionPath[]
-    this.addAction = (data.data.add_action as GameActionAddAction[])[0]
+    this.addActions = (data.data.add_action as GameActionAddAction[])
   }
 
   get type(): string { return "fire_displace" }
@@ -36,9 +36,11 @@ export default class FireDisplaceAction extends BaseAction {
     } else {
       rc += "and is eliminated"
     }
-    if (this.addAction) {
-      const child = this.game.findUnitById(this.addAction.id as string) as Unit
-      rc += `, ${child.name} dropped`
+    for (const a of this.addActions) {
+      if (a.type === gameActionAddActionType.Drop) {
+        const child = this.game.findUnitById(a.id as string) as Unit
+        rc += `, ${child.name} dropped`
+      }
     }
     if (this.undone) { rc += " [cancelled]"}
     return rc
@@ -50,8 +52,12 @@ export default class FireDisplaceAction extends BaseAction {
 
   mutateGame(): void {
     const start = new Coordinate(this.target.x, this.target.y)
-    if (this.addAction) {
-      this.map.dropUnit(start, start, this.addAction.id as string, this.addAction.facing)
+    for (const a of this.addActions) {
+      if (a.type === gameActionAddActionType.VP) {
+        this.map.toggleVP(new Coordinate(a.x, a.y))
+      } else {
+        this.map.dropUnit(start, start, a.id as string, a.facing)
+      }
     }
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (this.path.length > 1) {
@@ -78,8 +84,12 @@ export default class FireDisplaceAction extends BaseAction {
       )
       this.game.removeEliminatedCounter(this.target.id)
     }
-    if (this.addAction) {
-      this.map.loadUnit(start, start, this.addAction.id as string, unit.id, this.addAction.facing)
+    for (const a of this.addActions) {
+      if (a.type === gameActionAddActionType.VP) {
+        this.map.toggleVP(new Coordinate(a.x, a.y))
+      } else {
+        this.map.loadUnit(start, start, a.id as string, unit.id, a.facing)
+      }
     }
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative

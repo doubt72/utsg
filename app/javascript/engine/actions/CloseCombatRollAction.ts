@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { otherPlayer } from "../../utilities/utilities";
+import { coordinateToLabel, otherPlayer } from "../../utilities/utilities";
 import { maxCCCasualties, setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -45,7 +45,8 @@ export default class CloseCombatRollAction extends BaseAction {
       const unit = this.game.findUnitById(t.id) as Unit
       return unit.name
     }).join(", ")
-    rc += ` in close combat; ${iName} player rolls ${this.diceResult[0].result} plus ${this.base.o_base} firepower; `
+    rc += ` in close combat at ${coordinateToLabel(loc)}; ${iName} player `
+    rc += `rolls ${this.diceResult[0].result} plus ${this.base.o_base} firepower; `
     rc += `${oName} player rolls ${this.diceResult[1].result} plus ${this.base.t_base} firepower; `
     if (ip === op) {
       rc += "each player reduces 1 unit"

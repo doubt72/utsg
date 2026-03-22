@@ -8,6 +8,7 @@ import organizeStacks from "../support/organizeStacks"
 import { showClearObstacles, showEntrench } from "./assault"
 import Feature from "../Feature"
 import {
+  createBlankGame,
   createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck,
   testMineAT, testRInf, testRTank, testWire
 } from "./testHelpers"
@@ -298,6 +299,70 @@ describe("assault movement", () => {
     expect(game.gameState?.openHex(4, 3)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
   })
+
+  test("assaulting into enemy does not change VP ownership", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "ger"
+    unit.select()
+    const loc = new Coordinate(3, 4)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(testRInf)
+    unit2.id = "ussr"
+    const vloc = new Coordinate(4, 4)
+    map.addCounter(vloc, unit2)
+
+    expect(game.scenario.map.victoryAt(vloc)).toBe(1)
+
+    game.setGameState(new AssaultState(game))
+
+    select(map, {
+      counter: map.countersAt(loc)[0],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(game.gameState?.selection.length).toBe(1)
+
+    const state = game.assaultState
+    state.move(vloc.x, vloc.y)
+    state.finish()
+    expect(game.scenario.map.victoryAt(vloc)).toBe(1)
+  })
+
+  test("assaulting out of enemy does change VP ownership", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "ger"
+    unit.select()
+    const loc = new Coordinate(0, 0)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(testRInf)
+    unit2.id = "ussr"
+    map.addCounter(loc, unit2)
+    organizeStacks(map)
+
+    expect(game.scenario.map.victoryAt(loc)).toBe(2)
+
+    game.setGameState(new AssaultState(game))
+
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(game.gameState?.selection.length).toBe(1)
+
+    const state = game.assaultState
+    state.move(1, 0)
+    state.finish()
+    expect(map.countersAt(loc)[0].unit.id).toBe("ussr")
+    expect(map.countersAt(new Coordinate(1, 0))[0].unit.id).toBe("ger")
+    expect(game.scenario.map.victoryAt(loc)).toBe(1)
+  })
+
+
 
   test("multiselect with leader", () => {
     const game = createMoveGame()
