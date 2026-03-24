@@ -2,6 +2,7 @@ import { Coordinate, Direction, markerType } from "../../utilities/commonTypes"
 import { los } from "../../utilities/los"
 import { hexDistance } from "../../utilities/utilities"
 import BaseAction, { significantActions } from "../actions/BaseAction"
+import FireAction from "../actions/FireAction"
 import MoveAction from "../actions/MoveAction"
 import Game from "../Game"
 import GameAction, { gameActionAddActionType, GameActionPath } from "../GameAction"
@@ -139,6 +140,54 @@ export function placeReactionFireGhosts(game: Game) {
           copy.id = u.u.id
           if (u.max >= i && u.min <= i) {
             game.scenario.map.addGhost(new Coordinate(path[i].x, path[i].y), copy)
+          }
+        }
+      }
+    }
+  }
+}
+
+export function placeReactionMoraleCheckGhosts(game: Game, loc: Coordinate) {
+  const fireAction = game.lastSignificantAction as FireAction
+  if (!["reaction_fire", "reaction_intensive_fire"].includes(fireAction?.type) ||
+      !fireAction?.reaction || fireAction?.fireHex.moveSeq === undefined) { return }
+
+  const action = game.findActionBySequence(fireAction.fireHex.moveSeq) as MoveAction
+  if (!action) { return }
+
+  if (action.data.origin && action.data.add_action) {
+    const ids = action.data.origin.map(o => { return { id: o.id, min: 0, max: action.path.length - 1 } })
+    const drops = action.data.add_action.filter(a => a.type === gameActionAddActionType.Drop).map(a => {
+      return { id: a.id, index: a.index - 2 }
+    })
+    const loads = action.data.add_action.filter(a => a.type === gameActionAddActionType.Load).map(a => {
+      ids.push({ id: a.id ?? "", min: 0, max: action.path.length - 1 })
+      return { id: a.id, index: a.index - 1 }
+    })
+    const units = ids.map(i => {
+      const unit = game.findUnitById(i.id) as Unit
+      let min = i.min
+      let max = i.max
+      for (const d of drops) {
+        if (d.id === i.id) { max = d.index}
+      }
+      for (const l of loads) {
+        if (l.id === i.id) { min = l.index}
+      }
+      return { u: unit, min, max }
+    })
+    for (let i = 0; i < action.path.length; i++) {
+      if (action.path[i].x !== loc.x || action.path[i].y !== loc.y) { continue }
+      for (const u of units) {
+        const check = game.scenario.map.unitAtId(new Coordinate(action.path[i].x, action.path[i].y), u.u.id)
+        if (!check) {
+          const copy = u.u.clone()
+          if (action.path[i].facing && copy.rotates) { copy.facing = action.path[i].facing as Direction}
+          if (action.path[i].turret && copy.turreted) { copy.turretFacing = action.path[i].turret as Direction}
+          copy.id = u.u.id
+          if (u.max >= i && u.min <= i) {
+            game.scenario.map.addGhost(new Coordinate(action.path[i].x, action.path[i].y), copy)
+            if (u.u.selected) { copy.select() }
           }
         }
       }

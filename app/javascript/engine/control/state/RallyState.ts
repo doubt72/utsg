@@ -75,7 +75,7 @@ export default class RallyState extends BaseState {
           this.game.addMessage("unit already attempted to rally")
         } else {
           counter.unit.select()
-          this.map.clearOtherTargetSelections(x, y, counter.unit.id)
+          this.map.clearOtherSelections(x, y, counter.unit.id)
         }
       }
     }

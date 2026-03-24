@@ -87,14 +87,15 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       expect(game.currentPlayer).toBe(2)
       const original = Math.random
@@ -142,15 +143,15 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(-2)
+      expect(mods.mod).toBe(-3)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 2 for adjacent")
+      expect(mods.why[0]).toBe("- minus 3 for adjacent")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -187,14 +188,15 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(2)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-3)
@@ -236,14 +238,15 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-6)
@@ -286,15 +289,14 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(1)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 1 for more than half range")
+      expect(mods.mod).toBe(0)
+      expect(mods.why.length).toBe(0)
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-5)
@@ -337,14 +339,15 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-3)
@@ -397,9 +400,10 @@ describe("ranged fire attacks", () => {
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(2)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 2 for current weather")
+      expect(mods.mod).toBe(1)
+      expect(mods.why.length).toBe(2)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[1]).toBe("- plus 2 for current weather")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -410,7 +414,7 @@ describe("ranged fire attacks", () => {
         [{ unit: target, from: [floc], to: tloc, incendiary: false }]
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 17, rolled 20: hit"
+        "hit roll (2d10): target 14, rolled 20: hit"
       )
     })
 
@@ -448,9 +452,10 @@ describe("ranged fire attacks", () => {
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(1)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 1 for night")
+      expect(mods.mod).toBe(0)
+      expect(mods.why.length).toBe(2)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[1]).toBe("- plus 1 for night")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -461,7 +466,7 @@ describe("ranged fire attacks", () => {
         [{ unit: target, from: [floc], to: tloc, incendiary: false }]
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 16, rolled 20: hit"
+        "hit roll (2d10): target 13, rolled 20: hit"
       )
     })
 
@@ -499,14 +504,15 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-5)
@@ -553,15 +559,14 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(1)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 1 for more than half range")
+      expect(mods.mod).toBe(0)
+      expect(mods.why.length).toBe(0)
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-7)
@@ -680,14 +685,15 @@ describe("ranged fire attacks", () => {
       expect(target.targetSelected).toBe(true)
       expect(fire.doneSelect).toBe(true)
 
-      expect(baseToHit(fp.fp)).toBe(11)
+      expect(baseToHit(fp.fp)).toBe(9)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1141,14 +1147,15 @@ describe("ranged fire attacks", () => {
       const firingIDs = ["firing1", "firing2", "firing3"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
       expect(fp.fp).toBe(16)
-      expect(baseToHit(fp.fp)).toBe(11)
+      expect(baseToHit(fp.fp)).toBe(9)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1224,14 +1231,15 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)
-      expect(baseToHit(fp.fp)).toBe(15)
+      expect(baseToHit(fp.fp)).toBe(13)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       expect(game.playerTwoScore).toBe(10)
 
@@ -1244,7 +1252,7 @@ describe("ranged fire attacks", () => {
 
       expect(target.isWreck).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 15, rolled 20: hit, Studebaker US6 destroyed"
+        "hit roll (2d10): target 12, rolled 20: hit, Studebaker US6 destroyed"
       )
       expect(game.playerTwoScore).toBe(14)
     })
@@ -1285,7 +1293,7 @@ describe("ranged fire attacks", () => {
 
       expect(target.isWreck).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 15, rolled 20: hit, Studebaker US6 destroyed"
+        "hit roll (2d10): target 12, rolled 20: hit, Studebaker US6 destroyed"
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual({
@@ -1342,7 +1350,7 @@ describe("ranged fire attacks", () => {
 
       expect(target.isWreck).toBe(false)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 15, rolled 2: miss"
+        "hit roll (2d10): target 12, rolled 2: miss"
       )
 
       expect(game.fireStartCheckNeeded).toBe(undefined)
@@ -1388,14 +1396,15 @@ describe("ranged fire attacks", () => {
       const firingIDs = ["firing1", "firing2"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
       expect(fp.fp).toBe(17)
-      expect(baseToHit(fp.fp)).toBe(11)
+      expect(baseToHit(fp.fp)).toBe(9)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1449,15 +1458,16 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(10)
-      expect(baseToHit(fp.fp)).toBe(13)
+      expect(baseToHit(fp.fp)).toBe(11)
       expect(fireHindrance(game, makeAction(game, ["firing2"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing2"]), makeAction(game, ["target1", "target2"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(1)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 1 for rapid fire")
+      expect(mods.mod).toBe(0)
+      expect(mods.why.length).toBe(2)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[1]).toBe("- plus 1 for rapid fire")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1538,15 +1548,16 @@ describe("ranged fire attacks", () => {
 
       const fp = firepower(game, makeAction(game, ["firing2", "firing5"]), target, tloc, false, [false])
       expect(fp.fp).toBe(22)
-      expect(baseToHit(fp.fp)).toBe(10)
+      expect(baseToHit(fp.fp)).toBe(8)
       expect(fireHindrance(game, makeAction(game, ["firing2", "firing5"]), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing2", "firing5"]), makeAction(game, ["target1", "target2"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(1)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 1 for rapid fire")
+      expect(mods.mod).toBe(0)
+      expect(mods.why.length).toBe(2)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[1]).toBe("- plus 1 for rapid fire")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1643,14 +1654,15 @@ describe("ranged fire attacks", () => {
       const firingIDs = ["firing1", "firing2"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
       expect(fp.fp).toBe(17)
-      expect(baseToHit(fp.fp)).toBe(11)
+      expect(baseToHit(fp.fp)).toBe(9)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(0)
-      expect(mods.why.length).toBe(0)
+      expect(mods.mod).toBe(-1)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 1 for less than half range")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1742,13 +1754,13 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(14)
+      expect(baseToHit(fp.fp)).toBe(12)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(4)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
-      expect(baseToHit(fp2.fp)).toBe(17)
+      expect(baseToHit(fp2.fp)).toBe(15)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -1757,7 +1769,7 @@ describe("ranged fire attacks", () => {
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
 
       const original = Math.random
-      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      vi.spyOn(Math, "random").mockReturnValue(0.88)
       game.gameState?.finish()
       Math.random = original
 
@@ -1767,7 +1779,7 @@ describe("ranged fire attacks", () => {
       ])
       expect(target3.immobilized).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 20, rolled 20: tie, vehicle immobilized"
+        "penetration roll for T-34 M40 (2d10): target 18, rolled 18: tie, vehicle immobilized"
       )
     })
 
@@ -1813,13 +1825,13 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(4)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(17)
+      expect(baseToHit(fp.fp)).toBe(15)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(2)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
-      expect(baseToHit(fp2.fp)).toBe(19)
+      expect(baseToHit(fp2.fp)).toBe(17)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -1837,7 +1849,7 @@ describe("ranged fire attacks", () => {
         { unit: target2, from: [floc], to: tloc, incendiary: false },
       ])
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 22, rolled 20: failed"
+        "penetration roll for T-34 M40 (2d10): target 20, rolled 20: tie, vehicle immobilized"
       )
     })
 
@@ -1878,7 +1890,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "penetration roll (2d10): target 22, rolled 20: failed"
+        "penetration roll (2d10): target 20, rolled 20: tie, vehicle immobilized"
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual({
@@ -1995,13 +2007,13 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(9)
+      expect(baseToHit(fp.fp)).toBe(7)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(12)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
-      expect(baseToHit(fp2.fp)).toBe(12)
+      expect(baseToHit(fp2.fp)).toBe(10)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(4)
@@ -2069,13 +2081,13 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(9)
+      expect(baseToHit(fp.fp)).toBe(7)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(12)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
-      expect(baseToHit(fp2.fp)).toBe(12)
+      expect(baseToHit(fp2.fp)).toBe(10)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(4)
@@ -2101,7 +2113,7 @@ describe("ranged fire attacks", () => {
         "distance roll (d10): 1 for 1 hexes, drifted to D3"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[3].description).toBe(
-        "infantry effect roll (2d10): target 9, rolled 2: failed"
+        "infantry effect roll (2d10): target 7, rolled 2: failed"
       )
 
       const all = map.allUnits
@@ -2147,7 +2159,7 @@ describe("ranged fire attacks", () => {
       expect(game.lastAction?.stringValue).toBe(
         "German Radio 10.5cm at D3 fired at E3; targeting roll (d10x10): target 4, rolled 1: miss, " +
         "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
-        "drifted to D3; infantry effect roll (2d10): target 9, rolled 2: failed"
+        "drifted to D3; infantry effect roll (2d10): target 7, rolled 2: failed"
       )
 
       const all = map.allUnits
@@ -2391,13 +2403,13 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(9)
+      expect(baseToHit(fp.fp)).toBe(7)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(12)
       expect(fp2.why.length).toBe(2)
       expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
-      expect(baseToHit(fp2.fp)).toBe(12)
+      expect(baseToHit(fp2.fp)).toBe(10)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -2418,7 +2430,7 @@ describe("ranged fire attacks", () => {
       ])
       expect(target3.isWreck).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 15, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll for T-34 M40 (2d10): target 13, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -2474,12 +2486,12 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(9)
+      expect(baseToHit(fp.fp)).toBe(7)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(24)
       expect(fp2.why.length).toBe(1)
-      expect(baseToHit(fp2.fp)).toBe(9)
+      expect(baseToHit(fp2.fp)).toBe(7)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -2496,7 +2508,7 @@ describe("ranged fire attacks", () => {
       ])
       expect(target3.isWreck).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 9, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll for T-34 M40 (2d10): target 7, rolled 20: succeeded, vehicle destroyed"
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual({
@@ -2560,12 +2572,12 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(9)
+      expect(baseToHit(fp.fp)).toBe(7)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(24)
       expect(fp2.why.length).toBe(1)
-      expect(baseToHit(fp2.fp)).toBe(9)
+      expect(baseToHit(fp2.fp)).toBe(7)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -2581,7 +2593,7 @@ describe("ranged fire attacks", () => {
       ])
       expect(target3.isWreck).toBe(false)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 8, rolled 2: miss, Flamethrower destroyed"
+        "hit roll (2d10): target 4, rolled 2: miss, Flamethrower destroyed"
       )
 
       const all = map.allUnits
@@ -2642,12 +2654,12 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
       expect(fp.fp).toBe(4)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(17)
+      expect(baseToHit(fp.fp)).toBe(15)
 
       const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
       expect(fp2.fp).toBe(4)
       expect(fp2.why.length).toBe(1)
-      expect(baseToHit(fp2.fp)).toBe(17)
+      expect(baseToHit(fp2.fp)).toBe(15)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing2"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -2664,7 +2676,7 @@ describe("ranged fire attacks", () => {
       ])
       expect(target3.isWreck).toBe(true)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 17, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll for T-34 M40 (2d10): target 15, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -2870,7 +2882,7 @@ describe("ranged fire attacks", () => {
       expect(fp.fp).toBe(4)
       expect(fp.why.length).toBe(2)
       expect(fp.why[1]).toBe("- halved: antitank vs. soft target")
-      expect(baseToHit(fp.fp)).toBe(17)
+      expect(baseToHit(fp.fp)).toBe(15)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -2891,7 +2903,7 @@ describe("ranged fire attacks", () => {
       ])
       expect(target3.isWreck).toBe(false)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "roll for effect (2d10): target 17, rolled 20: hit"
+        "roll for effect (2d10): target 15, rolled 20: hit"
       )
 
       const all = map.allUnits
@@ -2938,7 +2950,7 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(14)
+      expect(baseToHit(fp.fp)).toBe(12)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(3)
@@ -2959,7 +2971,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 3, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 14, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3156,7 +3168,7 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(14)
+      expect(baseToHit(fp.fp)).toBe(12)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, true)
       expect(mult.mult).toBe(4)
@@ -3217,14 +3229,14 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(14)
+      expect(baseToHit(fp.fp)).toBe(12)
       const mods = untargetedModifiers(
         game, makeAction(game, ["firing1"]), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(-1)
+      expect(mods.mod).toBe(-2)
       expect(mods.why.length).toBe(2)
-      expect(mods.why[0]).toBe("- minus 2 for adjacent")
+      expect(mods.why[0]).toBe("- minus 3 for adjacent")
       expect(mods.why[1]).toBe("- plus 1 for moving the turret")
 
       const original = Math.random
@@ -3236,7 +3248,7 @@ describe("ranged fire attacks", () => {
         { unit: target, from: [floc], to: tloc, incendiary: false },
       ])
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 13, rolled 20: hit"
+        "hit roll (2d10): target 10, rolled 20: hit"
       )
 
       const all = map.allUnits
@@ -3343,7 +3355,7 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, true, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(14)
+      expect(baseToHit(fp.fp)).toBe(12)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, true, false)
       expect(mult.mult).toBe(3)
@@ -3367,7 +3379,7 @@ describe("ranged fire attacks", () => {
         "hit location roll (d10): 10 (hull)"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 14, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3410,7 +3422,7 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, true, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(14)
+      expect(baseToHit(fp.fp)).toBe(12)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, true, false)
       expect(mult.mult).toBe(3)
@@ -3472,7 +3484,7 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, true, [false])
       expect(fp.fp).toBe(24)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(9)
+      expect(baseToHit(fp.fp)).toBe(7)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -3482,7 +3494,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 7, rolled 2: miss, firing weapon destroyed"
+        "hit roll (2d10): target 4, rolled 2: miss, firing weapon destroyed"
       )
 
       const all = map.allUnits
@@ -3524,7 +3536,7 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [true])
       expect(fp.fp).toBe(4)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(17)
+      expect(baseToHit(fp.fp)).toBe(15)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3537,7 +3549,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 3, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 17, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 15, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3590,15 +3602,15 @@ describe("ranged fire attacks", () => {
       const firingIDs = ["firing1", "firing2"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
       expect(fp.fp).toBe(17)
-      expect(baseToHit(fp.fp)).toBe(11)
+      expect(baseToHit(fp.fp)).toBe(9)
       expect(fireHindrance(game, makeAction(game, firingIDs), tloc)).toBe(0)
       const mods = untargetedModifiers(
         game, makeAction(game, firingIDs), makeAction(game, ["target1"]),
         game.fireState.path as GameActionPath[]
       )
-      expect(mods.mod).toBe(2)
-      expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- plus 2 intensive fire")
+      expect(mods.mod).toBe(1)
+      expect(mods.why.length).toBe(2)
+      expect(mods.why[1]).toBe("- plus 2 intensive fire")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -3655,7 +3667,7 @@ describe("ranged fire attacks", () => {
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(8)
       expect(fp.why.length).toBe(1)
-      expect(baseToHit(fp.fp)).toBe(14)
+      expect(baseToHit(fp.fp)).toBe(12)
 
       const mult = rangeMultiplier(map, makeAction(game, ["firing1"])[0].counter, tloc, false, false)
       expect(mult.mult).toBe(4)
@@ -3677,7 +3689,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 4, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 14, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits

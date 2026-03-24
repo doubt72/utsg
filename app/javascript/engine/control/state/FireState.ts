@@ -18,6 +18,7 @@ export default class FireState extends BaseState {
 
   sponson: boolean;
   reaction: boolean;
+  moveSeq: number | undefined
 
   smoke: boolean;
   targetHexes: Coordinate[];
@@ -30,6 +31,8 @@ export default class FireState extends BaseState {
     this.sponson = false
     if (this.reaction) {
       placeReactionFireGhosts(game)
+      const action = this.game.lastSignificantAction
+      if (action?.type === "move") { this.moveSeq = action.sequence }
     }
     if (selection.unit.sponson && (selection.unit.jammed || selection.unit.weaponDestroyed)) {
       this.sponson = false
@@ -288,7 +291,8 @@ export default class FireState extends BaseState {
           start: this.targetHexes.map(h => {
             return { x: h.x, y: h.y, smoke: this.smoke }
           }),
-          final: []
+          final: [],
+          moveSeq: this.moveSeq,
         },
         dice_result: [],
       }

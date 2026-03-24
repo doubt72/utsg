@@ -4,6 +4,7 @@ import Counter from "../../Counter";
 import Game, { ComplexCheck } from "../../Game";
 import GameAction, { GameActionMoraleData } from "../../GameAction";
 import { moraleModifiers } from "../fire";
+import { placeReactionMoraleCheckGhosts } from "../reactionFire";
 import BaseState, { stateType } from "./BaseState";
 
 export default class MoraleCheckState extends BaseState {
@@ -22,6 +23,9 @@ export default class MoraleCheckState extends BaseState {
       short: check.to.x !== counter.hex?.x || check.to.y !== counter.hex?.y,
     }
     check.unit.select()
+
+    placeReactionMoraleCheckGhosts(game, check.to)
+
     game.openOverlay = game.scenario.map.hexAt(check.to)
     game.refreshCallback(game)
   }

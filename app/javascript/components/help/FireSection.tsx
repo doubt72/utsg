@@ -208,8 +208,6 @@ export default function FireSection() {
           </tr>
           <tr>
             <td>Base To-Hit</td>
-            <td>20</td>
-            <td>19</td>
             <td>18</td>
             <td>17</td>
             <td>16</td>
@@ -227,6 +225,8 @@ export default function FireSection() {
             <td>4</td>
             <td>3</td>
             <td>2</td>
+            <td>1</td>
+            <td>0</td>
           </tr>
         </tbody>
       </table>
@@ -245,7 +245,6 @@ export default function FireSection() {
               Add the maximum hindrance between any of the firing units and the target hex to the
               base to-hit.
             </li>
-            <li>Add one if the distance is more than half the range of any of the firing units.</li>
             <li>Add one if any of the firing units are tired.</li>
             <li>
               Add one if rapid fire (rapid fire <b>must</b> target multiple hexes, otherwise
@@ -255,7 +254,12 @@ export default function FireSection() {
             <li>Add two if intensive fire.</li>
             <li>Subtract one if all firing units are at a higher elevation than the target.</li>
             <li>Add one if any firing units are at a lower elevation than the target.</li>
-            <li>Subtract two if all units are adjacent to the target.</li>
+            <li>
+              Subtract one if the distance is less than half the range of all of the firing units
+              (rounded down, i.e., a unit with a range of 5 firing at a target 3 hexes away would
+              not get this modifier).
+            </li>
+            <li>Subtract three if all units are adjacent to the target.</li>
             <li>Add one if raining, sand or dust, two if snowing or fog.</li>
             <li>Add one if night.</li>
           </ol>

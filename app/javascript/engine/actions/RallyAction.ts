@@ -46,7 +46,7 @@ export default class RallyAction extends BaseAction {
 
   get passed(): boolean {
     if (this.diceResult.result === 2) { return false }
-    return this.diceResult.result >= this.rollNeeded || this.diceResult.result === 20
+    return this.diceResult.result > this.rollNeeded || this.diceResult.result === 20
   }
 
   get stringValue(): string {

@@ -218,7 +218,7 @@ export function untargetedModifiers(
 ): { mod: number, why: string[] } {
   const why: string[] = []
   let mod = 0
-  let gthalf = false
+  let lthalf = true
   let adj = true
   let elev = -1
   let tired = false
@@ -234,7 +234,7 @@ export function untargetedModifiers(
       const from = new Coordinate(sel.x, sel.y)
       const to = new Coordinate(targ.x, targ.y)
       const dist = hexDistance(from, to)
-      if (dist > sunit.currentRange/2 && !sunit.leader) { gthalf = true }
+      if (dist > sunit.currentRange/2 && !sunit.leader) { lthalf = false }
       if (dist > 1) { adj = false }
       const check = (map.hexAt(to) as Hex).elevation - (map.hexAt(from) as Hex).elevation
       if (check === 0 && elev < 0) { elev = 0 }
@@ -246,13 +246,12 @@ export function untargetedModifiers(
       }
     }
   }
-  if (gthalf) {
-    mod += 1
-    why.push("- plus 1 for more than half range")
-  }
   if (adj) {
-    mod -= 2
-    why.push("- minus 2 for adjacent")
+    mod -= 3
+    why.push("- minus 3 for adjacent")
+  } else if (lthalf) {
+    mod -= 1
+    why.push("- minus 1 for less than half range")
   }
   if (elev > 0 ) {
     mod += 1
