@@ -1,54 +1,33 @@
 High Priority Features/Bug Fixes:
   - Fix hindrance bug
     - Through two fence corner intersections
-  ? Free rally doesn't include already rallied
-    - Test didn't find issue, don't think it's fixed;
-      need to see it again to be able to figure out what's going on
-  - Overlay both fire and displacement
-  - Need ghost selection
 
   - Test scenarios
-    002, 003, 005, 007, 011
-    303, 308
-    503, 508, 509, 510
-    603
+    002, 303, 503, 003, 005, 308, 508, 007, 509, 011, 510, 603
 
   - Beta scenarios
-    004, 006
-    102
-    201
-    302, 305
-    406, 408
-    502, 504
-    604
+    004, 006, 102, 201, 302, 305, 406, 408, 502, 504, 604
 
-  - Add tutorial
-
-  - Add changelog page / server version
-  - Remove TODO on about page, still working and probably always will be
-  - Add Some Developer Notes
-  - Change announcements
-    - Patreon?
   - Email Notifications
     - Note to admins under code of contact
+  - Add Some Developer Notes
 
+Nice to Have Eventually:
+  - Add tutorial
+  - Admin pages for game/user summaries
+    - Remove/ban players (FE only security inadequate for this, validate on BE)
+  - Refactor firing action (currently an unmaintainable mess, though fairly well-tested)
+  - Break up/organize tests into smaller files
+
+Current Stretch:
   - Hotkeys and context buttons ?
   - Show Terrain in counter overlay ?
 
-  - Start testing other scenarios, add optional rules
-  - Admin pages for game/user summaries
-    - Remove/ban players (FE only security inadequate for this, validate on BE)
-
 Keep an Eye out for:
-  - Refactor firing action (currently an unmaintainable mess, though fairly well-tested)
-  - Improved move validation/synchronization to block duplicate/illegal moves
   - Undo getting out of sync / Automatically undo excessive deployments
   - Handle map scale and such settings gone wrong (reset button in prefs?)
-
-  - Break up tests / large files
-  - ?? Show ALL for movement into mines or wire
-  - ?? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
-
-Think about:
-  - Tanks with 1 man turrets/things like that ?
-    - https://en.wikipedia.org/wiki/Marmon%E2%80%93Herrington_CTLS ?
+  ? Show ALL for movement into mines or wire
+  ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
+  ? Free rally doesn't include already rallied
+    - Test didn't find issue, don't think it's fixed; other fixes may have fixed?
+      need to see it again to be able to figure out what's going on

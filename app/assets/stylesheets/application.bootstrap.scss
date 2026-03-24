@@ -8,6 +8,15 @@
 $title-font: 'Special Elite';
 $subtitle-font: 'Courier Prime';
 
+a.regular {
+  color: $alert-orange;
+  text-decoration: none;
+}
+
+a.regular:hover {
+  color: $darkish-green;
+}
+
 // Common
 button.custom-button,a.custom-button,div.custom-button {
   text-decoration: none;

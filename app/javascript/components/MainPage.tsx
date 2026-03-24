@@ -36,9 +36,21 @@ export default function MainPage() {
         <div>
           <div className={classes}>
             <p>
-              The <strong>{titleNameStyle}</strong> server is still massively under construction. If
-              you&apos;re seeing this, you&apos;re probably just looking at the github repo, nothing
-              is actually out there being hosted anywhere yet. There are, as yet, no announcements.
+              Welcome to the <strong>{titleNameStyle}</strong> server!  The server is currently
+              in alpha as I shake things down, work out the bugs, and test the scenarios.  See
+              the <a className="regular" href="/about">about</a> page for more information
+              about the server or to report bugs.
+            </p>
+            {/* <p>
+              Support the work (and/or my mild coffee addiction)
+              on <a className="regular" href="https://www.patreon.com/cw/u43420358">Patreon</a> or
+              on <a className="regular" href="https://ko-fi.com/doub72">Ko-fi</a> or
+              maybe just <a className="regular" href="https://buymeacoffee.com/doubt72">Buy Me a Coffee</a>.
+            </p> */}
+            <p>
+              <strong>Announcements:</strong></p>
+            <p>
+              Nothing to announce!  We&apos;re not quite open for business yet.
             </p>
           </div>
           {loggedIn ? newGameButton : ""}

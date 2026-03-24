@@ -2,7 +2,8 @@ import React from "react";
 import Header from "./Header";
 import { AboutHelpButton, ReturnButton } from "./utilities/buttons";
 import { subtitleNameStyle, titleNameStyle } from "./Utilities";
-import { subtitleName, titleName } from "../utilities/utilities";
+import { serverVersion, subtitleName, titleName } from "../utilities/utilities";
+import { BugFill, ListColumnsReverse } from "react-bootstrap-icons";
 
 export default function About() {
   return (
@@ -33,14 +34,26 @@ export default function About() {
           <p>
             There are a selection of scenarios available. To get started, head to the “Create New
             Game” link on the main page and explore the scenarios. Maybe try a hotseat game. New
-            content will be added over time, but scenarios are already playable and ready for
-            testing. [TODO: Okay, not really, but they should be whenever I turn on the production
-            server.]
+            content will be added over time.
           </p>
-          <p>This server is a work-in-progress, Doug is still working on it.</p>
-          <div className="align-end">
-            {AboutHelpButton()}
-            <ReturnButton />
+          <p>
+            Server version <span className="red">{serverVersion}&#x3B1;</span>:
+            currently a work in progress and probably always will be.
+          </p>
+          <div className="flex mt2em">
+            <div className="nowrap">
+              <a className="custom-button" href="https://github.com/doubt72/utsg/issues">
+                <BugFill/>report an issue
+              </a>
+            </div>
+            <div className="nowrap">
+              <a className="custom-button" href="https://github.com/doubt72/utsg/blob/main/changelog.md">
+                <ListColumnsReverse/>changelog
+              </a>
+            </div>
+            <div className="flex-fill"></div>
+            <div>{AboutHelpButton()}</div>
+            <div><ReturnButton /></div>
           </div>
         </div>
         <div className="about-about ml05em">
