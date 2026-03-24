@@ -415,10 +415,9 @@ export default function FireSection() {
         <li>Subtract cover (unless the attack was from an incendiary weapon).</li>
         <li>Add one if pinned.</li>
         <li>
-          Roll 2d10 (add them together). If the result is equal to the modified check, pin the unit,
-          unless it was reaction fire, then break it. If the result is less than the modified check,
-          break it. If the unit was already broken, eliminate it. A roll of 2 always fails. A roll
-          of 20 always succeeds.
+          Roll 2d10 (add them together). If the result is equal to the modified check, pin the unit.
+          If the result is less than the modified check, break it, or if the unit was already broken,
+          eliminate it. A roll of 2 always fails. A roll of 20 always succeeds.
         </li>
       </ol>
       <h3>{section}.6. Smoke</h3>

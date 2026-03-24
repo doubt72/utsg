@@ -6,7 +6,8 @@ module Scenarios
     NAME = "None Shall Pass"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1939, 5, 13].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -26,7 +27,7 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_5_1,
-          [6, :jap_b_division_s],
+          [5, :jap_b_division_s],
           [2, :jap_b_division_t],
           [2, :jap_type_96_lmg],
         ],

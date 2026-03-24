@@ -53,8 +53,8 @@ interface MapDisplayProps {
   resetCallback?: () => void;
   clearActionCallback?: () => void;
   updateCallback?: () => void;
-  checkCancelHideLOS: number;
-  checkCancelTerrain: number;
+  checkCancelHideLOS?: number;
+  checkCancelTerrain?: number;
 }
 
 export default function MapDisplay({
