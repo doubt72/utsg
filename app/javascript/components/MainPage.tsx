@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import ChatDisplay from "./ChatDisplay";
-import { CreateGameButton } from "./utilities/buttons";
+import { CreateGameButton, ScenariosButton } from "./utilities/buttons";
 import GameList from "./GameList";
 import { titleNameStyle } from "./Utilities";
 
@@ -21,10 +21,15 @@ export default function MainPage() {
     </div>
   );
 
+  const seeScenariosButton = (
+    <div className="main-page-start-game">
+      <span className="red font11em">&gt; &gt; &gt; &gt; &gt;</span> <ScenariosButton />
+    </div>
+  );
+
   const loggedIn = !!localStorage.getItem("username");
 
-  const classes =
-    "main-page-announcements main-page-announcements-logged-" + (loggedIn ? "in" : "out");
+  const classes = "main-page-announcements main-page-announcements-logged-in";
 
   return (
     <div className="main-page">
@@ -52,7 +57,7 @@ export default function MainPage() {
               maybe just <a className="regular" href="https://buymeacoffee.com/doubt72">Buy Me a Coffee</a>.
             </p>
           </div>
-          {loggedIn ? newGameButton : ""}
+          {loggedIn ? newGameButton : seeScenariosButton}
         </div>
       </div>
       <GameList />

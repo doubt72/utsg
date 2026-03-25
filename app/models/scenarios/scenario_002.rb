@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Block by Block"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 8, 23].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,11 +17,11 @@ module Scenarios
         :ussr_leader_5_1,
         :ussr_leader_4_1,
         :ussr_leader_3_1,
-        [2, :ussr_smg_s],
-        [4, :ussr_rifle_s],
+        [2, :ussr_rifle_s],
+        [2, :ussr_militia_s],
         [3, :ussr_rifle_t],
         [3, :ussr_dp_27],
-        [6, :ussr_mc],
+        [4, :ussr_mc],
         :sniper3,
       ] },
     }.freeze

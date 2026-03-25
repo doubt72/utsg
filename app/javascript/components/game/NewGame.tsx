@@ -354,6 +354,8 @@ export default function NewGame() {
   const scrollDown = scroll.down ?
     <div onClick={() => setPage(scenarioSearch.page + 1)}><CaretDownFill /></div> : ""
 
+  const loggedIn = !!localStorage.getItem("username");
+
   return (
     <div className="main-page">
       <Header />
@@ -382,9 +384,13 @@ export default function NewGame() {
               <CustomCheckbox onClick={() => setPlayer(0)} selected={ formInput.player === 0 }/>
               <span className="font11em">hotseat / solo</span>
             </div>
-            <div className="mt1em align-end">
-              <CreateGameButton type="confirm" />
-            </div>
+            { loggedIn ?
+              <div className="mt1em align-end">
+                <CreateGameButton type="confirm" />
+              </div> :
+              <div className="mt2em">
+                You must be logged in to create a game.
+              </div> }
           </div>
           <div className="scenario-list-container">
             <div className="scenario-list-filter-limit">

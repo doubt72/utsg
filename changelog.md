@@ -1,3 +1,10 @@
+## 0.14 alpha
+
+- Allow logged out users to see scenarios
+- Prematurely update 002 to "ready"
+- Prematurely update 303 to "ready"
+- Prematurely update 503 to "ready"
+
 ## 0.13 alpha
 
 - Split dev and admin, update profile page, allow admins to create devs

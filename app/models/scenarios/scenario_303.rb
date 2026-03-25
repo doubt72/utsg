@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Over the Hedge"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 7, 1].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -26,7 +27,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_1,
         :ger_leader_4_1,
-        [3, :ger_volksgrenadier_s],
+        [4, :ger_volksgrenadier_s],
         [2, :ger_volksgrenadier_t],
         [2, :ger_mg_42],
       ] },
@@ -55,7 +56,7 @@ module Scenarios
           during the Battle of Normandy. These natural defenses allowed German
           troops to easily create fortifications and ambush advancing Allied
           forces. The bocage also hindered Allied tank movement and made
-          progress slow and costly",
+          progress slow and costly.",
           "The fighting in the bocage became known as the \"Battle of the
           Hedgerows\" or \"Hedge War,\" highlighting the significant impact of
           this terrain on the Allied advance.",

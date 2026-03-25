@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Uruguay"
     ALLIES = ["pol"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1939, 9, 1].freeze
     LAYOUT = [15, 11, "x"].freeze

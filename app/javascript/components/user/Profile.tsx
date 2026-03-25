@@ -5,6 +5,7 @@ import ProfileEditPassword from "./ProfileEditPassword"
 import { ReturnButton } from "../utilities/buttons";
 import { getAPI, putAPI } from "../../utilities/network";
 import { useParams } from "react-router-dom";
+import { StarFill } from "react-bootstrap-icons";
 
 type GameStats = { name: string, count: number, win: number, loss: number, wait: number, abandoned: number }
 type UserData = { username: string, email: string, proto?: string, mcp: string }
@@ -88,17 +89,19 @@ export default function Profile() {
           { header }
           { statDisplay }
           <div className="flex">
-            { localStorage.getItem("mcp") ?
-              <button className="custom-button" onClick={() => {
-                putAPI(`/api/v1/user/toggle_dev`, {
-                  id: username,
-                }, {
-                  ok: () => setResetUser(s => !s)
-                })
-              }}>
-                &#x2605; Toggle Dev
-              </button> : "" }
             <div className="flex-fill"></div>
+            { localStorage.getItem("mcp") ?
+              <div>
+                <a className="custom-button nowrap" onClick={() => {
+                  putAPI(`/api/v1/user/toggle_dev`, {
+                    id: username,
+                  }, {
+                    ok: () => setResetUser(s => !s)
+                  })
+                }}>
+                  <StarFill />toggle dev
+                </a>
+              </div> : "" }
             <div><ReturnButton /></div>
           </div>
         </div>

@@ -123,6 +123,10 @@ export const CreateGameButton = ({ type }: ButtonTypeProps) => {
   }
 }
 
+export const ScenariosButton = () => {
+  return <CustomLink url="/new_game" text="scenarios"><Hexagon /></CustomLink>
+}
+
 export const ProfileButton = () => {
   return <CustomLink url={`/profile/${localStorage.getItem("username")}`} text="profile"><Person /></CustomLink>
 }

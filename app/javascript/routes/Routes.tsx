@@ -35,6 +35,7 @@ export default function Routes() {
     { path: "/verify", element: <Verify /> },
     { path: "/recover_account", element: <RecoverAccount /> },
     { path: "/reset_password", element: <ResetPassword /> },
+    { path: "/new_game", element: <NewGame /> },
     { path: "/game/:id", element: <GameDisplay /> },
 
     { path: "/help", element: <HelpDisplay /> },
@@ -73,8 +74,6 @@ export default function Routes() {
         { path: "/debug/stats/scenarios-p", element: <DebugScenarioStats proto={true} /> },
         { path: "/debug/stats/scenarios/:nation", element: <DebugScenarioStats proto={false} /> },
         { path: "/debug/stats/scenarios-p/:nation", element: <DebugScenarioStats proto={true}/> },
-
-        { path: "/new_game", element: <NewGame /> },
       ],
     },
   ]
