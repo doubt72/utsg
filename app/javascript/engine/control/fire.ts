@@ -374,10 +374,11 @@ export function rangeMultiplier(
 
 export function armorAtArc(
   game: Game, target: Unit, from: Coordinate, to: Coordinate, turret: boolean
-): number {
-  if (!target.rotates || !target.armored) { return -1 }
+): [string, number] {
+  if (!target.rotates || !target.armored) { return ["none", -1] }
   const armor = turret ? target.turretArmor as number[] : target.hullArmor as number[]
-  return armor[hitFromArc(game, target, from, to, turret)]
+  const arc = hitFromArc(game, target, from, to, turret)
+  return [["front", "side", "back"][arc], armor[arc]]
 }
 
 export function armorHitModifiers(

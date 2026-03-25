@@ -2,6 +2,35 @@ import React from "react";
 import { helpLink } from "./helpData";
 import { baseMorale } from "../../utilities/utilities";
 
+export const smokeTable = (
+  <table>
+    <tbody>
+      <tr>
+        <th>roll</th>
+        <th>result</th>
+      </tr>
+      <tr>
+        <td>
+          <strong>1-5</strong>
+        </td>
+        <td>smoke hindrance 2</td>
+      </tr>
+      <tr>
+        <td>
+          <strong>6-8</strong>
+        </td>
+        <td>smoke hindrance 3</td>
+      </tr>
+      <tr>
+        <td className="pr05em">
+          <strong>9-10</strong>
+        </td>
+        <td>smoke hindrance 4</td>
+      </tr>
+    </tbody>
+  </table>
+)
+
 export default function FireSection() {
   const section = "5.2.3.1"
   return (
@@ -308,9 +337,8 @@ export default function FireSection() {
           <tr>
             <th>roll</th>
             <th>1-3</th>
-            <th>4-5</th>
-            <th>6-7</th>
-            <th>7</th>
+            <th>4-6</th>
+            <th>7-8</th>
             <th>9</th>
             <th>10</th>
           </tr>
@@ -321,7 +349,6 @@ export default function FireSection() {
             <td>3</td>
             <td>4</td>
             <td>5</td>
-            <td>6</td>
           </tr>
         </tbody>
       </table>
@@ -428,38 +455,7 @@ export default function FireSection() {
         roll d10 to determine how heavy the resulting smoke is, and a smoke marker is placed in the
         hex:
       </p>
-      <table>
-        <tbody>
-          <tr>
-            <th>roll</th>
-            <th>result</th>
-          </tr>
-          <tr>
-            <td>
-              <strong>1-4</strong>
-            </td>
-            <td>smoke hindrance 1</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>5-7</strong>
-            </td>
-            <td>smoke hindrance 2</td>
-          </tr>
-          <tr>
-            <td className="pr05em">
-              <strong>8-9</strong>
-            </td>
-            <td>smoke hindrance 3</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>10</strong>
-            </td>
-            <td>smoke hindrance 4</td>
-          </tr>
-        </tbody>
-      </table>
+      { smokeTable }
       <p>
         Offboard artillery firing smoke works the same way, except on a miss, smoke is placed in the
         drift hex.

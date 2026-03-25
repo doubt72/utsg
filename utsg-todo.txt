@@ -1,15 +1,11 @@
 High Priority Features/Bug Fixes:
-  - Fix counter doc page
-  - Fix smoke table doc
-  - Fix drift table doc
-  - Fix initiative doc
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
 
   - Test scenarios
-    003, 005, 308, 508, 007, 509, 011, 510, 603
+    508, 007, 509, 011, 510, 603
 
   - Test/Beta scenarios
     004, 006, 102, 201, 302, 305, 406, 408, 502, 504, 604

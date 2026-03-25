@@ -1,3 +1,14 @@
+## 0.15 alpha
+
+- Fire check after morale and sniper checks
+- Fix facing on reaction fire against moves and on shorted immobilization
+- Improve reporting on armor facing fire attacks
+- Various documentation fixes
+- Tweak drift roll table
+- Prematurely update 003 to "ready"
+- Prematurely update 005 to "ready"
+- Prematurely update 308 to "ready"
+
 ## 0.14 alpha
 
 - Allow logged out users to see scenarios

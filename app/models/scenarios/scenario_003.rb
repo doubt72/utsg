@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Speed Bump"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 7, 10].freeze
     LAYOUT = [15, 11, "x"].freeze

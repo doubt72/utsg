@@ -411,14 +411,14 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
       }
       if (target.turreted) {
         const turretBasehit = baseToHit(fp.fp)
-        const turretArmor = armorAtArc(game, target, from, to, true)
+        const [arc, turretArmor] = armorAtArc(game, target, from, to, true)
         const turretMods = armorHitModifiers(game, source, target, from, to, true)
         const turretKill = turretBasehit + turretArmor + turretMods.mod
         if (turretArmor >= 0) {
           rc.push(`-> turret penetration roll (2d10): ${turretKill} (${chance2D10(turretKill)}%)`)
           rc.push(`firepower: ${fp.fp}`)
           rc.push(`base to hit: ${turretBasehit}`)
-          rc.push(`armor factor: ${turretArmor}`)
+          rc.push(`armor factor (${arc}): ${turretArmor}`)
           rc = rc.concat(turretMods.why)
         } else {
           rc.push(`-> turret hit destroys`)
@@ -426,14 +426,14 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
         rc.push("")
       }
       const hullBasehit = baseToHit(fp.fp)
-      const hullArmor = armorAtArc(game, target, from, to, false)
+      const [arc, hullArmor] = armorAtArc(game, target, from, to, false)
       const hullMods = armorHitModifiers(game, source, target, from, to, false)
       const hullKill = hullBasehit + hullArmor + hullMods.mod
       if (hullArmor >= 0) {
         rc.push(`-> hull penetration roll (2d10): ${hullKill} (${chance2D10(hullKill)}%)`)
         rc.push(`firepower: ${fp.fp}`)
         rc.push(`base to hit: ${hullBasehit}`)
-        rc.push(`armor factor: ${hullArmor}`)
+        rc.push(`armor factor (${arc}): ${hullArmor}`)
         rc = rc.concat(hullMods.why)
       } else {
         rc.push(`-> hull hit destroys`)

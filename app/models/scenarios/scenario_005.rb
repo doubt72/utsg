@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Typhoon's Last Gasp"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 12, 1].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -39,7 +40,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 8,
           first_deploy: 1,
           first_action: 2,
           date:,

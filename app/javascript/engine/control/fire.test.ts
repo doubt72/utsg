@@ -2971,7 +2971,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 3, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (front) (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3379,7 +3379,7 @@ describe("ranged fire attacks", () => {
         "hit location roll (d10): 10 (hull)"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (front) (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3549,7 +3549,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 3, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 15, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (front) (2d10): target 15, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3689,7 +3689,7 @@ describe("ranged fire attacks", () => {
         "targeting roll (d10x10): target 4, rolled 100: hit"
       )
       expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
+        "penetration roll (front) (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
       )
 
       const all = map.allUnits

@@ -462,7 +462,7 @@ export default function CounterSection() {
           <strong>Fire spread</strong> is the chance fires will spread during the cleanup phase.
         </p>)
         sections.push(<p key={index++}>
-          <strong>Smoke dispersed</strong> is the chance smoke markers will be removed during
+          <strong>Smoke dispersed</strong> is the amount smoke markers will be reduced during
           the cleanup phase.
         </p>)
       }
@@ -874,10 +874,10 @@ export default function CounterSection() {
             { counterButton("ap minefield", "f_AP Minefield") }
             { counterButton("at minefield", "f_AT Minefield") }
             { counterButton("sniper", "f_Sniper_3") }
-            { counterButton("tracked hull", "m_0_ger") }
-            { counterButton("wheeled hull", "m_1_ussr") }
-            { counterButton("breeze", "m_9_1_true_undefined") }
-            { counterButton("rain", "m_10_2_4_undefined") }
+            { counterButton("tracked hull", "m_tracked_hull_ger") }
+            { counterButton("wheeled hull", "m_wheeled_hull_ussr") }
+            { counterButton("breeze", "m_wind_2_true_undefined") }
+            { counterButton("rain", "m_weather_rain_4_undefined") }
           </div>
           { showBreak ?
             <div className="mt2em">

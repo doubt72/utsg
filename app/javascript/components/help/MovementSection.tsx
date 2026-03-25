@@ -2,6 +2,7 @@ import React from "react";
 import { ArrowClockwise, BoxArrowDown, BoxArrowInUp, Clouds } from "react-bootstrap-icons";
 import { CancelGlyph, MoveGlyph } from "../utilities/buttons";
 import { helpLink } from "./helpData";
+import { smokeTable } from "./FireSection";
 
 export default function MovementSection() {
   const section = "5.2.3.3"
@@ -184,32 +185,7 @@ export default function MovementSection() {
         rolls are involved). The locations that will get smoke counters are indicated by ghost
         counters on the map until then.
       </p>
-      <table>
-        <tbody>
-          <tr>
-            <th>roll</th>
-            <th>result</th>
-          </tr>
-          <tr>
-            <td>
-              <strong>1-5</strong>
-            </td>
-            <td>smoke hindrance 2</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>6-8</strong>
-            </td>
-            <td>smoke hindrance 3</td>
-          </tr>
-          <tr>
-            <td className="pr05em">
-              <strong>9-10</strong>
-            </td>
-            <td>smoke hindrance 4</td>
-          </tr>
-        </tbody>
-      </table>
+      { smokeTable }
       <p>Laying additional smoke in the same hex will add to existing smoke in that hex.</p>
       <p>Use the following button to toggle laying smoke on and off:</p>
       <div className="flex mb1em">

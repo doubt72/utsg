@@ -6,7 +6,8 @@ module Scenarios
     NAME = "A Day on the Waterfront"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 6, 29].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -37,7 +38,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_deploy: 2,
           first_action: 1,
           date:,

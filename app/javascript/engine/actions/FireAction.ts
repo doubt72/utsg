@@ -16,6 +16,7 @@ import {
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
+import MoveAction from "./MoveAction";
 
 type FireActionActor = {
   x: number, y: number, counter: Counter, sponson?: boolean, wire?: boolean
@@ -29,6 +30,7 @@ export default class FireAction extends BaseAction {
 
   intensive: boolean;
   reaction: boolean;
+  moveSeq: number | undefined
 
   constructor(data: GameActionData, game: Game, index: number, intensive: boolean, reaction: boolean) {
     super(data, game, index)
@@ -47,6 +49,7 @@ export default class FireAction extends BaseAction {
     this.target = data.data.target as GameActionUnit[]
     this.fireHex = data.data.fire_data as GameActionFireData
     this.diceResults = data.data.dice_result as GameActionDiceResult[]
+    this.moveSeq = data.data.fire_data?.moveSeq
   }
 
   get type(): string {
@@ -324,15 +327,28 @@ export default class FireAction extends BaseAction {
             }
           }
           const baseHit = baseToHit(fp.fp)
-          const armor = armorAtArc(this.game, target0.unit, from, to, turretHit)
-          const mods = armorHitModifiers(this.game, firing0.unit, target0.unit, from, to, turretHit)
+          const clone = target0.unit.clone()
+          if (this.moveSeq) {
+            const action = this.game.findActionBySequence(this.moveSeq) as MoveAction
+            if (action) {
+              for (const p of action.path) {
+                if (p.x === dTo.x && p.y === dTo.y) {
+                  if (p.facing) { clone.facing = p.facing }
+                  if (p.turret && clone.turreted) { clone.turretFacing = p.turret }
+                  break
+                }
+              }
+            }
+          }
+          const [arc, armor] = armorAtArc(this.game, clone, from, to, turretHit)
+          const mods = armorHitModifiers(this.game, firing0.unit, clone, from, to, turretHit)
           let hitCheck = baseHit + armor + mods.mod
           if (hitCheck < 2) { hitCheck = 2 }
           if (armor >= 0) {
             if (needDice) { this.diceResults.push({ result: roll2d10(), type: "2d10" }) }
             const hitRoll = this.diceResults[diceIndex++]
             if (needDice) {
-              hitRoll.description = `penetration roll (2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
+              hitRoll.description = `penetration roll (${arc}) (2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
             }
             if (hitRoll.result > hitCheck) {
               target0.unit.status = unitStatus.Wreck
@@ -352,6 +368,8 @@ export default class FireAction extends BaseAction {
                 const hex = target0.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
                   this.map.moveUnit(hex, dTo, target0.unit.id)
+                  target0.unit.facing = clone.facing
+                  if (target0.unit.turreted) { target0.unit.turretFacing = clone.turretFacing }
                   if (needDice) { hitRoll.description += `, move short at ${coordinateToLabel(dTo)}` }
                 }
                 target0.unit.immobilized = true

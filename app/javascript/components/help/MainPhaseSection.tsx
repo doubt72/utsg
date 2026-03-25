@@ -63,7 +63,7 @@ export default function MainPhaseSection() {
           <div className="flex-fill"></div>
           <div className="custom-button normal-button" onClick={
             () => {
-              game.updateInitiative(-1)
+              game.updateInitiative(game.currentInitiativePlayer === 1 ? -1 : 1)
               setInitiative(game.initiative)
             }}>
             <span>-</span>
@@ -77,7 +77,7 @@ export default function MainPhaseSection() {
           </div>
           <div className="custom-button normal-button" onClick={
             () => {
-              game.updateInitiative(1)
+              game.updateInitiative(game.currentInitiativePlayer === 1 ? 1 : -1)
               setInitiative(game.initiative)
             }}>
             <span>+</span>

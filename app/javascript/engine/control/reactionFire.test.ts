@@ -14,6 +14,7 @@ import { breakdownCheck } from "./state/BreakdownState"
 import MoraleCheckState from "./state/MoraleCheckState"
 import ReactionState from "./state/ReactionState"
 import { checkPhase } from "../support/gamePhase"
+import { fireHelpText } from "../support/help"
 
 describe("reaction fire attacks", () => {
   test("reaction fire after fire", () => {
@@ -1199,7 +1200,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at C3; targeting roll (d10x10): " +
-      "target 6, rolled 100: hit; hit location roll (d10): 10 (hull); penetration roll (2d10): target 5, " +
+      "target 6, rolled 100: hit; hit location roll (d10): 10 (hull); penetration roll (front) (2d10): target 8, " +
       "rolled 20: succeeded, vehicle destroyed")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     expect(unit.isWreck).toBe(true)
@@ -1207,6 +1208,99 @@ describe("reaction fire attacks", () => {
     const counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)
     expect(counter?.hex?.y).toBe(2)
+  })
+
+  test("hit shorts move for unit with proper orientation", () => {
+    const game = createFireGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.turretFacing = 1
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    const other = new Unit(testRTank)
+    other.id = "other1"
+    other.facing = 4
+    other.turretFacing = 4
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.moveState.rotate(2)
+    game.gameState?.finish()
+
+    expect(unit.facing).toBe(2)
+    expect(unit.turretFacing).toBe(2)
+
+    game.setGameState(new InitiativeState(game))
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(true)
+
+    const fireHex = new Coordinate(2, 2)
+
+    other.select()
+    game.setGameState(new FireState(game, true))
+    const counters = map.countersAt(fireHex)
+    expect(counters.length).toBe(2)
+    expect(counters[1].unit.ghost).toBe(true)
+    expect(counters[1].unit.id).toBe("test1")
+    expect(counters[1].unit.facing).toBe(1)
+    expect(counters[1].unit.turretFacing).toBe(1)
+
+    select(map, {
+      counter: map.countersAt(fireHex)[1],
+      target: { type: "map", xy: fireHex }
+    }, () => {})
+    const ghost = counters[1].unit
+    expect(ghost.targetSelected).toBe(true)
+    expect(fireHelpText(game, fireHex, counters[1].unit)).toStrictEqual([
+      "attack rolls:",
+      "-> targeting roll (d10x10): 6 (86%)",
+      "range: 2",
+      "multiplier: 3",
+      "",
+      "-> roll to hit turret (d10): 1-3",
+      "otherwise hull hit",
+      "",
+      "-> turret penetration roll (2d10): 8 (72%)",
+      "firepower: 24",
+      "base to hit: 7",
+      "armor factor (front): 2",
+      "- minus 1 for less than half range",
+      "",
+      "-> hull penetration roll (2d10): 8 (72%)",
+      "firepower: 24",
+      "base to hit: 7",
+      "armor factor (front): 2",
+      "- minus 1 for less than half range",
+    ])
+
+    vi.spyOn(Math, "random").mockReturnValue(0.3)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.type).toBe("reaction_fire")
+    expect(game.lastAction?.sequence).toBe(4)
+    expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
+    expect(game.lastAction?.stringValue).toBe(
+      "reaction fire: Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at C3; " +
+      "targeting roll (d10x10): target 6, rolled 16: hit; hit location roll (d10): 4 (hull); " +
+      "penetration roll (front) (2d10): target 8, rolled 8: tie, vehicle immobilized, move short at C3"
+    )
+
+    expect(unit.facing).toBe(1)
+    expect(unit.turretFacing).toBe(1)
   })
 
   test("reaction fire triggers correct sniper", () => {
