@@ -14,6 +14,7 @@ export function ProtectedRoute() {
     localStorage.removeItem("username")
     localStorage.removeItem("email")
     localStorage.removeItem("proto")
+    localStorage.removeItem("mcp")
     localStorage.removeItem("validationNeeded")
     if (path !== '/') {
       navigate("/", { replace: true })
@@ -22,6 +23,7 @@ export function ProtectedRoute() {
 
   useEffect(() => {
     localStorage.removeItem("proto")
+    localStorage.removeItem("mcp")
 
     const path = window.location.pathname
     getAPI("/api/v1/session/auth", {
@@ -32,6 +34,7 @@ export function ProtectedRoute() {
           } else {
             localStorage.removeItem("validationNeeded")
             if (body.proto) { localStorage.setItem("proto", "true") }
+            if (body.mcp) { localStorage.setItem("mcp", "true") }
             if (path.includes("debug") && !body.proto) {
               navigate("/", { replace: true })
             }

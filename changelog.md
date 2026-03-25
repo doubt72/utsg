@@ -1,3 +1,8 @@
+## 0.13 alpha
+
+- Split dev and admin, update profile page, allow admins to create devs
+- Prematurely turn on patreon links and the like
+
 ## 0.12 alpha
 
 - Add email notifications for signup codes/lost passwords

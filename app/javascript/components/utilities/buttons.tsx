@@ -163,10 +163,10 @@ export const VerifyButton = () => {
   return <CustomSubmitButton text="verify"><Check2Square /></CustomSubmitButton>
 }
 
-export const AboutHelpButton = () => {
+export const AboutHelpButton = (text?: string) => {
   return (
     <Link to={"/help"} className="custom-button custom-button-balance nowrap">
-      <QuestionCircle />
+      <QuestionCircle /> {text}
     </Link>
   )
 }

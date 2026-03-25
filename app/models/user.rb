@@ -44,6 +44,11 @@ class User < ApplicationRecord
       (1..length).map { [*(0..9), *("A".."Z")][rand(36)].to_s }.join
     end
 
+    def toggle_dev(username)
+      user = lookup(username)
+      user.update!(developer: !user.developer)
+    end
+
     def stats(username)
       user = lookup(username)
       return unless user
@@ -53,7 +58,7 @@ class User < ApplicationRecord
                  user.id, user.id).each do |game|
         game_record(user, game, games)
       end
-      games.merge(all: total_record(games))
+      { stats: games.merge(all: total_record(games)), user: user.body }
     end
 
     private
@@ -117,7 +122,9 @@ class User < ApplicationRecord
   end
 
   def body
-    return { username:, email:, proto: true } if admin
+    return { username:, email:, proto: true, mcp: true } if admin && developer
+    return { username:, email:, proto: true } if developer
+    return { username:, email:, mcp: true } if admin
 
     { username:, email: }
   end

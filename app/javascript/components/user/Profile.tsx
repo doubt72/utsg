@@ -3,26 +3,29 @@ import Header from "../Header"
 import ProfileEditInfo from "./ProfileEditInfo"
 import ProfileEditPassword from "./ProfileEditPassword"
 import { ReturnButton } from "../utilities/buttons";
-import { getAPI } from "../../utilities/network";
+import { getAPI, putAPI } from "../../utilities/network";
 import { useParams } from "react-router-dom";
 
-type GameStats = {
-  name: string, count: number, win: number, loss: number, wait: number, abandoned: number
-}
+type GameStats = { name: string, count: number, win: number, loss: number, wait: number, abandoned: number }
+type UserData = { username: string, email: string, proto?: string, mcp: string }
 
 export default function Profile() {
   const username: string | undefined = useParams().username
 
   const [stats, setStats] = useState<{ [index: string]: GameStats }>({})
+  const [user, setUser] = useState<UserData | undefined>()
+  const [resetUser, setResetUser] = useState<boolean>(true)
+  const [header, setHeader] = useState<JSX.Element | undefined>()
   const [statDisplay, setStatDisplay] = useState<JSX.Element | undefined>()
 
   useEffect(() => {
     getAPI(`/api/v1/user/stats?id=${username}`, {
       ok: response => response.json().then(json => {
-        setStats(json)
+        setStats(json.stats)
+        setUser(json.user)
       })
     })
-  }, [])
+  }, [resetUser])
 
   useEffect(() => {
     if (!stats?.all) { return }
@@ -60,22 +63,43 @@ export default function Profile() {
     )
   }, [stats])
 
+  useEffect(() => {
+    const self = localStorage.getItem("username") === username
+    const proto = user?.proto ? <span className="green">&#x2605;</span> : ""
+    const mcp = user?.mcp ? <span className="red">&#x2605;</span> : ""
+    const first = <p>Profile for {proto}{mcp}{username}</p>
+    const header = self ?
+      <>
+        { first }
+        <p>Your game stats (does not include hotseat games):</p>
+      </> :
+      <>
+        { first }
+        <p>Games stats (does not include hotseat games):</p>
+      </>
+    setHeader(header)
+  }, [user])
+
   return (
     <div>
       <Header hideProfile="true" />
       <div className="standard-body">
         <div className="profile-main">
-          { localStorage.getItem("username") === username ? 
-            <p>
-              Hello {username}!
-            </p> : "" }
-          { localStorage.getItem("username") === username ? 
-            <p>
-              Your game stats (does not include hotseat games):
-            </p> : <p>Games stats (does not include hotseat games):</p> }
+          { header }
           { statDisplay }
-          <div className="align-end">
-            <ReturnButton />
+          <div className="flex">
+            { localStorage.getItem("mcp") ?
+              <button className="custom-button" onClick={() => {
+                putAPI(`/api/v1/user/toggle_dev`, {
+                  id: username,
+                }, {
+                  ok: () => setResetUser(s => !s)
+                })
+              }}>
+                &#x2605; Toggle Dev
+              </button> : "" }
+            <div className="flex-fill"></div>
+            <div><ReturnButton /></div>
           </div>
         </div>
         { localStorage.getItem("username") === username ? <ProfileEditInfo /> : "" }

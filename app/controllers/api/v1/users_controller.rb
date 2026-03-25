@@ -67,6 +67,15 @@ module Api
         end
       end
 
+      def toggle_dev
+        if current_user.admin
+          User.toggle_dev(params[:id])
+          render json: {}, status: :ok
+        else
+          render json: { message: "action prohibited" }, status: :forbidden
+        end
+      end
+
       def stats
         stats = User.stats(params[:id])
         if stats

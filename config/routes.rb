@@ -13,6 +13,7 @@ Rails.application.routes.draw do
           post "check_conflict"
           post "set_recovery"
           post "password_reset"
+          put "toggle_dev"
           get "stats"
         end
       end

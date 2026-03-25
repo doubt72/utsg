@@ -39,18 +39,17 @@ export default function MainPage() {
               Welcome to the <strong>{titleNameStyle}</strong> server!  The server is currently
               in alpha as I shake things down, work out the bugs, and test the scenarios.  See
               the <a className="regular" href="/about">about</a> page for more information
-              about the server or to report bugs.
+              about the server, the code of conduct, or to report bugs.
             </p>
-            {/* <p>
+            <p>
+              Feel free to play games, but know that things may break and all the games <strong>will</strong> be
+              deleted at some point when we&apos;re ready to flip the &quot;release&quot; switch.
+            </p>
+            <p>
               Support the work (and/or my mild coffee addiction)
               on <a className="regular" href="https://www.patreon.com/cw/u43420358">Patreon</a> or
               on <a className="regular" href="https://ko-fi.com/doub72">Ko-fi</a> or
               maybe just <a className="regular" href="https://buymeacoffee.com/doubt72">Buy Me a Coffee</a>.
-            </p> */}
-            <p>
-              <strong>Announcements:</strong></p>
-            <p>
-              Nothing to announce!  We&apos;re not quite open for business yet.
             </p>
           </div>
           {loggedIn ? newGameButton : ""}

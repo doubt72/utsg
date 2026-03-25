@@ -29,6 +29,25 @@ RSpec.describe Api::V1::UsersController do
     expect(response.body).to be == { conflict: false }.to_json
   end
 
+  context "toggle_dev" do
+    let!(:admin) { create(:user, admin: true) }
+
+    it "needs to be an admin" do
+      login(user)
+
+      put :toggle_dev, params: { id: user.username }
+      expect(response.status).to be == 403
+    end
+
+    it "toggles user" do
+      login(admin)
+
+      put :toggle_dev, params: { id: user.username }
+      expect(response.status).to be == 200
+      expect(user.reload.developer).to be == true
+    end
+  end
+
   context "game stats" do
     let!(:user2) { create(:user) }
 
@@ -56,12 +75,15 @@ RSpec.describe Api::V1::UsersController do
 
       body = JSON.parse(response.body)
       expect(body.keys.length).to be == 2
-      expect(body["all"]).to be == {
+      expect(body["stats"]["all"]).to be == {
         "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 1, "name" => "total",
       }
-      expect(body["001"]).to be == {
+      expect(body["stats"]["001"]).to be == {
         "name" => "A Straightforward Proposition",
         "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 1,
+      }
+      expect(body["user"]).to be == {
+        "username" => user.username, "email" => user.email,
       }
     end
 
@@ -78,10 +100,10 @@ RSpec.describe Api::V1::UsersController do
 
       body = JSON.parse(response.body)
       expect(body.keys.length).to be == 2
-      expect(body["all"]).to be == {
+      expect(body["stats"]["all"]).to be == {
         "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 0, "name" => "total",
       }
-      expect(body["001"]).to be == {
+      expect(body["stats"]["001"]).to be == {
         "name" => "A Straightforward Proposition",
         "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 0,
       }

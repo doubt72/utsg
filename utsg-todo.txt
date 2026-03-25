@@ -1,26 +1,24 @@
 High Priority Features/Bug Fixes:
   - Fix hindrance bug
     - Through two fence corner intersections
+  - Admin pages for game/user summaries
+    - Remove/ban players (FE only security inadequate for this, validate on BE)
 
   - Test scenarios
     002, 303, 503, 003, 005, 308, 508, 007, 509, 011, 510, 603
 
-  - Beta scenarios
+  - Test/Beta scenarios
     004, 006, 102, 201, 302, 305, 406, 408, 502, 504, 604
 
-  - Email Notifications
-    - Note to admins under code of contact
-  - Add Some Developer Notes
+  - Upgrade everything else to Alpha
 
 Nice to Have Eventually/Soon:
-  - Separate admin/dev
-    - Admins can see admin/dev status on profile pages, can designate devs
-    - Creating admins is DB access only
-  - Admin pages for game/user summaries
-    - Remove/ban players (FE only security inadequate for this, validate on BE)
+  - Add Some Developer Notes
+    - Better way of doing announcements
   - Add tutorial
-  - Refactor firing action (currently an unmaintainable mess, though fairly well-tested)
+  - Refactor firing action (currently an unmaintainable mess, though... Moderately well-tested)
   - Break up/organize tests into smaller files
+  - Turn notifications
 
 Current Stretch:
   - Hotkeys and context buttons ?

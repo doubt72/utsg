@@ -10,6 +10,8 @@ Using DO rails droplet (specifically)
   - EDITOR=vi rails credentials:edit
 - set RAILS_ENV=production
 - set AHTF_DATABASE_PASSWORD=<secret stored in secret location>
+- set ELASTIC_KEY=<secret stored in secret location>
+- set FEEDBACK_EMAIL=<my email>
 - install redis/redis-cli
 - run 'rake db:create'
 - run 'rake db:migrate'
@@ -25,6 +27,7 @@ root# systemctl stop rails
 rails# git pull
 rails# yarn
 rails# bundle install
+rails# rake db:migrate
 rails# rake assets:clobber
 rails# rake assets:precompile
 rails# cp -r app/assets/images/* public/assets/
@@ -32,7 +35,7 @@ root# systemctl start rails
 root# systemctl start nginx
 
 systemctl stop nginx && systemctl stop rails
-git pull && yarn && bundle install
+git pull && yarn && bundle install && rake db:migrate
 rake assets:clobber && rake assets:precompile && cp -r app/assets/images/* public/assets/
 systemctl start rails && systemctl start nginx
 

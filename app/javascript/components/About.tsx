@@ -41,6 +41,8 @@ export default function About() {
             currently a work in progress and probably always will be.
           </p>
           <div className="flex mt2em">
+            <div className="flex-fill"></div>
+            <div>{AboutHelpButton("docs")}</div>
             { localStorage.getItem("username") ?
               <div className="nowrap">
                 <a className="custom-button" href="https://github.com/doubt72/utsg/issues">
@@ -52,8 +54,6 @@ export default function About() {
                 <ListColumnsReverse/>changelog
               </a>
             </div>
-            <div className="flex-fill"></div>
-            <div>{AboutHelpButton()}</div>
             <div><ReturnButton /></div>
           </div>
         </div>
@@ -69,8 +69,8 @@ export default function About() {
           <p>
             <strong>2. No Hate or Bigotry</strong>: there&apos;s zero tolerance for racism,
             antisemitism, misogyny, homophobia, transphobia or any other forms of hate here (just
-            because it isn&apos;t explicitly listed doesn&apos;t make it okay). This applies both to
-            chat and usernames.
+            because it isn&apos;t explicitly listed doesn&apos;t make it okay). This applies to
+            chat, as well as game names and usernames.
           </p>
           <p>
             <strong>3. Keep It Historical, Not Political</strong>: this game simulates historical
