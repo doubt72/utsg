@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import { AboutHelpButton, ReturnButton } from "./utilities/buttons";
+import { AboutHelpButton, ContactButton, ReturnButton } from "./utilities/buttons";
 import { subtitleNameStyle, titleNameStyle } from "./Utilities";
 import { serverVersion, subtitleName, titleName } from "../utilities/utilities";
 import { BugFill, ListColumnsReverse } from "react-bootstrap-icons";
@@ -41,11 +41,12 @@ export default function About() {
             currently a work in progress and probably always will be.
           </p>
           <div className="flex mt2em">
-            <div className="nowrap">
-              <a className="custom-button" href="https://github.com/doubt72/utsg/issues">
-                <BugFill/>report an issue
-              </a>
-            </div>
+            { localStorage.getItem("username") ?
+              <div className="nowrap">
+                <a className="custom-button" href="https://github.com/doubt72/utsg/issues">
+                  <BugFill/>report an issue
+                </a>
+              </div> : "" }
             <div className="nowrap">
               <a className="custom-button" href="https://github.com/doubt72/utsg/blob/main/changelog.md">
                 <ListColumnsReverse/>changelog
@@ -100,13 +101,17 @@ export default function About() {
           </p>
           <p>
             <strong>6. Report, Don&apos;t Escalate</strong>: If you see someone violating the code
-            of conduct, don&apos;t engage — report it to the admins. [TODO: Need to set up a link
-            here.]
+            of conduct, don&apos;t engage — report it to the admins (use the button below).
           </p>
           <p>
             Violations may result in warnings, suspensions, or bans depending on severity at the
             sole discretion of the management.
           </p>
+          {}
+          <div className="align-end mt2em">
+            { localStorage.getItem("username") ? <ContactButton /> :
+                "[You must be logged in for the feedback form to be accessible.]" }
+          </div>
         </div>
       </div>
     </div>

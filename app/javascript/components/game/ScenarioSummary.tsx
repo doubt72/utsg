@@ -153,16 +153,17 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
   const scenarioNote = () => {
     if (!scenario.status) { return "" }
     let note = "this scenario is an unfinished prototype.  It is still in initial design \
-      and is almost guaranteed to be broken (not all necessary server features may even be \
-      implemented)."
+      and is almost guaranteed to be unbalanced or even broken (in some cases, some \
+      necessary server features may not yet be implemented or sufficiently tested)."
     if (scenario.status === "b") {
       note = "this scenario is a beta scenario currently in development.  It is still undergoing \
         testing and is not yet ready to be played."
     }
     if (scenario.status === "a") {
       note = "this scenario is an alpha scenario currently in development.  It is still undergoing \
-        early testing and is not yet ready to be played and may be broken (not all necessary server \
-        features may be implemented)."
+        early testing and is not yet ready to be played, is likely unbalanced, and may even be \
+        broken (in some cases, some necessary server features may not yet be implemented or \
+        sufficiently tested)."
     }
     return (
       <p>

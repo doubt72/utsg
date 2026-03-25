@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 import {
   ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, Ban, BoxArrowInRight, BoxArrowRight,
-  ChatText, Check2Square, CircleFill, Crosshair, Crosshair2, Dice6, Hexagon, InfoCircle, PencilSquare, Person,
+  ChatText, Check2Square, CircleFill, Crosshair, Crosshair2, Dice6, EnvelopeFill, Hexagon, InfoCircle, PencilSquare, Person,
   QuestionCircle, ShieldExclamation, Trash3, XCircle,
   XSquare
 } from "react-bootstrap-icons"
@@ -64,6 +64,10 @@ export const CustomCheckbox = ({ selected, onClick}: CustomCheckboxProps) => {
 
 export const AboutButton = () => {
   return <CustomLink url="/about" text="about"><InfoCircle /></CustomLink>
+}
+
+export const ContactButton = () => {
+  return <CustomLink url="/contact" text="contact us"><EnvelopeFill /></CustomLink>
 }
 
 interface CancelButtonProps {
@@ -149,6 +153,10 @@ export const SignupButton = ({ type }: ButtonTypeProps) => {
 
 export const UpdateInfoButton = () => {
   return <CustomSubmitButton text="update account"><Person /></CustomSubmitButton>
+}
+
+export const ContactSendButton = () => {
+  return <CustomSubmitButton text="send feedback"><EnvelopeFill /></CustomSubmitButton>
 }
 
 export const VerifyButton = () => {

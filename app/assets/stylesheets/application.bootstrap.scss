@@ -153,6 +153,22 @@ div.custom-button-select:hover {
   border: 2px solid $alert-orange;
 }
 
+.form-input-text {
+  width: 100%;
+  height: 10em;
+  padding: 0.33em 0.5em;
+  margin: 0;
+  border: 2px solid $border-color-light;
+  border-radius: 0.33em;
+  background-color: $gray-f;
+}
+
+.form-input-text:focus {
+  outline: none;
+  background-color: $gray-e;
+  border: 2px solid $alert-orange;
+}
+
 .form-label-gray {
   display: block;
   position: relative;
@@ -509,6 +525,14 @@ div.custom-button-select:hover {
 
 .profile-form {
   width: 500px;
+  padding: 1em;
+  border: 2px solid $border-color-light-gray;
+  border-radius: 0.5em;
+}
+
+.profile-form-wide {
+  width: 800px;
+  min-width: 600px;
   padding: 1em;
   border: 2px solid $border-color-light-gray;
   border-radius: 0.5em;

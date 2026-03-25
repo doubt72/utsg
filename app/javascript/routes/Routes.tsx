@@ -23,6 +23,7 @@ import DebugUnitsByType from "../debug/DebugUnitsByType";
 import DebugUnitStats from "../debug/DebugUnitStats";
 import DebugScenarioStats from "../debug/DebugScenarioStats";
 import HelpDisplay from "../components/game/HelpDisplay";
+import Contact from "../components/Contact";
 
 export default function Routes() {
   const publicRoutes = [
@@ -48,6 +49,8 @@ export default function Routes() {
         { path: "/delete_account", element: <DeleteAccount /> },
         { path: "/logout", element: <Logout /> },
         { path: "/profile/:username", element: <Profile /> },
+
+        { path: "/contact", element: <Contact /> },
 
         { path: "/debug/", element: <DebugIndex /> },
         { path: "/debug/markers", element: <DebugMarkers /> },

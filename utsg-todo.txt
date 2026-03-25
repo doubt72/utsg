@@ -12,10 +12,13 @@ High Priority Features/Bug Fixes:
     - Note to admins under code of contact
   - Add Some Developer Notes
 
-Nice to Have Eventually:
-  - Add tutorial
+Nice to Have Eventually/Soon:
+  - Separate admin/dev
+    - Admins can see admin/dev status on profile pages, can designate devs
+    - Creating admins is DB access only
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
+  - Add tutorial
   - Refactor firing action (currently an unmaintainable mess, though fairly well-tested)
   - Break up/organize tests into smaller files
 
