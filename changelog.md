@@ -1,3 +1,10 @@
+## 0.16 alpha
+
+- Main page tweaks
+- Prematurely update 007 to ready
+- Prematurely update 508 to ready
+- Updated 509 to beta
+
 ## 0.15 alpha
 
 - Fire check after morale and sniper checks
@@ -5,16 +12,16 @@
 - Improve reporting on armor facing fire attacks
 - Various documentation fixes
 - Tweak drift roll table
-- Prematurely update 003 to "ready"
-- Prematurely update 005 to "ready"
-- Prematurely update 308 to "ready"
+- Prematurely update 003 to ready
+- Prematurely update 005 to ready
+- Prematurely update 308 to ready
 
 ## 0.14 alpha
 
 - Allow logged out users to see scenarios
-- Prematurely update 002 to "ready"
-- Prematurely update 303 to "ready"
-- Prematurely update 503 to "ready"
+- Prematurely update 002 to ready
+- Prematurely update 303 to ready
+- Prematurely update 503 to ready
 
 ## 0.13 alpha
 

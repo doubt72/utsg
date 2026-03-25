@@ -47,7 +47,8 @@ export default function MainPage() {
               about the server, the code of conduct, or to report bugs.
             </p>
             <p>
-              Feel free to play games, but know that things may break and all the games <strong>will</strong> be
+              Feel free to play games, but know that things may break, deploys will be frequent,
+              and all the games <strong>will</strong> be
               deleted at some point when we&apos;re ready to flip the &quot;release&quot; switch.
             </p>
             <p>

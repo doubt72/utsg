@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Surpise! KV"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 6, 23].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -29,6 +30,7 @@ module Scenarios
         [2, :ger_rifle_t],
         :ger_crew_t,
         [2, :ger_mg_34],
+        :ger_sc,
         :ger_3_7cm_pak_36,
         [4, :ger_pzkpfw_35t],
       ] },

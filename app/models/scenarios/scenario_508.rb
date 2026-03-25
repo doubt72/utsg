@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Midtskogen Farm"
     ALLIES = ["nor"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1940, 4, 9].freeze
     LAYOUT = [15, 11, "x"].freeze

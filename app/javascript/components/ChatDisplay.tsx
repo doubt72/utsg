@@ -73,8 +73,11 @@ export default function ChatDisplay({ gameId, showInput, collapse = false }: Cha
   let lastUser = ""
   let lastTime: Date | undefined = undefined
 
+  const loggedIn = !!localStorage.getItem("username");
+
   const outputClass = collapse ? "chat-output game-chat-collapse" :
-    ("chat-output " + (gameId === 0 ? "main-chat-output" : "game-chat-output"))
+    ("chat-output " + (gameId === 0 ?
+      (loggedIn ? "main-chat-output" : "main-chat-output-lo") : "game-chat-output"))
 
     const formattedDate = (date: Date) => {
     return `${("0" + (date.getMonth() + 1)).slice (-2)}/` +

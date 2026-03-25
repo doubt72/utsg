@@ -5,7 +5,7 @@ High Priority Features/Bug Fixes:
     - Remove/ban players (FE only security inadequate for this, validate on BE)
 
   - Test scenarios
-    508, 007, 509, 011, 510, 603
+    011, 510, 603
 
   - Test/Beta scenarios
     004, 006, 102, 201, 302, 305, 406, 408, 502, 504, 604
