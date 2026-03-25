@@ -71,8 +71,8 @@ export default function VerifyAccount() {
       </div>
       <div className="form-container">
         <div className="mb1em">
-          A verification code was sent to {email}.
-          Please enter it here to activate your account.
+          A verification code was sent to {email} (if you don&apos;t see it, check your
+          spam folder).  Please enter it here to activate your account:
         </div>
         <form onSubmit={onSubmit}>
           <label className="form-label">verification code:</label>

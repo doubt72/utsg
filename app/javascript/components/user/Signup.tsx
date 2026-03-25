@@ -152,7 +152,18 @@ export default function Signup() {
       <div className="form-container">
         <div className="mb1em">
           <p>Welcome!</p>
-          <p>Sign up for a new account here:</p>
+          <p>Sign up for a new account:</p>
+          { localStorage.getItem("username") ?
+            <p>
+              (If you&apos;ve already signed up but
+              haven&apos;t yet verified your account, you can verify
+              it <a className="regular" href="/verify_account">here</a>.)
+            </p> :
+            <p>
+              (If you&apos;ve already signed up but
+              haven&apos;t yet verified your account, you can verify
+              it after <a className="regular" href="/login">logging back in</a>.)
+            </p> }
         </div>
         <form onSubmit={onSubmit}>
           <label className="form-label">username</label>

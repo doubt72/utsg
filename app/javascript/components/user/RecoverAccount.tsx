@@ -42,7 +42,8 @@ export default function RecoverAccount() {
           you supply exists, an email will be sent to the email address on that
           account with an account recovery code.  The recovery code will be good
           for one day before expiring, after which you&apos;ll need to generate a new
-          code.
+          code.  If you&apos;ve already sent a password recovery code, you can enter
+          it <a className="regular" href="/reset_password">here</a>.
         </div>
         <form onSubmit={onSubmit}>
           <label className="form-label">username or email address</label>

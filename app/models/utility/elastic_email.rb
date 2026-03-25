@@ -5,7 +5,7 @@ require "net/http"
 require "uri"
 
 module Utility
-  module ElasticMail
+  module ElasticEmail
     class Contact
       include ActionView::Helpers::SanitizeHelper
 
@@ -17,7 +17,7 @@ module Utility
         body_p = "<p><strong>Message:</strong> #{sanitize(params[:body], tags: [])}</p>"
         body = "<div style=\"margin: 1em;\">#{from_p}#{subject_p}#{body_p}</div>"
 
-        Mail.send(user, "AHTF Server Feedback [#{from.email}]", body)
+        Email.send(user, "AHTF Server Feedback [#{from.email}]", body)
       end
     end
 
@@ -27,7 +27,7 @@ module Utility
       end
     end
 
-    class Mail
+    class Email
       API_PATH = "https://api.elasticemail.com/v2/email/send"
 
       def self.send(user, subject, body) # rubocop:disable Metrics/MethodLength

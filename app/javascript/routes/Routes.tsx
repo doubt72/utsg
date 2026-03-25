@@ -24,6 +24,7 @@ import DebugUnitStats from "../debug/DebugUnitStats";
 import DebugScenarioStats from "../debug/DebugScenarioStats";
 import HelpDisplay from "../components/game/HelpDisplay";
 import Contact from "../components/Contact";
+import Verify from "../components/user/Verify";
 
 export default function Routes() {
   const publicRoutes = [
@@ -31,6 +32,7 @@ export default function Routes() {
     { path: "/about", element: <About /> },
     { path: "/login", element: <Login /> },
     { path: "/signup", element: <Signup /> },
+    { path: "/verify", element: <Verify /> },
     { path: "/recover_account", element: <RecoverAccount /> },
     { path: "/reset_password", element: <ResetPassword /> },
     { path: "/game/:id", element: <GameDisplay /> },

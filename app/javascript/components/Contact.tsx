@@ -84,7 +84,9 @@ export default function About() {
       <div className="standard-body">
         <div className="profile-form-wide mr05em">
           <div className="mb1em">
-            Send a message to the management:
+            If you&apos;d like to send any feedback to the management about anything (the site, scenarios,
+            violations of the code of conduct, or any other topic relevant to the server), please use
+            this form:
           </div>
           <form onSubmit={onSubmit}>
             <label className="form-label">subject</label>
@@ -108,19 +110,6 @@ export default function About() {
               <ContactSendButton />
             </div>
           </form>
-        </div>
-        <div className="profile-main">
-          <p>
-            If you&apos;d like to send any feedback to the management about anything (the site, scenarios,
-            violations of the code of conduct, or any other topic relevant to the server), please use the
-            form to the left.
-          </p>
-          <p>
-            Thank you!
-          </p>
-          <p>
-            &mdash; the Management
-          </p>
         </div>
       </div>
     </div>

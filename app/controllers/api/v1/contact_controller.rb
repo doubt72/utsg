@@ -4,7 +4,7 @@ module Api
   module V1
     class ContactController < ApplicationController
       def create
-        contact = Utility::ElasticMail::Contact.new
+        contact = Utility::ElasticEmail::Contact.new
         response = JSON.parse(contact.contact_us(create_params, current_user))
         if response["success"]
           render json: {}, status: :ok

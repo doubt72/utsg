@@ -32,9 +32,12 @@ class User < ApplicationRecord
     end
 
     def signup_user(params)
-      params["confirmation_code"] = generate_confirmation_code
-      # TODO: mail out that code
-      create(params)
+      code = generate_confirmation_code
+      params["confirmation_code"] = code
+      user = create(params)
+
+      ::Utility::NotificationEmails.confirmation_code_resend(user, code)
+      user
     end
 
     def generate_confirmation_code(length = 6)
@@ -83,8 +86,9 @@ class User < ApplicationRecord
 
   def reset_confirmation_code
     code = User.generate_confirmation_code
-    # TODO: mail out that code
     update!(confirmation_code: code)
+
+    ::Utility::NotificationEmails.confirmation_code_resend(self, code)
   end
 
   def update_user(params)
@@ -99,8 +103,9 @@ class User < ApplicationRecord
 
   def set_recovery_code
     code = User.generate_confirmation_code(12).downcase
-    # TODO: mail out that code
     update!(recovery_code: code, recovery_code_expires: Time.zone.now + 1.day)
+
+    ::Utility::NotificationEmails.recovery_code(self, code)
   end
 
   def reset_password_with_code(code, password)
