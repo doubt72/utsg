@@ -11,6 +11,8 @@ export default function Logout() {
         localStorage.removeItem("username")
         localStorage.removeItem("email")
         localStorage.removeItem("validationNeeded")
+        localStorage.removeItem("proto")
+        localStorage.removeItem("mcp")
         navigate("/", { replace: true })
       }
     })

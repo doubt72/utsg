@@ -1,3 +1,12 @@
+## 0.17 alpha
+
+- Stop polling for user rating on scenarios when logged out/don't display
+- No links to user profiles when logged out
+- Clear session data more cleanly on logout
+- Fix issue with prematurely loading units on deploy
+- Updated 004, 102 to beta
+- Prematurely update 011, 510, 603 to ready
+
 ## 0.16 alpha
 
 - Main page tweaks

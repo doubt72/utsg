@@ -47,6 +47,8 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
   const [twoDisplay, setTwoDisplay] = useState<JSX.Element | undefined>()
   const [percentDisplay, setPercentDisplay] = useState<JSX.Element | undefined>()
 
+  const loggedIn = !!localStorage.getItem("username");
+
   useEffect(() => {
     getAPI(`/api/v1/ratings/average?scenario=${data.id}`, {
       ok: response => response.json().then(json => {
@@ -57,11 +59,13 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
   }, [data.id, myRating])
 
   useEffect(() => {
-    getAPI(`/api/v1/ratings/single?scenario=${data.id}`, {
-      ok: response => response.json().then(json => {
-        setMyRating(json.rating)
+    if (loggedIn) {
+      getAPI(`/api/v1/ratings/single?scenario=${data.id}`, {
+        ok: response => response.json().then(json => {
+          setMyRating(json.rating)
+        })
       })
-    })
+    }
     getAPI(`/api/v1/scenarios/${data.id}/stats`, {
       ok: response => response.json().then(json => {
         setWins(json)
@@ -255,7 +259,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         { twoDisplay }
         { percentDisplay }
         <div className="flex-fill"></div>
-        { myRatingDisplay }
+        { loggedIn ? myRatingDisplay : "" }
         { ratingDisplay }
         { ratingCountDisplay }
       </div>

@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Red Dust"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 9, 26].freeze
     LAYOUT = [15, 11, "x"].freeze

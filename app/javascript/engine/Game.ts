@@ -797,7 +797,7 @@ export default class Game {
           }
           em.mutateGame()
           em.executed = true
-          organizeStacks(this.scenario.map)
+          if (this.phase !== gamePhaseType.Deployment)  { organizeStacks(this.scenario.map) }
           this.refreshCallback(this)
         }
         return
@@ -841,7 +841,7 @@ export default class Game {
         })
       }
       if (m.type !== "info" && m.type !== "state" && !backendSync) { checkPhase(this, backendSync) }
-      organizeStacks(this.scenario.map)
+      if (this.phase !== gamePhaseType.Deployment)  { organizeStacks(this.scenario.map) }
       this.refreshCallback(this)
     } catch(err) {
       if (err instanceof IllegalActionError) {

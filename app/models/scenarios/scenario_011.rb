@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Release the Panzer"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 5, 17].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -40,7 +41,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 8,
           first_deploy: 1,
           first_action: 2,
           date:,

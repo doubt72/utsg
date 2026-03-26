@@ -4,11 +4,8 @@ High Priority Features/Bug Fixes:
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
 
-  - Test scenarios
-    011, 510, 603
-
   - Test/Beta scenarios
-    004, 006, 102, 201, 302, 305, 406, 408, 502, 504, 604
+    006, 201, 302, 305, 406, 408, 502, 504, 604
 
   - Upgrade everything else to Alpha
 

@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Into the the Gap"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1942, 7, 31].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -38,7 +39,7 @@ module Scenarios
       # TODO: documentation for field descriptions
       def generate
         {
-          turns: 6,
+          turns: 8,
           first_deploy: 1,
           first_action: 2,
           date:,

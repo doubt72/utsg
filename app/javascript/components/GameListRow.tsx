@@ -25,6 +25,8 @@ interface GameListRowProps {
 export default function GameListRow({ data }: GameListRowProps) {
   const navigate = useNavigate()
 
+  const loggedIn = !!localStorage.getItem("username");
+
   const onClick = (event: React.MouseEvent) => {
     if ((event.target as unknown as Element).className !== 'user-link') {
       if (empty) { return false }
@@ -37,7 +39,8 @@ export default function GameListRow({ data }: GameListRowProps) {
     if (data.player_one) { players.push(data.player_one) }
     if (data.player_two) { players.push(data.player_two) }
     const values = players.map((p, i) => <span key={i}>
-      <Link className="user-link" to={`/profile/${p}`} >{p}</Link>
+      { loggedIn ? <Link className="user-link" to={`/profile/${p}`} >{p}</Link> :
+          <Link className="faux-user-link" to={`/game/${data.id}`} >{p}</Link> }
     </span>)
     if (values.length === 1) {
       return ["started by: ", values[0]]

@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Fort Capuzzo"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,7 +17,7 @@ module Scenarios
         :uk_leader_5_1,
         :uk_leader_4_1,
         [4, :uk_line_s],
-        [2, :uk_line_s],
+        [2, :uk_line_t],
         [2, :uk_bren_lmg],
         :uk_matilda_ii,
         :uk_humber_ac_i,
@@ -36,7 +37,7 @@ module Scenarios
       # TODO: documentation for field descriptions
       def generate
         {
-          turns: 6,
+          turns: 5,
           first_deploy: 2,
           first_action: 1,
           date:,

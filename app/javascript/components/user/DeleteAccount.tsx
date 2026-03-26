@@ -37,6 +37,8 @@ export default function DeleteAccount({ reset, version }: DeleteAccountProps) {
           localStorage.removeItem("username")
           localStorage.removeItem("email")
           localStorage.removeItem("validationNeeded")
+          localStorage.removeItem("proto")
+          localStorage.removeItem("mcp")
           navigate("/", { replace: true })
         }
       })

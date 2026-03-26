@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Le Hérisson"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1940, 6, 8].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -15,7 +16,7 @@ module Scenarios
       "0": {
         list: [
           [2, :fra_leader_4_1],
-          [3, :fra_reservist_s],
+          [5, :fra_reservist_s],
           [3, :fra_reservist_t],
           [3, :fra_m1915_chauchat],
         ],
@@ -37,7 +38,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_deploy: 1,
           first_action: 2,
           date:,

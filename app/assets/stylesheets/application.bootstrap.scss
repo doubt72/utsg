@@ -722,3 +722,9 @@ button.help-section-unselected:hover {
 .user-link:hover {
   color: $alert-orange;
 }
+
+.faux-user-link {
+  font-weight: bold;
+  text-decoration: none;
+  color: $darkish-green;
+}
