@@ -1,4 +1,4 @@
-import { Coordinate, featureType, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate, featureType } from "../../utilities/commonTypes";
 import { baseToHit, coordinateToLabel, normalDir, smokeRoll } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
@@ -146,14 +146,14 @@ export default class MoveAction extends BaseAction {
       if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
-      unit.unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
+      this.rush ? unit.unit.exhaust() : unit.unit.activate()
       if (this.moveData?.mines) {
         if (unit.unit.isVehicle && !unit.unit.armored) {
-          unit.unit.status = unitStatus.Wreck
+          unit.unit.wreck(this.game)
         } else if (unit.unit.isVehicle) {
           const armor = unit.unit.lowestHullArmor < 0 ? 0 : unit.unit.lowestHullArmor
           if (hitRoll > hitCheck + armor) {
-            unit.unit.status = unitStatus.Wreck
+            unit.unit.wreck(this.game)
           }
         } else {
           if (hitRoll > hitCheck) {
@@ -174,14 +174,14 @@ export default class MoveAction extends BaseAction {
           this.map.moveUnit(end, mid, a.id as string)
         }
         const unit = this.game.findUnitById(a.id as string) as Unit
-        unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
+        this.rush ? unit.exhaust() : unit.activate()
       } else if (a.type === gameActionAddActionType.Load) {
         this.map.loadUnit(mid, end, a.id as string, a.parent_id as string)
         const parent = this.map.unitAtId(end, a.parent_id ?? "") as Counter
         const child = this.map.unitAtId(end, a.id ?? "") as Counter
         if (child.unit.rotates && parent.unit.rotates) { child.unit.facing = normalDir(parent.unit.facing + 3) }
         const unit = this.game.findUnitById(a.id as string) as Unit
-        unit.status = this.rush ? unitStatus.Exhausted : unitStatus.Activated
+        this.rush ? unit.exhaust() : unit.activate()
       } else if (a.type === gameActionAddActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
         this.map.addCounter(mid, new Feature(
@@ -235,11 +235,11 @@ export default class MoveAction extends BaseAction {
           this.map.moveUnit(mid, end, a.id as string)
         }
         const unit = this.game.findUnitById(a.id as string) as Unit
-        if (a.status !== undefined) { unit.status = a.status }
+        if (a.status !== undefined) { unit.setStatus(a.status) }
       } else if (a.type === gameActionAddActionType.Load) {
         this.map.dropUnit(end, mid, a.id as string, a.facing)
         const unit = this.game.findUnitById(a.id as string) as Unit
-        if (a.status !== undefined) { unit.status = a.status }
+        if (a.status !== undefined) { unit.setStatus(a.status) }
       } else if (a.type === gameActionAddActionType.Smoke) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing smoke")
@@ -250,7 +250,7 @@ export default class MoveAction extends BaseAction {
       this.map.moveUnit(end, start, u.id, facing, turret)
       const unit = this.map.unitAtId(start, u.id) as Counter
       if (u.status !== undefined) {
-        unit.unit.status = u.status
+        unit.unit.setStatus(u.status)
       }
       if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
         unit.unit.children[0].facing = normalDir(facing + 3)

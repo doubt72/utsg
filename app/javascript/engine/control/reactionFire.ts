@@ -9,6 +9,7 @@ import GameAction, { gameActionAddActionType, GameActionPath } from "../GameActi
 import Marker from "../Marker"
 import { gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
+import { hitFromArc } from "./fire"
 import BaseState from "./state/BaseState"
 
 export const reactionActions = ["move", "rush", "fire", "intensive_fire"]
@@ -63,6 +64,27 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
             if (c.unit.parent.isBroken || c.unit.parent.isExhausted) { continue }
           }
           if (c.unit.isExhausted) { continue }
+          if (c.unit.children.length > 0 && c.unit.children[0].crewed) { continue }
+          if (c.unit.rotates && !c.unit.turreted && !c.unit.rotatingMount && !c.unit.rotatingVehicleMount) {
+            let arc = false
+            for (const t of targets) {
+              const toc = new Coordinate(t.x, t.y)
+              if (c.unit.backwardsMount) {
+                if (hitFromArc(game, c.unit, toc, loc, false) === 2) { arc = true }
+              } else {
+                if (hitFromArc(game, c.unit, toc, loc, false) === 0) { arc = true }
+              }
+            }
+            if (!arc) { continue }
+          }
+          if (c.unit.rotates && c.unit.turreted && c.unit.turretJammed) {
+            let arc = false
+            for (const t of targets) {
+              const toc = new Coordinate(t.x, t.y)
+              if (hitFromArc(game, c.unit, toc, loc, true) === 0) { arc = true }
+            }
+            if (!arc) { continue }
+          }
           for (const t of targets) {
             const toc = new Coordinate(t.x, t.y)
             if (c.unit.currentRange < hexDistance(loc, toc)) { continue }

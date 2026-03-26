@@ -3,7 +3,7 @@ import Unit, { UnitData } from "../../engine/Unit";
 import Feature, { FeatureData } from "../../engine/Feature";
 import Marker, { MarkerData } from "../../engine/Marker";
 import Map, { MapData } from "../../engine/Map";
-import { baseTerrainType, Coordinate, unitStatus, weatherType, windType } from "../../utilities/commonTypes";
+import { baseTerrainType, Coordinate, weatherType, windType } from "../../utilities/commonTypes";
 import { getAPI } from "../../utilities/network";
 import { makeIndex } from "./CounterSection";
 import MapHexPatterns from "../game/map/MapHexPatterns";
@@ -146,7 +146,7 @@ export default function RoutSection() {
     const unit = units["ger_Rifle_sqd"].clone() as Unit
     if (map.units[1][1].length < 1) {
       map.addCounter(new Coordinate(1, 1), unit);
-      unit.status = unitStatus.Broken
+      unit.break()
     }
     const paths = routPaths(findRoutPathTree(map.game as Game, new Coordinate(1, 1), 4, 2, unit) as RoutPathTree)
 
@@ -201,7 +201,7 @@ export default function RoutSection() {
     const unit = units["ger_Rifle_sqd"].clone() as Unit
     if (map2.units[1][3].length < 1) {
       map2.addCounter(new Coordinate(3, 1), unit);
-      unit.status = unitStatus.Broken
+      unit.break()
     }
     const paths = routPaths(findRoutPathTree(map2.game as Game, new Coordinate(3, 1), 4, 2, unit) as RoutPathTree)
 

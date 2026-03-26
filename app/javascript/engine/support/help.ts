@@ -270,6 +270,9 @@ export function unitHelpText(unit: Unit): string[] {
   if (unit.offBoard && !unit.jammed) {
     text.push("- offboard artillery")
   }
+  if (unit.areaFire && !unit.jammed) {
+    text.push("- area fire")
+  }
   if (unit.antiTank && !unit.jammed) {
     text.push("- anti-armor capable")
     text.push("- half firepower vs. soft targets")

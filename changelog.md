@@ -1,3 +1,15 @@
+## 0.19 alpha
+
+- Refactor status changes (and fix pinned broken units)
+- Wrecked units also show up in casualties
+- Fix carried infantry weapons not being dropped when unit eliminated
+- Sniper no longer opens unit panel (was opening at the wrong time, but no help relevant and can affect multiple hexes so just skip)
+- Skip reaction fire for more units that can't react (units that don't have facing or manning guns)
+- Remove smoke as option on reaction fire
+- Minor doc and help fixes
+- Secondary sorting on ID after size when viewing scenarios for new game
+- A few unit name changes, add extra smaller name shrink for a couple particularly long names
+
 ## 0.18 alpha
 
 - Updated 008, 302, 305, 406, 408, 502, 504, 604 to beta

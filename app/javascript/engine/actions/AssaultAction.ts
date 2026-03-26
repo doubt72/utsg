@@ -1,4 +1,4 @@
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { coordinateToLabel, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
@@ -73,12 +73,12 @@ export default class AssaultMoveAction extends BaseAction {
         if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
           unit.unit.children[0].facing = normalDir(facing + 3)
         }
-        unit.unit.status = unitStatus.Exhausted
+        unit.unit.exhaust()
       }
     } else {
       for (const u of this.origin) {
         const unit = this.map.unitAtId(start, u.id) as Counter
-        unit.unit.status = unitStatus.Exhausted
+        unit.unit.exhaust()
       }
     }
 
@@ -125,7 +125,7 @@ export default class AssaultMoveAction extends BaseAction {
         this.map.moveUnit(end, start, u.id, facing, turret)
         const unit = this.map.unitAtId(start, u.id) as Counter
         if (u.status !== undefined) {
-          unit.unit.status = u.status
+          unit.unit.setStatus(u.status)
         }
         if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
           unit.unit.children[0].facing = normalDir(facing + 3)
@@ -134,7 +134,7 @@ export default class AssaultMoveAction extends BaseAction {
     } else {
       for (const u of this.origin) {
         const unit = this.map.unitAtId(start, u.id) as Counter
-        unit.unit.status = u.status
+        unit.unit.setStatus(u.status)
       }
     }
     sortStacks(this.map)

@@ -104,7 +104,7 @@ export default function FireSection() {
         </li>
         <li>
           <strong>Area Fire</strong>: area fire is another sort of targeted fire performed by
-          mortars or a few other weapons, indicated by a line above the firepower number, and it
+          mortars or a few other weapons, indicated by a line below the firepower number, and it
           affects all units in a hex. Units that are not fully armored are treated as non-armored
           units for the purposes of area fire, and otherwise armor penetration checks are required.
         </li>

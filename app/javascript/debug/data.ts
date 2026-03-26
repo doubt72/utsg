@@ -22,7 +22,7 @@ const testUnitData: { [index: string]: string } = {
   usht: "usa_M2 Half-track_ht", usht2: "usa_M3 GMC_ht", usht3: "usa_T19/M21 MMC_ht",
   usht4: "usa_LVT-1_ht", usht5: "usa_LVT-2_ht", usht6: "usa_LVT(A)-4_ht", ustruck: "usa_GMC CCKW_truck",
   ustruck2: "usa_GMC DUKW_truck", usjeep: "usa_Jeep_truck", usjeep2: "usa_Jeep .50 MG_truck",
-  usmoto: "usa_Harley-D. WLA_cav", hcav: "ger_Horse_cav", bcav: "jap_Bicycle_cav", htm: "ger_Kettenkrad_truck",
+  usmoto: "usa_Harley-Davidson WLA_cav", hcav: "ger_Horse_cav", bcav: "jap_Bicycle_cav", htm: "ger_Kettenkrad_truck",
   htsm: "ger_SdKfz 7_truck", tspag: "ger_Marder I_spg", tft: "ger_SdKfz 251/16_ht", atr: "uk_Boys AT Rifle_sw",
   uc: "uk_Universal Carrier_ht", tkt: "ita_L3/33_spg", amt: "jap_Type 2 Ka-Mi_tank",
   ukinf: "uk_Guard_sqd", ac: "fra_AMC Schneider P16_ac", rtr: "uk_Chevy C30 AT_truck"

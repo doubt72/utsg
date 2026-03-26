@@ -1,7 +1,14 @@
 High Priority Features/Bug Fixes:
+  + Map size secondarily sort by number
+  + Breaking unit should remove pin
+  + Area fire in counter overlay
+  + Update docs for area fire (below, not above)
+    + "weapon may be destroyed" - "destroyed instead of jamming"
+  + Sniper opening stack at wrong time
+  + Fix carried weapons not getting reassigned on elimination
+  + Smoke not an option for reaction fire
+  + Reaction should skip guns/tank destroyers with no firing arc
   - Romanian vehicles don't seem to be at higher breakdown in 006
-  - Reaction should skip guns/tank destroyers with no firing arc
-  - Smoke not an option for reaction fire
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries

@@ -1,7 +1,6 @@
 import React from "react";
 import CounterDisplay from "../game/CounterDisplay";
 import Unit from "../../engine/Unit";
-import { unitStatus } from "../../utilities/commonTypes";
 import { helpLink } from "./helpData";
 import { baseRally } from "../../utilities/utilities";
 
@@ -14,7 +13,7 @@ export default function RallySection() {
     t: "sw", i: "mg", c: "uk", n: "Vickers MG", y: 12,
     o: { r: 1, j: 2, f: 15 }, f: 6, r: 12, v: -1, s: 1,
   });
-  infantry.status = unitStatus.Broken
+  infantry.break()
   weapon.jammed = true
 
   return (

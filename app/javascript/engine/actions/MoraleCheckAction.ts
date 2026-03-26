@@ -68,7 +68,7 @@ export default class MoraleCheckAction extends BaseAction {
       if (counter.unit.isBroken) {
         this.game.scenario.map.eliminateCounter(counter.hex as Coordinate, this.target.id)
       } else {
-        counter.unit.status = unitStatus.Broken
+        counter.unit.break()
         const hex = counter.hex as Coordinate
         if (hex.x != this.target.x || hex.y !== this.target.y) {
           this.game.scenario.map.moveUnit(

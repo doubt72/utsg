@@ -37,11 +37,11 @@ export default class CloseCombatReduceAction extends BaseAction {
     const loc = new Coordinate(this.target.x, this.target.y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (unit.isVehicle) {
-      unit.status = unitStatus.Wreck
+      unit.wreck(this.game)
     } else if (unit.isBroken) {
       this.game.scenario.map.eliminateCounter(loc, this.target.id)
     } else {
-      unit.status = unitStatus.Broken
+      unit.break()
     }
     const current = this.game.closeNeeded.filter(cn => cn.loc.x === this.target.x && cn.loc.y === this.target.y)[0]
     if (this.game.currentPlayer === current.oPlayer) {
@@ -55,7 +55,7 @@ export default class CloseCombatReduceAction extends BaseAction {
       if (!this.map.contactAt(loc)) {
         for (const c of counters) {
           if (c.hasUnit && !c.unit.isWreck && !c.unit.isBroken && (c.unit.isVehicle || c.unit.canCarrySupport) ) {
-            c.unit.status = unitStatus.Exhausted
+            c.unit.exhaust()
           }
         }
         const vp = this.map.victoryAt(loc)

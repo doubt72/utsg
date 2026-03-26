@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, Direction, hexOpenType, unitStatus } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, Direction, hexOpenType } from "../../../utilities/commonTypes";
 import { hexDistance } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -309,8 +309,8 @@ export default class FireState extends BaseState {
       this.game.addMessage("cannot fire an exhausted unit")
       return false
     }
-    const status = this.initialSelection[0].counter.unit.status
-    if (counter.unit.isActivated && status !== unitStatus.Activated) {
+    const unit = this.initialSelection[0].counter.unit
+    if (counter.unit.isActivated && !unit.isActivated) {
       this.game.addMessage("cannot fire an activated unit")
       return false
     }

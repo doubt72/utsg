@@ -1,4 +1,4 @@
-import { Coordinate, featureType, sponsonType, unitStatus, unitType, weatherType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, sponsonType, unitType, weatherType } from "../../utilities/commonTypes";
 import { los, losHexPath } from "../../utilities/los";
 import { hexDistance, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
@@ -28,7 +28,7 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
   if (unit.areaFire) { return false }
   if (unit.uncrewedSW && unit.parent) { return true }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
-      (unit.children[0].status === unitStatus.Normal || (unit.children[0].isActivated &&
+      (unit.children[0].isNormal || (unit.children[0].isActivated &&
        unit.isActivated))) { return true }
   const counters = game.scenario.map.countersAt(new Coordinate(x, y))
   for (const c of counters) {
@@ -502,7 +502,7 @@ function fireCover(
   return cover
 }
 
-function hitFromArc(
+export function hitFromArc(
   game: Game, target: Unit | Feature, from: Coordinate, to: Coordinate, turret: boolean
 ): 0 | 1 | 2 {
   const map = game.scenario.map

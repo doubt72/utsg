@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { createBlankGame, testGGun, testGInf, testGTank, testGTruck, testJapSNLF, testRInf, testRMG, testUSLdr, testUSMarine, testUSMarineTeam, testUSMG } from "./testHelpers";
 import Unit from "../Unit";
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { closeProgress } from "../Game";
 import GameAction from "../GameAction";
 import select from "./select";
@@ -245,14 +245,14 @@ describe("close combat", () => {
     expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
-    expect(all.length).toBe(4) // four units (no hull for wreck)
+    expect(all.length).toBe(4) // four units (no hull counter for wreck)
     expect(all[0].unit.playerNation).toBe("ussr")
-    expect(all[0].unit.status).toBe(unitStatus.Broken)
+    expect(all[0].unit.isBroken).toBe(true)
     expect(all[2].unit.playerNation).toBe("ger")
-    expect(all[2].unit.status).toBe(unitStatus.Normal)
+    expect(all[2].unit.isNormal).toBe(true)
     expect(all[3].unit.playerNation).toBe("ger")
-    expect(all[3].unit.status).toBe(unitStatus.Wreck)
-    expect(game.eliminatedUnits.length).toBe(0)
+    expect(all[3].unit.isWreck).toBe(true)
+    expect(game.eliminatedUnits.length).toBe(1)
   })
 
   test("close combat power and overkill", () => {
@@ -360,15 +360,15 @@ describe("close combat", () => {
     let all = map.allCounters
     expect(all.length).toBe(4)
     expect(all[0].unit.name).toBe("Marine Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(game.eliminatedUnits.length).toBe(1)
-    expect((game.eliminatedUnits[0] as Unit).status).toBe(unitStatus.Normal)
+    expect((game.eliminatedUnits[0] as Unit).isNormal).toBe(true)
 
     game.closeCombatState.finish()
     all = map.allCounters
     expect(all.length).toBe(4)
     expect(all[0].unit.name).toBe("Marine Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Tired)
+    expect(all[0].unit.isTired).toBe(true)
   })
 
   test("handles multiple losses", () => {

@@ -113,8 +113,7 @@ export default class Unit {
 
   sponson?: { firepower: number, range: number, type: SponsonType };
 
-  status: UnitStatus;
-  tired: boolean;
+  internalStatus: UnitStatus;
   jammed: boolean;
   sponsonJammed: boolean;
   weaponDestroyed: boolean;
@@ -214,8 +213,7 @@ export default class Unit {
       this.sponson = { firepower: data.o.sg.f, range: data.o.sg.r, type: data.o.sg.t ?? sponsonType.Gun }      
     }
 
-    this.status = unitStatus.Normal
-    this.tired = false
+    this.internalStatus = unitStatus.Normal
     this.jammed = false
     this.sponsonJammed = false
     this.weaponDestroyed = false
@@ -356,7 +354,7 @@ export default class Unit {
   }
 
   canCarry(unit: Unit): boolean {
-    if (![unitStatus.Normal, unitStatus.Tired].includes(unit.status) && this.status) { return false }
+    if (!(unit.isNormal || unit.isTired) && this.internalStatus) { return false }
     if (this.leader && unit.uncrewedSW && unit.baseMovement < 0) { return false }
     return this.canTransportUnit(unit) || this.canTowUnit(unit) || (this.children.length < 1 &&
       ((this.canCarrySupport && unit.uncrewedSW) || (this.canHandle && unit.crewed)))
@@ -387,24 +385,77 @@ export default class Unit {
     return armor
   }
 
+  resetStatus(): void {
+    this.internalStatus = unitStatus.Normal
+  }
+
+  activate(): void {
+    this.internalStatus = unitStatus.Activated
+  }
+
+  exhaust(): void {
+    this.internalStatus = unitStatus.Exhausted
+  }
+
+  tire(): void {
+    this.internalStatus = unitStatus.Tired
+  }
+
+  break(): void {
+    this.pinned = false
+    this.internalStatus = unitStatus.Broken
+  }
+
+  wreck(game?: Game): void {
+    this.jammed = false
+    this.weaponDestroyed = false
+    this.immobilized = false
+    this.turretJammed = false
+    this.immobilized = false
+    this.sponsonJammed = false
+    this.sponsonDestroyed = false
+    this.internalStatus = unitStatus.Wreck
+    if (game) {
+      const casualty = this.clone()
+      casualty.id = `${this.id}-clone`
+      game.addEliminatedCounter(casualty)
+    }
+  }
+
+  setStatus(status: UnitStatus): void {
+    this.internalStatus = status
+  }
+
+  isStatusValue(status: UnitStatus): boolean {
+    return this.internalStatus === status
+  }
+
+  get status(): UnitStatus {
+    return this.internalStatus
+  }
+
+  get isNormal(): boolean {
+    return this.internalStatus === unitStatus.Normal
+  }
+
   get isActivated(): boolean {
-    return this.status === unitStatus.Activated
+    return this.internalStatus === unitStatus.Activated
   }
 
   get isExhausted(): boolean {
-    return this.status === unitStatus.Exhausted
+    return this.internalStatus === unitStatus.Exhausted
   }
 
   get isTired(): boolean {
-    return this.status === unitStatus.Tired
+    return this.internalStatus === unitStatus.Tired
   }
 
   get isBroken(): boolean {
-    return this.status === unitStatus.Broken
+    return this.internalStatus === unitStatus.Broken
   }
 
   get isWreck(): boolean {
-    return this.status === unitStatus.Wreck
+    return this.internalStatus === unitStatus.Wreck
   }
 
   get isTracked(): boolean {

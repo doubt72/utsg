@@ -1,4 +1,4 @@
-import { Coordinate, featureType, sponsonType, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate, featureType, sponsonType } from "../../utilities/commonTypes";
 import {
   baseToHit, coordinateToLabel, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
   rolld6, smokeRoll, otherPlayer
@@ -160,7 +160,7 @@ export default class FireAction extends BaseAction {
       to = new Coordinate(hex.x, hex.y)
     }
     if (firing0.unit.crewed && firing0.unit.parent) {
-      firing0.unit.parent.status = unitStatus.Activated
+      firing0.unit.parent.activate()
     }
     if (firing0.unit.incendiary || firing0.unit.sponson?.type === sponsonType.Flame) {
       fireStartIncendiary = true
@@ -266,7 +266,7 @@ export default class FireAction extends BaseAction {
             for (const t of dTargets) {
               if (t.counter.unit.canCarrySupport) { continue }
               if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
-                t.counter.unit.status = unitStatus.Wreck
+                t.counter.unit.wreck(this.game)
                 fireStartVehicle = t.counter.unit
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
@@ -288,7 +288,7 @@ export default class FireAction extends BaseAction {
                   }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
                 }
                 if (hitRoll.result > hitCheck) {
-                  t.counter.unit.status = unitStatus.Wreck
+                  t.counter.unit.wreck(this.game)
                   fireStartVehicle = t.counter.unit
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != dTo.x || hex.y !== dTo.y) {
@@ -308,7 +308,7 @@ export default class FireAction extends BaseAction {
             }
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
-          target0.unit.status = unitStatus.Wreck
+          target0.unit.wreck(this.game)
           fireStart = true
           fireStartVehicle = target0.unit
           const hex = target0.hex as Coordinate
@@ -351,7 +351,7 @@ export default class FireAction extends BaseAction {
               hitRoll.description = `penetration roll (${arc}) (2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
             }
             if (hitRoll.result > hitCheck) {
-              target0.unit.status = unitStatus.Wreck
+              target0.unit.wreck(this.game)
               fireStart = true
               fireStartVehicle = target0.unit
               const hex = target0.hex as Coordinate
@@ -376,7 +376,7 @@ export default class FireAction extends BaseAction {
               }
             } else if (needDice) { hitRoll.description += "failed" }
           } else {
-            target0.unit.status = unitStatus.Wreck
+            target0.unit.wreck(this.game)
             fireStart = true
             fireStartVehicle = target0.unit
             const hex = target0.hex as Coordinate
@@ -472,7 +472,7 @@ export default class FireAction extends BaseAction {
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
-                t.counter.unit.status = unitStatus.Wreck
+                t.counter.unit.wreck(this.game)
                 fireStart = true
                 fireStartVehicle = t.counter.unit
                 const hex = t.counter.hex as Coordinate
@@ -492,7 +492,7 @@ export default class FireAction extends BaseAction {
                   }(2d10): target ${hitCheck}, rolled ${hitRoll.result}: `
                 }
                 if (hitRoll.result > hitCheck) {
-                  t.counter.unit.status = unitStatus.Wreck
+                  t.counter.unit.wreck(this.game)
                   fireStart = true
                   fireStartVehicle = t.counter.unit
                   const hex = t.counter.hex as Coordinate
@@ -543,7 +543,7 @@ export default class FireAction extends BaseAction {
               if (needDice) { hitRoll.description += `, ${f.counter.unit.name} destroyed` }
             } else {
               f.counter.unit.jammed = true
-              f.counter.unit.status = unitStatus.Normal
+              f.counter.unit.resetStatus()
               if (needDice) { hitRoll.description += `, ${f.counter.unit.name} broken` }
             }
           }
@@ -554,10 +554,10 @@ export default class FireAction extends BaseAction {
       const counter = this.map.findCounterById(o.id)
       if (counter) {
         if (counter.unit.operated && !counter.unit.jammed) {
-          counter.unit.status = this.intensive ? unitStatus.Exhausted : unitStatus.Activated
+          this.intensive ? counter.unit.exhaust() : counter.unit.activate()
         }
         if (!counter.unit.operated) {
-          counter.unit.status = this.intensive ? unitStatus.Exhausted : unitStatus.Activated
+          this.intensive ? counter.unit.exhaust() : counter.unit.activate()
         }
         if (counter.unit.singleFire) {
           const hex = new Coordinate(o.x, o.y)

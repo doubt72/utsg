@@ -1,5 +1,5 @@
 import {
-  baseTerrainType, Coordinate, featureType, hexOpenType, markerType, unitStatus,
+  baseTerrainType, Coordinate, featureType, hexOpenType, markerType,
 } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
@@ -70,7 +70,7 @@ describe("movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
   })
 
   test("movement along path", () => {
@@ -140,7 +140,7 @@ describe("movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
   })
 
   test("movement along road over river", () => {
@@ -347,7 +347,7 @@ describe("movement", () => {
     expect(unit.baseMovement).toBe(4)
     expect(unit.currentMovement).toBe(0)
     unit.pinned = false
-    unit.status = unitStatus.Tired
+    unit.tire()
     expect(unit.currentMovement).toBe(2)
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
@@ -382,14 +382,14 @@ describe("movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(1)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
     all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(4)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Tired)
+    expect(all[0].unit.isTired).toBe(true)
   })
 
   test("smoke", () => {
@@ -571,11 +571,11 @@ describe("movement", () => {
     expect(all[0].hex?.x).toBe(0)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(0)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
   })
 
   test("can't move overstack or into enemy", () => {
@@ -623,7 +623,7 @@ describe("movement", () => {
     map.addCounter(loc, unit)
 
     const unit5 = new Unit(testRTank)
-    unit5.status = unitStatus.Wreck
+    unit5.wreck()
     unit5.id = "test5"
     map.addCounter(new Coordinate(4, 3), unit5)
 
@@ -713,11 +713,11 @@ describe("movement", () => {
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(0)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -792,11 +792,11 @@ describe("movement", () => {
     expect(all[0].hex?.x).toBe(0)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(0)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Leader")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
   })
 
   test("carrying sw", () => {
@@ -853,11 +853,11 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(1)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -867,11 +867,11 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("pick up sw", () => {
@@ -924,12 +924,12 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe("Rifle")
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -939,12 +939,12 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(0)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe(undefined)
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("leader carrying sw", () => {
@@ -1124,12 +1124,12 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.parent?.name).toBe(undefined)
     expect(all[0].unit.name).toBe("MG 08/15")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -1139,12 +1139,12 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe("Rifle")
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("move gun", () => {
@@ -1208,11 +1208,11 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Crew")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -1222,11 +1222,11 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Crew")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("move gun into trees", () => {
@@ -1432,12 +1432,12 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Crew")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe("Crew")
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -1447,12 +1447,12 @@ describe("movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.parent?.name).toBe(undefined)
     expect(all[0].unit.name).toBe("3.7cm Pak 36")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Crew")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("drop gun", () => {
@@ -1838,7 +1838,7 @@ describe("movement", () => {
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(5)
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
     all = map.allCounters
@@ -1850,7 +1850,7 @@ describe("movement", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(1)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("truck movement", () => {
@@ -1923,20 +1923,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(1)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Activated)
+    expect(all[2].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -1948,20 +1948,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(1)
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(4)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Normal)
+    expect(all[2].unit.isNormal).toBe(true)
   })
 
   test("truck dropping gun pre-turn", () => {
@@ -2037,20 +2037,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.facing).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Crew")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
     expect(all[2].hex?.x).toBe(3)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("3.7cm Pak 36")
     expect(all[2].unit.parent).toBe(undefined)
     expect(all[2].unit.facing).toBe(4)
-    expect(all[2].unit.status).toBe(unitStatus.Activated)
+    expect(all[2].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -2062,20 +2062,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(1)
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(4)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Normal)
+    expect(all[2].unit.isNormal).toBe(true)
   })
 
   test("truck dropping gun post-turn", () => {
@@ -2259,20 +2259,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.facing).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
     expect(all[2].hex?.x).toBe(3)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent).toBe(undefined)
-    expect(all[2].unit.status).toBe(unitStatus.Activated)
+    expect(all[2].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -2284,20 +2284,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(1)
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(4)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Normal)
+    expect(all[2].unit.isNormal).toBe(true)
   })
 
   test("truck loading gun", () => {
@@ -2378,20 +2378,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(1)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Activated)
+    expect(all[2].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -2403,20 +2403,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("3.7cm Pak 36")
     expect(all[0].unit.children.length).toBe(0)
     expect(all[0].unit.facing).toBe(1)
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(1)
     expect(all[1].unit.name).toBe("Opel Blitz")
     expect(all[1].unit.parent).toBe(undefined)
     expect(all[1].unit.facing).toBe(1)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Normal)
+    expect(all[2].unit.isNormal).toBe(true)
   })
 
   test("truck loading infantry", () => {
@@ -2492,20 +2492,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(5)
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
     expect(all[2].hex?.x).toBe(2)
     expect(all[2].hex?.y).toBe(1)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Activated)
+    expect(all[2].unit.isActivated).toBe(true)
 
     game.executeUndo(false)
 
@@ -2517,20 +2517,20 @@ describe("movement", () => {
     expect(all[0].unit.name).toBe("Crew")
     expect(all[0].unit.children.length).toBe(0)
     expect(all[0].unit.facing).toBe(1)
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(1)
     expect(all[1].unit.name).toBe("Opel Blitz")
     expect(all[1].unit.parent).toBe(undefined)
     expect(all[1].unit.facing).toBe(1)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
     expect(all[2].hex?.x).toBe(4)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("3.7cm Pak 36")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Normal)
+    expect(all[2].unit.isNormal).toBe(true)
   })
 
   test("moving into wire", () => {

@@ -1,4 +1,4 @@
-import { Coordinate, hexOpenType, unitStatus } from "../../utilities/commonTypes"
+import { Coordinate, hexOpenType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import { describe, expect, test } from "vitest"
 import { showLaySmoke, showLoadMove, showDropMove, mapSelectMovement } from "./movement"
@@ -17,7 +17,7 @@ describe("rush movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
@@ -52,7 +52,7 @@ describe("rush movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -60,7 +60,7 @@ describe("rush movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(4)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
   })
 
   test("can't rush when sw reduces move to zero", () => {
@@ -70,7 +70,7 @@ describe("rush movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
@@ -99,7 +99,7 @@ describe("rush movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
@@ -157,14 +157,14 @@ describe("rush movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.status = unitStatus.Tired
+    unit2.tire()
     map.addCounter(loc, unit2)
 
     game.setGameState(new MoveState(game))
@@ -199,11 +199,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -212,11 +212,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.x).toBe(4)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Tired)
+    expect(all[0].unit.isTired).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
   })
 
   test("multi-select drop-off", () => {
@@ -226,7 +226,7 @@ describe("rush movement", () => {
     unit.id = "test1"
     unit.baseMovement = 3
     unit.smokeCapable = false // any unit in stack is enough for smoke
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
@@ -281,11 +281,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.x).toBe(4)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -294,11 +294,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.x).toBe(4)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
   })
 
   test("multiselect with leader", () => {
@@ -306,7 +306,7 @@ describe("rush movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
@@ -364,11 +364,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.x).toBe(0)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(0)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Leader")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -377,11 +377,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.x).toBe(4)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Leader")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("cannot pick up sw", () => {
@@ -389,7 +389,7 @@ describe("rush movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
@@ -417,14 +417,14 @@ describe("rush movement", () => {
 
     const unit = new Unit(testGLdr)
     unit.id = "test1"
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
-    unit2.status = unitStatus.Activated
+    unit2.activate()
     map.addCounter(loc, unit2)
     organizeStacks(map)
     expect(unit.children.length).toBe(0)
@@ -464,11 +464,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Leader")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -478,11 +478,11 @@ describe("rush movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Leader")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Activated)
+    expect(all[1].unit.isActivated).toBe(true)
   })
 
   test("drop sw", () => {
@@ -491,7 +491,7 @@ describe("rush movement", () => {
 
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
@@ -531,12 +531,12 @@ describe("rush movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.parent?.name).toBe(undefined)
     expect(all[0].unit.name).toBe("MG 08/15")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -546,12 +546,12 @@ describe("rush movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Activated)
+    expect(all[0].unit.isActivated).toBe(true)
     expect(all[1].hex?.x).toBe(4)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.parent?.name).toBe("Rifle")
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("can't pick up gun", () => {
@@ -559,7 +559,7 @@ describe("rush movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
     unit.id = "test1"
-    unit.status = unitStatus.Activated
+    unit.activate()
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
@@ -586,7 +586,7 @@ describe("rush movement", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
-    unit.status = unitStatus.Activated
+    unit.activate()
     const loc = new Coordinate(3, 2)
 
     const unit2 = new Unit(testGGun)

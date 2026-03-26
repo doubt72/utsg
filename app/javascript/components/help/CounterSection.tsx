@@ -7,7 +7,7 @@ import Marker, { MarkerData } from "../../engine/Marker";
 import { roundedRectangle } from "../../utilities/graphics";
 import MapCounter from "../game/map/MapCounter";
 import Counter from "../../engine/Counter";
-import { markerType, unitStatus } from "../../utilities/commonTypes";
+import { markerType } from "../../utilities/commonTypes";
   
 export const makeIndex = (target: Unit | Feature | Marker) => {
   if (target.isFeature) {
@@ -382,11 +382,11 @@ export default function CounterSection() {
     const counter = new Counter(undefined, unit)
     counter.hideShadow = true
     if (["tank", "spg", "ht", "ac", "truck"].includes(counter.unit.type)) {
-      counter.unit.status = broken ? unitStatus.Wreck : unitStatus.Normal
+      broken ? counter.unit.wreck() : counter.unit.resetStatus()
     } else if (["gun", "sw"].includes(counter.unit.type)) {
       counter.unit.jammed = broken
     } else {
-      counter.unit.status = broken ? unitStatus.Broken : unitStatus.Normal
+      broken ? counter.unit.wreck() : counter.unit.resetStatus()
     }
     return <MapCounter counter={counter} ovCallback={() => {}} />
   }
@@ -766,7 +766,7 @@ export default function CounterSection() {
       }
       if (unit.breakWeaponRoll && (unit.breakDestroysWeapon || unit.jammed)) {
         sections.push(<p key={index++}>
-          <strong>A red circle</strong> indicates that this weapon may be destroyed.
+          <strong>A red circle</strong> indicates that this weapon may be destroyed (instead of breaking).
         </p>)
       } else if (unit.breakWeaponRoll) {
         sections.push(<p key={index++}>

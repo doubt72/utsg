@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MapCounter from "./MapCounter";
 import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
 import Counter from "../../../engine/Counter";
-import { Coordinate, markerType, unitStatus, unitType } from "../../../utilities/commonTypes";
+import { Coordinate, markerType, unitType } from "../../../utilities/commonTypes";
 import Map from "../../../engine/Map";
 import { clearColor, counterOutline } from "../../../utilities/graphics";
 import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
@@ -87,10 +87,10 @@ export default function MapCounterOverlay({
         if (unit.weaponDestroyed || unit.jammed ) { rc += 1 }
         if (unit.sponsonDestroyed || unit.sponsonJammed ) { rc += 1 }
         if (unit.turretJammed) { rc += 1 }
-        if (unit.status !== unitStatus.Normal ) { rc += 1 }
+        if (!unit.isNormal ) { rc += 1 }
         if (unit.eliteCrew !== 0) { rc += 1 }
       } else {
-        if (unit.status !== unitStatus.Normal && !unit.isBroken ) { rc += 1 }
+        if (!unit.isNormal && !unit.isBroken ) { rc += 1 }
         if (unit.pinned) { rc += 1 }
       }
     }

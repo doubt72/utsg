@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest"
 import { baseToHit, chance2D10, chanceD10x10 } from "../../utilities/utilities"
-import { Coordinate, featureType, sponsonType, unitStatus, weatherType } from "../../utilities/commonTypes"
+import { Coordinate, featureType, sponsonType, weatherType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import Game from "../Game"
 import select from "./select"
@@ -174,7 +174,7 @@ describe("ranged fire attacks", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      target.status = unitStatus.Activated
+      target.activate()
       const tloc = new Coordinate(4, 4)
       map.addCounter(tloc, target)
 
@@ -224,7 +224,7 @@ describe("ranged fire attacks", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      target.status = unitStatus.Exhausted
+      target.exhaust()
       const tloc = new Coordinate(2, 4)
       map.addCounter(tloc, target)
 
@@ -275,7 +275,7 @@ describe("ranged fire attacks", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      target.status = unitStatus.Tired
+      target.tire()
       const tloc = new Coordinate(0, 2)
       map.addCounter(tloc, target)
 
@@ -325,7 +325,7 @@ describe("ranged fire attacks", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      target.status = unitStatus.Broken
+      target.break()
       const tloc = new Coordinate(2, 0)
       map.addCounter(tloc, target)
 
@@ -928,7 +928,7 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.status = unitStatus.Broken
+      firing.break()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
@@ -970,12 +970,12 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.status = unitStatus.Activated
+      firing.activate()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.status = unitStatus.Activated
+      firing2.activate()
       map.addCounter(floc, firing2)
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
@@ -1013,16 +1013,16 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.status = unitStatus.Activated
+      firing.activate()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.status = unitStatus.Activated
+      firing2.activate()
       map.addCounter(floc, firing2)
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
-      firing3.status = unitStatus.Activated
+      firing3.activate()
       firing3.select()
       map.addCounter(floc, firing3)
 
@@ -1057,16 +1057,16 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.status = unitStatus.Exhausted
+      firing.exhaust()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.status = unitStatus.Exhausted
+      firing2.exhaust()
       map.addCounter(floc, firing2)
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
-      firing3.status = unitStatus.Activated
+      firing3.activate()
       firing3.select()
       map.addCounter(floc, firing3)
 
@@ -2319,9 +2319,9 @@ describe("ranged fire attacks", () => {
       const all = map.allCounters
       expect(all.length).toBe(3)
       expect(all[0].unit.id).toBe("firing1")
-      expect(all[0].unit.status).toBe(unitStatus.Activated)
+      expect(all[0].unit.isActivated).toBe(true)
       expect(all[1].unit.id).toBe("firing2")
-      expect(all[1].unit.status).toBe(unitStatus.Activated)
+      expect(all[1].unit.isActivated).toBe(true)
       expect(all[2].unit.id).toBe("0-smoke")
       expect(all[2].hex?.x).toBe(0)
       expect(all[2].hex?.y).toBe(2)
@@ -2441,8 +2441,10 @@ describe("ranged fire attacks", () => {
       expect(all[3].unit.id).toBe("firing1")
       expect(all[3].children.length).toBe(0)
 
-      expect(game.eliminatedUnits[0].id).toBe("firing2")
-      expect((game.eliminatedUnits[0] as Unit).parent).toBe(undefined)
+      expect(game.eliminatedUnits.length).toBe(2)
+      expect(game.eliminatedUnits[0].id).toBe("target3-clone")
+      expect(game.eliminatedUnits[1].id).toBe("firing2")
+      expect((game.eliminatedUnits[1] as Unit).parent).toBe(undefined)
     })
 
     test("incendiary", () => {
@@ -2687,8 +2689,10 @@ describe("ranged fire attacks", () => {
       expect(all[3].unit.id).toBe("firing1")
       expect(all[3].children.length).toBe(0)
 
-      expect(game.eliminatedUnits[0].id).toBe("firing2")
-      expect((game.eliminatedUnits[0] as Unit).parent).toBe(undefined)
+      expect(game.eliminatedUnits.length).toBe(2)
+      expect(game.eliminatedUnits[0].id).toBe("target3-clone")
+      expect(game.eliminatedUnits[1].id).toBe("firing2")
+      expect((game.eliminatedUnits[1] as Unit).parent).toBe(undefined)
     })
 
     test("destroying vehicle breaks children", () => {
@@ -2715,14 +2719,14 @@ describe("ranged fire attacks", () => {
       expect(all.length).toBe(3)
       expect(all[0].unit.id).toBe("firing2")
       expect(all[0].unit.jammed).toBe(false)
-      expect(all[0].unit.status).toBe(unitStatus.Normal)
+      expect(all[0].unit.isNormal).toBe(true)
       expect(all[0].unit.parent).toBe(undefined)
       expect(all[1].unit.id).toBe("firing3")
-      expect(all[1].unit.status).toBe(unitStatus.Broken)
+      expect(all[1].unit.isBroken).toBe(true)
       expect(all[0].unit.parent).toBe(undefined)
       expect(all[2].unit.id).toBe("firing4")
       expect(all[2].unit.jammed).toBe(false)
-      expect(all[2].unit.status).toBe(unitStatus.Normal)
+      expect(all[2].unit.isNormal).toBe(true)
       expect(all[0].unit.parent).toBe(undefined)
 
       expect(game.eliminatedUnits[0].id).toBe("firing1")
@@ -2747,7 +2751,7 @@ describe("ranged fire attacks", () => {
       expect(all.length).toBe(1)
       expect(all[0].unit.id).toBe("firing2")
       expect(all[0].unit.jammed).toBe(false)
-      expect(all[0].unit.status).toBe(unitStatus.Normal)
+      expect(all[0].unit.isNormal).toBe(true)
       expect(all[0].unit.parent).toBe(undefined)
 
       expect(game.eliminatedUnits[0].id).toBe("firing1")
@@ -2979,7 +2983,8 @@ describe("ranged fire attacks", () => {
       expect(all[0].unit.id).toBe("target1") // Wreck
       expect(all[1].unit.id).toBe("firing1")
 
-      expect(game.eliminatedUnits.length).toBe(0)
+      expect(game.eliminatedUnits.length).toBe(1)
+      expect(game.eliminatedUnits[0].id).toBe("target1-clone")
     })
 
     test("ranged fire against unarmored vehicle", () => {
@@ -3033,7 +3038,7 @@ describe("ranged fire attacks", () => {
       expect(all[0].unit.id).toBe("target1") // Wreck
       expect(all[1].unit.id).toBe("firing1")
 
-      expect(game.eliminatedUnits.length).toBe(0)
+      expect(game.eliminatedUnits.length).toBe(1)
     })
 
     test("weather affects ranged fire", () => {
@@ -3195,7 +3200,7 @@ describe("ranged fire attacks", () => {
       expect(all[0].unit.id).toBe("target1") // Wreck
       expect(all[1].unit.id).toBe("firing1")
 
-      expect(game.eliminatedUnits.length).toBe(0)
+      expect(game.eliminatedUnits.length).toBe(1)
     })
 
     test("vehicle machine gun", () => {
@@ -3387,7 +3392,7 @@ describe("ranged fire attacks", () => {
       expect(all[0].unit.id).toBe("target1") // Wreck
       expect(all[1].unit.id).toBe("firing1")
 
-      expect(game.eliminatedUnits.length).toBe(0)
+      expect(game.eliminatedUnits.length).toBe(1)
     })
 
     test("sponson breakdown roll", () => {
@@ -3557,7 +3562,7 @@ describe("ranged fire attacks", () => {
       expect(all[0].unit.id).toBe("target1") // Wreck
       expect(all[1].unit.id).toBe("firing1")
 
-      expect(game.eliminatedUnits.length).toBe(0)
+      expect(game.eliminatedUnits.length).toBe(1)
     })
 
     test("intensive infantry fire", () => {
@@ -3565,13 +3570,13 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.status = unitStatus.Activated
+      firing.activate()
       firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.status = unitStatus.Activated
+      firing2.activate()
       map.addCounter(floc, firing2)
 
       const target = new Unit(testRInf)
@@ -3625,9 +3630,9 @@ describe("ranged fire attacks", () => {
       expect(all.length).toBe(3)
       expect(all[0].unit.id).toBe("target1")
       expect(all[1].unit.id).toBe("firing1")
-      expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+      expect(all[1].unit.isExhausted).toBe(true)
       expect(all[2].unit.id).toBe("firing2")
-      expect(all[2].unit.status).toBe(unitStatus.Exhausted)
+      expect(all[2].unit.isExhausted).toBe(true)
 
       expect(game.eliminatedUnits.length).toBe(0)
     })
@@ -3638,7 +3643,7 @@ describe("ranged fire attacks", () => {
       const firing = new Unit(testGTank)
       firing.id = "firing1"
       firing.turretFacing = 4
-      firing.status = unitStatus.Activated
+      firing.activate()
       firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
@@ -3696,9 +3701,9 @@ describe("ranged fire attacks", () => {
       expect(all.length).toBe(2)
       expect(all[0].unit.id).toBe("target1") // Wreck
       expect(all[1].unit.id).toBe("firing1")
-      expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+      expect(all[1].unit.isExhausted).toBe(true)
 
-      expect(game.eliminatedUnits.length).toBe(0)
+      expect(game.eliminatedUnits.length).toBe(1)
     })
 
     test("infantry fire triggers sniper", () => {

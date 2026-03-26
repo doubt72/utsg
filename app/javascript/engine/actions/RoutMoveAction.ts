@@ -1,4 +1,4 @@
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { coordinateToLabel } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionAddAction, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
@@ -64,7 +64,7 @@ export default class RouteMoveAction extends BaseAction {
       this.map.moveUnit(start, end, this.target.id)
       unit.routed = true
     } else {
-      unit.status = unitStatus.Normal
+      unit.resetStatus()
       this.map.eliminateCounter(start, this.target.id)
     }
     sortStacks(this.map)

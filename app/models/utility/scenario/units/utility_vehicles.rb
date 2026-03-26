@@ -125,7 +125,7 @@ module Utility
 
               ["uk", "Horse", "cav", 0],
 
-              ["usa", "Harley-D. WLA", "cav-wheel", 40],
+              ["usa", "Harley-Davidson WLA", "cav-wheel", 40, { sn: 5 }],
 
               ["ussr", "Horse", "cav", 0], ["ussr", "PMZ-A-750", "cav-wheel", 34],
               ["ussr", "Dnepr M-72", "cav-wheel", 42],

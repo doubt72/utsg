@@ -36,6 +36,11 @@ export const testGGun: UnitData = {
   t: "gun", v: 2, y: 36
 }
 
+export const testRGun: UnitData = {
+  t: "gun", i: "atgun", c: "ussr", n: "45mm M-42", y: 42, f: 12, r: 16, v: 1, s: 3,
+  o: { tow: 3, c: 1, t: 1, p: 1, j: 3, f: 18 },
+}
+
 export const testGTank: UnitData = {
   t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
   o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
@@ -79,6 +84,11 @@ export const testGAC: UnitData = {
 export const testRTank: UnitData = {
   t: "tank", i: "tank", c: "ussr", n: "T-34 M40", y: 40, s: 5, f: 24, r: 22, v: 6,
   o: { t: 1, p: 1, ha: { f: 3, s: 3, r: 3 }, ta: { f: 3, s: 3, r: 3 }, j: 3, f: 18, u: 1, k: 1 },
+}
+
+export const testRTD: UnitData = {
+  t: "spg", c: "ussr", n: "SU-76", y: 42, s: 3, v: 5, f: 16, r: 24, i: "spg",
+  o: { ha: { f: 3, s: 1, r: 1 }, bd: 4, k: 1, t: 1, g: 1, j: 3, f: 18 },
 }
 
 export const testRTruck: UnitData = {

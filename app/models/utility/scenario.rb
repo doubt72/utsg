@@ -12,6 +12,7 @@ module Utility
         scenarios = ::Scenarios.constants.reject { |k| %i[Base Scenario999].include?(k) }
                                .map { |k| ::Scenarios.const_get(k).index_record }
         filter(scenarios, options)
+        puts sort(scenarios, options["sort"], options["sort_dir"])
         sort(scenarios, options["sort"], options["sort_dir"]).map do |s|
           s.except(:string, :date, :layout, :allied_units, :axis_units)
         end

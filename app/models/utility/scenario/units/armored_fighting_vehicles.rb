@@ -59,13 +59,13 @@ module Utility
               ["uk", "Churchill V-VI", 43], ["uk", "Churchill VII-VIII", 44, { sn: 1 }],
               ["uk", "M3 Stuart", 41], ["uk", "M22 Locust", 42], ["uk", "M24 Chaffee", 44],
               ["uk", "M3 Lee", 41], ["uk", "M3 Grant", 41], ["uk", "M4 Sherman", 42],
-              ["uk", "M4(76) Sherman", 43, { sn: 1 }], ["uk", "Sherman Firefly", 43],
+              ["uk", "M4A1(76) Sherman", 43, { sn: 3 }], ["uk", "Sherman Firefly", 43],
 
               ["usa", "M.-H. CTLS-4", 43], ["usa", "M2A4", 35], ["usa", "M3 Stuart", 41],
               ["usa", "M5 Stuart", 42], ["usa", "M24 Chaffee", 44], ["usa", "M3 Lee", 41],
               ["usa", "M4 Sherman", 42], ["usa", "M4(105) Sherman", 42, { sn: 2 }],
-              ["usa", "M4(76) Sherman", 43, { sn: 1 }], ["usa", "M4 Sherman Jumbo", 44, { sn: 4 }],
-              ["usa", "M4(76) Sh. Jumbo", 44, { sn: 3 }], ["usa", "M26 Pershing", 44],
+              ["usa", "M4A1(76) Sherman", 43, { sn: 3 }], ["usa", "M4A3E2 Sherman", 44, { sn: 2 }],
+              ["usa", "M4A3E2(76) Sherman", 44, { sn: 5 }], ["usa", "M26 Pershing", 44],
 
               ["ussr", "BT-5", 32], ["ussr", "BT-7", 35], ["ussr", "T-26 M38", 38],
               ["ussr", "T-26 M39", 39], ["ussr", "T-70", 42], ["ussr", "T-34 M40", 40],
@@ -76,7 +76,7 @@ module Utility
               ["ussr", "Matilda II", 41], ["ussr", "Valentine", 41], ["ussr", "Churchill II", 41],
               ["ussr", "Churchill III", 42], ["ussr", "M3 Stuart", 41, { bd: 4 }],
               ["ussr", "M3 Grant", 41, { bd: 4 }], ["ussr", "M4 Sherman", 43],
-              ["ussr", "M4(76) Sherman", 44, { sn: 1 }],
+              ["ussr", "M4A1(76) Sherman", 44, { sn: 3 }],
             ].each do |unit|
               tank = { t: "tank", i: "tank" }
               unit.each_with_index do |v, i|

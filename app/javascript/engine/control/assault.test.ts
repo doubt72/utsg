@@ -1,5 +1,5 @@
 import {
-  baseTerrainType, Coordinate, hexOpenType, unitStatus
+  baseTerrainType, Coordinate, hexOpenType
 } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import { describe, expect, test } from "vitest"
@@ -50,7 +50,7 @@ describe("assault movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
   })
 
   test("along road over water", () => {
@@ -90,7 +90,7 @@ describe("assault movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
   })
 
   test("along railroad over water", () => {
@@ -129,7 +129,7 @@ describe("assault movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
   })
 
   test("tired assault", () => {
@@ -137,7 +137,7 @@ describe("assault movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.status = unitStatus.Tired
+    unit.tire()
     unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
 
@@ -157,14 +157,14 @@ describe("assault movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
     all = map.allCounters
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Tired)
+    expect(all[0].unit.isTired).toBe(true)
   })
 
   test("multi-select", () => {
@@ -207,11 +207,11 @@ describe("assault movement", () => {
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
   })
 
   test("can't multi-select broken", () => {
@@ -225,7 +225,7 @@ describe("assault movement", () => {
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGInf)
-    unit2.status = unitStatus.Broken
+    unit2.break()
     unit2.id = "test2"
     map.addCounter(loc, unit2)
 
@@ -258,11 +258,11 @@ describe("assault movement", () => {
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Broken)
+    expect(all[0].unit.isBroken).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
   })
 
   test ("can't assault overstack, can into enemy", () => {
@@ -402,11 +402,11 @@ describe("assault movement", () => {
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Leader")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
   })
 
   test("carrying sw", () => {
@@ -444,11 +444,11 @@ describe("assault movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -458,11 +458,11 @@ describe("assault movement", () => {
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].unit.children.length).toBe(1)
     expect(all[0].unit.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("MG 08/15")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("leader carrying sw", () => {
@@ -544,7 +544,7 @@ describe("assault movement", () => {
     expect(all.length).toBe(1)
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
   })
 
   test("tank assault", () => {
@@ -588,7 +588,7 @@ describe("assault movement", () => {
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.facing).toBe(3)
     expect(all[1].unit.turretFacing).toBe(2)
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
     all = map.allCounters
@@ -600,7 +600,7 @@ describe("assault movement", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(1)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("tank can't assault into enemy or mines", () => {
@@ -617,7 +617,7 @@ describe("assault movement", () => {
     unit2.id = "test2"
     map.addCounter(new Coordinate(2, 2), unit2)
     const unit3 = new Unit(testRTank)
-    unit3.status = unitStatus.Wreck
+    unit3.wreck()
     unit3.id = "test3"
     map.addCounter(new Coordinate(3, 1), unit3)
     const mine = new Feature(testMineAT)
@@ -720,20 +720,20 @@ describe("assault movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(3)
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(6)
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
     expect(all[2].hex?.x).toBe(3)
     expect(all[2].hex?.y).toBe(1)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[2].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -745,20 +745,20 @@ describe("assault movement", () => {
     expect(all[0].unit.name).toBe("Opel Blitz")
     expect(all[0].unit.children.length).toBe(2)
     expect(all[0].unit.facing).toBe(1)
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.children.length).toBe(0)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.parent?.name).toBe("Opel Blitz")
     expect(all[1].unit.facing).toBe(4)
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
     expect(all[2].hex?.x).toBe(3)
     expect(all[2].hex?.y).toBe(2)
     expect(all[2].unit.children.length).toBe(0)
     expect(all[2].unit.name).toBe("Crew")
     expect(all[2].unit.parent?.name).toBe("Opel Blitz")
-    expect(all[2].unit.status).toBe(unitStatus.Normal)
+    expect(all[2].unit.isNormal).toBe(true)
   })
 
   test("assaulting into wire", () => {
@@ -829,7 +829,7 @@ describe("assault movement", () => {
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].feature.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
   })
 
   test("clearing wire", () => {
@@ -863,7 +863,7 @@ describe("assault movement", () => {
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].feature.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[0].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -875,7 +875,7 @@ describe("assault movement", () => {
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].feature.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Normal)
+    expect(all[1].unit.isNormal).toBe(true)
   })
 
   test("entrenching", () => {
@@ -911,7 +911,7 @@ describe("assault movement", () => {
     expect(all[1].hex?.x).toBe(3)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].feature.name).toBe("Rifle")
-    expect(all[1].unit.status).toBe(unitStatus.Exhausted)
+    expect(all[1].unit.isExhausted).toBe(true)
 
     game.executeUndo(false)
 
@@ -920,7 +920,7 @@ describe("assault movement", () => {
     expect(all[0].hex?.x).toBe(3)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].feature.name).toBe("Rifle")
-    expect(all[0].unit.status).toBe(unitStatus.Normal)
+    expect(all[0].unit.isNormal).toBe(true)
   })
 
   test("can't entrench in sand", () => {

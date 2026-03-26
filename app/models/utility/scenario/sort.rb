@@ -36,11 +36,19 @@ module Utility
         end
       end
 
-      def sort_mapsize(scenarios, dir)
+      def sort_mapsize(scenarios, dir) # rubocop:disable Metrics/MethodLength
         if dir == "asc"
-          scenarios.sort { |a, b| map_size(a) <=> map_size(b) }
+          scenarios.sort do |a, b|
+            a_size = map_size(a)
+            b_size = map_size(b)
+            a_size == b_size ? a[:id] <=> b[:id] : a_size <=> b_size
+          end
         else
-          scenarios.sort { |a, b| map_size(b) <=> map_size(a) }
+          scenarios.sort do |a, b|
+            a_size = map_size(a)
+            b_size = map_size(b)
+            a_size == b_size ? a[:id] <=> b[:id] : b_size <=> a_size
+          end
         end
       end
 

@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { createBlankGame, testGInf, testGMG, testGTruck, testRInf, testRTank } from "./testHelpers";
 import Unit from "../Unit";
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import OverstackState from "./state/OverstackState";
 import { gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
@@ -51,7 +51,7 @@ describe("overstack reduction", () => {
     map.addCounter(new Coordinate(0,0), unit2)
     const unit3 = new Unit(testRTank)
     unit3.id = "test3"
-    unit3.status = unitStatus.Wreck
+    unit3.wreck()
     map.addCounter(new Coordinate(0,0), unit3)
 
     game.internalCurrentPlayer = 1

@@ -1,4 +1,3 @@
-import { UnitStatus } from "../../utilities/commonTypes";
 import Counter from "../Counter";
 import Game from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
@@ -29,8 +28,8 @@ export default class StatusUpdateAction extends BaseAction {
     // this.game.initiative = this.data.old_initiative
     // for (const t of this.targets) {
     //   const c = this.game.findCounterById(t.id) as Counter
-    //   if (t.new_status !== undefined) {
-    //     c.unit.status = t.status as UnitStatus
+    //   if (t.status !== undefined) {
+    //     c.unit.setStatus(t.status)
     //   }
     //   if (t.unpin) { c.unit.pinned = true }
     //   if (t.unrout) { c.unit.routed = true }
@@ -42,7 +41,7 @@ export default class StatusUpdateAction extends BaseAction {
     for (const t of this.targets) {
       const c = this.game.findCounterById(t.id) as Counter
       if (t.new_status !== undefined) {
-        c.unit.status = t.new_status as UnitStatus
+        c.unit.setStatus(t.new_status)
       }
       if (t.unpin) { c.unit.pinned = false }
       if (t.unrout) { c.unit.routed = false }

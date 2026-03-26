@@ -340,7 +340,7 @@ export default class Map {
         for (const c of unit.children) {
           c.parent = undefined
           if (c.canCarrySupport) {
-            c.status = unitStatus.Broken
+            c.break()
           }
         }
         unit.children = []
@@ -349,11 +349,12 @@ export default class Map {
     if (counter.hasUnit) {
       counter.unit.pinned = false
       counter.unit.routed = false
-      counter.unit.status = unitStatus.Normal
+      counter.unit.resetStatus()
     }
     if (counter.hasFeature && (counter.feature.type === featureType.Fire ||
       counter.feature.type === featureType.Smoke)) { return }
     this.game.addEliminatedCounter(counter.hasFeature ? counter.feature : counter.unit)
+    sortStacks(this.game.scenario.map)
   }
 
   removeCounterFromList(list: (Unit | Feature)[], id: string): (Unit | Feature)[] {

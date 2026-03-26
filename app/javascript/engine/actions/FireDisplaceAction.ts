@@ -1,4 +1,4 @@
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { coordinateToLabel } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
@@ -64,7 +64,7 @@ export default class FireDisplaceAction extends BaseAction {
       const end = new Coordinate(this.path[1].x, this.path[1].y)
       this.map.moveUnit(start, end, this.target.id)
     } else {
-      unit.status = unitStatus.Normal
+      unit.resetStatus()
       this.map.eliminateCounter(start, this.target.id)
     }
     sortStacks(this.map)
@@ -78,7 +78,7 @@ export default class FireDisplaceAction extends BaseAction {
       this.map.moveUnit(end, start, this.target.id)
       unit.routed = false
     } else {
-      unit.status = this.target.status
+      unit.setStatus(this.target.status)
       this.map.addCounter(
         new Coordinate(this.path[0].x, this.path[0].y), this.game.findUnitById(this.target.id) as Unit
       )

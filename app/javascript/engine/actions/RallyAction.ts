@@ -1,4 +1,4 @@
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { baseRally, coordinateToLabel } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -70,7 +70,7 @@ export default class RallyAction extends BaseAction {
   mutateGame(): void {
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (this.passed) {
-      if (unit.isBroken) { unit.status = unitStatus.Normal }
+      if (unit.isBroken) { unit.resetStatus() }
       if (unit.jammed) { unit.jammed = false }
     } else if (!unit.canCarrySupport && this.diceResult.result <= this.breakRoll ) {
       unit.jammed = false

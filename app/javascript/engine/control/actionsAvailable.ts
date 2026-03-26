@@ -130,7 +130,8 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         if (!action.doneRotating && !action.sponson) {
           actions.push({ type: "finish_rotation" })
         }
-        if (selection?.smokeCapable && (selection.targetedRange || selection.offBoard)) {
+        if (selection?.smokeCapable && (selection.targetedRange || selection.offBoard) &&
+            !action.reaction) {
           actions.push({ type: "fire_smoke" })
         }
         if (action.targetHexes.length > 0) {

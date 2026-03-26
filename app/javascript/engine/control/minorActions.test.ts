@@ -3,7 +3,7 @@ import { createBlankGame, testFire, testGInf, testSmoke } from "./testHelpers";
 import { checkPhase, gamePhaseType } from "../support/gamePhase";
 import PrecipCheckState from "./state/PrecipCheckState";
 import SmokeCheckState from "./state/SmokeCheckState";
-import { Coordinate, featureType, unitStatus, windType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, windType } from "../../utilities/commonTypes";
 import Feature from "../Feature";
 import FireCheckState from "./state/FireCheckState";
 import Unit from "../Unit";
@@ -96,13 +96,13 @@ describe("minor actions", () => {
 
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.status = unitStatus.Activated
+    unit1.activate()
     unit1.pinned = true
     const loc = new Coordinate(0,0)
     map.addCounter(loc, unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.status = unitStatus.Exhausted
+    unit2.exhaust()
     map.addCounter(loc, unit2)
 
     game.phase = gamePhaseType.CleanupStatus
@@ -111,9 +111,9 @@ describe("minor actions", () => {
 
     const units = map.countersAt(loc)
     expect(units.length).toBe(2)
-    expect(units[0].unit.status).toBe(unitStatus.Normal)
+    expect(units[0].unit.isNormal).toBe(true)
     expect(units[0].unit.pinned).toBe(false)
-    expect(units[1].unit.status).toBe(unitStatus.Tired)
+    expect(units[1].unit.isTired).toBe(true)
 
     const action = game.actions[0]
     expect(action.type).toBe("status_update")

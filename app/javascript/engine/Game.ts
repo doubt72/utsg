@@ -85,7 +85,7 @@ export default class Game {
   internalCurrentPlayer: Player;
   internalInitiativePlayer: Player;
   winner?: Player;
-  iTurn: number = 0;
+  internalTurn: number = 0;
   phase: GamePhase;
   actions: BaseAction[] = [];
   lastActionIndex: number = -1;
@@ -141,7 +141,7 @@ export default class Game {
     // Initial state, actions will modify
     this.internalCurrentPlayer = this.scenario.firstDeploy || 1
     this.internalInitiativePlayer = this.scenario.firstAction || 1
-    this.iTurn = 0
+    this.internalTurn = 0
     this.phase = gamePhaseType.Deployment
 
     this.messageQueue = []
@@ -337,12 +337,12 @@ export default class Game {
   }
 
   get turn(): number {
-    return this.iTurn
+    return this.internalTurn
   }
 
   setTurn(turn: number) {
-    if (turn !== this.iTurn) {
-      this.iTurn = turn
+    if (turn !== this.internalTurn) {
+      this.internalTurn = turn
       if (this.suppressNetwork) { return }
       putAPI(`/api/v1/games/${this.id}`, { game: { metadata: JSON.stringify({ turn: turn }) } }, {
         ok: () => {}
@@ -446,9 +446,6 @@ export default class Game {
 
   addSniper(unit: SimpleUnitCheck): void {
     this.sniperNeeded.push(unit)
-    if (!this.suppressNetwork && this.currentUser === localStorage.getItem("username")) {
-      setTimeout(() => { this.openOverlay = this.scenario.map.hexAt(unit.loc) }, 400);
-    }
   }
 
   get freeRallyAvailable(): boolean {
@@ -475,10 +472,6 @@ export default class Game {
         points += unit.size
       }
     }
-    for (const u of this.scenario.map.allUnits) {
-      if (u.hasFeature || u.unit.nation === this.playerOneNation) { continue }
-      if (u.unit.isWreck) { points += u.unit.size }
-    }
     return points
   }
 
@@ -496,10 +489,6 @@ export default class Game {
       } else if (!unit.operated) {
         points += unit.size
       }
-    }
-    for (const u of this.scenario.map.allUnits) {
-      if (u.hasFeature || u.unit.nation === this.playerTwoNation) { continue }
-      if (u.unit.isWreck) { points += u.unit.size }
     }
     return points
   }

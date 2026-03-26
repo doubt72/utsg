@@ -1,4 +1,4 @@
-import { Coordinate, unitStatus } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { coordinateToLabel } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
@@ -57,7 +57,7 @@ export default class OverstackReduceAction extends BaseAction {
         this.map.dropUnit(loc, loc, id)
       }
     }
-    unit.status = unitStatus.Normal
+    unit.resetStatus()
     this.map.eliminateCounter(loc, this.target.id)
     organizeStacks(this.map)
   }

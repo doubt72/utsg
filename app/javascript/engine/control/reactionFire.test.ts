@@ -1,4 +1,4 @@
-import { Coordinate, featureType, unitStatus } from "../../utilities/commonTypes"
+import { Coordinate, featureType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import organizeStacks from "../support/organizeStacks"
@@ -6,7 +6,7 @@ import select from "./select"
 import { reactionAvailableCoords, reactionFireCheck, reactionFireHexes } from "./reactionFire"
 import WarningActionError from "../actions/WarningActionError"
 import Feature from "../Feature"
-import { createBlankGame, createFireGame, testGInf, testGMG, testGTank, testRInf, testRMG, testRTank } from "./testHelpers"
+import { createBlankGame, createFireGame, testGInf, testGMG, testGTank, testRGun, testRInf, testRMG, testRTank, testRTD } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import FireState from "./state/FireState"
 import MoveState from "./state/MoveState"
@@ -672,12 +672,12 @@ describe("reaction fire attacks", () => {
     map.addCounter(oloc, other1)
     const other2 = new Unit(testRInf)
     other2.id = "target2"
-    other2.status = unitStatus.Broken
+    other2.break()
     const oloc2 = new Coordinate(2, 1)
     map.addCounter(oloc2, other2)
     const other3 = new Unit(testRInf)
     other3.id = "target3"
-    other3.status = unitStatus.Broken
+    other3.break()
     const oloc3 = new Coordinate(2, 0)
     map.addCounter(oloc3, other3)
     const other4 = new Unit(testRMG)
@@ -718,6 +718,53 @@ describe("reaction fire attacks", () => {
     expect(reactionAvailableCoords(game).length).toBe(1)
     expect(reactionAvailableCoords(game)[0].x).toBe(2)
     expect(reactionAvailableCoords(game)[0].y).toBe(2)
+  })
+
+  test("reaction fire doesn't include guns/tank destroyers that don't have arc", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(0, 2)
+    map.addCounter(loc, unit)
+
+    const other1 = new Unit(testRInf)
+    other1.id = "target1"
+    const oloc = new Coordinate(2, 2)
+    map.addCounter(oloc, other1)
+    const other2 = new Unit(testRGun)
+    other2.id = "target2"
+    other2.facing = 4
+    map.addCounter(oloc, other2)
+    const other3 = new Unit(testRTD)
+    other3.id = "target3"
+    other3.facing = 4
+    const oloc2 = new Coordinate(3, 2)
+    map.addCounter(oloc2, other3)
+    organizeStacks(map)
+
+    game.setGameState(new FireState(game, false))
+    select(map, {
+      counter: map.countersAt(oloc)[0],
+      target: { type: "map", xy: oloc }
+    }, () => {})
+    expect(other1.targetSelected).toBe(true)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    game.setGameState(new InitiativeState(game))
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(false)
+    expect(reactionAvailableCoords(game).length).toBe(0)
   })
 
   test("reaction fire doesn't include units in contact", () => {

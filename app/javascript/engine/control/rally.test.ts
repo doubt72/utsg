@@ -21,7 +21,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.status = unitStatus.Broken
+    unit.break()
     map.addCounter(new Coordinate(0,0), unit)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
@@ -32,7 +32,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.status = unitStatus.Broken
+    unit.break()
     map.addCounter(new Coordinate(0,0), unit)
 
     const action = new RallyAction(
@@ -59,7 +59,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.status = unitStatus.Broken
+    unit.break()
     map.addCounter(new Coordinate(0,0), unit)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
@@ -73,7 +73,7 @@ describe("rallying", () => {
     game.gameState?.finish()
     Math.random = original
 
-    expect(unit.status).toBe(unitStatus.Normal)
+    expect(unit.isNormal).toBe(true)
     const action = game.actions[0]
     expect(action.type).toBe("rally")
     expect(action.stringValue).toBe(
@@ -90,7 +90,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.status = unitStatus.Broken
+    unit.break()
     map.addCounter(new Coordinate(0,0), unit)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
@@ -104,7 +104,7 @@ describe("rallying", () => {
     game.gameState?.finish()
     Math.random = original
 
-    expect(unit.status).toBe(unitStatus.Broken)
+    expect(unit.isBroken).toBe(true)
     expect(game.actions[0].type).toBe("rally")
     expect(game.actions[0].stringValue).toBe(
       "rally check at A1: needed 11, got 2, failed: Rifle fails to rally"
@@ -137,7 +137,7 @@ describe("rallying", () => {
     game.gameState?.finish()
     Math.random = original
 
-    expect(unit1.status).toBe(unitStatus.Normal)
+    expect(unit1.isNormal).toBe(true)
     const action = game.actions[0]
     expect(action.type).toBe("rally")
     expect(action.stringValue).toBe(
@@ -187,11 +187,11 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.status = unitStatus.Broken
+    unit1.break()
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.status = unitStatus.Broken
+    unit2.break()
     map.addCounter(new Coordinate(0,0), unit2)
     const unit3 = new Unit(testGLdr)
     unit3.id = "test3"
@@ -211,7 +211,7 @@ describe("rallying", () => {
     game.gameState?.finish()
     Math.random = original
 
-    expect(unit1.status).toBe(unitStatus.Normal)
+    expect(unit1.isNormal).toBe(true)
     const action = game.actions[game.actions.length - 1] as RallyAction
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
@@ -229,11 +229,11 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.status = unitStatus.Broken
+    unit1.break()
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.status = unitStatus.Broken
+    unit2.break()
     map.addCounter(new Coordinate(0,0), unit2)
     organizeStacks(map)
 
@@ -250,7 +250,7 @@ describe("rallying", () => {
     game.gameState?.finish()
     Math.random = original
 
-    expect(unit1.status).toBe(unitStatus.Normal)
+    expect(unit1.isNormal).toBe(true)
     const action = game.actions[0] as RallyAction
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(false)
@@ -267,11 +267,11 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.status = unitStatus.Broken
+    unit1.break()
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.status = unitStatus.Broken
+    unit2.break()
     map.addCounter(new Coordinate(0,0), unit2)
     const unit3 = new Unit(testGLdr)
     unit3.id = "test3"
@@ -289,7 +289,7 @@ describe("rallying", () => {
     game.gameState?.finish()
     Math.random = original
 
-    expect(unit1.status).toBe(unitStatus.Broken)
+    expect(unit1.isBroken).toBe(true)
     const action = game.actions[game.actions.length - 1] as RallyAction
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
@@ -315,18 +315,18 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.status = unitStatus.Broken
+    unit1.break()
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGLdr)
     unit2.id = "test2"
     map.addCounter(new Coordinate(0,0), unit2)
     const unit3 = new Unit(testGInf)
     unit3.id = "test3"
-    unit3.status = unitStatus.Broken
+    unit3.break()
     map.addCounter(new Coordinate(1,0), unit3)
     const unit4 = new Unit(testGInf)
     unit4.id = "test4"
-    unit4.status = unitStatus.Broken
+    unit4.break()
     map.addCounter(new Coordinate(2,0), unit4)
     organizeStacks(map)
 
@@ -346,7 +346,7 @@ describe("rallying", () => {
     expect(action.freeRally).toBe(false)
     expect(action.stringValue).toBe("rally check at C1: needed 11, got 20, passed: Rifle rallies")
 
-    expect(unit4.status).toBe(unitStatus.Normal)
+    expect(unit4.isNormal).toBe(true)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
     game.setGameState(new RallyState(game))
@@ -357,7 +357,7 @@ describe("rallying", () => {
     game.gameState?.finish()
     Math.random = original
 
-    expect(unit1.status).toBe(unitStatus.Broken)
+    expect(unit1.isBroken).toBe(true)
 
     action = game.actions[1] as RallyAction
     expect(action.type).toBe("rally")
@@ -374,7 +374,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.status = unitStatus.Broken
+    unit.break()
     map.addCounter(new Coordinate(0,0), unit)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
