@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Tip of the Spear"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 9, 19].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -45,7 +46,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 8,
           first_deploy: 2,
           first_action: 1,
           date:,

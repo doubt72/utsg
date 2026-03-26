@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Into the Tiger's Den"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 6, 13].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -60,7 +61,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 8,
           first_deploy: 1,
           first_action: 2,
           date:,

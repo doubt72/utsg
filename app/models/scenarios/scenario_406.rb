@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Butcher's Atoll"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1943, 11, 20].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -54,7 +55,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_deploy: 1,
           first_action: 1,
           date:,

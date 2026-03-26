@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Operation Landcrab"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1943, 5, 18].freeze
     LAYOUT = [15, 11, "x"].freeze

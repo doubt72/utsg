@@ -1,3 +1,8 @@
+## 0.18 alpha
+
+- Updated 008, 302, 305, 406, 408, 502, 504, 604 to beta
+- Updated the rest of the scenarios to alpha
+
 ## 0.17 alpha
 
 - Stop polling for user rating on scenarios when logged out/don't display

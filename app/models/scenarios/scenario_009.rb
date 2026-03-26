@@ -6,7 +6,8 @@ module Scenarios
     NAME = "That Sinking Feeling"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1941, 10, 17].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -40,7 +41,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,

@@ -6,7 +6,8 @@ module Scenarios
     NAME = "The Long Climb"
     ALLIES = ["bra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 11, 29].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -43,7 +44,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 9,
           first_deploy: 2,
           first_action: 1,
           date:,

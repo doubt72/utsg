@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Hell's Highway"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 9, 18].freeze
     LAYOUT = [15, 36, "x"].freeze
@@ -66,7 +67,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 10,
+          turns: 11,
           first_deploy: 2,
           first_action: 1,
           date:,

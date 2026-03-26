@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Rude Awakening"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1943, 2, 21].freeze
     LAYOUT = [15, 23, "x"].freeze

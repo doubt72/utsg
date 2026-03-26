@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Sicilian Crucible"
     ALLIES = ["usa"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1943, 7, 31].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -30,7 +31,7 @@ module Scenarios
       "0": {
         list: [
           [2, :ita_leader_5_1],
-          [2, :ita_fucilieri_s],
+          [6, :ita_fucilieri_s],
           [4, :ita_fucilieri_t],
           [2, :ita_breda_m37],
           :ita_brixia_m35,
@@ -43,7 +44,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 5,
           first_deploy: 2,
           first_action: 1,
           date:,

@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Bloody December"
     ALLIES = ["nz"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1943, 12, 7].freeze
     LAYOUT = [15, 11, "x"].freeze

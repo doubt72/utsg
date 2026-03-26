@@ -6,7 +6,8 @@ module Scenarios
     NAME = "The Red House"
     ALLIES = ["ind"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 6, 24].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -41,7 +42,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 7,
           first_deploy: 2,
           first_action: 1,
           date:,

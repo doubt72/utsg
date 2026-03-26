@@ -6,7 +6,8 @@ module Scenarios
     NAME = "The Tractor Factory"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 10, 14].freeze
     LAYOUT = [23, 36, "x"].freeze
@@ -106,7 +107,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 9,
+          turns: 12,
           first_deploy: 1,
           first_action: 2,
           date:,

@@ -1,13 +1,11 @@
 High Priority Features/Bug Fixes:
+  - Romanian vehicles don't seem to be at higher breakdown in 006
+  - Reaction should skip guns/tank destroyers with no firing arc
+  - Smoke not an option for reaction fire
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
-
-  - Test/Beta scenarios
-    006, 201, 302, 305, 406, 408, 502, 504, 604
-
-  - Upgrade everything else to Alpha
 
 Nice to Have Eventually/Soon:
   - Add Some Developer Notes

@@ -389,7 +389,7 @@ export default function NewGame() {
                 <CreateGameButton type="confirm" />
               </div> :
               <div className="mt2em">
-                You must be logged in to create a game.
+                [You must be logged in to create a game.]
               </div> }
           </div>
           <div className="scenario-list-container">

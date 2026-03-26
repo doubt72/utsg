@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Uranus Descending"
     ALLIES = ["ussr"].freeze
     AXIS = ["rom"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 11, 20].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -27,7 +28,7 @@ module Scenarios
       "0": { list: [
         :axm_leader_4_1,
         :axm_leader_3_1,
-        [4, :axm_conscript_s],
+        [5, :axm_conscript_s],
         :axm_crew_t,
         :axm_3_7cm_pak_36,
         [6, :axm_r_2],
@@ -37,7 +38,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 5,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,

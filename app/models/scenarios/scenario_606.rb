@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Burning Grounds"
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 4, 17].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -40,7 +41,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 9,
           first_deploy: 2,
           first_action: 1,
           date:,

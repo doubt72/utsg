@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Fish in a Barrel"
     ALLIES = ["ussr"].freeze
     AXIS = ["hun"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1941, 8, 1].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -15,7 +16,7 @@ module Scenarios
       "0": {
         list: [
           :ussr_leader_5_1,
-          [5, :ussr_rifle_s],
+          [4, :ussr_rifle_s],
           :ussr_rifle_t,
           :ussr_pm_m1910,
           [2, :ussr_t_26_m39],
@@ -28,7 +29,7 @@ module Scenarios
       "0": {
         list: [
           [2, :axm_leader_3_1],
-          [6, :axm_conscript_s],
+          [8, :axm_conscript_s],
           [4, :axm_conscript_t],
           [2, :axm_mg_30],
           [2, :axm_3_7cm_pak_36],
@@ -41,7 +42,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 8,
+          turns: 9,
           first_deploy: 1,
           first_action: 2,
           date:,

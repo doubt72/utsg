@@ -6,7 +6,8 @@ module Scenarios
     NAME = "End of the Line"
     ALLIES = ["frf"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1942, 5, 26].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -53,7 +54,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 9,
           first_deploy: 1,
           first_action: 2,
           date:,

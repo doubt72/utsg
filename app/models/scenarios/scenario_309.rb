@@ -6,7 +6,8 @@ module Scenarios
     NAME = "Storming the Gates"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
+    STATUS = "a"
+    VERSION = "0.2"
 
     DATE = [1944, 10, 2].freeze
     LAYOUT = [15, 11, "x"].freeze
