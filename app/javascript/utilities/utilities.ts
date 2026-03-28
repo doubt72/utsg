@@ -133,6 +133,10 @@ export function rolld10x10(): number {
   return rolld10() * rolld10()
 }
 
+export function rollCC(fp: number): number {
+  return (fp * 2 + rolld10()) * rolld10()
+}
+
 export function otherPlayer(p: Player) {
   return p === 1 ? 2 : 1
 }
@@ -159,31 +163,26 @@ export function baseToHit(fp: number): number {
   return 0
 }
 
-export function chanceCC(diff: number, playerOne: string, playerTwo: string): [number, string][] {
-  const rc: [number, string][] = []
-  if (diff > 20) {
-    rc.push([100, `${playerTwo} player will reduce at least 3`])
-  } else if (diff < -20) {
-    rc.push([100, `${playerOne} player will reduce at least 3`])
-  } else {
-    const odds = new Array(20 - diff).fill(0).concat(
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
-    ).concat(new Array(20 + diff).fill(0))
-    rc.push([odds.slice(0, 5).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 6`])
-    rc.push([odds.slice(5, 10).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 5`])
-    rc.push([odds.slice(10, 15).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 4`])
-    rc.push([odds.slice(15, 20).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 3`])
-    rc.push([odds.slice(20, 25).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 2`])
-    rc.push([odds.slice(25, 29).reduce((a,n) => a + n, 0), `${playerTwo} player reduces 1`])
-    rc.push([odds[29], `both players reduce 1`])
-    rc.push([odds.slice(30, 34).reduce((a,n) => a + n, 0), `${playerOne} player reduces 1`])
-    rc.push([odds.slice(34, 39).reduce((a,n) => a + n, 0), `${playerOne} player reduces 2`])
-    rc.push([odds.slice(39, 44).reduce((a,n) => a + n, 0), `${playerOne} player reduces 3`])
-    rc.push([odds.slice(44, 49).reduce((a,n) => a + n, 0), `${playerOne} player reduces 4`])
-    rc.push([odds.slice(49, 54).reduce((a,n) => a + n, 0), `${playerOne} player reduces 5`])
-    rc.push([odds.slice(54, 59).reduce((a,n) => a + n, 0), `${playerOne} player reduces 6`])
+export function chanceCC(fp: number, player: string, max: number): [number, string][] {
+  const checks: { [index: number]: number } = {}
+  for (let i = 1; i <= 10; i++) {
+    for (let j = 1; j <= 10; j++) {
+      const check = (2 * fp + i) * j
+      const succ = Math.floor(check / 80)
+      const hits = succ > max ? max : succ
+      checks[hits] = checks[hits] === undefined ? 1 : checks[hits] + 1
+    }
   }
-  return rc.filter(n => n[0] > 0)
+  const results = Object.keys(checks)
+  const rc: [number, string][] = []
+  for (const r of results) {
+    const num = Number.parseInt(r)
+    rc.push(
+      [checks[num], `${player} player takes ${num > 0 ? r : "no"} ` +
+        `hit${num !== 1 ? "s" : ""}${num === max ? " (all)" : ""}`]
+    )
+  }
+  return rc.sort((a, b) => b[0] - a[0])
 }
 
 export function chance2D10(check: number): number {
@@ -247,4 +246,4 @@ export const baseMorale = 15
 export const baseRally = 12
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.19"
+export const serverVersion = "0.20"

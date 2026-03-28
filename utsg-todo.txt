@@ -1,20 +1,33 @@
 High Priority Features/Bug Fixes:
-  + Map size secondarily sort by number
-  + Breaking unit should remove pin
-  + Area fire in counter overlay
-  + Update docs for area fire (below, not above)
-    + "weapon may be destroyed" - "destroyed instead of jamming"
-  + Sniper opening stack at wrong time
-  + Fix carried weapons not getting reassigned on elimination
-  + Smoke not an option for reaction fire
-  + Reaction should skip guns/tank destroyers with no firing arc
+  + Revamp close combat to make it more risky
+    + Rephrase close combat help "takes hits" > "reductions"
+    + Fix overlay at CC reduce
+    + Broken units have special close combat strength (half instead of zero)
+  + Desync issues, shut down if websockets lost (don't allow deploys on desync?)
+  + Reaction fire should get a bonus
+  - Reaction fire overlay should include units that moved/fired
+  - Open button on games on home page
+  - Make join button orange
+  - "Select icon to deploy units" should not show up unless deploying
+  - "Click to deploy" should be repeated on deploy window
+  - Automatically undo additional deploys (though again, shouldn't be necessary with above)
+  - Hit/miss/break/routed/etc. animations
+  - Draw line between unit that fired and target hex
+  - No intensive fire or fire when in contact
+  - End after overstack on last turn
+
+  - got weird state at one point blanking out map, need to play against myself with debugging info on
+  - Player disappearing during hotseat game
   - Romanian vehicles don't seem to be at higher breakdown in 006
   - Fix hindrance bug
     - Through two fence corner intersections
-  - Admin pages for game/user summaries
-    - Remove/ban players (FE only security inadequate for this, validate on BE)
 
 Nice to Have Eventually/Soon:
+  - Actions with some sort color palette for important/unimportant actions
+    - Refactor actions with helper to more cleanly display units (highlight colors)
+    - Add individual dice from results
+  - Admin pages for game/user summaries
+    - Remove/ban players (FE only security inadequate for this, validate on BE)
   - Add Some Developer Notes
     - Better way of doing announcements
   - Add tutorial
@@ -27,7 +40,7 @@ Current Stretch:
   - Show Terrain in counter overlay ?
 
 Keep an Eye out for:
-  - Undo getting out of sync / Automatically undo excessive deployments
+  - What does a game look like to someone watching logged in or logged out
   - Handle map scale and such settings gone wrong (reset button in prefs?)
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?

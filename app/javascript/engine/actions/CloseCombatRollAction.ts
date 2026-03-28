@@ -1,6 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel, otherPlayer } from "../../utilities/utilities";
-import { maxCCCasualties, setCCPlayer } from "../control/closeCombat";
+import { coordinateToLabel } from "../../utilities/utilities";
+import { setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -11,7 +11,7 @@ export default class CloseCombatRollAction extends BaseAction {
   diceResult: GameActionDiceResult[];
   origin: GameActionUnit[];
   target: GameActionUnit[];
-  base: { o_base: number, t_base: number };
+  ccData: { p1_fp: number, p2_fp: number, p1_max: number, p2_max: number };
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -24,45 +24,40 @@ export default class CloseCombatRollAction extends BaseAction {
     this.diceResult = (data.data.dice_result as GameActionDiceResult[])
     this.target = (data.data.target as GameActionUnit[])
     this.origin = (data.data.origin as GameActionUnit[])
-    this.base = (data.data.cc_data as { o_base: number, t_base: number })
+    this.ccData = (data.data.cc_data as { p1_fp: number, p2_fp: number, p1_max: number, p2_max: number })
   }
 
   get type(): string { return "close_combat_roll" }
 
   get stringValue(): string {
     const loc = new Coordinate(this.origin[0].x, this.origin[0].y)
-    const ip = this.base.o_base + this.diceResult[0].result
-    const op = this.base.t_base + this.diceResult[1].result
-    const iName = this.game.nationNameForPlayer(this.player)
-    const oName = this.game.nationNameForPlayer(otherPlayer(this.player))
-    let rc = `${iName} `
+    const nation1 = this.game.nationNameForPlayer(1)
+    const nation2 = this.game.nationNameForPlayer(2)
+    let rc = `${nation1} `
     rc += this.origin.map(o => {
       const unit = this.game.findUnitById(o.id) as Unit
       return unit.name
     }).join(", ")
-    rc += ` battles ${oName} `
+    rc += ` battles ${nation2} `
     rc += this.target.map(t => {
       const unit = this.game.findUnitById(t.id) as Unit
       return unit.name
     }).join(", ")
-    rc += ` in close combat at ${coordinateToLabel(loc)}; ${iName} player `
-    rc += `rolls ${this.diceResult[0].result} plus ${this.base.o_base} firepower; `
-    rc += `${oName} player rolls ${this.diceResult[1].result} plus ${this.base.t_base} firepower; `
-    if (ip === op) {
-      rc += "each player reduces 1 unit"
-    } else if (ip > op) {
-      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.origin[0].id)?.playerNation ?? "")
-      const reduce = Math.floor((ip - op)/5) + 1
-      const num = max < reduce ? max : reduce
-      rc += `${oName} player reduces ${num} unit${num > 1 ? "s" : ""}`
-      if (max < reduce) { rc += ` (all units)` }
-    } else {
-      const max = maxCCCasualties(this.map, loc, this.game.findUnitById(this.origin[0].id)?.playerNation ?? "")
-      const reduce = Math.floor((op - ip)/5) + 1
-      const num = max < reduce ? max : reduce
-      rc += `${iName} player reduces ${num} unit${num > 1 ? "s" : ""}`
-      if (max < reduce) { rc += ` (all units)` }
-    }
+    rc += ` in close combat at ${coordinateToLabel(loc)}; `
+    rc += `${nation1} player roll result of ${this.diceResult[0].result} on ${this.ccData.p1_fp} firepower; `
+    rc += `${nation2} player roll result of ${this.diceResult[1].result} on ${this.ccData.p2_fp} firepower; `
+
+    const hit1 = Math.floor(this.diceResult[1].result / 80)
+    const max1 = this.ccData.p1_max
+    const num1 = max1 < hit1 ? max1 : hit1
+    rc += `${nation1} player takes ${num1} hit${num1 !== 1 ? "s" : ""}`
+    if (max1 <= hit1) { rc += ` (all eliminated)` }
+
+    const hit2 = Math.floor(this.diceResult[0].result / 80)
+    const max2 = this.ccData.p2_max
+    const num2 = max2 < hit2 ? max2 : hit2
+    rc += `, ${nation2} player takes ${num2} hit${num2 !== 1 ? "s" : ""}`
+    if (max2 < hit2) { rc += ` (all eliminated)` }
     return rc
   }
 
@@ -81,28 +76,23 @@ export default class CloseCombatRollAction extends BaseAction {
       }
     })
     sortStacks(this.map)
-    const op = this.base.o_base + this.diceResult[0].result
-    const tp = this.base.t_base + this.diceResult[1].result
     const current = this.game.closeNeeded.filter(
       cn => cn.loc.x === this.target[0].x && cn.loc.y === this.target[0].y
     )[0]
-    const origin = this.game.findUnitById(this.origin[0].id)
-    const target = this.game.findUnitById(this.target[0].id)
-    if (op === tp) {
-      current.oReduce = 1
-      current.tReduce = 1
-    } else if (op > tp) {
-      const max = maxCCCasualties(this.map, loc, target?.playerNation ?? "")
-      const reduce = Math.floor((op - tp)/5) + 1
-      current.tReduce = max < reduce ? max : reduce
-    } else {
-      const max = maxCCCasualties(this.map, loc, origin?.playerNation ?? "")
-      const reduce = Math.floor((tp - op)/5) + 1
-      current.oReduce = max < reduce ? max : reduce
-    }
-    current.oPlayer = origin?.playerNation === this.game.playerOneNation ? 1 : 2
-    current.tPlayer = target?.playerNation === this.game.playerOneNation ? 1 : 2
+
+    const hit1 = Math.floor(this.diceResult[1].result / 80)
+    const max1 = this.ccData.p1_max
+    current.p1Reduce = max1 < hit1 ? max1 : hit1
+
+    const hit2 = Math.floor(this.diceResult[0].result / 80)
+    const max2 = this.ccData.p2_max
+    current.p2Reduce = max2 < hit2 ? max2 : hit2
+
     current.state = closeProgress.NeedsCasualties
     setCCPlayer(this.game, current)
+    if (!this.game.testGame && localStorage.getItem("username") === this.game.currentUser &&
+        (current.p1Reduce > 0 || current.p2Reduce > 0)) {
+      this.game.openOverlay = this.game.scenario.map.hexAt(loc)
+    }
   }
 }

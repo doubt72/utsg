@@ -386,7 +386,7 @@ export default function CounterSection() {
     } else if (["gun", "sw"].includes(counter.unit.type)) {
       counter.unit.jammed = broken
     } else {
-      broken ? counter.unit.wreck() : counter.unit.resetStatus()
+      broken ? counter.unit.break() : counter.unit.resetStatus()
     }
     return <MapCounter counter={counter} ovCallback={() => {}} />
   }
@@ -623,7 +623,8 @@ export default function CounterSection() {
         </p>)
       } else if (unit.currentMovement) {
         sections.push(<p key={index++}>
-          <strong>Uncircled, unboxed movement</strong> indicates that is this unit moves by foot.
+          <strong>Uncircled, unboxed movement</strong> indicates that is this unit moves by
+          foot. { unit.isBroken ? "Red movement can only be used to rout, not for movement or assaults." : "" }
         </p>)
       }
       if (unit.engineer && !unit.isBroken) {
@@ -757,6 +758,11 @@ export default function CounterSection() {
             this unit may attack armored units with no penalty.
           </p>)
         }
+      } else if (unit.isBroken) {
+        sections.push(<p key={index++}>
+          <strong>Red firepower</strong> indicates unit cannot participate in fire attacks but
+          counts for close combat.
+        </p>)
       }
       if (unit.breakdownRoll) {
         sections.push(<p key={index++}>

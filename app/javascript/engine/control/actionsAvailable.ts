@@ -268,7 +268,6 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       } else {
         const loc = closeCombatCasualtyNeeded(game)
         if (loc) {
-          setTimeout(() => { game.openOverlay = game.scenario.map.hexAt(loc) }, 400);
           actions.unshift({ type: "none", message: "select unit to reduce" })
         } else {
           actions.unshift({ type: "none", message: "select close combat to resolve" })

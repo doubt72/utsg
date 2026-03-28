@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 interface ActionDisplayProps {
   game: Game;
   callback: (actionId?: number) => void;
+  desyncCallback: () => void;
   chatInput: boolean;
   collapse?: boolean;
 }
 
 export default function ActionDisplay({
-  game, callback, chatInput, collapse = false
+  game, callback, desyncCallback, chatInput, collapse = false
 }: ActionDisplayProps) {
   const [divClass, setDivClass] = useState<string>("")
 
@@ -31,6 +32,8 @@ export default function ActionDisplay({
   useEffect(() => {
     if (readyState === ReadyState.OPEN) {
       subscribe()
+    } else if ([ReadyState.CLOSED, ReadyState.CLOSING, ReadyState.UNINSTANTIATED].includes(readyState)) {
+      desyncCallback()
     }
   }, [readyState])
 

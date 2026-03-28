@@ -93,7 +93,7 @@ export type GameActionRoutData = {
 }
 
 export type GameActionCCData = {
-  o_base?: number, t_base?: number, count?: number
+  p1_fp?: number, p2_fp?: number, count?: number, p1_max?: number, p2_max?: number,
 }
 
 export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"

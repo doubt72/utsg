@@ -13,10 +13,11 @@ type ChatMessage = {
 interface ChatDisplayProps {
   gameId: number;
   showInput: boolean;
+  desyncCallback: () => void;
   collapse?: boolean;
 }
 
-export default function ChatDisplay({ gameId, showInput, collapse = false }: ChatDisplayProps) {
+export default function ChatDisplay({ gameId, showInput, desyncCallback, collapse = false }: ChatDisplayProps) {
   const [message, setMessage] = useState("")
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
 
@@ -46,6 +47,8 @@ export default function ChatDisplay({ gameId, showInput, collapse = false }: Cha
   useEffect(() => {
     if (readyState === ReadyState.OPEN) {
       subscribe()
+    } else if ([ReadyState.CLOSED, ReadyState.CLOSING, ReadyState.UNINSTANTIATED].includes(readyState)) {
+      desyncCallback()
     }
   }, [readyState])
 

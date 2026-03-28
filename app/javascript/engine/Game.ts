@@ -63,8 +63,7 @@ export type SimpleHexCheck = {
 }
 export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
 export type CloseCheck = {
-  loc: Coordinate, state: CloseProgress, oReduce: number, tReduce: number,
-  oPlayer: Player, tPlayer: Player,
+  loc: Coordinate, state: CloseProgress, p1Reduce: number, p2Reduce: number,
 }
 
 export default class Game {
@@ -94,6 +93,7 @@ export default class Game {
   axisSniper?: Feature;
 
   suppressNetwork: boolean = false;
+  testGame: boolean = false;
   currentState?: BaseState;
 
   closeReinforcementPanel: boolean = false;
@@ -136,6 +136,7 @@ export default class Game {
 
     if (data.suppress_network) {
       this.suppressNetwork = data.suppress_network
+      this.testGame = data.suppress_network
     }
 
     // Initial state, actions will modify

@@ -1,3 +1,10 @@
+## 0.20 alpha
+
+- Reaction fire gets bonus to hit
+- Completely revamp close combat to make it more...  Dynamic
+- Broken infantry units have half firepower (for CC only)
+- Stop game on desync (websocket disconnection) with window with reload button
+
 ## 0.19 alpha
 
 - Refactor status changes (and fix pinned broken units)

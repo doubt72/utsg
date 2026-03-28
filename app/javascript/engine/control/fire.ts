@@ -214,7 +214,8 @@ export function leadershipAt(game: Game, at: Coordinate): number {
 }
 
 export function untargetedModifiers(
-  game: Game, source: StateSelection[], targets: StateSelection[], path: GameActionPath[]
+  game: Game, source: StateSelection[], targets: StateSelection[], path: GameActionPath[],
+  reaction: boolean,
 ): { mod: number, why: string[] } {
   const why: string[] = []
   let mod = 0
@@ -265,6 +266,10 @@ export function untargetedModifiers(
     mod += 1
     why.push("- plus 1 for tired")
   }
+  if (reaction) {
+    mod -= 1
+    why.push("- minus 1 for reaction fire")
+  }
   if (rapid) {
     mod += 1
     why.push("- plus 1 for rapid fire")
@@ -294,6 +299,7 @@ export function untargetedModifiers(
 
 export function rangeMultiplier(
   map: Map, source: Counter, target: Coordinate, sponson: boolean, turretMoved: boolean,
+  reaction: boolean
 ): { mult: number, why: string[] } {
   const why: string[] = []
   let mult = 3
@@ -351,6 +357,14 @@ export function rangeMultiplier(
   if (source.unit.isActivated) {
       mult += 1
       why.push("- plus 1 for intensive fire")
+  }
+  if (reaction) {
+      mult -= 1
+      why.push("- minus 1 for reaction fire")
+  }
+  if (source.unit.isTired) {
+      mult += 1
+      why.push("- plus 1 for tired")
   }
   if (turretMoved) {
       mult += 1

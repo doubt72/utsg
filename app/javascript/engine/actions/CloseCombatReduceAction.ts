@@ -44,25 +44,31 @@ export default class CloseCombatReduceAction extends BaseAction {
       unit.break()
     }
     const current = this.game.closeNeeded.filter(cn => cn.loc.x === this.target.x && cn.loc.y === this.target.y)[0]
-    if (this.game.currentPlayer === current.oPlayer) {
-      current.oReduce -= 1
+    if (this.game.currentPlayer === 1) {
+      current.p1Reduce -= 1
     } else {
-      current.tReduce -= 1
+      current.p2Reduce -= 1
     }
-    if (current.oReduce < 1 && current.tReduce < 1) {
+    if (current.p1Reduce < 1 && current.p2Reduce < 1) {
       current.state = closeProgress.Done
       const counters = this.game.scenario.map.countersAt(loc)
       if (!this.map.contactAt(loc)) {
         for (const c of counters) {
           if (c.hasUnit && !c.unit.isWreck && !c.unit.isBroken && (c.unit.isVehicle || c.unit.canCarrySupport) ) {
             c.unit.exhaust()
+            const current = c.unit.playerNation === this.game.currentPlayerNation
+            const vp = this.map.victoryAt(loc)
+            const currentVP = vp === this.game.currentPlayer
+            if (current !== currentVP) { this.map.toggleVP(loc) }
           }
         }
-        const vp = this.map.victoryAt(loc)
-        if (vp && vp === this.game.currentPlayer) { this.map.toggleVP(loc) }
       }
     }
     setCCPlayer(this.game, current)
     this.game.closeOverlay = true
+    if (!this.game.testGame && localStorage.getItem("username") === this.game.currentUser &&
+        (current.p1Reduce > 0 || current.p2Reduce > 0)) {
+      this.game.openOverlay = this.game.scenario.map.hexAt(loc)
+    }
   }
 }

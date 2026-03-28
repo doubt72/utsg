@@ -243,6 +243,7 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
   if (counter.hasUnit && (counter.unit.noFire || counter.unit.pinned)) {
     color = counterRed
     value = counter.unit.currentFirepower
+    if (counter.unit.isBroken) { value = counter.unit.closeCombatFirepower }
     size = 18
   } else if (counter.hasUnit) {
     if (counter.unit.areaFire || counter.unit.antiTank || counter.unit.fieldGun || counter.unit.incendiary) {
@@ -276,7 +277,7 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
     }
     if (counter.unit.singleFire) { color = "white" }
   }
-  if (value === 0) { value = "-" }
+  if (value === 0 && !(counter.hasUnit && counter.unit.isBroken)) { value = "-" }
   if (counter.hasFeature) {
     path = circlePath(loc, 10)
     color = "white"

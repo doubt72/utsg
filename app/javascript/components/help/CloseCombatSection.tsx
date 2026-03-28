@@ -37,13 +37,13 @@ export default function CloseCombatSection() {
         non-leader infantry unit. Vehicles count as 2. Infantry support weapons add 2 if they have
         an assault bonus, otherwise 0.
       </p>
-      <p>Each player rolls a single d10 and adds it to their combat power.</p>
       <p>
-        If the total result is a tie, both sides reduce one unit (breaking an infantry unit, or
-        removing a vehicle or broken infantry unit. Crewed and infantry weapons cannot be chosen as
-        a reduced unit). If one player has a higher total than the other, the other player must
-        reduce one unit, plus one more for every 5 of difference between total results (if possible
-        and any units remain).
+        Each player multiplies their FP by two, then adds the result of 1d10, then multiplies that
+        total by 1d10. For every multiple of 80 in the result, their opponent takes one hit (reduces
+        one unit). A reduction either breaks an unbroken infantry unit (or eliminates a vehicle), or
+        eliminates a broken infantry unit. Carried infantry weapons or manned weapons cannot take a
+        hit (those weapons are simply dropped/unmanned if the carrying/manning unit is eliminated,
+        and can be picked up/manned by either side later).
       </p>
       <p>
         If only one player remains after close combat, their units are exhausted. Otherwise, the

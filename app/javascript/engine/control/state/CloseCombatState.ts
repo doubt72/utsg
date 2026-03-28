@@ -1,9 +1,9 @@
 import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
-import { rolld10, otherPlayer } from "../../../utilities/utilities";
+import { rollCC } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { closeProgress } from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
-import { closeCombatCasualtyNeeded, closeCombatFirepower } from "../closeCombat";
+import { closeCombatCasualtyNeeded, closeCombatFirepower, maxCCCasualties } from "../closeCombat";
 import BaseState, { stateType } from "./BaseState";
 
 export default class CloseCombatState extends BaseState {
@@ -52,7 +52,6 @@ export default class CloseCombatState extends BaseState {
     for (const cn of this.game.closeNeeded) {
       if (cn.state === closeProgress.NeedsCasualties) {
         if (selection.counter.unit.operated) { return false }
-        // if (this.samePlayer(selection.counter.unit) && cn.oReduce === 0) { return false }
         if (!this.samePlayer(selection.counter.unit)) { return false }
         return cn.loc.x === xy.x && cn.loc.y === xy.y
       }
@@ -80,27 +79,30 @@ export default class CloseCombatState extends BaseState {
   }
 
   rollForCombat() {
-    const dice = [{ result: rolld10(), type: "d10" }, { result: rolld10(), type: "d10" }]
     const origin: GameActionUnit[] = []
     const target: GameActionUnit[] = []
+    const loc = this.map.currentSelection[0].hex as Coordinate
     const counters = this.map.currentSelection
     counters.forEach(c => {
-      const hex = c.hex as Coordinate
       if (this.samePlayer(c.unit)) {
-        origin.push({ x: hex.x, y: hex.y, id: c.unit.id, status: c.unit.status })
+        origin.push({ x: loc.x, y: loc.y, id: c.unit.id, status: c.unit.status })
       } else {
-        target.push({ x: hex.x, y: hex.y, id: c.unit.id, status: c.unit.status })
+        target.push({ x: loc.x, y: loc.y, id: c.unit.id, status: c.unit.status })
       }
     })
-    const p0 = this.player === 1 ? 1 : 2
-    const oBase = closeCombatFirepower(this.game, counters[0].hex as Coordinate, p0)
-    const tBase = closeCombatFirepower(this.game, counters[0].hex as Coordinate, otherPlayer(p0))
+    const fp1 = closeCombatFirepower(this.game, counters[0].hex as Coordinate, 1)
+    const fp2 = closeCombatFirepower(this.game, counters[0].hex as Coordinate, 2)
+    const max1 = maxCCCasualties(this.map, loc, this.game.playerOneNation)
+    const max2 = maxCCCasualties(this.map, loc, this.game.playerTwoNation)
+    const dice = [
+      { result: rollCC(fp1), type: "CC" }, { result: rollCC(fp2), type: "CC" }
+    ]
     const action = new GameAction({
       user: this.game.currentPlayer === this.player ? this.game.currentUser : this.game.opponentUser,
       player: this.player,
       data: {
         action: "close_combat_roll", old_initiative: this.game.initiative,
-        dice_result: dice, origin, target, cc_data: { o_base: oBase, t_base: tBase },
+        dice_result: dice, origin, target, cc_data: { p1_fp: fp1, p2_fp: fp2, p1_max: max1, p2_max: max2 },
       }
     }, this.game)
     this.map.clearAllSelections()

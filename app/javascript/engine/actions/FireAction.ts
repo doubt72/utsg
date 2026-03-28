@@ -176,7 +176,7 @@ export default class FireAction extends BaseAction {
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
-      const mult = rangeMultiplier(this.map, firing0, to, sponson, rotated)
+      const mult = rangeMultiplier(this.map, firing0, to, sponson, rotated, this.reaction)
       const range = hexDistance(from, to)
       const hindrance = fireHindrance(this.game, this.convertAToA(firing), to)
       const targetCheck = (range + hindrance) * mult.mult
@@ -438,7 +438,7 @@ export default class FireAction extends BaseAction {
     } else {
       const basehit = baseToHit(fp.fp)
       const mods = untargetedModifiers(
-        this.game, this.convertAToA(firing), this.convertAToA(targets), this.path
+        this.game, this.convertAToA(firing), this.convertAToA(targets), this.path, this.reaction
       )
       const coords: Coordinate[] = []
       for (const t of targets) {

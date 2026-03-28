@@ -164,7 +164,7 @@ export default function FireSection() {
           <ol className="mt05em mb05em">
             <li>
               The base range modifier for crewed weapons (excluding mortars) and offboard artillery
-              is 4. All other units have a base modifier of three.
+              is 4. All other units have a base modifier of 3.
             </li>
             <li>
               Subtract crew gun handling skill when operating a crewed weapon (unless firepower is
@@ -183,10 +183,13 @@ export default function FireSection() {
               immobilized vehicle.
             </li>
             <li>Add one if intensive fire.</li>
+            <li>Add one if tired.</li>
+            <li>Subtract one if reaction fire.</li>
             <li>Add one if raining, sand or dust, two if snowing or fog.</li>
             <li>Add one if night.</li>
           </ol>
         </li>
+        <li>The adjusted range modifier can never be less than 1.</li>
         <li>Determine the distance from the firing unit to the target(s).</li>
         <li>Add any hindrance between the firing unit and the target to the above distance.</li>
         <li>Multiply the modifier by the result: this is the range check.</li>
@@ -289,6 +292,7 @@ export default function FireSection() {
               not get this modifier).
             </li>
             <li>Subtract three if all units are adjacent to the target.</li>
+            <li>Subtract one if reaction fire.</li>
             <li>Add one if raining, sand or dust, two if snowing or fog.</li>
             <li>Add one if night.</li>
           </ol>

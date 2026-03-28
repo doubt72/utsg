@@ -3,7 +3,7 @@ import {
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
 import { baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
-import { closeCombatFirepower } from "../control/closeCombat"
+import { closeCombatFirepower, maxCCCasualties } from "../control/closeCombat"
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, leadershipAt, moraleModifiers, rangeMultiplier,
   untargetedModifiers
@@ -152,14 +152,15 @@ export function counterRallyHelpLayout(
 }
 
 export function counterFireHelpLayout(
-  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
+  game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate,
+  reaction: boolean
 ): HelpLayout {
   const noHelp = { path: "", size: 0, style: {}, opacity: 0, tStyle: {}, texts: [] }
   if (!game.gameState) { return noHelp }
   if (!game.fireState.targetSelection.map(s => s.id).includes(counter.unit.id)) {
     return noHelp
   }
-  const text = counter.unit.fireHelpText(game, hex)
+  const text = counter.unit.fireHelpText(game, hex, reaction)
   return mapHelpLayout(loc, max, text, scale)
 }
 
@@ -371,7 +372,7 @@ export function rallyHelpText(game: Game, loc: Coordinate, unit: Unit): string[]
   return rc
 }
 
-export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[] {
+export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction: boolean): string[] {
   if (!game.gameState) { return [] }
   if (game.fireState.targetSelection.length < 1) { return [] }
   let rc: string[] = []
@@ -390,7 +391,9 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
   const source = firing[0].counter.unit
   if (firing[0].counter.unit.targetedRange || firing[0].counter.unit.offBoard) {
     const rotated = game.fireState.path.length > 1
-    const mult = rangeMultiplier(game.scenario.map, firing[0].counter, to, game.fireState.sponson, rotated)
+    const mult = rangeMultiplier(
+      game.scenario.map, firing[0].counter, to, game.fireState.sponson, rotated, reaction
+    )
     const range = hexDistance(from, to)
     const roll = (range + hindrance) * mult.mult 
     rc.push(`-> targeting roll (d10x10): ${roll} (${chanceD10x10(roll)}%)`)
@@ -444,7 +447,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit): string[]
     }
   } else {
     const basehit = baseToHit(fp.fp)
-    const mods = untargetedModifiers(game, firing, targets, game.fireState.path)
+    const mods = untargetedModifiers(game, firing, targets, game.fireState.path, reaction)
     const tohit = basehit + mods.mod + hindrance
     rc.push(`-> to hit (2d10): ${tohit} (${chance2D10(tohit)}%)`)
     rc.push(`firepower: ${fp.fp}`)
@@ -509,9 +512,15 @@ export function closeCombatHelpText(game: Game, loc: Coordinate): string[] {
   rc.push(`${game.alliedName} firepower ${fp1}`)
   rc.push(`${game.axisName} firepower ${fp2}`)
   rc.push("")
-  rc.push("close combat odds:")
-  const odds = chanceCC(fp1 -fp2, game.alliedName, game.axisName)
-  for (const o of odds) {
+  const max1 = maxCCCasualties(game.scenario.map, loc, game.playerTwoNation)
+  const odds1 = chanceCC(fp1, game.axisName, max1)
+  for (const o of odds1) {
+    rc.push(`${o[0]}% ${o[1]}`)
+  }
+  rc.push("")
+  const max2 = maxCCCasualties(game.scenario.map, loc, game.playerOneNation)
+  const odds2 = chanceCC(fp2, game.alliedName, max2)
+  for (const o of odds2) {
     rc.push(`${o[0]}% ${o[1]}`)
   }
   return rc

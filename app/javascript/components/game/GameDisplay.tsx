@@ -17,6 +17,7 @@ import {
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { stateType } from "../../engine/control/state/BaseState";
 import NotificationWindow from "./NotificationWindow";
+import DesyncWindow from "./DesyncWindow";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -154,6 +155,17 @@ export default function GameDisplay() {
       setNotificationTimeout(to)
     }
   }, [game.k?.playerTwoNotification])
+
+  const desynced = () => {
+    if (!game.k) { return }
+    if (localStorage.getItem("username") !== game.k.playerOneName &&
+        localStorage.getItem("username") !== game.k.playerTwoName) { return }
+    const message = "The connection to the server was interrupted and the game cannot continue " +
+      "unless the connection is restored."
+    setErrorWindow(
+      <DesyncWindow title={"Connection Lost"} message={message} />
+    )
+  }
 
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {
@@ -303,7 +315,8 @@ export default function GameDisplay() {
   useEffect(() => {
     if (!game.k) { return }
     setActions(<ActionDisplay game={game.k} callback={actionNotification}
-                          collapse={collapseLayout} chatInput={showInput()} />)
+                              collapse={collapseLayout} chatInput={showInput()}
+                              desyncCallback={desynced} />)
   }, [game.k, game.k?.playerOneName, game.k?.playerTwoName, collapseLayout])
 
   useEffect(() => {
@@ -463,8 +476,8 @@ export default function GameDisplay() {
               {actions}
             </div>
             <div className="chat-section">
-              <ChatDisplay gameId={Number(id)} collapse={true}
-                           showInput={showInput()} />
+              <ChatDisplay gameId={Number(id)} collapse={true} showInput={showInput()}
+                           desyncCallback={desynced} />
             </div>
           </div>
         </div>
@@ -503,8 +516,7 @@ export default function GameDisplay() {
               {actions}
             </div>
             <div className="chat-section">
-              <ChatDisplay gameId={Number(id)}
-                           showInput={showInput()} />
+              <ChatDisplay gameId={Number(id)} showInput={showInput()} desyncCallback={desynced} />
             </div>
           </div>
         </div>

@@ -57,7 +57,9 @@ export default function MapCounterOverlay({
     if (rallyCheck) {
       setActionHelpDisplay(HelpOverlay(counterRallyHelpLayout(map.game, counter, loc, max, scale, hex)))
     } else if (fireCheck) {
-      setActionHelpDisplay(HelpOverlay(counterFireHelpLayout(map.game, counter, loc, max, scale, hex)))
+      setActionHelpDisplay(HelpOverlay(
+        counterFireHelpLayout(map.game, counter, loc, max, scale, hex, map.game.fireState.reaction))
+      )
     } else if (routCheck) {
       setActionHelpDisplay(HelpOverlay(counterRoutHelpLayout(map.game, counter, loc, max, scale, hex)))
     } else if (moraleCheck) {

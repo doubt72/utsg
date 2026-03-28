@@ -529,6 +529,19 @@ export default class Unit {
     }
   }
 
+  get closeCombatFirepower(): number {
+    if (this.isBroken) {
+      return Math.floor(this.baseFirepower / 2)
+    } else if (this.isVehicle && !this.isWreck) {
+      return this.armored ? 2 : 1
+    } else if (this.uncrewedSW && !this.jammed && (this.parent && !this.parent.isBroken)) {
+      return this.assault ? 2 : 0
+    } else if (this.canCarrySupport) {
+      return this.currentFirepower + (this.assault ? 2 : 0)
+    }
+    return 0
+  }
+
   get currentRange(): number {
     if (this.noFire) {
       return 0
@@ -557,8 +570,8 @@ export default class Unit {
     return rallyHelpText(game, hex, this)
   }
 
-  fireHelpText(game: Game, hex: Coordinate): string[] {
-    return fireHelpText(game, hex, this)
+  fireHelpText(game: Game, hex: Coordinate, reaction: boolean): string[] {
+    return fireHelpText(game, hex, this, reaction)
   }
 
   routHelpText(game: Game, hex: Coordinate): string[] {
