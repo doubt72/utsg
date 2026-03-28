@@ -204,7 +204,7 @@ export default function LineOfSightSection() {
       </p>
       <p>
         {redNumber(3)}
-        Each hex of the field add 1 to the total hindrance.
+        Each hex of the field adds 1 to the total hindrance.
       </p>
       <p>
         {redNumber(4)}
@@ -220,7 +220,7 @@ export default function LineOfSightSection() {
       </p>
       <p>
         {redNumber(7)}
-        Unlike the fence on the other side, the fence father away from the player add a hindrance.
+        Unlike the fence on the other side, the fence father away from the player adds a hindrance.
         Similarly, the wall next to the unit <em>does not</em> block LOS.
       </p>
       <p>

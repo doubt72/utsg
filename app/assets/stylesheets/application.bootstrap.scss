@@ -18,12 +18,10 @@ a.regular:hover {
 }
 
 // Common
-button.custom-button,a.custom-button,div.custom-button {
+button.custom-button,a.custom-button,div.custom-button,button.custom-button-orange {
   text-decoration: none;
   white-space: nowrap;
   font-size: 1.1em;
-  color: $light-green;
-  background-color: $dark-green;
   margin: 0.25em 0.25em 0 0.25em;
   border-radius: 0.33em;
   border: none;
@@ -31,6 +29,17 @@ button.custom-button,a.custom-button,div.custom-button {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+button.custom-button,a.custom-button,div.custom-button {
+  color: $light-green;
+  background-color: $dark-green;
+}
+
+button.custom-button-orange {
+  color: white;
+  background-color: $alert-orange;
+  padding: 0.075em 0.75em 0.225em 0.75em;
 }
 
 div.button-left {
@@ -52,6 +61,11 @@ div.button-right {
 }
 
 button.custom-button svg {
+  vertical-align: -3.5px;
+  margin-right: 5px;
+}
+
+button.custom-button-orange svg {
   vertical-align: -3.5px;
   margin-right: 5px;
 }
@@ -105,6 +119,11 @@ button.custom-button:hover,a.custom-button:hover,div.custom-button:hover {
   background-color: $very-dark-green;
 }
 
+button.custom-button-orange:hover {
+  color: white;
+  background-color: $lightish-green;
+}
+
 div.custom-button-ghost,div.custom-button-ghost:hover {
   color: $darkish-green;
 }
@@ -115,6 +134,27 @@ div.custom-button-select {
 }
 
 div.custom-button-select:hover {
+  color: white;
+  background-color: $darkish-green;
+}
+
+span.slim-button {
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 1.1em;
+  color: $light-green;
+  background-color: $dark-green;
+  margin: 0 0.5em 0 0;
+  padding: 0 0.75em 0 0.75em;
+  border-radius: 0.33em;
+  border: none;
+  outline: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+span.slim-button:hover {
   color: white;
   background-color: $darkish-green;
 }
@@ -356,9 +396,10 @@ div.custom-button-select:hover {
 }
 
 .main-page-list-row {
+  cursor: pointer;
   display: flex;
   background-color: $gray-f;
-  padding: 0.25em 1em 0.35em;
+  padding: 0.2em 1em 0.2em 0.75em;
   margin-top: 1px;
   border: 2px solid $gray-c;
   border-radius: 0.33em;

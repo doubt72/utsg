@@ -1,28 +1,21 @@
 High Priority Features/Bug Fixes:
-  + Revamp close combat to make it more risky
-    + Rephrase close combat help "takes hits" > "reductions"
-    + Fix overlay at CC reduce
-    + Broken units have special close combat strength (half instead of zero)
-  + Desync issues, shut down if websockets lost (don't allow deploys on desync?)
-  + Reaction fire should get a bonus
-  - Reaction fire overlay should include units that moved/fired
-  - Open button on games on home page
-  - Make join button orange
-  - "Select icon to deploy units" should not show up unless deploying
-  - "Click to deploy" should be repeated on deploy window
-  - Automatically undo additional deploys (though again, shouldn't be necessary with above)
-  - Hit/miss/break/routed/etc. animations
-  - Draw line between unit that fired and target hex
-  - No intensive fire or fire when in contact
-  - End after overstack on last turn
+  + Reaction fire overlay should include units that moved/fired
+  + Open button on games on home page
+  + Make join button orange
+  + "Select icon to deploy units" should not show up unless deploying
+  + "Click to deploy" should be repeated on deploy window
+  + No intensive fire or fire when in contact
+  + Draw line between unit that fired and target hex
+  + End after overstack on last turn
 
   - got weird state at one point blanking out map, need to play against myself with debugging info on
-  - Player disappearing during hotseat game
+  - Player icon disappearing during hotseat game
   - Romanian vehicles don't seem to be at higher breakdown in 006
   - Fix hindrance bug
     - Through two fence corner intersections
 
 Nice to Have Eventually/Soon:
+  - Hit/miss/break/routed/etc. animations
   - Actions with some sort color palette for important/unimportant actions
     - Refactor actions with helper to more cleanly display units (highlight colors)
     - Add individual dice from results
@@ -42,6 +35,7 @@ Current Stretch:
 Keep an Eye out for:
   - What does a game look like to someone watching logged in or logged out
   - Handle map scale and such settings gone wrong (reset button in prefs?)
+  - Automatically undo additional deploys (should no longer be necessary)
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
   ? Free rally doesn't include already rallied

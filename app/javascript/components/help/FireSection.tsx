@@ -269,8 +269,9 @@ export default function FireSection() {
           firing, just that unit&apos;s firepower). Pinned units only get half firepower, rounded
           down. If there is a leader in the same hex, increase the firepower of each unit in the hex
           by the leader&apos;s leadership, or the highest leadership if more than one. This applies
-          to either single or group fire. Find the base to-hit for the first total FP equal to or
-          below the combined firepower. Leaders out of range are not included. E.g., if the
+          to either single or group fire. Leaders out of range do not add their firepower to the total
+          (their only purpose in that case is to coordinate other units).  Find the base to-hit
+          for the first total FP equal to or below the combined firepower. E.g., if the
           firepower adds up to 11, use the base below 10, i.e., the base to-hit is 13.
           <ol className="mt05em mb05em">
             <li>
@@ -334,7 +335,7 @@ export default function FireSection() {
           Roll d6 to determine direction: the directions are the same as wind directions, with 1
           being to the left and then rotating clockwise.
         </li>
-        <li>Roll d10 to determin the drift, and use the following table to determine range:</li>
+        <li>Roll d10 to determine the drift, and use the following table to determine range:</li>
       </ol>
       <table>
         <tbody>
@@ -378,8 +379,8 @@ export default function FireSection() {
           hits:
           <ol className="mt05em mb05em">
             <li>
-              Find the base to-hit for the weapon&apos;s firepower. Remember to halve the amount if
-              using non-anti-armor weapons or if the turret is jammed, etc.
+              Find the base to-hit for the weapon&apos;s firepower (use the same table as with
+              infantry fire). Remember to halve the amount if using non-anti-armor weapons.
             </li>
             <li>
               If the vehicle has a turret, determine if a turret or hull hit: roll d10, 1-3 hits the

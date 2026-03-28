@@ -98,6 +98,7 @@ export default function GameListRow({ data }: GameListRowProps) {
 
   return (
     <div className="main-page-list-row" onClick={onClick}>
+      {empty ? "" : <span className="slim-button"> open </span>}
       {status()}
       {empty ? "" : <div className="main-page-list-row-names mr1em">{players()}</div>}
       {empty ? "" : <div className="green monospace mr05em">{data.scenario}:</div>}

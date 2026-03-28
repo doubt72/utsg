@@ -258,8 +258,8 @@ export default function ElevationSection() {
         Hexes at lower elevations cast &quot;shadows&quot; behind them. The length of the shadow can
         be calculated as so: first take the distance between the source and the hex casting the
         shadow, then divide by the difference in elevation plus one. In this case, the shadow has a
-        length of two: the distance of 4 divided by 2 (i.e., the difference in altitudes or 1, plus
-        another 1) results in a shadow distance of 2:
+        length of two: the distance of 4 divided by 2 (i.e., the difference in altitudes &mdash; 1
+        in this case &mdash; plus another 1) results in a shadow distance of 2:
       </p>
       <p>
         <em>

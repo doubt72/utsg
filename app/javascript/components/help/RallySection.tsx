@@ -39,7 +39,7 @@ export default function RallySection() {
       <ol>
         <li>start with a base of { baseRally }</li>
         <li>subtract the unit&apos;s morale</li>
-        <li>subtract the highest leadership of any leaders in the hex in the hex</li>
+        <li>subtract the highest leadership of any leaders in the hex</li>
         <li>subtract the cover of the terrain in the hex</li>
         <li>add one if there is an unbroken enemy unit adjacent</li>
         <li>

@@ -39,6 +39,11 @@ export default function HousekeepingSection() {
         (including both friendly and enemy wrecked units) count towards the total stacking size in a
         hex.
       </p>
+      <p>
+        The game ends on the last turn after this phase; there&apos;s no reason to update status,
+        check smoke, or check variable weather as it can no longer have any effect on the game, and
+        the chance that blazes spreading could is infinitessimal even if it wasn&apos;t skipped.
+      </p>
       <h3>{section}.2. Updating Unit Status and Initiative</h3>
       <p>
         At this point, all activated, pinned, tired, and routed markers are removed, and any exhausted

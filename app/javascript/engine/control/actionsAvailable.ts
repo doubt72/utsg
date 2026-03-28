@@ -113,6 +113,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
     actions.push({ type: "fire_start_check" })
   } else if (game.phase === gamePhaseType.Main) {
     const selection = currSelection(game, false)
+    const map = game.scenario.map
     if (game.gameState?.type === stateType.Fire) {
       const action = game.fireState
       if (action) {
@@ -240,18 +241,18 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
       actions.push({ type: "pass_cancel" })
     } else if (game.gameState?.type === stateType.Reaction) {
       actions.unshift({ type: "none", message: "reaction fire" })
-      if (canReactionFire(selection, game.scenario.map)) { actions.push({ type: "reaction_fire" }) }
-      if (canReactionIntensiveFire(selection)) { actions.push({ type: "reaction_intensive_fire" }) }
+      if (canReactionFire(selection, map)) { actions.push({ type: "reaction_fire" }) }
+      if (canReactionIntensiveFire(selection, map)) { actions.push({ type: "reaction_intensive_fire" }) }
       actions.push({ type: "reaction_pass" })
     } else if (!selection) {
       actions.unshift({ type: "none", message: "select units to activate" })
-      if (canEnemyRout(game.scenario.map)) { actions.push({ type: "enemy_rout" }) }
+      if (canEnemyRout(map)) { actions.push({ type: "enemy_rout" }) }
       actions.push({ type: "pass" })
     } else {
-      if (canFire(selection, game.scenario.map)) { actions.push({ type: "fire" }) }
-      if (canIntensiveFire(selection)) { actions.push({ type: "intensive_fire" }) }
-      if (canMove(selection, game.scenario.map)) { actions.push({ type: "move" }) }
-      if (canRush(selection, game.scenario.map)) { actions.push({ type: "rush" }) }
+      if (canFire(selection, map)) { actions.push({ type: "fire" }) }
+      if (canIntensiveFire(selection, map)) { actions.push({ type: "intensive_fire" }) }
+      if (canMove(selection, map)) { actions.push({ type: "move" }) }
+      if (canRush(selection, map)) { actions.push({ type: "rush" }) }
       if (canAssaultMove(selection)) { actions.push({ type: "assault_move" }) }
       if (canRout(selection)) { actions.push({ type: "rout" }) }
       actions.push({ type: "unselect" })
@@ -371,7 +372,7 @@ function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {
   }
 }
 
-function checkFire(unit: Unit): boolean {
+function checkFire(unit: Unit, map: Map): boolean {
   if (unit.isExhausted || unit.isBroken) { return false }
   if (unit.currentFirepower <= 0) { return false }
   if (unit.jammed && !unit.sponson) { return false }
@@ -380,21 +381,21 @@ function checkFire(unit: Unit): boolean {
   if (unit.parent && (unit.parent.pinned || unit.parent.isBroken)) { return false }
   if (unit.parent && unit.parent.isVehicle) { return false }
   if (!unit.parent && (unit.operated)) { return false }
+  if (contact(unit, map)) { return false }
   return true
 }
 
 function canFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (unit.isActivated) { return false }
-  if (contact(unit, map)) { return false }
-  return checkFire(unit)
+  return checkFire(unit, map)
 }
 
-function canIntensiveFire(unit?: Unit): boolean {
+function canIntensiveFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!unit.isActivated) { return false }
   if (unit.offBoard || unit.crewed || unit.areaFire) { return false }
-  return checkFire(unit)
+  return checkFire(unit, map)
 }
 
 function canReactionFire(unit: Unit | undefined, map: Map): boolean {
@@ -403,9 +404,9 @@ function canReactionFire(unit: Unit | undefined, map: Map): boolean {
   return canFire(unit, map)
 }
 
-function canReactionIntensiveFire(unit?: Unit): boolean {
+function canReactionIntensiveFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
-  return canIntensiveFire(unit)
+  return canIntensiveFire(unit, map)
 }
 
 function canMoveAny(unit: Unit): boolean {

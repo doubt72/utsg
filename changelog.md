@@ -1,3 +1,15 @@
+## 0.21 alpha
+
+- End game after overstack phase on last turn
+- Add pointer cursor to game listing, add extra "button" (though clicking anywhere works)
+- Make join button orange (and added a flash)
+- Add tweaks to reinforcement panels
+- Show reaction fire stacks
+- Show fire track
+- Fixed a bunch of doc typos
+
+- Bug fix: Disallow fire for units in contact
+
 ## 0.20 alpha
 
 - Reaction fire gets bonus to hit

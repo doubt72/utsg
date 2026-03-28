@@ -170,7 +170,19 @@ function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData
   }, game), backendSync)
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupStatus
-  game.executeAction(new GameAction(data, game), backendSync)
+  if (game.turn === game.scenario.turns && phaseData.new_phase === gamePhaseType.CleanupStatus) {
+    let winner = game.currentInitiativePlayer
+    if (game.playerOneScore !== game.playerTwoScore) {
+      winner = game.playerOneScore > game.playerTwoScore ? 1 : 2
+    }
+    game.executeAction(new GameAction({
+      player: winner, user: game.currentUser, data: {
+        action: "finish", old_initiative: game.initiative,
+      }
+    }, game), backendSync)
+  } else {
+    game.executeAction(new GameAction(data, game), backendSync)
+  }
 }
 
 function CleanupStatus(game: Game, backendSync: boolean, data: GameActionData): void {
@@ -217,20 +229,8 @@ function CleanupWeather(game: Game, backendSync: boolean, data: GameActionData):
   if ((game.checkWindDirection || game.checkWindSpeed) && game.turn !== game.scenario.turns) {
     return
   }
-  if (oldTurn === game.scenario.turns) {
-    let winner = game.currentInitiativePlayer
-    if (game.playerOneScore !== game.playerTwoScore) {
-      winner = game.playerOneScore > game.playerTwoScore ? 1 : 2
-    }
-    game.executeAction(new GameAction({
-      player: winner, user: game.currentUser, data: {
-        action: "finish", old_initiative: game.initiative,
-      }
-    }, game), backendSync)
-  } else {
-    phaseData.new_phase = gamePhaseType.Deployment
-    phaseData.new_player = game.scenario.firstAction
-    phaseData.new_turn = oldTurn + 1
-    game.executeAction(new GameAction(data, game), backendSync)
-  }
+  phaseData.new_phase = gamePhaseType.Deployment
+  phaseData.new_player = game.scenario.firstAction
+  phaseData.new_turn = oldTurn + 1
+  game.executeAction(new GameAction(data, game), backendSync)
 }

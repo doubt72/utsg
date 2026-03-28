@@ -81,7 +81,8 @@ export default function Reinforcements(
   }, [update])
 
   useEffect(() => {
-    const deployment = map.game?.phase === gamePhaseType.Deployment
+    const deployment = map.game?.phase === gamePhaseType.Deployment &&
+      localStorage.getItem("username") === map.game.currentUser
     setBase(
       <g>
         <path d={roundedRectangle(xx, yy, deployment ? 305 : 190 , 100)}

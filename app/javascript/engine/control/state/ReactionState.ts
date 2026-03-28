@@ -1,4 +1,5 @@
 import { Coordinate, CounterSelectionTarget, HexOpenType, hexOpenType } from "../../../utilities/commonTypes";
+import MoveAction from "../../actions/MoveAction";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
@@ -24,6 +25,23 @@ export default class ReactionState extends BaseState {
     let counters: Counter[] = []
     for (const a of available) {
       counters = counters.concat(this.map.countersAt(a))
+    }
+    const action = this.game.lastSignificantAction as MoveAction
+    if (["fire", "intensive_fire"].includes(action.type)) {
+      const hexes: Coordinate[] = []
+      for (const o of action.origin) {
+        let found = false
+        for (const h of hexes) {
+          if (h.x === o.x && h.y === o.y) { found = true; break }
+        }
+        if (!found) { hexes.push(new Coordinate(o.x, o.y))}
+      }
+      for (const h of hexes) {
+        counters = counters.concat(this.map.countersAt(h))
+      }
+    } else {
+      const last = action.path[action.path.length - 1]
+      counters = counters.concat(this.map.countersAt(new Coordinate(last.x, last.y)))
     }
     return counters
   }

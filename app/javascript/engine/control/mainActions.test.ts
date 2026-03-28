@@ -449,20 +449,8 @@ describe("game actions", () => {
     expect(game.actions[7]?.stringValue).toBe("close combat done, begin housekeeping, checking for overstacking")
     expect(game.actions[8]?.type).toBe("info")
     expect(game.actions[8]?.stringValue).toBe("no units overstacked, skipping overstack reduction")
-    expect(game.actions[9]?.type).toBe("phase")
-    expect(game.actions[9]?.stringValue).toBe("done checking for overstacking, updating unit status")
-    expect(game.actions[10]?.type).toBe("status_update")
-    expect(game.actions[10]?.stringValue).toBe(
-      "update all unit statuses: remove all pinned, routed, tired, and activated markers; exhausted units become tired"
-    )
-    expect(game.actions[11]?.type).toBe("phase")
-    expect(game.actions[11]?.stringValue).toBe("done updating unit status, checking smoke")
-    expect(game.actions[12]?.type).toBe("phase")
-    expect(game.actions[12]?.stringValue).toBe("done checking smoke, checking blazes")
-    expect(game.actions[13]?.type).toBe("phase")
-    expect(game.actions[13]?.stringValue).toBe("done checking blazes, checking for variable weather")
 
-    expect(game.actions.length).toBe(15)
+    expect(game.actions.length).toBe(10)
 
     expect(game.lastAction?.type).toBe("state")
     expect(game.lastAction?.stringValue).toBe("last turn complete, game over")

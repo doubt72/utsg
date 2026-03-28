@@ -48,7 +48,7 @@ export default function ReinforcementPanel({
     for (const value of Object.values(units)) {
       if (value.length > length) { length = value.length }
     }
-    return length == 1 ? 225 : length * 90 + 84
+    return length < 3 ? 320 : length * 90 + 84
   }
 
   const dragCallback = (event: React.MouseEvent) => {
@@ -110,11 +110,15 @@ export default function ReinforcementPanel({
          onMouseMove={(event) => {
            if (mouseDown) { dragCallback(event) }
          }} >
-        <path d={roundedRectangle(x, y, maxWidth(units), Object.keys(units).length * 106 + 44)}
+        <path d={roundedRectangle(x, y, maxWidth(units), Object.keys(units).length * 106 + 64)}
               style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }} />
         <text x={x + 10} y={y + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
           available units{ units[99] ? ", losses" : "" }:
+        </text>
+        <text x={x + 10} y={y + 44} fontSize={16} textAnchor="start"
+              fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
+          [select, then click on map]
         </text>
         {closeButton}
         {
@@ -123,14 +127,14 @@ export default function ReinforcementPanel({
             const label = turn > 98 ? "losses" : (turn > 0 ? `turn ${turn}` : "setup")
             return (
               <g key={i}>
-                <text x={x + 10} y={y + 100 + 106*i} fontSize={16} textAnchor="start"
+                <text x={x + 10} y={y + 120 + 106*i} fontSize={16} textAnchor="start"
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
                   {label}
                 </text>
                 {
                   pair[1].map((u, j) => {
                     const x0 = x + 84 + 90*j
-                    const y0 = y + 52 + 106*i
+                    const y0 = y + 72 + 106*i
                     const counter = new Counter(new Coordinate(x0, y0+5), u.counter, map, true)
                     counter.onMap = false
                     if (player === map.game?.currentPlayer) {
