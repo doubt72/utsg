@@ -34,6 +34,7 @@ import DeployState from "../../../engine/control/state/DeployState";
 import { gamePhaseType } from "../../../engine/support/gamePhase";
 import { fireActions, moveActions } from "../../../engine/actions/BaseAction";
 import { GameActionPath } from "../../../engine/GameAction";
+import { ActionAnimationDetails } from "../../../engine/Game";
 
 interface MapDisplayProps {
   map: Map;
@@ -106,6 +107,11 @@ export default function MapDisplay({
     error: string, timer: number
   }>({ error: "", timer: 0 })
 
+  const [actionAnimation, setActionAnimation] = useState<JSX.Element | undefined>()
+  const [actionAnimationDetails, setActionAnimationDetails] = useState<{
+    details: ActionAnimationDetails, timer: number, state: "in" | "show" | "out", size: number,
+  } | undefined>()
+
   const user = localStorage.getItem("username")
 
   const checkMin = (m?: Map): boolean => {
@@ -171,7 +177,7 @@ export default function MapDisplay({
       }
       return
     }
-    const alpha =  timer < 30 ? timer / 30 : 1
+    const alpha = timer < 30 ? timer / 30 : 1
     const error = notificationDetails.error
     const twidth = error.length * 14.4 + 24
     const x = (map.previewXSize * (mapScale ?? 1) - 76 < width / scale - 216 ?
@@ -193,6 +199,82 @@ export default function MapDisplay({
       setNotificationDetails({ error: map.game.getMessage() as string, timer: 200 })
     }
   }, [map.game?.messageQueue.length])
+
+  const actionAnimationIn = 80
+
+  useEffect(() => {
+    if (!map.game) { return }
+    if (!actionAnimationDetails) {
+      setActionAnimation(undefined)
+      return
+    }
+    const showLength = 300
+    const animationOut = 320
+    const timer = actionAnimationDetails.timer
+    const state = actionAnimationDetails.state
+    const size = actionAnimationDetails.size + 0.01
+    if (timer <= 0) {
+      if (state === "in") {
+        setActionAnimationDetails({
+          details: actionAnimationDetails.details, timer: showLength, state: "show", size
+        })
+      } else if (state === "show") {
+        setActionAnimationDetails({
+          details: actionAnimationDetails.details, timer: animationOut, state: "out", size
+        })
+      } else if (state === "out") {
+        if (map.game.animationQueue.length > 0) {
+          setActionAnimationDetails({
+            details: map.game.getActionAnimation(), timer: actionAnimationIn, state: "in", size: 1
+          })
+        } else {
+          setActionAnimationDetails(undefined)
+        }
+      }
+      return
+    }
+    let alpha = 1.0
+    if (state === "in") { alpha = 1 - timer / actionAnimationIn }
+    if (state === "out") { alpha = timer / animationOut }
+    const details = actionAnimationDetails.details
+    const message = details.message
+    const textSize = 80 / Math.sqrt(message.reduce((max, m) => m.length > max ? m.length : max, 0))
+    const outlineSize = textSize/4 > 10 ? 10 : textSize/4
+    const hex = map.hexAt(details.loc) as Hex
+    const x = hex.xOffset
+    const yInterval = textSize * 1.1
+    const y = hex.yOffset + textSize / 4 - (message.length / 2 - 0.5) * yInterval
+    const color = details.textColor
+    const bg = details.backgroundColor
+    setActionAnimation(
+      <g opacity={alpha}
+         transform={`translate(${(1 - size)*x} ${(1 - size)*y}) scale(${size})`}>
+        { message.map((m, i) => {
+            return <text key={i} x={x} y={y + i*yInterval} fontSize={textSize}
+                         fontFamily="'Courier Prime', monospace"
+                         textAnchor="middle" style={{
+                           fill: color, stroke: bg, paintOrder: "stroke", strokeWidth: outlineSize,
+                         }}>{m}</text>
+        })}
+      </g>
+    )
+    setTimeout(() => setActionAnimationDetails(
+      s => {
+        if (s === undefined) { return s }
+        return { details: actionAnimationDetails.details, state, size, timer: s.timer - 20}
+      }
+    ), 20)
+  }, [actionAnimationDetails])
+
+  useEffect(() => {
+    if (!map.game) { return }
+    if (actionAnimationDetails !== undefined) { return }
+    if (map.game.animationQueue.length > 0) {
+      setActionAnimationDetails({
+        details: map.game.getActionAnimation(), timer: actionAnimationIn, state: "in", size: 1
+      })
+    }
+  }, [map.game?.animationQueue.length])
 
   useEffect(() => {
     const handleResize = () => {
@@ -632,8 +714,7 @@ export default function MapDisplay({
       } else {
         return undefined
       }
-    }
-    )
+    })
   }
 
   const mapDisplay = () => {
@@ -677,6 +758,7 @@ export default function MapDisplay({
           {routTrack}
           {fireHindrance}
           {directionSelectionOverlay}
+          {actionAnimation}
         </svg>
       )
     }

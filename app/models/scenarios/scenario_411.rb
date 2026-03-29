@@ -3,11 +3,11 @@
 module Scenarios
   class Scenario411 < Base
     ID = "411"
-    NAME = "Breaking Back"
+    NAME = "Back on Track"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
     STATUS = "a"
-    VERSION = "0.2"
+    VERSION = "0.3"
 
     DATE = [1942, 10, 22].freeze
     LAYOUT = [15, 11, "x"].freeze

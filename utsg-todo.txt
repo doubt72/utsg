@@ -1,26 +1,19 @@
 High Priority Features/Bug Fixes:
-  + Reaction fire overlay should include units that moved/fired
-  + Open button on games on home page
-  + Make join button orange
-  + "Select icon to deploy units" should not show up unless deploying
-  + "Click to deploy" should be repeated on deploy window
-  + No intensive fire or fire when in contact
-  + Draw line between unit that fired and target hex
-  + End after overstack on last turn
+  - Hit/miss/break/routed/etc. animations
+  - Fix hindrance bug
+    - Through two fence corner intersections
+  - Admin pages for game/user summaries
+    - Remove/ban players (FE only security inadequate for this, validate on BE)
+  - Actions with some sort color palette for important/unimportant actions
+    - Refactor actions with helper to more cleanly display units (highlight colors)
+    - Add individual dice from results
+  - What does a game look like to someone watching logged in or logged out
 
   - got weird state at one point blanking out map, need to play against myself with debugging info on
   - Player icon disappearing during hotseat game
   - Romanian vehicles don't seem to be at higher breakdown in 006
-  - Fix hindrance bug
-    - Through two fence corner intersections
 
 Nice to Have Eventually/Soon:
-  - Hit/miss/break/routed/etc. animations
-  - Actions with some sort color palette for important/unimportant actions
-    - Refactor actions with helper to more cleanly display units (highlight colors)
-    - Add individual dice from results
-  - Admin pages for game/user summaries
-    - Remove/ban players (FE only security inadequate for this, validate on BE)
   - Add Some Developer Notes
     - Better way of doing announcements
   - Add tutorial
@@ -33,7 +26,6 @@ Current Stretch:
   - Show Terrain in counter overlay ?
 
 Keep an Eye out for:
-  - What does a game look like to someone watching logged in or logged out
   - Handle map scale and such settings gone wrong (reset button in prefs?)
   - Automatically undo additional deploys (should no longer be necessary)
   ? Show ALL for movement into mines or wire

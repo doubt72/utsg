@@ -66,6 +66,10 @@ export type CloseCheck = {
   loc: Coordinate, state: CloseProgress, p1Reduce: number, p2Reduce: number,
 }
 
+export type ActionAnimationDetails = {
+  loc: Coordinate, message: string[], textColor: string, backgroundColor: string
+}
+
 export default class Game {
   id: number;
   name: string;
@@ -102,6 +106,7 @@ export default class Game {
   closeOverlay: boolean = false;
 
   messageQueue: string[];
+  animationQueue: ActionAnimationDetails[];
   updateTimer: NodeJS.Timeout | undefined;
   resignationLevel: number;
 
@@ -146,6 +151,7 @@ export default class Game {
     this.phase = gamePhaseType.Deployment
 
     this.messageQueue = []
+    this.animationQueue = []
     this.resignationLevel = 0
     this.moraleChecksNeeded = []
     this.sniperNeeded = []
@@ -284,6 +290,29 @@ export default class Game {
 
   getMessage() {
     return this.messageQueue.pop()
+  }
+
+  addActionAnimation(loc: Coordinate, type: string) {
+    if (this.suppressNetwork) { return }
+    if (type === "hit") {
+      this.animationQueue.push({
+        loc, message: ["hit"], textColor: "#FFF", backgroundColor: "#E00" }
+      )
+    } else if (type === "immobilized") {
+      this.animationQueue.push({
+        loc, message: ["immobilized"], textColor: "#FFF", backgroundColor: "#E00" }
+      )
+    } else if (type === "jammed") {
+      this.animationQueue.push({
+        loc, message: ["weapon", "broken"], textColor: "#FFF", backgroundColor: "#E00" }
+      )
+    } else {
+      this.animationQueue.push({ loc, message: ["???"], textColor: "#EE0", backgroundColor: "#000" })
+    }
+  }
+
+  getActionAnimation(): ActionAnimationDetails {
+    return this.animationQueue.shift() as ActionAnimationDetails
   }
 
   get currentPlayer(): Player {

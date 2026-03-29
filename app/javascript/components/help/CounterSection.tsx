@@ -385,7 +385,7 @@ export default function CounterSection() {
       broken ? counter.unit.wreck() : counter.unit.resetStatus()
     } else if (["gun", "sw"].includes(counter.unit.type)) {
       counter.unit.jammed = broken
-    } else {
+    } else if (counter.hasUnit) {
       broken ? counter.unit.break() : counter.unit.resetStatus()
     }
     return <MapCounter counter={counter} ovCallback={() => {}} />

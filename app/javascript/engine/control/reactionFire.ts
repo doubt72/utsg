@@ -17,12 +17,12 @@ export const reactionActions = ["move", "rush", "fire", "intensive_fire"]
 export function reactionFireCheck(game: Game, action: boolean = true): boolean {
   if (game.gameState !== undefined) { return false }
   if (game.phase !== gamePhaseType.Main) { return false }
-  if (game.lastAction?.type === "reaction_pass") { return false }
   let rc = false
   let last = ""
   for (let i = game.actions.length - 1; i >= 0; i--) {
     const a = game.actions[i]
     if (a.undone) { continue }
+    if (a.type === "reaction_pass") { return false }
     if (a.type === "initiative") { rc = true }
     if (significantActions.includes(a.type)) { last = a.type; break }
   }

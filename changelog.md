@@ -1,3 +1,12 @@
+## 0.22 alpha
+
+- Added support for animated map notifications
+
+- Bug fix: fix display of feature and marker counters in doc counter section
+- Bug fix: fix reaction fire skip on undo
+
+- Updated 411 - better name
+
 ## 0.21 alpha
 
 - End game after overstack phase on last turn
