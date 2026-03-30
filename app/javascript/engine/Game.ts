@@ -292,27 +292,25 @@ export default class Game {
     return this.messageQueue.pop()
   }
 
-  addActionAnimation(loc: Coordinate, type: string) {
+  addActionAnimations(data: {loc: Coordinate, type: string}[]) {
     if (this.suppressNetwork) { return }
-    if (type === "hit") {
-      this.animationQueue.push({
-        loc, message: ["hit"], textColor: "#FFF", backgroundColor: "#E00" }
-      )
-    } else if (type === "immobilized") {
-      this.animationQueue.push({
-        loc, message: ["immobilized"], textColor: "#FFF", backgroundColor: "#E00" }
-      )
-    } else if (type === "jammed") {
-      this.animationQueue.push({
-        loc, message: ["weapon", "broken"], textColor: "#FFF", backgroundColor: "#E00" }
-      )
-    } else {
-      this.animationQueue.push({ loc, message: ["???"], textColor: "#EE0", backgroundColor: "#000" })
-    }
+    const animations = data.map(d => {
+      if (d.type === "hit") {
+        return { loc: d.loc, message: ["hit"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "immobilized") {
+        return  {loc: d.loc, message: ["immobilized"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "jammed") {
+        return { loc: d.loc, message: ["weapon", "broken"], textColor: "#FFF", backgroundColor: "#E00" }
+      }
+      return { loc: d.loc, message: ["???"], textColor: "#EE0", backgroundColor: "#000" }
+    })
+    this.animationQueue = this.animationQueue.concat(animations)
   }
 
-  getActionAnimation(): ActionAnimationDetails {
-    return this.animationQueue.shift() as ActionAnimationDetails
+  getActionAnimations(): ActionAnimationDetails[] {
+    const rc = this.animationQueue
+    this.animationQueue = []
+    return rc
   }
 
   get currentPlayer(): Player {

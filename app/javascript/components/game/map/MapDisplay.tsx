@@ -109,7 +109,7 @@ export default function MapDisplay({
 
   const [actionAnimation, setActionAnimation] = useState<JSX.Element | undefined>()
   const [actionAnimationDetails, setActionAnimationDetails] = useState<{
-    details: ActionAnimationDetails, timer: number, state: "in" | "show" | "out", size: number,
+    details: ActionAnimationDetails[], timer: number, state: "in" | "show" | "out", size: number,
   } | undefined>()
 
   const user = localStorage.getItem("username")
@@ -204,31 +204,39 @@ export default function MapDisplay({
 
   useEffect(() => {
     if (!map.game) { return }
-    if (!actionAnimationDetails) {
-      setActionAnimation(undefined)
-      return
-    }
+    if (!actionAnimationDetails) { return }
+    if (actionAnimationDetails.details.length < 1) { return }
     const showLength = 300
     const animationOut = 320
     const timer = actionAnimationDetails.timer
     const state = actionAnimationDetails.state
-    const size = actionAnimationDetails.size + 0.01
+    const size = actionAnimationDetails.size
     if (timer <= 0) {
       if (state === "in") {
-        setActionAnimationDetails({
-          details: actionAnimationDetails.details, timer: showLength, state: "show", size
+        setActionAnimationDetails(s => {
+          if (!s) { return s }
+          return {
+            details: s.details, timer: showLength, state: "show", size
+          }
         })
       } else if (state === "show") {
-        setActionAnimationDetails({
-          details: actionAnimationDetails.details, timer: animationOut, state: "out", size
+        setActionAnimationDetails(s => {
+          if (!s) { return s }
+          return {
+            details: s.details, timer: animationOut, state: "out", size
+          }
         })
       } else if (state === "out") {
-        if (map.game.animationQueue.length > 0) {
-          setActionAnimationDetails({
-            details: map.game.getActionAnimation(), timer: actionAnimationIn, state: "in", size: 1
+        if (actionAnimationDetails.details.length > 1) {
+          setActionAnimationDetails(s => {
+            if (!s) { return s }
+            return {
+              details: s.details.slice(1), timer: actionAnimationIn, state: "in", size: 1
+            }
           })
         } else {
           setActionAnimationDetails(undefined)
+          setActionAnimation(undefined)
         }
       }
       return
@@ -236,7 +244,7 @@ export default function MapDisplay({
     let alpha = 1.0
     if (state === "in") { alpha = 1 - timer / actionAnimationIn }
     if (state === "out") { alpha = timer / animationOut }
-    const details = actionAnimationDetails.details
+    const details = actionAnimationDetails.details[0]
     const message = details.message
     const textSize = 80 / Math.sqrt(message.reduce((max, m) => m.length > max ? m.length : max, 0))
     const outlineSize = textSize/4 > 10 ? 10 : textSize/4
@@ -250,7 +258,7 @@ export default function MapDisplay({
       <g opacity={alpha}
          transform={`translate(${(1 - size)*x} ${(1 - size)*y}) scale(${size})`}>
         { message.map((m, i) => {
-            return <text key={i} x={x} y={y + i*yInterval} fontSize={textSize}
+            return <text key={i} x={x} y={y + i*yInterval + size*10} fontSize={textSize}
                          fontFamily="'Courier Prime', monospace"
                          textAnchor="middle" style={{
                            fill: color, stroke: bg, paintOrder: "stroke", strokeWidth: outlineSize,
@@ -260,19 +268,24 @@ export default function MapDisplay({
     )
     setTimeout(() => setActionAnimationDetails(
       s => {
-        if (s === undefined) { return s }
-        return { details: actionAnimationDetails.details, state, size, timer: s.timer - 20}
+        if (!s) { return s }
+        return {
+          details: s.details, state, size: size + 0.02,
+          timer: s.timer - 20,
+        }
       }
     ), 20)
   }, [actionAnimationDetails])
 
   useEffect(() => {
     if (!map.game) { return }
-    if (actionAnimationDetails !== undefined) { return }
     if (map.game.animationQueue.length > 0) {
-      setActionAnimationDetails({
-        details: map.game.getActionAnimation(), timer: actionAnimationIn, state: "in", size: 1
-      })
+      setTimeout(() => setActionAnimationDetails(s => {
+        if (!map.game || s !== undefined ) { return undefined }
+        return {
+          details: map.game.getActionAnimations(), timer: actionAnimationIn, state: "in", size: 1
+        }
+      }), 100)
     }
   }, [map.game?.animationQueue.length])
 

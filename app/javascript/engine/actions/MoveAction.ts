@@ -209,10 +209,12 @@ export default class MoveAction extends BaseAction {
         if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
       })
     }
-    this.game.addActionAnimation(new Coordinate(this.lastPath.x, this.lastPath.y), "hit")
-    this.game.addActionAnimation(new Coordinate(this.lastPath.x, this.lastPath.y), "immobilized")
-    this.game.addActionAnimation(new Coordinate(this.lastPath.x, this.lastPath.y), "jammed")
-    this.game.addActionAnimation(new Coordinate(this.lastPath.x, this.lastPath.y), "nope")
+    this.game.addActionAnimations([
+      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "hit" },
+      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "immobilized" },
+      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "jammed" },
+      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "foo" },
+    ])
   }
 
   undo(): void {

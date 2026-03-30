@@ -8,6 +8,12 @@ High Priority Features/Bug Fixes:
     - Refactor actions with helper to more cleanly display units (highlight colors)
     - Add individual dice from results
   - What does a game look like to someone watching logged in or logged out
+  - Broken units can't move in stack (and reset status)
+  - Cancel last part of move
+  - Reaction fire not showing fire track
+  - Need keys for overlay to make react happy
+  - Remove scroll from map
+  - Don't unselect when hiding counters / don't cancel move / don't show overlay
 
   - got weird state at one point blanking out map, need to play against myself with debugging info on
   - Player icon disappearing during hotseat game
