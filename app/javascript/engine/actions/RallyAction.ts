@@ -69,14 +69,22 @@ export default class RallyAction extends BaseAction {
 
   mutateGame(): void {
     const unit = this.game.findUnitById(this.target.id) as Unit
+    const loc = new Coordinate(this.target.x, this.target.y)
     if (this.passed) {
-      if (unit.isBroken) { unit.resetStatus() }
-      if (unit.jammed) { unit.jammed = false }
+      if (unit.isBroken) {
+        unit.resetStatus()
+        this.game.addActionAnimations([{ loc, type: "rally" }])
+      }
+      if (unit.jammed) {
+        unit.jammed = false
+        this.game.addActionAnimations([{ loc, type: "fix" }])
+      }
     } else if (!unit.canCarrySupport && this.diceResult.result <= this.breakRoll ) {
       unit.jammed = false
-      this.game.scenario.map.eliminateCounter(
-        new Coordinate(this.target.x, this.target.y), this.target.id
-      )
+      this.game.scenario.map.eliminateCounter(loc, this.target.id)
+      this.game.addActionAnimations([{ loc, type: "destroyed" }])
+    } else {
+      this.game.addActionAnimations([{ loc, type: "norally" }])
     }
     this.game.clearGameState()
   }

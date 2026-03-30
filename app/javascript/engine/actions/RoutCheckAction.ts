@@ -46,10 +46,14 @@ export default class RoutCheckAction extends BaseAction {
   mutateGame(): void {
     this.game.routCheckNeeded.shift()
     const unit = this.game.findUnitById(this.target.id) as Unit
+    const loc = new Coordinate(this.target.x, this.target.y)
     const check = baseMorale + this.routCheckMods.mod - 2
     const roll = this.diceResult
     if (roll.result < check) {
-      this.game.routNeeded.push({ unit, loc: new Coordinate(this.target.x, this.target.y) })
+      this.game.routNeeded.push({ unit, loc })
+      this.game.addActionAnimations([{ loc, type: "rout" }])
+    } else {
+      this.game.addActionAnimations([{ loc, type: "norout" }])
     }
     if (this.game.routCheckNeeded.length < 1 && this.game.routNeeded.length < 1) {
       this.game.resetCurrentPlayer()

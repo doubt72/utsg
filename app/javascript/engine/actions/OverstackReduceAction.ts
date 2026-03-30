@@ -60,5 +60,6 @@ export default class OverstackReduceAction extends BaseAction {
     unit.resetStatus()
     this.map.eliminateCounter(loc, this.target.id)
     organizeStacks(this.map)
+    this.game.addActionAnimations([{ loc, type: "eliminate" }])
   }
 }

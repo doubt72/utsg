@@ -37,6 +37,7 @@ export default class SniperAction extends BaseAction {
 
   mutateGame(): void {
     this.game.sniperNeeded = []
+    const anims = []
     const roll = this.diceResult.result
     const check = this.player === 1 ? this.game.axisSniper?.sniperRoll ?? 0 :
       this.game.alliedSniper?.sniperRoll ?? 0
@@ -45,8 +46,14 @@ export default class SniperAction extends BaseAction {
         const unit = this.game.findUnitById(t.id) as Unit
         const loc = new Coordinate(t.x, t.y)
         this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false })
+        let found = false
+        for (const a of anims) {
+          if (a.loc.x === loc.x && a.loc.y === loc.y) { found = true; break }
+        }
+        if (!found) { anims.push({ loc, type: "sniper" })}
       }
     }
     this.game.closeOverlay = true
+    this.game.addActionAnimations(anims)
   }
 }

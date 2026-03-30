@@ -477,12 +477,15 @@ export default class MoveState extends BaseState {
     }
     if (counter.unit.isBroken) {
       this.game.addMessage("cannot move a broken unit")
+      return false
     }
     if (counter.unit.isExhausted) {
       this.game.addMessage("cannot move an exhausted unit")
+      return false
     }
     if (!this.rushing && counter.unit.isActivated) {
       this.game.addMessage("cannot move an activated unit")
+      return false
     }
     return true
   }

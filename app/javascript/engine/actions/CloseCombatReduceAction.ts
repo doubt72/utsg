@@ -38,10 +38,13 @@ export default class CloseCombatReduceAction extends BaseAction {
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (unit.isVehicle) {
       unit.wreck(this.game)
+      this.game.addActionAnimations([{ loc, type: "wreck" }])
     } else if (unit.isBroken) {
       this.game.scenario.map.eliminateCounter(loc, this.target.id)
+      this.game.addActionAnimations([{ loc, type: "eliminate" }])
     } else {
       unit.break()
+      this.game.addActionAnimations([{ loc, type: "break" }])
     }
     const current = this.game.closeNeeded.filter(cn => cn.loc.x === this.target.x && cn.loc.y === this.target.y)[0]
     if (this.game.currentPlayer === 1) {

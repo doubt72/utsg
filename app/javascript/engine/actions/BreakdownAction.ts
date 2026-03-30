@@ -1,3 +1,4 @@
+import { Coordinate } from "../../utilities/commonTypes";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -35,6 +36,9 @@ export default class BreakdownAction extends BaseAction {
     const unit = this.game.findUnitById(this.origin.id) as Unit
     if (this.diceResult.result <= (unit.breakdownRoll ?? 0)) {
       unit.immobilized = true
+      this.game.addActionAnimations(
+        [{ loc: new Coordinate(this.origin.x, this.origin.y), type: "immobilized" }]
+      )
     }
   }
 }

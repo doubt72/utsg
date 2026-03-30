@@ -1,10 +1,11 @@
 ## 0.22 alpha
 
-- Added support for animated map notifications
-
+- Added animated map notifications
+- Removed map scroll (never terribly useful, actively annoying on very small screens)
 - Bug fix: fix display of feature and marker counters in doc counter section
 - Bug fix: fix reaction fire skip on undo
-
+- Bug fix: broken units, etc., should not be multi-selectable
+- Bug fix: Fix fire track on reaction fire, plus tweaks
 - Updated 411 - better name
 
 ## 0.21 alpha
@@ -16,7 +17,6 @@
 - Show reaction fire stacks
 - Show fire track
 - Fixed a bunch of doc typos
-
 - Bug fix: Disallow fire for units in contact
 
 ## 0.20 alpha

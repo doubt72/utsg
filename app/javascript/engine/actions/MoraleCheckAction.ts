@@ -66,24 +66,38 @@ export default class MoraleCheckAction extends BaseAction {
     const roll = this.diceResult
     if (roll.result < check) {
       if (counter.unit.isBroken) {
-        this.game.scenario.map.eliminateCounter(counter.hex as Coordinate, this.target.id)
+        const hex = counter.hex as Coordinate
+        this.game.scenario.map.eliminateCounter(hex, this.target.id)
+        this.game.addActionAnimations([{ loc: hex, type: "eliminate" }])
       } else {
         counter.unit.break()
         const hex = counter.hex as Coordinate
         if (hex.x != this.target.x || hex.y !== this.target.y) {
-          this.game.scenario.map.moveUnit(
-            hex, new Coordinate(this.target.x, this.target.y), this.target.id
-          )
+          const old = new Coordinate(this.target.x, this.target.y)
+          this.game.scenario.map.moveUnit(hex, old, this.target.id)
+          this.game.addActionAnimations([{ loc: old, type: "break" }])
+        } else {
+          this.game.addActionAnimations([{ loc: hex, type: "break" }])
         }
       }
     } else if (roll.result === check) {
       if (!counter.unit.isBroken) { counter.unit.pinned = true }
         const hex = counter.hex as Coordinate
         if (hex.x != this.target.x || hex.y !== this.target.y) {
-          this.game.scenario.map.moveUnit(
-            hex, new Coordinate(this.target.x, this.target.y), this.target.id
-          )
+          const old = new Coordinate(this.target.x, this.target.y)
+          this.game.scenario.map.moveUnit(hex, old, this.target.id)
+          this.game.addActionAnimations([{ loc: old, type: "pinned" }])
+        } else {
+          this.game.addActionAnimations([{ loc: hex, type: "pinned" }])
         }
+    } else {
+      const hex = counter.hex as Coordinate
+      if (hex.x != this.target.x || hex.y !== this.target.y) {
+        const old = new Coordinate(this.target.x, this.target.y)
+        this.game.addActionAnimations([{ loc: old, type: "nobreak" }])
+      } else {
+        this.game.addActionAnimations([{ loc: hex, type: "nobreak" }])
+      }
     }
     if (this.game.moraleChecksNeeded.length < 1) {
       this.game.resetCurrentPlayer()

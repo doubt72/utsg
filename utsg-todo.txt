@@ -1,5 +1,12 @@
 High Priority Features/Bug Fixes:
-  - Hit/miss/break/routed/etc. animations
+  + Hit/miss/break/routed/etc. animations
+  + Reaction fire not showing fire track
+  + Broken units can't move in stack (and reset status)
+  + Remove scroll from map
+  - Add ability to cancel last part of move
+  - Add ability to hide counters without canceling move (and hide overlays if so)
+  - Add ability to add counters to attack
+  - Add help for showing rout all help
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
@@ -8,12 +15,6 @@ High Priority Features/Bug Fixes:
     - Refactor actions with helper to more cleanly display units (highlight colors)
     - Add individual dice from results
   - What does a game look like to someone watching logged in or logged out
-  - Broken units can't move in stack (and reset status)
-  - Cancel last part of move
-  - Reaction fire not showing fire track
-  - Need keys for overlay to make react happy
-  - Remove scroll from map
-  - Don't unselect when hiding counters / don't cancel move / don't show overlay
 
   - got weird state at one point blanking out map, need to play against myself with debugging info on
   - Player icon disappearing during hotseat game

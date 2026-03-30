@@ -81,6 +81,7 @@ export default class AssaultMoveAction extends BaseAction {
         unit.unit.exhaust()
       }
     }
+    const anims = []
 
     for (const a of this.addAction) {
       const mid = new Coordinate(a.x, a.y)
@@ -88,16 +89,19 @@ export default class AssaultMoveAction extends BaseAction {
         this.map.toggleVP(mid)
       } else if (a.type === gameActionAddActionType.Clear) {
         this.map.eliminateCounter(mid, a.id as string)
+        anims.push({ loc: mid, type: "clear" })
       } else if (a.type === gameActionAddActionType.Entrench) {
         const feature = new Feature({
           ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
         })
         feature.id = `scrap-${mid.x}-${mid.y}`
         this.map.addCounter(mid, feature)
+        anims.push({ loc: mid, type: "entrench" })
       }
     }
     sortStacks(this.map)
     this.game.updateInitiative(3)
+    this.game.addActionAnimations(anims)
   }
 
   undo(): void {

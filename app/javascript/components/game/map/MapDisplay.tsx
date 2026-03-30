@@ -206,8 +206,8 @@ export default function MapDisplay({
     if (!map.game) { return }
     if (!actionAnimationDetails) { return }
     if (actionAnimationDetails.details.length < 1) { return }
-    const showLength = 300
-    const animationOut = 320
+    const showLength = 400
+    const animationOut = 520
     const timer = actionAnimationDetails.timer
     const state = actionAnimationDetails.state
     const size = actionAnimationDetails.size
@@ -247,7 +247,7 @@ export default function MapDisplay({
     const details = actionAnimationDetails.details[0]
     const message = details.message
     const textSize = 80 / Math.sqrt(message.reduce((max, m) => m.length > max ? m.length : max, 0))
-    const outlineSize = textSize/4 > 10 ? 10 : textSize/4
+    const outlineSize = textSize/5 > 8 ? 8 : textSize/5
     const hex = map.hexAt(details.loc) as Hex
     const x = hex.xOffset
     const yInterval = textSize * 1.1
@@ -258,7 +258,7 @@ export default function MapDisplay({
       <g opacity={alpha}
          transform={`translate(${(1 - size)*x} ${(1 - size)*y}) scale(${size})`}>
         { message.map((m, i) => {
-            return <text key={i} x={x} y={y + i*yInterval + size*10} fontSize={textSize}
+            return <text key={i} x={x} y={y + i*yInterval - size*12} fontSize={textSize}
                          fontFamily="'Courier Prime', monospace"
                          textAnchor="middle" style={{
                            fill: color, stroke: bg, paintOrder: "stroke", strokeWidth: outlineSize,
@@ -343,17 +343,6 @@ export default function MapDisplay({
     })
     setYOffset(o => {
       let yNew = y / scale / (mapScale ?? 1) / map.ySize + o
-      if (yNew < 0) { yNew = 0 }
-      if (yNew > 0.999) { yNew = 0.999 }
-      return yNew
-    })
-  }
-
-  const scrollCallback = (event: React.WheelEvent) => {
-    const y = event.deltaY / 2
-
-    setYOffset(o => {
-      let yNew = y / map.ySize + o
       if (yNew < 0) { yNew = 0 }
       if (yNew > 0.999) { yNew = 0.999 }
       return yNew
@@ -756,8 +745,7 @@ export default function MapDisplay({
              onMouseLeave={() => setMouseDown(false)}
              onMouseMove={(event) => {
                if (mouseDown && event.buttons === 1) { dragCallback(event) }
-             }}
-             onWheel={(event) => { scrollCallback(event) } } >
+             }} >
           {hexDisplay}
           {hexDisplayDetail}
           {fireTargets}

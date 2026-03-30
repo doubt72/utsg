@@ -128,6 +128,7 @@ export default class MoveAction extends BaseAction {
     const end = new Coordinate(this.path[length - 1].x, this.path[length - 1].y)
     const facing = this.path[length - 1].facing
     const turret = this.path[length - 1].turret
+    const anims = []
 
     let diceIndex = 0
     let hitCheck = 0
@@ -140,6 +141,7 @@ export default class MoveAction extends BaseAction {
         hitRoll = this.diceResults[diceIndex++].result
       }
     }
+    let first = true
     for (const u of this.origin) {
       this.map.moveUnit(start, end, u.id, facing, turret)
       const unit = this.map.unitAtId(end, u.id) as Counter
@@ -150,14 +152,20 @@ export default class MoveAction extends BaseAction {
       if (this.moveData?.mines) {
         if (unit.unit.isVehicle && !unit.unit.armored) {
           unit.unit.wreck(this.game)
+          anims.push({ loc: end, type: "wreck" })
         } else if (unit.unit.isVehicle) {
           const armor = unit.unit.lowestHullArmor < 0 ? 0 : unit.unit.lowestHullArmor
           if (hitRoll > hitCheck + armor) {
             unit.unit.wreck(this.game)
+            anims.push({ loc: end, type: "wreck" })
           }
         } else {
           if (hitRoll > hitCheck) {
             this.game.moraleChecksNeeded.push({ unit: unit.unit, from: [end], to: end, incendiary: true })
+            if (first) {
+              anims.push({ loc: end, type: "hit" })
+              first = false
+            }
           }
         }
       }
@@ -184,6 +192,7 @@ export default class MoveAction extends BaseAction {
         this.rush ? unit.exhaust() : unit.activate()
       } else if (a.type === gameActionAddActionType.Smoke) {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
+        anims.push({ loc: mid, type: "smoke" })
         this.map.addCounter(mid, new Feature(
           { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id }
         ))
@@ -209,12 +218,7 @@ export default class MoveAction extends BaseAction {
         if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
       })
     }
-    this.game.addActionAnimations([
-      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "hit" },
-      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "immobilized" },
-      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "jammed" },
-      { loc: new Coordinate(this.lastPath.x, this.lastPath.y), type: "foo" },
-    ])
+    this.game.addActionAnimations(anims)
   }
 
   undo(): void {

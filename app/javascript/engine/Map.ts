@@ -849,6 +849,7 @@ export default class Map {
       return a.unit.playerNation === this.game?.currentPlayerNation ? -1 : 1
     })
     sortStacks(this)
+    this.game?.addActionAnimations([{ loc, type: "blaze" }])
   }
 
   spreadFire(loc: Coordinate) {

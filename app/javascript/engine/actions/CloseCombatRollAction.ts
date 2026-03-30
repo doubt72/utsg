@@ -94,5 +94,6 @@ export default class CloseCombatRollAction extends BaseAction {
         (current.p1Reduce > 0 || current.p2Reduce > 0)) {
       this.game.openOverlay = this.game.scenario.map.hexAt(loc)
     }
+    this.game.addActionAnimations([{ loc, type: "combat" }])
   }
 }

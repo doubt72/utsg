@@ -297,11 +297,58 @@ export default class Game {
     const animations = data.map(d => {
       if (d.type === "hit") {
         return { loc: d.loc, message: ["hit"], textColor: "#FFF", backgroundColor: "#E00" }
-      } else if (d.type === "immobilized") {
-        return  {loc: d.loc, message: ["immobilized"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "miss") {
+        return { loc: d.loc, message: ["miss"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "drift") {
+        return { loc: d.loc, message: ["miss", "drifts"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "jammed") {
         return { loc: d.loc, message: ["weapon", "broken"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "destroyed") {
+        return { loc: d.loc, message: ["weapon", "destroyed"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "immobilized") {
+        return  {loc: d.loc, message: ["immobilized"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "turret") {
+        return { loc: d.loc, message: ["turret", "jammed"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "break") {
+        return { loc: d.loc, message: ["breaks"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "pinned") {
+        return { loc: d.loc, message: ["pinned"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "eliminate") {
+        return { loc: d.loc, message: ["eliminated"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "nobreak") {
+        return { loc: d.loc, message: ["no", "effect"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "rally") {
+        return { loc: d.loc, message: ["rallies"], textColor: "#FFF", backgroundColor: "#080" }
+      } else if (d.type === "fix") {
+        return { loc: d.loc, message: ["weapon", "fixed"], textColor: "#FFF", backgroundColor: "#080" }
+      } else if (d.type === "norally") {
+        return { loc: d.loc, message: ["no", "effect"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "sniper") {
+        return { loc: d.loc, message: ["sniper"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "rout") {
+        return { loc: d.loc, message: ["routs"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "norout") {
+        return { loc: d.loc, message: ["no", "effect"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "wreck") {
+        return { loc: d.loc, message: ["destroyed"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "nowreck") {
+        return { loc: d.loc, message: ["no", "effect"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "blaze") {
+        return { loc: d.loc, message: ["blaze"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "blazeout") {
+        return { loc: d.loc, message: ["out"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "smoke") {
+        return { loc: d.loc, message: ["smoke"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "smokecheck") {
+        return { loc: d.loc, message: ["disperse"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "combat") {
+        return { loc: d.loc, message: ["combat"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "clear") {
+        return { loc: d.loc, message: ["clear"], textColor: "#FFF", backgroundColor: "#080" }
+      } else if (d.type === "entrench") {
+        return { loc: d.loc, message: ["digs in"], textColor: "#FFF", backgroundColor: "#080" }
       }
+      console.log(`unexpected anim type ${d.type}`)
       return { loc: d.loc, message: ["???"], textColor: "#EE0", backgroundColor: "#000" }
     })
     this.animationQueue = this.animationQueue.concat(animations)
