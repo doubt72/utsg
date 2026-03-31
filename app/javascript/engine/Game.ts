@@ -302,6 +302,10 @@ export default class Game {
         return { loc: d.loc, message: ["hit"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "miss") {
         return { loc: d.loc, message: ["miss"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "effect") {
+        return { loc: d.loc, message: ["effective"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "noeffect") {
+        return { loc: d.loc, message: ["not", "effective"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "drift") {
         return { loc: d.loc, message: ["miss", "drifts"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "jammed") {

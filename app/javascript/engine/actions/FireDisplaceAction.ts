@@ -67,6 +67,17 @@ export default class FireDisplaceAction extends BaseAction {
       unit.resetStatus()
       this.map.eliminateCounter(start, this.target.id)
     }
+    this.game.fireDisplaceNeeded.shift()
+    this.game.closeOverlay = true
+    if (this.game.fireDisplaceNeeded.length < 1) {
+      for (let i = this.game.actions.length - 1; i >= 0; i--) {
+        const action = this.game.actions[i]
+        if (action.type === "fire_start") {
+          this.game.setCurrentPlayer(action.player)
+          break
+        }
+      }
+    }
     sortStacks(this.map)
   }
   
@@ -91,6 +102,7 @@ export default class FireDisplaceAction extends BaseAction {
         this.map.loadUnit(start, start, a.id as string, unit.id, a.facing)
       }
     }
+    this.game.fireDisplaceNeeded.unshift({ loc: start, unit })
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }

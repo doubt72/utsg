@@ -1,4 +1,9 @@
 High Priority Features/Bug Fixes:
+  + Firing for effect "effect"/"no effect" on infantry rather than hit/miss for targeted fire
+  + Don't allow selection of units that can't perform reaction fire
+  + Only pickup/drop should trigger reaction fire
+  + Broken unit can't shouldn't get pinned animation on morale checks
+  + WTF happened with leader selection allowing extra stacks?
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
@@ -7,7 +12,7 @@ High Priority Features/Bug Fixes:
     - Refactor actions with helper to more cleanly display units (highlight colors)
     - Add individual dice from results
   - What does a game look like to someone watching logged in or logged out
-  - Add ability to add counters to attack
+  - Add ability to add counters after attack started?
 
   - got weird state at one point blanking out map, need to play against myself with debugging info on
   - Player icon disappearing during hotseat game

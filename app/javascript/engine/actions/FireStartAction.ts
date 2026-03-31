@@ -21,7 +21,7 @@ export default class FireStartAction extends BaseAction {
     this.startData = data.data.fire_start_data as GameActionFireStartData
   }
 
-  get type(): string { return "fire_spread_check" }
+  get type(): string { return "fire_start" }
 
   get needed(): number {
     let check = 2

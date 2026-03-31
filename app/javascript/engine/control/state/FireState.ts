@@ -63,17 +63,7 @@ export default class FireState extends BaseState {
   get lastPath() { return this.path[this.path.length - 1] }
 
   openHex(x: number, y: number) {
-    const last = this.lastPath as GameActionPath
-    const from = new Coordinate(last.x, last.y)
     const to = new Coordinate(x, y)
-    if (!this.doneSelect) {
-      const leadership = leadershipRange(this.game)
-      if (!leadership) {
-        if (from.x === to.x && from.y === to.y) { return hexOpenType.Open }
-      } else {
-        if (hexDistance(from, to) <= leadership) { return hexOpenType.Open }
-      }
-    }
     if (inRange(this.game, to)) { return hexOpenType.Open }
     return hexOpenType.Closed
   }
@@ -181,7 +171,9 @@ export default class FireState extends BaseState {
         const counters = this.map.allCounters
         for (const c of counters) {
           const hex = c.hex as Coordinate
-          if (hexDistance(new Coordinate(hex.x, hex.y), new Coordinate(first.x, first.y)) <= leadership) {
+          if (this.map.contactAt(hex)) { continue }
+          if (hexDistance(new Coordinate(hex.x, hex.y), new Coordinate(first.x, first.y)) <= leadership &&
+              this.game.currentPlayerNation === c.unit.playerNation) {
             rc.push(c)
           }
         }

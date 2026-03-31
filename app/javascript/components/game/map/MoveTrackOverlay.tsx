@@ -80,7 +80,7 @@ export default function MoveTrackOverlay({
     } else if (map.game?.gameState?.type === stateType.Assault) {
       return map.game.assaultState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     } else if (map.game?.gameState?.type === stateType.FireDisplace) {
-      return map.game.assaultState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
+      return map.game.fireDisplaceState.path.map(p => map.hexAt(new Coordinate(p.x, p.y)) as Hex)
     }
     const lastSigAction = map.game?.lastSignificantAction
     if (lastSigAction && moveActions.

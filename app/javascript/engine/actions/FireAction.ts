@@ -265,10 +265,10 @@ export default class FireAction extends BaseAction {
                     })
                   }
                 }
-                anims.push({ loc: dTo, type: "hit" })
+                anims.push({ loc: dTo, type: "effect" })
               } else if (needDice) {
                 hitRoll.description += "failed"
-                anims.push({ loc: dTo, type: "miss" })
+                anims.push({ loc: dTo, type: "noeffect" })
               }
             }
             for (const t of dTargets) {

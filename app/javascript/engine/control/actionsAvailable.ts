@@ -69,7 +69,7 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
       game.setGameState(new RoutState(game, false))
     } else if (game.routCheckNeeded.length > 0) {
       game.setGameState(new RoutCheckState(game))
-    } else if (game.fireDisplaceNeeded.length > 0) {
+    } else if (game.fireDisplaceNeeded.length > 0 && game.gameState?.type !== stateType.FireDisplace) {
       game.setGameState(new FireDisplaceState(game))
     } else if (initiativeCheck(game)) {
       game.setGameState(new InitiativeState(game))
@@ -104,6 +104,7 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     actions.push({ type: "precip_check" })
   } else if (game.gameState?.type === stateType.FireDisplace) {
     actions.unshift({ type: "none", message: "fire displaces unit" })
+    console.log("here")
     if (game.fireDisplaceState.remove || game.fireDisplaceState.path.length > 1) {
       actions.push({ type: "fire_displace_confirm" })
       actions.push({ type: "fire_displace_cancel" })

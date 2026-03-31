@@ -188,7 +188,7 @@ RSpec.describe Utility::Scenario do
       # If any of these change, scenario MUST to be updated with a new version,
       # then update test with new version/checksum
       expect(Utility::Scenario.checksum("001")).to be == "1.3-8c385f004378fbf1e5f8ad3172af0688"
-      expect(Utility::Scenario.checksum("002")).to be == "1.0-5cc6c8a04522dc9f6dc3090e00e7ae1b"
+      expect(Utility::Scenario.checksum("002")).to be == "1.1-21d464534362e38d295afce9d543b06b"
       expect(Utility::Scenario.checksum("003")).to be == "1.0-e1d15e6bafe4e97d7ed183d8bcb99f34"
       expect(Utility::Scenario.checksum("004")).to be == "0.3b-b438e85ded172454f2d34cd5c8029edd"
       expect(Utility::Scenario.checksum("005")).to be == "1.0-7e266aa6c2c9b7bb29bc194bc81b4f9f"

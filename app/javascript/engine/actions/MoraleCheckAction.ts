@@ -80,16 +80,16 @@ export default class MoraleCheckAction extends BaseAction {
           this.game.addActionAnimations([{ loc: hex, type: "break" }])
         }
       }
-    } else if (roll.result === check) {
-      if (!counter.unit.isBroken) { counter.unit.pinned = true }
-        const hex = counter.hex as Coordinate
-        if (hex.x != this.target.x || hex.y !== this.target.y) {
-          const old = new Coordinate(this.target.x, this.target.y)
-          this.game.scenario.map.moveUnit(hex, old, this.target.id)
-          this.game.addActionAnimations([{ loc: old, type: "pinned" }])
-        } else {
-          this.game.addActionAnimations([{ loc: hex, type: "pinned" }])
-        }
+    } else if (roll.result === check && !counter.unit.isBroken) {
+      counter.unit.pinned = true
+      const hex = counter.hex as Coordinate
+      if (hex.x != this.target.x || hex.y !== this.target.y) {
+        const old = new Coordinate(this.target.x, this.target.y)
+        this.game.scenario.map.moveUnit(hex, old, this.target.id)
+        this.game.addActionAnimations([{ loc: old, type: "pinned" }])
+      } else {
+        this.game.addActionAnimations([{ loc: hex, type: "pinned" }])
+      }
     } else {
       const hex = counter.hex as Coordinate
       if (hex.x != this.target.x || hex.y !== this.target.y) {

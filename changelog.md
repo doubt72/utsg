@@ -1,3 +1,13 @@
+## 0.25 alpha
+
+- Fire for effect/vs hit
+- Bug fix: non-move moves (e.g., load only) trigger reaction fire
+- Bug fix: fix fire leadership range open hexes/active counters
+- Bug fix: don't allow selection of units that can't reaction fire during reaction
+- Bug fix: don't display pin for already broken units on morale checks
+- Bug fix: fix fire displacement (rare event, not relevant to many scenarios, now testing)
+- Updated 002
+
 ## 0.24 alpha
 
 - Allow right click actions on move track

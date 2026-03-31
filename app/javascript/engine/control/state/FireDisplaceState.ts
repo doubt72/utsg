@@ -1,4 +1,4 @@
-import { Coordinate, CounterSelectionTarget, featureType, hexOpenType, HexOpenType, unitType } from "../../../utilities/commonTypes";
+import { Coordinate, featureType, hexOpenType, HexOpenType, unitType } from "../../../utilities/commonTypes";
 import { normalDir, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -15,13 +15,15 @@ export default class FireDisplaceState extends BaseState {
     super(game, stateType.FireDisplace, game.currentPlayer)
 
     const check = game.fireDisplaceNeeded[0]
+    const counter = game.findCounterById(check.unit.id) as Counter
 
-    this.selection = [{
-      x: check.loc.x, y: check.loc.y, id: check.unit.id, counter: game.findCounterById(check.unit.id) as Counter
-    }]
+    this.selection = [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, counter }]
     this.path = [{ x: check.loc.x, y: check.loc.y }]
     this.remove = false;
 
+    if (!counter.unit.selected) { counter.unit.select() }
+    if (game.currentPlayerNation !== counter.unit.playerNation) { game.togglePlayer() }
+    game.openOverlay = game.scenario.map.hexAt(check.loc)
     game.refreshCallback(game)
   }
 
@@ -64,6 +66,7 @@ export default class FireDisplaceState extends BaseState {
 
   openHex(x: number, y: number): HexOpenType {
     if (this.remove) { return hexOpenType.Closed }
+    if (this.path.length > 1) { return hexOpenType.Closed }
     for (const h of this.availableHexes) {
       if (h.coord.x === x && h.coord.y === y) {
         return hexOpenType.Open
@@ -72,19 +75,8 @@ export default class FireDisplaceState extends BaseState {
     return hexOpenType.Closed
   }
 
-  selectable(selection: CounterSelectionTarget): boolean {
-    if (selection.target.type === "reinforcement") { return false }
-    const loc = new Coordinate(this.path[0].x, this.path[0].y)
-    const target = selection.target.xy
-    if (target.x === loc.x && target.y === loc.y) { return true }
-    for (let dir = 0; dir < 6; dir++) {
-      const hexes = this.map.hexNeighbors(loc)
-      for (const h of hexes) {
-        if (!h) { continue }
-        if (h.coord.x === target.x && h.coord.y === target.y) { return true }
-      }
-    }
-    return false
+  get activeCounters(): Counter[] {
+    return this.game.scenario.map.countersAt(new Coordinate(this.path[0].x, this.path[0].y))
   }
 
   move(x: number, y: number): void {
@@ -95,6 +87,7 @@ export default class FireDisplaceState extends BaseState {
     if (vp && vp !== this.game.currentPlayer && !this.game.scenario.map.enemyAt(loc, this.game.currentPlayer)) {
       this.addAction = { x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 }
     }
+    this.game.closeOverlay = true
   }
 
   cancel(): void {
@@ -134,7 +127,6 @@ export default class FireDisplaceState extends BaseState {
         add_action: addAction,
       },
     }, this.game)
-    this.game.fireDisplaceNeeded.shift()
     this.execute(action)
   }
 }

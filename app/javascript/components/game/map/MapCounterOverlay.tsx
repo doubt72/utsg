@@ -73,6 +73,7 @@ export default function MapCounterOverlay({
           "initiative", "weather_check", "fire_start_check",
         ].includes(a.type)
       }).map(a => a.type)
+      if (filtered.length < 1) { return }
       const width = filtered.reduce((max, o) => {
         const length = translateAction(map.game as Game, target, o).length
         return max > length ? max : length

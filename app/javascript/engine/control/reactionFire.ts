@@ -104,7 +104,13 @@ export function reactionFireHexes(game: Game): GameActionPath[] {
   const rc: GameActionPath[] = []
   if (["move", "rush"].includes(action.type)) {
     if (action.data.path) {
-      for (let i = action.data.path.length - 1; i > 0; i--) {
+      for (let i = action.data.path.length - 1; i >= 0; i--) {
+        if (i === 0) {
+          if (!action.data.add_action || action.data.add_action.length < 1 ||
+              action.data.add_action[0].index !== 0) {
+            continue
+          }
+        }
         const s = action.data.path[i]
         let check = false
         for (const c of rc) {

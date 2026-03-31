@@ -66,6 +66,29 @@ export default class ReactionState extends BaseState {
       this.game.addMessage("unit out of range")
       return false
     }
+    if (target.areaFire || target.offBoard) {
+      this.game.addMessage("area fire can't react")
+      return false
+    }
+    if (target.isVehicle && !target.sponson && (target.weaponDestroyed || target.jammed)) {
+      this.game.addMessage("weapon cannot fire")
+      return false
+    }
+    if (target.isVehicle && target.sponson && (target.weaponDestroyed || target.jammed) &&
+        (target.sponsonDestroyed || target.sponsonJammed)) {
+      this.game.addMessage("no weapon can fire")
+      return false
+    }
+    if (target.canCarrySupport && target.children.length == 1 && target.children[0].crewed) {
+      this.game.addMessage("unit manning a crewed weapon cannot fire")
+      return false
+    }
+    const parent = target.parent
+    if ((target.uncrewedSW || target.crewed) &&
+        (target.jammed || !parent || parent.isBroken || parent.isExhausted || parent.pinned)) {
+      this.game.addMessage("weapon cannot fire")
+      return false
+    }
     return true
   }
 
