@@ -31,8 +31,8 @@ interface MapCounterOverlayProps {
   shiftY: number;
   maxX: number;
   maxY: number;
-  svgRef: React.MutableRefObject<HTMLElement>;
   counters?: Counter[];
+  svgRef: React.MutableRefObject<HTMLElement>;
 }
 
 export default function MapCounterOverlay({
@@ -84,7 +84,8 @@ export default function MapCounterOverlay({
             <path d={roundedRectangle(x + 8, y + 8 + i*36, width, 32, 5)} style={{ fill: "#EEE" }}
                   onClick={() => contextAction(o, target)}
                   onContextMenu={e => e.preventDefault()} />
-            <text textAnchor="start" x={x + 35} y={y + 30 + i*36} fontSize={24} fontFamily="'Courier Prime', monospace"
+            <text textAnchor="start" x={x + 35} y={y + 30 + i*36} fontSize={24}
+                  fontFamily="'Courier Prime', monospace"
                   style={{ fill: "000"}}
                   onClick={() => contextAction(o, target)}
                   onContextMenu={e => e.preventDefault()} >
@@ -105,10 +106,10 @@ export default function MapCounterOverlay({
     updateCallback()
   }
 
-  const showActionHelp = (e: React.MouseEvent, counter: Counter) => {
+  const showActionHelp = (event: React.MouseEvent, counter: Counter) => {
     if (!map.game) { return }
-    const x = (e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
-    const y = (e.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
+    const x = (event.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
+    const y = (event.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
     const loc = new Coordinate(x, y)
 
     const rallyCheck = map.game.phase === gamePhaseType.PrepRally && counter.hasUnit && counter.unit.selected

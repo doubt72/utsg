@@ -38,6 +38,6 @@ export default class SmokeCheckAction extends BaseAction {
     } else {
       (feature.feature.hindrance as number) -= reduce
     }
-    this.game.addActionAnimations([{ loc, type: "disperse" }])
+    this.game.addActionAnimations([{ loc, type: "smokecheck" }])
   }
 }

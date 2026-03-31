@@ -8,9 +8,9 @@ import Game from "../../engine/Game";
 import { CounterSelectionTarget } from "../../utilities/commonTypes";
 
 export function executeContextAction(
-  game: Game, target: CounterSelectionTarget, type: string, callback: () => void
+  game: Game, target: CounterSelectionTarget | undefined, type: string, callback: () => void
 ) {
-  if (type === "select") {
+  if (type === "select" && target) {
     select(game.scenario.map, target, callback)
   } else if ([
     "rally", "fire_finish", "move_finish", "assault_move_finish", "morale_check",
@@ -72,7 +72,7 @@ export function executeContextAction(
   }
 }
 
-export function translateAction(game: Game, target: CounterSelectionTarget, action: string): string {
+export function translateAction(game: Game, target: CounterSelectionTarget | undefined, action: string): string {
   let rc = {
     select: "select",
     rally: "rally",
@@ -114,7 +114,7 @@ export function translateAction(game: Game, target: CounterSelectionTarget, acti
     fire_displace_confirm: "displace",
     fire_displace_cancel: "cancel",
   }[action] ?? "unknown"
-  if (action === "select" &&
+  if (action === "select" && target &&
       (target.counter.unit.selected || target.counter.unit.targetSelected)) { rc = "unselect" }
   if ((action === "fire_smoke" && game.fireState.smoke) ||
       (action === "move_smoke_toggle" && game.moveState.smoke)) {

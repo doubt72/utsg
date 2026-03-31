@@ -580,7 +580,9 @@ export default function MapDisplay({
     const action = map.game?.lastSignificantAction
     if (map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault ||
       map.game?.gameState?.type === stateType.FireDisplace || moveActions.includes(action?.type ?? "")) {
-      setMoveTrack(<MoveTrackOverlay map={map} />)
+      setMoveTrack(<MoveTrackOverlay map={map} scale={scale} mapScale={mapScale ?? 1} updateCallback={() =>
+                                       { counterCallback(); updateCallback() }}
+                                     svgRef={svgRef as React.MutableRefObject<HTMLElement>} />)
     } else {
       // TODO: if last sig action was fire, check for displace
       setMoveTrack(undefined)
@@ -601,7 +603,7 @@ export default function MapDisplay({
     } else {
       setRoutTrack(undefined)
     }
-  }, [map.game?.lastSignificantAction, mapUpdate, forceUpdate, map.game?.gameState])
+  }, [map.game?.lastSignificantAction, mapUpdate, forceUpdate, map.game?.gameState, scale, mapScale])
 
   useEffect(() => {
     if (map.game?.gameState?.type === stateType.Move &&

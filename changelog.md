@@ -1,3 +1,10 @@
+## 0.24 alpha
+
+- Allow right click actions on move track
+- Bug fix: accidentally supressed animations for opposing player in non-hotseat games
+- Bug fix: removed double-hit anim
+- Bug fix: smoke check action animation
+
 ## 0.23 alpha
 
 - Allow right click to select actions

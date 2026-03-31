@@ -1,8 +1,4 @@
 High Priority Features/Bug Fixes:
-  + Add help for showing rout all help
-  + Add ability to hide counters without canceling move (and hide overlays if so)
-  + Add ability to cancel last part of move
-  + Hotkey/context buttons
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries

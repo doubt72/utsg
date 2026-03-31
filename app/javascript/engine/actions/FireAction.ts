@@ -505,7 +505,6 @@ export default class FireAction extends BaseAction {
         if (hitRoll.result > hitCheck) {
           if (needDice) { hitRoll.description += "hit" }
           anims.push({ loc: to, type: "hit" })
-          let infantryHit = false
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
@@ -547,10 +546,6 @@ export default class FireAction extends BaseAction {
                 this.game.moraleChecksNeeded.push({
                   unit: t.counter.unit, from: fcoords, to: c, incendiary: firing0.unit.incendiary
                 })
-                if (!infantryHit) {
-                  anims.push({ loc: to, type: "hit" })
-                  infantryHit = true
-                }
               }
             }
           })

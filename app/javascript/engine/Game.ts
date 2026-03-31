@@ -97,6 +97,7 @@ export default class Game {
   axisSniper?: Feature;
 
   suppressNetwork: boolean = false;
+  suppressAnimations: boolean = false;
   testGame: boolean = false;
   currentState?: BaseState;
 
@@ -177,7 +178,9 @@ export default class Game {
         for (let i = 0; i < json.length; i++) {
           const action = new GameAction(json[i], this, i)
           this.suppressNetwork = true
+          this.suppressAnimations = true
           this.executeAction(action, true)
+          this.suppressAnimations = false
           this.suppressNetwork = false
         }
       })
@@ -293,7 +296,7 @@ export default class Game {
   }
 
   addActionAnimations(data: {loc: Coordinate, type: string}[]) {
-    if (this.suppressNetwork) { return }
+    if (this.suppressAnimations) { return }
     const animations = data.map(d => {
       if (d.type === "hit") {
         return { loc: d.loc, message: ["hit"], textColor: "#FFF", backgroundColor: "#E00" }
