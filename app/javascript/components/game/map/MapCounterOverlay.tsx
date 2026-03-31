@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import MapCounter from "./MapCounter";
 import MapCounterOverlayHelp from "./MapCounterOverlayHelp";
 import Counter from "../../../engine/Counter";
-import { Coordinate, markerType, unitType } from "../../../utilities/commonTypes";
+import { Coordinate, CounterSelectionTarget, markerType, unitType } from "../../../utilities/commonTypes";
 import Map from "../../../engine/Map";
-import { clearColor, counterOutline } from "../../../utilities/graphics";
+import { clearColor, counterOutline, roundedRectangle } from "../../../utilities/graphics";
 import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
 import { HelpOverlay } from "./Help";
 import {
@@ -12,14 +12,17 @@ import {
   counterRoutHelpLayout } from "../../../engine/support/help";
 import Unit from "../../../engine/Unit";
 import { gamePhaseType } from "../../../engine/support/gamePhase";
-import { closeProgress } from "../../../engine/Game";
+import Game, { closeProgress } from "../../../engine/Game";
+import { stateType } from "../../../engine/control/state/BaseState";
+import { selectable } from "../../../engine/control/select";
+import actionsAvailable from "../../../engine/control/actionsAvailable";
+import { executeContextAction, translateAction } from "../../utilities/context";
 
 interface MapCounterOverlayProps {
   map: Map;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  setOverlay: Function;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  selectionCallback: Function;
+  setOverlay: (target: { show: boolean, x: number, y: number }) => void;
+  selectionCallback: (target: CounterSelectionTarget) => void;
+  updateCallback: () => void;
   xx?: number;
   yy?: number;
   mapScale: number;
@@ -33,12 +36,74 @@ interface MapCounterOverlayProps {
 }
 
 export default function MapCounterOverlay({
-  map, setOverlay, selectionCallback, xx, yy, mapScale, scale, shiftX, shiftY, maxX, maxY, counters, svgRef
+  map, setOverlay, selectionCallback, updateCallback, xx, yy, mapScale, scale, shiftX, shiftY, maxX, maxY,
+  counters, svgRef
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
   const [actionHelpDisplay, setActionHelpDisplay] = useState<JSX.Element | undefined>()
+  const [contextMenu, setContextMenu] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState(0)
+
+  const contextAction = (type: string, target: CounterSelectionTarget) => {
+    if (!map.game) { return }
+    executeContextAction(map.game, target, type, updateCallback)
+    setContextMenu(undefined)
+    updateCallback()
+  }
+
+  const rightClick = (event: React.MouseEvent, target?: CounterSelectionTarget) => {
+    event.preventDefault()
+    if (!map.game || !target) { return }
+    if (target.target.type == "reinforcement") { return }
+    const unit = target.counter.unit
+    const sel = selectable(map, target)
+    if (!unit.selected && !sel) {
+      map.game.addMessage("can't select counter")
+    } else {
+      const options = unit.selected || unit.targetSelected ?
+        actionsAvailable(map.game, map.game.currentUser, false) : []
+      if (!unit.selected || sel) { options.unshift({ type: "select" }) }
+      const x = (event.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale - 36
+      const y = (event.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale - 36
+      const filtered = options.filter(a => {
+        return ![
+          "sync", "wait", "none", "undo", "join", "leave", "start", "kick", "deploy", "help",
+          "rally_pass", "unselect", "pass", "pass_cancel", "precip_check", "reaction_pass",
+          "initiative", "weather_check", "fire_start_check",
+        ].includes(a.type)
+      }).map(a => a.type)
+      const width = filtered.reduce((max, o) => {
+        const length = translateAction(map.game as Game, target, o).length
+        return max > length ? max : length
+      }, 0) * 14.4 + 40
+      const buttons = filtered.map((o, i) => {
+        const text = translateAction(map.game as Game, target, o)
+        return (
+          <g key={`context-${i}`} >
+            <path d={roundedRectangle(x + 8, y + 8 + i*36, width, 32, 5)} style={{ fill: "#EEE" }}
+                  onClick={() => contextAction(o, target)}
+                  onContextMenu={e => e.preventDefault()} />
+            <text textAnchor="start" x={x + 35} y={y + 30 + i*36} fontSize={24} fontFamily="'Courier Prime', monospace"
+                  style={{ fill: "000"}}
+                  onClick={() => contextAction(o, target)}
+                  onContextMenu={e => e.preventDefault()} >
+              {text}
+            </text>
+          </g>
+        )
+      })
+      const height = filtered.length * 36 + 12
+      setContextMenu(
+        <g onMouseLeave={() => setContextMenu(undefined)} >
+          <path d={roundedRectangle(x, y, width + 16, height)} style={{ fill: "rgba(0,0,0,0.2)" }} />
+          { buttons }
+        </g>
+      )
+    }
+    setUpdate(s => s + 1)
+    updateCallback()
+  }
 
   const showActionHelp = (e: React.MouseEvent, counter: Counter) => {
     if (!map.game) { return }
@@ -48,7 +113,9 @@ export default function MapCounterOverlay({
 
     const rallyCheck = map.game.phase === gamePhaseType.PrepRally && counter.hasUnit && counter.unit.selected
     const fireCheck = counter.hasUnit && counter.unit.targetSelected
-    const routCheck = map.game.routCheckNeeded.length > 0 && counter.hasUnit && counter.unit.selected
+    const routCheck = (map.game.routCheckNeeded.length > 0 && counter.hasUnit && counter.unit.selected) ||
+      (map.game.gameState?.type === stateType.RoutAll && counter.hasUnit && counter.unit.isBroken &&
+       counter.unit.playerNation !== map.game.currentPlayerNation)
     const moraleCheck = map.game.moraleChecksNeeded.length > 0 && counter.hasUnit && counter.unit.selected
     const hex = new Coordinate(xx ?? -1, yy ?? -1)
     const cCCheck = counter.hasUnit && map.contactAt(hex) &&
@@ -149,31 +216,34 @@ export default function MapCounterOverlay({
             <MapCounterOverlayHelp key={i} xx={layout.x + i*176+170} yy={layout.y+10} maxX={maxX} maxY={maxY}
                                    map={map} scale={scale} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
+          let target: CounterSelectionTarget | undefined = undefined
+          if (xx !== undefined && yy !== undefined) {
+            target = { target: { type: "map", xy: new Coordinate(xx, yy) }, counter: cd, }
+          } else if (counter.reinforcement) {
+            target = {
+              target: {
+                type: "reinforcement",
+                player: counter.reinforcement.player,
+                turn: counter.reinforcement.turn,
+                index: counter.reinforcement.index,
+              }, counter: cd,
+            }
+          }
           selectionOverlays.push(
             <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
               <path d={counterPath(cd)} style={{ fill: clearColor }}
                     onClick={(e: React.MouseEvent) => {
                       if (xx !== undefined && yy !== undefined) {
-                        selectionCallback({
-                          target: { type: "map", xy: new Coordinate(xx, yy) },
-                          counter: cd,
-                        })
+                        selectionCallback(target as CounterSelectionTarget)
                         showActionHelp(e, cd)
                       } else if (counter.reinforcement) {
-                        selectionCallback({
-                          target: {
-                            type: "reinforcement",
-                            player: counter.reinforcement.player,
-                            turn: counter.reinforcement.turn,
-                            index: counter.reinforcement.index,
-                          },
-                          counter: cd,
-                        })
+                        selectionCallback(target as CounterSelectionTarget)
                       }
                       setUpdate(s => s + 1)
                     }}
                     onMouseMove={(e: React.MouseEvent) => { showActionHelp(e, cd) }}
-                    onMouseLeave={() => { setActionHelpDisplay(undefined) }}/>
+                    onMouseLeave={() => { setActionHelpDisplay(undefined) }}
+                    onContextMenu={e => { rightClick(e, target) }} />
             </g>
           )
           let unit: Unit | undefined = undefined
@@ -204,10 +274,11 @@ export default function MapCounterOverlay({
           <path d={layout.path} style={{ fill: clearColor}} />
           {selectionOverlays}
           {helpOverlays.reverse()}
+          {contextMenu}
         </g>
       </g>
     )
-  }, [xx, yy, counters, update])
+  }, [xx, yy, counters, update, contextMenu])
 
   return (
     <g>

@@ -190,7 +190,7 @@ export default function MapDisplay({
                   textAnchor="start" style={{ fill: `rgba(0,0,0,${alpha})` }}>{error}</text>
       </g>
     )
-    setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 2 } }), 20)
+    setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 5 } }), 20)
   }, [notificationDetails])
 
   useEffect(() => {
@@ -371,7 +371,7 @@ export default function MapDisplay({
   useEffect(() => {
     if (!checkCancelHideLOS) { return }
     if (map.debug) { return }
-    if (hideCounters || showLos) {
+    if (showLos) {
       if (map.game?.gameState) {
         map.game.cancelAction()
         clearActionCallback()
@@ -415,6 +415,7 @@ export default function MapDisplay({
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setHexDisplayOverlays(overlayLoader)
+    const action = map.game?.lastSignificantAction
     if (map.game?.gameState?.type === stateType.Fire) {
       const hexes: JSX.Element[] = []
       for (const c of map.game.fireState.targetHexes) {
@@ -423,9 +424,9 @@ export default function MapDisplay({
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true} />)
       }
       setFireTargets(hexes)
-    } else if (map.game?.lastSignificantAction?.data.fire_data) {
+    } else if (action && action.data.fire_data && map.game?.gameState === undefined) {
       const hexes: JSX.Element[] = []
-      for (const c of map.game.lastSignificantAction.data.fire_data.final) {
+      for (const c of action.data.fire_data.final) {
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(new Coordinate(c.x, c.y)) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false} />)
@@ -553,14 +554,18 @@ export default function MapDisplay({
     } else if (!overlay.counters) {
       setCounterOverlay(
         <MapCounterOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay}
-                           selectionCallback={unitSelection} maxX={width / scale} maxY={height / scale}
+                           selectionCallback={unitSelection} updateCallback={
+                              () => { counterCallback(); updateCallback() }}
+                           maxX={width / scale} maxY={height / scale}
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
       )
     } else if (!showLos) {
       setCounterOverlay(
         <MapCounterOverlay counters={overlay.counters} map={map} setOverlay={setOverlay}
-                           selectionCallback={unitSelection} maxX={width / scale} maxY={height / scale}
+                           selectionCallback={unitSelection} updateCallback={
+                              () => { counterCallback(); updateCallback() }}
+                           maxX={width / scale} maxY={height / scale}
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
       )
@@ -754,7 +759,7 @@ export default function MapDisplay({
           { map.game?.gameState?.showOverlays ? hexDisplayOverlays : "" }
           {losOverlay}
           {counterLosOverlay}
-          { map.game?.gameState?.showOverlays ? actionCounterDisplay : "" }
+          { map.game?.gameState?.showOverlays && !hideCounters ? actionCounterDisplay : "" }
           {moveTrack}
           {routTrack}
           {fireHindrance}

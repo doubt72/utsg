@@ -19,7 +19,7 @@ export default function OverstackReduceButton({ game, callback }: OverstackReduc
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{ EliminateGlyph() }reduce</button>
+        <button type="submit" className="custom-button nowrap">{ EliminateGlyph() }eliminate</button>
       </div>
     </form>
   )

@@ -56,6 +56,7 @@ import FireDisplaceConfirmButton from "./buttons/FireDisplaceConfirmButton";
 import FireDisplaceCancelButton from "./buttons/FireDisplaceCancelButton";
 import FireStartCheckButton from "./buttons/FireStartCheckButton";
 import KickButton from "./buttons/KickButton";
+import CancelMoveButton from "./buttons/CancelMoveButton";
 
 interface GameControlsProps {
   game: Game;
@@ -169,6 +170,8 @@ export default function GameControls({ game, callback, update }: GameControlsPro
         return <SniperButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move") {
         return <MoveButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "move_undo") {
+        return <CancelMoveButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_finish") {
         return <MoveFinishButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "move_rotate_toggle") {

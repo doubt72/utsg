@@ -14,8 +14,9 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
     const rc: JSX.Element[] = []
     const action = map.game.lastSignificantAction as FireAction
     if (action && fireActions.includes(action.type) &&
-       (map.game.gameState?.type !== stateType.Fire ||
-        (map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
+       (map.game.gameState === undefined || map.game.gameState.type == "reaction" ||
+         map.game.gameState.type == "pass" || (map.game.gameState?.type === "fire" &&
+          map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
       const origins = action.origin
       const targets = action.target
       for (let i = 0; i < origins.length; i++) {

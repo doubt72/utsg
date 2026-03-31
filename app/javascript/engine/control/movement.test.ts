@@ -3030,4 +3030,227 @@ describe("movement", () => {
 
     expect(game.sniperNeeded).toStrictEqual([])
   })
+
+  test("undo movement works", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+
+    map.victoryHexes.push({x: 2, y: 2, player: 1})
+    expect(map.victoryAt(new Coordinate(2, 2))).toBe(1)
+
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.setGameState(new MoveState(game))
+
+    game.moveState.move(3, 2)
+    expect(game.moveState.addActions.length).toBe(0)
+
+    game.moveState.move(2, 2)
+    expect(game.moveState.addActions.length).toBe(1)
+    expect(game.moveState.addActions[0].type).toBe("vp")
+
+    game.moveState.unmove()
+    expect(game.moveState.addActions.length).toBe(0)
+    expect(game.moveState.path.length).toBe(2)
+    expect(game.gameState?.openHex(2, 2)).toBe(1)
+    expect(game.gameState?.openHex(2, 3)).toBe(1)
+    expect(game.gameState?.openHex(3, 3)).toBe(2)
+
+    game.moveState.move(2, 2)
+    expect(game.moveState.addActions.length).toBe(1)
+    expect(game.moveState.addActions[0].type).toBe("vp")
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 3)).toBe(1)
+
+    game.moveState.move(1, 2)
+
+    game.gameState?.finish()
+    const all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.isActivated).toBe(true)
+  })
+
+  test("undoing drop works", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.smokeCapable = false // any unit in stack is enough for smoke
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    unit2.baseMovement = 3
+    map.addCounter(loc, unit2)
+
+    game.setGameState(new MoveState(game))
+
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(game.gameState?.selection.length).toBe(2)
+    expect(game.moveState.doneSelect).toBe(false)
+
+    game.moveState.move(3, 2)
+
+    game.moveState.dropping = true
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    game.moveState.dropping = false
+    expect(game.moveState.addActions.length).toBe(1)
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
+
+    game.moveState.unmove()
+    expect(game.moveState.addActions.length).toBe(0)
+    expect(map.units[2][3].filter(u => u.ghost).length).toBe(0)
+
+    game.moveState.move(2, 2)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 3)).toBe(1)
+
+    game.moveState.move(1, 2)
+    expect(game.gameState?.openHex(0, 2)).toBe(1)
+    expect(game.gameState?.openHex(0, 3)).toBe(hexOpenType.Closed)
+
+    game.moveState.move(0, 2)
+    expect(game.gameState?.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(showDropMove(game)).toBe(false)
+
+    game.gameState?.finish()
+
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(0)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.name).toBe("Rifle")
+    expect(all[0].unit.isActivated).toBe(true)
+    expect(all[1].hex?.x).toBe(0)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+    expect(all[1].unit.isActivated).toBe(true)
+  })
+
+  test("undoing smoke works", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.smokeToggle()
+
+    expect(game.moveState.addActions.length).toBe(0)
+    game.moveState.move(3, 3)
+    expect(showLaySmoke(game)).toBe(true)
+    expect(game.moveState.smoke).toBe(false)
+    expect(game.moveState.addActions.length).toBe(1)
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(1)
+    expect(game.moveState.path.length).toBe(1)
+
+    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(4, 3)).toBe(1)
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+
+    game.moveState.unmove()
+    expect(game.moveState.addActions.length).toBe(0)
+    expect(map.units[3][3].filter(u => u.ghost).length).toBe(0)
+
+    game.moveState.move(3, 2)
+    expect(game.moveState.path.length).toBe(2)
+    expect(game.gameState?.openHex(2, 2)).toBe(1)
+    expect(game.gameState?.openHex(2, 3)).toBe(1)
+    expect(game.gameState?.openHex(3, 3)).toBe(2)
+
+    game.moveState.move(2, 2)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 3)).toBe(1)
+
+    game.moveState.move(1, 2)
+    expect(game.gameState?.openHex(0, 2)).toBe(1)
+    expect(game.gameState?.openHex(0, 3)).toBe(hexOpenType.Closed)
+
+    game.gameState?.finish()
+    const all = map.allCounters
+    expect(all.length).toBe(1)
+    expect(all[0].hex?.x).toBe(1)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.isActivated).toBe(true)
+  })
+
+  test("undoing pick up works", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+
+    const unit2 = new Unit(testGMG)
+    unit2.id = "test2"
+    try {
+      map.addCounter(new Coordinate(3, 2), unit2)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof WarningActionError).toBe(true)
+    }
+
+    game.setGameState(new MoveState(game))
+
+    expect(showLoadMove(game)).toBe(false)
+
+    game.moveState.move(3, 2)
+    expect(showLoadMove(game)).toBe(true)
+    game.moveState.loading = true
+    select(map, {
+      counter: map.countersAt(new Coordinate(3, 2))[0],
+      target: { type: "map", xy: new Coordinate(3, 2) }
+    }, () => {})
+    expect(game.moveState.addActions.length).toBe(1)
+    expect(game.moveState.addActions[0].cost).toBe(2)
+    expect(game.moveState.addActions[0].id).toBe("test2")
+    expect(game.moveState.addActions[0].parent_id).toBe("test1")
+    game.moveState.loading = false
+
+    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(2, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+
+    game.moveState.unmove()
+    expect(game.moveState.addActions.length).toBe(0)
+
+    game.moveState.move(2, 2)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 3)).toBe(1)
+
+    game.moveState.move(1, 2)
+    expect(game.gameState?.openHex(0, 2)).toBe(1)
+    expect(game.gameState?.openHex(0, 3)).toBe(hexOpenType.Closed)
+
+    game.gameState?.finish()
+    const all = map.allCounters
+    expect(all.length).toBe(2)
+    expect(all[0].hex?.x).toBe(3)
+    expect(all[0].hex?.y).toBe(2)
+    expect(all[0].unit.name).toBe("MG 08/15")
+    expect(all[1].hex?.x).toBe(1)
+    expect(all[1].hex?.y).toBe(2)
+    expect(all[1].unit.name).toBe("Rifle")
+  })
 });

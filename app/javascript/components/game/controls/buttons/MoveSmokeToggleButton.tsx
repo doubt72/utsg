@@ -11,6 +11,7 @@ export default function MoveSmokeToggleButton({ game, callback }: MoveSmokeToggl
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.moveState.smokeToggle()
+    game.closeOverlay = true
     callback()
   }
 

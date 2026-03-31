@@ -178,11 +178,8 @@ export default class AssaultState extends BaseState {
   }
 
   get activeCounters(): Counter[] {
-    if (!this.doneSelect) {
-      const first = this.path[0]
-      return this.map.countersAt(new Coordinate(first.x, first.y))
-    }
-    return []
+    const first = this.path[0]
+    return this.map.countersAt(new Coordinate(first.x, first.y))
   }
 
   move(x: number, y: number) {

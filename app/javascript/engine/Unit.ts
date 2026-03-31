@@ -5,7 +5,9 @@ import {
   unitType
 } from "../utilities/commonTypes";
 import Game from "./Game";
-import { closeCombatHelpText, fireHelpText, moraleHelpText, rallyHelpText, routHelpText, unitHelpText } from "./support/help";
+import {
+  closeCombatHelpText, fireHelpText, moraleHelpText, rallyHelpText, routHelpText, unitHelpText
+} from "./support/help";
 
 // id: ID
 // c: nation, t: type, n: name, i: icon, y: year

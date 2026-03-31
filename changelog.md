@@ -1,3 +1,12 @@
+## 0.23 alpha
+
+- Allow right click to select actions
+- Allow rollback of last part of move/refactor move action
+- Add help overlay for enemy broken units for rout all
+- Hiding counters doesn't cancel action (and also hides "action" counter overlay)
+- Display/interface tweaks
+- Limit username characters (dunno why I never did this before, what was I thinking)
+
 ## 0.22 alpha
 
 - Added animated map notifications

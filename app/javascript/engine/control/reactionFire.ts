@@ -134,11 +134,11 @@ export function placeReactionFireGhosts(game: Game) {
   if (action.data.origin && action.data.add_action) {
     const ids = action.data.origin.map(o => { return { id: o.id, min: 0, max: path.length - 1 } })
     const drops = action.data.add_action.filter(a => a.type === gameActionAddActionType.Drop).map(a => {
-      return { id: a.id, index: a.index - 2 }
+      return { id: a.id, index: a.index - 1 }
     })
     const loads = action.data.add_action.filter(a => a.type === gameActionAddActionType.Load).map(a => {
       ids.push({ id: a.id ?? "", min: 0, max: path.length - 1 })
-      return { id: a.id, index: a.index - 1 }
+      return { id: a.id, index: a.index }
     })
     const units = ids.map(i => {
       const unit = game.findUnitById(i.id) as Unit

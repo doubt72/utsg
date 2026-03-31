@@ -109,6 +109,10 @@ export default function MapHexDetail({
   const interactionOverly = (
     <polygon points={hex.hexCoords} style={{ fill: clearColor }}
              onClick={() => selectCallback(hex.coord.x, hex.coord.y)}
+             onContextMenu={e => {
+              e.preventDefault()
+              selectCallback(hex.coord.x, hex.coord.y)
+             }}
              onMouseLeave={() => terrainCallback(undefined)}
              onMouseMove={e => updateTerrainInfo(e)} />
   )

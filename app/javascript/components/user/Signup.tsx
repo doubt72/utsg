@@ -61,8 +61,16 @@ export default function Signup() {
     let confirmPasswordError = formErrors.confirmPassword
 
     if (name === "username") {
+      const validRegex = /^[a-zA-Z0-9-_]*$/
+      const letterRegex = /[a-zA-Z]+/
       if (value === "") {
         usernameError = "username must not be blank"
+      } else if (!value.match(validRegex)) {
+        usernameError = "username can only contain letters, number, dashes or underscores"
+      } else if (value.length < 3) {
+        usernameError = "username must be at least 3 letters long"
+      } else if (!value.match(letterRegex)) {
+        usernameError = "username must contain at least one letter"
       } else {
         usernameError = ""
       }

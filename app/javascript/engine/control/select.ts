@@ -58,7 +58,7 @@ export function removeStateSelection(game: Game, x: number, y: number, id: strin
   }
 }
 
-function selectable(map: Map, selection: CounterSelectionTarget): boolean {
+export function selectable(map: Map, selection: CounterSelectionTarget): boolean {
   if (map.debug) { return true }
   const game = map.game
   if (!game) { return false }

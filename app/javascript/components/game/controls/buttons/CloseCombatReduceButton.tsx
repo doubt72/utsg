@@ -17,7 +17,7 @@ export default function CloseCombatReduceButton({ game, callback }: CloseCombatR
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><DashSquare />reduce unit</button>
+        <button type="submit" className="custom-button nowrap"><DashSquare />take hit</button>
       </div>
     </form>
   )

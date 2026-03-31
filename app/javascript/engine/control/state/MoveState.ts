@@ -194,7 +194,7 @@ export default class MoveState extends BaseState {
           x: xx, y: yy, cost, type: gameActionAddActionType.Drop, id: counter.unit.id,
           parent_id: counter.unit.parent?.id, status: counter.unit.status,
           facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing,
-          index: this.path.length,
+          index: this.path.length - 1,
         }
       )
       if (xx !== x || yy !== y) {
@@ -234,7 +234,7 @@ export default class MoveState extends BaseState {
         const facing = counter.unit.rotates ? counter.unit.facing : undefined
         this.addActions.push({
           x: xx, y: yy, cost, type: gameActionAddActionType.Load, id: counter.unit.id, parent_id: load?.unit.id,
-          facing, status: counter.unit.status, index: this.path.length,
+          facing, status: counter.unit.status, index: this.path.length - 1,
         })
       }
     } else {
@@ -315,16 +315,14 @@ export default class MoveState extends BaseState {
   }
 
   get activeCounters(): Counter[] {
-    if (!this.doneSelect || this.dropping ||
-        (this.loading && this.needPickUpDisambiguate)) {
-      const first = this.path[0]
-      return this.map.countersAt(new Coordinate(first.x, first.y))
-    }
+    let rc: Counter[] = []
+    const first = this.path[0]
+    rc = rc.concat(this.map.countersAt(new Coordinate(first.x, first.y)))
     if (this.loading && !this.needPickUpDisambiguate) {
       const last = this.lastPath as GameActionPath
-      return this.map.countersAt(new Coordinate(last.x, last.y))
+      rc.concat(this.map.countersAt(new Coordinate(last.x, last.y)))
     }
-    return []
+    return rc
   }
   
   move(x: number, y: number) {
@@ -334,7 +332,7 @@ export default class MoveState extends BaseState {
       const id = `uf-${this.game.actions.length}-${this.addActions.length}`
       this.addActions.push({
         x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id,
-        index: this.path.length
+        index: this.path.length - 1
       })
       this.map.addGhost(
         new Coordinate(x, y),
@@ -351,11 +349,46 @@ export default class MoveState extends BaseState {
       const vp = this.map.victoryAt(new Coordinate(x, y))
       if (vp && vp !== this.game.currentPlayer) {
         this.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0,
-        index: this.path.length })
+        index: this.path.length - 1 })
       }
     }
     this.doneSelect = true
     this.game.closeOverlay = true
+  }
+
+  unmove() {
+    if (this.addActions.length > 0) {
+      const lastIndex = this.path.length - 1
+      const lastAdd = this.addActions[this.addActions.length - 1]
+      if (lastAdd.index === lastIndex) {
+        this.addActions.pop()
+        if (lastAdd.type === gameActionAddActionType.VP) { this.unmove() }
+        if (lastAdd.type === gameActionAddActionType.Smoke ||
+            lastAdd.type === gameActionAddActionType.Drop
+        ) {
+          const units = this.game.scenario.map.units[lastAdd.y][lastAdd.x]
+          let name = "Smoke"
+          if (lastAdd.type !== gameActionAddActionType.Smoke) {
+            for (const s of this.selection) {
+              if (lastAdd.id === s.id) { name = s.counter.unit.name; break }
+            }
+          }
+          let index = -1
+          for (let i = 0; i < units.length; i++) {
+            const u = units[i]
+            if (u.ghost && u.name === name) {
+              index = i
+              break
+            }
+          }
+          if (index > -1) {
+            units.splice(index, 1)
+          }
+        }
+        return
+      }
+    }
+    this.path.pop()
   }
   
   rotateToggle() {

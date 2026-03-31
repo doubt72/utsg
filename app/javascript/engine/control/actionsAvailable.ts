@@ -22,7 +22,7 @@ import RoutCheckState from "./state/RoutCheckState"
 import RoutState from "./state/RoutState"
 import SniperState from "./state/SniperState"
 
-export default function actionsAvailable(game: Game, activePlayer: string): GameAction[] {
+export default function actionsAvailable(game: Game, activePlayer: string, active: boolean = true): GameAction[] {
   if (!game.fullySynced || game.needsRectify) { return [{ type: "sync" }] }
   if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
@@ -55,39 +55,41 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
   if (game.state === "complete") {
     return [{ type: "none", message: "game over" }]
   }
-  if (breakdownCheck(game)) {
-    game.setGameState(new BreakdownState(game))
-  } else if (game.moraleChecksNeeded.length > 0) {
-    game.setGameState(new MoraleCheckState(game))
-  } else if (game.sniperNeeded.length > 0) {
-    game.setGameState(new SniperState(game))
-  } else if (game.fireStartCheckNeeded !== undefined) {
-    game.setGameState(new FireStartState(game))
-  } else if (game.routNeeded.length > 0) {
-    game.routNeeded[0].unit.select()
-    game.setGameState(new RoutState(game, false))
-  } else if (game.routCheckNeeded.length > 0) {
-    game.setGameState(new RoutCheckState(game))
-  } else if (game.fireDisplaceNeeded.length > 0) {
-    game.setGameState(new FireDisplaceState(game))
-  } else if (initiativeCheck(game)) {
-    game.setGameState(new InitiativeState(game))
-  } else if (reactionFireCheck(game)) {
-    game.setGameState(new ReactionState(game))
-  } else if (game.phase === gamePhaseType.PrepRally) {
-    game.setGameState(new RallyState(game))
-  } else if (game.phase === gamePhaseType.PrepPrecip) {
-    game.setGameState(new PrecipCheckState(game))
-  } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
-    game.setGameState(new CloseCombatState(game))
-  } else if (game.phase === gamePhaseType.CleanupSmoke) {
-    game.checkForSmoke(false, false)
-  } else if (game.phase === gamePhaseType.CleanupFire) {
-    game.checkForFire(false, false)
-  } else if (game.phase === gamePhaseType.CleanupWeather) {
-    game.checkForSmoke(false, false)
+  if (active) {
+    if (breakdownCheck(game)) {
+      game.setGameState(new BreakdownState(game))
+    } else if (game.moraleChecksNeeded.length > 0) {
+      game.setGameState(new MoraleCheckState(game))
+    } else if (game.sniperNeeded.length > 0) {
+      game.setGameState(new SniperState(game))
+    } else if (game.fireStartCheckNeeded !== undefined) {
+      game.setGameState(new FireStartState(game))
+    } else if (game.routNeeded.length > 0) {
+      game.routNeeded[0].unit.select()
+      game.setGameState(new RoutState(game, false))
+    } else if (game.routCheckNeeded.length > 0) {
+      game.setGameState(new RoutCheckState(game))
+    } else if (game.fireDisplaceNeeded.length > 0) {
+      game.setGameState(new FireDisplaceState(game))
+    } else if (initiativeCheck(game)) {
+      game.setGameState(new InitiativeState(game))
+    } else if (reactionFireCheck(game)) {
+      game.setGameState(new ReactionState(game))
+    } else if (game.phase === gamePhaseType.PrepRally) {
+      game.setGameState(new RallyState(game))
+    } else if (game.phase === gamePhaseType.PrepPrecip) {
+      game.setGameState(new PrecipCheckState(game))
+    } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
+      game.setGameState(new CloseCombatState(game))
+    } else if (game.phase === gamePhaseType.CleanupSmoke) {
+      game.checkForSmoke(false, false)
+    } else if (game.phase === gamePhaseType.CleanupFire) {
+      game.checkForFire(false, false)
+    } else if (game.phase === gamePhaseType.CleanupWeather) {
+      game.checkForSmoke(false, false)
+    }
+    if (closeCombatDone(game)) { game.gameState?.finish() }
   }
-  if (closeCombatDone(game)) { game.gameState?.finish() }
   if (game.phase === gamePhaseType.Deployment) {
     actions.unshift({ type: "deploy" })
   } else if (game.phase === gamePhaseType.PrepRally) {
@@ -178,6 +180,7 @@ export default function actionsAvailable(game: Game, activePlayer: string): Game
         }
         if (action.path.length + action.addActions.length > 1) {
           actions.push({ type: "move_finish" })
+          actions.push({ type: "move_undo" })
         }
         actions.push({ type: "cancel_action" })
       } else {

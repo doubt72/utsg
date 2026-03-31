@@ -13,7 +13,7 @@ export default function FireDisplaceEliminateButton({ game, callback }: FireDisp
     if (game.fireDisplaceState.availableHexes.length > 0) {
       game.fireDisplaceState.remove = true
     } else {
-      game.gameState?.finish
+      game.gameState?.finish()
     }
     callback()
   }

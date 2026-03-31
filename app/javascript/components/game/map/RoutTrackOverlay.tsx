@@ -51,7 +51,11 @@ export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProp
       rc.push(
         <path key={`${i}-end`} d={circlePath(new Coordinate(x, y), 12)}
               style={{ fill: "#DDD", stroke: "#E00", strokeWidth: 4 }}
-              onClick={() => callback(loc.x, loc.y)}/>
+              onClick={() => callback(loc.x, loc.y)}
+              onContextMenu={e => {
+                  e.preventDefault()
+                  callback(loc.x, loc.y)
+                }}/>
       )
     }
     return rc
