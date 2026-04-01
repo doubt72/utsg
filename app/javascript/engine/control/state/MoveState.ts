@@ -258,7 +258,7 @@ export default class MoveState extends BaseState {
   selectable(selection: CounterSelectionTarget): boolean {
     const target = selection.counter.unit as Unit
     const same = this.samePlayer(target)
-    if (!same) {return false}
+    if (!same && !target.uncrewedSW && !target.crewed) {return false}
     if (this.dropping) {
       const child = target.children[0]
       if (target.selected) {
@@ -273,7 +273,7 @@ export default class MoveState extends BaseState {
         return false
       }
     }
-    if (this.loading) {   
+    if (this.loading) {
       if (this.needPickUpDisambiguate) {
         if (!target.selected) {
           this.game.addMessage("must select unit that started move or hasn't already been dropped")
@@ -534,7 +534,7 @@ export default class MoveState extends BaseState {
     const rc: Counter[] = []
     const counters = this.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
     for (const c of counters) {
-      if (c.hasFeature || c.unit.selected) { continue }
+      if (c.hasFeature || c.unit.selected || c.unit.parent) { continue }
       for (const s of this.selection) {
         const unit = s.counter.unit
         const target = c.unit

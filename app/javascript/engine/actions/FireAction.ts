@@ -419,10 +419,10 @@ export default class FireAction extends BaseAction {
             targets.forEach(t => this.game.moraleChecksNeeded.push(
               { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary }))
             if (needDice) { hitRoll.description += "hit"}
-            anims.push({ loc: dTo, type: "hit" })
+            anims.push({ loc: dTo, type: "effect" })
           } else {
             if (needDice) { hitRoll.description += "miss" }
-            anims.push({ loc: dTo, type: "miss" })
+            anims.push({ loc: dTo, type: "noeffect" })
           }
         }
       } else {

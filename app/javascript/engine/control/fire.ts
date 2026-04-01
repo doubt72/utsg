@@ -38,6 +38,7 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
 }
 
 export function rapidFire(game: Game): boolean {
+  if (game.fireState.reaction) { return false }
   for (const sel of game.fireState.selection) {
     if (sel.counter.unit.sponson && game.fireState.sponson) {
       return false

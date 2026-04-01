@@ -26,8 +26,8 @@ export default class WeatherState extends BaseState {
           old_initiative: this.game.initiative,
         },
       }, this.game)
-      this.execute(action)
       this.game.checkWindDirection = false
+      this.execute(action)
     } else {
       const action = new GameAction({
         user: this.game.currentUser, player: this.player,
@@ -38,8 +38,8 @@ export default class WeatherState extends BaseState {
           old_initiative: this.game.initiative,
         },
       }, this.game)
-      this.execute(action)
       this.game.checkWindSpeed = false
+      this.execute(action)
     }
   }
 }

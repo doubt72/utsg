@@ -218,7 +218,7 @@ export default class Game {
     const actions = this.sortedActions()
     let lastSequence = 0
     for (let i = 0; i < actions.length; i++) {
-      if (lastSequence !== (actions[i].sequence ?? 0) - 1) { return false }
+      if (lastSequence !== (actions[i].sequence ?? 0) - 1) { console.log("not in sync"); return false }
       lastSequence = actions[i].sequence as number
     }
     return true
@@ -228,7 +228,7 @@ export default class Game {
     if (!this.fullySynced) { return false }
     const actions = this.sortedActions()
     for (let i = 0; i < actions.length; i++) {
-      if (!actions[i].executed) { return true }
+      if (!actions[i].executed) { console.log("needs rectify"); return true }
     }
     return false
   }
@@ -305,7 +305,7 @@ export default class Game {
       } else if (d.type === "effect") {
         return { loc: d.loc, message: ["effective"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "noeffect") {
-        return { loc: d.loc, message: ["not", "effective"], textColor: "#FFF", backgroundColor: "#00E" }
+        return { loc: d.loc, message: ["no", "effect"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "drift") {
         return { loc: d.loc, message: ["miss", "drifts"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "jammed") {
@@ -479,10 +479,12 @@ export default class Game {
   }
 
   setGameState(state: BaseState): void {
+    console.log(`setting game state: ${state.type}`)
     this.currentState = state
   }
 
   clearGameState(): void {
+    console.log("clearing game state")
     this.currentState = undefined
   }
 
@@ -867,8 +869,9 @@ export default class Game {
             this.playerTwoNotification = undefined
           }
           em.mutateGame()
+          console.log(`executing[bounce] ${m.sequence} : ${m.type}`)
           em.executed = true
-          if (this.phase !== gamePhaseType.Deployment)  { organizeStacks(this.scenario.map) }
+          if (this.phase !== gamePhaseType.Deployment) { organizeStacks(this.scenario.map) }
           this.refreshCallback(this)
         }
         return
@@ -884,6 +887,7 @@ export default class Game {
               this.playerTwoNotification = undefined
             }
             m.mutateGame()
+            console.log(`executing[new] ${m.sequence ?? this.currentSequence + 1} : ${m.type}`)
             m.executed = true
             this.lastActionIndex = action.index
           }
@@ -937,6 +941,7 @@ export default class Game {
     const sequence = seq === undefined ? this.lastAction.sequence as number : seq
     const action = this.findActionBySequence(sequence)
     if (!action) { return }
+    console.log(`undoing ${sequence} : ${action.type}`)
     action.undo()
     action.undone = true
     action.executedUndo = true

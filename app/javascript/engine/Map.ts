@@ -661,7 +661,7 @@ export default class Map {
     let playerOne = false
     let playerTwo = false
     for (const c of this.countersAt(loc)) {
-      if (c.hasUnit && !c.unit.isWreck) {
+      if (c.hasUnit && !c.unit.isWreck && !c.unit.uncrewedSW && !c.unit.crewed) {
         c.unit.playerNation === this.game?.playerOneNation ? playerOne = true : playerTwo = true
       }
     }

@@ -1,3 +1,11 @@
+## 0.26 alpha
+
+- Disallow rapid reaction fire
+- Put in some general console instrumenting to proactively help identify if I come across any weird states
+- Bug fix: refactor some of the state creation (...Why wasn't this a bug before?)
+- Bug fix: fix getting stuck on variable weather check
+- Bug fix: a bunch of things involving interacting with dropped opponent weapons (this needs to be heavily tested before Pegasus Bridge)
+
 ## 0.25 alpha
 
 - Fire for effect/vs hit

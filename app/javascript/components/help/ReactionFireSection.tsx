@@ -18,11 +18,11 @@ export default function ReactionFireSection() {
         action may be targeted (though all units in that hex may be affected by return fire).
       </p>
       <p>
-        If the original moving or firing units cannot be targeted by particular opposing units,
-        those units may not perform reaction fire (for instance, if an armored unit performed the
-        firing action that reaction fire is responding to, infantry can&apos;t target it, so
-        can&apos;t participate in reaction fire, even if there are also unarmored vehicles or
-        infantry in the same hex).
+        Even if the original moving or firing units cannot be targeted by particular opposing units,
+        units may perform reaction fire if any units in the hex can be targeted, whether the target
+        hex contains other units that didn&apos;t fire (e.g., a firing machine gun can&apos;t be targeted with
+        reaction fire, but the unit that carries it can) or a unit moved through a hex containing other
+        units (i.e., both the moving unit and units that were moved through may be targeted).
       </p>
       <p>
         If moving units are targeted in a hex that was not their final destination and are broken or
@@ -37,6 +37,7 @@ export default function ReactionFireSection() {
       </p>
       <p>
         Area fire weapons (mortars, offboard artillery/radios, etc.) may not perform reaction fire.
+        Reaction fire may not be rapid; units capable of rapid fire can only fire as infantry fire.
       </p>
       <p>
         Certain penalties may apply to certain types of reaction fire, those penalties are listed in

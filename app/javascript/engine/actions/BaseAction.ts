@@ -12,7 +12,6 @@ export const significantActions = [
 
 export const moveActions = [ "move", "rush", "assault_move", "rout_move", "rout_self" ]
 export const routActions = [ "rout_move", "rout_self" ]
-
 export const fireActions = [ "fire", "intensive_fire", "reaction_fire", "reaction_intensive_fire" ]
 
 export default class BaseAction {

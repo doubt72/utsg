@@ -68,6 +68,7 @@ export function selectable(map: Map, selection: CounterSelectionTarget): boolean
   if (game.phase === gamePhaseType.Main) {
     const same = target.playerNation === game.currentPlayerNation
     if (!same && !game.gameState) { return false }
+    if (target.parent && target.parent.playerNation !== game.currentPlayerNation) { return false }
     return true
   }
   return false

@@ -1,9 +1,5 @@
 High Priority Features/Bug Fixes:
-  + Firing for effect "effect"/"no effect" on infantry rather than hit/miss for targeted fire
-  + Don't allow selection of units that can't perform reaction fire
-  + Only pickup/drop should trigger reaction fire
-  + Broken unit can't shouldn't get pinned animation on morale checks
-  + WTF happened with leader selection allowing extra stacks?
+  + No reaction rapid fire
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
@@ -12,11 +8,8 @@ High Priority Features/Bug Fixes:
     - Refactor actions with helper to more cleanly display units (highlight colors)
     - Add individual dice from results
   - What does a game look like to someone watching logged in or logged out
+  - Clean up phase changes/info action
   - Add ability to add counters after attack started?
-
-  - got weird state at one point blanking out map, need to play against myself with debugging info on
-  - Player icon disappearing during hotseat game
-  - Romanian vehicles don't seem to be at higher breakdown in 006
 
 Nice to Have Eventually/Soon:
   - Add Some Developer Notes
@@ -25,6 +18,7 @@ Nice to Have Eventually/Soon:
   - Refactor firing action (currently an unmaintainable mess, though... Moderately well-tested)
   - Break up/organize tests into smaller files
   - Turn notifications
+  - Live cable updates on home page
 
 Current Stretch:
   - Hotkeys and context buttons ?
@@ -33,6 +27,9 @@ Current Stretch:
 Keep an Eye out for:
   - Handle map scale and such settings gone wrong (reset button in prefs?)
   - Automatically undo additional deploys (should no longer be necessary)
+  - got weird state at one point blanking out map, need to play against myself with debugging info on
+  - Player icon disappearing during hotseat game
+  - Romanian vehicles don't seem to be at higher breakdown in 006
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
   ? Free rally doesn't include already rallied

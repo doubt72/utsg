@@ -2,7 +2,7 @@ import { Coordinate, GameAction, unitType } from "../../utilities/commonTypes"
 import { coordinateToLabel } from "../../utilities/utilities"
 import Game from "../Game"
 import Map from "../Map"
-import { gamePhaseType } from "../support/gamePhase"
+import { checkPhase, gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
 import { showClearObstacles, showEntrench } from "./assault"
 import { closeCombatCasualtyNeeded, closeCombatDone } from "./closeCombat"
@@ -58,35 +58,36 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
   if (active) {
     if (breakdownCheck(game)) {
       game.setGameState(new BreakdownState(game))
-    } else if (game.moraleChecksNeeded.length > 0) {
+    } else if (game.moraleChecksNeeded.length > 0 && game.gameState?.type !== stateType.MoraleCheck) {
       game.setGameState(new MoraleCheckState(game))
-    } else if (game.sniperNeeded.length > 0) {
+    } else if (game.sniperNeeded.length > 0 && game.gameState?.type !== stateType.Sniper) {
       game.setGameState(new SniperState(game))
-    } else if (game.fireStartCheckNeeded !== undefined) {
+    } else if (game.fireStartCheckNeeded !== undefined && game.gameState?.type !== stateType.FireStart) {
       game.setGameState(new FireStartState(game))
-    } else if (game.routNeeded.length > 0) {
+    } else if (game.routNeeded.length > 0 && game.gameState?.type !== stateType.Rout) {
       game.routNeeded[0].unit.select()
       game.setGameState(new RoutState(game, false))
-    } else if (game.routCheckNeeded.length > 0) {
+    } else if (game.routCheckNeeded.length > 0 && game.gameState?.type !== stateType.RoutCheck) {
       game.setGameState(new RoutCheckState(game))
     } else if (game.fireDisplaceNeeded.length > 0 && game.gameState?.type !== stateType.FireDisplace) {
       game.setGameState(new FireDisplaceState(game))
-    } else if (initiativeCheck(game)) {
+    } else if (initiativeCheck(game) && game.gameState?.type !== stateType.Initiative) {
       game.setGameState(new InitiativeState(game))
-    } else if (reactionFireCheck(game)) {
+    } else if (reactionFireCheck(game) && game.gameState?.type !== stateType.Reaction) {
       game.setGameState(new ReactionState(game))
-    } else if (game.phase === gamePhaseType.PrepRally) {
+    } else if (game.phase === gamePhaseType.PrepRally && game.gameState?.type !== stateType.Rally) {
       game.setGameState(new RallyState(game))
-    } else if (game.phase === gamePhaseType.PrepPrecip) {
+    } else if (game.phase === gamePhaseType.PrepPrecip && game.gameState?.type !== stateType.PrecipCheck) {
       game.setGameState(new PrecipCheckState(game))
-    } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
+    } else if (game.phase === gamePhaseType.CleanupCloseCombat && game.gameState?.type !== stateType.CloseCombat) {
       game.setGameState(new CloseCombatState(game))
-    } else if (game.phase === gamePhaseType.CleanupSmoke) {
+    } else if (game.phase === gamePhaseType.CleanupSmoke && game.gameState?.type !== stateType.SmokeCheck) {
       game.checkForSmoke(false, false)
-    } else if (game.phase === gamePhaseType.CleanupFire) {
+    } else if (game.phase === gamePhaseType.CleanupFire && game.gameState?.type !== stateType.FireCheck) {
       game.checkForFire(false, false)
-    } else if (game.phase === gamePhaseType.CleanupWeather) {
-      game.checkForSmoke(false, false)
+    } else if (game.phase === gamePhaseType.CleanupWeather && game.gameState?.type !== stateType.VariableWeather) {
+      game.checkForWind(false, false)
+      if (game.gameState === undefined) { checkPhase(game, false) }
     }
     if (closeCombatDone(game)) { game.gameState?.finish() }
   }
@@ -104,7 +105,6 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     actions.push({ type: "precip_check" })
   } else if (game.gameState?.type === stateType.FireDisplace) {
     actions.unshift({ type: "none", message: "fire displaces unit" })
-    console.log("here")
     if (game.fireDisplaceState.remove || game.fireDisplaceState.path.length > 1) {
       actions.push({ type: "fire_displace_confirm" })
       actions.push({ type: "fire_displace_cancel" })
