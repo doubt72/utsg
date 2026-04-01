@@ -389,7 +389,6 @@ export default function MapDisplay({
   }, [checkCancelTerrain])
 
   useEffect(() => {
-    if (!map.game) { return }
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
     const overlayLoader: JSX.Element[] = []
@@ -416,8 +415,8 @@ export default function MapDisplay({
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setHexDisplayOverlays(overlayLoader)
-    const action = map.game.lastSignificantAction
-    if (map.game.gameState?.type === stateType.Fire) {
+    const action = map.game?.lastSignificantAction
+    if (map.game?.gameState?.type === stateType.Fire) {
       const hexes: JSX.Element[] = []
       for (const c of map.game.fireState.targetHexes) {
         const target = map.units[c.y][c.x].length < 1
@@ -426,7 +425,7 @@ export default function MapDisplay({
       }
       setFireTargets(hexes)
     } else if (action && fireActions.includes(action.type) &&
-           (map.game.gameState === undefined || map.game.gameState.type == "reaction" ||
+           (map.game?.gameState === undefined || map.game.gameState.type == "reaction" ||
              map.game.gameState.type == "pass" || (map.game.gameState?.type === "fire" &&
               map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
       const hexes: JSX.Element[] = []
@@ -443,7 +442,7 @@ export default function MapDisplay({
     setCounterDisplay(map.counters.map((counter, i) => {
       return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
     }))
-    if (map.game.gameState) {
+    if (map.game?.gameState) {
       setActionCounterDisplay(map.game.gameState.activeCounters.map((counter, i) => {
         return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
       }))
@@ -486,7 +485,7 @@ export default function MapDisplay({
                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                         callback={showReinforcements} update={{key: true}}/>
     )
-    if (map.game.closeReinforcementPanel) {
+    if (map.game?.closeReinforcementPanel) {
       setReinforcementsOverlay(undefined)
       map.game.closeReinforcementPanel = false
     } else {
@@ -506,7 +505,7 @@ export default function MapDisplay({
         )
       })
     }
-    if (map.game.openOverlay !== undefined) {
+    if (map.game?.openOverlay !== undefined) {
       setTimeout(() => {
         if (map.game?.openOverlay === undefined) { return }
         setOverlay({
@@ -515,7 +514,7 @@ export default function MapDisplay({
         map.game.openOverlay = undefined
       }, 500);
     }
-    if (map.game.closeOverlay) {
+    if (map.game?.closeOverlay) {
       setOverlay({ show: false, x: -1, y: -1 })
       setCounterOverlay(undefined)
       map.game.closeOverlay = false

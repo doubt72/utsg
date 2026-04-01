@@ -1,3 +1,7 @@
+## 0.27 alpha
+
+- Fix map display issue on previews
+
 ## 0.26 alpha
 
 - Disallow rapid reaction fire
