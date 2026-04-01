@@ -12,7 +12,7 @@ export default class StateAction extends BaseAction {
 
   get type(): string { return "state" }
 
-  get stringValue() {
+  get htmlValue() {
     return this.description
   }
 

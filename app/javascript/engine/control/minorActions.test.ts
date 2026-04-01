@@ -42,7 +42,7 @@ describe("minor actions", () => {
 
     expect(map.currentWeather).toBe(map.precip)
     expect(game.lastAction?.stringValue).toBe(
-      "checking for precipitation, rolled (d10), precipitation on 3 or less, got 1: this turn it will be raining"
+      "checking for precipitation, precipitation on 3 or less, rolled 1 [d10]: this turn it will be raining"
     )
   })
 
@@ -64,7 +64,7 @@ describe("minor actions", () => {
 
     expect(map.currentWeather).toBe(map.baseWeather)
     expect(game.lastAction?.stringValue).toBe(
-      "checking for precipitation, rolled (d10), precipitation on 3 or less, got 10: this turn it will be clear"
+      "checking for precipitation, precipitation on 3 or less, rolled 10 [d10]: this turn it will be clear"
     )
   })
 
@@ -85,7 +85,7 @@ describe("minor actions", () => {
 
     expect(map.currentWeather).toBe(map.baseWeather)
     expect(game.lastAction?.stringValue).toBe(
-      "checking for precipitation, rolled (d10), precipitation on 3 or less, got 10: this turn it will be clear"
+      "checking for precipitation, precipitation on 3 or less, rolled 10 [d10]: this turn it will be clear"
     )
   })
 
@@ -149,7 +149,7 @@ describe("minor actions", () => {
     const action = game.actions[0]
     expect(action.type).toBe("smoke_check")
     expect(action.stringValue).toBe(
-      "smoke dispersion check for A1: rolled 10, reduces smoke by 3, smoke eliminated"
+      "smoke dispersion check for A1: rolled 10 [d10], reduces smoke by 3, smoke eliminated"
     )
   })
 
@@ -180,7 +180,7 @@ describe("minor actions", () => {
     const action = game.actions[0]
     expect(action.type).toBe("smoke_check")
     expect(action.stringValue).toBe(
-      "smoke dispersion check for A1: rolled 1, reduces smoke by 1"
+      "smoke dispersion check for A1: rolled 1 [d10], reduces smoke by 1"
     )
   })
 
@@ -252,7 +252,7 @@ describe("minor actions", () => {
     const action = game.actions[0]
     expect(action.type).toBe("fire_out_check")
     expect(action.stringValue).toBe(
-      "fire extinguish check for A1: fire goes out on 1 or less, rolled 1, fire goes out"
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 1 [d10], fire goes out"
     )
   })
 
@@ -282,7 +282,7 @@ describe("minor actions", () => {
     const action = game.actions[0]
     expect(action.type).toBe("fire_out_check")
     expect(action.stringValue).toBe(
-      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10, no effect"
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10 [d10], no effect"
     )
   })
 
@@ -310,7 +310,7 @@ describe("minor actions", () => {
     let action = game.actions[0]
     expect(action.type).toBe("fire_out_check")
     expect(action.stringValue).toBe(
-      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10, no effect"
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10 [d10], no effect"
     )
     expect(game.actions.length).toBe(1)
 
@@ -333,7 +333,7 @@ describe("minor actions", () => {
     action = game.actions[1]
     expect(action.type).toBe("fire_spread_check")
     expect(action.stringValue).toBe(
-      "fire spread check for A1: fire spreads on 2 or less, rolled 1, fire spreads"
+      "fire spread check for A1: fire spreads on 2 or less, rolled 1 [d10], fire spreads"
     )
   })
 
@@ -360,7 +360,7 @@ describe("minor actions", () => {
     let action = game.lastAction as BaseAction
     expect(action.type).toBe("fire_out_check")
     expect(action.stringValue).toBe(
-      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10, no effect"
+      "fire extinguish check for A1: fire goes out on 1 or less, rolled 10 [d10], no effect"
     )
     expect(game.actions.length).toBe(1)
 
@@ -381,7 +381,7 @@ describe("minor actions", () => {
     action = game.actions[1]
     expect(action.type).toBe("fire_spread_check")
     expect(action.stringValue).toBe(
-      "fire spread check for A1: fire spreads on 2 or less, rolled 10, no effect"
+      "fire spread check for A1: fire spreads on 2 or less, rolled 10 [d10], no effect"
     )
   })
 

@@ -38,7 +38,7 @@ export default class RoutCheckState extends BaseState {
       player: this.player,
       data: {
         action: "rout_check", old_initiative: this.game.initiative,
-        dice_result: [{ result: roll2d10(), type: "2d10" }],
+        dice_result: [{ result: roll2d10() }],
         rout_check_data: this.routCheck,
         target: [{ x: sel.x, y: sel.y, id: sel.id, status: sel.counter.unit.status }],
       },

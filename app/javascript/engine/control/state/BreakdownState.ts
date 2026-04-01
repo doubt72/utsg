@@ -54,7 +54,7 @@ export default class BreakdownState extends BaseState {
         origin: this.selection.map(s => {
           return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
         }),
-        dice_result: [{ result: roll2d10(), type: "2d10" }],
+        dice_result: [{ result: roll2d10() }],
       },
     }, this.game)
     this.execute(action)

@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { formatCoordinate, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -25,13 +25,14 @@ export default class FireDisplaceAction extends BaseAction {
 
   get type(): string { return "fire_displace" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const unit = this.game.findUnitById(this.target.id) as Unit
-    const start = coordinateToLabel(new Coordinate(this.target.x, this.target.y))
-    const nation = this.game.nationNameForPlayer(this.player)
-    let rc = `${nation} ${unit.name} at ${start} is displaced by fire `
+    const start = formatCoordinate(new Coordinate(this.target.x, this.target.y))
+    const player = unit.nation === this.game.playerOneNation ? 1 : 2
+    const nation = formatNation(this.game, player)
+    let rc = `${nation} ${formatNation(this.game, player, unit.name)} at ${start} is displaced by fire `
     if (this.path.length > 1) {
-      const end = coordinateToLabel(new Coordinate(this.path[1].x, this.path[1].y))
+      const end = formatCoordinate(new Coordinate(this.path[1].x, this.path[1].y))
       rc += `to ${end}`
     } else {
       rc += "and is eliminated"
@@ -42,7 +43,6 @@ export default class FireDisplaceAction extends BaseAction {
         rc += `, ${child.name} dropped`
       }
     }
-    if (this.undone) { rc += " [cancelled]"}
     return rc
   }
 

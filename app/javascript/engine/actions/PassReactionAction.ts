@@ -1,3 +1,4 @@
+import { formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -9,9 +10,9 @@ export default class ReactionPassAction extends BaseAction {
 
   get type(): string { return "reaction_pass" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     if (this.data.message) { return this.data.message }
-    return `${this.game.nationNameForPlayer(this.player)} reaction fire skipped by player`
+    return `${formatNation(this.game, this.player)} reaction fire skipped by player`
   }
 
   get undoPossible() {

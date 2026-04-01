@@ -1,4 +1,5 @@
 import { WindType, windType } from "../../utilities/commonTypes";
+import { formatDieResult } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionWindData } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -18,12 +19,12 @@ export default class WindSpeedAction extends BaseAction {
 
   get type(): string { return "wind_speed" }
   
-    get stringValue(): string {
+    get htmlValue(): string {
       let strength = "no change"
       const result = this.diceResult.result
-      if (result === 10 && this.windSpeed !== windType.Strong) { strength = "strenghtens" }
-      if (result === 1 && this.windSpeed !== windType.Calm) { strength = "weakens" }
-      return `variable wind speed check: rolled ${result} (d10), ${strength}`
+      if (result.result === 10 && this.windSpeed !== windType.Strong) { strength = "strenghtens" }
+      if (result.result === 1 && this.windSpeed !== windType.Calm) { strength = "weakens" }
+      return `variable wind speed check: rolled ${formatDieResult(result)}, ${strength}`
     }
   
     get undoPossible() {
@@ -32,9 +33,9 @@ export default class WindSpeedAction extends BaseAction {
   
     mutateGame(): void {
       const result = this.diceResult.result
-      if (result === 10 && this.windSpeed !== windType.Strong) {
+      if (result.result === 10 && this.windSpeed !== windType.Strong) {
         this.map.windSpeed += 1
-      } else if (result === 1 && this.windSpeed !== windType.Calm) {
+      } else if (result.result === 1 && this.windSpeed !== windType.Calm) {
         this.map.windSpeed -= 1
       }
     }

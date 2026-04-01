@@ -15,14 +15,13 @@ export default class WeatherState extends BaseState {
   }
 
   finish() {
-    const roll = rolld10()
     if (this.game.checkWindDirection) {
       const action = new GameAction({
         user: this.game.currentUser, player: this.player,
         data: {
           action: "wind_direction",
           wind_data: { speed: this.game.scenario.map.windSpeed },
-          dice_result: [{ result: roll, type: "d10" }],
+          dice_result: [{ result: rolld10() }],
           old_initiative: this.game.initiative,
         },
       }, this.game)
@@ -34,7 +33,7 @@ export default class WeatherState extends BaseState {
         data: {
           action: "wind_speed",
           wind_data: { speed: this.game.scenario.map.windSpeed },
-          dice_result: [{ result: roll, type: "d10" }],
+          dice_result: [{ result: rolld10() }],
           old_initiative: this.game.initiative,
         },
       }, this.game)

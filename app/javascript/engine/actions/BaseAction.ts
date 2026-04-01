@@ -1,4 +1,5 @@
 import { Player } from "../../utilities/commonTypes";
+import { deHTML } from "../../utilities/graphics";
 import { nowUTCString } from "../../utilities/utilities";
 import Game from "../Game"
 import { GameActionData, GameActionDetails } from "../GameAction"
@@ -59,7 +60,11 @@ export default class BaseAction {
            `${("0" + date.getMinutes()).slice (-2)}`
   }
 
-  get stringValue(): string { throw new Error("needs local implementation") }
+  get htmlValue(): string { throw new Error("needs local implementation") }
+
+  get stringValue(): string {
+    return deHTML(this.htmlValue)
+  }
 
   // Override if undoable
   get undoPossible(): boolean { return false }

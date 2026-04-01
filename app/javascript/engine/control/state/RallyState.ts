@@ -122,7 +122,6 @@ export default class RallyState extends BaseState {
   }
 
   finish() {
-    const dice = [{ result: roll2d10(), type: "2d10" }]
     const counter = this.map.currentSelection[0]
     const hex = counter.hex as Coordinate
     const data = counter.unit.canCarrySupport ? {
@@ -148,7 +147,7 @@ export default class RallyState extends BaseState {
         ],
         rally_data: data,
         old_initiative: this.game.initiative,
-        dice_result: dice,
+        dice_result: [{ result: roll2d10() }],
       },
     }, this.game)
     this.execute(action)

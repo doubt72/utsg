@@ -462,11 +462,11 @@ export default class MoveState extends BaseState {
       const unit = this.selection[0].counter.unit
       const mines = moveData.mines
       if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
-        dice.push({ result: roll2d10(), type: "2d10" })
+        dice.push({ result: roll2d10() })
       }
     }
     for (const a of this.addActions) {
-      if (a.type === gameActionAddActionType.Smoke) { dice.push({ result: rolld10(), type: "d10" }) }
+      if (a.type === gameActionAddActionType.Smoke) { dice.push({ result: rolld10() }) }
     }
     const action = new GameAction({
       user: this.game.currentUser,

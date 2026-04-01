@@ -413,7 +413,7 @@ describe("game actions", () => {
     Math.random = original
 
     expect(game.lastAction?.type).toBe("sniper")
-    expect(game.lastAction?.stringValue).toBe("Soviet sniper check (2d10): target 1, rolled 20, no effect")
+    expect(game.lastAction?.stringValue).toBe("Soviet sniper check: target 1, rolled 20 [2d10: 10 + 10], no effect")
   })
 
   test("game end", () => {

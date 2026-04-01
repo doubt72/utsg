@@ -1,4 +1,5 @@
 import { hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
+import { formatDieResult } from "../../../utilities/graphics";
 import { rolld10, smokeReduceRoll } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -29,14 +30,14 @@ export default class SmokeCheckState extends BaseState {
     const feature = this.game.smokeCheckNeeded[0].feature
     const loc = this.game.smokeCheckNeeded[0].loc
     const result = rolld10()
-    const reduce = this.map.smokeCheckBase() + smokeReduceRoll(result)
+    const reduce = this.map.smokeCheckBase() + smokeReduceRoll(result.result)
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
         action: "smoke_check", target: [{ x: loc.x, y: loc.y, id: feature.id }],
         dice_result: [{
-          result, type: "d10",
-          description: `rolled ${result}, reduces smoke by ${reduce}${
+          result,
+          description: `rolled ${formatDieResult(result)}, reduces smoke by ${reduce}${
             reduce >= (feature.hindrance ?? 99) ? ", smoke eliminated" : ""
           }`
         }],

@@ -396,7 +396,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
     )
     const range = hexDistance(from, to)
     const roll = (range + hindrance) * mult.mult 
-    rc.push(`-> targeting roll (d10x10): ${roll} (${chanceD10x10(roll)}%)`)
+    rc.push(`-> targeting roll [d10x10]: ${roll} (${chanceD10x10(roll)}%)`)
     rc.push(`range: ${range}`)
     if (hindrance > 0) { rc.push(`hindrance: ${hindrance}`) }
     rc.push(`multiplier: ${mult.mult}`)
@@ -411,7 +411,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
       }
     } else if (target.armored) {
       if (target.turreted) {
-        rc.push(`-> roll to hit turret (d10): 1-3`)
+        rc.push(`-> roll to hit turret [d10]: 1-3`)
         rc.push("otherwise hull hit")
         rc.push("")
       }

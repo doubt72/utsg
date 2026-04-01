@@ -1,3 +1,4 @@
+import { failRed, formatDieResult, formatNation, passBlue } from "../../utilities/graphics";
 import { initiativeThreshold } from "../../utilities/utilities";
 import { reactionActions } from "../control/reactionFire";
 import Game from "../Game";
@@ -20,23 +21,22 @@ export default class InitiativeAction extends BaseAction {
   get type(): string { return "initiative" }
 
   get passed(): boolean {
-    const roll = this.diceResult
-    if (roll) {
+    if (this.diceResult) {
       const threshold = initiativeThreshold(Math.abs(this.data.old_initiative))
-      return roll.result >= threshold
+      return this.diceResult.result.result >= threshold
     }
     return true
   }
 
-  get stringValue(): string {
-    const roll = this.diceResult
+  get htmlValue(): string {
     let result = "(automatic pass — no change)"
-    if (roll) {
+    if (this.diceResult) {
       const threshold = initiativeThreshold(Math.abs(this.data.old_initiative))
-      result = `(${roll.type}): target ${threshold}, rolled ${roll.result}: ${
-        this.passed ? `passed, no change` : `failed, initiative flipped` }`
+      result = `target ${threshold}, rolled ${formatDieResult(this.diceResult.result)}: ${
+        this.passed ? `<span style="color: ${passBlue};">passed</span>, no change` :
+          `<span style="color: ${failRed};">failed</span>, initiative flipped` }`
     }
-    return `${this.game.nationNameForPlayer(this.player)} initiative check ${result}`
+    return `${formatNation(this.game, this.player)} initiative check ${result}`
   }
 
   get undoPossible() {
@@ -44,10 +44,9 @@ export default class InitiativeAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const roll = this.diceResult
     const action = this.game.lastSignificantAction
-    if (roll) {
-      if (roll.result < initiativeThreshold(Math.abs(this.data.old_initiative))) {
+    if (this.diceResult) {
+      if (this.diceResult.result.result < initiativeThreshold(Math.abs(this.data.old_initiative))) {
         this.game.toggleInitiative()
       } else if (reactionActions.includes(action?.type ?? "")) {
         this.game.togglePlayer()

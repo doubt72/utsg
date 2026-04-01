@@ -1,6 +1,6 @@
 import Feature from "../engine/Feature"
 import Unit from "../engine/Unit"
-import { Coordinate, Direction, Player, WeatherType } from "./commonTypes"
+import { Coordinate, Direction, Player } from "./commonTypes"
 
 export function alliedCodeToName(code: string): string {
   const lookup = [
@@ -55,19 +55,6 @@ export function axisCodeToName(code: string): string {
   return "Unknown"
 }
 
-export function weatherDescription(weather: WeatherType): string {
-  const lookup = {
-    "dry": "clear",
-    "fog": "foggy",
-    "rain": "raining",
-    "snow": "snowing",
-    "sand": "blowing sand",
-    "dust": "blowing dust",
-  }
-
-  return lookup[weather] ?? "unknown"
-}
-
 export function getFormattedDate(date: [number, number, number]): string {
   const [year, month, day] = date
   const months = [
@@ -117,24 +104,39 @@ export function nowUTCString(): string {
   return `${year}-${mon}-${day}T${hour}:${min}:${sec}Z`
 }
 
-export function rolld6(): number {
-  return Math.floor(Math.random() * 6) + 1
+export type DiceResult = {
+  result: number,
+  components: number[],
+  type: string,
 }
 
-export function rolld10(): number {
-  return Math.floor(Math.random() * 10) + 1
+export function rolld6(): DiceResult {
+  const roll = Math.floor(Math.random() * 6) + 1
+  return { result: roll, components: [roll], type: "d6" }
 }
 
-export function roll2d10(): number {
-  return rolld10() + rolld10()
+export function rolld10(): DiceResult {
+  const roll = Math.floor(Math.random() * 10) + 1
+  return { result: roll, components: [roll], type: "d10" }
 }
 
-export function rolld10x10(): number {
-  return rolld10() * rolld10()
+export function roll2d10(): DiceResult {
+  const one = rolld10().result
+  const two = rolld10().result
+  return { result: one + two, components: [one, two], type: "2d10" }
 }
 
-export function rollCC(fp: number): number {
-  return (fp * 2 + rolld10()) * rolld10()
+export function rolld10x10(): DiceResult {
+  const one = rolld10().result
+  const two = rolld10().result
+  return { result: one * two, components: [one, two], type: "d10x10" }
+}
+
+export function rollCC(fp: number): DiceResult {
+  const one = rolld10().result
+  const two = rolld10().result
+  const result = (fp * 2 + one) * two
+  return { result, components: [fp, one, two], type: "CC" }
 }
 
 export function otherPlayer(p: Player) {

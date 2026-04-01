@@ -1,3 +1,4 @@
+import { formatDieResult } from "../../utilities/graphics";
 import { normalDir } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult } from "../GameAction";
@@ -15,12 +16,12 @@ export default class WindDirectionAction extends BaseAction {
 
   get type(): string { return "wind_direction" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     let dir = "no change"
     const result = this.diceResult.result
-    if (result < 3) { dir = "shifts counter-clockwise" }
-    if (result > 8) { dir = "shifts clockwise" }
-    return `variable wind direction check: rolled ${result} (d10), ${dir}`
+    if (result.result < 3) { dir = "shifts counter-clockwise" }
+    if (result.result > 8) { dir = "shifts clockwise" }
+    return `variable wind direction check: rolled ${formatDieResult(result)}, ${dir}`
   }
 
   get undoPossible() {
@@ -29,9 +30,9 @@ export default class WindDirectionAction extends BaseAction {
 
   mutateGame(): void {
     const result = this.diceResult.result
-    if (result < 3) {
+    if (result.result < 3) {
       this.map.windDirection = normalDir(this.map.windDirection - 1)
-    } else if (result > 7) {
+    } else if (result.result > 7) {
       this.map.windDirection = normalDir(this.map.windDirection - 1)
     }
   }

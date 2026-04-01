@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { formatCoordinate } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -19,8 +19,8 @@ export default class FireSpreadAction extends BaseAction {
 
   get type(): string { return "fire_spread_check" }
 
-  get stringValue(): string {
-    const loc = coordinateToLabel(new Coordinate(this.target.x, this.target.y))
+  get htmlValue(): string {
+    const loc = formatCoordinate(new Coordinate(this.target.x, this.target.y))
     return `fire spread check for ${loc}: ${this.diceResult.description}`
   }
 
@@ -30,7 +30,7 @@ export default class FireSpreadAction extends BaseAction {
 
   mutateGame(): void {
     const loc = new Coordinate(this.target.x, this.target.y)
-    if (this.diceResult.result <= this.map.fireSpreadTarget()) {
+    if (this.diceResult.result.result <= this.map.fireSpreadTarget()) {
       this.map.spreadFire(loc)
     }
   }

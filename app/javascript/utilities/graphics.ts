@@ -1,6 +1,8 @@
 import Counter from "../engine/Counter";
+import Game from "../engine/Game";
 import Map from "../engine/Map"
-import { Coordinate, Direction } from "./commonTypes";
+import { Coordinate, Direction, Player, WeatherType } from "./commonTypes";
+import { coordinateToLabel, DiceResult } from "./utilities";
 
 export type SVGPathArray = (string | number)[]
 export type SVGStyle = {
@@ -59,8 +61,13 @@ export type facingLayout = {
   path: string, dash: string, style: SVGStyle, style2: SVGStyle
 }
 
+export const actionOrange = "#B80"
+export const diceColor = "#670"
+export const coordColor = "#888"
+
 export const counterRed = "#E00"
 export const markerYellow = "#EE0"
+export const markerYellowText = "#BB0"
 export const selectColor = "#E00"
 export const targetSelectColor = "#E70"
 export const dropSelectColor = "#999"
@@ -70,7 +77,31 @@ export const lastSelectColor = "#55E"
 export const counterGreen = "#2F2"
 export const counterElite = "#070"
 
+export const failRed = "#A00"
+export const passBlue = "#00A"
+export const passGreen = "#070"
+
+export const calmColor = "#DDF"
+export const breezeColor = "#AAE"
+export const moderateColor = "#77B"
+export const strongColor = "#448"
+
+export const dryColor = "#DDF"
+export const fogColor = "#777"
+export const rainColor = "#44D"
+export const snowColor = "#DFDFDF"
+export const sandColor = "#DD8"
+export const dustColor = "#DB9"
+
+export const dryTextColor = "#99B"
+export const fogTextColor = "#999"
+export const rainTextColor = "#44D"
+export const snowTextColor = "#999"
+export const sandTextColor = "#AA7"
+export const dustTextColor = "#A97"
+
 // TODO: figure out a way to keep in sync with CSS
+
 export const nationalColors: { [index: string]: string } = {
   ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#BBF", frf: "#BBF", chi: "#ECF", alm: "#FA9",
   ger: "#BBB", ita: "#9DC", jap: "#E0D044", fin: "#DDD", axm: "#8CD",
@@ -90,6 +121,68 @@ export const nationalControlBackgrounds: { [index: string]: string } = {
   bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB", cro: "#BBB"
 }
 export const clearColor = "rgba(0,0,0,0)"
+
+export function nationalTextColor(nation: string): string {
+  const base = nationalColors[nation] ?? "#000"
+  const length = base.length + 1
+  return `#${base.slice(1, length).split("").map(c => {
+    return Math.floor(parseInt(c, 16) * 0.8).toString(16).toUpperCase()
+  }).join("")}`
+}
+
+export function formatNation(game: Game, player: Player, text?: string): string {
+  const name = player === 1 ? game.alliedName : game.axisName
+  const nation = player === 1 ? game.playerOneNation : game.playerTwoNation
+  return `<span style="color: ${nationalTextColor(nation)};">${text ?? name}</span>`
+}
+
+export function formatCoordinate(loc: Coordinate): string {
+  return `<span style="color: ${coordColor};">${coordinateToLabel(loc)}</span>`
+}
+
+export function formatDieResult(roll: DiceResult): string {
+  if (roll.type === "d6") {
+    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+      `[<span style="color: ${diceColor};">d6</span>]`
+  } else if (roll.type === "d10") {
+    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+      `[<span style="color: ${diceColor};">d10</span>]`
+  } else if (roll.type === "2d10") {
+    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+      `[<span style="color: ${diceColor};">2d10</span>: ` +
+      `<span style="color: ${diceColor};">${roll.components[0]}</span> + ` +
+      `<span style="color: ${diceColor};">${roll.components[1]}</span>]`
+  } else if (roll.type === "d10x10") {
+    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+      `[<span style="color: ${diceColor};">d10x10</span>: ` +
+      `<span style="color: ${diceColor};">${roll.components[0]}</span> x ` +
+      `<span style="color: ${diceColor};">${roll.components[1]}</span>]`
+  } else if (roll.type === "CC") {
+    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+      `[<span style="color: ${diceColor};">CC</span>: (2 x ` +
+      `<span style="color: ${diceColor};">${roll.components[0]}</span> + ` +
+      `<span style="color: ${diceColor};">${roll.components[1]}</span>) x ` +
+      `<span style="color: ${diceColor};">${roll.components[2]}</span>]`
+  }
+  return ""
+}
+
+export function weatherDescription(weather: WeatherType): string {
+  const lookup = {
+    "dry": `<span style="color: ${dryTextColor};">clear</span>`,
+    "fog": `<span style="color: ${fogTextColor};">foggy</span>`,
+    "rain": `<span style="color: ${rainTextColor};">raining</span>`,
+    "snow": `<span style="color: ${snowTextColor};">snowing</span>`,
+    "sand": `<span style="color: ${sandTextColor};">blowing sand</span>`,
+    "dust": `<span style="color: ${dustTextColor};">blowing dust</span>`,
+  }
+
+  return lookup[weather] ?? "unknown"
+}
+
+export function deHTML(text: string): string {
+  return text.replace(/(<([^>]+)>)/ig,"")
+}
 
 export function xCorner(map: Map, x: number, i: number): number {
   return x - map.radius * Math.cos((i-0.5)/3 * Math.PI)

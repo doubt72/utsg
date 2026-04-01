@@ -1,5 +1,6 @@
 import { Coordinate, featureType } from "../../utilities/commonTypes";
-import { baseToHit, coordinateToLabel, normalDir, smokeRoll } from "../../utilities/utilities";
+import { formatCoordinate, formatDieResult, formatNation } from "../../utilities/graphics";
+import { baseToHit, normalDir, smokeRoll } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -42,14 +43,16 @@ export default class MoveAction extends BaseAction {
 
   get moveString(): string { return this.rush ? "rushes" : "moves" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const end = new Coordinate(this.lastPath.x, this.lastPath.y)
-    const nation = this.game.nationNameForPlayer(this.player)
-    const units = this.origin.map(u => (this.game.findUnitById(u.id) as Unit).name).join(", ")
+    const nation = formatNation(this.game, this.player)
+    const units = this.origin.map(u => {
+      return formatNation(this.game, this.player, (this.game.findUnitById(u.id) as Unit).name)
+    }).join(", ")
     const actions = [this.path.length > 1 ?
-      `${nation} ${units} ${this.moveString} from ${coordinateToLabel(start)} to ${coordinateToLabel(end)}` :
-      `${nation} ${units} ${this.moveString} at ${coordinateToLabel(start)}`
+      `${nation} ${units} ${this.moveString} from ${formatCoordinate(start)} to ${formatCoordinate(end)}` :
+      `${nation} ${units} ${this.moveString} at ${formatCoordinate(start)}`
     ]
     let diceIndex = 0
     let mineAction = undefined
@@ -59,7 +62,7 @@ export default class MoveAction extends BaseAction {
       const unit = this.game.findUnitById(this.origin[0].id) as Unit
       let hitRoll = 0
       if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
-        hitRoll = this.diceResults[diceIndex++].result
+        hitRoll = this.diceResults[diceIndex++].result.result
       }
       if (unit.isVehicle && !unit.armored) {
         mineAction = ", vehicle destroyed by mines"
@@ -90,27 +93,28 @@ export default class MoveAction extends BaseAction {
     }
     this.addAction.forEach(a => {
       const mid = new Coordinate(a.x, a.y)
-      const label = coordinateToLabel(mid)
+      const label = formatCoordinate(mid)
       if (a.type === gameActionAddActionType.Drop) {
         const parent = this.game.findUnitById(a.parent_id ?? "")
         const child = this.game.findUnitById(a.id ?? "") as Unit
         if (parent) {
-          actions.push(`${child.name} dropped at ${label}`)
+          actions.push(`${formatNation(this.game, this.player, child.name)} dropped at ${label}`)
         } else {
-          actions.push(`${child.name} stopped at ${label}`)
+          actions.push(`${formatNation(this.game, this.player, child.name)} stopped at ${label}`)
         }
       } else if (a.type === gameActionAddActionType.Load) {
         const unit = this.game.findUnitById(a.id ?? "") as Unit
-        actions.push(`${unit.name} picked up at ${label}`)
+        actions.push(`${formatNation(this.game, this.player, unit.name)} picked up at ${label}`)
       } else if (a.type === gameActionAddActionType.Smoke) {
         const roll = this.diceResults[diceIndex++]
-        actions.push(`smoke level ${smokeRoll(roll.result)} placed at ${label} (from ${
-          roll.type} roll result of ${roll.result})`)
+        actions.push(`smoke level ${smokeRoll(roll.result.result)} placed at ${label} (smoke roll of ${
+          formatDieResult(roll.result)
+        })`)
       } else if (a.type !== gameActionAddActionType.VP) {
         actions.push("unexpected action")
       }
     })
-    return `${actions.join(", ")}${ mineAction ? mineAction : "" }${this.undone ? " [cancelled]" : ""}`;
+    return `${actions.join(", ")}${ mineAction ? mineAction : "" }`;
   }
 
   get lastPath(): GameActionPath {
@@ -138,7 +142,7 @@ export default class MoveAction extends BaseAction {
       hitCheck = baseToHit(mines.firepower)
       const unit = this.game.findUnitById(this.origin[0].id) as Unit
       if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
-        hitRoll = this.diceResults[diceIndex++].result
+        hitRoll = this.diceResults[diceIndex++].result.result
       }
     }
     let first = true
@@ -191,7 +195,7 @@ export default class MoveAction extends BaseAction {
         const unit = this.game.findUnitById(a.id as string) as Unit
         this.rush ? unit.exhaust() : unit.activate()
       } else if (a.type === gameActionAddActionType.Smoke) {
-        const hindrance = smokeRoll(this.diceResults[diceIndex++].result)
+        const hindrance = smokeRoll(this.diceResults[diceIndex++].result.result)
         anims.push({ loc: mid, type: "smoke" })
         this.map.addCounter(mid, new Feature(
           { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id }

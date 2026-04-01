@@ -93,15 +93,13 @@ export default class CloseCombatState extends BaseState {
     const fp2 = closeCombatFirepower(this.game, counters[0].hex as Coordinate, 2)
     const max1 = maxCCCasualties(this.map, loc, this.game.playerOneNation)
     const max2 = maxCCCasualties(this.map, loc, this.game.playerTwoNation)
-    const dice = [
-      { result: rollCC(fp1), type: "CC" }, { result: rollCC(fp2), type: "CC" }
-    ]
     const action = new GameAction({
       user: this.game.currentPlayer === this.player ? this.game.currentUser : this.game.opponentUser,
       player: this.player,
       data: {
         action: "close_combat_roll", old_initiative: this.game.initiative,
-        dice_result: dice, origin, target, cc_data: { p1_fp: fp1, p2_fp: fp2, p1_max: max1, p2_max: max2 },
+        dice_result: [{ result: rollCC(fp1) }, { result: rollCC(fp2) }],
+        origin, target, cc_data: { p1_fp: fp1, p2_fp: fp2, p1_max: max1, p2_max: max2 },
       }
     }, this.game)
     this.map.clearAllSelections()

@@ -19,12 +19,11 @@ export default class PrecipCheckState extends BaseState {
   }
 
   finish() {
-    const dice = [{ result: rolld10(), type: "d10" }]
     const action = new GameAction({
       user: this.game.currentUser, player: this.game.currentPlayer,
       data: {
         action: "precipitation_check", old_initiative: this.game.initiative,
-        dice_result: dice
+        dice_result: [{ result: rolld10() }]
       }
     }, this.game)
     this.execute(action)

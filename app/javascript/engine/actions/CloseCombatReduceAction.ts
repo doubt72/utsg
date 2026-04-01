@@ -1,5 +1,5 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { failRed, formatCoordinate, formatNation } from "../../utilities/graphics";
 import { setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
@@ -19,13 +19,15 @@ export default class CloseCombatReduceAction extends BaseAction {
 
   get type(): string { return "close_combat_reduce" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const loc = new Coordinate(this.target.x, this.target.y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (unit.isVehicle || this.target.status === unitStatus.Broken) {
-      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} at ${coordinateToLabel(loc)} eliminated`
+      return `${formatNation(this.game, this.player)} ${formatNation(this.game, this.player, unit.name)} ` +
+        `at ${formatCoordinate(loc)} <span style="color: ${failRed};">eliminated</span>`
     } else {
-      return `${this.game.nationNameForPlayer(this.player)} ${unit.name} at ${coordinateToLabel(loc)} broken`
+      return `${formatNation(this.game, this.player)} ${formatNation(this.game, this.player, unit.name)} ` +
+        `at ${formatCoordinate(loc)} <span style="color: ${failRed};">broken</span>`
     }
   }
 

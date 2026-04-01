@@ -22,7 +22,6 @@ export default class FireStartState extends BaseState {
 
   finish() {
     const loc = this.game.fireStartCheckNeeded?.loc as Coordinate
-    const dice = [{ result: roll2d10(), type: "2d10" }]
     const action = new GameAction({
       user: this.game.currentUser, player: this.game.currentPlayer,
       data: {
@@ -33,7 +32,7 @@ export default class FireStartState extends BaseState {
           incendiary: this.game.fireStartCheckNeeded?.incendiary as boolean,
           vehicle_incendiary: this.game.fireStartCheckNeeded?.vehicle_incendiary as boolean,
         },
-        dice_result: dice
+        dice_result: [{ result: roll2d10() }]
       }
     }, this.game)
     this.game.state = undefined

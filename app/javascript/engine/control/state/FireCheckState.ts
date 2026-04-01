@@ -1,4 +1,5 @@
 import { hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
+import { formatDieResult } from "../../../utilities/graphics";
 import { rolld10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -43,10 +44,10 @@ export default class FireCheckState extends BaseState {
         action: out ? "fire_out_check" : "fire_spread_check",
         target: [{ x: loc.x, y: loc.y, id: feature.id }],
         dice_result: [{
-          result, type: "d10",
+          result,
           description: `fire ${out ? "goes out" : "spreads"} on ${need} or less, ` +
-            `rolled ${result}, ${
-            result > need ? "no effect" : (out ? "fire goes out" : "fire spreads")
+            `rolled ${formatDieResult(result)}, ${
+            result.result > need ? "no effect" : (out ? "fire goes out" : "fire spreads")
           }`
         }],
         old_initiative: this.game.initiative,

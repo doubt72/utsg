@@ -1,4 +1,4 @@
-import { Player } from "../../utilities/commonTypes"
+import { formatNation } from "../../utilities/graphics"
 import { otherPlayer } from "../../utilities/utilities"
 import Game from "../Game"
 import GameAction, { GameActionData, GameActionPhaseChange } from "../GameAction"
@@ -69,10 +69,6 @@ export function checkPhase(game: Game, backendSync: boolean) {
   }
 }
 
-function nation(game: Game, player: Player): string {
-  return player === 1 ? game.alliedName : game.axisName
-}
-
 function deployment(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldTurn = phaseData.new_turn
@@ -80,9 +76,9 @@ function deployment(game: Game, data: GameActionData): void {
   const [count, initialCount] = game.reinforcementsCount(oldTurn, player)
   if (count === 0) {
     if (initialCount === 0) {
-      phaseData.messages.push(`no units to deploy, skipping ${nation(game, player)} player`)
+      phaseData.messages.push(`no units to deploy, skipping ${formatNation(game, player)} player`)
     }
-    phaseData.messages.push(`${nation(game, player)} deployment complete`)
+    phaseData.messages.push(`${formatNation(game, player)} deployment complete`)
     if (oldTurn === 0) {
       phaseData.new_phase = gamePhaseType.Deployment
       if (phaseData.new_player === game.scenario.firstDeploy) {
@@ -97,12 +93,12 @@ function deployment(game: Game, data: GameActionData): void {
         gamePhaseType.Deployment : gamePhaseType.PrepRally
     }
     if (phaseData.new_phase === gamePhaseType.Deployment) {
-      phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} deployment`)
+      phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} deployment`)
       deployment(game, data)
     } else {
-      phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} rally`)
+      phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} rally`)
       if (game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
-        `no rallyable broken units or jammed weapons, skipping ${nation(game, phaseData.new_player)} rally`
+        `no rallyable broken units or jammed weapons, skipping ${formatNation(game, phaseData.new_player)} rally`
       }
       prepRally(game, data)
     }
@@ -117,7 +113,7 @@ function prepRally(game: Game, data: GameActionData): void {
   if (game.scenario.map.anyUnitsCanRally(player)) {
     if (game.lastAction?.type !== "rally_pass") { return }
   }
-  phaseData.messages.push(`${nation(game, player)} rally complete`)
+  phaseData.messages.push(`${formatNation(game, player)} rally complete`)
   if (player === game.currentInitiativePlayer) {
     phaseData.new_player = otherPlayer(player)
     phaseData.new_phase = oldPhase
@@ -126,9 +122,9 @@ function prepRally(game: Game, data: GameActionData): void {
     phaseData.new_phase = gamePhaseType.PrepPrecip
   }
   if (phaseData.new_phase === gamePhaseType.PrepRally) {
-    phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} rally`)
+    phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} rally`)
     if (game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
-      `no rallyable broken units or jammed weapons, skipping ${nation(game, phaseData.new_player)} rally`
+      `no rallyable broken units or jammed weapons, skipping ${formatNation(game, phaseData.new_player)} rally`
     }
     prepRally(game, data)
   } else {
@@ -177,7 +173,7 @@ function cleanupCloseCombat(game: Game, data: GameActionData): void {
   phaseData.messages.push("close combat complete")
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupOverstack
-  phaseData.messages.push(`starting overstack check for ${nation(game, phaseData.new_player)}`)
+  phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)}`)
   if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
       phaseData.messages.push("no overstacked units, skipping")
   }
@@ -189,11 +185,11 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
   const oldPhase = phaseData.new_phase
   const player = phaseData.new_player
   if (game.scenario.map.anyOverstackedUnits(player)) { return }
-  phaseData.messages.push(`overstack check complete for ${nation(game, player)}`)
+  phaseData.messages.push(`overstack check complete for ${formatNation(game, player)}`)
   phaseData.new_player = otherPlayer(player)
   if (player === game.internalInitiativePlayer) {
     phaseData.new_phase = oldPhase
-    phaseData.messages.push(`starting overstack check for ${nation(game, phaseData.new_player)}`)
+    phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)}`)
     if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
         phaseData.messages.push("no overstacked units, skipping")
     }
@@ -265,6 +261,6 @@ function cleanupWeather(game: Game, data: GameActionData): void {
   phaseData.new_phase = gamePhaseType.Deployment
   phaseData.new_player = game.scenario.firstAction
   phaseData.new_turn = oldTurn + 1
-  phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} deployment`)
+  phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} deployment`)
   deployment(game, data)
 }

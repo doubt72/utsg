@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { baseRally, coordinateToLabel } from "../../utilities/utilities";
+import { failRed, formatCoordinate, formatDieResult, formatNation, passGreen } from "../../utilities/graphics";
+import { baseRally } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -45,22 +46,24 @@ export default class RallyAction extends BaseAction {
   }
 
   get passed(): boolean {
-    if (this.diceResult.result === 2) { return false }
-    return this.diceResult.result > this.rollNeeded || this.diceResult.result === 20
+    const roll = this.diceResult.result.result
+    if (roll === 2) { return false }
+    return roll > this.rollNeeded || roll === 20
   }
 
-  get stringValue(): string {
+  get htmlValue(): string {
+    const roll = this.diceResult.result.result
+    const nation = formatNation(this.game, this.player)
     const unit = this.game.findUnitById(this.target.id) as Unit
     const action = unit.canCarrySupport ? "rally check" : "attempt to fix weapon"
-    const succeed = unit.canCarrySupport ? "rallies" : "repaired"
-    const fail = unit.canCarrySupport ? "fails to rally" :
-      ( this.diceResult.result <= this.breakRoll ? "is destroyed" : "remains broken" )
-    const result = `${this.passed ? "passed" : (
-      !unit.canCarrySupport && this.diceResult.result <= this.breakRoll ?
-        "catastrophic failure" : "failed"
-    ) }: ` + `${unit?.name} ${this.passed ? succeed : fail}`
-    return `${action} at ${coordinateToLabel(new Coordinate(this.target.x, this.target.y))}` +
-      `: needed ${this.rollNeeded}, got ${this.diceResult.result}, ${result}`
+    const succeed = unit.canCarrySupport ? "rallies" : "is repaired"
+    const fail = unit.canCarrySupport ? `fails to rally` :
+      ( roll <= this.breakRoll ? `is <span style="color: ${failRed};">eliminated</span>` : "remains broken" )
+    const result = `${this.passed ? `<span style="color: ${passGreen};">passed</span>` : (
+      !unit.canCarrySupport && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed};">failure</span>` : `<span style="color: ${failRed};">failed</span>`
+    ) }: ` + `${formatNation(this.game, this.player, unit.name)} ${this.passed ? succeed : fail}`
+    return `${nation} ${action} at ${formatCoordinate(new Coordinate(this.target.x, this.target.y))}` +
+      `: needed ${this.rollNeeded}, rolled ${formatDieResult(this.diceResult.result)}, ${result}`
   }
 
   get undoPossible() {
@@ -79,7 +82,7 @@ export default class RallyAction extends BaseAction {
         unit.jammed = false
         this.game.addActionAnimations([{ loc, type: "fix" }])
       }
-    } else if (!unit.canCarrySupport && this.diceResult.result <= this.breakRoll ) {
+    } else if (!unit.canCarrySupport && this.diceResult.result.result <= this.breakRoll ) {
       unit.jammed = false
       this.game.scenario.map.eliminateCounter(loc, this.target.id)
       this.game.addActionAnimations([{ loc, type: "destroyed" }])

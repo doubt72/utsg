@@ -1,3 +1,4 @@
+import { counterRed, markerYellowText } from "../../utilities/graphics";
 import Counter from "../Counter";
 import Game from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
@@ -15,9 +16,14 @@ export default class StatusUpdateAction extends BaseAction {
 
   get type(): string { return "status_update" }
 
-  get stringValue(): string {
-    return "update all unit statuses: remove all pinned, routed, tired, and activated markers; exhausted units " +
-      `become tired${this.undone ? " [cancelled]" : ""}`
+  get htmlValue(): string {
+    const red = counterRed
+    const yellow = markerYellowText
+    return `update all unit statuses: remove all <span style="color: ${red};">pinned</span>, ` +
+      `<span style="color: ${red};">routed</span>, <span style="color: ${yellow};">tired</span>, ` +
+      `and <span style="color: ${yellow};">activated</span> markers; ` +
+      `<span style="color: ${yellow};">exhausted</span> units become ` +
+      `<span style="color: ${yellow};">tired</span>`
   }
 
   get undoPossible() {

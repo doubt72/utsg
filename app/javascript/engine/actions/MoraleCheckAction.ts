@@ -1,5 +1,6 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
-import { baseMorale, coordinateToLabel } from "../../utilities/utilities";
+import { failRed, formatCoordinate, formatDieResult, formatNation, passBlue } from "../../utilities/graphics";
+import { baseMorale } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionMoraleData, GameActionUnit } from "../GameAction";
@@ -25,32 +26,33 @@ export default class MoraleCheckAction extends BaseAction {
 
   get type(): string { return "morale_check" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     let rc = ""
     const unit = this.game.findUnitById(this.target.id) as Unit
     const check = baseMorale + this.moraleMods.mod
     let short = false
-    const roll = this.diceResult
+    const roll = this.diceResult.result.result
     rc += `${
-      this.game.nationNameForPlayer(this.player)
-    } morale check for ${unit.name} (2d10): target ${check}, rolled ${roll.result}`
-    if (roll.result < check) {
+      formatNation(this.game, this.player)
+    } morale check for ${formatNation(this.game, this.player, unit.name)} (2d10): ` +
+      `target ${check}, rolled ${formatDieResult(this.diceResult.result)}`
+    if (roll < check) {
       if (this.target.status === unitStatus.Broken) {
-        rc += ", unit eliminated"
+        rc += `, unit <span style="color: ${failRed};">eliminated</span>`
       } else {
-        rc += ", unit breaks"
+        rc += `, unit <span style="color: ${failRed};">breaks</span>`
         short = true
       }
-    } else if (roll.result == check) {
+    } else if (roll == check) {
       if (this.target.status !== unitStatus.Broken) {
-        rc += ", unit is pinned"
+        rc += `, unit is <span style="color: ${failRed};">pinned</span>`
         short = true
       }
     } else {
-      rc += ", no effect"
+      rc += `, <span style="color: ${passBlue};">no effect</span>`
     }
     if (this.moraleMods.short && short) {
-      rc += `, move short at ${coordinateToLabel(new Coordinate(this.target.x, this.target.y))}`
+      rc += `, move short at ${formatCoordinate(new Coordinate(this.target.x, this.target.y))}`
     }
     return rc
   }
@@ -63,8 +65,8 @@ export default class MoraleCheckAction extends BaseAction {
     this.game.moraleChecksNeeded.shift()
     const counter = this.game.findCounterById(this.target.id) as Counter
     const check = baseMorale + this.moraleMods.mod
-    const roll = this.diceResult
-    if (roll.result < check) {
+    const roll = this.diceResult.result.result
+    if (roll < check) {
       if (counter.unit.isBroken) {
         const hex = counter.hex as Coordinate
         this.game.scenario.map.eliminateCounter(hex, this.target.id)
@@ -80,7 +82,7 @@ export default class MoraleCheckAction extends BaseAction {
           this.game.addActionAnimations([{ loc: hex, type: "break" }])
         }
       }
-    } else if (roll.result === check && !counter.unit.isBroken) {
+    } else if (roll === check && !counter.unit.isBroken) {
       counter.unit.pinned = true
       const hex = counter.hex as Coordinate
       if (hex.x != this.target.x || hex.y !== this.target.y) {

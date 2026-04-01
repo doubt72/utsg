@@ -21,6 +21,7 @@ import {
 import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
 import FireStartState from "./state/FireStartState"
+import { deHTML } from "../../utilities/graphics"
 
 describe("ranged fire attacks", () => {
   describe("probability checks", () => {
@@ -413,8 +414,11 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual(
         [{ unit: target, from: [floc], to: tloc, incendiary: false }]
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 14, rolled 20: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 14, rolled 20 [2d10: 10 + 10]: hit"
+      )
+      expect(game.actions[0].stringValue).toBe(
+        "German Rifle at D3 fired at Soviet Rifle at E1; target 14, rolled 20 [2d10: 10 + 10]: hit"
       )
     })
 
@@ -465,8 +469,8 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual(
         [{ unit: target, from: [floc], to: tloc, incendiary: false }]
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 13, rolled 20: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 13, rolled 20 [2d10: 10 + 10]: hit"
       )
     })
 
@@ -1251,8 +1255,8 @@ describe("ranged fire attacks", () => {
       expect(game.currentPlayer).toBe(2)
 
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 12, rolled 20: hit, Studebaker US6 destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 12, rolled 20 [2d10: 10 + 10]: hit, Studebaker US6 destroyed"
       )
       expect(game.playerTwoScore).toBe(14)
     })
@@ -1292,8 +1296,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 12, rolled 20: hit, Studebaker US6 destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 12, rolled 20 [2d10: 10 + 10]: hit, Studebaker US6 destroyed"
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual({
@@ -1307,7 +1311,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E1 (2d10): need 4, got 2: blaze starts"
+        "checking to see if blaze starts in E1: need 4, rolled 2 [2d10: 1 + 1]: blaze starts"
       )
       const counters = map.countersAt(new Coordinate(4, 0))
       expect(counters.length).toBe(2)
@@ -1349,8 +1353,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(target.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 12, rolled 2: miss"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 12, rolled 2 [2d10: 1 + 1]: miss"
       )
 
       expect(game.fireStartCheckNeeded).toBe(undefined)
@@ -1780,8 +1784,8 @@ describe("ranged fire attacks", () => {
         { unit: target2, from: [floc], to: tloc, incendiary: false },
       ])
       expect(target3.immobilized).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 18, rolled 18: tie, vehicle immobilized"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll for T-34 M40: target 18, rolled 18 [2d10: 9 + 9]: tie, vehicle immobilized"
       )
     })
 
@@ -1852,8 +1856,8 @@ describe("ranged fire attacks", () => {
         { unit: target, from: [floc], to: tloc, incendiary: false },
         { unit: target2, from: [floc], to: tloc, incendiary: false },
       ])
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 20, rolled 20: tie, vehicle immobilized"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll for T-34 M40: target 20, rolled 20 [2d10: 10 + 10]: tie, vehicle immobilized"
       )
     })
 
@@ -1893,8 +1897,8 @@ describe("ranged fire attacks", () => {
       game.gameState?.finish()
       Math.random = original
 
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "penetration roll (2d10): target 20, rolled 20: tie, vehicle immobilized"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "penetration roll: target 20, rolled 20 [2d10: 10 + 10]: tie, vehicle immobilized"
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual({
@@ -1908,7 +1912,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E1 (2d10): need 2, got 20: no effect"
+        "checking to see if blaze starts in E1: need 2, rolled 20 [2d10: 10 + 10]: no effect"
       )
     })
 
@@ -1948,8 +1952,8 @@ describe("ranged fire attacks", () => {
       game.gameState?.finish()
       Math.random = original
 
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 6, rolled 100: hit, Studebaker US6 destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 6, rolled 100 [d10x10: 10 x 10]: hit, Studebaker US6 destroyed"
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual({
@@ -1963,7 +1967,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E1 (2d10): need 4, got 2: blaze starts"
+        "checking to see if blaze starts in E1: need 4, rolled 2 [2d10: 1 + 1]: blaze starts"
       )
       const counters = map.countersAt(new Coordinate(4, 0))
       expect(counters.length).toBe(2)
@@ -2111,17 +2115,17 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target3.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 4, rolled 1: miss, drifts, firing weapon broken"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "direction roll (d6): 1"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "direction roll: 1 [d6]"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "distance roll (d10): 1 for 1 hexes, drifted to D3"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "distance roll: 1 [d10] for 1 hexes, drifted to D3"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[3].description).toBe(
-        "infantry effect roll (2d10): target 7, rolled 2: failed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[3].description as string)).toBe(
+        "infantry effect roll: target 7, rolled 2 [2d10: 1 + 1]: no effect"
       )
 
       const all = map.allUnits
@@ -2165,9 +2169,9 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German Radio 10.5cm at D3 fired at E3; targeting roll (d10x10): target 4, rolled 1: miss, " +
-        "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
-        "drifted to D3; infantry effect roll (2d10): target 7, rolled 2: failed"
+        "German Radio 10.5cm at D3 fired at E3; targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, " +
+        "drifts, firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
+        "drifted to D3; infantry effect roll: target 7, rolled 2 [2d10: 1 + 1]: no effect"
       )
 
       const all = map.allUnits
@@ -2201,9 +2205,9 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German Radio 10.5cm at D3 fired smoke at E3; targeting roll (d10x10): target 4, rolled 1: miss, " +
-        "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
-        "drifted to D3; smoke roll (d10): rolled 1, smoke level 2"
+        "German Radio 10.5cm at D3 fired smoke at E3; targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, " +
+        "drifts, firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
+        "drifted to D3; smoke roll: rolled 1 [d10], smoke level 2"
       )
 
       const all = map.allCounters
@@ -2246,9 +2250,9 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German Radio 10.5cm at D3 fired smoke at C3; targeting roll (d10x10): target 4, rolled 1: miss, " +
-        "drifts, firing weapon broken; direction roll (d6): 1; distance roll (d10): 1 for 1 hexes, " +
-        "drifted to B3; smoke roll (d10): rolled 1, smoke level 2"
+        "German Radio 10.5cm at D3 fired smoke at C3; targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, " +
+        "drifts, firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
+        "drifted to B3; smoke roll: rolled 1 [d10], smoke level 2"
       )
 
       const counters = map.countersAt(new Coordinate(1, 2))
@@ -2282,8 +2286,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll (d10x10): target 9, rolled 100: hit; " +
-        "smoke roll (d10): rolled 10, smoke level 4"
+        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll: target 9, rolled 100 [d10x10: 10 x 10]: hit; " +
+        "smoke roll: rolled 10 [d10], smoke level 4"
       )
 
       const all = map.allCounters
@@ -2320,8 +2324,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll (d10x10): target 12, rolled 100: hit; " +
-        "smoke roll (d10): rolled 10, smoke level 4"
+        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll: target 12, rolled 100 [d10x10: 10 x 10]: hit; " +
+        "smoke roll: rolled 10 [d10], smoke level 4"
       )
 
       const all = map.allCounters
@@ -2360,7 +2364,7 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll (d10x10): target 12, rolled 1: miss, " +
+        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll: target 12, rolled 1 [d10x10: 1 x 1]: miss, " +
         "firing weapon broken"
       )
 
@@ -2439,8 +2443,8 @@ describe("ranged fire attacks", () => {
         { unit: target2, from: [floc], to: tloc, incendiary: false },
       ])
       expect(target3.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 13, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll for T-34 M40: target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -2521,8 +2525,8 @@ describe("ranged fire attacks", () => {
         { unit: target2, from: [floc], to: tloc, incendiary: true },
       ])
       expect(target3.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 7, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "penetration roll for T-34 M40: target 7, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual({
@@ -2536,7 +2540,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E3 (2d10): need 6, got 2: blaze starts"
+        "checking to see if blaze starts in E3: need 6, rolled 2 [2d10: 1 + 1]: blaze starts"
       )
       const counters = map.countersAt(new Coordinate(4, 2))
       expect(counters.length).toBe(4)
@@ -2608,8 +2612,8 @@ describe("ranged fire attacks", () => {
         { unit: firing, from: [], to: floc, incendiary: true },
       ])
       expect(target3.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 4, rolled 2: miss, Flamethrower destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 4, rolled 2 [2d10: 1 + 1]: miss, Flamethrower destroyed"
       )
 
       const all = map.allUnits
@@ -2693,8 +2697,8 @@ describe("ranged fire attacks", () => {
         { unit: target2, from: [floc], to: tloc, incendiary: true },
       ])
       expect(target3.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll for T-34 M40 (2d10): target 15, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll for T-34 M40: target 15, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -2804,8 +2808,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 3, rolled 1: miss, firing weapon broken"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 3, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
       )
 
       const all = map.allUnits
@@ -2849,8 +2853,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 3, rolled 1: miss, firing weapon destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 3, rolled 1 [d10x10: 1 x 1]: miss, firing weapon destroyed"
       )
 
       const all = map.allUnits
@@ -2924,8 +2928,8 @@ describe("ranged fire attacks", () => {
         { unit: target2, from: [floc], to: tloc, incendiary: false },
       ])
       expect(target3.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "roll for effect (2d10): target 15, rolled 20: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "roll for effect: target 15, rolled 20 [2d10: 10 + 10]: passed"
       )
 
       const all = map.allUnits
@@ -2991,11 +2995,11 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 3, rolled 100: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (front) (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3051,8 +3055,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 3, rolled 100: hit, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3111,8 +3115,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 5, rolled 100: hit, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 5, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
       )
     })
 
@@ -3163,8 +3167,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 4, rolled 100: hit, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
       )
     })
 
@@ -3219,8 +3223,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 4, rolled 100: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
       )
 
       const all = map.allUnits
@@ -3280,8 +3284,8 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([
         { unit: target, from: [floc], to: tloc, incendiary: false },
       ])
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 10, rolled 20: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 10, rolled 20 [2d10: 10 + 10]: hit"
       )
 
       const all = map.allUnits
@@ -3407,14 +3411,14 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 3, rolled 100: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description).toBe(
-        "hit location roll (d10): 10 (hull)"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "hit location roll: 10 [d10] (hull)"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (front) (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3476,8 +3480,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 3, rolled 1: miss, firing weapon broken"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 3, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
       )
 
       const all = map.allUnits
@@ -3530,8 +3534,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "hit roll (2d10): target 4, rolled 2: miss, firing weapon destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 4, rolled 2 [2d10: 1 + 1]: miss, firing weapon destroyed"
       )
 
       const all = map.allUnits
@@ -3582,11 +3586,11 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 3, rolled 100: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (front) (2d10): target 15, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll (front): target 15, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3724,11 +3728,11 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 4, rolled 100: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (front) (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3795,11 +3799,11 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description).toBe(
-        "targeting roll (d10x10): target 4, rolled 100: hit"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
       )
-      expect((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description).toBe(
-        "penetration roll (front) (2d10): target 12, rolled 20: succeeded, vehicle destroyed"
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       const all = map.allUnits

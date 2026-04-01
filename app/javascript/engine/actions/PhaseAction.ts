@@ -1,4 +1,5 @@
 import { Player } from "../../utilities/commonTypes";
+import { actionOrange } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData } from "../GameAction";
 import { GamePhase, gamePhaseType } from "../support/gamePhase";
@@ -34,8 +35,8 @@ export default class PhaseAction extends BaseAction {
 
   get type(): string { return "phase" }
 
-  get stringValue(): string {
-    return `${this.messages.join(" > ")}${this.undone ? " [cancelled]" : ""}`
+  get htmlValue(): string {
+    return this.messages.join(` <span style="color: ${actionOrange};">></span> `)
   }
 
   get undoPossible() {
@@ -48,6 +49,7 @@ export default class PhaseAction extends BaseAction {
     this.game.setCurrentPlayer(this.newPlayer)
     this.phaseNotification()
     organizeStacks(this.game.scenario.map)
+    this.game.openOverlay = undefined
   }
   
   undo(): void {

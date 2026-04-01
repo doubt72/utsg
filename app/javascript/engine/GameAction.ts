@@ -31,9 +31,11 @@ import WindDirectionAction from "./actions/WindDirectionAction";
 import WindSpeedAction from "./actions/WindSpeedAction";
 import FireDisplaceAction from "./actions/FireDisplaceAction";
 import FireStartAction from "./actions/FireStartAction";
+import { DiceResult } from "../utilities/utilities";
+import { formatNation } from "../utilities/graphics";
 
 export type GameActionDiceResult = {
-  result: number, type: string, description?: string
+  result: DiceResult, description?: string
 }
 
 export type GameActionUnit = {
@@ -139,7 +141,7 @@ export type GameActionData = {
   id?: number,
   sequence?: number,
   user: string,
-  player: number,
+  player: Player,
   created_at?: string,
 
   undone?: boolean,
@@ -164,7 +166,9 @@ export default class GameAction {
     } else if (this.data.data.action === "start") {
       return new StateAction(this.data, this.game, this.index, "game started");
     } else if (this.data.data.action === "join") {
-      return new StateAction(this.data, this.game, this.index, `joined as player ${this.data.player}`);
+      return new StateAction(
+        this.data, this.game, this.index, `joined as ${formatNation(this.game, this.data.player)} player`
+      );
     } else if (this.data.data.action === "leave") {
       return new StateAction(this.data, this.game, this.index, "left game");
     } else if (this.data.data.action === "kick") {

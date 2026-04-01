@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import Game from "./Game";
 import { ScenarioData } from "./Scenario";
 import { MapData } from "./Map";
-import { Coordinate, baseTerrainType, weatherType, windType } from "../utilities/commonTypes";
+import { Coordinate, Player, baseTerrainType, weatherType, windType } from "../utilities/commonTypes";
 import { UnitData } from "./Unit";
 import GameAction, { GameActionData } from "./GameAction";
 import { FeatureData } from "./Feature";
@@ -81,7 +81,7 @@ describe("action integration test", () => {
   });
 
   test("validation", () => {
-    const actionData = { user: "two", player: 1, data: { action: "deploy", old_initiative: game.initiative } }
+    const actionData = { user: "two", player: 1 as Player, data: { action: "deploy", old_initiative: game.initiative } }
 
     expect(() => new GameAction(actionData, game, 0).actionClass).toThrowError('Bad data for action')
   })
@@ -160,7 +160,7 @@ describe("action integration test", () => {
     // Otherwise actions are treated sort of as a stack, with lastActionIndex as the
     // "execution" pointer
     expect(game.lastActionIndex).toBe(index - 2)
-    expect(game.actions[index - 1].stringValue).toBe("deployed German unit: Rifle to E4 [cancelled]")
+    expect(game.actions[index - 1].undone).toBe(true)
 
     // Loading an undone action doesn't execute or increment last action
     currentActionData = {
@@ -231,10 +231,8 @@ describe("action integration test", () => {
     expect(game.lastActionIndex).toBe(index - 3)
     expect(game.currentPlayer).toBe(2)
     expect(game.lastAction?.stringValue).toBe("deployed German unit: Rifle to E4")
-    expect(game.actions[game.actions.length-2].stringValue).toBe("deployed German unit: Wire to E2 [cancelled]")
-    expect(game.actions[game.actions.length-1].stringValue).toBe(
-      "German deployment complete > starting Soviet deployment [cancelled]"
-    )
+    expect(game.actions[game.actions.length-2].undone).toBe(true)
+    expect(game.actions[game.actions.length-1].undone).toBe(true)
 
     index++
     game.executeAction(new GameAction(currentActionData, game, index++), false)

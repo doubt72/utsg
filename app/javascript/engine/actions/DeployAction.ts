@@ -1,5 +1,5 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { formatCoordinate, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionPath, GameActionData, GameActionReinforcementUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -32,12 +32,12 @@ export default class DeployAction extends BaseAction {
 
   get type(): string { return "deploy" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const name = this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.rTurn][this.rIndex].counter.name :
       this.game.scenario.axisReinforcements[this.rTurn][this.rIndex].counter.name
-    return `deployed ${this.game.nationNameForPlayer(this.player)} unit: ${name} to ${
-      coordinateToLabel(this.target)}${this.undone ? " [cancelled]" : ""}`
+    return `deployed ${formatNation(this.game, this.player)} ` +
+      `unit: ${formatNation(this.game, this.player,name)} to ${formatCoordinate(this.target)}`
   }
 
   get undoPossible() { return true }

@@ -1,3 +1,4 @@
+import { formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -9,8 +10,8 @@ export default class InitiativePassAction extends BaseAction {
 
   get type(): string { return "pass" }
 
-  get stringValue(): string {
-    return `${this.game.nationNameForPlayer(this.player)} passes initiative`
+  get htmlValue(): string {
+    return `${formatNation(this.game, this.player)} player passes initiative`
   }
 
   get undoPossible() {

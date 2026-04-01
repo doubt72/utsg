@@ -270,7 +270,7 @@ export default class Game {
     this.resignationLevel += 1
     if (this.resignationLevel > 2) {
       const user = localStorage.getItem("username") as string
-      let winner = user === this.playerOneName ? 2 : 1
+      let winner: Player = user === this.playerOneName ? 2 : 1
       if (this.playerOneName === this.playerTwoName) {
         winner = otherPlayer(this.currentPlayer)
       }

@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel, normalDir } from "../../utilities/utilities";
+import { formatCoordinate, formatNation } from "../../utilities/graphics";
+import { normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -28,14 +29,15 @@ export default class AssaultMoveAction extends BaseAction {
 
   get type(): string { return "assault_move" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const start = new Coordinate(this.path[0].x, this.path[0].y)
     const end = new Coordinate(this.lastPath.x, this.lastPath.y)
-    const nation = this.game.nationNameForPlayer(this.player)
-    const units = this.origin.map(u => (this.game.findUnitById(u.id) as Unit).name).join(", ")
+    const nation = formatNation(this.game, this.player)
+    const units = this.origin.map(u =>
+      formatNation(this.game, this.player, (this.game.findUnitById(u.id) as Unit).name)).join(", ")
     const actions = [this.path.length > 1 ?
-      `${nation} ${units} assault moved from ${coordinateToLabel(start)} to ${coordinateToLabel(end)}` :
-      `${nation} ${units} at ${coordinateToLabel(start)}`
+      `${nation} ${units} assault moved from ${formatCoordinate(start)} to ${formatCoordinate(end)}` :
+      `${nation} ${units} at ${formatCoordinate(start)}`
     ]
     this.addAction.forEach(a => {
       const feature = this.game.findCounterById(a.id ?? "") as Counter
@@ -47,7 +49,7 @@ export default class AssaultMoveAction extends BaseAction {
         actions.push("unexpected action")
       }
     })
-    return `${actions.join(" ")}${this.undone ? " [cancelled]" : ""}`;
+    return actions.join(" ")
   }
 
   get lastPath(): GameActionPath {

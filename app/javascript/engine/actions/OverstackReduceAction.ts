@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { formatCoordinate } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
 import organizeStacks from "../support/organizeStacks";
@@ -18,12 +18,12 @@ export default class OverstackReduceAction extends BaseAction {
 
   get type(): string { return "overstack_reduce" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const name = this.player === 1 ? this.game.playerOneName : this.game.playerTwoName
     const unit = this.game.findUnitById(this.target.id)
     return `${name} removed ${unit?.name} from ${
-      coordinateToLabel(new Coordinate(this.target.x, this.target.y))
-    }${this.undone ? " [cancelled]" : ""}`
+      formatCoordinate(new Coordinate(this.target.x, this.target.y))
+    }`
   }
 
   get undoPossible() {
@@ -61,5 +61,6 @@ export default class OverstackReduceAction extends BaseAction {
     this.map.eliminateCounter(loc, this.target.id)
     organizeStacks(this.map)
     this.game.addActionAnimations([{ loc, type: "eliminate" }])
+    if (!this.map.anyOverstackedUnits(this.game.currentPlayer)) { this.game.closeOverlay = true }
   }
 }

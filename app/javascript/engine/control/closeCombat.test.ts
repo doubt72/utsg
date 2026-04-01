@@ -84,8 +84,8 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "Soviet Rifle battles German Rifle in close combat at C3; " +
-        "Soviet player roll result of 120 on 7 firepower; " +
-        "German player roll result of 120 on 7 firepower; " +
+        "Soviet player roll result of 120 [CC: (2 x 7 + 6) x 6] on 7 firepower; " +
+        "German player roll result of 120 [CC: (2 x 7 + 6) x 6] on 7 firepower; " +
         "Soviet player takes 1 hit, German player takes 1 hit"
     )
     expect(game.anyCloseCombatLeft).toBe(true)
@@ -191,8 +191,8 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "Soviet Rifle, PzKpfw 35(t) battles German Rifle, DP-27 in close combat at C3; " +
-        "Soviet player roll result of 104 on 11 firepower; " +
-        "German player roll result of 104 on 11 firepower; " +
+        "Soviet player roll result of 104 [CC: (2 x 11 + 4) x 4] on 11 firepower; " +
+        "German player roll result of 104 [CC: (2 x 11 + 4) x 4] on 11 firepower; " +
         "Soviet player takes 1 hit, German player takes 1 hit"
     )
     expect(game.anyCloseCombatLeft).toBe(true)
@@ -314,8 +314,8 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "American SNLF battles Japanese Marine Rifle, Marine Rifle, M1918 BAR, Leader in close combat at C3; " +
-        "American player roll result of 264 on 19 firepower; " +
-        "Japanese player roll result of 132 on 8 firepower; " +
+        "American player roll result of 264 [CC: (2 x 19 + 6) x 6] on 19 firepower; " +
+        "Japanese player roll result of 132 [CC: (2 x 8 + 6) x 6] on 8 firepower; " +
         "American player takes 1 hit, Japanese player takes 2 hits (all eliminated)"
     )
     expect(game.anyCloseCombatLeft).toBe(true)
@@ -512,8 +512,8 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "Soviet Rifle, Rifle battles German Rifle in close combat at C3; " +
-        "Soviet player roll result of 120 on 7 firepower; " +
-        "German player roll result of 204 on 14 firepower; " +
+        "Soviet player roll result of 120 [CC: (2 x 7 + 6) x 6] on 7 firepower; " +
+        "German player roll result of 204 [CC: (2 x 14 + 6) x 6] on 14 firepower; " +
         "Soviet player takes 2 hits (all eliminated), German player takes 1 hit"
     )
     expect(game.anyCloseCombatLeft).toBe(true)
@@ -638,8 +638,8 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "Soviet Rifle battles German Rifle in close combat at C3; " +
-        "Soviet player roll result of 72 on 7 firepower; " +
-        "German player roll result of 88 on 9 firepower; " +
+        "Soviet player roll result of 72 [CC: (2 x 7 + 4) x 4] on 7 firepower; " +
+        "German player roll result of 88 [CC: (2 x 9 + 4) x 4] on 9 firepower; " +
         "Soviet player takes 1 hit, German player takes 0 hits"
     )
     expect(game.anyCloseCombatLeft).toBe(true)
@@ -683,8 +683,8 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "Soviet Rifle battles German Rifle in close combat at D4; " +
-        "Soviet player roll result of 88 on 9 firepower; " +
-        "German player roll result of 72 on 7 firepower; " +
+        "Soviet player roll result of 88 [CC: (2 x 9 + 4) x 4] on 9 firepower; " +
+        "German player roll result of 72 [CC: (2 x 7 + 4) x 4] on 7 firepower; " +
         "Soviet player takes 0 hits, German player takes 1 hit"
     )
     expect(game.anyCloseCombatLeft).toBe(true)
@@ -778,8 +778,8 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_roll")
     expect(game.lastAction?.stringValue).toBe(
       "Soviet Opel Blitz, Rifle battles German Rifle, DP-27 in close combat at C3; " +
-        "Soviet player roll result of 88 on 9 firepower; " +
-        "German player roll result of 80 on 8 firepower; " +
+        "Soviet player roll result of 88 [CC: (2 x 9 + 4) x 4] on 9 firepower; " +
+        "German player roll result of 80 [CC: (2 x 8 + 4) x 4] on 8 firepower; " +
         "Soviet player takes 1 hit, German player takes 1 hit"
     )
     expect(game.anyCloseCombatLeft).toBe(true)
@@ -899,8 +899,8 @@ describe("close combat", () => {
     })
     expect(game.lastAction?.stringValue).toBe(
       "Soviet Rifle, Rifle battles German Rifle in close combat at E5; " +
-        "Soviet player roll result of 120 on 7 firepower; " +
-        "German player roll result of 204 on 14 firepower; " +
+        "Soviet player roll result of 120 [CC: (2 x 7 + 6) x 6] on 7 firepower; " +
+        "German player roll result of 204 [CC: (2 x 14 + 6) x 6] on 14 firepower; " +
         "Soviet player takes 2 hits (all eliminated), German player takes 1 hit"
     )
 

@@ -1,4 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
+import { formatDieResult, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -20,12 +21,12 @@ export default class BreakdownAction extends BaseAction {
 
   get type(): string { return "breakdown" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const unit = this.game.findUnitById(this.origin.id) as Unit
     const roll = this.diceResult
-    return `breakdown check for ${this.game.nationNameForPlayer(this.player)} ${unit.name} (${
-      roll.type}, needed ${unit.breakdownRoll}, got ${roll.result}: ${
-      roll.result > (unit.breakdownRoll ?? 0) ? "passed" : "failed" })`
+    return `breakdown check for ${formatNation(this.game, this.player)} ${unit.name}, ` +
+      `needed ${unit.breakdownRoll}, rolled ${formatDieResult(roll.result)}: ${
+      roll.result.result > (unit.breakdownRoll ?? 0) ? "passed" : "failed" })`
   }
 
   get undoPossible() {
@@ -34,7 +35,7 @@ export default class BreakdownAction extends BaseAction {
 
   mutateGame(): void {
     const unit = this.game.findUnitById(this.origin.id) as Unit
-    if (this.diceResult.result <= (unit.breakdownRoll ?? 0)) {
+    if (this.diceResult.result.result <= (unit.breakdownRoll ?? 0)) {
       unit.immobilized = true
       this.game.addActionAnimations(
         [{ loc: new Coordinate(this.origin.x, this.origin.y), type: "immobilized" }]

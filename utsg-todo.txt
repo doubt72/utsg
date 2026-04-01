@@ -1,12 +1,13 @@
 High Priority Features/Bug Fixes:
-  - Clean up phase changes/info action
+  + Clean up phase changes/info action
+  + Actions with some sort color palette for important/unimportant actions
+    + Refactor actions with helper to more cleanly display units (highlight colors)
+    + Add individual dice from results
+  - Test rout all/blaze displacement with two-player games
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
-  - Actions with some sort color palette for important/unimportant actions
-    - Refactor actions with helper to more cleanly display units (highlight colors)
-    - Add individual dice from results
   - What does a game look like to someone watching logged in or logged out
   - Add ability to add counters after attack started?
 
@@ -16,12 +17,9 @@ Nice to Have Eventually/Soon:
   - Add tutorial
   - Refactor firing action (currently an unmaintainable mess, though... Moderately well-tested)
   - Break up/organize tests into smaller files
-  - Turn notifications
+  - Email turn notifications
   - Live cable updates on home page
-
-Current Stretch:
-  - Hotkeys and context buttons ?
-  - Show Terrain in counter overlay ?
+  - A way to show terrain in counter overlay
 
 Keep an Eye out for:
   - Handle map scale and such settings gone wrong (reset button in prefs?)

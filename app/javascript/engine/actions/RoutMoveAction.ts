@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { failRed, formatCoordinate, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionAddAction, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -28,23 +28,22 @@ export default class RouteMoveAction extends BaseAction {
 
   get type(): string { return this.optional ? "rout_self" : "rout_move" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const unit = this.game.findUnitById(this.target.id) as Unit
-    const start = coordinateToLabel(new Coordinate(this.target.x, this.target.y))
-    const nation = this.game.nationNameForPlayer(this.player)
-    let rc = `${nation} ${unit.name} at ${start} routs `
+    const start = formatCoordinate(new Coordinate(this.target.x, this.target.y))
+    const nation = formatNation(this.game, this.player)
+    let rc = `${nation} ${formatNation(this.game, this.player, unit.name)} at ${start} routs `
     if (this.path.length > 0) {
       const last = this.path.length - 1
-      const end = coordinateToLabel(new Coordinate(this.path[last].x, this.path[last].y))
+      const end = formatCoordinate(new Coordinate(this.path[last].x, this.path[last].y))
       rc += ` to ${end}`
     } else {
-      rc += " and is eliminated"
+      rc += ` and is <span style="color: ${failRed};">eliminated</span>`
     }
     if (this.addAction) {
       const child = this.game.findUnitById(this.addAction.id as string) as Unit
-      rc += `, ${child.name} dropped`
+      rc += `, ${formatNation(this.game, this.player, child.name)} dropped`
     }
-    if (this.undone) { rc += " [cancelled]"}
     return rc
   }
 

@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { baseMorale, coordinateToLabel } from "../../utilities/utilities";
+import { failRed, formatCoordinate, formatDieResult, formatNation, passBlue } from "../../utilities/graphics";
+import { baseMorale, otherPlayer } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionRoutData, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -24,17 +25,18 @@ export default class RoutCheckAction extends BaseAction {
 
   get type(): string { return "rout_check" }
 
-  get stringValue(): string {
+  get htmlValue(): string {
     const unit = this.game.findUnitById(this.target.id) as Unit
-    const nation = this.game.nationNameForPlayer(unit.playerNation === this.game.playerOneNation ? 1 : 2)
-    const loc = coordinateToLabel(new Coordinate(this.target.x, this.target.y))
+    const nation = formatNation(this.game, otherPlayer(this.player))
+    const loc = formatCoordinate(new Coordinate(this.target.x, this.target.y))
     const check = baseMorale + this.routCheckMods.mod - 2
     const roll = this.diceResult.result
-    let rc = `${nation} ${unit.name} rout morale check at ${loc} (2d10): target ${check}, rolled ${roll}, `
-    if (roll < check) {
-      rc += 'failed, unit routs'
+    let rc = `${nation} ${formatNation(this.game, otherPlayer(this.player), unit.name)} ` +
+      `rout morale check at ${loc}: target ${check}, rolled ${formatDieResult(roll)}, `
+    if (roll.result < check) {
+      rc += `<span style="color: ${failRed};">failed</span>, unit routs`
     } else {
-      rc += 'passed, no effect'
+      rc += `<span style="color: ${passBlue};">eliminated</span>, no effect`
     }
     return rc
   }
@@ -48,7 +50,7 @@ export default class RoutCheckAction extends BaseAction {
     const unit = this.game.findUnitById(this.target.id) as Unit
     const loc = new Coordinate(this.target.x, this.target.y)
     const check = baseMorale + this.routCheckMods.mod - 2
-    const roll = this.diceResult
+    const roll = this.diceResult.result
     if (roll.result < check) {
       this.game.routNeeded.push({ unit, loc })
       this.game.addActionAnimations([{ loc, type: "rout" }])

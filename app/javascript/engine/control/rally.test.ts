@@ -42,7 +42,7 @@ describe("rallying", () => {
             free_rally: true, infantry: {
               morale_base: 2, leader_mod: 0, terrain_mod: 0, next_to_enemy: false,
             },
-          }, dice_result: [ { result: 0, type: "2d10" } ],
+          }, dice_result: [ { result: { result: 2, type: "2d10", components: [1, 1] } } ],
           target: [ { x: 0, y: 0, id: "test", status: unitStatus.Broken } ]
         }
       },
@@ -77,7 +77,7 @@ describe("rallying", () => {
     const action = game.actions[0]
     expect(action.type).toBe("rally")
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 11, got 20, passed: Rifle rallies"
+      "German rally check at A1: needed 11, rolled 20 [2d10: 10 + 10], passed: Rifle rallies"
     )
     expect(map.anyUnitsCanRally(2)).toBe(false)
     expect(game.lastAction?.type).toBe("phase")
@@ -107,7 +107,7 @@ describe("rallying", () => {
     expect(unit.isBroken).toBe(true)
     expect(game.actions[0].type).toBe("rally")
     expect(game.actions[0].stringValue).toBe(
-      "rally check at A1: needed 11, got 2, failed: Rifle fails to rally"
+      "German rally check at A1: needed 11, rolled 2 [2d10: 1 + 1], failed: Rifle fails to rally"
     )
     expect(game.actions[1].stringValue).toBe(
       "German rally complete > starting Soviet rally > Soviet rally complete > starting precipitation check " +
@@ -144,7 +144,7 @@ describe("rallying", () => {
     const action = game.actions[0]
     expect(action.type).toBe("rally")
     expect(action.stringValue).toBe(
-      "attempt to fix weapon at A1: needed 15, got 20, passed: MG 08/15 repaired"
+      "German attempt to fix weapon at A1: needed 15, rolled 20 [2d10: 10 + 10], passed: MG 08/15 is repaired"
     )
     expect(map.anyUnitsCanRally(2)).toBe(false)
   })
@@ -178,7 +178,7 @@ describe("rallying", () => {
     const action = game.actions[0]
     expect(action.type).toBe("rally")
     expect(action.stringValue).toBe(
-      "attempt to fix weapon at A1: needed 15, got 2, catastrophic failure: MG 08/15 is destroyed"
+      "German attempt to fix weapon at A1: needed 15, rolled 2 [2d10: 1 + 1], catastrophic failure: MG 08/15 is eliminated"
     )
     expect(map.anyUnitsCanRally(2)).toBe(false)
   })
@@ -219,7 +219,7 @@ describe("rallying", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 9, got 20, passed: Rifle rallies"
+      "German rally check at A1: needed 9, rolled 20 [2d10: 10 + 10], passed: Rifle rallies"
     )
     expect(map.anyUnitsCanRally(2)).toBe(true)
     expect(game.lastAction?.type).toBe("rally")
@@ -258,7 +258,7 @@ describe("rallying", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(false)
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 11, got 20, passed: Rifle rallies"
+      "German rally check at A1: needed 11, rolled 20 [2d10: 10 + 10], passed: Rifle rallies"
     )
     expect(game.actions[1].stringValue).toBe(
       "German rally complete > starting Soviet rally > Soviet rally complete > starting precipitation check " +
@@ -300,7 +300,7 @@ describe("rallying", () => {
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
     expect(action.stringValue).toBe(
-      "rally check at A1: needed 9, got 2, failed: Rifle fails to rally"
+      "German rally check at A1: needed 9, rolled 2 [2d10: 1 + 1], failed: Rifle fails to rally"
     )
     expect(map.anyUnitsCanRally(2)).toBe(true)
 
@@ -350,7 +350,7 @@ describe("rallying", () => {
     let action = game.actions[0] as RallyAction
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(false)
-    expect(action.stringValue).toBe("rally check at C1: needed 11, got 20, passed: Rifle rallies")
+    expect(action.stringValue).toBe("German rally check at C1: needed 11, rolled 20 [2d10: 10 + 10], passed: Rifle rallies")
 
     expect(unit4.isNormal).toBe(true)
 
@@ -368,7 +368,7 @@ describe("rallying", () => {
     action = game.actions[1] as RallyAction
     expect(action.type).toBe("rally")
     expect(action.freeRally).toBe(true)
-    expect(action.stringValue).toBe("rally check at A1: needed 9, got 2, failed: Rifle fails to rally")
+    expect(action.stringValue).toBe("German rally check at A1: needed 9, rolled 2 [2d10: 1 + 1], failed: Rifle fails to rally")
 
     expect(game.actions[2].stringValue).toBe(
       "German rally complete > starting Soviet rally > Soviet rally complete > starting precipitation check " +

@@ -4,6 +4,7 @@ import Scenario from "../engine/Scenario";
 import { useParams } from "react-router-dom";
 import { alliedCodeToName, axisCodeToName } from "../utilities/utilities";
 import { hexBuildingNames } from "../utilities/hexBuilding";
+import { nationalTextColor } from "../utilities/graphics";
 
 // Yes, I could have put all this on the backend, but (1) the backend is largely
 // a big dumb JSON blob store WRT to any game logic, and (2) while this is super
@@ -261,7 +262,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
   }, [scenarios])
 
   const displayStat = (
-    data: Lookup, key: { [ index: string]: string }, sort: string = "value"
+    data: Lookup, key: { [ index: string]: string }, sort: string = "value", country: boolean = false
   ) => {
     let width = 2.5
     Object.values(data).forEach(v => {
@@ -294,7 +295,10 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
           <div style={{ marginLeft: "0.5em", width: `${width}em` }}>
             ({data[k]})
           </div>
-          <div>{key[k] ?? k}</div>
+          { country ? <div dangerouslySetInnerHTML={{
+            __html: `<span style="color: ${nationalTextColor(k)};">${nationalTextColor(k)} ${key[k] ?? k}</span>`
+          }}></div> :
+          <div>{key[k] ?? k}</div>}
         </div>
       )
     }
@@ -314,13 +318,15 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         {displayStat(
           countAllies,
           Object.keys(countAllies).filter(k => k !== "all").
-            reduce((o, k) => { return {...o, [k]: alliedCodeToName(k)} }, {})
+            reduce((o, k) => { return {...o, [k]: alliedCodeToName(k)} }, {}),
+          "value", true
         )}
         Axis Faction:
         {displayStat(
           countAxis,
           Object.keys(countAxis).filter(k => k !== "all").
-            reduce((o, k) => { return {...o, [k]: axisCodeToName(k)} }, {})
+            reduce((o, k) => { return {...o, [k]: axisCodeToName(k)} }, {}),
+          "value", true
         )}
         Turns:
         {displayStat(countTurns, {}, "num")}

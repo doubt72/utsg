@@ -1,4 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
+import { formatDieResult, formatNation } from "../../utilities/graphics";
 import { otherPlayer } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -21,13 +22,13 @@ export default class SniperAction extends BaseAction {
 
   get type(): string { return "sniper" }
 
-  get stringValue(): string {
-    const nation = this.game.nationNameForPlayer(otherPlayer(this.player))
+  get htmlValue(): string {
+    const nation = formatNation(this.game, otherPlayer(this.player))
     const roll = this.diceResult.result
     const check = this.player === 1 ? this.game.axisSniper?.sniperRoll ?? 0 :
       this.game.alliedSniper?.sniperRoll ?? 0
-    return `${nation} sniper check (2d10): target ${check}, rolled ${roll}, ${
-      roll > check ? "no effect" : "sniper hit"
+    return `${nation} sniper check: target ${check}, rolled ${formatDieResult(roll)}, ${
+      roll.result > check ? "no effect" : "sniper hit"
     }`
   }
 
@@ -41,7 +42,7 @@ export default class SniperAction extends BaseAction {
     const roll = this.diceResult.result
     const check = this.player === 1 ? this.game.axisSniper?.sniperRoll ?? 0 :
       this.game.alliedSniper?.sniperRoll ?? 0
-    if (roll <= check) {
+    if (roll.result <= check) {
       for (const t of this.target) {
         const unit = this.game.findUnitById(t.id) as Unit
         const loc = new Coordinate(t.x, t.y)

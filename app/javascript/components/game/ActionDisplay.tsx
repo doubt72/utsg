@@ -65,9 +65,13 @@ export default function ActionDisplay({
             <div key={i} className="action-output-record">
               <div className="action-output-date nowrap">{action.formattedDate}</div>
               <div className="action-output-message">
-                <span className="action-output-username">
-                  <Link className="user-link" to={`/profile/${action.user}`} >{action.user}</Link>
-                </span>{action.stringValue}
+                {["phase", "status_update"].includes(action.type) ?
+                  <span className="action-output-game">&gt;&gt;</span> :
+                  <span className="action-output-username">
+                    <Link className="user-link" to={`/profile/${action.user}`} >{action.user}</Link>
+                  </span> }
+                <span dangerouslySetInnerHTML={{ __html: action.htmlValue }}></span>
+                <span className="red">{action.undone ? " [cancelled]" : ""}</span>
               </div>
             </div>
           )

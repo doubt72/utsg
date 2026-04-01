@@ -1,7 +1,8 @@
 ## 0.27 alpha
 
+- Completely refactor action display formatting
 - Completely refactor action/phase to much cleaner flow (major changes to close combat, overstacking check in particular)
-- Delete all games; new action design is no longer compatible
+- Delete all games; new action flow is no longer compatible
 
 ## 0.27 alpha
 

@@ -1,5 +1,5 @@
 import { baseTerrainType, Coordinate, terrainType } from "../../utilities/commonTypes";
-import { coordinateToLabel } from "../../utilities/utilities";
+import { failRed, formatCoordinate, formatDieResult } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionFireStartData, GameActionPath } from "../GameAction";
 import Hex from "../Hex";
@@ -41,10 +41,12 @@ export default class FireStartAction extends BaseAction {
     return check
   }
 
-  get stringValue(): string {
-    const loc = coordinateToLabel(new Coordinate(this.hex.x, this.hex.y))
-    return `checking to see if blaze starts in ${loc} (2d10): need ${this.needed}, got ${this.diceResult.result}` +
-      `: ${ this.needed < this.diceResult.result ? "no effect" : "blaze starts" }`
+  get htmlValue(): string {
+    const loc = formatCoordinate(new Coordinate(this.hex.x, this.hex.y))
+    return `checking to see if blaze starts in ${loc}: need ${this.needed}, ` +
+      `rolled ${formatDieResult(this.diceResult.result)}` +
+      `: ${ this.needed < this.diceResult.result.result ? "no effect" :
+        `blaze <span style="color: ${failRed};">starts</span>` }`
   }
 
   get undoPossible() {
@@ -53,7 +55,7 @@ export default class FireStartAction extends BaseAction {
 
   mutateGame(): void {
     const loc = new Coordinate(this.hex.x, this.hex.y)
-    if (this.diceResult.result <= this.needed) {
+    if (this.diceResult.result.result <= this.needed) {
       this.map.addFire(loc)
     }
     this.game.fireStartCheckNeeded = undefined

@@ -34,7 +34,7 @@ export default class InitiativeState extends BaseState {
     let result: GameActionDiceResult[] | undefined = undefined
     if ((this.game.currentPlayer === 1 && this.game.initiative > 0) ||
         (this.game.currentPlayer === 2 && this.game.initiative < 0)) {
-      result = [{ result: roll2d10(), type: "2d10" }]
+      result = [{ result: roll2d10() }]
     }
     const action = new GameAction({
       user: this.game.currentUser,
