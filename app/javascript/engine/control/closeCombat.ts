@@ -20,11 +20,6 @@ export function maxCCCasualties(map: Map, loc: Coordinate, playerNation: string)
   return total
 }
 
-export function closeCombatDone(game: Game): boolean {
-  if (game.gameState?.type !== stateType.CloseCombat) { return false }
-  return game.closeNeeded.filter(cn => cn.state !== closeProgress.Done).length < 1
-}
-
 export function closeCombatCasualtyNeeded(game: Game): Coordinate | false {
   if (game.gameState?.type !== stateType.CloseCombat) { return false }
   const casualty = game.closeNeeded.filter(cn => cn.state === closeProgress.NeedsCasualties)

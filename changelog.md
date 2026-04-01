@@ -1,5 +1,10 @@
 ## 0.27 alpha
 
+- Completely refactor action/phase to much cleaner flow (major changes to close combat, overstacking check in particular)
+- Delete all games; new action design is no longer compatible
+
+## 0.27 alpha
+
 - Fix map display issue on previews
 
 ## 0.26 alpha

@@ -11,7 +11,7 @@ import WeatherState from "./state/WeatherState";
 import BaseAction from "../actions/BaseAction";
 
 describe("minor actions", () => {
-  test("skips no chance", () => {
+  test("skips no chance of precip", () => {
     const game = createBlankGame()
     const map = game.scenario.map
 
@@ -19,10 +19,10 @@ describe("minor actions", () => {
 
     game.phase = gamePhaseType.PrepPrecip
     checkPhase(game, false)
-    expect(game.phase).toBe(gamePhaseType.Main)
-    expect(game.actions[game.actions.length - 2].stringValue).toBe(
-      "no precipitation in scenario, skipping check"
+    expect(game.actions[0].stringValue).toBe(
+      "no precipitation in scenario, skipping > precipitation check complete > starting main phase"
     )
+    expect(game.phase).toBe(gamePhaseType.Main)
   })
 
   test("changes weather to precip", () => {
@@ -105,7 +105,7 @@ describe("minor actions", () => {
     unit2.exhaust()
     map.addCounter(loc, unit2)
 
-    game.phase = gamePhaseType.CleanupStatus
+    game.phase = gamePhaseType.CleanupOverstack
 
     checkPhase(game, false)
 
@@ -115,7 +115,7 @@ describe("minor actions", () => {
     expect(units[0].unit.pinned).toBe(false)
     expect(units[1].unit.isTired).toBe(true)
 
-    const action = game.actions[0]
+    const action = game.actions[1]
     expect(action.type).toBe("status_update")
     expect(action.data.target?.length).toBe(3)
     expect(action.stringValue).toBe(
@@ -133,7 +133,7 @@ describe("minor actions", () => {
     const loc = new Coordinate(0,0)
     map.addCounter(loc, smoke)
 
-    game.checkForSmoke(false)
+    game.addSmokeCheckState()
     expect(game.smokeCheckNeeded.length).toBe(1)
     const state = game.gameState as SmokeCheckState
 
@@ -162,7 +162,7 @@ describe("minor actions", () => {
     const loc = new Coordinate(0,0)
     map.addCounter(loc, smoke)
 
-    game.checkForSmoke(false)
+    game.addSmokeCheckState()
     expect(game.smokeCheckNeeded.length).toBe(1)
     const state = game.gameState as SmokeCheckState
 
@@ -199,7 +199,7 @@ describe("minor actions", () => {
     const loc2 = new Coordinate(0,1)
     map.addCounter(loc2, smoke2)
 
-    game.checkForSmoke(false)
+    game.addSmokeCheckState()
     expect(game.smokeCheckNeeded.length).toBe(2)
     const state = game.gameState as SmokeCheckState
 
@@ -207,11 +207,11 @@ describe("minor actions", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     state.finish()
 
-    game.checkForSmoke(false)
+    game.addSmokeCheckState()
     expect(game.smokeCheckNeeded.length).toBe(1)
     state.finish()
 
-    game.checkForSmoke(false)
+    game.addSmokeCheckState()
     expect(game.smokeCheckNeeded.length).toBe(0)
 
     Math.random = original
@@ -236,7 +236,7 @@ describe("minor actions", () => {
     const loc = new Coordinate(0,0)
     map.addCounter(loc, fire)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(1)
     const state = game.gameState as FireCheckState
 
@@ -265,7 +265,7 @@ describe("minor actions", () => {
     const loc = new Coordinate(0,0)
     map.addCounter(loc, fire)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(1)
     const state = game.gameState as FireCheckState
 
@@ -297,7 +297,7 @@ describe("minor actions", () => {
     const loc = new Coordinate(0,0)
     map.addCounter(loc, fire)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(1)
     expect(game.fireSpreadCheckNeeded.length).toBe(0)
 
@@ -314,7 +314,7 @@ describe("minor actions", () => {
     )
     expect(game.actions.length).toBe(1)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(0)
     expect(game.fireSpreadCheckNeeded.length).toBe(1)
 
@@ -348,7 +348,7 @@ describe("minor actions", () => {
     const loc = new Coordinate(0,0)
     map.addCounter(loc, fire)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(1)
     expect(game.fireSpreadCheckNeeded.length).toBe(0)
     const state = game.gameState as FireCheckState
@@ -364,7 +364,7 @@ describe("minor actions", () => {
     )
     expect(game.actions.length).toBe(1)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(0)
     expect(game.fireSpreadCheckNeeded.length).toBe(1)
 
@@ -396,7 +396,7 @@ describe("minor actions", () => {
     const loc = new Coordinate(0,0)
     map.addCounter(loc, fire)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     game.fireOutCheckNeeded = []
     expect(game.fireSpreadCheckNeeded.length).toBe(0)
   })
@@ -416,7 +416,7 @@ describe("minor actions", () => {
     const loc2 = new Coordinate(0,1)
     map.addCounter(loc2, fire2)
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(2)
     expect(game.fireSpreadCheckNeeded.length).toBe(0)
     const state = game.gameState as FireCheckState
@@ -425,18 +425,18 @@ describe("minor actions", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99)
     state.finish()
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(1)
     expect(game.fireSpreadCheckNeeded.length).toBe(1)
     state.finish()
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(0)
     expect(game.fireSpreadCheckNeeded.length).toBe(2)
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     state.finish()
 
-    game.checkForFire(false)
+    game.addFireCheckState()
     expect(game.fireOutCheckNeeded.length).toBe(0)
     expect(game.fireSpreadCheckNeeded.length).toBe(1)
     state.finish()
@@ -467,7 +467,7 @@ describe("minor actions", () => {
     map.windDirection = 1
     map.windSpeed = windType.Strong
 
-    game.checkForWind(false)
+    game.addVariableWindState()
     const state = game.gameState as WeatherState
 
     const original = Math.random
@@ -487,7 +487,7 @@ describe("minor actions", () => {
     map.windDirection = 1
     map.windSpeed = windType.Strong
 
-    game.checkForWind(false)
+    game.addVariableWindState()
     const state = game.gameState as WeatherState
 
     const original = Math.random
@@ -507,20 +507,20 @@ describe("minor actions", () => {
     map.windDirection = 1
     map.windSpeed = windType.Strong
 
-    game.checkForWind(false)
+    game.addVariableWindState()
     expect(game.checkWindDirection).toBe(true)
     expect(game.checkWindSpeed).toBe(true)
 
     const state = game.gameState as WeatherState
     state.finish()
 
-    game.checkForWind(false)
+    game.addVariableWindState()
     expect(game.checkWindDirection).toBe(false)
     expect(game.checkWindSpeed).toBe(true)
 
     state.finish()
 
-    game.checkForWind(false)
+    game.addVariableWindState()
     expect(game.checkWindDirection).toBe(false)
     expect(game.checkWindSpeed).toBe(false)
   })

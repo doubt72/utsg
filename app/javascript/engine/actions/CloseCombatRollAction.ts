@@ -66,6 +66,7 @@ export default class CloseCombatRollAction extends BaseAction {
   }
 
   mutateGame(): void {
+    if (this.game.closeNeeded.length < 1) { this.game.addCloseCombatChecks() }
     const loc = new Coordinate(this.origin[0].x, this.origin[0].y)
     const counters = this.map.countersAt(loc)
     counters.forEach(c => {
@@ -88,7 +89,11 @@ export default class CloseCombatRollAction extends BaseAction {
     const max2 = this.ccData.p2_max
     current.p2Reduce = max2 < hit2 ? max2 : hit2
 
-    current.state = closeProgress.NeedsCasualties
+    if (hit1 > 0 || hit2 > 0) {
+      current.state = closeProgress.NeedsCasualties
+    } else {
+      current.state = closeProgress.Done
+    }
     setCCPlayer(this.game, current)
     if (!this.game.testGame && localStorage.getItem("username") === this.game.currentUser &&
         (current.p1Reduce > 0 || current.p2Reduce > 0)) {

@@ -1,5 +1,5 @@
 High Priority Features/Bug Fixes:
-  + No reaction rapid fire
+  - Clean up phase changes/info action
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
@@ -8,7 +8,6 @@ High Priority Features/Bug Fixes:
     - Refactor actions with helper to more cleanly display units (highlight colors)
     - Add individual dice from results
   - What does a game look like to someone watching logged in or logged out
-  - Clean up phase changes/info action
   - Add ability to add counters after attack started?
 
 Nice to Have Eventually/Soon:

@@ -658,7 +658,33 @@ export default class Game {
     return false
   }
 
-  checkForSmoke(backendSync: boolean, action: boolean = true): void {
+  addCloseCombatChecks() {
+    const map = this.scenario.map
+    for (let y = 0; y < map.height; y++) {
+      for (let x = 0; x < map.width; x++) {
+        let one = false
+        let two = false
+        map.units[y][x].forEach(uf => {
+          if (uf.isFeature) { return }
+          const u = uf as Unit
+          if (u.operated) { return }
+          if (u.nation === this.playerOneNation) { one = true }
+          if (u.nation === this.playerTwoNation) { two = true }
+        })
+        if (one && two) {
+          this.closeNeeded.push({
+            loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
+          })
+        }
+      }
+    }
+  }
+
+  get anyCloseCombatLeft(): boolean {
+    return this.closeNeeded.filter(c => c.state !== closeProgress.Done).length > 0
+  }
+
+  addSmokeCheckState(): void {
     const done = []
     for (let i = this.lastActionIndex; i >= 0; i--) {
       const action = this.actions[i]
@@ -685,20 +711,12 @@ export default class Game {
         }
       }
     }
-    if (this.smokeCheckNeeded.length < 1) {
-      if (!action || done.length < 1) { return }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no smoke to check, skipping",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-    } else {
+    if (this.smokeCheckNeeded.length > 0) {
       this.setGameState(new SmokeCheckState(this))
     }
   }
 
-  checkForFire(backendSync: boolean, action: boolean = true): void {
+  addFireCheckState(): void {
     const out_done = []
     const spread_done = []
     for (let i = this.lastActionIndex; i >= 0; i--) {
@@ -741,33 +759,17 @@ export default class Game {
         }
       }
     }
-    if (this.fireOutCheckNeeded.length < 1 && this.fireSpreadCheckNeeded.length < 1) {
-      if (!action || out_done.length < 1) { return }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "no fire to check, skipping fire spread/dissipation check",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
-    } else {
+    if (this.fireOutCheckNeeded.length > 0 || this.fireSpreadCheckNeeded.length > 0) {
       this.setGameState(new FireCheckState(this))
     }
   }
 
-  checkForWind(backendSync: boolean, action: boolean = true): void {
+  addVariableWindState(): void {
     if (this.lastAction?.type === "wind_speed") { return }
     if (this.scenario.map.windVariable) {
       if (this.lastAction?.type !== "wind_direction") { this.checkWindDirection = true }
       this.checkWindSpeed = true
       this.setGameState(new WeatherState(this))
-    } else {
-      if (!action) { return }
-      this.executeAction(new GameAction({
-        player: this.currentPlayer, user: this.currentUser, data: {
-          action: "info", message: "wind not variable, skipping checks",
-          old_initiative: this.initiative,
-        }
-      }, this), backendSync)
     }
   }
 
@@ -971,10 +973,10 @@ export default class Game {
     return rc
   }
 
-  get reinforcementsCount(): [number, number] {
-    const counters = this.currentPlayer === 1 ?
-      this.scenario.alliedReinforcements[this.turn] :
-      this.scenario.axisReinforcements[this.turn]
+  reinforcementsCount(turn: number, player: Player): [number, number] {
+    const counters = player === 1 ?
+      this.scenario.alliedReinforcements[turn] :
+      this.scenario.axisReinforcements[turn]
 
     const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
     const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0

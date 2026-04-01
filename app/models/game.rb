@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Game < ApplicationRecord
+class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   belongs_to :owner, class_name: "User"
   belongs_to :player_one, class_name: "User", optional: true
   belongs_to :player_two, class_name: "User", optional: true
@@ -146,7 +146,7 @@ class Game < ApplicationRecord
     self
   end
 
-  def start(user)
+  def start(user) # rubocop:disable Metrics/MethodLength
     return nil unless owner_id == user.id && ready?
 
     first_deploy = Utility::Scenario.scenario_by_id(scenario)[:metadata][:first_deploy]
@@ -155,9 +155,12 @@ class Game < ApplicationRecord
     GameAction.create!(sequence: seq, game: self, user:, player: 1,
                        data: { action: "start", old_initiative: 0 })
     GameAction.create!(sequence: seq + 1, game: self, user:, player: first_deploy, data:
-      { action: "phase", old_initiative: 0, phase_data: {
-        old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_deploy,
-      }, })
+      {
+        action: "phase", old_initiative: 0, phase_data: {
+          old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_deploy,
+          messages: ["begin deployment"],
+        },
+      })
     in_progress!
     self
   end

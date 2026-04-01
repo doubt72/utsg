@@ -14,9 +14,7 @@ import Feature from "./Feature";
 import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
-import { otherPlayer } from "../utilities/utilities";
-import OverstackState from "./control/state/OverstackState";
-import { stateType } from "./control/state/BaseState";
+import { otherPlayer, stackLimit } from "../utilities/utilities";
 import { GameActionUnit } from "./GameAction";
 import { alreadyRallied } from "./control/state/RallyState";
 
@@ -620,7 +618,6 @@ export default class Map {
   }
 
   anyPrecip(): boolean {
-    if (this.game?.lastAction?.type === "precipitation_check") { return false }
     return this.precipChance > 0
   }
 
@@ -668,12 +665,26 @@ export default class Map {
     return playerOne && playerTwo
   }
 
-  anyOverstackedUnits(): boolean {
-    if (this.game?.gameState?.type !== stateType.Overstack) { return false }
-    const state = this.game?.gameState as OverstackState
+  overstackAt(x: number, y: number, player: Player): boolean {
+    if (this.contactAt(new Coordinate(x, y))) { return false }
+    let total = 0
+    const counters = this.countersAt(new Coordinate(x, y))
+    for (const c of counters) {
+      if (c.unit.isFeature) { continue }
+      const nation = player === 1 ? this.game?.playerOneNation : this.game?.playerTwoNation
+      if (c.unit.playerNation !== nation && !c.unit.isWreck) {
+        return false
+      } else {
+        total += c.unit.size
+      }
+    }
+    return total > stackLimit
+  }
+
+  anyOverstackedUnits(player: Player): boolean {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
-        if (state.overstackAt(x, y)) { return true }
+        if (this.overstackAt(x, y, player)) { return true }
       }
     }
     return false

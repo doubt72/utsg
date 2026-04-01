@@ -4,7 +4,6 @@ import BaseAction from "./actions/BaseAction";
 import StateAction from "./actions/StateAction";
 import PhaseAction from "./actions/PhaseAction";
 import DeployAction from "./actions/DeployAction";
-import InfoAction from "./actions/InfoAction";
 import MoveAction from "./actions/MoveAction";
 import BreakdownAction from "./actions/BreakdownAction";
 import InitiativeAction from "./actions/InitiativeAction";
@@ -17,10 +16,8 @@ import SniperAction from "./actions/SniperAction";
 import RouteMoveAction from "./actions/RoutMoveAction";
 import RoutCheckAction from "./actions/RoutCheckAction";
 import RoutAllAction from "./actions/RoutAllAction";
-import CloseCombatStartAction from "./actions/CloseCombatStartAction";
 import CloseCombatRollAction from "./actions/CloseCombatRollAction";
 import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
-import CloseCombatFinishAction from "./actions/CloseCombatFinishAction";
 import PrecipCheckAction from "./actions/PrecipCheckAction";
 import { GamePhase } from "./support/gamePhase";
 import RallyAction from "./actions/RallyAction";
@@ -102,11 +99,12 @@ export const gameActionAddActionType: { [index: string]: GameActionAddActionType
 }
 export type GameActionAddAction = {
   type: GameActionAddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
-  status?: UnitStatus, index: number
+  status?: UnitStatus, index: number,
 }
 
 export type GameActionPhaseChange = {
-  old_phase: GamePhase, new_phase: GamePhase, old_turn: number, new_turn: number, new_player: Player,
+  old_phase: GamePhase, new_phase: GamePhase, old_turn: number, new_turn: number,
+  new_player: Player, messages: string[],
 }
 
 export type GameActionWindData = {
@@ -161,135 +159,88 @@ export default class GameAction {
   }
 
   get actionClass(): BaseAction {
-    if (this.data.data.action === "info") {
-      return new InfoAction(this.data, this.game, this.index);
-    }
     if (this.data.data.action === "create") {
       return new StateAction(this.data, this.game, this.index, "game created");
-    }
-    if (this.data.data.action === "start") {
+    } else if (this.data.data.action === "start") {
       return new StateAction(this.data, this.game, this.index, "game started");
-    }
-    if (this.data.data.action === "join") {
+    } else if (this.data.data.action === "join") {
       return new StateAction(this.data, this.game, this.index, `joined as player ${this.data.player}`);
-    }
-    if (this.data.data.action === "leave") {
+    } else if (this.data.data.action === "leave") {
       return new StateAction(this.data, this.game, this.index, "left game");
-    }
-    if (this.data.data.action === "kick") {
+    } else if (this.data.data.action === "kick") {
       return new StateAction(this.data, this.game, this.index, "kicked player out of game");
-    }
-    if (this.data.data.action === "resign") {
+    } else if (this.data.data.action === "resign") {
       return new StateAction(this.data, this.game, this.index, "resigned game");
-    }
-    if (this.data.data.action === "finish") {
+    } else if (this.data.data.action === "finish") {
       return new StateAction(this.data, this.game, this.index, "last turn complete, game over");
-    }
-    if (this.data.data.action === "phase") {
+    } else if (this.data.data.action === "phase") {
       return new PhaseAction(this.data, this.game, this.index)
-    }
-    if (this.data.data.action === "deploy") {
+    } else if (this.data.data.action === "deploy") {
       return new DeployAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "rally") {
+    } else if (this.data.data.action === "rally") {
       return new RallyAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "rally_pass") {
+    } else if (this.data.data.action === "rally_pass") {
       return new RallyPassAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "precipitation_check") {
+    } else if (this.data.data.action === "precipitation_check") {
       return new PrecipCheckAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "initiative") {
+    } else if (this.data.data.action === "initiative") {
       return new InitiativeAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "pass") {
+    } else if (this.data.data.action === "pass") {
       return new InitiativePassAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "fire") {
+    } else if (this.data.data.action === "fire") {
       return new FireAction(this.data, this.game, this.index, false, false);
-    }
-    if (this.data.data.action === "intensive_fire") {
+    } else if (this.data.data.action === "intensive_fire") {
       return new FireAction(this.data, this.game, this.index, true, false);
-    }
-    if (this.data.data.action === "reaction_fire") {
+    } else if (this.data.data.action === "reaction_fire") {
       return new FireAction(this.data, this.game, this.index, false, true);
-    }
-    if (this.data.data.action === "reaction_intensive_fire") {
+    } else if (this.data.data.action === "reaction_intensive_fire") {
       return new FireAction(this.data, this.game, this.index, true, true);
-    }
-    if (this.data.data.action === "fire_start") {
+    } else if (this.data.data.action === "fire_start") {
       return new FireStartAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "reaction_pass") {
+    } else if (this.data.data.action === "reaction_pass") {
       return new ReactionPassAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "morale_check") {
+    } else if (this.data.data.action === "morale_check") {
       return new MoraleCheckAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "sniper") {
+    } else if (this.data.data.action === "sniper") {
       return new SniperAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "move") {
+    } else if (this.data.data.action === "move") {
       return new MoveAction(this.data, this.game, this.index, false);
-    }
-    if (this.data.data.action === "rush") {
+    } else if (this.data.data.action === "rush") {
       return new MoveAction(this.data, this.game, this.index, true);
-    }
-    if (this.data.data.action === "assault_move") {
+    } else if (this.data.data.action === "assault_move") {
       return new AssaultMoveAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "rout_all") {
+    } else if (this.data.data.action === "rout_all") {
       return new RoutAllAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "rout_check") {
+    } else if (this.data.data.action === "rout_check") {
       return new RoutCheckAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "rout_move") {
+    } else if (this.data.data.action === "rout_move") {
       return new RouteMoveAction(this.data, this.game, this.index, false);
-    }
-    if (this.data.data.action === "rout_self") {
+    } else if (this.data.data.action === "rout_self") {
       return new RouteMoveAction(this.data, this.game, this.index, true);
-    }
-    if (this.data.data.action === "breakdown") {
+    } else if (this.data.data.action === "breakdown") {
       return new BreakdownAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "close_combat_start") {
-      return new CloseCombatStartAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "close_combat_roll") {
+    } else if (this.data.data.action === "close_combat_roll") {
       return new CloseCombatRollAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "close_combat_reduce") {
+    } else if (this.data.data.action === "close_combat_reduce") {
       return new CloseCombatReduceAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "close_combat_finish") {
-      return new CloseCombatFinishAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "overstack_reduce") {
+    } else if (this.data.data.action === "overstack_reduce") {
       return new OverstackReduceAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "status_update") {
+    } else if (this.data.data.action === "status_update") {
       return new StatusUpdateAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "smoke_check") {
+    } else if (this.data.data.action === "smoke_check") {
       return new SmokeCheckAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "fire_out_check") {
+    } else if (this.data.data.action === "fire_out_check") {
       return new FireOutAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "fire_spread_check") {
+    } else if (this.data.data.action === "fire_spread_check") {
       return new FireSpreadAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "wind_direction") {
+    } else if (this.data.data.action === "wind_direction") {
       return new WindDirectionAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "wind_speed") {
+    } else if (this.data.data.action === "wind_speed") {
       return new WindSpeedAction(this.data, this.game, this.index);
-    }
-    if (this.data.data.action === "fire_displace") {
+    } else if (this.data.data.action === "fire_displace") {
       return new FireDisplaceAction(this.data, this.game, this.index);
+    } else {
+      return new StateAction(this.data, this.game, this.index, "unhandled action type");
     }
-    return new StateAction(this.data, this.game, this.index, "unhandled action type");
   }
 }

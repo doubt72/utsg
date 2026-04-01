@@ -9,7 +9,6 @@ import BaseState, { stateType } from "./BaseState";
 export default class CloseCombatState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.CloseCombat, game.currentPlayer)
-    this.startIfNotStarted()
     game.refreshCallback(game)
   }
 
@@ -124,40 +123,5 @@ export default class CloseCombatState extends BaseState {
     }, this.game)
     this.map.clearAllSelections()
     this.game.executeAction(action, false)
-  }
-
-  finish() {
-    const action = new GameAction({
-      user: this.game.currentUser, player: this.game.currentPlayer,
-      data: {
-        action: "close_combat_finish", old_initiative: this.game.initiative,
-        cc_data: { count: this.game.closeNeeded.length },
-      }
-    }, this.game)
-    this.execute(action)
-  }
-
-  get resolved(): boolean {
-    return this.game.closeNeeded.filter(cn => cn.state !== closeProgress.Done).length < 1
-  }
-
-  startIfNotStarted() {
-    for (let i = this.game.lastActionIndex; i >= 0; i--) {
-      const action = this.game.actions[i]
-      if (action.type === "close_combat_start") { return }
-      if (action.type === "phase") { break }
-    }
-    this.game.executeAction(new GameAction({
-      user: this.game.currentUser, player: this.game.currentPlayer,
-      data: { action: "close_combat_start", old_initiative: this.game.initiative }
-    }, this.game), false)
-    if (this.game.closeNeeded.length < 1) {
-      this.game.executeAction(new GameAction({
-        player: this.game.currentPlayer, user: this.game.currentUser, data: {
-          action: "info", message: "no units in contact, skipping close combat",
-          old_initiative: this.game.initiative,
-        }
-      }, this.game), false)
-    }
   }
 }

@@ -11,6 +11,7 @@ export default class PhaseAction extends BaseAction {
   oldTurn: number;
   newTurn: number;
   newPlayer: Player;
+  messages: string[];
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -20,6 +21,7 @@ export default class PhaseAction extends BaseAction {
     this.validate(data.data.phase_data?.old_turn)
     this.validate(data.data.phase_data?.new_turn)
     this.validate(data.data.phase_data?.new_player)
+    this.validate(data.data.phase_data?.messages)
 
     // Validate will already error out if data is missing, but the linter can't tell
     this.oldPhase = data.data.phase_data?.old_phase as GamePhase
@@ -27,102 +29,13 @@ export default class PhaseAction extends BaseAction {
     this.oldTurn = data.data.phase_data?.old_turn as number
     this.newTurn = data.data.phase_data?.new_turn as number
     this.newPlayer = data.data.phase_data?.new_player as Player
+    this.messages = data.data.phase_data?.messages as string[]
   }
 
   get type(): string { return "phase" }
 
   get stringValue(): string {
-    const undoMsg = this.undone ? " [cancelled]" : ""
-    if (this.newPhase === gamePhaseType.Deployment) { return this.deploymentMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.PrepRally) { return this.prepRallyMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.PrepPrecip) { return this.prepPrecipMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.Main) { return this.mainMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.CleanupCloseCombat) { return this.cleanupCloseCombatMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.CleanupOverstack) { return this.cleanupOverstackMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.CleanupStatus) { return this.cleanupStatusMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.CleanupSmoke) { return this.cleanupSmokeMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.CleanupFire) { return this.cleanupFireMessage + undoMsg }
-    if (this.newPhase === gamePhaseType.CleanupWeather) { return this.cleanupWeatherMessage + undoMsg }
-    return `problem parsing data ${this.data}`
-  }
-
-  get alliedName(): string {
-    return this.game.alliedName
-  }
-
-  get axisName(): string {
-    return this.game.axisName
-  }
-
-  get deploymentMessage(): string {
-    let first = this.game.scenario.firstAction
-    let last = this.newTurn === 1 ? "setup finished" : "cleanup finished"
-    if (this.newTurn === 0) {
-      first = this.game.scenario.firstDeploy as Player
-      last = "game started"
-    }
-    if (first === 1) {
-      if (this.newPlayer === 1) {
-        return last + `, begin ${this.alliedName} deployment`
-      } else {
-        return `${this.alliedName} deployment done, begin ${this.axisName} deployment`
-      }
-    } else {
-      if (this.newPlayer === 1) {
-        return `${this.axisName} deployment done, begin ${this.alliedName} deployment`
-      } else {
-        return last + `, begin ${this.axisName} deployment`
-      }
-    }
-  }
-
-  get prepRallyMessage(): string {
-    const first = this.game.currentInitiativePlayer
-    if (first === 1) {
-      if (this.newPlayer === 1) {
-        return `deployment done, begin prep phase, ${this.alliedName} rally`
-      } else {
-        return `${this.alliedName} rally done, begin ${this.axisName} rally`
-      }
-    } else {
-      if (this.newPlayer === 1) {
-        return `${this.axisName} rally done, begin ${this.alliedName} rally`
-      } else {
-        return `deployment done, begin prep phase, ${this.axisName} rally`
-      }
-    }
-  }
-
-  get prepPrecipMessage(): string {
-    return "rally done, checking precipitation"
-  }
-
-  get mainMessage(): string {
-    return "done checking precipitation, begin main phase"
-  }
-
-  get cleanupCloseCombatMessage(): string {
-    return "main phase done, begin cleanup phase, checking for close combat"
-  }
-
-  get cleanupOverstackMessage(): string {
-    return "close combat done, begin housekeeping, checking for overstacking"
-  }
-
-  get cleanupStatusMessage(): string {
-    return "done checking for overstacking, updating unit status"
-  }
-
-  get cleanupSmokeMessage(): string {
-    return "done updating unit status, checking smoke"
-  }
-
-  get cleanupFireMessage(): string {
-    return "done checking smoke, checking blazes"
-  }
-
-  get cleanupWeatherMessage(): string {
-    return "done checking blazes, checking for variable weather"
+    return `${this.messages.join(" > ")}${this.undone ? " [cancelled]" : ""}`
   }
 
   get undoPossible() {
@@ -155,7 +68,7 @@ export default class PhaseAction extends BaseAction {
         this.newPhase === gamePhaseType.Deployment ? "deploying" : "rallying"
       } their units.`
       const action = this.newPhase === gamePhaseType.Deployment ? "deployment" : "rally"
-      const count = this.game.reinforcementsCount[0]
+      const count = this.game.reinforcementsCount(this.newTurn, this.newPlayer)[0]
       const check1 = this.newPhase === gamePhaseType.Deployment ? count > 0 : map.anyUnitsCanRally(1)
       const check2 = this.newPhase === gamePhaseType.Deployment ? count > 0 : map.anyUnitsCanRally(2)
       if (this.game.playerOneName === this.game.playerTwoName && (check1 || check2)) {
@@ -172,7 +85,7 @@ export default class PhaseAction extends BaseAction {
         this.game.playerOneNotification = [title, oppMessage]
         this.game.playerTwoNotification = [title, selectMessage]
       }
-    } else if (this.newPhase === gamePhaseType.CleanupOverstack && map.anyOverstackedUnits()) {
+    } else if (this.newPhase === gamePhaseType.CleanupOverstack) {
       const selectMessage = "Units are overstacked, select units to remove to comply with stacking limits."
       const oppMessage = "Opponent is removing overstacked units."
       if (this.game.playerOneName === this.game.playerTwoName) {
@@ -197,7 +110,7 @@ export default class PhaseAction extends BaseAction {
       if (this.game.playerOneName !== this.game.playerTwoName) {
         this.game.playerTwoNotification = [title, message]
       }
-    } else if (this.newPhase === gamePhaseType.CleanupCloseCombat && map.anyContact()) {
+    } else if (this.newPhase === gamePhaseType.CleanupCloseCombat) {
       const title = `Turn ${this.newTurn}: close combat`
       const message = `Resolving close combat, the ${this.game.currentInitiativeNationName} player has initiative ` +
         "and chooses order of battles."
@@ -205,7 +118,7 @@ export default class PhaseAction extends BaseAction {
       if (this.game.playerOneName !== this.game.playerTwoName) {
         this.game.playerTwoNotification = [title, message]
       }
-    } else if (this.newPhase === gamePhaseType.PrepPrecip && map.precipChance > 0) {
+    } else if (this.newPhase === gamePhaseType.PrepPrecip) {
       const title = `Turn ${this.newTurn}: preciptitation`
       const message = `Checking precipitation, the ${this.game.currentInitiativeNationName} player has initiative ` +
         "and handles rolls."
@@ -213,7 +126,7 @@ export default class PhaseAction extends BaseAction {
       if (this.game.playerOneName !== this.game.playerTwoName) {
         this.game.playerTwoNotification = [title, message]
       }
-    } else if (this.newPhase === gamePhaseType.CleanupSmoke && map.anySmoke()) {
+    } else if (this.newPhase === gamePhaseType.CleanupSmoke) {
       const title = `Turn ${this.newTurn}: smoke check`
       const message = `Checking for smoke dispersion, the ${this.game.currentInitiativeNationName} ` +
         "player has initiative and handles rolls."
@@ -221,7 +134,7 @@ export default class PhaseAction extends BaseAction {
       if (this.game.playerOneName !== this.game.playerTwoName) {
         this.game.playerTwoNotification = [title, message]
       }
-    } else if (this.newPhase === gamePhaseType.CleanupFire && map.anyFire()) {
+    } else if (this.newPhase === gamePhaseType.CleanupFire) {
       const title = `Turn ${this.newTurn}: fire check`
       const message = "Checking for blazes extinguishing or spreading, " +
         `the ${this.game.currentInitiativeNationName} player has initiative and handles rolls.`
@@ -229,7 +142,7 @@ export default class PhaseAction extends BaseAction {
       if (this.game.playerOneName !== this.game.playerTwoName) {
         this.game.playerTwoNotification = [title, message]
       }
-    } else if (this.newPhase === gamePhaseType.CleanupWeather && map.windVariable) {
+    } else if (this.newPhase === gamePhaseType.CleanupWeather) {
       const title = `Turn ${this.newTurn}: variable weather`
       const message = `Checking variable weather, the ${this.game.currentInitiativeNationName} ` +
         "player has initiative and handles rolls."

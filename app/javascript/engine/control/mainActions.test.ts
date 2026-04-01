@@ -13,7 +13,6 @@ import SniperState from "./state/SniperState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import { gamePhaseType } from "../support/gamePhase"
 import { reactionFireCheck } from "./reactionFire"
-import CloseCombatState from "./state/CloseCombatState"
 
 describe("game actions", () => {
   test("initiative changes", () => {
@@ -430,27 +429,17 @@ describe("game actions", () => {
     game.setGameState(new PassState(game))
     game.gameState?.finish()
 
-    game.setGameState(new CloseCombatState(game))
-    game.gameState?.finish()
-
     expect(game.actions[0]?.type).toBe("pass")
     expect(game.actions[1]?.type).toBe("pass")
-    expect(game.actions[2]?.type).toBe("info")
-    expect(game.actions[2]?.stringValue).toBe("both players have passed, ending phase")
-    expect(game.actions[3]?.type).toBe("phase")
-    expect(game.actions[3]?.stringValue).toBe("main phase done, begin cleanup phase, checking for close combat")
-    expect(game.actions[4]?.type).toBe("close_combat_start")
-    expect(game.actions[4]?.stringValue).toBe("resolving close combat")
-    expect(game.actions[5]?.type).toBe("info")
-    expect(game.actions[5]?.stringValue).toBe("no units in contact, skipping close combat")
-    expect(game.actions[6]?.type).toBe("close_combat_finish")
-    expect(game.actions[6]?.stringValue).toBe("skipping: no combat to resolve")
-    expect(game.actions[7]?.type).toBe("phase")
-    expect(game.actions[7]?.stringValue).toBe("close combat done, begin housekeeping, checking for overstacking")
-    expect(game.actions[8]?.type).toBe("info")
-    expect(game.actions[8]?.stringValue).toBe("no units overstacked, skipping overstack reduction")
+    expect(game.actions[2]?.type).toBe("phase")
+    expect(game.actions[2]?.stringValue).toBe(
+      "both players have passed, main phase complete > starting close combat > no units in contact, skipping > " +
+      "close combat complete > starting overstack check for German > no overstacked units, skipping > " +
+      "overstack check complete for German > starting overstack check for Soviet > " +
+      "no overstacked units, skipping > overstack check complete for Soviet > game complete"
+    )
 
-    expect(game.actions.length).toBe(10)
+    expect(game.actions.length).toBe(4)
 
     expect(game.lastAction?.type).toBe("state")
     expect(game.lastAction?.stringValue).toBe("last turn complete, game over")

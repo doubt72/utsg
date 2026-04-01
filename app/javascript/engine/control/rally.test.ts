@@ -109,7 +109,10 @@ describe("rallying", () => {
     expect(game.actions[0].stringValue).toBe(
       "rally check at A1: needed 11, got 2, failed: Rifle fails to rally"
     )
-    expect(game.actions[1].stringValue).toBe("no more rallies possible, done with phase")
+    expect(game.actions[1].stringValue).toBe(
+      "German rally complete > starting Soviet rally > Soviet rally complete > starting precipitation check " +
+      "> no precipitation in scenario, skipping > precipitation check complete > starting main phase"
+    )
   })
 
   test("rally succeeds for mg", () => {
@@ -257,7 +260,10 @@ describe("rallying", () => {
     expect(action.stringValue).toBe(
       "rally check at A1: needed 11, got 20, passed: Rifle rallies"
     )
-    expect(game.actions[1].stringValue).toBe("no more rallies possible, done with phase")
+    expect(game.actions[1].stringValue).toBe(
+      "German rally complete > starting Soviet rally > Soviet rally complete > starting precipitation check " +
+      "> no precipitation in scenario, skipping > precipitation check complete > starting main phase"
+    )
   })
 
   test("can't rally twice", () => {
@@ -364,7 +370,10 @@ describe("rallying", () => {
     expect(action.freeRally).toBe(true)
     expect(action.stringValue).toBe("rally check at A1: needed 9, got 2, failed: Rifle fails to rally")
 
-    expect(game.actions[2].stringValue).toBe("no more rallies possible, done with phase")
+    expect(game.actions[2].stringValue).toBe(
+      "German rally complete > starting Soviet rally > Soviet rally complete > starting precipitation check " +
+      "> no precipitation in scenario, skipping > precipitation check complete > starting main phase"
+    )
   })
 
   test("advances on pass", () => {

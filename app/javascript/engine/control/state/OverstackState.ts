@@ -1,5 +1,4 @@
 import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
-import { stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
@@ -12,7 +11,7 @@ export default class OverstackState extends BaseState {
   }
 
   openHex(x: number, y: number): HexOpenType {
-    return this.overstackAt(x, y) ? hexOpenType.Open : hexOpenType.Closed
+    return this.game.scenario.map.overstackAt(x, y, this.game.currentPlayer) ? hexOpenType.Open : hexOpenType.Closed
   }
 
   select(selection: CounterSelectionTarget, callback: () => void): void {
@@ -22,7 +21,7 @@ export default class OverstackState extends BaseState {
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
-      if (this.overstackAt(x, y)) {
+      if (this.openHex(x, y) === hexOpenType.Open) {
         counter.unit.select()
         this.map.clearOtherTargetSelections(x, y, counter.unit.id)
       }
@@ -30,22 +29,28 @@ export default class OverstackState extends BaseState {
     callback()
   }
 
-  overstackAt(x: number, y: number): boolean {
-    let total = 0
-    const counters = this.game.scenario.map.countersAt(new Coordinate(x, y))
-    for (const c of counters) {
-      if (c.unit.isFeature) { continue }
-      if (!this.samePlayer(c.unit) && !c.unit.isWreck) {
-        return false
-      } else {
-        total += c.unit.size
-      }
-    }
-    return total > stackLimit
+  selectable(selection: CounterSelectionTarget): boolean {
+    if (selection.target.type === "reinforcement") { return false }
+    if (selection.counter.unit.playerNation !== this.game.currentPlayerNation) { return false }
+    const loc = selection.target.xy
+    return this.openHex(loc.x, loc.y) === hexOpenType.Open
   }
 
   get actionInProgress(): boolean {
     return false
+  }
+
+  get activeCounters(): Counter[] {
+    let rc: Counter[] = []
+    const map = this.game.scenario.map
+    for (let x = 0; x < map.width; x++) {
+      for (let y = 0; y < map.height; y++) {
+        if (map.overstackAt(x, y, this.game.currentPlayer)) {
+          rc = rc.concat(map.countersAt(new Coordinate(x, y)))
+        }
+      }
+    }
+    return rc
   }
 
   finish() {

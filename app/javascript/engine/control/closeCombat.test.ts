@@ -7,7 +7,7 @@ import GameAction from "../GameAction";
 import select from "./select";
 import organizeStacks from "../support/organizeStacks";
 import { gamePhaseType } from "../support/gamePhase";
-import { closeCombatCasualtyNeeded, closeCombatDone, closeCombatFirepower } from "./closeCombat";
+import { closeCombatCasualtyNeeded, closeCombatFirepower } from "./closeCombat";
 import CloseCombatState from "./state/CloseCombatState";
 import { chanceCC } from "../../utilities/utilities";
 
@@ -51,18 +51,18 @@ describe("close combat", () => {
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
           old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
-          old_turn: 1, new_turn: 1, new_player: 2,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
     })
-    expect(game.lastAction?.type).toBe("close_combat_start")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[0],
@@ -88,7 +88,7 @@ describe("close combat", () => {
         "German player roll result of 120 on 7 firepower; " +
         "Soviet player takes 1 hit, German player takes 1 hit"
     )
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
     expect(game.currentPlayer).toBe(1)
@@ -106,7 +106,7 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle at C3 broken")
     expect(two.isBroken).toBe(true)
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     expect(game.currentPlayer).toBe(2)
     select(map, {
@@ -123,12 +123,9 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle at C3 broken")
     expect(one.isBroken).toBe(true)
-    expect(closeCombatDone(game)).toBe(true)
+    expect(game.anyCloseCombatLeft).toBe(false)
 
-    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.closeNeeded.length).toBe(0)
-    expect(game.actions[5].stringValue).toBe("close combat complete")
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -159,18 +156,19 @@ describe("close combat", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
     })
-    expect(game.lastAction?.type).toBe("close_combat_start")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[0],
@@ -197,7 +195,7 @@ describe("close combat", () => {
         "German player roll result of 104 on 11 firepower; " +
         "Soviet player takes 1 hit, German player takes 1 hit"
     )
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
     expect(game.currentPlayer).toBe(1)
@@ -220,7 +218,7 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle at C3 broken")
     expect(two.isBroken).toBe(true)
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     expect(game.currentPlayer).toBe(2)
     select(map, {
@@ -237,11 +235,9 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German PzKpfw 35(t) at C3 eliminated")
     expect(one2.isWreck).toBe(true)
-    expect(closeCombatDone(game)).toBe(true)
+    expect(game.anyCloseCombatLeft).toBe(false)
 
-    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
     expect(all.length).toBe(4) // four units (no hull counter for wreck)
@@ -283,18 +279,18 @@ describe("close combat", () => {
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
           old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
-          old_turn: 1, new_turn: 1, new_player: 2,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
     })
-    expect(game.lastAction?.type).toBe("close_combat_start")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[0],
@@ -322,7 +318,7 @@ describe("close combat", () => {
         "Japanese player roll result of 132 on 8 firepower; " +
         "American player takes 1 hit, Japanese player takes 2 hits (all eliminated)"
     )
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
     select(map, {
@@ -338,7 +334,7 @@ describe("close combat", () => {
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("American Marine Rifle at C3 broken")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[4],
@@ -353,7 +349,7 @@ describe("close combat", () => {
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Japanese SNLF at C3 broken")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[4],
@@ -370,7 +366,7 @@ describe("close combat", () => {
     })
     expect(game.actions[index].type).toBe("close_combat_reduce")
     expect(game.actions[index].stringValue).toBe("Japanese SNLF at C3 eliminated")
-    expect(closeCombatDone(game)).toBe(true)
+    expect(game.anyCloseCombatLeft).toBe(false)
 
     let all = map.allCounters
     expect(all.length).toBe(4)
@@ -381,11 +377,10 @@ describe("close combat", () => {
     expect(game.eliminatedUnits.length).toBe(1)
     expect((game.eliminatedUnits[0] as Unit).isNormal).toBe(true)
 
-    game.closeCombatState.finish()
     all = map.allCounters
     expect(all.length).toBe(4)
     expect(all[1].unit.name).toBe("Marine Rifle")
-    expect(all[1].unit.isTired).toBe(true)
+    expect(all[1].unit.isExhausted).toBe(true)
   })
 
   test("broken units still have combat power", () => {
@@ -483,18 +478,19 @@ describe("close combat", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
     })
-    expect(game.lastAction?.type).toBe("close_combat_start")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[0],
@@ -520,7 +516,7 @@ describe("close combat", () => {
         "German player roll result of 204 on 14 firepower; " +
         "Soviet player takes 2 hits (all eliminated), German player takes 1 hit"
     )
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
     expect(game.currentPlayer).toBe(1)
@@ -537,7 +533,7 @@ describe("close combat", () => {
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle at C3 broken")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
     expect(game.currentPlayer).toBe(1)
@@ -554,7 +550,7 @@ describe("close combat", () => {
     })
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle at C3 eliminated")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
 
     expect(game.currentPlayer).toBe(2)
@@ -569,16 +565,13 @@ describe("close combat", () => {
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
     })
-    const action = game.actions[5]
+    const action = game.actions[7]
     expect(action.type).toBe("close_combat_reduce")
     expect(action.stringValue).toBe("German Rifle at C3 broken")
     expect(closeCombatCasualtyNeeded(game)).toBe(false)
-    expect(closeCombatDone(game)).toBe(true)
+    expect(game.anyCloseCombatLeft).toBe(false)
 
-    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.gameState).toBe(undefined)
-    expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -610,18 +603,19 @@ describe("close combat", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
     })
-    expect(game.lastAction?.type).toBe("close_combat_start")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[0],
@@ -648,7 +642,7 @@ describe("close combat", () => {
         "German player roll result of 88 on 9 firepower; " +
         "Soviet player takes 1 hit, German player takes 0 hits"
     )
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc)
     select(map, {
       counter: map.countersAt(loc)[0],
@@ -667,7 +661,7 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("Soviet Rifle at C3 broken")
     expect(two.isBroken).toBe(true)
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc2)[0],
@@ -693,7 +687,7 @@ describe("close combat", () => {
         "German player roll result of 72 on 7 firepower; " +
         "Soviet player takes 0 hits, German player takes 1 hit"
     )
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
     expect(closeCombatCasualtyNeeded(game)).toStrictEqual(loc2)
     select(map, {
       counter: map.countersAt(loc2)[1],
@@ -709,12 +703,10 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle at D4 broken")
     expect(one2.isBroken).toBe(true)
-    expect(closeCombatDone(game)).toBe(true)
+    expect(game.anyCloseCombatLeft).toBe(false)
     expect(closeCombatCasualtyNeeded(game)).toBe(false)
 
-    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
     expect(all.length).toBe(4)
@@ -746,7 +738,8 @@ describe("close combat", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
@@ -755,13 +748,13 @@ describe("close combat", () => {
     expect(one2.parent?.name).toBe("Opel Blitz")
     expect(one3.parent?.name).toBe("Opel Blitz")
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
       loc, state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
     })
-    expect(game.lastAction?.type).toBe("close_combat_start")
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     select(map, {
       counter: map.countersAt(loc)[0],
@@ -789,7 +782,7 @@ describe("close combat", () => {
         "German player roll result of 80 on 8 firepower; " +
         "Soviet player takes 1 hit, German player takes 1 hit"
     )
-    expect(closeCombatDone(game)).toBe(false)
+    expect(game.anyCloseCombatLeft).toBe(true)
 
     expect(one.children.length).toBe(1)
     expect(one2.parent?.name).toBe("Opel Blitz")
@@ -824,11 +817,9 @@ describe("close combat", () => {
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle at C3 broken")
     expect(one3.isBroken).toBe(true)
-    expect(closeCombatDone(game)).toBe(true)
+    expect(game.anyCloseCombatLeft).toBe(false)
 
-    game.gameState?.finish()
     expect(map.currentSelection.length).toBe(0)
-    expect(game.closeNeeded.length).toBe(0)
 
     const all = map.allCounters
     expect(all.length).toBe(5)
@@ -850,18 +841,17 @@ describe("close combat", () => {
     game.executeAction(new GameAction({
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
-          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat, old_turn: 1, new_turn: 1, new_player: 2,
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
 
     expect(closeCombatCasualtyNeeded(game)).toBe(false)
-    expect(closeCombatDone(game)).toBe(true)
-    const index = game.actions.length
-    game.gameState?.finish()
-    expect(game.actions[index].stringValue).toBe("skipping: no combat to resolve")
+    expect(game.anyCloseCombatLeft).toBe(false)
   })
 
   test("winning combat captures VP", () => {
@@ -886,11 +876,12 @@ describe("close combat", () => {
       user: game.currentUser, player: 1, data: {
         action: "phase", old_initiative: 0, phase_data: {
           old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
-          old_turn: 1, new_turn: 1, new_player: 2,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
         },
       },
     }, game), false)
 
+    game.addCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
 
     select(map, {
@@ -949,10 +940,7 @@ describe("close combat", () => {
       loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
     })
     expect(game.lastAction?.stringValue).toBe("German Rifle at E5 broken")
-    expect(closeCombatDone(game)).toBe(true)
-
-    game.gameState?.finish()
-    expect(game.actions[6].stringValue).toBe("close combat complete")
+    expect(game.anyCloseCombatLeft).toBe(false)
 
     const all = map.allCounters
     expect(all.length).toBe(2)

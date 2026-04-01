@@ -127,12 +127,12 @@ describe("action integration test", () => {
         action: "phase", old_initiative: game.initiative,
         phase_data: {
           old_turn: 0, new_turn: 0, old_phase: gamePhaseType.Deployment, new_phase: gamePhaseType.Deployment,
-          new_player: 2,
+          new_player: 2, messages: ["game started, begin deployment"],
         },
       },
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.lastAction?.stringValue).toBe("game started, begin German deployment")
+    expect(game.lastAction?.stringValue).toBe("game started, begin deployment")
     expect(game.lastAction?.undoPossible).toBe(false)
 
     expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
@@ -219,7 +219,7 @@ describe("action integration test", () => {
     expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
-    expect(game.lastAction?.stringValue).toBe("German deployment done, begin Soviet deployment")
+    expect(game.lastAction?.stringValue).toBe("German deployment complete > starting Soviet deployment")
 
     index++
     expect(game.actions.length).toBe(index)
@@ -233,7 +233,7 @@ describe("action integration test", () => {
     expect(game.lastAction?.stringValue).toBe("deployed German unit: Rifle to E4")
     expect(game.actions[game.actions.length-2].stringValue).toBe("deployed German unit: Wire to E2 [cancelled]")
     expect(game.actions[game.actions.length-1].stringValue).toBe(
-      "German deployment done, begin Soviet deployment [cancelled]"
+      "German deployment complete > starting Soviet deployment [cancelled]"
     )
 
     index++
@@ -241,7 +241,7 @@ describe("action integration test", () => {
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 1)
     expect(game.currentPlayer).toBe(1)
-    expect(game.lastAction?.stringValue).toBe("German deployment done, begin Soviet deployment")
+    expect(game.lastAction?.stringValue).toBe("German deployment complete > starting Soviet deployment")
 
     // { list: [rinf, rcrew, rmg, rldr, rgun]}
 
@@ -297,15 +297,17 @@ describe("action integration test", () => {
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    index += 11
+    index += 1
     expect(game.actions.length).toBe(index)
     expect(game.currentPlayer).toBe(1)
-    expect(game.actions[index - 12].stringValue).toBe("deployed Soviet unit: 76mm ZiS-3 to A1")
-    expect(game.actions[index - 9].stringValue).toBe("Soviet deployment done, begin German deployment")
-    expect(game.actions[index - 8].stringValue).toBe("no units to deploy, skipping phase")
-    expect(game.actions[index - 5].stringValue).toBe("Soviet rally done, begin German rally")
-    expect(game.actions[index - 4].stringValue).toBe("no rallyable broken units or jammed weapons, skipping phase")
-    expect(game.actions[index - 3].stringValue).toBe("rally done, checking precipitation")
-    expect(game.lastAction?.stringValue).toBe("done checking precipitation, begin main phase")
+    expect(game.actions[index - 2].stringValue).toBe("deployed Soviet unit: 76mm ZiS-3 to A1")
+    expect(game.lastAction?.stringValue).toBe(
+      "Soviet deployment complete > starting Soviet deployment > " +
+      "no units to deploy, skipping Soviet player > Soviet deployment complete > " +
+      "starting German deployment > no units to deploy, skipping German player > " +
+      "German deployment complete > starting Soviet rally > " +
+      "Soviet rally complete > starting German rally > German rally complete > " +
+      "starting precipitation check > no precipitation in scenario, skipping > " +
+      "precipitation check complete > starting main phase")
   })
 });

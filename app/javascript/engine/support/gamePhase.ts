@@ -1,5 +1,5 @@
+import { Player } from "../../utilities/commonTypes"
 import { otherPlayer } from "../../utilities/utilities"
-import OverstackState from "../control/state/OverstackState"
 import Game from "../Game"
 import GameAction, { GameActionData, GameActionPhaseChange } from "../GameAction"
 
@@ -15,7 +15,7 @@ export function checkPhase(game: Game, backendSync: boolean) {
   const oldPhase = game.phase
   const oldTurn = game.turn
   const phaseData: GameActionPhaseChange = {
-    old_phase: oldPhase, new_phase: gamePhaseType.Deployment,
+    old_phase: oldPhase, new_phase: oldPhase, messages: [],
     old_turn: oldTurn, new_turn: oldTurn, new_player: game.currentPlayer,
   }
   const data: GameActionData = {
@@ -23,103 +23,135 @@ export function checkPhase(game: Game, backendSync: boolean) {
     data: { action: "phase", phase_data: phaseData, old_initiative: game.initiative }
   }
   if (oldPhase == gamePhaseType.Deployment) {
-    Deployment(game, backendSync, data)
+    deployment(game, data)
   } else if (oldPhase === gamePhaseType.PrepRally) {
-    PrepRally(game, backendSync, data)
+    prepRally(game, data)
   } else if (oldPhase === gamePhaseType.PrepPrecip) {
-    PrepPrecip(game, backendSync, data)
+    prepPrecip(game, data)
   } else if (oldPhase === gamePhaseType.Main) {
-    Main(game, backendSync, data)
+    main(game, data)
   } else if (oldPhase === gamePhaseType.CleanupCloseCombat) {
-    CleanupCloseCombat(game, backendSync, data)
+    cleanupCloseCombat(game, data)
   } else if (oldPhase === gamePhaseType.CleanupOverstack) {
-    CleanupOverstack(game, backendSync, data)
+    cleanupOverstack(game, data)
   } else if (oldPhase === gamePhaseType.CleanupStatus) {
-    CleanupStatus(game, backendSync, data)
+    cleanupStatus(game, data)
   } else if (oldPhase === gamePhaseType.CleanupSmoke) {
-    CleanupSmoke(game, backendSync, data)
+    cleanupSmoke(game, data)
   } else if (oldPhase === gamePhaseType.CleanupFire) {
-    CleanupFire(game, backendSync, data)
+    cleanupFire(game, data)
   } else if (oldPhase === gamePhaseType.CleanupWeather) {
-    CleanupWeather(game, backendSync, data)
+    cleanupWeather(game, data)
   }
-}
-
-function Deployment(game: Game, backendSync: boolean, data: GameActionData): void {
-  const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  const oldTurn = game.turn
-  const [count, initialCount] = game.reinforcementsCount
-  if (count === 0) {
-    if (initialCount === 0) {
+  if (oldPhase !== phaseData.new_phase || oldTurn !== phaseData.new_turn ||
+      data.player !== phaseData.new_player) {
+    game.executeAction(new GameAction(data, game), backendSync)
+    if (phaseData.messages[phaseData.messages.length - 1] === "game complete") {
+      let winner = game.currentInitiativePlayer
+      if (game.playerOneScore !== game.playerTwoScore) {
+        winner = game.playerOneScore > game.playerTwoScore ? 1 : 2
+      }
       game.executeAction(new GameAction({
-        player: game.currentPlayer, user: game.currentUser, data: {
-          action: "info", message: "no units to deploy, skipping phase",
-          old_initiative: game.initiative,
+        player: winner, user: game.currentUser, data: {
+          action: "finish", old_initiative: game.initiative,
         }
       }, game), backendSync)
     }
+  }
+  if (phaseData.messages[phaseData.messages.length - 1] === "starting status update") {
+    const targets = game.scenario.map.allStatusChanges()
+    game.executeAction(new GameAction({
+      player: phaseData.new_player, user: game.currentUser, data: {
+        action: "status_update", old_initiative: game.initiative,
+        target: targets,
+      }
+    }, game), backendSync)
+  }
+}
+
+function nation(game: Game, player: Player): string {
+  return player === 1 ? game.alliedName : game.axisName
+}
+
+function deployment(game: Game, data: GameActionData): void {
+  const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
+  const oldTurn = phaseData.new_turn
+  const player = phaseData.new_player
+  const [count, initialCount] = game.reinforcementsCount(oldTurn, player)
+  if (count === 0) {
+    if (initialCount === 0) {
+      phaseData.messages.push(`no units to deploy, skipping ${nation(game, player)} player`)
+    }
+    phaseData.messages.push(`${nation(game, player)} deployment complete`)
     if (oldTurn === 0) {
       phaseData.new_phase = gamePhaseType.Deployment
-      if (game.currentPlayer === game.scenario.firstDeploy) {
-        phaseData.new_player = otherPlayer(game.currentPlayer)
+      if (phaseData.new_player === game.scenario.firstDeploy) {
+        phaseData.new_player = otherPlayer(phaseData.new_player)
       } else {
         phaseData.new_player = game.scenario.firstAction
         phaseData.new_turn = 1
       }
     } else {
-      phaseData.new_player = otherPlayer(game.currentPlayer)
-      phaseData.new_phase = game.currentPlayer === game.currentInitiativePlayer ?
+      phaseData.new_player = otherPlayer(phaseData.new_player)
+      phaseData.new_phase = player === game.currentInitiativePlayer ?
         gamePhaseType.Deployment : gamePhaseType.PrepRally
     }
-    game.executeAction(new GameAction(data, game), backendSync)
+    if (phaseData.new_phase === gamePhaseType.Deployment) {
+      phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} deployment`)
+      deployment(game, data)
+    } else {
+      phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} rally`)
+      if (game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
+        `no rallyable broken units or jammed weapons, skipping ${nation(game, phaseData.new_player)} rally`
+      }
+      prepRally(game, data)
+    }
     game.closeReinforcementPanel = true
   }
 }
 
-function PrepRally(game: Game, backendSync: boolean, data: GameActionData): void {
+function prepRally(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  const oldPhase = game.phase
-  if (game.scenario.map.anyUnitsCanRally(game.currentPlayer) &&
-    game.lastAction?.type !== "rally_pass") {
-    return
+  const oldPhase = phaseData.new_phase
+  const player = phaseData.new_player
+  if (game.scenario.map.anyUnitsCanRally(player)) {
+    if (game.lastAction?.type !== "rally_pass") { return }
   }
-  const message = ["rally", "rally_pass"].includes(game.lastAction?.type ?? "") ?
-    "no more rallies possible, done with phase" :
-    "no rallyable broken units or jammed weapons, skipping phase"
-  game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
-      action: "info", message, old_initiative: game.initiative,
-    }
-  }, game), backendSync)
-  if (game.currentPlayer === game.currentInitiativePlayer) {
-    phaseData.new_player = otherPlayer(game.currentPlayer)
+  phaseData.messages.push(`${nation(game, player)} rally complete`)
+  if (player === game.currentInitiativePlayer) {
+    phaseData.new_player = otherPlayer(player)
     phaseData.new_phase = oldPhase
   } else {
-    phaseData.new_player = otherPlayer(game.currentPlayer)
+    phaseData.new_player = otherPlayer(player)
     phaseData.new_phase = gamePhaseType.PrepPrecip
   }
-  game.executeAction(new GameAction(data, game), backendSync)
+  if (phaseData.new_phase === gamePhaseType.PrepRally) {
+    phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} rally`)
+    if (game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
+      `no rallyable broken units or jammed weapons, skipping ${nation(game, phaseData.new_player)} rally`
+    }
+    prepRally(game, data)
+  } else {
+    phaseData.messages.push("starting precipitation check")
+    prepPrecip(game, data)
+  }
 }
 
-function PrepPrecip(game: Game, backendSync: boolean, data: GameActionData): void {
+function prepPrecip(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   if (game.scenario.map.anyPrecip()) {
-    return
+    if (game.lastAction?.type !== "precipitation_check") { return }
+  } else {
+    phaseData.messages.push("no precipitation in scenario, skipping")
   }
-  if (game.lastAction?.type !== "info") {
-    game.executeAction(new GameAction({
-      player: game.currentPlayer, user: game.currentUser, data: {
-        action: "info", message: "no precipitation in scenario, skipping check",
-        old_initiative: game.initiative,
-      }
-    }, game), backendSync)
-  }
+  phaseData.messages.push("precipitation check complete")
+  phaseData.messages.push("starting main phase")
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.Main
-  game.executeAction(new GameAction(data, game), backendSync)
+  // No need to check main phase, never skipped
 }
 
-function Main(game: Game, backendSync: boolean, data: GameActionData): void {
+function main(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   let index = game.lastActionIndex - 1
   let previousAction = game.actions[index--]
@@ -127,110 +159,112 @@ function Main(game: Game, backendSync: boolean, data: GameActionData): void {
     previousAction = game.actions[index--]
   }
   if (game.lastAction?.type === "pass" && previousAction?.type === "pass") {
-    game.executeAction(new GameAction({
-      player: game.currentPlayer, user: game.currentUser, data: {
-        action: "info", message: "both players have passed, ending phase",
-        old_initiative: game.initiative,
-      }
-    }, game), backendSync)
+    phaseData.messages.push("both players have passed, main phase complete")
     phaseData.new_player = game.currentInitiativePlayer
     phaseData.new_phase = gamePhaseType.CleanupCloseCombat
-    game.executeAction(new GameAction(data, game), backendSync)
+    phaseData.messages.push("starting close combat")
+    game.addCloseCombatChecks()
+    if (!game.anyCloseCombatLeft) {
+      phaseData.messages.push("no units in contact, skipping")
+    }
+    cleanupCloseCombat(game, data)
   }
 }
 
-function CleanupCloseCombat(game: Game, backendSync: boolean, data: GameActionData): void {
+function cleanupCloseCombat(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  if (game.lastAction?.type !== "close_combat_finish") {
-    return
-  }
+  if (game.anyCloseCombatLeft) { return }
+  phaseData.messages.push("close combat complete")
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupOverstack
-  game.executeAction(new GameAction(data, game), backendSync)
+  phaseData.messages.push(`starting overstack check for ${nation(game, phaseData.new_player)}`)
+  if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
+      phaseData.messages.push("no overstacked units, skipping")
+  }
+  cleanupOverstack(game, data)
 }
 
-function CleanupOverstack(game: Game, backendSync: boolean, data: GameActionData): void {
+function cleanupOverstack(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  const oldPhase = game.phase
-  if (game.scenario.map.anyOverstackedUnits()) {
-    game.setGameState(new OverstackState(game))
-    return
-  }
-  phaseData.new_player = otherPlayer(game.currentPlayer)
-  if (game.currentPlayer !== game.internalInitiativePlayer) {
+  const oldPhase = phaseData.new_phase
+  const player = phaseData.new_player
+  if (game.scenario.map.anyOverstackedUnits(player)) { return }
+  phaseData.messages.push(`overstack check complete for ${nation(game, player)}`)
+  phaseData.new_player = otherPlayer(player)
+  if (player === game.internalInitiativePlayer) {
     phaseData.new_phase = oldPhase
-  } else {
-    phaseData.new_phase = gamePhaseType.CleanupStatus
-  }
-  game.executeAction(new GameAction({
-    player: game.currentInitiativePlayer, user: game.currentUser, data: {
-      action: "info", message: "no units overstacked, skipping overstack reduction",
-      old_initiative: game.initiative,
+    phaseData.messages.push(`starting overstack check for ${nation(game, phaseData.new_player)}`)
+    if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
+        phaseData.messages.push("no overstacked units, skipping")
     }
-  }, game), backendSync)
-  phaseData.new_player = game.currentInitiativePlayer
-  phaseData.new_phase = gamePhaseType.CleanupStatus
-  if (game.turn === game.scenario.turns && phaseData.new_phase === gamePhaseType.CleanupStatus) {
-    let winner = game.currentInitiativePlayer
-    if (game.playerOneScore !== game.playerTwoScore) {
-      winner = game.playerOneScore > game.playerTwoScore ? 1 : 2
-    }
-    game.executeAction(new GameAction({
-      player: winner, user: game.currentUser, data: {
-        action: "finish", old_initiative: game.initiative,
-      }
-    }, game), backendSync)
+    cleanupOverstack(game, data)
   } else {
-    game.executeAction(new GameAction(data, game), backendSync)
+    // In either case, we're done with this sequence of phase changes;
+    // these are "magic" messages, if these change, must also make changes above
+    if (phaseData.new_turn === game.scenario.turns) {
+      phaseData.messages.push("game complete")
+    } else {
+      phaseData.new_phase = gamePhaseType.CleanupStatus
+      phaseData.messages.push("starting status update")
+    }
   }
 }
 
-function CleanupStatus(game: Game, backendSync: boolean, data: GameActionData): void {
+function cleanupStatus(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  if (game.lastAction?.type === "status_update") { return }
-  const targets = game.scenario.map.allStatusChanges()
-  game.executeAction(new GameAction({
-    player: game.currentPlayer, user: game.currentUser, data: {
-      action: "status_update", old_initiative: game.initiative,
-      target: targets,
-    }
-  }, game), backendSync)
+  if (game.lastAction?.type !== "status_update") { return }
+  phaseData.messages.push("status update complete")
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupSmoke
-  game.executeAction(new GameAction(data, game), backendSync)
+  phaseData.messages.push("starting smoke dispersion check")
+  game.addSmokeCheckState()
+  if (game.smokeCheckNeeded.length < 1) {
+    phaseData.messages.push("no smoke counters, skipping")
+  }
+  cleanupSmoke(game, data)
 }
 
-function CleanupSmoke(game: Game, backendSync: boolean, data: GameActionData): void {
+function cleanupSmoke(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  game.checkForSmoke(backendSync)
-  if (game.smokeCheckNeeded.length > 0) {
-    return
-  }
+  game.addSmokeCheckState()
+  if (game.smokeCheckNeeded.length > 0) { return }
+  phaseData.messages.push("smoke dispersion check complete")
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupFire
-  game.executeAction(new GameAction(data, game), backendSync)
+  phaseData.messages.push("starting blaze check")
+  game.addFireCheckState()
+  if ((game.fireOutCheckNeeded.length < 1 && game.fireSpreadCheckNeeded.length < 1)) {
+    phaseData.messages.push("no blazes on map, skipping")
+  }
+  cleanupFire(game, data)
 }
 
-function CleanupFire(game: Game, backendSync: boolean, data: GameActionData): void {
+function cleanupFire(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  game.checkForFire(backendSync)
+  game.addFireCheckState()
   if ((game.fireOutCheckNeeded.length > 0 || game.fireSpreadCheckNeeded.length > 0)) {
     return
   }
+  phaseData.messages.push("blaze check complete")
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupWeather
-  game.executeAction(new GameAction(data, game), backendSync)
+  phaseData.messages.push("starting variable wind check")
+  game.addVariableWindState()
+  if (!game.checkWindDirection && !game.checkWindSpeed) {
+    phaseData.messages.push("wind not variable, skipping")
+  }
+  cleanupWeather(game, data)
 }
 
-function CleanupWeather(game: Game, backendSync: boolean, data: GameActionData): void {
+function cleanupWeather(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
-  const oldTurn = game.turn
-  game.checkForWind(backendSync)
-  if ((game.checkWindDirection || game.checkWindSpeed) && game.turn !== game.scenario.turns) {
-    return
-  }
+  const oldTurn = phaseData.old_turn
+  game.addVariableWindState()
+  if (game.checkWindDirection || game.checkWindSpeed) { return }
+  phaseData.messages.push("variable wind check complete")
   phaseData.new_phase = gamePhaseType.Deployment
   phaseData.new_player = game.scenario.firstAction
   phaseData.new_turn = oldTurn + 1
-  game.executeAction(new GameAction(data, game), backendSync)
+  phaseData.messages.push(`starting ${nation(game, phaseData.new_player)} deployment`)
+  deployment(game, data)
 }

@@ -14,7 +14,7 @@ describe("overstack reduction", () => {
     game.setGameState(new OverstackState(game))
     const map = game.scenario.map
 
-    expect(map.anyOverstackedUnits()).toBe(false)
+    expect(map.anyOverstackedUnits(1)).toBe(false)
   })
 
   test("doesn't skip if units overstacked", () => {
@@ -32,10 +32,8 @@ describe("overstack reduction", () => {
     unit3.id = "test3"
     map.addCounter(new Coordinate(0,0), unit3)
 
-    game.internalCurrentPlayer = 1
-    expect(map.anyOverstackedUnits()).toBe(false)
-    game.internalCurrentPlayer = 2
-    expect(map.anyOverstackedUnits()).toBe(true)
+    expect(map.anyOverstackedUnits(1)).toBe(false)
+    expect(map.anyOverstackedUnits(2)).toBe(true)
   })
 
   test("wreck counts towards stacking", () => {
@@ -54,10 +52,8 @@ describe("overstack reduction", () => {
     unit3.wreck()
     map.addCounter(new Coordinate(0,0), unit3)
 
-    game.internalCurrentPlayer = 1
-    expect(map.anyOverstackedUnits()).toBe(false)
-    game.internalCurrentPlayer = 2
-    expect(map.anyOverstackedUnits()).toBe(true)
+    expect(map.anyOverstackedUnits(1)).toBe(false)
+    expect(map.anyOverstackedUnits(2)).toBe(true)
   })
 
   test("close combat stacks not overstacked", () => {
@@ -75,10 +71,8 @@ describe("overstack reduction", () => {
     unit3.id = "test3"
     map.addCounter(new Coordinate(0,0), unit3)
 
-    game.internalCurrentPlayer = 1
-    expect(map.anyOverstackedUnits()).toBe(false)
-    game.internalCurrentPlayer = 2
-    expect(map.anyOverstackedUnits()).toBe(false)
+    expect(map.anyOverstackedUnits(1)).toBe(false)
+    expect(map.anyOverstackedUnits(2)).toBe(false)
   })
 
   test("reduction removes unit", () => {
@@ -102,7 +96,7 @@ describe("overstack reduction", () => {
     unit2.select()
     expect(unit2.selected).toBe(true)
     game.gameState?.finish()
-    expect(map.anyOverstackedUnits()).toBe(false)
+    expect(map.anyOverstackedUnits(2)).toBe(false)
     expect(game.eliminatedUnits[0].id).toBe("test2")
 
     let units = map.countersAt(loc)
@@ -144,7 +138,7 @@ describe("overstack reduction", () => {
     unit2.select()
     expect(unit2.selected).toBe(true)
     game.gameState?.finish()
-    expect(map.anyOverstackedUnits()).toBe(false)
+    expect(map.anyOverstackedUnits(2)).toBe(false)
     const unit = game.eliminatedUnits[0] as Unit
     expect(unit.id).toBe("inf")
     expect(unit.parent).toBe(undefined)

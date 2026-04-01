@@ -505,7 +505,7 @@ export default function MapDisplay({
         )
       })
     }
-    if (map.game?.openOverlay !== undefined) {
+    if (map.game?.openOverlay !== undefined && !preview) {
       setTimeout(() => {
         if (map.game?.openOverlay === undefined) { return }
         setOverlay({
