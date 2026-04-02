@@ -25,9 +25,23 @@ export default class CloseCombatRollAction extends BaseAction {
     this.target = (data.data.target as GameActionUnit[])
     this.origin = (data.data.origin as GameActionUnit[])
     this.ccData = (data.data.cc_data as { p1_fp: number, p2_fp: number, p1_max: number, p2_max: number })
+
+    if (game.closeNeeded.length < 1) { game.addCloseCombatChecks() }
   }
 
   get type(): string { return "close_combat_roll" }
+
+  get p1Hits(): number {
+    const hit = Math.floor(this.diceResult[1].result.result / 80)
+    const max = this.ccData.p1_max
+    return max < hit ? max : hit
+  }
+
+  get p2Hits(): number {
+    const hit = Math.floor(this.diceResult[0].result.result / 80)
+    const max = this.ccData.p2_max
+    return max < hit ? max : hit
+  }
 
   get htmlValue(): string {
     const loc = new Coordinate(this.origin[0].x, this.origin[0].y)
@@ -48,18 +62,13 @@ export default class CloseCombatRollAction extends BaseAction {
       `on ${this.ccData.p1_fp} firepower; `
     rc += `${nation2} player roll result of ${formatDieResult(this.diceResult[1].result)} ` +
       `on ${this.ccData.p2_fp} firepower; `
+    const hit1 = this.p1Hits
+    rc += `${nation1} player takes ${hit1} hit${hit1 !== 1 ? "s" : ""}`
+    if (this.ccData.p1_max === hit1) { rc += ` (all eliminated)` }
 
-    const hit1 = Math.floor(this.diceResult[1].result.result / 80)
-    const max1 = this.ccData.p1_max
-    const num1 = max1 < hit1 ? max1 : hit1
-    rc += `${nation1} player takes ${num1} hit${num1 !== 1 ? "s" : ""}`
-    if (max1 <= hit1) { rc += ` (all eliminated)` }
-
-    const hit2 = Math.floor(this.diceResult[0].result.result / 80)
-    const max2 = this.ccData.p2_max
-    const num2 = max2 < hit2 ? max2 : hit2
-    rc += `, ${nation2} player takes ${num2} hit${num2 !== 1 ? "s" : ""}`
-    if (max2 < hit2) { rc += ` (all eliminated)` }
+    const hit2 = this.p2Hits
+    rc += `, ${nation2} player takes ${hit2} hit${hit2 !== 1 ? "s" : ""}`
+    if (this.ccData.p2_max === hit2) { rc += ` (all eliminated)` }
     return rc
   }
 
@@ -83,13 +92,11 @@ export default class CloseCombatRollAction extends BaseAction {
       cn => cn.loc.x === this.target[0].x && cn.loc.y === this.target[0].y
     )[0]
 
-    const hit1 = Math.floor(this.diceResult[1].result.result / 80)
-    const max1 = this.ccData.p1_max
-    current.p1Reduce = max1 < hit1 ? max1 : hit1
+    const hit1 = this.p1Hits
+    current.p1Reduce = hit1
 
-    const hit2 = Math.floor(this.diceResult[0].result.result / 80)
-    const max2 = this.ccData.p2_max
-    current.p2Reduce = max2 < hit2 ? max2 : hit2
+    const hit2 = this.p2Hits
+    current.p2Reduce = hit2
 
     if (hit1 > 0 || hit2 > 0) {
       current.state = closeProgress.NeedsCasualties

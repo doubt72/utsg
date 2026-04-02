@@ -7,7 +7,7 @@ import BaseAction, { significantActions } from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
-import { alliedCodeToName, axisCodeToName, counterKey, otherPlayer } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, counterKey, otherPlayer, serverVersion } from "../utilities/utilities";
 import Unit from "./Unit";
 import Hex from "./Hex";
 import organizeStacks, { sortValues } from "./support/organizeStacks";
@@ -31,6 +31,8 @@ import { helpIndexByName } from "../components/help/helpData";
 import SmokeCheckAction from "./actions/SmokeCheckAction";
 import FireOutAction from "./actions/FireOutAction";
 import FireSpreadAction from "./actions/FireSpreadAction";
+import CloseCombatRollAction from "./actions/CloseCombatRollAction";
+import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
 
 export type GameData = {
   id: number;
@@ -44,6 +46,7 @@ export type GameData = {
   player_two: string;
   current_player: string;
   winner?: Player;
+  server_version: string;
   metadata: {
     turn: number;
   }
@@ -126,6 +129,8 @@ export default class Game {
   playerOneNotification: [string, string] | undefined;
   playerTwoNotification: [string, string] | undefined;
 
+  serverVersion: string;
+
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
@@ -167,10 +172,13 @@ export default class Game {
     this.checkWindDirection = false
     this.checkWindSpeed = false
 
+    this.serverVersion = data.server_version
+
     this.loadAllActions()
   }
 
   loadAllActions() {
+    if (this.serverVersion !== serverVersion) { return }
     if (this.suppressNetwork) { return }
 
     getAPI(`/api/v1/game_actions?game_id=${this.id}`, {
@@ -188,6 +196,8 @@ export default class Game {
   }
 
   loadNewActions(actionId?: number) {
+    if (this.serverVersion !== serverVersion) { return }
+
     const limit = actionId ? actionId - 1 : this.actions[this.lastActionIndex].id
     getAPI(`/api/v1/game_actions?game_id=${this.id}&after_id=${limit}`, {
       ok: response => response.json().then(json => {
@@ -659,6 +669,33 @@ export default class Game {
   }
 
   addCloseCombatChecks() {
+    const checks: CloseCheck[] = []
+    for (let i = this.lastActionIndex; i >= 0; i--) {
+      const action = this.actions[i]
+      if (action.type === "phase") { break }
+      if (action.type === "close_combat_roll") {
+        const roll = action as CloseCombatRollAction
+        checks.push({
+          loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
+          state: closeProgress.needsCasualties, p1Reduce: roll.p1Hits, p2Reduce: roll.p2Hits
+        })
+      }
+      if (action.type === "close_combat_reduce") {
+        console.log("reducing")
+        const reduce = action as CloseCombatReduceAction
+        for (const c of checks) {
+          if (c.loc.x !== reduce.target.x || c.loc.y !== reduce.target.y) { continue }
+          const unit = this.findUnitById(reduce.target.id) as Unit
+          if (unit.playerNation === this.playerOneNation) {
+            c.p1Reduce -= 1
+          } else {
+            c.p2Reduce -= 1
+          }
+          if (c.p1Reduce < 1 && c.p2Reduce < 1) { c.state = closeProgress.Done }
+          break
+        }
+      }
+    }
     const map = this.scenario.map
     for (let y = 0; y < map.height; y++) {
       for (let x = 0; x < map.width; x++) {
@@ -672,12 +709,19 @@ export default class Game {
           if (u.nation === this.playerTwoNation) { two = true }
         })
         if (one && two) {
-          this.closeNeeded.push({
-            loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
-          })
+          let found: CloseCheck | undefined = undefined
+          for (const c of checks) {
+            if (c.loc.x === x && c.loc.y === y) { found = c; break }
+          }
+          if (found === undefined) {
+            checks.push({
+              loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
+            })
+          }
         }
       }
     }
+    this.closeNeeded = checks
   }
 
   get anyCloseCombatLeft(): boolean {

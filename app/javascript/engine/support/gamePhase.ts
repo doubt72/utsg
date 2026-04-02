@@ -97,7 +97,7 @@ function deployment(game: Game, data: GameActionData): void {
       deployment(game, data)
     } else {
       phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} rally`)
-      if (game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
+      if (!game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
         `no rallyable broken units or jammed weapons, skipping ${formatNation(game, phaseData.new_player)} rally`
       }
       prepRally(game, data)
@@ -114,16 +114,15 @@ function prepRally(game: Game, data: GameActionData): void {
     if (game.lastAction?.type !== "rally_pass") { return }
   }
   phaseData.messages.push(`${formatNation(game, player)} rally complete`)
+  phaseData.new_player = otherPlayer(player)
   if (player === game.currentInitiativePlayer) {
-    phaseData.new_player = otherPlayer(player)
     phaseData.new_phase = oldPhase
   } else {
-    phaseData.new_player = otherPlayer(player)
     phaseData.new_phase = gamePhaseType.PrepPrecip
   }
   if (phaseData.new_phase === gamePhaseType.PrepRally) {
     phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} rally`)
-    if (game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
+    if (!game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
       `no rallyable broken units or jammed weapons, skipping ${formatNation(game, phaseData.new_player)} rally`
     }
     prepRally(game, data)

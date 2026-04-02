@@ -111,6 +111,7 @@ export default function MapDisplay({
   const [actionAnimationDetails, setActionAnimationDetails] = useState<{
     details: ActionAnimationDetails[], timer: number, state: "in" | "show" | "out", size: number,
   } | undefined>()
+  const [actionAnimationFallback, setActionAnimationFallback] = useState<NodeJS.Timeout | undefined>()
 
   const user = localStorage.getItem("username")
 
@@ -275,7 +276,27 @@ export default function MapDisplay({
         }
       }
     ), 20)
-  }, [actionAnimationDetails])
+    if (actionAnimationFallback) { clearTimeout(actionAnimationFallback) }
+    const to = setTimeout(() => {
+      if (actionAnimationDetails === undefined) { return }
+      console.log("resetting animation with fallback")
+      if (actionAnimationDetails.details.length > 1) {
+        setActionAnimationDetails(s => {
+          if (!s) { return s }
+          return {
+            details: s.details.slice(1), timer: actionAnimationIn, state: "in", size: 1
+          }
+        })
+      } else {
+        setActionAnimationDetails(undefined)
+        setActionAnimation(undefined)
+      }
+    }, 1000)
+    setActionAnimationFallback(to)
+  }, [
+    actionAnimationDetails, actionAnimationDetails?.timer, actionAnimationDetails?.state,
+    actionAnimationDetails?.details
+  ])
 
   useEffect(() => {
     if (!map.game) { return }

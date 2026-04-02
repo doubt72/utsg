@@ -1,8 +1,5 @@
 High Priority Features/Bug Fixes:
-  + Clean up phase changes/info action
-  + Actions with some sort color palette for important/unimportant actions
-    + Refactor actions with helper to more cleanly display units (highlight colors)
-    + Add individual dice from results
+  - Force reload of page when old version
   - Test rout all/blaze displacement with two-player games
   - Fix hindrance bug
     - Through two fence corner intersections

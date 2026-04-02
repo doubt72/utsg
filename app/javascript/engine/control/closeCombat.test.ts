@@ -116,10 +116,7 @@ describe("close combat", () => {
     expect(one.selected).toBe(true)
     game.closeCombatState.reduceUnit()
 
-    expect(game.closeNeeded.length).toBe(1)
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
-    })
+    expect(game.closeNeeded).toStrictEqual([])
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle at C3 broken")
     expect(one.isBroken).toBe(true)
@@ -228,10 +225,7 @@ describe("close combat", () => {
     expect(one2.selected).toBe(true)
     game.closeCombatState.reduceUnit()
 
-    expect(game.closeNeeded.length).toBe(1)
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
-    })
+    expect(game.closeNeeded).toStrictEqual([])
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German PzKpfw 35(t) at C3 eliminated")
     expect(one2.isWreck).toBe(true)
@@ -360,10 +354,7 @@ describe("close combat", () => {
     const index = game.actions.length
     game.closeCombatState.reduceUnit()
 
-    expect(game.closeNeeded.length).toBe(1)
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
-    })
+    expect(game.closeNeeded).toStrictEqual([])
     expect(game.actions[index].type).toBe("close_combat_reduce")
     expect(game.actions[index].stringValue).toBe("Japanese SNLF at C3 eliminated")
     expect(game.anyCloseCombatLeft).toBe(false)
@@ -561,10 +552,7 @@ describe("close combat", () => {
     expect(one.selected).toBe(true)
     game.closeCombatState.reduceUnit()
 
-    expect(game.closeNeeded.length).toBe(1)
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
-    })
+    expect(game.closeNeeded).toStrictEqual([])
     const action = game.actions[7]
     expect(action.type).toBe("close_combat_reduce")
     expect(action.stringValue).toBe("German Rifle at C3 broken")
@@ -696,10 +684,7 @@ describe("close combat", () => {
     expect(one2.selected).toBe(true)
     game.closeCombatState.reduceUnit()
 
-    expect(game.closeNeeded.length).toBe(2)
-    expect(game.closeNeeded[1]).toStrictEqual({
-      loc: loc2, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
-    })
+    expect(game.closeNeeded).toStrictEqual([])
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle at D4 broken")
     expect(one2.isBroken).toBe(true)
@@ -810,10 +795,7 @@ describe("close combat", () => {
     expect(one3.selected).toBe(true)
     game.closeCombatState.reduceUnit()
 
-    expect(game.closeNeeded.length).toBe(1)
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
-    })
+    expect(game.closeNeeded).toStrictEqual([])
     expect(game.lastAction?.type).toBe("close_combat_reduce")
     expect(game.lastAction?.stringValue).toBe("German Rifle at C3 broken")
     expect(one3.isBroken).toBe(true)
@@ -936,9 +918,7 @@ describe("close combat", () => {
     expect(one1.selected).toBe(true)
     game.closeCombatState.reduceUnit()
 
-    expect(game.closeNeeded[0]).toStrictEqual({
-      loc, state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0,
-    })
+    expect(game.closeNeeded).toStrictEqual([])
     expect(game.lastAction?.stringValue).toBe("German Rifle at E5 broken")
     expect(game.anyCloseCombatLeft).toBe(false)
 

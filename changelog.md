@@ -1,4 +1,11 @@
-## 0.27 alpha
+## 0.29 alpha
+
+- Force reload of game page if loaded version of app is out of date
+- Bug fix: can't select close combat in two-player games (combat list doesn't get initiated)
+- Bug fix: rally unexpectedly skipped
+- Bug fix: rout check description text error
+
+## 0.28 alpha
 
 - Completely refactor action display formatting
 - Completely refactor action/phase to much cleaner flow (major changes to close combat, overstacking check in particular)

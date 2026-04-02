@@ -72,6 +72,7 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
       player_two: player_two&.username,
       current_player: current_player&.username,
       winner: winner&.username,
+      server_version: ::Utility::Server::VERSION,
       created_at: created_at.iso8601,
       updated_at: last_action_at,
     }

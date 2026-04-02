@@ -594,24 +594,29 @@ export default class Map {
     if (!this.game) { return false }
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
-        let rally = false
+        const loc = new Coordinate(x, y)
         let unbrokerLeader = false
-        for (const c of this.countersAt(new Coordinate(x, y))) {
+        for (const c of this.countersAt(loc)) {
+          const unit = c.unit as Unit
+          if (!unit.isFeature) {
+            const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
+            if (player === unitPlayer && !unit.isBroken && unit.leader) {
+              unbrokerLeader = true
+            }
+          }
+        }
+        for (const c of this.countersAt(loc)) {
           const unit = c.unit as Unit
           if (!unit.isFeature) {
             const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
             if (player === unitPlayer) {
-              if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed)&& !unit.isWreck)) &&
+              if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck)) &&
                   !alreadyRallied(this.game, unit.id)) {
-                rally = true
-              }
-              if (!unit.isBroken && unit.leader) {
-                unbrokerLeader = true
+                if (unbrokerLeader || this.game.freeRallyAvailable) { return true }
               }
             }
           }
         }
-        if (rally && (unbrokerLeader || this.game?.freeRallyAvailable)) { return true }
       }
     }
     return false

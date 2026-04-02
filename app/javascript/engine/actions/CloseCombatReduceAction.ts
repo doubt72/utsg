@@ -68,6 +68,7 @@ export default class CloseCombatReduceAction extends BaseAction {
           }
         }
       }
+      if (!this.game.anyCloseCombatLeft) { this.game.closeNeeded = [] }
     }
     setCCPlayer(this.game, current)
     this.game.closeOverlay = true

@@ -33,6 +33,7 @@ RSpec.describe Game do
       player_two: user2.username,
       current_player: user2.username,
       winner: nil,
+      server_version: Utility::Server::VERSION,
       metadata: game.metadata,
       created_at: game.created_at.iso8601,
       updated_at: game.actions.last.created_at.iso8601,

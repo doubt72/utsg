@@ -3,12 +3,16 @@ import { rollCC } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game, { closeProgress } from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
+import { checkPhase } from "../../support/gamePhase";
 import { closeCombatCasualtyNeeded, closeCombatFirepower, maxCCCasualties } from "../closeCombat";
 import BaseState, { stateType } from "./BaseState";
 
 export default class CloseCombatState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.CloseCombat, game.currentPlayer)
+
+    if (game.closeNeeded.length < 1) { game.addCloseCombatChecks() }
+    if (!game.anyCloseCombatLeft) { checkPhase(game, false) }
     game.refreshCallback(game)
   }
 

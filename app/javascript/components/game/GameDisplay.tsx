@@ -18,6 +18,7 @@ import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { stateType } from "../../engine/control/state/BaseState";
 import NotificationWindow from "./NotificationWindow";
 import DesyncWindow from "./DesyncWindow";
+import { serverVersion } from "../../utilities/utilities";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -155,6 +156,16 @@ export default function GameDisplay() {
       setNotificationTimeout(to)
     }
   }, [game.k?.playerTwoNotification])
+
+  useEffect(() => {
+    if (!game.k) { return }
+    if (game.k.serverVersion === serverVersion) { return }
+    const message = "The server version has been updated since you last loaded this game and " +
+      "the game cannot continue unless the game is reloaded."
+    setErrorWindow(
+      <DesyncWindow title={"Server Version Mismatch"} message={message} />
+    )
+  }, [game.k, game.k?.serverVersion])
 
   const desynced = () => {
     if (!game.k) { return }

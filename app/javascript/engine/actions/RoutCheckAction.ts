@@ -36,7 +36,7 @@ export default class RoutCheckAction extends BaseAction {
     if (roll.result < check) {
       rc += `<span style="color: ${failRed};">failed</span>, unit routs`
     } else {
-      rc += `<span style="color: ${passBlue};">eliminated</span>, no effect`
+      rc += `<span style="color: ${passBlue};">passed</span>, no effect`
     }
     return rc
   }
