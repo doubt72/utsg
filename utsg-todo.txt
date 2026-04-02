@@ -1,28 +1,32 @@
 High Priority Features/Bug Fixes:
-  - Force reload of page when old version
+  + What does a game look like to someone watching logged in or logged out
+  + Assualt move not checking stacking?
+  + Move being blocked by support weapon?
+  + Overstacking should include dropped weapons
+  - Dropping undo move is kind of weird
   - Test rout all/blaze displacement with two-player games
   - Fix hindrance bug
     - Through two fence corner intersections
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
-  - What does a game look like to someone watching logged in or logged out
+
   - Add ability to add counters after attack started?
+  - Limit open reaction hexes to actual possible targets?
 
 Nice to Have Eventually/Soon:
   - Add Some Developer Notes
-    - Better way of doing announcements
-  - Add tutorial
-  - Refactor firing action (currently an unmaintainable mess, though... Moderately well-tested)
-  - Break up/organize tests into smaller files
+  - Better way of doing announcements
+  - Create tutorial
   - Email turn notifications
   - Live cable updates on home page
   - A way to show terrain in counter overlay
 
+  - Refactor firing action (currently an unmaintainable mess, though... Moderately well-tested)
+  - Break up/organize tests into smaller files
+
 Keep an Eye out for:
   - Handle map scale and such settings gone wrong (reset button in prefs?)
   - Automatically undo additional deploys (should no longer be necessary)
-  - got weird state at one point blanking out map, need to play against myself with debugging info on
-  - Player icon disappearing during hotseat game
   - Romanian vehicles don't seem to be at higher breakdown in 006
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?

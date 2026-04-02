@@ -84,7 +84,8 @@ export default class AssaultState extends BaseState {
       if ((terrTo.vehicle === "amph") && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
       const countersAt = this.map.countersAt(to)
       for (const c of countersAt) {
-        if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck) {
+        if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
+            !c.unit.crewed && !c.unit.uncrewedSW) {
           return hexOpenType.Closed
         }
         if (c.hasFeature && c.feature.type === featureType.Mines && c.feature.antiTank) {
@@ -112,7 +113,8 @@ export default class AssaultState extends BaseState {
     const countersAt = this.map.countersAt(to)
     let check = false
     for (const c of countersAt) {
-      if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation) { check = true }
+      if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
+          !c.unit.crewed && !c.unit.uncrewedSW) { check = true }
     }
     if (moveSize + toSize > stackLimit && !check) { return hexOpenType.Closed }
     if (this.path.length + this.addActions.length > 1) { return hexOpenType.Closed }

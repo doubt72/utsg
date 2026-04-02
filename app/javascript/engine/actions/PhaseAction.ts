@@ -49,6 +49,7 @@ export default class PhaseAction extends BaseAction {
     this.game.setCurrentPlayer(this.newPlayer)
     this.phaseNotification()
     organizeStacks(this.game.scenario.map)
+    this.game.clearGameState()
     this.game.openOverlay = undefined
   }
   

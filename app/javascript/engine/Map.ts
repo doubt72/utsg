@@ -612,7 +612,7 @@ export default class Map {
             if (player === unitPlayer) {
               if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck)) &&
                   !alreadyRallied(this.game, unit.id)) {
-                if (unbrokerLeader || this.game.freeRallyAvailable) { return true }
+                if (unbrokerLeader || this.game.freeRallyAvailable(player)) { return true }
               }
             }
           }

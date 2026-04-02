@@ -542,11 +542,11 @@ export default class Game {
     this.sniperNeeded.push(unit)
   }
 
-  get freeRallyAvailable(): boolean {
+  freeRallyAvailable(player: Player): boolean {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const action = this.actions[i] as RallyAction
       if (action.type === "phase") { break }
-      if (action.type === "rally" && !action.freeRally) { return false }
+      if (action.type === "rally" && !action.freeRally && action.player === player) { return false }
     }
     return true
   }

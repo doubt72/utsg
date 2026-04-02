@@ -65,7 +65,8 @@ export default function ActionDisplay({
             <div key={i} className="action-output-record">
               <div className="action-output-date nowrap">{action.formattedDate}</div>
               <div className="action-output-message">
-                {["phase", "status_update"].includes(action.type) ?
+                {["phase", "status_update"].includes(action.type) ||
+                 ["start", "resign", "finish"].includes(action.data.action) ?
                   <span className="action-output-game">&gt;&gt;</span> :
                   <span className="action-output-username">
                     <Link className="user-link" to={`/profile/${action.user}`} >{action.user}</Link>

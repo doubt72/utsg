@@ -159,7 +159,7 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
       {
         action: "phase", old_initiative: 0, phase_data: {
           old_turn: 0, new_turn: 0, old_phase: 0, new_phase: 0, new_player: first_deploy,
-          messages: ["begin deployment"],
+          messages: ["begin initial deployment"],
         },
       })
     in_progress!

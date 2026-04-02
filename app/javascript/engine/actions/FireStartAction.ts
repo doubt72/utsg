@@ -1,5 +1,5 @@
 import { baseTerrainType, Coordinate, terrainType } from "../../utilities/commonTypes";
-import { failRed, formatCoordinate, formatDieResult } from "../../utilities/graphics";
+import { failRed, formatCoordinate, formatDieResult, passBlue } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionFireStartData, GameActionPath } from "../GameAction";
 import Hex from "../Hex";
@@ -45,7 +45,7 @@ export default class FireStartAction extends BaseAction {
     const loc = formatCoordinate(new Coordinate(this.hex.x, this.hex.y))
     return `checking to see if blaze starts in ${loc}: need ${this.needed}, ` +
       `rolled ${formatDieResult(this.diceResult.result)}` +
-      `: ${ this.needed < this.diceResult.result.result ? "no effect" :
+      `: ${ this.needed < this.diceResult.result.result ? `<span style="color: ${passBlue};">no effect</span>` :
         `blaze <span style="color: ${failRed};">starts</span>` }`
   }
 

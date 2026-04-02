@@ -1,3 +1,9 @@
+## 0.30 alpha
+
+- Bug fix: several weirdnesses from support weapons lying around
+- Bug fix: ...finally fix deploy being skipped?
+- Addtional minor display tweaks
+
 ## 0.29 alpha
 
 - Force reload of game page if loaded version of app is out of date

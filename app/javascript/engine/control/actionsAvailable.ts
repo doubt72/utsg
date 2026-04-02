@@ -96,7 +96,14 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
       return [{ type: "none", message: "waiting for game to start" }]
     }
   }
-  if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) { return [] }
+  if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) {
+    if (game.state === "in_progress") {
+      return [{ type: "none", message: "game currently in progress" }]
+    } if (game.state === "complete") {
+      return [{ type: "none", message: "game over" }]
+    }
+    return []
+  }
   if (activePlayer !== game.currentUser) {
     if (game.state === "complete") {
       return [{ type: "none", message: "game over" }]
