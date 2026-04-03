@@ -829,13 +829,14 @@ describe("reaction fire attacks", () => {
     other.id = "other1"
     other.facing = 4
     other.turretFacing = 4
-    const oloc = new Coordinate(0, 2)
+    const oloc = new Coordinate(0, 1)
     map.addCounter(oloc, other)
     organizeStacks(map)
 
     game.setGameState(new MoveState(game))
 
     game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
     game.moveState.dropping = true
 
     select(map, {
@@ -846,8 +847,8 @@ describe("reaction fire attacks", () => {
     expect(unit2.dropSelected).toBe(true)
 
     game.moveState.dropping = false
-    game.moveState.move(2, 2)
     game.moveState.move(1, 2)
+    game.moveState.move(0, 2)
     game.gameState?.finish()
 
     expect(breakdownCheck(game)).toBe(false)
@@ -873,20 +874,27 @@ describe("reaction fire attacks", () => {
     other.select()
 
     game.setGameState(new FireState(game, true))
-    const counters1 = map.countersAt(new Coordinate(3, 2))
-    expect(counters1.length).toBe(2)
-    expect(counters1[0].unit.ghost).toBe(undefined)
-    expect(counters1[0].unit.name).toBe("MG 08/15")
-    expect(counters1[1].unit.ghost).toBe(true)
-    expect(counters1[1].unit.name).toBe("Rifle")
-    const counters2 = map.countersAt(new Coordinate(2, 2))
-    expect(counters2.length).toBe(1)
-    expect(counters2[0].unit.ghost).toBe(true)
+    let counters = map.countersAt(new Coordinate(3, 2))
+    expect(counters.length).toBe(2)
+    expect(counters[0].unit.ghost).toBe(true)
+    expect(counters[0].unit.name).toBe("Rifle")
+    expect(counters[1].unit.ghost).toBe(true)
+    expect(counters[1].unit.name).toBe("MG 08/15")
+    counters = map.countersAt(new Coordinate(2, 2))
+    expect(counters.length).toBe(2)
+    expect(counters[0].unit.ghost).toBe(undefined)
+    expect(counters[0].unit.name).toBe("MG 08/15")
+    expect(counters[1].unit.ghost).toBe(true)
+    expect(counters[1].unit.name).toBe("Rifle")
+    counters = map.countersAt(new Coordinate(1, 2))
+    expect(counters.length).toBe(1)
+    expect(counters[0].unit.ghost).toBe(true)
 
     expect(reactionFireHexes(game)).toStrictEqual([
       { x: 3, y: 2, facing: undefined, turret: undefined },
       { x: 2, y: 2, facing: undefined, turret: undefined },
       { x: 1, y: 2, facing: undefined, turret: undefined },
+      { x: 0, y: 2, facing: undefined, turret: undefined },
     ])
   })
 
@@ -984,7 +992,8 @@ describe("reaction fire attacks", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.select()
-    map.addCounter(new Coordinate(4, 2), unit)
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -994,11 +1003,17 @@ describe("reaction fire attacks", () => {
     map.addCounter(oloc, other)
     organizeStacks(map)
 
+    const eloc = new Coordinate(1, 2)
+    map.victoryHexes.push({ x: eloc.x, y: eloc.y, player: 1 })
+    expect(map.victoryAt(eloc)).toBe(1)
+
     game.setGameState(new MoveState(game))
     game.moveState.move(3, 2)
     game.moveState.move(2, 2)
     game.moveState.move(1, 2)
     game.gameState?.finish()
+
+    expect(map.victoryAt(eloc)).toBe(2)
 
     game.setGameState(new InitiativeState(game))
 
@@ -1040,6 +1055,7 @@ describe("reaction fire attacks", () => {
     ])
 
     expect(initiativeCheck(game)).toBe(false)
+    expect(map.victoryAt(eloc)).toBe(2)
 
     game.setGameState(new MoraleCheckState(game))
     const counters2 = map.countersAt(fireHex)
@@ -1057,6 +1073,7 @@ describe("reaction fire attacks", () => {
     const counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)
     expect(counter?.hex?.y).toBe(2)
+    expect(map.victoryAt(eloc)).toBe(1)
   })
 
   test("hit, morale check shorts move for unit, but not dropped unit", () => {
@@ -1159,6 +1176,206 @@ describe("reaction fire attacks", () => {
     expect(counter?.hex?.y).toBe(2)
   })
 
+  test("hit, morale check, rolls back dropped mg", () => {
+    const game = createFireGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGMG)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+
+    const other = new Unit(testRTank)
+    other.id = "other1"
+    other.facing = 4
+    other.turretFacing = 4
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.moveState.dropToggle()
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc }
+    }, () => {})
+    expect(unit2.dropSelected).toBe(true)
+    game.moveState.dropToggle()
+    expect(game.moveState.addActions.length).toBe(1)
+    game.moveState.move(1, 1)
+    game.gameState?.finish()
+
+    let counter = game.findCounterById(unit.id)
+    expect(counter?.hex?.x).toBe(1)
+    expect(counter?.hex?.y).toBe(1)
+    expect(counter?.unit.children.length).toBe(0)
+    counter = game.findCounterById(unit2.id)
+    expect(counter?.hex?.x).toBe(1)
+    expect(counter?.hex?.y).toBe(2)
+    expect(counter?.unit.parent).toBe(undefined)
+
+    game.setGameState(new InitiativeState(game))
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(true)
+
+    const fireHex = new Coordinate(2, 2)
+
+    other.select()
+    game.setGameState(new FireState(game, true))
+    const counters = map.countersAt(fireHex)
+
+    select(map, {
+      counter: counters[0],
+      target: { type: "map", xy: fireHex }
+    }, () => {})
+    const ghost = counters[0].unit
+    expect(ghost.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.type).toBe("reaction_fire")
+    expect(game.lastAction?.sequence).toBe(4)
+    expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
+    expect(game.lastAction?.stringValue).toBe(
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 4, " +
+      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
+    )
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false },
+    ])
+
+    expect(initiativeCheck(game)).toBe(false)
+
+    game.setGameState(new MoraleCheckState(game))
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+    counter = game.findCounterById(unit.id)
+    expect(counter?.hex?.x).toBe(2)
+    expect(counter?.hex?.y).toBe(2)
+    expect(counter?.unit.children[0].id).toBe("test2")
+    counter = game.findCounterById(unit2.id)
+    expect(counter?.hex?.x).toBe(2)
+    expect(counter?.hex?.y).toBe(2)
+    expect(counter?.unit.parent?.id).toBe("test1")
+  })
+
+  test("hit, morale check, rolls back loaded mg", () => {
+    const game = createFireGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    unit.select()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGMG)
+    unit2.id = "test2"
+    const loc2 = new Coordinate(1, 2)
+    try {
+      map.addCounter(loc2, unit2)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof WarningActionError).toBe(true)
+    }
+
+    const other = new Unit(testRTank)
+    other.id = "other1"
+    other.facing = 4
+    other.turretFacing = 4
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.moveState.loadToggle()
+    select(map, {
+      counter: map.countersAt(loc2)[0],
+      target: { type: "map", xy: loc2 }
+    }, () => {})
+    expect(unit2.loadedSelected).toBe(true)
+    game.moveState.loadToggle()
+    expect(game.moveState.addActions.length).toBe(1)
+    game.gameState?.finish()
+
+    game.setGameState(new InitiativeState(game))
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(true)
+
+    const fireHex = new Coordinate(2, 2)
+
+    other.select()
+    game.setGameState(new FireState(game, true))
+    const counters = map.countersAt(fireHex)
+    expect(counters.length).toBe(1)
+    expect(counters[0].unit.ghost).toBe(true)
+
+    select(map, {
+      counter: map.countersAt(fireHex)[0],
+      target: { type: "map", xy: fireHex }
+    }, () => {})
+    const ghost = counters[0].unit
+    expect(ghost.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.type).toBe("reaction_fire")
+    expect(game.lastAction?.sequence).toBe(4)
+    expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
+    expect(game.lastAction?.stringValue).toBe(
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 4, " +
+      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
+    )
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false },
+    ])
+
+    expect(initiativeCheck(game)).toBe(false)
+
+    game.setGameState(new MoraleCheckState(game))
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
+    expect(game.moraleChecksNeeded).toStrictEqual([])
+    let counter = game.findCounterById(unit.id)
+    expect(counter?.hex?.x).toBe(2)
+    expect(counter?.hex?.y).toBe(2)
+
+    counter = game.findCounterById(unit2.id)
+    expect(counter?.hex?.x).toBe(1)
+    expect(counter?.hex?.y).toBe(2)
+  })
+
   test("ghost directions are correct, and vehicle is removed", () => {
     const game = createFireGame()
     const map = game.scenario.map
@@ -1168,6 +1385,10 @@ describe("reaction fire attacks", () => {
     unit.turretFacing = 2
     unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+
+    const eloc = new Coordinate(1, 1)
+    map.victoryHexes.push({ x: eloc.x, y: eloc.y, player: 1 })
+    expect(map.victoryAt(eloc)).toBe(1)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -1196,6 +1417,7 @@ describe("reaction fire attacks", () => {
     game.gameState?.finish()
     expect(unit.facing).toBe(2)
     expect(unit.turretFacing).toBe(3)
+    expect(map.victoryAt(eloc)).toBe(2)
 
     game.setGameState(new InitiativeState(game))
 
@@ -1255,6 +1477,7 @@ describe("reaction fire attacks", () => {
     const counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)
     expect(counter?.hex?.y).toBe(2)
+    expect(map.victoryAt(eloc)).toBe(1)
   })
 
   test("hit shorts move for unit with proper orientation", () => {

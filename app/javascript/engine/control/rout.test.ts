@@ -9,6 +9,7 @@ import IllegalActionError from "../actions/IllegalActionError";
 import RoutState, { RoutPathTree } from "./state/RoutState";
 import RoutAllState from "./state/RoutAllState";
 import RoutCheckState from "./state/RoutCheckState";
+import RouteMoveAction from "../actions/RoutMoveAction";
 
 describe("routing", () => {
   describe("rout trees", () => {
@@ -366,18 +367,42 @@ describe("routing", () => {
       map.addCounter(loc, unit2)
       organizeStacks(map)
 
+      const loc2 = new Coordinate(1, 2)
+      const loc3 = new Coordinate(2, 2)
+      const loc4 = new Coordinate(3, 2)
+      const end = new Coordinate(4, 2)
       map.victoryHexes.push({ x: loc.x, y: loc.y, player: 2 })
+      map.victoryHexes.push({ x: loc3.x, y: loc3.y, player: 1 })
+      map.victoryHexes.push({ x: end.x, y: end.y, player: 1 })
       expect(map.victoryAt(loc)).toBe(2)
+      expect(map.victoryAt(loc3)).toBe(1)
+      expect(map.victoryAt(end)).toBe(1)
 
       game.setGameState(new RoutState(game, true))
       const tree = game.routState.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
 
-      game.routState.finishXY(4, 2)
+      game.routState.finishXY(end.x, end.y)
       expect(map.victoryAt(loc)).toBe(1)
+      expect(map.victoryAt(loc3)).toBe(2)
+      expect(map.victoryAt(end)).toBe(2)
 
       game.executeUndo(false)
+      const action = game.actions[0] as RouteMoveAction
+
+      expect(action.path[0].x).toBe(loc.x)
+      expect(action.path[0].y).toBe(loc.y)
+      expect(action.path[1].x).toBe(loc2.x)
+      expect(action.path[1].y).toBe(loc2.y)
+      expect(action.path[2].x).toBe(loc3.x)
+      expect(action.path[2].y).toBe(loc3.y)
+      expect(action.path[3].x).toBe(loc4.x)
+      expect(action.path[3].y).toBe(loc4.y)
+      expect(action.path[4].x).toBe(end.x)
+      expect(action.path[4].y).toBe(end.y)
       expect(map.victoryAt(loc)).toBe(2)
+      expect(map.victoryAt(loc3)).toBe(1)
+      expect(map.victoryAt(end)).toBe(1)
     })
 
     test("rout drops weapon", () => {

@@ -22,6 +22,7 @@ import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
 import FireStartState from "./state/FireStartState"
 import { deHTML } from "../../utilities/graphics"
+import { fireHelpText } from "../support/help"
 
 describe("ranged fire attacks", () => {
   describe("probability checks", () => {
@@ -493,18 +494,41 @@ describe("ranged fire attacks", () => {
       firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMG)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
       const tloc = new Coordinate(2, 0)
       map.addCounter(tloc, target)
+      organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
+      select(map, {
+        counter: map.countersAt(floc)[1],
+        target: { type: "map", xy: floc }
+      }, () => {})
+      expect(firing2.selected).toBe(true)
 
       select(map, {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
       }, () => {})
+      expect(target.targetSelected).toBe(true)
+
+      expect(fireHelpText(game, tloc, target, false)).toStrictEqual([
+        "attack rolls:",
+        "-> to hit (2d10): 8 (72%)",
+        "firepower: 17",
+        "- base to hit: 9",
+        "- minus 1 for less than half range",
+        "",
+        "-> morale check (2d10): 10 (55%)",
+        "base roll of 15",
+        "- minus morale 3",
+        "- minus cover 2",
+      ])
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
       expect(fp.fp).toBe(7)

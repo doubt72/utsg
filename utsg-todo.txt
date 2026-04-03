@@ -1,44 +1,38 @@
 High Priority Features/Bug Fixes:
-  + Only show clicky clicky if deploy phase
-  + Don't show direction of casualties
-  + Radios shouldn't be able to lay smoke
-  + Smoke on the dot not laying
-  + Ability to Undo reaction fire
-  + Fired gun should not be counted for reaction fire check
-  + Show message when clicking on LOS mode
-  + Fix buttons during game states
-    + Also the function of the buttons
-  - Displace should be able to capture VPs
-  - Rout should be able to capture VPs
-  - Something wrong with calculation for cover for help (adding all sides?)
-  - Reaction fire should cancel VP in later hex (all later add actions?)
+  + Rout should be able to capture VPs
+  + Something wrong with calculation for cover for help (adding all sides?)
+  + Reaction fire should cancel VP in later hex (all later add actions?)
   - Animation still getting stuck -- refactor this
-  - Allow undeploy
-  - Dropping undo move is messed up (specifically, dropping carried weapons)
+  - Dropping undo move is messed up (specifically, dropping units with carried weapons)
   - Fix hindrance bug
     - Through two fence corner intersections
   - Romanian vehicles don't seem to be at higher breakdown in 006
+  - Roll back smoke on reaction fire?
 
 New features
-  - Split squads?
-  - Special rule for surrounded paratrooper scenario
+  - Refactor deploy:
+    - Allow undeploy
+    - Split/Join squads during deploy / Split/join squads during game
+  - Refactor firing:
+    - Remove done select?  Can join units after the fact without canceling
+
+  - Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
+
   - Email turn notifications
   - Live cable updates on home page
+
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
-  - Create tutorial?
-  - Add Some Developer Notes
-  - A way to show terrain in counter overlay?
+  - Create tutorial
+  - A way to show terrain in counter overlay
   - Colorblind settings
+  - Add Some Developer Notes
 
 Nice to Have Eventually:
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
 
 Keep an Eye out for:
   - Improve reaction hex selection
-  - Improve fire action:
-    - Add ability to add legal counters after attack started
-    - Refactor and get rid of multiselection concept?
   - Handle map scale and such settings gone wrong (reset button in prefs?)
   - Automatically undo additional deploys (should no longer be necessary)
   ? Show ALL for movement into mines or wire

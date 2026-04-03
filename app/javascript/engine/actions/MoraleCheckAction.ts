@@ -1,6 +1,7 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
 import { baseMorale } from "../../utilities/utilities";
+import { rollbackAddActions } from "../control/movement";
 import Counter from "../Counter";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionMoraleData, GameActionUnit } from "../GameAction";
@@ -61,9 +62,17 @@ export default class MoraleCheckAction extends BaseAction {
     return false
   }
 
+  resetMove(): void {
+    const counter = this.game.findCounterById(this.target.id) as Counter
+    const old = new Coordinate(this.target.x, this.target.y)
+    const hex = counter.hex as Coordinate
+    rollbackAddActions(this.game.scenario.map, hex, old, this.target.id)
+  }
+
   mutateGame(): void {
     this.game.moraleChecksNeeded.shift()
     const counter = this.game.findCounterById(this.target.id) as Counter
+    const hex = counter.hex as Coordinate
     const check = baseMorale + this.moraleMods.mod
     const roll = this.diceResult.result.result
     if (roll < check) {
@@ -73,10 +82,9 @@ export default class MoraleCheckAction extends BaseAction {
         this.game.addActionAnimations([{ loc: hex, type: "eliminate" }])
       } else {
         counter.unit.break()
-        const hex = counter.hex as Coordinate
         if (hex.x != this.target.x || hex.y !== this.target.y) {
           const old = new Coordinate(this.target.x, this.target.y)
-          this.game.scenario.map.moveUnit(hex, old, this.target.id)
+          this.resetMove()
           this.game.addActionAnimations([{ loc: old, type: "break" }])
         } else {
           this.game.addActionAnimations([{ loc: hex, type: "break" }])
@@ -84,16 +92,14 @@ export default class MoraleCheckAction extends BaseAction {
       }
     } else if (roll === check && !counter.unit.isBroken) {
       counter.unit.pinned = true
-      const hex = counter.hex as Coordinate
       if (hex.x != this.target.x || hex.y !== this.target.y) {
         const old = new Coordinate(this.target.x, this.target.y)
-        this.game.scenario.map.moveUnit(hex, old, this.target.id)
+        this.resetMove()
         this.game.addActionAnimations([{ loc: old, type: "pinned" }])
       } else {
         this.game.addActionAnimations([{ loc: hex, type: "pinned" }])
       }
     } else {
-      const hex = counter.hex as Coordinate
       if (hex.x != this.target.x || hex.y !== this.target.y) {
         const old = new Coordinate(this.target.x, this.target.y)
         this.game.addActionAnimations([{ loc: old, type: "nobreak" }])

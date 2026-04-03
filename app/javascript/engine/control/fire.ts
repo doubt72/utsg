@@ -501,18 +501,25 @@ function fireCover(
     const toHex = map.hexAt(to) as Hex
     const terrain = toHex.terrain
     cover = !terrain.cover ? 0 : terrain.cover
+    let minCover = 99
+    let found = false
     for (const c of from) {
       if (c.x !== to.x || c.y !== to.y) {
         const fromHex = map.hexAt(c) as Hex
         const path = losHexPath(map, toHex, fromHex)
         if (path[0].edgeHex?.border && path[0].edgeHex.borderEdges?.includes(path[0].edge ?? 1)) {
-          cover += path[0].edgeHex.terrain.borderAttr.cover
+          const coverCheck = path[0].edgeHex.terrain.borderAttr.cover
+          found = true
+          if (coverCheck < minCover) { minCover = coverCheck }
         }
         if (path[1].hex?.border && path[1].hex.borderEdges?.includes(normalDir((path[0].edge ?? 1) + 3))) {
-          cover += path[1].hex.terrain.borderAttr.cover
+          const coverCheck = path[1].hex.terrain.borderAttr.cover
+          found = true
+          if (coverCheck < minCover) { minCover = coverCheck }
         }
       }
     }
+    if (found) cover += minCover
   }
   return cover
 }

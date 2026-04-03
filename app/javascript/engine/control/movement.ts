@@ -1,5 +1,6 @@
 import { Coordinate, Direction, hexOpenType, HexOpenType, roadType } from "../../utilities/commonTypes"
 import { hexDistance, normalDir } from "../../utilities/utilities"
+import MoveAction from "../actions/MoveAction"
 import Game from "../Game"
 import { gameActionAddActionType } from "../GameAction"
 import Hex from "../Hex"
@@ -229,6 +230,41 @@ export function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selecti
   if (distance < 1 && move > past) { return 1 }
   if (distance < 2 && move > past + 1) { return 2 }
   return hexOpenType.Closed
+}
+
+export function rollbackAddActions(
+  map: Map, from: Coordinate, to: Coordinate, id: string,
+): void {
+  map.moveUnit(from, to, id)
+  if (!map.game) { return }
+  let move: MoveAction | undefined = undefined
+  for (let i = map.game.lastActionIndex; i >= 0; i--) {
+    const action = map.game.actions[i]
+    if (action.type === "move") { move = action as MoveAction; break }
+  }
+  if (!move) { return }
+  let index = 0
+  for (let i = 0; i < move.path.length; i++) {
+    const path = move.path[i]
+    if (path.x === to.x && path.y === to.y) { index = i; break }
+  }
+  for (const a of move.addAction) {
+    if (a.index > index) {
+      if (a.type === gameActionAddActionType.VP) {
+        map.toggleVP(new Coordinate(a.x, a.y))
+      } else if (a.type === gameActionAddActionType.Load && a.parent_id === id) {
+        map.dropUnit(to, new Coordinate(a.x, a.y), a.id as string)
+      } else if (a.type === gameActionAddActionType.Drop && a.parent_id === id) {
+        map.loadUnit(new Coordinate(a.x, a.y), to, a.id as string, id)
+      } else if (a.type === gameActionAddActionType.Smoke) {
+        // Not supported; smoke stays (we don't account for this for reaction fire anyway)
+        // ...This is so complicated it would take refactoring of add actions to keep track of
+        // smoke amounts to roll back; reaction fire complications are closer to being insane
+
+        // By rule/fiat, just going to say: smoke lays just happen before reaction fire regardless
+      }
+    }
+  }
 }
 
 function allAlongRoad(map: Map): boolean {

@@ -72,6 +72,13 @@ export default class RoutState extends BaseState {
     if (vp && vp === this.game.currentPlayer && this.map.enemyAt(loc, this.game.currentPlayer)) {
       addAction.push({ x: loc.x, y: loc.y, type: gameActionAddActionType.VP, index: 0 })
     }
+    for (let i = 1; i < path.length; i++) {
+      const loc2 = new Coordinate(path[i].x, path[i].y)
+      const vp2 = this.map.victoryAt(loc2)
+      if (vp2 && vp2 !== this.game.currentPlayer && this.map.enemyAt(loc, this.game.opponentPlayer)) {
+        addAction.push({ x: loc2.x, y: loc2.y, type: gameActionAddActionType.VP, index: 0 })
+      }
+    }
     const action = new GameAction({
       user: this.game.currentUser,
       player: this.player,

@@ -3,6 +3,9 @@
 - Let player undo passing reaction fire
 - Disable LOS overlay/terrain buttons/overlays/tooltips when state overlays on
 - Deployment panel only shows the clicky-clicky if it's a deployment phase
+- Bug fix: roll back VP/loading/dropping for shorted moves (uh, let's not speak of smoke)
+- Bug fix: fire help adding up cover from all firing units but should use minimum cover
+- Bug fix: rout can switch VPs by routing into/through them
 - Bug fix: gun needs to not be fired to be shown as available for reaction fire
 - Bug fix: allow smoke click on path
 - Bug fix: disallow radios from laying smoke

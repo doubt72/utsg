@@ -7,6 +7,7 @@ import {
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
 } from "../control/fire";
+import { rollbackAddActions } from "../control/movement";
 import { StateSelection } from "../control/state/BaseState";
 import Counter from "../Counter";
 import Feature from "../Feature";
@@ -290,7 +291,7 @@ export default class FireAction extends BaseAction {
                 fireStartVehicle = t.counter.unit
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
-                  this.map.moveUnit(hex, dTo, t.counter.unit.id)
+                  rollbackAddActions(this.map, hex, dTo, t.counter.unit.id)
                 }
                 if (needDice) { targetRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
                 anims.push({ loc: dTo, type: "wreck" })
@@ -313,7 +314,7 @@ export default class FireAction extends BaseAction {
                   fireStartVehicle = t.counter.unit
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != dTo.x || hex.y !== dTo.y) {
-                    this.map.moveUnit(hex, dTo, t.counter.unit.id)
+                    rollbackAddActions(this.map, hex, dTo, t.counter.unit.id)
                   }
                   if (needDice) {
                     hitRoll.description += `<span style="color: ${failRed};">passed</span>, vehicle destroyed`
@@ -326,7 +327,7 @@ export default class FireAction extends BaseAction {
                   }
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != dTo.x || hex.y !== dTo.y) {
-                    this.map.moveUnit(hex, dTo, t.counter.unit.id)
+                    rollbackAddActions(this.map, hex, dTo, t.counter.unit.id)
                     if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dTo)}` }
                   }
                   anims.push({ loc: dTo, type: "immobilized" })
@@ -343,7 +344,7 @@ export default class FireAction extends BaseAction {
           fireStartVehicle = target0.unit
           const hex = target0.hex as Coordinate
           if (hex.x != dTo.x || hex.y !== dTo.y) {
-            this.map.moveUnit(hex, dTo, target0.unit.id)
+            rollbackAddActions(this.map, hex, dTo, target0.unit.id)
           }
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
           anims.push({ loc: dTo, type: "wreck" })
@@ -389,7 +390,7 @@ export default class FireAction extends BaseAction {
               fireStartVehicle = target0.unit
               const hex = target0.hex as Coordinate
               if (hex.x != dTo.x || hex.y !== dTo.y) {
-                this.map.moveUnit(hex, dTo, target0.unit.id)
+                rollbackAddActions(this.map, hex, dTo, target0.unit.id)
               }
               if (needDice) {
                 hitRoll.description += `<span style="color: ${failRed};">passed</span>, vehicle destroyed`
@@ -408,7 +409,7 @@ export default class FireAction extends BaseAction {
                 }
                 const hex = target0.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
-                  this.map.moveUnit(hex, dTo, target0.unit.id)
+                  rollbackAddActions(this.map, hex, dTo, target0.unit.id)
                   target0.unit.facing = clone.facing
                   if (target0.unit.turreted) { target0.unit.turretFacing = clone.turretFacing }
                   if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dTo)}` }
@@ -426,7 +427,7 @@ export default class FireAction extends BaseAction {
             fireStartVehicle = target0.unit
             const hex = target0.hex as Coordinate
             if (hex.x != dTo.x || hex.y !== dTo.y) {
-              this.map.moveUnit(hex, dTo, target0.unit.id)
+              rollbackAddActions(this.map, hex, dTo, target0.unit.id)
             }
             targetRoll.description += ", no armor on hit side, vehicle destroyed"
             anims.push({ loc: dTo, type: "wreck" })
@@ -550,7 +551,7 @@ export default class FireAction extends BaseAction {
                 fireStartVehicle = t.counter.unit
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != t.x || hex.y !== t.y) {
-                  this.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
+                  rollbackAddActions(this.map, hex, new Coordinate(t.x, t.y), t.counter.unit.id)
                 }
                 if (needDice) { hitRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
                 anims.push({ loc: to, type: "wreck" })
@@ -571,7 +572,7 @@ export default class FireAction extends BaseAction {
                   fireStartVehicle = t.counter.unit
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != t.x || hex.y !== t.y) {
-                    this.map.moveUnit(hex, new Coordinate(t.x, t.y), t.counter.unit.id)
+                    rollbackAddActions(this.map, hex, new Coordinate(t.x, t.y), t.counter.unit.id)
                   }
                   if (needDice) {
                     hitRoll.description += `<span style="color: ${failRed};">passed</span>, vehicle destroyed`
