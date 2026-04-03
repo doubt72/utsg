@@ -136,6 +136,11 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
 export function counterInfoBadges(
   map: Map, x: number, y: number, maxY: number, counter: Counter, shift: number
 ): BadgeLayout[] {
+  if (map.game && counter.hasUnit) {
+    for (const c of map.game.eliminatedUnits) {
+      if (!c.isFeature && counter.unit.id === c.id) { return [] }
+    }
+  }
   const badges: { text: string, color: string, tColor: string, arrow?: Direction}[] = []
   if (counter.targetUF.rotates && !(counter.hasUnit && counter.unit.isWreck) &&
       !(counter.hasMarker && counter.marker.hideOverlayRotation) && !counter.reinforcement) {

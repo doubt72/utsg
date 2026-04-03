@@ -124,7 +124,7 @@ export function showLaySmoke(game: Game): boolean {
   if (move.loading || move.dropping) { return false }
   let smoke = false
   for (const s of move.selection) {
-    if (s.counter.unit.smokeCapable && !s.counter.unit.targetedRange) {
+    if (s.counter.unit.smokeCapable && !s.counter.unit.targetedRange && !s.counter.unit.offBoard) {
       smoke = true
       break
     }

@@ -583,7 +583,7 @@ export default function MapDisplay({
     }
     const xShift = (map.previewXSize ?? 1) * xOffset
     const yShift = (map.ySize ?? 1) * yOffset - 50 / scale + 50
-    if (showLos && !overlay.counters) {
+    if (showLos && !overlay.counters && !map.game?.gameState?.showOverlays) {
       const counters = map.counterDataAt(new Coordinate(overlay.x, overlay.y)).filter(c => !c.u.isFeature)
       if (counters.length < 1) { return }
       if (map.debugLos) { // debugging only, never set in actual games
@@ -595,7 +595,10 @@ export default function MapDisplay({
           <MapLosOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay} />
         )
         setCounterLosOverlay(map.countersAt(new Coordinate(overlay.x, overlay.y)).map((c, i) => 
-          <MapCounter key={i} counter={c} ovCallback={() => {}} />
+          <MapCounter key={i} counter={c} ovCallback={() => {}} onClick={() => {
+                        map.game?.addMessage("switch off line-of-sight overlay to select counters")
+                        updateCallback()
+                      }} />
         ))
       }
     } else if (!overlay.counters) {
@@ -607,7 +610,7 @@ export default function MapDisplay({
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
       )
-    } else if (!showLos) {
+    } else if (!showLos || map.game?.gameState?.showOverlays) {
       setCounterOverlay(
         <MapCounterOverlay counters={overlay.counters} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} updateCallback={
@@ -628,7 +631,7 @@ export default function MapDisplay({
     if (map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault ||
       map.game?.gameState?.type === stateType.FireDisplace || moveActions.includes(action?.type ?? "")) {
       setMoveTrack(<MoveTrackOverlay map={map} scale={scale} mapScale={mapScale ?? 1} updateCallback={() =>
-                                       { counterCallback(); updateCallback() }}
+                                       { counterCallback(); updateCallback() }} selectCallback={hexSelection}
                                      svgRef={svgRef as React.MutableRefObject<HTMLElement>} />)
       counterCallback()
     } else {
@@ -814,8 +817,8 @@ export default function MapDisplay({
           {fireTrack}
           {counterDisplay}
           { map.game?.gameState?.showOverlays ? hexDisplayOverlays : "" }
-          {losOverlay}
-          {counterLosOverlay}
+          { map.game?.gameState?.showOverlays ? "" : losOverlay }
+          { map.game?.gameState?.showOverlays ? "" : counterLosOverlay }
           { map.game?.gameState?.showOverlays && !hideCounters ? actionCounterDisplay : "" }
           {moveTrack}
           {routTrack}

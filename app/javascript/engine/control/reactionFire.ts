@@ -65,6 +65,7 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
             if (c.unit.parent.isBroken || c.unit.parent.isExhausted) { continue }
           }
           if (c.unit.isExhausted) { continue }
+          if (c.unit.crewed && c.unit.isActivated) { continue }
           if (c.unit.children.length > 0 && c.unit.children[0].crewed) { continue }
           if (c.unit.rotates && !c.unit.turreted && !c.unit.rotatingMount && !c.unit.rotatingVehicleMount) {
             let arc = false

@@ -12,13 +12,14 @@ import Game from "../../../engine/Game";
 interface MoveTrackOverlayProps {
   map: Map;
   updateCallback: () => void;
+  selectCallback: (x: number, y: number) => void;
   scale: number;
   mapScale: number;
   svgRef: React.MutableRefObject<HTMLElement>;
 }
 
 export default function MoveTrackOverlay({
-  map, updateCallback, scale, mapScale, svgRef }: MoveTrackOverlayProps
+  map, updateCallback, selectCallback, scale, mapScale, svgRef }: MoveTrackOverlayProps
 ) {
   const [contextMenu, setContextMenu] = useState<JSX.Element | undefined>()
 
@@ -97,6 +98,7 @@ export default function MoveTrackOverlay({
     const routing = routActions.includes(action)
     let first = true
     return hexes().map((h, i) => {
+      const loc = h.coord
       const offset = Math.max(map.counterDataAt(h.coord).length * 5 - 5, 0)
       const x = h.xOffset + offset
       const y = h.yOffset - offset
@@ -104,11 +106,16 @@ export default function MoveTrackOverlay({
       if (!routing) { first = false }
       if (routing) {
         return <path key={`${i}-c`} d={circlePath(new Coordinate(x, y), 12)}
-                    style={{ fill, stroke: "#777", strokeWidth: 4 }} />
+                     style={{ fill, stroke: "#777", strokeWidth: 4 }} />
+      } else if (map.game?.gameState?.type === stateType.Move) {
+        return <path key={`${i}-c`} d={circlePath(new Coordinate(x, y), 12)}
+                     style={{ fill, stroke: "#777", strokeWidth: 4 }}
+                     onClick={() => selectCallback(loc.x, loc.y)}
+                     onContextMenu={e => rightClick(e)}/>
       } else {
         return <path key={`${i}-c`} d={circlePath(new Coordinate(x, y), 12)}
-                    style={{ fill, stroke: "#777", strokeWidth: 4 }}
-                    onContextMenu={e => rightClick(e)}/>
+                     style={{ fill, stroke: "#777", strokeWidth: 4 }}
+                     onContextMenu={e => rightClick(e)}/>
       }
     })
   }

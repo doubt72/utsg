@@ -16,11 +16,16 @@ export default class ReactionPassAction extends BaseAction {
   }
 
   get undoPossible() {
-    return false
+    return true
   }
 
   mutateGame(): void {
     this.game.resetCurrentPlayer()
+    this.game.clearGameState()
+  }
+
+  undo(): void {
+    this.game.setCurrentPlayer(this.player)
     this.game.clearGameState()
   }
 }

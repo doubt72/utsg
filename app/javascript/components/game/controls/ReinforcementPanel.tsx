@@ -118,7 +118,8 @@ export default function ReinforcementPanel({
         </text>
         <text x={x + 10} y={y + 44} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-          [select, then click on map]
+          { map.game?.phase === gamePhaseType.Deployment ? "[select, then click on map]" :
+              "[nothing to deploy]" }
         </text>
         {closeButton}
         {

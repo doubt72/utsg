@@ -1,13 +1,18 @@
 High Priority Features/Bug Fixes:
-  - Smoke on the dot not laying
-  - Terrain help during reaction fire or anything hiding hexes
-  - Undo reaction fire
+  + Only show clicky clicky if deploy phase
+  + Don't show direction of casualties
+  + Radios shouldn't be able to lay smoke
+  + Smoke on the dot not laying
+  + Ability to Undo reaction fire
+  + Fired gun should not be counted for reaction fire check
+  + Show message when clicking on LOS mode
+  + Fix buttons during game states
+    + Also the function of the buttons
+  - Displace should be able to capture VPs
+  - Rout should be able to capture VPs
   - Something wrong with calculation for cover for help (adding all sides?)
   - Reaction fire should cancel VP in later hex (all later add actions?)
-  - Don't open panel in overlay mode
-  - Fired gun should not be counted for reaction fire check
   - Animation still getting stuck -- refactor this
-  - Show message when clicking on LOS mode
   - Allow undeploy
   - Dropping undo move is messed up (specifically, dropping carried weapons)
   - Fix hindrance bug
@@ -15,6 +20,7 @@ High Priority Features/Bug Fixes:
   - Romanian vehicles don't seem to be at higher breakdown in 006
 
 New features
+  - Split squads?
   - Special rule for surrounded paratrooper scenario
   - Email turn notifications
   - Live cable updates on home page

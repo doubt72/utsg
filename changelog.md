@@ -1,3 +1,13 @@
+## 0.35 alpha
+
+- Let player undo passing reaction fire
+- Disable LOS overlay/terrain buttons/overlays/tooltips when state overlays on
+- Deployment panel only shows the clicky-clicky if it's a deployment phase
+- Bug fix: gun needs to not be fired to be shown as available for reaction fire
+- Bug fix: allow smoke click on path
+- Bug fix: disallow radios from laying smoke
+- Bug fix: get rid of badges on casualties
+
 ## 0.34 alpha
 
 - Bug fix: fix rout/rout check loop issue

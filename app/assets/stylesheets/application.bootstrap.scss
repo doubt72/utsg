@@ -18,7 +18,7 @@ a.regular:hover {
 }
 
 // Common
-button.custom-button,a.custom-button,div.custom-button,button.custom-button-orange {
+button.custom-button,a.custom-button,div.custom-button,button.custom-button-orange,div.custom-button-disable {
   text-decoration: none;
   white-space: nowrap;
   font-size: 1.1em;
@@ -31,9 +31,13 @@ button.custom-button,a.custom-button,div.custom-button,button.custom-button-oran
   user-select: none;
 }
 
-button.custom-button,a.custom-button,div.custom-button {
+button.custom-button,a.custom-button,div.custom-button,div.custom-button-disable {
   color: $light-green;
   background-color: $dark-green;
+}
+
+div.custom-button-disable {
+  opacity: 0.5;
 }
 
 button.custom-button-orange {
@@ -107,6 +111,10 @@ div.expand-button {
 }
 
 div.custom-button span {
+  padding-top: 0.2em;
+}
+
+div.custom-button-disable span {
   padding-top: 0.2em;
 }
 

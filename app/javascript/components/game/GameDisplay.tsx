@@ -596,10 +596,15 @@ export default function GameDisplay() {
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={overlayTooltip}
                         delay={{ show: 0, hide: 0 }}>
-        <div className="custom-button normal-button"
-             onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
-          { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
-        </div>
+        { game.k?.gameState?.showOverlays ?
+          <div className="custom-button-disable normal-button">
+            { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
+          </div> :
+          <div className="custom-button normal-button"
+               onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
+            { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
+          </div>
+        }
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={countersTooltip}
                         delay={{ show: 0, hide: 0 }}>
@@ -610,10 +615,15 @@ export default function GameDisplay() {
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={terrainTooltip}
                         delay={{ show: 0, hide: 0 }}>
-        <div className="custom-button normal-button"
-             onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
-        { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain</span>
-        </div>
+        { game.k?.gameState?.showOverlays ?
+          <div className="custom-button-disable normal-button">
+            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain</span>
+          </div> :
+          <div className="custom-button normal-button"
+               onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
+            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain</span>
+          </div>
+        }
         </OverlayTrigger>
       </div>
       <div className="game-map">

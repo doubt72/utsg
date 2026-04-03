@@ -24,9 +24,10 @@ interface MapCounterProps {
   counter: Counter;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
+  onClick?: () => void;
 }
 
-export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
+export default function MapCounter({ counter, ovCallback, onClick }: MapCounterProps) {
 
   const counterBack = (
     <path d={counterPath(counter)} style={counterStyle(counter) as object} />
@@ -481,7 +482,14 @@ export default function MapCounter({ counter, ovCallback }: MapCounterProps) {
       <path d={counterPath(counter)} style={{ fill: clearColor }}
             onMouseEnter={() => ovCallback(
               { show: true, x: counter.hex?.x, y: counter.hex?.y }
-            )} />
+            )}
+            onContextMenu={e => {
+              if (onClick) {
+                e.preventDefault()
+                onClick()
+              }
+            }}
+            onClick={onClick} />
     )
   }
 
