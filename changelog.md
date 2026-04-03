@@ -1,3 +1,7 @@
+## 0.34 alpha
+
+- Bug fix: fix rout/rout check loop issue
+
 ## 0.33 alpha
 
 - Bug fix: fix getting stuck on fire displacement

@@ -41,37 +41,67 @@ function setState(game: Game): void {
   const state = game.gameState?.type
   if (breakdownCheck(game)) {
     game.setGameState(new BreakdownState(game))
-  } else if (game.moraleChecksNeeded.length > 0 && state !== stateType.MoraleCheck) {
-    game.setGameState(new MoraleCheckState(game))
-  } else if (game.sniperNeeded.length > 0 && state !== stateType.Sniper) {
-    game.setGameState(new SniperState(game))
-  } else if (game.fireStartCheckNeeded !== undefined && state !== stateType.FireStart) {
-    game.setGameState(new FireStartState(game))
-  } else if (game.routNeeded.length > 0 && state !== stateType.Rout) {
+  } else if (game.moraleChecksNeeded.length > 0) {
+    if (state !== stateType.MoraleCheck) {
+      game.setGameState(new MoraleCheckState(game))
+    }
+  } else if (game.sniperNeeded.length > 0) {
+    if (state !== stateType.Sniper) {
+      game.setGameState(new SniperState(game))
+    }
+  } else if (game.fireStartCheckNeeded !== undefined) {
+    if (state !== stateType.FireStart) {
+      game.setGameState(new FireStartState(game))
+    }
+  } else if (game.routNeeded.length > 0) {
+    if (state !== stateType.Rout) {
+      game.setGameState(new RoutState(game, false))
+    }
     game.routNeeded[0].unit.select()
-    game.setGameState(new RoutState(game, false))
-  } else if (game.routCheckNeeded.length > 0 && state !== stateType.RoutCheck) {
-    game.setGameState(new RoutCheckState(game))
-  } else if (game.fireDisplaceNeeded.length > 0 && state !== stateType.FireDisplace) {
-    game.setGameState(new FireDisplaceState(game))
-  } else if (initiativeCheck(game) && state !== stateType.Initiative) {
-    game.setGameState(new InitiativeState(game))
-  } else if (reactionFireCheck(game) && state !== stateType.Reaction) {
-    game.setGameState(new ReactionState(game))
-  } else if (game.phase === gamePhaseType.PrepRally && state !== stateType.Rally) {
-    game.setGameState(new RallyState(game))
-  } else if (game.phase === gamePhaseType.PrepPrecip && state !== stateType.PrecipCheck) {
-    game.setGameState(new PrecipCheckState(game))
-  } else if (game.phase === gamePhaseType.CleanupCloseCombat && state !== stateType.CloseCombat) {
-    game.setGameState(new CloseCombatState(game))
-  } else if (game.phase === gamePhaseType.CleanupSmoke && state !== stateType.SmokeCheck) {
-    game.addSmokeCheckState()
-  } else if (game.phase === gamePhaseType.CleanupOverstack && state !== stateType.Overstack) {
-    game.setGameState(new OverstackState(game))
-  } else if (game.phase === gamePhaseType.CleanupFire && state !== stateType.FireCheck) {
-    game.addFireCheckState()
-  } else if (game.phase === gamePhaseType.CleanupWeather && state !== stateType.VariableWeather) {
-    game.addVariableWindState()
+  } else if (game.routCheckNeeded.length > 0) {
+    if (state !== stateType.RoutCheck) {
+      game.setGameState(new RoutCheckState(game))
+    }
+  } else if (game.fireDisplaceNeeded.length > 0) {
+    if (state !== stateType.FireDisplace) {
+      game.setGameState(new FireDisplaceState(game))
+    }
+  } else if (initiativeCheck(game)) {
+    if (state !== stateType.Initiative) {
+      game.setGameState(new InitiativeState(game))
+    }
+  } else if (reactionFireCheck(game)) {
+    if (state !== stateType.Reaction) {
+      game.setGameState(new ReactionState(game))
+    }
+  } else if (game.phase === gamePhaseType.PrepRally) {
+    if (state !== stateType.Rally) {
+      game.setGameState(new RallyState(game))
+    }
+  } else if (game.phase === gamePhaseType.PrepPrecip) {
+    if (state !== stateType.PrecipCheck) {
+      game.setGameState(new PrecipCheckState(game))
+    }
+  } else if (game.phase === gamePhaseType.CleanupCloseCombat) {
+    if (state !== stateType.CloseCombat) {
+      game.setGameState(new CloseCombatState(game))
+    }
+  } else if (game.phase === gamePhaseType.CleanupSmoke) {
+    if (state !== stateType.SmokeCheck) {
+      game.addSmokeCheckState()
+    }
+  } else if (game.phase === gamePhaseType.CleanupOverstack) {
+    if (state !== stateType.Overstack) {
+      game.setGameState(new OverstackState(game))
+    }
+  } else if (game.phase === gamePhaseType.CleanupFire) {
+    if (state !== stateType.FireCheck) {
+      game.addFireCheckState()
+    }
+  } else if (game.phase === gamePhaseType.CleanupWeather) {
+    if (state !== stateType.VariableWeather) {
+      game.addVariableWindState()
+    }
   }
 }
 
