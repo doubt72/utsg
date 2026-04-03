@@ -1,3 +1,8 @@
+## 0.33 alpha
+
+- Bug fix: fix getting stuck on fire displacement
+- Updated 003
+
 ## 0.32 alpha
 
 - Monospace fonts for numbers (and hex Coordinates) in action display

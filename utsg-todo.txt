@@ -1,35 +1,39 @@
 High Priority Features/Bug Fixes:
-  + Monospace fonts for numbers in action display
+  - Smoke on the dot not laying
+  - Terrain help during reaction fire or anything hiding hexes
+  - Undo reaction fire
+  - Something wrong with calculation for cover for help (adding all sides?)
+  - Reaction fire should cancel VP in later hex (all later add actions?)
+  - Don't open panel in overlay mode
+  - Fired gun should not be counted for reaction fire check
+  - Animation still getting stuck -- refactor this
+  - Show message when clicking on LOS mode
   - Allow undeploy
   - Dropping undo move is messed up (specifically, dropping carried weapons)
-  - Special rule for surrounded paratrooper scenario
-  - Test rout all/blaze displacement with two-player games
   - Fix hindrance bug
     - Through two fence corner intersections
-  - Admin pages for game/user summaries
-    - Remove/ban players (FE only security inadequate for this, validate on BE)
+  - Romanian vehicles don't seem to be at higher breakdown in 006
 
-  - Hide reaction fire if can't target anything?
-  - Add ability to add counters after attack started?
-  - Limit open reaction hexes to actual possible targets?
-
-Nice to Have Eventually/Soon:
-  - Add Some Developer Notes
-  - Better way of doing announcements
-  - Create tutorial
+New features
+  - Special rule for surrounded paratrooper scenario
   - Email turn notifications
   - Live cable updates on home page
-  - A way to show terrain in counter overlay
+  - Admin pages for game/user summaries
+    - Remove/ban players (FE only security inadequate for this, validate on BE)
+  - Create tutorial?
+  - Add Some Developer Notes
+  - A way to show terrain in counter overlay?
+  - Colorblind settings
 
-  - Refactor firing action (currently an unmaintainable mess, though... Moderately well-tested)
-  - Break up/organize tests into smaller files
+Nice to Have Eventually:
+  - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
 
 Keep an Eye out for:
+  - Improve reaction hex selection
+  - Improve fire action:
+    - Add ability to add legal counters after attack started
+    - Refactor and get rid of multiselection concept?
   - Handle map scale and such settings gone wrong (reset button in prefs?)
   - Automatically undo additional deploys (should no longer be necessary)
-  - Romanian vehicles don't seem to be at higher breakdown in 006
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
-  ? Free rally doesn't include already rallied
-    - Test didn't find issue, don't think it's fixed; other fixes may have fixed?
-      need to see it again to be able to figure out what's going on

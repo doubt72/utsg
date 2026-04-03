@@ -34,7 +34,6 @@ export function nextToEnemy(game: Game, loc: Coordinate): boolean {
         c.unit.playerNation !== game.currentPlayerNation) { return true }
     }
   }
-  console.log("nope")
   return false
 }
 

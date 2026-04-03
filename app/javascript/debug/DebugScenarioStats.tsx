@@ -296,7 +296,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
             ({data[k]})
           </div>
           { country ? <div dangerouslySetInnerHTML={{
-            __html: `<span style="color: ${nationalTextColor(k)};">${nationalTextColor(k)} ${key[k] ?? k}</span>`
+            __html: `<span style="color: ${nationalTextColor(k)};">${key[k] ?? k}</span>`
           }}></div> :
           <div>{key[k] ?? k}</div>}
         </div>

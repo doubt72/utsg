@@ -65,13 +65,13 @@ export default function About() {
               <strong>Note to Players</strong>
             </p>
             <p>
-              <strong>2 Apr 2026</strong>: while the server is definitely under construction:
-              feel free to play games, but know that things may break,
+              <strong>2 Apr 2026</strong>: while the server is definitely under construction,
+              do feel free to play games knowing that things may break,
               deploys will be frequent, and all the games <strong>will</strong> be
               deleted at some point when we&apos;re ready to flip the &quot;release&quot; switch.
               Games may also be deleted at other times if the archetecture changes enough to break
               old games (as has already happend).  Otherwise, old games may break in (probably) minor
-              was as things are fixed and polished.  Feedback is still welcomed and encouraged,
+              ways as things are fixed and polished.  Feedback is still welcomed and encouraged,
               be it about the UX or design, or if you find any bugs.  Note that a bunch of scenarios
               are listed as &quot;ready&quot; for convenience&apos; sake; many of them really aren&apos;t
               and probably should be considered to be in beta status at best.  The plan is to have
