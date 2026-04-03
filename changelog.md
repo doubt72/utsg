@@ -1,3 +1,7 @@
+## 0.32 alpha
+
+- Monospace fonts for numbers (and hex Coordinates) in action display
+
 ## 0.31 alpha
 
 - Slowed down animations a bit

@@ -1,5 +1,5 @@
 import { Coordinate, featureType } from "../../utilities/commonTypes";
-import { formatCoordinate, formatDieResult, formatNation } from "../../utilities/graphics";
+import { formatCoordinate, formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
 import { baseToHit, normalDir, smokeRoll } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
@@ -61,15 +61,17 @@ export default class MoveAction extends BaseAction {
       const hitCheck = baseToHit(mines.firepower)
       const unit = this.game.findUnitById(this.origin[0].id) as Unit
       let hitRoll = 0
+      let formatHit = ""
       if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
-        hitRoll = this.diceResults[diceIndex++].result.result
+        hitRoll = this.diceResults[diceIndex].result.result
+        formatHit = formatDieResult(this.diceResults[diceIndex++].result)
       }
       if (unit.isVehicle && !unit.armored) {
         mineAction = ", vehicle destroyed by mines"
       } else if (unit.isVehicle) {
         if (mines.antitank) {
         const armor = unit.lowestArmor < 0 ? 0 : unit.lowestArmor
-          mineAction = `, mine roll (2d10): target ${hitCheck + armor}, rolled ${hitRoll}, `
+          mineAction = `, mine roll (2d10): target ${formatTarget(hitCheck + armor)}, rolled ${formatHit}, `
           if (hitRoll > hitCheck + armor) {
             mineAction += "vehicle destroyed"
           } else {
@@ -80,7 +82,7 @@ export default class MoveAction extends BaseAction {
         }
       } else {
         if (mines.infantry) {
-          mineAction = `, mine roll (2d10): target ${hitCheck}, rolled ${hitRoll}, `
+          mineAction = `, mine roll (2d10): target ${formatTarget(hitCheck)}, rolled ${formatHit}, `
           if (hitRoll > hitCheck) {
             mineAction += "hit"
           } else {

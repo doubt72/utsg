@@ -16,16 +16,16 @@ export default function About() {
       element.scrollIntoView({ behavior: 'smooth' });
       setTimeout(() => {
         element.style.opacity = "0.33"
-      }, 600)
+      }, 800)
       setTimeout(() => {
         element.style.opacity = "1"
-      }, 800)
+      }, 900)
       setTimeout(() => {
         element.style.opacity = "0.33"
       }, 1000)
       setTimeout(() => {
         element.style.opacity = "1"
-      }, 1200)
+      }, 1100)
     }
   }, [])
 
@@ -62,7 +62,7 @@ export default function About() {
           <p><strong>Announcements</strong></p>
           <div id="a02042026" className="ml1em">
             <p>
-              <strong>Player Beware!</strong>
+              <strong>Note to Players</strong>
             </p>
             <p>
               <strong>2 Apr 2026</strong>: while the server is definitely under construction:

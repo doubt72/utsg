@@ -137,32 +137,36 @@ export function formatNation(game: Game, player: Player, text?: string): string 
 }
 
 export function formatCoordinate(loc: Coordinate): string {
-  return `<span style="color: ${coordColor};">${coordinateToLabel(loc)}</span>`
+  return `<span style="color: ${coordColor};font-family: 'Courier Prime', monospace;">${coordinateToLabel(loc)}</span>`
+}
+
+export function formatTarget(target: number): string {
+  return `<span style="color: ${coordColor};font-family: 'Courier Prime', monospace;">${target}</span>`
 }
 
 export function formatDieResult(roll: DiceResult): string {
   if (roll.type === "d6") {
-    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+    return `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.result}</span> ` +
       `[<span style="color: ${diceColor};">d6</span>]`
   } else if (roll.type === "d10") {
-    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+    return `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.result}</span> ` +
       `[<span style="color: ${diceColor};">d10</span>]`
   } else if (roll.type === "2d10") {
-    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+    return `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.result}</span> ` +
       `[<span style="color: ${diceColor};">2d10</span>: ` +
-      `<span style="color: ${diceColor};">${roll.components[0]}</span> + ` +
-      `<span style="color: ${diceColor};">${roll.components[1]}</span>]`
+      `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.components[0]}</span> + ` +
+      `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.components[1]}</span>]`
   } else if (roll.type === "d10x10") {
-    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+    return `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.result}</span> ` +
       `[<span style="color: ${diceColor};">d10x10</span>: ` +
-      `<span style="color: ${diceColor};">${roll.components[0]}</span> x ` +
-      `<span style="color: ${diceColor};">${roll.components[1]}</span>]`
+      `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.components[0]}</span> x ` +
+      `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.components[1]}</span>]`
   } else if (roll.type === "CC") {
-    return `<span style="color: ${diceColor};">${roll.result}</span> ` +
+    return `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.result}</span> ` +
       `[<span style="color: ${diceColor};">CC</span>: (2 x ` +
-      `<span style="color: ${diceColor};">${roll.components[0]}</span> + ` +
-      `<span style="color: ${diceColor};">${roll.components[1]}</span>) x ` +
-      `<span style="color: ${diceColor};">${roll.components[2]}</span>]`
+      `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.components[0]}</span> + ` +
+      `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.components[1]}</span>) x ` +
+      `<span style="color: ${diceColor};font-family: 'Courier Prime', monospace;">${roll.components[2]}</span>]`
   }
   return ""
 }

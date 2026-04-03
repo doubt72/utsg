@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { failRed, formatCoordinate, formatDieResult, formatNation, passBlue } from "../../utilities/graphics";
+import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
 import { baseMorale, otherPlayer } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionRoutData, GameActionUnit } from "../GameAction";
@@ -32,7 +32,7 @@ export default class RoutCheckAction extends BaseAction {
     const check = baseMorale + this.routCheckMods.mod - 2
     const roll = this.diceResult.result
     let rc = `${nation} ${formatNation(this.game, otherPlayer(this.player), unit.name)} ` +
-      `rout morale check at ${loc}: target ${check}, rolled ${formatDieResult(roll)}, `
+      `rout morale check at ${loc}: target ${formatTarget(check)}, rolled ${formatDieResult(roll)}, `
     if (roll.result < check) {
       rc += `<span style="color: ${failRed};">failed</span>, unit routs`
     } else {

@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { formatDieResult, formatNation } from "../../utilities/graphics";
+import { formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -25,7 +25,7 @@ export default class BreakdownAction extends BaseAction {
     const unit = this.game.findUnitById(this.origin.id) as Unit
     const roll = this.diceResult
     return `breakdown check for ${formatNation(this.game, this.player)} ${unit.name}, ` +
-      `needed ${unit.breakdownRoll}, rolled ${formatDieResult(roll.result)}: ${
+      `target ${formatTarget(unit.breakdownRoll as number)}, rolled ${formatDieResult(roll.result)}: ${
       roll.result.result > (unit.breakdownRoll ?? 0) ? "passed" : "failed" })`
   }
 

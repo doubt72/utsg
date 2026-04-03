@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { failRed, formatCoordinate, formatDieResult, formatNation, passGreen } from "../../utilities/graphics";
+import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passGreen } from "../../utilities/graphics";
 import { baseRally } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -63,7 +63,7 @@ export default class RallyAction extends BaseAction {
       !unit.canCarrySupport && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed};">failure</span>` : `<span style="color: ${failRed};">failed</span>`
     ) }: ` + `${formatNation(this.game, this.player, unit.name)} ${this.passed ? succeed : fail}`
     return `${nation} ${action} at ${formatCoordinate(new Coordinate(this.target.x, this.target.y))}` +
-      `: needed ${this.rollNeeded}, rolled ${formatDieResult(this.diceResult.result)}, ${result}`
+      `: target ${formatTarget(this.rollNeeded)}, rolled ${formatDieResult(this.diceResult.result)}, ${result}`
   }
 
   get undoPossible() {

@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { formatDieResult, formatNation } from "../../utilities/graphics";
+import { formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
 import { otherPlayer } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -27,7 +27,7 @@ export default class SniperAction extends BaseAction {
     const roll = this.diceResult.result
     const check = this.player === 1 ? this.game.axisSniper?.sniperRoll ?? 0 :
       this.game.alliedSniper?.sniperRoll ?? 0
-    return `${nation} sniper check: target ${check}, rolled ${formatDieResult(roll)}, ${
+    return `${nation} sniper check: target ${formatTarget(check)}, rolled ${formatDieResult(roll)}, ${
       roll.result > check ? "no effect" : "sniper hit"
     }`
   }

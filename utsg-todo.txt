@@ -1,16 +1,8 @@
 High Priority Features/Bug Fixes:
-  + Rout should lose VP in vacating hex
-  + Can't fire enemy machine gun
-  + Can't shoot at people in vehicled (must target vehicle)
-  + Active counters should include things that can be picked up for movement
-  + Weapon broken animation in wrong spot (should be in firing spot)
-  + Unit panel renders in wrong place for tall maps/adjust for all, messages too, general rethink?
-  + Improve drift display
-  + Don't show non-free unit available for rally after free rally used
-  - Monospace fonts for numbers in action display
+  + Monospace fonts for numbers in action display
   - Allow undeploy
   - Dropping undo move is messed up (specifically, dropping carried weapons)
-  - Special rule for surrounded paratroopers
+  - Special rule for surrounded paratrooper scenario
   - Test rout all/blaze displacement with two-player games
   - Fix hindrance bug
     - Through two fence corner intersections

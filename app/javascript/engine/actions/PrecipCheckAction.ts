@@ -1,4 +1,4 @@
-import { formatDieResult, weatherDescription } from "../../utilities/graphics";
+import { formatDieResult, formatTarget, weatherDescription } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult } from "../GameAction";
 import BaseAction from "./BaseAction";
@@ -21,7 +21,7 @@ export default class PrecipCheckAction extends BaseAction {
 
   get htmlValue(): string {
     const result = this.passed ? this.map.precip : this.map.baseWeather
-    return `checking for precipitation, precipitation on ${this.map.precipChance} or less, ` +
+    return `checking for precipitation, precipitation on ${formatTarget(this.map.precipChance)} or less, ` +
       `rolled ${formatDieResult(this.diceResult.result)}: this turn it will be ${weatherDescription(result)}`
   }
 

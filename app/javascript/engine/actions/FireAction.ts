@@ -1,5 +1,5 @@
 import { Coordinate, featureType, sponsonType } from "../../utilities/commonTypes";
-import { failRed, formatCoordinate, formatDieResult, formatNation, passBlue } from "../../utilities/graphics";
+import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
 import {
   baseToHit, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
   rolld6, smokeRoll, otherPlayer
@@ -190,7 +190,7 @@ export default class FireAction extends BaseAction {
       if (needDice) { this.diceResults.push({ result: rolld10x10() }) }
       const targetRoll = this.diceResults[diceIndex++]
       if (needDice) {
-        targetRoll.description = `targeting roll: target ${targetCheck}, ` +
+        targetRoll.description = `targeting roll: target ${formatTarget(targetCheck)}, ` +
           `rolled ${formatDieResult(targetRoll.result)}: `
       }
       if (targetRoll.result.result > targetCheck || oBoard) {
@@ -208,7 +208,7 @@ export default class FireAction extends BaseAction {
           const dist = driftRoll(drift.result.result)
           if (needDice) {
             dirRoll.description = `direction roll: ${formatDieResult(dirRoll.result)}`
-            drift.description = `distance roll: ${formatDieResult(drift.result)} for ${dist} hexes`
+            drift.description = `distance roll: ${formatDieResult(drift.result)} for ${formatTarget(dist)} hexes`
           }
           const loc = this.map.driftHex(to, dirRoll.result.result, dist)
           anims.push({ loc: to, type: "miss" })
@@ -242,7 +242,7 @@ export default class FireAction extends BaseAction {
             const smokeValue = smokeRoll(smokeDice.result.result)
             if (needDice) {
               smokeDice.description = `smoke roll: rolled ${formatDieResult(smokeDice.result)}, ` +
-                `smoke level ${smokeValue}`
+                `smoke level ${formatTarget(smokeValue)}`
             }
             this.map.addCounter(dTo, new Feature(
               { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: smokeValue, id: `${this.index}-smoke` }
@@ -266,7 +266,7 @@ export default class FireAction extends BaseAction {
               const hitRoll = this.diceResults[diceIndex++]
               if (needDice) {
                 hitRoll.description =
-                  `infantry effect roll: target ${hitCheck}, rolled ${formatDieResult(hitRoll.result)}: `
+                  `infantry effect roll: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
               }
               if (hitRoll.result.result > hitCheck) {
                 if (needDice) { hitRoll.description += `<span style="color: ${failRed};">passed</span>` }
@@ -306,7 +306,7 @@ export default class FireAction extends BaseAction {
                 if (needDice) {
                   hitRoll.description = `penetration roll${
                     dTargets.length > 1 ? ` for ${this.formatUnit(t.counter.unit)}`: ""
-                  }: target ${hitCheck}, rolled ${formatDieResult(hitRoll.result)}: `
+                  }: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
                 }
                 if (hitRoll.result.result > hitCheck) {
                   t.counter.unit.wreck(this.game)
@@ -380,7 +380,7 @@ export default class FireAction extends BaseAction {
             if (needDice) { this.diceResults.push({ result: roll2d10() }) }
             const hitRoll = this.diceResults[diceIndex++]
             if (needDice) {
-              hitRoll.description = `penetration roll (${arc}): target ${hitCheck}, ` +
+              hitRoll.description = `penetration roll (${arc}): target ${formatTarget(hitCheck)}, ` +
                 `rolled ${formatDieResult(hitRoll.result)}: `
             }
             if (hitRoll.result.result > hitCheck) {
@@ -438,7 +438,7 @@ export default class FireAction extends BaseAction {
           const hitRoll = this.diceResults[diceIndex++]
           if (needDice) {
             hitRoll.description =
-              `roll for effect: target ${hitCheck}, rolled ${formatDieResult(hitRoll.result)}: `
+              `roll for effect: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
           }
           if (hitRoll.result.result > hitCheck) {
             targets.forEach(t => this.game.moraleChecksNeeded.push(
@@ -537,7 +537,7 @@ export default class FireAction extends BaseAction {
         if (needDice) {
           hitRoll.description = `${
             coords.length > 1 ? `at ${formatCoordinate(c)}:` : ""
-          }target ${hitCheck}, rolled ${formatDieResult(hitRoll.result)}: `
+          }target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
         }
         if (hitRoll.result.result > hitCheck) {
           if (needDice) { hitRoll.description += `<span style="color: ${failRed};">hit</span>` }
@@ -563,7 +563,7 @@ export default class FireAction extends BaseAction {
                 if (needDice) {
                   hitRoll.description = `penetration roll${
                     targets.length > 1 ? ` for ${this.formatUnit(t.counter.unit)}` : ""
-                  }: target ${hitCheck}, rolled ${formatDieResult(hitRoll.result)}: `
+                  }: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
                 }
                 if (hitRoll.result.result > hitCheck) {
                   t.counter.unit.wreck(this.game)

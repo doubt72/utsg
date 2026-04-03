@@ -1311,7 +1311,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E1: need 4, rolled 2 [2d10: 1 + 1]: blaze starts"
+        "checking to see if blaze starts in E1: on 4 or less, rolled 2 [2d10: 1 + 1]: blaze starts"
       )
       const counters = map.countersAt(new Coordinate(4, 0))
       expect(counters.length).toBe(2)
@@ -1912,7 +1912,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E1: need 2, rolled 20 [2d10: 10 + 10]: no effect"
+        "checking to see if blaze starts in E1: on 2 or less, rolled 20 [2d10: 10 + 10]: no effect"
       )
     })
 
@@ -1967,7 +1967,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E1: need 4, rolled 2 [2d10: 1 + 1]: blaze starts"
+        "checking to see if blaze starts in E1: on 4 or less, rolled 2 [2d10: 1 + 1]: blaze starts"
       )
       const counters = map.countersAt(new Coordinate(4, 0))
       expect(counters.length).toBe(2)
@@ -2540,7 +2540,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E3: need 6, rolled 2 [2d10: 1 + 1]: blaze starts"
+        "checking to see if blaze starts in E3: on 6 or less, rolled 2 [2d10: 1 + 1]: blaze starts"
       )
       const counters = map.countersAt(new Coordinate(4, 2))
       expect(counters.length).toBe(4)

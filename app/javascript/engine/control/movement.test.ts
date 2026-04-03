@@ -2636,7 +2636,7 @@ describe("movement", () => {
     ])
 
     expect(game.lastAction?.stringValue).toBe(
-      "German Rifle moves from E3 to D3, mine roll (2d10): target 12, rolled 20, hit"
+      "German Rifle moves from E3 to D3, mine roll (2d10): target 12, rolled 20 [2d10: 10 + 10], hit"
     )
 
     const all = map.allCounters
@@ -2691,7 +2691,7 @@ describe("movement", () => {
     ])
 
     expect(game.lastAction?.stringValue).toBe(
-      "German Rifle moves from E3 to D3, mine roll (2d10): target 12, rolled 20, hit"
+      "German Rifle moves from E3 to D3, mine roll (2d10): target 12, rolled 20 [2d10: 10 + 10], hit"
     )
 
     const all = map.allCounters
@@ -2790,7 +2790,7 @@ describe("movement", () => {
     expect(unit.isWreck).toBe(true)
 
     expect(game.lastAction?.stringValue).toBe(
-      "German PzKpfw 35(t) moves from E3 to D3, mine roll (2d10): target 13, rolled 20, vehicle destroyed"
+      "German PzKpfw 35(t) moves from E3 to D3, mine roll (2d10): target 13, rolled 20 [2d10: 10 + 10], vehicle destroyed"
     )
 
     const all = map.allCounters
@@ -2893,7 +2893,7 @@ describe("movement", () => {
     expect(unit.isWreck).toBe(true)
 
     expect(game.lastAction?.stringValue).toBe(
-      "German PzKpfw 35(t) moves from E3 to D3, mine roll (2d10): target 13, rolled 20, vehicle destroyed"
+      "German PzKpfw 35(t) moves from E3 to D3, mine roll (2d10): target 13, rolled 20 [2d10: 10 + 10], vehicle destroyed"
     )
 
     const all = map.allCounters

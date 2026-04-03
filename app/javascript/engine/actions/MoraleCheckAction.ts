@@ -1,5 +1,5 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
-import { failRed, formatCoordinate, formatDieResult, formatNation, passBlue } from "../../utilities/graphics";
+import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
 import { baseMorale } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Game from "../Game";
@@ -35,7 +35,7 @@ export default class MoraleCheckAction extends BaseAction {
     rc += `${
       formatNation(this.game, this.player)
     } morale check for ${formatNation(this.game, this.player, unit.name)} (2d10): ` +
-      `target ${check}, rolled ${formatDieResult(this.diceResult.result)}`
+      `target ${formatTarget(check)}, rolled ${formatDieResult(this.diceResult.result)}`
     if (roll < check) {
       if (this.target.status === unitStatus.Broken) {
         rc += `, unit <span style="color: ${failRed};">eliminated</span>`

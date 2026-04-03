@@ -1,4 +1,4 @@
-import { failRed, formatDieResult, formatNation, passBlue } from "../../utilities/graphics";
+import { failRed, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
 import { initiativeThreshold } from "../../utilities/utilities";
 import { reactionActions } from "../control/reactionFire";
 import Game from "../Game";
@@ -32,7 +32,7 @@ export default class InitiativeAction extends BaseAction {
     let result = "(automatic pass — no change)"
     if (this.diceResult) {
       const threshold = initiativeThreshold(Math.abs(this.data.old_initiative))
-      result = `target ${threshold}, rolled ${formatDieResult(this.diceResult.result)}: ${
+      result = `target ${formatTarget(threshold)}, rolled ${formatDieResult(this.diceResult.result)}: ${
         this.passed ? `<span style="color: ${passBlue};">passed</span>, no change` :
           `<span style="color: ${failRed};">failed</span>, initiative flipped` }`
     }

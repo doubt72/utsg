@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { formatCoordinate, formatDieResult, formatNation } from "../../utilities/graphics";
+import { formatCoordinate, formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
 import { setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -59,15 +59,15 @@ export default class CloseCombatRollAction extends BaseAction {
     }).join(", ")
     rc += ` in close combat at ${formatCoordinate(loc)}; `
     rc += `${nation1} player roll result of ${formatDieResult(this.diceResult[0].result)} ` +
-      `on ${this.ccData.p1_fp} firepower; `
+      `on ${formatTarget(this.ccData.p1_fp)} firepower; `
     rc += `${nation2} player roll result of ${formatDieResult(this.diceResult[1].result)} ` +
-      `on ${this.ccData.p2_fp} firepower; `
+      `on ${formatTarget(this.ccData.p2_fp)} firepower; `
     const hit1 = this.p1Hits
-    rc += `${nation1} player takes ${hit1} hit${hit1 !== 1 ? "s" : ""}`
+    rc += `${nation1} player takes ${formatTarget(hit1)} hit${hit1 !== 1 ? "s" : ""}`
     if (this.ccData.p1_max === hit1) { rc += ` (all eliminated)` }
 
     const hit2 = this.p2Hits
-    rc += `, ${nation2} player takes ${hit2} hit${hit2 !== 1 ? "s" : ""}`
+    rc += `, ${nation2} player takes ${formatTarget(hit2)} hit${hit2 !== 1 ? "s" : ""}`
     if (this.ccData.p2_max === hit2) { rc += ` (all eliminated)` }
     return rc
   }

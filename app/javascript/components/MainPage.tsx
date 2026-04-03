@@ -50,7 +50,7 @@ export default function MainPage() {
             </p>
             <p>
               <strong>Latest announcement</strong>: <a className="regular" href="/about/a02042026">
-                Players Beware!
+                Note to Players
               </a>
             </p>
             <p>
