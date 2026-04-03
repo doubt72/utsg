@@ -41,22 +41,7 @@ export default class RoutState extends BaseState {
   }
 
   finish() {
-    const action = new GameAction({
-      user: this.game.currentUser,
-      player: this.player,
-      data: {
-        action: this.optional ? "rout_self" : "rout_move",
-        old_initiative: this.game.initiative,
-        path: [],
-        target: this.selection.map(s => {
-          return {
-            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
-          }
-        }),
-        add_action: [],
-      },
-    }, this.game)
-    this.execute(action)
+    this.finishXY()
   }
 
   finishXY(x?: number, y?: number) {
@@ -81,6 +66,11 @@ export default class RoutState extends BaseState {
       addAction.push({
         type: gameActionAddActionType.Drop, x: hex.x, y: hex.y, id: child.id, index: 0, facing
       })
+    }
+    const loc = new Coordinate(this.selection[0].x, this.selection[0].y)
+    const vp = this.map.victoryAt(loc)
+    if (vp && vp === this.game.currentPlayer && this.map.enemyAt(loc, this.game.currentPlayer)) {
+      addAction.push({ x: loc.x, y: loc.y, type: gameActionAddActionType.VP, index: 0 })
     }
     const action = new GameAction({
       user: this.game.currentUser,

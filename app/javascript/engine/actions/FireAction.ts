@@ -211,8 +211,10 @@ export default class FireAction extends BaseAction {
             drift.description = `distance roll: ${formatDieResult(drift.result)} for ${dist} hexes`
           }
           const loc = this.map.driftHex(to, dirRoll.result.result, dist)
-          anims.push({ loc: to, type: "drift" })
+          anims.push({ loc: to, type: "miss" })
           if (loc !== false) {
+            anims.push({ loc: loc, type: "drift" })
+            if (this.data.fire_data) { this.data.fire_data.drift = true }
             dTo = loc
             drift.description += `, drifted to ${formatCoordinate(loc)}`
             fireStartHex.x = loc.x
@@ -267,7 +269,7 @@ export default class FireAction extends BaseAction {
                   `infantry effect roll: target ${hitCheck}, rolled ${formatDieResult(hitRoll.result)}: `
               }
               if (hitRoll.result.result > hitCheck) {
-                if (needDice) { hitRoll.description += `<span style="color: ${failRed};">pased</span>` }
+                if (needDice) { hitRoll.description += `<span style="color: ${failRed};">passed</span>` }
                 for (const t of dTargets) {
                   if (t.counter.unit.canCarrySupport) {
                     this.game.moraleChecksNeeded.push({
@@ -591,6 +593,7 @@ export default class FireAction extends BaseAction {
           anims.push({ loc: to, type: "miss" })
         }
         for (const f of firing) {
+          const from = new Coordinate(f.x, f.y)
           const breakmod = 0 + (this.intensive ? 1 : 0) +
             (f.counter.unit.parent && f.counter.unit.nation !== f.counter.unit.parent.nation ? 1 : 0)
           if (f.counter.unit.breakWeaponRoll && hitRoll.result.result <= f.counter.unit.breakWeaponRoll + breakmod) {
@@ -601,13 +604,13 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRed};">destroyed</span>`
                   }
-                  anims.push({ loc: to, type: "destroyed" })
+                  anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.sponsonJammed = true
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRed};">broken</span>`
                   }
-                  anims.push({ loc: to, type: "jammed" })
+                  anims.push({ loc: from, type: "jammed" })
                 }
               } else {
                 if (f.counter.unit.breakDestroysWeapon) {
@@ -615,13 +618,13 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRed};">destroyed</span>`
                   }
-                  anims.push({ loc: to, type: "destroyed" })
+                  anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.jammed = true
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRed};">broken</span>`
                   }
-                  anims.push({ loc: to, type: "jammed" })
+                  anims.push({ loc: from, type: "jammed" })
                 }
               }
             } else if (f.counter.unit.breakDestroysWeapon ||
@@ -637,7 +640,7 @@ export default class FireAction extends BaseAction {
                 hitRoll.description += `, ${this.formatUnit(f.counter.unit)} ` +
                   `<span style="color: ${failRed};">destroyed</span>`
               }
-              anims.push({ loc: to, type: "destroyed" })
+              anims.push({ loc: from, type: "destroyed" })
             } else {
               f.counter.unit.jammed = true
               f.counter.unit.resetStatus()
@@ -645,7 +648,7 @@ export default class FireAction extends BaseAction {
                 hitRoll.description += `, ${this.formatUnit(f.counter.unit)} ` +
                   `<span style="color: ${failRed};">broken</span>`
               }
-              anims.push({ loc: to, type: "jammed" })
+              anims.push({ loc: from, type: "jammed" })
             }
           }
         }

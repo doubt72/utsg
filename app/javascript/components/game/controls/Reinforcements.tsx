@@ -14,7 +14,7 @@ interface ReinforcementsProps {
   maxY: number;
   scale: number;
   svgRef: React.MutableRefObject<HTMLElement>;
-  callback: (x: number, y: number, player: Player) => void;
+  callback: (player: Player) => void;
   update: { key: boolean };
 }
 
@@ -30,12 +30,12 @@ export default function Reinforcements(
     const faction = game.nationNameForPlayer(player)
     const overlay = enabled ? (
       <path className="svg-button-hover" d={baseCounterPath(x, y)}
-            onClick={() => callback(player === 1 ? x : x - 90, y, player)}
+            onClick={() => callback(player)}
             onMouseLeave={() => setHelpDisplay(undefined)}
             onMouseMove={e => updateHelpOverlay(e, faction)} />
     ) : (
       <path d={baseCounterPath(x, y)} style={{ fill: "rgba(0,0,0,0.33)" }}
-            onClick={() => callback(player === 1 ? x : x - 90, y, player)}
+            onClick={() => callback(player)}
             onMouseLeave={() => setHelpDisplay(undefined)}
             onMouseMove={e => updateHelpOverlay(e, faction)} />
     )

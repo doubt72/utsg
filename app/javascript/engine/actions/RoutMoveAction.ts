@@ -1,7 +1,7 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { failRed, formatCoordinate, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
-import { GameActionAddAction, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
+import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
@@ -9,7 +9,7 @@ import IllegalActionError from "./IllegalActionError";
 
 export default class RouteMoveAction extends BaseAction {
   target: GameActionUnit
-  addAction: GameActionAddAction | undefined
+  addActions: GameActionAddAction[]
   path: GameActionPath[]
   optional: boolean
 
@@ -21,7 +21,7 @@ export default class RouteMoveAction extends BaseAction {
     this.validate(data.data.path as GameActionPath[])
 
     this.target = (data.data.target as GameActionUnit[])[0]
-    this.addAction = (data.data.add_action as GameActionAddAction[])[0]
+    this.addActions = (data.data.add_action as GameActionAddAction[])
     this.path = data.data.path as GameActionPath[]
     this.optional = optional
   }
@@ -40,9 +40,11 @@ export default class RouteMoveAction extends BaseAction {
     } else {
       rc += ` and is <span style="color: ${failRed};">eliminated</span>`
     }
-    if (this.addAction) {
-      const child = this.game.findUnitById(this.addAction.id as string) as Unit
-      rc += `, ${formatNation(this.game, this.player, child.name)} dropped`
+    for (const a of this.addActions) {
+      if (a.type === gameActionAddActionType.Drop) {
+        const child = this.game.findUnitById(a.id as string) as Unit
+        rc += `, ${formatNation(this.game, this.player, child.name)} dropped`
+      }
     }
     return rc
   }
@@ -53,8 +55,12 @@ export default class RouteMoveAction extends BaseAction {
 
   mutateGame(): void {
     const start = new Coordinate(this.target.x, this.target.y)
-    if (this.addAction) {
-      this.map.dropUnit(start, start, this.addAction.id as string, this.addAction.facing)
+    for (const a of this.addActions) {
+      if (a.type === gameActionAddActionType.Drop) {
+        this.map.dropUnit(start, start, a.id as string, a.facing)
+      } else if (a.type === gameActionAddActionType.VP) {
+        this.map.toggleVP(new Coordinate(a.x, a.y))
+      }
     }
     const unit = this.game.findUnitById(this.target.id) as Unit
     if (this.path.length > 0) {
@@ -87,8 +93,12 @@ export default class RouteMoveAction extends BaseAction {
     } else {
       throw new IllegalActionError("rout elimination undo should happen")
     }
-    if (this.addAction) {
-      this.map.loadUnit(start, start, this.addAction.id as string, unit.id, this.addAction.facing)
+    for (const a of this.addActions) {
+      if (a.type === gameActionAddActionType.Drop) {
+        this.map.loadUnit(start, start, a.id as string, unit.id, a.facing)
+      } else if (a.type === gameActionAddActionType.VP) {
+        this.map.toggleVP(new Coordinate(a.x, a.y))
+      }
     }
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative

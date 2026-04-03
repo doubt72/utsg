@@ -352,6 +352,34 @@ describe("routing", () => {
       expect(all[0].unit.routed).toBe(false)
     })
 
+    test("rout switches value of VP", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.break()
+      unit.id = "test1"
+      unit.select()
+      const loc = new Coordinate(0, 2)
+      map.addCounter(loc, unit)
+      const unit2 = new Unit(testRInf)
+      unit2.id = "test2"
+      map.addCounter(loc, unit2)
+      organizeStacks(map)
+
+      map.victoryHexes.push({ x: loc.x, y: loc.y, player: 2 })
+      expect(map.victoryAt(loc)).toBe(2)
+
+      game.setGameState(new RoutState(game, true))
+      const tree = game.routState.routPathTree as RoutPathTree
+      expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
+
+      game.routState.finishXY(4, 2)
+      expect(map.victoryAt(loc)).toBe(1)
+
+      game.executeUndo(false)
+      expect(map.victoryAt(loc)).toBe(2)
+    })
+
     test("rout drops weapon", () => {
       const game = createBlankGame()
       const map = game.scenario.map

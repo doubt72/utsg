@@ -16,7 +16,7 @@ import {
 } from "../utilities/commonTypes";
 import Feature, { FeatureData } from "../engine/Feature";
 import Unit, { UnitData } from "../engine/Unit";
-import { normalDir } from "../utilities/utilities";
+import { normalDir, serverVersion } from "../utilities/utilities";
 import { getAPI } from "../utilities/network";
 import organizeStacks from "../engine/support/organizeStacks";
 import { gamePhaseType } from "../engine/support/gamePhase";
@@ -82,6 +82,7 @@ export default function DebugMap() {
     const game = new Game({
       id: 0, name: "test", owner: "one", player_one: "one", player_two: "two",
       current_player: "one", metadata: { turn: 0 }, scenario_version: "0.01",
+      server_version: serverVersion,
       scenario: {
         id: "999", name: "test", allies: ["ussr"], axis: ["ger"], status: "p", version: "0.01",
         metadata: {

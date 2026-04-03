@@ -106,7 +106,7 @@ export default class MoveState extends BaseState {
     for (const c of countersAt) {
       if (c.hasFeature && c.feature.type === featureType.Fire) { return hexOpenType.Closed }
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
-          !c.unit.crewed && !c.unit.uncrewedSW) {
+          !c.unit.operated) {
         return hexOpenType.Closed
       }
     }
@@ -259,7 +259,7 @@ export default class MoveState extends BaseState {
   selectable(selection: CounterSelectionTarget): boolean {
     const target = selection.counter.unit as Unit
     const same = this.samePlayer(target)
-    if (!same && !target.uncrewedSW && !target.crewed) {return false}
+    if (!same && !target.operated) {return false}
     if (this.dropping) {
       const child = target.children[0]
       if (target.selected) {
@@ -316,12 +316,13 @@ export default class MoveState extends BaseState {
   }
 
   get activeCounters(): Counter[] {
-    let rc: Counter[] = []
     const first = this.path[0]
-    rc = rc.concat(this.map.countersAt(new Coordinate(first.x, first.y)))
-    if (this.loading && !this.needPickUpDisambiguate) {
+    let rc = this.map.countersAt(new Coordinate(first.x, first.y))
+    if (this.loading) {
       const last = this.lastPath as GameActionPath
-      rc.concat(this.map.countersAt(new Coordinate(last.x, last.y)))
+      if (last.x !== first.x || last.y !== first.y) {
+        rc = rc.concat(this.map.countersAt(new Coordinate(last.x, last.y)))
+      }
     }
     return rc
   }

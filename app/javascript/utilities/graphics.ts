@@ -62,7 +62,7 @@ export type facingLayout = {
 }
 
 export const actionOrange = "#B80"
-export const diceColor = "#670"
+export const diceColor = "#780"
 export const coordColor = "#888"
 
 export const counterRed = "#E00"

@@ -85,7 +85,7 @@ export default class AssaultState extends BaseState {
       const countersAt = this.map.countersAt(to)
       for (const c of countersAt) {
         if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
-            !c.unit.crewed && !c.unit.uncrewedSW) {
+            !c.unit.operated) {
           return hexOpenType.Closed
         }
         if (c.hasFeature && c.feature.type === featureType.Mines && c.feature.antiTank) {
@@ -114,7 +114,7 @@ export default class AssaultState extends BaseState {
     let check = false
     for (const c of countersAt) {
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
-          !c.unit.crewed && !c.unit.uncrewedSW) { check = true }
+          !c.unit.operated) { check = true }
     }
     if (moveSize + toSize > stackLimit && !check) { return hexOpenType.Closed }
     if (this.path.length + this.addActions.length > 1) { return hexOpenType.Closed }

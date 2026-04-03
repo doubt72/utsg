@@ -46,7 +46,7 @@ export function sortValues(game: Game, unit: Unit | Feature): number {
   if (unit.isFeature) { return 0 }
   const side = unit.playerNation === game?.playerOneNation ? 0 : 100
   const u = unit as Unit
-  if (u.crewed || u.uncrewedSW) { return 0 }
+  if (u.operated) { return 0 }
   return ({
     other: 1, sw: 2, gun: 3, sqd: 4, tm: 5, ldr: 6, cav: 7, truck: 8, ht: 9, ac: 10,
     spg: 11, tank: 12,

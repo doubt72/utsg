@@ -73,7 +73,7 @@ export default function MiniMap(
     const wO = xSize - 6
     const hO = ySize - 6
 
-    setWidth(() => xSize)
+    setWidth(xSize)
     setMinimap(
       <g>
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
@@ -117,10 +117,7 @@ export default function MiniMap(
   }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastAction])
 
   useEffect(() => {
-    widthCallback(v => {
-      const newV = width + xx + 16
-      return v > newV ? v : newV
-    })
+    widthCallback(width + xx + 16)
   }, [width])
 
   return (

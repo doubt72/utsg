@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import Header from "./Header";
-import { useNavigate } from "react-router-dom";
 import ChatDisplay from "./ChatDisplay";
 import { CreateGameButton, ScenariosButton } from "./utilities/buttons";
 import GameList from "./GameList";
 import { titleNameStyle } from "./Utilities";
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage() {
   const navigate = useNavigate();
@@ -45,11 +45,13 @@ export default function MainPage() {
               in alpha as I shake things down, work out the bugs, and test the scenarios.  See
               the <a className="regular" href="/about">about</a> page for more information
               about the server, the code of conduct, or to report bugs.
+              Best with Chromium-based browsers; should work with any modern browser, but
+              rendering performance varies significantly.
             </p>
             <p>
-              Feel free to play games, but know that things may break, deploys will be frequent,
-              and all the games <strong>will</strong> be
-              deleted at some point when we&apos;re ready to flip the &quot;release&quot; switch.
+              <strong>Latest announcement</strong>: <a className="regular" href="/about/a02042026">
+                Players Beware!
+              </a>
             </p>
             <p>
               Support the work (and/or my mild coffee addiction)

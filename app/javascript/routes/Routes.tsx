@@ -30,6 +30,7 @@ export default function Routes() {
   const publicRoutes = [
     { path: "*", element: <MainPage /> },
     { path: "/about", element: <About /> },
+    { path: "/about/:id", element: <About /> },
     { path: "/login", element: <Login /> },
     { path: "/signup", element: <Signup /> },
     { path: "/verify", element: <Verify /> },

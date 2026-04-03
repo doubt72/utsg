@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1942, 5, 17].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -35,6 +35,8 @@ module Scenarios
         :ger_radio_15cm,
         [1, :ger_sdkfz_250_1],
         [4, :ger_pzkpfw_iii_j],
+        :ger_stug_iii_f_g,
+        :ger_marder_i,
       ] },
     }.freeze
 

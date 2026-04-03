@@ -163,7 +163,7 @@ export default function GameDisplay() {
     const message = "The server version has been updated since you last loaded this game and " +
       "the game cannot continue unless the game is reloaded."
     setErrorWindow(
-      <DesyncWindow title={"Server Version Mismatch"} message={message} />
+      <DesyncWindow title={"Server Version Mismatch"} message={message} button={"reload"} />
     )
   }, [game.k, game.k?.serverVersion])
 
@@ -174,7 +174,7 @@ export default function GameDisplay() {
     const message = "The connection to the server was interrupted and the game cannot continue " +
       "unless the connection is restored."
     setErrorWindow(
-      <DesyncWindow title={"Connection Lost"} message={message} />
+      <DesyncWindow title={"Connection Lost"} message={message} button={"attempt to reconnect"} />
     )
   }
 

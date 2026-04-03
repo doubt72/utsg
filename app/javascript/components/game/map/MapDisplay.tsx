@@ -35,6 +35,7 @@ import { gamePhaseType } from "../../../engine/support/gamePhase";
 import { fireActions, moveActions } from "../../../engine/actions/BaseAction";
 import { GameActionFireData, GameActionPath } from "../../../engine/GameAction";
 import { ActionAnimationDetails } from "../../../engine/Game";
+import FireAction from "../../../engine/actions/FireAction";
 
 interface MapDisplayProps {
   map: Map;
@@ -89,7 +90,8 @@ export default function MapDisplay({
   const [turn, setTurn] = useState<JSX.Element | undefined>()
   const [sniper, setSniper] = useState<JSX.Element | undefined>()
   const [reinforcements, setReinforcements] = useState<JSX.Element | undefined>()
-  const [reinforecmentTimout, setReinforcementTimeout] = useState<NodeJS.Timeout | undefined>()
+  const [reinforcementTimout, setReinforcementTimeout] = useState<NodeJS.Timeout | undefined>()
+  const [showReinforcements, setShowReinforcements] = useState<false | Player>(false)
   const [minimap, setMinimap] = useState<JSX.Element | undefined>()
 
   const [xOffset, setXOffset] = useState<number>(0)
@@ -150,8 +152,8 @@ export default function MapDisplay({
     if (map.game.phase !== gamePhase.phase || map.game.currentPlayer !== gamePhase.player) {
       setGamePhase({ phase: map.game.phase, player: map.game.currentPlayer })
       if (map.game.phase !== gamePhaseType.Deployment || map.game.currentUser !== user) {
-        if (reinforecmentTimout) {
-          clearTimeout(reinforecmentTimout)
+        if (reinforcementTimout) {
+          clearTimeout(reinforcementTimout)
           setReinforcementTimeout(undefined)
         }
         return
@@ -160,7 +162,7 @@ export default function MapDisplay({
           if (!map.game || map.game.phase !== gamePhaseType.Deployment || map.game.currentUser !== user) {
             return
           }
-          showReinforcements(reinforcementOffset + 8, 52 + 50 / scale - 50, map.game.currentPlayer)
+          setShowReinforcements(map.game.currentPlayer)
         }, 1000)
         setReinforcementTimeout(to)
       }
@@ -180,14 +182,17 @@ export default function MapDisplay({
     }
     const alpha = timer < 30 ? timer / 30 : 1
     const error = notificationDetails.error
-    const twidth = error.length * 14.4 + 24
-    const x = (map.previewXSize * (mapScale ?? 1) - 76 < width / scale - 216 ?
-              map.previewXSize * (mapScale ?? 1) - 76 : width / scale - 216) - twidth
+    const fontSize = 24
+    const height = fontSize * 1.5
+    const twidth = error.length * fontSize * 0.6 + fontSize
+    // const x = (map.previewXSize * (mapScale ?? 1) - 76 < width / scale - 216 ?
+    //           map.previewXSize * (mapScale ?? 1) - 76 : width / scale - 216) - twidth
+    const x = 75
     const y = 50 + map.yStatusSize + 50 / scale - 50
     setNotification(
       <g>
-        <path d={roundedRectangle(x, y, twidth, 36)} style={{ fill: `rgba(221,221,221,${alpha})` }}/>
-        <text x={x + 12} y={y + 24} fontSize={24} fontFamily="'Courier Prime', monospace"
+        <path d={roundedRectangle(x, y, twidth, height)} style={{ fill: `rgba(221,221,221,${alpha})` }}/>
+        <text x={x + 12} y={y + fontSize*1.05} fontSize={fontSize} fontFamily="'Courier Prime', monospace"
                   textAnchor="start" style={{ fill: `rgba(0,0,0,${alpha})` }}>{error}</text>
       </g>
     )
@@ -275,7 +280,7 @@ export default function MapDisplay({
           timer: s.timer - 20,
         }
       }
-    ), 20)
+    ), 30)
     if (actionAnimationFallback) { clearTimeout(actionAnimationFallback) }
     const to = setTimeout(() => {
       if (actionAnimationDetails === undefined) { return }
@@ -446,12 +451,29 @@ export default function MapDisplay({
       }
       setFireTargets(hexes)
     } else if (action && fireActions.includes(action.type) &&
-           (map.game?.gameState === undefined || map.game.gameState.type == "reaction" ||
-             map.game.gameState.type == "pass" || (map.game.gameState?.type === "fire" &&
+           (map.game?.gameState === undefined || map.game.gameState.type === "reaction" ||
+            map.game.gameState.type === "fire_start" || map.game.gameState.type === "init" ||
+             map.game.gameState.type === "pass" || (map.game.gameState?.type === "fire" &&
               map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
       const hexes: JSX.Element[] = []
+      const fireAction = action as FireAction
+      const coords: Coordinate[] = []
+      for (const t of fireAction.target) {
+        let found = false
+        for (const c of coords) {
+          if (c.x === t.x && c.y === t.y) { found = true; break }
+        }
+        if (!found) { coords.push(new Coordinate(t.x, t.y))}
+      }
       const fire = action.data.fire_data as GameActionFireData
-      for (const c of fire.final) {
+      for (const t of fire.final) {
+        let found = false
+        for (const c of coords) {
+          if (c.x === t.x && c.y === t.y) { found = true; break }
+        }
+        if (!found) { coords.push(new Coordinate(t.x, t.y))}
+      }
+      for (const c of coords) {
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(new Coordinate(c.x, c.y)) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false} />)
@@ -504,7 +526,7 @@ export default function MapDisplay({
         <Reinforcements map={map} xx={reinforcementOffset} yy={52 + 50 / scale - 50}
                         maxX={width / scale} maxY={height / scale} scale={scale}
                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
-                        callback={showReinforcements} update={{key: true}}/>
+                        callback={displayReinforcements} update={{key: true}}/>
     )
     if (map.game?.closeReinforcementPanel) {
       setReinforcementsOverlay(undefined)
@@ -736,12 +758,14 @@ export default function MapDisplay({
     }
   }
 
-  const showReinforcements = (x: number, y: number, player: Player) => {
+  const displayReinforcements = (player: Player) => {
     resetCallback()
     setReinforcementsOverlay(rp => {
       if (!rp || rp.props.player !== player) {
+        const xx = reinforcementOffset + (player === 1 ? 0 : 90)
+        const yy = 52 + 50 / scale - 50
         return (
-          <ReinforcementPanel map={map} xx={x-10} yy={y-10} player={player}
+          <ReinforcementPanel map={map} xx={xx} yy={yy} player={player}
                               scale={scale ?? 1} mapScale={mapScale ?? 1}
                               closeCallback={() => setReinforcementsOverlay(undefined)}
                               ovCallback={setOverlay} forceUpdate={mapUpdate} />
@@ -751,6 +775,11 @@ export default function MapDisplay({
       }
     })
   }
+
+  useEffect(() => {
+    if (!showReinforcements) { return }
+    displayReinforcements(showReinforcements)
+  }, [showReinforcements])
 
   const mapDisplay = () => {
     if (map.preview || preview) {

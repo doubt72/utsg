@@ -15,6 +15,7 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
     const action = map.game.lastSignificantAction as FireAction
     if (action && fireActions.includes(action.type) &&
        (map.game.gameState === undefined || map.game.gameState.type == "reaction" ||
+        map.game.gameState.type === "fire_start" || map.game.gameState.type === "init" ||
          map.game.gameState.type == "pass" || (map.game.gameState?.type === "fire" &&
           map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
       const origins = action.origin
@@ -30,6 +31,16 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
           rc.push(<line key={`${i}-${j}r`} x1={x1} y1={y1} x2={x2} y2={y2}
                         style={{ stroke: "#00E", strokeWidth: 4, strokeDasharray: "5, 5" }} />)
         }
+      }
+      if (action.fireHex.drift) {
+        const start = action.target[0]
+        const end = action.fireHex.final[0]
+        const x1 = map.xOffset(start.x, start.y)
+        const y1 = map.yOffset(start.y)
+        const x2 = map.xOffset(end.x, end.y)
+        const y2 = map.yOffset(end.y)
+        rc.push(<line key={`over-drift`} x1={x1} y1={y1} x2={x2} y2={y2}
+                      style={{ stroke: "#00E", strokeWidth: 4, strokeDasharray: "5, 5" }} />)
       }
     }
     if (map.game.gameState?.type === stateType.Fire) {

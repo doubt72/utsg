@@ -84,7 +84,7 @@ export default class ReactionState extends BaseState {
       return false
     }
     const parent = target.parent
-    if ((target.uncrewedSW || target.crewed) &&
+    if ((target.operated) &&
         (target.jammed || !parent || parent.isBroken || parent.isExhausted || parent.pinned)) {
       this.game.addMessage("weapon cannot fire")
       return false

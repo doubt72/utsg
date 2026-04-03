@@ -4,9 +4,10 @@ import { ShieldFillX, WrenchAdjustable } from "react-bootstrap-icons";
 interface DesyncWindowProps {
   title: string;
   message: string;
+  button: string;
 }
 
-export default function DesyncWindow({ title, message }: DesyncWindowProps ) {
+export default function DesyncWindow({ title, message, button }: DesyncWindowProps ) {
   const callback = () => {
     window.location.reload()
   }
@@ -25,7 +26,7 @@ export default function DesyncWindow({ title, message }: DesyncWindowProps ) {
             { message }
           </div>
           <button onClick={() => callback()} className="custom-button game-notification-button nowrap">
-            <WrenchAdjustable />attempt to reconnect
+            <WrenchAdjustable />{button}
           </button>
         </div>
       </div>

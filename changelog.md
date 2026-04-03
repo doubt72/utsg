@@ -1,3 +1,17 @@
+## 0.31 alpha
+
+- Slowed down animations a bit
+- Improve drift display
+- Slightly refactored map display to deal with taller maps more elegantly
+- Tweaked main page/about to add announcement
+- Bug fix: can't fire at units inside vehicles, only vehicles
+- Bug fix: rally selection fix (probably)
+- Bug fix: fix problems with weilding enemy infantry weapons
+- Bug fix: fix VP not switching after hex vacated due to rout
+- Bug fix: fix loadable counters not being in active layer on move
+- Bug fix: weapon broken animation should be in location of broken weapon
+- Updated 011
+
 ## 0.30 alpha
 
 - Bug fix: several weirdnesses from support weapons lying around

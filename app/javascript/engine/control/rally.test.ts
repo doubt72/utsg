@@ -3,7 +3,7 @@ import { createBlankGame, testGInf, testGLdr, testGMG } from "./testHelpers";
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import Unit from "../Unit";
 import RallyAction from "../actions/RallyAction";
-import RallyState from "./state/RallyState";
+import RallyState, { leaderAtHex } from "./state/RallyState";
 import { gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
 import Counter from "../Counter";
@@ -204,8 +204,7 @@ describe("rallying", () => {
     expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
-    const state = game.rallyState
-    expect(state.leaderAtHex(0, 0)).toBe(true)
+    expect(leaderAtHex(game, 0, 0, game.currentPlayer, undefined)).toBe(true)
 
     unit1.select()
 
@@ -243,8 +242,7 @@ describe("rallying", () => {
     expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
-    const state = game.rallyState
-    expect(state.leaderAtHex(0, 0)).toBe(false)
+    expect(leaderAtHex(game, 0, 0, game.currentPlayer, undefined)).toBe(false)
 
     unit1.select()
 
@@ -317,7 +315,6 @@ describe("rallying", () => {
   test("failed 'free' rally doesn't count for rally check", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.PrepRally
-    game.setCurrentPlayer(2)
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"

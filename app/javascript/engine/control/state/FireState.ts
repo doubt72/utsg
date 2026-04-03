@@ -156,6 +156,12 @@ export default class FireState extends BaseState {
           return false
         }
       }
+      if (target.parent && target.parent.isVehicle) {
+        if (!target.parent || !this.samePlayer(target.parent)) {
+          this.game.addMessage("can't target units in vehicles")
+          return false
+        }
+      }
     }
     return true
   }

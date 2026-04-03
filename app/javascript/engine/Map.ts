@@ -16,7 +16,7 @@ import { countersFromUnits, MapCounterData, sortStacks } from "./support/organiz
 import BaseAction from "./actions/BaseAction";
 import { otherPlayer, stackLimit } from "../utilities/utilities";
 import { GameActionUnit } from "./GameAction";
-import { alreadyRallied } from "./control/state/RallyState";
+import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -428,6 +428,7 @@ export default class Map {
     this.units[from.y][from.x] = this.units[from.y][from.x].filter(u => u.id !== id)
     insert.unit.children.push(counter.unit)
     counter.unit.parent = insert.unit
+    counter.unit.playerNation = insert.unit.playerNation
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {
@@ -595,16 +596,6 @@ export default class Map {
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
         const loc = new Coordinate(x, y)
-        let unbrokerLeader = false
-        for (const c of this.countersAt(loc)) {
-          const unit = c.unit as Unit
-          if (!unit.isFeature) {
-            const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
-            if (player === unitPlayer && !unit.isBroken && unit.leader) {
-              unbrokerLeader = true
-            }
-          }
-        }
         for (const c of this.countersAt(loc)) {
           const unit = c.unit as Unit
           if (!unit.isFeature) {
@@ -612,7 +603,7 @@ export default class Map {
             if (player === unitPlayer) {
               if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck)) &&
                   !alreadyRallied(this.game, unit.id)) {
-                if (unbrokerLeader || this.game.freeRallyAvailable(player)) { return true }
+                if (leaderAtHex(this.game, x, y, unitPlayer, unit) || this.game.freeRallyAvailable(player)) { return true }
               }
             }
           }
@@ -663,7 +654,7 @@ export default class Map {
     let playerOne = false
     let playerTwo = false
     for (const c of this.countersAt(loc)) {
-      if (c.hasUnit && !c.unit.isWreck && !c.unit.uncrewedSW && !c.unit.crewed) {
+      if (c.hasUnit && !c.unit.isWreck && !c.unit.operated) {
         c.unit.playerNation === this.game?.playerOneNation ? playerOne = true : playerTwo = true
       }
     }

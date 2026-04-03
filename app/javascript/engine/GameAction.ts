@@ -73,6 +73,7 @@ export type GameActionFireData = {
   start: { x: number, y: number, smoke: boolean }[],
   final: { x: number, y: number, smoke: boolean }[],
   moveSeq?: number,
+  drift?: boolean,
 }
 
 export type GameActionFireStartData = {

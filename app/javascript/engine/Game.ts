@@ -317,7 +317,7 @@ export default class Game {
       } else if (d.type === "noeffect") {
         return { loc: d.loc, message: ["no", "effect"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "drift") {
-        return { loc: d.loc, message: ["miss", "drifts"], textColor: "#FFF", backgroundColor: "#00E" }
+        return { loc: d.loc, message: ["drifts"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "jammed") {
         return { loc: d.loc, message: ["weapon", "broken"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "destroyed") {
@@ -681,7 +681,6 @@ export default class Game {
         })
       }
       if (action.type === "close_combat_reduce") {
-        console.log("reducing")
         const reduce = action as CloseCombatReduceAction
         for (const c of checks) {
           if (c.loc.x !== reduce.target.x || c.loc.y !== reduce.target.y) { continue }

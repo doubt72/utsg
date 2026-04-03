@@ -107,12 +107,15 @@ function deployment(game: Game, data: GameActionData): void {
 }
 
 function prepRally(game: Game, data: GameActionData): void {
+  console.log("check rally")
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = phaseData.new_phase
   const player = phaseData.new_player
   if (game.scenario.map.anyUnitsCanRally(player)) {
+    console.log("YES")
     if (game.lastAction?.type !== "rally_pass") { return }
   }
+  console.log("hey what")
   phaseData.messages.push(`${formatNation(game, player)} rally complete`)
   phaseData.new_player = otherPlayer(player)
   if (player === game.currentInitiativePlayer) {
