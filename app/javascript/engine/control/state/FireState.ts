@@ -261,7 +261,7 @@ export default class FireState extends BaseState {
   
   smokeToggle() {
     this.smoke = !this.smoke
-    this.targetHexes = []
+    if (this.targetSelection.length > 0) { this.targetHexes = [] }
     this.targetSelection = []
     this.map.clearAllTargetSelections()
   }

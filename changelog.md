@@ -1,9 +1,10 @@
 ## 0.35 alpha
 
-- Completely refactor animations
+- Completely refactor action animations
 - Let player undo passing reaction fire
 - Disable LOS overlay/terrain buttons/overlays/tooltips when state overlays on
 - Deployment panel only shows the clicky-clicky if it's a deployment phase
+- Bug fix: issue targeting open hexes with artillery
 - Bug fix: roll back VP/loading/dropping for shorted moves (uh, let's not speak of smoke)
 - Bug fix: fire help adding up cover from all firing units but should use minimum cover
 - Bug fix: rout can switch VPs by routing into/through them

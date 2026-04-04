@@ -16,10 +16,11 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
     if (action && fireActions.includes(action.type) &&
        (map.game.gameState === undefined || map.game.gameState.type == "reaction" ||
         map.game.gameState.type === "fire_start" || map.game.gameState.type === "init" ||
-         map.game.gameState.type == "pass" || (map.game.gameState?.type === "fire" &&
-          map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
+        map.game.gameState.type === "morale" ||
+        map.game.gameState.type == "pass" || (map.game.gameState?.type === "fire" &&
+        map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
       const origins = action.origin
-      const targets = action.target
+      const targets = action.target.length < 1 ? action.fireHex.start : action.target
       for (let i = 0; i < origins.length; i++) {
         const sel = origins[i]
         for (let j = 0; j < targets.length; j++) {
@@ -33,7 +34,7 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
         }
       }
       if (action.fireHex.drift) {
-        const start = action.target[0]
+        const start = action.target[0] ?? action.fireHex.start[0]
         const end = action.fireHex.final[0]
         const x1 = map.xOffset(start.x, start.y)
         const y1 = map.yOffset(start.y)

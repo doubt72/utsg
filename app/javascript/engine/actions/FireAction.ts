@@ -252,7 +252,7 @@ export default class FireAction extends BaseAction {
           } else {
             const dTarget0 = dTargets[0]?.counter ?? target0
             let infantry = false
-            let unit = dTarget0.unit
+            let unit = dTarget0?.unit
             for (const t of dTargets) {
               if (t.counter.unit.canCarrySupport) {
                 infantry = true

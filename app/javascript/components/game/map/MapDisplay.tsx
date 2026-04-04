@@ -378,12 +378,13 @@ export default function MapDisplay({
     } else if (action && fireActions.includes(action.type) &&
            (map.game?.gameState === undefined || map.game.gameState.type === "reaction" ||
             map.game.gameState.type === "fire_start" || map.game.gameState.type === "init" ||
-             map.game.gameState.type === "pass" || (map.game.gameState?.type === "fire" &&
-              map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
+            map.game.gameState.type === "morale" ||
+            map.game.gameState.type === "pass" || (map.game.gameState?.type === "fire" &&
+            map.game.fireState.targetSelection.length < 1 && map.game.fireState.reaction))) {
       const hexes: JSX.Element[] = []
       const fireAction = action as FireAction
       const coords: Coordinate[] = []
-      for (const t of fireAction.target) {
+      for (const t of (fireAction.target.length < 1 ? fireAction.fireHex.start : fireAction.target)) {
         let found = false
         for (const c of coords) {
           if (c.x === t.x && c.y === t.y) { found = true; break }

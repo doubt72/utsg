@@ -1,10 +1,9 @@
 High Priority Features/Bug Fixes:
-  - Problem with shooting at open terrain
+  + Problem with artillery fire at open terrain
   - Dropping undo move is messed up (specifically, dropping units with carried weapons)
   - Fix hindrance bug
     - Through two fence corner intersections
   - Romanian vehicles don't seem to be at higher breakdown in 006
-  - Roll back smoke on reaction fire?
 
 New features
   - Refactor deploy:
@@ -12,6 +11,7 @@ New features
     - Split/Join squads during deploy / Split/join squads during game
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
+  - Roll back smoke on reaction fire?
 
   - Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
 
