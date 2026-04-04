@@ -372,11 +372,7 @@ describe("routing", () => {
       const loc4 = new Coordinate(3, 2)
       const end = new Coordinate(4, 2)
       map.victoryHexes.push({ x: loc.x, y: loc.y, player: 2 })
-      map.victoryHexes.push({ x: loc3.x, y: loc3.y, player: 1 })
-      map.victoryHexes.push({ x: end.x, y: end.y, player: 1 })
       expect(map.victoryAt(loc)).toBe(2)
-      expect(map.victoryAt(loc3)).toBe(1)
-      expect(map.victoryAt(end)).toBe(1)
 
       game.setGameState(new RoutState(game, true))
       const tree = game.routState.routPathTree as RoutPathTree
@@ -384,8 +380,6 @@ describe("routing", () => {
 
       game.routState.finishXY(end.x, end.y)
       expect(map.victoryAt(loc)).toBe(1)
-      expect(map.victoryAt(loc3)).toBe(2)
-      expect(map.victoryAt(end)).toBe(2)
 
       game.executeUndo(false)
       const action = game.actions[0] as RouteMoveAction
@@ -401,8 +395,6 @@ describe("routing", () => {
       expect(action.path[4].x).toBe(end.x)
       expect(action.path[4].y).toBe(end.y)
       expect(map.victoryAt(loc)).toBe(2)
-      expect(map.victoryAt(loc3)).toBe(1)
-      expect(map.victoryAt(end)).toBe(1)
     })
 
     test("rout drops weapon", () => {

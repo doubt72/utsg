@@ -32,7 +32,7 @@ export default class FireState extends BaseState {
     if (this.reaction) {
       placeReactionFireGhosts(game)
       const action = this.game.lastSignificantAction
-      if (action?.type === "move") { this.moveSeq = action.sequence }
+      if (action && ["move", "rush"].includes(action.type)) { this.moveSeq = action.sequence }
     }
     if (selection.unit.sponson && (selection.unit.jammed || selection.unit.weaponDestroyed)) {
       this.sponson = false
@@ -146,7 +146,7 @@ export default class FireState extends BaseState {
         return false
       }
     } else {
-      if (sc.unit.canCarrySupport && tc.unit.armored) {
+      if ((sc.unit.canCarrySupport || sc.unit.rapidFire) && tc.unit.armored && !this.sponson) {
         this.game.addMessage("light weapons can't damage armored units")
         return false
       }

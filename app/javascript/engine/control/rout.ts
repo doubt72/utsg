@@ -96,7 +96,7 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
     if (c.hasFeature && c.feature.currentMovement === "A") { return false }
     if (c.hasUnit) {
       if (c.unit.isVehicle || c.unit.canCarrySupport) {
-        if (c.unit.nation !== unit.nation && !c.unit.isWreck) { return false }
+        if (c.unit.playerNation !== unit.playerNation && !c.unit.isWreck) { return false }
         toSize += c.unit.size
       }
     }

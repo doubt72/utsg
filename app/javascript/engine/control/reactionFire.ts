@@ -46,7 +46,8 @@ export function reactionFireCheck(game: Game, action: boolean = true): boolean {
 export function reactionAvailableCoords(game: Game): Coordinate[] {
   const rc: Coordinate[] = []
   const action = game.lastSignificantAction as MoveAction
-  const otherNation = game.findUnitById(action.origin[0].id)?.playerNation
+  const otherUnit = game.findUnitById(action.origin[0].id)
+  const otherNation = otherUnit?.playerNation
   const map = game.scenario.map
   const targets = reactionFireHexes(game)
   for (let x = 0; x < map.width; x++) {
@@ -64,6 +65,7 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
             if (c.unit.parent === undefined) { continue }
             if (c.unit.parent.isBroken || c.unit.parent.isExhausted) { continue }
           }
+          if ((c.unit.canCarrySupport || c.unit.rapidFire) && otherUnit?.armored) { continue }
           if (c.unit.isExhausted) { continue }
           if (c.unit.crewed && c.unit.isActivated) { continue }
           if (c.unit.children.length > 0 && c.unit.children[0].crewed) { continue }
@@ -181,7 +183,6 @@ export function placeReactionMoraleCheckGhosts(game: Game, loc: Coordinate) {
   const fireAction = game.lastSignificantAction as FireAction
   if (!["reaction_fire", "reaction_intensive_fire"].includes(fireAction?.type) ||
       !fireAction?.reaction || fireAction?.fireHex.moveSeq === undefined) { return }
-
   const action = game.findActionBySequence(fireAction.fireHex.moveSeq) as MoveAction
   if (!action) { return }
 

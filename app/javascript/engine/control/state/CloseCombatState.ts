@@ -113,7 +113,7 @@ export default class CloseCombatState extends BaseState {
   reduceUnit() {
     const counter = this.map.currentSelection[0]
     const hex = counter.hex as Coordinate
-    const player = counter.unit.nation === this.game.currentPlayerNation ? this.game.currentPlayer :
+    const player = counter.unit.playerNation === this.game.currentPlayerNation ? this.game.currentPlayer :
       this.game.opponentPlayer
     const action = new GameAction({
       user: this.game.currentPlayer === player ? this.game.currentUser : this.game.opponentUser,

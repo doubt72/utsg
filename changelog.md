@@ -1,3 +1,14 @@
+## 0.36 alpha
+
+- Changed my mind about routed units capturing VPs (now flip on successful rally)
+- Only anti-armor capable units show reaction fire for tanks
+- Bug fix: fix display problem with undoing moves
+- Bug fix: prevent selection of units in reinforcement panel if not deploying
+- Bug fix: fix skipping deployment for initiative player in turns after the first
+- Bug fix: rapid fire units attacks on armored units should be forbidden
+- Bug fix: ghosts not showing up for morale checks on reaction fire after rush
+- Bug fix: prevent rout all showing on minor nations when nothing to rout (and other nation/playerNation mismatches)
+
 ## 0.35 alpha
 
 - Completely refactor action animations
@@ -7,7 +18,7 @@
 - Bug fix: issue targeting open hexes with artillery
 - Bug fix: roll back VP/loading/dropping for shorted moves (uh, let's not speak of smoke)
 - Bug fix: fire help adding up cover from all firing units but should use minimum cover
-- Bug fix: rout can switch VPs by routing into/through them
+- Bug fix: rout should be able to switch VPs by routing into/through them
 - Bug fix: gun needs to not be fired to be shown as available for reaction fire
 - Bug fix: allow smoke click on path
 - Bug fix: disallow radios from laying smoke

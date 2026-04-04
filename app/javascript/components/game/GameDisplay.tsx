@@ -161,7 +161,7 @@ export default function GameDisplay() {
     if (!game.k) { return }
     if (game.k.serverVersion === serverVersion) { return }
     const message = "The server version has been updated since you last loaded this game and " +
-      "the game cannot continue unless the game is reloaded."
+      "the game cannot continue unless the it is reloaded."
     setErrorWindow(
       <DesyncWindow title={"Server Version Mismatch"} message={message} button={"reload"} />
     )

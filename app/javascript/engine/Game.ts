@@ -668,7 +668,7 @@ export default class Game {
     return undefined
   }
 
-  checkLastSAIsRush(player: Player): boolean {
+  checkLastSAIsRout(player: Player): boolean {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone || a.player !== player) { continue }
@@ -716,8 +716,8 @@ export default class Game {
           if (uf.isFeature) { return }
           const u = uf as Unit
           if (u.operated) { return }
-          if (u.nation === this.playerOneNation) { one = true }
-          if (u.nation === this.playerTwoNation) { two = true }
+          if (u.playerNation === this.playerOneNation) { one = true }
+          if (u.playerNation === this.playerTwoNation) { two = true }
         })
         if (one && two) {
           let found: CloseCheck | undefined = undefined
@@ -868,7 +868,7 @@ export default class Game {
   sortedCasualties(player: Player): ReinforcementList {
     const set: { [index: string]: { x: number, c: Unit } } = {}
     for (const c of this.eliminatedUnits) {
-      if (c.isFeature || c.nation !== (player === 1 ? this.playerOneNation : this.playerTwoNation)) {
+      if (c.isFeature || c.playerNation !== (player === 1 ? this.playerOneNation : this.playerTwoNation)) {
         continue
       }
       const key = counterKey(c)

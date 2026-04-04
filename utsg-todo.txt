@@ -1,23 +1,18 @@
-High Priority Features/Bug Fixes:
-  + Problem with artillery fire at open terrain
-  - Dropping undo move is messed up (specifically, dropping units with carried weapons)
-  - Fix hindrance bug
-    - Through two fence corner intersections
-  - Romanian vehicles don't seem to be at higher breakdown in 006
-
-New features
+Features/Bug Fixes:
+  + Only infantry with tank move doesn't trigger reaction check
+  + Are initiative deploys getting skipped after wind speed check?
+  + Prevent selection of ghosted units in deploy panel
+  + Dropping undo move is messed up (specifically, dropping units with carried weapons)
   - Refactor deploy:
     - Allow undeploy
     - Split/Join squads during deploy / Split/join squads during game
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
   - Roll back smoke on reaction fire?
-
+  - Romanian vehicles don't seem to be at higher breakdown in 006
   - Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
-
   - Email turn notifications
   - Live cable updates on home page
-
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
   - Create tutorial

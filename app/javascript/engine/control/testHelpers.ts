@@ -1,4 +1,5 @@
 import { baseTerrainType, weatherType, windType } from "../../utilities/commonTypes"
+import { serverVersion } from "../../utilities/utilities"
 import { FeatureData } from "../Feature"
 import Game from "../Game"
 import { HexData } from "../Hex"
@@ -165,7 +166,7 @@ export const createBlankGame = (hexes: HexData[][] = plainTestHexes): Game => {
 
 export const createTestGame = (hexes: HexData[][]): Game => {
   const game = new Game({
-    id: 1,
+    id: 1, server_version: serverVersion,
     name: "test game", scenario: scenarioTestData(hexes), scenario_version: "0.01",
     owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
     metadata: { turn: 0 },
@@ -176,7 +177,7 @@ export const createTestGame = (hexes: HexData[][]): Game => {
 
 export const createInProgressGame = (hexes: HexData[][]): Game => {
   const game = new Game({
-    id: 1,
+    id: 1, server_version: serverVersion,
     name: "test game", scenario: scenarioTestData(hexes), scenario_version: "0.01",
     owner: "one", state: "in_progress", player_one: "one", player_two: "two", current_player: "two",
     metadata: { turn: 1 },

@@ -33,13 +33,13 @@ export function closeCombatFirepower(game: Game, loc: Coordinate, player: Player
   let leadership = 0
   const counters = game.scenario.map.countersAt(loc)
   for (const c of counters) {
-    if (c.unit.nation !== nation || !c.unit.leader) { continue }
+    if (c.unit.playerNation !== nation || !c.unit.leader) { continue }
     if (c.unit.currentLeadership > leadership) { leadership = c.unit.currentLeadership }
   }
   for (const c of counters) {
     if (!c.hasUnit) { continue }
-    if (c.unit.nation !== nation && !c.unit.parent) { continue }
-    if (c.unit.parent && c.unit.parent.nation !== nation) { continue }
+    if (c.unit.playerNation !== nation) { continue }
+    if (c.unit.operated && !c.unit.parent) { continue }
     if (c.unit.canCarrySupport && !c.unit.leader) {
       rc += c.unit.closeCombatFirepower + leadership
     } else {

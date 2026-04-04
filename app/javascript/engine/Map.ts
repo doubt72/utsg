@@ -14,7 +14,7 @@ import Feature from "./Feature";
 import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
-import { otherPlayer, stackLimit } from "../utilities/utilities";
+import { otherPlayer, playerForNation, stackLimit } from "../utilities/utilities";
 import { GameActionUnit } from "./GameAction";
 import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
 
@@ -599,7 +599,7 @@ export default class Map {
         for (const c of this.countersAt(loc)) {
           const unit = c.unit as Unit
           if (!unit.isFeature) {
-            const unitPlayer = unit.playerNation === this.game?.playerOneNation ? 1 : 2
+            const unitPlayer = playerForNation(unit, this.game)
             if (player === unitPlayer) {
               if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck)) &&
                   !alreadyRallied(this.game, unit.id)) {
@@ -857,7 +857,7 @@ export default class Map {
     })
     if (this.game && this.game?.fireDisplaceNeeded.length > 0) {
       const unit = this.game.fireDisplaceNeeded[0].unit
-      const player = unit.playerNation === this.game.playerOneNation ? 1 : 2
+      const player = playerForNation(unit, this.game)
       this.game.setCurrentPlayer(player)
     }
     sortStacks(this)

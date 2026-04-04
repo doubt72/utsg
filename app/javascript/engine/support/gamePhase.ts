@@ -258,7 +258,7 @@ function cleanupWeather(game: Game, data: GameActionData): void {
   if (game.checkWindDirection || game.checkWindSpeed) { return }
   phaseData.messages.push("variable wind check complete")
   phaseData.new_phase = gamePhaseType.Deployment
-  phaseData.new_player = game.scenario.firstAction
+  phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_turn = oldTurn + 1
   phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} deployment`)
   deployment(game, data)

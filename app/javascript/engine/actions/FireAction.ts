@@ -2,7 +2,8 @@ import { Coordinate, featureType, sponsonType } from "../../utilities/commonType
 import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
 import {
   baseToHit, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
-  rolld6, smokeRoll, otherPlayer
+  rolld6, smokeRoll, otherPlayer,
+  playerForNation
 } from "../../utilities/utilities";
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
@@ -60,7 +61,7 @@ export default class FireAction extends BaseAction {
   }
 
   formatUnit(unit: Unit): string {
-    const player = unit.playerNation === this.game.playerOneNation ? 1 : 2
+    const player = playerForNation(unit, this.game)
     return formatNation(this.game, player, unit.name)
   }
 

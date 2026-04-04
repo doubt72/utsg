@@ -60,8 +60,11 @@ describe("rallying", () => {
     const unit = new Unit(testGInf)
     unit.id = "test"
     unit.break()
-    map.addCounter(new Coordinate(0,0), unit)
+    const loc = new Coordinate(0, 0)
+    map.addCounter(loc, unit)
 
+    map.toggleVP(loc)
+    expect(map.victoryAt(loc)).toBe(1)
     expect(map.anyUnitsCanRally(2)).toBe(true)
 
     game.setGameState(new RallyState(game))
@@ -81,6 +84,7 @@ describe("rallying", () => {
     )
     expect(map.anyUnitsCanRally(2)).toBe(false)
     expect(game.lastAction?.type).toBe("phase")
+    expect(map.victoryAt(loc)).toBe(2)
   })
 
   test("rally fails", () => {

@@ -1043,26 +1043,17 @@ export const mapDebugData: {
     x: 5,
     y: 5,
     units: [
-      { u: testUnitData.ginf, x: 3, y: 2 },
-      { u: testUnitData.rinf, x: 4, y: 0 },
-      { u: testUnitData.rinf, x: 4, y: 4 },
-      { u: testUnitData.rinf, x: 4, y: 2 },
-      { u: testUnitData.rinf, x: 0, y: 2 },
-      { u: testUnitData.rinf, x: 2, y: 0 },
-      { u: testUnitData.rinf, x: 2, y: 4 },
+      { u: testUnitData.ginf, x: 3, y: 0 },
+      { u: testUnitData.ginf, x: 2, y: 3 },
+      { u: testUnitData.ginf, x: 1, y: 2 },
     ],
     features: [],
     hexes: [
-      [{ t: "o" }, { t: "o" }, { t: "o", b: "w", be: [5] }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "b" }, { t: "o" }],
-      [
-        { t: "o" },
-        { t: "o", s: { d: [4, 6], t: "t" } },
-        { t: "o", s: { d: [1, 5], t: "t" } },
-        { t: "o" }, { t: "b" }
-      ],
+      [{ t: "o" }, { t: "o" }, { t: "o", b: "f", be: [1, 2, 3, 4, 5, 6] }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o", h: 1 }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
     ],
   },
 ]

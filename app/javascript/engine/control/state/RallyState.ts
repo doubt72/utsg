@@ -43,7 +43,7 @@ export function leaderAtHex(game: Game, x: number, y: number, player: Player, ch
   for (const c of counters) {
     const u = c.unit
     if (!u.isFeature) {
-      if (u.nation === nation && u.id !== checkedUnit?.id) {
+      if (u.playerNation === nation && u.id !== checkedUnit?.id) {
         if (!u.isBroken && u.leader) { return true }
       }
     }

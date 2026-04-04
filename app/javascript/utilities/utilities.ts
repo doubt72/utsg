@@ -1,4 +1,5 @@
 import Feature from "../engine/Feature"
+import Game from "../engine/Game"
 import Unit from "../engine/Unit"
 import { Coordinate, Direction, Player } from "./commonTypes"
 
@@ -53,6 +54,10 @@ export function axisCodeToName(code: string): string {
   }
 
   return "Unknown"
+}
+
+export function playerForNation(unit: Unit, game: Game): Player {
+  return unit.playerNation === game.playerOneNation ? 1 : 2
 }
 
 export function getFormattedDate(date: [number, number, number]): string {
@@ -248,4 +253,4 @@ export const baseMorale = 15
 export const baseRally = 12
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.35"
+export const serverVersion = "0.36"

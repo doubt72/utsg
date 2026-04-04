@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
+import { playerForNation } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -28,7 +29,7 @@ export default class FireDisplaceAction extends BaseAction {
   get htmlValue(): string {
     const unit = this.game.findUnitById(this.target.id) as Unit
     const start = formatCoordinate(new Coordinate(this.target.x, this.target.y))
-    const player = unit.nation === this.game.playerOneNation ? 1 : 2
+    const player = playerForNation(unit, this.game)
     const nation = formatNation(this.game, player)
     let rc = `${nation} ${formatNation(this.game, player, unit.name)} at ${start} is displaced by fire `
     if (this.path.length > 1) {

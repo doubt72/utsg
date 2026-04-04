@@ -370,21 +370,37 @@ export default class MoveState extends BaseState {
         ) {
           const units = this.game.scenario.map.units[lastAdd.y][lastAdd.x]
           let name = "Smoke"
+          let child = ""
           if (lastAdd.type !== gameActionAddActionType.Smoke) {
             for (const s of this.selection) {
-              if (lastAdd.id === s.id) { name = s.counter.unit.name; break }
+              if (lastAdd.id === s.id) {
+                name = s.counter.unit.name
+                // should only ever have one child (i.e., can only drop one squad at a time),
+                // and nothing else could ever be dropped that has a child
+                if (s.counter.unit.children.length > 0) {
+                  child = s.counter.unit.children[0].name
+                }
+                break
+              }
             }
           }
           let index = -1
           for (let i = 0; i < units.length; i++) {
             const u = units[i]
-            if (u.ghost && u.name === name) {
-              index = i
-              break
-            }
+            if (u.ghost && u.name === name) { index = i; break }
           }
           if (index > -1) {
             units.splice(index, 1)
+          }
+          if (child !== "") {
+            index = -1
+            for (let i = 0; i < units.length; i++) {
+              const u = units[i]
+              if (u.ghost && u.name === child) { index = i; break }
+            }
+            if (index > -1) {
+              units.splice(index, 1)
+            }
           }
         }
         return

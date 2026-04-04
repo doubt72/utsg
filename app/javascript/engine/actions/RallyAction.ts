@@ -1,6 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passGreen } from "../../utilities/graphics";
-import { baseRally } from "../../utilities/utilities";
+import { baseRally, playerForNation } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import Unit from "../Unit";
@@ -77,6 +77,10 @@ export default class RallyAction extends BaseAction {
       if (unit.isBroken) {
         unit.resetStatus()
         this.game.addActionAnimations([{ loc, type: "rally" }])
+        const vp = this.map.victoryAt(loc)
+        if (vp && vp !== playerForNation(unit, this.game) && !this.map.contactAt(loc)) {
+          this.map.toggleVP(loc)
+        }
       }
       if (unit.jammed) {
         unit.jammed = false

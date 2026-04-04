@@ -550,10 +550,10 @@ function canRout(unit?: Unit): boolean {
 
 function canEnemyRout(map?: Map): boolean {
   if (!map || !map.game) { return false }
-  if (map.game.checkLastSAIsRush(map.game.currentPlayer)) { return false }
+  if (map.game.checkLastSAIsRout(map.game.currentPlayer)) { return false }
   const units = map.allUnits
   for (const u of units) {
-    if (u.unit.nation !== map.game?.currentPlayerNation && u.unit.isBroken && !u.unit.routed) { return true }
+    if (u.unit.playerNation !== map.game?.currentPlayerNation && u.unit.isBroken && !u.unit.routed) { return true }
   }
   return false
 }
