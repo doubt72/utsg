@@ -70,7 +70,7 @@ export type CloseCheck = {
 }
 
 export type ActionAnimationDetails = {
-  loc: Coordinate, message: string[], textColor: string, backgroundColor: string
+  index: number, loc: Coordinate, message: string[], textColor: string, backgroundColor: string
 }
 
 export default class Game {
@@ -111,6 +111,7 @@ export default class Game {
 
   messageQueue: string[];
   animationQueue: ActionAnimationDetails[];
+  animationIndex: number = 1;
   updateTimer: NodeJS.Timeout | undefined;
   resignationLevel: number;
 
@@ -368,7 +369,18 @@ export default class Game {
       console.log(`unexpected anim type ${d.type}`)
       return { loc: d.loc, message: ["???"], textColor: "#EE0", backgroundColor: "#000" }
     })
-    this.animationQueue = this.animationQueue.concat(animations)
+    // Stagger adding independent animations
+    for (let i = 0; i < animations.length; i++) {
+      const a = animations[i]
+      const index = this.animationIndex++
+      setTimeout(() => {
+        this.animationQueue.push({
+          index, loc: a.loc, message: a.message, textColor: a.textColor,
+          backgroundColor: a.backgroundColor,
+        })
+        this.refreshCallback(this)
+      }, i * 1000)
+    }
   }
 
   getActionAnimations(): ActionAnimationDetails[] {

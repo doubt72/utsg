@@ -1,8 +1,5 @@
 High Priority Features/Bug Fixes:
-  + Rout should be able to capture VPs
-  + Something wrong with calculation for cover for help (adding all sides?)
-  + Reaction fire should cancel VP in later hex (all later add actions?)
-  - Animation still getting stuck -- refactor this
+  - Problem with shooting at open terrain
   - Dropping undo move is messed up (specifically, dropping units with carried weapons)
   - Fix hindrance bug
     - Through two fence corner intersections

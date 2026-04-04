@@ -36,6 +36,7 @@ import { fireActions, moveActions } from "../../../engine/actions/BaseAction";
 import { GameActionFireData, GameActionPath } from "../../../engine/GameAction";
 import { ActionAnimationDetails } from "../../../engine/Game";
 import FireAction from "../../../engine/actions/FireAction";
+import ActionAnimation from "./ActionAnimation";
 
 interface MapDisplayProps {
   map: Map;
@@ -109,11 +110,9 @@ export default function MapDisplay({
     error: string, timer: number
   }>({ error: "", timer: 0 })
 
-  const [actionAnimation, setActionAnimation] = useState<JSX.Element | undefined>()
-  const [actionAnimationDetails, setActionAnimationDetails] = useState<{
-    details: ActionAnimationDetails[], timer: number, state: "in" | "show" | "out", size: number,
-  } | undefined>()
-  const [actionAnimationFallback, setActionAnimationFallback] = useState<NodeJS.Timeout | undefined>()
+  const [actionAnimationDetails, setActionAnimationDetails] = useState<
+    { timer: number, details: ActionAnimationDetails }[]
+  >([])
 
   const user = localStorage.getItem("username")
 
@@ -206,112 +205,38 @@ export default function MapDisplay({
     }
   }, [map.game?.messageQueue.length])
 
-  const actionAnimationIn = 80
-
-  useEffect(() => {
-    if (!map.game) { return }
-    if (!actionAnimationDetails) { return }
-    if (actionAnimationDetails.details.length < 1) { return }
-    const showLength = 400
-    const animationOut = 520
-    const timer = actionAnimationDetails.timer
-    const state = actionAnimationDetails.state
-    const size = actionAnimationDetails.size
-    if (timer <= 0) {
-      if (state === "in") {
-        setActionAnimationDetails(s => {
-          if (!s) { return s }
-          return {
-            details: s.details, timer: showLength, state: "show", size
-          }
-        })
-      } else if (state === "show") {
-        setActionAnimationDetails(s => {
-          if (!s) { return s }
-          return {
-            details: s.details, timer: animationOut, state: "out", size
-          }
-        })
-      } else if (state === "out") {
-        if (actionAnimationDetails.details.length > 1) {
-          setActionAnimationDetails(s => {
-            if (!s) { return s }
-            return {
-              details: s.details.slice(1), timer: actionAnimationIn, state: "in", size: 1
-            }
-          })
-        } else {
-          setActionAnimationDetails(undefined)
-          setActionAnimation(undefined)
-        }
-      }
-      return
-    }
-    let alpha = 1.0
-    if (state === "in") { alpha = 1 - timer / actionAnimationIn }
-    if (state === "out") { alpha = timer / animationOut }
-    const details = actionAnimationDetails.details[0]
-    const message = details.message
-    const textSize = 80 / Math.sqrt(message.reduce((max, m) => m.length > max ? m.length : max, 0))
-    const outlineSize = textSize/5 > 8 ? 8 : textSize/5
-    const hex = map.hexAt(details.loc) as Hex
-    const x = hex.xOffset
-    const yInterval = textSize * 1.1
-    const y = hex.yOffset + textSize / 4 - (message.length / 2 - 0.5) * yInterval
-    const color = details.textColor
-    const bg = details.backgroundColor
-    setActionAnimation(
-      <g opacity={alpha}
-         transform={`translate(${(1 - size)*x} ${(1 - size)*y}) scale(${size})`}>
-        { message.map((m, i) => {
-            return <text key={i} x={x} y={y + i*yInterval - size*12} fontSize={textSize}
-                         fontFamily="'Courier Prime', monospace"
-                         textAnchor="middle" style={{
-                           fill: color, stroke: bg, paintOrder: "stroke", strokeWidth: outlineSize,
-                         }}>{m}</text>
-        })}
-      </g>
+  const animations = (): JSX.Element[] => {
+    return actionAnimationDetails.map((a, i) =>
+      <ActionAnimation key={i} map={map} timer={a.timer} details={a.details} />
     )
-    setTimeout(() => setActionAnimationDetails(
-      s => {
-        if (!s) { return s }
-        return {
-          details: s.details, state, size: size + 0.02,
-          timer: s.timer - 20,
+  }
+
+  const animate = (index: number) => {
+    setTimeout(() => {
+      setActionAnimationDetails(s => {
+        const record = s[index]
+        if (!record) { return s }
+        if (record.timer <= 0) {
+          delete s[index]
+        } else {
+          s[index] = { timer: record.timer - 40, details: record.details }
+          animate(index)
         }
-      }
-    ), 30)
-    if (actionAnimationFallback) { clearTimeout(actionAnimationFallback) }
-    const to = setTimeout(() => {
-      if (actionAnimationDetails === undefined) { return }
-      console.log("resetting animation with fallback")
-      if (actionAnimationDetails.details.length > 1) {
-        setActionAnimationDetails(s => {
-          if (!s) { return s }
-          return {
-            details: s.details.slice(1), timer: actionAnimationIn, state: "in", size: 1
-          }
-        })
-      } else {
-        setActionAnimationDetails(undefined)
-        setActionAnimation(undefined)
-      }
-    }, 1000)
-    setActionAnimationFallback(to)
-  }, [
-    actionAnimationDetails, actionAnimationDetails?.timer, actionAnimationDetails?.state,
-    actionAnimationDetails?.details
-  ])
+        return s
+      })
+      updateCallback()
+    }, 40)
+  }
 
   useEffect(() => {
     if (!map.game) { return }
     if (map.game.animationQueue.length > 0) {
-      setTimeout(() => setActionAnimationDetails(s => {
-        if (!map.game || s !== undefined ) { return undefined }
-        return {
-          details: map.game.getActionAnimations(), timer: actionAnimationIn, state: "in", size: 1
-        }
-      }), 100)
+      const animation = map.game.animationQueue.pop() as ActionAnimationDetails
+      setActionAnimationDetails(s => {
+        s[animation.index] = { timer: 2000, details: animation }
+        return s
+      })
+      animate(animation.index)
     }
   }, [map.game?.animationQueue.length])
 
@@ -824,7 +749,7 @@ export default function MapDisplay({
           {routTrack}
           {fireHindrance}
           {directionSelectionOverlay}
-          {actionAnimation}
+          {animations()}
         </svg>
       )
     }

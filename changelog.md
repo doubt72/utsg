@@ -1,5 +1,6 @@
 ## 0.35 alpha
 
+- Completely refactor animations
 - Let player undo passing reaction fire
 - Disable LOS overlay/terrain buttons/overlays/tooltips when state overlays on
 - Deployment panel only shows the clicky-clicky if it's a deployment phase
