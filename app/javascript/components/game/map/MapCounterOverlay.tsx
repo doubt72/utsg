@@ -227,7 +227,7 @@ export default function MapCounterOverlay({
                 type: "reinforcement",
                 player: counter.reinforcement.player,
                 turn: counter.reinforcement.turn,
-                index: counter.reinforcement.index,
+                key: counter.reinforcement.key,
               }, counter: cd,
             }
           }

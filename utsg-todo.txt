@@ -1,9 +1,6 @@
 Features/Bug Fixes:
-  + Only infantry with tank move doesn't trigger reaction check
-  + Are initiative deploys getting skipped after wind speed check?
-  + Prevent selection of ghosted units in deploy panel
-  + Dropping undo move is messed up (specifically, dropping units with carried weapons)
   - Refactor deploy:
+    - Undo shouldn't unselect / should select
     - Allow undeploy
     - Split/Join squads during deploy / Split/join squads during game
   - Refactor firing:

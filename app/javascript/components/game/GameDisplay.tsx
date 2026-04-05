@@ -380,7 +380,7 @@ export default function GameDisplay() {
   const hexSelection = (x: number, y: number) => {
     if (game.k?.gameState?.type === stateType.Deploy) {
       const counter = game.k.availableReinforcements(game.k.currentPlayer)[game.k.turn][
-        game.k.deployState.index]
+        game.k.deployState.key]
       if (!counter.counter.rotates || !game.k.deployState.needsDirection) {
         game.k.deployState.toHex(x, y)
         game.k.gameState.finish()

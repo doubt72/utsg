@@ -1,3 +1,7 @@
+## 0.37 alpha
+
+- Refactoring deploy data structure
+
 ## 0.36 alpha
 
 - Changed my mind about routed units capturing VPs (now flip on successful rally)

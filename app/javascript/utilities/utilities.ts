@@ -1,7 +1,8 @@
 import Feature from "../engine/Feature"
 import Game from "../engine/Game"
+import { ReinforcementItem } from "../engine/Scenario"
 import Unit from "../engine/Unit"
-import { Coordinate, Direction, Player } from "./commonTypes"
+import { Coordinate, Direction, featureType, Player } from "./commonTypes"
 
 export function alliedCodeToName(code: string): string {
   const lookup = [
@@ -248,9 +249,37 @@ export function counterKey(c: Unit | Feature): string {
   return `${c.isFeature ? "feature" : c.nation}-${c.name.toLowerCase()}-${extra}`
 }
 
+export function sortReinforcementList(list: ReinforcementItem[]): ReinforcementItem[]  {
+  const sortValues = (unit: Unit | Feature): number => {
+    if (unit.isFeature && unit.type === featureType.Sniper) { return 16 }
+    if (unit.isFeature && unit.type === featureType.Wire) { return 15 }
+    if (unit.isFeature && unit.type === featureType.Mines) { return 14 }
+    if (unit.isFeature) { return 13 }
+    const u = unit as Unit
+    return {
+      ldr: 1, sqd: 2, tm: 3, sw: 4, gun: 5, tank: 6, spg: 7, ac: 8, ht: 9, truck: 10,
+      cav: 11, other: 12,
+    }[u.type]
+  }
+
+  return list.sort((a, b) => {
+    let rc = sortValues(a.counter) - sortValues(b.counter)
+    if (rc === 0 && !a.counter.isFeature) {
+      const au = a.counter as Unit
+      const bu = b.counter as Unit
+      if (rc === 0) { rc = bu.size - au.size }
+      if (rc === 0) { rc = bu.baseFirepower - au.baseFirepower}
+      if (rc === 0) { rc = bu.closeCombatFirepower - au.closeCombatFirepower}
+      if (rc === 0) { rc = bu.baseMorale - au.baseMorale }
+      if (rc === 0) { rc = bu.leadership - au.leadership}
+    }
+    return rc
+  })
+}
+
 export const stackLimit = 12
 export const baseMorale = 15
 export const baseRally = 12
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.36"
+export const serverVersion = "0.37"

@@ -843,7 +843,7 @@ export default class Map {
 
   addFire(loc: Coordinate) {
     this.addCounter(loc, new Feature({
-      ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1, ai: 1 }
+      id: `fire-${loc.x}-${loc.y}`, ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1, ai: 1 }
     }))
     const counters = this.countersAt(loc)
     for (const c of counters) {

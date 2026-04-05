@@ -14,7 +14,7 @@ export default class Counter {
   stackingIndex: number;
   unitIndex: number;
 
-  reinforcement?: { player: Player, turn: number, index: number }
+  reinforcement?: { player: Player, turn: number, key: string }
   
   parent?: Counter;
   children: Counter[];

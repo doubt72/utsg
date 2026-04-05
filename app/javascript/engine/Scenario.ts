@@ -1,5 +1,5 @@
 import { Player } from "../utilities/commonTypes";
-import { alliedCodeToName, axisCodeToName, getFormattedDate } from "../utilities/utilities";
+import { alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList } from "../utilities/utilities";
 import Feature, { FeatureData } from "./Feature";
 import Game from "./Game"
 import Map, { MapData } from "./Map";
@@ -35,8 +35,8 @@ export type ScenarioListData = ScenarioBaseData & {
   rating: { average: number, count: number }
 }
 
-export type ReinforcementItem = {x: number, used: number, id?: string, counter: Unit | Feature}
-export type ReinforcementList = ReinforcementItem[]
+export type ReinforcementItem = {x: number, used: number, id: string, counter: Unit | Feature}
+export type ReinforcementList = { [index: string]: ReinforcementItem }
 export type ReinforcementSchedule = { [index: number]: ReinforcementList };
 
 export default class Scenario {
@@ -102,7 +102,7 @@ export default class Scenario {
   convertUnitData(data: { [index: number]: {list: (UnitData | FeatureData)[]} }): ReinforcementSchedule {
     const converted: ReinforcementSchedule = {}
     for (const turn in data) {
-      const turnCounters = []
+      const turnCounters: ReinforcementList = {}
       const list = data[turn].list
       for (const counterData of list) {
         const x = counterData.x || 1
@@ -118,8 +118,7 @@ export default class Scenario {
           }
         }
         const counter = counterData.ft ? new Feature(counterData) : new Unit(counterData)
-
-        turnCounters.push({x, used: 0, id, counter})
+        turnCounters[id] = {x, used: 0, id, counter}
       }
       converted[turn] = turnCounters
     }
@@ -140,18 +139,30 @@ export default class Scenario {
     }[this.status]
   }
 
-  get alliedUnitList(): ReinforcementList {
+  get alliedUnitList(): ReinforcementItem[] {
     if (!this.alliedReinforcements) { return [] }
-    return Object.entries(this.alliedReinforcements).flatMap(kv => kv[1])
+    const counts: ReinforcementList = {}
+    for (const turn of Object.values(this.alliedReinforcements)) {
+      for (const key of Object.keys(turn)) {
+        counts[key] ? counts[key].x += turn[key].x : counts[key] = turn[key]
+      }
+    }
+    return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
   }
 
-  get axisUnitList(): ReinforcementList {
+  get axisUnitList(): ReinforcementItem[] {
     if (!this.axisReinforcements) { return [] }
-    return Object.entries(this.axisReinforcements).flatMap(kv => kv[1])
+    const counts: ReinforcementList = {}
+    for (const turn of Object.values(this.axisReinforcements)) {
+      for (const key of Object.keys(turn)) {
+        counts[key] ? counts[key].x += turn[key].x : counts[key] = turn[key]
+      }
+    }
+    return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
   }
 
-  takeAlliedReinforcement(turn: number, index: number): Unit | Feature {
-    const entry = this.alliedReinforcements[turn][index]
+  takeAlliedReinforcement(turn: number, key: string): Unit | Feature {
+    const entry = this.alliedReinforcements[turn][key]
     if (entry.used >= entry.x) {
       throw new Error('Error deploying too many of reinforcement type')
     }
@@ -160,8 +171,8 @@ export default class Scenario {
     return entry.counter.clone()
   }
 
-  takeAxisReinforcement(turn: number, index: number): Unit | Feature {
-    const entry = this.axisReinforcements[turn][index]
+  takeAxisReinforcement(turn: number, key: string): Unit | Feature {
+    const entry = this.axisReinforcements[turn][key]
     if (entry.used >= entry.x) {
       throw new Error('Error deploying too many of reinforcement type')
     }
@@ -170,12 +181,12 @@ export default class Scenario {
     return entry.counter.clone()
   }
 
-  replaceAlliedReinforcement(turn: number, index: number): void {
-    this.alliedReinforcements[turn][index].used--
+  replaceAlliedReinforcement(turn: number, key: string): void {
+    this.alliedReinforcements[turn][key].used--
   }
 
-  replaceAxisReinforcement(turn: number, index: number): void {
-    this.axisReinforcements[turn][index].used--
+  replaceAxisReinforcement(turn: number, key: string): void {
+    this.axisReinforcements[turn][key].used--
   }
 
   get specialRulesList(): string[] {

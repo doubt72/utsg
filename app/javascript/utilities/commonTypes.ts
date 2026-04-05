@@ -53,7 +53,7 @@ export class Coordinate {
 export type CounterSelectionTarget = {
   target:
     { type: "map", xy: Coordinate } |
-    { type: "reinforcement", player: Player, turn: number, index: number };
+    { type: "reinforcement", player: Player, turn: number, key: string };
   counter: Counter;
 }
 

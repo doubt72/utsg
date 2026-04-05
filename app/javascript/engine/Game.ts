@@ -1,4 +1,4 @@
-import { baseTerrainType, Coordinate, featureType, Player, unitType } from "../utilities/commonTypes";
+import { baseTerrainType, Coordinate, featureType, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction from "./GameAction";
@@ -10,7 +10,7 @@ import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, counterKey, otherPlayer, serverVersion } from "../utilities/utilities";
 import Unit from "./Unit";
 import Hex from "./Hex";
-import organizeStacks, { sortValues } from "./support/organizeStacks";
+import organizeStacks from "./support/organizeStacks";
 import BaseState, { stateType } from "./control/state/BaseState";
 import FireState from "./control/state/FireState";
 import MoveState from "./control/state/MoveState";
@@ -865,7 +865,7 @@ export default class Game {
     this.eliminatedUnits = this.eliminatedUnits.filter(c => c.id !== id)
   }
 
-  sortedCasualties(player: Player): ReinforcementList {
+  panelCasualties(player: Player): ReinforcementList {
     const set: { [index: string]: { x: number, c: Unit } } = {}
     for (const c of this.eliminatedUnits) {
       if (c.isFeature || c.playerNation !== (player === 1 ? this.playerOneNation : this.playerTwoNation)) {
@@ -878,22 +878,11 @@ export default class Game {
         set[key].x++
       }
     }
-    const rc: ReinforcementList = []
+    const rc: ReinforcementList = {}
     for (const key in set) {
-      rc.push({ x: set[key].x, used: 0, counter: set[key].c })
+      rc[key] = { x: set[key].x, used: 0, id: key, counter: set[key].c }
     }
-    return rc.sort((a, b) => {
-      let an = a.counter.name
-      an = String(999 - sortValues(this, a.counter)) + an
-      an = String(999 - (a.counter as Unit).size) + an
-      an = a.counter.type === unitType.Leader ? "0" : "1" + an
-      let bn = b.counter.name
-      bn = String(999 - sortValues(this, b.counter)) + bn
-      bn = String(999 - (b.counter as Unit).size) + bn
-      bn = b.counter.type === unitType.Leader ? "0" : "1" + bn
-      if (an === bn) { return 0 }
-      return an > bn ? 1 : -1
-    })
+    return rc
   }
 
   previousActionUndoPossible(index: number): boolean {
@@ -1019,11 +1008,11 @@ export default class Game {
     const rc: ReinforcementSchedule = {}
     const schedule = player === 1 ? this.scenario.alliedReinforcements : this.scenario.axisReinforcements
     for (const turn in schedule) {
-      rc[turn] = []
-      for (const counter of schedule[turn]) {
-        rc[turn].push(counter)
+      rc[turn] = {}
+      for (const pairs of Object.entries(schedule[turn])) {
+        rc[turn][pairs[0]] = pairs[1]
       }
-      if (rc[turn].length === 0) { delete rc[turn] }
+      if (Object.keys(rc[turn]).length === 0) { delete rc[turn] }
     }
     return rc
   }
@@ -1033,8 +1022,8 @@ export default class Game {
       this.scenario.alliedReinforcements[turn] :
       this.scenario.axisReinforcements[turn]
 
-    const initialCount = counters ? counters.reduce((tot, u) => tot + u.x, 0) : 0
-    const count = counters ? counters.reduce((tot, u) => tot + u.x - u.used, 0) : 0
+    const initialCount = counters ? Object.values(counters).reduce((tot, u) => tot + u.x, 0) : 0
+    const count = counters ? Object.values(counters).reduce((tot, u) => tot + u.x - u.used, 0) : 0
     return [count, initialCount]
   }
 

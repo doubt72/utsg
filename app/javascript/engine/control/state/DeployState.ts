@@ -8,17 +8,17 @@ import BaseState, { stateType } from "./BaseState";
 
 export default class DeployState extends BaseState {
   turn: number;
-  index: number;
+  key: string;
 
   needsDirection: boolean;
   location: Coordinate | undefined;
   direction: Direction | undefined;
 
-  constructor(game: Game, turn: number, index: number) {
+  constructor(game: Game, turn: number, key: string) {
     super(game, stateType.Deploy, game.currentPlayer)
     this.needsDirection = false
     this.turn = turn
-    this.index = index
+    this.key = key
     game.refreshCallback(game)
   }
 
@@ -33,8 +33,8 @@ export default class DeployState extends BaseState {
     }
     const hex = this.map.hexAt(new Coordinate(x, y)) as Hex
     const uf = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.turn][this.index].counter :
-      this.game.scenario.axisReinforcements[this.turn][this.index].counter
+      this.game.scenario.alliedReinforcements[this.turn][this.key].counter :
+      this.game.scenario.axisReinforcements[this.turn][this.key].counter
     const unit = uf as Unit
     if (!hex.terrain.move && !hex.road && !hex.railroad) { return false }
     if (!hex.terrain.vehicle && !(hex.road && hex.roadType !== roadType.Path) && !uf.isFeature &&
@@ -119,13 +119,13 @@ export default class DeployState extends BaseState {
       data: {
         action: "deploy", old_initiative: this.game.initiative,
         path: [{ x: this.location.x, y: this.location.y, facing: this.direction }],
-        deploy: [{ turn: this.turn, index: this.index, id }]
+        deploy: [{ turn: this.turn, key: this.key, id }]
       }
     }, this.game)
     // Only clears state and "finishes" if all counters deployed
     const counter = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.turn][this.index] :
-      this.game.scenario.axisReinforcements[this.turn][this.index]
+      this.game.scenario.alliedReinforcements[this.turn][this.key] :
+      this.game.scenario.axisReinforcements[this.turn][this.key]
     this.game.executeAction(action, false)
     if (counter.x === counter.used) {
       this.game.cancelAction()

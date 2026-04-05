@@ -7,6 +7,7 @@ import { UnitData } from "./Unit";
 import GameAction, { GameActionData } from "./GameAction";
 import { FeatureData } from "./Feature";
 import { gamePhaseType } from "./support/gamePhase";
+import { serverVersion } from "../utilities/utilities";
 
 describe("action integration test", () => {
   const mapData: MapData = {
@@ -31,25 +32,25 @@ describe("action integration test", () => {
   }
 
   const ginf: UnitData = {
-    c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0, x: 3
+    id: "g_inf", c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0, x: 3
   }
   const rinf: UnitData = {
-    c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
+    id: "r_inf", c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
   }
   const rcrew: UnitData = {
-    c: "ussr", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
+    id: "r_crew", c: "ussr", t: "tm", n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: {cw: 2}
   }
   const rmg: UnitData = {
-    c: "ussr", t: "sw", i: "mg", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3}
+    id: "r_mg", c: "ussr", t: "sw", i: "mg", n: "DShK", y: 38, f: 14, r: 15, v: -2, o: {r: 1, j: 3}
   }
   const rgun: UnitData = {
-    c: "ussr", f: 16, i: "gun", n: "76mm ZiS-3", o: {t: 1, j: 3, g: 1, s: 1, c: 1, tow: 3}, r: 16,
+    id: "r_gun", c: "ussr", f: 16, i: "gun", n: "76mm ZiS-3", o: {t: 1, j: 3, g: 1, s: 1, c: 1, tow: 3}, r: 16,
     t: "gun", v: 1, y: 28
   }
   const rldr: UnitData = {
-    c: "ussr", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
+    id: "r_ldr", c: "ussr", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
   }
-  const wire: FeatureData = { ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
+  const wire: FeatureData = { id: "wire", ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A" }
 
   const scenarioData: ScenarioData = {
     id: "1", name: "test scenario", status: "b", version: "0.01",
@@ -73,7 +74,7 @@ describe("action integration test", () => {
   };
 
   const game = new Game({
-    id: 1,
+    id: 1, server_version: serverVersion,
     name: "test game", scenario: scenarioData, scenario_version: "0.01",
     owner: "one", state: "needs_player", player_one: "one", player_two: "", current_player: "",
     metadata: { turn: 0 },
@@ -135,17 +136,17 @@ describe("action integration test", () => {
     expect(game.lastAction?.stringValue).toBe("game started, begin deployment")
     expect(game.lastAction?.undoPossible).toBe(false)
 
-    expect(game.scenario.axisReinforcements[0][0].x).toBe(3)
-    expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].x).toBe(3)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(0)
     currentActionData = {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
     expect(game.actions[index - 1].stringValue).toBe("deployed German unit: Rifle to E4")
 
@@ -153,7 +154,7 @@ describe("action integration test", () => {
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 1)
     game.executeUndo(false)
-    expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
     // Undone actions are just marked as undone
     expect(game.actions.length).toBe(index)
@@ -167,11 +168,11 @@ describe("action integration test", () => {
       undone: true, user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0][0].used).toBe(0)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 3)
@@ -180,16 +181,16 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 4, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0][0].used).toBe(1)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
 
     // Same unit, same spot
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0][0].used).toBe(2)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4)).length).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].unit.name).toBe("Rifle")
@@ -198,11 +199,11 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0][0].used).toBe(3)
+    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(3)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
     // Should trigger phase end
@@ -212,11 +213,11 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, index: 1, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "wire", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0][1].used).toBe(1)
+    expect(game.scenario.axisReinforcements[0]["wire"].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
     expect(game.lastAction?.stringValue).toBe("German deployment complete > starting Soviet deployment")
@@ -247,7 +248,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, index: 0, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_inf", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -258,7 +259,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, index: 1, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_crew", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -269,7 +270,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, index: 2, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_mg", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -280,7 +281,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, index: 3, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_ldr", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -291,7 +292,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, index: 4, id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_gun", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)

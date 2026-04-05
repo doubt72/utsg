@@ -9,7 +9,7 @@ export default class DeployAction extends BaseAction {
   target: Coordinate;
   orientation: Direction;
   rTurn: number;
-  rIndex: number;
+  rKey: string;
   rId: string;
 
   constructor(data: GameActionData, game: Game, index: number) {
@@ -25,7 +25,7 @@ export default class DeployAction extends BaseAction {
 
     this.target = new Coordinate(path[0].x, path[0].y)
     this.orientation = path[0].facing ?? 1
-    this.rIndex = deploy[0].index
+    this.rKey = deploy[0].key
     this.rTurn = deploy[0].turn
     this.rId = deploy[0].id
   }
@@ -34,8 +34,8 @@ export default class DeployAction extends BaseAction {
 
   get htmlValue(): string {
     const name = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.rTurn][this.rIndex].counter.name :
-      this.game.scenario.axisReinforcements[this.rTurn][this.rIndex].counter.name
+      this.game.scenario.alliedReinforcements[this.rTurn][this.rKey].counter.name :
+      this.game.scenario.axisReinforcements[this.rTurn][this.rKey].counter.name
     return `deployed ${formatNation(this.game, this.player)} ` +
       `unit: ${formatNation(this.game, this.player,name)} to ${formatCoordinate(this.target)}`
   }
@@ -48,8 +48,8 @@ export default class DeployAction extends BaseAction {
 
     const turn = this.rTurn
 
-    const uf = this.player === 1 ? scenario.takeAlliedReinforcement(turn, this.rIndex) :
-                                   scenario.takeAxisReinforcement(turn, this.rIndex)
+    const uf = this.player === 1 ? scenario.takeAlliedReinforcement(turn, this.rKey) :
+                                   scenario.takeAxisReinforcement(turn, this.rKey)
     if (!uf.isFeature) {
       (uf as Unit).playerNation = this.player === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]
     }
@@ -69,9 +69,9 @@ export default class DeployAction extends BaseAction {
     const map = scenario.map
 
     if (this.player === 1) {
-      scenario.replaceAlliedReinforcement(this.rTurn, this.rIndex)
+      scenario.replaceAlliedReinforcement(this.rTurn, this.rKey)
     } else {
-      scenario.replaceAxisReinforcement(this.rTurn, this.rIndex)
+      scenario.replaceAxisReinforcement(this.rTurn, this.rKey)
     }
     map.removeCounter(this.target, this.rId)
   }

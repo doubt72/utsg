@@ -622,7 +622,7 @@ export default function MapDisplay({
       let doCallback = true
       if (map.game?.gameState?.type === stateType.Deploy) {
         const counter = map.game.availableReinforcements(map.game.currentPlayer)[
-          map.game.turn][map.game.deployState.index]
+          map.game.turn][map.game.deployState.key]
         if (counter.counter.rotates && !map.game.deployState.needsDirection) {
           map.game.deployState.needsDirection = true
           map.game.deployState.toHex(x, y)
@@ -658,13 +658,13 @@ export default function MapDisplay({
     if (selection.target.type === "map") {
       select(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
-      if (map.game.gameState?.type !== stateType.Deploy) { return }
+      if (map.game.phase !== gamePhaseType.Deployment) { return }
       if (map.game.gameState?.type === stateType.Deploy &&
-          map.game.deployState.index !== selection.target.index) {
+          map.game.deployState.key !== selection.target.key) {
         map.game.deployState.needsDirection = false
       }
       const player = selection.target.player
-      map.game.setGameState(new DeployState(map.game, selection.target.turn, selection.target.index))
+      map.game.setGameState(new DeployState(map.game, selection.target.turn, selection.target.key))
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
       setReinforcementsOverlay(

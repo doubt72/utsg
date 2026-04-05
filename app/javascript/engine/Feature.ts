@@ -16,7 +16,7 @@ import { featureHelpText } from "./support/help";
 // x: count
 
 export type FeatureData = {
-  id?: string;
+  id: string;
   t: FeatureType;
   n: string;
   i: string;

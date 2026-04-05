@@ -6,6 +6,7 @@ import { Coordinate, Player } from "../../../utilities/commonTypes";
 import Counter from "../../../engine/Counter";
 import { ReinforcementSchedule } from "../../../engine/Scenario";
 import { gamePhaseType } from "../../../engine/support/gamePhase";
+import { sortReinforcementList } from "../../../utilities/utilities";
 
 interface ReinforcementPanelProps {
   map?: Map;
@@ -38,15 +39,16 @@ export default function ReinforcementPanel({
       const n = Number(key)
       rc[n] = reinf[n]
     }
-    const last = map.game.sortedCasualties(player)
-    if (last.length > 0) { rc[99] = last }
+    const last = map.game.panelCasualties(player)
+    if (Object.keys(last).length > 0) { rc[99] = last }
     return rc
   }
 
-  const maxWidth = (units: object) => {
+  const maxWidth = (units: ReinforcementSchedule) => {
     let length = 1
     for (const value of Object.values(units)) {
-      if (value.length > length) { length = value.length }
+      const keys = Object.keys(value)
+      if (keys.length > length) { length = keys.length }
     }
     return length < 3 ? 320 : length * 90 + 84
   }
@@ -133,16 +135,16 @@ export default function ReinforcementPanel({
                   {label}
                 </text>
                 {
-                  pair[1].map((u, j) => {
+                  sortReinforcementList(Object.values(pair[1])).map((data, j) => {
                     const x0 = x + 84 + 90*j
                     const y0 = y + 72 + 106*i
-                    const counter = new Counter(new Coordinate(x0, y0+5), u.counter, map, true)
+                    const counter = new Counter(new Coordinate(x0, y0+5), data.counter, map, true)
                     counter.onMap = false
                     if (player === map.game?.currentPlayer) {
-                      counter.reinforcement = { player, turn, index: j }
+                      counter.reinforcement = { player, turn, key: data.id }
                     }
                     const r = map.game?.deployState
-                    if (r && player === r.player && turn === r.turn && j === r.index) {
+                    if (r && player === r.player && turn === r.turn && data.id === r.key) {
                       if (!counter.targetUF.selected) {
                         counter.targetUF.select()
                       }
@@ -152,7 +154,7 @@ export default function ReinforcementPanel({
                     counter.showDisabled = (map.game?.phase !== gamePhaseType.Deployment ||
                       map.game?.currentPlayer !== player || map.game.state !== 'in_progress' ||
                       map.game.turn !== turn) && turn !== 99
-                    const count = (u.x || 1) - (u.used || 0)
+                    const count = (data.x || 1) - (data.used || 0)
                     const cb = () => { ovCallback({show: true, counters: [counter]})}
                     if (count < 1) {
                       counter.showDisabled = true
@@ -163,7 +165,7 @@ export default function ReinforcementPanel({
                         <g key={j}>
                           <text x={x0} y={y0} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#555" }}>
-                            {u.x}x
+                            {data.x}x
                           </text>
                           <MapCounter counter={counter} ovCallback={cb} />
                         </g>
@@ -173,7 +175,7 @@ export default function ReinforcementPanel({
                         <g key={j}>
                           <text x={x0} y={y0} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-                            {u.used > 0 ? `${u.used}/${u.x}` : count}x
+                            {data.used > 0 ? `${data.used}/${data.x}` : count}x
                           </text>
                           <MapCounter counter={counter} ovCallback={cb} />
                         </g>

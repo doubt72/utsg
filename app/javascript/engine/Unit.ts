@@ -35,7 +35,7 @@ import {
 
 // TODO: Maybe more types for some of these
 export type UnitData = {
-  id?: string;
+  id: string;
   c: string; t: UnitType; n: string; i: string; y: number;
   m?: MoraleRange; s?: SizeRange;
   f: number; r: number; v: number;
