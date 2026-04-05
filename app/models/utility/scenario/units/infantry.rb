@@ -5,7 +5,7 @@ module Utility
     module Units
       module Infantry # rubocop:disable Metrics/ModuleLength
         class << self
-          # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+          # rubocop:disable Metrics/MethodLength
           def infantry
             leaders.merge(squads_and_teams).merge(crews)
           end
@@ -112,22 +112,16 @@ module Utility
               ["ussr", "Militia", 0, 2, 6, 2, 3, {}],
             ].each do |unit|
               squad = { t: "sqd", i: "squad", s: 6 }
-              team = { t: "tm", i: "team", s: 3 }
               unit.each_with_index do |v, i|
                 squad[key[i]] = v
-                team[key[i]] = v
               end
 
               squad[:o][:bv] = squad[:v] if squad[:v] < 4
-              team[:o] = team[:v] < 4 ? { bv: team[:v] } : {}
-              team[:f] = team[:f] / 2
 
               squad.delete(:o) if squad[:o] == {}
-              team.delete(:o) if team[:o] == {}
 
-              name = "#{team[:c]}_#{Units.sanitize(team[:n])}"
+              name = "#{squad[:c]}_#{Units.sanitize(squad[:n])}"
               lu[:"#{name}_s"] = squad
-              lu[:"#{name}_t"] = team
             end
             lu
           end
@@ -146,7 +140,7 @@ module Utility
             end
             lu
           end
-          # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+          # rubocop:enable Metrics/MethodLength
         end
       end
     end

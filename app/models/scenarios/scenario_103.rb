@@ -25,8 +25,7 @@ module Scenarios
       "0": { list: [
         :ita_leader_5_1,
         :ita_leader_3_1,
-        [3, :ita_bersaglieri_s],
-        [3, :ita_bersaglieri_t],
+        [5, :ita_bersaglieri_s],
         [2, :ita_elite_crew_t],
         [2, :ita_breda_30],
         [1, :ita_brixia_m35],

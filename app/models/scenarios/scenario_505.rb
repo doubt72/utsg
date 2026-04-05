@@ -17,8 +17,7 @@ module Scenarios
         list: [
           :ussr_leader_5_1,
           :ussr_leader_4_1,
-          [6, :ussr_rifle_s],
-          [3, :ussr_rifle_t],
+          [7, :ussr_rifle_s],
           [2, :ussr_dp_27],
           :ussr_82_bm_37,
           :ussr_radio_152mm,
@@ -31,8 +30,7 @@ module Scenarios
         list: [
           :fin_leader_6_2,
           :fin_leader_4_1,
-          [4, :fin_regular_s],
-          [2, :fin_regular_t],
+          [5, :fin_regular_s],
           [2, :fin_mg_08_15],
           [2, :bunker],
         ],

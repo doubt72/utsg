@@ -138,6 +138,7 @@ export default class Unit {
   smallName: number;
 
   rawData: UnitData;
+  isSplit: boolean = false;
   
   ghost?: boolean;
   
@@ -243,7 +244,8 @@ export default class Unit {
   }
 
   clone(): Unit {
-    return new Unit(this.rawData)
+    const unit = new Unit(this.rawData)
+    return unit
   }
 
   select() {
@@ -562,6 +564,51 @@ export default class Unit {
     } else {
       return this.baseMovement
     }
+  }
+
+  split(): Unit {
+    const other = this.clone()
+    this.baseFirepower = Math.floor(this.baseFirepower / 2)
+    this.size = 3
+    this.smokeCapable = false
+    this.engineer = false
+    this.assault = false
+    this.type = unitType.Team
+    this.icon = "team"
+    this.isSplit = true
+
+    other.baseFirepower = this.baseFirepower
+    other.size = 3
+    other.smokeCapable = false
+    other.engineer = false
+    other.assault = false
+    other.type = unitType.Team
+    other.icon = "team"
+    other.isSplit = true
+
+    other.pinned = this.pinned
+    other.setStatus(this.status)
+    other.id = `${this.id}-2`
+    return other
+  }
+
+  join(unit: Unit): void {
+    const reset = this.clone()
+    this.baseFirepower = reset.baseFirepower
+    this.smokeCapable = reset.smokeCapable
+    this.engineer = reset.engineer
+    this.assault = reset.assault
+    this.size = 6
+    this.type = unitType.Squad
+    this.icon = "squad"
+    this.isSplit = false
+
+    if (unit.pinned) { this.pinned = true }
+    // Can't be broken or wreck, so highest of:
+    // Normal: 1, Tired: 2, Activated: 4, Exhausted: 5
+    if (unit.status > this.status) { this.setStatus(unit.status) }
+  
+    this.id = `${this.id}-r`
   }
 
   get helpText(): string[] {

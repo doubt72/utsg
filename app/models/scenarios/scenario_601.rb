@@ -17,7 +17,6 @@ module Scenarios
         list: [
           :chi_leader_4_1,
           [5, :chi_regular_s],
-          :chi_regular_t,
           :chi_type_24_maxim,
         ],
       },
@@ -27,8 +26,7 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_5_1,
-          [5, :jap_b_division_s],
-          [2, :jap_b_division_t],
+          [6, :jap_b_division_s],
           [2, :jap_type_96_lmg],
         ],
       },

@@ -17,10 +17,8 @@ module Scenarios
         list: [
           :ussr_leader_5_1,
           [2, :ussr_leader_3_1],
-          [4, :ussr_rifle_s],
-          [4, :ussr_militia_s],
-          [4, :ussr_rifle_t],
-          [4, :ussr_militia_t],
+          [6, :ussr_rifle_s],
+          [6, :ussr_militia_s],
           [4, :ussr_dp_27],
           [2, :ussr_82_bm_37],
           [2, :ussr_ampulomet],
@@ -33,8 +31,7 @@ module Scenarios
       "2": {
         list: [
           :ussr_leader_5_1,
-          [2, :ussr_guards_smg_s],
-          [2, :ussr_guards_rifle_t],
+          [3, :ussr_guards_smg_s],
           :ussr_dp_27,
           :ussr_sc,
         ],
@@ -42,8 +39,7 @@ module Scenarios
       "4": {
         list: [
           :ussr_leader_4_1,
-          [8, :ussr_militia_s],
-          [2, :ussr_militia_t],
+          [9, :ussr_militia_s],
           :ussr_dp_27,
           [4, :ussr_mc],
         ],
@@ -53,9 +49,7 @@ module Scenarios
           :ussr_leader_4_1,
           :ussr_leader_3_1,
           [3, :ussr_rifle_s],
-          [4, :ussr_militia_s],
-          :ussr_rifle_t,
-          [2, :ussr_militia_t],
+          [5, :ussr_militia_s],
           [2, :ussr_dp_27],
           [4, :ussr_mc],
         ],
@@ -67,8 +61,7 @@ module Scenarios
         list: [
           :ger_leader_5_2,
           [3, :ger_leader_4_1],
-          [10, :ger_rifle_s],
-          [6, :ger_rifle_t],
+          [12, :ger_rifle_s],
           [2, :ger_crew_t],
           [4, :ger_mg_34],
           :ger_kz_8cm_grw_42,
@@ -85,9 +78,7 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           [3, :ger_pionier_s],
-          :ger_rifle_s,
-          :ger_pionier_t,
-          [3, :ger_rifle_t],
+          [3, :ger_rifle_s],
           [2, :ger_mg_34],
           [2, :ger_sc],
           :ger_ft,
@@ -97,8 +88,7 @@ module Scenarios
       "5": {
         list: [
           :ger_leader_5_1,
-          [6, :ger_rifle_s],
-          [2, :ger_rifle_t],
+          [7, :ger_rifle_s],
           [2, :ger_mg_34],
         ],
       },

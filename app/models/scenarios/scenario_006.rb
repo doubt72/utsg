@@ -16,8 +16,7 @@ module Scenarios
       "0": { list: [
         :ussr_leader_5_1,
         :ussr_leader_4_1,
-        [4, :ussr_rifle_s],
-        [2, :ussr_rifle_t],
+        [5, :ussr_rifle_s],
         :ussr_dp_27,
         :ussr_82_pm_41,
         [4, :ussr_t_34_m40],

@@ -17,7 +17,6 @@ module Scenarios
         list: [
           :ussr_leader_5_1,
           [4, :ussr_rifle_s],
-          :ussr_rifle_t,
           :ussr_pm_m1910,
           [2, :ussr_t_26_m39],
           [2, :ussr_bt_7],
@@ -29,8 +28,7 @@ module Scenarios
       "0": {
         list: [
           [2, :axm_leader_3_1],
-          [8, :axm_conscript_s],
-          [4, :axm_conscript_t],
+          [10, :axm_conscript_s],
           [2, :axm_mg_30],
           [2, :axm_3_7cm_pak_36],
           [3, :axm_38m_toldi_i],

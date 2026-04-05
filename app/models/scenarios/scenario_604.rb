@@ -16,8 +16,7 @@ module Scenarios
       "0": {
         list: [
           :ussr_leader_4_1,
-          [3, :ussr_rifle_s],
-          :ussr_rifle_t,
+          [4, :ussr_rifle_s],
           :ussr_dp_27,
           :ussr_radio_122mm,
           [4, :ussr_bt_7],
@@ -31,8 +30,7 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_4_1,
-          [2, :jap_b_division_s],
-          [2, :jap_b_division_t],
+          [3, :jap_b_division_s],
           :jap_type_92_hmg,
           :jap_37mm_type_94,
           [2, :jap_type_89_i_go],

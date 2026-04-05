@@ -16,10 +16,8 @@ module Scenarios
       "0": {
         list: [
           :usa_leader_4_1,
-          [3, :usa_rifle_s],
-          [3, :usa_ranger_s],
-          :usa_rifle_t,
-          :usa_ranger_t,
+          [4, :usa_rifle_s],
+          [4, :usa_ranger_s],
           [2, :usa_m1918_bar],
           :usa_radio_105mm,
           [5, :usa_m10],
@@ -32,8 +30,7 @@ module Scenarios
       "0": {
         list: [
           :ger_leader_5_2,
-          [4, :ger_rifle_s],
-          [2, :ger_rifle_t],
+          [5, :ger_rifle_s],
           [2, :ger_mg_42],
           [6, :ger_pzkpfw_iv_f2],
           [2, :ger_sdkfz_251_1],

@@ -16,8 +16,7 @@ module Scenarios
       "0": { list: [
         :chi_leader_5_1,
         [3, :chi_leader_4_1],
-        [14, :chi_elite_s],
-        [6, :chi_elite_t],
+        [16, :chi_elite_s],
         :chi_crew_t,
         [4, :chi_type_24_maxim],
         [2, :chi_type_20_mortar],
@@ -27,8 +26,7 @@ module Scenarios
       ] },
       "2": { list: [
         :chi_leader_6_1,
-        [3, :chi_elite_s],
-        :chi_elite_t,
+        [5, :chi_elite_s],
         :chi_czeck_lmg,
       ] },
       "4": { list: [
@@ -38,8 +36,7 @@ module Scenarios
       ] },
       "6": { list: [
         :chi_leader_4_1,
-        [2, :chi_elite_s],
-        :chi_elite_t,
+        [3, :chi_elite_s],
         :chi_czeck_lmg,
       ] },
     }.freeze
@@ -48,8 +45,7 @@ module Scenarios
       "0": { list: [
         [2, :jap_leader_6_1],
         [2, :jap_leader_5_1],
-        [8, :jap_snlf_s],
-        [4, :jap_snlf_t],
+        [10, :jap_snlf_s],
         [2, :jap_elite_crew_t],
         [4, :jap_type_92_hmg],
         [2, :jap_70mm_type_92],
@@ -66,8 +62,7 @@ module Scenarios
       ] },
       "5": { list: [
         :jap_leader_5_1,
-        [2, :jap_snlf_s],
-        :jap_snlf_t,
+        [3, :jap_snlf_s],
         :jap_type_96_lmg,
         :jap_chiyoda_ac,
       ] },

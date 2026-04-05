@@ -17,8 +17,7 @@ module Scenarios
         list: [
           :uk_leader_6_1,
           :uk_leader_5_2,
-          [3, :uk_guard_s],
-          [3, :uk_guard_t],
+          [5, :uk_guard_s],
           [2, :uk_bren_lmg],
           :uk_ml_3inch_mortar,
           :uk_radio_152mm,
@@ -36,8 +35,7 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           :ger_leader_4_1,
-          [4, :ger_fallschirmjager_s],
-          [2, :ger_fallschirmjager_t],
+          [5, :ger_fallschirmjager_s],
           [2, :ger_crew_t],
           [2, :ger_mg_42],
           [2, :ger_7_5cm_pak_40],
@@ -47,15 +45,13 @@ module Scenarios
         list: [
           :ger_leader_4_1,
           [3, :ger_rifle_s],
-          :ger_rifle_t,
           :ger_mg_42,
         ],
       },
       "6": {
         list: [
           :ger_leader_5_1,
-          :ger_ss_s,
-          :ger_ss_t,
+          [2, :ger_ss_s],
           :ger_crew_t,
           :ger_mg_42,
           :ger_7_5cm_pak_40,

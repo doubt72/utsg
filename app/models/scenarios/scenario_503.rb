@@ -16,8 +16,7 @@ module Scenarios
       "0": { list: [
         :alm_leader_5_1,
         :alm_leader_4_1,
-        [4, :alm_regular_s],
-        [4, :alm_regular_t],
+        [6, :alm_regular_s],
         [2, :alm_rkm_wz__28],
         [2, :alm_wz__35_at_rifle],
       ] },
@@ -27,8 +26,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_2,
         :ger_leader_4_1,
-        [2, :ger_rifle_s],
-        [2, :ger_rifle_t],
+        [3, :ger_rifle_s],
         [2, :ger_mg_34],
         :ger_pzkpfw_i,
         [2, :ger_pzkpfw_ii_a_e],

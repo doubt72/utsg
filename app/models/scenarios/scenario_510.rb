@@ -16,8 +16,7 @@ module Scenarios
       "0": {
         list: [
           [2, :fra_leader_4_1],
-          [5, :fra_reservist_s],
-          [3, :fra_reservist_t],
+          [6, :fra_reservist_s],
           [3, :fra_m1915_chauchat],
         ],
       },
@@ -28,8 +27,7 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           :ger_leader_4_1,
-          [6, :ger_rifle_s],
-          [3, :ger_rifle_t],
+          [7, :ger_rifle_s],
           [3, :ger_mg_34],
         ],
       },

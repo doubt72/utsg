@@ -58,6 +58,8 @@ import FireStartCheckButton from "./buttons/FireStartCheckButton";
 import KickButton from "./buttons/KickButton";
 import CancelMoveButton from "./buttons/CancelMoveButton";
 import UndeployButton from "./buttons/UnDeployButton";
+import SplitSquadButton from "./buttons/SplitSquadButton";
+import JoinSquadButton from "./buttons/JoinSquadButton";
 
 interface GameControlsProps {
   game: Game;
@@ -133,6 +135,10 @@ export default function GameControls({ game, callback, update }: GameControlsPro
         return <div className="mt05em mb05em mr05em ml05em" key={i}>deploy units</div>
       } else if (a.type === "undeploy") {
         return <UndeployButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "split_squad") {
+        return <SplitSquadButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "join_squad") {
+        return <JoinSquadButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rally") {
         return <RallyButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rally_pass") {

@@ -16,8 +16,7 @@ module Scenarios
       "0": { list: [
         :usa_leader_6_2,
         :usa_leader_5_1,
-        [3, :usa_paratroop_s],
-        [2, :usa_paratroop_t],
+        [4, :usa_paratroop_s],
         [2, :usa_m1918_bar],
       ] },
     }.freeze
@@ -26,8 +25,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_4_1,
         :ger_leader_3_1,
-        [9, :ger_volksgrenadier_s],
-        [2, :ger_volksgrenadier_t],
+        [10, :ger_volksgrenadier_s],
         [2, :ger_mg_42],
       ] },
     }.freeze

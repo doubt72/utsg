@@ -3,6 +3,7 @@
 - Refactoring deploy data structure
 - Improve undo flow for deployments
 - Add ability to "undeploy" units
+- Add ability to split/rejoin squads (deleted teams from available units/scenarios, now split only)
 - Bug fix: undo not properly setting last action index
 
 ## 0.36 alpha

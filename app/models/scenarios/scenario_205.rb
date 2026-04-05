@@ -16,8 +16,7 @@ module Scenarios
       "0": {
         list: [
           [3, :uk_leader_4_1],
-          [7, :uk_line_s],
-          [3, :uk_line_t],
+          [9, :uk_line_s],
           [3, :uk_bren_lmg],
           :uk_radio_152mm,
           :uk_white_scout_car,
@@ -29,8 +28,7 @@ module Scenarios
       "0": {
         list: [
           :ger_leader_5_2,
-          [4, :ger_rifle_s],
-          [2, :ger_rifle_t],
+          [5, :ger_rifle_s],
           [2, :ger_mg_42],
           :ger_marder_iii_h_m,
           [2, :wire],

@@ -64,8 +64,8 @@ export default function DebugUnitStats({ proto = false }: DebugUnitStatsProps) {
         cs[key] === undefined ? cs[key] = 1 : cs[key]++
       }
     }
-    setCountUnits(() => cu)
-    setCountScenarios(() => cs)
+    setCountUnits(cu)
+    setCountScenarios(cs)
   }, [scenarios])
 
   const cells = (check?: boolean) => {

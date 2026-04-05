@@ -144,7 +144,7 @@ export default class Scenario {
     const counts: ReinforcementList = {}
     for (const turn of Object.values(this.alliedReinforcements)) {
       for (const key of Object.keys(turn)) {
-        counts[key] ? counts[key].x += turn[key].x : counts[key] = turn[key]
+        counts[key] ? counts[key].x += turn[key].x : counts[key] = structuredClone(turn[key])
       }
     }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
@@ -155,7 +155,7 @@ export default class Scenario {
     const counts: ReinforcementList = {}
     for (const turn of Object.values(this.axisReinforcements)) {
       for (const key of Object.keys(turn)) {
-        counts[key] ? counts[key].x += turn[key].x : counts[key] = turn[key]
+        counts[key] ? counts[key].x += turn[key].x : counts[key] = structuredClone(turn[key])
       }
     }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
@@ -167,8 +167,11 @@ export default class Scenario {
       throw new Error('Error deploying too many of reinforcement type')
     }
     entry.used++
-
-    return entry.counter.clone()
+    const unit = entry.counter.clone()
+    if (!entry.counter.isFeature && (entry.counter as Unit).isSplit) {
+      (unit as Unit).split()
+    }
+    return unit
   }
 
   takeAxisReinforcement(turn: number, key: string): Unit | Feature {
@@ -177,8 +180,11 @@ export default class Scenario {
       throw new Error('Error deploying too many of reinforcement type')
     }
     entry.used++
-
-    return entry.counter.clone()
+    const unit = entry.counter.clone()
+    if (!entry.counter.isFeature && (entry.counter as Unit).isSplit) {
+      (unit as Unit).split()
+    }
+    return unit
   }
 
   replaceAlliedReinforcement(turn: number, key: string): void {

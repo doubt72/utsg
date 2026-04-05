@@ -110,6 +110,50 @@ export default class DeployState extends BaseState {
     this.direction = dir
   }
 
+  get canSplit(): boolean {
+    const counter = this.player === 1 ?
+      this.game.scenario.alliedReinforcements[this.turn][this.key] :
+      this.game.scenario.axisReinforcements[this.turn][this.key]
+    if (counter.x > counter.used && !counter.counter.isFeature &&
+        counter.counter.type === unitType.Squad) {
+      return true
+    }
+    return false
+  }
+
+  get canJoin(): boolean {
+    const counter = this.player === 1 ?
+      this.game.scenario.alliedReinforcements[this.turn][this.key] :
+      this.game.scenario.axisReinforcements[this.turn][this.key]
+    if (counter.x > counter.used + 1 && !counter.counter.isFeature &&
+        counter.counter.type === unitType.Team) {
+      return true
+    }
+    return false
+  }
+
+  split() {
+    this.game.executeAction(new GameAction({
+      user: this.game.currentUser, player: this.player,
+      data: {
+        action: "deploy_split_squad", old_initiative: this.game.initiative,
+        deploy: [{ turn: this.turn, key: this.key, id: "" }]
+      }
+    }, this.game), false)
+    this.game.refreshCallback(this.game)
+  }
+
+  join() {
+    this.game.executeAction(new GameAction({
+      user: this.game.currentUser, player: this.player,
+      data: {
+        action: "deploy_join_squad", old_initiative: this.game.initiative,
+        deploy: [{ turn: this.turn, key: `${this.key.substring(0, this.key.length - 1)}s`, id: "" }]
+      }
+    }, this.game), false)
+    this.game.refreshCallback(this.game)
+  }
+
   finish() {
     if (!this.location) { return }
     const id = `uf-${this.game.actions.length}`

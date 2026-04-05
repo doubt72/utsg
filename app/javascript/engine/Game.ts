@@ -1093,4 +1093,23 @@ export default class Game {
     if (this.initiative > 3) { this.initiative = 3 }
     if (this.initiative < -3) { this.initiative = -3 }
   }
+
+  split() {
+    if (this.gameState?.type === stateType.Deploy) {
+      this.deployState.split()
+    } else {
+      const map = this.scenario.map
+      const selection = map.currentSelection[0]
+      map.addCounter(selection.hex as Coordinate, selection.unit.split())
+      organizeStacks(map)
+    }
+  }
+
+  join() {
+    if (this.gameState?.type === stateType.Deploy) {
+      this.deployState.join()
+    } else {
+      // Need new state
+    }
+  }
 }

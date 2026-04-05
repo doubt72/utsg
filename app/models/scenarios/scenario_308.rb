@@ -17,8 +17,7 @@ module Scenarios
         :usa_leader_5_1,
         :usa_leader_4_1,
         [2, :usa_engineer_s],
-        [4, :usa_rifle_s],
-        [4, :usa_rifle_t],
+        [6, :usa_rifle_s],
         [2, :usa_m1918_bar],
         :usa_m2_browning,
         :usa_m2_mortar,
@@ -30,7 +29,6 @@ module Scenarios
         :ger_leader_4_1,
         :ger_leader_3_1,
         [9, :ger_conscript_s],
-        :ger_conscript_t,
         :ger_mg_42,
       ] },
     }.freeze

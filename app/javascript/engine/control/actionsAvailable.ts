@@ -153,6 +153,13 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     if (select !== undefined) {
       actions.push({ type: "undeploy" })
     }
+    if (game.gameState?.type === stateType.Deploy) {
+      if (game.deployState.canSplit) {
+        actions.push({ type: "split_squad" })
+      } else if (game.deployState.canJoin) {
+        actions.push({ type: "join_squad" })
+      }
+    }
   } else if (game.phase === gamePhaseType.PrepRally) {
     addRallyActions(game, actions)
   } else if (game.gameState?.type === stateType.PrecipCheck) {

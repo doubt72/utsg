@@ -15,8 +15,7 @@ module Scenarios
     ALLIED_UNITS = {
       "0": { list: [
         :ussr_leader_3_1,
-        [3, :ussr_rifle_s],
-        :ussr_rifle_t,
+        [4, :ussr_rifle_s],
         :ussr_dp_27,
         [2, :ussr_kv_1_m40],
       ] },
@@ -26,8 +25,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_2,
         :ger_pionier_s,
-        [2, :ger_rifle_s],
-        [2, :ger_rifle_t],
+        [3, :ger_rifle_s],
         :ger_crew_t,
         [2, :ger_mg_34],
         :ger_sc,

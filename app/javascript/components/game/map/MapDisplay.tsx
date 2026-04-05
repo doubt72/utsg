@@ -666,8 +666,10 @@ export default function MapDisplay({
       const state = map.game.deployState
       if (state && state.key === selection.target.key) {
         map.game.clearGameState()
+        counterCallback()
       } else {
         map.game.setGameState(new DeployState(map.game, selection.target.turn, selection.target.key))
+        counterCallback()
       }
       const player = selection.target.player
       const x = reinforcementsOverlay?.props.xx

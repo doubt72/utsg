@@ -17,8 +17,7 @@ module Scenarios
         list: [
           :usa_leader_5_1,
           [2, :usa_leader_4_1],
-          [5, :usa_rifle_s],
-          [3, :usa_rifle_t],
+          [6, :usa_rifle_s],
           [2, :usa_m1918_bar],
           :usa_m2_mortar,
           :usa_radio_155mm,
@@ -31,8 +30,7 @@ module Scenarios
       "0": {
         list: [
           [2, :ita_leader_5_1],
-          [6, :ita_fucilieri_s],
-          [4, :ita_fucilieri_t],
+          [8, :ita_fucilieri_s],
           [2, :ita_breda_m37],
           :ita_brixia_m35,
           :ita_obice_da_100_17,

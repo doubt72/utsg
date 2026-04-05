@@ -16,8 +16,7 @@ module Scenarios
       "0": { list: [
         :uk_leader_5_1,
         :uk_leader_4_1,
-        [4, :uk_line_s],
-        [2, :uk_line_t],
+        [5, :uk_line_s],
         [2, :uk_bren_lmg],
         :uk_matilda_ii,
         :uk_humber_ac_i,
@@ -27,8 +26,7 @@ module Scenarios
     AXIS_UNITS = {
       "0": { list: [
         :ita_leader_3_1,
-        [5, :ita_fucilieri_s],
-        :ita_fucilieri_t,
+        [6, :ita_fucilieri_s],
         :ita_breda_30,
       ] },
     }.freeze

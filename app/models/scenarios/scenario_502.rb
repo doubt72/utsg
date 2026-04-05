@@ -17,8 +17,7 @@ module Scenarios
         :fra_leader_5_2,
         [2, :fra_leader_5_1],
         [2, :fra_bar_s],
-        [2, :fra_reservist_s],
-        [2, :fra_reservist_t],
+        [3, :fra_reservist_s],
         :fra_crew_t,
         [2, :fra_fm_24_29],
         :fra_25mm_hotchkiss,
@@ -34,8 +33,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_2,
         :ger_leader_5_1,
-        [2, :ger_rifle_s],
-        [2, :ger_rifle_t],
+        [3, :ger_rifle_s],
         [2, :ger_elite_crew_t],
         [2, :ger_mg_34],
         [2, :ger_3_7cm_pak_36],
@@ -44,8 +42,7 @@ module Scenarios
       ] },
       "2": { list: [
         :ger_leader_5_1,
-        :ger_rifle_s,
-        :ger_rifle_t,
+        [2, :ger_rifle_s],
         :ger_mg_34,
       ] },
       "4": { list: [

@@ -16,8 +16,7 @@ module Scenarios
       "0": { list: [
         :fra_leader_5_1,
         :fra_leader_4_1,
-        [4, :fra_reservist_s],
-        [2, :fra_reservist_t],
+        [5, :fra_reservist_s],
         [2, :fra_crew_t],
         [2, :fra_fm_24_29],
         [2, :fra_75mm_m1897],
@@ -30,8 +29,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_2,
         [2, :ger_leader_5_1],
-        [6, :ger_rifle_s],
-        [3, :ger_rifle_t],
+        [8, :ger_rifle_s],
         :ger_elite_crew_t,
         [2, :ger_mg_34],
         :ger_8cm_grw_34,
@@ -39,8 +37,7 @@ module Scenarios
       ] },
       "2": { list: [
         :ger_leader_5_1,
-        :ger_rifle_s,
-        :ger_rifle_t,
+        [2, :ger_rifle_s],
         :ger_elite_crew_t,
         :ger_mg_34,
         :ger_3_7cm_pak_36,
@@ -51,8 +48,7 @@ module Scenarios
       ] },
       "6": { list: [
         :ger_leader_4_1,
-        :ger_rifle_s,
-        :ger_rifle_t,
+        [2, :ger_rifle_s],
         :ger_mg_34,
       ] },
     }.freeze

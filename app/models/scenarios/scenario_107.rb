@@ -16,8 +16,7 @@ module Scenarios
       "0": { list: [
         :uk_leader_5_1,
         :uk_leader_4_1,
-        [4, :uk_line_s],
-        [2, :uk_line_t],
+        [6, :uk_line_s],
         :uk_bren_lmg,
         :uk_2inch_mortar,
         [5, :uk_matilda_ii],
@@ -29,7 +28,6 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_2,
         [3, :ger_rifle_s],
-        :ger_rifle_t,
         [3, :ger_elite_crew_t],
         :ger_mg_34,
         [3, :ger_8_8cm_flak_36],
