@@ -338,7 +338,7 @@ export default class MoveState extends BaseState {
       })
       this.map.addGhost(
         new Coordinate(x, y),
-        new Feature({ ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
+        new Feature({ id: "Smoke", ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
       )
       this.smoke = false
     } else {

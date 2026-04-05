@@ -1,8 +1,10 @@
 Features/Bug Fixes:
-  - Refactor deploy:
-    - Undo shouldn't unselect / should select
-    - Allow undeploy
+  + Refactor deploy:
+    + Undo shouldn't unselect / should select
+    + Allow undeploy
     - Split/Join squads during deploy / Split/join squads during game
+  - Split docs/rout vp docs
+  - Fix game load redirecting
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
   - Roll back smoke on reaction fire?

@@ -33,6 +33,7 @@ import FireDisplaceAction from "./actions/FireDisplaceAction";
 import FireStartAction from "./actions/FireStartAction";
 import { DiceResult } from "../utilities/utilities";
 import { formatNation } from "../utilities/graphics";
+import UndeployAction from "./actions/UndeployAction";
 
 export type GameActionDiceResult = {
   result: DiceResult, description?: string
@@ -182,6 +183,8 @@ export default class GameAction {
       return new PhaseAction(this.data, this.game, this.index)
     } else if (this.data.data.action === "deploy") {
       return new DeployAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "undeploy") {
+      return new UndeployAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "rally") {
       return new RallyAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "rally_pass") {

@@ -57,6 +57,7 @@ import FireDisplaceCancelButton from "./buttons/FireDisplaceCancelButton";
 import FireStartCheckButton from "./buttons/FireStartCheckButton";
 import KickButton from "./buttons/KickButton";
 import CancelMoveButton from "./buttons/CancelMoveButton";
+import UndeployButton from "./buttons/UnDeployButton";
 
 interface GameControlsProps {
   game: Game;
@@ -130,6 +131,8 @@ export default function GameControls({ game, callback, update }: GameControlsPro
         return <KickButton gameId={game.id} key={i} />
       } else if (a.type === "deploy") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>deploy units</div>
+      } else if (a.type === "undeploy") {
+        return <UndeployButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rally") {
         return <RallyButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "rally_pass") {

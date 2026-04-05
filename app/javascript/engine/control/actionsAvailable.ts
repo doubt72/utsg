@@ -149,6 +149,10 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
 
   if (game.phase === gamePhaseType.Deployment) {
     actions.unshift({ type: "deploy" })
+    const select = currSelection(game, false)
+    if (select !== undefined) {
+      actions.push({ type: "undeploy" })
+    }
   } else if (game.phase === gamePhaseType.PrepRally) {
     addRallyActions(game, actions)
   } else if (game.gameState?.type === stateType.PrecipCheck) {

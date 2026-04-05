@@ -1,5 +1,6 @@
 import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
 import { hexDistance } from "../../utilities/utilities"
+import DeployAction from "../actions/DeployAction"
 import Counter from "../Counter"
 import Game from "../Game"
 import Map from "../Map"
@@ -65,11 +66,26 @@ export function selectable(map: Map, selection: CounterSelectionTarget): boolean
   const target = selection.counter.unit as Unit
   if (target.isFeature) { return false }
   if (game.gameState) { return game.gameState.selectable(selection) }
+  const same = target.playerNation === game.currentPlayerNation
   if (game.phase === gamePhaseType.Main) {
-    const same = target.playerNation === game.currentPlayerNation
     if (!same && !game.gameState) { return false }
     if (target.parent && target.parent.playerNation !== game.currentPlayerNation) { return false }
     return true
+  } else if (game.phase === gamePhaseType.Deployment) {
+    if (same && deployedThisTurn(game, target.id)) { return true }
+    if (same) {
+      game.addMessage("unit not deployed this turn")
+    }
+  }
+  return false
+}
+
+function deployedThisTurn(game: Game, id: string): boolean {
+  for (let i = game.lastActionIndex; i >= 0; i--) {
+    const action = game.actions[i] as DeployAction
+    if (action.undone) { continue }
+    if (action.type === "phase") { break }
+    if (action.type === "deploy" && id === action.rId) { return true }
   }
   return false
 }

@@ -33,6 +33,7 @@ import FireOutAction from "./actions/FireOutAction";
 import FireSpreadAction from "./actions/FireSpreadAction";
 import CloseCombatRollAction from "./actions/CloseCombatRollAction";
 import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
+import DeployAction from "./actions/DeployAction";
 
 export type GameData = {
   id: number;
@@ -991,7 +992,13 @@ export default class Game {
     action.undo()
     action.undone = true
     action.executedUndo = true
-    if (this.lastActionIndex >= action.index) { this.lastActionIndex = action.index - 1 }
+    if (this.lastActionIndex >= action.index) {
+      for (let i = this.lastActionIndex; i >= 0; i--) {
+        if (this.actions[i].undone) { continue }
+        this.lastActionIndex = i
+        break
+      }
+    }
 
     if (action.lastUndoCascade) {
       this.executeUndo(backendSync, sequence - 1)
@@ -1000,7 +1007,9 @@ export default class Game {
         postAPI(`/api/v1/game_actions/${action.id}/undo`, {}, { ok: () => {} })
       }
     }
-    this.clearGameState()
+    if (this.gameState?.type !== stateType.Deploy) {
+      this.clearGameState()
+    }
     this.refreshCallback(this)
   }
 
@@ -1025,6 +1034,27 @@ export default class Game {
     const initialCount = counters ? Object.values(counters).reduce((tot, u) => tot + u.x, 0) : 0
     const count = counters ? Object.values(counters).reduce((tot, u) => tot + u.x - u.used, 0) : 0
     return [count, initialCount]
+  }
+
+  undeploy() {
+    const select = this.scenario.map.currentSelection[0]
+    for (let i = this.lastActionIndex; i >= 0; i--) {
+      const action = this.actions[i] as DeployAction
+      if (action.undone) { continue }
+      if (action.type === "phase") { break }
+      if (action.type === "deploy" && select.unit.id === action.rId) {
+        this.executeAction(new GameAction({
+          user: this.currentUser,
+          player: this.currentPlayer,
+          data: {
+            action: "undeploy", old_initiative: this.initiative,
+            path: [{ x: action.target.x, y: action.target.y }],
+            deploy: [{ turn: this.turn, key: action.rKey, id: action.rId }]
+          }
+        }, this), false)
+        break
+      }
+    }
   }
 
   cancelAction() {

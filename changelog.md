@@ -1,6 +1,9 @@
 ## 0.37 alpha
 
 - Refactoring deploy data structure
+- Improve undo flow for deployments
+- Add ability to "undeploy" units
+- Bug fix: undo not properly setting last action index
 
 ## 0.36 alpha
 

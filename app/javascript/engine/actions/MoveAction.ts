@@ -200,7 +200,7 @@ export default class MoveAction extends BaseAction {
         const hindrance = smokeRoll(this.diceResults[diceIndex++].result.result)
         anims.push({ loc: mid, type: "smoke" })
         this.map.addCounter(mid, new Feature(
-          { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id }
+          { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: hindrance, id: a.id ?? "smoke" }
         ))
       }
     }
