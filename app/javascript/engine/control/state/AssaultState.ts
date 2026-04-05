@@ -40,12 +40,20 @@ export default class AssaultState extends BaseState {
       })
       canSelect = check
     }
-    this.selection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
-    this.initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+    this.selection = [{
+      x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection
+    }]
+    this.initialSelection = [{
+      x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection
+    }]
     units.forEach(u => {
       const hex = u.hex as Coordinate
-      this.selection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
-      this.initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
+      this.selection.push({
+        x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u
+      })
+      this.initialSelection.push({
+        x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u
+      })
     })
     this.path = [loc]
     this.addActions = []
@@ -151,7 +159,7 @@ export default class AssaultState extends BaseState {
       removeStateSelection(this.game, x, y, counter.unit.id)
     } else {
       this.selection?.push({
-        x, y, id: counter.unit.id, counter: counter,
+        x, y, id: counter.unit.id, name: counter.unit.name, counter: counter,
       })
       this.selection.sort((a, b) => {
         if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
@@ -197,7 +205,7 @@ export default class AssaultState extends BaseState {
     })
     const vp = this.map.victoryAt(loc)
     if (vp && vp !== this.game.currentPlayer && !map.enemyAt(loc, this.game.currentPlayer)) {
-      this.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 })
+      this.addActions.push({x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 })
     }
     const vp2 = this.map.victoryAt(old)
     if (vp2 && vp2 === this.game.currentPlayer && map.enemyAt(old, this.game.currentPlayer)) {
@@ -228,7 +236,9 @@ export default class AssaultState extends BaseState {
     const x = this.selection[0].x
     const y = this.selection[0].y
     const f = this.map.countersAt(new Coordinate(x, y)).filter(c => c.hasFeature)[0]
-    this.addActions.push({ x, y, type: gameActionAddActionType.Clear, cost: 0, id: f.feature.id, index: 0 })
+    this.addActions.push({
+      x, y, type: gameActionAddActionType.Clear, cost: 0, id: f.feature.id, name: f.feature.name, index: 0
+    })
     this.game.closeOverlay = true
   }
 
@@ -236,7 +246,7 @@ export default class AssaultState extends BaseState {
     const x = this.selection[0].x
     const y = this.selection[0].y
     this.map.unshiftGhost(new Coordinate(x, y), new Feature({
-      ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
+      id: "scrape-ghost", ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
     }))
     this.addActions.push({ x, y, type: gameActionAddActionType.Entrench, cost: 0, index: 0 })
     this.game.closeOverlay = true
@@ -250,10 +260,13 @@ export default class AssaultState extends BaseState {
         action: "assault_move", old_initiative: this.game.initiative,
         path: this.path,
         origin: this.selection.map(s => {
-          return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
+          return {
+            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name,
+            status: s.counter.unit.status
+          }
         }),
         add_action: this.addActions.map(a => {
-          return { type: a.type, x: a.x, y: a.y, id: a.id, index: a.index }
+          return { type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, index: a.index }
         }),
       }
     }, this.game)

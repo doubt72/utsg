@@ -24,9 +24,8 @@ export default class RoutAllAction extends BaseAction {
     let rc = `${nation} player attempting to rout all broken enemies: `
     const names: string[] = []
     for (const t of this.target) {
-      const unit = this.game.findUnitById(t.id) as Unit
       const loc = formatCoordinate(new Coordinate(t.x, t.y))
-      names.push(`${formatNation(this.game, otherPlayer(this.player), unit.name)} at ${loc}`)
+      names.push(`${formatNation(this.game, otherPlayer(this.player), t.name)} at ${loc}`)
     }
     rc += names.join(", ")
     return rc

@@ -2,7 +2,7 @@ import { Coordinate, featureType, hexOpenType, HexOpenType, unitType } from "../
 import { normalDir, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
-import GameAction, { GameActionAddAction, gameActionAddActionType, GameActionPath } from "../../GameAction";
+import GameAction, { GameActionAddAction, gameActionAddActionType, GameActionPath, GameActionUnit } from "../../GameAction";
 import Hex from "../../Hex";
 import BaseState, { StateAddAction, stateType } from "./BaseState";
 
@@ -17,7 +17,7 @@ export default class FireDisplaceState extends BaseState {
     const check = game.fireDisplaceNeeded[0]
     const counter = game.findCounterById(check.unit.id) as Counter
 
-    this.selection = [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, counter }]
+    this.selection = [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, name: check.unit.name, counter }]
     this.path = [{ x: check.loc.x, y: check.loc.y }]
     this.remove = false;
 
@@ -109,22 +109,25 @@ export default class FireDisplaceState extends BaseState {
       const child = unit.children[0]
       const facing = child.facing
       addAction.push({
-        type: gameActionAddActionType.Drop, x: loc.x, y: loc.y, id: child.id, facing, index: 0
+        type: gameActionAddActionType.Drop, x: loc.x, y: loc.y, id: child.id, name: child.name,
+        facing, index: 0
       })
     }
     if (this.addAction) {
       addAction.push({
         type: this.addAction.type, x: this.addAction.x, y: this.addAction.y,
-        id: this.addAction.id, index: this.addAction.index
+        id: this.addAction.id, name: this.addAction.name, index: this.addAction.index
       })
+    }
+    const target: GameActionUnit = {
+      x: loc.x, y: loc.y, id: unit.id, name: unit.name, status: unit.status
     }
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
         action: "fire_displace", old_initiative: this.game.initiative,
         path: this.path.map(c => { return { x: c.x, y: c.y }}),
-        target: [{ x: loc.x, y: loc.y, id: unit.id, status: unit.status }],
-        add_action: addAction,
+        target: [target], add_action: addAction,
       },
     }, this.game)
     this.execute(action)

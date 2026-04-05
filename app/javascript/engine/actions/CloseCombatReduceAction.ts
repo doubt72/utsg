@@ -21,12 +21,12 @@ export default class CloseCombatReduceAction extends BaseAction {
 
   get htmlValue(): string {
     const loc = new Coordinate(this.target.x, this.target.y)
-    const unit = this.game.findUnitById(this.target.id) as Unit
-    if (unit.isVehicle || this.target.status === unitStatus.Broken) {
-      return `${formatNation(this.game, this.player)} ${formatNation(this.game, this.player, unit.name)} ` +
+    // const unit = this.game.findUnitById(this.target.id) as Unit
+    if (this.target.vehicle || this.target.status === unitStatus.Broken) {
+      return `${formatNation(this.game, this.player)} ${formatNation(this.game, this.player, this.target.name)} ` +
         `at ${formatCoordinate(loc)} <span style="color: ${failRed};">eliminated</span>`
     } else {
-      return `${formatNation(this.game, this.player)} ${formatNation(this.game, this.player, unit.name)} ` +
+      return `${formatNation(this.game, this.player)} ${formatNation(this.game, this.player, this.target.name)} ` +
         `at ${formatCoordinate(loc)} <span style="color: ${failRed};">broken</span>`
     }
   }

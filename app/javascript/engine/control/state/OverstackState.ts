@@ -1,7 +1,7 @@
 import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import Counter from "../../Counter";
 import Game from "../../Game";
-import GameAction from "../../GameAction";
+import GameAction, { GameActionUnit } from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
 
 export default class OverstackState extends BaseState {
@@ -56,16 +56,16 @@ export default class OverstackState extends BaseState {
   finish() {
     const counter = this.map.currentSelection[0]
     const hex = counter.hex as Coordinate
+    const target: GameActionUnit = {
+      x: hex.x, y: hex.y, id: counter.unit.id, name: counter.unit.name, status: counter.unit.status,
+      parent: counter.unit.parent?.id, children: counter.children.map(c => {
+        return c.unit.id
+      })
+    }
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
-        action: "overstack_reduce", target: [{
-          x: hex.x, y: hex.y, id: counter.unit.id, status: counter.unit.status,
-          parent: counter.unit.parent?.id, children: counter.children.map(c => {
-            return c.unit.id
-          })
-        }],
-        old_initiative: this.game.initiative,
+        action: "overstack_reduce", target: [target], old_initiative: this.game.initiative,
       }
     }, this.game)
     this.execute(action)

@@ -366,6 +366,7 @@ export default class Unit {
 
   get lowestArmor(): number {
     let armor = 99
+    if (!this.armored) { return -1 }
     if (this.turreted && this.turretArmor) {
       this.turretArmor.forEach(a => {
         if (a < armor) { armor = a }
@@ -586,9 +587,7 @@ export default class Unit {
     other.icon = "team"
     other.isSplit = true
 
-    other.pinned = this.pinned
     other.setStatus(this.status)
-    other.id = `${this.id}-2`
     return other
   }
 
@@ -598,17 +597,14 @@ export default class Unit {
     this.smokeCapable = reset.smokeCapable
     this.engineer = reset.engineer
     this.assault = reset.assault
-    this.size = 6
-    this.type = unitType.Squad
-    this.icon = "squad"
+    this.size = reset.size
+    this.type = reset.type
+    this.icon = reset.icon
     this.isSplit = false
 
-    if (unit.pinned) { this.pinned = true }
     // Can't be broken or wreck, so highest of:
     // Normal: 1, Tired: 2, Activated: 4, Exhausted: 5
     if (unit.status > this.status) { this.setStatus(unit.status) }
-  
-    this.id = `${this.id}-r`
   }
 
   get helpText(): string[] {

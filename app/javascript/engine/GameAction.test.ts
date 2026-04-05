@@ -32,7 +32,7 @@ describe("action integration test", () => {
   }
 
   const ginf: UnitData = {
-    id: "g_inf", c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0, x: 3
+    id: "g_rifle_s", c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0, x: 3
   }
   const rinf: UnitData = {
     id: "r_inf", c: "ussr", f: 8, i: "squad", m: 4, n: "Guards SMG", o: {a: 1}, r: 3, s: 6, t: "sqd", v: 5, y: 41
@@ -136,17 +136,41 @@ describe("action integration test", () => {
     expect(game.lastAction?.stringValue).toBe("game started, begin deployment")
     expect(game.lastAction?.undoPossible).toBe(false)
 
-    expect(game.scenario.axisReinforcements[0]["g_inf"].x).toBe(3)
-    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(0)
+    currentActionData = {
+      user: "two", player: 2,
+      data: {
+        action: "deploy_split_squad", old_initiative: game.initiative,
+        deploy: [ { turn: 0, key: "g_rifle_s", id: "" } ]
+      },
+    }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].x).toBe(2)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_t"].x).toBe(2)
+    expect(game.actions[index - 1].stringValue).toBe("German player split Rifle squad into two teams")
+
+    currentActionData = {
+      user: "two", player: 2,
+      data: {
+        action: "deploy_join_squad", old_initiative: game.initiative,
+        deploy: [ { turn: 0, key: "g_rifle_s", id: "" } ]
+      },
+    }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].x).toBe(3)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_t"]).toBe(undefined)
+
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].x).toBe(3)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].used).toBe(0)
+    expect(game.actions[index - 1].stringValue).toBe("German player joined two Rifle teams into a squad")
     currentActionData = {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(1)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
     expect(game.actions[index - 1].stringValue).toBe("deployed German unit: Rifle to E4")
 
@@ -154,7 +178,7 @@ describe("action integration test", () => {
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 1)
     game.executeUndo(false)
-    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(0)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
     // Undone actions are just marked as undone
     expect(game.actions.length).toBe(index)
@@ -168,11 +192,11 @@ describe("action integration test", () => {
       undone: true, user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(0)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].used).toBe(0)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3)).length).toBe(0)
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 3)
@@ -181,16 +205,16 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 4, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(1)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
 
     // Same unit, same spot
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(2)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].used).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4)).length).toBe(2)
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[0].unit.name).toBe("Rifle")
     expect(game.scenario.map.countersAt(new Coordinate(4, 4))[1].unit.name).toBe("Rifle")
@@ -199,11 +223,11 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_inf", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    expect(game.scenario.axisReinforcements[0]["g_inf"].used).toBe(3)
+    expect(game.scenario.axisReinforcements[0]["g_rifle_s"].used).toBe(3)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
 
     // Should trigger phase end
@@ -244,11 +268,12 @@ describe("action integration test", () => {
 
     // { list: [rinf, rcrew, rmg, rldr, rgun]}
 
+    const guardsId = `uf-${game.actions.length}`
     currentActionData = {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_inf", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_inf", id: guardsId } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -287,6 +312,33 @@ describe("action integration test", () => {
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.actions.length).toBe(index)
     expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: Leader to A4")
+
+    currentActionData = {
+      user: "one", player: 1, data: {
+        action: "undeploy", old_initiative: game.initiative,
+        path: [ { x: 0, y: 0, facing: 1 }],
+        deploy: [ { turn: 0, key: "r_inf", id: guardsId } ],
+      }
+    }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastAction?.stringValue).toBe("undeployed Soviet unit: Guards SMG from A1")
+    let counters = game.scenario.map.countersAt(new Coordinate(0, 0))
+    expect(counters.length).toBe(0)
+
+    currentActionData = {
+      user: "one", player: 1, data: {
+        action: "deploy", old_initiative: game.initiative,
+        path: [ { x: 0, y: 0, facing: 1 }],
+        deploy: [ { turn: 0, key: "r_inf", id: `uf-${game.actions.length}` } ],
+      }
+    }
+    game.executeAction(new GameAction(currentActionData, game, index++), false)
+    expect(game.actions.length).toBe(index)
+    expect(game.lastAction?.stringValue).toBe("deployed Soviet unit: Guards SMG to A1")
+    counters = game.scenario.map.countersAt(new Coordinate(0, 0))
+    expect(counters.length).toBe(1)
+    expect(counters[0].unit.name).toBe("Guards SMG")
 
     currentActionData = {
       user: "one", player: 1, data: {

@@ -43,8 +43,10 @@ export default class FireState extends BaseState {
       facing: selection.unit.rotates ? selection.unit.facing : undefined,
       turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
     }
-    this.selection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
-    this.initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+    this.selection = [{
+      x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection }]
+    this.initialSelection = [{
+      x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection }]
     this.targetSelection = []
     this.path = [loc]
     this.doneSelect = !canMultiSelectFire(game, loc.x, loc.y, selection.unit)
@@ -91,7 +93,7 @@ export default class FireState extends BaseState {
         clearUnrangedSelection(this.game)
       } else {
         this.selection?.push({
-          x, y, id: counter.unit.id, counter: counter,
+          x, y, id: counter.unit.id, name: counter.unit.name, counter: counter,
         })
       }
     } else {
@@ -277,13 +279,16 @@ export default class FireState extends BaseState {
         path: this.path,
         origin: this.selection.map(s => {
           return {
-            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status,
-            sponson: this.sponson,
-            wire: this.map.wireAt(new Coordinate(s.x, s.y))
+            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name,
+            status: s.counter.unit.status,
+            sponson: this.sponson, wire: this.map.wireAt(new Coordinate(s.x, s.y))
           }
         }),
         target: this.targetSelection.map(t => {
-          return { x: t.x, y: t.y, id: t.counter.unit.id, status: t.counter.unit.status }
+          return {
+            x: t.x, y: t.y, id: t.counter.unit.id, name: t.counter.unit.name,
+            status: t.counter.unit.status,
+          }
         }),
         fire_data: {
           start: this.targetHexes.map(h => {

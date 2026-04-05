@@ -1578,7 +1578,7 @@ describe("reaction fire attacks", () => {
   test("reaction fire triggers correct sniper", () => {
     const game = createFireGame()
     game.axisSniper = new Feature({
-      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      id: "sniper-2", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
     })
     const map = game.scenario.map
     const unit = new Unit(testGInf)
@@ -1638,7 +1638,7 @@ describe("reaction fire attacks", () => {
   test("reaction fire doesn't trigger other sniper", () => {
     const game = createFireGame()
     game.alliedSniper = new Feature({
-      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
     })
     const map = game.scenario.map
     const unit = new Unit(testGInf)

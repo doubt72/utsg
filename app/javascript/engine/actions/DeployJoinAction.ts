@@ -19,7 +19,7 @@ export default class DeployJoinAction extends BaseAction {
     this.turn = deploy[0].turn
   }
 
-  get type(): string { return "deploy_join" }
+  get type(): string { return "deploy_join_squad" }
 
   get htmlValue(): string {
     const name = this.player === 1 ?

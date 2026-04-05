@@ -798,20 +798,24 @@ export default class Map {
       const loc = u.hex as Coordinate
       if (u.unit.isActivated || u.unit.isTired) {
         rc.push({
-          x: loc.x, y: loc.y, id: u.unit.id, status: unitStatus.Activated,
+          x: loc.x, y: loc.y, id: u.unit.id, name: u.unit.name, status: unitStatus.Activated,
           new_status: unitStatus.Normal
         })
       } else if (u.unit.isExhausted) {
         rc.push({
-          x: loc.x, y: loc.y, id: u.unit.id, status: unitStatus.Exhausted,
+          x: loc.x, y: loc.y, id: u.unit.id, name: u.unit.name, status: unitStatus.Exhausted,
           new_status: this.contactAt(loc) ? unitStatus.Normal : unitStatus.Tired
         })
       }
       if (u.unit.pinned) {
-        rc.push({ x: loc.x, y: loc.y, id: u.unit.id, status: u.unit.status, unpin: true })
+        rc.push({
+          x: loc.x, y: loc.y, id: u.unit.id, name: u.unit.name, status: u.unit.status, unpin: true,
+        })
       }
       if (u.unit.routed) {
-        rc.push({ x: loc.x, y: loc.y, id: u.unit.id, status: u.unit.status, unrout: true })
+        rc.push({
+          x: loc.x, y: loc.y, id: u.unit.id, name: u.unit.name, status: u.unit.status, unrout: true,
+        })
       }
     }
     return rc

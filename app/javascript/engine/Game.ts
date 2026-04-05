@@ -34,6 +34,7 @@ import FireSpreadAction from "./actions/FireSpreadAction";
 import CloseCombatRollAction from "./actions/CloseCombatRollAction";
 import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
 import DeployAction from "./actions/DeployAction";
+import SquadJoinState from "./control/state/SquadJoinState";
 
 export type GameData = {
   id: number;
@@ -1098,10 +1099,20 @@ export default class Game {
     if (this.gameState?.type === stateType.Deploy) {
       this.deployState.split()
     } else {
-      const map = this.scenario.map
-      const selection = map.currentSelection[0]
-      map.addCounter(selection.hex as Coordinate, selection.unit.split())
-      organizeStacks(map)
+      const selection = this.scenario.map.currentSelection[0]
+      const loc = selection.hex as Coordinate
+      const newId = `uf-${this.actions.length}`
+      this.executeAction(new GameAction({
+        user: this.currentUser, player: this.currentPlayer,
+        data: {
+          action: "squad_split", old_initiative: this.initiative,
+          target: [
+            { x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name },
+            { x: loc.x, y: loc.y, id: newId, name: selection.unit.name },
+          ]
+        }
+      }, this), false)
+      this.scenario.map.clearAllSelections()
     }
   }
 
@@ -1109,7 +1120,11 @@ export default class Game {
     if (this.gameState?.type === stateType.Deploy) {
       this.deployState.join()
     } else {
-      // Need new state
+      if (this.gameState === undefined) {
+        this.setGameState(new SquadJoinState(this))
+      } else {
+        this.gameState.finish()
+      }
     }
   }
 }

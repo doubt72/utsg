@@ -19,7 +19,7 @@ export default class DeploySplitAction extends BaseAction {
     this.turn = deploy[0].turn
   }
 
-  get type(): string { return "deploy_split" }
+  get type(): string { return "deploy_split_squad" }
 
   get htmlValue(): string {
     const name = this.player === 1 ?

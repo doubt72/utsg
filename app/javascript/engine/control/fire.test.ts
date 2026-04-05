@@ -53,7 +53,7 @@ describe("ranged fire attacks", () => {
     return ids.map(id => {
       const counter = game.findCounterById(id) as Counter
       const hex = counter.hex as Coordinate
-      return { x: hex.x, y: hex.y, id, counter }
+      return { x: hex.x, y: hex.y, id, name: counter.unit.id, counter }
     })
   }
 
@@ -3842,7 +3842,7 @@ describe("ranged fire attacks", () => {
     test("infantry fire triggers sniper", () => {
       const game = createFireGame()
       game.alliedSniper = new Feature({
-        t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+        id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
       })
       const map = game.scenario.map
       const firing = new Unit(testGInf)
@@ -3897,7 +3897,7 @@ describe("ranged fire attacks", () => {
     test("same nation sniper doesn't trigger", () => {
       const game = createFireGame()
       game.axisSniper = new Feature({
-        t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+        id: "sniper-2", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
       })
       const map = game.scenario.map
       const firing = new Unit(testGInf)
@@ -3931,7 +3931,7 @@ describe("ranged fire attacks", () => {
     test("vehicle doesn't trigger sniper", () => {
       const game = createFireGame()
       game.alliedSniper = new Feature({
-        t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+        id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
       })
       const map = game.scenario.map
       const firing = new Unit(testGTank)

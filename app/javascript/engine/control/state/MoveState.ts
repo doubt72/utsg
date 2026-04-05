@@ -3,7 +3,7 @@ import { normalDir, roll2d10, rolld10, stackLimit } from "../../../utilities/uti
 import Counter from "../../Counter";
 import Feature from "../../Feature";
 import Game from "../../Game";
-import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionPath } from "../../GameAction";
+import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionMoveData, GameActionPath } from "../../GameAction";
 import Hex from "../../Hex";
 import Unit from "../../Unit";
 import { alongRailroad, alongRoad, canBeLoaded, canLoadUnit, mapSelectMovement, movementCost, movementPastCost, smokeOpenHex } from "../movement";
@@ -50,12 +50,16 @@ export default class MoveState extends BaseState {
       })
       canSelect = check
     }
-    const allSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
-    const initialSelection = [{ x: loc.x, y: loc.y, id: selection.unit.id, counter: selection }]
+    const allSelection = [{
+      x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection }
+    ]
+    const initialSelection = [{
+      x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection }
+    ]
     units.forEach(u => {
       const hex = u.hex as Coordinate
-      allSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
-      initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
+      allSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u })
+      initialSelection.push({ x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u })
     })
     this.selection = allSelection
     this.initialSelection = initialSelection
@@ -193,7 +197,8 @@ export default class MoveState extends BaseState {
       this.addActions.push(
         {
           x: xx, y: yy, cost, type: gameActionAddActionType.Drop, id: counter.unit.id,
-          parent_id: counter.unit.parent?.id, status: counter.unit.status,
+          name: counter.unit.name, parent_id: counter.unit.parent?.id,
+          parent_name: counter.unit.parent?.name, status: counter.unit.status,
           facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing,
           index: this.path.length - 1,
         }
@@ -234,7 +239,8 @@ export default class MoveState extends BaseState {
         }
         const facing = counter.unit.rotates ? counter.unit.facing : undefined
         this.addActions.push({
-          x: xx, y: yy, cost, type: gameActionAddActionType.Load, id: counter.unit.id, parent_id: load?.unit.id,
+          x: xx, y: yy, cost, type: gameActionAddActionType.Load, id: counter.unit.id,
+          name: counter.unit.name, parent_id: load?.unit.id, parent_name: load?.unit.name,
           facing, status: counter.unit.status, index: this.path.length - 1,
         })
       }
@@ -245,8 +251,10 @@ export default class MoveState extends BaseState {
         counter.children.forEach(c => removeStateSelection(this.game, x, y, c.unit.id))
       } else {
         const sel = this.selection
-        sel.push({ x, y, id: counter.unit.id, counter: counter })
-        counter.children.forEach(c => sel.push({ x, y, id: c.unit.id, counter: c }))
+        sel.push({ x, y, id: counter.unit.id, name: counter.unit.name, counter: counter })
+        counter.children.forEach(c => sel.push({
+          x, y, id: c.unit.id, name: c.unit.name, counter: c
+        }))
         this.selection.sort((a, b) => {
           if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
           return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
@@ -469,17 +477,19 @@ export default class MoveState extends BaseState {
     for (const c of counters) {
       if (c.hasFeature && c.feature.type === featureType.Mines) { check = c.feature; break }
     }
-    const moveData = check ? { mines:
+    const mineTarget = this.selection[0].counter.unit
+    const moveData: GameActionMoveData | undefined = check ? { mines:
       {
         firepower: check.baseFirepower as number, infantry: !check.antiTank,
-        antitank: check.fieldGun || check.antiTank
+        antitank: check.fieldGun || check.antiTank, is_armored: mineTarget.armored,
+        is_vehicle: mineTarget.isVehicle, lowest_armor: mineTarget.lowestArmor
       }
      } : undefined
     const dice: GameActionDiceResult[] = []
     if (moveData) {
       const unit = this.selection[0].counter.unit
       const mines = moveData.mines
-      if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
+      if ((unit.armored && mines?.antitank) || (!unit.armored && mines?.infantry)) {
         dice.push({ result: roll2d10() })
       }
     }
@@ -493,12 +503,15 @@ export default class MoveState extends BaseState {
         action: this.rushing ? "rush" : "move", old_initiative: this.game.initiative,
         path: this.path,
         origin: this.selection.map(s => {
-          return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
+          return {
+            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name,
+            status: s.counter.unit.status
+          }
         }),
         add_action: this.addActions.map(a => {
           return {
-            type: a.type, x: a.x, y: a.y, id: a.id, parent_id: a.parent_id, facing: a.facing,
-            status: a.status, index: a.index,
+            type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, parent_id: a.parent_id,
+            parent_name: a.parent_name, facing: a.facing, status: a.status, index: a.index,
           }
         }),
         move_data: moveData,

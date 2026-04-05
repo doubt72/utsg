@@ -114,7 +114,7 @@ export function refreshTargetSelection(game: Game) {
   for (const u of units) {
     const hex = u.hex as Coordinate
     if (u.unit.targetSelected) {
-      targets.push({ x: hex.x, y: hex.y, id: u.unit.id, counter: u })
+      targets.push({ x: hex.x, y: hex.y, id: u.unit.id, name: u.unit.name, counter: u })
       let check = false
       for (const c of coords) {
         if (c.x === hex.x && c.y === hex.y) { check = true; break }

@@ -39,8 +39,7 @@ export default class RallyAction extends BaseAction {
   get type(): string { return "rally" }
 
   get rollNeeded(): number {
-    const unit = this.game.findUnitById(this.target.id) as Unit
-    if (!unit.canCarrySupport) { return this.fixRoll }
+    if (this.fixRoll) { return this.fixRoll }
     return baseRally - this.moraleBase - this.leaderMod - this.terrainMod +
       (this.nextToEnemy ? 1 : 0)
   }
@@ -54,14 +53,14 @@ export default class RallyAction extends BaseAction {
   get htmlValue(): string {
     const roll = this.diceResult.result.result
     const nation = formatNation(this.game, this.player)
-    const unit = this.game.findUnitById(this.target.id) as Unit
-    const action = unit.canCarrySupport ? "rally check" : "attempt to fix weapon"
-    const succeed = unit.canCarrySupport ? "rallies" : "is repaired"
-    const fail = unit.canCarrySupport ? `fails to rally` :
+    const infantry = !this.fixRoll
+    const action = infantry ? "rally check" : "attempt to fix weapon"
+    const succeed = infantry ? "rallies" : "is repaired"
+    const fail = infantry ? `fails to rally` :
       ( roll <= this.breakRoll ? `is <span style="color: ${failRed};">eliminated</span>` : "remains broken" )
     const result = `${this.passed ? `<span style="color: ${passGreen};">passed</span>` : (
-      !unit.canCarrySupport && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed};">failure</span>` : `<span style="color: ${failRed};">failed</span>`
-    ) }: ` + `${formatNation(this.game, this.player, unit.name)} ${this.passed ? succeed : fail}`
+      !infantry && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed};">failure</span>` : `<span style="color: ${failRed};">failed</span>`
+    ) }: ` + `${formatNation(this.game, this.player, this.target.name)} ${this.passed ? succeed : fail}`
     return `${nation} ${action} at ${formatCoordinate(new Coordinate(this.target.x, this.target.y))}` +
       `: target ${formatTarget(this.rollNeeded)}, rolled ${formatDieResult(this.diceResult.result)}, ${result}`
   }

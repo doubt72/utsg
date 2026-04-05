@@ -11,7 +11,8 @@ export default class SniperState extends BaseState {
     this.selection = game.sniperNeeded.map(s => {
       s.unit.select()
       return {
-        x: s.loc.x, y: s.loc.y, id: s.unit.id,counter: game.findCounterById(s.unit.id) as Counter
+        x: s.loc.x, y: s.loc.y, id: s.unit.id, name: s.unit.name,
+        counter: game.findCounterById(s.unit.id) as Counter
       }
     })
     game.refreshCallback(game)
@@ -55,7 +56,7 @@ export default class SniperState extends BaseState {
         action: "sniper", old_initiative: this.game.initiative,
         dice_result: [{ result: roll2d10() }],
         target: this.selection.map(s => {
-          return { x: s.x, y: s.y, id: s.id, status: s.counter.unit.status }
+          return { x: s.x, y: s.y, id: s.id, name: s.name, status: s.counter.unit.status }
         }),
       },
     }, this.game)

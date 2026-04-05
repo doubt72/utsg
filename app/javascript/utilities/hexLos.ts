@@ -1,3 +1,4 @@
+import Feature from "../engine/Feature";
 import Hex from "../engine/Hex"
 import { Direction } from "./commonTypes";
 import { hexBuildingBuildingLosEdges } from "./hexBuilding";
@@ -14,8 +15,11 @@ export function hexLosCounterLos(hex: Hex): HexLosData {
   let los = false
   const counters = hex.map.counterDataAt(hex.coord)
   counters.forEach(c => {
-    if (c.u.hindrance) { hindrance += c.u.hindrance }
-    if (c.u.blocksLos) { los = true }
+    if (c.u.isFeature) {
+      const f = c.u as Feature
+      if (f.hindrance) { hindrance += f.hindrance }
+      if (f.blocksLos) { los = true }
+    }
   })
   return { hindrance: hindrance, los: los}
 }

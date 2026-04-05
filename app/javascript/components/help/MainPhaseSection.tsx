@@ -6,6 +6,7 @@ import MapHexPatterns from "../game/map/MapHexPatterns";
 import InitiativeDisplay from "../game/map/InitiativeDisplay";
 import { roundedRectangle } from "../../utilities/graphics";
 import { helpLink } from "./helpData";
+import { serverVersion } from "../../utilities/utilities";
 
 export default function MainPhaseSection() {
   const section = "5.2.3.0"
@@ -39,7 +40,8 @@ export default function MainPhaseSection() {
             ]
           },
         },
-      }
+      },
+      server_version: serverVersion,
     })
     game.scenario.map.showCoords = false
     game.setCurrentInitiativePlayer(1)

@@ -4,7 +4,6 @@ import { setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
-import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 
 export default class CloseCombatRollAction extends BaseAction {
@@ -49,13 +48,11 @@ export default class CloseCombatRollAction extends BaseAction {
     const nation2 = formatNation(this.game, 2)
     let rc = `${nation1} `
     rc += this.origin.map(o => {
-      const unit = this.game.findUnitById(o.id) as Unit
-      return formatNation(this.game, 1, unit.name)
+      return formatNation(this.game, 1, o.name)
     }).join(", ")
     rc += ` battles ${nation2} `
     rc += this.target.map(t => {
-      const unit = this.game.findUnitById(t.id) as Unit
-      return formatNation(this.game, 2, unit.name)
+      return formatNation(this.game, 2, t.name)
     }).join(", ")
     rc += ` in close combat at ${formatCoordinate(loc)}; `
     rc += `${nation1} player roll result of ${formatDieResult(this.diceResult[0].result)} ` +

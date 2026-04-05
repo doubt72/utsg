@@ -48,7 +48,7 @@ export default class MoveAction extends BaseAction {
     const end = new Coordinate(this.lastPath.x, this.lastPath.y)
     const nation = formatNation(this.game, this.player)
     const units = this.origin.map(u => {
-      return formatNation(this.game, this.player, (this.game.findUnitById(u.id) as Unit).name)
+      return formatNation(this.game, this.player, u.name)
     }).join(", ")
     const actions = [this.path.length > 1 ?
       `${nation} ${units} ${this.moveString} from ${formatCoordinate(start)} to ${formatCoordinate(end)}` :
@@ -59,18 +59,19 @@ export default class MoveAction extends BaseAction {
     if (this.moveData?.mines) {
       const mines = this.moveData.mines
       const hitCheck = baseToHit(mines.firepower)
-      const unit = this.game.findUnitById(this.origin[0].id) as Unit
+      // const unit = this.game.findUnitById(this.origin[0].id) as Unit
       let hitRoll = 0
       let formatHit = ""
-      if ((unit.armored && mines.antitank) || (!unit.armored && mines.infantry)) {
+      if ((this.moveData.mines.is_armored && mines.antitank) ||
+          (!this.moveData.mines.is_armored && mines.infantry)) {
         hitRoll = this.diceResults[diceIndex].result.result
         formatHit = formatDieResult(this.diceResults[diceIndex++].result)
       }
-      if (unit.isVehicle && !unit.armored) {
+      if (this.moveData.mines.is_vehicle && !this.moveData.mines.is_armored) {
         mineAction = ", vehicle destroyed by mines"
-      } else if (unit.isVehicle) {
+      } else if (this.moveData.mines.is_vehicle) {
         if (mines.antitank) {
-        const armor = unit.lowestArmor < 0 ? 0 : unit.lowestArmor
+        const armor = this.moveData.mines.lowest_armor < 0 ? 0 : this.moveData.mines.lowest_armor
           mineAction = `, mine roll (2d10): target ${formatTarget(hitCheck + armor)}, rolled ${formatHit}, `
           if (hitRoll > hitCheck + armor) {
             mineAction += "vehicle destroyed"
@@ -97,16 +98,13 @@ export default class MoveAction extends BaseAction {
       const mid = new Coordinate(a.x, a.y)
       const label = formatCoordinate(mid)
       if (a.type === gameActionAddActionType.Drop) {
-        const parent = this.game.findUnitById(a.parent_id ?? "")
-        const child = this.game.findUnitById(a.id ?? "") as Unit
-        if (parent) {
-          actions.push(`${formatNation(this.game, this.player, child.name)} dropped at ${label}`)
+        if (a.parent_id) {
+          actions.push(`${formatNation(this.game, this.player, a.parent_name)} dropped at ${label}`)
         } else {
-          actions.push(`${formatNation(this.game, this.player, child.name)} stopped at ${label}`)
+          actions.push(`${formatNation(this.game, this.player, a.name)} stopped at ${label}`)
         }
       } else if (a.type === gameActionAddActionType.Load) {
-        const unit = this.game.findUnitById(a.id ?? "") as Unit
-        actions.push(`${formatNation(this.game, this.player, unit.name)} picked up at ${label}`)
+        actions.push(`${formatNation(this.game, this.player, a.name)} picked up at ${label}`)
       } else if (a.type === gameActionAddActionType.Smoke) {
         const roll = this.diceResults[diceIndex++]
         actions.push(`smoke level ${smokeRoll(roll.result.result)} placed at ${label} (smoke roll of ${

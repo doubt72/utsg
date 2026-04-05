@@ -18,6 +18,7 @@ import { RoutPathTree } from "../../engine/control/state/RoutState";
 import Game from "../../engine/Game";
 import { gamePhaseType } from "../../engine/support/gamePhase";
 import { helpLink } from "./helpData";
+import { serverVersion } from "../../utilities/utilities";
 
 export default function RoutSection() {
   const [routDiagram, setRoutDiagram] = useState<JSX.Element | undefined>();
@@ -29,7 +30,7 @@ export default function RoutSection() {
   
   const createTestGame = (x: number, y: number, hexes: HexData[][]): Game => {
     const game = new Game({
-      id: 1,
+      id: 1, server_version: serverVersion,
       name: "test game", scenario: scenarioTestData(x, y, hexes),
       owner: "one", state: "ready", scenario_version: "0.01",
       player_one: "one", player_two: "", current_player: "",

@@ -27,7 +27,7 @@ export default class BreakdownState extends BaseState {
     const id = origin[0].id
     const counter = game.findCounterById(id) as Counter
     this.selection = [{
-      x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, counter,
+      x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, name: counter.unit.name, counter,
     }],
     counter.unit.select()
     game.refreshCallback(game)
@@ -46,14 +46,17 @@ export default class BreakdownState extends BaseState {
   }
 
   finish() {
+    const selection = this.selection[0]
     const action = new GameAction({
       user: this.game.currentUser,
       player: this.player,
       data: {
         action: "breakdown", old_initiative: this.game.initiative,
-        origin: this.selection.map(s => {
-          return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
-        }),
+        origin: [{
+            x: selection.x, y: selection.y, id: selection.counter.unit.id,
+            name: selection.counter.unit.name, status: selection.counter.unit.status
+        }],
+        breakdown_data: { breakdown_roll: selection.counter.unit.breakdownRoll as number },
         dice_result: [{ result: roll2d10() }],
       },
     }, this.game)

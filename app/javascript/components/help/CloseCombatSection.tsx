@@ -4,19 +4,19 @@ import Unit from "../../engine/Unit";
 
 export default function CloseCombatSection() {
   const one1 = new Unit({
-    t: "sqd", i: "squad", s: 6, c: "usa", n: "Marine Rifle", y: 0, m: 4, f: 7, r: 6, v: 5,
+    id: "us_marine_rifle_s", t: "sqd", i: "squad", s: 6, c: "usa", n: "Marine Rifle", y: 0, m: 4, f: 7, r: 6, v: 5,
     o: { a: 1 },
   });
   const one2 = new Unit({
-    t: "sw", i: "mg", c: "usa", n: "M1918 BAR", y: 18,
+    id: "us_m1918_bar", t: "sw", i: "mg", c: "usa", n: "M1918 BAR", y: 18,
     o: { a: 1, r: 1, j: 3, f: 16 }, f: 5, r: 8, v: 0, s: 1,
   });
   const one3 = new Unit({
-    c: "usa", t: "ldr", n: "Leader", i: "leader", y: 0, m: 5, s: 1, f: 1, r: 1, v: 6,
+    id: "us_leader_5_1", c: "usa", t: "ldr", n: "Leader", i: "leader", y: 0, m: 5, s: 1, f: 1, r: 1, v: 6,
     o: { l: 1 },
   });
   const two = new Unit({
-    t: "sqd", i: "squad", s: 6, c: "jap", n: "SNLF", y: 0, m: 3, f: 6, r: 4, v: 4,
+    id: "jap_snlf_s", t: "sqd", i: "squad", s: 6, c: "jap", n: "SNLF", y: 0, m: 3, f: 6, r: 4, v: 4,
     o: { a: 1 },
   });
 

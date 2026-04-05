@@ -6,7 +6,6 @@ import Feature from "../Feature";
 import Game from "../Game";
 import { GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, gameActionAddActionType } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
-import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 
 export default class AssaultMoveAction extends BaseAction {
@@ -34,15 +33,14 @@ export default class AssaultMoveAction extends BaseAction {
     const end = new Coordinate(this.lastPath.x, this.lastPath.y)
     const nation = formatNation(this.game, this.player)
     const units = this.origin.map(u =>
-      formatNation(this.game, this.player, (this.game.findUnitById(u.id) as Unit).name)).join(", ")
+      formatNation(this.game, this.player, u.name)).join(", ")
     const actions = [this.path.length > 1 ?
       `${nation} ${units} assault moved from ${formatCoordinate(start)} to ${formatCoordinate(end)}` :
       `${nation} ${units} at ${formatCoordinate(start)}`
     ]
     this.addAction.forEach(a => {
-      const feature = this.game.findCounterById(a.id ?? "") as Counter
       if (a.type === gameActionAddActionType.Clear) {
-        actions.push(`cleared ${feature.feature.name}`)
+        actions.push(`cleared ${a.name}`)
       } else if (a.type === gameActionAddActionType.Entrench) {
         actions.push("dug in")
       } else if (a.type !== gameActionAddActionType.VP) {
@@ -94,7 +92,7 @@ export default class AssaultMoveAction extends BaseAction {
         anims.push({ loc: mid, type: "clear" })
       } else if (a.type === gameActionAddActionType.Entrench) {
         const feature = new Feature({
-          ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
+          id: `sc-${this.game.lastActionIndex}`, ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
         })
         feature.id = `scrap-${mid.x}-${mid.y}`
         this.map.addCounter(mid, feature)

@@ -20,8 +20,7 @@ export default class OverstackReduceAction extends BaseAction {
 
   get htmlValue(): string {
     const name = this.player === 1 ? this.game.playerOneName : this.game.playerTwoName
-    const unit = this.game.findUnitById(this.target.id)
-    return `${name} removed ${unit?.name} from ${
+    return `${name} removed ${this.target.name} from ${
       formatCoordinate(new Coordinate(this.target.x, this.target.y))
     }`
   }

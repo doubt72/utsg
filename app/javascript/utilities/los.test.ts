@@ -9,8 +9,8 @@ import { TextLayout } from "./graphics";
 // LOS integration tests
 
 const testFeatureData: { [index: string]: FeatureData } = {
-  smoke: { ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
-  fire: { ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
+  smoke: { id: "smoke", ft: 1, n: "Smoke", t: "smoke", i: "smoke", h: 2 },
+  fire: { id: "fire", ft: 1, n: "Blaze", t: "fire", i: "fire", o: { los: 1 } },
 };
 
 type MapTestData = {

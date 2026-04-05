@@ -29,10 +29,9 @@ export default class RouteMoveAction extends BaseAction {
   get type(): string { return this.optional ? "rout_self" : "rout_move" }
 
   get htmlValue(): string {
-    const unit = this.game.findUnitById(this.target.id) as Unit
     const start = formatCoordinate(new Coordinate(this.target.x, this.target.y))
     const nation = formatNation(this.game, this.player)
-    let rc = `${nation} ${formatNation(this.game, this.player, unit.name)} at ${start} routs `
+    let rc = `${nation} ${formatNation(this.game, this.player, this.target.name)} at ${start} routs `
     if (this.path.length > 0) {
       const last = this.path.length - 1
       const end = formatCoordinate(new Coordinate(this.path[last].x, this.path[last].y))
@@ -42,8 +41,7 @@ export default class RouteMoveAction extends BaseAction {
     }
     for (const a of this.addActions) {
       if (a.type === gameActionAddActionType.Drop) {
-        const child = this.game.findUnitById(a.id as string) as Unit
-        rc += `, ${formatNation(this.game, this.player, child.name)} dropped`
+        rc += `, ${formatNation(this.game, this.player, a.name)} dropped`
       }
     }
     return rc

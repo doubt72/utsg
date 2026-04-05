@@ -80,8 +80,7 @@ export default class FireAction extends BaseAction {
     for (let i = 0; i < coords.length; i++) {
       const c = coords[i]
       const names = this.origin.filter(o => o.x === c.x && o.y === c.y).map(o => {
-        const unit = this.game.findUnitById(o.id) as Unit
-        return this.formatUnit(unit)
+        return formatNation(this.game, this.player, o.name)
       })
       if (i > 0) { part += "and " }
       part += `${ formatNation(this.game, this.player) } ${names.join(", ")}`
@@ -99,8 +98,7 @@ export default class FireAction extends BaseAction {
       }
       for (const c of coords) {
         const names = this.target.filter(t => t.x === c.x && t.y === c.y).map(t => {
-          const unit = this.game.findUnitById(t.id) as Unit
-          return this.formatUnit(unit)
+        return formatNation(this.game, otherPlayer(this.player), t.name)
         })
         part += `${ formatNation(this.game, otherPlayer(this.player)) } ${names.join(", ")}`
         part += ` at ${formatCoordinate(c)}`
@@ -120,7 +118,7 @@ export default class FireAction extends BaseAction {
 
   convertAToA(actor: FireActionActor[]): StateSelection[] {
     return actor.map(a => {
-      return { x: a.x, y: a.y, id: a.counter.unit.id, counter: a.counter }
+      return { x: a.x, y: a.y, id: a.counter.unit.id, name: a.counter.unit.name, counter: a.counter }
     })
   }
 

@@ -36,18 +36,21 @@ import { formatNation } from "../utilities/graphics";
 import UndeployAction from "./actions/UndeployAction";
 import DeploySplitAction from "./actions/DeploySplitAction";
 import DeployJoinAction from "./actions/DeployJoinAction";
+import SquadJoinAction from "./actions/SquadJoinAction";
+import SquadSplitAction from "./actions/SquadSplitAction";
 
 export type GameActionDiceResult = {
   result: DiceResult, description?: string
 }
 
 export type GameActionUnit = {
-  x: number, y: number, id: string, status: UnitStatus, new_status?: UnitStatus,
+  x: number, y: number, id: string, name: string, status: UnitStatus, new_status?: UnitStatus,
   sponson?: boolean, wire?: boolean, parent?: string, children?: string[], unpin?: boolean, unrout?: boolean,
+  vehicle?: boolean,
 }
 
 export type GameActionFeature = {
-  x: number, y: number, id: string
+  x: number, y: number, id: string, name: string
 }
 
 export type GameActionReinforcementUnit = {
@@ -84,7 +87,10 @@ export type GameActionFireStartData = {
 }
 
 export type GameActionMoveData = {
-  mines?: { firepower: number, infantry: boolean, antitank: boolean },
+  mines?: {
+    firepower: number, infantry: boolean, antitank: boolean, is_vehicle: boolean, is_armored: boolean,
+    lowest_armor: number,
+  },
 }
 
 export type GameActionMoraleData = {
@@ -104,8 +110,8 @@ export const gameActionAddActionType: { [index: string]: GameActionAddActionType
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
 }
 export type GameActionAddAction = {
-  type: GameActionAddActionType, x: number, y: number, id?: string, parent_id?: string, facing?: Direction,
-  status?: UnitStatus, index: number,
+  type: GameActionAddActionType, x: number, y: number, id?: string, name?: string,
+  parent_id?: string, parent_name?: string, facing?: Direction, status?: UnitStatus, index: number,
 }
 
 export type GameActionPhaseChange = {
@@ -115,6 +121,10 @@ export type GameActionPhaseChange = {
 
 export type GameActionWindData = {
   speed: WindType,
+}
+
+export type GameActionBreakdowndData = {
+  breakdown_roll: number,
 }
 
 export type GameActionDetails = {
@@ -134,6 +144,7 @@ export type GameActionDetails = {
   fire_data?: GameActionFireData,
   fire_start_data?: GameActionFireStartData,
   move_data?: GameActionMoveData,
+  breakdown_data?: GameActionBreakdowndData,
   morale_data?: GameActionMoraleData,
   rout_check_data?: GameActionRoutData,
   cc_data?: GameActionCCData,
@@ -191,6 +202,10 @@ export default class GameAction {
       return new DeploySplitAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "deploy_join_squad") {
       return new DeployJoinAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "squad_split") {
+      return new SquadSplitAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "squad_join") {
+      return new SquadJoinAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "rally") {
       return new RallyAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "rally_pass") {

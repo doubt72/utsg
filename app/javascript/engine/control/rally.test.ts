@@ -7,6 +7,7 @@ import RallyState, { leaderAtHex } from "./state/RallyState";
 import { gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
 import Counter from "../Counter";
+import { GameActionUnit } from "../GameAction";
 
 describe("rallying", () => {
   test("skips if no broken units", () => {
@@ -35,6 +36,7 @@ describe("rallying", () => {
     unit.break()
     map.addCounter(new Coordinate(0,0), unit)
 
+    const target: GameActionUnit = { x: 0, y: 0, id: "test", name: "Rifle", status: unitStatus.Broken }
     const action = new RallyAction(
       { user: "", player: 1,
         data: {
@@ -43,7 +45,7 @@ describe("rallying", () => {
               morale_base: 2, leader_mod: 0, terrain_mod: 0, next_to_enemy: false,
             },
           }, dice_result: [ { result: { result: 2, type: "2d10", components: [1, 1] } } ],
-          target: [ { x: 0, y: 0, id: "test", status: unitStatus.Broken } ]
+          target: [target]
         }
       },
       game, game.actions.length

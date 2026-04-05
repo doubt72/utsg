@@ -26,12 +26,12 @@ export default class RoutCheckAction extends BaseAction {
   get type(): string { return "rout_check" }
 
   get htmlValue(): string {
-    const unit = this.game.findUnitById(this.target.id) as Unit
+    // const unit = this.game.findUnitById(this.target.id) as Unit
     const nation = formatNation(this.game, otherPlayer(this.player))
     const loc = formatCoordinate(new Coordinate(this.target.x, this.target.y))
     const check = baseMorale + this.routCheckMods.mod - 2
     const roll = this.diceResult.result
-    let rc = `${nation} ${formatNation(this.game, otherPlayer(this.player), unit.name)} ` +
+    let rc = `${nation} ${formatNation(this.game, otherPlayer(this.player), this.target.name)} ` +
       `rout morale check at ${loc}: target ${formatTarget(check)}, rolled ${formatDieResult(roll)}, `
     if (roll.result < check) {
       rc += `<span style="color: ${failRed};">failed</span>, unit routs`

@@ -71,11 +71,19 @@ export default function About() {
               deleted at some point when we&apos;re ready to flip the &quot;release&quot; switch.
               Games may also be deleted at other times if the archetecture changes enough to break
               old games (as has already happend).  Otherwise, old games may break in (probably) minor
-              ways as things are fixed and polished.  Feedback is still welcomed and encouraged,
+              ways as things are fixed and polished.
+            </p>
+            <p>
+              In other words, finishing games immediately should <em>mostly</em> be fine, but don&apos;t
+              leave games sitting for too long, and async games are probably a bad idea (and move notifications
+              haven&apos;t even been enabled yet).
+            </p>
+            <p>
+              Feedback is still welcomed and encouraged,
               be it about the UX or design, or if you find any bugs.  Note that a bunch of scenarios
               are listed as &quot;ready&quot; for convenience&apos; sake; many of them really aren&apos;t
               and probably should be considered to be in beta status at best.  The plan is to have
-              them tested and balanced by the time the server itself is ready.
+              them tested and at least somewhat balanced by the time the server itself is ready.
             </p>
           </div>
           <p>

@@ -126,7 +126,7 @@ export default class DeployState extends BaseState {
       this.game.scenario.alliedReinforcements[this.turn][this.key] :
       this.game.scenario.axisReinforcements[this.turn][this.key]
     if (counter.x > counter.used + 1 && !counter.counter.isFeature &&
-        counter.counter.type === unitType.Team) {
+        (counter.counter as Unit).isSplit) {
       return true
     }
     return false

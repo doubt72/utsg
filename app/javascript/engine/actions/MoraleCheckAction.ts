@@ -5,7 +5,6 @@ import { rollbackAddActions } from "../control/movement";
 import Counter from "../Counter";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionMoraleData, GameActionUnit } from "../GameAction";
-import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 
 export default class MoraleCheckAction extends BaseAction {
@@ -29,13 +28,12 @@ export default class MoraleCheckAction extends BaseAction {
 
   get htmlValue(): string {
     let rc = ""
-    const unit = this.game.findUnitById(this.target.id) as Unit
     const check = baseMorale + this.moraleMods.mod
     let short = false
     const roll = this.diceResult.result.result
     rc += `${
       formatNation(this.game, this.player)
-    } morale check for ${formatNation(this.game, this.player, unit.name)} (2d10): ` +
+    } morale check for ${formatNation(this.game, this.player, this.target.name)} (2d10): ` +
       `target ${formatTarget(check)}, rolled ${formatDieResult(this.diceResult.result)}`
     if (roll < check) {
       if (this.target.status === unitStatus.Broken) {

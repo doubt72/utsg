@@ -88,9 +88,9 @@ export default class CloseCombatState extends BaseState {
     const counters = this.map.currentSelection
     counters.forEach(c => {
       if (this.samePlayer(c.unit)) {
-        origin.push({ x: loc.x, y: loc.y, id: c.unit.id, status: c.unit.status })
+        origin.push({ x: loc.x, y: loc.y, id: c.unit.id, name: c.unit.name, status: c.unit.status })
       } else {
-        target.push({ x: loc.x, y: loc.y, id: c.unit.id, status: c.unit.status })
+        target.push({ x: loc.x, y: loc.y, id: c.unit.id, name: c.unit.name, status: c.unit.status })
       }
     })
     const fp1 = closeCombatFirepower(this.game, counters[0].hex as Coordinate, 1)
@@ -115,12 +115,16 @@ export default class CloseCombatState extends BaseState {
     const hex = counter.hex as Coordinate
     const player = counter.unit.playerNation === this.game.currentPlayerNation ? this.game.currentPlayer :
       this.game.opponentPlayer
+    const target: GameActionUnit = {
+      x: hex.x, y: hex.y, id: counter.unit.id, name: counter.unit.name, status: counter.unit.status,
+      vehicle: counter.unit.isVehicle,
+    }
     const action = new GameAction({
       user: this.game.currentPlayer === player ? this.game.currentUser : this.game.opponentUser,
       player: player,
       data: {
         action: "close_combat_reduce", old_initiative: this.game.initiative,
-        target: [{ x: hex.x, y: hex.y, id: counter.unit.id, status: counter.unit.status }],
+        target: [target],
       }
     }, this.game)
     this.map.clearAllSelections()

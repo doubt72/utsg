@@ -6,25 +6,25 @@ import Map from "../../Map";
 import Unit from "../../Unit";
 
 export type StateType = "deploy" | "rally" | "precip" | "fire" | "move" | "assault" |
-  "breakdown" | "init" | "pass" | "morale" | "sniper" | "rout" | "routall" |
+  "breakdown" | "init" | "pass" | "morale" | "sniper" | "rout" | "routall" | "squad_join" |
   "routcheck" | "reaction" | "close" | "overstack" | "status" | "smoke" | "fire_extinguish" |
   "displace" | "weather" | "fire_start"
 export const stateType: { [index: string]: StateType } = {
   Deploy: "deploy", Rally: "rally", PrecipCheck: "precip", Fire: "fire", Move: "move",
   Assault: "assault", Breakdown: "breakdown", Initiative: "init", Pass: "pass",
-  MoraleCheck: "morale", Sniper: "sniper", Rout: "rout", RoutAll: "routall",
+  SquadJoin: "squad_join", MoraleCheck: "morale", Sniper: "sniper", Rout: "rout", RoutAll: "routall",
   RoutCheck: "routcheck", Reaction: "reaction", CloseCombat: "close", FireStart: "fire_start",
   Overstack: "overstack", StatusCheck: "status", SmokeCheck: "smoke",
   FireCheck: "fire_extinguish", FireDisplace: "displace", VariableWeather: "weather",
 }
 
 export type StateSelection = {
-  x: number, y: number, id: string, counter: Counter,
+  x: number, y: number, id: string, name: string, counter: Counter,
 }
 
 export type StateAddAction = {
-  type: GameActionAddActionType, x: number, y: number, id?: string, parent_id?: string,
-  cost: number, facing?: Direction, status?: UnitStatus, index: number
+  type: GameActionAddActionType, x: number, y: number, id?: string, name?: string, parent_id?: string,
+  parent_name?: string, cost: number, facing?: Direction, status?: UnitStatus, index: number
 }
 
 export default class BaseState {

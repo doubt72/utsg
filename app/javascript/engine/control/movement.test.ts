@@ -2917,7 +2917,7 @@ describe("movement", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     game.alliedSniper = new Feature({
-      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 8, o: { q: 3 }, ft: 1
+      id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 8, o: { q: 3 }, ft: 1
     })
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -2962,7 +2962,7 @@ describe("movement", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     game.axisSniper = new Feature({
-      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      id: "sniper-2", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
     })
     const unit = new Unit(testGInf)
     unit.id = "test1"
@@ -3004,7 +3004,7 @@ describe("movement", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     game.alliedSniper = new Feature({
-      t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+      id: "sniper-1", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
     })
     const unit = new Unit(testGTank)
     unit.id = "test1"

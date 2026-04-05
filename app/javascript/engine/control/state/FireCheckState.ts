@@ -42,7 +42,7 @@ export default class FireCheckState extends BaseState {
       user: this.game.currentUser, player: this.player,
       data: {
         action: out ? "fire_out_check" : "fire_spread_check",
-        target: [{ x: loc.x, y: loc.y, id: feature.id }],
+        target: [{ x: loc.x, y: loc.y, id: feature.id, name: feature.name }],
         dice_result: [{
           result,
           description: `fire ${out ? "goes out" : "spreads"} on ${need} or less, ` +

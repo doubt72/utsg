@@ -34,7 +34,7 @@ export default class SmokeCheckState extends BaseState {
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
-        action: "smoke_check", target: [{ x: loc.x, y: loc.y, id: feature.id }],
+        action: "smoke_check", target: [{ x: loc.x, y: loc.y, id: feature.id, name: feature.name }],
         dice_result: [{
           result,
           description: `rolled ${formatDieResult(result)}, reduces smoke by ${reduce}${

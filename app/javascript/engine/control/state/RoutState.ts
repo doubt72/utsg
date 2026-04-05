@@ -21,7 +21,7 @@ export default class RoutState extends BaseState {
     super(game, stateType.Rout, player)
     const hex = game.routNeeded.length > 0 ? game.routNeeded[0].loc :
       game.scenario.map.currentSelection[0].hex as Coordinate
-    this.selection = [{ x: hex.x, y: hex.y, id: unit.id, counter }]
+    this.selection = [{ x: hex.x, y: hex.y, id: unit.id, name: unit.name, counter }]
     this.routPathTree = findRoutPathTree(game, hex, unit.currentMovement, player, unit)
     this.optional = optional
   }
@@ -64,7 +64,8 @@ export default class RoutState extends BaseState {
       const child = counter.unit.children[0]
       const facing = child.rotates ? child.facing : undefined
       addAction.push({
-        type: gameActionAddActionType.Drop, x: hex.x, y: hex.y, id: child.id, index: 0, facing
+        type: gameActionAddActionType.Drop, x: hex.x, y: hex.y,
+        id: child.id, name: child.name, index: 0, facing
       })
     }
     const loc = new Coordinate(this.selection[0].x, this.selection[0].y)
@@ -81,7 +82,7 @@ export default class RoutState extends BaseState {
         path: path.map(c => { return { x: c.x, y: c.y } }),
         target: this.selection.map(s => {
           return {
-            x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status
+            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name, status: s.counter.unit.status
           }
         }),
         add_action: addAction,

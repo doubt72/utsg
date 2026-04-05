@@ -140,15 +140,14 @@ export default class RallyState extends BaseState {
       },
       free_rally: leaderAtHex(this.game, hex.x, hex.y, this.game.currentPlayer, counter.unit),
     }
+    const target: GameActionUnit = {
+      x: hex.x, y: hex.y, id: counter.unit.id, name: counter.unit.name, status: counter.unit.status
+    }
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
-        action: "rally", target: [
-          { x: hex.x, y: hex.y, id: counter.unit.id, status: counter.unit.status }
-        ],
-        rally_data: data,
-        old_initiative: this.game.initiative,
-        dice_result: [{ result: roll2d10() }],
+        action: "rally", target: [target], rally_data: data,
+        old_initiative: this.game.initiative,  dice_result: [{ result: roll2d10() }],
       },
     }, this.game)
     this.execute(action)

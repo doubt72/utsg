@@ -6,11 +6,11 @@ import { baseRally } from "../../utilities/utilities";
 
 export default function RallySection() {
   const infantry = new Unit({
-    t: "sqd", i: "squad", s: 6, c: "uk", n: "Gurkha", y: 0, m: 4, f: 7, r: 5, v: 5,
+    id: "uk_gurkha_s", t: "sqd", i: "squad", s: 6, c: "uk", n: "Gurkha", y: 0, m: 4, f: 7, r: 5, v: 5,
     o: { a: 1 },
   });
   const weapon = new Unit({
-    t: "sw", i: "mg", c: "uk", n: "Vickers MG", y: 12,
+    id: "uk_vickers_mg", t: "sw", i: "mg", c: "uk", n: "Vickers MG", y: 12,
     o: { r: 1, j: 2, f: 15 }, f: 6, r: 12, v: -1, s: 1,
   });
   infantry.break()

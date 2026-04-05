@@ -1,6 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
-import { playerForNation } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -27,11 +26,10 @@ export default class FireDisplaceAction extends BaseAction {
   get type(): string { return "fire_displace" }
 
   get htmlValue(): string {
-    const unit = this.game.findUnitById(this.target.id) as Unit
     const start = formatCoordinate(new Coordinate(this.target.x, this.target.y))
-    const player = playerForNation(unit, this.game)
-    const nation = formatNation(this.game, player)
-    let rc = `${nation} ${formatNation(this.game, player, unit.name)} at ${start} is displaced by fire `
+    const nation = formatNation(this.game, this.player)
+    let rc = `${nation} ${formatNation(this.game, this.player, this.target.name)} ` +
+      `at ${start} is displaced by fire `
     if (this.path.length > 1) {
       const end = formatCoordinate(new Coordinate(this.path[1].x, this.path[1].y))
       rc += `to ${end}`
@@ -40,8 +38,7 @@ export default class FireDisplaceAction extends BaseAction {
     }
     for (const a of this.addActions) {
       if (a.type === gameActionAddActionType.Drop) {
-        const child = this.game.findUnitById(a.id as string) as Unit
-        rc += `, ${child.name} dropped`
+        rc += `, ${a.name} dropped`
       }
     }
     return rc

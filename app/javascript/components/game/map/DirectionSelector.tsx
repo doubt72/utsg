@@ -21,10 +21,10 @@ export default function DirectionSelector({ hex, selectCallback }: DirectionSele
     if (game.gameState?.type === stateType.Deploy) {
       const player = game.gameState.player
       const turn = game.deployState.turn
-      const index = game.deployState.index
+      const key = game.deployState.key
       const uf = player === 1 ?
-        game.scenario.alliedReinforcements[turn][index].counter :
-        game.scenario.axisReinforcements[turn][index].counter
+        game.scenario.alliedReinforcements[turn][key].counter :
+        game.scenario.axisReinforcements[turn][key].counter
       const unit = uf as Unit
       if (!hex.terrain.vehicle && !uf.isFeature && unit.isVehicle && hex.roadType !== roadType.Path) {
         dirs = hex.roadDirections ?? []

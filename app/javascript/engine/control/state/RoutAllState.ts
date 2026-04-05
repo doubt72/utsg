@@ -16,7 +16,7 @@ export default class RoutAllState extends BaseState {
     this.selection = counters.map(c => {
       const hex = c.hex as Coordinate
       c.unit.select()
-      return { x: hex.x, y: hex.y, id: c.unit.id, counter: c }
+      return { x: hex.x, y: hex.y, id: c.unit.id, name: c.unit.name, counter: c }
     })
     game.refreshCallback(game)
   }
@@ -42,7 +42,7 @@ export default class RoutAllState extends BaseState {
       data: {
         action: "rout_all", old_initiative: this.game.initiative,
         target: this.selection.map(s => {
-          return { x: s.x, y: s.y, id: s.counter.unit.id, status: s.counter.unit.status }
+          return { x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name, status: s.counter.unit.status }
         }),
       },
     }, this.game)
