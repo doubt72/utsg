@@ -31,6 +31,11 @@ export const deploymentRulesSection = (phase: string) => {
         deployment map as unshaded hexes.
       </p>
       <p>
+        Squads may be freely split into teams or reformed; squads are slightly more than the sum of their parts,
+        the strength is half of a squad rounded down, and they don&apos;t get any of the special
+        bonuses or abilities of the full squad.
+      </p>
+      <p>
         Finally, players should be aware of how stacking works when placing units so that units are
         loaded on vehicles or weapons are carried or operated by units as expected (though the
         deployment map will attempt to show valid options if possible — i.e., hexes that would result

@@ -5,7 +5,7 @@ import GameAction, { GameActionData, GameActionPhaseChange } from "../GameAction
 
 export type GamePhase = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 export const gamePhaseType: { [index: string]: GamePhase } = {
-  Deployment: 0, PrepRally: 1, PrepPrecip: 2, Main: 3, CleanupCloseCombat: 4,
+  Deploy: 0, PrepRally: 1, PrepPrecip: 2, Main: 3, CleanupCloseCombat: 4,
   CleanupOverstack: 5, CleanupStatus: 6, CleanupSmoke: 7, CleanupFire: 8,
   CleanupWeather: 9,
 }
@@ -22,8 +22,8 @@ export function checkPhase(game: Game, backendSync: boolean) {
     player: game.currentPlayer, user: game.currentUser,
     data: { action: "phase", phase_data: phaseData, old_initiative: game.initiative }
   }
-  if (oldPhase == gamePhaseType.Deployment) {
-    deployment(game, data)
+  if (oldPhase == gamePhaseType.Deploy) {
+    deploy(game, data)
   } else if (oldPhase === gamePhaseType.PrepRally) {
     prepRally(game, data)
   } else if (oldPhase === gamePhaseType.PrepPrecip) {
@@ -69,7 +69,7 @@ export function checkPhase(game: Game, backendSync: boolean) {
   }
 }
 
-function deployment(game: Game, data: GameActionData): void {
+function deploy(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldTurn = phaseData.new_turn
   const player = phaseData.new_player
@@ -80,7 +80,7 @@ function deployment(game: Game, data: GameActionData): void {
     }
     phaseData.messages.push(`${formatNation(game, player)} deployment complete`)
     if (oldTurn === 0) {
-      phaseData.new_phase = gamePhaseType.Deployment
+      phaseData.new_phase = gamePhaseType.Deploy
       if (phaseData.new_player === game.scenario.firstDeploy) {
         phaseData.new_player = otherPlayer(phaseData.new_player)
       } else {
@@ -90,11 +90,11 @@ function deployment(game: Game, data: GameActionData): void {
     } else {
       phaseData.new_player = otherPlayer(phaseData.new_player)
       phaseData.new_phase = player === game.currentInitiativePlayer ?
-        gamePhaseType.Deployment : gamePhaseType.PrepRally
+        gamePhaseType.Deploy : gamePhaseType.PrepRally
     }
-    if (phaseData.new_phase === gamePhaseType.Deployment) {
+    if (phaseData.new_phase === gamePhaseType.Deploy) {
       phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} deployment`)
-      deployment(game, data)
+      deploy(game, data)
     } else {
       phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} rally`)
       if (!game.scenario.map.anyUnitsCanRally(phaseData.new_player)) {
@@ -257,9 +257,9 @@ function cleanupWeather(game: Game, data: GameActionData): void {
   game.addVariableWindState()
   if (game.checkWindDirection || game.checkWindSpeed) { return }
   phaseData.messages.push("variable wind check complete")
-  phaseData.new_phase = gamePhaseType.Deployment
+  phaseData.new_phase = gamePhaseType.Deploy
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_turn = oldTurn + 1
   phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} deployment`)
-  deployment(game, data)
+  deploy(game, data)
 }

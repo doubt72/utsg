@@ -120,7 +120,7 @@ export default function ReinforcementPanel({
         </text>
         <text x={x + 10} y={y + 44} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-          { map.game?.phase === gamePhaseType.Deployment ? "[select, then click on map]" :
+          { map.game?.phase === gamePhaseType.Deploy ? "[select, then click on map]" :
               "[nothing to deploy]" }
         </text>
         {closeButton}
@@ -151,7 +151,7 @@ export default function ReinforcementPanel({
                     } else if (counter.targetUF.selected) {
                       counter.targetUF.select()
                     }
-                    counter.showDisabled = (map.game?.phase !== gamePhaseType.Deployment ||
+                    counter.showDisabled = (map.game?.phase !== gamePhaseType.Deploy ||
                       map.game?.currentPlayer !== player || map.game.state !== 'in_progress' ||
                       map.game.turn !== turn) && turn !== 99
                     const count = (data.x || 1) - (data.used || 0)

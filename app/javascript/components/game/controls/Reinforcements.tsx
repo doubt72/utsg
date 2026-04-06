@@ -50,13 +50,13 @@ export default function Reinforcements(
   }
 
   const nationOne = (x: number, y: number) => {
-    const enabled = map.game?.phase === gamePhaseType.Deployment &&
+    const enabled = map.game?.phase === gamePhaseType.Deploy &&
       map.game.currentPlayer === 1 && map.game.state === "in_progress"
     return nation(x, y, map.game?.playerOneNation as string, 1, enabled);
   }
 
   const nationTwo = (x: number, y: number) => {
-    const enabled = map.game?.phase === gamePhaseType.Deployment &&
+    const enabled = map.game?.phase === gamePhaseType.Deploy &&
       map.game.currentPlayer === 2 && map.game.state === "in_progress"
     return nation(x, y, map.game?.playerTwoNation as string, 2, enabled)
   }
@@ -81,13 +81,13 @@ export default function Reinforcements(
   }, [update])
 
   useEffect(() => {
-    const deployment = map.game?.phase === gamePhaseType.Deployment &&
+    const deploy = map.game?.phase === gamePhaseType.Deploy &&
       localStorage.getItem("username") === map.game.currentUser
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, deployment ? 305 : 190 , 100)}
+        <path d={roundedRectangle(xx, yy, deploy ? 305 : 190 , 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
-        { deployment ?
+        { deploy ?
           (
             <g>
               <text x={xx + 190} y={yy + 22} fontSize={16} textAnchor="start"
@@ -107,7 +107,7 @@ export default function Reinforcements(
         }
         <text x="0" y="0" fontSize={16} textAnchor="end"
                  fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}
-                 transform={`translate(${xx + 195 + (deployment ? 115 : 0)},${yy + 95}) rotate(90)`}>
+                 transform={`translate(${xx + 195 + (deploy ? 115 : 0)},${yy + 95}) rotate(90)`}>
           units
         </text>
         {nationOne(xx + 10, yy + 10)}

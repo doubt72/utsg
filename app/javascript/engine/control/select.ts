@@ -71,7 +71,7 @@ export function selectable(map: Map, selection: CounterSelectionTarget): boolean
     if (!same && !game.gameState) { return false }
     if (target.parent && target.parent.playerNation !== game.currentPlayerNation) { return false }
     return true
-  } else if (game.phase === gamePhaseType.Deployment) {
+  } else if (game.phase === gamePhaseType.Deploy) {
     if (same && deployedThisTurn(game, target.id)) { return true }
     if (same) {
       game.addMessage("unit not deployed this turn")

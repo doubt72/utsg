@@ -147,7 +147,7 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
   }
   if (active) { setState(game) }
 
-  if (game.phase === gamePhaseType.Deployment) {
+  if (game.phase === gamePhaseType.Deploy) {
     actions.unshift({ type: "deploy" })
     const select = currSelection(game, false)
     if (select !== undefined) {
@@ -444,7 +444,7 @@ function currentEnemyAction(game: Game): string {
     return "waiting for opponent initiative check"
   } else if (reactionFireCheck(game, false)) {
     return "waiting for opponent reaction fire"
-  } else if (game.phase === gamePhaseType.Deployment) {
+  } else if (game.phase === gamePhaseType.Deploy) {
     return "waiting for opponent to deploy units"
   } else if (game.phase === gamePhaseType.PrepRally) {
     return "waiting for opponent to attempt to rally units"

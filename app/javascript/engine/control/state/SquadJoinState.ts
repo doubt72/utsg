@@ -40,6 +40,14 @@ export default class SquadJoinState extends BaseState {
       this.game.addMessage("can only join teams")
       return false
     }
+    if (target.isBroken) {
+      this.game.addMessage("broken teams cannot combine")
+      return false
+    }
+    if (target.pinned) {
+      this.game.addMessage("pinned teams cannot combine")
+      return false
+    }
     if (target.name !== source.name) {
       this.game.addMessage("teams are not of the same type")
       return false

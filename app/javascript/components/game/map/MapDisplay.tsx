@@ -150,7 +150,7 @@ export default function MapDisplay({
     if (!map.game || map.game.state !== "in_progress" || map.debug || preview) { return }
     if (map.game.phase !== gamePhase.phase || map.game.currentPlayer !== gamePhase.player) {
       setGamePhase({ phase: map.game.phase, player: map.game.currentPlayer })
-      if (map.game.phase !== gamePhaseType.Deployment || map.game.currentUser !== user) {
+      if (map.game.phase !== gamePhaseType.Deploy || map.game.currentUser !== user) {
         if (reinforcementTimout) {
           clearTimeout(reinforcementTimout)
           setReinforcementTimeout(undefined)
@@ -158,7 +158,7 @@ export default function MapDisplay({
         return
       } else {
         const to = setTimeout(() => {
-          if (!map.game || map.game.phase !== gamePhaseType.Deployment || map.game.currentUser !== user) {
+          if (!map.game || map.game.phase !== gamePhaseType.Deploy || map.game.currentUser !== user) {
             return
           }
           setShowReinforcements(map.game.currentPlayer)
@@ -658,7 +658,7 @@ export default function MapDisplay({
     if (selection.target.type === "map") {
       select(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
-      if (map.game.phase !== gamePhaseType.Deployment) { return }
+      if (map.game.phase !== gamePhaseType.Deploy) { return }
       if (map.game.gameState?.type === stateType.Deploy &&
           map.game.deployState.key !== selection.target.key) {
         map.game.deployState.needsDirection = false

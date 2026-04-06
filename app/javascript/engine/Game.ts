@@ -157,7 +157,7 @@ export default class Game {
     this.internalCurrentPlayer = this.scenario.firstDeploy || 1
     this.internalInitiativePlayer = this.scenario.firstAction || 1
     this.internalTurn = 0
-    this.phase = gamePhaseType.Deployment
+    this.phase = gamePhaseType.Deploy
 
     this.messageQueue = []
     this.animationQueue = []
@@ -626,7 +626,7 @@ export default class Game {
       return helpIndexByName("Routing").join(".")
     } else if (this.gameState?.type === stateType.Reaction) {
       return helpIndexByName("Reaction Fire").join(".")
-    } else if (this.phase === gamePhaseType.Deployment) {
+    } else if (this.phase === gamePhaseType.Deploy) {
       return helpIndexByName("Deployment Phase").join(".")
     } else if (this.phase === gamePhaseType.PrepRally) {
       return helpIndexByName("Rallying").join(".")
@@ -919,7 +919,7 @@ export default class Game {
           em.mutateGame()
           console.log(`executing[bounce] ${m.sequence} : ${m.type}`)
           em.executed = true
-          if (this.phase !== gamePhaseType.Deployment) { organizeStacks(this.scenario.map) }
+          if (this.phase !== gamePhaseType.Deploy) { organizeStacks(this.scenario.map) }
           this.refreshCallback(this)
         }
         return
@@ -964,7 +964,7 @@ export default class Game {
         })
       }
       if (m.type !== "info" && m.type !== "state" && !backendSync) { checkPhase(this, backendSync) }
-      if (this.phase !== gamePhaseType.Deployment)  { organizeStacks(this.scenario.map) }
+      if (this.phase !== gamePhaseType.Deploy)  { organizeStacks(this.scenario.map) }
       this.refreshCallback(this)
     } catch(err) {
       if (err instanceof IllegalActionError) {
