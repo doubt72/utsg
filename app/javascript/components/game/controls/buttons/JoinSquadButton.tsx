@@ -17,7 +17,7 @@ export default function JoinSquadButton({ game, callback }: JoinSquadButtonProps
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><CircleFill />join squad</button>
+        <button type="submit" className="custom-button nowrap"><CircleFill />combine teams</button>
       </div>
     </form>
   )

@@ -4,9 +4,9 @@ Features/Bug Fixes:
     + Allow undeploy
     + Split/Join squads during deploy / Split/join squads during game
       + Deploy
-      - Main phase
-      - Right click
-    - Fix docs
+      + Main phase
+      + Right click
+    + Fix docs
     - Rename deployment -> deploy for consistency
   - Split docs/rout vp docs
   - Fix deleted game redirect

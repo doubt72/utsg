@@ -21,15 +21,11 @@ export default class SquadJoinState extends BaseState {
   }
 
   openHex(x: number, y: number): HexOpenType {
-    if (x === this.selection[0].x && y === this.selection[1].y) { return hexOpenType.Open }
-    return hexOpenType.Close
+    if (x === this.selection[0].x && y === this.selection[0].y) { return hexOpenType.Open }
+    return hexOpenType.Closed
   }
 
   select(selection: CounterSelectionTarget, callback: () => void): void {
-    if (selection.counter.unit.selected) {
-      this.map.clearAllSelections()
-      this.selection[0].counter.unit.loaderSelect()
-    }
     selection.counter.unit.select()
     callback()
   }

@@ -1071,6 +1071,8 @@ export default class Game {
       this.scenario.map.clearAllSelections()
     } else if (this.gameState?.type === stateType.RoutAll) {
       this.scenario.map.clearAllSelections()
+    } else if (this.gameState?.type === stateType.SquadJoin) {
+      this.scenario.map.clearAllSelections()
     }
     if (select) {
       select.select()
@@ -1124,6 +1126,7 @@ export default class Game {
         this.setGameState(new SquadJoinState(this))
       } else {
         this.gameState.finish()
+        this.clearGameState()
       }
     }
   }

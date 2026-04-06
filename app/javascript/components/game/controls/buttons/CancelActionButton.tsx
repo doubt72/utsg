@@ -24,6 +24,8 @@ export default function CancelActionButton({ game, callback }: CancelActionButto
       return "cancel assault move"
     } else if (game.gameState && [stateType.Rout, stateType.RoutAll].includes(game.gameState.type)) {
       return "cancel rout"
+    } else if (game.gameState?.type === stateType.SquadJoin) {
+      return "cancel join"
     } else {
       return "unexpected action"
     }

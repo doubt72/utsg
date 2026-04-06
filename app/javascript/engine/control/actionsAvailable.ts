@@ -239,8 +239,14 @@ function addMainPhaseActions(game: Game, actions: GameAction[]): void {
     if (canReactionFire(selection, map)) { actions.push({ type: "reaction_fire" }) }
     if (canReactionIntensiveFire(selection, map)) { actions.push({ type: "reaction_intensive_fire" }) }
     actions.push({ type: "reaction_pass" })
+  } else if (game.gameState?.type === stateType.SquadJoin) {
+    actions.unshift({ type: "none", message: "select team to join" })
+    if (map.currentSelection.length > 0) {
+      actions.push({ type: "join_squad" })
+    }
+    actions.push({ type: "cancel_action" })
   } else if (!selection) {
-    actions.unshift({ type: "none", message: "select units to activate" })
+    actions.unshift({ type: "none", message: "select units to combine" })
     if (canEnemyRout(map)) { actions.push({ type: "enemy_rout" }) }
     actions.push({ type: "pass" })
   } else {

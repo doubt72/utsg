@@ -29,6 +29,10 @@ export function executeContextAction(
     game.fireState.smokeToggle()
   } else if (type === "move" || type === "rush") {
     game.setGameState(new MoveState(game))
+  } else if (type === "join_squad") {
+    game.join()
+  } else if (type === "split_squad") {
+    game.split()
   } else if (type === "move_undo") {
     game.moveState.unmove()
   } else if (type === "move_rotate_toggle") {
@@ -75,6 +79,8 @@ export function executeContextAction(
 export function translateAction(game: Game, target: CounterSelectionTarget | undefined, action: string): string {
   let rc = {
     select: "select",
+    join_squad: "join teams",
+    split_squad: "split squad",
     rally: "rally",
     reaction_fire: "reaction fire",
     reaction_intensive_fire: "int react fire",
