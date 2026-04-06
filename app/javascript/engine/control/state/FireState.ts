@@ -335,6 +335,10 @@ export default class FireState extends BaseState {
       this.game.addMessage("targeted weapons cannot fire with other units")
       return false
     }
+    if (this.map.contactAt(counter.hex as Coordinate)) {
+      this.game.addMessage("cannot combine units in contact with the enemy")
+      return false
+    }
     if (counter.unit.isVehicle) {
       this.game.addMessage("vehicles cannot fire with other units")
       return false

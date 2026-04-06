@@ -1,19 +1,22 @@
 Features/Bug Fixes:
-  + Split docs/rout vp docs
-  + Fix deleted game redirect
-  - Find better way to make lists
+  + Can't select units in contact for multi-fire
+  + Can't select units in contact for split/join
+  + Add ability to rollback placement that on warning doesn't man gun, clarify warning
+  + Double check gun handling move
+  - Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
+  - Colorblind settings
+  - Turn off animations
+  - Handle map scale and such settings gone wrong (reset button in prefs?)
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
   - Roll back smoke on reaction fire?
   - Romanian vehicles don't seem to be at higher breakdown in 006
-  - Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
-  - Email turn notifications
   - Live cable updates on home page
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
+  - Email turn notifications
   - Create tutorial
   - A way to show terrain in counter overlay
-  - Colorblind settings
   - Add Some Developer Notes
 
 Nice to Have Eventually:
@@ -21,7 +24,6 @@ Nice to Have Eventually:
 
 Keep an Eye out for:
   - Improve reaction hex selection
-  - Handle map scale and such settings gone wrong (reset button in prefs?)
   - Automatically undo additional deploys (should no longer be necessary)
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?

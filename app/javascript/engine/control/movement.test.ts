@@ -8,7 +8,7 @@ import {
 } from "./movement"
 import select from "./select"
 import { gameActionAddActionType } from "../GameAction"
-import WarningActionError from "../actions/WarningActionError"
+import StackingActionError from "../actions/StackingActionError"
 import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
 import {
@@ -889,7 +889,7 @@ describe("movement", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     game.setGameState(new MoveState(game))
@@ -1036,7 +1036,7 @@ describe("movement", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     game.setGameState(new MoveState(game))
@@ -1369,7 +1369,7 @@ describe("movement", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     game.setGameState(new MoveState(game))
@@ -1400,7 +1400,7 @@ describe("movement", () => {
       map.addCounter(loc, unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     unit.id = "test1"
@@ -1537,7 +1537,7 @@ describe("movement", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     game.setGameState(new MoveState(game))
@@ -1598,7 +1598,7 @@ describe("movement", () => {
       map.addCounter(loc, unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     unit.id = "test1"
@@ -2322,7 +2322,7 @@ describe("movement", () => {
       map.addCounter(loc, unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
     map.addCounter(loc, unit)
     map.addCounter(loc, unit3)
@@ -3208,7 +3208,7 @@ describe("movement", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     game.setGameState(new MoveState(game))

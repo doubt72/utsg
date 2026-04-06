@@ -25,7 +25,7 @@ export default function HelpButton({ game }: HelpButtonProps) {
       <OverlayTrigger placement="bottom" overlay={helpTooltip}
                       delay={{ show: 0, hide: 0 }}>
         <div className="mb025em">
-          <button type="submit" className="custom-button custom-button-balance nowrap"><QuestionCircle/></button>
+          <button type="submit" className="custom-button custom-button-balance nowrap"><QuestionCircle /></button>
         </div>
       </OverlayTrigger>
     </form>

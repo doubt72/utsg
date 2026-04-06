@@ -1,16 +1,20 @@
 import React from "react";
-import { ShieldFillExclamation, ShieldFillX, XCircle } from "react-bootstrap-icons";
+import { QuestionCircle, ShieldFillExclamation, ShieldFillX, XCircle } from "react-bootstrap-icons";
+import UndoButton from "./controls/buttons/UndoButton";
+import Game from "../../engine/Game";
+import { helpIndexByName } from "../help/helpData";
 
 interface ErrorDisplayProps {
+  game: Game;
   type: string;
   message: string;
   callBack: () => void;
 }
 
-export default function ErrorDisplay({ type, message, callBack }: ErrorDisplayProps ) {
-  const intro = type === "warn" ? "warning: " : ""
-  const icon = type === "warn" ? <ShieldFillExclamation /> : <ShieldFillX />
-  const iconColor = type === "warn" ? "#B90" : "#C00"
+export default function ErrorDisplay({ game, type, message, callBack }: ErrorDisplayProps ) {
+  const intro = type === "stack" ? "warning: " : ""
+  const icon = type === "stack" ? <ShieldFillExclamation /> : <ShieldFillX />
+  const iconColor = type === "stack" ? "#B90" : "#C00"
 
   return (
     <div className="game-error">
@@ -23,9 +27,25 @@ export default function ErrorDisplay({ type, message, callBack }: ErrorDisplayPr
             {intro}{message}
           </div>
         </div>
-        <button onClick={callBack} className="custom-button game-error-button nowrap">
-          <XCircle />close
-        </button>
+        <div className="game-error-buttons">
+          <div className="flex">
+            <div className="flex-fill"></div>
+            { type === "stack" ?
+              <div className="mb025em">
+                <button onClick={()=> window.open(`/help/${helpIndexByName("Stacking").join(".")}`)}
+                        className="custom-button nowrap">
+                  <QuestionCircle />about stacking
+                </button>
+              </div> : "" }
+            { type === "stack" ?
+              <UndoButton game={game} callback={callBack} /> : "" }
+            <div className="mb025em">
+              <button onClick={callBack} className="custom-button nowrap">
+                <XCircle />close
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

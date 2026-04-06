@@ -256,8 +256,8 @@ function addMainPhaseActions(game: Game, actions: GameAction[]): void {
     if (canRush(selection, map)) { actions.push({ type: "rush" }) }
     if (canAssaultMove(selection)) { actions.push({ type: "assault_move" }) }
     if (canRout(selection)) { actions.push({ type: "rout" }) }
-    if (canSplit(selection)) { actions.push({ type: "split_squad" }) }
-    if (canJoin(selection)) { actions.push({ type: "join_squad" }) }
+    if (canSplit(selection, map)) { actions.push({ type: "split_squad" }) }
+    if (canJoin(selection, map)) { actions.push({ type: "join_squad" }) }
     actions.push({ type: "unselect" })
   }
 }
@@ -480,15 +480,17 @@ function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {
   }
 }
 
-function canSplit(unit: Unit): boolean {
+function canSplit(unit: Unit, map: Map): boolean {
   if (unit.pinned || unit.isBroken) { return false }
   if (unit.type !== unitType.Squad) { return false }
+  if (contact(unit, map)) { return false }
   return true
 }
 
-function canJoin(unit: Unit): boolean {
+function canJoin(unit: Unit, map: Map): boolean {
   if (unit.pinned || unit.isBroken) { return false }
   if (!unit.isSplit) { return false }
+  if (contact(unit, map)) { return false }
   return true
 }
 

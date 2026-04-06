@@ -1,3 +1,10 @@
+## 0.38 Alpha
+
+- Lower animation refresh slightly (Safari in particular has trouble updating)
+- Redo stacking warning during deploy to be more informative, include undo
+- Bug fix: don't allow spliting/joining of units in contact with the enemy
+- Updated 501
+
 ## 0.37 alpha
 
 - Refactoring deploy data structure

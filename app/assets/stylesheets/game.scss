@@ -215,7 +215,7 @@
 .game-error-window, .game-notification-window {
   position: relative;
   width: 500px;
-  height: 250px;
+  height: 300px;
   background-color: #FFF;
   border-radius: 0.5em;
   padding: 0.25em;
@@ -255,7 +255,14 @@
   height: 150px;
 }
 
-.game-error-button, .game-notification-button {
+.game-error-buttons {
+  position: absolute;
+  width: 100%;
+  right: 8px;
+  bottom: 8px;
+}
+
+.game-notification-button {
   position: absolute;
   right: 8px;
   bottom: 8px;

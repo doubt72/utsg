@@ -35,7 +35,7 @@ export const deploymentRulesSection = (phase: string) => {
       <p>
         Squads may be freely split into teams or reformed; squads are slightly
         more than the sum of their parts, the strength of a team is half of a squad
-        rounded down, and they don&apos;t get any of the special bonuses or
+        rounded down, and they don&apos;t get any of the special combat bonuses or
         abilities of the full squad.
       </p>
       <p>

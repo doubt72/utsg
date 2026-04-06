@@ -11,12 +11,12 @@ import {
   HelpButtonLayout, OverlayLayout, TextLayout, roundedRectangle, yMapOffset,
 } from "../utilities/graphics";
 import Feature from "./Feature";
-import WarningActionError from "./actions/WarningActionError";
 import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
 import { otherPlayer, playerForNation, stackLimit } from "../utilities/utilities";
 import { GameActionUnit } from "./GameAction";
 import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
+import StackingActionError from "./actions/StackingActionError";
 
 type MapLayout = [ number, number, "x" | "y" ];
 type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
@@ -305,18 +305,23 @@ export default class Map {
       list.push(counter)
       if (unit.uncrewedSW) {
         if (!last || !last.canCarrySupport) {
-          throw new WarningActionError(
+          throw new StackingActionError(
             `${counter.name} is not assigned to an operator; it ` +
-            "must be placed on a squad, team, or leader to be assigned."
+              "must be placed on a squad, team, or leader to be assigned.  I.e, you must place the " +
+              `carrying unit first, THEN place the ${counter.name} immediately on top of it to indicate ` +
+              "which unit should carry it."
           )
         }
       }
       if (unit.crewed) {
         if (!last ||
           (!last.canHandle && !(last.canTow && last.size >= (unit.towSize ?? 0)))) {
-          throw new WarningActionError(
+          throw new StackingActionError(
             `${counter.name} is not assigned to an operator or vehicle; it ` +
-            "must be placed on a squad or team to be assigned, or on a vehicle large enough to tow it."
+              "must be placed on a squad or team to be assigned, or on a vehicle large enough " +
+              "to tow it.  I.e, you must place the operating/towing unit first, " +
+              `THEN place the ${counter.name} immediately on top of it to indicate ` +
+              "which unit should operate/tow it."
           )
         }
       }

@@ -17,7 +17,7 @@ export default function UndoButton({ game, callback }: UndoButtonProps) {
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><ArrowCounterclockwise/>undo</button>
+        <button type="submit" className="custom-button nowrap"><ArrowCounterclockwise />undo</button>
       </div>
     </form>
   )

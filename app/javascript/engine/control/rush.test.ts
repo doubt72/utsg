@@ -4,7 +4,7 @@ import { describe, expect, test } from "vitest"
 import { showLaySmoke, showLoadMove, showDropMove, mapSelectMovement } from "./movement"
 import select from "./select"
 import { gameActionAddActionType } from "../GameAction"
-import WarningActionError from "../actions/WarningActionError"
+import StackingActionError from "../actions/StackingActionError"
 import organizeStacks from "../support/organizeStacks"
 import { createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG } from "./testHelpers"
 import MoveState from "./state/MoveState"
@@ -400,7 +400,7 @@ describe("rush movement", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     game.setGameState(new MoveState(game))
@@ -570,7 +570,7 @@ describe("rush movement", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     game.setGameState(new MoveState(game))
@@ -596,7 +596,7 @@ describe("rush movement", () => {
       map.addCounter(loc, unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     unit.id = "test1"

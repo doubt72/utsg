@@ -183,14 +183,17 @@ export default function MainPhaseSection() {
       </p>
       <h3>{section}.3. Squads and Teams</h3>
       <p>
-        Squads may be be split into teams, and if two teams of the same type are in the same hex
-        (gun crews excepted), they may be combined into a squad.  Broken or pinned teams cannot
-        be combined, and the resulting squad will get the most expended status of either squad
-        (e.g., tired or activated or exhausted, in that order).
+        Squads may be be split into teams, and if two teams of the same type are in the same hex,
+        they may be combined into a squad.  This can be done freely at any
+        time (when otherwise legal) at no cost, except: broken or pinned teams cannot
+        be combined or split, nor can units in contact (the same hex) with enemy units, nor can
+        gun crews.  The squad resulting from two teams being combined will get the most expended
+        status of either team (e.g., tired or activated or exhausted, in that order).
       </p>
       <p>
         Squads are slightly more than the sum of their parts, the strength of a team is half of a squad
-        rounded down, and they don&apos;t get any of the special bonuses or abilities of the full squad.
+        rounded down, and they don&apos;t get any of the special combat bonuses or abilities of the
+        full squad.
       </p>
     </div>
   );

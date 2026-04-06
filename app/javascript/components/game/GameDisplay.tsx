@@ -360,7 +360,7 @@ export default function GameDisplay() {
   const gameNotification = (g: Game, error?: [string, string]) => {
     if (error) {
       setErrorWindow(
-        <ErrorDisplay type={error[0]} message={error[1]} callBack={
+        <ErrorDisplay game={g} type={error[0]} message={error[1]} callBack={
           () => setErrorWindow(undefined)
         } />
       )

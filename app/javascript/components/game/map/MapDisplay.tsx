@@ -195,7 +195,7 @@ export default function MapDisplay({
                   textAnchor="start" style={{ fill: `rgba(0,0,0,${alpha})` }}>{error}</text>
       </g>
     )
-    setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 5 } }), 20)
+    setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 12 } }), 50)
   }, [notificationDetails])
 
   useEffect(() => {
@@ -219,13 +219,13 @@ export default function MapDisplay({
         if (record.timer <= 0) {
           delete s[index]
         } else {
-          s[index] = { timer: record.timer - 40, details: record.details }
+          s[index] = { timer: record.timer - 50, details: record.details }
           animate(index)
         }
         return s
       })
       updateCallback()
-    }, 40)
+    }, 50)
   }
 
   useEffect(() => {

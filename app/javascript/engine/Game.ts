@@ -5,7 +5,6 @@ import GameAction from "./GameAction";
 import Feature from "./Feature";
 import BaseAction, { significantActions } from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
-import WarningActionError from "./actions/WarningActionError";
 import Counter from "./Counter";
 import { alliedCodeToName, axisCodeToName, counterKey, otherPlayer, serverVersion } from "../utilities/utilities";
 import Unit from "./Unit";
@@ -35,6 +34,7 @@ import CloseCombatRollAction from "./actions/CloseCombatRollAction";
 import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
 import DeployAction from "./actions/DeployAction";
 import SquadJoinState from "./control/state/SquadJoinState";
+import StackingActionError from "./actions/StackingActionError";
 
 export type GameData = {
   id: number;
@@ -940,8 +940,9 @@ export default class Game {
             this.lastActionIndex = action.index
           }
         } catch(err) {
-          if (err instanceof WarningActionError) {
-            if (!m.id) { this.refreshCallback(this, ["warn", err.message]) }
+          // Currently the only type of warning supported
+          if (err instanceof StackingActionError) {
+            if (!m.id) { this.refreshCallback(this, ["stack", err.message]) }
             m.executed = true
             this.lastActionIndex = action.index
           } else { throw err }

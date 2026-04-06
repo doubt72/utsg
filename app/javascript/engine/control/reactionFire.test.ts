@@ -4,7 +4,7 @@ import { describe, expect, test, vi } from "vitest"
 import organizeStacks from "../support/organizeStacks"
 import select from "./select"
 import { reactionAvailableCoords, reactionFireCheck, reactionFireHexes } from "./reactionFire"
-import WarningActionError from "../actions/WarningActionError"
+import StackingActionError from "../actions/StackingActionError"
 import Feature from "../Feature"
 import { createBlankGame, createFireGame, testGInf, testGMG, testGTank, testRGun, testRInf, testRMG, testRTank, testRTD } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
@@ -911,7 +911,7 @@ describe("reaction fire attacks", () => {
       map.addCounter(new Coordinate(3, 2), unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     const other = new Unit(testRTank)
@@ -1292,7 +1292,7 @@ describe("reaction fire attacks", () => {
       map.addCounter(loc2, unit2)
     } catch(err) {
       // Warning expected for placing a unit by itself
-      expect(err instanceof WarningActionError).toBe(true)
+      expect(err instanceof StackingActionError).toBe(true)
     }
 
     const other = new Unit(testRTank)

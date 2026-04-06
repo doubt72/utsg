@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["fin"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1940, 1, 1].freeze
     LAYOUT = [23, 11, "x"].freeze
@@ -26,7 +26,7 @@ module Scenarios
       "0": { list: [
         :fin_leader_6_1,
         :fin_leader_5_1,
-        [7, :fin_sissi_s],
+        [6, :fin_sissi_s],
         [2, :fin_ls_26],
         :fin_14mm_pst_kiv_37,
       ] },
