@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getAPI } from "../../utilities/network";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
@@ -21,6 +21,7 @@ import DesyncWindow from "./DesyncWindow";
 import { serverVersion } from "../../utilities/utilities";
 
 export default function GameDisplay() {
+  const navigate = useNavigate()
   const { id } = useParams()
 
   const [game, setGame] = useState<{ k?: Game, turn: number, state?: string }>({ turn: 0 })
@@ -68,7 +69,10 @@ export default function GameDisplay() {
             setMap(g.scenario.map)
           })
         })
-      })
+      }),
+      other: () => {
+        navigate("/", { replace: true })
+      }
     })
     const shrink = localStorage.getItem("mapInterfaceShrink")
     const mScale = localStorage.getItem("mapScale")

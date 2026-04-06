@@ -1,6 +1,7 @@
 Features/Bug Fixes:
   + Split docs/rout vp docs
-  - Fix deleted game redirect
+  + Fix deleted game redirect
+  - Find better way to make lists
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
   - Roll back smoke on reaction fire?

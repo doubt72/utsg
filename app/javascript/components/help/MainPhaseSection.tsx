@@ -189,7 +189,7 @@ export default function MainPhaseSection() {
         (e.g., tired or activated or exhausted, in that order).
       </p>
       <p>
-        Squads are slightly more than the sum of their parts, the strength is half of a squad
+        Squads are slightly more than the sum of their parts, the strength of a team is half of a squad
         rounded down, and they don&apos;t get any of the special bonuses or abilities of the full squad.
       </p>
     </div>

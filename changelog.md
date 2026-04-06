@@ -5,6 +5,7 @@
 - Add ability to split/rejoin squads (deleted teams from available units/scenarios, now split only)
 - Removed all unit lookups in action string values (because unit can change type/IDs can disappear, this will also help bug fixes not degrade older games action displays or possibly break them outright)
 - Deleted all games (and scenario versions): existing games no longer compatible with deploys/action changes
+- Deleted games now redirect to main page
 - Bug fix: undo not properly setting last action index
 
 ## 0.36 alpha
