@@ -11,7 +11,7 @@ class Rating < ApplicationRecord
   class << self
     def average_rating(scenario)
       count = where(scenario:).count + 1
-      average = (where(scenario:).average(:rating).to_f * (count - 1) / count) + (4 / count)
+      average = (where(scenario:).average(:rating).to_f * (count - 1) / count) + (4.0 / count)
       { count:, average: }
     end
 

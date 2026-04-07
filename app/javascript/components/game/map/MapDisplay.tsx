@@ -230,7 +230,7 @@ export default function MapDisplay({
         }
         return s
       })
-      updateCallback()
+      setMapUpdate(s => s + 1)
     }, 50)
   }
 

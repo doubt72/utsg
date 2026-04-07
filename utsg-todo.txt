@@ -1,8 +1,9 @@
 Features/Bug Fixes:
-  + Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
-  + Colorblind settings
-  + Turn off animations
-  + Handle map scale and such settings gone wrong (reset button in prefs?)
+  + Remove one infantry from each side of 308
+  + When picking leader first should be able to move together
+  + Should not be able to undo automatic reaction fire skip
+  + Optimize re-render of control bar
+  + Return to menu button on game over
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
   - Roll back smoke on reaction fire?

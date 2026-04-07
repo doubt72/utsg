@@ -16,6 +16,7 @@ export default class ReactionPassAction extends BaseAction {
   }
 
   get undoPossible() {
+    if (this.data.message) { return false }
     return true
   }
 

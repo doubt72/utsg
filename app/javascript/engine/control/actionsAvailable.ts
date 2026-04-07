@@ -1,4 +1,4 @@
-import { Coordinate, GameAction, unitType } from "../../utilities/commonTypes"
+import { Coordinate, GameControl, unitType } from "../../utilities/commonTypes"
 import { coordinateToLabel } from "../../utilities/utilities"
 import Game from "../Game"
 import Map from "../Map"
@@ -105,7 +105,7 @@ function setState(game: Game): void {
   }
 }
 
-export default function actionsAvailable(game: Game, activePlayer: string, active: boolean = true): GameAction[] {
+export default function actionsAvailable(game: Game, activePlayer: string, active: boolean = true): GameControl[] {
   if (!game.fullySynced || game.needsRectify) { return [{ type: "sync" }] }
   if (game.state === "needs_player") {
     if (game.ownerName === activePlayer || !activePlayer) {
@@ -128,22 +128,22 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
   }
   if (activePlayer !== game.playerOneName && activePlayer !== game.playerTwoName) {
     if (game.state === "in_progress") {
-      return [{ type: "none", message: "game currently in progress" }]
+      return [{ type: "none", message: "game currently in progress" }, { type: "menu" }]
     } if (game.state === "complete") {
-      return [{ type: "none", message: "game over" }]
+      return [{ type: "none", message: "game over" }, { type: "menu" }]
     }
     return []
   }
   if (activePlayer !== game.currentUser) {
     if (game.state === "complete") {
-      return [{ type: "none", message: "game over" }]
+      return [{ type: "none", message: "game over" }, { type: "menu" }]
     }
     return [{ type: "wait", message: currentEnemyAction(game) }] }
   if (game.lastAction?.id === undefined) { return [{ type: "sync" }] }
-  const actions: GameAction[] = []
+  const actions: GameControl[] = []
   addUndo(game, activePlayer, actions)
   if (game.state === "complete") {
-    return [{ type: "none", message: "game over" }]
+    return [{ type: "none", message: "game over" }, { type: "menu" }]
   }
   if (active) { setState(game) }
 
@@ -193,7 +193,7 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
   return actions
 }
 
-function addRallyActions(game: Game, actions: GameAction[]): void {
+function addRallyActions(game: Game, actions: GameControl[]): void {
   actions.unshift({ type: "none", message: "select unit to rally/repair" })
   const select = currSelection(game, false)
   if (select !== undefined) {
@@ -203,7 +203,7 @@ function addRallyActions(game: Game, actions: GameAction[]): void {
   }
 }
 
-function addMainPhaseActions(game: Game, actions: GameAction[]): void {
+function addMainPhaseActions(game: Game, actions: GameControl[]): void {
   const selection = currSelection(game, false)
   const map = game.scenario.map
   if (game.gameState?.type === stateType.Fire) {
@@ -262,7 +262,7 @@ function addMainPhaseActions(game: Game, actions: GameAction[]): void {
   }
 }
 
-function addFireDisplaceActions(game: Game, actions: GameAction[]): void {
+function addFireDisplaceActions(game: Game, actions: GameControl[]): void {
   actions.unshift({ type: "none", message: "fire displaces unit" })
   if (game.fireDisplaceState.remove || game.fireDisplaceState.path.length > 1) {
     actions.push({ type: "fire_displace_confirm" })
@@ -272,7 +272,7 @@ function addFireDisplaceActions(game: Game, actions: GameAction[]): void {
   }
 }
 
-function addMoraleActions(game: Game, actions: GameAction[]): void {
+function addMoraleActions(game: Game, actions: GameControl[]): void {
   const state = game.gameState as BaseState
   const counter = state.selection[0].counter
   const hex = counter.hex as Coordinate
@@ -284,7 +284,7 @@ function addMoraleActions(game: Game, actions: GameAction[]): void {
   actions.push({ type: "morale_check" })
 }
 
-function addFireActions(game: Game, actions: GameAction[], selection?: Unit): void {
+function addFireActions(game: Game, actions: GameControl[], selection?: Unit): void {
   const action = game.fireState
   if (action) {
     if (!action.doneSelect) {
@@ -314,7 +314,7 @@ function addFireActions(game: Game, actions: GameAction[], selection?: Unit): vo
   }
 }
 
-function addMoveActions(game: Game, actions: GameAction[]): void {
+function addMoveActions(game: Game, actions: GameControl[]): void {
   const actionSelect = currSelection(game, true)
   const action = game.moveState
   if (actionSelect && action) {
@@ -358,7 +358,7 @@ function addMoveActions(game: Game, actions: GameAction[]): void {
   }
 }
 
-function addAssaultActions(game: Game, actions: GameAction[]): void {
+function addAssaultActions(game: Game, actions: GameControl[]): void {
   const action = game.assaultState
   if (action) {
     if (showClearObstacles(game)) {
@@ -379,7 +379,7 @@ function addAssaultActions(game: Game, actions: GameAction[]): void {
   }
 }
 
-function addRoutActions(game: Game, actions: GameAction[]): void {
+function addRoutActions(game: Game, actions: GameControl[]): void {
   if (game.routState.optional && !game.routState.routPathTree) {
     actions.unshift({ type: "none", message: "can't rout unit without eliminating it" })
   } else if (!game.routState.routPathTree) {
@@ -393,7 +393,7 @@ function addRoutActions(game: Game, actions: GameAction[]): void {
   }
 }
 
-function addCloseCombatActions(game: Game, actions: GameAction[]): void {
+function addCloseCombatActions(game: Game, actions: GameControl[]): void {
   const selection = currSelection(game, false)
   if (game.gameState?.type === stateType.CloseCombat) {
     if (selection) {
@@ -415,7 +415,7 @@ function addCloseCombatActions(game: Game, actions: GameAction[]): void {
   }
 }
 
-function addFireCheckActions(game: Game, actions: GameAction[]): void {
+function addFireCheckActions(game: Game, actions: GameControl[]): void {
   if (game.fireOutCheckNeeded.length > 0) {
     actions.unshift({ type: "none", message: "checking if fires extinguish" })
     actions.push({ type: "fire_out_check" })
@@ -473,7 +473,7 @@ function currentEnemyAction(game: Game): string {
   return "unknown enemy action"
 }
 
-function addUndo(game: Game, activePlayer: string, actions: GameAction[]) {
+function addUndo(game: Game, activePlayer: string, actions: GameControl[]) {
   if (!game.lastAction?.undoPossible) { return }
   if (!game.gameState?.actionInProgress) {
     actions.push({ type: "undo" })

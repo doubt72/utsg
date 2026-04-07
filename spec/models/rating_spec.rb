@@ -40,7 +40,7 @@ RSpec.describe Rating do
     end.to change { Rating.count }.by(1)
 
     expect(Rating.average_rating("001")[:count]).to be == 3
-    expect(Rating.average_rating("001")[:average]).to be_within(0.01).of(3.333)
+    expect(Rating.average_rating("001")[:average]).to be_within(0.01).of(3.667)
   end
 
   it "handles average of no records" do

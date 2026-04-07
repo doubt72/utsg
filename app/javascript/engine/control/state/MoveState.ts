@@ -526,6 +526,10 @@ export default class MoveState extends BaseState {
   }
   
   canBeMultiselected(counter: Counter): boolean {
+    if (!counter.unit.canCarrySupport && counter.unit.parent?.canCarrySupport) {
+      this.game.addMessage("can't move support weapons, select infantry unit carrying it")
+      return false
+    }
     if (!counter.unit.canCarrySupport) {
       this.game.addMessage("only infantry units and leaders can move together")
       return false

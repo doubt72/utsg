@@ -29,7 +29,7 @@ RSpec.describe Api::V1::RatingsController do
       expect(response.status).to be == 200
       json = JSON.parse(response.body)
       expect(json["count"]).to be == 3
-      expect(json["average"]).to be_within(0.01).of(3.333)
+      expect(json["average"]).to be_within(0.01).of(3.667)
     end
 
     it "can get average of nothing" do
@@ -94,7 +94,7 @@ RSpec.describe Api::V1::RatingsController do
       expect(json["rating"]).to be == 3
 
       expect(Rating.average_rating("001")[:count]).to be == 3
-      expect(Rating.average_rating("001")[:average]).to be_within(0.01).of(3.333)
+      expect(Rating.average_rating("001")[:average]).to be_within(0.01).of(3.667)
     end
 
     it "can update rating" do

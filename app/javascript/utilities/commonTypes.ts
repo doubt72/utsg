@@ -184,7 +184,7 @@ export type SizeRange = 1 | 2 | 3 | 4 | 5 | 6
 export type LeadershipRange = 0 | 1 | 2
 export type GunHandlingRange = 0 | 1 | 2
 
-export type GameAction = {
+export type GameControl = {
   type: string, message?: string
 }
 

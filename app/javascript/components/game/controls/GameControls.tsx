@@ -60,6 +60,7 @@ import CancelMoveButton from "./buttons/CancelMoveButton";
 import UndeployButton from "./buttons/UnDeployButton";
 import SplitSquadButton from "./buttons/SplitSquadButton";
 import JoinSquadButton from "./buttons/JoinSquadButton";
+import GameOverMenuButton from "./buttons/GameOverMenuButton";
 
 interface GameControlsProps {
   game: Game;
@@ -72,8 +73,11 @@ export default function GameControls({ game, callback, update }: GameControlsPro
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [internalUpdate, setInternalUpdate] = useState(0)
 
+  console.log("reloading control panel")
+
   useEffect(() => {
     if (!game.id) { return }
+    console.log("re-effecting control panel")
     displayActions()
   }, [game, game.lastActionIndex, internalUpdate, update])
 
@@ -235,6 +239,8 @@ export default function GameControls({ game, callback, update }: GameControlsPro
         return <FireDisplaceConfirmButton game={game} key={i} callback={callAllBack} />
       } else if (a.type === "fire_displace_cancel") {
         return <FireDisplaceCancelButton game={game} key={i} callback={callAllBack} />
+      } else if (a.type === "menu") {
+        return <GameOverMenuButton key={i} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {
