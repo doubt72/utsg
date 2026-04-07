@@ -2,24 +2,25 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Circle, CircleFill, XCircle } from "react-bootstrap-icons";
 
+export type GameRowData = {
+  id: number;
+  name: string;
+  scenario: string;
+  player_one?: string;
+  player_two?: string;
+  owner: string;
+  current_player?: string;
+  winner?: string;
+  state: string;
+  summary_metadata: {
+    turn: number;
+    scenario_turns: number;
+    scenario_name: string;
+  };
+  empty: boolean;
+}
 interface GameListRowProps {
-  data: {
-    id: number;
-    name: string;
-    scenario: string;
-    player_one?: string;
-    player_two?: string;
-    owner: string;
-    current_player?: string;
-    winner?: string;
-    state: string;
-    summary_metadata: {
-      turn: number;
-      scenario_turns: number;
-      scenario_name: string;
-    };
-    empty: boolean;
-  }
+  data: GameRowData;
 }
 
 export default function GameListRow({ data }: GameListRowProps) {

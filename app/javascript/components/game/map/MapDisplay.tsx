@@ -678,6 +678,7 @@ export default function MapDisplay({
         map.game.setGameState(new DeployState(map.game, selection.target.turn, selection.target.key))
         counterCallback()
       }
+      map.clearAllSelections()
       const player = selection.target.player
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy

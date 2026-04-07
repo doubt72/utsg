@@ -11,8 +11,8 @@ class GameAction < ApplicationRecord
 
   after_create :update_game_last_action
   after_create :check_status
-  after_update :broadcast_if_undone
   after_create :broadcast
+  after_update :broadcast_if_undone
 
   def self.create_action(params)
     game = Game.find_by(id: params[:game_id])

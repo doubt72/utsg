@@ -21,6 +21,8 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   before_create :set_current_player
   before_save :check_players
+  after_create :broadcast
+  after_update :broadcast
 
   # needs_player:   owner must choose side when creating game
   # ready:          players joined, start needs confirmation (but non-owner can drop back out)
@@ -193,5 +195,9 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def game_full?
     player_one && player_two
+  end
+
+  def broadcast
+    ActionCable.server.broadcast("game-0", { body: })
   end
 end

@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { CaretDownFill, CaretUp, CaretUpFill } from "react-bootstrap-icons";
 import { getAPI } from "../utilities/network";
-import GameListRow from "./GameListRow";
+import GameListRow, { GameRowData } from "./GameListRow";
 
 interface GameListSectionProps {
   scope: string;
   user?: string;
+  queue: GameRowData[];
+  shiftQueue: () => void;
 }
 
-export default function GameListSection({ scope, user }: GameListSectionProps) {
+export default function GameListSection({ scope, user, queue, shiftQueue }: GameListSectionProps) {
   const [page, setPage] = useState(0)
   const [scroll, setScroll] = useState({ up: false, down: false })
-  const [games, setGames] = useState([])
+  const [games, setGames] = useState<GameRowData[]>([])
+  const [update, setUpdate] = useState<number>(0)
 
   useEffect(() => {
     const params: Record<string, string> = {
@@ -33,7 +36,36 @@ export default function GameListSection({ scope, user }: GameListSectionProps) {
         })
       }
     })
-  }, [page])
+  }, [page, update])
+
+  useEffect(() => {
+    if (queue.length < 1) { return }
+    let check = false
+    const record = queue[0]
+    const currentUser = localStorage.getItem("username")
+    shiftQueue()
+    if (!user || user === record.player_one || user === record.player_two || user === record.owner) {
+      if (scope === "not_started" && ["needs_player", "ready"].includes(record.state)) {
+        check = true
+      } else if (scope === "active" && record.state === "in_progress") {
+        check = true
+      } else if (scope === "complete" && record.state === "complete") {
+        check = true
+      } else if (scope === "needs_player_start" &&
+          ((record.state === "ready" && record.owner === currentUser) ||
+           (record.state === "needs_player" && record.owner !== currentUser)) ) {
+        check = true
+      } else if (scope === "needs_action" && record.current_player === currentUser &&
+          record.state === "in_progress") {
+        check = true
+      } else {
+        for (let i = 0; i < games.length; i++) {
+          if (games[i].id === record.id) { check = true; break }
+        }
+      }
+    }
+    if (check) { setUpdate(s => s + 1)}
+  }, [queue, queue.length])
 
   const scrollUp = scroll.up ?
     <div onClick={() => setPage(page - 1)}><CaretUpFill /></div> :

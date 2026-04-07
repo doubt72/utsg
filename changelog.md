@@ -1,10 +1,12 @@
 ## 0.39 Alpha
 
-- Slightly better error message when multiselecting
+- Live updates of game lists on main page when games created/updated
+- Slightly better error message when (not) multiselecting infantry weapons
 - Some render optimizations
 - Add button to return to main page after game over or not logged in
 - Bug fix: don't allow undo of automatic reaction fire pass
 - Bug fix: fixed bug with calculated average rating
+- Bug fix: selecting deploy unit should unselect on map
 - Updated 308
 
 ## 0.38 Alpha

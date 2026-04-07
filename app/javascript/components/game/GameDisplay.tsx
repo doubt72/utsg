@@ -113,7 +113,7 @@ export default function GameDisplay() {
                   checkCancelHideLOS={checkCancelHideLOS} checkCancelTerrain={checkCancelTerrain} />
     )
   }, [
-    map, updateControls, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
+    map, updateMap, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
     hideCounters, showTerrain, collapseLayout
   ])
 

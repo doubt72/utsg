@@ -28,7 +28,6 @@ export default class SquadJoinAction extends BaseAction {
   get undoPossible() { return true }
 
   mutateGame(): void {
-    console.log("hello")
     const one = this.map.findCounterById(this.target[0].id) as Counter
     const two = this.map.findCounterById(this.target[1].id) as Counter
     if (this.target[1].children && this.target[1].children.length > 0) {

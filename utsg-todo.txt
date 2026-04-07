@@ -1,16 +1,10 @@
 Features/Bug Fixes:
-  + Remove one infantry from each side of 308
-  + When picking leader first should be able to move together
-  + Should not be able to undo automatic reaction fire skip
-  + Optimize re-render of control bar
-  + Return to menu button on game over
+  + Live cable updates on home page
+  - Admin pages for game/user summaries
+    - Remove/ban players (FE only security inadequate for this, validate on BE)
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
   - Roll back smoke on reaction fire?
-  - Romanian vehicles don't seem to be at higher breakdown in 006
-  - Live cable updates on home page
-  - Admin pages for game/user summaries
-    - Remove/ban players (FE only security inadequate for this, validate on BE)
   - Email turn notifications
   - Create tutorial
   - A way to show terrain in counter overlay

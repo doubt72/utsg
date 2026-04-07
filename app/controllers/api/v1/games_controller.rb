@@ -90,7 +90,7 @@ module Api
         when "needs_action"
           games = games.needs_action(current_user)
         end
-        games.order(created_at: :desc)
+        games.order(updated_at: :desc)
       end
 
       def serialize_index(games)

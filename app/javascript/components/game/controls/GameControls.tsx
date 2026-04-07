@@ -73,11 +73,8 @@ export default function GameControls({ game, callback, update }: GameControlsPro
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [internalUpdate, setInternalUpdate] = useState(0)
 
-  console.log("reloading control panel")
-
   useEffect(() => {
     if (!game.id) { return }
-    console.log("re-effecting control panel")
     displayActions()
   }, [game, game.lastActionIndex, internalUpdate, update])
 
