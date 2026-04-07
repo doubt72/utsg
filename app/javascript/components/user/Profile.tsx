@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Header from "../Header"
 import ProfileEditInfo from "./ProfileEditInfo"
 import ProfileEditPassword from "./ProfileEditPassword"
-import { ReturnButton } from "../utilities/buttons";
+import { CustomCheckbox, ReturnButton } from "../utilities/buttons";
 import { getAPI, putAPI } from "../../utilities/network";
 import { useParams } from "react-router-dom";
-import { StarFill } from "react-bootstrap-icons";
+import { ArrowCounterclockwise, StarFill } from "react-bootstrap-icons";
 
 type GameStats = { name: string, count: number, win: number, loss: number, wait: number, abandoned: number }
 type UserData = { username: string, email: string, proto?: string, mcp: string }
@@ -15,9 +15,15 @@ export default function Profile() {
 
   const [stats, setStats] = useState<{ [index: string]: GameStats }>({})
   const [user, setUser] = useState<UserData | undefined>()
+  const [resetSettings, setResetSettings] = useState<boolean>(true)
   const [resetUser, setResetUser] = useState<boolean>(true)
+
+  const [colorblind, setColorblind] = useState<boolean>(false)
+  const [animations, setAnimations] = useState<boolean>(false)
+
   const [header, setHeader] = useState<JSX.Element | undefined>()
   const [statDisplay, setStatDisplay] = useState<JSX.Element | undefined>()
+  const [settings, setSettings] = useState<JSX.Element | undefined>()
 
   useEffect(() => {
     getAPI(`/api/v1/user/stats?id=${username}`, {
@@ -65,6 +71,11 @@ export default function Profile() {
   }, [stats])
 
   useEffect(() => {
+    setColorblind(localStorage.getItem("colorblind") === "true")
+    setAnimations(localStorage.getItem("noanim") === "true")
+  }, [])
+
+  useEffect(() => {
     const self = localStorage.getItem("username") === username
     const proto = user?.proto ? <span className="green">&#x2605;</span> : ""
     const mcp = user?.mcp ? <span className="red">&#x2605;</span> : ""
@@ -79,7 +90,39 @@ export default function Profile() {
         <p>Games stats (does not include hotseat games):</p>
       </>
     setHeader(header)
-  }, [user])
+    if (self) {
+      setSettings(
+        <div>
+          <div className="profile-prefs">
+            <p>Preferences:</p>
+            <div>
+              <CustomCheckbox onClick={() => {
+                setColorblind(s => {
+                  localStorage.setItem("colorblind", s ? "false" : "true")
+                  return !s
+                })
+              }} selected={colorblind}/>
+              <span className="font11em">high contrast display for colorblindness</span>
+            </div>
+            <div>
+              <CustomCheckbox onClick={() => {
+                setAnimations(s => {
+                  localStorage.setItem("noanim", s ? "false" : "true")
+                  return !s
+                })
+              }} selected={animations}/>
+              <span className="font11em">disable map animations</span>
+            </div>
+            <p className="mt1em">
+              Disabling map animations is not recommended except for Safari users.  Instead of
+              using that option, a better solution is not using Safari in the first
+              place &mdash; it&apos;s rendering performance is abysmal.
+            </p>
+          </div>
+        </div>
+      )
+    }
+  }, [user, colorblind, animations])
 
   return (
     <div>
@@ -88,8 +131,22 @@ export default function Profile() {
         <div className="profile-main">
           { header }
           { statDisplay }
-          <div className="flex">
+          { settings }
+          <div className="flex mt2em">
             <div className="flex-fill"></div>
+            { resetSettings ?
+              <div>
+                <a className="custom-button nowrap" onClick={() => {
+                  localStorage.removeItem("mapInterfaceShrink")
+                  localStorage.removeItem("mapScale")
+                  localStorage.removeItem("mapCollapseLayout")
+                  localStorage.removeItem("mapCoords")
+                  localStorage.removeItem("mapMarkers")
+                  setResetSettings(false)
+                }}>
+                  <ArrowCounterclockwise />reset map prefs
+                </a>
+              </div> : "" }
             { localStorage.getItem("mcp") ?
               <div>
                 <a className="custom-button nowrap" onClick={() => {

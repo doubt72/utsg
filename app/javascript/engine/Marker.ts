@@ -1,7 +1,10 @@
 import {
   Direction, MarkerType, NumberBoolean, WeatherType, WindType, markerType, weatherType, windType
 } from "../utilities/commonTypes"
-import { breezeColor, calmColor, counterElite, counterGreen, counterRed, dryColor, dustColor, fogColor, markerYellow, moderateColor, rainColor, sandColor, snowColor, strongColor } from "../utilities/graphics";
+import {
+  breezeColor, calmColor, counterElite, counterGreen, counterRed, dryColor, dustColor, fogColor,
+  markerYellow, moderateColor, rainColor, sandColor, snowColor, strongColor
+} from "../utilities/graphics";
 import { markerHelpText } from "./support/help";
 import Unit from "./Unit";
 
@@ -100,25 +103,25 @@ export default class Marker {
   }
 
   get color(): string {
-    if (this.type === markerType.GreenCrew) { return counterGreen }
-    if (this.type === markerType.EliteCrew) { return counterElite }
+    if (this.type === markerType.GreenCrew) { return counterGreen() }
+    if (this.type === markerType.EliteCrew) { return counterElite() }
     if (this.type === markerType.Tired || this.type === markerType.Activated ||
-        this.type === markerType.Exhausted) { return markerYellow }
+        this.type === markerType.Exhausted) { return markerYellow() }
     if (this.type === markerType.Wind) {
-      if (this.subType === windType.Calm) { return calmColor }
-      if (this.subType === windType.Breeze) { return breezeColor }
-      if (this.subType === windType.Moderate) { return moderateColor }
-      if (this.subType === windType.Strong) { return strongColor }
+      if (this.subType === windType.Calm) { return calmColor() }
+      if (this.subType === windType.Breeze) { return breezeColor() }
+      if (this.subType === windType.Moderate) { return moderateColor() }
+      if (this.subType === windType.Strong) { return strongColor() }
     }
     if (this.type === markerType.Weather) {
-      if (this.subType === weatherType.Dry) { return dryColor }
-      if (this.subType === weatherType.Fog) { return fogColor }
-      if (this.subType === weatherType.Rain) { return rainColor }
-      if (this.subType === weatherType.Snow) { return snowColor }
-      if (this.subType === weatherType.Sand) { return sandColor }
-      if (this.subType === weatherType.Dust) { return dustColor }
+      if (this.subType === weatherType.Dry) { return dryColor() }
+      if (this.subType === weatherType.Fog) { return fogColor() }
+      if (this.subType === weatherType.Rain) { return rainColor() }
+      if (this.subType === weatherType.Snow) { return snowColor() }
+      if (this.subType === weatherType.Sand) { return sandColor() }
+      if (this.subType === weatherType.Dust) { return dustColor() }
     }
-    return counterRed
+    return counterRed()
   }
 
   get displayText(): string[] {

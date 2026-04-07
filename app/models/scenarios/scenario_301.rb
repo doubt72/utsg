@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -43,6 +43,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: ["retreat_301"],
         }
       end
 

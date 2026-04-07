@@ -68,16 +68,32 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
           {map.game?.playerTwoScore}
         </text>
-        <g transform={`rotate(${(map.alliedDir - 1)*60} ${xl} ${yd})`}>
-          <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
-                    `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
-                style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
-        </g>
-        <g transform={`rotate(${(map.axisDir - 1)*60} ${xr} ${yd})`}>
-          <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
-                    `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
-                style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
-        </g>
+        { game.scenario.specialRules.includes("retreat_301") ?
+          <g>
+            <g transform={`rotate(${(map.alliedDir - 1)*60} ${xl} ${yd})`}>
+              <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
+                        `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
+                    style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
+            </g>
+            <g transform={`rotate(${(map.axisDir - 1)*60} ${xl} ${yd})`}>
+              <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
+                        `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
+                    style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
+            </g>
+          </g> :
+          <g>
+            <g transform={`rotate(${(map.alliedDir - 1)*60} ${xl} ${yd})`}>
+              <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
+                        `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
+                    style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
+            </g>
+            <g transform={`rotate(${(map.axisDir - 1)*60} ${xr} ${yd})`}>
+              <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
+                        `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
+                    style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
+            </g>
+          </g>
+        }
         <circle cx={xl} cy={yd} r={12} style={nationOne(12, 1)}
                 onMouseEnter={() => helpText(xl+4, yd+8, game.alliedName)}
                 onMouseLeave={() => setHelpDisplay(undefined)}/>

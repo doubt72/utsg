@@ -17,8 +17,8 @@ export default class StatusUpdateAction extends BaseAction {
   get type(): string { return "status_update" }
 
   get htmlValue(): string {
-    const red = counterRed
-    const yellow = markerYellowText
+    const red = counterRed()
+    const yellow = markerYellowText()
     return `update all unit statuses: remove all <span style="color: ${red};">pinned</span>, ` +
       `<span style="color: ${red};">routed</span>, <span style="color: ${yellow};">tired</span>, ` +
       `and <span style="color: ${yellow};">activated</span> markers; ` +

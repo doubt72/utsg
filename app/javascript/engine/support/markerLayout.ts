@@ -9,7 +9,7 @@ export function markerMoraleLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasMarker || counter.marker.type !== markerType.Pinned) { return false }
   return {
     x: counter.x + 13, y: counter.y + 24, size: 16, value: "-1",
-    tStyle: { fill: counterRed },
+    tStyle: { fill: counterRed() },
   }
 }
 
@@ -20,7 +20,7 @@ export function markerBreakLayout(counter: Counter): CounterLayout | false {
   const loc = new Coordinate(counter.x + 40, counter.y + 14)
   return {
     path: circlePath(loc, 10),
-    style: { strokeWidth: 0, fill: counterRed }, tStyle: { fill: "white" },
+    style: { strokeWidth: 0, fill: counterRed() }, tStyle: { fill: "white" },
     x: loc.x, y: loc.y + 4.25, size: 16, value: "4",
   }
 }
@@ -43,7 +43,7 @@ export function markerFirepowerLayout(counter: Counter): CounterLayout | false {
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
   const path = squarePath(loc)
   return {
-    path: path, style: style, tStyle: { fill: counterRed },
+    path: path, style: style, tStyle: { fill: counterRed() },
     x: loc.x, y: loc.y + 4, size: 18, value: "½",
   }
 }
@@ -54,7 +54,7 @@ export function markerRangeLayout(counter: Counter): CounterLayout | false {
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
   const path = squarePath(loc)
   return {
-    path: path, style: style, tStyle: { fill: counterRed }, x: loc.x, y: loc.y + 4,
+    path: path, style: style, tStyle: { fill: counterRed() }, x: loc.x, y: loc.y + 4,
     size: 18, value: "-",
   }
 }
@@ -65,7 +65,7 @@ export function markerMovementLayout(counter: Counter): CounterLayout | false {
   const style = { stroke: clearColor, fill: clearColor, strokeWidth: 1 }
   const path = circlePath(loc, 10)
   return {
-    path: path, style: style, tStyle: { fill: counterRed }, x: loc.x, y: loc.y + 4,
+    path: path, style: style, tStyle: { fill: counterRed() }, x: loc.x, y: loc.y + 4,
     size: 18, value: "0",
   }
 }

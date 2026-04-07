@@ -1,6 +1,7 @@
 import { Coordinate, Direction, featureType, sponsonType, SponsonType, unitType } from "../../utilities/commonTypes"
 import {
-  circlePath, clearColor, counterElite, counterGreen, CounterLayout, counterRed,
+  circlePath, clearColor, counterElite, counterGreen, CounterLayout,
+  counterRed,
   facingLayout, hexPath, markerYellow, squarePath, SVGPathArray
 } from "../../utilities/graphics"
 import { normalDir } from "../../utilities/utilities"
@@ -11,7 +12,7 @@ export function moraleLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.baseMorale) { return false }
   return {
     x: counter.x + 13, y: counter.y + 28, size: 18, value: counter.unit.currentMorale,
-    style: { fill: counter.unit.currentMorale === counter.unit.baseMorale ? "black" : counterRed }
+    style: { fill: counter.unit.currentMorale === counter.unit.baseMorale ? "black" : counterRed() }
   }
 }
 
@@ -23,10 +24,10 @@ export function weaponBreakLayout(counter: Counter): CounterLayout | false {
   let y = counter.y + 25
   if (counter.unit.breakdownRoll) { y -= 3 }
   const red = counter.unit.breakDestroysWeapon || counter.unit.jammed
-  let fill = red ? counterRed : markerYellow
+  let fill = red ? counterRed() : markerYellow()
   let textColor = red ? "white" : "black"
   if (counter.unit.sponson && counter.unit.sponson.type === sponsonType.Flame) {
-    textColor = counterRed
+    textColor = counterRed()
   }
   if (counter.unit.jammed && counter.unit.breakDestroysWeapon) {
     fill = clearColor
@@ -76,7 +77,7 @@ export function eliteLayout(counter: Counter): CounterLayout | false {
   if (counter.unit.isWreck || showAllCounters || elite === 0) {
     return false
   }
-  const color = elite > 0 ? counterElite : counterGreen
+  const color = elite > 0 ? counterElite() : counterGreen()
   const stroke = elite > 0 ? "white" : "black"
   const tColor = elite > 0 ? "white" : "black"
   const rc: CounterLayout | false = sizeLayout(counter)
@@ -157,7 +158,7 @@ export function breakdownLayout(counter: Counter): CounterLayout | false {
   const loc = new Coordinate(counter.x + 14, counter.y + 40)
   const path = circlePath(loc, 8)
   return {
-    path: path, style: { stroke: "black", strokeWidth: 1, fill: markerYellow },
+    path: path, style: { stroke: "black", strokeWidth: 1, fill: markerYellow() },
     tStyle: { fill: "black" },
     x: loc.x, y: loc.y+4.25, size: 15, value: counter.unit.breakdownRoll,
   }
@@ -182,7 +183,7 @@ export function centerLabelLayout(counter: Counter): CounterLayout | false {
   const x = counter.x + 40
   const y = counter.y + 48
   return {
-    x: x, y: y, size: 40, value: counter.feature.sniperRoll, style: { fill: counterRed }
+    x: x, y: y, size: 40, value: counter.feature.sniperRoll, style: { fill: counterRed() }
   }
 }
 
@@ -196,10 +197,10 @@ export function sponsonLayout(counter: Counter): CounterLayout | false {
   const path = [
     "M", x-width, y-9, "L", x+width, y-9, "L", x+width, y+3, "L", x-width, y+3, "L", x-width, y-9
   ].join(" ")
-  const tfill = counter.unit.sponsonJammed || counter.unit.sponsonDestroyed ? counterRed : "black"
+  const tfill = counter.unit.sponsonJammed || counter.unit.sponsonDestroyed ? counterRed() : "black"
   const style = { fill: counterColor(counter) }
   if (gun.type === sponsonType.Flame) {
-    style.fill = markerYellow
+    style.fill = markerYellow()
   } else if (gun.type === sponsonType.AntiArmor) {
     style.fill = "white"
   }
@@ -241,7 +242,7 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
   let path = squarePath(loc)
   let size = value === "½" ? 18 : attrSizeFor(value as number)
   if (counter.hasUnit && (counter.unit.noFire || counter.unit.pinned)) {
-    color = counterRed
+    color = counterRed()
     value = counter.unit.currentFirepower
     if (counter.unit.isBroken) { value = counter.unit.closeCombatFirepower }
     size = 18
@@ -266,11 +267,11 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
       }
     }
     if (counter.unit.singleFire && counter.unit.incendiary) {
-      style.fill = counterRed
+      style.fill = counterRed()
     } else if (counter.unit.singleFire) {
       style.fill = "black"
     } else if (counter.unit.incendiary) {
-      style.fill = markerYellow
+      style.fill = markerYellow()
     }
     if (counter.unit.fieldGun) {
       style.stroke = "black"
@@ -285,9 +286,9 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
       style.stroke = "white"
     }
     if (counter.feature.antiTank) {
-      style.stroke = counterRed
+      style.stroke = counterRed()
       style.fill = "white"
-      color = counterRed
+      color = counterRed()
     }
     if (counter.feature.type === featureType.Sniper) {
       value = "X"
@@ -313,7 +314,7 @@ export function areaLayout(counter: Counter): CounterLayout | false {
 }
 
 export function smokeLayout(counter: Counter): CounterLayout | false {
-  if (!counter.hasUnit || !counter.unit.currentSmokeCapable) { return false }
+  if (!counter.hasUnit || !counter.unit.currentSmokeCapable || counter.unit.isWreck) { return false }
   let x = counter.x + 16
   let y = counter.y + 57
   const size = 2
@@ -339,7 +340,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
   let path = squarePath(loc)
   let size = attrSizeFor(value)
   if (counter.hasUnit && counter.unit.noFire) {
-    color = counterRed
+    color = counterRed()
     size = 18
   } else if (counter.hasUnit) {
     if (counter.unit.targetedRange || counter.unit.offBoard) { path = circlePath(loc, 10) }
@@ -409,7 +410,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
   const size = value === "A" ? 18 : attrSizeFor(value as number)
   if (counter.hasUnit && (counter.unit.isBroken || counter.unit.pinned || counter.unit.isTired ||
       value as number < 0 || counter.unit.immobilized || counter.unit.isWreck)) {
-    color = counterRed
+    color = counterRed()
   } else if (counter.hasUnit) {
     if (counter.unit.isTracked || counter.unit.crewed || counter.unit.isWheeled ) {
       style.stroke = "black"

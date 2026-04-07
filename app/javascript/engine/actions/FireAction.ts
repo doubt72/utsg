@@ -1,5 +1,5 @@
 import { Coordinate, featureType, sponsonType } from "../../utilities/commonTypes";
-import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
+import { failRedColorMarker, formatCoordinate, formatDieResult, formatNation, formatTarget, parseColorMarkers, passBlueColorMarker } from "../../utilities/graphics";
 import {
   baseToHit, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
   rolld6, smokeRoll, otherPlayer,
@@ -109,7 +109,7 @@ export default class FireAction extends BaseAction {
     }
     rc.push(part)
     this.diceResults.forEach(dr => rc.push(dr.description as string))
-    return rc.join("; ")
+    return parseColorMarkers(rc.join("; "))
   }
 
   get undoPossible() {
@@ -198,8 +198,8 @@ export default class FireAction extends BaseAction {
         let dTargets = targets
         if (targetRoll.result.result <= targetCheck && oBoard) {
           if (needDice) {
-            targetRoll.description += `<span style="color: ${failRed};">miss</span>, ` +
-              `<span style="color: ${passBlue};">drifts</span>`
+            targetRoll.description += `<span style="color: ${failRedColorMarker()};">miss</span>, ` +
+              `<span style="color: ${passBlueColorMarker()};">drifts</span>`
             this.diceResults.push({ result: rolld6() })
             this.diceResults.push({ result: rolld10() })
           }
@@ -232,7 +232,7 @@ export default class FireAction extends BaseAction {
             fireStart = false
           }
         } else {
-          if (needDice) { targetRoll.description += `<span style="color: ${failRed};">hit</span>` }
+          if (needDice) { targetRoll.description += `<span style="color: ${failRedColorMarker()};">hit</span>` }
           anims.push({ loc: to, type: "hit" })
         }
         if (firing0.unit.areaFire || smoke) {
@@ -269,7 +269,7 @@ export default class FireAction extends BaseAction {
                   `infantry effect roll: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
               }
               if (hitRoll.result.result > hitCheck) {
-                if (needDice) { hitRoll.description += `<span style="color: ${failRed};">passed</span>` }
+                if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>` }
                 for (const t of dTargets) {
                   if (t.counter.unit.canCarrySupport) {
                     this.game.moraleChecksNeeded.push({
@@ -279,7 +279,7 @@ export default class FireAction extends BaseAction {
                 }
                 anims.push({ loc: dTo, type: "effect" })
               } else if (needDice) {
-                hitRoll.description += `<span style="color: ${passBlue};">no effect</span>`
+                hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>`
                 anims.push({ loc: dTo, type: "noeffect" })
               }
             }
@@ -316,13 +316,13 @@ export default class FireAction extends BaseAction {
                     rollbackAddActions(this.map, hex, dTo, t.counter.unit.id)
                   }
                   if (needDice) {
-                    hitRoll.description += `<span style="color: ${failRed};">passed</span>, vehicle destroyed`
+                    hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
                   }
                   anims.push({ loc: dTo, type: "wreck" })
                 } else if (hitRoll.result.result === hitCheck && !firing0.unit.incendiary) {
                   t.counter.unit.immobilized = true
                   if (needDice) {
-                    hitRoll.description += `<span style="color: ${failRed};">tie</span>, vehicle immobilized`
+                    hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
                   }
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != dTo.x || hex.y !== dTo.y) {
@@ -331,7 +331,7 @@ export default class FireAction extends BaseAction {
                   }
                   anims.push({ loc: dTo, type: "immobilized" })
                 } else if (needDice) {
-                  hitRoll.description += `<span style="color: ${passBlue};">failed</span>`
+                  hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
                   anims.push({ loc: dTo, type: "nowreck" })
                 }
               }
@@ -392,19 +392,19 @@ export default class FireAction extends BaseAction {
                 rollbackAddActions(this.map, hex, dTo, target0.unit.id)
               }
               if (needDice) {
-                hitRoll.description += `<span style="color: ${failRed};">passed</span>, vehicle destroyed`
+                hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
               }
               anims.push({ loc: dTo, type: "wreck" })
             } else if (hitRoll.result.result === hitCheck) {
               if (turretHit) {
                 if (needDice) {
-                  hitRoll.description += `<span style="color: ${failRed};">tie</span>, turret jammed`
+                  hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, turret jammed`
                 }
                 target0.unit.turretJammed = true
                 anims.push({ loc: dTo, type: "turret" })
               } else {
                 if (needDice) {
-                  hitRoll.description += `<span style="color: ${failRed};">tie</span>, vehicle immobilized`
+                  hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
                 }
                 const hex = target0.hex as Coordinate
                 if (hex.x != dTo.x || hex.y !== dTo.y) {
@@ -417,7 +417,7 @@ export default class FireAction extends BaseAction {
                 anims.push({ loc: dTo, type: "immobilized" })
               }
             } else if (needDice) {
-              hitRoll.description += `<span style="color: ${passBlue};">failed</span>`
+              hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
               anims.push({ loc: dTo, type: "nowreck" })
             }
           } else {
@@ -443,10 +443,10 @@ export default class FireAction extends BaseAction {
           if (hitRoll.result.result > hitCheck) {
             targets.forEach(t => this.game.moraleChecksNeeded.push(
               { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary }))
-            if (needDice) { hitRoll.description += `<span style="color: ${failRed};">passed</span>` }
+            if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>` }
             anims.push({ loc: dTo, type: "effect" })
           } else {
-            if (needDice) { hitRoll.description += `<span style="color: ${passBlue};">no effect</span>` }
+            if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>` }
             anims.push({ loc: dTo, type: "noeffect" })
           }
         }
@@ -461,13 +461,13 @@ export default class FireAction extends BaseAction {
           if (sponson) {
             if (firing0.unit.breakDestroysSponson) {
               if (needDice) {
-                targetRoll.description += `, firing weapon <span style="color: ${failRed};">destroyed</span>`
+                targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
               firing0.unit.sponsonDestroyed = true
               anims.push({ loc: from, type: "destroyed" })
             } else {
               if (needDice) {
-                targetRoll.description += `, firing weapon <span style="color: ${failRed};">broken</span>`
+                targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
               }
               firing0.unit.sponsonJammed = true
               anims.push({ loc: from, type: "jammed" })
@@ -475,13 +475,13 @@ export default class FireAction extends BaseAction {
           } else {
             if (firing0.unit.breakDestroysWeapon) {
               if (needDice) {
-                targetRoll.description += `, firing weapon <span style="color: ${failRed};">destroyed</span>`
+                targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
               firing0.unit.weaponDestroyed = true
               anims.push({ loc: from, type: "destroyed" })
             } else {
               if (needDice) {
-                targetRoll.description += `, firing weapon <span style="color: ${failRed};">broken</span>`
+                targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
               }
               firing0.unit.jammed = true
               anims.push({ loc: from, type: "jammed" })
@@ -496,13 +496,13 @@ export default class FireAction extends BaseAction {
           }
           this.map.eliminateCounter(from, firing0.unit.id)
           if (needDice) {
-            targetRoll.description += `, firing weapon <span style="color: ${failRed};">destroyed</span>`
+            targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
           }
           anims.push({ loc: from, type: "destroyed" })
         } else {
           firing0.unit.jammed = true
           if (needDice) {
-            targetRoll.description += `, firing weapon <span style="color: ${failRed};">broken</span>`
+            targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
           }
           anims.push({ loc: from, type: "jammed" })
         }
@@ -540,7 +540,7 @@ export default class FireAction extends BaseAction {
           }target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
         }
         if (hitRoll.result.result > hitCheck) {
-          if (needDice) { hitRoll.description += `<span style="color: ${failRed};">hit</span>` }
+          if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">hit</span>` }
           anims.push({ loc: to, type: "hit" })
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
@@ -574,11 +574,11 @@ export default class FireAction extends BaseAction {
                     rollbackAddActions(this.map, hex, new Coordinate(t.x, t.y), t.counter.unit.id)
                   }
                   if (needDice) {
-                    hitRoll.description += `<span style="color: ${failRed};">passed</span>, vehicle destroyed`
+                    hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
                   }
                   anims.push({ loc: to, type: "wreck" })
                 } else {
-                  if (needDice) { hitRoll.description += `<span style="color: ${passBlue};">failed</span>` }
+                  if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>` }
                   anims.push({ loc: to, type: "nowreck" })
                 }
               } else {
@@ -589,7 +589,7 @@ export default class FireAction extends BaseAction {
             }
           })
         } else {
-          if (needDice) { hitRoll.description += `<span style="color: ${passBlue};">miss</span>` }
+          if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">miss</span>` }
           anims.push({ loc: to, type: "miss" })
         }
         for (const f of firing) {
@@ -602,13 +602,13 @@ export default class FireAction extends BaseAction {
                 if (f.counter.unit.breakDestroysSponson) {
                   f.counter.unit.sponsonDestroyed = true
                   if (needDice) {
-                    hitRoll.description += `, firing weapon <span style="color: ${failRed};">destroyed</span>`
+                    hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
                   }
                   anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.sponsonJammed = true
                   if (needDice) {
-                    hitRoll.description += `, firing weapon <span style="color: ${failRed};">broken</span>`
+                    hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
                   }
                   anims.push({ loc: from, type: "jammed" })
                 }
@@ -616,13 +616,13 @@ export default class FireAction extends BaseAction {
                 if (f.counter.unit.breakDestroysWeapon) {
                   f.counter.unit.weaponDestroyed = true
                   if (needDice) {
-                    hitRoll.description += `, firing weapon <span style="color: ${failRed};">destroyed</span>`
+                    hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
                   }
                   anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.jammed = true
                   if (needDice) {
-                    hitRoll.description += `, firing weapon <span style="color: ${failRed};">broken</span>`
+                    hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
                   }
                   anims.push({ loc: from, type: "jammed" })
                 }
@@ -638,7 +638,7 @@ export default class FireAction extends BaseAction {
               this.map.eliminateCounter(hex, f.counter.unit.id)
               if (needDice) {
                 hitRoll.description += `, ${this.formatUnit(f.counter.unit)} ` +
-                  `<span style="color: ${failRed};">destroyed</span>`
+                  `<span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
               anims.push({ loc: from, type: "destroyed" })
             } else {
@@ -646,7 +646,7 @@ export default class FireAction extends BaseAction {
               f.counter.unit.resetStatus()
               if (needDice) {
                 hitRoll.description += `, ${this.formatUnit(f.counter.unit)} ` +
-                  `<span style="color: ${failRed};">broken</span>`
+                  `<span style="color: ${failRedColorMarker()};">broken</span>`
               }
               anims.push({ loc: from, type: "jammed" })
             }

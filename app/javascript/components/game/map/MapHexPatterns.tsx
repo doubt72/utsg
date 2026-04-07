@@ -1,5 +1,5 @@
 import React from "react";
-import { clearColor, nationalControlBackgrounds } from "../../../utilities/graphics";
+import { clearColor, nationalControlLookup } from "../../../utilities/graphics";
 
 export default function MapHexPatterns() {
   const darkStyle = { fill: "rgba(0,0,0,0.16)" }
@@ -30,7 +30,7 @@ export default function MapHexPatterns() {
     return (
       <pattern key={key} id={key} x="0" y="0" patternUnits="objectBoundingBox"
                width={size*2} height={size*2}>
-        <rect width={size*2} height={size*2} style={{ fill: nationalControlBackgrounds[nation] }}/>
+        <rect width={size*2} height={size*2} style={{ fill: nationalControlLookup(nation) }}/>
         <image x="0" y="0" height={size*2} width={size*2} xlinkHref={`/assets/units/${nation}.svg`}/>
       </pattern>
     )

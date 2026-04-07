@@ -45,8 +45,8 @@ export default class FireStartAction extends BaseAction {
     const loc = formatCoordinate(new Coordinate(this.hex.x, this.hex.y))
     return `checking to see if blaze starts in ${loc}: on ${formatTarget(this.needed)} or less, ` +
       `rolled ${formatDieResult(this.diceResult.result)}` +
-      `: ${ this.needed < this.diceResult.result.result ? `<span style="color: ${passBlue};">no effect</span>` :
-        `blaze <span style="color: ${failRed};">starts</span>` }`
+      `: ${ this.needed < this.diceResult.result.result ? `<span style="color: ${passBlue()};">no effect</span>` :
+        `blaze <span style="color: ${failRed()};">starts</span>` }`
   }
 
   get undoPossible() {

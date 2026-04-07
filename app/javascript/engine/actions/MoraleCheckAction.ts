@@ -37,18 +37,18 @@ export default class MoraleCheckAction extends BaseAction {
       `target ${formatTarget(check)}, rolled ${formatDieResult(this.diceResult.result)}`
     if (roll < check) {
       if (this.target.status === unitStatus.Broken) {
-        rc += `, unit <span style="color: ${failRed};">eliminated</span>`
+        rc += `, unit <span style="color: ${failRed()};">eliminated</span>`
       } else {
-        rc += `, unit <span style="color: ${failRed};">breaks</span>`
+        rc += `, unit <span style="color: ${failRed()};">breaks</span>`
         short = true
       }
     } else if (roll == check) {
       if (this.target.status !== unitStatus.Broken) {
-        rc += `, unit is <span style="color: ${failRed};">pinned</span>`
+        rc += `, unit is <span style="color: ${failRed()};">pinned</span>`
         short = true
       }
     } else {
-      rc += `, <span style="color: ${passBlue};">no effect</span>`
+      rc += `, <span style="color: ${passBlue()};">no effect</span>`
     }
     if (this.moraleMods.short && short) {
       rc += `, move short at ${formatCoordinate(new Coordinate(this.target.x, this.target.y))}`

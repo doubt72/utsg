@@ -34,9 +34,9 @@ export default class RoutCheckAction extends BaseAction {
     let rc = `${nation} ${formatNation(this.game, otherPlayer(this.player), this.target.name)} ` +
       `rout morale check at ${loc}: target ${formatTarget(check)}, rolled ${formatDieResult(roll)}, `
     if (roll.result < check) {
-      rc += `<span style="color: ${failRed};">failed</span>, unit routs`
+      rc += `<span style="color: ${failRed()};">failed</span>, unit routs`
     } else {
-      rc += `<span style="color: ${passBlue};">passed</span>, no effect`
+      rc += `<span style="color: ${passBlue()};">passed</span>, no effect`
     }
     return rc
   }

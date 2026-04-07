@@ -1,8 +1,14 @@
 import { Coordinate, Direction, markerType } from "../../utilities/commonTypes"
 import {
   BadgeLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, CounterLayout,
-  counterRed, dropSelectColor, lastSelectColor, loadedSelectColor, loaderSelectColor, markerYellow,
-  nationalColors, selectColor, StatusLayout, SVGStyle, targetSelectColor
+  counterRed,
+  dropSelectColor,
+  lastSelectColor,
+  loadedSelectColor,
+  loaderSelectColor,
+  markerYellow,
+  nationalColorLookup, selectColor, StatusLayout, SVGStyle,
+  targetSelectColor
 } from "../../utilities/graphics"
 import Counter from "../Counter"
 import Map from "../Map"
@@ -28,17 +34,17 @@ export function counterOutlineStyle(counter: Counter): SVGStyle {
     return { fill: color, stroke: "black", strokeWidth: 1 }
   }
   if (counter.targetUF.selected) {
-    return { fill: color, stroke: selectColor, strokeWidth: 4 }
+    return { fill: color, stroke: selectColor(), strokeWidth: 4 }
   } else if (counter.hasUnit && counter.unit.targetSelected) {
-    return { fill: color, stroke: targetSelectColor, strokeWidth: 4 }
+    return { fill: color, stroke: targetSelectColor(), strokeWidth: 4 }
   } else if (counter.unit.dropSelected) {
-    return { fill: color, stroke: dropSelectColor, strokeWidth: 4 }
+    return { fill: color, stroke: dropSelectColor(), strokeWidth: 4 }
   } else if (counter.unit.loaderSelected) {
-    return { fill: color, stroke: loaderSelectColor, strokeWidth: 4 }
+    return { fill: color, stroke: loaderSelectColor(), strokeWidth: 4 }
   } else if (counter.unit.loadedSelected) {
-    return { fill: color, stroke: loadedSelectColor, strokeWidth: 4 }
+    return { fill: color, stroke: loadedSelectColor(), strokeWidth: 4 }
   } else if (counter.targetUF.lastSelected) {
-    return { fill: color, stroke: lastSelectColor, strokeWidth: 4 }
+    return { fill: color, stroke: lastSelectColor(), strokeWidth: 4 }
   } else {
     return { fill: color, stroke: "black", strokeWidth: 1 }
   }
@@ -57,7 +63,7 @@ export function nameBackgroundPath(counter: Counter): string {
 }
 
 export function nameBackgroundStyle(counter: Counter): SVGStyle {
-  return { fill: reverseName(counter) ? counterRed : clearColor }
+  return { fill: reverseName(counter) ? counterRed() : clearColor }
 }
 
 export function shadowPath(counter: Counter): string | false {
@@ -91,12 +97,12 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   const loc = new Coordinate(counter.x + 40, counter.y + 46)
   let size = 20
   const path = circlePath(loc.yDelta(-6), 22)
-  const style = { fill: markerYellow, stroke: "black", strokeWidth: 2 }
+  const style = { fill: markerYellow(), stroke: "black", strokeWidth: 2 }
   const fStyle = { fill: "black" }
   if (counter.unit.pinned || counter.unit.immobilized || counter.unit.turretJammed ||
       (counter.unit.jammed && counter.unit.isVehicle) || counter.unit.weaponDestroyed ||
       counter.unit.sponsonJammed || counter.unit.sponsonDestroyed || counter.unit.routed) {
-    style.fill = counterRed
+    style.fill = counterRed()
     style.stroke = "white"
     fStyle.fill = "white"
   }
@@ -152,51 +158,51 @@ export function counterInfoBadges(
     const u = counter.unit
     const s = !map.showAllCounters
     if (u.eliteCrew > 0 && s) {
-      badges.push({ text: "elite crew +1", color: counterElite, tColor: "white" })
+      badges.push({ text: "elite crew +1", color: counterElite(), tColor: "white" })
     }
     if (u.eliteCrew < 0 && s) {
-      badges.push({ text: "green crew -1", color: counterGreen, tColor: "black" })
+      badges.push({ text: "green crew -1", color: counterGreen(), tColor: "black" })
     }
     if (u.isBroken) {
-      badges.push({ text: "broken", color: counterRed, tColor: "white" })
+      badges.push({ text: "broken", color: counterRed(), tColor: "white" })
     }
     if (u.isWreck) {
-      badges.push({ text: "destroyed", color: counterRed, tColor: "white" })
+      badges.push({ text: "destroyed", color: counterRed(), tColor: "white" })
     }
     if (u.immobilized && s) {
-      badges.push({ text: "immobilized", color: counterRed, tColor: "white" })
+      badges.push({ text: "immobilized", color: counterRed(), tColor: "white" })
     }
     if (u.turretJammed && s) {
-      badges.push({ text: "turret jammed", color: counterRed, tColor: "white" })
+      badges.push({ text: "turret jammed", color: counterRed(), tColor: "white" })
     }
     if (u.jammed && u.isVehicle && s) {
-      badges.push({ text: "weapon broken", color: counterRed, tColor: "white" })
+      badges.push({ text: "weapon broken", color: counterRed(), tColor: "white" })
     } else if (u.jammed && s) {
-      badges.push({ text: "broken", color: counterRed, tColor: "white" })
+      badges.push({ text: "broken", color: counterRed(), tColor: "white" })
     }
     if (u.weaponDestroyed && s) {
-      badges.push({ text: "weapon destr", color: counterRed, tColor: "white" })
+      badges.push({ text: "weapon destr", color: counterRed(), tColor: "white" })
     }
     if (u.sponsonJammed && s) {
-      badges.push({ text: "hull wpn brok", color: counterRed, tColor: "white" })
+      badges.push({ text: "hull wpn brok", color: counterRed(), tColor: "white" })
     }
     if (u.sponsonDestroyed && s) {
-      badges.push({ text: "hull wpn dest", color: counterRed, tColor: "white" })
+      badges.push({ text: "hull wpn dest", color: counterRed(), tColor: "white" })
     }
     if (u.routed && s) {
-      badges.push({ text: "routed", color: counterRed, tColor: "white" })
+      badges.push({ text: "routed", color: counterRed(), tColor: "white" })
     }
     if (u.isTired && s) {
-      badges.push({ text: "tired", color: markerYellow, tColor: "black" })
+      badges.push({ text: "tired", color: markerYellow(), tColor: "black" })
     }
     if (u.pinned && s) {
-      badges.push({ text: "pinned", color: counterRed, tColor: "white" })
+      badges.push({ text: "pinned", color: counterRed(), tColor: "white" })
     }
     if (u.isExhausted && s) {
-      badges.push({ text: "exhausted", color: markerYellow, tColor: "black" })
+      badges.push({ text: "exhausted", color: markerYellow(), tColor: "black" })
     }
     if (u.isActivated && s) {
-      badges.push({ text: "activated", color: markerYellow, tColor: "black" })
+      badges.push({ text: "activated", color: markerYellow(), tColor: "black" })
     }
   }
   const size = 24
@@ -230,7 +236,7 @@ export function counterInfoBadges(
 }
 
 export function counterColor(counter: Counter): string {
-  return nationalColors[counter.targetUF.nation]
+  return nationalColorLookup(counter.targetUF.nation)
 }
 
 function reverseName(counter: Counter): boolean {

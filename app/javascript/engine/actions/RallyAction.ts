@@ -57,9 +57,9 @@ export default class RallyAction extends BaseAction {
     const action = infantry ? "rally check" : "attempt to fix weapon"
     const succeed = infantry ? "rallies" : "is repaired"
     const fail = infantry ? `fails to rally` :
-      ( roll <= this.breakRoll ? `is <span style="color: ${failRed};">eliminated</span>` : "remains broken" )
-    const result = `${this.passed ? `<span style="color: ${passGreen};">passed</span>` : (
-      !infantry && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed};">failure</span>` : `<span style="color: ${failRed};">failed</span>`
+      ( roll <= this.breakRoll ? `is <span style="color: ${failRed()};">eliminated</span>` : "remains broken" )
+    const result = `${this.passed ? `<span style="color: ${passGreen()};">passed</span>` : (
+      !infantry && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed()};">failure</span>` : `<span style="color: ${failRed()};">failed</span>`
     ) }: ` + `${formatNation(this.game, this.player, this.target.name)} ${this.passed ? succeed : fail}`
     return `${nation} ${action} at ${formatCoordinate(new Coordinate(this.target.x, this.target.y))}` +
       `: target ${formatTarget(this.rollNeeded)}, rolled ${formatDieResult(this.diceResult.result)}, ${result}`

@@ -37,7 +37,7 @@ export default class RouteMoveAction extends BaseAction {
       const end = formatCoordinate(new Coordinate(this.path[last].x, this.path[last].y))
       rc += ` to ${end}`
     } else {
-      rc += ` and is <span style="color: ${failRed};">eliminated</span>`
+      rc += ` and is <span style="color: ${failRed()};">eliminated</span>`
     }
     for (const a of this.addActions) {
       if (a.type === gameActionAddActionType.Drop) {

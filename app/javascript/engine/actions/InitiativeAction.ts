@@ -33,8 +33,8 @@ export default class InitiativeAction extends BaseAction {
     if (this.diceResult) {
       const threshold = initiativeThreshold(Math.abs(this.data.old_initiative))
       result = `target ${formatTarget(threshold)}, rolled ${formatDieResult(this.diceResult.result)}: ${
-        this.passed ? `<span style="color: ${passBlue};">passed</span>, no change` :
-          `<span style="color: ${failRed};">failed</span>, initiative flipped` }`
+        this.passed ? `<span style="color: ${passBlue()};">passed</span>, no change` :
+          `<span style="color: ${failRed()};">failed</span>, initiative flipped` }`
     }
     return `${formatNation(this.game, this.player)} initiative check ${result}`
   }

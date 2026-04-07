@@ -8,11 +8,15 @@ import { alongRailroad, alongStream } from "./movement";
 import { RoutPathTree } from "./state/RoutState";
 
 export function findRoutPathTree(
-  game: Game, loc: Coordinate, move: number, player: Player, unit: Unit
+  game: Game, loc: Coordinate, move: number, player: Player, unit: Unit, startLoc?: Coordinate
 ): RoutPathTree | false {
   if (move === 0) { return { x: loc.x, y: loc.y, children: [] } }
   const map = game.scenario.map
-  const dir = normalDir((player === 1 ? map.alliedDir : map.axisDir) + 3)
+  let dir = normalDir((player === 1 ? map.alliedDir : map.axisDir) + 3)
+  const rLoc = startLoc ? startLoc : loc
+  if (game.scenario.specialRules.includes("retreat_301") && rLoc.y < 5) {
+    dir = normalDir(dir - 3)
+  }
   const straight = dir === Math.floor(dir)
   const hexes: Coordinate[] = []
   if (straight) {
@@ -43,7 +47,7 @@ export function findRoutPathTree(
   reachableHexes = reachableHexes.filter(h => movementCost(map, loc, h, unit) as number <= move)
   if (reachableHexes.length < 1) { return { x: loc.x, y: loc.y, children: [] }}
   const subPaths = reachableHexes.map(h =>
-    findRoutPathTree(game, h, move - (movementCost(map, loc, h, unit) as number), player, unit)
+    findRoutPathTree(game, h, move - (movementCost(map, loc, h, unit) as number), player, unit, rLoc)
   )
   const children = subPaths.filter(c => c) as RoutPathTree[]
   if (children.length < 1) { return false }

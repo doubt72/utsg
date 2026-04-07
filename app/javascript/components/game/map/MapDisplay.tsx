@@ -114,7 +114,13 @@ export default function MapDisplay({
     { timer: number, details: ActionAnimationDetails }[]
   >([])
 
+  const [showAnimations, setShowAnimations] = useState<boolean>(true)
+
   const user = localStorage.getItem("username")
+
+  useEffect(() => {
+    if (localStorage.getItem("noanim") === "true") { setShowAnimations(false) }
+  }, [])
 
   const checkMin = (m?: Map): boolean => {
     if (!m) { return false }
@@ -230,6 +236,7 @@ export default function MapDisplay({
 
   useEffect(() => {
     if (!map.game) { return }
+    if (!showAnimations) { return }
     if (map.game.animationQueue.length > 0) {
       const animation = map.game.animationQueue.pop() as ActionAnimationDetails
       setActionAnimationDetails(s => {

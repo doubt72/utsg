@@ -217,12 +217,8 @@ export default class Scenario {
         return `${axis} units ignore penalties for moving through snow`
       } else if (r === "winter") {
         return `Winter: no digging in, treat water/river hexes as open for infantry`
-      } else if (r === "infantry_wire_clearing") {
-        return `Infantry units have the ability to clear wire`
-      } else if (r === "armored_wire_clearing") {
-        return `Armored units have the ability to clear wire`
-      } else if (r === "engineer_mine_clearing") {
-        return `Engineers have the ability to clear minefields`
+      } else if (r === "retreat_301") {
+        return `Allied units rout down below row 6, up otherwise; Axis rout in opposite direction`
       }
       return "unknown rule"
     })

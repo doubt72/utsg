@@ -1,12 +1,8 @@
 Features/Bug Fixes:
-  + Can't select units in contact for multi-fire
-  + Can't select units in contact for split/join
-  + Add ability to rollback placement that on warning doesn't man gun, clarify warning
-  + Double check gun handling move
-  - Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
-  - Colorblind settings
-  - Turn off animations
-  - Handle map scale and such settings gone wrong (reset button in prefs?)
+  + Special rule for surrounded paratrooper scenario (retreat towards far/close edge)
+  + Colorblind settings
+  + Turn off animations
+  + Handle map scale and such settings gone wrong (reset button in prefs?)
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling
   - Roll back smoke on reaction fire?

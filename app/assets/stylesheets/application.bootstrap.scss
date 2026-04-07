@@ -250,10 +250,10 @@ span.slim-button:hover {
   vertical-align: 3px;
   margin: 8px 8px 0 0;
   font-size: 5px;
-  color: $gray-d;
-  background-color: $gray-d;
+  color: $gray-c;
+  background-color: $gray-c;
   border: none;
-  border-radius: 40%;
+  border-radius: 50%;
 }
 
 .custom-checkbox-selected {
@@ -262,8 +262,8 @@ span.slim-button:hover {
 }
 
 .custom-checkbox:hover {
-  color: $gray-c;
-  background-color: $gray-c;
+  color: $gray-b;
+  background-color: $gray-b;
 }
 
 .custom-checkbox-selected:hover {
@@ -588,6 +588,12 @@ span.slim-button:hover {
   min-width: 600px;
   padding: 1em;
   border: 2px solid $border-color-light-gray;
+  border-radius: 0.5em;
+}
+
+.profile-prefs {
+  padding: 1em;
+  background-color: #EEE;
   border-radius: 0.5em;
 }
 

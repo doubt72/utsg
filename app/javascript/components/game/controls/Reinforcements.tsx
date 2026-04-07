@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { baseCounterPath, nationalColors, roundedRectangle } from "../../../utilities/graphics";
+import { baseCounterPath, nationalColorLookup, roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
 import { Coordinate, Player } from "../../../utilities/commonTypes";
 import { mapHelpLayout } from "../../../engine/support/help";
@@ -42,7 +42,7 @@ export default function Reinforcements(
     return (
       <g>
         <path d={baseCounterPath(x, y)}
-              style={{ fill: nationalColors[n], stroke: "black", strokeWidth: 2 }}/>
+              style={{ fill: nationalColorLookup(n), stroke: "black", strokeWidth: 2 }}/>
         <image width={80} height={80} x={x} y={y} href={`/assets/units/${n}.svg`}/>
         {overlay}
       </g>

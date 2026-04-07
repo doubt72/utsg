@@ -1,9 +1,13 @@
 ## 0.38 Alpha
 
+- Added high contrast palette for colorblindness
+- Added preferences, can now disable map animations and reset map display settings
 - Lower animation refresh slightly (Safari in particular has trouble updating)
 - Redo stacking warning during deploy to be more informative, include undo
+- Bug fix: rally pass doesn't pass BOTH players
 - Bug fix: don't allow spliting/joining of units in contact with the enemy
 - Updated 501
+- Updated 301 (and implemented special rout rule)
 
 ## 0.37 alpha
 

@@ -84,7 +84,7 @@ export default function MiniMap(
         <path d={roundedRectangleHole(xO, yO, wO, hO, xI, yI, wI, hI, 5)}
               style={{ fill: "rgb(0,0,0,0.2)", strokeWidth: 0, stroke: "rgb(0,0,0,0)" }} />
         <path d={roundedRectangle(xI, yI, wI, hI, 5)}
-              style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: counterRed }} />
+              style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: counterRed() }} />
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "rgb(0,0,0,0)", strokeWidth: 1, stroke: "#rgb(0,0,0,0)" }}
               onMouseDown={event => {

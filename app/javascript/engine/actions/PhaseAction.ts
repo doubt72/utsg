@@ -36,7 +36,7 @@ export default class PhaseAction extends BaseAction {
   get type(): string { return "phase" }
 
   get htmlValue(): string {
-    return this.messages.join(` <span style="color: ${actionOrange};">></span> `)
+    return this.messages.join(` <span style="color: ${actionOrange()};">></span> `)
   }
 
   get undoPossible() {

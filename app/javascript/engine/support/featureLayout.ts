@@ -27,7 +27,7 @@ export function featureLayout(counter: Counter): CounterLayout | boolean {
     value = `cover ${cs[0]}-${cs[1]}-${cs[2]}`
     size = 10.5
   }
-  const style = { fill: counterRed }
+  const style = { fill: counterRed() }
   const tStyle = { fill: "white" }
   if (["foxhole", "bunker"].includes(feature.type)) {
     style.fill = "#999"

@@ -23,7 +23,7 @@ export default function FireHindranceOverlay({ map }: FireHindranceOverlayProps)
         const x0 = map.xOffset(x, y) + offset
         const y0 = map.yOffset(y) - offset
         rc.push(<path key="hindrance-circle" d={circlePath(new Coordinate(x0, y0), 16)}
-                      style={{ stroke: "#FFF", strokeWidth: 2, fill: counterRed }}/>)
+                      style={{ stroke: "#FFF", strokeWidth: 2, fill: counterRed() }}/>)
         rc.push(<text key="hindrance" x={x0} y={y0+6} fontSize={18} textAnchor="middle"
                       style={{ fill: "#FFF" }}>{hindrance}</text>)
       }
