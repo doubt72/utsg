@@ -1,3 +1,9 @@
+## 0.40 Alpha
+
+- More attempts at improving update performance
+- Updated 301
+- Downgraded 004, 302, 504 to alpha
+
 ## 0.39 Alpha
 
 - Live updates of game lists on main page when games created/updated

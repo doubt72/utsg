@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.2"
+    VERSION = "1.3"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -17,7 +17,7 @@ module Scenarios
         :usa_leader_6_2,
         :usa_leader_5_1,
         [4, :usa_paratroop_s],
-        [2, :usa_m1918_bar],
+        :usa_m1918_bar,
       ] },
     }.freeze
 
@@ -26,7 +26,7 @@ module Scenarios
         :ger_leader_4_1,
         :ger_leader_3_1,
         [10, :ger_volksgrenadier_s],
-        [2, :ger_mg_42],
+        [3, :ger_mg_42],
       ] },
     }.freeze
 
