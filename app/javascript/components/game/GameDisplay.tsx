@@ -64,19 +64,25 @@ export default function GameDisplay() {
 
   useEffect(() => {
     if (!game.k) { return }
-    if (game.state !== "in_progress") {
+    console.log(`before setting display nation: ${game.k.state} : ${game.k.currentPlayer}`)
+    if (game.k.state !== "in_progress") {
       setPlayerNation(undefined)
+      console.log("unsetting display nation")
       return
     }
     const user = localStorage.getItem("username") ?? ""
+    console.log(`for: ${user} : ${game.k.currentPlayerNation}`)
     let nation: string | undefined = undefined
     if (game.k.playerOneName === game.k.playerTwoName && game.k.playerOneName === user) {
       nation = game.k.currentPlayerNation
     } else if (user === game.k.playerOneName) {
+      if (playerNation !== undefined) { console.log("skipping setting display nation"); return }
       nation = game.k.playerOneNation
     } else if (user === game.k.playerTwoName) {
+      if (playerNation !== undefined) { console.log("skipping setting display nation"); return }
       nation = game.k.playerTwoNation
     }
+    console.log(`setting display nation: ${nation}`)
     if (nation) {
       const fill = `url(#nation-${nation}-16)`
       setPlayerNation(
@@ -88,7 +94,7 @@ export default function GameDisplay() {
         </div>
       )
     }
-  }, [game, game.k?.state, game.k?.currentPlayer])
+  }, [game.k?.state, game.k?.currentPlayer])
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {

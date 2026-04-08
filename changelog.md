@@ -1,3 +1,9 @@
+## 0.43 Alpha
+
+- Fix scoring for minor nations
+- Instrumenting national display (seems to only disappear on the remote server)
+- Update 308
+
 ## 0.42 Alpha
 
 - Move logo out of Game Controls which are constantly change and sometimes disappears

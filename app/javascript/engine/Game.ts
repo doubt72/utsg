@@ -572,7 +572,7 @@ export default class Game {
       if (vh.player === 1) { points += 10 }
     }
     for (const u of this.eliminatedUnits) {
-      if (u.isFeature || u.nation === this.playerOneNation) { continue }
+      if (u.isFeature || u.playerNation === this.playerOneNation) { continue }
       const unit = u as Unit
       if (unit.leader) {
         points += 6
@@ -590,7 +590,7 @@ export default class Game {
       if (vh.player === 2) { points += 10 }
     }
     for (const u of this.eliminatedUnits) {
-      if (u.isFeature || u.nation === this.playerTwoNation) { continue }
+      if (u.isFeature || u.playerNation === this.playerTwoNation) { continue }
       const unit = u as Unit
       if (unit.leader) {
         points += 6
