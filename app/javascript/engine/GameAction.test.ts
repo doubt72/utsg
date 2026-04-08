@@ -140,7 +140,7 @@ describe("action integration test", () => {
       user: "two", player: 2,
       data: {
         action: "deploy_split_squad", old_initiative: game.initiative,
-        deploy: [ { turn: 0, key: "g_rifle_s", id: "" } ]
+        deploy: [ { turn: 0, key: "g_rifle_s", id: "", name: "Rifle" } ]
       },
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -152,7 +152,7 @@ describe("action integration test", () => {
       user: "two", player: 2,
       data: {
         action: "deploy_join_squad", old_initiative: game.initiative,
-        deploy: [ { turn: 0, key: "g_rifle_s", id: "" } ]
+        deploy: [ { turn: 0, key: "g_rifle_s", id: "", name: "Rifle" } ]
       },
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -166,7 +166,7 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}`, name: "Rifle" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -192,7 +192,7 @@ describe("action integration test", () => {
       undone: true, user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}`, name: "Rifle" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -205,7 +205,7 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 4, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}`, name: "Rifle" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -223,7 +223,7 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "g_rifle_s", id: `uf-${game.actions.length}`, name: "Rifle" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -237,7 +237,7 @@ describe("action integration test", () => {
       user: "two", player: 2, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 4, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, key: "wire", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "wire", id: `uf-${game.actions.length}`, name: "Wire" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -273,7 +273,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_inf", id: guardsId } ],
+        deploy: [ { turn: 0, key: "r_inf", id: guardsId, name: "Guards SMG" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -284,7 +284,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_crew", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_crew", id: `uf-${game.actions.length}`, name: "Crew" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -295,7 +295,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 1, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_mg", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_mg", id: `uf-${game.actions.length}`, name: "DShK" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -306,7 +306,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 3, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_ldr", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_ldr", id: `uf-${game.actions.length}`, name: "Leader" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -317,7 +317,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "undeploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_inf", id: guardsId } ],
+        deploy: [ { turn: 0, key: "r_inf", id: guardsId, name: "Guards SMG" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -330,7 +330,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_inf", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_inf", id: `uf-${game.actions.length}`, name: "Guards SMG" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
@@ -344,7 +344,7 @@ describe("action integration test", () => {
       user: "one", player: 1, data: {
         action: "deploy", old_initiative: game.initiative,
         path: [ { x: 0, y: 0, facing: 1 }],
-        deploy: [ { turn: 0, key: "r_gun", id: `uf-${game.actions.length}` } ],
+        deploy: [ { turn: 0, key: "r_gun", id: `uf-${game.actions.length}`, name: "76mm ZiS-3" } ],
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)

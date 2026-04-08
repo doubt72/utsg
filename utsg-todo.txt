@@ -1,4 +1,5 @@
 Features/Bug Fixes:
+  - Problematic Game Controls performance (excessive refreshes still)
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
   - Refactor firing:
@@ -29,7 +30,7 @@ Keep an Eye out for:
 007	5	? / 2P
 303	4	? / Solo / 2P
 501	5	? / 2P
-308	3	? / Solo / 2P
+308	3	? / 2P
 601	4	? / 2P
 401	3	? / Solo / 2P
 510	3	? / Solo / 2P

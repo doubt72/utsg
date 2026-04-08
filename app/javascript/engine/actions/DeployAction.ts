@@ -12,6 +12,7 @@ export default class DeployAction extends BaseAction {
   rTurn: number;
   rKey: string;
   rId: string;
+  rName: string;
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -29,16 +30,14 @@ export default class DeployAction extends BaseAction {
     this.rKey = deploy[0].key
     this.rTurn = deploy[0].turn
     this.rId = deploy[0].id
+    this.rName = deploy[0].name
   }
 
   get type(): string { return "deploy" }
 
   get htmlValue(): string {
-    const name = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.rTurn][this.rKey].counter.name :
-      this.game.scenario.axisReinforcements[this.rTurn][this.rKey].counter.name
     return `deployed ${formatNation(this.game, this.player)} ` +
-      `unit: ${formatNation(this.game, this.player,name)} to ${formatCoordinate(this.target)}`
+      `unit: ${formatNation(this.game, this.player, this.rName)} to ${formatCoordinate(this.target)}`
   }
 
   get undoPossible() { return true }

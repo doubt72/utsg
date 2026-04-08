@@ -7,6 +7,7 @@ import BaseAction from "./BaseAction";
 export default class DeploySplitAction extends BaseAction {
   turn: number;
   sKey: string;
+  name: string;
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -17,16 +18,14 @@ export default class DeploySplitAction extends BaseAction {
 
     this.sKey = deploy[0].key
     this.turn = deploy[0].turn
+    this.name = deploy[0].name
   }
 
   get type(): string { return "deploy_split_squad" }
 
   get htmlValue(): string {
-    const name = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.turn][this.sKey].counter.name :
-      this.game.scenario.axisReinforcements[this.turn][this.sKey].counter.name
     return `${formatNation(this.game, this.player)} player split ` +
-      `${formatNation(this.game, this.player,name)} squad into two teams`
+      `${formatNation(this.game, this.player, this.name)} squad into two teams`
   }
 
   get undoPossible() { return true }

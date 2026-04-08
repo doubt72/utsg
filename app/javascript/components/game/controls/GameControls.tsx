@@ -69,7 +69,6 @@ interface GameControlsProps {
 }
 
 export default function GameControls({ game, callback, update }: GameControlsProps) {
-  const [playerNation, setPlayerNation] = useState<JSX.Element | undefined>()
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [internalUpdate, setInternalUpdate] = useState(0)
 
@@ -77,34 +76,6 @@ export default function GameControls({ game, callback, update }: GameControlsPro
     if (!game.id) { return }
     displayActions()
   }, [game, game.lastActionIndex, internalUpdate, update])
-
-  useEffect(() => {
-    if (!game.id) { return }
-    if (game.state !== "in_progress") {
-      setPlayerNation(undefined)
-      return
-    }
-    const user = localStorage.getItem("username") ?? ""
-    let nation: string | undefined = undefined
-    if (game.playerOneName === game.playerTwoName && game.playerOneName === user) {
-      nation = game.currentPlayerNation
-    } else if (user === game.playerOneName) {
-      nation = game.playerOneNation
-    } else if (user === game.playerTwoName) {
-      nation = game.playerTwoNation
-    }
-    if (nation) {
-      const fill = `url(#nation-${nation}-16)`
-      setPlayerNation(
-        <div style={{ paddingTop: 3, paddingRight: 2 }}>
-          <svg width={34} height={34} viewBox="0 0 34 34" style={{ minWidth: 32 }}>
-            <circle cx={17} cy={17} r={16}
-                    style={{ fill, strokeWidth: 1, stroke: "black" }}/>
-          </svg>
-        </div>
-      )
-    }
-  }, [game, game.state, game.currentPlayer])
 
   const callAllBack = () => {
     setInternalUpdate(s => s+1)
@@ -247,8 +218,7 @@ export default function GameControls({ game, callback, update }: GameControlsPro
   }
 
   return (
-    <div className="game-control ml05em mr05em">
-      {playerNation}
+    <div className="flex">
       {controls}
       <div className="flex-fill"></div>
       { game.state === "complete" ? "" : game.resignationLevel > 0 ? <div className="flex nowrap">

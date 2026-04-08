@@ -1,3 +1,8 @@
+## 0.42 Alpha
+
+- Move logo out of Game Controls which are constantly change and sometimes disappears
+- Bug fix: cache names for deploy action string value (undeployed teams may disappear)
+
 ## 0.41 Alpha
 
 - Removed excessive updates and finally successfully(?) fixed performance

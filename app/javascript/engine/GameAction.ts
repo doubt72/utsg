@@ -54,7 +54,7 @@ export type GameActionFeature = {
 }
 
 export type GameActionReinforcementUnit = {
-  turn: number, key: string, id: string,
+  turn: number, key: string, id: string, name: string,
 }
 
 export type GameActionPath = {

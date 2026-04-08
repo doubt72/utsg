@@ -29,6 +29,7 @@ export default function GameDisplay() {
   const [mapDisplay, setMapDisplay] = useState<JSX.Element | undefined>()
   const [actions, setActions] = useState<JSX.Element | undefined>()
   const [turn, setTurn] = useState<JSX.Element | undefined>()
+  const [playerNation, setPlayerNation] = useState<JSX.Element | undefined>()
   const [controls, setControls] = useState<JSX.Element | undefined>()
   const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>()
 
@@ -60,6 +61,34 @@ export default function GameDisplay() {
     setUpdateControls(s => s + 1)
     setUpdateMap(s => s + 1)
   }
+
+  useEffect(() => {
+    if (!game.k) { return }
+    if (game.state !== "in_progress") {
+      setPlayerNation(undefined)
+      return
+    }
+    const user = localStorage.getItem("username") ?? ""
+    let nation: string | undefined = undefined
+    if (game.k.playerOneName === game.k.playerTwoName && game.k.playerOneName === user) {
+      nation = game.k.currentPlayerNation
+    } else if (user === game.k.playerOneName) {
+      nation = game.k.playerOneNation
+    } else if (user === game.k.playerTwoName) {
+      nation = game.k.playerTwoNation
+    }
+    if (nation) {
+      const fill = `url(#nation-${nation}-16)`
+      setPlayerNation(
+        <div style={{ paddingTop: 3, paddingRight: 2 }}>
+          <svg width={34} height={34} viewBox="0 0 34 34" style={{ minWidth: 32 }}>
+            <circle cx={17} cy={17} r={16}
+                    style={{ fill, strokeWidth: 1, stroke: "black" }}/>
+          </svg>
+        </div>
+      )
+    }
+  }, [game, game.k?.state, game.k?.currentPlayer])
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
@@ -581,7 +610,12 @@ export default function GameDisplay() {
     <div className="main-page">
       <Header />
       {layout()}
-      {controls}
+      <div className="game-control">
+        {playerNation}
+        <div className="flex-fill">
+          {controls}
+        </div>
+      </div>
       <div className="flex map-control">
         <div className="flex-fill"></div>
         {mapScaleMinusButton}

@@ -3,6 +3,7 @@ import { stackLimit } from "../../../utilities/utilities";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
 import Hex from "../../Hex";
+import { ReinforcementItem } from "../../Scenario";
 import Unit from "../../Unit";
 import BaseState, { stateType } from "./BaseState";
 
@@ -110,23 +111,23 @@ export default class DeployState extends BaseState {
     this.direction = dir
   }
 
-  get canSplit(): boolean {
-    const counter = this.player === 1 ?
+  get counter(): ReinforcementItem {
+    return this.player === 1 ?
       this.game.scenario.alliedReinforcements[this.turn][this.key] :
       this.game.scenario.axisReinforcements[this.turn][this.key]
-    if (counter.x > counter.used && !counter.counter.isFeature &&
-        counter.counter.type === unitType.Squad) {
+  }
+
+  get canSplit(): boolean {
+    if (this.counter.x > this.counter.used && !this.counter.counter.isFeature &&
+        this.counter.counter.type === unitType.Squad) {
       return true
     }
     return false
   }
 
   get canJoin(): boolean {
-    const counter = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.turn][this.key] :
-      this.game.scenario.axisReinforcements[this.turn][this.key]
-    if (counter.x > counter.used + 1 && !counter.counter.isFeature &&
-        (counter.counter as Unit).isSplit) {
+    if (this.counter.x > this.counter.used + 1 && !this.counter.counter.isFeature &&
+        (this.counter.counter as Unit).isSplit) {
       return true
     }
     return false
@@ -137,7 +138,7 @@ export default class DeployState extends BaseState {
       user: this.game.currentUser, player: this.player,
       data: {
         action: "deploy_split_squad", old_initiative: this.game.initiative,
-        deploy: [{ turn: this.turn, key: this.key, id: "" }]
+        deploy: [{ turn: this.turn, key: this.key, id: "", name: this.counter.counter.name }]
       }
     }, this.game), false)
     this.game.refreshCallback(this.game)
@@ -148,7 +149,10 @@ export default class DeployState extends BaseState {
       user: this.game.currentUser, player: this.player,
       data: {
         action: "deploy_join_squad", old_initiative: this.game.initiative,
-        deploy: [{ turn: this.turn, key: `${this.key.substring(0, this.key.length - 1)}s`, id: "" }]
+        deploy: [{
+          turn: this.turn, key: `${this.key.substring(0, this.key.length - 1)}s`, id: "",
+          name: this.counter.counter.name
+        }]
       }
     }, this.game), false)
     this.game.refreshCallback(this.game)
@@ -163,15 +167,12 @@ export default class DeployState extends BaseState {
       data: {
         action: "deploy", old_initiative: this.game.initiative,
         path: [{ x: this.location.x, y: this.location.y, facing: this.direction }],
-        deploy: [{ turn: this.turn, key: this.key, id }]
+        deploy: [{ turn: this.turn, key: this.key, id, name: this.counter.counter.name }]
       }
     }, this.game)
     // Only clears state and "finishes" if all counters deployed
-    const counter = this.player === 1 ?
-      this.game.scenario.alliedReinforcements[this.turn][this.key] :
-      this.game.scenario.axisReinforcements[this.turn][this.key]
     this.game.executeAction(action, false)
-    if (counter.x === counter.used) {
+    if (this.counter.x === this.counter.used) {
       this.game.cancelAction()
     }
   }
