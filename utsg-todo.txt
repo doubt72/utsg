@@ -2,7 +2,7 @@ Features/Bug Fixes:
   - Admin pages for game/user summaries
     - Remove/ban players (FE only security inadequate for this, validate on BE)
   - Refactor firing:
-    - Remove done select?  Can join units after the fact without canceling
+    - Remove done select?  Can join units after the fact without canceling?
   - Roll back smoke on reaction fire?
   - Email turn notifications
   - Create tutorial
@@ -18,23 +18,23 @@ Keep an Eye out for:
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 
+101	3	GOOD
 001 4	? / 2P
 002	4 ? / 2P
+301	5	? / 2P
 003	4	? / 2P
 005	3	? / 2P
-007	5	? / Solo / 2P
+503	4	? / 2P
+508	4	? / Solo / 2P
+007	5	? / 2P
+303	4	? / Solo / 2P
+501	5	? / 2P
+308	3	? / Solo / 2P
+601	4	? / 2P
+401	3	? / Solo / 2P
+510	3	? / Solo / 2P
+603	4	? / Solo / 2P
 011	4	? / Solo / 2P
-101	3	GOOD
-301	5	/ Solo / 2P
-303	4	/ Solo / 2P
-308	3	/ Solo / 2P
-401	3	/ Solo / 2P
-501	5	/ 2P
-503	4	/ 2P
-508	4	/ Solo / 2P
-510	3	/ Solo / 2P
-601	4	/ 2P
-603	4	/ Solo / 2P
 
 006 (Romanian)
 203 (Little Stalingrad)

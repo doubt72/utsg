@@ -1,3 +1,9 @@
+## 0.41 Alpha
+
+- Removed excessive updates and finally successfully(?) fixed performance
+- Bug fix: dropped machine guns prevent overstack resolution
+- Updated 007
+
 ## 0.40 Alpha
 
 - More attempts at improving update performance

@@ -57,12 +57,8 @@ export default function GameDisplay() {
   const [updateMap, setUpdateMap] = useState(0)
 
   const setUpdate = () =>  {
-    setTimeout(() => {
-      setUpdateControls(s => s + 1)
-    }, 35);
-    setTimeout(() => {
-      setUpdateMap(s => s + 1)
-    }, 25);
+    setUpdateControls(s => s + 1)
+    setUpdateMap(s => s + 1)
   }
 
   useEffect(() => {

@@ -566,7 +566,6 @@ export default function MapDisplay({
       setMoveTrack(<MoveTrackOverlay map={map} scale={scale} mapScale={mapScale ?? 1} updateCallback={() =>
                                        { counterCallback(); updateCallback() }} selectCallback={hexSelection}
                                      svgRef={svgRef as React.MutableRefObject<HTMLElement>} />)
-      counterCallback()
     } else {
       // TODO: if last sig action was fire, check for displace
       setMoveTrack(undefined)

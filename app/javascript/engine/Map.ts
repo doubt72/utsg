@@ -673,7 +673,7 @@ export default class Map {
     for (const c of counters) {
       if (c.unit.isFeature) { continue }
       const nation = player === 1 ? this.game?.playerOneNation : this.game?.playerTwoNation
-      if (c.unit.playerNation !== nation && !c.unit.isWreck) {
+      if (c.unit.playerNation !== nation && !c.unit.isWreck && !c.unit.operated) {
         return false
       } else {
         total += c.unit.size

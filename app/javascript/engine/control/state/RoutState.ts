@@ -16,9 +16,9 @@ export default class RoutState extends BaseState {
   constructor(game: Game, optional: boolean) {
     const unit = game.routNeeded.length > 0 ? game.routNeeded[0].unit :
       game.scenario.map.currentSelection[0].unit
-    const counter = game.scenario.map.findCounterById(unit.id) as Counter
     const player = unit.playerNation === game.currentPlayerNation ? game.currentPlayer : game.opponentPlayer
     super(game, stateType.Rout, player)
+    const counter = game.scenario.map.findCounterById(unit.id) as Counter
     const hex = game.routNeeded.length > 0 ? game.routNeeded[0].loc :
       game.scenario.map.currentSelection[0].hex as Coordinate
     this.selection = [{ x: hex.x, y: hex.y, id: unit.id, name: unit.name, counter }]

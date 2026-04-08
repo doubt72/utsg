@@ -1,11 +1,12 @@
 import { describe, expect, test } from "vitest";
-import { createBlankGame, testGInf, testGMG, testGTruck, testRInf, testRTank } from "./testHelpers";
+import { createBlankGame, testGInf, testGMG, testGTruck, testRInf, testRMG, testRTank } from "./testHelpers";
 import Unit from "../Unit";
 import { Coordinate } from "../../utilities/commonTypes";
 import OverstackState from "./state/OverstackState";
 import { gamePhaseType } from "../support/gamePhase";
 import organizeStacks from "../support/organizeStacks";
 import OverstackReduceAction from "../actions/OverstackReduceAction";
+import StackingActionError from "../actions/StackingActionError";
 
 describe("overstack reduction", () => {
   test("skips if nothing overstacked", () => {
@@ -33,6 +34,31 @@ describe("overstack reduction", () => {
     map.addCounter(new Coordinate(0,0), unit3)
 
     expect(map.anyOverstackedUnits(1)).toBe(false)
+    expect(map.anyOverstackedUnits(2)).toBe(true)
+  })
+
+  test("wrecks and operated units count as overstacked", () => {
+    const game = createBlankGame()
+    game.phase = gamePhaseType.CleanupOverstack
+    game.setGameState(new OverstackState(game))
+    const map = game.scenario.map
+    const unit1 = new Unit(testRMG)
+    unit1.id = "test1"
+    const loc = new Coordinate(0,0)
+    try {
+      map.addCounter(loc, unit1)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof StackingActionError).toBe(true)
+    }
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    const unit3 = new Unit(testRTank)
+    unit3.id = "test3"
+    unit3.wreck()
+    unit3.size = 6
+    map.addCounter(loc, unit3)
     expect(map.anyOverstackedUnits(2)).toBe(true)
   })
 
