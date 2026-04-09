@@ -47,7 +47,7 @@ export type GameData = {
   player_one: string;
   player_two: string;
   current_player: string;
-  winner?: Player;
+  winner?: string;
   server_version: string;
   metadata: {
     turn: number;
@@ -92,7 +92,7 @@ export default class Game {
 
   internalCurrentPlayer: Player;
   internalInitiativePlayer: Player;
-  winner?: Player;
+  winner?: string;
   internalTurn: number = 0;
   phase: GamePhase;
   actions: BaseAction[] = [];

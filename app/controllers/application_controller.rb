@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     return nil unless session[:current_user]
 
     user = User.find_by(id: session[:current_user])
-    session[:current_user] = nil unless user
+    session[:current_user] = nil unless user && !user.banned
     user
   end
 

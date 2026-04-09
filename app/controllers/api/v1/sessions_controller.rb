@@ -7,7 +7,9 @@ module Api
 
       def create
         user = User.lookup(params[:user][:username])
-        if user&.authenticate(params[:user][:password])
+        if user&.banned
+          render json: {}, status: :ok # silently fail
+        elsif user&.authenticate(params[:user][:password])
           session[:current_user] = user.id
           render json: user.body, status: :ok
         else

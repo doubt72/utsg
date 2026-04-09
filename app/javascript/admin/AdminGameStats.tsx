@@ -83,7 +83,7 @@ export default function AdminGameStats() {
       statAddOne(cp1, g.player_one ?? "[none yet]")
       statAddOne(cp2, g.player_two ?? "[none yet]")
       statAddOne(ccp, g.current_player)
-      statAddOne(cw, g.winner ? (g.winner === 1 ? g.player_one : g.player_two) : "[none yet]")
+      statAddOne(cw, g.winner ? `${g.winner}` : "[none yet]")
       if (g.state === "needs_player") {
         statIncrementAllOne([cnpo, cnpp1, cnpp2])
         statAddOne(cnpo, g.owner)
@@ -109,7 +109,8 @@ export default function AdminGameStats() {
         statAddOne(cgcp1, g.player_one ?? "[none yet]")
         statAddOne(cgcp2, g.player_two ?? "[none yet]")
         statAddOne(cgccp, g.current_player)
-        statAddOne(cgcw, g.winner ? (g.winner === 1 ? g.player_one : g.player_two) : "[none yet]")
+        console.log(g.winner)
+        statAddOne(cgcw, g.winner ? `${g.winner}` : "[none yet]")
       }
     }
     setCountScenario(() => csc)

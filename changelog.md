@@ -1,3 +1,8 @@
+## 0.45 Alpha
+
+- Disabling accounts does the minimum (but silently)
+- Bug fix: rectify type mismatch on game record (winner)
+
 ## 0.44 Alpha
 
 - Admin stat pages / allow disabling accounts

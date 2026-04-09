@@ -33,6 +33,10 @@ export function ProtectedRoute() {
             unauthorized()
           } else {
             localStorage.removeItem("validationNeeded")
+            if (body.banned) {
+              unauthorized()
+              return
+            }
             if (body.proto) { localStorage.setItem("proto", "true") }
             if (body.mcp) { localStorage.setItem("mcp", "true") }
             if (path.includes("/debug") && !body.proto) {

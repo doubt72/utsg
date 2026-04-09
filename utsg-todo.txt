@@ -1,14 +1,14 @@
 Features/Bug Fixes:
   - Problematic Game Controls performance (excessive refreshes still)
-  + Admin pages for game/user summaries
-    + Remove/ban players (FE only security inadequate for this, validate on BE)
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling?
   - Roll back smoke on reaction fire?
-  - Email turn notifications
   - Create tutorial
   - A way to show terrain in counter overlay
   - Add Some Developer Notes
+  - Go through docs, add examples
+  - Email turn notifications
+  - Have ban actually do something
 
 Nice to Have Eventually:
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)

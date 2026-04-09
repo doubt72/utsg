@@ -62,8 +62,10 @@ export default function Login() {
       postAPI("/api/v1/session", body, {
         ok: response => {
           response.json().then(json => {
-            localStorage.setItem("username", json.username)
-            localStorage.setItem("email", json.email)
+            if (json.username) {
+              localStorage.setItem("username", json.username)
+              localStorage.setItem("email", json.email)
+            }
             navigate("/", { replace: true })
           })
         },
