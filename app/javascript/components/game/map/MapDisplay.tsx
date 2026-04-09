@@ -669,6 +669,10 @@ export default function MapDisplay({
           map.game.deployState.key !== selection.target.key) {
         map.game.deployState.needsDirection = false
       }
+      const counter = map.game.currentPlayer === 1 ?
+        map.game.scenario.alliedReinforcements[selection.target.turn][selection.target.key] :
+        map.game.scenario.axisReinforcements[selection.target.turn][selection.target.key]
+      if (counter.used === counter.x) { return }
       const state = map.game.deployState
       if (state && state.key === selection.target.key) {
         map.game.clearGameState()

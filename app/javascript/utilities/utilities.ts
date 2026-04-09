@@ -282,4 +282,4 @@ export const baseMorale = 15
 export const baseRally = 12
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.43"
+export const serverVersion = "0.44"

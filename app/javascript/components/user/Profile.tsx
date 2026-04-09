@@ -5,10 +5,10 @@ import ProfileEditPassword from "./ProfileEditPassword"
 import { CustomCheckbox, ReturnButton } from "../utilities/buttons";
 import { getAPI, putAPI } from "../../utilities/network";
 import { useParams } from "react-router-dom";
-import { ArrowCounterclockwise, StarFill } from "react-bootstrap-icons";
+import { ArrowCounterclockwise, Ban, StarFill } from "react-bootstrap-icons";
 
 type GameStats = { name: string, count: number, win: number, loss: number, wait: number, abandoned: number }
-type UserData = { username: string, email: string, proto?: string, mcp: string }
+type UserData = { username: string, email: string, proto?: string, mcp: string, banned: string }
 
 export default function Profile() {
   const username: string | undefined = useParams().username
@@ -79,7 +79,8 @@ export default function Profile() {
     const self = localStorage.getItem("username") === username
     const proto = user?.proto ? <span className="green">&#x2605;</span> : ""
     const mcp = user?.mcp ? <span className="red">&#x2605;</span> : ""
-    const first = <p>Profile for {proto}{mcp}{username}</p>
+    const banned = user?.banned && localStorage.getItem("mcp") ? <span className="red">&#x2298;</span> : ""
+    const first = <p>Profile for {proto}{mcp}{banned}{username}</p>
     const header = self ?
       <>
         { first }
@@ -134,7 +135,7 @@ export default function Profile() {
           { settings }
           <div className="flex mt2em">
             <div className="flex-fill"></div>
-            { resetSettings ?
+            { resetSettings && localStorage.getItem("username") === username ?
               <div>
                 <a className="custom-button nowrap" onClick={() => {
                   localStorage.removeItem("mapInterfaceShrink")
@@ -157,6 +158,18 @@ export default function Profile() {
                   })
                 }}>
                   <StarFill />toggle dev
+                </a>
+              </div> : "" }
+            { localStorage.getItem("mcp") ?
+              <div>
+                <a className="custom-button nowrap" onClick={() => {
+                  putAPI(`/api/v1/user/toggle_banned`, {
+                    id: username,
+                  }, {
+                    ok: () => setResetUser(s => !s)
+                  })
+                }}>
+                  <Ban />toggle ban
                 </a>
               </div> : "" }
             <div><ReturnButton /></div>

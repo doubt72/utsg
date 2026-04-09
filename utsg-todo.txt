@@ -1,7 +1,7 @@
 Features/Bug Fixes:
   - Problematic Game Controls performance (excessive refreshes still)
-  - Admin pages for game/user summaries
-    - Remove/ban players (FE only security inadequate for this, validate on BE)
+  + Admin pages for game/user summaries
+    + Remove/ban players (FE only security inadequate for this, validate on BE)
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling?
   - Roll back smoke on reaction fire?
@@ -28,42 +28,51 @@ Keep an Eye out for:
 503	4	? / 2P
 508	4	? / 2P
 007	5	? / 2P
-303	4	? / Solo / 2P
+303	4	? / 2P
 501	5	? / 2P
 308	3	? / 2P
 601	4	? / 2P
-401	3	? / Solo / 2P
-510	3	? / Solo / 2P
-603	4	? / Solo / 2P
-011	4	? / Solo / 2P
+401	3	? / 2P
+510	3	? / 2P
+603	4	? / 2P
+011	4	? / 2P
 
 006 (Romanian)
 203 (Little Stalingrad)
 102 (Capuzzo)
+
 406 (Tarawa)
 302 (Pegasus Bridge)
 008 (Kursk / Tigers)
+
 512 (Greek)
 604 (Khalkhin Gol)
 106 (America N. Africa)
+
 108 (Better America N. Africa)
 402 (Australian New Guinea)
 502 (France)
+
 012 (Tanks in Snow)
 602 (Japanese Tanks)
 015 (T-34 Surprise)
+
 110 (Rat Patrol)
 010 (Hungarian)
 107 (Hellfire Pass)
+
 013 (End of the Tiger)
 305 (Shingle)
 202 (Japanese-American Italy)
+
 105 (Crumbling)
 507 (Char B1)
 307 (British vs Tigers)
+
 009 (Small Mud)
 309 (Aachen)
 605 (Red House)
+
 408 (Land Crab)
 509 (More France)
 511 (88s)

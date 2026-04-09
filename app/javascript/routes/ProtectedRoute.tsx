@@ -38,6 +38,9 @@ export function ProtectedRoute() {
             if (path.includes("/debug") && !body.proto) {
               navigate("/", { replace: true })
             }
+            if (path.includes("/admin") && !body.mcp) {
+              navigate("/", { replace: true })
+            }
           }
         }).catch(error => {
           console.log(error.message)

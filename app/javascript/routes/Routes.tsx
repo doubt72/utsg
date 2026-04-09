@@ -25,6 +25,9 @@ import DebugScenarioStats from "../debug/DebugScenarioStats";
 import HelpDisplay from "../components/game/HelpDisplay";
 import Contact from "../components/Contact";
 import Verify from "../components/user/Verify";
+import AdminIndex from "../admin/AdminIndex";
+import AdminGameStats from "../admin/AdminGameStats";
+import AdminUsers from "../admin/AdminUsers";
 
 export default function Routes() {
   const publicRoutes = [
@@ -75,6 +78,10 @@ export default function Routes() {
         { path: "/debug/stats/scenarios-p", element: <DebugScenarioStats proto={true} /> },
         { path: "/debug/stats/scenarios/:nation", element: <DebugScenarioStats proto={false} /> },
         { path: "/debug/stats/scenarios-p/:nation", element: <DebugScenarioStats proto={true}/> },
+
+        { path: "/admin/", element: <AdminIndex /> },
+        { path: "/admin/users", element: <AdminUsers /> },
+        { path: "/admin/stats/games", element: <AdminGameStats /> },
       ],
     },
   ]

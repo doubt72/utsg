@@ -1,3 +1,10 @@
+## 0.44 Alpha
+
+- Admin stat pages / allow disabling accounts
+- Bug fix: fire start state was clearing in_progress state/not gameState
+- Bug fix: overselection of ghosted deploy
+- Update 011, 510, 603
+
 ## 0.43 Alpha
 
 - Fix scoring for minor nations

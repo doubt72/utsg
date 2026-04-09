@@ -94,6 +94,8 @@ module Api
       end
 
       def serialize_index(games)
+        return { data: games.map(&:body) } if params[:scope] == "all"
+
         page_size = 8
         page = params[:page].to_i
         count = games.count

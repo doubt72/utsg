@@ -48,6 +48,46 @@ RSpec.describe Api::V1::UsersController do
     end
   end
 
+  context "toggle_banned" do
+    let!(:admin) { create(:user, admin: true) }
+
+    it "needs to be an admin" do
+      login(user)
+
+      put :toggle_banned, params: { id: user.username }
+      expect(response.status).to be == 403
+    end
+
+    it "toggles user" do
+      login(admin)
+
+      put :toggle_banned, params: { id: user.username }
+      expect(response.status).to be == 200
+      expect(user.reload.banned).to be == true
+    end
+  end
+
+  context "get all" do
+    let!(:admin) { create(:user, admin: true) }
+
+    it "needs to be an admin" do
+      login(user)
+
+      get :all
+      expect(response.status).to be == 403
+    end
+
+    it "returns records" do
+      login(admin)
+
+      get :all
+      expect(response.status).to be == 200
+      body = JSON.parse(response.body)
+      expect(body.length).to be == 1
+      expect(body["data"][0]["username"]).to be == admin.username
+    end
+  end
+
   context "game stats" do
     let!(:user2) { create(:user) }
 

@@ -35,7 +35,7 @@ export default class FireStartState extends BaseState {
         dice_result: [{ result: roll2d10() }]
       }
     }, this.game)
-    this.game.state = undefined
+    this.game.clearGameState()
     this.execute(action)
   }
 }

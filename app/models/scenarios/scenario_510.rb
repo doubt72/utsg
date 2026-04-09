@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1940, 6, 8].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,8 +16,8 @@ module Scenarios
       "0": {
         list: [
           [2, :fra_leader_4_1],
-          [6, :fra_reservist_s],
-          [3, :fra_m1915_chauchat],
+          [5, :fra_reservist_s],
+          [2, :fra_m1915_chauchat],
         ],
       },
     }.freeze
@@ -162,8 +162,8 @@ module Scenarios
             { t: "f" },
             { t: "o" },
             { t: "o" },
+            { t: "o", d: 1, st: { sh: "l2", s: "f" } },
             { t: "o" },
-            { t: "o", d: 1, st: { sh: "x", s: "f" } },
             { t: "f" },
             { t: "f" },
             { t: "g" },
@@ -177,7 +177,7 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "o" },
-            { t: "o" },
+            { t: "o", r: { d: [3, 5], t: "d", c: "r" } },
             { t: "o" },
             { t: "f" },
             { t: "f" },

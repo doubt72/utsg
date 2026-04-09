@@ -7,6 +7,14 @@ module Api
         create check_conflict set_recovery password_reset
       ]
 
+      def all
+        if current_user.admin
+          render json: { data: User.all.order(updated_at: :desc).map(&:index_body) }, status: :ok
+        else
+          render json: { message: "action prohibited" }, status: :forbidden
+        end
+      end
+
       def create
         user = User.signup_user(create_params)
         if user && !user.errors.present?
@@ -70,6 +78,15 @@ module Api
       def toggle_dev
         if current_user.admin
           User.toggle_dev(params[:id])
+          render json: {}, status: :ok
+        else
+          render json: { message: "action prohibited" }, status: :forbidden
+        end
+      end
+
+      def toggle_banned
+        if current_user.admin
+          User.toggle_banned(params[:id])
           render json: {}, status: :ok
         else
           render json: { message: "action prohibited" }, status: :forbidden

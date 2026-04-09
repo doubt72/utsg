@@ -49,6 +49,11 @@ class User < ApplicationRecord
       user.update!(developer: !user.developer)
     end
 
+    def toggle_banned(username)
+      user = lookup(username)
+      user.update!(banned: !user.banned)
+    end
+
     def stats(username)
       user = lookup(username)
       return unless user
@@ -122,11 +127,21 @@ class User < ApplicationRecord
   end
 
   def body
+    return { username:, email:, banned: } if banned # The rest doesn't matter if banned
     return { username:, email:, proto: true, mcp: true } if admin && developer
     return { username:, email:, proto: true } if developer
     return { username:, email:, mcp: true } if admin
 
     { username:, email: }
+  end
+
+  def index_body # rubocop:disable Metrics/CyclomaticComplexity
+    rc = recovery_code&.length&.positive? || false
+    {
+      username:, email:, proto: developer, mcp: admin,
+      cc: confirmation_code&.length&.positive? || false,
+      rc:, rc_valid: rc && recovery_code_expires > Time.zone.now, verified:, banned:,
+    }
   end
 
   private

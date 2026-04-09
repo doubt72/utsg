@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1942, 5, 17].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -16,11 +16,11 @@ module Scenarios
       "0": { list: [
         :ussr_leader_4_1,
         :ussr_leader_3_1,
-        [7, :ussr_militia_s],
+        [8, :ussr_militia_s],
         :ussr_crew_t,
         [2, :ussr_dp_27],
         :ussr_45mm_53_k,
-        [2, :ussr_t_34_m40],
+        [3, :ussr_t_34_m40],
       ] },
     }.freeze
 

@@ -14,7 +14,9 @@ Rails.application.routes.draw do
           post "set_recovery"
           post "password_reset"
           put "toggle_dev"
+          put "toggle_banned"
           get "stats"
+          get "all"
         end
       end
       resources :messages, only: %i[index create]

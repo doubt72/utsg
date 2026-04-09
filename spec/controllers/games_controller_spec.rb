@@ -224,6 +224,26 @@ RSpec.describe Api::V1::GamesController do
       expect(GameAction.last.data["action"]).to be == "join"
     end
 
+    it "handles solo game" do
+      login(user1)
+
+      expect do
+        post :create, params: {
+          game: {
+            name: "new game", scenario: "001", player_one: user1.username,
+            player_two: user1.username, metadata: '{ "turn": 2 }',
+          },
+        }
+      end.to change { GameAction.count }.by(5)
+
+      expect(Game.last.name).to be == "new game"
+      expect(GameAction.first.data["action"]).to be == "create"
+      expect(GameAction.second.data["action"]).to be == "join"
+      expect(GameAction.third.data["action"]).to be == "join"
+      expect(GameAction.second_to_last.data["action"]).to be == "start"
+      expect(GameAction.last.data["action"]).to be == "phase"
+    end
+
     it "can't create bogus game" do
       login(user1)
 
