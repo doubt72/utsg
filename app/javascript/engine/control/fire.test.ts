@@ -2536,7 +2536,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(3)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
 
       const original = Math.random
@@ -2624,7 +2624,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(3)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
 
       const original = Math.random
@@ -2833,7 +2833,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 3, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
+        "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
       )
 
       const all = map.allUnits
@@ -2878,7 +2878,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 3, rolled 1 [d10x10: 1 x 1]: miss, firing weapon destroyed"
+        "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, firing weapon destroyed"
       )
 
       const all = map.allUnits
@@ -2935,7 +2935,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(3)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target3, floc, tloc, false)
       expect(mods.mod).toBe(-3)
@@ -3005,7 +3005,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(3)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
       expect(mods.mod).toBe(-3)
@@ -3020,7 +3020,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit"
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
@@ -3065,7 +3065,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(3)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
       expect(mods.mod).toBe(-3)
@@ -3080,7 +3080,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
       )
 
       const all = map.allUnits
@@ -3123,9 +3123,9 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(5)
+      expect(mult.mult).toBe(6)
       expect(mult.why.length).toBe(2)
-      expect(mult.why[0]).toBe("- base multiplier 3")
+      expect(mult.why[0]).toBe("- base multiplier 4")
       expect(mult.why[1]).toBe("- plus 2 for current weather")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
       expect(mods.mod).toBe(-3)
@@ -3140,7 +3140,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 5, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
+        "targeting roll: target 6, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
       )
     })
 
@@ -3175,9 +3175,9 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(2)
-      expect(mult.why[0]).toBe("- base multiplier 3")
+      expect(mult.why[0]).toBe("- base multiplier 4")
       expect(mult.why[1]).toBe("- plus 1 for night")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
       expect(mods.mod).toBe(-3)
@@ -3192,7 +3192,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
+        "targeting roll: target 5, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
       )
     })
 
@@ -3232,7 +3232,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, true, false
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(2)
       expect(mult.why[1]).toBe("- plus 1 for moving the turret")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
@@ -3248,7 +3248,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
+        "targeting roll: target 5, rolled 100 [d10x10: 10 x 10]: hit"
       )
 
       const all = map.allUnits
@@ -3421,7 +3421,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, true, false, false
       )
-      expect(mult.mult).toBe(3)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
       expect(mods.mod).toBe(-3)
@@ -3436,7 +3436,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit"
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
         "hit location roll: 10 [d10] (hull)"
@@ -3490,7 +3490,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, true, false, false
       )
-      expect(mult.mult).toBe(3)
+      expect(mult.mult).toBe(4)
       expect(mult.why.length).toBe(1)
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
       expect(mods.mod).toBe(-3)
@@ -3505,7 +3505,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(false)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 3, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
+        "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
       )
 
       const all = map.allUnits
@@ -3611,7 +3611,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 3, rolled 100 [d10x10: 10 x 10]: hit"
+        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll (front): target 15, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
@@ -3737,7 +3737,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(2)
       expect(mult.why[1]).toBe("- plus 1 for intensive fire")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
@@ -3753,7 +3753,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
+        "targeting roll: target 5, rolled 100 [d10x10: 10 x 10]: hit"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
@@ -3808,7 +3808,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false,
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(2)
       expect(mult.why[1]).toBe("- plus 1 for tired")
       const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
@@ -3824,7 +3824,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 4, rolled 100 [d10x10: 10 x 10]: hit"
+        "targeting roll: target 5, rolled 100 [d10x10: 10 x 10]: hit"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"

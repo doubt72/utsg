@@ -101,7 +101,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at E3; targeting roll: " +
-      "target 10, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken")
+      "target 15, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken")
 
     checkPhase(game, false)
     expect(game.moraleChecksNeeded).toStrictEqual([])
@@ -196,7 +196,7 @@ describe("reaction fire attacks", () => {
 
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
-      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at B3; targeting roll: target 2, " +
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at B3; targeting roll: target 3, " +
       "rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken")
     expect(game.moraleChecksNeeded).toStrictEqual([])
 
@@ -288,7 +288,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at E3; targeting roll: " +
-      "target 10, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken")
+      "target 15, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken")
     expect(game.moraleChecksNeeded).toStrictEqual([])
 
     expect(reactionFireCheck(game, false)).toBe(false)
@@ -382,7 +382,7 @@ describe("reaction fire attacks", () => {
 
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
-      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at B3; targeting roll: target 2, " +
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at B3; targeting roll: target 3, " +
       "rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken")
     expect(game.moraleChecksNeeded).toStrictEqual([])
 
@@ -461,7 +461,7 @@ describe("reaction fire attacks", () => {
 
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
-      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 4, " +
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
       "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
     expect(game.moraleChecksNeeded).toStrictEqual([
       { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
@@ -552,7 +552,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle, Rifle at C3; targeting roll: " +
-      "target 4, rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
+      "target 6, rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
     expect(game.moraleChecksNeeded).toStrictEqual([
       { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
       { unit: unit2, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
@@ -648,7 +648,8 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle, Rifle, Rifle at C3; targeting " +
-      "roll: target 4, rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
+        "roll: target 6, rolled 100 [d10x10: 10 x 10]: hit; " +
+        "roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
     expect(game.moraleChecksNeeded).toStrictEqual([
       { unit: unit3, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
       { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
@@ -1047,7 +1048,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.sequence).toBe(4)
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
-      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 4, " +
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
       "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
@@ -1149,7 +1150,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.sequence).toBe(4)
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
-      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 4, " +
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
       "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
@@ -1250,7 +1251,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.sequence).toBe(4)
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
-      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 4, " +
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
       "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
@@ -1349,7 +1350,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.sequence).toBe(4)
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
-      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 4, " +
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
       "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
@@ -1469,8 +1470,9 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at C3; targeting roll: " +
-      "target 4, rolled 100 [d10x10: 10 x 10]: hit; hit location roll: 10 [d10] (hull); penetration roll (front): target 8, " +
-      "rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed")
+        "target 6, rolled 100 [d10x10: 10 x 10]: hit; hit location roll: 10 [d10] (hull); " +
+        "penetration roll (front): target 8, " +
+        "rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     expect(unit.isWreck).toBe(true)
 
@@ -1536,10 +1538,10 @@ describe("reaction fire attacks", () => {
     expect(ghost.targetSelected).toBe(true)
     expect(fireHelpText(game, fireHex, counters[1].unit, true)).toStrictEqual([
       "attack rolls:",
-      "-> targeting roll [d10x10]: 4 (92%)",
+      "-> targeting roll [d10x10]: 6 (86%)",
       "range: 2",
-      "multiplier: 2",
-      "- base multiplier 3",
+      "multiplier: 3",
+      "- base multiplier 4",
       "- minus 1 for reaction fire",
       "",
       "-> roll to hit turret [d10]: 1-3",
@@ -1567,7 +1569,7 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German PzKpfw 35(t) at C3; " +
-      "targeting roll: target 4, rolled 16 [d10x10: 4 x 4]: hit; hit location roll: 4 [d10] (hull); " +
+      "targeting roll: target 6, rolled 16 [d10x10: 4 x 4]: hit; hit location roll: 4 [d10] (hull); " +
       "penetration roll (front): target 8, rolled 8 [2d10: 4 + 4]: tie, vehicle immobilized, move short at C3"
     )
 

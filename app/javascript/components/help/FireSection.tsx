@@ -163,8 +163,8 @@ export default function FireSection() {
           Determine the range modifier.
           <ol className="mt05em mb05em">
             <li>
-              The base range modifier for crewed weapons (excluding mortars) and offboard artillery
-              is 4. All other units have a base modifier of 3.
+              The base range modifier for all ranged weapons is 4, except weapons with black-filled
+              range have a base modifier of 3.
             </li>
             <li>
               Subtract crew gun handling skill when operating a crewed weapon (unless firepower is

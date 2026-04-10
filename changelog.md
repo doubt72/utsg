@@ -1,3 +1,8 @@
+## 0.46 Alpha
+
+- Make ranged combat a little less likely to hit
+- Removed unnecessary admin game stats
+
 ## 0.45 Alpha
 
 - Disabling accounts does the minimum (but silently)

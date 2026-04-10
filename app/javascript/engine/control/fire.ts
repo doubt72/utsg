@@ -303,27 +303,22 @@ export function rangeMultiplier(
   reaction: boolean
 ): { mult: number, why: string[] } {
   const why: string[] = []
-  let mult = 3
+  let mult = source.unit.type === unitType.SupportWeapon && source.unit.targetedRange ? 3 : 4
+  why.push(`- base multiplier ${mult}`)
   if (source.unit.offBoard) {
-    mult = 4
-    why.push("- base multiplier 4")
     const leadership = source.unit.parent?.leadership ? source.unit.parent.leadership : undefined
     if (leadership) {
       mult -= leadership
       why.push(`- minus leadership ${leadership}`)
     }
-  } else if (source.unit.type === unitType.SupportWeapon && source.unit.targetedRange) {
-    mult = 3
-    why.push("- base multiplier 3")
-  } else if (source.unit.crewed) {
-    mult = 4
-    why.push("- base multiplier 4")
+  } else if (!(source.unit.type === unitType.SupportWeapon && source.unit.targetedRange) &&
+              source.unit.crewed) {
     const handling = source.unit.parent?.gunHandling ? source.unit.parent.gunHandling : undefined
     if (handling) {
       mult -= handling
       why.push(`- minus gun handling ${handling}`)
     }
-  } else { why.push("- base multiplier 3") }
+  }
   if (source.unit.turreted && !sponson) {
     if (source.unit.turretJammed) {
       mult += 1

@@ -32,7 +32,6 @@ export default function AdminGameStats() {
   const [countGCOwner, setCountGCOwner] = useState<StatLookup>({})
   const [countGCPlayerOne, setCountGCPlayerOne] = useState<StatLookup>({})
   const [countGCPlayerTwo, setCountGCPlayerTwo] = useState<StatLookup>({})
-  const [countGCCurrentPlayer, setCountGCCurrentPlayer] = useState<StatLookup>({})
   const [countGCWinner, setCountGCWinner] = useState<StatLookup>({})
 
   useEffect(() => {
@@ -72,7 +71,6 @@ export default function AdminGameStats() {
     const cgco: StatLookup = { all: 0 }
     const cgcp1: StatLookup = { all: 0 }
     const cgcp2: StatLookup = { all: 0 }
-    const cgccp: StatLookup = { all: 0 }
     const cgcw: StatLookup = { all: 0 }
     for (const g of games) {
       statIncrementAllOne([csc, cscv, cst, co, cp1, cp2, ccp, cw])
@@ -104,11 +102,10 @@ export default function AdminGameStats() {
         statAddOne(cipcp, g.current_player)
       }
       if (g.state === "complete") {
-        statIncrementAllOne([cgco, cgcp1, cgcp2, cgccp, cgcw])
+        statIncrementAllOne([cgco, cgcp1, cgcp2, cgcw])
         statAddOne(cgco, g.owner)
         statAddOne(cgcp1, g.player_one ?? "[none yet]")
         statAddOne(cgcp2, g.player_two ?? "[none yet]")
-        statAddOne(cgccp, g.current_player)
         console.log(g.winner)
         statAddOne(cgcw, g.winner ? `${g.winner}` : "[none yet]")
       }
@@ -138,7 +135,6 @@ export default function AdminGameStats() {
     setCountGCOwner(() => cgco)
     setCountGCPlayerOne(() => cgcp1)
     setCountGCPlayerTwo(() => cgcp2)
-    setCountGCCurrentPlayer(() => cgccp)
     setCountGCWinner(() => cgcw)
   }, [games])
 
@@ -203,8 +199,6 @@ export default function AdminGameStats() {
         {displayStat(countGCPlayerOne, {})}
         Player Two:
         {displayStat(countGCPlayerTwo, {})}
-        Current Player:
-        {displayStat(countGCCurrentPlayer, {})}
         Winner:
         {displayStat(countGCWinner, {})}
       </div>
