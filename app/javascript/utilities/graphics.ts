@@ -278,14 +278,7 @@ export function baseHexCoords(map: Map, x: number, y: number): string {
 }
 
 export function baseCounterPath(x: number, y: number): string {
-  const corner = 4
-  return [
-    "M", x+corner, y,
-    "L", x+80-corner, y, "A", corner, corner, 0, 0, 1, x+80, y+corner,
-    "L", x+80, y+80-corner, "A", corner, corner, 0, 0, 1, x+80-corner, y+80,
-    "L", x+corner, y+80, "A", corner, corner, 0, 0, 1, x, y+80-corner,
-    "L", x, y+corner, "A", corner, corner, 0, 0, 1, x+corner, y,
-  ].join(" ")
+  return roundedRectangle(x, y, 80, 80, 4)
 }
 
 export function roundedRectangle(

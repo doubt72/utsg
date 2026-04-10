@@ -13,12 +13,13 @@ interface InitiativeDisplayProps {
   xx: number;
   yy: number;
   hideCounters: boolean;
+  small: boolean;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
 }
 
 export default function InitiativeDisplay({
-  map, xx, yy, hideCounters, ovCallback
+  map, xx, yy, hideCounters, small, ovCallback
 }: InitiativeDisplayProps) {
   const [base, setBase] = useState<JSX.Element | undefined>()
   const [initiative, setInitiative] = useState<JSX.Element | undefined>()
@@ -38,14 +39,47 @@ export default function InitiativeDisplay({
     }
   }
 
-  const xOffset = (i: number) => {
+  const xOffset = (i: number): number => {
     if (i < 0) { return xx + 10 }
     if (i > 0) { return xx + 100 }
     return xx + 55
   }
 
-  const yOffset = (i: number) => {
-    return yy + Math.abs(i)*90 + 32
+  const yOffset = (game: Game, i: number): number => {
+    const index = Math.abs(i)
+    let shrinkOffset = 0
+    if (small) {
+      if (Math.abs(game.initiative) < 3) {
+        if (index > 4) { shrinkOffset = index - 4 }
+      } else if (Math.abs(game.initiative) > 6) {
+        if (index > 1) { shrinkOffset = (index - 1) < 4 ? index - 1 : 4 }
+      } else {
+        if (index > 0) {
+          shrinkOffset = Math.abs(Math.abs(game.initiative)) - 2
+          if (shrinkOffset > index - 1) { shrinkOffset = index - 1 }
+        }
+        if (index > Math.abs(game.initiative) + 1) {
+          shrinkOffset += index - Math.abs(game.initiative) - 2
+        }
+      }
+    }
+    return yy + Math.abs(i)*90 + 32 - shrinkOffset*60
+  }
+
+  const shrink = (game: Game, i: number): boolean => {
+    const index = Math.abs(i - 7)
+    if (small) {
+      if (Math.abs(game.initiative) < 3) {
+        if (index > 3) { return true }
+      } else if (Math.abs(game.initiative) > 6) {
+        if (index > 0 && index < 5) { return true }
+      } else {
+        if (index > 0 && Math.abs((Math.abs(game.initiative) - index)) > 1) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   const roll = (i: number) => {
@@ -55,7 +89,7 @@ export default function InitiativeDisplay({
   useEffect(() => {
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, 190, 752)}
+        <path d={roundedRectangle(xx, yy, 190, small ? 512 : 752)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         <text x={xx + 10} y={yy + 20} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
@@ -63,9 +97,20 @@ export default function InitiativeDisplay({
         </text>
         {
           [...Array(15).keys()].map(i => {
+            if (!map) { return <g key={i}></g> }
+            const game = map.game as Game
             const x = xOffset(i - 7)
-            const y = yOffset(i - 7)
-            return (
+            const y = yOffset(game, i - 7)
+            return shrink(game, i) ? (
+              <g key={i}>
+                <path d={roundedRectangle(x, y, 80, 20, 4)}
+                      style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
+                <text x={x + 40} y={y + 15.5} fontSize={18} textAnchor="middle"
+                      fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
+                  { roll(i - 7) }
+                </text>
+              </g>
+            ) : (
               <g key={i}>
                 <path d={baseCounterPath(x, y)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
@@ -74,15 +119,14 @@ export default function InitiativeDisplay({
                   { roll(i - 7) }
                 </text>
               </g>
-              )
-            }
-          )
+            )
+          })
         }
         <circle cx={xx + 26} cy={yy + 72} r={16} style={nationOne()}/>
         <circle cx={xx + 164} cy={yy + 72} r={16} style={nationTwo()}/>
       </g>
     )
-  }, [xx, yy, map.alliedDir, map.axisDir])
+  }, [xx, yy, map.alliedDir, map.axisDir, map.game?.initiative, small])
 
   useEffect(() => {
     if (!map) { return }
@@ -95,7 +139,7 @@ export default function InitiativeDisplay({
         game.scenario.axisFactions[0]
       const index = game.initiative
       const counter = new Counter(
-        new Coordinate(xOffset(index), yOffset(index)),
+        new Coordinate(xOffset(index), yOffset(game, index)),
         new Marker({
           type: markerType.Initiative, nation: nation, i: nation, mk: 1
         }), map, true
@@ -103,7 +147,7 @@ export default function InitiativeDisplay({
       const cb = () => { ovCallback({ show: true, counters: [counter] }) }
       setInitiative(<MapCounter counter={counter} ovCallback={cb} />)
     }
-  }, [xx, yy, hideCounters, map.game?.initiative, map.game?.currentInitiativePlayer])
+  }, [xx, yy, hideCounters, map.game?.initiative, map.game?.currentInitiativePlayer, small])
 
   useEffect(() => {
     if (!map || !map.game) { return }

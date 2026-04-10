@@ -59,7 +59,7 @@ export default function MainPhaseSection() {
         <svg width={203} height={653} viewBox='0 0 254 816' style={{ minWidth: 203 }}>
           <MapHexPatterns />
           <path d={roundedRectangle(1,1,252,814,8)} style={{ stroke: "#DDD", strokeWidth: 1, fill: "#FFF" }}/>
-          <InitiativeDisplay map={map} xx={32} yy={32} hideCounters={false} ovCallback={() => {}} />
+          <InitiativeDisplay map={map} xx={32} yy={32} hideCounters={false} small={false} ovCallback={() => {}} />
         </svg>
         <div className="flex">
           <div className="flex-fill"></div>

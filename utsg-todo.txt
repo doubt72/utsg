@@ -1,9 +1,4 @@
 Features/Bug Fixes:
-  + Not displaying no effect on broken morale checks
-  + Leave game opens new tab
-  + Showing wrong player as winner
-  + Tooltips at bottom shouldn't just displace but go above
-  + Verify Reaction fire shouldn't count for rout all non-action
   - Close combat with broken team and leader didn't fire (but can't reproduce... WTF?)
   - Problematic Game Controls performance (excessive refreshes still)
   - Refactor firing:
@@ -25,8 +20,6 @@ Keep an Eye out for:
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 
-101	3	GOOD
-005	3	GOOD
 001 4	? / 2P
 002	4 ? / 2P
 301	5	? / 2P

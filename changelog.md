@@ -1,3 +1,7 @@
+## 0.48 Alpha
+
+- Add Collapse of Inititiative Track
+
 ## 0.47 Alpha
 
 - Minor layout fix

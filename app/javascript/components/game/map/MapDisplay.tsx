@@ -129,12 +129,16 @@ export default function MapDisplay({
     return turn > 2 && turn < turns - 2
   }
 
-  const minHeight = (height: number, scale: number = 1, m?: Map) => {
+  const minHeight = (height: number, scale: number = 1, m?: Map, base: number = 904): number => {
     if (preview || m?.preview) { return map.ySize * scale }
     const gc = guiCollapse ? 178 : 0
     const fill = m?.debug ? 16 : 408 - gc
-    const available = 1144 + 50 / scale - 50
+    const available = base + 50 / scale - 50
     return height - fill < available * scale ? available * scale : height - fill
+  }
+
+  const minFullHeight = (height: number, scale: number = 1, m?: Map): number => {
+    return minHeight(height, scale, m, 1144)
   }
 
   const minWidth = (width: number, scale: number = 1, m?: Map) => {
@@ -439,6 +443,7 @@ export default function MapDisplay({
     setInitiative(() =>
       map.preview || preview ? undefined :
         <InitiativeDisplay map={map} ovCallback={setOverlay} hideCounters={hideCounters}
+                           small={height < minFullHeight(window.innerHeight, scale, map)}
                            xx={width / scale - 192} yy={392 + 50 / scale - 50} />
     )
     setTurn(() =>
