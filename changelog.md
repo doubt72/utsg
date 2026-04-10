@@ -1,5 +1,6 @@
 ## 0.47 Alpha
 
+- Minor layout fix
 - Tweak counter tooltips to be above mouse to avoid issues
 - Bug fix: winning player swapped in game over window
 - Bug fix: leave game button shouldn't open new tab, should just go to main page (what was I thinking?)

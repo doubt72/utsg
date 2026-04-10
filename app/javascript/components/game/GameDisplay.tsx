@@ -612,7 +612,7 @@ export default function GameDisplay() {
     <div className="main-page">
       <Header />
       {layout()}
-      <div className="game-control">
+      <div className="game-control ml05em mr05em">
         {playerNation}
         <div className="flex-fill">
           {controls}
