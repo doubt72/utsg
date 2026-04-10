@@ -1,3 +1,11 @@
+## 0.47 Alpha
+
+- Tweak counter tooltips to be above mouse to avoid issues
+- Bug fix: winning player swapped in game over window
+- Bug fix: leave game button shouldn't open new tab, should just go to main page (what was I thinking?)
+- Bug fix: display bug on broken tie morale checks
+- Update 005
+
 ## 0.46 Alpha
 
 - Make ranged combat a little less likely to hit

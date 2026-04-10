@@ -46,6 +46,8 @@ export default class MoraleCheckAction extends BaseAction {
       if (this.target.status !== unitStatus.Broken) {
         rc += `, unit is <span style="color: ${failRed()};">pinned</span>`
         short = true
+      } else {
+        rc += `, <span style="color: ${passBlue()};">no effect</span>`
       }
     } else {
       rc += `, <span style="color: ${passBlue()};">no effect</span>`

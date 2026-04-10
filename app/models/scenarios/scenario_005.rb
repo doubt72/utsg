@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1941, 12, 1].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -82,7 +82,7 @@ module Scenarios
           allied_dir: 1,
           axis_dir: 4,
           victory_hexes: [
-            [1, 1, 2], [4, 9, 1], [6, 4, 1], [9, 2, 1], [11, 5, 1],
+            [3, 4, 1], [4, 9, 1], [7, 4, 1], [9, 2, 1], [11, 5, 1],
           ],
           allied_setup: { "0" => [["4-14", "*"]] },
           axis_setup: { "0" => [["0-2", "*"]] },

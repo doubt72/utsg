@@ -47,16 +47,16 @@ export default class StateAction extends BaseAction {
     } else if (this.data.action === "resign") {
       this.game.winner = this.player === 1 ? this.game.playerTwoName : this.game.playerOneName
       this.game.state = "complete"
-      const title = "Game over"
+      const title = "Game Over"
       const message = `${this.game.winner} has resigned.`
       this.game.playerOneNotification = [title, message]
       if (this.game.playerOneName !== this.game.playerTwoName) {
         this.game.playerTwoNotification = [title, message]
       }
     } else if (this.data.action === "finish") {
-      this.game.winner = this.player === 1 ? this.game.playerTwoName : this.game.playerOneName
+      this.game.winner = this.player === 1 ? this.game.playerOneName : this.game.playerTwoName
       this.game.state = "complete"
-      const title = "Game over"
+      const title = "Game Over"
       const message = `${this.game.winner} has won the game.`
       this.game.playerOneNotification = [title, message]
       if (this.game.playerOneName !== this.game.playerTwoName) {

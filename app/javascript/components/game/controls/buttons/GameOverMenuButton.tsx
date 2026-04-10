@@ -1,11 +1,13 @@
 import React, { FormEvent } from "react";
 import { ArrowLeftCircle } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 export default function GameOverMenuButton() {
+  const navigate = useNavigate()
+
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
-    const url = `/`
-    window.open(url)
+    navigate("/", { replace: true })
   }
 
   return (

@@ -64,14 +64,11 @@ export default function GameDisplay() {
 
   useEffect(() => {
     if (!game.k) { return }
-    // console.log(`before setting display nation: ${game.k.state} : ${game.k.currentPlayer}`)
     if (game.k.state !== "in_progress") {
       setPlayerNation(undefined)
-      // console.log("unsetting display nation")
       return
     }
     const user = localStorage.getItem("username") ?? ""
-    // console.log(`for: ${user} : ${game.k.currentPlayerNation}`)
     let nation: string | undefined = undefined
     if (game.k.playerOneName === game.k.playerTwoName && game.k.playerOneName === user) {
       nation = game.k.currentPlayerNation
@@ -82,7 +79,6 @@ export default function GameDisplay() {
       if (playerNation !== undefined) { return }
       nation = game.k.playerTwoNation
     }
-    // console.log(`setting display nation: ${nation}`)
     if (nation) {
       const fill = `url(#nation-${nation}-16)`
       setPlayerNation(

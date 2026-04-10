@@ -676,8 +676,8 @@ export default class Game {
       if (a.undone || a.player !== player) { continue }
       if ([
         "move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "pass",
-      ].includes(a.data.action)) { return false }
-      if (a.data.action === "rout_all") { return true }
+      ].includes(a.type)) { return false }
+      if (a.type === "rout_all") { return true }
     }
     return false
   }
@@ -722,11 +722,11 @@ export default class Game {
           if (u.playerNation === this.playerTwoNation) { two = true }
         })
         if (one && two) {
-          let found: CloseCheck | undefined = undefined
+          let found = false
           for (const c of checks) {
-            if (c.loc.x === x && c.loc.y === y) { found = c; break }
+            if (c.loc.x === x && c.loc.y === y) { found = true; break }
           }
-          if (found === undefined) {
+          if (!found) {
             checks.push({
               loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
             })

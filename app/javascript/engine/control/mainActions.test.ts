@@ -445,6 +445,6 @@ describe("game actions", () => {
     expect(game.lastAction?.stringValue).toBe("last turn complete, game over")
 
     expect(game.state).toBe("complete")
-    expect(game.winner).toBe("one")
+    expect(game.winner).toBe("two")
   })
 });

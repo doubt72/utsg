@@ -625,12 +625,12 @@ export function mapHelpLayout(
   let y1 = loc.y
   let y2 = y1 + text.length * size + size/2
   if (x2 > max.x) {
-    const diff = - (width + 20)
+    const diff = -(width + 20)
     x1 += diff
     x2 += diff
   }
   if (y2 > max.y) {
-    const diff = y2 - max.y
+    const diff = y2 - y1 + 20
     y1 -= diff
     y2 -= diff
   }
