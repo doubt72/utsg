@@ -131,8 +131,9 @@ export default function MapDisplay({
 
   const minHeight = (height: number, scale: number = 1, m?: Map, base: number = 904): number => {
     if (preview || m?.preview) { return map.ySize * scale }
-    const gc = guiCollapse ? 130 : 0
-    const fill = m?.debug ? 16 : 352 - gc
+    const extra = user === m?.game?.playerOneName || user === m?.game?.playerTwoName ? 0 : 48
+    const gc = guiCollapse ? 178 - extra : 0
+    const fill = m?.debug ? 16 : 400 - extra - gc
     const available = base + 50 / scale - 50
     return height - fill < available * scale ? available * scale : height - fill
   }
@@ -764,21 +765,32 @@ export default function MapDisplay({
              onMouseLeave={() => setMouseDown(false)}
              onMouseMove={(event) => {
                if (mouseDown && event.buttons === 1) { dragCallback(event) }
-             }} >
-          {hexDisplay}
-          {hexDisplayDetail}
-          {fireTargets}
-          {fireTrack}
-          {counterDisplay}
-          { map.game?.gameState?.showOverlays ? hexDisplayOverlays : "" }
-          { map.game?.gameState?.showOverlays ? "" : losOverlay }
-          { map.game?.gameState?.showOverlays ? "" : counterLosOverlay }
-          { map.game?.gameState?.showOverlays && !hideCounters ? actionCounterDisplay : "" }
-          {moveTrack}
-          {routTrack}
-          {fireHindrance}
-          {directionSelectionOverlay}
-          {animations()}
+             }}>
+          <defs>
+            <clipPath id="map-clip">
+              <path id="map-clip" d={
+                roundedRectangle(
+                  xShift, yShift, mWidth / (mapScale ?? 1), mHeight / (mapScale ?? 1), 10 / (mapScale ?? 1)
+                )
+              } />
+            </clipPath>
+          </defs>
+          <g clipPath="url(#map-clip">
+            {hexDisplay}
+            {hexDisplayDetail}
+            {fireTargets}
+            {fireTrack}
+            {counterDisplay}
+            { map.game?.gameState?.showOverlays ? hexDisplayOverlays : "" }
+            { map.game?.gameState?.showOverlays ? "" : losOverlay }
+            { map.game?.gameState?.showOverlays ? "" : counterLosOverlay }
+            { map.game?.gameState?.showOverlays && !hideCounters ? actionCounterDisplay : "" }
+            {moveTrack}
+            {routTrack}
+            {fireHindrance}
+            {directionSelectionOverlay}
+            {animations()}
+          </g>
         </svg>
       )
     }
@@ -793,8 +805,12 @@ export default function MapDisplay({
     const bWidth = width/scale - 202
     const bHeight = height/scale - 110 - 50/scale
     return (
-      <path d={roundedRectangle(x, y, bWidth, bHeight, 0)}
-            style={{ fill: "rgba(0,0,0,0.5)" }} />
+      <g>
+        <path d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+              style={{ fill: map.mapBackgroundColor }} />
+        <path opacity={0.125} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+              style={{ fill: "url(#camo-bg)" }} />
+      </g>
     )
   }
 

@@ -1,6 +1,6 @@
 ## 0.49 Alpha
 
-- Add background
+- Layout size tweaks, add map background
 
 ## 0.48 Alpha
 

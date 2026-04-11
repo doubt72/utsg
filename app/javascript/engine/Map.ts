@@ -222,6 +222,16 @@ export default class Map {
     }[this.baseTerrain]
   }
 
+  get mapBackgroundColor(): string {
+    return {
+      g: "#90AE90",
+      d: "#BB7",
+      s: "#BBB",
+      m: "#AFA797",
+      u: "#979F90",
+    }[this.baseTerrain]
+  }
+
   hexNeighbors(loc: Coordinate): (Hex | undefined)[] {
     const offset = loc.y%2
     return [

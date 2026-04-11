@@ -44,6 +44,9 @@ export default function MapHexPatterns() {
 
   return (
     <defs>
+      <pattern id="camo-bg" width="160" height="160" patternUnits="userSpaceOnUse">
+        <image href="/assets/camo-bw.png" width="160" height="160"/>
+      </pattern>
       <pattern id="forest-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="12" height="20.8" viewBox="0 0 2 3.46">
         <circle cx="0" cy="-0.866" r="0.85" style={forestStyle} />
