@@ -78,6 +78,8 @@ export default function MiniMap(
       <g>
         <path d={roundedRectangle(xx, yy + extraShift, xSize + 6, ySize + 6)}
               style={{ fill: "#EEE", strokeWidth: 4, stroke: "#670", fillRule: "evenodd" }} />
+        <path d={roundedRectangle(xx + 6, yy + extraShift + 6, xSize - 6, ySize - 6, 5)}
+              style={{ fill: "#777", strokeWidth: 0 }} />
         <g transform={`translate(${xShift} ${yShift + extraShift})`}>
           <MapDisplay map={map} scale={miniScale} preview={true} forceUpdate={0} />
         </g>

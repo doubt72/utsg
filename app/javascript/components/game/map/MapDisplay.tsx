@@ -131,8 +131,8 @@ export default function MapDisplay({
 
   const minHeight = (height: number, scale: number = 1, m?: Map, base: number = 904): number => {
     if (preview || m?.preview) { return map.ySize * scale }
-    const gc = guiCollapse ? 178 : 0
-    const fill = m?.debug ? 16 : 408 - gc
+    const gc = guiCollapse ? 130 : 0
+    const fill = m?.debug ? 16 : 352 - gc
     const available = base + 50 / scale - 50
     return height - fill < available * scale ? available * scale : height - fill
   }
@@ -146,7 +146,11 @@ export default function MapDisplay({
     let min = 1274
     if (checkMin(m)) { min += 15 }
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 280 }
-    return width - 24 < min * scale ? min * scale : width - 24
+    let margin = 32
+    if (minHeight(window.innerHeight + 0, scale, m) > (904 + 50 / scale - 50) * scale) {
+      margin = 16
+    }
+    return width - margin < min * scale ? min * scale : width - margin
   }
 
   const [width, setWidth] = useState<number>(minWidth(window.innerWidth, 1, map))
@@ -780,11 +784,26 @@ export default function MapDisplay({
     }
   }
 
+  const background = () => {
+    if (map.preview || preview) {
+      return <g></g>
+    }
+    const x = 0
+    const y = 110 + 50/scale
+    const bWidth = width/scale - 202
+    const bHeight = height/scale - 110 - 50/scale
+    return (
+      <path d={roundedRectangle(x, y, bWidth, bHeight, 0)}
+            style={{ fill: "rgba(0,0,0,0.5)" }} />
+    )
+  }
+
   return (
     <svg ref={svgRef as React.LegacyRef<SVGSVGElement>}
          className="map-svg" width={width} height={height}
          viewBox={`0 0 ${width / scale} ${height / scale}`}>
       <MapHexPatterns />
+      {background()}
       {mapDisplay()}
       {weather}
       {initiative}

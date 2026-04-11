@@ -150,7 +150,7 @@ export default class Map {
   get xSize(): number { return this.narrow * (this.width + 0.5) + 2 + this.xStatusSize }
   get previewXSize(): number { return this.narrow * (this.width + 0.5) + 2 }
   get ySize(): number {
-    return 1.5 * this.radius * (this.height + 0.3333) + 2
+    return 1.5 * this.radius * (this.height + 0.3333)
   }
 
   victoryNationAt(loc: Coordinate): string | false {
