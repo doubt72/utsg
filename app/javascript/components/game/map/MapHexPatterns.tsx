@@ -55,9 +55,6 @@ export default function MapHexPatterns({ map }: MapHexPatternProps) {
 
   return (
     <defs>
-      <pattern id="camo-bg" width="160" height="160" patternUnits="userSpaceOnUse">
-        <image href="/assets/camo-bw.png" width="160" height="160"/>
-      </pattern>
       { map?.baseTerrain === baseTerrainType.Grass ? <CamoPatternGrass /> : "" }
       { map?.baseTerrain === baseTerrainType.Urban ? <CamoPatternUrban /> : "" }
       { map?.baseTerrain === baseTerrainType.Sand ? <CamoPatternDesert /> : "" }

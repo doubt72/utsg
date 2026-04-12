@@ -76,6 +76,15 @@ def hex_react(x, y, radius, name)
   "      <polygon className=\"#{name}\" points=\"#{points.join(" ")}\" />"
 end
 
+def hex_coords(x, y, radius, num)
+  points = []
+  0.upto(5) do |p|
+    angle = 60 * p
+    points.push("#{round(cos(angle) * radius + x)},#{round(sin(angle) * radius + y)}")
+  end
+  "      [#{num}, \"#{points.join(" ")}\"],"
+end
+
 def num_to_index(n)
   return 1 if n == color1
   return 2 if n == color2
@@ -132,30 +141,34 @@ types.each do |type|
   end
 end
 
-types.each do |type|
-  File.open("camo-#{type[0]}.xxx", "w") do |f|
-    f.puts "    <pattern id=\"camo-#{type[0]}-bg\" width=\"#{width}\" height=\"#{height}\" patternUnits=\"userSpaceOnUse\" >"
-    f.puts "      <rect x=\"0\" y=\"0\" width=\"#{width}\" height=\"#{height}\" fill=\"#000\" />"
+# types.each do |type|
+  # File.open("camo-#{type[0]}.xxx", "w") do |f|
+  File.open("camo-coords.xxx", "w") do |f|
+    # f.puts "    <pattern id=\"camo-#{type[0]}-bg\" width=\"#{width}\" height=\"#{height}\" patternUnits=\"userSpaceOnUse\" >"
+    # f.puts "      <rect x=\"0\" y=\"0\" width=\"#{width}\" height=\"#{height}\" fill=\"#000\" />"
     0.upto(x_size) do |x|
       0.upto(y_size) do |y|
         xx = x % (image_size/x_multiplier)
         yy = y % (image_size/y_multiplier)
         num = num_to_index(pixels[yy*y_multiplier + xx%2*x_multiplier/2][xx*x_multiplier])
-        color = type[num]
-        f.puts hex_react(x*radius*2*hex_factor, y*radius*2 + x%2*radius, small_radius, "camo-#{type[0]}#{num}")
+        # color = type[num]
+        f.puts hex_coords(x*radius*2*hex_factor, y*radius*2 + x%2*radius, small_radius, num)
+        # f.puts hex_react(x*radius*2*hex_factor, y*radius*2 + x%2*radius, small_radius, "camo-#{type[0]}#{num}")
       end
     end
+
+    f.puts ""
 
     -1.upto(x_size) do |x|
       -1.upto(y_size) do |y|
         xx = x % (image_size/x_multiplier)
         yy = y % (image_size/y_multiplier)
         num = num_to_index(pixels[yy*y_multiplier + xx%2*x_multiplier/2][xx*x_multiplier + x_multiplier/2])
-        color = type[num]
-        f.puts hex_react(x*radius*2*hex_factor + radius, y*radius*2 + x%2*radius, small_radius, "camo-#{type[0]}-line#{num}")
+        # color = type[num]
+        f.puts hex_coords(x*radius*2*hex_factor + radius, y*radius*2 + x%2*radius, small_radius, num)
+        # f.puts hex_react(x*radius*2*hex_factor + radius, y*radius*2 + x%2*radius, small_radius, "camo-#{type[0]}-line#{num}")
       end
     end
-    f.puts "    </pattern>"
+    # f.puts "    </pattern>"
   end
-end
-
+# end
