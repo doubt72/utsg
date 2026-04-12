@@ -1,5 +1,7 @@
 Features/Bug Fixes:
-  - Close combat with broken team and leader didn't fire (but can't reproduce... WTF?)
+  + Overstack should unselect other units
+  + Unmanned gun should not trigger reaction fire check
+  + Close combat sometimes not happening (but can't reproduce... WTF?)
   - Problematic Game Controls performance (excessive refreshes still)
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling?
@@ -9,7 +11,6 @@ Features/Bug Fixes:
   - Add Some Developer Notes
   - Go through docs, add examples
   - Email turn notifications
-  - Have ban actually do something
 
 Nice to Have Eventually:
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)

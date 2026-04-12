@@ -11,7 +11,7 @@ export default class CloseCombatState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.CloseCombat, game.currentPlayer)
 
-    if (game.closeNeeded.length < 1) { game.addCloseCombatChecks() }
+    game.setCloseCombatChecks()
     if (!game.anyCloseCombatLeft) { checkPhase(game, false) }
     game.refreshCallback(game)
   }

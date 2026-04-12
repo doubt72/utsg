@@ -682,7 +682,8 @@ export default class Game {
     return false
   }
 
-  addCloseCombatChecks() {
+  setCloseCombatChecks() {
+    console.log("checking for close combat")
     const checks: CloseCheck[] = []
     for (let i = this.lastActionIndex; i >= 0; i--) {
       const action = this.actions[i]

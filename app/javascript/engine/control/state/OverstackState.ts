@@ -23,7 +23,7 @@ export default class OverstackState extends BaseState {
     if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
       if (this.openHex(x, y) === hexOpenType.Open) {
         counter.unit.select()
-        this.map.clearOtherTargetSelections(x, y, counter.unit.id)
+        this.map.clearOtherSelections(x, y, counter.unit.id)
       }
     }
     callback()

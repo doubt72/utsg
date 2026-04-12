@@ -56,7 +56,7 @@ describe("close combat", () => {
       },
     }, game), false)
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -159,7 +159,7 @@ describe("close combat", () => {
       },
     }, game), false)
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -278,7 +278,7 @@ describe("close combat", () => {
       },
     }, game), false)
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -475,7 +475,7 @@ describe("close combat", () => {
       },
     }, game), false)
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -597,7 +597,7 @@ describe("close combat", () => {
       },
     }, game), false)
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(2)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -733,7 +733,7 @@ describe("close combat", () => {
     expect(one2.parent?.name).toBe("Opel Blitz")
     expect(one3.parent?.name).toBe("Opel Blitz")
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
     expect(game.closeNeeded.length).toBe(1)
     expect(game.closeNeeded[0]).toStrictEqual({
@@ -829,7 +829,7 @@ describe("close combat", () => {
       },
     }, game), false)
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
 
     expect(closeCombatCasualtyNeeded(game)).toBe(false)
@@ -863,7 +863,7 @@ describe("close combat", () => {
       },
     }, game), false)
 
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     game.setGameState(new CloseCombatState(game))
 
     select(map, {

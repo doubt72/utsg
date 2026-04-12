@@ -112,7 +112,8 @@ export default function FireSection() {
           <strong>Offboard Artillery</strong>: another sort of area fire called in from offboard by
           units carrying a radio, and is indicated with a hexagon around the unit&apos;s firepower.
           Unlike all other targeted fire, misses will drift and may hit other hexes, including hexes
-          with friendly units.
+          with friendly units.  This is the only type of infantry weapon that cannot be operated by
+          an opponent if captured.
         </li>
       </ul>
       <p>

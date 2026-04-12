@@ -210,7 +210,7 @@ export function counterInfoBadges(
   let start = y
   if (y + diff * badges.length > maxY) {
     diff = -diff
-    start = y - 210 - shift
+    start = y - 203 - shift*2
   }
   return badges.map((raw, i): BadgeLayout => {
     const b: BadgeLayout = raw

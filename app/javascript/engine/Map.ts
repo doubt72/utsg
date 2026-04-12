@@ -443,7 +443,7 @@ export default class Map {
     this.units[from.y][from.x] = this.units[from.y][from.x].filter(u => u.id !== id)
     insert.unit.children.push(counter.unit)
     counter.unit.parent = insert.unit
-    counter.unit.playerNation = insert.unit.playerNation
+    if (!counter.unit.offBoard) { counter.unit.playerNation = insert.unit.playerNation }
   }
 
   counterDataAt(loc: Coordinate): MapCounterData[] {

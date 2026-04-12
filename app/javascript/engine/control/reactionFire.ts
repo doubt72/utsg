@@ -61,7 +61,7 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
           if (c.unit.playerNation === otherNation) { continue }
           if (c.unit.parent && c.unit.parent.playerNation === otherNation) { continue }
           if (c.unit.areaFire || c.unit.isBroken) { continue }
-          if (c.unit.uncrewedSW) {
+          if (c.unit.operated) {
             if (c.unit.parent === undefined) { continue }
             if (c.unit.parent.isBroken || c.unit.parent.isExhausted) { continue }
           }

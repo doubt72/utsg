@@ -158,7 +158,7 @@ function main(game: Game, data: GameActionData): void {
     phaseData.new_player = game.currentInitiativePlayer
     phaseData.new_phase = gamePhaseType.CleanupCloseCombat
     phaseData.messages.push("starting close combat")
-    game.addCloseCombatChecks()
+    game.setCloseCombatChecks()
     if (!game.anyCloseCombatLeft) {
       phaseData.messages.push("no units in contact, skipping")
     }

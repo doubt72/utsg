@@ -25,7 +25,7 @@ export default class CloseCombatRollAction extends BaseAction {
     this.origin = (data.data.origin as GameActionUnit[])
     this.ccData = (data.data.cc_data as { p1_fp: number, p2_fp: number, p1_max: number, p2_max: number })
 
-    if (game.closeNeeded.length < 1) { game.addCloseCombatChecks() }
+    if (game.closeNeeded.length < 1) { game.setCloseCombatChecks() }
   }
 
   get type(): string { return "close_combat_roll" }
@@ -74,7 +74,7 @@ export default class CloseCombatRollAction extends BaseAction {
   }
 
   mutateGame(): void {
-    if (this.game.closeNeeded.length < 1) { this.game.addCloseCombatChecks() }
+    if (this.game.closeNeeded.length < 1) { this.game.setCloseCombatChecks() }
     const loc = new Coordinate(this.origin[0].x, this.origin[0].y)
     const counters = this.map.countersAt(loc)
     counters.forEach(c => {

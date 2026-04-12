@@ -1,3 +1,12 @@
+## 0.50 Alpha
+
+- Layout tweaks
+- Dropped radio cannot be operated by an opponent
+- Bug fix: close combat not being set correctly in two-player games at the beginning of phase (left in a little bit of instrumentation in case not fixed)
+- Bug fix: overstack should unselect all other units
+- Bug fix: unmanned gun should not trigger possible reaction fire
+- Update 011
+
 ## 0.49 Alpha
 
 - Layout size tweaks, add map background
