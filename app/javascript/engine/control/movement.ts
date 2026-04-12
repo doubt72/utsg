@@ -240,7 +240,7 @@ export function rollbackAddActions(
   let move: MoveAction | undefined = undefined
   for (let i = map.game.lastActionIndex; i >= 0; i--) {
     const action = map.game.actions[i]
-    if (action.type === "move") { move = action as MoveAction; break }
+    if (action.type === "move" || action.type === "rush") { move = action as MoveAction; break }
   }
   if (!move) { return }
   let index = 0

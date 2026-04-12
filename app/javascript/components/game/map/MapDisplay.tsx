@@ -15,7 +15,7 @@ import SniperDisplay from "./SniperDisplay";
 import Map from "../../../engine/Map";
 import Counter from "../../../engine/Counter";
 import ReinforcementPanel from "../controls/ReinforcementPanel";
-import { Coordinate, CounterSelectionTarget, Direction, Player } from "../../../utilities/commonTypes";
+import { baseTerrainType, Coordinate, CounterSelectionTarget, Direction, Player } from "../../../utilities/commonTypes";
 import MapHexOverlay from "./MapHexOverlay";
 import DirectionSelector from "./DirectionSelector";
 import MiniMap from "./MiniMap";
@@ -808,8 +808,21 @@ export default function MapDisplay({
       <g>
         <path d={roundedRectangle(x, y, bWidth, bHeight, 10)}
               style={{ fill: map.mapBackgroundColor }} />
-        <path opacity={0.125} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
-              style={{ fill: "url(#camo-bg)" }} />
+        { map.baseTerrain === baseTerrainType.Grass ?
+            <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+                  style={{ fill: "url(#camo-grass-bg)" }} /> : "" }
+        { map.baseTerrain === baseTerrainType.Urban ?
+            <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+                  style={{ fill: "url(#camo-urban-bg)" }} /> : "" }
+        { map.baseTerrain === baseTerrainType.Sand ?
+            <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+                  style={{ fill: "url(#camo-desert-bg)" }} /> : "" }
+        { map.baseTerrain === baseTerrainType.Snow ?
+            <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+                  style={{ fill: "url(#camo-snow-bg)" }} /> : "" }
+        { map.baseTerrain === baseTerrainType.Mud ?
+            <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
+                  style={{ fill: "url(#camo-mud-bg)" }} /> : "" }
       </g>
     )
   }
@@ -818,7 +831,7 @@ export default function MapDisplay({
     <svg ref={svgRef as React.LegacyRef<SVGSVGElement>}
          className="map-svg" width={width} height={height}
          viewBox={`0 0 ${width / scale} ${height / scale}`}>
-      <MapHexPatterns />
+      <MapHexPatterns map={map} />
       {background()}
       {mapDisplay()}
       {weather}

@@ -1,7 +1,18 @@
 import React from "react";
 import { clearColor, nationalControlLookup } from "../../../utilities/graphics";
+import Map from "../../../engine/Map";
+import CamoPatternGrass from "./patterns/CamoPatternGrass";
+import { baseTerrainType } from "../../../utilities/commonTypes";
+import CamoPatternUrban from "./patterns/CamoPatternUrban";
+import CamoPatternDesert from "./patterns/CamoPatternDesert";
+import CamoPatternMud from "./patterns/CamoPatternMud";
+import CamoPatternSnow from "./patterns/CamoPatternSnow";
 
-export default function MapHexPatterns() {
+interface MapHexPatternProps {
+  map?: Map;
+}
+
+export default function MapHexPatterns({ map }: MapHexPatternProps) {
   const darkStyle = { fill: "rgba(0,0,0,0.16)" }
   const darkerStyle = { fill: "rgba(0,0,0,0.33)" }
   const forestStyle = { fill: "#070" }
@@ -47,6 +58,11 @@ export default function MapHexPatterns() {
       <pattern id="camo-bg" width="160" height="160" patternUnits="userSpaceOnUse">
         <image href="/assets/camo-bw.png" width="160" height="160"/>
       </pattern>
+      { map?.baseTerrain === baseTerrainType.Grass ? <CamoPatternGrass /> : "" }
+      { map?.baseTerrain === baseTerrainType.Urban ? <CamoPatternUrban /> : "" }
+      { map?.baseTerrain === baseTerrainType.Sand ? <CamoPatternDesert /> : "" }
+      { map?.baseTerrain === baseTerrainType.Mud ? <CamoPatternMud /> : "" }
+      { map?.baseTerrain === baseTerrainType.Snow ? <CamoPatternSnow /> : "" }
       <pattern id="forest-pattern" x="0" y="0" patternUnits="userSpaceOnUse"
                width="12" height="20.8" viewBox="0 0 2 3.46">
         <circle cx="0" cy="-0.866" r="0.85" style={forestStyle} />

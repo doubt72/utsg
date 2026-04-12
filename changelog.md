@@ -1,3 +1,8 @@
+## 0.51 Alpha
+
+- Fancier map background
+- Bug fix: rush should also roll back VPs
+
 ## 0.50 Alpha
 
 - Layout tweaks

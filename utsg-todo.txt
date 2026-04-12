@@ -1,7 +1,5 @@
 Features/Bug Fixes:
-  + Overstack should unselect other units
-  + Unmanned gun should not trigger reaction fire check
-  + Close combat sometimes not happening (but can't reproduce... WTF?)
+  - KV and French single-man turrets?
   - Problematic Game Controls performance (excessive refreshes still)
   - Refactor firing:
     - Remove done select?  Can join units after the fact without canceling?
@@ -16,7 +14,6 @@ Nice to Have Eventually:
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
 
 Keep an Eye out for:
-  - Improve reaction hex selection
   - Automatically undo additional deploys (should no longer be necessary)
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
@@ -34,7 +31,7 @@ Keep an Eye out for:
 601	4	? / 2P
 401	3	? / 2P
 510	3	? / 2P
-603	4	? / 2P
+603	3	? / 2P
 011	4	? / 2P
 
 006 (Romanian)
