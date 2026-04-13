@@ -13,7 +13,7 @@ interface InitiativeDisplayProps {
   xx: number;
   yy: number;
   hideCounters: boolean;
-  small: boolean;
+  small: 0 | 1 | 2;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
 }
@@ -48,7 +48,11 @@ export default function InitiativeDisplay({
   const yOffset = (game: Game, i: number): number => {
     const index = Math.abs(i)
     let shrinkOffset = 0
-    if (small) {
+    if (small === 2) {
+      shrinkOffset = index - 1
+      if (index > Math.abs(game.initiative)) { shrinkOffset -= 1 }
+      if (shrinkOffset < 0) { shrinkOffset = 0 }
+    } else if (small === 1) {
       if (Math.abs(game.initiative) < 3) {
         if (index > 4) { shrinkOffset = index - 4 }
       } else if (Math.abs(game.initiative) > 6) {
@@ -68,7 +72,11 @@ export default function InitiativeDisplay({
 
   const shrink = (game: Game, i: number): boolean => {
     const index = Math.abs(i - 7)
-    if (small) {
+    if (small === 2) {
+      if (Math.abs(game.initiative) < 1 && index < 2) { return false }
+      if (index === 0 || Math.abs(game.initiative) === index) { return false }
+      return true
+    } else if (small === 1) {
       if (Math.abs(game.initiative) < 3) {
         if (index > 3) { return true }
       } else if (Math.abs(game.initiative) > 6) {
@@ -89,7 +97,7 @@ export default function InitiativeDisplay({
   useEffect(() => {
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, 190, small ? 512 : 752)}
+        <path d={roundedRectangle(xx, yy, 190, small === 0 ? 752 : (small === 1 ? 512 : 392 ))}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         <text x={xx + 10} y={yy + 20} fontSize={16} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>

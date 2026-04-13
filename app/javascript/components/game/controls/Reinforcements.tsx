@@ -85,20 +85,24 @@ export default function Reinforcements(
       localStorage.getItem("username") === map.game.currentUser
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, deploy ? 305 : 190 , 100)}
+        <path d={roundedRectangle(xx, yy, deploy ? 265 : 190 , 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         { deploy ?
           (
             <g>
               <text x={xx + 190} y={yy + 22} fontSize={16} textAnchor="start"
                     fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
-                select icon
+                select
               </text>
               <text x={xx + 190} y={yy + 40} fontSize={16} textAnchor="start"
                     fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
-                to deploy
+                icon to
               </text>
               <text x={xx + 190} y={yy + 58} fontSize={16} textAnchor="start"
+                    fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
+                deploy
+              </text>
+              <text x={xx + 190} y={yy + 76} fontSize={16} textAnchor="start"
                     fontFamily="'Courier Prime', monospace" style={{ fill: "#000" }}>
                 units
               </text>
@@ -107,7 +111,7 @@ export default function Reinforcements(
         }
         <text x="0" y="0" fontSize={16} textAnchor="end"
                  fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}
-                 transform={`translate(${xx + 195 + (deploy ? 115 : 0)},${yy + 95}) rotate(90)`}>
+                 transform={`translate(${xx + 195 + (deploy ? 75 : 0)},${yy + 95}) rotate(90)`}>
           units
         </text>
         {nationOne(xx + 10, yy + 10)}

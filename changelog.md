@@ -1,3 +1,7 @@
+## 0.52 Alpha
+
+- More shrinkage
+
 ## 0.51 Alpha
 
 - Fancier map background

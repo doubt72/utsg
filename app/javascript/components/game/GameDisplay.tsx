@@ -42,6 +42,7 @@ export default function GameDisplay() {
   const [hideCounters, setHideCounters] = useState(false)
   const [showTerrain, setShowTerrain] = useState(false)
   const [showLos, setShowLos] = useState(false)
+  const [shrinkButtons, setShrinkButtons] = useState<0 | 1>(0)
   const [checkCancelHideLOS, setCheckCancelHideLOS] = useState<number>(0)
   const [checkCancelTerrain, setCheckCancelTerrain] = useState<number>(0)
 
@@ -141,6 +142,7 @@ export default function GameDisplay() {
                   hexCallback={hexSelection} counterCallback={unitSelection}
                   directionCallback={directionSelection} resetCallback={resetDisplay}
                   clearActionCallback={clearAction} updateCallback={setUpdate}
+                  shrinkCallback={(n: 0 | 1) => setShrinkButtons(n)}
                   checkCancelHideLOS={checkCancelHideLOS} checkCancelTerrain={checkCancelTerrain} />
     )
   }, [
@@ -630,25 +632,25 @@ export default function GameDisplay() {
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => toggleShowCoords()}>
-          { coords ? <GeoAltFill /> : <GeoAlt /> } <span>coords</span>
+          { coords ? <GeoAltFill /> : <GeoAlt /> } <span>{shrinkButtons ? "" : "coords"}</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={statusTooltip}
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => toggleShowMarkers()}>
-          { showStatusCounters ? <Stack /> : <CircleFill /> } <span>status</span>
+          { showStatusCounters ? <Stack /> : <CircleFill /> } <span>{shrinkButtons ? "" : "status"}</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={overlayTooltip}
                         delay={{ show: 0, hide: 0 }}>
         { game.k?.gameState?.showOverlays ?
           <div className="custom-button-disable normal-button">
-            { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
+            { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
           </div> :
           <div className="custom-button normal-button"
                onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
-            { showLos ? <EyeFill /> : <Stack /> } <span>overlay</span>
+            { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
           </div>
         }
         </OverlayTrigger>
@@ -656,18 +658,18 @@ export default function GameDisplay() {
                         delay={{ show: 0, hide: 0 }}>
         <div className="custom-button normal-button"
              onClick={() => { setHideCounters(sc => !sc); setCheckCancelHideLOS(s => s+1) }}>
-        { hideCounters ? <Square /> : <SquareFill /> } <span>counters</span>
+        { hideCounters ? <Square /> : <SquareFill /> } <span>{shrinkButtons ? "" : "counters"}</span>
         </div>
         </OverlayTrigger>
         <OverlayTrigger placement="bottom" overlay={terrainTooltip}
                         delay={{ show: 0, hide: 0 }}>
         { game.k?.gameState?.showOverlays ?
           <div className="custom-button-disable normal-button">
-            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain</span>
+            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
           </div> :
           <div className="custom-button normal-button"
                onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
-            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>terrain</span>
+            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
           </div>
         }
         </OverlayTrigger>
