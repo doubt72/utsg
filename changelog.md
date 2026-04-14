@@ -1,3 +1,7 @@
+## 0.53 Alpha
+
+- Optimize map background
+
 ## 0.52 Alpha
 
 - More shrinkage

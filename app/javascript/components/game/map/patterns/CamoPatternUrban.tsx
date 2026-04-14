@@ -1,12 +1,9 @@
 import React from "react";
-import { camoHexData, camoOutlineData } from "./camoData";
 
 export default function CamoPatternUrban() {
   return (
-    <pattern id="camo-urban-bg" width="692.84" height="400.0" patternUnits="userSpaceOnUse" >
-      <rect x="0" y="0" width="692.84" height="400.0" fill="#000" />
-        { camoHexData.map((d,i) => <polygon key={i} className={`camo-urban${d[0]}`} points={d[1]} />) }
-        { camoOutlineData.map((d,i) => <polygon key={i} className={`camo-urban-line${d[0]}`} points={d[1]} />) }
-      </pattern>
+    <pattern id="camo-urban-bg" width="693" height="400.0" patternUnits="userSpaceOnUse" >
+      <image href="/assets/camo-urban.png" width="693" height="400" />
+    </pattern>
   )
 }

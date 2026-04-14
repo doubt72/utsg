@@ -118,7 +118,7 @@ line_width = (radius - small_radius)*2
 
 types.each do |type|
   File.open("camo-#{type[0]}.svg", "w") do |f|
-    f.puts "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 #{width} #{height}\" width=\"#{width}\" height=\"#{height}\" >"
+    f.puts "<svg style=\"margin: 1em;\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 #{width} #{height}\" width=\"#{width}\" height=\"#{height}\" >"
     f.puts "<rect x=\"0\" y=\"0\" width=\"#{width}\" height=\"#{height}\" fill=\"#000\" />"
     0.upto(x_size) do |x|
       0.upto(y_size) do |y|
