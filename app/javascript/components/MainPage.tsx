@@ -54,10 +54,10 @@ export default function MainPage() {
               </a>
             </p>
             <p>
-              Support the work (and/or my mild coffee addiction)
+              {/* Support the work (and/or my mild coffee addiction)
               on <a className="regular" href="https://www.patreon.com/cw/u43420358">Patreon</a> or
               on <a className="regular" href="https://ko-fi.com/doub72">Ko-fi</a> or
-              maybe just <a className="regular" href="https://buymeacoffee.com/doubt72">Buy Me a Coffee</a>.
+              maybe just <a className="regular" href="https://buymeacoffee.com/doubt72">Buy Me a Coffee</a>. */}
             </p>
           </div>
           {loggedIn ? newGameButton : seeScenariosButton}

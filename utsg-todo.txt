@@ -1,11 +1,8 @@
 Features/Bug Fixes:
-  - KV and French single-man turrets?
-  - Problematic Game Controls performance (excessive refreshes still)
-  - Refactor firing:
-    - Remove done select?  Can join units after the fact without canceling?
-  - Roll back smoke on reaction fire?
+  - Add message when trying to select opponent counters
+  - Only show reaction fire target hexes
   - Create tutorial
-  - A way to show terrain in counter overlay
+  - Roll back smoke on reaction fire?
   - Add Some Developer Notes
   - Go through docs, add examples
   - Email turn notifications
@@ -14,7 +11,11 @@ Nice to Have Eventually:
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
 
 Keep an Eye out for:
+  - Problematic Game Controls performance (excessive refreshes still)
+  - Refactor firing:
+    - Remove done select?  Can join units after the fact without canceling?
   - Automatically undo additional deploys (should no longer be necessary)
+  ? KV and French single-man turrets?
   ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 
