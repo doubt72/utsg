@@ -91,7 +91,7 @@ export default class DeployState extends BaseState {
             rc = hexOpenType.Red
           }
         } else if (unit.uncrewedSW) {
-          if ((last && !last.isFeature) && last.canCarrySupport) {
+          if ((last && !last.isFeature) && last.canCarrySupport && !(last.leader && unit.baseMovement < 0)) {
             rc = hexOpenType.Open
           } else {
             rc = hexOpenType.Red

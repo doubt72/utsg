@@ -523,13 +523,13 @@ describe("ranged fire attacks", () => {
         "firepower: 17",
         "- base to hit: 9",
         "- minus 1 for less than half range",
-        "-> critical hit on: 18 (6%)",
+        "-> critical hit on: 17 (10%)",
         "",
         "-> morale check (2d10): 10 (55%)",
         "base roll of 15",
         "- minus morale 3",
         "- minus cover 2",
-        "-> on critical (2d10): 13 (36%)"
+        "-> on critical (2d10): 14 (21%)"
       ])
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
@@ -1506,8 +1506,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual(
         [
-          { unit: target, from: [floc], to: tloc, incendiary: false, critical: false },
-          { unit: target2, from: [floc], to: tloc2, incendiary: false, critical: false },
+          { unit: target, from: [floc], to: tloc, incendiary: false, critical: true },
+          { unit: target2, from: [floc], to: tloc2, incendiary: false, critical: true },
         ]
       )
     })

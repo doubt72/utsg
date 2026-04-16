@@ -270,7 +270,6 @@ export default function FireSection() {
             <td>N/A</td>
             <td>N/A</td>
             <td>N/A</td>
-            <td>N/A</td>
             <td>20</td>
             <td>19</td>
             <td>18</td>
@@ -282,6 +281,7 @@ export default function FireSection() {
             <td>12</td>
             <td>11</td>
             <td>10</td>
+            <td>9</td>
           </tr>
         </tbody>
       </table>
@@ -327,7 +327,7 @@ export default function FireSection() {
           a hit).
         </li>
         <li>
-          Rolling 10 or more above the to-hit threshold results in a <strong>critical</strong> hit,
+          Rolling more than 8 above the to-hit threshold results in a <strong>critical</strong> hit,
           which results in a negative modifier to morale checks (see below).  Critical hits have
           no other effect.
         </li>

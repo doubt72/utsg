@@ -109,9 +109,9 @@ export function passGreenColorMarker(): string { return "===pg===" }
 
 export function parseColorMarkers(input: string): string {
   return input
-    .replace(failRedColorMarker(), failRed())
-    .replace(passBlueColorMarker(), passBlue())
-    .replace(passGreenColorMarker(), passGreen())
+    .replaceAll(failRedColorMarker(), failRed())
+    .replaceAll(passBlueColorMarker(), passBlue())
+    .replaceAll(passGreenColorMarker(), passGreen())
 }
 
 export function actionOrange(): string { return colorLookup("actionOrange") }

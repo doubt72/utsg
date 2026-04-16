@@ -425,12 +425,17 @@ describe("rush movement", () => {
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
     unit2.activate()
-    map.addCounter(loc, unit2)
+    try {
+      map.addCounter(loc, unit2)
+    } catch(err) {
+      // Warning expected for placing a unit leader can't carry
+      expect(err instanceof StackingActionError).toBe(true)
+    }
     organizeStacks(map)
     expect(unit.children.length).toBe(0)
 
     map.units[2][4].reverse()
-    unit2.baseMovement = 0
+    unit2.baseMovement = 0 // Reset so leader CAN carry
     organizeStacks(map)
     expect(unit.children.length).toBe(1)
 

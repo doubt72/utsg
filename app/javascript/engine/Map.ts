@@ -321,6 +321,11 @@ export default class Map {
               `carrying unit first, THEN place the ${counter.name} immediately on top of it to indicate ` +
               "which unit should carry it."
           )
+        } else if (last && last.leader && unit.baseMovement < 0) {
+          throw new StackingActionError(
+            `${counter.name} is not assigned to an operator; a ` +
+              "leader cannot carry an encumbered support weapon.", "Movement"
+          )
         }
       }
       if (unit.crewed) {

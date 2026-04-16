@@ -8,10 +8,11 @@ interface ErrorDisplayProps {
   game: Game;
   type: string;
   message: string;
+  section?: string;
   callBack: () => void;
 }
 
-export default function ErrorDisplay({ game, type, message, callBack }: ErrorDisplayProps ) {
+export default function ErrorDisplay({ game, type, message, section, callBack }: ErrorDisplayProps ) {
   const intro = type === "stack" ? "warning: " : ""
   const icon = type === "stack" ? <ShieldFillExclamation /> : <ShieldFillX />
   const iconColor = type === "stack" ? "#B90" : "#C00"
@@ -32,9 +33,9 @@ export default function ErrorDisplay({ game, type, message, callBack }: ErrorDis
             <div className="flex-fill"></div>
             { type === "stack" ?
               <div className="mb025em">
-                <button onClick={()=> window.open(`/help/${helpIndexByName("Stacking").join(".")}`)}
+                <button onClick={()=> window.open(`/help/${helpIndexByName(section ?? "Stacking").join(".")}`)}
                         className="custom-button nowrap">
-                  <QuestionCircle />about stacking
+                  <QuestionCircle />about { (section ?? "stacking").toLowerCase() }
                 </button>
               </div> : "" }
             { type === "stack" ?

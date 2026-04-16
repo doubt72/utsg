@@ -1,3 +1,6 @@
+## 0.57 Alpha
+
+
 ## 0.56 Alpha
 
 - Add critical hit (only affects morale checks)
@@ -6,6 +9,8 @@
 - Only show firing hexes as targets in reaction fire
 - Graphical and display tweaks
 - Bug fix: reload forgets close combat roll result
+- Bug fix: only first formatted substitution substituting
+- Bug fix: show display error when trying to place encumbered SW on leader
 
 ## 0.55 Alpha
 

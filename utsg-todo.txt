@@ -1,10 +1,6 @@
 Features/Bug Fixes:
-  + Only show reaction fire target hexes
-  + Reduce outline size for counter overlay
-  + Critical hit
-    + Add to help
-  + Allow split during overstack
-    + Allow discarding unmanned weapons
+  + Warning/red for leader not being able to carry encumbered weapons
+  + Second broken message not red
 
   - Go through docs, add examples
   - Create tutorial
@@ -29,21 +25,21 @@ Special Rules/Scenarios
   - Cumulative VPs (last stand/rush)
   - Hidden counters (?) only some are infantry but can move like infantry
 
-001 4	? / 2P
-002	4 ? / 2P
-301	5	? / 2P
-003	4	? / 2P
-503	4	? / 2P
-508	4	? / 2P
-007	5	? / 2P
-303	4	? / 2P
-501	5	? / 2P
-308	3	? / 2P
-601	4	? / 2P
-401	3	? / 2P
-510	3	? / 2P
-603	3	? / 2P
-011	4	? / 2P
+001 4 ? / 2P
+002 4 ? / 2P
+301 5 ? / 2P
+003 4 ? / 2P
+503 4 ? / 2P
+508 4 ? / 2P
+007 5 ? / 2P
+303 4 ? / 2P
+501 5 ? / 2P
+308 3 ? / 2P
+601 4 ? / 2P
+401 3 ? / 2P
+510 3 ? / 2P
+603 3 ? / 2P
+011 4 ? / 2P
 
 006 (Romanian)
 203 (Little Stalingrad)

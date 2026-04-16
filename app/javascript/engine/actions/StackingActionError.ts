@@ -1,7 +1,10 @@
 export default class StackingActionError extends Error {
-  constructor(message: string) {
+  extra?: string;
+
+  constructor(message: string, extra?: string) {
     super(message)
     this.name = "StackingActionError"
+    this.extra = extra
     Object.setPrototypeOf(this, StackingActionError.prototype)
   }
 }

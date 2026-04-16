@@ -90,7 +90,7 @@ export default class Game {
 
   eliminatedUnits: (Unit | Feature)[]
 
-  refreshCallback: (g: Game, error?: [string, string]) => void;
+  refreshCallback: (g: Game, error?: [string, string, string?]) => void;
 
   internalCurrentPlayer: Player;
   internalInitiativePlayer: Player;
@@ -136,7 +136,7 @@ export default class Game {
 
   serverVersion: string;
 
-  constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string]) => void = () => {}) {
+  constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string, string?]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
     this.scenario = new Scenario(data.scenario, this)
@@ -949,7 +949,7 @@ export default class Game {
         } catch(err) {
           // Currently the only type of warning supported
           if (err instanceof StackingActionError) {
-            if (!m.id) { this.refreshCallback(this, ["stack", err.message]) }
+            if (!m.id) { this.refreshCallback(this, ["stack", err.message, err.extra]) }
             m.executed = true
             this.lastActionIndex = action.index
           } else { throw err }

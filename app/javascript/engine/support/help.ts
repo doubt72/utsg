@@ -411,7 +411,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
         rc = rc.concat(fp.why)
       }
       if (tohit < 11) {
-        rc.push(`-> critical hit on: ${tohit + 10} (${chance2D10(tohit + 9)}%)`)
+        rc.push(`-> critical hit on: ${tohit + 9} (${chance2D10(tohit + 8)}%)`)
         critical = true
       }
     } else if (target.armored) {
@@ -464,7 +464,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
       rc = rc.concat(mods.why)
     }
     if (tohit < 11) {
-      rc.push(`-> critical hit on: ${tohit + 10} (${chance2D10(tohit + 9)}%)`)
+      rc.push(`-> critical hit on: ${tohit + 9} (${chance2D10(tohit + 8)}%)`)
       critical = true
     }
   }
@@ -477,7 +477,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
     rc.push(`base roll of ${baseMorale}`)
     rc = rc.concat(mods.why)
     if (critical) {
-      rc.push(`-> on critical (2d10): ${moraleCheck + 3} (${chance2D10(moraleCheck + 2)}%)`)
+      rc.push(`-> on critical (2d10): ${moraleCheck + 4} (${chance2D10(moraleCheck + 4)}%)`)
     }
   } else if (!target.armored) {
     rc.push("")

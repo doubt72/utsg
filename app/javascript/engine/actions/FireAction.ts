@@ -269,7 +269,7 @@ export default class FireAction extends BaseAction {
                   `infantry effect roll: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
               }
               if (hitRoll.result.result > hitCheck) {
-                const critical = hitRoll.result.result >= hitCheck + 10
+                const critical = hitRoll.result.result > hitCheck + 8
                 if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
                   critical ? "passed (critical)" : "passed"
                 }</span>` }
@@ -445,7 +445,7 @@ export default class FireAction extends BaseAction {
               `roll for effect: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
           }
           if (hitRoll.result.result > hitCheck) {
-            const critical = hitRoll.result.result >= hitCheck + 10
+            const critical = hitRoll.result.result > hitCheck + 8
             targets.forEach(t => this.game.moraleChecksNeeded.push(
               { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary, critical }))
             if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
@@ -547,7 +547,7 @@ export default class FireAction extends BaseAction {
           }target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
         }
         if (hitRoll.result.result > hitCheck) {
-          const critical = hitRoll.result.result >= hitCheck + 10
+          const critical = hitRoll.result.result > hitCheck + 8
           let critMessage = false
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
