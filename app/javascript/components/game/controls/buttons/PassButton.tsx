@@ -21,10 +21,11 @@ export default function PassButton({ game, callback }: PassButtonProps) {
   }
 
   const text = () => {
+    const amount = game.passAmount
     if (game.gameState?.type === stateType.Pass) {
       return "confirm pass"
     } else {
-      return "pass (-1)"
+      return `pass (${amount})`
     }
   }
 

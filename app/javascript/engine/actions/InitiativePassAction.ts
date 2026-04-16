@@ -19,7 +19,7 @@ export default class InitiativePassAction extends BaseAction {
   }
 
   mutateGame(): void {
+    this.game.passInitiative()
     this.game.toggleInitiative()
-    this.game.updateInitiative(1)
   }
 }

@@ -50,7 +50,7 @@ export default function HousekeepingSection() {
         markers are replaced with tired markers.
       </p>
       <p>
-        Also, if initiative value is greater than 14, it is reduced to 14 on the same side.
+        Also, if initiative value is greater than 16, it is reduced to 16 on the same side.
       </p>
       <h3>{section}.3. Checking for Smoke Dispersion</h3>
       <p>

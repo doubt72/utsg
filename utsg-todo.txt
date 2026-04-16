@@ -1,10 +1,12 @@
 Features/Bug Fixes:
-  - Add message when trying to select opponent counters
-  - Only show reaction fire target hexes
+  + Add message when trying to select opponent counters
+  + Pass only moves initiative when not on side
+
+  ? Only show reaction fire target hexes
   - Create tutorial
+  - Go through docs, add examples
   - Roll back smoke on reaction fire?
   - Add Some Developer Notes
-  - Go through docs, add examples
   - Email turn notifications
 
 Nice to Have Eventually:

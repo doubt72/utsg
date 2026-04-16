@@ -1084,6 +1084,19 @@ export default class Game {
     this.clearGameState()
   }
 
+  get passAmount(): number {
+    if (this.currentPlayer === 1) {
+      if (this.initiative < 0) { return 0 }
+    } else {
+      if (this.initiative > 0) { return 0 }
+    }
+    return -1
+  }
+
+  passInitiative() {
+    this.updateInitiative(this.passAmount)
+  }
+
   updateInitiative(amount: number) {
     if (this.currentPlayer === 1) {
       this.initiative += amount
@@ -1095,8 +1108,8 @@ export default class Game {
   }
 
   endTurnInitiative() {
-    if (this.initiative > 3) { this.initiative = 3 }
-    if (this.initiative < -3) { this.initiative = -3 }
+    if (this.initiative > 4) { this.initiative = 4 }
+    if (this.initiative < -4) { this.initiative = -4 }
   }
 
   split() {

@@ -1,3 +1,9 @@
+## 0.55 Alpha
+
+- Show message when selecting non-active player units
+- Passing doesn't shift initiative if initiative on player's side
+- Only reset to 16 instead of 14
+
 ## 0.54 Alpha
 
 - Update 007

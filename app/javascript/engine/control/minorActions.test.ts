@@ -9,8 +9,43 @@ import FireCheckState from "./state/FireCheckState";
 import Unit from "../Unit";
 import WeatherState from "./state/WeatherState";
 import BaseAction from "../actions/BaseAction";
+import PassState from "./state/PassState";
 
 describe("minor actions", () => {
+  test("passing changes initiative on opponent side", () => {
+    const game = createBlankGame()
+
+    game.initiative = 2
+    game.setCurrentPlayer(1)
+
+    game.setGameState(new PassState(game))
+    game.gameState?.finish()
+    expect(game.initiative).toBe(1)
+  })
+
+  test("passing changes initiative at zero", () => {
+    const game = createBlankGame()
+
+    game.initiative = 0
+    game.setCurrentPlayer(1)
+
+    game.setGameState(new PassState(game))
+    game.gameState?.finish()
+    expect(game.initiative).toBe(-1)
+  })
+
+  test("passing doesn't change initiative on own side", () => {
+    const game = createBlankGame()
+
+    game.initiative = -2
+    game.setCurrentPlayer(1)
+
+    game.setGameState(new PassState(game))
+    game.gameState?.finish()
+    expect(game.initiative).toBe(-2)
+  })
+
+
   test("skips no chance of precip", () => {
     const game = createBlankGame()
     const map = game.scenario.map
@@ -121,7 +156,7 @@ describe("minor actions", () => {
     expect(action.stringValue).toBe(
       "update all unit statuses: remove all pinned, routed, tired, and activated markers; exhausted units become tired"
     )
-    expect(game.initiative).toBe(-3)
+    expect(game.initiative).toBe(-4)
   })
 
   test("smoke disperses", () => {

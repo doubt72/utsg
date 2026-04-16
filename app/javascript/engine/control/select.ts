@@ -68,7 +68,14 @@ export function selectable(map: Map, selection: CounterSelectionTarget): boolean
   if (game.gameState) { return game.gameState.selectable(selection) }
   const same = target.playerNation === game.currentPlayerNation
   if (game.phase === gamePhaseType.Main) {
-    if (!same && !game.gameState) { return false }
+    if (!same && !game.gameState) {
+      if (game.playerOneName === game.playerTwoName) {
+        game.addMessage("can't activate non-active player units")
+      } else {
+        game.addMessage("can't activate opponent's units")
+      }
+      return false
+    }
     if (target.parent && target.parent.playerNation !== game.currentPlayerNation) { return false }
     return true
   } else if (game.phase === gamePhaseType.Deploy) {

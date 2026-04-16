@@ -109,10 +109,13 @@ export default function MainPhaseSection() {
       <p>These are all of the actions that can be performed by the player with initiative:</p>
       <ol>
         <li>
-          <strong>Pass</strong> (-1): a player may choose (or be forced to choose if no other
+          <strong>Pass</strong> (-1 or 0): a player may choose (or be forced to choose if no other
           options are available) to pass and take no action. Initiative is passed to the other
           player. Two passes in a row (one by each player) ends the Main Phase. This is the only
-          &quot;action&quot; that is not followed by an initiative check.
+          &quot;action&quot; that is not followed by an initiative check.  Passing moves initiative
+          towards the passing player, unless initiative is already on that player&apos;s side,
+          in which case it passes control to the opposing player without moving the initiative
+          marker.
         </li>
         <li>
           <strong>Fire</strong> (2): a ranged attack from one or more of a player&apos;s units on
