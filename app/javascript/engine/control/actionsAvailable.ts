@@ -178,6 +178,7 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     const select = currSelection(game, false)
     if (select) {
       actions.push({ type: "overstack_reduce" })
+      if (canSplit(select, game.scenario.map)) { actions.push({ type: "split_squad" }) }
     }
   } else if (game.gameState?.type === stateType.SmokeCheck) {
     actions.unshift({ type: "none", message: "checking smoke dispersion" })

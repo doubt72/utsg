@@ -462,9 +462,10 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
-      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
+        "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)")
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
+      { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -552,10 +553,11 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.type).toBe("reaction_fire")
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle, Rifle at C3; targeting roll: " +
-      "target 6, rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
+        "target 6, rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)")
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
-      { unit: unit2, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
+      { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false, critical: true },
+      { unit: unit2, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -649,11 +651,11 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle, Rifle, Rifle at C3; targeting " +
         "roll: target 6, rolled 100 [d10x10: 10 x 10]: hit; " +
-        "roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed")
+        "roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed (critical)")
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit3, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
-      { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
-      { unit: unit2, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false },
+      { unit: unit3, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false, critical: true },
+      { unit: unit, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false, critical: true },
+      { unit: unit2, from: [new Coordinate(0, 2)], to: new Coordinate(2, 2), incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -1049,10 +1051,11 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
-      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
+        "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false },
+      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -1069,7 +1072,7 @@ describe("reaction fire attacks", () => {
     Math.random = original
 
     expect(game.lastAction?.stringValue).toBe(
-      "German morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
+      "German morale check for Rifle (2d10): target 16, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     const counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)
@@ -1140,10 +1143,11 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
-      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
+        "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false },
+      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -1160,7 +1164,7 @@ describe("reaction fire attacks", () => {
     Math.random = original
 
     expect(game.lastAction?.stringValue).toBe(
-      "German morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
+      "German morale check for Rifle (2d10): target 16, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     const counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)
@@ -1242,10 +1246,11 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
-      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
+        "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit1, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false },
+      { unit: unit1, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -1261,7 +1266,7 @@ describe("reaction fire attacks", () => {
     Math.random = original
 
     expect(game.lastAction?.stringValue).toBe(
-      "German morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
+      "German morale check for Rifle (2d10): target 16, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     const counter = game.findCounterById(unit1.id)
     expect(counter?.hex?.x).toBe(2)
@@ -1343,10 +1348,11 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
-      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
+        "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false },
+      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -1357,7 +1363,7 @@ describe("reaction fire attacks", () => {
     Math.random = original
 
     expect(game.lastAction?.stringValue).toBe(
-      "German morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
+      "German morale check for Rifle (2d10): target 16, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)
@@ -1442,10 +1448,11 @@ describe("reaction fire attacks", () => {
     expect(game.lastAction?.data.fire_data?.moveSeq).toBe(2)
     expect(game.lastAction?.stringValue).toBe(
       "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at C3; targeting roll: target 6, " +
-      "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, rolled 20 [2d10: 10 + 10]: passed"
+        "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 10, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false },
+      { unit: unit, from: [new Coordinate(0, 2)], to: fireHex, incendiary: false, critical: true },
     ])
 
     expect(initiativeCheck(game)).toBe(false)
@@ -1457,7 +1464,7 @@ describe("reaction fire attacks", () => {
     Math.random = original
 
     expect(game.lastAction?.stringValue).toBe(
-      "German morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
+      "German morale check for Rifle (2d10): target 16, rolled 2 [2d10: 1 + 1], unit breaks, move short at C3")
     expect(game.moraleChecksNeeded).toStrictEqual([])
     let counter = game.findCounterById(unit.id)
     expect(counter?.hex?.x).toBe(2)

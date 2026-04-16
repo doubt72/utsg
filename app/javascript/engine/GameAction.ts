@@ -94,7 +94,7 @@ export type GameActionMoveData = {
 }
 
 export type GameActionMoraleData = {
-  mod: number, why: string[], short: boolean,
+  mod: number, why: string[], short: boolean, critical: boolean,
 }
 
 export type GameActionRoutData = {

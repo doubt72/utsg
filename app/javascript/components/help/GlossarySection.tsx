@@ -245,6 +245,14 @@ const terms: GlossaryData[] = [
     ),
   },
   {
+    name: "Critical Hit",
+    desc: (
+      <>
+        a significant hit that adds a penalty to morale checks.
+      </>
+    ),
+  },
+  {
     name: "Armor",
     desc: (
       <>

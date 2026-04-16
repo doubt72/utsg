@@ -261,6 +261,28 @@ export default function FireSection() {
             <td>1</td>
             <td>0</td>
           </tr>
+          <tr>
+            <td>Critical Hit</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>N/A</td>
+            <td>20</td>
+            <td>19</td>
+            <td>18</td>
+            <td>17</td>
+            <td>16</td>
+            <td>15</td>
+            <td>14</td>
+            <td>13</td>
+            <td>12</td>
+            <td>11</td>
+            <td>10</td>
+          </tr>
         </tbody>
       </table>
       <ol>
@@ -303,6 +325,11 @@ export default function FireSection() {
           Roll 2d10 (add the two dice together). If the roll is higher than the adjusted to-hit, the
           result is a hit, otherwise no effect. A roll of 2 always misses (but 20 does not guarantee
           a hit).
+        </li>
+        <li>
+          Rolling 10 or more above the to-hit threshold results in a <strong>critical</strong> hit,
+          which results in a negative modifier to morale checks (see below).  Critical hits have
+          no other effect.
         </li>
         <li>
           Regardless of whether the result is a hit, if the result is less than or equal to the
@@ -410,8 +437,8 @@ export default function FireSection() {
         <li>
           If firing area weapons (mortars, offboard artillery or satchel charges), infantry are
           targeted separately from vehicles. For all of the infantry, use a single check for effect
-          (i.e., use the firepower chart as if it was an infantry attack but no modifiers). Then for
-          each fully-armored units, fire as targeted fire above (don&apos;t forget to halve
+          (i.e., use the firepower chart as if it was an infantry attack but no modifiers.  Critical
+          hits do apply). Then for each fully-armored units, fire as targeted fire above (don&apos;t forget to halve
           firepower), but don&apos;t check for turret or hull hit, use lowest armor value (whether
           turret or hull) and no other modifiers. Ties immobilize vehicle. Unarmored or partially
           armored vehicles are destroyed.
@@ -447,6 +474,7 @@ export default function FireSection() {
         </li>
         <li>Subtract cover (unless the attack was from an incendiary weapon).</li>
         <li>Add one if pinned.</li>
+        <li>Add four if a critical hit.</li>
         <li>
           Roll 2d10 (add them together). If the result is equal to the modified check, pin the unit.
           If the result is less than the modified check, break it, or if the unit was already broken,

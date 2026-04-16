@@ -562,8 +562,11 @@ export default class Map {
       x1 = loc.x - 50
       y1 = loc.y - 50
     }
-    let x2 = x1 + size*176 + 16
-    let y2 = y1 + 192
+    const outwidth = 12
+    let x2 = x1 + size*(160 + outwidth) + outwidth
+    let y2 = y1 + 160 + outwidth*2
+    // let x2 = x1 + size*176 + 16
+    // let y2 = y1 + 192
     if (x2 > max.x) {
       const diff = max.x - x2
       x1 += diff
@@ -586,8 +589,8 @@ export default class Map {
       y2 += diff
     }
     return {
-      path: roundedRectangle(x1, y1, x2 - x1, y2 - y1), x: x1 + 5, y: y1 + 7.5, y2: y2,
-      style: { fill: "rgba(0,0,0,0.4" },
+      path: roundedRectangle(x1, y1, x2 - x1, y2 - y1, outwidth+4), x: x1 + 5, y: y1 + 7.5, y2: y2,
+      style: { fill: "rgba(0,0,0,0.25" },
     }
   }
 

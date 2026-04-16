@@ -28,21 +28,21 @@ export default class MoraleCheckAction extends BaseAction {
 
   get htmlValue(): string {
     let rc = ""
-    const check = baseMorale + this.moraleMods.mod
+    const check = baseMorale + this.moraleMods.mod + (this.moraleMods.critical ? 4 : 0)
     let short = false
     const roll = this.diceResult.result.result
     rc += `${
       formatNation(this.game, this.player)
     } morale check for ${formatNation(this.game, this.player, this.target.name)} (2d10): ` +
       `target ${formatTarget(check)}, rolled ${formatDieResult(this.diceResult.result)}`
-    if (roll < check) {
+    if (roll < check || roll === 2) {
       if (this.target.status === unitStatus.Broken) {
         rc += `, unit <span style="color: ${failRed()};">eliminated</span>`
       } else {
         rc += `, unit <span style="color: ${failRed()};">breaks</span>`
         short = true
       }
-    } else if (roll == check) {
+    } else if (roll === check && roll !== 20) {
       if (this.target.status !== unitStatus.Broken) {
         rc += `, unit is <span style="color: ${failRed()};">pinned</span>`
         short = true
@@ -73,9 +73,9 @@ export default class MoraleCheckAction extends BaseAction {
     this.game.moraleChecksNeeded.shift()
     const counter = this.game.findCounterById(this.target.id) as Counter
     const hex = counter.hex as Coordinate
-    const check = baseMorale + this.moraleMods.mod
+    const check = baseMorale + this.moraleMods.mod + (this.moraleMods.critical ? 4 : 0)
     const roll = this.diceResult.result.result
-    if (roll < check) {
+    if (roll < check || roll === 2) {
       if (counter.unit.isBroken) {
         const hex = counter.hex as Coordinate
         this.game.scenario.map.eliminateCounter(hex, this.target.id)
@@ -90,7 +90,7 @@ export default class MoraleCheckAction extends BaseAction {
           this.game.addActionAnimations([{ loc: hex, type: "break" }])
         }
       }
-    } else if (roll === check && !counter.unit.isBroken) {
+    } else if (roll === check && !counter.unit.isBroken && roll !== 20) {
       counter.unit.pinned = true
       if (hex.x != this.target.x || hex.y !== this.target.y) {
         const old = new Coordinate(this.target.x, this.target.y)

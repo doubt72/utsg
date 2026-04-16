@@ -20,7 +20,8 @@ export default class OverstackState extends BaseState {
     const y = selection.target.xy.y
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
-    if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
+    if (!counter.unit.isFeature && (this.samePlayer(counter.unit) ||
+          (selection.counter.unit.operated && selection.counter.unit.parent === undefined))) {
       if (this.openHex(x, y) === hexOpenType.Open) {
         counter.unit.select()
         this.map.clearOtherSelections(x, y, counter.unit.id)
@@ -31,7 +32,15 @@ export default class OverstackState extends BaseState {
 
   selectable(selection: CounterSelectionTarget): boolean {
     if (selection.target.type === "reinforcement") { return false }
-    if (selection.counter.unit.playerNation !== this.game.currentPlayerNation) { return false }
+    if (selection.counter.unit.playerNation !== this.game.currentPlayerNation) {
+      if (!selection.counter.unit.operated || selection.counter.unit.parent !== undefined) {
+        return false
+      }
+    }
+    if (selection.counter.unit.operated && selection.counter.unit.parent !== undefined) {
+      return false
+    }
+    if (selection.counter.unit.isWreck) { return false }
     const loc = selection.target.xy
     return this.openHex(loc.x, loc.y) === hexOpenType.Open
   }

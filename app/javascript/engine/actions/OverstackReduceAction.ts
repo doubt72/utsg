@@ -1,5 +1,5 @@
 import { Coordinate } from "../../utilities/commonTypes";
-import { formatCoordinate } from "../../utilities/graphics";
+import { formatCoordinate, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
 import organizeStacks from "../support/organizeStacks";
@@ -19,10 +19,9 @@ export default class OverstackReduceAction extends BaseAction {
   get type(): string { return "overstack_reduce" }
 
   get htmlValue(): string {
-    const name = this.player === 1 ? this.game.playerOneName : this.game.playerTwoName
-    return `${name} removed ${this.target.name} from ${
-      formatCoordinate(new Coordinate(this.target.x, this.target.y))
-    }`
+    return `${formatNation(this.game, this.player)} player removed ` +
+      `${formatNation(this.game, this.player, this.target.name)} from ` +
+      `${formatCoordinate(new Coordinate(this.target.x, this.target.y))}`
   }
 
   get undoPossible() {

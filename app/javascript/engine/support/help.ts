@@ -389,6 +389,7 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
   const fp = firepower(game, firing, target, to, game.fireState.sponson, wire)
   const hindrance = fireHindrance(game, firing, to)
   const source = firing[0].counter.unit
+  let critical = false
   if (firing[0].counter.unit.targetedRange || firing[0].counter.unit.offBoard) {
     const rotated = game.fireState.path.length > 1
     const mult = rangeMultiplier(
@@ -408,6 +409,10 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
       rc.push(`firepower: ${fp.fp}`)
       if (fp.why.length > 1) {
         rc = rc.concat(fp.why)
+      }
+      if (tohit < 11) {
+        rc.push(`-> critical hit on: ${tohit + 10} (${chance2D10(tohit + 9)}%)`)
+        critical = true
       }
     } else if (target.armored) {
       if (target.turreted) {
@@ -458,6 +463,10 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
       }
       rc = rc.concat(mods.why)
     }
+    if (tohit < 11) {
+      rc.push(`-> critical hit on: ${tohit + 10} (${chance2D10(tohit + 9)}%)`)
+      critical = true
+    }
   }
   if (target.canCarrySupport) {
     rc.push("")
@@ -467,6 +476,9 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
     rc.push(`-> morale check (2d10): ${moraleCheck} (${chance2D10(moraleCheck)}%)`)
     rc.push(`base roll of ${baseMorale}`)
     rc = rc.concat(mods.why)
+    if (critical) {
+      rc.push(`-> on critical (2d10): ${moraleCheck + 3} (${chance2D10(moraleCheck + 2)}%)`)
+    }
   } else if (!target.armored) {
     rc.push("")
     rc.push("-> hit destroys vehicle")

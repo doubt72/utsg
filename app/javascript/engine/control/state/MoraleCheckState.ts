@@ -19,7 +19,7 @@ export default class MoraleCheckState extends BaseState {
     const counter = game.findCounterById(check.unit.id) as Counter
     this.selection = [{ x: check.to.x, y: check.to.y, id: check.unit.id, name: check.unit.name, counter }]
     this.moraleCheck = {
-      mod: modifiers.mod, why: modifiers.why,
+      mod: modifiers.mod, why: modifiers.why, critical: check.critical,
       short: check.to.x !== counter.hex?.x || check.to.y !== counter.hex?.y,
     }
     if (!check.unit.selected) { check.unit.select() }

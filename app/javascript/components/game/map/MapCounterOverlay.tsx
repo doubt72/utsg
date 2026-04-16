@@ -194,9 +194,12 @@ export default function MapCounterOverlay({
           const transport = counter.unit.transport && (counter.children.length > 1 ||
             (counter.children.length === 1 && !counter.children[0].unit.crewed)) ?
             getLength(counter.unit, true) : undefined
+          const outwidth = 6
+          const dblwidth = outwidth*2
+          const x = layout.x + i*(160+dblwidth) + dblwidth*2
           const shiftBadges = transport || counter.parent?.unit.transport
           const badges = counterInfoBadges(
-            map, layout.x+i*176 + 32, layout.y2 + 4 + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 0)
+            map, x, layout.y2 + 20 - dblwidth + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 3)
           ).map((b, i) => {
             const arrow = b.arrow ?
               <g>
@@ -215,7 +218,7 @@ export default function MapCounterOverlay({
             )
           })
           helpOverlays.push(
-            <MapCounterOverlayHelp key={i} xx={layout.x + i*176+170} yy={layout.y+10} maxX={maxX} maxY={maxY}
+            <MapCounterOverlayHelp key={i} xx={x + 167 - dblwidth*2} yy={layout.y - 20 + dblwidth*2} maxX={maxX} maxY={maxY}
                                    map={map} scale={scale} counter={cd} setHelpDisplay={setHelpDisplay} />
           )
           let target: CounterSelectionTarget | undefined = undefined
@@ -231,8 +234,10 @@ export default function MapCounterOverlay({
               }, counter: cd,
             }
           }
+          const ox = layout.x/2 + i*(80 + outwidth) - 5.5 + outwidth
+          const oy = layout.y/2 - 5 + outwidth
           selectionOverlays.push(
-            <g key={i} transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
+            <g key={i} transform={`scale(2) translate(${ox} ${oy})`}>
               <path d={counterPath(cd)} style={{ fill: clearColor }}
                     onClick={(e: React.MouseEvent) => {
                       if (xx !== undefined && yy !== undefined) {
@@ -262,7 +267,7 @@ export default function MapCounterOverlay({
                   style={{ fill: clearColor, stroke: "#FFF", strokeWidth: 1.5, strokeDasharray: "5 4" }} />  : ""
           return (
             <g key={i} >
-              <g transform={`scale(2) translate(${layout.x/2 + i*88 + 2.5} ${layout.y/2 + 3})`}>
+              <g transform={`scale(2) translate(${ox} ${oy})`}>
                 { unit ? <path d={counterOutline(cd, getLength(unit, false), 1)}
                                 style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} /> : "" }
                 { outerLine }

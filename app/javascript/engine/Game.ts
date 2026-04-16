@@ -66,7 +66,9 @@ export type SimpleFeatureCheck = { feature: Feature, loc: Coordinate }
 export type SimpleHexCheck = {
   loc: Coordinate, vehicle?: boolean, incendiary?: boolean, vehicle_incendiary?: boolean,
 }
-export type ComplexCheck = { unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean }
+export type ComplexCheck = {
+  unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean, critical: boolean,
+}
 export type CloseCheck = {
   loc: Coordinate, state: CloseProgress, p1Reduce: number, p2Reduce: number,
 }
@@ -313,10 +315,14 @@ export default class Game {
     const animations = data.map(d => {
       if (d.type === "hit") {
         return { loc: d.loc, message: ["hit"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "crit") {
+        return { loc: d.loc, message: ["critical", "hit"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "miss") {
         return { loc: d.loc, message: ["miss"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "effect") {
         return { loc: d.loc, message: ["effective"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "criteffect") {
+        return { loc: d.loc, message: ["critical", "effect"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "noeffect") {
         return { loc: d.loc, message: ["no", "effect"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "drift") {
@@ -692,7 +698,7 @@ export default class Game {
         const roll = action as CloseCombatRollAction
         checks.push({
           loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
-          state: closeProgress.needsCasualties, p1Reduce: roll.p1Hits, p2Reduce: roll.p2Hits
+          state: closeProgress.NeedsCasualties, p1Reduce: roll.p1Hits, p2Reduce: roll.p2Hits
         })
       }
       if (action.type === "close_combat_reduce") {

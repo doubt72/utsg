@@ -337,7 +337,8 @@ export function hexPath(loc: Coordinate, r: number, rotated: boolean): string {
 export function counterOutline(counter: Counter, width: number, outline: number): string {
   const x = counter.x
   const y = counter.y
-  const xWidth = width * 88 - 8
+  const outwidth = 6
+  const xWidth = width * (80+outwidth) - outwidth
   const corner = 4 + outline
   return [
     "M", x+xWidth-corner+outline, y-outline,

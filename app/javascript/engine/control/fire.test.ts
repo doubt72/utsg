@@ -107,7 +107,7 @@ describe("ranged fire attacks", () => {
       expect(game.currentPlayer).toBe(1)
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
 
       expect(firing.isActivated).toBe(true)
@@ -161,7 +161,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
     })
 
@@ -211,7 +211,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
     })
 
@@ -262,7 +262,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
     })
 
@@ -312,7 +312,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
     })
 
@@ -363,7 +363,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
     })
 
@@ -413,7 +413,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
         "target 14, rolled 20 [2d10: 10 + 10]: hit"
@@ -468,7 +468,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
         "target 13, rolled 20 [2d10: 10 + 10]: hit"
@@ -523,11 +523,13 @@ describe("ranged fire attacks", () => {
         "firepower: 17",
         "- base to hit: 9",
         "- minus 1 for less than half range",
+        "-> critical hit on: 18 (6%)",
         "",
         "-> morale check (2d10): 10 (55%)",
         "base roll of 15",
         "- minus morale 3",
         "- minus cover 2",
+        "-> on critical (2d10): 13 (36%)"
       ])
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
@@ -554,7 +556,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
     })
 
@@ -616,7 +618,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
       )
     })
 
@@ -729,7 +731,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
     })
 
@@ -1191,7 +1193,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc, floc2], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc, floc2], to: tloc, incendiary: false, critical: true }]
       )
 
       expect(firing.isActivated).toBe(true)
@@ -1440,7 +1442,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
     })
 
@@ -1504,8 +1506,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual(
         [
-          { unit: target, from: [floc], to: tloc, incendiary: false },
-          { unit: target2, from: [floc], to: tloc2, incendiary: false },
+          { unit: target, from: [floc], to: tloc, incendiary: false, critical: false },
+          { unit: target2, from: [floc], to: tloc2, incendiary: false, critical: false },
         ]
       )
     })
@@ -1594,8 +1596,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual(
         [
-          { unit: target, from: [floc, floc2], to: tloc, incendiary: false },
-          { unit: target2, from: [floc, floc2], to: tloc2, incendiary: false },
+          { unit: target, from: [floc, floc2], to: tloc, incendiary: false, critical: true },
+          { unit: target2, from: [floc, floc2], to: tloc2, incendiary: false, critical: true },
         ]
       )
     })
@@ -1698,7 +1700,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
     })
 
@@ -1804,8 +1806,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: false },
-        { unit: target2, from: [floc], to: tloc, incendiary: false },
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: false },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: false },
       ])
       expect(target3.immobilized).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
@@ -1877,8 +1879,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: false },
-        { unit: target2, from: [floc], to: tloc, incendiary: false },
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: false },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: false },
       ])
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll for T-34 M40: target 20, rolled 20 [2d10: 10 + 10]: tie, vehicle immobilized"
@@ -2062,8 +2064,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: false },
-        { unit: target2, from: [floc], to: tloc, incendiary: false },
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: true },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: true },
       ])
       expect(target3.isWreck).toBe(true)
       expect(game.playerTwoScore).toBe(15)
@@ -2463,10 +2465,13 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: false },
-        { unit: target2, from: [floc], to: tloc, incendiary: false },
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: true },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: true },
       ])
       expect(target3.isWreck).toBe(true)
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "infantry effect roll: target 7, rolled 20 [2d10: 10 + 10]: passed (critical)"
+      )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll for T-34 M40: target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
@@ -2545,8 +2550,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: true },
-        { unit: target2, from: [floc], to: tloc, incendiary: true },
+        { unit: target, from: [floc], to: tloc, incendiary: true, critical: true },
+        { unit: target2, from: [floc], to: tloc, incendiary: true, critical: true },
       ])
       expect(target3.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
@@ -2633,7 +2638,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: firing, from: [], to: floc, incendiary: true },
+        { unit: firing, from: [], to: floc, incendiary: true, critical: false },
       ])
       expect(target3.isWreck).toBe(false)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
@@ -2717,8 +2722,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: true },
-        { unit: target2, from: [floc], to: tloc, incendiary: true },
+        { unit: target, from: [floc], to: tloc, incendiary: true, critical: false },
+        { unit: target2, from: [floc], to: tloc, incendiary: true, critical: false },
       ])
       expect(target3.isWreck).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
@@ -2948,8 +2953,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: false },
-        { unit: target2, from: [floc], to: tloc, incendiary: false },
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: false },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: false },
       ])
       expect(target3.isWreck).toBe(false)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
@@ -3306,10 +3311,10 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual([
-        { unit: target, from: [floc], to: tloc, incendiary: false },
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: true },
       ])
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "target 10, rolled 20 [2d10: 10 + 10]: hit"
+        "target 10, rolled 20 [2d10: 10 + 10]: critical hit"
       )
 
       const all = map.allUnits
@@ -3683,7 +3688,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
 
       const all = map.allUnits

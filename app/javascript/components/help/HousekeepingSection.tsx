@@ -40,6 +40,14 @@ export default function HousekeepingSection() {
         hex.
       </p>
       <p>
+        Infantry support and crewed weapons may not be selected to be removed if assigned to an infantry
+        unit.  Dropped support weapons and uncrewed weapons may be selected (in other words, infantry
+        unit operating the weapon must be removed first, or if capturing a hex that had opponent weapons,
+        those may be removed to bring the stack under the stacking limit if the player&apos;s stack
+        would have otherwise been legal).  Unbroken, unpinned squads may
+        be split at this time.  Wrecks may not be removed.
+      </p>
+      <p>
         The game ends on the last turn after this phase; there&apos;s no reason to update status,
         check smoke, or check variable weather as it can no longer have any effect on the game, and
         the chance that blazes spreading could is infinitessimal even if it wasn&apos;t skipped.

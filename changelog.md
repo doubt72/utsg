@@ -1,3 +1,12 @@
+## 0.56 Alpha
+
+- Add critical hit (only affects morale checks)
+- Allow discarding unmanned or uncarried support weapons to be removed to get under stacking limit.
+- Allow splitting squads during overstack reduction
+- Only show firing hexes as targets in reaction fire
+- Graphical and display tweaks
+- Bug fix: reload forgets close combat roll result
+
 ## 0.55 Alpha
 
 - Show message when selecting non-active player units

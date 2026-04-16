@@ -66,7 +66,15 @@ export default class FireState extends BaseState {
 
   openHex(x: number, y: number) {
     const to = new Coordinate(x, y)
-    if (inRange(this.game, to)) { return hexOpenType.Open }
+    if (inRange(this.game, to)) {
+      if (this.reaction) {
+        for (const h of reactionFireHexes(this.game)) {
+          if (h.x === x && h.y === y) { return hexOpenType.Open }
+        }
+        return hexOpenType.Closed
+      }
+      return hexOpenType.Open
+    }
     return hexOpenType.Closed
   }
 
