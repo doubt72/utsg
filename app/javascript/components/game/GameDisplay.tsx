@@ -42,7 +42,7 @@ export default function GameDisplay() {
   const [hideCounters, setHideCounters] = useState(false)
   const [showTerrain, setShowTerrain] = useState(false)
   const [showLos, setShowLos] = useState(false)
-  const [shrinkButtons, setShrinkButtons] = useState<0 | 1>(0)
+  const [shrinkButtons, setShrinkButtons] = useState<boolean>(false)
   const [checkCancelHideLOS, setCheckCancelHideLOS] = useState<number>(0)
   const [checkCancelTerrain, setCheckCancelTerrain] = useState<number>(0)
 
@@ -142,7 +142,7 @@ export default function GameDisplay() {
                   hexCallback={hexSelection} counterCallback={unitSelection}
                   directionCallback={directionSelection} resetCallback={resetDisplay}
                   clearActionCallback={clearAction} updateCallback={setUpdate}
-                  shrinkCallback={(n: 0 | 1) => setShrinkButtons(n)}
+                  shrinkCallback={(n: boolean) => setShrinkButtons(n)}
                   checkCancelHideLOS={checkCancelHideLOS} checkCancelTerrain={checkCancelTerrain} />
     )
   }, [

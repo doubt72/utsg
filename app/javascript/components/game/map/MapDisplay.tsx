@@ -56,7 +56,7 @@ interface MapDisplayProps {
   resetCallback?: () => void;
   clearActionCallback?: () => void;
   updateCallback?: () => void;
-  shrinkCallback?: (shrink: 0 | 1) => void;
+  shrinkCallback?: (shrink: boolean) => void;
   checkCancelHideLOS?: number;
   checkCancelTerrain?: number;
 }
@@ -155,21 +155,25 @@ export default function MapDisplay({
   const [height, setHeight] = useState<number>(minHeight(window.innerHeight, 1, map))
 
   const [iShrink, setIShrink] = useState<0 | 1 | 2>(0)
-  const [tShrink, setTShrink] = useState<0 | 1>(0)
+  const [tShrink, setTShrink] = useState<0 | 1 | 2>(0)
 
   useEffect(() => {
-    const value = width < minWidth(
-      window.innerHeight, scale, map, (map.game?.alliedSniper || map.game?.axisSniper) ? 1350 : 1235
-    ) ? 1 : 0
+    if (!map.game) { return}
+    const turnWidth = (map.game.scenario.turns + 1) * 88 +
+      ((map.game?.alliedSniper || map.game?.axisSniper) ? 880 : 800)
+    let value: 0 | 1 | 2 = width < minWidth(window.innerWidth, scale, map, turnWidth) ? 1 : 0
+    if(width < minWidth(
+      window.innerWidth, scale, map, (map.game?.alliedSniper || map.game?.axisSniper) ? 1330 : 1250
+    )) { value = 2 }
     setTShrink(value)
-    shrinkCallback((map.game?.alliedSniper || map.game?.axisSniper) ? 0 : value)
-  }, [width])
+    shrinkCallback(window.innerWidth < 1150)
+  }, [width, map, map.game])
 
   useEffect(() => {
     let shrink: 0 | 1 | 2 = height < minHeight(window.innerHeight, scale, map, 1144) ? 1 : 0
     if (height < minHeight(window.innerHeight, scale, map, 904)) { shrink = 2 }
     setIShrink(shrink)
-  }, [height])
+  }, [height, map, map.game])
 
   // IDEK what I'm doing with types here
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
@@ -464,17 +468,20 @@ export default function MapDisplay({
         <InitiativeDisplay map={map} ovCallback={setOverlay} hideCounters={hideCounters}
                            small={iShrink} xx={width / scale - 192} yy={392 + 50 / scale - 50} />
     )
+    let xx = width / scale - 677 - (checkMin(map) ? 15 : 0) + (tShrink === 2 ? 240 : 0)
+    if (map.game && tShrink === 0) { xx = width / scale - map.game?.scenario.turns*88 - 316 }
     setTurn(() =>
       map.preview || preview ? undefined :
-        <TurnDisplay xx={width / scale - 677 - (checkMin(map) ? 15 : 0) + (tShrink === 1 ? 240 : 0)} small={tShrink}
+        <TurnDisplay xx={xx} small={tShrink}
                      yy={52 + 50 / scale - 50} hideCounters={hideCounters} map={map}
                      ovCallback={setOverlay}/>
     )
     setSniper(() => {
-      const x = width / scale - 959 - (checkMin(map) ? 15 : 0)
+      let xx = width / scale - 959 - (checkMin(map) ? 15 : 0) + (tShrink === 2 ? 240 : 0)
+      if (map.game && tShrink === 0) { xx = width / scale - map.game?.scenario.turns*88 - 598 }
       return map.preview || preview || (!map.game?.alliedSniper && !map.game?.axisSniper) ?
         undefined :
-        <SniperDisplay xx={x + (tShrink === 1 ? 240 : 0)} yy={52 + 50 / scale - 50}
+        <SniperDisplay xx={xx} yy={52 + 50 / scale - 50}
                        hideCounters={hideCounters} map={map} ovCallback={setOverlay}/>
     })
     setReinforcements(() =>

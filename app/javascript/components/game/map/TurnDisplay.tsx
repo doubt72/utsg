@@ -12,7 +12,7 @@ interface TurnDisplayProps {
   xx: number;
   yy: number;
   hideCounters: boolean;
-  small: 0 | 1;
+  small: 0 | 1 | 2;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
 }
@@ -63,12 +63,12 @@ export default function TurnDisplay({
   }
 
   const offset = (game: Game, turn: number): number => {
-    if (small === 0) { return 0 }
+    if (small === 0 || small === 1) { return 0 }
     return slots().slice(1).reduce((sum, n) => (turn >= n && n !== game.turn + 1) ? sum + 1 : sum, 0)
   }
 
   const totalOffset = (): number => {
-    if (small === 1) {
+    if (small === 2) {
       return (slots().length - 1) * 60
     }
     return 0
@@ -76,18 +76,33 @@ export default function TurnDisplay({
 
   const shrink = (game: Game, turn: number): boolean => {
     if (game.turn === turn) { return false}
-    if (small === 1 && game.turn !== turn) { return true }
+    if (small === 2 && game.turn !== turn) { return true }
     return false
   }
 
   useEffect(() => {
+    if (!map.game) { return }
     let oldShift = 0
+    const width = small === 0 ? 100 + map.game.scenario.turns * 90 : 460 + 15 * shifts(4) - totalOffset()
     setBase(
       <g>
-        <path d={roundedRectangle(xx, yy, 460 + 15 * shifts(4) - totalOffset(), 100)}
+        <path d={roundedRectangle(xx, yy, width, 100)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
         {
-          slots().map((n, i) => {
+          small === 0 ? [...Array(map.game.scenario.turns + 1).keys()].map(n => {
+            const x = xx + 10 + 90*n
+            const y = yy + 10
+            return (
+              <g key={n}>
+                <path d={roundedRectangle(x, y, 80, 80, 4)}
+                      style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
+                <text x={x + 40} y={y + (n ? 50 : 44)} fontSize={n ? 40 : 20} textAnchor="middle"
+                      fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
+                  { n ? n : "setup" }
+                </text>
+              </g>
+              )
+          }) : slots().map((n, i) => {
             if (!map.game) { return }
             const x = xx + 10 + 90 * i + shifts(i) * 15 - 60 * offset(map.game, n)
             const y = yy + 10
@@ -105,7 +120,7 @@ export default function TurnDisplay({
                 { spacer }
                 <path d={roundedRectangle(x, y, shrink(map.game, n) ? 20 : 80, 80, 4)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-                { small === 0 ?
+                { small === 1 ?
                   <text x={x + 40} y={y + (i ? 50 : 44)} fontSize={i ? 40 : 20} textAnchor="middle"
                         fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
                     { n ? n : "setup" }
@@ -130,7 +145,8 @@ export default function TurnDisplay({
     if (hideCounters) {
       setTurn(undefined)
     } else {
-      const x = xx + 10 + index()*90 + shifts(index()) * 15 - 60 * offset(map.game, slots()[index()])
+      let x = xx + 10 + index()*90 + shifts(index()) * 15 - 60 * offset(map.game, slots()[index()])
+      if (small === 0) { x = xx + 10 + map.game.turn * 90 }
       const counter = new Counter(
         new Coordinate(x, yy+10), new Marker({
           type: markerType.Turn, v: map.game.playerOneNation,

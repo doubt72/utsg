@@ -68,14 +68,13 @@ export default function CloseCombatSection() {
         </div>
       </div>
       <p>
-        For instance, if player one has a total combat power of 13 and rolls a 6, and player two has
-        a total combat power of 8 and rolls a 4, the total result for player one is 19, and the
-        total result for player two is 12. Player two must reduce one unit, and because the
-        difference in rolls is 7, they must reduce one more. (If the difference was 10 or greater,
-        they would have had to reduce two more, or three more if it was 15 or greater, etc. If the
-        difference was less than five, player two would only have to reduce the one total unit).
-        Since player two only has one unit and must perform two reductions, the unit breaks and is
-        then eliminated. Player one&apos;s units are then marked as exhausted.
+        For instance, if player one has a total combat power of 13 and rolls a 6 and a 4, and player two has
+        a total combat power of 8 and rolls a 4 and a 3, the total result for player one is
+        128 <span className="inline-monospace">[(2x13 + 6)x4]</span>, and the total result for player
+        two is 60 <span className="inline-monospace">[(2x8 + 4)x3]</span>.  Player two must take one hit (reduce
+        one unit &mdash; player one&apos;s total result is between 80 and 159), and because player two&apos;s total result is
+        below 80, player takes no hits.  Since player two only has one unit and must perform a reduction, the unit
+        breaks and the combat is over; a second hit would have eliminated the unit.
       </p>
     </div>
   );

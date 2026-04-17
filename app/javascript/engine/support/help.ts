@@ -264,35 +264,40 @@ export function unitHelpText(unit: Unit): string[] {
   if ((unit.minimumRange || unit.type === "sw") && unit.targetedRange) {
     text.push("- no crew targeting bonus")
   }
-  text.push(`firepower ${unit.currentFirepower}`)
-  if (unit.assault && !unit.isBroken && !unit.jammed) {
-    text.push("- assault bonus")
-  }
-  if (unit.offBoard && !unit.jammed) {
-    text.push("- offboard artillery")
-  }
-  if (unit.areaFire && !unit.jammed) {
-    text.push("- area fire")
-  }
-  if (unit.antiTank && !unit.jammed) {
-    text.push("- anti-armor capable")
-    text.push("- half firepower vs. soft targets")
-  }
-  if (unit.fieldGun && !unit.jammed) {
-    text.push("- anti-armor capable")
-    text.push("- half firepower vs. armor")
-  }
-  if (unit.singleFire) {
-    text.push("- firing expends weapon")
-  }
-  if (unit.incendiary) {
-    text.push("- negates cover")
-  }
-  if (unit.currentSmokeCapable) {
-    if (unit.targetedRange) {
-      text.push("- can fire smoke rounds")
-    } else {
-      text.push("- can lay smoke")
+  if (unit.isBroken) {
+    text.push(`firepower ${unit.closeCombatFirepower}`)
+    text.push("- close combat only")
+  } else {
+    text.push(`firepower ${unit.currentFirepower}`)
+    if (unit.assault && !unit.isBroken && !unit.jammed) {
+      text.push("- assault bonus")
+    }
+    if (unit.offBoard && !unit.jammed) {
+      text.push("- offboard artillery")
+    }
+    if (unit.areaFire && !unit.jammed) {
+      text.push("- area fire")
+    }
+    if (unit.antiTank && !unit.jammed) {
+      text.push("- anti-armor capable")
+      text.push("- half firepower vs. soft targets")
+    }
+    if (unit.fieldGun && !unit.jammed) {
+      text.push("- anti-armor capable")
+      text.push("- half firepower vs. armor")
+    }
+    if (unit.singleFire) {
+      text.push("- firing expends weapon")
+    }
+    if (unit.incendiary) {
+      text.push("- negates cover")
+    }
+    if (unit.currentSmokeCapable) {
+      if (unit.targetedRange) {
+        text.push("- can fire smoke rounds")
+      } else {
+        text.push("- can lay smoke")
+      }
     }
   }
   if (unit.breakdownRoll && !unit.immobilized) {

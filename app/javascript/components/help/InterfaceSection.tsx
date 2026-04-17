@@ -56,20 +56,20 @@ export default function InterfaceSection() {
     const shrink = (innerWidth - 1) / width;
     const buttonSelect = showNumbers ? "counter-help-button-selected" : "";
     const coords: { x: number; y: number }[] = [
-      { x: 92, y: 90 },
-      { x: 800, y: 50 },
+      { x: 75, y: 110 },
+      { x: 800, y: 65 },
       { x: 200, y: 200 },
       { x: 1700, y: 200 },
-      { x: 1070, y: 550 },
-      { x: 92, y: 690 },
-      { x: 700, y: 730 },
-      { x: 1265, y: 655 },
-      { x: 1555, y: 730 },
-      { x: 1990, y: 730 },
-      { x: 2715, y: 730 },
-      { x: 2715, y: 1130 },
-      { x: 2715, y: 1230 },
-      { x: 625, y: 1575 },
+      { x: 900, y: 490 },
+      { x: 92, y: 625 },
+      { x: 775, y: 650 },
+      { x: 1535, y: 580 },
+      { x: 975, y: 650 },
+      { x: 1470, y: 650 },
+      { x: 2690, y: 650 },
+      { x: 2690, y: 1130 },
+      { x: 2690, y: 1230 },
+      { x: 625, y: 1540 },
     ];
     setGameInterface(
       <div style={{ float: "right" }}>
@@ -86,7 +86,7 @@ export default function InterfaceSection() {
               height={height * shrink}
             >
               <image
-                href="/assets/screenshot.png"
+                href="/assets/screenshot2.png"
                 x="0"
                 y="0"
                 width={width * shrink}
@@ -165,8 +165,7 @@ export default function InterfaceSection() {
         player. The game will only present options that are currently possible. There is always a
         help button here that will go to a relevant section of the documentation. Note that many but
         not all actions may be undone; in general, if any dice rolls are involved, there is no
-        undoing it, nor can actions that pass control to the opponent generally be undone. Also,
-        actions can usually be cancelled until finished, any dice rolls involved will be deferred
+        undoing. Also, actions can usually be cancelled until finished, any dice rolls involved will be deferred
         until the action is &quot;committed.&quot;  This also indicates (with a national icon
         on the far left) which player you&apos;re playing (or currently playing in a hotseat
         game).
@@ -174,7 +173,7 @@ export default function InterfaceSection() {
       <p>
         {redNumber(6)}
         <strong>Map overview</strong>: a mini-map, showing the entire map of the current scenario,
-        and which part of the map is visible. The main map can be navigated by clicking here to move
+        and which part of the map is visible. The main map can be navigated by clicking or dragging here to move
         the map display to other parts of the map if the entire map is not visible at once.
       </p>
       <p>
@@ -182,12 +181,16 @@ export default function InterfaceSection() {
         <strong>Unit displays</strong>: these can be clicked on to show any units that can be
         deployed (either initially or as reinforcements) or casualties. If units are available for
         deployment, the player nation or faction icon will be highlighted, and units can be
-        selected.
+        selected.  The unit display panels can be dragged if they are blocking an area of interest
+        on the map.
       </p>
       <p>
         {redNumber(8)}
         <strong>Map controls</strong>: these buttons control how the map is displayed or what is
-        displayed on the map. Map zoom is controled with these buttons (if the map is at full or
+        displayed on the map.  These buttons may be collapsed to icon only on smaller displays.
+      </p>
+      <p>
+        Map zoom is controled with these buttons (if the map is at full or
         minimum size, those buttons are ghosted):
       </p>
       <div className="flex mb1em">
@@ -301,7 +304,7 @@ export default function InterfaceSection() {
       <p>
         {redNumber(10)}
         <strong>Turn track</strong>: shows the current turn. When the last turn is over, the
-        scenario ends.  The turn track is compressed to fit the display, but the last turn is always shown
+        scenario ends.  The turn track may be compressed to fit the display, but the last turn is always shown
         so it&apos;s always possible to see how many turns are left.
       </p>
       <p>
@@ -324,14 +327,17 @@ export default function InterfaceSection() {
         track. Game actions taken by the players move the marker along the track.  The currently
         active player (not always the same as initiative player, e.g., when the opposing player
         needs to make checks after the inititive player takes an action, etc.) is indicated by
-        black arrows above and below the national icon of the current player.
+        black arrows above and below the national icon of the current player.  This display may
+        be compressed to fit the display.
       </p>
       <p>
         {redNumber(14)}
         <strong>Main map</strong>: the actual scenario map, along with counters showing features and
-        player units. Depending on map controls, units or the map itself can be moused over to show
-        more information, and when actions are in progress, options for the action are shown on the
-        map and can be interacted with there.
+        player units.  If the terrain button is activated, mousing over the map will show terrain,
+        if the LOS overlay is selected, mousing over units will show their line-of-sight, otherwise,
+        unless in the middle of certain actions, mousing over units will expand the stacks where units
+        can be examined or selected (if legal, e.g., if it&apos;s your turn to activate units) by clicking
+        on them. The map can be dragged if not all of it is currently visible on the display.
       </p>
     </div>
   );

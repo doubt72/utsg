@@ -1,3 +1,9 @@
+## 0.58 Alpha
+
+- Add non-collapsed turn track for larger windows
+- Update docs to match changes that happened a while ago.
+- Bug fix: show close combat firepower if unit broken
+
 ## 0.57 Alpha
 
 - More tweaks to critical hit

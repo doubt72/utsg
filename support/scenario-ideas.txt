@@ -86,6 +86,10 @@
   606 42 Burma / Oil Fields
   607 37 Battle of Shanghai / Iron Fist
 
+[ random airdrop ]
+[ cumulative VPs ]
+[ hidden units ]
+
 Future Scenarios:
 + 3 Lost Battalion https://en.wikipedia.org/wiki/Lost_Battalion_(Europe,_World_War_II)
 + 4 Eniwetok
