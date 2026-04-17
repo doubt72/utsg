@@ -1,6 +1,6 @@
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import { failRed, formatCoordinate, formatDieResult, formatNation, formatTarget, passBlue } from "../../utilities/graphics";
-import { baseMorale } from "../../utilities/utilities";
+import { baseMorale, critMorale } from "../../utilities/utilities";
 import { rollbackAddActions } from "../control/movement";
 import Counter from "../Counter";
 import Game from "../Game";
@@ -28,7 +28,7 @@ export default class MoraleCheckAction extends BaseAction {
 
   get htmlValue(): string {
     let rc = ""
-    const check = baseMorale + this.moraleMods.mod + (this.moraleMods.critical ? 4 : 0)
+    const check = baseMorale + this.moraleMods.mod + (this.moraleMods.critical ? critMorale : 0)
     let short = false
     const roll = this.diceResult.result.result
     rc += `${
@@ -73,7 +73,7 @@ export default class MoraleCheckAction extends BaseAction {
     this.game.moraleChecksNeeded.shift()
     const counter = this.game.findCounterById(this.target.id) as Counter
     const hex = counter.hex as Coordinate
-    const check = baseMorale + this.moraleMods.mod + (this.moraleMods.critical ? 4 : 0)
+    const check = baseMorale + this.moraleMods.mod + (this.moraleMods.critical ? critMorale : 0)
     const roll = this.diceResult.result.result
     if (roll < check || roll === 2) {
       if (counter.unit.isBroken) {

@@ -1,5 +1,6 @@
 ## 0.57 Alpha
 
+- More tweaks to critical hit
 
 ## 0.56 Alpha
 

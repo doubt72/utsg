@@ -1,6 +1,6 @@
 import React from "react";
 import { helpLink } from "./helpData";
-import { baseMorale } from "../../utilities/utilities";
+import { baseMorale, critHitDiff, critMorale } from "../../utilities/utilities";
 
 export const smokeTable = (
   <table>
@@ -32,6 +32,10 @@ export const smokeTable = (
 )
 
 export default function FireSection() {
+
+  const fp = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128]
+  const hits = [...Array(19).keys()].reverse()
+
   const section = "5.2.3.1"
   return (
     <div>
@@ -219,69 +223,18 @@ export default function FireSection() {
         <tbody>
           <tr>
             <th>Total FP</th>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-            <th>5</th>
-            <th>6</th>
-            <th>8</th>
-            <th>10</th>
-            <th>12</th>
-            <th>16</th>
-            <th>20</th>
-            <th>24</th>
-            <th>32</th>
-            <th>40</th>
-            <th>48</th>
-            <th>64</th>
-            <th>80</th>
-            <th>96</th>
-            <th>128</th>
+            { fp.map(x => <th key={x}>{ x }</th>)}
           </tr>
           <tr>
             <td>Base To-Hit</td>
-            <td>18</td>
-            <td>17</td>
-            <td>16</td>
-            <td>15</td>
-            <td>14</td>
-            <td>13</td>
-            <td>12</td>
-            <td>11</td>
-            <td>10</td>
-            <td>9</td>
-            <td>8</td>
-            <td>7</td>
-            <td>6</td>
-            <td>5</td>
-            <td>4</td>
-            <td>3</td>
-            <td>2</td>
-            <td>1</td>
-            <td>0</td>
+            { hits.map(x => <td key={x}>{ x }</td>)}
           </tr>
           <tr>
             <td>Critical Hit</td>
-            <td>N/A</td>
-            <td>N/A</td>
-            <td>N/A</td>
-            <td>N/A</td>
-            <td>N/A</td>
-            <td>N/A</td>
-            <td>N/A</td>
-            <td>20</td>
-            <td>19</td>
-            <td>18</td>
-            <td>17</td>
-            <td>16</td>
-            <td>15</td>
-            <td>14</td>
-            <td>13</td>
-            <td>12</td>
-            <td>11</td>
-            <td>10</td>
-            <td>9</td>
+            { hits.map(x => {
+              const n = x + critHitDiff < 13 ? 13 : x + critHitDiff
+              return <td key={x}>{ n < 21 ? n : "N/A" }</td>
+            }) }
           </tr>
         </tbody>
       </table>
@@ -327,7 +280,8 @@ export default function FireSection() {
           a hit).
         </li>
         <li>
-          Rolling more than 8 above the to-hit threshold results in a <strong>critical</strong> hit,
+          Rolling {critHitDiff} or more above the to-hit threshold (but above 12) results
+          in a <strong>critical</strong> hit,
           which results in a negative modifier to morale checks (see below).  Critical hits have
           no other effect.
         </li>
@@ -474,7 +428,7 @@ export default function FireSection() {
         </li>
         <li>Subtract cover (unless the attack was from an incendiary weapon).</li>
         <li>Add one if pinned.</li>
-        <li>Add four if a critical hit.</li>
+        <li>Add {critMorale} if a critical hit.</li>
         <li>
           Roll 2d10 (add them together). If the result is equal to the modified check, pin the unit.
           If the result is less than the modified check, break it, or if the unit was already broken,

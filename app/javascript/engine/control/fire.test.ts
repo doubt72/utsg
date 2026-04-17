@@ -107,7 +107,7 @@ describe("ranged fire attacks", () => {
       expect(game.currentPlayer).toBe(1)
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
 
       expect(firing.isActivated).toBe(true)
@@ -262,7 +262,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
     })
 
@@ -363,7 +363,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.moraleChecksNeeded).toStrictEqual(
-        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: false }]
+        [{ unit: target, from: [floc], to: tloc, incendiary: false, critical: true }]
       )
     })
 
@@ -523,7 +523,7 @@ describe("ranged fire attacks", () => {
         "firepower: 17",
         "- base to hit: 9",
         "- minus 1 for less than half range",
-        "-> critical hit on: 17 (10%)",
+        "-> critical hit on: 16 (15%)",
         "",
         "-> morale check (2d10): 10 (55%)",
         "base roll of 15",

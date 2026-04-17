@@ -1,7 +1,4 @@
 Features/Bug Fixes:
-  + Warning/red for leader not being able to carry encumbered weapons
-  + Second broken message not red
-
   - Go through docs, add examples
   - Create tutorial
 

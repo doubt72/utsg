@@ -2,7 +2,7 @@ import {
   baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
-import { baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
+import { baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, critHitDiff, critMorale, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
 import { closeCombatFirepower, maxCCCasualties } from "../control/closeCombat"
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, leadershipAt, moraleModifiers, rangeMultiplier,
@@ -410,8 +410,9 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
       if (fp.why.length > 1) {
         rc = rc.concat(fp.why)
       }
-      if (tohit < 11) {
-        rc.push(`-> critical hit on: ${tohit + 9} (${chance2D10(tohit + 8)}%)`)
+      if (tohit <= 20 - critHitDiff) {
+        const crit = tohit + critHitDiff < 13 ? 13 : tohit + critHitDiff
+        rc.push(`-> critical hit on: ${crit} (${chance2D10(crit - 1)}%)`)
         critical = true
       }
     } else if (target.armored) {
@@ -463,8 +464,9 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
       }
       rc = rc.concat(mods.why)
     }
-    if (tohit < 11) {
-      rc.push(`-> critical hit on: ${tohit + 9} (${chance2D10(tohit + 8)}%)`)
+    if (tohit <= 20 - critHitDiff) {
+      const crit = tohit + critHitDiff < 13 ? 13 : tohit + critHitDiff
+      rc.push(`-> critical hit on: ${crit} (${chance2D10(crit - 1)}%)`)
       critical = true
     }
   }
@@ -509,10 +511,14 @@ export function moraleHelpText(game: Game, loc: Coordinate, unit: Unit): string[
   const modifiers = moraleModifiers(game, unit, check.from, check.to, !!check.incendiary)
   moraleCheck += modifiers.mod
   for (const m of modifiers.why) { rc.push(m) }
+  const critMod = check.critical ? critMorale : 0
+  if (check.critical) {
+    rc.push(`- plus ${critMod} critical hit`)
+  }
   rc.push("")
-  rc.push(`morale check pass: ${moraleCheck} (${chance2D10(moraleCheck)}%)`)
+  rc.push(`morale check pass: ${moraleCheck + critMod} (${chance2D10(moraleCheck + critMod)}%)`)
   if (!unit.isBroken) {
-    rc.push(`unit pinned on exact roll (${exact2D10(moraleCheck)}%)`)
+    rc.push(`unit pinned on exact roll (${exact2D10(moraleCheck + critMod)}%)`)
   }
   return rc
 }

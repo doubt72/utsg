@@ -280,6 +280,8 @@ export function sortReinforcementList(list: ReinforcementItem[]): ReinforcementI
 export const stackLimit = 12
 export const baseMorale = 15
 export const baseRally = 12
+export const critHitDiff = 8
+export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.56"
+export const serverVersion = "0.57"

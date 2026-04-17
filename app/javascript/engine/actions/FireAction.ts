@@ -3,7 +3,8 @@ import { failRedColorMarker, formatCoordinate, formatDieResult, formatNation, fo
 import {
   baseToHit, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
   rolld6, smokeRoll, otherPlayer,
-  playerForNation
+  playerForNation,
+  critHitDiff
 } from "../../utilities/utilities";
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
@@ -20,6 +21,10 @@ import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 import MoveAction from "./MoveAction";
+
+function critHit(roll: number, check: number): boolean {
+  return roll >= check + critHitDiff && roll > 12
+}
 
 type FireActionActor = {
   x: number, y: number, counter: Counter, sponson?: boolean, wire?: boolean
@@ -269,7 +274,7 @@ export default class FireAction extends BaseAction {
                   `infantry effect roll: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
               }
               if (hitRoll.result.result > hitCheck) {
-                const critical = hitRoll.result.result > hitCheck + 8
+                const critical = critHit(hitRoll.result.result, hitCheck)
                 if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
                   critical ? "passed (critical)" : "passed"
                 }</span>` }
@@ -445,7 +450,7 @@ export default class FireAction extends BaseAction {
               `roll for effect: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
           }
           if (hitRoll.result.result > hitCheck) {
-            const critical = hitRoll.result.result > hitCheck + 8
+            const critical = critHit(hitRoll.result.result, hitCheck)
             targets.forEach(t => this.game.moraleChecksNeeded.push(
               { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary, critical }))
             if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
@@ -547,7 +552,7 @@ export default class FireAction extends BaseAction {
           }target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
         }
         if (hitRoll.result.result > hitCheck) {
-          const critical = hitRoll.result.result > hitCheck + 8
+          const critical = critHit(hitRoll.result.result, hitCheck)
           let critMessage = false
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
