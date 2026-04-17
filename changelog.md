@@ -1,6 +1,7 @@
 ## 0.57 Alpha
 
 - More tweaks to critical hit
+- Bug fix: "sd"
 
 ## 0.56 Alpha
 

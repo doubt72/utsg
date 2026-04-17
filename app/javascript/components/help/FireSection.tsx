@@ -248,7 +248,7 @@ export default function FireSection() {
           to either single or group fire. Leaders out of range do not add their firepower to the total
           (their only purpose in that case is to coordinate other units).  Find the base to-hit
           for the first total FP equal to or below the combined firepower. E.g., if the
-          firepower adds up to 11, use the base below 10, i.e., the base to-hit is 13.
+          firepower adds up to 9, use the base below 8, i.e., the base to-hit is 12.
           <ol className="mt05em mb05em">
             <li>
               Add the maximum hindrance between any of the firing units and the target hex to the
@@ -280,8 +280,8 @@ export default function FireSection() {
           a hit).
         </li>
         <li>
-          Rolling {critHitDiff} or more above the to-hit threshold (but above 12) results
-          in a <strong>critical</strong> hit,
+          Rolling {critHitDiff} or more above the to-hit threshold (and also above 12)
+          results in a <strong>critical</strong> hit,
           which results in a negative modifier to morale checks (see below).  Critical hits have
           no other effect.
         </li>

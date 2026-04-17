@@ -607,17 +607,18 @@ export function markerHelpText(marker: Marker): string[] {
   const variable: string[] = []
   if (subText) {
     subText.forEach(t => {
+      const parts = t.split(" ")
       if (t === "") { return }
       if (t === "variable") {
         variable.push("weather variable")
         variable.push("- 10% chance of strength change")
         variable.push("- 20% chance of direction change")
+      } if (parts[0] === "sd") {
+        text.push(`- ${parts[1]} smoke dispersion/turn`)
       } else {
-        const parts = t.split(" ")
         const d = {
           fs: "chance of fires spreading",
           fe: "chance of fires being extinguished",
-          sd: "chance of smoke dispersing",
           chance: "chance of precipitation",
         }[parts[1]]
         text.push(["-", parts[0], d].join(" "))
