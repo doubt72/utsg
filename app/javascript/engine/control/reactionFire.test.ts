@@ -1,4 +1,4 @@
-import { Coordinate, featureType } from "../../utilities/commonTypes"
+import { Coordinate, featureType, unitType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import organizeStacks from "../support/organizeStacks"
@@ -469,6 +469,82 @@ describe("reaction fire attacks", () => {
     ])
 
     expect(initiativeCheck(game)).toBe(false)
+  })
+
+  test("team ghosts are correct", () => {
+    const game = createFireGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.split()
+    unit.id = "test1"
+    unit.select()
+    map.addCounter(new Coordinate(4, 2), unit)
+
+    const other = new Unit(testRTank)
+    other.id = "other1"
+    other.facing = 4
+    other.turretFacing = 4
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.gameState?.finish()
+
+    game.setGameState(new InitiativeState(game))
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(true)
+
+    game.setGameState(new ReactionState(game))
+    select(map, {
+      counter: map.countersAt(oloc)[0],
+      target: { type: "map", xy: oloc }
+    }, () => {})
+    expect(other.selected).toBe(true)
+
+    game.setGameState(new FireState(game, true))
+    const state = game.fireState
+    state.doneRotating = true
+
+    const counters1 = map.countersAt(new Coordinate(3, 2))
+    expect(counters1.length).toBe(1)
+    expect(counters1[0].unit.ghost).toBe(true)
+    expect(counters1[0].unit.type).toBe(unitType.Team)
+    const counters2 = map.countersAt(new Coordinate(2, 2))
+    expect(counters2.length).toBe(1)
+    expect(counters2[0].unit.ghost).toBe(true)
+    expect(counters2[0].unit.type).toBe(unitType.Team)
+
+    expect(reactionFireHexes(game)).toStrictEqual([
+      { x: 3, y: 2, facing: undefined, turret: undefined },
+      { x: 2, y: 2, facing: undefined, turret: undefined },
+      { x: 1, y: 2, facing: undefined, turret: undefined },
+    ])
+
+    select(map, {
+      counter: map.countersAt(new Coordinate(1, 2))[0],
+      target: { type: "map", xy: new Coordinate(1, 2) }
+    }, () => {})
+    expect(unit.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.type).toBe("reaction_fire")
+    expect(game.lastAction?.stringValue).toBe(
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Rifle at B3; targeting roll: target 3, " +
+      "rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken")
+    expect(game.moraleChecksNeeded).toStrictEqual([])
   })
 
   test("multiple units moving", () => {

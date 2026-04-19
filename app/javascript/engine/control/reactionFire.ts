@@ -166,7 +166,7 @@ export function placeReactionFireGhosts(game: Game) {
       for (const u of units) {
         const check = game.scenario.map.unitAtId(new Coordinate(path[i].x, path[i].y), u.u.id)
         if (!check) {
-          const copy = u.u.clone()
+          const copy = u.u.clone(true)
           if (path[i].facing && copy.rotates) { copy.facing = path[i].facing as Direction}
           if (path[i].turret && copy.turreted) { copy.turretFacing = path[i].turret as Direction}
           copy.id = u.u.id
@@ -212,7 +212,7 @@ export function placeReactionMoraleCheckGhosts(game: Game, loc: Coordinate) {
       for (const u of units) {
         const check = game.scenario.map.unitAtId(new Coordinate(action.path[i].x, action.path[i].y), u.u.id)
         if (!check) {
-          const copy = u.u.clone()
+          const copy = u.u.clone(true)
           if (action.path[i].facing && copy.rotates) { copy.facing = action.path[i].facing as Direction}
           if (action.path[i].turret && copy.turreted) { copy.turretFacing = action.path[i].turret as Direction}
           copy.id = u.u.id

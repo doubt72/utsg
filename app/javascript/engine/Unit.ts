@@ -243,9 +243,13 @@ export default class Unit {
     this.id = data.id ?? ""
   }
 
-  clone(): Unit {
+  clone(split?: boolean): Unit {
     const unit = new Unit(this.rawData)
-    return unit
+    if (split && this.type === unitType.Team) {
+      return unit.split()
+    } else {
+      return unit
+    }
   }
 
   select() {

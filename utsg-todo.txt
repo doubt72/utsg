@@ -1,7 +1,5 @@
 Features/Bug Fixes:
-  + Add non-collapsed turn track
-  + Update main interface doc image
-  + Fix broken unit firepower in help
+  + Ghosts of teams should not be squads
   - Go through docs, add examples
   - Create tutorial
 

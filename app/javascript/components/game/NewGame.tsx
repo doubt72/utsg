@@ -155,9 +155,9 @@ export default function NewGame() {
   }
 
   const sorts = [
+    { code: "n", name: "Scenario ID"},
     { code: "r", name: "Rating"},
     { code: "b", name: "Balance"},
-    { code: "n", name: "Scenario ID"},
     { code: "d", name: "Date"},
     { code: "m", name: "Map Size"},
     { code: "u", name: "Unit Count"},

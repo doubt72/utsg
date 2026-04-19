@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.2"
+    VERSION = "1.3"
 
     DATE = [1944, 6, 29].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -264,7 +264,7 @@ module Scenarios
             { t: "o", d: 1, st: { sh: "t" } },
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o" },
-            { t: "o", b: "w", be: [4, 5] },
+            { t: "o", b: "w", be: [4] },
             { t: "o" },
             { t: "o", r: { d: [3, 6], t: "t" } },
             { t: "o", d: 6, st: { sh: "s" } },

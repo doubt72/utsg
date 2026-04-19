@@ -46,7 +46,7 @@ export default function MainPage() {
               the <a className="regular" href="/about">about</a> page for more information
               about the server, the code of conduct, or to report bugs.
               Best with Chromium-based browsers; should work with any modern browser, but
-              rendering performance varies significantly.
+              rendering performance varies significantly (sorry Safari users, Safari performance is just awful).
             </p>
             <p>
               <strong>Latest announcement</strong>: <a className="regular" href="/about/a02042026">

@@ -204,13 +204,13 @@ export default class MoveState extends BaseState {
         }
       )
       if (xx !== x || yy !== y) {
-        this.map.addGhost(new Coordinate(xx, yy), counter.unit.clone() as Unit)
+        this.map.addGhost(new Coordinate(xx, yy), counter.unit.clone(true) as Unit)
       }
       if (counter.children.length === 1) {
         const child = counter.children[0]
         child.unit.select()
         child.unit.dropSelect()
-        this.map.addGhost(new Coordinate(xx, yy), child.unit.clone() as Unit)
+        this.map.addGhost(new Coordinate(xx, yy), child.unit.clone(true) as Unit)
       }
       this.doneSelect = true
       this.game.closeOverlay = true

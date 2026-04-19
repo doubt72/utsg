@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.3"
+    VERSION = "1.4"
 
     DATE = [1944, 6, 25].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -81,7 +81,7 @@ module Scenarios
           layout:,
           allied_dir: 1,
           axis_dir: 4,
-          victory_hexes: [[2, 2, 2], [3, 1, 2], [5, 3, 2], [7, 2, 2], [11, 5, 2]],
+          victory_hexes: [[2, 8, 2], [3, 2, 2], [5, 3, 2], [7, 2, 2], [11, 5, 2]],
           allied_setup: { "0": [[12, "*"], [13, "*"], [14, "*"]] },
           axis_setup: { "0": [
             [0, "*"], [1, "*"], [2, "*"], [3, "*"], [4, "*"], [5, "*"],
@@ -192,7 +192,7 @@ module Scenarios
             { t: "o" },
           ], [
             { t: "f" },
-            { t: "o", r: { d: [3, 6] } },
+            { t: "o", r: { d: [3, 5] } },
             { t: "d", d: 3 },
             { t: "o" },
             { t: "b" },
@@ -207,8 +207,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
           ], [
-            { t: "o", r: { d: [1, 3] } },
             { t: "o" },
+            { t: "o", r: { d: [2, 5] } },
             { t: "o" },
             { t: "b" },
             { t: "b" },
@@ -225,7 +225,7 @@ module Scenarios
           ], [
             { t: "f" },
             { t: "f" },
-            { t: "o" },
+            { t: "o", r: { d: [2, 5] } },
             { t: "b" },
             { t: "f" },
             { t: "f" },
@@ -241,7 +241,7 @@ module Scenarios
           ], [
             { t: "f" },
             { t: "f" },
-            { t: "o" },
+            { t: "o", r: { d: [2, 6] } },
             { t: "o" },
             { t: "f" },
             { t: "o" },
@@ -257,7 +257,7 @@ module Scenarios
           ], [
             { t: "f" },
             { t: "f" },
-            { t: "f" },
+            { t: "o", r: { d: [3, 6] } },
             { t: "f" },
             { t: "o" },
             { t: "o" },

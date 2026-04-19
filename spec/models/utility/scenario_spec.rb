@@ -187,7 +187,7 @@ RSpec.describe Utility::Scenario do
 
       # If any of these change, scenario MUST to be updated with a new version,
       # then update test with new version/checksum
-      expect(Utility::Scenario.checksum("001")).to be == "1.3-6daf6f847aa2f2d8c528682b0bd21e02"
+      expect(Utility::Scenario.checksum("001")).to be == "1.4-790911864eba699a6a294c3b8ee4b22a"
       expect(Utility::Scenario.checksum("002")).to be == "1.1-ee61a14b7681312b3885d3b9b30774a5"
       expect(Utility::Scenario.checksum("003")).to be == "1.1-4c1f0c20a1557999c22666d130578194"
       expect(Utility::Scenario.checksum("004")).to be == "0.3a-ece623c625ee6734bbdc07084e60c713"
@@ -229,7 +229,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("305")).to be == "0.3b-751ba3df6c724ff7656e89de36962693"
       expect(Utility::Scenario.checksum("306")).to be == "0.2a-147cf450c03caf5d7eb2eff454abc8be"
       expect(Utility::Scenario.checksum("307")).to be == "0.2a-e4d9d0c2ba7536df5a571be346e7d5ff"
-      expect(Utility::Scenario.checksum("308")).to be == "1.2-db9d9fed5c72112e7bc2e723f3a7b116"
+      expect(Utility::Scenario.checksum("308")).to be == "1.3-90cf0b131676f56cc4efb95f7fafdcc2"
       expect(Utility::Scenario.checksum("309")).to be == "0.2a-a025c970fb5f10ec0889e186e2b6d2d9"
       expect(Utility::Scenario.checksum("310")).to be == "0.2a-6e70130747d54b4ae57e9bb317b5f4f1"
       expect(Utility::Scenario.checksum("311")).to be == "0.2a-199b16d24bbc721a19316ce4675d0c11"

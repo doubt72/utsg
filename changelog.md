@@ -1,3 +1,10 @@
+## 0.59 Alpha
+
+- Set default (back) to scenario number (for now)
+- Bug fix: team ghosts
+- Updated 001, 308
+- Reset 001, 101
+
 ## 0.58 Alpha
 
 - Add non-collapsed turn track for larger windows
@@ -28,7 +35,7 @@
 
 ## 0.54 Alpha
 
-- Update 007
+- Updated 007
 
 ## 0.53 Alpha
 
@@ -50,7 +57,7 @@
 - Bug fix: close combat not being set correctly in two-player games at the beginning of phase (left in a little bit of instrumentation in case not fixed)
 - Bug fix: overstack should unselect all other units
 - Bug fix: unmanned gun should not trigger possible reaction fire
-- Update 011
+- Updated 011
 
 ## 0.49 Alpha
 
@@ -67,7 +74,7 @@
 - Bug fix: winning player swapped in game over window
 - Bug fix: leave game button shouldn't open new tab, should just go to main page (what was I thinking?)
 - Bug fix: display bug on broken tie morale checks
-- Update 005
+- Updated 005
 
 ## 0.46 Alpha
 
@@ -90,7 +97,7 @@
 
 - Fix scoring for minor nations
 - Instrumenting national display (seems to only disappear on the remote server)
-- Update 308
+- Updated 308
 
 ## 0.42 Alpha
 
