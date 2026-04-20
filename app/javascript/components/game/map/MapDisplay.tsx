@@ -240,30 +240,31 @@ export default function MapDisplay({
 
   const animations = (): JSX.Element[] => {
     return actionAnimationDetails.map((a, i) =>
-      <ActionAnimation key={i} map={map} timer={a.timer} details={a.details} />
+      <ActionAnimation key={i} map={map} timer={a.timer} details={a.details}
+                       animate={showAnimations} />
     )
   }
 
   const animate = (index: number) => {
+    const interval = showAnimations ? 50 : 500
     setTimeout(() => {
       setActionAnimationDetails(s => {
         const record = s[index]
         if (!record) { return s }
-        if (record.timer <= 0) {
+        if (record.timer <= 0 || (!showAnimations && record.timer <= 1000)) {
           delete s[index]
         } else {
-          s[index] = { timer: record.timer - 50, details: record.details }
+          s[index] = { timer: record.timer - interval, details: record.details }
           animate(index)
         }
         return s
       })
       setMapUpdate(s => s + 1)
-    }, 50)
+    }, interval)
   }
 
   useEffect(() => {
     if (!map.game) { return }
-    if (!showAnimations) { return }
     if (map.game.animationQueue.length > 0) {
       const animation = map.game.animationQueue.pop() as ActionAnimationDetails
       setActionAnimationDetails(s => {

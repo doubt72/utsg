@@ -13,6 +13,21 @@ module Utility
       BODY
     end
 
+    def self.turn_notification(user, game)
+      ::Utility::ElasticEmail::Email.send(
+        user, "It's your turn on A Hex Too Far",
+        email_template(
+          user, <<~BODY
+            <p>
+              Your opponent has finished their turn in a
+              game <a href="https://ahextoofar.games/game/#{game.id}">(#{game.name})</a> and
+              it is now your turn to move.
+            </p>
+          BODY
+        )
+      )
+    end
+
     def self.confirmation_content
       <<~CONFIRMATION
         <p>

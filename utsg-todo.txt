@@ -1,11 +1,13 @@
 Features/Bug Fixes:
-  + Ghosts of teams should not be squads
+  + Scenario ID isn't.
+  + Right click undeploy doesn't work and also doesn't show right action
+  + Partial animations for Safari
+  - Email turn notifications
+
   - Go through docs, add examples
   - Create tutorial
-
   - Roll back smoke on reaction fire?
   - Add Some Developer Notes
-  - Email turn notifications
 
 Nice to Have Eventually:
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
@@ -24,7 +26,8 @@ Special Rules/Scenarios
   - Hidden counters (?) only some are infantry but can move like infantry
   - Random landing locations for paratroop scenarios
 
-101, 005, 001, 002, 301, 003, 503, 508, 007, 303, 501, 308, 601, 401, 510, 603, 011
+Probably done but need plays: 101, 005, 001
+Probably not done: 002, 301, 003, 503, 508, 007, 303, 501, 308, 601, 401, 510, 603, 011
 
 006 (Romanian)
 203 (Little Stalingrad)

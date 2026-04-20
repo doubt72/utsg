@@ -73,6 +73,8 @@ export function executeContextAction(
     }
   } else if (type === "fire_displace_cancel") {
     game.fireDisplaceState.cancel()
+  } else if (type === "undeploy") {
+    game.undeploy()
   }
 }
 
@@ -119,6 +121,7 @@ export function translateAction(game: Game, target: CounterSelectionTarget | und
     fire_displace_eliminate: "eliminate",
     fire_displace_confirm: "displace",
     fire_displace_cancel: "cancel",
+    undeploy: "undeploy",
   }[action] ?? "unknown"
   if (action === "select" && target &&
       (target.counter.unit.selected || target.counter.unit.targetSelected)) { rc = "unselect" }

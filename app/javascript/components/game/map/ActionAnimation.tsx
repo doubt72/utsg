@@ -7,12 +7,14 @@ interface ActionAnimationProps {
   map: Map;
   timer: number;
   details: ActionAnimationDetails;
+  animate: boolean;
 }
 
-export default function ActionAnimation({map, timer, details}: ActionAnimationProps) {
+export default function ActionAnimation({map, timer, details, animate}: ActionAnimationProps) {
   let alpha = 1
-  if (timer < 400) { alpha = timer / 400 }
-  if (timer > 1400) { alpha = (2000 - timer) / 600 }
+  const iTimer = animate ? timer : 1400
+  if (iTimer < 400) { alpha = iTimer / 400 }
+  if (iTimer > 1400) { alpha = (2000 - iTimer) / 600 }
   const message = details.message
   const textSize = 80 / Math.sqrt(message.reduce((max, m) => m.length > max ? m.length : max, 0))
   const outlineSize = textSize/5 > 8 ? 8 : textSize/5
@@ -22,7 +24,7 @@ export default function ActionAnimation({map, timer, details}: ActionAnimationPr
   const y = hex.yOffset + textSize / 4 - (message.length / 2 - 0.5) * yInterval
   const color = details.textColor
   const bg = details.backgroundColor
-  const size = 1 + (2000 - timer) / 4000
+  const size = 1 + (2000 - iTimer) / 4000
 
   return (
     <g opacity={alpha}

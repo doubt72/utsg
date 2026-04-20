@@ -1,3 +1,9 @@
+## 0.60 Alpha
+
+- Add "still" notification animations for safari
+- Bug fix: undeploy right click menu
+- Bug fix: fix default sort
+
 ## 0.59 Alpha
 
 - Set default (back) to scenario number (for now)

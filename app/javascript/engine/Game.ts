@@ -1064,6 +1064,7 @@ export default class Game {
         break
       }
     }
+    this.closeOverlay = true
   }
 
   cancelAction() {
