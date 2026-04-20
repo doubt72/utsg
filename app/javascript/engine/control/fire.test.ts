@@ -5,7 +5,7 @@ import Unit from "../Unit"
 import Game from "../Game"
 import select from "./select"
 import {
-  armorHitModifiers, fireHindrance, firepower, moraleModifiers, rangeMultiplier, untargetedModifiers
+  armorHitModifiers, fireHindrance, firepower, hitFromArc, moraleModifiers, rangeMultiplier, untargetedModifiers
 } from "./fire"
 import Counter from "../Counter"
 import IllegalActionError from "../actions/IllegalActionError"
@@ -46,6 +46,80 @@ describe("ranged fire attacks", () => {
       expect(chanceD10x10(99)).toBe(1)
       expect(chanceD10x10(100)).toBe(0)
       expect(chanceD10x10(111)).toBe(0)
+    })
+  })
+
+  describe("hit from arc", () => {
+    test("has correct values", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+
+      const target1 = new Unit(testGTank)
+      target1.id = "target1"
+      target1.facing = 4
+      target1.turretFacing = 4
+      const loc = new Coordinate(2, 2)
+      map.addCounter(loc, target1)
+      const target2 = new Unit(testGTank)
+      target2.id = "target2"
+      target2.facing = 1
+      target2.turretFacing = 1
+      map.addCounter(loc, target2)
+
+      // 0: front, 1: side, 2: back
+      expect(hitFromArc(game, target1, new Coordinate(3, 2), loc, false)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(3, 2), loc, true)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(4, 2), loc, false)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(4, 2), loc, true)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(1, 2), loc, false)).toBe(2)
+      expect(hitFromArc(game, target1, new Coordinate(1, 2), loc, true)).toBe(2)
+      expect(hitFromArc(game, target1, new Coordinate(0, 2), loc, false)).toBe(2)
+      expect(hitFromArc(game, target1, new Coordinate(0, 2), loc, true)).toBe(2)
+
+      expect(hitFromArc(game, target1, new Coordinate(3, 1), loc, false)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(3, 1), loc, true)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(2, 1), loc, false)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(2, 1), loc, true)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(1, 1), loc, false)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(1, 1), loc, true)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(0, 1), loc, false)).toBe(2)
+      expect(hitFromArc(game, target1, new Coordinate(0, 1), loc, true)).toBe(2)
+
+      expect(hitFromArc(game, target1, new Coordinate(3, 3), loc, false)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(3, 3), loc, true)).toBe(0)
+      expect(hitFromArc(game, target1, new Coordinate(2, 3), loc, false)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(2, 3), loc, true)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(1, 3), loc, false)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(1, 3), loc, true)).toBe(1)
+      expect(hitFromArc(game, target1, new Coordinate(0, 3), loc, false)).toBe(2)
+      expect(hitFromArc(game, target1, new Coordinate(0, 3), loc, true)).toBe(2)
+
+      expect(hitFromArc(game, target2, new Coordinate(3, 2), loc, false)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(3, 2), loc, true)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(4, 2), loc, false)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(4, 2), loc, true)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(1, 2), loc, false)).toBe(0)
+      expect(hitFromArc(game, target2, new Coordinate(1, 2), loc, true)).toBe(0)
+      expect(hitFromArc(game, target2, new Coordinate(0, 2), loc, false)).toBe(0)
+      expect(hitFromArc(game, target2, new Coordinate(0, 2), loc, true)).toBe(0)
+
+      expect(hitFromArc(game, target2, new Coordinate(3, 1), loc, false)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(3, 1), loc, true)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(2, 1), loc, false)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(2, 1), loc, true)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(1, 1), loc, false)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(1, 1), loc, true)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(0, 1), loc, false)).toBe(0)
+      expect(hitFromArc(game, target2, new Coordinate(0, 1), loc, true)).toBe(0)
+
+      expect(hitFromArc(game, target2, new Coordinate(3, 3), loc, false)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(3, 3), loc, true)).toBe(2)
+      expect(hitFromArc(game, target2, new Coordinate(2, 3), loc, false)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(2, 3), loc, true)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(1, 3), loc, false)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(1, 3), loc, true)).toBe(1)
+      expect(hitFromArc(game, target2, new Coordinate(0, 3), loc, false)).toBe(0)
+      expect(hitFromArc(game, target2, new Coordinate(0, 3), loc, true)).toBe(0)
     })
   })
 
@@ -2478,9 +2552,10 @@ describe("ranged fire attacks", () => {
 
       const all = map.allUnits
       expect(all.length).toBe(4)
-      expect(all[0].unit.id).toBe("target1")
-      expect(all[1].unit.id).toBe("target2")
-      expect(all[2].unit.id).toBe("target3")
+      expect(all[0].unit.id).toBe("target3")
+      expect(all[0].unit.isWreck).toBe(true)
+      expect(all[1].unit.id).toBe("target1")
+      expect(all[2].unit.id).toBe("target2")
       expect(all[3].unit.id).toBe("firing1")
       expect(all[3].children.length).toBe(0)
 
@@ -2573,8 +2648,8 @@ describe("ranged fire attacks", () => {
       )
       const counters = map.countersAt(new Coordinate(4, 2))
       expect(counters.length).toBe(4)
-      expect(counters[2].unit.name).toBe("T-34 M40")
-      expect(counters[2].unit.isWreck).toBe(true)
+      expect(counters[0].unit.name).toBe("T-34 M40")
+      expect(counters[0].unit.isWreck).toBe(true)
       expect(counters[3].feature.name).toBe("Blaze")
     })
 
@@ -2732,9 +2807,10 @@ describe("ranged fire attacks", () => {
 
       const all = map.allUnits
       expect(all.length).toBe(4)
-      expect(all[0].unit.id).toBe("target1")
-      expect(all[1].unit.id).toBe("target2")
-      expect(all[2].unit.id).toBe("target3")
+      expect(all[0].unit.id).toBe("target3")
+      expect(all[0].unit.isWreck).toBe(true)
+      expect(all[1].unit.id).toBe("target1")
+      expect(all[2].unit.id).toBe("target2")
       expect(all[3].unit.id).toBe("firing1")
       expect(all[3].children.length).toBe(0)
 

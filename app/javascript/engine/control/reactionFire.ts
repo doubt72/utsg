@@ -65,6 +65,7 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
             if (c.unit.parent === undefined) { continue }
             if (c.unit.parent.isBroken || c.unit.parent.isExhausted) { continue }
           }
+          if (c.unit.isWreck) { continue }
           if ((c.unit.canCarrySupport || c.unit.rapidFire) && otherUnit?.armored) { continue }
           if (c.unit.isExhausted) { continue }
           if (c.unit.crewed && c.unit.isActivated) { continue }

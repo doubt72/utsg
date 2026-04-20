@@ -1,8 +1,14 @@
 Features/Bug Fixes:
-  + Scenario ID isn't.
-  + Right click undeploy doesn't work and also doesn't show right action
-  + Partial animations for Safari
-  - Email turn notifications
+  + Huge close combat fail?
+  + Unit has already been dropped?
+  + Fire hitting back when it should have been front
+  + Close combat with wreck
+  + Wreck should be on bottom
+  + Reaction fire from wreck in hex
+  + Email turn notifications
+
+  - Select menu start actions
+  - Count help as not mouse-out
 
   - Go through docs, add examples
   - Create tutorial

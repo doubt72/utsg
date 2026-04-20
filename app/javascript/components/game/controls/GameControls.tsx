@@ -74,7 +74,7 @@ export default function GameControls({ game, callback, update }: GameControlsPro
 
   useEffect(() => {
     if (!game.id) { return }
-    console.log(game.closeNeeded)
+    console.log(structuredClone(game.closeNeeded))
     displayActions()
   }, [game, game.lastActionIndex, internalUpdate, update])
 

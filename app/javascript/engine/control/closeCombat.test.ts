@@ -235,12 +235,12 @@ describe("close combat", () => {
 
     const all = map.allCounters
     expect(all.length).toBe(4) // four units (no hull counter for wreck)
-    expect(all[0].unit.playerNation).toBe("ussr")
-    expect(all[0].unit.isBroken).toBe(true)
-    expect(all[2].unit.playerNation).toBe("ger")
-    expect(all[2].unit.isNormal).toBe(true)
+    expect(all[0].unit.playerNation).toBe("ger")
+    expect(all[0].unit.isWreck).toBe(true)
+    expect(all[1].unit.playerNation).toBe("ussr")
+    expect(all[1].unit.isBroken).toBe(true)
     expect(all[3].unit.playerNation).toBe("ger")
-    expect(all[3].unit.isWreck).toBe(true)
+    expect(all[3].unit.isNormal).toBe(true)
     expect(game.eliminatedUnits.length).toBe(1)
   })
 

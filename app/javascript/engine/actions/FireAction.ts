@@ -369,6 +369,8 @@ export default class FireAction extends BaseAction {
           }
           const baseHit = baseToHit(fp.fp)
           const clone = target0.unit.clone()
+          clone.facing = target0.unit.facing
+          clone.turretFacing = target0.unit.turretFacing
           if (this.moveSeq) {
             const action = this.game.findActionBySequence(this.moveSeq) as MoveAction
             if (action) {

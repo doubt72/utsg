@@ -573,6 +573,11 @@ export default class MoveState extends BaseState {
       for (const s of this.selection) {
         const unit = s.counter.unit
         const target = c.unit
+        let already = false
+        for (const r of rc) {
+          if (r.unit.id === unit.id) { already = true; break}
+        }
+        if (already) { continue }
         if (unit.canCarry(target)) { rc.push(s.counter) }
       }
     }

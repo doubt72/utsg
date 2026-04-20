@@ -43,10 +43,11 @@ export function sortStacks(map: Map) {
 
 function sortValues(game: Game, unit: Unit | Feature): number {
   if (unit.isFeature && unit.type === featureType.Fire) { return 999 }
-  if (unit.isFeature) { return 0 }
+  if (unit.isFeature) { return -5 }
   const side = unit.playerNation === game?.playerOneNation ? 0 : 100
   const u = unit as Unit
-  if (u.operated) { return 0 }
+  if (u.isWreck) { return side === 0 ? -3 : -2 }
+  if (u.operated) { return side === 0 ? -1 : 0 }
   return ({
     other: 1, sw: 2, gun: 3, sqd: 4, tm: 5, ldr: 6, cav: 7, truck: 8, ht: 9, ac: 10,
     spg: 11, tank: 12,

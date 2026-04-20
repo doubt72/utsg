@@ -1,8 +1,16 @@
 ## 0.60 Alpha
 
 - Add "still" notification animations for safari
+- Sort wrecks to bottom of stack
+- Additional/better instrumentation to close combat checks to help debug future close combat issues
+- Bug fix: another issue with close combat not setting correctly in multiplayer games under certain conditions
+- Bug fix: unexpected confusion when unit can pick up more than one unit
 - Bug fix: undeploy right click menu
 - Bug fix: fix default sort
+- Bug fix: wrecks should not trigger reaction fire
+- Bug fix: wrecks should not trigger close combat
+- Bug fix: firing not respecting armor arcs since ghost changes
+- Updated 503
 
 ## 0.59 Alpha
 
