@@ -1,14 +1,20 @@
 Features/Bug Fixes:
-  + Huge close combat fail?
-  + Unit has already been dropped?
-  + Fire hitting back when it should have been front
-  + Close combat with wreck
-  + Wreck should be on bottom
-  + Reaction fire from wreck in hex
-  + Email turn notifications
-
-  - Select menu start actions
-  - Count help as not mouse-out
+  + Red reaction hexes
+  + Count help as not mouse-out
+  + Don't allow clicking on move circles, only last rout
+  + No resign during opponents turn
+  + Tired should not subtract from operated weapons
+  + Select menu start actions
+    + Add Cancel for Rout
+    + Add Confirm/Cancel for Target Selection
+    - Add Confirm/Cancel for Assault
+    - Add Confirm/Undo/Cancel for Move
+    - Other Checks
+  - Improve reinforcement panel dragging
+  - Refactor deploys/commit to deploy/commit to finish deploy
+    - Allow selection of features on deploy (to undeploy)
+  - Sound for your turn/visual bell
+  - Email turn notifications
 
   - Go through docs, add examples
   - Create tutorial
@@ -32,8 +38,10 @@ Special Rules/Scenarios
   - Hidden counters (?) only some are infantry but can move like infantry
   - Random landing locations for paratroop scenarios
 
-Probably done but need plays: 101, 005, 001
-Probably not done: 002, 301, 003, 503, 508, 007, 303, 501, 308, 601, 401, 510, 603, 011
+- Remove 23, 24, 25, 26, 27, 30, 31, 32, 33, 35, 36, 37
+- Clean out unused scenario versions
+Probably done but need plays: 101, 005, 001, 003, 301
+Probably not done: 002, 503, 508, 007, 303, 501, 308, 601, 401, 510, 603, 011
 
 006 (Romanian)
 203 (Little Stalingrad)

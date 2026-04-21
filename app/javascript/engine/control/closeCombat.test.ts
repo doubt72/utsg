@@ -122,7 +122,7 @@ describe("close combat", () => {
     expect(one.isBroken).toBe(true)
     expect(game.anyCloseCombatLeft).toBe(false)
 
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -231,7 +231,7 @@ describe("close combat", () => {
     expect(one2.isWreck).toBe(true)
     expect(game.anyCloseCombatLeft).toBe(false)
 
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
 
     const all = map.allCounters
     expect(all.length).toBe(4) // four units (no hull counter for wreck)
@@ -559,7 +559,7 @@ describe("close combat", () => {
     expect(closeCombatCasualtyNeeded(game)).toBe(false)
     expect(game.anyCloseCombatLeft).toBe(false)
 
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
 
     const all = map.allCounters
     expect(all.length).toBe(2)
@@ -691,7 +691,7 @@ describe("close combat", () => {
     expect(game.anyCloseCombatLeft).toBe(false)
     expect(closeCombatCasualtyNeeded(game)).toBe(false)
 
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
 
     const all = map.allCounters
     expect(all.length).toBe(4)
@@ -801,7 +801,7 @@ describe("close combat", () => {
     expect(one3.isBroken).toBe(true)
     expect(game.anyCloseCombatLeft).toBe(false)
 
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
 
     const all = map.allCounters
     expect(all.length).toBe(5)

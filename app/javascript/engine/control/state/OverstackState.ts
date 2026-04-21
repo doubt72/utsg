@@ -23,7 +23,7 @@ export default class OverstackState extends BaseState {
     if (!counter.unit.isFeature && (this.samePlayer(counter.unit) ||
           (selection.counter.unit.operated && selection.counter.unit.parent === undefined))) {
       if (this.openHex(x, y) === hexOpenType.Open) {
-        counter.unit.select()
+        this.map.select(counter.unit)
         this.map.clearOtherSelections(x, y, counter.unit.id)
       }
     }
@@ -63,7 +63,7 @@ export default class OverstackState extends BaseState {
   }
 
   finish() {
-    const counter = this.map.currentSelection[0]
+    const counter = this.map.selection as Counter
     const hex = counter.hex as Coordinate
     const target: GameActionUnit = {
       x: hex.x, y: hex.y, id: counter.unit.id, name: counter.unit.name, status: counter.unit.status,

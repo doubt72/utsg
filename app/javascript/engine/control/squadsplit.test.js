@@ -12,10 +12,10 @@ describe("squad splitting/joining", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "uf-101"
-    unit.select()
     unit.setStatus(unitStatus.Activated)
     const loc = new Coordinate(1, 1)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.split()
 
@@ -48,22 +48,22 @@ describe("squad splitting/joining", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "uf-101"
-    unit.select()
     unit.setStatus(unitStatus.Activated)
     const loc = new Coordinate(1, 1)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.split()
 
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
     const counters = map.countersAt(loc)
-    counters[0].unit.select()
-    expect(map.currentSelection.length).toBe(1)
+    map.select(counters[0].unit)
+    expect(map.selection?.unit.id).toBe(unit.id)
 
     game.join()
     expect(game.gameState?.type).toBe(stateType.SquadJoin)
     expect(counters[0].unit.loaderSelected).toBe(true)
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
 
     select(map, {
       counter: counters[1],
@@ -101,10 +101,10 @@ describe("squad splitting/joining", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "uf-101"
-    unit.select()
     unit.setStatus(unitStatus.Activated)
     const loc = new Coordinate(1, 1)
     map.addCounter(loc, unit)
+    map.select(unit)
     const unit2 = new Unit(testGMG)
     unit2.id = "uf-102"
     map.addCounter(loc, unit2)
@@ -143,10 +143,10 @@ describe("squad splitting/joining", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "uf-101"
-    unit.select()
     unit.setStatus(unitStatus.Activated)
     const loc = new Coordinate(1, 1)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.split()
 
@@ -155,15 +155,15 @@ describe("squad splitting/joining", () => {
     map.addCounter(loc, unit2)
     organizeStacks(map)
 
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
     const counters = map.countersAt(loc)
-    counters[0].unit.select()
-    expect(map.currentSelection.length).toBe(1)
+    map.select(counters[0].unit)
+    expect(map.selection?.unit.id).toBe(unit.id)
 
     game.join()
     expect(game.gameState?.type).toBe(stateType.SquadJoin)
     expect(counters[0].unit.loaderSelected).toBe(true)
-    expect(map.currentSelection.length).toBe(0)
+    expect(map.selection).toBe(undefined)
 
     select(map, {
       counter: counters[1],

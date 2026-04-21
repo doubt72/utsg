@@ -137,9 +137,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -199,9 +199,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -244,9 +244,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -294,9 +294,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -345,9 +345,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -395,9 +395,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -448,9 +448,9 @@ describe("ranged fire attacks", () => {
       map.currentWeather = weatherType.Fog
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -503,9 +503,9 @@ describe("ranged fire attacks", () => {
       map.night = true
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -565,9 +565,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -639,9 +639,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -701,9 +701,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGInf)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -731,9 +731,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGInf)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -814,9 +814,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGLdr)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -866,9 +866,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGLdr)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -908,9 +908,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGFT)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -949,9 +949,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGSC)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -998,8 +998,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing2)
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
-      firing3.select()
       map.addCounter(floc, firing3)
+      map.select(firing3)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1040,8 +1040,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing2)
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
-      firing3.select()
       map.addCounter(floc, firing3)
+      map.select(firing3)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1083,8 +1083,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing2)
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
-      firing3.select()
       map.addCounter(floc, firing3)
+      map.select(firing3)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1127,8 +1127,8 @@ describe("ranged fire attacks", () => {
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
       firing3.activate()
-      firing3.select()
       map.addCounter(floc, firing3)
+      map.select(firing3)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1171,8 +1171,8 @@ describe("ranged fire attacks", () => {
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
       firing3.activate()
-      firing3.select()
       map.addCounter(floc, firing3)
+      map.select(firing3)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1205,9 +1205,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGLdr)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -1280,9 +1280,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -1309,9 +1309,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTruck)
       target.id = "target1"
@@ -1366,9 +1366,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTruck)
       target.id = "target1"
@@ -1423,9 +1423,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTruck)
       target.id = "target1"
@@ -1465,9 +1465,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -1529,8 +1529,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1595,8 +1595,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
       const firing3 = new Unit(testGLdr)
       firing3.id = "firing3"
       map.addCounter(floc, firing3)
@@ -1685,8 +1685,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1722,9 +1722,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGMG)
       firing2.nation = "ussr"
       firing2.id = "firing2"
@@ -1787,8 +1787,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1826,8 +1826,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMortar)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1899,8 +1899,8 @@ describe("ranged fire attacks", () => {
       const firing2 = new Unit(testGMortar)
       firing2.baseFirepower /= 2
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -1971,8 +1971,8 @@ describe("ranged fire attacks", () => {
       const firing2 = new Unit(testGMortar)
       firing2.baseFirepower /= 2
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRTank)
       target.id = "target3"
@@ -2026,8 +2026,8 @@ describe("ranged fire attacks", () => {
       const firing2 = new Unit(testGMortar)
       firing2.baseFirepower /= 2
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRTruck)
       target.id = "target3"
@@ -2083,8 +2083,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGRadio)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -2159,8 +2159,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGRadio)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -2254,8 +2254,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGRadio)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
       organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
@@ -2289,8 +2289,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGRadio)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
       organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
@@ -2330,8 +2330,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGRadio)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const smoke = new Feature(testSmoke)
       smoke.id = "smoke1"
@@ -2370,8 +2370,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMortar)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
       organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
@@ -2408,8 +2408,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGGun)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
       organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
@@ -2448,8 +2448,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGGun)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
       organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
@@ -2483,8 +2483,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGSC)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -2574,8 +2574,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGFT)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -2662,8 +2662,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGFT)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -2746,8 +2746,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMC)
       firing2.id = "firing2"
-      firing2.select()
       map.addCounter(floc, firing2)
+      map.select(firing2)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -2888,9 +2888,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -2933,9 +2933,9 @@ describe("ranged fire attacks", () => {
       const firing = new Unit(testGTank)
       firing.id = "firing1"
       firing.breakDestroysWeapon = true
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -2977,9 +2977,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -3053,9 +3053,9 @@ describe("ranged fire attacks", () => {
       const firing = new Unit(testGTank)
       firing.id = "firing1"
       firing.turretFacing = 4
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -3121,9 +3121,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTruck)
       target.id = "target1"
@@ -3179,9 +3179,9 @@ describe("ranged fire attacks", () => {
       map.currentWeather = weatherType.Fog
       const firing = new Unit(testGTank)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTruck)
       target.id = "target1"
@@ -3231,9 +3231,9 @@ describe("ranged fire attacks", () => {
       map.night = true
       const firing = new Unit(testGTank)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTruck)
       target.id = "target1"
@@ -3282,9 +3282,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -3345,9 +3345,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGAC)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -3422,8 +3422,8 @@ describe("ranged fire attacks", () => {
       map.addCounter(floc, firing5)
       const firing6 = new Unit(testGLdr)
       firing6.id = "firing6"
-      firing6.select()
       map.addCounter(floc, firing6)
+      map.select(firing6)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -3474,9 +3474,9 @@ describe("ranged fire attacks", () => {
       const firing = new Unit(testITank)
       firing.id = "firing1"
       firing.facing = 4
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -3543,9 +3543,9 @@ describe("ranged fire attacks", () => {
       const firing = new Unit(testITank)
       firing.id = "firing1"
       firing.facing = 4
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -3607,9 +3607,9 @@ describe("ranged fire attacks", () => {
       firing.id = "firing1"
       firing.facing = 4
       firing.sponson = { firepower: 24, range: 1, type: sponsonType.Flame }
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testGInf)
       target.id = "target1"
@@ -3657,9 +3657,9 @@ describe("ranged fire attacks", () => {
       const firing = new Unit(testGTank)
       firing.id = "firing1"
       firing.turretFacing = 4
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const wire = new Feature(testWire)
       wire.id = "wire1"
@@ -3712,9 +3712,9 @@ describe("ranged fire attacks", () => {
       const firing = new Unit(testGInf)
       firing.id = "firing1"
       firing.activate()
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGMG)
       firing2.id = "firing2"
       firing2.activate()
@@ -3785,9 +3785,9 @@ describe("ranged fire attacks", () => {
       firing.id = "firing1"
       firing.turretFacing = 4
       firing.activate()
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -3856,9 +3856,9 @@ describe("ranged fire attacks", () => {
       firing.id = "firing1"
       firing.turretFacing = 4
       firing.tire()
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRTank)
       target.id = "target1"
@@ -3928,9 +3928,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
       const firing2 = new Unit(testGLdr)
       firing2.id = "firing2"
       map.addCounter(floc, firing2)
@@ -3983,9 +3983,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"
@@ -4017,9 +4017,9 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGTank)
       firing.id = "firing1"
-      firing.select()
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
+      map.select(firing)
 
       const target = new Unit(testRInf)
       target.id = "target1"

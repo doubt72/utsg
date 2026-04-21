@@ -32,9 +32,9 @@ export function currSelection(game: Game, move: boolean): Unit | undefined {
     }
     return unit
   }
-  const counters = game.scenario.map.currentSelection
-  if (counters.length < 1) { return undefined }
-  return counters[0].unit
+  const counter = game.scenario.map.selection
+  if (!counter) { return undefined }
+  return counter.unit
 }
 
 function setState(game: Game): void {
@@ -57,7 +57,7 @@ function setState(game: Game): void {
     if (state !== stateType.Rout) {
       game.setGameState(new RoutState(game, false))
     }
-    game.routNeeded[0].unit.select()
+    game.scenario.map.select(game.routNeeded[0].unit)
   } else if (game.routCheckNeeded.length > 0) {
     if (state !== stateType.RoutCheck) {
       game.setGameState(new RoutCheckState(game))
@@ -242,7 +242,7 @@ function addMainPhaseActions(game: Game, actions: GameControl[]): void {
     actions.push({ type: "reaction_pass" })
   } else if (game.gameState?.type === stateType.SquadJoin) {
     actions.unshift({ type: "none", message: "select team to combine" })
-    if (map.currentSelection.length > 0) {
+    if (map.selection) {
       actions.push({ type: "join_squad" })
     }
     actions.push({ type: "cancel_action" })
@@ -508,26 +508,26 @@ function checkFire(unit: Unit, map: Map): boolean {
   return true
 }
 
-function canFire(unit: Unit | undefined, map: Map): boolean {
+export function canFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (unit.isActivated) { return false }
   return checkFire(unit, map)
 }
 
-function canIntensiveFire(unit: Unit | undefined, map: Map): boolean {
+export function canIntensiveFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!unit.isActivated) { return false }
   if (unit.offBoard || unit.crewed || unit.areaFire) { return false }
   return checkFire(unit, map)
 }
 
-function canReactionFire(unit: Unit | undefined, map: Map): boolean {
+export function canReactionFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (unit.areaFire) { return false }
   return canFire(unit, map)
 }
 
-function canReactionIntensiveFire(unit: Unit | undefined, map: Map): boolean {
+export function canReactionIntensiveFire(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   return canIntensiveFire(unit, map)
 }
@@ -545,7 +545,7 @@ function contact(unit: Unit, map: Map): boolean {
   return map.contactAt(loc)
 }
 
-function canMove(unit: Unit | undefined, map: Map): boolean {
+export function canMove(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
   if (contact(unit, map)) { return false }
@@ -553,7 +553,7 @@ function canMove(unit: Unit | undefined, map: Map): boolean {
   return true
 }
 
-function canRush(unit: Unit | undefined, map: Map): boolean {
+export function canRush(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
   if (contact(unit, map)) { return false }
@@ -566,7 +566,7 @@ function canRush(unit: Unit | undefined, map: Map): boolean {
   return true
 }
 
-function canAssaultMove(unit?: Unit): boolean {
+export function canAssaultMove(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
@@ -576,7 +576,7 @@ function canAssaultMove(unit?: Unit): boolean {
   return true
 }
 
-function canRout(unit?: Unit): boolean {
+export function canRout(unit?: Unit): boolean {
   if (unit === undefined) { return false }
   if (!unit.isBroken || unit.routed) { return false }
   return true

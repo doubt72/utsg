@@ -18,8 +18,8 @@ describe("rush movement", () => {
     unit.id = "test1"
     unit.baseMovement = 3
     unit.activate()
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -71,7 +71,6 @@ describe("rush movement", () => {
     unit.id = "test1"
     unit.baseMovement = 3
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
@@ -79,6 +78,7 @@ describe("rush movement", () => {
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -100,8 +100,8 @@ describe("rush movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.activate()
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
     game.moveState.smokeToggle()
@@ -158,9 +158,9 @@ describe("rush movement", () => {
     unit.id = "test1"
     unit.baseMovement = 3
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
@@ -227,9 +227,9 @@ describe("rush movement", () => {
     unit.baseMovement = 3
     unit.smokeCapable = false // any unit in stack is enough for smoke
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
@@ -307,9 +307,9 @@ describe("rush movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGLdr)
     unit2.id = "test2"
@@ -390,9 +390,9 @@ describe("rush movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
@@ -418,7 +418,6 @@ describe("rush movement", () => {
     const unit = new Unit(testGLdr)
     unit.id = "test1"
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
@@ -437,6 +436,7 @@ describe("rush movement", () => {
     map.units[2][4].reverse()
     unit2.baseMovement = 0 // Reset so leader CAN carry
     organizeStacks(map)
+    map.select(unit)
     expect(unit.children.length).toBe(1)
 
     game.setGameState(new MoveState(game))
@@ -497,7 +497,6 @@ describe("rush movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
@@ -505,6 +504,7 @@ describe("rush movement", () => {
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -565,8 +565,8 @@ describe("rush movement", () => {
     const unit = new Unit(testGCrew)
     unit.id = "test1"
     unit.activate()
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGGun)
     unit2.id = "test2"
@@ -605,8 +605,8 @@ describe("rush movement", () => {
     }
 
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 

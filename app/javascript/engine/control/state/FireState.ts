@@ -27,7 +27,7 @@ export default class FireState extends BaseState {
     super(game, stateType.Fire, game.currentPlayer)
     this.reaction = reaction
 
-    const selection = game.scenario.map.currentSelection[0]
+    const selection = game.scenario.map.selection as Counter
     this.sponson = false
     if (this.reaction) {
       placeReactionFireGhosts(game)
@@ -71,7 +71,7 @@ export default class FireState extends BaseState {
         for (const h of reactionFireHexes(this.game)) {
           if (h.x === x && h.y === y) { return hexOpenType.Open }
         }
-        return hexOpenType.Closed
+        return hexOpenType.Red
       }
       return hexOpenType.Open
     }
@@ -94,7 +94,7 @@ export default class FireState extends BaseState {
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!this.doneRotating) { this.doneRotating = true }
     const selected = counter.unit.selected
-    counter.unit.select()
+    this.map.select(counter.unit)
     if (!this.doneSelect && this.samePlayer(counter.unit)) {
       if (selected) {
         removeStateSelection(this.game, x, y, counter.unit.id)
@@ -106,7 +106,7 @@ export default class FireState extends BaseState {
       }
     } else {
       this.doneSelect = true
-      counter.unit.select()
+      this.map.select(counter.unit)
       const ts = counter.unit.targetSelected
       if (ts) {
         this.map.clearAllTargetSelections()
@@ -120,7 +120,7 @@ export default class FireState extends BaseState {
             this.map.unTargetSelectAllExcept(x, y)
           }
         } else {
-          counter.unit.targetSelect()
+          this.map.targetSelect(counter.unit)
           this.map.clearOtherTargetSelections(x, y, counter.unit.id)
           if (!counter.unit.isVehicle) {
             this.map.targetSelectAllAt(x, y, false, false)
@@ -228,7 +228,7 @@ export default class FireState extends BaseState {
   toHex(x: number, y: number) {
     if (this.selection[0].counter.unit.offBoard || this.smoke) {
       for (const t of this.targetSelection) {
-        t.counter.unit.targetSelect()
+        this.map.targetSelect(t.counter.unit)
       }
       this.targetSelection = []
       const loc = new Coordinate(x, y)

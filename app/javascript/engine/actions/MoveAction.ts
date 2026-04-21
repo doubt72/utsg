@@ -165,7 +165,7 @@ export default class MoveAction extends BaseAction {
           }
         } else {
           if (hitRoll > hitCheck) {
-            this.game.moraleChecksNeeded.push({ unit: unit.unit, from: [end], to: end, incendiary: true })
+            this.game.moraleChecksNeeded.push({ unit: unit.unit, from: [end], to: end, incendiary: true, critical: false })
             if (first) {
               anims.push({ loc: end, type: "hit" })
               first = false

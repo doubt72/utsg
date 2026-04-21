@@ -89,7 +89,7 @@ export default class RallyState extends BaseState {
         if (alreadyRallied(this.game, id)) {
           this.game.addMessage("unit already attempted to rally")
         } else {
-          counter.unit.select()
+          this.map.select(counter.unit)
           this.map.clearOtherSelections(x, y, counter.unit.id)
         }
       }
@@ -123,7 +123,7 @@ export default class RallyState extends BaseState {
   }
 
   finish() {
-    const counter = this.map.currentSelection[0]
+    const counter = this.map.selection as Counter
     const hex = counter.hex as Coordinate
     const data = counter.unit.canCarrySupport ? {
       infantry: {

@@ -1,3 +1,13 @@
+## 0.61 Alpha
+
+- Add LOS hexes for reaction fire but red
+- Add ability to start/complete/cancel fire/move/assault/rout from counter overlay
+- Major selection refactor to improve performance, make UX changes cleaner
+- Only active player should be able to resign
+- Bug fix: help no longer causes counter overlay to close with accidental mouseovers on slower displays
+- Bug fix: prevent clicking on move track if moving to current or illegal hex
+- Bug fix: operated movement should not be affected by tired status
+
 ## 0.60 Alpha
 
 - Add "still" notification animations for safari

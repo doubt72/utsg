@@ -40,7 +40,7 @@ export default class CloseCombatState extends BaseState {
     } else {
       const casualty = closeCombatCasualtyNeeded(this.game)
       if (casualty) {
-        counter.unit.select()
+        this.map.select(counter.unit)
         this.map.clearOtherSelections(x, y, id)
       } else {
         this.map.selectAllAt(x, y)
@@ -84,8 +84,8 @@ export default class CloseCombatState extends BaseState {
   rollForCombat() {
     const origin: GameActionUnit[] = []
     const target: GameActionUnit[] = []
-    const loc = this.map.currentSelection[0].hex as Coordinate
-    const counters = this.map.currentSelection
+    const loc = this.map.selection?.hex as Coordinate
+    const counters = this.map.allSelections
     counters.forEach(c => {
       if (this.samePlayer(c.unit)) {
         origin.push({ x: loc.x, y: loc.y, id: c.unit.id, name: c.unit.name, status: c.unit.status })
@@ -111,7 +111,7 @@ export default class CloseCombatState extends BaseState {
   }
 
   reduceUnit() {
-    const counter = this.map.currentSelection[0]
+    const counter = this.map.selection as Counter
     const hex = counter.hex as Coordinate
     const player = counter.unit.playerNation === this.game.currentPlayerNation ? this.game.currentPlayer :
       this.game.opponentPlayer

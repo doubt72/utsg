@@ -1044,7 +1044,7 @@ export default class Game {
   }
 
   undeploy() {
-    const select = this.scenario.map.currentSelection[0]
+    const select = this.scenario.map.selection as Counter
     for (let i = this.lastActionIndex; i >= 0; i--) {
       const action = this.actions[i] as DeployAction
       if (action.undone) { continue }
@@ -1082,7 +1082,7 @@ export default class Game {
       this.scenario.map.clearAllSelections()
     }
     if (select) {
-      select.select()
+      this.scenario.map.select(select)
     }
     this.scenario.map.clearGhosts()
     this.closeOverlay = true
@@ -1121,7 +1121,7 @@ export default class Game {
     if (this.gameState?.type === stateType.Deploy) {
       this.deployState.split()
     } else {
-      const selection = this.scenario.map.currentSelection[0]
+      const selection = this.scenario.map.selection as Counter
       const loc = selection.hex as Coordinate
       const newId = `uf-${this.actions.length}`
       this.executeAction(new GameAction({

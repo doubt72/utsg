@@ -325,9 +325,9 @@ describe("routing", () => {
       const unit = new Unit(testGInf)
       unit.break()
       unit.id = "test1"
-      unit.select()
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
+      map.select(unit)
       organizeStacks(map)
 
       game.setGameState(new RoutState(game, true))
@@ -359,12 +359,12 @@ describe("routing", () => {
       const unit = new Unit(testGInf)
       unit.break()
       unit.id = "test1"
-      unit.select()
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
       const unit2 = new Unit(testRInf)
       unit2.id = "test2"
       map.addCounter(loc, unit2)
+      map.select(unit)
       organizeStacks(map)
 
       const loc2 = new Coordinate(1, 2)
@@ -518,7 +518,7 @@ describe("routing", () => {
       Math.random = original
       expect(game.routNeeded[0].unit.name).toBe("Rifle")
 
-      unit.select()
+      map.select(unit)
       game.setGameState(new RoutState(game, false))
       const tree = game.routState.routPathTree as RoutPathTree
       expect(routEnds(tree)).toStrictEqual([new Coordinate(0, 2)])
@@ -548,9 +548,9 @@ describe("routing", () => {
       const unit = new Unit(testRInf)
       unit.id = "test1"
       unit.break()
-      unit.select()
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
+      map.select(unit)
       organizeStacks(map)
 
       game.setGameState(new RoutAllState(game))
@@ -567,7 +567,7 @@ describe("routing", () => {
       Math.random = original
       expect(game.routNeeded[0].unit.name).toBe("Rifle")
 
-      unit.select()
+      map.select(unit)
       game.setGameState(new RoutState(game, false))
       expect(game.routState.routPathTree).toBe(false)
 

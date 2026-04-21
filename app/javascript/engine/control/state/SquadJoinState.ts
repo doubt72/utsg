@@ -9,13 +9,13 @@ export default class SquadJoinState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.SquadJoin, game.currentPlayer)
   
-    const selection = this.map.currentSelection[0]
+    const selection = this.map.selection as Counter
     const loc = selection.hex as Coordinate
     this.selection = [{
       x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name, counter: selection,
     }]
     this.map.clearAllSelections()
-    selection.unit.loaderSelect()
+    this.map.loaderSelect(selection.unit)
 
     game.refreshCallback(game)
   }
@@ -26,7 +26,7 @@ export default class SquadJoinState extends BaseState {
   }
 
   select(selection: CounterSelectionTarget, callback: () => void): void {
-    selection.counter.unit.select()
+    this.map.select(selection.counter.unit)
     callback()
   }
 
@@ -67,7 +67,7 @@ export default class SquadJoinState extends BaseState {
 
   finish(): void {
     const one = this.selection[0]
-    const two = this.map.currentSelection[0]
+    const two = this.map.selection as Counter
     const loc = two.hex as Coordinate
     const target1 = { x: loc.x, y: loc.y, id: one.id, name: one.name, status: one.counter.unit.status }
     const target2: GameActionUnit = {

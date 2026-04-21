@@ -15,7 +15,7 @@ export default class RoutAllState extends BaseState {
     })
     this.selection = counters.map(c => {
       const hex = c.hex as Coordinate
-      c.unit.select()
+      this.map.select(c.unit)
       return { x: hex.x, y: hex.y, id: c.unit.id, name: c.unit.name, counter: c }
     })
     game.refreshCallback(game)

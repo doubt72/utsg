@@ -21,8 +21,8 @@ describe("game actions", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
     game.moveState.move(3, 2)
@@ -43,8 +43,8 @@ describe("game actions", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const enemy = new Unit(testRInf)
     enemy.id = "test2"
@@ -92,8 +92,8 @@ describe("game actions", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const enemy = new Unit(testRInf)
     enemy.id = "test2"
@@ -143,8 +143,8 @@ describe("game actions", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(0, 3), unit)
+    map.select(unit)
 
     const unit2 = new Unit(testRInf)
     unit2.id = "test2"
@@ -198,8 +198,8 @@ describe("game actions", () => {
     unit.facing = 1
     unit.turretFacing = 1
     unit.breakdownRoll = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -236,8 +236,8 @@ describe("game actions", () => {
     unit.facing = 1
     unit.turretFacing = 1
     unit.breakdownRoll = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -307,8 +307,8 @@ describe("game actions", () => {
     unit.facing = 1
     unit.turretFacing = 1
     unit.breakdownRoll = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new AssaultState(game))
 
@@ -399,7 +399,7 @@ describe("game actions", () => {
     const map = game.scenario.map
     const firing = new Unit(testGInf)
     firing.id = "firing1"
-    firing.select()
+    map.select(firing)
     const floc = new Coordinate(3, 2)
     map.addCounter(floc, firing)
 

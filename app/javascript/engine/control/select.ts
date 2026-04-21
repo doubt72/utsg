@@ -21,24 +21,25 @@ export default function select(
   const id = selection.counter.target.id
   const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
   map.clearOtherSelections(x, y, id)
-  counter.unit.select()
+  map.select(counter.unit)
   callback()
 }
 
 export function clearUnrangedSelection(game: Game) {
   if (game?.gameState?.type !== stateType.Fire) { return }
+  const map = game.scenario.map
   const init = game.fireState.initialSelection[0]
   const leadership = leadershipRange(game)
   for (const sel of game.gameState.selection) {
     if (leadership === false) {
       const child = init.counter.unit.children[0]
       if (sel.id !== init.id && (!child || child.id !== sel.id)) {
-        sel.counter.unit.select()
+        map.select(sel.counter.unit)
         removeStateSelection(game, sel.x, sel.y, sel.id)
       }
     } else {
       if (hexDistance(new Coordinate(init.x, init.y), new Coordinate(sel.x, sel.y)) > leadership) {
-        sel.counter.unit.select()
+        map.select(sel.counter.unit)
         removeStateSelection(game, sel.x, sel.y, sel.id)
       }
     }

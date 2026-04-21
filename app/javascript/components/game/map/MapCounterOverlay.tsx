@@ -5,9 +5,10 @@ import Counter from "../../../engine/Counter";
 import { Coordinate, CounterSelectionTarget, markerType, unitType } from "../../../utilities/commonTypes";
 import Map from "../../../engine/Map";
 import { clearColor, counterOutline, roundedRectangle } from "../../../utilities/graphics";
-import { counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
+import { counterActionButtons, counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
 import { HelpOverlay } from "./Help";
 import {
+  actionButtonHelpLayout,
   counterCloseCombatHelpLayout, counterFireHelpLayout, counterMoraleHelpLayout, counterRallyHelpLayout,
   counterRoutHelpLayout } from "../../../engine/support/help";
 import Unit from "../../../engine/Unit";
@@ -45,10 +46,20 @@ export default function MapCounterOverlay({
   const [contextMenu, setContextMenu] = useState<JSX.Element | undefined>()
   const [update, setUpdate] = useState(0)
 
+  const [actionControls, setActionControls] = useState<JSX.Element[]>([])
+
   const contextAction = (type: string, target: CounterSelectionTarget) => {
     if (!map.game) { return }
     executeContextAction(map.game, target, type, updateCallback)
     setContextMenu(undefined)
+    updateCallback()
+  }
+
+  const buttonAction = (type: string, target: CounterSelectionTarget) => {
+    if (!map.game) { return }
+    executeContextAction(map.game, target, type, updateCallback)
+    setActionControls([])
+    setUpdate(s => s + 1)
     updateCallback()
   }
 
@@ -105,6 +116,15 @@ export default function MapCounterOverlay({
     }
     setUpdate(s => s + 1)
     updateCallback()
+  }
+
+  const showButtonHelp = (event: React.MouseEvent, type: string) => {
+    if (!map.game) { return }
+    const x = (event.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
+    const y = (event.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
+    const loc = new Coordinate(x, y)
+    const max = new Coordinate(maxX, maxY)
+    setActionHelpDisplay(HelpOverlay(actionButtonHelpLayout(loc, max, scale, type)))
   }
 
   const showActionHelp = (event: React.MouseEvent, counter: Counter) => {
@@ -169,6 +189,14 @@ export default function MapCounterOverlay({
   }
 
   useEffect(() => {
+    if (map.selection === undefined) { setActionControls([]) }
+    setActionHelpDisplay(undefined)
+    setUpdate(s => s + 1)
+  }, [
+    map.selection?.target.id, xx, yy, map.game?.gameState, map.targetSelection?.target.id
+  ])
+
+  useEffect(() => {
     // Either counters or a number makes for iffy typing
     const displayCounters = counters ? counters :
       map.countersAt(new Coordinate(xx as number, yy as number))
@@ -179,6 +207,7 @@ export default function MapCounterOverlay({
     )
     const helpOverlays: JSX.Element[] = []
     const selectionOverlays: JSX.Element[] = []
+    const buttons: JSX.Element[] = []
     setOverlayDisplay(
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -197,19 +226,42 @@ export default function MapCounterOverlay({
           const outwidth = 6
           const dblwidth = outwidth*2
           const x = layout.x + i*(160+dblwidth) + dblwidth*2
+          let thisButtons = false
+          if (counter.hasUnit && (counter.unit.selected || counter.unit.targetSelected) && yy) {
+            const controls = counterActionButtons(map, x, layout.y2 - outwidth + 2, maxY, counter)
+            for (const c of controls) {
+              thisButtons = true
+              buttons.push(
+                <g key={`${c.text}-${counter.unit.id}`}
+                    onClick={() => buttonAction(c.action, {
+                      target: { type: "map", xy: counter.hex as Coordinate }, counter
+                    })} >
+                  <path d={c.path} style={{ fill: c.color, strokeWidth: 2, stroke: "#000" }} />
+                  <text textAnchor="middle" fontFamily="'Courier Prime', monospace" x={c.tX} y={c.tY}
+                        fontSize={c.size} style={{ fill: c.tColor }}>
+                    {c.text}
+                  </text>
+                  <path d={c.path} style={{ fill: clearColor, strokeWidth: 0 }}
+                        onMouseMove={(e: React.MouseEvent) => { showButtonHelp(e, c.action) }}
+                        onMouseLeave={() => { setActionHelpDisplay(undefined) }}
+                        onContextMenu={e => e.preventDefault()} />
+                </g>
+              )
+            }
+          }
           const shiftBadges = transport || counter.parent?.unit.transport
           const badges = counterInfoBadges(
             map, x, layout.y2 + 20 - dblwidth + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 3)
           ).map((b, i) => {
             const arrow = b.arrow ?
-              <g>
+              <g opacity={thisButtons ? 0.33 : 1}>
                 <path d={b.dirpath} style={{ fill: b.color, stroke: b.tColor, strokeWidth: 2 }} />
                 <text x={b.dx} y={b.y as number+1} fontSize={b.size} textAnchor="middle"
                       style={{ fill: b.tColor }}
                       transform={`rotate(${b.arrow*60-60} ${b.dx} ${b.dy})`}>←</text>
               </g> : "" 
             return (
-              <g key={i} >
+              <g key={i} opacity={thisButtons ? 0.33 : 1} >
                 <path d={b.path} style={{ fill: b.color, stroke: b.tColor, strokeWidth: 2 }} />
                 <text x={b.x} y={b.y} fontSize={b.size} textAnchor="start" fontFamily="'Courier Prime', monospace"
                       style={{ fill: b.tColor }}>{b.text}</text>
@@ -218,8 +270,9 @@ export default function MapCounterOverlay({
             )
           })
           helpOverlays.push(
-            <MapCounterOverlayHelp key={i} xx={x + 167 - dblwidth*2} yy={layout.y - 20 + dblwidth*2} maxX={maxX} maxY={maxY}
-                                   map={map} scale={scale} counter={cd} setHelpDisplay={setHelpDisplay} />
+            <MapCounterOverlayHelp key={i} xx={x + 167 - dblwidth*2} yy={layout.y - 20 + dblwidth*2}
+                                   maxX={maxX} maxY={maxY} map={map} scale={scale} counter={cd}
+                                   setHelpDisplay={setHelpDisplay} />
           )
           let target: CounterSelectionTarget | undefined = undefined
           if (xx !== undefined && yy !== undefined) {
@@ -281,17 +334,21 @@ export default function MapCounterOverlay({
           <path d={layout.path} style={{ fill: clearColor}} />
           {selectionOverlays}
           {helpOverlays.reverse()}
+          {actionControls}
+          {helpDisplay}
+          {actionHelpDisplay}
           {contextMenu}
         </g>
       </g>
     )
-  }, [xx, yy, counters, update, contextMenu])
+    setActionControls(buttons)
+  }, [
+    xx, yy, counters, update, contextMenu, helpDisplay, actionHelpDisplay,
+  ])
 
   return (
     <g>
       {overlayDisplay}
-      {helpDisplay}
-      {actionHelpDisplay}
     </g>
   )
 }

@@ -1,8 +1,6 @@
 import {
-  Coordinate,
-  Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType,
-  NumberBoolean, SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus,
-  unitType
+  Coordinate, Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType, NumberBoolean,
+  SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus, unitType
 } from "../utilities/commonTypes";
 import Game from "./Game";
 import {
@@ -564,7 +562,7 @@ export default class Unit {
       return this.brokenMovement
     } else if (this.pinned || this.immobilized || this.isWreck) {
       return 0
-    } else if (this.isTired) {
+    } else if (this.isTired && !this.operated) {
       return this.baseMovement - 2
     } else {
       return this.baseMovement

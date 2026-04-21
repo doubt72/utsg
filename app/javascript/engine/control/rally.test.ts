@@ -71,7 +71,7 @@ describe("rallying", () => {
 
     game.setGameState(new RallyState(game))
 
-    unit.select()
+    map.select(unit)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -103,7 +103,7 @@ describe("rallying", () => {
 
     game.setGameState(new RallyState(game))
 
-    unit.select()
+    map.select(unit)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -139,7 +139,7 @@ describe("rallying", () => {
 
     game.setGameState(new RallyState(game))
 
-    unit2.select()
+    map.select(unit2)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -173,7 +173,7 @@ describe("rallying", () => {
 
     game.setGameState(new RallyState(game))
 
-    unit2.select()
+    map.select(unit2)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -212,7 +212,7 @@ describe("rallying", () => {
     game.setGameState(new RallyState(game))
     expect(leaderAtHex(game, 0, 0, game.currentPlayer, undefined)).toBe(true)
 
-    unit1.select()
+    map.select(unit1)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -250,7 +250,7 @@ describe("rallying", () => {
     game.setGameState(new RallyState(game))
     expect(leaderAtHex(game, 0, 0, game.currentPlayer, undefined)).toBe(false)
 
-    unit1.select()
+    map.select(unit1)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -292,7 +292,7 @@ describe("rallying", () => {
 
     game.setGameState(new RallyState(game))
 
-    unit1.select()
+    map.select(unit1)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -343,7 +343,7 @@ describe("rallying", () => {
 
     game.setGameState(new RallyState(game))
 
-    unit4.select()
+    map.select(unit4)
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -360,7 +360,7 @@ describe("rallying", () => {
     expect(map.anyUnitsCanRally(2)).toBe(true)
     game.setGameState(new RallyState(game))
 
-    unit1.select()
+    map.select(unit1)
 
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     game.gameState?.finish()

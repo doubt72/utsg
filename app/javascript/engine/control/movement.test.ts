@@ -26,8 +26,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -96,8 +96,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -161,8 +161,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -210,8 +210,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -259,8 +259,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 5
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -307,8 +307,8 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -349,8 +349,8 @@ describe("movement", () => {
     unit.pinned = false
     unit.tire()
     expect(unit.currentMovement).toBe(2)
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -398,8 +398,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
     game.moveState.smokeToggle()
@@ -463,8 +463,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const smoke = new Feature(testSmoke)
     smoke.id = "smoke1"
@@ -511,9 +511,9 @@ describe("movement", () => {
     unit.id = "test1"
     unit.baseMovement = 3
     unit.smokeCapable = false // any unit in stack is enough for smoke
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
@@ -583,9 +583,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
@@ -618,9 +618,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit5 = new Unit(testRTank)
     unit5.wreck()
@@ -645,9 +645,9 @@ describe("movement", () => {
     unit.id = "test1"
     unit.baseMovement = 3
     unit.smokeCapable = false // any unit in stack is enough for smoke
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
@@ -737,9 +737,9 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 2
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGLdr)
     unit2.id = "test2"
@@ -805,7 +805,6 @@ describe("movement", () => {
 
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
@@ -813,6 +812,7 @@ describe("movement", () => {
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -879,9 +879,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
@@ -954,7 +954,6 @@ describe("movement", () => {
     const unit = new Unit(testGLdr)
     unit.id = "test1"
     unit.baseMovement = 5
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
@@ -972,6 +971,7 @@ describe("movement", () => {
     map.units[2][4].reverse()
     unit2.baseMovement = 0 // Reset so leader CAN carry
     organizeStacks(map)
+    map.select(unit)
     expect(unit.children.length).toBe(1)
 
     game.setGameState(new MoveState(game))
@@ -1031,9 +1031,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGLdr)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
@@ -1065,7 +1065,6 @@ describe("movement", () => {
 
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
 
@@ -1073,6 +1072,7 @@ describe("movement", () => {
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1096,8 +1096,8 @@ describe("movement", () => {
 
     // Reset to allow dropping at a different location
     game.moveState.addActions.pop()
-    unit2.select()
-    unit2.dropSelect()
+    map.dropSelect(unit2)
+    map.select(unit2)
 
     game.moveState.move(3, 2)
 
@@ -1159,7 +1159,6 @@ describe("movement", () => {
     const loc = new Coordinate(3, 2)
     const unit = new Unit(testGCrew)
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -1167,6 +1166,7 @@ describe("movement", () => {
     unit2.facing = 1
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1241,7 +1241,6 @@ describe("movement", () => {
     const loc = new Coordinate(3, 2)
     const unit = new Unit(testGCrew)
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -1249,6 +1248,7 @@ describe("movement", () => {
     unit2.facing = 2
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1303,7 +1303,6 @@ describe("movement", () => {
     const loc = new Coordinate(3, 2)
     const unit = new Unit(testGCrew)
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -1312,6 +1311,7 @@ describe("movement", () => {
     unit2.baseMovement = 1
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1364,8 +1364,8 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGCrew)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGGun)
     unit2.id = "test2"
@@ -1409,8 +1409,8 @@ describe("movement", () => {
     }
 
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1467,7 +1467,6 @@ describe("movement", () => {
 
     const unit = new Unit(testGCrew)
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -1475,6 +1474,7 @@ describe("movement", () => {
     unit2.facing = 1
     map.addCounter(loc, unit2)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1531,9 +1531,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGMG)
     unit2.nation = "ussr"
@@ -1607,8 +1607,8 @@ describe("movement", () => {
     }
 
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1661,8 +1661,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1697,8 +1697,8 @@ describe("movement", () => {
     const loc = new Coordinate(3, 4)
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1730,8 +1730,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1763,8 +1763,8 @@ describe("movement", () => {
     unit.id = "test1"
     unit.facing = 1
     unit.turretFacing = 1
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1867,7 +1867,6 @@ describe("movement", () => {
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -1880,6 +1879,7 @@ describe("movement", () => {
     map.addCounter(loc, unit3)
 
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -1978,7 +1978,6 @@ describe("movement", () => {
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 4
-    unit.select()
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -1991,6 +1990,7 @@ describe("movement", () => {
     map.addCounter(loc, unit3)
 
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -2091,8 +2091,7 @@ describe("movement", () => {
     const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
-    unit.baseMovement = 3
-    unit.select()
+    unit.baseMovement = 4
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -2105,11 +2104,12 @@ describe("movement", () => {
     map.addCounter(loc, unit3)
 
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
-    expect(mapSelectMovement(game, false)).toBe(3)
-    expect(mapSelectMovement(game, true)).toBe(3)
+    expect(mapSelectMovement(game, false)).toBe(4)
+    expect(mapSelectMovement(game, true)).toBe(4)
 
     expect(game.gameState?.rotateOpen).toBe(true)
     expect(game.gameState?.rotatePossible).toBe(true)
@@ -2139,6 +2139,7 @@ describe("movement", () => {
     expect(game.moveState.addActions[0].facing).toBe(5)
     expect(game.moveState.addActions[0].cost).toBe(1)
     expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
+    expect(game.gameState?.openHex(2, 1)).toBe(1)
 
     game.moveState.move(2, 1)
     expect(game.gameState?.rotateOpen).toBe(true)
@@ -2199,8 +2200,7 @@ describe("movement", () => {
     const unit = new Unit(testGTruck)
     unit.id = "test1"
     unit.facing = 1
-    unit.baseMovement = 3
-    unit.select()
+    unit.baseMovement = 4
     map.addCounter(loc, unit)
 
     const unit2 = new Unit(testGGun)
@@ -2213,11 +2213,12 @@ describe("movement", () => {
     map.addCounter(loc, unit3)
 
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
-    expect(mapSelectMovement(game, false)).toBe(3)
-    expect(mapSelectMovement(game, true)).toBe(3)
+    expect(mapSelectMovement(game, false)).toBe(4)
+    expect(mapSelectMovement(game, true)).toBe(4)
 
     expect(game.gameState?.rotateOpen).toBe(true)
     expect(game.gameState?.rotatePossible).toBe(true)
@@ -2247,6 +2248,7 @@ describe("movement", () => {
     expect(game.moveState.addActions[0].facing).toBe(undefined)
     expect(game.moveState.addActions[0].cost).toBe(1)
     expect(map.units[2][3].filter(u => u.ghost).length).toBe(1)
+    expect(game.gameState?.openHex(2, 1)).toBe(1)
 
     game.moveState.move(2, 1)
     expect(game.gameState?.rotateOpen).toBe(true)
@@ -2314,7 +2316,6 @@ describe("movement", () => {
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 4
-    unit.select()
 
     const unit2 = new Unit(testGGun)
     unit2.id = "test2"
@@ -2333,6 +2334,7 @@ describe("movement", () => {
     map.addCounter(loc, unit3)
 
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -2433,7 +2435,6 @@ describe("movement", () => {
     unit.id = "test1"
     unit.facing = 1
     unit.baseMovement = 4
-    unit.select()
 
     const unit2 = new Unit(testGGun)
     unit2.id = "test2"
@@ -2447,6 +2448,7 @@ describe("movement", () => {
     map.addCounter(loc, unit2)
 
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -2543,12 +2545,12 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
     const feature = new Feature(testWire)
     feature.id = "wire"
     map.addCounter(new Coordinate(3, 2), feature)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -2577,12 +2579,12 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
     const feature = new Feature(testWire)
     feature.id = "wire"
     map.addCounter(new Coordinate(4, 2), feature)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -2611,9 +2613,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const floc = new Coordinate(4, 2)
     map.addCounter(floc, unit)
+    map.select(unit)
 
     const feature = new Feature(testMine)
     feature.id = "mine"
@@ -2637,7 +2639,7 @@ describe("movement", () => {
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [tloc], to: tloc, incendiary: true },
+      { unit: unit, from: [tloc], to: tloc, incendiary: true, critical: false },
     ])
 
     expect(game.lastAction?.stringValue).toBe(
@@ -2666,9 +2668,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const floc = new Coordinate(4, 2)
     map.addCounter(floc, unit)
+    map.select(unit)
 
     const feature = new Feature(testMineAP)
     feature.id = "mine"
@@ -2692,7 +2694,7 @@ describe("movement", () => {
     Math.random = original
 
     expect(game.moraleChecksNeeded).toStrictEqual([
-      { unit: unit, from: [tloc], to: tloc, incendiary: true },
+      { unit: unit, from: [tloc], to: tloc, incendiary: true, critical: false },
     ])
 
     expect(game.lastAction?.stringValue).toBe(
@@ -2721,9 +2723,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const floc = new Coordinate(4, 2)
     map.addCounter(floc, unit)
+    map.select(unit)
 
     const feature = new Feature(testMineAT)
     feature.id = "mine"
@@ -2769,9 +2771,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
-    unit.select()
     const floc = new Coordinate(4, 2)
     map.addCounter(floc, unit)
+    map.select(unit)
 
     const feature = new Feature(testMine)
     feature.id = "mine"
@@ -2820,9 +2822,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
-    unit.select()
     const floc = new Coordinate(4, 2)
     map.addCounter(floc, unit)
+    map.select(unit)
 
     const feature = new Feature(testMineAP)
     feature.id = "mine"
@@ -2872,9 +2874,9 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
-    unit.select()
     const floc = new Coordinate(4, 2)
     map.addCounter(floc, unit)
+    map.select(unit)
 
     const feature = new Feature(testMineAT)
     feature.id = "mine"
@@ -2926,13 +2928,13 @@ describe("movement", () => {
     })
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -2971,13 +2973,13 @@ describe("movement", () => {
     })
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
     unit2.baseMovement = 3
     map.addCounter(loc, unit2)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -3013,9 +3015,9 @@ describe("movement", () => {
     })
     const unit = new Unit(testGTank)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
     game.moveState.move(3, 2)
@@ -3046,8 +3048,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -3088,9 +3090,9 @@ describe("movement", () => {
     unit.id = "test1"
     unit.baseMovement = 3
     unit.smokeCapable = false // any unit in stack is enough for smoke
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
@@ -3153,8 +3155,8 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
     game.moveState.smokeToggle()
@@ -3203,9 +3205,9 @@ describe("movement", () => {
     const unit = new Unit(testGInf)
     unit.id = "test1"
     unit.baseMovement = 3
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"

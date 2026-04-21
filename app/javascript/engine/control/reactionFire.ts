@@ -181,6 +181,7 @@ export function placeReactionFireGhosts(game: Game) {
 }
 
 export function placeReactionMoraleCheckGhosts(game: Game, loc: Coordinate) {
+  const map = game.scenario.map
   const fireAction = game.lastSignificantAction as FireAction
   if (!["reaction_fire", "reaction_intensive_fire"].includes(fireAction?.type) ||
       !fireAction?.reaction || fireAction?.fireHex.moveSeq === undefined) { return }
@@ -211,15 +212,15 @@ export function placeReactionMoraleCheckGhosts(game: Game, loc: Coordinate) {
     for (let i = 0; i < action.path.length; i++) {
       if (action.path[i].x !== loc.x || action.path[i].y !== loc.y) { continue }
       for (const u of units) {
-        const check = game.scenario.map.unitAtId(new Coordinate(action.path[i].x, action.path[i].y), u.u.id)
+        const check = map.unitAtId(new Coordinate(action.path[i].x, action.path[i].y), u.u.id)
         if (!check) {
           const copy = u.u.clone(true)
           if (action.path[i].facing && copy.rotates) { copy.facing = action.path[i].facing as Direction}
           if (action.path[i].turret && copy.turreted) { copy.turretFacing = action.path[i].turret as Direction}
           copy.id = u.u.id
           if (u.max >= i && u.min <= i) {
-            game.scenario.map.addGhost(new Coordinate(action.path[i].x, action.path[i].y), copy)
-            if (u.u.selected) { copy.select() }
+            map.addGhost(new Coordinate(action.path[i].x, action.path[i].y), copy)
+            if (u.u.selected) { map.select(copy) }
           }
         }
       }

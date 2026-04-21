@@ -27,7 +27,7 @@ export default class MoveState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.Move, game.currentPlayer)
 
-    const selection = game.scenario.map.currentSelection[0]
+    const selection = game.scenario.map.selection as Counter
 
     let facing = selection.unit.rotates ? selection.unit.facing : undefined
     const child = selection.unit.children[0]
@@ -38,7 +38,7 @@ export default class MoveState extends BaseState {
       turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
     }
     const units = selection.children
-    units.forEach(c => c.unit.select())
+    units.forEach(c => this.map.select(c.unit))
     let canSelect = selection.unit.canCarrySupport && (units.length < 1 || !units[0].unit.crewed)
     if (canSelect) {
       let check = false
@@ -187,11 +187,11 @@ export default class MoveState extends BaseState {
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     const selected = counter.unit.selected
-    counter.unit.select()
+    this.map.select(counter.unit)
     const xx = this.lastPath?.x ?? 0 // But should always exist, type notwithstanding
     const yy = this.lastPath?.y ?? 0
     if (this.dropping) {
-      counter.unit.dropSelect()
+      this.map.dropSelect(counter.unit)
       const cost = counter.parent ? 1 : 0
       const facing = counter.unit.crewed ? this.lastPath?.facing : undefined
       this.addActions.push(
@@ -208,23 +208,23 @@ export default class MoveState extends BaseState {
       }
       if (counter.children.length === 1) {
         const child = counter.children[0]
-        child.unit.select()
-        child.unit.dropSelect()
+        this.map.select(child.unit)
+        this.map.dropSelect(child.unit)
         this.map.addGhost(new Coordinate(xx, yy), child.unit.clone(true) as Unit)
       }
       this.doneSelect = true
       this.game.closeOverlay = true
     } else if (this.loading) {
       if (this.needPickUpDisambiguate) {
-        counter.unit.loaderSelect()
+        this.map.loaderSelect(counter.unit)
         this.loader = counter
       } else {
-        counter.unit.select()
-        counter.unit.loadedSelect()
+        this.map.select(counter.unit)
+        this.map.loadedSelect(counter.unit)
         let load = this.loader
         if (!load) { load = this.getLoader[0] }
-        load.unit.select()
-        load.unit.loaderSelect()
+        this.map.select(load.unit)
+        this.map.loaderSelect(load.unit)
         this.loader = undefined
         this.loading = false
         this.doneSelect = true
@@ -245,7 +245,7 @@ export default class MoveState extends BaseState {
         })
       }
     } else {
-      counter.children.forEach(c => c.unit.select())
+      counter.children.forEach(c => this.map.select(c.unit))
       if (selected) {
         removeStateSelection(this.game, x, y, counter.unit.id)
         counter.children.forEach(c => removeStateSelection(this.game, x, y, c.unit.id))
@@ -338,6 +338,7 @@ export default class MoveState extends BaseState {
   move(x: number, y: number) {
     const target = this.selection[0].counter.unit
     const lastPath = this.lastPath as GameActionPath
+    if (this.openHex(x, y) === hexOpenType.Closed) { return }
     if (this.smoke) {
       const id = `uf-${this.game.actions.length}-${this.addActions.length}`
       this.addActions.push({
@@ -350,6 +351,7 @@ export default class MoveState extends BaseState {
       )
       this.smoke = false
     } else {
+      if (lastPath.x === x && lastPath.y === y) { return }
       let facing = target.rotates ? lastPath.facing : undefined
       const child = target.children[0]
       if (target.canHandle && child && child.crewed) { facing = child.facing }

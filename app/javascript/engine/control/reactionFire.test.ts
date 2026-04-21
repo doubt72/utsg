@@ -24,8 +24,8 @@ describe("reaction fire attacks", () => {
     unit.id = "test1"
     unit.turretFacing = 1
     unit.facing = 1
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "target1"
@@ -114,8 +114,8 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -211,8 +211,8 @@ describe("reaction fire attacks", () => {
     unit.id = "test1"
     unit.turretFacing = 1
     unit.facing = 1
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "target1"
@@ -300,8 +300,8 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -395,8 +395,8 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -432,7 +432,7 @@ describe("reaction fire attacks", () => {
 
     expect(reactionFireCheck(game)).toBe(true)
 
-    other.select()
+    map.select(other)
 
     game.setGameState(new FireState(game, true))
     const counters1 = map.countersAt(new Coordinate(3, 2))
@@ -477,8 +477,8 @@ describe("reaction fire attacks", () => {
     const unit = new Unit(testGInf)
     unit.split()
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -552,11 +552,11 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
     map.addCounter(new Coordinate(4, 2), unit2)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -599,7 +599,7 @@ describe("reaction fire attacks", () => {
 
     expect(reactionFireCheck(game)).toBe(true)
 
-    other.select()
+    map.select(other)
 
     game.setGameState(new FireState(game, true))
     const counters1 = map.countersAt(new Coordinate(3, 2))
@@ -640,16 +640,16 @@ describe("reaction fire attacks", () => {
   })
 
   test("multiple units moving, plus extra targeting", () => {
-    const game = createFireGame()
+    const game = createBlankGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
-    const unit2 = new Unit(testGInf)
+    map.select(unit)
+    const unit2 = new Unit(testGInf).split()
     unit2.id = "test2"
     map.addCounter(new Coordinate(4, 2), unit2)
-    const unit3 = new Unit(testGInf)
+    const unit3 = new Unit(testGInf).split()
     unit3.id = "test3"
     map.addCounter(new Coordinate(2, 2), unit3)
 
@@ -694,7 +694,7 @@ describe("reaction fire attacks", () => {
 
     expect(reactionFireCheck(game)).toBe(true)
 
-    other.select()
+    map.select(other)
 
     game.setGameState(new FireState(game, true))
     const counters1 = map.countersAt(new Coordinate(3, 2))
@@ -742,8 +742,8 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
 
     const other1 = new Unit(testRInf)
     other1.id = "target1"
@@ -804,9 +804,9 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(0, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const other1 = new Unit(testRInf)
     other1.id = "target1"
@@ -851,8 +851,8 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
 
     const other1 = new Unit(testRInf)
     other1.id = "target1"
@@ -894,11 +894,11 @@ describe("reaction fire attacks", () => {
   })
 
   test("ghosts for dropping are correct", () => {
-    const game = createFireGame()
+    const game = createBlankGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
+    unit.baseMovement = 6
     map.addCounter(new Coordinate(4, 2), unit)
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
@@ -911,6 +911,7 @@ describe("reaction fire attacks", () => {
     const oloc = new Coordinate(0, 1)
     map.addCounter(oloc, other)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
 
@@ -950,7 +951,7 @@ describe("reaction fire attacks", () => {
 
     expect(reactionFireCheck(game)).toBe(true)
 
-    other.select()
+    map.select(other)
 
     game.setGameState(new FireState(game, true))
     let counters = map.countersAt(new Coordinate(3, 2))
@@ -978,12 +979,13 @@ describe("reaction fire attacks", () => {
   })
 
   test("ghosts for loading are correct", () => {
-    const game = createFireGame()
+    const game = createBlankGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
+    unit.baseMovement = 5
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
     const unit2 = new Unit(testGMG)
     unit2.id = "test2"
     try {
@@ -1013,7 +1015,6 @@ describe("reaction fire attacks", () => {
     expect(unit2.selected).toBe(false)
     expect(unit2.loadedSelected).toBe(true)
 
-    game.moveState.loadToggle()
     game.moveState.move(2, 2)
     game.moveState.move(1, 2)
     game.gameState?.finish()
@@ -1038,7 +1039,7 @@ describe("reaction fire attacks", () => {
 
     expect(reactionFireCheck(game)).toBe(true)
 
-    other.select()
+    map.select(other)
 
     game.setGameState(new FireState(game, true))
     const counters1 = map.countersAt(new Coordinate(3, 2))
@@ -1070,9 +1071,9 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -1105,7 +1106,7 @@ describe("reaction fire attacks", () => {
 
     const fireHex = new Coordinate(2, 2)
 
-    other.select()
+    map.select(other)
     game.setGameState(new FireState(game, true))
     const counters = map.countersAt(fireHex)
     expect(counters.length).toBe(1)
@@ -1157,14 +1158,15 @@ describe("reaction fire attacks", () => {
   })
 
   test("hit, morale check shorts rush for unit", () => {
-    const game = createFireGame()
+    const game = createBlankGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
+    unit.baseMovement = 6
     unit.activate()
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -1197,7 +1199,7 @@ describe("reaction fire attacks", () => {
 
     const fireHex = new Coordinate(2, 2)
 
-    other.select()
+    map.select(other)
     game.setGameState(new FireState(game, true))
     const counters = map.countersAt(fireHex)
     expect(counters.length).toBe(1)
@@ -1253,9 +1255,9 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit1)
+    map.select(unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
     map.addCounter(loc, unit2)
@@ -1300,7 +1302,7 @@ describe("reaction fire attacks", () => {
 
     const fireHex = new Coordinate(2, 2)
 
-    other.select()
+    map.select(other)
     game.setGameState(new FireState(game, true))
     const counters = map.countersAt(fireHex)
     expect(counters.length).toBe(1)
@@ -1354,7 +1356,7 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
+    unit.baseMovement = 7
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
     const unit2 = new Unit(testGMG)
@@ -1368,6 +1370,7 @@ describe("reaction fire attacks", () => {
     const oloc = new Coordinate(0, 2)
     map.addCounter(oloc, other)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
     game.moveState.move(3, 2)
@@ -1404,7 +1407,7 @@ describe("reaction fire attacks", () => {
 
     const fireHex = new Coordinate(2, 2)
 
-    other.select()
+    map.select(other)
     game.setGameState(new FireState(game, true))
     const counters = map.countersAt(fireHex)
 
@@ -1456,7 +1459,6 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
     const unit2 = new Unit(testGMG)
@@ -1476,6 +1478,7 @@ describe("reaction fire attacks", () => {
     const oloc = new Coordinate(0, 2)
     map.addCounter(oloc, other)
     organizeStacks(map)
+    map.select(unit)
 
     game.setGameState(new MoveState(game))
     game.moveState.move(3, 2)
@@ -1502,7 +1505,7 @@ describe("reaction fire attacks", () => {
 
     const fireHex = new Coordinate(2, 2)
 
-    other.select()
+    map.select(other)
     game.setGameState(new FireState(game, true))
     const counters = map.countersAt(fireHex)
     expect(counters.length).toBe(1)
@@ -1558,7 +1561,6 @@ describe("reaction fire attacks", () => {
     unit.id = "test1"
     unit.facing = 1
     unit.turretFacing = 2
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
 
     const eloc = new Coordinate(1, 1)
@@ -1570,6 +1572,7 @@ describe("reaction fire attacks", () => {
     const oloc = new Coordinate(0, 2)
     map.addCounter(oloc, other)
     organizeStacks(map)
+    map.select(unit)
 
     expect(unit.facing).toBe(1)
     expect(unit.turretFacing).toBe(2)
@@ -1603,7 +1606,7 @@ describe("reaction fire attacks", () => {
 
     expect(reactionFireCheck(game)).toBe(true)
 
-    other.select()
+    map.select(other)
     game.setGameState(new FireState(game, true))
     const counters1 = map.countersAt(new Coordinate(3, 2))
     expect(counters1.length).toBe(2)
@@ -1663,8 +1666,8 @@ describe("reaction fire attacks", () => {
     unit.id = "test1"
     unit.facing = 1
     unit.turretFacing = 1
-    unit.select()
     map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
 
     const other = new Unit(testRTank)
     other.id = "other1"
@@ -1695,7 +1698,7 @@ describe("reaction fire attacks", () => {
 
     const fireHex = new Coordinate(2, 2)
 
-    other.select()
+    map.select(other)
     game.setGameState(new FireState(game, true))
     const counters = map.countersAt(fireHex)
     expect(counters.length).toBe(2)
@@ -1759,9 +1762,9 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const uloc = new Coordinate(4, 2)
     map.addCounter(uloc, unit)
+    map.select(unit)
 
     const other = new Unit(testRInf)
     other.id = "target1"
@@ -1792,7 +1795,7 @@ describe("reaction fire attacks", () => {
 
     Math.random = original
 
-    other.select()
+    map.select(other)
 
     game.setGameState(new FireState(game, true))
 
@@ -1819,9 +1822,9 @@ describe("reaction fire attacks", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.select()
     const uloc = new Coordinate(4, 2)
     map.addCounter(uloc, unit)
+    map.select(unit)
 
     const other = new Unit(testRInf)
     other.id = "target1"
@@ -1852,7 +1855,7 @@ describe("reaction fire attacks", () => {
 
     Math.random = original
 
-    other.select()
+    map.select(other)
 
     game.setGameState(new FireState(game, true))
 

@@ -70,6 +70,9 @@ export default class Map {
   debug: boolean = false;
   debugLos: boolean = false;
 
+  selection: Counter | undefined
+  targetSelection: Counter | undefined
+
   constructor (data: MapData, game?: Game) {
     this.loadConfig(data.layout)
 
@@ -718,6 +721,34 @@ export default class Map {
       if (u.unit.loaderSelected) { u.unit.loaderSelect() }
       if (u.unit.loadedSelected) { u.unit.loadedSelect() }
     }
+    this.selection = undefined
+    this.targetSelection = undefined
+  }
+
+  select(unit: Unit | Feature) {
+    unit.select()
+    this.selection = this.allSelections[0]
+  }
+
+  targetSelect(unit: Unit) {
+    unit.targetSelect()
+    this.targetSelection = this.allTargetSelections[0]
+  }
+
+  dropSelect(unit: Unit) {
+    unit.dropSelect()
+  }
+
+  loaderSelect(unit: Unit) {
+    unit.loaderSelect()
+  }
+
+  loadedSelect(unit: Unit) {
+    unit.loadedSelect()
+  }
+
+  lastSelect(unit: Unit | Feature) {
+    unit.lastSelect()
   }
 
   clearOtherSelections(x: number, y: number, id: string) {
@@ -726,16 +757,26 @@ export default class Map {
       if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unit.id === id)) {
         continue
       }
-      if (u.unit.selected) { u.unit.select() }
+      if (u.unit.selected) { this.select(u.unit) }
     }
   }
 
-  get currentSelection(): Counter[] {
+  get allSelections(): Counter[] {
     if (!this.game) { return [] }
     const rc: Counter[] = []
     const units = this.allUnits
     for (const u of units) {
       if (u.unit.selected) { rc.push(u) }
+    }
+    return rc
+  }
+
+  get allTargetSelections(): Counter[] {
+    if (!this.game) { return [] }
+    const rc: Counter[] = []
+    const units = this.allUnits
+    for (const u of units) {
+      if (u.unit.targetSelected) { rc.push(u) }
     }
     return rc
   }
@@ -755,12 +796,12 @@ export default class Map {
       if (u.hasMarker) { continue }
       if (action) {
         if (ids.includes(u.targetUF.id)) {
-          if (!u.targetUF.lastSelected) { u.targetUF.lastSelect() }
+          if (!u.targetUF.lastSelected) { this.lastSelect(u.targetUF) }
         } else {
-          if (u.targetUF.lastSelected) { u.targetUF.lastSelect() }
+          if (u.targetUF.lastSelected) { this.lastSelect(u.targetUF) }
         }
       } else {
-        if (u.targetUF.lastSelected) { u.targetUF.lastSelect() }
+        if (u.targetUF.lastSelected) { this.lastSelect(u.targetUF) }
       }
     }
   }
@@ -770,7 +811,7 @@ export default class Map {
     for (const c of counters) {
       if (!c.hasUnit) { continue }
       if (c.unit.crewed || (c.unit.operated && !c.unit.parent)) { continue }
-      if (!c.unit.selected) { c.unit.select() }
+      if (!c.unit.selected) { this.select(c.unit) }
     }
   }
 
@@ -780,11 +821,11 @@ export default class Map {
       if (!c.hasUnit) { continue }
       if (c.unit.operated) { continue }
       if (c.unit.armored) {
-        if (armored && !c.unit.targetSelected) { c.unit.targetSelect() }
+        if (armored && !c.unit.targetSelected) { this.targetSelect(c.unit) }
       } else if (c.unit.isVehicle) {
-        if (vehicles && !c.unit.targetSelected) { c.unit.targetSelect() }
+        if (vehicles && !c.unit.targetSelected) { this.targetSelect(c.unit) }
       } else {
-        if (!c.unit.targetSelected) { c.unit.targetSelect() }
+        if (!c.unit.targetSelected) { this.targetSelect(c.unit) }
       }
     }
   }
@@ -794,7 +835,7 @@ export default class Map {
     for (const u of units) {
       const hex = u.hex as Coordinate
       if (hex.x === x && hex.y === y) { continue }
-      if (u.unit.targetSelected) { u.unit.targetSelect() }
+      if (u.unit.targetSelected) { this.targetSelect(u.unit) }
     }
   }
 
@@ -803,14 +844,14 @@ export default class Map {
     for (const u of units) {
       const hex = u.hex as Coordinate
       if (hex.x === x && hex.y === y && u.unit.id === id) { continue }
-      if (u.unit.targetSelected) { u.unit.targetSelect() }
+      if (u.unit.targetSelected) { this.targetSelect(u.unit) }
     }
   }
 
   clearAllTargetSelections() {
     const units = this.allUnits
     for (const u of units) {
-      if (u.unit.targetSelected) { u.unit.targetSelect() }
+      if (u.unit.targetSelected) { this.targetSelect(u.unit) }
     }
   }
 

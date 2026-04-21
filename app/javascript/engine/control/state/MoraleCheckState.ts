@@ -22,7 +22,7 @@ export default class MoraleCheckState extends BaseState {
       mod: modifiers.mod, why: modifiers.why, critical: check.critical,
       short: check.to.x !== counter.hex?.x || check.to.y !== counter.hex?.y,
     }
-    if (!check.unit.selected) { check.unit.select() }
+    if (!check.unit.selected) { this.map.select(check.unit) }
 
     placeReactionMoraleCheckGhosts(game, check.to)
 

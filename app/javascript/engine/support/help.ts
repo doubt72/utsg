@@ -144,6 +144,18 @@ export function counterHelpLayout(
   return mapHelpLayout(loc, max, text, scale)
 }
 
+export function actionButtonHelpLayout(
+  loc: Coordinate, max: Coordinate, scale: number, type: string
+): HelpLayout {
+  const text = {
+    fire: "fire", intensive_fire: "intensive fire", reaction_fire: "reaction fire",
+    reaction_intensive_fire: "intensive reaction fire", move: "move", rush: "rush",
+    assault_move: "assault move", rout: "rout", cancel_action: "cancel",
+    fire_finish: "finish fire",
+  }[type] ?? ""
+  return mapHelpLayout(loc, max, [text], scale)
+}
+
 export function counterRallyHelpLayout(
   game: Game, counter: Counter, loc: Coordinate, max: Coordinate, scale: number, hex: Coordinate
 ): HelpLayout {

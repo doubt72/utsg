@@ -1,5 +1,8 @@
 import { Coordinate, Direction, markerType } from "../../utilities/commonTypes"
 import {
+  actionBlue,
+  ActionButtonLayout,
+  actionGreen,
   BadgeLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, CounterLayout,
   counterRed,
   dropSelectColor,
@@ -7,9 +10,11 @@ import {
   loadedSelectColor,
   loaderSelectColor,
   markerYellow,
-  nationalColorLookup, selectColor, StatusLayout, SVGStyle,
+  nationalColorLookup, roundedRectangle, selectColor, StatusLayout, SVGStyle,
   targetSelectColor
 } from "../../utilities/graphics"
+import { canAssaultMove, canFire, canIntensiveFire, canMove, canReactionFire, canReactionIntensiveFire, canRout, canRush } from "../control/actionsAvailable"
+import { stateType } from "../control/state/BaseState"
 import Counter from "../Counter"
 import Map from "../Map"
 
@@ -137,6 +142,75 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
     value: text, x: loc.x, y: loc.y, size: size, path: path,
     style: style, fStyle: fStyle
   }
+}
+
+export function counterActionButtons(
+  map: Map, x: number, y: number, maxY: number, counter: Counter,
+): ActionButtonLayout[] {
+  const rc: { x: number, color: string, text: string, tColor: string, action: string }[] = []
+  const size = 24
+  const boxHeight = 30
+  const boxWidth = 40
+  const offset = 0
+  let start = y
+  if (y + boxHeight > maxY) {
+    start = y - 176 - boxHeight
+  }
+  if (map.game?.gameState?.type === stateType.Fire) {
+    if (counter.unit.targetSelected && map.game?.gameState?.type === stateType.Fire) {
+      rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "fire_finish" })
+      rc.push({ x: x + boxWidth, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+    }
+  } else if (map.game?.gameState?.type === stateType.Move) {
+    // if (map.game.moveState.path.length > 0) {
+    //   rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "fire_finish" })
+    //   rc.push({ x: x + boxWidth, color: markerYellow(), text: "U", tColor: "#000", action: "undo_action" })
+    //   rc.push({ x: x + boxWidth, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+    //   offset = -boxWidth * 1.5
+    // }
+  } else if (map.game?.gameState?.type === stateType.Assault) {
+    // if (map.game.assaultState.path.length > 0) {
+    //   rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "fire_finish" })
+    //   rc.push({ x: x + boxWidth, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+    //   offset = -boxWidth
+    // }
+  } else if (map.game?.gameState?.type === stateType.Rout) {
+    if (counter.unit.selected) {
+      rc.push({ x, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+    }
+  } else if (map.game?.gameState === undefined) {
+    if (counter.unit.selected) {
+      if (canFire(counter.unit, map)) {
+        rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "fire" })
+      } else if (canIntensiveFire(counter.unit, map)) {
+        rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "intensive_fire" })
+      } else if (canReactionFire(counter.unit, map)) {
+        rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "reaction_fire" })
+      } else if (canReactionIntensiveFire(counter.unit, map)) {
+        rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "reaction_intensive_fire" })
+      }
+      const x2 = x + rc.length * (boxWidth + 0)
+      if (canMove(counter.unit, map)) {
+        rc.push({ x: x2, color: actionGreen(), text: "M", tColor: "#FFF", action: "move" })
+      } else if (canRush(counter.unit, map)) {
+        rc.push({ x: x2, color: actionGreen(), text: "M", tColor: "#FFF", action: "rush" })
+      }
+      const x3 = x + rc.length * (boxWidth + 0)
+      if (canAssaultMove(counter.unit)) {
+        rc.push({ x: x3, color: actionBlue(), text: "A", tColor: "#FFF", action: "assault_move" })
+      }
+      const x4 = x + rc.length * (boxWidth + 0)
+      if (canRout(counter.unit)) {
+        rc.push({ x: x4, color: markerYellow(), text: "R", tColor: "#000", action: "rout" })
+      }
+    }
+  }
+  return rc.map(t => {
+    return {
+      path: roundedRectangle(t.x - offset, start, boxWidth, boxHeight, 0), color: t.color, text: t.text,
+      tColor: t.tColor, size, tX: t.x + boxWidth/2 - offset, tY: start + boxHeight/2 + 6, action: t.action,
+    }
+  })
 }
 
 export function counterInfoBadges(

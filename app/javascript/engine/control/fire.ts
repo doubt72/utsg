@@ -103,7 +103,7 @@ export function unTargetSelectExceptChain(game: Game, x: number, y: number) {
         break
       }
     }
-    if (!check && u.unit.targetSelected) { u.unit.targetSelect() }
+    if (!check && u.unit.targetSelected) { game.scenario.map.targetSelect(u.unit) }
   }
 }
 

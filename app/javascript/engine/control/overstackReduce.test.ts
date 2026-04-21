@@ -119,7 +119,7 @@ describe("overstack reduction", () => {
     map.addCounter(loc, unit3)
     organizeStacks(map)
 
-    unit2.select()
+    map.select(unit2)
     expect(unit2.selected).toBe(true)
     game.gameState?.finish()
     expect(map.anyOverstackedUnits(2)).toBe(false)
@@ -161,7 +161,7 @@ describe("overstack reduction", () => {
     map.addCounter(loc, unit3)
     organizeStacks(map)
 
-    unit2.select()
+    map.select(unit2)
     expect(unit2.selected).toBe(true)
     game.gameState?.finish()
     expect(map.anyOverstackedUnits(2)).toBe(false)

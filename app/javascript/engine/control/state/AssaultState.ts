@@ -20,7 +20,7 @@ export default class AssaultState extends BaseState {
 
   constructor(game: Game) {
     super(game, stateType.Assault, game.currentPlayer)
-    const selection = game.scenario.map.currentSelection[0]
+    const selection = game.scenario.map.selection as Counter
     const hex = selection.hex as Coordinate
     const loc = {
       x: hex.x, y: hex.y,
@@ -28,7 +28,7 @@ export default class AssaultState extends BaseState {
       turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
     }
     const units = selection.children
-    units.forEach(c => c.unit.select())
+    units.forEach(c => this.map.select(c.unit))
     let canSelect = selection.unit.canCarrySupport
     if (canSelect) {
       let check = false
@@ -153,8 +153,8 @@ export default class AssaultState extends BaseState {
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     const selected = counter.unit.selected
-    counter.unit.select()
-    counter.children.forEach(c => c.unit.select())
+    this.map.select(counter.unit)
+    counter.children.forEach(c => this.map.select(c.unit))
     if (selected) {
       removeStateSelection(this.game, x, y, counter.unit.id)
     } else {

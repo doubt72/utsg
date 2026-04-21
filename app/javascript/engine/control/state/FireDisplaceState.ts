@@ -21,7 +21,7 @@ export default class FireDisplaceState extends BaseState {
     this.path = [{ x: check.loc.x, y: check.loc.y }]
     this.remove = false;
 
-    if (!counter.unit.selected) { counter.unit.select() }
+    if (!counter.unit.selected) { this.map.select(counter.unit) }
     if (game.currentPlayerNation !== counter.unit.playerNation) { game.togglePlayer() }
     game.openOverlay = game.scenario.map.hexAt(check.loc)
     game.refreshCallback(game)

@@ -222,13 +222,15 @@ export default function GameControls({ game, callback, update }: GameControlsPro
     <div className="flex">
       {controls}
       <div className="flex-fill"></div>
-      { game.state === "complete" ? "" : game.resignationLevel > 0 ? <div className="flex nowrap">
-        <div className="mt05em mb05em mr05em ml05em" >
-          { game.resignationLevel > 1 ? "Are you really sure? " : "Are you sure you want to resign? " }
-        </div>
-        <ResignButton game={game} callback={callAllBack} />
-        <ResignCancelButton game={game} callback={callAllBack} />
-      </div> : <div><ResignButton game={game} callback={callAllBack} /></div>
+      { (game.state === "complete" || game.currentUser !== localStorage.getItem("username")) ? "" :
+        game.resignationLevel > 0 ?
+        <div className="flex nowrap">
+          <div className="mt05em mb05em mr05em ml05em" >
+            { game.resignationLevel > 1 ? "Are you really sure? " : "Are you sure you want to resign? " }
+          </div>
+          <ResignButton game={game} callback={callAllBack} />
+          <ResignCancelButton game={game} callback={callAllBack} />
+        </div> : <div><ResignButton game={game} callback={callAllBack} /></div>
       }
     </div>
   )

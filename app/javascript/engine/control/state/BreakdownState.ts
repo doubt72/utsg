@@ -29,7 +29,7 @@ export default class BreakdownState extends BaseState {
     this.selection = [{
       x: counter.hex?.x ?? 0, y: counter.hex?.y ?? 0, id: counter.unit.id, name: counter.unit.name, counter,
     }],
-    counter.unit.select()
+    this.map.select(counter.unit)
     game.refreshCallback(game)
   }
 

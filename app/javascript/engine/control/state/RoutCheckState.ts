@@ -16,7 +16,7 @@ export default class RoutCheckState extends BaseState {
     const counter = game.findCounterById(check.unit.id) as Counter
     this.selection = [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, name: check.unit.name, counter }]
     this.routCheck = { mod: modifiers.mod, why: modifiers.why }
-    check.unit.select()
+    this.map.select(check.unit)
     game.openOverlay = game.scenario.map.hexAt(check.loc)
     game.refreshCallback(game)
   }

@@ -53,7 +53,7 @@ export default class ReactionState extends BaseState {
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     this.map.clearOtherSelections(x, y, id)
-    counter.unit.select()
+    this.map.select(counter.unit)
     callback()
   }
 

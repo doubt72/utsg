@@ -9,7 +9,7 @@ export default class SniperState extends BaseState {
   constructor(game: Game) {
     super(game, stateType.Sniper, game.currentPlayer)
     this.selection = game.sniperNeeded.map(s => {
-      s.unit.select()
+      this.map.select(s.unit)
       return {
         x: s.loc.x, y: s.loc.y, id: s.unit.id, name: s.unit.name,
         counter: game.findCounterById(s.unit.id) as Counter
