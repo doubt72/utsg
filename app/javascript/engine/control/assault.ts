@@ -25,7 +25,7 @@ export function showClearObstacles(game: Game): boolean {
       return true
     }
   }
-  return true
+  return false
 }
 
 export function showEntrench(game: Game): boolean {

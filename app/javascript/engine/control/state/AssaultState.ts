@@ -56,6 +56,7 @@ export default class AssaultState extends BaseState {
       })
     })
     this.path = [loc]
+    this.game.actionPathLength = 1
     this.addActions = []
     this.doneSelect = !canSelect
     if (canSelect) {
@@ -225,6 +226,7 @@ export default class AssaultState extends BaseState {
     }
     this.doneSelect = true
     this.game.closeOverlay = true
+    this.game.actionPathLength = this.path.length
   }
 
   rotate(dir: Direction) {
@@ -239,6 +241,7 @@ export default class AssaultState extends BaseState {
     this.addActions.push({
       x, y, type: gameActionAddActionType.Clear, cost: 0, id: f.feature.id, name: f.feature.name, index: 0
     })
+    this.map.targetSelect(f.feature)
     this.game.closeOverlay = true
   }
 

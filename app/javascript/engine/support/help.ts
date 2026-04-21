@@ -151,7 +151,13 @@ export function actionButtonHelpLayout(
     fire: "fire", intensive_fire: "intensive fire", reaction_fire: "reaction fire",
     reaction_intensive_fire: "intensive reaction fire", move: "move", rush: "rush",
     assault_move: "assault move", rout: "rout", cancel_action: "cancel",
-    fire_finish: "finish fire",
+    fire_finish: "finish fire", undeploy: "undeploy", morale_check: "morale check",
+    rally: "attempt to rally", repair: "attempt to repair", rout_check: "rout check",
+    move_smoke_toggle: "lay smoke", close_combat_reduce: "take close combat hit",
+    overstack_reduce: "eliminate unit", breakdown: "breakdown check",
+    assault_move_clear: "clear obstacle", assault_move_entrench: "entrench",
+    assault_move_finish: "finish assault", move_finish: "finish move",
+    move_undo: "undo last move",
   }[type] ?? ""
   return mapHelpLayout(loc, max, [text], scale)
 }

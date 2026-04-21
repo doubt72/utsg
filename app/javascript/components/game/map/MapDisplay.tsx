@@ -594,7 +594,9 @@ export default function MapDisplay({
     const action = map.game?.lastSignificantAction
     if (map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault ||
       map.game?.gameState?.type === stateType.FireDisplace || moveActions.includes(action?.type ?? "")) {
-      setMoveTrack(<MoveTrackOverlay map={map} scale={scale} mapScale={mapScale ?? 1} updateCallback={() =>
+      setMoveTrack(<MoveTrackOverlay map={map} scale={scale} mapScale={mapScale ?? 1}
+                                     xOffset={xOffset} yOffset={yOffset}
+                                     maxX={width / scale} maxY={height / scale} updateCallback={() =>
                                        { counterCallback(); updateCallback() }} selectCallback={hexSelection}
                                      svgRef={svgRef as React.MutableRefObject<HTMLElement>} />)
     } else {
@@ -617,7 +619,10 @@ export default function MapDisplay({
     } else {
       setRoutTrack(undefined)
     }
-  }, [map.game?.lastSignificantAction, mapUpdate, forceUpdate, map.game?.gameState, scale, mapScale])
+  }, [
+    map.game?.lastSignificantAction, mapUpdate, forceUpdate, map.game?.gameState,
+    scale, mapScale, xOffset, yOffset
+  ])
 
   useEffect(() => {
     if (map.game?.gameState?.type === stateType.Move &&

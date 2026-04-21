@@ -730,7 +730,7 @@ export default class Map {
     this.selection = this.allSelections[0]
   }
 
-  targetSelect(unit: Unit) {
+  targetSelect(unit: Unit | Feature) {
     unit.targetSelect()
     this.targetSelection = this.allTargetSelections[0]
   }

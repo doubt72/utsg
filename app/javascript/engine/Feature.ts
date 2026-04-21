@@ -61,6 +61,8 @@ export default class Feature {
 
   rawData: FeatureData;
 
+  selected: boolean;
+  targetSelected: boolean;
   lastSelected: boolean;
   
   ghost?: boolean;
@@ -89,6 +91,8 @@ export default class Feature {
     this.facing = 1
 
     this.id = data.id ?? ""
+    this.selected = false
+    this.targetSelected = false
     this.lastSelected = false
 
     this.rawData = data
@@ -98,10 +102,12 @@ export default class Feature {
     return new Feature(this.rawData)
   }
 
-  selected = false
-
   select() {
     this.selected = !this.selected
+  }
+
+  targetSelect() {
+    this.targetSelected = !this.targetSelected
   }
 
   lastSelect() {

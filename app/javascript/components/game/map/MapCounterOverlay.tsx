@@ -235,16 +235,15 @@ export default function MapCounterOverlay({
                 <g key={`${c.text}-${counter.unit.id}`}
                     onClick={() => buttonAction(c.action, {
                       target: { type: "map", xy: counter.hex as Coordinate }, counter
-                    })} >
+                    })}
+                    onMouseMove={(e: React.MouseEvent) => { showButtonHelp(e, c.action) }}
+                    onMouseLeave={() => { setActionHelpDisplay(undefined) }}
+                    onContextMenu={e => e.preventDefault()} >
                   <path d={c.path} style={{ fill: c.color, strokeWidth: 2, stroke: "#000" }} />
                   <text textAnchor="middle" fontFamily="'Courier Prime', monospace" x={c.tX} y={c.tY}
                         fontSize={c.size} style={{ fill: c.tColor }}>
                     {c.text}
                   </text>
-                  <path d={c.path} style={{ fill: clearColor, strokeWidth: 0 }}
-                        onMouseMove={(e: React.MouseEvent) => { showButtonHelp(e, c.action) }}
-                        onMouseLeave={() => { setActionHelpDisplay(undefined) }}
-                        onContextMenu={e => e.preventDefault()} />
                 </g>
               )
             }

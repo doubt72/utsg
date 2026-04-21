@@ -1,4 +1,4 @@
-import { baseTerrainType, Coordinate, featureType, Player } from "../utilities/commonTypes";
+import { baseTerrainType, Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
 import { getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction from "./GameAction";
@@ -133,6 +133,10 @@ export default class Game {
   checkWindSpeed: boolean;
   playerOneNotification: [string, string] | undefined;
   playerTwoNotification: [string, string] | undefined;
+
+  actionPathLength: number = 0;
+  actionPathDir: Direction | undefined;
+  actionTurretDir: Direction | undefined;
 
   serverVersion: string;
 
@@ -515,6 +519,9 @@ export default class Game {
 
   clearGameState(): void {
     console.log("clearing game state")
+    this.actionPathLength = 0
+    this.actionPathDir = undefined
+    this.actionTurretDir = undefined
     this.currentState = undefined
   }
 
@@ -696,7 +703,7 @@ export default class Game {
       if (action.type === "phase") { break }
       if (action.type === "close_combat_roll") {
         const roll = action as CloseCombatRollAction
-        console.log(`- cc roll at ${roll.origin[0].x},${roll.origin[1].y}`)
+        console.log(`- cc roll at ${roll.origin[0].x},${roll.origin[0].y}`)
         checks.push({
           loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
           state: closeProgress.NeedsCasualties, p1Reduce: roll.p1Hits, p2Reduce: roll.p2Hits

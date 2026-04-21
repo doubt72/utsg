@@ -1,8 +1,11 @@
 ## 0.61 Alpha
 
-- Add LOS hexes for reaction fire but red
-- Add ability to start/complete/cancel fire/move/assault/rout from counter overlay
 - Major selection refactor to improve performance, make UX changes cleaner
+- Add ability to start/complete/cancel/etc for fire/move/assault/rout/etc from counter overlay
+- Add ability to finish/cancel for move/assault/displace from map
+- Improve dragging of reinforcement panel
+- Add LOS hexes for reaction fire but red
+- Mines and wire show all movement, not cost
 - Only active player should be able to resign
 - Bug fix: help no longer causes counter overlay to close with accidental mouseovers on slower displays
 - Bug fix: prevent clicking on move track if moving to current or illegal hex

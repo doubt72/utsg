@@ -106,7 +106,6 @@ export default function AdminGameStats() {
         statAddOne(cgco, g.owner)
         statAddOne(cgcp1, g.player_one ?? "[none yet]")
         statAddOne(cgcp2, g.player_two ?? "[none yet]")
-        console.log(g.winner)
         statAddOne(cgcw, g.winner ? `${g.winner}` : "[none yet]")
       }
     }

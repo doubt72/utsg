@@ -1,10 +1,13 @@
 import {
-  baseTerrainType, Direction, RoadCenterType, roadType, streamType, terrainType
+  baseTerrainType, Coordinate, Direction, RoadCenterType, roadType, streamType, terrainType
 } from "../../utilities/commonTypes"
-import { CircleLayout, clearColor, PathLayout, SVGPathArray, SVGStyle } from "../../utilities/graphics"
+import { ActionButtonLayout, actionGreen, CircleLayout, clearColor, counterRed, markerYellow, PathLayout, roundedRectangle, SVGPathArray, SVGStyle } from "../../utilities/graphics"
 import { hexBuildingBuildingDisplay } from "../../utilities/hexBuilding"
 import { normalDir } from "../../utilities/utilities"
+import { stateType } from "../control/state/BaseState"
 import Hex from "../Hex"
+import Map from "../Map"
+import { gamePhaseType } from "./gamePhase"
   
 export function hexBackground(hex: Hex): SVGStyle {
   if (hex.elevationEdges === "all") {
@@ -431,4 +434,34 @@ function path(hex: Hex, directions?: Direction[], center?: RoadCenterType): stri
     }
     return path.join(" ")
   }
+}
+
+export function mapActionButtons(map: Map, x: number, y: number, loc: Coordinate): ActionButtonLayout[] {
+  if (!map.game) { return [] }
+  if (map.countersAt(loc).length > 0) { return [] }
+  const rc: { x: number, color: string, text: string, tColor: string, action: string }[] = []
+  const size = 24
+  const boxHeight = 30
+  const boxWidth = 35
+  let offset = 0
+  if (map.game.phase === gamePhaseType.Main) {
+    if (map.game.gameState?.type === stateType.Move) {
+      if (map.game.moveState.rotateOpen) { return [] }
+      rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "move_finish" })
+      rc.push({ x: x + boxWidth, color: markerYellow(), text: "U", tColor: "#000", action: "move_undo" })
+      rc.push({ x: x + boxWidth*2, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+      offset = boxWidth * 1.5
+    } else if (map.game.gameState?.type === stateType.Assault) {
+      if (map.game.assaultState.rotateOpen) { return [] }
+      rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "assault_move_finish" })
+      rc.push({ x: x + boxWidth, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+      offset = boxWidth
+    }
+  }
+  return rc.map(t => {
+    return {
+      path: roundedRectangle(t.x - offset, y, boxWidth, boxHeight, 0), color: t.color, text: t.text,
+      tColor: t.tColor, size, tX: t.x + boxWidth/2 - offset, tY: y + boxHeight/2 + 6, action: t.action,
+    }
+  })
 }

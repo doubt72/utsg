@@ -19,6 +19,7 @@ export default class FireDisplaceState extends BaseState {
 
     this.selection = [{ x: check.loc.x, y: check.loc.y, id: check.unit.id, name: check.unit.name, counter }]
     this.path = [{ x: check.loc.x, y: check.loc.y }]
+    this.game.actionPathLength = 1
     this.remove = false;
 
     if (!counter.unit.selected) { this.map.select(counter.unit) }
@@ -88,6 +89,7 @@ export default class FireDisplaceState extends BaseState {
       this.addAction = { x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 }
     }
     this.game.closeOverlay = true
+    this.game.actionPathLength = this.path.length
   }
 
   cancel(): void {

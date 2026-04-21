@@ -65,6 +65,9 @@ export default class MoveState extends BaseState {
     this.initialSelection = initialSelection
     this.addActions = []
     this.path = [loc]
+    this.game.actionPathLength = 1
+    if (selection.unit.rotates) { this.game.actionPathDir = selection.unit.facing }
+    if (selection.unit.turreted) { this.game.actionTurretDir = selection.unit.turretFacing }
 
     this.doneSelect = !canSelect
     this.rotatingTurret = false
@@ -155,6 +158,11 @@ export default class MoveState extends BaseState {
     if (move < cost + pastCost && length > 1) { return false }
     for (const p of this.path) {
       if (to.x === p.x && to.y === p.y ) { return hexOpenType.Open }
+    }
+    for (const c of countersAt) {
+      if (c.hasFeature && [featureType.Wire, featureType.Mines].includes(c.feature.type)) {
+        return hexOpenType.All
+      }
     }
     return move >= cost + pastCost ? cost : hexOpenType.All
   }
@@ -364,6 +372,7 @@ export default class MoveState extends BaseState {
         index: this.path.length - 1 })
       }
     }
+    this.game.actionPathLength = this.path.length
     this.doneSelect = true
     this.game.closeOverlay = true
   }
@@ -417,6 +426,7 @@ export default class MoveState extends BaseState {
       }
     }
     this.path.pop()
+    this.game.actionPathLength = this.path.length
   }
   
   rotateToggle() {
@@ -427,6 +437,7 @@ export default class MoveState extends BaseState {
     const last = this.lastPath as GameActionPath
     if (this.rotatingTurret) {
       last.turret = dir
+      this.game.actionTurretDir = dir
     } else {
       const lastDir = last.facing
       let turret = last.turret
@@ -436,6 +447,8 @@ export default class MoveState extends BaseState {
       this.path.push({
         x: last.x, y: last.y, facing: dir, turret,
       })
+      this.game.actionPathLength = this.path.length
+      this.game.actionPathDir = dir
     }
   }
   

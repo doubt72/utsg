@@ -105,6 +105,8 @@ export default function ReinforcementPanel({
       )
       return
     }
+    const width = maxWidth(units)
+    const height = Object.keys(units).length * 106 + 64
     setBase(
       <g onMouseDown={() => setMouseDown(true)}
          onMouseUp={() => setMouseDown(false)}
@@ -112,7 +114,7 @@ export default function ReinforcementPanel({
          onMouseMove={(event) => {
            if (mouseDown) { dragCallback(event) }
          }} >
-        <path d={roundedRectangle(x, y, maxWidth(units), Object.keys(units).length * 106 + 64)}
+        <path d={roundedRectangle(x, y, width, height)}
               style={{ fill: mainFill, stroke: "#777", strokeWidth: 1 }} />
         <text x={x + 10} y={y + 22} fontSize={16} textAnchor="start"
               fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
@@ -123,7 +125,6 @@ export default function ReinforcementPanel({
           { map.game?.phase === gamePhaseType.Deploy ? "[select, then click on map]" :
               "[nothing to deploy]" }
         </text>
-        {closeButton}
         {
           Object.entries(units).map((pair, i) => {
             const turn = Number(pair[0])
@@ -187,6 +188,10 @@ export default function ReinforcementPanel({
             )
           })
         }
+        { mouseDown ?
+          <path d={roundedRectangle(x - 1000, y - 1000, width + 2000, height + 2000)}
+                style={{ fill: "rgba(0,0,0,0)" }} /> : "" }
+        {closeButton}
       </g>
     )
   }, [

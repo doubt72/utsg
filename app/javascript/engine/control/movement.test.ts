@@ -2554,7 +2554,7 @@ describe("movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
     expect(game.gameState?.openHex(3, 3)).toBe(2)
 
@@ -2624,7 +2624,7 @@ describe("movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
     expect(game.gameState?.openHex(3, 3)).toBe(2)
 
@@ -2679,7 +2679,7 @@ describe("movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
     expect(game.gameState?.openHex(3, 3)).toBe(2)
 
@@ -2734,7 +2734,7 @@ describe("movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
     expect(game.gameState?.openHex(3, 3)).toBe(2)
 
@@ -2782,7 +2782,7 @@ describe("movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
 
     game.moveState.move(3, 2)
     expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.Closed)
@@ -2833,7 +2833,7 @@ describe("movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
 
     game.moveState.move(3, 2)
     expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.Closed)
@@ -2885,7 +2885,7 @@ describe("movement", () => {
 
     game.setGameState(new MoveState(game))
 
-    expect(game.gameState?.openHex(3, 2)).toBe(1)
+    expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
 
     game.moveState.move(3, 2)
     expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.Closed)

@@ -1,20 +1,25 @@
 Features/Bug Fixes:
-  + Red reaction hexes
-  + Count help as not mouse-out
-  + Don't allow clicking on move circles, only last rout
-  + No resign during opponents turn
-  + Tired should not subtract from operated weapons
-  + Select menu start actions
-    + Add Cancel for Rout
-    + Add Confirm/Cancel for Target Selection
-    - Add Confirm/Cancel for Assault
-    - Add Confirm/Undo/Cancel for Move
-    - Other Checks
-  - Improve reinforcement panel dragging
-  - Refactor deploys/commit to deploy/commit to finish deploy
-    - Allow selection of features on deploy (to undeploy)
+  + Counter Actions
+    + Deploy - undeploy
+    + MoraleCheck - morale_check
+    + RoutCheck - rout_check
+    + Rally - rally
+    + CloseCombat - reduce
+    + Overstack - reduce
+    + Breakdown - breakdown
+    + Move - smoke
+    + Assault - dig in
+    + Assault - elmininate obstacle
+  + Map Actions
+    + Add Confirm/Cancel for Assault
+    + Add Confirm/Undo/Cancel for Move
+  + Improve reinforcement panel dragging
+  + Show ALL for movement into mines or wire
+
   - Sound for your turn/visual bell
   - Email turn notifications
+
+  - Allow selection of features on deploy (to undeploy)
 
   - Go through docs, add examples
   - Create tutorial
@@ -25,12 +30,12 @@ Nice to Have Eventually:
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
 
 Keep an Eye out for:
-  - Problematic Game Controls performance (excessive refreshes still)
-  - Refactor firing:
-    - Remove done select?  Can join units after the fact without canceling?
-  - Automatically undo additional deploys (should no longer be necessary)
+  ? Problematic Game Controls performance (excessive refreshes still)
+  ? Refactor deploys/commit to deploy/commit to finish deploy
+  ? Refactor firing:
+    ? Remove done select?  Can join units after the fact without canceling?
+  ? Automatically undo additional deploys (should no longer be necessary)
   ? KV and French single-man turrets?
-  ? Show ALL for movement into mines or wire
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 
 Special Rules/Scenarios
