@@ -12,6 +12,7 @@ import { reactionFireCheck } from "./reactionFire"
 import BaseState, { stateType } from "./state/BaseState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import CloseCombatState from "./state/CloseCombatState"
+import FinishDeployState from "./state/FinishDeployState"
 import FireDisplaceState from "./state/FireDisplaceState"
 import FireStartState from "./state/FireStartState"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
@@ -74,6 +75,10 @@ function setState(game: Game): void {
   } else if (reactionFireCheck(game)) {
     if (state !== stateType.Reaction) {
       game.setGameState(new ReactionState(game))
+    }
+  } else if (!game.reinforcementsCheck(game.turn, game.currentPlayer)[1]) {
+    if (state !== stateType.FinishDeploy) {
+      game.setGameState(new FinishDeployState(game))
     }
   } else if (game.phase === gamePhaseType.PrepRally) {
     if (state !== stateType.Rally) {
@@ -150,16 +155,20 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
   if (active) { setState(game) }
 
   if (game.phase === gamePhaseType.Deploy) {
-    actions.unshift({ type: "deploy" })
-    const select = currSelection(game, false)
-    if (select !== undefined) {
-      actions.push({ type: "undeploy" })
-    }
-    if (game.gameState?.type === stateType.Deploy) {
-      if (game.deployState.canSplit) {
-        actions.push({ type: "split_squad" })
-      } else if (game.deployState.canJoin) {
-        actions.push({ type: "join_squad" })
+    if (game.gameState?.type === stateType.FinishDeploy) {
+      actions.push({ type: "finish_deploy" })
+    } else {
+      actions.unshift({ type: "deploy" })
+      const select = currSelection(game, false)
+      if (select !== undefined) {
+        actions.push({ type: "undeploy" })
+      }
+      if (game.gameState?.type === stateType.Deploy) {
+        if (game.deployState.canSplit) {
+          actions.push({ type: "split_squad" })
+        } else if (game.deployState.canJoin) {
+          actions.push({ type: "join_squad" })
+        }
       }
     }
   } else if (game.phase === gamePhaseType.PrepRally) {

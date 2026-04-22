@@ -243,7 +243,15 @@ describe("action integration test", () => {
     game.executeAction(new GameAction(currentActionData, game, index++), false)
     expect(game.scenario.axisReinforcements[0]["wire"].used).toBe(1)
     expect(game.scenario.map.countersAt(new Coordinate(4, 3))[0].unit.name).toBe("Rifle")
+    expect(game.reinforcementsCheck(0, 2)).toStrictEqual([false, false, true])
 
+    let finishDeployActionData: GameActionData = {
+      user: "two", player: 2, data: {
+        action: "finish_deploy", old_initiative: game.initiative,
+      }
+    }
+    game.executeAction(new GameAction(finishDeployActionData, game, index++), false)
+    expect(game.actions[index - 1].stringValue).toBe("German player finished deployment")
     expect(game.lastAction?.stringValue).toBe("German deployment complete > starting Soviet deployment")
 
     index++
@@ -252,15 +260,20 @@ describe("action integration test", () => {
     expect(game.currentPlayer).toBe(1)
 
     game.executeUndo(false)
+    game.executeUndo(false)
     expect(game.actions.length).toBe(index)
-    expect(game.lastActionIndex).toBe(index - 3)
+    expect(game.lastActionIndex).toBe(index - 4)
     expect(game.currentPlayer).toBe(2)
     expect(game.lastAction?.stringValue).toBe("deployed German unit: Rifle to E4")
+    expect(game.actions[game.actions.length-3].undone).toBe(true)
     expect(game.actions[game.actions.length-2].undone).toBe(true)
     expect(game.actions[game.actions.length-1].undone).toBe(true)
 
-    index++
     game.executeAction(new GameAction(currentActionData, game, index++), false)
+    game.executeAction(new GameAction(finishDeployActionData, game, index++), false)
+    expect(game.actions[index - 1].stringValue).toBe("German player finished deployment")
+
+    index++
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 1)
     expect(game.currentPlayer).toBe(1)
@@ -348,10 +361,19 @@ describe("action integration test", () => {
       }
     }
     game.executeAction(new GameAction(currentActionData, game, index++), false)
-    index += 1
+
+    finishDeployActionData = {
+      user: "two", player: 2, data: {
+        action: "finish_deploy", old_initiative: game.initiative,
+      }
+    }
+    game.executeAction(new GameAction(finishDeployActionData, game, index++), false)
+    expect(game.actions[index - 1].stringValue).toBe("German player finished deployment")
+
+    index++
     expect(game.actions.length).toBe(index)
     expect(game.currentPlayer).toBe(1)
-    expect(game.actions[index - 2].stringValue).toBe("deployed Soviet unit: 76mm ZiS-3 to A1")
+    expect(game.actions[index - 3].stringValue).toBe("deployed Soviet unit: 76mm ZiS-3 to A1")
     expect(game.lastAction?.stringValue).toBe(
       "Soviet deployment complete > starting Soviet deployment > " +
       "no units to deploy, skipping Soviet player > Soviet deployment complete > " +

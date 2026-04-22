@@ -38,6 +38,7 @@ import DeploySplitAction from "./actions/DeploySplitAction";
 import DeployJoinAction from "./actions/DeployJoinAction";
 import SquadJoinAction from "./actions/SquadJoinAction";
 import SquadSplitAction from "./actions/SquadSplitAction";
+import FinishDeployAction from "./actions/FinishDeployAction";
 
 export type GameActionDiceResult = {
   result: DiceResult, description?: string
@@ -202,6 +203,8 @@ export default class GameAction {
       return new DeploySplitAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "deploy_join_squad") {
       return new DeployJoinAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "finish_deploy") {
+      return new FinishDeployAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "squad_split") {
       return new SquadSplitAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "squad_join") {

@@ -73,9 +73,9 @@ function deploy(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldTurn = phaseData.new_turn
   const player = phaseData.new_player
-  const [count, initialCount] = game.reinforcementsCount(oldTurn, player)
-  if (count === 0) {
-    if (initialCount === 0) {
+  const [confirm, count, initial] = game.reinforcementsCheck(oldTurn, player)
+  if ((confirm && !count) || !initial) {
+    if (!initial) {
       phaseData.messages.push(`no units to deploy, skipping ${formatNation(game, player)} player`)
     }
     phaseData.messages.push(`${formatNation(game, player)} deployment complete`)

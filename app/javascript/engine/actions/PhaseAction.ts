@@ -71,9 +71,9 @@ export default class PhaseAction extends BaseAction {
         this.newPhase === gamePhaseType.Deploy ? "deploying" : "rallying"
       } their units.`
       const action = this.newPhase === gamePhaseType.Deploy ? "deployment" : "rally"
-      const count = this.game.reinforcementsCount(this.newTurn, this.newPlayer)[0]
-      const check1 = this.newPhase === gamePhaseType.Deploy ? count > 0 : map.anyUnitsCanRally(1)
-      const check2 = this.newPhase === gamePhaseType.Deploy ? count > 0 : map.anyUnitsCanRally(2)
+      const count = this.game.reinforcementsCheck(this.newTurn, this.newPlayer)[1]
+      const check1 = this.newPhase === gamePhaseType.Deploy ? count : map.anyUnitsCanRally(1)
+      const check2 = this.newPhase === gamePhaseType.Deploy ? count : map.anyUnitsCanRally(2)
       if (this.game.playerOneName === this.game.playerTwoName && (check1 || check2)) {
         this.game.playerOneNotification = [
           `Begin ${ this.newPlayer === 1 ? this.game.alliedName : this.game.axisName } ${action}`,

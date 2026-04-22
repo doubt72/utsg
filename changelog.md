@@ -1,10 +1,16 @@
+## 0.63 Alpha
+
+- Add deployment confirmation
+- Regularize/add symbols for action buttons on counters/map
+- Delete (some more) games, clean up scenarios
+
 ## 0.62 Alpha
 
 - Finish email notifications / allow notification toggle
 - Allow undeploy of deployed features
 - Bug fix: pinned parents of operated vehicles should not trigger reaction fire
 - Delete (some) games, clean up scenarios
-- Update 603
+- Updated 603
 
 ## 0.61 Alpha
 

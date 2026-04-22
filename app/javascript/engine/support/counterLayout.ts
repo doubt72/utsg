@@ -6,6 +6,7 @@ import {
   BadgeLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, CounterLayout,
   counterRed,
   dropSelectColor,
+  iconSymbols,
   lastSelectColor,
   loadedSelectColor,
   loaderSelectColor,
@@ -157,98 +158,111 @@ export function counterActionButtons(
   const boxHeight = 30
   const boxWidth = 40
   let start = y
+  const yes = iconSymbols("yes")
+  const no = iconSymbols("no")
+  const undo = iconSymbols("undo")
+  const fire = iconSymbols("fire")
+  const check = iconSymbols("check")
   if (y + boxHeight > maxY) {
     start = y - 176 - boxHeight
   }
   if (map.game?.phase === gamePhaseType.Deploy) {
     if (counter.targetUF.selected) {
-      rc.push({ x, color: markerYellow(), text: "U", tColor: "#000", action: "undeploy" })
+      rc.push({ x, color: markerYellow(), text: undo, tColor: "#000", action: "undeploy" })
     }
   } else if (map.game.phase === gamePhaseType.PrepRally) {
     if (map.game.gameState?.type === stateType.Rally) {
       if (counter.unit.selected) {
         if (counter.unit.isBroken) {
-          rc.push({ x, color: actionGreen(), text: "R", tColor: "#FFF", action: "rally" })
+          rc.push({ x, color: actionGreen(), text: check, tColor: "#FFF", action: "rally" })
         } else {
-          rc.push({ x, color: actionGreen(), text: "R", tColor: "#FFF", action: "repair" })
+          rc.push({ x, color: actionGreen(), text: check, tColor: "#FFF", action: "repair" })
         }
       }
     }
   } else if (map.game.phase === gamePhaseType.Main) {
     if (map.game.gameState?.type === stateType.Fire) {
       if (counter.unit.targetSelected && map.game?.gameState?.type === stateType.Fire) {
-        rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "fire_finish" })
-        rc.push({ x: x + boxWidth, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+        rc.push({ x, color: actionGreen(), text: yes, tColor: "#FFF", action: "fire_finish" })
+        rc.push({ x: x + boxWidth, color: counterRed(), text: no, tColor: "#FFF", action: "cancel_action" })
       }
     } else if (map.game.gameState?.type === stateType.Move) {
       if (counter.unit.selected && counter.unit.canCarrySupport && counter.unit.smokeCapable &&
           movementPastCost(map, counter.unit) < counter.unit.currentMovement) {
-        rc.push({ x, color: markerYellow(), text: "S", tColor: "#000", action: "move_smoke_toggle" })
+        const smoke = iconSymbols("smoke")
+        rc.push({ x, color: markerYellow(), text: smoke, tColor: "#000", action: "move_smoke_toggle" })
       }
     } else if (map.game.gameState?.type === stateType.Assault) {
       if (counter.unit.selected) {
+        const clear = iconSymbols("clear")
+        const entrench = iconSymbols("entrench")
         if (showClearObstacles(map.game)) {
-          rc.push({ x, color: markerYellow(), text: "C", tColor: "#000", action: "assault_move_clear" })
+          rc.push({ x, color: markerYellow(), text: clear, tColor: "#000", action: "assault_move_clear" })
         }
         const x2 = x + rc.length * boxWidth
         if (showEntrench(map.game)) {
-          rc.push({ x: x2, color: markerYellow(), text: "D", tColor: "#000", action: "assault_move_entrench" })
+          rc.push({
+            x: x2, color: markerYellow(), text: entrench, tColor: "#000", action: "assault_move_entrench"
+          })
         }
       }
     } else if (map.game.gameState?.type === stateType.Rout) {
       if (counter.unit.selected) {
-        rc.push({ x, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+        rc.push({ x, color: counterRed(), text: no, tColor: "#FFF", action: "cancel_action" })
       }
     } else if (map.game.gameState?.type === stateType.Reaction) {
       if (counter.unit.selected) {
         if (canReactionFire(counter.unit, map)) {
-          rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "reaction_fire" })
+          rc.push({ x, color: counterRed(), text: fire, tColor: "#FFF", action: "reaction_fire" })
         } else if (canReactionIntensiveFire(counter.unit, map)) {
-          rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "reaction_intensive_fire" })
+          rc.push({ x, color: counterRed(), text: fire, tColor: "#FFF", action: "reaction_intensive_fire" })
         }
       }
     } else if (map.game.gameState?.type === stateType.MoraleCheck) {
       if (counter.unit.selected) {
-        rc.push({ x, color: markerYellow(), text: "M", tColor: "#000", action: "morale_check" })
+        rc.push({ x, color: markerYellow(), text: check, tColor: "#000", action: "morale_check" })
       }
     } else if (map.game.gameState?.type === stateType.Breakdown) {
       if (counter.unit.selected) {
-        rc.push({ x, color: markerYellow(), text: "B", tColor: "#000", action: "breakdown" })
+        rc.push({ x, color: markerYellow(), text: check, tColor: "#000", action: "breakdown" })
       }
     } else if (map.game.gameState?.type === stateType.RoutCheck) {
       if (counter.unit.selected) {
-        rc.push({ x, color: markerYellow(), text: "R", tColor: "#000", action: "rout_check" })
+        rc.push({ x, color: markerYellow(), text: check, tColor: "#000", action: "rout_check" })
       }
     } else if (map.game.gameState === undefined) {
       if (counter.unit.selected) {
         if (canFire(counter.unit, map)) {
-          rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "fire" })
+          rc.push({ x, color: counterRed(), text: fire, tColor: "#FFF", action: "fire" })
         } else if (canIntensiveFire(counter.unit, map)) {
-          rc.push({ x, color: counterRed(), text: "F", tColor: "#FFF", action: "intensive_fire" })
+          rc.push({ x, color: counterRed(), text: fire, tColor: "#FFF", action: "intensive_fire" })
         }
         const x2 = x + rc.length * boxWidth
+        const move = iconSymbols("move")
         if (canMove(counter.unit, map)) {
-          rc.push({ x: x2, color: actionGreen(), text: "M", tColor: "#FFF", action: "move" })
+          rc.push({ x: x2, color: actionGreen(), text: move, tColor: "#FFF", action: "move" })
         } else if (canRush(counter.unit, map)) {
-          rc.push({ x: x2, color: actionGreen(), text: "M", tColor: "#FFF", action: "rush" })
+          rc.push({ x: x2, color: actionGreen(), text: move, tColor: "#FFF", action: "rush" })
         }
         const x3 = x + rc.length * boxWidth
+        const assault = iconSymbols("assault")
         if (canAssaultMove(counter.unit)) {
-          rc.push({ x: x3, color: actionBlue(), text: "A", tColor: "#FFF", action: "assault_move" })
+          rc.push({ x: x3, color: actionBlue(), text: assault, tColor: "#FFF", action: "assault_move" })
         }
         const x4 = x + rc.length * boxWidth
+        const rout = iconSymbols("rout")
         if (canRout(counter.unit)) {
-          rc.push({ x: x4, color: markerYellow(), text: "R", tColor: "#000", action: "rout" })
+          rc.push({ x: x4, color: markerYellow(), text: rout, tColor: "#000", action: "rout" })
         }
       }
     }
   } else if (map.game.phase === gamePhaseType.CleanupCloseCombat) {
     if (counter.unit.selected && closeCombatCasualtyNeeded(map.game)) {
-      rc.push({ x, color: counterRed(), text: "H", tColor: "#FFF", action: "close_combat_reduce" })
+      rc.push({ x, color: counterRed(), text: no, tColor: "#FFF", action: "close_combat_reduce" })
     }
   } else if (map.game.phase === gamePhaseType.CleanupOverstack) {
     if (counter.unit.selected) {
-      rc.push({ x, color: counterRed(), text: "E", tColor: "#FFF", action: "overstack_reduce" })
+      rc.push({ x, color: counterRed(), text: no, tColor: "#FFF", action: "overstack_reduce" })
     }
   }
   return rc.map(t => {

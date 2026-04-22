@@ -212,6 +212,13 @@ export function nationalTextColor(nation: string): string {
   }).join("")}`
 }
 
+export function iconSymbols(key: string): string {
+  return {
+    yes: "✓", no: "×", undo: "-", fire: "F", move: "M", assault: "A", rout: "R", check: "⚅",
+    smoke: "S", entrench: "E", clear: "C",
+  }[key] ?? "?"
+}
+
 export function formatNation(game: Game, player: Player, text?: string): string {
   const name = player === 1 ? game.alliedName : game.axisName
   const nation = player === 1 ? game.playerOneNation : game.playerTwoNation

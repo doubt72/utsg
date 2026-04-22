@@ -1040,14 +1040,15 @@ export default class Game {
     return rc
   }
 
-  reinforcementsCount(turn: number, player: Player): [number, number] {
+  reinforcementsCheck(turn: number, player: Player): [boolean, boolean, boolean] {
     const counters = player === 1 ?
       this.scenario.alliedReinforcements[turn] :
       this.scenario.axisReinforcements[turn]
 
-    const initialCount = counters ? Object.values(counters).reduce((tot, u) => tot + u.x, 0) : 0
+    const confirmation = this.lastAction?.type === "finish_deploy"
     const count = counters ? Object.values(counters).reduce((tot, u) => tot + u.x - u.used, 0) : 0
-    return [count, initialCount]
+    const initialCount = counters ? Object.values(counters).reduce((tot, u) => tot + u.x, 0) : 0
+    return [confirmation, count !== 0, initialCount !== 0]
   }
 
   undeploy() {

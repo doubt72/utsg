@@ -5,13 +5,13 @@ import GameAction, { GameActionAddActionType } from "../../GameAction";
 import Map from "../../Map";
 import Unit from "../../Unit";
 
-export type StateType = "deploy" | "rally" | "precip" | "fire" | "move" | "assault" |
+export type StateType = "deploy" | "finish_deploy" | "rally" | "precip" | "fire" | "move" | "assault" |
   "breakdown" | "init" | "pass" | "morale" | "sniper" | "rout" | "routall" | "squad_join" |
   "rout_check" | "reaction" | "close" | "overstack" | "status" | "smoke" | "fire_extinguish" |
   "displace" | "weather" | "fire_start"
 export const stateType: { [index: string]: StateType } = {
-  Deploy: "deploy", Rally: "rally", PrecipCheck: "precip", Fire: "fire", Move: "move",
-  Assault: "assault", Breakdown: "breakdown", Initiative: "init", Pass: "pass",
+  Deploy: "deploy", FinishDeploy: "finish_deploy", Rally: "rally", PrecipCheck: "precip", Fire: "fire",
+  Move: "move", Assault: "assault", Breakdown: "breakdown", Initiative: "init", Pass: "pass",
   SquadJoin: "squad_join", MoraleCheck: "morale", Sniper: "sniper", Rout: "rout", RoutAll: "routall",
   RoutCheck: "rout_check", Reaction: "reaction", CloseCombat: "close", FireStart: "fire_start",
   Overstack: "overstack", StatusCheck: "status", SmokeCheck: "smoke",

@@ -10,12 +10,12 @@ import { leadershipRange } from "./fire"
 import { stateType } from "./state/BaseState"
 
 export default function select(
-  map: Map, selection: CounterSelectionTarget, callback: () => void
+  map: Map, selection: CounterSelectionTarget, callback: () => void, reselect: boolean = true
 ) {
   const game = map.game
   if (selection.target.type === "reinforcement") { return }
   if (!selectable(map, selection)) { return }
-  if (game?.gameState) { return game.gameState.select(selection, callback) }
+  if (reselect && game?.gameState) { return game.gameState.select(selection, callback) }
   const x = selection.target.xy.x
   const y = selection.target.xy.y
   const id = selection.counter.target.id
@@ -61,13 +61,13 @@ export function removeStateSelection(game: Game, x: number, y: number, id: strin
   }
 }
 
-export function selectable(map: Map, selection: CounterSelectionTarget): boolean {
+export function selectable(map: Map, selection: CounterSelectionTarget, reselect: boolean = true): boolean {
   if (map.debug) { return true }
   const game = map.game
   if (!game) { return false }
   const target = selection.counter.unit as Unit
   if (target.isFeature && game.phase !== gamePhaseType.Deploy) { return false }
-  if (game.gameState) { return game.gameState.selectable(selection) }
+  if (reselect && game.gameState) { return game.gameState.selectable(selection) }
   const same = target.playerNation === game.currentPlayerNation
   if (game.phase === gamePhaseType.Main) {
     if (!same && !game.gameState) {

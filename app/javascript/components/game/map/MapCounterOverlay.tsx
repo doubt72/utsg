@@ -228,7 +228,7 @@ export default function MapCounterOverlay({
           const x = layout.x + i*(160+dblwidth) + dblwidth*2
           let thisButtons = false
           if ((counter.hasUnit || (counter.hasFeature && map.game?.phase === gamePhaseType.Deploy)) &&
-              (counter.targetUF.selected || counter.targetUF.targetSelected) && yy) {
+              (counter.targetUF.selected || counter.targetUF.targetSelected) && yy !== undefined) {
             const controls = counterActionButtons(map, x, layout.y2 - outwidth + 2, maxY, counter)
             for (const c of controls) {
               thisButtons = true

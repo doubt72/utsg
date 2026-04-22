@@ -1,7 +1,10 @@
 import {
   baseTerrainType, Coordinate, Direction, RoadCenterType, roadType, streamType, terrainType
 } from "../../utilities/commonTypes"
-import { ActionButtonLayout, actionGreen, CircleLayout, clearColor, counterRed, markerYellow, PathLayout, roundedRectangle, SVGPathArray, SVGStyle } from "../../utilities/graphics"
+import {
+  ActionButtonLayout, actionGreen, CircleLayout, clearColor, counterRed, iconSymbols, markerYellow,
+  PathLayout, roundedRectangle, SVGPathArray, SVGStyle
+} from "../../utilities/graphics"
 import { hexBuildingBuildingDisplay } from "../../utilities/hexBuilding"
 import { normalDir } from "../../utilities/utilities"
 import { stateType } from "../control/state/BaseState"
@@ -443,18 +446,21 @@ export function mapActionButtons(map: Map, x: number, y: number, loc: Coordinate
   const size = 24
   const boxHeight = 30
   const boxWidth = 35
+  const yes = iconSymbols("yes")
+  const no = iconSymbols("no")
+  const undo = iconSymbols("undo")
   let offset = 0
   if (map.game.phase === gamePhaseType.Main) {
     if (map.game.gameState?.type === stateType.Move) {
       if (map.game.moveState.rotateOpen) { return [] }
-      rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "move_finish" })
-      rc.push({ x: x + boxWidth, color: markerYellow(), text: "U", tColor: "#000", action: "move_undo" })
-      rc.push({ x: x + boxWidth*2, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+      rc.push({ x, color: actionGreen(), text: yes, tColor: "#FFF", action: "move_finish" })
+      rc.push({ x: x + boxWidth, color: markerYellow(), text: undo, tColor: "#000", action: "move_undo" })
+      rc.push({ x: x + boxWidth*2, color: counterRed(), text: no, tColor: "#FFF", action: "cancel_action" })
       offset = boxWidth * 1.5
     } else if (map.game.gameState?.type === stateType.Assault) {
       if (map.game.assaultState.rotateOpen) { return [] }
-      rc.push({ x, color: actionGreen(), text: "Y", tColor: "#FFF", action: "assault_move_finish" })
-      rc.push({ x: x + boxWidth, color: counterRed(), text: "N", tColor: "#FFF", action: "cancel_action" })
+      rc.push({ x, color: actionGreen(), text: yes, tColor: "#FFF", action: "assault_move_finish" })
+      rc.push({ x: x + boxWidth, color: counterRed(), text: no, tColor: "#FFF", action: "cancel_action" })
       offset = boxWidth
     }
   }
