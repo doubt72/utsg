@@ -3,6 +3,7 @@
 - Major selection refactor to improve performance, make UX changes cleaner
 - Add ability to start/complete/cancel/etc for fire/move/assault/rout/etc from counter overlay
 - Add ability to finish/cancel for move/assault/displace from map
+- Added sound/visual bell when switching to current player
 - Improve dragging of reinforcement panel
 - Add LOS hexes for reaction fire but red
 - Mines and wire show all movement, not cost

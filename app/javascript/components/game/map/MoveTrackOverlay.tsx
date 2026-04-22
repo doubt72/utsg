@@ -18,15 +18,13 @@ interface MoveTrackOverlayProps {
   selectCallback: (x: number, y: number) => void;
   scale: number;
   mapScale: number;
-  maxX: number;
-  maxY: number;
   xOffset: number;
   yOffset: number;
   svgRef: React.MutableRefObject<HTMLElement>;
 }
 
 export default function MoveTrackOverlay({
-  map, updateCallback, selectCallback, scale, mapScale, maxX, maxY, xOffset, yOffset, svgRef }: MoveTrackOverlayProps
+  map, updateCallback, selectCallback, scale, mapScale, xOffset, yOffset, svgRef }: MoveTrackOverlayProps
 ) {
   const [hexTrack, setHexTrack] = useState<JSX.Element[]>([])
   const [hexCenters, setHexCenters] = useState<JSX.Element[]>([])
@@ -102,7 +100,7 @@ export default function MoveTrackOverlay({
     const y = ((e.clientY - svgRef.current.getBoundingClientRect().y + 10 - yMapOffset + 100) / scale -
       100 + map.ySize * yOffset)/mapScale
     const loc = new Coordinate(x, y)
-    const max = new Coordinate(maxX, maxY)
+    const max = new Coordinate(map.previewXSize, map.ySize)
     setActionHelpDisplay(HelpOverlay(actionButtonHelpLayout(loc, max, scale, type)))
   }
 

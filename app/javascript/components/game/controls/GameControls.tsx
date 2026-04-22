@@ -68,7 +68,7 @@ interface GameControlsProps {
   callback: () => void;
 }
 
-export default function GameControls({ game, callback, update }: GameControlsProps) {
+export default function GameControls({ game, update, callback }: GameControlsProps) {
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [internalUpdate, setInternalUpdate] = useState(0)
 

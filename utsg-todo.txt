@@ -1,22 +1,5 @@
 Features/Bug Fixes:
-  + Counter Actions
-    + Deploy - undeploy
-    + MoraleCheck - morale_check
-    + RoutCheck - rout_check
-    + Rally - rally
-    + CloseCombat - reduce
-    + Overstack - reduce
-    + Breakdown - breakdown
-    + Move - smoke
-    + Assault - dig in
-    + Assault - elmininate obstacle
-  + Map Actions
-    + Add Confirm/Cancel for Assault
-    + Add Confirm/Undo/Cancel for Move
-  + Improve reinforcement panel dragging
-  + Show ALL for movement into mines or wire
-
-  - Sound for your turn/visual bell
+  + Sound for your turn/visual bell
   - Email turn notifications
 
   - Allow selection of features on deploy (to undeploy)

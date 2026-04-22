@@ -58,6 +58,61 @@ export default function GameDisplay() {
   const [updateControls, setUpdateControls] = useState(0)
   const [updateMap, setUpdateMap] = useState(0)
 
+  const [needsTurnAlert, setNeedsTurnAlert] = useState<boolean>(false)
+  const [controlClasses, setControlClasses] = useState<string>("game-control ml05em mr05em")
+  const [turnTimer, setTurnTimer] = useState<NodeJS.Timeout | undefined>()
+  const [turnSwitchTimer, setTurnSwitchTimer] = useState<NodeJS.Timeout | undefined>()
+
+  useEffect(() => {
+    const user = localStorage.getItem("username")
+    if (game.k?.currentUser === user) {
+      setTurnTimer(t => {
+        if (t) { clearTimeout(t) }
+        const to = setTimeout(() => {
+          setTurnTimer(t => {
+            if (t) { clearTimeout(t) }
+            return undefined
+          })
+          if (needsTurnAlert && game.k?.currentUser === user) {
+            setControlClasses("game-control-turn-alert ml05em mr05em")
+            setTimeout(() => { setControlClasses("game-control ml05em mr05em") }, 500)
+            setTimeout(() => { setControlClasses("game-control-turn-alert ml05em mr05em") }, 1000)
+            setTimeout(() => { setControlClasses("game-control ml05em mr05em") }, 1500)
+            setTimeout(() => { setControlClasses("game-control-turn-alert ml05em mr05em") }, 2000)
+            setTimeout(() => { setControlClasses("game-control ml05em mr05em") }, 2500)
+            const sound = new Audio("/assets/release.wav")
+            sound.play()
+            turnTimer
+          }
+        }, 1500)
+        return to
+      })
+    }
+  }, [game.k?.lastActionIndex])
+
+  useEffect(() => {
+    if (!game.k || !game.k.currentUser) { return }
+    const user = localStorage.getItem("username")
+    if (game.k?.currentUser !== user) {
+      setTurnSwitchTimer(t => {
+        if (t) { clearTimeout(t) }
+        const to = setTimeout(() => {
+          setTurnSwitchTimer(t => {
+            if (t) { clearTimeout(t) }
+            return undefined
+          })
+          if (game.k?.currentUser !== user) {
+            setNeedsTurnAlert(true)
+          } else { setNeedsTurnAlert(false) }
+          turnSwitchTimer
+        }, 1000)
+        return to
+      })
+    } else {
+      setNeedsTurnAlert(false)
+    }
+  }, [game.k?.currentUser])
+
   const setUpdate = () =>  {
     setUpdateControls(s => s + 1)
     setUpdateMap(s => s + 1)
@@ -614,7 +669,7 @@ export default function GameDisplay() {
     <div className="main-page">
       <Header />
       {layout()}
-      <div className="game-control ml05em mr05em">
+      <div className={controlClasses}>
         {playerNation}
         <div className="flex-fill">
           {controls}

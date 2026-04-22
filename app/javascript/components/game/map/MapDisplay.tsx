@@ -595,8 +595,7 @@ export default function MapDisplay({
     if (map.game?.gameState?.type === stateType.Move || map.game?.gameState?.type === stateType.Assault ||
       map.game?.gameState?.type === stateType.FireDisplace || moveActions.includes(action?.type ?? "")) {
       setMoveTrack(<MoveTrackOverlay map={map} scale={scale} mapScale={mapScale ?? 1}
-                                     xOffset={xOffset} yOffset={yOffset}
-                                     maxX={width / scale} maxY={height / scale} updateCallback={() =>
+                                     xOffset={xOffset} yOffset={yOffset} updateCallback={() =>
                                        { counterCallback(); updateCallback() }} selectCallback={hexSelection}
                                      svgRef={svgRef as React.MutableRefObject<HTMLElement>} />)
     } else {
