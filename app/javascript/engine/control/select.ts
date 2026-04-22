@@ -19,7 +19,8 @@ export default function select(
   const x = selection.target.xy.x
   const y = selection.target.xy.y
   const id = selection.counter.target.id
-  const counter = map.unitAtId(new Coordinate(x, y), id) as Counter
+  const counter = game?.phase == gamePhaseType.Deploy ? map.counterAtId(new Coordinate(x, y), id) as Counter :
+    map.unitAtId(new Coordinate(x, y), id) as Counter
   map.clearOtherSelections(x, y, id)
   map.select(counter.unit)
   callback()
@@ -65,7 +66,7 @@ export function selectable(map: Map, selection: CounterSelectionTarget): boolean
   const game = map.game
   if (!game) { return false }
   const target = selection.counter.unit as Unit
-  if (target.isFeature) { return false }
+  if (target.isFeature && game.phase !== gamePhaseType.Deploy) { return false }
   if (game.gameState) { return game.gameState.selectable(selection) }
   const same = target.playerNation === game.currentPlayerNation
   if (game.phase === gamePhaseType.Main) {

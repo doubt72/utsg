@@ -161,7 +161,7 @@ export function counterActionButtons(
     start = y - 176 - boxHeight
   }
   if (map.game?.phase === gamePhaseType.Deploy) {
-    if (counter.unit.selected) {
+    if (counter.targetUF.selected) {
       rc.push({ x, color: markerYellow(), text: "U", tColor: "#000", action: "undeploy" })
     }
   } else if (map.game.phase === gamePhaseType.PrepRally) {

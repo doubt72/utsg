@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getAPI } from "../../utilities/network";
+import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
 import ActionDisplay from "./ActionDisplay";
@@ -62,6 +62,34 @@ export default function GameDisplay() {
   const [controlClasses, setControlClasses] = useState<string>("game-control ml05em mr05em")
   const [turnTimer, setTurnTimer] = useState<NodeJS.Timeout | undefined>()
   const [turnSwitchTimer, setTurnSwitchTimer] = useState<NodeJS.Timeout | undefined>()
+
+  const [emailTimer, setEmailTimer] = useState<NodeJS.Timeout | undefined>()
+
+  const notificationEmail = (user: string) => {
+    setEmailTimer(t => {
+      if (t) { clearTimeout(t) }
+      const to = setTimeout(() => {
+        setEmailTimer(t => {
+          if (t) { clearTimeout(t) }
+          return undefined
+        })
+        if (game.k && user === game.k.currentUser) {
+          postAPI(
+            `/api/v1/user/notify`, { id: user, game_id: game.k.id }, { ok: () => {} }
+          )
+        }
+        emailTimer
+      }, 3000)
+      return to
+    })
+  }
+
+  const cancelNotificationEmail = () => {
+    setEmailTimer(t => {
+      if (t) { clearTimeout(t) }
+      return undefined
+    })
+  }
 
   useEffect(() => {
     const user = localStorage.getItem("username")
@@ -158,7 +186,9 @@ export default function GameDisplay() {
             json.scenario = scenario
             const g = new Game(json, gameNotification)
             setGame({k: g, turn: g.turn, state: g.state})
-            setControls(<GameControls game={g} callback={setUpdate} update={updateControls} />)
+            setControls(<GameControls game={g} callback={setUpdate} update={updateControls}
+                                      emailCallback={notificationEmail}
+                                      emailCancelCallback={cancelNotificationEmail} />)
             setMap(g.scenario.map)
           })
         })
@@ -433,7 +463,8 @@ export default function GameDisplay() {
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
       return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                           update={updateControls} />
+                           update={updateControls} emailCallback={notificationEmail}
+                           emailCancelCallback={cancelNotificationEmail} />
     })
 
     let status = game.k.turn > 0 ? <span>turn {game.k.turn}/{game.k.scenario.turns}</span> : "initial setup"
@@ -486,14 +517,16 @@ export default function GameDisplay() {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
           return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                               update={updateControls} />
+                               update={updateControls} emailCallback={notificationEmail}
+                               emailCancelCallback={cancelNotificationEmail} />
         })
       }
     } else if (game.k?.gameState?.type === stateType.Move || game.k?.gameState?.type === stateType.Assault) {
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                             update={updateControls} />
+                             update={updateControls} emailCallback={notificationEmail}
+                             emailCancelCallback={cancelNotificationEmail} />
       })
     } else if (game.k?.gameState?.type === stateType.Fire) {
       const fire = game.k.fireState
@@ -501,7 +534,8 @@ export default function GameDisplay() {
         setControls(gc => {
           const key = Number(gc?.key ?? 0)
           return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                               update={updateControls} />
+                               update={updateControls} emailCallback={notificationEmail}
+                               emailCancelCallback={cancelNotificationEmail} />
         })
       }
     }
@@ -511,7 +545,8 @@ export default function GameDisplay() {
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
       return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                           update={updateControls} />
+                           update={updateControls} emailCallback={notificationEmail}
+                           emailCancelCallback={cancelNotificationEmail} />
     })
   }
 
@@ -527,14 +562,16 @@ export default function GameDisplay() {
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                             update={updateControls} />
+                             update={updateControls} emailCallback={notificationEmail}
+                             emailCancelCallback={cancelNotificationEmail} />
       })
     } else if (game.k?.gameState?.type === stateType.Assault) {
       game.k.assaultState.rotate(d)
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                             update={updateControls} />
+                             update={updateControls} emailCallback={notificationEmail}
+                             emailCancelCallback={cancelNotificationEmail} />
       })
     }
   }
@@ -544,7 +581,8 @@ export default function GameDisplay() {
     setControls(gc => {
       const key = Number(gc?.key ?? 0)
       return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
-                           update={updateControls} />
+                           update={updateControls} emailCallback={notificationEmail}
+                           emailCancelCallback={cancelNotificationEmail} />
     })
     setUpdate()
   }

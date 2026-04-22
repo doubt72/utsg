@@ -65,6 +65,20 @@ RSpec.describe Api::V1::GameActionsController do
       expect(GameAction.last.user).to be == user1
     end
 
+    it "resets user notified when created" do
+      user1.update!(notified: true)
+
+      login(user1)
+
+      expect do
+        post :create, params: {
+          game_action: { sequence: 3, game_id: game.id, data: '{ "2d6": 7 }', player: 1 },
+        }
+      end.to change { GameAction.count }.by(1)
+
+      expect(user1.reload.notified).to be == false
+    end
+
     it "can't create bogus action" do
       login(user1)
 

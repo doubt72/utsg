@@ -20,6 +20,7 @@ export default function Profile() {
 
   const [colorblind, setColorblind] = useState<boolean>(false)
   const [animations, setAnimations] = useState<boolean>(false)
+  const [notifications, setNofications] = useState<boolean>(true)
 
   const [header, setHeader] = useState<JSX.Element | undefined>()
   const [statDisplay, setStatDisplay] = useState<JSX.Element | undefined>()
@@ -73,6 +74,7 @@ export default function Profile() {
   useEffect(() => {
     setColorblind(localStorage.getItem("colorblind") === "true")
     setAnimations(localStorage.getItem("noanim") === "true")
+    setNofications(localStorage.getItem("notifications") === "true")
   }, [])
 
   useEffect(() => {
@@ -107,6 +109,19 @@ export default function Profile() {
             </div>
             <div>
               <CustomCheckbox onClick={() => {
+                putAPI(`/api/v1/user/toggle_notifications`, {}, {
+                  ok: () => {
+                    setNofications(s => {
+                      localStorage.setItem("notifications", s  ? "false" : "true")
+                      return !s
+                    })
+                  }
+                })
+              }} selected={notifications}/>
+              <span className="font11em">email turn notifications</span>
+            </div>
+            <div>
+              <CustomCheckbox onClick={() => {
                 setAnimations(s => {
                   localStorage.setItem("noanim", s ? "false" : "true")
                   return !s
@@ -123,7 +138,7 @@ export default function Profile() {
         </div>
       )
     }
-  }, [user, colorblind, animations])
+  }, [user, colorblind, animations, notifications])
 
   return (
     <div>

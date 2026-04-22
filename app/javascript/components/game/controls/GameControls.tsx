@@ -66,9 +66,13 @@ interface GameControlsProps {
   game: Game;
   update: number;
   callback: () => void;
+  emailCallback: (user: string) => void;
+  emailCancelCallback: () => void;
 }
 
-export default function GameControls({ game, update, callback }: GameControlsProps) {
+export default function GameControls({
+  game, update, callback, emailCallback, emailCancelCallback }: GameControlsProps
+) {
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [internalUpdate, setInternalUpdate] = useState(0)
 
@@ -87,10 +91,12 @@ export default function GameControls({ game, update, callback }: GameControlsPro
     const user = localStorage.getItem("username")
     const actions = actionsAvailable(game, user as string)
     actions.push({ type: "help" })
+    let check = false
     setControls(actions.map((a, i) => {
       if (a.type === "sync") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing (you may need to reload this page)</div>
       } else if (a.type === "wait") {
+        check = true
         return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
       } else if (a.type === "none") {
         return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
@@ -216,6 +222,12 @@ export default function GameControls({ game, update, callback }: GameControlsPro
         return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>
       }
     }))
+    if (check) {
+      const player = user === game.playerOneName ? game.playerTwoName : game.playerOneName
+      emailCallback(player)
+    } else {
+      emailCancelCallback()
+    }
   }
 
   return (

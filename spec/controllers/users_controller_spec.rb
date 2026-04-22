@@ -67,6 +67,81 @@ RSpec.describe Api::V1::UsersController do
     end
   end
 
+  context "toggle_notification" do
+    it "toggles self" do
+      login(user)
+      expect(user.notifications).to be == true
+
+      put :toggle_notifications
+      expect(response.status).to be == 200
+      expect(user.reload.notifications).to be == false
+    end
+  end
+
+  context "notify" do
+    let(:user2) { create(:user, notifications: false) }
+    let(:other) { create(:user, notifications: false) }
+    let!(:game) do
+      create(:game, owner: user, player_one: user, player_two: user2,
+                    current_player: user2, name: "game", state: :in_progress)
+    end
+
+    before :each do
+      create(:game_action, user: user2, created_at: 25.minutes.ago, sequence: 1, game:)
+      create(:game_action, user:, created_at: 20.minutes.ago, sequence: 2, game:)
+    end
+
+    it "can notify self" do
+      login(user)
+
+      expect(user.reload.notified).to be == false
+      post :notify, params: { id: user.username, game_id: game.id }
+      expect(response.status).to be == 200
+      expect(user.reload.notified).to be == true
+    end
+
+    it "can handle being already notified" do
+      login(user)
+
+      user.update!(notified: true)
+      post :notify, params: { id: user.username, game_id: game.id }
+      expect(response.status).to be == 200
+      expect(user.reload.notified).to be == true
+    end
+
+    it "can notify other" do
+      login(user)
+
+      post :notify, params: { id: user2.username, game_id: game.id }
+      expect(response.status).to be == 200
+      expect(user2.reload.notified).to be == false
+    end
+
+    it "other player can notify self" do
+      login(user2)
+
+      post :notify, params: { id: user2.username, game_id: game.id }
+      expect(response.status).to be == 200
+      expect(user2.reload.notified).to be == false
+    end
+
+    it "other player can notify other" do
+      login(user2)
+
+      post :notify, params: { id: user.username, game_id: game.id }
+      expect(response.status).to be == 200
+      expect(user.reload.notified).to be == true
+    end
+
+    it "outside player can't trigger notify" do
+      login(other)
+
+      post :notify, params: { id: user.username, game_id: game.id }
+      expect(response.status).to be == 403
+      expect(user.reload.notified).to be == false
+    end
+  end
+
   context "get all" do
     let!(:admin) { create(:user, admin: true) }
 
@@ -123,7 +198,7 @@ RSpec.describe Api::V1::UsersController do
         "count" => 5, "win" => 1, "loss" => 1, "wait" => 1, "abandoned" => 1,
       }
       expect(body["user"]).to be == {
-        "username" => user.username, "email" => user.email,
+        "username" => user.username, "email" => user.email, "notifications" => true,
       }
     end
 

@@ -508,6 +508,14 @@ export default class Map {
     return
   }
 
+  counterAtId(loc: Coordinate, id: string): Counter | undefined {
+    const counters = this.countersAt(loc)
+    for (const c of counters) {
+      if (c.targetUF.id === id) { return c }
+    }
+    return
+  }
+
   locForId(id: string): Coordinate | undefined {
     for (let y = 0; y < this.height; y++) {
       for (let x = this.width - 1; x >= 0; x--) {
@@ -713,7 +721,7 @@ export default class Map {
   }
 
   clearAllSelections() {
-    const units = this.allUnits
+    const units = this.allCounters
     for (const u of units) {
       if (u.unit.selected) { u.unit.select() }
       if (u.unit.targetSelected) { u.unit.targetSelect() }
@@ -752,7 +760,7 @@ export default class Map {
   }
 
   clearOtherSelections(x: number, y: number, id: string) {
-    const units = this.allUnits
+    const units = this.allCounters
     for (const u of units) {
       if (!u.hex || (u.hex.x === x && u.hex.y === y && u.unit.id === id)) {
         continue
@@ -764,7 +772,7 @@ export default class Map {
   get allSelections(): Counter[] {
     if (!this.game) { return [] }
     const rc: Counter[] = []
-    const units = this.allUnits
+    const units = this.allCounters
     for (const u of units) {
       if (u.unit.selected) { rc.push(u) }
     }
@@ -774,7 +782,7 @@ export default class Map {
   get allTargetSelections(): Counter[] {
     if (!this.game) { return [] }
     const rc: Counter[] = []
-    const units = this.allUnits
+    const units = this.allCounters
     for (const u of units) {
       if (u.unit.targetSelected) { rc.push(u) }
     }

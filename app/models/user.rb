@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User < ApplicationRecord
+class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # Owned games are deleted only if no other users are associated with them (see
   # before_destroy hooks)
   has_many :games, foreign_key: :owner_id
@@ -52,6 +52,20 @@ class User < ApplicationRecord
     def toggle_banned(username)
       user = lookup(username)
       user.update!(banned: !user.banned)
+    end
+
+    def notify(current_user, username, game_id)
+      user = lookup(username)
+      game = Game.find(game_id)
+      return false unless current_user == game.player_one || current_user == game.player_two
+      return true if user.notified || !user.notifications
+
+      action = GameAction.where(game_id:, user:, undone: false).order(sequence: :desc).first
+      if action && action.created_at < 15.minutes.ago
+        ::Utility::NotificationEmails.turn_notification(user, game)
+        user.update!(notified: true)
+      end
+      :success
     end
 
     def stats(username)
@@ -126,13 +140,18 @@ class User < ApplicationRecord
     update!(password:, recovery_code: nil, recovery_code_expires: nil)
   end
 
-  def body
-    return { username:, email:, banned: } if banned # The rest doesn't matter if banned
-    return { username:, email:, proto: true, mcp: true } if admin && developer
-    return { username:, email:, proto: true } if developer
-    return { username:, email:, mcp: true } if admin
+  def toggle_notifications
+    update!(notifications: !notifications)
+  end
 
-    { username:, email: }
+  def body
+    # The rest doesn't matter if banned
+    return { username:, email:, banned: } if banned
+    return { username:, email:, notifications:, proto: true, mcp: true } if admin && developer
+    return { username:, email:, notifications:, proto: true } if developer
+    return { username:, email:, notifications:, mcp: true } if admin
+
+    { username:, email:, notifications: }
   end
 
   def index_body # rubocop:disable Metrics/CyclomaticComplexity

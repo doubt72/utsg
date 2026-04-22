@@ -93,6 +93,22 @@ module Api
         end
       end
 
+      def toggle_notifications
+        if current_user.toggle_notifications
+          render json: {}, status: :ok
+        else
+          render json: { message: "action prohibited" }, status: :forbidden
+        end
+      end
+
+      def notify
+        if User.notify(current_user, params[:id], params[:game_id])
+          render json: {}, status: :ok
+        else
+          render json: { message: "action prohibited" }, status: :forbidden
+        end
+      end
+
       def stats
         stats = User.stats(params[:id])
         if stats

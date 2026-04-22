@@ -42,7 +42,7 @@ export default class Feature {
 
   type: FeatureType;
   nation = "none"
-  playerNation = "none"
+  playerNation: string;
   name: string;
   icon: string;
   baseFirepower?: number | string;
@@ -69,6 +69,7 @@ export default class Feature {
 
   constructor(data: FeatureData) {
     this.type = data.t
+    this.playerNation = "none"
     this.name = data.n
     this.icon = data.i
     this.baseFirepower = data.f

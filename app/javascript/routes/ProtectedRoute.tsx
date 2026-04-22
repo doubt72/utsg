@@ -39,6 +39,7 @@ export function ProtectedRoute() {
             }
             if (body.proto) { localStorage.setItem("proto", "true") }
             if (body.mcp) { localStorage.setItem("mcp", "true") }
+            localStorage.setItem("notifications", body.notifications ? "true" : "false")
             if (path.includes("/debug") && !body.proto) {
               navigate("/", { replace: true })
             }

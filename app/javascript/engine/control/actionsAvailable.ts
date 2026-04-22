@@ -1,5 +1,6 @@
 import { Coordinate, GameControl, unitType } from "../../utilities/commonTypes"
 import { coordinateToLabel } from "../../utilities/utilities"
+import Feature from "../Feature"
 import Game from "../Game"
 import Map from "../Map"
 import { gamePhaseType } from "../support/gamePhase"
@@ -23,7 +24,7 @@ import RoutCheckState from "./state/RoutCheckState"
 import RoutState from "./state/RoutState"
 import SniperState from "./state/SniperState"
 
-export function currSelection(game: Game, move: boolean): Unit | undefined {
+export function currSelection(game: Game, move: boolean): Unit | Feature | undefined {
   if (!game) { return undefined}
   if (game.gameState && game.gameState.selection.length > 0) {
     const unit = game.gameState.selection[0].counter.unit
@@ -34,7 +35,7 @@ export function currSelection(game: Game, move: boolean): Unit | undefined {
   }
   const counter = game.scenario.map.selection
   if (!counter) { return undefined }
-  return counter.unit
+  return counter.targetUF
 }
 
 function setState(game: Game): void {
@@ -138,7 +139,8 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     if (game.state === "complete") {
       return [{ type: "none", message: "game over" }, { type: "menu" }]
     }
-    return [{ type: "wait", message: currentEnemyAction(game) }] }
+    return [{ type: "wait", message: currentEnemyAction(game) }]
+  }
   if (game.lastAction?.id === undefined) { return [{ type: "sync" }] }
   const actions: GameControl[] = []
   addUndo(game, activePlayer, actions)
@@ -175,7 +177,7 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     addCloseCombatActions(game, actions)
   } else if (game.gameState?.type === stateType.Overstack) {
     actions.unshift({ type: "none", message: "overstacked units; select unit to remove" })
-    const select = currSelection(game, false)
+    const select = currSelection(game, false) as Unit
     if (select) {
       actions.push({ type: "overstack_reduce" })
       if (canSplit(select, game.scenario.map)) { actions.push({ type: "split_squad" }) }
@@ -205,7 +207,7 @@ function addRallyActions(game: Game, actions: GameControl[]): void {
 }
 
 function addMainPhaseActions(game: Game, actions: GameControl[]): void {
-  const selection = currSelection(game, false)
+  const selection = currSelection(game, false) as Unit
   const map = game.scenario.map
   if (game.gameState?.type === stateType.Fire) {
     addFireActions(game, actions, selection)
@@ -238,7 +240,9 @@ function addMainPhaseActions(game: Game, actions: GameControl[]): void {
   } else if (game.gameState?.type === stateType.Reaction) {
     actions.unshift({ type: "none", message: "reaction fire" })
     if (canReactionFire(selection, map)) { actions.push({ type: "reaction_fire" }) }
-    if (canReactionIntensiveFire(selection, map)) { actions.push({ type: "reaction_intensive_fire" }) }
+    if (canReactionIntensiveFire(selection, map)) {
+      actions.push({ type: "reaction_intensive_fire" })
+    }
     actions.push({ type: "reaction_pass" })
   } else if (game.gameState?.type === stateType.SquadJoin) {
     actions.unshift({ type: "none", message: "select team to combine" })
@@ -316,7 +320,7 @@ function addFireActions(game: Game, actions: GameControl[], selection?: Unit): v
 }
 
 function addMoveActions(game: Game, actions: GameControl[]): void {
-  const actionSelect = currSelection(game, true)
+  const actionSelect = currSelection(game, true) as Unit
   const action = game.moveState
   if (actionSelect && action) {
     if (action.loading) {
