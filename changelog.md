@@ -1,3 +1,8 @@
+## 0.64 Alpha
+
+- Bug fix: got stuck in deploy (needed to be more careful with state setting)
+- Bug fix: repair counter button not working (typo)
+
 ## 0.63 Alpha
 
 - Add deployment confirmation

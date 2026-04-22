@@ -1,11 +1,10 @@
 Features/Bug Fixes:
-  + Commit Deployment
   - Go through docs, add examples
   - Create tutorial
-  - Roll back smoke on reaction fire?
   - Add Some Developer Notes
 
 Nice to Have Eventually:
+  - Better rollback of smoke on reaction fire
   - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
 
 Keep an Eye out for:

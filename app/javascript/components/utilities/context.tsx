@@ -13,7 +13,7 @@ export function executeContextAction(
   if (type === "select" && target) {
     select(game.scenario.map, target, callback)
   } else if ([
-    "rally", "reapir", "fire_finish", "move_finish", "assault_move_finish", "morale_check",
+    "rally", "repair", "fire_finish", "move_finish", "assault_move_finish", "morale_check",
     "rout_check", "rout_eliminate", "breakdown", "overstack_reduce", "enemy_rout",
     "smoke_check", "fire_out_check", "fire_spread_check", "fire_displace_confirm"
   ].includes(type)) {

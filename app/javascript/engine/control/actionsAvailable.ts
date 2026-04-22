@@ -76,7 +76,8 @@ function setState(game: Game): void {
     if (state !== stateType.Reaction) {
       game.setGameState(new ReactionState(game))
     }
-  } else if (!game.reinforcementsCheck(game.turn, game.currentPlayer)[1]) {
+  } else if (game.phase === gamePhaseType.Deploy &&
+             !game.reinforcementsCheck(game.turn, game.currentPlayer)[1]) {
     if (state !== stateType.FinishDeploy) {
       game.setGameState(new FinishDeployState(game))
     }

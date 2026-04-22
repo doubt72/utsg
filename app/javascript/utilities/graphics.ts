@@ -214,7 +214,7 @@ export function nationalTextColor(nation: string): string {
 
 export function iconSymbols(key: string): string {
   return {
-    yes: "✓", no: "×", undo: "-", fire: "F", move: "M", assault: "A", rout: "R", check: "⚅",
+    yes: "✓", no: "×", undo: "-", fire: "F", move: "M", assault: "A", rout: "R", check: "?",
     smoke: "S", entrench: "E", clear: "C",
   }[key] ?? "?"
 }
