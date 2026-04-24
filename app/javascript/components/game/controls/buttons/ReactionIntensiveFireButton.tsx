@@ -2,23 +2,43 @@ import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
 import { FireIntenseGlyph } from "../../../utilities/buttons";
 import FireState from "../../../../engine/control/state/FireState";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface ReactionIntensiveFireButtonProps {
   game: Game;
+  vertical: boolean;
   callback: () => void;
 }
 
-export default function ReactionIntensiveFireButton({ game, callback }: ReactionIntensiveFireButtonProps) {
+export default function ReactionIntensiveFireButton({ game, vertical, callback }: ReactionIntensiveFireButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.setGameState(new FireState(game, true))
     callback()
   }
 
+  const text = "intensive reaction fire (2)"
+
+  const buttonTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      { text }
+    </Tooltip>
+  )
+
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{FireIntenseGlyph()}intensive reaction fire (2)</button>
+        { vertical ?
+          <OverlayTrigger placement="bottom" overlay={buttonTooltip}
+                          delay={{ show: 0, hide: 0 }} >
+            <button type="submit" className="custom-button custom-button-balance nowrap">
+              {FireIntenseGlyph()}
+            </button>
+          </OverlayTrigger> :
+          <button type="submit" className="custom-button nowrap">
+            {FireIntenseGlyph()} {text}
+          </button>
+        }
       </div>
     </form>
   )

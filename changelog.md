@@ -1,3 +1,8 @@
+## 0.65 Alpha
+
+- Major changes to game UI: allow moving control bar to left, allow hiding header
+- Bug fix: splitting last squad in deploy should clear deploy state
+
 ## 0.64 Alpha
 
 - Bug fix: got stuck in deploy (needed to be more careful with state setting)

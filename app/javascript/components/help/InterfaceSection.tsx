@@ -56,20 +56,22 @@ export default function InterfaceSection() {
     const shrink = (innerWidth - 1) / width;
     const buttonSelect = showNumbers ? "counter-help-button-selected" : "";
     const coords: { x: number; y: number }[] = [
-      { x: 75, y: 110 },
-      { x: 800, y: 65 },
-      { x: 200, y: 200 },
+      { x: 160, y: 100 },
+      { x: 800, y: 50 },
+      { x: 2870, y: 100 },
+      { x: 250, y: 200 },
       { x: 1700, y: 200 },
-      { x: 900, y: 490 },
-      { x: 92, y: 625 },
-      { x: 775, y: 650 },
-      { x: 1535, y: 580 },
-      { x: 975, y: 650 },
-      { x: 1470, y: 650 },
-      { x: 2690, y: 650 },
-      { x: 2690, y: 1130 },
-      { x: 2690, y: 1230 },
-      { x: 625, y: 1540 },
+      { x: 2400, y: 590 },
+      { x: 160, y: 620 },
+      { x: 180, y: 750 },
+      { x: 1070, y: 702 },
+      { x: 800, y: 780 },
+      { x: 1000, y: 780 },
+      { x: 1470, y: 780 },
+      { x: 2650, y: 780 },
+      { x: 2650, y: 1220 },
+      { x: 2650, y: 1330 },
+      { x: 550, y: 1580 },
     ];
     setGameInterface(
       <div style={{ float: "right" }}>
@@ -86,7 +88,7 @@ export default function InterfaceSection() {
               height={height * shrink}
             >
               <image
-                href="/assets/screenshot2.png"
+                href="/assets/screenshot3.png"
                 x="0"
                 y="0"
                 width={width * shrink}
@@ -149,18 +151,23 @@ export default function InterfaceSection() {
       </p>
       <p>
         {redNumber(3)}
-        <strong>Move display</strong>: shows all of the game moves up to this point, as well as roll
-        results for various required checks.
+        <strong>Header Collapse Button</strong>: can be used to hide the page header to make more
+        room for the map.  Will be replaced by an expand button once the header is hidden.
       </p>
       <p>
         {redNumber(4)}
+        <strong>Action display</strong>: shows all of the game actions up to this point, as well as roll
+        results for various required checks.
+      </p>
+      <p>
+        {redNumber(5)}
         <strong>Chat display</strong>: players can send messages via this display. Messages can only
         be sent by the players in the game, but any logged-in user can see the messages. Every game
         has its own chat, and the main chat on the front page of the site is also distinct from all
         of the game chats.
       </p>
       <p>
-        {redNumber(5)}
+        {redNumber(6)}
         <strong>Control bar</strong>: this shows all of game actions currently available to the
         player. The game will only present options that are currently possible. There is always a
         help button here that will go to a relevant section of the documentation. Note that many but
@@ -171,21 +178,20 @@ export default function InterfaceSection() {
         game).
       </p>
       <p>
-        {redNumber(6)}
+        {redNumber(7)}
+        <strong>Control bar position toggle</strong>: can be used to toggle the control bar between
+        horizontal and vertical orientations (to give the map more horizonal or vertical space).
+        Horizontal orientations are recommended until a user has experience with the controls; the
+        controls are harder to navigate when collapesed to icon-only with only tooltips as a guide.
+      </p>
+      <p>
+        {redNumber(8)}
         <strong>Map overview</strong>: a mini-map, showing the entire map of the current scenario,
         and which part of the map is visible. The main map can be navigated by clicking or dragging here to move
         the map display to other parts of the map if the entire map is not visible at once.
       </p>
       <p>
-        {redNumber(7)}
-        <strong>Unit displays</strong>: these can be clicked on to show any units that can be
-        deployed (either initially or as reinforcements) or casualties. If units are available for
-        deployment, the player nation or faction icon will be highlighted, and units can be
-        selected.  The unit display panels can be dragged if they are blocking an area of interest
-        on the map.
-      </p>
-      <p>
-        {redNumber(8)}
+        {redNumber(9)}
         <strong>Map controls</strong>: these buttons control how the map is displayed or what is
         displayed on the map.  These buttons may be collapsed to icon only on smaller displays.
       </p>
@@ -297,30 +303,38 @@ export default function InterfaceSection() {
         <div className="flex-fill"></div>
       </div>
       <p>
-        {redNumber(9)}
+        {redNumber(10)}
+        <strong>Unit displays</strong>: these can be clicked on to show any units that can be
+        deployed (either initially or as reinforcements) or casualties. If units are available for
+        deployment, the player nation or faction icon will be highlighted, and units can be
+        selected.  The unit display panels can be dragged if they are blocking an area of interest
+        on the map.
+      </p>
+      <p>
+        {redNumber(11)}
         <strong>Sniper</strong>: if one or both sides have snipers in the game, they are displayed
         here. Sniper rolls may affect infantry units after they take certain actions.
       </p>
       <p>
-        {redNumber(10)}
+        {redNumber(12)}
         <strong>Turn track</strong>: shows the current turn. When the last turn is over, the
         scenario ends.  The turn track may be compressed to fit the display, but the last turn is always shown
         so it&apos;s always possible to see how many turns are left.
       </p>
       <p>
-        {redNumber(11)}
+        {redNumber(13)}
         <strong>Weather display</strong>: shows the current weather conditions, and if there&apos;s a
         chance of precipitation, etc.
       </p>
       <p>
-        {redNumber(12)}
+        {redNumber(14)}
         <strong>Score display</strong>: shows the current score (i.e., who would win if the game
         ended at that moment). Also shows which directions the two players are advancing, or more
         importantly, the directions that units must move when routing (i.e., the opposite direction
         from the arrows).
       </p>
       <p>
-        {redNumber(13)}
+        {redNumber(15)}
         <strong>Initiative track</strong>: shows the player who currently has initiative (i.e.,
         which side the marker is displaying), and the roll required for the initiative player would
         need to roll after an action if when the marker moves to the opponent&apos;s side of the
@@ -331,7 +345,7 @@ export default function InterfaceSection() {
         be compressed to fit the display.
       </p>
       <p>
-        {redNumber(14)}
+        {redNumber(16)}
         <strong>Main map</strong>: the actual scenario map, along with counters showing features and
         player units.  If the terrain button is activated, mousing over the map will show terrain,
         if the LOS overlay is selected, mousing over units will show their line-of-sight, otherwise,

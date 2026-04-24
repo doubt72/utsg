@@ -1,23 +1,43 @@
 import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
 import { DashSquare } from "react-bootstrap-icons";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface CloseCombatReduceButtonProps {
   game: Game;
+  vertical: boolean;
   callback: () => void;
 }
 
-export default function CloseCombatReduceButton({ game, callback }: CloseCombatReduceButtonProps) {
+export default function CloseCombatReduceButton({ game, vertical, callback }: CloseCombatReduceButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.closeCombatState.reduceUnit()
     callback()
   }
 
+  const text = "take hit"
+
+  const buttonTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      { text }
+    </Tooltip>
+  )
+
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><DashSquare />take hit</button>
+        { vertical ?
+          <OverlayTrigger placement="bottom" overlay={buttonTooltip}
+                          delay={{ show: 0, hide: 0 }} >
+            <button type="submit" className="custom-button custom-button-balance nowrap">
+              <DashSquare />
+            </button>
+          </OverlayTrigger> :
+          <button type="submit" className="custom-button nowrap">
+            <DashSquare /> {text}
+          </button>
+        }
       </div>
     </form>
   )

@@ -51,6 +51,11 @@
   display: flex;
 }
 
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-fill {
   flex-grow: 1;
 }

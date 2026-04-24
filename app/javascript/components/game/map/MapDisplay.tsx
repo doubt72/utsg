@@ -49,6 +49,8 @@ interface MapDisplayProps {
   showTerrain?: boolean;
   preview: boolean;
   guiCollapse?: boolean;
+  headerCollapse?: boolean;
+  horizontalControls?: boolean;
   forceUpdate: number;
   hexCallback?: (x: number, y: number) => void;
   counterCallback?: () => void;
@@ -64,9 +66,9 @@ interface MapDisplayProps {
 export default function MapDisplay({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
   hideCounters = false, showTerrain = false, preview, guiCollapse = false, forceUpdate,
+  headerCollapse = false, horizontalControls = false, checkCancelHideLOS, checkCancelTerrain,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
   clearActionCallback = () => {}, updateCallback = () => {}, shrinkCallback = () => {},
-  checkCancelHideLOS, checkCancelTerrain,
 }: MapDisplayProps) {
   const [mouseDown, setMouseDown] = useState<boolean>(false)
   const [mapUpdate, setMapUpdate] = useState(0)
@@ -135,7 +137,9 @@ export default function MapDisplay({
     if (preview || m?.preview) { return map.ySize * scale }
     const extra = user === m?.game?.playerOneName || user === m?.game?.playerTwoName ? 0 : 48
     const gc = guiCollapse ? 178 - extra : 0
-    const fill = m?.debug ? 16 : 400 - extra - gc
+    const hc = headerCollapse ? 82 : 0
+    const hc2 = horizontalControls ? 0 : 56
+    const fill = m?.debug ? 16 : 400 - extra - gc - hc - hc2
     const available = base + 50 / scale - 50
     return height - fill < available * scale ? available * scale : height - fill
   }
@@ -144,11 +148,12 @@ export default function MapDisplay({
     if (preview || m?.preview) { return map.xSize * scale }
     let min = base
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 200 }
+    const hc = horizontalControls ? 0 : 69
     let margin = 32
-    if (minHeight(window.innerHeight + 0, scale, m) > (784 + 50 / scale - 50) * scale) {
+    if (minHeight(window.innerHeight + 0, scale, m) > (785 + 50 / scale - 50) * scale) {
       margin = 16
     }
-    return width - margin < min * scale ? min * scale : width - margin
+    return width - margin - hc < min * scale ? min * scale : width - margin - hc
   }
 
   const [width, setWidth] = useState<number>(minWidth(window.innerWidth, 1, map))
@@ -170,8 +175,8 @@ export default function MapDisplay({
   }, [width, map, map.game])
 
   useEffect(() => {
-    let shrink: 0 | 1 | 2 = height < minHeight(window.innerHeight, scale, map, 1144) ? 1 : 0
-    if (height < minHeight(window.innerHeight, scale, map, 904)) { shrink = 2 }
+    let shrink: 0 | 1 | 2 = height < minHeight(window.innerHeight, scale, map, 1147) ? 1 : 0
+    if (height < minHeight(window.innerHeight, scale, map, 907)) { shrink = 2 }
     setIShrink(shrink)
   }, [height, map, map.game])
 
@@ -282,12 +287,12 @@ export default function MapDisplay({
     }
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
-  }, [scale, map, guiCollapse])
+  }, [scale, map, guiCollapse, headerCollapse, horizontalControls])
 
   useEffect(() => {
     setWidth(minWidth(window.innerWidth, scale, map))
     setHeight(minHeight(window.innerHeight, scale, map))
-  }, [scale, map, guiCollapse])
+  }, [scale, map, guiCollapse, headerCollapse, horizontalControls])
 
   const minimapCallback = (event: React.MouseEvent, calculated: {
     mapSize: Coordinate, scale: number

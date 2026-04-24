@@ -11,6 +11,8 @@ import Map from "../../engine/Map";
 import { Direction } from "../../utilities/commonTypes";
 import ErrorDisplay from "./ErrorDisplay";
 import {
+  ArrowDownCircle,
+  ArrowRightCircle,
   ArrowsAngleContract, ArrowsAngleExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
   GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
@@ -33,7 +35,9 @@ export default function GameDisplay() {
   const [controls, setControls] = useState<JSX.Element | undefined>()
   const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>()
 
+  const [collapseHeader, setCollapseHeader] = useState<boolean>(false)
   const [collapseLayout, setCollapseLayout] = useState<boolean>(false)
+  const [horizontalControls, setHorizontalControls] = useState<boolean>(true)
 
   const [mapScale, setMapScale] = useState(1)
   const [interfaceShrink, setInterfaceShrink] = useState(0)
@@ -59,7 +63,7 @@ export default function GameDisplay() {
   const [updateMap, setUpdateMap] = useState(0)
 
   const [needsTurnAlert, setNeedsTurnAlert] = useState<boolean>(false)
-  const [controlClasses, setControlClasses] = useState<string>("game-control ml05em mr05em")
+  const [controlClasses, setControlClasses] = useState<string>("game-control")
   const [turnTimer, setTurnTimer] = useState<NodeJS.Timeout | undefined>()
   const [turnSwitchTimer, setTurnSwitchTimer] = useState<NodeJS.Timeout | undefined>()
 
@@ -102,12 +106,28 @@ export default function GameDisplay() {
             return undefined
           })
           if (needsTurnAlert && game.k?.currentUser === user) {
-            setControlClasses("game-control-turn-alert ml05em mr05em")
-            setTimeout(() => { setControlClasses("game-control ml05em mr05em") }, 500)
-            setTimeout(() => { setControlClasses("game-control-turn-alert ml05em mr05em") }, 1000)
-            setTimeout(() => { setControlClasses("game-control ml05em mr05em") }, 1500)
-            setTimeout(() => { setControlClasses("game-control-turn-alert ml05em mr05em") }, 2000)
-            setTimeout(() => { setControlClasses("game-control ml05em mr05em") }, 2500)
+            const also = horizontalControls ? "" : "-vertical"
+            setControlClasses(`game-control-turn-alert${also}`)
+            setTimeout(() => {
+              const add = horizontalControls ? "" : "-vertical"
+              setControlClasses(`game-control${add}`)
+            }, 500)
+            setTimeout(() => {
+              const add = horizontalControls ? "" : "-vertical"
+              setControlClasses(`game-control-turn-alert${add}`)
+            }, 1000)
+            setTimeout(() => {
+              const add = horizontalControls ? "" : "-vertical"
+              setControlClasses(`game-control${add}`)
+            }, 1500)
+            setTimeout(() => {
+              const add = horizontalControls ? "" : "-vertical"
+              setControlClasses(`game-control-turn-alert${add}`)
+            }, 2000)
+            setTimeout(() => {
+              const add = horizontalControls ? "" : "-vertical"
+              setControlClasses(`game-control${add}`)
+            }, 2500)
             const sound = new Audio("/assets/release.wav")
             sound.play()
             turnTimer
@@ -117,6 +137,10 @@ export default function GameDisplay() {
       })
     }
   }, [game.k?.lastActionIndex])
+
+  useEffect(() => {
+    setControlClasses(`game-control${horizontalControls ? "" : "-vertical"}`)
+  }, [horizontalControls])
 
   useEffect(() => {
     if (!game.k || !game.k.currentUser) { return }
@@ -157,16 +181,17 @@ export default function GameDisplay() {
     if (game.k.playerOneName === game.k.playerTwoName && game.k.playerOneName === user) {
       nation = game.k.currentPlayerNation
     } else if (user === game.k.playerOneName) {
-      if (playerNation !== undefined) { return }
       nation = game.k.playerOneNation
     } else if (user === game.k.playerTwoName) {
-      if (playerNation !== undefined) { return }
       nation = game.k.playerTwoNation
     }
     if (nation) {
       const fill = `url(#nation-${nation}-16)`
       setPlayerNation(
-        <div style={{ paddingTop: 3, paddingRight: 2 }}>
+        <div style={{
+            paddingTop: horizontalControls ? 3 : 8, paddingBottom: horizontalControls ? 0 : 12,
+            paddingRight: 2, paddingLeft: horizontalControls ? 0 : 9
+          }}>
           <svg width={34} height={34} viewBox="0 0 34 34" style={{ minWidth: 32 }}>
             <circle cx={17} cy={17} r={16}
                     style={{ fill, strokeWidth: 1, stroke: "black" }}/>
@@ -174,7 +199,7 @@ export default function GameDisplay() {
         </div>
       )
     }
-  }, [game.k?.state, game.k?.currentPlayer])
+  }, [game.k?.state, game.k?.currentPlayer, horizontalControls])
 
   useEffect(() => {
     getAPI(`/api/v1/games/${id}`, {
@@ -187,7 +212,7 @@ export default function GameDisplay() {
             const g = new Game(json, gameNotification)
             setGame({k: g, turn: g.turn, state: g.state})
             setControls(<GameControls game={g} callback={setUpdate} update={updateControls}
-                                      emailCallback={notificationEmail}
+                                      emailCallback={notificationEmail} vertical={!horizontalControls}
                                       emailCancelCallback={cancelNotificationEmail} />)
             setMap(g.scenario.map)
           })
@@ -200,6 +225,8 @@ export default function GameDisplay() {
     const shrink = localStorage.getItem("mapInterfaceShrink")
     const mScale = localStorage.getItem("mapScale")
     const collape = localStorage.getItem("mapCollapseLayout")
+    const headerCollape = localStorage.getItem("mapCollapseHeader")
+    const horizontal = localStorage.getItem("horizontalControls")
     const showCoords = localStorage.getItem("mapCoords")
     const showMarkers = localStorage.getItem("mapMarkers")
     if (shrink !== null) {
@@ -213,6 +240,8 @@ export default function GameDisplay() {
     }
     if (mScale !== null) { setMapScale(Number(mScale)) }
     if (collape !== null) { setCollapseLayout(collape == "true") }
+    if (headerCollape !== null) { setCollapseHeader(headerCollape == "true") }
+    if (horizontal !== null) { setHorizontalControls(horizontal == "true") }
     if (showCoords !== null) { setCoords(showCoords == "true") }
     if (showMarkers !== null) { setShowStatusCounters(showMarkers == "true") }
   }, [])
@@ -223,7 +252,8 @@ export default function GameDisplay() {
       <MapDisplay map={map} scale={shrinkScales[interfaceShrink]} mapScale={mapScale}
                   showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
                   hideCounters={hideCounters} showTerrain={showTerrain} preview={false}
-                  guiCollapse={collapseLayout} forceUpdate={updateMap}
+                  guiCollapse={collapseLayout} headerCollapse={collapseHeader}
+                  horizontalControls={horizontalControls} forceUpdate={updateMap}
                   hexCallback={hexSelection} counterCallback={unitSelection}
                   directionCallback={directionSelection} resetCallback={resetDisplay}
                   clearActionCallback={clearAction} updateCallback={setUpdate}
@@ -232,7 +262,7 @@ export default function GameDisplay() {
     )
   }, [
     map, updateMap, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
-    hideCounters, showTerrain, collapseLayout
+    hideCounters, showTerrain, collapseLayout, collapseHeader, horizontalControls
   ])
 
   useEffect(() => {
@@ -289,7 +319,7 @@ export default function GameDisplay() {
     if (!game.k) { return }
     if (game.k.serverVersion === serverVersion) { return }
     const message = "The server version has been updated since you last loaded this game and " +
-      "the game cannot continue unless the it is reloaded."
+      "the game cannot continue unless it is reloaded."
     setErrorWindow(
       <DesyncWindow title={"Server Version Mismatch"} message={message} button={"reload"} />
     )
@@ -464,7 +494,7 @@ export default function GameDisplay() {
       const key = Number(gc?.key ?? 0)
       return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                            update={updateControls} emailCallback={notificationEmail}
-                           emailCancelCallback={cancelNotificationEmail} />
+                           emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
     })
 
     let status = game.k.turn > 0 ? <span>turn {game.k.turn}/{game.k.scenario.turns}</span> : "initial setup"
@@ -472,7 +502,7 @@ export default function GameDisplay() {
     if (game.k.state === "ready") { status += " - waiting for game to start"}
     setTurn(<>{status}</>)
   }, [
-    game.k?.state, game.k?.lastAction?.undone, game.k?.lastAction?.id,
+    game.k?.state, game.k?.lastAction?.undone, game.k?.lastAction?.id, horizontalControls,
   ])
 
   const actionNotification = (actionId?: number) => {
@@ -518,7 +548,7 @@ export default function GameDisplay() {
           const key = Number(gc?.key ?? 0)
           return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                                update={updateControls} emailCallback={notificationEmail}
-                               emailCancelCallback={cancelNotificationEmail} />
+                               emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
         })
       }
     } else if (game.k?.gameState?.type === stateType.Move || game.k?.gameState?.type === stateType.Assault) {
@@ -526,7 +556,7 @@ export default function GameDisplay() {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                              update={updateControls} emailCallback={notificationEmail}
-                             emailCancelCallback={cancelNotificationEmail} />
+                             emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
       })
     } else if (game.k?.gameState?.type === stateType.Fire) {
       const fire = game.k.fireState
@@ -535,7 +565,7 @@ export default function GameDisplay() {
           const key = Number(gc?.key ?? 0)
           return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                                update={updateControls} emailCallback={notificationEmail}
-                               emailCancelCallback={cancelNotificationEmail} />
+                               emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
         })
       }
     }
@@ -546,7 +576,7 @@ export default function GameDisplay() {
       const key = Number(gc?.key ?? 0)
       return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                            update={updateControls} emailCallback={notificationEmail}
-                           emailCancelCallback={cancelNotificationEmail} />
+                           emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
     })
   }
 
@@ -563,7 +593,7 @@ export default function GameDisplay() {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                              update={updateControls} emailCallback={notificationEmail}
-                             emailCancelCallback={cancelNotificationEmail} />
+                             emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
       })
     } else if (game.k?.gameState?.type === stateType.Assault) {
       game.k.assaultState.rotate(d)
@@ -571,7 +601,7 @@ export default function GameDisplay() {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                              update={updateControls} emailCallback={notificationEmail}
-                             emailCancelCallback={cancelNotificationEmail} />
+                             emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
       })
     }
   }
@@ -582,7 +612,7 @@ export default function GameDisplay() {
       const key = Number(gc?.key ?? 0)
       return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
                            update={updateControls} emailCallback={notificationEmail}
-                           emailCancelCallback={cancelNotificationEmail} />
+                           emailCancelCallback={cancelNotificationEmail} vertical={!horizontalControls} />
     })
     setUpdate()
   }
@@ -591,6 +621,18 @@ export default function GameDisplay() {
     setShowLos(false)
     setHideCounters(false)
   }
+
+  const expandHeaderTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      show header
+    </Tooltip>
+  )
+
+  const collapseHeaderTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      collapses header to make more room for the game map
+    </Tooltip>
+  )
 
   const expandTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
@@ -610,13 +652,13 @@ export default function GameDisplay() {
         <div className="flex">
           <OverlayTrigger placement="bottom" overlay={expandTooltip}
                           delay={{ show: 0, hide: 0 }}>
-          <div className="custom-button normal-button expand-button"
-               onClick={() => {
-                 setCollapseLayout(false)
-                 localStorage.setItem("mapCollapseLayout", "false")
-               }}>
-            <PlusCircle />
-          </div>
+            <div className="custom-button normal-button expand-button"
+                onClick={() => {
+                  setCollapseLayout(false)
+                  localStorage.setItem("mapCollapseLayout", "false")
+                }}>
+              <PlusCircle />
+            </div>
           </OverlayTrigger>
           <div className="standard-body">
             <div className="game-page-actions">
@@ -627,6 +669,18 @@ export default function GameDisplay() {
                            desyncCallback={desynced} />
             </div>
           </div>
+          <OverlayTrigger placement="bottom" overlay={expandHeaderTooltip}
+                          delay={{ show: 0, hide: 0 }}>
+            <div className="custom-button normal-button expand-button-right"
+                onClick={() => {
+                  setCollapseHeader(s => {
+                    localStorage.setItem("mapCollapseHeader", s ? "false" : "true")
+                    return !s
+                  })
+                }}>
+              { collapseHeader ? <PlusCircle /> : <DashCircle /> }
+            </div>
+          </OverlayTrigger>
         </div>
       )
     } else {
@@ -635,13 +689,13 @@ export default function GameDisplay() {
           <div className="flex">
             <OverlayTrigger placement="bottom" overlay={collapseTooltip}
                             delay={{ show: 0, hide: 0 }}>
-            <div className="custom-button normal-button collapse-button"
-                 onClick={() => {
-                   setCollapseLayout(true)
-                   localStorage.setItem("mapCollapseLayout", "true")
-                 }}>
-              <DashCircle />
-            </div>
+              <div className="custom-button normal-button collapse-button"
+                  onClick={() => {
+                    setCollapseLayout(true)
+                    localStorage.setItem("mapCollapseLayout", "true")
+                  }}>
+                <DashCircle />
+              </div>
             </OverlayTrigger>
             <div className="game-control ml05em mr05em mt05em flex-fill">
               <div className="red monospace mr05em">
@@ -657,6 +711,18 @@ export default function GameDisplay() {
                 {game.k?.name}
               </div>
             </div>
+            <OverlayTrigger placement="bottom" overlay={collapseHeaderTooltip}
+                            delay={{ show: 0, hide: 0 }}>
+              <div className="custom-button normal-button collapse-button-right"
+                  onClick={() => {
+                    setCollapseHeader(s => {
+                      localStorage.setItem("mapCollapseHeader", s ? "false" : "true")
+                      return !s
+                    })
+                  }}>
+                { collapseHeader ? <PlusCircle /> : <DashCircle /> }
+              </div>
+            </OverlayTrigger>
           </div>
           <div className="standard-body">
             <div className="game-page-actions">
@@ -670,6 +736,12 @@ export default function GameDisplay() {
       )
     }
   }
+
+  const controlSwitchTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      toggles location of control bar
+    </Tooltip>
+  )
 
   const coordsTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
@@ -705,72 +777,92 @@ export default function GameDisplay() {
 
   return (
     <div className="main-page">
-      <Header />
+      { collapseHeader ? "" : <Header /> }
       {layout()}
-      <div className={controlClasses}>
-        {playerNation}
-        <div className="flex-fill">
-          {controls}
-        </div>
-      </div>
-      <div className="flex map-control">
-        <div className="flex-fill"></div>
-        {mapScaleMinusButton}
-        {mapScaleResetButton}
-        {mapScalePlusButton}
-        {largeInterfaceButton}
-        {smallInterfaceButton}
-        {mobileInterfaceButton}
-        <OverlayTrigger placement="bottom" overlay={coordsTooltip}
-                        delay={{ show: 0, hide: 0 }}>
-        <div className="custom-button normal-button"
-             onClick={() => toggleShowCoords()}>
-          { coords ? <GeoAltFill /> : <GeoAlt /> } <span>{shrinkButtons ? "" : "coords"}</span>
-        </div>
-        </OverlayTrigger>
-        <OverlayTrigger placement="bottom" overlay={statusTooltip}
-                        delay={{ show: 0, hide: 0 }}>
-        <div className="custom-button normal-button"
-             onClick={() => toggleShowMarkers()}>
-          { showStatusCounters ? <Stack /> : <CircleFill /> } <span>{shrinkButtons ? "" : "status"}</span>
-        </div>
-        </OverlayTrigger>
-        <OverlayTrigger placement="bottom" overlay={overlayTooltip}
-                        delay={{ show: 0, hide: 0 }}>
-        { game.k?.gameState?.showOverlays ?
-          <div className="custom-button-disable normal-button">
-            { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
-          </div> :
-          <div className="custom-button normal-button"
-               onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
-            { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
+      <div className={ horizontalControls ? "" : "flex" }>
+        <div className={ horizontalControls ? "flex" : "flex-vertical" }>
+          <OverlayTrigger placement="bottom" overlay={controlSwitchTooltip}
+                          delay={{ show: 0, hide: 0 }}>
+            <div className={
+                  `game-control-switch game-control-switch-${horizontalControls ? "horizontal" : "vertical"}`
+                }
+                onClick={() => {
+                  setHorizontalControls(s => {
+                    localStorage.setItem("horizontalControls", s ? "false" : "true")
+                    return !s
+                  })
+                }} >
+              { horizontalControls ? <ArrowRightCircle /> : <ArrowDownCircle /> }
+            </div>
+          </OverlayTrigger>
+          <div className={`${controlClasses} mb05em ml05em ${horizontalControls ? "mr05em" : ""} flex-fill`}>
+            {playerNation}
+            <div className={ horizontalControls ? "flex-fill" : "flex flex-fill" }>
+              {controls}
+            </div>
           </div>
-        }
-        </OverlayTrigger>
-        <OverlayTrigger placement="bottom" overlay={countersTooltip}
-                        delay={{ show: 0, hide: 0 }}>
-        <div className="custom-button normal-button"
-             onClick={() => { setHideCounters(sc => !sc); setCheckCancelHideLOS(s => s+1) }}>
-        { hideCounters ? <Square /> : <SquareFill /> } <span>{shrinkButtons ? "" : "counters"}</span>
         </div>
-        </OverlayTrigger>
-        <OverlayTrigger placement="bottom" overlay={terrainTooltip}
-                        delay={{ show: 0, hide: 0 }}>
-        { game.k?.gameState?.showOverlays ?
-          <div className="custom-button-disable normal-button">
-            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
-          </div> :
-          <div className="custom-button normal-button"
-               onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
-            { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
+        <div>
+          <div className="flex map-control">
+            <div className="flex-fill"></div>
+            {mapScaleMinusButton}
+            {mapScaleResetButton}
+            {mapScalePlusButton}
+            {largeInterfaceButton}
+            {smallInterfaceButton}
+            {mobileInterfaceButton}
+            <OverlayTrigger placement="bottom" overlay={coordsTooltip}
+                            delay={{ show: 0, hide: 0 }}>
+            <div className="custom-button normal-button"
+                onClick={() => toggleShowCoords()}>
+              { coords ? <GeoAltFill /> : <GeoAlt /> } <span>{shrinkButtons ? "" : "coords"}</span>
+            </div>
+            </OverlayTrigger>
+            <OverlayTrigger placement="bottom" overlay={statusTooltip}
+                            delay={{ show: 0, hide: 0 }}>
+            <div className="custom-button normal-button"
+                onClick={() => toggleShowMarkers()}>
+              { showStatusCounters ? <Stack /> : <CircleFill /> } <span>{shrinkButtons ? "" : "status"}</span>
+            </div>
+            </OverlayTrigger>
+            <OverlayTrigger placement="bottom" overlay={overlayTooltip}
+                            delay={{ show: 0, hide: 0 }}>
+            { game.k?.gameState?.showOverlays ?
+              <div className="custom-button-disable normal-button">
+                { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
+              </div> :
+              <div className="custom-button normal-button"
+                  onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
+                { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
+              </div>
+            }
+            </OverlayTrigger>
+            <OverlayTrigger placement="bottom" overlay={countersTooltip}
+                            delay={{ show: 0, hide: 0 }}>
+            <div className="custom-button normal-button"
+                onClick={() => { setHideCounters(sc => !sc); setCheckCancelHideLOS(s => s+1) }}>
+            { hideCounters ? <Square /> : <SquareFill /> } <span>{shrinkButtons ? "" : "counters"}</span>
+            </div>
+            </OverlayTrigger>
+            <OverlayTrigger placement="bottom" overlay={terrainTooltip}
+                            delay={{ show: 0, hide: 0 }}>
+            { game.k?.gameState?.showOverlays ?
+              <div className="custom-button-disable normal-button">
+                { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
+              </div> :
+              <div className="custom-button normal-button"
+                  onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
+                { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
+              </div>
+            }
+            </OverlayTrigger>
           </div>
-        }
-        </OverlayTrigger>
+          <div className="game-map">
+            { mapDisplay }
+          </div>
+          {errorWindow}
+        </div>
       </div>
-      <div className="game-map">
-        { mapDisplay }
-      </div>
-      {errorWindow}
     </div>
   )
 }

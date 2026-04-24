@@ -242,6 +242,7 @@ export default class AssaultState extends BaseState {
       x, y, type: gameActionAddActionType.Clear, cost: 0, id: f.feature.id, name: f.feature.name, index: 0
     })
     this.map.targetSelect(f.feature)
+    this.doneSelect = true
     this.game.closeOverlay = true
   }
 
@@ -252,6 +253,7 @@ export default class AssaultState extends BaseState {
       id: "scrape-ghost", ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
     }))
     this.addActions.push({ x, y, type: gameActionAddActionType.Entrench, cost: 0, index: 0 })
+    this.doneSelect = true
     this.game.closeOverlay = true
   }
 

@@ -105,9 +105,19 @@ div.collapse-button {
   margin: 0.5em 0 0 0.5em;
 }
 
+div.collapse-button-right {
+  padding: 0em 0.5em 0.2em;
+  margin: 0.5em 0.5em 0 0;
+}
+
 div.expand-button {
   padding: 0em 0.5em 0.2em;
   margin: 0.5em 0 0.5em 0.5em;
+}
+
+div.expand-button-right {
+  padding: 0em 0.5em 0.2em;
+  margin: 0.5em 0.5em 0.5em 0;
 }
 
 div.custom-button span {

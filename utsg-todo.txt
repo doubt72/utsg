@@ -1,7 +1,8 @@
 Features/Bug Fixes:
+  - One more UX change
+  - Add Some Developer Notes
   - Go through docs, add examples
   - Create tutorial
-  - Add Some Developer Notes
 
 Nice to Have Eventually:
   - Better rollback of smoke on reaction fire
@@ -9,9 +10,11 @@ Nice to Have Eventually:
 
 Keep an Eye out for:
   ? Problematic Game Controls performance (excessive refreshes still)
-  ? Refactor deploys?
+  ? Make deploy more comprehensible
   ? Refactor firing:
     ? Remove done select?  Can join units after the fact without canceling?
+
+Probably not:
   ? Automatically undo additional deploys (should no longer be necessary)
   ? KV and French single-man turrets?
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
@@ -20,10 +23,11 @@ Special Rules/Scenarios
   - Cumulative VPs (last stand/rush)
   - Hidden counters (?) only some are infantry but can move like infantry
   - Random landing locations for paratroop scenarios
+  - Win by certain number of points
 
 Solo All
-Probably done but need plays: 101, 005, 001, 003, 301
-Probably not done: 002, 503, 508, 007, 303, 501, 308, 601, 401, 510, 603, 011
+Good but needs plays: 001, 003, 005, 007, 101, 301
+Probably not done: 002, 503, 508, 303, 501, 308, 601, 401, 510, 603, 011
 
 006 (Romanian)
 203 (Little Stalingrad)

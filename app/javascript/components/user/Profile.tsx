@@ -132,7 +132,7 @@ export default function Profile() {
             <p className="mt1em">
               Disabling map animations is not recommended except for Safari users.  Instead of
               using that option, a better solution is not using Safari in the first
-              place &mdash; it&apos;s rendering performance is abysmal.
+              place &mdash; its rendering performance is abysmal.
             </p>
           </div>
         </div>

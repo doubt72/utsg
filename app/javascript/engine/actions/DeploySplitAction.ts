@@ -42,6 +42,9 @@ export default class DeploySplitAction extends BaseAction {
       const unit = reinf[this.turn][this.sKey].counter as Unit
       reinf[this.turn][tKey] = { x: 2, used: 0, counter: unit.clone().split(), id: tKey }
     }
+    if (reinf[this.turn][this.sKey].x === reinf[this.turn][this.sKey].used) {
+      this.game.clearGameState()
+    }
   }
 
   undo(): void {

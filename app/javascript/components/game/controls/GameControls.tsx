@@ -62,17 +62,20 @@ import SplitSquadButton from "./buttons/SplitSquadButton";
 import JoinSquadButton from "./buttons/JoinSquadButton";
 import GameOverMenuButton from "./buttons/GameOverMenuButton";
 import FinishDeployButton from "./buttons/FinishDeployButton";
+import { ClockHistory, ExclamationTriangle, HexagonHalf } from "react-bootstrap-icons";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface GameControlsProps {
   game: Game;
   update: number;
+  vertical: boolean;
   callback: () => void;
   emailCallback: (user: string) => void;
   emailCancelCallback: () => void;
 }
 
 export default function GameControls({
-  game, update, callback, emailCallback, emailCancelCallback }: GameControlsProps
+  game, update, vertical, callback, emailCallback, emailCancelCallback }: GameControlsProps
 ) {
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [internalUpdate, setInternalUpdate] = useState(0)
@@ -88,6 +91,30 @@ export default function GameControls({
     callback()
   }
 
+  const syncTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      synchronizing (you may need to reload this page)
+    </Tooltip>
+  )
+
+  const waitTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      waiting for opponent to take an action
+    </Tooltip>
+  )
+
+  const deployTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      open unit panel to deploy units
+    </Tooltip>
+  )
+
+  const unknownTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      waiting for opponent to take an action
+    </Tooltip>
+  )
+
   const displayActions = () => {
     const user = localStorage.getItem("username")
     const actions = actionsAvailable(game, user as string)
@@ -95,134 +122,180 @@ export default function GameControls({
     let check = false
     setControls(actions.map((a, i) => {
       if (a.type === "sync") {
-        return <div className="mt05em mb05em mr05em ml05em" key={i}>synchronizing (you may need to reload this page)</div>
+        if (vertical) {
+          return (
+            <OverlayTrigger key={i} placement="bottom" overlay={syncTooltip}
+                            delay={{ show: 0, hide: 0 }} >
+              <div className="game-control-text-vertical"><ExclamationTriangle /></div>
+            </OverlayTrigger>
+          )
+        } else {
+          return (
+            <div className="mt05em mb05em mr05em ml05em" key={i}>
+              synchronizing (you may need to reload this page)
+            </div>
+          )
+        }
       } else if (a.type === "wait") {
         check = true
-        return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
+        if (vertical) {
+          return (
+            <OverlayTrigger key={i} placement="bottom" overlay={waitTooltip}
+                            delay={{ show: 0, hide: 0 }} >
+              <div className="game-control-text-vertical"><ClockHistory /></div>
+            </OverlayTrigger>
+          )
+        } else {
+          return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
+        }
       } else if (a.type === "none") {
-        return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
+        if (vertical) {
+          return (<div key={i}></div>
+          )
+        } else {
+          return <div className="mt05em mb05em mr05em ml05em" key={i}>{a.message}</div>
+        }
       } else if (a.type === "undo") {
-        return <UndoButton game={game} key={i} callback={callAllBack} />
+        return <UndoButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "join") {
-        return <JoinButton gameId={game.id} key={i} />
+        return <JoinButton gameId={game.id} key={i} vertical={vertical} />
       } else if (a.type === "leave") {
-        return <LeaveButton gameId={game.id} key={i} />
+        return <LeaveButton gameId={game.id} key={i} vertical={vertical} />
       } else if (a.type === "start") {
-        return <StartButton gameId={game.id} key={i} />
+        return <StartButton gameId={game.id} key={i} vertical={vertical} />
       } else if (a.type === "kick") {
-        return <KickButton gameId={game.id} key={i} />
+        return <KickButton gameId={game.id} key={i} vertical={vertical} />
       } else if (a.type === "deploy") {
-        return <div className="mt05em mb05em mr05em ml05em" key={i}>deploy units</div>
+        if (vertical) {
+          return (
+            <OverlayTrigger key={i} placement="bottom" overlay={deployTooltip}
+                            delay={{ show: 0, hide: 0 }} >
+              <div className="game-control-text-vertical"><HexagonHalf /></div>
+            </OverlayTrigger>
+          )
+        } else {
+          return <div className="mt05em mb05em mr05em ml05em" key={i}>deploy units</div>
+        }
       } else if (a.type === "undeploy") {
-        return <UndeployButton game={game} key={i} callback={callAllBack} />
+        return <UndeployButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "finish_deploy") {
-        return <FinishDeployButton game={game} key={i} callback={callAllBack} />
+        return <FinishDeployButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "split_squad") {
-        return <SplitSquadButton game={game} key={i} callback={callAllBack} />
+        return <SplitSquadButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "join_squad") {
-        return <JoinSquadButton game={game} key={i} callback={callAllBack} />
+        return <JoinSquadButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "rally") {
-        return <RallyButton game={game} key={i} callback={callAllBack} />
+        return <RallyButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "rally_pass") {
-        return <RallyPassButton game={game} key={i} callback={callAllBack} />
+        return <RallyPassButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "precip_check") {
-        return <PrecipCheckButton game={game} key={i} callback={callAllBack} />
+        return <PrecipCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "unselect") {
-        return <UnselectButton game={game} key={i} callback={callAllBack} />
+        return <UnselectButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "pass") {
-        return <PassButton game={game} key={i} callback={callAllBack} />
+        return <PassButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "pass_cancel") {
-        return <PassCancelButton game={game} key={i} callback={callAllBack} />
+        return <PassCancelButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "reaction_fire") {
-        return <ReactionFireButton game={game} key={i} callback={callAllBack} />
+        return <ReactionFireButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "reaction_intensive_fire") {
-        return <ReactionIntensiveFireButton game={game} key={i} callback={callAllBack} />
+        return <ReactionIntensiveFireButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "reaction_pass") {
-        return <ReactionPassButton game={game} key={i} callback={callAllBack} />
+        return <ReactionPassButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "enemy_rout") {
-        return <EnemyRoutButton game={game} key={i} callback={callAllBack} />
+        return <EnemyRoutButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire") {
-        return <FireButton game={game} key={i} callback={callAllBack} />
+        return <FireButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_finish") {
-        return <FireFinishButton game={game} key={i} callback={callAllBack} />
+        return <FireFinishButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_toggle_sponson") {
-        return <ToggleSponsonButton game={game} key={i} callback={callAllBack} />
+        return <ToggleSponsonButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_smoke") {
-        return <FireSmokeButton game={game} key={i} callback={callAllBack} />
+        return <FireSmokeButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "intensive_fire") {
-        return <IntensiveFireButton game={game} key={i} callback={callAllBack} />
+        return <IntensiveFireButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "morale_check") {
-        return <MoraleCheckButton game={game} key={i} callback={callAllBack} />
+        return <MoraleCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "initiative") {
-        return <InitiativeButton game={game} key={i} callback={callAllBack} />
+        return <InitiativeButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_start_check") {
-        return <FireStartCheckButton game={game} key={i} callback={callAllBack} />
+        return <FireStartCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "sniper") {
-        return <SniperButton game={game} key={i} callback={callAllBack} />
+        return <SniperButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "move") {
-        return <MoveButton game={game} key={i} callback={callAllBack} />
+        return <MoveButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "move_undo") {
-        return <CancelMoveButton game={game} key={i} callback={callAllBack} />
+        return <CancelMoveButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "move_finish") {
-        return <MoveFinishButton game={game} key={i} callback={callAllBack} />
+        return <MoveFinishButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "move_rotate_toggle") {
-        return <MoveRotateToggleButton game={game} key={i} callback={callAllBack} />
+        return <MoveRotateToggleButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "move_shortdrop_toggle") {
-        return <MoveShortToggleButton game={game} key={i} callback={callAllBack} />
+        return <MoveShortToggleButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "move_load_toggle") {
-        return <MoveLoadToggleButton game={game} key={i} callback={callAllBack} />
+        return <MoveLoadToggleButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "move_smoke_toggle") {
-        return <MoveSmokeToggleButton game={game} key={i} callback={callAllBack} />
+        return <MoveSmokeToggleButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "breakdown") {
-        return <BreakdownButton game={game} key={i} callback={callAllBack} />
+        return <BreakdownButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "rush") {
-        return <RushButton game={game} key={i} callback={callAllBack} />
+        return <RushButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move") {
-        return <AssaultMoveButton game={game} key={i} callback={callAllBack} />
+        return <AssaultMoveButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_finish") {
-        return <AssaultMoveFinishButton game={game} key={i} callback={callAllBack} />
+        return <AssaultMoveFinishButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_clear") {
-        return <AssaultMoveClearButton game={game} key={i} callback={callAllBack} />
+        return <AssaultMoveClearButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_entrench") {
-        return <AssaultMoveEntrenchButton game={game} key={i} callback={callAllBack} />
+        return <AssaultMoveEntrenchButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "finish_multiselect") {
-        return <FinishMultiselectButton game={game} key={i} callback={callAllBack} />
+        return <FinishMultiselectButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "finish_rotation") {
-        return <FinishRotationButton game={game} key={i} callback={callAllBack} />
+        return <FinishRotationButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "cancel_action") {
-        return <CancelActionButton game={game} key={i} callback={callAllBack} />
+        return <CancelActionButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "rout") {
-        return <RoutButton game={game} key={i} callback={callAllBack} />
+        return <RoutButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "rout_eliminate") {
-        return <RoutEliminateButton game={game} key={i} callback={callAllBack} />
+        return <RoutEliminateButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "rout_check") {
-        return <RoutCheckButton game={game} key={i} callback={callAllBack} />
+        return <RoutCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "close_combat_select") {
-        return <CloseCombatSelectButton game={game} key={i} callback={callAllBack} />
+        return <CloseCombatSelectButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "close_combat_reduce") {
-        return <CloseCombatReduceButton game={game} key={i} callback={callAllBack} />
+        return <CloseCombatReduceButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "overstack_reduce") {
-        return <OverstackReduceButton game={game} key={i} callback={callAllBack} />
+        return <OverstackReduceButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "smoke_check") {
-        return <SmokeCheckButton game={game} key={i} callback={callAllBack} />
+        return <SmokeCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_out_check") {
-        return <FireOutCheckButton game={game} key={i} callback={callAllBack} />
+        return <FireOutCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_spread_check") {
-        return <FireSpreadCheckButton game={game} key={i} callback={callAllBack} />
+        return <FireSpreadCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "weather_check") {
-        return <WeatherCheckButton game={game} key={i} callback={callAllBack} />
+        return <WeatherCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_displace_eliminate") {
-        return <FireDisplaceEliminateButton game={game} key={i} callback={callAllBack} />
+        return <FireDisplaceEliminateButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_displace_confirm") {
-        return <FireDisplaceConfirmButton game={game} key={i} callback={callAllBack} />
+        return <FireDisplaceConfirmButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_displace_cancel") {
-        return <FireDisplaceCancelButton game={game} key={i} callback={callAllBack} />
+        return <FireDisplaceCancelButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "menu") {
-        return <GameOverMenuButton key={i} />
+        return <GameOverMenuButton key={i} vertical={vertical} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {
-        return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>
+        if (vertical) {
+          console.log(`unknown action ${a.type}`)
+          return (
+            <OverlayTrigger key={i} placement="bottom" overlay={unknownTooltip}
+                            delay={{ show: 0, hide: 0 }} >
+              <div className="game-control-text-vertical"><ExclamationTriangle /></div>
+            </OverlayTrigger>
+          )
+        } else {
+          return <div className="mt05em mb05em mr05em" key={i}>unknown action {a.type}</div>
+        }
       }
     }))
     if (check) {
@@ -234,18 +307,23 @@ export default function GameControls({
   }
 
   return (
-    <div className="flex">
+    <div className={ vertical ? "flex-vertical" : "flex" } >
       {controls}
       <div className="flex-fill"></div>
       { (game.state === "complete" || game.currentUser !== localStorage.getItem("username")) ? "" :
         game.resignationLevel > 0 ?
-        <div className="flex nowrap">
-          <div className="mt05em mb05em mr05em ml05em" >
-            { game.resignationLevel > 1 ? "Are you really sure? " : "Are you sure you want to resign? " }
-          </div>
-          <ResignButton game={game} callback={callAllBack} />
-          <ResignCancelButton game={game} callback={callAllBack} />
-        </div> : <div><ResignButton game={game} callback={callAllBack} /></div>
+        <div className={ `${vertical ? "flex-vertical" : "flex"} nowrap` }>
+          { vertical ? "" :
+            <div className="mt05em mb05em mr05em ml05em" >
+              { game.resignationLevel > 1 ? "Are you really sure? " : "Are you sure you want to resign? " }
+            </div>
+          }
+          <ResignButton game={game} callback={callAllBack} vertical={vertical} />
+          <ResignCancelButton game={game} callback={callAllBack} vertical={vertical} />
+        </div> :
+        <div>
+          <ResignButton game={game} callback={callAllBack} vertical={vertical} />
+        </div>
       }
     </div>
   )

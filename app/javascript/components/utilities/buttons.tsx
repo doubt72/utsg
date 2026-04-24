@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 import {
   ArrowRepeat, ArrowsCollapseVertical, ArrowsExpandVertical, ArrowsMove, Ban, BoxArrowInRight, BoxArrowRight,
-  ChatText, Check2Square, CircleFill, Crosshair, Crosshair2, Dice6, EnvelopeFill, Hexagon, InfoCircle, PencilSquare, Person,
+  ChatText, Check2Square, CheckLg, CircleFill, Crosshair, Crosshair2, Dice6, EnvelopeFill, Hexagon, InfoCircle, PencilSquare, Person,
   QuestionCircle, ShieldExclamation, Trash3, XCircle,
   XSquare
 } from "react-bootstrap-icons"
@@ -193,6 +193,10 @@ export const MoveRushGlyph = () => {
 
 export const RoutGlyph = () => {
   return <ArrowsExpandVertical />
+}
+
+export const FinishGlyph = () => {
+  return <CheckLg />
 }
 
 export const CancelGlyph = () => {

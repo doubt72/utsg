@@ -2,13 +2,15 @@ import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
 import { CheckSquare } from "react-bootstrap-icons";
 import { stateType } from "../../../../engine/control/state/BaseState";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface FinishMultiselectButtonProps {
   game: Game;
+  vertical: boolean;
   callback: () => void;
 }
 
-export default function FinishMultiselectButton({ game, callback }: FinishMultiselectButtonProps) {
+export default function FinishMultiselectButton({ game, vertical, callback }: FinishMultiselectButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     if (game.gameState?.type === stateType.Fire) { game.fireState.doneSelect = true }
@@ -18,10 +20,28 @@ export default function FinishMultiselectButton({ game, callback }: FinishMultis
     callback()
   }
 
+  const text = "end selection"
+
+  const buttonTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      { text }
+    </Tooltip>
+  )
+
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap"><CheckSquare />end selection</button>
+        { vertical ?
+          <OverlayTrigger placement="bottom" overlay={buttonTooltip}
+                          delay={{ show: 0, hide: 0 }} >
+            <button type="submit" className="custom-button custom-button-balance nowrap">
+              <CheckSquare />
+            </button>
+          </OverlayTrigger> :
+          <button type="submit" className="custom-button nowrap">
+            <CheckSquare /> {text}
+          </button>
+        }
       </div>
     </form>
   )

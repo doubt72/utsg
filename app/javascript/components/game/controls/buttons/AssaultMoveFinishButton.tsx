@@ -1,25 +1,43 @@
 import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
-import { MoveRushGlyph } from "../../../utilities/buttons";
+import { FinishGlyph } from "../../../utilities/buttons";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface AssaultMoveFinishButtonProps {
   game: Game;
+  vertical: boolean;
   callback: () => void;
 }
 
-export default function AssaultMoveFinishButton({ game, callback }: AssaultMoveFinishButtonProps) {
+export default function AssaultMoveFinishButton({ game, vertical, callback }: AssaultMoveFinishButtonProps) {
   const onSubmit = (event: FormEvent) => {
     event.preventDefault()
     game.gameState?.finish()
     callback()
   }
 
+  const text = "finish assault move"
+
+  const buttonTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      { text }
+    </Tooltip>
+  )
+
   return (
     <form onSubmit={onSubmit}>
       <div className="mb025em">
-        <button type="submit" className="custom-button nowrap">{MoveRushGlyph()}
-          finish assault move
-        </button>
+        { vertical ?
+          <OverlayTrigger placement="bottom" overlay={buttonTooltip}
+                          delay={{ show: 0, hide: 0 }} >
+            <button type="submit" className="custom-button custom-button-balance nowrap">
+              {FinishGlyph()}
+            </button>
+          </OverlayTrigger> :
+          <button type="submit" className="custom-button nowrap">
+            {FinishGlyph()} {text}
+          </button>
+        }
       </div>
     </form>
   )
