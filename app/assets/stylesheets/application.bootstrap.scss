@@ -549,6 +549,18 @@ span.slim-button:hover {
   font: small-caps 18px $subtitle-font, monospace;
 }
 
+.about-announcement {
+  margin: 0 0 1em 1em;
+  border-bottom: 1px solid $dark-green;
+  padding-bottom: 0;
+}
+
+.about-announcement-header {
+  font-weight: bold;
+  font-variant: small-caps;
+  color: $dark-green;
+}
+
 .inline-game-title {
   color: $dark-green;
   font: small-caps 20px $title-font, monospace;

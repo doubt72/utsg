@@ -686,7 +686,8 @@ export default class Game {
   checkLastSAIsRout(player: Player): boolean {
     for (let i = this.actions.length - 1; i >= 0; i--) {
       const a = this.actions[i]
-      if (a.undone || a.player !== player) { continue }
+      if (a.undone || a.player !== player || a.type === "squad_join" ||
+          a.type === "squad_split") { continue }
       if ([
         "move", "rush", "assault_move", "fire", "intensive_fire", "rout_self", "pass",
       ].includes(a.type)) { return false }

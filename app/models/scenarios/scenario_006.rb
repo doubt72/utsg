@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Uranus Descending"
     ALLIES = ["ussr"].freeze
     AXIS = ["rom"].freeze
-    STATUS = "a"
+    STATUS = "b"
     VERSION = "0.2"
 
     DATE = [1942, 11, 20].freeze

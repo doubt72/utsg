@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Lightning Strikes"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
+    STATUS = "a"
     VERSION = "0.3"
 
     DATE = [1940, 5, 10].freeze

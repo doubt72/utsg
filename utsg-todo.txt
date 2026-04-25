@@ -1,7 +1,7 @@
 Features/Bug Fixes:
-  + Double tap on finish deployment
-  + Add turn number to deployment phase changes
-
+  + Highlight class on sidebar is throwing things off
+  + Squad splitting should not count as non-pass
+  + Rout morale check should be dice icon
   - Add Some Developer Notes
   - Go through docs, add examples
   - Create tutorial
@@ -28,7 +28,8 @@ Special Rules/Scenarios
   - Win by certain number of points
 
 Solo All
-Good but needs plays: 001, 003, 005, 007, 101, 301
+Enough: 007
+Good but needs plays: 001, 003, 005, 101, 301
 Probably not done: 002, 503, 508, 303, 501, 308, 601, 401, 510, 603, 011
 
 006 (Romanian)

@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import Game from "../../../../engine/Game";
-import { RoutGlyph } from "../../../utilities/buttons";
+import { DiceGlyph } from "../../../utilities/buttons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface RoutCheckButtonProps {
@@ -31,11 +31,11 @@ export default function RoutCheckButton({ game, vertical, callback }: RoutCheckB
           <OverlayTrigger placement="bottom" overlay={buttonTooltip}
                           delay={{ show: 0, hide: 0 }} >
             <button type="submit" className="custom-button custom-button-balance nowrap">
-              {RoutGlyph()}
+              {DiceGlyph()}
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            {RoutGlyph()} {text}
+            {DiceGlyph()} {text}
           </button>
         }
       </div>

@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Little Stalingrad"
     ALLIES = ["can"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "b"
     VERSION = "0.2"
 
     DATE = [1943, 12, 25].freeze

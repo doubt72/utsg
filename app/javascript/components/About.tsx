@@ -59,10 +59,39 @@ export default function About() {
             Game” link on the main page and explore the scenarios. Maybe try a hotseat game. New
             content will be added over time.
           </p>
-          <p><strong>Announcements</strong></p>
-          <div id="a02042026" className="ml1em">
+          <p>
+            If you&apos;re looking for a quick introduction to the game, scenario <strong>001</strong>: <em>A
+            Straightforward Proposition</em> (as a simpler infantry-only battle) is a decent starting
+            scenario, perhaps followed by <strong>101</strong>: <em>A Brief Encounter</em> (a
+            quick tank-on-tank battle), then perhaps <strong>003</strong>: <em>Speed Bump</em> (which adds
+            an anti-tank gun, a mortar and a little bit of elevation).
+          </p>
+          <p><strong>Announcements:</strong></p>
+          <div id="a24042026" className="about-announcement">
             <p>
-              <strong>Note to Players</strong>
+              <span className="about-announcement-header">AHTF to Beta!</span>
+            </p>
+            <p>
+              <strong>24 Apr 2026</strong>: A Hex Too Far is hereby officially declared to be out of
+              alpha and into beta testing.  It&apos;s time.
+            </p>
+            <p>
+              While the server is still under active development,
+              things should be a bit more stable now, with frequent (albeit not-quite-as-frequent)
+              deploys.  Some games will probably still be deleted
+              from time to time (particularly if any of scenarios undergo
+              any major changes), and while email turn notifications have been implemented and
+              turned on, long async games are still not recommended.
+            </p>
+            <p>
+              Feedback is still welcomed and encouraged (for the UX, design, bugs, whatever).  Any of
+              the scenarios might still change, though it&apos;s less likely now
+              for &quot;ready&quot; scenarios than it was before.
+            </p>
+          </div>
+          <div id="a02042026" className="about-announcement">
+            <p>
+              <span className="about-announcement-header">Note to Players</span>
             </p>
             <p>
               <strong>2 Apr 2026</strong>: while the server is definitely under construction,
@@ -87,7 +116,7 @@ export default function About() {
             </p>
           </div>
           <p>
-            Server version <span className="red">{serverVersion}&#x3B1;</span>:
+            Server version <span className="red">{serverVersion}&#x3B2;</span>:
             currently a work in progress and probably always will be.
           </p>
           <div className="flex mt2em">

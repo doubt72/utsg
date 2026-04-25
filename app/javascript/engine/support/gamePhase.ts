@@ -155,7 +155,8 @@ function main(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   let index = game.lastActionIndex - 1
   let previousAction = game.actions[index--]
-  while (previousAction && previousAction.undone) {
+  while (previousAction && (previousAction.undone || previousAction.type === "squad_split" ||
+           previousAction.type === "squad_join")) {
     previousAction = game.actions[index--]
   }
   if (game.lastAction?.type === "pass" && previousAction?.type === "pass") {

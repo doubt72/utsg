@@ -42,15 +42,15 @@ export default function MainPage() {
           <div className={classes}>
             <p>
               Welcome to the <strong>{titleNameStyle}</strong> server!  The server is currently
-              in alpha as I shake things down, work out the bugs, and test the scenarios.  See
+              in beta as I continue to shake things down, work out the bugs, and test the scenarios.  See
               the <a className="regular" href="/about">about</a> page for more information
               about the server, the code of conduct, or to report bugs.
-              Best with Chromium-based browsers; should work with any modern browser, but
-              rendering performance varies significantly.
+              Best with Chromium-based browsers; it should work with any modern browser, but
+              rendering performance can vary significantly.
             </p>
             <p>
-              <strong>Latest announcement</strong>: <a className="regular" href="/about/a02042026">
-                Note to Players
+              <strong>Latest announcement</strong>: <a className="regular" href="/about/a24042026">
+                ATHF to Beta!
               </a>
             </p>
             <p>

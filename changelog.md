@@ -1,3 +1,13 @@
+## 0.67 Beta
+
+- Beta release / update announcements
+- Bug fix: css class was incorrect for vertical controls during turn alert
+- Bug fix: split/join shouldn't count for route enemy check...
+- Bug fix: ...or double-pass main phase end check
+- Updated 002
+- Upgraded 006, 203 to beta
+- Downgraded 406, 509 to alpha
+
 ## 0.66 Alpha
 
 - Add turns to deployment phase notifications

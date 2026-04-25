@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Butcher's Atoll"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "b"
+    STATUS = "a"
     VERSION = "0.3"
 
     DATE = [1943, 11, 20].freeze
