@@ -12,8 +12,9 @@ import StackingActionError from "../actions/StackingActionError"
 import organizeStacks from "../support/organizeStacks"
 import IllegalActionError from "../actions/IllegalActionError"
 import {
-  createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck, testMine,
-  testMineAP, testMineAT, testRInf, testRTank, testSmoke, testWire
+  createBlankGame, createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG,
+  testGTank, testGTruck, testMine, testMineAP, testMineAT, testRInf, testRMG, testRTank,
+  testSmoke, testWire
 } from "./testHelpers"
 import Feature from "../Feature"
 import MoveState from "./state/MoveState"
@@ -945,6 +946,70 @@ describe("movement", () => {
     expect(all[1].unit.parent?.name).toBe(undefined)
     expect(all[1].unit.name).toBe("MG 08/15")
     expect(all[1].unit.isNormal).toBe(true)
+  })
+
+  test("can't pick up sw with no movement left", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    map.select(unit)
+
+    const unit2 = new Unit(testGMG)
+    unit2.id = "test2"
+    const loc2 = new Coordinate(1, 2)
+    try {
+      map.addCounter(loc2, unit2)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof StackingActionError).toBe(true)
+    }
+    const unit3 = new Unit(testRMG)
+    unit3.id = "test3"
+    try {
+      map.addCounter(loc2, unit3)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof StackingActionError).toBe(true)
+    }
+
+    const unit4 = new Unit(testRMG)
+    unit4.id = "test4"
+    const loc3 = new Coordinate(0, 2)
+    try {
+      map.addCounter(loc3, unit4)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof StackingActionError).toBe(true)
+    }
+
+    game.setGameState(new MoveState(game))
+
+    expect(showLoadMove(game)).toBe(false)
+
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(loc2.x, loc2.y)
+    expect(showLoadMove(game)).toBe(true)
+    expect(game.gameState?.openHex(0, 2)).toBe(1)
+    expect(game.gameState?.openHex(0, 1)).toBe(1)
+    expect(game.gameState?.openHex(0, 3)).toBe(1)
+    game.moveState.loadToggle()
+    expect(game.moveState.selectable({
+      counter: map.countersAt(loc2)[0], target: { type: "map", xy: loc2 }
+    })).toBe(false)
+    expect(game.moveState.selectable({
+      counter: map.countersAt(loc2)[1], target: { type: "map", xy: loc2 }
+    })).toBe(true)
+    expect(unit2.loadedSelected).toBe(false)
+    game.moveState.loadToggle()
+    game.moveState.move(loc3.x, loc3.y)
+    expect(game.gameState?.openHex(1, 2)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(0, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(0, 3)).toBe(hexOpenType.Closed)
+    expect(showLoadMove(game)).toBe(false)
   })
 
   test("leader carrying sw", () => {

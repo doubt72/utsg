@@ -1,5 +1,7 @@
 Features/Bug Fixes:
-  - One more UX change
+  + Double tap on finish deployment
+  + Add turn number to deployment phase changes
+
   - Add Some Developer Notes
   - Go through docs, add examples
   - Create tutorial

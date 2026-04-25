@@ -1,3 +1,9 @@
+## 0.66 Alpha
+
+- Add turns to deployment phase notifications
+- Bug fix: should not be able to pick up weapon when out of movement
+- Bug fix: don't clear deployment done state when closing reinforcement panel (causes first "deploy finished" click to do nothing)
+
 ## 0.65 Alpha
 
 - Major changes to game UI: allow moving control bar to left, allow hiding header

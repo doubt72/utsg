@@ -511,7 +511,9 @@ export default function MapDisplay({
                               scale={scale ?? 1} mapScale={mapScale ?? 1}
                               closeCallback={() => {
                                 setReinforcementsOverlay(undefined)
-                                if (map.game) { map.game.clearGameState() }
+                                if (map.game && map.game.gameState?.type === stateType.Deploy) {
+                                  map.game.clearGameState()
+                                }
                               }}
                               ovCallback={setOverlay} forceUpdate={mapUpdate} />
         )
@@ -730,7 +732,9 @@ export default function MapDisplay({
                             scale={scale ?? 1} mapScale={mapScale ?? 1}
                             closeCallback={() => {
                               setReinforcementsOverlay(undefined)
-                              if (map.game) { map.game.clearGameState() }
+                              if (map.game && map.game.gameState?.type === stateType.Deploy) {
+                                map.game.clearGameState()
+                              }
                             }}
                             ovCallback={setOverlay} forceUpdate={mapUpdate} />
       )

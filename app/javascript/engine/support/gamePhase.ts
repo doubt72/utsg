@@ -78,7 +78,9 @@ function deploy(game: Game, data: GameActionData): void {
     if (!initial) {
       phaseData.messages.push(`no units to deploy, skipping ${formatNation(game, player)} player`)
     }
-    phaseData.messages.push(`${formatNation(game, player)} deployment complete`)
+    phaseData.messages.push(
+      `${formatNation(game, player)} ${oldTurn === 0 ? "initial" : `turn ${oldTurn}`} deployment complete`
+    )
     if (oldTurn === 0) {
       phaseData.new_phase = gamePhaseType.Deploy
       if (phaseData.new_player === game.scenario.firstDeploy) {
@@ -93,7 +95,10 @@ function deploy(game: Game, data: GameActionData): void {
         gamePhaseType.Deploy : gamePhaseType.PrepRally
     }
     if (phaseData.new_phase === gamePhaseType.Deploy) {
-      phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} deployment`)
+      phaseData.messages.push(
+        `starting ${formatNation(game, phaseData.new_player)} ${
+          phaseData.new_turn === 0 ? "initial" : `turn ${phaseData.new_turn}`
+        } deployment`)
       deploy(game, data)
     } else {
       phaseData.messages.push(`starting ${formatNation(game, phaseData.new_player)} rally`)

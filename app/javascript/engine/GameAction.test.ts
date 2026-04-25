@@ -252,7 +252,9 @@ describe("action integration test", () => {
     }
     game.executeAction(new GameAction(finishDeployActionData, game, index++), false)
     expect(game.actions[index - 1].stringValue).toBe("German player finished deployment")
-    expect(game.lastAction?.stringValue).toBe("German deployment complete > starting Soviet deployment")
+    expect(game.lastAction?.stringValue).toBe(
+      "German initial deployment complete > starting Soviet initial deployment"
+    )
 
     index++
     expect(game.actions.length).toBe(index)
@@ -277,7 +279,9 @@ describe("action integration test", () => {
     expect(game.actions.length).toBe(index)
     expect(game.lastActionIndex).toBe(index - 1)
     expect(game.currentPlayer).toBe(1)
-    expect(game.lastAction?.stringValue).toBe("German deployment complete > starting Soviet deployment")
+    expect(game.lastAction?.stringValue).toBe(
+      "German initial deployment complete > starting Soviet initial deployment"
+    )
 
     // { list: [rinf, rcrew, rmg, rldr, rgun]}
 
@@ -375,10 +379,10 @@ describe("action integration test", () => {
     expect(game.currentPlayer).toBe(1)
     expect(game.actions[index - 3].stringValue).toBe("deployed Soviet unit: 76mm ZiS-3 to A1")
     expect(game.lastAction?.stringValue).toBe(
-      "Soviet deployment complete > starting Soviet deployment > " +
-      "no units to deploy, skipping Soviet player > Soviet deployment complete > " +
-      "starting German deployment > no units to deploy, skipping German player > " +
-      "German deployment complete > starting Soviet rally > " +
+      "Soviet initial deployment complete > starting Soviet turn 1 deployment > " +
+      "no units to deploy, skipping Soviet player > Soviet turn 1 deployment complete > " +
+      "starting German turn 1 deployment > no units to deploy, skipping German player > " +
+      "German turn 1 deployment complete > starting Soviet rally > " +
       "Soviet rally complete > starting German rally > German rally complete > " +
       "starting precipitation check > no precipitation in scenario, skipping > " +
       "precipitation check complete > starting main phase")

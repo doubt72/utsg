@@ -1458,6 +1458,7 @@ describe("reaction fire attacks", () => {
     const game = createFireGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
+    unit.baseMovement += 2
     unit.id = "test1"
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
