@@ -54,6 +54,7 @@ export default function MainPage() {
               </a>
             </p>
             <p>
+              Join us on <a className="regular" href="https://discord.gg/URDcFwNGA7">Discord</a>.
               {/* Support the work (and/or my mild coffee addiction)
               on <a className="regular" href="https://www.patreon.com/cw/u43420358">Patreon</a> or
               on <a className="regular" href="https://ko-fi.com/doub72">Ko-fi</a> or

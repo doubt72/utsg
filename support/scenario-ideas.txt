@@ -97,7 +97,8 @@ Future Scenarios:
 + 5 Crete
 + 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
     Cologne pershing/panther duel?
-+ 5 Belgium
++ 5 Belgian
++ 5 Dutch https://en.wikipedia.org/wiki/Battle_of_the_Hague_(1940)
 + 5 Somua S35 at Hannut https://en.wikipedia.org/wiki/Battle_of_Hannut
 + 6 Lake Khasan
 + 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)

@@ -655,7 +655,9 @@ export default function GameDisplay() {
       <OverlayTrigger placement="bottom"
                       overlay={ collapseHeader ? expandHeaderTooltip : collapseHeaderTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className="custom-button normal-button collapse-button-right"
+        <div className={`custom-button normal-button ${
+                          collapseLayout ? "expand-button-right" : "collapse-button-right"
+                        }`}
             onClick={() => {
               setCollapseHeader(s => {
                 localStorage.setItem("mapCollapseHeader", s ? "false" : "true")
@@ -666,7 +668,7 @@ export default function GameDisplay() {
         </div>
       </OverlayTrigger>
     )
-  }, [collapseHeader])
+  }, [collapseHeader, collapseLayout])
 
   useEffect(() => {
     if (collapseLayout) {

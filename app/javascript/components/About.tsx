@@ -66,7 +66,7 @@ export default function About() {
             quick tank-on-tank battle), then perhaps <strong>003</strong>: <em>Speed Bump</em> (which adds
             an anti-tank gun, a mortar and a little bit of elevation).
           </p>
-          <p><strong>Announcements:</strong></p>
+          <p><strong>Recent Announcements:</strong></p>
           <div id="a24042026" className="about-announcement">
             <p>
               <span className="about-announcement-header">AHTF to Beta!</span>

@@ -1,9 +1,6 @@
 Features/Bug Fixes:
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)
-  + Tooltip doesn't have mouse out event
-  + Track not getting updated on moves
-  + Sniper check should go away on an undo
 
   - Add Some Developer Notes
   - Go through docs, add examples
@@ -30,10 +27,7 @@ Special Rules/Scenarios
   - Random landing locations for paratroop scenarios
   - Win by certain number of points
 
-Solo All
-Enough: 007
-Good but needs plays: 001, 003, 005, 101, 301
-Probably not done: 002, 503, 508, 303, 501, 308, 601, 401, 510, 603, 011
+Delete 38 44 50 51 52 53
 
 006 (Romanian)
 203 (Little Stalingrad)

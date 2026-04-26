@@ -156,6 +156,8 @@ export default function Profile() {
                   localStorage.removeItem("mapInterfaceShrink")
                   localStorage.removeItem("mapScale")
                   localStorage.removeItem("mapCollapseLayout")
+                  localStorage.removeItem("mapCollapseHeader")
+                  localStorage.removeItem("horizontalControls")
                   localStorage.removeItem("mapCoords")
                   localStorage.removeItem("mapMarkers")
                   setResetSettings(false)

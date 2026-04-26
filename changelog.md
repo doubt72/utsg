@@ -1,3 +1,9 @@
+## 0.71 Beta
+
+- Server tweaks
+- Added a discord, this commit is also testing the webhook
+- Bug fix: minor display issue with header collapse button when layout collapsed
+
 ## 0.70 Beta
 
 - Bug fix: fix hanging tooltip when reconfiguring layout
