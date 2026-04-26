@@ -1,3 +1,7 @@
+## 0.69 Beta
+
+- Bug fix: fix for previous CC fix
+
 ## 0.68 Beta
 
 - Leader can hold but not capture VPs
