@@ -1,9 +1,10 @@
 Features/Bug Fixes:
-  + Disable leader capture
-  - Not right height on initial load
-  - Tooltip doesn't have mouse out event
-  - Track not getting updated on moves
-  - Sniper check should go away on an undo
+  ? Not right height on initial load (can't seem to duplicate, keep an eye out)
+  ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)
+  + Tooltip doesn't have mouse out event
+  + Track not getting updated on moves
+  + Sniper check should go away on an undo
+
   - Add Some Developer Notes
   - Go through docs, add examples
   - Create tutorial

@@ -1,3 +1,11 @@
+## 0.70 Beta
+
+- Bug fix: fix hanging tooltip when reconfiguring layout
+- Bug fix: move paths sometimes not getting updated after opponent moves
+- Bug fix: undoing move should reset sniper check
+- Bug fix: only show resign if game in progress
+- Updated 002
+
 ## 0.69 Beta
 
 - Bug fix: fix for previous CC fix

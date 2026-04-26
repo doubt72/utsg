@@ -270,6 +270,7 @@ export default class MoveAction extends BaseAction {
         unit.unit.children[0].facing = normalDir(facing + 3)
       }
     }
+    if (this.game.sniperNeeded.length > 0) { this.game.sniperNeeded = [] }
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }

@@ -39,6 +39,10 @@ export default function GameDisplay() {
   const [collapseLayout, setCollapseLayout] = useState<boolean>(false)
   const [horizontalControls, setHorizontalControls] = useState<boolean>(true)
 
+  const [collapseHeaderButton, setCollapseHeaderButton] = useState<JSX.Element | undefined>()
+  const [collapseLayoutButton, setCollapseLayoutButton] = useState<JSX.Element | undefined>()
+  const [horizontalControlsButton, setHorizontalControlsButton] = useState<JSX.Element | undefined>()
+
   const [mapScale, setMapScale] = useState(1)
   const [interfaceShrink, setInterfaceShrink] = useState(0)
   const [coords, setCoords] = useState(true)
@@ -646,20 +650,78 @@ export default function GameDisplay() {
     </Tooltip>
   )
 
+  useEffect(() => {
+    setCollapseHeaderButton(
+      <OverlayTrigger placement="bottom"
+                      overlay={ collapseHeader ? expandHeaderTooltip : collapseHeaderTooltip}
+                      delay={{ show: 0, hide: 0 }}>
+        <div className="custom-button normal-button collapse-button-right"
+            onClick={() => {
+              setCollapseHeader(s => {
+                localStorage.setItem("mapCollapseHeader", s ? "false" : "true")
+                return !s
+              })
+            }}>
+          { collapseHeader ? <PlusCircle /> : <DashCircle /> }
+        </div>
+      </OverlayTrigger>
+    )
+  }, [collapseHeader])
+
+  useEffect(() => {
+    if (collapseLayout) {
+      setCollapseLayoutButton(
+        <OverlayTrigger placement="bottom" overlay={expandTooltip}
+                        delay={{ show: 0, hide: 0 }}>
+          <div className="custom-button normal-button expand-button"
+              onClick={() => {
+                setCollapseLayout(false)
+                localStorage.setItem("mapCollapseLayout", "false")
+              }}>
+            <PlusCircle />
+          </div>
+        </OverlayTrigger>
+      )
+    } else {
+      setCollapseLayoutButton(
+        <OverlayTrigger placement="bottom" overlay={collapseTooltip}
+                        delay={{ show: 0, hide: 0 }}>
+          <div className="custom-button normal-button collapse-button"
+              onClick={() => {
+                setCollapseLayout(true)
+                localStorage.setItem("mapCollapseLayout", "true")
+              }}>
+            <DashCircle />
+          </div>
+        </OverlayTrigger>
+      )
+    }
+  }, [collapseLayout])
+
+  useEffect(() => {
+      setHorizontalControlsButton(
+        <OverlayTrigger placement="bottom" overlay={controlSwitchTooltip}
+                        delay={{ show: 0, hide: 0 }}>
+          <div className={
+                `game-control-switch game-control-switch-${horizontalControls ? "horizontal" : "vertical"}`
+              }
+              onClick={() => {
+                setHorizontalControls(s => {
+                  localStorage.setItem("horizontalControls", s ? "false" : "true")
+                  return !s
+                })
+              }} >
+            { horizontalControls ? <ArrowRightCircle /> : <ArrowDownCircle /> }
+          </div>
+        </OverlayTrigger>
+      )
+  }, [horizontalControls])
+
   const layout = () => {
     if (collapseLayout) {
       return (
         <div className="flex">
-          <OverlayTrigger placement="bottom" overlay={expandTooltip}
-                          delay={{ show: 0, hide: 0 }}>
-            <div className="custom-button normal-button expand-button"
-                onClick={() => {
-                  setCollapseLayout(false)
-                  localStorage.setItem("mapCollapseLayout", "false")
-                }}>
-              <PlusCircle />
-            </div>
-          </OverlayTrigger>
+          { collapseLayoutButton }
           <div className="standard-body">
             <div className="game-page-actions">
               {actions}
@@ -669,34 +731,14 @@ export default function GameDisplay() {
                            desyncCallback={desynced} />
             </div>
           </div>
-          <OverlayTrigger placement="bottom" overlay={expandHeaderTooltip}
-                          delay={{ show: 0, hide: 0 }}>
-            <div className="custom-button normal-button expand-button-right"
-                onClick={() => {
-                  setCollapseHeader(s => {
-                    localStorage.setItem("mapCollapseHeader", s ? "false" : "true")
-                    return !s
-                  })
-                }}>
-              { collapseHeader ? <PlusCircle /> : <DashCircle /> }
-            </div>
-          </OverlayTrigger>
+          { collapseHeaderButton }
         </div>
       )
     } else {
       return (
         <div>
           <div className="flex">
-            <OverlayTrigger placement="bottom" overlay={collapseTooltip}
-                            delay={{ show: 0, hide: 0 }}>
-              <div className="custom-button normal-button collapse-button"
-                  onClick={() => {
-                    setCollapseLayout(true)
-                    localStorage.setItem("mapCollapseLayout", "true")
-                  }}>
-                <DashCircle />
-              </div>
-            </OverlayTrigger>
+            { collapseLayoutButton }
             <div className="game-control ml05em mr05em mt05em flex-fill">
               <div className="red monospace mr05em">
                 {game.k?.scenario?.code}:
@@ -711,18 +753,7 @@ export default function GameDisplay() {
                 {game.k?.name}
               </div>
             </div>
-            <OverlayTrigger placement="bottom" overlay={collapseHeaderTooltip}
-                            delay={{ show: 0, hide: 0 }}>
-              <div className="custom-button normal-button collapse-button-right"
-                  onClick={() => {
-                    setCollapseHeader(s => {
-                      localStorage.setItem("mapCollapseHeader", s ? "false" : "true")
-                      return !s
-                    })
-                  }}>
-                { collapseHeader ? <PlusCircle /> : <DashCircle /> }
-              </div>
-            </OverlayTrigger>
+            { collapseHeaderButton }
           </div>
           <div className="standard-body">
             <div className="game-page-actions">
@@ -781,20 +812,7 @@ export default function GameDisplay() {
       {layout()}
       <div className={ horizontalControls ? "" : "flex" }>
         <div className={ horizontalControls ? "flex" : "flex-vertical" }>
-          <OverlayTrigger placement="bottom" overlay={controlSwitchTooltip}
-                          delay={{ show: 0, hide: 0 }}>
-            <div className={
-                  `game-control-switch game-control-switch-${horizontalControls ? "horizontal" : "vertical"}`
-                }
-                onClick={() => {
-                  setHorizontalControls(s => {
-                    localStorage.setItem("horizontalControls", s ? "false" : "true")
-                    return !s
-                  })
-                }} >
-              { horizontalControls ? <ArrowRightCircle /> : <ArrowDownCircle /> }
-            </div>
-          </OverlayTrigger>
+          { horizontalControlsButton }
           <div className={`${controlClasses} mb05em ml05em ${horizontalControls ? "mr05em" : ""} flex-fill`}>
             {playerNation}
             <div className={ horizontalControls ? "flex-fill" : "flex flex-fill" }>

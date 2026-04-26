@@ -141,7 +141,7 @@ export default function MoveTrackOverlay({
       )
     }
     setHexTrack(track)
-  }, [map.game?.actionPathLength, map.game?.actionPathDir, map.game?.actionTurretDir])
+  }, [map.game?.actionPathLength, map.game?.actionPathDir, map.game?.actionTurretDir, map.game?.lastActionIndex])
 
   useEffect(() => {
     const action = map.game?.lastSignificantAction?.data.action ?? ""
@@ -202,7 +202,8 @@ export default function MoveTrackOverlay({
       }
     }))
   }, [
-    map.game?.actionPathLength, map.game?.actionPathDir, map.game?.actionTurretDir, yOffset, xOffset, scale, mapScale
+    map.game?.actionPathLength, map.game?.actionPathDir, map.game?.actionTurretDir, yOffset, xOffset, scale, mapScale,
+    map.game?.lastActionIndex,
   ])
 
   const track = () => {

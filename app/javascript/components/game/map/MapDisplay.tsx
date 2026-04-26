@@ -626,7 +626,7 @@ export default function MapDisplay({
       setRoutTrack(undefined)
     }
   }, [
-    map.game?.lastSignificantAction, mapUpdate, forceUpdate, map.game?.gameState,
+    map.game?.lastSignificantAction, map.game?.lastActionIndex, mapUpdate, forceUpdate, map.game?.gameState,
     scale, mapScale, xOffset, yOffset
   ])
 

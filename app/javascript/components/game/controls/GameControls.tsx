@@ -310,7 +310,7 @@ export default function GameControls({
     <div className={ vertical ? "flex-vertical" : "flex" } >
       {controls}
       <div className="flex-fill"></div>
-      { (game.state === "complete" || game.currentUser !== localStorage.getItem("username")) ? "" :
+      { (game.state !== "in_progress" || game.currentUser !== localStorage.getItem("username")) ? "" :
         game.resignationLevel > 0 ?
         <div className={ `${vertical ? "flex-vertical" : "flex"} nowrap` }>
           { vertical ? "" :
