@@ -3148,6 +3148,45 @@ describe("movement", () => {
     expect(all[0].unit.isActivated).toBe(true)
   })
 
+  test("leader doesn't affect VP hexes", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+
+    map.victoryHexes.push({x: 2, y: 2, player: 1})
+    expect(map.victoryAt(new Coordinate(2, 2))).toBe(1)
+
+    const unit = new Unit(testGLdr)
+    unit.id = "test1"
+    unit.baseMovement = 3
+    map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+
+    game.moveState.move(3, 2)
+    expect(game.moveState.addActions.length).toBe(0)
+
+    game.moveState.move(2, 2)
+    expect(game.moveState.addActions.length).toBe(0)
+
+    game.moveState.unmove()
+    expect(game.moveState.addActions.length).toBe(0)
+    expect(game.moveState.path.length).toBe(2)
+    expect(game.gameState?.openHex(2, 2)).toBe(1)
+    expect(game.gameState?.openHex(2, 3)).toBe(1)
+    expect(game.gameState?.openHex(3, 3)).toBe(2)
+
+    game.moveState.move(2, 2)
+    expect(game.moveState.addActions.length).toBe(0)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 3)).toBe(1)
+
+    game.moveState.move(1, 2)
+
+    game.gameState?.finish()
+    expect(map.victoryAt(new Coordinate(2, 2))).toBe(1)
+  })
+
   test("undoing drop works", () => {
     const game = createMoveGame()
     const map = game.scenario.map

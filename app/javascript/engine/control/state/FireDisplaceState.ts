@@ -85,7 +85,9 @@ export default class FireDisplaceState extends BaseState {
     this.path.push({ x, y })
     const loc = new Coordinate(x, y)
     const vp = this.map.victoryAt(loc)
-    if (vp && vp !== this.game.currentPlayer && !this.game.scenario.map.enemyAt(loc, this.game.currentPlayer)) {
+    const unit = this.selection[0].counter.unit
+    if (vp && vp !== this.game.currentPlayer && !this.game.scenario.map.enemyAt(loc, this.game.currentPlayer) &&
+        !unit.leader && !unit.isBroken) {
       this.addAction = { x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 }
     }
     this.game.closeOverlay = true

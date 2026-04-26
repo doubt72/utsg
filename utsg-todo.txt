@@ -1,7 +1,9 @@
 Features/Bug Fixes:
-  + Highlight class on sidebar is throwing things off
-  + Squad splitting should not count as non-pass
-  + Rout morale check should be dice icon
+  + Disable leader capture
+  - Not right height on initial load
+  - Tooltip doesn't have mouse out event
+  - Track not getting updated on moves
+  - Sniper check should go away on an undo
   - Add Some Developer Notes
   - Go through docs, add examples
   - Create tutorial

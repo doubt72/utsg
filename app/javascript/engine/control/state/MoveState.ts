@@ -367,7 +367,8 @@ export default class MoveState extends BaseState {
         x, y, facing, turret: target.turreted ? lastPath.turret : undefined
       })
       const vp = this.map.victoryAt(new Coordinate(x, y))
-      if (vp && vp !== this.game.currentPlayer) {
+      if (vp && vp !== this.game.currentPlayer &&
+          this.selection.filter(u => !u.counter.unit.operated && !u.counter.unit.leader).length > 0) {
         this.addActions.push({ x, y, type: gameActionAddActionType.VP, cost: 0,
         index: this.path.length - 1 })
       }

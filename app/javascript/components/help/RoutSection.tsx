@@ -293,9 +293,9 @@ export default function RoutSection() {
         marked with a &quot;routed&quot; marker.
       </p>
       <p>
-        Broken units cannot capture VPs, so routs cannot capture VPs (though broken units can hold
-        VPs until routed out of contact or eliminated).  A broken unit in a VP hex would have to
-        successfully rally to capture the hex.
+        Broken units cannot capture victory point hexes, so routs cannot capture VPs (though broken
+        units can hold VPs until routed out of contact or eliminated).  A broken unit in a VP hex
+        would have to successfully rally to capture the hex.
       </p>
       <p>
         If the last action a player took was to rout all enemy units, a player may not attempt to

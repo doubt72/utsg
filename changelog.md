@@ -1,3 +1,8 @@
+## 0.68 Beta
+
+- Leader can hold but not capture VPs
+- Bug fix: CC with no casualties not being properly detected as complete
+
 ## 0.67 Beta
 
 - Beta release / update announcements

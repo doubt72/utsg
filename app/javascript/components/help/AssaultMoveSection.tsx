@@ -46,6 +46,13 @@ export default function AssaultMoveSection() {
         resulting combined movement of zero) may not assault move. Mark units as exhausted after an
         assault move.
       </p>
+      <p>
+        Leaders cannot capture victory point hexes by themselves, only infantry or vehicles
+        can (crewed and support weapons also can&apos;t capture victory hexes, nor can broken units,
+        but none of those can move by themselves in the first place).  However, leaders and broken units can hold victory
+        hexes that opponents assault move into; VPs don&apos;t change ownership until those units
+        are eliminated.
+      </p>
       <h3>{section}.1. Additional Actions</h3>
       <p>
         Engineering units (marked with a dot over their movement) may clear obstacles such as mines

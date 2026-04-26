@@ -40,6 +40,11 @@ export default function MovementSection() {
         weapons they can carry is always -2 instead of zero.
       </p>
       <p>
+        Leaders also cannot capture victory point hexes by themselves, only infantry or vehicles
+        can (crewed and support weapons also can&apos;t capture victory hexes, nor can broken units,
+        but none of those can move by themselves in the first place).
+      </p>
+      <p>
         There are three kinds of movement, foot (as indicated by an undecorated number), tracked (as
         indicated by a circled number), and wheeled (as indicated by a white-filled circle). Crewed
         weapons being manhandled are considered to be moving on foot.

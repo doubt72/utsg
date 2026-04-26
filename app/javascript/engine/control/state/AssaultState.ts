@@ -205,7 +205,8 @@ export default class AssaultState extends BaseState {
         normalDir(target.turretFacing - this.selection[0].counter.unit.facing + facing) : undefined
     })
     const vp = this.map.victoryAt(loc)
-    if (vp && vp !== this.game.currentPlayer && !map.enemyAt(loc, this.game.currentPlayer)) {
+    if (vp && vp !== this.game.currentPlayer && !map.enemyAt(loc, this.game.currentPlayer) &&
+        this.selection.filter(u => !u.counter.unit.operated && !u.counter.unit.leader).length > 0) {
       this.addActions.push({x, y, type: gameActionAddActionType.VP, cost: 0, index: 0 })
     }
     const vp2 = this.map.victoryAt(old)

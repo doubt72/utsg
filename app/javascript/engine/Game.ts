@@ -705,10 +705,17 @@ export default class Game {
       if (action.type === "close_combat_roll") {
         const roll = action as CloseCombatRollAction
         console.log(`- cc roll at ${roll.origin[0].x},${roll.origin[0].y}`)
-        checks.push({
-          loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
-          state: closeProgress.NeedsCasualties, p1Reduce: roll.p1Hits, p2Reduce: roll.p2Hits
-        })
+        if (roll.p1Hits > 0 && roll.p2Hits > 0) {
+          checks.push({
+            loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
+            state: closeProgress.NeedsCasualties, p1Reduce: roll.p1Hits, p2Reduce: roll.p2Hits
+          })
+        } else {
+          checks.push({
+            loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
+            state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0
+          })
+        }
       }
     }
     for (let i = this.lastActionIndex; i >= 0; i--) {
