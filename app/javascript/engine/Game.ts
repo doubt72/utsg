@@ -713,7 +713,7 @@ export default class Game {
         } else {
           checks.push({
             loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
-            state: closeProgress.NeedsCasualties, p1Reduce: 0, p2Reduce: 0
+            state: closeProgress.Done, p1Reduce: 0, p2Reduce: 0
           })
         }
       }

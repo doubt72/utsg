@@ -1,3 +1,7 @@
+## 0.72 Beta
+
+- Bug fix: another close combat issue
+
 ## 0.71 Beta
 
 - Server tweaks
