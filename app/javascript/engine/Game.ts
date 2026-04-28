@@ -990,8 +990,10 @@ export default class Game {
     } catch(err) {
       if (err instanceof IllegalActionError) {
         this.refreshCallback(this, ["illegal", err.message])
+        throw err
       } else if (err instanceof Error) {
         this.refreshCallback(this, ["unknown", err.message])
+        throw err
       }
       if (!backendSync) {
         throw err
