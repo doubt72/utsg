@@ -90,7 +90,7 @@ export default function Profile() {
       </> :
       <>
         { first }
-        <p>Games stats (does not include hotseat games):</p>
+        <p>Game stats (does not include hotseat games):</p>
       </>
     setHeader(header)
     if (self) {

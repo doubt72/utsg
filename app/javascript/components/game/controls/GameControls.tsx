@@ -62,7 +62,7 @@ import SplitSquadButton from "./buttons/SplitSquadButton";
 import JoinSquadButton from "./buttons/JoinSquadButton";
 import GameOverMenuButton from "./buttons/GameOverMenuButton";
 import FinishDeployButton from "./buttons/FinishDeployButton";
-import { ClockHistory, ExclamationTriangle, HexagonHalf } from "react-bootstrap-icons";
+import { ClockHistory, ExclamationCircle, ExclamationTriangle, HexagonHalf } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 interface GameControlsProps {
@@ -78,6 +78,7 @@ export default function GameControls({
   game, update, vertical, callback, emailCallback, emailCancelCallback }: GameControlsProps
 ) {
   const [controls, setControls] = useState<JSX.Element[]>([])
+  const [specialRules, setSpecialRules] = useState<JSX.Element | undefined>(undefined)
   const [internalUpdate, setInternalUpdate] = useState(0)
 
   useEffect(() => {
@@ -85,6 +86,30 @@ export default function GameControls({
     console.log(structuredClone(game.closeNeeded))
     displayActions()
   }, [game, game.lastActionIndex, internalUpdate, update])
+
+  useEffect(() => {
+    if (!game.scenario || game.scenario.specialRules.length < 1) { return }
+    const tooltip = (props: TooltipProps) => (
+      <Tooltip className="tooltip-game" {...props}>
+        Special Rules:
+        <ul>
+          {
+            game.scenario.specialRulesList.map((r,i) => {
+              return (
+                <li key={i}>{r}</li>
+              )
+            })
+          }
+        </ul>
+      </Tooltip>
+    )
+    setSpecialRules(
+      <OverlayTrigger placement="bottom" overlay={tooltip}
+                      delay={{ show: 0, hide: 0 }} >
+        <div className="special-rules"><ExclamationCircle /></div>
+      </OverlayTrigger>
+    )
+  }, [game])
 
   const callAllBack = () => {
     setInternalUpdate(s => s+1)
@@ -309,6 +334,7 @@ export default function GameControls({
   return (
     <div className={ vertical ? "flex-vertical" : "flex" } >
       {controls}
+      {specialRules}
       <div className="flex-fill"></div>
       { (game.state !== "in_progress" || game.currentUser !== localStorage.getItem("username")) ? "" :
         game.resignationLevel > 0 ?

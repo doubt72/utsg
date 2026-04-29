@@ -1,3 +1,13 @@
+## 0.73 Beta
+
+- Added scenario design page (which is still empty, though)
+- More ostentatious scroll buttons
+- Minor display tweaks/typo fixes
+- Added tooltip with special rules
+- Bug fix: don't show cancel on forced routs
+- Bug fix: fix loss selections not being cleared
+- Bug fix: a bit of cleanup on rally/repair (disallow unmanned weapon repair)
+
 ## 0.72 Beta
 
 - Bug fix: another close combat issue

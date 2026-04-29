@@ -6,6 +6,7 @@ import {
   QuestionCircle, ShieldExclamation, Trash3, XCircle,
   XSquare
 } from "react-bootstrap-icons"
+import { actionGreen, clearColor } from "../../utilities/graphics";
 
 interface ButtonTypeProps {
   type?: string;
@@ -209,4 +210,26 @@ export const DiceGlyph = () => {
 
 export const EliminateGlyph = () => {
   return <XSquare />
+}
+
+export const NavUp = (fill: boolean) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em">
+      <path d="M 1 23 L 12 9 L 23 23 Z" style={{
+        strokeWidth: 2, stroke: actionGreen(),
+        fill: fill ? actionGreen() : clearColor
+      }} />
+    </svg>
+  )
+}
+
+export const NavDown = (fill: boolean) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="1em" height="1em">
+      <path d="M 1 1 L 12 15 L 23 1 Z" style={{
+        strokeWidth: 2, stroke: actionGreen(),
+        fill: fill ? actionGreen() : clearColor
+      }} />
+    </svg>
+  )
 }

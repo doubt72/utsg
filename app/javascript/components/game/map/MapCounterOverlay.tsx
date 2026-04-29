@@ -69,7 +69,7 @@ export default function MapCounterOverlay({
     if (target.target.type == "reinforcement") { return }
     const unit = target.counter.unit
     const sel = selectable(map, target)
-    if (!unit.selected && !sel) {
+    if (!sel) {
       map.game.addMessage("can't select counter")
     } else {
       const options = unit.selected || unit.targetSelected ?

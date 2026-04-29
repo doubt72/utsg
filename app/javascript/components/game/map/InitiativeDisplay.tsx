@@ -159,7 +159,10 @@ export default function InitiativeDisplay({
 
   useEffect(() => {
     if (!map || !map.game) { return }
-    if (map.game.state !== "in_progress") { return }
+    if (map.game.state !== "in_progress") {
+      setPLayerPointer(undefined)
+      return
+    }
     const y1 = yy + 52
     const y2 = yy + 92
     const x = xx + (map.game.currentPlayer === 1 ? 26 : 164)

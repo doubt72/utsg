@@ -66,9 +66,12 @@ export default class RallyState extends BaseState {
       if (!u.isFeature) {
         const unit = u as Unit
         if (this.samePlayer(unit)) {
-          if ((unit.isBroken || unit.jammed) &&
-            (this.game.freeRallyAvailable(this.game.currentPlayer) || unbrokerLeader)) {
-            return hexOpenType.Open
+          if (unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck)) {
+            if (this.game.freeRallyAvailable(this.game.currentPlayer) || unbrokerLeader) {
+              if (alreadyRallied(this.game, unit.id)) { continue }
+              if (unit.operated && !unit.parent) { continue }
+              return hexOpenType.Open
+            }
           }
         }
       }
@@ -83,11 +86,13 @@ export default class RallyState extends BaseState {
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
     if (!counter.unit.isFeature && this.samePlayer(counter.unit)) {
-      if ((counter.unit.isBroken || counter.unit.jammed) &&
+      if ((counter.unit.isBroken || ((counter.unit.jammed || counter.unit.sponsonJammed) && !counter.unit.isWreck)) &&
         (this.game.freeRallyAvailable(this.game.currentPlayer) ||
          leaderAtHex(this.game, x, y, this.game.currentPlayer, counter.unit))) {
         if (alreadyRallied(this.game, id)) {
           this.game.addMessage("unit already attempted to rally")
+        } else if (counter.unit.operated && !counter.unit.parent) {
+          this.game.addMessage("can't repair unmanned weapon")
         } else {
           this.map.select(counter.unit)
           this.map.clearOtherSelections(x, y, counter.unit.id)

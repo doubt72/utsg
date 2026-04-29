@@ -218,7 +218,7 @@ export default class Scenario {
       } else if (r === "winter") {
         return `Winter: no digging in, treat water/river hexes as open for infantry`
       } else if (r === "retreat_301") {
-        return `Allied units rout down below row 6, up otherwise; Axis rout in opposite direction`
+        return `Allied units rout up below row 5, down otherwise; Axis rout in opposite direction`
       }
       return "unknown rule"
     })

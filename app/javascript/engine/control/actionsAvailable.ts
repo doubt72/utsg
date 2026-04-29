@@ -59,7 +59,9 @@ function setState(game: Game): void {
     if (state !== stateType.Rout) {
       game.setGameState(new RoutState(game, false))
     }
-    game.scenario.map.select(game.routNeeded[0].unit)
+    if (!game.routNeeded[0].unit.selected) {
+      game.scenario.map.select(game.routNeeded[0].unit)
+    }
   } else if (game.routCheckNeeded.length > 0) {
     if (state !== stateType.RoutCheck) {
       game.setGameState(new RoutCheckState(game))

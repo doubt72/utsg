@@ -28,6 +28,7 @@ import Verify from "../components/user/Verify";
 import AdminIndex from "../admin/AdminIndex";
 import AdminGameStats from "../admin/AdminGameStats";
 import AdminUsers from "../admin/AdminUsers";
+import ScenarioDesigner from "../designer/ScenarioDesigner";
 
 export default function Routes() {
   const publicRoutes = [
@@ -58,6 +59,8 @@ export default function Routes() {
         { path: "/profile/:username", element: <Profile /> },
 
         { path: "/contact", element: <Contact /> },
+
+        { path: "/designer", element: <ScenarioDesigner /> },
 
         { path: "/debug/", element: <DebugIndex /> },
         { path: "/debug/markers", element: <DebugMarkers /> },

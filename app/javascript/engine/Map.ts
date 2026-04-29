@@ -635,8 +635,9 @@ export default class Map {
           if (!unit.isFeature) {
             const unitPlayer = playerForNation(unit, this.game)
             if (player === unitPlayer) {
-              if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck)) &&
-                  !alreadyRallied(this.game, unit.id)) {
+              if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck))) {
+                if (alreadyRallied(this.game, unit.id)) { continue }
+                if (unit.operated && !unit.parent) { continue }
                 if (leaderAtHex(this.game, x, y, unitPlayer, unit) || this.game.freeRallyAvailable(player)) { return true }
               }
             }
@@ -738,6 +739,18 @@ export default class Map {
       if (u.unit.dropSelected) { u.unit.dropSelect() }
       if (u.unit.loaderSelected) { u.unit.loaderSelect() }
       if (u.unit.loadedSelected) { u.unit.loadedSelect() }
+    }
+    if (this.game) {
+      for (const u of this.game.eliminatedUnits) {
+        if (u.selected) { u.select() }
+        if (u.targetSelected) { u.targetSelect() }
+        if (!u.isFeature) {
+          const unit = u as Unit
+          if (unit.dropSelected) { unit.dropSelect() }
+          if (unit.loaderSelected) { unit.loaderSelect() }
+          if (unit.loadedSelected) { unit.loadedSelect() }
+        }
+      }
     }
     this.selection = undefined
     this.targetSelection = undefined

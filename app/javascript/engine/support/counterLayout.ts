@@ -207,7 +207,7 @@ export function counterActionButtons(
         }
       }
     } else if (map.game.gameState?.type === stateType.Rout) {
-      if (counter.unit.selected) {
+      if (counter.unit.selected && map.game.routState.optional) {
         rc.push({ x, color: counterRed(), text: no, tColor: "#FFF", action: "cancel_action" })
       }
     } else if (map.game.gameState?.type === stateType.Reaction) {

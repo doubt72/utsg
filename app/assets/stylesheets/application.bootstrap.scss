@@ -435,6 +435,30 @@ span.slim-button:hover {
   min-width: 300px;
 }
 
+.main-page-list-nav {
+  height: 24px;
+  line-height: 8px;
+}
+
+.main-page-list-scroll {
+  padding: 0 0.4375em;
+  margin: 0.2em 0;
+  border-top: 2px solid #070;
+  border-bottom: 2px solid #070;
+}
+
+.main-page-list-scroll-filler {
+  width: 24px;
+}
+
+.main-page-list-not-scroll-inside {
+  height: 100%;
+  width: 0.125em;
+  opacity: 0.33;
+  background-image: url("/assets/stripe.png");
+  background-size: 33px;
+}
+
 // Chat details
 .chat-section {
   padding: 0.5em;

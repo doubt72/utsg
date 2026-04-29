@@ -1,4 +1,11 @@
 Features/Bug Fixes:
+  + Don't allow cancel of forced routs
+  + Don't allow fixing broken weapon not being manned
+  + Turn indicator showing up but not being updated on game over
+  + Improve pagination buttons
+  + Standardize cleanup tasks (unused versions, game kill list)
+  - Special rules
+  ? Add tie (48 55)
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)
 
@@ -26,8 +33,6 @@ Special Rules/Scenarios
   - Hidden counters (?) only some are infantry but can move like infantry
   - Random landing locations for paratroop scenarios
   - Win by certain number of points
-
-Delete 38 44 50 51 52 53
 
 006 (Romanian)
 203 (Little Stalingrad)

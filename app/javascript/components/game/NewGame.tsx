@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
-import { CreateGameButton, CustomCheckbox } from "../utilities/buttons";
-import { ArrowDownCircle, ArrowUpCircle, CaretDownFill, CaretUp, CaretUpFill } from "react-bootstrap-icons";
+import { CreateGameButton, CustomCheckbox, NavDown, NavUp } from "../utilities/buttons";
+import { ArrowDownCircle, ArrowUpCircle } from "react-bootstrap-icons";
 import ScenarioRow from "./ScenarioRow";
 import ScenarioSummary from "./ScenarioSummary";
 import { Player } from "../../utilities/commonTypes";
@@ -347,12 +347,16 @@ export default function NewGame() {
   }
 
   const scrollUp = scroll.up ?
-    <div onClick={() => setPage(scenarioSearch.page - 1)}><CaretUpFill /></div> :
-    (scroll.down ? <div><CaretUp /></div> :
-      <div className="transparent"><CaretUpFill /></div>)
+    <div className="main-page-list-nav" onClick={() => setPage(scenarioSearch.page - 1)}>{ NavUp(true) }</div> :
+      (scroll.down ? <div className="main-page-list-nav">{ NavUp(false) }</div> : "")
 
   const scrollDown = scroll.down ?
-    <div onClick={() => setPage(scenarioSearch.page + 1)}><CaretDownFill /></div> : ""
+    <div className="main-page-list-nav" onClick={() => setPage(scenarioSearch.page + 1)}>{ NavDown(true) }</div> : ""
+
+  const scrollMiddle = scroll.up || scroll.down ?
+    <div className="flex-fill main-page-list-scroll">
+      <div className="main-page-list-not-scroll-inside"></div>
+    </div> : <div className="flex-fill main-page-list-scroll-filler"></div>
 
   const loggedIn = !!localStorage.getItem("username");
 
@@ -438,7 +442,11 @@ export default function NewGame() {
                 <div className="flex-fill">
                   {scenarioDisplayList}
                 </div>
-                <div className="ml05em control-large">{scrollUp}{scrollDown}</div>
+                <div className="ml05em control-large flex-vertical">
+                  {scrollUp}
+                  {scrollMiddle}
+                  {scrollDown}
+                </div>
               </div>
             </div>
           </div>
