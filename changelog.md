@@ -1,6 +1,7 @@
 ## 0.74 Beta
 
 - More work on scenario designer
+- Updated 510
 
 ## 0.73 Beta
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import { getAPI } from "../utilities/network";
 import Scenario, { ScenarioData } from "../engine/Scenario";
-import { hexPath, roundedRectangle } from "../utilities/graphics";
+import { hexPath, iconSymbols, roundedRectangle } from "../utilities/graphics";
 import MapHex from "../components/game/map/MapHex";
 import MapHexDetail from "../components/game/map/MapHexDetail";
 import MapHexPatterns from "../components/game/map/MapHexPatterns";
@@ -259,14 +259,18 @@ export default function ScenarioDesigner() {
                     <input type="text" className="form-input"
                       name="id"
                       value={scenarioData.id}
-                      onChange={({ target }) => target.value} />
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, id: target.value } }
+                      )} />
                   </div>
                   <div className="ml1em" style={{width: "400px"}}>
                     <label className="design-label">name</label>
                     <input type="text" className="form-input"
                       name="name"
                       value={scenarioData.name}
-                      onChange={({ target }) => target.value} />
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, name: target.value } }
+                      )} />
                   </div>
                 </div>
                 <div className="flex mb05em">
@@ -275,7 +279,9 @@ export default function ScenarioDesigner() {
                     <input type="text" className="form-input"
                       name="author"
                       value={scenarioData.metadata.author}
-                      onChange={({ target }) => target.value} />
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, metadata: { ...s.metadata, author: target.value }} }
+                      )} />
                   </div>
                 </div>
                 <div className="flex mb05em">
@@ -284,12 +290,16 @@ export default function ScenarioDesigner() {
                     <input type="text" className="form-input"
                       name="version"
                       value={scenarioData.version}
-                      onChange={({ target }) => target.value} />
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, version: target.value } }
+                      )} />
                   </div>
                   <div className="ml1em" style={{width: "120px"}}>
                     <label className="design-label">status</label>
                     <select name="status" value={scenarioData.status} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s =>
+                              { return { ...s, status: target.value } }
+                            )} >
                       <option value="">ready</option>
                       <option value="b">beta</option>
                       <option value="a">alpha</option>
@@ -299,21 +309,33 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "80px"}}>
                     <label className="design-label">year</label>
                     <select name="year" value={scenarioData.metadata.date[0]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s =>
+                              { return { ...s, metadata: {
+                                ...s.metadata, date: [Number(target.value), s.metadata.date[1], s.metadata.date[2]],
+                              }} }
+                            )} >
                       { Array.from(Array(50).keys()).map(i => <option key={i} value={i+1920}>{i+1920}</option>) }
                     </select>
                   </div>
                   <div className="ml1em" style={{width: "60px"}}>
                     <label className="design-label">month</label>
                     <select name="month" value={scenarioData.metadata.date[1]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s =>
+                              { return { ...s, metadata: {
+                                ...s.metadata, date: [s.metadata.date[0], Number(target.value), s.metadata.date[2]],
+                              }} }
+                            )} >
                       { Array.from(Array(12).keys()).map(i => <option key={i} value={i+1}>{i+1}</option>) }
                     </select>
                   </div>
                   <div className="ml1em" style={{width: "60px"}}>
                     <label className="design-label">day</label>
                     <select name="day" value={scenarioData.metadata.date[2]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s =>
+                              { return { ...s, metadata: {
+                                ...s.metadata, date: [s.metadata.date[0], s.metadata.date[1], Number(target.value)],
+                              }} }
+                            )} >
                       { Array.from(Array(31).keys()).map(i => <option key={i} value={i+1}>{i+1}</option>) }
                     </select>
                   </div>
@@ -324,7 +346,9 @@ export default function ScenarioDesigner() {
                     <input type="text" className="form-input"
                       name="location"
                       value={scenarioData.metadata.location}
-                      onChange={({ target }) => target.value} />
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, metadata: { ...s.metadata, location: target.value }} }
+                      )} />
                   </div>
                 </div>
                 <div style={{width: "480px"}}>
@@ -333,7 +357,7 @@ export default function ScenarioDesigner() {
                 { scenarioData.metadata.description.map((d, i) =>
                   <div key={i} className="flex mb05em" style={{width: "480px"}} >
                     <div className="flex-vertical">
-                      <span className="slim-button">-</span>
+                      <span className="slim-button">{iconSymbols("no")}</span>
                       <div className="flex-fill"></div>
                     </div>
                     <textarea className="form-input-text"
