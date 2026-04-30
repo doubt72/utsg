@@ -1,3 +1,7 @@
+## 0.74 Beta
+
+- More work on scenario designer
+
 ## 0.73 Beta
 
 - Added scenario design page (which is still empty, though)

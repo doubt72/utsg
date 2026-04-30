@@ -254,6 +254,41 @@ span.slim-button:hover {
   border: 2px solid $alert-orange;
 }
 
+.designer-label {
+  display: block;
+  position: relative;
+  width: fit-content;
+  font-size: 0.625em;
+  padding: 0 0.25em;
+  transform: translate(0.8em, 1.1em);
+  color: $dark-green;
+  background: linear-gradient(to top, $transparent 0 calc(50% - 0.25em), white calc(50% - 0.25em));
+}
+
+.designer-input {
+  width: 100%;
+  padding: 0.1em 0.5em;
+  margin: 0;
+  border: 2px solid $border-color-light;
+  border-radius: 0.33em;
+  background-color: white;
+}
+
+.designer-input:focus {
+  outline: none;
+  background-color: $gray-f;
+  border: 2px solid $alert-orange;
+}
+
+.designer-section {
+  padding: 0.5em;
+  width: 500px;
+  min-width: 500px;
+  // border: 2px solid $border-color-light-gray;
+  background-color: $background-gray;
+  border-radius: 0 0.5em 0.5em 0.5em;
+}
+
 .custom-checkbox {
   height: 20px;
   width: 20px;
