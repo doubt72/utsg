@@ -6,8 +6,8 @@ import { hexPath, iconSymbols, roundedRectangle } from "../utilities/graphics";
 import MapHex from "../components/game/map/MapHex";
 import MapHexDetail from "../components/game/map/MapHexDetail";
 import MapHexPatterns from "../components/game/map/MapHexPatterns";
-import { alliedCodeToName, axisCodeToName } from "../utilities/utilities";
-import { Coordinate, ExtendedDirection } from "../utilities/commonTypes";
+import { alliedCodeToName, axisCodeToName, normalDir } from "../utilities/utilities";
+import { BaseTerrainType, Coordinate, ExtendedDirection, Player, WeatherType, WindType } from "../utilities/commonTypes";
 
 function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -144,10 +144,10 @@ export default function ScenarioDesigner() {
     )
   }
 
-  const showHex = (dir: ExtendedDirection): JSX.Element => {
+  const showHex = (dir: ExtendedDirection, click: () => void): JSX.Element => {
     return (
       <svg className="" width={32} height={32}
-           viewBox="0 0 32 32">
+           viewBox="0 0 32 32" onClick={click}>
         <path d={ hexPath(new Coordinate(16, 16), 15, true) }
               style={{ fill: "#FFF", stroke: "#AAA", strokeWidth: 2 }}/>
         <g transform={`rotate(${(dir-1)*60} 16 16)`}>
@@ -177,81 +177,29 @@ export default function ScenarioDesigner() {
                    `bold main-page-list-tab ` +
                    `main-page-list-tab-${tab === 1 ? "" : "un" }selected`
                  }>
-              File
+              Data
             </div>
             <div onClick={() => setTab(2)} className={
                    `bold main-page-list-tab ` +
                    `main-page-list-tab-${tab === 2 ? "" : "un" }selected`
                  }>
-              Data
+              Map
             </div>
             <div onClick={() => setTab(3)} className={
                    `bold main-page-list-tab ` +
                    `main-page-list-tab-${tab === 3 ? "" : "un" }selected`
                  }>
-              Map
+              OOB
             </div>
             <div onClick={() => setTab(4)} className={
                    `bold main-page-list-tab ` +
                    `main-page-list-tab-${tab === 4 ? "" : "un" }selected`
                  }>
-              OOB
+              File
             </div>
           </div>
           <div className="designer-section" style={{ minHeight: window.innerHeight - 182 }}>
             { tab === 1 ?
-              <div>
-                <div>
-                  load from server scenario:
-                </div>
-                <div className="flex">
-                  <form>
-                    <select name="scenario" className="designer-input" onChange={({ target }) => loadScenario(target.value)}>
-                      <option value="">---</option>
-                      { scenarioList.sort().map(sel =>
-                          <option key={sel} value={sel}>{sel}</option>
-                        )}
-                    </select>
-                  </form>
-                  <div className="flex-fill"></div>
-                </div>
-                <div className="mt1em">
-                  load from file:
-                </div>
-                <div>
-                  <form>
-                    <input type="file" className="form-input"
-                      name="upload"
-                      onChange={({ target }) => {
-                        if (!target.files) { return }
-                        const file = target.files[0]
-                        if (!file) { return }
-
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                          try {
-                            const jsonData = JSON.parse(e.target?.result as string);
-                            setScenarioData(jsonData)
-                          } catch (err) {
-                            console.error('Invalid JSON:', err);
-                          }
-                        };
-                        reader.readAsText(file);
-                        setTab(2)
-                      }} />
-                  </form>
-                </div>
-                <div className="mt1em">
-                  save to file:
-                </div>
-                <div>
-                  <span className="slim-button" onClick={() => download()}
-                        style={{ padding: "0.15em 0.5em 0.25em" }}>
-                    save
-                  </span>
-                </div>
-              </div> : "" }
-            { tab === 2 ?
               <form>
                 <div className="flex mb05em">
                   <div style={{width: "60px"}}>
@@ -356,50 +304,94 @@ export default function ScenarioDesigner() {
                 </div>
                 { scenarioData.metadata.description.map((d, i) =>
                   <div key={i} className="flex mb05em" style={{width: "480px"}} >
-                    <div className="flex-vertical">
-                      <span className="slim-button">{iconSymbols("no")}</span>
+                    <div className="flex-vertical mt05em">
+                      { i === 0 ?
+                        <span className="slim-button-disable">{iconSymbols("no")}</span> :
+                        <span className="slim-button"
+                              onClick={() => {
+                                setScenarioData(s => {
+                                  const d = ([] as string[]).concat(s.metadata.description)
+                                  d.splice(i, 1)
+                                  return { ...s, metadata: { ...s.metadata, description: d }}
+                                })
+                              }} >
+                          {iconSymbols("no")}
+                        </span> }
                       <div className="flex-fill"></div>
                     </div>
                     <textarea className="form-input-text"
                       name={`description-${i}`}
                       value={scenarioData.metadata.description[i].replace(/[\n\r\t]/gm, "").replace(/\s+/gm, " ")}
-                      onChange={({ target }) => target.value} />
+                      onChange={({ target }) => {
+                        setScenarioData(s => {
+                          const d = ([] as string[]).concat(s.metadata.description)
+                          d[i] = target.value
+                          return { ...s, metadata: { ...s.metadata, description: d }}
+                        })
+                      }} />
                   </div>
                 )}
                 <div className="flex mb05em" style={{width: 480, height: "1.8em"}}>
                   <div className="flex-fill"></div>
-                  <span className="slim-button">+</span>
+                  <span className="slim-button"
+                        onClick={() => {
+                          setScenarioData(s => {
+                            const d = ([] as string[]).concat(s.metadata.description)
+                            d.push("")
+                            return { ...s, metadata: { ...s.metadata, description: d }}
+                          })
+                        }}>+</span>
                 </div>
                 <div className="flex mb05em">
                   <div style={{width: "150px"}}>
                     <label className="design-label">player one</label>
                     <select name="allies" value={scenarioData.allies[0]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => {
+                              setScenarioData(s => {
+                                return { ...s, allies: [target.value] }
+                              })
+                            }} >
                       { [
                           "ussr", "usa", "bra", "uk", "can", "aus", "nz", "ind", "sa", "fra", "frf", "chi",
                           "pol", "gre", "nor", "bel", "dut", "yug",
                         ].map(n => <option key={n} value={n}>{alliedCodeToName(n)}</option>) }
                     </select>
                   </div>
-                  <div className="ml1em" style={{width: "70px"}}>
+                  <div className="ml1em unselectable" style={{width: "70px"}}>
                     <label className="design-label">adv</label>
                     <br />
-                    { showHex(scenarioData.metadata.map_data.allied_dir) }
+                    { showHex(scenarioData.metadata.map_data.allied_dir, () => {
+                      setScenarioData(s => {
+                        return { ...s, metadata: { ...s.metadata, map_data: {
+                          ...s.metadata.map_data, allied_dir: normalDir(s.metadata.map_data.allied_dir + 0.5)
+                        }} }
+                      })
+                    }) }
                     : { scenarioData.metadata.map_data.allied_dir }
                   </div>
                   <div className="ml1em" style={{width: "150px"}}>
                     <label className="design-label">player two</label>
                     <select name="axis" value={scenarioData.axis[0]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => {
+                              setScenarioData(s => {
+                                return { ...s, axis: [target.value] }
+                              })
+                            }} >
                       { [
                           "ger", "ita", "jap", "fin", "hun", "bul", "rom", "slo", "cro",
                         ].map(n => <option key={n} value={n}>{axisCodeToName(n)}</option>) }
                     </select>
                   </div>
-                  <div className="ml1em" style={{width: "70px"}}>
+                  <div className="ml1em unselectable" style={{width: "70px"}}>
                     <label className="design-label">adv</label>
                     <br />
-                    { showHex(scenarioData.metadata.map_data.axis_dir) }
+                    { showHex(scenarioData.metadata.map_data.axis_dir, () => {
+                      setScenarioData(s => {
+                        return { ...s, metadata: { ...s.metadata, map_data: {
+                          ...s.metadata.map_data, axis_dir: normalDir(s.metadata.map_data.axis_dir + 0.5)
+                        }} }
+                      })
+                    }) }
                     : { scenarioData.metadata.map_data.axis_dir }
                   </div>
                 </div>
@@ -407,7 +399,9 @@ export default function ScenarioDesigner() {
                   <div style={{width: "130px"}}>
                     <label className="design-label">first deploy</label>
                     <select name="allies" value={scenarioData.metadata.first_deploy} className="form-input"
-                            onChange={({ target }) => target.value} >
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, metadata: { ...s.metadata, first_deploy: Number(target.value) as Player }} }
+                      )} >
                       <option value={1}>player one</option>
                       <option value={2}>player two</option>
                     </select>
@@ -415,7 +409,9 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "130px"}}>
                     <label className="design-label">initiative</label>
                     <select name="axis" value={scenarioData.metadata.first_action} className="form-input"
-                            onChange={({ target }) => target.value} >
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, metadata: { ...s.metadata, first_action: Number(target.value) as Player }} }
+                      )} >
                       <option value={1}>player one</option>
                       <option value={2}>player two</option>
                     </select>
@@ -423,16 +419,30 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "60px"}}>
                     <label className="design-label">turns</label>
                     <select name="turns" value={scenarioData.metadata.turns} className="form-input"
-                            onChange={({ target }) => target.value} >
+                      onChange={({ target }) => setScenarioData(s =>
+                        { return { ...s, metadata: { ...s.metadata, turns: Number(target.value) }} }
+                      )} >
                       { Array.from(Array(30).keys()).map(i => <option key={i} value={i+1}>{i+1}</option>) }
                     </select>
                   </div>
                 </div>
-                <div className="flex mb05em">
+                <div className="flex">
                   <div style={{width: "480px"}}>
                     <label className="design-label">special rules</label>
-                    <select name="allies" value={scenarioData.metadata.special_rules} className="form-input"
-                            onChange={({ target }) => target.value} multiple >
+                    <select name="special" value={scenarioData.metadata.special_rules ?? []} className="form-input"
+                            onChange={({ target }) => {
+                              setScenarioData(s => {
+                                const sr = ([] as string[]).concat(scenarioData.metadata.special_rules ?? [])
+                                const index =  sr.indexOf(target.value)
+                                console.log(index)
+                                if (index < 0) {
+                                  sr.push(target.value)
+                                } else {
+                                  sr.splice(index, 1)
+                                }
+                                return { ...s, metadata: { ...s.metadata, special_rules: sr } }
+                              })
+                            }} multiple data-dropdown="true" >
                       <option value={"allied_green_armor"}>green allied armor</option>
                       <option value={"axis_green_armor"}>green axis armor</option>
                       <option value={"allied_elite_armor"}>elite allied armor</option>
@@ -446,11 +456,17 @@ export default function ScenarioDesigner() {
                     </select>
                   </div>
                 </div>
+                <div className="flex mb1em">
+                  <span className="green">{ scenarioData.metadata.special_rules?.join(", ") }</span>
+                </div>
                 <div className="flex mb05em">
                   <div style={{width: "90px"}}>
                     <label className="design-label">base</label>
                     <select name="allies" value={scenarioData.metadata.map_data.base_terrain} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, base_terrain: target.value as BaseTerrainType
+                              }}}}) } >
                       <option value={"g"}>grass</option>
                       <option value={"u"}>urban</option>
                       <option value={"s"}>snow</option>
@@ -461,7 +477,10 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "80px"}}>
                     <label className="design-label">time</label>
                     <select name="axis" value={String(scenarioData.metadata.map_data.night)} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, night: target.value === "true"
+                              }}}}) } >
                       <option value={"false"}>day</option>
                       <option value={"true"}>night</option>
                     </select>
@@ -469,7 +488,11 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "100px"}}>
                     <label className="design-label">wind</label>
                     <select name="axis" value={scenarioData.metadata.map_data.wind[0]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              const wind = s.metadata.map_data.wind
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, wind: [Number(target.value) as WindType, wind[1], wind[2]]
+                              }}}}) } >
                       <option value={1}>calm</option>
                       <option value={2}>breeze</option>
                       <option value={3}>moderate</option>
@@ -479,15 +502,25 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "70px"}}>
                     <label className="design-label">var</label>
                     <select name="axis" value={String(scenarioData.metadata.map_data.wind[2])} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              const wind = s.metadata.map_data.wind
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, wind: [wind[0], wind[1], target.value === "true"]
+                              }}}}) } >
                       <option value={"false"}>no</option>
                       <option value={"true"}>yes</option>
                     </select>
                   </div>
-                  <div className="ml1em" style={{width: "70px"}}>
+                  <div className="ml1em unselectable" style={{width: "70px"}}>
                     <label className="design-label">dir</label>
                     <br />
-                    { showHex(scenarioData.metadata.map_data.wind[1]) }
+                    { showHex(scenarioData.metadata.map_data.wind[1], () => {
+                        setScenarioData(s => {
+                          const wind = s.metadata.map_data.wind
+                          return { ...s, metadata: { ...s.metadata, map_data: {
+                            ...s.metadata.map_data, wind: [wind[0], normalDir(wind[1] + 1), wind[2]]
+                          }}}})
+                      }) }
                     : { scenarioData.metadata.map_data.wind[1] }
                   </div>
                 </div>
@@ -495,7 +528,10 @@ export default function ScenarioDesigner() {
                   <div  style={{width: "80px"}}>
                     <label className="design-label">weather</label>
                     <select name="axis" value={scenarioData.metadata.map_data.base_weather} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, base_weather: target.value as WeatherType
+                              }}}}) } >
                       <option value={"dry"}>dry</option>
                       <option value={"fog"}>fog</option>
                       <option value={"rain"}>rain</option>
@@ -507,7 +543,11 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "80px"}}>
                     <label className="design-label">precip</label>
                     <select name="axis" value={scenarioData.metadata.map_data.precip[1]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              const precip = s.metadata.map_data.precip
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, precip: [precip[0], target.value as WeatherType]
+                              }}}}) } >
                       <option value={"dry"}>dry</option>
                       <option value={"fog"}>fog</option>
                       <option value={"rain"}>rain</option>
@@ -519,14 +559,21 @@ export default function ScenarioDesigner() {
                   <div className="ml1em" style={{width: "60px"}}>
                     <label className="design-label">%</label>
                     <select name="axis" value={scenarioData.metadata.map_data.precip[0]} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              const precip = s.metadata.map_data.precip
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, precip: [Number(target.value), precip[1]]
+                              }}}}) } >
                       { Array.from(Array(10).keys()).map(i => <option key={i} value={i}>{i*10}</option>) }
                     </select>
                   </div>
                   <div className="ml1em" style={{width: "80px"}}>
                     <label className="design-label">current</label>
                     <select name="axis" value={scenarioData.metadata.map_data.start_weather} className="form-input"
-                            onChange={({ target }) => target.value} >
+                            onChange={({ target }) => setScenarioData(s => {
+                              return { ...s, metadata: { ...s.metadata, map_data: {
+                                ...s.metadata.map_data, start_weather: target.value as WeatherType
+                              }}}}) } >
                       <option value={"dry"}>dry</option>
                       <option value={"fog"}>fog</option>
                       <option value={"rain"}>rain</option>
@@ -537,6 +584,58 @@ export default function ScenarioDesigner() {
                   </div>
                 </div>
               </form> : "" }
+            { tab === 4 ?
+              <div>
+                <div>
+                  load from server scenario:
+                </div>
+                <div className="flex">
+                  <form>
+                    <select name="scenario" className="designer-input" onChange={({ target }) => loadScenario(target.value)}>
+                      <option value="">---</option>
+                      { scenarioList.sort().map(sel =>
+                          <option key={sel} value={sel}>{sel}</option>
+                        )}
+                    </select>
+                  </form>
+                  <div className="flex-fill"></div>
+                </div>
+                <div className="mt1em">
+                  load from file:
+                </div>
+                <div>
+                  <form>
+                    <input type="file" className="form-input"
+                      name="upload"
+                      onChange={({ target }) => {
+                        if (!target.files) { return }
+                        const file = target.files[0]
+                        if (!file) { return }
+
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                          try {
+                            const jsonData = JSON.parse(e.target?.result as string);
+                            setScenarioData(jsonData)
+                          } catch (err) {
+                            console.error('Invalid JSON:', err);
+                          }
+                        };
+                        reader.readAsText(file);
+                        setTab(1)
+                      }} />
+                  </form>
+                </div>
+                <div className="mt1em">
+                  save to file:
+                </div>
+                <div>
+                  <span className="slim-button" onClick={() => download()}
+                        style={{ padding: "0.15em 0.5em 0.25em" }}>
+                    save
+                  </span>
+                </div>
+              </div> : "" }
           </div>
         </div>
         <div className="flex-vertical">
@@ -546,9 +645,6 @@ export default function ScenarioDesigner() {
     </div>
   )
 }
-
-// Enable editing
-// Functional tabs
 
 // layout
 // paint hexes

@@ -54,11 +54,11 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
       user.update!(banned: !user.banned)
     end
 
-    def notify(current_user, username, game_id)
+    def notify(current_user, username, game_id) # rubocop:disable Metrics/CyclomaticComplexity
       user = lookup(username)
       game = Game.find(game_id)
       return false unless current_user == game.player_one || current_user == game.player_two
-      return true if user.notified || !user.notifications
+      return true if user.notified || !user.notifications || !game.in_progress?
 
       action = GameAction.where(game_id:, user:, undone: false).order(sequence: :desc).first
       if action && action.created_at < 15.minutes.ago

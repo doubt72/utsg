@@ -81,7 +81,7 @@ export default function GameDisplay() {
           if (t) { clearTimeout(t) }
           return undefined
         })
-        if (game.k && user === game.k.currentUser) {
+        if (game.k && user === game.k.currentUser && game.state === "in_progress") {
           postAPI(
             `/api/v1/user/notify`, { id: user, game_id: game.k.id }, { ok: () => {} }
           )

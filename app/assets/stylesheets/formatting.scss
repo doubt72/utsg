@@ -95,3 +95,8 @@
 .bold {
   font-weight: bold;
 }
+
+.unselectable {
+  -webkit-user-select:none;
+  user-select:none;
+}
