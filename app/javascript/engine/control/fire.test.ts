@@ -603,7 +603,9 @@ describe("ranged fire attacks", () => {
         "base roll of 15",
         "- minus morale 3",
         "- minus cover 2",
-        "-> on critical (2d10): 14 (21%)"
+        "-> on critical (2d10): 14 (21%)",
+        "",
+        "[hold down shift to hide]"
       ])
 
       const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])

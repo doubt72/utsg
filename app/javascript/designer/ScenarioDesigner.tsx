@@ -584,6 +584,9 @@ export default function ScenarioDesigner() {
                   </div>
                 </div>
               </form> : "" }
+            { tab === 3 ?
+              <div>
+              </div> : ""}
             { tab === 4 ?
               <div>
                 <div>

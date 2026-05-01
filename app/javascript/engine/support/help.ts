@@ -392,6 +392,8 @@ export function rallyHelpText(game: Game, loc: Coordinate, unit: Unit): string[]
     rc.push("")
     rc.push(`target to rally: ${toRally} (${chance2D10(toRally)}%)`)
   }
+  rc.push("")
+  rc.push("[hold down shift to hide]")
   return rc
 }
 
@@ -508,6 +510,8 @@ export function fireHelpText(game: Game, to: Coordinate, target: Unit, reaction:
     rc.push("")
     rc.push("-> hit destroys vehicle")
   }
+  rc.push("")
+  rc.push("[hold down shift to hide]")
   return rc
 }
 
@@ -522,6 +526,8 @@ export function routHelpText(game: Game, loc: Coordinate, unit: Unit): string[] 
   for (const m of modifiers.why) { rc.push(m) }
   rc.push("")
   rc.push(`target to avoid rout: ${toRout} (${chance2D10(toRout - 1)}%)`)
+  rc.push("")
+  rc.push("[hold down shift to hide]")
   return rc
 }
 
@@ -543,6 +549,8 @@ export function moraleHelpText(game: Game, loc: Coordinate, unit: Unit): string[
   if (!unit.isBroken) {
     rc.push(`unit pinned on exact roll (${exact2D10(moraleCheck + critMod)}%)`)
   }
+  rc.push("")
+  rc.push("[hold down shift to hide]")
   return rc
 }
 
@@ -564,6 +572,8 @@ export function closeCombatHelpText(game: Game, loc: Coordinate): string[] {
   for (const o of odds2) {
     rc.push(`${o[0]}% ${o[1]}`)
   }
+  rc.push("")
+  rc.push("[hold down shift to hide]")
   return rc
 }
 

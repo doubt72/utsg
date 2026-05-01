@@ -1736,6 +1736,8 @@ describe("reaction fire attacks", () => {
       "base to hit: 7",
       "armor factor (front): 2",
       "- minus 1 for less than half range",
+      "",
+      "[hold down shift to hide]"
     ])
 
     vi.spyOn(Math, "random").mockReturnValue(0.3)

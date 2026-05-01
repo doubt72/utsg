@@ -128,6 +128,10 @@ export default function MapCounterOverlay({
   }
 
   const showActionHelp = (event: React.MouseEvent, counter: Counter) => {
+    if (event.shiftKey) {
+      setActionHelpDisplay(undefined)
+      return
+    }
     if (!map.game) { return }
     const x = (event.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
     const y = (event.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
@@ -345,6 +349,18 @@ export default function MapCounterOverlay({
   }, [
     xx, yy, counters, update, contextMenu, helpDisplay, actionHelpDisplay,
   ])
+
+  const listener = (e: KeyboardEvent) => {
+    if (e.key === "Shift") { setActionHelpDisplay(undefined) }
+  }
+
+  useEffect(() => {
+    if (!actionHelpDisplay) {
+      document.removeEventListener("keydown", listener)
+      return
+    }
+    document.addEventListener("keydown", listener)
+  }, [actionHelpDisplay])
 
   return (
     <g>

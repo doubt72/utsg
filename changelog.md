@@ -1,6 +1,7 @@
 # 0.75 Beta
 
 - More work on scenario designer
+- Add ability to suppress help overlays
 - Bug fix: no notification on finished games (but only notifying because old game was broken, technically)
 
 ## 0.74 Beta
