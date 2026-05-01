@@ -1,3 +1,9 @@
+# 0.76 Beta
+
+- Tweaks to copy
+- Some game cleanup of old scenarios
+- Updated 601
+
 # 0.75 Beta
 
 - More work on scenario designer

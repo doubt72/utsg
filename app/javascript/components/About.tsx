@@ -61,10 +61,11 @@ export default function About() {
           </p>
           <p>
             If you&apos;re looking for a quick introduction to the game, scenario <strong>001</strong>: <em>A
-            Straightforward Proposition</em> (as a simpler infantry-only battle) is a decent starting
-            scenario, perhaps followed by <strong>101</strong>: <em>A Brief Encounter</em> (a
-            quick tank-on-tank battle), then perhaps <strong>003</strong>: <em>Speed Bump</em> (which adds
-            an anti-tank gun, a mortar and a little bit of elevation).
+            Straightforward Proposition</em> is a decent starting scenario.  It&apos;s not the smallest
+            scenario, but it&apos;s basically just an infantry battle &mdash; no tanks or artillery or wires or
+            mines &mdash; and doesn&apos;t have any elevation or crazy weather to worry about.  From there,
+            there are lots of choices: in particular, pay attention to the map size and what units are
+            included in the scenario descriptions.
           </p>
           <p><strong>Recent Announcements:</strong></p>
           <div id="a24042026" className="about-announcement">
