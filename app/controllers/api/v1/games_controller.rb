@@ -76,8 +76,9 @@ module Api
         %i[owner player_one player_two winner last_action]
       end
 
-      def index_games(scope) # rubocop:disable Metrics/MethodLength
+      def index_games(scope) # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
         games = Game.includes(index_includes)
+        games = games.not_solo(current_user) unless current_user&.admin
         case scope
         when "not_started"
           games = games.not_started

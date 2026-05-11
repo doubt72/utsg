@@ -46,6 +46,18 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     )
   end
 
+  # For excluding other people's solo games on the main page
+  def self.not_solo(user)
+    if user
+      where(
+        "player_one_id != player_two_id OR player_one_id IS NULL OR player_two_id IS NULL " \
+        "OR player_one_id = ?", user.id
+      )
+    else
+      where("player_one_id != player_two_id OR player_one_id IS NULL OR player_two_id IS NULL")
+    end
+  end
+
   def self.needs_action(user)
     where("current_player_id = ? AND state = ?", user.id, 2)
   end

@@ -62,6 +62,51 @@ RSpec.describe Api::V1::GamesController do
       expect(json[3]["id"]).to be == game1.id
     end
 
+    it "exclude solo games" do
+      create(
+        :game, owner: user1, player_one: user1, player_two: user1,
+               current_player: user1, name: "game 5", state: :in_progress
+      )
+
+      get :index
+
+      expect(response.status).to be == 200
+      json = JSON.parse(response.body)["data"]
+      expect(json.length).to be == 4
+    end
+
+    it "don't exclude own solo games" do
+      login(user1)
+
+      create(
+        :game, owner: user1, player_one: user1, player_two: user1,
+               current_player: user1, name: "game 5", state: :in_progress
+      )
+
+      get :index
+
+      expect(response.status).to be == 200
+      json = JSON.parse(response.body)["data"]
+      expect(json.length).to be == 5
+    end
+
+    it "admin sees all games" do
+      user1.update!(admin: true)
+
+      login(user1)
+
+      create(
+        :game, owner: user2, player_one: user2, player_two: user2,
+               current_player: user2, name: "game 5", state: :in_progress
+      )
+
+      get :index
+
+      expect(response.status).to be == 200
+      json = JSON.parse(response.body)["data"]
+      expect(json.length).to be == 5
+    end
+
     it "can find new games" do
       get :index, params: { scope: "not_started" }
 

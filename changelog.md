@@ -1,3 +1,7 @@
+# 0.77 Beta
+
+- Exclude other player's solo games from the main page display
+
 # 0.76 Beta
 
 - Tweaks to copy
