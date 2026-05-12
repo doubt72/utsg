@@ -441,6 +441,7 @@ export default function MapDisplay({
         if (!found) { coords.push(new Coordinate(t.x, t.y))}
       }
       for (const c of coords) {
+        if (c.x >= map.width || c.y >= map.height) { continue }
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(new Coordinate(c.x, c.y)) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false} />)

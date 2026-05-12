@@ -1,3 +1,7 @@
+# 0.79 Beta
+
+- Bug fix: handle display of drift off-board in second location
+
 # 0.78 Beta
 
 - Dynamically resize interface components when selecting interface scale buttons
