@@ -273,7 +273,7 @@ export default class Map {
     for (let i = 0; i < distance; i++) {
       rc = this.neightborCoordinate(rc, dir)
     }
-    if (rc.x < 0 || rc.y < 0 || rc.x > this.width || rc.y > this.width) { return false }
+    if (rc.x < 0 || rc.y < 0 || rc.x >= this.width || rc.y >= this.width) { return false }
     return rc
   }
 

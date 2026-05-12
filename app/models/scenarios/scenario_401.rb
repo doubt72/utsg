@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1944, 10, 31].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -33,6 +33,7 @@ module Scenarios
           :jap_crew_t,
           [2, :jap_type_92_hmg],
           :jap_70mm_type_92,
+          [2, :foxhole],
         ],
       },
     }.freeze

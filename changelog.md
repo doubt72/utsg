@@ -1,3 +1,10 @@
+# 0.81 Beta
+
+- Added tutorial link
+- Toned down artillery drift slightly
+- Bug fix: one last subtle bug with drift logic for off-board artillery, added additional test coverage; previous bugs were display-only but game-breaking
+- Updated 401
+
 # 0.80 Beta
 
 - Bug fix: more changes for off-board artillery

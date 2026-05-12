@@ -323,10 +323,9 @@ export default function FireSection() {
         <tbody>
           <tr>
             <th>roll</th>
-            <th>1-3</th>
-            <th>4-6</th>
-            <th>7-8</th>
-            <th>9</th>
+            <th>1-4</th>
+            <th>5-7</th>
+            <th>8-9</th>
             <th>10</th>
           </tr>
           <tr>
@@ -335,7 +334,6 @@ export default function FireSection() {
             <td>2</td>
             <td>3</td>
             <td>4</td>
-            <td>5</td>
           </tr>
         </tbody>
       </table>

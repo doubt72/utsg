@@ -2139,6 +2139,13 @@ describe("ranged fire attacks", () => {
       game.gameState?.finish()
       Math.random = original
 
+      expect(game.actions[0].stringValue).toBe(
+        "German Radio 10.5cm at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E1; targeting roll: " +
+        "target 8, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll: target 7, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40: " +
+        "target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+      )
+
       expect(game.moraleChecksNeeded).toStrictEqual([
         { unit: target, from: [floc], to: tloc, incendiary: false, critical: true },
         { unit: target2, from: [floc], to: tloc, incendiary: false, critical: true },
@@ -2230,6 +2237,13 @@ describe("ranged fire attacks", () => {
         "infantry effect roll: target 7, rolled 2 [2d10: 1 + 1]: no effect"
       )
 
+      expect(game.actions[0].stringValue).toBe(
+        "German Radio 10.5cm at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E3; " +
+        "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, drifts, " +
+        "firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
+        "drifted to D3; infantry effect roll: target 7, rolled 2 [2d10: 1 + 1]: no effect"
+      )
+
       const all = map.allUnits
       expect(all.length).toBe(5)
       expect(all[0].unit.id).toBe("target1")
@@ -2245,6 +2259,72 @@ describe("ranged fire attacks", () => {
         loc: new Coordinate(3, 2), vehicle: false, incendiary: false,
         vehicle_incendiary: false,
       })
+    })
+
+    test("offboard artillery miss drifts offboard", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadio)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      map.select(firing2)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(0, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(24)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(7)
+
+      const mult = rangeMultiplier(
+        map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
+      )
+      expect(mult.mult).toBe(4)
+      expect(mult.why.length).toBe(1)
+
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+      expect(game.playerTwoScore).toBe(10)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 16, rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken"
+      )
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "direction roll: 1 [d6]"
+      )
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "distance roll: 1 [d10] for 1 hexes, drifted off map"
+      )
+
+      expect(game.actions[0].stringValue).toBe(
+        "German Radio 10.5cm at D3 fired at Soviet Rifle at A1; targeting roll: target 16, " +
+        "rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken; direction roll: 1 [d6]; " +
+        "distance roll: 1 [d10] for 1 hexes, drifted off map"
+      )
     })
 
     test("offboard artillery hex", () => {
