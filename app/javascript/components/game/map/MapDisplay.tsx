@@ -410,7 +410,7 @@ export default function MapDisplay({
     if (map.game?.gameState?.type === stateType.Fire) {
       const hexes: JSX.Element[] = []
       for (const c of map.game.fireState.targetHexes) {
-        if (c.x >= map.width || c.y >= map.height) { continue }
+        if (c.x >= map.width || c.y >= map.height || c.x < 0 || c.y < 0) { continue }
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(c) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true} />)
@@ -441,7 +441,7 @@ export default function MapDisplay({
         if (!found) { coords.push(new Coordinate(t.x, t.y))}
       }
       for (const c of coords) {
-        if (c.x >= map.width || c.y >= map.height) { continue }
+        if (c.x >= map.width || c.y >= map.height || c.x < 0 || c.y < 0) { continue }
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(new Coordinate(c.x, c.y)) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false} />)

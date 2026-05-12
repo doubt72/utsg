@@ -184,7 +184,7 @@ export default class FireAction extends BaseAction {
     if (firing0.unit.areaFire || oBoard) {
       fireStart = true
     }
-    const fireStartHex = new Coordinate(to.x, to.y)
+    const fsHex = new Coordinate(to.x, to.y)
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
@@ -222,8 +222,8 @@ export default class FireAction extends BaseAction {
             if (this.data.fire_data) { this.data.fire_data.drift = true }
             dTo = loc
             drift.description += `, drifted to ${formatCoordinate(loc)}`
-            fireStartHex.x = loc.x
-            fireStartHex.y = loc.y
+            fsHex.x = loc.x
+            fsHex.y = loc.y
             this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
             dTargets = this.map.countersAt(loc).filter(c => c.hasUnit).map(u => {
               return { x: loc.x, y: loc.y, counter: u }
@@ -709,10 +709,12 @@ export default class FireAction extends BaseAction {
       fireStartVehicleIncendiary = true
     }
     if (fireStart && !smoke) {
-      this.game.fireStartCheckNeeded = {
-        loc: fireStartHex, vehicle: fireStartVehicle !== undefined,
-        incendiary: fireStartIncendiary,
-        vehicle_incendiary: fireStartVehicleIncendiary,
+      if (fsHex.x >= 0 && fsHex.x < this.map.width && fsHex.y >= 0 && fsHex.y < this.map.height) {
+        this.game.fireStartCheckNeeded = {
+          loc: fsHex, vehicle: fireStartVehicle !== undefined,
+          incendiary: fireStartIncendiary,
+          vehicle_incendiary: fireStartVehicleIncendiary,
+        }
       }
     }
     sortStacks(this.map)

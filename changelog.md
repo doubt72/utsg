@@ -1,3 +1,7 @@
+# 0.80 Beta
+
+- Bug fix: more changes for off-board artillery
+
 # 0.79 Beta
 
 - Bug fix: handle display of drift off-board in second location
