@@ -1,3 +1,9 @@
+# 0.78 Beta
+
+- Dynamically resize interface components when selecting interface scale buttons
+- Bug fix: unselect units when closing reinforcement panel (only affected auto-open, the most important case)
+- Bug fix: handle display of drift off-board
+
 # 0.77 Beta
 
 - Exclude other player's solo games from the main page display

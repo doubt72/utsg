@@ -172,13 +172,13 @@ export default function MapDisplay({
     )) { value = 2 }
     setTShrink(value)
     shrinkCallback(window.innerWidth < 1150)
-  }, [width, map, map.game])
+  }, [width, map, map.game, scale, mapScale])
 
   useEffect(() => {
     let shrink: 0 | 1 | 2 = height < minHeight(window.innerHeight, scale, map, 1147) ? 1 : 0
     if (height < minHeight(window.innerHeight, scale, map, 907)) { shrink = 2 }
     setIShrink(shrink)
-  }, [height, map, map.game])
+  }, [height, map, map.game, scale, mapScale])
 
   // IDEK what I'm doing with types here
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
@@ -410,6 +410,7 @@ export default function MapDisplay({
     if (map.game?.gameState?.type === stateType.Fire) {
       const hexes: JSX.Element[] = []
       for (const c of map.game.fireState.targetHexes) {
+        if (c.x >= map.width || c.y >= map.height) { continue }
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(c) as Hex
         hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true} />)
@@ -506,17 +507,7 @@ export default function MapDisplay({
         const xx = rp.props.xx
         const yy = rp.props.yy
         const player = rp.props.player
-        return (
-          <ReinforcementPanel map={map} xx={xx} yy={yy} player={player}
-                              scale={scale ?? 1} mapScale={mapScale ?? 1}
-                              closeCallback={() => {
-                                setReinforcementsOverlay(undefined)
-                                if (map.game && map.game.gameState?.type === stateType.Deploy) {
-                                  map.game.clearGameState()
-                                }
-                              }}
-                              ovCallback={setOverlay} forceUpdate={mapUpdate} />
-        )
+        return makeReinfocementPanel(xx, yy, player)
       })
     }
     if (map.game?.openOverlay !== undefined && !preview) {
@@ -538,7 +529,7 @@ export default function MapDisplay({
     map.currentWeather, map.baseWeather, map.precip, map.precipChance,
     map.windSpeed, map.windDirection, map.windVariable, width, height, scale,
     map.game?.currentPlayer, map.game?.lastActionIndex, map.game?.lastAction?.undone,
-    map.game?.initiative, map.game?.currentPlayer, map.game?.turn,
+    map.game?.initiative, map.game?.currentPlayer, map.game?.turn, iShrink, tShrink,
     map.game?.playerOneScore, map.game?.playerTwoScore, forceUpdate,
     map.game?.closeReinforcementPanel, map.game?.gameState?.type,
     map.baseTerrain, map.night // debugging only, don't change in actual games
@@ -727,17 +718,7 @@ export default function MapDisplay({
       const player = selection.target.player
       const x = reinforcementsOverlay?.props.xx
       const y = reinforcementsOverlay?.props.yy
-      setReinforcementsOverlay(
-        <ReinforcementPanel map={map} xx={x} yy={y} player={player}
-                            scale={scale ?? 1} mapScale={mapScale ?? 1}
-                            closeCallback={() => {
-                              setReinforcementsOverlay(undefined)
-                              if (map.game && map.game.gameState?.type === stateType.Deploy) {
-                                map.game.clearGameState()
-                              }
-                            }}
-                            ovCallback={setOverlay} forceUpdate={mapUpdate} />
-      )
+      setReinforcementsOverlay(makeReinfocementPanel(x, y, player))
     }
     setMapUpdate(s => s + 1)
   }
@@ -750,18 +731,29 @@ export default function MapDisplay({
     }
   }
 
+  const makeReinfocementPanel = (x: number, y: number, player: Player) => {
+    return (
+      <ReinforcementPanel map={map} xx={x} yy={y} player={player}
+                          scale={scale ?? 1} mapScale={mapScale ?? 1}
+                          closeCallback={() => {
+                            setReinforcementsOverlay(undefined)
+                            if (map.game && map.game.gameState?.type === stateType.Deploy) {
+                              map.game.clearGameState()
+                            }
+                            updateCallback()
+                            counterCallback()
+                          }}
+                          ovCallback={setOverlay} forceUpdate={mapUpdate} />
+    )
+  }
+
   const displayReinforcements = (player: Player) => {
     resetCallback()
     setReinforcementsOverlay(rp => {
       if (!rp || rp.props.player !== player) {
         const xx = reinforcementOffset + (player === 1 ? 0 : 90)
         const yy = 52 + 50 / scale - 50
-        return (
-          <ReinforcementPanel map={map} xx={xx} yy={yy} player={player}
-                              scale={scale ?? 1} mapScale={mapScale ?? 1}
-                              closeCallback={() => setReinforcementsOverlay(undefined)}
-                              ovCallback={setOverlay} forceUpdate={mapUpdate} />
-        )
+        return makeReinfocementPanel(xx, yy, player)
       } else {
         return undefined
       }
