@@ -1,3 +1,7 @@
+# 0.82
+
+- Updated tutorial link
+
 # 0.81 Beta
 
 - Added tutorial link

@@ -54,7 +54,7 @@ export default function MainPage() {
               </a>
             </p>
             <p>
-              View a video <a className="regular" href="https://www.youtube.com/watch?v=xGDyiLfwerc">tutorial</a>, or
+              View a video <a className="regular" href="https://youtu.be/0wJj1YgMCVc">tutorial</a>, or
               join us on <a className="regular" href="https://discord.gg/URDcFwNGA7">Discord</a>.
               {/* or upport the work (and/or my mild coffee addiction)
               on <a className="regular" href="https://www.patreon.com/cw/u43420358">Patreon</a> or
