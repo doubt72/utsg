@@ -355,6 +355,44 @@ RSpec.describe Api::V1::GamesController do
     end
   end
 
+  describe "destroy" do
+    it "can delete a game" do
+      login(user1)
+
+      expect do
+        delete :destroy, params: { id: game2.id }
+      end.to change { Game.count }
+
+      expect(response.status).to be == 204
+
+      expect(Game.where(id: game2.id).count).to be == 0
+    end
+
+    it "can't delete game you don't own" do
+      login(user2)
+
+      expect do
+        delete :destroy, params: { id: game2.id }
+      end.to_not change { Game.count }
+
+      expect(response.status).to be == 403
+
+      expect(Game.find_by(id: game2.id).id).to be == game2.id
+    end
+
+    it "can't delete game in progress" do
+      login(user1)
+
+      expect do
+        delete :destroy, params: { id: game1.id }
+      end.to_not change { Game.count }
+
+      expect(response.status).to be == 403
+
+      expect(Game.find_by(id: game1.id).id).to be == game1.id
+    end
+  end
+
   describe "join_game" do
     it "allows player to join open game" do
       login(user2)

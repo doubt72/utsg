@@ -113,6 +113,13 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
     update(params)
   end
 
+  def cancel_game(user)
+    return nil unless owner_id == user.id
+    return nil if in_progress? || complete?
+
+    delete
+  end
+
   def join(user)
     return nil if game_full? || player_one_id == user.id || player_two_id == user.id
 

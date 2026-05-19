@@ -22,7 +22,7 @@ Rails.application.routes.draw do
         end
       end
       resources :messages, only: %i[index create]
-      resources :games, only: %i[index show create update] do
+      resources :games, only: %i[index show create update destroy] do
         member do
           post "join"
           post "leave"

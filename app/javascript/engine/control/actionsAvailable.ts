@@ -158,11 +158,14 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
   if (active) { setState(game) }
 
   if (game.phase === gamePhaseType.Deploy) {
+    const select = currSelection(game, false)
     if (game.gameState?.type === stateType.FinishDeploy) {
+      if (select !== undefined) {
+        actions.push({ type: "undeploy" })
+      }
       actions.push({ type: "finish_deploy" })
     } else {
       actions.unshift({ type: "deploy" })
-      const select = currSelection(game, false)
       if (select !== undefined) {
         actions.push({ type: "undeploy" })
       }

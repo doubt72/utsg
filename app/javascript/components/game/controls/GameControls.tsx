@@ -64,6 +64,7 @@ import GameOverMenuButton from "./buttons/GameOverMenuButton";
 import FinishDeployButton from "./buttons/FinishDeployButton";
 import { ClockHistory, ExclamationCircle, ExclamationTriangle, HexagonHalf } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
+import DeleteGameButton from "./buttons/DeleteGameButton";
 
 interface GameControlsProps {
   game: Game;
@@ -349,6 +350,22 @@ export default function GameControls({
         </div> :
         <div>
           <ResignButton game={game} callback={callAllBack} vertical={vertical} />
+        </div>
+      }
+      { (game.state === "in_progress" || game.state === "complete" ||
+         game.ownerName !== localStorage.getItem("username")) ? "" :
+        game.deleteLevel > 0 ?
+        <div className={ `${vertical ? "flex-vertical" : "flex"} nowrap` }>
+          { vertical ? "" :
+            <div className="mt05em mb05em mr05em ml05em" >
+              Are you really sure?
+            </div>
+          }
+          <DeleteGameButton game={game} callback={callAllBack} vertical={vertical} />
+          <ResignCancelButton game={game} callback={callAllBack} vertical={vertical} />
+        </div> :
+        <div>
+          <DeleteGameButton game={game} callback={callAllBack} vertical={vertical} />
         </div>
       }
     </div>

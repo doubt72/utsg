@@ -1,5 +1,5 @@
 import { baseTerrainType, Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
-import { getAPI, postAPI, putAPI } from "../utilities/network";
+import { deleteAPI, getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
 import GameAction from "./GameAction";
 import Feature from "./Feature";
@@ -118,6 +118,7 @@ export default class Game {
   animationIndex: number = 1;
   updateTimer: NodeJS.Timeout | undefined;
   resignationLevel: number;
+  deleteLevel: number;
 
   moraleChecksNeeded: ComplexCheck[];
   sniperNeeded: SimpleUnitCheck[];
@@ -168,6 +169,7 @@ export default class Game {
     this.messageQueue = []
     this.animationQueue = []
     this.resignationLevel = 0
+    this.deleteLevel = 0
     this.moraleChecksNeeded = []
     this.sniperNeeded = []
     this.routCheckNeeded = []
@@ -304,6 +306,17 @@ export default class Game {
 
   clearResignation() {
     this.resignationLevel = 0
+  }
+
+  increaseDelete() {
+    this.deleteLevel += 1
+    if (this.deleteLevel > 1) {
+      deleteAPI(`/api/v1/games/${this.id}`, { ok: () => {} })
+    }
+  }
+
+  clearDelete() {
+    this.deleteLevel = 0
   }
 
   addMessage(message: string) {

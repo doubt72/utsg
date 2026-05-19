@@ -38,6 +38,14 @@ module Api
         end
       end
 
+      def destroy
+        if current_game&.cancel_game(current_user)
+          render json: {}, status: :no_content
+        else
+          render json: {}, status: :forbidden
+        end
+      end
+
       def join
         if current_game&.join(current_user)
           render json: current_game.show_body, status: :ok

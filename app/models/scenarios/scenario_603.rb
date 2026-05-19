@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.2"
+    VERSION = "1.3"
 
     DATE = [1941, 9, 26].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,6 +16,7 @@ module Scenarios
       "0": {
         list: [
           :chi_leader_5_1,
+          :chi_leader_4_1,
           [6, :chi_regular_s],
           [1, :chi_type_triple_ten],
         ],
@@ -27,8 +28,8 @@ module Scenarios
         list: [
           :jap_leader_6_1,
           :jap_leader_4_1,
-          [7, :jap_b_division_s],
-          [2, :jap_type_99_lmg],
+          [6, :jap_b_division_s],
+          :jap_type_99_lmg,
           :jap_type_89_gren_l,
           :jap_70mm_type_92,
         ],
@@ -38,7 +39,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 6,
+          turns: 5,
           first_deploy: 1,
           first_action: 2,
           date:,

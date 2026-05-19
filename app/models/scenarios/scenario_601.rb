@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["chi"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1939, 5, 13].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,7 +16,7 @@ module Scenarios
       "0": {
         list: [
           :chi_leader_4_1,
-          [7, :chi_regular_s],
+          [6, :chi_regular_s],
           :chi_type_24_maxim,
         ],
       },

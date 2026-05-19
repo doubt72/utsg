@@ -1,3 +1,9 @@
+# 0.84
+
+- Add ability to cancel/delete games before they start
+- Bug fix: undeploy button not displaying after all units deployed
+- Updated 601, 602
+
 # 0.83
 
 - Updated 401

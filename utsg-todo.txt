@@ -1,4 +1,9 @@
 Features/Bug Fixes:
+  + Undeploy button missing at end of deploy
+  + Add ability to cancel own game
+  - Leader should not affect opponent morale check
+  - Rush should be able to pick up weapons
+  - Unit rally on rout checks
   - Finish scenario editor
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)
