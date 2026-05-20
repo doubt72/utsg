@@ -133,7 +133,7 @@ export default class RallyState extends BaseState {
     const data = counter.unit.canCarrySupport ? {
       infantry: {
         morale_base: counter.unit.currentMorale,
-        leader_mod: leadershipAt(this.game, hex),
+        leader_mod: leadershipAt(this.game, hex, counter.unit.playerNation),
         terrain_mod: this.map.hexAt(hex)?.terrain.cover as number,
         next_to_enemy: nextToEnemy(this.game, hex),
       },

@@ -1,10 +1,12 @@
 import { Coordinate } from "../../../utilities/commonTypes";
 import Counter from "../../Counter";
 import Game from "../../Game";
-import GameAction from "../../GameAction";
+import GameAction, { GameActionRoutData } from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
 
 export default class RoutAllState extends BaseState {
+  routCheck: GameActionRoutData;
+
   constructor(game: Game) {
     super(game, stateType.RoutAll, game.currentPlayer)
     const counters: Counter[] = []
@@ -18,6 +20,7 @@ export default class RoutAllState extends BaseState {
       this.map.select(c.unit)
       return { x: hex.x, y: hex.y, id: c.unit.id, name: c.unit.name, counter: c }
     })
+    this.routCheck = { mod: 0, why: [], rally_mod: game.routCount()*2 }
     game.refreshCallback(game)
   }
 

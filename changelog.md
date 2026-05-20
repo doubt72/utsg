@@ -1,6 +1,9 @@
 # 0.84
 
 - Add ability to cancel/delete games before they start
+- Changed mind on ability to pick up weapons when rushing -- it's no longer forbidden
+- Refactor rout all to implement new rules
+- Bug fix: opponent units should not get leader bonus during morale checks in shared hex
 - Bug fix: undeploy button not displaying after all units deployed
 - Updated 601, 602
 

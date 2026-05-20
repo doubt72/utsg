@@ -671,6 +671,17 @@ export default class Game {
     return ""
   }
 
+  routCount(player?: Player): number {
+    let rc = 0
+    for (let i = this.lastActionIndex; i >= 0; i--) {
+      const action = this.actions[i]
+      if (action.undone) { continue }
+      if (action.type === "phase") { break }
+      if (action.type === "rout_all" && action.player === (player ?? this.currentPlayer)) { rc += 1 }
+    }
+    return rc
+  }
+
   findActionBySequence(sequence: number): BaseAction | false {
     for (const a of this.actions) {
       if (a.sequence === sequence) { return a }

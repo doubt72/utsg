@@ -261,12 +261,23 @@ export default function RoutSection() {
         Routing one&apos;s own units is automatic. If the unit can be routed, it will be routed.
       </p>
       <p>
-        Attempting to rout all of an opponent&apos;s units is not automatic. Each broken unit makes
+        Attempting to rout all of an opponent&apos;s units is not automatic, and risks rallying
+        opponent units. Each broken unit makes
         a standard morale check (using all the normal morale check modifiers, plus an additiona -2
         modifier), except: ties result
         in no rout (see &quot;Morale Checks&quot; in the{" "}
         { helpLink("Fire", "fire section") } of the
-        documents). If the unit fails that morale check, it will rout.
+        documents). If the unit fails that morale check, it will rout.  However, if a unit passes
+        the morale check by 12 or more above the modified morale check threshold, the unit will
+        rally instead.
+      </p>
+        In addition, each attempt to rout enemy units (in the same turn) lowers the rally threshold
+        by two.  For example, on the fifth attempt, enemy units will rally on a roll of 4 or
+        more above the modified morale check threshold (plus 12 minus 4 times 2).  The rally
+        threshold will never drop below the morale check threshold, however (at most, in extreme
+        cases of any attempts to rout all enemy units after the sixth, all non-routs result in
+        rallied units).
+      <p>
       </p>
       {routDiagram}
       {routDiagram2}

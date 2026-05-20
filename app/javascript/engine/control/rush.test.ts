@@ -384,7 +384,7 @@ describe("rush movement", () => {
     expect(all[1].unit.isNormal).toBe(true)
   })
 
-  test("cannot pick up sw", () => {
+  test("can pick up sw", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
@@ -408,7 +408,7 @@ describe("rush movement", () => {
     expect(showLoadMove(game)).toBe(false)
 
     game.moveState.move(3, 2)
-    expect(showLoadMove(game)).toBe(false)
+    expect(showLoadMove(game)).toBe(true)
   })
 
   test("leader carrying sw", () => {

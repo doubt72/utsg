@@ -155,7 +155,6 @@ export function showDropMove(game: Game): boolean {
 }
 
 export function showLoadMove(game: Game): boolean {
-  if (game.moveState.rushing) { return false }
   const move = game.moveState
   if (!move.selection || move.smoke || move.dropping) { return false }
   for (const s of move.selection) {
@@ -169,6 +168,7 @@ export function canBeLoaded(game: Game, target: Unit): boolean {
     if (!unit) { unit = game.moveState.selection[0].counter.unit as Unit }
     const path = game.moveState.path
     if (target.crewed && path && path.length > 1) { return false }
+    if (target.crewed && game.moveState.rushing) { return false }
     const extra = target.uncrewedSW ? target.baseMovement : 0
     return unit.canCarry(target) && movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra
 }
@@ -181,6 +181,7 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
     if (c.hasFeature || c.unit.selected || c.unit.loadedSelected) { continue }
     const path = game.moveState.path
     if (c.unit.crewed && path && path.length > 1) { continue}
+    if (c.unit.crewed && game.moveState.rushing) { continue }
     const extra = c.unit.uncrewedSW ? c.unit.baseMovement : 0
     if (unit.canCarry(c.unit) && movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra) {
       return true

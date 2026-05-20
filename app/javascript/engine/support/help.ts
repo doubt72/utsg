@@ -9,6 +9,7 @@ import {
   untargetedModifiers
 } from "../control/fire"
 import { nextToEnemy } from "../control/state/RallyState"
+import RoutCheckState from "../control/state/RoutCheckState"
 import Counter from "../Counter"
 import Feature from "../Feature"
 import Game from "../Game"
@@ -374,7 +375,7 @@ export function rallyHelpText(game: Game, loc: Coordinate, unit: Unit): string[]
     rc.push(`- base of ${baseRally}`)
     rc.push(`- minus unit morale ${unit.currentMorale}`)
     let toRally = baseRally - unit.currentMorale
-    const leadership = leadershipAt(game, loc)
+    const leadership = leadershipAt(game, loc, unit.playerNation)
     if (leadership > 0) {
       rc.push(`- minus minus leadership ${leadership}`)
       toRally -= leadership
@@ -524,8 +525,17 @@ export function routHelpText(game: Game, loc: Coordinate, unit: Unit): string[] 
   const modifiers = moraleModifiers(game, unit, [loc], loc, false)
   toRout += modifiers.mod
   for (const m of modifiers.why) { rc.push(m) }
+  let mod = (game.gameState as RoutCheckState).routCheck.rally_mod
+  if (mod > 12) { mod = 12 }
+  const toRally = toRout + 12 - mod
   rc.push("")
   rc.push(`target to avoid rout: ${toRout} (${chance2D10(toRout - 1)}%)`)
+  rc.push(`target to rally: ${toRally} (${chance2D10(toRally - 1)}%)`)
+  if (mod > 0) {
+    rc.push(`- plus 12 minus ${mod} for previous attempts`)
+  } else {
+    rc.push(`- rout check plus 10`)
+  }
   rc.push("")
   rc.push("[hold down shift to hide]")
   return rc

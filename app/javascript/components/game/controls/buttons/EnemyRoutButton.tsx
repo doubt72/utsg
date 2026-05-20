@@ -26,7 +26,12 @@ export default function EnemyRoutButton({ game, vertical, callback }: EnemyRoutB
     if (game.gameState?.type === stateType.RoutAll) {
       return "confirm rout enemy"
     } else {
-      return "rout enemy (3)"
+      const mod = game.routCount()*2
+      if (vertical) {
+        return `rout enemy (3)${ mod > 0 ? ` [+${mod} rally modifier]` : "" }`
+      } else {
+        return `rout enemy (3)${ mod > 0 ? ` [rally +${mod}]` : "" }`
+      }
     }
   }
 

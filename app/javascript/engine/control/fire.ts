@@ -172,7 +172,7 @@ export function firepower(
       if (sunit.sponson.range >= dist) { fp += sunit.sponson.firepower}
     } else {
       const leadership = (sunit.targetedRange || sunit.offBoard) && !sunit.isVehicle ? 0 :
-        leadershipAt(game, new Coordinate(sel.x, sel.y))
+        leadershipAt(game, new Coordinate(sel.x, sel.y), sunit.playerNation)
       if (sunit.currentRange >= dist || sunit.offBoard) {
         fp += sunit.currentFirepower / (wire[i] ? 2 : 1) + leadership
       }
@@ -201,13 +201,13 @@ export function firepower(
   return { fp, why }
 }
 
-export function leadershipAt(game: Game, at: Coordinate): number {
+export function leadershipAt(game: Game, at: Coordinate, player: string): number {
   const counters = game.scenario.map.countersAt(at)
   let leadership = 0
   for (const c of counters) {
     if (!c.hasUnit) { continue }
     const unit = c.unit
-    if (unit.leader) {
+    if (unit.leader && unit.playerNation === player) {
       if (unit.currentLeadership > leadership) { leadership = unit.currentLeadership }
     }
   }
@@ -423,7 +423,7 @@ export function moraleModifiers(
   // Calculated live as part of current morale, but display help slightly differently
   why.push(`- minus morale ${target.currentMorale + (target.pinned ? 1 : 0)}`)
   if (!target.leader) {
-    const leadership = leadershipAt(game, to)
+    const leadership = leadershipAt(game, to, target.playerNation)
     if (leadership > 0) {
       mod -= leadership
       why.push(`- minus leadership ${leadership}`)

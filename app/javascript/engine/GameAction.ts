@@ -99,7 +99,7 @@ export type GameActionMoraleData = {
 }
 
 export type GameActionRoutData = {
-  mod: number, why: string[],
+  mod: number, why: string[], rally_mod: number,
 }
 
 export type GameActionCCData = {

@@ -22,7 +22,8 @@ import FireState from "./state/FireState"
 import { StateSelection, stateType } from "./state/BaseState"
 import FireStartState from "./state/FireStartState"
 import { deHTML } from "../../utilities/graphics"
-import { fireHelpText } from "../support/help"
+import { fireHelpText, moraleHelpText } from "../support/help"
+import MoraleCheckState from "./state/MoraleCheckState"
 
 describe("ranged fire attacks", () => {
   describe("probability checks", () => {
@@ -1361,6 +1362,127 @@ describe("ranged fire attacks", () => {
         "target 12, rolled 20 [2d10: 10 + 10]: hit, Studebaker US6 destroyed"
       )
       expect(game.playerTwoScore).toBe(14)
+    })
+
+    test("attack against multiplayer stack", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const firing = new Unit(testRInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target1 = new Unit(testRInf)
+      target1.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target1)
+      const target2 = new Unit(testGInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testGLdr)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.type).toBe(stateType.Fire)
+      expect(fire.selection[0].id).toBe("firing1")
+
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target1.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target1, from: [floc], to: tloc, incendiary: false, critical: false },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: false },
+        { unit: target3, from: [floc], to: tloc, incendiary: false, critical: false },
+      ])
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 13, rolled 20 [2d10: 10 + 10]: hit"
+      )
+
+      game.setGameState(new MoraleCheckState(game))
+      let check = game.gameState as MoraleCheckState
+      expect(check.type).toBe(stateType.MoraleCheck)
+      expect(check.selection[0].id).toBe("target1")
+
+      expect(moraleHelpText(game, tloc, target1)).toStrictEqual([
+        "morale check roll:",
+        "- base of 15",
+        "- minus morale 3",
+        "",
+        "morale check pass: 12 (36%)",
+        "unit pinned on exact roll (9%)",
+        "",
+        "[hold down shift to hide]",
+      ])
+
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState?.finish()
+
+      expect(deHTML(game.lastAction?.stringValue as string)).toBe(
+        "Soviet morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks"
+      )
+
+      game.setGameState(new MoraleCheckState(game))
+      check = game.gameState as MoraleCheckState
+      expect(check.type).toBe(stateType.MoraleCheck)
+      expect(check.selection[0].id).toBe("target2")
+
+      expect(moraleHelpText(game, tloc, target2)).toStrictEqual([
+        "morale check roll:",
+        "- base of 15",
+        "- minus morale 3",
+        "- minus leadership 2",
+        "",
+        "morale check pass: 10 (55%)",
+        "unit pinned on exact roll (9%)",
+        "",
+        "[hold down shift to hide]",
+      ])
+
+      game.gameState?.finish()
+
+      expect(deHTML(game.lastAction?.stringValue as string)).toBe(
+        "German morale check for Rifle (2d10): target 10, rolled 2 [2d10: 1 + 1], unit breaks"
+      )
+
+      game.setGameState(new MoraleCheckState(game))
+      check = game.gameState as MoraleCheckState
+      expect(check.type).toBe(stateType.MoraleCheck)
+      expect(check.selection[0].id).toBe("target3")
+
+      expect(moraleHelpText(game, tloc, target3)).toStrictEqual([
+        "morale check roll:",
+        "- base of 15",
+        "- minus morale 6",
+        "",
+        "morale check pass: 9 (64%)",
+        "unit pinned on exact roll (8%)",
+        "",
+        "[hold down shift to hide]",
+      ])
+
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(deHTML(game.lastAction?.stringValue as string)).toBe(
+        "German morale check for Leader (2d10): target 9, rolled 2 [2d10: 1 + 1], unit breaks"
+      )
     })
 
     test("destroyed vehicle may start fire", () => {

@@ -9,7 +9,9 @@ export default function RushSection() {
         { helpLink("Move", "movement") }, with the following
         differences:
       </p>
-      <p>Only infantry units may rush. Units manning crewed weapons may not rush.</p>
+      <p>
+        Only infantry units may rush. Units manning crewed weapons may not rush.  Crewed weapons
+        also may not be manned during a rush.</p>
       <p>
         Only units that have already been activated may rush (unactivated units perform regular
         movement). However, a mix of activated units and unactivated units may rush together (all of
@@ -20,7 +22,7 @@ export default function RushSection() {
         movement points next turn.
       </p>
       <p>
-        Units may not pick up weapons during a rush, though they may drop them if they have
+        Units may pick up weapons or drop them during a rush if they have
         sufficient movement points to do so. Units capable of laying smoke may lay it at the same
         movement costs as normal movement.
       </p>

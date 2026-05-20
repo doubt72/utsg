@@ -1,5 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
-import { createBlankGame, testGGun, testGInf, testGMG, testRInf, testWire } from "./testHelpers";
+import {
+  createBlankGame, createMoveGame, testGGun, testGInf, testGLdr, testGMG, testRInf, testWire
+} from "./testHelpers";
 import { Coordinate } from "../../utilities/commonTypes";
 import Unit from "../Unit";
 import { findRoutPathTree, routEnds, routPaths } from "./rout";
@@ -10,6 +12,8 @@ import RoutState, { RoutPathTree } from "./state/RoutState";
 import RoutAllState from "./state/RoutAllState";
 import RoutCheckState from "./state/RoutCheckState";
 import RouteMoveAction from "../actions/RoutMoveAction";
+import { routHelpText } from "../support/help";
+import { deHTML } from "../../utilities/graphics";
 
 describe("routing", () => {
   describe("rout trees", () => {
@@ -512,6 +516,19 @@ describe("routing", () => {
       game.setGameState(new RoutCheckState(game))
       expect(game.gameState?.selection[0]?.id).toBe(unit.id)
 
+      expect(routHelpText(game, loc, unit)).toStrictEqual([
+        "rout check roll:",
+        "- base of 15",
+        "- minus 2 for rout check",
+        "- minus morale 1",
+        "",
+        "target to avoid rout: 12 (45%)",
+        "target to rally: 24 (0%)",
+        "- rout check plus 10",
+        "",
+        "[hold down shift to hide]",
+      ])
+
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
       game.gameState?.finish()
@@ -540,6 +557,160 @@ describe("routing", () => {
         // Can't roll involuntary rout
         expect(err instanceof IllegalActionError).toBe(true)
       }
+    })
+
+    test("high enough rout check rallies", () => {
+      const game = createMoveGame()
+      game.setCurrentPlayer(1)
+      const map = game.scenario.map
+      const unit = new Unit(testGLdr)
+      unit.break()
+      unit.id = "test1"
+      const loc = new Coordinate(3, 3)
+      map.addCounter(loc, unit)
+      organizeStacks(map)
+
+      game.setGameState(new RoutAllState(game))
+      expect(game.routCheckNeeded.length).toBe(0)
+      game.gameState?.finish()
+      expect(game.routCheckNeeded.length).toBe(1)
+
+      game.setGameState(new RoutCheckState(game))
+      expect(game.gameState?.selection[0]?.id).toBe(unit.id)
+
+      expect(routHelpText(game, loc, unit)).toStrictEqual([
+        "rout check roll:",
+        "- base of 15",
+        "- minus 2 for rout check",
+        "- minus morale 4",
+        "- minus cover 2",
+        "",
+        "target to avoid rout: 7 (85%)",
+        "target to rally: 19 (3%)",
+        "- rout check plus 10",
+        "",
+        "[hold down shift to hide]",
+      ])
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.routNeeded.length).toBe(0)
+
+      expect(deHTML(game.lastAction?.stringValue as string)).toBe(
+        "German Leader rout morale check at D4: target 7, rolled 20 [2d10: 10 + 10], critical success, unit rallies"
+      )
+    })
+
+    test("multiple rout all decreases rally threshold on rout checks", () => {
+      const game = createMoveGame()
+      const map = game.scenario.map
+      const unit = new Unit(testRInf)
+      unit.break()
+      unit.id = "test1"
+      const loc = new Coordinate(3, 3)
+      map.addCounter(loc, unit)
+      organizeStacks(map)
+
+      game.setGameState(new RoutAllState(game)) // 0
+      game.gameState?.finish()
+
+      game.setGameState(new RoutCheckState(game))
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.7)
+      game.gameState?.finish()
+
+      game.setGameState(new RoutAllState(game)) // 1
+      game.gameState?.finish()
+
+      game.setGameState(new RoutCheckState(game))
+      game.gameState?.finish()
+
+      game.setGameState(new RoutAllState(game)) // 2
+      game.gameState?.finish()
+
+      game.setGameState(new RoutCheckState(game))
+      game.gameState?.finish()
+
+      game.setGameState(new RoutAllState(game)) // 3
+      game.gameState?.finish()
+
+      game.setGameState(new RoutCheckState(game))
+
+      expect(routHelpText(game, loc, unit)).toStrictEqual([
+        "rout check roll:",
+        "- base of 15",
+        "- minus 2 for rout check",
+        "- minus morale 1",
+        "- minus cover 2",
+        "",
+        "target to avoid rout: 10 (64%)",
+        "target to rally: 16 (15%)",
+        "- plus 12 minus 6 for previous attempts",
+        "",
+        "[hold down shift to hide]",
+      ])
+
+      vi.spyOn(Math, "random").mockReturnValue(0.7)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.routNeeded.length).toBe(0)
+
+      expect(deHTML(game.lastAction?.stringValue as string)).toBe(
+        "Soviet Rifle rout morale check at D4: target 10, rolled 16 [2d10: 8 + 8], critical success, unit rallies"
+      )
+    })
+
+    test("rally threshold doesn't go below fail threshold", () => {
+      const game = createMoveGame()
+      const map = game.scenario.map
+      const unit = new Unit(testRInf)
+      unit.break()
+      unit.id = "test1"
+      const loc = new Coordinate(3, 3)
+      map.addCounter(loc, unit)
+      organizeStacks(map)
+
+      game.setGameState(new RoutAllState(game)) // 0
+      game.gameState?.finish()
+      game.togglePlayer()
+      game.setGameState(new RoutAllState(game)) // 1
+      game.gameState?.finish()
+      game.togglePlayer()
+      game.setGameState(new RoutAllState(game)) // 2
+      game.gameState?.finish()
+      game.togglePlayer()
+      game.setGameState(new RoutAllState(game)) // 3
+      game.gameState?.finish()
+      game.togglePlayer()
+      game.setGameState(new RoutAllState(game)) // 4
+      game.gameState?.finish()
+      game.togglePlayer()
+      game.setGameState(new RoutAllState(game)) // 5
+      game.gameState?.finish()
+      game.togglePlayer()
+      game.setGameState(new RoutAllState(game)) // 6
+      game.gameState?.finish()
+
+      game.setGameState(new RoutCheckState(game))
+
+      expect(routHelpText(game, loc, unit)).toStrictEqual([
+        "rout check roll:",
+        "- base of 15",
+        "- minus 2 for rout check",
+        "- minus morale 1",
+        "- minus cover 2",
+        "",
+        "target to avoid rout: 10 (64%)",
+        "target to rally: 10 (64%)",
+        "- plus 12 minus 12 for previous attempts",
+        "",
+        "[hold down shift to hide]",
+      ])
     })
 
     test("check and involuntary rout action off board", () => {
