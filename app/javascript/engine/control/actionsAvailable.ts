@@ -162,12 +162,15 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     if (game.gameState?.type === stateType.FinishDeploy) {
       if (select !== undefined) {
         actions.push({ type: "undeploy" })
+        actions.push({ type: "unselect" })
+      } else {
+        actions.push({ type: "finish_deploy" })
       }
-      actions.push({ type: "finish_deploy" })
     } else {
       actions.unshift({ type: "deploy" })
       if (select !== undefined) {
         actions.push({ type: "undeploy" })
+        actions.push({ type: "unselect" })
       }
       if (game.gameState?.type === stateType.Deploy) {
         if (game.deployState.canSplit) {

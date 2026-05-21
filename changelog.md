@@ -1,3 +1,8 @@
+# 0.85
+
+- Tweak deploy actions
+- Add some credits
+
 # 0.84
 
 - Add ability to cancel/delete games before they start

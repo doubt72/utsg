@@ -67,6 +67,10 @@ export default function About() {
             there are lots of choices: in particular, pay attention to the map size and what units are
             included in the scenario descriptions.
           </p>
+          <p>
+            There is also a <a className="regular" href="https://youtu.be/0wJj1YgMCVc">tutorial</a> available,
+            and we hope to add some video play-throughs (and improve and/or add tutorials) in the future.
+          </p>
           <p><strong>Recent Announcements:</strong></p>
           <div id="a24042026" className="about-announcement">
             <p>

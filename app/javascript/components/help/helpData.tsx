@@ -28,6 +28,7 @@ import HousekeepingSection from "./HousekeepingSection";
 import DevNotesSection from "./DevNotesSection";
 import PrecipCheckSection from "./PrecipCheckSection";
 import { Link } from "react-router-dom";
+import CreditsSection from "./CreditsSection";
 
 export type HelpSection = {
   name: string,
@@ -72,6 +73,7 @@ export const helpIndex: HelpSection[] = [
   ]},
   { name: "Glossary", fullName: "Glossary", section: <GlossarySection /> },
   { name: "Dev Notes", fullName: "Developer Notes", section: <DevNotesSection /> },
+  { name: "Credits", fullName: "Credits", section: <CreditsSection /> },
 ]
 
 export function redNumber(n: number): JSX.Element {

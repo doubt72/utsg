@@ -395,7 +395,7 @@ const terms: GlossaryData[] = [
     desc: (
       <>
         whoever has the most victory points at the end of a scenario wins; points may be awarded
-        from occupying victory points or from eliminating enemy <strong>units</strong>.
+        from occupying victory point hexes or from eliminating enemy <strong>units</strong>.
       </>
     ),
   },
