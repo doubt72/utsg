@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["pol"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1939, 9, 1].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -26,10 +26,9 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_2,
         :ger_leader_4_1,
-        [4, :ger_rifle_s],
+        [5, :ger_rifle_s],
         [2, :ger_mg_34],
-        :ger_pzkpfw_i,
-        [2, :ger_pzkpfw_ii_a_e],
+        [2, :ger_pzkpfw_i],
         :ger_pzkpfw_35t,
       ] },
     }.freeze

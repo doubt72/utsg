@@ -151,6 +151,8 @@ export default class MoveAction extends BaseAction {
       const unit = this.map.unitAtId(end, u.id) as Counter
       if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
         unit.unit.children[0].facing = normalDir(facing + 3)
+      } else if (facing && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
+        unit.unit.children[0].facing = facing
       }
       this.rush ? unit.unit.exhaust() : unit.unit.activate()
       if (this.moveData?.mines) {
@@ -268,6 +270,8 @@ export default class MoveAction extends BaseAction {
       }
       if (facing && unit.unit.transport && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
         unit.unit.children[0].facing = normalDir(facing + 3)
+      } else if (facing && unit.unit.children.length > 0 && unit.unit.children[0].crewed) {
+        unit.unit.children[0].facing = facing
       }
     }
     if (this.game.sniperNeeded.length > 0) { this.game.sniperNeeded = [] }

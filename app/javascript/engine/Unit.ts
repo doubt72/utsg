@@ -588,6 +588,7 @@ export default class Unit {
     other.type = unitType.Team
     other.icon = "team"
     other.isSplit = true
+    other.playerNation = this.playerNation
 
     other.setStatus(this.status)
     return other

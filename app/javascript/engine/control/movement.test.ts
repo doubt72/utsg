@@ -1283,6 +1283,7 @@ describe("movement", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.isActivated).toBe(true)
+    expect(all[1].unit.facing).toBe(2)
 
     game.executeUndo(false)
 
@@ -1297,6 +1298,7 @@ describe("movement", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("3.7cm Pak 36")
     expect(all[1].unit.isNormal).toBe(true)
+    expect(all[1].unit.facing).toBe(1)
   })
 
   test("move gun into trees", () => {

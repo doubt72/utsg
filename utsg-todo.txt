@@ -1,4 +1,8 @@
 Features/Bug Fixes:
+  + Allied minor split squad wrong nation
+  + Turning gun (in woods?) doesn't work
+  + Rout in opposite order
+  + Tweak Uruguay
   - Finish scenario editor
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)

@@ -39,7 +39,7 @@ export default class RoutAllAction extends BaseAction {
     for (const t of this.target) {
       const unit = this.game.findUnitById(t.id) as Unit
       const loc = new Coordinate(t.x, t.y)
-      this.game.routCheckNeeded.push({ unit, loc })
+      this.game.routCheckNeeded.unshift({ unit, loc })
     }
     this.game.updateInitiative(3)
     if (this.game.routCheckNeeded.length > 0) {

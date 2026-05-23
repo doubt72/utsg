@@ -1,3 +1,10 @@
+# 0.86
+
+- Reverse order of routing in rout-all in case of rally
+- Bug fix: minor nation split team doesn't properly duplicate player nation
+- Bug fix: gun turn not turning
+- Updated 503
+
 # 0.85
 
 - Tweak deploy actions
