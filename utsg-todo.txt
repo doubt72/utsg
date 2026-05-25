@@ -1,8 +1,5 @@
 Features/Bug Fixes:
-  + Button should say dispersion
-  + Tired units can't pick machine gun
-  + Better message for disambiguate
-  - No reaction fire no turn notification?  Maybe simplify.
+  + No reaction fire no turn notification?  Maybe simplify.
   - Finish scenario editor
   ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)

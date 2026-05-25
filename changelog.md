@@ -4,6 +4,7 @@
 - Change message when needing to choose which unit is picking up another unit
 - Slightly slow down error messages/tweak display
 - Remove some instrumentation that isn't needed anymore
+- Bug fix: turn notification not always firing; code simplified and fixed
 - Bug fix: fix premature end selection when firing tired unit and machine gun
 - Updated 308
 

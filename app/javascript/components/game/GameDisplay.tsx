@@ -68,8 +68,8 @@ export default function GameDisplay() {
 
   const [needsTurnAlert, setNeedsTurnAlert] = useState<boolean>(false)
   const [controlClasses, setControlClasses] = useState<string>("game-control")
-  const [turnTimer, setTurnTimer] = useState<NodeJS.Timeout | undefined>()
-  const [turnSwitchTimer, setTurnSwitchTimer] = useState<NodeJS.Timeout | undefined>()
+  const [, setTurnTimer] = useState<NodeJS.Timeout | undefined>()
+  const [, setTurnSwitchTimer] = useState<NodeJS.Timeout | undefined>()
 
   const [emailTimer, setEmailTimer] = useState<NodeJS.Timeout | undefined>()
 
@@ -100,16 +100,21 @@ export default function GameDisplay() {
   }
 
   useEffect(() => {
+    setControlClasses(`game-control${horizontalControls ? "" : "-vertical"}`)
+  }, [horizontalControls])
+
+  useEffect(() => {
     const user = localStorage.getItem("username")
     if (game.k?.currentUser === user) {
       setTurnTimer(t => {
         if (t) { clearTimeout(t) }
+        if (game.k?.currentUser !== user || !needsTurnAlert) { return }
         const to = setTimeout(() => {
           setTurnTimer(t => {
             if (t) { clearTimeout(t) }
-            return undefined
           })
           if (needsTurnAlert && game.k?.currentUser === user) {
+            setNeedsTurnAlert(false)
             const also = horizontalControls ? "" : "-vertical"
             setControlClasses(`game-control-turn-alert${also}`)
             setTimeout(() => {
@@ -134,17 +139,12 @@ export default function GameDisplay() {
             }, 2500)
             const sound = new Audio("/assets/release.wav")
             sound.play()
-            turnTimer
           }
         }, 1500)
         return to
       })
     }
   }, [game.k?.lastActionIndex])
-
-  useEffect(() => {
-    setControlClasses(`game-control${horizontalControls ? "" : "-vertical"}`)
-  }, [horizontalControls])
 
   useEffect(() => {
     if (!game.k || !game.k.currentUser) { return }
@@ -159,15 +159,10 @@ export default function GameDisplay() {
           })
           if (game.k?.currentUser !== user) {
             setNeedsTurnAlert(true)
-          } else {
-            setNeedsTurnAlert(false)
           }
-          turnSwitchTimer
         }, 1000)
         return to
       })
-    } else {
-      setNeedsTurnAlert(false)
     }
   }, [game.k?.currentUser])
 
