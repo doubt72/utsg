@@ -217,7 +217,7 @@ export default function MapDisplay({
       }
       return
     }
-    const alpha = timer < 30 ? timer / 30 : 1
+    const alpha = timer < 70 ? timer / 70 : 1
     const error = notificationDetails.error
     const fontSize = 24
     const height = fontSize * 1.5
@@ -233,7 +233,7 @@ export default function MapDisplay({
                   textAnchor="start" style={{ fill: `rgba(0,0,0,${alpha})` }}>{error}</text>
       </g>
     )
-    setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 12 } }), 50)
+    setTimeout(() => setNotificationDetails(s => { return { error: s.error, timer: s.timer - 6 } }), 50)
   }, [notificationDetails])
 
   useEffect(() => {

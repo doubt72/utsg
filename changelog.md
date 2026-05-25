@@ -1,3 +1,12 @@
+# 0.87
+
+- Dissipate changed to disperse in one place
+- Change message when needing to choose which unit is picking up another unit
+- Slightly slow down error messages/tweak display
+- Remove some instrumentation that isn't needed anymore
+- Bug fix: fix premature end selection when firing tired unit and machine gun
+- Updated 308
+
 # 0.86
 
 - Reverse order of routing in rout-all in case of rally

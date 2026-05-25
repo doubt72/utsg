@@ -293,7 +293,7 @@ export default class MoveState extends BaseState {
     if (this.loading) {
       if (this.needPickUpDisambiguate) {
         if (!target.selected) {
-          this.game.addMessage("must select unit that started move or hasn't already been dropped")
+          this.game.addMessage("need to select which unit is picking up unit")
           return false
         }
         if (canLoadUnit(this.game, target)) {

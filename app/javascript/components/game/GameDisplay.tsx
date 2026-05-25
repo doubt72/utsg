@@ -159,7 +159,9 @@ export default function GameDisplay() {
           })
           if (game.k?.currentUser !== user) {
             setNeedsTurnAlert(true)
-          } else { setNeedsTurnAlert(false) }
+          } else {
+            setNeedsTurnAlert(false)
+          }
           turnSwitchTimer
         }, 1000)
         return to

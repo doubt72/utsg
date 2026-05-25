@@ -16,7 +16,7 @@ export default function SmokeCheckButton({ game, vertical, callback }: SmokeChec
     callback()
   }
 
-  const text = "smoke dissipation check"
+  const text = "smoke dispersion check"
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>

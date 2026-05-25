@@ -84,7 +84,6 @@ export default function GameControls({
 
   useEffect(() => {
     if (!game.id) { return }
-    console.log(structuredClone(game.closeNeeded))
     displayActions()
   }, [game, game.lastActionIndex, internalUpdate, update])
 

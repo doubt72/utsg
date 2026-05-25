@@ -28,7 +28,7 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
   if (unit.areaFire) { return false }
   if (unit.uncrewedSW && unit.parent) { return true }
   if (unit.children.length > 0 && !unit.children[0].targetedRange &&
-      (unit.children[0].isNormal || (unit.children[0].isActivated &&
+      (unit.children[0].isNormal || unit.children[0].isTired || (unit.children[0].isActivated &&
        unit.isActivated))) { return true }
   const counters = game.scenario.map.countersAt(new Coordinate(x, y))
   for (const c of counters) {

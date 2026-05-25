@@ -721,14 +721,12 @@ export default class Game {
   }
 
   setCloseCombatChecks() {
-    console.log("checking for close combat")
     const checks: CloseCheck[] = []
     for (let i = this.lastActionIndex; i >= 0; i--) {
       const action = this.actions[i]
       if (action.type === "phase") { break }
       if (action.type === "close_combat_roll") {
         const roll = action as CloseCombatRollAction
-        console.log(`- cc roll at ${roll.origin[0].x},${roll.origin[0].y}`)
         if (roll.p1Hits > 0 || roll.p2Hits > 0) {
           checks.push({
             loc: new Coordinate(roll.origin[0].x, roll.origin[0].y),
@@ -750,7 +748,6 @@ export default class Game {
         for (const c of checks) {
           if (c.loc.x !== reduce.target.x || c.loc.y !== reduce.target.y) { continue }
           const unit = this.findUnitById(reduce.target.id) as Unit
-          console.log(`- cc check ${unit.nation}:${unit.playerNation} - ${this.playerOneNation}/${this.playerTwoNation}`)
           if (unit.playerNation === this.playerOneNation) {
             c.p1Reduce -= 1
           } else {
@@ -770,7 +767,6 @@ export default class Game {
             if (c.loc.x === x && c.loc.y === y) { found = true; break }
           }
           if (!found) {
-            console.log(`- adding cc ${x},${y}`)
             checks.push({
               loc: new Coordinate(x, y), state: closeProgress.NeedsRoll, p1Reduce: 0, p2Reduce: 0,
             })

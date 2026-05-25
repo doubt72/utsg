@@ -1,15 +1,20 @@
 Features/Bug Fixes:
-  + Allied minor split squad wrong nation
-  + Turning gun (in woods?) doesn't work
-  + Rout in opposite order
-  + Tweak Uruguay
+  + Button should say dispersion
+  + Tired units can't pick machine gun
+  + Better message for disambiguate
+  - No reaction fire no turn notification?  Maybe simplify.
   - Finish scenario editor
+  ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)
 
   - Add Some Developer Notes
   - Go through docs, add examples
   - Record some games
+
+Good: 001, 002, 003, 007, 101, 303, 508, 603
+Maybe: 301, 401, 503, 510
+Need: 005, 011, 308, 501, 601
 
 Nice to Have Eventually:
   - Better rollback of smoke on reaction fire
