@@ -13,7 +13,6 @@ Rails.application.routes.draw do
           post "check_conflict"
           post "set_recovery"
           post "password_reset"
-          post "notify"
           put "toggle_dev"
           put "toggle_banned"
           put "toggle_notifications"

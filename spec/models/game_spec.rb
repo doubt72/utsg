@@ -90,4 +90,68 @@ RSpec.describe Game do
       end
     end
   end
+
+  context "turn notifications" do
+    let(:user) { create(:user) }
+    let(:user2) { create(:user) }
+    let!(:game) do
+      create(:game, owner: user, player_one: user, player_two: user2,
+                    current_player: user2, name: "game", state: :in_progress,
+                    needs_turn_notification: true)
+    end
+
+    before :each do
+      create(:game_action, user: user2, created_at: 25.minutes.ago, sequence: 3, game:)
+      create(:game_action, user:, created_at: 20.minutes.ago, sequence: 4, game:)
+    end
+
+    it "handles notificaton" do
+      expect(game.needs_turn_notification).to be == true
+      expect(Utility::NotificationEmails).to receive(:turn_notification)
+
+      game.check_for_turn_notification
+
+      expect(game.needs_turn_notification).to be == false
+    end
+
+    it "no solo notifications" do
+      game.update(owner: user2, player_one: user2)
+
+      expect(Utility::NotificationEmails).not_to receive(:turn_notification)
+
+      game.check_for_turn_notification
+
+      expect(game.needs_turn_notification).to be == true
+    end
+
+    it "doesn't notify if already notified" do
+      game.update(needs_turn_notification: false)
+
+      expect(Utility::NotificationEmails).not_to receive(:turn_notification)
+
+      game.check_for_turn_notification
+
+      expect(game.needs_turn_notification).to be == false
+    end
+
+    it "doesn't notify unless in progress" do
+      game.update(state: :complete)
+
+      expect(Utility::NotificationEmails).not_to receive(:turn_notification)
+
+      game.check_for_turn_notification
+
+      expect(game.needs_turn_notification).to be == true
+    end
+
+    it "doesn't notify if notifications disabled" do
+      user2.update(notifications: false)
+
+      expect(Utility::NotificationEmails).not_to receive(:turn_notification)
+
+      game.check_for_turn_notification
+
+      expect(game.needs_turn_notification).to be == true
+    end
+  end
 end

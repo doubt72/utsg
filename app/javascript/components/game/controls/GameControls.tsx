@@ -71,12 +71,10 @@ interface GameControlsProps {
   update: number;
   vertical: boolean;
   callback: () => void;
-  emailCallback: (user: string) => void;
-  emailCancelCallback: () => void;
 }
 
 export default function GameControls({
-  game, update, vertical, callback, emailCallback, emailCancelCallback }: GameControlsProps
+  game, update, vertical, callback }: GameControlsProps
 ) {
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [specialRules, setSpecialRules] = useState<JSX.Element | undefined>(undefined)
@@ -144,7 +142,6 @@ export default function GameControls({
     const user = localStorage.getItem("username")
     const actions = actionsAvailable(game, user as string)
     actions.push({ type: "help" })
-    let check = false
     setControls(actions.map((a, i) => {
       if (a.type === "sync") {
         if (vertical) {
@@ -162,7 +159,6 @@ export default function GameControls({
           )
         }
       } else if (a.type === "wait") {
-        check = true
         if (vertical) {
           return (
             <OverlayTrigger key={i} placement="bottom" overlay={waitTooltip}
@@ -323,12 +319,6 @@ export default function GameControls({
         }
       }
     }))
-    if (check) {
-      const player = user === game.playerOneName ? game.playerTwoName : game.playerOneName
-      emailCallback(player)
-    } else {
-      emailCancelCallback()
-    }
   }
 
   return (

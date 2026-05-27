@@ -1,5 +1,5 @@
 Features/Bug Fixes:
-  + No reaction fire no turn notification?  Maybe simplify.
+  + Clean up notifications
   - Finish scenario editor
   ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)

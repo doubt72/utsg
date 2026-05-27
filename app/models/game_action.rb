@@ -23,7 +23,6 @@ class GameAction < ApplicationRecord
     return nil if game.player_one.id != user&.id && game.player_two.id != user&.id
 
     params[:data] = JSON.parse(params[:data])
-    user.update!(notified: false)
 
     GameAction.create!(params)
   end

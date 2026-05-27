@@ -110,7 +110,11 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
   def update_game(user, params)
     return nil unless [player_one_id, player_two_id].include? user.id
 
-    update(params)
+    update(needs_turn_notification: true)
+    update_check = update(params)
+
+    check_for_turn_notification
+    update_check
   end
 
   def cancel_game(user)
@@ -185,6 +189,18 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
       })
     in_progress!
     self
+  end
+
+  def check_for_turn_notification
+    return unless player_one_id != player_two_id && needs_turn_notification && in_progress? &&
+                  current_player.notifications
+
+    action = GameAction.where(game_id: id, user_id: current_player_id, undone: false)
+                       .order(sequence: :desc).first
+    return unless action && action.created_at < 15.minutes.ago
+
+    ::Utility::NotificationEmails.turn_notification(current_player, self)
+    update(needs_turn_notification: false)
   end
 
   private

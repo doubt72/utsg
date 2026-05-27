@@ -1,3 +1,7 @@
+# 0.88
+
+- Move turn notifications to back end where it always should have been
+
 # 0.87
 
 - Dissipate changed to disperse in one place

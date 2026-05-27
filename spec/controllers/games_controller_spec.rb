@@ -322,12 +322,14 @@ RSpec.describe Api::V1::GamesController do
       login(user1)
 
       expect(game1.current_player).to be == user2
+      expect(game1.needs_turn_notification).to be == false
 
       expect do
         put :update, params: { id: game1.id, game: { current_player: user1.username } }
       end.to change { game1.reload.current_player }
 
       expect(game1.current_player).to be == user1
+      expect(game1.needs_turn_notification).to be == true
     end
 
     it "can update metadata" do

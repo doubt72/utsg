@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class User < ApplicationRecord
   # Owned games are deleted only if no other users are associated with them (see
   # before_destroy hooks)
   has_many :games, foreign_key: :owner_id
@@ -52,20 +52,6 @@ class User < ApplicationRecord # rubocop:disable Metrics/ClassLength
     def toggle_banned(username)
       user = lookup(username)
       user.update!(banned: !user.banned)
-    end
-
-    def notify(current_user, username, game_id) # rubocop:disable Metrics/CyclomaticComplexity
-      user = lookup(username)
-      game = Game.find(game_id)
-      return false unless current_user == game.player_one || current_user == game.player_two
-      return true if user.notified || !user.notifications || !game.in_progress?
-
-      action = GameAction.where(game_id:, user:, undone: false).order(sequence: :desc).first
-      if action && action.created_at < 15.minutes.ago
-        ::Utility::NotificationEmails.turn_notification(user, game)
-        user.update!(notified: true)
-      end
-      :success
     end
 
     def stats(username)
