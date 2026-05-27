@@ -1,5 +1,6 @@
 Features/Bug Fixes:
-  + Clean up notifications
+  - Leader bonuses on rush?
+  - Way to close overlay (CTRL?)
   - Finish scenario editor
   ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
@@ -40,7 +41,7 @@ Special Rules/Scenarios
 102 (Capuzzo)
 
 406 (Tarawa)
-302 (Pegasus Bridge)
+304 (Pegasus Bridge)
 008 (Kursk / Tigers)
 
 512 (Greek)
@@ -74,3 +75,39 @@ Special Rules/Scenarios
 408 (Land Crab)
 509 (More France)
 511 (88s)
+
+201 Americans in Sicily
+302 Mortain
+103 Italians
+
+403 Night New Guinea
+004 Mud Meeting Engagement
+104 Indians
+
+204 Mud in Italy
+404 Manila
+504 More France
+
+205 New Zealand in Italy
+405 Guadalcanal Small
+505 More Finland
+
+206 Brazilians in Italy
+306 Bastogne
+506 Greek Italian
+
+606 Chinese Tanks
+407 Guadalcanal Big
+607 Shanghai
+
+109 French in Libya
+409 End of New Guinea
+310 Hell's Highway
+
+410 Japanese Tanks
+311 Arracourt
+411 Australian New Guinea II
+
+312 Purple Heart Lane
+014 Russian Counterattack
+016 Tractor Factory
