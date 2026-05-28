@@ -570,10 +570,8 @@ export default class Unit {
   }
 
   encumberedMovement(rush: boolean): number {
-    console.log(`enc mov ${this.children.length} ${this.canCarrySupport}`)
     const move = rush ? Math.floor(this.currentMovement/2) : this.currentMovement
     if (this.children.length > 0 && this.canCarrySupport) {
-      console.log(`enc 222 ${this.children[0].baseMovement} ${this.currentMovement}`)
       return this.children[0].baseMovement + move
     }
     return this.currentMovement
