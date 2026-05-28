@@ -24,7 +24,6 @@ interface MapCounterOverlayProps {
   setOverlay: (target: { show: boolean, x: number, y: number }) => void;
   selectionCallback: (target: CounterSelectionTarget) => void;
   updateCallback: () => void;
-  controlCallback: () => void;
   xx?: number;
   yy?: number;
   mapScale: number;
@@ -38,7 +37,7 @@ interface MapCounterOverlayProps {
 }
 
 export default function MapCounterOverlay({
-  map, setOverlay, selectionCallback, updateCallback, controlCallback, xx, yy,
+  map, setOverlay, selectionCallback, updateCallback, xx, yy,
   mapScale, scale, shiftX, shiftY, maxX, maxY, counters, svgRef
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
@@ -353,7 +352,10 @@ export default function MapCounterOverlay({
 
   const listener = (e: KeyboardEvent) => {
     if (e.key === "Shift") { setActionHelpDisplay(undefined) }
-    if (e.key === "Control") { controlCallback() }
+    if (e.key === "Control" && map.game) {
+      map.game.closeOverlay = true
+      updateCallback()
+    }
   }
 
   useEffect(() => {

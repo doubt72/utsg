@@ -1,6 +1,8 @@
 # 0.89
 
 - Contol key closes overlay
+- Change tired movement to half rounded down instead of -2
+- Don't apply leader movement bonus if unit starts at 0
 
 # 0.88
 

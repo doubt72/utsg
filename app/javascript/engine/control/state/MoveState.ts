@@ -571,6 +571,10 @@ export default class MoveState extends BaseState {
       this.game.addMessage("cannot move an activated unit")
       return false
     }
+    if (counter.unit.encumberedMovement(this.rushing) <= 0) {
+      this.game.addMessage("cannot move an a unit that has zero movement")
+      return false
+    }
     return true
   }
 

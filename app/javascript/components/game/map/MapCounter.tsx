@@ -22,13 +22,12 @@ import {
 
 interface MapCounterProps {
   counter: Counter;
-  // updateEnter: number;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
   onClick?: () => void;
 }
 
-export default function MapCounter({ counter, /* updateEnter, */ovCallback, onClick }: MapCounterProps) {
+export default function MapCounter({ counter, ovCallback, onClick }: MapCounterProps) {
   const [mouseInside, setMouseInside] = useState<boolean>(false)
 
   const counterBack = (
@@ -484,11 +483,10 @@ export default function MapCounter({ counter, /* updateEnter, */ovCallback, onCl
       <path d={counterPath(counter)} style={{ fill: clearColor }}
             onMouseEnter={(e: React.MouseEvent) => {
               setMouseInside(true)
-              console.log(`setting enter ${counter.unit.id}`)
               if (e.ctrlKey) { return }
               ovCallback({ show: true, x: counter.hex?.x, y: counter.hex?.y })
             }}
-            onMouseLeave={() => { console.log(`unsetting enter ${counter.unit.id}`); setMouseInside(false) }}
+            onMouseLeave={() => setMouseInside(false) }
             onMouseMove={(e: React.MouseEvent) => {
               if (e.ctrlKey) { return }
               ovCallback({ show: true, x: counter.hex?.x, y: counter.hex?.y })
@@ -509,11 +507,9 @@ export default function MapCounter({ counter, /* updateEnter, */ovCallback, onCl
 
   useEffect(() => {
     if (!mouseInside) {
-      console.log(`removing listener ${counter.unit.id}`)
       document.removeEventListener("keyup", listener)
       return
     }
-      console.log(`adding listener ${counter.unit.id}`)
     document.addEventListener("keyup", listener)
   }, [mouseInside])
 

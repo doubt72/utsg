@@ -109,9 +109,6 @@ export default function MapDisplay({
   const [fireHindrance, setFireHindrance] = useState<JSX.Element | undefined>()
   const [routTrack, setRoutTrack] = useState<JSX.Element | undefined>()
 
-  // const [counterReferences, setCounterReferences] = useState()
-  // const [actionCounterReferences, setActionCounterReferences] = useState()
-
   const [notification, setNotification] = useState<JSX.Element | undefined>()
   const [notificationDetails, setNotificationDetails] = useState<{
     error: string, timer: number
@@ -571,7 +568,7 @@ export default function MapDisplay({
       setCounterOverlay(
         <MapCounterOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} updateCallback={
-                              () => { counterCallback(); updateCallback() }} controlCallback={controlCallback}
+                              () => { counterCallback(); updateCallback() }}
                            maxX={width / scale} maxY={height / scale}
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
@@ -580,7 +577,7 @@ export default function MapDisplay({
       setCounterOverlay(
         <MapCounterOverlay counters={overlay.counters} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} updateCallback={
-                              () => { counterCallback(); updateCallback() }} controlCallback={controlCallback}
+                              () => { counterCallback(); updateCallback() }}
                            maxX={width / scale} maxY={height / scale}
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
@@ -693,12 +690,6 @@ export default function MapDisplay({
   }
 
   const handleSelect = () => {
-    counterCallback()
-  }
-
-  const controlCallback = () => {
-    if (!map.game) { return }
-    map.game.closeOverlay = true
     counterCallback()
   }
 

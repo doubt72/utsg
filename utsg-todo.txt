@@ -1,7 +1,7 @@
 Features/Bug Fixes:
   + Way to close overlay (CTRL?)
+  + Change rule so no selecting unit without movement to start move, regardless of leader bonus
   - Finish scenario editor
-  - Change rule so no selecting unit without movement to start move, regardless of leader bonus
   ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)

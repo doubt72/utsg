@@ -563,10 +563,20 @@ export default class Unit {
     } else if (this.pinned || this.immobilized || this.isWreck) {
       return 0
     } else if (this.isTired && !this.operated) {
-      return this.baseMovement - 2
+      return Math.floor(this.baseMovement/2)
     } else {
       return this.baseMovement
     }
+  }
+
+  encumberedMovement(rush: boolean): number {
+    console.log(`enc mov ${this.children.length} ${this.canCarrySupport}`)
+    const move = rush ? Math.floor(this.currentMovement/2) : this.currentMovement
+    if (this.children.length > 0 && this.canCarrySupport) {
+      console.log(`enc 222 ${this.children[0].baseMovement} ${this.currentMovement}`)
+      return this.children[0].baseMovement + move
+    }
+    return this.currentMovement
   }
 
   split(): Unit {

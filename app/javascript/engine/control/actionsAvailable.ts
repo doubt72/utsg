@@ -570,6 +570,7 @@ function contact(unit: Unit, map: Map): boolean {
 export function canMove(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
+  if (unit.encumberedMovement(false) <= 0) { return false }
   if (contact(unit, map)) { return false }
   if (unit.isActivated || unit.isExhausted || unit.isBroken) { return false }
   return true
@@ -578,13 +579,11 @@ export function canMove(unit: Unit | undefined, map: Map): boolean {
 export function canRush(unit: Unit | undefined, map: Map): boolean {
   if (unit === undefined) { return false }
   if (!canMoveAny(unit)) { return false }
+  if (unit.encumberedMovement(true) <= 0) { return false }
   if (contact(unit, map)) { return false }
   if (!unit.isActivated) { return false }
   if (!unit.canCarrySupport) { return false }
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
-  if (unit.children.length > 0 && unit.children[0].baseMovement + Math.floor(unit.currentMovement/2) <= 0) {
-    return false
-  }
   return true
 }
 

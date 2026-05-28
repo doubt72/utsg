@@ -93,7 +93,8 @@ export default function MovementSection() {
       </div>
       <p>
         When infantry units are moving in a group including a leader, the non-leaders may move one
-        additional movement point. Infantry units moving in a group may drop units along the way,
+        additional movement point, except: units that cannot otherwise move cannot apply
+        the leadership bonus.  Infantry units moving in a group may drop units along the way,
         but they may not pick up any new infantry units to move with them. If the unit being dropped
         is a leader and the stack still moving no longer contains a leader, the leader bonus is lost
         for the remainder of the move.
@@ -112,7 +113,7 @@ export default function MovementSection() {
       <p>
         Units are marked as activated after moving. Crewed weapons and transported units are as
         well. Infantry weapons are not. Already activated units may not move, nor may exhausted,
-        pinned, or broken units. Tired units get two less movement points.
+        pinned, or broken units. Tired units movement is half rounded down.
       </p>
       <p>
         Once a move has started, the following buttons can be used to commit or abandon a move
