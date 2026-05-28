@@ -1,3 +1,7 @@
+# 0.89
+
+- Contol key closes overlay
+
 # 0.88
 
 - Move turn notifications to back end where it always should have been

@@ -24,6 +24,7 @@ interface MapCounterOverlayProps {
   setOverlay: (target: { show: boolean, x: number, y: number }) => void;
   selectionCallback: (target: CounterSelectionTarget) => void;
   updateCallback: () => void;
+  controlCallback: () => void;
   xx?: number;
   yy?: number;
   mapScale: number;
@@ -37,8 +38,8 @@ interface MapCounterOverlayProps {
 }
 
 export default function MapCounterOverlay({
-  map, setOverlay, selectionCallback, updateCallback, xx, yy, mapScale, scale, shiftX, shiftY, maxX, maxY,
-  counters, svgRef
+  map, setOverlay, selectionCallback, updateCallback, controlCallback, xx, yy,
+  mapScale, scale, shiftX, shiftY, maxX, maxY, counters, svgRef
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
@@ -352,15 +353,15 @@ export default function MapCounterOverlay({
 
   const listener = (e: KeyboardEvent) => {
     if (e.key === "Shift") { setActionHelpDisplay(undefined) }
+    if (e.key === "Control") { controlCallback() }
   }
 
   useEffect(() => {
-    if (!actionHelpDisplay) {
-      document.removeEventListener("keydown", listener)
-      return
-    }
     document.addEventListener("keydown", listener)
-  }, [actionHelpDisplay])
+    return () => {
+      document.removeEventListener("keydown", listener)
+    }
+  }, [])
 
   return (
     <g>
