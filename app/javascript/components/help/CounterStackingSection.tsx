@@ -72,7 +72,7 @@ export default function CounterStackingSection() {
     setStack1(
       <div className="help-section-image" >
         <svg width={504} height={134} viewBox='0 0 720 192' style={{ minWidth: 504 }}>
-          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}} controlCallback={() => {}}
+          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
                              counters={map.countersAt(new Coordinate(0,0))} scale={1} updateCallback={() => {}}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
@@ -87,7 +87,7 @@ export default function CounterStackingSection() {
     setStack2(
       <div className="help-section-image" >
         <svg width={627} height={134} viewBox='0 0 896 192' style={{ minWidth: 627 }}>
-          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}} controlCallback={() => {}}
+          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
                              counters={map.countersAt(new Coordinate(1,1))} scale={1} updateCallback={() => {}}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />

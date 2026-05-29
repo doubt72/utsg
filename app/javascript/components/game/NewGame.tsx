@@ -7,12 +7,14 @@ import { ArrowDownCircle, ArrowUpCircle } from "react-bootstrap-icons";
 import ScenarioRow from "./ScenarioRow";
 import ScenarioSummary from "./ScenarioSummary";
 import { Player } from "../../utilities/commonTypes";
-import { ScenarioListData } from "../../engine/Scenario";
+import { ScenarioData, ScenarioListData } from "../../engine/Scenario";
+import { alliedCodeToName, axisCodeToName } from "../../utilities/utilities";
 
 export default function NewGame() {
   const navigate = useNavigate()
   const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: "" })
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
+  const [players, setPlayers] = useState({ one: "player one" , two: "player two" })
 
   const [scenarioSearch, setScenarioSearch] = useState({
     sort: "n", sortDir: "asc", string: "", allies: "", axis: "", theater: "", status: "",
@@ -20,7 +22,7 @@ export default function NewGame() {
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
-  const [scenarioData, setScenarioData] = useState(null)
+  const [scenarioData, setScenarioData] = useState<ScenarioData | undefined>(undefined)
 
   const [alliedFactions, setAlliedFactions] = useState([])
   const [axisFactions, setAxisFactions] = useState([])
@@ -66,9 +68,17 @@ export default function NewGame() {
         }
       })
     } else {
-      setScenarioData(null)
+      setScenarioData(undefined)
     }
   }, [formInput.scenario])
+
+  useEffect(() => {
+    if (!scenarioData) { return }
+    setPlayers({
+      one: `${alliedCodeToName(scenarioData.allies[0])} player`,
+      two: `${axisCodeToName(scenarioData.axis[0])} player`},
+    )
+  }, [scenarioData])
 
   useEffect(() => {
     setFormInput({ ...formInput, scenario: "" })
@@ -378,11 +388,11 @@ export default function NewGame() {
             <div className="red">{formErrors.name}</div>
             <div className="mt1em">
               <CustomCheckbox onClick={() => setPlayer(1)} selected={ formInput.player === 1 }/>
-              <span className="font11em">play as allied side</span>
+              <span className="font11em">play as { players.one }</span>
             </div>
             <div>
               <CustomCheckbox onClick={() => setPlayer(2)} selected={ formInput.player === 2 }/>
-              <span className="font11em">play as axis side</span>
+              <span className="font11em">play as { players.two }</span>
             </div>
             <div>
               <CustomCheckbox onClick={() => setPlayer(0)} selected={ formInput.player === 0 }/>
@@ -412,11 +422,11 @@ export default function NewGame() {
               />
             </div>
             <div className="scenario-list-filter-limit">
-              <label>by allied faction</label><br />
+              <label>by player one faction</label><br />
               {alliedFactionSelector}
             </div>
             <div className="scenario-list-filter-limit">
-              <label>by axis faction</label><br />
+              <label>by player two faction</label><br />
               {axisFactionSelector}
             </div>
             <div className="scenario-list-filter-limit">

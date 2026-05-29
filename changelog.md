@@ -1,3 +1,8 @@
+# 0.90
+
+- Show faction name instead of axis or allies
+- Updated 301
+
 # 0.89
 
 - Contol key closes overlay

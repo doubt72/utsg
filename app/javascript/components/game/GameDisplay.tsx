@@ -750,7 +750,7 @@ export default function GameDisplay() {
 
   const overlayTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      toggles between counter overlays and line-of-sight overlay
+      toggles between counter overlays and line-of-sight overlay [hold down control to suppress overlays]
     </Tooltip>
   )
 
