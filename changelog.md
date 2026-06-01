@@ -1,3 +1,13 @@
+# 0.91
+
+- Undeploy tweaks:
+  - Don't select unit when undeploying
+  - Add warning when undeploy will leave crewed/support weapon unassigned
+  - Bug fix: selection of turreted units selected marker instead of unit
+  - Bug fix: replace unit at same index with undo instead of top of stack
+- Bug fix: stack size broken by hull markers
+- Bug fix: should not be able to combine fire with unmanned operated units
+
 # 0.90
 
 - Show faction name instead of axis or allies

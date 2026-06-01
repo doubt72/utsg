@@ -1094,7 +1094,7 @@ export default class Game {
           data: {
             action: "undeploy", old_initiative: this.initiative,
             path: [{ x: action.target.x, y: action.target.y }],
-            deploy: [{ turn: this.turn, key: action.rKey, id: action.rId, name: action.rName }]
+            deploy: [{ turn: this.turn, key: action.rKey, id: action.rId, name: action.rName, index: select.unitIndex }]
           }
         }, this), false)
         break

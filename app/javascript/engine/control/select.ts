@@ -1,7 +1,6 @@
-import { Coordinate, CounterSelectionTarget } from "../../utilities/commonTypes"
+import { Coordinate, CounterSelectionTarget, markerType } from "../../utilities/commonTypes"
 import { hexDistance } from "../../utilities/utilities"
 import DeployAction from "../actions/DeployAction"
-import Counter from "../Counter"
 import Game from "../Game"
 import Map from "../Map"
 import { gamePhaseType } from "../support/gamePhase"
@@ -19,8 +18,16 @@ export default function select(
   const x = selection.target.xy.x
   const y = selection.target.xy.y
   const id = selection.counter.target.id
-  const counter = game?.phase == gamePhaseType.Deploy ? map.counterAtId(new Coordinate(x, y), id) as Counter :
-    map.unitAtId(new Coordinate(x, y), id) as Counter
+  let counter = undefined
+  if (game?.phase === gamePhaseType.Deploy) {
+    counter = map.counterAtId(new Coordinate(x, y), id)
+    if (counter?.hasMarker && [markerType.TrackedHull, markerType.WheeledHull].includes(counter.marker.type)) {
+      counter = map.unitAtId(new Coordinate(x, y), id)
+    }
+  } else {
+    counter = map.unitAtId(new Coordinate(x, y), id)
+  }
+  if (counter === undefined) { return }
   map.clearOtherSelections(x, y, id)
   map.select(counter.unit)
   callback()

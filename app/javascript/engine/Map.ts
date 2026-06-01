@@ -308,14 +308,16 @@ export default class Map {
     }
   }
 
-  addCounter(loc: Coordinate, counter: Unit | Feature) {
+  addCounter(loc: Coordinate, counter: Unit | Feature, index?: number) {
     const list = this.units[loc.y][loc.x]
     if (counter.isFeature) {
       list.unshift(counter)
     } else {
       const unit = counter as Unit
       const last = list[list.length-1] as Unit
-      list.push(counter)
+      if (index === undefined) {
+        list.push(counter)
+      } else { list.splice(index, 0, counter) }
       if (unit.uncrewedSW) {
         if (!last || !last.canCarrySupport) {
           throw new StackingActionError(
@@ -496,7 +498,7 @@ export default class Map {
 
   sizeAt(loc: Coordinate): number {
     return this.countersAt(loc).reduce((sum, c) => {
-      return c.hasFeature ? sum : sum + c.unit.size
+      return c.hasUnit ? sum + c.unit.size : sum
     }, 0)
   }
 

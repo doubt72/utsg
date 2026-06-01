@@ -359,6 +359,10 @@ export default class FireState extends BaseState {
       this.game.addMessage("unit being transported cannot fire with other units")
       return false
     }
+    if (counter.unit.operated && !counter.parent) {
+      this.game.addMessage("cannot fire unmanned unit")
+      return false
+    }
     const next = counter.children[0]
     if (next && next?.unit.crewed) {
       this.game.addMessage("unit manning a crewed weapon cannot fire with other units")
