@@ -88,10 +88,13 @@ export default class AssaultState extends BaseState {
     if (!terrTo.move && railroadMove) {
       if (selection.unit.isVehicle) { return hexOpenType.Closed }
     }
+    const countersAt = this.map.countersAt(to)
+    for (const c of countersAt) {
+      if (c.hasFeature && c.feature.type === featureType.Fire) { return hexOpenType.Closed }
+    }
     if (selection.unit.isVehicle) {
       if ((!terrTo.vehicle || !terrFrom.vehicle) && !roadMove) { return hexOpenType.Closed }
       if ((terrTo.vehicle === "amph") && !roadMove && !selection.unit.amphibious) { return hexOpenType.Closed }
-      const countersAt = this.map.countersAt(to)
       for (const c of countersAt) {
         if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
             !c.unit.operated) {
@@ -119,7 +122,6 @@ export default class AssaultState extends BaseState {
       (sum, u) => sum + u.counter.unit.size + u.counter.unit.children.reduce((sum, u) => u.size, 0), 0
     )
     const toSize = this.map.sizeAt(to)
-    const countersAt = this.map.countersAt(to)
     let check = false
     for (const c of countersAt) {
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&

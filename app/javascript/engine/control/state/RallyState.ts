@@ -130,6 +130,7 @@ export default class RallyState extends BaseState {
   finish() {
     const counter = this.map.selection as Counter
     const hex = counter.hex as Coordinate
+    const free = !counter.unit.isVehicle && leaderAtHex(this.game, hex.x, hex.y, this.game.currentPlayer, counter.unit)
     const data = counter.unit.canCarrySupport ? {
       infantry: {
         morale_base: counter.unit.currentMorale,
@@ -137,13 +138,13 @@ export default class RallyState extends BaseState {
         terrain_mod: this.map.hexAt(hex)?.terrain.cover as number,
         next_to_enemy: nextToEnemy(this.game, hex),
       },
-      free_rally: leaderAtHex(this.game, hex.x, hex.y, this.game.currentPlayer, counter.unit),
+      free_rally: free,
     } : {
       weapon: {
         fix_roll: counter.unit.repairRoll as number,
         break_roll: counter.unit.breakWeaponRoll as number,
       },
-      free_rally: leaderAtHex(this.game, hex.x, hex.y, this.game.currentPlayer, counter.unit),
+      free_rally: free,
     }
     const target: GameActionUnit = {
       x: hex.x, y: hex.y, id: counter.unit.id, name: counter.unit.name, status: counter.unit.status

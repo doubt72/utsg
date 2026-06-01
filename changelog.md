@@ -1,12 +1,17 @@
 # 0.91
 
+- Reset counters/overlay to show counters and unit overlays when current user's turn
+- Vehicles don't get free repairs with leader in hex, now count as single repair attempt
 - Undeploy tweaks:
   - Don't select unit when undeploying
   - Add warning when undeploy will leave crewed/support weapon unassigned
-  - Bug fix: selection of turreted units selected marker instead of unit
-  - Bug fix: replace unit at same index with undo instead of top of stack
+  - Bug fix: selection of turreted units selected marker instead of unit during deploy phase
+  - Bug fix: replace unit at same index instead of top of stack when undoing
 - Bug fix: stack size broken by hull markers
 - Bug fix: should not be able to combine fire with unmanned operated units
+- Bug fix: prevent assault moves into blazes
+- Bug fix: fixes to updates on fire displacement (wasn't allowing displace to complete)
+- Bug fix: fix premature skip to next phase when fire spread finished but displacement still needed
 
 # 0.90
 

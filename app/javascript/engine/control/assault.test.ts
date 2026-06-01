@@ -362,8 +362,6 @@ describe("assault movement", () => {
     expect(game.scenario.map.victoryAt(loc)).toBe(1)
   })
 
-
-
   test("multiselect with leader", () => {
     const game = createMoveGame()
     const map = game.scenario.map
@@ -766,11 +764,12 @@ describe("assault movement", () => {
     const feature = new Feature(testWire)
     feature.id = "wire"
     map.addCounter(new Coordinate(2, 2), feature)
+    map.addFire(new Coordinate(3, 3))
 
     game.setGameState(new AssaultState(game))
 
     expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.All)
-    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.All)
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
     expect(game.gameState?.openHex(2, 3)).toBe(hexOpenType.All)
 
     game.assaultState.move(2, 2)
@@ -781,13 +780,16 @@ describe("assault movement", () => {
     game.gameState?.finish()
 
     const all = map.allCounters
-    expect(all.length).toBe(2)
+    expect(all.length).toBe(3)
     expect(all[0].hex?.x).toBe(2)
     expect(all[0].hex?.y).toBe(2)
     expect(all[0].feature.name).toBe("Wire")
     expect(all[1].hex?.x).toBe(2)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].feature.name).toBe("Rifle")
+    expect(all[2].hex?.x).toBe(3)
+    expect(all[2].hex?.y).toBe(3)
+    expect(all[2].feature.name).toBe("Blaze")
   })
 
   test("assaulting out of wire", () => {

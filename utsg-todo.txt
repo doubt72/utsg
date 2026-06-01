@@ -1,11 +1,8 @@
 Features/Bug Fixes:
-  + Warning when undeploying a unit that would be carrying a weapon
-  + Don't select when undeploying
-  + Machine gun on ground should not be able to be part of fire
-  - Assault move into fire should be illegal
-  - Leaders should not vehicle weapon repairs free
-  - Turn off LOS and counters off when popping up unit overlay
-  - Fire spread displace is bugged
+  + Assault move into fire should be illegal
+  + Leaders should not make vehicle weapon repairs free
+  + Turn off LOS and counters off when popping up unit overlay
+  + Fire spread displace is bugged
   - Finish scenario editor
   - Rotate map if bored
   ? Filter bad words

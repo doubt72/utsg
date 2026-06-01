@@ -143,6 +143,27 @@ describe("fire/blaze displacement", () => {
     expect(game.fireDisplaceNeeded[0].unit.playerNation).toBe(game.currentPlayerNation)
   })
 
+  test("playernation set correction when opposite player spreads fire", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    map.windDirection = 1
+    const unit1 = new Unit(testRInf)
+    unit1.id = "test1"
+    const loc = new Coordinate(1, 1)
+    map.addCounter(loc, unit1)
+
+    const fireLoc = new Coordinate(2, 1)
+    map.addFire(fireLoc)
+    expect(map.windDirection).toBe(1)
+
+    expect(game.currentPlayerNation).toBe("ger")
+    map.spreadFire(fireLoc)
+    expect(game.fireDisplaceNeeded.length).toBe(1)
+    expect(game.currentPlayerNation).toBe("ussr")
+
+    expect(game.fireDisplaceNeeded[0].unit.playerNation).toBe(game.currentPlayerNation)
+  })
+
   test("vehicle displacing with illegal terrain", () => {
     const game = createTestGame([
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],

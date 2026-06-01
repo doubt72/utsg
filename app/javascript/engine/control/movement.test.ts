@@ -614,6 +614,23 @@ describe("movement", () => {
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
   })
 
+  test("can't move into blaze", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    map.select(unit)
+
+    map.addFire(new Coordinate(3, 3))
+
+    game.setGameState(new MoveState(game))
+
+    expect(game.gameState?.openHex(4, 3)).toBe(1)
+    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+  })
+
   test("can move into wreck", () => {
     const game = createMoveGame()
     const map = game.scenario.map

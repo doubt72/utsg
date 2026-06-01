@@ -243,7 +243,8 @@ function cleanupSmoke(game: Game, data: GameActionData): void {
 function cleanupFire(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   game.addFireCheckState()
-  if ((game.fireOutCheckNeeded.length > 0 || game.fireSpreadCheckNeeded.length > 0)) {
+  if ((game.fireOutCheckNeeded.length > 0 || game.fireSpreadCheckNeeded.length > 0 ||
+       game.fireDisplaceNeeded.length > 0)) {
     return
   }
   phaseData.messages.push("blaze check complete")

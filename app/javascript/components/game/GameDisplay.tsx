@@ -81,6 +81,7 @@ export default function GameDisplay() {
       setTurnTimer(t => {
         if (t) { clearTimeout(t) }
         if (game.k?.currentUser !== user || !needsTurnAlert) { return }
+        resetDisplay()
         const to = setTimeout(() => {
           setTurnTimer(t => {
             if (t) { clearTimeout(t) }
@@ -521,7 +522,8 @@ export default function GameDisplay() {
                                update={updateControls} vertical={!horizontalControls} />
         })
       }
-    } else if (game.k?.gameState?.type === stateType.Move || game.k?.gameState?.type === stateType.Assault) {
+    } else if (game.k?.gameState?.type === stateType.Move || game.k?.gameState?.type === stateType.Assault ||
+               game.k?.gameState?.type === stateType.FireDisplace) {
       setControls(gc => {
         const key = Number(gc?.key ?? 0)
         return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}

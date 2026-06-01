@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { createBlankGame, testGInf, testGLdr, testGMG } from "./testHelpers";
+import { createBlankGame, testGInf, testGLdr, testGMG, testGTank } from "./testHelpers";
 import { Coordinate, unitStatus } from "../../utilities/commonTypes";
 import Unit from "../Unit";
 import RallyAction from "../actions/RallyAction";
@@ -147,8 +147,9 @@ describe("rallying", () => {
     Math.random = original
 
     expect(unit1.isNormal).toBe(true)
-    const action = game.actions[0]
+    const action = game.actions[0] as RallyAction
     expect(action.type).toBe("rally")
+    expect(action.freeRally).toBe(false)
     expect(action.stringValue).toBe(
       "German attempt to fix weapon at A1: target 15, rolled 20 [2d10: 10 + 10], passed: MG 08/15 is repaired"
     )
@@ -268,6 +269,41 @@ describe("rallying", () => {
       "German rally complete > starting Soviet rally > Soviet rally complete > starting precipitation check " +
       "> no precipitation in scenario, skipping > precipitation check complete > starting main phase"
     )
+  })
+
+  test("vehicle rally always uses free rally", () => {
+    const game = createBlankGame()
+    game.phase = gamePhaseType.PrepRally
+    game.setCurrentPlayer(2)
+    const map = game.scenario.map
+    const unit1 = new Unit(testGTank)
+    unit1.id = "test1"
+    unit1.jammed = true
+    map.addCounter(new Coordinate(0,0), unit1)
+    const unit2 = new Unit(testGLdr)
+    unit2.id = "test2"
+    map.addCounter(new Coordinate(0,0), unit2)
+    organizeStacks(map)
+
+    expect(map.anyUnitsCanRally(2)).toBe(true)
+
+    game.setGameState(new RallyState(game))
+
+    map.select(unit1)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(unit1.jammed).toBe(false)
+    const action = game.actions[0] as RallyAction
+    expect(action.type).toBe("rally")
+    expect(action.freeRally).toBe(false)
+    expect(action.stringValue).toBe(
+      "German attempt to fix weapon at A1: target 18, rolled 20 [2d10: 10 + 10], passed: PzKpfw 35(t) is repaired"
+    )
+    expect(map.anyUnitsCanRally(2)).toBe(false)
   })
 
   test("can't rally twice", () => {

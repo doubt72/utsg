@@ -20,9 +20,9 @@ export default function RallySection() {
     <div>
       <p>
         During the rally phase, players may attempt to recover broken infrantry units or leaders or
-        fix broken weapons. Rally checks on units are free (i.e., any number of units can make rally
+        fix broken weapons. Rally checks on non-vehicle units are free (i.e., any number of units can make rally
         checks) in a hex with an unbroken leader, or else one check may be made per player per turn
-        of a unit not stacked with a leader. If the single check is used on a broken leader and
+        of a unit not stacked with a leader (or on vehicles). If the single check is used on a broken leader and
         succeeds, other broken units in the hex may subsequently make &quot;free&quot; rally checks.
       </p>
       <div className={"flex mb1em"}>
