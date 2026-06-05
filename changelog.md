@@ -1,3 +1,7 @@
+# 0.92
+
+- Update admin game listing page to have list of just two-player/finished games
+
 # 0.91
 
 - Reset counters/overlay to show counters and unit overlays when current user's turn

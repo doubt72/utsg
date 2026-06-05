@@ -8,6 +8,7 @@ export default function AdminGameStats() {
   const [games, setGames] = useState<GameData[]>([])
 
   const [countScenario, setCountScenario] = useState<StatLookup>({})
+  const [countFinishedScenario, setCountFinishedScenario] = useState<StatLookup>({})
   const [countScenarioVersion, setCountScenarioVersion] = useState<StatLookup>({})
   const [countState, setCountState] = useState<StatLookup>({})
   const [countOwner, setCountOwner] = useState<StatLookup>({})
@@ -47,6 +48,7 @@ export default function AdminGameStats() {
 
   useEffect(() => {
     const csc: StatLookup = { all: 0 }
+    const cfsc: StatLookup = { all: 0 }
     const cscv: StatLookup = { all: 0 }
     const cst: StatLookup = { all: 0 }
     const co: StatLookup = { all: 0 }
@@ -103,6 +105,10 @@ export default function AdminGameStats() {
       }
       if (g.state === "complete") {
         statIncrementAllOne([cgco, cgcp1, cgcp2, cgcw])
+        if (g.player_one !== g.player_two) {
+          statIncrementAllOne([cfsc])
+          statAddOne(cfsc, `${g.scenario}`)
+        }
         statAddOne(cgco, g.owner)
         statAddOne(cgcp1, g.player_one ?? "[none yet]")
         statAddOne(cgcp2, g.player_two ?? "[none yet]")
@@ -110,6 +116,7 @@ export default function AdminGameStats() {
       }
     }
     setCountScenario(() => csc)
+    setCountFinishedScenario(() => cfsc)
     setCountScenarioVersion(() => cscv)
     setCountState(() => cst)
     setCountOwner(() => co)
@@ -142,6 +149,10 @@ export default function AdminGameStats() {
       <div className="p1em">
         Scenario:
         {displayStat(countScenario, {})}
+      </div>
+      <div className="p1em">
+        Scenario (2P/Done):
+        {displayStat(countFinishedScenario, {})}
       </div>
       <div className="p1em">
         Scenario Version:

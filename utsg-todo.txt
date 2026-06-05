@@ -1,8 +1,5 @@
 Features/Bug Fixes:
-  + Assault move into fire should be illegal
-  + Leaders should not make vehicle weapon repairs free
-  + Turn off LOS and counters off when popping up unit overlay
-  + Fire spread displace is bugged
+  - Open reinforcement panel when selecting unit on undo
   - Finish scenario editor
   - Rotate map if bored
   ? Filter bad words
@@ -14,9 +11,8 @@ Features/Bug Fixes:
   - Go through docs, add examples
   - Record some games
 
-Good: 001, 002, 003, 005, 007, 011, 101, 303, 508, 603
-Maybe: 401, 501, 503, 510
-Need: 301, 308, 601
+Maybe: 401, 501, 503, 510, 601
+Need: 308
 
 Nice to Have Eventually:
   - Better rollback of smoke on reaction fire
