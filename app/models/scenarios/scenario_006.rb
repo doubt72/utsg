@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["rom"].freeze
     STATUS = "b"
-    VERSION = "0.2"
+    VERSION = "0.3"
 
     DATE = [1942, 11, 20].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -220,6 +220,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
+            { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },

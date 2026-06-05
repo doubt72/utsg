@@ -1,5 +1,5 @@
 Features/Bug Fixes:
-  - Open reinforcement panel when selecting unit on undo
+  + Open reinforcement panel when selecting unit on undo
   - Finish scenario editor
   - Rotate map if bored
   ? Filter bad words
@@ -13,6 +13,7 @@ Features/Bug Fixes:
 
 Maybe: 401, 501, 503, 510, 601
 Need: 308
+Beta: 006, 203, 102
 
 Nice to Have Eventually:
   - Better rollback of smoke on reaction fire

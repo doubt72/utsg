@@ -1,6 +1,8 @@
 # 0.92
 
+- Open reinforcement panel when undoing deployment/selecting unit
 - Update admin game listing page to have list of just two-player/finished games
+- Updated 006 (fixed map)
 
 # 0.91
 
