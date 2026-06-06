@@ -109,6 +109,9 @@ export default function MapDisplay({
   const [fireHindrance, setFireHindrance] = useState<JSX.Element | undefined>()
   const [routTrack, setRoutTrack] = useState<JSX.Element | undefined>()
 
+  const [rotateTransform, setRotateTransform] = useState<string>("")
+  const [clipTransform, setClipTransform] = useState<string>("")
+
   const [notification, setNotification] = useState<JSX.Element | undefined>()
   const [notificationDetails, setNotificationDetails] = useState<{
     error: string, timer: number
@@ -134,7 +137,7 @@ export default function MapDisplay({
   }
 
   const minHeight = (height: number, scale: number = 1, m?: Map, base: number = 784): number => {
-    if (preview || m?.preview) { return map.ySize * scale }
+    if (preview || m?.preview) { return (map.rotated ? map.xSize : map.ySize) * scale }
     const extra = user === m?.game?.playerOneName || user === m?.game?.playerTwoName ? 0 : 48
     const gc = guiCollapse ? 178 - extra : 0
     const hc = headerCollapse ? 82 : 0
@@ -145,7 +148,7 @@ export default function MapDisplay({
   }
 
   const minWidth = (width: number, scale: number = 1, m?: Map, base: number = 1110) => {
-    if (preview || m?.preview) { return map.xSize * scale }
+    if (preview || m?.preview) { return (map.rotated ? map.ySize : map.xSize) * scale }
     let min = base
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 200 }
     const hc = horizontalControls ? 0 : 69
@@ -171,7 +174,7 @@ export default function MapDisplay({
       window.innerWidth, scale, map, (map.game?.alliedSniper || map.game?.axisSniper) ? 1330 : 1250
     )) { value = 2 }
     setTShrink(value)
-    shrinkCallback(window.innerWidth < 1150)
+    shrinkCallback(window.innerWidth < 1200)
   }, [width, map, map.game, scale, mapScale])
 
   useEffect(() => {
@@ -302,8 +305,10 @@ export default function MapDisplay({
     const x = event.clientX - rect.x;
     const y = event.clientY - rect.y;
 
-    let xScale = (width - 200 * scale) / map.previewXSize / scale / (mapScale ?? 1)
-    let yScale = (height + 50 - 50 / scale - yMapOffset * scale) / map.ySize / scale / (mapScale ?? 1)
+    const maxX = map.rotated ? map.ySize : map.previewXSize
+    const maxY = map.rotated ? map.previewXSize : map.ySize
+    let xScale = (width - 200 * scale) / maxX / scale / (mapScale ?? 1)
+    let yScale = (height + 50 - 50 / scale - yMapOffset * scale) / maxY / scale / (mapScale ?? 1)
     if (xScale > 1) { xScale = 1}
     if (yScale > 1) { yScale = 1}
 
@@ -343,8 +348,10 @@ export default function MapDisplay({
   useEffect(() => {
     if (map.preview || preview) { return }
 
-    let xScale = (width - 200 * scale) / map.previewXSize / scale / (mapScale ?? 1)
-    let yScale = (height + 50 - 50 / scale - yMapOffset * scale) / map.ySize / scale / (mapScale ?? 1)
+    const maxX = map.rotated ? map.ySize : map.previewXSize
+    const maxY = map.rotated ? map.previewXSize : map.ySize
+    let xScale = (width - 200 * scale) / maxX / scale / (mapScale ?? 1)
+    let yScale = (height + 50 - 50 / scale - yMapOffset * scale) / maxY / scale / (mapScale ?? 1)
     if (xScale > 1) { xScale = 1}
     if (yScale > 1) { yScale = 1}
     if (xOffset > 1 - xScale) { setXOffset(1 - xScale) }
@@ -353,11 +360,11 @@ export default function MapDisplay({
     setMinimap(
       <MiniMap map={map} xx={2} yy={5} maxX={width / scale} maxY={height / scale}
                 scale={scale} mapScale={mapScale ?? 1} svgRef={svgRef as React.MutableRefObject<HTMLElement>}
-                xScale={xScale > 1 ? 1 : xScale} yScale={yScale > 1 ? 1 : yScale}
+                xScale={xScale} yScale={yScale}
                 xOffset={xOffset} yOffset={yOffset} callback={minimapCallback}
                 widthCallback={setReinforcementOffset} />
     )
-  }, [map, mapScale, width, height, scale, xOffset, yOffset, map.game?.lastAction])
+  }, [map, map.rotated, mapScale, width, height, scale, xOffset, yOffset, map.game?.lastAction])
 
   useEffect(() => {
     if (!checkCancelHideLOS) { return }
@@ -529,13 +536,13 @@ export default function MapDisplay({
       map.game.closeOverlay = false
     }
   }, [
-    map, showCoords, showStatusCounters, hideCounters, mapUpdate, showTerrain,
+    map, map.rotated, showCoords, showStatusCounters, hideCounters, mapUpdate, showTerrain,
     map.currentWeather, map.baseWeather, map.precip, map.precipChance,
     map.windSpeed, map.windDirection, map.windVariable, width, height, scale,
     map.game?.currentPlayer, map.game?.lastActionIndex, map.game?.lastAction?.undone,
     map.game?.initiative, map.game?.currentPlayer, map.game?.turn, iShrink, tShrink,
     map.game?.playerOneScore, map.game?.playerTwoScore, forceUpdate,
-    map.game?.closeReinforcementPanel, map.game?.gameState?.type,
+    map.game?.closeReinforcementPanel, map.game?.gameState?.type, reinforcementOffset,
     map.baseTerrain, map.night // debugging only, don't change in actual games
   ])
 
@@ -568,12 +575,13 @@ export default function MapDisplay({
         ))
       }
     } else if (!overlay.counters) {
+      const reshift = map.rotated ? map.previewXSize / map.ySize : 1
       setCounterOverlay(
         <MapCounterOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay}
                            selectionCallback={unitSelection} updateCallback={
                               () => { counterCallback(); updateCallback() }}
                            maxX={width / scale} maxY={height / scale}
-                           shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
+                           shiftX={xShift / reshift} shiftY={yShift * reshift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
       )
     } else if (!showLos || map.game?.gameState?.showOverlays) {
@@ -622,7 +630,7 @@ export default function MapDisplay({
     }
   }, [
     map.game?.lastSignificantAction, map.game?.lastActionIndex, mapUpdate, forceUpdate, map.game?.gameState,
-    scale, mapScale, xOffset, yOffset
+    scale, mapScale, xOffset, yOffset, map.rotated,
   ])
 
   useEffect(() => {
@@ -736,6 +744,7 @@ export default function MapDisplay({
   }
 
   const makeReinfocementPanel = (x: number, y: number, player: Player) => {
+    if (map.preview) { return (<g></g>) }
     return (
       <ReinforcementPanel map={map} xx={x} yy={y} player={player}
                           scale={scale ?? 1} mapScale={mapScale ?? 1}
@@ -769,10 +778,21 @@ export default function MapDisplay({
     displayReinforcements(showReinforcements)
   }, [showReinforcements])
 
+  useEffect(() => {
+    if (map.rotated) {
+      setRotateTransform(`rotate(-90 0 0) translate(-${map.previewXSize} 0)`)
+      setClipTransform(`translate(${map.previewXSize} 0) rotate(90 0 0)`)
+    } else {
+      setRotateTransform("")
+      setClipTransform("")
+    }
+    counterCallback()
+  }, [map.rotated])
+
   const mapDisplay = () => {
     if (map.preview || preview) {
       return (
-        <g>
+        <g transform={rotateTransform}>
           {hexDisplay}
           {hexDisplayDetail}
           {counterDisplay}
@@ -782,11 +802,13 @@ export default function MapDisplay({
       let mWidth = width / scale - 202
       let mHeight = height / scale - yMapOffset - 50 / scale + 50
       if (map) {
-        if (mWidth > map.previewXSize) { mWidth = map.previewXSize }
-        if (mHeight > map.ySize) { mHeight = map.ySize }
+        const xMax = map.rotated ? map.ySize : map.previewXSize
+        const yMax = map.rotated ? map.previewXSize : map.ySize
+        if (mWidth > xMax) { mWidth = xMax }
+        if (mHeight > yMax) { mHeight = yMax }
       }
-      const xShift = (map.previewXSize ?? 1) * xOffset
-      const yShift = (map.ySize ?? 1) * yOffset
+      const xShift = ((map.rotated ? map.ySize : map.previewXSize) ?? 1) * xOffset
+      const yShift = ((map.rotated ? map.previewXSize : map.ySize) ?? 1) * yOffset
       return (
         <svg x={0} y={yMapOffset + 50 / scale - 50} width={mWidth} height={mHeight}
              viewBox={`${xShift} ${yShift} ${mWidth / (mapScale ?? 1)} ${mHeight / (mapScale ?? 1)}`}
@@ -798,14 +820,14 @@ export default function MapDisplay({
              }}>
           <defs>
             <clipPath id="map-clip">
-              <path id="map-clip" d={
+              <path id="map-clip" transform={clipTransform} d={
                 roundedRectangle(
                   xShift, yShift, mWidth / (mapScale ?? 1), mHeight / (mapScale ?? 1), 10 / (mapScale ?? 1)
                 )
               } />
             </clipPath>
           </defs>
-          <g clipPath="url(#map-clip">
+          <g clipPath="url(#map-clip" transform={rotateTransform}>
             {hexDisplay}
             {hexDisplayDetail}
             {fireTargets}
@@ -870,8 +892,8 @@ export default function MapDisplay({
       {turn}
       {sniper}
       {reinforcements}
-      {reinforcementsOverlay}
       {minimap}
+      {reinforcementsOverlay}
       {counterOverlay}
       {terrainInfoOverlay}
       {notification}

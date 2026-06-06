@@ -138,6 +138,10 @@ export default function DebugMap() {
     setHideCounters(false)
   }, [map])
 
+  useEffect(() => {
+
+  }, [map?.rotated])
+
   const hexSelection = (x: number, y: number) => {
     const key = `${x}-${y}`
     console.log(key)
@@ -190,6 +194,9 @@ export default function DebugMap() {
   return (
     <div className="map-container">
       <div className="flex map-control">
+        <div className="custom-button normal-button" onClick={() => { if (map) { map.rotated = !map.rotated }} }>
+          rotate
+        </div>
         <div className="custom-button normal-button" onClick={() => setScale(s => Math.max(s/1.25, 0.4))}>
           size -
         </div>

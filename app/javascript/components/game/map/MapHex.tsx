@@ -10,7 +10,6 @@ interface MapHexProps {
 }
 
 export default function MapHex({ hex }: MapHexProps) {
-
   const background = (
     <polygon points={hex.hexCoords} style={hexBackground(hex) as object} />
   )
@@ -62,7 +61,8 @@ export default function MapHex({ hex }: MapHexProps) {
 
   const label = (
     <text x={hex.labelX} y={hex.labelY} style={{
-      fill: "rgba(0,0,0,0.33)", textAnchor: "middle", fontFamily: "'Courier Prime', monospace", fontSize: "15px" }}>
+          fill: "rgba(0,0,0,0.33)", textAnchor: "middle", fontFamily: "'Courier Prime', monospace", fontSize: "15px" }}
+          transform={ hex.map.rotated ? `rotate(90 ${hex.labelX} ${hex.labelY})` : "" }>
       {hex.label}
     </text>
   )

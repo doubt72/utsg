@@ -470,9 +470,11 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
       const c = counter
       const r = c.rotation
       return (
-        <g transform={`rotate(${r ? `${-r.a} ${c.x+40} ${c.y+40}` : "0"})`}>
-          <path d={layout.path} style={layout.style as object} />
-          {text}
+        <g transform={ counter.map?.rotated ? `rotate(90 ${c.x+40} ${c.y+40})` : "" }>
+          <g transform={`rotate(${r ? `${-r.a} ${c.x+40} ${c.y+40}` : "0"})`}>
+            <path d={layout.path} style={layout.style as object} />
+            {text}
+          </g>
         </g>
       )
     }

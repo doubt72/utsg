@@ -11,8 +11,7 @@ import Map from "../../engine/Map";
 import { Direction } from "../../utilities/commonTypes";
 import ErrorDisplay from "./ErrorDisplay";
 import {
-  ArrowDownCircle,
-  ArrowRightCircle,
+  ArrowDownCircle, ArrowRepeat, ArrowRightCircle,
   ArrowsAngleContract, ArrowsAngleExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
   GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack
 } from "react-bootstrap-icons";
@@ -45,6 +44,7 @@ export default function GameDisplay() {
 
   const [mapScale, setMapScale] = useState(1)
   const [interfaceShrink, setInterfaceShrink] = useState(0)
+  const [, setRotated] = useState(false)
   const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(false)
@@ -234,7 +234,7 @@ export default function GameDisplay() {
                   checkCancelHideLOS={checkCancelHideLOS} checkCancelTerrain={checkCancelTerrain} />
     )
   }, [
-    map, updateMap, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
+    map, map?.rotated, updateMap, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
     hideCounters, showTerrain, collapseLayout, collapseHeader, horizontalControls
   ])
 
@@ -435,6 +435,14 @@ export default function GameDisplay() {
       if (nv > 2) { nv = 2 }
       localStorage.setItem("mapInterfaceShrink", String(nv))
       return nv
+    })
+  }
+
+  const toggleRotated = () => {
+    setRotated(c => {
+      const nc = !c
+      if (map) { map.rotated = nc }
+      return nc
     })
   }
 
@@ -738,6 +746,12 @@ export default function GameDisplay() {
     </Tooltip>
   )
 
+  const rotateTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      rotate map
+    </Tooltip>
+  )
+
   const coordsTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
       toggles showing hex coordinate labels
@@ -787,6 +801,13 @@ export default function GameDisplay() {
         <div>
           <div className="flex map-control">
             <div className="flex-fill"></div>
+            <OverlayTrigger placement="bottom" overlay={rotateTooltip}
+                            delay={{ show: 0, hide: 0 }}>
+              <div className={`custom-button normal-button${ map?.rotated ? " custom-button-select" : ""}`}
+                   onClick={() => toggleRotated()}>
+                <ArrowRepeat />
+              </div>
+            </OverlayTrigger>
             {mapScaleMinusButton}
             {mapScaleResetButton}
             {mapScalePlusButton}
@@ -795,48 +816,48 @@ export default function GameDisplay() {
             {mobileInterfaceButton}
             <OverlayTrigger placement="bottom" overlay={coordsTooltip}
                             delay={{ show: 0, hide: 0 }}>
-            <div className="custom-button normal-button"
-                onClick={() => toggleShowCoords()}>
-              { coords ? <GeoAltFill /> : <GeoAlt /> } <span>{shrinkButtons ? "" : "coords"}</span>
-            </div>
+              <div className="custom-button normal-button"
+                  onClick={() => toggleShowCoords()}>
+                { coords ? <GeoAltFill /> : <GeoAlt /> } <span>{shrinkButtons ? "" : "coords"}</span>
+              </div>
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={statusTooltip}
                             delay={{ show: 0, hide: 0 }}>
-            <div className="custom-button normal-button"
-                onClick={() => toggleShowMarkers()}>
-              { showStatusCounters ? <Stack /> : <CircleFill /> } <span>{shrinkButtons ? "" : "status"}</span>
-            </div>
+              <div className="custom-button normal-button"
+                  onClick={() => toggleShowMarkers()}>
+                { showStatusCounters ? <Stack /> : <CircleFill /> } <span>{shrinkButtons ? "" : "status"}</span>
+              </div>
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={overlayTooltip}
                             delay={{ show: 0, hide: 0 }}>
-            { game.k?.gameState?.showOverlays ?
-              <div className="custom-button-disable normal-button">
-                { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
-              </div> :
-              <div className="custom-button normal-button"
-                  onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
-                { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
-              </div>
-            }
+              { game.k?.gameState?.showOverlays ?
+                <div className="custom-button-disable normal-button">
+                  { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
+                </div> :
+                <div className="custom-button normal-button"
+                    onClick={() => { setShowLos(sl => !sl); setCheckCancelHideLOS(s => s+1) }}>
+                  { showLos ? <EyeFill /> : <Stack /> } <span>{shrinkButtons ? "" : "overlay"}</span>
+                </div>
+              }
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={countersTooltip}
                             delay={{ show: 0, hide: 0 }}>
-            <div className="custom-button normal-button"
-                onClick={() => { setHideCounters(sc => !sc); setCheckCancelHideLOS(s => s+1) }}>
-            { hideCounters ? <Square /> : <SquareFill /> } <span>{shrinkButtons ? "" : "counters"}</span>
-            </div>
+              <div className="custom-button normal-button"
+                  onClick={() => { setHideCounters(sc => !sc); setCheckCancelHideLOS(s => s+1) }}>
+                { hideCounters ? <Square /> : <SquareFill /> } <span>{shrinkButtons ? "" : "counters"}</span>
+              </div>
             </OverlayTrigger>
             <OverlayTrigger placement="bottom" overlay={terrainTooltip}
                             delay={{ show: 0, hide: 0 }}>
-            { game.k?.gameState?.showOverlays ?
-              <div className="custom-button-disable normal-button">
-                { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
-              </div> :
-              <div className="custom-button normal-button"
-                  onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
-                { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
-              </div>
-            }
+              { game.k?.gameState?.showOverlays ?
+                <div className="custom-button-disable normal-button">
+                  { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
+                </div> :
+                <div className="custom-button normal-button"
+                    onClick={() => { setShowTerrain(sc => !sc); setCheckCancelTerrain(s => s+1) }}>
+                  { showTerrain ? <HexagonFill /> : <Hexagon /> } <span>{shrinkButtons ? "" : "terrain"}</span>
+                </div>
+              }
             </OverlayTrigger>
           </div>
           <div className="game-map">

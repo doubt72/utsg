@@ -5,6 +5,7 @@ import Map from "../../../engine/Map";
 import { mapHelpLayout } from "../../../engine/support/help";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { HelpOverlay } from "./Help";
+import { normalDir } from "../../../utilities/utilities";
 
 ScoreDisplay.propTypes = {
   map: PropTypes.instanceOf(Map),
@@ -56,6 +57,8 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
     const xl = xx + 26
     const xr = xx + 164
     const yd = yy + 26
+    const alliedDir = map.rotated ? normalDir(map.alliedDir - 1.5) : map.alliedDir
+    const axisDir = map.rotated ? normalDir(map.axisDir - 1.5) : map.axisDir
     setBase(
       <g>
         <path d={roundedRectangle(xx, yy, 190, 52)}
@@ -70,24 +73,24 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
         </text>
         { game.scenario.specialRules.includes("retreat_301") ?
           <g>
-            <g transform={`rotate(${(map.alliedDir - 1)*60} ${xl} ${yd})`}>
+            <g transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
               <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
-            <g transform={`rotate(${(map.axisDir - 1)*60} ${xl} ${yd})`}>
+            <g transform={`rotate(${(axisDir - 1)*60} ${xl} ${yd})`}>
               <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
           </g> :
           <g>
-            <g transform={`rotate(${(map.alliedDir - 1)*60} ${xl} ${yd})`}>
+            <g transform={`rotate(${(alliedDir - 1)*60} ${xl} ${yd})`}>
               <path d={`M ${xl - radius + size} ${yd - size} L ${xl - radius} ${yd} ` +
                         `L ${xl - radius + size} ${yd + size} M ${xl - radius} ${yd} L ${xl} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
             </g>
-            <g transform={`rotate(${(map.axisDir - 1)*60} ${xr} ${yd})`}>
+            <g transform={`rotate(${(axisDir - 1)*60} ${xr} ${yd})`}>
               <path d={`M ${xr - radius + size} ${yd - size} L ${xr - radius} ${yd} ` +
                         `L ${xr - radius + size} ${yd + size} M ${xr - radius} ${yd} L ${xr} ${yd}`}
                     style={{ fill: clearColor, stroke: "#444", strokeWidth: 2 }}/>
@@ -102,7 +105,7 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
                 onMouseLeave={() => setHelpDisplay(undefined)}/>
       </g>
     )
-  }, [xx, yy, map.game?.playerOneScore, map.game?.playerTwoScore, map.alliedDir, map.axisDir])
+  }, [xx, yy, map.game?.playerOneScore, map.game?.playerTwoScore, map.rotated, map.alliedDir, map.axisDir])
 
   return (
     <g>

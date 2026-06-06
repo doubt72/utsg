@@ -47,7 +47,7 @@ export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProp
       const loc = ends[i]
       const offset1 = Math.max(map.counterDataAt(loc).length * 5 - 5, 0)
       const x = map.xOffset(loc.x, loc.y) + offset1
-      const y = map.yOffset(loc.y) - offset1
+      const y = map.yOffset(loc.y) - (map.rotated ? -offset1 : offset1)
       rc.push(
         <path key={`${i}-end`} d={circlePath(new Coordinate(x, y), 12)}
               style={{ fill: "#DDD", stroke: "#E00", strokeWidth: 4 }}

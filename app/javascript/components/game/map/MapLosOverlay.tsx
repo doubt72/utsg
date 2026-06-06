@@ -35,7 +35,7 @@ export default function MapLosOverlay({
                   new Coordinate(x, y)
                 ).length * 5 - 5, 0)
                 const xd = hex.xOffset + offset
-                const yd = hex.yOffset + 20 - offset
+                const yd = hex.yOffset + 20 - (map.rotated ? -offset : offset)
                 return (
                   <g key={key}>
                     <text x={xd} y={yd} fontSize={80}
@@ -54,7 +54,9 @@ export default function MapLosOverlay({
                         style={{ fill: "rgba(0,0,0,0.3)" }}/>
                   <text x={value.x} y={value.y + 15} fontSize={value.size}
                         textAnchor="middle" fontFamily="'Courier Prime', monospace"
-                        style={value.style as object}>{value.value}</text>
+                        style={value.style as object} transform={ map.rotated ? `rotate(90 ${value.x} ${value.y})` : "" }>
+                    {value.value}
+                  </text>
                   <polygon points={hex.hexCoords} style={{ fill: clearColor }}
                            onMouseEnter={() => setOverlay({ show: false, x: 0, y: 0 })} />
                 </g>

@@ -1,7 +1,7 @@
 Features/Bug Fixes:
-  + Open reinforcement panel when selecting unit on undo
+  + Rotate map if bored
+  - Update docs with rotated map
   - Finish scenario editor
-  - Rotate map if bored
   ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)

@@ -33,12 +33,13 @@ export default function MapHexOverlay({
       let decoration = shaded === hexOpenType.All ? "A" : shaded
       if (decoration === 0.5) { decoration = "½" }
       circle = (
-        <g>
+        <g transform={ hex.map.rotated ? `rotate(90 ${x + offset} ${y - offset})` : "" }>
           <path d={circlePath(new Coordinate(x + offset, y - offset), 30)}
                 style={{ fill: "rgba(0,0,0,0.3)" }} />
           <text x={x + offset} y={y - offset + 15} fontSize={56} textAnchor="middle"
-                fontFamily="'Courier Prime', monospace"
-                style={{ fill: "rgba(255,255,255,0.6)"}}>{decoration}</text>
+                fontFamily="'Courier Prime', monospace" style={{ fill: "rgba(255,255,255,0.6)"}}>
+            {decoration}
+          </text>
         </g>
       )
     }

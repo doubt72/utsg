@@ -1,4 +1,4 @@
-import { Coordinate, Player } from "../utilities/commonTypes";
+import { Coordinate, markerType, Player } from "../utilities/commonTypes";
 import Marker from "./Marker";
 import Unit from "./Unit";
 import Feature from "./Feature";
@@ -84,11 +84,19 @@ export default class Counter {
 
   get stackOffset(): number { return this.onMap ? 5 : 3 }
   get x(): number { return (this.base?.x ?? 0) + this.stackingIndex * this.stackOffset }
-  get y(): number { return (this.base?.y ?? 0) - this.stackingIndex * this.stackOffset }
+  get y(): number {
+    return (this.base?.y ?? 0) - (this.map?.rotated ? -this.stackingIndex : this.stackingIndex) * this.stackOffset
+  }
   
   get rotation(): { a: number, x: number, y: number} | false {
-    if (!this.onMap || !this.target.rotates || (this.hasUnit && this.unit.isWreck)) { return false }
+    if (!this.onMap) { return false }
+    if (this.hasMarker &&
+        [markerType.Weather, markerType.Initiative, markerType.Turn].includes(this.marker.type)) {
+      return false
+    }
+    if (!this.map?.rotated && (!this.target.rotates || (this.hasUnit && this.unit.isWreck))) { return false }
     let facing = this.target.facing
+    if (!this.target.rotates || (this.hasUnit && this.unit.isWreck)) { facing = 4 }
     if (this.hasUnit && this.unit.turreted) { facing = this.unit.turretFacing }
     return { a: facing*60 - 150, x: this.x + 40, y: this.y + 40 }
   }

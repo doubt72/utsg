@@ -21,11 +21,13 @@ export default function FireHindranceOverlay({ map }: FireHindranceOverlayProps)
         const y = action.selection[0].y
         const offset = Math.max(map.countersAt(new Coordinate(x, y)).length * 5 - 5, 0)
         const x0 = map.xOffset(x, y) + offset
-        const y0 = map.yOffset(y) - offset
+        const y0 = map.yOffset(y) - (map.rotated ? -offset : offset)
         rc.push(<path key="hindrance-circle" d={circlePath(new Coordinate(x0, y0), 16)}
-                      style={{ stroke: "#FFF", strokeWidth: 2, fill: counterRed() }}/>)
+                      style={{ stroke: "#FFF", strokeWidth: 2, fill: counterRed() }}
+                      transform={ map.rotated ? `rotate(90 ${x0} ${y0})` : "" }/>)
         rc.push(<text key="hindrance" x={x0} y={y0+6} fontSize={18} textAnchor="middle"
-                      style={{ fill: "#FFF" }}>{hindrance}</text>)
+                      style={{ fill: "#FFF" }}
+                      transform={ map.rotated ? `rotate(90 ${x0} ${y0})` : "" }>{hindrance}</text>)
       }
     }
     return rc

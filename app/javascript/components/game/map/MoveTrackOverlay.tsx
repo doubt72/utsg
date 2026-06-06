@@ -155,7 +155,7 @@ export default function MoveTrackOverlay({
       const loc = h.coord
       const offset = Math.max(map.counterDataAt(h.coord).length * 5 - 5, 0)
       const x = h.xOffset + offset
-      const y = h.yOffset - offset
+      const y = h.yOffset - (map.rotated ? -offset : offset)
       const fill = first ? "#AAA" : "#DDD"
       if (!routing) { first = false }
       const buttons: JSX.Element[] = []
@@ -203,7 +203,7 @@ export default function MoveTrackOverlay({
     }))
   }, [
     map.game?.actionPathLength, map.game?.actionPathDir, map.game?.actionTurretDir, yOffset, xOffset, scale, mapScale,
-    map.game?.lastActionIndex,
+    map.game?.lastActionIndex, map.rotated,
   ])
 
   const track = () => {

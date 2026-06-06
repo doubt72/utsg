@@ -53,8 +53,8 @@ export default function MiniMap(
   useEffect(() => {
     const maxXSize = 245 // inner sizes
     const maxYSize = 180 // outer size is +10
-    const x = map.previewXSize
-    const y = map.ySize
+    const x = map.rotated ? map.ySize : map.previewXSize
+    const y = map.rotated ? map.previewXSize : map.ySize
     const miniScale = maxXSize / x < maxYSize / y ? maxXSize / x : maxYSize / y
     const xSize = x * miniScale + 6
     const ySize = y * miniScale + 6
@@ -114,7 +114,7 @@ export default function MiniMap(
               }} />
       </g>
     )
-  }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastAction])
+  }, [scale, mapScale, xScale, yScale, xOffset, yOffset, map.game?.lastAction, map.rotated])
 
   useEffect(() => {
     widthCallback(width + xx + 16)

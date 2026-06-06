@@ -81,7 +81,8 @@ export default function MapHexDetail({
   const victory = () => {
     const layout = victoryLayout(hex)
     if (!layout) { return "" }
-    return <circle cx={layout.x} cy={layout.y} r={layout.r} style={layout.style as object}/>
+    return <circle cx={layout.x} cy={layout.y} r={layout.r} style={layout.style as object}
+                   transform={ hex.map.rotated ? `rotate(90, ${layout.x} ${layout.y})` : "" } />
   }
 
   const night = (

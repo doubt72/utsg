@@ -212,11 +212,11 @@ export default class Hex {
   }
 
   get labelX(): number {
-    return this.xOffset
+    return this.map.rotated ? this.xOffset + this.radius - 25 : this.xOffset
   }
 
   get labelY(): number {
-    return this.yOffset - this.radius + 21
+    return this.map.rotated ? this.yOffset - this.radius + 50 : this.yOffset - this.radius + 21
   }
 
   get label(): string {

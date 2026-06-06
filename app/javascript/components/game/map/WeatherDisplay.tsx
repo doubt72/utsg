@@ -7,6 +7,7 @@ import Map from "../../../engine/Map";
 import { Coordinate, markerType } from "../../../utilities/commonTypes";
 import Marker from "../../../engine/Marker";
 import Counter from "../../../engine/Counter";
+import { normalDir } from "../../../utilities/utilities";
 
 interface WeatherDisplayProps {
   map: Map;
@@ -50,15 +51,17 @@ export default function WeatherDisplay({
     const prev = preview
     const hex = <g>
       <polygon points={baseHexCoords(map || { radius: 0 }, x.hex, y.hex)}
-              style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
+               style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }}
+               transform={ map.rotated ? `rotate(30 ${x.hex} ${y.hex})` : "" }/>
       {[1, 2, 3, 4, 5, 6].map(d => {
+        const dir = map.rotated ? d - 2.5 : d - 1
         if (!map) { return }
-        const x0 = x.hex - (map.radius-4) * Math.cos((d-1)/3 * Math.PI)
-        const y0 = y.hex - (map.radius-4) * Math.sin((d-1)/3 * Math.PI)
+        const x0 = x.hex - (map.radius-4) * Math.cos((dir)/3 * Math.PI)
+        const y0 = y.hex - (map.radius-4) * Math.sin((dir)/3 * Math.PI)
         return (
           <text key={d} fontSize={24} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}
-                transform={`translate(${x0},${y0}) rotate(${d*60 - 150})`}>
+                transform={`translate(${x0},${y0}) rotate(${dir*60 - 90})`}>
             {d}
           </text>
         )
@@ -146,7 +149,7 @@ export default function WeatherDisplay({
       )
     }
   }, [
-    x, y,
+    x, y, map.rotated,
     map.baseTerrain, map.night // For debugging
   ])
 
@@ -222,13 +225,13 @@ export default function WeatherDisplay({
 
       const wc = new Counter(new Coordinate(x.hex - 40, y.hex - 40), new Marker({
         type: markerType.Wind, subtype: map.windSpeed, v: map.windVariable ? 1 : 0,
-        facing: map.windDirection, rotates: 1, mk: 1,
+        facing: map.rotated ? normalDir(map.windDirection - 1.5) : map.windDirection, rotates: 1, mk: 1,
       }), map, true)
       const wcb = () => { ovCallback({ show: true, counters: [wc] }) }
       setWind(<MapCounter counter={wc} ovCallback={wcb} />)
     }
   }, [
-    x, y, hideCounters,
+    x, y, hideCounters, map.rotated,
     map.currentWeather, map.baseWeather, map.precip, map.precipChance,
     map.windSpeed, map.windDirection, map.windVariable,
   ])

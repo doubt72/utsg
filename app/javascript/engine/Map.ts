@@ -62,6 +62,7 @@ export default class Map {
   windSpeed: WindType;
   windDirection: Direction;
   windVariable: boolean;
+  rotated: boolean = false;
   showCoords: boolean = true;
   showAllCounters: boolean = false;
   hideCounters: boolean = false;
@@ -576,6 +577,10 @@ export default class Map {
   ): OverlayLayout {
     let x1 = (this.xOffset(loc.x, loc.y) - shift.x) * mapScale - 90
     let y1 = (this.yOffset(loc.y) - shift.y) * mapScale - 90 + yMapOffset
+    if (this.rotated) {
+      x1 = (this.yOffset(loc.y) - shift.x) * mapScale - 90
+      y1 = (this.previewXSize - this.xOffset(loc.x, loc.y) - shift.y) * mapScale - 90 + yMapOffset
+    }
     if (absolute) {
       x1 = loc.x - 50
       y1 = loc.y - 50
@@ -583,8 +588,6 @@ export default class Map {
     const outwidth = 12
     let x2 = x1 + size*(160 + outwidth) + outwidth
     let y2 = y1 + 160 + outwidth*2
-    // let x2 = x1 + size*176 + 16
-    // let y2 = y1 + 192
     if (x2 > max.x) {
       const diff = max.x - x2
       x1 += diff

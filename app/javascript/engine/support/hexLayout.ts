@@ -238,8 +238,8 @@ export function riverStyle(hex: Hex): SVGStyle {
 export function victoryLayout(hex: Hex): CircleLayout | false {
   const victory = hex.map.victoryNationAt(hex.coord)
   if (!victory) { return false }
-  const x = hex.xCorner(5, 20)
-  const y = hex.yCorner(5, 20)
+  const x = hex.map.rotated ? hex.xCorner(6, 20) : hex.xCorner(5, 20)
+  const y = hex.map.rotated ? hex.yCorner(6, 20) : hex.yCorner(5, 20)
   return {
     x: x, y: y, r: 12, style: {
       fill: `url(#nation-${victory}-12)`, strokeWidth: 1, stroke: "#000"

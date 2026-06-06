@@ -1,5 +1,6 @@
-# 0.92
+# 0.93
 
+- Allow ability to rotate the map (first pass)
 - Open reinforcement panel when undoing deployment/selecting unit
 - Update admin game listing page to have list of just two-player/finished games
 - Updated 006 (fixed map)
