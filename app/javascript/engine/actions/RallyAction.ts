@@ -18,6 +18,7 @@ export default class RallyAction extends BaseAction {
 
   fixRoll: number;
   breakRoll: number;
+  vehicle: boolean;
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -34,6 +35,7 @@ export default class RallyAction extends BaseAction {
     this.nextToEnemy = data.data.rally_data?.infantry?.next_to_enemy ?? false
     this.fixRoll = data.data.rally_data?.weapon?.fix_roll ?? 0
     this.breakRoll = data.data.rally_data?.weapon?.break_roll ?? 0
+    this.vehicle = data.data.rally_data?.weapon?.vehicle ?? false
   }
 
   get type(): string { return "rally" }
@@ -56,8 +58,10 @@ export default class RallyAction extends BaseAction {
     const infantry = !this.fixRoll
     const action = infantry ? "rally check" : "attempt to fix weapon"
     const succeed = infantry ? "rallies" : "is repaired"
+    const weaponFail = this.vehicle ? `weapon is <span style="color: ${failRed()};">destroyed</span>` :
+      `is <span style="color: ${failRed()};">eliminated</span>`
     const fail = infantry ? `fails to rally` :
-      ( roll <= this.breakRoll ? `is <span style="color: ${failRed()};">eliminated</span>` : "remains broken" )
+      ( roll <= this.breakRoll ? weaponFail : "remains broken" )
     const result = `${this.passed ? `<span style="color: ${passGreen()};">passed</span>` : (
       !infantry && roll <= this.breakRoll ? `catastrophic <span style="color: ${failRed()};">failure</span>` : `<span style="color: ${failRed()};">failed</span>`
     ) }: ` + `${formatNation(this.game, this.player, this.target.name)} ${this.passed ? succeed : fail}`
@@ -86,9 +90,15 @@ export default class RallyAction extends BaseAction {
         this.game.addActionAnimations([{ loc, type: "fix" }])
       }
     } else if (!unit.canCarrySupport && this.diceResult.result.result <= this.breakRoll ) {
-      unit.jammed = false
-      this.game.scenario.map.eliminateCounter(loc, this.target.id)
-      this.game.addActionAnimations([{ loc, type: "destroyed" }])
+      if (unit.isVehicle) {
+        unit.jammed = false
+        unit.weaponDestroyed = true
+        this.game.addActionAnimations([{ loc, type: "destroyed" }])
+      } else {
+        unit.jammed = false
+        this.game.scenario.map.eliminateCounter(loc, this.target.id)
+        this.game.addActionAnimations([{ loc, type: "destroyed" }])
+      }
     } else {
       this.game.addActionAnimations([{ loc, type: "norally" }])
     }

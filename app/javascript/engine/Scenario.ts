@@ -1,5 +1,5 @@
 import { Player } from "../utilities/commonTypes";
-import { alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList } from "../utilities/utilities";
+import { addSpecialArmorRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList } from "../utilities/utilities";
 import Feature, { FeatureData } from "./Feature";
 import Game from "./Game"
 import Map, { MapData } from "./Map";
@@ -107,17 +107,8 @@ export default class Scenario {
       for (const counterData of list) {
         const x = counterData.x || 1
         const id = counterData.id
-        if (!counterData.ft && this.axisFactions.includes(counterData.c)) {
-          if (this.specialRules.includes("axis_green_armor")) {
-            if (["tank", "spg", "ht", "ac"].includes(counterData.t)) { counterData.o.v = -1 }
-          }
-          if (this.specialRules.includes("axis_fragile_vehicles")) {
-            if (["tank", "spg", "ht", "ac"].includes(counterData.t)) {
-              counterData.o.bd = counterData.o.bd ? counterData.o.bd + 1 : 3
-            }
-          }
-        }
         const counter = counterData.ft ? new Feature(counterData) : new Unit(counterData)
+        if (!counter.isFeature) { addSpecialArmorRules(counter as Unit, this) }
         turnCounters[id] = {x, used: 0, id, counter}
       }
       converted[turn] = turnCounters

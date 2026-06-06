@@ -1,5 +1,6 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
+import { addSpecialArmorRules } from "../../utilities/utilities";
 import DeployState from "../control/state/DeployState";
 import Game from "../Game";
 import { GameActionPath, GameActionData, GameActionReinforcementUnit } from "../GameAction";
@@ -59,6 +60,7 @@ export default class DeployAction extends BaseAction {
       }
     }
     uf.id = this.rId
+    if (!uf.isFeature) { addSpecialArmorRules(uf as Unit, scenario) }
     map.addCounter(this.target, uf)
   }
 

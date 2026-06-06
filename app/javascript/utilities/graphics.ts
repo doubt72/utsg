@@ -57,6 +57,7 @@ export type StatusLayout = {
 export type HelpLayout = {
   path: string, style: SVGStyle, size: number, opacity: number;
   texts: { x: number, y: number, value: string }[]; tStyle: SVGStyle;
+  x0?: number; y0?: number;
 }
 export type HelpButtonLayout = {
   path: string, x: number, y: number, size: number

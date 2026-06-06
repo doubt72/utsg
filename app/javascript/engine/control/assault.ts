@@ -30,6 +30,7 @@ export function showClearObstacles(game: Game): boolean {
 
 export function showEntrench(game: Game): boolean {
   if (!game.gameState) { return false }
+  if (game.scenario.specialRules.includes("winter")) { return false }
   const selection = game.assaultState.selection
   if (selection.length > 1) { return false }
   if (game.scenario.map.contactAt(new Coordinate(selection[0].x, selection[0].y))) { return false }

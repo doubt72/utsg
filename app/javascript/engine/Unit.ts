@@ -424,6 +424,7 @@ export default class Unit {
     this.internalStatus = unitStatus.Wreck
     if (game) {
       const casualty = this.clone()
+      casualty.playerNation = this.playerNation
       casualty.id = `${this.id}-clone`
       game.addEliminatedCounter(casualty)
     }
@@ -540,7 +541,7 @@ export default class Unit {
     if (this.isBroken) {
       return Math.floor(this.baseFirepower / 2)
     } else if (this.isVehicle && !this.isWreck) {
-      return this.armored ? 2 : 1
+      return (this.armored && !this.immobilized) ? 2 : 1
     } else if (this.uncrewedSW && !this.jammed && (this.parent && !this.parent.isBroken)) {
       return this.assault ? 2 : 0
     } else if (this.canCarrySupport) {

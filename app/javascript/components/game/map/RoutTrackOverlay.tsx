@@ -21,10 +21,10 @@ export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProp
         const next = path[j]
         const offset1 = Math.max(map.counterDataAt(last).length * 5 - 5, 0)
         const x1 = map.xOffset(last.x, last.y) + offset1
-        const y1 = map.yOffset(last.y) - offset1
+        const y1 = map.yOffset(last.y) - (map.rotated ? -offset1 : offset1)
         const offset2 = Math.max(map.counterDataAt(next).length * 5 - 5, 0)
         const x2 = map.xOffset(next.x, next.y) + offset2
-        const y2 = map.yOffset(next.y) - offset2
+        const y2 = map.yOffset(next.y) - (map.rotated ? -offset2 : offset2)
         rc.push(
           <g key={`${i}-${j}-line`}>
             <line x1={x1} y1={y1} x2={x2} y2={y2} style={{ stroke: "#DDD", strokeWidth: 4 }} />

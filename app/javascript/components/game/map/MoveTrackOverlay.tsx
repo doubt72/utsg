@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
 import Hex from "../../../engine/Hex";
-import { circlePath, roundedRectangle, yMapOffset } from "../../../utilities/graphics";
+import { circlePath, roundedRectangle } from "../../../utilities/graphics";
 import { stateType } from "../../../engine/control/state/BaseState";
 import { moveActions, routActions } from "../../../engine/actions/BaseAction";
 import { executeContextAction, translateAction } from "../../utilities/context";
@@ -16,6 +16,8 @@ interface MoveTrackOverlayProps {
   map: Map;
   updateCallback: () => void;
   selectCallback: (x: number, y: number) => void;
+  tooltipCallback: (e: JSX.Element | undefined) => void;
+  menuCallback: (e: JSX.Element | undefined) => void;
   scale: number;
   mapScale: number;
   xOffset: number;
@@ -24,19 +26,19 @@ interface MoveTrackOverlayProps {
 }
 
 export default function MoveTrackOverlay({
-  map, updateCallback, selectCallback, scale, mapScale, xOffset, yOffset, svgRef }: MoveTrackOverlayProps
+  map, updateCallback, selectCallback, tooltipCallback, menuCallback, scale, mapScale, xOffset, yOffset, svgRef
+}: MoveTrackOverlayProps
 ) {
   const [hexTrack, setHexTrack] = useState<JSX.Element[]>([])
   const [hexCenters, setHexCenters] = useState<JSX.Element[]>([])
-  const [contextMenu, setContextMenu] = useState<JSX.Element | undefined>()
 
-  const [actionHelpDisplay, setActionHelpDisplay] = useState<JSX.Element | undefined>()
   const [actionControls, setActionControls] = useState<JSX.Element[]>([])
 
   const contextAction = (type: string) => {
     if (!map.game) { return }
     executeContextAction(map.game, undefined, type, updateCallback)
-    setContextMenu(undefined)
+    menuCallback(undefined)
+    tooltipCallback(undefined)
     updateCallback()
   }
 
@@ -44,6 +46,8 @@ export default function MoveTrackOverlay({
     if (!map.game) { return }
     executeContextAction(map.game, undefined, type, updateCallback)
     setActionControls([])
+    menuCallback(undefined)
+    tooltipCallback(undefined)
     updateCallback()
   }
 
@@ -51,10 +55,8 @@ export default function MoveTrackOverlay({
     e.preventDefault()
     if (!map.game) { return }
     const options = actionsAvailable(map.game, map.game.currentUser, false)
-    const x = ((e.clientX - svgRef.current.getBoundingClientRect().x) / scale +
-      map.previewXSize * xOffset)/mapScale - 24
-    const y = ((e.clientY - svgRef.current.getBoundingClientRect().y - yMapOffset + 100) / scale -
-      100 + map.ySize * yOffset)/mapScale - 24
+    const x = (e.clientX - svgRef.current.getBoundingClientRect().x - 16) / scale
+    const y = (e.clientY - svgRef.current.getBoundingClientRect().y - 16) / scale
     const filtered = options.filter(a => {
       return ![
         "sync", "wait", "none", "undo", "join", "leave", "start", "kick", "deploy", "help",
@@ -84,8 +86,8 @@ export default function MoveTrackOverlay({
       )
     })
     const height = filtered.length * 36 + 12
-    setContextMenu(
-      <g onMouseLeave={() => setContextMenu(undefined)} >
+    menuCallback(
+      <g onMouseLeave={() => menuCallback(undefined)} >
         <path d={roundedRectangle(x, y, width + 16, height)} style={{ fill: "rgba(0,0,0,0.2)" }} />
         { buttons }
       </g>
@@ -95,13 +97,11 @@ export default function MoveTrackOverlay({
 
   const showButtonHelp = (e: React.MouseEvent, type: string) => {
     if (!map.game) { return }
-    const x = ((e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale +
-      map.previewXSize * xOffset)/mapScale
-    const y = ((e.clientY - svgRef.current.getBoundingClientRect().y + 10 - yMapOffset + 100) / scale -
-      100 + map.ySize * yOffset)/mapScale
+    const x = (e.clientX - svgRef.current.getBoundingClientRect().x + 10) / scale
+    const y = (e.clientY - svgRef.current.getBoundingClientRect().y + 10) / scale
     const loc = new Coordinate(x, y)
     const max = new Coordinate(map.previewXSize, map.ySize)
-    setActionHelpDisplay(HelpOverlay(actionButtonHelpLayout(loc, max, scale, type)))
+    tooltipCallback(HelpOverlay(actionButtonHelpLayout(loc, max, scale, type)))
   }
 
   const hexes = (): Hex[] => {
@@ -127,10 +127,10 @@ export default function MoveTrackOverlay({
     for (let i = 1; i < hx.length; i++) {
       const offset1 = Math.max(map.counterDataAt(hx[i-1].coord).length * 5 - 5, 0)
       const x1 = hx[i-1].xOffset + offset1
-      const y1 = hx[i-1].yOffset - offset1
+      const y1 = hx[i-1].yOffset - (map.rotated ? -offset1 : offset1)
       const offset2 = Math.max(map.counterDataAt(hx[i].coord).length * 5 - 5, 0)
       const x2 = hx[i].xOffset + offset2
-      const y2 = hx[i].yOffset - offset2
+      const y2 = hx[i].yOffset - (map.rotated ? -offset2 : offset2)
       track.push(
         <g key={`${i}-g`}>
           <line key={`${i}-la`} x1={x1} y1={y1} x2={x2} y2={y2}
@@ -163,10 +163,10 @@ export default function MoveTrackOverlay({
         const controls = mapActionButtons(map, x, y + 10, loc)
         for (const c of controls) {
           buttons.push(
-            <g key={`${c.text}`}
+            <g key={`${c.text}`} transform={ map.rotated ? `rotate(90 ${h.xOffset} ${h.yOffset})` : "" }
                 onClick={() => buttonAction(c.action)}
                 onMouseMove={(e: React.MouseEvent) => { showButtonHelp(e, c.action) }}
-                onMouseLeave={() => { setActionHelpDisplay(undefined) }}
+                onMouseLeave={() => { tooltipCallback(undefined) }}
                 onContextMenu={e => e.preventDefault()} >
               <path d={c.path} style={{ fill: c.color, strokeWidth: 2, stroke: "#000" }} />
               <text textAnchor="middle" fontFamily="'Courier Prime', monospace" x={c.tX} y={c.tY}
@@ -177,7 +177,7 @@ export default function MoveTrackOverlay({
           )
         }
         setActionControls(buttons)
-        setActionHelpDisplay(undefined)
+        tooltipCallback(undefined)
       }
       if (routing) {
         return <path key={`${i}-c`} d={circlePath(new Coordinate(x, y), 12)}
@@ -213,8 +213,6 @@ export default function MoveTrackOverlay({
         { hexTrack }
         { hexCenters }
         { actionControls }
-        { contextMenu }
-        { actionHelpDisplay }
       </g>
     )
   }

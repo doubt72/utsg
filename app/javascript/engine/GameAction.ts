@@ -72,6 +72,7 @@ export type GameActionRallyData = {
   weapon?: {
     break_roll: number,
     fix_roll: number,
+    vehicle: boolean,
   },
   free_rally: boolean,
 }

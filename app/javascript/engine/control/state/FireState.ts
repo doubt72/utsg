@@ -134,6 +134,7 @@ export default class FireState extends BaseState {
 
   selectable(selection: CounterSelectionTarget): boolean {
     if (selection.target.type !== "map") { return false }
+    if (selection.counter.unit.isWreck) { return false }
     const target = selection.counter.unit as Unit
     const same = this.samePlayer(target)
     const select = this.selection[0]

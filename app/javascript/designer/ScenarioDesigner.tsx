@@ -434,7 +434,6 @@ export default function ScenarioDesigner() {
                               setScenarioData(s => {
                                 const sr = ([] as string[]).concat(scenarioData.metadata.special_rules ?? [])
                                 const index =  sr.indexOf(target.value)
-                                console.log(index)
                                 if (index < 0) {
                                   sr.push(target.value)
                                 } else {

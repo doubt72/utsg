@@ -258,7 +258,7 @@ export default function MapCounterOverlay({
             map, x, layout.y2 + 20 - dblwidth + (shiftBadges ? 6 : 0), maxY, cd, (shiftBadges ? 6 : 3)
           ).map((b, i) => {
             const arrow = b.arrow ?
-              <g opacity={thisButtons ? 0.33 : 1}>
+              <g opacity={thisButtons ? 0.33 : 1} transform={ map.rotated ? `rotate(-90, ${b.dx} ${b.dy as number})` : "" }>
                 <path d={b.dirpath} style={{ fill: b.color, stroke: b.tColor, strokeWidth: 2 }} />
                 <text x={b.dx} y={b.y as number+1} fontSize={b.size} textAnchor="middle"
                       style={{ fill: b.tColor }}

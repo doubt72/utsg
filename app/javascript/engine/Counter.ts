@@ -97,7 +97,7 @@ export default class Counter {
     if (!this.map?.rotated && (!this.target.rotates || (this.hasUnit && this.unit.isWreck))) { return false }
     let facing = this.target.facing
     if (!this.target.rotates || (this.hasUnit && this.unit.isWreck)) { facing = 4 }
-    if (this.hasUnit && this.unit.turreted) { facing = this.unit.turretFacing }
+    if (this.hasUnit && this.unit.turreted && !this.unit.isWreck) { facing = this.unit.turretFacing }
     return { a: facing*60 - 150, x: this.x + 40, y: this.y + 40 }
   }
 }

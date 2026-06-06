@@ -1,5 +1,23 @@
 # 0.93
 
+- Change immobilized vehicle close combat firepower to 1 (and update docs)
+- Various artifacts related to map rotation
+  - Remember setting on reload
+  - Clean up animation alignment
+  - Update docs
+  - Bug fix: move/rout track lines offset in wrong direction
+  - Bug fix: direction arrow in counter badges
+  - Bug fix: some shadows are wrong direction(s)
+  - Bug fix: wrecks in direction of turret
+  - Bug fix: rotate action buttons on move track and fix/refactor menu/tooltip placement/rotation
+- Bug fix: prevent automatic opening reinforcement panel in minimap
+- Bug fix: refactor/implement various special rules properly (never got around to most of them before)
+- Bug fix: fix minor nation vehicle casualties/scoring
+- Bug fix: should not be able to target wrecks
+- Bug fix: catastrophic weapon repair check should only destroy weapon, not vehicle
+
+# 0.92
+
 - Allow ability to rotate the map (first pass)
 - Open reinforcement panel when undoing deployment/selecting unit
 - Update admin game listing page to have list of just two-player/finished games

@@ -49,8 +49,8 @@ export default function MapHexOverlay({
         <polygon points={hex.hexCoords} style={style}
                  onClick={() => open ? selectCallback(hex.coord.x, hex.coord.y) : {}}
                  onContextMenu={e => {
-                  e.preventDefault()
-                  open ? selectCallback(hex.coord.x, hex.coord.y) : {}
+                   e.preventDefault()
+                   open ? selectCallback(hex.coord.x, hex.coord.y) : {}
                  }} />
       </g>
     )

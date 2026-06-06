@@ -1,6 +1,6 @@
 import Feature from "../engine/Feature"
 import Game from "../engine/Game"
-import { ReinforcementItem } from "../engine/Scenario"
+import Scenario, { ReinforcementItem } from "../engine/Scenario"
 import Unit from "../engine/Unit"
 import { Coordinate, Direction, featureType, Player } from "./commonTypes"
 
@@ -108,6 +108,36 @@ export function nowUTCString(): string {
   const min = ("0" + date.getUTCMinutes()).slice(-2)
   const sec = ("0" + date.getUTCSeconds()).slice(-2)
   return `${year}-${mon}-${day}T${hour}:${min}:${sec}Z`
+}
+
+export function addSpecialArmorRules(unit: Unit, scenario: Scenario) {
+  // playerNation may or may not be set; takes priority if it is, failover to axm if no matches
+  if (scenario.axisFactions.includes(unit.playerNation) || scenario.axisFactions.includes(unit.nation) ||
+      unit.nation === "axm" ) {
+    if (scenario.specialRules.includes("axis_green_armor")) {
+      if (["tank", "spg", "ht", "ac"].includes(unit.type)) { unit.eliteCrew = -1 }
+    }
+    if (scenario.specialRules.includes("axis_elite_armor")) {
+      if (["tank", "spg", "ht", "ac"].includes(unit.type)) { unit.eliteCrew = 1 }
+    }
+    if (scenario.specialRules.includes("axis_fragile_vehicles")) {
+      if (["tank", "spg", "ht", "ac"].includes(unit.type)) {
+        unit.breakdownRoll = unit.breakdownRoll ? unit.breakdownRoll + 1 : 3
+      }
+    }
+  } else {
+    if (scenario.specialRules.includes("allied_green_armor")) {
+      if (["tank", "spg", "ht", "ac"].includes(unit.type)) { unit.eliteCrew = -1 }
+    }
+    if (scenario.specialRules.includes("allied_elite_armor")) {
+      if (["tank", "spg", "ht", "ac"].includes(unit.type)) { unit.eliteCrew = 1 }
+    }
+    if (scenario.specialRules.includes("allied_fragile_vehicles")) {
+      if (["tank", "spg", "ht", "ac"].includes(unit.type)) {
+        unit.breakdownRoll = unit.breakdownRoll ? unit.breakdownRoll + 1 : 3
+      }
+    }
+  }
 }
 
 export type DiceResult = {
@@ -284,4 +314,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.92"
+export const serverVersion = "0.93"

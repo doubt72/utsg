@@ -108,6 +108,8 @@ export default function MapDisplay({
   const [fireTargets, setFireTargets] = useState<JSX.Element[]>([])
   const [fireHindrance, setFireHindrance] = useState<JSX.Element | undefined>()
   const [routTrack, setRoutTrack] = useState<JSX.Element | undefined>()
+  const [actionMenu, setActionMenu] = useState<JSX.Element | undefined>()
+  const [actionTooltip, setActionTooltip] = useState<JSX.Element | undefined>()
 
   const [rotateTransform, setRotateTransform] = useState<string>("")
   const [clipTransform, setClipTransform] = useState<string>("")
@@ -512,7 +514,7 @@ export default function MapDisplay({
     } else if (map.game?.gameState?.type === stateType.Deploy &&
                reinforcementsOverlay === undefined) {
       displayReinforcements(map.game.currentPlayer)
-    } else {
+    } else if (!preview) {
       setReinforcementsOverlay(rp => {
         if (!rp) { return undefined }
         const xx = rp.props.xx
@@ -607,6 +609,8 @@ export default function MapDisplay({
       setMoveTrack(<MoveTrackOverlay map={map} scale={scale} mapScale={mapScale ?? 1}
                                      xOffset={xOffset} yOffset={yOffset} updateCallback={() =>
                                        { counterCallback(); updateCallback() }} selectCallback={hexSelection}
+                                     tooltipCallback={(e) => setActionTooltip(e)}
+                                     menuCallback={(e) => setActionMenu(e)}
                                      svgRef={svgRef as React.MutableRefObject<HTMLElement>} />)
     } else {
       // TODO: if last sig action was fire, check for displace
@@ -744,7 +748,7 @@ export default function MapDisplay({
   }
 
   const makeReinfocementPanel = (x: number, y: number, player: Player) => {
-    if (map.preview) { return (<g></g>) }
+    if (map.preview) { return undefined }
     return (
       <ReinforcementPanel map={map} xx={x} yy={y} player={player}
                           scale={scale ?? 1} mapScale={mapScale ?? 1}
@@ -896,7 +900,9 @@ export default function MapDisplay({
       {reinforcementsOverlay}
       {counterOverlay}
       {terrainInfoOverlay}
+      {actionTooltip}
       {notification}
+      {actionMenu}
     </svg>
   )
 }

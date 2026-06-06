@@ -871,13 +871,17 @@ export default class Game {
   }
 
   get specialRulesNegateTerrain(): boolean {
-    const check = this.scenario.map.baseTerrain === baseTerrainType.Snow &&
+    const allies = this.scenario.map.baseTerrain === baseTerrainType.Snow &&
+      this.scenario.specialRules.includes("allies_ignore_snow")
+    const axis = this.scenario.map.baseTerrain === baseTerrainType.Snow &&
       this.scenario.specialRules.includes("axis_ignore_snow")
     if (this.playerOneName === this.playerTwoName || this.suppressNetwork) {
-      if (this.currentPlayer === 2 && check) { return true }
+      if (this.currentPlayer === 1 && allies) { return true }
+      if (this.currentPlayer === 2 && axis) { return true }
     } else {
       const player = localStorage.getItem("username") === this.playerOneName ? 1 : 2
-      if (player === 2 && check) { return true }
+      if (player === 1 && allies) { return true }
+      if (player === 2 && axis) { return true }
     }
     return false
   }

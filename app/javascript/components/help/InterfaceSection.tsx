@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { roundedRectangle } from "../../utilities/graphics";
 import { redNumber } from "./helpData";
 import {
+  ArrowRepeat,
   ArrowsAngleContract,
   ArrowsAngleExpand,
   Circle,
@@ -64,7 +65,7 @@ export default function InterfaceSection() {
       { x: 2400, y: 590 },
       { x: 160, y: 620 },
       { x: 180, y: 750 },
-      { x: 1070, y: 702 },
+      { x: 960, y: 702 },
       { x: 800, y: 780 },
       { x: 1000, y: 780 },
       { x: 1470, y: 780 },
@@ -88,7 +89,7 @@ export default function InterfaceSection() {
               height={height * shrink}
             >
               <image
-                href="/assets/screenshot3.png"
+                href="/assets/screenshot4.png"
                 x="0"
                 y="0"
                 width={width * shrink}
@@ -195,6 +196,16 @@ export default function InterfaceSection() {
         <strong>Map controls</strong>: these buttons control how the map is displayed or what is
         displayed on the map.  These buttons may be collapsed to icon only on smaller displays.
       </p>
+      <p>
+        The map rotation can be toggled with this button:
+      </p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <ArrowRepeat />
+        </div>
+        <div className="flex-fill"></div>
+      </div>
       <p>
         Map zoom is controled with these buttons (if the map is at full or
         minimum size, those buttons are ghosted):

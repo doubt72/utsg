@@ -1,10 +1,24 @@
 Features/Bug Fixes:
-  + Rotate map if bored
-  - Update docs with rotated map
+  + Weather, turn, reinforcement, rotated units shadows on wrong side
+  + Lines of track in wrong places
+  + Direction arrow under facing not rotated
+  + Fix wreck marker orientation
+  + Move controls sideways/tooltips are in wrong place
+  + Clean up animation alignment for rotated
+  + Update docs with rotated map
+  + Reinforcement panel showed up on minimap
+  + Romanian units not having increased breakdown
+  + Winter should not allow dig ins
+  + Dead untis/scoring not showing up minor/scoring wrong
+  + Immobilized armored vehicle only gets CC 1
+  + Fire shouldn't be able to select wrecks
+  + Weapon destroyed removes tank
+  + Clear state at game end
   - Finish scenario editor
   ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)
+  ? Help display error when routing (sometimes)
 
   - Add Some Developer Notes
   - Strategy notes
@@ -13,7 +27,7 @@ Features/Bug Fixes:
 
 Maybe: 401, 501, 503, 510, 601
 Need: 308
-Beta: 006, 203, 102
+Beta: 006, 102, 203
 
 Nice to Have Eventually:
   - Better rollback of smoke on reaction fire
@@ -21,13 +35,10 @@ Nice to Have Eventually:
 
 Keep an Eye out for:
   ? Problematic Game Controls performance (excessive refreshes still)
-  ? Make deploy more comprehensible
   ? Refactor firing:
     ? Remove done select?  Can join units after the fact without canceling?
 
 Probably not:
-  ? Add tie (48 55)
-  ? Automatically undo additional deploys (should no longer be necessary)
   ? KV and French single-man turrets?
   ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 

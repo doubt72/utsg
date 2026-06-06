@@ -190,6 +190,38 @@ describe("rallying", () => {
     expect(map.anyUnitsCanRally(2)).toBe(false)
   })
 
+  test("rally fails for tank weapon", () => {
+    const game = createBlankGame()
+    game.phase = gamePhaseType.PrepRally
+    game.setCurrentPlayer(2)
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.jammed = true
+    map.addCounter(new Coordinate(0,0), unit)
+    organizeStacks(map)
+
+    expect(map.anyUnitsCanRally(2)).toBe(true)
+
+    game.setGameState(new RallyState(game))
+
+    map.select(unit)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(map.countersAt(new Coordinate(0,0)).length).toBe(2)
+    const action = game.actions[0]
+    expect(action.type).toBe("rally")
+    expect(action.stringValue).toBe(
+      "German attempt to fix weapon at A1: target 18, rolled 2 [2d10: 1 + 1], catastrophic failure: " +
+        "PzKpfw 35(t) weapon is destroyed"
+    )
+    expect(unit.weaponDestroyed).toBe(true)
+    expect(map.anyUnitsCanRally(2)).toBe(false)
+  })
+
   test("rally with leader doesn't use free rally", () => {
     const game = createBlankGame()
     game.phase = gamePhaseType.PrepRally

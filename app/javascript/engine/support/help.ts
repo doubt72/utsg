@@ -703,7 +703,7 @@ export function mapHelpLayout(
     path: roundedRectangle(x1, y1, x2 - x1, y2 - y1), style: { fill: color },
     opacity: 0.9, size: size-(6/scale), texts: text.map((t, i) => {
       return { x: x1+(8/scale), y: y1 + i*diff + size - 1, value: t }
-    }), tStyle: { fill: textColor }
+    }), tStyle: { fill: textColor }, x0: x1, y0: y1,
   }
 }
 

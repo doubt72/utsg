@@ -51,6 +51,7 @@ export function checkPhase(game: Game, backendSync: boolean) {
       if (game.playerOneScore !== game.playerTwoScore) {
         winner = game.playerOneScore > game.playerTwoScore ? 1 : 2
       }
+      game.clearGameState()
       game.executeAction(new GameAction({
         player: winner, user: game.currentUser, data: {
           action: "finish", old_initiative: game.initiative,

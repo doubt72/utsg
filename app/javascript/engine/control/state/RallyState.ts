@@ -143,6 +143,7 @@ export default class RallyState extends BaseState {
       weapon: {
         fix_roll: counter.unit.repairRoll as number,
         break_roll: counter.unit.breakWeaponRoll as number,
+        vehicle: counter.unit.isVehicle
       },
       free_rally: free,
     }

@@ -34,7 +34,8 @@ export default function CloseCombatSection() {
         Each player adds up their combat power, which is the cumulative total of the firepower of
         any infantry unit (squad, team, or leader) plus 2 for any infantry units with an assault
         bonus, plus the highest leadership of any leader in the stack for that player added to each
-        non-leader infantry unit. Vehicles count as 2. Infantry support weapons add 2 if they have
+        non-leader infantry unit. Armored vehicles have close combat firepower of 2 (unless immobilized,
+        then 1), other vehicles have close combat fire of 1. Infantry support weapons add 2 if they have
         an assault bonus, otherwise 0.
       </p>
       <p>

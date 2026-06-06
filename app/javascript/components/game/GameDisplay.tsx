@@ -44,7 +44,7 @@ export default function GameDisplay() {
 
   const [mapScale, setMapScale] = useState(1)
   const [interfaceShrink, setInterfaceShrink] = useState(0)
-  const [, setRotated] = useState(false)
+  const [rotated, setRotated] = useState(false)
   const [coords, setCoords] = useState(true)
   const [showStatusCounters, setShowStatusCounters] = useState(false)
   const [hideCounters, setHideCounters] = useState(false)
@@ -202,6 +202,7 @@ export default function GameDisplay() {
     const horizontal = localStorage.getItem("horizontalControls")
     const showCoords = localStorage.getItem("mapCoords")
     const showMarkers = localStorage.getItem("mapMarkers")
+    const mapRotate = localStorage.getItem("mapRotate")
     if (shrink !== null) {
       setInterfaceShrink(Number(shrink))
     } else {
@@ -212,15 +213,17 @@ export default function GameDisplay() {
       }
     }
     if (mScale !== null) { setMapScale(Number(mScale)) }
-    if (collape !== null) { setCollapseLayout(collape == "true") }
-    if (headerCollape !== null) { setCollapseHeader(headerCollape == "true") }
-    if (horizontal !== null) { setHorizontalControls(horizontal == "true") }
-    if (showCoords !== null) { setCoords(showCoords == "true") }
-    if (showMarkers !== null) { setShowStatusCounters(showMarkers == "true") }
+    if (collape !== null) { setCollapseLayout(collape === "true") }
+    if (headerCollape !== null) { setCollapseHeader(headerCollape === "true") }
+    if (horizontal !== null) { setHorizontalControls(horizontal === "true") }
+    if (showCoords !== null) { setCoords(showCoords === "true") }
+    if (showMarkers !== null) { setShowStatusCounters(showMarkers === "true") }
+    if (mapRotate !== null) { setRotated(mapRotate === "true") }
   }, [])
 
   useEffect(() => {
     if (!map) { return }
+    map.rotated = rotated
     setMapDisplay(
       <MapDisplay map={map} scale={shrinkScales[interfaceShrink]} mapScale={mapScale}
                   showCoords={coords} showStatusCounters={showStatusCounters} showLos={showLos}
@@ -234,7 +237,7 @@ export default function GameDisplay() {
                   checkCancelHideLOS={checkCancelHideLOS} checkCancelTerrain={checkCancelTerrain} />
     )
   }, [
-    map, map?.rotated, updateMap, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
+    map, rotated, updateMap, interfaceShrink, mapScale, coords, showStatusCounters, showLos,
     hideCounters, showTerrain, collapseLayout, collapseHeader, horizontalControls
   ])
 
@@ -442,6 +445,7 @@ export default function GameDisplay() {
     setRotated(c => {
       const nc = !c
       if (map) { map.rotated = nc }
+      localStorage.setItem("mapRotate", nc ? "true" : "false")
       return nc
     })
   }
@@ -803,7 +807,7 @@ export default function GameDisplay() {
             <div className="flex-fill"></div>
             <OverlayTrigger placement="bottom" overlay={rotateTooltip}
                             delay={{ show: 0, hide: 0 }}>
-              <div className={`custom-button normal-button${ map?.rotated ? " custom-button-select" : ""}`}
+              <div className={`custom-button normal-button${ rotated ? " custom-button-select" : ""}`}
                    onClick={() => toggleRotated()}>
                 <ArrowRepeat />
               </div>

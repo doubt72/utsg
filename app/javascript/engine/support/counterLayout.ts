@@ -78,11 +78,18 @@ export function nameBackgroundStyle(counter: Counter): SVGStyle {
 
 export function shadowPath(counter: Counter): string | false {
   if (counter.hideShadow) { return false }
-  const angle = counter.rotation ? counter.rotation.a : 0
+  let angle = counter.rotation ? counter.rotation.a : 0
+  if (counter.map?.rotated) {
+    if (counter.hasMarker && [
+          markerType.Weather, markerType.Initiative, markerType.Turn, markerType.Wind
+        ].includes(counter.marker.type)) {
+      angle += 90
+    }
+    angle -= 90
+  }
   return counterPath(
     counter,
-    counter.map?.rotated ? counter.stackOffset * Math.sqrt(2) * Math.cos((angle + 45)/ 180 * Math.PI) :
-      -counter.stackOffset * Math.sqrt(2) * Math.cos((angle + 45)/ 180 * Math.PI),
+    -counter.stackOffset * Math.sqrt(2) * Math.cos((angle + 45) / 180 * Math.PI),
     counter.stackOffset * Math.sqrt(2) * Math.sin((angle + 45) / 180 * Math.PI)
   )
 }
