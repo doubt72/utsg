@@ -690,14 +690,16 @@ export default class Map {
     return false
   }
 
-  vpEnemyAt(loc: Coordinate, player: number): boolean {
+  vpEnemyAt(loc: Coordinate, player: number, id: string): boolean {
+    let check = false
     const nation = player === 1 ? this.game?.playerOneNation : this.game?.playerTwoNation
     for (const c of this.countersAt(loc)) {
-      if (c.hasUnit && !c.unit.isWreck && !c.unit.operated && !c.unit.leader ) {
-        if (c.unit.playerNation !== nation) { return true }
+      if (c.hasUnit && !c.unit.isWreck && !c.unit.operated) {
+        if (c.unit.playerNation === nation && c.unit.id !== id) { return false }
+        if (c.unit.playerNation !== nation && !c.unit.leader) { check = true }
       }
     }
-    return false
+    return check
   }
 
   contactAt(loc: Coordinate): boolean {

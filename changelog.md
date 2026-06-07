@@ -1,3 +1,11 @@
+# 0.94
+
+- Tweaked animation placement
+- Bug fix: actually fix reinforcement panel opening in minimap
+- Bug fix: don't flip VP control on rout if other units can hold it
+- Bug fix: fix shift on hex overlay numbers/letters when map rotated
+- Bug fix: fix cases where animations got hidden behind dice generation
+
 # 0.93
 
 - Change immobilized vehicle close combat firepower to 1 (and update docs)

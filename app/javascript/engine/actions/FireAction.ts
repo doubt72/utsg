@@ -287,8 +287,10 @@ export default class FireAction extends BaseAction {
                   }
                 }
                 anims.push({ loc: dTo, type: critical ? "criteffect" : "effect" })
-              } else if (needDice) {
-                hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>`
+              } else {
+                if (needDice) {
+                  hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>`
+                }
                 anims.push({ loc: dTo, type: "noeffect" })
               }
             }
@@ -339,8 +341,10 @@ export default class FireAction extends BaseAction {
                     if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dTo)}` }
                   }
                   anims.push({ loc: dTo, type: "immobilized" })
-                } else if (needDice) {
-                  hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
+                } else {
+                  if (needDice) {
+                    hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
+                  }
                   anims.push({ loc: dTo, type: "nowreck" })
                 }
               }
@@ -427,8 +431,10 @@ export default class FireAction extends BaseAction {
                 target0.unit.immobilized = true
                 anims.push({ loc: dTo, type: "immobilized" })
               }
-            } else if (needDice) {
-              hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
+            } else {
+              if (needDice) {
+                hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
+              }
               anims.push({ loc: dTo, type: "nowreck" })
             }
           } else {
@@ -460,7 +466,9 @@ export default class FireAction extends BaseAction {
             }</span>` }
             anims.push({ loc: dTo, type: critical ? "criteffect" : "effect" })
           } else {
-            if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>` }
+            if (needDice) {
+              hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>`
+            }
             anims.push({ loc: dTo, type: "noeffect" })
           }
         }

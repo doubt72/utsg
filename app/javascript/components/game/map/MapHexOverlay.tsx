@@ -26,17 +26,19 @@ export default function MapHexOverlay({
     if (shaded === hexOpenType.Red) { style = redStyle }
     const x = hex.xOffset
     const y = hex.yOffset
-    const offset = Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0)
+    const xoffset = Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0)
+    let yoffset = Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0)
+    if (hex.map.rotated) { yoffset = -Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0) }
     const open = shaded !== hexOpenType.Closed
     let circle: JSX.Element | string = ""
     if (typeof shaded === "number" || shaded === hexOpenType.All) {
       let decoration = shaded === hexOpenType.All ? "A" : shaded
       if (decoration === 0.5) { decoration = "½" }
       circle = (
-        <g transform={ hex.map.rotated ? `rotate(90 ${x + offset} ${y - offset})` : "" }>
-          <path d={circlePath(new Coordinate(x + offset, y - offset), 30)}
+        <g transform={ hex.map.rotated ? `rotate(90 ${x + xoffset} ${y - yoffset})` : "" }>
+          <path d={circlePath(new Coordinate(x + xoffset, y - yoffset), 30)}
                 style={{ fill: "rgba(0,0,0,0.3)" }} />
-          <text x={x + offset} y={y - offset + 15} fontSize={56} textAnchor="middle"
+          <text x={x + xoffset} y={y - yoffset + 15} fontSize={56} textAnchor="middle"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "rgba(255,255,255,0.6)"}}>
             {decoration}
           </text>

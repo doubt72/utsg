@@ -21,7 +21,7 @@ export default function ActionAnimation({map, timer, details, animate}: ActionAn
   const hex = map.hexAt(details.loc) as Hex
   const x = hex.xOffset
   const yInterval = textSize * 1.1
-  const y = hex.yOffset + textSize / 4 - (message.length / 2 - 0.5) * yInterval
+  const y = hex.yOffset
   const color = details.textColor
   const bg = details.backgroundColor
   const size = 1 + (2000 - iTimer) / 4000

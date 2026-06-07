@@ -386,8 +386,8 @@ describe("routing", () => {
       expect(map.victoryAt(loc)).toBe(1)
 
       game.executeUndo(false)
-      const action = game.actions[0] as RouteMoveAction
 
+      const action = game.actions[0] as RouteMoveAction
       expect(action.path[0].x).toBe(loc.x)
       expect(action.path[0].y).toBe(loc.y)
       expect(action.path[1].x).toBe(loc2.x)
@@ -398,6 +398,33 @@ describe("routing", () => {
       expect(action.path[3].y).toBe(loc4.y)
       expect(action.path[4].x).toBe(end.x)
       expect(action.path[4].y).toBe(end.y)
+      expect(map.victoryAt(loc)).toBe(2)
+    })
+
+    test("rout doesn't switch value of VP if still contested", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.break()
+      unit.id = "test1"
+      const loc = new Coordinate(0, 2)
+      map.addCounter(loc, unit)
+      const unit2 = new Unit(testGInf)
+      unit2.break()
+      unit2.id = "test2"
+      map.addCounter(loc, unit2)
+      const unit3 = new Unit(testRInf)
+      unit3.id = "test3"
+      map.addCounter(loc, unit3)
+      map.select(unit)
+      organizeStacks(map)
+
+      map.victoryHexes.push({ x: loc.x, y: loc.y, player: 2 })
+      expect(map.victoryAt(loc)).toBe(2)
+
+      game.setGameState(new RoutState(game, true))
+      const end = new Coordinate(4, 2)
+      game.routState.finishXY(end.x, end.y)
       expect(map.victoryAt(loc)).toBe(2)
     })
 
