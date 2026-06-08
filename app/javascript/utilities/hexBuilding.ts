@@ -465,7 +465,9 @@ export function hexBuildingBuildingLosEdges(hex: Hex): number[] {
   const opp = normalDir (dir + 3)
   if (!hex.building) { return [] }
   if (hex.buildingShape === "m") { return [dir, opp] }
+  if (hex.buildingShape === "m2") { return [dir, opp] }
   if (hex.buildingShape === "s") { return [opp] }
+  if (hex.buildingShape === "s2") { return [opp] }
   if (hex.buildingShape === "bm") { return [1, 2, 3, 4, 5, 6] }
   if (hex.buildingShape === "bs1") { return [dir+2, opp, opp+1] }
   if (hex.buildingShape === "bs2") { return [dir, opp, opp+1, opp+2] }
@@ -474,6 +476,7 @@ export function hexBuildingBuildingLosEdges(hex: Hex): number[] {
   if (hex.buildingShape === "bc1") { return [opp, opp+1, opp+2] }
   if (hex.buildingShape === "bc2") { return [dir, opp+1, opp+2] }
   if (hex.buildingShape === "bc3") { return [dir, opp+2] }
+  if (hex.buildingShape === "bc4") { return [opp, opp+1] }
   return []
 }
 

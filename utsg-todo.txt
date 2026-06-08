@@ -1,9 +1,7 @@
 Features/Bug Fixes:
-  + Reinforcement panel still showing up on minimap
-  + Routing out of house switches ownership even if still contested
-  + Assault all movement on map shifting wrong direction
-  + Tank no penetration not showing no effect (sometimes?)
-  + Animations still off
+  + Shadows on reinforcements on wrong side
+  + Reinforcement panel should reset
+  + LOS through building is wrong
   - Playthrough
   - Finish scenario editor
   ? Filter bad words
@@ -18,7 +16,7 @@ Features/Bug Fixes:
 
 Maybe: 401, 501, 503, 510, 601
 Need: 308
-Beta: 006, 102, 203
+Beta: 102, 203
 
 006 (Romanian)
 203 (Little Stalingrad)

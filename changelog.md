@@ -1,3 +1,11 @@
+# 0.95
+
+- Bug fix: fix shadows on reinforcement panel when map rotated
+- Bug fix: switching reinforcement planel should reset position
+- Bug fix: fix missing blocked LOS by edges for a few buildings types
+- Updated 102
+- Moved 006 to release
+
 # 0.94
 
 - Tweaked animation placement

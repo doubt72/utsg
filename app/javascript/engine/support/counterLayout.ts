@@ -85,6 +85,9 @@ export function shadowPath(counter: Counter): string | false {
         ].includes(counter.marker.type)) {
       angle += 90
     }
+    if (!counter.hasMarker && !counter.onMap) {
+      angle += 90
+    }
     angle -= 90
   }
   return counterPath(

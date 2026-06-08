@@ -28,8 +28,9 @@ export default function ReinforcementPanel({
   const [closeButtonHover, setCloseButtonHover] = useState<boolean>(false)
 
   const [shiftX, setShiftX] = useState<number>(0)
-  const [shiftY, setShiftT] = useState<number>(0)
+  const [shiftY, setShiftY] = useState<number>(0)
   const [mouseDown, setMouseDown] = useState<boolean>(false)
+  const [oldPlayer, setOldPlayer] = useState<Player>(1)
 
   const allUnits = (): ReinforcementSchedule | undefined => {
     if (!map || !map.game) { return }
@@ -59,8 +60,16 @@ export default function ReinforcementPanel({
     if (event.buttons !== 1) { return }
 
     setShiftX(o => { return x + o })
-    setShiftT(o => { return y + o })
+    setShiftY(o => { return y + o })
   }
+
+  useEffect(() => {
+    if (player !== oldPlayer) {
+      setShiftX(0)
+      setShiftY(0)
+      setOldPlayer(player)
+    }
+  }, [player])
 
   useEffect(() => {
     if (!map) { return }
@@ -73,17 +82,15 @@ export default function ReinforcementPanel({
     const cStroke = closeButtonHover ? "#F77" : "#F55"
     const cFill = closeButtonHover ? "#EEE" : "#CCC"
     const closeButton = (
-      <g>
+      <g onClick={(e) => { setShiftX(0); setShiftY(0); closeCallback(e) }}
+         onMouseEnter={() => setCloseButtonHover(true)}
+         onMouseLeave={() => setCloseButtonHover(false)}>
         <circle cx={closeX} cy={closeY} r={8} style={{ fill: cFill, stroke: cStroke, strokeWidth: 2 }} />
         <line x1={closeX - ff} y1={closeY - ff} x2={closeX + ff} y2={closeY + ff}
-              style={{ stroke: cStroke, strokeWidth: 2 }}
-              onClick={closeCallback}/>
+              style={{ stroke: cStroke, strokeWidth: 2 }} />
         <line x1={closeX - ff} y1={closeY + ff} x2={closeX + ff} y2={closeY - ff}
-              style={{ stroke: cStroke, strokeWidth: 2 }}
-              onClick={closeCallback}/>
-        <circle cx={closeX} cy={closeY} r={8} style={{ fill: clearColor }}
-                onClick={closeCallback} onMouseEnter={() => setCloseButtonHover(true)}
-                onMouseLeave={() => setCloseButtonHover(false)} />
+              style={{ stroke: cStroke, strokeWidth: 2 }} />
+        <circle cx={closeX} cy={closeY} r={8} style={{ fill: clearColor }} />
       </g>
     )
     const mainFill = "rgba(143,143,143,0.95)"

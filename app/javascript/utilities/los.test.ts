@@ -883,6 +883,31 @@ describe("los", () => {
         });
       }
     });
+
+    describe("special cases", () => {
+      test("m2 s2 bug", () => {
+        const mapData: MapTestData = {
+          x: 5,
+          y: 5,
+          hexes: [
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o", d: 1, st: { sh: "c" } }, { t: "o" }],
+            [
+              { t: "o", d: 1, st: { sh: "s2" }, b: "w", be: [2, 3] },
+              { t: "o", d: 1, st: { sh: "m2" }, b: "w", be: [2, 3] },
+              { t: "o", d: 1, st: { sh: "m2" }, b: "w", be: [2, 3] },
+              { t: "o", d: 1, st: { sh: "m2" }, b: "w", be: [2, 3] },
+              { t: "o", d: 4, st: { sh: "s2" }, b: "w", be: [2, 3] },
+            ],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+            [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+          ],
+        };
+
+        const map = createMap(mapData);
+        expect(los(map, new Coordinate(2, 0), new Coordinate(2, 2))).toBe(false)
+      })
+    })
   });
 
   describe("elevation", () => {

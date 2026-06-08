@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -26,7 +26,7 @@ module Scenarios
     AXIS_UNITS = {
       "0": { list: [
         :ita_leader_3_1,
-        [6, :ita_fucilieri_s],
+        [5, :ita_fucilieri_s],
         :ita_breda_30,
       ] },
     }.freeze
