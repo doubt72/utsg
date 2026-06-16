@@ -5,15 +5,20 @@ import Logo from "../Logo";
 import { subtitleName, titleName } from "../../utilities/utilities";
 import { useOnInView } from "react-intersection-observer";
 
+export interface SectionProps {
+  section?: string,
+}
+
 interface SectionComponentProps {
   id: string,
   header: string,
   ll: number[],
   section: JSX.Element,
+  hasChildren: boolean,
   setState: React.Dispatch<React.SetStateAction<{ [index: string]: boolean }>>
 }
 
-function SectionComponent({ id, header, ll, section, setState }: SectionComponentProps) {
+function SectionComponent({ id, header, ll, section, hasChildren, setState }: SectionComponentProps) {
   const obRef = useOnInView(
     (ob) => {
       if (ob) {
@@ -24,12 +29,14 @@ function SectionComponent({ id, header, ll, section, setState }: SectionComponen
     }, { threshold: 0.02 }
   )
 
+  const rSection = React.cloneElement(section, { section: `${id.replace(/-/g, ".")}${ hasChildren ? ".0" : "" }` })
+
   return (
     <div id={`s${id}`} ref={o => {obRef(o)}}>
       { ll.length === 0 ?
           <h1>{ header }</h1> :
           <h2>{ header }</h2> }
-      { section }
+      { rSection }
     </div>
   )
 }
@@ -92,9 +99,11 @@ export default function HelpDisplay() {
       const keyName = key.join("-")
       if (sec.section) {
         const header = `${key.join(".")}. ${sec.fullName}`
+        let children = false
+        if (sec.children?.length && sec.children.length > 0) { children = true }
         sections.push(
           <SectionComponent key={keyName} id={keyName} header={header} ll={ll} section={sec.section}
-                            setState={setVisible}>
+                            hasChildren={children} setState={setVisible}>
           </SectionComponent>
         )
         if (sec.children) {

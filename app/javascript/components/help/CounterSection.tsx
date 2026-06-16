@@ -8,6 +8,7 @@ import { roundedRectangle } from "../../utilities/graphics";
 import MapCounter from "../game/map/MapCounter";
 import Counter from "../../engine/Counter";
 import { markerType } from "../../utilities/commonTypes";
+import { SectionProps } from "../game/HelpDisplay";
   
 export const makeIndex = (target: Unit | Feature | Marker) => {
   if (target.isFeature) {
@@ -33,8 +34,7 @@ export const makeIndex = (target: Unit | Feature | Marker) => {
   }
 }
 
-export default function CounterSection() {
-  const section = "3.0"
+export default function CounterSection({ section }: SectionProps) {
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
 
   const [unitFeature, setUnitFeature] = useState<{ key: string, broken: boolean }>(
@@ -316,6 +316,7 @@ export default function CounterSection() {
                               target.type === markerType.Wind))) {
       return
     }
+    if (!target.isFeature && !target.isMarker && (target as Unit).isWreck) { return }
     const name = target.type === markerType.Wind ? "This Direction" : "Faces This Edge"
     return (
       <g>
@@ -918,17 +919,22 @@ export default function CounterSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
+      <h3 className="mt05em">{section}.1. Units</h3>
       <p>
         <strong>Unit</strong> counters represent squads or teams, leaders, vehicles, and various
         guns or other infantry equipment, and can be moved, fired, or otherwise ordered. Unit
-        counters&apos; background color matches the color of the country or faction they belong to.
+        counters&apos; background color matches the color of the country or faction they belong to,
+        although guns and support weapons such as machine guns can be operated by the opposing
+        player if dropped.
       </p>
+      <h3 className="mt05em">{section}.2. Features</h3>
       <p>
         <strong>Feature</strong> counters represent various on-map obstacles of various sorts such
         as wire, mines, smoke, fires and such, as well as defensive fortifications. Features
         can&apos;t be ordered or moved (although they can be placed or removed under certain
         circumstances). Features generally have a white background.
       </p>
+      <h3 className="mt05em">{section}.3. Markers</h3>
       <p>
         <strong>Markers</strong> represent unit status on-map (such as fatigue, jammed weapons and
         such), or game status off-map (e.g., marking the current turn, initiative, or indicating
@@ -948,7 +954,7 @@ export default function CounterSection() {
         </div>
         <div className="flex-fill"></div>
       </div>
-      <h3 className="mt05em">{section}.1. Counter Layout</h3>
+      <h3 className="mt05em">{section}.4. Counter Layout</h3>
       <p>
         Select the buttons on the right to see examples of various counter layouts. Additionally, a
         help tooltip is available in-game by mousing over the question mark icon in the upper right

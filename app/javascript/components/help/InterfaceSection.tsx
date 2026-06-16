@@ -2,22 +2,8 @@ import React, { useEffect, useState } from "react";
 import { roundedRectangle } from "../../utilities/graphics";
 import { redNumber } from "./helpData";
 import {
-  ArrowRepeat,
-  ArrowsAngleContract,
-  ArrowsAngleExpand,
-  Circle,
-  CircleFill,
-  DashCircle,
-  EyeFill,
-  GeoAlt,
-  GeoAltFill,
-  Hexagon,
-  HexagonFill,
-  Phone,
-  PlusCircle,
-  Square,
-  SquareFill,
-  Stack,
+  ArrowRepeat, ArrowsAngleContract, ArrowsAngleExpand, Circle, CircleFill, DashCircle, EyeFill,
+  GeoAlt, GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack,
 } from "react-bootstrap-icons";
 
 export default function InterfaceSection() {
@@ -123,7 +109,7 @@ export default function InterfaceSection() {
               ))
             : ""}
         </svg>
-        <div className="flex mb05em">
+        <div className="flex mb05em ml1em mr1em">
           <div className="flex-fill p05em align-end">toggle illustration:</div>
           <div
             className={`custom-button normal-button terrain-help-button ${buttonSelect}`}
@@ -153,12 +139,12 @@ export default function InterfaceSection() {
       <p>
         {redNumber(3)}
         <strong>Header Collapse Button</strong>: can be used to hide the page header to make more
-        room for the map.  Will be replaced by an expand button once the header is hidden.
+        room for the map. Will be replaced by an expand button once the header is hidden.
       </p>
       <p>
         {redNumber(4)}
-        <strong>Action display</strong>: shows all of the game actions up to this point, as well as roll
-        results for various required checks.
+        <strong>Action display</strong>: shows all of the game actions up to this point, as well as
+        roll results for various required checks.
       </p>
       <p>
         {redNumber(5)}
@@ -170,35 +156,36 @@ export default function InterfaceSection() {
       <p>
         {redNumber(6)}
         <strong>Control bar</strong>: this shows all of game actions currently available to the
-        player. The game will only present options that are currently possible. There is always a
-        help button here that will go to a relevant section of the documentation. Note that many but
-        not all actions may be undone; in general, if any dice rolls are involved, there is no
-        undoing. Also, actions can usually be cancelled until finished, any dice rolls involved will be deferred
-        until the action is &quot;committed.&quot;  This also indicates (with a national icon
-        on the far left) which player you&apos;re playing (or currently playing in a hotseat
+        player. The game will only present options that are currently legal. There is always a help
+        button here that will go to a relevant section of the documentation. Note that many but not
+        all actions may be undone; in general, if any dice rolls are involved, undoing an action is
+        not possible. In some cases, if an action causes the current player to change, the opponent
+        may be able to undo the oction of the first player (and may or may not agree to do so).
+        Also, actions can usually be cancelled until finished, any dice rolls involved will be
+        deferred until the action is &quot;committed.&quot; This also indicates (with a national
+        icon on the far left) which player you&apos;re playing (or currently playing in a hotseat
         game).
       </p>
       <p>
         {redNumber(7)}
         <strong>Control bar position toggle</strong>: can be used to toggle the control bar between
         horizontal and vertical orientations (to give the map more horizonal or vertical space).
-        Horizontal orientations are recommended until a user has experience with the controls; the
-        controls are harder to navigate when collapesed to icon-only with only tooltips as a guide.
+        Horizontal orientations are recommended until a user has experience with the controls; when
+        vertical, the buttons collapse to icon-only and button text is only available in tooltips.
       </p>
       <p>
         {redNumber(8)}
         <strong>Map overview</strong>: a mini-map, showing the entire map of the current scenario,
-        and which part of the map is visible. The main map can be navigated by clicking or dragging here to move
-        the map display to other parts of the map if the entire map is not visible at once.
+        and which part of the map is visible. If the entire map is not visible at once, the main map
+        can be navigated by clicking or dragging here to move the map display to other parts of the
+        map.
       </p>
       <p>
         {redNumber(9)}
         <strong>Map controls</strong>: these buttons control how the map is displayed or what is
-        displayed on the map.  These buttons may be collapsed to icon only on smaller displays.
+        displayed on the map. These buttons may be collapsed to icon only on smaller displays.
       </p>
-      <p>
-        The map rotation can be toggled with this button:
-      </p>
+      <p>The map rotation can be toggled with this button:</p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
@@ -207,8 +194,9 @@ export default function InterfaceSection() {
         <div className="flex-fill"></div>
       </div>
       <p>
-        Map zoom is controled with these buttons (if the map is at full or
-        minimum size, those buttons are ghosted):
+        Map zoom is controled with these buttons (if the map is at full or minimum size, the
+        relevant buttons are ghosted); they make the map smaller, reset to full size, or make the
+        map bigger:
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
@@ -228,7 +216,7 @@ export default function InterfaceSection() {
         interfact suitable for large displays, a smaller interface suitable for smaller displays or
         to make room for larger maps, and an even smaller interface suitable for mobile devices such
         as tablets (the game is not meant for phones, and essentially unusable on anything smaller
-        than a tablet):
+        than a tablet; even on a tablet, some things like tooltips are not particularly functional):
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
@@ -318,8 +306,8 @@ export default function InterfaceSection() {
         <strong>Unit displays</strong>: these can be clicked on to show any units that can be
         deployed (either initially or as reinforcements) or casualties. If units are available for
         deployment, the player nation or faction icon will be highlighted, and units can be
-        selected.  The unit display panels can be dragged if they are blocking an area of interest
-        on the map.
+        selected. The unit display panels can be dragged if they are blocking an area of interest on
+        the map.
       </p>
       <p>
         {redNumber(11)}
@@ -329,13 +317,13 @@ export default function InterfaceSection() {
       <p>
         {redNumber(12)}
         <strong>Turn track</strong>: shows the current turn. When the last turn is over, the
-        scenario ends.  The turn track may be compressed to fit the display, but the last turn is always shown
-        so it&apos;s always possible to see how many turns are left.
+        scenario ends. The turn track may be compressed to fit the display, but the last turn is
+        always shown so it&apos;s always possible to see how many turns are left.
       </p>
       <p>
         {redNumber(13)}
-        <strong>Weather display</strong>: shows the current weather conditions, and if there&apos;s a
-        chance of precipitation, etc.
+        <strong>Weather display</strong>: shows the current weather conditions, and if there&apos;s
+        a chance of precipitation, etc.
       </p>
       <p>
         {redNumber(14)}
@@ -349,20 +337,21 @@ export default function InterfaceSection() {
         <strong>Initiative track</strong>: shows the player who currently has initiative (i.e.,
         which side the marker is displaying), and the roll required for the initiative player would
         need to roll after an action if when the marker moves to the opponent&apos;s side of the
-        track. Game actions taken by the players move the marker along the track.  The currently
+        track. Game actions taken by the players move the marker along the track. The currently
         active player (not always the same as initiative player, e.g., when the opposing player
-        needs to make checks after the inititive player takes an action, etc.) is indicated by
-        black arrows above and below the national icon of the current player.  This display may
-        be compressed to fit the display.
+        needs to make checks after the inititive player takes an action, etc.) is indicated by black
+        arrows above and below the national icon of the current player. This display may be
+        compressed to fit the display.
       </p>
       <p>
         {redNumber(16)}
         <strong>Main map</strong>: the actual scenario map, along with counters showing features and
-        player units.  If the terrain button is activated, mousing over the map will show terrain,
-        if the LOS overlay is selected, mousing over units will show their line-of-sight, otherwise,
-        unless in the middle of certain actions, mousing over units will expand the stacks where units
-        can be examined or selected (if legal, e.g., if it&apos;s your turn to activate units) by clicking
-        on them. The map can be dragged if not all of it is currently visible on the display.
+        player units. If the terrain button is activated, mousing over the map will show terrain, if
+        the LOS overlay is selected, mousing over units will show their line-of-sight, otherwise,
+        unless in the middle of certain actions, mousing over units will expand the stacks where
+        units can be examined or selected (if legal, e.g., if it&apos;s your turn to activate units)
+        by clicking on them. Holding down the control key can be used to suppress unit overlays. The
+        map can also be dragged if not all of it is currently visible on the display.
       </p>
     </div>
   );

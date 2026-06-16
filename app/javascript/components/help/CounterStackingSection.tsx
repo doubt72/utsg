@@ -95,7 +95,7 @@ export default function CounterStackingSection() {
                 style={{ stroke: clearColor, strokeWidth: 0.5, fill: clearColor }}/>
         </svg>
         <div className="help-section-image-caption">
-          a vehicle carrying two infantry units, towing a gun
+          a vehicle carrying two infantry units, towing a gun; the leader is also carrying a radio
         </div>
       </div>
     )
@@ -137,9 +137,9 @@ export default function CounterStackingSection() {
         Once the game starts, units can be picked up or dropped via the move interface, and the game
         will take care of re-arranging and re-sorting the stacks. In addition, leaders will
         automatically be placed on top of stacks, which means that when attacks affect all the units
-        in the stack, leaders will be affected last (results will be evaluated from bottom-to-top of
-        stacks) so that the leadership bonus won&apos;t be lost until after the entire attack is
-        evaluated.
+        in the stack, leaders will be do their morale checks last (results will be evaluated from
+        bottom-to-top of stacks) so that the leadership bonus won&apos;t be lost until after the
+        entire attack is evaluated.
       </p>
       <p>
         Finally, there is a stacking limit of {stackLimit}. That limit can never be exceeded except

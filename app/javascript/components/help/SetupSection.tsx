@@ -1,15 +1,14 @@
 import React from "react";
 import { deploymentRulesSection } from "./DeploymentPhaseSection";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function SetupSection() {
+export default function SetupSection({ section }: SectionProps) {
   return (
     <div>
       <p>
-        During game setup, each player deploys their units, first setup player first (this is
-        usually not the same player as the player that moves first, though there&apos;s no actual
-        rule that it can&apos;t be).
+        During game setup, each player deploys their units, first setup player first.
       </p>
-      {deploymentRulesSection("setup")}
+      {deploymentRulesSection("setup", section ?? "")}
     </div>
   );
 }

@@ -3,7 +3,8 @@ import { EyeFill, Hexagon, HexagonFill, Stack } from "react-bootstrap-icons";
 import { roundedRectangle } from "../../utilities/graphics";
 import Map from "../../engine/Map";
 import {
-  BaseTerrainType, borderType, BorderType, BuildingShape, Coordinate, RoadType, streamType, StreamType, terrainType, TerrainType, weatherType, windType
+  BaseTerrainType, borderType, BorderType, BuildingShape, Coordinate, RoadType, streamType, StreamType,
+  terrainType, TerrainType, weatherType, windType
 } from "../../utilities/commonTypes";
 import MapHex from "../game/map/MapHex";
 import Hex from "../../engine/Hex";
@@ -11,13 +12,13 @@ import MapHexDetail from "../game/map/MapHexDetail";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import { helpLink } from "./helpData";
 import { buildingCover } from "../../engine/Terrain";
+import { SectionProps } from "../game/HelpDisplay";
 
 type PickTerrain = {
   m?: BaseTerrainType, t?: TerrainType, b?: BorderType, r?: RoadType, s?: StreamType, rr?: boolean, sh?: BuildingShape,
 }
 
-export default function TerrainSection() {
-  const section = "4.0"
+export default function TerrainSection({ section }: SectionProps) {
   const [currentState, setCurrentState] = useState<PickTerrain>({ m: "g", t: "o" })
   const [currentTerrain, setCurrentTerrain] = useState<string>("open")
 
@@ -292,7 +293,7 @@ export default function TerrainSection() {
     if (currentState.sh) {
       sections.push(<p key={index++}>
         There is a <strong>building{currentState.sh === "c" ? " (silo)": "" }</strong>, which has a
-        movement cost of 2 (instead of base movement), but is impassible to vehicles and crewed weapons.
+        movement cost of {["s", "m"].includes(currentState.m as string) ? 3 : 2} (instead of base movement), but is impassible to vehicles and crewed weapons.
         It blocks line-of-sight, and has a cover of { buildingCover }.
       </p>)
     }
@@ -468,10 +469,11 @@ export default function TerrainSection() {
   return (
     <div>
       <p>
-        <strong>Terrain</strong> affects a number of things: in particular, movement (i.e., movement cost),
-        cover, and hindrances or line-of-sight.  Terrain also has elevations, which has further effects
-        on movement and line-of-sight.  A help tooltip is available in-game by mousing over hexes, and can
-        be toggled on and off with the terrain button:
+        <strong>Terrain</strong> affects a number of things: in particular, movement (i.e., all
+        terrain has a movement cost), cover, and hindrances or line-of-sight. Terrain also has
+        elevations, which has further effects on movement and line-of-sight. A help tooltip is
+        available in-game by mousing over hexes, and can be toggled on and off with the terrain
+        button:
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
@@ -501,11 +503,12 @@ export default function TerrainSection() {
       </div>
       <h3 className="mt05em">{section}.1. Terrain Illustrated</h3>
       <p>
-        Select the buttons on the right to see the different types of terrain on the illustration below:
+        Select the buttons on the right to see the different types of terrain on the illustration
+        below:
       </p>
-      { updateSection }
+      {updateSection}
       <h3 className="mt05em">{section}.2. Terrain Table</h3>
-      { terrainTable }
+      {terrainTable}
     </div>
-  )
+  );
 }

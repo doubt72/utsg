@@ -767,6 +767,22 @@ span.slim-button-disable {
 }
 
 .help-sections h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+}
+
+.help-sections h2 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5em;
+}
+
+.help-sections h3 {
+  font-size: 1.4rem;
+  margin-bottom: 0.5em;
+}
+
+.help-sections h4 {
+  font-size: 1.16rem;
   margin-bottom: 0.5em;
 }
 
@@ -777,6 +793,13 @@ span.slim-button-disable {
 
 .help-sections a:hover {
   color: $lightish-green;
+}
+
+.help-sections div.example {
+  border-radius: 0.33em;
+  padding: 0.5em;
+  background-color: #DDB;
+  margin-bottom: 1em;
 }
 
 .counter-help-button {

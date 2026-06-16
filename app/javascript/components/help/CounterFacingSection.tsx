@@ -111,13 +111,13 @@ export default function CounterFacingSection() {
     <div>
       <p>
         Some units have <strong>facing</strong>, i.e., they are always pointed in some particular
-        direction. This applies to vehicles and guns, not infantry or infantry weapons. The forward
-        direction (or facing) of any unit is indicated by the direction the top of the counter,
-        i.e., if the top of the counter points left, the unit&apos;s facing and forward arc is to
-        the left. Some armored units have armored turrets, in which case the facing of the turret
-        and the hull can be oriented independently; in this case the hull facing is indicated with a
-        hull marker, and the facing of the turret is indicated with the counter itself, placed on
-        top of the hull.
+        direction. This applies to vehicles and guns; infantry or infantry weapons have no
+        particular facing. The forward direction (or facing) of any unit is indicated by the
+        direction the top of the counter, i.e., if the top of the counter points left, the
+        unit&apos;s facing and forward arc is to the left. Some armored units have armored turrets,
+        in which case the facing of the turret and the hull can be oriented independently; in this
+        case the hull facing is indicated with a hull marker, and the facing of the turret is
+        indicated with the counter itself, placed on top of the hull.
       </p>
       {facingDiagram}
       <p>
@@ -125,8 +125,8 @@ export default function CounterFacingSection() {
         arc, as shown on the image here. The forward arc includes all the hexes that are between the
         lines, even if only partially (i.e., it includes all of the hexes that the lines pass
         through). If a unit is not in the forward arc of the hull of an un-turreted vehicle (or the
-        forward arc of the hull if a hull-mounted weapon), it cannot be targeted. The same applies to
-        the forward arc of the turrets of turreted vehicles.
+        forward arc of the hull if a hull-mounted weapon), it cannot be targeted. The same applies
+        to the forward arc of the turrets of turreted vehicles.
       </p>
       <p>
         Units without facing (i.e., infantry unit or infantry weapons) are unrestricted by firing
@@ -144,8 +144,7 @@ export default function CounterFacingSection() {
       <p>
         Forward firing arcs can be seen on the map at any time by toggling the overlay button to
         show line-of-sight and mousing over unit counters — assuming the unit has a facing (see the{" "}
-        { helpLink("Line of Sight", "line-of-sight") } section
-        for more):
+        {helpLink("Line of Sight", "line-of-sight")} section for more):
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>

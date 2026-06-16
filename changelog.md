@@ -1,3 +1,7 @@
+# 0.96
+
+- Major Documentation Updates
+
 # 0.95
 
 - Bug fix: fix shadows on reinforcement panel when map rotated

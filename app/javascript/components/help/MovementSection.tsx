@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowClockwise, BoxArrowDown, BoxArrowInUp, Clouds } from "react-bootstrap-icons";
 import { CancelGlyph, MoveGlyph } from "../utilities/buttons";
 import { helpLink } from "./helpData";
-import { smokeTable } from "./FireSection";
+import { smokeTable } from "./FireSmokeSection";
 
 export default function MovementSection() {
   const section = "5.2.3.3"
@@ -98,6 +98,13 @@ export default function MovementSection() {
         but they may not pick up any new infantry units to move with them. If the unit being dropped
         is a leader and the stack still moving no longer contains a leader, the leader bonus is lost
         for the remainder of the move.
+      </p>
+      <h3>{section}.4. Breakdowns</h3>
+      <p>
+        After any move action, if a vehicle has a breakdown number, it makes a breakdown check.
+        Breakdown checks are made immediately after moves but before the initiative check. To make a
+        check, roll two ten-sided dice, adding the total together (2d10), and if the dice roll is
+        equal or below that number, the vehicle is immobilized.
       </p>
       <p>
         If a unit has a breakdown number, the moving player must roll 2d10 (added together) after moving, and if the

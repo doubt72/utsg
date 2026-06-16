@@ -1,7 +1,15 @@
 Features/Bug Fixes:
-  + Shadows on reinforcements on wrong side
-  + Reinforcement panel should reset
-  + LOS through building is wrong
+  + Align label button for screenshot
+  + Wreck doesn't face an edge
+  - Game name
+  - Mouse pointer on scenarios
+  - Notification window is a little low on small screens / adjust for screen size
+  - Consider changing verbiage of "target"
+  - Check that radios can't be used by an opponent
+  - Check that jammed turrets or immobilized units halve firepower on hull mount
+  - Check rapid fire
+  - Check that incendiary weapons go away when carrying unit lost
+  - Desert or sand same for fire
   - Playthrough
   - Finish scenario editor
   ? Filter bad words

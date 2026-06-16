@@ -15,9 +15,9 @@ import MapLosOverlay from "../game/map/MapLosOverlay";
 import MapHexPatterns from "../game/map/MapHexPatterns";
 import Hex from "../../engine/Hex";
 import { helpLink, redNumber } from "./helpData";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function LineOfSightSection() {
-  const section = "4.1"
+export default function LineOfSightSection({ section }: SectionProps) {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>();
 
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({});
@@ -149,14 +149,13 @@ export default function LineOfSightSection() {
   return (
     <div>
       <p>
-        Whenever a player would like one of their units to fire at the other player&apos;s units,
-        that unit must have a clear <strong>line-of-sight</strong> (LOS) to the other unit for the attack to take
-        place, and that line-of-sight may be blocked by various obstacles such as buildings, forest,
-        or other terrain, as well as features like fire or rubble. Line-of-sight may also be blocked
-        by elevated terrain, but that will be covered in the{" "}
-        { helpLink("Elevation", "elevation") } section of the
-        documentation. Line-of-sight is determined by all of the hexes that are intersected by the
-        sightline from the center of one hex to the center of the target hex.
+        Whenever a player&apos;s units fire at the other player&apos;s units, that unit must have a
+        clear <strong>line-of-sight</strong> (LOS) to the other unit for the attack to take place,
+        and that line-of-sight may be blocked by various obstacles such as buildings, forest, or
+        other terrain, as well as features like fire or rubble. Line-of-sight may also be blocked by
+        elevated terrain, but that will be covered in the {helpLink("Elevation", "elevation")}{" "}
+        section of the documentation. Line-of-sight is determined by all of the hexes that are
+        intersected by the sightline from the center of one hex to the center of the target hex.
       </p>
       <p>
         Fire attacks may also be increased in difficulty by a similar concept called{" "}
@@ -227,7 +226,7 @@ export default function LineOfSightSection() {
         {redNumber(8)}
         Sightlines along a wall block LOS to everything beyond them.
       </p>
-      <h3>{section}.1. Additional Rules</h3>
+      <h3>{section}.1. Symmetry</h3>
       <p>
         Line-of-sight is symmetrical, so if (and only if) one unit one unit can see another unit,
         that unit can be seen in turn. Hindrance is mostly symmetrical, except (terrain) hindrance

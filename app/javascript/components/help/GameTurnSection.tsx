@@ -1,4 +1,5 @@
 import React from "react";
+import { SectionProps } from "../game/HelpDisplay";
 
 export const sequenceOfTurn = (
   <ol>
@@ -53,13 +54,11 @@ export const sequenceOfTurn = (
   </ol>
 );
 
-export default function GameTurnSection() {
-  const section = "5.2.0"
+export default function GameTurnSection({ section }: SectionProps) {
   return (
     <div>
       <p>
-        Each game has a fixed number of turns, mostly in the main phase as initiative goes back and
-        forth between the players. When all of the turns have been completed, the winner is
+        Each game has a fixed number of turns. When all of the turns have been completed, the winner is
         determined based on objective victory points as well as points for units eliminated.
       </p>
       <p>

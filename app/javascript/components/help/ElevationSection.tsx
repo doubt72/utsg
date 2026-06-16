@@ -15,9 +15,9 @@ import MapHexPatterns from "../game/map/MapHexPatterns";
 import Hex from "../../engine/Hex";
 import { Hexagon, HexagonFill } from "react-bootstrap-icons";
 import { redNumber } from "./helpData";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function ElevationSection() {
-  const section = "4.2"
+export default function ElevationSection({ section }: SectionProps) {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>();
 
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({});
@@ -217,9 +217,9 @@ export default function ElevationSection() {
   return (
     <div>
       <p>
-        <strong>Elevation</strong> is indicated on the map by hex color (with higher elevations having darker
-        brown colors).  Depressions (i.e., elevations below the rest of the map) and indicated
-        with a dark green hex color.  Elevation is also shown on the terrain help tooltip
+        <strong>Elevation</strong> is indicated on the map by hex color (with higher elevations
+        having darker brown colors). Depressions (i.e., elevations below the rest of the map) and
+        indicated with a dark green hex color. Elevation is also shown on the terrain help tooltip
         when toggled on with the terrain button:
       </p>
       <div className="flex mb1em">
@@ -251,7 +251,8 @@ export default function ElevationSection() {
       </p>
       <p>
         {redNumber(2)}
-        Again, hexes at the same elevation block the view of any hexes at lower elevations behind them.
+        Again, hexes at the same elevation block the view of any hexes at lower elevations behind
+        them.
       </p>
       <p>
         {redNumber(3)}
@@ -263,7 +264,8 @@ export default function ElevationSection() {
       </p>
       <p>
         <em>
-          distance to hex casting shadow ÷ (difference in elevation + 1) = length of shadow, rounded down
+          distance to hex casting shadow ÷ (difference in elevation + 1) = length of shadow, rounded
+          down
         </em>
       </p>
       <p>
@@ -271,11 +273,11 @@ export default function ElevationSection() {
       </p>
       <p>
         {redNumber(4)}
-        Terrain that blocks line-of-sight is treated as if it was an altitude one higher
-        than the base terrain beneath it, except the shadow is calculated even if the altitude
-        of the observer is only one elevation above its base terrain (e.g., a building at an elevation
-        of 0 with a unit calculating LOS from an elevation of 1 would have a shadow equal to the
-        distance between them).
+        Terrain that blocks line-of-sight is treated as if it was an altitude one higher than the
+        base terrain beneath it, except the shadow is calculated even if the altitude of the
+        observer is only one elevation above its base terrain (e.g., a building at an elevation of 0
+        with a unit calculating LOS from an elevation of 1 would have a shadow equal to the distance
+        between them).
       </p>
       <p>
         {redNumber(5)}
@@ -288,8 +290,8 @@ export default function ElevationSection() {
       </p>
       <p>
         {redNumber(6)}
-        The hex casting this shadow is one hex closer to the unit
-        than the two previous highlighted elevation hexes.  Shadow lengths are rounded down:
+        The hex casting this shadow is one hex closer to the unit than the two previous highlighted
+        elevation hexes. Shadow lengths are rounded down:
       </p>
       <p>
         <strong>3 ÷ (1 + 1) = 1.5, rounded to 1</strong>
@@ -306,16 +308,17 @@ export default function ElevationSection() {
         {redNumber(8)}
         Hindrances are also cast directly downhill.
       </p>
-      <h3>{section}.1. Additional Rules</h3>
+      <h3>{section}.1. Smoke and Fire</h3>
       <p>
         Smoke is considered to have unlimited height, so always causes hindrance. Fire also always
         blocks line-of-sight, regardless of elevation difference.
       </p>
+      <h3>{section}.2. Symmetry</h3>
       <p>
         Remember that line-of-sight is symmetrical, so if (and only if) the unit at the top of the
         hill can see a hex, a unit in that hex can see the unit at the top of the hill. Hindrance is
-        mostly symmetrical, except (terrain) hindrance in the same hex (or fences bordering a hex) only affect
-        fire in, not fire out (smoke is an exception, it affects both directions).
+        mostly symmetrical, except (terrain) hindrance in the same hex (or fences bordering a hex)
+        only affect fire in, not fire out (smoke is an exception, it affects both directions).
       </p>
     </div>
   );

@@ -29,6 +29,12 @@ import DevNotesSection from "./DevNotesSection";
 import PrecipCheckSection from "./PrecipCheckSection";
 import { Link } from "react-router-dom";
 import CreditsSection from "./CreditsSection";
+import FireTypesSection from "./FireTypesSection";
+import FireProcessSection from "./FireProcessSection";
+import FireEffectsSection from "./FireEffectsSection";
+import FireSmokeSection from "./FireSmokeSection";
+import FireBlazeSection from "./FireBlazeSection";
+import FireExampleSection from "./FireExampleSection";
 
 export type HelpSection = {
   name: string,
@@ -49,15 +55,22 @@ export const helpIndex: HelpSection[] = [
     { name: "Elevation", fullName: "Elevation", section: <ElevationSection /> },
   ] },
   { name: "Game Play", fullName: "Game Play", section: <GamePlaySection />, children: [
-    { name: "Setup", fullName: "Game Setup", section: <SetupSection /> },
+    { name: "Setup", fullName: "Game Setup / Deployment", section: <SetupSection /> },
     { name: "Game Turn", fullName: "Game Turn", section: <GameTurnSection />, children: [
       { name: "Deployment Phase", fullName: "Deployment Phase", section: <DeploymentPhaseSection /> },
       { name: "Prep Phase", fullName: "Prep Phase", section: <PrepPhaseSection />, children: [
-        { name: "Rallying", fullName: "Rallying", section: <RallySection /> },
-        { name: "Precip Check", fullName: "Precipitation Check", section: <PrecipCheckSection /> },
+        { name: "Rallying", fullName: "Rally Phase", section: <RallySection /> },
+        { name: "Precip Check", fullName: "Precipitation Check Phase", section: <PrecipCheckSection /> },
       ]},
       { name: "Main Phase", fullName: "Main Phase", section: <MainPhaseSection />, children: [
-        { name: "Fire", fullName: "Fire", section: <FireSection /> },
+        { name: "Fire", fullName: "Fire", section: <FireSection />, children: [
+          { name: "Types of Fire", fullName: "Types of Fire", section: <FireTypesSection /> },
+          { name: "Firing Process", fullName: "Firing Process", section: <FireProcessSection /> },
+          { name: "Hit Effects", fullName: "Hit Effects", section: <FireEffectsSection /> },
+          { name: "Firing Smoke", fullName: "Firing Smoke", section: <FireSmokeSection /> },
+          { name: "Blazes", fullName: "Blazes", section: <FireBlazeSection /> },
+          { name: "Fire Example", fullName: "Example of Fire", section: <FireExampleSection /> },
+        ]},
         { name: "Intensive Fire", fullName: "Intensive Fire", section: <IntensiveFireSection /> },
         { name: "Movement", fullName: "Movement", section: <MovementSection /> },
         { name: "Rush Move", fullName: "Rush Movement", section: <RushSection /> },

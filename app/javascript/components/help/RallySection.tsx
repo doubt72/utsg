@@ -3,8 +3,9 @@ import CounterDisplay from "../game/CounterDisplay";
 import Unit from "../../engine/Unit";
 import { helpLink } from "./helpData";
 import { baseRally } from "../../utilities/utilities";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function RallySection() {
+export default function RallySection({ section }: SectionProps) {
   const infantry = new Unit({
     id: "uk_gurkha_s", t: "sqd", i: "squad", s: 6, c: "uk", n: "Gurkha", y: 0, m: 4, f: 7, r: 5, v: 5,
     o: { a: 1 },
@@ -20,11 +21,15 @@ export default function RallySection() {
     <div>
       <p>
         During the rally phase, players may attempt to recover broken infrantry units or leaders or
-        fix broken weapons. Rally checks on non-vehicle units are free (i.e., any number of units can make rally
-        checks) in a hex with an unbroken leader, or else one check may be made per player per turn
-        of a unit not stacked with a leader (or on vehicles). If the single check is used on a broken leader and
-        succeeds, other broken units in the hex may subsequently make &quot;free&quot; rally checks.
+        fix broken weapons. Rally checks on non-vehicle units are free (i.e., any number of units
+        can make rally checks) in a hex with an unbroken leader, or else one other check may be made
+        per player per turn.
       </p>
+      <p>
+        If the single check is used on a broken leader and succeeds, other broken units in the hex
+        may subsequently make &quot;free&quot; rally checks.
+      </p>
+      <p>Units may not attempt to rally (or repair) more than once per turn.</p>
       <div className={"flex mb1em"}>
         <div>
           <CounterDisplay unit={infantry} />
@@ -34,10 +39,14 @@ export default function RallySection() {
           <CounterDisplay unit={weapon} />
         </div>
       </div>
-      <p>Rally checks for broken infantry units and leaders are calculated as so (see the
-        ({ helpLink("Counters", "counters") } and { helpLink("Terrain", "terrain") } sections for more on finding these values):</p>
+      <h3>{section}.1. Rallying Infantry</h3>
+      <p>
+        Rally checks for broken infantry units and leaders are calculated as so (see
+        the { helpLink("Counters", "counters")} and {helpLink("Terrain", "terrain") } sections for more on
+        finding these values):
+      </p>
       <ol>
-        <li>start with a base of { baseRally }</li>
+        <li>start with a base of {baseRally}</li>
         <li>subtract the unit&apos;s morale</li>
         <li>subtract the highest leadership of any leaders in the hex</li>
         <li>subtract the cover of the terrain in the hex</li>
@@ -45,14 +54,14 @@ export default function RallySection() {
         <li>
           Roll 2d10 (add them together). If the total of the dice is above the number calculated
           above, the unit rallies, otherwise the rally fails. A roll of 2 always fails, and a roll
-          of 20 always succeeds. Units may not attempt to rally more than once per turn.
+          of 20 always succeeds.
         </li>
       </ol>
+      <h3>{section}.2. Repairing Weapons</h3>
       <p>
-        Repair checks for jammed/broken weapons are slightly simpler: the player rolls two d10 and
-        adds them together. If the roll is greater than the fix number on counter, the weapon is
-        repaired. If the roll is less than the break number on the counter, the weapon is removed
-        from the game.
+        To do a repair check on a weapon, the player rolls two d10 and adds them together. If the
+        roll is greater than the fix number on counter, the weapon is repaired. If the roll is less
+        than the break number on the counter, the weapon is removed from the game.
       </p>
     </div>
   );
