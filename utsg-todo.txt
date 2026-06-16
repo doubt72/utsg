@@ -10,6 +10,7 @@ Features/Bug Fixes:
   - Check rapid fire
   - Check that incendiary weapons go away when carrying unit lost
   - Desert or sand same for fire
+  - Implement short stacking on reaction fire
   - Playthrough
   - Finish scenario editor
   ? Filter bad words

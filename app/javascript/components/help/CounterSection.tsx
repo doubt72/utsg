@@ -924,7 +924,7 @@ export default function CounterSection({ section }: SectionProps) {
         <strong>Unit</strong> counters represent squads or teams, leaders, vehicles, and various
         guns or other infantry equipment, and can be moved, fired, or otherwise ordered. Unit
         counters&apos; background color matches the color of the country or faction they belong to,
-        although guns and support weapons such as machine guns can be operated by the opposing
+        although guns and infantry weapons such as machine guns can be operated by the opposing
         player if dropped.
       </p>
       <h3 className="mt05em">{section}.2. Features</h3>

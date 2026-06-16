@@ -35,6 +35,9 @@ import FireEffectsSection from "./FireEffectsSection";
 import FireSmokeSection from "./FireSmokeSection";
 import FireBlazeSection from "./FireBlazeSection";
 import FireExampleSection from "./FireExampleSection";
+import MovementOtherSection from "./MovementOtherSection";
+import MovementMineSection from "./MovementMineSection";
+import AssaultMoveOtherSection from "./AssaultMoveOtherSection";
 
 export type HelpSection = {
   name: string,
@@ -69,12 +72,17 @@ export const helpIndex: HelpSection[] = [
           { name: "Hit Effects", fullName: "Hit Effects", section: <FireEffectsSection /> },
           { name: "Firing Smoke", fullName: "Firing Smoke", section: <FireSmokeSection /> },
           { name: "Blazes", fullName: "Blazes", section: <FireBlazeSection /> },
-          { name: "Fire Example", fullName: "Example of Fire", section: <FireExampleSection /> },
+          { name: "Example", fullName: "Example of Fire", section: <FireExampleSection /> },
         ]},
         { name: "Intensive Fire", fullName: "Intensive Fire", section: <IntensiveFireSection /> },
-        { name: "Movement", fullName: "Movement", section: <MovementSection /> },
+        { name: "Movement", fullName: "Movement", section: <MovementSection />, children: [
+          { name: "Other Actions", fullName: "Other Movement Actions", section: <MovementOtherSection /> },
+          { name: "Minefields", fullName: "Minefields", section: <MovementMineSection /> },
+        ]},
         { name: "Rush Move", fullName: "Rush Movement", section: <RushSection /> },
-        { name: "Assault Move", fullName: "Assault Movement", section: <AssaultMoveSection /> },
+        { name: "Assault Move", fullName: "Assault Movement", section: <AssaultMoveSection />, children: [
+          { name: "Other Actions", fullName: "Other Assault Actions", section: <AssaultMoveOtherSection /> },
+        ] },
         { name: "Routing", fullName: "Routing Units", section: <RoutSection /> },
         { name: "Reaction Fire", fullName: "Reaction Fire", section: <ReactionFireSection /> },
       ]},

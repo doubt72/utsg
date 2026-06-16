@@ -23,7 +23,7 @@ export default function FireSection({ section }: SectionProps) {
         must be fired instead, until and unless the crew unmans the weapon). Crews will be activated
         when the weapon is fired.
       </p>
-      <h3>{section}.2. Targeting Support Weapons and Crewed Weapons</h3>
+      <h3>{section}.2. Targeting Infantry Weapons and Crewed Weapons</h3>
       <p>
         Neither crewed weapons or infantry weapons may be targeted (or directly destroyed) by fire,
         only the infantry units or leaders carrying or manning them.

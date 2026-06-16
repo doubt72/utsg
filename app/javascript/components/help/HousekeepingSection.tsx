@@ -4,9 +4,9 @@ import CounterDisplay from "../game/CounterDisplay";
 import Marker from "../../engine/Marker";
 import { featureType, markerType, weatherType, windType } from "../../utilities/commonTypes";
 import Feature from "../../engine/Feature";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function HousekeepingSection() {
-  const section = "5.2.4.2"
+export default function HousekeepingSection({ section }: SectionProps) {
 
   const wind1 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Calm })
   const wind2 = new Marker({ mk: 1, type: markerType.Wind, subtype: windType.Breeze })
@@ -40,8 +40,8 @@ export default function HousekeepingSection() {
         hex.
       </p>
       <p>
-        Infantry support and crewed weapons may not be selected to be removed if assigned to an infantry
-        unit.  Dropped support weapons and uncrewed weapons may be selected (in other words, infantry
+        Infantry and crewed weapons may not be selected to be removed if assigned to an infantry
+        unit.  Dropped infantry weapons and uncrewed weapons may be selected (in other words, infantry
         unit operating the weapon must be removed first, or if capturing a hex that had opponent weapons,
         those may be removed to bring the stack under the stacking limit if the player&apos;s stack
         would have otherwise been legal).  Unbroken, unpinned squads may
@@ -113,16 +113,16 @@ export default function HousekeepingSection() {
           </tr>
         </tbody>
       </table>
-      <div className={"flex mb1em"}>
-        <div>
-          <CounterDisplay unit={smoke1} />
+      <div className="example">
+        <div className={"flex mb1em"}>
+          <div>
+            <CounterDisplay unit={smoke1} />
+          </div>
         </div>
-      </div>
-      <p>
         For example, if the wind was moderate and a 2 was rolled smoke in a given hex, the a smoke marker
         would be reduced by 3.  If the current hindrance of the smoke marker was 4, it would be reduced to 1;
         any smoke with a hindrance lower than that would be removed from the board completely.
-      </p>
+      </div>
       <h3>{section}.4. Checking for Blazes Being Extinguished or Spreading</h3>
       <p>
         There are two parts of the fire check, first to see if the fire is extinguished, then to see

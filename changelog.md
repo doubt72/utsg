@@ -1,6 +1,6 @@
 # 0.96
 
-- Major Documentation Updates
+- Major documentation updates/refactoring
 
 # 0.95
 

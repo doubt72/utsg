@@ -19,8 +19,9 @@ import Game from "../../engine/Game";
 import { gamePhaseType } from "../../engine/support/gamePhase";
 import { helpLink } from "./helpData";
 import { serverVersion } from "../../utilities/utilities";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function RoutSection() {
+export default function RoutSection({ section }: SectionProps) {
   const [routDiagram, setRoutDiagram] = useState<JSX.Element | undefined>();
   const [routDiagram2, setRoutDiagram2] = useState<JSX.Element | undefined>();
 
@@ -257,9 +258,11 @@ export default function RoutSection() {
         There are two kinds of routing actions: routing a single one of a player&apos;s own units,
         or attempting to rout all of an opponent&apos;s units.
       </p>
+      <h3>{section}.1. Self-Routing</h3>
       <p>
         Routing one&apos;s own units is automatic. If the unit can be routed, it will be routed.
       </p>
+      <h3>{section}.2. Rout-All Action</h3>
       <p>
         Attempting to rout all of an opponent&apos;s units is not automatic, and risks rallying
         opponent units. Each broken unit makes
@@ -271,16 +274,24 @@ export default function RoutSection() {
         the morale check by 12 or more above the modified morale check threshold, the unit will
         rally instead.
       </p>
+      <p>
         In addition, each attempt to rout enemy units (in the same turn) lowers the rally threshold
         by two.  For example, on the fifth attempt, enemy units will rally on a roll of 4 or
         more above the modified morale check threshold (plus 12 minus 4 times 2).  The rally
         threshold will never drop below the morale check threshold, however (at most, in extreme
         cases of any attempts to rout all enemy units after the sixth, all non-routs result in
         rallied units).
+      </p>
+      <h3>{section}.3. Non-Consecutive Rout-All Actions</h3>
       <p>
+        If the last action a player took was to rout all enemy units, a player may not attempt to
+        rout all enemy units again, they must make some other action (passing included). I.e., if no
+        other actions are available and the other player passes, only one rout enemy will be
+        possible before the main phase ends.
       </p>
       {routDiagram}
       {routDiagram2}
+      <h3>{section}.3. Rout Move</h3>
       <p>
         A unit that routs must use all of their movement and must move backwards. The cost of
         movement through each hex is the same as normal movement, and any terrain that blocks
@@ -299,20 +310,16 @@ export default function RoutSection() {
         movement). Units that can&apos;t use all of their movement (with the exception from the
         previous paragraph) without being blocked or going off the map are eliminated.
       </p>
+      <h3>{section}.4. Rout Limits</h3>
       <p>
         Only broken units may rout, and a unit may only rout once per turn; after it routs it is
         marked with a &quot;routed&quot; marker.
       </p>
+      <h3>{section}.5. Victory Point Hexes</h3>
       <p>
         Broken units cannot capture victory point hexes, so routs cannot capture VPs (though broken
         units can hold VPs until routed out of contact or eliminated).  A broken unit in a VP hex
         would have to successfully rally to capture the hex.
-      </p>
-      <p>
-        If the last action a player took was to rout all enemy units, a player may not attempt to
-        rout all enemy units again, they must make some other action (passing included). I.e., if no
-        other actions are available and the other player passes, only one rout enemy will be
-        possible before the main phase ends.
       </p>
     </div>
   );

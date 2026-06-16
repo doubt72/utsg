@@ -176,10 +176,10 @@ export default function FireExampleSection() {
       <div className="example">
         {fireDiagram}
         <p>
-          In this example, a German StuG III-F/G is firing at a Soviet Rifle squad. The StuG has a
-          firepower of 40 (anti-armor) and a range of 32 (i.e., more than enough) and is facing in
-          the correct direction, so can fire at the infantry unit. The StuG has a targeted weapon,
-          so the first step is determining if the weapon hits.
+          Here a German StuG III-F/G is firing at a Soviet Rifle squad. The StuG has a firepower of
+          40 (anti-armor) and a range of 32 (i.e., more than enough) and is facing in the correct
+          direction, so can fire at the infantry unit. The StuG has a targeted weapon, so the first
+          step is determining if the weapon hits.
         </p>
         <p>
           First, we need to figure out the range modifier; in this case it&apos;s 4 (base of 4 with
@@ -188,7 +188,7 @@ export default function FireExampleSection() {
           has to beat with a roll. Let&apos;s say it rolls a 30 (5 times 6), and the StuG hits.
         </p>
         <p>
-          The StuG then needs to fire for effect, it&apos;s firing at an infantry unit with an
+          The StuG then needs to fire for effect.  It&apos;s firing at an infantry unit with an
           anti-tank weapon, so its firepower of 40 is halved, and so (checking the infantry fire
           table) it has to beat an 8 to hit, or get a 16 to make a critical hit. Let&apos;s say it
           rolls a 17 (8 plus 9), and makes a critical hit.
