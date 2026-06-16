@@ -48,7 +48,7 @@ export default function FireSection({ section }: SectionProps) {
         require a targeting roll or ignores terrain) may be combine its attack with the unit
         carrying it, e.g., an infantry squad could combine its attack with a machine gun it carries.
       </p>
-      <h3>{section}.6. After Firing</h3>
+      <h3>{section}.6. Status</h3>
       <p>When fire is complete, mark all firing units as activated.</p>
     </div>
   );

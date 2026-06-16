@@ -99,7 +99,8 @@ export default function FireEffectsSection({ section }: SectionProps) {
       <p>
         Infantry and crewed weapons are not damaged or eliminated when units carrying them or
         crewing them are eliminated (except incendiary weapons which are removed with their carrying
-        unit). Weapons are left on the map and can be picked up by other units (of either side).
+        unit). Weapons are left on the map and can be picked up by other units (of either side, except
+        radios, which can only be used by the original side).
       </p>
     </div>
   );

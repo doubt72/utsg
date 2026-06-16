@@ -71,7 +71,7 @@ export default function FireProcessSection({ section }: SectionProps) {
         weapon is broken (or the weapon is marked as broken on a vehicle). When checking for a
         break, the following may apply:
       </p>
-      <ol className="mt05em mb05em">
+      <ol className="mt05em mb1em">
         <li>Add one to the break check number if intensive fire.</li>
         <li>Add one to the break check number if firing an opponent&apos;s weapon.</li>
       </ol>

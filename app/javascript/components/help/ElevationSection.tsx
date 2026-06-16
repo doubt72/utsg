@@ -242,6 +242,7 @@ export default function ElevationSection({ section }: SectionProps) {
         complicated effects on line-of-sight, as show by the illustration below.
       </p>
       {facingDiagram}
+      <h3>{section}.1. Examples</h3>
       <p>Here are some example sightlines in the illustration:</p>
       <p>
         {redNumber(1)}
@@ -308,12 +309,12 @@ export default function ElevationSection({ section }: SectionProps) {
         {redNumber(8)}
         Hindrances are also cast directly downhill.
       </p>
-      <h3>{section}.1. Smoke and Fire</h3>
+      <h3>{section}.2. Smoke and Fire</h3>
       <p>
         Smoke is considered to have unlimited height, so always causes hindrance. Fire also always
         blocks line-of-sight, regardless of elevation difference.
       </p>
-      <h3>{section}.2. Symmetry</h3>
+      <h3>{section}.3. Symmetry</h3>
       <p>
         Remember that line-of-sight is symmetrical, so if (and only if) the unit at the top of the
         hill can see a hex, a unit in that hex can see the unit at the top of the hill. Hindrance is

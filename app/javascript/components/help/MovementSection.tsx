@@ -125,13 +125,13 @@ export default function MovementSection({ section }: SectionProps) {
         any point while moving, not even &quot;temporarily&quot; when moving through hexes
         containing friendly units.
       </p>
-      <h3>{section}.12. Finishing</h3>
+      <h3>{section}.12. Status</h3>
       <p>
         Units are marked as activated after moving. Crewed weapons and transported units are as
         well. Already activated units may not move (they may only rush), nor may exhausted, pinned,
         or broken units. Tired units movement is half rounded down.
       </p>
-      <h3>{section}.13. Controls</h3>
+      <h3>{section}.13. Server Controls</h3>
       <p>
         Once a move has started, the following buttons can be used to commit or abandon a move
         anytime during the movement action:
@@ -153,7 +153,7 @@ export default function MovementSection({ section }: SectionProps) {
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
-          <ArrowCounterclockwise /> <span>finish move</span>
+          <ArrowCounterclockwise /> <span>undo last move</span>
         </div>
         <div className="flex-fill"></div>
       </div>

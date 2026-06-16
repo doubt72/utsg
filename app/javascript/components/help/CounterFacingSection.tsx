@@ -13,8 +13,9 @@ import { makeIndex } from "./CounterSection";
 import MapCounter from "../game/map/MapCounter";
 import MapLosOverlay from "../game/map/MapLosOverlay";
 import { helpLink } from "./helpData";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function CounterFacingSection() {
+export default function CounterFacingSection({ section }: SectionProps) {
   const [facingDiagram, setFacingDiagram] = useState<JSX.Element | undefined>()
 
   const [units, setUnits] = useState<{ [index: string]: Unit | Feature | Marker }>({})
@@ -120,6 +121,7 @@ export default function CounterFacingSection() {
         indicated with the counter itself, placed on top of the hull.
       </p>
       {facingDiagram}
+      <h3 className="mt05em">{section}.1. Firing Arcs</h3>
       <p>
         Whenever the weapons with facing are firing, they must fire in the direction of the forward
         arc, as shown on the image here. The forward arc includes all the hexes that are between the
@@ -132,6 +134,7 @@ export default function CounterFacingSection() {
         Units without facing (i.e., infantry unit or infantry weapons) are unrestricted by firing
         arcs and can fire in any direction.
       </p>
+      <h3 className="mt05em">{section}.2. Armor Facing</h3>
       <p>
         Facing also applies to armored protection. If an attack comes from a unit in the forward arc
         of the targeted vehicle (or the targeted vehicle&apos;s turret if it hits the turret), it is
@@ -141,6 +144,7 @@ export default function CounterFacingSection() {
         the firing unit is not in either of those arcs, it would be considered to be hitting the
         side, and side armor applies.
       </p>
+      <h3 className="mt05em">{section}.3. Server Facing View</h3>
       <p>
         Forward firing arcs can be seen on the map at any time by toggling the overlay button to
         show line-of-sight and mousing over unit counters — assuming the unit has a facing (see the{" "}

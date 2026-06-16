@@ -10,8 +10,9 @@ import { Coordinate, weatherType, windType } from "../../utilities/commonTypes";
 import organizeStacks from "../../engine/support/organizeStacks";
 import MapCounterOverlay from "../game/map/MapCounterOverlay";
 import { stackLimit } from "../../utilities/utilities";
+import { SectionProps } from "../game/HelpDisplay";
 
-export default function CounterStackingSection() {
+export default function CounterStackingSection({ section }: SectionProps) {
   const [stack1, setStack1] = useState<JSX.Element | undefined>()
   const [stack2, setStack2] = useState<JSX.Element | undefined>()
   
@@ -112,6 +113,7 @@ export default function CounterStackingSection() {
         are operated or carried by the units the player actually intends.
       </p>
       {stack1}
+      <h3 className="mt05em">{section}.1. Infantry and Crewed Weapons</h3>
       <p>
         In general, a unit (typically a weapon) is carried or operated by the unit under it. For
         instance, a machine gun may be carried by an infantry unit, and this means that if the
@@ -122,6 +124,7 @@ export default function CounterStackingSection() {
       </p>
       <div style={{ clear: "both" }}></div>
       {stack2}
+      <h3 className="mt05em">{section}.2. Vehicles</h3>
       <p>
         Units being towed and/or carried by vehicles work essentially the same way. Towed units
         should be placed immediately on top of a vehicle, and any infantry units placed on top of
@@ -133,6 +136,7 @@ export default function CounterStackingSection() {
         dotted line around them.
       </p>
       <div style={{ clear: "both" }}></div>
+      <h3 className="mt05em">{section}.3. Server Management of Stacking</h3>
       <p>
         Once the game starts, units can be picked up or dropped via the move interface, and the game
         will take care of re-arranging and re-sorting the stacks. In addition, leaders will
@@ -141,6 +145,7 @@ export default function CounterStackingSection() {
         bottom-to-top of stacks) so that the leadership bonus won&apos;t be lost until after the
         entire attack is evaluated.
       </p>
+      <h3 className="mt05em">{section}.4. Stacking Limit</h3>
       <p>
         Finally, there is a stacking limit of {stackLimit}. That limit can never be exceeded except
         when moving into an enemy-occupied hex. Stacking limits in that case are separate for each

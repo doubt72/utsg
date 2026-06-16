@@ -1,11 +1,4 @@
 Features/Bug Fixes:
-  + Game name
-  + Mouse pointer on scenarios
-  + Notification window is a little low on small screens / adjust for screen size
-  + Check that radios can't be used by an opponent
-  + Check that jammed turrets or immobilized units halve firepower on hull mount
-  + Check rapid fire
-  + Check that incendiary weapons go away when carrying unit lost
   - Playthrough
   - Finish scenario editor
   ? Implement short stacking on reaction fire

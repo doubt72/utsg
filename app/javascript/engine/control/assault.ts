@@ -37,6 +37,7 @@ export function showEntrench(game: Game): boolean {
   if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
   if (game.assaultState.path.length + game.assaultState.addActions.length > 1) { return false }
   if (game.scenario.map.baseTerrain === baseTerrainType.Snow) { return false }
+  if (game.scenario.map.baseTerrain === baseTerrainType.Mud) { return false }
   const loc = new Coordinate(selection[0].x, selection[0].y)
   const hex = game.scenario.map.hexAt(loc) as Hex
   if (!hex.terrain.vehicle || [terrainType.Sand, terrainType.Shallow].includes(hex.baseTerrain)) { return false }

@@ -157,6 +157,7 @@ export default function LineOfSightSection({ section }: SectionProps) {
         section of the documentation. Line-of-sight is determined by all of the hexes that are
         intersected by the sightline from the center of one hex to the center of the target hex.
       </p>
+      <h3>{section}.1. Hindrance</h3>
       <p>
         Fire attacks may also be increased in difficulty by a similar concept called{" "}
         <strong>hindrance</strong>. Hindrance is an inherent value of terrain that does not block
@@ -164,6 +165,7 @@ export default function LineOfSightSection({ section }: SectionProps) {
         binary yes or no, hindrance adds up for every hindering terrain or feature the line-of-sight
         line passes through.
       </p>
+      <h3>{section}.2. Full Hexes</h3>
       <p>
         Unlike many other small unit tactics hex-and-counter wargames, hindrance and line-of-sight
         are not determined by the shape of the blocking or hindering terrain in hexes, but by the
@@ -185,6 +187,7 @@ export default function LineOfSightSection({ section }: SectionProps) {
         <div className="flex-fill"></div>
       </div>
       {facingDiagram}
+      <h3>{section}.3. Examples</h3>
       <p>Here are some example sightlines in the illustration to the right:</p>
       <p>
         {redNumber(1)}
@@ -226,7 +229,7 @@ export default function LineOfSightSection({ section }: SectionProps) {
         {redNumber(8)}
         Sightlines along a wall block LOS to everything beyond them.
       </p>
-      <h3>{section}.1. Symmetry</h3>
+      <h3>{section}.4. Symmetry</h3>
       <p>
         Line-of-sight is symmetrical, so if (and only if) one unit one unit can see another unit,
         that unit can be seen in turn. Hindrance is mostly symmetrical, except (terrain) hindrance

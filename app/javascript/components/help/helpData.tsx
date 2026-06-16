@@ -62,8 +62,8 @@ export const helpIndex: HelpSection[] = [
     { name: "Game Turn", fullName: "Game Turn", section: <GameTurnSection />, children: [
       { name: "Deployment Phase", fullName: "Deployment Phase", section: <DeploymentPhaseSection /> },
       { name: "Prep Phase", fullName: "Prep Phase", section: <PrepPhaseSection />, children: [
-        { name: "Rallying", fullName: "Rally Phase", section: <RallySection /> },
-        { name: "Precip Check", fullName: "Precipitation Check Phase", section: <PrecipCheckSection /> },
+        { name: "Rallying", fullName: "Rallying", section: <RallySection /> },
+        { name: "Precip Check", fullName: "Precipitation Check", section: <PrecipCheckSection /> },
       ]},
       { name: "Main Phase", fullName: "Main Phase", section: <MainPhaseSection />, children: [
         { name: "Fire", fullName: "Fire", section: <FireSection />, children: [

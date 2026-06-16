@@ -203,7 +203,8 @@ export default function MainPhaseSection({ section }: SectionProps) {
         center or on the player&apos;s side of the track, the check automatically passes.
       </p>
       <p>
-        Initiative checks are not undoable, regardless of whether or not the result was automatic.
+        Initiative checks are not undoable on the server, regardless of whether or not the result
+        was automatic.
       </p>
       <p>
         Actions cost one to three initiative points, or move the marker that many spaces on the

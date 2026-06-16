@@ -1,5 +1,6 @@
 # 0.96
 
+- Changed rule so no entrenchment in mud (not just snow)
 - Moved window to calculated location based on window height
 - Switch name to game name on new game form
 - Add pointer cursor to scenario selection row

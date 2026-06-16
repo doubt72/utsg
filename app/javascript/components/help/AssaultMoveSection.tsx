@@ -43,9 +43,9 @@ export default function AssaultMoveSection({ section }: SectionProps) {
         check, roll two ten-sided dice, adding the total together (2d10), and if the dice roll is
         equal or below that number, the vehicle is immobilized for the rest of the scenario.
       </p>
-      <h3>{section}.4. Assault Movement and Reaction Fire</h3>
+      <h3>{section}.4. Reaction Fire</h3>
       <p>There is no reaction fire after an assault move, only a regular initiative check.</p>
-      <h3>{section}.5. Assault Movement and Minefields</h3>
+      <h3>{section}.5. Minefields</h3>
       <p>Infantry units (not vehicles) performing assault moves are unaffected by minefields.</p>
       <h3>{section}.6. Victory Point Hexes</h3>
       <p>
@@ -55,7 +55,7 @@ export default function AssaultMoveSection({ section }: SectionProps) {
         can hold victory hexes that opponents assault move into; VPs don&apos;t change ownership
         until those units are eliminated.
       </p>
-      <h3>{section}.7. Assault Move and Status</h3>
+      <h3>{section}.7. Status</h3>
       <p>
         Activated, exhausted, or broken units may not assault move. Pinned or immobilized units or
         units that otherwise have no movement points (i.e., tired and encumbered units with a

@@ -26,7 +26,7 @@ export default function AssaultMoveOtherSection({ section }: SectionProps) {
       <p>
         Infantry squads or teams may entrench in most open terrain. The valid terrains are: open,
         brush, orchards, fields, or palm trees. Entrenchment is not possible in any other terrain,
-        or if the base terrain is snow. Entrenchment is also not possible if other features
+        or if the base terrain is snow or mud. Entrenchment is also not possible if other features
         (including both defensive features and obstacles) are present. Entrenchments are not
         possible in hexes with streams, gullies, trenches, or railroads, but is permitted in hexes
         with roads. No dice roll is required, success is automatic. Place a shell scrape in the hex

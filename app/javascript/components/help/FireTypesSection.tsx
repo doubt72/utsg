@@ -5,7 +5,7 @@ export default function FireTypesSection({ section }: SectionProps) {
 
   return (
     <div>
-      <p>There are several types of fire in the game.</p>
+      <p>There are several types of fire actions and firepower in the game.</p>
       <h3>{section}.1. Types of Fire Actions</h3>
       <p>There are five types of fire actions:</p>
       <div className="ml1em">
@@ -23,7 +23,8 @@ export default function FireTypesSection({ section }: SectionProps) {
           units may target any (non-armored) units in contiguous hexes; the targeted units must be
           contiguous, they can&apos;t be connected through other units. All the non-weapon,
           non-armored units in all of those hexes will be attacked. When the rapid fire attack is
-          made, separate die rolls are made for each targeted hex, each with their own hindrance.
+          made, separate die rolls are made for each targeted hex, each with their own hindrance
+          (so note that the chance of a weapon breaking increases by the number of targets).
         </p>
         <h4>{section}.1.3. Targeted Fire</h4>
         <p>
@@ -48,7 +49,7 @@ export default function FireTypesSection({ section }: SectionProps) {
           Another sort of area fire called in from offboard by units carrying a radio, and is
           indicated with a hexagon around the unit&apos;s firepower. Unlike all other targeted fire,
           misses will drift and may hit other hexes, including hexes with friendly units. This type
-          of weapon cannot be operated by an opponent if captured.
+          of weapon cannot be operated by an opponent.
         </p>
       </div>
       <h3>{section}.2. Mixed Units</h3>
