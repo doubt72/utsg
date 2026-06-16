@@ -1,6 +1,12 @@
 # 0.96
 
+- Moved window to calculated location based on window height
+- Switch name to game name on new game form
+- Add pointer cursor to scenario selection row
 - Major documentation updates/refactoring
+- Bug fix: radios should not be able to be picked up by opponent
+- Bug fix: fix rapid fire animations and action string
+- Bug fix: incendiary infantry weapons should be eliminated when carrying eliminated
 
 # 0.95
 

@@ -362,6 +362,7 @@ export default class Unit {
   canCarry(unit: Unit): boolean {
     if (!(unit.isNormal || unit.isTired) && this.internalStatus) { return false }
     if (this.leader && unit.uncrewedSW && unit.baseMovement < 0) { return false }
+    if (unit.offBoard && unit.playerNation !== this.playerNation) { return false }
     return this.canTransportUnit(unit) || this.canTowUnit(unit) || (this.children.length < 1 &&
       ((this.canCarrySupport && unit.uncrewedSW) || (this.canHandle && unit.crewed)))
   }

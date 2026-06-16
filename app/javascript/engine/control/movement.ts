@@ -180,7 +180,7 @@ export function canLoadUnit(game: Game, unit: Unit): boolean {
   for (const c of counters) {
     if (c.hasFeature || c.unit.selected || c.unit.loadedSelected) { continue }
     const path = game.moveState.path
-    if (c.unit.crewed && path && path.length > 1) { continue}
+    if (c.unit.crewed && path && path.length > 1) { continue }
     if (c.unit.crewed && game.moveState.rushing) { continue }
     const extra = c.unit.uncrewedSW ? c.unit.baseMovement : 0
     if (unit.canCarry(c.unit) && movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra) {

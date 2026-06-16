@@ -101,13 +101,15 @@ export default class FireAction extends BaseAction {
         }
         if (!check) { coords.push(new Coordinate(t.x, t.y)) }
       }
-      for (const c of coords) {
+      part += coords.map(c => {
+        let rc = ""
         const names = this.target.filter(t => t.x === c.x && t.y === c.y).map(t => {
-        return formatNation(this.game, otherPlayer(this.player), t.name)
+          return formatNation(this.game, otherPlayer(this.player), t.name)
         })
-        part += `${ formatNation(this.game, otherPlayer(this.player)) } ${names.join(", ")}`
-        part += ` at ${formatCoordinate(c)}`
-      }
+        rc += `${ formatNation(this.game, otherPlayer(this.player)) } ${names.join(", ")}`
+        rc += ` at ${formatCoordinate(c)}`
+        return rc
+      }).join(", ")
     } else {
       const loc = this.fireHex.start[0]
       part += formatCoordinate(new Coordinate(loc.x, loc.y))
@@ -558,7 +560,7 @@ export default class FireAction extends BaseAction {
         const hitRoll = this.diceResults[diceIndex++]
         if (needDice) {
           hitRoll.description = `${
-            coords.length > 1 ? `at ${formatCoordinate(c)}:` : ""
+            coords.length > 1 ? `at ${formatCoordinate(c)}: ` : ""
           }target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
         }
         if (hitRoll.result.result > hitCheck) {
@@ -588,7 +590,7 @@ export default class FireAction extends BaseAction {
                   rollbackAddActions(this.map, hex, new Coordinate(t.x, t.y), t.counter.unit.id)
                 }
                 if (needDice) { hitRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
-                anims.push({ loc: to, type: "wreck" })
+                anims.push({ loc: c, type: "wreck" })
               } else if (t.counter.unit.isVehicle && firing0.unit.incendiary) {
                 fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false, [wire])
                 let hitCheck = baseToHit(fp.fp)
@@ -611,10 +613,10 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
                   }
-                  anims.push({ loc: to, type: "wreck" })
+                  anims.push({ loc: c, type: "wreck" })
                 } else {
                   if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>` }
-                  anims.push({ loc: to, type: "nowreck" })
+                  anims.push({ loc: c, type: "nowreck" })
                 }
               } else {
                 this.game.moraleChecksNeeded.push({
@@ -623,10 +625,10 @@ export default class FireAction extends BaseAction {
               }
             }
           })
-          anims.push({ loc: to, type: critMessage ? "crit" : "hit" })
+          anims.push({ loc: c, type: critMessage ? "crit" : "hit" })
         } else {
           if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">miss</span>` }
-          anims.push({ loc: to, type: "miss" })
+          anims.push({ loc: c, type: "miss" })
         }
         for (const f of firing) {
           const from = new Coordinate(f.x, f.y)

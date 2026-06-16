@@ -78,7 +78,14 @@ export default class MoraleCheckAction extends BaseAction {
     if (roll < check || roll === 2) {
       if (counter.unit.isBroken) {
         const hex = counter.hex as Coordinate
+        let sub = undefined
+        if (counter.unit.children.length > 0 && counter.unit.children[0].incendiary) {
+          sub = counter.unit.children[0]
+        }
         this.game.scenario.map.eliminateCounter(hex, this.target.id)
+        if (sub !== undefined) {
+          this.game.scenario.map.eliminateCounter(hex, sub.id)
+        }
         this.game.addActionAnimations([{ loc: hex, type: "eliminate" }])
       } else {
         counter.unit.break()

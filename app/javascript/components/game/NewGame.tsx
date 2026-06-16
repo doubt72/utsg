@@ -377,7 +377,7 @@ export default function NewGame() {
         <div className="standard-body">
           <div className="scenario-form-container">
             Create a new game:
-            <label className="form-label">name</label>
+            <label className="form-label">game name</label>
             <input
               type="text"
               name="name"

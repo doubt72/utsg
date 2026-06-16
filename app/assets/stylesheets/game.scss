@@ -51,6 +51,7 @@
 }
 
 .scenario-row {
+  cursor: pointer;
   display: flex;
   flex-basis: auto;
   background-color: $gray-f;
@@ -267,11 +268,11 @@
 }
 
 .game-error {
-  padding: 525px calc(50% - 250px);
+  padding: calc(60vh - 144px) calc(50% - 250px) calc(40vh - 144px) calc(50% - 250px);
 }
 
 .game-notification {
-  padding: 525px calc(50% - 250px);
+  padding: calc(60vh - 144px) calc(50% - 250px) calc(40vh - 144px) calc(50% - 250px);
 }
 
 .game-error-window, .game-notification-window {
