@@ -170,12 +170,11 @@ describe("game actions", () => {
     expect(game.currentPlayer).toBe(2)
     expect(game.currentInitiativePlayer).toBe(2)
     game.gameState?.finish()
-    expect(reactionFireCheck(game)).toBe(false)
+    expect(reactionFireCheck(game, false)).toBe(false)
     expect(game.currentPlayer).toBe(1)
     expect(game.currentInitiativePlayer).toBe(1)
 
     Math.random = original
-
 
     const action = game.lastAction
     expect(action?.type).toBe("reaction_pass")

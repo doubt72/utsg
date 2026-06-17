@@ -1008,7 +1008,7 @@ export default class Game {
           ok: () => {},
         })
       }
-      if (m.type !== "info" && m.type !== "state" && !backendSync) { checkPhase(this, backendSync) }
+      if (m.type !== "state" && !backendSync) { checkPhase(this, backendSync) }
       if (this.phase !== gamePhaseType.Deploy)  { organizeStacks(this.scenario.map) }
       this.refreshCallback(this)
     } catch(err) {

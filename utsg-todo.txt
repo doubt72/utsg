@@ -1,4 +1,5 @@
 Features/Bug Fixes:
+  + Possible bug involving reaction fire of dropped machine gun and/or broken leader/unit with rush
   - Playthrough
   - Finish scenario editor
   ? Implement short stacking on reaction fire

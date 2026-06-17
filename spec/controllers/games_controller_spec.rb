@@ -355,6 +355,20 @@ RSpec.describe Api::V1::GamesController do
 
       expect(response.status).to be == 403
     end
+
+    it "doesn't update if player or metadata doesn't change" do
+      login(user1)
+
+      expect(game1.current_player).to be == user2
+      expect(game1.needs_turn_notification).to be == false
+
+      expect do
+        put :update, params: { id: game1.id, game: { current_player: user2.username } }
+      end.not_to change { game1.reload.needs_turn_notification }
+
+      expect(game1.current_player).to be == user2
+      expect(game1.needs_turn_notification).to be == false
+    end
   end
 
   describe "destroy" do

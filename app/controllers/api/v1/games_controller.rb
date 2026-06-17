@@ -123,7 +123,7 @@ module Api
       end
 
       def update_params
-        p = params.require(:game).permit(:current_player, :metadata)
+        p = params.require(:game).permit(:current_player, :metadata).to_h
         p[:metadata] = JSON.parse(p[:metadata]) if p[:metadata]
         p[:current_player] ? translate(p, "current_player") : p
       end

@@ -17,18 +17,18 @@ export const reactionActions = ["move", "rush", "fire", "intensive_fire"]
 export function reactionFireCheck(game: Game, action: boolean = true): boolean {
   if (game.gameState !== undefined) { return false }
   if (game.phase !== gamePhaseType.Main) { return false }
-  let rc = false
+  let initCheck = false
   let last = ""
   for (let i = game.actions.length - 1; i >= 0; i--) {
     const a = game.actions[i]
     if (a.undone) { continue }
     if (a.type === "reaction_pass") { return false }
-    if (a.type === "initiative") { rc = true }
+    if (a.type === "initiative") { initCheck = true }
     if (significantActions.includes(a.type)) { last = a.type; break }
   }
-  if (rc && reactionActions.includes(last)) {
+  if (initCheck && reactionActions.includes(last)) {
     if (reactionAvailableCoords(game).length < 1) {
-      if (action && game.lastAction?.type !== "info") {
+      if (!action) {
         const base = new BaseState(game, "reaction", 1)
         base.execute(new GameAction({
           user: game.currentUser, player: game.currentPlayer, data: {
@@ -36,7 +36,6 @@ export function reactionFireCheck(game: Game, action: boolean = true): boolean {
             message: "no valid units have range and line-of-sight, skipping reaction fire",
           },
         }, game))
-        game.resetCurrentPlayer()
       }
     } else { return true }
   }

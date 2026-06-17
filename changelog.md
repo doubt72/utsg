@@ -1,3 +1,8 @@
+# 0.97
+
+- Some refactoring of scenario designer
+- Bug fix: not exactly a bug, but streamline notifications and also switch skipping reaction fire when invalid to inactive player to avoid issues of stalling async games for no reason/giving turn notifications for no reason
+
 # 0.96
 
 - Changed rule so no entrenchment in mud (not just snow)
