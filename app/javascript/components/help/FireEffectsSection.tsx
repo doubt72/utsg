@@ -42,7 +42,7 @@ export default function FireEffectsSection({ section }: SectionProps) {
             <li>Subtract two if targeting the side of the hull.</li>
             <li>Subtract three if point-blank range (i.e., firing from an adjacent hex).</li>
             <li>
-              Subtract one if range is less than half weapon range, but not point blank (rounded
+              Subtract one if range is half or less of weapon range, but not point blank (rounded
               down, i.e., a weapon range of 5 firing at a range of 3 does not subtract one).
             </li>
             <li>

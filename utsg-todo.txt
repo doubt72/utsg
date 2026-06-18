@@ -1,5 +1,5 @@
 Features/Bug Fixes:
-  + Possible bug involving reaction fire of dropped machine gun and/or broken leader/unit with rush
+  + Should say half or less, not less than half range
   - Playthrough
   - Finish scenario editor
   ? Implement short stacking on reaction fire

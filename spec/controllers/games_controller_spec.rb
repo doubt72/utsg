@@ -356,7 +356,7 @@ RSpec.describe Api::V1::GamesController do
       expect(response.status).to be == 403
     end
 
-    it "doesn't update if player or metadata doesn't change" do
+    it "doesn't trigger turn notification if player doesn't change" do
       login(user1)
 
       expect(game1.current_player).to be == user2

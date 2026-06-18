@@ -28,7 +28,7 @@ export function reactionFireCheck(game: Game, action: boolean = true): boolean {
   }
   if (initCheck && reactionActions.includes(last)) {
     if (reactionAvailableCoords(game).length < 1) {
-      if (!action) {
+      if (!action || game.playerOneName === game.playerTwoName) {
         const base = new BaseState(game, "reaction", 1)
         base.execute(new GameAction({
           user: game.currentUser, player: game.currentPlayer, data: {

@@ -172,7 +172,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       expect(game.currentPlayer).toBe(2)
       const original = Math.random
@@ -273,7 +273,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-3)
@@ -323,7 +323,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-6)
@@ -424,7 +424,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-3)
@@ -479,7 +479,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(1)
       expect(mods.why.length).toBe(2)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
       expect(mods.why[1]).toBe("- plus 2 for current weather")
 
       const original = Math.random
@@ -534,7 +534,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(2)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
       expect(mods.why[1]).toBe("- plus 1 for night")
 
       const original = Math.random
@@ -597,7 +597,7 @@ describe("ranged fire attacks", () => {
         "-> to hit (2d10): 8 (72%)",
         "firepower: 17",
         "- base to hit: 9",
-        "- minus 1 for less than half range",
+        "- minus 1 for half range or less",
         "-> critical hit on: 16 (15%)",
         "",
         "-> morale check (2d10): 10 (55%)",
@@ -619,7 +619,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const mc = moraleModifiers(game, target, [floc], tloc, false)
       expect(mc.mod).toBe(-5)
@@ -800,7 +800,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1262,7 +1262,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1346,7 +1346,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       expect(game.playerTwoScore).toBe(10)
 
@@ -1632,7 +1632,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -1694,7 +1694,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(2)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
       expect(mods.why[1]).toBe("- plus 1 for rapid fire")
 
       const original = Math.random
@@ -1784,7 +1784,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(0)
       expect(mods.why.length).toBe(2)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
       expect(mods.why[1]).toBe("- plus 1 for rapid fire")
 
       const original = Math.random
@@ -1890,7 +1890,7 @@ describe("ranged fire attacks", () => {
       )
       expect(mods.mod).toBe(-1)
       expect(mods.why.length).toBe(1)
-      expect(mods.why[0]).toBe("- minus 1 for less than half range")
+      expect(mods.why[0]).toBe("- minus 1 for half range or less")
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.99)

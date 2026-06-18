@@ -1,3 +1,10 @@
+# 0.98
+
+- Slightly cleaner notification tweak
+- Bug fix: should say half range or less, not less than half range in help
+- Bug fix: previous fix broke solo games, tweak fix
+- Updated 102
+
 # 0.97
 
 - Some refactoring of scenario designer

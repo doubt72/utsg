@@ -109,11 +109,9 @@ class Game < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def update_game(user, params)
     return nil unless [player_one_id, player_two_id].include? user.id
-    return true if (!params[:current_player_id] ||
-                    params[:current_player_id] == current_player_id) &&
-                   (!params[:metadata] || params[:metadata] == metadata)
 
-    update(needs_turn_notification: true)
+    update(needs_turn_notification: true) if params[:current_player_id] &&
+                                             params[:current_player_id] != current_player_id
     update_check = update(params)
 
     check_for_turn_notification

@@ -253,7 +253,7 @@ export function untargetedModifiers(
     why.push("- minus 3 for adjacent")
   } else if (lthalf) {
     mod -= 1
-    why.push("- minus 1 for less than half range")
+    why.push("- minus 1 for half range or less")
   }
   if (elev > 0 ) {
     mod += 1
@@ -410,7 +410,7 @@ export function armorHitModifiers(
     why.push("- minus 3 for point-blank range")
   } else if (dist <= Math.floor(source.currentRange/2) ) {
     mod -= 1
-    why.push("- minus 1 for less than half range")
+    why.push("- minus 1 for half range or less")
   }
   return { mod, why }
 }

@@ -1729,13 +1729,13 @@ describe("reaction fire attacks", () => {
       "firepower: 24",
       "base to hit: 7",
       "armor factor (front): 2",
-      "- minus 1 for less than half range",
+      "- minus 1 for half range or less",
       "",
       "-> hull penetration roll (2d10): 8 (72%)",
       "firepower: 24",
       "base to hit: 7",
       "armor factor (front): 2",
-      "- minus 1 for less than half range",
+      "- minus 1 for half range or less",
       "",
       "[hold down shift to hide]"
     ])

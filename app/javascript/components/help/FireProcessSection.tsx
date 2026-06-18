@@ -130,7 +130,7 @@ export default function FireProcessSection({ section }: SectionProps) {
             <li>Subtract one if all firing units are at a higher elevation than the target.</li>
             <li>Add one if any firing units are at a lower elevation than the target.</li>
             <li>
-              Subtract one if the distance is less than half the range of all of the firing units
+              Subtract one if the distance is half or less of the range of all of the firing units
               (rounded down, i.e., a unit with a range of 5 firing at a target 3 hexes away would
               not get this modifier).
             </li>
