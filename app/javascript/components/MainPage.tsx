@@ -49,8 +49,8 @@ export default function MainPage() {
               rendering performance can vary significantly.
             </p>
             <p>
-              <strong>Latest announcement</strong>: <a className="regular" href="/about/a24042026">
-                ATHF to Beta!
+              <strong>Latest announcement</strong>: <a className="regular" href="/about/a20260618">
+                Scenarios Ready
               </a>
             </p>
             <p>

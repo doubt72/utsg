@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Fort Capuzzo"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,7 +16,7 @@ module Scenarios
       "0": { list: [
         :uk_leader_5_1,
         :uk_leader_4_1,
-        [5, :uk_line_s],
+        [6, :uk_line_s],
         [2, :uk_bren_lmg],
         :uk_matilda_ii,
         :uk_humber_ac_i,

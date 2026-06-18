@@ -60,38 +60,75 @@ export default function About() {
             content will be added over time.
           </p>
           <p>
-            If you&apos;re looking for a quick introduction to the game, scenario <strong>001</strong>: <em>A
-            Straightforward Proposition</em> is a decent starting scenario.  It&apos;s not the smallest
-            scenario, but it&apos;s basically just an infantry battle &mdash; no tanks or artillery or wires or
-            mines &mdash; and doesn&apos;t have any elevation or crazy weather to worry about.  From there,
-            there are lots of choices: in particular, pay attention to the map size and what units are
-            included in the scenario descriptions.
+            If you&apos;re looking for a quick introduction to the game, scenario{" "}
+            <strong>001</strong>: <em>A Straightforward Proposition</em> is a decent starting
+            scenario. It&apos;s not the smallest scenario, but it&apos;s basically just an infantry
+            battle &mdash; no tanks or artillery or wires or mines &mdash; and doesn&apos;t have any
+            elevation or crazy weather to worry about. From there, there are lots of choices: in
+            particular, pay attention to the map size and what units are included in the scenario
+            descriptions.
           </p>
           <p>
-            There is also a <a className="regular" href="https://youtu.be/0wJj1YgMCVc">tutorial</a> available,
-            and we hope to add some video play-throughs (and improve and/or add tutorials) in the future.
+            There is also a{" "}
+            <a className="regular" href="https://youtu.be/0wJj1YgMCVc">
+              tutorial
+            </a>{" "}
+            available, as well as a couple playthroughs: an{" "}
+            <a className="regular" href="https://youtu.be/iJUNHKPXRaw">
+              infantry
+            </a>{" "}
+            scenario and an{" "}
+            <a className="regular" href="https://youtu.be/KuXc-RpKwNk">
+              armored
+            </a>{" "}
+            scenario.
           </p>
-          <p><strong>Recent Announcements:</strong></p>
+          <p>
+            <strong>Recent Announcements:</strong>
+          </p>
+          <div id="a20260618" className="about-announcement">
+            <p>
+              <span className="about-announcement-header">Scenarios Ready</span>
+            </p>
+            <p>
+              <strong>18 Jun 2026</strong>: We&apos;ve made a fair bit of progress in the last
+              month.
+            </p>
+            <p>
+              Lately the most significant effort has been in playtesting, and at this point almost
+              twenty scenarios have been tested enough that we think they&apos;re actually ready for
+              play. Most of these were already marked as &quot;ready&quot; on the new game page, but
+              now they actually are, and a couple of beta scenarios have been tested and promoted.
+            </p>
+            <p>
+              Still looking for feedback (again, for the UX, design, bugs, scenarios, or whatever).
+              Any of the scenarios might still change (and old games of those scenarios might still
+              be deleted if those changes are significant), though it&apos;s even less likely for
+              the &quot;ready&quot; scenarios than it was before, and things seem like they might
+              even be fine for async play (though that&apos;s only been lightly tested at this
+              point). If you see anything odd (particularly games that seem stalled and/or produce
+              duplicate turn notification emails), please let us know.
+            </p>
+          </div>
           <div id="a24042026" className="about-announcement">
             <p>
               <span className="about-announcement-header">AHTF to Beta!</span>
             </p>
             <p>
               <strong>24 Apr 2026</strong>: A Hex Too Far is hereby officially declared to be out of
-              alpha and into beta testing.  It&apos;s time.
+              alpha and into beta testing. It&apos;s time.
             </p>
             <p>
-              While the server is still under active development,
-              things should be a bit more stable now, with frequent (albeit not-quite-as-frequent)
-              deploys.  Some games will probably still be deleted
-              from time to time (particularly if any of scenarios undergo
-              any major changes), and while email turn notifications have been implemented and
-              turned on, long async games are still not recommended.
+              While the server is still under active development, things should be a bit more stable
+              now, with frequent (albeit not-quite-as-frequent) deploys. Some games will probably
+              still be deleted from time to time (particularly if any of scenarios undergo any major
+              changes), and while email turn notifications have been implemented and turned on, long
+              async games are still not recommended.
             </p>
             <p>
-              Feedback is still welcomed and encouraged (for the UX, design, bugs, whatever).  Any of
-              the scenarios might still change, though it&apos;s less likely now
-              for &quot;ready&quot; scenarios than it was before.
+              Feedback is still welcomed and encouraged (for the UX, design, bugs, whatever). Any of
+              the scenarios might still change, though it&apos;s less likely now for
+              &quot;ready&quot; scenarios than it was before.
             </p>
           </div>
           <div id="a02042026" className="about-announcement">
@@ -99,46 +136,55 @@ export default function About() {
               <span className="about-announcement-header">Note to Players</span>
             </p>
             <p>
-              <strong>2 Apr 2026</strong>: while the server is definitely under construction,
-              do feel free to play games knowing that things may break,
-              deploys will be frequent, and all the games <strong>will</strong> be
-              deleted at some point when we&apos;re ready to flip the &quot;release&quot; switch.
-              Games may also be deleted at other times if the archetecture changes enough to break
-              old games (as has already happend).  Otherwise, old games may break in (probably) minor
-              ways as things are fixed and polished.
+              <strong>2 Apr 2026</strong>: while the server is definitely under construction, do
+              feel free to play games knowing that things may break, deploys will be frequent, and
+              all the games <strong>will</strong> be deleted at some point when we&apos;re ready to
+              flip the &quot;release&quot; switch. Games may also be deleted at other times if the
+              archetecture changes enough to break old games (as has already happend). Otherwise,
+              old games may break in (probably) minor ways as things are fixed and polished.
             </p>
             <p>
-              In other words, finishing games immediately should <em>mostly</em> be fine, but don&apos;t
-              leave games sitting for too long, and async games are probably a bad idea (and move notifications
-              haven&apos;t even been enabled yet).
+              In other words, finishing games immediately should <em>mostly</em> be fine, but
+              don&apos;t leave games sitting for too long, and async games are probably a bad idea
+              (and move notifications haven&apos;t even been enabled yet).
             </p>
             <p>
-              Feedback is still welcomed and encouraged,
-              be it about the UX or design, or if you find any bugs.  Note that a bunch of scenarios
-              are listed as &quot;ready&quot; for convenience&apos; sake; many of them really aren&apos;t
-              and probably should be considered to be in beta status at best.  The plan is to have
-              them tested and at least somewhat balanced by the time the server itself is ready.
+              Feedback is still welcomed and encouraged, be it about the UX or design, or if you
+              find any bugs. Note that a bunch of scenarios are listed as &quot;ready&quot; for
+              convenience&apos; sake; many of them really aren&apos;t and probably should be
+              considered to be in beta status at best. The plan is to have them tested and at least
+              somewhat balanced by the time the server itself is ready.
             </p>
           </div>
           <p>
-            Server version <span className="red">{serverVersion}&#x3B2;</span>:
-            currently a work in progress and probably always will be.
+            Server version <span className="red">{serverVersion}&#x3B2;</span>: currently a work in
+            progress and probably always will be.
           </p>
           <div className="flex mt2em">
             <div className="flex-fill"></div>
             <div>{AboutHelpButton("docs")}</div>
-            { localStorage.getItem("username") ?
+            {localStorage.getItem("username") ? (
               <div className="nowrap">
                 <a className="custom-button" href="https://github.com/doubt72/utsg/issues">
-                  <BugFill/>report an issue
+                  <BugFill />
+                  report an issue
                 </a>
-              </div> : "" }
+              </div>
+            ) : (
+              ""
+            )}
             <div className="nowrap">
-              <a className="custom-button" href="https://github.com/doubt72/utsg/blob/main/changelog.md">
-                <ListColumnsReverse/>changelog
+              <a
+                className="custom-button"
+                href="https://github.com/doubt72/utsg/blob/main/changelog.md"
+              >
+                <ListColumnsReverse />
+                changelog
               </a>
             </div>
-            <div><ReturnButton /></div>
+            <div>
+              <ReturnButton />
+            </div>
           </div>
         </div>
         <div className="about-about ml05em">
@@ -160,29 +206,30 @@ export default function About() {
             <p>
               <strong>3. Keep It Historical, Not Political</strong>: this game simulates historical
               military conflicts — many of which were fought for terrible reasons by regimes
-              responsible for enormous harm. Discussion of the history is fine. Political provocation
-              is not. Focus on the game play and be respectful when discussing the period.
+              responsible for enormous harm. Discussion of the history is fine. Political
+              provocation is not. Focus on the game play and be respectful when discussing the
+              period.
             </p>
             <p>
               <strong>4. Stay on Topic</strong>: use the main chat for game-related discussion.
-              Don&apos;t spam or derail it with off-topic commentary. There are plenty of other places
-              on the internet for that. This doesn&apos;t apply to in-game chats — as those can only
-              be seen by people watching the game, there&apos;s no real need to cut down on noise, so
-              players can feel free to use them however they like (assuming the other rules here are
-              observed, obviously).
+              Don&apos;t spam or derail it with off-topic commentary. There are plenty of other
+              places on the internet for that. This doesn&apos;t apply to in-game chats — as those
+              can only be seen by people watching the game, there&apos;s no real need to cut down on
+              noise, so players can feel free to use them however they like (assuming the other
+              rules here are observed, obviously).
             </p>
             <p>
-              <strong>5. Don&apos;t Abandon Games</strong>: when you join a game, commit to seeing it
-              through. Dropping out without notice ruins the experience for everyone else. While games
-              aren&apos;t considered officially abandoned by the server for seven days, be considerate
-              and try not to push that limit. If something comes up and you can&apos;t continue, let
-              your opponent know in the chat, and a resignation is acceptable. It&apos;s also fine to
-              resign if the game seems lost and you don&apos;t want to keep playing. It&apos;s not
-              fine to just disappear. If both players agree (preferably in advance) to resume play
-              after a long break (even beyond a week), that&apos;s okay, just don&apos;t make a habit
-              of it. Repeated abandonments will show up in your stats, and other players are
-              within their rights to avoid you in future games, and the management reserves the right
-              to take action.
+              <strong>5. Don&apos;t Abandon Games</strong>: when you join a game, commit to seeing
+              it through. Dropping out without notice ruins the experience for everyone else. While
+              games aren&apos;t considered officially abandoned by the server for seven days, be
+              considerate and try not to push that limit. If something comes up and you can&apos;t
+              continue, let your opponent know in the chat, and a resignation is acceptable.
+              It&apos;s also fine to resign if the game seems lost and you don&apos;t want to keep
+              playing. It&apos;s not fine to just disappear. If both players agree (preferably in
+              advance) to resume play after a long break (even beyond a week), that&apos;s okay,
+              just don&apos;t make a habit of it. Repeated abandonments will show up in your stats,
+              and other players are within their rights to avoid you in future games, and the
+              management reserves the right to take action.
             </p>
             <p>
               <strong>6. Report, Don&apos;t Escalate</strong>: If you see someone violating the code
@@ -195,8 +242,11 @@ export default function About() {
           </p>
           {}
           <div className="align-end mt2em">
-            { localStorage.getItem("username") ? <ContactButton /> :
-                "[You must be logged in for the feedback form to be accessible.]" }
+            {localStorage.getItem("username") ? (
+              <ContactButton />
+            ) : (
+              "[You must be logged in for the feedback form to be accessible.]"
+            )}
           </div>
         </div>
       </div>

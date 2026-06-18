@@ -17,6 +17,7 @@ export default function CreditsSection() {
       <ul>
         <li>James Scott</li>
         <li>Ricardo Gomez</li>
+        <li>Tom MacDevitt</li>
         <li>Draco &quot;CptClutch&quot; Iarovoi</li>
       </ul>
     </div>

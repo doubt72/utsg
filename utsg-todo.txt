@@ -1,30 +1,22 @@
 Features/Bug Fixes:
-  + Should say half or less, not less than half range
-  - Playthrough
   - Finish scenario editor
+  - Playthroughs
+  - Add Some Developer Notes
+  - Strategy notes
   ? Implement short stacking on reaction fire
   ? Consider changing verbiage of "target"
   ? Filter bad words
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Wrong message on other end when reducing CC (can't seem to duplicate, keep an eye out)
-  ? Help display error when routing (sometimes)
+  ? Help display error when rout moving (sometimes)
 
-  - Add Some Developer Notes
-  - Strategy notes
-  - Go through docs, add examples
-  - Record some games
+Maybe: 102, 308, 401, 501, 503, 510, 601
+Beta: 203
 
-Maybe: 401, 501, 503, 510, 601
-Need: 308
-Beta: 102, 203
-
-006 (Romanian)
 203 (Little Stalingrad)
-102 (Capuzzo)
 
 Nice to Have Eventually:
-  - Better rollback of smoke on reaction fire
-  - Refactor firing action (currently an incomprehensible mess, though... Moderately well-tested)
+  ? Better rollback of smoke on reaction fire
 
 Keep an Eye out for:
   ? Problematic Game Controls performance (excessive refreshes still)
@@ -33,7 +25,6 @@ Keep an Eye out for:
 
 Probably not:
   ? KV and French single-man turrets?
-  ? Road attributes on terrain?  Some affected by mud/snow?  Differentiate path/road?
 
 Special Rules/Scenarios
   - Cumulative VPs (last stand/rush)
@@ -41,33 +32,33 @@ Special Rules/Scenarios
   - Random landing locations for paratroop scenarios
   - Win by certain number of points
 
-406 (Tarawa)
-304 (Pegasus Bridge)
 008 (Kursk / Tigers)
+304 (Pegasus Bridge)
+406 (Tarawa)
 
+106 (America N. Africa)
 512 (Greek)
 604 (Khalkhin Gol)
-106 (America N. Africa)
 
 108 (Better America N. Africa)
 402 (Australian New Guinea)
 502 (France)
 
 012 (Tanks in Snow)
-602 (Japanese Tanks)
 015 (T-34 Surprise)
+602 (Japanese Tanks)
 
-110 (Rat Patrol)
 010 (Hungarian)
 107 (Hellfire Pass)
+110 (Rat Patrol)
 
 013 (End of the Tiger)
-305 (Shingle)
 202 (Japanese-American Italy)
+305 (Shingle)
 
 105 (Crumbling)
-507 (Char B1)
 307 (British vs Tigers)
+507 (Char B1)
 
 009 (Small Mud)
 309 (Aachen)
@@ -77,13 +68,13 @@ Special Rules/Scenarios
 509 (More France)
 511 (88s)
 
+103 Italians
 201 Americans in Sicily
 302 Mortain
-103 Italians
 
-403 Night New Guinea
 004 Mud Meeting Engagement
 104 Indians
+403 Night New Guinea
 
 204 Mud in Italy
 404 Manila
@@ -97,18 +88,18 @@ Special Rules/Scenarios
 306 Bastogne
 506 Greek Italian
 
-606 Chinese Tanks
 407 Guadalcanal Big
+606 Chinese Tanks
 607 Shanghai
 
 109 French in Libya
-409 End of New Guinea
 310 Hell's Highway
+409 End of New Guinea
 
-410 Japanese Tanks
 311 Arracourt
+410 Japanese Tanks
 411 Australian New Guinea II
 
-312 Purple Heart Lane
 014 Russian Counterattack
 016 Tractor Factory
+312 Purple Heart Lane

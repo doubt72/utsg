@@ -1,3 +1,8 @@
+# 0.99
+
+- Add new announcement/links to playthroughs
+- Updated 102, moved to release
+
 # 0.98
 
 - Slightly cleaner notification tweak
