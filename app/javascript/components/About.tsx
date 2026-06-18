@@ -109,6 +109,10 @@ export default function About() {
               point). If you see anything odd (particularly games that seem stalled and/or produce
               duplicate turn notification emails), please let us know.
             </p>
+            <p>
+              Also... A tutorial and a couple of playthroughs are now available (see immediately
+              above the announcements here).
+            </p>
           </div>
           <div id="a24042026" className="about-announcement">
             <p>
