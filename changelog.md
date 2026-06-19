@@ -1,3 +1,12 @@
+# 0.100
+
+- Bug fix: sniper check should check leader last in stack
+- Bug fix: sniper check should not switch players on reaction fire
+- Bug fix: reaction fire not consistently triggering sniper
+- Bug fix: routs should use road cost when base terrain cost > 1
+- Bug fix: fix crash on second tab open on same game (is this really a real issue?  Ehhh, well, I dunno, need to keep an eye on other things that can happen here too.)
+- Updated 203
+
 # 0.99
 
 - Add new announcement/links to playthroughs

@@ -708,7 +708,7 @@ export default class FireAction extends BaseAction {
       }
     }
     if (needDice) { this.data.dice_result = this.diceResults }
-    if (this.player === 1 ? this.game.axisSniper : this.game.alliedSniper && !this.reaction) {
+    if (this.player === 1 ? this.game.axisSniper : this.game.alliedSniper) {
       this.origin.forEach(o => {
         const unit = this.game.findUnitById(o.id)
         if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc: new Coordinate(o.x, o.y) }) }
@@ -731,7 +731,7 @@ export default class FireAction extends BaseAction {
     this.game.updateInitiative(2)
     if (this.game.moraleChecksNeeded.length > 0) {
       this.game.togglePlayer()
-    } else {
+    } else if (!this.reaction || this.game.sniperNeeded.length < 1) {
       this.game.resetCurrentPlayer()
     }
     this.game.addActionAnimations(anims)

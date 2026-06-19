@@ -2,7 +2,7 @@ import { describe, expect, test, vi } from "vitest";
 import {
   createBlankGame, createMoveGame, testGGun, testGInf, testGLdr, testGMG, testRInf, testWire
 } from "./testHelpers";
-import { Coordinate } from "../../utilities/commonTypes";
+import { baseTerrainType, Coordinate } from "../../utilities/commonTypes";
 import Unit from "../Unit";
 import { findRoutPathTree, routEnds, routPaths } from "./rout";
 import Feature from "../Feature";
@@ -355,6 +355,33 @@ describe("routing", () => {
       expect(all[0].hex?.x).toBe(0)
       expect(all[0].hex?.y).toBe(2)
       expect(all[0].unit.routed).toBe(false)
+    })
+
+    test("rout along road in snow", () => {
+      const game = createMoveGame()
+      const map = game.scenario.map
+      map.baseTerrain = baseTerrainType.Snow
+      const unit = new Unit(testGInf)
+      unit.break()
+      unit.id = "test1"
+      const loc = new Coordinate(0, 2)
+      map.addCounter(loc, unit)
+      map.select(unit)
+      organizeStacks(map)
+
+      game.setGameState(new RoutState(game, true))
+      const tree = game.routState.routPathTree as RoutPathTree
+      expect(routEnds(tree)).toStrictEqual([new Coordinate(4, 2)])
+
+      expect(game.initiative).toBe(0)
+      game.routState.finishXY(4, 2)
+      expect(game.initiative).toBe(-1)
+
+      const all = map.allCounters
+      expect(all.length).toBe(1)
+      expect(all[0].hex?.x).toBe(4)
+      expect(all[0].hex?.y).toBe(2)
+      expect(all[0].unit.routed).toBe(true)
     })
 
     test("rout switches value of VP", () => {

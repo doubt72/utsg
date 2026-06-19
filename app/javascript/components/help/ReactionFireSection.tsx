@@ -6,32 +6,33 @@ export default function ReactionFireSection({ section }: SectionProps) {
   return (
     <div>
       <p>
-        Reaction fire follows all the same rules as{" "}
-        { helpLink("Fire", "fire") }, but the action is
+        Reaction fire follows all the same rules as {helpLink("Fire", "fire")}, but the action is
         performed by the non-initiative player in response to a fire/intensive fire or movment/rush
         action, and has some limitations.
       </p>
       <p>
         May only be performed immediately after an opponent moves or fires. If performed after a
-        move, may target any hex the player moved through or to, but only the moving units will be
-        targeted (ghost units in all the intermediate hexes will be displayed by the game and can be
-        selected as targets). If performed after a fire action, only the firing unit(s) from that
-        action may be targeted (though all units in that hex may be affected by return fire).
+        move, may target any hex the player moved through or to (ghost units in all the intermediate
+        hexes will be displayed by the game and can be selected as targets). If performed after a
+        fire action, only unit(s) from the firing hex may be targeted.
       </p>
       <h3>{section}.1. Other Units in Hex</h3>
       <p>
         Even if the original moving or firing units cannot be targeted by particular opposing units,
         units may perform reaction fire if any units in the hex can be targeted, whether the target
-        hex contains other units that didn&apos;t fire (e.g., a firing machine gun can&apos;t be targeted with
-        reaction fire, but the unit that carries it can) or a unit moved through a hex containing other
-        units (i.e., both the moving unit and units that were moved through may be targeted).
+        hex contains other units that didn&apos;t fire (e.g., a firing machine gun can&apos;t be
+        targeted with reaction fire, but the unit that carries it can) or a unit moved through a hex
+        containing other units (i.e., both the moving unit and units that were moved through may be
+        targeted).
       </p>
       <h3>{section}.2. Effect on Moving Units</h3>
       <p>
         If moving units are targeted in a hex that was not their final destination and are broken or
-        pinned, they are moved back to the hex they were targeted in. If other units were moving in
-        a stack, they may also be moved back to that hex at the moving player&apos;s discretion (not
-        implemented on server).
+        pinned, they are moved back to the hex they were targeted in.{" "}
+        <em>
+          If other units were moving in a stack, they may also be moved back to that hex at the
+          moving player&apos;s discretion [not implemented on server].
+        </em>
       </p>
       <h3>{section}.3. Intensive Reaction Fire</h3>
       <p>

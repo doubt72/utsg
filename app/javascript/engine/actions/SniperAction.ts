@@ -1,4 +1,4 @@
-import { Coordinate } from "../../utilities/commonTypes";
+import { Coordinate, unitType } from "../../utilities/commonTypes";
 import { formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
 import { otherPlayer } from "../../utilities/utilities";
 import Game from "../Game";
@@ -54,6 +54,13 @@ export default class SniperAction extends BaseAction {
         if (!found) { anims.push({ loc, type: "sniper" })}
       }
     }
+    this.game.moraleChecksNeeded.sort((a, b) => {
+      const aVal = a.unit.type === unitType.Leader ? 1 : 0
+      const bVal = b.unit.type === unitType.Leader ? 1 : 0
+      if (aVal === bVal) { return 0 }
+      return aVal > bVal ? 1 : -1
+    })
+    if (this.game.moraleChecksNeeded.length < 1) { this.game.resetCurrentPlayer() }
     this.game.closeOverlay = true
     this.game.addActionAnimations(anims)
   }

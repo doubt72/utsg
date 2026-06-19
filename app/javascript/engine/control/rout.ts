@@ -4,7 +4,7 @@ import Game from "../Game";
 import Hex from "../Hex";
 import Map from "../Map";
 import Unit from "../Unit";
-import { alongRailroad, alongStream } from "./movement";
+import { alongRailroad, alongRoad, alongStream } from "./movement";
 import { RoutPathTree } from "./state/RoutState";
 
 export function findRoutPathTree(
@@ -127,6 +127,7 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
   if (alongStream(hexFrom, hexTo, dir)) {
     cost += hexTo.terrain.streamAttr.alongMove
   }
+  if (alongRoad(hexFrom, hexTo, dir, true)) { cost = 1 }
   if (hexTo.elevation > hexFrom.elevation) {
     cost += 1
   }

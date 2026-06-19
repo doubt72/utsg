@@ -115,7 +115,11 @@ export default class MoraleCheckAction extends BaseAction {
       }
     }
     if (this.game.moraleChecksNeeded.length < 1) {
-      this.game.resetCurrentPlayer()
+      if (this.game.sniperNeeded.length > 0) {
+        this.game.setCurrentPlayer(this.game.playerOneNation === this.game.sniperNeeded[0].unit.playerNation ? 1 : 2)
+      } else {
+        this.game.resetCurrentPlayer()
+      }
     }
     this.game.closeOverlay = true
   }

@@ -3,7 +3,7 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import IllegalActionError from "../actions/IllegalActionError"
 import Feature from "../Feature"
-import { createBlankGame, createMoveGame, testGInf, testGTank, testRInf } from "./testHelpers"
+import { createBlankGame, createMoveGame, testGInf, testGLdr, testGTank, testRInf } from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import PassState from "./state/PassState"
 import { stateType } from "./state/BaseState"
@@ -13,6 +13,7 @@ import SniperState from "./state/SniperState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
 import { gamePhaseType } from "../support/gamePhase"
 import { reactionFireCheck } from "./reactionFire"
+import organizeStacks from "../support/organizeStacks"
 
 describe("game actions", () => {
   test("initiative changes", () => {
@@ -413,6 +414,41 @@ describe("game actions", () => {
 
     expect(game.lastAction?.type).toBe("sniper")
     expect(game.lastAction?.stringValue).toBe("Soviet sniper check: target 1, rolled 20 [2d10: 10 + 10], no effect")
+  })
+
+  test("sniper stack order", () => {
+    const game = createMoveGame()
+    game.alliedSniper = new Feature({
+      id: "sniper-3", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 3 }, ft: 1
+    })
+    const map = game.scenario.map
+
+    const firing = new Unit(testGInf)
+    firing.id = "firing1"
+    map.select(firing)
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, firing)
+
+    const firing2 = new Unit(testGLdr)
+    firing2.id = "firing2"
+    map.select(firing2)
+    map.addCounter(floc, firing2)
+    organizeStacks(map)
+
+    game.sniperNeeded = [{unit: firing2, loc: floc }, {unit: firing, loc: floc }]
+
+    game.setGameState(new SniperState(game))
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.type).toBe("sniper")
+    expect(game.lastAction?.stringValue).toBe("Soviet sniper check: target 3, rolled 2 [2d10: 1 + 1], sniper hit")
+
+    expect(game.moraleChecksNeeded[0].unit.id).toBe("firing1")
+    expect(game.moraleChecksNeeded[1].unit.id).toBe("firing2")
   })
 
   test("game end", () => {

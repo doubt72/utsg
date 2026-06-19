@@ -1817,6 +1817,70 @@ describe("reaction fire attacks", () => {
     ])
   })
 
+  test("reaction fire doesn't switch player", () => {
+    const game = createFireGame()
+    game.axisSniper = new Feature({
+      id: "sniper-2", t: featureType.Sniper, n: "Sniper", i: "sniper", f: 3, o: { q: 1 }, ft: 1
+    })
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    const uloc = new Coordinate(4, 2)
+    map.addCounter(uloc, unit)
+    map.select(unit)
+
+    const other = new Unit(testRInf)
+    other.id = "target1"
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.setGameState(new FireState(game, false))
+    select(map, {
+      counter: map.countersAt(oloc)[0],
+      target: { type: "map", xy: oloc }
+    }, () => {})
+    expect(other.targetSelected).toBe(true)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.sniperNeeded).toStrictEqual([])
+
+    game.setGameState(new InitiativeState(game))
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    expect(game.currentPlayer).toBe(2)
+    game.gameState?.finish()
+    expect(game.currentPlayer).toBe(1)
+
+    Math.random = original
+
+    map.select(other)
+
+    game.setGameState(new FireState(game, true))
+
+    select(map, {
+      counter: map.countersAt(uloc)[0],
+      target: { type: "map", xy: uloc }
+    }, () => {})
+    expect(unit.targetSelected).toBe(true)
+
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.sniperNeeded).toStrictEqual([
+      { unit: other, loc: oloc },
+    ])
+
+    // starting here
+
+    expect(game.currentPlayer).toBe(1)
+  })
+
   test("reaction fire doesn't trigger other sniper", () => {
     const game = createFireGame()
     game.alliedSniper = new Feature({

@@ -45,6 +45,7 @@ export function reactionFireCheck(game: Game, action: boolean = true): boolean {
 export function reactionAvailableCoords(game: Game): Coordinate[] {
   const rc: Coordinate[] = []
   const action = game.lastSignificantAction as MoveAction
+  if (!action || action.origin.length < 1) { return rc }
   const otherUnit = game.findUnitById(action.origin[0].id)
   const otherNation = otherUnit?.playerNation
   const map = game.scenario.map
