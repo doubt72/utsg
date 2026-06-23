@@ -31,6 +31,20 @@ module Utility
               at_mines8: {
                 ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 8, r: 0, v: "A", o: { p: 1 },
               },
+              mines10: {
+                ft: 1, n: "Minefield", t: "mines", i: "mines", f: 10, r: 0, v: "A", o: { g: 1 },
+              },
+              ap_mines10: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 10, r: 0, v: "A" },
+              at_mines10: {
+                ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 10, r: 0, v: "A", o: { p: 1 },
+              },
+              mines12: {
+                ft: 1, n: "Minefield", t: "mines", i: "mines", f: 12, r: 0, v: "A", o: { g: 1 },
+              },
+              ap_mines12: { ft: 1, n: "AP Minefield", t: "mines", i: "mines", f: 12, r: 0, v: "A" },
+              at_mines12: {
+                ft: 1, n: "AT Minefield", t: "mines", i: "mines", f: 12, r: 0, v: "A", o: { p: 1 },
+              },
               shell_scrape: { ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1 },
               foxhole: { ft: 1, n: "Foxhole", t: "foxhole", i: "foxhole", d: 2 },
               trench: { ft: 1, n: "Trench", t: "foxhole", i: "foxhole", d: 3 },

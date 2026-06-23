@@ -6,7 +6,7 @@ module Scenarios
     NAME = "The Shingle"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
+    STATUS = "a"
     VERSION = "0.3"
 
     DATE = [1944, 6, 6].freeze

@@ -91,22 +91,8 @@
 [ hidden units ]
 
 Future Scenarios:
-+ 3 Lost Battalion https://en.wikipedia.org/wiki/Lost_Battalion_(Europe,_World_War_II)
-+ 4 Eniwetok
-+ 3 Town w/causeway + orchard
-+ 5 Crete
-+ 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
-    Cologne pershing/panther duel?
-+ 5 Belgian
-+ 5 Dutch https://en.wikipedia.org/wiki/Battle_of_the_Hague_(1940)
-+ 5 Somua S35 at Hannut https://en.wikipedia.org/wiki/Battle_of_Hannut
-+ 6 Lake Khasan
-+ 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
-      Bulge tank counterattack https://en.wikipedia.org/wiki/Battle_of_the_Bulge
-+ 0 Budapest
-+ 2 Monte Cassino - Algerians/Free French to the North?
-+ 3 Jagdpanther vs. Churchill https://www.youtube.com/watch?v=qYHDEqCP3go
 
+- 0 Budapest
 - 0 Croatian Attack Somewhere
 - 0 Slovak Uman, Slovak crapmobiles Lypovec
 - 0 Berlin?
@@ -117,17 +103,25 @@ Future Scenarios:
   0 the Red October Steel Factory, the Barrikady Arms Factory and Stalingrad Tractor Factory
       Barrikady Fuel Tanks, 22 Dec 42, Commisar House, 13 Nov 42, Pavlov's House
       Barrikady Gun Factory, 17 Oct 42, Dom 31 Barrikady, 27 Oct 42, Grain Elevator, Manina, 18 Sep 42
-+ 1 Desert Rats - https://en.wikipedia.org/wiki/7th_Armoured_Division_(United_Kingdom)
+- 1 Desert Rats - https://en.wikipedia.org/wiki/7th_Armoured_Division_(United_Kingdom)
 - 1 Hill Assault Somewhere
 - 1 Fight over featureless land (infantry)
   1 Sidi Barrani, Bardia, Beda Fromm, Skorpion, Battleaxe, Mareth Line/Buerat, Tripoli
   1 Ethiopia, Somalia
+  1 LRDG running into Compagnia Autosahariana di Cufra in Gebel Sherif
+- 2 Monte Cassino - Algerians/Free French to the North?
 - 2 Anzio, Sicily, Salerno
-  2 LRDG running into Compagnia Autosahariana di Cufra in Gebel Sherif
-+ 3 Airborne Arnhem https://en.wikipedia.org/wiki/Battle_of_Arnhem
-+ 3 Airborne Nijmegen/Support Attack? https://en.wikipedia.org/wiki/Battle_of_Nijmegen
-+ 3 Pointe-du-Hoc Rangers https://en.wikipedia.org/wiki/Pointe_du_Hoc
-+ 3 Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
+- 3 Lost Battalion https://en.wikipedia.org/wiki/Lost_Battalion_(Europe,_World_War_II)
+- 3 Town w/causeway + orchard
+- 3 Paderborn Pershing/School battle https://en.wikipedia.org/wiki/Western_Allied_invasion_of_Germany
+    Cologne pershing/panther duel?
+- 3 761st Tank Battalion https://en.wikipedia.org/wiki/761st_Tank_Battalion_(United_States)
+      Bulge tank counterattack https://en.wikipedia.org/wiki/Battle_of_the_Bulge
+- 3 Jagdpanther vs. Churchill https://www.youtube.com/watch?v=qYHDEqCP3go
+- 3 Airborne Arnhem https://en.wikipedia.org/wiki/Battle_of_Arnhem
+- 3 Airborne Nijmegen/Support Attack? https://en.wikipedia.org/wiki/Battle_of_Nijmegen
+- 3 Pointe-du-Hoc Rangers https://en.wikipedia.org/wiki/Pointe_du_Hoc
+- 3 Omaha Beach Not Cliff Rangers - Captain Ralph Goranson plus Infantry against strongpoint CC49
       https://www.moaa.org/content/publications-and-media/news-articles/2019-news-articles/uncovering-2nd-ranger-battalion,-the-inspiration-for-saving-private-ryan/
 - 3 Battle of Hürtgen Forest
 - 3 La Fiere Airborne Slugfest / St Mere Eglise https://en.wikipedia.org/wiki/Mission_Boston#Along_the_Merderet
@@ -144,8 +138,9 @@ Future Scenarios:
   3 Lanzerath Ridge
   3 Americans Clearing Small Normandy Town Somewhere
   3 Bloody Gulch (Carentan Counterattack)
-+ 4 Luzon Tank Battle
-+ 4 Milne Bay
+- 4 Eniwetok
+- 4 Luzon Tank Battle
+- 4 Milne Bay
 - 4 Bataan Defense
 - 4 Saipan Landings / Death Valley / Flame Throwers / Flame Tanks /
       maybe last-ditch tank breakout attempt
@@ -156,11 +151,16 @@ Future Scenarios:
   4 Okinawa / Steel Storm
   4 Lyte 44 Battle of the Ridges / Airfields / Shoestring Ridge
   4 Buna-Gona, New Guinea and Cartwheel
-+ 5 Polish Cavalry Attack
-+ 5 Yugoslavia (Nisava River Bridge?)
-+ 5 Battle of Hannut / Somua S35s
+- 5 Crete
+- 5 Belgian
+- 5 Dutch https://en.wikipedia.org/wiki/Battle_of_the_Hague_(1940)
+- 5 Somua S35 at Hannut https://en.wikipedia.org/wiki/Battle_of_Hannut
+- 5 Polish Cavalry Attack
+- 5 Yugoslavia (Nisava River Bridge?)
+- 5 Battle of Hannut / Somua S35s
 - 5 Slovakian vs. Polish Fight
-+ 6 Ayo Gorkhali
+- 6 Lake Khasan
+- 6 Ayo Gorkhali
   6 Singapore, Malaysia
 
 - (South African), Slovakian, Croatian, (Bulgarian), Belgian, Dutch, (Yugoslavian)

@@ -81,7 +81,7 @@ export default function About() {
             <a className="regular" href="https://youtu.be/KuXc-RpKwNk">
               armored
             </a>{" "}
-            scenario.
+            scenario.  We plan to add a combined-arms scenario at some point soon.
           </p>
           <p>
             <strong>Recent Announcements:</strong>

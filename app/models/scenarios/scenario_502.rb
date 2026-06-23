@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Armored Connage"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
+    STATUS = "a"
     VERSION = "0.2"
 
     DATE = [1940, 5, 14].freeze

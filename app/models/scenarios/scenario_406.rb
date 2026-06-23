@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Butcher's Atoll"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
-    VERSION = "0.3"
+    STATUS = "b"
+    VERSION = "0.4"
 
     DATE = [1943, 11, 20].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -44,7 +44,7 @@ module Scenarios
           [2, :jap_crew_t],
           [4, :jap_type_92_hmg],
           [2, :jap_70mm_type_92],
-          [5, :bunker],
+          [4, :bunker],
         ],
       },
     }.freeze

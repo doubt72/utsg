@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1943, 7, 5].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -22,7 +22,7 @@ module Scenarios
         :ussr_dp_27,
         :ussr_120_pm_38,
         [2, :ussr_57mm_zis_2],
-        [4, :ussr_t_34_m42_m43],
+        [5, :ussr_t_34_m42_m43],
         [2, :ussr_su_122],
       ] },
     }.freeze
@@ -36,8 +36,8 @@ module Scenarios
         :ger_radio_15cm,
         :ger_sdkfz_222,
         [2, :ger_sdkfz_251_1],
-        [2, :ger_stuh_42],
-        [5, :ger_tiger_i],
+        [1, :ger_stuh_42],
+        [4, :ger_tiger_i],
       ] },
     }.freeze
 

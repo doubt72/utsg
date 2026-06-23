@@ -16,7 +16,7 @@ module Scenarios
       "0": { list: [
         :uk_leader_5_1,
         :uk_leader_4_1,
-        [4, :uk_gurkha_s],
+        [5, :uk_indian_s],
         [4, :uk_crew_t],
         [2, :uk_vickers_mg],
         [2, :uk_qf_25_pounder],

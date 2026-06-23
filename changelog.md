@@ -1,3 +1,9 @@
+# 0.101
+
+- Added mines with different FP
+- Downgraded 305, 408, 502, 604 to alpha
+- Updated 008, 104, 304, 406
+
 # 0.100
 
 - Bug fix: sniper check should check leader last in stack

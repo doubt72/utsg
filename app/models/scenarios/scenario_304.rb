@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Pegasus Bridge"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -16,8 +16,9 @@ module Scenarios
       "0": {
         list: [
           :uk_leader_6_2,
+          :uk_leader_6_1,
           :uk_engineer_s,
-          [8, :uk_airborne_s],
+          [6, :uk_airborne_s],
           :uk_bren_lmg,
           :uk_piat,
         ],
@@ -35,7 +36,7 @@ module Scenarios
         list: [
           :ger_leader_4_1,
           [4, :ger_rifle_s],
-          :ger_mg_34,
+          :ger_mg_42,
           [2, :ger_pzkpfw_iv_g],
         ],
       },
@@ -43,7 +44,7 @@ module Scenarios
         list: [
           :ger_leader_4_1,
           [3, :ger_rifle_s],
-          :ger_mg_34,
+          :ger_mg_42,
           :ger_marder_iii,
         ],
       },
@@ -51,7 +52,7 @@ module Scenarios
         list: [
           :ger_leader_4_1,
           [5, :ger_rifle_s],
-          :ger_mg_34,
+          :ger_mg_42,
           :ger_8cm_grw_34,
           :ger_pzkpfw_iv_g,
         ],
