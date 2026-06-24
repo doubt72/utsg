@@ -1,3 +1,9 @@
+# 0.102
+
+- Support for additional factions (interwar, cold war, hypothetical)
+- Bug fix: MG should not hold VP when assault moving out
+- Update 203 to release
+
 # 0.101
 
 - Added mines with different FP

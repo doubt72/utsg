@@ -10,7 +10,7 @@ Features/Bug Fixes:
   ? Help display error when rout moving (sometimes)
 
 Maybe: 102, 308, 401, 501, 503, 510, 601
-Beta: 203, 008, 304, 406
+Beta: 008, 304, 406
 
 203 (Little Stalingrad)
 008 (Kursk / Tigers)

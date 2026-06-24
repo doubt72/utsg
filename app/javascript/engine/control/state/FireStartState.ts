@@ -12,7 +12,8 @@ export default class FireStartState extends BaseState {
   }
   
   openHex(x: number, y: number): HexOpenType {
-    const loc = this.game.fireStartCheckNeeded?.loc as Coordinate
+    const loc = this.game.fireStartCheckNeeded?.loc
+    if (loc === undefined) { return hexOpenType.Closed }
     return loc.x === x && loc.y === y ? hexOpenType.Open : hexOpenType.Closed
   }
 

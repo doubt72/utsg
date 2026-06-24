@@ -32,7 +32,7 @@ module Utility
               turn11: { mk: 1, type: "turn", v: "ussr", v2: "jap" },
               turn12: { mk: 1, type: "turn", v: "usa", v2: "ger" },
               turn13: { mk: 1, type: "turn", v: "usa", v2: "ita" },
-              turn13b: { mk: 1, type: "turn", v: "bra", v2: "ita" },
+              turn13b: { mk: 1, type: "turn", v: "bra", v2: "ger" },
               turn14: { mk: 1, type: "turn", v: "usa", v2: "jap" },
               turn15: { mk: 1, type: "turn", v: "pol", v2: "ger" },
               turn15b: { mk: 1, type: "turn", v: "pol", v2: "slv" },
@@ -47,6 +47,23 @@ module Utility
               turn22: { mk: 1, type: "turn", v: "gre", v2: "ita" },
               turn23: { mk: 1, type: "turn", v: "chi", v2: "jap" },
               turn24: { mk: 1, type: "turn", v: "dut", v2: "jap" },
+              turn25: { mk: 1, type: "turn", v: "rsp", v2: "nsp" },
+              turn26: { mk: 1, type: "turn", v: "ita", v2: "eth" },
+              turn27: { mk: 1, type: "turn", v: "chb", v2: "jap" },
+              turn28: { mk: 1, type: "turn", v: "chi", v2: "chb" },
+              turn29: { mk: 1, type: "turn", v: "chi", v2: "chc" },
+              turn30: { mk: 1, type: "turn", v: "chi", v2: "chg" },
+              turn31: { mk: 1, type: "turn", v: "bol", v2: "par" },
+              turn32: { mk: 1, type: "turn", v: "sk", v2: "nk" },
+              turn33: { mk: 1, type: "turn", v: "un", v2: "nk" },
+              turn34: { mk: 1, type: "turn", v: "un", v2: "chc" },
+              turn35: { mk: 1, type: "turn", v: "doi", v2: "pak" },
+              turn36: { mk: 1, type: "turn", v: "fra", v2: "vie" },
+              turn37: { mk: 1, type: "turn", v: "isr", v2: "syr" },
+              turn38: { mk: 1, type: "turn", v: "isr", v2: "jor" },
+              turn39: { mk: 1, type: "turn", v: "isr", v2: "egy" },
+              turn40: { mk: 1, type: "turn", v: "ger", v2: "cze" },
+              turn41: { mk: 1, type: "turn", v: "usa", v2: "ussr" },
               calm: { mk: 1, type: "wind", subtype: 1 },
               calm_variable: { mk: 1, type: "wind", subtype: 1, v: true },
               breezy: { mk: 1, type: "wind", subtype: 2 },
@@ -95,6 +112,9 @@ module Utility
                 lu[:bel_initiative] = { mk: 1, nation: "alm", i: "bel", type: "initiative" }
                 lu[:dut_initiative] = { mk: 1, nation: "alm", i: "dut2", type: "initiative" }
                 lu[:yug_initiative] = { mk: 1, nation: "alm", i: "yug", type: "initiative" }
+                lu[:cze_initiative] = { mk: 1, nation: "alm", i: "cze", type: "initiative" }
+                lu[:eth_initiative] = { mk: 1, nation: "alm", i: "eth", type: "initiative" }
+                lu[:bol_initiative] = { mk: 1, nation: "alm", i: "bol", type: "initiative" }
                 next
               end
               if nation == "axm"
@@ -103,23 +123,38 @@ module Utility
                 lu[:rum_initiative] = { mk: 1, nation: "axm", i: "rom", type: "initiative" }
                 lu[:slv_initiative] = { mk: 1, nation: "axm", i: "slv", type: "initiative" }
                 lu[:cro_initiative] = { mk: 1, nation: "axm", i: "cro", type: "initiative" }
+                lu[:par_initiative] = { mk: 1, nation: "axm", i: "par", type: "initiative" }
+                next
+              end
+              if nation == "arl"
+                lu[:syr_initiative] = { mk: 1, nation: "arl", i: "syr", type: "initiative" }
+                lu[:jor_initiative] = { mk: 1, nation: "arl", i: "jor", type: "initiative" }
+                lu[:egy_initiative] = { mk: 1, nation: "arl", i: "egy", type: "initiative" }
                 next
               end
               lu[:"#{nation}_initiative"] = {
                 mk: 1, nation:, i: nation == "ussr" ? "ussr2" : nation, type: "initiative",
               }
-              if nation == "uk"
+              case nation
+              when "uk"
                 lu[:can_initiative] = { mk: 1, nation: "can", i: "can", type: "initiative" }
                 lu[:aus_initiative] = { mk: 1, nation: "aus", i: "aus", type: "initiative" }
                 lu[:nz_initiative] = { mk: 1, nation: "nz", i: "nz", type: "initiative" }
                 lu[:ind_initiative] = { mk: 1, nation: "ind", i: "ind", type: "initiative" }
                 lu[:sa_initiative] = { mk: 1, nation: "sa", i: "sa", type: "initiative" }
-              end
-              if nation == "usa"
+              when "usa"
                 lu[:bra_initiative] = { mk: 1, nation: "bra", i: "bra", type: "initiative" }
-              end
-              if nation == "fra"
+              when "un"
+                lu[:sk_initiative] = { mk: 1, nation: "un", i: "sk", type: "initiative" }
+              when "fra"
                 lu[:frf_initiative] = { mk: 1, nation: "frf", i: "frf", type: "initiative" }
+              when "chc"
+                lu[:nk_initiative] = { mk: 1, nation: "com", i: "nk", type: "initiative" }
+                lu[:vie_initiative] = { mk: 1, nation: "com", i: "vie", type: "initiative" }
+              when "chi"
+                lu[:chb_initiative] = { mk: 1, nation: "chi", i: "chb", type: "initiative" }
+                lu[:chg_initiative] = { mk: 1, nation: "axm", i: "chg", type: "initiative" }
+                lu[:chb2_initiative] = { mk: 1, nation: "axm", i: "chb", type: "initiative" }
               end
             end
             lu

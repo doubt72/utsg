@@ -14,6 +14,7 @@ import {
 } from "./testHelpers"
 import AssaultState from "./state/AssaultState"
 import { stateType } from "./state/BaseState"
+import StackingActionError from "../actions/StackingActionError"
 
 describe("assault movement", () => {
   test("along road", () => {
@@ -333,15 +334,25 @@ describe("assault movement", () => {
   test("assaulting out of enemy does change VP ownership", () => {
     const game = createBlankGame()
     const map = game.scenario.map
-    const unit = new Unit(testGInf)
-    unit.id = "ger"
-    const loc = new Coordinate(0, 0)
-    map.addCounter(loc, unit)
-    map.select(unit)
 
-    const unit2 = new Unit(testRInf)
-    unit2.id = "ussr"
+    const unit1 = new Unit(testGMG)
+    unit1.id = "ger1"
+    const loc = new Coordinate(0, 0)
+    try {
+      map.addCounter(loc, unit1)
+    } catch(err) {
+      // Warning expected for placing a unit by itself
+      expect(err instanceof StackingActionError).toBe(true)
+    }
+
+    const unit2 = new Unit(testGInf)
+    unit2.id = "ger2"
     map.addCounter(loc, unit2)
+    map.select(unit2)
+
+    const unit3 = new Unit(testRInf)
+    unit3.id = "ussr"
+    map.addCounter(loc, unit3)
     organizeStacks(map)
 
     expect(game.scenario.map.victoryAt(loc)).toBe(2)
@@ -357,8 +368,9 @@ describe("assault movement", () => {
     const state = game.assaultState
     state.move(1, 0)
     state.finish()
-    expect(map.countersAt(loc)[0].unit.id).toBe("ussr")
-    expect(map.countersAt(new Coordinate(1, 0))[0].unit.id).toBe("ger")
+    expect(map.countersAt(loc)[0].unit.id).toBe("ger1")
+    expect(map.countersAt(loc)[1].unit.id).toBe("ussr")
+    expect(map.countersAt(new Coordinate(1, 0))[0].unit.id).toBe("ger2")
     expect(game.scenario.map.victoryAt(loc)).toBe(1)
   })
 

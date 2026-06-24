@@ -169,7 +169,14 @@ export function nationalColorLookup(key: string): string {
 
     sa: "#BBF", can: "#BBF", aus: "#BBF", nz: "#BBF", ind: "#BBF", bra: "#BBF",
     pol: "#BBF", bel: "#BBF", dut: "#BBF", nor: "#BBF", yug: "#BBF", gre: "#BBF",
-    bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044"
+    bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044",
+
+    rsp: "#BBF", eth: "#BBF", bol: "#BBF", chb: "#BBF",
+    nsp: "#E0D044", chc: "#E0D044", chg: "#E0D044", par: "#E0D044",
+    sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
+    com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
+    arl: "#E0D044", syr: "#E0D044", egy: "#E0D044", jor: "#E0D044",
+    cze: "#BBF",
   }[key] ?? "#777"
   return {
     ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#BBF", frf: "#BBF", chi: "#ECF", alm: "#FA9",
@@ -178,7 +185,14 @@ export function nationalColorLookup(key: string): string {
 
     sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#BC7",
     pol: "#FA9", bel: "#FA9", dut: "#FA9", nor: "#FA9", yug: "#FA9", gre: "#FA9",
-    bul: "#8CD", hun: "#8CD", rom: "#8CD", slv: "#8CD", cro: "#8CD"
+    bul: "#8CD", hun: "#8CD", rom: "#8CD", slv: "#8CD", cro: "#8CD",
+
+    rsp: "#CAC", eth: "#FA9", bol: "#FA9", chb: "#ECF",
+    nsp: "#FC5", chc: "#F99", chg: "#8CD", par: "#8CD",
+    sk: "#DDF", un: "#DDF", doi: "#FC9", isr: "#BBE",
+    com: "#F99", nk: "#F99", pak: "#9DB", vie: "#F99",
+    arl: "#9DB", syr: "#9DB", jor: "#9DB", egy: "#9DB",
+    cze: "#FA9",
   }[key] ?? "#777"
 }
 
@@ -190,7 +204,14 @@ export function nationalControlLookup(key: string): string {
 
     sa: "#BBF", can: "#BBF", aus: "#BBF", nz: "#BBF", ind: "#BBF", bra: "#BBF",
     pol: "#BBF", bel: "#BBF", dut: "#BBF", nor: "#BBF", yug: "#BBF", gre: "#BBF",
-    bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044"
+    bul: "#E0D044", hun: "#E0D044", rom: "#E0D044", slv: "#E0D044", cro: "#E0D044",
+
+    rsp: "#BBF", eth: "#BBF", bol: "#BBF", chb: "#BBF",
+    nsp: "#E0D044", chc: "#E0D044", chg: "#E0D044", par: "#E0D044",
+    sk: "#BBF", un: "#BBF", doi: "#BBF", isr: "#BBF",
+    com: "#E0D044", nk: "#E0D044", pak: "#E0D044", vie: "#E0D044",
+    arl: "#E0D044", syr: "#E0D044", egy: "#E0D044", jor: "#E0D044",
+    cze: "#BBF",
   }[key] ?? "#777"
   return {
     ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#EEE", frf: "#FFF", chi: "#EEE", alm: "#FA9",
@@ -199,7 +220,14 @@ export function nationalControlLookup(key: string): string {
 
     sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#570",
     pol: "#CCC", bel: "#EEE", dut: "#EEE", nor: "#EEE", yug: "#CCC", gre: "#EEE",
-    bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB", cro: "#BBB"
+    bul: "#BBB", hun: "#BBB", rom: "#BBB", slv: "#BBB", cro: "#BBB",
+
+    rsp: "#5D0080", eth: "#EEE", bol: "#EEE", chb: "#EEE",
+    nsp: "#FFC400", chc: "#B00", chg: "#D00", par: "#EEE",
+    sk: "#EEE", un: "#07B", doi: "#EEE", isr: "#FFF",
+    com: "#EEE", nk: "#D00", pak: "#EEE", vie: "#EEE",
+    arl: "#EEE", syr: "#EEE", jor: "#EEE", egy: "#EEE",
+    cze: "#EEE",
   }[key] ?? "#777"
 }
 

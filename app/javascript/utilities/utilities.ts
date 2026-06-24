@@ -24,6 +24,21 @@ export function alliedCodeToName(code: string): string {
     { name: "Belgian", code: "bel" },
     { name: "Dutch", code: "dut" },
     { name: "Yugoslavian", code: "yug" },
+
+    // Interwar
+    { name: "Republican", code: "rsp" },
+    { name: "Ethiopian", code: "eth" },
+    { name: "Bolivian", code: "bol" },
+    { name: "Chinese", code: "chb" },
+
+    // Cold War
+    { name: "United Nations", code: "un" },
+    { name: "South Korean", code: "sk" },
+    { name: "Indian", code: "doi" },
+    { name: "Israeli", code: "isr" },
+
+    // Hypothetical
+    { name: "Czeckoslovakian", code: "cze" },
   ]
 
   for (const rec of lookup) {
@@ -46,6 +61,21 @@ export function axisCodeToName(code: string): string {
     { name: "Romanian", code: "rom" },
     { name: "Slovakian", code: "slo" },
     { name: "Croatian", code: "cro" },
+
+    // Interwar
+    { name: "Nationalist", code: "rsp" },
+    { name: "Communist", code: "chc" },
+    { name: "Communist", code: "par" },
+    { name: "Beiyang", code: "chb2" },
+    { name: "Guanxi", code: "chg" },
+
+    // Cold War
+    { name: "North Korean", code: "nk" },
+    { name: "Viet Minh", code: "vie" },
+    { name: "Pakistani", code: "pak" },
+    { name: "Syrian", code: "syr" },
+    { name: "Jordanian", code: "jor" },
+    { name: "Egyptian", code: "egy" },
   ]
 
   for (const rec of lookup) {
@@ -314,4 +344,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.101"
+export const serverVersion = "0.102"

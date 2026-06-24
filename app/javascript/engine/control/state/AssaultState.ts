@@ -215,7 +215,7 @@ export default class AssaultState extends BaseState {
     if (vp2 && vp2 === this.game.currentPlayer && map.enemyAt(old, this.game.currentPlayer)) {
       let any = false
       for (const c of map.countersAt(old)) {
-        if (c.hasUnit && c.unit.playerNation === this.game.currentPlayerNation) {
+        if (c.hasUnit && !c.unit.operated && c.unit.playerNation === this.game.currentPlayerNation) {
           let check = false
           for (const s of this.selection) {
             if (s.counter.unit.id === c.unit.id) { check = true; break }
