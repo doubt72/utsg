@@ -525,7 +525,9 @@ function checkFire(unit: Unit, map: Map): boolean {
   if (unit.children.length > 0 && unit.children[0].crewed) { return false }
   if (unit.parent && (unit.parent.pinned || unit.parent.isBroken)) { return false }
   if (unit.parent && unit.parent.isVehicle) { return false }
-  if (!unit.parent && (unit.operated)) { return false }
+  if (unit.parent && unit.parent.parent && unit.parent.parent.isVehicle && !unit.offBoard) { return false }
+  if (unit.operated && unit.parent && contact(unit.parent, map)) { return false}
+  if (unit.operated && !unit.parent) { return false }
   if (contact(unit, map)) { return false }
   return true
 }

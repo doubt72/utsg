@@ -59,17 +59,19 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
     const yd = yy + 26
     const alliedDir = map.rotated ? normalDir(map.alliedDir - 1.5) : map.alliedDir
     const axisDir = map.rotated ? normalDir(map.axisDir - 1.5) : map.axisDir
+    const s1 = map.game?.playerOneScore
+    const s2 = map.game?.playerTwoScore
     setBase(
       <g>
         <path d={roundedRectangle(xx, yy, 190, 52)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
-        <text x={xx + 50} y={yy + 33} fontSize={24} textAnchor="start"
+        <text x={xx + (s1 > 99 ? 46 : 50)} y={yy + 33} fontSize={24} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-          {map.game?.playerOneScore}
+          {s1}
         </text>
-        <text x={xx + 140} y={yy + 33} fontSize={24} textAnchor="end"
+        <text x={xx + (s2 > 99 ? 144 : 140)} y={yy + 33} fontSize={24} textAnchor="end"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-          {map.game?.playerTwoScore}
+          {s2}
         </text>
         { game.scenario.specialRules.includes("retreat_301") ?
           <g>

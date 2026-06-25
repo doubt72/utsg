@@ -240,7 +240,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("403")).to be == "0.2a-ed22a0bb144066e94d4aa4aa44bded9b"
       expect(Utility::Scenario.checksum("404")).to be == "0.2a-8bf20a855d265a1565e50808ce8be1ba"
       expect(Utility::Scenario.checksum("405")).to be == "0.2a-5d7007fde1dc2956a0efae8e71e7ed72"
-      expect(Utility::Scenario.checksum("406")).to be == "0.4b-ad19b1af2292be84b88f4395abebd5b2"
+      expect(Utility::Scenario.checksum("406")).to be == "0.5b-7df1dc005dc3d2f3a66dcde7cd5228cd"
       expect(Utility::Scenario.checksum("407")).to be == "0.2a-07a6e572da08d23fa58937a10346a5cf"
       expect(Utility::Scenario.checksum("408")).to be == "0.3a-ab3da773c85881069be7edd84c2629c4"
       expect(Utility::Scenario.checksum("409")).to be == "0.2a-1b15c8c9f787b9fb6cb6375d386b98b9"

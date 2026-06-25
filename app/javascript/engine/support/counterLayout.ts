@@ -387,5 +387,5 @@ export function counterColor(counter: Counter): string {
 function reverseName(counter: Counter): boolean {
   if(!counter.hasUnit) { return false }
   return counter.unit.isBroken || counter.unit.isWreck ||
-    (counter.unit.jammed && !counter.unit.hullArmor)
+    (counter.unit.jammed && !counter.unit.isVehicle)
 }

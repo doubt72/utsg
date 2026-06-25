@@ -287,8 +287,12 @@ export default class AssaultState extends BaseState {
       return false
     }
     const next = counter.children[0]
-    if (next && next?.unit.crewed) {
+    if (next && next.unit.crewed) {
       this.game.addMessage("unit manning a crewed weapon cannot assault with other infantry")
+      return false
+    }
+    if (next && next.unit.uncrewedSW && counter.unit.encumberedMovement(false) < 1) {
+      this.game.addMessage("cannot assault with a unit that has zero movement")
       return false
     }
     if (counter.parent) {

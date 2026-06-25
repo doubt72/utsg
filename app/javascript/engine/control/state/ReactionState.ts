@@ -40,6 +40,7 @@ export default class ReactionState extends BaseState {
         counters = counters.concat(this.map.countersAt(h))
       }
     } else {
+      if (!action.path) { return counters }
       const last = action.path[action.path.length - 1]
       counters = counters.concat(this.map.countersAt(new Coordinate(last.x, last.y)))
     }

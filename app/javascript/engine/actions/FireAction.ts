@@ -334,6 +334,10 @@ export default class FireAction extends BaseAction {
                   anims.push({ loc: dTo, type: "wreck" })
                 } else if (hitRoll.result.result === hitCheck && !firing0.unit.incendiary) {
                   t.counter.unit.immobilized = true
+                  const loc = this.map.findLocationById(t.counter.unit.id) as Coordinate
+                  for (const u of t.counter.unit.children) {
+                    this.map.dropUnit(loc, loc, u.id, u.rotates ? t.counter.unit.facing : undefined)
+                  }
                   if (needDice) {
                     hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
                   }
@@ -431,6 +435,10 @@ export default class FireAction extends BaseAction {
                   if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dTo)}` }
                 }
                 target0.unit.immobilized = true
+                const loc = this.map.findLocationById(target0.unit.id) as Coordinate
+                for (const u of target0.unit.children) {
+                  this.map.dropUnit(loc, loc, u.id, u.rotates ? target0.unit.facing : undefined)
+                }
                 anims.push({ loc: dTo, type: "immobilized" })
               }
             } else {
@@ -730,7 +738,11 @@ export default class FireAction extends BaseAction {
     sortStacks(this.map)
     this.game.updateInitiative(2)
     if (this.game.moraleChecksNeeded.length > 0) {
-      this.game.togglePlayer()
+      let check = false
+      for (const mc of this.game.moraleChecksNeeded) {
+        if (mc.unit.playerNation !== this.game.currentPlayerNation) { check = true }
+      }
+      if (check) { this.game.togglePlayer() }
     } else if (!this.reaction || this.game.sniperNeeded.length < 1) {
       this.game.resetCurrentPlayer()
     }

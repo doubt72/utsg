@@ -94,6 +94,9 @@ export default function MovementSection({ section }: SectionProps) {
         check, roll two ten-sided dice, adding the total together (2d10), and if the dice roll is
         equal or below that number, the vehicle is immobilized for the rest of the scenario.
       </p>
+      <p>
+        If a unit breaks down, all of the units it is carrying or towing are dropped.
+      </p>
       <h3>{section}.9. Turning</h3>
       <p>
         If a unit has facing it can turn. The unit must pay the cost of the terrain to change

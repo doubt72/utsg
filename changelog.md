@@ -1,3 +1,13 @@
+# 0.104
+
+- Immobilized vehicles now drop any units they are carrying (new rule)
+- Bug fix/change: units should not be able to fire from vehicles (except radios)
+- Bug fix: support weapons should not be able to be fired when in contact with opponent units
+- Bug fix: don't allow multiselect for assault with unit with zero movement
+- Bug fix: don't use red text for unarmored vehicles with jammed weapons
+- Bug fix: artillery drift hitting friendly units should not toggle player for morale check rolls
+- Updated 406
+
 # 0.103
 
 - Rearrange the ratings and balance to top of the scenario display

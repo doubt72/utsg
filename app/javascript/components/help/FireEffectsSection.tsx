@@ -74,7 +74,12 @@ export default function FireEffectsSection({ section }: SectionProps) {
         are unaffected). Vehicles are replaced with wrecks with the same size (flip the counter).
         Wrecks affect stacking (for both sides) but otherwise have no other effects.
       </p>
-      <h3>{section}.2. Morale Checks</h3>
+      <h3>{section}.2. Immobilized Vehicles</h3>
+      <p>
+        If a vehicle carrying or towing units is immobilized, all of the units are dropped with no
+        other effects.
+      </p>
+      <h3>{section}.3. Morale Checks</h3>
       <p>
         If any infantry units are hit (or is carrying an incendiary weapon that breaks during the
         firing action), they must perform morale checks. To perform a morale check, use the
@@ -95,7 +100,7 @@ export default function FireEffectsSection({ section }: SectionProps) {
           broken, eliminate it. A roll of 2 always fails. A roll of 20 always succeeds.
         </li>
       </ol>
-      <h3>{section}.3. Weapons Carried by Eliminated Units</h3>
+      <h3>{section}.4. Weapons Carried by Eliminated Units</h3>
       <p>
         Infantry and crewed weapons are not damaged or eliminated when units carrying them or
         crewing them are eliminated (except incendiary weapons which are removed with their carrying

@@ -541,6 +541,17 @@ export default class Map {
     return
   }
 
+  findLocationById(id: string): Coordinate | undefined {
+    for (let y = 0; y < this.height; y++) {
+      for (let x = this.width - 1; x >= 0; x--) {
+        for (const u of this.units[y][x]) {
+          if (u.id === id) { return new Coordinate(x, y) }
+        }
+      }
+    }
+    return
+  }
+
   get allCounters(): Counter[] {
     let c: Counter[] = []
     for (let y = 0; y < this.height; y++) {
