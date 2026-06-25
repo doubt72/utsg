@@ -193,17 +193,26 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         <div className="green ml1em"> {scenario.location}</div>
       </div>
       <div className="scenario-description-row">
-        <div className="mr1em">Turns: <span className="red">{scenario.turns}</span></div>
-        <div className="mr1em nowrap">
-          Sets up first: {scenario.firstDeploy == 1 ? player1Pills : player2Pills}
-        </div>
-        <div className="mr1em nowrap">
-          Initiative: {scenario.firstAction == 1 ? player1Pills : player2Pills}
-        </div>
-        <div className="flex-fill align-end">Author: <span className="green">{scenario.author}</span></div>
+        { oneDisplay }
+        { twoDisplay }
+        { percentDisplay }
+        <div className="flex-fill"></div>
+        { loggedIn ? myRatingDisplay : "" }
+        { ratingDisplay }
+        { ratingCountDisplay }
       </div>
-      <div className="flex mt1em">
-        <div className="p1em mr1em background-gray flex-fill corner-round">
+      <div className="flex">
+        <div className="pl1em pr1em pb1em mr1em background-gray flex-fill corner-round">
+          <div className="flex pt1em pb1em">
+            <div className="flex-fill">Author: <span className="green">{scenario.author}</span></div>
+            <div className="mr1em">Turns: <span className="red">{scenario.turns}</span></div>
+            <div className="mr1em nowrap">
+              Sets up first: {scenario.firstDeploy == 1 ? player1Pills : player2Pills}
+            </div>
+            <div className="nowrap">
+              Initiative: {scenario.firstAction == 1 ? player1Pills : player2Pills}
+            </div>
+          </div>
           {scenario.description?.map((p, i) => {
             return <p key={i}>{p}</p>
           })}
@@ -253,15 +262,6 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
             })}
           </div>
         </div>
-      </div>
-      <div className="scenario-description-row background-gray corner-round mt1em">
-        { oneDisplay }
-        { twoDisplay }
-        { percentDisplay }
-        <div className="flex-fill"></div>
-        { loggedIn ? myRatingDisplay : "" }
-        { ratingDisplay }
-        { ratingCountDisplay }
       </div>
     </div>
   )

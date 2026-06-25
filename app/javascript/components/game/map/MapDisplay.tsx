@@ -714,6 +714,7 @@ export default function MapDisplay({
       select(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
       if (map.game.phase !== gamePhaseType.Deploy) { return }
+      if (selection.target.turn === 99) { return }
       if (map.game.gameState?.type === stateType.Deploy &&
           map.game.deployState.key !== selection.target.key) {
         map.game.deployState.needsDirection = false

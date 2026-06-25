@@ -15,7 +15,7 @@ module Scenarios
     ALLIED_UNITS = {
       "0": {
         list: [
-          :ussr_leader_4_1,
+          [2, :ussr_leader_4_1],
           [4, :ussr_rifle_s],
           :ussr_dp_27,
           :ussr_radio_122mm,
@@ -33,7 +33,7 @@ module Scenarios
           [3, :jap_b_division_s],
           :jap_type_92_hmg,
           :jap_37mm_type_94,
-          [2, :jap_type_89_i_go],
+          :jap_type_89_i_go,
           [3, :jap_type_95_ha_go],
         ],
       },

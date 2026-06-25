@@ -69,7 +69,7 @@ export default function About() {
             descriptions.
           </p>
           <p>
-            There is also a{" "}
+            There is also a video{" "}
             <a className="regular" href="https://youtu.be/0wJj1YgMCVc">
               tutorial
             </a>{" "}

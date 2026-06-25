@@ -1,4 +1,5 @@
-Features/Bug Fixes:
+Features/Bug Fixes
+  + Add victory point hexes to terrain help
   - Finish scenario editor
   - Playthroughs
   - Add Some Developer Notes
@@ -9,13 +10,14 @@ Features/Bug Fixes:
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Help display error when rout moving (sometimes)
 
-Maybe: 102, 308, 401, 501, 503, 510, 601
-Beta: 008, 304, 406
-
-203 (Little Stalingrad)
 008 (Kursk / Tigers)
 304 (Pegasus Bridge)
 406 (Tarawa)
+
+106 (America N. Africa)
+512 (Greek)
+604 (Khalkhin Gol)
+201 Americans in Sicily
 
 Nice to Have Eventually:
   ? Better rollback of smoke on reaction fire
@@ -34,54 +36,61 @@ Special Rules/Scenarios
   - Random landing locations for paratroop scenarios
   - Win by certain number of points
 
-106 (America N. Africa)
-512 (Greek)
-604 (Khalkhin Gol)
-108 (Better America N. Africa)
-402 (Australian New Guinea)
-502 (France)
 012 (Tanks in Snow)
-015 (T-34 Surprise)
-602 (Japanese Tanks)
-010 (Hungarian)
 107 (Hellfire Pass)
-110 (Rat Patrol)
-013 (End of the Tiger)
 202 (Japanese-American Italy)
 305 (Shingle)
-105 (Crumbling)
+
+402 (Australian New Guinea)
+502 (France)
+602 (Japanese Tanks)
+015 (T-34 Surprise)
+
+108 (Better America N. Africa)
+204 Mud in Italy
 307 (British vs Tigers)
-507 (Char B1)
-009 (Small Mud)
-309 (Aachen)
-605 (Red House)
 408 (Land Crab)
+
+507 (Char B1)
+605 (Red House)
+010 (Hungarian)
+110 (Rat Patrol)
+
+205 New Zealand in Italy
+309 (Aachen)
+403 Night New Guinea
 509 (More France)
-511 (88s)
-103 Italians
-201 Americans in Sicily
+
+606 Chinese Tanks
+013 (End of the Tiger)
+105 (Crumbling)
+206 Brazilians in Italy
+
 302 Mortain
+404 Manila
+511 (88s)
+607 Shanghai
+
+009 (Small Mud)
+103 Italians
+306 Bastogne
+405 Guadalcanal Small
+
+504 More France
 004 Mud Meeting Engagement
 104 Indians
-403 Night New Guinea
-204 Mud in Italy
-404 Manila
-504 More France
-205 New Zealand in Italy
-405 Guadalcanal Small
-505 More Finland
-206 Brazilians in Italy
-306 Bastogne
-506 Greek Italian
-407 Guadalcanal Big
-606 Chinese Tanks
-607 Shanghai
-109 French in Libya
 310 Hell's Highway
-409 End of New Guinea
-311 Arracourt
-410 Japanese Tanks
-411 Australian New Guinea II
+
+407 Guadalcanal Big
+505 More Finland
 014 Russian Counterattack
-016 Tractor Factory
+109 French in Libya
+
+409 End of New Guinea
+506 Greek Italian
+311 Arracourt
+411 Australian New Guinea II
+
 312 Purple Heart Lane
+410 Japanese Tanks
+016 Tractor Factory

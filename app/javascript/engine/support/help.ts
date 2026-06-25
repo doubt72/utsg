@@ -2,7 +2,7 @@ import {
   baseTerrainType, Coordinate, Direction, markerType, sponsonType, streamType, weatherType, windType
 } from "../../utilities/commonTypes"
 import { HelpLayout, roundedRectangle } from "../../utilities/graphics"
-import { baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, critHitDiff, critMorale, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
+import { alliedCodeToName, axisCodeToName, baseMorale, baseRally, baseToHit, chance2D10, chanceCC, chanceD10x10, critHitDiff, critMorale, exact2D10, hexDistance, normalDir } from "../../utilities/utilities"
 import { closeCombatFirepower, maxCCCasualties } from "../control/closeCombat"
 import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, leadershipAt, moraleModifiers, rangeMultiplier,
@@ -134,6 +134,13 @@ function hexHelpText(hex: Hex): string[] {
     }
   })
   Object.keys(borderText).forEach(k => borderText[k].forEach(t => text.push(t)))
+  const vp = hex.map.victoryAt(hex.coord)
+  if (vp) {
+    text.push("victory point hex")
+    text.push(`- 10 vp for ${vp === 1 ?
+      alliedCodeToName(hex.map.game?.playerOneNation ?? "") :
+      axisCodeToName(hex.map.game?.playerTwoNation ?? "")} player`)
+  }
   return text
 }
 
