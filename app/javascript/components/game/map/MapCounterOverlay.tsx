@@ -178,7 +178,7 @@ export default function MapCounterOverlay({
     if (unit.turreted) { rc += 1 }
     if (map.showAllCounters) {
       if (unit.isVehicle) {
-        if (unit.immobilized) { rc += 1 }
+        if (unit.isImmobilized) { rc += 1 }
         if (unit.weaponDestroyed || unit.jammed ) { rc += 1 }
         if (unit.sponsonDestroyed || unit.sponsonJammed ) { rc += 1 }
         if (unit.turretJammed) { rc += 1 }

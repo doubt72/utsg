@@ -124,7 +124,7 @@ export default function DebugMap() {
       if (data.tf) { unit.turretFacing = data.tf }
       if (data.v) { unit.eliteCrew = data.v }
       if (data.st) { unit.setStatus(data.st) }
-      if (data.imm) { unit.immobilized = true }
+      if (data.imm) { unit.immobilize(map) }
       if (data.pin) { unit.pinned = true }
       if (data.trt) { unit.turretJammed = true }
       if (data.brk) { unit.jammed = true }

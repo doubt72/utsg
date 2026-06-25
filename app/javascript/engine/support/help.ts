@@ -326,7 +326,7 @@ export function unitHelpText(unit: Unit): string[] {
       }
     }
   }
-  if (unit.breakdownRoll && !unit.immobilized) {
+  if (unit.breakdownRoll && !unit.isImmobilized) {
     text.push(`breakdown roll ${unit.breakdownRoll}`)
   }
   if (unit.gunHandling && !unit.isBroken) {

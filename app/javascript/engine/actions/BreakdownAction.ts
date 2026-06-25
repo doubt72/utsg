@@ -39,11 +39,7 @@ export default class BreakdownAction extends BaseAction {
   mutateGame(): void {
     const unit = this.game.findUnitById(this.origin.id) as Unit
     if (this.diceResult.result.result <= (unit.breakdownRoll ?? 0)) {
-      unit.immobilized = true
-      const loc = this.map.findLocationById(this.origin.id) as Coordinate
-      for (const u of unit.children) {
-        this.map.dropUnit(loc, loc, u.id, u.rotates ? unit.facing : undefined)
-      }
+      unit.immobilize(this.map)
       this.game.addActionAnimations(
         [{ loc: new Coordinate(this.origin.x, this.origin.y), type: "immobilized" }]
       )

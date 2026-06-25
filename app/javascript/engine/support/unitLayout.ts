@@ -152,7 +152,7 @@ export function handlingLayout(counter: Counter): CounterLayout | false {
 }
 
 export function breakdownLayout(counter: Counter): CounterLayout | false {
-  if (!counter.hasUnit || !counter.unit.breakdownRoll || counter.unit.immobilized || counter.unit.isWreck) {
+  if (!counter.hasUnit || !counter.unit.breakdownRoll || counter.unit.isImmobilized || counter.unit.isWreck) {
     return false
   }
   const loc = new Coordinate(counter.x + 14, counter.y + 40)
@@ -409,7 +409,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
   const path = circlePath(loc, 10)
   const size = value === "A" ? 18 : attrSizeFor(value as number)
   if (counter.hasUnit && (counter.unit.isBroken || counter.unit.pinned || counter.unit.isTired ||
-      value as number < 0 || counter.unit.immobilized || counter.unit.isWreck)) {
+      value as number < 0 || counter.unit.isImmobilized || counter.unit.isWreck)) {
     color = counterRed()
   } else if (counter.hasUnit) {
     if (counter.unit.isTracked || counter.unit.crewed || counter.unit.isWheeled ) {
@@ -447,7 +447,7 @@ export function engineerLayout(counter: Counter): CounterLayout | false {
 }
 
 export function amphibiousLayout(counter: Counter): CounterLayout | false {
-  if (!counter.hasUnit || !counter.unit.amphibious || counter.unit.isWreck || counter.unit.immobilized ) {
+  if (!counter.hasUnit || !counter.unit.amphibious || counter.unit.isWreck || counter.unit.isImmobilized ) {
     return false
   }
   const x = counter.x + 64

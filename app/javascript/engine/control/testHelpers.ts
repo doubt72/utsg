@@ -20,6 +20,10 @@ export const testGLdr: UnitData = {
   id: "g_ldr", c: "ger", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
 }
 
+export const testRLdr: UnitData = {
+  id: "r_ldr", c: "ussr", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6, o: {l: 2}
+}
+
 export const testGMG: UnitData = {
   id: "g_mg", c: "ger", t: "sw", i: "mg", n: "MG 08/15", y: 23, f: 10, r: 12, v: -1, o: {f: 15, r: 1, j: 3}
 }
@@ -52,6 +56,12 @@ export const testGTruck: UnitData = {
   o: { tr: 3, trg: 1, w: 1 },
 };
 
+export const testRHT: UnitData = {
+  id: "r_ht", t: "ht", i: "ht", c: "ussr", n: "M9 Half-track", y: 41,
+  o: { ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1, k: 1, r: 1, j: 3, f: 16 },
+  s: 3, v: 6, f: 20, r: 12
+};
+
 export const testGFT: UnitData = {
   id: "g_ft", c: "ger", t: "sw", n: "Flamethrower", y: 15, i: "flamethrower", f: 24, r: 1, v: 0,
   o: { a: 1, i: 1, b: 4, e: 1 },
@@ -74,6 +84,11 @@ export const testGMortar: UnitData = {
 
 export const testGRadio: UnitData = {
   id: "g_radio", t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 24, r: 99, v: 0,
+  o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
+}
+
+export const testRRadio: UnitData = {
+  id: "r_radio", t: "sw", i: "radio", c: "ussr", n: "Radio 122mm", y: 35, f: 24, r: 99, v: 0,
   o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
 }
 

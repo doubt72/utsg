@@ -333,11 +333,7 @@ export default class FireAction extends BaseAction {
                   }
                   anims.push({ loc: dTo, type: "wreck" })
                 } else if (hitRoll.result.result === hitCheck && !firing0.unit.incendiary) {
-                  t.counter.unit.immobilized = true
-                  const loc = this.map.findLocationById(t.counter.unit.id) as Coordinate
-                  for (const u of t.counter.unit.children) {
-                    this.map.dropUnit(loc, loc, u.id, u.rotates ? t.counter.unit.facing : undefined)
-                  }
+                  t.counter.unit.immobilize(this.map)
                   if (needDice) {
                     hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
                   }
@@ -434,11 +430,7 @@ export default class FireAction extends BaseAction {
                   if (target0.unit.turreted) { target0.unit.turretFacing = clone.turretFacing }
                   if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dTo)}` }
                 }
-                target0.unit.immobilized = true
-                const loc = this.map.findLocationById(target0.unit.id) as Coordinate
-                for (const u of target0.unit.children) {
-                  this.map.dropUnit(loc, loc, u.id, u.rotates ? target0.unit.facing : undefined)
-                }
+                target0.unit.immobilize(this.map)
                 anims.push({ loc: dTo, type: "immobilized" })
               }
             } else {

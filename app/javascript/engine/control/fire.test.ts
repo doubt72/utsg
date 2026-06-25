@@ -15,7 +15,7 @@ import Feature from "../Feature"
 import {
   createBlankGame,
   createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr, testGMC, testGMG,
-  testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill, testRInf, testRTank,
+  testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill, testRGun, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRTank,
   testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"
@@ -2007,7 +2007,7 @@ describe("ranged fire attacks", () => {
         { unit: target, from: [floc], to: tloc, incendiary: false, critical: false },
         { unit: target2, from: [floc], to: tloc, incendiary: false, critical: false },
       ])
-      expect(target3.immobilized).toBe(true)
+      expect(target3.isImmobilized).toBe(true)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll for T-34 M40: target 18, rolled 18 [2d10: 9 + 9]: tie, vehicle immobilized"
       )
@@ -3129,6 +3129,82 @@ describe("ranged fire attacks", () => {
       expect(all[1].unit.weaponDestroyed).toBe(false)
 
       expect(game.eliminatedUnits.length).toBe(0)
+    })
+
+    test("immobilized vehicle unloads units", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRHT)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRGun)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRInf)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      const target4 = new Unit(testRMG)
+      target4.id = "target4"
+      map.addCounter(tloc, target4)
+      const target5 = new Unit(testRLdr)
+      target5.id = "target5"
+      map.addCounter(tloc, target5)
+      const target6 = new Unit(testRRadio)
+      target6.id = "target6"
+      map.addCounter(tloc, target6)
+      organizeStacks(map)
+
+      expect(map.units[tloc.y][tloc.x].length).toBe(1)
+      expect(target.children.length).toBe(3)
+      expect(target3.children.length).toBe(1)
+      expect(target5.children.length).toBe(1)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(false)
+      expect(target3.targetSelected).toBe(false)
+      expect(target4.targetSelected).toBe(false)
+      expect(target5.targetSelected).toBe(false)
+      expect(target6.targetSelected).toBe(false)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(12)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.45)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(target.isImmobilized).toBe(true)
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "penetration roll (side): target 10, rolled 10 [2d10: 5 + 5]: tie, vehicle immobilized"
+      )
+
+      expect(map.units[tloc.y][tloc.x].length).toBe(4)
+      expect(target.children.length).toBe(0)
+      expect(target2.parent).toBe(undefined)
+      expect(target3.children.length).toBe(1)
+      expect(target3.parent).toBe(undefined)
+      expect(target3.children.length).toBe(1)
+      expect(target5.parent).toBe(undefined)
     })
 
     test("ranged vehicle breakdown destroys roll", () => {

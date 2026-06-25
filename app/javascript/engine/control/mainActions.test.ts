@@ -273,7 +273,7 @@ describe("game actions", () => {
     expect(all[1].hex?.y).toBe(1)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(5)
-    expect(all[1].unit.immobilized).toBe(false)
+    expect(all[1].unit.isImmobilized).toBe(false)
     expect(reactionFireCheck(game)).toBe(false)
 
     expect(breakdownCheck(game)).toBe(true)
@@ -289,7 +289,7 @@ describe("game actions", () => {
 
     Math.random = original
 
-    expect(all[1].unit.immobilized).toBe(true)
+    expect(all[1].unit.isImmobilized).toBe(true)
 
     try {
       game.executeUndo(false)
@@ -336,7 +336,7 @@ describe("game actions", () => {
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.facing).toBe(1)
     expect(all[1].unit.turretFacing).toBe(1)
-    expect(all[1].unit.immobilized).toBe(false)
+    expect(all[1].unit.isImmobilized).toBe(false)
 
     expect(breakdownCheck(game)).toBe(true)
 
@@ -349,7 +349,7 @@ describe("game actions", () => {
 
     Math.random = original
 
-    expect(all[1].unit.immobilized).toBe(true)
+    expect(all[1].unit.isImmobilized).toBe(true)
 
     try {
       game.executeUndo(false)

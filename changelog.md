@@ -1,6 +1,7 @@
 # 0.104
 
-- Immobilized vehicles now drop any units they are carrying (new rule)
+- Refactored immobilization
+  - Immobilized vehicles now drop any units they are carrying (new rule)
 - Bug fix/change: units should not be able to fire from vehicles (except radios)
 - Bug fix: support weapons should not be able to be fired when in contact with opponent units
 - Bug fix: don't allow multiselect for assault with unit with zero movement

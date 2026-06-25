@@ -3,6 +3,7 @@ import {
   SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus, unitType
 } from "../utilities/commonTypes";
 import Game from "./Game";
+import Map from "./Map";
 import {
   closeCombatHelpText, fireHelpText, moraleHelpText, rallyHelpText, routHelpText, unitHelpText
 } from "./support/help";
@@ -119,7 +120,7 @@ export default class Unit {
   weaponDestroyed: boolean;
   sponsonDestroyed: boolean;
   turretJammed: boolean;
-  immobilized: boolean;
+  immobilizationState: boolean;
   pinned: boolean;
   routed: boolean;
   closeCombatDone: boolean;
@@ -220,7 +221,7 @@ export default class Unit {
     this.weaponDestroyed = false
     this.sponsonDestroyed = false
     this.turretJammed = false
-    this.immobilized = false
+    this.immobilizationState = false
     this.pinned = false
     this.routed = false
     this.closeCombatDone = false
@@ -414,12 +415,20 @@ export default class Unit {
     this.internalStatus = unitStatus.Broken
   }
 
+  immobilize(map?: Map): void {
+    this.immobilizationState = true
+    if (!map) { return }
+    const loc = map.findLocationById(this.id) as Coordinate
+    for (const u of this.children) {
+      map.dropUnit(loc, loc, u.id, u.rotates ? this.facing : undefined)
+    }
+  }
+
   wreck(game?: Game): void {
     this.jammed = false
     this.weaponDestroyed = false
-    this.immobilized = false
+    this.immobilizationState = false
     this.turretJammed = false
-    this.immobilized = false
     this.sponsonJammed = false
     this.sponsonDestroyed = false
     this.internalStatus = unitStatus.Wreck
@@ -477,6 +486,10 @@ export default class Unit {
 
   get isVehicle(): boolean {
     return this.isWheeled || this.isTracked
+  }
+
+  get isImmobilized(): boolean {
+    return this.immobilizationState
   }
 
   get noFire(): boolean {
@@ -542,7 +555,7 @@ export default class Unit {
     if (this.isBroken) {
       return Math.floor(this.baseFirepower / 2)
     } else if (this.isVehicle && !this.isWreck) {
-      return (this.armored && !this.immobilized) ? 2 : 1
+      return (this.armored && !this.immobilizationState) ? 2 : 1
     } else if (this.uncrewedSW && !this.jammed && (this.parent && !this.parent.isBroken)) {
       return this.assault ? 2 : 0
     } else if (this.canCarrySupport) {
@@ -562,7 +575,7 @@ export default class Unit {
   get currentMovement(): number {
     if (this.isBroken) {
       return this.brokenMovement
-    } else if (this.pinned || this.immobilized || this.isWreck) {
+    } else if (this.pinned || this.immobilizationState || this.isWreck) {
       return 0
     } else if (this.isTired && !this.operated) {
       return Math.floor(this.baseMovement/2)

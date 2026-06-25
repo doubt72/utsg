@@ -105,7 +105,7 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       versions.push(svgContainer(unit5, key*13+4))
 
       const unit6 = new Unit(data)
-      unit6.immobilized = true
+      unit6.immobilize()
       versions.push(svgContainer(unit6, key*13+5))
 
       const unit7 = new Unit(data)
@@ -114,26 +114,26 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
 
       const unit8 = new Unit(data)
       unit8.activate()
-      unit8.immobilized = true
+      unit8.immobilize()
       versions.push(svgContainer(unit8, key*13+7))
 
       const unit9 = new Unit(data)
       unit9.exhaust()
-      unit9.immobilized = true
+      unit9.immobilize()
       unit9.turretJammed = true
       versions.push(svgContainer(unit9, key*13+8))
 
       const unit10 = new Unit(data)
       unit10.exhaust()
       unit10.jammed = true
-      unit10.immobilized = true
+      unit10.immobilize()
       unit10.turretJammed = true
       versions.push(svgContainer(unit10, key*13+9))
 
       const unit11 = new Unit(data)
       unit11.exhaust()
       unit11.jammed = true
-      unit11.immobilized = true
+      unit11.immobilize()
       unit11.turretJammed = true
       unit11.eliteCrew = -1
       versions.push(svgContainer(unit11, key*13+10))
@@ -141,7 +141,7 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       const unit12 = new Unit(data)
       unit12.exhaust()
       unit12.jammed = true
-      unit12.immobilized = true
+      unit12.immobilize()
       unit12.turretJammed = true
       unit12.eliteCrew = 1
       versions.push(svgContainer(unit12, key*13+11))
@@ -177,31 +177,31 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       versions.push(svgContainer(unit5, key*11+4))
 
       const unit6 = new Unit(data)
-      unit6.immobilized = true
+      unit6.immobilize()
       versions.push(svgContainer(unit6, key*11+5))
 
       const unit7 = new Unit(data)
       unit7.activate()
-      unit7.immobilized = true
+      unit7.immobilize()
       versions.push(svgContainer(unit7, key*11+6))
 
       const unit8 = new Unit(data)
       unit8.exhaust()
       unit8.weaponDestroyed = true
-      unit8.immobilized = true
+      unit8.immobilize()
       versions.push(svgContainer(unit8, key*11+7))
 
       const unit9 = new Unit(data)
       unit9.exhaust()
       unit9.weaponDestroyed = true
-      unit9.immobilized = true
+      unit9.immobilize()
       unit9.eliteCrew = -1
       versions.push(svgContainer(unit9, key*11+8))
 
       const unit10 = new Unit(data)
       unit10.exhaust()
       unit10.weaponDestroyed = true
-      unit10.immobilized = true
+      unit10.immobilize()
       unit10.eliteCrew = 1
       versions.push(svgContainer(unit10, key*11+9))
 

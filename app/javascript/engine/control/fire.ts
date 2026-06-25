@@ -189,7 +189,7 @@ export function firepower(
       fp = Math.floor(fp/2)
       why.push("- halved: high-explosive vs. armor")
     }
-    if (sunit.immobilized && (!sunit.turreted || sponson)) {
+    if (sunit.isImmobilized && (!sunit.turreted || sponson)) {
       fp = Math.floor(fp/2)
       why.push("- halved: vehicle immobilized")
     }
@@ -325,7 +325,7 @@ export function rangeMultiplier(
       why.push("- plus 1 for jammed turret")
     }
   } else {
-    if (source.unit.immobilized) {
+    if (source.unit.isImmobilized) {
       mult += 1
       why.push("- plus 1 for immobilized")
     }
@@ -400,7 +400,7 @@ export function armorHitModifiers(
     mod -= 2
     why.push("- minus 2 for targeting side of hull")
   }
-  if (target.immobilized) {
+  if (target.isImmobilized) {
     mod -= 2
     why.push("- minus 2 for target immobilized")
   }
