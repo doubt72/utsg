@@ -94,6 +94,8 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
   const terrFrom = hexFrom.terrain
   const terrTo = hexTo.terrain
   let cost = terrTo.move
+  const dir = map.relativeDirection(from, to) as Direction
+  if (alongRoad(hexFrom, hexTo, dir)) { cost = 1 }
   if (!cost) { return false }
   let toSize = 0
   for (const c of map.countersAt(to)) {
@@ -106,7 +108,6 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
     }
   }
   if (toSize + unit.size > stackLimit) { return false }
-  const dir = map.relativeDirection(from, to) as Direction
   if (!terrTo.move && alongRailroad(hexFrom, hexTo, dir)) { cost = 2 }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     const move = terrFrom.borderMove

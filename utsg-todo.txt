@@ -1,9 +1,9 @@
 Features/Bug Fixes
-  - Reinforcement markers
-  - Redo score, don't change location, change size
-  - Can't rout over bridge across water
   - Single split unit still displaying during deploy
-  - Make sure can't scrape trench, river, etc.
+  + Reinforcement markers
+  + Can't rout over bridge across water
+  + Redo score, don't change location, change size
+  + Make sure can't scrape trench, river, etc.
   + 304
     + Advance directions are backwards
     + Remove some paratroopers

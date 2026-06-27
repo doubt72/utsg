@@ -83,6 +83,7 @@ export default function TurnDisplay({
   useEffect(() => {
     if (!map.game) { return }
     let oldShift = 0
+    const opacity = 0.66
     const width = small === 0 ? 100 + map.game.scenario.turns * 90 : 460 + 15 * shifts(4) - totalOffset()
     setBase(
       <g>
@@ -92,6 +93,9 @@ export default function TurnDisplay({
           small === 0 ? [...Array(map.game.scenario.turns + 1).keys()].map(n => {
             const x = xx + 10 + 90*n
             const y = yy + 10
+            const fut = n > (map.game?.turn ?? 0)
+            const r1 = map.game?.availableReinforcements(1)[n] !== undefined && fut
+            const r2 = map.game?.availableReinforcements(2)[n] !== undefined && fut
             return (
               <g key={n}>
                 <path d={roundedRectangle(x, y, 80, 80, 4)}
@@ -100,6 +104,16 @@ export default function TurnDisplay({
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
                   { n ? n : "setup" }
                 </text>
+                { r1 ? <circle opacity={opacity} cx={x + 15} cy={y + 65} r={12}
+                               style={{
+                                  strokeWidth: 1, stroke: "#000",
+                                  fill: `url(#nation-${map.game?.playerOneNation}-12)`,
+                                }} /> : "" }
+                { r2 ? <circle opacity={opacity} cx={x + 65} cy={y + 65} r={12}
+                               style={{
+                                  strokeWidth: 1, stroke: "#000",
+                                  fill: `url(#nation-${map.game?.playerTwoNation}-12)`,
+                                }} /> : "" }
               </g>
               )
           }) : slots().map((n, i) => {
@@ -115,6 +129,14 @@ export default function TurnDisplay({
                 <path d={circlePath(new Coordinate(x - 12.5, y + 50), 3)} style={{ fill: "#777" }} />
               </g>
             }
+            const fut = n > (map.game?.turn ?? 0)
+            const r1 = map.game?.availableReinforcements(1)[n] !== undefined && fut
+            const r2 = map.game?.availableReinforcements(2)[n] !== undefined && fut
+            const size = small === 1 ? 12 : 9
+            const top = small === 1 ? 65 : 12
+            const right = small === 1 ? 65 : 10
+            const bottom = small === 1 ? 65 : 68
+            const left = small === 1 ? 15 : 10
             return (
               <g key={i}>
                 { spacer }
@@ -131,10 +153,19 @@ export default function TurnDisplay({
                     { n ? n : "setup" }
                   </text>
                 }
+                { r1 ? <circle opacity={opacity} cx={x + left} cy={y + bottom} r={size}
+                               style={{
+                                  strokeWidth: 1, stroke: "#000",
+                                  fill: `url(#nation-${map.game?.playerOneNation}-${size})`,
+                               }} /> : "" }
+                { r2 ? <circle opacity={opacity} cx={x + right} cy={y + top} r={size}
+                               style={{
+                                  strokeWidth: 1, stroke: "#000",
+                                  fill: `url(#nation-${map.game?.playerTwoNation}-${size})`,
+                               }} /> : "" }
               </g>
-              )
-            }
-          )
+            )
+          })
         }
       </g>
     )

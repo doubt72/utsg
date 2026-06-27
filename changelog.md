@@ -1,6 +1,7 @@
 # 0.105
 
-
+- Add icons for reinforcements on turn track
+- Bug fix: rout over bridge through impassible terrain
 - Updated 304
 
 # 0.104

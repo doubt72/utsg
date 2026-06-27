@@ -21,7 +21,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const unit = new Unit(testGInf)
       unit.break()
-      
+
       expect(findRoutPathTree(game, new Coordinate(4, 2), 4, 2, unit)).toBe(false)
     })
 
@@ -37,7 +37,7 @@ describe("routing", () => {
       map.addCounter(new Coordinate(3, 1), blocking2)
       const blocking3 = new Unit(testRInf)
       map.addCounter(new Coordinate(3, 3), blocking3)
-      
+
       expect(findRoutPathTree(game, new Coordinate(3, 2), 4, 2, unit)).toBe(false)
     })
 
@@ -47,7 +47,7 @@ describe("routing", () => {
       unit.break()
 
       expect(unit.currentMovement).toBe(4)
-      
+
       expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
         x: 0, y: 2, children: [{
           x: 1, y: 2, children: [{
@@ -69,7 +69,7 @@ describe("routing", () => {
 
       const blocking = new Unit(testRInf)
       map.addCounter(new Coordinate(1, 2), blocking)
-      
+
       expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
         x: 0, y: 2, children: [{
           x: 0, y: 1, children: [{
@@ -99,7 +99,7 @@ describe("routing", () => {
 
       const blocking = new Unit(testGInf)
       map.addCounter(new Coordinate(1, 2), blocking)
-      
+
       expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
         x: 0, y: 2, children: [{
           x: 1, y: 2, children: [{
@@ -123,7 +123,7 @@ describe("routing", () => {
       map.addCounter(new Coordinate(1, 2), blocking)
       const blocking2 = new Unit(testGInf)
       map.addCounter(new Coordinate(1, 2), blocking2)
-      
+
       expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
         x: 0, y: 2, children: [{
           x: 0, y: 1, children: [{
@@ -153,7 +153,7 @@ describe("routing", () => {
 
       const blocking = new Feature(testWire)
       map.addCounter(new Coordinate(1, 2), blocking)
-      
+
       expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
         x: 0, y: 2, children: [{
           x: 0, y: 1, children: [{
@@ -252,6 +252,38 @@ describe("routing", () => {
         [root, new Coordinate(1, 1), new Coordinate(2,2)],
         [root, new Coordinate(1, 1), new Coordinate(1,2)],
       ])
+    })
+
+    test("path for with bridge over water", () => {
+      const game = createBlankGame([
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [
+          { t: "o", r: { d: [1, 4 ]} },
+          { t: "w", r: { d: [1, 4 ]} },
+          { t: "o", r: { d: [1, 4 ]} },
+          { t: "o", r: { d: [1, 4 ]} },
+          { t: "o", r: { d: [1, 4 ]} },
+        ],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ])
+      const unit = new Unit(testGInf)
+      unit.break()
+
+      expect(unit.currentMovement).toBe(4)
+
+      expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
+        x: 0, y: 2, children: [{
+          x: 1, y: 2, children: [{
+            x: 2, y: 2, children: [{
+              x: 3, y: 2, children: [{
+                x: 4, y: 2, children: [],
+              }]
+            }]
+          }]
+        }]
+      })
     })
 
     test("endpoints for different side", () => {

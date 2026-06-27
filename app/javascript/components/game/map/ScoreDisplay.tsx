@@ -65,11 +65,11 @@ export default function ScoreDisplay({ map, xx, yy, maxX, maxY, scale }: ScoreDi
       <g>
         <path d={roundedRectangle(xx, yy, 190, 52)}
               style={{ fill: "#EEE", stroke: "#D5D5D5", strokeWidth: 1 }} />
-        <text x={xx + (s1 > 99 ? 46 : 50)} y={yy + 33} fontSize={24} textAnchor="start"
+        <text x={xx + 50} y={yy + 33} fontSize={s1 > 99 ? 22 : 24} textAnchor="start"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
           {s1}
         </text>
-        <text x={xx + (s2 > 99 ? 144 : 140)} y={yy + 33} fontSize={24} textAnchor="end"
+        <text x={xx + 140} y={yy + 33} fontSize={s2 > 99 ? 22 : 24} textAnchor="end"
                 fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
           {s2}
         </text>
