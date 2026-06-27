@@ -1067,6 +1067,7 @@ export default class Game {
     for (const turn in schedule) {
       rc[turn] = {}
       for (const pairs of Object.entries(schedule[turn])) {
+        if (pairs[1].x < 1) { continue }
         rc[turn][pairs[0]] = pairs[1]
       }
       if (Object.keys(rc[turn]).length === 0) { delete rc[turn] }

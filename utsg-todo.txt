@@ -1,5 +1,5 @@
 Features/Bug Fixes
-  - Single split unit still displaying during deploy
+  + Single split unit still displaying during deploy
   + Reinforcement markers
   + Can't rout over bridge across water
   + Redo score, don't change location, change size
