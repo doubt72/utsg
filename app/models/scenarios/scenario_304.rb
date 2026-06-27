@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -18,12 +18,12 @@ module Scenarios
           :uk_leader_6_2,
           :uk_leader_6_1,
           :uk_engineer_s,
-          [6, :uk_airborne_s],
+          [5, :uk_airborne_s],
           :uk_bren_lmg,
           :uk_piat,
         ],
       },
-      "2": {
+      "3": {
         list: [
           :uk_airborne_s,
           :ger_7_5cm_pak_40,
@@ -52,7 +52,7 @@ module Scenarios
         list: [
           :ger_leader_4_1,
           [5, :ger_rifle_s],
-          :ger_mg_42,
+          [2, :ger_mg_42],
           :ger_8cm_grw_34,
           :ger_pzkpfw_iv_g,
         ],
@@ -62,7 +62,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 8,
+          turns: 7,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -111,14 +111,14 @@ module Scenarios
           wind: [3, 5, true],
           hexes:,
           layout:,
-          allied_dir: 4.5,
-          axis_dir: 1,
+          allied_dir: 1.5,
+          axis_dir: 4,
           victory_hexes: [
-            [6, 3, 1], [8, 5, 1], [9, 3, 1], [10, 5, 1], [12, 6, 1],
+            [5, 7, 1], [6, 3, 1], [9, 4, 1], [10, 5, 1], [12, 6, 1],
           ],
           allied_setup: {
             "0" => 0.upto(10).map { |y| ["#{8 - ((y - 1) / 2)}-14", y] },
-            "2" => 0.upto(10).map { |y| ["#{12 - ((y - 1) / 2)}-14", y] },
+            "3" => 0.upto(10).map { |y| ["#{12 - ((y - 1) / 2)}-14", y] },
           },
           axis_setup: {
             "0" => [["0-1", "*"]],

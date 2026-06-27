@@ -1,14 +1,16 @@
 Features/Bug Fixes
-  + Oppenent rolls for morale checks on drift
-  + Weapon broken on LVT shouldn't "flip" counter
-  + When vehicle immobilized, unload?
-  + 100 100 should be farther apart
-  + MG firing out of contested hex
-  + 406
-    + More VP hexes
-    + Fewer Turns
-    + More Japanese
-    + Fewer LVTs
+  - Reinforcement markers
+  - Redo score, don't change location, change size
+  - Can't rout over bridge across water
+  - Single split unit still displaying during deploy
+  - Make sure can't scrape trench, river, etc.
+  + 304
+    + Advance directions are backwards
+    + Remove some paratroopers
+    + Add some germans
+    + VPs?
+    + Brits turn 3 not 2
+    + 7 turns
   - Finish scenario editor
   - Playthroughs
   - Add Some Developer Notes
