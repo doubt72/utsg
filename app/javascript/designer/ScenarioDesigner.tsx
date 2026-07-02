@@ -5,9 +5,9 @@ import { roundedRectangle } from "../utilities/graphics";
 import MapHex from "../components/game/map/MapHex";
 import MapHexDetail from "../components/game/map/MapHexDetail";
 import MapHexPatterns from "../components/game/map/MapHexPatterns";
-import { Coordinate } from "../utilities/commonTypes";
 import DesignerDataTab from "./DesignerDataTab";
 import DesignerFileTab from "./DesignerFileTab";
+import DesignerMapTab from "./DesignerMapTab";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -25,9 +25,16 @@ export function defaultScenario(): ScenarioData {
   })
 }
 
+export type SelectionType = {
+  setting: "vp" | "terrain" | "building" | "border" | "road" | "stream" | "railroad",
+}
+
 export default function ScenarioDesigner() {
   const [scenarioData, setScenarioData] = useState<ScenarioData>(defaultScenario())
   const [scenario, setScenario] = useState<Scenario>(new Scenario(defaultScenario()))
+
+  const [selectionType, setSelectionType] = useState<SelectionType>({ setting: "vp" })
+  const [selectionHex, setSelectionHex] = useState<{ x: number, y: number, n: number }>({ x: 0, y: 0, n: -1 })
 
   const [tab, setTab] = useState<number>(1)
 
@@ -40,6 +47,18 @@ export default function ScenarioDesigner() {
   const [height, setHeight] = useState<number>(1)
 
   const svgRef = useRef<HTMLElement | SVGSVGElement>()
+
+  const selectHex = (x: number, y: number) => {
+    setSelectionHex(s => {
+      return { x, y, n: s.n + 1}
+    })
+  }
+
+  useEffect(() => {
+    if (selectionHex.n < 0) { return }
+    console.log(`selected ${selectionHex.x},${selectionHex.y}`)
+    console.log(selectionType.setting)
+  }, [selectionHex])
 
   useEffect(() => {
     const s = new Scenario(scenarioData)
@@ -59,21 +78,20 @@ export default function ScenarioDesigner() {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
         detailLoader.push(<MapHexDetail key={`${x}-${y}-d`} hex={hex} maxX={width / scale} maxY={height / scale}
-                                        selectCallback={() => {}} showTerrain={false} terrainCallback={() => {}}
+                                        selectCallback={selectHex} showTerrain={false} terrainCallback={() => {}}
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         const vp = scenarioData.metadata.map_data.victory_hexes as [number, number, 1|2][]
-        const loc = hex.coord as Coordinate
         for (const v of vp) {
-          if (v[0] === loc.x && v[1] === loc.y) {
-            const x = hex.xCorner(5, 20)
-            const y = hex.yCorner(5, 20)
+          if (v[0] === x && v[1] === y) {
+            const xx = hex.xCorner(5, 20)
+            const yy = hex.yCorner(5, 20)
             const victory = v[2] === 1 ? scenarioData.allies[0] : scenarioData.axis[0]
             const style = {
               fill: `url(#nation-${victory}-12)`, strokeWidth: 1, stroke: "#000"
             }
             victoryLoader.push(
-              <circle cx={x} cy={y} r={12} style={style}/>
+              <circle key={`vp-${x}-${y}`} cx={xx} cy={yy} r={12} style={style}/>
             )
           }
         }
@@ -142,6 +160,7 @@ export default function ScenarioDesigner() {
           </div>
           <div className="designer-section" style={{ minHeight: window.innerHeight - 182 }}>
             { tab === 1 ? <DesignerDataTab scenarioData={scenarioData} setScenarioData={setScenarioData} /> : "" }
+            { tab === 2 ? <DesignerMapTab selectionType={selectionType} setSelectionType={setSelectionType} /> : ""}
             { tab === 3 ?
               <div>
               </div> : ""}

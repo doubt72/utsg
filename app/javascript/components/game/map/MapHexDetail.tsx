@@ -85,10 +85,6 @@ export default function MapHexDetail({
                    transform={ hex.map.rotated ? `rotate(90, ${layout.x} ${layout.y})` : "" } />
   }
 
-  const night = (
-    <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0.1)" }} />
-  )
-
   const outline = (
     <polygon points={hex.hexCoords}
              style={{ strokeWidth: 1, stroke: "rgba(0,0,0,0.16)", fill: clearColor }} />
@@ -125,7 +121,6 @@ export default function MapHexDetail({
       {road()}
       {railroad()}
       {outline}
-      {hex.night ? night : ""}
       {edge()}
       {victory()}
       {interactionOverly}

@@ -1,3 +1,8 @@
+# 0.106
+
+- More work on scenario editor
+- Change the way night renders slightly (fixes weird looking bridges)
+
 # 0.105
 
 - Add icons for reinforcements on turn track
