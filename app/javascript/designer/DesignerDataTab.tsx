@@ -1,8 +1,9 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { ScenarioData } from "../engine/Scenario";
-import { BaseTerrainType, Coordinate, ExtendedDirection, Player, WeatherType, WindType } from "../utilities/commonTypes";
-import { hexPath, iconSymbols } from "../utilities/graphics";
+import { BaseTerrainType, Player, WeatherType, WindType } from "../utilities/commonTypes";
+import { iconSymbols } from "../utilities/graphics";
 import { alliedCodeToName, axisCodeToName, normalDir } from "../utilities/utilities";
+import { showHex } from "./ScenarioDesigner";
 
 interface DesignerDataTabProps {
   scenarioData: ScenarioData;
@@ -10,21 +11,6 @@ interface DesignerDataTabProps {
 }
 
 export default function DesignerDataTab({ scenarioData, setScenarioData }: DesignerDataTabProps) {
-
-  const showHex = (dir: ExtendedDirection, click: () => void): JSX.Element => {
-    return (
-      <svg className="" width={32} height={32}
-           viewBox="0 0 32 32" onClick={click}>
-        <path d={ hexPath(new Coordinate(16, 16), 15, true) }
-              style={{ fill: "#FFF", stroke: "#AAA", strokeWidth: 2 }}/>
-        <g transform={`rotate(${(dir-1)*60} 16 16)`}>
-          <path d="M 4 16 L 18 10 L 18 22 Z"
-                style={{ strokeWidth: 0, fill: "#666" }} />
-        </g>
-      </svg>
-    )
-  }
-
   return (
     <form>
       <div className="flex mb05em">

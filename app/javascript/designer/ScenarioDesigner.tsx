@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import Scenario, { ScenarioData } from "../engine/Scenario";
-import { roundedRectangle } from "../utilities/graphics";
+import { hexPath, roundedRectangle } from "../utilities/graphics";
 import MapHex from "../components/game/map/MapHex";
 import MapHexDetail from "../components/game/map/MapHexDetail";
 import MapHexPatterns from "../components/game/map/MapHexPatterns";
 import DesignerDataTab from "./DesignerDataTab";
 import DesignerFileTab from "./DesignerFileTab";
 import DesignerMapTab from "./DesignerMapTab";
+import { BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, ExtendedDirection, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -25,15 +26,48 @@ export function defaultScenario(): ScenarioData {
   })
 }
 
+export function showHex(dir: ExtendedDirection, click: () => void): JSX.Element {
+  return (
+    <svg className="" width={32} height={32}
+          viewBox="0 0 32 32" onClick={click}>
+      <path d={ hexPath(new Coordinate(16, 16), 15, true) }
+            style={{ fill: "#FFF", stroke: "#AAA", strokeWidth: 2 }}/>
+      <g transform={`rotate(${(dir-1)*60} 16 16)`}>
+        <path d="M 4 16 L 18 10 L 18 22 Z"
+              style={{ strokeWidth: 0, fill: "#666" }} />
+      </g>
+    </svg>
+  )
+}
+
 export type SelectionType = {
-  setting: "vp" | "terrain" | "building" | "border" | "road" | "stream" | "railroad",
+  set: "vp" | "terrain" | "building" | "border" | "road" | "stream" | "railroad",
+  terrain: TerrainType,
+  elevation: number,
+  building: BuildingShape,
+  buildStyle: BuildingStyle,
+  border: BorderType,
+  borderEdges: number[],
+  road: RoadType,
+  roadDirs: number[],
+  roadCenter?: RoadCenterType,
+  roadTurn: Direction,
+  stream: StreamType,
+  streamDirs: number[],
+  railroad: "+" | "-",
+  rrStart: Direction,
+  rrEnd: Direction,
+  dir: Direction,
 }
 
 export default function ScenarioDesigner() {
   const [scenarioData, setScenarioData] = useState<ScenarioData>(defaultScenario())
   const [scenario, setScenario] = useState<Scenario>(new Scenario(defaultScenario()))
 
-  const [selectionType, setSelectionType] = useState<SelectionType>({ setting: "vp" })
+  const [selectionType, setSelectionType] = useState<SelectionType>({
+    set: "vp", terrain: "o", elevation: 0, dir: 1, building: "l", buildStyle: "f", border: "f", borderEdges: [],
+    road: "t", roadDirs: [], roadTurn: 1, stream: "s", streamDirs: [], railroad: "+", rrStart: 1, rrEnd: 4,
+  })
   const [selectionHex, setSelectionHex] = useState<{ x: number, y: number, n: number }>({ x: 0, y: 0, n: -1 })
 
   const [tab, setTab] = useState<number>(1)
@@ -57,7 +91,9 @@ export default function ScenarioDesigner() {
   useEffect(() => {
     if (selectionHex.n < 0) { return }
     console.log(`selected ${selectionHex.x},${selectionHex.y}`)
-    console.log(selectionType.setting)
+    if (tab === 2) {
+      console.log(selectionType)
+    }
   }, [selectionHex])
 
   useEffect(() => {
