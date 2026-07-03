@@ -194,22 +194,35 @@ export default function ScenarioDesigner() {
           return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
         })
       } else if (selectionType.set === "border") {
-        // setScenarioData(s => {
-        //   const hexes = s.metadata.map_data.hexes
-        //   const hex = hexes[selectionHex.y][selectionHex.x]
-        //   if (selectionType.borderEdges.length < 1) {
-        //     delete hex.b
-        //     delete hex.be
-        //   } else {
-        //     hex.b = selectionType.border
-        //     hex.be = [...selectionType.borderEdges]
-        //     for (const b of selectionType.borderEdges) {
-        //       const hex = scenario.map.neighborAt(new Coordinate(selectionHex.x, selectionHex.y), b)
-
-        //     }
-        //   }
-        //   return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        // })
+        setScenarioData(s => {
+          const hexes = s.metadata.map_data.hexes
+          const hex = hexes[selectionHex.y][selectionHex.x]
+          const start = [...selectionType.borderEdges]
+          const final: Direction[] = []
+          for (const b of start) {
+            const loc = new Coordinate(selectionHex.x, selectionHex.y)
+            const neighbor = scenario.map.neighborAt(loc, b)
+            if (neighbor) {
+              final.push(b)
+              const other = hexes[neighbor.coord.y][neighbor.coord.x]
+              if (other.be?.includes(normalDir(b+3))) {
+                other.be = other.be.filter(d => d != normalDir(b+3))
+                if (other.be.length < 1) {
+                  delete other.b
+                  delete other.be
+                }
+              }
+            }
+          }
+          if (final.length < 1) {
+            delete hex.b
+            delete hex.be
+          } else {
+            hex.b = selectionType.border
+            hex.be = final
+          }
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        })
       } else if (selectionType.set === "road") {
         setScenarioData(s => {
           const hexes = s.metadata.map_data.hexes

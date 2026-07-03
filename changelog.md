@@ -1,6 +1,6 @@
 # 0.106
 
-- More work on scenario editor
+- More work on scenario editor (map editing)
 - Change the way night renders slightly (fixes weird looking bridges)
 
 # 0.105
