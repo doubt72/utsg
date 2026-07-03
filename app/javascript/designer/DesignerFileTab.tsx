@@ -4,13 +4,16 @@ import { getAPI } from "../utilities/network";
 import { defaultScenario } from "./ScenarioDesigner";
 
 interface DesignerFileTabProps {
+  resetCacheCallback: () => void;
   scenarioData: ScenarioData;
   setScenarioData: Dispatch<SetStateAction<ScenarioData>>;
   setScale: Dispatch<SetStateAction<number>>;
   setTab: Dispatch<SetStateAction<number>>;
 }
 
-export default function DesignerFileTab({ scenarioData, setScenarioData, setScale, setTab }: DesignerFileTabProps) {
+export default function DesignerFileTab({
+  resetCacheCallback, scenarioData, setScenarioData, setScale, setTab
+}: DesignerFileTabProps) {
   const [scenarioList, setScenarioList] = useState<string[]>([])
 
   const proto = localStorage.getItem("proto") === "true"
@@ -30,6 +33,7 @@ export default function DesignerFileTab({ scenarioData, setScenarioData, setScal
   const loadScenario = (id: string) => {
     if (id === "") {
       setScenarioData(defaultScenario())
+      resetCacheCallback()
       return
     }
     const url = `/api/v1/scenarios/${id}`
@@ -37,6 +41,7 @@ export default function DesignerFileTab({ scenarioData, setScenarioData, setScal
       ok: response => {
         response.json().then(json => {
           setScenarioData(json)
+          resetCacheCallback()
         })
       }
     })
@@ -90,6 +95,7 @@ export default function DesignerFileTab({ scenarioData, setScenarioData, setScal
                 try {
                   const jsonData = JSON.parse(e.target?.result as string);
                   setScenarioData(jsonData)
+                  resetCacheCallback()
                 } catch (err) {
                   console.error('Invalid JSON:', err);
                 }

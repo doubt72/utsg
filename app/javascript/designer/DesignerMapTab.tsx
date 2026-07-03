@@ -1,17 +1,43 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { SelectionType, showHex } from "./ScenarioDesigner";
-import { BorderType, BuildingShape, BuildingStyle, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
-import { normalDir } from "../utilities/utilities";
+import { BorderType, BuildingShape, BuildingStyle, Direction, Elevation, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
+import { alliedCodeToName, axisCodeToName, normalDir } from "../utilities/utilities";
+import { ScenarioData } from "../engine/Scenario";
 
 interface DesignerMapTabProps {
+  scenarioData: ScenarioData;
+  resizeMapCallback: (x: number, y: number) => void;
   selectionType: SelectionType;
   setSelectionType: Dispatch<SetStateAction<SelectionType>>;
 }
 
-export default function DesignerMapTab({ selectionType, setSelectionType }: DesignerMapTabProps) {
+export default function DesignerMapTab({
+  scenarioData, resizeMapCallback, selectionType, setSelectionType
+}: DesignerMapTabProps) {
   return (
     <form>
       <div className="flex mb05em">
+        <div style={{width: "200px"}}>
+          <label className="design-label">map size</label>
+          <select name="size" value={selectionType.mapSize} className="form-input"
+                  onChange={({ target }) => {
+                    const x = Number(target.value.substring(0, 2))
+                    const y = Number(target.value.substring(3))
+                    resizeMapCallback(x, y)
+                  }} >
+            <option key={"p2x1"} value={"15x11"}>15x11 (2x1 pages)</option>
+            <option key={"p2x2"} value={"15x23"}>15x23 (2x2 pages)</option>
+            <option key={"p2x3"} value={"15x36"}>15x36 (2x3 pages)</option>
+            <option key={"p3x1"} value={"23x11"}>23x11 (3x1 pages)</option>
+            <option key={"p3x2"} value={"23x23"}>23x23 (3x2 pages)</option>
+            <option key={"p3x3"} value={"23x36"}>23x36 (3x3 pages)</option>
+            <option key={"p4x1"} value={"32x11"}>32x11 (4x1 pages)</option>
+            <option key={"p4x2"} value={"32x23"}>32x23 (4x2 pages)</option>
+            <option key={"p4x3"} value={"32x36"}>32x36 (4x3 pages)</option>
+          </select>
+        </div>
+      </div>
+      <div className="flex pt05em mb05em" style={{ borderTop: "1px solid black" }}>
         <input type="radio" className="mr1em"
                name="select"
                value="vp"
@@ -20,6 +46,16 @@ export default function DesignerMapTab({ selectionType, setSelectionType }: Desi
                  { return { ...s, set: "vp" }}
                )} />
         <label className="design-label flex-fill">vps</label>
+        <div className="mr1em">
+          { alliedCodeToName(scenarioData.allies[0]) }: {
+            (scenarioData.metadata.map_data.victory_hexes?.filter(vp => vp[2] === 1).length ?? 0) * 10
+          }
+        </div>
+        <div>
+          { axisCodeToName(scenarioData.axis[0]) }: {
+            (scenarioData.metadata.map_data.victory_hexes?.filter(vp => vp[2] === 2).length ?? 0) * 10
+          }
+        </div>
       </div>
       <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
         <input type="radio" className="mr1em"
@@ -66,12 +102,24 @@ export default function DesignerMapTab({ selectionType, setSelectionType }: Desi
           }) }
           : { selectionType.dir }
         </div>
+      </div>
+      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
+        <input type="radio" className="mr1em"
+               name="select"
+               value="elevation"
+               checked={ selectionType.set === "elevation" }
+               onChange={() => setSelectionType(s =>
+                 { return { ...s, set: "elevation" }}
+               )} />
+        <label className="design-label flex-fill">elevation:</label>
+      </div>
+      <div className="flex mb1em">
         <div style={{width: "120px"}}>
-          <label className="design-label">elev</label>
+          <label className="design-label">height</label>
           <select name="tdir" value={selectionType.elevation} className="form-input"
                   onChange={({ target }) => {
                     setSelectionType(s => {
-                      return { ...s, elevation: Number(target.value) }
+                      return { ...s, elevation: Number(target.value) as Elevation }
                     })
                   }} >
             {
@@ -104,7 +152,7 @@ export default function DesignerMapTab({ selectionType, setSelectionType }: Desi
             <option key={"l"} value={"l"}>lone with eaves</option>
             <option key={"s"} value={"s"}>side with eaves</option>
             <option key={"m"} value={"m"}>middle with eaves</option>
-            <option key={"x"} value={"x"}>crosss</option>
+            <option key={"x"} value={"x"}>cross</option>
             <option key={"l2"} value={"l2"}>lone no eaves</option>
             <option key={"s2"} value={"s2"}>side no eaves</option>
             <option key={"m2"} value={"m2"}>middle no eaves</option>
@@ -115,11 +163,11 @@ export default function DesignerMapTab({ selectionType, setSelectionType }: Desi
             <option key={"bs2"} value={"bs2"}>big side 2</option>
             <option key={"bs3"} value={"bs3"}>big side 3</option>
             <option key={"bs4"} value={"bs4"}>big side 4</option>
-            <option key={"bm"} value={"bm"}>big corner</option>
-            <option key={"bc1"} value={"bc1"}>big corner 2</option>
-            <option key={"bc2"} value={"bc2"}>big corner 3</option>
-            <option key={"bc3"} value={"bc3"}>big corner 4</option>
-            <option key={"bc4"} value={"bc4"}>big middle</option>
+            <option key={"bm"} value={"bm"}>big middle</option>
+            <option key={"bc1"} value={"bc1"}>big corner</option>
+            <option key={"bc2"} value={"bc2"}>big corner 2</option>
+            <option key={"bc3"} value={"bc3"}>big corner 3</option>
+            <option key={"bc4"} value={"bc4"}>big corner 4</option>
           </select>
         </div>
         <div className="ml1em unselectable" style={{width: "75px"}}>
@@ -180,10 +228,10 @@ export default function DesignerMapTab({ selectionType, setSelectionType }: Desi
                        value="true"
                        onChange={() => setSelectionType(s => {
                          let edges = s.borderEdges
-                         if (edges.includes(n)) {
+                         if (edges.includes(n as Direction)) {
                            edges = edges.filter(i => i !== n)
                          } else {
-                           edges.push(n)
+                           edges.push(n as Direction)
                            edges.sort()
                          }
                          return { ...s, borderEdges: edges }
@@ -228,10 +276,10 @@ export default function DesignerMapTab({ selectionType, setSelectionType }: Desi
                        value="true"
                        onChange={() => setSelectionType(s => {
                          let edges = s.roadDirs
-                         if (edges.includes(n)) {
+                         if (edges.includes(n as Direction)) {
                            edges = edges.filter(i => i !== n)
                          } else {
-                           edges.push(n)
+                           edges.push(n as Direction)
                            edges.sort()
                          }
                          return { ...s, roadDirs: edges }
@@ -302,10 +350,10 @@ export default function DesignerMapTab({ selectionType, setSelectionType }: Desi
                        value="true"
                        onChange={() => setSelectionType(s => {
                          let edges = s.streamDirs
-                         if (edges.includes(n)) {
+                         if (edges.includes(n as Direction)) {
                            edges = edges.filter(i => i !== n)
                          } else {
-                           edges.push(n)
+                           edges.push(n as Direction)
                            edges.sort()
                          }
                          return { ...s, streamDirs: edges }

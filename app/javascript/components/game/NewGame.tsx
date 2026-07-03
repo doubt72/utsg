@@ -313,7 +313,7 @@ export default function NewGame() {
     // { code: "4x1", name: "32x11 (4x1 pages)"},
     { code: "4x2", name: "32x23 (4x2 pages)"},
     // { code: "4x3", name: "32x36 (4x3 pages)"},
-    { code: "other", name: "Other"},
+    // { code: "other", name: "Other"},
   ]
 
   const sizeSelector = (

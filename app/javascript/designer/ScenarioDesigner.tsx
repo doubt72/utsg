@@ -8,7 +8,9 @@ import MapHexPatterns from "../components/game/map/MapHexPatterns";
 import DesignerDataTab from "./DesignerDataTab";
 import DesignerFileTab from "./DesignerFileTab";
 import DesignerMapTab from "./DesignerMapTab";
-import { BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, ExtendedDirection, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
+import { BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, Elevation, ExtendedDirection, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
+import { HexData } from "../engine/Hex";
+import { normalDir } from "../utilities/utilities";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -20,7 +22,7 @@ export function defaultScenario(): ScenarioData {
         layout: [15, 11, "x"], allied_dir: 1, axis_dir: 1, victory_hexes: [],
         allied_setup: {}, axis_setup: {}, base_terrain: "g", night: false,
         start_weather: "dry", base_weather: "dry", precip: [0, "rain"], wind: [1, 1, false],
-        hexes: Array(11).fill(Array(15).fill({ t: "o" }))
+        hexes: [...Array(11)].map(() => [...Array(15)].map(() => { return { t: "o" } })),
       }
     }
   })
@@ -41,32 +43,36 @@ export function showHex(dir: ExtendedDirection, click: () => void): JSX.Element 
 }
 
 export type SelectionType = {
-  set: "vp" | "terrain" | "building" | "border" | "road" | "stream" | "railroad",
+  set: "vp" | "terrain" | "elevation" | "building" | "border" | "road" | "stream" | "railroad",
   terrain: TerrainType,
-  elevation: number,
+  elevation: Elevation,
   building: BuildingShape,
   buildStyle: BuildingStyle,
   border: BorderType,
-  borderEdges: number[],
+  borderEdges: Direction[],
   road: RoadType,
-  roadDirs: number[],
+  roadDirs: Direction[],
   roadCenter?: RoadCenterType,
   roadTurn: Direction,
   stream: StreamType,
-  streamDirs: number[],
+  streamDirs: Direction[],
   railroad: "+" | "-",
   rrStart: Direction,
   rrEnd: Direction,
   dir: Direction,
+  mapSize: string,
 }
 
 export default function ScenarioDesigner() {
   const [scenarioData, setScenarioData] = useState<ScenarioData>(defaultScenario())
   const [scenario, setScenario] = useState<Scenario>(new Scenario(defaultScenario()))
+  const [hexCache, setHexCache] = useState<HexData[][]>([])
+  const [vpCache, setVpCache] = useState<[number, number, 1 | 2][]>([])
 
   const [selectionType, setSelectionType] = useState<SelectionType>({
     set: "vp", terrain: "o", elevation: 0, dir: 1, building: "l", buildStyle: "f", border: "f", borderEdges: [],
     road: "t", roadDirs: [], roadTurn: 1, stream: "s", streamDirs: [], railroad: "+", rrStart: 1, rrEnd: 4,
+    mapSize: "15x11",
   })
   const [selectionHex, setSelectionHex] = useState<{ x: number, y: number, n: number }>({ x: 0, y: 0, n: -1 })
 
@@ -88,17 +94,195 @@ export default function ScenarioDesigner() {
     })
   }
 
+  const resetCache = () => {
+    setHexCache([])
+    setVpCache([])
+  }
+
+  const resizeMap = (x: number, y: number) => {
+    setScenarioData(s => {
+      const oldData = s.metadata.map_data
+      const cache: HexData[][] = []
+      const my = Math.max(y, oldData.layout[1], hexCache.length)
+      for (let yy = 0; yy < my; yy++) {
+        cache.push([])
+        const hcl = hexCache.length > yy ? hexCache[yy].length : 0
+        const mx = Math.max(x, oldData.layout[0], hcl)
+        for (let xx = 0; xx < mx; xx++) {
+          if (xx < oldData.layout[0] && yy < oldData.layout[1]) {
+            cache[yy][xx] = oldData.hexes[yy][xx]
+          } else if (yy < hexCache.length && xx < hexCache[yy].length) {
+            cache[yy][xx] = hexCache[yy][xx]
+          } else {
+            cache[yy][xx] = { t: "o" }
+          }
+        }
+      }
+      const data: HexData[][] = []
+      for (let yy = 0; yy < y; yy++) {
+        data.push([])
+        for (let xx = 0; xx < x; xx++) { data[yy].push(cache[yy][xx]) }
+      }
+      setHexCache(cache)
+      const vps: [number, number, 1 | 2][] = []
+      for (const vp of vpCache) { vps.push(vp) }
+      for (const vp of s.metadata.map_data.victory_hexes ?? []) {
+        let found = false
+        for (const ovp of vpCache) {
+          if (vp[0] === ovp[0] && vp[1] === ovp[1]) { found = true; break }
+        }
+        if (!found) { vps.push(vp) }
+      }
+      setVpCache(vps)
+      return {
+        ...s, metadata: { ...s.metadata, map_data:  {
+          ...s.metadata.map_data, layout: [x, y, "x"], hexes: data,
+          victory_hexes: vps.filter(vp => vp[0] < x && vp[1] < y),
+        }}
+      }
+    })
+  }
+
   useEffect(() => {
     if (selectionHex.n < 0) { return }
-    console.log(`selected ${selectionHex.x},${selectionHex.y}`)
     if (tab === 2) {
-      console.log(selectionType)
+      if (selectionType.set === "vp") {
+        resetCache()
+        setScenarioData(s => {
+          const vps: [number, number, 1 | 2][] = []
+          let found = false;
+          for (const vp of s.metadata.map_data.victory_hexes as [number, number, 1 | 2][]) {
+            if (vp[0] === selectionHex.x && vp[1] === selectionHex.y) {
+              found = true
+              if (vp[2] === 1) { vps.push([vp[0], vp[1], 2]) }
+            } else {
+              vps.push(vp)
+            }
+          }
+          if (!found) { vps.push([selectionHex.x, selectionHex.y, 1])}
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, victory_hexes: vps }}}
+        })
+      } else if (selectionType.set === "terrain") {
+        setScenarioData(s => {
+          const hexes = s.metadata.map_data.hexes
+          const hex = hexes[selectionHex.y][selectionHex.x]
+          delete hex.st
+          hex.t = selectionType.terrain
+          if (hex.t === "d") { hex.d = selectionType.dir } else { delete hex.d }
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        })
+      } else if (selectionType.set === "elevation") {
+        setScenarioData(s => {
+          const hexes = s.metadata.map_data.hexes
+          const hex = hexes[selectionHex.y][selectionHex.x]
+          if ((hex.h ?? 0) !== selectionType.elevation) {
+            if (selectionType.elevation !== 0) {
+              hex.h = selectionType.elevation
+            } else {
+              delete hex.h
+            }
+          }
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        })
+      } else if (selectionType.set === "building") {
+        setScenarioData(s => {
+          const hexes = s.metadata.map_data.hexes
+          const hex = hexes[selectionHex.y][selectionHex.x]
+          hex.t = "o"
+          hex.st = { sh: selectionType.building, s: selectionType.buildStyle }
+          hex.d = selectionType.dir
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        })
+      } else if (selectionType.set === "border") {
+        // setScenarioData(s => {
+        //   const hexes = s.metadata.map_data.hexes
+        //   const hex = hexes[selectionHex.y][selectionHex.x]
+        //   if (selectionType.borderEdges.length < 1) {
+        //     delete hex.b
+        //     delete hex.be
+        //   } else {
+        //     hex.b = selectionType.border
+        //     hex.be = [...selectionType.borderEdges]
+        //     for (const b of selectionType.borderEdges) {
+        //       const hex = scenario.map.neighborAt(new Coordinate(selectionHex.x, selectionHex.y), b)
+
+        //     }
+        //   }
+        //   return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        // })
+      } else if (selectionType.set === "road") {
+        setScenarioData(s => {
+          const hexes = s.metadata.map_data.hexes
+          const hex = hexes[selectionHex.y][selectionHex.x]
+          if (selectionType.roadDirs.length > 1) {
+            if (selectionType.roadCenter !== undefined) {
+              if (selectionType.roadTurn !== 1) {
+                hex.r = {
+                  t: selectionType.road, d: [...selectionType.roadDirs], c: selectionType.roadCenter,
+                  r: normalDir(selectionType.roadTurn - 1)
+                }
+              } else {
+                hex.r = {
+                  t: selectionType.road, d: [...selectionType.roadDirs], c: selectionType.roadCenter
+                }
+              }
+            } else {
+              hex.r = { t: selectionType.road, d: [...selectionType.roadDirs] }
+            }
+          } else {
+            delete hex.r
+          }
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        })
+      } else if (selectionType.set === "stream") {
+        setScenarioData(s => {
+          const hexes = s.metadata.map_data.hexes
+          const hex = hexes[selectionHex.y][selectionHex.x]
+          if (selectionType.streamDirs.length > 1) {
+            hex.s = { t: selectionType.stream, d: [...selectionType.streamDirs] }
+          } else {
+            delete hex.s
+          }
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        })
+      } else if (selectionType.set === "railroad") {
+        setScenarioData(s => {
+          const hexes = s.metadata.map_data.hexes
+          const hex = hexes[selectionHex.y][selectionHex.x]
+          const dirs: Direction[][] = []
+          let found = false
+          if (hex.rr) {
+            for (const d of hex.rr.d) {
+              if ((d[0] === selectionType.rrStart && d[1] === selectionType.rrEnd) ||
+                  (d[1] === selectionType.rrStart && d[0] === selectionType.rrEnd)) {
+                found = true
+                if (selectionType.railroad !== "-") { dirs.push(d) }
+              } else {
+                dirs.push(d)
+              }
+            }
+          }
+          if (selectionType.railroad === "+" && !found) {
+            dirs.push([selectionType.rrStart, selectionType.rrEnd])
+          }
+          if (dirs.length < 1) {
+            delete hex.rr
+          } else {
+            hex.rr = { d: dirs }
+          }
+          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
+        })
+      }
     }
   }, [selectionHex])
 
   useEffect(() => {
     const s = new Scenario(scenarioData)
     setScenario(s)
+    setSelectionType(s => {
+      const layout = scenarioData.metadata.map_data.layout
+      return { ...s, mapSize: `${layout[0]}x${layout[1]}` }
+    })
     setWidth(s.map.previewXSize * scale)
     setHeight(s.map.ySize * scale)
   }, [scenarioData])
@@ -196,11 +380,14 @@ export default function ScenarioDesigner() {
           </div>
           <div className="designer-section" style={{ minHeight: window.innerHeight - 182 }}>
             { tab === 1 ? <DesignerDataTab scenarioData={scenarioData} setScenarioData={setScenarioData} /> : "" }
-            { tab === 2 ? <DesignerMapTab selectionType={selectionType} setSelectionType={setSelectionType} /> : ""}
+            { tab === 2 ? <DesignerMapTab scenarioData={scenarioData} resizeMapCallback={resizeMap}
+                                          selectionType={selectionType}
+                                          setSelectionType={setSelectionType} /> : ""}
             { tab === 3 ?
               <div>
               </div> : ""}
-            { tab === 4 ? <DesignerFileTab scenarioData={scenarioData} setScenarioData={setScenarioData}
+            { tab === 4 ? <DesignerFileTab resetCacheCallback={resetCache} scenarioData={scenarioData}
+                                           setScenarioData={setScenarioData}
                                            setScale={setScale} setTab={setTab}/> : "" }
           </div>
         </div>
