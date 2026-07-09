@@ -1,5 +1,6 @@
 # 0.106
 
+- Tweaks to admin game list page
 - More work on scenario editor (map editing)
 - Change the way night renders slightly (fixes weird looking bridges)
 

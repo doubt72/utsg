@@ -175,6 +175,28 @@ export default function AdminGameStats() {
         {displayStat(countWinner, {})}
       </div>
       <div className="p1em">
+        <p><strong>Finished</strong></p>
+        Owner:
+        {displayStat(countGCOwner, {})}
+        Player One:
+        {displayStat(countGCPlayerOne, {})}
+        Player Two:
+        {displayStat(countGCPlayerTwo, {})}
+        Winner:
+        {displayStat(countGCWinner, {})}
+      </div>
+      <div className="p1em">
+        <p><strong>In Progress</strong></p>
+        Owner:
+        {displayStat(countIPOwner, {})}
+        Player One:
+        {displayStat(countIPPlayerOne, {})}
+        Player Two:
+        {displayStat(countIPPlayerTwo, {})}
+        Current Player:
+        {displayStat(countIPCurrentPlayer, {})}
+      </div>
+      <div className="p1em">
         <p><strong>Needs Player</strong></p>
         Owner:
         {displayStat(countNPOwner, {})}
@@ -189,28 +211,6 @@ export default function AdminGameStats() {
         {displayStat(countRTPlayerOne, {})}
         Player Two:
         {displayStat(countRTPlayerTwo, {})}
-      </div>
-      <div className="p1em">
-        <p><strong>In Progress</strong></p>
-        Owner:
-        {displayStat(countIPOwner, {})}
-        Player One:
-        {displayStat(countIPPlayerOne, {})}
-        Player Two:
-        {displayStat(countIPPlayerTwo, {})}
-        Current Player:
-        {displayStat(countIPCurrentPlayer, {})}
-      </div>
-      <div className="p1em">
-        <p><strong>Finished</strong></p>
-        Owner:
-        {displayStat(countGCOwner, {})}
-        Player One:
-        {displayStat(countGCPlayerOne, {})}
-        Player Two:
-        {displayStat(countGCPlayerTwo, {})}
-        Winner:
-        {displayStat(countGCWinner, {})}
       </div>
     </div>
   )

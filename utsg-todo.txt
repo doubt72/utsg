@@ -1,4 +1,6 @@
 Features/Bug Fixes
+  - Scenario undo
+  - Scenario resize
   - Finish scenario editor
   - Playthroughs
   - Add Some Developer Notes
