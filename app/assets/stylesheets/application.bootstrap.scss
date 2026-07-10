@@ -399,21 +399,40 @@ span.slim-button-disable {
 }
 
 // Main page layout
+.home-page {
+  min-width: 1500px;
+}
+
+.main-page-welcome {
+  flex-grow: 1;
+}
+
+.main-page-welcome-contents {
+  padding: 1em 1em 1em;
+  border-top-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background-color: $background-gray;
+  height: calc(294px + 2em);
+}
+
+.main-page-scenario-loop {
+  float: right;
+  height: 294px;
+  margin-left: 1em;
+  border-radius: 0.5em;
+  border: 2px solid $border-color-gray;
+}
+
 .main-page-announcements {
   padding: 1em;
+  margin-top: 35.5px;
   margin-left: 0.5em;
   width: 650px;
   min-width: 650px;
   background-color: $background-gray;
   border-radius: 0.5em;
-}
-
-.main-page-announcements-logged-in {
-  height: 260px;
-}
-
-.main-page-announcements-logged-out {
-  height: calc(260px + 1em);
+  min-height: 256px;
 }
 
 .main-page-start-game {
@@ -516,6 +535,19 @@ span.slim-button-disable {
   flex-grow: 1;
   background-color: $background-gray;
   border-radius: 0.5em;
+}
+
+.main-page-chat-section {
+  padding: 0.5em;
+  flex-grow: 1;
+  background-color: $background-gray;
+  border-top-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.main-page-chat-section-logged-out {
+  padding-bottom: 13px;
 }
 
 .chat-output {

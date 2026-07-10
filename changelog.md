@@ -1,3 +1,7 @@
+# 0.107
+
+- Animation on front page
+
 # 0.106
 
 - Tweaks to admin game list page
