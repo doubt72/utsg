@@ -1,6 +1,6 @@
 # 0.107
 
-- Animation on front page
+- Animation on front page, revamp front page layout, move chat to tab
 
 # 0.106
 

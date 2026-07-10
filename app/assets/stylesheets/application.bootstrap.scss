@@ -400,7 +400,7 @@ span.slim-button-disable {
 
 // Main page layout
 .home-page {
-  min-width: 1500px;
+  min-width: 1440px;
 }
 
 .main-page-welcome {
@@ -417,9 +417,9 @@ span.slim-button-disable {
 }
 
 .main-page-scenario-loop {
-  float: right;
+  float: left;
   height: 294px;
-  margin-left: 1em;
+  margin-right: 1em;
   border-radius: 0.5em;
   border: 2px solid $border-color-gray;
 }
