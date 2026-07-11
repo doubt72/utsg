@@ -11,6 +11,7 @@ import DesignerMapTab from "./DesignerMapTab";
 import { BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, Elevation, ExtendedDirection, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
 import { HexData } from "../engine/Hex";
 import { normalDir } from "../utilities/utilities";
+import DesignerOrderOfBattleTab from "./DesignerOrderOfBattleTab";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -75,6 +76,7 @@ export default function ScenarioDesigner() {
     mapSize: "15x11",
   })
   const [selectionHex, setSelectionHex] = useState<{ x: number, y: number, n: number }>({ x: 0, y: 0, n: -1 })
+  const [deploySelected, setDeploySelected] = useState<string>("t0-1")
 
   const [tab, setTab] = useState<number>(1)
 
@@ -296,6 +298,7 @@ export default function ScenarioDesigner() {
       const layout = scenarioData.metadata.map_data.layout
       return { ...s, mapSize: `${layout[0]}x${layout[1]}` }
     })
+    setDeploySelected("t0-1")
     setWidth(s.map.previewXSize * scale)
     setHeight(s.map.ySize * scale)
   }, [scenarioData])
@@ -396,9 +399,10 @@ export default function ScenarioDesigner() {
             { tab === 2 ? <DesignerMapTab scenarioData={scenarioData} resizeMapCallback={resizeMap}
                                           selectionType={selectionType}
                                           setSelectionType={setSelectionType} /> : ""}
-            { tab === 3 ?
-              <div>
-              </div> : ""}
+            { tab === 3 ? <DesignerOrderOfBattleTab scenarioData={scenarioData}
+                                                    setScenarioData={setScenarioData}
+                                                    deploySelected={deploySelected}
+                                                    setDeploySelected={setDeploySelected} /> : ""}
             { tab === 4 ? <DesignerFileTab resetCacheCallback={resetCache} scenarioData={scenarioData}
                                            setScenarioData={setScenarioData}
                                            setScale={setScale} setTab={setTab}/> : "" }

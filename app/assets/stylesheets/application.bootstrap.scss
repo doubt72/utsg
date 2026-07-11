@@ -271,6 +271,27 @@ span.slim-button-disable {
   border: 2px solid $alert-orange;
 }
 
+.designer-radio {
+  padding: 0.5em 0.5em 0 0.5em;
+  display: flex;
+  border-top: 1px solid black;
+}
+
+.designer-radio-all {
+  padding: 0.5em;
+  display: flex;
+  border-top: 1px solid black;
+}
+
+.designer-details {
+  padding: 0 0.5em 1em 0.5em;
+  display: flex;
+}
+
+.designer-selected {
+  background-color: $gray-c;
+}
+
 .designer-label {
   display: block;
   position: relative;

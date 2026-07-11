@@ -37,8 +37,8 @@ export default function DesignerMapTab({
           </select>
         </div>
       </div>
-      <div className="flex pt05em mb05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio-all${ selectionType.set === "vp" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="vp"
                checked={ selectionType.set === "vp" }
@@ -57,8 +57,8 @@ export default function DesignerMapTab({
           }
         </div>
       </div>
-      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio${ selectionType.set === "terrain" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="terrain"
                checked={ selectionType.set === "terrain" }
@@ -67,7 +67,7 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">terrain:</label>
       </div>
-      <div className="flex mb1em">
+      <div className={`designer-details${ selectionType.set === "terrain" ? " designer-selected" : ""}`} >
         <div style={{width: "150px"}}>
           <label className="design-label">type</label>
           <select name="terrain" value={selectionType.terrain} className="form-input"
@@ -103,8 +103,8 @@ export default function DesignerMapTab({
           : { selectionType.dir }
         </div>
       </div>
-      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio${ selectionType.set === "elevation" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="elevation"
                checked={ selectionType.set === "elevation" }
@@ -113,7 +113,7 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">elevation:</label>
       </div>
-      <div className="flex mb1em">
+      <div className={`designer-details${ selectionType.set === "elevation" ? " designer-selected" : ""}`} >
         <div style={{width: "120px"}}>
           <label className="design-label">height</label>
           <select name="tdir" value={selectionType.elevation} className="form-input"
@@ -130,8 +130,8 @@ export default function DesignerMapTab({
           </select>
         </div>
       </div>
-      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio${ selectionType.set === "building" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="building"
                checked={ selectionType.set === "building" }
@@ -140,7 +140,7 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">buldings:</label>
       </div>
-      <div className="flex mb1em">
+      <div className={`designer-details${ selectionType.set === "building" ? " designer-selected" : ""}`} >
         <div style={{width: "200px"}}>
           <label className="design-label">type</label>
           <select name="buildings" value={selectionType.building} className="form-input"
@@ -193,8 +193,8 @@ export default function DesignerMapTab({
           </select>
         </div>
       </div>
-      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio${ selectionType.set === "border" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="border"
                checked={ selectionType.set === "border" }
@@ -203,7 +203,7 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">borders:</label>
       </div>
-      <div className="flex mb1em">
+      <div className={`designer-details${ selectionType.set === "border" ? " designer-selected" : ""}`} >
         <div style={{width: "150px"}}>
           <label className="design-label">type</label>
           <select name="border" value={selectionType.border} className="form-input"
@@ -241,8 +241,8 @@ export default function DesignerMapTab({
           })
         }
       </div>
-      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio${ selectionType.set === "road" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="road"
                checked={ selectionType.set === "road" }
@@ -251,7 +251,7 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">roads:</label>
       </div>
-      <div className="flex">
+      <div className={`designer-details${ selectionType.set === "road" ? " designer-selected" : ""}`} >
         <div style={{width: "150px"}}>
           <label className="design-label">type</label>
           <select name="road" value={selectionType.road} className="form-input"
@@ -289,7 +289,7 @@ export default function DesignerMapTab({
           })
         }
       </div>
-      <div className="flex mb1em">
+      <div className={`designer-details${ selectionType.set === "road" ? " designer-selected" : ""}`} >
         <div style={{width: "150px"}}>
           <label className="design-label">center offset</label>
           <select name="rcenter" value={selectionType.roadCenter} className="form-input"
@@ -316,8 +316,8 @@ export default function DesignerMapTab({
           : { selectionType.roadTurn }
         </div>
       </div>
-      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio${ selectionType.set === "stream" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="stream"
                checked={ selectionType.set === "stream" }
@@ -326,7 +326,7 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">streams:</label>
       </div>
-      <div className="flex mb1em">
+      <div className={`designer-details${ selectionType.set === "stream" ? " designer-selected" : ""}`} >
         <div style={{width: "150px"}}>
           <label className="design-label">type</label>
           <select name="stream" value={selectionType.stream} className="form-input"
@@ -363,8 +363,8 @@ export default function DesignerMapTab({
           })
         }
       </div>
-      <div className="flex pt05em" style={{ borderTop: "1px solid black" }}>
-        <input type="radio" className="mr1em"
+      <div className={`designer-radio${ selectionType.set === "railroad" ? " designer-selected" : ""}`} >
+        <input type="radio" className="mr05em"
                name="select"
                value="railroad"
                checked={ selectionType.set === "railroad" }
@@ -373,7 +373,7 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">railroads:</label>
       </div>
-      <div className="flex mb1em">
+      <div className={`designer-details${ selectionType.set === "railroad" ? " designer-selected" : ""}`} >
         <div className="mr1em" style={{width: "100px"}}>
           <label className="design-label">toggle</label>
           <select name="railroad" value={selectionType.railroad} className="form-input"

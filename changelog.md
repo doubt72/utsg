@@ -1,3 +1,7 @@
+# 0.108
+
+- More work on scenario editor (OOB)
+
 # 0.107
 
 - Animation on front page, revamp front page layout, move chat to tab
