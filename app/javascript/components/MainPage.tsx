@@ -48,8 +48,8 @@ export default function MainPage() {
           </div>
           { tab === 0 ?
             <div className="main-page-welcome-contents">
-              <a href="/assets/scenario-animation.gif">
-                <img className="main-page-scenario-loop" src="/assets/scenario-animation.gif" alt="scenario loop" />
+              <a href="/assets/scenario-animation2.gif">
+                <img className="main-page-scenario-loop" src="/assets/scenario-animation2.gif" alt="scenario loop" />
               </a>
               <p>
                 Welcome to the <strong>{titleNameStyle}</strong> server!  The server is currently
