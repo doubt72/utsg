@@ -13,6 +13,7 @@ export default function MapHexOverlay({
   hex, selectCallback, shaded
 }: MapHexOverlayProps) {
   const shadedStyle = { fill: "rgba(0,0,0,0.3)" }
+  const falseClosedStyle = { fill: "rgba(0,0,0,0.3)" }
   const greenStyle = { fill: "rgba(0,255,0,0.15)" }
   // TODO: not sure we'll ever use yellow
   const yellowStyle = { fill: "rgba(255,255,0,0.15)" }
@@ -24,6 +25,7 @@ export default function MapHexOverlay({
     if (shaded === hexOpenType.Green) {style = greenStyle }
     if (shaded === hexOpenType.Yellow) { style = yellowStyle }
     if (shaded === hexOpenType.Red) { style = redStyle }
+    if (shaded === hexOpenType.FalseClosed) { style = falseClosedStyle }
     const x = hex.xOffset
     const y = hex.yOffset
     const xoffset = Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0)

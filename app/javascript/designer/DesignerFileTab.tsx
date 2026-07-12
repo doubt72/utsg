@@ -108,11 +108,12 @@ export default function DesignerFileTab({
       <div className="mt1em">
         save to file:
       </div>
-      <div>
-        <span className="slim-button" onClick={() => download()}
+      <div className="flex">
+        <div className="design-button" onClick={() => download()}
               style={{ padding: "0.15em 0.5em 0.25em" }}>
           save
-        </span>
+        </div>
+        <div className="flex-fill"></div>
       </div>
     </div>
   )

@@ -188,7 +188,7 @@ export type GameControl = {
   type: string, message?: string
 }
 
-export type HexOpenType = true | false | "red" | "yellow" | "green" | "all" | number
+export type HexOpenType = true | false | "red" | "yellow" | "green" | "faux" | "all" | number
 export const hexOpenType: { [index: string]: HexOpenType } = {
-  Open: true, Closed: false, Red: "red", All: "all",
+  Open: true, Closed: false, Red: "red", FalseClosed: "faux", All: "all",
 }

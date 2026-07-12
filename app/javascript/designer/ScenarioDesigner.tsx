@@ -8,12 +8,17 @@ import MapHexPatterns from "../components/game/map/MapHexPatterns";
 import DesignerDataTab from "./DesignerDataTab";
 import DesignerFileTab from "./DesignerFileTab";
 import DesignerMapTab from "./DesignerMapTab";
-import { BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, Elevation, ExtendedDirection, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
+import {
+  BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, Elevation, ExtendedDirection,
+  hexOpenType, RoadCenterType, RoadType, StreamType, TerrainType
+} from "../utilities/commonTypes";
 import { HexData } from "../engine/Hex";
 import { normalDir } from "../utilities/utilities";
 import DesignerOrderOfBattleTab from "./DesignerOrderOfBattleTab";
 import { getAPI } from "../utilities/network";
 import { UnitData } from "../engine/Unit";
+import { deployHex, toggleHex } from "../engine/control/deploy";
+import MapHexOverlay from "../components/game/map/MapHexOverlay";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -24,7 +29,8 @@ export function defaultScenario(): ScenarioData {
       allied_units: { 0: { list: [] } }, axis_units: { 0: { list: [] } },
       description: ["no description yet"], special_rules: [], map_data: {
         layout: [15, 11, "x"], allied_dir: 1, axis_dir: 1, victory_hexes: [],
-        allied_setup: {}, axis_setup: {}, base_terrain: "g", night: false,
+        allied_setup: { 0: [] }, axis_setup: { 0: [] },
+        base_terrain: "g", night: false,
         start_weather: "dry", base_weather: "dry", precip: [0, "rain"], wind: [1, 1, false],
         hexes: [...Array(11)].map(() => [...Array(15)].map(() => { return { t: "o" } })),
       }
@@ -86,6 +92,7 @@ export default function ScenarioDesigner() {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
   const [victoryDisplay, setVictoryDisplay] = useState<JSX.Element[]>([])
+  const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element[]>([])
 
   const [availableAlliedUnits, setAvailableAlliedUnits] = useState<[string, string, UnitData][]>([])
   const [availableAxisUnits, setAvailableAxisUnits] = useState<[string, string, UnitData][]>([])
@@ -294,6 +301,37 @@ export default function ScenarioDesigner() {
           return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
         })
       }
+    } else if (tab === 3) {
+      const player = Number(deploySelected[deploySelected.length - 1])
+      const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
+      const mapData = scenarioData.metadata.map_data
+      const hexes = player === 1 ? mapData.allied_setup :
+        mapData.allied_setup
+      if (hexes && hexes[turn]) {
+        const newHexes = toggleHex(
+          hexes[turn], selectionHex.x, selectionHex.y,
+          mapData.layout[0] - 1, mapData.layout[1] - 1
+        )
+        setScenarioData(s => {
+          return player === 1 ? {
+            ...s, metadata: {
+              ...s.metadata, map_data: {
+                ...s.metadata.map_data, allied_setup: {
+                  ...s.metadata.map_data.allied_setup, [turn]: newHexes,
+                },
+              }
+            }
+          } : {
+            ...s, metadata: {
+              ...s.metadata, map_data: {
+                ...s.metadata.map_data, axis_setup: {
+                  ...s.metadata.map_data.axis_setup, [turn]: newHexes,
+                },
+              }
+            }
+          }
+        })
+      }
     }
   }, [selectionHex])
 
@@ -333,6 +371,7 @@ export default function ScenarioDesigner() {
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
     const victoryLoader: JSX.Element[] = []
+    const overlayLoader: JSX.Element[] = []
     const map = scenario.map
     map.showCoords = false
     map.mapHexes.forEach((row, y) => {
@@ -342,6 +381,12 @@ export default function ScenarioDesigner() {
                                         selectCallback={selectHex} showTerrain={false} terrainCallback={() => {}}
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
+        const player = Number(deploySelected[deploySelected.length - 1])
+        const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
+        const hexes = player === 1 ? map.alliedSetupHexes : map.axisSetupHexes
+        const shaded = !!hexes && !!hexes[turn] && deployHex(hexes[turn], x, y)
+        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selectCallback={selectHex}
+                                          shaded={shaded ? hexOpenType.Open : hexOpenType.FalseClosed } />)
         const vp = scenarioData.metadata.map_data.victory_hexes as [number, number, 1|2][]
         for (const v of vp) {
           if (v[0] === x && v[1] === y) {
@@ -361,7 +406,26 @@ export default function ScenarioDesigner() {
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setVictoryDisplay(victoryLoader)
+    setOverlayDisplay(overlayLoader)
   }, [scenario])
+
+  useEffect(() => {
+    if (!scenario) { return }
+    const overlayLoader: JSX.Element[] = []
+    const map = scenario.map
+    map.showCoords = false
+    map.mapHexes.forEach((row, y) => {
+      row.forEach((hex, x) => {
+        const player = Number(deploySelected[deploySelected.length - 1])
+        const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
+        const hexes = player === 1 ? map.alliedSetupHexes : map.axisSetupHexes
+        const shaded = !!hexes && !!hexes[turn] && deployHex(hexes[turn], x, y)
+        overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selectCallback={selectHex}
+                                          shaded={shaded} />)
+      })
+    })
+    setOverlayDisplay(overlayLoader)
+  }, [deploySelected])
 
   const mapDisplay = () => {
     if (!scenario) { return <></> }
@@ -375,6 +439,7 @@ export default function ScenarioDesigner() {
         {hexDisplay}
         {hexDisplayDetail}
         {victoryDisplay}
+        {tab === 3 ? overlayDisplay : ""}
       </svg>
     )
   }
@@ -442,15 +507,3 @@ export default function ScenarioDesigner() {
     </div>
   )
 }
-
-// layout
-// paint hexes
-//   max-sized cache
-// victory hexes
-
-// allied units
-//   allied setup
-//   turn cache
-// axis units
-//   axis setup
-//   turn cache

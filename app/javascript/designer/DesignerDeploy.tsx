@@ -101,7 +101,7 @@ export default function DesignerDeploy({
         )
       })}
       <div className="flex mt05em">
-        <div style={{width: "250px"}} className="mr1em">
+        <div style={{width: "250px"}} className="mr05em">
           <label className="design-label">unit</label>
           <select name="allies" value={currentUnit} className="form-input"
                   onChange={({ target }) => { setCurrentUnit(target.value) }} >
@@ -135,7 +135,7 @@ export default function DesignerDeploy({
         </div>
       </div>
       <div className="flex mt05em">
-        <div style={{width: "250px"}} className="mr1em">
+        <div style={{width: "250px"}} className="mr05em">
           <label className="design-label">feature</label>
           <select name="allies" value={currentFeature} className="form-input"
                   onChange={({ target }) => { setCurrentFeature(target.value) }} >

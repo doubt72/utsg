@@ -11,6 +11,8 @@ interface DesignerDataTabProps {
 }
 
 export default function DesignerDataTab({ scenarioData, setScenarioData }: DesignerDataTabProps) {
+  const metadata = scenarioData.metadata
+
   return (
     <form>
       <div className="flex mb05em">
@@ -38,7 +40,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
           <label className="design-label">author</label>
           <input type="text" className="form-input"
             name="author"
-            value={scenarioData.metadata.author}
+            value={metadata.author}
             onChange={({ target }) => setScenarioData(s =>
               { return { ...s, metadata: { ...s.metadata, author: target.value }} }
             )} />
@@ -68,7 +70,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "80px"}}>
           <label className="design-label">year</label>
-          <select name="year" value={scenarioData.metadata.date[0]} className="form-input"
+          <select name="year" value={metadata.date[0]} className="form-input"
                   onChange={({ target }) => setScenarioData(s =>
                     { return { ...s, metadata: {
                       ...s.metadata, date: [Number(target.value), s.metadata.date[1], s.metadata.date[2]],
@@ -79,7 +81,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "60px"}}>
           <label className="design-label">month</label>
-          <select name="month" value={scenarioData.metadata.date[1]} className="form-input"
+          <select name="month" value={metadata.date[1]} className="form-input"
                   onChange={({ target }) => setScenarioData(s =>
                     { return { ...s, metadata: {
                       ...s.metadata, date: [s.metadata.date[0], Number(target.value), s.metadata.date[2]],
@@ -90,7 +92,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "60px"}}>
           <label className="design-label">day</label>
-          <select name="day" value={scenarioData.metadata.date[2]} className="form-input"
+          <select name="day" value={metadata.date[2]} className="form-input"
                   onChange={({ target }) => setScenarioData(s =>
                     { return { ...s, metadata: {
                       ...s.metadata, date: [s.metadata.date[0], s.metadata.date[1], Number(target.value)],
@@ -105,7 +107,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
           <label className="design-label">location</label>
           <input type="text" className="form-input"
             name="location"
-            value={scenarioData.metadata.location}
+            value={metadata.location}
             onChange={({ target }) => setScenarioData(s =>
               { return { ...s, metadata: { ...s.metadata, location: target.value }} }
             )} />
@@ -114,12 +116,14 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
       <div style={{width: "480px"}}>
         <label className="design-label">description</label>
       </div>
-      { scenarioData.metadata.description.map((d, i) =>
+      { metadata.description.map((d, i) =>
         <div key={i} className="flex mb05em" style={{width: "480px"}} >
           <div className="flex-vertical mt05em">
             { i === 0 ?
-              <span className="slim-button-disable">{iconSymbols("no")}</span> :
-              <span className="slim-button"
+              <div className="design-button-disable mr05em" style={{ width: "32px", textAlign: "center" }}>
+                {iconSymbols("no")}
+              </div> :
+              <div className="design-button mr05em" style={{ width: "32px", textAlign: "center" }}
                     onClick={() => {
                       setScenarioData(s => {
                         const d = ([] as string[]).concat(s.metadata.description)
@@ -128,12 +132,12 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
                       })
                     }} >
                 {iconSymbols("no")}
-              </span> }
+              </div> }
             <div className="flex-fill"></div>
           </div>
           <textarea className="form-input-text"
             name={`description-${i}`}
-            value={scenarioData.metadata.description[i].replace(/[\n\r\t]/gm, "").replace(/\s+/gm, " ")}
+            value={metadata.description[i].replace(/[\n\r\t]/gm, "").replace(/\s+/gm, " ")}
             onChange={({ target }) => {
               setScenarioData(s => {
                 const d = ([] as string[]).concat(s.metadata.description)
@@ -145,14 +149,14 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
       )}
       <div className="flex mb05em" style={{width: 480, height: "1.8em"}}>
         <div className="flex-fill"></div>
-        <span className="slim-button"
+        <div className="design-button" style={{ width: "32px", textAlign: "center" }}
               onClick={() => {
                 setScenarioData(s => {
                   const d = ([] as string[]).concat(s.metadata.description)
                   d.push("")
                   return { ...s, metadata: { ...s.metadata, description: d }}
                 })
-              }}>+</span>
+              }}>+</div>
       </div>
       <div className="flex mb05em">
         <div style={{width: "150px"}}>
@@ -172,14 +176,14 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         <div className="ml1em unselectable" style={{width: "70px"}}>
           <label className="design-label">adv</label>
           <br />
-          { showHex(scenarioData.metadata.map_data.allied_dir, () => {
+          { showHex(metadata.map_data.allied_dir, () => {
             setScenarioData(s => {
               return { ...s, metadata: { ...s.metadata, map_data: {
                 ...s.metadata.map_data, allied_dir: normalDir(s.metadata.map_data.allied_dir + 0.5)
               }} }
             })
           }) }
-          : { scenarioData.metadata.map_data.allied_dir }
+          : { metadata.map_data.allied_dir }
         </div>
         <div className="ml1em" style={{width: "150px"}}>
           <label className="design-label">player two</label>
@@ -197,20 +201,20 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         <div className="ml1em unselectable" style={{width: "70px"}}>
           <label className="design-label">adv</label>
           <br />
-          { showHex(scenarioData.metadata.map_data.axis_dir, () => {
+          { showHex(metadata.map_data.axis_dir, () => {
             setScenarioData(s => {
               return { ...s, metadata: { ...s.metadata, map_data: {
                 ...s.metadata.map_data, axis_dir: normalDir(s.metadata.map_data.axis_dir + 0.5)
               }} }
             })
           }) }
-          : { scenarioData.metadata.map_data.axis_dir }
+          : { metadata.map_data.axis_dir }
         </div>
       </div>
       <div className="flex mb05em">
         <div style={{width: "130px"}}>
           <label className="design-label">first deploy</label>
-          <select name="allies" value={scenarioData.metadata.first_deploy} className="form-input"
+          <select name="allies" value={metadata.first_deploy} className="form-input"
             onChange={({ target }) => setScenarioData(s =>
               { return { ...s, metadata: { ...s.metadata, first_deploy: Number(target.value) as Player }} }
             )} >
@@ -220,7 +224,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "130px"}}>
           <label className="design-label">initiative</label>
-          <select name="axis" value={scenarioData.metadata.first_action} className="form-input"
+          <select name="axis" value={metadata.first_action} className="form-input"
             onChange={({ target }) => setScenarioData(s =>
               { return { ...s, metadata: { ...s.metadata, first_action: Number(target.value) as Player }} }
             )} >
@@ -230,7 +234,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "60px"}}>
           <label className="design-label">turns</label>
-          <select name="turns" value={scenarioData.metadata.turns} className="form-input"
+          <select name="turns" value={metadata.turns} className="form-input"
             onChange={({ target }) => setScenarioData(s =>
               { return { ...s, metadata: { ...s.metadata, turns: Number(target.value) }} }
             )} >
@@ -241,10 +245,10 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
       <div className="flex">
         <div style={{width: "480px"}}>
           <label className="design-label">special rules</label>
-          <select name="special" value={scenarioData.metadata.special_rules ?? []} className="form-input"
+          <select name="special" value={metadata.special_rules ?? []} className="form-input"
                   onChange={({ target }) => {
                     setScenarioData(s => {
-                      const sr = ([] as string[]).concat(scenarioData.metadata.special_rules ?? [])
+                      const sr = ([] as string[]).concat(metadata.special_rules ?? [])
                       const index =  sr.indexOf(target.value)
                       if (index < 0) {
                         sr.push(target.value)
@@ -268,12 +272,12 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
       </div>
       <div className="flex mb1em">
-        <span className="green">{ scenarioData.metadata.special_rules?.join(", ") }</span>
+        <span className="green">{ metadata.special_rules?.join(", ") }</span>
       </div>
       <div className="flex mb05em">
         <div style={{width: "90px"}}>
           <label className="design-label">base</label>
-          <select name="allies" value={scenarioData.metadata.map_data.base_terrain} className="form-input"
+          <select name="allies" value={metadata.map_data.base_terrain} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     return { ...s, metadata: { ...s.metadata, map_data: {
                       ...s.metadata.map_data, base_terrain: target.value as BaseTerrainType
@@ -287,7 +291,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "80px"}}>
           <label className="design-label">time</label>
-          <select name="axis" value={String(scenarioData.metadata.map_data.night)} className="form-input"
+          <select name="axis" value={String(metadata.map_data.night)} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     return { ...s, metadata: { ...s.metadata, map_data: {
                       ...s.metadata.map_data, night: target.value === "true"
@@ -298,7 +302,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "100px"}}>
           <label className="design-label">wind</label>
-          <select name="axis" value={scenarioData.metadata.map_data.wind[0]} className="form-input"
+          <select name="axis" value={metadata.map_data.wind[0]} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     const wind = s.metadata.map_data.wind
                     return { ...s, metadata: { ...s.metadata, map_data: {
@@ -312,7 +316,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "70px"}}>
           <label className="design-label">var</label>
-          <select name="axis" value={String(scenarioData.metadata.map_data.wind[2])} className="form-input"
+          <select name="axis" value={String(metadata.map_data.wind[2])} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     const wind = s.metadata.map_data.wind
                     return { ...s, metadata: { ...s.metadata, map_data: {
@@ -325,20 +329,20 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         <div className="ml1em unselectable" style={{width: "70px"}}>
           <label className="design-label">dir</label>
           <br />
-          { showHex(scenarioData.metadata.map_data.wind[1], () => {
+          { showHex(metadata.map_data.wind[1], () => {
               setScenarioData(s => {
                 const wind = s.metadata.map_data.wind
                 return { ...s, metadata: { ...s.metadata, map_data: {
                   ...s.metadata.map_data, wind: [wind[0], normalDir(wind[1] + 1), wind[2]]
                 }}}})
             }) }
-          : { scenarioData.metadata.map_data.wind[1] }
+          : { metadata.map_data.wind[1] }
         </div>
       </div>
       <div className="flex mb05em">
         <div  style={{width: "80px"}}>
           <label className="design-label">weather</label>
-          <select name="axis" value={scenarioData.metadata.map_data.base_weather} className="form-input"
+          <select name="axis" value={metadata.map_data.base_weather} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     return { ...s, metadata: { ...s.metadata, map_data: {
                       ...s.metadata.map_data, base_weather: target.value as WeatherType
@@ -353,7 +357,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "80px"}}>
           <label className="design-label">precip</label>
-          <select name="axis" value={scenarioData.metadata.map_data.precip[1]} className="form-input"
+          <select name="axis" value={metadata.map_data.precip[1]} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     const precip = s.metadata.map_data.precip
                     return { ...s, metadata: { ...s.metadata, map_data: {
@@ -369,7 +373,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "60px"}}>
           <label className="design-label">%</label>
-          <select name="axis" value={scenarioData.metadata.map_data.precip[0]} className="form-input"
+          <select name="axis" value={metadata.map_data.precip[0]} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     const precip = s.metadata.map_data.precip
                     return { ...s, metadata: { ...s.metadata, map_data: {
@@ -380,7 +384,7 @@ export default function DesignerDataTab({ scenarioData, setScenarioData }: Desig
         </div>
         <div className="ml1em" style={{width: "80px"}}>
           <label className="design-label">current</label>
-          <select name="axis" value={scenarioData.metadata.map_data.start_weather} className="form-input"
+          <select name="axis" value={metadata.map_data.start_weather} className="form-input"
                   onChange={({ target }) => setScenarioData(s => {
                     return { ...s, metadata: { ...s.metadata, map_data: {
                       ...s.metadata.map_data, start_weather: target.value as WeatherType

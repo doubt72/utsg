@@ -18,16 +18,18 @@ import { GameActionUnit } from "./GameAction";
 import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
 import StackingActionError from "./actions/StackingActionError";
 
+export type DeployHexes = [string | number, string | number][]
+
 type MapLayout = [ number, number, "x" | "y" ];
-type SetupHexesType = { [index: string]: ["*" | number, "*" | number][] }
+type DeployHexesTurn = { [index: string]: DeployHexes }
 
 export type MapData = {
   layout: MapLayout;
   allied_dir: ExtendedDirection;
   axis_dir: ExtendedDirection;
   victory_hexes?: [ number, number, 1 | 2 ][];
-  allied_setup?: SetupHexesType;
-  axis_setup?: SetupHexesType;
+  allied_setup?: DeployHexesTurn;
+  axis_setup?: DeployHexesTurn;
   hexes: HexData[][];
   base_terrain: BaseTerrainType;
   night?: boolean;
@@ -47,8 +49,8 @@ export default class Map {
   alliedDir: ExtendedDirection;
   axisDir: ExtendedDirection;
   victoryHexes: VictoryHex[];
-  alliedSetupHexes?: SetupHexesType;
-  axisSetupHexes?: SetupHexesType;
+  alliedSetupHexes?: DeployHexesTurn;
+  axisSetupHexes?: DeployHexesTurn;
   mapHexes: Hex[][] = [];
 
   units: (Unit | Feature)[][][];

@@ -5,6 +5,7 @@ import GameAction from "../../GameAction";
 import Hex from "../../Hex";
 import { ReinforcementItem } from "../../Scenario";
 import Unit from "../../Unit";
+import { deployHex } from "../deploy";
 import BaseState, { stateType } from "./BaseState";
 
 export default class DeployState extends BaseState {
@@ -62,43 +63,25 @@ export default class DeployState extends BaseState {
     const ts = `${this.turn}`
     if (!this.map.alliedSetupHexes || !this.map.axisSetupHexes) { return hexOpenType.Closed }
     const hexes = this.player === 1 ? this.map.alliedSetupHexes[ts] : this.map.axisSetupHexes[ts]
-    for (const h of hexes) {
-      let xMatch = false
-      let yMatch = false
-      if (typeof h[0] === "string" && h[0].includes("-")) {
-        const [lo, hi] = h[0].split("-")
-        if (x >= Number(lo) && x <= Number(hi)) { xMatch = true }
-      } else if (h[0] === "*") {
-        xMatch = true
-      } else if (x === h[0]) { xMatch = true }
-
-      if (typeof h[1] === "string" && h[1].includes("-")) {
-        const [lo, hi] = h[1].split("-")
-        if (y >= Number(lo) && y <= Number(hi)) { yMatch = true }
-      } else if (h[1] === "*") {
-        yMatch = true
-      } else if (y === h[1]) { yMatch = true }
-
-      if (xMatch && yMatch) {
-        let rc = hexOpenType.Open
-        const list = this.map.units[hex.coord.y][hex.coord.x]
-        const last = list[list.length - 1] as Unit
-        if (unit.crewed) {
-          if ((last && !last.isFeature) &&
-              ((last.canTow && last.size >= (unit.towSize ?? 0)) || last.canHandle)) {
-            rc = hexOpenType.Open
-          } else {
-            rc = hexOpenType.Red
-          }
-        } else if (unit.uncrewedSW) {
-          if ((last && !last.isFeature) && last.canCarrySupport && !(last.leader && unit.baseMovement < 0)) {
-            rc = hexOpenType.Open
-          } else {
-            rc = hexOpenType.Red
-          }
+    if (deployHex(hexes, x, y)) {
+      let rc = hexOpenType.Open
+      const list = this.map.units[hex.coord.y][hex.coord.x]
+      const last = list[list.length - 1] as Unit
+      if (unit.crewed) {
+        if ((last && !last.isFeature) &&
+            ((last.canTow && last.size >= (unit.towSize ?? 0)) || last.canHandle)) {
+          rc = hexOpenType.Open
+        } else {
+          rc = hexOpenType.Red
         }
-        return rc
+      } else if (unit.uncrewedSW) {
+        if ((last && !last.isFeature) && last.canCarrySupport && !(last.leader && unit.baseMovement < 0)) {
+          rc = hexOpenType.Open
+        } else {
+          rc = hexOpenType.Red
+        }
       }
+      return rc
     }
     return hexOpenType.Closed
   }
