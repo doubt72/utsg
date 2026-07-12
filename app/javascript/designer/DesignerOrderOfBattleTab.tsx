@@ -1,18 +1,20 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ScenarioData } from "../engine/Scenario";
 import DesignerDeploy from "./DesignerDeploy";
+import { UnitData } from "../engine/Unit";
 
 interface DesignerOrderOfBattleTabProps {
   scenarioData: ScenarioData;
   setScenarioData: Dispatch<SetStateAction<ScenarioData>>;
   deploySelected: string;
   setDeploySelected: Dispatch<SetStateAction<string>>;
+  availableAlliedUnits: [string, string, UnitData][];
+  availableAxisUnits: [string, string, UnitData][];
 }
 
 export default function DesignerOrderOfBattleTab({
-  scenarioData, setScenarioData, deploySelected, setDeploySelected
+  scenarioData, setScenarioData, deploySelected, setDeploySelected, availableAlliedUnits, availableAxisUnits
 }: DesignerOrderOfBattleTabProps) {
-
   const [deploys, setDeploys] = useState<JSX.Element[]>([])
 
   const addSelector = (turn: number, player: number, deps: JSX.Element[]) => {
@@ -31,7 +33,8 @@ export default function DesignerOrderOfBattleTab({
         </div>
         <div className={`designer-details${ deploySelected === index ? " designer-selected" : ""}`} >
           <DesignerDeploy scenarioData={scenarioData} setScenarioData={setScenarioData}
-                          turn={turn} player={player} />
+                          turn={turn} player={player}
+                          available={player === 1 ? availableAlliedUnits : availableAxisUnits} />
         </div>
       </div> :
       <div key={index}>
@@ -39,7 +42,7 @@ export default function DesignerOrderOfBattleTab({
           <div className="mr1em">
             turn {turn} &mdash; player {player}
           </div>
-          <span className="slim-button" onClick={() => {
+          <div className="design-button" onClick={() => {
             setScenarioData(s => {
               return player === 1 ?
                 { ...s, metadata: {
@@ -60,7 +63,7 @@ export default function DesignerOrderOfBattleTab({
                 }
             })
             setDeploySelected(index)
-          }}>activate</span>
+          }}>activate</div>
         </div>
       </div>
     )

@@ -12,13 +12,16 @@ import { BorderType, BuildingShape, BuildingStyle, Coordinate, Direction, Elevat
 import { HexData } from "../engine/Hex";
 import { normalDir } from "../utilities/utilities";
 import DesignerOrderOfBattleTab from "./DesignerOrderOfBattleTab";
+import { getAPI } from "../utilities/network";
+import { UnitData } from "../engine/Unit";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
     id: "000", name: "blank scenario", status: "p", version: "0.1",
     allies: ["ussr"], axis: ["ger"], metadata: {
       author: "nobody", date: [1939, 1, 1], location: "nowhere", turns: 5,
-      first_action: 1, first_deploy: 2, allied_units: [], axis_units: [],
+      first_action: 1, first_deploy: 2,
+      allied_units: { 0: { list: [] } }, axis_units: { 0: { list: [] } },
       description: ["no description yet"], special_rules: [], map_data: {
         layout: [15, 11, "x"], allied_dir: 1, axis_dir: 1, victory_hexes: [],
         allied_setup: {}, axis_setup: {}, base_terrain: "g", night: false,
@@ -83,6 +86,9 @@ export default function ScenarioDesigner() {
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
   const [victoryDisplay, setVictoryDisplay] = useState<JSX.Element[]>([])
+
+  const [availableAlliedUnits, setAvailableAlliedUnits] = useState<[string, string, UnitData][]>([])
+  const [availableAxisUnits, setAvailableAxisUnits] = useState<[string, string, UnitData][]>([])
 
   const [scale, setScale] = useState<number>(0.45)
   const [width, setWidth] = useState<number>(1)
@@ -293,6 +299,25 @@ export default function ScenarioDesigner() {
 
   useEffect(() => {
     const s = new Scenario(scenarioData)
+    getAPI("/api/v1/scenarios/all_units", {
+      ok: response => response.json().then(json => {
+        const allies: [string, string, UnitData][] = []
+        const axis: [string, string, UnitData][] = []
+        for (const id of Object.keys(json)) {
+          const data = json[id]
+          if (scenarioData.allies[0] === data.c) {
+            allies.push([id, data.n, data])
+          } else if (scenarioData.axis[0] === data.c) {
+            axis.push([id, data.n, data])
+          } else if (data.ft === 1 && !["smoke", "fire", "rubble"].includes(data.t)) {
+            allies.push([id, data.n, data])
+            axis.push([id, data.n, data])
+          }
+        }
+        setAvailableAlliedUnits(allies)
+        setAvailableAxisUnits(axis)
+      })
+    })
     setScenario(s)
     setSelectionType(s => {
       const layout = scenarioData.metadata.map_data.layout
@@ -402,7 +427,9 @@ export default function ScenarioDesigner() {
             { tab === 3 ? <DesignerOrderOfBattleTab scenarioData={scenarioData}
                                                     setScenarioData={setScenarioData}
                                                     deploySelected={deploySelected}
-                                                    setDeploySelected={setDeploySelected} /> : ""}
+                                                    setDeploySelected={setDeploySelected}
+                                                    availableAlliedUnits={availableAlliedUnits}
+                                                    availableAxisUnits={availableAxisUnits} /> : ""}
             { tab === 4 ? <DesignerFileTab resetCacheCallback={resetCache} scenarioData={scenarioData}
                                            setScenarioData={setScenarioData}
                                            setScale={setScale} setTab={setTab}/> : "" }
