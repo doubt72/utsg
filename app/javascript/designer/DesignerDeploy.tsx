@@ -13,8 +13,8 @@ interface DesignerDeployProps {
 export default function DesignerDeploy({
   scenarioData, setScenarioData, turn, player, available,
 }: DesignerDeployProps) {
-  const raw = player === 1 ? scenarioData.metadata.allied_units[turn].list :
-    scenarioData.metadata.axis_units[turn].list
+  const raw = player === 1 ? (scenarioData.metadata.allied_units[turn]?.list ?? []) :
+    (scenarioData.metadata.axis_units[turn]?.list ?? [])
   const ids = raw.map(u => u.id)
   const names = raw.map(u => u.n)
   const counts = raw.map(u => u.x ?? 1)
@@ -22,7 +22,7 @@ export default function DesignerDeploy({
   const availableFeatures = available.filter(n => !ids.includes(n[0]) && n[2].ft )
 
   const [currentUnit, setCurrentUnit] = useState<string>(availableUnits[0][0])
-  const [currentFeature, setCurrentFeature] = useState<string>(availableUnits[0][0])
+  const [currentFeature, setCurrentFeature] = useState<string>(availableFeatures[0][0])
 
   return (
     <div>
@@ -108,30 +108,35 @@ export default function DesignerDeploy({
             { availableUnits.map(n => <option key={n[0]} value={n[0]}>{n[1]} [{n[0]}]</option>) }
           </select>
         </div>
-        <div className="design-button" style={{marginTop: "28px", marginBottom: "4px"}} onClick={() => {
+        <div className="design-button" style={{
+               marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
+             }}
+             onClick={() => {
           setScenarioData(s => {
             const selection = availableUnits.find(u => u[0] === currentUnit)
             if (!selection) { return s }
             setCurrentUnit(availableUnits.filter(u => u[0] !== currentUnit)[0][0])
             selection[2].x = 1
             selection[2].id = selection[0]
+            const list = player === 1 ? (s.metadata.allied_units[turn]?.list ?? []) :
+              (s.metadata.axis_units[turn]?.list ?? [])
             return player === 1 ? {
               ...s, metadata: {
                 ...s.metadata,
                 allied_units: { ...s.metadata.allied_units, [turn]: {
-                  list: [...s.metadata.allied_units[turn].list, selection[2]]
+                  list: [...list, selection[2]]
                 }}
               }
             } : {
               ...s, metadata: {
                 ...s.metadata,
                 axis_units: { ...s.metadata.axis_units, [turn]: {
-                  list: [...s.metadata.axis_units[turn].list, selection[2]]
+                  list: [...list, selection[2]]
                 }}
               }
             }
           })}}>
-          add
+          +
         </div>
       </div>
       <div className="flex mt05em">
@@ -142,30 +147,34 @@ export default function DesignerDeploy({
             { availableFeatures.map(n => <option key={n[0]} value={n[0]}>{n[1]} [{n[0]}]</option>) }
           </select>
         </div>
-        <div className="design-button" style={{marginTop: "28px", marginBottom: "4px"}} onClick={() => {
+        <div className="design-button" style={{
+               marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
+             }} onClick={() => {
           setScenarioData(s => {
             const selection = availableFeatures.find(u => u[0] === currentFeature)
             if (!selection) { return s }
-            setCurrentFeature(availableFeatures.filter(u => u[0] !== currentUnit)[0][0])
+            setCurrentFeature(availableFeatures.filter(u => u[0] !== currentFeature)[0][0])
             selection[2].x = 1
             selection[2].id = selection[0]
+            const list = player === 1 ? (s.metadata.allied_units[turn]?.list ?? []) :
+              (s.metadata.axis_units[turn]?.list ?? [])
             return player === 1 ? {
               ...s, metadata: {
                 ...s.metadata,
                 allied_units: { ...s.metadata.allied_units, [turn]: {
-                  list: [...s.metadata.allied_units[turn].list, selection[2]]
+                  list: [...list, selection[2]]
                 }}
               }
             } : {
               ...s, metadata: {
                 ...s.metadata,
                 axis_units: { ...s.metadata.axis_units, [turn]: {
-                  list: [...s.metadata.axis_units[turn].list, selection[2]]
+                  list: [...list, selection[2]]
                 }}
               }
             }
           })}}>
-          add
+          +
         </div>
       </div>
     </div>

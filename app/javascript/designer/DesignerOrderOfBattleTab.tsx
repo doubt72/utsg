@@ -3,6 +3,7 @@ import { ScenarioData } from "../engine/Scenario";
 import DesignerDeploy from "./DesignerDeploy";
 import { UnitData } from "../engine/Unit";
 import { toggleHex } from "../engine/control/deploy";
+import { DeployHexes } from "../engine/Map";
 
 interface DesignerOrderOfBattleTabProps {
   scenarioData: ScenarioData;
@@ -88,7 +89,7 @@ export default function DesignerOrderOfBattleTab({
     <div>
       <form>
         <div className="flex mb1em">
-          <div style={{width: "50px"}} className="mr05em">
+          <div style={{width: "60px"}} className="mr05em">
             <label className="design-label">left</label>
             <select name="allies" value={left} className="form-input"
                     onChange={({ target }) => { setLeft(Number(target.value)) }} >
@@ -99,15 +100,18 @@ export default function DesignerOrderOfBattleTab({
               }) }
             </select>
           </div>
-          <div className="design-button mr1em" style={{marginTop: "28px", marginBottom: "4px"}} onClick={() => {
+          <div className="design-button mr1em" style={{
+                 marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
+               }} onClick={() => {
             setScenarioData(s => {
               const player = Number(deploySelected[deploySelected.length - 1])
               const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
               const mapData = scenarioData.metadata.map_data
-              const hexes = player === 1 ? mapData.allied_setup : mapData.allied_setup
-              if (!hexes || !hexes[turn]) { return s }
+              const hexes = player === 1 ? mapData.allied_setup : mapData.axis_setup
+              let turnHexes: DeployHexes = []
+              if (hexes && hexes[turn]) { turnHexes = hexes[turn] }
               const newHexes = toggleHex(
-                [...hexes[turn], [`0-${left-1}`, "*"]], -1, -1,
+                [...turnHexes, [`0-${left-1}`, "*"]], -1, -1,
                 mapData.layout[0] - 1, mapData.layout[1] - 1
               )
               return player === 1 ?
@@ -127,13 +131,13 @@ export default function DesignerOrderOfBattleTab({
                     ...s.metadata,
                     map_data: {
                       ...s.metadata.map_data,
-                      allied_setup: { ...s.metadata.map_data.allied_setup, [turn]: newHexes },
+                      axis_setup: { ...s.metadata.map_data.axis_setup, [turn]: newHexes },
                     },
                   },
                 }
             })
-          }}>add</div>
-          <div style={{width: "50px"}} className="mr05em">
+          }}>+</div>
+          <div style={{width: "60px"}} className="mr05em">
             <label className="design-label">right</label>
             <select name="allies" value={right} className="form-input"
                     onChange={({ target }) => { setRight(Number(target.value)) }} >
@@ -144,16 +148,19 @@ export default function DesignerOrderOfBattleTab({
               }) }
             </select>
           </div>
-          <div className="design-button mr1em" style={{marginTop: "28px", marginBottom: "4px"}} onClick={() => {
+          <div className="design-button mr1em" style={{
+                 marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
+               }} onClick={() => {
             setScenarioData(s => {
               const player = Number(deploySelected[deploySelected.length - 1])
               const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
               const mapData = scenarioData.metadata.map_data
-              const hexes = player === 1 ? mapData.allied_setup : mapData.allied_setup
-              if (!hexes || !hexes[turn]) { return s }
+              const hexes = player === 1 ? mapData.allied_setup : mapData.axis_setup
+              let turnHexes: DeployHexes = []
+              if (hexes && hexes[turn]) { turnHexes = hexes[turn] }
               const xMax = mapData.layout[0] - 1
               const newHexes = toggleHex(
-                [...hexes[turn], [`${xMax - right + 1}-${xMax}`, "*"]], -1, -1,
+                [...turnHexes, [`${xMax - right + 1}-${xMax}`, "*"]], -1, -1,
                 xMax, mapData.layout[1] - 1
               )
               return player === 1 ?
@@ -173,13 +180,13 @@ export default function DesignerOrderOfBattleTab({
                     ...s.metadata,
                     map_data: {
                       ...s.metadata.map_data,
-                      allied_setup: { ...s.metadata.map_data.allied_setup, [turn]: newHexes },
+                      axis_setup: { ...s.metadata.map_data.axis_setup, [turn]: newHexes },
                     },
                   },
                 }
             })
-          }}>add</div>
-          <div style={{width: "50px"}} className="mr05em">
+          }}>+</div>
+          <div style={{width: "60px"}} className="mr05em">
             <label className="design-label">top</label>
             <select name="allies" value={top} className="form-input"
                     onChange={({ target }) => { setTop(Number(target.value)) }} >
@@ -190,15 +197,18 @@ export default function DesignerOrderOfBattleTab({
               }) }
             </select>
           </div>
-          <div className="design-button mr1em" style={{marginTop: "28px", marginBottom: "4px"}} onClick={() => {
+          <div className="design-button mr1em" style={{
+                 marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
+               }} onClick={() => {
             setScenarioData(s => {
               const player = Number(deploySelected[deploySelected.length - 1])
               const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
               const mapData = scenarioData.metadata.map_data
-              const hexes = player === 1 ? mapData.allied_setup : mapData.allied_setup
-              if (!hexes || !hexes[turn]) { return s }
+              const hexes = player === 1 ? mapData.allied_setup : mapData.axis_setup
+              let turnHexes: DeployHexes = []
+              if (hexes && hexes[turn]) { turnHexes = hexes[turn] }
               const newHexes = toggleHex(
-                [...hexes[turn], ["*", `0-${top-1}`]], -1, -1,
+                [...turnHexes, ["*", `0-${top-1}`]], -1, -1,
                 mapData.layout[0] - 1, mapData.layout[1] - 1
               )
               return player === 1 ?
@@ -218,13 +228,13 @@ export default function DesignerOrderOfBattleTab({
                     ...s.metadata,
                     map_data: {
                       ...s.metadata.map_data,
-                      allied_setup: { ...s.metadata.map_data.allied_setup, [turn]: newHexes },
+                      axis_setup: { ...s.metadata.map_data.axis_setup, [turn]: newHexes },
                     },
                   },
                 }
             })
-          }}>add</div>
-          <div style={{width: "50px"}} className="mr05em">
+          }}>+</div>
+          <div style={{width: "60px"}} className="mr05em">
             <label className="design-label">bottom</label>
             <select name="allies" value={bottom} className="form-input"
                     onChange={({ target }) => { setBottom(Number(target.value)) }} >
@@ -235,16 +245,19 @@ export default function DesignerOrderOfBattleTab({
               }) }
             </select>
           </div>
-          <div className="design-button mr1em" style={{marginTop: "28px", marginBottom: "4px"}} onClick={() => {
+          <div className="design-button mr1em" style={{
+                 marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
+               }} onClick={() => {
             setScenarioData(s => {
               const player = Number(deploySelected[deploySelected.length - 1])
               const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
               const mapData = scenarioData.metadata.map_data
-              const hexes = player === 1 ? mapData.allied_setup : mapData.allied_setup
-              if (!hexes || !hexes[turn]) { return s }
+              const hexes = player === 1 ? mapData.allied_setup : mapData.axis_setup
+              let turnHexes: DeployHexes = []
+              if (hexes && hexes[turn]) { turnHexes = hexes[turn] }
               const yMax = mapData.layout[1] - 1
               const newHexes = toggleHex(
-                [...hexes[turn], ["*", `${yMax - bottom + 1}-${yMax}`]], -1, -1,
+                [...turnHexes, ["*", `${yMax - bottom + 1}-${yMax}`]], -1, -1,
                 mapData.layout[0] - 1, yMax
               )
               return player === 1 ?
@@ -264,12 +277,12 @@ export default function DesignerOrderOfBattleTab({
                     ...s.metadata,
                     map_data: {
                       ...s.metadata.map_data,
-                      allied_setup: { ...s.metadata.map_data.allied_setup, [turn]: newHexes },
+                      axis_setup: { ...s.metadata.map_data.axis_setup, [turn]: newHexes },
                     },
                   },
                 }
             })
-          }}>add</div>
+          }}>+</div>
         </div>
         {deploys}
       </form>

@@ -1,7 +1,8 @@
 Features/Bug Fixes
   - Scenario undo
   - Scenario resize
-  - Finish scenario editor
+  - Clear scenario
+  - Remove end selection/make fire selection more robust
   - Playthroughs
   - Add Some Developer Notes
   - Strategy notes

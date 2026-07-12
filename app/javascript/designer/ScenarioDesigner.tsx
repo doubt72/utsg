@@ -19,6 +19,7 @@ import { getAPI } from "../utilities/network";
 import { UnitData } from "../engine/Unit";
 import { deployHex, toggleHex } from "../engine/control/deploy";
 import MapHexOverlay from "../components/game/map/MapHexOverlay";
+import { DeployHexes } from "../engine/Map";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -110,6 +111,7 @@ export default function ScenarioDesigner() {
   }
 
   const resetCache = () => {
+    setDeploySelected("t0-1")
     setHexCache([])
     setVpCache([])
   }
@@ -306,32 +308,34 @@ export default function ScenarioDesigner() {
       const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
       const mapData = scenarioData.metadata.map_data
       const hexes = player === 1 ? mapData.allied_setup :
-        mapData.allied_setup
+        mapData.axis_setup
+      let turnHexes: DeployHexes = []
       if (hexes && hexes[turn]) {
-        const newHexes = toggleHex(
-          hexes[turn], selectionHex.x, selectionHex.y,
-          mapData.layout[0] - 1, mapData.layout[1] - 1
-        )
-        setScenarioData(s => {
-          return player === 1 ? {
-            ...s, metadata: {
-              ...s.metadata, map_data: {
-                ...s.metadata.map_data, allied_setup: {
-                  ...s.metadata.map_data.allied_setup, [turn]: newHexes,
-                },
-              }
-            }
-          } : {
-            ...s, metadata: {
-              ...s.metadata, map_data: {
-                ...s.metadata.map_data, axis_setup: {
-                  ...s.metadata.map_data.axis_setup, [turn]: newHexes,
-                },
-              }
+        turnHexes = hexes[turn]
+      }
+      const newHexes = toggleHex(
+        turnHexes, selectionHex.x, selectionHex.y,
+        mapData.layout[0] - 1, mapData.layout[1] - 1
+      )
+      setScenarioData(s => {
+        return player === 1 ? {
+          ...s, metadata: {
+            ...s.metadata, map_data: {
+              ...s.metadata.map_data, allied_setup: {
+                ...s.metadata.map_data.allied_setup, [turn]: newHexes,
+              },
             }
           }
-        })
-      }
+        } : {
+          ...s, metadata: {
+            ...s.metadata, map_data: {
+              ...s.metadata.map_data, axis_setup: {
+                ...s.metadata.map_data.axis_setup, [turn]: newHexes,
+              },
+            }
+          }
+        }
+      })
     }
   }, [selectionHex])
 
@@ -361,7 +365,6 @@ export default function ScenarioDesigner() {
       const layout = scenarioData.metadata.map_data.layout
       return { ...s, mapSize: `${layout[0]}x${layout[1]}` }
     })
-    setDeploySelected("t0-1")
     setWidth(s.map.previewXSize * scale)
     setHeight(s.map.ySize * scale)
   }, [scenarioData])
@@ -421,7 +424,7 @@ export default function ScenarioDesigner() {
         const hexes = player === 1 ? map.alliedSetupHexes : map.axisSetupHexes
         const shaded = !!hexes && !!hexes[turn] && deployHex(hexes[turn], x, y)
         overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selectCallback={selectHex}
-                                          shaded={shaded} />)
+                                          shaded={shaded ? hexOpenType.Open : hexOpenType.FalseClosed } />)
       })
     })
     setOverlayDisplay(overlayLoader)
