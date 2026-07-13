@@ -1,10 +1,10 @@
 Features/Bug Fixes
-  - Scenario undo
-  + Scenario resize
-  + Clear scenario
+  + Scenario undo
+  - Change draw order on rotated map
   - Scenario/file conversion
   - Save/play user scenarios / limit 1 - 3 - 5
   - Remove end selection/make fire selection more robust
+  ? Join squad bug (what happened?)
   - Playthroughs
   - Add Some Developer Notes
   - Strategy notes

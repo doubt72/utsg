@@ -1,19 +1,21 @@
 import React, { Dispatch, SetStateAction } from "react";
-import { SelectionType, showHex } from "./ScenarioDesigner";
+import { DesignStack, SelectionType, showHex } from "./ScenarioDesigner";
 import { BorderType, BuildingShape, BuildingStyle, Direction, Elevation, RoadCenterType, RoadType, StreamType, TerrainType } from "../utilities/commonTypes";
 import { alliedCodeToName, axisCodeToName, normalDir } from "../utilities/utilities";
-import { ScenarioData } from "../engine/Scenario";
 
 interface DesignerMapTabProps {
-  scenarioData: ScenarioData;
+  designStack: DesignStack;
   resizeMapCallback: (x: number, y: number) => void;
   selectionType: SelectionType;
   setSelectionType: Dispatch<SetStateAction<SelectionType>>;
 }
 
 export default function DesignerMapTab({
-  scenarioData, resizeMapCallback, selectionType, setSelectionType
+  designStack, resizeMapCallback, selectionType, setSelectionType
 }: DesignerMapTabProps) {
+  const data = designStack.data[designStack.index]
+  const metadata = data.metadata
+
   return (
     <form>
       <div className="flex mb05em">
@@ -47,13 +49,13 @@ export default function DesignerMapTab({
                )} />
         <label className="design-label flex-fill">vps</label>
         <div className="mr1em">
-          { alliedCodeToName(scenarioData.allies[0]) }: {
-            (scenarioData.metadata.map_data.victory_hexes?.filter(vp => vp[2] === 1).length ?? 0) * 10
+          { alliedCodeToName(data.allies[0]) }: {
+            (metadata.map_data.victory_hexes?.filter(vp => vp[2] === 1).length ?? 0) * 10
           }
         </div>
         <div>
-          { axisCodeToName(scenarioData.axis[0]) }: {
-            (scenarioData.metadata.map_data.victory_hexes?.filter(vp => vp[2] === 2).length ?? 0) * 10
+          { axisCodeToName(data.axis[0]) }: {
+            (metadata.map_data.victory_hexes?.filter(vp => vp[2] === 2).length ?? 0) * 10
           }
         </div>
       </div>

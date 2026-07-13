@@ -1,19 +1,20 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ScenarioData } from "../engine/Scenario";
 import { getAPI } from "../utilities/network";
-import { defaultScenario } from "./ScenarioDesigner";
+import { defaultScenario, DesignStack } from "./ScenarioDesigner";
 
 interface DesignerFileTabProps {
   resetCacheCallback: () => void;
-  scenarioData: ScenarioData;
-  setScenarioData: Dispatch<SetStateAction<ScenarioData>>;
+  designStack: DesignStack;
+  setDesignStack: Dispatch<SetStateAction<DesignStack>>;
   setScale: Dispatch<SetStateAction<number>>;
   setTab: Dispatch<SetStateAction<number>>;
 }
 
 export default function DesignerFileTab({
-  resetCacheCallback, scenarioData, setScenarioData, setScale, setTab
+  resetCacheCallback, designStack, setDesignStack, setScale, setTab
 }: DesignerFileTabProps) {
+  const data = designStack.data[designStack.index]
+
   const [scenarioList, setScenarioList] = useState<string[]>([])
 
   const proto = localStorage.getItem("proto") === "true"
@@ -32,7 +33,7 @@ export default function DesignerFileTab({
   
   const loadScenario = (id: string) => {
     if (id === "") {
-      setScenarioData(defaultScenario())
+      setDesignStack({ data: [defaultScenario()], index: 0 })
       resetCacheCallback()
       return
     }
@@ -40,7 +41,7 @@ export default function DesignerFileTab({
     getAPI(url, {
       ok: response => {
         response.json().then(json => {
-          setScenarioData(json)
+          setDesignStack({ data: [json], index: 0 })
           resetCacheCallback()
         })
       }
@@ -48,13 +49,13 @@ export default function DesignerFileTab({
   }
   
   const download = () => {
-    const jsonString = JSON.stringify(scenarioData)
+    const jsonString = JSON.stringify(data)
     const blob = new Blob([jsonString], { type: "application/json" })
 
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `scenario_${scenarioData.id}.json`
+    link.download = `scenario_${data.id}.json`
 
     document.body.appendChild(link);
     link.click();
@@ -63,7 +64,7 @@ export default function DesignerFileTab({
   }
 
   const clearScenario = () => {
-    setScenarioData(defaultScenario())
+    setDesignStack({ data: [defaultScenario()], index: 0 })
   }
 
   return (
@@ -98,7 +99,7 @@ export default function DesignerFileTab({
               reader.onload = (e) => {
                 try {
                   const jsonData = JSON.parse(e.target?.result as string);
-                  setScenarioData(jsonData)
+                  setDesignStack({ data: [jsonData], index: 0 })
                   resetCacheCallback()
                 } catch (err) {
                   console.error('Invalid JSON:', err);

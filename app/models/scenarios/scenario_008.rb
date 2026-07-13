@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.4"
+    VERSION = "0.5"
 
     DATE = [1943, 7, 5].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -17,12 +17,13 @@ module Scenarios
         :ussr_leader_6_1,
         :ussr_leader_4_1,
         [2, :ussr_smg_s],
-        [2, :ussr_rifle_s],
+        [4, :ussr_rifle_s],
         [2, :ussr_crew_t],
-        :ussr_dp_27,
+        [2, :ussr_dp_27],
         :ussr_120_pm_38,
         [2, :ussr_57mm_zis_2],
         [5, :ussr_t_34_m42_m43],
+        :ussr_su_85,
         [2, :ussr_su_122],
       ] },
     }.freeze
@@ -91,7 +92,8 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [2, 1, 2], [4, 2, 2], [5, 7, 1], [11, 10, 1], [7, 12, 1], [7, 18, 1], [6, 20, 1],
+            [2, 1, 2], [9, 3, 2], [5, 7, 1], [11, 10, 1], [7, 13, 1], [2, 17, 1], [11, 17, 1],
+            [7, 18, 1], [6, 20, 1],
           ],
           allied_setup: { "0" => [["*", "7-22"]] },
           axis_setup: { "0" => [["*", "0-3"]] },

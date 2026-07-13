@@ -1,3 +1,8 @@
+# 0.109
+
+- Add undo to scenario editor (massive data schema refactor)
+- Updated 008
+
 # 0.108
 
 - More work on scenario editor (mainly OOB)

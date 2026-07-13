@@ -1,20 +1,24 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { ScenarioData } from "../engine/Scenario";
 import { UnitData } from "../engine/Unit";
+import { DesignStack, pushDesignStack } from "./ScenarioDesigner";
+import { FeatureData } from "../engine/Feature";
 
 interface DesignerDeployProps {
-  scenarioData: ScenarioData;
-  setScenarioData: Dispatch<SetStateAction<ScenarioData>>;
+  designStack: DesignStack;
+  setDesignStack: Dispatch<SetStateAction<DesignStack>>;
   turn: number;
   player: number;
-  available: [string, string, UnitData][];
+  available: [string, string, UnitData | FeatureData][];
 }
 
 export default function DesignerDeploy({
-  scenarioData, setScenarioData, turn, player, available,
+  designStack, setDesignStack, turn, player, available,
 }: DesignerDeployProps) {
-  const raw = player === 1 ? (scenarioData.metadata.allied_units[turn]?.list ?? []) :
-    (scenarioData.metadata.axis_units[turn]?.list ?? [])
+  const data = designStack.data[designStack.index]
+  const metadata = data.metadata
+
+  const raw = player === 1 ? (metadata.allied_units[turn]?.list ?? []) :
+    (metadata.axis_units[turn]?.list ?? [])
   const ids = raw.map(u => u.id)
   const names = raw.map(u => u.n)
   const counts = raw.map(u => u.x ?? 1)
@@ -30,70 +34,67 @@ export default function DesignerDeploy({
         return (
           <div key={`name-${i}`} className="ml1em flex mt05em">
             <div className="design-button" style={{minWidth: "20px", textAlign: "center"}} onClick={() => {
-              setScenarioData(s => {
-                return player === 1 ? {
-                  ...s, metadata: {
-                    ...s.metadata,
-                    allied_units: { ...s.metadata.allied_units, [turn]: {
-                      list: s.metadata.allied_units[turn].list.map((u, j) => {
+              pushDesignStack(
+                player === 1 ? {
+                  ...data, metadata: {
+                    ...metadata,
+                    allied_units: { ...metadata.allied_units, [turn]: {
+                      list: metadata.allied_units[turn].list.map((u, j) => {
                         return i === j ? { ...u, x: (u.x ?? 1) + 1 } : u
                       })
                     }}
                   }
                 } : {
-                  ...s, metadata: {
-                    ...s.metadata,
-                    axis_units: { ...s.metadata.axis_units, [turn]: {
-                      list: s.metadata.axis_units[turn].list.map((u, j) => {
+                  ...data, metadata: {
+                    ...metadata,
+                    axis_units: { ...metadata.axis_units, [turn]: {
+                      list: metadata.axis_units[turn].list.map((u, j) => {
                         return i === j ? { ...u, x: (u.x ?? 1) + 1 } : u
                       })
                     }}
                   }
-                }
-              })
+                }, setDesignStack
+              )
             }}>+</div>
             <div style={{minWidth: "32px", textAlign: "center"}}>{ counts[i] }</div>
             <div className="design-button" style={{minWidth: "20px", textAlign: "center"}} onClick={() => {
-              setScenarioData(s => {
-                if (counts[i] > 1) {
-                  return player === 1 ? {
-                    ...s, metadata: {
-                      ...s.metadata,
-                      allied_units: { ...s.metadata.allied_units, [turn]: {
-                        list: s.metadata.allied_units[turn].list.map((u, j) => {
-                          return i === j ? { ...u, x: (u.x ?? 1) - 1 } : u
-                        })
-                      }}
-                    }
-                  } : {
-                    ...s, metadata: {
-                      ...s.metadata,
-                      axis_units: { ...s.metadata.axis_units, [turn]: {
-                        list: s.metadata.axis_units[turn].list.map((u, j) => {
-                          return i === j ? { ...u, x: (u.x ?? 1) - 1 } : u
-                        })
-                      }}
-                    }
-                  }
-                } else {
-                  return player === 1 ? {
-                    ...s, metadata: {
-                      ...s.metadata,
-                      allied_units: { ...s.metadata.allied_units, [turn]: {
-                        list: s.metadata.allied_units[turn].list.filter((u, j) => { return i !== j })
-                      }}
-                    }
-                  } : {
-                    ...s, metadata: {
-                      ...s.metadata,
-                      axis_units: { ...s.metadata.axis_units, [turn]: {
-                        list: s.metadata.axis_units[turn].list.filter((u, j) => { return i !== j })
-                      }}
-                    }
-                  }
-                }
-              })
-            }}>-</div>
+                   const newData = counts[i] > 0 ?
+                     (player === 1 ? {
+                        ...data, metadata: {
+                          ...metadata,
+                          allied_units: { ...metadata.allied_units, [turn]: {
+                            list: metadata.allied_units[turn].list.map((u, j) => {
+                              return i === j ? { ...u, x: (u.x ?? 1) - 1 } : u
+                            })
+                          }}
+                        }
+                      } : {
+                        ...data, metadata: {
+                          ...metadata,
+                          axis_units: { ...metadata.axis_units, [turn]: {
+                            list: metadata.axis_units[turn].list.map((u, j) => {
+                              return i === j ? { ...u, x: (u.x ?? 1) - 1 } : u
+                            })
+                          }}
+                        }
+                      }) :
+                     (player === 1 ? {
+                        ...data, metadata: {
+                          ...metadata,
+                          allied_units: { ...metadata.allied_units, [turn]: {
+                            list: metadata.allied_units[turn].list.filter((u, j) => { return i !== j })
+                          }}
+                        }
+                      } : {
+                        ...data, metadata: {
+                          ...metadata,
+                          axis_units: { ...metadata.axis_units, [turn]: {
+                            list: metadata.axis_units[turn].list.filter((u, j) => { return i !== j })
+                          }}
+                        }
+                      })
+                   pushDesignStack(newData, setDesignStack)
+                 }}>-</div>
             <div className="flex-fill ml05em">
               { names[i] } <span style={{color: "#777"}}>[{n}]</span>
             </div>
@@ -112,30 +113,30 @@ export default function DesignerDeploy({
                marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
              }}
              onClick={() => {
-          setScenarioData(s => {
-            const selection = availableUnits.find(u => u[0] === currentUnit)
-            if (!selection) { return s }
-            setCurrentUnit(availableUnits.filter(u => u[0] !== currentUnit)[0][0])
-            selection[2].x = 1
-            selection[2].id = selection[0]
-            const list = player === 1 ? (s.metadata.allied_units[turn]?.list ?? []) :
-              (s.metadata.axis_units[turn]?.list ?? [])
-            return player === 1 ? {
-              ...s, metadata: {
-                ...s.metadata,
-                allied_units: { ...s.metadata.allied_units, [turn]: {
-                  list: [...list, selection[2]]
-                }}
-              }
-            } : {
-              ...s, metadata: {
-                ...s.metadata,
-                axis_units: { ...s.metadata.axis_units, [turn]: {
-                  list: [...list, selection[2]]
-                }}
-              }
-            }
-          })}}>
+               const selection = availableUnits.find(u => u[0] === currentUnit)
+               if (!selection) { return }
+               setCurrentUnit(availableUnits.filter(u => u[0] !== currentUnit)[0][0])
+               selection[2].x = 1
+               selection[2].id = selection[0]
+               const list = player === 1 ? (metadata.allied_units[turn]?.list ?? []) :
+                 (metadata.axis_units[turn]?.list ?? [])
+               pushDesignStack(
+                 player === 1 ? {
+                   ...data, metadata: {
+                     ...metadata,
+                     allied_units: { ...metadata.allied_units, [turn]: {
+                       list: [...list, selection[2]]
+                     }}
+                   }
+                 } : {
+                   ...data, metadata: {
+                     ...metadata,
+                     axis_units: { ...metadata.axis_units, [turn]: {
+                       list: [...list, selection[2]]
+                     }}
+                   }
+                 }, setDesignStack
+               )}}>
           +
         </div>
       </div>
@@ -149,31 +150,32 @@ export default function DesignerDeploy({
         </div>
         <div className="design-button" style={{
                marginTop: "28px", marginBottom: "4px", width: "24px", textAlign: "center",
-             }} onClick={() => {
-          setScenarioData(s => {
-            const selection = availableFeatures.find(u => u[0] === currentFeature)
-            if (!selection) { return s }
-            setCurrentFeature(availableFeatures.filter(u => u[0] !== currentFeature)[0][0])
-            selection[2].x = 1
-            selection[2].id = selection[0]
-            const list = player === 1 ? (s.metadata.allied_units[turn]?.list ?? []) :
-              (s.metadata.axis_units[turn]?.list ?? [])
-            return player === 1 ? {
-              ...s, metadata: {
-                ...s.metadata,
-                allied_units: { ...s.metadata.allied_units, [turn]: {
-                  list: [...list, selection[2]]
-                }}
-              }
-            } : {
-              ...s, metadata: {
-                ...s.metadata,
-                axis_units: { ...s.metadata.axis_units, [turn]: {
-                  list: [...list, selection[2]]
-                }}
-              }
-            }
-          })}}>
+             }}
+             onClick={() => {
+               const selection = availableFeatures.find(u => u[0] === currentFeature)
+               if (!selection) { return }
+               setCurrentFeature(availableFeatures.filter(u => u[0] !== currentFeature)[0][0])
+               selection[2].x = 1
+               selection[2].id = selection[0]
+               const list = player === 1 ? (metadata.allied_units[turn]?.list ?? []) :
+                 (metadata.axis_units[turn]?.list ?? [])
+               pushDesignStack(
+                 player === 1 ? {
+                   ...data, metadata: {
+                     ...metadata,
+                     allied_units: { ...metadata.allied_units, [turn]: {
+                       list: [...list, selection[2]]
+                     }}
+                   }
+                 } : {
+                   ...data, metadata: {
+                     ...metadata,
+                     axis_units: { ...metadata.axis_units, [turn]: {
+                       list: [...list, selection[2]]
+                     }}
+                   }
+                 }, setDesignStack
+               )}}>
           +
         </div>
       </div>

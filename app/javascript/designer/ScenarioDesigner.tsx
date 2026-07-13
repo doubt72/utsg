@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import Scenario, { ScenarioData } from "../engine/Scenario";
 import { hexPath, roundedRectangle } from "../utilities/graphics";
@@ -20,6 +20,7 @@ import { UnitData } from "../engine/Unit";
 import { deployHex, toggleHex } from "../engine/control/deploy";
 import MapHexOverlay from "../components/game/map/MapHexOverlay";
 import { DeployHexes } from "../engine/Map";
+import { FeatureData } from "../engine/Feature";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -53,6 +54,21 @@ export function showHex(dir: ExtendedDirection, click: () => void): JSX.Element 
   )
 }
 
+export function pushDesignStack(
+  data: ScenarioData, setData: Dispatch<SetStateAction<DesignStack>>
+): void {
+  setData(s => {
+    const oldData = s.data.slice(0, s.index + 1)
+    if (oldData.length > 25) { oldData.shift() }
+    return { data: [...oldData, data], index: oldData.length }
+  })
+}
+
+export type DesignStack = {
+  data: ScenarioData[],
+  index: number,
+}
+
 export type SelectionType = {
   set: "vp" | "terrain" | "elevation" | "building" | "border" | "road" | "stream" | "railroad",
   terrain: TerrainType,
@@ -75,12 +91,14 @@ export type SelectionType = {
 }
 
 export default function ScenarioDesigner() {
-  // const [undoStack, setUndo] = useState<ScenarioData[]>([])
-
-  const [scenarioData, setScenarioData] = useState<ScenarioData>(defaultScenario())
+  const [designStack, setDesignStack] = useState<DesignStack>({
+    data: [defaultScenario()], index: 0
+  })
   const [scenario, setScenario] = useState<Scenario>(new Scenario(defaultScenario()))
   const [hexCache, setHexCache] = useState<HexData[][]>([])
   const [vpCache, setVpCache] = useState<[number, number, 1 | 2][]>([])
+
+  const [allUnits, setAllUnits] = useState<{ [index: string]: UnitData | FeatureData }>({})
 
   const [selectionType, setSelectionType] = useState<SelectionType>({
     set: "vp", terrain: "o", elevation: 0, dir: 1, building: "l", buildStyle: "f", border: "f", borderEdges: [],
@@ -97,8 +115,8 @@ export default function ScenarioDesigner() {
   const [victoryDisplay, setVictoryDisplay] = useState<JSX.Element[]>([])
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element[]>([])
 
-  const [availableAlliedUnits, setAvailableAlliedUnits] = useState<[string, string, UnitData][]>([])
-  const [availableAxisUnits, setAvailableAxisUnits] = useState<[string, string, UnitData][]>([])
+  const [availableAlliedUnits, setAvailableAlliedUnits] = useState<[string, string, UnitData | FeatureData][]>([])
+  const [availableAxisUnits, setAvailableAxisUnits] = useState<[string, string, UnitData | FeatureData][]>([])
 
   const [scale, setScale] = useState<number>(0.45)
   const [width, setWidth] = useState<number>(1)
@@ -119,196 +137,204 @@ export default function ScenarioDesigner() {
   }
 
   const resizeMap = (x: number, y: number) => {
-    setScenarioData(s => {
-      const oldData = s.metadata.map_data
-      const cache: HexData[][] = []
-      const my = Math.max(y, oldData.layout[1], hexCache.length)
-      for (let yy = 0; yy < my; yy++) {
-        cache.push([])
-        const hcl = hexCache.length > yy ? hexCache[yy].length : 0
-        const mx = Math.max(x, oldData.layout[0], hcl)
-        for (let xx = 0; xx < mx; xx++) {
-          if (xx < oldData.layout[0] && yy < oldData.layout[1]) {
-            cache[yy][xx] = oldData.hexes[yy][xx]
-          } else if (yy < hexCache.length && xx < hexCache[yy].length) {
-            cache[yy][xx] = hexCache[yy][xx]
-          } else {
-            cache[yy][xx] = { t: "o" }
-          }
+    const data = designStack.data[designStack.index]
+    const metadata = data.metadata
+    const oldData = metadata.map_data
+    const cache: HexData[][] = []
+    const my = Math.max(y, oldData.layout[1], hexCache.length)
+    for (let yy = 0; yy < my; yy++) {
+      cache.push([])
+      const hcl = hexCache.length > yy ? hexCache[yy].length : 0
+      const mx = Math.max(x, oldData.layout[0], hcl)
+      for (let xx = 0; xx < mx; xx++) {
+        if (xx < oldData.layout[0] && yy < oldData.layout[1]) {
+          cache[yy][xx] = oldData.hexes[yy][xx]
+        } else if (yy < hexCache.length && xx < hexCache[yy].length) {
+          cache[yy][xx] = hexCache[yy][xx]
+        } else {
+          cache[yy][xx] = { t: "o" }
         }
       }
-      const data: HexData[][] = []
-      for (let yy = 0; yy < y; yy++) {
-        data.push([])
-        for (let xx = 0; xx < x; xx++) { data[yy].push(cache[yy][xx]) }
+    }
+    const hexData: HexData[][] = []
+    for (let yy = 0; yy < y; yy++) {
+      hexData.push([])
+      for (let xx = 0; xx < x; xx++) { hexData[yy].push(cache[yy][xx]) }
+    }
+    setHexCache(cache)
+    const vps: [number, number, 1 | 2][] = []
+    for (const vp of vpCache) { vps.push(vp) }
+    for (const vp of metadata.map_data.victory_hexes ?? []) {
+      let found = false
+      for (const ovp of vpCache) {
+        if (vp[0] === ovp[0] && vp[1] === ovp[1]) { found = true; break }
       }
-      setHexCache(cache)
-      const vps: [number, number, 1 | 2][] = []
-      for (const vp of vpCache) { vps.push(vp) }
-      for (const vp of s.metadata.map_data.victory_hexes ?? []) {
-        let found = false
-        for (const ovp of vpCache) {
-          if (vp[0] === ovp[0] && vp[1] === ovp[1]) { found = true; break }
-        }
-        if (!found) { vps.push(vp) }
-      }
-      setVpCache(vps)
-      return {
-        ...s, metadata: { ...s.metadata, map_data:  {
-          ...s.metadata.map_data, layout: [x, y, "x"], hexes: data,
+      if (!found) { vps.push(vp) }
+    }
+    setVpCache(vps)
+    pushDesignStack(
+      {
+        ...data, metadata: { ...metadata, map_data:  {
+          ...metadata.map_data, layout: [x, y, "x"], hexes: hexData,
           victory_hexes: vps.filter(vp => vp[0] < x && vp[1] < y),
         }}
-      }
-    })
+      }, setDesignStack
+    )
   }
 
   useEffect(() => {
+    getAPI("/api/v1/scenarios/all_units", {
+      ok: response => response.json().then(json => {
+        setAllUnits(json)
+      })
+    })
+  }, [])
+
+  useEffect(() => {
+    const data = designStack.data[designStack.index]
+    const metadata = data.metadata
     if (selectionHex.n < 0) { return }
     if (tab === 2) {
+      const hexes = metadata.map_data.hexes
+      const hex = hexes[selectionHex.y][selectionHex.x]
       if (selectionType.set === "vp") {
         resetCache()
-        setScenarioData(s => {
-          const vps: [number, number, 1 | 2][] = []
-          let found = false;
-          for (const vp of s.metadata.map_data.victory_hexes as [number, number, 1 | 2][]) {
-            if (vp[0] === selectionHex.x && vp[1] === selectionHex.y) {
-              found = true
-              if (vp[2] === 1) { vps.push([vp[0], vp[1], 2]) }
-            } else {
-              vps.push(vp)
-            }
+        const vps: [number, number, 1 | 2][] = []
+        let found = false;
+        for (const vp of metadata.map_data.victory_hexes as [number, number, 1 | 2][]) {
+          if (vp[0] === selectionHex.x && vp[1] === selectionHex.y) {
+            found = true
+            if (vp[2] === 1) { vps.push([vp[0], vp[1], 2]) }
+          } else {
+            vps.push(vp)
           }
-          if (!found) { vps.push([selectionHex.x, selectionHex.y, 1])}
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, victory_hexes: vps }}}
-        })
+        }
+        if (!found) { vps.push([selectionHex.x, selectionHex.y, 1])}
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, victory_hexes: vps }}},
+          setDesignStack
+        )
       } else if (selectionType.set === "terrain") {
-        setScenarioData(s => {
-          const hexes = s.metadata.map_data.hexes
-          const hex = hexes[selectionHex.y][selectionHex.x]
-          delete hex.st
-          hex.t = selectionType.terrain
-          if (hex.t === "d") { hex.d = selectionType.dir } else { delete hex.d }
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        })
+        delete hex.st
+        hex.t = selectionType.terrain
+        if (hex.t === "d") { hex.d = selectionType.dir } else { delete hex.d }
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, hexes }}},
+          setDesignStack
+        )
       } else if (selectionType.set === "elevation") {
-        setScenarioData(s => {
-          const hexes = s.metadata.map_data.hexes
-          const hex = hexes[selectionHex.y][selectionHex.x]
-          if ((hex.h ?? 0) !== selectionType.elevation) {
-            if (selectionType.elevation !== 0) {
-              hex.h = selectionType.elevation
-            } else {
-              delete hex.h
-            }
+        if ((hex.h ?? 0) !== selectionType.elevation) {
+          if (selectionType.elevation !== 0) {
+            hex.h = selectionType.elevation
+          } else {
+            delete hex.h
           }
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        })
+        }
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, hexes }}},
+          setDesignStack
+        )
       } else if (selectionType.set === "building") {
-        setScenarioData(s => {
-          const hexes = s.metadata.map_data.hexes
-          const hex = hexes[selectionHex.y][selectionHex.x]
-          hex.t = "o"
-          hex.st = { sh: selectionType.building, s: selectionType.buildStyle }
-          hex.d = selectionType.dir
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        })
+        hex.t = "o"
+        hex.st = { sh: selectionType.building, s: selectionType.buildStyle }
+        hex.d = selectionType.dir
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, hexes }}},
+          setDesignStack
+        )
       } else if (selectionType.set === "border") {
-        setScenarioData(s => {
-          const hexes = s.metadata.map_data.hexes
-          const hex = hexes[selectionHex.y][selectionHex.x]
-          const start = [...selectionType.borderEdges]
-          const final: Direction[] = []
-          for (const b of start) {
-            const loc = new Coordinate(selectionHex.x, selectionHex.y)
-            const neighbor = scenario.map.neighborAt(loc, b)
-            if (neighbor) {
-              final.push(b)
-              const other = hexes[neighbor.coord.y][neighbor.coord.x]
-              if (other.be?.includes(normalDir(b+3))) {
-                other.be = other.be.filter(d => d != normalDir(b+3))
-                if (other.be.length < 1) {
-                  delete other.b
-                  delete other.be
-                }
+        const start = [...selectionType.borderEdges]
+        const final: Direction[] = []
+        for (const b of start) {
+          const loc = new Coordinate(selectionHex.x, selectionHex.y)
+          const neighbor = scenario.map.neighborAt(loc, b)
+          if (neighbor) {
+            final.push(b)
+            const other = hexes[neighbor.coord.y][neighbor.coord.x]
+            if (other.be?.includes(normalDir(b+3))) {
+              other.be = other.be.filter(d => d != normalDir(b+3))
+              if (other.be.length < 1) {
+                delete other.b
+                delete other.be
               }
             }
           }
-          if (final.length < 1) {
-            delete hex.b
-            delete hex.be
-          } else {
-            hex.b = selectionType.border
-            hex.be = final
-          }
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        })
+        }
+        if (final.length < 1) {
+          delete hex.b
+          delete hex.be
+        } else {
+          hex.b = selectionType.border
+          hex.be = final
+        }
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, hexes }}},
+          setDesignStack
+        )
       } else if (selectionType.set === "road") {
-        setScenarioData(s => {
-          const hexes = s.metadata.map_data.hexes
-          const hex = hexes[selectionHex.y][selectionHex.x]
-          if (selectionType.roadDirs.length > 1) {
-            if (selectionType.roadCenter !== undefined) {
-              if (selectionType.roadTurn !== 1) {
-                hex.r = {
-                  t: selectionType.road, d: [...selectionType.roadDirs], c: selectionType.roadCenter,
-                  r: normalDir(selectionType.roadTurn - 1)
-                }
-              } else {
-                hex.r = {
-                  t: selectionType.road, d: [...selectionType.roadDirs], c: selectionType.roadCenter
-                }
+        if (selectionType.roadDirs.length > 1) {
+          if (selectionType.roadCenter !== undefined) {
+            if (selectionType.roadTurn !== 1) {
+              hex.r = {
+                t: selectionType.road, d: [...selectionType.roadDirs], c: selectionType.roadCenter,
+                r: normalDir(selectionType.roadTurn - 1)
               }
             } else {
-              hex.r = { t: selectionType.road, d: [...selectionType.roadDirs] }
-            }
-          } else {
-            delete hex.r
-          }
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        })
-      } else if (selectionType.set === "stream") {
-        setScenarioData(s => {
-          const hexes = s.metadata.map_data.hexes
-          const hex = hexes[selectionHex.y][selectionHex.x]
-          if (selectionType.streamDirs.length > 1) {
-            hex.s = { t: selectionType.stream, d: [...selectionType.streamDirs] }
-          } else {
-            delete hex.s
-          }
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        })
-      } else if (selectionType.set === "railroad") {
-        setScenarioData(s => {
-          const hexes = s.metadata.map_data.hexes
-          const hex = hexes[selectionHex.y][selectionHex.x]
-          const dirs: Direction[][] = []
-          let found = false
-          if (hex.rr) {
-            for (const d of hex.rr.d) {
-              if ((d[0] === selectionType.rrStart && d[1] === selectionType.rrEnd) ||
-                  (d[1] === selectionType.rrStart && d[0] === selectionType.rrEnd)) {
-                found = true
-                if (selectionType.railroad !== "-") { dirs.push(d) }
-              } else {
-                dirs.push(d)
+              hex.r = {
+                t: selectionType.road, d: [...selectionType.roadDirs], c: selectionType.roadCenter
               }
             }
-          }
-          if (selectionType.railroad === "+" && !found) {
-            dirs.push([selectionType.rrStart, selectionType.rrEnd])
-          }
-          if (dirs.length < 1) {
-            delete hex.rr
           } else {
-            hex.rr = { d: dirs }
+            hex.r = { t: selectionType.road, d: [...selectionType.roadDirs] }
           }
-          return { ...s, metadata: { ...s.metadata, map_data: { ...s.metadata.map_data, hexes }}}
-        })
+        } else {
+          delete hex.r
+        }
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, hexes }}},
+          setDesignStack
+        )
+      } else if (selectionType.set === "stream") {
+        if (selectionType.streamDirs.length > 1) {
+          hex.s = { t: selectionType.stream, d: [...selectionType.streamDirs] }
+        } else {
+          delete hex.s
+        }
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, hexes }}},
+          setDesignStack
+        )
+      } else if (selectionType.set === "railroad") {
+        const dirs: Direction[][] = []
+        let found = false
+        if (hex.rr) {
+          for (const d of hex.rr.d) {
+            if ((d[0] === selectionType.rrStart && d[1] === selectionType.rrEnd) ||
+                (d[1] === selectionType.rrStart && d[0] === selectionType.rrEnd)) {
+              found = true
+              if (selectionType.railroad !== "-") { dirs.push(d) }
+            } else {
+              dirs.push(d)
+            }
+          }
+        }
+        if (selectionType.railroad === "+" && !found) {
+          dirs.push([selectionType.rrStart, selectionType.rrEnd])
+        }
+        if (dirs.length < 1) {
+          delete hex.rr
+        } else {
+          hex.rr = { d: dirs }
+        }
+        pushDesignStack(
+          { ...data, metadata: { ...metadata, map_data: { ...metadata.map_data, hexes }}},
+          setDesignStack
+        )
       }
     } else if (tab === 3) {
       const player = Number(deploySelected[deploySelected.length - 1])
       const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
-      const mapData = scenarioData.metadata.map_data
+      const mapData = data.metadata.map_data
       const hexes = player === 1 ? mapData.allied_setup :
         mapData.axis_setup
       let turnHexes: DeployHexes = []
@@ -319,60 +345,59 @@ export default function ScenarioDesigner() {
         turnHexes, selectionHex.x, selectionHex.y,
         mapData.layout[0] - 1, mapData.layout[1] - 1
       )
-      setScenarioData(s => {
-        return player === 1 ? {
-          ...s, metadata: {
-            ...s.metadata, map_data: {
-              ...s.metadata.map_data, allied_setup: {
-                ...s.metadata.map_data.allied_setup, [turn]: newHexes,
+      pushDesignStack(
+        player === 1 ? {
+          ...data, metadata: {
+            ...metadata, map_data: {
+              ...metadata.map_data, allied_setup: {
+                ...metadata.map_data.allied_setup, [turn]: newHexes,
               },
             }
           }
         } : {
-          ...s, metadata: {
-            ...s.metadata, map_data: {
-              ...s.metadata.map_data, axis_setup: {
-                ...s.metadata.map_data.axis_setup, [turn]: newHexes,
+          ...data, metadata: {
+            ...metadata, map_data: {
+              ...metadata.map_data, axis_setup: {
+                ...metadata.map_data.axis_setup, [turn]: newHexes,
               },
             }
           }
-        }
-      })
+        }, setDesignStack
+      )
     }
   }, [selectionHex])
 
   useEffect(() => {
-    const s = new Scenario(scenarioData)
-    getAPI("/api/v1/scenarios/all_units", {
-      ok: response => response.json().then(json => {
-        const allies: [string, string, UnitData][] = []
-        const axis: [string, string, UnitData][] = []
-        for (const id of Object.keys(json)) {
-          const data = json[id]
-          if (scenarioData.allies[0] === data.c) {
-            allies.push([id, data.n, data])
-          } else if (scenarioData.axis[0] === data.c) {
-            axis.push([id, data.n, data])
-          } else if (data.ft === 1 && !["smoke", "fire", "rubble"].includes(data.t)) {
-            allies.push([id, data.n, data])
-            axis.push([id, data.n, data])
-          }
-        }
-        setAvailableAlliedUnits(allies)
-        setAvailableAxisUnits(axis)
-      })
-    })
+    const data = designStack.data[designStack.index]
+    const s = new Scenario(data)
+    const allies: [string, string, UnitData | FeatureData][] = []
+    const axis: [string, string, UnitData | FeatureData][] = []
+    for (const id of Object.keys(allUnits)) {
+      const unit = allUnits[id] as UnitData
+      const feature = allUnits[id] as FeatureData
+      if (data.allies[0] === unit.c) {
+        allies.push([id, unit.n, unit])
+      } else if (data.axis[0] === unit.c) {
+        axis.push([id, unit.n, unit])
+      } else if (feature.ft === 1 && !["smoke", "fire", "rubble"].includes(feature.t)) {
+        allies.push([id, feature.n, feature])
+        axis.push([id, feature.n, feature])
+      }
+    }
+    setAvailableAlliedUnits(allies)
+    setAvailableAxisUnits(axis)
     setScenario(s)
     setSelectionType(s => {
-      const layout = scenarioData.metadata.map_data.layout
+      const layout = data.metadata.map_data.layout
       return { ...s, mapSize: `${layout[0]}x${layout[1]}` }
     })
     setWidth(s.map.previewXSize)
     setHeight(s.map.ySize)
-  }, [scenarioData])
+  }, [designStack.index, designStack.data[0], allUnits])
 
   useEffect(() => {
     if (!scenario) { return }
+    const data = designStack.data[designStack.index]
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
     const victoryLoader: JSX.Element[] = []
@@ -392,12 +417,12 @@ export default function ScenarioDesigner() {
         const shaded = !!hexes && !!hexes[turn] && deployHex(hexes[turn], x, y)
         overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex} selectCallback={selectHex}
                                           shaded={shaded ? hexOpenType.Open : hexOpenType.FalseClosed } />)
-        const vp = scenarioData.metadata.map_data.victory_hexes as [number, number, 1|2][]
+        const vp = data.metadata.map_data.victory_hexes as [number, number, 1|2][]
         for (const v of vp) {
           if (v[0] === x && v[1] === y) {
             const xx = hex.xCorner(5, 20)
             const yy = hex.yCorner(5, 20)
-            const victory = v[2] === 1 ? scenarioData.allies[0] : scenarioData.axis[0]
+            const victory = v[2] === 1 ? data.allies[0] : data.axis[0]
             const style = {
               fill: `url(#nation-${victory}-12)`, strokeWidth: 1, stroke: "#000"
             }
@@ -454,14 +479,18 @@ export default function ScenarioDesigner() {
       <Header />
       <div className="flex">
         <div className="design-button ml05em mt05em" onClick={() => {
-
+               if (designStack.index > 0) {
+                 setDesignStack(s => { return { data: s.data, index: s.index - 1 } } )
+               }
              }} style={{ padding: "0.15em 0.5em 0.25em" }}>
-          undo
+          undo ({designStack.index})
         </div>
         <div className="design-button ml05em mt05em" onClick={() => {
-
+               if (designStack.index < designStack.data.length - 1) {
+                 setDesignStack(s => { return { data: s.data, index: s.index + 1 } } )
+               }
              }} style={{ padding: "0.15em 0.5em 0.25em" }}>
-          redo
+          redo ({designStack.data.length - designStack.index - 1})
         </div>
         <div className="game-control ml05em mt05em mr05em flex-fill">
           <div className="red monospace ml05em mr05em">
@@ -512,18 +541,18 @@ export default function ScenarioDesigner() {
             </div>
           </div>
           <div className="designer-section" style={{ minHeight: window.innerHeight - 182 }}>
-            { tab === 1 ? <DesignerDataTab scenarioData={scenarioData} setScenarioData={setScenarioData} /> : "" }
-            { tab === 2 ? <DesignerMapTab scenarioData={scenarioData} resizeMapCallback={resizeMap}
+            { tab === 1 ? <DesignerDataTab designStack={designStack} setDesignStack={setDesignStack} /> : "" }
+            { tab === 2 ? <DesignerMapTab designStack={designStack} resizeMapCallback={resizeMap}
                                           selectionType={selectionType}
                                           setSelectionType={setSelectionType} /> : ""}
-            { tab === 3 ? <DesignerOrderOfBattleTab scenarioData={scenarioData}
-                                                    setScenarioData={setScenarioData}
+            { tab === 3 ? <DesignerOrderOfBattleTab designStack={designStack}
+                                                    setDesignStack={setDesignStack}
                                                     deploySelected={deploySelected}
                                                     setDeploySelected={setDeploySelected}
                                                     availableAlliedUnits={availableAlliedUnits}
                                                     availableAxisUnits={availableAxisUnits} /> : ""}
-            { tab === 4 ? <DesignerFileTab resetCacheCallback={resetCache} scenarioData={scenarioData}
-                                           setScenarioData={setScenarioData}
+            { tab === 4 ? <DesignerFileTab resetCacheCallback={resetCache} designStack={designStack}
+                                           setDesignStack={setDesignStack}
                                            setScale={setScale} setTab={setTab}/> : "" }
           </div>
         </div>
