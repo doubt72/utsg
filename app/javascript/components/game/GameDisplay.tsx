@@ -85,6 +85,7 @@ export default function GameDisplay() {
         const to = setTimeout(() => {
           setTurnTimer(t => {
             if (t) { clearTimeout(t) }
+            return undefined
           })
           if (needsTurnAlert && game.k?.currentUser === user) {
             setNeedsTurnAlert(false)

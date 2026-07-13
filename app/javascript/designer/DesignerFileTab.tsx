@@ -62,6 +62,10 @@ export default function DesignerFileTab({
     URL.revokeObjectURL(url);
   }
 
+  const clearScenario = () => {
+    setScenarioData(defaultScenario())
+  }
+
   return (
     <div>
       <div>
@@ -112,6 +116,13 @@ export default function DesignerFileTab({
         <div className="design-button" onClick={() => download()}
               style={{ padding: "0.15em 0.5em 0.25em" }}>
           save
+        </div>
+        <div className="flex-fill"></div>
+      </div>
+      <div className="flex mt1em">
+        <div className="design-button" onClick={() => clearScenario()}
+              style={{ padding: "0.15em 0.5em 0.25em" }}>
+          clear
         </div>
         <div className="flex-fill"></div>
       </div>

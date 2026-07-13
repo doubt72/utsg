@@ -1,7 +1,9 @@
 Features/Bug Fixes
   - Scenario undo
-  - Scenario resize
-  - Clear scenario
+  + Scenario resize
+  + Clear scenario
+  - Scenario/file conversion
+  - Save/play user scenarios / limit 1 - 3 - 5
   - Remove end selection/make fire selection more robust
   - Playthroughs
   - Add Some Developer Notes

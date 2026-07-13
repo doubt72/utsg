@@ -75,6 +75,8 @@ export type SelectionType = {
 }
 
 export default function ScenarioDesigner() {
+  // const [undoStack, setUndo] = useState<ScenarioData[]>([])
+
   const [scenarioData, setScenarioData] = useState<ScenarioData>(defaultScenario())
   const [scenario, setScenario] = useState<Scenario>(new Scenario(defaultScenario()))
   const [hexCache, setHexCache] = useState<HexData[][]>([])
@@ -365,8 +367,8 @@ export default function ScenarioDesigner() {
       const layout = scenarioData.metadata.map_data.layout
       return { ...s, mapSize: `${layout[0]}x${layout[1]}` }
     })
-    setWidth(s.map.previewXSize * scale)
-    setHeight(s.map.ySize * scale)
+    setWidth(s.map.previewXSize)
+    setHeight(s.map.ySize)
   }, [scenarioData])
 
   useEffect(() => {
@@ -410,7 +412,7 @@ export default function ScenarioDesigner() {
     setHexDisplayDetail(detailLoader)
     setVictoryDisplay(victoryLoader)
     setOverlayDisplay(overlayLoader)
-  }, [scenario])
+  }, [scenario, scale])
 
   useEffect(() => {
     if (!scenario) { return }
@@ -434,9 +436,9 @@ export default function ScenarioDesigner() {
     if (!scenario) { return <></> }
     return (
       <svg ref={svgRef as React.LegacyRef<SVGSVGElement>}
-           className="map-svg ml05em mr05em" width={width} height={height}
-           viewBox={`0 0 ${width / scale} ${height / scale}`}>
-        <path d={roundedRectangle(0, 0, width / scale, height / scale, 10 / scale)}
+           className="map-svg ml05em mr05em" width={width * scale} height={height * scale}
+           viewBox={`0 0 ${width} ${height}`}>
+        <path d={roundedRectangle(0, 0, width, height, 10)}
               style={{fill: "#BBB"}} />
         <MapHexPatterns map={scenario.map} />
         {hexDisplay}
@@ -450,14 +452,36 @@ export default function ScenarioDesigner() {
   return (
     <div className="main-page">
       <Header />
-      <div className="game-control ml05em mt05em mr05em">
-        <div className="red monospace ml05em mr05em">
-          {scenario.code}:
+      <div className="flex">
+        <div className="design-button ml05em mt05em" onClick={() => {
+
+             }} style={{ padding: "0.15em 0.5em 0.25em" }}>
+          undo
         </div>
-        <div className="green nowrap">
-          {scenario.name}
+        <div className="design-button ml05em mt05em" onClick={() => {
+
+             }} style={{ padding: "0.15em 0.5em 0.25em" }}>
+          redo
         </div>
-        <div className="flex-fill"></div>
+        <div className="game-control ml05em mt05em mr05em flex-fill">
+          <div className="red monospace ml05em mr05em">
+            {scenario.code}:
+          </div>
+          <div className="green nowrap">
+            {scenario.name}
+          </div>
+          <div className="flex-fill"></div>
+        </div>
+        <div className="design-button mr05em mt05em" onClick={() => {
+               setScale(s => Math.min(s*1.305, 1))
+             }} style={{ padding: "0.15em 0.5em 0.25em" }}>
+          map +
+        </div>
+        <div className="design-button mr05em mt05em" onClick={() => {
+               setScale(s => Math.max(s/1.305, 0.264))
+             }} style={{ padding: "0.15em 0.5em 0.25em" }}>
+          map -
+        </div>
       </div>
       <div className="flex ml05em mt05em">
         <div>

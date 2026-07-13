@@ -1,6 +1,6 @@
 # 0.108
 
-- More work on scenario editor (OOB)
+- More work on scenario editor (mainly OOB)
 
 # 0.107
 
