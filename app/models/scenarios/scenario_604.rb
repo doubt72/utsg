@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Steppe Reckoning"
     ALLIES = ["ussr"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
-    VERSION = "0.3"
+    STATUS = "b"
+    VERSION = "0.4"
 
     DATE = [1939, 7, 7].freeze
     LAYOUT = [23, 23, "x"].freeze

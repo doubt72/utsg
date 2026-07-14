@@ -2281,6 +2281,88 @@ describe("ranged fire attacks", () => {
       })
     })
 
+    test("offboard artillery doesn't target wrecks", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGRadio)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      map.select(firing2)
+
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRInf)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRTank)
+      target3.id = "target3"
+      target3.wreck(game)
+      map.addCounter(tloc, target3)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[1],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(target3.targetSelected).toBe(false)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing2"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(24)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(7)
+
+      const fp2 = firepower(game, makeAction(game, ["firing2"]), target3, tloc, false, [false])
+      expect(fp2.fp).toBe(12)
+      expect(fp2.why.length).toBe(2)
+      expect(fp2.why[1]).toBe("- halved: high-explosive vs. armor")
+      expect(baseToHit(fp2.fp)).toBe(10)
+
+      const mult = rangeMultiplier(
+        map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
+      )
+      expect(mult.mult).toBe(4)
+      expect(mult.why.length).toBe(1)
+
+      expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.actions[0].stringValue).toBe(
+        "German Radio 10.5cm at D3 fired at Soviet Rifle, Rifle at E1; targeting roll: " +
+        "target 8, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll: target 7, " +
+        "rolled 20 [2d10: 10 + 10]: passed (critical)"
+      )
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target, from: [floc], to: tloc, incendiary: false, critical: true },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: true },
+      ])
+      expect(target3.isWreck).toBe(true)
+      expect(game.playerTwoScore).toBe(15)
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 0), vehicle: false, incendiary: false,
+        vehicle_incendiary: false,
+      })
+    })
+
     test("offboard artillery miss", () => {
       const game = createFireGame()
       const map = game.scenario.map
@@ -3205,6 +3287,92 @@ describe("ranged fire attacks", () => {
       expect(target3.parent).toBe(undefined)
       expect(target3.children.length).toBe(1)
       expect(target5.parent).toBe(undefined)
+    })
+
+    test("destroyed vehicle unloads/breaks units", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRHT)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      const target2 = new Unit(testRGun)
+      target2.id = "target2"
+      map.addCounter(tloc, target2)
+      const target3 = new Unit(testRInf)
+      target3.id = "target3"
+      map.addCounter(tloc, target3)
+      const target4 = new Unit(testRMG)
+      target4.id = "target4"
+      map.addCounter(tloc, target4)
+      const target5 = new Unit(testRLdr)
+      target5.id = "target5"
+      map.addCounter(tloc, target5)
+      const target6 = new Unit(testRRadio)
+      target6.id = "target6"
+      map.addCounter(tloc, target6)
+      organizeStacks(map)
+
+      expect(target.facing).toBe(1)
+
+      expect(map.units[tloc.y][tloc.x].length).toBe(1)
+      expect(target.children.length).toBe(3)
+      expect(target3.children.length).toBe(1)
+      expect(target5.children.length).toBe(1)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(false)
+      expect(target3.targetSelected).toBe(false)
+      expect(target4.targetSelected).toBe(false)
+      expect(target5.targetSelected).toBe(false)
+      expect(target6.targetSelected).toBe(false)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(12)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
+        "penetration roll (side): target 10, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+      )
+
+      const unit = map.countersAt(tloc)
+      expect(unit.length).toBe(6)
+      expect(unit[0].unit.name).toBe("M9 Half-track")
+      expect(unit[0].unit.isWreck).toBe(true)
+      expect(unit[0].unit.children.length).toBe(0)
+      expect(unit[1].unit.name).toBe("45mm M-42")
+      expect(unit[1].unit.parent).toBe(undefined)
+      expect(unit[1].unit.facing).toBe(4)
+      expect(unit[2].unit.name).toBe("Rifle")
+      expect(unit[2].unit.children.length).toBe(1)
+      expect(unit[2].unit.parent).toBe(undefined)
+      expect(unit[2].unit.isBroken).toBe(true)
+      expect(unit[2].unit.children.length).toBe(1)
+      expect(unit[4].unit.name).toBe("Leader")
+      expect(unit[4].unit.parent).toBe(undefined)
+      expect(unit[4].unit.isBroken).toBe(true)
     })
 
     test("ranged vehicle breakdown destroys roll", () => {

@@ -870,7 +870,7 @@ export default class Map {
     const counters = this.countersAt(new Coordinate(x, y))
     for (const c of counters) {
       if (!c.hasUnit) { continue }
-      if (c.unit.operated) { continue }
+      if (c.unit.operated || c.unit.isWreck) { continue }
       if (c.unit.armored) {
         if (armored && !c.unit.targetSelected) { this.targetSelect(c.unit) }
       } else if (c.unit.isVehicle) {

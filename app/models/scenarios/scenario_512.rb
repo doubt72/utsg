@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Molon Labe"
     ALLIES = ["gre"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1941, 4, 6].freeze
     LAYOUT = [15, 11, "x"].freeze

@@ -1,3 +1,10 @@
+# 0.110
+
+- Bug fix: destroyed vehicle should drop units/break infantry
+- Bug fix: artillery targeting/firing at wrecks
+- Moved 106, 201, 512, 604 to beta
+- Updated/promoted 008
+
 # 0.109
 
 - Add undo to scenario editor (massive data schema refactor)

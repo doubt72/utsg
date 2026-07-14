@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Clash of Steel"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.5"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1943, 7, 5].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -17,14 +17,14 @@ module Scenarios
         :ussr_leader_6_1,
         :ussr_leader_4_1,
         [2, :ussr_smg_s],
-        [4, :ussr_rifle_s],
+        [3, :ussr_rifle_s],
         [2, :ussr_crew_t],
         [2, :ussr_dp_27],
         :ussr_120_pm_38,
         [2, :ussr_57mm_zis_2],
         [5, :ussr_t_34_m42_m43],
         :ussr_su_85,
-        [2, :ussr_su_122],
+        :ussr_su_122,
       ] },
     }.freeze
 

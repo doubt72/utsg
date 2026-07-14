@@ -2,6 +2,7 @@ import {
   Coordinate, Direction, GunHandlingRange, LeadershipRange, MoraleRange, MovementType, NumberBoolean,
   SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus, unitType
 } from "../utilities/commonTypes";
+import { normalDir } from "../utilities/utilities";
 import Game from "./Game";
 import Map from "./Map";
 import {
@@ -332,7 +333,7 @@ export default class Unit {
 
   canTowUnit(unit: Unit): boolean {
     if (!unit.crewed) { return false }
-    if (!this.canTow) { return false }
+    if (!this.canTow || this.isImmobilized || this.isWreck) { return false }
     if (this.size < (unit.towSize ?? 0)) { return false }
     for (let i = 0; i < this.children.length; i++) {
       if (this.children[i].crewed) { return false }
@@ -341,7 +342,7 @@ export default class Unit {
   }
 
   canTransportUnit(unit: Unit): boolean {
-    if (!this.transport) { return false }
+    if (!this.transport || this.isImmobilized || this.isWreck) { return false }
     if (this.transport === 1 && !unit.leader) { return false }
     if (this.transport === 2 && ![unitType.Team, unitType.Leader].includes(unit.type)) {
       return false
@@ -431,13 +432,18 @@ export default class Unit {
     this.turretJammed = false
     this.sponsonJammed = false
     this.sponsonDestroyed = false
-    this.internalStatus = unitStatus.Wreck
     if (game) {
+      const loc = game.scenario.map.findLocationById(this.id) as Coordinate
+      for (const c of this.children) {
+        game.scenario.map.dropUnit(loc, loc, c.id, c.rotates ? normalDir(this.facing + 3) : undefined)
+        if (c.canCarrySupport) { c.break() }
+      }
       const casualty = this.clone()
       casualty.playerNation = this.playerNation
       casualty.id = `${this.id}-clone`
       game.addEliminatedCounter(casualty)
     }
+    this.internalStatus = unitStatus.Wreck
   }
 
   setStatus(status: UnitStatus): void {
