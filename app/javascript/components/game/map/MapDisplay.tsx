@@ -459,9 +459,19 @@ export default function MapDisplay({
     } else {
       setFireTargets([])
     }
-    setCounterDisplay(map.counters.map((counter, i) => {
-      return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
-    }))
+    if (map.rotated) {
+      setCounterDisplay(map.counters.sort((a, b) => {
+        if (a.hex?.x === b.hex?.x && a.hex?.y === b.hex?.y) { return a.stackingIndex - b.stackingIndex }
+        if (a.hex?.y === b.hex?.y) { return (b.hex?.x ?? 0) - (a.hex?.x ?? 0) }
+        return (b.hex?.y ?? 0) - (a.hex?.y ?? 0)
+      }).map((counter, i) => {
+        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+      }))
+    } else {
+      setCounterDisplay(map.counters.map((counter, i) => {
+        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+      }))
+    }
     if (map.game?.gameState) {
       setActionCounterDisplay(map.game.gameState.activeCounters.map((counter, i) => {
         return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />

@@ -1,6 +1,7 @@
 # 0.109
 
 - Add undo to scenario editor (massive data schema refactor)
+- Bug fix: fix stack overlap/render order on rotated maps
 - Updated 008
 
 # 0.108

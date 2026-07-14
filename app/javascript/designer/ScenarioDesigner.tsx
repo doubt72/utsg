@@ -59,7 +59,7 @@ export function pushDesignStack(
 ): void {
   setData(s => {
     const oldData = s.data.slice(0, s.index + 1)
-    if (oldData.length > 25) { oldData.shift() }
+    if (oldData.length > 20) { oldData.shift() }
     return { data: [...oldData, data], index: oldData.length }
   })
 }
