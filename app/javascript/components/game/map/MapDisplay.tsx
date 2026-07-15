@@ -593,8 +593,9 @@ export default function MapDisplay({
                            selectionCallback={unitSelection} updateCallback={
                               () => { counterCallback(); updateCallback() }}
                            maxX={width / scale} maxY={height / scale}
-                           shiftX={xShift / reshift} shiftY={yShift * reshift} mapScale={mapScale ?? 1} scale={scale}
-                           svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
+                           shiftX={xShift / reshift} shiftY={yShift * reshift} mapScale={mapScale ?? 1}
+                           scale={scale} svgRef={svgRef as React.MutableRefObject<HTMLElement>}
+                           mapUpdate={mapUpdate} />
       )
     } else if (!showLos || map.game?.gameState?.showOverlays) {
       setCounterOverlay(
@@ -603,10 +604,11 @@ export default function MapDisplay({
                               () => { counterCallback(); updateCallback() }}
                            maxX={width / scale} maxY={height / scale}
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
-                           svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
+                           svgRef={svgRef as React.MutableRefObject<HTMLElement>}
+                           mapUpdate={mapUpdate} />
       )
     }
-  }, [overlay.show, overlay.x, overlay.y, overlay.counters, map.debugLos])
+  }, [overlay.show, overlay.x, overlay.y, overlay.counters, map.debugLos, mapUpdate])
 
   useEffect(() => {
     setOverlay({ show: false, x: -1, y: -1 })
@@ -714,7 +716,8 @@ export default function MapDisplay({
     }
   }
 
-  const handleSelect = () => {
+  const handleSelect = (refresh?: boolean) => {
+    if (refresh) { setMapUpdate(s => s + 1) }
     counterCallback()
   }
 

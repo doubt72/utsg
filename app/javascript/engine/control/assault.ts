@@ -32,7 +32,7 @@ export function showEntrench(game: Game): boolean {
   if (!game.gameState) { return false }
   if (game.scenario.specialRules.includes("winter")) { return false }
   const selection = game.assaultState.selection
-  if (selection.length > 1) { return false }
+  if (selection.filter(s => s.counter.unit.parent === undefined).length > 1 ) { return false }
   if (game.scenario.map.contactAt(new Coordinate(selection[0].x, selection[0].y))) { return false }
   if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
   if (game.assaultState.path.length + game.assaultState.addActions.length > 1) { return false }

@@ -65,7 +65,7 @@ export default class BaseState {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  select(selection: CounterSelectionTarget, callback: () => void) { }
+  select(selection: CounterSelectionTarget, callback: (refresh?: boolean) => void) { }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   selectable(selection: CounterSelectionTarget): boolean {

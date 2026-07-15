@@ -1,6 +1,4 @@
 Features/Bug Fixes
-  + Leader in destroyed vehicle should be broken, dropped
-  + No penetration roll on wrecks for artillery
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops

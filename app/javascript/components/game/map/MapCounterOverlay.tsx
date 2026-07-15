@@ -34,11 +34,12 @@ interface MapCounterOverlayProps {
   maxY: number;
   counters?: Counter[];
   svgRef: React.MutableRefObject<HTMLElement>;
+  mapUpdate: number;
 }
 
 export default function MapCounterOverlay({
-  map, setOverlay, selectionCallback, updateCallback, xx, yy,
-  mapScale, scale, shiftX, shiftY, maxX, maxY, counters, svgRef
+  map, setOverlay, selectionCallback, updateCallback, xx, yy, mapScale, scale,
+  shiftX, shiftY, maxX, maxY, counters, svgRef, mapUpdate
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
@@ -347,7 +348,7 @@ export default function MapCounterOverlay({
     )
     setActionControls(buttons)
   }, [
-    xx, yy, counters, update, contextMenu, helpDisplay, actionHelpDisplay,
+    xx, yy, counters, update, contextMenu, helpDisplay, actionHelpDisplay, mapUpdate
   ])
 
   const listener = (e: KeyboardEvent) => {

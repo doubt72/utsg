@@ -149,7 +149,7 @@ export default class AssaultState extends BaseState {
     return false
   }
 
-  select(selection: CounterSelectionTarget, callback: () => void) {
+  select(selection: CounterSelectionTarget, callback: (refresh?: boolean) => void) {
     if (selection.target.type === "reinforcement") { return }
     const x = selection.target.xy.x
     const y = selection.target.xy.y
@@ -169,7 +169,7 @@ export default class AssaultState extends BaseState {
         return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
       })
     }
-    callback()
+    callback(true)
   }
 
   selectable(selection: CounterSelectionTarget): boolean {

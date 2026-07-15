@@ -1,6 +1,8 @@
 # 0.110
 
 - Bug fix: destroyed vehicle should drop units/break infantry
+- Bug fix: units carrying MG should be able to entrench
+- Bug fix: sometimes counter overlay controls not updating properly
 - Bug fix: artillery targeting/firing at wrecks
 - Moved 106, 201, 512, 604 to beta
 - Updated/promoted 008
