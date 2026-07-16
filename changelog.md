@@ -1,6 +1,11 @@
 # 0.111
 
+- Scenario designer fixes/tweaks
 - Scenario format converter
+- Bug fix: should not be able to load opponent infantry into vehicles
+- Promoted 201
+- Update 008 (fixed typo)
+- Added prototypes 111, 112, 207
 
 # 0.110
 

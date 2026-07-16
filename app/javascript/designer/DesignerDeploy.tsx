@@ -34,31 +34,7 @@ export default function DesignerDeploy({
         return (
           <div key={`name-${i}`} className="ml1em flex mt05em">
             <div className="design-button" style={{minWidth: "20px", textAlign: "center"}} onClick={() => {
-              pushDesignStack(
-                player === 1 ? {
-                  ...data, metadata: {
-                    ...metadata,
-                    allied_units: { ...metadata.allied_units, [turn]: {
-                      list: metadata.allied_units[turn].list.map((u, j) => {
-                        return i === j ? { ...u, x: (u.x ?? 1) + 1 } : u
-                      })
-                    }}
-                  }
-                } : {
-                  ...data, metadata: {
-                    ...metadata,
-                    axis_units: { ...metadata.axis_units, [turn]: {
-                      list: metadata.axis_units[turn].list.map((u, j) => {
-                        return i === j ? { ...u, x: (u.x ?? 1) + 1 } : u
-                      })
-                    }}
-                  }
-                }, setDesignStack
-              )
-            }}>+</div>
-            <div style={{minWidth: "32px", textAlign: "center"}}>{ counts[i] }</div>
-            <div className="design-button" style={{minWidth: "20px", textAlign: "center"}} onClick={() => {
-                   const newData = counts[i] > 0 ?
+                   const newData = counts[i] > 1 ?
                      (player === 1 ? {
                         ...data, metadata: {
                           ...metadata,
@@ -95,6 +71,30 @@ export default function DesignerDeploy({
                       })
                    pushDesignStack(newData, setDesignStack)
                  }}>-</div>
+            <div style={{minWidth: "32px", textAlign: "center"}}>{ counts[i] }</div>
+            <div className="design-button" style={{minWidth: "20px", textAlign: "center"}} onClick={() => {
+              pushDesignStack(
+                player === 1 ? {
+                  ...data, metadata: {
+                    ...metadata,
+                    allied_units: { ...metadata.allied_units, [turn]: {
+                      list: metadata.allied_units[turn].list.map((u, j) => {
+                        return i === j ? { ...u, x: (u.x ?? 1) + 1 } : u
+                      })
+                    }}
+                  }
+                } : {
+                  ...data, metadata: {
+                    ...metadata,
+                    axis_units: { ...metadata.axis_units, [turn]: {
+                      list: metadata.axis_units[turn].list.map((u, j) => {
+                        return i === j ? { ...u, x: (u.x ?? 1) + 1 } : u
+                      })
+                    }}
+                  }
+                }, setDesignStack
+              )
+            }}>+</div>
             <div className="flex-fill ml05em">
               { names[i] } <span style={{color: "#777"}}>[{n}]</span>
             </div>

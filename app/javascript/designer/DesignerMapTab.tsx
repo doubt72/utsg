@@ -227,7 +227,7 @@ export default function DesignerMapTab({
                 <label className="design-label">{n}</label>
                 <input type="checkbox" className="mr1em"
                        name={`b${n}`}
-                       value="true"
+                       checked={selectionType.borderEdges.includes(n as Direction)}
                        onChange={() => setSelectionType(s => {
                          let edges = s.borderEdges
                          if (edges.includes(n as Direction)) {
@@ -275,7 +275,7 @@ export default function DesignerMapTab({
                 <label className="design-label">{n}</label>
                 <input type="checkbox" className="mr1em"
                        name={`r${n}`}
-                       value="true"
+                       checked={selectionType.roadDirs.includes(n as Direction)}
                        onChange={() => setSelectionType(s => {
                          let edges = s.roadDirs
                          if (edges.includes(n as Direction)) {
@@ -349,7 +349,7 @@ export default function DesignerMapTab({
                 <label className="design-label">{n}</label>
                 <input type="checkbox" className="mr1em"
                        name={`s${n}`}
-                       value="true"
+                       checked={selectionType.streamDirs.includes(n as Direction)}
                        onChange={() => setSelectionType(s => {
                          let edges = s.streamDirs
                          if (edges.includes(n as Direction)) {

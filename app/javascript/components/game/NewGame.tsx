@@ -255,7 +255,7 @@ export default function NewGame() {
   const theaters = [
     { code: "", name: "[ any ]"},
     { code: "0", name: "East Front"},
-    { code: "1", name: "North Africa"},
+    { code: "1", name: "Africa/Middle East"},
     { code: "2", name: "Italy/Sicily"},
     { code: "3", name: "Normandy/West"},
     { code: "4", name: "Pacific"},

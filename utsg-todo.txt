@@ -1,20 +1,20 @@
 Features/Bug Fixes
+  + Can't load into opponent vehicles
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops
     - Remove end selection/make fire selection more robust
-  - Scenario/file conversion
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
   - Add Some Developer Notes
   - Strategy notes
+  - Figure out how to implement Vichy French with same French units
   ? Join squad bug (what happened?)
   ? Not right height on initial load (can't seem to duplicate, keep an eye out)
   ? Help display error when rout moving (sometimes)
   ? Filter bad words
 
 106 (America N. Africa)
-201 Americans in Sicily
 304 (Pegasus Bridge)
 406 (Tarawa)
 512 (Greek)

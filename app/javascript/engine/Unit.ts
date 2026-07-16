@@ -348,6 +348,7 @@ export default class Unit {
       return false
     }
     if (![unitType.Squad, unitType.Team, unitType.Leader].includes(unit.type)) { return false }
+    if (unit.playerNation !== this.playerNation) { return false }
     if (unit.leader) {
       for (let i = 0; i < this.children.length; i++) {
         if (this.children[i].leader) { return false }

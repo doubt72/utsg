@@ -68,7 +68,13 @@ puts <<EOF
           map_data:,
           allied_units:,
           axis_units:,
+EOF
+if metadata["special_rules"] && metadata["special_rules"].length > 0
+  puts <<EOF
           special_rules: #{metadata["special_rules"]},
+EOF
+end
+puts <<EOF
         }
       end
 
@@ -107,6 +113,13 @@ puts <<EOF
           ],
           allied_setup: #{allied_setup},
           axis_setup: #{axis_setup},
+EOF
+if mapdata["base_terrain"] != "g"
+  puts <<EOF
+          base_terrain: "#{mapdata["base_terrain"]}",
+EOF
+end
+puts <<EOF
         }
       end
 

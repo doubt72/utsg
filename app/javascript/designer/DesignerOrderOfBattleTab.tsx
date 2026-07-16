@@ -121,7 +121,7 @@ export default function DesignerOrderOfBattleTab({
       addSelector(i, 2, deps)
     }
     setDeploys(deps)
-  }, [designStack.index, deploySelected])
+  }, [designStack.index, designStack.data[0], deploySelected])
 
   return (
     <div>

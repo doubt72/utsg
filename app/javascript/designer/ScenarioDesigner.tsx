@@ -195,7 +195,7 @@ export default function ScenarioDesigner() {
     const metadata = data.metadata
     if (selectionHex.n < 0) { return }
     if (tab === 2) {
-      const hexes = metadata.map_data.hexes
+      const hexes = structuredClone(metadata.map_data.hexes)
       const hex = hexes[selectionHex.y][selectionHex.x]
       if (selectionType.set === "vp") {
         resetCache()
