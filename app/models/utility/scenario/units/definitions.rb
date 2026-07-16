@@ -94,6 +94,7 @@ module Utility
             {
               # Machine Guns
               colt_m_29: :m1917_browning,
+              "12_7mm_hmg": :m1917_browning,
               mg_30t: :zb_vz__30,
               czeck_lmg: :zb_vz__26,
               fn_m1930: :m1918_bar,
@@ -420,6 +421,8 @@ module Utility
               "38m_toldi_i": { sz: 3, mv: 6, wpn: :"s_18_100", bd: 4, arm: [1, 1, 0], trt: [1, 1, 0] },
               "42m_toldi_ii": { sz: 3, mv: 6, wpn: :"s_18_100", arm: [2, 1, 1], trt: [2, 1, 1] },
               "42m_toldi_iia": { sz: 3, mv: 6, wpn: :"37_42m", arm: [3, 1, 1], trt: [3, 1, 1] },
+              # Dutch (Indonesia) Armored Vehicles
+              "overvalwagen": { sz: 3, mv: 5, wpn: :"vickers_mg", whl: true, bd: 3, trn: 1, arm: [1, 0, 0, -1] },
               # Italian Armored Vehicles
               "l5_30": { sz: 3, mv: 4, wpn: :"fiat_revelli_1935", arm: [1, 1, 0], trt: [1, 1, 1] },
               "l6_40": { sz: 3, mv: 4, wpn: :"breda_20_65", arm: [3, 1, 0], trt: [3, 3, 3] },

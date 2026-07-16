@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + Can't load into opponent vehicles
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops
@@ -95,3 +94,9 @@ Special Rules/Scenarios
 312 Purple Heart Lane
 410 Japanese Tanks
 016 Tractor Factory
+
+111 Plains
+112 Eritrea
+207 Italian Tank Destroyers
+208 Gurkas
+412 Japanese Paratroopers

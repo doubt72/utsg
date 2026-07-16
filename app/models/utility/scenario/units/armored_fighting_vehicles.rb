@@ -147,6 +147,7 @@ module Utility
             lu = {}
             key = %i[c n y o]
             [
+              ["alm", "Overvalwagen", 40],
               ["chi", "M3A1 Scout Car", 39, { sn: 1 }],
 
               ["fra", "AMC Schneider P16", 28, { sn: 4 }], ["fra", "White AM AC", 15],

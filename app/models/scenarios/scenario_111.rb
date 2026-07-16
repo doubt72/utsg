@@ -62,8 +62,6 @@ module Scenarios
           reallocate troops to Greece, but also due to supply exhaustion and
           worn out equipment), in the process capturing most of the
           Italian 10th Army.",
-          "This scenario covers an infantry advance through open desert near
-          Sofafi.",
         ]
       end
 

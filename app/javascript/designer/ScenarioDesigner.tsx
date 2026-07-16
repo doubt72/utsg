@@ -13,7 +13,7 @@ import {
   hexOpenType, RoadCenterType, RoadType, StreamType, TerrainType
 } from "../utilities/commonTypes";
 import { HexData } from "../engine/Hex";
-import { normalDir } from "../utilities/utilities";
+import { minorToMajor, normalDir } from "../utilities/utilities";
 import DesignerOrderOfBattleTab from "./DesignerOrderOfBattleTab";
 import { getAPI } from "../utilities/network";
 import { UnitData } from "../engine/Unit";
@@ -375,9 +375,9 @@ export default function ScenarioDesigner() {
     for (const id of Object.keys(allUnits)) {
       const unit = allUnits[id] as UnitData
       const feature = allUnits[id] as FeatureData
-      if (data.allies[0] === unit.c) {
+      if (minorToMajor(data.allies[0]) === unit.c) {
         allies.push([id, unit.n, unit])
-      } else if (data.axis[0] === unit.c) {
+      } else if (minorToMajor(data.axis[0]) === unit.c) {
         axis.push([id, unit.n, unit])
       } else if (feature.ft === 1 && !["smoke", "fire", "rubble"].includes(feature.t)) {
         allies.push([id, feature.n, feature])

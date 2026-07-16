@@ -5,7 +5,7 @@
 - Bug fix: should not be able to load opponent infantry into vehicles
 - Promoted 201
 - Update 008 (fixed typo)
-- Added prototypes 111, 112, 207
+- Added prototypes 111, 112, 207, 208, 412
 
 # 0.110
 
