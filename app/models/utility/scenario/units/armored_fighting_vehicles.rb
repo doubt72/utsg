@@ -109,6 +109,7 @@ module Utility
               ["ita", "L3/33", 33], ["ita", "L3/35", 35], ["ita", "L3/38", 38],
               ["ita", "Semovente da 47/32", 42, { sn: 4 }],
               ["ita", "Semovente da 75/18", 42, { sn: 4 }],
+              ["ita", "Semovente da 90/53", 42, { sn: 4 }],
 
               ["jap", "Type 97 Chi-Ha FT", 41, { sn: 3 }], ["jap", "Type 1 Ho-Ni I", 42],
               ["jap", "Type 1 Ho-Ni II", 43], ["jap", "Type 1 Ho-Ni III", 44],

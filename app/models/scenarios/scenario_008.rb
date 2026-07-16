@@ -77,7 +77,7 @@ module Scenarios
           counter-attack was defeated and the first defensive belt breached,
           the fighting had delayed the Germans long enough for the rest of
           29th Rifle Corps of the 13th Army — initially deployed behind the
-          first belt — to move forward and seal the breach",
+          first belt — to move forward and seal the breach.",
         ]
       end
 

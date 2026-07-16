@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Sicilian Crucible"
     ALLIES = ["usa"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1943, 7, 31].freeze
     LAYOUT = [15, 11, "x"].freeze

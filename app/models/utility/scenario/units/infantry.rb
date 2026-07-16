@@ -78,6 +78,7 @@ module Utility
               ["ita", "Paracadutisti", 40, 4, 6, 3, 5, { a: 1, s: 1 }],
               ["ita", "Fucilieri", 0, 3, 6, 4, 4, {}],
               ["ita", "Blackshirt", 23, 2, 5, 3, 3, {}],
+              ["ita", "Bande", 0, 2, 5, 3, 3, {}],
 
               ["jap", "Betsudotai", 0, 5, 7, 3, 5, { a: 1 }],
               ["jap", "Konoehen", 0, 4, 6, 4, 5, { a: 1 }],

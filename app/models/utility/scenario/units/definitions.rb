@@ -433,6 +433,7 @@ module Utility
               "l3_38": { sz: 3, mv: 6, wpn: :"hotchkiss_13_2mm", arm: [1, 1, -1] },
               "semovente_da_47_32": { sz: 3, mv: 4, wpn: :"cannone_da_47_32", arm: [3, 1, -1] },
               "semovente_da_75_18": { sz: 3, mv: 5, wpn: :"c_da_75_18", arm: [3, 2, 2] },
+              "semovente_da_90_53": { sz: 4, mv: 4, wpn: :"cannone_da_90_53", arm: [3, 2, 2] },
               "autoblindo_41": { sz: 3, mv: 4, wpn: :"breda_m35", whl: true, trn: 1, arm: [1, 0, 0], trt: [1, 1, 1] },
               # Japanese Armored Vehicles
               "type_94": { sz: 3, mv: 4, wpn: :"type_3_hmg", arm: [1, 0, 0], trt: [1, 0, 0] },
