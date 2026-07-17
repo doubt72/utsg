@@ -92,5 +92,37 @@ function collapseColumns(hexes: DeployHexes, yMax: number): DeployHexes {
     }
     rc.push(h)
   }
+  return collapseRows(rc)
+}
+
+function collapseRows(hexes: DeployHexes): DeployHexes {
+  const rc: DeployHexes = []
+  const nums: number[] = []
+  for (const h of hexes) {
+    if (h[0] === "*" && typeof h[1] === "number") {
+      nums.push(h[1])
+    } else {
+      rc.push(h)
+    }
+  }
+  if (nums.length > 1) {
+    let rangeStart = 0
+    for (let i = 1; i < nums.length; i++) {
+      if (nums[i] === nums[i - 1] + 1) { continue }
+      if (rangeStart < i - 1) {
+        rc.push(["*", `${nums[rangeStart]}-${nums[i - 1]}`])
+      } else {
+        rc.push(["*", nums[i - 1]])
+      }
+      rangeStart = i
+    }
+    if (rangeStart < nums.length - 1) {
+      rc.push(["*", `${nums[rangeStart]}-${nums[nums.length - 1]}`])
+    } else {
+      rc.push(["*", nums[nums.length - 1]])
+    }
+  } else if (nums.length === 1) {
+    rc.push(["*", nums[0]])
+  }
   return rc
 }

@@ -1,3 +1,9 @@
+# 0.112
+
+- Scenario designer fixes/tweaks
+- Bug fix: admin unit counts are incorrect
+- Added prototype 209
+
 # 0.111
 
 - Scenario designer fixes/tweaks

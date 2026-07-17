@@ -135,7 +135,7 @@ export default class Scenario {
     const counts: ReinforcementList = {}
     for (const turn of Object.values(this.alliedReinforcements)) {
       for (const key of Object.keys(turn)) {
-        counts[key] ? counts[key].x += turn[key].x : counts[key] = turn[key]
+        counts[key] ? counts[key].x += turn[key].x : counts[key] = { ...turn[key]}
       }
     }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
@@ -146,7 +146,7 @@ export default class Scenario {
     const counts: ReinforcementList = {}
     for (const turn of Object.values(this.axisReinforcements)) {
       for (const key of Object.keys(turn)) {
-        counts[key] ? counts[key].x += turn[key].x : counts[key] = turn[key]
+        counts[key] ? counts[key].x += turn[key].x : counts[key] = { ...turn[key]}
       }
     }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))

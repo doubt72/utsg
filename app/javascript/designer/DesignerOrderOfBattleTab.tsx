@@ -75,6 +75,27 @@ export default function DesignerOrderOfBattleTab({
                  checked={deploySelected === index}
                  onChange={() => setDeploySelected(index)} />
           <label className="mr1em">{ turn > 0 ? `turn ${turn}` : "setup" } &mdash; player {player}</label>
+          { turn === 0 ? "" :
+            <div className="design-button" onClick={() => {
+                   const newUnits = player === 1 ? { ...metadata.allied_units } :
+                     { ...metadata.axis_units}
+                   const newSetup = player === 1 ? { ...metadata.map_data.allied_setup} :
+                     { ...metadata.map_data.axis_setup }
+                   delete newUnits[turn]
+                   delete newSetup[turn]
+                   pushDesignStack(
+                     player === 1 ?
+                       { ...data, metadata: {
+                           ...metadata, allied_units: newUnits,
+                           map_data: { ...metadata.map_data, allied_setup: newSetup },
+                       }} :
+                       { ...data, metadata: {
+                           ...metadata, axis_units: newUnits,
+                           map_data: { ...metadata.map_data, axis_setup: newSetup },
+                       }}, setDesignStack
+                    )
+                  setDeploySelected("0-1")
+                }}>remove</div> }
         </div>
         <div className={`designer-details${ deploySelected === index ? " designer-selected" : ""}`} >
           <DesignerDeploy designStack={designStack} setDesignStack={setDesignStack}
@@ -100,7 +121,7 @@ export default function DesignerOrderOfBattleTab({
                      }} :
                      { ...data, metadata: {
                        ...metadata,
-                       axis_units: { ...metadata.allied_units, [turn]: { list: [] } },
+                       axis_units: { ...metadata.axis_units, [turn]: { list: [] } },
                        map_data: {
                          ...metadata.map_data,
                          axis_setup: { ...metadata.map_data.axis_setup, [turn]: [] },

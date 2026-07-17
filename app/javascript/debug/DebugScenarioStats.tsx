@@ -186,6 +186,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
       statAddOne(ctn, String(s.turns))
       statAddOne(cl, `${s.map.width}x${s.map.height}`)
       statAddOne(cv, String(s.map.victoryHexes.length))
+      console.log(`${s.name} ${s.alliedUnitList.reduce((sum, u) => sum + u.x, 0)}`)
       statAddOne(calu, String(s.alliedUnitList.reduce((sum, u) => sum + u.x, 0)))
       statAddOne(caxu, String(s.axisUnitList.reduce((sum, u) => sum + u.x, 0)))
       for (const r of s.specialRules) {
