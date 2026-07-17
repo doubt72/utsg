@@ -2,7 +2,7 @@
 
 - Scenario designer fixes/tweaks
 - Bug fix: admin unit counts are incorrect
-- Added prototype 209
+- Added prototypes 209, 210
 
 # 0.111
 
