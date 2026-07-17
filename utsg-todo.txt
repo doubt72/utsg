@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  - Don't open panel / select when undoing deployment for opponent
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops
@@ -16,7 +17,6 @@ Features/Bug Fixes
 106 (America N. Africa)
 304 (Pegasus Bridge)
 406 (Tarawa)
-512 (Greek)
 604 (Khalkhin Gol)
 
 Nice to Have Eventually:
@@ -101,4 +101,6 @@ Special Rules/Scenarios
 112 Eritrea
 207 Italian Tank Destroyers
 208 Gurkas
+209 Salerno Counterattack
+210 Silicy Airborne
 412 Japanese Paratroopers

@@ -12,12 +12,18 @@ interface DesignerOrderOfBattleTabProps {
   setDesignStack: Dispatch<SetStateAction<DesignStack>>;
   deploySelected: string;
   setDeploySelected: Dispatch<SetStateAction<string>>;
+  initAlliedSelected: string;
+  setInitAlliedSelected: Dispatch<SetStateAction<string>>;
+  initAxisSelected: string;
+  setInitAxisSelected: Dispatch<SetStateAction<string>>;
   availableAlliedUnits: [string, string, UnitData | FeatureData][];
   availableAxisUnits: [string, string, UnitData | FeatureData][];
 }
 
 export default function DesignerOrderOfBattleTab({
-  designStack, setDesignStack, deploySelected, setDeploySelected, availableAlliedUnits, availableAxisUnits
+  designStack, setDesignStack, deploySelected, setDeploySelected,
+  initAlliedSelected, setInitAlliedSelected, initAxisSelected, setInitAxisSelected,
+  availableAlliedUnits, availableAxisUnits
 }: DesignerOrderOfBattleTabProps) {
   const data = designStack.data[designStack.index]
   const metadata = data.metadata
@@ -137,12 +143,53 @@ export default function DesignerOrderOfBattleTab({
 
   useEffect(() => {
     const deps: JSX.Element[] = []
+    for (let i = 1; i <= 2; i++) {
+      const index = `i-${i}`
+      deps.push(
+        <div key={index} className="mb1em">
+          <div className={`designer-radio${deploySelected === index ? " designer-selected" : ""}`} >
+            <input type="radio" className="mr05em"
+                  name="select"
+                  value={index}
+                  checked={deploySelected === index}
+                  onChange={() => setDeploySelected(index)} />
+            <label className="mr1em">init &mdash; player {player}</label>
+          </div>
+          <div className="flex mt05em">
+            <div style={{width: "250px"}} className="mr05em">
+              <label className="design-label">unit</label>
+              <select name={`init-player${i}`} value={i === 1 ? initAlliedSelected : initAxisSelected} className="form-input"
+                      onChange={({ target }) => {
+                        if (i === 1) {
+                          setInitAlliedSelected(target.value)
+                        } else {
+                          setInitAxisSelected(target.value)
+                        }
+                      }} >
+                <option key={"---"} value={""}>---</option>
+                { (i === 1 ? availableAlliedUnits : availableAxisUnits).map(n =>
+                    <option key={n[0]} value={n[0]}>{n[1]} [{n[0]}]</option>) }
+              </select>
+            </div>
+            <div className="design-button" style={{ marginTop: "28px", marginBottom: "4px" }} onClick={() => {
+                   const newMapData = { ...metadata.map_data }
+                   if (i === 1) {
+                     delete newMapData["init_allied_units"]
+                   } else {
+                     delete newMapData["init_axis_units"]
+                   }
+                   pushDesignStack({ ...data, metadata: { ...metadata, map_data: newMapData }}, setDesignStack)
+                 }}>clear</div>
+          </div>
+        </div>
+      )
+    }
     for (let i = 0; i <= metadata.turns; i++) {
       addSelector(i, 1, deps)
       addSelector(i, 2, deps)
     }
     setDeploys(deps)
-  }, [designStack.index, designStack.data[0], deploySelected])
+  }, [designStack.index, designStack.data[0], deploySelected, initAlliedSelected, initAxisSelected])
 
   return (
     <div>

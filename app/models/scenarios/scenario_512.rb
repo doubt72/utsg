@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Molon Labe"
     ALLIES = ["gre"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 4, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -41,7 +41,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -63,7 +63,6 @@ module Scenarios
           was designed to defend against northern invasion. Though incomplete,
           it featured dozens of bunkers and fortresses built into mountainous
           terrain, including heavily fortified positions like Fort Roupel.",
-
           "Despite being outnumbered and facing overwhelming air and artillery
           attacks, Greek defenders mounted a fierce resistance. For several
           days, they held off the German 18th Mountain Corps and 2nd Panzer
@@ -71,7 +70,6 @@ module Scenarios
           underground fortifications. The Germans suffered heavy casualties
           trying to breach the line through frontal assaults and mountain
           flanking maneuvers.",
-
           "Ultimately, the Metaxas Line was not defeated — it was bypassed.
           German forces advancing through Yugoslavia penetrated into central
           Greece, outflanking the defensive line and forcing the Greek

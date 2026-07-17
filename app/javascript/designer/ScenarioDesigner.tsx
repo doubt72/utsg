@@ -21,6 +21,7 @@ import { deployHex, toggleHex } from "../engine/control/deploy";
 import MapHexOverlay from "../components/game/map/MapHexOverlay";
 import { DeployHexes } from "../engine/Map";
 import { FeatureData } from "../engine/Feature";
+import MapCounter from "../components/game/map/MapCounter";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -107,12 +108,15 @@ export default function ScenarioDesigner() {
   })
   const [selectionHex, setSelectionHex] = useState<{ x: number, y: number, n: number }>({ x: 0, y: 0, n: -1 })
   const [deploySelected, setDeploySelected] = useState<string>("t0-1")
+  const [initAlliedSelected, setInitAlliedSelected] = useState<string>("")
+  const [initAxisSelected, setInitAxisSelected] = useState<string>("")
 
   const [tab, setTab] = useState<number>(1)
 
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
   const [victoryDisplay, setVictoryDisplay] = useState<JSX.Element[]>([])
+  const [unitDisplay, setUnitDisplay] = useState<JSX.Element[]>([])
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element[]>([])
 
   const [availableAlliedUnits, setAvailableAlliedUnits] = useState<[string, string, UnitData | FeatureData][]>([])
@@ -332,38 +336,72 @@ export default function ScenarioDesigner() {
         )
       }
     } else if (tab === 3) {
-      const player = Number(deploySelected[deploySelected.length - 1])
-      const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
-      const mapData = data.metadata.map_data
-      const hexes = player === 1 ? mapData.allied_setup :
-        mapData.axis_setup
-      let turnHexes: DeployHexes = []
-      if (hexes && hexes[turn]) {
-        turnHexes = hexes[turn]
+      if (deploySelected === "i-1") {
+        console.log(deploySelected)
+        console.log(initAlliedSelected)
+        const unit = availableAlliedUnits.find(u => u[0] === initAlliedSelected)
+        const units = metadata.map_data.init_allied_units ?? []
+        if (unit) {
+          pushDesignStack({
+            ...data, metadata: {
+              ...metadata, map_data: {
+                ...metadata.map_data, init_allied_units: [
+                  ...units, [unit[2], selectionHex.x, selectionHex.y],
+                ],
+              },
+            },
+          }, setDesignStack)
+        }
+      } else if (deploySelected === "i-2") {
+        console.log(deploySelected)
+        console.log(initAxisSelected)
+        const unit = availableAxisUnits.find(u => u[0] === initAxisSelected)
+        const units = metadata.map_data.init_axis_units ?? []
+        if (unit) {
+          pushDesignStack({
+            ...data, metadata: {
+              ...metadata, map_data: {
+                ...metadata.map_data, init_axis_units: [
+                  ...units, [unit[2], selectionHex.x, selectionHex.y],
+                ],
+              },
+            },
+          }, setDesignStack)
+        }
+      } else {
+        const player = Number(deploySelected[deploySelected.length - 1])
+        const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
+        const mapData = data.metadata.map_data
+        const hexes = player === 1 ? mapData.allied_setup :
+          mapData.axis_setup
+        let turnHexes: DeployHexes = []
+        if (hexes && hexes[turn]) {
+          turnHexes = hexes[turn]
+        }
+        const newHexes = toggleHex(
+          turnHexes, selectionHex.x, selectionHex.y,
+          mapData.layout[0] - 1, mapData.layout[1] - 1
+        )
+        pushDesignStack(
+          player === 1 ? {
+            ...data, metadata: {
+              ...metadata, map_data: {
+                ...metadata.map_data, allied_setup: {
+                  ...metadata.map_data.allied_setup, [turn]: newHexes,
+                },
+              }
+            }
+          } : {
+            ...data, metadata: {
+              ...metadata, map_data: {
+                ...metadata.map_data, axis_setup: {
+                  ...metadata.map_data.axis_setup, [turn]: newHexes,
+                },
+              }
+            }
+          }, setDesignStack
+        )
       }
-      const newHexes = toggleHex(
-        turnHexes, selectionHex.x, selectionHex.y,
-        mapData.layout[0] - 1, mapData.layout[1] - 1
-      )
-      pushDesignStack(
-        player === 1 ? {
-          ...data, metadata: {
-            ...metadata, map_data: {
-              ...metadata.map_data, allied_setup: {
-                ...metadata.map_data.allied_setup, [turn]: newHexes,
-              },
-            }
-          }
-        } : {
-          ...data, metadata: {
-            ...metadata, map_data: {
-              ...metadata.map_data, axis_setup: {
-                ...metadata.map_data.axis_setup, [turn]: newHexes,
-              },
-            }
-          }
-        }, setDesignStack
-      )
     }
   }, [selectionHex])
 
@@ -436,6 +474,9 @@ export default function ScenarioDesigner() {
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
     setVictoryDisplay(victoryLoader)
+    setUnitDisplay(map.counters.map((counter, i) => {
+      return <MapCounter key={i} counter={counter} ovCallback={() => {}} />
+    }))
     setOverlayDisplay(overlayLoader)
   }, [scenario, scale])
 
@@ -469,6 +510,7 @@ export default function ScenarioDesigner() {
         {hexDisplay}
         {hexDisplayDetail}
         {victoryDisplay}
+        {unitDisplay}
         {tab === 3 ? overlayDisplay : ""}
       </svg>
     )
@@ -549,6 +591,10 @@ export default function ScenarioDesigner() {
                                                     setDesignStack={setDesignStack}
                                                     deploySelected={deploySelected}
                                                     setDeploySelected={setDeploySelected}
+                                                    initAlliedSelected={initAlliedSelected}
+                                                    setInitAlliedSelected={setInitAlliedSelected}
+                                                    initAxisSelected={initAxisSelected}
+                                                    setInitAxisSelected={setInitAxisSelected}
                                                     availableAlliedUnits={availableAlliedUnits}
                                                     availableAxisUnits={availableAxisUnits} /> : ""}
             { tab === 4 ? <DesignerFileTab resetCacheCallback={resetCache} designStack={designStack}
