@@ -156,7 +156,7 @@ export default function DesignerOrderOfBattleTab({
                   value={index}
                   checked={deploySelected === index}
                   onChange={() => setDeploySelected(index)} />
-            <label className="mr1em">init &mdash; player {player}</label>
+            <label className="mr1em">init &mdash; player {i}</label>
           </div>
           <div className={`flex pt05em${deploySelected === index ? " designer-selected" : ""}`}>
             <div style={{width: "250px"}} className="mr05em">

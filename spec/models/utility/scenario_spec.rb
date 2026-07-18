@@ -183,7 +183,7 @@ RSpec.describe Utility::Scenario do
       constants = Scenarios.constants.reject do |k|
         %i[Base Scenario999 Scenario000].include?(k)
       end
-      expect(constants.length).to be == 81
+      expect(constants.length).to be == 82
 
       # If any of these change, scenario MUST to be updated with a new version,
       # then update test with new version/checksum
@@ -225,7 +225,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("206")).to be == "0.2a-d9b6201068ef5157f6df278896792290"
       expect(Utility::Scenario.checksum("207")).to be == "0.1p-09df0572413c1a97feeafa6c48ba55be"
       expect(Utility::Scenario.checksum("208")).to be == "0.1p-aa823f7190b2b034ea15f7cc98a1763a"
-      expect(Utility::Scenario.checksum("209")).to be == "0.1p-17d8f4e6fa9bff0e36e76b1e6f2b2f1f"
+      expect(Utility::Scenario.checksum("209")).to be == "0.1p-39d2c8b424ccb40a85fb5c1a0d4b1aeb"
       expect(Utility::Scenario.checksum("210")).to be == "0.1p-e572c7d00f14600819d73e906c646046"
 
       expect(Utility::Scenario.checksum("301")).to be == "1.4-f7676cfd8065e278e5db862886d59841"
@@ -270,10 +270,11 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("601")).to be == "1.2-b3cb8e42f52aac8108bcf7f548c12130"
       expect(Utility::Scenario.checksum("602")).to be == "0.2a-5794b16e30d19385de4e75b5ce31a3e0"
       expect(Utility::Scenario.checksum("603")).to be == "1.3-184b435e7200f65f45c8f8e1abe68bb8"
-      expect(Utility::Scenario.checksum("604")).to be == "0.5b-c10c983dcfdd22a19827e1db1335e424"
+      expect(Utility::Scenario.checksum("604")).to be == "0.6b-fd07280ba0da36f18d3f636408bf406f"
       expect(Utility::Scenario.checksum("605")).to be == "0.2a-3c145088425f4d24c3795e669e8c36af"
       expect(Utility::Scenario.checksum("606")).to be == "0.2a-f781df1b20d8578375d8d141672e06ae"
       expect(Utility::Scenario.checksum("607")).to be == "0.2a-a9de334d7452547632eceb9c5e4e421d"
+      expect(Utility::Scenario.checksum("608")).to be == "0.1p-ae7ef1f515dce312a180a5cb62709424"
     end
   end
 end

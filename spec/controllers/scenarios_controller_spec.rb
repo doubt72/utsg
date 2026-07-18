@@ -180,7 +180,9 @@ RSpec.describe Api::V1::ScenariosController do
         units = scenario[:metadata][:allied_units].map { |t| t[1] }.flatten(1) +
                 scenario[:metadata][:axis_units].map { |t| t[1] }.flatten(1)
         units = units.map { |u| u[:list] }.flatten(1)
-        unit_count = units.reduce(0) { |cnt, u| cnt + (u[:x] || 1) }
+        unit_count = units.reduce(0) { |cnt, u| cnt + (u[:x] || 1) } +
+                     (scenario[:metadata][:init_allied_units] || []).length +
+                     (scenario[:metadata][:init_axis_units] || []).length
         expect(unit_count <=> last).to be >= 0
         last = unit_count
       end
@@ -198,7 +200,9 @@ RSpec.describe Api::V1::ScenariosController do
         units = scenario[:metadata][:allied_units].map { |t| t[1] }.flatten(1) +
                 scenario[:metadata][:axis_units].map { |t| t[1] }.flatten(1)
         units = units.map { |u| u[:list] }.flatten(1)
-        unit_count = units.reduce(0) { |cnt, u| cnt + (u[:x] || 1) }
+        unit_count = units.reduce(0) { |cnt, u| cnt + (u[:x] || 1) } +
+                     (scenario[:metadata][:init_allied_units] || []).length +
+                     (scenario[:metadata][:init_axis_units] || []).length
         expect(unit_count <=> last).to be <= 0
         last = unit_count
       end

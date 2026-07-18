@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario209 < Base
     ID = "209"
-    NAME = "Avalanche in Balance"
+    NAME = "Avalanche by a Thread"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

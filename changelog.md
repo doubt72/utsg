@@ -1,3 +1,9 @@
+# 0.113
+
+- Fixes and tweaks to scenario editing/generation
+- Updated 604
+- Added prototype 608
+
 # 0.112
 
 - Scenario designer fixes/tweaks

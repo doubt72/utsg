@@ -54,7 +54,6 @@ units(metadata["axis_units"])
 
 puts <<EOF
     }.freeze
-
 EOF
 
 def init_units(unit_data)
@@ -66,21 +65,23 @@ def init_units(unit_data)
   end
 end
 
-if mapdata["init_allied_units"]
+if metadata["init_allied_units"]
   puts <<EOF
+
     INIT_ALLIED_UNITS = [
 EOF
-  init_units(mapdata["init_allied_units"])
+  init_units(metadata["init_allied_units"])
   puts <<EOF
     ].freeze
 EOF
 end
 
-if mapdata["init_axis_units"]
+if metadata["init_axis_units"]
   puts <<EOF
+
     INIT_AXIS_UNITS = [
 EOF
-  init_units(mapdata["init_axis_units"])
+  init_units(metadata["init_axis_units"])
   puts <<EOF
     ].freeze
 EOF
@@ -102,12 +103,12 @@ puts <<EOF
           allied_units:,
           axis_units:,
 EOF
-if mapdata["init_allied_units"]
+if metadata["init_allied_units"]
   puts <<EOF
           init_allied_units:,
 EOF
 end
-if mapdata["init_axis_units"]
+if metadata["init_axis_units"]
   puts <<EOF
           init_axis_units:,
 EOF
