@@ -4,19 +4,19 @@ import {
   WeatherType, WindType, baseTerrainType, featureType, markerType, unitStatus, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
-import Unit, { UnitData } from "./Unit";
 import Counter from "./Counter";
 import { los } from "../utilities/los";
 import {
   HelpButtonLayout, OverlayLayout, TextLayout, roundedRectangle, yMapOffset,
 } from "../utilities/graphics";
-import Feature, { FeatureData } from "./Feature";
 import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
 import { otherPlayer, playerForNation, stackLimit } from "../utilities/utilities";
 import { GameActionUnit } from "./GameAction";
 import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
 import StackingActionError from "./actions/StackingActionError";
+import Unit from "./Unit";
+import Feature from "./Feature";
 
 export type DeployHexes = [string | number, string | number][]
 
@@ -37,8 +37,6 @@ export type MapData = {
   base_weather?: WeatherType;
   precip: [number, WeatherType];
   wind: [WindType, Direction, boolean];
-  init_allied_units?: [UnitData | FeatureData, number, number][],
-  init_axis_units?: [UnitData | FeatureData, number, number][],
 }
 
 // Defined here to avoid circular imports
@@ -115,17 +113,6 @@ export default class Map {
     this.windSpeed = wind ? wind[0] : windType.Calm
     this.windDirection = wind ? wind[1] : 1
     this.windVariable = wind ? wind[2] : false
-
-    if (!this.preview) {
-      for (const uf of data.init_allied_units ?? []) {
-        const counter = uf[0].ft ? new Feature(uf[0]) : new Unit(uf[0])
-        this.addCounter(new Coordinate(uf[1], uf[2]), counter)
-      }
-      for (const uf of data.init_axis_units ?? []) {
-        const counter = uf[0].ft ? new Feature(uf[0]) : new Unit(uf[0])
-        this.addCounter(new Coordinate(uf[1], uf[2]), counter)
-      }
-    }
   }
 
   loadConfig(data: MapLayout) {

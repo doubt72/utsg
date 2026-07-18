@@ -13,7 +13,10 @@ module Utility
                                .map { |k| ::Scenarios.const_get(k).index_record }
         filter(scenarios, options)
         sort(scenarios, options["sort"], options["sort_dir"]).map do |s|
-          s.except(:string, :date, :layout, :allied_units, :axis_units)
+          s.except(
+            :string, :date, :layout, :allied_units, :axis_units,
+            :init_allied_units, :init_axis_units
+          )
         end
       end
 
@@ -30,7 +33,9 @@ module Utility
         units = scenario[:allied_units].map { |t| t[1] }.flatten(1) +
                 scenario[:axis_units].map { |t| t[1] }.flatten(1)
 
-        units.map { |u| u[:list] }.flatten(1)
+        units.map { |u| u[:list] }.flatten(1) +
+          scenario[:init_allied_units].map { 1 } +
+          scenario[:init_axis_units].map { 1 }
       end
 
       def processed_units(scenario)

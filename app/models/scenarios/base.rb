@@ -5,6 +5,8 @@ module Scenarios
     ID = ""
     STATUS = ""
     VERSION = "0.1"
+    INIT_ALLIED_UNITS = [].freeze
+    INIT_AXIS_UNITS = [].freeze
 
     class << self
       def index_record
@@ -20,6 +22,8 @@ module Scenarios
           layout: self::LAYOUT,
           allied_units: self::ALLIED_UNITS,
           axis_units: self::AXIS_UNITS,
+          init_allied_units: self::INIT_ALLIED_UNITS,
+          init_axis_units: self::INIT_AXIS_UNITS,
         }
       rescue NameError
         { id: name, name: "", string: "", allies: [], axis: [] }
@@ -32,6 +36,8 @@ module Scenarios
         record.delete(:layout)
         record.delete(:allied_units)
         record.delete(:axis_units)
+        record.delete(:init_allied_units)
+        record.delete(:init_axis_units)
         record.merge({ metadata: generate })
       end
 
@@ -57,6 +63,24 @@ module Scenarios
           units[k] = { list: convert_units(v[:list]) }
         end
         units
+      end
+
+      def init_allied_units
+        self::INIT_ALLIED_UNITS.map do |u|
+          {
+            data: convert_units([u[:data]])[0],
+            x: u[:x], y: u[:y], facing: u[:facing],
+          }
+        end
+      end
+
+      def init_axis_units
+        self::INIT_AXIS_UNITS.map do |u|
+          {
+            data: convert_units([u[:data]])[0],
+            x: u[:x], y: u[:y], facing: u[:facing],
+          }
+        end
       end
 
       def convert_units(units)

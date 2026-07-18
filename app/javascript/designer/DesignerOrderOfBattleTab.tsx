@@ -3,9 +3,10 @@ import DesignerDeploy from "./DesignerDeploy";
 import { UnitData } from "../engine/Unit";
 import { toggleHex } from "../engine/control/deploy";
 import { DeployHexes } from "../engine/Map";
-import { DesignStack, pushDesignStack } from "./ScenarioDesigner";
-import { Player } from "../utilities/commonTypes";
+import { DesignStack, pushDesignStack, showHex } from "./ScenarioDesigner";
+import { ExtendedDirection, Player } from "../utilities/commonTypes";
 import { FeatureData } from "../engine/Feature";
+import { normalDir } from "../utilities/utilities";
 
 interface DesignerOrderOfBattleTabProps {
   designStack: DesignStack;
@@ -16,6 +17,8 @@ interface DesignerOrderOfBattleTabProps {
   setInitAlliedSelected: Dispatch<SetStateAction<string>>;
   initAxisSelected: string;
   setInitAxisSelected: Dispatch<SetStateAction<string>>;
+  initDir: ExtendedDirection;
+  setInitDir: Dispatch<SetStateAction<ExtendedDirection>>;
   availableAlliedUnits: [string, string, UnitData | FeatureData][];
   availableAxisUnits: [string, string, UnitData | FeatureData][];
 }
@@ -23,7 +26,7 @@ interface DesignerOrderOfBattleTabProps {
 export default function DesignerOrderOfBattleTab({
   designStack, setDesignStack, deploySelected, setDeploySelected,
   initAlliedSelected, setInitAlliedSelected, initAxisSelected, setInitAxisSelected,
-  availableAlliedUnits, availableAxisUnits
+  initDir, setInitDir, availableAlliedUnits, availableAxisUnits,
 }: DesignerOrderOfBattleTabProps) {
   const data = designStack.data[designStack.index]
   const metadata = data.metadata
@@ -155,7 +158,7 @@ export default function DesignerOrderOfBattleTab({
                   onChange={() => setDeploySelected(index)} />
             <label className="mr1em">init &mdash; player {player}</label>
           </div>
-          <div className="flex mt05em">
+          <div className={`flex pt05em${deploySelected === index ? " designer-selected" : ""}`}>
             <div style={{width: "250px"}} className="mr05em">
               <label className="design-label">unit</label>
               <select name={`init-player${i}`} value={i === 1 ? initAlliedSelected : initAxisSelected} className="form-input"
@@ -172,14 +175,17 @@ export default function DesignerOrderOfBattleTab({
               </select>
             </div>
             <div className="design-button" style={{ marginTop: "28px", marginBottom: "4px" }} onClick={() => {
-                   const newMapData = { ...metadata.map_data }
+                   const newMtadata = { ...metadata }
                    if (i === 1) {
-                     delete newMapData["init_allied_units"]
+                     delete newMtadata["init_allied_units"]
                    } else {
-                     delete newMapData["init_axis_units"]
+                     delete newMtadata["init_axis_units"]
                    }
-                   pushDesignStack({ ...data, metadata: { ...metadata, map_data: newMapData }}, setDesignStack)
+                   pushDesignStack({ ...data, metadata: newMtadata}, setDesignStack)
                  }}>clear</div>
+            <div className="ml05em" style={{ marginTop: "26px" }}>
+              { showHex(initDir, () => { setInitDir(normalDir(initDir + 1)) }) }
+            </div>
           </div>
         </div>
       )
@@ -189,7 +195,9 @@ export default function DesignerOrderOfBattleTab({
       addSelector(i, 2, deps)
     }
     setDeploys(deps)
-  }, [designStack.index, designStack.data[0], deploySelected, initAlliedSelected, initAxisSelected])
+  }, [
+    designStack.index, designStack.data[0], deploySelected, initAlliedSelected, initAxisSelected, initDir
+  ])
 
   return (
     <div>

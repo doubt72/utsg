@@ -1,6 +1,7 @@
 # 0.112
 
 - Scenario designer fixes/tweaks
+- Add ability to have pre-placed units in scenarios
 - Bug fix: admin unit counts are incorrect
 - Updated/promoted 512
 - Updated 604

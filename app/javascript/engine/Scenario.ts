@@ -1,4 +1,4 @@
-import { Player } from "../utilities/commonTypes";
+import { Coordinate, Direction, Player } from "../utilities/commonTypes";
 import { addSpecialArmorRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList } from "../utilities/utilities";
 import Feature, { FeatureData } from "./Feature";
 import Game from "./Game"
@@ -14,6 +14,10 @@ type ScenarioBaseData = {
   axis: string[];
 }
 
+type InitUnits = {
+  data: UnitData | FeatureData, x: number, y: number, facing?: Direction,
+}
+
 export type ScenarioData = ScenarioBaseData & {
   metadata: {
     author: string;
@@ -25,6 +29,8 @@ export type ScenarioData = ScenarioBaseData & {
     first_action: Player;
     allied_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
     axis_units: { [index: number]: {list: (UnitData | FeatureData)[]} };
+    init_allied_units?: InitUnits[],
+    init_axis_units?: InitUnits[],
     special_rules?: string[],
     map_data: MapData;
   }
@@ -40,6 +46,8 @@ export type ReinforcementList = { [index: string]: ReinforcementItem }
 export type ReinforcementSchedule = { [index: number]: ReinforcementList };
 
 export default class Scenario {
+  rawData: ScenarioData;
+
   code: string;
   name: string;
   author: string;
@@ -58,7 +66,9 @@ export default class Scenario {
   map: Map;
   specialRules: string[]
 
-  constructor(data: ScenarioData, game?: Game) {
+  constructor(data: ScenarioData, game?: Game, init: boolean = true) {
+    this.rawData = data
+
     this.code = data.id
     this.name = data.name
     this.author = data.metadata.author
@@ -82,6 +92,22 @@ export default class Scenario {
     this.firstDeploy = data.metadata.first_deploy
 
     this.map = new Map(data.metadata.map_data, game)
+
+    if (init) {
+      let count = 0
+      for (const uf of data.metadata.init_allied_units ?? []) {
+        const counter = uf.data.ft ? new Feature(uf.data) : new Unit(uf.data)
+        if (uf.facing && counter.rotates) { counter.facing = uf.facing }
+        counter.id = `ia-${count++}`
+        this.map.addCounter(new Coordinate(uf.x, uf.y), counter)
+      }
+      for (const uf of data.metadata.init_axis_units ?? []) {
+        const counter = uf.data.ft ? new Feature(uf.data) : new Unit(uf.data)
+        if (uf.facing && counter.rotates) { counter.facing = uf.facing }
+        counter.id = `ia-${count++}`
+        this.map.addCounter(new Coordinate(uf.x, uf.y), counter)
+      }
+    }
   }
 
   setUnits({ metadata }: ScenarioData, game?: Game) {
@@ -131,8 +157,19 @@ export default class Scenario {
   }
 
   get alliedUnitList(): ReinforcementItem[] {
-    if (!this.alliedReinforcements) { return [] }
+    if (!this.alliedReinforcements &&
+      (this.rawData.metadata.init_allied_units?.length ?? 0) < 1) { return [] }
     const counts: ReinforcementList = {}
+    for (const iu of this.rawData.metadata.init_allied_units ?? []) {
+      if (counts[iu.data.id]) {
+        counts[iu.data.id].x += 1
+      } else {
+        counts[iu.data.id] = {
+          x: 1, used: 0, id: iu.data.id,
+          counter: iu.data.ft ? new Feature(iu.data) : new Unit(iu.data)
+        }
+      }
+    }
     for (const turn of Object.values(this.alliedReinforcements)) {
       for (const key of Object.keys(turn)) {
         counts[key] ? counts[key].x += turn[key].x : counts[key] = { ...turn[key]}
@@ -142,8 +179,19 @@ export default class Scenario {
   }
 
   get axisUnitList(): ReinforcementItem[] {
-    if (!this.axisReinforcements) { return [] }
+    if (!this.axisReinforcements &&
+      (this.rawData.metadata.init_axis_units?.length ?? 0) < 1) { return [] }
     const counts: ReinforcementList = {}
+    for (const iu of this.rawData.metadata.init_axis_units ?? []) {
+      if (counts[iu.data.id]) {
+        counts[iu.data.id].x += 1
+      } else {
+        counts[iu.data.id] = {
+          x: 1, used: 0, id: iu.data.id,
+          counter: iu.data.ft ? new Feature(iu.data) : new Unit(iu.data)
+        }
+      }
+    }
     for (const turn of Object.values(this.axisReinforcements)) {
       for (const key of Object.keys(turn)) {
         counts[key] ? counts[key].x += turn[key].x : counts[key] = { ...turn[key]}

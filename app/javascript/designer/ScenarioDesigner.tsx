@@ -110,6 +110,7 @@ export default function ScenarioDesigner() {
   const [deploySelected, setDeploySelected] = useState<string>("t0-1")
   const [initAlliedSelected, setInitAlliedSelected] = useState<string>("")
   const [initAxisSelected, setInitAxisSelected] = useState<string>("")
+  const [initDir, setInitDir] = useState<ExtendedDirection>(1)
 
   const [tab, setTab] = useState<number>(1)
 
@@ -340,15 +341,16 @@ export default function ScenarioDesigner() {
         console.log(deploySelected)
         console.log(initAlliedSelected)
         const unit = availableAlliedUnits.find(u => u[0] === initAlliedSelected)
-        const units = metadata.map_data.init_allied_units ?? []
+        const units = metadata.init_allied_units ?? []
         if (unit) {
           pushDesignStack({
             ...data, metadata: {
-              ...metadata, map_data: {
-                ...metadata.map_data, init_allied_units: [
-                  ...units, [unit[2], selectionHex.x, selectionHex.y],
-                ],
-              },
+              ...metadata, init_allied_units: [
+                ...units, {
+                  data: { ...unit[2], id: unit[0] }, x: selectionHex.x, y: selectionHex.y,
+                  facing: initDir as Direction,
+                },
+              ],
             },
           }, setDesignStack)
         }
@@ -356,15 +358,16 @@ export default function ScenarioDesigner() {
         console.log(deploySelected)
         console.log(initAxisSelected)
         const unit = availableAxisUnits.find(u => u[0] === initAxisSelected)
-        const units = metadata.map_data.init_axis_units ?? []
+        const units = metadata.init_axis_units ?? []
         if (unit) {
           pushDesignStack({
             ...data, metadata: {
-              ...metadata, map_data: {
-                ...metadata.map_data, init_axis_units: [
-                  ...units, [unit[2], selectionHex.x, selectionHex.y],
-                ],
-              },
+              ...metadata, init_axis_units: [
+                ...units, {
+                  data: { ...unit[2], id: unit[0] }, x: selectionHex.x, y: selectionHex.y,
+                  facing: initDir as Direction,
+                },
+              ],
             },
           }, setDesignStack)
         }
@@ -511,7 +514,7 @@ export default function ScenarioDesigner() {
         {hexDisplayDetail}
         {victoryDisplay}
         {unitDisplay}
-        {tab === 3 ? overlayDisplay : ""}
+        {tab === 3 && !["i-1", "i-2"].includes(deploySelected) ? overlayDisplay : ""}
       </svg>
     )
   }
@@ -595,6 +598,7 @@ export default function ScenarioDesigner() {
                                                     setInitAlliedSelected={setInitAlliedSelected}
                                                     initAxisSelected={initAxisSelected}
                                                     setInitAxisSelected={setInitAxisSelected}
+                                                    initDir={initDir} setInitDir={setInitDir}
                                                     availableAlliedUnits={availableAlliedUnits}
                                                     availableAxisUnits={availableAxisUnits} /> : ""}
             { tab === 4 ? <DesignerFileTab resetCacheCallback={resetCache} designStack={designStack}

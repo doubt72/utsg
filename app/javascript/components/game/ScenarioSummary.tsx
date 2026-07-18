@@ -120,7 +120,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
     )
   }
 
-  const scenario = new Scenario(data)
+  const scenario = new Scenario(data, undefined, false)
   const map = scenario.map
   map.preview = true
 

@@ -45,6 +45,11 @@ module Scenarios
       ] },
     }.freeze
 
+    INIT_AXIS_UNITS = [
+      { data: :pillbox, x: 6, y: 10, facing: 5 },
+      { data: :pillbox, x: 8, y: 10, facing: 6 },
+    ].freeze
+
     class << self
       def generate
         {
@@ -58,6 +63,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          init_axis_units:,
         }
       end
 
