@@ -1,5 +1,5 @@
 Features/Bug Fixes
-  - Add one more level to shrink map
+  + Add one more level to shrink map
   - Option to move back to where unit breaks / or stack stops moving
   - Dig in to level 2
   - Always show line for drift off map

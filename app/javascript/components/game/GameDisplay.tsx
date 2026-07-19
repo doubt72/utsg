@@ -316,7 +316,7 @@ export default function GameDisplay() {
   const switchMapScale = (set: -1 | 0 | 1) => {
     if (set < 0) {
       setMapScale(ms => {
-        const nv = Math.max(ms/1.25, 0.512)
+        const nv = Math.max(ms/1.25, 0.4096)
         localStorage.setItem("mapScale", String(nv))
         return nv
       })
@@ -377,7 +377,7 @@ export default function GameDisplay() {
     setMapScaleMinusButton(
       <OverlayTrigger placement="bottom" overlay={scaleMinusTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={`custom-button normal-button button-left${mapScale > 0.52 ? "" : " custom-button-ghost"}`}
+        <div className={`custom-button normal-button button-left${mapScale > 0.41 ? "" : " custom-button-ghost"}`}
              onClick={() => switchMapScale(-1)}>
           <DashCircle />
         </div>
@@ -787,7 +787,7 @@ export default function GameDisplay() {
     </Tooltip>
   )
 
-  const shrinkScales = [1, 0.75, 0.625]
+  const shrinkScales = [1, 0.75, 0.5625]
 
   return (
     <div className="main-page">

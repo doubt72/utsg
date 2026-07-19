@@ -1,5 +1,6 @@
 # 0.113
 
+- Allow maps to shrink one more step, make smallest interface slightly smaller
 - Fixes and tweaks to scenario editing/generation
 - Updated 604
 - Added prototype 608
