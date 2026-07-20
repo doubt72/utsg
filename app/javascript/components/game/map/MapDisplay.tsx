@@ -522,8 +522,11 @@ export default function MapDisplay({
       setReinforcementsOverlay(undefined)
       map.game.closeReinforcementPanel = false
     } else if (map.game?.gameState?.type === stateType.Deploy &&
-               reinforcementsOverlay === undefined) {
+               reinforcementsOverlay === undefined && map.game.currentUser === user) {
       displayReinforcements(map.game.currentPlayer)
+    } else if (map.game?.gameState?.type === stateType.Deploy &&
+               reinforcementsOverlay === undefined) {
+      map.game.clearGameState()
     } else if (!preview) {
       setReinforcementsOverlay(rp => {
         if (!rp) { return undefined }

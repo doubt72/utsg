@@ -4,6 +4,7 @@
 - Always draw line for drift off map; terminate clean line on map edge
 - Allow maps to shrink one more step, make smallest interface slightly smaller
 - Fixes and tweaks to scenario editing/generation
+- Bug fix: don't open panel/select unit for opponent when undoing deploy
 - Updated 604
 - Added prototype 608
 

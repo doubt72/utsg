@@ -1,8 +1,6 @@
 Features/Bug Fixes
-  + Dig in to level 2
-  + Always show line for drift off map
+  + Don't open panel / select when undoing deployment for opponent
   - Option to move back to where unit breaks / or stack stops moving
-  - Don't open panel / select when undoing deployment for opponent
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops
@@ -12,10 +10,6 @@ Features/Bug Fixes
   - Add Some Developer Notes
   - Strategy notes
   - Figure out how to implement Vichy French with same French units
-  ? Join squad bug (what happened?)
-  ? Not right height on initial load (can't seem to duplicate, keep an eye out)
-  ? Help display error when rout moving (sometimes)
-  ? Filter bad words
 
 106 (America N. Africa)
 304 (Pegasus Bridge)
@@ -27,10 +21,11 @@ Nice to Have Eventually:
 
 Keep an Eye out for:
   ? Problematic Game Controls performance (excessive refreshes still)
-  ? Refactor firing:
-    ? Remove done select?  Can join units after the fact without canceling?
-
+  ? Join squad bug (what happened?)
+  ? Not right height on initial load (can't seem to duplicate, keep an eye out)
+  ? Help display error when rout moving (sometimes)
 Probably not:
+  ? Filter bad words
   ? KV and French single-man turrets?
 
 Special Rules/Scenarios
