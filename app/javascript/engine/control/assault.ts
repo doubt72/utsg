@@ -45,7 +45,7 @@ export function showEntrench(game: Game): boolean {
   if (hex.building) { return false }
   const features = game.scenario.map.countersAt(loc)
   for (const f of features) {
-    if (f.hasFeature) { return false }
+    if (f.hasFeature && f.feature.name !== "Shell Scrape") { return false }
   }
   return true
 }

@@ -1,5 +1,5 @@
-import { Coordinate, CounterSelectionTarget, hexOpenType, HexOpenType, Player } from "../../../utilities/commonTypes";
-import { roll2d10 } from "../../../utilities/utilities";
+import { Coordinate, CounterSelectionTarget, Direction, hexOpenType, HexOpenType, Player } from "../../../utilities/commonTypes";
+import { neightborCoordinate, roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionUnit } from "../../GameAction";
@@ -27,7 +27,7 @@ export function nextToEnemy(game: Game, loc: Coordinate): boolean {
       c.unit.playerNation !== game.currentPlayerNation) { return true }
   }
   for (let d = 1; d <= 6; d++) {
-    const hex = map.neightborCoordinate(loc, d)
+    const hex = neightborCoordinate(loc, d as Direction)
     const hexCounters = map.countersAt(hex)
     for (const c of hexCounters) {
       if (!c.unit.isFeature && !c.unit.isBroken &&

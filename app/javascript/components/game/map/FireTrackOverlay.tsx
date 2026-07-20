@@ -3,6 +3,8 @@ import Map from "../../../engine/Map";
 import { stateType } from "../../../engine/control/state/BaseState";
 import FireAction from "../../../engine/actions/FireAction";
 import { fireActions } from "../../../engine/actions/BaseAction";
+import { hexDirection, hexDistance, neightborCoordinate } from "../../../utilities/utilities";
+import { Coordinate } from "../../../utilities/commonTypes";
 
 interface FireTrackOverlayProps {
   map: Map;
@@ -36,10 +38,26 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
       if (action.fireHex.drift) {
         const start = action.target[0] ?? action.fireHex.start[0]
         const end = action.fireHex.final[0]
+        const hexS = new Coordinate(start.x, start.y)
+        const hexE = new Coordinate(end.x, end.y)
+        const dir = hexDirection(hexS, hexE) ?? 1
+        let current = hexS
+        let last = current
+        let off = false
+        for (let i = 0; i <= hexDistance(hexS, hexE); i++) {
+          last = current
+          current = neightborCoordinate(current, dir)
+          if (current.x < 0 || current.y < 0 || current.x >= map.width || current.y >= map.height) {
+            console.log(`what ${last.x},${last.y} ${current.x},${current.y}`)
+            off = true
+            break
+          }
+        }
         const x1 = map.xOffset(start.x, start.y)
         const y1 = map.yOffset(start.y)
-        const x2 = map.xOffset(end.x, end.y)
-        const y2 = map.yOffset(end.y)
+        const x2 = off ? (map.xOffset(last.x, last.y) + map.xOffset(current.x, current.y))/2 :
+          map.xOffset(end.x, end.y)
+        const y2 = off ? (map.yOffset(last.y) + map.yOffset(current.y))/2 : map.yOffset(end.y)
         rc.push(<line key={`over-drift`} x1={x1} y1={y1} x2={x2} y2={y2}
                       style={{ stroke: "#00E", strokeWidth: 4, strokeDasharray: "5, 5" }} />)
       }

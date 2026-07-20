@@ -1,5 +1,5 @@
 import { Coordinate, Direction, Player } from "../../utilities/commonTypes";
-import { normalDir, stackLimit } from "../../utilities/utilities";
+import { neightborCoordinate, normalDir, stackLimit } from "../../utilities/utilities";
 import Game from "../Game";
 import Hex from "../Hex";
 import Map from "../Map";
@@ -20,27 +20,27 @@ export function findRoutPathTree(
   const straight = dir === Math.floor(dir)
   const hexes: Coordinate[] = []
   if (straight) {
-    const hex = map.neightborCoordinate(loc, dir)
+    const hex = neightborCoordinate(loc, dir)
     if (map.hexAt(hex)) { hexes.push(hex) }
   } else {
-    const hex1 = map.neightborCoordinate(loc, normalDir(dir - 0.5))
-    const hex2 = map.neightborCoordinate(loc, normalDir(dir + 0.5))
+    const hex1 = neightborCoordinate(loc, normalDir(dir - 0.5))
+    const hex2 = neightborCoordinate(loc, normalDir(dir + 0.5))
     if (map.hexAt(hex1)) { hexes.push(hex1) }
     if (map.hexAt(hex2)) { hexes.push(hex2) }
   }
   if (hexes.length < 1) { return false }
   const unblockedHexes = hexes.filter(h => !!movementCost(map, loc, h, unit))
   if (unblockedHexes.length < 1 && straight) {
-    const hex1 = map.neightborCoordinate(loc, normalDir(dir - 1))
-    const hex2 = map.neightborCoordinate(loc, normalDir(dir + 1))
+    const hex1 = neightborCoordinate(loc, normalDir(dir - 1))
+    const hex2 = neightborCoordinate(loc, normalDir(dir + 1))
     if (map.hexAt(hex1) && !!movementCost(map, loc, hex1, unit)) { unblockedHexes.push(hex1) }
     if (map.hexAt(hex2) && !!movementCost(map, loc, hex2, unit)) { unblockedHexes.push(hex2) }
   }
   if (unblockedHexes.length < 1) { return false }
   let reachableHexes = unblockedHexes.filter(h => movementCost(map, loc, h, unit) as number <= move)
   if (reachableHexes.length < 1 && straight) {
-    const hex1 = map.neightborCoordinate(loc, normalDir(dir - 1))
-    const hex2 = map.neightborCoordinate(loc, normalDir(dir + 1))
+    const hex1 = neightborCoordinate(loc, normalDir(dir - 1))
+    const hex2 = neightborCoordinate(loc, normalDir(dir + 1))
     if (map.hexAt(hex1) && !!movementCost(map, loc, hex1, unit)) { reachableHexes.push(hex1) }
     if (map.hexAt(hex2) && !!movementCost(map, loc, hex2, unit)) { reachableHexes.push(hex2) }
   }

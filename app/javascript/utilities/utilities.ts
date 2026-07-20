@@ -125,6 +125,36 @@ export function hexDistance(hex0: Coordinate, hex1: Coordinate): number {
   return Math.max(Math.abs(x00 - x11), Math.abs(hex0.y - hex1.y), Math.abs(z0 - z1));
 }
 
+// Cardinal directions only
+export function hexDirection(hex0: Coordinate, hex1: Coordinate): Direction | undefined {
+  // Transform X into axial coordinates
+  const x00 = hex0.x - Math.floor(hex0.y / 2);
+  const x11 = hex1.x - Math.floor(hex1.y / 2);
+  // Add a cubic component
+  const z0 = -x00 - hex0.y;
+  const z1 = -x11 - hex1.y;
+  // And now things are simple
+  if (hex0.y === hex1.y) {
+    return hex0.x > hex1.x ? 1 : 4
+  } else if (x00 === x11) {
+    return hex0.y > hex1.y ? 2 : 5
+  } else if (z0 == z1) {
+    return hex0.y > hex1.y ? 3 : 6
+  }
+}
+
+export function neightborCoordinate(hex: Coordinate, dir: Direction): Coordinate {
+  const offset = hex.y%2
+  return [
+    new Coordinate(hex.x - 1, hex.y),
+    new Coordinate(hex.x - 1 + offset, hex.y - 1),
+    new Coordinate(hex.x + offset, hex.y - 1),
+    new Coordinate(hex.x + 1, hex.y),
+    new Coordinate(hex.x + offset, hex.y + 1),
+    new Coordinate(hex.x - 1 + offset, hex.y + 1),
+  ][dir - 1]
+}
+
 export function coordinateToLabel(loc: Coordinate): string {
   // handle up to 52 for now, easy to extend if we need it, but at 1" hexes,
   // 52 would be a somewhat ludicrous seven 8.5x11" pages wide

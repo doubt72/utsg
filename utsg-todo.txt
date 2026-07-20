@@ -1,8 +1,7 @@
 Features/Bug Fixes
-  + Add one more level to shrink map
+  + Dig in to level 2
+  + Always show line for drift off map
   - Option to move back to where unit breaks / or stack stops moving
-  - Dig in to level 2
-  - Always show line for drift off map
   - Don't open panel / select when undoing deployment for opponent
   - General cleanup of button flow
     - Only one pick up picks up

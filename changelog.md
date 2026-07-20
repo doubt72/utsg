@@ -1,5 +1,7 @@
 # 0.113
 
+- Add ability to improve entrenchments to level 2 (foxholes)
+- Always draw line for drift off map; terminate clean line on map edge
 - Allow maps to shrink one more step, make smallest interface slightly smaller
 - Fixes and tweaks to scenario editing/generation
 - Updated 604

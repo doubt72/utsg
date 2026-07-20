@@ -252,10 +252,17 @@ export default class AssaultState extends BaseState {
   entrench() {
     const x = this.selection[0].x
     const y = this.selection[0].y
-    this.map.unshiftGhost(new Coordinate(x, y), new Feature({
-      id: "scrape-ghost", ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
+    const loc = new Coordinate(x, y)
+    const counters = this.map.countersAt(loc)
+    const ck = counters[0].hasFeature
+    this.map.unshiftGhost(loc, new Feature({
+      id: "scrape-ghost", ft: 1, n: ck ? "Foxhole" : "Shell Scrape",
+      t: "foxhole", i: "foxhole", d: ck ? 2 : 1,
     }))
-    this.addActions.push({ x, y, type: gameActionAddActionType.Entrench, cost: 0, index: 0 })
+    this.addActions.push({
+      x, y, type: gameActionAddActionType.Entrench, cost: 0, index: ck ? 1 : 0,
+      id: `scrap-${loc.x}-${loc.y}`
+    })
     this.doneSelect = true
     this.game.closeOverlay = true
   }
@@ -274,7 +281,9 @@ export default class AssaultState extends BaseState {
           }
         }),
         add_action: this.addActions.map(a => {
-          return { type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, index: a.index }
+          return {
+            type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, index: a.index
+          }
         }),
       }
     }, this.game)

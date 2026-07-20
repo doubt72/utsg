@@ -204,6 +204,7 @@ export default class FireAction extends BaseAction {
         let dTo = to
         let dTargets = targets
         if (targetRoll.result.result <= targetCheck && oBoard) {
+          anims.push({ loc: to, type: "miss" })
           if (needDice) {
             targetRoll.description += `<span style="color: ${failRedColorMarker()};">miss</span>, ` +
               `<span style="color: ${passBlueColorMarker()};">drifts</span>`
@@ -218,25 +219,24 @@ export default class FireAction extends BaseAction {
             drift.description = `distance roll: ${formatDieResult(drift.result)} for ${formatTarget(dist)} hexes`
           }
           const loc = this.map.driftHex(to, dirRoll.result.result, dist)
-          anims.push({ loc: to, type: "miss" })
-          if (loc !== false) {
+          this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
+          if (this.data.fire_data) { this.data.fire_data.drift = true }
+          if (loc.x < 0 || loc.y < 0 || loc.x >= this.map.width || loc.y >= this.map.height) {
+            dTargets = []
+            drift.description += ", drifted off map"
+            fireStart = false
+          } else {
             anims.push({ loc: loc, type: "drift" })
-            if (this.data.fire_data) { this.data.fire_data.drift = true }
             dTo = loc
             drift.description += `, drifted to ${formatCoordinate(loc)}`
             fsHex.x = loc.x
             fsHex.y = loc.y
-            this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
             dTargets = this.map.countersAt(loc).filter(c => c.hasUnit).map(u => {
               return { x: loc.x, y: loc.y, counter: u }
             })
             if (dTargets.length < 1 && !smoke) {
               drift.description += ", no units in hex"
             }
-          } else {
-            dTargets = []
-            drift.description += ", drifted off map"
-            fireStart = false
           }
         } else {
           if (needDice) { targetRoll.description += `<span style="color: ${failRedColorMarker()};">hit</span>` }

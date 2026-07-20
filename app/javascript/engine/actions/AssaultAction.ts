@@ -91,10 +91,12 @@ export default class AssaultMoveAction extends BaseAction {
         this.map.eliminateCounter(mid, a.id as string)
         anims.push({ loc: mid, type: "clear" })
       } else if (a.type === gameActionAddActionType.Entrench) {
+        if (a.index) { this.map.eliminateCounter(mid, a.id as string) }
         const feature = new Feature({
-          id: `sc-${this.game.lastActionIndex}`, ft: 1, n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
+          id: `scrap-${mid.x}-${mid.y}${a.index ? "-2" : ""}`, ft: 1,
+          n: a.index ? "Foxhole" : "Shell Scrape", t: "foxhole", i: "foxhole",
+          d: a.index ? 2 : 1,
         })
-        feature.id = `scrap-${mid.x}-${mid.y}`
         this.map.addCounter(mid, feature)
         anims.push({ loc: mid, type: "entrench" })
       }
@@ -119,7 +121,14 @@ export default class AssaultMoveAction extends BaseAction {
         this.map.addCounter(mid, counter.feature)
         this.game.removeEliminatedCounter(a.id as string)
       } else if (a.type === gameActionAddActionType.Entrench) {
-        this.map.removeCounter(mid, `scrap-${mid.x}-${mid.y}` as string)
+        this.map.removeCounter(mid, `scrap-${mid.x}-${mid.y}${a.index ? "-2" : ""}` as string)
+        if (a.index) {
+        const feature = new Feature({
+            id: `scrap-${mid.x}-${mid.y}`, ft: 1,
+            n: "Shell Scrape", t: "foxhole", i: "foxhole", d: 1,
+          })
+          this.map.addCounter(mid, feature)
+        }
       }
     }
 

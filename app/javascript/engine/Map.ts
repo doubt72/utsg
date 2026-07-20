@@ -11,7 +11,7 @@ import {
 } from "../utilities/graphics";
 import { countersFromUnits, MapCounterData, sortStacks } from "./support/organizeStacks";
 import BaseAction from "./actions/BaseAction";
-import { otherPlayer, playerForNation, stackLimit } from "../utilities/utilities";
+import { neightborCoordinate, otherPlayer, playerForNation, stackLimit } from "../utilities/utilities";
 import { GameActionUnit } from "./GameAction";
 import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
 import StackingActionError from "./actions/StackingActionError";
@@ -251,22 +251,10 @@ export default class Map {
   }
 
   neighborAt(loc: Coordinate, dir: Direction): Hex | undefined {
-    return this.hexAt(this.neightborCoordinate(loc, dir))
+    return this.hexAt(neightborCoordinate(loc, dir))
   }
 
-  neightborCoordinate(loc: Coordinate, dir: number): Coordinate {
-    const offset = loc.y%2
-    return [
-      new Coordinate(loc.x - 1, loc.y),
-      new Coordinate(loc.x - 1 + offset, loc.y - 1),
-      new Coordinate(loc.x + offset, loc.y - 1),
-      new Coordinate(loc.x + 1, loc.y),
-      new Coordinate(loc.x + offset, loc.y + 1),
-      new Coordinate(loc.x - 1 + offset, loc.y + 1),
-    ][dir - 1]
-  }
-
-  driftHex(start: Coordinate, dir: number, distance: number): false | Coordinate {
+  driftHex(start: Coordinate, dir: number, distance: number): Coordinate {
     let rc = start
     // Honestly, which this is theoretically slower (but never actually slow in
     // practice), it's simpler than calculating the hex in one step since each
@@ -274,9 +262,8 @@ export default class Map {
     // cubic version that's marginally simpler, but I'm too lazy to work it out
     // right now
     for (let i = 0; i < distance; i++) {
-      rc = this.neightborCoordinate(rc, dir)
+      rc = neightborCoordinate(rc, dir as Direction)
     }
-    if (rc.x < 0 || rc.y < 0 || rc.x >= this.width || rc.y >= this.width) { return false }
     return rc
   }
 
@@ -984,7 +971,7 @@ export default class Map {
   }
 
   spreadFire(loc: Coordinate) {
-    const newLoc = this.neightborCoordinate(loc, this.windDirection)
+    const newLoc = neightborCoordinate(loc, this.windDirection)
     this.addFire(newLoc)
   }
 }
