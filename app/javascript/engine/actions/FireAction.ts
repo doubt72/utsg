@@ -90,7 +90,9 @@ export default class FireAction extends BaseAction {
       if (i > 0) { part += "and " }
       part += `${ formatNation(this.game, this.player) } ${names.join(", ")}`
       part += ` at ${formatCoordinate(c)} `
-      if (i === coords.length - 1) { part += `fired ${smoke ? "smoke ": "" }at ` }
+      if (i === coords.length - 1) {
+        part += `fired ${this.origin[i].sponson ? "hull gun " : ""}${smoke ? "smoke ": "" }at `
+      }
     }
     if (this.target.length > 0) {
       coords = [new Coordinate(this.target[0].x, this.target[0].y)]

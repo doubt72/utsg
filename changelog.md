@@ -1,5 +1,14 @@
 # 0.113
 
+- Default to hull gun / show hull gun firing in action description
+- Display assault bonus number
+- Switched map type from sand to desert, split out beach (different in name only)
+- Bug fix: prevent unit in vehicle from laying smoke
+- Bug fix: no joining or splitting squads in vehicle
+- Updated 106
+
+# 0.113
+
 - Add ability to improve entrenchments to level 2 (foxholes)
 - Always draw line for drift off map; terminate clean line on map edge
 - Allow maps to shrink one more step, make smallest interface slightly smaller

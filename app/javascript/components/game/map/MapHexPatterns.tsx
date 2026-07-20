@@ -62,7 +62,7 @@ export default function MapHexPatterns({ map }: MapHexPatternProps) {
     <defs>
       { map?.baseTerrain === baseTerrainType.Grass ? <CamoPatternGrass /> : "" }
       { map?.baseTerrain === baseTerrainType.Urban ? <CamoPatternUrban /> : "" }
-      { map?.baseTerrain === baseTerrainType.Sand ? <CamoPatternDesert /> : "" }
+      { map?.baseTerrain === baseTerrainType.Desert || map?.baseTerrain === baseTerrainType.Beach ? <CamoPatternDesert /> : "" }
       { map?.baseTerrain === baseTerrainType.Mud ? <CamoPatternMud /> : "" }
       { map?.baseTerrain === baseTerrainType.Snow ? <CamoPatternSnow /> : "" }
       <pattern id="forest-pattern" x="0" y="0" patternUnits="userSpaceOnUse"

@@ -222,6 +222,7 @@ export default class Map {
     return {
       g: "#D0EED0",
       d: "#EEB",
+      b: "#EEB",
       s: "#EEE",
       m: "#DFD7C7",
       u: "#D7DFD0",
@@ -232,6 +233,7 @@ export default class Map {
     return {
       g: "#90AE90",
       d: "#BB7",
+      b: "#BB7",
       s: "#BBB",
       m: "#AFA797",
       u: "#979F90",

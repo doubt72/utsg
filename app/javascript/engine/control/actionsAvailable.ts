@@ -506,6 +506,7 @@ function addUndo(game: Game, activePlayer: string, actions: GameControl[]) {
 function canSplit(unit: Unit, map: Map): boolean {
   if (unit.pinned || unit.isBroken) { return false }
   if (unit.type !== unitType.Squad) { return false }
+  if (unit.parent) { return false }
   if (contact(unit, map)) { return false }
   return true
 }
@@ -513,6 +514,7 @@ function canSplit(unit: Unit, map: Map): boolean {
 function canJoin(unit: Unit, map: Map): boolean {
   if (unit.pinned || unit.isBroken) { return false }
   if (!unit.isSplit) { return false }
+  if (unit.parent) { return false }
   if (contact(unit, map)) { return false }
   return true
 }

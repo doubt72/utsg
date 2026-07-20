@@ -296,7 +296,7 @@ export function unitHelpText(unit: Unit): string[] {
   } else {
     text.push(`firepower ${unit.currentFirepower}`)
     if (unit.assault && !unit.isBroken && !unit.jammed) {
-      text.push("- assault bonus")
+      text.push("- assault bonus 2")
     }
     if (unit.offBoard && !unit.jammed) {
       text.push("- offboard artillery")

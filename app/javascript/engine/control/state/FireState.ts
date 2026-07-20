@@ -34,8 +34,8 @@ export default class FireState extends BaseState {
       const action = this.game.lastSignificantAction
       if (action && ["move", "rush"].includes(action.type)) { this.moveSeq = action.sequence }
     }
-    if (selection.unit.sponson && (selection.unit.jammed || selection.unit.weaponDestroyed)) {
-      this.sponson = false
+    if (selection.unit.sponson && !(selection.unit.sponsonJammed || selection.unit.sponsonDestroyed)) {
+      this.sponson = true
     }
     const hex = selection.hex as Coordinate
     const loc = {

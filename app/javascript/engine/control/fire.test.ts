@@ -3934,8 +3934,6 @@ describe("ranged fire attacks", () => {
 
       game.setGameState(new FireState(game, false))
 
-      game.fireState.sponsonToggle()
-
       select(map, {
         counter: map.countersAt(tloc)[0],
         target: { type: "map", xy: tloc }
@@ -3961,6 +3959,12 @@ describe("ranged fire attacks", () => {
       vi.spyOn(Math, "random").mockReturnValue(0.99)
       game.gameState?.finish()
       Math.random = original
+
+      expect(deHTML(game.actions[0].stringValue)).toBe(
+        "Italian M11/39 at D3 fired hull gun at Soviet T-34 M40 at E3; targeting roll: target 4, " +
+        "rolled 100 [d10x10: 10 x 10]: hit; hit location roll: 10 [d10] (hull); " +
+        "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+      )
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target.isWreck).toBe(true)
@@ -4002,8 +4006,6 @@ describe("ranged fire attacks", () => {
       organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
-
-      game.fireState.sponsonToggle()
 
       select(map, {
         counter: map.countersAt(tloc)[0],
@@ -4066,8 +4068,6 @@ describe("ranged fire attacks", () => {
       organizeStacks(map)
 
       game.setGameState(new FireState(game, false))
-
-      game.fireState.sponsonToggle()
 
       select(map, {
         counter: map.countersAt(tloc)[0],

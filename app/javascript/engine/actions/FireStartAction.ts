@@ -33,7 +33,7 @@ export default class FireStartAction extends BaseAction {
       terrainType.Orchard,
       terrainType.Palm,
     ].includes(hex.baseTerrain) ) { check = 3 }
-    if (this.map.baseTerrain === baseTerrainType.Sand && hex.baseTerrain === terrainType.Open) { check = 1 }
+    if ([baseTerrainType.Desert, baseTerrainType.Beach].includes(this.map.baseTerrain) && hex.baseTerrain === terrainType.Open) { check = 1 }
     if (hex.baseTerrain === terrainType.Sand) { check = 1 }
     if (this.startData.vehicle) { check = 4 }
     if (this.startData.incendiary) { check += 2 }

@@ -156,8 +156,9 @@ export default function DebugMap() {
 
   const nextTerrain = (t: BaseTerrainType): BaseTerrainType => {
     return {
-      g: baseTerrainType.Sand,
-      d: baseTerrainType.Snow,
+      g: baseTerrainType.Desert,
+      d: baseTerrainType.Beach,
+      b: baseTerrainType.Snow,
       s: baseTerrainType.Mud,
       m: baseTerrainType.Urban,
       u: baseTerrainType.Grass,

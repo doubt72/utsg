@@ -1,5 +1,10 @@
 Features/Bug Fixes
-  + Don't open panel / select when undoing deployment for opponent
+  + Call it desert, not sand
+  + Assault Bonus number
+  + Should not be able to lay smoke from vehicle
+  + Default to hull gun
+  + Should not be able to split units in vehicle
+  + Show hull/turret gun firing
   - Option to move back to where unit breaks / or stack stops moving
   - General cleanup of button flow
     - Only one pick up picks up

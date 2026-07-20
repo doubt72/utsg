@@ -887,7 +887,7 @@ export default function MapDisplay({
         { map.baseTerrain === baseTerrainType.Urban ?
             <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
                   style={{ fill: "url(#camo-urban-bg)" }} /> : "" }
-        { map.baseTerrain === baseTerrainType.Sand ?
+        { [baseTerrainType.Desert, baseTerrainType.Beach].includes(map.baseTerrain) ?
             <path opacity={0.25} d={roundedRectangle(x, y, bWidth, bHeight, 10)}
                   style={{ fill: "url(#camo-desert-bg)" }} /> : "" }
         { map.baseTerrain === baseTerrainType.Snow ?
