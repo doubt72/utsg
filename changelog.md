@@ -1,4 +1,9 @@
-# 0.113
+# 0.115
+
+- Added tank crews, and special tank gun crew rules/abilities
+- Updated and promoted 106
+
+# 0.114
 
 - Implement moving stack back to where units broke due to reaction fire on movement
     (requires in progress games to be deleted)

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Rude Awakening"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1943, 2, 21].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -16,14 +16,14 @@ module Scenarios
       "0": {
         list: [
           :usa_leader_3_1,
-          [4, :usa_green_s],
+          [3, :usa_green_s],
           [2, :usa_m1918_bar],
           :usa_m2_browning,
           [3, :usa_m3_gmc],
           [2, :foxhole],
         ],
       },
-      "2": {
+      "4": {
         list: [
           [3, :usa_m3_lee],
         ],
@@ -95,7 +95,7 @@ module Scenarios
           ],
           allied_setup: {
             "0" => [["*", "0-14"]],
-            "2" => [["*", 0]],
+            "4" => [["*", 0]],
           },
           axis_setup: { "0" => [["*", "16-22"]] },
           base_terrain: "d",

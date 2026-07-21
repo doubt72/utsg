@@ -62,7 +62,7 @@ export default function CounterStackingSection({ section }: SectionProps) {
     const units2 = [
       units["ger_SdKfz 250/1_ht"].clone() as Unit,
       units["ger_3.7cm Pak 36_gun"].clone() as Unit,
-      units["ger_Crew_tm_1"].clone() as Unit,
+      units["ger_Gun Crew_tm_1"].clone() as Unit,
       units["ger_Leader_ldr_5_2"].clone() as Unit,
       units["ger_Radio 15cm_sw"].clone() as Unit,
     ]
@@ -73,7 +73,7 @@ export default function CounterStackingSection({ section }: SectionProps) {
     setStack1(
       <div className="help-section-image" >
         <svg width={504} height={134} viewBox='0 0 720 192' style={{ minWidth: 504 }}>
-          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
+          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}} mapUpdate={1}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
                              counters={map.countersAt(new Coordinate(0,0))} scale={1} updateCallback={() => {}}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
@@ -88,7 +88,7 @@ export default function CounterStackingSection({ section }: SectionProps) {
     setStack2(
       <div className="help-section-image" >
         <svg width={627} height={134} viewBox='0 0 896 192' style={{ minWidth: 627 }}>
-          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}}
+          <MapCounterOverlay map={map} setOverlay={() => {}} selectionCallback={() => {}} mapUpdate={1}
                              xx={0} yy={0} mapScale={1} shiftX={0} shiftY={44} maxX={0} maxY={0}
                              counters={map.countersAt(new Coordinate(1,1))} scale={1} updateCallback={() => {}}
                              svgRef={svgRef as React.MutableRefObject<HTMLElement>} />

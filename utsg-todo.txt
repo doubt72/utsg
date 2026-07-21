@@ -1,16 +1,26 @@
 Features/Bug Fixes
-  + Option to move back to where unit breaks / or stack stops moving
+  - Sponson ranges not counted for reaction fire
+  - Don't toggle smoke after laying smoke
+  - Weird halftrack placement error
+  + Tank crews on destruction/abandon
+    - Blaze rolls of 7 or less
+    - Exhausted on abandon, morale check on destruction
+    - Not worth VP
+    - Abandon status does not allow any actions, immobilization bonus to shots
+    - Abandoned vehicles are destroyed at the beginning of close combat
+    - Manning a vehicle removes abandoned status, exhausts vehicle
+    - Repair vehicle success >= 10 + size
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops
     - Remove end selection/make fire selection more robust
+    - Can both pick up and drop units
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
   - Add Some Developer Notes
   - Strategy notes
   - Figure out how to implement Vichy French with same French units
 
-106 (America N. Africa)
 304 (Pegasus Bridge)
 406 (Tarawa)
 604 (Khalkhin Gol)

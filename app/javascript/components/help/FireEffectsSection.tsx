@@ -1,6 +1,7 @@
 import React from "react";
 import { baseMorale, critMorale } from "../../utilities/utilities";
 import { SectionProps } from "../game/HelpDisplay";
+import { helpLink } from "./helpData";
 
 export default function FireEffectsSection({ section }: SectionProps) {
 
@@ -74,12 +75,30 @@ export default function FireEffectsSection({ section }: SectionProps) {
         are unaffected). Vehicles are replaced with wrecks with the same size (flip the counter).
         Wrecks affect stacking (for both sides) but otherwise have no other effects.
       </p>
-      <h3>{section}.2. Immobilized Vehicles</h3>
+      <h3>{section}.2. Tank Crews</h3>
+      <p>
+        When a tank or self-propelled-gun/tank destroyer are destroyed, there&apos;s a small chance
+        that the crew will survive. This is determined by during the fire start roll (see{" "}
+        {helpLink("Blazes", "Blazes")}), a roll of 7 or less duing the fire start roll will result
+        in the crew escaping and tank crew unit being placed on the map in the same hex as the
+        vehicle; this means that a crew is much less likely to survive incendiary attacks, and has
+        no chance of surviving an incendiary attack on an incendiary-armed armored vehicle.
+      </p>
+      <p>
+        Once the tank crew unit is placed, it starts with an exhausted status and must take an
+        immediate morale check roll.
+      </p>
+      <p>
+        Tank crews escaping may cause the stack limit to be exceeded (and may trigger a stack
+        reduction at the end of the turn). Tank crews are not worth any victory points. Tank crews
+        never survive close combat vehicle losses.
+      </p>
+      <h3>{section}.3. Immobilized Vehicles</h3>
       <p>
         If a vehicle carrying or towing units is immobilized, all of the units are dropped with no
         other effects.
       </p>
-      <h3>{section}.3. Morale Checks</h3>
+      <h3>{section}.4. Morale Checks</h3>
       <p>
         If any infantry units are hit (or is carrying an incendiary weapon that breaks during the
         firing action), they must perform morale checks. To perform a morale check, use the
@@ -100,12 +119,12 @@ export default function FireEffectsSection({ section }: SectionProps) {
           broken, eliminate it. A roll of 2 always fails. A roll of 20 always succeeds.
         </li>
       </ol>
-      <h3>{section}.4. Weapons Carried by Eliminated Units</h3>
+      <h3>{section}.5. Weapons Carried by Eliminated Units</h3>
       <p>
         Infantry and crewed weapons are not damaged or eliminated when units carrying them or
         crewing them are eliminated (except incendiary weapons which are removed with their carrying
-        unit). Weapons are left on the map and can be picked up by other units (of either side, except
-        radios, which can only be used by the original side).
+        unit). Weapons are left on the map and can be picked up by other units (of either side,
+        except radios, which can only be used by the original side).
       </p>
     </div>
   );

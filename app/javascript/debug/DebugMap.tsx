@@ -55,8 +55,8 @@ export default function DebugMap() {
       if (unit.name === "Leader") {
         return `${unit.nation}_Leader_ldr_${unit.baseMorale}_${unit.currentLeadership}`
       }
-      if (unit.name === "Crew") {
-        return `${unit.nation}_Crew_tm_${unit.currentGunHandling}`
+      if (unit.name === "Gun Crew") {
+        return `${unit.nation}_Gun Crew_tm_${unit.currentGunHandling}`
       }
       return `${unit.nation}_${unit.name}_${unit.type}`
     }

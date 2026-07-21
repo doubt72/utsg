@@ -42,7 +42,7 @@ export type UnitData = {
   o: {
     l?: LeadershipRange; a?: NumberBoolean; s?: NumberBoolean; r?: NumberBoolean;
     e?: NumberBoolean;
-    z?: NumberBoolean; cw?: GunHandlingRange; x?: NumberBoolean; i?: NumberBoolean;
+    z?: NumberBoolean; cw?: GunHandlingRange; tc?: NumberBoolean; x?: NumberBoolean; i?: NumberBoolean;
     j?: number; b?: number; bd?: number; uu?: NumberBoolean; bw?: NumberBoolean;
     t?: NumberBoolean; m?: number; p?: NumberBoolean; g?: NumberBoolean;
     o?: NumberBoolean; u?: NumberBoolean; k?: NumberBoolean; w?: NumberBoolean;
@@ -82,6 +82,7 @@ export default class Unit {
   engineer: boolean;
   smokeCapable: boolean;
   gunHandling: GunHandlingRange;
+  tankCrew: boolean;
   brokenMovement: number;
 
   rapidFire: boolean;
@@ -167,6 +168,7 @@ export default class Unit {
     this.engineer = !!data.o?.eng
     this.smokeCapable = !!data.o?.s
     this.gunHandling = data.o?.cw ?? 0
+    this.tankCrew = !!data.o?.tc
     this.brokenMovement = data.o?.bv || 4
 
     this.rapidFire = !!data.o?.r

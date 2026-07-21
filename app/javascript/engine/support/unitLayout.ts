@@ -151,6 +151,21 @@ export function handlingLayout(counter: Counter): CounterLayout | false {
   }
 }
 
+export function tankCrewLayout(counter: Counter): CounterLayout | false {
+  if (!counter.hasUnit || !counter.unit.tankCrew) { return false }
+  const loc = new Coordinate(counter.x + 13, counter.y + 37)
+  // const path = circlePath(loc, 3)
+  const size = 3
+  const path = [
+    "M", loc.x - size, loc.y, loc.x, loc.y - size, loc.x + size, loc.y, loc.x, loc.y + size, "z"
+  ].map(n => `${n}`).join(" ")
+  return {
+    path: path, style: { stroke: "black", strokeWidth: 1, fill: "black" },
+    tStyle: { fill: "black" },
+    x: loc.x, y: loc.y+4.25, size: 15, value: "",
+  }
+}
+
 export function breakdownLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.breakdownRoll || counter.unit.isImmobilized || counter.unit.isWreck) {
     return false

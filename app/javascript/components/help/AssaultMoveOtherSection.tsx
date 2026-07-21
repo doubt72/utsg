@@ -1,6 +1,7 @@
 import React from "react";
-import { ShieldFill, XLg } from "react-bootstrap-icons";
+import { BoxArrowDown, BoxArrowInUp, ShieldFill, XLg } from "react-bootstrap-icons";
 import { SectionProps } from "../game/HelpDisplay";
+import { DiceGlyph } from "../utilities/buttons";
 
 export default function AssaultMoveOtherSection({ section }: SectionProps) {
   return (
@@ -37,6 +38,54 @@ export default function AssaultMoveOtherSection({ section }: SectionProps) {
         <div className="custom-button normal-button">
           <ShieldFill />
           <span> entrench</span>
+        </div>
+      </div>
+      <h3>{section}.3. Tank Crews</h3>
+      <p>
+        There are three special assault actions related to tank crews: abandon vehicle, man vehicle,
+        and abandon vehicle.
+      </p>
+      <p>
+        Crews may abandon vehicles, which will mark a vehicle as abandoned (with the same effects as
+        immobilized, e.g. bonus to enemy penetration rolls) and place a tank crew on the map in the
+        same hex in an exhausted state. Abandoned vehicles may take no further actions unless
+        re-manned (see below). Abandoned vehicles are still considered enemy units and can be
+        attacked normally, but are automatically destroyed at the beginning of close combat, before
+        any dice are rolled.
+      </p>
+      <p>
+        Tank crews abandoning a vehicle may cause the stack limit to be exceeded (and may trigger a
+        stack reduction at the end of the turn). Tank crews are not worth any victory points.
+      </p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <BoxArrowDown />
+          <span> abandon vehicle</span>
+        </div>
+      </div>
+      <p>
+        Tank crews can man (friendly) abandoned vehicles. Manning a vehicle removes the abandoned
+        status, the tank crew, and causes the vehicle to be exhausted.
+      </p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          <BoxArrowInUp />
+          <span> man vehicle</span>
+        </div>
+      </div>
+      <p>
+        Tank crews in the same hex as an immobilized vehicle (abandoned or not) may attempt to
+        repair it (i.e., remove the immobilized status). To repair a vehicle, a 2d10 dice roll is
+        performed, and if the number equals or exceeds 10 plus the size of the vehicle, the
+        immobilized status is removed (so larger vehicles are more difficult to repair).
+      </p>
+      <div className="flex mb1em">
+        <div className="ml1em"></div>
+        <div className="custom-button normal-button">
+          { DiceGlyph() }
+          <span> repair vehicle</span>
         </div>
       </div>
     </div>

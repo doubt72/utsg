@@ -133,10 +133,14 @@ module Utility
             Units.all_factions.each do |c|
               t = "tm"
               lu[:"#{c}_elite_crew_t"] = {
-                c:, t:, n: "Crew", i: "crew", y: 0, m: 4, s: 3, f: 1, r: 1, v: 5, o: { cw: 2 },
+                c:, t:, n: "Gun Crew", i: "crew", y: 0, m: 4, s: 2, f: 1, r: 1, v: 5, o: { cw: 2 },
               }
               lu[:"#{c}_crew_t"] = {
-                c:, t:, n: "Crew", i: "crew", y: 0, m: 3, s: 3, f: 1, r: 1, v: 4, o: { cw: 1 },
+                c:, t:, n: "Gun Crew", i: "crew", y: 0, m: 3, s: 2, f: 1, r: 1, v: 4, o: { cw: 1 },
+              }
+              lu[:"#{c}_tank_crew_t"] = {
+                c:, t:, n: "Tank Crew", i: "tcrew", y: 0, m: 2, s: 2, f: 1, r: 1, v: 4,
+                o: { tc: 1 },
               }
             end
             lu

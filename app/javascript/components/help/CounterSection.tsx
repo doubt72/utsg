@@ -27,8 +27,8 @@ export const makeIndex = (target: Unit | Feature | Marker) => {
     if (unit.name === "Leader") {
       return `${unit.nation}_Leader_ldr_${unit.baseMorale}_${unit.currentLeadership}`
     }
-    if (unit.name === "Crew") {
-      return `${unit.nation}_Crew_tm_${unit.currentGunHandling}`
+    if (unit.name === "Gun Crew") {
+      return `${unit.nation}_Gun Crew_tm_${unit.currentGunHandling}`
     }
     return `${unit.nation}_${unit.name}_${unit.type}`
   }
@@ -144,15 +144,18 @@ export default function CounterSection({ section }: SectionProps) {
     )
   }
 
-  const leadershipHandlingOverlay = (target: Unit | Feature | Marker) => {
+  const leadershipHandlingTankOverlay = (target: Unit | Feature | Marker) => {
     if (target.isFeature || target.isMarker) { return }
     const unit = target as Unit
-    if ((!unit.leadership && !unit.gunHandling) || unit.isBroken) { return }
-    const name = unit.leadership ? "Leadership" : "Gun Handling"
+    if ((!unit.leadership && !unit.gunHandling && !unit.tankCrew) || unit.isBroken) { return }
+    let name = unit.leadership ? "Leadership" : "Gun Handling"
+    if (unit.tankCrew) { name = "Operator" }
+    const x = unit.tankCrew ? 90 : 84
+    const y = unit.tankCrew ? 79 : 83
     return (
       <g>
         <text x={64} y={96} fontSize={9} textAnchor="end">{name}</text>
-        { labelLine(65,93,84,83) }
+        { labelLine(65,93,x,y) }
       </g>
     )
   }
@@ -404,7 +407,7 @@ export default function CounterSection({ section }: SectionProps) {
         { breakdownOverlay(target) }
         { iconOverlay(target) }
         { sponsonOverlay(target) }
-        { leadershipHandlingOverlay(target) }
+        { leadershipHandlingTankOverlay(target) }
         { firepowerOverlay(target) }
         { rangeOverlay(target) }
         { movementOverlay(target) }
@@ -793,6 +796,12 @@ export default function CounterSection({ section }: SectionProps) {
             be applied to stacked units.  Also, units in that range can be combined in infantry arms attacks.
           </p>)
         }
+        if (unit.tankCrew) {
+          sections.push(<p key={index++}>
+            <strong>A diamond</strong> indicates that this unit can man tanks, and also attempt to repair
+            immobilized vehicles.
+          </p>)
+        }
       }
       if (unit.baseMorale) {
         sections.push(<p key={index++}>
@@ -854,7 +863,8 @@ export default function CounterSection({ section }: SectionProps) {
             { counterButton("gun", "uk_QF 25-Pounder_gun") }
             { counterButton("mortar", "fra_Brandt M1935_sw") }
             { counterButton("leader", "ussr_Leader_ldr_6_2") }
-            { counterButton("crew", "ita_Crew_tm_2") }
+            { counterButton("gun crew", "ita_Gun Crew_tm_2") }
+            { counterButton("tank crew", "ussr_Tank Crew_tm") }
             { counterButton("flamethrower", "usa_Flamethrower_sw") }
             { counterButton("satchel charge", "usa_Satchel Charge_sw") }
             { counterButton("molotov coctail", "fin_Molotov Cocktail_sw") }

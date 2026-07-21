@@ -2,18 +2,18 @@ import { HexData } from "../engine/Hex"
 import { Direction, UnitStatus, unitStatus } from "../utilities/commonTypes"
 
 const testUnitData: { [index: string]: string } = {
-  ginf: "ger_Rifle_sqd", gldr: "ger_Leader_ldr_6_2", gcrew: "ger_Crew_tm_1",
+  ginf: "ger_Rifle_sqd", gldr: "ger_Leader_ldr_6_2", gcrew: "ger_Gun Crew_tm_1",
   gmg: "ger_MG 42_sw", gps: "ger_Panzerschreck_sw", gpf: "ger_Panzerfaust_sw",
   gtank: "ger_Panther D_tank", gspg: "ger_StuG III-F/G_spg", gscout: "ger_SdKfz 221_ac",
   ght: "ger_SdKfz 250/11_ht",
   rinf: "ussr_Guards SMG_sqd", rldr: "ussr_Leader_ldr_4_1", rmg: "ussr_DShK_sw",
   rft: "ussr_Flamethrower_sw", rmc: "ussr_Molotov Cocktail_sw", rmort: "ussr_RM-38_sw",
-  rgun: "ussr_76mm ZiS-3_gun", rcrew: "ussr_Crew_tm_2", rat: "ussr_57mm ZiS-2_gun",
+  rgun: "ussr_76mm ZiS-3_gun", rcrew: "ussr_Gun Crew_tm_2", rat: "ussr_57mm ZiS-2_gun",
   rtank: "ussr_T-34-85_tank", rgrant: "ussr_M3 Grant_tank",
   rm2cs: "uk_Matilda II CS_spg", croc: "uk_Churchill Crocodile_spg",
   flak88: "ger_8.8cm Flak 36_gun", radio: "ussr_Radio 85mm_sw",
   usldr: "usa_Leader_ldr_5_2", usldr2: "usa_Leader_ldr_4_1", useng: "usa_Engineer_sqd", usinf: "usa_Green_sqd",
-  uscrew: "usa_Crew_tm_2", usft: "usa_Flamethrower_sw", usmg: "usa_M1918 BAR_sw", usmg2: "usa_M2 Browning_sw",
+  uscrew: "usa_Gun Crew_tm_2", usft: "usa_Flamethrower_sw", usmg: "usa_M1918 BAR_sw", usmg2: "usa_M2 Browning_sw",
   ussc: "usa_Satchel Charge_sw", usradio: "usa_Radio 155mm_sw", usmort: "usa_M2 Mortar_sw",
   usmort2: "usa_M1 Mortar_sw", usmort3: "usa_M2 4.2inch Mortar_sw", usbaz: "usa_M1 Bazooka_sw",
   usgun: "usa_75mm M1 Pack_gun", usat: "usa_37mm M3_gun", usac: "usa_M3A1 Scout Car_ac",

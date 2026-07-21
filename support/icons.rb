@@ -1589,6 +1589,21 @@ File.open('crew.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('tcrew.svg', 'w') do |file|
+  file.puts header3
+  write_path([
+    ["M", 10, 90], ["L", 10, 30], ["L", 90, 30], ["L", 90, 90], ["L", 10, 90], ["L", 10, 30],
+  ], file, false)
+  write_path([["M", 10, 90], ["L", 90, 30]], file, false)
+  write_path([["M", 10, 30], ["L", 90, 90]], file, false)
+  write_path([
+    ["M", 42.5, 75], ["A", [15, 15], 0, [0, 1], [42.5, 45]],
+    ["L", 57.5, 45], ["A", [15, 15], 0, [0, 1], [57.5, 75]], ["L", 42.5, 75],
+  ], file, false)
+  write_circle(50, 17, 10, file, false)
+  file.puts footer
+end
+
 File.open('team.svg', 'w') do |file|
   file.puts header
   write_path([

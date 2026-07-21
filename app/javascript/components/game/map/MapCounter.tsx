@@ -6,7 +6,7 @@ import {
   amphibiousLayout, areaLayout, breakdownLayout, canTowLayout, centerLabelLayout, eliteLayout, engineerLayout,
   firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
   hullArmorLayout, iconLayout, leadershipLayout, moraleLayout, movementLayout, rangeLayout,
-  sizeLayout, smokeLayout, sponsonLayout, towLayout, transportLLayout, transportRLayout, turretArmorLayout,
+  sizeLayout, smokeLayout, sponsonLayout, tankCrewLayout, towLayout, transportLLayout, transportRLayout, turretArmorLayout,
   weaponBreakLayout, weaponFixLayout
 } from "../../../engine/support/unitLayout";
 import {
@@ -186,6 +186,18 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
 
   const handling = () => {
     const layout = handlingLayout(counter)
+    if (layout) return (
+      <g>
+        <path d={layout.path} style={layout.style as object} />
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.tStyle as object}>{layout.value}</text>
+      </g>
+    )
+  }
+
+  const tankCrew = () => {
+    const layout = tankCrewLayout(counter)
     if (layout) return (
       <g>
         <path d={layout.path} style={layout.style as object} />
@@ -527,7 +539,7 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
       {nameBackground()}{name()}
       {morale()}
       {weaponBreak()}{size()}
-      {leadership()}{handling()}{breakdown()}{weaponFix()}
+      {leadership()}{handling()}{tankCrew()}{breakdown()}{weaponFix()}
       {icon()}{centerLabel()}
       {sponson()}{turretArmor()}{hullArmor()}
       {feature()}
