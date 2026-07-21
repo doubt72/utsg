@@ -349,10 +349,7 @@ export default class MoveState extends BaseState {
     if (this.openHex(x, y) === hexOpenType.Closed) { return }
     if (this.smoke) {
       const id = `uf-${this.game.actions.length}-${this.addActions.length}`
-      this.addActions.push({
-        x, y, type: "smoke", cost: lastPath.x === x && lastPath.y === y ? 1 : 2, id,
-        index: this.path.length - 1
-      })
+      this.addActions.push({ x, y, type: "smoke", cost: 2, id, index: this.path.length - 1 })
       this.map.addGhost(
         new Coordinate(x, y),
         new Feature({ id: "Smoke", ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })

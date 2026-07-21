@@ -23,6 +23,7 @@ import RallyState from "./state/RallyState"
 import ReactionState from "./state/ReactionState"
 import RoutCheckState from "./state/RoutCheckState"
 import RoutState from "./state/RoutState"
+import ShortMoveState from "./state/ShortMoveState"
 import SniperState from "./state/SniperState"
 
 export function currSelection(game: Game, move: boolean): Unit | Feature | undefined {
@@ -46,6 +47,10 @@ function setState(game: Game): void {
   } else if (game.moraleChecksNeeded.length > 0) {
     if (state !== stateType.MoraleCheck) {
       game.setGameState(new MoraleCheckState(game))
+    }
+  } else if (game.shortCheckNeeded.hit) {
+    if (state !== stateType.ShortMove) {
+      game.setGameState(new ShortMoveState(game))
     }
   } else if (game.sniperNeeded.length > 0) {
     if (state !== stateType.Sniper) {
@@ -245,6 +250,8 @@ function addMainPhaseActions(game: Game, actions: GameControl[]): void {
     addRoutActions(game, actions)
   } else if (game.gameState?.type === stateType.MoraleCheck) {
     addMoraleActions(game, actions)
+  } else if (game.gameState?.type === stateType.ShortMove) {
+    addShortMoveActions(game, actions)
   } else if (game.gameState?.type === stateType.Initiative) {
     actions.unshift({ type: "none", message: "check for" })
     actions.push({ type: "initiative" })
@@ -305,6 +312,17 @@ function addMoraleActions(game: Game, actions: GameControl[]): void {
       `at ${coordinateToLabel(hex)}:`
   })
   actions.push({ type: "morale_check" })
+}
+
+function addShortMoveActions(game: Game, actions: GameControl[]): void {
+  const state = game.gameState as BaseState
+  const names = state.selection.map(s => s.counter.unit.name).join(", ")
+  actions.unshift({
+    type: "none",
+    message: `complete move for ${names}?`,
+  })
+  actions.push({ type: "skip_short_move" })
+  actions.push({ type: "short_move" })
 }
 
 function addFireActions(game: Game, actions: GameControl[], selection?: Unit): void {
@@ -455,6 +473,8 @@ function currentEnemyAction(game: Game): string {
     return "waiting for opponent fire check"
   } else if (game.moraleChecksNeeded.length > 0) {
     return "waiting for opponent morale check"
+  } else if (game.shortCheckNeeded.hit) {
+    return "waiting for opponent short move check"
   } else if (game.sniperNeeded.length > 0) {
     return "waiting for opponent sniper check"
   } else if (game.routNeeded.length > 0) {

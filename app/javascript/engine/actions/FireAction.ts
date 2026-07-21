@@ -732,6 +732,11 @@ export default class FireAction extends BaseAction {
     sortStacks(this.map)
     this.game.updateInitiative(2)
     if (this.game.moraleChecksNeeded.length > 0) {
+      if (this.reaction && this.moveSeq) {
+        this.game.shortCheckNeeded = {
+          hit: true, short: false, ids: [], coords: [new Coordinate(this.target[0].x, this.target[0].y)]
+        }
+      }
       let check = false
       for (const mc of this.game.moraleChecksNeeded) {
         if (mc.unit.playerNation !== this.game.currentPlayerNation) { check = true }

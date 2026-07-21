@@ -6,15 +6,15 @@ import Map from "../../Map";
 import Unit from "../../Unit";
 
 export type StateType = "deploy" | "finish_deploy" | "rally" | "precip" | "fire" | "move" | "assault" |
-  "breakdown" | "init" | "pass" | "morale" | "sniper" | "rout" | "routall" | "squad_join" |
+  "breakdown" | "init" | "pass" | "morale" | "short_move" | "sniper" | "rout" | "routall" | "squad_join" |
   "rout_check" | "reaction" | "close" | "overstack" | "status" | "smoke" | "fire_extinguish" |
   "displace" | "weather" | "fire_start"
 export const stateType: { [index: string]: StateType } = {
   Deploy: "deploy", FinishDeploy: "finish_deploy", Rally: "rally", PrecipCheck: "precip", Fire: "fire",
   Move: "move", Assault: "assault", Breakdown: "breakdown", Initiative: "init", Pass: "pass",
-  SquadJoin: "squad_join", MoraleCheck: "morale", Sniper: "sniper", Rout: "rout", RoutAll: "routall",
-  RoutCheck: "rout_check", Reaction: "reaction", CloseCombat: "close", FireStart: "fire_start",
-  Overstack: "overstack", StatusCheck: "status", SmokeCheck: "smoke",
+  SquadJoin: "squad_join", MoraleCheck: "morale", ShortMove: "short_move", Sniper: "sniper",
+  Rout: "rout", RoutAll: "routall", RoutCheck: "rout_check", Reaction: "reaction", CloseCombat: "close",
+  FireStart: "fire_start", Overstack: "overstack", StatusCheck: "status", SmokeCheck: "smoke",
   FireCheck: "fire_extinguish", FireDisplace: "displace", VariableWeather: "weather",
 }
 

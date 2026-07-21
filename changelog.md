@@ -1,5 +1,8 @@
 # 0.113
 
+- Implement moving stack back to where units broke due to reaction fire on movement
+    (requires in progress games to be deleted)
+- Change smoke to always cost 2, even in same hex
 - Default to hull gun / show hull gun firing in action description
 - Display assault bonus number
 - Switched map type from sand to desert, split out beach (different in name only)

@@ -39,6 +39,7 @@ import DeployJoinAction from "./actions/DeployJoinAction";
 import SquadJoinAction from "./actions/SquadJoinAction";
 import SquadSplitAction from "./actions/SquadSplitAction";
 import FinishDeployAction from "./actions/FinishDeployAction";
+import ShortMoveAction from "./actions/ShortMoveAction";
 
 export type GameActionDiceResult = {
   result: DiceResult, description?: string
@@ -99,6 +100,10 @@ export type GameActionMoraleData = {
   mod: number, why: string[], short: boolean, critical: boolean,
 }
 
+export type GameActionShortMoveData = {
+  skip: boolean,
+}
+
 export type GameActionRoutData = {
   mod: number, why: string[], rally_mod: number,
 }
@@ -148,6 +153,7 @@ export type GameActionDetails = {
   move_data?: GameActionMoveData,
   breakdown_data?: GameActionBreakdowndData,
   morale_data?: GameActionMoraleData,
+  short_move_data?: GameActionShortMoveData,
   rout_check_data?: GameActionRoutData,
   cc_data?: GameActionCCData,
   phase_data?: GameActionPhaseChange,
@@ -234,6 +240,8 @@ export default class GameAction {
       return new ReactionPassAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "morale_check") {
       return new MoraleCheckAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "short_move") {
+      return new ShortMoveAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "sniper") {
       return new SniperAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "move") {

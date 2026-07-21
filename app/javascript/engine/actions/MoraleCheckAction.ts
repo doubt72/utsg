@@ -76,6 +76,9 @@ export default class MoraleCheckAction extends BaseAction {
     const check = baseMorale + this.moraleMods.mod + (this.moraleMods.critical ? critMorale : 0)
     const roll = this.diceResult.result.result
     if (roll < check || roll === 2) {
+      if (this.game.shortCheckNeeded.hit) {
+        this.game.shortCheckNeeded.short = true
+      }
       if (counter.unit.isBroken) {
         const hex = counter.hex as Coordinate
         let sub = undefined
@@ -98,6 +101,9 @@ export default class MoraleCheckAction extends BaseAction {
         }
       }
     } else if (roll === check && !counter.unit.isBroken && roll !== 20) {
+      if (this.game.shortCheckNeeded.hit) {
+        this.game.shortCheckNeeded.short = true
+      }
       counter.unit.pinned = true
       if (hex.x != this.target.x || hex.y !== this.target.y) {
         const old = new Coordinate(this.target.x, this.target.y)
@@ -107,6 +113,13 @@ export default class MoraleCheckAction extends BaseAction {
         this.game.addActionAnimations([{ loc: hex, type: "pinned" }])
       }
     } else {
+      if (this.game.shortCheckNeeded.hit) {
+        const loc = this.game.shortCheckNeeded.coords[0]
+        if (hex.x !== loc.x || hex.y !== loc.y) {
+          this.game.shortCheckNeeded.ids.push(this.target.id)
+          this.game.shortCheckNeeded.coords.push(hex)
+        }
+      }
       if (hex.x != this.target.x || hex.y !== this.target.y) {
         const old = new Coordinate(this.target.x, this.target.y)
         this.game.addActionAnimations([{ loc: old, type: "nobreak" }])
@@ -114,7 +127,12 @@ export default class MoraleCheckAction extends BaseAction {
         this.game.addActionAnimations([{ loc: hex, type: "nobreak" }])
       }
     }
-    if (this.game.moraleChecksNeeded.length < 1) {
+    if (this.game.moraleChecksNeeded.length < 1 && this.game.shortCheckNeeded) {
+      if (!this.game.shortCheckNeeded.short || this.game.shortCheckNeeded.ids.length < 1) {
+        this.game.shortCheckNeeded.hit = false
+      }
+    }
+    if (this.game.moraleChecksNeeded.length < 1 && !this.game.shortCheckNeeded.hit) {
       if (this.game.sniperNeeded.length > 0) {
         this.game.setCurrentPlayer(this.game.playerOneNation === this.game.sniperNeeded[0].unit.playerNation ? 1 : 2)
       } else {

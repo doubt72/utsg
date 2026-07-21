@@ -66,13 +66,12 @@ export default function MovementOtherSection({ section }: SectionProps) {
       <h3>{section}.6. Laying Smoke</h3>
       <p>
         Units that are capable of laying smoke (i.e., smoke-capable infantry, not smoke-capable
-        artillery and such that require a targeting roll) may lay smoke for two movement points in a
-        neighboring hex, or one movement point in the current hex. Smoke-capable units are marked
-        with a dot over their firepower. The quality of the smoke is determined by a d10 die roll
-        (see the table below). On the server, this happens after the move is committed, and the
-        entire move may be cancelled up to that point, but may not be undone afterwards (as die
-        rolls are involved). The locations that will get smoke counters are indicated by ghost
-        counters on the map until then.
+        artillery and such that require a targeting roll) may lay smoke for two movement points in
+        the same or neighboring hex. Smoke-capable units are marked with a dot over their firepower.
+        The quality of the smoke is determined by a d10 die roll (see the table below). On the
+        server, this happens after the move is committed, and the entire move may be cancelled up to
+        that point, but may not be undone afterwards (as die rolls are involved). The locations that
+        will get smoke counters are indicated by ghost counters on the map until then.
       </p>
       {smokeTable}
       <p>Laying additional smoke in the same hex will add to existing smoke in that hex.</p>

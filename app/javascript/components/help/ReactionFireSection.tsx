@@ -28,11 +28,8 @@ export default function ReactionFireSection({ section }: SectionProps) {
       <h3>{section}.2. Effect on Moving Units</h3>
       <p>
         If moving units are targeted in a hex that was not their final destination and are broken or
-        pinned, they are moved back to the hex they were targeted in.{" "}
-        <em>
-          If other units were moving in a stack, they may also be moved back to that hex at the
-          moving player&apos;s discretion [not implemented on server].
-        </em>
+        pinned, they are moved back to the hex they were targeted in. If other units were moving in
+        a stack, they may also be moved back to that hex at the moving player&apos;s discretion.
       </p>
       <h3>{section}.3. Intensive Reaction Fire</h3>
       <p>

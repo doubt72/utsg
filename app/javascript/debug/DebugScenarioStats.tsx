@@ -337,7 +337,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         {displayStat(countLayout, {})}
         Base Terrain:
         {displayStat(countBaseTerrain, {
-          g: "grass", d: "sand", s: "snow", m: "mud", u: "urban",
+          g: "grass", d: "desert", s: "snow", m: "mud", u: "urban", b: "beach",
         })}
         Day/Night:
         {displayStat(countNight, {})}

@@ -227,8 +227,9 @@ export default function MainPhaseSection({ section }: SectionProps) {
         they may be combined into a squad. This can be done freely at any time (when otherwise
         legal) during a player&apos;s turn at no initiative cost, except: broken or pinned teams
         cannot be combined or split, nor can units in contact (the same hex) with enemy units, nor
-        can gun crews. The squad resulting from two teams being combined will get the most expended
-        status of either team (e.g., tired or activated or exhausted, in that order).
+        can units currently being carried by a vehicle, nor can gun crews.  The squad resulting
+        from two teams being combined will get the most expended status of either team (e.g.,
+        tired or activated or exhausted, in that order).
       </p>
       <p>
         Squads are slightly more than the sum of their parts, the strength of a team is half of a

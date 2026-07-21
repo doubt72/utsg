@@ -1,7 +1,7 @@
 import { baseTerrainType, Coordinate, Direction, featureType, Player } from "../utilities/commonTypes";
 import { deleteAPI, getAPI, postAPI, putAPI } from "../utilities/network";
 import Scenario, { ReinforcementList, ReinforcementSchedule, ScenarioData } from "./Scenario";
-import GameAction from "./GameAction";
+import GameAction, { GameActionPath } from "./GameAction";
 import Feature from "./Feature";
 import BaseAction, { significantActions } from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
@@ -35,6 +35,7 @@ import CloseCombatReduceAction from "./actions/CloseCombatReduceAction";
 import DeployAction from "./actions/DeployAction";
 import SquadJoinState from "./control/state/SquadJoinState";
 import StackingActionError from "./actions/StackingActionError";
+import ShortMoveState from "./control/state/ShortMoveState";
 
 export type GameData = {
   id: number;
@@ -121,6 +122,9 @@ export default class Game {
   deleteLevel: number;
 
   moraleChecksNeeded: ComplexCheck[];
+  shortCheckNeeded: {
+    hit: boolean, short: boolean, ids: string[], coords: GameActionPath[],
+  }
   sniperNeeded: SimpleUnitCheck[];
   routCheckNeeded: SimpleUnitCheck[];
   routNeeded: SimpleUnitCheck[];
@@ -171,6 +175,7 @@ export default class Game {
     this.resignationLevel = 0
     this.deleteLevel = 0
     this.moraleChecksNeeded = []
+    this.shortCheckNeeded = { hit: false, short: false, ids: [], coords: [] }
     this.sniperNeeded = []
     this.routCheckNeeded = []
     this.routNeeded = []
@@ -564,6 +569,10 @@ export default class Game {
 
   get reactionState(): ReactionState {
     return this.gameState as ReactionState
+  }
+
+  get shortMoveState(): ShortMoveState {
+    return this.gameState as ShortMoveState
   }
 
   get closeCombatState(): CloseCombatState {

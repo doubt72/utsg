@@ -65,6 +65,8 @@ import FinishDeployButton from "./buttons/FinishDeployButton";
 import { ClockHistory, ExclamationCircle, ExclamationTriangle, HexagonHalf } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import DeleteGameButton from "./buttons/DeleteGameButton";
+import ShortMoveButton from "./buttons/ShortMoveButton";
+import SkipShortMoveButton from "./buttons/SkipShortMoveButton";
 
 interface GameControlsProps {
   game: Game;
@@ -237,6 +239,10 @@ export default function GameControls({
         return <IntensiveFireButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "morale_check") {
         return <MoraleCheckButton game={game} key={i} callback={callAllBack} vertical={vertical} />
+      } else if (a.type === "short_move") {
+        return <ShortMoveButton game={game} key={i} callback={callAllBack} vertical={vertical} />
+      } else if (a.type === "skip_short_move") {
+        return <SkipShortMoveButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "initiative") {
         return <InitiativeButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "fire_start_check") {

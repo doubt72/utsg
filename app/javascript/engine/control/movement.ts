@@ -133,7 +133,7 @@ export function showLaySmoke(game: Game): boolean {
   }
   if (!smoke) { return false }
   if (movementPastCost(
-    game.scenario.map, move.selection[0].counter.unit) >= mapSelectMovement(game, false)
+    game.scenario.map, move.selection[0].counter.unit) >= mapSelectMovement(game, false) - 1
   ) {
     return false
   }
@@ -231,7 +231,6 @@ export function smokeOpenHex(map: Map, from: Coordinate, to: Coordinate, selecti
   const distance = hexDistance(from, to)
   const past = movementPastCost(map, selection)
   const move = mapSelectMovement(map.game as Game, false)
-  if (distance < 1 && move > past) { return 1 }
   if (distance < 2 && move > past + 1) { return 2 }
   return hexOpenType.Closed
 }

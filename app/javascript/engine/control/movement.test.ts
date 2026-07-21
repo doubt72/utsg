@@ -398,7 +398,6 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.baseMovement = 3
     map.addCounter(new Coordinate(4, 2), unit)
     map.select(unit)
 
@@ -411,7 +410,7 @@ describe("movement", () => {
     expect(game.moveState.loading).toBe(false)
 
     expect(game.gameState?.openHex(0, 0)).toBe(hexOpenType.Closed)
-    expect(game.gameState?.openHex(4, 2)).toBe(1)
+    expect(game.gameState?.openHex(4, 2)).toBe(2)
     expect(game.gameState?.openHex(3, 2)).toBe(2)
     expect(game.gameState?.openHex(3, 3)).toBe(2)
 
@@ -429,12 +428,11 @@ describe("movement", () => {
 
     expect(game.gameState?.openHex(3, 2)).toBe(1)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
-    // Laying smoke cancels road bonus
-    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(3, 3)).toBe(2)
 
     game.moveState.move(3, 2)
-    expect(game.gameState?.openHex(2, 2)).toBe(hexOpenType.Closed)
-    expect(game.gameState?.openHex(2, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(2, 2)).toBe(1)
+    expect(game.gameState?.openHex(2, 3)).toBe(1)
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
     expect(showLaySmoke(game)).toBe(false)
 
@@ -480,7 +478,7 @@ describe("movement", () => {
     expect(game.moveState.loading).toBe(false)
 
     expect(game.gameState?.openHex(0, 0)).toBe(hexOpenType.Closed)
-    expect(game.gameState?.openHex(4, 2)).toBe(1)
+    expect(game.gameState?.openHex(4, 2)).toBe(2)
     expect(game.gameState?.openHex(3, 2)).toBe(2)
     expect(game.gameState?.openHex(3, 3)).toBe(2)
 
@@ -3277,7 +3275,6 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.baseMovement = 3
     map.addCounter(new Coordinate(4, 2), unit)
     map.select(unit)
 
@@ -3294,7 +3291,7 @@ describe("movement", () => {
 
     expect(game.gameState?.openHex(3, 2)).toBe(1)
     expect(game.gameState?.openHex(4, 3)).toBe(1)
-    expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(3, 3)).toBe(2)
 
     game.moveState.unmove()
     expect(game.moveState.addActions.length).toBe(0)
@@ -3312,7 +3309,7 @@ describe("movement", () => {
 
     game.moveState.move(1, 2)
     expect(game.gameState?.openHex(0, 2)).toBe(1)
-    expect(game.gameState?.openHex(0, 3)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(0, 3)).toBe(1)
 
     game.gameState?.finish()
     const all = map.allCounters

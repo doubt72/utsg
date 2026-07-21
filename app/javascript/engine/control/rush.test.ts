@@ -33,7 +33,7 @@ describe("rush movement", () => {
     expect(game.gameState?.openHex(4, 3)).toBe(1)
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.All)
 
-    expect(showLaySmoke(game)).toBe(true)
+    expect(showLaySmoke(game)).toBe(false)
     expect(showDropMove(game)).toBe(false)
     expect(showLoadMove(game)).toBe(false)
 
@@ -115,7 +115,7 @@ describe("rush movement", () => {
     expect(mapSelectMovement(game, true)).toBe(3)
 
     expect(game.gameState?.openHex(0, 0)).toBe(hexOpenType.Closed)
-    expect(game.gameState?.openHex(4, 2)).toBe(1)
+    expect(game.gameState?.openHex(4, 2)).toBe(2)
     expect(game.gameState?.openHex(3, 2)).toBe(2)
     expect(game.gameState?.openHex(3, 3)).toBe(2)
 
