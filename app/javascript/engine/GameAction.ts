@@ -46,9 +46,15 @@ export type GameActionDiceResult = {
 }
 
 export type GameActionUnit = {
-  x: number, y: number, id: string, name: string, status: UnitStatus, new_status?: UnitStatus,
-  sponson?: boolean, wire?: boolean, parent?: string, children?: string[], unpin?: boolean, unrout?: boolean,
+  x: number, y: number, id: string, name: string,
+  status: UnitStatus, new_status?: UnitStatus,
+  sponson?: boolean, wire?: boolean,
+  parent?: string, children?: string[],
+  unpin?: boolean, unrout?: boolean,
   vehicle?: boolean,
+  immobilized?: boolean, turret?: boolean,
+  weapon_jammed?: boolean, weapon_broken?: boolean,
+  sponson_jammed?: boolean, sponson_broken?: boolean,
 }
 
 export type GameActionFeature = {

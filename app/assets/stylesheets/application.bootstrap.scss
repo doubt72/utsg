@@ -454,7 +454,7 @@ div.design-button-disable {
 
 // Main page layout
 .home-page {
-  min-width: 1440px;
+  min-width: 1280px;
 }
 
 .main-page-welcome {
@@ -482,8 +482,8 @@ div.design-button-disable {
   padding: 1em;
   margin-top: 35.5px;
   margin-left: 0.5em;
-  width: 650px;
-  min-width: 650px;
+  width: 480px;
+  min-width: 480px;
   background-color: $background-gray;
   border-radius: 0.5em;
   min-height: 256px;
@@ -492,8 +492,8 @@ div.design-button-disable {
 .main-page-start-game {
   padding: 1em;
   margin: 0.5em 0 0 0.5em;
-  width: 650px;
-  min-width: 650px;
+  width: 480px;
+  min-width: 480px;
   border: 2px solid $border-color-light-gray;
   border-radius: 0.5em;
   text-align: end;

@@ -7,11 +7,11 @@ Features/Bug Fixes
     + Abandon status does not allow any actions, immobilization bonus to shots
     + Manning a vehicle removes abandoned status, exhausts vehicle
     + Repair vehicle success >= 10 + size
-    - Abandoned vehicles are destroyed at the beginning of close combat
+    + Abandoned vehicles are destroyed by enemy assault move
     - test abandon, undo
     - test repair succeed, fail, disambiguate, undo
     - test man, disambiguate, undo
-    - test abandoned vehicle in close combat: removed, help text
+    - test opponent assault move
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops

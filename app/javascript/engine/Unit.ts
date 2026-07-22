@@ -471,6 +471,20 @@ export default class Unit {
     this.internalStatus = unitStatus.Wreck
   }
 
+  unWreck(
+    game: Game, immobilized: boolean, turret: boolean, weaponJammed: boolean,
+    weaponDestroyed: boolean, sponsonJammed: boolean, sponsonDestroyed: boolean
+  ): void {
+    game.removeEliminatedCounter(`${this.id}-clone`)
+    this.internalStatus = unitStatus.Normal
+    this.immobilizationState = immobilized
+    this.turretJammed = turret
+    this.jammed = weaponJammed
+    this.weaponDestroyed = weaponDestroyed
+    this.sponsonJammed = sponsonJammed
+    this.sponsonDestroyed = sponsonDestroyed
+  }
+
   setStatus(status: UnitStatus): void {
     this.internalStatus = status
   }

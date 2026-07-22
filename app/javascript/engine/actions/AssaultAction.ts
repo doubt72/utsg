@@ -14,6 +14,7 @@ export default class AssaultMoveAction extends BaseAction {
   origin: GameActionUnit[];
   path: GameActionPath[];
   addAction: GameActionAddAction[];
+  target: GameActionUnit[];
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -21,11 +22,13 @@ export default class AssaultMoveAction extends BaseAction {
     this.validate(data.data.origin)
     this.validate(data.data.path)
     this.validate(data.data.add_action)
+    this.validate(data.data.target)
 
     // Validate will already error out if data is missing, but the linter can't tell
     this.origin = data.data.origin as GameActionUnit[]
     this.path = data.data.path as GameActionPath[]
     this.addAction = data.data.add_action as GameActionAddAction[]
+    this.target = data.data.target as GameActionUnit[]
   }
 
   get type(): string { return "assault_move" }
@@ -84,6 +87,12 @@ export default class AssaultMoveAction extends BaseAction {
       for (const u of this.origin) {
         const unit = this.map.unitAtId(start, u.id) as Counter
         unit.unit.exhaust()
+      }
+    }
+    if (this.target.length > 0) {
+      for (const t of this.target) {
+        const counter = this.map.findCounterById(t.id)
+        counter?.unit.wreck()
       }
     }
     const anims = []
@@ -174,6 +183,16 @@ export default class AssaultMoveAction extends BaseAction {
         unit.playerNation = counter.unit.playerNation as string
         const loc = new Coordinate(a.x, a.y)
         this.map.addCounter(loc, unit)
+      }
+    }
+    if (this.target.length > 0) {
+      for (const t of this.target) {
+        const counter = this.map.findCounterById(t.id)
+        counter?.unit.unWreck(
+          this.game, t.immobilized as boolean, t.turret as boolean,
+          t.weapon_jammed as boolean, t.weapon_broken as boolean,
+          t.sponson_jammed as boolean, t.sponson_broken as boolean
+        )
       }
     }
 

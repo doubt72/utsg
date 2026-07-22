@@ -51,8 +51,8 @@ export default function AssaultMoveOtherSection({ section }: SectionProps) {
         immobilized, e.g. bonus to enemy penetration rolls) and place a tank crew on the map in the
         same hex in an exhausted state. Abandoned vehicles may take no further actions unless
         re-manned (see below). Abandoned vehicles are still considered enemy units and can be
-        attacked normally, but are automatically destroyed at the beginning of close combat, before
-        any dice are rolled.
+        attacked normally, but are automatically destroyed if enemy units assualt move into the same
+        hex.
       </p>
       <p>
         Tank crews abandoning a vehicle may cause the stack limit to be exceeded (and may trigger a

@@ -3,7 +3,7 @@ import { normalDir, roll2d10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
 import Game from "../../Game";
-import GameAction, { gameActionAddActionType, GameActionPath } from "../../GameAction";
+import GameAction, { gameActionAddActionType, GameActionPath, GameActionUnit } from "../../GameAction";
 import Hex from "../../Hex";
 import Unit from "../../Unit";
 import { assaultMovement } from "../assault";
@@ -371,6 +371,22 @@ export default class AssaultState extends BaseState {
   finish() {
     const dice = this.addActions.length > 0 && this.addActions[0].type === gameActionAddActionType.Repair ?
       { result: roll2d10() } : undefined
+    const target: GameActionUnit[] = []
+    if (this.path.length > 1) {
+      const loc = new Coordinate(this.path[1].x, this.path[1].y)
+      const counters = this.map.countersAt(loc)
+      for (const c of counters) {
+        if (c.hasUnit && c.unit.isAbandoned &&
+            c.unit.playerNation !== this.selection[0].counter.unit.playerNation) {
+          target.push({
+            x: loc.x, y: loc.y, id: c.unit.id, name: c.unit.name, status: c.unit.status,
+            immobilized: c.unit.isImmobilized, turret: c.unit.turretJammed,
+            weapon_jammed: c.unit.jammed, weapon_broken: c.unit.weaponDestroyed,
+            sponson_jammed: c.unit.sponsonJammed, sponson_broken: c.unit.sponsonDestroyed,
+          })
+        }
+      }
+    }
     const action = new GameAction({
       user: this.game.currentUser,
       player: this.player,
@@ -383,6 +399,7 @@ export default class AssaultState extends BaseState {
             status: s.counter.unit.status
           }
         }),
+        target,
         add_action: this.addActions.map(a => {
           return {
             type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, index: a.index
