@@ -37,6 +37,16 @@ export function canMultiSelectFire(game: Game, x: number, y: number, unit: Unit)
   return false
 }
 
+export function canToggleSponson(unit: Unit, sponson: boolean): boolean {
+  if (!unit.sponson) { return false }
+  if (sponson && (unit.jammed || unit.weaponDestroyed)) {
+    return false
+  } else if (!sponson && (unit.sponsonJammed || unit.sponsonDestroyed)) {
+    return false
+  }
+  return false
+}
+
 export function rapidFire(game: Game): boolean {
   if (game.fireState.reaction) { return false }
   for (const sel of game.fireState.selection) {
@@ -442,7 +452,7 @@ export function moraleModifiers(
   return { mod, why }
 }
 
-export function inRange(game: Game, to: Coordinate): boolean {
+export function inRange(game: Game, to: Coordinate, sponson?: boolean): boolean {
   let leaderRange = true
   let leaderOnly = true
   for (const sel of game.fireState.selection) {
@@ -452,12 +462,12 @@ export function inRange(game: Game, to: Coordinate): boolean {
     if (los(game.scenario.map, from, to) === false) { return false }
     if (!unit.leader) {
       const dist = hexDistance(from, to)
-      if (!unit.sponson) {
-        if (unit.currentRange < dist) { return false }
-        if ((unit.minimumRange ?? 0) > dist) { return false }
-      } else {
+      if (sponson && unit.sponson) {
         // No sponson min range
         if (unit.currentRange < dist && unit.sponson.range < dist) { return false }
+      } else {
+        if (unit.currentRange < dist) { return false }
+        if ((unit.minimumRange ?? 0) > dist) { return false }
       }
       if (!inFiringArc(game, sel.counter, to)) { return false }
       leaderOnly = false

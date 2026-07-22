@@ -4,7 +4,7 @@
   - Cleared all games: tank crew make significant enough changes to multiple actions
 - Added color coding to indicate ranges in LOS overlay
 - Changed default to not toggling laying smoke after laying smoke
-- Bug fix: sponson units in range should get reaction fire
+- Bug fix: sponson units in range should get reaction fire/clean up range checks
 - Bug fix: check that units can actually be towed when setting unit direction during deploy
 - Updated and promoted 106
 

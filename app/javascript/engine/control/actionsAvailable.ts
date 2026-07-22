@@ -334,9 +334,7 @@ function addFireActions(game: Game, actions: GameControl[], selection?: Unit): v
     } else {
       actions.unshift({ type: "none", message: "select target" })
     }
-    const sponson = !!action.selection[0].counter.unit.sponson
-    if (sponson && !(selection?.sponsonJammed || selection?.sponsonDestroyed ||
-                      selection?.jammed || selection?.weaponDestroyed)) {
+    if (game.fireState.canToggleSponson) {
       actions.push({ type: "fire_toggle_sponson" })
     }
     if (!action.doneRotating && !action.sponson) {

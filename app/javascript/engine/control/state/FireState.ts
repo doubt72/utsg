@@ -4,7 +4,7 @@ import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionPath } from "../../GameAction";
 import Unit from "../../Unit";
-import { areaFire, canMultiSelectFire, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
+import { areaFire, canMultiSelectFire, canToggleSponson, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
 import { placeReactionFireGhosts, reactionFireHexes, reactionFireInRange } from "../reactionFire";
 import { clearUnrangedSelection, removeStateSelection } from "../select";
 import BaseState, { StateSelection, stateType } from "./BaseState";
@@ -66,7 +66,7 @@ export default class FireState extends BaseState {
 
   openHex(x: number, y: number) {
     const to = new Coordinate(x, y)
-    if (inRange(this.game, to)) {
+    if (inRange(this.game, to, this.sponson)) {
       if (this.reaction) {
         for (const h of reactionFireHexes(this.game)) {
           if (h.x === x && h.y === y) { return hexOpenType.Open }
@@ -255,6 +255,11 @@ export default class FireState extends BaseState {
     } else {
       this.path.push({ x, y, turret: dir })
     }
+  }
+
+  get canToggleSponson(): boolean {
+    if (this.selection.length > 0) { return false }
+    return canToggleSponson(this.initialSelection[0].counter.unit, this.sponson)
   }
   
   sponsonToggle() {

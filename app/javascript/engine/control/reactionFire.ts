@@ -92,7 +92,8 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
           }
           for (const t of targets) {
             const toc = new Coordinate(t.x, t.y)
-            if (c.unit.currentRange < hexDistance(loc, toc)) { continue }
+            const dist = hexDistance(loc, toc)
+            if (c.unit.currentRange < dist && !(c.unit.sponson && c.unit.sponson.range >= dist)) { continue }
             if (los(map, loc, toc)) { rc.push(loc); added = true; break }
           }
           if (added) { break }
