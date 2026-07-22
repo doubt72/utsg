@@ -160,15 +160,16 @@ export const sponsonType: { [index: string]: SponsonType } = {
 }
 
 export type MarkerType = "tracked_hull" | "wheeled_hull" | "tired" | "pinned" | "activated" |
-  "exhausted" | "jammed" | "turret_jammed" | "immobilized" | "wind" | "weather" | "initiative" |
-  "turn" | "elite_crew" | "green_crew" | "weapon_broken" | "sponson_jammed" | "sponson_broken" |
-  "routed"
+  "exhausted" | "jammed" | "turret_jammed" | "immobilized" | "abandoned" | "wind" | "weather" |
+  "initiative" | "turn" | "elite_crew" | "green_crew" | "weapon_broken" | "sponson_jammed" |
+  "sponson_broken" | "routed"
 export const markerType: { [index: string]: MarkerType } = {
   TrackedHull: "tracked_hull", WheeledHull: "wheeled_hull", Tired: "tired", Pinned: "pinned",
   Activated: "activated", Exhausted: "exhausted", Jammed: "jammed", TurretJammed: "turret_jammed",
-  Immobilized: "immobilized", Wind: "wind", Weather: "weather", Initiative: "initiative",
-  Turn: "turn", EliteCrew: "elite_crew", GreenCrew: "green_crew", WeaponBroken: "weapon_broken",
-  SponsonJammed: "sponson_jammed", SponsonBroken: "sponson_broken", Routed: "routed"
+  Immobilized: "immobilized", Abandoned: "abandoned", Wind: "wind", Weather: "weather",
+  Initiative: "initiative", Turn: "turn", EliteCrew: "elite_crew", GreenCrew: "green_crew",
+  WeaponBroken: "weapon_broken", SponsonJammed: "sponson_jammed", SponsonBroken: "sponson_broken",
+  Routed: "routed"
 }
 
 export type FeatureType = "bunker" | "pillbox" | "foxhole" | "trench" | "scrape" |

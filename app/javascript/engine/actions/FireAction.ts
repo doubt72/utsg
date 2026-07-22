@@ -722,7 +722,12 @@ export default class FireAction extends BaseAction {
     }
     if (fireStart && !smoke) {
       if (fsHex.x >= 0 && fsHex.x < this.map.width && fsHex.y >= 0 && fsHex.y < this.map.height) {
-        this.game.fireStartCheckNeeded = {
+        const crew = fireStartVehicle && ["tank", "spg"].includes(target0.unit.type)
+        this.game.fireStartCheckNeeded = crew ? {
+          loc: fsHex, vehicle: true, incendiary: fireStartIncendiary,
+          vehicle_incendiary: fireStartVehicleIncendiary, tank: true,
+          nation: target0.unit.nation, player_nation: target0.unit.playerNation
+        } : {
           loc: fsHex, vehicle: fireStartVehicle !== undefined,
           incendiary: fireStartIncendiary,
           vehicle_incendiary: fireStartVehicleIncendiary,

@@ -123,6 +123,7 @@ export default class Unit {
   sponsonDestroyed: boolean;
   turretJammed: boolean;
   immobilizationState: boolean;
+  abandonedState: boolean;
   pinned: boolean;
   routed: boolean;
   closeCombatDone: boolean;
@@ -225,6 +226,7 @@ export default class Unit {
     this.sponsonDestroyed = false
     this.turretJammed = false
     this.immobilizationState = false
+    this.abandonedState = false
     this.pinned = false
     this.routed = false
     this.closeCombatDone = false
@@ -428,10 +430,15 @@ export default class Unit {
     }
   }
 
+  abandon(): void {
+    this.abandonedState = true
+  }
+
   wreck(game?: Game): void {
     this.jammed = false
     this.weaponDestroyed = false
     this.immobilizationState = false
+    this.abandonedState = false
     this.turretJammed = false
     this.sponsonJammed = false
     this.sponsonDestroyed = false
@@ -501,6 +508,10 @@ export default class Unit {
     return this.immobilizationState
   }
 
+  get isAbandoned(): boolean {
+    return this.abandonedState
+  }
+
   get noFire(): boolean {
     if (this.isBroken || this.isWreck) { return true }
     if (this.sponson && (this.jammed || this.weaponDestroyed) &&
@@ -564,6 +575,7 @@ export default class Unit {
     if (this.isBroken) {
       return Math.floor(this.baseFirepower / 2)
     } else if (this.isVehicle && !this.isWreck) {
+      if (this.abandonedState) { return 0 }
       return (this.armored && !this.immobilizationState) ? 2 : 1
     } else if (this.uncrewedSW && !this.jammed && (this.parent && !this.parent.isBroken)) {
       return this.assault ? 2 : 0
@@ -584,7 +596,7 @@ export default class Unit {
   get currentMovement(): number {
     if (this.isBroken) {
       return this.brokenMovement
-    } else if (this.pinned || this.immobilizationState || this.isWreck) {
+    } else if (this.pinned || this.abandonedState || this.immobilizationState || this.isWreck) {
       return 0
     } else if (this.isTired && !this.operated) {
       return Math.floor(this.baseMovement/2)

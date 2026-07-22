@@ -538,7 +538,7 @@ function canJoin(unit: Unit, map: Map): boolean {
 }
 
 function checkFire(unit: Unit, map: Map): boolean {
-  if (unit.isExhausted || unit.isBroken) { return false }
+  if (unit.isExhausted || unit.isBroken || unit.isAbandoned) { return false }
   if (unit.currentFirepower <= 0) { return false }
   if (unit.jammed && !unit.sponson) { return false }
   if (unit.sponson && unit.jammed && unit.sponsonJammed) { return false }

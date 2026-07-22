@@ -66,6 +66,7 @@ export type SimpleUnitCheck = { unit: Unit, loc: Coordinate }
 export type SimpleFeatureCheck = { feature: Feature, loc: Coordinate }
 export type SimpleHexCheck = {
   loc: Coordinate, vehicle?: boolean, incendiary?: boolean, vehicle_incendiary?: boolean,
+  tank?: boolean, nation?: string, player_nation?: string,
 }
 export type ComplexCheck = {
   unit: Unit, from: Coordinate[], to: Coordinate, incendiary: boolean, critical: boolean,
@@ -355,6 +356,10 @@ export default class Game {
         return { loc: d.loc, message: ["weapon", "destroyed"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "immobilized") {
         return  {loc: d.loc, message: ["immobilized"], textColor: "#FFF", backgroundColor: "#E00" }
+      } else if (d.type === "abandoned") {
+        return  {loc: d.loc, message: ["abandoned"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "crewescape") {
+        return  {loc: d.loc, message: ["crew", "escaped"], textColor: "#FFF", backgroundColor: "#080" }
       } else if (d.type === "turret") {
         return { loc: d.loc, message: ["turret", "jammed"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "break") {
@@ -611,7 +616,7 @@ export default class Game {
       const unit = u as Unit
       if (unit.leader) {
         points += 6
-      } else if (!unit.operated) {
+      } else if (!unit.operated && unit.name !== "Tank Crew") {
         points += unit.size
       }
     }
@@ -629,7 +634,7 @@ export default class Game {
       const unit = u as Unit
       if (unit.leader) {
         points += 6
-      } else if (!unit.operated) {
+      } else if (!unit.operated && unit.name !== "Tank Crew") {
         points += unit.size
       }
     }

@@ -120,7 +120,8 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   const path = circlePath(loc.yDelta(-6), 22)
   const style = { fill: markerYellow(), stroke: "black", strokeWidth: 2 }
   const fStyle = { fill: "black" }
-  if (counter.unit.pinned || counter.unit.isImmobilized || counter.unit.turretJammed ||
+  if (counter.unit.pinned || counter.unit.isImmobilized ||
+      counter.unit.isAbandoned || counter.unit.turretJammed ||
       (counter.unit.jammed && counter.unit.isVehicle) || counter.unit.weaponDestroyed ||
       counter.unit.sponsonJammed || counter.unit.sponsonDestroyed || counter.unit.routed) {
     style.fill = counterRed()
@@ -133,6 +134,7 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   if (counter.unit.pinned) { text.push("PIN") }
   if (counter.unit.isTired) { text.push("TRD") }
   if (counter.unit.isImmobilized) { text.push("IMM") }
+  if (counter.unit.isAbandoned) { text.push("ABN") }
   if (counter.unit.turretJammed) { text.push("TRT") }
   if (counter.unit.jammed && counter.unit.isVehicle) { text.push("WPB") }
   if (counter.unit.weaponDestroyed) { text.push("WPD") }
@@ -316,6 +318,9 @@ export function counterInfoBadges(
     }
     if (u.isImmobilized && s) {
       badges.push({ text: "immobilized", color: counterRed(), tColor: "white" })
+    }
+    if (u.isAbandoned && s) {
+      badges.push({ text: "abandoned", color: counterRed(), tColor: "white" })
     }
     if (u.turretJammed && s) {
       badges.push({ text: "turret jammed", color: counterRed(), tColor: "white" })

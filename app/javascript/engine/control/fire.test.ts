@@ -16,6 +16,7 @@ import {
   createBlankGame,
   createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr, testGMC, testGMG,
   testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill, testRGun, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRTank,
+  testRTD,
   testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"
@@ -2196,6 +2197,70 @@ describe("ranged fire attacks", () => {
       const counters = map.countersAt(new Coordinate(4, 0))
       expect(counters.length).toBe(2)
       expect(counters[1].feature.name).toBe("Blaze")
+    })
+
+    test("fire start check after area fire destroys vehicle with crew escape", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMortar)
+      firing2.baseFirepower /= 2
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      map.select(firing2)
+
+      const target = new Unit(testRTD)
+      target.id = "target3"
+      const tloc = new Coordinate(4, 0)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(deHTML(game.actions[0].stringValue)).toBe(
+        "German 5cm leGrW 36 at D3 fired at Soviet SU-76 at E1; targeting roll: target 6, " +
+        "rolled 100 [d10x10: 10 x 10]: hit; penetration roll: target 18, " +
+        "rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+      )
+
+      expect(game.fireStartCheckNeeded).toStrictEqual({
+        loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+        vehicle_incendiary: false, tank: true, nation: "ussr", player_nation: "ussr",
+      })
+
+      game.setGameState(new FireStartState(game))
+      vi.spyOn(Math, "random").mockReturnValue(0.25)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.lastAction?.stringValue).toBe(
+        "checking to see if blaze starts in E1: on 4 or less, rolled 6 [2d10: 3 + 3]: no effect, crew escapes"
+      )
+      const counters = map.countersAt(new Coordinate(4, 0))
+      expect(counters.length).toBe(2)
+      expect(counters[1].unit.name).toBe("Tank Crew")
+      expect(counters[1].unit.isExhausted).toBe(true)
+
+      expect(game.moraleChecksNeeded.length).toBe(1)
+      expect(game.moraleChecksNeeded[0].unit.name).toBe("Tank Crew")
     })
 
     test("offboard artillery", () => {

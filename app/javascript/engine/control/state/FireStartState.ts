@@ -1,6 +1,6 @@
 import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
-import Game from "../../Game";
+import Game, { SimpleHexCheck } from "../../Game";
 import GameAction from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
 
@@ -22,16 +22,20 @@ export default class FireStartState extends BaseState {
   }
 
   finish() {
-    const loc = this.game.fireStartCheckNeeded?.loc as Coordinate
+    const check = this.game.fireStartCheckNeeded as SimpleHexCheck
+    const loc = check.loc as Coordinate
     const action = new GameAction({
       user: this.game.currentUser, player: this.game.currentPlayer,
       data: {
         action: "fire_start", old_initiative: this.game.initiative,
         path: [{ x: loc.x, y: loc.y }],
-        fire_start_data: {
-          vehicle: this.game.fireStartCheckNeeded?.vehicle as boolean,
-          incendiary: this.game.fireStartCheckNeeded?.incendiary as boolean,
-          vehicle_incendiary: this.game.fireStartCheckNeeded?.vehicle_incendiary as boolean,
+        fire_start_data: check.tank ? {
+          vehicle: check.vehicle as boolean, incendiary: check.incendiary as boolean,
+          vehicle_incendiary: check.vehicle_incendiary as boolean,
+          tank: true, nation: check.nation, player_nation: check.player_nation
+        } : {
+          vehicle: check.vehicle as boolean, incendiary: check.incendiary as boolean,
+          vehicle_incendiary: check.vehicle_incendiary as boolean, tank: false,
         },
         dice_result: [{ result: roll2d10() }]
       }

@@ -86,7 +86,8 @@ export type GameActionFireData = {
 }
 
 export type GameActionFireStartData = {
-  vehicle: boolean, incendiary: boolean, vehicle_incendiary: boolean,
+  vehicle: boolean, incendiary: boolean, vehicle_incendiary: boolean, tank: boolean,
+  nation?: string, player_nation?: string,
 }
 
 export type GameActionMoveData = {
@@ -112,9 +113,11 @@ export type GameActionCCData = {
   p1_fp?: number, p2_fp?: number, count?: number, p1_max?: number, p2_max?: number,
 }
 
-export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench"
+export type GameActionAddActionType = "smoke" | "drop" | "load" | "vp" | "clear" | "entrench" |
+  "abandon" | "repair" | "crew"
 export const gameActionAddActionType: { [index: string]: GameActionAddActionType } = {
   Smoke: "smoke", Drop: "drop", Load: "load", VP: "vp", Clear: "clear", Entrench: "entrench",
+  Abandon: "abandon", Repair: "repair", Crew: "crew",
 }
 export type GameActionAddAction = {
   type: GameActionAddActionType, x: number, y: number, id?: string, name?: string,

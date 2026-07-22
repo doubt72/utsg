@@ -410,9 +410,9 @@ export function armorHitModifiers(
     mod -= 2
     why.push("- minus 2 for targeting side of hull")
   }
-  if (target.isImmobilized) {
+  if (target.isImmobilized || target.isAbandoned) {
     mod -= 2
-    why.push("- minus 2 for target immobilized")
+    why.push(`- minus 2 for target immobilized`)
   }
   const dist = hexDistance(from, to)
   if (dist < 2 ) {

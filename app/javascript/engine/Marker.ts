@@ -138,6 +138,7 @@ export default class Marker {
     if (this.type === markerType.SponsonBroken) { return ["hull weap.", "destroyed"] }
     if (this.type === markerType.TurretJammed) { return ["turret", "jammed"] }
     if (this.type === markerType.Immobilized) { return ["immobilized"] }
+    if (this.type === markerType.Abandoned) { return ["abandoned"] }
     if (this.type === markerType.Wind) {
       if (this.subType === windType.Calm) { return ["calm"] }
       if (this.subType === windType.Breeze) { return ["breeze"] }

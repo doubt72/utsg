@@ -97,6 +97,7 @@ module Utility
               routed: { mk: 1, type: "routed" },
               turret_jammed: { mk: 1, type: "turret_jammed" },
               immobilized: { mk: 1, type: "immobilized" },
+              abandoned: { mk: 1, type: "abandoned" },
               elite_crew: { mk: 1, type: "elite_crew" },
               green_crew: { mk: 1, type: "green_crew" },
             }

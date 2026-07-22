@@ -1,12 +1,10 @@
 Features/Bug Fixes
-  + Sponson ranges not counted for reaction fire
-  + Don't toggle smoke after laying smoke
-  + Weird halftrack placement error
   + Tank crews on destruction/abandon
-    - Blaze rolls of 7 or less
-    - Exhausted on abandon, morale check on destruction
-    - Not worth VP
-    - Abandon status does not allow any actions, immobilization bonus to shots
+    + Blaze rolls of 7 or less
+    - Exhausted on abandon
+    + Morale check on destruction
+    + Not worth VP
+    + Abandon status does not allow any actions, immobilization bonus to shots
     - Abandoned vehicles are destroyed at the beginning of close combat
     - Manning a vehicle removes abandoned status, exhausts vehicle
     - Repair vehicle success >= 10 + size

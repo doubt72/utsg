@@ -1,8 +1,9 @@
 import { baseTerrainType, Coordinate, terrainType } from "../../utilities/commonTypes";
-import { failRed, formatCoordinate, formatDieResult, formatTarget, passBlue } from "../../utilities/graphics";
+import { failRed, formatCoordinate, formatDieResult, formatTarget, passBlue, passGreen } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionFireStartData, GameActionPath } from "../GameAction";
 import Hex from "../Hex";
+import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 
 export default class FireStartAction extends BaseAction {
@@ -42,11 +43,16 @@ export default class FireStartAction extends BaseAction {
   }
 
   get htmlValue(): string {
+    let result = `<span style="color: ${passBlue()};">no effect</span>`
+    if (this.needed >= this.diceResult.result.result) {
+      result = `blaze <span style="color: ${failRed()};">starts</span>`
+    } else if (this.diceResult.result.result <= 7 && this.startData.vehicle) {
+      result += `, <span style="color: ${passGreen()};">crew escapes</span>`
+    }
     const loc = formatCoordinate(new Coordinate(this.hex.x, this.hex.y))
     return `checking to see if blaze starts in ${loc}: on ${formatTarget(this.needed)} or less, ` +
       `rolled ${formatDieResult(this.diceResult.result)}` +
-      `: ${ this.needed < this.diceResult.result.result ? `<span style="color: ${passBlue()};">no effect</span>` :
-        `blaze <span style="color: ${failRed()};">starts</span>` }`
+      `: ${ result }`
   }
 
   get undoPossible() {
@@ -57,6 +63,16 @@ export default class FireStartAction extends BaseAction {
     const loc = new Coordinate(this.hex.x, this.hex.y)
     if (this.diceResult.result.result <= this.needed) {
       this.map.addFire(loc)
+    } else if (this.diceResult.result.result <= 7 && this.startData.vehicle && this.startData.tank) {
+      const unit = new Unit({
+        id: `uf-${this.game.actions.length}`, c: this.startData.nation as string,
+        t: "tm", n: "Tank Crew", i: "tcrew", y: 0, m: 2, s: 2, f: 1, r: 1, v: 4, o: { tc: 1 },
+      })
+      unit.playerNation = this.startData.player_nation as string
+      unit.exhaust()
+      this.map.addCounter(loc, unit)
+      this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false, critical: false })
+      this.game.addActionAnimations([{ loc, type: "crewescape" }])
     }
     this.game.fireStartCheckNeeded = undefined
   }
