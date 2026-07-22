@@ -126,10 +126,13 @@ describe("rush movement", () => {
     expect(game.moveState.addActions.length).toBe(0)
     game.moveState.move(3, 3)
     expect(showLaySmoke(game)).toBe(false)
-    expect(game.moveState.smoke).toBe(false)
+    expect(game.moveState.smoke).toBe(true)
     expect(game.moveState.addActions.length).toBe(1)
     expect(map.units[3][3].filter(u => u.ghost).length).toBe(1)
     expect(game.moveState.path.length).toBe(1)
+
+    game.moveState.smokeToggle()
+
     expect(game.gameState?.openHex(4, 2)).toBe(hexOpenType.Closed)
     expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.Closed)
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)

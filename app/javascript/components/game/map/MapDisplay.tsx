@@ -698,7 +698,7 @@ export default function MapDisplay({
           map.game.deployState.toHex(x, y)
           const list = map.units[y][x]
           const last = list[list.length - 1] as Unit
-          if (last && last.canTow) {
+          if (last && last.canTow && !counter.counter.isFeature && (counter.counter as Unit).towSize) {
             directionCallback(normalDir(last.facing + 3))
             doCallback = false
           }

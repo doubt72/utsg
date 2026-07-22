@@ -1,7 +1,9 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
 import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
-import { circlePath, clearColor } from "../../../utilities/graphics";
+import {
+  circlePath, clearColor, falseShadedHexColor, greenHexColor, redHexColor, shadedHexColor, yellowHexColor
+} from "../../../utilities/graphics";
 
 interface MapHexOverlayProps {
   hex: Hex;
@@ -12,12 +14,11 @@ interface MapHexOverlayProps {
 export default function MapHexOverlay({
   hex, selectCallback, shaded
 }: MapHexOverlayProps) {
-  const shadedStyle = { fill: "rgba(0,0,0,0.3)" }
-  const falseClosedStyle = { fill: "rgba(0,0,0,0.3)" }
-  const greenStyle = { fill: "rgba(0,255,0,0.15)" }
-  // TODO: not sure we'll ever use yellow
-  const yellowStyle = { fill: "rgba(255,255,0,0.15)" }
-  const redStyle = { fill: "rgba(255,0,0,0.15)" }
+  const shadedStyle = { fill: shadedHexColor }
+  const falseClosedStyle = { fill: falseShadedHexColor }
+  const greenStyle = { fill: greenHexColor }
+  const yellowStyle = { fill: yellowHexColor }
+  const redStyle = { fill: redHexColor }
   const unshadedStyle = { fill: clearColor }
 
   const overlay = () => {

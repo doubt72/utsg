@@ -452,8 +452,13 @@ export function inRange(game: Game, to: Coordinate): boolean {
     if (los(game.scenario.map, from, to) === false) { return false }
     if (!unit.leader) {
       const dist = hexDistance(from, to)
-      if (unit.currentRange < dist) { return false }
-      if ((unit.minimumRange ?? 0) > dist) { return false }
+      if (!unit.sponson) {
+        if (unit.currentRange < dist) { return false }
+        if ((unit.minimumRange ?? 0) > dist) { return false }
+      } else {
+        // No sponson min range
+        if (unit.currentRange < dist && unit.sponson.range < dist) { return false }
+      }
       if (!inFiringArc(game, sel.counter, to)) { return false }
       leaderOnly = false
     } else {

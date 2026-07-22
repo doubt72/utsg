@@ -354,7 +354,6 @@ export default class MoveState extends BaseState {
         new Coordinate(x, y),
         new Feature({ id: "Smoke", ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
       )
-      this.smoke = false
     } else {
       if (lastPath.x === x && lastPath.y === y) { return }
       let facing = target.rotates ? lastPath.facing : undefined

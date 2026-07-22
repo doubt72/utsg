@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
-import { circlePath, clearColor } from "../../../utilities/graphics";
+import { circlePath, clearColor, greenHexColor, yellowHexColor } from "../../../utilities/graphics";
 import { facingLayout } from "../../../engine/support/unitLayout";
+import { hexDistance } from "../../../utilities/utilities";
 
 interface MapLosOverlayProps {
   map: Map;
@@ -17,6 +18,8 @@ export default function MapLosOverlay({
 }: MapLosOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
 
+  const from = new Coordinate(xx, yy)
+
   useEffect(() => {
     setOverlayDisplay(
       <g>
@@ -24,16 +27,30 @@ export default function MapLosOverlay({
           map.mapHexes.map((row, y) =>
             row.map((hex, x) => {
               const key = `${x}-${y}`
-              const value = map.hexLos(new Coordinate(xx, yy), new Coordinate(x, y))
+              const to = new Coordinate(x, y)
+              const value = map.hexLos(from, to)
+              const dist = hexDistance(from, to)
+              let inRange = false
+              for (const c of map.countersAt(from)) {
+                if (!c.hasUnit) { continue }
+                if ((c.unit.minimumRange ?? 0) <= dist && c.unit.currentRange >= dist &&
+                    !c.unit.jammed && !c.unit.weaponDestroyed) {
+                  inRange = true
+                }
+                if (c.unit.sponson && c.unit.sponson.range >= dist &&
+                    !c.unit.sponsonJammed && !c.unit.sponsonDestroyed) {
+                  inRange = true
+                }
+              }
+              let color = clearColor
+              if (dist === 0) { color = greenHexColor } else if (!inRange) { color = yellowHexColor }
               if (value === true) {
                 return <polygon key={key} points={hex.hexCoords}
-                                style={{ fill: clearColor }}
+                                style={{ fill: color }}
                                 onMouseEnter={() => setOverlay({ show: false, x: 0, y: 0 })} />
               }
               if (value === false) {
-                const offset = Math.max(map.counterDataAt(
-                  new Coordinate(x, y)
-                ).length * 5 - 5, 0)
+                const offset = Math.max(map.counterDataAt(to).length * 5 - 5, 0)
                 const xd = hex.xOffset + offset
                 const yd = hex.yOffset + 20 - (map.rotated ? -offset : offset)
                 return (
@@ -57,14 +74,14 @@ export default function MapLosOverlay({
                         style={value.style as object} transform={ map.rotated ? `rotate(90 ${value.x} ${value.y})` : "" }>
                     {value.value}
                   </text>
-                  <polygon points={hex.hexCoords} style={{ fill: clearColor }}
+                  <polygon points={hex.hexCoords} style={{ fill: color }}
                            onMouseEnter={() => setOverlay({ show: false, x: 0, y: 0 })} />
                 </g>
               )
             })
           )
         }
-        {map.countersAt(new Coordinate(xx, yy)).map((c, i) => {
+        {map.countersAt(from).map((c, i) => {
           if (!c.hasUnit) { return "" }
           const fl = facingLayout(c)
           const fl2 = facingLayout(c, !!c.unit.sponson)

@@ -232,6 +232,11 @@ export function nationalControlLookup(key: string): string {
 }
 
 export const clearColor = "rgba(0,0,0,0)"
+export const shadedHexColor = "rgba(0,0,0,0.3)"
+export const falseShadedHexColor = "rgba(0,0,0,0.3)"
+export const greenHexColor = "rgba(0,255,0,0.15)"
+export const yellowHexColor = "rgba(255,255,0,0.15)"
+export const redHexColor = "rgba(255,0,0,0.15)"
 
 export function nationalTextColor(nation: string): string {
   const base = nationalColorLookup(nation)

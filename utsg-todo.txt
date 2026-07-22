@@ -1,7 +1,7 @@
 Features/Bug Fixes
-  - Sponson ranges not counted for reaction fire
-  - Don't toggle smoke after laying smoke
-  - Weird halftrack placement error
+  + Sponson ranges not counted for reaction fire
+  + Don't toggle smoke after laying smoke
+  + Weird halftrack placement error
   + Tank crews on destruction/abandon
     - Blaze rolls of 7 or less
     - Exhausted on abandon, morale check on destruction
