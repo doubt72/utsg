@@ -4,9 +4,11 @@ import { normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
-import { GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, gameActionAddActionType } from "../GameAction";
+import { GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, gameActionAddActionType, GameActionDiceResult } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
+import Unit, { unitDataForTankCrew } from "../Unit";
 import BaseAction from "./BaseAction";
+import IllegalActionError from "./IllegalActionError";
 
 export default class AssaultMoveAction extends BaseAction {
   origin: GameActionUnit[];
@@ -56,6 +58,9 @@ export default class AssaultMoveAction extends BaseAction {
   }
 
   get undoPossible() {
+    if (this.addAction.length > 0 && this.addAction[0].type === gameActionAddActionType.Repair) {
+      return false
+    }
     return true
   }
 
@@ -99,6 +104,31 @@ export default class AssaultMoveAction extends BaseAction {
         })
         this.map.addCounter(mid, feature)
         anims.push({ loc: mid, type: "entrench" })
+      } else if (a.type === gameActionAddActionType.Abandon) {
+        const counter = this.game.findCounterById(this.origin[0].id as string) as Counter
+        counter.unit.abandon()
+        const unit = new Unit(unitDataForTankCrew(a.id as string, counter.unit.nation))
+        unit.playerNation = counter.unit.playerNation as string
+        unit.exhaust()
+        const loc = new Coordinate(a.x, a.y)
+        this.map.addCounter(loc, unit)
+        this.game.addActionAnimations([{ loc, type: "abandoned" }])
+      } else if (a.type === gameActionAddActionType.Repair) {
+        const counter = this.game.findCounterById(a.id as string) as Counter
+        const dr =(this.data.dice_result as GameActionDiceResult[])[0] as GameActionDiceResult
+        const loc = new Coordinate(a.x, a.y)
+        if (dr.result.result <= 10 + counter.unit.size) {
+          counter.unit.repair()
+          this.game.addActionAnimations([{ loc, type: "repaired" }])
+        } else {
+          this.game.addActionAnimations([{ loc, type: "noeffect" }])
+        }
+      } else if (a.type === gameActionAddActionType.Crew) {
+        const counter = this.game.findCounterById(a.id as string) as Counter
+        counter.unit.crew()
+        counter.unit.exhaust()
+        const loc = new Coordinate(a.x, a.y)
+        this.map.removeCounter(loc, this.origin[0].id)
       }
     }
     sortStacks(this.map)
@@ -129,6 +159,21 @@ export default class AssaultMoveAction extends BaseAction {
           })
           this.map.addCounter(mid, feature)
         }
+      } else if (a.type === gameActionAddActionType.Abandon) {
+        const counter = this.game.findCounterById(a.id as string) as Counter
+        counter.unit.crew()
+        const loc = new Coordinate(a.x, a.y)
+        this.map.removeCounter(loc, this.origin[0].id)
+      } else if (a.type === gameActionAddActionType.Repair) {
+        // Shouldn't happen
+        throw new IllegalActionError("internal error undoing repair")
+      } else if (a.type === gameActionAddActionType.Crew) {
+        const counter = this.game.findCounterById(this.origin[0].id as string) as Counter
+        counter.unit.abandon()
+        const unit = new Unit(unitDataForTankCrew(a.id as string, counter.unit.nation))
+        unit.playerNation = counter.unit.playerNation as string
+        const loc = new Coordinate(a.x, a.y)
+        this.map.addCounter(loc, unit)
       }
     }
 

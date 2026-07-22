@@ -43,7 +43,8 @@ export default function AssaultMoveOtherSection({ section }: SectionProps) {
       <h3>{section}.3. Tank Crews</h3>
       <p>
         There are three special assault actions related to tank crews: abandon vehicle, man vehicle,
-        and abandon vehicle.
+        and abandon vehicle. None of these actions can be performed when sharing a hex with enemy
+        units.
       </p>
       <p>
         Crews may abandon vehicles, which will mark a vehicle as abandoned (with the same effects as
@@ -79,12 +80,14 @@ export default function AssaultMoveOtherSection({ section }: SectionProps) {
         Tank crews in the same hex as an immobilized vehicle (abandoned or not) may attempt to
         repair it (i.e., remove the immobilized status). To repair a vehicle, a 2d10 dice roll is
         performed, and if the number equals or exceeds 10 plus the size of the vehicle, the
-        immobilized status is removed (so larger vehicles are more difficult to repair).
+        immobilized status is removed (so larger vehicles are more difficult to repair). Repairs may
+        not be attempted on units that have performed any other actions (been activated or
+        exhausted).
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
-          { DiceGlyph() }
+          {DiceGlyph()}
           <span> repair vehicle</span>
         </div>
       </div>

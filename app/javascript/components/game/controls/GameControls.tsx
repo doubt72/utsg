@@ -67,6 +67,9 @@ import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import DeleteGameButton from "./buttons/DeleteGameButton";
 import ShortMoveButton from "./buttons/ShortMoveButton";
 import SkipShortMoveButton from "./buttons/SkipShortMoveButton";
+import AssaultMoveAbandonButton from "./buttons/AssaultMoveAbandonButton";
+import AssaultMoveRepairButton from "./buttons/AssaultMoveRepairButton";
+import AssaultMoveCrewButton from "./buttons/AssaultMoveCrewButton";
 
 interface GameControlsProps {
   game: Game;
@@ -275,6 +278,12 @@ export default function GameControls({
         return <AssaultMoveClearButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_entrench") {
         return <AssaultMoveEntrenchButton game={game} key={i} callback={callAllBack} vertical={vertical} />
+      } else if (a.type === "assault_move_abandon") {
+        return <AssaultMoveAbandonButton game={game} key={i} callback={callAllBack} vertical={vertical} />
+      } else if (a.type === "assault_move_repair") {
+        return <AssaultMoveRepairButton game={game} key={i} callback={callAllBack} vertical={vertical} />
+      } else if (a.type === "assault_move_crew") {
+        return <AssaultMoveCrewButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "finish_multiselect") {
         return <FinishMultiselectButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "finish_rotation") {

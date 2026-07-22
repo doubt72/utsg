@@ -5,7 +5,7 @@ import Game from "../Game"
 import Map from "../Map"
 import { gamePhaseType } from "../support/gamePhase"
 import Unit from "../Unit"
-import { showClearObstacles, showEntrench } from "./assault"
+import { showAbandon, showClearObstacles, showCrew, showEntrench, showRepair } from "./assault"
 import { closeCombatCasualtyNeeded } from "./closeCombat"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
 import { reactionFireCheck } from "./reactionFire"
@@ -400,17 +400,32 @@ function addMoveActions(game: Game, actions: GameControl[]): void {
 function addAssaultActions(game: Game, actions: GameControl[]): void {
   const action = game.assaultState
   if (action) {
-    if (showClearObstacles(game)) {
-      actions.push({ type: "assault_move_clear" })
-    }
-    if (showEntrench(game)) {
-      actions.push({ type: "assault_move_entrench" })
-    }
-    if (action.path.length + action.addActions.length > 1) {
-      actions.push({ type: "assault_move_finish" })
-    }
-    if (!action.doneSelect) {
-      actions.push({ type: "finish_multiselect" })
+    if (action.chooseRepair || action.chooseCrew) {
+      actions.unshift({
+        type: "none", message:`choose vehicle to ${action.chooseRepair ? "repair" : "man"}`
+      })
+    } else {
+      if (showClearObstacles(game)) {
+        actions.push({ type: "assault_move_clear" })
+      }
+      if (showEntrench(game)) {
+        actions.push({ type: "assault_move_entrench" })
+      }
+      if (showAbandon(game)) {
+        actions.push({ type: "assault_move_abandon" })
+      }
+      if (showRepair(game)) {
+        actions.push({ type: "assault_move_repair" })
+      }
+      if (showCrew(game)) {
+        actions.push({ type: "assault_move_crew" })
+      }
+      if (action.path.length + action.addActions.length > 1) {
+        actions.push({ type: "assault_move_finish" })
+      }
+      if (!action.doneSelect) {
+        actions.push({ type: "finish_multiselect" })
+      }
     }
     actions.push({ type: "cancel_action" })
   } else {

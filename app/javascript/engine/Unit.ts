@@ -59,6 +59,13 @@ export type UnitData = {
   mk?: 0;
 }
 
+export function unitDataForTankCrew(id: string, nation: string): UnitData {
+  return {
+    id, c: nation, t: "tm", n: "Tank Crew", i: "tcrew", y: 0, m: 2, s: 2, f: 1, r: 1, v: 4,
+    o: { tc: 1 },
+  }
+}
+
 export default class Unit {
   id: string;
 
@@ -430,8 +437,16 @@ export default class Unit {
     }
   }
 
+  repair(): void {
+    this.immobilizationState = false
+  }
+
   abandon(): void {
     this.abandonedState = true
+  }
+
+  crew(): void {
+    this.abandonedState = false
   }
 
   wreck(game?: Game): void {

@@ -3,7 +3,7 @@ import { failRed, formatCoordinate, formatDieResult, formatTarget, passBlue, pas
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionFireStartData, GameActionPath } from "../GameAction";
 import Hex from "../Hex";
-import Unit from "../Unit";
+import Unit, { unitDataForTankCrew } from "../Unit";
 import BaseAction from "./BaseAction";
 
 export default class FireStartAction extends BaseAction {
@@ -64,10 +64,7 @@ export default class FireStartAction extends BaseAction {
     if (this.diceResult.result.result <= this.needed) {
       this.map.addFire(loc)
     } else if (this.diceResult.result.result <= 7 && this.startData.vehicle && this.startData.tank) {
-      const unit = new Unit({
-        id: `uf-${this.game.actions.length}`, c: this.startData.nation as string,
-        t: "tm", n: "Tank Crew", i: "tcrew", y: 0, m: 2, s: 2, f: 1, r: 1, v: 4, o: { tc: 1 },
-      })
+      const unit = new Unit(unitDataForTankCrew(`uf-${this.game.actions.length}`, this.startData.nation as string))
       unit.playerNation = this.startData.player_nation as string
       unit.exhaust()
       this.map.addCounter(loc, unit)

@@ -358,6 +358,8 @@ export default class Game {
         return  {loc: d.loc, message: ["immobilized"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "abandoned") {
         return  {loc: d.loc, message: ["abandoned"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "repaired") {
+        return  {loc: d.loc, message: ["vehicle", "repaired"], textColor: "#FFF", backgroundColor: "#080" }
       } else if (d.type === "crewescape") {
         return  {loc: d.loc, message: ["crew", "escaped"], textColor: "#FFF", backgroundColor: "#080" }
       } else if (d.type === "turret") {
@@ -389,7 +391,7 @@ export default class Game {
       } else if (d.type === "blaze") {
         return { loc: d.loc, message: ["blaze"], textColor: "#FFF", backgroundColor: "#E00" }
       } else if (d.type === "blazeout") {
-        return { loc: d.loc, message: ["out"], textColor: "#FFF", backgroundColor: "#00E" }
+        return { loc: d.loc, message: ["blaze", "out"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "smoke") {
         return { loc: d.loc, message: ["smoke"], textColor: "#FFF", backgroundColor: "#00E" }
       } else if (d.type === "smokecheck") {
@@ -616,7 +618,7 @@ export default class Game {
       const unit = u as Unit
       if (unit.leader) {
         points += 6
-      } else if (!unit.operated && unit.name !== "Tank Crew") {
+      } else if (!unit.operated && !unit.tankCrew) {
         points += unit.size
       }
     }
@@ -634,7 +636,7 @@ export default class Game {
       const unit = u as Unit
       if (unit.leader) {
         points += 6
-      } else if (!unit.operated && unit.name !== "Tank Crew") {
+      } else if (!unit.operated && !unit.tankCrew) {
         points += unit.size
       }
     }

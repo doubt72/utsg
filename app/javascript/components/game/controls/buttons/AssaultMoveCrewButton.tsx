@@ -1,0 +1,44 @@
+import React, { FormEvent } from "react";
+import Game from "../../../../engine/Game";
+import { BoxArrowInUp } from "react-bootstrap-icons";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
+
+interface AssaultMoveCrewButtonProps {
+  game: Game;
+  vertical: boolean;
+  callback: () => void;
+}
+
+export default function AssaultMoveCrewButton({ game, vertical, callback }: AssaultMoveCrewButtonProps) {
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    game.assaultState.crew()
+    callback()
+  }
+
+  const text = "man vehicle"
+
+  const buttonTooltip = (props: TooltipProps) => (
+    <Tooltip className="tooltip-game" {...props}>
+      { text }
+    </Tooltip>
+  )
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="mb025em">
+        { vertical ?
+          <OverlayTrigger placement="bottom" overlay={buttonTooltip}
+                          delay={{ show: 0, hide: 0 }} >
+            <button type="submit" className="custom-button custom-button-balance nowrap">
+              <BoxArrowInUp />
+            </button>
+          </OverlayTrigger> :
+          <button type="submit" className="custom-button nowrap">
+            <BoxArrowInUp /> {text}
+          </button>
+        }
+      </div>
+    </form>
+  )
+}

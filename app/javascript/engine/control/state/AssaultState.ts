@@ -1,5 +1,5 @@
 import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType } from "../../../utilities/commonTypes";
-import { normalDir, stackLimit } from "../../../utilities/utilities";
+import { normalDir, roll2d10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
 import Game from "../../Game";
@@ -17,6 +17,8 @@ export default class AssaultState extends BaseState {
   path: GameActionPath[];
 
   doneSelect: boolean;
+  chooseRepair: boolean;
+  chooseCrew: boolean;
 
   constructor(game: Game) {
     super(game, stateType.Assault, game.currentPlayer)
@@ -62,6 +64,8 @@ export default class AssaultState extends BaseState {
     if (canSelect) {
       game.openOverlay = game.scenario.map.hexAt(hex)
     }
+    this.chooseRepair = false;
+    this.chooseCrew = false;
     game.refreshCallback(game)
   }
 
@@ -176,6 +180,20 @@ export default class AssaultState extends BaseState {
     const target = selection.counter.unit as Unit
     const same = this.samePlayer(target)
     if (!same) {return false}
+    if (this.chooseRepair) {
+      if (target.isVehicle && target.isImmobilized && !target.isActivated && !target.isExhausted) {
+        return true
+      }
+      this.game.addMessage("vehicle can't currently be repaired")
+      return false
+    }
+    if (this.chooseCrew) {
+      if (target.isVehicle && target.isAbandoned) {
+        return true
+      }
+      this.game.addMessage("vehicle can't be manned")
+      return false
+    }
     if (this.doneSelect) { return false }
     if (selection.target.type !== "map") { return false }
     for (const s of this.initialSelection) {
@@ -267,7 +285,92 @@ export default class AssaultState extends BaseState {
     this.game.closeOverlay = true
   }
 
+  abandon() {
+    const x = this.selection[0].x
+    const y = this.selection[0].y
+    this.addActions.push({
+      x, y, type: gameActionAddActionType.Abandon, cost: 0, index: 0,
+      id: `uf-${this.game.actions.length + 1}`
+    })
+    this.doneSelect = true
+    this.game.closeOverlay = true
+  }
+
+  repair() {
+    const x = this.selection[0].x
+    const y = this.selection[0].y
+    const loc = new Coordinate(x, y)
+    const counters = this.map.countersAt(loc)
+    let id = ""
+    for (const c of counters) {
+      const unit = c.unit as Unit
+      if (c.hasUnit && unit.isVehicle && unit.isImmobilized && !unit.isActivated &&
+          !unit.isExhausted && unit.playerNation === this.selection[0].counter.unit.playerNation) {
+        if (id === "") {
+          id = unit.id
+        } else {
+          this.chooseRepair = true
+          this.game.openOverlay = this.game.scenario.map.hexAt(loc)
+          return
+        }
+      }
+    }
+    this.addActions.push({
+      x, y, type: gameActionAddActionType.Repair, cost: 0, index: 0, id
+    })
+    this.doneSelect = true
+    this.game.closeOverlay = true
+  }
+
+  crew() {
+    const x = this.selection[0].x
+    const y = this.selection[0].y
+    const loc = new Coordinate(x, y)
+    const counters = this.map.countersAt(loc)
+    let id = ""
+    for (const c of counters) {
+      const unit = c.unit as Unit
+      if (c.hasUnit && unit.isVehicle && unit.isAbandoned &&
+          unit.playerNation === this.selection[0].counter.unit.playerNation) {
+        if (id === "") {
+          id = unit.id
+        } else {
+          this.chooseCrew = true
+          this.game.openOverlay = this.game.scenario.map.hexAt(loc)
+          return
+        }
+      }
+    }
+    this.addActions.push({
+      x, y, type: gameActionAddActionType.Crew, cost: 0, index: 0, id
+    })
+    this.doneSelect = true
+    this.game.closeOverlay = true
+  }
+
+  selectRepair(id: string) {
+    const x = this.selection[0].x
+    const y = this.selection[0].y
+    this.addActions.push({
+      x, y, type: gameActionAddActionType.Repair, cost: 0, index: 0, id
+    })
+    this.doneSelect = true
+    this.game.closeOverlay = true
+  }
+
+  selectCrew(id: string) {
+    const x = this.selection[0].x
+    const y = this.selection[0].y
+    this.addActions.push({
+      x, y, type: gameActionAddActionType.Crew, cost: 0, index: 0, id
+    })
+    this.doneSelect = true
+    this.game.closeOverlay = true
+  }
+
   finish() {
+    const dice = this.addActions.length > 0 && this.addActions[0].type === gameActionAddActionType.Repair ?
+      { result: roll2d10() } : undefined
     const action = new GameAction({
       user: this.game.currentUser,
       player: this.player,
@@ -285,6 +388,7 @@ export default class AssaultState extends BaseState {
             type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, index: a.index
           }
         }),
+        dice_result: dice ? [dice] : [],
       }
     }, this.game)
     this.execute(action)

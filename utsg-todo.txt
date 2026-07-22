@@ -1,13 +1,17 @@
 Features/Bug Fixes
   + Tank crews on destruction/abandon
     + Blaze rolls of 7 or less
-    - Exhausted on abandon
+    + Exhausted on abandon
     + Morale check on destruction
     + Not worth VP
     + Abandon status does not allow any actions, immobilization bonus to shots
+    + Manning a vehicle removes abandoned status, exhausts vehicle
+    + Repair vehicle success >= 10 + size
     - Abandoned vehicles are destroyed at the beginning of close combat
-    - Manning a vehicle removes abandoned status, exhausts vehicle
-    - Repair vehicle success >= 10 + size
+    - test abandon, undo
+    - test repair succeed, fail, disambiguate, undo
+    - test man, disambiguate, undo
+    - test abandoned vehicle in close combat: removed, help text
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops

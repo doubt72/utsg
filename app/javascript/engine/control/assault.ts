@@ -6,19 +6,10 @@ import Game from "../Game"
 import Hex from "../Hex"
 
 export function showClearObstacles(game: Game): boolean {
-  if (!game.gameState) { return false }
+  if (!showCommon(game)) { return false }
   const selection = game.assaultState.selection
-  if (selection.length > 1) { return false }
-  if (game.scenario.map.contactAt(new Coordinate(selection[0].x, selection[0].y))) { return false }
-  if (game.assaultState.path.length + game.assaultState.addActions.length > 1) { return false }
-  let eng = false
-  for (const s of selection) {
-    if (s.counter.unit.engineer) {
-      eng = true
-      break
-    }
-  }
-  if (!eng) { return false }
+  const unit = selection[0].counter.unit
+  if (!unit.engineer) { return false }
   const features = game.scenario.map.countersAt(new Coordinate(selection[0].x, selection[0].y))
   for (const f of features) {
     if (f.hasFeature && [featureType.Mines, featureType.Wire].includes(f.feature.type)) {
@@ -29,13 +20,11 @@ export function showClearObstacles(game: Game): boolean {
 }
 
 export function showEntrench(game: Game): boolean {
-  if (!game.gameState) { return false }
-  if (game.scenario.specialRules.includes("winter")) { return false }
+  if (!showCommon(game, false)) { return false }
   const selection = game.assaultState.selection
-  if (selection.filter(s => s.counter.unit.parent === undefined).length > 1 ) { return false }
-  if (game.scenario.map.contactAt(new Coordinate(selection[0].x, selection[0].y))) { return false }
+  if (selection.filter(s => s.counter.unit.parent === undefined).length > 1) { return false }
+  if (game.scenario.specialRules.includes("winter")) { return false }
   if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
-  if (game.assaultState.path.length + game.assaultState.addActions.length > 1) { return false }
   if (game.scenario.map.baseTerrain === baseTerrainType.Snow) { return false }
   if (game.scenario.map.baseTerrain === baseTerrainType.Mud) { return false }
   const loc = new Coordinate(selection[0].x, selection[0].y)
@@ -47,6 +36,53 @@ export function showEntrench(game: Game): boolean {
   for (const f of features) {
     if (f.hasFeature && f.feature.name !== "Shell Scrape") { return false }
   }
+  return true
+}
+
+export function showAbandon(game: Game): boolean {
+  if (!showCommon(game)) { return false }
+  const selection = game.assaultState.selection
+  const unit = selection[0].counter.unit
+  if (![unitType.Tank, unitType.SelfPropelledGun].includes(unit.type) || unit.isAbandoned) { return false }
+  return true
+}
+
+export function showRepair(game: Game): boolean {
+  if (!showCommon(game)) { return false }
+  const selection = game.assaultState.selection
+  const unit = selection[0].counter.unit
+  if (!unit.tankCrew) { return false }
+  const counters = game.scenario.map.countersAt(new Coordinate(selection[0].x, selection[0].y))
+  for (const f of counters) {
+    if (f.hasUnit && f.unit.isVehicle && f.unit.isImmobilized && f.unit.playerNation === unit.playerNation) {
+      if (f.unit.isActivated || f.unit.isExhausted) { continue }
+      return true
+    }
+  }
+  return false
+}
+
+export function showCrew(game: Game): boolean {
+  if (!showCommon(game)) { return false }
+  const selection = game.assaultState.selection
+  const unit = selection[0].counter.unit
+  if (!unit.tankCrew) { return false }
+  const counters = game.scenario.map.countersAt(new Coordinate(selection[0].x, selection[0].y))
+  for (const f of counters) {
+    if (f.hasUnit && [unitType.Tank, unitType.SelfPropelledGun].includes(f.unit.type) &&
+        f.unit.isAbandoned && f.unit.playerNation === unit.playerNation) {
+      return true
+    }
+  }
+  return false
+}
+
+function showCommon(game: Game, multi: boolean = true): boolean {
+  if (!game.gameState) { return false }
+  const selection = game.assaultState.selection
+  if (multi && selection.length > 1) { return false }
+  if (game.scenario.map.contactAt(new Coordinate(selection[0].x, selection[0].y))) { return false }
+  if (game.assaultState.path.length + game.assaultState.addActions.length > 1) { return false }
   return true
 }
 
