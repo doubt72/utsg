@@ -2,19 +2,21 @@ import {
   baseTerrainType, Coordinate, hexOpenType
 } from "../../utilities/commonTypes"
 import Unit from "../Unit"
-import { describe, expect, test } from "vitest"
+import { describe, expect, test, vi } from "vitest"
 import select from "./select"
 import organizeStacks from "../support/organizeStacks"
 import { showClearObstacles, showEntrench } from "./assault"
 import Feature from "../Feature"
 import {
   createBlankGame,
-  createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTruck,
+  createMoveGame, testGCrew, testGGun, testGInf, testGLdr, testGMG, testGTank, testGTCrew, testGTruck,
   testMineAT, testRInf, testRTank, testWire
 } from "./testHelpers"
 import AssaultState from "./state/AssaultState"
 import { stateType } from "./state/BaseState"
 import StackingActionError from "../actions/StackingActionError"
+import { deHTML } from "../../utilities/graphics"
+import IllegalActionError from "../actions/IllegalActionError"
 
 describe("assault movement", () => {
   test("along road", () => {
@@ -266,7 +268,7 @@ describe("assault movement", () => {
     expect(all[1].unit.isExhausted).toBe(true)
   })
 
-  test ("can't assault overstack, can into enemy", () => {
+  test("can't assault overstack, can into enemy", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
@@ -299,6 +301,47 @@ describe("assault movement", () => {
     expect(game.gameState?.openHex(3, 2)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(4, 3)).toBe(hexOpenType.All)
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
+  })
+
+  test("assault into abandoned vehicle removes it", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    map.select(unit)
+
+    const unit2 = new Unit(testRTank)
+    unit2.abandon()
+    unit2.immobilize()
+    unit2.id = "enemy"
+    const eloc = new Coordinate(3, 2)
+    map.addCounter(eloc, unit2)
+
+    game.setGameState(new AssaultState(game))
+
+    expect(game.gameState?.openHex(eloc.x, eloc.y)).toBe(hexOpenType.All)
+
+    game.assaultState.move(eloc.x, eloc.y)
+    game.assaultState.finish()
+
+    const counters = map.countersAt(eloc)
+    expect(counters.length).toBe(2)
+    expect(counters[0].unit.isWreck).toBe(true)
+    expect(counters[1].unit.name).toBe("Rifle")
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German Rifle assault moved from E3 to D3, Soviet T-34 M40 destroyed"
+    )
+
+    game.executeUndo(false)
+
+    const counters2 = map.countersAt(eloc)
+    expect(counters2.length).toBe(2)
+    expect(counters2[0].hasMarker).toBe(true)
+    expect(counters2[1].unit.name).toBe("T-34 M40")
+    expect(counters2[1].unit.isImmobilized).toBe(true)
   })
 
   test("assaulting into enemy does not change VP ownership", () => {
@@ -965,7 +1008,251 @@ describe("assault movement", () => {
 
     expect(showClearObstacles(game)).toBe(false)
     expect(showEntrench(game)).toBe(false)
-    
+  })
+
+  test("abandoning vehicle", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    map.select(unit)
+
+    game.setGameState(new AssaultState(game))
+
+    game.assaultState.abandon()
+    game.assaultState.finish()
+
+    const counters = map.countersAt(loc)
+    expect(counters.length).toBe(3)
+    expect(counters[0].unit.name).toBe("Tank Crew")
+    expect(counters[0].unit.isExhausted).toBe(true)
+    expect(counters[1].hasMarker).toBe(true)
+    expect(counters[2].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[2].unit.isAbandoned).toBe(true)
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German PzKpfw 35(t) at E3 abandoned by crew"
+    )
+
+    game.executeUndo(false)
+
+    const counters2 = map.countersAt(loc)
+    expect(counters2.length).toBe(2)
+    expect(counters2[0].hasMarker).toBe(true)
+    expect(counters2[1].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters2[1].unit.isAbandoned).toBe(false)
+  })
+
+  test("repairing vehicle succeeds", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.immobilize()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGTCrew)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    map.select(unit2)
+
+    game.setGameState(new AssaultState(game))
+
+    game.assaultState.repair()
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    const counters = map.countersAt(loc)
+    expect(counters.length).toBe(3)
+    expect(counters[0].unit.name).toBe("Tank Crew")
+    expect(counters[0].unit.isExhausted).toBe(true)
+    expect(counters[1].hasMarker).toBe(true)
+    expect(counters[2].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[2].unit.isImmobilized).toBe(false)
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German Tank Crew at E3 attempts to repair vehicle; " +
+      "target 13, rolled 20 [2d10: 10 + 10]: repaired"
+    )
+
+    try {
+      game.executeUndo(false)
+    } catch(err) {
+      // Can't roll back a smoke roll
+      expect(err instanceof IllegalActionError).toBe(true)
+    }
+  })
+
+  test("repairing vehicle fails", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.immobilize()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGTCrew)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    map.select(unit2)
+
+    game.setGameState(new AssaultState(game))
+
+    game.assaultState.repair()
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    game.gameState?.finish()
+    Math.random = original
+
+    const counters = map.countersAt(loc)
+    expect(counters.length).toBe(3)
+    expect(counters[0].unit.name).toBe("Tank Crew")
+    expect(counters[0].unit.isExhausted).toBe(true)
+    expect(counters[1].hasMarker).toBe(true)
+    expect(counters[2].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[2].unit.isImmobilized).toBe(true)
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German Tank Crew at E3 attempts to repair vehicle; " +
+      "target 13, rolled 2 [2d10: 1 + 1]: no effect"
+    )
+  })
+
+  test("repairing vehicle disambiguated, succeeds", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.immobilize()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGTank)
+    unit2.immobilize()
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    const unit3 = new Unit(testGTCrew)
+    unit3.id = "test3"
+    map.addCounter(loc, unit3)
+    map.select(unit3)
+
+    game.setGameState(new AssaultState(game))
+    game.assaultState.repair()
+    game.assaultState.selectRepair("test2")
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    const counters = map.countersAt(loc)
+    expect(counters.length).toBe(5)
+    expect(counters[0].unit.name).toBe("Tank Crew")
+    expect(counters[0].unit.isExhausted).toBe(true)
+    expect(counters[1].hasMarker).toBe(true)
+    expect(counters[2].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[2].unit.isImmobilized).toBe(true)
+    expect(counters[3].hasMarker).toBe(true)
+    expect(counters[4].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[4].unit.isImmobilized).toBe(false)
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German Tank Crew at E3 attempts to repair vehicle; " +
+      "target 13, rolled 20 [2d10: 10 + 10]: repaired"
+    )
+  })
+
+  test("manning vehicle", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.abandon()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGTCrew)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    map.select(unit2)
+
+    game.setGameState(new AssaultState(game))
+
+    game.assaultState.crew()
+    game.gameState?.finish()
+
+    const counters = map.countersAt(loc)
+    expect(counters.length).toBe(2)
+    expect(counters[0].hasMarker).toBe(true)
+    expect(counters[1].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[1].unit.isAbandoned).toBe(false)
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German Tank Crew at E3 manned PzKpfw 35(t)"
+    )
+
+    game.executeUndo(false)
+
+    const counters2 = map.countersAt(loc)
+    expect(counters2.length).toBe(3)
+    expect(counters2[0].unit.name).toBe("Tank Crew")
+    expect(counters2[0].unit.isExhausted).toBe(false)
+    expect(counters2[1].hasMarker).toBe(true)
+    expect(counters2[2].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters2[2].unit.isAbandoned).toBe(true)
+  })
+
+  test("manning vehicle disambiguation", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.abandon()
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGTank)
+    unit2.abandon()
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    const unit3 = new Unit(testGTCrew)
+    unit3.id = "test3"
+    map.addCounter(loc, unit3)
+    map.select(unit3)
+
+    game.setGameState(new AssaultState(game))
+    game.assaultState.crew()
+    game.assaultState.selectCrew("test2", unit2.name)
+    game.gameState?.finish()
+
+    const counters = map.countersAt(loc)
+    expect(counters.length).toBe(4)
+    expect(counters[0].hasMarker).toBe(true)
+    expect(counters[1].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[1].unit.isAbandoned).toBe(true)
+    expect(counters[2].hasMarker).toBe(true)
+    expect(counters[3].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[3].unit.isAbandoned).toBe(false)
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German Tank Crew at E3 manned PzKpfw 35(t)"
+    )
+
+    game.executeUndo(false)
+
+    const counters2 = map.countersAt(loc)
+    expect(counters2.length).toBe(5)
+    expect(counters2[0].unit.name).toBe("Tank Crew")
+    expect(counters2[0].unit.isExhausted).toBe(false)
+    expect(counters2[1].hasMarker).toBe(true)
+    expect(counters2[2].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters2[2].unit.isAbandoned).toBe(true)
+    expect(counters2[3].hasMarker).toBe(true)
+    expect(counters2[4].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters2[4].unit.isAbandoned).toBe(true)
   })
 
   test("assaulting into mines", () => {

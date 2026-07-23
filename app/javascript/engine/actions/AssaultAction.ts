@@ -1,6 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
-import { normalDir } from "../../utilities/utilities";
+import { normalDir, otherPlayer } from "../../utilities/utilities";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
@@ -15,6 +15,7 @@ export default class AssaultMoveAction extends BaseAction {
   path: GameActionPath[];
   addAction: GameActionAddAction[];
   target: GameActionUnit[];
+  diceResult: GameActionDiceResult[];
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -23,12 +24,14 @@ export default class AssaultMoveAction extends BaseAction {
     this.validate(data.data.path)
     this.validate(data.data.add_action)
     this.validate(data.data.target)
+    this.validate(data.data.dice_result)
 
     // Validate will already error out if data is missing, but the linter can't tell
     this.origin = data.data.origin as GameActionUnit[]
     this.path = data.data.path as GameActionPath[]
     this.addAction = data.data.add_action as GameActionAddAction[]
     this.target = data.data.target as GameActionUnit[]
+    this.diceResult = data.data.dice_result as GameActionDiceResult[]
   }
 
   get type(): string { return "assault_move" }
@@ -48,11 +51,22 @@ export default class AssaultMoveAction extends BaseAction {
         actions.push(`cleared ${a.name}`)
       } else if (a.type === gameActionAddActionType.Entrench) {
         actions.push("dug in")
+      } else if (a.type === gameActionAddActionType.Abandon) {
+        actions.push("abandoned by crew")
+      } else if (a.type === gameActionAddActionType.Repair) {
+        actions.push(`attempts to repair vehicle; ${this.diceResult[0].description as string}`)
+      } else if (a.type === gameActionAddActionType.Crew) {
+        actions.push(`manned ${this.addAction[0].name}`)
       } else if (a.type !== gameActionAddActionType.VP) {
         actions.push("unexpected action")
       }
     })
-    return actions.join(" ")
+    const other = otherPlayer(this.player)
+    const destroyed = this.target.length > 0 ?
+      `, ${formatNation(this.game, other)} ${
+        this.target.map(t => formatNation(this.game, other, t.name)).join(", ")
+      } destroyed` : ""
+    return actions.join(" ") + destroyed
   }
 
   get lastPath(): GameActionPath {
@@ -124,9 +138,8 @@ export default class AssaultMoveAction extends BaseAction {
         this.game.addActionAnimations([{ loc, type: "abandoned" }])
       } else if (a.type === gameActionAddActionType.Repair) {
         const counter = this.game.findCounterById(a.id as string) as Counter
-        const dr =(this.data.dice_result as GameActionDiceResult[])[0] as GameActionDiceResult
         const loc = new Coordinate(a.x, a.y)
-        if (dr.result.result <= 10 + counter.unit.size) {
+        if (this.diceResult[0].result.result >= 10 + counter.unit.size) {
           counter.unit.repair()
           this.game.addActionAnimations([{ loc, type: "repaired" }])
         } else {
@@ -169,17 +182,17 @@ export default class AssaultMoveAction extends BaseAction {
           this.map.addCounter(mid, feature)
         }
       } else if (a.type === gameActionAddActionType.Abandon) {
-        const counter = this.game.findCounterById(a.id as string) as Counter
+        const counter = this.game.findCounterById(this.origin[0].id) as Counter
         counter.unit.crew()
         const loc = new Coordinate(a.x, a.y)
-        this.map.removeCounter(loc, this.origin[0].id)
+        this.map.removeCounter(loc, a.id as string)
       } else if (a.type === gameActionAddActionType.Repair) {
         // Shouldn't happen
         throw new IllegalActionError("internal error undoing repair")
       } else if (a.type === gameActionAddActionType.Crew) {
-        const counter = this.game.findCounterById(this.origin[0].id as string) as Counter
+        const counter = this.game.findCounterById(a.id as string) as Counter
         counter.unit.abandon()
-        const unit = new Unit(unitDataForTankCrew(a.id as string, counter.unit.nation))
+        const unit = new Unit(unitDataForTankCrew(this.origin[0].id as string, counter.unit.nation))
         unit.playerNation = counter.unit.playerNation as string
         const loc = new Coordinate(a.x, a.y)
         this.map.addCounter(loc, unit)

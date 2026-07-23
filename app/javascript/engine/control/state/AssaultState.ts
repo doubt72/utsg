@@ -1,4 +1,5 @@
 import { Coordinate, CounterSelectionTarget, Direction, featureType, hexOpenType } from "../../../utilities/commonTypes";
+import { formatDieResult, passBlue, passGreen } from "../../../utilities/graphics";
 import { normalDir, roll2d10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
@@ -159,19 +160,27 @@ export default class AssaultState extends BaseState {
     const y = selection.target.xy.y
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
-    const selected = counter.unit.selected
-    this.map.select(counter.unit)
-    counter.children.forEach(c => this.map.select(c.unit))
-    if (selected) {
-      removeStateSelection(this.game, x, y, counter.unit.id)
+    if (this.chooseRepair) {
+      this.map.loadedSelect(counter.unit)
+      this.selectRepair(id)
+    } else if (this.chooseCrew) {
+      this.map.loadedSelect(counter.unit)
+      this.selectCrew(id, counter.unit.name)
     } else {
-      this.selection?.push({
-        x, y, id: counter.unit.id, name: counter.unit.name, counter: counter,
-      })
-      this.selection.sort((a, b) => {
-        if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
-        return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
-      })
+      const selected = counter.unit.selected
+      this.map.select(counter.unit)
+      counter.children.forEach(c => this.map.select(c.unit))
+      if (selected) {
+        removeStateSelection(this.game, x, y, counter.unit.id)
+      } else {
+        this.selection?.push({
+          x, y, id: counter.unit.id, name: counter.unit.name, counter: counter,
+        })
+        this.selection.sort((a, b) => {
+          if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
+          return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1
+        })
+      }
     }
     callback(true)
   }
@@ -328,12 +337,14 @@ export default class AssaultState extends BaseState {
     const loc = new Coordinate(x, y)
     const counters = this.map.countersAt(loc)
     let id = ""
+    let name = ""
     for (const c of counters) {
       const unit = c.unit as Unit
       if (c.hasUnit && unit.isVehicle && unit.isAbandoned &&
           unit.playerNation === this.selection[0].counter.unit.playerNation) {
         if (id === "") {
           id = unit.id
+          name = unit.name
         } else {
           this.chooseCrew = true
           this.game.openOverlay = this.game.scenario.map.hexAt(loc)
@@ -342,7 +353,7 @@ export default class AssaultState extends BaseState {
       }
     }
     this.addActions.push({
-      x, y, type: gameActionAddActionType.Crew, cost: 0, index: 0, id
+      x, y, type: gameActionAddActionType.Crew, cost: 0, index: 0, id, name
     })
     this.doneSelect = true
     this.game.closeOverlay = true
@@ -358,19 +369,31 @@ export default class AssaultState extends BaseState {
     this.game.closeOverlay = true
   }
 
-  selectCrew(id: string) {
+  selectCrew(id: string, name: string) {
     const x = this.selection[0].x
     const y = this.selection[0].y
     this.addActions.push({
-      x, y, type: gameActionAddActionType.Crew, cost: 0, index: 0, id
+      x, y, type: gameActionAddActionType.Crew, cost: 0, index: 0, id, name
     })
     this.doneSelect = true
     this.game.closeOverlay = true
   }
 
   finish() {
-    const dice = this.addActions.length > 0 && this.addActions[0].type === gameActionAddActionType.Repair ?
-      { result: roll2d10() } : undefined
+    const dice = []
+    if (this.addActions.length > 0 && this.addActions[0].type === gameActionAddActionType.Repair) {
+      const loc = new Coordinate(this.path[0].x, this.path[0].y)
+      const counter = this.map.unitAtId(loc, this.addActions[0].id as string) as Counter
+      const result = roll2d10()
+      dice.push({
+        result,
+        description: `target ${10 + counter.unit.size}, rolled ${formatDieResult(result)}: ${
+          result.result >= 10 + counter.unit.size ?
+            `<span style="color: ${passGreen()};">repaired</span>` :
+            `<span style="color: ${passBlue()};">no effect</span>`
+        }`
+      })
+    }
     const target: GameActionUnit[] = []
     if (this.path.length > 1) {
       const loc = new Coordinate(this.path[1].x, this.path[1].y)
@@ -405,7 +428,7 @@ export default class AssaultState extends BaseState {
             type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, index: a.index
           }
         }),
-        dice_result: dice ? [dice] : [],
+        dice_result: dice
       }
     }, this.game)
     this.execute(action)

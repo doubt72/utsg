@@ -8,10 +8,10 @@ Features/Bug Fixes
     + Manning a vehicle removes abandoned status, exhausts vehicle
     + Repair vehicle success >= 10 + size
     + Abandoned vehicles are destroyed by enemy assault move
-    - test abandon, undo
-    - test repair succeed, fail, disambiguate, undo
-    - test man, disambiguate, undo
-    - test opponent assault move
+    + test abandon, undo
+    + test repair succeed, fail, disambiguate, undo
+    + test man, disambiguate, undo
+    + test opponent assault move
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops

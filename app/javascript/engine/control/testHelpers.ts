@@ -6,7 +6,7 @@ import { HexData } from "../Hex"
 import { MapData } from "../Map"
 import { ScenarioData } from "../Scenario"
 import { gamePhaseType } from "../support/gamePhase"
-import { UnitData } from "../Unit"
+import { UnitData, unitDataForTankCrew } from "../Unit"
 
 export const testGInf: UnitData = {
   id: "g_inf", c: "ger", f: 7, i: "squad", m: 3, n: "Rifle", o: {s: 1}, r: 5, s: 6, t: "sqd", v: 4, y: 0
@@ -50,6 +50,8 @@ export const testGTank: UnitData = {
   id: "g_tank", t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
   o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
 };
+
+export const testGTCrew: UnitData = unitDataForTankCrew("g_crew", "ger")
 
 export const testGTruck: UnitData = {
   id: "g_truck", t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
