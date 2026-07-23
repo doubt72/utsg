@@ -550,7 +550,7 @@ export default class Unit {
   }
 
   get noFire(): boolean {
-    if (this.isBroken || this.isWreck) { return true }
+    if (this.isBroken || this.isWreck || this.isAbandoned) { return true }
     if (this.sponson && (this.jammed || this.weaponDestroyed) &&
         (this.sponsonJammed || this.sponsonDestroyed)) { return true }
     if (!this.sponson && (this.jammed || this.weaponDestroyed )) { return true }

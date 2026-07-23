@@ -424,7 +424,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
   const path = circlePath(loc, 10)
   const size = value === "A" ? 18 : attrSizeFor(value as number)
   if (counter.hasUnit && (counter.unit.isBroken || counter.unit.pinned || counter.unit.isTired ||
-      value as number < 0 || counter.unit.isImmobilized || counter.unit.isWreck)) {
+      value as number < 0 || counter.unit.isImmobilized || counter.unit.isAbandoned || counter.unit.isWreck)) {
     color = counterRed()
   } else if (counter.hasUnit) {
     if (counter.unit.isTracked || counter.unit.crewed || counter.unit.isWheeled ) {

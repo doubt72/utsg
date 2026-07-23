@@ -1,3 +1,9 @@
+# 0.116
+
+- Bug fix: abandoned tanks should not have escaping crews
+- Bug fix: movement, FP, range display on abandoned counters
+- Updated 608
+
 # 0.115
 
 - Added tank crews, and special tank gun crew rules/abilities

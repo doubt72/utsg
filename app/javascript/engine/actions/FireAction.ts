@@ -722,7 +722,7 @@ export default class FireAction extends BaseAction {
     }
     if (fireStart && !smoke) {
       if (fsHex.x >= 0 && fsHex.x < this.map.width && fsHex.y >= 0 && fsHex.y < this.map.height) {
-        const crew = fireStartVehicle && ["tank", "spg"].includes(target0.unit.type)
+        const crew = fireStartVehicle && ["tank", "spg"].includes(target0.unit.type) && !target0.unit.isAbandoned
         this.game.fireStartCheckNeeded = crew ? {
           loc: fsHex, vehicle: true, incendiary: fireStartIncendiary,
           vehicle_incendiary: fireStartVehicleIncendiary, tank: true,
