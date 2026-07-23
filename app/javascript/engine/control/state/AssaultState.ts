@@ -190,7 +190,8 @@ export default class AssaultState extends BaseState {
     const same = this.samePlayer(target)
     if (!same) {return false}
     if (this.chooseRepair) {
-      if (target.isVehicle && target.isImmobilized && !target.isActivated && !target.isExhausted) {
+      if (target.isVehicle && (target.isImmobilized || target.turretJammed) &&
+          !target.isActivated && !target.isExhausted) {
         return true
       }
       this.game.addMessage("vehicle can't currently be repaired")
@@ -315,7 +316,7 @@ export default class AssaultState extends BaseState {
     let id = ""
     for (const c of counters) {
       const unit = c.unit as Unit
-      if (c.hasUnit && unit.isVehicle && unit.isImmobilized && !unit.isActivated &&
+      if (c.hasUnit && unit.isVehicle && (unit.isImmobilized || unit.turretJammed) && !unit.isActivated &&
           !unit.isExhausted && unit.playerNation === this.selection[0].counter.unit.playerNation) {
         if (id === "") {
           id = unit.id

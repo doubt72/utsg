@@ -5,7 +5,6 @@ import { circlePath, clearColor, greenHexColor, redHexColor, yellowHexColor } fr
 import { facingLayout } from "../../../engine/support/unitLayout";
 import { hexDistance } from "../../../utilities/utilities";
 import { hitFromArc } from "../../../engine/control/fire";
-import Game from "../../../engine/Game";
 
 interface MapLosOverlayProps {
   map: Map;
@@ -46,14 +45,14 @@ export default function MapLosOverlay({
                 }
                 if (!c.unit.rotates) {
                   inArc = true
-                } else if (c.unit.backwardsMount) {
-                  if (hitFromArc(map.game as Game, c.unit, to, from, false) === 2) { inArc = true }
+                } else if (map.game && c.unit.backwardsMount) {
+                  if (hitFromArc(map.game, c.unit, to, from, false) === 2) { inArc = true }
                 } else {
-                  if (c.unit.turreted) {
-                    if (hitFromArc(map.game as Game, c.unit, to, from, true) === 0) { inArc = true }
+                  if (map.game && c.unit.turreted) {
+                    if (hitFromArc(map.game, c.unit, to, from, true) === 0) { inArc = true }
                   }
-                  if (!c.unit.turreted || c.unit.sponson) {
-                    if (hitFromArc(map.game as Game, c.unit, to, from, false) === 0) { inArc = true }
+                  if (map.game && (!c.unit.turreted || c.unit.sponson)) {
+                    if (hitFromArc(map.game, c.unit, to, from, false) === 0) { inArc = true }
                   }
                 }
               }

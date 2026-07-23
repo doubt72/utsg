@@ -1088,6 +1088,42 @@ describe("assault movement", () => {
     }
   })
 
+  test("repairing turret succeeds", () => {
+    const game = createMoveGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTank)
+    unit.id = "test1"
+    unit.turretJammed = true
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGTCrew)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+    map.select(unit2)
+
+    game.setGameState(new AssaultState(game))
+
+    game.assaultState.repair()
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    const counters = map.countersAt(loc)
+    expect(counters.length).toBe(3)
+    expect(counters[0].unit.name).toBe("Tank Crew")
+    expect(counters[0].unit.isExhausted).toBe(true)
+    expect(counters[1].hasMarker).toBe(true)
+    expect(counters[2].unit.name).toBe("PzKpfw 35(t)")
+    expect(counters[2].unit.turretJammed).toBe(false)
+
+    expect(deHTML(game.actions[0].stringValue)).toBe(
+      "German Tank Crew at E3 attempts to repair vehicle; " +
+      "target 13, rolled 20 [2d10: 10 + 10]: repaired"
+    )
+  })
+
   test("repairing vehicle fails", () => {
     const game = createMoveGame()
     const map = game.scenario.map

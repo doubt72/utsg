@@ -438,7 +438,11 @@ export default class Unit {
   }
 
   repair(): void {
-    this.immobilizationState = false
+    if (this.immobilizationState) {
+      this.immobilizationState = false
+    } else {
+      this.turretJammed = false
+    }
   }
 
   abandon(): void {

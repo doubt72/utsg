@@ -1,7 +1,5 @@
 Features/Bug Fixes
-  + Add abandon ghost
-  + Switch destroyed vehicles unloading to morale checks
-  - Crew fixing turret jams
+  + Crew fixing turret jams
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops
