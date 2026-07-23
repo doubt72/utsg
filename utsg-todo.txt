@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + Crew fixing turret jams
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops

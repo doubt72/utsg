@@ -9,6 +9,7 @@
 - Bug fix: sponson units in range should get reaction fire/clean up range checks
 - Bug fix: check that units can actually be towed when setting unit direction during deploy
 - Updated and promoted 106
+- Updated 608
 
 # 0.114
 

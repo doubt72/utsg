@@ -71,9 +71,9 @@ export default function FireEffectsSection({ section }: SectionProps) {
       </ul>
       <h3>{section}.1. Destroyed Vehicles</h3>
       <p>
-        If a vehicle carrying infantry is destroyed, all of the infantry units are broken (weapons
-        are unaffected). Vehicles are replaced with wrecks with the same size (flip the counter).
-        Wrecks affect stacking (for both sides) but otherwise have no other effects.
+        If a vehicle carrying infantry is destroyed, all of the infantry must make morael checks
+        (weapons are unaffected). Vehicles are replaced with wrecks with the same size (flip the
+        counter). Wrecks affect stacking (for both sides) but otherwise have no other effects.
       </p>
       <h3>{section}.2. Tank Crews</h3>
       <p>
