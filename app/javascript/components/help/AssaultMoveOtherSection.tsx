@@ -57,6 +57,8 @@ export default function AssaultMoveOtherSection({ section }: SectionProps) {
       <p>
         Tank crews abandoning a vehicle may cause the stack limit to be exceeded (and may trigger a
         stack reduction at the end of the turn). Tank crews are not worth any victory points.
+        Unlike other assault moves performed by vehicles, abandoning a vehicle does not trigger a
+        breakdown check.
       </p>
       <div className="flex mb1em">
         <div className="ml1em"></div>

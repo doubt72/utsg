@@ -2,6 +2,7 @@
 
 - Added tank crews, and special tank gun crew rules/abilities
   - Cleared all games: tank crew make significant enough changes to multiple actions
+  - Related bug fixes and tweaks
 - Added color coding to indicate ranges in LOS overlay
 - Changed default to not toggling laying smoke after laying smoke
 - Bug fix: sponson units in range should get reaction fire/clean up range checks

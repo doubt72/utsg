@@ -717,7 +717,8 @@ export function mapHelpLayout(
 function unitTypeName(unit: Unit): string[] {
   const names: { [index: string]: string[] } = {
     ac: ["armored car"], antitank: ["anti-tank rifle"], atgun: ["anit-tank gun"],
-    crew: ["trained gun crew"], explosive: ["explosive"], flamethrower: ["flame thrower"],
+    crew: ["trained gun crew"], tcrew: ["trained tank crew"],
+    explosive: ["explosive"], flamethrower: ["flame thrower"],
     gun: ["field gun"], ht: ["infantry fighting vehicle"],
     htat: ["infantry fighting vehicle", "w/anti-tank gun"],
     htft: ["infantry fighting vehicle", "w/flame thrower"],

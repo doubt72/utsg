@@ -152,7 +152,7 @@ export function handlingLayout(counter: Counter): CounterLayout | false {
 }
 
 export function tankCrewLayout(counter: Counter): CounterLayout | false {
-  if (!counter.hasUnit || !counter.unit.tankCrew) { return false }
+  if (!counter.hasUnit || !counter.unit.tankCrew || counter.unit.isBroken) { return false }
   const loc = new Coordinate(counter.x + 13, counter.y + 37)
   // const path = circlePath(loc, 3)
   const size = 3

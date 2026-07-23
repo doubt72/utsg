@@ -3,7 +3,7 @@ import { roll2d10 } from "../../../utilities/utilities";
 import BaseAction from "../../actions/BaseAction";
 import Counter from "../../Counter";
 import Game from "../../Game";
-import GameAction, { GameActionUnit } from "../../GameAction";
+import GameAction, { gameActionAddActionType, GameActionUnit } from "../../GameAction";
 import BaseState, { stateType } from "./BaseState";
 
 export function breakdownCheck(game: Game): boolean {
@@ -12,7 +12,13 @@ export function breakdownCheck(game: Game): boolean {
   if (action.data.origin && action.data.origin.length > 0) {
     const id = action.data.origin[0].id
     const counter = game.findCounterById(id) as Counter
-    if (["move", "assault_move"].includes(action.data.action) && counter.unit.breakdownRoll) {
+    if (!counter.unit.breakdownRoll) { return false }
+    if ("move" == action.data.action) { return true }
+    if ("assault_move" === action.data.action) {
+      if (action.data.add_action && action.data.add_action.length > 0 &&
+          action.data.add_action[0].type == gameActionAddActionType.Abandon) {
+        return false
+      }
       return true
     }
   }

@@ -4,7 +4,7 @@ import { normalDir, roll2d10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
 import Game from "../../Game";
-import GameAction, { gameActionAddActionType, GameActionPath, GameActionUnit } from "../../GameAction";
+import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionPath, GameActionUnit } from "../../GameAction";
 import Hex from "../../Hex";
 import Unit from "../../Unit";
 import { assaultMovement } from "../assault";
@@ -380,7 +380,7 @@ export default class AssaultState extends BaseState {
   }
 
   finish() {
-    const dice = []
+    const dice: GameActionDiceResult[] = []
     if (this.addActions.length > 0 && this.addActions[0].type === gameActionAddActionType.Repair) {
       const loc = new Coordinate(this.path[0].x, this.path[0].y)
       const counter = this.map.unitAtId(loc, this.addActions[0].id as string) as Counter
