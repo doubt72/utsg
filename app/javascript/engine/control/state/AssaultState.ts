@@ -6,7 +6,7 @@ import Feature from "../../Feature";
 import Game from "../../Game";
 import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionPath, GameActionUnit } from "../../GameAction";
 import Hex from "../../Hex";
-import Unit from "../../Unit";
+import Unit, { unitDataForTankCrew } from "../../Unit";
 import { assaultMovement } from "../assault";
 import { alongRailroad, alongRoad } from "../movement";
 import { removeStateSelection } from "../select";
@@ -301,6 +301,8 @@ export default class AssaultState extends BaseState {
       x, y, type: gameActionAddActionType.Abandon, cost: 0, index: 0,
       id: `uf-${this.game.actions.length + 1}`
     })
+    const loc = new Coordinate(this.selection[0].x, this.selection[0].y)
+    this.map.addGhost(loc, new Unit(unitDataForTankCrew("crew-ghost", this.game.currentPlayerNation)))
     this.doneSelect = true
     this.game.closeOverlay = true
   }

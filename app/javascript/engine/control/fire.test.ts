@@ -3433,11 +3433,15 @@ describe("ranged fire attacks", () => {
       expect(unit[2].unit.name).toBe("Rifle")
       expect(unit[2].unit.children.length).toBe(1)
       expect(unit[2].unit.parent).toBe(undefined)
-      expect(unit[2].unit.isBroken).toBe(true)
+      expect(unit[2].unit.isBroken).toBe(false)
       expect(unit[2].unit.children.length).toBe(1)
       expect(unit[4].unit.name).toBe("Leader")
       expect(unit[4].unit.parent).toBe(undefined)
-      expect(unit[4].unit.isBroken).toBe(true)
+      expect(unit[4].unit.isBroken).toBe(false)
+
+      expect(game.moraleChecksNeeded.length).toBe(2)
+      expect(game.moraleChecksNeeded[0].unit.name).toBe("Rifle")
+      expect(game.moraleChecksNeeded[1].unit.name).toBe("Leader")
     })
 
     test("ranged vehicle breakdown destroys roll", () => {

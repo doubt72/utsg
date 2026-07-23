@@ -44,7 +44,7 @@ export function canToggleSponson(unit: Unit, sponson: boolean): boolean {
   } else if (!sponson && (unit.sponsonJammed || unit.sponsonDestroyed)) {
     return false
   }
-  return false
+  return true
 }
 
 export function rapidFire(game: Game): boolean {

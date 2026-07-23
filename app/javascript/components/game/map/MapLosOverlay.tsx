@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Map from "../../../engine/Map";
 import { Coordinate } from "../../../utilities/commonTypes";
-import { circlePath, clearColor, greenHexColor, yellowHexColor } from "../../../utilities/graphics";
+import { circlePath, clearColor, greenHexColor, redHexColor, yellowHexColor } from "../../../utilities/graphics";
 import { facingLayout } from "../../../engine/support/unitLayout";
 import { hexDistance } from "../../../utilities/utilities";
+import { hitFromArc } from "../../../engine/control/fire";
+import Game from "../../../engine/Game";
 
 interface MapLosOverlayProps {
   map: Map;
@@ -31,6 +33,7 @@ export default function MapLosOverlay({
               const value = map.hexLos(from, to)
               const dist = hexDistance(from, to)
               let inRange = false
+              let inArc = false
               for (const c of map.countersAt(from)) {
                 if (!c.hasUnit) { continue }
                 if ((c.unit.minimumRange ?? 0) <= dist && c.unit.currentRange >= dist &&
@@ -41,9 +44,27 @@ export default function MapLosOverlay({
                     !c.unit.sponsonJammed && !c.unit.sponsonDestroyed) {
                   inRange = true
                 }
+                if (!c.unit.rotates) {
+                  inArc = true
+                } else if (c.unit.backwardsMount) {
+                  if (hitFromArc(map.game as Game, c.unit, to, from, false) === 2) { inArc = true }
+                } else {
+                  if (c.unit.turreted) {
+                    if (hitFromArc(map.game as Game, c.unit, to, from, true) === 0) { inArc = true }
+                  }
+                  if (!c.unit.turreted || c.unit.sponson) {
+                    if (hitFromArc(map.game as Game, c.unit, to, from, false) === 0) { inArc = true }
+                  }
+                }
               }
               let color = clearColor
-              if (dist === 0) { color = greenHexColor } else if (!inRange) { color = yellowHexColor }
+              if (dist === 0) {
+                color = greenHexColor
+              } else if (inRange && !inArc) {
+                color = yellowHexColor
+              } else if (!inRange) {
+                color = redHexColor
+              }
               if (value === true) {
                 return <polygon key={key} points={hex.hexCoords}
                                 style={{ fill: color }}

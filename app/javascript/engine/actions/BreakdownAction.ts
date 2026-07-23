@@ -29,7 +29,7 @@ export default class BreakdownAction extends BaseAction {
     const roll = this.diceResult
     return `breakdown check for ${formatNation(this.game, this.player)} ${this.origin.name}, ` +
       `target ${formatTarget(this.breakdownRoll as number)}, rolled ${formatDieResult(roll.result)}: ${
-      roll.result.result > (this.breakdownRoll ?? 0) ? "passed" : "failed" })`
+      roll.result.result > (this.breakdownRoll ?? 0) ? "passed" : "failed" }`
   }
 
   get undoPossible() {

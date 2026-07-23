@@ -258,7 +258,7 @@ export default class FireState extends BaseState {
   }
 
   get canToggleSponson(): boolean {
-    if (this.selection.length > 0) { return false }
+    if (this.selection.length > 1) { return false }
     return canToggleSponson(this.initialSelection[0].counter.unit, this.sponson)
   }
   

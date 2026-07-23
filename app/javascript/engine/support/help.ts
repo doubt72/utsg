@@ -332,6 +332,9 @@ export function unitHelpText(unit: Unit): string[] {
   if (unit.gunHandling && !unit.isBroken) {
     text.push(`gun operation bonus ${unit.gunHandling}`)
   }
+  if (unit.tankCrew) {
+    text.push(`tank operator/mechanic`)
+  }
   if (unit.currentLeadership) {
     text.push(`leadership ${unit.currentLeadership}`)
   }

@@ -461,7 +461,11 @@ export default class Unit {
       const loc = game.scenario.map.findLocationById(this.id) as Coordinate
       for (const c of this.children) {
         game.scenario.map.dropUnit(loc, loc, c.id, c.rotates ? normalDir(this.facing + 3) : undefined)
-        if (c.canCarrySupport) { c.break() }
+        if (c.canCarrySupport) {
+          game.moraleChecksNeeded.push({
+            unit: c, from: [loc], to: loc, incendiary: false, critical: false
+          })
+        }
       }
       const casualty = this.clone()
       casualty.playerNation = this.playerNation
