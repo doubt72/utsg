@@ -1,4 +1,7 @@
 Features/Bug Fixes
+  - Can't pick up weapons that are dropped but not activated
+  - Leader should not allow vehicle to do free repair check (after regular check)
+  - Morale checks for mortar smoke round, no smoke
   - General cleanup of button flow
     - Only one pick up picks up
     - Only drop one drops
