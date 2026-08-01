@@ -71,7 +71,7 @@ module Utility
 
       def average(averages, counts, id)
         count = counts[id].to_f + 1
-        (averages[id].to_f * (count - 1) / count) + (4 / count)
+        (averages[id].to_f * (count - 1) / count) + (4.0 / count)
       end
 
       def sort_rating(scenarios, dir) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength

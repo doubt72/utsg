@@ -15,7 +15,7 @@ class Rating < ApplicationRecord
       { count:, average: }
     end
 
-    def all_averages(data) # rubocop:disable Metrics/AbcSize
+    def all_averages(data) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       ids = data[:data].map { |s| s[:id] }
       counts = where(scenario: ids).group(:scenario).count
       averages = where(scenario: ids).group(:scenario).average(:rating)
@@ -23,7 +23,9 @@ class Rating < ApplicationRecord
         page: data[:page], more: data[:more], data: data[:data].map do |s|
           count = counts[s[:id]].to_i + 1
           s.merge(
-            rating: { count:, average: (averages[s[:id]].to_f * (count - 1) / count) + (4 / count) }
+            rating: {
+              count:, average: (averages[s[:id]].to_f * (count - 1) / count) + (4.0 / count),
+            }
           )
         end,
       }

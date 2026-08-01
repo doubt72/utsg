@@ -94,7 +94,7 @@ export default class FireAction extends BaseAction {
         part += `fired ${this.origin[i].sponson ? "hull gun " : ""}${smoke ? "smoke ": "" }at `
       }
     }
-    if (this.target.length > 0) {
+    if (this.target.length > 0 && !smoke) {
       coords = [new Coordinate(this.target[0].x, this.target[0].y)]
       for (const t of this.target) {
         let check = false
@@ -169,6 +169,7 @@ export default class FireAction extends BaseAction {
     let smoke = false
     if (target0) {
       to = new Coordinate(targets[0].x, targets[0].y)
+      smoke = this.fireHex.start[0].smoke
       fp = firepower(this.game, this.convertAToA(firing), target0.unit, to, sponson, [wire])
     } else {
       const hex = this.fireHex.start[0] as { x: number, y: number, smoke: boolean }

@@ -7,6 +7,8 @@ import { Coordinate, markerType } from "../../../utilities/commonTypes";
 import Counter from "../../../engine/Counter";
 import Game from "../../../engine/Game";
 import { initiativeRolls } from "../../../utilities/utilities";
+import { stateType } from "../../../engine/control/state/BaseState";
+import { gamePhaseType } from "../../../engine/support/gamePhase";
 
 interface InitiativeDisplayProps {
   map: Map;
@@ -37,6 +39,39 @@ export default function InitiativeDisplay({
     return {
       fill: `url(#nation-${n}-16)`, strokeWidth: 1, stroke: "#000"
     }
+  }
+
+  const showArrow = (index: number, up: boolean): boolean => {
+    const game = map.game
+    console.log(`game ${game} ${up} ${game?.currentPlayer}`)
+    if (!game || game.phase !== gamePhaseType.Main) return false
+
+    const dir = game.currentPlayer === 1
+    if (game.gameState?.type !== stateType.Pass) {
+      if (up && dir) { return false }
+      if (!up && !dir) { return false }
+    } else {
+      if (up && !dir) { return false }
+      if (!up && dir) { return false }
+    }
+    const shift = dir ? 1 : -1
+    if (!game.gameState && index === game.initiative + shift) { return true }
+    if (game.gameState) {
+      const type = game.gameState.type
+      if (type === stateType.Pass && index === game.initiative - shift) {
+        if ((dir && index >= 0) || (!dir && index <= 0)) { return true }
+      }
+      if (type === stateType.Rout && index === game.initiative + shift) {  return true }
+      if ([stateType.Fire, stateType.Move].includes(type) &&
+          [game.initiative + shift, game.initiative + shift*2].includes(index)) {
+        return true
+      }
+      if ([stateType.Assault, stateType.RoutAll].includes(type) &&
+          [game.initiative + shift, game.initiative + shift*2, game.initiative + shift*3].includes(index)) {
+        return true
+      }
+    }
+    return false
   }
 
   const xOffset = (i: number): number => {
@@ -95,6 +130,7 @@ export default function InitiativeDisplay({
   }
 
   useEffect(() => {
+    const arrowColor = "#DDD"
     setBase(
       <g>
         <path d={roundedRectangle(xx, yy, 190, small === 0 ? 752 : (small === 1 ? 512 : 392 ))}
@@ -109,10 +145,18 @@ export default function InitiativeDisplay({
             const game = map.game as Game
             const x = xOffset(i - 7)
             const y = yOffset(game, i - 7)
+            const arrowUp = showArrow(i - 7, i > 7)
+            const arrowDown = showArrow(i - 7, i <= 7)
             return shrink(game, i) ? (
               <g key={i}>
                 <path d={roundedRectangle(x, y, 80, 20, 4)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
+                { arrowUp ? <path d={`M ${x+25} ${y+16} L ${x+55} ${y+16} L ${x+40} ${y+8} z`}
+                                  style={{ fill: arrowColor, strokeWidth: 0 }} /> :
+                    "" }
+                { arrowDown ? <path d={`M ${x+25} ${y+4} L ${x+55} ${y+4} L ${x+40} ${y+12} z`}
+                                  style={{ fill: arrowColor, strokeWidth: 0 }} /> :
+                    "" }
                 <text x={x + 40} y={y + 15.5} fontSize={18} textAnchor="middle"
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
                   { roll(i - 7) }
@@ -122,7 +166,19 @@ export default function InitiativeDisplay({
               <g key={i}>
                 <path d={baseCounterPath(x, y)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-                <text x={x + 40} y={y + 50} fontSize={40} textAnchor="middle"
+                { arrowUp && i !== 7 ? <path d={`M ${x+15} ${y+76} L ${x+65} ${y+76} L ${x+40} ${y+60} z`}
+                                  style={{ fill: arrowColor, strokeWidth: 0 }} /> :
+                    "" }
+                { arrowDown && i !== 7 ? <path d={`M ${x+15} ${y+4} L ${x+65} ${y+4} L ${x+40} ${y+20} z`}
+                                  style={{ fill: arrowColor, strokeWidth: 0 }} /> :
+                    "" }
+                { arrowUp && i === 7 ? <path d={`M ${x+5} ${y+76} L ${x+35} ${y+76} L ${x+20} ${y+65} z`}
+                                  style={{ fill: arrowColor, strokeWidth: 0 }} /> :
+                    "" }
+                { arrowDown && i === 7 ? <path d={`M ${x+45} ${y+76} L ${x+75} ${y+76} L ${x+60} ${y+65} z`}
+                                  style={{ fill: arrowColor, strokeWidth: 0 }} /> :
+                    "" }
+                <text x={x + 40} y={y + 52} fontSize={40} textAnchor="middle"
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
                   { roll(i - 7) }
                 </text>
@@ -134,7 +190,7 @@ export default function InitiativeDisplay({
         <circle cx={xx + 164} cy={yy + 72} r={16} style={nationTwo()}/>
       </g>
     )
-  }, [xx, yy, map.alliedDir, map.axisDir, map.game?.initiative, small])
+  }, [xx, yy, map.alliedDir, map.axisDir, map.game?.initiative, map.game?.gameState, map.game?.currentPlayer, small])
 
   useEffect(() => {
     if (!map) { return }

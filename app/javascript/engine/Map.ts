@@ -645,7 +645,8 @@ export default class Map {
               if ((unit.isBroken || ((unit.jammed || unit.sponsonJammed) && !unit.isWreck))) {
                 if (alreadyRallied(this.game, unit.id)) { continue }
                 if (unit.operated && !unit.parent) { continue }
-                if (leaderAtHex(this.game, x, y, unitPlayer, unit) || this.game.freeRallyAvailable(player)) { return true }
+                if (this.game.freeRallyAvailable(player)) { return true }
+                if (leaderAtHex(this.game, x, y, unitPlayer, unit) && !unit.isVehicle) { return true }
               }
             }
           }

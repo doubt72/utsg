@@ -1,5 +1,9 @@
 # 0.117
 
+- Show inititative changes via arrows in initiative track
+- Bug fix: average rating integer/float rounding error on scenario list/sorting
+- Bug fix: leader should not give free rallies for vehicles
+- Bug fix: mortar smoke rounds should not trigger morale checks
 - Updated 304
 
 # 0.116

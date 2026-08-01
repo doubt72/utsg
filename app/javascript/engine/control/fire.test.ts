@@ -2750,6 +2750,50 @@ describe("ranged fire attacks", () => {
       expect(all[2].hex?.y).toBe(2)
     })
 
+    test("mortar firing smoke does not affect infantry", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const target = new Unit(testRInf)
+      target.id = "target1"
+      const tloc = new Coordinate(0, 2)
+      map.addCounter(tloc, target)
+
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGMortar)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      map.select(firing2)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      game.fireState.smokeToggle()
+      game.fireState.toHex(tloc.x, tloc.y)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.lastAction?.stringValue).toBe(
+        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll: target 9, rolled 100 [d10x10: 10 x 10]: hit; " +
+        "smoke roll: rolled 10 [d10], smoke level 4"
+      )
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+
+      const all = map.allCounters
+      expect(all.length).toBe(4)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].unit.id).toBe("firing2")
+      expect(all[2].unit.id).toBe("0-smoke")
+      expect(all[2].hex?.x).toBe(0)
+      expect(all[2].hex?.y).toBe(2)
+      expect(all[3].unit.id).toBe("target1")
+    })
+
     test("gun firing smoke", () => {
       const game = createFireGame()
       const map = game.scenario.map

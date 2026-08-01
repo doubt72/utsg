@@ -8,6 +8,7 @@ import { roundedRectangle } from "../../utilities/graphics";
 import { helpLink } from "./helpData";
 import { serverVersion } from "../../utilities/utilities";
 import { SectionProps } from "../game/HelpDisplay";
+import { gamePhaseType } from "../../engine/support/gamePhase";
 
 export default function MainPhaseSection({ section }: SectionProps) {
   const [showInitiative, setShowInitiative] = useState<JSX.Element | undefined>();
@@ -67,6 +68,7 @@ export default function MainPhaseSection({ section }: SectionProps) {
     game.scenario.map.showCoords = false;
     game.setCurrentInitiativePlayer(1);
     game.setCurrentPlayer(1);
+    game.phase = gamePhaseType.Main
     setMap(game.scenario.map);
   }, []);
 
