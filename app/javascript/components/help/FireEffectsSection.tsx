@@ -71,8 +71,9 @@ export default function FireEffectsSection({ section }: SectionProps) {
       </ul>
       <h3>{section}.1. Destroyed Vehicles</h3>
       <p>
-        If a vehicle carrying infantry is destroyed, all of the infantry must make morael checks
-        (weapons are unaffected). Vehicles are replaced with wrecks with the same size (flip the
+        If a vehicle carrying infantry is destroyed, all of the infantry must make morale checks
+        (weapons are unaffected).  Dropped units are also either activated (non-infantry units) or
+        exhausted (infantry units).  Vehicles are replaced with wrecks with the same size (flip the
         counter). Wrecks affect stacking (for both sides) but otherwise have no other effects.
       </p>
       <h3>{section}.2. Tank Crews</h3>
@@ -95,8 +96,8 @@ export default function FireEffectsSection({ section }: SectionProps) {
       </p>
       <h3>{section}.3. Immobilized Vehicles</h3>
       <p>
-        If a vehicle carrying or towing units is immobilized, all of the units are dropped with no
-        other effects.
+        If a vehicle carrying or towing units is immobilized, all of the units are dropped, and if
+        not exhausted, the units are activated.
       </p>
       <h3>{section}.4. Morale Checks</h3>
       <p>

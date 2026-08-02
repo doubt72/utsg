@@ -315,7 +315,13 @@ export default function RoutSection({ section }: SectionProps) {
         Only broken units may rout, and a unit may only rout once per turn; after it routs it is
         marked with a &quot;routed&quot; marker.
       </p>
-      <h3>{section}.5. Victory Point Hexes</h3>
+      <h3>{section}.5. Infantry Weapons and Guns</h3>
+      <p>
+        Routing units that are carrying infantry weapons will drop the weapon (which will be activated
+        if not already activated or exhausted).  Routing units manning guns will also unman the weapon
+        which will be left behind (and activated if not already activated).
+      </p>
+      <h3>{section}.6. Victory Point Hexes</h3>
       <p>
         Broken units cannot capture victory point hexes, so routs cannot capture VPs (though broken
         units can hold VPs until routed out of contact or eliminated).  A broken unit in a VP hex

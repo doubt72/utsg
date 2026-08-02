@@ -1,12 +1,20 @@
-import { Coordinate, CounterSelectionTarget, Direction, featureType, HexOpenType, hexOpenType } from "../../../utilities/commonTypes";
+import {
+  Coordinate, CounterSelectionTarget, Direction, featureType, HexOpenType, hexOpenType
+} from "../../../utilities/commonTypes";
 import { normalDir, roll2d10, rolld10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
 import Game from "../../Game";
-import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionMoveData, GameActionPath } from "../../GameAction";
+import GameAction, {
+  gameActionAddActionType, GameActionDiceResult, GameActionMoveData, GameActionPath
+} from "../../GameAction";
 import Hex from "../../Hex";
 import Unit from "../../Unit";
-import { alongRailroad, alongRoad, canBeLoaded, canLoadUnit, mapSelectMovement, movementCost, movementPastCost, smokeOpenHex } from "../movement";
+import {
+  alongRailroad, alongRoad, canBeLoaded, canLoadUnit, dropUnitCounters, loadUnitCounters,
+  mapSelectMovement, movementCost, movementPastCost, showDropMove, showLoadedDisambiguate,
+  smokeOpenHex
+} from "../movement";
 import { removeStateSelection } from "../select";
 import BaseState, { StateAddAction, StateSelection, stateType } from "./BaseState";
 
@@ -154,8 +162,8 @@ export default class MoveState extends BaseState {
     const cost = movementCost(this.map, from, to, selection.unit)
     const pastCost = movementPastCost(this.map, selection.unit)
     const move = mapSelectMovement(this.game, roadMove)
-    if (move === 0) { return false }
-    if (move < cost + pastCost && length > 1) { return false }
+    if (move === 0) { return hexOpenType.Closed }
+    if (move < cost + pastCost && length > 1) { return hexOpenType.Closed }
     for (const p of this.path) {
       if (to.x === p.x && to.y === p.y ) { return hexOpenType.Open }
     }
@@ -220,12 +228,23 @@ export default class MoveState extends BaseState {
         this.map.dropSelect(child.unit)
         this.map.addGhost(new Coordinate(xx, yy), child.unit.clone(true) as Unit)
       }
+      if (!showDropMove(this.game)) { this.dropping = false }
       this.doneSelect = true
       this.game.closeOverlay = true
     } else if (this.loading) {
-      if (this.needPickUpDisambiguate) {
+      if (this.needLoaderDisambiguate) {
         this.map.loaderSelect(counter.unit)
         this.loader = counter
+        if (!this.needLoadedDisambiguate) {
+          const target = loadUnitCounters(this.game, this.loader.unit, this.selection.length > 1)[0]
+          this.select(
+            {
+              target: { type: "map", xy: target.hex as Coordinate },
+              counter: target
+            }, () => {}
+          )
+          this.loading = false
+        }
       } else {
         this.map.select(counter.unit)
         this.map.loadedSelect(counter.unit)
@@ -291,12 +310,12 @@ export default class MoveState extends BaseState {
       }
     }
     if (this.loading) {
-      if (this.needPickUpDisambiguate) {
+      if (this.needLoaderDisambiguate) {
         if (!target.selected) {
           this.game.addMessage("need to select which unit is picking up unit")
           return false
         }
-        if (canLoadUnit(this.game, target)) {
+        if (canLoadUnit(this.game, target, this.selection.length > 1)) {
           return true
         } else {
           this.game.addMessage("can't carry/load any available units")
@@ -354,6 +373,10 @@ export default class MoveState extends BaseState {
         new Coordinate(x, y),
         new Feature({ id: "Smoke", ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: 0 })
       )
+      if (movementPastCost(this.map, this.selection[0].counter.unit) + 2 >
+          mapSelectMovement(this.game, true)) {
+        this.smoke = false
+      }
     } else {
       if (lastPath.x === x && lastPath.y === y) { return }
       let facing = target.rotates ? lastPath.facing : undefined
@@ -458,8 +481,19 @@ export default class MoveState extends BaseState {
   dropToggle() {
     this.dropping = !this.dropping
     if (this.dropping) {
-      const first = this.path[0]
-      this.game.openOverlay = this.map.hexAt(new Coordinate(first.x, first.y))
+      if (this.needDropDisambiguate) {
+        const first = this.path[0]
+        this.game.openOverlay = this.map.hexAt(new Coordinate(first.x, first.y))
+      } else {
+        const target = dropUnitCounters(this.game)[0]
+        this.select(
+          {
+            target: { type: "map", xy: target.hex as Coordinate },
+            counter: target
+          }, () => {}
+        )
+        this.dropping = false
+      }
     }
     this.loading = false
     this.smoke = false
@@ -468,12 +502,23 @@ export default class MoveState extends BaseState {
   loadToggle() {
     this.loading = !this.loading
     if (this.loading) {
-      if (this.needPickUpDisambiguate) {
+      if (this.needLoaderDisambiguate) {
         const first = this.path[0]
         this.game.openOverlay = this.map.hexAt(new Coordinate(first.x, first.y))
-      } else {
+      } else if (this.needLoadedDisambiguate) {
         const last = this.lastPath as GameActionPath
         this.game.openOverlay = this.map.hexAt(new Coordinate(last.x, last.y))
+      } else {
+        let load = this.loader
+        if (!load) { load = this.getLoader[0] }
+        const target = loadUnitCounters(this.game, load.unit, this.selection.length > 1)[0]
+        this.select(
+          {
+            target: { type: "map", xy: target.hex as Coordinate },
+            counter: target
+          }, () => {}
+        )
+        this.loading = false
       }
       const last = this.lastPath as GameActionPath
       this.game.openOverlay = this.map.hexAt(new Coordinate(last.x, last.y))
@@ -574,13 +619,41 @@ export default class MoveState extends BaseState {
     return true
   }
 
-  get needPickUpDisambiguate(): boolean {
+  get needLoaderDisambiguate(): boolean {
     if (this.loader) { return false }
     const gl = this.getLoader
     return gl.length > 1 && !gl[0].unit.transport
   }
 
+  get needLoadedDisambiguate(): boolean {
+    return showLoadedDisambiguate(this.game)
+  }
+
+  get needDropDisambiguate(): boolean {
+    return dropUnitCounters(this.game).length > 1
+  }
+
   get getLoader(): Counter[] {
+    const lastPath = this.lastPath as GameActionPath
+    const rc: Counter[] = []
+    const counters = this.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
+    for (const c of counters) {
+      if (c.hasFeature || c.unit.selected || c.unit.parent) { continue }
+      for (const s of this.selection) {
+        const unit = s.counter.unit
+        const target = c.unit
+        let already = false
+        for (const r of rc) {
+          if (r.unit.id === unit.id) { already = true; break}
+        }
+        if (already) { continue }
+        if (unit.canCarry(target)) { rc.push(s.counter) }
+      }
+    }
+    return rc
+  }
+
+  get getLoaded(): Counter[] {
     const lastPath = this.lastPath as GameActionPath
     const rc: Counter[] = []
     const counters = this.map.countersAt(new Coordinate(lastPath.x, lastPath.y))

@@ -1,14 +1,11 @@
 Features/Bug Fixes
-  + Initiative arrows
-  + Rating stars wrong (only) on scenario list
-  + Leader should not allow vehicle to do free repair check (after regular check)
-  + Morale checks for mortar smoke round, no smoke
-  - Can't pick up weapons that are dropped but not activated (what's going on here?)
+  - Back button
+  + Activate dropped weapons instead of checking
   - General cleanup of button flow
-    - Only one pick up picks up
-    - Only drop one drops
+    + Only one pick up picks up
+    + Only drop one drops
+    + Can both pick up and drop units
     - Remove end selection/make fire selection more robust
-    - Can both pick up and drop units
     - Remove end selection, remove end turret rotate
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
@@ -37,3 +34,4 @@ Special Rules/Scenarios
   - Hidden counters (?) only some are infantry but can move like infantry
   - Random landing locations for paratroop scenarios
   - Win by certain number of points
+  - Random weapons yeeting soviets across the river in Stalingrad

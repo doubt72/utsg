@@ -46,9 +46,10 @@ export default function MovementOtherSection({ section }: SectionProps) {
       </p>
       <p>
         Units may either be loaded (or manned or towed) or dropped (or unmanned or untowed) in a
-        single turn, but not both. Units may not &quot;pass&quot; infantry weapons to another unit,
+        single action, but not both. Units may not &quot;pass&quot; infantry weapons to another unit,
         the infantry weapon must be dropped by the first unit and picked up by the second in
-        separate actions. The following buttons are used for all loading or dropping actions and
+        separate actions (note, though, that dropping weapons activates or exhausts them, so this is not
+        possible in the same turn). The following buttons are used for all loading or dropping actions and
         will appear when those actions are allowed:
       </p>
       <div className="flex mb1em">

@@ -1,5 +1,12 @@
 # 0.117
 
+- Refactored movement control flow
+  - Remove end selection option
+  - Automatically pick up/drop when only one option
+  - Automatically end sub-action no further action possible
+  - Activate/exhaust any dropped units from destroyed/immobilized vehicles or routed infantry
+  - Bug fix: multiselect can't man gun
+  - Bug fix: should turn off smoke automatically when movement left but not enough for smoke
 - Show inititative changes via arrows in initiative track
 - Bug fix: average rating integer/float rounding error on scenario list/sorting
 - Bug fix: leader should not give free rallies for vehicles

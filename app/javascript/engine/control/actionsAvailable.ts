@@ -154,7 +154,7 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     }
     return [{ type: "wait", message: currentEnemyAction(game) }]
   }
-  if (game.lastAction?.id === undefined) { return [{ type: "sync" }] }
+  if (!game.unitTesting && game.lastAction?.id === undefined) { return [{ type: "sync" }] }
   const actions: GameControl[] = []
   addUndo(game, activePlayer, actions)
   if (game.state === "complete") {
@@ -358,7 +358,7 @@ function addMoveActions(game: Game, actions: GameControl[]): void {
   const action = game.moveState
   if (actionSelect && action) {
     if (action.loading) {
-      if (action.needPickUpDisambiguate) {
+      if (action.needLoaderDisambiguate) {
         actions.unshift({ type: "none", message: "select unit to pick up unit" })
       } else {
         actions.unshift({ type: "none", message: "select unit to be picked up" })
@@ -370,7 +370,7 @@ function addMoveActions(game: Game, actions: GameControl[]): void {
     } else if (action.doneSelect) {
       actions.unshift({ type: "none", message: "select hex to move" })
     } else {
-      actions.unshift({ type: "none", message: "select addtional units or select hex to move" })
+      actions.unshift({ type: "none", message: "select additional units or select hex to move" })
     }
     if (actionSelect.turreted && !actionSelect.turretJammed) {
       actions.push({ type: "move_rotate_toggle" })
@@ -383,9 +383,6 @@ function addMoveActions(game: Game, actions: GameControl[]): void {
     }
     if (showLoadMove(game)) {
       actions.push({ type: "move_load_toggle" })
-    }
-    if (!action.doneSelect) {
-      actions.push({ type: "finish_multiselect" })
     }
     if (action.path.length + action.addActions.length > 1) {
       actions.push({ type: "move_finish" })

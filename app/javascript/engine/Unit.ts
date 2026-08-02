@@ -373,12 +373,13 @@ export default class Unit {
     return true
   }
 
-  canCarry(unit: Unit): boolean {
+  canCarry(unit: Unit, includeHandle?: boolean): boolean {
     if (!(unit.isNormal || unit.isTired) && this.internalStatus) { return false }
     if (this.leader && unit.uncrewedSW && unit.baseMovement < 0) { return false }
     if (unit.offBoard && unit.playerNation !== this.playerNation) { return false }
     return this.canTransportUnit(unit) || this.canTowUnit(unit) || (this.children.length < 1 &&
-      ((this.canCarrySupport && unit.uncrewedSW) || (this.canHandle && unit.crewed)))
+      ((this.canCarrySupport && unit.uncrewedSW) ||
+       ((includeHandle ?? true) && this.canHandle && unit.crewed)))
   }
 
   get lowestArmor(): number {
@@ -433,6 +434,8 @@ export default class Unit {
     if (!map) { return }
     const loc = map.findLocationById(this.id) as Coordinate
     for (const u of this.children) {
+      if (!u.isExhausted) { u.activate() }
+      if (u.children.length > 0 && !u.children[0].isExhausted) { u.children[0].activate() }
       map.dropUnit(loc, loc, u.id, u.rotates ? this.facing : undefined)
     }
   }
@@ -464,6 +467,11 @@ export default class Unit {
     if (game) {
       const loc = game.scenario.map.findLocationById(this.id) as Coordinate
       for (const c of this.children) {
+        if (c.canCarrySupport) {
+          c.exhaust()
+        } else if (c.isNormal) {
+          c.activate()
+        }
         game.scenario.map.dropUnit(loc, loc, c.id, c.rotates ? normalDir(this.facing + 3) : undefined)
         if (c.canCarrySupport) {
           game.moraleChecksNeeded.push({

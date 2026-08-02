@@ -1,4 +1,4 @@
-import { Coordinate } from "../../utilities/commonTypes";
+import { Coordinate, UnitStatus } from "../../utilities/commonTypes";
 import { failRed, formatCoordinate, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
@@ -55,6 +55,8 @@ export default class RouteMoveAction extends BaseAction {
     const start = new Coordinate(this.target.x, this.target.y)
     for (const a of this.addActions) {
       if (a.type === gameActionAddActionType.Drop) {
+        const child = this.game.findUnitById(a.id as string) as Unit
+        if (!child.isExhausted) { child.activate() }
         this.map.dropUnit(start, start, a.id as string, a.facing)
       } else if (a.type === gameActionAddActionType.VP) {
         this.map.toggleVP(new Coordinate(a.x, a.y))
@@ -93,6 +95,8 @@ export default class RouteMoveAction extends BaseAction {
     }
     for (const a of this.addActions) {
       if (a.type === gameActionAddActionType.Drop) {
+        const child = this.game.findUnitById(a.id as string) as Unit
+        child.setStatus(a.status as UnitStatus)
         this.map.loadUnit(start, start, a.id as string, unit.id, a.facing)
       } else if (a.type === gameActionAddActionType.VP) {
         this.map.toggleVP(new Coordinate(a.x, a.y))

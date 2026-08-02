@@ -320,7 +320,9 @@ describe("routing", () => {
       const all = map.allCounters
       expect(all.length).toBe(0)
     })
+  })
 
+  describe("rout actions", () => {
     test("complete rout action", () => {
       const game = createBlankGame()
       const map = game.scenario.map
@@ -517,6 +519,7 @@ describe("routing", () => {
       expect(all[1].hex?.x).toBe(0)
       expect(all[1].hex?.y).toBe(2)
       expect(all[1].unit.name).toBe("MG 08/15")
+      expect(all[1].unit.isActivated).toBe(true)
       expect(all[1].unit.parent?.name).toBe(undefined)
 
       game.executeUndo(false)
@@ -530,6 +533,7 @@ describe("routing", () => {
       expect(all[1].hex?.x).toBe(0)
       expect(all[1].hex?.y).toBe(2)
       expect(all[1].unit.name).toBe("MG 08/15")
+      expect(all[1].unit.isActivated).toBe(false)
       expect(all[1].unit.parent?.name).toBe("Rifle")
     })
 

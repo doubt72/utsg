@@ -1382,12 +1382,7 @@ describe("reaction fire attacks", () => {
     game.moveState.move(2, 2)
     game.moveState.move(1, 2)
     game.moveState.dropToggle()
-    select(map, {
-      counter: map.countersAt(loc)[1],
-      target: { type: "map", xy: loc }
-    }, () => {})
     expect(unit2.dropSelected).toBe(true)
-    game.moveState.dropToggle()
     expect(game.moveState.addActions.length).toBe(1)
     game.moveState.move(1, 1)
     game.gameState?.finish()
@@ -1491,12 +1486,7 @@ describe("reaction fire attacks", () => {
     game.moveState.move(2, 2)
     game.moveState.move(1, 2)
     game.moveState.loadToggle()
-    select(map, {
-      counter: map.countersAt(loc2)[0],
-      target: { type: "map", xy: loc2 }
-    }, () => {})
     expect(unit2.loadedSelected).toBe(true)
-    game.moveState.loadToggle()
     expect(game.moveState.addActions.length).toBe(1)
     game.gameState?.finish()
 

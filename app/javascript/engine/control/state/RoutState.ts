@@ -64,7 +64,7 @@ export default class RoutState extends BaseState {
       const facing = child.rotates ? child.facing : undefined
       addAction.push({
         type: gameActionAddActionType.Drop, x: hex.x, y: hex.y,
-        id: child.id, name: child.name, index: 0, facing
+        id: child.id, name: child.name, index: 0, facing, status: child.status
       })
     }
     const loc = new Coordinate(this.selection[0].x, this.selection[0].y)

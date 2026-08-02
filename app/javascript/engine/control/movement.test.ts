@@ -1013,15 +1013,7 @@ describe("movement", () => {
     expect(game.gameState?.openHex(0, 2)).toBe(1)
     expect(game.gameState?.openHex(0, 1)).toBe(1)
     expect(game.gameState?.openHex(0, 3)).toBe(1)
-    game.moveState.loadToggle()
-    expect(game.moveState.selectable({
-      counter: map.countersAt(loc2)[0], target: { type: "map", xy: loc2 }
-    })).toBe(false)
-    expect(game.moveState.selectable({
-      counter: map.countersAt(loc2)[1], target: { type: "map", xy: loc2 }
-    })).toBe(true)
-    expect(unit2.loadedSelected).toBe(false)
-    game.moveState.loadToggle()
+
     game.moveState.move(loc3.x, loc3.y)
     expect(game.gameState?.openHex(1, 2)).toBe(hexOpenType.Closed)
     expect(game.gameState?.openHex(0, 1)).toBe(hexOpenType.Closed)

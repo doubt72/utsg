@@ -146,6 +146,8 @@ export default class Game {
 
   serverVersion: string;
 
+  unitTesting = false;
+
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string, string?]) => void = () => {}) {
     this.id = data.id
     this.name = data.name
@@ -245,7 +247,10 @@ export default class Game {
     const actions = this.sortedActions()
     let lastSequence = 0
     for (let i = 0; i < actions.length; i++) {
-      if (lastSequence !== (actions[i].sequence ?? 0) - 1) { console.log("not in sync"); return false }
+      if (lastSequence !== (actions[i].sequence ?? 0) - 1) {
+        if (!this.unitTesting) { console.log("not in sync") }
+        return false
+      }
       lastSequence = actions[i].sequence as number
     }
     return true
@@ -255,7 +260,10 @@ export default class Game {
     if (!this.fullySynced) { return false }
     const actions = this.sortedActions()
     for (let i = 0; i < actions.length; i++) {
-      if (!actions[i].executed) { console.log("needs rectify"); return true }
+      if (!actions[i].executed) {
+        if (!this.unitTesting) { console.log("needs rectify") }
+        return true
+      }
     }
     return false
   }
@@ -538,12 +546,12 @@ export default class Game {
   }
 
   setGameState(state: BaseState): void {
-    console.log(`setting game state: ${state.type}`)
+    if (!this.unitTesting) { console.log(`setting game state: ${state.type}`) }
     this.currentState = state
   }
 
   clearGameState(): void {
-    console.log("clearing game state")
+    if (!this.unitTesting) { console.log("clearing game state") }
     this.actionPathLength = 0
     this.actionPathDir = undefined
     this.actionTurretDir = undefined
@@ -977,7 +985,7 @@ export default class Game {
             this.playerTwoNotification = undefined
           }
           em.mutateGame()
-          console.log(`executing[bounce] ${m.sequence} : ${m.type}`)
+          if (!this.unitTesting) { console.log(`executing[bounce] ${m.sequence} : ${m.type}`) }
           em.executed = true
           if (this.phase !== gamePhaseType.Deploy) { organizeStacks(this.scenario.map) }
           this.refreshCallback(this)
@@ -995,7 +1003,9 @@ export default class Game {
               this.playerTwoNotification = undefined
             }
             m.mutateGame()
-            console.log(`executing[new] ${m.sequence ?? this.currentSequence + 1} : ${m.type}`)
+            if (!this.unitTesting) {
+              console.log(`executing[new] ${m.sequence ?? this.currentSequence + 1} : ${m.type}`)
+            }
             m.executed = true
             this.lastActionIndex = action.index
           }
@@ -1052,7 +1062,7 @@ export default class Game {
     const sequence = seq === undefined ? this.lastAction.sequence as number : seq
     const action = this.findActionBySequence(sequence)
     if (!action) { return }
-    console.log(`undoing ${sequence} : ${action.type}`)
+    if (!this.unitTesting) { console.log(`undoing ${sequence} : ${action.type}`) }
     action.undo()
     action.undone = true
     action.executedUndo = true

@@ -196,6 +196,9 @@ export const createTestGame = (hexes: HexData[][]): Game => {
     metadata: { turn: 0 },
     suppress_network: true
   });
+
+  game.unitTesting = true
+
   return game
 }
 
@@ -208,10 +211,12 @@ export const createInProgressGame = (hexes: HexData[][]): Game => {
     suppress_network: true
   });
 
+  game.unitTesting = true
   game.setTurn(1)
   game.phase = gamePhaseType.Main
   game.setCurrentPlayer(2)
   game.setCurrentInitiativePlayer(2)
+
   return game
 }
 

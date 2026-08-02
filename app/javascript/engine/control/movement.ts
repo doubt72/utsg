@@ -1,6 +1,7 @@
 import { Coordinate, Direction, hexOpenType, HexOpenType, roadType } from "../../utilities/commonTypes"
 import { hexDistance, normalDir } from "../../utilities/utilities"
 import MoveAction from "../actions/MoveAction"
+import Counter from "../Counter"
 import Game from "../Game"
 import { gameActionAddActionType } from "../GameAction"
 import Hex from "../Hex"
@@ -143,52 +144,86 @@ export function showLaySmoke(game: Game): boolean {
 export function showDropMove(game: Game): boolean {
   const state = game.moveState
   if (state.loading || state.smoke) { return false }
-  const selection = state.selection
-  if ((!selection || selection.length === 1)) { return false }
-  const unit = selection[0].counter.unit
-  if (mapSelectMovement(game, true) <= movementPastCost(game.scenario.map, unit as Unit)) { return false }
-
-  for (const s of selection) {
-    if (s.counter.children.length > 0) { return true }
-  }
-  if (state.path.length === 1) { return false }
-  return true
+  return dropUnitCounters(game).length > 0
 }
 
 export function showLoadMove(game: Game): boolean {
   const move = game.moveState
   if (!move.selection || move.smoke || move.dropping) { return false }
   for (const s of move.selection) {
-    if (canLoadUnit(game, s.counter.unit)) { return true }
+    if (canLoadUnit(game, s.counter.unit, move.selection.length > 1)) { return true }
   }
   return false
 }
 
-export function canBeLoaded(game: Game, target: Unit): boolean {
-    let unit = game.moveState.loader?.unit as Unit
-    if (!unit) { unit = game.moveState.selection[0].counter.unit as Unit }
-    const path = game.moveState.path
-    if (target.crewed && path && path.length > 1) { return false }
-    if (target.crewed && game.moveState.rushing) { return false }
-    const extra = target.uncrewedSW ? target.baseMovement : 0
-    return unit.canCarry(target) && movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra
+export function showLoadedDisambiguate(game: Game): boolean {
+  let count = 0
+  const move = game.moveState
+  if (!move.selection || move.smoke || move.dropping) { return false }
+  for (const s of move.selection) {
+    const lCount = loadUnitCounters(game, s.counter.unit, move.selection.length > 1).length
+    if (lCount > count) { count = lCount }
+  }
+  return count > 1
 }
 
-export function canLoadUnit(game: Game, unit: Unit): boolean {
+export function canBeLoaded(game: Game, target: Unit): boolean {
+  let unit = game.moveState.loader?.unit as Unit
+  if (!unit) { unit = game.moveState.selection[0].counter.unit as Unit }
+  const path = game.moveState.path
+  if (target.crewed && path && path.length > 1) { return false }
+  if (target.crewed && game.moveState.rushing) { return false }
+  const extra = target.uncrewedSW ? target.baseMovement : 0
+  return unit.canCarry(target) && movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra
+}
+
+export function canLoadUnit(game: Game, unit: Unit, multi: boolean): boolean {
+  return loadUnitCounters(game, unit, multi).length > 0
+}
+
+export function loadUnitCounters(game: Game, unit: Unit, multi: boolean): Counter[] {
+  const rc: Counter[] = []
   const lastPath = game.moveState.lastPath
-  if (!lastPath) { return false }
+  if (!lastPath) { return [] }
   const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
   for (const c of counters) {
     if (c.hasFeature || c.unit.selected || c.unit.loadedSelected) { continue }
     const path = game.moveState.path
     if (c.unit.crewed && path && path.length > 1) { continue }
     if (c.unit.crewed && game.moveState.rushing) { continue }
+    if (c.unit.parent) { continue }
     const extra = c.unit.uncrewedSW ? c.unit.baseMovement : 0
-    if (unit.canCarry(c.unit) && movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra) {
-      return true
+    if (unit.canCarry(c.unit, !multi) &&
+        movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra) {
+      if (!c.unit.loadedSelected) { rc.push(c) }
     }
   }
-  return false
+  return rc
+}
+
+export function dropUnitCounters(game: Game): Counter[] {
+  const selection = game.moveState.selection
+  const inf: Counter[] = []
+  const loaded: Counter[] = []
+
+  if (!selection || selection.length < 2) { return [] }
+
+  for (const s of selection) {
+    const unit = s.counter.unit
+    if (unit.dropSelected) { continue }
+    if (unit.canCarrySupport && !unit.parent) {
+      if (game.moveState.path.length === 1) { continue }
+      if (mapSelectMovement(game, true) <= movementPastCost(game.scenario.map, unit)) { continue }
+      inf.push(s.counter)
+    }
+    if (unit.parent) { loaded.push(s.counter) }
+  }
+  const rc: Counter[] = []
+  if (inf.length > 1) {
+    for (const i of inf) { rc.push(i) }
+  }
+  for (const l of loaded) { rc.push(l) }
+  return rc
 }
 
 export function alongRoad(from: Hex, to: Hex, dir: Direction, pathOk: boolean = false): boolean {
