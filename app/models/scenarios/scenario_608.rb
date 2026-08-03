@@ -17,12 +17,12 @@ module Scenarios
         [2, :chi_leader_4_1],
         [8, :chi_conscript_s],
         [2, :chi_type_24_maxim],
-        [1, :chi_type_triple_ten],
+        :chi_type_triple_ten,
       ] },
       "2": { list: [
-        [1, :chi_leader_4_1],
+        :chi_leader_4_1,
         [3, :chi_conscript_s],
-        [1, :chi_czeck_lmg],
+        :chi_czeck_lmg,
       ] },
       "4": { list: [
         [3, :chi_conscript_s],
@@ -31,18 +31,18 @@ module Scenarios
 
     AXIS_UNITS = {
       "0": { list: [
-        [1, :jap_leader_5_1],
+        :jap_leader_5_1,
         [2, :jap_leader_4_1],
         [8, :jap_b_division_s],
         [2, :jap_type_89_gren_l],
         [3, :jap_type_96_lmg],
       ] },
       "3": { list: [
-        [1, :jap_leader_5_1],
+        :jap_leader_5_1,
         [4, :jap_a_division_s],
-        [1, :jap_crew_t],
-        [1, :jap_70mm_type_92],
-        [1, :jap_type_92_hmg],
+        :jap_crew_t,
+        :jap_70mm_type_92,
+        :jap_type_92_hmg,
       ] },
     }.freeze
 
@@ -140,7 +140,7 @@ module Scenarios
             ],
             "3" => [[22, "*"]],
           },
-          base_terrain: "u",
+          base_terrain: "g",
         }
       end
 

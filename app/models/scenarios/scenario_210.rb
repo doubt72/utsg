@@ -14,13 +14,13 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        [1, :uk_leader_6_2],
-        [1, :uk_leader_5_1],
+        :uk_leader_6_2,
+        :uk_leader_5_1,
         [6, :uk_airborne_s],
         [3, :uk_bren_lmg],
-        [1, :uk_elite_crew_t],
-        [1, :uk_qf_6pdr_mk_iv],
-        [1, :uk_engineer_s],
+        :uk_elite_crew_t,
+        :uk_qf_6pdr_mk_iv,
+        :uk_engineer_s,
       ] },
     }.freeze
 
@@ -32,16 +32,16 @@ module Scenarios
       "4": { list: [
         [2, :ger_pzkpfw_iii_n],
         [2, :ger_pzkpfw_iv_e],
-        [1, :ger_pzkpfw_ii_luchs],
+        :ger_pzkpfw_ii_luchs,
       ] },
       "5": { list: [
-        [1, :ger_leader_5_1],
-        [1, :ger_leader_4_1],
+        :ger_leader_5_1,
+        :ger_leader_4_1,
         [6, :ger_rifle_s],
         [2, :ger_mg_42],
-        [1, :ger_8cm_grw_34],
-        [1, :ger_sdkfz_251_1],
-        [1, :ger_stug_iii_b_e],
+        :ger_8cm_grw_34,
+        :ger_sdkfz_251_1,
+        :ger_stug_iii_b_e,
       ] },
     }.freeze
 
@@ -134,7 +134,7 @@ module Scenarios
             "4" => [["*", 0]],
             "5" => [["*", 0]],
           },
-          base_terrain: "",
+          base_terrain: "g",
         }
       end
 

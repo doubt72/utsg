@@ -14,28 +14,28 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        [1, :usa_leader_5_1],
-        [1, :usa_leader_4_1],
+        :usa_leader_5_1,
+        :usa_leader_4_1,
         [6, :usa_rifle_s],
         [2, :usa_m1918_bar],
-        [1, :usa_radio_105mm],
+        :usa_radio_105mm,
         [2, :usa_m3_half_track],
       ] },
       "2": { list: [
-        [1, :usa_leader_4_1],
+        :usa_leader_4_1,
         [2, :usa_rifle_s],
-        [1, :usa_m1918_bar],
+        :usa_m1918_bar,
         [3, :usa_m4_sherman],
       ] },
     }.freeze
 
     AXIS_UNITS = {
       "0": { list: [
-        [1, :ita_leader_5_1],
-        [1, :ita_leader_3_1],
+        :ita_leader_5_1,
+        :ita_leader_3_1,
         [4, :ita_bersaglieri_s],
-        [1, :ita_breda_30],
-        [1, :ita_brixia_m35],
+        :ita_breda_30,
+        :ita_brixia_m35,
         [3, :ita_semovente_da_90_53],
       ] },
     }.freeze
@@ -90,7 +90,7 @@ module Scenarios
           ],
           allied_setup: { "0" => [["*", "20-22"]], "2" => [] },
           axis_setup: { "0" => [["*", "0-18"]] },
-          base_terrain: "",
+          base_terrain: "g",
         }
       end
 

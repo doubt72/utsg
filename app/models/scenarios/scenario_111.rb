@@ -14,7 +14,7 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        [1, :uk_leader_6_1],
+        :uk_leader_6_1,
         [2, :uk_leader_4_1],
         [9, :uk_line_s],
         [3, :uk_bren_lmg],

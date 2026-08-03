@@ -30,7 +30,7 @@ def units(units)
       "#{key}": { list: [
 EOF
     units[key]["list"].each do |unit|
-      if (unit["x"].to_i < 1)
+      if (unit["x"].to_i < 2)
         puts "        :#{unit["id"]},"
       else
         puts "        [#{unit["x"]}, :#{unit["id"]}],"
@@ -161,6 +161,11 @@ EOF
 if mapdata["base_terrain"] != "g"
   puts <<EOF
           base_terrain: "#{mapdata["base_terrain"]}",
+EOF
+end
+if mapdata["night"] != "g"
+  puts <<EOF
+          night: true,
 EOF
 end
 puts <<EOF

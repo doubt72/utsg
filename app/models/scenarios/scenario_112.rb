@@ -14,12 +14,12 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        [1, :uk_leader_5_1],
+        :uk_leader_5_1,
         [2, :uk_leader_4_1],
         [9, :uk_colonial_s],
         [2, :uk_bren_lmg],
-        [1, :uk_radio_88mm],
-        [1, :uk_universal_carrier],
+        :uk_radio_88mm,
+        :uk_universal_carrier,
       ] },
     }.freeze
 
@@ -27,8 +27,8 @@ module Scenarios
       "0": { list: [
         [2, :ita_leader_4_1],
         [6, :ita_bande_s],
-        [1, :ita_breda_30],
-        [1, :ita_fiat_revelli_1935],
+        :ita_breda_30,
+        :ita_fiat_revelli_1935,
         [2, :mines8],
       ] },
     }.freeze
@@ -81,7 +81,7 @@ module Scenarios
           ],
           allied_setup: { "0" => [["0-5", "*"]] },
           axis_setup: { "0" => [["9-31", "*"]] },
-          base_terrain: "",
+          base_terrain: "g",
         }
       end
 
@@ -493,7 +493,7 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "o" },
           ],
           [
             { t: "o", h: 1 },
@@ -527,7 +527,7 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "o" },
           ],
           [
             { t: "o", h: 1 },
@@ -561,7 +561,7 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "o" },
           ],
           [
             { t: "o", h: 1 },
@@ -595,7 +595,7 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "o" },
           ],
           [
             { t: "o", h: 1 },
@@ -628,8 +628,8 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "o" },
+            { t: "o" },
           ],
           [
             { t: "o", h: 1 },
@@ -661,8 +661,8 @@ module Scenarios
             { t: "o", h: 2 },
             { t: "o", h: 2 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "o" },
+            { t: "o" },
             { t: "o" },
           ],
           [
@@ -694,7 +694,7 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1 },
+            { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },

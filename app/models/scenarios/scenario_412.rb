@@ -14,16 +14,16 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        [1, :alm_leader_3_1],
-        [3, :alm_conscript_s],
-        [1, :alm_12_7mm_hmg],
-        [1, :alm_overvalwagen],
+        :alm_leader_3_1,
+        [4, :alm_conscript_s],
+        :alm_12_7mm_hmg,
+        :alm_overvalwagen,
       ] },
     }.freeze
 
     AXIS_UNITS = {
       "0": { list: [
-        [1, :jap_leader_5_2],
+        :jap_leader_5_2,
         [2, :jap_leader_5_1],
         [6, :jap_snlf_s],
         [2, :jap_type_99_lmg],
@@ -81,7 +81,7 @@ module Scenarios
           ],
           allied_setup: { "0" => [["*", "10-22"]] },
           axis_setup: { "0" => [["*", "0-4"]] },
-          base_terrain: "",
+          base_terrain: "g",
         }
       end
 

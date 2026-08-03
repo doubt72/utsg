@@ -14,23 +14,23 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        [1, :uk_leader_6_1],
+        :uk_leader_6_1,
         [2, :uk_leader_5_1],
         [9, :uk_gurkha_s],
         [2, :uk_lewis_gun],
-        [1, :uk_2inch_mortar],
-        [1, :uk_radio_114mm],
+        :uk_2inch_mortar,
+        :uk_radio_114mm,
       ] },
     }.freeze
 
     AXIS_UNITS = {
       "0": { list: [
-        [1, :ger_leader_5_1],
+        :ger_leader_5_1,
         [5, :ger_fallschirmjager_s],
         [2, :ger_mg_42],
-        [1, :ger_8cm_grw_34],
-        [1, :ger_elite_crew_t],
-        [1, :ger_7_5cm_gebg_36],
+        :ger_8cm_grw_34,
+        :ger_elite_crew_t,
+        :ger_7_5cm_gebg_36,
       ] },
     }.freeze
 
@@ -66,15 +66,15 @@ module Scenarios
           there.",
           "Worst of all, after the bombing, German paratroopers then occupied
           the ruins and turned it into a fortress...  And the observation post
-          it hadn't been before.", "On the night of the 17th, a second assault
-          took on the German defenses on the high ground by the Rajputana and
-          Gurkha Rifles took place including a sweep across the slopes and
-          ravines by the latter in a direct assault on the monastery. This
-          attack was across appalling terrain, but it was hoped that the
-          Gurkhas, expert in mountain terrain, would succeed. They did not.
-          The fighting was brutal, but despite the unquestionably courageous
-          efforts of the attackers, no progress was made and casualties were
-          heavy.",
+          it hadn't been before.",
+          "On the night of the 17th, a second assault took on the German
+          defenses on the high ground by the Rajputana and Gurkha Rifles took
+          place including a sweep across the slopes and ravines by the latter
+          in a direct assault on the monastery. This attack was across
+          appalling terrain, but it was hoped that the Gurkhas, expert in
+          mountain terrain, would succeed. They did not. The fighting was
+          brutal, but despite the unquestionably courageous efforts of the
+          attackers, no progress was made and casualties were heavy.",
         ]
       end
 
@@ -93,7 +93,8 @@ module Scenarios
           ],
           allied_setup: { "0" => [["*", "0-7"]] },
           axis_setup: { "0" => [["*", "9-22"]] },
-          base_terrain: "",
+          base_terrain: "g",
+          night: true,
         }
       end
 
@@ -352,7 +353,7 @@ module Scenarios
             { t: "b", h: 4 },
             { t: "o", h: 3, r: { t: "d", d: [2, 6] }, b: "c", be: [3, 4, 5] },
             { t: "o", h: 2, r: { t: "d", d: [2, 6] } },
-            { t: "o", h: 1 },
+            { t: "o", h: 1, b: "c", be: [1] },
           ],
           [
             { t: "b", h: 4 },
@@ -368,7 +369,7 @@ module Scenarios
             { t: "b", h: 4 },
             { t: "o", h: 3, r: { t: "d", d: [3, 5] }, b: "c", be: [4] },
             { t: "o", h: 2, r: { t: "d", d: [3, 5] } },
-            { t: "o", h: 1 },
+            { t: "o", h: 1, b: "c", be: [1, 2] },
             { t: "o", h: 1 },
           ],
           [
@@ -385,8 +386,8 @@ module Scenarios
             { t: "o", h: 4 },
             { t: "b", h: 4 },
             { t: "o", h: 3, r: { t: "d", d: [2, 6] }, b: "c", be: [3, 4, 5] },
-            { t: "o", h: 2, r: { t: "d", d: [2, 5] } },
-            { t: "o", h: 1 },
+            { t: "o", h: 2, r: { t: "d", d: [2, 5] }, b: "c", be: [3] },
+            { t: "o", h: 1, b: "c", be: [1] },
           ],
           [
             { t: "d", h: 4, d: 2 },
@@ -402,8 +403,8 @@ module Scenarios
             { t: "o", h: 4 },
             { t: "o", h: 3, r: { t: "d", d: [3, 6] } },
             { t: "f", h: 2 },
-            { t: "o", h: 2, r: { t: "d", d: [2, 6] } },
-            { t: "o", h: 1, r: { t: "d", d: [3, 6] } },
+            { t: "o", h: 2, r: { t: "d", d: [2, 6] }, b: "c", be: [3] },
+            { t: "o", h: 1, r: { t: "d", d: [3, 6] }, b: "c", be: [1] },
           ],
           [
             { t: "o", h: 3 },
@@ -420,7 +421,7 @@ module Scenarios
             { t: "o", h: 3, r: { t: "d", d: [3, 6] } },
             { t: "f", h: 2 },
             { t: "o", h: 2, r: { t: "d", d: [3, 6] } },
-            { t: "o", h: 1, r: { t: "d", d: [3, 6] } },
+            { t: "o", h: 1, r: { t: "d", d: [3, 6] }, b: "c", be: [1, 2] },
           ],
           [
             { t: "b", h: 3 },
@@ -436,7 +437,7 @@ module Scenarios
             { t: "o", h: 3, r: { t: "d", d: [3, 6] } },
             { t: "f", h: 2 },
             { t: "o", h: 2, r: { t: "d", d: [3, 5] } },
-            { t: "o", h: 1, r: { t: "d", d: [3, 5] } },
+            { t: "o", h: 1, r: { t: "d", d: [3, 5] }, b: "c", be: [1, 2] },
             { t: "o", h: 1 },
           ],
           [
@@ -453,7 +454,7 @@ module Scenarios
             { t: "o", h: 3, r: { t: "d", d: [3, 6] } },
             { t: "f", h: 2 },
             { t: "f", h: 2 },
-            { t: "o", h: 2, r: { t: "d", d: [2, 5] } },
+            { t: "o", h: 2, r: { t: "d", d: [2, 5] }, b: "c", be: [3] },
             { t: "o", h: 1, r: { t: "d", d: [2, 6] } },
           ],
           [

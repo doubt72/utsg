@@ -1,11 +1,8 @@
 Features/Bug Fixes
   - Back button
-  + Activate dropped weapons instead of checking
+  - Tired vehicles should still have circle/fill movement
   - General cleanup of button flow
-    + Only one pick up picks up
-    + Only drop one drops
-    + Can both pick up and drop units
-    - Remove end selection/make fire selection more robust
+    - Allow adding units if rapid/infantry fire
     - Remove end selection, remove end turret rotate
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel

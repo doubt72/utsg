@@ -12,6 +12,8 @@
 - Bug fix: leader should not give free rallies for vehicles
 - Bug fix: mortar smoke rounds should not trigger morale checks
 - Updated 304
+- Updated 111, 112, 208, 209, 210, 412, 608 (cleanup from conversion issues on prototypes)
+- Added prototype 609
 
 # 0.116
 
