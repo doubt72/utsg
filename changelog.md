@@ -11,9 +11,9 @@
 - Bug fix: average rating integer/float rounding error on scenario list/sorting
 - Bug fix: leader should not give free rallies for vehicles
 - Bug fix: mortar smoke rounds should not trigger morale checks
-- Updated 304
+- Updated 304, 508
 - Updated 111, 112, 208, 209, 210, 412, 608 (cleanup from conversion issues on prototypes)
-- Added prototype 609
+- Added prototype 609, 610
 
 # 0.116
 

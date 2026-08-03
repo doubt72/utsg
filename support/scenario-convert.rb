@@ -163,7 +163,7 @@ if mapdata["base_terrain"] != "g"
           base_terrain: "#{mapdata["base_terrain"]}",
 EOF
 end
-if mapdata["night"] != "g"
+if mapdata["night"]
   puts <<EOF
           night: true,
 EOF

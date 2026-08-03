@@ -1,5 +1,6 @@
 Features/Bug Fixes
   - Back button
+  - Fix road/stream on night map (609, 304)
   - Tired vehicles should still have circle/fill movement
   - General cleanup of button flow
     - Allow adding units if rapid/infantry fire

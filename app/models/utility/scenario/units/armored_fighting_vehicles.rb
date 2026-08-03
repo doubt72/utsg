@@ -124,9 +124,9 @@ module Utility
               ["usa", "M10", 42], ["usa", "M10A1", 43], ["usa", "M18 Hellcat", 43],
               ["usa", "M8 Scott", 42], ["usa", "M36 Jackson", 44],
 
-              ["ussr", "SU-76", 42], ["ussr", "SU-76M", 42], ["ussr", "SU-85", 43],
-              ["ussr", "SU-100", 44], ["ussr", "SU-122", 42], ["ussr", "SU-152", 43],
-              ["ussr", "ISU-122", 44], ["ussr", "ISU-152", 43],
+              ["ussr", "KhT-26", 33], ["ussr", "SU-76", 42], ["ussr", "SU-76M", 42],
+              ["ussr", "SU-85", 43], ["ussr", "SU-100", 44], ["ussr", "SU-122", 42],
+              ["ussr", "SU-152", 43], ["ussr", "ISU-122", 44], ["ussr", "ISU-152", 43],
             ].each do |unit|
               spg = { t: "spg" }
               unit.each_with_index do |v, i|
