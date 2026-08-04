@@ -2,7 +2,7 @@ import React from "react";
 import Hex from "../../../engine/Hex";
 import {
   buildingDisplay, hexElevationContinuous, hexElevation, hexBackground, hexTerrainPattern, orchardDisplay,
-  hexTerrainCircle, hexTerrainContinuous
+  hexTerrainCircle, hexTerrainContinuous,
 } from "../../../engine/support/hexLayout";
 
 interface MapHexProps {
@@ -59,10 +59,6 @@ export default function MapHex({ hex }: MapHexProps) {
     }
   }
 
-  const night = (
-    <polygon points={hex.hexCoords} style={{ fill: "rgba(0,0,0,0.167)" }} />
-  )
-
   const label = (
     <text x={hex.labelX} y={hex.labelY} style={{
           fill: "rgba(0,0,0,0.33)", textAnchor: "middle", fontFamily: "'Courier Prime', monospace", fontSize: "15px" }}
@@ -77,7 +73,6 @@ export default function MapHex({ hex }: MapHexProps) {
       {elevation()}
       {terrain()}
       {terrainPattern()}
-      {hex.night ? night : ""}
       {label}
     </g>
   )

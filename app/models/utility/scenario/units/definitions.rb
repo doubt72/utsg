@@ -131,7 +131,7 @@ module Utility
               churchill_ii: :churchill_i_ii,
               churchill_iii: :churchill_iii_iv,
               m3_grant: :m3_lee,
-              t_26: :t_26_m38,
+              t_26: :t_26_m33,
               m10_achilles: :m10,
               fiat_l3: :l3_35,
               white_scout_car: :m3a1_scout_car,
@@ -545,6 +545,7 @@ module Utility
               # USSR Armored Vehicles
               "bt_5": { sz: 3, mv: 9, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },
               "bt_7": { sz: 3, mv: 9, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },
+              "t_26_m33": { sz: 3, mv: 4, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },
               "t_26_m38": { sz: 3, mv: 4, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },
               "t_26_m39": { sz: 3, mv: 4, wpn: :"45mm_19_k", arm: [2, 1, 1], trt: [2, 1, 1] },
               "kht_26": { sz: 3, mv: 4, wpn: :"ft", arm: [2, 1, 1], trt: [2, 1, 1] },

@@ -67,16 +67,16 @@ module Utility
               ["usa", "M4A1(76) Sherman", 43, { sn: 3 }], ["usa", "M4A3E2 Sherman", 44, { sn: 2 }],
               ["usa", "M4A3E2(76) Sherman", 44, { sn: 5 }], ["usa", "M26 Pershing", 44],
 
-              ["ussr", "BT-5", 32], ["ussr", "BT-7", 35], ["ussr", "T-26 M38", 38],
-              ["ussr", "T-26 M39", 39], ["ussr", "T-70", 42], ["ussr", "T-34 M40", 40],
-              ["ussr", "T-34 M41", 41], ["ussr", "T-34 M42/M43", 42], ["ussr", "T-34-85", 43],
-              ["ussr", "T-34-85 M44", 44], ["ussr", "KV-1 M39", 39], ["ussr", "KV-1 M40", 40],
-              ["ussr", "KV-1 M41", 41], ["ussr", "KV-1 M42", 42], ["ussr", "KV-1S", 42],
-              ["ussr", "KV-2", 40], ["ussr", "KV-85", 43], ["ussr", "IS-2", 44],
-              ["ussr", "Matilda II", 41], ["ussr", "Valentine", 41], ["ussr", "Churchill II", 41],
-              ["ussr", "Churchill III", 42], ["ussr", "M3 Stuart", 41, { bd: 4 }],
-              ["ussr", "M3 Grant", 41, { bd: 4 }], ["ussr", "M4 Sherman", 43],
-              ["ussr", "M4A1(76) Sherman", 44, { sn: 3 }],
+              ["ussr", "BT-5", 32], ["ussr", "BT-7", 35], ["ussr", "T-26 M33", 33],
+              ["ussr", "T-26 M38", 38], ["ussr", "T-26 M39", 39], ["ussr", "T-70", 42],
+              ["ussr", "T-34 M40", 40], ["ussr", "T-34 M41", 41], ["ussr", "T-34 M42/M43", 42],
+              ["ussr", "T-34-85", 43], ["ussr", "T-34-85 M44", 44], ["ussr", "KV-1 M39", 39],
+              ["ussr", "KV-1 M40", 40], ["ussr", "KV-1 M41", 41], ["ussr", "KV-1 M42", 42],
+              ["ussr", "KV-1S", 42], ["ussr", "KV-2", 40], ["ussr", "KV-85", 43],
+              ["ussr", "IS-2", 44], ["ussr", "Matilda II", 41], ["ussr", "Valentine", 41],
+              ["ussr", "Churchill II", 41], ["ussr", "Churchill III", 42],
+              ["ussr", "M3 Stuart", 41, { bd: 4 }], ["ussr", "M3 Grant", 41, { bd: 4 }],
+              ["ussr", "M4 Sherman", 43], ["ussr", "M4A1(76) Sherman", 44, { sn: 3 }],
             ].each do |unit|
               tank = { t: "tank", i: "tank" }
               unit.each_with_index do |v, i|

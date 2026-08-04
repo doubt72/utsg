@@ -33,11 +33,11 @@ export default function MapHexDetail({
   const road = () => {
     if (!hex.road) { return "" }
     const path = roadPath(hex)
+    const bridge = hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow
     return (
       <g>
         <path d={path} style={roadOutlineStyle(hex) as object} transform={roadRotate(hex)} />
-        { (hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow) ?
-            <path d={path} style={bridgeStyle(hex) as object} transform={roadRotate(hex)} /> : "" }
+        { bridge ? <path d={path} style={bridgeStyle(hex) as object} transform={roadRotate(hex)} /> : "" }
         <path d={path} style={roadEdgeStyle(hex) as object} transform={roadRotate(hex)} />
         <path d={path} style={roadStyle(hex) as object} transform={roadRotate(hex)} />
       </g>
@@ -47,10 +47,10 @@ export default function MapHexDetail({
   const railroadBottom = () => {
     if (!hex.railroad) { return "" }
     const path = railroadPath(hex)
+    const bridge = hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow
     return (
       <g>        
-        { (hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow) ?
-            <path d={path} style={railroadBridgeStyle() as object} /> :
+        { bridge ? <path d={path} style={railroadBridgeStyle() as object} /> :
             <path d={path} style={railroadBedStyle() as object} /> }
         <path d={path} style={railroadtieStyle() as object} />
       </g>

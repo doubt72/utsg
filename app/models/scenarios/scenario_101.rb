@@ -32,7 +32,7 @@ module Scenarios
           first_deploy: 2,
           first_action: 1,
           date:,
-          location: "Near the Frontier Wire",
+          location: "Near the Frontier Wire, Libya",
           author: "The Establishment",
           description:,
           map_data:,

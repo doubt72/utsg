@@ -75,6 +75,7 @@ export default function MapDisplay({
 
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
+  const [hexNightOverlay, setHexNightOverlay] = useState<JSX.Element[]>([])
   const [hexDisplayOverlays, setHexDisplayOverlays] = useState<JSX.Element[]>([])
   const [counterDisplay, setCounterDisplay] = useState<JSX.Element[]>([])
   const [actionCounterDisplay, setActionCounterDisplay] = useState<JSX.Element[]>([])
@@ -392,6 +393,7 @@ export default function MapDisplay({
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
     const overlayLoader: JSX.Element[] = []
+    const nightLoader: JSX.Element[] = []
     map.showCoords = showCoords
     map.showAllCounters = showStatusCounters
     map.hideCounters = hideCounters
@@ -404,6 +406,9 @@ export default function MapDisplay({
                                           setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
+        nightLoader.push(
+          <polygon key={`${x}-${y}-n`} points={hex.hexCoords} style={{ fill: `rgba(0,0,0,0.125)` }} />
+        )
         const state = map.game?.gameState
         if (state && map.game?.currentUser === user) {
           const shaded = state.openHex(x, y)
@@ -414,6 +419,7 @@ export default function MapDisplay({
     })
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
+    setHexNightOverlay(nightLoader)
     setHexDisplayOverlays(overlayLoader)
     const action = map.game?.lastSignificantAction
     if (map.game?.gameState?.type === stateType.Fire) {
@@ -816,6 +822,7 @@ export default function MapDisplay({
         <g transform={rotateTransform}>
           {hexDisplay}
           {hexDisplayDetail}
+          { map.night ? hexNightOverlay : 0 }
           {counterDisplay}
         </g>
       )
@@ -851,6 +858,7 @@ export default function MapDisplay({
           <g clipPath="url(#map-clip" transform={rotateTransform}>
             {hexDisplay}
             {hexDisplayDetail}
+            { map.night ? hexNightOverlay : 0 }
             {fireTargets}
             {fireTrack}
             {counterDisplay}

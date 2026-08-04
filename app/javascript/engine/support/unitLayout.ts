@@ -426,6 +426,12 @@ export function movementLayout(counter: Counter): CounterLayout | false {
   if (counter.hasUnit && (counter.unit.isBroken || counter.unit.pinned || counter.unit.isTired ||
       value as number < 0 || counter.unit.isImmobilized || counter.unit.isAbandoned || counter.unit.isWreck)) {
     color = counterRed()
+    if (counter.unit.isTracked || counter.unit.isWheeled ) {
+      style.stroke = "black"
+    }
+    if (counter.unit.isWheeled) {
+      style.fill = "white"
+    }
   } else if (counter.hasUnit) {
     if (counter.unit.isTracked || counter.unit.crewed || counter.unit.isWheeled ) {
       style.stroke = "black"

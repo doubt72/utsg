@@ -8,10 +8,12 @@
   - Bug fix: multiselect can't man gun
   - Bug fix: should turn off smoke automatically when movement left but not enough for smoke
 - Show inititative changes via arrows in initiative track
+- Redid the way night maps render to make background/detail rendering consistent
 - Bug fix: average rating integer/float rounding error on scenario list/sorting
 - Bug fix: leader should not give free rallies for vehicles
 - Bug fix: mortar smoke rounds should not trigger morale checks
-- Updated 304, 508
+- Bug fix: show movement type with tired vehicles
+- Updated 101, 304, 508
 - Updated 111, 112, 208, 209, 210, 412, 608 (cleanup from conversion issues on prototypes)
 - Added prototype 609, 610
 
