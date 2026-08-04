@@ -4,9 +4,21 @@ import { AboutHelpButton, ContactButton, ReturnButton } from "./utilities/button
 import { subtitleNameStyle, titleNameStyle } from "./Utilities";
 import { serverVersion, subtitleName, titleName } from "../utilities/utilities";
 import { BugFill, ListColumnsReverse } from "react-bootstrap-icons";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function About() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
+
   const id = useParams().id
 
   useEffect(() => {

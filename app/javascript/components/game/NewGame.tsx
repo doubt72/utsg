@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
 import { CreateGameButton, CustomCheckbox, NavDown, NavUp } from "../utilities/buttons";
@@ -11,7 +11,18 @@ import { ScenarioData, ScenarioListData } from "../../engine/Scenario";
 import { alliedCodeToName, axisCodeToName } from "../../utilities/utilities";
 
 export default function NewGame() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
+
   const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: "" })
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
   const [players, setPlayers] = useState({ one: "player one" , two: "player two" })

@@ -1,3 +1,7 @@
+# 0.118
+
+- Disable back button (stopgap to deal with render issues on back navigation I don't know how to fix)
+
 # 0.117
 
 - Refactored movement control flow

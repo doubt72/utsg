@@ -1,12 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import { postAPI } from "../../utilities/network";
 import { DeleteButton, LogoutButton, SendNewCodeButton, VerifyButton } from "../utilities/buttons";
 import DeleteAccount from "./DeleteAccount";
 
 export default function VerifyAccount() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
+
   const [verificationCode, setVerificationCode] = useState("")
   const [verificationError, setVerificationError] = useState("")
   const [deleting, setDeleting] = useState(false)

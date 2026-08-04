@@ -4,10 +4,20 @@ import ChatDisplay from "./ChatDisplay";
 import { CreateGameButton, ScenariosButton } from "./utilities/buttons";
 import GameList from "./GameList";
 import { titleNameStyle } from "./Utilities";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function MainPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
 
   const [tab, setTab] = useState<number>(0)
 

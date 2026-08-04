@@ -22,6 +22,7 @@ import MapHexOverlay from "../components/game/map/MapHexOverlay";
 import { DeployHexes } from "../engine/Map";
 import { FeatureData } from "../engine/Feature";
 import MapCounter from "../components/game/map/MapCounter";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -92,6 +93,18 @@ export type SelectionType = {
 }
 
 export default function ScenarioDesigner() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
+
   const [designStack, setDesignStack] = useState<DesignStack>({
     data: [defaultScenario()], index: 0
   })

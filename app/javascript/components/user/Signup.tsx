@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import { postAPI } from "../../utilities/network";
 import { PasswordTooltip, SignupEmailTooltip } from "../utilities/tooltips";
@@ -7,7 +7,18 @@ import { CancelButton, SignupButton } from "../utilities/buttons";
 import { subtitleName, titleName } from "../../utilities/utilities";
 
 export default function Signup() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
+
   const [formInput, setFormInput] = useState({
     username: "", email: "", password: "", confirmPassword: ""
   })

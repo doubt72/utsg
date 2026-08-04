@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { getAPI } from "../../utilities/network";
 import Header from "../Header";
 import ChatDisplay from "../ChatDisplay";
@@ -22,8 +22,18 @@ import DesyncWindow from "./DesyncWindow";
 import { serverVersion } from "../../utilities/utilities";
 
 export default function GameDisplay() {
-  const navigate = useNavigate()
   const { id } = useParams()
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
 
   const [game, setGame] = useState<{ k?: Game, turn: number, state?: string }>({ turn: 0 })
   const [map, setMap] = useState<Map | undefined>()

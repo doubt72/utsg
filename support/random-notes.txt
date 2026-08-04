@@ -1,0 +1,7 @@
+Normal code line count (looking for large files):
+
+find . \( -name '*.rb' -o -name '*.tsx' -o -name '*.ts' \) | grep -v '^./config' | grep -v '^./node_modules' | grep -v 'scenarios/scenario_....rb' | xargs wc | sort -n
+
+Count scenario lines:
+
+wc app/models/scenarios/* | sort -n

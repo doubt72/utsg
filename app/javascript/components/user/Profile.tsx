@@ -4,13 +4,25 @@ import ProfileEditInfo from "./ProfileEditInfo"
 import ProfileEditPassword from "./ProfileEditPassword"
 import { CustomCheckbox, ReturnButton } from "../utilities/buttons";
 import { getAPI, putAPI } from "../../utilities/network";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ArrowCounterclockwise, Ban, StarFill } from "react-bootstrap-icons";
 
 type GameStats = { name: string, count: number, win: number, loss: number, wait: number, abandoned: number }
 type UserData = { username: string, email: string, proto?: string, mcp: string, banned: string }
 
 export default function Profile() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
+
   const username: string | undefined = useParams().username
 
   const [stats, setStats] = useState<{ [index: string]: GameStats }>({})

@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { findHelpSection, helpIndex, HelpSection } from "../help/helpData";
 import Logo from "../Logo";
 import { subtitleName, titleName } from "../../utilities/utilities";
@@ -42,8 +42,19 @@ function SectionComponent({ id, header, ll, section, hasChildren, setState }: Se
 }
 
 export default function HelpDisplay() {
-  const navigate = useNavigate()
   const section: string = useParams().section ?? "1"
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    history.pushState(null, "", location.pathname)
+    const handlePopState = () => { history.pushState(null, "", location.pathname) }
+    window.addEventListener('popstate', handlePopState)
+    return () => {
+      window.removeEventListener("popstate", handlePopState)
+    }
+  }, [navigate, location])
 
   const [sectionKey, setSectionKey] = useState<number[]>([])
   const [allSections, setAllSections] = useState<JSX.Element[]>([])
