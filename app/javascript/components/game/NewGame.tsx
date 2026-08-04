@@ -27,6 +27,12 @@ export default function NewGame() {
   const [alliedFactions, setAlliedFactions] = useState([])
   const [axisFactions, setAxisFactions] = useState([])
 
+  useEffect(() => {
+    if (localStorage.getItem("validationNeeded")) {
+      navigate("/verify_account", { replace: true });
+    }
+  }, []);
+
   const loadScenarios = () => {
     const params: Record<string, string> = { page: scenarioSearch.page.toString() }
     params.sort = scenarioSearch.sort

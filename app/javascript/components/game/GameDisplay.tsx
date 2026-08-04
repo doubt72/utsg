@@ -72,6 +72,12 @@ export default function GameDisplay() {
   const [, setTurnSwitchTimer] = useState<NodeJS.Timeout | undefined>()
 
   useEffect(() => {
+    if (localStorage.getItem("validationNeeded")) {
+      navigate("/verify_account", { replace: true });
+    }
+  }, []);
+
+  useEffect(() => {
     setControlClasses(`game-control${horizontalControls ? "" : "-vertical"}`)
   }, [horizontalControls])
 

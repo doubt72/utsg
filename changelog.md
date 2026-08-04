@@ -9,6 +9,7 @@
   - Bug fix: should turn off smoke automatically when movement left but not enough for smoke
 - Show inititative changes via arrows in initiative track
 - Redid the way night maps render to make background/detail rendering consistent
+- Bug fix: validation code not being required on new game/game pages (whoops)
 - Bug fix: average rating integer/float rounding error on scenario list/sorting
 - Bug fix: leader should not give free rallies for vehicles
 - Bug fix: mortar smoke rounds should not trigger morale checks
