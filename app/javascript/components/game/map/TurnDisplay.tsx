@@ -100,7 +100,7 @@ export default function TurnDisplay({
               <g key={n}>
                 <path d={roundedRectangle(x, y, 80, 80, 4)}
                       style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-                <text x={x + 40} y={y + (n ? 50 : 44)} fontSize={n ? 40 : 20} textAnchor="middle"
+                <text x={x + 40} y={y + (n ? 52 : 46)} fontSize={n ? 40 : 20} textAnchor="middle"
                       fontFamily="'Courier Prime', monospace" style={{ fill: "#AAA" }}>
                   { n ? n : "setup" }
                 </text>

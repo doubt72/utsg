@@ -81,6 +81,8 @@ describe("action integration test", () => {
     suppress_network: true
   });
 
+  game.unitTesting = true
+
   test("validation", () => {
     const actionData = { user: "two", player: 1 as Player, data: { action: "deploy", old_initiative: game.initiative } }
 

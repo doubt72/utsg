@@ -117,6 +117,7 @@ export default function DebugIndex() {
         Units by Type:
         <ul>
           <li><Link to={"/debug/units/type"}>all</Link></li>
+          <li><Link to={"/debug/units/promo"}>promo</Link></li>
         </ul>
         Types:
         <ul>

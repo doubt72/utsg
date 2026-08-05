@@ -423,8 +423,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
   let color = "black"
   const path = circlePath(loc, 10)
   const size = value === "A" ? 18 : attrSizeFor(value as number)
-  if (counter.hasUnit && (counter.unit.isBroken || counter.unit.pinned || counter.unit.isTired ||
-      value as number < 0 || counter.unit.isImmobilized || counter.unit.isAbandoned || counter.unit.isWreck)) {
+  if (counter.hasUnit && counter.unit.isTired) {
     color = counterRed()
     if (counter.unit.isTracked || counter.unit.isWheeled ) {
       style.stroke = "black"
@@ -432,6 +431,9 @@ export function movementLayout(counter: Counter): CounterLayout | false {
     if (counter.unit.isWheeled) {
       style.fill = "white"
     }
+  } else if (counter.hasUnit && (counter.unit.isBroken || counter.unit.pinned ||
+      value as number < 0 || counter.unit.isImmobilized || counter.unit.isAbandoned || counter.unit.isWreck)) {
+    color = counterRed()
   } else if (counter.hasUnit) {
     if (counter.unit.isTracked || counter.unit.crewed || counter.unit.isWheeled ) {
       style.stroke = "black"

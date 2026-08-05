@@ -29,6 +29,7 @@ import AdminIndex from "../admin/AdminIndex";
 import AdminGameStats from "../admin/AdminGameStats";
 import AdminUsers from "../admin/AdminUsers";
 import ScenarioDesigner from "../designer/ScenarioDesigner";
+import DebugUnitsPromo from "../debug/DebugUnitsPromo";
 
 export default function Routes() {
   const publicRoutes = [
@@ -67,6 +68,7 @@ export default function Routes() {
         { path: "/debug/markers/:nation", element: <DebugUnits /> },
         { path: "/debug/units/", element: <DebugUnits /> },
         { path: "/debug/units/:nation", element: <DebugUnits suppressMarkers={true} /> },
+        { path: "/debug/units/promo", element: <DebugUnitsPromo /> },
         { path: "/debug/units/type", element: <DebugUnitsByType /> },
         { path: "/debug/units/type/:type", element: <DebugUnitsByType /> },
         { path: "/debug/units/ability/:ability", element: <DebugUnitsByType /> },

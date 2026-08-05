@@ -1,6 +1,8 @@
 # 0.118
 
 - Disable back button (stopgap to deal with render issues on back navigation I don't know how to fix)
+- Some promo debug stuff
+- Bug fix: don't show movement type except with tired vehicles (partial roll back of bug fix)
 
 # 0.117
 
