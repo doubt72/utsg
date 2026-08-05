@@ -402,6 +402,21 @@ export default class MoveState extends BaseState {
       const lastIndex = this.path.length - 1
       const lastAdd = this.addActions[this.addActions.length - 1]
       if (lastAdd.index === lastIndex) {
+        if (gameActionAddActionType.Drop === lastAdd.type) {
+          const id = lastAdd.id as string
+          const counter = this.map.findCounterById(id) as Counter
+          counter.unit.dropSelect()
+          counter.unit.select()
+        }
+        if (gameActionAddActionType.Load === lastAdd.type) {
+          const id = lastAdd.id as string
+          const counter = this.map.findCounterById(id) as Counter
+          counter.unit.loadedSelect()
+          const parentId = lastAdd.parent_id as string
+          const parent = this.map.findCounterById(parentId) as Counter
+          parent.unit.loaderSelect()
+          parent.unit.select()
+        }
         this.addActions.pop()
         if (lastAdd.type === gameActionAddActionType.VP) { this.unmove() }
         if (lastAdd.type === gameActionAddActionType.Smoke ||

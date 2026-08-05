@@ -351,8 +351,6 @@ export default function ScenarioDesigner() {
       }
     } else if (tab === 3) {
       if (deploySelected === "i-1") {
-        console.log(deploySelected)
-        console.log(initAlliedSelected)
         const unit = availableAlliedUnits.find(u => u[0] === initAlliedSelected)
         const units = metadata.init_allied_units ?? []
         if (unit) {
@@ -368,8 +366,6 @@ export default function ScenarioDesigner() {
           }, setDesignStack)
         }
       } else if (deploySelected === "i-2") {
-        console.log(deploySelected)
-        console.log(initAxisSelected)
         const unit = availableAxisUnits.find(u => u[0] === initAxisSelected)
         const units = metadata.init_axis_units ?? []
         if (unit) {

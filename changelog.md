@@ -2,7 +2,10 @@
 
 - Disable back button (stopgap to deal with render issues on back navigation I don't know how to fix)
 - Some promo debug stuff
+- Bug fix: unselect/reselect loaded/dropped units when undiong part of move
+- Bug fix: don't allow dropping support weapons if no movement left
 - Bug fix: don't show movement type except with tired vehicles (partial roll back of bug fix)
+- Bug fix: very minor square/hex rendering issue on counters
 
 # 0.117
 

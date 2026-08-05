@@ -48,7 +48,6 @@ export default function FireTrackOverlay({ map }: FireTrackOverlayProps) {
           last = current
           current = neightborCoordinate(current, dir)
           if (current.x < 0 || current.y < 0 || current.x >= map.width || current.y >= map.height) {
-            console.log(`what ${last.x},${last.y} ${current.x},${current.y}`)
             off = true
             break
           }

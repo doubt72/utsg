@@ -43,7 +43,6 @@ export default function InitiativeDisplay({
 
   const showArrow = (index: number, up: boolean): boolean => {
     const game = map.game
-    console.log(`game ${game} ${up} ${game?.currentPlayer}`)
     if (!game || game.phase !== gamePhaseType.Main) return false
 
     const dir = game.currentPlayer === 1

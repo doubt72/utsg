@@ -29,6 +29,9 @@ export default function DebugUnitsPromo() {
     ger_8_8cm_flak_36: true,
     ger_stug_iii_f_g: true,
     ussr_t_34_85: true,
+    ger_tiger_ii: true,
+    usa_gmc_dukw: true,
+    usa_m3_half_track: true,
   }
 
   const rowTop: { [index: string]: boolean } = {
@@ -57,6 +60,7 @@ export default function DebugUnitsPromo() {
   }
 
   const keysPromoMaybe: { [index: string]: boolean } = {
+    usa_m3_half_track: true,
     ussr_militia_s: true,
     uk_sherman_firefly: true,
     usa_ranger_s: true,
@@ -87,7 +91,7 @@ export default function DebugUnitsPromo() {
 
   const cells = (keys: { [index: string]: boolean }, pad: boolean) => {
     const cells: JSX.Element[] = []
-    Object.keys(units).filter(u => { console.log(u); return !!keys[u] } ).map(
+    Object.keys(units).filter(u => !!keys[u]).map(
       (k, j) => cells.push(svgContainer(makeUnit(units[k]), j, pad))
     )
     return cells

@@ -216,7 +216,9 @@ export function dropUnitCounters(game: Game): Counter[] {
       if (mapSelectMovement(game, true) <= movementPastCost(game.scenario.map, unit)) { continue }
       inf.push(s.counter)
     }
-    if (unit.parent) { loaded.push(s.counter) }
+    if (unit.parent && mapSelectMovement(game, true) > movementPastCost(game.scenario.map, unit.parent)) {
+      loaded.push(s.counter)
+    }
   }
   const rc: Counter[] = []
   if (inf.length > 1) {
