@@ -21,7 +21,6 @@ import actionsAvailable from "../../../engine/control/actionsAvailable";
 import MoveShortToggleButton from "./buttons/MoveShortToggleButton";
 import MoveSmokeToggleButton from "./buttons/MoveSmokeToggleButton";
 import MoveLoadToggleButton from "./buttons/MoveLoadToggleButton";
-import FinishMultiselectButton from "./buttons/FinishMultiselectButton";
 import UnselectButton from "./buttons/UnselectButton";
 import HelpButton from "./buttons/HelpButton";
 import BreakdownButton from "./buttons/BreakdownButton";
@@ -284,8 +283,6 @@ export default function GameControls({
         return <AssaultMoveRepairButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_crew") {
         return <AssaultMoveCrewButton game={game} key={i} callback={callAllBack} vertical={vertical} />
-      } else if (a.type === "finish_multiselect") {
-        return <FinishMultiselectButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "finish_rotation") {
         return <FinishRotationButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "cancel_action") {

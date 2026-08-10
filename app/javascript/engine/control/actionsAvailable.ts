@@ -328,11 +328,10 @@ function addShortMoveActions(game: Game, actions: GameControl[]): void {
 function addFireActions(game: Game, actions: GameControl[], selection?: Unit): void {
   const action = game.fireState
   if (action) {
-    if (!action.doneSelect) {
-      actions.unshift({ type: "none", message: "select fire group" })
-      actions.push({ type: "finish_multiselect" })
-    } else {
+    if (action.doneSelect) {
       actions.unshift({ type: "none", message: "select target" })
+    } else {
+      actions.unshift({ type: "none", message: "select fire group or target" })
     }
     if (game.fireState.canToggleSponson) {
       actions.push({ type: "fire_toggle_sponson" })

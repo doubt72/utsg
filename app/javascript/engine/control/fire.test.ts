@@ -791,7 +791,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       expect(baseToHit(fp.fp)).toBe(9)
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
@@ -1250,7 +1249,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       const firingIDs = ["firing1", "firing2", "firing3"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
@@ -1620,7 +1618,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       const firingIDs = ["firing1", "firing2"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
@@ -1677,7 +1674,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       select(map, {
         counter: map.countersAt(tloc2)[0],
@@ -1767,7 +1763,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       select(map, {
         counter: map.countersAt(tloc2)[0],
@@ -1833,7 +1828,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       select(map, {
         counter: map.countersAt(tloc2)[0],
@@ -1878,7 +1872,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       const firingIDs = ["firing1", "firing2"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])
@@ -1931,7 +1924,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       const original = Math.random
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -4312,7 +4304,6 @@ describe("ranged fire attacks", () => {
         target: { type: "map", xy: tloc }
       }, () => {})
       expect(target.targetSelected).toBe(true)
-      expect(fire.doneSelect).toBe(true)
 
       const firingIDs = ["firing1", "firing2"]
       const fp = firepower(game, makeAction(game, firingIDs), target, tloc, false, [false])

@@ -105,7 +105,6 @@ export default class FireState extends BaseState {
         })
       }
     } else {
-      this.doneSelect = true
       this.map.select(counter.unit)
       const ts = counter.unit.targetSelected
       if (ts) {
@@ -143,7 +142,10 @@ export default class FireState extends BaseState {
     if (same) {
       if (this.doneSelect) { return false }
       for (const s of this.initialSelection) {
-        if (selection.counter.target.id === s.id) { return false }
+        if (selection.counter.target.id === s.id) {
+          this.game.addMessage("initial selection must be in fire group")
+          return false
+        }
       }
       const counter = this.map.unitAtId(selection.target.xy, selection.counter.target.id) as Counter
       if (!this.canBeMultiselected(counter)) { return false }
@@ -316,7 +318,7 @@ export default class FireState extends BaseState {
     }, this.game)
     this.execute(action)
   }
-  
+
   canBeMultiselected(counter: Counter): boolean {
     if (counter.unit.isBroken || counter.unit.jammed) {
       this.game.addMessage("cannot fire a broken unit")

@@ -1,3 +1,11 @@
+# 0.119
+
+- Refactor fire control flow
+  - Remove end selection option
+  - Allow additional infantry to be added if single target
+  > Allow only machine guns to be added if multi-target
+  > Remove finish rotation / Unselect fire if rotating again
+
 # 0.118
 
 - Disable back button (stopgap to deal with render issues on back navigation I don't know how to fix)

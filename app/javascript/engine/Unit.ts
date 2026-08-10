@@ -303,12 +303,6 @@ export default class Unit {
     return false
   }
 
-  get canGroupFire(): boolean {
-    return [
-      unitType.SupportWeapon, unitType.Leader, unitType.Squad, unitType.Team,
-    ].includes(this.type)
-  }
-
   get canHandle(): boolean {
     return [
       unitType.Squad, unitType.Team,

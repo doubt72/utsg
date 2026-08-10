@@ -1,5 +1,4 @@
 Features/Bug Fixes=
-  + Shouldn't show drop unit when no one has movement
   - General cleanup of button flow
     - Remove end selection, remove end turret rotate
     - Allow adding units if rapid/infantry fire
