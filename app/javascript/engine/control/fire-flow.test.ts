@@ -1,10 +1,11 @@
 import { describe, expect, test } from "vitest";
-import { createBlankGame, testGInf, testGLdr, testGTank, testRInf } from "./testHelpers";
+import { createBlankGame, createInProgressGame, testGInf, testGLdr, testGMG, testGTank, testRInf } from "./testHelpers";
 import Unit from "../Unit";
 import FireState from "./state/FireState";
 import { Coordinate } from "../../utilities/commonTypes";
 import actionsAvailable from "./actionsAvailable";
 import select, { selectable } from "./select";
+import organizeStacks from "../support/organizeStacks";
 
 describe("fire flow", () => {
   test("addtional units for infantry fire", () => {
@@ -152,16 +153,216 @@ describe("fire flow", () => {
     expect(game.messageQueue[1]).toBe("initial selection must be in fire group")
   })
 
-  test("can't unselect/select different ranged firing unit", () => {
-
-  })
-
   test("can select additional MG for multi-fire (with leader)", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const target1 = new Unit(testRInf)
+    target1.id = "target1"
+    const tloc1 = new Coordinate(2, 2)
+    map.addCounter(tloc1, target1)
 
+    const target2 = new Unit(testRInf)
+    target2.id = "target2"
+    const tloc2 = new Coordinate(2, 1)
+    map.addCounter(tloc2, target2)
+
+    const fire1 = new Unit(testGInf)
+    fire1.id = "fire1"
+    const floc1 = new Coordinate(3, 2)
+    map.addCounter(floc1, fire1)
+    const fire2 = new Unit(testGMG)
+    fire2.id = "fire2"
+    map.addCounter(floc1, fire2)
+    const fire3 = new Unit(testGLdr)
+    fire3.id = "fire3"
+    map.addCounter(floc1, fire3)
+
+    const fire4 = new Unit(testGInf)
+    fire4.id = "fire4"
+    const floc2 = new Coordinate(3, 1)
+    map.addCounter(floc2, fire4)
+    const fire5 = new Unit(testGMG)
+    fire5.id = "fire5"
+    map.addCounter(floc2, fire5)
+    organizeStacks(map)
+
+    map.select(fire2)
+
+    game.setGameState(new FireState(game, false))
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "cancel_action" },
+      ]
+    )
+    expect(game.fireState.doneSelect).toBe(false)
+
+    select(map, {
+      counter: map.countersAt(tloc1)[0],
+      target: { type: "map", xy: tloc1 }
+    }, () => {})
+    expect(target1.targetSelected).toBe(true)
+    expect(target2.targetSelected).toBe(false)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+    expect(game.fireState.doneSelect).toBe(false)
+
+    select(map, {
+      counter: map.countersAt(tloc2)[0],
+      target: { type: "map", xy: tloc2 }
+    }, () => {})
+    expect(target1.targetSelected).toBe(true)
+    expect(target2.targetSelected).toBe(true)
+    expect(fire2.selected).toBe(true)
+    expect(fire3.selected).toBe(false)
+    expect(fire5.selected).toBe(false)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(floc1)[2],
+      target: { type: "map", xy: floc1 }
+    }, () => {})
+    expect(target1.targetSelected).toBe(true)
+    expect(target2.targetSelected).toBe(true)
+    expect(fire2.selected).toBe(true)
+    expect(fire3.selected).toBe(true)
+    expect(fire5.selected).toBe(false)
+    expect(game.fireState.targetSelection.length).toBe(2)
+    expect(game.fireState.selection.length).toBe(2)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+
+    select(map, {
+      counter: map.countersAt(floc2)[1],
+      target: { type: "map", xy: floc2 }
+    }, () => {})
+    expect(target1.targetSelected).toBe(true)
+    expect(target2.targetSelected).toBe(true)
+    expect(fire2.selected).toBe(true)
+    expect(fire3.selected).toBe(true)
+    expect(fire5.selected).toBe(true)
+    expect(game.fireState.targetSelection.length).toBe(2)
+    expect(game.fireState.selection.length).toBe(3)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+
+    expect(selectable(map, {
+      counter: map.countersAt(floc1)[0],
+      target: { type: "map", xy: floc1 }
+    })).toBe(false)
+    expect(game.messageQueue.length).toBe(1)
+    expect(game.messageQueue[0]).toBe("can't combine units without rapid fire when firing at multiple hexes")
   })
 
-  test("can't select additional infantry for multi-fire (with leader)", () => {
+  test("should not be able to add units out of range or LOS", () => {
+    const game = createInProgressGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const target1 = new Unit(testRInf)
+    target1.id = "target1"
+    const tloc1 = new Coordinate(0, 2)
+    map.addCounter(tloc1, target1)
 
+    const fire1 = new Unit(testGInf)
+    fire1.id = "fire1"
+    const floc1 = new Coordinate(4, 2)
+    map.addCounter(floc1, fire1)
+    const fire2 = new Unit(testGInf).split()
+    fire2.id = "fire2"
+    fire2.baseRange = 1
+    map.addCounter(floc1, fire2)
+    const fire3 = new Unit(testGLdr)
+    fire3.id = "fire3"
+    map.addCounter(floc1, fire3)
+
+    map.addCounter(floc1, fire1)
+    const fire4 = new Unit(testGInf).split()
+    fire4.id = "fire4"
+    const floc2 = new Coordinate(4, 3)
+    map.addCounter(floc2, fire4)
+
+    map.select(fire1)
+
+    game.setGameState(new FireState(game, false))
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "cancel_action" },
+      ]
+    )
+    expect(game.fireState.doneSelect).toBe(false)
+
+    select(map, {
+      counter: map.countersAt(tloc1)[0],
+      target: { type: "map", xy: tloc1 }
+    }, () => {})
+    expect(target1.targetSelected).toBe(true)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+    expect(game.fireState.doneSelect).toBe(false)
+
+    select(map, {
+      counter: map.countersAt(floc1)[2],
+      target: { type: "map", xy: floc1 }
+    }, () => {})
+    expect(fire1.selected).toBe(true)
+    expect(fire2.selected).toBe(false)
+    expect(fire3.selected).toBe(true)
+    expect(game.fireState.selection.length).toBe(2)
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select fire group or target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+
+    expect(selectable(map, {
+      counter: map.countersAt(floc1)[1],
+      target: { type: "map", xy: floc1 }
+    })).toBe(false)
+    expect(game.messageQueue.length).toBe(1)
+    expect(game.messageQueue[0]).toBe("can't combine units that are out of range of target")
+
+    expect(selectable(map, {
+      counter: map.countersAt(floc2)[0],
+      target: { type: "map", xy: floc2 }
+    })).toBe(false)
+    expect(game.messageQueue.length).toBe(2)
+    expect(game.messageQueue[1]).toBe("can't combine units that are out of line-of-sight of target")
   })
 
   test("changing turret direction clears target", () => {

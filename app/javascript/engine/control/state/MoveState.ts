@@ -616,19 +616,19 @@ export default class MoveState extends BaseState {
       return false
     }
     if (counter.unit.isBroken) {
-      this.game.addMessage("cannot move a broken unit")
+      this.game.addMessage("can't move a broken unit")
       return false
     }
     if (counter.unit.isExhausted) {
-      this.game.addMessage("cannot move an exhausted unit")
+      this.game.addMessage("can't move an exhausted unit")
       return false
     }
     if (!this.rushing && counter.unit.isActivated) {
-      this.game.addMessage("cannot move an activated unit")
+      this.game.addMessage("can't move an activated unit")
       return false
     }
     if (counter.unit.encumberedMovement(this.rushing) <= 0) {
-      this.game.addMessage("cannot move an a unit that has zero movement")
+      this.game.addMessage("can't move an a unit that has zero movement")
       return false
     }
     return true

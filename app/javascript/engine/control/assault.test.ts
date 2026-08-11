@@ -239,7 +239,7 @@ describe("assault movement", () => {
       target: { type: "map", xy: loc }
     }, () => {})
     expect(game.messageQueue.length).toBe(1)
-    expect(game.messageQueue[0]).toBe("cannot assault with a broken unit")
+    expect(game.messageQueue[0]).toBe("can't assault with a broken unit")
     expect(game.gameState?.selection.length).toBe(1)
     expect(unit2.selected).toBe(false)
     expect(game.assaultState.doneSelect).toBe(false)

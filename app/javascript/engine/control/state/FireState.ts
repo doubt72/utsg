@@ -1,4 +1,5 @@
 import { Coordinate, CounterSelectionTarget, Direction, hexOpenType } from "../../../utilities/commonTypes";
+import { los } from "../../../utilities/los";
 import { hexDistance } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
@@ -318,29 +319,29 @@ export default class FireState extends BaseState {
 
   canBeMultiselected(counter: Counter): boolean {
     if (counter.unit.isBroken || counter.unit.jammed) {
-      this.game.addMessage("cannot fire a broken unit")
+      this.game.addMessage("can't fire a broken unit")
       return false
     }
     if (counter.unit.isExhausted) {
-      this.game.addMessage("cannot fire an exhausted unit")
+      this.game.addMessage("can't fire an exhausted unit")
       return false
     }
     const unit = this.initialSelection[0].counter.unit
     if (counter.unit.isActivated && !unit.isActivated) {
-      this.game.addMessage("cannot fire an activated unit")
+      this.game.addMessage("can't fire an activated unit")
       return false
     }
     if (counter.unit.parent) {
       if (counter.unit.parent.isBroken) {
-        this.game.addMessage("cannot fire a unit if parent is broken")
+        this.game.addMessage("can't fire a unit if parent is broken")
         return false
       }
       if (counter.unit.parent.isExhausted) {
-        this.game.addMessage("cannot fire a unit if parent is exhausted")
+        this.game.addMessage("can't fire a unit if parent is exhausted")
         return false
       }
       if (counter.unit.parent.pinned) {
-        this.game.addMessage("cannot fire a unit if parent is pinned")
+        this.game.addMessage("can't fire a unit if parent is pinned")
         return false
       }
     }
@@ -349,7 +350,7 @@ export default class FireState extends BaseState {
       return false
     }
     if (this.map.contactAt(counter.hex as Coordinate)) {
-      this.game.addMessage("cannot combine units in contact with the enemy")
+      this.game.addMessage("can't combine units in contact with the enemy")
       return false
     }
     if (counter.unit.isVehicle) {
@@ -365,13 +366,29 @@ export default class FireState extends BaseState {
       return false
     }
     if (counter.unit.operated && !counter.parent) {
-      this.game.addMessage("cannot fire unmanned unit")
+      this.game.addMessage("can't fire unmanned unit")
       return false
     }
     const next = counter.children[0]
     if (next && next?.unit.crewed) {
       this.game.addMessage("unit manning a crewed weapon cannot fire with other units")
       return false
+    }
+    if (this.targetHexes.length > 1 && !counter.unit.rapidFire && !counter.unit.leader) {
+      this.game.addMessage("can't combine units without rapid fire when firing at multiple hexes")
+      return false
+    }
+    for (const t of this.targetHexes) {
+      const start = counter.hex as Coordinate
+      const end = new Coordinate(t.x, t.y)
+      if (!counter.unit.leader && hexDistance(start, end) > counter.unit.currentRange) {
+        this.game.addMessage("can't combine units that are out of range of target")
+        return false
+      }
+      if (!los(this.map, start, end)) {
+        this.game.addMessage("can't combine units that are out of line-of-sight of target")
+        return false
+      }
     }
     const init = this.initialSelection[0]
     if (counter.parent && counter.parent?.unit.id === init.counter.unit.id) {

@@ -3,8 +3,9 @@
 - Refactor fire control flow
   - Remove end selection option
   - Allow additional infantry to be added if single target
-  > Allow only machine guns to be added if multi-target
-  - Remove finish rotation / Unselect fire if rotating again
+  - Allow only machine guns to be added if multi-target
+  - Should not be able to select units that are out of range or LOS
+  - Remove finish rotation / unselect target if rotating again
 - Updated/promoted 304
 
 # 0.118

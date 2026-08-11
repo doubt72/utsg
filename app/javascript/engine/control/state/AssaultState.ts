@@ -448,7 +448,7 @@ export default class AssaultState extends BaseState {
       return false
     }
     if (next && next.unit.uncrewedSW && counter.unit.encumberedMovement(false) < 1) {
-      this.game.addMessage("cannot assault with a unit that has zero movement")
+      this.game.addMessage("can't assault with a unit that has zero movement")
       return false
     }
     if (counter.parent) {
@@ -456,15 +456,15 @@ export default class AssaultState extends BaseState {
       return false
     }
     if (counter.unit.isBroken) {
-      this.game.addMessage("cannot assault with a broken unit")
+      this.game.addMessage("can't assault with a broken unit")
       return false
     }
     if (counter.unit.isExhausted) {
-      this.game.addMessage("cannot assault with an exhausted unit")
+      this.game.addMessage("can't assault with an exhausted unit")
       return false
     }
     if (counter.unit.isActivated) {
-      this.game.addMessage("cannot assault with an activated unit")
+      this.game.addMessage("can't assault with an activated unit")
       return false
     }
     return true
