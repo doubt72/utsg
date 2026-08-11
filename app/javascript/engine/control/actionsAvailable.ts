@@ -336,9 +336,6 @@ function addFireActions(game: Game, actions: GameControl[], selection?: Unit): v
     if (game.fireState.canToggleSponson) {
       actions.push({ type: "fire_toggle_sponson" })
     }
-    if (!action.doneRotating && !action.sponson) {
-      actions.push({ type: "finish_rotation" })
-    }
     if (selection?.smokeCapable && (selection.targetedRange || selection.offBoard) &&
         !action.reaction) {
       actions.push({ type: "fire_smoke" })

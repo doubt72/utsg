@@ -4,7 +4,7 @@
   - Remove end selection option
   - Allow additional infantry to be added if single target
   > Allow only machine guns to be added if multi-target
-  > Remove finish rotation / Unselect fire if rotating again
+  - Remove finish rotation / Unselect fire if rotating again
 
 # 0.118
 

@@ -14,7 +14,6 @@ export default class FireState extends BaseState {
   targetSelection: StateSelection[];
   path: GameActionPath[]; // For turret facing/changes:
   doneSelect: boolean;
-  doneRotating: boolean;
 
   sponson: boolean;
   reaction: boolean;
@@ -50,7 +49,6 @@ export default class FireState extends BaseState {
     this.targetSelection = []
     this.path = [loc]
     this.doneSelect = !canMultiSelectFire(game, loc.x, loc.y, selection.unit)
-    this.doneRotating = !selection.unit.turreted || this.sponson
     this.smoke = false
     this.targetHexes = []
     if (!this.doneSelect) {
@@ -79,11 +77,11 @@ export default class FireState extends BaseState {
   }
 
   get rotateOpen(): boolean {
-    return !this.doneRotating
+    return this.selection[0].counter.unit.turreted && !this.sponson
   }
 
   get rotatePossible(): boolean {
-    return !this.doneRotating
+    return this.selection[0].counter.unit.turreted && !this.sponson
   }
 
   select(selection: CounterSelectionTarget, callback: () => void) {
@@ -92,7 +90,6 @@ export default class FireState extends BaseState {
     const y = selection.target.xy.y
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
-    if (!this.doneRotating) { this.doneRotating = true }
     const selected = counter.unit.selected
     this.map.select(counter.unit)
     if (!this.doneSelect && this.samePlayer(counter.unit)) {
@@ -215,7 +212,7 @@ export default class FireState extends BaseState {
             }
           }
           for (const sel of this.selection) {
-            if (!this.doneRotating) { break }
+            if (this.selection[0].counter.unit.turreted && !this.sponson) { break }
             if (sel.x === x && sel.y === y) {
               check = true
               break
@@ -257,6 +254,9 @@ export default class FireState extends BaseState {
     } else {
       this.path.push({ x, y, turret: dir })
     }
+    this.targetSelection = []
+    this.targetHexes = []
+    this.map.clearAllTargetSelections()
   }
 
   get canToggleSponson(): boolean {
@@ -271,9 +271,6 @@ export default class FireState extends BaseState {
     this.map.clearAllTargetSelections()
     if (this.sponson) {
       this.path = [this.path[0]]
-      this.doneRotating = true
-    } else {
-      this.doneRotating = false
     }
   }
   

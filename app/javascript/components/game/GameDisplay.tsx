@@ -585,6 +585,11 @@ export default function GameDisplay() {
       game.k.gameState.finish()
     } else if (game.k?.gameState?.type === stateType.Fire) {
       game.k.fireState.rotate(d)
+      setControls(gc => {
+        const key = Number(gc?.key ?? 0)
+        return <GameControls key={key + 1} game={game.k as Game} callback={setUpdate}
+                             update={updateControls} vertical={!horizontalControls} />
+      })
     } else if (game.k?.gameState?.type === stateType.Move) {
       game.k.moveState.rotate(d)
       setControls(gc => {

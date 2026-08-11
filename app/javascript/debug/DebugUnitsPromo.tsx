@@ -34,6 +34,16 @@ export default function DebugUnitsPromo() {
     usa_m3_half_track: true,
   }
 
+  const keysPromo2: { [index: string]: boolean } = {
+    jap_snlf_s: true,
+    usa_gmc_cckw: true,
+    fra_brandt_m1935: true,
+    fra_char_b1_bis: true,
+    ger_panzerschreck: true,
+    uk_churchill_crocodile: true,
+    uk_matilda_ii: true,
+  }
+
   const rowTop: { [index: string]: boolean } = {
     uk_sherman_firefly: true,
     usa_ranger_s: true,
@@ -51,12 +61,12 @@ export default function DebugUnitsPromo() {
   }
 
   const rowBottom2: { [index: string]: boolean } = {
-    uk_universal_carrier: true,
     fra_char_b1_bis: true,
   }
 
   const rowBottom3: { [index: string]: boolean } = {
-    ger_panzerschreck: true,
+    ger_tiger_ii: true,
+    jap_snlf_s: true,
   }
 
   const keysPromoMaybe: { [index: string]: boolean } = {
@@ -122,6 +132,9 @@ export default function DebugUnitsPromo() {
       </div>
       <div className="p1em flex flex-wrap">
         {cells(keysPromo, true)}
+      </div>
+      <div className="p1em flex flex-wrap">
+        {cells(keysPromo2, true)}
       </div>
       <div className="p1em flex flex-wrap">
         {cells(rowTop, false)}

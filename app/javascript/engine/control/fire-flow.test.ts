@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { createBlankGame, testGInf, testGLdr, testRInf } from "./testHelpers";
+import { createBlankGame, testGInf, testGLdr, testGTank, testRInf } from "./testHelpers";
 import Unit from "../Unit";
 import FireState from "./state/FireState";
 import { Coordinate } from "../../utilities/commonTypes";
@@ -7,7 +7,7 @@ import actionsAvailable from "./actionsAvailable";
 import select, { selectable } from "./select";
 
 describe("fire flow", () => {
-  test.only("addtional units for infantry fire", () => {
+  test("addtional units for infantry fire", () => {
     const game = createBlankGame()
     const map = game.scenario.map
     const target1 = new Unit(testRInf)
@@ -165,6 +165,58 @@ describe("fire flow", () => {
   })
 
   test("changing turret direction clears target", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const target = new Unit(testRInf)
+    target.id = "target"
+    const tloc = new Coordinate(2, 2)
+    map.addCounter(tloc, target)
 
+    const fire = new Unit(testGTank)
+    fire.id = "fire"
+    fire.facing = 1
+    const floc = new Coordinate(3, 2)
+    map.addCounter(floc, fire)
+    map.select(fire)
+
+    game.setGameState(new FireState(game, false))
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "cancel_action" },
+      ]
+    )
+    expect(game.fireState.doneSelect).toBe(true)
+    expect(game.fireState.rotateOpen).toBe(true)
+    expect(game.fireState.rotatePossible).toBe(true)
+
+    select(map, {
+      counter: map.countersAt(tloc)[0],
+      target: { type: "map", xy: tloc }
+    }, () => {})
+    expect(target.targetSelected).toBe(true)
+    expect(game.fireState.rotateOpen).toBe(true)
+    expect(game.fireState.rotatePossible).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "fire_finish" },
+        { type: "cancel_action" },
+      ]
+    )
+
+    game.fireState.rotate(2)
+    expect(target.targetSelected).toBe(false)
+    expect(game.fireState.rotateOpen).toBe(true)
+    expect(game.fireState.rotatePossible).toBe(true)
+
+    expect(actionsAvailable(game, "two")).toStrictEqual(
+      [
+        { type: "none", message: "select target" },
+        { type: "cancel_action" },
+      ]
+    )
   })
 })

@@ -31,7 +31,6 @@ import PassCancelButton from "./buttons/PassCancelButton";
 import AssaultMoveFinishButton from "./buttons/AssaultMoveFinishButton";
 import AssaultMoveEntrenchButton from "./buttons/AssaultMoveEntrenchButton";
 import AssaultMoveClearButton from "./buttons/AssaultMoveClearButton";
-import FinishRotationButton from "./buttons/FinishRotationButton";
 import ToggleSponsonButton from "./buttons/ToggleSponsonButton";
 import FireFinishButton from "./buttons/FireFinishButton";
 import MoraleCheckButton from "./buttons/MoraleCheckButton";
@@ -283,8 +282,6 @@ export default function GameControls({
         return <AssaultMoveRepairButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "assault_move_crew") {
         return <AssaultMoveCrewButton game={game} key={i} callback={callAllBack} vertical={vertical} />
-      } else if (a.type === "finish_rotation") {
-        return <FinishRotationButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "cancel_action") {
         return <CancelActionButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "rout") {

@@ -3,6 +3,7 @@ Features/Bug Fixes=
     - Remove end selection, remove end turret rotate
     - Allow adding units if rapid/infantry fire
   - Think about hotkeys
+  - After game replay
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
   - Add Some Developer Notes

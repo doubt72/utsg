@@ -77,17 +77,14 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new FireState(game, true))
     const state = game.fireState
-    state.doneRotating = true
 
     expect(reactionFireHexes(game)).toStrictEqual([
       { x: 4, y: 2 },
     ])
     const available = state.activeCounters
-    expect(available.length).toBe(4)
+    expect(available.length).toBe(2)
     expect(available[0].marker.type).toBe("tracked_hull")
     expect(available[1].unit.id).toBe("test1")
-    expect(available[2].marker.type).toBe("tracked_hull")
-    expect(available[3].unit.id).toBe("target1")
 
     select(map, {
       counter: map.countersAt(new Coordinate(4, 2))[0],
@@ -163,7 +160,6 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new FireState(game, true))
     const state = game.fireState
-    state.doneRotating = true
 
     const counters1 = map.countersAt(new Coordinate(3, 2))
     expect(counters1.length).toBe(1)
@@ -178,12 +174,10 @@ describe("reaction fire attacks", () => {
       { x: 1, y: 2, facing: undefined, turret: undefined },
     ])
     const available = state.activeCounters
-    expect(available.length).toBe(5)
+    expect(available.length).toBe(3)
     expect(available[0].unit.id).toBe("test1")
     expect(available[1].unit.id).toBe("test1")
     expect(available[2].unit.id).toBe("test1")
-    expect(available[3].marker.type).toBe("tracked_hull")
-    expect(available[4].unit.id).toBe("other1")
 
     select(map, {
       counter: map.countersAt(new Coordinate(1, 2))[0],
@@ -264,17 +258,14 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new FireState(game, true))
     const state = game.fireState
-    state.doneRotating = true
 
     expect(reactionFireHexes(game)).toStrictEqual([
       { x: 4, y: 2 },
     ])
     const available = state.activeCounters
-    expect(available.length).toBe(4)
+    expect(available.length).toBe(2)
     expect(available[0].marker.type).toBe("tracked_hull")
     expect(available[1].unit.id).toBe("test1")
-    expect(available[2].marker.type).toBe("tracked_hull")
-    expect(available[3].unit.id).toBe("target1")
 
     select(map, {
       counter: map.countersAt(new Coordinate(4, 2))[0],
@@ -349,7 +340,6 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new FireState(game, true))
     const state = game.fireState
-    state.doneRotating = true
 
     const counters1 = map.countersAt(new Coordinate(3, 2))
     expect(counters1.length).toBe(1)
@@ -364,12 +354,10 @@ describe("reaction fire attacks", () => {
       { x: 1, y: 2, facing: undefined, turret: undefined },
     ])
     const available = state.activeCounters
-    expect(available.length).toBe(5)
+    expect(available.length).toBe(3)
     expect(available[0].unit.id).toBe("test1")
     expect(available[1].unit.id).toBe("test1")
     expect(available[2].unit.id).toBe("test1")
-    expect(available[3].marker.type).toBe("tracked_hull")
-    expect(available[4].unit.id).toBe("other1")
 
     select(map, {
       counter: map.countersAt(new Coordinate(1, 2))[0],
@@ -513,8 +501,6 @@ describe("reaction fire attacks", () => {
     expect(other.selected).toBe(true)
 
     game.setGameState(new FireState(game, true))
-    const state = game.fireState
-    state.doneRotating = true
 
     const counters1 = map.countersAt(new Coordinate(3, 2))
     expect(counters1.length).toBe(1)
