@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Pegasus Bridge"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.5"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -114,7 +114,7 @@ module Scenarios
           allied_dir: 1.5,
           axis_dir: 4,
           victory_hexes: [
-            [5, 7, 1], [6, 3, 1], [9, 4, 1], [10, 5, 1], [12, 6, 1],
+            [5, 7, 1], [6, 3, 1], [8, 6, 1], [9, 4, 1], [12, 6, 1],
           ],
           allied_setup: {
             "0" => 0.upto(10).map { |y| ["#{8 - ((y - 1) / 2)}-14", y] },

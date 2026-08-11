@@ -1,4 +1,5 @@
 Features/Bug Fixes=
+  - Player should swap when crew escapes for morale check
   - General cleanup of button flow
     - Remove end selection, remove end turret rotate
     - Allow adding units if rapid/infantry fire
