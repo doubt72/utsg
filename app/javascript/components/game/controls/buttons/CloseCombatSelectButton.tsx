@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import Game from "../../../../engine/Game";
 import { DiceGlyph } from "../../../utilities/buttons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
@@ -10,17 +10,39 @@ interface CloseCombatSelectButtonProps {
 }
 
 export default function CloseCombatSelectButton({ game, vertical, callback }: CloseCombatSelectButtonProps) {
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const hotkey = "C"
+  const submit = () => {
     game.closeCombatState.rollForCombat()
     callback()
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        if (e.key === hotkey.toLowerCase() && e.ctrlKey) {
+          e.preventDefault()
+          e.stopPropagation()
+          submit()
+        }
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit()
   }
 
   const text = "resolve close combat"
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text }
+      { text }{ localStorage.getItem("hotkeys") === "true" ? ` ^${hotkey}` : "" }
     </Tooltip>
   )
 
@@ -35,7 +57,9 @@ export default function CloseCombatSelectButton({ game, vertical, callback }: Cl
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            {DiceGlyph()} {text}
+            {DiceGlyph()} {text} {
+              localStorage.getItem("hotkeys") === "true" ? <span className="button-hotkey">^{hotkey}</span> : ""
+            }
           </button>
         }
       </div>

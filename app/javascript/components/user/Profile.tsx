@@ -32,6 +32,7 @@ export default function Profile() {
 
   const [colorblind, setColorblind] = useState<boolean>(false)
   const [animations, setAnimations] = useState<boolean>(false)
+  const [hotkeys, setHotkeys] = useState<boolean>(false)
   const [notifications, setNofications] = useState<boolean>(true)
 
   const [header, setHeader] = useState<JSX.Element | undefined>()
@@ -86,6 +87,7 @@ export default function Profile() {
   useEffect(() => {
     setColorblind(localStorage.getItem("colorblind") === "true")
     setAnimations(localStorage.getItem("noanim") === "true")
+    setHotkeys(localStorage.getItem("hotkeys") === "true")
     setNofications(localStorage.getItem("notifications") === "true")
   }, [])
 
@@ -141,6 +143,17 @@ export default function Profile() {
               }} selected={animations}/>
               <span className="font11em">disable map animations</span>
             </div>
+            <div>
+              <CustomCheckbox onClick={() => {
+                setHotkeys(s => {
+                  localStorage.setItem("hotkeys", s ? "false" : "true")
+                  return !s
+                })
+              }} selected={hotkeys}/>
+              <span className="font11em">
+                enable hotkeys (conflicts will override default browser control keys)
+              </span>
+            </div>
             <p className="mt1em">
               Disabling map animations is not recommended except for Safari users.  Instead of
               using that option, a better solution is not using Safari in the first
@@ -150,7 +163,7 @@ export default function Profile() {
         </div>
       )
     }
-  }, [user, colorblind, animations, notifications])
+  }, [user, colorblind, animations, hotkeys, notifications])
 
   return (
     <div>

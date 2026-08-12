@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import Game from "../../../../engine/Game";
 import { EliminateGlyph, MoveGlyph } from "../../../utilities/buttons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
@@ -10,17 +10,39 @@ interface FireDisplaceConfirmButtonProps {
 }
 
 export default function FireDisplaceConfirmButton({ game, vertical, callback }: FireDisplaceConfirmButtonProps) {
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const hotkey = "K"
+  const submit = () => {
     game.gameState?.finish()
     callback()
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        if (e.key === hotkey.toLowerCase() && e.ctrlKey) {
+          e.preventDefault()
+          e.stopPropagation()
+          submit()
+        }
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit()
   }
 
   const text = ` confirm ${game.fireDisplaceState.path.length > 1 ? "displacement" : "elimination"}`
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text }
+      { text }{ localStorage.getItem("hotkeys") === "true" ? ` ^${hotkey}` : "" }
     </Tooltip>
   )
 
@@ -35,7 +57,9 @@ export default function FireDisplaceConfirmButton({ game, vertical, callback }: 
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            { game.fireDisplaceState.path.length > 1 ? MoveGlyph() : EliminateGlyph() } {text}
+            { game.fireDisplaceState.path.length > 1 ? MoveGlyph() : EliminateGlyph() } {text} {
+              localStorage.getItem("hotkeys") === "true" ? <span className="button-hotkey">^{hotkey}</span> : ""
+            }
           </button>
         }
       </div>

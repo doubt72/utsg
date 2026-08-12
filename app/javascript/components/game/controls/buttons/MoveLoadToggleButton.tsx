@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import Game from "../../../../engine/Game";
 import { BoxArrowInUp } from "react-bootstrap-icons";
 import { MoveGlyph } from "../../../utilities/buttons";
@@ -11,10 +11,32 @@ interface MoveLoadToggleButtonProps {
 }
 
 export default function MoveLoadToggleButton({ game, vertical, callback }: MoveLoadToggleButtonProps) {
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const hotkey = "L"
+  const submit = () => {
     game.moveState.loadToggle()
     callback()
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        if (e.key === hotkey.toLowerCase() && e.ctrlKey) {
+          e.preventDefault()
+          e.stopPropagation()
+          submit()
+        }
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit()
   }
 
   const text = () => {
@@ -29,7 +51,7 @@ export default function MoveLoadToggleButton({ game, vertical, callback }: MoveL
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text() }
+      { text() }{ localStorage.getItem("hotkeys") === "true" ? ` ^${hotkey}` : "" }
     </Tooltip>
   )
 
@@ -44,7 +66,9 @@ export default function MoveLoadToggleButton({ game, vertical, callback }: MoveL
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            {icon()} {text()}
+            {icon()} {text()} {
+              localStorage.getItem("hotkeys") === "true" ? <span className="button-hotkey">^{hotkey}</span> : ""
+            }
           </button>
         }
       </div>

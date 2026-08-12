@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import Game from "../../../../engine/Game";
 import { CircleHalf } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
@@ -10,17 +10,39 @@ interface SplitSquadButtonProps {
 }
 
 export default function SplitSquadButton({ game, vertical, callback }: SplitSquadButtonProps) {
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const hotkey = "X"
+  const submit = () => {
     game.split()
     callback()
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        if (e.key === hotkey.toLowerCase() && e.ctrlKey) {
+          e.preventDefault()
+          e.stopPropagation()
+          submit()
+        }
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit()
   }
 
   const text = "split squad"
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text }
+      { text }{ localStorage.getItem("hotkeys") === "true" ? ` ^${hotkey}` : "" }
     </Tooltip>
   )
 
@@ -35,7 +57,9 @@ export default function SplitSquadButton({ game, vertical, callback }: SplitSqua
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            <CircleHalf /> {text}
+            <CircleHalf /> {text} {
+              localStorage.getItem("hotkeys") === "true" ? <span className="button-hotkey">^{hotkey}</span> : ""
+            }
           </button>
         }
       </div>

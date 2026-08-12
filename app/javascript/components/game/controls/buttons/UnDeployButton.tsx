@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { ArrowCounterclockwise } from "react-bootstrap-icons";
 import Game from "../../../../engine/Game";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
@@ -10,17 +10,39 @@ interface UndeployButtonProps {
 }
 
 export default function UndeployButton({ game, vertical, callback }: UndeployButtonProps) {
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const hotkey = "U"
+  const submit = () => {
     game.undeploy()
     callback()
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        if (e.key === hotkey.toLowerCase() && e.ctrlKey) {
+          e.preventDefault()
+          e.stopPropagation()
+          submit()
+        }
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit()
   }
 
   const text = "undeploy"
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text }
+      { text }{ localStorage.getItem("hotkeys") === "true" ? ` ^${hotkey}` : "" }
     </Tooltip>
   )
 
@@ -35,7 +57,9 @@ export default function UndeployButton({ game, vertical, callback }: UndeployBut
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            <ArrowCounterclockwise /> {text}
+            <ArrowCounterclockwise /> {text} {
+              localStorage.getItem("hotkeys") === "true" ? <span className="button-hotkey">^{hotkey}</span> : ""
+            }
           </button>
         }
       </div>

@@ -39,7 +39,7 @@ export default function ErrorDisplay({ game, type, message, section, callBack }:
                 </button>
               </div> : "" }
             { type === "stack" ?
-              <UndoButton game={game} callback={callBack} /> : "" }
+              <UndoButton game={game} callback={callBack} vertical={false} /> : "" }
             <div className="mb025em">
               <button onClick={callBack} className="custom-button nowrap">
                 <XCircle />close

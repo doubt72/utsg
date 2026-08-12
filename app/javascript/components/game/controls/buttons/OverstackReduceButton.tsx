@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import Game from "../../../../engine/Game";
 import OverstackState from "../../../../engine/control/state/OverstackState";
 import { EliminateGlyph } from "../../../utilities/buttons";
@@ -11,18 +11,40 @@ interface OverstackReduceButtonProps {
 }
 
 export default function OverstackReduceButton({ game, vertical, callback }: OverstackReduceButtonProps) {
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const hotkey = "H"
+  const submit = () => {
     const state = game.gameState as OverstackState
     state.finish()
     callback()
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        if (e.key === hotkey.toLowerCase() && e.ctrlKey) {
+          e.preventDefault()
+          e.stopPropagation()
+          submit()
+        }
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit()
   }
 
   const text = "eliminate"
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text }
+      { text }{ localStorage.getItem("hotkeys") === "true" ? ` ^${hotkey}` : "" }
     </Tooltip>
   )
 
@@ -37,7 +59,9 @@ export default function OverstackReduceButton({ game, vertical, callback }: Over
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            { EliminateGlyph() } {text}
+            { EliminateGlyph() } {text} {
+              localStorage.getItem("hotkeys") === "true" ? <span className="button-hotkey">^{hotkey}</span> : ""
+            }
           </button>
         }
       </div>

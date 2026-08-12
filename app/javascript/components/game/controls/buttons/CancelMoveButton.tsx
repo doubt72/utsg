@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import Game from "../../../../engine/Game";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { ArrowCounterclockwise } from "react-bootstrap-icons";
@@ -10,17 +10,39 @@ interface CancelMoveButtonProps {
 }
 
 export default function CancelMoveButton({ game, vertical, callback }: CancelMoveButtonProps) {
-  const onSubmit = (event: FormEvent) => {
-    event.preventDefault()
+  const hotkey = "Z"
+  const submit = () => {
     game.moveState.unmove()
     callback()
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        if (e.key === hotkey.toLowerCase() && e.ctrlKey) {
+          e.preventDefault()
+          e.stopPropagation()
+          submit()
+        }
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
+
+  const onSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    submit()
   }
 
   const text = "undo last move"
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text }
+      { text }{ localStorage.getItem("hotkeys") === "true" ? ` ^${hotkey}` : "" }
     </Tooltip>
   )
 
@@ -35,7 +57,9 @@ export default function CancelMoveButton({ game, vertical, callback }: CancelMov
             </button>
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
-            <ArrowCounterclockwise /> {text}
+            <ArrowCounterclockwise /> {text} {
+              localStorage.getItem("hotkeys") === "true" ? <span className="button-hotkey">^{hotkey}</span> : ""
+            }
           </button>
         }
       </div>

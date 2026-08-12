@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ExclamationCircle, XCircle } from "react-bootstrap-icons";
 
 interface NotificationWindowProps {
@@ -8,6 +8,18 @@ interface NotificationWindowProps {
 }
 
 export default function NotificationWindow({ title, message, callBack }: NotificationWindowProps ) {
+  useEffect(() => {
+    const hotKeyListener = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        callBack()
+      }
+    }
+    window.addEventListener('keyup', hotKeyListener)
+
+    return () => {
+      window.removeEventListener('keyup', hotKeyListener)
+    }
+  }, [])
 
   return (
     <div className="game-notification">

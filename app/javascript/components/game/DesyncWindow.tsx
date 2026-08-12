@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ShieldFillX, WrenchAdjustable } from "react-bootstrap-icons";
 
 interface DesyncWindowProps {
@@ -8,6 +8,19 @@ interface DesyncWindowProps {
 }
 
 export default function DesyncWindow({ title, message, button }: DesyncWindowProps ) {
+  useEffect(() => {
+    const hotKeyListener = (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        callback()
+      }
+    }
+    window.addEventListener('keyup', hotKeyListener)
+
+    return () => {
+      window.removeEventListener('keyup', hotKeyListener)
+    }
+  }, [])
+
   const callback = () => {
     window.location.reload()
   }
