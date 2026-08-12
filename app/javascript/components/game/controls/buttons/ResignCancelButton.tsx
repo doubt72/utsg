@@ -29,7 +29,7 @@ export default function ResignCancelButton({ game, vertical, callback }: ResignC
     <form onSubmit={onSubmit}>
       <div className="mb025em">
         { vertical ?
-          <OverlayTrigger placement="bottom" overlay={buttonTooltip}
+          <OverlayTrigger placement="top" overlay={buttonTooltip}
                           delay={{ show: 0, hide: 0 }} >
             <button type="submit" className="custom-button custom-button-balance nowrap">
               { CancelGlyph() }

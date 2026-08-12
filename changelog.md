@@ -6,6 +6,8 @@
   - Allow only machine guns to be added if multi-target
   - Should not be able to select units that are out of range or LOS
   - Remove finish rotation / unselect target if rotating again
+- Bug fix: tank crew player should handle tank crew escape morale check
+- Bug fix: resign tooltip should be above vertical button, not off screen
 - Updated/promoted 304
 
 # 0.118

@@ -32,7 +32,7 @@ export default function ResignButton({ game, vertical, callback }: ResignButtonP
     <form onSubmit={onSubmit}>
       <div className="mb025em">
         { vertical ?
-          <OverlayTrigger placement="bottom" overlay={buttonTooltip}
+          <OverlayTrigger placement={ game.resignationLevel > 0 ? "bottom" : "top"} overlay={buttonTooltip}
                           delay={{ show: 0, hide: 0 }} >
             <button type="submit" className="custom-button custom-button-balance nowrap">
               <XCircle />

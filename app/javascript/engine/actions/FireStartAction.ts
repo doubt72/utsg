@@ -70,6 +70,7 @@ export default class FireStartAction extends BaseAction {
       this.map.addCounter(loc, unit)
       this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false, critical: false })
       this.game.addActionAnimations([{ loc, type: "crewescape" }])
+      if (this.game.currentPlayerNation !== unit.playerNation) { this.game.togglePlayer() }
     }
     this.game.fireStartCheckNeeded = undefined
   }

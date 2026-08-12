@@ -2253,6 +2253,7 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded.length).toBe(1)
       expect(game.moraleChecksNeeded[0].unit.name).toBe("Tank Crew")
+      expect(game.currentPlayer).toBe(1)
     })
 
     test("offboard artillery", () => {
