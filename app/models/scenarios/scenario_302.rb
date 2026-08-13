@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Counterattack!"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.3"
+    STATUS = "b"
+    VERSION = "0.4"
 
     DATE = [1944, 8, 7].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -29,9 +29,9 @@ module Scenarios
     AXIS_UNITS = {
       "0": { list: [
         :ger_leader_5_1,
-        :ger_leader_4_1,
-        [5, :ger_ss_s],
-        [2, :ger_mg_42],
+        [2, :ger_leader_4_1],
+        [7, :ger_ss_s],
+        [3, :ger_mg_42],
         [2, :ger_sdkfz_250_1],
         [4, :ger_pzkpfw_iv_h_j],
       ] },

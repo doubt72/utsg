@@ -152,7 +152,7 @@ export default function Profile() {
                 })
               }} selected={hotkeys === "A"}/>
               <span className="font11em">
-                use plain key hotkeys
+                use plain key hotkeys (be careful with browser focus when using chat)
               </span>
             </div>
             <div>
@@ -164,7 +164,7 @@ export default function Profile() {
                 })
               }} selected={hotkeys === "C"}/>
               <span className="font11em">
-                use control hotkeys (typically won&apos;t work on Windows)
+                use control hotkeys (typically won&apos;t work on Windows due to browser control conflicts)
               </span>
             </div>
             <p className="mt1em">

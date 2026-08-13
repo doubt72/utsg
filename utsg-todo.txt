@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + Think about hotkeys
   - After game replay
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
@@ -7,9 +6,11 @@ Features/Bug Fixes
   - Strategy notes
   - Figure out how to implement Vichy French with same French units
 
-304 (Pegasus Bridge)
+004 [Mud]
+103 [Italians]
+302 [Mortain]
+402 [Kokoda]
 406 (Tarawa)
-604 (Khalkhin Gol)
 
 Nice to Have Eventually:
   ? Better rollback of smoke on reaction fire

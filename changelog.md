@@ -10,7 +10,8 @@
 - Allow return key event listener to close windows
 - Bug fix: tank crew player should handle tank crew escape morale check
 - Bug fix: resign tooltip should be above vertical button, not off screen
-- Updated/promoted 304
+- Updated/promoted 304, 604
+- Promoted 004, 103, 302, 402 to beta
 
 # 0.118
 

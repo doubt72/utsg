@@ -799,8 +799,9 @@ function StandardTooltipButton({vertical, text, glyph, hotkey, callback}: Standa
     submit()
   }
 
+  const hk = localStorage.getItem("hotkeys") ?? ""
+
   useEffect(() => {
-    const hk = localStorage.getItem("hotkeys")
     if (hk !== "") {
       const hotKeyListener = (e: KeyboardEvent) => {
         if ((e.key === hotkey.toLowerCase() && hk === "A" && document.activeElement?.tagName !== "INPUT") ||
@@ -819,7 +820,6 @@ function StandardTooltipButton({vertical, text, glyph, hotkey, callback}: Standa
   }, [])
 
   const hkstring = () => {
-    const hk = localStorage.getItem("hotkeys")
     if (hk === "") { return "" }
     if (hk === "C") { return ` ^${hotkey}` }
     if (hk === "A") { return `${hotkey}` }
@@ -827,7 +827,7 @@ function StandardTooltipButton({vertical, text, glyph, hotkey, callback}: Standa
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
-      { text }{ localStorage.getItem("hotkeys") === "A" ? ` [${hotkey}]`: hkstring() }
+      { text }{ hk === "A" ? ` [${hotkey}]`: hkstring() }
     </Tooltip>
   )
 
@@ -843,8 +843,8 @@ function StandardTooltipButton({vertical, text, glyph, hotkey, callback}: Standa
           </OverlayTrigger> :
           <button type="submit" className="custom-button nowrap">
             {glyph} {text} {
-              localStorage.getItem("hotkeys") !== "" ?
-                <span className={`button-hotkey${localStorage.getItem("hotkeys") === "A" ? " ml025em": ""}`}>
+              hk !== "" ?
+                <span className={`button-hotkey${hk === "A" ? " ml025em": ""}`}>
                   {hkstring()}
                 </span> : ""
             }

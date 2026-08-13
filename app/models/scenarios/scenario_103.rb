@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Less Sand than Stone"
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1941, 11, 19].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -16,7 +16,7 @@ module Scenarios
       "0": { list: [
         :uk_leader_5_2,
         :uk_radio_140mm,
-        [6, :uk_crusader_i],
+        [8, :uk_crusader_i],
         [2, :uk_humber_lrc],
       ] },
     }.freeze

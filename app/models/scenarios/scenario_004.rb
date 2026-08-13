@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Into the the Gap"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.3"
+    STATUS = "b"
+    VERSION = "0.4"
 
     DATE = [1942, 7, 31].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -18,7 +18,7 @@ module Scenarios
         :ussr_leader_4_1,
         [2, :ussr_smg_s],
         [6, :ussr_rifle_s],
-        :ussr_dp_27,
+        [2, :ussr_dp_27],
         :ussr_sg_43,
       ] },
     }.freeze
@@ -27,7 +27,7 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_2,
         :ger_leader_4_1,
-        [7, :ger_rifle_s],
+        [6, :ger_rifle_s],
         [2, :ger_mg_34],
         :ger_5cm_legrw_36,
       ] },

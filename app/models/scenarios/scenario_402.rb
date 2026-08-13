@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Withdrawal by Measures"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1942, 9, 1].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -17,7 +17,7 @@ module Scenarios
         list: [
           :uk_leader_4_1,
           :uk_leader_3_1,
-          [7, :uk_territorial_s],
+          [5, :uk_colonial_s],
           :uk_vickers_mg,
         ],
       },
