@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  - Think about moving off bridges in slow terrain
   - After game replay
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
