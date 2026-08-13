@@ -157,7 +157,7 @@ export default function TerrainSection({ section }: SectionProps) {
         <tr key={index++}>
           <td className="nowrap"><strong>{hex.terrain.roadAttr?.name}</strong></td>
           <td className="nowrap">{ showHex(hex) }</td><td className="nowrap"></td><td className="nowrap"></td><td className="nowrap"></td>
-          <td>special: see { helpLink("Move", "movement") } section</td>
+          <td>special: see { helpLink("Movement", "movement") } section</td>
         </tr>
       )
     })

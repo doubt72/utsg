@@ -6,9 +6,9 @@ RSpec.describe Utility::Scenario do
   let(:scenario_name) { "xxx Spec Test xxx" }
 
   before :all do
-    unless defined?(Scenarios::Scenario000)
-      class Scenarios::Scenario000 < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
-        ID = "000"
+    unless defined?(Scenarios::Scenario0TT)
+      class Scenarios::Scenario0TT < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
+        ID = "0TT"
         NAME = "xxx Spec Test xxx"
         ALLIES = %w[uk usa].freeze
         AXIS = %w[ger ita].freeze
@@ -28,7 +28,7 @@ RSpec.describe Utility::Scenario do
   end
 
   it "gets correct scenario from get_scenario" do
-    expect(described_class.scenario_by_id("000")[:name]).to be == scenario_name
+    expect(described_class.scenario_by_id("0TT")[:name]).to be == scenario_name
   end
 
   describe "all_scenarios" do
@@ -50,7 +50,7 @@ RSpec.describe Utility::Scenario do
     it "gets spec scenario when filtering by string" do
       scenarios = described_class.all_scenarios({ "string" => scenario_name, "status" => "p*" })
       expect(scenarios.length).to be == 1
-      expect(scenarios.first[:id]).to be == "000"
+      expect(scenarios.first[:id]).to be == "0TT"
     end
 
     it "gets correct scenarios with allies filter" do
@@ -58,9 +58,9 @@ RSpec.describe Utility::Scenario do
       scenarios.each do |s|
         expect(s[:allies].include?("usa") || s[:allies].include?("bra")).to be true
       end
-      scenarios.select! { |s| s[:id] == "000" }
+      scenarios.select! { |s| s[:id] == "0TT" }
       expect(scenarios.length).to be == 1
-      expect(scenarios.first[:id]).to be == "000"
+      expect(scenarios.first[:id]).to be == "0TT"
     end
 
     it "gets correct scenarios with axis filter" do
@@ -68,9 +68,9 @@ RSpec.describe Utility::Scenario do
       scenarios.each do |s|
         expect(s[:axis].include?("ger")).to be true
       end
-      scenarios.select! { |s| s[:id] == "000" }
+      scenarios.select! { |s| s[:id] == "0TT" }
       expect(scenarios.length).to be == 1
-      expect(scenarios.first[:id]).to be == "000"
+      expect(scenarios.first[:id]).to be == "0TT"
     end
   end
 
@@ -181,12 +181,13 @@ RSpec.describe Utility::Scenario do
 
       # If this changes, make sure to add entry for version/checksum
       constants = Scenarios.constants.reject do |k|
-        %i[Base Scenario999 Scenario000].include?(k)
+        %i[Base Scenario999 Scenario0TT].include?(k)
       end
-      expect(constants.length).to be == 86
+      expect(constants.length).to be == 87
 
       # If any of these change, scenario MUST to be updated with a new version,
       # then update test with new version/checksum
+      expect(Utility::Scenario.checksum("000")).to be == "0.3b-24f960252ffc67a2bd80e9d3a745dd77"
       expect(Utility::Scenario.checksum("001")).to be == "1.4-790911864eba699a6a294c3b8ee4b22a"
       expect(Utility::Scenario.checksum("002")).to be == "1.3-fbc99e933e44aa5983dcb24599f80ccb"
       expect(Utility::Scenario.checksum("003")).to be == "1.1-6e4944cc13c728c57ce952eebef0bc31"

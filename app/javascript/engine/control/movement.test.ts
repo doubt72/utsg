@@ -229,7 +229,7 @@ describe("movement", () => {
 
     game.moveState.move(2, 2)
     expect(game.gameState?.openHex(1, 2)).toBe(1)
-    expect(game.gameState?.openHex(1, 3)).toBe(1)
+    expect(game.gameState?.openHex(1, 3)).toBe(hexOpenType.Closed)
 
     game.moveState.move(1, 2)
     expect(game.gameState?.openHex(0, 2)).toBe(1)
@@ -326,7 +326,7 @@ describe("movement", () => {
 
     game.moveState.move(2, 2)
     expect(game.gameState?.openHex(1, 2)).toBe(1)
-    expect(game.gameState?.openHex(1, 3)).toBe(1)
+    expect(game.gameState?.openHex(1, 3)).toBe(hexOpenType.Closed)
 
     game.moveState.move(1, 2)
     expect(game.gameState?.openHex(0, 2)).toBe(hexOpenType.Closed)
@@ -3375,5 +3375,110 @@ describe("movement", () => {
     expect(all[1].hex?.x).toBe(1)
     expect(all[1].hex?.y).toBe(2)
     expect(all[1].unit.name).toBe("Rifle")
+  })
+
+  test("bridge movement with stream", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] }, s: { d: [3, 5] } },
+        { t: "o", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [2, 6] } }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o", s: { d: [3, 5] } }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.gameState?.openHex(2, 2)).toBe(1)
+    expect(game.gameState?.openHex(2, 1)).toBe(2)
+    expect(game.gameState?.openHex(2, 3)).toBe(2)
+
+    game.moveState.move(2, 2)
+    expect(movementPastCost(map, unit)).toBe(1)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 1)).toBe(2)
+    expect(game.gameState?.openHex(1, 3)).toBe(2)
+
+    game.moveState.move(1, 3)
+    expect(movementPastCost(map, unit)).toBe(3)
+  })
+
+  test("bridge movement with shallow water", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "y" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "y" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+        { t: "y", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "y" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "y" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.gameState?.openHex(2, 2)).toBe(1)
+    expect(game.gameState?.openHex(2, 1)).toBe(3)
+    expect(game.gameState?.openHex(2, 3)).toBe(3)
+
+    game.moveState.move(2, 2)
+    expect(movementPastCost(map, unit)).toBe(1)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 1)).toBe(3)
+    expect(game.gameState?.openHex(1, 3)).toBe(3)
+
+    game.moveState.move(1, 3)
+    expect(movementPastCost(map, unit)).toBe(4)
+  })
+
+  test("bridge movement with deep water", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [
+        { t: "o", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+        { t: "w", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+        { t: "o", r: { d: [1, 4] } },
+      ],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "w" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(3, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.gameState?.openHex(2, 2)).toBe(1)
+    expect(game.gameState?.openHex(2, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(2, 3)).toBe(hexOpenType.Closed)
+
+    game.moveState.move(2, 2)
+    expect(movementPastCost(map, unit)).toBe(1)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 1)).toBe(hexOpenType.Closed)
+    expect(game.gameState?.openHex(1, 3)).toBe(hexOpenType.Closed)
   })
 });

@@ -1,6 +1,11 @@
 # 0.120
 
+- New announcement
+- Exhaust units if rout morale checks rally them
+- Bug fix: terrain overlay not working at night / render night in scenario designer
+- Bug fix: should not be able to move out of impassible terrain or get road discounts out of expensive terrain unless following roads
 - Promoted 402
+- Added "tutorial" scenario 000 directly to beta
 - Added prototype 017, 018
 
 # 0.119

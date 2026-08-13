@@ -78,7 +78,8 @@ export default function About() {
             battle &mdash; no tanks or artillery or wires or mines &mdash; and doesn&apos;t have any
             elevation or crazy weather to worry about. From there, there are lots of choices: in
             particular, pay attention to the map size and what units are included in the scenario
-            descriptions.
+            descriptions. Note that playing as the attacker is much more difficult for beginners
+            than defending, and that&apos;s particularly true of some scenarios.
           </p>
           <p>
             There is also a video{" "}
@@ -93,11 +94,44 @@ export default function About() {
             <a className="regular" href="https://youtu.be/KuXc-RpKwNk">
               armored
             </a>{" "}
-            scenario.  We plan to add a combined-arms scenario at some point soon.
+            scenario. We plan to add a combined-arms scenario at some point soon.
           </p>
           <p>
             <strong>Recent Announcements:</strong>
           </p>
+          <div id="a20260813" className="about-announcement">
+            <p>
+              <span className="about-announcement-header">More Progress</span>
+            </p>
+            <p>
+              <strong>13 Aug 2026</strong>: It&apos;s been quite a while since the last
+              announcement, almost two months. Part of that is just not getting around to adding
+              anything here, part of that is the fact that no major changes (in terms of status)
+              have happened, part of that was a (not-life-threatening but very annoying) health
+              thing that was a major distraction for me.
+            </p>
+            <p>
+              For the most part, the biggest changes have been in playtesting; the number of
+              &quot;ready&quot; scenarios is approaching thirty now. Other than that, there have
+              been quite a few bug fixes and (hopefully) improvements to the control flow, and even
+              a new feature or two (most recently, the addition of tank crews). There was also a
+              major purge of old games when that happened; given the small active user base of about
+              2.5 people at that point (up to 4.5 people now!), it wasn&apos;t really worth making
+              those changes backwards compatible, and the vast majority of deleted games were
+              playtests by me.
+            </p>
+            <p>
+              Probably the biggest thing that&apos;s still coming is the scenario editor (which is
+              technically already available if you know where to look). At this point, though,
+              it&apos;s not really integrated with the rest of the site (and it probably will never
+              be particularly polished compared to the game itself).
+            </p>
+            <p>
+              Anyway, while things are increasingly stable, particularly for the more fiddly rules
+              in the more recently-playtested scenarios, things are still basically in beta, and
+              feedback (as always) is still appreciated.
+            </p>
+          </div>
           <div id="a20260618" className="about-announcement">
             <p>
               <span className="about-announcement-header">Scenarios Ready</span>

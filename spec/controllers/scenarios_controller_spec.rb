@@ -7,9 +7,9 @@ RSpec.describe Api::V1::ScenariosController do
   let(:real_scenario_name) { "A Straightforward Proposition" }
 
   before :all do
-    unless defined?(Scenarios::Scenario000)
-      class Scenarios::Scenario000 < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
-        ID = "000"
+    unless defined?(Scenarios::Scenario0TT)
+      class Scenarios::Scenario0TT < Scenarios::Base # rubocop:disable Style/ClassAndModuleChildren
+        ID = "0TT"
         NAME = "xxx Spec Test xxx"
         ALLIES = %w[uk usa].freeze
         AXIS = %w[ger ita].freeze
@@ -296,7 +296,7 @@ RSpec.describe Api::V1::ScenariosController do
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["data"].length).to be == 1
-      expect(JSON.parse(response.body)["data"].first["id"]).to be == "000"
+      expect(JSON.parse(response.body)["data"].first["id"]).to be == "0TT"
     end
 
     it "gets correct scenarios with allies filter" do
@@ -307,9 +307,9 @@ RSpec.describe Api::V1::ScenariosController do
       scenarios.each do |s|
         expect(s["allies"].include?("usa") || s["allies"].include?("bra")).to be true
       end
-      scenarios.select! { |s| s["id"] == "000" }
+      scenarios.select! { |s| s["id"] == "0TT" }
       expect(scenarios.length).to be == 1
-      expect(scenarios.first["id"]).to be == "000"
+      expect(scenarios.first["id"]).to be == "0TT"
     end
 
     it "gets correct scenarios with axis filter" do
@@ -395,7 +395,7 @@ RSpec.describe Api::V1::ScenariosController do
 
   describe "show" do
     it "gets correct scenario from get_scenario" do
-      get :show, params: { id: "000" }
+      get :show, params: { id: "0TT" }
 
       expect(response.status).to be == 200
       expect(JSON.parse(response.body)["name"]).to be == scenario_name
@@ -472,7 +472,7 @@ RSpec.describe Api::V1::ScenariosController do
 
   describe "stats" do
     it "handles no data" do
-      get :stats, params: { id: "000" }
+      get :stats, params: { id: "0TT" }
 
       expect(response.status).to be == 200
       body = JSON.parse(response.body)

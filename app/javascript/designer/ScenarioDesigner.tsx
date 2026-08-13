@@ -23,6 +23,7 @@ import { DeployHexes } from "../engine/Map";
 import { FeatureData } from "../engine/Feature";
 import MapCounter from "../components/game/map/MapCounter";
 import { useLocation, useNavigate } from "react-router-dom";
+import MapHexNight from "../components/game/map/MapHexNight";
 
 export function defaultScenario(): ScenarioData {
   return structuredClone({
@@ -129,6 +130,7 @@ export default function ScenarioDesigner() {
 
   const [hexDisplay, setHexDisplay] = useState<JSX.Element[]>([])
   const [hexDisplayDetail, setHexDisplayDetail] = useState<JSX.Element[]>([])
+  const [hexDisplayNight, setHexDisplayNight] = useState<JSX.Element[]>([])
   const [victoryDisplay, setVictoryDisplay] = useState<JSX.Element[]>([])
   const [unitDisplay, setUnitDisplay] = useState<JSX.Element[]>([])
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element[]>([])
@@ -451,6 +453,7 @@ export default function ScenarioDesigner() {
     const hexLoader: JSX.Element[] = []
     const detailLoader: JSX.Element[] = []
     const victoryLoader: JSX.Element[] = []
+    const nightLoader: JSX.Element[] = []
     const overlayLoader: JSX.Element[] = []
     const map = scenario.map
     map.showCoords = false
@@ -461,6 +464,13 @@ export default function ScenarioDesigner() {
                                         selectCallback={selectHex} showTerrain={false} terrainCallback={() => {}}
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
+        nightLoader.push(
+          <g key={`${x}-${y}-n`} onClick={() => selectHex(hex.coord.x, hex.coord.y)}>
+            <MapHexNight hex={hex} maxX={width / scale} maxY={height / scale} scale={scale}
+                         showTerrain={false} terrainCallback={() => {}}
+                         svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
+          </g>
+        )
         const player = Number(deploySelected[deploySelected.length - 1])
         const turn = Number(deploySelected.substring(1, deploySelected.length - 2))
         const hexes = player === 1 ? map.alliedSetupHexes : map.axisSetupHexes
@@ -485,6 +495,7 @@ export default function ScenarioDesigner() {
     })
     setHexDisplay(hexLoader)
     setHexDisplayDetail(detailLoader)
+    setHexDisplayNight(nightLoader)
     setVictoryDisplay(victoryLoader)
     setUnitDisplay(map.counters.map((counter, i) => {
       return <MapCounter key={i} counter={counter} ovCallback={() => {}} />
@@ -521,6 +532,7 @@ export default function ScenarioDesigner() {
         <MapHexPatterns map={scenario.map} />
         {hexDisplay}
         {hexDisplayDetail}
+        {scenario.map.night ? hexDisplayNight : ""}
         {victoryDisplay}
         {unitDisplay}
         {tab === 3 && !["i-1", "i-2"].includes(deploySelected) ? overlayDisplay : ""}

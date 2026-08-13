@@ -56,10 +56,9 @@ export default class RoutCheckAction extends BaseAction {
     if (roll.result < check) {
       this.game.routNeeded.push({ unit, loc })
       this.game.addActionAnimations([{ loc, type: "rout" }])
-    } else if (this.routCheckMods.rally_mod !== undefined && roll.result >= check + 12 - this.routCheckMods.rally_mod) {
-      // TODO: check for existing data; won't break existing moves, theoretically
-      // could pull this after all games before id=69 deleted, if ever
+    } else if (roll.result >= check + 12 - this.routCheckMods.rally_mod) {
       unit.resetStatus()
+      unit.exhaust()
       this.game.addActionAnimations([{ loc, type: "rally" }])
       const vp = this.map.victoryAt(loc)
       if (vp && vp !== playerForNation(unit, this.game) && !this.map.contactAt(loc)) {

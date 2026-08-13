@@ -37,6 +37,7 @@ import { GameActionFireData, GameActionPath } from "../../../engine/GameAction";
 import { ActionAnimationDetails } from "../../../engine/Game";
 import FireAction from "../../../engine/actions/FireAction";
 import ActionAnimation from "./ActionAnimation";
+import MapHexNight from "./MapHexNight";
 
 interface MapDisplayProps {
   map: Map;
@@ -407,7 +408,10 @@ export default function MapDisplay({
                                         svgRef={svgRef as React.MutableRefObject<HTMLElement>}
                                         scale={scale} />)
         nightLoader.push(
-          <polygon key={`${x}-${y}-n`} points={hex.hexCoords} style={{ fill: `rgba(0,0,0,0.125)` }} />
+          <MapHexNight key={`${x}-${y}-n`} hex={hex} maxX={width / scale} maxY={height / scale} scale={scale}
+                       showTerrain={showTerrain} terrainCallback={showTerrain ?
+                         setTerrainInfoOverlay : () => setTerrainInfoOverlay(undefined) }
+                       svgRef={svgRef as React.MutableRefObject<HTMLElement>} />
         )
         const state = map.game?.gameState
         if (state && map.game?.currentUser === user) {
@@ -858,7 +862,7 @@ export default function MapDisplay({
           <g clipPath="url(#map-clip" transform={rotateTransform}>
             {hexDisplay}
             {hexDisplayDetail}
-            { map.night ? hexNightOverlay : 0 }
+            { map.night ? hexNightOverlay : "" }
             {fireTargets}
             {fireTrack}
             {counterDisplay}

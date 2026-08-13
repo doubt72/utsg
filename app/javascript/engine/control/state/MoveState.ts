@@ -106,6 +106,7 @@ export default class MoveState extends BaseState {
     const roadMove = alongRoad(hexFrom, hexTo, dir)
     const railroadMove = alongRailroad(hexFrom, hexTo, dir)
     if (!terrTo.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
+    if (!terrFrom.move && !roadMove && !railroadMove) { return hexOpenType.Closed }
     const next = selection.children[0]
     if (!terrTo.move && railroadMove) {
       if (selection.unit.isVehicle) { return hexOpenType.Closed }

@@ -44,6 +44,13 @@ export default function MovementSection({ section }: SectionProps) {
         roads, except only foot units can take advantage of them, and they don&apos;t give the same
         bonus of one additional hex.
       </p>
+      <p>
+        When following a road into otherwise impassible terrain, a unit can only leave the hex in
+        the direction of a road. When following a road into terrain with higher movement cost than
+        the road (e.g., a bridge over shallow water), if movement is made out of that hex not along
+        a road, if the movement cost of the next hex is lower than the current hex, the higher
+        movement cost of the current hex is used.
+      </p>
       <h3>{section}.4. Elevation</h3>
       <p>
         Elevation costs +1 movement when going uphill. There is no movement bonus for going
@@ -52,9 +59,9 @@ export default function MovementSection({ section }: SectionProps) {
       <h3>{section}.5. Victory Point Hexes</h3>
       <p>
         Victory points hexes are captured by units moving into the hex. Leaders cannot capture
-        victory point hexes by themselves, only infantry or vehicles can (crewed and infantry weapons
-        also can&apos;t capture victory hexes, nor can broken units, but none of those can move by
-        themselves in the first place).
+        victory point hexes by themselves, only infantry or vehicles can (crewed and infantry
+        weapons also can&apos;t capture victory hexes, nor can broken units, but none of those can
+        move by themselves in the first place).
       </p>
       <h3>{section}.6. Leader Bonus</h3>
       <p>
@@ -94,9 +101,7 @@ export default function MovementSection({ section }: SectionProps) {
         check, roll two ten-sided dice, adding the total together (2d10), and if the dice roll is
         equal or below that number, the vehicle is immobilized for the rest of the scenario.
       </p>
-      <p>
-        If a unit breaks down, all of the units it is carrying or towing are dropped.
-      </p>
+      <p>If a unit breaks down, all of the units it is carrying or towing are dropped.</p>
       <h3>{section}.9. Turning</h3>
       <p>
         If a unit has facing it can turn. The unit must pay the cost of the terrain to change

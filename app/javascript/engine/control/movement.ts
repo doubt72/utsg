@@ -67,12 +67,14 @@ export function movementPastCost(map: Map, target: Unit): number {
     const p2 = move.path[i+1]
     const loc1 = new Coordinate(p1.x, p1.y)
     const loc2 = new Coordinate(p2.x, p2.y)
-    pastCost += movementCost(map, loc1, loc2, target)
+    pastCost += movementCost(map, loc1, loc2, target, i)
   }
   return pastCost
 }
 
-export function movementCost(map: Map, from: Coordinate, to: Coordinate, target: Unit): number {
+export function movementCost(
+  map: Map, from: Coordinate, to: Coordinate, target: Unit, index: number = -1
+): number {
   const hexFrom = map.hexAt(from) as Hex;
   if (from.x === to.x && from.y === to.y) {  // When rotating in place
     if (hexFrom.road) {
@@ -97,6 +99,9 @@ export function movementCost(map: Map, from: Coordinate, to: Coordinate, target:
     cost = 1
   } else if (alongRoad(hexFrom, hexTo, dir, true)) {
     cost = 1
+  }
+  if (allAlongRoad(map, index) && (map.game?.moveState.path.length ?? 0) > 1 && !roadMove) {
+    if (terrFrom.move && terrTo.move && terrFrom.move > terrTo.move) { cost = terrFrom.move }
   }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     cost += terrFrom.borderMove as number
@@ -307,10 +312,10 @@ export function rollbackAddActions(
   }
 }
 
-function allAlongRoad(map: Map): boolean {
+function allAlongRoad(map: Map, index: number = -1): boolean {
   const game = map.game as Game
   if (game.moveState.addActions.filter(a => a.cost > 0).length > 0) { return false }
-  const length = game.moveState.path.length
+  const length = index >= 0 ? index + 1 : game.moveState.path.length
   for (let i = 0; i < length - 1; i++) {
     const p1 = game.moveState.path[i]
     const p2 = game.moveState.path[i+1]
