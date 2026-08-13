@@ -3,71 +3,27 @@ import Game from "../../../engine/Game";
 import JoinButton from "./buttons/JoinButton";
 import LeaveButton from "./buttons/LeaveButton";
 import StartButton from "./buttons/StartButton";
-import UndoButton from "./buttons/UndoButton";
-import PassButton from "./buttons/PassButton";
-import ReactionFireButton from "./buttons/ReactionFireButton";
-import ReactionIntensiveFireButton from "./buttons/ReactionIntensiveFireButton";
-import EnemyRoutButton from "./buttons/EnemyRoutButton";
-import FireButton from "./buttons/FireButton";
-import IntensiveFireButton from "./buttons/IntensiveFireButton";
-import MoveButton from "./buttons/MoveButton";
-import RushButton from "./buttons/RushButton";
-import AssaultMoveButton from "./buttons/AssaultMoveButton";
-import RoutButton from "./buttons/RoutButton";
-import MoveFinishButton from "./buttons/MoveFinishButton";
-import CancelActionButton from "./buttons/CancelActionButton";
-import MoveRotateToggleButton from "./buttons/MoveRotateToggleButton";
 import actionsAvailable from "../../../engine/control/actionsAvailable";
-import MoveShortToggleButton from "./buttons/MoveShortToggleButton";
-import MoveSmokeToggleButton from "./buttons/MoveSmokeToggleButton";
-import MoveLoadToggleButton from "./buttons/MoveLoadToggleButton";
-import UnselectButton from "./buttons/UnselectButton";
 import HelpButton from "./buttons/HelpButton";
-import BreakdownButton from "./buttons/BreakdownButton";
-import InitiativeButton from "./buttons/InitiativeButton";
-import ResignButton from "./buttons/ResignButton";
-import ResignCancelButton from "./buttons/ResignCancelButton";
-import PassCancelButton from "./buttons/PassCancelButton";
-import AssaultMoveFinishButton from "./buttons/AssaultMoveFinishButton";
-import AssaultMoveEntrenchButton from "./buttons/AssaultMoveEntrenchButton";
-import AssaultMoveClearButton from "./buttons/AssaultMoveClearButton";
-import ToggleSponsonButton from "./buttons/ToggleSponsonButton";
-import FireFinishButton from "./buttons/FireFinishButton";
-import MoraleCheckButton from "./buttons/MoraleCheckButton";
-import FireSmokeButton from "./buttons/FireSmokeButton";
-import ReactionPassButton from "./buttons/ReactionPassButton";
-import RoutEliminateButton from "./buttons/RoutEliminateButton";
-import RoutCheckButton from "./buttons/RoutCheckButton";
-import CloseCombatSelectButton from "./buttons/CloseCombatSelectButton";
-import CloseCombatReduceButton from "./buttons/CloseCombatReduceButton";
-import SniperButton from "./buttons/SniperButton";
-import PrecipCheckButton from "./buttons/PrecipCheckButton";
-import RallyButton from "./buttons/RallyButton";
-import RallyPassButton from "./buttons/RallyPassButton";
-import OverstackReduceButton from "./buttons/OverstackReduceButton";
-import SmokeCheckButton from "./buttons/SmokeCheckButton";
-import FireOutCheckButton from "./buttons/FireOutCheckButton";
-import FireSpreadCheckButton from "./buttons/FireSpreadCheckButton";
-import WeatherCheckButton from "./buttons/WeatherCheckButton";
-import FireDisplaceEliminateButton from "./buttons/FireDisplaceEliminateButton";
-import FireDisplaceConfirmButton from "./buttons/FireDisplaceConfirmButton";
-import FireDisplaceCancelButton from "./buttons/FireDisplaceCancelButton";
-import FireStartCheckButton from "./buttons/FireStartCheckButton";
 import KickButton from "./buttons/KickButton";
-import CancelMoveButton from "./buttons/CancelMoveButton";
-import UndeployButton from "./buttons/UnDeployButton";
-import SplitSquadButton from "./buttons/SplitSquadButton";
-import JoinSquadButton from "./buttons/JoinSquadButton";
 import GameOverMenuButton from "./buttons/GameOverMenuButton";
-import FinishDeployButton from "./buttons/FinishDeployButton";
 import { ClockHistory, ExclamationCircle, ExclamationTriangle, HexagonHalf } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
-import DeleteGameButton from "./buttons/DeleteGameButton";
-import ShortMoveButton from "./buttons/ShortMoveButton";
-import SkipShortMoveButton from "./buttons/SkipShortMoveButton";
-import AssaultMoveAbandonButton from "./buttons/AssaultMoveAbandonButton";
-import AssaultMoveRepairButton from "./buttons/AssaultMoveRepairButton";
-import AssaultMoveCrewButton from "./buttons/AssaultMoveCrewButton";
+import {
+  AssaultMoveAbandonButton, AssaultMoveButton, AssaultMoveClearButton, AssaultMoveCrewButton,
+  AssaultMoveEntrenchButton, AssaultMoveFinishButton, AssaultMoveRepairButton, BreakdownButton,
+  CancelActionButton, CancelMoveButton, CloseCombatReduceButton, CloseCombatSelectButton,
+  DeleteGameButton, EnemyRoutButton, FinishDeployButton, FireButton, FireDisplaceCancelButton,
+  FireDisplaceConfirmButton, FireDisplaceEliminateButton, FireFinishButton, FireOutCheckButton,
+  FireSmokeButton, FireSpreadCheckButton, FireStartCheckButton, InitiativeButton, IntensiveFireButton,
+  JoinSquadButton, MoraleCheckButton, MoveButton, MoveFinishButton, MoveLoadToggleButton,
+  MoveRotateToggleButton, MoveShortToggleButton, MoveSmokeToggleButton, OverstackReduceButton,
+  PassButton, PassCancelButton, PrecipCheckButton, RallyButton, RallyPassButton, ReactionFireButton,
+  ReactionIntensiveFireButton, ReactionPassButton, ResignButton, ResignCancelButton, RoutButton,
+  RoutCheckButton, RoutEliminateButton, RushButton, ShortMoveButton, SkipShortMoveButton,
+  SmokeCheckButton, SniperButton, SplitSquadButton, ToggleSponsonButton, UndeployButton,
+  UndoButton, UnselectButton, WeatherCheckButton
+} from "./buttons/ControlButtons";
 
 interface GameControlsProps {
   game: Game;
@@ -82,6 +38,19 @@ export default function GameControls({
   const [controls, setControls] = useState<JSX.Element[]>([])
   const [specialRules, setSpecialRules] = useState<JSX.Element | undefined>(undefined)
   const [internalUpdate, setInternalUpdate] = useState(0)
+
+  useEffect(() => {
+    if (localStorage.getItem("hotkeys") === "true") {
+      const hotKeyListener = (e: KeyboardEvent) => {
+        console.log(`${e.key} c:${e.ctrlKey} a:${e.altKey} s:${e.shiftKey}`)
+      }
+      window.addEventListener('keyup', hotKeyListener)
+
+      return () => {
+        window.removeEventListener('keyup', hotKeyListener)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!game.id) { return }

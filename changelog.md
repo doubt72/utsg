@@ -6,7 +6,7 @@
   - Allow only machine guns to be added if multi-target
   - Should not be able to select units that are out of range or LOS
   - Remove finish rotation / unselect target if rotating again
-- Added hotkeys (conflict with browser controls on windows, so disabled by default)
+- Refactored buttons, added hotkeys (disabled by default)
 - Allow return key event listener to close windows
 - Bug fix: tank crew player should handle tank crew escape morale check
 - Bug fix: resign tooltip should be above vertical button, not off screen

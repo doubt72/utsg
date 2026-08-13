@@ -1,8 +1,8 @@
 import React from "react";
 import { QuestionCircle, ShieldFillExclamation, ShieldFillX, XCircle } from "react-bootstrap-icons";
-import UndoButton from "./controls/buttons/UndoButton";
 import Game from "../../engine/Game";
 import { helpIndexByName } from "../help/helpData";
+import { UndoButton } from "./controls/buttons/ControlButtons";
 
 interface ErrorDisplayProps {
   game: Game;

@@ -32,7 +32,7 @@ export default function Profile() {
 
   const [colorblind, setColorblind] = useState<boolean>(false)
   const [animations, setAnimations] = useState<boolean>(false)
-  const [hotkeys, setHotkeys] = useState<boolean>(false)
+  const [hotkeys, setHotkeys] = useState<string>("")
   const [notifications, setNofications] = useState<boolean>(true)
 
   const [header, setHeader] = useState<JSX.Element | undefined>()
@@ -87,7 +87,7 @@ export default function Profile() {
   useEffect(() => {
     setColorblind(localStorage.getItem("colorblind") === "true")
     setAnimations(localStorage.getItem("noanim") === "true")
-    setHotkeys(localStorage.getItem("hotkeys") === "true")
+    setHotkeys(localStorage.getItem("hotkeys") ?? "")
     setNofications(localStorage.getItem("notifications") === "true")
   }, [])
 
@@ -146,12 +146,25 @@ export default function Profile() {
             <div>
               <CustomCheckbox onClick={() => {
                 setHotkeys(s => {
-                  localStorage.setItem("hotkeys", s ? "false" : "true")
-                  return !s
+                  const set = s === "A" ? "" : "A"
+                  localStorage.setItem("hotkeys", set)
+                  return set
                 })
-              }} selected={hotkeys}/>
+              }} selected={hotkeys === "A"}/>
               <span className="font11em">
-                enable hotkeys (conflicts will override default browser control keys)
+                use plain key hotkeys
+              </span>
+            </div>
+            <div>
+              <CustomCheckbox onClick={() => {
+                setHotkeys(s => {
+                  const set = s === "C" ? "" : "C"
+                  localStorage.setItem("hotkeys", set)
+                  return set
+                })
+              }} selected={hotkeys === "C"}/>
+              <span className="font11em">
+                use control hotkeys (typically won&apos;t work on Windows)
               </span>
             </div>
             <p className="mt1em">
