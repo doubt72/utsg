@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Withdrawal by Measures"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 9, 1].freeze
     LAYOUT = [15, 11, "x"].freeze

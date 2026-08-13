@@ -1,5 +1,7 @@
 Features/Bug Fixes
   - Think about moving off bridges in slow terrain
+  - Terrain overlay doesn't work at night
+  - Rout rally should be exhausted
   - After game replay
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel

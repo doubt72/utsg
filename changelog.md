@@ -1,3 +1,8 @@
+# 0.120
+
+- Promoted 402
+- Added prototype 017, 018
+
 # 0.119
 
 - Refactor fire control flow
