@@ -1,3 +1,9 @@
+# 0.121
+
+- Bug fix: movement bug introduced by previous bridge fix
+- Promoted 000 (eh...  It's even enough for a tutorial, testing probably won't help)
+- Updated 004
+
 # 0.120
 
 - New announcement

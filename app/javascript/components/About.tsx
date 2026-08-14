@@ -79,7 +79,8 @@ export default function About() {
             elevation or crazy weather to worry about. From there, there are lots of choices: in
             particular, pay attention to the map size and what units are included in the scenario
             descriptions. Note that playing as the attacker is much more difficult for beginners
-            than defending, and that&apos;s particularly true of some scenarios.
+            than defending, and that&apos;s true to a greater or lesser extent depending on the
+            scenario.
           </p>
           <p>
             There is also a video{" "}

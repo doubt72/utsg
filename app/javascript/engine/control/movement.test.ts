@@ -3481,4 +3481,29 @@ describe("movement", () => {
     expect(game.gameState?.openHex(1, 1)).toBe(hexOpenType.Closed)
     expect(game.gameState?.openHex(1, 3)).toBe(hexOpenType.Closed)
   })
+
+  test("movement from higher cost terrain is correct", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o", st: { sh: "l" }, d: 1 }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.gameState?.openHex(1, 2)).toBe(1)
+    expect(game.gameState?.openHex(1, 1)).toBe(1)
+
+    game.moveState.move(1, 2)
+    expect(movementPastCost(map, unit)).toBe(1)
+    expect(game.gameState?.openHex(0, 2)).toBe(1)
+    expect(game.gameState?.openHex(0, 1)).toBe(1)
+  })
 });

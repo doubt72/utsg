@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Simple Matter"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 5, 15].freeze
     LAYOUT = [15, 11, "x"].freeze

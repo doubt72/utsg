@@ -101,7 +101,9 @@ export function movementCost(
     cost = 1
   }
   if (allAlongRoad(map, index) && (map.game?.moveState.path.length ?? 0) > 1 && !roadMove) {
-    if (terrFrom.move && terrTo.move && terrFrom.move > terrTo.move) { cost = terrFrom.move }
+    if (terrFrom.move && terrTo.move && terrFrom.move > terrTo.move && hexFrom.road) {
+      cost = terrFrom.move
+    }
   }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {
     cost += terrFrom.borderMove as number

@@ -1,8 +1,5 @@
 Features/Bug Fixes
-  + Think about moving off bridges in slow terrain
-  + Terrain overlay doesn't work at night
-  + Rout rally should be exhausted
-  + Make new beginner scenario 000
+  + Fix new movement bug
   - After game replay
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
@@ -13,7 +10,6 @@ Features/Bug Fixes
 004 [Mud]
 103 [Italians]
 302 [Mortain]
-402 [Kokoda]
 406 (Tarawa)
 
 Nice to Have Eventually:
