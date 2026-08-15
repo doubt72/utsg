@@ -21,7 +21,7 @@ import Feature from "./Feature";
 export type DeployHexes = [string | number, string | number][]
 
 type MapLayout = [ number, number, "x" | "y" ];
-type DeployHexesTurn = { [index: string]: DeployHexes }
+export type DeployHexesTurn = { [index: string]: DeployHexes }
 
 export type MapData = {
   layout: MapLayout;

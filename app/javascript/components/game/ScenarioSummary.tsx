@@ -7,6 +7,7 @@ import Scenario, { ScenarioData } from "../../engine/Scenario";
 import { clearColor, starPath } from "../../utilities/graphics";
 import { Coordinate } from "../../utilities/commonTypes";
 import { getAPI, postAPI } from "../../utilities/network";
+import MapDeployDisplay from "./map/MapDeployDisplay";
 
 export function ratingStars(rating: number) {
   const stars: number[] = []
@@ -177,6 +178,54 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
     )
   }
 
+  const reinforcementSchedule = () => {
+    let pScale = scale() / 3
+    while (map.height * pScale < 0.8) { pScale *= 1.1 }
+    const rc: JSX.Element[] = []
+    for (let t = 0; t <= scenario.turns; t++) {
+      for (let pp = 1; pp <= 2; pp++) {
+        const p = t === 0 ? (scenario.firstDeploy === 1 ? pp : 3 - pp) : (scenario.firstAction === 1 ? pp : 3 - pp)
+        if ((p === 1 && scenario.alliedReinforcements[t]) ||
+            (p === 2 && scenario.axisReinforcements[t])) {
+          const fill = `url(#nation-${p === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]}-9)`
+          const units = p === 1 ? scenario.alliedUnitTurnList(t) : scenario.axisUnitTurnList(t)
+          rc.push(
+            <div key={`${t}-${p}`} className="background-gray corner-round mt05em p05em flex">
+              <div className="background-light corner-round edge-line flex-vertical p05em mr05em"
+                   style={{ width: "2.4em" }}>
+                <div className="flex-fill" />
+                <div className="rotate-text-schedule nowrap">
+                  { t === 0 ? "SETUP" : `TURN ${t}` }
+                </div>
+                <svg width={20} height={20} viewBox="0 0 20 20" style={{ minWidth: 16 }}>
+                  <circle cx={10} cy={10} r={9}
+                          style={{ fill, strokeWidth: 1, stroke: "black" }}/>
+                </svg>
+              </div>
+              {units.map((unit, i) => {
+                if (unit.x !== undefined) {
+                  return (
+                    <div key={i} className="flex nowrap mb05em">
+                      <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
+                      <CounterDisplay unit={unit.counter} />
+                    </div>
+                  )
+                } else {
+                  return <CounterDisplay key={i} unit={unit.counter} />
+                }
+              })}
+              <div className="flex-fill"></div>
+              <div className="background-dark edge-line-dark corner-round p025em">
+                <MapDeployDisplay scenario={scenario} scale={pScale} player={p} turn={t} />
+              </div>
+            </div>
+          )
+        }
+      }
+    }
+    return rc
+  }
+
   const scale = () => {
     return 6 / (map.width + map.height)
   }
@@ -234,6 +283,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         </div>
         <div className="flex-fill">
           <div className="flex flex-wrap">
+            <div className="flex-fill"></div>
             {scenario.alliedUnitList.map((unit, i) => {
               if (unit.x !== undefined) {
                 return (
@@ -248,6 +298,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
             })}
           </div>
           <div className="flex flex-wrap">
+            <div className="flex-fill"></div>
             {scenario.axisUnitList.map((unit, i) => {
               if (unit.x !== undefined) {
                 return (
@@ -263,6 +314,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           </div>
         </div>
       </div>
+      { reinforcementSchedule() }
     </div>
   )
 }

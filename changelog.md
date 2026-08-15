@@ -1,3 +1,11 @@
+# 0.122
+
+- Added reinforcement schedule to scenario preview
+- Added Vichy France faction
+- Added Prototype 113
+- Updated/promoted 302
+- Updated 207
+
 # 0.121
 
 - Update about page with new tutorial scenario

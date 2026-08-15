@@ -111,6 +111,9 @@ module Utility
               ["ussr", "Rifle", 0, 3, 7, 3, 4, {}],
               ["ussr", "SMG", 0, 3, 7, 2, 4, { a: 1 }],
               ["ussr", "Militia", 0, 2, 6, 2, 3, {}],
+
+              ["vcf", "BAR", 0, 3, 8, 4, 4, { a: 1, s: 1 }],
+              ["vcf", "Colonial", 0, 2, 6, 3, 3, {}],
             ].each do |unit|
               squad = { t: "sqd", i: "squad", s: 6 }
               unit.each_with_index do |v, i|

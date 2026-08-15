@@ -28,6 +28,7 @@ module Utility
         { name: "Japanese", code: "jap", nations: ["jap"] },
         # ...Move this to minors? (anything > 5 scenarios = include here)
         { name: "Finnish", code: "fin", nations: ["fin"] },
+        { name: "Vichy French", code: "vcf", nations: ["vcf"] },
         # { name: "Chinese", code: "chb", nations: ["chb2 chg"] },
         # { name: "Communist", code: "com", nations: %w[ussr chc nk vie] },
         # { name: "Nationalist", code: "nsp", nations: ["nsp"] },

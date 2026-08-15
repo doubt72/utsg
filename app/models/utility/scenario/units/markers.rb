@@ -41,6 +41,7 @@ module Utility
               turn18: { mk: 1, type: "turn", v: "fra", v2: "ger" },
               turn18b: { mk: 1, type: "turn", v: "frf", v2: "ger" },
               turn18c: { mk: 1, type: "turn", v: "frf", v2: "ita" },
+              turn18d: { mk: 1, type: "turn", v: "usa", v2: "vcf" },
               turn19: { mk: 1, type: "turn", v: "nor", v2: "ger" },
               turn20: { mk: 1, type: "turn", v: "yug", v2: "ger" },
               turn21: { mk: 1, type: "turn", v: "gre", v2: "ger" },

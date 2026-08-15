@@ -48,7 +48,7 @@ export default function MapHexPatterns({ map }: MapHexPatternProps) {
   }
 
   const nations = [
-    "ger", "ita", "jap", "fin", "bul", "hun", "rom", "slv", "cro",
+    "ger", "ita", "jap", "fin", "bul", "hun", "rom", "slv", "cro", "vcf",
     "uk", "usa", "ussr", "chi", "fra",
     "frf", "sa", "can", "aus", "nz", "ind", "bra", "pol", "bel", "dut", "nor", "yug", "gre",
     "rsp", "eth", "bol", "chb",

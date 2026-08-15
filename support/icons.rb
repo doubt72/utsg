@@ -2880,6 +2880,14 @@ File.open('fra.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('vcf.svg', 'w') do |file|
+  file.puts header
+  write_circle(50, 50, 40, file, true, "#D00")
+  write_circle(50, 50, 26.7, file, true, "#FFF")
+  write_circle(50, 50, 13.3, file, true, "#007")
+  file.puts footer
+end
+
 File.open('frf.svg', 'w') do |file|
   file.puts header
   top = 32

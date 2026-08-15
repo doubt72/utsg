@@ -37,6 +37,8 @@ module Utility
               ["usa", "75mm M1 Pack", 27], ["usa", "75mm M1897", 40],
 
               ["ussr", "76mm ZiS-3", 28],
+
+              ["vcf", "75mm M1897", 0], ["vcf", "37mm M1916", 16],
             ].each do |unit|
               gun = { t: "gun", i: "gun" }
               unit.each_with_index do |v, i|
@@ -82,6 +84,8 @@ module Utility
 
               ["ussr", "45mm 19-K", 34], ["ussr", "45mm 53-K", 37], ["ussr", "45mm M-42", 42],
               ["ussr", "57mm ZiS-2", 41], ["ussr", "76mm F-22", 37], ["ussr", "100mm BS-3", 44],
+
+              ["vcf", "25mm Hotchkiss", 34, { sn: 1 }], ["vcf", "47mm APX", 39],
             ].each do |unit|
               at = { t: "gun", i: "atgun" }
               unit.each_with_index do |v, i|

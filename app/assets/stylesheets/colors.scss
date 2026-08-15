@@ -49,6 +49,14 @@ $unit-dark-red: #C00;
   background-color: $gray-d;
 }
 
+.background-light {
+  background-color: $gray-e;
+}
+
+.background-dark {
+  background-color: $gray-a;
+}
+
 .nation-ussr { background-color: #DA7; }
 .nation-usa { background-color: #BC7; }
 .nation-bra { background-color: #BC7; }
@@ -90,6 +98,7 @@ $unit-dark-red: #C00;
 .nation-rom { background-color: #8CD; }
 .nation-slv { background-color: #8CD; }
 .nation-cro { background-color: #8CD; }
+.nation-vcf { background-color: #BBF; }
 
 // interwar
 .nation-nsp { background-color: #FC5; }

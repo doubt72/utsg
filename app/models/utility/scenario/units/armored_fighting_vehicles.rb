@@ -77,6 +77,8 @@ module Utility
               ["ussr", "Churchill II", 41], ["ussr", "Churchill III", 42],
               ["ussr", "M3 Stuart", 41, { bd: 4 }], ["ussr", "M3 Grant", 41, { bd: 4 }],
               ["ussr", "M4 Sherman", 43], ["ussr", "M4A1(76) Sherman", 44, { sn: 3 }],
+
+              ["vcf", "Renault FT", 40],
             ].each do |unit|
               tank = { t: "tank", i: "tank" }
               unit.each_with_index do |v, i|

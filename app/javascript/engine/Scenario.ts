@@ -200,6 +200,20 @@ export default class Scenario {
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
   }
 
+  alliedUnitTurnList(turn: number): ReinforcementItem[] {
+    if (!this.alliedReinforcements &&
+      (this.rawData.metadata.init_allied_units?.length ?? 0) < 1) { return [] }
+    const counts: ReinforcementList = this.alliedReinforcements[turn]
+    return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
+  }
+
+  axisUnitTurnList(turn: number): ReinforcementItem[] {
+    if (!this.axisReinforcements &&
+      (this.rawData.metadata.init_axis_units?.length ?? 0) < 1) { return [] }
+    const counts: ReinforcementList = this.axisReinforcements[turn]
+    return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
+  }
+
   takeAlliedReinforcement(turn: number, key: string): Unit | Feature {
     const entry = this.alliedReinforcements[turn][key]
     if (entry.used >= entry.x) {

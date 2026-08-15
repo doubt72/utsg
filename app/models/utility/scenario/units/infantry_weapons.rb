@@ -49,6 +49,9 @@ module Utility
 
               ["ussr", "DP-27", 28], ["ussr", "SG-43", 43], ["ussr", "PM M1910", 10],
               ["ussr", "DShK", 38],
+
+              ["vcf", "M1915 Chauchat", 15, { sn: 1 }], ["vcf", "M1915 Hotchkiss", 14, { sn: 1 }],
+              ["vcf", "FM 24/29", 25],
             ].each do |unit|
               mg = { t: "sw", i: "mg" }
               unit.each_with_index do |v, i|

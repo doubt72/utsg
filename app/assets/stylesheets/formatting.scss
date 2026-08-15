@@ -25,6 +25,7 @@
 
 .p1em { padding: 1em }
 .p05em { padding: 0.5em }
+.p025em { padding: 0.25em }
 
 .pt05em { padding-top: 0.5em; }
 .pb05em { padding-bottom: 0.5em; }
@@ -79,6 +80,10 @@
 
 .edge-line {
   border: 2px solid $gray-c;
+}
+
+.edge-line-dark {
+  border: 2px solid $gray-9;
 }
 
 .control-large {

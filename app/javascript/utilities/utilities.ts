@@ -69,6 +69,7 @@ export function axisCodeToName(code: string): string {
     { name: "Romanian", code: "rom" },
     { name: "Slovakian", code: "slo" },
     { name: "Croatian", code: "cro" },
+    { name: "Vichy French", code: "vcf" },
 
     // Interwar
     { name: "Nationalist", code: "rsp" },
@@ -382,4 +383,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.121"
+export const serverVersion = "0.122"

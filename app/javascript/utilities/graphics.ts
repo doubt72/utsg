@@ -164,7 +164,7 @@ export function dustTextColor(): string { return colorLookup("dustTextColor") }
 export function nationalColorLookup(key: string): string {
   if (colorblind()) return {
     ussr: "#BBF", usa: "#BBF", uk: "#BBF", fra: "#BBF", frf: "#BBF", chi: "#BBF", alm: "#BBF",
-    ger: "#E0D044", ita: "#E0D044", jap: "#E0D044", fin: "#E0D044", axm: "#E0D044",
+    ger: "#E0D044", ita: "#E0D044", jap: "#E0D044", fin: "#E0D044", axm: "#E0D044", vcf: "#BBF",
     none: "white", fort: "white",
 
     sa: "#BBF", can: "#BBF", aus: "#BBF", nz: "#BBF", ind: "#BBF", bra: "#BBF",
@@ -180,7 +180,7 @@ export function nationalColorLookup(key: string): string {
   }[key] ?? "#777"
   return {
     ussr: "#DA7", usa: "#BC7", uk: "#DC9", fra: "#BBF", frf: "#BBF", chi: "#ECF", alm: "#FA9",
-    ger: "#BBB", ita: "#9DC", jap: "#E0D044", fin: "#DDD", axm: "#8CD",
+    ger: "#BBB", ita: "#9DC", jap: "#E0D044", fin: "#DDD", axm: "#8CD", vcf: "#BBF",
     none: "white", fort: "white",
 
     sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#BC7",
@@ -199,7 +199,7 @@ export function nationalColorLookup(key: string): string {
 export function nationalControlLookup(key: string): string {
   if (colorblind()) return {
     ussr: "#BBF", usa: "#BBF", uk: "#BBF", fra: "#BBF", frf: "#BBF", chi: "#BBF", alm: "#BBF",
-    ger: "#E0D044", ita: "#E0D044", jap: "#E0D044", fin: "#E0D044", axm: "#E0D044",
+    ger: "#E0D044", ita: "#E0D044", jap: "#E0D044", fin: "#E0D044", axm: "#E0D044", vcf: "#BBF",
     none: "white", fort: "white",
 
     sa: "#BBF", can: "#BBF", aus: "#BBF", nz: "#BBF", ind: "#BBF", bra: "#BBF",
@@ -215,7 +215,7 @@ export function nationalControlLookup(key: string): string {
   }[key] ?? "#777"
   return {
     ussr: "#DA7", usa: "#570", uk: "#DC9", fra: "#EEE", frf: "#FFF", chi: "#EEE", alm: "#FA9",
-    ger: "#BBB", ita: "#9DC", jap: "#FFF", fin: "#BBB", axm: "#8CD",
+    ger: "#BBB", ita: "#9DC", jap: "#FFF", fin: "#BBB", axm: "#8CD", vcf: "#FFF",
     none: "white", fort: "white",
 
     sa: "#DC9", can: "#DC9", aus: "#DC9", nz: "#DC9", ind: "#DC9", bra: "#570",

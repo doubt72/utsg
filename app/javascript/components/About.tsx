@@ -73,13 +73,13 @@ export default function About() {
           </p>
           <p>
             If you&apos;re looking for a quick introduction to the game, scenario{" "}
-            <strong>000</strong>: <em>A Simple Matter</em> is a simple infantry meeting engagement
-            indended as a tutorial scenario, with no tanks or artillery or wires or mines, and no
-            elevation or crazy weather or more fiddly rules to worry about. From there, there are
-            lots of choices: in particular, pay attention to the map size and what units are
-            included in the scenario descriptions. Note that playing as the attacker is much more
-            difficult for beginners than defending, and that&apos;s true to a greater or lesser
-            extent depending on the scenario.
+            <strong>000</strong>: <em>A Simple Matter</em> is a straightforward infantry meeting
+            engagement indended as a tutorial scenario, with no tanks or artillery or wires or
+            mines, and no elevation or crazy weather or any of the more fiddly rules to worry about.
+            From there, there are lots of choices: in particular, pay attention to the map size and
+            what units are included in the scenario descriptions. Note that playing as the attacker
+            is can be much more difficult for beginners than defending, though that&apos;s true to a
+            greater or lesser extent depending on the scenario.
           </p>
           <p>
             There is also a video{" "}

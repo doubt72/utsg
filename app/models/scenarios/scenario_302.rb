@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Counterattack!"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 8, 7].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -19,10 +19,10 @@ module Scenarios
         [5, :usa_rifle_s],
         [2, :usa_m1918_bar],
         :usa_m2_browning,
-        [2, :usa_m1a1_bazooka],
+        [3, :usa_m1a1_bazooka],
         :usa_m2_mortar,
         :usa_radio_155mm,
-        [3, :foxhole],
+        [2, :foxhole],
       ] },
     }.freeze
 
@@ -40,7 +40,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,

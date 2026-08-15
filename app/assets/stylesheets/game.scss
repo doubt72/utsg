@@ -105,6 +105,13 @@
   padding: 0.5em 1em;
 }
 
+.rotate-text-schedule {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.95em;
+  rotate: -90deg;
+  translate: 0.15em -0.1em;
+}
+
 // Chat/Action sections
 
 .game-chat-output {

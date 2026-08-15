@@ -64,6 +64,10 @@ export default function DebugIndex() {
             [ <Link to={"/debug/stats/scenarios-p/fin"}>proto</Link> ]
           </li>
           <li>
+            <Link to={"/debug/stats/scenarios/vcf"}>vichy french</Link>&nbsp;
+            [ <Link to={"/debug/stats/scenarios-p/vcf"}>proto</Link> ]
+          </li>
+          <li>
             <Link to={"/debug/stats/scenarios/axm"}>axis minors</Link>&nbsp;
             [ <Link to={"/debug/stats/scenarios-p/axm"}>proto</Link> ]
           </li>
@@ -88,6 +92,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/ita"}>italian</Link></li>
           <li><Link to={"/debug/units/jap"}>japanese</Link></li>
           <li><Link to={"/debug/units/fin"}>finnish</Link></li>
+          <li><Link to={"/debug/units/vcf"}>vichy french</Link></li>
           <li><Link to={"/debug/units/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -110,6 +115,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/units/year/ita"}>italian</Link></li>
           <li><Link to={"/debug/units/year/jap"}>japanese</Link></li>
           <li><Link to={"/debug/units/year/fin"}>finnish</Link></li>
+          <li><Link to={"/debug/units/year/vcf"}>vichy french</Link></li>
           <li><Link to={"/debug/units/year/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -164,6 +170,7 @@ export default function DebugIndex() {
           <li><Link to={"/debug/markers/ita"}>italian</Link></li>
           <li><Link to={"/debug/markers/jap"}>japanese</Link></li>
           <li><Link to={"/debug/markers/fin"}>finnish</Link></li>
+          <li><Link to={"/debug/markers/vcf"}>vichy french</Link></li>
           <li><Link to={"/debug/markers/axm"}>axis minors</Link></li>
         </ul>
       </div>
@@ -218,6 +225,10 @@ export default function DebugIndex() {
           <li>
             <Link to={"/debug/stats/units/fin"}>finnish</Link>&nbsp;
             [ <Link to={"/debug/stats/units-p/fin"}>proto</Link> ]
+          </li>
+          <li>
+            <Link to={"/debug/stats/units/vcf"}>vichy french</Link>&nbsp;
+            [ <Link to={"/debug/stats/units-p/vcf"}>proto</Link> ]
           </li>
           <li>
             <Link to={"/debug/stats/units/axm"}>axis minors</Link>&nbsp;

@@ -36,7 +36,7 @@ module Utility
 
         def all_factions
           %w[
-            ger ita jap fin axm ussr usa uk fra chi alm rsp nsp un chc doi pak isr arl
+            ger ita jap fin vcf axm ussr usa uk fra chi alm rsp nsp un chc doi pak isr arl
           ]
         end
 
