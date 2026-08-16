@@ -1,9 +1,5 @@
 Features/Bug Fixes
-  - Don't say crew escaped unless tank or spg
-  - 302
-    - minus some foxholes
-    - 6 turns
-    - Add one bazooka
+  + Don't say crew escaped unless tank or spg
   - After game replay
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel

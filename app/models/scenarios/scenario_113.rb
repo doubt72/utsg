@@ -27,8 +27,8 @@ module Scenarios
       "0": { list: [
         [2, :vcf_leader_4_1],
         [6, :vcf_colonial_s],
-        :vcf_crew_t,
-        :vcf_75mm_m1897,
+        [2, :vcf_crew_t],
+        [2, :vcf_75mm_m1897],
         [2, :vcf_m1915_chauchat],
       ] },
       "2": { list: [

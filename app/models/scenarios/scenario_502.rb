@@ -76,10 +76,10 @@ module Scenarios
           divisions had been routed and were in full retreat.  In the
           confusion the French response was delayed, until finally French
           finally committed their armor to try and fill the gap. The French
-          armor was very slow, though and took a long time until it finally
-          arrived, allowing the Germans to advance some ways; once they did
-          arrive, however, the Germans had quite a bit of difficulty dealing
-          with the tougher French tanks.",
+          armor was very slow and it took a long time until it finally
+          arrived, allowing the Germans to advance significantly in the
+          meantime; once it did arrive, however, the Germans had quite a bit
+          of difficulty dealing with the tougher French tanks.",
           "Eventually, though, the better coordination of the faster German
           tanks formations told, and the Germans also brough up more powerful
           dual-purpose 8.8cm FlaK guns to help support the attack.  A bigger

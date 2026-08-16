@@ -98,7 +98,7 @@ module Scenarios
             "0": 0.upto(22).map do |y|
               (((y - 12).abs / 2) + 3).abs.upto(14).map { |x| [x, y] }
             end.flatten(1),
-            "3": 10.upto(14).map { |x| [x, 20] }.concat(15.upto(20).map { |y| [14, y] }),
+            "3": 10.upto(14).map { |x| [x, 22] }.concat(17.upto(22).map { |y| [14, y] }),
           },
           axis_setup: {
             "0": 0.upto(22).map do |y|

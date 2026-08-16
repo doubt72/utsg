@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario509 < Base
     ID = "509"
-    NAME = "Lightning Strikes"
+    NAME = "Arriving Storm"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"

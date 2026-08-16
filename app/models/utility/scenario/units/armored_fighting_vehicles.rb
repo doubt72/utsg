@@ -158,7 +158,7 @@ module Utility
               ["ger", "SdKfz 221", 35], ["ger", "SdKfz 222", 37], ["ger", "SdKfz 234/1", 43],
               ["ger", "SdKfz 234/2", 43], ["ger", "SdKfz 234/3", 44], ["ger", "SdKfz 234/4", 44],
 
-              ["ita", "Autoblindo 41", 41],
+              ["ita", "Autoblindo 41", 41], ["ita", "Lancia 1ZM", 18],
 
               ["jap", "Chiyoda AC", 31], ["jap", "Sumida Type 91", 33, { sn: 1 }],
 

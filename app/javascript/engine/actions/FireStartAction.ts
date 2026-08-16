@@ -46,7 +46,7 @@ export default class FireStartAction extends BaseAction {
     let result = `<span style="color: ${passBlue()};">no effect</span>`
     if (this.needed >= this.diceResult.result.result) {
       result = `blaze <span style="color: ${failRed()};">starts</span>`
-    } else if (this.diceResult.result.result <= 7 && this.startData.vehicle) {
+    } else if (this.diceResult.result.result <= 7 && this.startData.vehicle && this.startData.tank) {
       result += `, <span style="color: ${passGreen()};">crew escapes</span>`
     }
     const loc = formatCoordinate(new Coordinate(this.hex.x, this.hex.y))
