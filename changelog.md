@@ -3,7 +3,7 @@
 - Added reinforcement schedule to scenario preview
 - Added Vichy France faction
 - Bug fix: don't show crew escape in action display unless vehicle is tank
-- Added Prototype 113, 114
+- Added Prototype 113, 114, 313, 314
 - Updated/promoted 302
 - Updated 104, 207, 502, 509, 609
 
