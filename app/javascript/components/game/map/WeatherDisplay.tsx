@@ -34,16 +34,16 @@ export default function WeatherDisplay({
   useEffect(() => {
     const prev = preview
     setX({
-      current: xx + 10,
-      base: xx + 100,
-      precip: xx + (prev ? 190 : 100),
-      hex: xx + (prev ? 356 : 95),
+      current: xx + (prev ? 55 : 10),
+      base: xx + 10,
+      precip: xx + (prev ? 100 : 100),
+      hex: xx + (prev ? 95 : 95),
     })
     setY({
-      current: yy + (prev ? 60 : 10),
-      base: yy + 60,
-      precip: yy + (prev ? 60 : 10),
-      hex: yy + (prev ? 80 : 170),
+      current: yy + (prev ? 160 : 10),
+      base: yy + 50,
+      precip: yy + (prev ? 50 : 10),
+      hex: yy + (prev ? 330 : 170),
     })
   }, [xx, yy, preview])
 
@@ -76,12 +76,13 @@ export default function WeatherDisplay({
       </text>
     </g>
 
-    const xTextOffset = prev ? 4 : 5
+    const xTextOffset = prev ? 40 : 5
     const yTextOffset = prev ? -6 : 15
     const current = <g>
       <path d={baseCounterPath(x.current, y.current)}
             style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-      <text x={x.current + xTextOffset} y={y.current + yTextOffset} fontSize={16} textAnchor="start"
+      <text x={x.current + xTextOffset} y={y.current + yTextOffset} fontSize={16}
+            textAnchor={prev ? "middle" : "start"}
             fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
         { prev ? "start" : "current" }
       </text>
@@ -90,7 +91,8 @@ export default function WeatherDisplay({
     const precip = <g>
       <path d={baseCounterPath(x.precip, y.precip)}
             style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-      <text x={x.precip + xTextOffset} y={y.precip + yTextOffset} fontSize={16} textAnchor="start"
+      <text x={x.precip + xTextOffset} y={y.precip + yTextOffset} fontSize={16}
+            textAnchor={prev ? "middle" : "start"}
             fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
         precip
       </text>
@@ -100,27 +102,32 @@ export default function WeatherDisplay({
       const base = <g>
         <path d={baseCounterPath(x.base, y.base)}
               style={{ fill: "white", stroke: "black", strokeWidth: 1.5 }} />
-        <text x={x.base + xTextOffset} y={y.base + yTextOffset} fontSize={16} textAnchor="start"
+        <text x={x.base + xTextOffset} y={y.base + yTextOffset} fontSize={16}
+              textAnchor={prev ? "middle" : "start"}
               fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
           base
         </text>
       </g>
       setBase(
         <g>
-          <path d={roundedRectangle(xx, yy, 442, 169)}
+          <path d={roundedRectangle(xx, yy, 190, 456)}
                 style={{ fill: map?.baseTerrainColor, stroke: "#CCC", strokeWidth: 2 }} />
           {
             map?.night ? 
-              <path d={roundedRectangle(xx, yy, 442, 169)}
+              <path d={roundedRectangle(xx, yy, 190, 456)}
                     style={{ fill: "rgba(0,0,0,0.1)", strokeWidth: 0 }} /> : ""
           }
-          <text x={xx + 14} y={yy + 160} fontSize={16} textAnchor="start"
+          <text x={xx + 95} y={yy + 422} fontSize={16} textAnchor="middle"
                   fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-            terrain: {map?.baseTerrainName} ({map?.night ? "night" : "daytime"})
+            terrain: {map?.baseTerrainName}
           </text>
-          <text x={xx + 10} y={yy + 20} fontSize={16} textAnchor="start"
+          <text x={xx + 95} y={yy + 442} fontSize={16} textAnchor="middle"
                   fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
-            environmental conditions
+            ({map?.night ? "night" : "daytime"})
+          </text>
+          <text x={xx + 95} y={yy + 20} fontSize={16} textAnchor="middle"
+                  fontFamily="'Courier Prime', monospace" style={{ fill: "black" }}>
+            conditions
           </text>
           {current}
           {base}
@@ -166,14 +173,10 @@ export default function WeatherDisplay({
           type: markerType.Weather, subtype: map.currentWeather, mk: 1,
         }), map, true)
         setCurrentWeather(<MapCounter counter={cc} ovCallback={() => {}} />)
-        if (map.currentWeather !== map.baseWeather) {
-          const bc = new Counter(new Coordinate(x.base, y.base), new Marker({
-            type: markerType.Weather, subtype: map.currentWeather, mk: 1
-          }), map, true)
-          setBaseWeather(<MapCounter counter={bc} ovCallback={() => {}} />)
-        } else {
-          setBaseWeather(undefined)
-        }
+        const bc = new Counter(new Coordinate(x.base, y.base), new Marker({
+          type: markerType.Weather, subtype: map.baseWeather, mk: 1
+        }), map, true)
+        setBaseWeather(<MapCounter counter={bc} ovCallback={() => {}} />)
         if (map.precipChance > 0 && map.precipChance < 10) {
           const pcc = new Counter(new Coordinate(x.precip, y.precip), new Marker({
             type: markerType.Weather, subtype: map.precip, v: map.precipChance, mk: 1
@@ -231,9 +234,8 @@ export default function WeatherDisplay({
       setWind(<MapCounter counter={wc} ovCallback={wcb} />)
     }
   }, [
-    x, y, hideCounters, map.rotated,
-    map.currentWeather, map.baseWeather, map.precip, map.precipChance,
-    map.windSpeed, map.windDirection, map.windVariable,
+    x, y, hideCounters, map.rotated, map.currentWeather, map.baseWeather, map.precip,
+    map.precipChance, map.windSpeed, map.windDirection, map.windVariable,
   ])
 
   return (

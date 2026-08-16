@@ -1,3 +1,7 @@
+# 0.123
+
+- Streamline scenario summary a bit
+
 # 0.122
 
 - Added reinforcement schedule to scenario preview

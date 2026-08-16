@@ -179,8 +179,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
   }
 
   const reinforcementSchedule = () => {
-    let pScale = scale() / 3
-    while (map.height * pScale < 0.8) { pScale *= 1.1 }
+    const pScale = scale() / 3
     const rc: JSX.Element[] = []
     for (let t = 0; t <= scenario.turns; t++) {
       for (let pp = 1; pp <= 2; pp++) {
@@ -190,7 +189,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           const fill = `url(#nation-${p === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]}-9)`
           const units = p === 1 ? scenario.alliedUnitTurnList(t) : scenario.axisUnitTurnList(t)
           rc.push(
-            <div key={`${t}-${p}`} className="background-gray corner-round mt05em p05em flex">
+            <div key={`${t}-${p}`} className="background-gray corner-round mt05em mr05em p05em flex">
               <div className="background-light corner-round edge-line flex-vertical p05em mr05em"
                    style={{ width: "2.4em" }}>
                 <div className="flex-fill" />
@@ -202,21 +201,26 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
                           style={{ fill, strokeWidth: 1, stroke: "black" }}/>
                 </svg>
               </div>
-              {units.map((unit, i) => {
-                if (unit.x !== undefined) {
-                  return (
-                    <div key={i} className="flex nowrap mb05em">
-                      <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
-                      <CounterDisplay unit={unit.counter} />
-                    </div>
-                  )
-                } else {
-                  return <CounterDisplay key={i} unit={unit.counter} />
-                }
-              })}
+              <div className="flex flex-wrap">
+                {units.map((unit, i) => {
+                  if (unit.x !== undefined) {
+                    return (
+                      <div key={i} className="flex nowrap mb05em">
+                        <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
+                        <CounterDisplay unit={unit.counter} />
+                      </div>
+                    )
+                  } else {
+                    return <CounterDisplay key={i} unit={unit.counter} />
+                  }
+                })}
+              </div>
               <div className="flex-fill"></div>
-              <div className="background-dark edge-line-dark corner-round p025em">
-                <MapDeployDisplay scenario={scenario} scale={pScale} player={p} turn={t} />
+              <div className="flex flex-vertical">
+                <div className="background-dark edge-line-dark corner-round p025em">
+                  <MapDeployDisplay scenario={scenario} scale={pScale} player={p} turn={t} />
+                </div>
+                <div className="flex-fill"></div>
               </div>
             </div>
           )
@@ -251,70 +255,37 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
         { ratingCountDisplay }
       </div>
       <div className="flex">
-        <div className="pl1em pr1em pb1em mr1em background-gray flex-fill corner-round">
-          <div className="flex pt1em pb1em">
-            <div className="flex-fill">Author: <span className="green">{scenario.author}</span></div>
-            <div className="mr1em">Turns: <span className="red">{scenario.turns}</span></div>
-            <div className="mr1em nowrap">
-              Sets up first: {scenario.firstDeploy == 1 ? player1Pills : player2Pills}
+        <div>
+          <div className="pl1em pr1em mr05em background-gray flex-fill corner-round">
+            <div className="flex pt1em pb1em">
+              <div className="flex-fill">Author: <span className="green">{scenario.author}</span></div>
+              <div className="mr1em">Turns: <span className="red">{scenario.turns}</span></div>
+              <div className="mr1em nowrap">
+                Sets up first: {scenario.firstDeploy == 1 ? player1Pills : player2Pills}
+              </div>
+              <div className="nowrap">
+                Initiative: {scenario.firstAction == 1 ? player1Pills : player2Pills}
+              </div>
             </div>
-            <div className="nowrap">
-              Initiative: {scenario.firstAction == 1 ? player1Pills : player2Pills}
+            <div className="p05em ml1em mb1em corner-round edge-line background-light float-right">
+              <MapDisplay map={map} scale={scale()} preview={true} forceUpdate={0} />
             </div>
+            {scenario.description?.map((p, i) => {
+              return <p key={i}>{p}</p>
+            })}
+            {specialRules()}
+            {scenarioNote()}
+            <div className="float-clear"></div>
           </div>
-          {scenario.description?.map((p, i) => {
-            return <p key={i}>{p}</p>
-          })}
-          {specialRules()}
-          {scenarioNote()}
+          { reinforcementSchedule() }
         </div>
         <div>
-          <div className="p05em corner-round edge-line">
-            <MapDisplay map={map} scale={scale()} preview={true} forceUpdate={0} />
-          </div>
-        </div>
-      </div>
-      <div className="flex mt1em">
-        <div className="mr1em">
-          <svg className="map-svg" width={446} height={172} viewBox={"0 0 446 172"}>
+          <svg className="map-svg" width={194} height={460} viewBox={"0 0 194 460"}>
             <WeatherDisplay preview={true} map={map} hideCounters={false}
                             xx={2} yy={2} ovCallback={() => {}} />
           </svg>
         </div>
-        <div className="flex-fill">
-          <div className="flex flex-wrap">
-            <div className="flex-fill"></div>
-            {scenario.alliedUnitList.map((unit, i) => {
-              if (unit.x !== undefined) {
-                return (
-                  <div key={i} className="flex nowrap">
-                    <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
-                    <CounterDisplay unit={unit.counter} />
-                  </div>
-                )
-              } else {
-                return <CounterDisplay key={i} unit={unit.counter} />
-              }
-            })}
-          </div>
-          <div className="flex flex-wrap">
-            <div className="flex-fill"></div>
-            {scenario.axisUnitList.map((unit, i) => {
-              if (unit.x !== undefined) {
-                return (
-                  <div key={i} className="flex nowrap">
-                    <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
-                    <CounterDisplay unit={unit.counter} />
-                  </div>
-                )
-              } else {
-                return <CounterDisplay key={i} unit={unit.counter} />
-              }
-            })}
-          </div>
-        </div>
       </div>
-      { reinforcementSchedule() }
     </div>
   )
 }
