@@ -7,16 +7,17 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1941, 11, 19].freeze
     LAYOUT = [15, 23, "x"].freeze
 
     ALLIED_UNITS = {
       "0": { list: [
-        :uk_leader_5_2,
-        :uk_radio_140mm,
+        [2, :uk_leader_5_2],
+        [2, :uk_radio_140mm],
         [8, :uk_crusader_i],
+        [2, :uk_crusader_i_cs],
         [2, :uk_humber_lrc],
       ] },
     }.freeze
@@ -27,7 +28,7 @@ module Scenarios
         :ita_leader_3_1,
         [5, :ita_bersaglieri_s],
         [2, :ita_elite_crew_t],
-        [2, :ita_breda_30],
+        :ita_breda_30,
         [1, :ita_brixia_m35],
         [2, :ita_cannone_da_47_32],
         [4, :ita_m13_40],
@@ -38,8 +39,8 @@ module Scenarios
       def generate
         {
           turns: 6,
-          first_deploy: 1,
-          first_action: 2,
+          first_deploy: 2,
+          first_action: 1,
           date:,
           location: "Bir el Gubi, Libya",
           author: "The Establishment",
