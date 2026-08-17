@@ -143,7 +143,7 @@ export default function MapDisplay({
 
   const minHeight = (height: number, scale: number = 1, m?: Map, base: number = 784): number => {
     if (preview || m?.preview) { return (map.rotated ? map.xSize : map.ySize) * scale }
-    const extra = user === m?.game?.playerOneName || user === m?.game?.playerTwoName ? 0 : 48
+    const extra = user === m?.game?.playerOneName || user === m?.game?.playerTwoName || replay ? 0 : 48
     const gc = guiCollapse ? 178 - extra : 0
     const hc = headerCollapse ? 82 : 0
     const hc2 = horizontalControls ? 0 : 56
