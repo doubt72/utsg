@@ -384,9 +384,9 @@ export function hexPath(loc: Coordinate, r: number, rotated: boolean): string {
 }
 
 export function counterOutline(counter: Counter, width: number, outline: number): string {
-  const x = counter.x
-  const y = counter.y
   const outwidth = 6
+  const x = counter.unit.turreted ? counter.x - 80 - outwidth : counter.x
+  const y = counter.y
   const xWidth = width * (80+outwidth) - outwidth
   const corner = 4 + outline
   return [

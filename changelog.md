@@ -1,6 +1,7 @@
 # 0.124
 
 - Cleaned up issues with game replay, show button at game end
+- Bug fix: counter overlay transport outline offset by one counter when transport turreted
 
 # 0.123
 
