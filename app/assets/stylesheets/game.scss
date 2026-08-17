@@ -130,6 +130,19 @@
   border-radius: 0.5em;
 }
 
+.game-page-replay-actions {
+  padding: 0.5em;
+  background-color: $background-gray;
+  border-radius: 0.5em;
+}
+
+.game-page-replay-controls {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em 0 0 0.5em;
+  width: 500px;
+}
+
 .action-output {
   background-color: white;
   border-radius: 0.5em;
@@ -152,9 +165,30 @@
   height: 40px;
 }
 
+.action-replay-output {
+  background-color: white;
+  border-radius: 0.5em;
+  padding: 0.5em 0.25em;
+  overflow-y: scroll;
+
+  display: flex;
+  flex-direction: column-reverse;
+  height: 150px;
+}
+
 .action-output-record {
   flex-direction: row;
   display: flex;
+}
+
+.action-replay-output-record {
+  padding: 0 0.25em;
+  flex-direction: row;
+  display: flex;
+}
+
+.action-replay-output-record-selected {
+  background-color: #E7E7E7;
 }
 
 .action-output-date {

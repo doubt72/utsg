@@ -30,6 +30,7 @@ import AdminGameStats from "../admin/AdminGameStats";
 import AdminUsers from "../admin/AdminUsers";
 import ScenarioDesigner from "../designer/ScenarioDesigner";
 import DebugUnitsPromo from "../debug/DebugUnitsPromo";
+import GameReplayDisplay from "../components/game/GameReplayDisplay";
 
 export default function Routes() {
   const publicRoutes = [
@@ -43,6 +44,7 @@ export default function Routes() {
     { path: "/reset_password", element: <ResetPassword /> },
     { path: "/new_game", element: <NewGame /> },
     { path: "/game/:id", element: <GameDisplay /> },
+    { path: "/game_replay/:id", element: <GameReplayDisplay /> },
 
     { path: "/help", element: <HelpDisplay /> },
     { path: "/help/:section", element: <HelpDisplay /> },

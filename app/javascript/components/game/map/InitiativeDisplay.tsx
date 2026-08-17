@@ -43,7 +43,7 @@ export default function InitiativeDisplay({
 
   const showArrow = (index: number, up: boolean): boolean => {
     const game = map.game
-    if (!game || game.phase !== gamePhaseType.Main) return false
+    if (!game || game.replay || game.phase !== gamePhaseType.Main) return false
 
     const dir = game.currentPlayer === 1
     if (game.gameState?.type !== stateType.Pass) {
@@ -221,15 +221,19 @@ export default function InitiativeDisplay({
     const y1 = yy + 52
     const y2 = yy + 92
     const x = xx + (map.game.currentPlayer === 1 ? 26 : 164)
-    setPLayerPointer(
-      <g>
-        <path d={`M ${x} ${y1} L ${x-8.5} ${y1-12} L ${x+8.5} ${y1-12} L ${x} ${y1}`}
-              style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
-        <path d={`M ${x} ${y2} L ${x-8.5} ${y2+12} L ${x+8.5} ${y2+12} L ${x} ${y2}`}
-              style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
-      </g>
-    )
-  }, [xx, yy, map.game?.currentPlayer, map.game?.state])
+    if (!map.game.replay) {
+      setPLayerPointer(
+        <g>
+          <path d={`M ${x} ${y1} L ${x-8.5} ${y1-12} L ${x+8.5} ${y1-12} L ${x} ${y1}`}
+                style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
+          <path d={`M ${x} ${y2} L ${x-8.5} ${y2+12} L ${x+8.5} ${y2+12} L ${x} ${y2}`}
+                style={{ fill: "black", strokeWidth: 0, stroke: "black" }} />
+        </g>
+      )
+    } else {
+      setPLayerPointer(undefined)
+    }
+  }, [xx, yy, map.game?.currentPlayer, map.game?.state, map.game?.replayIndex])
 
   return (
     <g>

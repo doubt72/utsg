@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  - Circle transport offset by one when both turreted, see 103
   - After game replay
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel

@@ -52,6 +52,7 @@ interface MapDisplayProps {
   guiCollapse?: boolean;
   headerCollapse?: boolean;
   horizontalControls?: boolean;
+  replay?: boolean;
   forceUpdate: number;
   hexCallback?: (x: number, y: number) => void;
   counterCallback?: () => void;
@@ -66,7 +67,7 @@ interface MapDisplayProps {
 
 export default function MapDisplay({
   map, scale, mapScale, showCoords = false, showStatusCounters = false, showLos = false,
-  hideCounters = false, showTerrain = false, preview, guiCollapse = false, forceUpdate,
+  hideCounters = false, showTerrain = false, preview, guiCollapse = false, replay = false, forceUpdate,
   headerCollapse = false, horizontalControls = false, checkCancelHideLOS, checkCancelTerrain,
   hexCallback = () => {}, counterCallback = () => {}, directionCallback = () => {}, resetCallback = () => {},
   clearActionCallback = () => {}, updateCallback = () => {}, shrinkCallback = () => {},
@@ -146,7 +147,8 @@ export default function MapDisplay({
     const gc = guiCollapse ? 178 - extra : 0
     const hc = headerCollapse ? 82 : 0
     const hc2 = horizontalControls ? 0 : 56
-    const fill = m?.debug ? 16 : 400 - extra - gc - hc - hc2
+    const hc3 = replay ? 70 : 0
+    const fill = m?.debug ? 16 : 400 - extra - gc - hc - hc2 - hc3
     const available = base + 50 / scale - 50
     return height - fill < available * scale ? available * scale : height - fill
   }
@@ -155,7 +157,7 @@ export default function MapDisplay({
     if (preview || m?.preview) { return (map.rotated ? map.ySize : map.xSize) * scale }
     let min = base
     if (m?.game?.alliedSniper || m?.game?.axisSniper) { min += 200 }
-    const hc = horizontalControls ? 0 : 69
+    const hc = horizontalControls || replay ? 0 : 69
     let margin = 32
     if (minHeight(window.innerHeight + 0, scale, m) > (785 + 50 / scale - 50) * scale) {
       margin = 16
@@ -521,13 +523,15 @@ export default function MapDisplay({
         <SniperDisplay xx={xx} yy={52 + 50 / scale - 50}
                        hideCounters={hideCounters} map={map} ovCallback={setOverlay}/>
     })
-    setReinforcements(() =>
-      map.preview || preview ? undefined :
-        <Reinforcements map={map} xx={reinforcementOffset} yy={52 + 50 / scale - 50}
-                        maxX={width / scale} maxY={height / scale} scale={scale}
-                        svgRef={svgRef as React.MutableRefObject<HTMLElement>}
-                        callback={displayReinforcements} update={{key: true}}/>
-    )
+    if (!replay) {
+      setReinforcements(() =>
+        map.preview || preview ? undefined :
+          <Reinforcements map={map} xx={reinforcementOffset} yy={52 + 50 / scale - 50}
+                          maxX={width / scale} maxY={height / scale} scale={scale}
+                          svgRef={svgRef as React.MutableRefObject<HTMLElement>}
+                          callback={displayReinforcements} update={{key: true}}/>
+      )
+    }
     if (map.game?.closeReinforcementPanel) {
       setReinforcementsOverlay(undefined)
       map.game.closeReinforcementPanel = false
@@ -698,6 +702,7 @@ export default function MapDisplay({
   ])
 
   const hexSelection = (x: number, y: number) => {
+    if (replay) { return }
     if (hexCallback) {
       let doCallback = true
       if (map.game?.gameState?.type === stateType.Deploy) {
@@ -730,11 +735,13 @@ export default function MapDisplay({
   }
 
   const handleSelect = (refresh?: boolean) => {
+    if (replay) { return }
     if (refresh) { setMapUpdate(s => s + 1) }
     counterCallback()
   }
 
   const unitSelection = (selection: CounterSelectionTarget) => {
+    if (replay) { return }
     if (map.game?.currentUser !== user) { return }
     if (selection.target.type === "map") {
       select(map, selection, handleSelect)
@@ -792,6 +799,7 @@ export default function MapDisplay({
   }
 
   const displayReinforcements = (player: Player) => {
+    if (replay) { return }
     resetCallback()
     setReinforcementsOverlay(rp => {
       if (!rp || rp.props.player !== player) {

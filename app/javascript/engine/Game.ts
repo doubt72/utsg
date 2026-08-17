@@ -147,6 +147,8 @@ export default class Game {
   serverVersion: string;
 
   unitTesting = false;
+  replay = false;
+  replayIndex = 0;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string, string?]) => void = () => {}) {
     this.id = data.id
@@ -719,11 +721,12 @@ export default class Game {
   }
 
   get lastSignificantAction(): BaseAction | undefined {
-    for (let i = this.actions.length - 1; i >= 0; i--) {
+    const start = this.replay ? this.replayIndex : this.actions.length - 1
+    for (let i = start; i >= 0; i--) {
       const a = this.actions[i]
       if (a.undone) { continue }
       if (significantActions.includes(a.data.action)) {
-        this.scenario.map.setLastSelection(a)
+        if (!this.replay) { this.scenario.map.setLastSelection(a) }
         return a
       }
     }
