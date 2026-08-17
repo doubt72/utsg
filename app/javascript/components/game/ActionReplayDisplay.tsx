@@ -5,13 +5,13 @@ import GameReplay from "../../engine/GameReplay";
 interface ActionReplayDisplayProps {
   gameReplay: GameReplay,
   currentSequence: number,
+  setSequence: (sequence: number) => void,
 }
 
-export default function ActionReplayDisplay({ gameReplay, currentSequence }: ActionReplayDisplayProps) {
+export default function ActionReplayDisplay({ gameReplay, currentSequence, setSequence }: ActionReplayDisplayProps) {
   const [actionList, setActionList] = useState<JSX.Element | undefined>()
 
   useEffect(() => {
-    console.log(`ard seq ${currentSequence}`) // remove after testing
     setActionList(
       <div className="action-replay-output">
         {
@@ -20,7 +20,7 @@ export default function ActionReplayDisplay({ gameReplay, currentSequence }: Act
               <div key={i} id={`replay-action-sequence-${action.sequence}`}
                    className={`action-replay-output-record${
                      action.sequence === currentSequence ? " action-replay-output-record-selected": ""
-                   }`}>
+                   }`} onClick={() => setSequence(action.sequence ?? 1)}>
                 <div className="action-output-date nowrap">{action.formattedDate}</div>
                 <div className="action-output-message">
                   {["phase", "status_update"].includes(action.type) ||

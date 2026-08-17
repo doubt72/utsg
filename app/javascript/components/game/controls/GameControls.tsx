@@ -24,6 +24,7 @@ import {
   SmokeCheckButton, SniperButton, SplitSquadButton, ToggleSponsonButton, UndeployButton,
   UndoButton, UnselectButton, WeatherCheckButton
 } from "./buttons/ControlButtons";
+import ReplayButton from "./buttons/ReplayButton";
 
 interface GameControlsProps {
   game: Game;
@@ -281,6 +282,8 @@ export default function GameControls({
         return <FireDisplaceCancelButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "menu") {
         return <GameOverMenuButton key={i} vertical={vertical} />
+      } else if (a.type === "replay") {
+        return <ReplayButton key={i} vertical={vertical} gameId={game.id} />
       } else if (a.type === "help") {
         return <HelpButton game={game} key={i} />
       } else {

@@ -144,13 +144,17 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
     if (game.state === "in_progress") {
       return [{ type: "none", message: "game currently in progress" }, { type: "menu" }]
     } if (game.state === "complete") {
-      return [{ type: "none", message: "game over" }, { type: "menu" }]
+      return [
+        { type: "none", message: "game over" }, { type: "menu" }, { type: "replay" },
+      ]
     }
     return []
   }
   if (activePlayer !== game.currentUser) {
     if (game.state === "complete") {
-      return [{ type: "none", message: "game over" }, { type: "menu" }]
+      return [
+        { type: "none", message: "game over" }, { type: "menu" }, { type: "replay" },
+      ]
     }
     return [{ type: "wait", message: currentEnemyAction(game) }]
   }
@@ -158,7 +162,9 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
   const actions: GameControl[] = []
   addUndo(game, activePlayer, actions)
   if (game.state === "complete") {
-    return [{ type: "none", message: "game over" }, { type: "menu" }]
+    return [
+      { type: "none", message: "game over" }, { type: "menu" }, { type: "replay" },
+    ]
   }
   if (active) { setState(game) }
 

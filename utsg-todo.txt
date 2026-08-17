@@ -1,8 +1,8 @@
 Features/Bug Fixes
   + After game replay
-    - Fix load
-    - Click on turn
-    - Disable next/prev on end/start
+    + Fix load
+    + Click on turn
+    + Disable next/prev on end/start
   - Circle transport offset by one when both turreted, see 103
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel

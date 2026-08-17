@@ -34,7 +34,6 @@ export default class GameReplay {
         }
         this.currentIndex = json.length - 1
         this.game.replayIndex = this.currentIndex
-        console.log("doing callback")
         callback()
       })
     })
@@ -63,5 +62,27 @@ export default class GameReplay {
       this.game.replayIndex = this.currentIndex
       break
     }
+  }
+
+  setSequence(sequence: number) {
+    for (let i = this.replayState.length - 1; i >= 0; i--) {
+      const state = this.replayState[i]
+      if (state.sequence == sequence) {
+        if (!state.undone) {
+          setGameData(this.game, state)
+          this.currentIndex = i
+          this.game.replayIndex = this.currentIndex
+        }
+        break
+      }
+    }
+  }
+
+  get firstIndex(): boolean {
+    return this.currentIndex === 0
+  }
+
+  get lastIndex(): boolean {
+    return this.currentIndex === this.replayState.length - 1
   }
 }

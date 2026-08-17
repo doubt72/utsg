@@ -292,9 +292,12 @@ export default function GameReplayDisplay() {
 
   useEffect(() => {
     if (!replay) { return }
-    console.log(`seq ${replay.currentSequence}`) // Remove this later, but checking load timing here
-    setActions(<ActionReplayDisplay gameReplay={replay} currentSequence={replay.currentSequence}/>)
-  }, [replay?.currentIndex, updateMap])
+    setActions(<ActionReplayDisplay gameReplay={replay} currentSequence={replay.currentSequence}
+                                    setSequence={s => {
+                                      replay.setSequence(s)
+                                      setUpdate()
+                                    }}/>)
+  }, [replay, replay?.currentIndex, updateMap])
 
   useEffect(() => {
     setCollapseHeaderButton(
@@ -317,25 +320,41 @@ export default function GameReplayDisplay() {
 
   useEffect(() => {
     if (!replay) { return }
-    setRollbackButton(
-      <div className="custom-button normal-button"
-           onClick={() => {
-            replay.rollback()
-            setUpdate()
-           }}>
-        <ArrowCounterclockwise /> <span style={{ verticalAlign: "-1px" }}>previous</span>
-      </div>
-    )
-    setRollforewardButton(
-      <div className="custom-button normal-button"
-           onClick={() => {
-            replay.rollForward()
-            setUpdate()
-           }}>
-        <ArrowClockwise /> <span style={{ verticalAlign: "-1px" }}>next</span>
-      </div>
-    )
-  }, [replay])
+    if (replay.firstIndex) {
+      setRollbackButton(
+        <div className="custom-button-disable normal-button">
+          <ArrowCounterclockwise /> <span style={{ verticalAlign: "-1px" }}>previous</span>
+        </div>
+      )
+    } else {
+      setRollbackButton(
+        <div className="custom-button normal-button"
+            onClick={() => {
+              replay.rollback()
+              setUpdate()
+            }}>
+          <ArrowCounterclockwise /> <span style={{ verticalAlign: "-1px" }}>previous</span>
+        </div>
+      )
+    }
+    if (replay.lastIndex) {
+      setRollforewardButton(
+        <div className="custom-button-disable normal-button">
+          <ArrowClockwise /> <span style={{ verticalAlign: "-1px" }}>next</span>
+        </div>
+      )
+    } else {
+      setRollforewardButton(
+        <div className="custom-button normal-button"
+            onClick={() => {
+              replay.rollForward()
+              setUpdate()
+            }}>
+          <ArrowClockwise /> <span style={{ verticalAlign: "-1px" }}>next</span>
+        </div>
+      )
+    }
+  }, [replay, replay?.currentIndex])
 
   const rotateTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>
@@ -408,7 +427,7 @@ export default function GameReplayDisplay() {
           </div>
         </div>
         <div className="standard-body">
-          <div className="game-page-replay-actions">
+          <div className="game-page-replay-actions flex-fill">
             {actions}
           </div>
         </div>

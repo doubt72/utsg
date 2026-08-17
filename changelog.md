@@ -1,5 +1,7 @@
 # 0.124
 
+- Cleaned up issues with game replay, show button at game end
+
 # 0.123
 
 - Added game replay (not linked yet)
