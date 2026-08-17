@@ -66,9 +66,6 @@ export default function GameReplayDisplay() {
   const [updateMap, setUpdateMap] = useState(0)
 
   const setUpdate = () =>  {
-    console.log("got callback")
-    if (!replay) { return }
-    console.log("doing callback")
     setUpdateMap(s => s + 1)
   }
 
@@ -297,7 +294,7 @@ export default function GameReplayDisplay() {
     if (!replay) { return }
     console.log(`seq ${replay.currentSequence}`) // Remove this later, but checking load timing here
     setActions(<ActionReplayDisplay gameReplay={replay} currentSequence={replay.currentSequence}/>)
-  }, [replay?.currentSequence, updateMap])
+  }, [replay?.currentIndex, updateMap])
 
   useEffect(() => {
     setCollapseHeaderButton(
