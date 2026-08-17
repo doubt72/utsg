@@ -293,8 +293,19 @@ export default function GameReplayDisplay() {
 
   useEffect(() => {
     if (!replay) { return }
+    console.log(`seq ${replay.currentSequence}`) // Remove this later, but checking load timing here
     setActions(<ActionReplayDisplay gameReplay={replay} currentSequence={replay.currentSequence}/>)
-  }, [replay, replay?.currentSequence])
+  }, [replay?.currentSequence, updateMap])
+
+  // More testing BS
+  useEffect(() => {
+    if (updateMap < 5) {
+      setTimeout(() => {
+        console.log(`add timeout ${updateMap}`)
+        setUpdate()
+      }, 1000)
+    }
+  }, [updateMap])
 
   useEffect(() => {
     setCollapseHeaderButton(

@@ -54,7 +54,7 @@
   cursor: pointer;
   display: flex;
   flex-basis: auto;
-  background-color: $gray-f;
+  background-color: white;
   padding: 0.25em 0.5em 0.35em 0.5em;
   margin-top: 1px;
   border: 2px solid $gray-c;
@@ -63,7 +63,7 @@
 }
 
 .scenario-row-selected {
-  background-color: white;
+  background-color: #FFE;
 }
 
 .scenario-row-percentage {

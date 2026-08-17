@@ -11,6 +11,7 @@ export default function ActionReplayDisplay({ gameReplay, currentSequence }: Act
   const [actionList, setActionList] = useState<JSX.Element | undefined>()
 
   useEffect(() => {
+    console.log(`ard seq ${currentSequence}`) // remove after testing
     setActionList(
       <div className="action-replay-output">
         {

@@ -1,6 +1,8 @@
+# 0.124
+
 # 0.123
 
-- Added game replay
+- Added game replay (not linked yet)
 - Streamline scenario summary a bit
 - Updated 004, 103, 313
 
