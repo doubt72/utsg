@@ -78,7 +78,7 @@ export default function GameReplayDisplay() {
         getAPI(`/api/v1/scenarios/${code}?version=${version}`, {
           ok: response => response.json().then(scenario => {
             json.scenario = scenario
-            setReplay(new GameReplay(json))
+            setReplay(new GameReplay(json, setUpdate))
           })
         })
       }),
@@ -296,16 +296,6 @@ export default function GameReplayDisplay() {
     console.log(`seq ${replay.currentSequence}`) // Remove this later, but checking load timing here
     setActions(<ActionReplayDisplay gameReplay={replay} currentSequence={replay.currentSequence}/>)
   }, [replay?.currentSequence, updateMap])
-
-  // More testing BS
-  useEffect(() => {
-    if (updateMap < 5) {
-      setTimeout(() => {
-        console.log(`add timeout ${updateMap}`)
-        setUpdate()
-      }, 1000)
-    }
-  }, [updateMap])
 
   useEffect(() => {
     setCollapseHeaderButton(

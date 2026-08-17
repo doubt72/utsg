@@ -5,20 +5,19 @@ import { copyGameData, GameReplayState, setGameData } from "./support/gameReplay
 
 export default class GameReplay {
   game: Game;
-  currentIndex: number;
+  currentIndex: number = -1;
 
   replayState: GameReplayState[] = []
 
-  constructor(data: GameData) {
+  constructor(data: GameData, callback: () => void) {
     data.suppress_network = true
     this.game = new Game(data, () => {})
     this.game.suppressAnimations = true
 
-    this.loadAllActions()
-    this.currentIndex = this.replayState.length - 1
+    this.loadAllActions(callback)
   }
 
-  loadAllActions() {
+  loadAllActions(callback: () => void) {
     getAPI(`/api/v1/game_actions?game_id=${this.game.id}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {
@@ -35,6 +34,7 @@ export default class GameReplay {
         }
         this.currentIndex = json.length - 1
         this.game.replayIndex = this.currentIndex
+        callback()
       })
     })
   }
