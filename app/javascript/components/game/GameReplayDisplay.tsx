@@ -66,7 +66,9 @@ export default function GameReplayDisplay() {
   const [updateMap, setUpdateMap] = useState(0)
 
   const setUpdate = () =>  {
+    console.log("got callback")
     if (!replay) { return }
+    console.log("doing callback")
     setUpdateMap(s => s + 1)
   }
 

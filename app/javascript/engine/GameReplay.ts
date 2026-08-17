@@ -34,6 +34,7 @@ export default class GameReplay {
         }
         this.currentIndex = json.length - 1
         this.game.replayIndex = this.currentIndex
+        console.log("doing callback")
         callback()
       })
     })
