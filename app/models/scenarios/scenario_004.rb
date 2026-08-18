@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Into the the Gap"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.6"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 7, 31].freeze
     LAYOUT = [15, 11, "x"].freeze

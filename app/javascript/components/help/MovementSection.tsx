@@ -147,7 +147,7 @@ export default function MovementSection({ section }: SectionProps) {
       <div className="flex mb1em">
         <div className="ml1em"></div>
         <div className="custom-button normal-button">
-          {MoveGlyph()} <span>finish move</span>
+          {MoveGlyph()} <span>done moving</span>
         </div>
         <div className="mt05em">/</div>
         <div className="custom-button normal-button">

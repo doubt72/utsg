@@ -241,6 +241,7 @@ module Utility
               "obice_da_75_18": { fp: 16, rng: 24, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "obice_da_100_17": { fp: 24, rng: 32, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "70mm_type_92": { fp: 16, rng: 16, mv: 2, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 2, twsz: 2 },
+              "75mm_type_94": { fp: 16, rng: 16, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "qf_25_pounder": { fp: 20, rng: 32, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "qf_25pdr_short": { fp: 20, rng: 20, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },
               "qf_4_5inch": { fp: 32, rng: 24, mv: 1, tgt: true, fix: 18, gun: true, smk: true, crw: true, sz: 3, twsz: 3 },

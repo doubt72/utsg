@@ -25,11 +25,14 @@ export function showEntrench(game: Game): boolean {
   if (selection.filter(s => s.counter.unit.parent === undefined).length > 1) { return false }
   if (game.scenario.specialRules.includes("winter")) { return false }
   if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
-  if (game.scenario.map.baseTerrain === baseTerrainType.Snow) { return false }
-  if (game.scenario.map.baseTerrain === baseTerrainType.Mud) { return false }
+  if ([baseTerrainType.Snow, baseTerrainType.Mud].includes(game.scenario.map.baseTerrain)) { return false }
   const loc = new Coordinate(selection[0].x, selection[0].y)
   const hex = game.scenario.map.hexAt(loc) as Hex
-  if (!hex.terrain.vehicle || [terrainType.Sand, terrainType.Shallow].includes(hex.baseTerrain)) { return false }
+  if (!hex.terrain.vehicle) { return false }
+  if (hex.terrain.cover) { return false }
+  if ([
+      terrainType.Sand, terrainType.Shallow, terrainType.Marsh, terrainType.Rough, terrainType.Soft
+    ].includes(hex.baseTerrain)) { return false }
   if (hex.river || hex.railroad) { return false }
   if (hex.building) { return false }
   const features = game.scenario.map.countersAt(loc)

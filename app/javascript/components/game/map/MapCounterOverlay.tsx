@@ -140,7 +140,8 @@ export default function MapCounterOverlay({
 
     const rallyCheck = map.game.phase === gamePhaseType.PrepRally && counter.hasUnit && counter.unit.selected
     const fireCheck = counter.hasUnit && counter.unit.targetSelected
-    const routCheck = (map.game.routCheckNeeded.length > 0 && counter.hasUnit && counter.unit.selected) ||
+    const routCheck = (map.game.routCheckNeeded.length > 0 && counter.hasUnit &&
+        counter.unit.selected && map.game.routNeeded.length < 1) ||
       (map.game.gameState?.type === stateType.RoutAll && counter.hasUnit && counter.unit.isBroken &&
        counter.unit.playerNation !== map.game.currentPlayerNation)
     const moraleCheck = map.game.moraleChecksNeeded.length > 0 && counter.hasUnit && counter.unit.selected

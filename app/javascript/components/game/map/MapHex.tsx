@@ -3,6 +3,7 @@ import Hex from "../../../engine/Hex";
 import {
   buildingDisplay, hexElevationContinuous, hexElevation, hexBackground, hexTerrainPattern, orchardDisplay,
   hexTerrainCircle, hexTerrainContinuous,
+  craterDisplay,
 } from "../../../engine/support/hexLayout";
 
 interface MapHexProps {
@@ -35,6 +36,10 @@ export default function MapHex({ hex }: MapHexProps) {
           })}
         </g>
       )
+    }
+    const crater = craterDisplay(hex)
+    if (crater) {
+      return <path d={crater.path} style={crater.style as object} />
     }
     const building = buildingDisplay(hex)
     if (building) {

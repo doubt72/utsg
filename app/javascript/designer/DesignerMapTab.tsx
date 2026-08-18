@@ -90,6 +90,7 @@ export default function DesignerMapTab({
             <option key={"r"} value={"r"}>rough</option>
             <option key={"t"} value={"t"}>soft ground</option>
             <option key={"x"} value={"x"}>debris</option>
+            <option key={"c"} value={"c"}>crater</option>
             <option key={"w"} value={"w"}>water</option>
             <option key={"y"} value={"y"}>shallow water</option>
           </select>

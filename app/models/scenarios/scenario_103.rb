@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
     STATUS = "b"
-    VERSION = "0.4"
+    VERSION = "0.5"
 
     DATE = [1941, 11, 19].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -15,22 +15,22 @@ module Scenarios
     ALLIED_UNITS = {
       "0": { list: [
         [2, :uk_leader_5_2],
-        [2, :uk_radio_140mm],
-        [8, :uk_crusader_i],
+        [2, :uk_radio_152mm],
+        [6, :uk_crusader_i],
         [2, :uk_crusader_i_cs],
         [2, :uk_humber_lrc],
+        [2, :uk_white_scout_car],
       ] },
     }.freeze
 
     AXIS_UNITS = {
       "0": { list: [
-        :ita_leader_5_1,
-        :ita_leader_3_1,
-        [5, :ita_bersaglieri_s],
-        [2, :ita_elite_crew_t],
+        [2, :ita_leader_3_1],
+        [4, :ita_bersaglieri_s],
+        :ita_crew_t,
         :ita_breda_30,
         [1, :ita_brixia_m35],
-        [2, :ita_cannone_da_47_32],
+        :ita_cannone_da_47_32,
         [4, :ita_m13_40],
       ] },
     }.freeze
@@ -82,7 +82,7 @@ module Scenarios
           allied_dir: 1,
           axis_dir: 4,
           victory_hexes: [
-            [2, 2, 2], [5, 6, 2], [6, 9, 2], [2, 18, 2], [12, 8, 1],
+            [5, 12, 2], [5, 6, 2], [6, 9, 2], [2, 18, 2], [12, 8, 1],
           ],
           allied_setup: { "0" => [["12-14", "*"]] },
           axis_setup: { "0" => [["0-6", "*"]] },

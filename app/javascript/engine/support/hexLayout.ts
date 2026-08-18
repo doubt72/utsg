@@ -72,6 +72,35 @@ export function orchardDisplay(hex: Hex): CircleLayout[] | false {
   return trees
 }
 
+export function craterDisplay(hex: Hex): PathLayout | false {
+  if (hex.baseTerrain !== terrainType.Crater) { return false }
+  const inset = 24
+  const inner = 12
+  let path = [
+    "M", hex.xCorner(6, inset), hex.yCorner(6, inset),
+    "A", hex.radius - inset, hex.radius - inset, 0, 1, 0,
+    hex.xCorner(3, inset), hex.yCorner(3, inset),
+    "A", hex.radius - inset, hex.radius - inset, 0, 1, 0,
+    hex.xCorner(6, inset), hex.yCorner(6, inset)
+  ]
+  let even = false
+  for (let i = 0; i < 18; i++) {
+    const len = even ? inner : inner*1.2
+    even = !even
+    path = path.concat(
+      [
+        "M", hex.xCorner(normalDir(i/3), inset), hex.yCorner(normalDir(i/3), inset),
+        "L", hex.xCorner(normalDir(i/3), inset+len), hex.yCorner(normalDir(i/3), inset+len),
+      ]
+    )
+  }
+  return {
+    path: path.join(" "), style: {
+      fill: "rgba(192,144,96,0.5)", stroke: "rgb(192,144,96)", strokeWidth: 2,
+    }
+  }
+}
+
 export function buildingDisplay(hex: Hex): PathLayout | false {
   return hexBuildingBuildingDisplay(hex)
 }

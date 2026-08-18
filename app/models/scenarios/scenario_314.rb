@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario314 < Base
     ID = "314"
-    NAME = "Push, Counter, Pull"
+    NAME = "Push, Pull, Counter"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"

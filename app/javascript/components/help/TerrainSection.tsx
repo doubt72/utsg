@@ -42,6 +42,7 @@ export default function TerrainSection({ section }: SectionProps) {
     palm: { m: "g", t: "p", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     rough: { m: "g", t: "r", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     debris: { m: "g", t: "x", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
+    crater: { m: "g", t: "c", sh: undefined },
     water: { m: "g", t: "w", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     shallow: { m: "g", t: "y", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     road: { t: "o", r: "t", s: undefined, rr: false },
@@ -57,14 +58,14 @@ export default function TerrainSection({ section }: SectionProps) {
     gully: { t: "o", s: "g", r: undefined, rr: false },
     trench: { t: "o", s: "t", r: undefined, rr: false },
     house: { t: "o", sh: "l" },
-    silo: { t: "o", sh: "c" },
+    silo: { m: "g", t: "o", sh: "c" },
   }
 
   const terrainTypes: TerrainType[] = [
     terrainType.Open, terrainType.Forest, terrainType.Brush, terrainType.Grain, terrainType.Orchard,
     terrainType.Rough, terrainType.Sand, terrainType.Jungle, terrainType.Palm,
-    terrainType.Marsh, terrainType.Soft, terrainType.Debris, terrainType.Water, terrainType.Shallow,
-    // house: { t: "o", sh: "l" },
+    terrainType.Marsh, terrainType.Soft, terrainType.Debris, terrainType.Crater,
+    terrainType.Water, terrainType.Shallow,
   ]
 
   const borderTypes: BorderType[] = [
@@ -448,6 +449,7 @@ export default function TerrainSection({ section }: SectionProps) {
               { typeButton("rough", "Rough Ground") }
               { typeButton("soft", "Soft Ground") }
               { typeButton("debris", "Debris") }
+              { typeButton("crater", "Craters") }
               { typeButton("water", "Water") }
               { buildingButton("silo", "Silo") }
               { typeButton("shallow", "Shallow Water") }

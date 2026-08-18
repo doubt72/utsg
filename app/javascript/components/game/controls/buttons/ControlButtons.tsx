@@ -80,7 +80,7 @@ export function AssaultMoveFinishButton({ game, vertical, callback }: ButtonProp
     callback()
   }
 
-  return <StandardTooltipButton vertical={vertical} text={"finish assault move"} glyph={FinishGlyph()} hotkey={"K"}
+  return <StandardTooltipButton vertical={vertical} text={"done assault moving"} glyph={FinishGlyph()} hotkey={"K"}
                                 callback={submit} />
 }
 
@@ -213,7 +213,7 @@ export function FinishDeployButton({ game, vertical, callback }: ButtonProps) {
     callback()
   }
 
-  return <StandardTooltipButton vertical={vertical} text="finish deployment" glyph={FinishGlyph()} hotkey={"K"}
+  return <StandardTooltipButton vertical={vertical} text="done with deployment" glyph={FinishGlyph()} hotkey={"K"}
                                 callback={submit} />
 }
 
@@ -271,7 +271,7 @@ export function FireFinishButton({ game, vertical, callback }: ButtonProps) {
     callback()
   }
 
-  return <StandardTooltipButton vertical={vertical} text="finish fire" glyph={FinishGlyph()} hotkey={"K"}
+  return <StandardTooltipButton vertical={vertical} text="done firing" glyph={FinishGlyph()} hotkey={"K"}
                                 callback={submit} />
 }
 
@@ -381,7 +381,7 @@ export function MoveFinishButton({ game, vertical, callback }: ButtonProps) {
     callback()
   }
 
-  const text = `finish ${ game.moveState.rushing ? "rush" : "move" }`
+  const text = `done ${ game.moveState.rushing ? "rushing" : "moving" }`
 
   return <StandardTooltipButton vertical={vertical} text={text} glyph={FinishGlyph()} hotkey={"K"}
                                 callback={submit} />

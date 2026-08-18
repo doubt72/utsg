@@ -1,3 +1,12 @@
+# 0.125
+
+- Switch "finish" to "done" to make less ambiguous
+- Tweak entrenchment conditions
+- Bug fix: don't display rout odds on actual rout
+- Promoted 004
+- Updated 103, 314
+- Added prototype 413, 416
+
 # 0.124
 
 - Cleaned up issues with game replay, show button at game end

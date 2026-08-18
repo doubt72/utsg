@@ -30,7 +30,7 @@ module Utility
               ["ita", "Cannone da 65/17", 13, { sn: 2 }], ["ita", "Obice da 75/18", 34],
               ["ita", "Obice da 100/17", 14, { sn: 1 }],
 
-              ["jap", "70mm Type 92", 32],
+              ["jap", "70mm Type 92", 32], ["jap", "75mm Type 94", 35],
 
               ["uk", "QF 25-Pounder", 40], ["uk", "QF 25Pdr Short", 43], ["uk", "QF 4.5inch", 8],
 

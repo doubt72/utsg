@@ -1,9 +1,12 @@
 Features/Bug Fixes
+  + Fix rout help text on rout move
+  - Can't fire smoke round into hex with smoke?
+  - Area fire should not affect infantry inside vehicle
+  - Don't show combine unless legal
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
   - Add Some Developer Notes
   - Strategy notes
-  - Figure out how to implement Vichy French with same French units
 
 004 [Mud]
 103 [Italians]
