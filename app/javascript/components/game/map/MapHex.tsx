@@ -4,6 +4,7 @@ import {
   buildingDisplay, hexElevationContinuous, hexElevation, hexBackground, hexTerrainPattern, orchardDisplay,
   hexTerrainCircle, hexTerrainContinuous,
   craterDisplay,
+  caveDisplay,
 } from "../../../engine/support/hexLayout";
 
 interface MapHexProps {
@@ -40,6 +41,10 @@ export default function MapHex({ hex }: MapHexProps) {
     const crater = craterDisplay(hex)
     if (crater) {
       return <path d={crater.path} style={crater.style as object} />
+    }
+    const cave = caveDisplay(hex)
+    if (cave) {
+      return <path d={cave.path} style={cave.style as object} />
     }
     const building = buildingDisplay(hex)
     if (building) {

@@ -1,11 +1,12 @@
 # 0.125
 
 - Switch "finish" to "done" to make less ambiguous
-- Tweak entrenchment conditions
+- Added new terrain types: caves and craters
+- Bug fix: don't allow entrenchment in more terrains
 - Bug fix: don't display rout odds on actual rout
 - Promoted 004
 - Updated 103, 314
-- Added prototype 413, 416
+- Added prototype 413, 414, 415, 416 (some new units as well)
 
 # 0.124
 

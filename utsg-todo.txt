@@ -1,5 +1,4 @@
 Features/Bug Fixes
-  + Fix rout help text on rout move
   - Can't fire smoke round into hex with smoke?
   - Area fire should not affect infantry inside vehicle
   - Don't show combine unless legal

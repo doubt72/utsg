@@ -101,6 +101,23 @@ export function craterDisplay(hex: Hex): PathLayout | false {
   }
 }
 
+export function caveDisplay(hex: Hex): PathLayout | false {
+  if (hex.baseTerrain !== terrainType.Cave) { return false }
+  const inset = 20
+  const path = [
+    "M", hex.xCorner(6, inset), hex.yCorner(6, inset),
+    "A", hex.radius - inset, hex.radius - inset, 0, 1, 0,
+    hex.xCorner(3, inset), hex.yCorner(3, inset),
+    "A", hex.radius - inset, hex.radius - inset, 0, 1, 0,
+    hex.xCorner(6, inset), hex.yCorner(6, inset)
+  ]
+  return {
+    path: path.join(" "), style: {
+      fill: "rgba(96,72,48)", stroke: "rgb(0,0,0)", strokeWidth: 4,
+    }
+  }
+}
+
 export function buildingDisplay(hex: Hex): PathLayout | false {
   return hexBuildingBuildingDisplay(hex)
 }

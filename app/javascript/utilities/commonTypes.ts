@@ -73,9 +73,10 @@ export const baseTerrainType: { [index: string]: BaseTerrainType } = {
 }
 
 export type TerrainType = "o" | "f" | "b" | "j" | "p" | "s" | "m" | "w" | "g" | "r" | "d" | "t" |
-  "x" | "c" | "y"
+  "x" | "c" | "v" | "y"
 export const terrainType: { [index: string]: TerrainType } = {
-  Open: "o", Forest: "f", Brush: "b", Jungle: "j", Sand: "s", Marsh: "m", Water: "w", Crater: "c",
+  Open: "o", Forest: "f", Brush: "b", Jungle: "j", Sand: "s", Marsh: "m", Water: "w",
+  Crater: "c", Cave: "v",
   Grain: "g", Rough: "r", Orchard: "d", Soft: "t", Debris: "x", Shallow: "y", Palm: "p"
 }
 

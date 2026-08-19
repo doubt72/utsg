@@ -43,6 +43,7 @@ export default function TerrainSection({ section }: SectionProps) {
     rough: { m: "g", t: "r", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     debris: { m: "g", t: "x", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     crater: { m: "g", t: "c", sh: undefined },
+    cave: { m: "g", t: "v", sh: undefined },
     water: { m: "g", t: "w", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     shallow: { m: "g", t: "y", b: undefined, r: undefined, s: undefined, rr: false, sh: undefined },
     road: { t: "o", r: "t", s: undefined, rr: false },
@@ -64,7 +65,7 @@ export default function TerrainSection({ section }: SectionProps) {
   const terrainTypes: TerrainType[] = [
     terrainType.Open, terrainType.Forest, terrainType.Brush, terrainType.Grain, terrainType.Orchard,
     terrainType.Rough, terrainType.Sand, terrainType.Jungle, terrainType.Palm,
-    terrainType.Marsh, terrainType.Soft, terrainType.Debris, terrainType.Crater,
+    terrainType.Marsh, terrainType.Soft, terrainType.Debris, terrainType.Crater, terrainType.Cave,
     terrainType.Water, terrainType.Shallow,
   ]
 
@@ -450,6 +451,7 @@ export default function TerrainSection({ section }: SectionProps) {
               { typeButton("soft", "Soft Ground") }
               { typeButton("debris", "Debris") }
               { typeButton("crater", "Craters") }
+              { typeButton("cave", "Caves") }
               { typeButton("water", "Water") }
               { buildingButton("silo", "Silo") }
               { typeButton("shallow", "Shallow Water") }

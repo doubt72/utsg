@@ -27,6 +27,7 @@ export default class Terrain {
       t: { move: 2, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "soft ground" },
       x: { move: 2, hindrance: 1, cover: 2, los: false, vehicle: false, gun: false,  name: "debris" },
       c: { move: 2, hindrance: 0, cover: 2, los: false, vehicle: true, gun: true,  name: "crater" },
+      v: { move: 2, hindrance: 0, cover: 5, los: false, vehicle: false, gun: true,  name: "cave" },
       w: { move: 0, hindrance: 0, cover: 0, los: false, vehicle: false, gun: false,  name: "water" },
       y: { move: 3, hindrance: 0, cover: 0, los: false, vehicle: "amph", gun: false,  name: "shallow water" },
     }[this.hex.baseTerrain]

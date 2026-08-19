@@ -103,6 +103,7 @@ module Utility
               ["usa", "Veteran", 0, 4, 7, 6, 4, { s: 1 }],
               ["usa", "Rifle", 0, 3, 7, 6, 4, { s: 1 }],
               ["usa", "Garrison", 0, 2, 6, 4, 3, {}],
+              ["usa", "Philippine Scouts", 1, 4, 6, 4, 5, { sn: 1 }],
               ["usa", "Green", 0, 2, 6, 4, 3, {}],
 
               ["ussr", "Assault", 41, 4, 9, 2, 5, { a: 1, s: 1 }],
