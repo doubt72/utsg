@@ -5,6 +5,7 @@
 - Bug fix: removed multiselect button for assault, should not try to render
 - Bug fix: unit children should affect rout overstack checks
 - Updated/promoted 103
+- Promoted 202, 403, 502, 602 to beta
 - Added prototype 513 (partially)
 
 # 0.125

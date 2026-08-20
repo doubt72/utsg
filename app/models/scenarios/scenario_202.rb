@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Purple Heart Battalion"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1943, 10, 18].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -16,7 +16,7 @@ module Scenarios
       "0": {
         list: [
           [2, :usa_leader_5_1],
-          [8, :usa_rifle_s],
+          [8, :usa_veteran_s],
           :usa_crew_t,
           [3, :usa_m1919_browning],
           :usa_m2_browning,
@@ -32,9 +32,9 @@ module Scenarios
         list: [
           :ger_leader_5_1,
           :ger_leader_4_1,
-          [6, :ger_rifle_s],
+          [5, :ger_rifle_s],
           :ger_crew_t,
-          [3, :ger_mg_42],
+          [2, :ger_mg_42],
           :ger_7_5cm_leig_18,
           :pillbox,
           :bunker,

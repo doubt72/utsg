@@ -1,8 +1,4 @@
 Features/Bug Fixes
-  + Replay not review
-  + Assault unknown action finish multiselect
-  + Should not be able to rout into overstack (children?)
-  + Back-to-back rotation should replace previous rotation
   - Spinning mount should be able to fire in any direction
   - Path screws up tank movement?  E10-E11 on 103
   - Reaction fire for out of arc should not show

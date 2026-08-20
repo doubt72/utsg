@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Gates of Imphal"
     ALLIES = ["ind"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1944, 3, 20].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -27,9 +27,9 @@ module Scenarios
       "0": {
         list: [
           :jap_leader_6_1,
-          [5, :jap_a_division_s],
+          [6, :jap_a_division_s],
           [2, :jap_type_99_lmg],
-          [4, :jap_type_95_ha_go],
+          [5, :jap_type_95_ha_go],
         ],
       },
     }.freeze
@@ -37,7 +37,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 8,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,
