@@ -159,22 +159,32 @@ export default function HousekeepingSection({ section }: SectionProps) {
         the result is less than or equal to the <strong>fe</strong> value, the blaze counter is
         removed from the map.
       </p>
+      <div className="example">
+        For example, if it was raining and a 6 was rolled, the blaze marker
+        being checked would be removed.
+      </div>
       <p>
-        For example, if it was raining and a 6 was rolled, the blaze marker being checked would be
-        removed.
+        After checking to see if the blazes remain, a check is made to see if
+        the blazes spread. Fire spread depends on the <strong>fs</strong>{" "}
+        percentage on the current wind speed and downwind terrain.  Sand, water,
+        marsh, or soft ground will prevent fires from spreading; buildings, forest,
+        brush, fields, orchards, or palm trees increase to chance by 2.  Other
+        terrain features have no effect.
       </p>
       <p>
-        After checking to see if the blazes remain, a check is made to see if the blazes spread.
-        Fire spread depends on the <strong>fs</strong> percentage on the current wind speed. Each
-        hex containing a blaze is checked separately: a single d10 is rolled, and if ten times the
-        result is less than or equal to the <strong>fs</strong> value, the blaze spreads in the
-        direction of the wind. Note that fires will not spread in calm winds, and dust increases the
-        chance of spreading by 10% (even in calm winds).
+        Each hex containing a blaze is checked separately: a single d10 is
+        rolled, and if ten times the result is less than or equal to the{" "}
+        <strong>fs</strong> value, the blaze spreads in the direction of the
+        wind. Note that dust also increases the chance of spreading by 10%.
+        There&apos;s no need to check blazes when there&apos;s
+        already a blaze downwind.
       </p>
-      <p>
-        For example, if the wind was moderate, the weather was dry and a 2 was rolled, a new blaze
-        marker would be placed in the direction the wind is blowing from the marker being checked.
-      </p>
+      <div className="example">
+        For example, if the wind was moderate, the weather was dry and a 2 was
+        rolled, and the downwind terrain was open, a new blaze marker would be
+        placed in the direction the wind is blowing from the marker being
+        checked.
+      </div>
       <h3>{section}.5. Variable Weather</h3>
       <p>If the wind is variable, there is a chance of the wind direction and/or speed changing.</p>
       <div className={"flex mb1em"}>

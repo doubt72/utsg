@@ -64,6 +64,7 @@ export default function FireBlazeSection({ section }: SectionProps) {
         Units don&apos;t need to be all be displaced to the same hex). If the hex contained smoke,
         it is removed, but all other features remain in the same hex, as do wrecks, dropped infantry
         weapons, or unmanned crewed weapons. If a unit is manning a crewed weapon, it is abandoned.
+        Immobilzed vehicles are destroyed.
       </p>
       <p>
         Units are eliminated if they have nowhere legal to displace; i.e., they cannot cross or

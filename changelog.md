@@ -1,5 +1,6 @@
 # 0.126
 
+- Refactoring blazes
 - Review should be replay
 - Switching direction multiple times only counts last change
 - Bug fix: removed multiselect button for assault, should not try to render
