@@ -4,6 +4,9 @@
 - Switching direction multiple times only counts last change
 - Bug fix: removed multiselect button for assault, should not try to render
 - Bug fix: unit children should affect rout overstack checks
+- Bug fix: rotate issue, also issue with paths and vehicles
+- Bug fix: firing arc doesn't account for rotating weapon mounts
+- Bug fix: don't offer infantry/rapid fire as option when units in armored vehicle fire
 - Updated/promoted 103
 - Promoted 202, 403, 502, 602 to beta
 - Added prototype 513 (partially)

@@ -3513,4 +3513,36 @@ describe("movement", () => {
     expect(game.gameState?.openHex(0, 2)).toBe(1)
     expect(game.gameState?.openHex(0, 1)).toBe(1)
   })
+
+  test("vehicle movement not along path", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "b", r: { t: "p", d: [3, 5] }}, { t: "o", r: { t: "p", d: [2, 6] } }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGTruck)
+    unit.id = "test1"
+    unit.baseMovement = 4
+    unit.facing = 2
+    map.addCounter(new Coordinate(2, 2), unit)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    expect(movementPastCost(map, unit)).toBe(0)
+    expect(game.moveState.openHex(3, 2)).toBe(hexOpenType.Closed)
+    expect(game.moveState.rotatePossible).toBe(true)
+
+    game.moveState.rotate(4)
+    expect(movementPastCost(map, unit)).toBe(2)
+    expect(game.moveState.openHex(3, 2)).toBe(1)
+    expect(game.moveState.rotatePossible).toBe(true)
+
+    game.moveState.move(3, 2)
+    expect(movementPastCost(map, unit)).toBe(3)
+    expect(game.moveState.openHex(4, 2)).toBe(1)
+    expect(game.moveState.rotatePossible).toBe(true)
+  })
 });

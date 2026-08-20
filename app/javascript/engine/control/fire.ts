@@ -551,7 +551,7 @@ export function hitFromArc(
 }
 
 function inFiringArc(game: Game, counter: Counter, to: Coordinate): boolean {
-  if (!counter.unit.rotates) { return true }
+  if (!counter.unit.rotates || counter.unit.rotatingVehicleMount) { return true }
   const map = game.scenario.map
   const from = counter.hex as Coordinate
   const start = new Coordinate(map.xOffset(from.x, from.y), map.yOffset(from.y))

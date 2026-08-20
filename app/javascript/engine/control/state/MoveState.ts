@@ -190,7 +190,7 @@ export default class MoveState extends BaseState {
 
   get rotatePossible(): boolean {
     const counter = this.selection[0].counter
-    const loc = counter.hex as Coordinate
+    const loc = new Coordinate(this.lastPath.x, this.lastPath.y)
     const cost = movementCost(this.map, loc, loc, counter.unit) + movementPastCost(this.map, counter.unit)
     const length = this.path.length
     const move = mapSelectMovement(this.game, true)

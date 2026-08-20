@@ -1,12 +1,11 @@
 Features/Bug Fixes
-  - Spinning mount should be able to fire in any direction
-  - Path screws up tank movement?  E10-E11 on 103
-  - Reaction fire for out of arc should not show
-  - Reaction fire should not trigger if unit in vehicle
+  + Spinning mount should be able to fire in any direction
+  + Path screws up tank movement?  E10-E11 on 103
+  + Reaction fire should not trigger if unit in vehicle
   - Tweak fire start/spread rules
   - Don't check for fire start on 1 or less
   - Fire spread check should go back to initiative player
-  - Fire into immobilized unit should destroy itself
+  - Fire into immobilized unit should destroy vehicle
   - Don't check for blazes that can't spread
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel

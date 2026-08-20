@@ -94,7 +94,17 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
             const toc = new Coordinate(t.x, t.y)
             const dist = hexDistance(loc, toc)
             if (c.unit.currentRange < dist && !(c.unit.sponson && c.unit.sponson.range >= dist)) { continue }
-            if (los(map, loc, toc)) { rc.push(loc); added = true; break }
+            if (!los(map, loc, toc)) { continue }
+            let canTarget = false
+            for (const tc of map.countersAt(toc)) {
+              if (!tc.hasUnit || tc.unit.parent) { continue }
+              if (tc.unit.armored && !(c.unit.antiTank || c.unit.fieldGun)) { continue }
+              canTarget = true
+            }
+            if (!canTarget) { continue }
+            rc.push(loc);
+            added = true;
+            break
           }
           if (added) { break }
         }
