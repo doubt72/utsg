@@ -422,9 +422,6 @@ function addAssaultActions(game: Game, actions: GameControl[]): void {
       if (action.path.length + action.addActions.length > 1) {
         actions.push({ type: "assault_move_finish" })
       }
-      if (!action.doneSelect) {
-        actions.push({ type: "finish_multiselect" })
-      }
     }
     actions.push({ type: "cancel_action" })
   } else {

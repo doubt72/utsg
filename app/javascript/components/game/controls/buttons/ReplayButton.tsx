@@ -16,7 +16,7 @@ export default function ReplayButton({ vertical, gameId }: ReplayButtonProps) {
     navigate(`/game_replay/${gameId}`, { replace: true })
   }
 
-  const text = "review game"
+  const text = "game replay"
 
   const buttonTooltip = (props: TooltipProps) => (
     <Tooltip className="tooltip-game" {...props}>

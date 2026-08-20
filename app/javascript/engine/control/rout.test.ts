@@ -91,6 +91,73 @@ describe("routing", () => {
       })
     })
 
+    test("path when blocked by overstack", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.break()
+
+      const blocking = new Unit(testGInf)
+      const loc = new Coordinate(1, 2)
+      map.addCounter(loc, blocking)
+      const blocking2 = new Unit(testGInf)
+      map.addCounter(loc, blocking2)
+
+      expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
+        x: 0, y: 2, children: [{
+          x: 0, y: 1, children: [{
+            x: 1, y: 1, children: [{
+              x: 2, y: 1, children: [{
+                x: 3, y: 1, children: [],
+              }]
+            }]
+          }]
+        }, {
+          x: 0, y: 3, children: [{
+            x: 1, y: 3, children: [{
+              x: 2, y: 3, children: [{
+                x: 3, y: 3, children: []
+              }]
+            }]
+          }]
+        }]
+      })
+    })
+
+    test("path when blocked by overstack", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.break()
+
+      const blocking = new Unit(testGInf)
+      const loc = new Coordinate(1, 2)
+      map.addCounter(loc, blocking)
+      const blocking2 = new Unit(testGMG)
+      map.addCounter(loc, blocking2)
+      organizeStacks(map)
+
+      expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
+        x: 0, y: 2, children: [{
+          x: 0, y: 1, children: [{
+            x: 1, y: 1, children: [{
+              x: 2, y: 1, children: [{
+                x: 3, y: 1, children: [],
+              }]
+            }]
+          }]
+        }, {
+          x: 0, y: 3, children: [{
+            x: 1, y: 3, children: [{
+              x: 2, y: 3, children: [{
+                x: 3, y: 3, children: []
+              }]
+            }]
+          }]
+        }]
+      })
+    })
+
     test("path not blocked by friendly unit", () => {
       const game = createBlankGame()
       const map = game.scenario.map

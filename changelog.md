@@ -1,3 +1,12 @@
+# 0.126
+
+- Review should be replay
+- Switching direction multiple times only counts last change
+- Bug fix: removed multiselect button for assault, should not try to render
+- Bug fix: unit children should affect rout overstack checks
+- Updated/promoted 103
+- Added prototype 513 (partially)
+
 # 0.125
 
 - Switch "finish" to "done" to make less ambiguous

@@ -97,16 +97,15 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
   const dir = map.relativeDirection(from, to) as Direction
   if (alongRoad(hexFrom, hexTo, dir)) { cost = 1 }
   if (!cost) { return false }
-  let toSize = 0
   for (const c of map.countersAt(to)) {
     if (c.hasFeature && c.feature.currentMovement === "A") { return false }
     if (c.hasUnit) {
       if (c.unit.isVehicle || c.unit.canCarrySupport) {
         if (c.unit.playerNation !== unit.playerNation && !c.unit.isWreck) { return false }
-        toSize += c.unit.size
       }
     }
   }
+  const toSize = map.sizeAt(to)
   if (toSize + unit.size > stackLimit) { return false }
   if (!terrTo.move && alongRailroad(hexFrom, hexTo, dir)) { cost = 2 }
   if (hexFrom.border && hexFrom.borderEdges?.includes(dir)) {

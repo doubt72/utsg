@@ -1867,6 +1867,13 @@ describe("movement", () => {
     expect(game.gameState?.openHex(4, 2)).toBe(hexOpenType.Open)
     expect(game.gameState?.openHex(3, 3)).toBe(hexOpenType.Closed)
 
+    game.moveState.rotate(4)
+    expect(game.moveState.path.length).toBe(3)
+    expect(game.moveState.path[2].facing).toBe(4)
+    expect(game.moveState.path[2].turret).toBe(4)
+    expect(game.gameState?.rotateOpen).toBe(true)
+    expect(game.gameState?.rotatePossible).toBe(true)
+
     game.moveState.rotate(2)
     expect(game.moveState.path.length).toBe(3)
     expect(game.moveState.path[2].facing).toBe(2)

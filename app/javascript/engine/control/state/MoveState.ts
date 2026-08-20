@@ -480,9 +480,15 @@ export default class MoveState extends BaseState {
       if (lastDir && turret) {
         turret = normalDir(turret + dir - lastDir)
       }
-      this.path.push({
-        x: last.x, y: last.y, facing: dir, turret,
-      })
+      const nextLast = this.path.length > 1 ? this.path[this.path.length - 2] : undefined
+      if (nextLast && nextLast.x === last.x && nextLast.y === last.y && nextLast.facing !== last.facing) {
+        last.facing = dir
+        last.turret = turret
+      } else {
+        this.path.push({
+          x: last.x, y: last.y, facing: dir, turret,
+        })
+      }
       this.game.actionPathLength = this.path.length
       this.game.actionPathDir = dir
     }
