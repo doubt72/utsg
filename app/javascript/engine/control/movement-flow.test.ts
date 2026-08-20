@@ -1152,7 +1152,7 @@ describe("movement flow", () => {
     expect(all[1].hex?.y).toBe(2)
   })
 
-  test.only("dropping a MG or infantry", () => {
+  test("dropping a MG or infantry", () => {
     const game = createBlankGame()
     const map = game.scenario.map
     const test1 = new Unit(testGInf)

@@ -2,8 +2,11 @@
 
 - Switch "finish" to "done" to make less ambiguous
 - Added new terrain types: caves and craters
+- Only show combine teams when combining teams is possible
 - Bug fix: don't allow entrenchment in more terrains
 - Bug fix: don't display rout odds on actual rout
+- Bug fix: can't select hex when firing smoke into hex with feature
+- Bug fix: area fire should not target units inside of vehicles
 - Promoted 004
 - Updated 103, 314
 - Added prototype 413, 414, 415, 416 (some new units as well)

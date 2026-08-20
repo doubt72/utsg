@@ -859,7 +859,7 @@ export default class Map {
   targetSelectAllAt(x: number, y: number, vehicles: boolean, armored: boolean) {
     const counters = this.countersAt(new Coordinate(x, y))
     for (const c of counters) {
-      if (!c.hasUnit) { continue }
+      if (!c.hasUnit || c.unit.parent) { continue }
       if (c.unit.operated || c.unit.isWreck) { continue }
       if (c.unit.armored) {
         if (armored && !c.unit.targetSelected) { this.targetSelect(c.unit) }

@@ -91,8 +91,8 @@ export default class FireState extends BaseState {
     const y = selection.target.xy.y
     const id = selection.counter.target.id
     const counter = this.map.unitAtId(new Coordinate(x, y), id) as Counter
-    const selected = counter.unit.selected
-    this.map.select(counter.unit)
+    const selected = counter?.unit?.selected
+    if (counter) { this.map.select(counter.unit) }
     if (!this.doneSelect && this.samePlayer(counter.unit)) {
       if (selected) {
         removeStateSelection(this.game, x, y, counter.unit.id)
@@ -103,8 +103,8 @@ export default class FireState extends BaseState {
         })
       }
     } else {
-      this.map.select(counter.unit)
-      const ts = counter.unit.targetSelected
+      if (counter) { this.map.select(counter.unit) }
+      const ts = counter?.unit?.targetSelected
       if (ts) {
         this.map.clearAllTargetSelections()
       } else {

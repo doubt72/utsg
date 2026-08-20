@@ -548,7 +548,14 @@ function canJoin(unit: Unit, map: Map): boolean {
   if (!unit.isSplit) { return false }
   if (unit.parent) { return false }
   if (contact(unit, map)) { return false }
-  return true
+  const counters = map.countersAt(map.locForId(unit.id) as Coordinate)
+  for (const c of counters) {
+    if (c.unit.id === unit.id) { continue }
+    if (!c.hasUnit || c.unit.pinned || c.unit.isBroken) { continue }
+    if (!c.unit.isSplit || c.unit.parent || c.unit.name !== unit.name) { continue }
+    return true
+  }
+  return false
 }
 
 function checkFire(unit: Unit, map: Map): boolean {
