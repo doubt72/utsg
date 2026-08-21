@@ -1,7 +1,7 @@
 import Game from "./Game";
 import {
   BaseTerrainType, Coordinate, Direction, ExtendedDirection, Player, VictoryHex,
-  WeatherType, WindType, baseTerrainType, featureType, markerType, unitStatus, weatherType, windType,
+  WeatherType, WindType, baseTerrainType, featureType, markerType, terrainType, unitStatus, weatherType, windType,
 } from "../utilities/commonTypes";
 import Hex, { HexData } from "./Hex";
 import Counter from "./Counter";
@@ -941,11 +941,24 @@ export default class Map {
     return 1
   }
 
-  fireSpreadTarget(): number {
+  fireSpreadTarget(loc: Coordinate): number {
     let rc = 0
+    const neighbor = this.neighborAt(loc, this.windDirection)
+    if (!neighbor) { return 0 }
+    for (const c of this.countersAt(neighbor.coord)) {
+      if (c.hasFeature && c.feature.type === featureType.Fire) { return 0 }
+    }
+    if ([terrainType.Sand, terrainType.Water, terrainType.Shallow, terrainType.Marsh,
+          terrainType.Soft].includes(neighbor.baseTerrain)) {
+      return 0
+    }
     if (this.windSpeed === windType.Breeze) { rc = 1 }
     if (this.windSpeed === windType.Moderate) { rc = 2 }
     if (this.windSpeed === windType.Strong) { rc = 3 }
+    if ([terrainType.Forest, terrainType.Brush, terrainType.Grain, terrainType.Orchard,
+          terrainType.Palm].includes(neighbor.baseTerrain) || neighbor.building) {
+      rc += 2
+    }
     if (this.currentWeather === weatherType.Dust) { rc += 1 }
     return rc
   }

@@ -2,6 +2,6 @@
 
 module Utility
   class Server
-    VERSION = "0.126"
+    VERSION = "0.127"
   end
 end

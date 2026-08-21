@@ -495,6 +495,58 @@ describe("minor actions", () => {
     expect(units[0].feature.type).toBe(featureType.Fire)
   })
 
+  test.only("terrain affects fire", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "m" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    map.windSpeed = windType.Moderate
+    map.windDirection = 4
+
+    const fire1 = new Feature(testFire)
+    fire1.id = "fire1"
+    const loc1 = new Coordinate(0,0)
+    map.addCounter(loc1, fire1)
+    const fire2 = new Feature(testFire)
+    fire2.id = "fire2"
+    const loc2 = new Coordinate(0,1)
+    map.addCounter(loc2, fire2)
+    const fire3 = new Feature(testFire)
+    fire3.id = "fire3"
+    const loc3 = new Coordinate(4,1)
+    map.addCounter(loc3, fire3)
+
+    game.addFireCheckState()
+    expect(game.fireOutCheckNeeded.length).toBe(3)
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+    const state = game.gameState as FireCheckState
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    state.finish()
+
+    game.addFireCheckState()
+    expect(game.fireOutCheckNeeded.length).toBe(2)
+    expect(game.fireSpreadCheckNeeded.length).toBe(0)
+    state.finish()
+
+    game.addFireCheckState()
+    expect(game.fireOutCheckNeeded.length).toBe(1)
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+    vi.spyOn(Math, "random").mockReturnValue(0.01)
+    state.finish()
+    Math.random = original
+
+    expect(game.fireSpreadCheckNeeded.length).toBe(1)
+    expect(map.fireSpreadTarget(loc1)).toBe(0)
+    expect(map.fireSpreadTarget(loc2)).toBe(4)
+    expect(map.fireSpreadTarget(loc3)).toBe(0)
+  })
+
   test("variable wind changes", () => {
     const game = createBlankGame()
     const map = game.scenario.map

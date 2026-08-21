@@ -874,7 +874,7 @@ export default class Game {
               for (const d of spread_done) {
                 if (d.x === x && d.y === y) { foundSpread = true; break }
               }
-              if (!foundSpread && this.scenario.map.fireSpreadTarget() > 0) {
+              if (!foundSpread && this.scenario.map.fireSpreadTarget(loc) > 0) {
                 const nat = map.neighborAt(loc, map.windDirection)
                 if (nat) { this.fireSpreadCheckNeeded.push({ feature: c.feature, loc }) }
               }

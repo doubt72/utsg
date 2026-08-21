@@ -30,7 +30,7 @@ export default class FireSpreadAction extends BaseAction {
 
   mutateGame(): void {
     const loc = new Coordinate(this.target.x, this.target.y)
-    if (this.diceResult.result.result <= this.map.fireSpreadTarget()) {
+    if (this.diceResult.result.result <= this.map.fireSpreadTarget(loc)) {
       this.map.spreadFire(loc)
     }
   }

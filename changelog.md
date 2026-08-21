@@ -1,6 +1,11 @@
+# 0.127
+
+- Refactoring blazes; don't bother checking spread if already have blaze, add terrain effects
+- Bug fix: reset current player to initiative player after displace action after fire spread
+- Updated 406
+
 # 0.126
 
-- Refactoring blazes
 - Review should be replay
 - Switching direction multiple times only counts last change
 - Bug fix: removed multiselect button for assault, should not try to render

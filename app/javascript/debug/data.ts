@@ -1044,13 +1044,15 @@ export const mapDebugData: {
     x: 5,
     y: 5,
     units: [
-      { u: testUnitData.ginf, x: 1, y: 2 },
+      { u: testFeatureData.fire, x: 0, y: 0 },
+      { u: testFeatureData.fire, x: 0, y: 1 },
+      { u: testFeatureData.fire, x: 4, y: 1 },
     ],
     features: [],
     hexes: [
+      [{ t: "o" }, { t: "m" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
-      [{ t: "o" }, { t: "o" }, { t: "b", r: { t: "p", d: [3, 5] }}, { t: "o", r: { t: "p", d: [2, 6] } }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
     ],

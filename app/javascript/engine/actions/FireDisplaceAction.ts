@@ -73,6 +73,9 @@ export default class FireDisplaceAction extends BaseAction {
         if (action.type === "fire_start") {
           this.game.setCurrentPlayer(action.player)
           break
+        } else if (action.type === "fire_spread_check") {
+          this.game.setCurrentPlayer(this.game.currentInitiativePlayer)
+          break
         }
       }
     }
