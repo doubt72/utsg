@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import GameReplay from "../../engine/GameReplay";
-import { getAPI } from "../../utilities/network";
+import { getAPI, postAPI } from "../../utilities/network";
 import MapDisplay from "./map/MapDisplay";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import {
@@ -13,11 +13,15 @@ import {
 } from "react-bootstrap-icons";
 import Header from "../Header";
 import ActionReplayDisplay from "./ActionReplayDisplay";
+import { clearColor, starPath } from "../../utilities/graphics";
+import { Coordinate } from "../../utilities/commonTypes";
 
 export default function GameReplayDisplay() {
   const { id } = useParams()
   const navigate = useNavigate();
   const location = useLocation();
+
+  const user = localStorage.getItem("username") ?? ""
 
   useEffect(() => {
     history.pushState(null, "", location.pathname)
@@ -62,6 +66,8 @@ export default function GameReplayDisplay() {
   const [largeInterfaceButton, setLargeInterfaceButton] = useState<JSX.Element | undefined>()
   const [smallInterfaceButton, setSmallInterfaceButton] = useState<JSX.Element | undefined>()
   const [mobileInterfaceButton, setMobileInterfaceButton] = useState<JSX.Element | undefined>()
+
+  const [myRating, setMyRating] = useState<number>(0)
 
   const [updateMap, setUpdateMap] = useState(0)
 
@@ -394,6 +400,40 @@ export default function GameReplayDisplay() {
 
   const shrinkScales = [1, 0.75, 0.5625]
 
+  useEffect(() => {
+    if (!replay) { return }
+    if (user) {
+      getAPI(`/api/v1/ratings/single?scenario=${replay.game.scenario.code}`, {
+        ok: response => response.json().then(json => {
+          setMyRating(json.rating)
+        })
+      })
+    }
+  }, [replay])
+
+  const myRatingStars = (rating: number) => {
+    return (
+      <svg className="scenario-row-rating" width={80} height={16} viewBox="0 0 500 100">
+        { [0, 1, 2, 3, 4].map(s => <g key={s}>
+          <mask id={`star-mask-${s}`}>
+            <path d={starPath(new Coordinate(50 + 100*s, 55), 50)} style={{ fill: "#FFF" }}/>
+          </mask>
+          <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
+                style={({ stroke: "#540", strokeWidth: 5, fill: "#540", strokeLinejoin: "round" })} />
+          { rating >= s+1 ? <rect x={10 + 100*s} y={0} width={80} height={100} mask={`url(#star-mask-${s})`}
+                                style={{ fill: "#EB0" }} /> : "" }
+          <path d={starPath(new Coordinate(50 + 100*s, 55), 50)}
+                style={({ stroke: "#000", strokeWidth: 5, fill: clearColor, strokeLinejoin: "round" })}
+                onClick={() => {
+                  postAPI("/api/v1/ratings", { scenario: replay?.game.scenario.code, rating: s+1 }, {
+                    ok: () => setMyRating(s+1)
+                  })
+                }} />
+        </g>)}
+      </svg>
+    )
+  }
+
   return (
     <div className="main-page">
       { collapseHeader ? "" : <Header /> }
@@ -413,6 +453,16 @@ export default function GameReplayDisplay() {
                 </div>
               </div>
             </div>
+            { [replay?.game.playerOneName, replay?.game.playerTwoName].includes(user) ?
+              <div className="flex mt05em">
+                <div className="mr1em">
+                  Rate scenario:
+                </div>
+                <div>
+                  { myRatingStars(myRating) }
+                </div>
+              </div> : ""
+            }
             <div className="flex-fill"></div>
             <div className="flex">
               <div className="flex-fill"></div>

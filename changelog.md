@@ -1,5 +1,6 @@
 # 0.127
 
+- Option to rate scenario or game replay
 - Refactoring blazes; don't bother checking spread if already have blaze, add terrain effects
 - Don't check for fire on target below 2 unless tank involved
 - Bug fix: don't allow deployment into blazes
