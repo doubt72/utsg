@@ -42,6 +42,7 @@ module Scenarios
         :ger_panzerschreck,
         [3, :ger_panther_a_g],
         :ger_nashorn,
+        :sniper4,
       ] },
     }.freeze
 

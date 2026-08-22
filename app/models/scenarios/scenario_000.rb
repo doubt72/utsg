@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario000 < Base
     ID = "000"
-    NAME = "A Simple Matter [Start Here]"
+    NAME = "A Simple Matter"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""

@@ -33,7 +33,8 @@ export default function NewGame() {
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
-  const [scenarioData, setScenarioData] = useState<ScenarioData | undefined>(undefined)
+  const [tutorial, setTutorial] = useState<ScenarioListData | undefined>()
+  const [scenarioData, setScenarioData] = useState<ScenarioData | undefined>()
 
   const [alliedFactions, setAlliedFactions] = useState([])
   const [axisFactions, setAxisFactions] = useState([])
@@ -60,7 +61,8 @@ export default function NewGame() {
     getAPI(url, {
       ok: response => {
         response.json().then(json => {
-          setScenarioList(json.data)
+          setScenarioList(json.data.filter((s: ScenarioData) => s.id !== "000"))
+          setTutorial(json.data.filter((s: ScenarioData) => s.id === "000")[0])
           setScroll({ up: json.page > 0, down: json.more })
         })
       }
@@ -199,7 +201,8 @@ export default function NewGame() {
       >
         {
           sorts.map(sel => {
-            return <option key={sel.code} value={sel.code}>{sel.name}</option>
+            return <option key={sel.code} selected={sel.code === scenarioSearch.sort}
+                           value={sel.code}>{sel.name}</option>
           })
         }
       </select>
@@ -347,6 +350,13 @@ export default function NewGame() {
     </select>
   )
 
+  const TutorialDisplay = () => {
+    if (!tutorial) { return "" }
+    return (
+      <ScenarioRow onClick={setScenario} selected={formInput.scenario === tutorial.id} data={tutorial} />
+    )
+  }
+
   const scenarioDisplayList = (
     scenarioList.length < 1 ? <div className="red mt05em">no scenarios match search</div> :
     scenarioList.map((row: ScenarioListData, i) => {
@@ -463,7 +473,13 @@ export default function NewGame() {
               {statusSelector}
             </div>
             <div className="scenario-list-select">
-              <div>select scenario:</div>
+              <div>start here:</div>
+              <div className="flex">
+                <div className="flex-fill mb1em" style={{ marginRight: "2.25em" }}>
+                  {TutorialDisplay()}
+                </div>
+              </div>
+              <div>or select a scenario:</div>
               <div className="red">{formErrors.scenario}</div>
               <div className="flex">
                 <div className="flex-fill">

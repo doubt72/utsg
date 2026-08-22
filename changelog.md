@@ -1,3 +1,10 @@
+# 0.128
+
+- Take 000 out of regular flow on new game screen/highlight as tutorial; clean up new game page slightly
+- Updated/Promoted 406
+- Updated 313, 413, 513
+- Added prototype 514, 611, 612
+
 # 0.127
 
 - Option to rate scenario or game replay
@@ -7,7 +14,7 @@
 - Bug fix: don't allow deployment into blazes
 - Bug fix: reset current player to initiative player after displace action after fire spread
 - Bug fix: immobilized units should be destroyed, not displaced
-- Updated 406, 513
+- Updated 406
 
 # 0.126
 

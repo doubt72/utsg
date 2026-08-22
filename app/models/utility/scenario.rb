@@ -9,8 +9,10 @@ module Utility
       include Utility::Scenario::Cache
 
       def all_scenarios(options = {})
-        scenarios = ::Scenarios.constants.reject { |k| %i[Base Scenario999].include?(k) }
-                               .map { |k| ::Scenarios.const_get(k).index_record }
+        scenarios = ::Scenarios.constants.reject do |k|
+          %i[Base Scenario999 Scenario000].include?(k)
+        end
+        scenarios = scenarios.map { |k| ::Scenarios.const_get(k).index_record }
         filter(scenarios, options)
         sort(scenarios, options["sort"], options["sort_dir"]).map do |s|
           s.except(

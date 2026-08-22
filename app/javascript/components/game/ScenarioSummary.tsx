@@ -189,7 +189,8 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
           const fill = `url(#nation-${p === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]}-9)`
           const units = p === 1 ? scenario.alliedUnitTurnList(t) : scenario.axisUnitTurnList(t)
           rc.push(
-            <div key={`${t}-${p}`} className="background-gray corner-round mt05em mr05em p05em flex">
+            <div key={`${t}-${p}`}
+                 className="background-gray corner-round mt05em mr05em pt05em pb05em pr1em pl1em flex">
               <div className="background-light corner-round edge-line flex-vertical p05em mr05em"
                    style={{ width: "2.4em" }}>
                 <div className="flex-fill" />
@@ -267,7 +268,7 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
                 Initiative: {scenario.firstAction == 1 ? player1Pills : player2Pills}
               </div>
             </div>
-            <div className="p05em ml1em mb1em corner-round edge-line background-light float-right">
+            <div className="p05em ml1em mb1em corner-round edge-line-white background-gray float-right">
               <MapDisplay map={map} scale={scale()} preview={true} forceUpdate={0} />
             </div>
             {scenario.description?.map((p, i) => {

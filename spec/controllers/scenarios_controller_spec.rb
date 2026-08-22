@@ -37,7 +37,7 @@ RSpec.describe Api::V1::ScenariosController do
       get :index, params: { status: "p*" }
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body)["data"].length).to be == 10
+      expect(JSON.parse(response.body)["data"].length).to be == 11
     end
 
     it "gets correct winner data" do
@@ -52,13 +52,13 @@ RSpec.describe Api::V1::ScenariosController do
       get :index, params: { status: "p*", sort: "n", sort_dir: "asc" }
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body)["data"].length).to be == 10
-      expect(JSON.parse(response.body)["data"][1]["id"]).to be == "001"
-      expect(JSON.parse(response.body)["data"][1]["wins"]["one"]).to be == 2
-      expect(JSON.parse(response.body)["data"][1]["wins"]["two"]).to be == 2
-      expect(JSON.parse(response.body)["data"][2]["id"]).to be == "002"
-      expect(JSON.parse(response.body)["data"][2]["wins"]["one"]).to be == 1
-      expect(JSON.parse(response.body)["data"][2]["wins"]["two"]).to be == 1
+      expect(JSON.parse(response.body)["data"].length).to be == 11
+      expect(JSON.parse(response.body)["data"][0]["id"]).to be == "001"
+      expect(JSON.parse(response.body)["data"][0]["wins"]["one"]).to be == 2
+      expect(JSON.parse(response.body)["data"][0]["wins"]["two"]).to be == 2
+      expect(JSON.parse(response.body)["data"][1]["id"]).to be == "002"
+      expect(JSON.parse(response.body)["data"][1]["wins"]["one"]).to be == 1
+      expect(JSON.parse(response.body)["data"][1]["wins"]["two"]).to be == 1
     end
 
     it "gets correct rating data" do
@@ -68,16 +68,16 @@ RSpec.describe Api::V1::ScenariosController do
       get :index, params: { status: "p*", sort: "n", sort_dir: "asc" }
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body)["data"].length).to be == 10
-      expect(JSON.parse(response.body)["data"][1]["id"]).to be == "001"
+      expect(JSON.parse(response.body)["data"].length).to be == 11
+      expect(JSON.parse(response.body)["data"][0]["id"]).to be == "001"
+      expect(JSON.parse(response.body)["data"][0]["rating"]["count"]).to be == 2
+      expect(JSON.parse(response.body)["data"][0]["rating"]["average"]).to be_within(0.01).of(2.5)
+      expect(JSON.parse(response.body)["data"][1]["id"]).to be == "002"
       expect(JSON.parse(response.body)["data"][1]["rating"]["count"]).to be == 2
-      expect(JSON.parse(response.body)["data"][1]["rating"]["average"]).to be_within(0.01).of(2.5)
-      expect(JSON.parse(response.body)["data"][2]["id"]).to be == "002"
-      expect(JSON.parse(response.body)["data"][2]["rating"]["count"]).to be == 2
-      expect(JSON.parse(response.body)["data"][2]["rating"]["average"]).to be_within(0.01).of(4.5)
-      expect(JSON.parse(response.body)["data"][3]["id"]).to be == "003"
-      expect(JSON.parse(response.body)["data"][3]["rating"]["count"]).to be == 1
-      expect(JSON.parse(response.body)["data"][3]["rating"]["average"]).to be == 4
+      expect(JSON.parse(response.body)["data"][1]["rating"]["average"]).to be_within(0.01).of(4.5)
+      expect(JSON.parse(response.body)["data"][2]["id"]).to be == "003"
+      expect(JSON.parse(response.body)["data"][2]["rating"]["count"]).to be == 1
+      expect(JSON.parse(response.body)["data"][2]["rating"]["average"]).to be == 4
     end
   end
 
@@ -90,6 +90,8 @@ RSpec.describe Api::V1::ScenariosController do
 
       last = ""
       data.each do |d|
+        next if d["id"] == "000"
+
         expect(d["id"]).to be > last
         last = d["id"]
       end
@@ -176,6 +178,8 @@ RSpec.describe Api::V1::ScenariosController do
 
       last = 0
       data.each do |d|
+        next if d["id"] == "000"
+
         scenario = Utility::Scenario.scenario_by_id(d["id"])
         units = scenario[:metadata][:allied_units].map { |t| t[1] }.flatten(1) +
                 scenario[:metadata][:axis_units].map { |t| t[1] }.flatten(1)
@@ -295,7 +299,7 @@ RSpec.describe Api::V1::ScenariosController do
       get :index, params: { string: scenario_name, status: "p*" }
 
       expect(response.status).to be == 200
-      expect(JSON.parse(response.body)["data"].length).to be == 1
+      expect(JSON.parse(response.body)["data"].length).to be == 2
       expect(JSON.parse(response.body)["data"].first["id"]).to be == "0TT"
     end
 
@@ -305,6 +309,8 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
       scenarios.each do |s|
+        next if s["id"] == "000"
+
         expect(s["allies"].include?("usa") || s["allies"].include?("bra")).to be true
       end
       scenarios.select! { |s| s["id"] == "0TT" }
@@ -328,6 +334,8 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
       scenarios.each do |s|
+        next if s["id"] == "000"
+
         expect(s["status"]).to be == "p"
       end
     end
@@ -348,6 +356,8 @@ RSpec.describe Api::V1::ScenariosController do
       expect(response.status).to be == 200
       scenarios = JSON.parse(response.body)["data"]
       scenarios.each do |s|
+        next if s["id"] == "000"
+
         expect(s["id"][0]).to be == "1"
       end
     end

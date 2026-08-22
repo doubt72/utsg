@@ -51,6 +51,7 @@ module Scenarios
         :jap_crew_t,
         :jap_70mm_type_92,
         [2, :jap_type_92_hmg],
+        :sniper4,
       ] },
       "4": { list: [
         :jap_leader_5_1,

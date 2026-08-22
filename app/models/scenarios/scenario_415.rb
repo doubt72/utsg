@@ -16,8 +16,8 @@ module Scenarios
       "0": { list: [
         :usa_leader_5_1,
         [2, :usa_leader_4_1],
-        [6, :usa_rifle_s],
-        [2, :usa_m1918_bar],
+        [8, :usa_rifle_s],
+        [3, :usa_m1918_bar],
         :usa_radio_155mm,
         :usa_ft,
         :usa_m4105_sherman,
@@ -48,6 +48,7 @@ module Scenarios
         [3, :jap_type_92_hmg],
         :jap_radio_10cm,
         [2, :jap_sc],
+        :sniper5,
       ] },
     }.freeze
 
