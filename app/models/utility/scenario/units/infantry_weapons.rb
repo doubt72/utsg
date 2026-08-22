@@ -18,6 +18,7 @@ module Utility
               ["alm", "M1915 Chauchat", 15, { sn: 1 }], ["alm", "Bren LMG", 35],
               ["alm", "Vickers MG", 12], ["alm", "Colt M/29", 17], ["alm", "12.7mm HMG", 17],
               ["alm", "MG 08/15", 24], ["alm", "rkm wz. 28", 28], ["alm", "ZB vz. 30", 26],
+              ["alm", "Lewis Gun", 14],
 
               ["axm", "MG 08/15", 24], ["axm", "MG 30", 31], ["axm", "MG 34", 36],
               ["axm", "MG 42", 42], ["axm", "ZB vz. 26", 26], ["axm", "ZB vz. 30", 26],
@@ -159,6 +160,8 @@ module Utility
             lu = {}
             key = %i[c n y]
             [
+              ["alm", "Radio 7.5cm"],
+
               ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],
 
               ["ger", "Radio 10.5cm", 35], ["ger", "Radio 15cm", 34], ["ger", "Radio 17cm", 41],

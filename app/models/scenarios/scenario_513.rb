@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario513 < Base
     ID = "513"
-    NAME = "blank scenario"
+    NAME = "At the Gates of The Hague"
     ALLIES = ["dut"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
@@ -14,8 +14,18 @@ module Scenarios
 
     ALLIED_UNITS = {
       "0": { list: [
-        :alm_leader_5_1,
         :alm_leader_3_1,
+        [4, :alm_conscript_s],
+      ] },
+      "4": { list: [
+        [2, :alm_leader_5_1],
+        :alm_leader_4_1,
+        [3, :alm_elite_s],
+        [10, :alm_regular_s],
+        [2, :alm_12_7mm_hmg],
+        [4, :alm_lewis_gun],
+        :alm_81mm_mortar,
+        :alm_radio_7_5cm,
       ] },
     }.freeze
 
@@ -23,13 +33,33 @@ module Scenarios
       "0": { list: [
         :ger_leader_5_1,
         :ger_leader_4_1,
+        [6, :ger_fallschirmjager_s],
+        [2, :ger_mg_34],
+        :ger_sc,
+      ] },
+      "2": { list: [
+        :ger_leader_6_1,
+        [2, :ger_fallschirmjager_s],
+        :ger_mg_34,
+        :ger_sc,
+      ] },
+      "3": { list: [
+        :ger_leader_4_1,
+        [2, :ger_fallschirmjager_s],
+        :ger_mg_34,
+      ] },
+      "5": { list: [
+        :ger_leader_6_1,
+        :ger_leader_4_1,
+        [4, :ger_fallschirmjager_s],
+        [2, :ger_mg_34],
       ] },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 7,
+          turns: 8,
           first_deploy: 1,
           first_action: 2,
           date:,
@@ -44,7 +74,24 @@ module Scenarios
 
       def description
         [
-          "no description yet",
+          "During he Battle for The Hague, German Fallschirmjäger units were
+          dropped in and around The Hague to capture Dutch airfields and the
+          city itself. After securing a bridgehead, the Germans expected the
+          Netherlands to surrender, but the landings failed to achieve that
+          objective, as the German forces were unable to hold onto their
+          initial gains once the Dutch organized and launched effective
+          counterattacks.  Isolated pockets of German troops retreated to the
+          nearby dunes where they were continually pursued and harrassed for
+          five days until the Netherlands was forced to surrender due to
+          German advances on other fronts.",
+          "One of the locations the German troops were dropped was at the
+          airstrip in Ockenburg. The defenders were unable to prevent the
+          Germans from taking the airfield but delayed them long enough to
+          secure the arrival of additional Dutch infantry units, which
+          prevented the Germans from advancing into The Hague. As the Germans
+          were using the Ockenburg airstrip to strengthen their numbers, the
+          Dutch bombed it to prevent it from being used any further, and some
+          further reinforcements were landed on the beaches instead.",
         ]
       end
 
@@ -68,8 +115,17 @@ module Scenarios
               ["17-22", "15-16"], ["16-22", "17-18"], ["15-22", 19], ["16-22", "20-21"],
               ["17-22", 22],
             ],
+            "4" => [[22, "*"]],
           },
-          axis_setup: { "0" => [["5-14", 14]] },
+          axis_setup: {
+            "0" => [
+              ["3-16", 11], ["3-17", 12], ["2-17", "13-14"], ["1-16", 15], ["2-16", 16],
+              ["2-15", 17],
+            ],
+            "2" => [["6-10", 14]],
+            "3" => [["6-10", 14]],
+            "5" => [[1, 2], ["0-1", "3-5"], [0, 6]],
+          },
           base_terrain: "",
         }
       end

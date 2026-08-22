@@ -3,10 +3,11 @@
 - Option to rate scenario or game replay
 - Refactoring blazes; don't bother checking spread if already have blaze, add terrain effects
 - Don't check for fire on target below 2 unless tank involved
+- Highlight isolated reinforcement hexes
 - Bug fix: don't allow deployment into blazes
 - Bug fix: reset current player to initiative player after displace action after fire spread
 - Bug fix: immobilized units should be destroyed, not displaced
-- Updated 406
+- Updated 406, 513
 
 # 0.126
 
