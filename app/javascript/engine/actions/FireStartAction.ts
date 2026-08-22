@@ -1,8 +1,8 @@
-import { baseTerrainType, Coordinate, terrainType } from "../../utilities/commonTypes";
+import { Coordinate } from "../../utilities/commonTypes";
 import { failRed, formatCoordinate, formatDieResult, formatTarget, passBlue, passGreen } from "../../utilities/graphics";
+import { fireStartTarget } from "../control/fire";
 import Game from "../Game";
 import { GameActionData, GameActionDiceResult, GameActionFireStartData, GameActionPath } from "../GameAction";
-import Hex from "../Hex";
 import Unit, { unitDataForTankCrew } from "../Unit";
 import BaseAction from "./BaseAction";
 
@@ -25,21 +25,10 @@ export default class FireStartAction extends BaseAction {
   get type(): string { return "fire_start" }
 
   get needed(): number {
-    let check = 2
-    const hex = this.map.hexAt(new Coordinate(this.hex.x, this.hex.y)) as Hex
-    if ([
-      terrainType.Forest,
-      terrainType.Brush,
-      terrainType.Grain,
-      terrainType.Orchard,
-      terrainType.Palm,
-    ].includes(hex.baseTerrain) ) { check = 3 }
-    if ([baseTerrainType.Desert, baseTerrainType.Beach].includes(this.map.baseTerrain) && hex.baseTerrain === terrainType.Open) { check = 1 }
-    if (hex.baseTerrain === terrainType.Sand) { check = 1 }
-    if (this.startData.vehicle) { check = 4 }
-    if (this.startData.incendiary) { check += 2 }
-    if (this.startData.vehicle && this.startData.vehicle_incendiary) { check += 2 }
-    return check
+    return fireStartTarget(
+      this.map, new Coordinate(this.hex.x, this.hex.y), this.startData.vehicle,
+      this.startData.incendiary, this.startData.vehicle_incendiary
+    )
   }
 
   get htmlValue(): string {
@@ -50,9 +39,13 @@ export default class FireStartAction extends BaseAction {
       result += `, <span style="color: ${passGreen()};">crew escapes</span>`
     }
     const loc = formatCoordinate(new Coordinate(this.hex.x, this.hex.y))
-    return `checking to see if blaze starts in ${loc}: on ${formatTarget(this.needed)} or less, ` +
-      `rolled ${formatDieResult(this.diceResult.result)}` +
-      `: ${ result }`
+    return this.needed < 2 ? `checking to see if crew escapes in ${loc}: on 7 or less, ` +
+        `rolled ${formatDieResult(this.diceResult.result)}` +
+        `: ${ result }` :
+      `checking to see if blaze starts in ${loc}: on ${formatTarget(this.needed)} or less${
+          this.startData.tank && this.needed < 7 ? " (crew escapes on 7 or less)" : "" }, ` +
+        `rolled ${formatDieResult(this.diceResult.result)}` +
+        `: ${ result }`
   }
 
   get undoPossible() {

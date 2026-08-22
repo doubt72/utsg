@@ -2244,7 +2244,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E1: on 4 or less, rolled 6 [2d10: 3 + 3]: no effect, crew escapes"
+        "checking to see if blaze starts in E1: on 4 or less (crew escapes on 7 or less), " +
+          "rolled 6 [2d10: 3 + 3]: no effect, crew escapes"
       )
       const counters = map.countersAt(new Coordinate(4, 0))
       expect(counters.length).toBe(2)

@@ -970,7 +970,11 @@ export default class Map {
     const counters = this.countersAt(loc)
     for (const c of counters) {
       if (!c.hasFeature && !c.hasMarker && !c.unit.isWreck && !c.unit.parent) {
-        this.game?.fireDisplaceNeeded.push({ loc, unit: c.unit })
+        if (c.unit.isImmobilized) {
+          c.unit.wreck(this.game)
+        } else {
+          this.game?.fireDisplaceNeeded.push({ loc, unit: c.unit })
+        }
       }
     }
     this.game?.fireDisplaceNeeded.sort((a, b) => {

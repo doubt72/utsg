@@ -7,7 +7,7 @@ import {
   critHitDiff
 } from "../../utilities/utilities";
 import {
-  armorAtArc, armorHitModifiers, fireHindrance, firepower, rangeMultiplier, untargetedModifiers
+  armorAtArc, armorHitModifiers, fireHindrance, firepower, fireStartTarget, rangeMultiplier, untargetedModifiers
 } from "../control/fire";
 import { rollbackAddActions } from "../control/movement";
 import { StateSelection } from "../control/state/BaseState";
@@ -724,14 +724,20 @@ export default class FireAction extends BaseAction {
     if (fireStart && !smoke) {
       if (fsHex.x >= 0 && fsHex.x < this.map.width && fsHex.y >= 0 && fsHex.y < this.map.height) {
         const crew = fireStartVehicle && ["tank", "spg"].includes(target0.unit.type) && !target0.unit.isAbandoned
-        this.game.fireStartCheckNeeded = crew ? {
-          loc: fsHex, vehicle: true, incendiary: fireStartIncendiary,
-          vehicle_incendiary: fireStartVehicleIncendiary, tank: true,
-          nation: target0.unit.nation, player_nation: target0.unit.playerNation
-        } : {
-          loc: fsHex, vehicle: fireStartVehicle !== undefined,
-          incendiary: fireStartIncendiary,
-          vehicle_incendiary: fireStartVehicleIncendiary,
+        if (crew) {
+          this.game.fireStartCheckNeeded = {
+            loc: fsHex, vehicle: true, incendiary: fireStartIncendiary,
+            vehicle_incendiary: fireStartVehicleIncendiary, tank: true,
+            nation: target0.unit.nation, player_nation: target0.unit.playerNation
+          }
+        } else if (fireStartTarget(
+                    this.map, fsHex, fireStartVehicle !== undefined, fireStartIncendiary,
+                    fireStartVehicleIncendiary) > 1) {
+          this.game.fireStartCheckNeeded = {
+            loc: fsHex, vehicle: fireStartVehicle !== undefined,
+            incendiary: fireStartIncendiary,
+            vehicle_incendiary: fireStartVehicleIncendiary,
+          }
         }
       }
     }

@@ -60,6 +60,9 @@ export default class DeployState extends BaseState {
         return hexOpenType.Closed
       }
     }
+    for (const c of this.map.countersAt(hex.coord)) {
+      if (c.hasFeature && c.feature.type === featureType.Fire) { return hexOpenType.Closed }
+    }
     const ts = `${this.turn}`
     if (!this.map.alliedSetupHexes || !this.map.axisSetupHexes) { return hexOpenType.Closed }
     const hexes = this.player === 1 ? this.map.alliedSetupHexes[ts] : this.map.axisSetupHexes[ts]

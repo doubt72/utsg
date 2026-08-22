@@ -1,10 +1,8 @@
 Features/Bug Fixes
-  + Tweak fire start/spread rules
-  + Fire spread check should go back to initiative player
-  + Don't check for blazes that can't spread
-  - Shouldn't be able to deploy into blaze
-  - Don't check for fire start on 1 or less
-  - Fire into immobilized unit should destroy vehicle
+  + Shouldn't be able to deploy into blaze
+  + Don't check for fire start on 1 or less
+  + Fire into immobilized unit should destroy vehicle
+  - Rate games on replay page
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
   - Add Some Developer Notes

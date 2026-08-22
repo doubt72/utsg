@@ -1,4 +1,4 @@
-import { Coordinate, featureType, sponsonType, unitType, weatherType } from "../../utilities/commonTypes";
+import { baseTerrainType, Coordinate, featureType, sponsonType, terrainType, unitType, weatherType } from "../../utilities/commonTypes";
 import { los, losHexPath } from "../../utilities/los";
 import { hexDistance, normalDir } from "../../utilities/utilities";
 import Counter from "../Counter";
@@ -564,4 +564,27 @@ function inFiringArc(game: Game, counter: Counter, to: Coordinate): boolean {
   if (a < 0) { a += 360 }
   if (a > 29.99 && a < 90.01) { return true }
   return false
+}
+
+export function fireStartTarget(
+  map: Map, loc: Coordinate, vehicle: boolean, incendiary: boolean, vehicle_incendiary: boolean
+): number {
+    let check = 2
+    const hex = map.hexAt(loc) as Hex
+    if ([
+      terrainType.Forest,
+      terrainType.Brush,
+      terrainType.Grain,
+      terrainType.Orchard,
+      terrainType.Palm,
+    ].includes(hex.baseTerrain) ) { check = 3 }
+    if ([baseTerrainType.Desert, baseTerrainType.Beach].includes(map.baseTerrain) &&
+        hex.baseTerrain === terrainType.Open) {
+      check = 1
+    }
+    if (hex.baseTerrain === terrainType.Sand) { check = 1 }
+    if (vehicle) { check = 4 }
+    if (incendiary) { check += 2 }
+    if (vehicle && vehicle_incendiary) { check += 2 }
+    return check
 }
