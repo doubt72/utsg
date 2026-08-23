@@ -13,7 +13,7 @@ module Utility
                           .merge(TowedGuns.towed_guns)
                           .merge(ArmoredFightingVehicles.armored_fighting_vehicles)
                           .merge(UtilityVehicles.utility_vehicles)
-                          .merge(other)
+                          .merge(decoys).merge(other)
           # rubocop: enable Style/ClassVars
         end
 
@@ -51,6 +51,29 @@ module Utility
               other[key[i]] = v
             end
             lu[:"#{other[:c]}_#{sanitize(other[:n])}"] = other
+          end
+          lu
+        end
+
+        def decoys # rubocop:disable Metrics/MethodLength
+          lu = {}
+          key = %i[t n s v]
+          %w[ger ussr].each do |nation|
+            [
+              ["dldr", "decoy_;eader", 1, 6],
+              ["dinf", "decoy_squad_5", 6, 5],
+              ["dinf", "decoy_squad_4", 6, 4],
+              ["dinf", "decoy_squad_3", 6, 3],
+              ["dsw", "decoy_mg_0", 1, 0],
+              ["dsw", "decoy_mg_1", 1, -1],
+              ["dsw", "decoy_mg_2", 1, -2],
+            ].each do |unit|
+              decoy = { c: nation, i: "decoy", y: 0 }
+              unit.each_with_index do |v, i|
+                decoy[key[i]] = v
+              end
+              lu[:"#{nation}_#{decoy[:n]}"] = decoy
+            end
           end
           lu
         end

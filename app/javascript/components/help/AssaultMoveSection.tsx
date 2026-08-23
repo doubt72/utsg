@@ -60,7 +60,7 @@ export default function AssaultMoveSection({ section }: SectionProps) {
         Activated, exhausted, or broken units may not assault move. Pinned or immobilized units or
         units that otherwise have no movement points (i.e., tired and encumbered units with a
         resulting combined movement of zero) may not assault move. Mark units as exhausted after an
-        assault move.
+        assault move, including crewed or transported units.
       </p>
     </div>
   );

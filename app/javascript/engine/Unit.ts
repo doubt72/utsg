@@ -31,6 +31,7 @@ import {
 //        f: firepower, r: range, t: type=p/g/ft
 //    sn: small names, bv: broken movement, f: fix number, eng: engineering,
 //    tow: size truck needed for towing, tr: transport, trg: can tow, amp: amphibious
+// d: decoy;
 // x: count
 
 // TODO: Maybe more types for some of these
@@ -52,7 +53,8 @@ export type UnitData = {
     sg?: { f: number; r: number; t?: SponsonType }
     sn?: number; bv?: number; f?: number; tow?: SizeRange; tr?: number;
     amp?: NumberBoolean; eng?: NumberBoolean; trg?: NumberBoolean;
-  }
+  };
+  d?: NumberBoolean;
   x?: number;
 
   ft?: 0;
@@ -148,9 +150,11 @@ export default class Unit {
 
   rawData: UnitData;
   isSplit: boolean = false;
-  
+
   ghost?: boolean;
-  
+  observed: boolean = true;
+  decoy: boolean;
+
   parent?: Unit;
   children: Unit[];
 
@@ -167,8 +171,8 @@ export default class Unit {
     this.towSize = data.o?.tow
     this.canTow = !!data.o?.trg
     this.transport = data.o?.tr ?? 0
-    this.baseFirepower = data.f
-    this.baseRange = data.r
+    this.baseFirepower = data.f ?? 0
+    this.baseRange = data.r ?? 0
     this.baseMovement = data.v
 
     this.leadership = data.o?.l ?? 0
@@ -225,6 +229,7 @@ export default class Unit {
     if (data.o?.sg !== undefined) {
       this.sponson = { firepower: data.o.sg.f, range: data.o.sg.r, type: data.o.sg.t ?? sponsonType.Gun }      
     }
+    this.decoy = !!data.d
 
     this.internalStatus = unitStatus.Normal
     this.jammed = false
