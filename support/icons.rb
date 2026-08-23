@@ -3805,6 +3805,16 @@ File.open('un.svg', 'w') do |file|
 EOF
 end
 
+File.open('decoy.svg', 'w') do |file|
+  file.puts header
+  write_circle(50, 91, 7, file, true, "#000")
+  write_path([
+    ["M", 26, 32], ["A", [24, 24], 90, [0, 1], [74, 32]], ["A", [22, 22], 30, [0, 1], [65, 51]],
+    ["A", [30, 30], 30, [0, 0], [50, 76]],
+  ], file, false, 9, "#000")
+  file.puts footer
+end
+
 # File.open('test.svg', 'w') do |file|
 #   file.puts header
 #   path = []

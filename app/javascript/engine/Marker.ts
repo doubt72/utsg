@@ -43,6 +43,7 @@ export default class Marker {
   rawData: MarkerData;
 
   ghost?: boolean;
+  observed: boolean = true;
 
   constructor(data: MarkerData) {
     this.type = data.type

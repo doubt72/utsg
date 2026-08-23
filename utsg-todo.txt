@@ -1,4 +1,14 @@
 Features/Bug Fixes
+  - Decoy markers
+    - Add to docs
+    - Allow split / join (deploy only)
+    - Implement unobserved special rule on deploy
+    - Check normal actions -- moving, assaulting, picking up, dropping, etc.
+    - Implement observation on
+      - Firing
+      - Being fired on
+      - Moving next to
+      - Remove decoy on observation
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
   - Add Some Developer Notes

@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
-    VERSION = "0.2"
+    VERSION = "0.3"
 
     DATE = [1942, 10, 24].freeze
     LAYOUT = [23, 11, "x"].freeze
@@ -53,9 +53,6 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
-          special_rules: [
-            "infantry_wire_clearing", "armored_wire_clearing", "engineer_mine_clearing",
-          ],
         }
       end
 

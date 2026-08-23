@@ -1,10 +1,10 @@
 # 0.128
 
-- Adding decoy makers
+- Adding decoy makers, very partial implementation
 - Take 000 out of regular flow on new game screen/highlight as tutorial; clean up new game page slightly
 - Bug fix: assault move should also exhaust carried weapons
 - Updated/Promoted 406
-- Updated 313, 413, 513
+- Updated 016, 105, 313, 413, 513
 - Added prototype 514, 611, 612
 
 # 0.127

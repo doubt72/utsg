@@ -10,6 +10,7 @@ import { counterColor } from "./counterLayout"
 
 export function moraleLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.baseMorale) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   return {
     x: counter.x + 13, y: counter.y + 28, size: 18, value: counter.unit.currentMorale,
     style: { fill: counter.unit.currentMorale === counter.unit.baseMorale ? "black" : counterRed() }
@@ -18,6 +19,7 @@ export function moraleLayout(counter: Counter): CounterLayout | false {
 
 export function weaponBreakLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || counter.unit.isWreck) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   if (!counter.unit.breakWeaponRoll) { return false }
 
   const x = counter.x + 14
@@ -45,6 +47,7 @@ export function weaponFixLayout(counter: Counter): CounterLayout | false {
       counter.unit.isWreck || counter.unit.breakdownRoll) {
     return false
   }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const loc = new Coordinate(counter.x + 14, counter.y + 40)
   return {
     path: circlePath(loc, 8),
@@ -72,6 +75,7 @@ export function sizeLayout(counter: Counter): CounterLayout | false {
 
 export function eliteLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const showAllCounters = counter.onMap ? counter.map?.showAllCounters : counter.showAllCounters
   const elite = counter.unit.eliteCrew
   if (counter.unit.isWreck || showAllCounters || elite === 0) {
@@ -92,6 +96,7 @@ export function eliteLayout(counter: Counter): CounterLayout | false {
 
 export function towLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.towSize) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   return {
     tStyle: { fill: "black" },
     x: counter.x + 73, y: counter.y + 21, size: 12, value: counter.unit.towSize,
@@ -100,6 +105,7 @@ export function towLayout(counter: Counter): CounterLayout | false {
 
 export function canTowLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.canTow || counter.unit.isWreck) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 66
   const y = counter.y + 30.5
   const size = 5
@@ -111,6 +117,7 @@ export function canTowLayout(counter: Counter): CounterLayout | false {
 export function transportLLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || (counter.unit.transport !== 1 && counter.unit.transport !== 3) ||
       counter.unit.isWreck) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 59
   let y = counter.y + 23
   if (counter.unit.icon === "cav" || counter.unit.icon === "cav-wheel") { y -= 3 }
@@ -122,6 +129,7 @@ export function transportLLayout(counter: Counter): CounterLayout | false {
 
 export function transportRLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || counter.unit.transport < 2 || counter.unit.isWreck) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 73
   let y = counter.y + 23
   if (counter.unit.icon === "cav" || counter.unit.icon === "cav-wheel") { y -= 3 }
@@ -133,6 +141,7 @@ export function transportRLayout(counter: Counter): CounterLayout | false {
 
 export function leadershipLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.currentLeadership) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   return {
     path: hexPath(new Coordinate(counter.x + 13, counter.y + 44), 10, true),
     style: { stroke: "black", strokeWidth: 1, fill: clearColor }, tStyle: { fill: "black" },
@@ -142,6 +151,7 @@ export function leadershipLayout(counter: Counter): CounterLayout | false {
 
 export function handlingLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.currentGunHandling) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const loc = new Coordinate(counter.x + 13, counter.y + 42)
   const path = circlePath(loc, 8)
   return {
@@ -153,6 +163,7 @@ export function handlingLayout(counter: Counter): CounterLayout | false {
 
 export function tankCrewLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.tankCrew || counter.unit.isBroken) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const loc = new Coordinate(counter.x + 13, counter.y + 37)
   // const path = circlePath(loc, 3)
   const size = 3
@@ -170,6 +181,7 @@ export function breakdownLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.breakdownRoll || counter.unit.isImmobilized || counter.unit.isWreck) {
     return false
   }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const loc = new Coordinate(counter.x + 14, counter.y + 40)
   const path = circlePath(loc, 8)
   return {
@@ -181,6 +193,8 @@ export function breakdownLayout(counter: Counter): CounterLayout | false {
 
 export function iconLayout(counter: Counter): CounterLayout | false {
   if (!counter.target.icon) { return false }
+  let icon = counter.target.icon
+  if (counter.hasUnit && !counter.unit.observed) { icon = "decoy" }
   const x = counter.x + ((counter.hasMarker && counter.marker.fullIcon) ? 0 : 20)
   let y = counter.y + ((counter.hasMarker && counter.marker.fullIcon) ? 0 : 13)
   if (counter.hasFeature) {
@@ -189,12 +203,13 @@ export function iconLayout(counter: Counter): CounterLayout | false {
   const size = (counter.hasMarker && counter.marker.fullIcon) ? 80 : 40
   return {
     x: x, y: y, size: size,
-    icon: (counter.hasUnit && counter.unit.isWreck) ? "wreck" : counter.targetUF.icon
+    icon: (counter.hasUnit && counter.unit.isWreck) ? "wreck" : icon
   }
 }
 
 export function centerLabelLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasFeature || !counter.feature.sniperRoll) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 40
   const y = counter.y + 48
   return {
@@ -204,6 +219,7 @@ export function centerLabelLayout(counter: Counter): CounterLayout | false {
 
 export function sponsonLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const gun = counter.unit.sponson as { firepower: number, range: number, type: SponsonType }
   if (!gun || counter.unit.isWreck) { return false }
   const x = counter.x + 38
@@ -227,6 +243,7 @@ export function sponsonLayout(counter: Counter): CounterLayout | false {
 
 export function turretArmorLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const armor = counter.unit.turretArmor as [number, number, number]
   if (!armor || counter.unit.isWreck) { return false }
   const x = counter.x + 65
@@ -237,6 +254,7 @@ export function turretArmorLayout(counter: Counter): CounterLayout | false {
 
 export function hullArmorLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const armor = counter.unit.hullArmor as [number, number, number]
   if (!armor || counter.unit.isWreck) { return false }
   const x = counter.x + 65
@@ -248,6 +266,7 @@ export function hullArmorLayout(counter: Counter): CounterLayout | false {
 export function firepowerLayout(counter: Counter): CounterLayout | false {
   // This is a mess.  Maybe clean this up.
   if (counter.hasMarker) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const loc = new Coordinate(
     counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
   )
@@ -318,6 +337,7 @@ export function firepowerLayout(counter: Counter): CounterLayout | false {
 
 export function areaLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.areaFire || counter.unit.isWreck || counter.unit.jammed) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2)
   let y = counter.y + 74
   let size = 6
@@ -330,6 +350,7 @@ export function areaLayout(counter: Counter): CounterLayout | false {
 
 export function smokeLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.currentSmokeCapable || counter.unit.isWreck) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   let x = counter.x + 16
   let y = counter.y + 57
   const size = 2
@@ -342,6 +363,7 @@ export function smokeLayout(counter: Counter): CounterLayout | false {
 
 export function rangeLayout(counter: Counter): CounterLayout | false {
   if (counter.hasMarker) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   if (counter.hasFeature && [
       featureType.Smoke, featureType.Fire, featureType.Bunker, featureType.Foxhole,
       featureType.Rubble,
@@ -397,6 +419,7 @@ export function rangeLayout(counter: Counter): CounterLayout | false {
 export function gunForwardsLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.rotatingVehicleMount || counter.unit.isWreck ||
       counter.unit.jammed ) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 40
   const y = counter.y + 60
   const size = 7
@@ -406,6 +429,7 @@ export function gunForwardsLayout(counter: Counter): CounterLayout | false {
 
 export function gunBackwardsLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.backwardsMount || counter.unit.isWreck) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 40
   const y = counter.y + 74.5
   const size = 2
@@ -462,6 +486,7 @@ export function movementLayout(counter: Counter): CounterLayout | false {
 
 export function engineerLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.engineer || counter.unit.isBroken) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 64
   const y = counter.y + 57
   const size = 2
@@ -473,6 +498,7 @@ export function amphibiousLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasUnit || !counter.unit.amphibious || counter.unit.isWreck || counter.unit.isImmobilized ) {
     return false
   }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const x = counter.x + 64
   const y = counter.y + 74
   const size = 4

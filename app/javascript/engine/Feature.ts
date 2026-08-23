@@ -64,6 +64,8 @@ export default class Feature {
   selected: boolean;
   targetSelected: boolean;
   lastSelected: boolean;
+
+  observed: boolean = true;
   
   ghost?: boolean;
 

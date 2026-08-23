@@ -1,4 +1,4 @@
-import { Coordinate, Direction, markerType } from "../../utilities/commonTypes"
+import { Coordinate, Direction, markerType, unitType } from "../../utilities/commonTypes"
 import {
   actionBlue,
   ActionButtonLayout,
@@ -97,7 +97,14 @@ export function shadowPath(counter: Counter): string | false {
   )
 }
 
-export function nameLayout(counter: Counter): CounterLayout {
+export function nameLayout(counter: Counter): CounterLayout | false {
+  let name = counter.targetUF.name
+  if (counter.hasUnit && (!counter.unit.observed)) {
+    if (counter.unit.leader) { name = "leader" }
+    if (counter.unit.type === unitType.Squad) { name = "squad" }
+    if (counter.unit.type === unitType.Team) { name = "team" }
+    if (counter.unit.type === unitType.SupportWeapon) { name = "weapon" }
+  }
   let size = counter.hasFeature ? 11 : 9
   if (counter.unit.smallName > 0) { size = 8.25 }
   if (counter.unit.smallName > 1) { size = 7.825 }
@@ -106,13 +113,14 @@ export function nameLayout(counter: Counter): CounterLayout {
   if (counter.unit.smallName > 3) { size = 6.4 }
   const y = (counter.hasFeature ? counter.y + 12 : counter.y + 10) + size/2 - 4.125
   return {
-    x: counter.x + 5, y: y, size: size, name: counter.targetUF.name,
+    x: counter.x + 5, y, size, name,
     style: { fill: reverseName(counter) ? "white" : "black" }
   }
 }
 
 export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   if (!counter.hasUnit) { return false }
+  if (counter.unit.decoy || !counter.unit.observed) { return false }
   const showAllCounters = counter.onMap ? counter.map?.showAllCounters : counter.showAllCounters
   if (counter.unit.isWreck || showAllCounters) { return false }
   const loc = new Coordinate(counter.x + 40, counter.y + 46)

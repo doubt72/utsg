@@ -204,7 +204,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("013")).to be == "0.2a-0db484758e449db1364e6d44fd19bc42"
       expect(Utility::Scenario.checksum("014")).to be == "0.2a-3421a297cbd2eaabe9f0a1dbc705685d"
       expect(Utility::Scenario.checksum("015")).to be == "0.2a-f5368eade5fadca0220d344d2e25a336"
-      expect(Utility::Scenario.checksum("016")).to be == "0.2a-a04acd0c46df1e396c7d0e7eb7c55540"
+      expect(Utility::Scenario.checksum("016")).to be == "0.3a-4108c1f5d08cb08a5ef376083f935603"
       expect(Utility::Scenario.checksum("017")).to be == "0.1p-8e970017b30986206f629ed225e796f1"
       expect(Utility::Scenario.checksum("018")).to be == "0.1p-54c2d01ca9762c25345e89eb86061286"
 
@@ -212,7 +212,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("102")).to be == "1.0-00ff27c7b93b97053578e8b7963026a5"
       expect(Utility::Scenario.checksum("103")).to be == "1.0-fc4ea4d02d1909371badffa5febfe88e"
       expect(Utility::Scenario.checksum("104")).to be == "0.2a-7c1078ef7713ca69d7dfa7c14d753ae8"
-      expect(Utility::Scenario.checksum("105")).to be == "0.2a-9fedd58044a4a7dc97769de621524b47"
+      expect(Utility::Scenario.checksum("105")).to be == "0.3a-a68295cbcdf3cc7b5222dd71bd2b3395"
       expect(Utility::Scenario.checksum("106")).to be == "1.0-505c657a6911817f490323772110c1f9"
       expect(Utility::Scenario.checksum("107")).to be == "0.2a-cf0848927824082675d3d96668451a96"
       expect(Utility::Scenario.checksum("108")).to be == "0.2a-f7f799c007b0d7ccb712f6af81b3b875"

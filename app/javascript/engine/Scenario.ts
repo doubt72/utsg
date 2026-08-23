@@ -268,6 +268,10 @@ export default class Scenario {
         return `${allied} units ignore penalties for moving through snow`
       } else if (r === "axis_ignore_snow") {
         return `${axis} units ignore penalties for moving through snow`
+      } else if (r === "allied_hidden_units") {
+        return `${allied} infantry units start unobserved`
+      } else if (r === "axis_hidden_units") {
+        return `${axis} infantry units start unobserved`
       } else if (r === "winter") {
         return `Winter: no digging in, treat water/river hexes as open for infantry`
       } else if (r === "retreat_301") {

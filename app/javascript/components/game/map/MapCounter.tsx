@@ -40,366 +40,416 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
 
   const showDisabled = () => {
     const disable = counter.showDisabled
-    if (disable) return (
-      <path d={counterPath(counter)} style={{ fill: "rgba(0,0,0,0.5)" }} />
-    )
+    if (disable) {
+      return <path d={counterPath(counter)} style={{ fill: "rgba(0,0,0,0.5)" }} />
+    }
   }
 
   const nameBackground = () => {
     const path = nameBackgroundPath(counter)
-    if (path) return (
-        <path d={path} style={nameBackgroundStyle(counter) as object} />
-    )
+    if (path) {
+      return <path d={path} style={nameBackgroundStyle(counter) as object} />
+    }
   }
 
   const shadow = () => {
     const layout = shadowPath(counter)
     if (layout) {
-      return (
-        <path d={layout} style={{ fill: "rgba(0,0,0,0.2)" }} />
-      )
+      return <path d={layout} style={{ fill: "rgba(0,0,0,0.2)" }} />
     }
   }
 
   const name = () => {
     const layout = nameLayout(counter)
-    return (
-      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="start"
-            style={layout.style as object}>{layout.name}</text>
-    )
+    if (layout) {
+      return (
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="start"
+              style={layout.style as object}>{layout.name}</text>
+      )
+    }
   }
 
   const morale = () => {
     const layout = moraleLayout(counter)
-    if (layout) return (
-      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-            fontFamily="'Courier Prime', monospace"
-            style={layout.style as object}>{layout.value}</text>
-    )
+    if (layout) {
+      return (
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.style as object}>{layout.value}</text>
+      )
+    }
   }
 
   const weaponBreak = () => {
     const layout = weaponBreakLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const weaponFix = () => {
     const layout = weaponFixLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const markerBreak = () => {
     const layout = markerBreakLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const markerFix = () => {
     const layout = markerFixLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const size = () => {
     const layout = sizeLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const tow = () => {
     const layout = towLayout(counter)
-    if (layout) return (
-      <g>
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const canTow = () => {
     const layout = canTowLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+        </g>
+      )
+    }
   }
 
   const rightTransport = () => {
     const layout = transportRLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const leftTransport = () => {
     const layout = transportLLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const leadership = () => {
     const layout = leadershipLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const handling = () => {
     const layout = handlingLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const tankCrew = () => {
     const layout = tankCrewLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const breakdown = () => {
     const layout = breakdownLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const icon = () => {
     const layout = iconLayout(counter)
-    if (layout) return (
-      <image width={layout.size} height={layout.size} x={layout.x} y={layout.y}
-             href={`/assets/units/${layout.icon}.svg`} /> 
-    )
+    if (layout) {
+      return (
+        <image width={layout.size} height={layout.size} x={layout.x} y={layout.y}
+               href={`/assets/units/${layout.icon}.svg`} /> 
+      )
+    }
   }
 
   const centerLabel = () => {
     const layout = centerLabelLayout(counter)
-    if (layout) return (
-      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-            fontFamily="'Courier Prime', monospace"
-            style={layout.style as object}>{layout.value}</text>
-    )
+    if (layout) {
+      return (
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="'Courier Prime', monospace"
+              style={layout.style as object}>{layout.value}</text>
+      )
+    }
   }
 
   const sponson = () => {
     const layout = sponsonLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="sans-serif" style={layout.tStyle as object} >{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="sans-serif" style={layout.tStyle as object} >{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const turretArmor = () => {
     const layout = turretArmorLayout(counter)
-    if (layout) return (
-      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-            fontFamily="sans-serif" style={{fill: "black"}}>{layout.value}</text>
-    )
+    if (layout) {
+      return (
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="sans-serif" style={{fill: "black"}}>{layout.value}</text>
+      )
+    }
   }
 
   const hullArmor = () => {
     const layout = hullArmorLayout(counter)
-    if (layout) return (
-      <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-            fontFamily="sans-serif" style={{fill: "black"}}>{layout.value}</text>
-    )
+    if (layout) {
+      return (
+        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+              fontFamily="sans-serif" style={{fill: "black"}}>{layout.value}</text>
+      )
+    }
   }
 
   const firepower = () => {
     const layout = firepowerLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const area = () => {
     const layout = areaLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const smoke = () => {
     const layout = smokeLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const range = () => {
     const layout = rangeLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const gunForward = () => {
     const layout = gunForwardsLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const gunBackward = () => {
     const layout = gunBackwardsLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const movement = () => {
     const layout = movementLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const engineer = () => {
     const layout = engineerLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const amphibious = () => {
     const layout = amphibiousLayout(counter)
-    if (layout) return (
-      <path d={layout.path} style={layout.style as object} />
-    )
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const markerMorale = () => {
     const layout = markerMoraleLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const markerFirepower = () => {
     const layout = markerFirepowerLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const markerRange = () => {
     const layout = markerRangeLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const markerMovement = () => {
     const layout = markerMovementLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const elite = () => {
     const layout = eliteLayout(counter)
-    if (layout) return (
-      <g>
-        <path d={layout.path} style={layout.style as object} />
-        <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
-              fontFamily="'Courier Prime', monospace"
-              style={layout.tStyle as object}>{layout.value}</text>
-      </g>
-    )
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
   }
 
   const marker = () => {
@@ -435,7 +485,9 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
 
   const windArrow = () => {
     const layout = windArrowLayout(counter)
-    if (layout) return <path d={layout.path} style={layout.style as object} />
+    if (layout) {
+      return <path d={layout.path} style={layout.style as object} />
+    }
   }
 
   const markerSub = () => {
