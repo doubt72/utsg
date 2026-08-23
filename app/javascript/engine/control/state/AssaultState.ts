@@ -173,9 +173,11 @@ export default class AssaultState extends BaseState {
       if (selected) {
         removeStateSelection(this.game, x, y, counter.unit.id)
       } else {
-        this.selection?.push({
-          x, y, id: counter.unit.id, name: counter.unit.name, counter: counter,
-        })
+        const sel = this.selection
+        sel.push({ x, y, id: counter.unit.id, name: counter.unit.name, counter: counter })
+        counter.children.forEach(c => sel.push({
+          x, y, id: c.unit.id, name: c.unit.name, counter: c
+        }))
         this.selection.sort((a, b) => {
           if (a.counter.unitIndex === b.counter.unitIndex) { return 0 }
           return a.counter.unitIndex > b.counter.unitIndex ? 1 : -1

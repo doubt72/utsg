@@ -201,8 +201,7 @@ export default function NewGame() {
       >
         {
           sorts.map(sel => {
-            return <option key={sel.code} selected={sel.code === scenarioSearch.sort}
-                           value={sel.code}>{sel.name}</option>
+            return <option key={sel.code} value={sel.code}>{sel.name}</option>
           })
         }
       </select>
