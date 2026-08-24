@@ -38,6 +38,7 @@ import FireExampleSection from "./FireExampleSection";
 import MovementOtherSection from "./MovementOtherSection";
 import MovementMineSection from "./MovementMineSection";
 import AssaultMoveOtherSection from "./AssaultMoveOtherSection";
+import SpecialRulesSection from "./SpecialRulesSection";
 
 export type HelpSection = {
   name: string,
@@ -91,6 +92,7 @@ export const helpIndex: HelpSection[] = [
         { name: "Housekeeping", fullName: "Housekeeping", section: <HousekeepingSection /> },
       ]},
     ]},
+    { name: "Special Rules", fullName: "Special Rules", section: <SpecialRulesSection /> },
   ]},
   { name: "Glossary", fullName: "Glossary", section: <GlossarySection /> },
   { name: "Dev Notes", fullName: "Developer Notes", section: <DevNotesSection /> },

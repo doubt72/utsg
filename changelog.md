@@ -1,3 +1,10 @@
+# 0.129
+
+- Decoy/unobserved documentation
+- Prevent digging in on airfields
+- Bug fix: add airfield to terrain help
+- Updated 403
+
 # 0.128
 
 - Adding decoy makers, very partial implementation

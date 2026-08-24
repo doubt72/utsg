@@ -60,13 +60,13 @@ module Utility
           key = %i[t n s v]
           %w[ger ussr].each do |nation|
             [
-              ["dldr", "leader", 1, 6],
-              ["dinf", "squad", 6, 5],
-              ["dinf", "squad", 6, 4],
-              ["dinf", "squad", 6, 3],
-              ["dsw", "weapon", 1, 0],
-              ["dsw", "weapon", 1, -1],
-              ["dsw", "weapon", 1, -2],
+              ["ldr", "leader", 1, 6],
+              ["sqd", "squad", 6, 5],
+              ["sqd", "squad", 6, 4],
+              ["sqd", "squad", 6, 3],
+              ["sw", "weapon", 1, 0],
+              ["sw", "weapon", 1, -1],
+              ["sw", "weapon", 1, -2],
             ].each do |unit|
               decoy = { c: nation, i: "decoy", y: 0, d: 1 }
               unit.each_with_index do |v, i|

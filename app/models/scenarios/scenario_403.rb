@@ -28,7 +28,7 @@ module Scenarios
         list: [
           :jap_leader_5_1,
           :jap_leader_4_1,
-          [8, :jap_snlf_s],
+          [9, :jap_snlf_s],
           :jap_crew_t,
           [2, :jap_type_92_hmg],
           [2, :jap_type_97_81mm],
@@ -87,7 +87,7 @@ module Scenarios
           allied_dir: 4,
           axis_dir: 1,
           victory_hexes: [
-            [3, 6, 1], [4, 3, 1], [6, 15, 1], [7, 4, 1], [8, 3, 1], [8, 9, 1], [10, 5, 1],
+            [4, 3, 1], [6, 15, 1], [7, 4, 1], [8, 3, 1], [8, 9, 1], [10, 5, 1], [10, 8, 1],
           ],
           allied_setup: { "0" => [["0-10", "*"]] },
           axis_setup: { "0" => [["12-14", "*"]] },

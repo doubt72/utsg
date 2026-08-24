@@ -1,5 +1,5 @@
 import {
-  baseTerrainType, Coordinate, featureType, terrainType,
+  baseTerrainType, Coordinate, featureType, roadType, terrainType,
   unitType
 } from "../../utilities/commonTypes"
 import Game from "../Game"
@@ -34,6 +34,7 @@ export function showEntrench(game: Game): boolean {
       terrainType.Sand, terrainType.Shallow, terrainType.Marsh, terrainType.Rough, terrainType.Soft
     ].includes(hex.baseTerrain)) { return false }
   if (hex.river || hex.railroad) { return false }
+  if (hex.road && hex.roadType ===  roadType.Airfield) { return false }
   if (hex.building) { return false }
   const features = game.scenario.map.countersAt(loc)
   for (const f of features) {

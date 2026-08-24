@@ -70,6 +70,9 @@ function hexHelpText(hex: Hex): string[] {
     if (hex.roadType === 'p') {
       text.push("path")
       text.push("- foot movement cost 1 if moving along path")
+    } else if (hex.roadType === 'a') {
+      text.push("airfield")
+      text.push("- movement bonus +1 if moving along runway")
     } else if (hex.roadType === 't') {
       if (hex.river) {
         text.push("bridge")
