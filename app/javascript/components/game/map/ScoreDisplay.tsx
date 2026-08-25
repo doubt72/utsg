@@ -4,7 +4,7 @@ import { clearColor, roundedRectangle } from "../../../utilities/graphics";
 import Map from "../../../engine/Map";
 import { mapHelpLayout } from "../../../engine/support/help";
 import { Coordinate } from "../../../utilities/commonTypes";
-import { HelpOverlay } from "./Help";
+import { HelpOverlay } from "./HelpOverlay";
 import { normalDir } from "../../../utilities/utilities";
 
 ScoreDisplay.propTypes = {

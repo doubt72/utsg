@@ -6,7 +6,7 @@ import { Coordinate, CounterSelectionTarget, markerType, unitType } from "../../
 import Map from "../../../engine/Map";
 import { clearColor, counterOutline, roundedRectangle } from "../../../utilities/graphics";
 import { counterActionButtons, counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
-import { HelpOverlay } from "./Help";
+import { HelpOverlay } from "./HelpOverlay";
 import {
   actionButtonHelpLayout,
   counterCloseCombatHelpLayout, counterFireHelpLayout, counterMoraleHelpLayout, counterRallyHelpLayout,

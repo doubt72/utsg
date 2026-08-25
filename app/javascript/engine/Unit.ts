@@ -153,6 +153,7 @@ export default class Unit {
 
   ghost?: boolean;
   observed: boolean = true;
+  interfacePlayer: boolean = false;
   decoy: boolean;
 
   parent?: Unit;
@@ -292,6 +293,19 @@ export default class Unit {
     this.lastSelected = !this.lastSelected
   }
 
+  setInterfacePlayer(user: string | null, game: Game) {
+    if ((user === game.playerOneName && this.playerNation === game.playerOneNation) ||
+        (user === game.playerTwoName && this.playerNation === game.playerTwoNation)) {
+      this.interfacePlayer = true
+    }
+  }
+
+  get visible(): boolean {
+    if (this.decoy) { return false }
+    if (this.observed || this.interfacePlayer) { return true }
+    return false
+  }
+
   get hiddenName(): string {
     return this.decoy || !this.observed ? this.typeName : this.name
   }
@@ -300,7 +314,7 @@ export default class Unit {
     if (this.type === unitType.Leader) { return "leader" }
     if (this.type === unitType.Squad) { return "squad" }
     if (this.type === unitType.Team) { return "team" }
-    if (this.type === unitType.SupportWeapon) { return "squad" }
+    if (this.type === unitType.SupportWeapon) { return "weapon" }
     return this.name
   }
 

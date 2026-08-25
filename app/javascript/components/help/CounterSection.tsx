@@ -161,7 +161,7 @@ export default function CounterSection({ section }: SectionProps) {
   }
 
   const firepowerOverlay = (target: Unit | Feature | Marker) => {
-    if (target.isMarker) { return }
+    if (target.isMarker || (!target.isFeature && (target as Unit).decoy)) { return }
     const unit = target as Unit
     const add: string[] = []
     const y = 130
@@ -194,7 +194,7 @@ export default function CounterSection({ section }: SectionProps) {
   }
 
   const rangeOverlay = (target: Unit | Feature | Marker) => {
-    if (target.isMarker) { return }
+    if (target.isMarker || (!target.isFeature && (target as Unit).decoy)) { return }
     const unit = target as Unit
     const add: string[] = []
     let y1 = 136
@@ -423,6 +423,7 @@ export default function CounterSection({ section }: SectionProps) {
 
   const counterButton = (name: string, unit: string) => {
     const selected = unitFeature.key === unit ? "counter-help-button-selected" : ""
+    console.log(`${name} ${unit}`)
     return (
       <div className={`custom-button normal-button counter-help-button ${selected}`} onClick={
            () => setCounterKeyStatus(unit) }>
@@ -883,6 +884,7 @@ export default function CounterSection({ section }: SectionProps) {
             { counterButton("technical", "uk_Chevy C30 AT_truck") }
             { counterButton("cavalry", "alm_Horse_cav") }
             { counterButton("bicycle", "jap_Bicycle_cav") }
+            { counterButton("decoy", "ussr_squad4_sqd") }
             { counterButton("hedgehog", "f_Hedgehog") }
             { counterButton("wire", "f_Wire") }
             { counterButton("foxhole", "f_Foxhole") }

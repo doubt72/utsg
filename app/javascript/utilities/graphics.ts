@@ -77,7 +77,7 @@ export function colorLookup(key: string): string {
   const rc = {
     actionOrange: "#BB0",
 
-    counterRed: "#A0A", markerYellow: "#EE0", markerYellowText: "#BB0",
+    counterRed: "#A0A", counterBlue: "#55E", markerYellow: "#EE0", markerYellowText: "#BB0",
     selectColor: "#E00", targetSelectColor: "#E0E", dropSelectColor: "#E0E",
     loaderSelectColor: "#E0E", loadedSelectColor: "#E0E", lastSelectColor: "#55E",
     counterGreen: "#2F2", counterElite: "#070",
@@ -91,7 +91,7 @@ export function colorBaseLookup(key: string): string {
   return {
     actionOrange: "#B80", diceColor: "#780", coordColor: "#888",
 
-    counterRed: "#E00", markerYellow: "#FF7", markerYellowText: "#BB0",
+    counterRed: "#E00", counterBlue: "#55E", markerYellow: "#FF7", markerYellowText: "#BB0",
     actionBlue: "#00E", actionGreen: "#070",
     selectColor: "#E00", targetSelectColor: "#E70", dropSelectColor: "#999",
     loaderSelectColor: "#E70", loadedSelectColor: "#E70", lastSelectColor: "#55E",
@@ -125,6 +125,7 @@ export function diceColor(): string { return colorLookup("diceColor") }
 export function coordColor(): string { return colorLookup("coordColor") }
 
 export function counterRed(): string { return colorLookup("counterRed") }
+export function counterBlue(): string { return colorLookup("counterBlue") }
 export function markerYellow(): string { return colorLookup("markerYellow") }
 export function actionBlue(): string { return colorLookup("actionBlue") }
 export function actionGreen(): string { return colorLookup("actionGreen") }

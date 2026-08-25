@@ -215,38 +215,40 @@ export function counterCloseCombatHelpLayout(
 }
 
 export function unitHelpText(unit: Unit): string[] {
-  let text = [unit.name]
+  let text = [unit.visible ? unit.name : "Unknown"]
   text = text.concat(unitTypeName(unit))
   text.push("")
   text.push("[from name, clockwise]")
   if (unit.size > 0) {
     text.push(`stacking/size ${unit.size} (${unit.armored ? "armored" : "soft"})`)
   }
-  if (unit.topOpen) {
-    text.push(`- open / vulnerable to indirect fire`)
-  }
-  if (unit.transport) {
-    let size = unit.transport < 2 ? "leader" : "team or leader"
-    if (unit.transport > 2) { size = "infantry units" }
-    text.push(`- can transport ${size}`)
-  }
-  if (unit.canTow) {
-    text.push(`- towing capable`)
-  }
-  if (unit.towSize) {
-    text.push(`- minimum size ${unit.towSize} transport to tow`)
-  }
-  if (unit.turretArmor) {
-    text.push("turret armor:")
-    text.push(`- front ${unit.turretArmor[0]} / side ${unit.turretArmor[1]} / rear ${
-      unit.turretArmor[2] < 0 ? "none" : unit.turretArmor[2]
-    }`)
-  }
-  if (unit.hullArmor) {
-    text.push("hull armor:")
-    text.push(`- front ${unit.hullArmor[0]} / side ${unit.hullArmor[1]} / rear ${
-      unit.hullArmor[2] < 0 ? "none" : unit.hullArmor[2]
-    }`)
+  if (unit.visible) {
+    if (unit.topOpen) {
+      text.push(`- open / vulnerable to indirect fire`)
+    }
+    if (unit.transport) {
+      let size = unit.transport < 2 ? "leader" : "team or leader"
+      if (unit.transport > 2) { size = "infantry units" }
+      text.push(`- can transport ${size}`)
+    }
+    if (unit.canTow) {
+      text.push(`- towing capable`)
+    }
+    if (unit.towSize) {
+      text.push(`- minimum size ${unit.towSize} transport to tow`)
+    }
+    if (unit.turretArmor) {
+      text.push("turret armor:")
+      text.push(`- front ${unit.turretArmor[0]} / side ${unit.turretArmor[1]} / rear ${
+        unit.turretArmor[2] < 0 ? "none" : unit.turretArmor[2]
+      }`)
+    }
+    if (unit.hullArmor) {
+      text.push("hull armor:")
+      text.push(`- front ${unit.hullArmor[0]} / side ${unit.hullArmor[1]} / rear ${
+        unit.hullArmor[2] < 0 ? "none" : unit.hullArmor[2]
+      }`)
+    }
   }
   if (unit.baseMovement > 0) {
     text.push(`movement ${unit.currentMovement}`)
@@ -268,35 +270,37 @@ export function unitHelpText(unit: Unit): string[] {
   } else {
     text.push(`movement modifier ${unit.baseMovement}`)
   }
-  text.push(`range ${unit.currentRange}`)
-  if (unit.minimumRange) {
-    text.push(`minimum range ${unit.minimumRange}`)
-  }
-  if (unit.targetedRange && !unit.jammed) {
-    text.push("- target roll required")
-  }
-  if (unit.turreted && !unit.jammed) {
-    text.push("- turret mounted")
-  }
-  if (unit.rotatingMount) {
-    text.push("- rotating mount")
-  }
-  if (unit.rapidFire && !unit.jammed) {
-    text.push("- rapid fire")
-  }
-  if (unit.rotatingVehicleMount && !unit.jammed) {
-    text.push("- unrestricted firing arc")
-  }
-  if (unit.backwardsMount && !unit.jammed) {
-    text.push("- mounted rear")
-  }
-  if ((unit.minimumRange || unit.type === "sw") && unit.targetedRange) {
-    text.push("- no crew targeting bonus")
+  if (unit.visible) {
+    text.push(`range ${unit.currentRange}`)
+    if (unit.minimumRange) {
+      text.push(`minimum range ${unit.minimumRange}`)
+    }
+    if (unit.targetedRange && !unit.jammed) {
+      text.push("- target roll required")
+    }
+    if (unit.turreted && !unit.jammed) {
+      text.push("- turret mounted")
+    }
+    if (unit.rotatingMount) {
+      text.push("- rotating mount")
+    }
+    if (unit.rapidFire && !unit.jammed) {
+      text.push("- rapid fire")
+    }
+    if (unit.rotatingVehicleMount && !unit.jammed) {
+      text.push("- unrestricted firing arc")
+    }
+    if (unit.backwardsMount && !unit.jammed) {
+      text.push("- mounted rear")
+    }
+    if ((unit.minimumRange || unit.type === "sw") && unit.targetedRange) {
+      text.push("- no crew targeting bonus")
+    }
   }
   if (unit.isBroken) {
     text.push(`firepower ${unit.closeCombatFirepower}`)
     text.push("- close combat only")
-  } else {
+  } else if (unit.visible) {
     text.push(`firepower ${unit.currentFirepower}`)
     if (unit.assault && !unit.isBroken && !unit.jammed) {
       text.push("- assault bonus 2")
@@ -329,46 +333,48 @@ export function unitHelpText(unit: Unit): string[] {
       }
     }
   }
-  if (unit.breakdownRoll && !unit.isImmobilized) {
-    text.push(`breakdown roll ${unit.breakdownRoll}`)
-  }
-  if (unit.gunHandling && !unit.isBroken) {
-    text.push(`gun operation bonus ${unit.gunHandling}`)
-  }
-  if (unit.tankCrew) {
-    text.push(`tank operator/mechanic`)
-  }
-  if (unit.currentLeadership) {
-    text.push(`leadership ${unit.currentLeadership}`)
-  }
-  if (unit.breakWeaponRoll) {
-    if (unit.jammed) {
-      text.push(`weapon fixed on ${unit.repairRoll}`)
-      text.push(`weapon breaks on ${unit.breakWeaponRoll}`)
-    } else if (unit.breakDestroysWeapon) {
-      text.push(`weapon breaks on ${unit.breakWeaponRoll}`)
-    } else {
-      text.push(`weapon jams on ${unit.breakWeaponRoll}`)
+  if (unit.visible) {
+    if (unit.breakdownRoll && !unit.isImmobilized) {
+      text.push(`breakdown roll ${unit.breakdownRoll}`)
     }
-  }
-  if (unit.baseMorale) {
-    text.push(`unit morale ${unit.currentMorale}`)
-  }
-  if (unit.sponson) {
-    text.push("center / symbol bottom:")
-    if (unit.sponson.type === sponsonType.Flame) {
-      text.push("flamethrower mounted")
-      text.push("- forward arc only")
-      text.push(`- firepower ${unit.sponson.firepower}`)
-      text.push(`- range ${unit.sponson.range}`)
-      text.push("- ignores terrain")
-    } else {
-      text.push("hull-mounted gun - forward arc only")
-      text.push(`- firepower ${unit.sponson.firepower}`)
-      text.push(`- range ${unit.sponson.range}`)
-      text.push("- target roll required")
-      text.push("- anti-armor capable")
-      text.push("- half firepower vs. soft targets")
+    if (unit.gunHandling && !unit.isBroken) {
+      text.push(`gun operation bonus ${unit.gunHandling}`)
+    }
+    if (unit.tankCrew) {
+      text.push(`tank operator/mechanic`)
+    }
+    if (unit.currentLeadership) {
+      text.push(`leadership ${unit.currentLeadership}`)
+    }
+    if (unit.breakWeaponRoll) {
+      if (unit.jammed) {
+        text.push(`weapon fixed on ${unit.repairRoll}`)
+        text.push(`weapon breaks on ${unit.breakWeaponRoll}`)
+      } else if (unit.breakDestroysWeapon) {
+        text.push(`weapon breaks on ${unit.breakWeaponRoll}`)
+      } else {
+        text.push(`weapon jams on ${unit.breakWeaponRoll}`)
+      }
+    }
+    if (unit.baseMorale) {
+      text.push(`unit morale ${unit.currentMorale}`)
+    }
+    if (unit.sponson) {
+      text.push("center / symbol bottom:")
+      if (unit.sponson.type === sponsonType.Flame) {
+        text.push("flamethrower mounted")
+        text.push("- forward arc only")
+        text.push(`- firepower ${unit.sponson.firepower}`)
+        text.push(`- range ${unit.sponson.range}`)
+        text.push("- ignores terrain")
+      } else {
+        text.push("hull-mounted gun - forward arc only")
+        text.push(`- firepower ${unit.sponson.firepower}`)
+        text.push(`- range ${unit.sponson.range}`)
+        text.push("- target roll required")
+        text.push("- anti-armor capable")
+        text.push("- half firepower vs. soft targets")
+      }
     }
   }
   text.push("")
@@ -721,6 +727,7 @@ export function mapHelpLayout(
 }
 
 function unitTypeName(unit: Unit): string[] {
+  if (!unit.visible) { return [unit.typeName] }
   const names: { [index: string]: string[] } = {
     ac: ["armored car"], antitank: ["anti-tank rifle"], atgun: ["anit-tank gun"],
     crew: ["trained gun crew"], tcrew: ["trained tank crew"],

@@ -7,7 +7,7 @@ import {
   roadPath, roadRotate, roadStyle, victoryLayout
 } from "../../../engine/support/hexLayout";
 import { hexHelpLayout } from "../../../engine/support/help";
-import { HelpOverlay } from "./Help";
+import { HelpOverlay } from "./HelpOverlay";
 import { clearColor } from "../../../utilities/graphics";
 
 interface MapHexDetailProps {

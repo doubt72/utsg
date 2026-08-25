@@ -2,7 +2,7 @@ import React from "react";
 import Hex from "../../../engine/Hex";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { hexHelpLayout } from "../../../engine/support/help";
-import { HelpOverlay } from "./Help";
+import { HelpOverlay } from "./HelpOverlay";
 
 interface MapHexNightProps {
   hex: Hex;

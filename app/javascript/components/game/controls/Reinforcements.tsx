@@ -3,7 +3,7 @@ import { baseCounterPath, nationalColorLookup, roundedRectangle } from "../../..
 import Map from "../../../engine/Map";
 import { Coordinate, Player } from "../../../utilities/commonTypes";
 import { mapHelpLayout } from "../../../engine/support/help";
-import { HelpOverlay } from "../map/Help";
+import { HelpOverlay } from "../map/HelpOverlay";
 import { gamePhaseType } from "../../../engine/support/gamePhase";
 
 interface ReinforcementsProps {

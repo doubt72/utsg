@@ -18,6 +18,7 @@ export default class GameReplay {
   }
 
   loadAllActions(callback: () => void) {
+    if (this.game.state !== "complete") { return }
     getAPI(`/api/v1/game_actions?game_id=${this.game.id}`, {
       ok: response => response.json().then(json => {
         for (let i = 0; i < json.length; i++) {

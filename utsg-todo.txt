@@ -1,11 +1,8 @@
 Features/Bug Fixes
   - Decoy markers
-    + Implement special rule
-      + Add unobserved flag
-      + Don't show how many deployed to opponent during deployment
-    - Display unobserved to opponent as decoy unless replay
-    - Display unobserved status to owner or replay
-    + Action display only shows type not unit name
+    + Display unobserved to opponent as decoy unless replay
+    + Display unobserved status to owner
+    - Display unobserved to replay
     - Units become observed when
       - They move next to opponent
       - Opponent moves next to them
@@ -15,11 +12,6 @@ Features/Bug Fixes
       - Unit moves into mines
       - Blaze starts in hex
       - All units in hex become observed
-    + Decoys cannot
-      + Fire
-      + Split / Join
-      + Load or drop or dig in
-      + Move into VP or mines
     - Decoys are removed on observation
       - Remove from morale checks on hit / sniper
       - Remove from displacement on blaze start / spread

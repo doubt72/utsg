@@ -10,7 +10,7 @@ import actionsAvailable from "../../../engine/control/actionsAvailable";
 import Game from "../../../engine/Game";
 import { mapActionButtons } from "../../../engine/support/hexLayout";
 import { actionButtonHelpLayout } from "../../../engine/support/help";
-import { HelpOverlay } from "./Help";
+import { HelpOverlay } from "./HelpOverlay";
 
 interface MoveTrackOverlayProps {
   map: Map;

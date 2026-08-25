@@ -477,15 +477,24 @@ export default function MapDisplay({
         if (a.hex?.y === b.hex?.y) { return (b.hex?.x ?? 0) - (a.hex?.x ?? 0) }
         return (b.hex?.y ?? 0) - (a.hex?.y ?? 0)
       }).map((counter, i) => {
+        if (counter.hasUnit && map.game) {
+          counter.unit.setInterfacePlayer(user, map.game)
+        }
         return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
       }))
     } else {
       setCounterDisplay(map.counters.map((counter, i) => {
+        if (counter.hasUnit && map.game) {
+          counter.unit.setInterfacePlayer(user, map.game)
+        }
         return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
       }))
     }
     if (map.game?.gameState) {
       setActionCounterDisplay(map.game.gameState.activeCounters.map((counter, i) => {
+        if (counter.hasUnit && map.game) {
+          counter.unit.setInterfacePlayer(user, map.game)
+        }
         return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
       }))
     } else {
@@ -596,12 +605,15 @@ export default function MapDisplay({
         setLosOverlay(
           <MapLosOverlay xx={overlay.x} yy={overlay.y} map={map} setOverlay={setOverlay} />
         )
-        setCounterLosOverlay(map.countersAt(new Coordinate(overlay.x, overlay.y)).map((c, i) => 
-          <MapCounter key={i} counter={c} ovCallback={() => {}} onClick={() => {
-                        map.game?.addMessage("switch off line-of-sight overlay to select counters")
-                        updateCallback()
-                      }} />
-        ))
+        setCounterLosOverlay(map.countersAt(new Coordinate(overlay.x, overlay.y)).map((c, i) => {
+          if (c.hasUnit && map.game) {
+            c.unit.setInterfacePlayer(user, map.game)
+          }
+          return <MapCounter key={i} counter={c} ovCallback={() => {}} onClick={() => {
+                             map.game?.addMessage("switch off line-of-sight overlay to select counters")
+                               updateCallback()
+                             }} />
+          }))
       }
     } else if (!overlay.counters) {
       const reshift = map.rotated ? map.previewXSize / map.ySize : 1

@@ -4,7 +4,7 @@ import { counterRed, roundedRectangle, roundedRectangleHole } from "../../../uti
 import MapDisplay from "./MapDisplay";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { mapHelpLayout } from "../../../engine/support/help";
-import { HelpOverlay } from "./Help";
+import { HelpOverlay } from "./HelpOverlay";
 
 interface MiniMapProps {
   map: Map;

@@ -4,7 +4,7 @@ import Counter from "../../../engine/Counter";
 import { Coordinate } from "../../../utilities/commonTypes";
 import { HelpButtonLayout } from "../../../utilities/graphics";
 import { counterHelpLayout } from "../../../engine/support/help";
-import { HelpOverlay } from "./Help";
+import { HelpOverlay } from "./HelpOverlay";
 import { helpIndexByName } from "../../help/helpData";
 
 interface MapCounterOverlayHelpProps {

@@ -3,7 +3,7 @@ import {
   actionBlue,
   ActionButtonLayout,
   actionGreen,
-  BadgeLayout, baseCounterPath, circlePath, clearColor, counterElite, counterGreen, CounterLayout,
+  BadgeLayout, baseCounterPath, circlePath, clearColor, counterBlue, counterElite, counterGreen, CounterLayout,
   counterRed,
   dropSelectColor,
   iconSymbols,
@@ -73,7 +73,9 @@ export function nameBackgroundPath(counter: Counter): string {
 }
 
 export function nameBackgroundStyle(counter: Counter): SVGStyle {
-  return { fill: reverseName(counter) ? counterRed() : clearColor }
+  let fill = reverseName(counter) ? counterRed() : clearColor
+  if (blueName(counter)) { fill = counterBlue() }
+  return { fill }
 }
 
 export function shadowPath(counter: Counter): string | false {
@@ -99,7 +101,7 @@ export function shadowPath(counter: Counter): string | false {
 
 export function nameLayout(counter: Counter): CounterLayout | false {
   let name = counter.targetUF.name
-  if (counter.hasUnit && (!counter.unit.observed || counter.unit.decoy)) {
+  if (counter.hasUnit && !counter.unit.visible) {
     if (counter.unit.leader) { name = "leader" }
     if (counter.unit.type === unitType.Squad) { name = "squad" }
     if (counter.unit.type === unitType.Team) { name = "team" }
@@ -112,15 +114,16 @@ export function nameLayout(counter: Counter): CounterLayout | false {
   if (counter.unit.smallName > 3) { size = 6.85 }
   if (counter.unit.smallName > 3) { size = 6.4 }
   const y = (counter.hasFeature ? counter.y + 12 : counter.y + 10) + size/2 - 4.125
+  const fill = reverseName(counter) || blueName(counter) ? "white" : "black"
   return {
     x: counter.x + 5, y, size, name,
-    style: { fill: reverseName(counter) ? "white" : "black" }
+    style: { fill }
   }
 }
 
 export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   if (!counter.hasUnit) { return false }
-  if (counter.unit.decoy || !counter.unit.observed) { return false }
+  if (!counter.unit.visible) { return false }
   const showAllCounters = counter.onMap ? counter.map?.showAllCounters : counter.showAllCounters
   if (counter.unit.isWreck || showAllCounters) { return false }
   const loc = new Coordinate(counter.x + 40, counter.y + 46)
@@ -321,6 +324,9 @@ export function counterInfoBadges(
     if (u.isBroken) {
       badges.push({ text: "broken", color: counterRed(), tColor: "white" })
     }
+    if (blueName(counter)) {
+      badges.push({ text: "unobserved", color: counterBlue(), tColor: "white" })
+    }
     if (u.isWreck) {
       badges.push({ text: "destroyed", color: counterRed(), tColor: "white" })
     }
@@ -398,7 +404,12 @@ export function counterColor(counter: Counter): string {
 }
 
 function reverseName(counter: Counter): boolean {
-  if(!counter.hasUnit) { return false }
+  if (!counter.hasUnit) { return false }
   return counter.unit.isBroken || counter.unit.isWreck ||
     (counter.unit.jammed && !counter.unit.isVehicle)
+}
+
+function blueName(counter: Counter): boolean {
+  if (!counter.hasUnit) { return false }
+  return !counter.unit.decoy && counter.unit.interfacePlayer && !counter.unit.observed
 }
