@@ -22,7 +22,8 @@ export default class SquadJoinAction extends BaseAction {
       const t = this.target[0]
       const loc = new Coordinate(t.x, t.y)
       return `${formatNation(this.game, this.player)} player joined two ` +
-        `${formatNation(this.game, this.player, t.name)} teams into a squad at ${formatCoordinate(loc)}`
+        (t.name === "team" ? "" : formatNation(this.game, this.player, t.name) + " ") +
+        `teams into a squad at ${formatCoordinate(loc)}`
   }
 
   get undoPossible() { return true }

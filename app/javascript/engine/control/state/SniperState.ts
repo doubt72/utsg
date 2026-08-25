@@ -56,7 +56,7 @@ export default class SniperState extends BaseState {
         action: "sniper", old_initiative: this.game.initiative,
         dice_result: [{ result: roll2d10() }],
         target: this.selection.map(s => {
-          return { x: s.x, y: s.y, id: s.id, name: s.name, status: s.counter.unit.status }
+          return { x: s.x, y: s.y, id: s.id, name: s.counter.unit.hiddenName, status: s.counter.unit.status }
         }),
       },
     }, this.game)

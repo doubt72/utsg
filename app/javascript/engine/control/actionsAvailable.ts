@@ -404,6 +404,7 @@ function addAssaultActions(game: Game, actions: GameControl[]): void {
         type: "none", message:`choose vehicle to ${action.chooseRepair ? "repair" : "man"}`
       })
     } else {
+      actions.unshift({ type: "none", message: "select hex to move" })
       if (showClearObstacles(game)) {
         actions.push({ type: "assault_move_clear" })
       }
@@ -533,6 +534,7 @@ function addUndo(game: Game, activePlayer: string, actions: GameControl[]) {
 }
 
 function canSplit(unit: Unit, map: Map): boolean {
+  if (unit.decoy) { return false }
   if (unit.pinned || unit.isBroken) { return false }
   if (unit.type !== unitType.Squad) { return false }
   if (unit.parent) { return false }
@@ -541,6 +543,7 @@ function canSplit(unit: Unit, map: Map): boolean {
 }
 
 function canJoin(unit: Unit, map: Map): boolean {
+  if (unit.decoy) { return false }
   if (unit.pinned || unit.isBroken) { return false }
   if (!unit.isSplit) { return false }
   if (unit.parent) { return false }
@@ -556,6 +559,7 @@ function canJoin(unit: Unit, map: Map): boolean {
 }
 
 function checkFire(unit: Unit, map: Map): boolean {
+  if (unit.decoy) { return false }
   if (unit.isExhausted || unit.isBroken || unit.isAbandoned) { return false }
   if (unit.currentFirepower <= 0) { return false }
   if (unit.jammed && !unit.sponson) { return false }

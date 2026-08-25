@@ -25,7 +25,8 @@ export default class DeploySplitAction extends BaseAction {
 
   get htmlValue(): string {
     return `${formatNation(this.game, this.player)} player split ` +
-      `${formatNation(this.game, this.player, this.name)} squad into two teams`
+      (this.name === "" ? "" : formatNation(this.game, this.player, this.name) + " ") +
+      "squad into two teams"
   }
 
   get undoPossible() { return true }

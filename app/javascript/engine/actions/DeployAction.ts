@@ -60,7 +60,11 @@ export default class DeployAction extends BaseAction {
       }
     }
     uf.id = this.rId
-    if (!uf.isFeature) { addSpecialArmorRules(uf as Unit, scenario) }
+    if (!uf.isFeature) {
+      const u = uf as Unit
+      addSpecialArmorRules(u, scenario)
+      if (this.game.hide(u)) { u.observed = false }
+    }
     map.addCounter(this.target, uf)
   }
 

@@ -99,7 +99,7 @@ export function shadowPath(counter: Counter): string | false {
 
 export function nameLayout(counter: Counter): CounterLayout | false {
   let name = counter.targetUF.name
-  if (counter.hasUnit && (!counter.unit.observed)) {
+  if (counter.hasUnit && (!counter.unit.observed || counter.unit.decoy)) {
     if (counter.unit.leader) { name = "leader" }
     if (counter.unit.type === unitType.Squad) { name = "squad" }
     if (counter.unit.type === unitType.Team) { name = "team" }

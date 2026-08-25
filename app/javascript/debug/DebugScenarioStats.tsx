@@ -294,10 +294,14 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
     setCountStreamPresent(() => csp)
   }, [scenarios])
 
+  const hexCount = () => {
+    return scenarios.reduce((sum, s) => sum + s.map.height * s.map.width, 0)
+  }
+
   return (
     <div className="flex flex-wrap">
       <div className="p1em">
-        Dev Status:
+        Dev Status ({scenarios.length}):
         {displayStat(countStatus, { a: "Alpha", b: "Beta", p: "Prototype", "": "Ready" })}
         Allied Faction:
         {displayStat(
@@ -357,7 +361,7 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         {displayStat(countWindVariable, {})}
       </div>
       <div className="p1em">
-        Terrain Count:
+        Terrain Count ({hexCount()}):
         {displayStat(countTerrain, {})}
         Terrain Present:
         {displayStat(countTerrainPresent, {})}

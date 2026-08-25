@@ -84,6 +84,7 @@ export default class AssaultState extends BaseState {
     if (!dir) { return hexOpenType.Closed }
 
     const selection = this.selection[0].counter
+    if (selection.unit.decoy && this.map.victoryAt(to)) { return hexOpenType.Closed }
     const terrFrom = hexFrom.terrain
     const terrTo = hexTo.terrain
     const roadMove = alongRoad(hexFrom, hexTo, dir)
@@ -423,7 +424,7 @@ export default class AssaultState extends BaseState {
         path: this.path,
         origin: this.selection.map(s => {
           return {
-            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name,
+            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.hiddenName,
             status: s.counter.unit.status
           }
         }),

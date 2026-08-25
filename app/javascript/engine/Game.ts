@@ -1128,7 +1128,9 @@ export default class Game {
           data: {
             action: "undeploy", old_initiative: this.initiative,
             path: [{ x: action.target.x, y: action.target.y }],
-            deploy: [{ turn: this.turn, key: action.rKey, id: action.rId, name: action.rName, index: select.unitIndex }]
+            deploy: [{
+              turn: this.turn, key: action.rKey, id: action.rId, name: action.rName, index: select.unitIndex
+            }]
           }
         }, this), false)
         break
@@ -1201,8 +1203,8 @@ export default class Game {
         data: {
           action: "squad_split", old_initiative: this.initiative,
           target: [
-            { x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.name },
-            { x: loc.x, y: loc.y, id: newId, name: selection.unit.name },
+            { x: loc.x, y: loc.y, id: selection.unit.id, name: selection.unit.hiddenName },
+            { x: loc.x, y: loc.y, id: newId, name: selection.unit.hiddenName },
           ]
         }
       }, this), false)
@@ -1221,5 +1223,18 @@ export default class Game {
         this.clearGameState()
       }
     }
+  }
+
+  hide(uf: Unit | Feature): boolean {
+    if (uf.isFeature) { return false }
+    const unit = uf as Unit
+    const player = unit.playerNation === this.playerOneNation ? 1 : 2
+    if (unit.canCarrySupport || unit.uncrewedSW) {
+      if ((this.scenario.specialRules.includes("allied_hidden_units") && player === 1) ||
+          (this.scenario.specialRules.includes("axis_hidden_units") && player === 2)) {
+        return true
+      }
+    }
+    return false
   }
 }

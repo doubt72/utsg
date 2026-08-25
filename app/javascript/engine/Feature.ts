@@ -117,6 +117,8 @@ export default class Feature {
     this.lastSelected = !this.lastSelected
   }
 
+  get typeName(): string { return this.name }
+
   get isMarker(): boolean { return false }
 
   get isFeature(): boolean { return true }

@@ -32,6 +32,8 @@ export default function ReinforcementPanel({
   const [mouseDown, setMouseDown] = useState<boolean>(false)
   const [oldPlayer, setOldPlayer] = useState<Player>(1)
 
+  const user = localStorage.getItem("username")
+
   const allUnits = (): ReinforcementSchedule | undefined => {
     if (!map || !map.game) { return }
     const rc: ReinforcementSchedule = {}
@@ -162,7 +164,20 @@ export default function ReinforcementPanel({
                     counter.showDisabled = (map.game?.phase !== gamePhaseType.Deploy ||
                       map.game?.currentPlayer !== player || map.game.state !== 'in_progress' ||
                       map.game.turn !== turn) && turn !== 99
-                    const count = (data.x || 1) - (data.used || 0)
+                    let count = (data.x || 1) - (data.used || 0)
+                    let show = true
+                    if (player === 1 && map.game?.scenario.specialRules.includes("allied_hidden_units")) {
+                      if (user !== map.game.playerOneName && !map.game.replay) {
+                        count = data.x || 1
+                        show = false
+                      }
+                    }
+                    if (player === 2 && map.game?.scenario.specialRules.includes("axis_hidden_units")) {
+                      if (user !== map.game.playerTwoName && !map.game.replay) {
+                        count = data.x || 1
+                        show = false
+                      }
+                    }
                     const cb = () => { ovCallback({show: true, counters: [counter]})}
                     if (count < 1) {
                       counter.showDisabled = true
@@ -183,7 +198,7 @@ export default function ReinforcementPanel({
                         <g key={j}>
                           <text x={x0} y={y0} fontSize={16} textAnchor="start"
                                 fontFamily="'Courier Prime', monospace" style={{ fill: "#FFF" }}>
-                            {data.used > 0 ? `${data.used}/${data.x}` : count}x
+                            {data.used > 0 && show ? `${data.used}/${data.x}` : count}x
                           </text>
                           <MapCounter counter={counter} ovCallback={cb} />
                         </g>

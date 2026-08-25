@@ -193,14 +193,14 @@ export function canLoadUnit(game: Game, unit: Unit, multi: boolean): boolean {
 export function loadUnitCounters(game: Game, unit: Unit, multi: boolean): Counter[] {
   const rc: Counter[] = []
   const lastPath = game.moveState.lastPath
-  if (!lastPath) { return [] }
+  if (!lastPath || unit.decoy) { return [] }
   const counters = game.scenario.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
   for (const c of counters) {
     if (c.hasFeature || c.unit.selected || c.unit.loadedSelected) { continue }
     const path = game.moveState.path
     if (c.unit.crewed && path && path.length > 1) { continue }
     if (c.unit.crewed && game.moveState.rushing) { continue }
-    if (c.unit.parent) { continue }
+    if (c.unit.parent || c.unit.decoy) { continue }
     const extra = c.unit.uncrewedSW ? c.unit.baseMovement : 0
     if (unit.canCarry(c.unit, !multi) &&
         movementPastCost(game.scenario.map, unit) <= unit.currentMovement - 1 + extra) {
@@ -226,7 +226,7 @@ export function dropUnitCounters(game: Game): Counter[] {
       inf.push(s.counter)
     }
     if (unit.parent && mapSelectMovement(game, true) > movementPastCost(game.scenario.map, unit.parent)) {
-      loaded.push(s.counter)
+      if (!unit.decoy && !unit.parent.decoy) { loaded.push(s.counter) }
     }
   }
   const rc: Counter[] = []

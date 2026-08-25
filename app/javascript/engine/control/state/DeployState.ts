@@ -120,24 +120,25 @@ export default class DeployState extends BaseState {
   }
 
   split() {
+    const name = this.game.hide(this.counter.counter) ? "" : this.counter.counter.name
     this.game.executeAction(new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
         action: "deploy_split_squad", old_initiative: this.game.initiative,
-        deploy: [{ turn: this.turn, key: this.key, id: "", name: this.counter.counter.name }]
+        deploy: [{ turn: this.turn, key: this.key, id: "", name }]
       }
     }, this.game), false)
     this.game.refreshCallback(this.game)
   }
 
   join() {
+    const name = this.game.hide(this.counter.counter) ? "" : this.counter.counter.name
     this.game.executeAction(new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
         action: "deploy_join_squad", old_initiative: this.game.initiative,
         deploy: [{
-          turn: this.turn, key: `${this.key.substring(0, this.key.length - 1)}s`, id: "",
-          name: this.counter.counter.name
+          turn: this.turn, key: `${this.key.substring(0, this.key.length - 1)}s`, id: "", name
         }]
       }
     }, this.game), false)
@@ -146,6 +147,7 @@ export default class DeployState extends BaseState {
 
   finish() {
     if (!this.location) { return }
+    const name = this.game.hide(this.counter.counter) ? this.counter.counter.typeName : this.counter.counter.name
     const id = `uf-${this.game.actions.length}`
     const action = new GameAction({
       user: this.game.currentUser,
@@ -153,7 +155,7 @@ export default class DeployState extends BaseState {
       data: {
         action: "deploy", old_initiative: this.game.initiative,
         path: [{ x: this.location.x, y: this.location.y, facing: this.direction }],
-        deploy: [{ turn: this.turn, key: this.key, id, name: this.counter.counter.name }]
+        deploy: [{ turn: this.turn, key: this.key, id, name }]
       }
     }, this.game)
     // Only clears state and "finishes" if all counters deployed

@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1942, 9, 1].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -17,7 +17,7 @@ module Scenarios
         list: [
           :uk_leader_4_1,
           :uk_leader_3_1,
-          [5, :uk_colonial_s],
+          [5, :uk_garrison_s],
           :uk_vickers_mg,
         ],
       },

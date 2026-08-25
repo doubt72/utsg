@@ -293,14 +293,14 @@ export default class FireState extends BaseState {
         path: this.path,
         origin: this.selection.map(s => {
           return {
-            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name,
+            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.hiddenName,
             status: s.counter.unit.status,
             sponson: this.sponson, wire: this.map.wireAt(new Coordinate(s.x, s.y))
           }
         }),
         target: this.targetSelection.map(t => {
           return {
-            x: t.x, y: t.y, id: t.counter.unit.id, name: t.counter.unit.name,
+            x: t.x, y: t.y, id: t.counter.unit.id, name: t.counter.unit.hiddenName,
             status: t.counter.unit.status,
           }
         }),

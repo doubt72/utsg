@@ -292,6 +292,18 @@ export default class Unit {
     this.lastSelected = !this.lastSelected
   }
 
+  get hiddenName(): string {
+    return this.decoy || !this.observed ? this.typeName : this.name
+  }
+
+  get typeName(): string {
+    if (this.type === unitType.Leader) { return "leader" }
+    if (this.type === unitType.Squad) { return "squad" }
+    if (this.type === unitType.Team) { return "team" }
+    if (this.type === unitType.SupportWeapon) { return "squad" }
+    return this.name
+  }
+
   get breakDestroysSponson(): boolean {
     return !!this.sponson && this.sponson.type === sponsonType.Flame
   }
@@ -665,7 +677,7 @@ export default class Unit {
     this.engineer = false
     this.assault = false
     this.type = unitType.Team
-    this.icon = "team"
+    this.icon = this.decoy ? "decoy" : "team"
     this.isSplit = true
 
     other.baseFirepower = this.baseFirepower
@@ -674,8 +686,10 @@ export default class Unit {
     other.engineer = false
     other.assault = false
     other.type = unitType.Team
-    other.icon = "team"
+    other.icon = this.decoy ? "decoy" : "team"
     other.isSplit = true
+    other.decoy = this.decoy
+    other.observed = this.observed
     other.playerNation = this.playerNation
 
     other.setStatus(this.status)
@@ -696,6 +710,7 @@ export default class Unit {
     // Can't be broken or wreck, so highest of:
     // Normal: 1, Tired: 2, Activated: 4, Exhausted: 5
     if (unit.status > this.status) { this.setStatus(unit.status) }
+    if (unit.observed || this.observed) { this.observed = true }
   }
 
   get helpText(): string[] {

@@ -25,6 +25,7 @@ export function showEntrench(game: Game): boolean {
   if (selection.filter(s => s.counter.unit.parent === undefined).length > 1) { return false }
   if (game.scenario.specialRules.includes("winter")) { return false }
   if (![unitType.Squad, unitType.Team].includes(selection[0].counter.unit.type)) { return false }
+  if (selection[0].counter.unit.decoy) { return false }
   if ([baseTerrainType.Snow, baseTerrainType.Mud].includes(game.scenario.map.baseTerrain)) { return false }
   const loc = new Coordinate(selection[0].x, selection[0].y)
   const hex = game.scenario.map.hexAt(loc) as Hex

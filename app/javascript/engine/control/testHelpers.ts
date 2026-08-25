@@ -49,20 +49,20 @@ export const testRGun: UnitData = {
 export const testGTank: UnitData = {
   id: "g_tank", t: "tank", i: "tank", c: "ger", n: "PzKpfw 35(t)", y: 38, s: 3, f: 8, r: 12, v: 5,
   o: { t: 1, p: 1, ha: { f: 2, s: 1, r: 1, }, ta: { f: 2, s: 1, r: 2, }, j: 3, f: 18, u: 1, k: 1 },
-};
+}
 
 export const testGTCrew: UnitData = unitDataForTankCrew("g_crew", "ger")
 
 export const testGTruck: UnitData = {
   id: "g_truck", t: "truck", c: "ger", n: "Opel Blitz", i: "truck", y: 30, s: 3, f: 0, r: 0, v: 5,
   o: { tr: 3, trg: 1, w: 1 },
-};
+}
 
 export const testRHT: UnitData = {
   id: "r_ht", t: "ht", i: "ht", c: "ussr", n: "M9 Half-track", y: 41,
   o: { ha: { f: 1, s: 1, r: 0, t: -1 }, tr: 3, trg: 1, k: 1, r: 1, j: 3, f: 16 },
   s: 3, v: 6, f: 20, r: 12
-};
+}
 
 export const testGFT: UnitData = {
   id: "g_ft", c: "ger", t: "sw", n: "Flamethrower", y: 15, i: "flamethrower", f: 24, r: 1, v: 0,
@@ -77,7 +77,7 @@ export const testGSC: UnitData = {
 export const testGMC: UnitData = {
   id: "g_mc", c: "ger", t: "sw", n: "Molotov Cocktail", y: 39, i: "explosive", f: 4, r: 1, v: 0,
   o: { i: 1, x: 1, t: 1, sn: 1, e: 1 },
-};
+}
 
 export const testGMortar: UnitData = {
   id: "g_mortar", t: "sw", i: "mortar", c: "ger", n: "5cm leGrW 36", y: 36, f: 8, r: 11, v: 0,
@@ -125,27 +125,39 @@ export const testITank: UnitData = {
 export const testUSMarine: UnitData = {
   id: "us_marine", t: "sqd", i: "squad", s: 6, c: "usa", n: "Marine Rifle", y: 0, m: 4, f: 7, r: 6, v: 5,
   o: { a: 1 },
-};
+}
 
 export const testUSMarineTeam: UnitData = {
   id: "us_marine_tm", t: "tm", i: "team", s: 3, c: "usa", n: "Marine Rifle", y: 0, m: 4, f: 3, r: 6, v: 5,
   o: {},
-};
+}
 
 export const testUSMG: UnitData = {
   id: "us_mg", t: "sw", i: "mg", c: "usa", n: "M1918 BAR", y: 18,
   o: { a: 1, r: 1, j: 3, f: 16 }, f: 5, r: 8, v: 0, s: 1,
-};
+}
 
 export const testUSLdr: UnitData = {
   id: "us_ldr", c: "usa", t: "ldr", n: "Leader", i: "leader", y: 0, m: 6, s: 1, f: 1, r: 1, v: 6,
   o: { l: 2 },
-};
+}
 
 export const testJapSNLF: UnitData = {
   id: "jap_snlf", t: "sqd", i: "squad", s: 6, c: "jap", n: "SNLF", y: 0, m: 3, f: 6, r: 4, v: 4,
   o: { a: 1 },
-};
+}
+
+export const testGSqdDecoy: UnitData = {
+  id: "g_inf_decoy", c: "ger", i: "decoy", n: "squad", s: 6, t: "sqd", v: 4, y: 0, d: 1, f: 0, r: 0, o: {},
+}
+
+export const testGLdrDecoy: UnitData = {
+  id: "g_ldr_decoy", c: "ger", t: "ldr", n: "leader", i: "decoy", y: 0, d: 1, s: 1, f: 0, r: 0, v: 6, o: {},
+}
+
+export const testGMGDecoy: UnitData = {
+  id: "g_mg_decoy", c: "ger", t: "sw", i: "decoy", n: "weapon", y: 0, d: 1, f: 0, r: 0, v: -1, s: 1, o: {}
+}
 
 export const testWire: FeatureData = {
   id: "wire", ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A"

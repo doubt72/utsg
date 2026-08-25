@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "a"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1942, 10, 14].freeze
     LAYOUT = [23, 36, "x"].freeze
@@ -24,12 +24,12 @@ module Scenarios
           [2, :ussr_ampulomet],
           [6, :ussr_mc],
           [2, :ussr_t_34_m42_m43],
-          [2, :ussr_decoy_leader_6],
-          [4, :ussr_decoy_squad_4],
-          [4, :ussr_decoy_squad_3],
-          [2, :ussr_decoy_weapon_0],
-          :ussr_decoy_weapon_1,
-          :ussr_decoy_weapon_2,
+          [2, :ussr_decoy_leader6],
+          [4, :ussr_decoy_squad4_s],
+          [4, :ussr_decoy_squad3_s],
+          [2, :ussr_decoy_weapon0],
+          :ussr_decoy_weapon1,
+          :ussr_decoy_weapon2,
           [10, :wire],
           :sniper5,
         ],
@@ -40,9 +40,9 @@ module Scenarios
           [3, :ussr_guards_smg_s],
           :ussr_dp_27,
           :ussr_sc,
-          :ussr_decoy_leader_6,
-          [3, :ussr_decoy_squad_5],
-          [2, :ussr_decoy_weapon_0],
+          :ussr_decoy_leader6,
+          [3, :ussr_decoy_squad5_s],
+          [2, :ussr_decoy_weapon0],
         ],
       },
       "4": {
@@ -51,9 +51,9 @@ module Scenarios
           [9, :ussr_militia_s],
           :ussr_dp_27,
           [4, :ussr_mc],
-          :ussr_decoy_leader_6,
-          [6, :ussr_decoy_squad_3],
-          [3, :ussr_decoy_weapon_0],
+          :ussr_decoy_leader6,
+          [6, :ussr_decoy_squad3_s],
+          [3, :ussr_decoy_weapon0],
         ],
       },
       "6": {
@@ -64,10 +64,10 @@ module Scenarios
           [5, :ussr_militia_s],
           [2, :ussr_dp_27],
           [4, :ussr_mc],
-          [2, :ussr_decoy_leader_6],
-          [2, :ussr_decoy_squad_4],
-          [3, :ussr_decoy_squad_3],
-          [4, :ussr_decoy_weapon_0],
+          [2, :ussr_decoy_leader6],
+          [2, :ussr_decoy_squad4_s],
+          [3, :ussr_decoy_squad3_s],
+          [4, :ussr_decoy_weapon0],
         ],
       },
     }.freeze

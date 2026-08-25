@@ -3,9 +3,7 @@ import Unit from "../Unit"
 import { describe, expect, test } from "vitest"
 import { showLaySmoke, showLoadMove, showDropMove, movementPastCost } from "./movement"
 import {
-  createBlankGame, testGGun, testGInf,
-  testGLdr,
-  testGMG,
+  createBlankGame, testGGun, testGInf, testGLdr, testGMG,
 } from "./testHelpers"
 import MoveState from "./state/MoveState"
 import actionsAvailable from "./actionsAvailable"

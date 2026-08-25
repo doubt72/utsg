@@ -69,9 +69,11 @@ export default class SquadJoinState extends BaseState {
     const one = this.selection[0]
     const two = this.map.selection as Counter
     const loc = two.hex as Coordinate
-    const target1 = { x: loc.x, y: loc.y, id: one.id, name: one.name, status: one.counter.unit.status }
+    const target1 = {
+      x: loc.x, y: loc.y, id: one.id, name: one.counter.unit.hiddenName, status: one.counter.unit.status
+    }
     const target2: GameActionUnit = {
-      x: loc.x, y: loc.y, id: two.unit.id, name: two.unit.name,
+      x: loc.x, y: loc.y, id: two.unit.id, name: two.unit.hiddenName,
       children: two.unit.children.length > 0 ? two.unit.children.map(c => c.id) : undefined,
       status: two.unit.status,
     }

@@ -95,6 +95,7 @@ module Utility
               ["uk", "Indian", 0, 3, 6, 4, 4, {}],
               ["uk", "Territorial", 0, 2, 6, 3, 3, {}],
               ["uk", "Colonial", 0, 2, 6, 3, 3, {}],
+              ["uk", "Garrison", 0, 2, 6, 3, 3, {}],
 
               ["usa", "Engineer", 0, 4, 9, 3, 5, { a: 1, s: 1, eng: 1 }],
               ["usa", "Paratroop", 43, 4, 8, 4, 5, { a: 1, s: 1 }],

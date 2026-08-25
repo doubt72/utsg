@@ -82,9 +82,7 @@ export default class MoveState extends BaseState {
     this.smoke = false
     this.dropping = false
     this.loading = false
-    if (canSelect) {
-      game.openOverlay = game.scenario.map.hexAt(hex)
-    }
+    if (canSelect) { game.openOverlay = game.scenario.map.hexAt(hex) }
   }
 
   get lastPath() { return this.path[this.path.length - 1] }
@@ -95,6 +93,7 @@ export default class MoveState extends BaseState {
     if (this.dropping) { return hexOpenType.Closed }
     if (this.loading) { return hexOpenType.Closed }
     const selection = this.selection[0].counter
+    if (selection.unit.decoy && this.map.victoryAt(to)) { return hexOpenType.Closed }
     if (this.smoke) { return smokeOpenHex(this.map, from, to, selection.unit) }
     if (from.x === to.x && from.y === to.y) { return hexOpenType.Closed }
     const hexFrom = this.map.hexAt(from) as Hex;
@@ -120,6 +119,9 @@ export default class MoveState extends BaseState {
     const countersAt = this.map.countersAt(to)
     if (moveSize + toSize > stackLimit) { return hexOpenType.Closed }
     for (const c of countersAt) {
+      if (selection.unit.decoy && c.hasFeature && c.feature.type === featureType.Mines) {
+        return hexOpenType.Closed
+      }
       if (c.hasFeature && c.feature.type === featureType.Fire) { return hexOpenType.Closed }
       if (c.hasUnit && selection.unit.playerNation !== c.unit.playerNation && !c.unit.isWreck &&
           !c.unit.operated) {
@@ -214,8 +216,8 @@ export default class MoveState extends BaseState {
       this.addActions.push(
         {
           x: xx, y: yy, cost, type: gameActionAddActionType.Drop, id: counter.unit.id,
-          name: counter.unit.name, parent_id: counter.unit.parent?.id,
-          parent_name: counter.unit.parent?.name, status: counter.unit.status,
+          name: counter.unit.hiddenName, parent_id: counter.unit.parent?.id,
+          parent_name: counter.unit.parent?.hiddenName, status: counter.unit.status,
           facing: facing && counter.unit.parent?.rotates && counter.unit.crewed ? normalDir(facing + 3) : facing,
           index: this.path.length - 1,
         }
@@ -268,7 +270,7 @@ export default class MoveState extends BaseState {
         const facing = counter.unit.rotates ? counter.unit.facing : undefined
         this.addActions.push({
           x: xx, y: yy, cost, type: gameActionAddActionType.Load, id: counter.unit.id,
-          name: counter.unit.name, parent_id: load?.unit.id, parent_name: load?.unit.name,
+          name: counter.unit.hiddenName, parent_id: load?.unit.id, parent_name: load?.unit.hiddenName,
           facing, status: counter.unit.status, index: this.path.length - 1,
         })
       }
@@ -583,7 +585,7 @@ export default class MoveState extends BaseState {
         path: this.path,
         origin: this.selection.map(s => {
           return {
-            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.name,
+            x: s.x, y: s.y, id: s.counter.unit.id, name: s.counter.unit.hiddenName,
             status: s.counter.unit.status
           }
         }),

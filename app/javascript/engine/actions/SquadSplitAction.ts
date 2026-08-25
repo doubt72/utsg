@@ -22,7 +22,8 @@ export default class SquadSplitAction extends BaseAction {
     const t = this.target[0]
     const loc = new Coordinate(t.x, t.y)
     return `${formatNation(this.game, this.player)} player split ` +
-      `${formatNation(this.game, this.player, t.name)} squad into two teams at ${formatCoordinate(loc)}`
+      (t.name === "squad" ? "" : formatNation(this.game, this.player, t.name) + " ") +
+      `squad into two teams at ${formatCoordinate(loc)}`
   }
 
   get undoPossible() { return true }

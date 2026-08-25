@@ -25,7 +25,8 @@ export default class DeployJoinAction extends BaseAction {
 
   get htmlValue(): string {
     return `${formatNation(this.game, this.player)} player joined two ` +
-      `${formatNation(this.game, this.player, this.name)} teams into a squad`
+      (this.name === "" ? "" : formatNation(this.game, this.player, this.name) + " ") +
+      "teams into a squad"
   }
 
   get undoPossible() { return true }
