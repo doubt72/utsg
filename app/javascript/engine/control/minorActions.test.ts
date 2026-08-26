@@ -495,7 +495,7 @@ describe("minor actions", () => {
     expect(units[0].feature.type).toBe(featureType.Fire)
   })
 
-  test.only("terrain affects fire", () => {
+  test("terrain affects fire", () => {
     const game = createBlankGame([
       [{ t: "o" }, { t: "m" }, { t: "o" }, { t: "o" }, { t: "o" }],
       [{ t: "o" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }],

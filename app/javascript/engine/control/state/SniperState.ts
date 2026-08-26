@@ -61,5 +61,11 @@ export default class SniperState extends BaseState {
       },
     }, this.game)
     this.execute(action)
+    if (this.game.observeNeeded.length > 0) {
+      for (const c of this.game.observeNeeded) {
+        this.game.observe(c)
+      }
+      this.game.observeNeeded = []
+    }
   }
 }

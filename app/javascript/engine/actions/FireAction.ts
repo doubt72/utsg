@@ -232,6 +232,7 @@ export default class FireAction extends BaseAction {
             anims.push({ loc: loc, type: "drift" })
             dTo = loc
             drift.description += `, drifted to ${formatCoordinate(loc)}`
+            this.game.observeNeeded.push(loc)
             fsHex.x = loc.x
             fsHex.y = loc.y
             dTargets = this.map.countersAt(loc).filter(c => c.hasUnit).map(u => {
@@ -244,6 +245,7 @@ export default class FireAction extends BaseAction {
         } else {
           if (needDice) { targetRoll.description += `<span style="color: ${failRedColorMarker()};">hit</span>` }
           anims.push({ loc: to, type: "hit" })
+          this.game.observeNeeded.push(to)
         }
         if (firing0.unit.areaFire || smoke) {
           if (smoke) {
@@ -567,6 +569,7 @@ export default class FireAction extends BaseAction {
           }target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
         }
         if (hitRoll.result.result > hitCheck) {
+          this.game.observeNeeded.push(c)
           const critical = critHit(hitRoll.result.result, hitCheck)
           let critMessage = false
           targets.forEach(t => {

@@ -40,6 +40,8 @@ import SquadJoinAction from "./actions/SquadJoinAction";
 import SquadSplitAction from "./actions/SquadSplitAction";
 import FinishDeployAction from "./actions/FinishDeployAction";
 import ShortMoveAction from "./actions/ShortMoveAction";
+import ObserveAction from "./actions/ObserveAction";
+import RemoveDecoyAction from "./actions/RemoveDecoyAction";
 
 export type GameActionDiceResult = {
   result: DiceResult, description?: string
@@ -289,6 +291,10 @@ export default class GameAction {
       return new WindSpeedAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "fire_displace") {
       return new FireDisplaceAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "observe") {
+      return new ObserveAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "remove_decoy") {
+      return new RemoveDecoyAction(this.data, this.game, this.index);
     } else {
       return new StateAction(this.data, this.game, this.index, "unhandled action type");
     }

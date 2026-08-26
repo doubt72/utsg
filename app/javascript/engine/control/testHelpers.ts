@@ -159,6 +159,10 @@ export const testGMGDecoy: UnitData = {
   id: "g_mg_decoy", c: "ger", t: "sw", i: "decoy", n: "weapon", y: 0, d: 1, f: 0, r: 0, v: -1, s: 1, o: {}
 }
 
+export const testRSqdDecoy: UnitData = {
+  id: "r_inf_decoy", c: "ussr", i: "decoy", n: "squad", s: 6, t: "sqd", v: 4, y: 0, d: 1, f: 0, r: 0, o: {},
+}
+
 export const testWire: FeatureData = {
   id: "wire", ft: 1, n: "Wire", t: "wire", i: "wire", f: "½", r: 0, v: "A"
 }

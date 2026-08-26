@@ -41,7 +41,7 @@ export default class MoveAction extends BaseAction {
 
   get type(): string { return this.rush ? "rush" : "move" }
 
-  get moveString(): string { return this.rush ? "rushes" : "moves" }
+  get moveString(): string { return this.rush ? "rushed" : "moved" }
 
   get htmlValue(): string {
     const start = new Coordinate(this.path[0].x, this.path[0].y)

@@ -992,6 +992,7 @@ export default class Map {
 
   spreadFire(loc: Coordinate) {
     const newLoc = neightborCoordinate(loc, this.windDirection)
+    this.game?.observeNeeded.push(newLoc)
     this.addFire(newLoc)
   }
 }

@@ -89,5 +89,8 @@ export default class RoutState extends BaseState {
       },
     }, this.game)
     this.execute(action)
+    for (const p of path) {
+      this.game.observeFrom(new Coordinate(p.x, p.y), this.player)
+    }
   }
 }

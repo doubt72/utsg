@@ -43,9 +43,10 @@ export default class SniperAction extends BaseAction {
     const check = this.player === 1 ? this.game.axisSniper?.sniperRoll ?? 0 :
       this.game.alliedSniper?.sniperRoll ?? 0
     if (roll.result <= check) {
+      const loc = new Coordinate(this.target[0].x, this.target[0].y)
+      this.game.observeNeeded.push(loc)
       for (const t of this.target) {
         const unit = this.game.findUnitById(t.id) as Unit
-        const loc = new Coordinate(t.x, t.y)
         this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false, critical: false })
         let found = false
         for (const a of anims) {

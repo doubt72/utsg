@@ -1,20 +1,14 @@
 import { Coordinate, Direction, markerType, unitType } from "../../utilities/commonTypes"
 import {
-  actionBlue,
-  ActionButtonLayout,
-  actionGreen,
-  BadgeLayout, baseCounterPath, circlePath, clearColor, counterBlue, counterElite, counterGreen, CounterLayout,
-  counterRed,
-  dropSelectColor,
-  iconSymbols,
-  lastSelectColor,
-  loadedSelectColor,
-  loaderSelectColor,
-  markerYellow,
-  nationalColorLookup, roundedRectangle, selectColor, StatusLayout, SVGStyle,
-  targetSelectColor
+  actionBlue, ActionButtonLayout, actionGreen, BadgeLayout, baseCounterPath, circlePath, clearColor,
+  counterObserved, counterElite, counterGreen, CounterLayout, counterRed, dropSelectColor, iconSymbols,
+  lastSelectColor, loadedSelectColor, loaderSelectColor, markerYellow, nationalColorLookup,
+  roundedRectangle, selectColor, StatusLayout, SVGStyle, targetSelectColor
 } from "../../utilities/graphics"
-import { canAssaultMove, canFire, canIntensiveFire, canMove, canReactionFire, canReactionIntensiveFire, canRout, canRush } from "../control/actionsAvailable"
+import {
+  canAssaultMove, canFire, canIntensiveFire, canMove, canReactionFire, canReactionIntensiveFire,
+  canRout, canRush
+} from "../control/actionsAvailable"
 import { showClearObstacles, showEntrench } from "../control/assault"
 import { closeCombatCasualtyNeeded } from "../control/closeCombat"
 import { movementPastCost } from "../control/movement"
@@ -74,7 +68,7 @@ export function nameBackgroundPath(counter: Counter): string {
 
 export function nameBackgroundStyle(counter: Counter): SVGStyle {
   let fill = reverseName(counter) ? counterRed() : clearColor
-  if (blueName(counter)) { fill = counterBlue() }
+  if (blueName(counter)) { fill = counterObserved() }
   return { fill }
 }
 
@@ -325,7 +319,7 @@ export function counterInfoBadges(
       badges.push({ text: "broken", color: counterRed(), tColor: "white" })
     }
     if (blueName(counter)) {
-      badges.push({ text: "unobserved", color: counterBlue(), tColor: "white" })
+      badges.push({ text: "unobserved", color: counterObserved(), tColor: "white" })
     }
     if (u.isWreck) {
       badges.push({ text: "destroyed", color: counterRed(), tColor: "white" })

@@ -555,8 +555,13 @@ export default class MoveState extends BaseState {
     const lastPath = this.lastPath as GameActionPath
     const counters = this.map.countersAt(new Coordinate(lastPath.x, lastPath.y))
     let check = undefined
+    const vpOrMines: Coordinate[] = []
     for (const c of counters) {
-      if (c.hasFeature && c.feature.type === featureType.Mines) { check = c.feature; break }
+      if (c.hasFeature && c.feature.type === featureType.Mines) {
+        vpOrMines.push(new Coordinate(lastPath.x, lastPath.y))
+        check = c.feature
+        break
+      }
     }
     const mineTarget = this.selection[0].counter.unit
     const moveData: GameActionMoveData | undefined = check ? { mines:
@@ -575,6 +580,7 @@ export default class MoveState extends BaseState {
       }
     }
     for (const a of this.addActions) {
+      if (a.type == gameActionAddActionType.VP) { vpOrMines.push(new Coordinate(a.x, a.y)) }
       if (a.type === gameActionAddActionType.Smoke) { dice.push({ result: rolld10() }) }
     }
     const action = new GameAction({
@@ -600,6 +606,12 @@ export default class MoveState extends BaseState {
       }
     }, this.game)
     this.execute(action)
+    for (const p of this.path) {
+      this.game.observeFrom(new Coordinate(p.x, p.y), this.player)
+    }
+    for (const v of vpOrMines) {
+      this.game.observe(new Coordinate(v.x, v.y))
+    }
   }
 
   get rushing(): boolean {

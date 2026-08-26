@@ -56,6 +56,7 @@ export default class FireStartAction extends BaseAction {
     const loc = new Coordinate(this.hex.x, this.hex.y)
     if (this.diceResult.result.result <= this.needed) {
       this.map.addFire(loc)
+      this.game.observeNeeded.push(loc)
     } else if (this.diceResult.result.result <= 7 && this.startData.vehicle && this.startData.tank) {
       const unit = new Unit(unitDataForTankCrew(`uf-${this.game.actions.length}`, this.startData.nation as string))
       unit.playerNation = this.startData.player_nation as string

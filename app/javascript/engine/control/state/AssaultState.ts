@@ -438,6 +438,9 @@ export default class AssaultState extends BaseState {
       }
     }, this.game)
     this.execute(action)
+    for (const p of this.path) {
+      this.game.observeFrom(new Coordinate(p.x, p.y), this.player)
+    }
   }
 
   canBeMultiselected(counter: Counter): boolean {

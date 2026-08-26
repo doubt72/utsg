@@ -135,6 +135,7 @@ export default class Game {
   fireStartCheckNeeded: SimpleHexCheck | undefined;
   fireOutCheckNeeded: SimpleFeatureCheck[];
   fireSpreadCheckNeeded: SimpleFeatureCheck[];
+  observeNeeded: Coordinate[];
   checkWindDirection: boolean;
   checkWindSpeed: boolean;
   playerOneNotification: [string, string] | undefined;
@@ -190,6 +191,7 @@ export default class Game {
     this.fireStartCheckNeeded = undefined
     this.fireOutCheckNeeded = []
     this.fireSpreadCheckNeeded = []
+    this.observeNeeded = []
     this.checkWindDirection = false
     this.checkWindSpeed = false
 
@@ -412,6 +414,10 @@ export default class Game {
         return { loc: d.loc, message: ["clear"], textColor: "#FFF", backgroundColor: "#080" }
       } else if (d.type === "entrench") {
         return { loc: d.loc, message: ["digs in"], textColor: "#FFF", backgroundColor: "#080" }
+      } else if (d.type === "observed") {
+        return { loc: d.loc, message: ["observed"], textColor: "#FFF", backgroundColor: "#00E" }
+      } else if (d.type === "decoy") {
+        return { loc: d.loc, message: ["decoy", "removed"], textColor: "#FFF", backgroundColor: "#00E" }
       }
       console.log(`unexpected anim type ${d.type}`)
       return { loc: d.loc, message: ["???"], textColor: "#EE0", backgroundColor: "#000" }
@@ -628,7 +634,7 @@ export default class Game {
       const unit = u as Unit
       if (unit.leader) {
         points += 6
-      } else if (!unit.operated && !unit.tankCrew) {
+      } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
         points += unit.size
       }
     }
@@ -646,7 +652,7 @@ export default class Game {
       const unit = u as Unit
       if (unit.leader) {
         points += 6
-      } else if (!unit.operated && !unit.tankCrew) {
+      } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
         points += unit.size
       }
     }
@@ -1236,5 +1242,76 @@ export default class Game {
       }
     }
     return false
+  }
+
+  observeAction(loc: Coordinate, counters: Counter[], action: string) {
+    this.executeAction(new GameAction({
+      user: this.currentUser, player: counters[0].unit.playerNation === this.playerOneNation ? 1 : 2,
+      data: {
+        action, old_initiative: this.initiative,
+        target: counters.map(t => {
+          return {
+            x: loc.x, y: loc.y, id: t.unit.id, name: t.unit.name, status: t.unit.status
+          }
+        })
+      }
+    }, this), false)
+  }
+
+  observeFrom(loc: Coordinate, player: Player) {
+    const nation = player === 1 ? this.playerOneNation : this.playerTwoNation
+    let contact = false
+    for (const h of this.scenario.map.hexNeighbors(loc)) {
+      if (!h) { continue }
+      const counters = this.scenario.map.countersAt(h.coord)
+      const decoys: Counter[] = []
+      const targets: Counter[] = []
+      for (const c of counters) {
+        if (c.hasUnit && c.unit.nation !== nation) {
+          contact = true
+          if (c.unit.decoy) {
+            decoys.push(c)
+          } else if (!c.unit.observed) {
+            targets.push(c)
+          }
+        }
+      }
+      if (targets.length > 0) { this.observeAction(h.coord, targets, "observe") }
+      if (decoys.length > 0) { this.observeAction(h.coord, decoys, "remove_decoy") }
+    }
+    if (contact) {
+      const counters = this.scenario.map.countersAt(loc)
+      const decoys: Counter[] = []
+      const targets: Counter[] = []
+      for (const c of counters) {
+        if (c.hasUnit && c.unit.nation === nation) {
+          contact = true
+          if (c.unit.decoy) {
+            decoys.push(c)
+          } else if (!c.unit.observed) {
+            targets.push(c)
+          }
+        }
+      }
+      if (targets.length > 0) { this.observeAction(loc, targets, "observe") }
+      if (decoys.length > 0) { this.observeAction(loc, decoys, "remove_decoy") }
+    }
+  }
+
+  observe(loc: Coordinate) {
+    const counters = this.scenario.map.countersAt(loc)
+    const decoys: Counter[] = []
+    const targets: Counter[] = []
+    for (const c of counters) {
+      if (c.hasUnit) {
+        if (c.unit.decoy) {
+          decoys.push(c)
+        } else if (!c.unit.observed) {
+          targets.push(c)
+        }
+      }
+    }
+    if (targets.length > 0) { this.observeAction(loc, targets, "observe") }
+    if (decoys.length > 0) { this.observeAction(loc, decoys, "remove_decoy") }
   }
 }

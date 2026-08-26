@@ -3,7 +3,9 @@
 - Decoy/unobserved implementation / documentation / tests
 - Prevent digging in on airfields
 - Bug fix: add airfield to terrain help
+- Switched 016 to 023
 - Updated 402, 403, 609
+- Added replacement alpha 016
 
 # 0.128
 

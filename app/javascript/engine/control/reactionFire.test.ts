@@ -1280,7 +1280,7 @@ describe("reaction fire attacks", () => {
     game.moveState.move(2, 2)
     game.moveState.move(1, 2)
     game.gameState?.finish()
-    expect(game.lastAction?.stringValue).toBe("German Rifle, Rifle moves from E3 to B3, Rifle stopped at D3")
+    expect(game.lastAction?.stringValue).toBe("German Rifle, Rifle moved from E3 to B3, Rifle stopped at D3")
 
     game.setGameState(new InitiativeState(game))
 

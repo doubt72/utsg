@@ -271,6 +271,8 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
             <option value={"axis_fragile_vehicles"}>increased axis breakdowns</option>
             <option value={"allied_ignore_snow"}>no snow movement penalties for allies</option>
             <option value={"axis_ignore_snow"}>no snow movement penalties for axis</option>
+            <option value={"allied_hidden_units"}>allied hidden units</option>
+            <option value={"axis_hidden_units"}>axis hidden units</option>
             <option value={"winter"}>winter: no digging in, water as open for infantry</option>
             <option value={"retreat_301"}>allies rout up below 5, otherwise down, reverse for axis</option>
           </select>

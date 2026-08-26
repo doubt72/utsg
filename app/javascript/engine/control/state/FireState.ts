@@ -315,6 +315,13 @@ export default class FireState extends BaseState {
       }
     }, this.game)
     this.execute(action)
+    for (const c of this.selection) { this.game.observe(new Coordinate(c.x, c.y)) }
+    if (this.game.observeNeeded.length > 0) {
+      for (const c of this.game.observeNeeded) {
+        this.game.observe(c)
+      }
+      this.game.observeNeeded = []
+    }
   }
 
   canBeMultiselected(counter: Counter): boolean {
