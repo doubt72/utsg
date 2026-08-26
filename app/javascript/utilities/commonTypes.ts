@@ -106,12 +106,12 @@ export const buildingStyle: { [index: string]: BuildingStyle } = {
 }
 
 export type BuildingShape = "c" | "t" | "h" | "x" | "l" | "s" | "m" | "l2" | "s2" | "m2" |
-  "bs1" | "bs2" | "bs3" | "bs4" | "bm" | "bc1" | "bc2" | "bc3" | "bc4"
+  "bs1" | "bs2" | "bs3" | "bs4" | "bm" | "bm2" | "bc1" | "bc2" | "bc3" | "bc4" | "bic1" | "bic2"
 export const buildingShape: { [index: string]: BuildingShape } = {
   Silo: "c", Tank: "t", Hut: "h", Cross: "x", Lone: "l", Side: "s", Middle: "m",
   Lone2: "l2", Side2: "s2", Middle2: "m2", BigSide1: "bs1", BigSide2: "bs2", BigSide3: "bs3",
-  BigSide4: "bs4", BigMiddle: "bm", BigCorner1: "bc1", BigCorner2: "bc2", BigCorner3: "bc3",
-  BigCorner4: "bc4"
+  BigSide4: "bs4", BigMiddle: "bm", BigMiddle2: "bm2", BigCorner1: "bc1", BigCorner2: "bc2",
+  BigCorner3: "bc3", BigCorner4: "bc4", BigInCorner1: "bic1", BigInCorner2: "bic2",
 }
 
 export type Elevation = -1 | 0 | 1 | 2 | 3 | 4 | 5

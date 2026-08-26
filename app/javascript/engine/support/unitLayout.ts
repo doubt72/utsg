@@ -209,7 +209,6 @@ export function iconLayout(counter: Counter): CounterLayout | false {
 
 export function centerLabelLayout(counter: Counter): CounterLayout | false {
   if (!counter.hasFeature || !counter.feature.sniperRoll) { return false }
-  if (!counter.unit.visible) { return false }
   const x = counter.x + 40
   const y = counter.y + 48
   return {
@@ -266,7 +265,7 @@ export function hullArmorLayout(counter: Counter): CounterLayout | false {
 export function firepowerLayout(counter: Counter): CounterLayout | false {
   // This is a mess.  Maybe clean this up.
   if (counter.hasMarker) { return false }
-  if (!counter.unit.visible) { return false }
+  if (counter.hasUnit && !counter.unit.visible) { return false }
   const loc = new Coordinate(
     counter.x + 14 + ((counter.hasUnit && counter.unit.minimumRange) ? 0 : 2), counter.y + 67
   )
@@ -363,7 +362,7 @@ export function smokeLayout(counter: Counter): CounterLayout | false {
 
 export function rangeLayout(counter: Counter): CounterLayout | false {
   if (counter.hasMarker) { return false }
-  if (!counter.unit.visible) { return false }
+  if (counter.hasUnit && !counter.unit.visible) { return false }
   if (counter.hasFeature && [
       featureType.Smoke, featureType.Fire, featureType.Bunker, featureType.Foxhole,
       featureType.Rubble,

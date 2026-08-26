@@ -6,7 +6,7 @@ module Scenarios
     NAME = "The Tractor Factory"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
     VERSION = "0.4"
 
     DATE = [1942, 10, 14].freeze
@@ -214,7 +214,7 @@ module Scenarios
             { t: "o", d: 1, st: { sh: "s2" } },
             { t: "o", d: 1, st: { sh: "m2" } },
             { t: "o", d: 4, st: { sh: "s2" } },
-            { t: "o" },
+            { t: "c" },
             { t: "o", d: 1, st: { sh: "s2" } },
             { t: "o", d: 1, st: { sh: "m2" } },
             { t: "o", d: 4, st: { sh: "s2" } },
@@ -238,7 +238,7 @@ module Scenarios
             { t: "o", rr: { d: [[2, 5]] } },
             { t: "o" },
             { t: "o" },
-            { t: "o" },
+            { t: "c" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -851,7 +851,7 @@ module Scenarios
             { t: "o", d: 1, st: { sh: "t" } },
             { t: "o" },
             { t: "o", r: { d: [2, 5], t: "t" } },
-            { t: "c" },
+            { t: "o" },
             { t: "x" },
             { t: "x" },
             { t: "o" },
@@ -918,7 +918,7 @@ module Scenarios
             { t: "o", d: 4, st: { sh: "s2" } },
             { t: "o" },
             { t: "c" },
-            { t: "c" },
+            { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6], t: "t" } },
@@ -1022,7 +1022,7 @@ module Scenarios
             { t: "o", r: { d: [1, 3], t: "t" } },
             { t: "o" },
             { t: "o" },
-            { t: "c" },
+            { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -1049,7 +1049,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-            { t: "c" },
+            { t: "o" },
             { t: "o" },
             { t: "o" },
             { t: "o", h: -1 },

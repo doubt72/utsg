@@ -168,10 +168,13 @@ export default function DesignerMapTab({
             <option key={"bs3"} value={"bs3"}>big side 3</option>
             <option key={"bs4"} value={"bs4"}>big side 4</option>
             <option key={"bm"} value={"bm"}>big middle</option>
+            <option key={"bm2"} value={"bm2"}>big middle 2</option>
             <option key={"bc1"} value={"bc1"}>big corner</option>
             <option key={"bc2"} value={"bc2"}>big corner 2</option>
             <option key={"bc3"} value={"bc3"}>big corner 3</option>
             <option key={"bc4"} value={"bc4"}>big corner 4</option>
+            <option key={"bic1"} value={"bic1"}>big inner corner 1</option>
+            <option key={"bic2"} value={"bic2"}>big inner corner 2</option>
           </select>
         </div>
         <div className="ml1em unselectable" style={{width: "75px"}}>

@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Red October"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "p"
     VERSION = "0.5"
 
     DATE = [1942, 10, 14].freeze
@@ -24,6 +24,7 @@ module Scenarios
         [8, :ussr_decoy_squad3_s],
         [2, :ussr_decoy_weapon2],
         [4, :ussr_decoy_weapon0],
+        :sniper5,
       ] },
       "2": { list: [
         :ussr_leader_5_1,
@@ -55,6 +56,7 @@ module Scenarios
         [4, :ger_sc],
         [5, :ger_mg_34],
         :ger_ft,
+        :sniper5,
       ] },
       "3": { list: [
         :ger_leader_6_1,
@@ -113,7 +115,7 @@ module Scenarios
           start_weather: "dry",
           base_weather: "dry",
           precip: [0, "rain"],
-          wind: [1, 1, false],
+          wind: [2, 4, true],
           hexes:,
           layout:,
           allied_dir: 1.5,
@@ -126,7 +128,8 @@ module Scenarios
               ["8-14", 0], ["7-14", "1-2"], ["6-14", "3-4"], ["5-14", "5-6"], ["4-14", "7-8"],
               ["3-14", "9-10"], ["2-14", "11-12"], ["1-14", "13-14"], ["*", "15-22"],
             ],
-            "2" => [[14, "*"]], "4" => [[14, "*"]],
+            "2" => [[14, "*"], ["10-13", 22]],
+            "4" => [[14, "*"], ["10-13", 22]],
           },
           axis_setup: {
             "0" => [
@@ -150,7 +153,7 @@ module Scenarios
             { t: "o", st: { sh: "s2", s: "u" }, d: 6 },
             { t: "o", rr: { d: [[6, 3]] } },
             { t: "x" },
-            { t: "o" },
+            { t: "x" },
             { t: "o", r: { t: "t", d: [2, 6], c: "l", r: 2 } },
             { t: "o", r: { t: "t", d: [3, 5], c: "r", r: 2 } },
             { t: "x" },
@@ -166,7 +169,7 @@ module Scenarios
             { t: "o" },
             { t: "x" },
             { t: "o" },
-            { t: "x" },
+            { t: "o" },
             { t: "o" },
             { t: "c" },
             { t: "o", r: { t: "t", d: [2, 6], c: "l", r: 2 } },
@@ -309,7 +312,7 @@ module Scenarios
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bs2", s: "u" }, d: 3 },
+            { t: "o", st: { sh: "bm", s: "u" }, d: 6 },
           ],
           [
             { t: "o" },
@@ -326,7 +329,7 @@ module Scenarios
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bs2", s: "u" }, d: 3 },
+            { t: "o", st: { sh: "bm", s: "u" }, d: 6 },
           ],
           [
             { t: "o", rr: { d: [[6, 3]] } },
@@ -342,8 +345,8 @@ module Scenarios
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bs2", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bs2", s: "u" }, d: 6 },
+            { t: "o", st: { sh: "bm", s: "u" }, d: 6 },
+            { t: "o", st: { sh: "bm", s: "u" }, d: 6 },
           ],
           [
             { t: "o", rr: { d: [[6, 3], [6, 4]] } },
@@ -359,8 +362,8 @@ module Scenarios
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bs2", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bs2", s: "u" }, d: 6 },
+            { t: "o", st: { sh: "bm", s: "u" }, d: 6 },
+            { t: "o", st: { sh: "bm", s: "u" }, d: 6 },
           ],
           [
             { t: "o", r: { t: "t", d: [3, 5], c: "r", r: 2 } },
@@ -375,8 +378,8 @@ module Scenarios
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bs2", s: "u" }, d: 3 },
-            { t: "o", st: { sh: "bc1", s: "u" }, d: 6 },
+            { t: "o", st: { sh: "bic2", s: "u" }, d: 6 },
+            { t: "o", st: { sh: "bs4", s: "u" }, d: 6 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
           ],
           [
@@ -409,7 +412,7 @@ module Scenarios
             { t: "o", st: { sh: "bs4", s: "u" }, d: 6 },
             { t: "o", st: { sh: "bm", s: "u" }, d: 3 },
             { t: "o", st: { sh: "bs2", s: "u" }, d: 3 },
-            { t: "o" },
+            { t: "x" },
             { t: "x" },
             { t: "o" },
           ],
@@ -426,8 +429,8 @@ module Scenarios
             { t: "o" },
             { t: "o", st: { sh: "bs1", s: "u" }, d: 6 },
             { t: "o", st: { sh: "bc2", s: "u" }, d: 3 },
-            { t: "o" },
             { t: "x" },
+            { t: "o" },
             { t: "o" },
           ],
           [
@@ -443,7 +446,7 @@ module Scenarios
             { t: "o", r: { t: "t", d: [3, 5], c: "r", r: 2 } },
             { t: "x" },
             { t: "o" },
-            { t: "c" },
+            { t: "o" },
             { t: "o", st: { sh: "bc3", s: "u" }, d: 6 },
             { t: "o" },
           ],

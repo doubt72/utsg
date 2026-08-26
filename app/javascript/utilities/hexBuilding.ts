@@ -94,7 +94,7 @@ function hutPath(hex: Hex): SVGPathArray {
 function crossPath(hex: Hex): SVGPathArray {
   // Symmetrical "x" or "cross" building for some variety
   const inset = 4
-  const dir = hex.direction 
+  const dir = hex.direction
   const mag1 = hex.narrow/2 - inset*2
   const mag2 = mag1/2.5
   // This could be abstracted a bit, but it's probably not really worth it;
@@ -168,7 +168,7 @@ function lonePath(hex: Hex): SVGPathArray {
   let path = []
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x = hex.narrow/2
   const y = hex.radius/2 - inset
   path = drawCore(hex, dir, x, y, inset, inset*2, inset*2)
@@ -183,7 +183,7 @@ function sidePath(hex: Hex): SVGPathArray {
   let path = []
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x = hex.narrow/2
   const y = hex.radius/2 - inset
   path = drawCore(hex, dir, x, y, inset, inset*2, 0)
@@ -197,7 +197,7 @@ function middlePath(hex: Hex): SVGPathArray {
   let path = []
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x = hex.narrow/2
   const y = hex.radius/2 - inset
   path = drawCore(hex, dir, x, y, inset, 0, 0)
@@ -213,7 +213,7 @@ function middlePath(hex: Hex): SVGPathArray {
 function lonePath2(hex: Hex): SVGPathArray {
   let path = []
   const inset = 4
-  const dir = hex.direction 
+  const dir = hex.direction
   const x = hex.narrow/2
   const y = hex.radius/2 - inset
   path = drawCore2(hex, dir, x, y, inset, inset*2, inset*2)
@@ -225,7 +225,7 @@ function lonePath2(hex: Hex): SVGPathArray {
 function sidePath2(hex: Hex): SVGPathArray {
   let path = []
   const inset = 4
-  const dir = hex.direction 
+  const dir = hex.direction
   const x = hex.narrow/2
   const y = hex.radius/2 - inset
   path = drawCore2(hex, dir, x, y, inset, inset*2, 0)
@@ -236,7 +236,7 @@ function sidePath2(hex: Hex): SVGPathArray {
 function middlePath2(hex: Hex): SVGPathArray {
   let path = []
   const inset = 4
-  const dir = hex.direction 
+  const dir = hex.direction
   const x = hex.narrow/2
   const y = hex.radius/2 - inset
   path = drawCore2(hex, dir, x, y, inset, 0, 0)
@@ -259,10 +259,30 @@ function bigMiddle(hex: Hex): SVGPathArray {
   return path
 }
 
+function bigMiddle2(hex: Hex): SVGPathArray {
+  const inset = 4
+  const outset = inset*3
+  const dir = hex.direction
+  const x1 = hex.xCornerOffset(dir, outset, 1)
+  const y1 = hex.yCornerOffset(dir, outset, 1)
+  const x2 = hex.xCornerOffset(normalDir(dir - 1), outset, -1)
+  const y2 = hex.yCornerOffset(normalDir(dir - 1), outset, -1)
+  const x3 = hex.xCornerOffset(normalDir(dir + 3), outset, 1)
+  const y3 = hex.yCornerOffset(normalDir(dir + 3), outset, 1)
+  const x4 = hex.xCornerOffset(normalDir(dir + 2), outset, -1)
+  const y4 = hex.yCornerOffset(normalDir(dir + 2), outset, -1)
+  return [
+    "M", x1, y1, "L", hex.xCorner(normalDir(dir + 1)), hex.yCorner(normalDir(dir + 1)),
+    "L", x4, y4, "L", x3, y3,
+    "L", hex.xCorner(normalDir(dir + 4)), hex.yCorner(normalDir(dir + 4)),
+    "L", x2, y2, "L", x1, y1,
+  ]
+}
+
 function bigSide1(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(normalDir(dir + 1), outset, 1)
   const y1 = hex.yCornerOffset(normalDir(dir + 1), outset, 1)
   const x2 = hex.xCornerOffset(normalDir(dir + 4), outset, -1)
@@ -282,7 +302,7 @@ function bigSide1(hex: Hex): SVGPathArray {
 function bigSide2(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(normalDir(dir + 2), outset, 1)
   const y1 = hex.yCornerOffset(normalDir(dir + 2), outset, 1)
   const x2 = hex.xCornerOffset(dir, outset, -1)
@@ -298,7 +318,7 @@ function bigSide2(hex: Hex): SVGPathArray {
 function bigSide3(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(normalDir(dir - 1), outset, -1)
   const y1 = hex.yCornerOffset(normalDir(dir - 1), outset, -1)
   const x2 = hex.xCornerOffset(normalDir(dir + 3), outset, 1)
@@ -316,7 +336,7 @@ function bigSide3(hex: Hex): SVGPathArray {
 function bigSide4(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(dir, outset, 1)
   const y1 = hex.yCornerOffset(dir, outset, 1)
   const x2 = hex.xCornerOffset(normalDir(dir - 1), outset, -1)
@@ -333,7 +353,7 @@ function bigSide4(hex: Hex): SVGPathArray {
 function bigCorner1(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(normalDir(dir - 1), outset, -1)
   const y1 = hex.yCornerOffset(normalDir(dir - 1), outset, -1)
   const x2 = hex.xCornerOffset(normalDir(dir + 2), outset, 1)
@@ -350,7 +370,7 @@ function bigCorner1(hex: Hex): SVGPathArray {
 function bigCorner2(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(dir, outset, -1)
   const y1 = hex.yCornerOffset(dir, outset, -1)
   const x2 = hex.xCornerOffset(normalDir(dir + 3), outset, 1)
@@ -367,7 +387,7 @@ function bigCorner2(hex: Hex): SVGPathArray {
 function bigCorner3(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(dir, outset, -1)
   const y1 = hex.yCornerOffset(dir, outset, -1)
   const x2 = hex.xCornerOffset(normalDir(dir + 4), outset, 1)
@@ -386,7 +406,7 @@ function bigCorner3(hex: Hex): SVGPathArray {
 function bigCorner4(hex: Hex): SVGPathArray {
   const inset = 4
   const outset = inset*3
-  const dir = hex.direction 
+  const dir = hex.direction
   const x1 = hex.xCornerOffset(normalDir(dir + 2), outset, 1)
   const y1 = hex.yCornerOffset(normalDir(dir + 2), outset, 1)
   const x2 = hex.xCornerOffset(normalDir(dir + 4), outset, -1)
@@ -400,6 +420,48 @@ function bigCorner4(hex: Hex): SVGPathArray {
     "L", ...buildingRotatePoint(hex, normalDir(dir + 3), new Coordinate(xOff2, -hex.radius/2)).tuple,
     "L", x2, y2, "L", hex.xCorner(normalDir(dir + 3)), hex.yCorner(normalDir(dir + 3)),
     "L", x1, y1,
+  ]
+}
+
+function bigInCorner1(hex: Hex): SVGPathArray {
+  const inset = 4
+  const outset = inset*3
+  const dir = hex.direction
+  const x1 = hex.xCornerOffset(normalDir(dir + 3), outset, -1)
+  const y1 = hex.yCornerOffset(normalDir(dir + 3), outset, -1)
+  const x2 = hex.xCornerOffset(normalDir(dir + 4), outset, 1)
+  const y2 = hex.yCornerOffset(normalDir(dir + 4), outset, 1)
+  const xOff = outset * Math.sin(Math.PI/3)
+  return [
+    "M", hex.xCorner(normalDir(dir)), hex.yCorner(normalDir(dir)),
+    "L", hex.xCorner(normalDir(dir + 1)), hex.yCorner(normalDir(dir + 1)),
+    "L", hex.xCorner(normalDir(dir + 2)), hex.yCorner(normalDir(dir + 2)),
+    "L", x1, y1,
+    "L", ...buildingRotatePoint(hex, dir, new Coordinate(xOff, hex.radius/3)).tuple,
+    "L", x2, y2,
+    "L", hex.xCorner(normalDir(dir + 5)), hex.yCorner(normalDir(dir + 5)),
+    "L", hex.xCorner(normalDir(dir)), hex.yCorner(normalDir(dir)),
+  ]
+}
+
+function bigInCorner2(hex: Hex): SVGPathArray {
+  const inset = 4
+  const outset = inset*3
+  const dir = hex.direction
+  const x1 = hex.xCornerOffset(normalDir(dir + 4), outset, -1)
+  const y1 = hex.yCornerOffset(normalDir(dir + 4), outset, -1)
+  const x2 = hex.xCornerOffset(normalDir(dir + 5), outset, 1)
+  const y2 = hex.yCornerOffset(normalDir(dir + 5), outset, 1)
+  const xOff = -outset * Math.sin(Math.PI/3)
+  return [
+    "M", hex.xCorner(normalDir(dir)), hex.yCorner(normalDir(dir)),
+    "L", hex.xCorner(normalDir(dir + 1)), hex.yCorner(normalDir(dir + 1)),
+    "L", hex.xCorner(normalDir(dir + 2)), hex.yCorner(normalDir(dir + 2)),
+    "L", hex.xCorner(normalDir(dir + 3)), hex.yCorner(normalDir(dir + 3)),
+    "L", x1, y1,
+    "L", ...buildingRotatePoint(hex, dir, new Coordinate(xOff, hex.radius/3)).tuple,
+    "L", x2, y2,
+    "L", hex.xCorner(normalDir(dir)), hex.yCorner(normalDir(dir)),
   ]
 }
 
@@ -428,6 +490,8 @@ export function hexBuildingBuildingDisplay(hex: Hex): PathLayout | false {
     path = middlePath2(hex)
   } else if (hex.buildingShape === buildingShape.BigMiddle) {
     path = bigMiddle(hex)
+  } else if (hex.buildingShape === buildingShape.BigMiddle2) {
+    path = bigMiddle2(hex)
   } else if (hex.buildingShape === buildingShape.BigSide1) {
     path = bigSide1(hex)
   } else if (hex.buildingShape === buildingShape.BigSide2) {
@@ -444,6 +508,10 @@ export function hexBuildingBuildingDisplay(hex: Hex): PathLayout | false {
     path = bigCorner3(hex)
   } else if (hex.buildingShape === buildingShape.BigCorner4) {
     path = bigCorner4(hex)
+  } else if (hex.buildingShape === buildingShape.BigInCorner1) {
+    path = bigInCorner1(hex)
+  } else if (hex.buildingShape === buildingShape.BigInCorner2) {
+    path = bigInCorner2(hex)
   }
   const hcs = elevationStyles(hex)[hex.elevation].fill as string
   // TODO: maybe generic versions of this?  If we ever do this anywhere else

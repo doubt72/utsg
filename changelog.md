@@ -1,11 +1,13 @@
 # 0.129
 
 - Decoy/unobserved implementation / documentation / tests
+- Added a few building shapes
 - Prevent digging in on airfields
 - Bug fix: add airfield to terrain help
 - Switched 016 to 023
 - Updated 402, 403, 609
 - Added replacement alpha 016
+- Added prototype 020
 
 # 0.128
 
