@@ -80,8 +80,8 @@ module Scenarios
           Marshal Friedrich Paulus selected its image for the proposed
           Stalingrad Shield (Stalingradschild) medal, which was never awarded
           due to the German defeat. Today the building remains in Volgograd
-          and continues to function as an active grain storage facility, whith
-          visible battle damage preserved as historical markers.",
+          and continues to function as an active grain storage facility, with
+          visible battle damage preserved.",
         ]
       end
 

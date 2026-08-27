@@ -7,7 +7,7 @@
 - Updated 402, 403, 609
 - Switched 016 to 023, downgrade to prototype
 - Added alpha 026
-- Added prototype 016 (replacement), 020, 022, 030
+- Added prototype 016 (replacement), 019, 020, 022, 030
 
 # 0.128
 

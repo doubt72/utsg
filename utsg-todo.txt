@@ -1,5 +1,8 @@
 Features/Bug Fixes
-  - Add inner corner building for 020
+  - Re-factor artillery
+    - Range multiplier +1
+    - Drift range 5 (5/6, 7/8, 9, 10)
+    - 7-hex AOA
   - Decoy markers
     - Display unobserved in replay
   - Save/play user scenarios / limit 1 - 3 - 5
