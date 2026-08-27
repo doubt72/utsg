@@ -23,6 +23,7 @@ export default function NewGame() {
     }
   }, [navigate, location])
 
+  const [first, setFirst] = useState<boolean>(true)
   const [formInput, setFormInput] = useState({ name: "", player: 1, scenario: "" })
   const [formErrors, setFormErrors] = useState({ name: "" , scenario: "" })
   const [players, setPlayers] = useState({ one: "player one" , two: "player two" })
@@ -64,6 +65,10 @@ export default function NewGame() {
           setScenarioList(json.data.filter((s: ScenarioData) => s.id !== "000"))
           setTutorial(json.data.filter((s: ScenarioData) => s.id === "000")[0])
           setScroll({ up: json.page > 0, down: json.more })
+          if (first) {
+            setScenario("000")
+            setFirst(false)
+          }
         })
       }
     })
@@ -352,7 +357,8 @@ export default function NewGame() {
   const TutorialDisplay = () => {
     if (!tutorial) { return "" }
     return (
-      <ScenarioRow onClick={setScenario} selected={formInput.scenario === tutorial.id} data={tutorial} />
+      <ScenarioRow onClick={setScenario} selected={formInput.scenario === tutorial.id}
+                   data={tutorial} small={true} />
     )
   }
 
@@ -401,7 +407,7 @@ export default function NewGame() {
       <Header />
       <form onSubmit={onSubmit}>
         <div className="standard-body">
-          <div className="scenario-form-container">
+          <div className="scenario-form-container flex flex-vertical">
             Create a new game:
             <label className="form-label">game name</label>
             <input
@@ -431,6 +437,13 @@ export default function NewGame() {
               <div className="mt2em">
                 [You must be logged in to create a game.]
               </div> }
+            <div className="flex-fill"></div>
+            <div>start here:</div>
+            <div className="flex">
+              <div className="flex-fill">
+                {TutorialDisplay()}
+              </div>
+            </div>
           </div>
           <div className="scenario-list-container">
             <div className="scenario-list-filter-limit">
@@ -472,12 +485,6 @@ export default function NewGame() {
               {statusSelector}
             </div>
             <div className="scenario-list-select">
-              <div>start here:</div>
-              <div className="flex">
-                <div className="flex-fill mb1em" style={{ marginRight: "2.25em" }}>
-                  {TutorialDisplay()}
-                </div>
-              </div>
               <div>or select a scenario:</div>
               <div className="red">{formErrors.scenario}</div>
               <div className="flex">

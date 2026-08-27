@@ -205,7 +205,7 @@ module Scenarios
             { t: "j", h: 1 },
             { t: "j", h: 1 },
             { t: "o", h: 1 },
-            { t: "o", h: 1, st: { sh: "l2", s: "f" }, d: 2.5 },
+            { t: "o", h: 1, st: { sh: "l2", s: "f" }, d: 1 },
             { t: "o", r: { t: "p", d: [3, 5] }, h: 1 },
             { t: "o", h: 1 },
           ],

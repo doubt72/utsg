@@ -1,10 +1,11 @@
 # 0.129
 
 - Decoy/unobserved implementation / documentation / tests
-- Added a few building shapes
+- Reformat new game page to save space/pre-load tutorial
 - Prevent digging in on airfields
+- Added a few building shapes
 - Bug fix: add airfield to terrain help
-- Updated 402, 403, 609
+- Updated 402, 403, 414, 609
 - Switched 016 to 023, downgrade to prototype
 - Added alpha 026
 - Added prototype 016 (replacement), 019, 020, 022, 030
