@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Hard Place"
     ALLIES = ["ind"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1942, 7, 1].freeze
     LAYOUT = [15, 23, "x"].freeze

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Intramuros"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1945, 2, 23].freeze
     LAYOUT = [15, 11, "x"].freeze

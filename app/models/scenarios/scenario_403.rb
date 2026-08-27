@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Shadows in the Jungle"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 7, 28].freeze
     LAYOUT = [15, 23, "x"].freeze

@@ -1,3 +1,10 @@
+# 0.130
+
+- Updated 205, 206
+- Updated/promoted 602
+- Promoted 403
+- Promoted 104, 305, 404 to alpha
+
 # 0.129
 
 - Decoy/unobserved implementation / documentation / tests
