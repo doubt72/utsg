@@ -132,7 +132,7 @@ export default class Game {
   fireDisplaceNeeded: SimpleUnitCheck[];
   closeNeeded: CloseCheck[];
   smokeCheckNeeded: SimpleFeatureCheck[];
-  fireStartCheckNeeded: SimpleHexCheck | undefined;
+  fireStartCheckNeeded: SimpleHexCheck[];
   fireOutCheckNeeded: SimpleFeatureCheck[];
   fireSpreadCheckNeeded: SimpleFeatureCheck[];
   observeNeeded: Coordinate[];
@@ -188,7 +188,7 @@ export default class Game {
     this.fireDisplaceNeeded = []
     this.closeNeeded = []
     this.smokeCheckNeeded = []
-    this.fireStartCheckNeeded = undefined
+    this.fireStartCheckNeeded = []
     this.fireOutCheckNeeded = []
     this.fireSpreadCheckNeeded = []
     this.observeNeeded = []

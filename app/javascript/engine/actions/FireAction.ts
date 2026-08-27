@@ -154,10 +154,6 @@ export default class FireAction extends BaseAction {
       return { x: t.x, y: t.y, counter: this.game.findCounterById(t.id) as Counter }
     })
     const firing0 = firing[0].counter
-    let fireStart = false
-    let fireStartVehicle: Unit | undefined = undefined
-    let fireStartIncendiary = false
-    let fireStartVehicleIncendiary = false
     if (this.path.length > 1) {
       firing0.unit.turretFacing = this.path[1].turret ?? 1
     }
@@ -179,17 +175,18 @@ export default class FireAction extends BaseAction {
     if (firing0.unit.crewed && firing0.unit.parent) {
       firing0.unit.parent.activate()
     }
-    if (firing0.unit.incendiary || firing0.unit.sponson?.type === sponsonType.Flame) {
-      fireStartIncendiary = true
-    }
     // Also generate final target hexes
     this.fireHex.final = this.fireHex.start
     const tRange = sponson ? firing0.unit.sponson?.type !== sponsonType.Flame : firing0.unit.targetedRange
     const oBoard = firing0.unit.offBoard
+    let fsHexes: { x: number, y: number, vehicle?: Unit }[] = []
     if (firing0.unit.areaFire || oBoard) {
-      fireStart = true
+      fsHexes = [{ x: to.x, y: to.y }]
     }
-    const fsHex = new Coordinate(to.x, to.y)
+    let incendiary = false
+    if (firing0.unit.incendiary || firing0.unit.sponson?.type === sponsonType.Flame) {
+      incendiary = true
+    }
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
@@ -204,8 +201,8 @@ export default class FireAction extends BaseAction {
           `rolled ${formatDieResult(targetRoll.result)}: `
       }
       if (targetRoll.result.result > targetCheck || oBoard) {
-        let dTo = to
-        let dTargets = targets
+        let dHexes = [to]
+        fsHexes = []
         if (targetRoll.result.result <= targetCheck && oBoard) {
           anims.push({ loc: to, type: "miss" })
           if (needDice) {
@@ -225,148 +222,171 @@ export default class FireAction extends BaseAction {
           this.fireHex.final = [{ x: loc.x, y: loc.y, smoke }]
           if (this.data.fire_data) { this.data.fire_data.drift = true }
           if (loc.x < 0 || loc.y < 0 || loc.x >= this.map.width || loc.y >= this.map.height) {
-            dTargets = []
+            dHexes = []
             drift.description += ", drifted off map"
-            fireStart = false
           } else {
             anims.push({ loc: loc, type: "drift" })
-            dTo = loc
+            dHexes = [loc]
+            for (const h of this.map.hexNeighbors(loc)) { if (h) { dHexes.push(h.coord)} }
             drift.description += `, drifted to ${formatCoordinate(loc)}`
-            this.game.observeNeeded.push(loc)
-            fsHex.x = loc.x
-            fsHex.y = loc.y
-            dTargets = this.map.countersAt(loc).filter(c => c.hasUnit).map(u => {
-              return { x: loc.x, y: loc.y, counter: u }
-            })
-            if (dTargets.length < 1 && !smoke) {
-              drift.description += ", no units in hex"
+            let hit = false
+            for (const d of dHexes) {
+              this.game.observeNeeded.push(d)
+              fsHexes.push({ x: d.x, y: d.y })
+              if (this.map.countersAt(d).filter(c => c.hasUnit).length > 0) { hit = true }
+            }
+            if (!hit && !smoke) {
+              drift.description += ", no units hit"
             }
           }
         } else {
           if (needDice) { targetRoll.description += `<span style="color: ${failRedColorMarker()};">hit</span>` }
           anims.push({ loc: to, type: "hit" })
-          this.game.observeNeeded.push(to)
+          if (oBoard) {
+            for (const h of this.map.hexNeighbors(to)) { if (h) { dHexes.push(h.coord)} }
+          }
+          for (const d of dHexes) {
+            this.game.observeNeeded.push(d)
+            fsHexes.push({ x: d.x, y: d.y })
+          }
         }
         if (firing0.unit.areaFire || smoke) {
           if (smoke) {
-            if (needDice) { this.diceResults.push({ result: rolld10() }) }
-            const smokeDice = this.diceResults[diceIndex++]
-            const smokeValue = smokeRoll(smokeDice.result.result)
-            if (needDice) {
-              smokeDice.description = `smoke roll: rolled ${formatDieResult(smokeDice.result)}, ` +
-                `smoke level ${formatTarget(smokeValue)}`
-            }
-            this.map.addCounter(dTo, new Feature(
-              { ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: smokeValue, id: `${this.index}-smoke` }
-            ))
-            anims.push({ loc: dTo, type: "smoke" })
-          } else {
-            const dTarget0 = dTargets[0]?.counter ?? target0
-            let infantry = false
-            let unit = dTarget0?.unit
-            for (const t of dTargets) {
-              if (t.counter.unit.canCarrySupport) {
-                infantry = true
-                unit = t.counter.unit
-              }
-            }
-            if (infantry) {
-              fp = firepower(this.game, this.convertAToA(firing), unit, dTo, sponson, [wire])
-              let hitCheck = baseToHit(fp.fp)
-              if (hitCheck < 2) { hitCheck = 2 }
-              if (needDice) { this.diceResults.push({ result: roll2d10() }) }
-              const hitRoll = this.diceResults[diceIndex++]
+            for (const d of dHexes) {
+              if (needDice) { this.diceResults.push({ result: rolld10() }) }
+              const smokeDice = this.diceResults[diceIndex++]
+              const smokeValue = smokeRoll(smokeDice.result.result)
               if (needDice) {
-                hitRoll.description =
-                  `infantry effect roll: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
+                smokeDice.description = `smoke roll${dHexes.length > 1 ? ` for ${formatCoordinate(d)}` : ""}: ` +
+                  `rolled ${formatDieResult(smokeDice.result)}, ` +
+                  `smoke level ${formatTarget(smokeValue)}`
               }
-              if (hitRoll.result.result > hitCheck) {
-                const critical = critHit(hitRoll.result.result, hitCheck)
-                if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
-                  critical ? "passed (critical)" : "passed"
-                }</span>` }
-                for (const t of dTargets) {
-                  if (t.counter.unit.canCarrySupport) {
-                    this.game.moraleChecksNeeded.push({
-                      unit: t.counter.unit, from: [from], to: dTo, incendiary: firing0.unit.incendiary,
-                      critical,
-                    })
-                  }
+              this.map.addCounter(d, new Feature(
+                {
+                  ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: smokeValue,
+                  id: `${this.index}-smoke-${d.x}-${d.y}`
                 }
-                anims.push({ loc: dTo, type: critical ? "criteffect" : "effect" })
-              } else {
-                if (needDice) {
-                  hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>`
-                }
-                anims.push({ loc: dTo, type: "noeffect" })
-              }
+              ))
+              anims.push({ loc: d, type: "smoke" })
             }
-            for (const t of dTargets) {
-              if (t.counter.unit.canCarrySupport) { continue }
-              if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
-                t.counter.unit.wreck(this.game)
-                fireStartVehicle = t.counter.unit
-                const hex = t.counter.hex as Coordinate
-                if (hex.x != dTo.x || hex.y !== dTo.y) {
-                  rollbackAddActions(this.map, hex, dTo, t.counter.unit.id)
+          } else {
+            for (const d of dHexes) {
+              const dTargets = this.map.countersAt(d).filter(c => c.hasUnit).map(u => {
+                return { x: d.x, y: d.y, counter: u }
+              })
+              if (dTargets.length < 1) { continue }
+              const dTarget0 = dTargets[0]?.counter ?? target0
+              let infantry = false
+              let unit = dTarget0?.unit
+              for (const t of dTargets) {
+                if (t.counter.unit.canCarrySupport) {
+                  infantry = true
+                  unit = t.counter.unit
                 }
-                if (needDice) { targetRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
-                anims.push({ loc: dTo, type: "wreck" })
-              } else if (t.counter.unit.isVehicle) {
-                const fwire = firing.map(f => f.wire ?? false)
-                fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, dTo, sponson, fwire)
-                const baseHit = baseToHit(fp.fp)
-                const armor = firing0.unit.incendiary ? 0 : t.counter.unit.lowestArmor
-                let hitCheck = baseHit + armor
+              }
+              if (infantry) {
+                fp = firepower(this.game, this.convertAToA(firing), unit, d, sponson, [wire])
+                let hitCheck = baseToHit(fp.fp)
                 if (hitCheck < 2) { hitCheck = 2 }
                 if (needDice) { this.diceResults.push({ result: roll2d10() }) }
                 const hitRoll = this.diceResults[diceIndex++]
                 if (needDice) {
-                  hitRoll.description = `penetration roll${
-                    dTargets.length > 1 ? ` for ${this.formatUnit(t.counter.unit)}`: ""
-                  }: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
+                  hitRoll.description =
+                    `infantry effect roll${dHexes.length > 1 ? ` at ${formatCoordinate(d)}` : ""}: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
                 }
                 if (hitRoll.result.result > hitCheck) {
-                  t.counter.unit.wreck(this.game)
-                  fireStartVehicle = t.counter.unit
-                  const hex = t.counter.hex as Coordinate
-                  if (hex.x != dTo.x || hex.y !== dTo.y) {
-                    rollbackAddActions(this.map, hex, dTo, t.counter.unit.id)
+                  const critical = critHit(hitRoll.result.result, hitCheck)
+                  if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
+                    critical ? "passed (critical)" : "passed"
+                  }</span>` }
+                  for (const t of dTargets) {
+                    if (t.counter.unit.canCarrySupport) {
+                      this.game.moraleChecksNeeded.push({
+                        unit: t.counter.unit, from: [from], to: d, incendiary: firing0.unit.incendiary,
+                        critical,
+                      })
+                    }
                   }
-                  if (needDice) {
-                    hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
-                  }
-                  anims.push({ loc: dTo, type: "wreck" })
-                } else if (hitRoll.result.result === hitCheck && !firing0.unit.incendiary) {
-                  t.counter.unit.immobilize(this.map)
-                  if (needDice) {
-                    hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
-                  }
-                  const hex = t.counter.hex as Coordinate
-                  if (hex.x != dTo.x || hex.y !== dTo.y) {
-                    rollbackAddActions(this.map, hex, dTo, t.counter.unit.id)
-                    if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dTo)}` }
-                  }
-                  anims.push({ loc: dTo, type: "immobilized" })
+                  anims.push({ loc: d, type: critical ? "criteffect" : "effect" })
                 } else {
                   if (needDice) {
-                    hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
+                    hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>`
                   }
-                  anims.push({ loc: dTo, type: "nowreck" })
+                  anims.push({ loc: d, type: "noeffect" })
+                }
+              }
+              for (const t of dTargets) {
+                if (t.counter.unit.canCarrySupport) { continue }
+                if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
+                  t.counter.unit.wreck(this.game)
+                  for (const f of fsHexes) {
+                    if (f.x === d.x && f.y === d.y) { f.vehicle = t.counter.unit }
+                  }
+                  const hex = t.counter.hex as Coordinate
+                  if (hex.x != d.x || hex.y !== d.y) {
+                    rollbackAddActions(this.map, hex, d, t.counter.unit.id)
+                  }
+                  if (needDice) { targetRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
+                  anims.push({ loc: d, type: "wreck" })
+                } else if (t.counter.unit.isVehicle) {
+                  const fwire = firing.map(f => f.wire ?? false)
+                  fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, d, sponson, fwire)
+                  const baseHit = baseToHit(fp.fp)
+                  const armor = firing0.unit.incendiary ? 0 : t.counter.unit.lowestArmor
+                  let hitCheck = baseHit + armor
+                  if (hitCheck < 2) { hitCheck = 2 }
+                  if (needDice) { this.diceResults.push({ result: roll2d10() }) }
+                  const hitRoll = this.diceResults[diceIndex++]
+                  if (needDice) {
+                    hitRoll.description = `penetration roll${
+                      dTargets.length > 1 ? ` for ${this.formatUnit(t.counter.unit)}`: ""
+                    }${
+                      dHexes.length > 1 ? ` at ${formatCoordinate(d)}` : ""
+                    }: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
+                  }
+                  if (hitRoll.result.result > hitCheck) {
+                    t.counter.unit.wreck(this.game)
+                    for (const f of fsHexes) {
+                      if (f.x === d.x && f.y === d.y) { f.vehicle = t.counter.unit }
+                    }
+                    const hex = t.counter.hex as Coordinate
+                    if (hex.x != d.x || hex.y !== d.y) {
+                      rollbackAddActions(this.map, hex, d, t.counter.unit.id)
+                    }
+                    if (needDice) {
+                      hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
+                    }
+                    anims.push({ loc: d, type: "wreck" })
+                  } else if (hitRoll.result.result === hitCheck && !firing0.unit.incendiary) {
+                    t.counter.unit.immobilize(this.map)
+                    if (needDice) {
+                      hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
+                    }
+                    const hex = t.counter.hex as Coordinate
+                    if (hex.x != d.x || hex.y !== d.y) {
+                      rollbackAddActions(this.map, hex, d, t.counter.unit.id)
+                      if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(d)}` }
+                    }
+                    anims.push({ loc: d, type: "immobilized" })
+                  } else {
+                    if (needDice) {
+                      hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
+                    }
+                    anims.push({ loc: d, type: "nowreck" })
+                  }
                 }
               }
             }
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
           target0.unit.wreck(this.game)
-          fireStart = true
-          fireStartVehicle = target0.unit
+          fsHexes = [{ x: dHexes[0].x, y: dHexes[0].y, vehicle: target0.unit }]
           const hex = target0.hex as Coordinate
-          if (hex.x != dTo.x || hex.y !== dTo.y) {
-            rollbackAddActions(this.map, hex, dTo, target0.unit.id)
+          if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
+            rollbackAddActions(this.map, hex, dHexes[0], target0.unit.id)
           }
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
-          anims.push({ loc: dTo, type: "wreck" })
+          anims.push({ loc: dHexes[0], type: "wreck" })
         } else if (target0.unit.isVehicle) {
           let turretHit = false
           if (target0.unit.turreted) {
@@ -386,7 +406,7 @@ export default class FireAction extends BaseAction {
             const action = this.game.findActionBySequence(this.moveSeq) as MoveAction
             if (action) {
               for (const p of action.path) {
-                if (p.x === dTo.x && p.y === dTo.y) {
+                if (p.x === dHexes[0].x && p.y === dHexes[0].y) {
                   if (p.facing) { clone.facing = p.facing }
                   if (p.turret && clone.turreted) { clone.turretFacing = p.turret }
                   break
@@ -407,53 +427,51 @@ export default class FireAction extends BaseAction {
             }
             if (hitRoll.result.result > hitCheck) {
               target0.unit.wreck(this.game)
-              fireStart = true
-              fireStartVehicle = target0.unit
+              fsHexes = [{ x: dHexes[0].x, y: dHexes[0].y, vehicle: target0.unit }]
               const hex = target0.hex as Coordinate
-              if (hex.x != dTo.x || hex.y !== dTo.y) {
-                rollbackAddActions(this.map, hex, dTo, target0.unit.id)
+              if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
+                rollbackAddActions(this.map, hex, dHexes[0], target0.unit.id)
               }
               if (needDice) {
                 hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
               }
-              anims.push({ loc: dTo, type: "wreck" })
+              anims.push({ loc: dHexes[0], type: "wreck" })
             } else if (hitRoll.result.result === hitCheck) {
               if (turretHit) {
                 if (needDice) {
                   hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, turret jammed`
                 }
                 target0.unit.turretJammed = true
-                anims.push({ loc: dTo, type: "turret" })
+                anims.push({ loc: dHexes[0], type: "turret" })
               } else {
                 if (needDice) {
                   hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
                 }
                 const hex = target0.hex as Coordinate
-                if (hex.x != dTo.x || hex.y !== dTo.y) {
-                  rollbackAddActions(this.map, hex, dTo, target0.unit.id)
+                if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
+                  rollbackAddActions(this.map, hex, dHexes[0], target0.unit.id)
                   target0.unit.facing = clone.facing
                   if (target0.unit.turreted) { target0.unit.turretFacing = clone.turretFacing }
-                  if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dTo)}` }
+                  if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dHexes[0])}` }
                 }
                 target0.unit.immobilize(this.map)
-                anims.push({ loc: dTo, type: "immobilized" })
+                anims.push({ loc: dHexes[0], type: "immobilized" })
               }
             } else {
               if (needDice) {
                 hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>`
               }
-              anims.push({ loc: dTo, type: "nowreck" })
+              anims.push({ loc: dHexes[0], type: "nowreck" })
             }
           } else {
             target0.unit.wreck(this.game)
-            fireStart = true
-            fireStartVehicle = target0.unit
+            fsHexes = [{ x: dHexes[0].x, y: dHexes[0].y, vehicle: target0.unit }]
             const hex = target0.hex as Coordinate
-            if (hex.x != dTo.x || hex.y !== dTo.y) {
-              rollbackAddActions(this.map, hex, dTo, target0.unit.id)
+            if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
+              rollbackAddActions(this.map, hex, dHexes[0], target0.unit.id)
             }
             targetRoll.description += ", no armor on hit side, vehicle destroyed"
-            anims.push({ loc: dTo, type: "wreck" })
+            anims.push({ loc: dHexes[0], type: "wreck" })
           }
         } else {
           let hitCheck = baseToHit(fp.fp)
@@ -471,12 +489,12 @@ export default class FireAction extends BaseAction {
             if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
               critical ? "passed (critical)" : "passed"
             }</span>` }
-            anims.push({ loc: dTo, type: critical ? "criteffect" : "effect" })
+            anims.push({ loc: dHexes[0], type: critical ? "criteffect" : "effect" })
           } else {
             if (needDice) {
               hitRoll.description += `<span style="color: ${passBlueColorMarker()};">no effect</span>`
             }
-            anims.push({ loc: dTo, type: "noeffect" })
+            anims.push({ loc: dHexes[0], type: "noeffect" })
           }
         }
       } else {
@@ -589,8 +607,7 @@ export default class FireAction extends BaseAction {
             if (t.x === c.x && t.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
                 t.counter.unit.wreck(this.game)
-                fireStart = true
-                fireStartVehicle = t.counter.unit
+                fsHexes = [{ x: t.x, y: t.y, vehicle: t.counter.unit }]
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != t.x || hex.y !== t.y) {
                   rollbackAddActions(this.map, hex, new Coordinate(t.x, t.y), t.counter.unit.id)
@@ -610,8 +627,7 @@ export default class FireAction extends BaseAction {
                 }
                 if (hitRoll.result.result > hitCheck) {
                   t.counter.unit.wreck(this.game)
-                  fireStart = true
-                  fireStartVehicle = t.counter.unit
+                  fsHexes = [{ x: t.x, y: t.y, vehicle: t.counter.unit }]
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != t.x || hex.y !== t.y) {
                     rollbackAddActions(this.map, hex, new Coordinate(t.x, t.y), t.counter.unit.id)
@@ -720,26 +736,24 @@ export default class FireAction extends BaseAction {
         if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc: new Coordinate(o.x, o.y) }) }
       })
     }
-    if (fireStartVehicle && (fireStartVehicle.incendiary ||
-        fireStartVehicle.sponson?.type === sponsonType.Flame)) {
-      fireStartVehicleIncendiary = true
-    }
-    if (fireStart && !smoke) {
-      if (fsHex.x >= 0 && fsHex.x < this.map.width && fsHex.y >= 0 && fsHex.y < this.map.height) {
-        const crew = fireStartVehicle && ["tank", "spg"].includes(target0.unit.type) && !target0.unit.isAbandoned
-        if (crew) {
-          this.game.fireStartCheckNeeded = {
-            loc: fsHex, vehicle: true, incendiary: fireStartIncendiary,
-            vehicle_incendiary: fireStartVehicleIncendiary, tank: true,
-            nation: target0.unit.nation, player_nation: target0.unit.playerNation
-          }
-        } else if (fireStartTarget(
-                    this.map, fsHex, fireStartVehicle !== undefined, fireStartIncendiary,
-                    fireStartVehicleIncendiary) > 1) {
-          this.game.fireStartCheckNeeded = {
-            loc: fsHex, vehicle: fireStartVehicle !== undefined,
-            incendiary: fireStartIncendiary,
-            vehicle_incendiary: fireStartVehicleIncendiary,
+    if (!smoke) {
+      for (const f of fsHexes) {
+        if (f.x >= 0 && f.x < this.map.width && f.y >= 0 && f.y < this.map.height) {
+          const vehicle_incendiary = f.vehicle !== undefined &&
+            (f.vehicle.incendiary || f.vehicle.sponson?.type === sponsonType.Flame)
+          const loc = new Coordinate(f.x, f.y)
+          const crew = f.vehicle && ["tank", "spg"].includes(target0.unit.type) && !target0.unit.isAbandoned
+          if (crew) {
+            this.game.fireStartCheckNeeded.push({
+              loc, vehicle: true, incendiary, vehicle_incendiary, tank: true,
+              nation: target0.unit.nation, player_nation: target0.unit.playerNation
+            })
+          } else if (fireStartTarget(
+                      this.map, loc, f.vehicle !== undefined, incendiary,
+                      vehicle_incendiary) > 1) {
+            this.game.fireStartCheckNeeded.push({
+              loc, vehicle: f.vehicle !== undefined, incendiary, vehicle_incendiary,
+            })
           }
         }
       }

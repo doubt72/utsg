@@ -4,7 +4,6 @@ import { critHitDiff } from "../../utilities/utilities";
 import { SectionProps } from "../game/HelpDisplay";
 
 export default function FireProcessSection({ section }: SectionProps) {
-
   const fp = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128]
   const hits = [...Array(19).keys()].reverse()
 
@@ -27,8 +26,8 @@ export default function FireProcessSection({ section }: SectionProps) {
           Determine the range modifier.
           <ol className="mt05em mb05em">
             <li>
-              The base range modifier for all ranged weapons is 4, except weapons with black-filled
-              range have a base modifier of 3.
+              The base range modifier for ranged weapons is 4, except weapons with black-filled
+              range have a base modifier of 3, and off-board artillery have a base of 5.
             </li>
             <li>
               Subtract crew gun handling skill when operating a crewed weapon (unless firepower is
@@ -191,9 +190,11 @@ export default function FireProcessSection({ section }: SectionProps) {
         <tbody>
           <tr>
             <th>roll</th>
-            <th>1-4</th>
-            <th>5-7</th>
-            <th>8-9</th>
+            <th>1-2</th>
+            <th>3-4</th>
+            <th>5-6</th>
+            <th>7-8</th>
+            <th>9</th>
             <th>10</th>
           </tr>
           <tr>
@@ -202,10 +203,22 @@ export default function FireProcessSection({ section }: SectionProps) {
             <td>2</td>
             <td>3</td>
             <td>4</td>
+            <td>5</td>
+            <td>6</td>
           </tr>
         </tbody>
       </table>
-      <p>Wherever the drift lands, treat that hex as being hit by regular area fire.</p>
+      <p>
+        Wherever the drift lands, treat that hex as if the round had been targeted and hit there,
+        unless the fire drifts offboard, in which case treat the result as no effect and end
+        the firing process.
+      </p>
+      <p>
+        Offboard artillery also differs from every other attack in that it affects not just the hex where
+        the round lands (either the target or drift hex if the round misses and lands on the map)
+        but also all six <strong>bordering</strong> hexes. Separate hit resolution (treat as regular
+        area fire) or smoke rolls are performed for each affected hex.
+      </p>
     </div>
   );
 }

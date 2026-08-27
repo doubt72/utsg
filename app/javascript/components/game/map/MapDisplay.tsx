@@ -434,7 +434,10 @@ export default function MapDisplay({
         if (c.x >= map.width || c.y >= map.height || c.x < 0 || c.y < 0) { continue }
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(c) as Hex
-        hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true} />)
+        hexes.push(
+          <MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={true}
+                                 offboard={map.game.gameState.selection[0].counter.unit.offBoard} />
+        )
       }
       setFireTargets(hexes)
     } else if (action && fireActions.includes(action.type) &&
@@ -465,7 +468,11 @@ export default function MapDisplay({
         if (c.x >= map.width || c.y >= map.height || c.x < 0 || c.y < 0) { continue }
         const target = map.units[c.y][c.x].length < 1
         const hex = map.hexAt(new Coordinate(c.x, c.y)) as Hex
-        hexes.push(<MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false} />)
+        const origin = map.game?.findUnitById(fireAction.origin[0].id) as Unit
+        hexes.push(
+          <MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false}
+                                 offboard={origin.offBoard} />
+        )
       }
       setFireTargets(hexes)
     } else {

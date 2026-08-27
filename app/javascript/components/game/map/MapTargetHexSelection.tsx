@@ -1,15 +1,17 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
 import { circlePath, clearColor } from "../../../utilities/graphics";
-import { Coordinate } from "../../../utilities/commonTypes";
+import { Coordinate, Direction } from "../../../utilities/commonTypes";
+import { normalDir } from "../../../utilities/utilities";
 
 interface MapTargetHexSelectionProps {
   hex: Hex;
   target: boolean;
   active: boolean;
+  offboard?: boolean;
 }
 
-export default function MapTargetHexSelection({ hex, target, active }: MapTargetHexSelectionProps) {
+export default function MapTargetHexSelection({ hex, target, active, offboard }: MapTargetHexSelectionProps) {
   const color = active ? "#E00" : "#00E"
   const x = hex.xOffset
   const y = hex.yOffset
@@ -21,21 +23,43 @@ export default function MapTargetHexSelection({ hex, target, active }: MapTarget
   const short = 10
   const tColor = active ? "#E00" : "#000"
 
+  const offset = offboard ? hex.narrow/5 : 0
+  const coords = [0, 1, 2, 3, 4, 5, 6].map(i => {
+    return `${hex.xCorner(normalDir(i), -offset)},${hex.yCorner(normalDir(i),  -offset)}`
+  }).join(" ")
+
+  const xDir = (x: number, dir: Direction, offset: number): number => {
+    return x + Math.sin(dir * Math.PI / 3) * offset
+  }
+
+  const yDir = (y: number, dir: Direction, offset: number): number => {
+    return y + Math.cos(dir * Math.PI / 3) * offset
+  }
+
   return (
     <g>
-      <polygon points={hex.hexCoords} style={{ fill: clearColor, stroke: color, strokeWidth: 4 }} />
+      <polygon points={coords} style={{ fill: clearColor, stroke: color, strokeWidth: 4 }} />
       { target ? <g>
-        <path d={circlePath(new Coordinate(x, y), center)}
-              style={{ fill: tColor, stroke: tColor, strokeWidth }} />
-        <path d={circlePath(new Coordinate(x, y), inside)}
-              style={{ fill: clearColor, stroke: tColor, strokeWidth }} />
-        <path d={circlePath(new Coordinate(x, y), outside)}
-              style={{ fill: clearColor, stroke: tColor, strokeWidth }} />
-        <line x1={x+short} x2={x+length} y1={y} y2={y} style={{ stroke: tColor, strokeWidth }} />
-        <line x1={x} x2={x} y1={y+short} y2={y+length} style={{ stroke: tColor, strokeWidth }} />
-        <line x1={x-short} x2={x-length} y1={y} y2={y} style={{ stroke: tColor, strokeWidth }} />
-        <line x1={x} x2={x} y1={y-short} y2={y-length} style={{ stroke: tColor, strokeWidth }} />
-      </g> : "" }
+          <path d={circlePath(new Coordinate(x, y), center)}
+                style={{ fill: tColor, stroke: tColor, strokeWidth }} />
+          <path d={circlePath(new Coordinate(x, y), inside)}
+                style={{ fill: clearColor, stroke: tColor, strokeWidth }} />
+          <path d={circlePath(new Coordinate(x, y), outside)}
+                style={{ fill: clearColor, stroke: tColor, strokeWidth }} />
+          <line x1={x+short} x2={x+length} y1={y} y2={y} style={{ stroke: tColor, strokeWidth }} />
+          <line x1={x} x2={x} y1={y+short} y2={y+length} style={{ stroke: tColor, strokeWidth }} />
+          <line x1={x-short} x2={x-length} y1={y} y2={y} style={{ stroke: tColor, strokeWidth }} />
+          <line x1={x} x2={x} y1={y-short} y2={y-length} style={{ stroke: tColor, strokeWidth }} />
+        </g> : "" }
+      { offboard ? <g>
+          { [1, 2, 3, 4, 5, 6].map((d, i) => {
+            const dd = normalDir(d)
+            const ii = hex.narrow * 0.5
+            const oo = hex.narrow
+            return <line key={`target-line-${i}`} style={{ stroke: color, strokeWidth: 4 }}
+                         x1={xDir(x, dd, ii)} x2={xDir(x, dd, oo)} y1={yDir(y, dd, ii)} y2={yDir(y, dd, oo)} />
+          }) }
+        </g> : ""}
     </g>
   )
 }

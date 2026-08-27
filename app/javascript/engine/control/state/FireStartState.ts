@@ -12,7 +12,7 @@ export default class FireStartState extends BaseState {
   }
   
   openHex(x: number, y: number): HexOpenType {
-    const loc = this.game.fireStartCheckNeeded?.loc
+    const loc = this.game.fireStartCheckNeeded[0].loc
     if (loc === undefined) { return hexOpenType.Closed }
     return loc.x === x && loc.y === y ? hexOpenType.Open : hexOpenType.Closed
   }
@@ -22,7 +22,7 @@ export default class FireStartState extends BaseState {
   }
 
   finish() {
-    const check = this.game.fireStartCheckNeeded as SimpleHexCheck
+    const check = this.game.fireStartCheckNeeded[0] as SimpleHexCheck
     const loc = check.loc as Coordinate
     const action = new GameAction({
       user: this.game.currentUser, player: this.game.currentPlayer,

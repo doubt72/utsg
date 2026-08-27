@@ -66,6 +66,6 @@ export default class FireStartAction extends BaseAction {
       this.game.addActionAnimations([{ loc, type: "crewescape" }])
       if (this.game.currentPlayerNation !== unit.playerNation) { this.game.togglePlayer() }
     }
-    this.game.fireStartCheckNeeded = undefined
+    this.game.fireStartCheckNeeded.shift()
   }
 }

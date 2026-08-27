@@ -316,6 +316,7 @@ export function rangeMultiplier(
   let mult = source.unit.type === unitType.SupportWeapon && source.unit.targetedRange ? 3 : 4
   why.push(`- base multiplier ${mult}`)
   if (source.unit.offBoard) {
+    mult = 5
     const leadership = source.unit.parent?.leadership ? source.unit.parent.leadership : undefined
     if (leadership) {
       mult -= leadership

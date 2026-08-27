@@ -56,7 +56,7 @@ function setState(game: Game): void {
     if (state !== stateType.Sniper) {
       game.setGameState(new SniperState(game))
     }
-  } else if (game.fireStartCheckNeeded !== undefined) {
+  } else if (game.fireStartCheckNeeded.length > 0) {
     if (state !== stateType.FireStart) {
       game.setGameState(new FireStartState(game))
     }
@@ -479,7 +479,7 @@ function addFireCheckActions(game: Game, actions: GameControl[]): void {
 function currentEnemyAction(game: Game): string {
   if (breakdownCheck(game)) {
     return "waiting for opponent breakdown check"
-  } else if (game.fireStartCheckNeeded !== undefined) {
+  } else if (game.fireStartCheckNeeded.length > 0) {
     return "waiting for opponent fire check"
   } else if (game.moraleChecksNeeded.length > 0) {
     return "waiting for opponent morale check"

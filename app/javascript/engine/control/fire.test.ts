@@ -1523,10 +1523,10 @@ describe("ranged fire attacks", () => {
         "target 12, rolled 20 [2d10: 10 + 10]: hit, Studebaker US6 destroyed"
       )
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
         loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
         vehicle_incendiary: false,
-      })
+      }])
 
       game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -1580,7 +1580,7 @@ describe("ranged fire attacks", () => {
         "target 12, rolled 2 [2d10: 1 + 1]: miss"
       )
 
-      expect(game.fireStartCheckNeeded).toBe(undefined)
+      expect(game.fireStartCheckNeeded).toStrictEqual([])
     })
 
     test("can combine unit and carried mg", () => {
@@ -2118,10 +2118,10 @@ describe("ranged fire attacks", () => {
         "penetration roll: target 20, rolled 20 [2d10: 10 + 10]: tie, vehicle immobilized"
       )
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
         loc: new Coordinate(4, 0), vehicle: false, incendiary: false,
         vehicle_incendiary: false,
-      })
+      }])
 
       game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -2173,10 +2173,10 @@ describe("ranged fire attacks", () => {
         "targeting roll: target 6, rolled 100 [d10x10: 10 x 10]: hit, Studebaker US6 destroyed"
       )
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
         loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
         vehicle_incendiary: false,
-      })
+      }])
 
       game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -2233,10 +2233,10 @@ describe("ranged fire attacks", () => {
         "rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
         loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
         vehicle_incendiary: false, tank: true, nation: "ussr", player_nation: "ussr",
-      })
+      }])
 
       game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.25)
@@ -2309,7 +2309,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(1)
 
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
@@ -2322,9 +2322,9 @@ describe("ranged fire attacks", () => {
 
       expect(game.actions[0].stringValue).toBe(
         "German Radio 10.5cm at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E1; targeting roll: " +
-        "target 8, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll: target 7, " +
-        "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40: " +
-        "target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+          "target 10, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 7, " +
+          "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40 at E1: " +
+          "target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2334,10 +2334,24 @@ describe("ranged fire attacks", () => {
       expect(target3.isWreck).toBe(true)
       expect(game.playerTwoScore).toBe(15)
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
-        loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
-        vehicle_incendiary: false,
-      })
+      expect(game.fireStartCheckNeeded).toStrictEqual([
+        {
+          loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 0), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(4, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+      ])
     })
 
     test("offboard artillery doesn't target wrecks", () => {
@@ -2393,7 +2407,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(1)
 
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
@@ -2405,8 +2419,9 @@ describe("ranged fire attacks", () => {
 
       expect(game.actions[0].stringValue).toBe(
         "German Radio 10.5cm at D3 fired at Soviet Rifle, Rifle at E1; targeting roll: " +
-        "target 8, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll: target 7, " +
-        "rolled 20 [2d10: 10 + 10]: passed (critical)"
+          "target 10, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 7, " +
+          "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40 at E1: " +
+          "target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2414,12 +2429,26 @@ describe("ranged fire attacks", () => {
         { unit: target2, from: [floc], to: tloc, incendiary: false, critical: true },
       ])
       expect(target3.isWreck).toBe(true)
-      expect(game.playerTwoScore).toBe(15)
+      expect(game.playerTwoScore).toBe(20)
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
-        loc: new Coordinate(4, 0), vehicle: false, incendiary: false,
-        vehicle_incendiary: false,
-      })
+      expect(game.fireStartCheckNeeded).toStrictEqual([
+        {
+          loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 0), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(4, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+      ])
     })
 
     test("offboard artillery miss", () => {
@@ -2474,7 +2503,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(1)
 
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
@@ -2488,7 +2517,7 @@ describe("ranged fire attacks", () => {
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(target3.isWreck).toBe(false)
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken"
+        "targeting roll: target 5, rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
         "direction roll: 1 [d6]"
@@ -2497,14 +2526,16 @@ describe("ranged fire attacks", () => {
         "distance roll: 1 [d10] for 1 hexes, drifted to D3"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[3].description as string)).toBe(
-        "infantry effect roll: target 7, rolled 2 [2d10: 1 + 1]: no effect"
+        "infantry effect roll at D3: target 7, rolled 2 [2d10: 1 + 1]: no effect"
       )
 
       expect(game.actions[0].stringValue).toBe(
         "German Radio 10.5cm at D3 fired at Soviet Rifle, Rifle, T-34 M40 at E3; " +
-        "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, drifts, " +
-        "firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
-        "drifted to D3; infantry effect roll: target 7, rolled 2 [2d10: 1 + 1]: no effect"
+          "targeting roll: target 5, rolled 1 [d10x10: 1 x 1]: miss, drifts, " +
+          "firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
+          "drifted to D3; infantry effect roll at D3: target 7, rolled 2 [2d10: 1 + 1]: " +
+          "no effect; infantry effect roll at E3: target 7, rolled 2 [2d10: 1 + 1]: no effect; " +
+          "penetration roll for T-34 M40 at E3: target 13, rolled 2 [2d10: 1 + 1]: failed"
       )
 
       const all = map.allUnits
@@ -2518,10 +2549,36 @@ describe("ranged fire attacks", () => {
 
       expect(firing2.incendiary).toBe(false)
       expect(firing2.sponson?.type).toBe(undefined)
-      expect(game.fireStartCheckNeeded).toStrictEqual({
-        loc: new Coordinate(3, 2), vehicle: false, incendiary: false,
-        vehicle_incendiary: false,
-      })
+      expect(game.fireStartCheckNeeded).toStrictEqual([
+        {
+          loc: new Coordinate(3, 2), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(2, 2), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(2, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 1), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(4, 2), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(3, 3), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+        {
+          loc: new Coordinate(2, 3), vehicle: false, incendiary: false,
+          vehicle_incendiary: false,
+        },
+      ])
     })
 
     test("offboard artillery miss drifts offboard", () => {
@@ -2562,7 +2619,7 @@ describe("ranged fire attacks", () => {
       const mult = rangeMultiplier(
         map, makeAction(game, ["firing2"])[0].counter, tloc, false, false, false
       )
-      expect(mult.mult).toBe(4)
+      expect(mult.mult).toBe(5)
       expect(mult.why.length).toBe(1)
 
       expect(fireHindrance(game, makeAction(game, ["firing1"]), tloc)).toBe(0)
@@ -2574,7 +2631,7 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-        "targeting roll: target 16, rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken"
+        "targeting roll: target 20, rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken"
       )
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[1].description as string)).toBe(
         "direction roll: 1 [d6]"
@@ -2584,9 +2641,9 @@ describe("ranged fire attacks", () => {
       )
 
       expect(game.actions[0].stringValue).toBe(
-        "German Radio 10.5cm at D3 fired at Soviet Rifle at A1; targeting roll: target 16, " +
-        "rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken; direction roll: 1 [d6]; " +
-        "distance roll: 1 [d10] for 1 hexes, drifted off map"
+        "German Radio 10.5cm at D3 fired at Soviet Rifle at A1; targeting roll: target 20, " +
+          "rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken; direction roll: 1 [d6]; " +
+          "distance roll: 1 [d10] for 1 hexes, drifted off map"
       )
     })
 
@@ -2614,9 +2671,9 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German Radio 10.5cm at D3 fired at E3; targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, " +
+        "German Radio 10.5cm at D3 fired at E3; targeting roll: target 5, rolled 1 [d10x10: 1 x 1]: miss, " +
         "drifts, firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
-        "drifted to D3; infantry effect roll: target 7, rolled 2 [2d10: 1 + 1]: no effect"
+        "drifted to D3; infantry effect roll at D3: target 7, rolled 2 [2d10: 1 + 1]: no effect"
       )
 
       const all = map.allUnits
@@ -2650,20 +2707,38 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German Radio 10.5cm at D3 fired smoke at E3; targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, " +
-        "drifts, firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
-        "drifted to D3; smoke roll: rolled 1 [d10], smoke level 2"
+        "German Radio 10.5cm at D3 fired smoke at E3; targeting roll: target 5, " +
+          "rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken; " +
+          "direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, drifted to D3; " +
+          "smoke roll for D3: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for C3: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for C2: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for D2: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for E3: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for D4: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for C4: rolled 1 [d10], smoke level 2"
       )
 
-      const all = map.allCounters
-      expect(all.length).toBe(3)
-      expect(all[0].unit.id).toBe("0-smoke")
-      expect(all[0].hex?.x).toBe(3)
-      expect(all[0].hex?.y).toBe(2)
-      expect(all[1].unit.id).toBe("firing1")
-      expect(all[2].unit.id).toBe("firing2")
+      const counters = map.allCounters
+      expect(counters.length).toBe(9)
+      expect(counters[0].unit.id).toBe("0-smoke-3-1")
+      expect(counters[0].feature.hindrance).toBe(2)
+      expect(counters[1].unit.id).toBe("0-smoke-2-1")
+      expect(counters[1].feature.hindrance).toBe(2)
+      expect(counters[2].unit.id).toBe("0-smoke-4-2")
+      expect(counters[2].feature.hindrance).toBe(2)
+      expect(counters[3].unit.id).toBe("0-smoke-3-2")
+      expect(counters[3].feature.hindrance).toBe(2)
+      expect(counters[4].unit.id).toBe("firing1")
+      expect(counters[5].unit.id).toBe("firing2")
+      expect(counters[6].unit.id).toBe("0-smoke-2-2")
+      expect(counters[6].feature.hindrance).toBe(2)
+      expect(counters[7].unit.id).toBe("0-smoke-3-3")
+      expect(counters[7].feature.hindrance).toBe(2)
+      expect(counters[8].unit.id).toBe("0-smoke-2-3")
+      expect(counters[8].feature.hindrance).toBe(2)
 
-      expect(game.fireStartCheckNeeded).toStrictEqual(undefined)
+      expect(game.fireStartCheckNeeded).toStrictEqual([])
     })
 
     test("offboard artillery firing smoke adds onto existing smoke", () => {
@@ -2695,15 +2770,36 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German Radio 10.5cm at D3 fired smoke at C3; targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, " +
-        "drifts, firing weapon broken; direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, " +
-        "drifted to B3; smoke roll: rolled 1 [d10], smoke level 2"
+        "German Radio 10.5cm at D3 fired smoke at C3; targeting roll: target 5, " +
+          "rolled 1 [d10x10: 1 x 1]: miss, drifts, firing weapon broken; " +
+          "direction roll: 1 [d6]; distance roll: 1 [d10] for 1 hexes, drifted to B3; " +
+          "smoke roll for B3: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for A3: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for A2: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for B2: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for C3: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for B4: rolled 1 [d10], smoke level 2; " +
+          "smoke roll for A4: rolled 1 [d10], smoke level 2"
       )
 
-      const counters = map.countersAt(new Coordinate(1, 2))
-      expect(counters.length).toBe(1)
-      expect(counters[0].unit.id).toBe("0-smoke")
-      expect(counters[0].feature.hindrance).toBe(4)
+      const counters = map.allCounters
+      expect(counters.length).toBe(9)
+      expect(counters[0].unit.id).toBe("0-smoke-1-1")
+      expect(counters[0].feature.hindrance).toBe(2)
+      expect(counters[1].unit.id).toBe("0-smoke-0-1")
+      expect(counters[1].feature.hindrance).toBe(2)
+      expect(counters[2].unit.id).toBe("firing1")
+      expect(counters[3].unit.id).toBe("firing2")
+      expect(counters[4].unit.id).toBe("0-smoke-2-2")
+      expect(counters[4].feature.hindrance).toBe(2)
+      expect(counters[5].unit.id).toBe("0-smoke-1-2")
+      expect(counters[5].feature.hindrance).toBe(4)
+      expect(counters[6].unit.id).toBe("0-smoke-0-2")
+      expect(counters[6].feature.hindrance).toBe(2)
+      expect(counters[7].unit.id).toBe("0-smoke-1-3")
+      expect(counters[7].feature.hindrance).toBe(2)
+      expect(counters[8].unit.id).toBe("0-smoke-0-3")
+      expect(counters[8].feature.hindrance).toBe(2)
     })
 
     test("mortar firing smoke", () => {
@@ -2739,7 +2835,7 @@ describe("ranged fire attacks", () => {
       expect(all.length).toBe(3)
       expect(all[0].unit.id).toBe("firing1")
       expect(all[1].unit.id).toBe("firing2")
-      expect(all[2].unit.id).toBe("0-smoke")
+      expect(all[2].unit.id).toBe("0-smoke-0-2")
       expect(all[2].hex?.x).toBe(0)
       expect(all[2].hex?.y).toBe(2)
     })
@@ -2782,7 +2878,7 @@ describe("ranged fire attacks", () => {
       expect(all.length).toBe(4)
       expect(all[0].unit.id).toBe("firing1")
       expect(all[1].unit.id).toBe("firing2")
-      expect(all[2].unit.id).toBe("0-smoke")
+      expect(all[2].unit.id).toBe("0-smoke-0-2")
       expect(all[2].hex?.x).toBe(0)
       expect(all[2].hex?.y).toBe(2)
       expect(all[3].unit.id).toBe("target1")
@@ -2823,7 +2919,7 @@ describe("ranged fire attacks", () => {
       expect(all[0].unit.isActivated).toBe(true)
       expect(all[1].unit.id).toBe("firing2")
       expect(all[1].unit.isActivated).toBe(true)
-      expect(all[2].unit.id).toBe("0-smoke")
+      expect(all[2].unit.id).toBe("0-smoke-0-2")
       expect(all[2].hex?.x).toBe(0)
       expect(all[2].hex?.y).toBe(2)
     })
@@ -3022,10 +3118,10 @@ describe("ranged fire attacks", () => {
         "penetration roll for T-34 M40: target 7, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
         loc: new Coordinate(4, 2), vehicle: true, incendiary: true,
         vehicle_incendiary: false,
-      })
+      }])
 
       game.setGameState(new FireStartState(game))
       vi.spyOn(Math, "random").mockReturnValue(0.01)
@@ -3120,10 +3216,10 @@ describe("ranged fire attacks", () => {
       expect(game.eliminatedUnits[0].id).toBe("firing2")
       expect((game.eliminatedUnits[0] as Unit).parent).toBe(undefined)
 
-      expect(game.fireStartCheckNeeded).toStrictEqual({
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
         loc: new Coordinate(4, 2), vehicle: false, incendiary: true,
         vehicle_incendiary: false,
-      })
+      }])
     })
 
     test("targeted incendiary single shot", () => {

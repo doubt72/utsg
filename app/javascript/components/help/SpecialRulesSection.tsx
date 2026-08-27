@@ -20,15 +20,15 @@ export default function SpecialRulesSection({ section }: SectionProps) {
       </p>
       <p>
         Units become &quot;observed&quot; whenever an opponent moves next to them, or fires at them
-        and hits them (misses have no effect), or an unobserved unit fires, moves next to an
-        opponent, captures a victory hex, or moves into a minefield. Failing a sniper check (i.e.,
-        triggering a sniper morale check) will also cause a unit to be observed, as well as a blaze
-        starting or spreading to a hex with an unobserved unit. Whenever one unit in a hex is
-        observed, all units in the hex are observed with it, even if they wouldn&apos;t otherwise be
-        affected by the event that caused a unit to be observed (e.g., fire doesn&apos;t affect
-        infantry weapons, but if the unit carrying it is uncovered, so is the weapon). Once
-        observed, normal units display normally to both sides, but decoys are removed from play
-        (they do not count for the purposes of score).
+        and hits them (misses have no effect, but ineffective/non-penetrating hits from ranged
+        weapons do), or an unobserved unit fires, moves next to an opponent, captures a victory hex,
+        or moves into a minefield. Failing a sniper check (i.e., triggering a sniper morale check)
+        will also cause a unit to be observed, as well as a blaze starting or spreading to a hex
+        with an unobserved unit. Whenever one unit in a hex is observed, all units in the hex are
+        observed with it, even if they wouldn&apos;t otherwise be affected by the event that caused
+        a unit to be observed (e.g., fire doesn&apos;t affect infantry weapons, but if the unit
+        carrying it is uncovered, so is the weapon). Once observed, normal units display normally to
+        both sides, but decoys are removed from play (they do not count for the purposes of score).
       </p>
       <p>
         Decoys behave like normal units in limited ways. They can move or assault move, decoy

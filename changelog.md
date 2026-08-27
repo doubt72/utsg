@@ -1,6 +1,10 @@
 # 0.130
 
-- Updated 205, 206
+- Refactored artillery
+  - Increase base range multiplayer to 5
+  - Increase drift range to a max of 6
+  - 7 hex area-of-effect
+- Updated 205, 206, 502
 - Updated/promoted 602
 - Promoted 403
 - Promoted 104, 305, 404 to alpha

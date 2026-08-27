@@ -315,9 +315,11 @@ export function chanceD10x10(check: number): number {
 }
 
 export function driftRoll(roll: number): number {
-  if (roll > 9) { return 4 }
-  if (roll > 7) { return 3 }
-  if (roll > 4) { return 2 }
+  if (roll > 9) { return 6 }
+  if (roll > 8) { return 5 }
+  if (roll > 6) { return 4 }
+  if (roll > 4) { return 3 }
+  if (roll > 2) { return 2 }
   return 1
 }
 

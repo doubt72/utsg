@@ -38,7 +38,7 @@ module Scenarios
         [2, :ger_mg_34],
         [2, :ger_3_7cm_pak_36],
         [4, :ger_pzkpfw_ii_a_e],
-        [2, :ger_pzkpfw_iii__39],
+        [2, :ger_pzkpfw_38t_a_d],
       ] },
       "2": { list: [
         :ger_leader_5_1,

@@ -423,7 +423,6 @@ export default function CounterSection({ section }: SectionProps) {
 
   const counterButton = (name: string, unit: string) => {
     const selected = unitFeature.key === unit ? "counter-help-button-selected" : ""
-    console.log(`${name} ${unit}`)
     return (
       <div className={`custom-button normal-button counter-help-button ${selected}`} onClick={
            () => setCounterKeyStatus(unit) }>
