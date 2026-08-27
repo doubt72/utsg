@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario020 < Base
     ID = "020"
-    NAME = "Commissar's House"
+    NAME = "The Commissar's House"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
