@@ -1,6 +1,8 @@
 # 0.131
 
 - Clean up games with old artillery rules
+- Updated 609
+- Added prototype 613
 
 # 0.130
 
