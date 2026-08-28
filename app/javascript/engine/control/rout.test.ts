@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import {
-  createBlankGame, createMoveGame, testGGun, testGInf, testGLdr, testGMG, testRInf, testWire
+  createBlankGame, createMoveGame, testFire, testGGun, testGInf, testGLdr, testGMG, testRInf, testWire
 } from "./testHelpers";
 import { baseTerrainType, Coordinate } from "../../utilities/commonTypes";
 import Unit from "../Unit";
@@ -219,6 +219,36 @@ describe("routing", () => {
       unit.break()
 
       const blocking = new Feature(testWire)
+      map.addCounter(new Coordinate(1, 2), blocking)
+
+      expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({
+        x: 0, y: 2, children: [{
+          x: 0, y: 1, children: [{
+            x: 1, y: 1, children: [{
+              x: 2, y: 1, children: [{
+                x: 3, y: 1, children: [],
+              }]
+            }]
+          }]
+        }, {
+          x: 0, y: 3, children: [{
+            x: 1, y: 3, children: [{
+              x: 2, y: 3, children: [{
+                x: 3, y: 3, children: []
+              }]
+            }]
+          }]
+        }]
+      })
+    })
+
+    test("path when blocked by blaze", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const unit = new Unit(testGInf)
+      unit.break()
+
+      const blocking = new Feature(testFire)
       map.addCounter(new Coordinate(1, 2), blocking)
 
       expect(findRoutPathTree(game, new Coordinate(0, 2), 4, 2, unit)).toStrictEqual({

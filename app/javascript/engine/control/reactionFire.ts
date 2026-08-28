@@ -50,6 +50,8 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
   const otherNation = otherUnit?.playerNation
   const map = game.scenario.map
   const targets = reactionFireHexes(game)
+  // Kind of a hack, be since we already have the logic for this...
+  if (["move", "rush"].includes(action.type)) { placeReactionFireGhosts(game) }
   for (let x = 0; x < map.width; x++) {
     for (let y = 0; y < map.height; y++) {
       const loc = new Coordinate(x, y)
@@ -60,7 +62,7 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
           let added = false
           if (c.unit.playerNation === otherNation) { continue }
           if (c.unit.parent && c.unit.parent.playerNation === otherNation) { continue }
-          if (c.unit.areaFire || c.unit.isBroken) { continue }
+          if (c.unit.areaFire || c.unit.isBroken || c.unit.currentFirepower === 0) { continue }
           if (c.unit.operated) {
             if (c.unit.parent === undefined) { continue }
             if (c.unit.parent.isBroken || c.unit.parent.isExhausted || c.unit.parent.pinned) { continue }
@@ -111,6 +113,7 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
       }
     }
   }
+  map.clearGhosts()
   return rc
 }
 

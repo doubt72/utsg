@@ -315,11 +315,10 @@ export function chanceD10x10(check: number): number {
 }
 
 export function driftRoll(roll: number): number {
-  if (roll > 9) { return 6 }
-  if (roll > 8) { return 5 }
-  if (roll > 6) { return 4 }
-  if (roll > 4) { return 3 }
-  if (roll > 2) { return 2 }
+  if (roll > 9) { return 5 }
+  if (roll > 7) { return 4 }
+  if (roll > 5) { return 3 }
+  if (roll > 3) { return 2 }
   return 1
 }
 
@@ -385,4 +384,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.132"
+export const serverVersion = "0.133"

@@ -98,7 +98,7 @@ function movementCost(map: Map, from: Coordinate, to: Coordinate, unit: Unit): n
   if (alongRoad(hexFrom, hexTo, dir)) { cost = 1 }
   if (!cost) { return false }
   for (const c of map.countersAt(to)) {
-    if (c.hasFeature && c.feature.currentMovement === "A") { return false }
+    if (c.hasFeature && (c.feature.currentMovement === "A" || c.feature.impassable)) { return false }
     if (c.hasUnit) {
       if (c.unit.isVehicle || c.unit.canCarrySupport) {
         if (c.unit.playerNation !== unit.playerNation && !c.unit.isWreck) { return false }

@@ -7,40 +7,42 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.4"
+    VERSION = "0.5"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
 
     ALLIED_UNITS = {
       "0": { list: [
-        :usa_leader_5_1,
-        :usa_leader_4_1,
-        [2, :usa_engineer_s],
-        [5, :usa_rifle_s],
+        [7, :usa_rifle_s],
         [2, :usa_m1918_bar],
       ] },
       "2": { list: [
-        :usa_leader_5_1,
-        [3, :usa_rifle_s],
-        [1, :usa_m1918_bar],
+        [4, :usa_rifle_s],
+        :usa_m1918_bar,
       ] },
     }.freeze
 
     AXIS_UNITS = {
       "0": { list: [
         [2, :ger_leader_4_1],
-        [3, :ger_volksgrenadier_s],
-        [2, :ger_mg_42],
+        [4, :ger_volksgrenadier_s],
+        [4, :ger_mg_42],
         [8, :wire],
-        [2, :pillbox],
       ] },
     }.freeze
+
+    INIT_AXIS_UNITS = [
+      { data: :pillbox, x: 1, y: 10, facing: 3 },
+      { data: :pillbox, x: 4, y: 10, facing: 3 },
+      { data: :pillbox, x: 8, y: 10, facing: 2 },
+      { data: :pillbox, x: 11, y: 10, facing: 2 },
+    ].freeze
 
     class << self
       def generate
         {
-          turns: 6,
+          turns: 5,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -50,6 +52,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          init_axis_units:,
         }
       end
 
@@ -79,15 +82,11 @@ module Scenarios
           layout:,
           allied_dir: 5.5,
           axis_dir: 2.5,
-          victory_hexes: [[1, 10, 2], [5, 7, 2], [5, 10, 2], [7, 9, 2], [11, 10, 2]],
-          allied_setup: {
-            "0": [["*", 0], ["0-5", 1]],
-            "2": [["*", 0], ["0-5", 1]],
-          },
-          axis_setup: { "0": [
-            ["6-15", 1], ["*", 2], ["*", 3], ["*", 4], ["*", 5], ["*", 6], ["*", 7], ["*", 8],
-            ["*", 9], ["*", 10],
-          ] },
+          victory_hexes: [
+            [1, 10, 2], [5, 7, 2], [5, 10, 2], [7, 9, 2], [11, 10, 2],
+          ],
+          allied_setup: { "0" => [["*", 0], ["0-5", 1]], "2" => [["*", 0], ["0-5", 1]] },
+          axis_setup: { "0" => [["6-15", 1], ["*", "2-10"]] },
           base_terrain: "d",
         }
       end
@@ -110,7 +109,8 @@ module Scenarios
             { t: "s" },
             { t: "s" },
             { t: "s" },
-          ], [
+          ],
+          [
             { t: "s" },
             { t: "s" },
             { t: "s" },
@@ -126,7 +126,8 @@ module Scenarios
             { t: "s" },
             { t: "s" },
             { t: "s" },
-          ], [
+          ],
+          [
             { t: "s" },
             { t: "s" },
             { t: "s" },
@@ -142,7 +143,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -158,7 +160,8 @@ module Scenarios
             { t: "s" },
             { t: "s" },
             { t: "s" },
-          ], [
+          ],
+          [
             { t: "s" },
             { t: "s" },
             { t: "s" },
@@ -174,7 +177,8 @@ module Scenarios
             { t: "s" },
             { t: "s" },
             { t: "s" },
-          ], [
+          ],
+          [
             { t: "s" },
             { t: "s" },
             { t: "s" },
@@ -190,7 +194,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -206,7 +211,8 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
@@ -222,7 +228,8 @@ module Scenarios
             { t: "b", h: 1 },
             { t: "b", h: 1 },
             { t: "b", h: 1 },
-          ], [
+          ],
+          [
             { t: "o", h: 2 },
             { t: "b", h: 2 },
             { t: "b", h: 2 },
@@ -238,7 +245,8 @@ module Scenarios
             { t: "b", h: 2 },
             { t: "b", h: 2 },
             { t: "o", h: 2 },
-          ], [
+          ],
+          [
             { t: "b", h: 3 },
             { t: "o", h: 3 },
             { t: "o", h: 2 },
@@ -254,7 +262,8 @@ module Scenarios
             { t: "b", h: 3 },
             { t: "o", h: 3 },
             { t: "o", h: 3 },
-          ], [
+          ],
+          [
             { t: "b", h: 4 },
             { t: "o", h: 4 },
             { t: "o", h: 3 },

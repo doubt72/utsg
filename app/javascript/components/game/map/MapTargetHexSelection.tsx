@@ -1,7 +1,7 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
 import { circlePath, clearColor } from "../../../utilities/graphics";
-import { Coordinate, Direction } from "../../../utilities/commonTypes";
+import { Coordinate } from "../../../utilities/commonTypes";
 import { normalDir } from "../../../utilities/utilities";
 
 interface MapTargetHexSelectionProps {
@@ -22,23 +22,18 @@ export default function MapTargetHexSelection({ hex, target, active, offboard }:
   const length = 30
   const short = 10
   const tColor = active ? "#E00" : "#000"
+  const offset = offboard ? -hex.narrow/10 : 0
 
-  const offset = offboard ? hex.narrow/5 : 0
-  const coords = [0, 1, 2, 3, 4, 5, 6].map(i => {
-    return `${hex.xCorner(normalDir(i), -offset)},${hex.yCorner(normalDir(i),  -offset)}`
-  }).join(" ")
-
-  const xDir = (x: number, dir: Direction, offset: number): number => {
-    return x + Math.sin(dir * Math.PI / 3) * offset
-  }
-
-  const yDir = (y: number, dir: Direction, offset: number): number => {
-    return y + Math.cos(dir * Math.PI / 3) * offset
+  const hexCoords = (hex: Hex, offset: number) => {
+    return [0, 1, 2, 3, 4, 5, 6].map(i => {
+      return `${hex.xCorner(normalDir(i), offset)},${hex.yCorner(normalDir(i),  offset)}`
+    }).join(" ")
   }
 
   return (
     <g>
-      <polygon points={coords} style={{ fill: clearColor, stroke: color, strokeWidth: 4 }} />
+      <polygon points={hexCoords(hex, offset)}
+               style={{ fill: clearColor, stroke: color, strokeWidth: 4 }} />
       { target ? <g>
           <path d={circlePath(new Coordinate(x, y), center)}
                 style={{ fill: tColor, stroke: tColor, strokeWidth }} />
@@ -54,10 +49,11 @@ export default function MapTargetHexSelection({ hex, target, active, offboard }:
       { offboard ? <g>
           { [1, 2, 3, 4, 5, 6].map((d, i) => {
             const dd = normalDir(d)
-            const ii = hex.narrow * 0.5
-            const oo = hex.narrow
-            return <line key={`target-line-${i}`} style={{ stroke: color, strokeWidth: 4 }}
-                         x1={xDir(x, dd, ii)} x2={xDir(x, dd, oo)} y1={yDir(y, dd, ii)} y2={yDir(y, dd, oo)} />
+            const h = hex.map.neighborAt(hex.coord, dd)
+            const o = hex.narrow/5
+            if (!h) { return }
+            return <polygon key={`e-hex-${i}`} points={hexCoords(h, o)}
+                            style={{ fill: clearColor, stroke: color, strokeWidth: 4 }} />
           }) }
         </g> : ""}
     </g>

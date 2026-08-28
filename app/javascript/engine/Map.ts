@@ -982,13 +982,11 @@ export default class Map {
       if (a.unit.playerNation === b.unit.playerNation) { return 0 }
       return a.unit.playerNation === this.game?.currentPlayerNation ? -1 : 1
     })
-    console.log(this.game?.currentPlayerNation)
     if (this.game && this.game.fireDisplaceNeeded.length > 0) {
       const unit = this.game.fireDisplaceNeeded[0].unit
       const player = playerForNation(unit, this.game)
       this.game.setCurrentPlayer(player)
     }
-    console.log(this.game?.currentPlayerNation)
     sortStacks(this)
     this.game?.addActionAnimations([{ loc, type: "blaze" }])
   }

@@ -36,8 +36,8 @@ module Utility
                 scenario[:axis_units].map { |t| t[1] }.flatten(1)
 
         units.map { |u| u[:list] }.flatten(1) +
-          scenario[:init_allied_units].map { 1 } +
-          scenario[:init_axis_units].map { 1 }
+          scenario[:init_allied_units].map { |t| t[:data] } +
+          scenario[:init_axis_units].map { |t| t[:data] }
       end
 
       def processed_units(scenario)

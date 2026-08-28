@@ -1,3 +1,20 @@
+# 0.133
+
+- Reduce drift range to max 5
+- Modify artillery overlay graphic
+- Include init units in turn 0 preview
+- Bug fix: should trigger reaction fire for intermediate move hexes
+- Bug fix: units with no firepower should not trigger reaction fire
+- Bug fix: should not rout through blazes
+- Bug fix: filter should include init units
+- Updated 305
+- Updated/promoted 404
+
+# 0.132
+
+- Bug fix: fire displace not selecting correct player
+- Bug fix: fire displace should not displace unmanned weapons
+
 # 0.131
 
 - Clean up games with old artillery rules

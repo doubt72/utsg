@@ -199,6 +199,104 @@ describe("reaction fire attacks", () => {
     expect(initiativeCheck(game)).toBe(false)
   })
 
+  test("reaction fire after move out of LOS", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "f" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
+
+    const other = new Unit(testRInf)
+    other.id = "other1"
+    const oloc = new Coordinate(2, 0)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.gameState?.finish()
+
+    expect(breakdownCheck(game)).toBe(false)
+    expect(initiativeCheck(game)).toBe(true)
+    expect(reactionFireCheck(game)).toBe(false)
+
+    game.setGameState(new InitiativeState(game))
+
+    expect(initiativeCheck(game)).toBe(false)
+    expect(reactionFireCheck(game)).toBe(false)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+
+    expect(game.currentInitiativePlayer).toBe(2)
+    expect(game.currentPlayer).toBe(2)
+    game.gameState?.finish()
+    expect(game.currentInitiativePlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
+
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(true)
+  })
+
+  test("reaction fire after move no LOS", () => {
+    const game = createBlankGame([
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "f" }, { t: "f" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+    ])
+    const map = game.scenario.map
+    const unit = new Unit(testGInf)
+    unit.id = "test1"
+    map.addCounter(new Coordinate(4, 2), unit)
+    map.select(unit)
+
+    const other = new Unit(testRInf)
+    other.id = "other1"
+    const oloc = new Coordinate(2, 0)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.move(1, 2)
+    game.gameState?.finish()
+
+    expect(breakdownCheck(game)).toBe(false)
+    expect(initiativeCheck(game)).toBe(true)
+    expect(reactionFireCheck(game)).toBe(false)
+
+    game.setGameState(new InitiativeState(game))
+
+    expect(initiativeCheck(game)).toBe(false)
+    expect(reactionFireCheck(game)).toBe(false)
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+
+    expect(game.currentInitiativePlayer).toBe(2)
+    expect(game.currentPlayer).toBe(2)
+    game.gameState?.finish()
+    expect(game.currentInitiativePlayer).toBe(2)
+    expect(game.currentPlayer).toBe(1)
+
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(false)
+  })
+
   test("reaction fire after fire after initiative flip", () => {
     const game = createFireGame()
     const map = game.scenario.map

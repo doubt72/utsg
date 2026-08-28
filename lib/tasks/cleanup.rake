@@ -4,7 +4,7 @@ namespace :db do
   desc "clean up old game data"
   task cleanup: :environment do
     puts "removing tagged games"
-    ids = [122, 136, 138] # 139, 140, 141, 142
+    ids = [142] # 139, 140, 141
     Game.where(id: ids).delete_all
 
     puts "cleaning up old scenario version"

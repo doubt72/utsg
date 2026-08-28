@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Intramuros"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1945, 2, 23].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -18,7 +18,7 @@ module Scenarios
           :usa_leader_5_1,
           [2, :usa_leader_4_1],
           [2, :usa_engineer_s],
-          [8, :usa_rifle_s],
+          [9, :usa_rifle_s],
           [3, :usa_m1919_browning],
           :usa_ft,
           :usa_sc,
@@ -91,7 +91,7 @@ module Scenarios
           allied_dir: 1,
           axis_dir: 4,
           victory_hexes: [
-            [2, 9, 2], [3, 6, 2], [3, 1, 2], [5, 9, 2], [6, 3, 2], [9, 6, 2], [12, 8, 1],
+            [3, 6, 2], [3, 1, 2], [5, 9, 2], [6, 3, 2], [7, 6, 2], [9, 4, 2], [12, 8, 1],
           ],
           allied_setup: { "0" => [["12-14", "*"]] },
           axis_setup: { "0" => [["0-10", "*"]] },

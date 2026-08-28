@@ -1,5 +1,7 @@
 import { Coordinate, Direction, Player } from "../utilities/commonTypes";
-import { addSpecialArmorRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList } from "../utilities/utilities";
+import {
+  addSpecialArmorRules, alliedCodeToName, axisCodeToName, getFormattedDate, sortReinforcementList
+} from "../utilities/utilities";
 import Feature, { FeatureData } from "./Feature";
 import Game from "./Game"
 import Map, { MapData } from "./Map";
@@ -204,6 +206,15 @@ export default class Scenario {
     if (!this.alliedReinforcements &&
       (this.rawData.metadata.init_allied_units?.length ?? 0) < 1) { return [] }
     const counts: ReinforcementList = this.alliedReinforcements[turn]
+    if (turn === 0) {
+      for (const i of this.rawData.metadata.init_allied_units ?? []) {
+        counts[i.data.id] ? counts[i.data.id].x += 1 :
+          counts[i.data.id] = {
+            x: 1, used: 0, id: i.data.id,
+            counter: i.data.ft ? new Feature(i.data as FeatureData) : new Unit(i.data as UnitData)
+          }
+      }
+    }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
   }
 
@@ -211,6 +222,15 @@ export default class Scenario {
     if (!this.axisReinforcements &&
       (this.rawData.metadata.init_axis_units?.length ?? 0) < 1) { return [] }
     const counts: ReinforcementList = this.axisReinforcements[turn]
+    if (turn === 0) {
+      for (const i of this.rawData.metadata.init_axis_units ?? []) {
+        counts[i.data.id] ? counts[i.data.id].x += 1 :
+          counts[i.data.id] = {
+            x: 1, used: 0, id: i.data.id,
+            counter: i.data.ft ? new Feature(i.data as FeatureData) : new Unit(i.data as UnitData)
+          }
+      }
+    }
     return sortReinforcementList(Object.entries(counts).flatMap(kv => kv[1]))
   }
 

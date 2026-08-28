@@ -190,11 +190,10 @@ export default function FireProcessSection({ section }: SectionProps) {
         <tbody>
           <tr>
             <th>roll</th>
-            <th>1-2</th>
-            <th>3-4</th>
-            <th>5-6</th>
-            <th>7-8</th>
-            <th>9</th>
+            <th>1-3</th>
+            <th>4-5</th>
+            <th>6-7</th>
+            <th>8-9</th>
             <th>10</th>
           </tr>
           <tr>
@@ -204,7 +203,6 @@ export default function FireProcessSection({ section }: SectionProps) {
             <td>3</td>
             <td>4</td>
             <td>5</td>
-            <td>6</td>
           </tr>
         </tbody>
       </table>
