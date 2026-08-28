@@ -1,3 +1,7 @@
+# 0.131
+
+- Clean up games with old artillery rules
+
 # 0.130
 
 - Refactored artillery
