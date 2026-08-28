@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
+import { playerForNation } from "../../utilities/utilities";
 import Game from "../Game";
 import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
@@ -78,6 +79,10 @@ export default class FireDisplaceAction extends BaseAction {
           break
         }
       }
+    } else {
+      const unit = this.game.fireDisplaceNeeded[0].unit
+      const player = playerForNation(unit, this.game)
+      this.game.setCurrentPlayer(player)
     }
     sortStacks(this.map)
   }

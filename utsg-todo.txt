@@ -1,4 +1,12 @@
 Features/Bug Fixes
+  - Uncarried/unmanned weapons should not displace
+  - Redo artillery graphic
+  - Check reaction fire 305 JJ-I7
+  - 305
+    - Fewer turns
+    - No engineers, no leaders
+    - More German machine guns, nests
+  - 404
   - Decoy markers
     - Display unobserved in replay
   - Save/play user scenarios / limit 1 - 3 - 5

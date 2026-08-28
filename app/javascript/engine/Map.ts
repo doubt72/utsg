@@ -969,7 +969,8 @@ export default class Map {
     }))
     const counters = this.countersAt(loc)
     for (const c of counters) {
-      if (!c.hasFeature && !c.hasMarker && !c.unit.isWreck && !c.unit.parent) {
+      if (!c.hasFeature && !c.hasMarker && !c.unit.isWreck && !c.unit.parent &&
+          !c.unit.crewed && !c.unit.uncrewedSW) {
         if (c.unit.isImmobilized) {
           c.unit.wreck(this.game)
         } else {
@@ -981,11 +982,13 @@ export default class Map {
       if (a.unit.playerNation === b.unit.playerNation) { return 0 }
       return a.unit.playerNation === this.game?.currentPlayerNation ? -1 : 1
     })
+    console.log(this.game?.currentPlayerNation)
     if (this.game && this.game.fireDisplaceNeeded.length > 0) {
       const unit = this.game.fireDisplaceNeeded[0].unit
       const player = playerForNation(unit, this.game)
       this.game.setCurrentPlayer(player)
     }
+    console.log(this.game?.currentPlayerNation)
     sortStacks(this)
     this.game?.addActionAnimations([{ loc, type: "blaze" }])
   }
