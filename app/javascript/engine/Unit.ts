@@ -202,6 +202,10 @@ export default class Unit {
     this.breakdownRoll = data.o?.bd
     this.repairRoll = data.o?.f
 
+    if ((this.targetedRange || this.offBoard) && this.rawBreakWeaponRoll) {
+      this.rawBreakWeaponRoll -= 1
+    }
+
     this.eliteCrew = data.o?.v ?? 0
     this.turreted = !!data.o?.u
     this.rotatingVehicleMount = !!data.o?.uu

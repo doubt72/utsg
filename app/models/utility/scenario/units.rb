@@ -68,7 +68,7 @@ module Utility
               ["sw", "weapon1", 1, -1],
               ["sw", "weapon2", 1, -2],
             ].each do |unit|
-              decoy = { c: nation, i: "decoy", y: 0, d: 1 }
+              decoy = { c: nation, i: "decoy", y: 0, d: 1, o: {} }
               unit.each_with_index do |v, i|
                 decoy[key[i]] = v
               end

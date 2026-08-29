@@ -124,8 +124,6 @@ module Utility
 
               squad[:o][:bv] = squad[:v] if squad[:v] < 4
 
-              squad.delete(:o) if squad[:o] == {}
-
               name = "#{squad[:c]}_#{Units.sanitize(squad[:n])}"
               lu[:"#{name}_s"] = squad
             end

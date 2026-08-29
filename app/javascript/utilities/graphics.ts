@@ -367,10 +367,10 @@ export function circlePath(loc: Coordinate, r: number): string {
     "A", r, r, 0, 0, 1, loc.x, loc.y-r, "z"].join(" ")
 }
 
-export function squarePath(loc: Coordinate): string {
+export function squarePath(loc: Coordinate, r: number = 10): string {
   return [
-    "M", loc.x-10, loc.y-10, "L", loc.x+10, loc.y-10, "L", loc.x+10, loc.y+10,
-    "L", loc.x-10, loc.y+10, "z"].join(" ")
+    "M", loc.x-r, loc.y-r, "L", loc.x+r, loc.y-r, "L", loc.x+r, loc.y+r,
+    "L", loc.x-r, loc.y+r, "z"].join(" ")
 }
 
 export function hexPath(loc: Coordinate, r: number, rotated: boolean): string {

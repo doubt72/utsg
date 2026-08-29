@@ -35,10 +35,14 @@ export function weaponBreakLayout(counter: Counter): CounterLayout | false {
     fill = clearColor
     textColor = clearColor
   }
+  let path = circlePath(new Coordinate(x, y), 8)
+  if (counter.unit.targetedRange || counter.unit.offBoard) {
+    path = squarePath(new Coordinate(x, y), 7)
+  }
   return {
-    path: circlePath(new Coordinate(x, y), 8),
-    style: { stroke: textColor, strokeWidth: 1, fill: fill }, tStyle: { fill: textColor },
-    x, y: y + 4.25, size: 15, value: counter.unit.breakWeaponRoll,
+    path, style: { stroke: textColor, strokeWidth: 1, fill: fill },
+    tStyle: { fill: textColor }, x, y: y + 4.25, size: 15,
+    value: counter.unit.breakWeaponRoll,
   }
 }
 

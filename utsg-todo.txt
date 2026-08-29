@@ -1,9 +1,5 @@
 Features/Bug Fixes
-  + Units that are broken or have no firepower should not trigger reaction fire
-  + Redo artillery graphic
-  + Routs shouldn't go through blazes
-  + Check reaction fire 305 JJ-I7
-  + Show initial stuff in turn 0
+  + Fix ranged weapon breakdown numbers
   - Improve multiplier on subsequent shot
   - Decoy markers
     - Display unobserved in replay

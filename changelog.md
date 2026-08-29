@@ -3,10 +3,13 @@
 - Reduce drift range to max 5
 - Modify artillery overlay graphic
 - Include init units in turn 0 preview
+- Changed infantry generation to always include o, update checksums to match
 - Bug fix: should trigger reaction fire for intermediate move hexes
 - Bug fix: units with no firepower should not trigger reaction fire
 - Bug fix: should not rout through blazes
 - Bug fix: filter should include init units
+- Bug fix: drift offboard for replays crashing
+- Bug fix: adjust break/destroy threshold on ranged weapons to (mostly) match infantry/rapid fire
 - Updated 305
 - Updated/promoted 404
 

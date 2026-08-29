@@ -471,7 +471,7 @@ export default function MapDisplay({
         const origin = map.game?.findUnitById(fireAction.origin[0].id) as Unit
         hexes.push(
           <MapTargetHexSelection key={`${c.y}-${c.x}`} hex={hex} target={target} active={false}
-                                 offboard={origin.offBoard} />
+                                 offboard={origin?.offBoard} />
         )
       }
       setFireTargets(hexes)
