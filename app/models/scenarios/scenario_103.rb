@@ -7,38 +7,39 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1941, 11, 19].freeze
     LAYOUT = [15, 23, "x"].freeze
 
     ALLIED_UNITS = {
       "0": { list: [
-        [2, :uk_leader_5_2],
-        [2, :uk_radio_152mm],
+        :uk_leader_5_1,
+        :uk_radio_152mm,
         [5, :uk_crusader_i],
-        [4, :uk_crusader_i_cs],
-        [2, :uk_humber_lrc],
-        [2, :uk_white_scout_car],
+        [3, :uk_crusader_i_cs],
+        :uk_humber_lrc,
+        :uk_white_scout_car,
       ] },
     }.freeze
 
     AXIS_UNITS = {
       "0": { list: [
-        [2, :ita_leader_3_1],
+        [2, :ita_leader_5_1],
         [4, :ita_bersaglieri_s],
         :ita_crew_t,
         :ita_breda_30,
         [1, :ita_brixia_m35],
         :ita_cannone_da_47_32,
         [4, :ita_m13_40],
+        [2, :foxhole],
       ] },
     }.freeze
 
     class << self
       def generate
         {
-          turns: 6,
+          turns: 5,
           first_deploy: 2,
           first_action: 1,
           date:,

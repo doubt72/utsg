@@ -80,7 +80,6 @@ export default class MoraleCheckAction extends BaseAction {
         this.game.shortCheckNeeded.short = true
       }
       if (counter.unit.isBroken) {
-        const hex = counter.hex as Coordinate
         let sub = undefined
         if (counter.unit.children.length > 0 && counter.unit.children[0].incendiary) {
           sub = counter.unit.children[0]
@@ -89,7 +88,19 @@ export default class MoraleCheckAction extends BaseAction {
         if (sub !== undefined) {
           this.game.scenario.map.eliminateCounter(hex, sub.id)
         }
-        this.game.addActionAnimations([{ loc: hex, type: "eliminate" }])
+        if (this.map.victoryAt(hex)) {
+          this.game.addActionAnimations([{ loc: hex, type: "eliminate" }])
+          let same = false
+          let other = false
+          for (const c of this.map.countersAt(hex)) {
+            if (c.hasFeature || c.hasMarker) { continue }
+            const u = c.unit
+            if (u.canCarrySupport || (u.isVehicle && !u.isWreck && !u.isAbandoned)) {
+              u.playerNation === counter.unit.playerNation ? same = true : other = true
+            }
+          }
+          if (other && !same) { this.map.toggleVP(hex) }
+        }
       } else {
         counter.unit.break()
         if (hex.x != this.target.x || hex.y !== this.target.y) {

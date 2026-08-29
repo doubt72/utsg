@@ -1,5 +1,11 @@
 Features/Bug Fixes
-  + Fix ranged weapon breakdown numbers
+  + High velocity/high explosive guns shouldn't start blazes unless tank destroyed
+  + Eliminating last unit in hex doesn't change VP status
+  + Wrecks should not be destroyed after already destroyed (by area fire/offboard in particular)
+  - Unit should be dumped where vehicle is destroyed
+  - Replay show current score
+  - Replay show new artillery graphic
+  - Check offboard lines for artillery all edges
   - Improve multiplier on subsequent shot
   - Decoy markers
     - Display unobserved in replay

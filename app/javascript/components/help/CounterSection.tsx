@@ -777,22 +777,22 @@ export default function CounterSection({ section }: SectionProps) {
       if (unit.breakWeaponRoll && (unit.breakDestroysWeapon || unit.jammed)) {
         if (unit.targetedRange || unit.offBoard) {
           sections.push(<p key={index++}>
-            <strong>A red square</strong> indicates that this weapon may be destroyed (instead of breaking)
+            <strong>A red circle</strong> indicates that this weapon may be destroyed (instead of breaking)
             on a targeting roll.
           </p>)
         } else {
           sections.push(<p key={index++}>
-            <strong>A red circle</strong> indicates that this weapon may be destroyed (instead of breaking).
+            <strong>A red square</strong> indicates that this weapon may be destroyed (instead of breaking).
           </p>)
         }
       } else if (unit.breakWeaponRoll) {
         if (unit.targetedRange || unit.offBoard) {
           sections.push(<p key={index++}>
-            <strong>A yellow square</strong> indicates that this weapon may break on a targeting roll.
+            <strong>A yellow circle</strong> indicates that this weapon may break on a targeting roll.
           </p>)
         } else {
           sections.push(<p key={index++}>
-            <strong>A yellow circle</strong> indicates that this weapon may break.
+            <strong>A yellow square</strong> indicates that this weapon may break.
           </p>)
         }
       }

@@ -35,9 +35,9 @@ export function weaponBreakLayout(counter: Counter): CounterLayout | false {
     fill = clearColor
     textColor = clearColor
   }
-  let path = circlePath(new Coordinate(x, y), 8)
-  if (counter.unit.targetedRange || counter.unit.offBoard) {
-    path = squarePath(new Coordinate(x, y), 7)
+  let path = squarePath(new Coordinate(x, y), 7)
+  if ((counter.unit.targetedRange || counter.unit.offBoard) && !counter.unit.jammed) {
+    path = circlePath(new Coordinate(x, y), 8)
   }
   return {
     path, style: { stroke: textColor, strokeWidth: 1, fill: fill },

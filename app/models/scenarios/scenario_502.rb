@@ -7,21 +7,21 @@ module Scenarios
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 23, "x"].freeze
 
     ALLIED_UNITS = {
       "0": { list: [
-        :fra_leader_5_2,
+        :fra_leader_5_1,
         [2, :fra_leader_5_1],
         [2, :fra_bar_s],
         [3, :fra_reservist_s],
         :fra_crew_t,
         [2, :fra_fm_24_29],
         :fra_25mm_hotchkiss,
-        :fra_radio_155mm,
+        :fra_radio_105mm,
         [6, :fra_fcm_36],
       ] },
       "3": { list: [
@@ -32,12 +32,13 @@ module Scenarios
     AXIS_UNITS = {
       "0": { list: [
         :ger_leader_6_2,
-        :ger_leader_5_1,
-        [3, :ger_rifle_s],
-        [2, :ger_elite_crew_t],
-        [2, :ger_mg_34],
+        [2, :ger_leader_5_1],
+        [4, :ger_rifle_s],
+        [3, :ger_elite_crew_t],
+        [3, :ger_mg_34],
         [2, :ger_3_7cm_pak_36],
-        [4, :ger_pzkpfw_ii_a_e],
+        :ger_7_5cm_leig_18,
+        [3, :ger_pzkpfw_ii_a_e],
         [2, :ger_pzkpfw_38t_a_d],
       ] },
       "2": { list: [
@@ -46,10 +47,9 @@ module Scenarios
         :ger_mg_34,
       ] },
       "4": { list: [
-        [2, :ger_pzkpfw_iii__39],
         :ger_elite_crew_t,
         :ger_8_8cm_flak_36,
-        :ger_le__gl__lkw,
+        [2, :ger_pzkpfw_38t_a_d],
       ] },
     }.freeze
 

@@ -1361,6 +1361,11 @@ describe("ranged fire attacks", () => {
         "target 12, rolled 20 [2d10: 10 + 10]: hit, Studebaker US6 destroyed"
       )
       expect(game.playerTwoScore).toBe(14)
+
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
+        loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+        vehicle_incendiary: false,
+      }])
     })
 
     test("attack against multiplayer stack", () => {
@@ -1482,6 +1487,80 @@ describe("ranged fire attacks", () => {
       expect(deHTML(game.lastAction?.stringValue as string)).toBe(
         "German morale check for Leader (2d10): target 9, rolled 2 [2d10: 1 + 1], unit breaks"
       )
+    })
+
+    test("removing last unit in multiplayer stack flips VP", () => {
+      const game = createBlankGame()
+      const map = game.scenario.map
+      const firing = new Unit(testRInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target1 = new Unit(testRInf)
+      target1.id = "target1"
+      const tloc = new Coordinate(4, 4)
+      map.addCounter(tloc, target1)
+      const target2 = new Unit(testGInf)
+      target2.id = "target2"
+      target2.break()
+      map.addCounter(tloc, target2)
+
+      map.toggleVP(tloc)
+      expect(map.victoryAt(tloc)).toBe(2)
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.type).toBe(stateType.Fire)
+      expect(fire.selection[0].id).toBe("firing1")
+
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target1.targetSelected).toBe(true)
+      expect(target2.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([
+        { unit: target1, from: [floc], to: tloc, incendiary: false, critical: false },
+        { unit: target2, from: [floc], to: tloc, incendiary: false, critical: false },
+      ])
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "target 13, rolled 20 [2d10: 10 + 10]: hit"
+      )
+
+      game.setGameState(new MoraleCheckState(game))
+      let check = game.gameState as MoraleCheckState
+      expect(check.type).toBe(stateType.MoraleCheck)
+      expect(check.selection[0].id).toBe("target1")
+
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState?.finish()
+
+      expect(deHTML(game.lastAction?.stringValue as string)).toBe(
+        "Soviet morale check for Rifle (2d10): target 12, rolled 2 [2d10: 1 + 1], unit breaks"
+      )
+
+      game.setGameState(new MoraleCheckState(game))
+      check = game.gameState as MoraleCheckState
+      expect(check.type).toBe(stateType.MoraleCheck)
+      expect(check.selection[0].id).toBe("target2")
+
+      game.gameState?.finish()
+
+      expect(deHTML(game.lastAction?.stringValue as string)).toBe(
+        "German morale check for Rifle (2d10): target 14, rolled 2 [2d10: 1 + 1], unit eliminated"
+      )
+      expect(map.victoryAt(tloc)).toBe(1)
     })
 
     test("destroyed vehicle may start fire", () => {
@@ -2004,6 +2083,11 @@ describe("ranged fire attacks", () => {
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll for T-34 M40: target 18, rolled 18 [2d10: 9 + 9]: tie, vehicle immobilized"
       )
+
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
+        loc: new Coordinate(4, 0), vehicle: false, incendiary: false,
+        vehicle_incendiary: false,
+      }])
     })
 
     test("area fire (miss)", () => {
@@ -2375,9 +2459,16 @@ describe("ranged fire attacks", () => {
       map.addCounter(tloc, target2)
       const target3 = new Unit(testRTank)
       target3.id = "target3"
-      target3.wreck(game)
       map.addCounter(tloc, target3)
+      target3.wreck(game)
+      const wreck = new Unit(testRTank)
+      wreck.id = "wreck"
+      map.addCounter(new Coordinate(4, 1), wreck)
+      wreck.wreck(game)
       organizeStacks(map)
+
+      expect(game.playerOneScore).toBe(10)
+      expect(game.playerTwoScore).toBe(20)
 
       game.setGameState(new FireState(game, false))
 
@@ -2420,8 +2511,7 @@ describe("ranged fire attacks", () => {
       expect(game.actions[0].stringValue).toBe(
         "German Radio 10.5cm at D3 fired at Soviet Rifle, Rifle at E1; targeting roll: " +
           "target 10, rolled 100 [d10x10: 10 x 10]: hit; infantry effect roll at E1: target 7, " +
-          "rolled 20 [2d10: 10 + 10]: passed (critical); penetration roll for T-34 M40 at E1: " +
-          "target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
+          "rolled 20 [2d10: 10 + 10]: passed (critical)"
       )
 
       expect(game.moraleChecksNeeded).toStrictEqual([
@@ -2433,7 +2523,7 @@ describe("ranged fire attacks", () => {
 
       expect(game.fireStartCheckNeeded).toStrictEqual([
         {
-          loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
+          loc: new Coordinate(4, 0), vehicle: false, incendiary: false,
           vehicle_incendiary: false,
         },
         {
@@ -2449,6 +2539,8 @@ describe("ranged fire attacks", () => {
           vehicle_incendiary: false,
         },
       ])
+      expect(game.playerOneScore).toBe(10)
+      expect(game.playerTwoScore).toBe(20)
     })
 
     test("offboard artillery miss", () => {
@@ -3034,6 +3126,11 @@ describe("ranged fire attacks", () => {
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll for T-34 M40: target 13, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
+
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
+        loc: new Coordinate(4, 2), vehicle: true, incendiary: false,
+        vehicle_incendiary: false,
+      }])
 
       const all = map.allUnits
       expect(all.length).toBe(4)
@@ -3621,6 +3718,8 @@ describe("ranged fire attacks", () => {
         "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, firing weapon destroyed"
       )
 
+      expect(game.fireStartCheckNeeded).toStrictEqual([])
+
       const all = map.allUnits
       expect(all.length).toBe(2)
       expect(all[0].unit.id).toBe("target1") // Wreck
@@ -3696,6 +3795,8 @@ describe("ranged fire attacks", () => {
         "roll for effect: target 15, rolled 20 [2d10: 10 + 10]: passed"
       )
 
+      expect(game.fireStartCheckNeeded).toStrictEqual([])
+
       const all = map.allUnits
       expect(all.length).toBe(4)
       expect(all[0].unit.id).toBe("target1")
@@ -3765,6 +3866,10 @@ describe("ranged fire attacks", () => {
       expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
         "penetration roll (front): target 12, rolled 20 [2d10: 10 + 10]: passed, vehicle destroyed"
       )
+      expect(game.fireStartCheckNeeded).toStrictEqual([{
+        loc: new Coordinate(4, 2), vehicle: true, incendiary: false,
+        vehicle_incendiary: false, nation: "ussr", player_nation: "ussr", tank: true,
+      }])
 
       const all = map.allUnits
       expect(all.length).toBe(2)
@@ -3773,6 +3878,75 @@ describe("ranged fire attacks", () => {
 
       expect(game.eliminatedUnits.length).toBe(1)
       expect(game.eliminatedUnits[0].id).toBe("target1-clone")
+    })
+
+    test("ranged fire hit no penetration", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.turretFacing = 4
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 2)
+      map.addCounter(tloc, target)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      game.fireState.rotate(1)
+      game.fireState.rotate(4) // rotate to original rotation
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const fp = firepower(game, makeAction(game, ["firing1"]), target, tloc, false, [false])
+      expect(fp.fp).toBe(8)
+      expect(fp.why.length).toBe(1)
+      expect(baseToHit(fp.fp)).toBe(12)
+
+      const mult = rangeMultiplier(
+        map, makeAction(game, ["firing1"])[0].counter, tloc, false, false, false
+      )
+      expect(mult.mult).toBe(4)
+      expect(mult.why.length).toBe(1)
+      const mods = armorHitModifiers(game, firing, target, floc, tloc, false)
+      expect(mods.mod).toBe(-3)
+      expect(mods.why.length).toBe(1)
+      expect(mods.why[0]).toBe("- minus 3 for point-blank range")
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.5)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(false)
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
+        "targeting roll: target 4, rolled 36 [d10x10: 6 x 6]: hit"
+      )
+      expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[2].description as string)).toBe(
+        "penetration roll (front): target 12, rolled 12 [2d10: 6 + 6]: tie, vehicle immobilized"
+      )
+      expect(game.fireStartCheckNeeded).toStrictEqual([])
+
+      const all = map.allUnits
+      expect(all.length).toBe(2)
+      expect(all[0].unit.id).toBe("target1")
+      expect(all[1].unit.id).toBe("firing1")
+
+      expect(game.eliminatedUnits.length).toBe(0)
     })
 
     test("ranged fire against unarmored vehicle", () => {
@@ -3829,6 +4003,59 @@ describe("ranged fire attacks", () => {
       expect(all[1].unit.id).toBe("firing1")
 
       expect(game.eliminatedUnits.length).toBe(1)
+    })
+
+    test("ranged fire against armored vehicle in contested hex", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGTank)
+      firing.id = "firing1"
+      firing.turretFacing = 4
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      map.select(firing)
+
+      const target = new Unit(testRTank)
+      target.id = "target1"
+      const tloc = new Coordinate(4, 4)
+      map.addCounter(tloc, target)
+      const other = new Unit(testGInf)
+      other.id = "other1"
+      map.addCounter(tloc, other)
+      organizeStacks(map)
+
+      expect(map.victoryAt(tloc)).toBe(1)
+
+      game.setGameState(new FireState(game, false))
+
+      const fire = game.gameState as FireState
+      expect(fire.doneSelect).toBe(true)
+
+      select(map, {
+        counter: map.countersAt(tloc)[0],
+        target: { type: "map", xy: tloc }
+      }, () => {})
+      expect(target.targetSelected).toBe(true)
+      expect(fire.doneSelect).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(target.isWreck).toBe(true)
+
+      const all = map.allUnits
+      expect(all.length).toBe(3)
+      expect(all[0].unit.id).toBe("firing1") // Wreck
+      expect(all[1].unit.id).toBe("target1")
+      expect(all[2].unit.id).toBe("other1")
+
+      expect(game.eliminatedUnits.length).toBe(1)
+      expect(game.eliminatedUnits[0].id).toBe("target1-clone")
+
+      expect(map.victoryAt(tloc)).toBe(2)
     })
 
     test("weather affects ranged fire", () => {

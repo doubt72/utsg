@@ -1,3 +1,12 @@
+# 0.134
+
+- Bug fix: no fire start checks for non-area/offboard fire
+- Bug fix: wrecks not destroyed
+- Bug fix: eliminating last unit in contact should toggle VP
+- Swapped square and circle breakdown numbers
+- Updated 103, 401, 502, 613
+- Added prototypes 614, 615, 616
+
 # 0.133
 
 - Reduce drift range to max 5

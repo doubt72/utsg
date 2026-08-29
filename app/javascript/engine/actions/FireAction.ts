@@ -247,7 +247,9 @@ export default class FireAction extends BaseAction {
           }
           for (const d of dHexes) {
             this.game.observeNeeded.push(d)
-            fsHexes.push({ x: d.x, y: d.y })
+            if (firing0.unit.areaFire || oBoard) {
+              fsHexes.push({ x: d.x, y: d.y })
+            }
           }
         }
         if (firing0.unit.areaFire || smoke) {
@@ -317,6 +319,7 @@ export default class FireAction extends BaseAction {
               }
               for (const t of dTargets) {
                 if (t.counter.unit.canCarrySupport) { continue }
+                if (t.counter.unit.isWreck) { continue }
                 if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
                   t.counter.unit.wreck(this.game)
                   for (const f of fsHexes) {
@@ -744,14 +747,14 @@ export default class FireAction extends BaseAction {
           const loc = new Coordinate(f.x, f.y)
           const crew = f.vehicle && ["tank", "spg"].includes(target0.unit.type) && !target0.unit.isAbandoned
           if (crew) {
-            this.game.fireStartCheckNeeded.push({
+            this.game.addFireCheck({
               loc, vehicle: true, incendiary, vehicle_incendiary, tank: true,
               nation: target0.unit.nation, player_nation: target0.unit.playerNation
             })
           } else if (fireStartTarget(
                       this.map, loc, f.vehicle !== undefined, incendiary,
                       vehicle_incendiary) > 1) {
-            this.game.fireStartCheckNeeded.push({
+            this.game.addFireCheck({
               loc, vehicle: f.vehicle !== undefined, incendiary, vehicle_incendiary,
             })
           }

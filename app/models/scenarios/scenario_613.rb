@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario613 < Base
     ID = "613"
-    NAME = "End of the Road"
+    NAME = "The Last Road"
     ALLIES = ["aus"].freeze
     AXIS = ["jap"].freeze
     STATUS = "p"

@@ -493,15 +493,17 @@ export default class Unit {
     this.turretJammed = false
     this.sponsonJammed = false
     this.sponsonDestroyed = false
+    this.internalStatus = unitStatus.Wreck
     if (game) {
-      const loc = game.scenario.map.findLocationById(this.id) as Coordinate
+      const map = game.scenario.map
+      const loc = map.findLocationById(this.id) as Coordinate
       for (const c of this.children) {
         if (c.canCarrySupport) {
           c.exhaust()
         } else if (c.isNormal) {
           c.activate()
         }
-        game.scenario.map.dropUnit(loc, loc, c.id, c.rotates ? normalDir(this.facing + 3) : undefined)
+        map.dropUnit(loc, loc, c.id, c.rotates ? normalDir(this.facing + 3) : undefined)
         if (c.canCarrySupport) {
           game.moraleChecksNeeded.push({
             unit: c, from: [loc], to: loc, incendiary: false, critical: false
@@ -512,8 +514,19 @@ export default class Unit {
       casualty.playerNation = this.playerNation
       casualty.id = `${this.id}-clone`
       game.addEliminatedCounter(casualty)
+      if (map.victoryAt(loc)) {
+        let same = false
+        let other = false
+        for (const c of game.scenario.map.countersAt(loc)) {
+          if (c.hasFeature || c.hasMarker) { continue }
+          const u = c.unit
+          if (u.canCarrySupport || (u.isVehicle && !u.isWreck && !u.isAbandoned)) {
+            u.playerNation === this.playerNation ? same = true : other = true
+          }
+        }
+        if (other && !same) { map.toggleVP(loc) }
+      }
     }
-    this.internalStatus = unitStatus.Wreck
   }
 
   unWreck(

@@ -894,6 +894,18 @@ export default class Game {
     }
   }
 
+  addFireCheck(check: SimpleHexCheck) {
+    for (const c of this.fireStartCheckNeeded) {
+      if (c.loc.x === check.loc.x && c.loc.y === check.loc.y) {
+        if (check.vehicle && !c.vehicle) { c.vehicle = true }
+        if (check.incendiary && !c.incendiary) { c.incendiary = true }
+        if (check.vehicle_incendiary && !c.vehicle_incendiary) { c.vehicle_incendiary = true }
+        return
+      }
+    }
+    this.fireStartCheckNeeded.push(check)
+  }
+
   addVariableWindState(): void {
     if (this.lastAction?.type === "wind_speed") { return }
     if (this.scenario.map.windVariable) {
