@@ -321,7 +321,6 @@ export default class FireAction extends BaseAction {
                 if (t.counter.unit.canCarrySupport) { continue }
                 if (t.counter.unit.isWreck) { continue }
                 if (t.counter.unit.isVehicle && (!t.counter.unit.armored || t.counter.unit.topOpen)) {
-                  t.counter.unit.wreck(this.game)
                   for (const f of fsHexes) {
                     if (f.x === d.x && f.y === d.y) { f.vehicle = t.counter.unit }
                   }
@@ -330,6 +329,7 @@ export default class FireAction extends BaseAction {
                     rollbackAddActions(this.map, hex, d, t.counter.unit.id)
                   }
                   if (needDice) { targetRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
+                  t.counter.unit.wreck(this.game)
                   anims.push({ loc: d, type: "wreck" })
                 } else if (t.counter.unit.isVehicle) {
                   const fwire = firing.map(f => f.wire ?? false)
@@ -348,7 +348,6 @@ export default class FireAction extends BaseAction {
                     }: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
                   }
                   if (hitRoll.result.result > hitCheck) {
-                    t.counter.unit.wreck(this.game)
                     for (const f of fsHexes) {
                       if (f.x === d.x && f.y === d.y) { f.vehicle = t.counter.unit }
                     }
@@ -359,9 +358,9 @@ export default class FireAction extends BaseAction {
                     if (needDice) {
                       hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
                     }
+                    t.counter.unit.wreck(this.game)
                     anims.push({ loc: d, type: "wreck" })
                   } else if (hitRoll.result.result === hitCheck && !firing0.unit.incendiary) {
-                    t.counter.unit.immobilize(this.map)
                     if (needDice) {
                       hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
                     }
@@ -370,6 +369,7 @@ export default class FireAction extends BaseAction {
                       rollbackAddActions(this.map, hex, d, t.counter.unit.id)
                       if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(d)}` }
                     }
+                    t.counter.unit.immobilize(this.map)
                     anims.push({ loc: d, type: "immobilized" })
                   } else {
                     if (needDice) {
@@ -382,13 +382,13 @@ export default class FireAction extends BaseAction {
             }
           }
         } else if (target0.unit.isVehicle && !target0.unit.armored) {
-          target0.unit.wreck(this.game)
           fsHexes = [{ x: dHexes[0].x, y: dHexes[0].y, vehicle: target0.unit }]
           const hex = target0.hex as Coordinate
           if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
             rollbackAddActions(this.map, hex, dHexes[0], target0.unit.id)
           }
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
+          target0.unit.wreck(this.game)
           anims.push({ loc: dHexes[0], type: "wreck" })
         } else if (target0.unit.isVehicle) {
           let turretHit = false
@@ -429,7 +429,6 @@ export default class FireAction extends BaseAction {
                 `rolled ${formatDieResult(hitRoll.result)}: `
             }
             if (hitRoll.result.result > hitCheck) {
-              target0.unit.wreck(this.game)
               fsHexes = [{ x: dHexes[0].x, y: dHexes[0].y, vehicle: target0.unit }]
               const hex = target0.hex as Coordinate
               if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
@@ -438,6 +437,7 @@ export default class FireAction extends BaseAction {
               if (needDice) {
                 hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
               }
+              target0.unit.wreck(this.game)
               anims.push({ loc: dHexes[0], type: "wreck" })
             } else if (hitRoll.result.result === hitCheck) {
               if (turretHit) {
@@ -467,13 +467,13 @@ export default class FireAction extends BaseAction {
               anims.push({ loc: dHexes[0], type: "nowreck" })
             }
           } else {
-            target0.unit.wreck(this.game)
             fsHexes = [{ x: dHexes[0].x, y: dHexes[0].y, vehicle: target0.unit }]
             const hex = target0.hex as Coordinate
             if (hex.x != dHexes[0].x || hex.y !== dHexes[0].y) {
               rollbackAddActions(this.map, hex, dHexes[0], target0.unit.id)
             }
             targetRoll.description += ", no armor on hit side, vehicle destroyed"
+            target0.unit.wreck(this.game)
             anims.push({ loc: dHexes[0], type: "wreck" })
           }
         } else {
@@ -609,13 +609,13 @@ export default class FireAction extends BaseAction {
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
               if (t.counter.unit.isVehicle && !t.counter.unit.armored) {
-                t.counter.unit.wreck(this.game)
                 fsHexes = [{ x: t.x, y: t.y, vehicle: t.counter.unit }]
                 const hex = t.counter.hex as Coordinate
                 if (hex.x != t.x || hex.y !== t.y) {
                   rollbackAddActions(this.map, hex, new Coordinate(t.x, t.y), t.counter.unit.id)
                 }
                 if (needDice) { hitRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
+                t.counter.unit.wreck(this.game)
                 anims.push({ loc: c, type: "wreck" })
               } else if (t.counter.unit.isVehicle && firing0.unit.incendiary) {
                 fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false, [wire])
@@ -629,7 +629,6 @@ export default class FireAction extends BaseAction {
                   }: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
                 }
                 if (hitRoll.result.result > hitCheck) {
-                  t.counter.unit.wreck(this.game)
                   fsHexes = [{ x: t.x, y: t.y, vehicle: t.counter.unit }]
                   const hex = t.counter.hex as Coordinate
                   if (hex.x != t.x || hex.y !== t.y) {
@@ -638,6 +637,7 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
                   }
+                  t.counter.unit.wreck(this.game)
                   anims.push({ loc: c, type: "wreck" })
                 } else {
                   if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>` }

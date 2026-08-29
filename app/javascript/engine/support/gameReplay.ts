@@ -37,6 +37,8 @@ export type GameReplayState = {
   phase: GamePhase,
   currentInitiativePlayer: Player,
   initative: number,
+  p1Score: number,
+  p2Score: number,
 
   units: GameReplayCounterData[],
   vp: VictoryHex[],
@@ -113,6 +115,7 @@ export function copyGameData(game: Game, sequence: number, undone: boolean): Gam
     phase: game.phase,
     currentInitiativePlayer: game.currentInitiativePlayer,
     initative: game.initiative,
+    p1Score: game.playerOneScore, p2Score: game.playerTwoScore,
 
     units,
     vp,
@@ -128,6 +131,8 @@ export function setGameData(game: Game, state: GameReplayState): void {
   game.phase = state.phase
   game.setCurrentInitiativePlayer(state.currentInitiativePlayer)
   game.initiative = state.initative
+  game.replay1Score = state.p1Score
+  game.replay2Score = state.p2Score
 
   for (let x = 0; x < game.scenario.map.width; x++) {
     for (let y = 0; y < game.scenario.map.height; y++) {

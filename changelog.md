@@ -1,8 +1,11 @@
 # 0.134
 
+- Show "current" instead of "final" score on replay
 - Bug fix: no fire start checks for non-area/offboard fire
 - Bug fix: wrecks not destroyed
 - Bug fix: eliminating last unit in contact should toggle VP
+- Bug fix: destroyed/immobilized vehicles should unload at the point hit on reaction fire
+- Bug fix: show offboard target overlay in replay
 - Swapped square and circle breakdown numbers
 - Updated 103, 401, 502, 613
 - Added prototypes 614, 615, 616

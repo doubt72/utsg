@@ -64,6 +64,7 @@ export default class DeployAction extends BaseAction {
       const u = uf as Unit
       addSpecialArmorRules(u, scenario)
       if (this.game.hide(u)) { u.observed = false }
+      if (u.offBoard) { this.game.replayOffboard.push(u.id) }
     }
     map.addCounter(this.target, uf)
   }

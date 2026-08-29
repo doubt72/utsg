@@ -75,9 +75,9 @@ module Scenarios
           factories, and gave the city the nickname of \"Little Shanghai\". In
           addition, the American Flying Tigers were based out of a nearby
           airfield along the Lei River, making capturing the city a priority
-          for the Japanese.  The air power concentrated there also ended up
-          playing a significant role in helping the city hold out for a total
-          of 47 days.",
+          for the Japanese. The air power concentrated there also ended up
+          playing a significant role in disrupting Japanese logistics and
+          supply, helping the city hold out for a total of 47 days.",
         ]
       end
 
@@ -97,6 +97,7 @@ module Scenarios
           ],
           allied_setup: { "0" => [["*", "0-18"]] },
           axis_setup: { "0" => [["*", "20-22"]] },
+          base_terrain: "",
         }
       end
 
@@ -239,11 +240,11 @@ module Scenarios
             { t: "o", r: { t: "d", d: [3, 5], c: "r" } },
             { t: "o" },
             { t: "o" },
+            { t: "o", d: 2.5, st: { sh: "l2", s: "f" } },
             { t: "d", d: 1 },
             { t: "d", d: 1 },
             { t: "d", d: 1 },
-            { t: "d", d: 1 },
-            { t: "d", d: 1 },
+            { t: "o", d: 2.5, st: { sh: "l2", s: "f" } },
             { t: "o" },
             { t: "o", st: { sh: "l2", s: "u" }, d: 2.5 },
             { t: "o", r: { t: "d", d: [3, 5], c: "r" } },
@@ -385,15 +386,15 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "d", d: 1 },
-            { t: "d", d: 1 },
+            { t: "o", d: 2.5, st: { sh: "l2", s: "f" } },
             { t: "o", r: { t: "d", d: [3, 5], c: "r" } },
             { t: "o" },
             { t: "o" },
+            { t: "o", d: 2.5, st: { sh: "l2", s: "f" } },
             { t: "d", d: 1 },
             { t: "d", d: 1 },
             { t: "d", d: 1 },
-            { t: "d", d: 1 },
-            { t: "d", d: 1 },
+            { t: "o", d: 2.5, st: { sh: "l2", s: "f" } },
             { t: "o" },
             { t: "o", st: { sh: "l2", s: "u" }, d: 2.5 },
             { t: "o", r: { t: "d", d: [3, 5], c: "r" } },
@@ -498,7 +499,7 @@ module Scenarios
             { t: "o", st: { sh: "s2", s: "u" }, d: 2 },
             { t: "o", r: { t: "d", d: [3, 5], c: "r" } },
             { t: "o", st: { sh: "l2", s: "u" }, d: 2.5 },
-            { t: "o" },
+            { t: "w" },
             { t: "w" },
             { t: "w" },
           ],
@@ -514,7 +515,7 @@ module Scenarios
             { t: "o", h: 1 },
             { t: "o", h: 1 },
             { t: "o", h: 1 },
-            { t: "o" },
+            { t: "o", h: 1 },
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -548,7 +549,7 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o", r: { t: "d", d: [2, 5] } },
-            { t: "o" },
+            { t: "w" },
             { t: "w" },
             { t: "w" },
           ],

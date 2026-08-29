@@ -150,6 +150,9 @@ export default class Game {
   unitTesting = false;
   replay = false;
   replayIndex = 0;
+  replayOffboard: string[] = []
+  replay1Score?: number;
+  replay2Score?: number;
 
   constructor(data: GameData, refreshCallback: (g: Game, error?: [string, string, string?]) => void = () => {}) {
     this.id = data.id
@@ -624,6 +627,7 @@ export default class Game {
   }
 
   get playerOneScore(): number {
+    if (this.replay1Score) { return this.replay1Score }
     let points = 0
     for (let i = 0; i < this.scenario.map.victoryHexes.length; i++) {
       const vh = this.scenario.map.victoryHexes[i]
@@ -642,6 +646,7 @@ export default class Game {
   }
 
   get playerTwoScore(): number {
+    if (this.replay2Score) { return this.replay2Score }
     let points = 0
     for (let i = 0; i < this.scenario.map.victoryHexes.length; i++) {
       const vh = this.scenario.map.victoryHexes[i]

@@ -6,7 +6,10 @@ import select from "./select"
 import { reactionAvailableCoords, reactionFireCheck, reactionFireHexes } from "./reactionFire"
 import StackingActionError from "../actions/StackingActionError"
 import Feature from "../Feature"
-import { createBlankGame, createFireGame, testGInf, testGMG, testGTank, testRGun, testRInf, testRMG, testRTank, testRTD } from "./testHelpers"
+import {
+  createBlankGame, createFireGame, testGInf, testGMG, testGTank, testGTruck, testRGun, testRInf,
+  testRMG, testRTank, testRTD,
+} from "./testHelpers"
 import InitiativeState, { initiativeCheck } from "./state/InitiativeState"
 import FireState from "./state/FireState"
 import MoveState from "./state/MoveState"
@@ -1859,6 +1862,75 @@ describe("reaction fire attacks", () => {
     expect(counter?.hex?.x).toBe(2)
     expect(counter?.hex?.y).toBe(2)
     expect(map.victoryAt(eloc)).toBe(1)
+  })
+
+  test("loaded units are dropped short", () => {
+    const game = createFireGame()
+    const map = game.scenario.map
+    const unit = new Unit(testGTruck)
+    unit.id = "test1"
+    unit.facing = 1
+    unit.turretFacing = 2
+    const loc = new Coordinate(4, 2)
+    map.addCounter(loc, unit)
+    const unit2 = new Unit(testGInf)
+    unit2.id = "test2"
+    map.addCounter(loc, unit2)
+
+    const other = new Unit(testRTank)
+    other.id = "other1"
+    const oloc = new Coordinate(0, 2)
+    map.addCounter(oloc, other)
+    organizeStacks(map)
+    map.select(unit)
+
+    game.setGameState(new MoveState(game))
+    game.moveState.move(3, 2)
+    game.moveState.move(2, 2)
+    game.moveState.rotate(2)
+    game.moveState.move(1, 1)
+    game.moveState.finish()
+
+    game.setGameState(new InitiativeState(game))
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(reactionFireCheck(game)).toBe(true)
+
+    map.select(other)
+    game.setGameState(new FireState(game, true))
+
+    const tloc = new Coordinate(2, 2)
+    select(map, {
+      counter: map.countersAt(tloc)[0],
+      target: { type: "map", xy: tloc }
+    }, () => {})
+
+    vi.spyOn(Math, "random").mockReturnValue(0.99)
+    game.gameState?.finish()
+    Math.random = original
+
+    expect(game.lastAction?.type).toBe("reaction_fire")
+    expect(game.lastAction?.stringValue).toBe(
+      "reaction fire: Soviet T-34 M40 at A3 fired at German Opel Blitz at C3; targeting roll: " +
+        "target 6, rolled 100 [d10x10: 10 x 10]: hit, vehicle destroyed"
+    )
+    expect(game.moraleChecksNeeded).toStrictEqual([
+      {
+        critical: false, from: [tloc], incendiary: false, to: tloc, unit: unit2,
+      }
+    ])
+    expect(unit.isWreck).toBe(true)
+
+    const counter = game.findCounterById(unit.id)
+    expect(counter?.hex?.x).toBe(2)
+    expect(counter?.hex?.y).toBe(2)
+    const counter2 = game.findCounterById(unit2.id)
+    expect(counter2?.hex?.x).toBe(2)
+    expect(counter2?.hex?.y).toBe(2)
   })
 
   test("hit shorts move for unit with proper orientation", () => {
