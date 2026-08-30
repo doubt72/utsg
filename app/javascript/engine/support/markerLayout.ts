@@ -71,11 +71,11 @@ export function markerMovementLayout(counter: Counter): CounterLayout | false {
 }
 
 export function markerLayout(counter: Counter): MarkerLayout | false {
-  if (!counter.hasMarker || counter.marker.type === markerType.TrackedHull ||
-      counter.marker.type === markerType.WheeledHull ||
-      counter.marker.type === markerType.Initiative) {
-    return false
-  }
+  if (!counter.hasMarker ||
+      [
+        markerType.TrackedHull, markerType.WheeledHull, markerType.Initiative,
+        markerType.Spotter, markerType.Spotting
+      ].includes(counter.marker.type)) { return false }
   const loc = new Coordinate(counter.x + 40, counter.y + 40)
   const marker = counter.marker
   let size = (marker.displayText[0] === "immobilized") ? 11 : 12
@@ -101,6 +101,27 @@ export function markerLayout(counter: Counter): MarkerLayout | false {
       style: { fill: marker.color }, size: size,
       tStyle: { fill: marker.textColor }, text: text
     }
+  }
+}
+
+export function spotLetterLayout(counter: Counter): CounterLayout | false {
+  if (!counter.marker.isMarker || (counter.marker.type !== markerType.Spotter &&
+      counter.marker.type !== markerType.Spotting)) { return false }
+  const loc = new Coordinate(counter.x + 40, counter.y + 52.5)
+  const value = (counter.marker.value as string).toUpperCase()
+  return {
+    x: loc.x, y: loc.y, size: 32, tStyle: { fill: "#000" }, value
+  }
+}
+
+export function spotPlusLayout(counter: Counter): CounterLayout | false {
+  if (!counter.marker.isMarker || (counter.marker.type !== markerType.Spotter &&
+      counter.marker.type !== markerType.Spotting)) { return false }
+  const loc = new Coordinate(counter.x + 64, counter.y + 16)
+  if (counter.marker.type === markerType.Spotting) { loc.y = counter.y + 74 }
+  const value = `+${counter.marker.value2}`
+  return {
+    x: loc.x, y: loc.y, size: 20, tStyle: { fill: counterRed() }, value
   }
 }
 

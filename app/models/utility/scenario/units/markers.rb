@@ -101,6 +101,22 @@ module Utility
               abandoned: { mk: 1, type: "abandoned" },
               elite_crew: { mk: 1, type: "elite_crew" },
               green_crew: { mk: 1, type: "green_crew" },
+              spotting_a: {
+                mk: 1, type: "spotting", name: "Radio 155mm", v: "a", i: "spotting", v2: 1,
+              },
+              spotting_b: {
+                mk: 1, type: "spotting", name: "PzKfw III '40", v: "b", i: "spotting", v2: 2,
+              },
+              spotting_c: {
+                mk: 1, type: "spotting", name: "T-34-85", v: "c", i: "spotting", v2: 2,
+              },
+              spotter_a: {
+                mk: 1, type: "spotter", name: "Radio 155mm", v: "a", i: "spotter", v2: 2,
+              },
+              spotter_b: {
+                mk: 1, type: "spotter", name: "PzKfw III '40", v: "b", i: "spotter", v2: 1,
+              },
+              spotter_c: { mk: 1, type: "spotter", name: "T-34-85", v: "c", i: "spotter", v2: 1 },
             }
           end
 

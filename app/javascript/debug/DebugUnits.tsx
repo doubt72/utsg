@@ -220,7 +220,6 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
     } else if (nation && data.c !== nation) {
       return undefined
     } else {
-      if (data.o.t && (data.o.b || data.o.j)) { console.log(`${data.n} - ${data.o.t} - ${data.o.b} - ${data.o.j}`) }
       return new Unit(data)
     }
   }

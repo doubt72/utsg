@@ -41,19 +41,6 @@ export default function GameControls({
   const [internalUpdate, setInternalUpdate] = useState(0)
 
   useEffect(() => {
-    if (localStorage.getItem("hotkeys") === "true") {
-      const hotKeyListener = (e: KeyboardEvent) => {
-        console.log(`${e.key} c:${e.ctrlKey} a:${e.altKey} s:${e.shiftKey}`)
-      }
-      window.addEventListener('keyup', hotKeyListener)
-
-      return () => {
-        window.removeEventListener('keyup', hotKeyListener)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
     if (!game.id) { return }
     displayActions()
   }, [game, game.lastActionIndex, internalUpdate, update])

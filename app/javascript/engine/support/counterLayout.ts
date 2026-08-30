@@ -95,6 +95,12 @@ export function shadowPath(counter: Counter): string | false {
 
 export function nameLayout(counter: Counter): CounterLayout | false {
   let name = counter.targetUF.name
+  if (counter.hasMarker && (counter.marker.type === markerType.Spotter)) {
+    name = "spotter"
+  }
+  if (counter.hasMarker && (counter.marker.type === markerType.Spotting)) {
+    name = counter.marker.spotName
+  }
   if (counter.hasUnit && !counter.unit.visible) {
     if (counter.unit.leader) { name = "leader" }
     if (counter.unit.type === unitType.Squad) { name = "squad" }

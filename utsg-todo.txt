@@ -1,8 +1,10 @@
 Features/Bug Fixes
-  + Unit should be dumped where vehicle is destroyed
-  + Replay show current score
-  + Replay show new artillery graphic
   - Improve multiplier on subsequent shot
+    - Add target markers
+    - Display on counters
+    - Lay marker on firing
+    - Max 2
+    - Moving, assault, breaking, pin, abandon, wreck remove marker
   - Decoy markers
     - Display unobserved in replay
   - Check offboard lines for artillery all edges

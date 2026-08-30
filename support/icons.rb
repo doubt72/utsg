@@ -3815,6 +3815,30 @@ File.open('decoy.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('spotting.svg', 'w') do |file|
+  file.puts header
+  radius = 25
+  write_circle(50, 54, radius, file, false, "#F00")
+  olen = 8
+  ilen = 8
+  write_path([["M", 50, 54 - radius - olen], ["L", 50, 54 - radius + ilen]], file, false, 2, "#F00")
+  write_path([["M", 50, 54 + radius + olen], ["L", 50, 54 + radius - ilen]], file, false, 2, "#F00")
+  write_path([["M", 50 - radius - olen, 54], ["L", 50 - radius + ilen, 54]], file, false, 2, "#F00")
+  write_path([["M", 50 + radius + olen, 54], ["L", 50 + radius - ilen, 54]], file, false, 2, "#F00")
+  file.puts footer
+end
+
+File.open('spotter.svg', 'w') do |file|
+  file.puts header
+  radius = 28
+  ilen = 7
+  olen = 7
+  write_circle(50, 54, radius - ilen, file, false, "#F00")
+  write_circle(50, 54, radius, file, false, "#F00")
+  write_circle(50, 54, radius + olen, file, false, "#F00")
+  file.puts footer
+end
+
 # File.open('test.svg', 'w') do |file|
 #   file.puts header
 #   path = []

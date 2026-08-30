@@ -11,7 +11,7 @@ import {
 } from "../../../engine/support/unitLayout";
 import {
   markerBreakLayout, markerFirepowerLayout, markerFixLayout, markerLayout, markerMoraleLayout,
-  markerMovementLayout, markerRangeLayout, markerSubLayout, turnLayout, windArrowLayout
+  markerMovementLayout, markerRangeLayout, markerSubLayout, spotLetterLayout, spotPlusLayout, turnLayout, windArrowLayout
 } from "../../../engine/support/markerLayout";
 import { featureLayout } from "../../../engine/support/featureLayout";
 import {
@@ -483,6 +483,32 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
     }
   }
 
+  const spotLetter = () => {
+    const layout = spotLetterLayout(counter)
+    if (layout) {
+      return (
+        <g>
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
+  }
+
+  const spotPlus = () => {
+    const layout = spotPlusLayout(counter)
+    if (layout) {
+      return (
+        <g>
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
+  }
+
   const windArrow = () => {
     const layout = windArrowLayout(counter)
     if (layout) {
@@ -600,6 +626,7 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
       {elite()}
       {tow()}{canTow()}{leftTransport()}{rightTransport()}
       {marker()}{windArrow()}{markerSub()}{turnBadges()}
+      {spotLetter()}{spotPlus()}
       {markerBreak()}{markerFix()}
       {markerMorale()}{markerFirepower()}{markerRange()}{markerMovement()}
       {status()}

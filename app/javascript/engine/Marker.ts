@@ -23,6 +23,8 @@ export type MarkerData = {
   facing?: Direction;
   rotates?: NumberBoolean;
 
+  name?: string; // for debug display
+
   ft?: 0;
   mk: 1;
 }
@@ -44,6 +46,7 @@ export default class Marker {
 
   ghost?: boolean;
   observed: boolean = true;
+  spotName: string = ""
 
   constructor(data: MarkerData) {
     this.type = data.type
@@ -55,6 +58,8 @@ export default class Marker {
     this.playerNation = data.player_nation || this.nation
     this.facing = data.facing || 1
     this.rotates = !!data.rotates || false
+
+    this.spotName = data.name ?? ""
 
     this.id = data.id ?? ""
 
@@ -198,6 +203,8 @@ export default class Marker {
   get icon(): string | false {
     if (this.type === markerType.WheeledHull) { return "wheeled-hull" }
     if (this.type === markerType.TrackedHull) { return "tracked-hull" }
+    if (this.type === markerType.Spotter) { return "spotter" }
+    if (this.type === markerType.Spotting) { return "spotting" }
     if (this.type === markerType.Initiative) { return this.nationalIcon || this.nation }
     return false
   }
