@@ -2,6 +2,7 @@ import { Coordinate, hexOpenType } from "../../../utilities/commonTypes";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionAddAction, gameActionAddActionType } from "../../GameAction";
+import { observeFrom } from "../decoy";
 import { findRoutPathTree, routEnds, routPaths } from "../rout";
 import BaseState, { stateType } from "./BaseState";
 
@@ -90,7 +91,7 @@ export default class RoutState extends BaseState {
     }, this.game)
     this.execute(action)
     for (const p of path) {
-      this.game.observeFrom(new Coordinate(p.x, p.y), this.player)
+      observeFrom(this.game, new Coordinate(p.x, p.y), this.player)
     }
   }
 }

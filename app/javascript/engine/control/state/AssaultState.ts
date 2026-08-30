@@ -8,6 +8,7 @@ import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionPa
 import Hex from "../../Hex";
 import Unit, { unitDataForTankCrew } from "../../Unit";
 import { assaultMovement } from "../assault";
+import { observeFrom } from "../decoy";
 import { alongRailroad, alongRoad } from "../movement";
 import { removeStateSelection } from "../select";
 import BaseState, { StateAddAction, StateSelection, stateType } from "./BaseState";
@@ -439,7 +440,7 @@ export default class AssaultState extends BaseState {
     }, this.game)
     this.execute(action)
     for (const p of this.path) {
-      this.game.observeFrom(new Coordinate(p.x, p.y), this.player)
+      observeFrom(this.game, new Coordinate(p.x, p.y), this.player)
     }
   }
 

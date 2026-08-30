@@ -108,7 +108,7 @@ export function spotLetterLayout(counter: Counter): CounterLayout | false {
   if (!counter.marker.isMarker || (counter.marker.type !== markerType.Spotter &&
       counter.marker.type !== markerType.Spotting)) { return false }
   const loc = new Coordinate(counter.x + 40, counter.y + 52.5)
-  const value = (counter.marker.value as string).toUpperCase()
+  const value = counter.marker.value
   return {
     x: loc.x, y: loc.y, size: 32, tStyle: { fill: "#000" }, value
   }

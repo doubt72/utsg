@@ -187,6 +187,18 @@ export default class FireAction extends BaseAction {
     if (firing0.unit.incendiary || firing0.unit.sponson?.type === sponsonType.Flame) {
       incendiary = true
     }
+    let spotting = false
+    if (firing0.unit.offBoard || firing0.unit.crewed ||
+        (sponson && firing0.unit.sponson?.type !== sponsonType.Flame) ||
+        (!sponson && firing0.unit.isVehicle && firing0.unit.targetedRange)) {
+      spotting = true
+      if (firing0.unit.isVehicle) {
+        if (sponson && firing0.unit.isImmobilized) { spotting = false }
+        if (!firing0.unit.turreted && firing0.unit.isImmobilized) { spotting = false }
+        if (!sponson && firing0.unit.turretJammed) { spotting = false }
+      }
+    }
+    if (spotting) { this.game.addSpotting(to, firing0.unit, sponson) }
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate

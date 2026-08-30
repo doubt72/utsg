@@ -1,10 +1,25 @@
 Features/Bug Fixes
   - Improve multiplier on subsequent shot
-    - Add target markers
-    - Display on counters
-    - Lay marker on firing
-    - Max 2
-    - Moving, assault, breaking, pin, abandon, wreck remove marker
+    + Add target markers
+    + Add docs
+    - Display on counters/as markers main/sponson
+    + Lay marker on firing (only):
+      + Radio
+      + Turret (unless jammed)
+      + Hull Gun (unless immobilized)
+      + Sponson (unless immobilized)
+      + Gun
+      + Crewed Mortar
+    + Second time improves it, max 2
+    - Remove marker
+      - On move
+      - On assault
+      - On fire displace
+      - On crew breaking/being pinned
+      - On wreck/abandon
+      - On break/destroy weapon
+      - On turret jam
+      - On immobilized sponson/hull
   - Decoy markers
     - Display unobserved in replay
   - Check offboard lines for artillery all edges

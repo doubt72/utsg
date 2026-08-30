@@ -1,6 +1,7 @@
 import { Coordinate, Direction } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
 import { addSpecialArmorRules } from "../../utilities/utilities";
+import { hideObserved } from "../control/decoy";
 import DeployState from "../control/state/DeployState";
 import Game from "../Game";
 import { GameActionPath, GameActionData, GameActionReinforcementUnit } from "../GameAction";
@@ -63,7 +64,7 @@ export default class DeployAction extends BaseAction {
     if (!uf.isFeature) {
       const u = uf as Unit
       addSpecialArmorRules(u, scenario)
-      if (this.game.hide(u)) { u.observed = false }
+      if (hideObserved(this.game, u)) { u.observed = false }
       if (u.offBoard) { this.game.replayOffboard.push(u.id) }
     }
     map.addCounter(this.target, uf)

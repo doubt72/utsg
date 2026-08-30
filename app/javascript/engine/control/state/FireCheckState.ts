@@ -4,6 +4,7 @@ import { rolld10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
+import { observe } from "../decoy";
 import BaseState, { stateType } from "./BaseState";
 
 // Handle fire spreading/extinguish
@@ -57,7 +58,7 @@ export default class FireCheckState extends BaseState {
     this.execute(action)
     if (this.game.observeNeeded.length > 0) {
       for (const c of this.game.observeNeeded) {
-        this.game.observe(c)
+        observe(this.game, c)
       }
       this.game.observeNeeded = []
     }

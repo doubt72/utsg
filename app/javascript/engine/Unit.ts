@@ -155,6 +155,8 @@ export default class Unit {
   observed: boolean = true;
   interfacePlayer: boolean = false;
   decoy: boolean;
+  spotting: string | undefined;
+  sponsonSpotting: string | undefined;
 
   parent?: Unit;
   children: Unit[];

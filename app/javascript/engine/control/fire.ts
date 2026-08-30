@@ -317,6 +317,7 @@ export function rangeMultiplier(
   why.push(`- base multiplier ${mult}`)
   if (source.unit.offBoard) {
     mult = 5
+    why[why.length - 1] = "- base multiplier 5 (radio)"
     const leadership = source.unit.parent?.leadership ? source.unit.parent.leadership : undefined
     if (leadership) {
       mult -= leadership

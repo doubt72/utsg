@@ -305,7 +305,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("613")).to be == "0.1p-aa4d8e092ee367a1010f30842b0ddd42"
       expect(Utility::Scenario.checksum("614")).to be == "0.1p-60e8641f0104434759eb136ce5f19a68"
       expect(Utility::Scenario.checksum("615")).to be == "0.1p-3b42e55efe73e04d287099ce236185fc"
-      expect(Utility::Scenario.checksum("616")).to be == "0.1p-5bee51ebc7cee2a9c94f29a1fe0e9337"
+      expect(Utility::Scenario.checksum("616")).to be == "0.1p-c178bc29c9c3958cd10022f1ef053ad7"
     end
   end
 end

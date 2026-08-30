@@ -13,10 +13,9 @@ import organizeStacks from "../support/organizeStacks"
 import { GameActionDiceResult, GameActionPath } from "../GameAction"
 import Feature from "../Feature"
 import {
-  createBlankGame,
-  createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr, testGMC, testGMG,
-  testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill, testRGun, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRTank,
-  testRTD,
+  createBlankGame, createFireGame, testGAC, testGCrew, testGFT, testGGun, testGInf, testGLdr,
+  testGMC, testGMG, testGMortar, testGRadio, testGSC, testGTank, testGTruck, testITank, testPill,
+  testRGun, testRHT, testRInf, testRLdr, testRMG, testRRadio, testRTank, testRTD,
   testRTruck, testSmoke, testWire
 } from "./testHelpers"
 import FireState from "./state/FireState"

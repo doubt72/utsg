@@ -10,6 +10,7 @@ import GameAction, {
 } from "../../GameAction";
 import Hex from "../../Hex";
 import Unit from "../../Unit";
+import { observe, observeFrom } from "../decoy";
 import {
   alongRailroad, alongRoad, canBeLoaded, canLoadUnit, dropUnitCounters, loadUnitCounters,
   mapSelectMovement, movementCost, movementPastCost, showDropMove, showLoadedDisambiguate,
@@ -607,10 +608,10 @@ export default class MoveState extends BaseState {
     }, this.game)
     this.execute(action)
     for (const p of this.path) {
-      this.game.observeFrom(new Coordinate(p.x, p.y), this.player)
+      observeFrom(this.game, new Coordinate(p.x, p.y), this.player)
     }
     for (const v of vpOrMines) {
-      this.game.observe(new Coordinate(v.x, v.y))
+      observe(this.game, new Coordinate(v.x, v.y))
     }
   }
 

@@ -1,6 +1,9 @@
 # 0.134
 
-- Added spotting markers
+- Spotting
+  - Docs
+  - Added markers
+  - Add spotting status on firing
 - Show "current" instead of "final" score on replay
 - Bug fix: no fire start checks for non-area/offboard fire
 - Bug fix: wrecks not destroyed

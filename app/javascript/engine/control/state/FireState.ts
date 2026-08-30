@@ -5,6 +5,7 @@ import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction, { GameActionPath } from "../../GameAction";
 import Unit from "../../Unit";
+import { observe } from "../decoy";
 import { areaFire, canMultiSelectFire, canToggleSponson, inRange, leadershipRange, rapidFire, refreshTargetSelection, unTargetSelectExceptChain } from "../fire";
 import { placeReactionFireGhosts, reactionFireHexes, reactionFireInRange } from "../reactionFire";
 import { clearUnrangedSelection, removeStateSelection } from "../select";
@@ -315,10 +316,10 @@ export default class FireState extends BaseState {
       }
     }, this.game)
     this.execute(action)
-    for (const c of this.selection) { this.game.observe(new Coordinate(c.x, c.y)) }
+    for (const c of this.selection) { observe(this.game, new Coordinate(c.x, c.y)) }
     if (this.game.observeNeeded.length > 0) {
       for (const c of this.game.observeNeeded) {
-        this.game.observe(c)
+        observe(this.game, c)
       }
       this.game.observeNeeded = []
     }

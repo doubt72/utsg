@@ -86,7 +86,7 @@ module Scenarios
           start_weather: "dry",
           base_weather: "dry",
           precip: [0, "rain"],
-          wind: [2, 4, false],
+          wind: [3, 4, true],
           hexes:,
           layout:,
           allied_dir: 6,

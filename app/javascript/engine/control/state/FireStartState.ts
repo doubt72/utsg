@@ -2,6 +2,7 @@ import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonT
 import { roll2d10 } from "../../../utilities/utilities";
 import Game, { SimpleHexCheck } from "../../Game";
 import GameAction from "../../GameAction";
+import { observe } from "../decoy";
 import BaseState, { stateType } from "./BaseState";
 
 // Check for rain/snow before turn
@@ -44,7 +45,7 @@ export default class FireStartState extends BaseState {
     this.execute(action)
     if (this.game.observeNeeded.length > 0) {
       for (const c of this.game.observeNeeded) {
-        this.game.observe(c)
+        observe(this.game, c)
       }
       this.game.observeNeeded = []
     }

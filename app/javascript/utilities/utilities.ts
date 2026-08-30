@@ -167,6 +167,18 @@ export function coordinateToLabel(loc: Coordinate): string {
   return `${letters[loc.x]}${loc.y + 1}`
 }
 
+export function nextLetter(used: string[]): string {
+  // Again, probably not more than 52 targeted weapons in a scenario
+  const letters = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+  ]
+  for (const l of letters) {
+    if (!used.includes(l)) { return l }
+  }
+  return "whoops"
+}
+
 // This is the format we get from the backend, in UTC
 export function nowUTCString(): string {
   const date = new Date()

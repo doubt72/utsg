@@ -4,8 +4,8 @@ import { critHitDiff } from "../../utilities/utilities";
 import { SectionProps } from "../game/HelpDisplay";
 
 export default function FireProcessSection({ section }: SectionProps) {
-  const fp = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128]
-  const hits = [...Array(19).keys()].reverse()
+  const fp = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96, 128];
+  const hits = [...Array(19).keys()].reverse();
 
   return (
     <div>
@@ -29,6 +29,7 @@ export default function FireProcessSection({ section }: SectionProps) {
               The base range modifier for ranged weapons is 4, except weapons with black-filled
               range have a base modifier of 3, and off-board artillery have a base of 5.
             </li>
+            <li>Subtract the spotting bonus (see below).</li>
             <li>
               Subtract crew gun handling skill when operating a crewed weapon (unless firepower is
               filled black).
@@ -61,7 +62,39 @@ export default function FireProcessSection({ section }: SectionProps) {
           result is success, and the fire hits the target.
         </li>
       </ol>
-      <h3>{section}.2. Weapons Breaking (Targeted Fire)</h3>
+      <h3>{section}.2. Spotting</h3>
+      <p>
+        Some targeted weapons can gain a <strong>spotting bonus</strong>. If a unit fires at the
+        same target in subsequent actions, the range multiplier can be improved (by a maximum of 2).
+        The spotting bonus applies to hexes; if targeting units in the same hex, it does&apos;t
+        matter if it&apos;s the same unit, e.g., if a unit is targeting an individual vehicle, if
+        that vehicle moves out of the hex and another one moves in, the range multiplier bonus can
+        be applied to the new vehicle.
+      </p>
+      <p>
+        Spotting bonus apply even if the weapon misses (if the weapons drifts, the spotting marker
+        is placed in the targeted &mdash; not final &mdash; hex).
+      </p>
+      <p>
+        To mark the spotting bonus, a marker is placed in the target hex, and a marker with the same
+        letter is placed on the firing unit. On a second shot into the same hex, flip the marker
+        side from +1 to +2.
+      </p>
+      <p>
+        The following types of units are eligible for spotting bonuses: radios, all targeted vehicle
+        weapons (i.e., guns but not machine guns or flamethrowers), and all crewed weapons (guns or
+        mortars). Uncrewed mortars do not get spotting bonuses, and hull guns are tracked separately
+        from turret-mounted weapons if a vehicle has both.
+      </p>
+      <p>
+        Moving or assault moving a unit with a bonus will cancel it, as will be being displaced by a
+        blaze. Crewed weapons lose the bonus if the crew is broken or pinned, as will abaondoning a
+        vehicle. A broken weapon loses the bonus and does not get it back if it&apos;s repaired
+        until firing again. Weapons in jammed turrets cannot gain a spotting bonus, and lose it when
+        the turret james. Likewise, hull weapons in immobilized vehicles cannot gain it and lose it
+        when the vehicle is immobilized.
+      </p>
+      <h3>{section}.3. Weapons Breaking (Targeted Fire)</h3>
       <p>
         Regardless of whether the result is a hit, if the result is less than or equal to the break
         check number (circled red or yellow number on the left, or top circled red or yellow number
@@ -74,7 +107,7 @@ export default function FireProcessSection({ section }: SectionProps) {
         <li>Add one to the break check number if intensive fire.</li>
         <li>Add one to the break check number if firing an opponent&apos;s weapon.</li>
       </ol>
-      <h3>{section}.3. Infantry and Rapid Fire</h3>
+      <h3>{section}.4. Infantry and Rapid Fire</h3>
       <p>
         When using infantry fire or rapid firing, no targeting roll is required, instead hits are
         determined with the following table:
@@ -150,14 +183,14 @@ export default function FireProcessSection({ section }: SectionProps) {
           below). Critical hits have no other effect.
         </li>
       </ol>
-      <h3>{section}.4. Weapons Breaking (Infantry and Rapid Fire)</h3>
+      <h3>{section}.5. Weapons Breaking (Infantry and Rapid Fire)</h3>
       <p>
         Regardless of whether the result is a hit, if the result is less than or equal to the break
-        check number (circled red or yellow number on the left, or top circled red or yellow number
-        if there are two), the weapon breaks. If red, the weapon is destroyed and removed from play
-        (or marked as permanently broken if on a vehicle). If yellow, the marker is flipped and the
-        weapon is broken (or the weapon is marked as broken on a vehicle). When checking for a
-        break, the following may apply:
+        check number (squared red or yellow number on the left, or top squared red or yellow number
+        if there is also a circled breakdown number), the weapon breaks. If red, the weapon is
+        destroyed and removed from play (or marked as permanently broken if on a vehicle). If
+        yellow, the marker is flipped and the weapon is broken (or the weapon is marked as broken on
+        a vehicle). When checking for a break, the following may apply:
       </p>
       <ol className="mt05em mb05em">
         <li>Add one to the break check number if intensive fire.</li>
@@ -170,7 +203,7 @@ export default function FireProcessSection({ section }: SectionProps) {
         If the weapon is incendiary and breaks, the unit carrying it must pass a morale check to
         avoid breaking.
       </p>
-      <h3>{section}.5. Offboard Artillery</h3>
+      <h3>{section}.6. Offboard Artillery</h3>
       <p>
         Unlike other weapons, offboard artillery (radios) can be targeted at any hex, regardless of
         whether or not it contains units.
@@ -208,14 +241,14 @@ export default function FireProcessSection({ section }: SectionProps) {
       </table>
       <p>
         Wherever the drift lands, treat that hex as if the round had been targeted and hit there,
-        unless the fire drifts offboard, in which case treat the result as no effect and end
-        the firing process.
+        unless the fire drifts offboard, in which case treat the result as no effect and end the
+        firing process.
       </p>
       <p>
-        Offboard artillery also differs from every other attack in that it affects not just the hex where
-        the round lands (either the target or drift hex if the round misses and lands on the map)
-        but also all six <strong>bordering</strong> hexes. Separate hit resolution (treat as regular
-        area fire) or smoke rolls are performed for each affected hex.
+        Offboard artillery also differs from every other attack in that it affects not just the hex
+        where the round lands (either the target or drift hex if the round misses and lands on the
+        map) but also all six <strong>bordering</strong> hexes. Separate hit resolution (treat as
+        regular area fire) or smoke rolls are performed for each affected hex.
       </p>
     </div>
   );

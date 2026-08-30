@@ -3,6 +3,7 @@ import { roll2d10 } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
+import { observe } from "../decoy";
 import BaseState, { stateType } from "./BaseState";
 
 export default class SniperState extends BaseState {
@@ -63,7 +64,7 @@ export default class SniperState extends BaseState {
     this.execute(action)
     if (this.game.observeNeeded.length > 0) {
       for (const c of this.game.observeNeeded) {
-        this.game.observe(c)
+        observe(this.game, c)
       }
       this.game.observeNeeded = []
     }

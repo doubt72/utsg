@@ -6,7 +6,9 @@ import Feature from "./Feature";
 import BaseAction, { significantActions } from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import Counter from "./Counter";
-import { alliedCodeToName, axisCodeToName, counterKey, otherPlayer, serverVersion } from "../utilities/utilities";
+import {
+  alliedCodeToName, axisCodeToName, counterKey, nextLetter, otherPlayer, serverVersion
+} from "../utilities/utilities";
 import Unit from "./Unit";
 import Hex from "./Hex";
 import organizeStacks from "./support/organizeStacks";
@@ -60,6 +62,10 @@ export type GameData = {
 export type CloseProgress = "nr" | "nc" | "d"
 export const closeProgress: { [index: string]: CloseProgress } = {
   NeedsRoll: "nr", NeedsCasualties: "nc", Done: "d",
+}
+
+export type SpottingStatus = {
+  ref: string, target: Coordinate, level: number, unit: Unit,
 }
 
 export type SimpleUnitCheck = { unit: Unit, loc: Coordinate }
@@ -140,6 +146,7 @@ export default class Game {
   checkWindSpeed: boolean;
   playerOneNotification: [string, string] | undefined;
   playerTwoNotification: [string, string] | undefined;
+  spottingStatus: SpottingStatus[];
 
   actionPathLength: number = 0;
   actionPathDir: Direction | undefined;
@@ -197,6 +204,7 @@ export default class Game {
     this.observeNeeded = []
     this.checkWindDirection = false
     this.checkWindSpeed = false
+    this.spottingStatus = []
 
     this.serverVersion = data.server_version
 
@@ -1248,87 +1256,24 @@ export default class Game {
     }
   }
 
-  hide(uf: Unit | Feature): boolean {
-    if (uf.isFeature) { return false }
-    const unit = uf as Unit
-    const player = unit.playerNation === this.playerOneNation ? 1 : 2
-    if (unit.canCarrySupport || unit.uncrewedSW) {
-      if ((this.scenario.specialRules.includes("allied_hidden_units") && player === 1) ||
-          (this.scenario.specialRules.includes("axis_hidden_units") && player === 2)) {
-        return true
-      }
+  addSpotting(loc: Coordinate, unit: Unit, sponson: boolean) {
+    let letter = nextLetter(this.spottingStatus.map(s => s.ref))
+    if (!sponson && unit.spotting) {
+      letter = unit.spotting
+    } else if (sponson && unit.sponsonSpotting) {
+      letter = unit.sponsonSpotting
     }
-    return false
-  }
-
-  observeAction(loc: Coordinate, counters: Counter[], action: string) {
-    this.executeAction(new GameAction({
-      user: this.currentUser, player: counters[0].unit.playerNation === this.playerOneNation ? 1 : 2,
-      data: {
-        action, old_initiative: this.initiative,
-        target: counters.map(t => {
-          return {
-            x: loc.x, y: loc.y, id: t.unit.id, name: t.unit.name, status: t.unit.status
-          }
-        })
-      }
-    }, this), false)
-  }
-
-  observeFrom(loc: Coordinate, player: Player) {
-    const nation = player === 1 ? this.playerOneNation : this.playerTwoNation
-    let contact = false
-    for (const h of this.scenario.map.hexNeighbors(loc)) {
-      if (!h) { continue }
-      const counters = this.scenario.map.countersAt(h.coord)
-      const decoys: Counter[] = []
-      const targets: Counter[] = []
-      for (const c of counters) {
-        if (c.hasUnit && c.unit.nation !== nation) {
-          contact = true
-          if (c.unit.decoy) {
-            decoys.push(c)
-          } else if (!c.unit.observed) {
-            targets.push(c)
-          }
-        }
-      }
-      if (targets.length > 0) { this.observeAction(h.coord, targets, "observe") }
-      if (decoys.length > 0) { this.observeAction(h.coord, decoys, "remove_decoy") }
-    }
-    if (contact) {
-      const counters = this.scenario.map.countersAt(loc)
-      const decoys: Counter[] = []
-      const targets: Counter[] = []
-      for (const c of counters) {
-        if (c.hasUnit && c.unit.nation === nation) {
-          contact = true
-          if (c.unit.decoy) {
-            decoys.push(c)
-          } else if (!c.unit.observed) {
-            targets.push(c)
-          }
-        }
-      }
-      if (targets.length > 0) { this.observeAction(loc, targets, "observe") }
-      if (decoys.length > 0) { this.observeAction(loc, decoys, "remove_decoy") }
-    }
-  }
-
-  observe(loc: Coordinate) {
-    const counters = this.scenario.map.countersAt(loc)
-    const decoys: Counter[] = []
-    const targets: Counter[] = []
-    for (const c of counters) {
-      if (c.hasUnit) {
-        if (c.unit.decoy) {
-          decoys.push(c)
-        } else if (!c.unit.observed) {
-          targets.push(c)
+    for (const s of this.spottingStatus) {
+      if (s.ref === letter) {
+        if (loc.x === s.target.x && loc.y === s.target.y) {
+          s.level = 2
+        } else {
+          s.level = 1
+          s.target = loc
         }
       }
     }
-    if (targets.length > 0) { this.observeAction(loc, targets, "observe") }
-    if (decoys.length > 0) { this.observeAction(loc, decoys, "remove_decoy") }
+    this.spottingStatus.push({ ref: letter, target: loc, level: 1, unit })
+    unit.spotting = letter
   }
 }
