@@ -10,6 +10,7 @@ import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, fireStartTarget, rangeMultiplier, untargetedModifiers
 } from "../control/fire";
 import { rollbackAddActions } from "../control/movement";
+import { addSpotting } from "../control/spotting";
 import { StateSelection } from "../control/state/BaseState";
 import Counter from "../Counter";
 import Feature from "../Feature";
@@ -198,7 +199,7 @@ export default class FireAction extends BaseAction {
         if (!sponson && firing0.unit.turretJammed) { spotting = false }
       }
     }
-    if (spotting) { this.game.addSpotting(to, firing0.unit, sponson) }
+    if (spotting) { addSpotting(this.game, to, firing0.unit, sponson) }
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate

@@ -145,6 +145,10 @@ export type GameActionBreakdowndData = {
   breakdown_roll: number,
 }
 
+export type GameActionSpottingData = {
+  ref: string, x: number, y: number, level: number, id: string, sponson: boolean,
+}
+
 export type GameActionDetails = {
   action: string,
   old_initiative: number;
@@ -157,6 +161,7 @@ export type GameActionDetails = {
   target?: GameActionUnit[] | GameActionFeature[],
 
   dice_result?: GameActionDiceResult[],
+  spotting_data?: GameActionSpottingData[]
 
   rally_data?: GameActionRallyData,
   fire_data?: GameActionFireData,

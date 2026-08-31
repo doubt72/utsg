@@ -1,16 +1,6 @@
 Features/Bug Fixes
   - Improve multiplier on subsequent shot
-    + Add target markers
-    + Add docs
     - Display on counters/as markers main/sponson
-    + Lay marker on firing (only):
-      + Radio
-      + Turret (unless jammed)
-      + Hull Gun (unless immobilized)
-      + Sponson (unless immobilized)
-      + Gun
-      + Crewed Mortar
-    + Second time improves it, max 2
     - Remove marker
       - On move
       - On assault

@@ -4,9 +4,10 @@ import {
 import { normalDir, roll2d10, rolld10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
-import Game from "../../Game";
+import Game, { SpottingStatus } from "../../Game";
 import GameAction, {
-  gameActionAddActionType, GameActionDiceResult, GameActionMoveData, GameActionPath
+  gameActionAddActionType, GameActionDiceResult, GameActionMoveData, GameActionPath,
+  GameActionSpottingData
 } from "../../GameAction";
 import Hex from "../../Hex";
 import Unit from "../../Unit";
@@ -17,6 +18,7 @@ import {
   smokeOpenHex
 } from "../movement";
 import { removeStateSelection } from "../select";
+import { dataForSpotting } from "../spotting";
 import BaseState, { StateAddAction, StateSelection, stateType } from "./BaseState";
 
 export default class MoveState extends BaseState {
@@ -565,14 +567,36 @@ export default class MoveState extends BaseState {
       }
     }
     const mineTarget = this.selection[0].counter.unit
-    const moveData: GameActionMoveData | undefined = check ? { mines:
-      {
-        firepower: check.baseFirepower as number, infantry: !check.antiTank,
-        antitank: check.fieldGun || check.antiTank, is_armored: mineTarget.armored,
-        is_vehicle: mineTarget.isVehicle, lowest_armor: mineTarget.lowestArmor
-      }
-     } : undefined
+    const moveData: GameActionMoveData | undefined = check ? {
+      mines:
+        {
+          firepower: check.baseFirepower as number, infantry: !check.antiTank,
+          antitank: check.fieldGun || check.antiTank, is_armored: mineTarget.armored,
+          is_vehicle: mineTarget.isVehicle, lowest_armor: mineTarget.lowestArmor
+        }
+      } : undefined
     const dice: GameActionDiceResult[] = []
+    const spotting: GameActionSpottingData[] = []
+    if (this.path.length > 1) {
+      for (const s of this.selection) {
+        const ref = s.counter.unit.spotting
+        if (ref) {
+          const data = dataForSpotting(this.game, ref) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: s.counter.unit.id, ref,
+            level: data.level, sponson: false,
+          })
+        }
+        const ref2 = s.counter.unit.sponsonSpotting
+        if (ref2) {
+          const data = dataForSpotting(this.game, ref2) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: s.counter.unit.id, ref: ref2,
+            level: data.level, sponson: false,
+          })
+        }
+      }
+    }
     if (moveData) {
       const unit = this.selection[0].counter.unit
       const mines = moveData.mines
@@ -604,6 +628,7 @@ export default class MoveState extends BaseState {
         }),
         move_data: moveData,
         dice_result: dice,
+        spotting_data: spotting,
       }
     }, this.game)
     this.execute(action)

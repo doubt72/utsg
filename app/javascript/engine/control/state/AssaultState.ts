@@ -3,14 +3,17 @@ import { formatDieResult, passBlue, passGreen } from "../../../utilities/graphic
 import { normalDir, roll2d10, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
 import Feature from "../../Feature";
-import Game from "../../Game";
-import GameAction, { gameActionAddActionType, GameActionDiceResult, GameActionPath, GameActionUnit } from "../../GameAction";
+import Game, { SpottingStatus } from "../../Game";
+import GameAction, {
+  gameActionAddActionType, GameActionDiceResult, GameActionPath, GameActionSpottingData, GameActionUnit
+} from "../../GameAction";
 import Hex from "../../Hex";
 import Unit, { unitDataForTankCrew } from "../../Unit";
 import { assaultMovement } from "../assault";
 import { observeFrom } from "../decoy";
 import { alongRailroad, alongRoad } from "../movement";
 import { removeStateSelection } from "../select";
+import { dataForSpotting } from "../spotting";
 import BaseState, { StateAddAction, StateSelection, stateType } from "./BaseState";
 
 export default class AssaultState extends BaseState {
@@ -401,6 +404,7 @@ export default class AssaultState extends BaseState {
         }`
       })
     }
+    const spotting: GameActionSpottingData[] = []
     const target: GameActionUnit[] = []
     if (this.path.length > 1) {
       const loc = new Coordinate(this.path[1].x, this.path[1].y)
@@ -413,6 +417,24 @@ export default class AssaultState extends BaseState {
             immobilized: c.unit.isImmobilized, turret: c.unit.turretJammed,
             weapon_jammed: c.unit.jammed, weapon_broken: c.unit.weaponDestroyed,
             sponson_jammed: c.unit.sponsonJammed, sponson_broken: c.unit.sponsonDestroyed,
+          })
+        }
+      }
+      for (const s of this.selection) {
+        const ref = s.counter.unit.spotting
+        if (ref) {
+          const data = dataForSpotting(this.game, ref) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: s.counter.unit.id, ref,
+            level: data.level, sponson: false,
+          })
+        }
+        const ref2 = s.counter.unit.sponsonSpotting
+        if (ref2) {
+          const data = dataForSpotting(this.game, ref2) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: s.counter.unit.id, ref: ref2,
+            level: data.level, sponson: false,
           })
         }
       }
@@ -435,7 +457,8 @@ export default class AssaultState extends BaseState {
             type: a.type, x: a.x, y: a.y, id: a.id, name: a.name, index: a.index
           }
         }),
-        dice_result: dice
+        dice_result: dice,
+        spotting_data: spotting,
       }
     }, this.game)
     this.execute(action)

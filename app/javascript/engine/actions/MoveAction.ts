@@ -1,12 +1,14 @@
 import { Coordinate, featureType } from "../../utilities/commonTypes";
 import { formatCoordinate, formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
 import { baseToHit, normalDir, smokeRoll } from "../../utilities/utilities";
+import { addSpotting, removeSpotting } from "../control/spotting";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
 import {
   GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, GameActionDiceResult, gameActionAddActionType,
-  GameActionMoveData
+  GameActionMoveData,
+  GameActionSpottingData
 } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
@@ -19,6 +21,7 @@ export default class MoveAction extends BaseAction {
   addAction: GameActionAddAction[];
   moveData?: GameActionMoveData
   diceResults: GameActionDiceResult[];
+  spottingData: GameActionSpottingData[];
 
   rush: boolean;
 
@@ -37,6 +40,7 @@ export default class MoveAction extends BaseAction {
     this.addAction = data.data.add_action as GameActionAddAction[]
     this.moveData = data.data.move_data
     this.diceResults = data.data.dice_result as GameActionDiceResult[]
+    this.spottingData = this.data.spotting_data ?? []
   }
 
   get type(): string { return this.rush ? "rush" : "move" }
@@ -224,6 +228,9 @@ export default class MoveAction extends BaseAction {
         if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
       })
     }
+    for (const s of this.spottingData) {
+      removeSpotting(this.game, s.ref)
+    }
     this.game.addActionAnimations(anims)
   }
 
@@ -275,6 +282,11 @@ export default class MoveAction extends BaseAction {
       }
     }
     if (this.game.sniperNeeded.length > 0) { this.game.sniperNeeded = [] }
+    for (const s of this.spottingData) {
+      const loc = new Coordinate(s.x, s.y)
+      const unit = this.game.findUnitById(s.id) as Unit
+      addSpotting(this.game, loc, unit, s.sponson, s.ref)
+    }
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }

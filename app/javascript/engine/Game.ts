@@ -7,7 +7,7 @@ import BaseAction, { significantActions } from "./actions/BaseAction";
 import IllegalActionError from "./actions/IllegalActionError";
 import Counter from "./Counter";
 import {
-  alliedCodeToName, axisCodeToName, counterKey, nextLetter, otherPlayer, serverVersion
+  alliedCodeToName, axisCodeToName, counterKey, otherPlayer, serverVersion
 } from "../utilities/utilities";
 import Unit from "./Unit";
 import Hex from "./Hex";
@@ -65,7 +65,7 @@ export const closeProgress: { [index: string]: CloseProgress } = {
 }
 
 export type SpottingStatus = {
-  ref: string, target: Coordinate, level: number, unit: Unit,
+  ref: string, target: Coordinate, level: number, unit: Unit, sponson: boolean,
 }
 
 export type SimpleUnitCheck = { unit: Unit, loc: Coordinate }
@@ -1254,26 +1254,5 @@ export default class Game {
         this.clearGameState()
       }
     }
-  }
-
-  addSpotting(loc: Coordinate, unit: Unit, sponson: boolean) {
-    let letter = nextLetter(this.spottingStatus.map(s => s.ref))
-    if (!sponson && unit.spotting) {
-      letter = unit.spotting
-    } else if (sponson && unit.sponsonSpotting) {
-      letter = unit.sponsonSpotting
-    }
-    for (const s of this.spottingStatus) {
-      if (s.ref === letter) {
-        if (loc.x === s.target.x && loc.y === s.target.y) {
-          s.level = 2
-        } else {
-          s.level = 1
-          s.target = loc
-        }
-      }
-    }
-    this.spottingStatus.push({ ref: letter, target: loc, level: 1, unit })
-    unit.spotting = letter
   }
 }

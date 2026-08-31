@@ -1,10 +1,11 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
 import { normalDir, otherPlayer } from "../../utilities/utilities";
+import { addSpotting, removeSpotting } from "../control/spotting";
 import Counter from "../Counter";
 import Feature from "../Feature";
 import Game from "../Game";
-import { GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, gameActionAddActionType, GameActionDiceResult } from "../GameAction";
+import { GameActionPath, GameActionUnit, GameActionAddAction, GameActionData, gameActionAddActionType, GameActionDiceResult, GameActionSpottingData } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit, { unitDataForTankCrew } from "../Unit";
 import BaseAction from "./BaseAction";
@@ -16,6 +17,7 @@ export default class AssaultMoveAction extends BaseAction {
   addAction: GameActionAddAction[];
   target: GameActionUnit[];
   diceResult: GameActionDiceResult[];
+  spottingData: GameActionSpottingData[];
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -32,6 +34,7 @@ export default class AssaultMoveAction extends BaseAction {
     this.addAction = data.data.add_action as GameActionAddAction[]
     this.target = data.data.target as GameActionUnit[]
     this.diceResult = data.data.dice_result as GameActionDiceResult[]
+    this.spottingData = this.data.spotting_data ?? []
   }
 
   get type(): string { return "assault_move" }
@@ -153,6 +156,9 @@ export default class AssaultMoveAction extends BaseAction {
         this.map.removeCounter(loc, this.origin[0].id)
       }
     }
+    for (const s of this.spottingData) {
+      removeSpotting(this.game, s.ref)
+    }
     sortStacks(this.map)
     this.game.updateInitiative(3)
     this.game.addActionAnimations(anims)
@@ -226,6 +232,11 @@ export default class AssaultMoveAction extends BaseAction {
         const unit = this.map.unitAtId(start, u.id) as Counter
         unit.unit.setStatus(u.status)
       }
+    }
+    for (const s of this.spottingData) {
+      const loc = new Coordinate(s.x, s.y)
+      const unit = this.game.findUnitById(s.id) as Unit
+      addSpotting(this.game, loc, unit, s.sponson)
     }
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative

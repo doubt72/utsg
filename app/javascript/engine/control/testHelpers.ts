@@ -84,6 +84,12 @@ export const testGMortar: UnitData = {
   o: { m: 2, t: 1, b: 3, e: 1 },
 }
 
+export const testGHMortar: UnitData = {
+  id: "gh_mortar", t: "sw", i: "mortar", c: "ger", n: "12cm GrW 42",
+  y: 43, f: 32, r: 32, v: 2, s: 2,
+  o: { tow: 2, c: 1, s: 1, e: 1, m: 5, t: 1, b: 3 },
+}
+
 export const testGRadio: UnitData = {
   id: "g_radio", t: "sw", i: "radio", c: "ger", n: "Radio 10.5cm", y: 35, f: 24, r: 99, v: 0,
   o: { s: 1, o: 1, j: 3, f: 18, e: 1 },
