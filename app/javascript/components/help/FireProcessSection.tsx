@@ -88,7 +88,7 @@ export default function FireProcessSection({ section }: SectionProps) {
       </p>
       <p>
         Moving or assault moving a unit with a bonus will cancel it, as will be being displaced by a
-        blaze. Crewed weapons lose the bonus if the crew is broken or pinned, as will abaondoning a
+        blaze. Crewed weapons lose the bonus if the crew is broken or pinned, as will abandoning a
         vehicle. A broken weapon loses the bonus and does not get it back if it&apos;s repaired
         until firing again. Weapons in jammed turrets cannot gain a spotting bonus, and lose it when
         the turret james. Likewise, hull weapons in immobilized vehicles cannot gain it and lose it

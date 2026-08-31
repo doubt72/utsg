@@ -132,7 +132,7 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   const style = { fill: markerYellow(), stroke: "black", strokeWidth: 2 }
   const fStyle = { fill: "black" }
   if (counter.unit.pinned || counter.unit.isImmobilized ||
-      counter.unit.isAbandoned || counter.unit.turretJammed ||
+      counter.unit.isAbandoned || counter.unit.isTurretJammed ||
       (counter.unit.jammed && counter.unit.isVehicle) || counter.unit.weaponDestroyed ||
       counter.unit.sponsonJammed || counter.unit.sponsonDestroyed || counter.unit.routed) {
     style.fill = counterRed()
@@ -146,7 +146,7 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   if (counter.unit.isTired) { text.push("TRD") }
   if (counter.unit.isImmobilized) { text.push("IMM") }
   if (counter.unit.isAbandoned) { text.push("ABN") }
-  if (counter.unit.turretJammed) { text.push("TRT") }
+  if (counter.unit.isTurretJammed) { text.push("TRT") }
   if (counter.unit.jammed && counter.unit.isVehicle) { text.push("WPB") }
   if (counter.unit.weaponDestroyed) { text.push("WPD") }
   if (counter.unit.sponsonJammed) { text.push("HWB") }
@@ -336,7 +336,7 @@ export function counterInfoBadges(
     if (u.isAbandoned && s) {
       badges.push({ text: "abandoned", color: counterRed(), tColor: "white" })
     }
-    if (u.turretJammed && s) {
+    if (u.isTurretJammed && s) {
       badges.push({ text: "turret jammed", color: counterRed(), tColor: "white" })
     }
     if (u.jammed && u.isVehicle && s) {

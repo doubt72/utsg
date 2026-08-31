@@ -59,7 +59,7 @@ export function showRepair(game: Game): boolean {
   if (!unit.tankCrew) { return false }
   const counters = game.scenario.map.countersAt(new Coordinate(selection[0].x, selection[0].y))
   for (const f of counters) {
-    if (f.hasUnit && f.unit.isVehicle && (f.unit.isImmobilized || f.unit.turretJammed) &&
+    if (f.hasUnit && f.unit.isVehicle && (f.unit.isImmobilized || f.unit.isTurretJammed) &&
         f.unit.playerNation === unit.playerNation) {
       if (f.unit.isActivated || f.unit.isExhausted) { continue }
       return true

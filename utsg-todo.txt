@@ -1,15 +1,17 @@
 Features/Bug Fixes
   - Improve multiplier on subsequent shot
     - Display on counters/as markers main/sponson
-    - Remove marker
-      - On move
-      - On assault
-      - On fire displace
-      - On crew breaking/being pinned
-      - On wreck/abandon
-      - On break/destroy weapon
-      - On turret jam
-      - On immobilized sponson/hull
+    - Actually improved fire (unskip tests)
+    + Remove marker
+      + On move
+      + On assault
+      + On fire displace
+      + On crew breaking/being pinned
+      + On wreck/abandon
+      + On break/destroy weapon
+      + On turret jam
+      + On immobilized sponson/hull
+  - Check that fire displace dispells decoy
   - Decoy markers
     - Display unobserved in replay
   - Check offboard lines for artillery all edges

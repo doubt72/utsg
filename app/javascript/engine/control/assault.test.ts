@@ -228,7 +228,7 @@ describe("assault movement", () => {
     map.select(unit)
 
     const unit2 = new Unit(testGInf)
-    unit2.break()
+    unit2.break(game)
     unit2.id = "test2"
     map.addCounter(loc, unit2)
 
@@ -313,7 +313,7 @@ describe("assault movement", () => {
     map.select(unit)
 
     const unit2 = new Unit(testRTank)
-    unit2.abandon()
+    unit2.abandon(game)
     unit2.immobilize()
     unit2.id = "enemy"
     const eloc = new Coordinate(3, 2)
@@ -1093,7 +1093,7 @@ describe("assault movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
-    unit.turretJammed = true
+    unit.jamTurret(game)
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
     const unit2 = new Unit(testGTCrew)
@@ -1116,7 +1116,7 @@ describe("assault movement", () => {
     expect(counters[0].unit.isExhausted).toBe(true)
     expect(counters[1].hasMarker).toBe(true)
     expect(counters[2].unit.name).toBe("PzKpfw 35(t)")
-    expect(counters[2].unit.turretJammed).toBe(false)
+    expect(counters[2].unit.isTurretJammed).toBe(false)
 
     expect(deHTML(game.actions[0].stringValue)).toBe(
       "German Tank Crew at E3 attempts to repair vehicle; " +
@@ -1208,7 +1208,7 @@ describe("assault movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
-    unit.abandon()
+    unit.abandon(game)
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
     const unit2 = new Unit(testGTCrew)
@@ -1247,11 +1247,11 @@ describe("assault movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGTank)
     unit.id = "test1"
-    unit.abandon()
+    unit.abandon(game)
     const loc = new Coordinate(4, 2)
     map.addCounter(loc, unit)
     const unit2 = new Unit(testGTank)
-    unit2.abandon()
+    unit2.abandon(game)
     unit2.id = "test2"
     map.addCounter(loc, unit2)
     const unit3 = new Unit(testGTCrew)

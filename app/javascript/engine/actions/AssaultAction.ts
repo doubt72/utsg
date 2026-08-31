@@ -132,7 +132,7 @@ export default class AssaultMoveAction extends BaseAction {
         anims.push({ loc: mid, type: "entrench" })
       } else if (a.type === gameActionAddActionType.Abandon) {
         const counter = this.game.findCounterById(this.origin[0].id as string) as Counter
-        counter.unit.abandon()
+        counter.unit.abandon(this.game)
         const unit = new Unit(unitDataForTankCrew(a.id as string, counter.unit.nation))
         unit.playerNation = counter.unit.playerNation as string
         unit.exhaust()
@@ -156,9 +156,7 @@ export default class AssaultMoveAction extends BaseAction {
         this.map.removeCounter(loc, this.origin[0].id)
       }
     }
-    for (const s of this.spottingData) {
-      removeSpotting(this.game, s.ref)
-    }
+    for (const s of this.spottingData) { removeSpotting(this.game, s.ref) }
     sortStacks(this.map)
     this.game.updateInitiative(3)
     this.game.addActionAnimations(anims)
@@ -197,7 +195,7 @@ export default class AssaultMoveAction extends BaseAction {
         throw new IllegalActionError("internal error undoing repair")
       } else if (a.type === gameActionAddActionType.Crew) {
         const counter = this.game.findCounterById(a.id as string) as Counter
-        counter.unit.abandon()
+        counter.unit.abandon(this.game)
         const unit = new Unit(unitDataForTankCrew(this.origin[0].id as string, counter.unit.nation))
         unit.playerNation = counter.unit.playerNation as string
         const loc = new Coordinate(a.x, a.y)
@@ -236,7 +234,7 @@ export default class AssaultMoveAction extends BaseAction {
     for (const s of this.spottingData) {
       const loc = new Coordinate(s.x, s.y)
       const unit = this.game.findUnitById(s.id) as Unit
-      addSpotting(this.game, loc, unit, s.sponson)
+      addSpotting(this.game, loc, unit, s.sponson, s.ref)
     }
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative

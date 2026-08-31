@@ -228,9 +228,7 @@ export default class MoveAction extends BaseAction {
         if (unit?.canCarrySupport) { this.game.addSniper( { unit, loc }) }
       })
     }
-    for (const s of this.spottingData) {
-      removeSpotting(this.game, s.ref)
-    }
+    for (const s of this.spottingData) { removeSpotting(this.game, s.ref) }
     this.game.addActionAnimations(anims)
   }
 

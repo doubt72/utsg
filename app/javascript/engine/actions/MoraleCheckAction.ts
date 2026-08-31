@@ -102,7 +102,7 @@ export default class MoraleCheckAction extends BaseAction {
           if (other && !same) { this.map.toggleVP(hex) }
         }
       } else {
-        counter.unit.break()
+        counter.unit.break(this.game)
         if (hex.x != this.target.x || hex.y !== this.target.y) {
           const old = new Coordinate(this.target.x, this.target.y)
           this.resetMove()
@@ -115,7 +115,7 @@ export default class MoraleCheckAction extends BaseAction {
       if (this.game.shortCheckNeeded.hit) {
         this.game.shortCheckNeeded.short = true
       }
-      counter.unit.pinned = true
+      counter.unit.pin(this.game)
       if (hex.x != this.target.x || hex.y !== this.target.y) {
         const old = new Coordinate(this.target.x, this.target.y)
         this.resetMove()

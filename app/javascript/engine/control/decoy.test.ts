@@ -337,7 +337,7 @@ describe("decoy", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       game.routNeeded.push({ unit, loc })

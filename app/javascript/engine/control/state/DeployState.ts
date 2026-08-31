@@ -5,6 +5,7 @@ import GameAction from "../../GameAction";
 import Hex from "../../Hex";
 import { ReinforcementItem } from "../../Scenario";
 import Unit from "../../Unit";
+import { hideObserved } from "../decoy";
 import { deployHex } from "../deploy";
 import BaseState, { stateType } from "./BaseState";
 
@@ -120,7 +121,7 @@ export default class DeployState extends BaseState {
   }
 
   split() {
-    const name = this.game.hide(this.counter.counter) ? "" : this.counter.counter.name
+    const name = hideObserved(this.game, this.counter.counter) ? "" : this.counter.counter.name
     this.game.executeAction(new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
@@ -132,7 +133,7 @@ export default class DeployState extends BaseState {
   }
 
   join() {
-    const name = this.game.hide(this.counter.counter) ? "" : this.counter.counter.name
+    const name = hideObserved(this.game, this.counter.counter) ? "" : this.counter.counter.name
     this.game.executeAction(new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
@@ -147,7 +148,7 @@ export default class DeployState extends BaseState {
 
   finish() {
     if (!this.location) { return }
-    const name = this.game.hide(this.counter.counter) ? this.counter.counter.typeName : this.counter.counter.name
+    const name = hideObserved(this.game, this.counter.counter) ? this.counter.counter.typeName : this.counter.counter.name
     const id = `uf-${this.game.actions.length}`
     const action = new GameAction({
       user: this.game.currentUser,

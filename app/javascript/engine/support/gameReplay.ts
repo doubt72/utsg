@@ -57,7 +57,7 @@ function unitToData(x: number, y: number, unit: Unit): GameReplayCounterData {
     split: unit.isSplit, immobilized: unit.isImmobilized, wreck: unit.isWreck,
     jammed: unit.jammed, sponsonJammed: unit.sponsonJammed,
     weaponDestroyed: unit.weaponDestroyed, sponsonDestroyed: unit.sponsonDestroyed,
-    turretJammed: unit.turretJammed, abandoned: unit.isAbandoned, facing: unit.facing,
+    turretJammed: unit.isTurretJammed, abandoned: unit.isAbandoned, facing: unit.facing,
     turretFacing: unit.turretFacing, uf: unit.rawData, children
   }
 }
@@ -74,7 +74,7 @@ function dataToUnit(data: GameReplayCounterData): Unit {
   unit.sponsonJammed = !!data.sponsonJammed
   unit.weaponDestroyed = !!data.weaponDestroyed
   unit.sponsonDestroyed = !!data.sponsonDestroyed
-  unit.turretJammed = !!data.turretJammed
+  unit.turretJammedState = !!data.turretJammed
   if (data.abandoned) { unit.abandon() }
   unit.facing = data.facing
   unit.turretFacing = data.turretFacing as Direction

@@ -132,7 +132,7 @@ describe("minor actions", () => {
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
     unit1.activate()
-    unit1.pinned = true
+    unit1.pin(game)
     const loc = new Coordinate(0,0)
     map.addCounter(loc, unit1)
     const unit2 = new Unit(testGInf)

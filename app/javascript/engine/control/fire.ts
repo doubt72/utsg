@@ -203,7 +203,7 @@ export function firepower(
       fp = Math.floor(fp/2)
       why.push("- halved: vehicle immobilized")
     }
-    if (sunit.turreted && sunit.turretJammed && !sponson) {
+    if (sunit.turreted && sunit.isTurretJammed && !sponson) {
       fp = Math.floor(fp/2)
       why.push("- halved: turret jammed")
     }
@@ -332,7 +332,7 @@ export function rangeMultiplier(
     }
   }
   if (source.unit.turreted && !sponson) {
-    if (source.unit.turretJammed) {
+    if (source.unit.isTurretJammed) {
       mult += 1
       why.push("- plus 1 for jammed turret")
     }

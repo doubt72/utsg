@@ -839,12 +839,12 @@ describe("reaction fire attacks", () => {
     map.addCounter(oloc, other1)
     const other2 = new Unit(testRInf)
     other2.id = "target2"
-    other2.break()
+    other2.break(game)
     const oloc2 = new Coordinate(2, 1)
     map.addCounter(oloc2, other2)
     const other3 = new Unit(testRInf)
     other3.id = "target3"
-    other3.break()
+    other3.break(game)
     const oloc3 = new Coordinate(2, 0)
     map.addCounter(oloc3, other3)
     const other4 = new Unit(testRMG)

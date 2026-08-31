@@ -49,7 +49,7 @@ export default class StatusUpdateAction extends BaseAction {
       if (t.new_status !== undefined) {
         c.unit.setStatus(t.new_status)
       }
-      if (t.unpin) { c.unit.pinned = false }
+      if (t.unpin) { c.unit.unpin() }
       if (t.unrout) { c.unit.routed = false }
     }
   }

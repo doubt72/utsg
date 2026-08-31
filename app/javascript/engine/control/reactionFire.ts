@@ -84,7 +84,7 @@ export function reactionAvailableCoords(game: Game): Coordinate[] {
             }
             if (!arc) { continue }
           }
-          if (c.unit.rotates && c.unit.turreted && c.unit.turretJammed) {
+          if (c.unit.rotates && c.unit.turreted && c.unit.isTurretJammed) {
             let arc = false
             for (const t of targets) {
               const toc = new Coordinate(t.x, t.y)

@@ -1,9 +1,10 @@
 import { Coordinate, featureType, hexOpenType, HexOpenType, unitType } from "../../../utilities/commonTypes";
 import { normalDir, stackLimit } from "../../../utilities/utilities";
 import Counter from "../../Counter";
-import Game from "../../Game";
-import GameAction, { GameActionAddAction, gameActionAddActionType, GameActionPath, GameActionUnit } from "../../GameAction";
+import Game, { SpottingStatus } from "../../Game";
+import GameAction, { GameActionAddAction, gameActionAddActionType, GameActionPath, GameActionSpottingData, GameActionUnit } from "../../GameAction";
 import Hex from "../../Hex";
+import { dataForSpotting } from "../spotting";
 import BaseState, { StateAddAction, stateType } from "./BaseState";
 
 export default class FireDisplaceState extends BaseState {
@@ -125,12 +126,41 @@ export default class FireDisplaceState extends BaseState {
     const target: GameActionUnit = {
       x: loc.x, y: loc.y, id: unit.id, name: unit.name, status: unit.status
     }
+    const spotting: GameActionSpottingData[] = []
+    const checkUnits = this.selection.map(s => s.counter.unit)
+    for (const s of this.selection) {
+      for (const c of s.counter.unit.children) {
+        checkUnits.push(c)
+        for (const cc of c.children) { checkUnits.push(cc) }
+      }
+    }
+    if (this.path.length > 1) {
+      for (const s of checkUnits) {
+        const ref = s.spotting
+        if (ref) {
+          const data = dataForSpotting(this.game, ref) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: s.id, ref,
+            level: data.level, sponson: false,
+          })
+        }
+        const ref2 = s.sponsonSpotting
+        if (ref2) {
+          const data = dataForSpotting(this.game, ref2) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: s.id, ref: ref2,
+            level: data.level, sponson: true,
+          })
+        }
+      }
+    }
     const action = new GameAction({
       user: this.game.currentUser, player: this.player,
       data: {
         action: "fire_displace", old_initiative: this.game.initiative,
         path: this.path.map(c => { return { x: c.x, y: c.y }}),
         target: [target], add_action: addAction,
+        spotting_data: spotting,
       },
     }, this.game)
     this.execute(action)

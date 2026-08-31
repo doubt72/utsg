@@ -344,10 +344,10 @@ describe("movement", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test1"
-    unit.pinned = true
+    unit.pin(game)
     expect(unit.baseMovement).toBe(4)
     expect(unit.currentMovement).toBe(0)
-    unit.pinned = false
+    unit.unpin()
     unit.tire()
     expect(unit.currentMovement).toBe(2)
     map.addCounter(new Coordinate(4, 2), unit)

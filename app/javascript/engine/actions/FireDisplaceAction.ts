@@ -1,8 +1,9 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
 import { playerForNation } from "../../utilities/utilities";
+import { addSpotting, removeSpotting } from "../control/spotting";
 import Game from "../Game";
-import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionUnit } from "../GameAction";
+import { GameActionAddAction, gameActionAddActionType, GameActionData, GameActionPath, GameActionSpottingData, GameActionUnit } from "../GameAction";
 import { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
@@ -11,6 +12,7 @@ export default class FireDisplaceAction extends BaseAction {
   target: GameActionUnit
   path: GameActionPath[]
   addActions: GameActionAddAction[]
+  spottingData: GameActionSpottingData[];
 
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -22,6 +24,7 @@ export default class FireDisplaceAction extends BaseAction {
     this.target = (data.data.target as GameActionUnit[])[0]
     this.path = data.data.path as GameActionPath[]
     this.addActions = (data.data.add_action as GameActionAddAction[])
+    this.spottingData = this.data.spotting_data ?? []
   }
 
   get type(): string { return "fire_displace" }
@@ -84,6 +87,7 @@ export default class FireDisplaceAction extends BaseAction {
       const player = playerForNation(unit, this.game)
       this.game.setCurrentPlayer(player)
     }
+    for (const s of this.spottingData) { removeSpotting(this.game, s.ref) }
     sortStacks(this.map)
   }
   
@@ -109,6 +113,11 @@ export default class FireDisplaceAction extends BaseAction {
       }
     }
     this.game.fireDisplaceNeeded.unshift({ loc: start, unit })
+    for (const s of this.spottingData) {
+      const loc = new Coordinate(s.x, s.y)
+      const unit = this.game.findUnitById(s.id) as Unit
+      addSpotting(this.game, loc, unit, s.sponson, s.ref)
+    }
     sortStacks(this.map)
     this.game.initiative = this.data.old_initiative
   }

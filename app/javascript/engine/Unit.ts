@@ -3,6 +3,7 @@ import {
   SizeRange, SponsonType, UnitStatus, UnitType, movementType, sponsonType, unitStatus, unitType
 } from "../utilities/commonTypes";
 import { normalDir } from "../utilities/utilities";
+import { removeSpotting } from "./control/spotting";
 import Game from "./Game";
 import Map from "./Map";
 import {
@@ -130,7 +131,7 @@ export default class Unit {
   sponsonJammed: boolean;
   weaponDestroyed: boolean;
   sponsonDestroyed: boolean;
-  turretJammed: boolean;
+  turretJammedState: boolean;
   immobilizationState: boolean;
   abandonedState: boolean;
   pinned: boolean;
@@ -243,7 +244,7 @@ export default class Unit {
     this.sponsonJammed = false
     this.weaponDestroyed = false
     this.sponsonDestroyed = false
-    this.turretJammed = false
+    this.turretJammedState = false
     this.immobilizationState = false
     this.abandonedState = false
     this.pinned = false
@@ -455,14 +456,39 @@ export default class Unit {
     this.internalStatus = unitStatus.Tired
   }
 
-  break(): void {
+  break(game?: Game): void {
     this.pinned = false
     this.internalStatus = unitStatus.Broken
+    if (game) {
+      for (const c of this.children) {
+        if (c.spotting) { removeSpotting(game, c.spotting) }
+      }
+    }
+  }
+
+  pin(game?: Game): void {
+    this.pinned = true
+    if (game) {
+      for (const c of this.children) {
+        if (c.spotting) { removeSpotting(game, c.spotting) }
+      }
+    }
+  }
+
+  unpin(): void {
+    this.pinned = false
+  }
+
+  jamTurret(game?: Game): void {
+    this.turretJammedState = true
+    if (game) { if (this.spotting) { removeSpotting(game, this.spotting) } }
   }
 
   immobilize(map?: Map): void {
     this.immobilizationState = true
     if (!map) { return }
+    if (this.sponsonSpotting && map.game) { removeSpotting(map.game, this.sponsonSpotting) }
+    if (this.spotting && !this.turreted && map.game) { removeSpotting(map.game, this.spotting) }
     const loc = map.findLocationById(this.id) as Coordinate
     for (const u of this.children) {
       if (!u.isExhausted) { u.activate() }
@@ -475,12 +501,16 @@ export default class Unit {
     if (this.immobilizationState) {
       this.immobilizationState = false
     } else {
-      this.turretJammed = false
+      this.turretJammedState = false
     }
   }
 
-  abandon(): void {
+  abandon(game?: Game): void {
     this.abandonedState = true
+    if (game) {
+      if (this.spotting) { removeSpotting(game, this.spotting) }
+      if (this.sponsonSpotting) { removeSpotting(game, this.sponsonSpotting) }
+    }
   }
 
   crew(): void {
@@ -492,7 +522,7 @@ export default class Unit {
     this.weaponDestroyed = false
     this.immobilizationState = false
     this.abandonedState = false
-    this.turretJammed = false
+    this.turretJammedState = false
     this.sponsonJammed = false
     this.sponsonDestroyed = false
     this.internalStatus = unitStatus.Wreck
@@ -528,6 +558,8 @@ export default class Unit {
         }
         if (other && !same) { map.toggleVP(loc) }
       }
+      if (this.spotting) { removeSpotting(game, this.spotting) }
+      if (this.sponsonSpotting) { removeSpotting(game, this.sponsonSpotting) }
     }
   }
 
@@ -538,7 +570,7 @@ export default class Unit {
     game.removeEliminatedCounter(`${this.id}-clone`)
     this.internalStatus = unitStatus.Normal
     this.immobilizationState = immobilized
-    this.turretJammed = turret
+    this.turretJammedState = turret
     this.jammed = weaponJammed
     this.weaponDestroyed = weaponDestroyed
     this.sponsonJammed = sponsonJammed
@@ -595,6 +627,10 @@ export default class Unit {
 
   get isImmobilized(): boolean {
     return this.immobilizationState
+  }
+
+  get isTurretJammed(): boolean {
+    return this.turretJammedState
   }
 
   get isAbandoned(): boolean {

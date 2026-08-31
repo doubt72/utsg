@@ -146,7 +146,7 @@ export default class AssaultState extends BaseState {
   get rotateOpen(): boolean {
     const counter = this.selection[0].counter
     if (this.path.length > 1) {
-      if (counter.unit.turreted && !counter.unit.turretJammed) { return true }
+      if (counter.unit.turreted && !counter.unit.isTurretJammed) { return true }
     }
     return false
   }
@@ -154,7 +154,7 @@ export default class AssaultState extends BaseState {
   get rotatePossible(): boolean {
     const counter = this.selection[0].counter
     if (this.path.length > 1) {
-      if (counter.unit.turreted && !counter.unit.turretJammed) { return true }
+      if (counter.unit.turreted && !counter.unit.isTurretJammed) { return true }
     }
     return false
   }
@@ -197,7 +197,7 @@ export default class AssaultState extends BaseState {
     const same = this.samePlayer(target)
     if (!same) {return false}
     if (this.chooseRepair) {
-      if (target.isVehicle && (target.isImmobilized || target.turretJammed) &&
+      if (target.isVehicle && (target.isImmobilized || target.isTurretJammed) &&
           !target.isActivated && !target.isExhausted) {
         return true
       }
@@ -323,7 +323,7 @@ export default class AssaultState extends BaseState {
     let id = ""
     for (const c of counters) {
       const unit = c.unit as Unit
-      if (c.hasUnit && unit.isVehicle && (unit.isImmobilized || unit.turretJammed) && !unit.isActivated &&
+      if (c.hasUnit && unit.isVehicle && (unit.isImmobilized || unit.isTurretJammed) && !unit.isActivated &&
           !unit.isExhausted && unit.playerNation === this.selection[0].counter.unit.playerNation) {
         if (id === "") {
           id = unit.id
@@ -414,7 +414,7 @@ export default class AssaultState extends BaseState {
             c.unit.playerNation !== this.selection[0].counter.unit.playerNation) {
           target.push({
             x: loc.x, y: loc.y, id: c.unit.id, name: c.unit.name, status: c.unit.status,
-            immobilized: c.unit.isImmobilized, turret: c.unit.turretJammed,
+            immobilized: c.unit.isImmobilized, turret: c.unit.isTurretJammed,
             weapon_jammed: c.unit.jammed, weapon_broken: c.unit.weaponDestroyed,
             sponson_jammed: c.unit.sponsonJammed, sponson_broken: c.unit.sponsonDestroyed,
           })
@@ -434,7 +434,7 @@ export default class AssaultState extends BaseState {
           const data = dataForSpotting(this.game, ref2) as SpottingStatus
           spotting.push({
             x: data.target.x, y: data.target.y, id: s.counter.unit.id, ref: ref2,
-            level: data.level, sponson: false,
+            level: data.level, sponson: true,
           })
         }
       }

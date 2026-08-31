@@ -184,7 +184,7 @@ export default function MapCounterOverlay({
         if (unit.isAbandoned) { rc += 1 }
         if (unit.weaponDestroyed || unit.jammed ) { rc += 1 }
         if (unit.sponsonDestroyed || unit.sponsonJammed ) { rc += 1 }
-        if (unit.turretJammed) { rc += 1 }
+        if (unit.isTurretJammed) { rc += 1 }
         if (!unit.isNormal ) { rc += 1 }
         if (unit.eliteCrew !== 0) { rc += 1 }
       } else {

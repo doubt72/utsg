@@ -374,7 +374,7 @@ function addMoveActions(game: Game, actions: GameControl[]): void {
     } else {
       actions.unshift({ type: "none", message: "select additional units or select hex to move" })
     }
-    if (actionSelect.turreted && !actionSelect.turretJammed) {
+    if (actionSelect.turreted && !actionSelect.isTurretJammed) {
       actions.push({ type: "move_rotate_toggle" })
     }
     if (showLaySmoke(game)) {

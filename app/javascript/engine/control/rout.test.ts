@@ -20,7 +20,7 @@ describe("routing", () => {
     test("map edge rout path", () => {
       const game = createBlankGame()
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       expect(findRoutPathTree(game, new Coordinate(4, 2), 4, 2, unit)).toBe(false)
     })
@@ -29,7 +29,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Unit(testRInf)
       map.addCounter(new Coordinate(4, 2), blocking)
@@ -44,7 +44,7 @@ describe("routing", () => {
     test("single rout path", () => {
       const game = createBlankGame()
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       expect(unit.currentMovement).toBe(4)
 
@@ -65,7 +65,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Unit(testRInf)
       map.addCounter(new Coordinate(1, 2), blocking)
@@ -95,7 +95,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Unit(testGInf)
       const loc = new Coordinate(1, 2)
@@ -128,7 +128,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Unit(testGInf)
       const loc = new Coordinate(1, 2)
@@ -162,7 +162,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Unit(testGInf)
       map.addCounter(new Coordinate(1, 2), blocking)
@@ -184,7 +184,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Unit(testGInf)
       map.addCounter(new Coordinate(1, 2), blocking)
@@ -216,7 +216,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Feature(testWire)
       map.addCounter(new Coordinate(1, 2), blocking)
@@ -246,7 +246,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Feature(testFire)
       map.addCounter(new Coordinate(1, 2), blocking)
@@ -276,7 +276,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       const blocking = new Feature(testWire)
       map.addCounter(new Coordinate(0, 2), blocking)
@@ -293,7 +293,7 @@ describe("routing", () => {
       game.scenario.map.axisDir = 2.5
       const unit = new Unit(testGInf)
       unit.brokenMovement = 2
-      unit.break()
+      unit.break(game)
       expect(unit.currentMovement).toBe(2)
 
       const root = new Coordinate(2, 0)
@@ -312,7 +312,7 @@ describe("routing", () => {
       game.scenario.map.axisDir = 2.5
       const unit = new Unit(testGInf)
       unit.brokenMovement = 2
-      unit.break()
+      unit.break(game)
       expect(unit.currentMovement).toBe(2)
 
       const notBlocking = new Unit(testGInf)
@@ -339,7 +339,7 @@ describe("routing", () => {
       game.scenario.map.axisDir = 2.5
       const unit = new Unit(testGInf)
       unit.brokenMovement = 2
-      unit.break()
+      unit.break(game)
       expect(unit.currentMovement).toBe(2)
 
       const root = new Coordinate(2, 0)
@@ -366,7 +366,7 @@ describe("routing", () => {
         [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
       ])
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
 
       expect(unit.currentMovement).toBe(4)
 
@@ -388,7 +388,7 @@ describe("routing", () => {
       game.scenario.map.axisDir = 2.5
       const unit = new Unit(testGInf)
       unit.brokenMovement = 2
-      unit.break()
+      unit.break(game)
       expect(unit.currentMovement).toBe(2)
 
       const root = new Coordinate(2, 0)
@@ -402,7 +402,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(4, 2)
       map.addCounter(loc, unit)
@@ -424,7 +424,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       game.routNeeded.push({ unit, loc })
@@ -458,7 +458,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
@@ -493,7 +493,7 @@ describe("routing", () => {
       const map = game.scenario.map
       map.baseTerrain = baseTerrainType.Snow
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
@@ -519,7 +519,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
@@ -563,12 +563,12 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
       const unit2 = new Unit(testGInf)
-      unit2.break()
+      unit2.break(game)
       unit2.id = "test2"
       map.addCounter(loc, unit2)
       const unit3 = new Unit(testRInf)
@@ -590,7 +590,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       game.routNeeded.push({ unit, loc })
@@ -638,7 +638,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testGInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(0, 2)
       game.routNeeded.push({ unit, loc })
@@ -687,7 +687,7 @@ describe("routing", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       const unit = new Unit(testRInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(4, 2)
       map.addCounter(loc, unit)
@@ -751,7 +751,7 @@ describe("routing", () => {
       game.setCurrentPlayer(1)
       const map = game.scenario.map
       const unit = new Unit(testGLdr)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(3, 3)
       map.addCounter(loc, unit)
@@ -795,7 +795,7 @@ describe("routing", () => {
       const game = createMoveGame()
       const map = game.scenario.map
       const unit = new Unit(testRInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(3, 3)
       map.addCounter(loc, unit)
@@ -856,7 +856,7 @@ describe("routing", () => {
       const game = createMoveGame()
       const map = game.scenario.map
       const unit = new Unit(testRInf)
-      unit.break()
+      unit.break(game)
       unit.id = "test1"
       const loc = new Coordinate(3, 3)
       map.addCounter(loc, unit)
@@ -905,7 +905,7 @@ describe("routing", () => {
       const map = game.scenario.map
       const unit = new Unit(testRInf)
       unit.id = "test1"
-      unit.break()
+      unit.break(game)
       const loc = new Coordinate(0, 2)
       map.addCounter(loc, unit)
       map.select(unit)

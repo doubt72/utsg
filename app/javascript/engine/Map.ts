@@ -355,14 +355,14 @@ export default class Map {
         for (const c of unit.children) {
           c.parent = undefined
           if (c.canCarrySupport) {
-            c.break()
+            c.break(this.game)
           }
         }
         unit.children = []
       }
     }
     if (counter.hasUnit) {
-      counter.unit.pinned = false
+      counter.unit.unpin()
       counter.unit.routed = false
       counter.unit.resetStatus()
     }

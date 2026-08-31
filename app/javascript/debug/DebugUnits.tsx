@@ -71,7 +71,7 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       versions.push(svgContainer(unit3, key*5+2))
 
       const unit4 = new Unit(data)
-      unit4.pinned = true
+      unit4.pin()
       versions.push(svgContainer(unit4, key*5+3))
 
       const unit5 = new Unit(data)
@@ -109,7 +109,7 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       versions.push(svgContainer(unit6, key*13+5))
 
       const unit7 = new Unit(data)
-      unit7.turretJammed = true
+      unit7.jamTurret()
       versions.push(svgContainer(unit7, key*13+6))
 
       const unit8 = new Unit(data)
@@ -120,21 +120,21 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       const unit9 = new Unit(data)
       unit9.exhaust()
       unit9.immobilize()
-      unit9.turretJammed = true
+      unit9.jamTurret()
       versions.push(svgContainer(unit9, key*13+8))
 
       const unit10 = new Unit(data)
       unit10.exhaust()
       unit10.jammed = true
       unit10.immobilize()
-      unit10.turretJammed = true
+      unit10.jamTurret()
       versions.push(svgContainer(unit10, key*13+9))
 
       const unit11 = new Unit(data)
       unit11.exhaust()
       unit11.jammed = true
       unit11.immobilize()
-      unit11.turretJammed = true
+      unit11.jamTurret()
       unit11.eliteCrew = -1
       versions.push(svgContainer(unit11, key*13+10))
 
@@ -142,7 +142,7 @@ export default function DebugUnits({ suppressMarkers }: DebugUnitsProps) {
       unit12.exhaust()
       unit12.jammed = true
       unit12.immobilize()
-      unit12.turretJammed = true
+      unit12.jamTurret()
       unit12.eliteCrew = 1
       versions.push(svgContainer(unit12, key*13+11))
 

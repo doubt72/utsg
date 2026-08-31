@@ -10,7 +10,7 @@ import {
   armorAtArc, armorHitModifiers, fireHindrance, firepower, fireStartTarget, rangeMultiplier, untargetedModifiers
 } from "../control/fire";
 import { rollbackAddActions } from "../control/movement";
-import { addSpotting } from "../control/spotting";
+import { addSpotting, removeSpotting } from "../control/spotting";
 import { StateSelection } from "../control/state/BaseState";
 import Counter from "../Counter";
 import Feature from "../Feature";
@@ -196,7 +196,7 @@ export default class FireAction extends BaseAction {
       if (firing0.unit.isVehicle) {
         if (sponson && firing0.unit.isImmobilized) { spotting = false }
         if (!firing0.unit.turreted && firing0.unit.isImmobilized) { spotting = false }
-        if (!sponson && firing0.unit.turretJammed) { spotting = false }
+        if (!sponson && firing0.unit.isTurretJammed) { spotting = false }
       }
     }
     if (spotting) { addSpotting(this.game, to, firing0.unit, sponson) }
@@ -457,7 +457,7 @@ export default class FireAction extends BaseAction {
                 if (needDice) {
                   hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, turret jammed`
                 }
-                target0.unit.turretJammed = true
+                target0.unit.jamTurret(this.game)
                 anims.push({ loc: dHexes[0], type: "turret" })
               } else {
                 if (needDice) {
@@ -526,6 +526,7 @@ export default class FireAction extends BaseAction {
               if (needDice) {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
+              if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
               firing0.unit.sponsonDestroyed = true
               anims.push({ loc: from, type: "destroyed" })
             } else {
@@ -533,6 +534,7 @@ export default class FireAction extends BaseAction {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
               }
               firing0.unit.sponsonJammed = true
+              if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
               anims.push({ loc: from, type: "jammed" })
             }
           } else {
@@ -541,12 +543,14 @@ export default class FireAction extends BaseAction {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
               firing0.unit.weaponDestroyed = true
+              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
               anims.push({ loc: from, type: "destroyed" })
             } else {
               if (needDice) {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
               }
               firing0.unit.jammed = true
+              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
               anims.push({ loc: from, type: "jammed" })
             }
           }
@@ -561,12 +565,14 @@ export default class FireAction extends BaseAction {
           if (needDice) {
             targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
           }
+          if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
           anims.push({ loc: from, type: "destroyed" })
         } else {
           firing0.unit.jammed = true
           if (needDice) {
             targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
           }
+          if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
           anims.push({ loc: from, type: "jammed" })
         }
       }
@@ -680,12 +686,14 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
                   }
+                  if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
                   anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.sponsonJammed = true
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
                   }
+                  if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
                   anims.push({ loc: from, type: "jammed" })
                 }
               } else {
@@ -694,12 +702,14 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
                   }
+                  if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
                   anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.jammed = true
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
                   }
+                  if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
                   anims.push({ loc: from, type: "jammed" })
                 }
               }
@@ -716,6 +726,7 @@ export default class FireAction extends BaseAction {
                 hitRoll.description += `, ${this.formatUnit(f.counter.unit)} ` +
                   `<span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
+              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
               anims.push({ loc: from, type: "destroyed" })
             } else {
               f.counter.unit.jammed = true
@@ -724,6 +735,8 @@ export default class FireAction extends BaseAction {
                 hitRoll.description += `, ${this.formatUnit(f.counter.unit)} ` +
                   `<span style="color: ${failRedColorMarker()};">broken</span>`
               }
+
+              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
               anims.push({ loc: from, type: "jammed" })
             }
           }

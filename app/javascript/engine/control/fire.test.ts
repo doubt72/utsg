@@ -206,7 +206,7 @@ describe("ranged fire attacks", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      target.pinned = true
+      target.pin(game)
       const tloc = new Coordinate(4, 2)
       map.addCounter(tloc, target)
 
@@ -402,7 +402,7 @@ describe("ranged fire attacks", () => {
 
       const target = new Unit(testRInf)
       target.id = "target1"
-      target.break()
+      target.break(game)
       const tloc = new Coordinate(2, 0)
       map.addCounter(tloc, target)
 
@@ -992,7 +992,7 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.pinned = true
+      firing.pin(game)
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
@@ -1034,7 +1034,7 @@ describe("ranged fire attacks", () => {
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
-      firing.break()
+      firing.break(game)
       const floc = new Coordinate(3, 2)
       map.addCounter(floc, firing)
       const firing2 = new Unit(testGMG)
@@ -1503,7 +1503,7 @@ describe("ranged fire attacks", () => {
       map.addCounter(tloc, target1)
       const target2 = new Unit(testGInf)
       target2.id = "target2"
-      target2.break()
+      target2.break(game)
       map.addCounter(tloc, target2)
 
       map.toggleVP(tloc)

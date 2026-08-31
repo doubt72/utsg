@@ -4,7 +4,11 @@
   - Docs
   - Added markers
   - Add spotting status on firing
+  - Clear markers on certain actions
+  - Refactored a bunch of things
 - Show "current" instead of "final" score on replay
+- Reveal decoys/hidden units on fire displacement
+- Bug fix: moving should select all children (including second-order children)
 - Bug fix: no fire start checks for non-area/offboard fire
 - Bug fix: wrecks not destroyed
 - Bug fix: eliminating last unit in contact should toggle VP

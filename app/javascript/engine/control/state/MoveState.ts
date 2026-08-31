@@ -48,7 +48,11 @@ export default class MoveState extends BaseState {
       x: hex.x, y: hex.y, facing,
       turret: selection.unit.turreted ? selection.unit.turretFacing : undefined,
     }
-    const units = selection.children
+    const children = selection.children
+    const units = [...children]
+    for (const c of children) {
+      for (const cc of c.children) { units.push(cc) }
+    }
     units.forEach(c => this.map.select(c.unit))
     let canSelect = selection.unit.canCarrySupport && (units.length < 1 || !units[0].unit.crewed)
     if (canSelect) {
@@ -592,7 +596,7 @@ export default class MoveState extends BaseState {
           const data = dataForSpotting(this.game, ref2) as SpottingStatus
           spotting.push({
             x: data.target.x, y: data.target.y, id: s.counter.unit.id, ref: ref2,
-            level: data.level, sponson: false,
+            level: data.level, sponson: true,
           })
         }
       }

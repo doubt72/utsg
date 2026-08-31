@@ -22,7 +22,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.break()
+    unit.break(game)
     map.addCounter(new Coordinate(0,0), unit)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
@@ -33,7 +33,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.break()
+    unit.break(game)
     map.addCounter(new Coordinate(0,0), unit)
 
     const target: GameActionUnit = { x: 0, y: 0, id: "test", name: "Rifle", status: unitStatus.Broken }
@@ -61,7 +61,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.break()
+    unit.break(game)
     const loc = new Coordinate(0, 0)
     map.addCounter(loc, unit)
 
@@ -96,7 +96,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.break()
+    unit.break(game)
     map.addCounter(new Coordinate(0,0), unit)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
@@ -229,11 +229,11 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.break()
+    unit1.break(game)
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.break()
+    unit2.break(game)
     map.addCounter(new Coordinate(0,0), unit2)
     const unit3 = new Unit(testGLdr)
     unit3.id = "test3"
@@ -270,11 +270,11 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.break()
+    unit1.break(game)
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.break()
+    unit2.break(game)
     map.addCounter(new Coordinate(0,0), unit2)
     organizeStacks(map)
 
@@ -345,11 +345,11 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.break()
+    unit1.break(game)
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGInf)
     unit2.id = "test2"
-    unit2.break()
+    unit2.break(game)
     map.addCounter(new Coordinate(0,0), unit2)
     const unit3 = new Unit(testGLdr)
     unit3.id = "test3"
@@ -392,18 +392,18 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit1 = new Unit(testGInf)
     unit1.id = "test1"
-    unit1.break()
+    unit1.break(game)
     map.addCounter(new Coordinate(0,0), unit1)
     const unit2 = new Unit(testGLdr)
     unit2.id = "test2"
     map.addCounter(new Coordinate(0,0), unit2)
     const unit3 = new Unit(testGInf)
     unit3.id = "test3"
-    unit3.break()
+    unit3.break(game)
     map.addCounter(new Coordinate(1,0), unit3)
     const unit4 = new Unit(testGInf)
     unit4.id = "test4"
-    unit4.break()
+    unit4.break(game)
     map.addCounter(new Coordinate(2,0), unit4)
     organizeStacks(map)
 
@@ -454,7 +454,7 @@ describe("rallying", () => {
     const map = game.scenario.map
     const unit = new Unit(testGInf)
     unit.id = "test"
-    unit.break()
+    unit.break(game)
     map.addCounter(new Coordinate(0,0), unit)
 
     expect(map.anyUnitsCanRally(2)).toBe(true)
