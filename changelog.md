@@ -1,12 +1,11 @@
 # 0.134
 
-- Spotting
-  - Docs
-  - Added markers/marker display
+- Add spotting
+  - Docs, added markers/marker display
   - Add spotting status on firing
   - Clear markers on certain actions
   - Improve range modifier on spotted
-  - Refactored a bunch of things
+- Some minor refactors
 - Show "current" instead of "final" score on replay
 - Reveal decoys/hidden units on fire displacement
 - Add small invisible "shelf" around action buttons to prevent closing overlay
@@ -17,7 +16,7 @@
 - Bug fix: destroyed/immobilized vehicles should unload at the point hit on reaction fire
 - Bug fix: show offboard target overlay in replay
 - Swapped square and circle breakdown numbers
-- Updated 103, 401, 406, 502, 512, 613
+- Updated 016, 103, 401, 406, 502, 512, 613
 - Added prototypes 614, 615, 616
 
 # 0.133

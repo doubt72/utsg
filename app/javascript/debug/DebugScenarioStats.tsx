@@ -4,7 +4,7 @@ import Scenario from "../engine/Scenario";
 import { useParams } from "react-router-dom";
 import { alliedCodeToName, axisCodeToName } from "../utilities/utilities";
 import { hexBuildingNames } from "../utilities/hexBuilding";
-import { nationalTextColor } from "../utilities/graphics";
+import { failRed, nationalTextColor, passBlue, passGreen } from "../utilities/graphics";
 import { statAddMany, statAddOne, statIncrementAllOne, StatLookup } from "./statHelpers";
 
 // Yes, I could have put all this on the backend, but (1) the backend is largely
@@ -15,7 +15,8 @@ import { statAddMany, statAddOne, statIncrementAllOne, StatLookup } from "./stat
 // code/text conversions as the engine uses for help/etc).
 
 export function displayStat(
-  data: StatLookup, key: { [ index: string]: string }, sort: string = "value", country: boolean = false
+  data: StatLookup, key: { [ index: string]: string }, sort: string = "value",
+  country: boolean = false, compare: { [ index: string]: number } = {}
 ) {
   let width = 2.5
   Object.values(data).forEach(v => {
@@ -32,6 +33,14 @@ export function displayStat(
     }
   )) {
     if (k === "all") { continue }
+    const rawPct = data[k] / data["all"]
+    const pct = Math.round(rawPct * 100)
+    const dbl = compare[k] ? Math.round(rawPct / compare[k] * 100) : false
+    let color = passGreen()
+    if (dbl !== false) {
+      if (dbl < 100) { color = failRed() }
+      if (dbl > 100) { color = passBlue() }
+    }
     items.push(
       <div className="flex" key={k}>
         <div style={{
@@ -43,15 +52,17 @@ export function displayStat(
           marginTop: "4px"
         }}></div>
         <div style={{ marginLeft: "0.5em", width: "2.5em" }}>
-          {Math.round(data[k] / data["all"] * 100)}%
+          {pct}%
         </div>
         <div style={{ marginLeft: "0.5em", width: `${width}em` }}>
           ({data[k]})
         </div>
         { country ? <div dangerouslySetInnerHTML={{
-          __html: `<span style="color: ${nationalTextColor(k)};">${key[k] ?? k}</span>`
-        }}></div> :
-        <div>{key[k] ?? k}</div>}
+            __html: `<span style="color: ${nationalTextColor(k)};">${key[k] ?? k}</span>`
+          }}></div> :
+          <div>
+            {key[k] ?? k} {dbl !== false ? <span style={{ color }}>({dbl})%</span> : ""}
+          </div> }
       </div>
     )
   }
@@ -109,6 +120,13 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
 
   const allied = (code: string): boolean => {
     return ["ussr", "uk", "usa", "fra", "chi", "alm"].includes(code)
+  }
+
+  const wdPct = {
+    1: 0.13, 2: 0.14, 3: 0.18, 4: 0.23, 5: 0.18, 6: 0.14,
+  }
+  const wsPct = {
+    1: 0.48, 2: 0.28, 3: 0.16, 4: 0.08,
   }
 
   useEffect(() => {
@@ -354,9 +372,11 @@ export default function DebugScenarioStats({ proto = false }: DebugScenarioStats
         Precip Chance:
         {displayStat(countPrecipPercent, { 0: "none", 1: "10%", 2: "20%", 3: "30%" })}
         Wind Strength:
-        {displayStat(countWindType, { 1: "calm", 2: "breeze", 3: "moderate", 4: "strong" })}
+        {displayStat(
+            countWindType, { 1: "calm", 2: "breeze", 3: "moderate", 4: "strong" }, "value", false, wsPct
+          )}
         Wind Direction:
-        {displayStat(countWindDirection, {})}
+        {displayStat(countWindDirection, {}, "value", false, wdPct)}
         Variable:
         {displayStat(countWindVariable, {})}
       </div>
