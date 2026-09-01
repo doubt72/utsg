@@ -5,7 +5,9 @@ import Counter from "../../../engine/Counter";
 import { Coordinate, CounterSelectionTarget, markerType, unitType } from "../../../utilities/commonTypes";
 import Map from "../../../engine/Map";
 import { clearColor, counterOutline, roundedRectangle } from "../../../utilities/graphics";
-import { counterActionButtons, counterInfoBadges, counterPath } from "../../../engine/support/counterLayout";
+import {
+  counterActionButtons, counterActionButtonShelfPath, counterInfoBadges, counterPath
+} from "../../../engine/support/counterLayout";
 import { HelpOverlay } from "./HelpOverlay";
 import {
   actionButtonHelpLayout,
@@ -255,6 +257,12 @@ export default function MapCounterOverlay({
                     {c.text}
                   </text>
                 </g>
+              )
+            }
+            if (controls.length > 0) {
+              buttons.unshift(
+                <path key="shelf" d={counterActionButtonShelfPath(x-17, layout.y2 - outwidth + 4, maxY)}
+                      style={{ fill: clearColor }}/>
               )
             }
           }

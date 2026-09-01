@@ -9,6 +9,7 @@
   - Refactored a bunch of things
 - Show "current" instead of "final" score on replay
 - Reveal decoys/hidden units on fire displacement
+- Add small invisible "shelf" around action buttons to prevent closing overlay
 - Bug fix: moving should select all children (including second-order children)
 - Bug fix: no fire start checks for non-area/offboard fire
 - Bug fix: wrecks not destroyed

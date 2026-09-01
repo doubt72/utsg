@@ -1,9 +1,5 @@
 Features/Bug Fixes
-  + Improve multiplier on subsequent shot
-    + Display on counters/as markers main/sponson
-    + Actually improved fire (unskip tests)
-  + Check that fire displace dispells decoy
-  - Add "shelf" below markers when controls are present
+  + Add "shelf" below markers when controls are present
   - Decoy markers
     - Display unobserved in replay
   - Check offboard lines for artillery all edges

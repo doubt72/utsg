@@ -173,6 +173,18 @@ export function counterStatusLayout(counter: Counter): StatusLayout | boolean {
   }
 }
 
+export function counterActionButtonShelfPath(
+  x: number, y: number, maxY: number,
+): string {
+  let y1 = y
+  if (y1 + 28 > maxY) {
+    y1 = y - 215
+  }
+  const y2 = y1 + 34
+  const x2 = x + 160
+  return `M ${x} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x} ${y2} z`
+}
+
 export function counterActionButtons(
   map: Map, x: number, y: number, maxY: number, counter: Counter,
 ): ActionButtonLayout[] {
