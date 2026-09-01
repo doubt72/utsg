@@ -17,6 +17,7 @@ import { alreadyRallied, leaderAtHex } from "./control/state/RallyState";
 import StackingActionError from "./actions/StackingActionError";
 import Unit from "./Unit";
 import Feature from "./Feature";
+import Marker from "./Marker";
 
 export type DeployHexes = [string | number, string | number][]
 
@@ -453,7 +454,7 @@ export default class Map {
       return []
     }
     const list = this.units[loc.y][loc.x]
-    return countersFromUnits(loc, list, this.showAllCounters)
+    return countersFromUnits(this.game, loc, list, this.showAllCounters)
   }
 
   countersAt(loc: Coordinate): Counter[] {
@@ -476,6 +477,18 @@ export default class Map {
         counter.parent = lu[parent]
       }
       rc.push(counter)
+    }
+    if (this.game) {
+      for (const s of this.game.spottingStatus) {
+        if (loc.x === s.target.x && loc.y === s.target.y) {
+          const counter = new Counter(loc, new Marker({
+            mk: 1, type: "spotting", i: "spotting", v: s.ref, v2: s.level, name: s.unit.name,
+            sn: s.unit.smallName
+          }), this)
+          counter.stackingIndex = rc.length
+          rc.push(counter)
+        }
+      }
     }
     return rc
   }

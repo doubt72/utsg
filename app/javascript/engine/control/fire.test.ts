@@ -3005,7 +3005,7 @@ describe("ranged fire attacks", () => {
       )
 
       const all = map.allCounters
-      expect(all.length).toBe(3)
+      expect(all.length).toBe(4)
       expect(all[0].unit.id).toBe("firing1")
       expect(all[0].unit.isActivated).toBe(true)
       expect(all[1].unit.id).toBe("firing2")
@@ -3013,6 +3013,7 @@ describe("ranged fire attacks", () => {
       expect(all[2].unit.id).toBe("0-smoke-0-2")
       expect(all[2].hex?.x).toBe(0)
       expect(all[2].hex?.y).toBe(2)
+      expect(all[3].marker.type).toBe("spotting")
     })
 
     test("gun firing smoke miss", () => {
@@ -3658,7 +3659,7 @@ describe("ranged fire attacks", () => {
       )
 
       const unit = map.countersAt(tloc)
-      expect(unit.length).toBe(6)
+      expect(unit.length).toBe(7)
       expect(unit[0].unit.name).toBe("M9 Half-track")
       expect(unit[0].unit.isWreck).toBe(true)
       expect(unit[0].unit.children.length).toBe(0)
@@ -3676,6 +3677,7 @@ describe("ranged fire attacks", () => {
       expect(unit[4].unit.isExhausted).toBe(true)
       expect(unit[4].unit.parent).toBe(undefined)
       expect(unit[4].unit.isBroken).toBe(false)
+      expect(unit[6].marker.type).toBe("spotting")
 
       expect(game.moraleChecksNeeded.length).toBe(2)
       expect(game.moraleChecksNeeded[0].unit.name).toBe("Rifle")

@@ -321,7 +321,7 @@ describe("spotting", () => {
     expect(game.spottingStatus).toStrictEqual([])
   })
 
-  test.skip("spotting improves targeting", () => {
+  test("spotting improves targeting", () => {
     const game = createFireGame()
     const map = game.scenario.map
     const firing = new Unit(testGTank)
@@ -357,7 +357,7 @@ describe("spotting", () => {
     expect(mult.mult).toBe(3)
     expect(mult.why.length).toBe(2)
     expect(mult.why[0]).toBe("- base multiplier 4")
-    expect(mult.why[1]).toBe("- spotting")
+    expect(mult.why[1]).toBe("- minus 1 for spotting")
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -365,7 +365,7 @@ describe("spotting", () => {
     Math.random = original
 
     expect(game.actions[0].stringValue).toBe(
-      "German PzKpfw 35(t) at E3 fired at Soviet Rifle at C3; targeting roll: target 12, " +
+      "German PzKpfw 35(t) at E3 fired at Soviet Rifle at C3; targeting roll: target 9, " +
         "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 15, " +
         "rolled 20 [2d10: 10 + 10]: passed"
     )
@@ -376,7 +376,7 @@ describe("spotting", () => {
     }])
   })
 
-  test.skip("spotting improves gun targeting", () => {
+  test("spotting improves gun targeting", () => {
     const game = createFireGame()
     const map = game.scenario.map
     const firing = new Unit(testGInf)
@@ -414,7 +414,7 @@ describe("spotting", () => {
     expect(mult.mult).toBe(3)
     expect(mult.why.length).toBe(2)
     expect(mult.why[0]).toBe("- base multiplier 4")
-    expect(mult.why[1]).toBe("- spotting")
+    expect(mult.why[1]).toBe("- minus 1 for spotting")
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -422,7 +422,7 @@ describe("spotting", () => {
     Math.random = original
 
     expect(game.actions[0].stringValue).toBe(
-      "German 3.7cm Pak 36 at E3 fired at Soviet Rifle at C3; targeting roll: target 12, " +
+      "German 3.7cm Pak 36 at E3 fired at Soviet Rifle at C3; targeting roll: target 9, " +
         "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 15, " +
         "rolled 20 [2d10: 10 + 10]: passed"
     )
@@ -433,7 +433,7 @@ describe("spotting", () => {
     }])
   })
 
-  test.skip("spotting improves sponson targeting", () => {
+  test("spotting improves sponson targeting", () => {
     const game = createFireGame()
     game.scenario.axisFactions = ["ita"]
     const map = game.scenario.map
@@ -469,7 +469,7 @@ describe("spotting", () => {
     expect(mult.mult).toBe(2)
     expect(mult.why.length).toBe(2)
     expect(mult.why[0]).toBe("- base multiplier 4")
-    expect(mult.why[1]).toBe("- spotting")
+    expect(mult.why[1]).toBe("- minus 2 for spotting")
 
     const original = Math.random
     vi.spyOn(Math, "random").mockReturnValue(0.99)
@@ -477,7 +477,7 @@ describe("spotting", () => {
     Math.random = original
 
     expect(game.actions[0].stringValue).toBe(
-      "Italian M11/39 at E3 fired hull gun at Soviet Rifle at C3; targeting roll: target 12, " +
+      "Italian M11/39 at E3 fired hull gun at Soviet Rifle at C3; targeting roll: target 6, " +
         "rolled 100 [d10x10: 10 x 10]: hit; roll for effect: target 12, " +
         "rolled 20 [2d10: 10 + 10]: passed (critical)"
     )
@@ -775,10 +775,19 @@ describe("spotting", () => {
       ref: "A", target: new Coordinate(2, 2), level: 1, unit: firing, sponson: false
     }])
 
-    firing.abandon(game)
+    game.setGameState(new AssaultState(game))
+    game.assaultState.abandon()
+    game.assaultState.finish()
 
     expect(firing.spotting).toBe(undefined)
     expect(game.spottingStatus).toStrictEqual([])
+
+    game.executeUndo(false)
+
+    expect(firing.spotting).toBe("A")
+    expect(game.spottingStatus).toStrictEqual([{
+      ref: "A", target: new Coordinate(2, 2), level: 1, unit: firing, sponson: false
+    }])
   })
 
   test("turret jamming cancels spotting", () => {
@@ -1043,7 +1052,7 @@ describe("spotting", () => {
     expect(game.moraleChecksNeeded).toStrictEqual([])
     expect(target.isWreck).toBe(false)
     expect(deHTML((game.lastAction?.data.dice_result as GameActionDiceResult[])[0].description as string)).toBe(
-      "targeting roll: target 4, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
+      "targeting roll: target 3, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken"
     )
 
     expect(firing.spotting).toBe(undefined)
@@ -1088,7 +1097,7 @@ describe("spotting", () => {
 
     expect(game.actions[0].stringValue).toBe(
       "German 12cm GrW 42 at D3 fired at Soviet Rifle at E1; targeting roll: " +
-        "target 6, rolled 1 [d10x10: 1 x 1]: miss, firing weapon destroyed"
+        "target 4, rolled 1 [d10x10: 1 x 1]: miss, firing weapon destroyed"
     )
 
     expect(firing2.spotting).toBe(undefined)

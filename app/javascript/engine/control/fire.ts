@@ -8,6 +8,7 @@ import { GameActionPath } from "../GameAction";
 import Hex from "../Hex";
 import Map from "../Map";
 import Unit from "../Unit";
+import { dataForSpotting } from "./spotting";
 import { StateSelection } from "./state/BaseState";
 
 export function leadershipRange(game: Game): number | false {
@@ -389,6 +390,20 @@ export function rangeMultiplier(
   if (map.night) {
     mult += 1
     why.push("- plus 1 for night")
+  }
+  if (map.game && sponson && source.unit.sponsonSpotting) {
+    const data = dataForSpotting(map.game, source.unit.sponsonSpotting)
+    if (target.x === data?.target.x && target.y === data.target.y) {
+      mult -= data.level
+      why.push(`- minus ${data.level} for spotting`)
+    }
+  }
+  if (map.game && !sponson && source.unit.spotting) {
+    const data = dataForSpotting(map.game, source.unit.spotting)
+    if (target.x === data?.target.x && target.y === data.target.y) {
+      mult -= data.level
+      why.push(`- minus ${data.level} for spotting`)
+    }
   }
   if (mult < 1) { mult = 1 }
   return { mult, why }

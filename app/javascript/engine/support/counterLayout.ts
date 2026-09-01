@@ -368,6 +368,12 @@ export function counterInfoBadges(
     if (u.isActivated && s) {
       badges.push({ text: "activated", color: markerYellow(), tColor: "black" })
     }
+    if (u.spotting && s) {
+      badges.push({ text: `spotting ${u.spotting}`, color: "white", tColor: "black" })
+    }
+    if (u.sponsonSpotting && s) {
+      badges.push({ text: `hull spot ${u.sponsonSpotting}`, color: "white", tColor: "black" })
+    }
   }
   const size = 24
   let diff = size+4

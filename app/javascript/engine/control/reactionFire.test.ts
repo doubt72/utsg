@@ -1228,9 +1228,10 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new MoraleCheckState(game))
     const counters2 = map.countersAt(fireHex)
-    expect(counters2.length).toBe(1)
+    expect(counters2.length).toBe(2)
     expect(counters2[0].unit.ghost).toBe(true)
     expect(counters2[0].unit.selected).toBe(true)
+    expect(counters2[1].marker.type).toBe("spotting")
 
     expect(game.shortCheckNeeded.hit).toBe(true)
 
@@ -1325,9 +1326,10 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new MoraleCheckState(game))
     const counters2 = map.countersAt(fireHex)
-    expect(counters2.length).toBe(1)
+    expect(counters2.length).toBe(2)
     expect(counters2[0].unit.ghost).toBe(true)
     expect(counters2[0].unit.selected).toBe(true)
+    expect(counters2[1].marker.type).toBe("spotting")
 
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     game.gameState?.finish()
@@ -1427,9 +1429,10 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new MoraleCheckState(game))
     const counters2 = map.countersAt(fireHex)
-    expect(counters2.length).toBe(1)
+    expect(counters2.length).toBe(2)
     expect(counters2[0].unit.ghost).toBe(true)
     expect(counters2[0].unit.selected).toBe(true)
+    expect(counters2[1].marker.type).toBe("spotting")
 
     vi.spyOn(Math, "random").mockReturnValue(0.01)
     game.gameState?.finish()
@@ -1715,9 +1718,10 @@ describe("reaction fire attacks", () => {
 
     game.setGameState(new MoraleCheckState(game))
     const counters2 = map.countersAt(fireHex)
-    expect(counters2.length).toBe(2)
+    expect(counters2.length).toBe(3)
     expect(counters2[0].unit.ghost).toBe(true)
     expect(counters2[0].unit.selected).toBe(true)
+    expect(counters2[2].marker.type).toBe("spotting")
 
     expect(game.shortCheckNeeded.hit).toBe(true)
     expect(game.shortCheckNeeded.short).toBe(false)
@@ -1750,13 +1754,13 @@ describe("reaction fire attacks", () => {
     expect(game.shortCheckNeeded.ids.length).toBe(1)
 
     const counters3 = map.countersAt(fireHex)
-    expect(counters3.length).toBe(1)
+    expect(counters3.length).toBe(2)
 
     game.setGameState(new ShortMoveState(game))
     game.gameState?.finish()
 
     const counters4 = map.countersAt(fireHex)
-    expect(counters4.length).toBe(2)
+    expect(counters4.length).toBe(3)
   })
 
   test("ghost directions are correct, and vehicle is removed", () => {

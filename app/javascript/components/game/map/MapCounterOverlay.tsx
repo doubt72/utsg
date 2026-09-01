@@ -179,6 +179,7 @@ export default function MapCounterOverlay({
     }
     if (unit.turreted) { rc += 1 }
     if (map.showAllCounters) {
+      if (unit.spotting) { rc += 1 }
       if (unit.isVehicle) {
         if (unit.isImmobilized) { rc += 1 }
         if (unit.isAbandoned) { rc += 1 }
@@ -187,6 +188,7 @@ export default function MapCounterOverlay({
         if (unit.isTurretJammed) { rc += 1 }
         if (!unit.isNormal ) { rc += 1 }
         if (unit.eliteCrew !== 0) { rc += 1 }
+        if (unit.sponsonSpotting) { rc += 1 }
       } else {
         if (!unit.isNormal && !unit.isBroken ) { rc += 1 }
         if (unit.pinned) { rc += 1 }

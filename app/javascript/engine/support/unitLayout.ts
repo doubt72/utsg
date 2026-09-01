@@ -528,6 +528,36 @@ export function facingLayout(counter: Counter, hull: boolean = false): facingLay
   }
 }
 
+export function spottingLayout(counter: Counter): CounterLayout | false {
+  if (!counter.hasUnit || !counter.unit.spotting) { return false }
+  if (!counter.unit.visible) { return false }
+  const showAllCounters = counter.onMap ? counter.map?.showAllCounters : counter.showAllCounters
+  if (showAllCounters) { return false }
+  const x = counter.x + 64
+  const y = counter.y + 18
+  const path = circlePath(new Coordinate(x, y), 10)
+  const style = { fill: "#FFF", stroke: "black", strokeWidth: 1 }
+  return {
+    x, y: y + 6, size: 20, value: counter.unit.spotting, tStyle: { fill: counterRed() },
+    path, style
+  }
+}
+
+export function sponsonSpottingLayout(counter: Counter): CounterLayout | false {
+  if (!counter.hasUnit || !counter.unit.sponsonSpotting) { return false }
+  if (!counter.unit.visible) { return false }
+  const showAllCounters = counter.onMap ? counter.map?.showAllCounters : counter.showAllCounters
+  if (showAllCounters) { return false }
+  const x = counter.x + 64
+  const y = counter.y + 41
+  const path = circlePath(new Coordinate(x, y), 10)
+  const style = { fill: "#FFF", stroke: "black", strokeWidth: 1 }
+  return {
+    x, y: y + 6, size: 20, value: counter.unit.sponsonSpotting, tStyle: { fill: counterRed() },
+    path, style
+  }
+}
+
 function facingLine(counter: Counter, dir: Direction): SVGPathArray {
   if (!counter.map || !counter.hex) { return [] }
   const hex = counter.map.hexAt(counter.hex)

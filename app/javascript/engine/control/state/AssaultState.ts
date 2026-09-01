@@ -439,6 +439,27 @@ export default class AssaultState extends BaseState {
         }
       }
     }
+    for (const a of this.addActions) {
+      if (a.type === gameActionAddActionType.Abandon) {
+        const unit = this.selection[0].counter.unit
+        const ref = unit.spotting
+        if (ref) {
+          const data = dataForSpotting(this.game, ref) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: unit.id, ref,
+            level: data.level, sponson: false,
+          })
+        }
+        const ref2 = unit.sponsonSpotting
+        if (ref2) {
+          const data = dataForSpotting(this.game, ref2) as SpottingStatus
+          spotting.push({
+            x: data.target.x, y: data.target.y, id: unit.id, ref: ref2,
+            level: data.level, sponson: true,
+          })
+        }
+      }
+    }
     const action = new GameAction({
       user: this.game.currentUser,
       player: this.player,

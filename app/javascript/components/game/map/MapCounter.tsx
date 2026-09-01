@@ -3,21 +3,21 @@ import MapHexPatterns from "./MapHexPatterns";
 import Counter from "../../../engine/Counter";
 import { clearColor, CounterLayout, StatusLayout } from "../../../utilities/graphics";
 import {
-  amphibiousLayout, areaLayout, breakdownLayout, canTowLayout, centerLabelLayout, eliteLayout, engineerLayout,
-  firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
+  amphibiousLayout, areaLayout, breakdownLayout, canTowLayout, centerLabelLayout, eliteLayout,
+  engineerLayout, firepowerLayout, gunBackwardsLayout, gunForwardsLayout, handlingLayout,
   hullArmorLayout, iconLayout, leadershipLayout, moraleLayout, movementLayout, rangeLayout,
-  sizeLayout, smokeLayout, sponsonLayout, tankCrewLayout, towLayout, transportLLayout, transportRLayout, turretArmorLayout,
-  weaponBreakLayout, weaponFixLayout
+  sizeLayout, smokeLayout, sponsonLayout, sponsonSpottingLayout, spottingLayout, tankCrewLayout, towLayout, transportLLayout,
+  transportRLayout, turretArmorLayout, weaponBreakLayout, weaponFixLayout
 } from "../../../engine/support/unitLayout";
 import {
   markerBreakLayout, markerFirepowerLayout, markerFixLayout, markerLayout, markerMoraleLayout,
-  markerMovementLayout, markerRangeLayout, markerSubLayout, spotLetterLayout, spotPlusLayout, turnLayout, windArrowLayout
+  markerMovementLayout, markerRangeLayout, markerSubLayout, spotLetterLayout, spotPlusLayout,
+  turnLayout, windArrowLayout
 } from "../../../engine/support/markerLayout";
 import { featureLayout } from "../../../engine/support/featureLayout";
 import {
-  counterOutlineStyle,
-  counterPath, counterStatusLayout, counterStyle, nameBackgroundPath, nameBackgroundStyle, nameLayout,
-  shadowPath
+  counterOutlineStyle, counterPath, counterStatusLayout, counterStyle, nameBackgroundPath,
+  nameBackgroundStyle, nameLayout, shadowPath,
 } from "../../../engine/support/counterLayout";
 
 interface MapCounterProps {
@@ -452,6 +452,34 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
     }
   }
 
+  const spotting = () => {
+    const layout = spottingLayout(counter)
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
+  }
+
+  const sponsonSpotting = () => {
+    const layout = sponsonSpottingLayout(counter)
+    if (layout) {
+      return (
+        <g>
+          <path d={layout.path} style={layout.style as object} />
+          <text x={layout.x} y={layout.y} fontSize={layout.size} textAnchor="middle"
+                fontFamily="'Courier Prime', monospace"
+                style={layout.tStyle as object}>{layout.value}</text>
+        </g>
+      )
+    }
+  }
+
   const marker = () => {
     const layout = markerLayout(counter)
     if (layout) {
@@ -629,6 +657,7 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
       {spotLetter()}{spotPlus()}
       {markerBreak()}{markerFix()}
       {markerMorale()}{markerFirepower()}{markerRange()}{markerMovement()}
+      {spotting()}{sponsonSpotting()}
       {status()}
       {showDisabled()}
       {counterOutline}

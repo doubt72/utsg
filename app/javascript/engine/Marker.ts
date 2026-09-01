@@ -24,6 +24,7 @@ export type MarkerData = {
   rotates?: NumberBoolean;
 
   name?: string; // for debug display
+  sn?: number
 
   ft?: 0;
   mk: 1;
@@ -47,6 +48,7 @@ export default class Marker {
   ghost?: boolean;
   observed: boolean = true;
   spotName: string = ""
+  smallName: number;
 
   constructor(data: MarkerData) {
     this.type = data.type
@@ -60,6 +62,7 @@ export default class Marker {
     this.rotates = !!data.rotates || false
 
     this.spotName = data.name ?? ""
+    this.smallName = data.sn ?? 0
 
     this.id = data.id ?? ""
 

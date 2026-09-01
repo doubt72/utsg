@@ -1,6 +1,7 @@
 import { Coordinate, featureType, markerType, MarkerType } from "../../utilities/commonTypes";
+import { dataForSpotting } from "../control/spotting";
 import Feature from "../Feature";
-import Game from "../Game";
+import Game, { SpottingStatus } from "../Game";
 import Map from "../Map";
 import Marker from "../Marker";
 import Unit from "../Unit";
@@ -19,13 +20,13 @@ export default function organizeStacks(map: Map) {
 }
 
 export function countersFromUnits(
-  loc: Coordinate, list: (Unit | Feature)[], showAllCounters: boolean
+  game: Game | undefined, loc: Coordinate, list: (Unit | Feature)[], showAllCounters: boolean
 ): MapCounterData[] {
   let rc: MapCounterData[] = []
   let unitIndex = 0
   for (let i = 0; i < list.length; i++) {
     const unit = list[i]
-    const [subList, newIndex] = dataForUnit(loc, unit, unitIndex, showAllCounters)
+    const [subList, newIndex] = dataForUnit(game, loc, unit, unitIndex, showAllCounters)
     unitIndex = newIndex
     rc = rc.concat(subList)
   }
@@ -55,7 +56,8 @@ function sortValues(game: Game, unit: Unit | Feature): number {
 }
 
 function dataForUnit(
-  loc: Coordinate, uf: Unit | Feature, index: number, showAllCounters: boolean, parent?: number
+  game: Game | undefined, loc: Coordinate, uf: Unit | Feature, index: number,
+  showAllCounters: boolean, parent?: number
 ): [MapCounterData[], number] {
   let rc: MapCounterData[] = []
   const unit = uf as Unit
@@ -70,11 +72,13 @@ function dataForUnit(
     rc.push({ loc: loc, i: index, u: marker })
   }
   rc.push({ loc: loc, u: uf, i: index++, pi: parent })
-  if (showAllCounters) { rc = rc.concat(addMarkers(loc, uf, index)) }
+  if (showAllCounters) { rc = rc.concat(addMarkers(game, loc, uf, index)) }
   if (!uf.isFeature) {
     const parentIndex = index - 1
     for (let i = 0; i < unit.children.length; i++) {
-      const [subList, newIndex] = dataForUnit(loc, unit.children[i], index, showAllCounters, parentIndex)
+      const [subList, newIndex] = dataForUnit(
+        game, loc, unit.children[i], index, showAllCounters, parentIndex
+      )
       index = newIndex
       rc = rc.concat(subList)
     }
@@ -82,7 +86,9 @@ function dataForUnit(
   return [rc, index]
 }
 
-function addMarkers(loc: Coordinate, uf: Unit | Feature, index: number): MapCounterData[] {
+function addMarkers(
+  game: Game | undefined, loc: Coordinate, uf: Unit | Feature, index: number
+): MapCounterData[] {
   const rc: MapCounterData[] = []
   const rotates = uf.rotates ? 1 : 0
   const unit = uf as Unit
@@ -107,6 +113,26 @@ function addMarkers(loc: Coordinate, uf: Unit | Feature, index: number): MapCoun
   markerTypes.forEach(t => rc.push(
     { loc: loc, u: new Marker({id: uf.id, type: t, rotates, facing, mk: 1}), i: index }
   ))
+  if (game) {
+    if (!uf.isFeature && unit.spotting) {
+      const data = dataForSpotting(game, unit.spotting) as SpottingStatus
+      rc.push({
+        loc: loc, u: new Marker({
+          mk: 1, type: "spotter", i: "spotter", v: data.ref, v2: data.level, name: unit.name,
+          sn: unit.smallName,
+        })
+      })
+    }
+    if (!uf.isFeature && unit.sponsonSpotting) {
+      const data = dataForSpotting(game, unit.sponsonSpotting) as SpottingStatus
+      rc.push({
+        loc: loc, u: new Marker({
+          mk: 1, type: "spotter", i: "spotter", v: data.ref, v2: data.level, name: unit.name,
+          sn: unit.smallName,
+        })
+      })
+    }
+  }
   return rc
 }
 

@@ -2,9 +2,10 @@
 
 - Spotting
   - Docs
-  - Added markers
+  - Added markers/marker display
   - Add spotting status on firing
   - Clear markers on certain actions
+  - Improve range modifier on spotted
   - Refactored a bunch of things
 - Show "current" instead of "final" score on replay
 - Reveal decoys/hidden units on fire displacement

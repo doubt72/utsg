@@ -155,8 +155,9 @@ export default class FireAction extends BaseAction {
       return { x: t.x, y: t.y, counter: this.game.findCounterById(t.id) as Counter }
     })
     const firing0 = firing[0].counter
+    const u0 = firing0.unit
     if (this.path.length > 1) {
-      firing0.unit.turretFacing = this.path[1].turret ?? 1
+      u0.turretFacing = this.path[1].turret ?? 1
     }
     const target0 = targets[0]?.counter
     let to = new Coordinate(-1, -1)
@@ -173,33 +174,32 @@ export default class FireAction extends BaseAction {
       smoke = hex.smoke
       to = new Coordinate(hex.x, hex.y)
     }
-    if (firing0.unit.crewed && firing0.unit.parent) {
-      firing0.unit.parent.activate()
+    if (u0.crewed && u0.parent) {
+      u0.parent.activate()
     }
     // Also generate final target hexes
     this.fireHex.final = this.fireHex.start
-    const tRange = sponson ? firing0.unit.sponson?.type !== sponsonType.Flame : firing0.unit.targetedRange
-    const oBoard = firing0.unit.offBoard
+    const tRange = sponson ? u0.sponson?.type !== sponsonType.Flame : u0.targetedRange
+    const oBoard = u0.offBoard
     let fsHexes: { x: number, y: number, vehicle?: Unit }[] = []
-    if (firing0.unit.areaFire || oBoard) {
+    if (u0.areaFire || oBoard) {
       fsHexes = [{ x: to.x, y: to.y }]
     }
     let incendiary = false
-    if (firing0.unit.incendiary || firing0.unit.sponson?.type === sponsonType.Flame) {
+    if (u0.incendiary || u0.sponson?.type === sponsonType.Flame) {
       incendiary = true
     }
     let spotting = false
-    if (firing0.unit.offBoard || firing0.unit.crewed ||
-        (sponson && firing0.unit.sponson?.type !== sponsonType.Flame) ||
-        (!sponson && firing0.unit.isVehicle && firing0.unit.targetedRange)) {
+    if (u0.offBoard || u0.crewed ||
+        (sponson && u0.sponson?.type !== sponsonType.Flame) ||
+        (!sponson && u0.isVehicle && u0.targetedRange)) {
       spotting = true
-      if (firing0.unit.isVehicle) {
-        if (sponson && firing0.unit.isImmobilized) { spotting = false }
-        if (!firing0.unit.turreted && firing0.unit.isImmobilized) { spotting = false }
-        if (!sponson && firing0.unit.isTurretJammed) { spotting = false }
+      if (u0.isVehicle) {
+        if (sponson && u0.isImmobilized) { spotting = false }
+        if (!u0.turreted && u0.isImmobilized) { spotting = false }
+        if (!sponson && u0.isTurretJammed) { spotting = false }
       }
     }
-    if (spotting) { addSpotting(this.game, to, firing0.unit, sponson) }
     if (tRange || oBoard) {
       const rotated = this.path.length > 1
       const from = firing0.hex as Coordinate
@@ -260,12 +260,12 @@ export default class FireAction extends BaseAction {
           }
           for (const d of dHexes) {
             this.game.observeNeeded.push(d)
-            if (firing0.unit.areaFire || oBoard) {
+            if (u0.areaFire || oBoard) {
               fsHexes.push({ x: d.x, y: d.y })
             }
           }
         }
-        if (firing0.unit.areaFire || smoke) {
+        if (u0.areaFire || smoke) {
           if (smoke) {
             for (const d of dHexes) {
               if (needDice) { this.diceResults.push({ result: rolld10() }) }
@@ -317,7 +317,7 @@ export default class FireAction extends BaseAction {
                   for (const t of dTargets) {
                     if (t.counter.unit.canCarrySupport) {
                       this.game.moraleChecksNeeded.push({
-                        unit: t.counter.unit, from: [from], to: d, incendiary: firing0.unit.incendiary,
+                        unit: t.counter.unit, from: [from], to: d, incendiary: u0.incendiary,
                         critical,
                       })
                     }
@@ -348,7 +348,7 @@ export default class FireAction extends BaseAction {
                   const fwire = firing.map(f => f.wire ?? false)
                   fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, d, sponson, fwire)
                   const baseHit = baseToHit(fp.fp)
-                  const armor = firing0.unit.incendiary ? 0 : t.counter.unit.lowestArmor
+                  const armor = u0.incendiary ? 0 : t.counter.unit.lowestArmor
                   let hitCheck = baseHit + armor
                   if (hitCheck < 2) { hitCheck = 2 }
                   if (needDice) { this.diceResults.push({ result: roll2d10() }) }
@@ -373,7 +373,7 @@ export default class FireAction extends BaseAction {
                     }
                     t.counter.unit.wreck(this.game)
                     anims.push({ loc: d, type: "wreck" })
-                  } else if (hitRoll.result.result === hitCheck && !firing0.unit.incendiary) {
+                  } else if (hitRoll.result.result === hitCheck && !u0.incendiary) {
                     if (needDice) {
                       hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, vehicle immobilized`
                     }
@@ -431,7 +431,7 @@ export default class FireAction extends BaseAction {
             }
           }
           const [arc, armor] = armorAtArc(this.game, clone, from, to, turretHit)
-          const mods = armorHitModifiers(this.game, firing0.unit, clone, from, to, turretHit)
+          const mods = armorHitModifiers(this.game, u0, clone, from, to, turretHit)
           let hitCheck = baseHit + armor + mods.mod
           if (hitCheck < 2) { hitCheck = 2 }
           if (armor >= 0) {
@@ -518,61 +518,67 @@ export default class FireAction extends BaseAction {
         anims.push({ loc: to, type: "miss" })
       }
       const breakmod = 0 + (this.intensive ? 1 : 0) +
-        (firing0.unit.parent && firing0.unit.nation !== firing0.unit.parent.nation ? 1 : 0)
-      if (firing0.unit.breakWeaponRoll && targetRoll.result.result <= firing0.unit.breakWeaponRoll + breakmod) {
-        if (firing0.unit.isVehicle) {
+        (u0.parent && u0.nation !== u0.parent.nation ? 1 : 0)
+      if (u0.breakWeaponRoll && targetRoll.result.result <= u0.breakWeaponRoll + breakmod) {
+        if (u0.isVehicle) {
           if (sponson) {
-            if (firing0.unit.breakDestroysSponson) {
+            if (u0.breakDestroysSponson) {
               if (needDice) {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
-              if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
-              firing0.unit.sponsonDestroyed = true
+              if (u0.sponsonSpotting) { removeSpotting(this.game, u0.sponsonSpotting) }
+              spotting = false
+              u0.sponsonDestroyed = true
               anims.push({ loc: from, type: "destroyed" })
             } else {
               if (needDice) {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
               }
-              firing0.unit.sponsonJammed = true
-              if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
+              u0.sponsonJammed = true
+              if (u0.sponsonSpotting) { removeSpotting(this.game, u0.sponsonSpotting) }
+              spotting = false
               anims.push({ loc: from, type: "jammed" })
             }
           } else {
-            if (firing0.unit.breakDestroysWeapon) {
+            if (u0.breakDestroysWeapon) {
               if (needDice) {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
-              firing0.unit.weaponDestroyed = true
-              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+              u0.weaponDestroyed = true
+              if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
+              spotting = false
               anims.push({ loc: from, type: "destroyed" })
             } else {
               if (needDice) {
                 targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
               }
-              firing0.unit.jammed = true
-              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+              u0.jammed = true
+              if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
+              spotting = false
               anims.push({ loc: from, type: "jammed" })
             }
           }
-        } else if (firing0.unit.breakDestroysWeapon ||
-                   (firing0.unit.parent && firing0.unit.nation !== firing0.unit.parent.nation)) {
-          if (firing0.unit.incendiary && firing0.unit.parent) {
+        } else if (u0.breakDestroysWeapon ||
+                   (u0.parent && u0.nation !== u0.parent.nation)) {
+          if (u0.incendiary && u0.parent) {
             this.game.moraleChecksNeeded.push({
-              unit: firing0.unit.parent, from: [], to, incendiary: true, critical: false,
+              unit: u0.parent, from: [], to, incendiary: true, critical: false,
             })
           }
-          this.map.eliminateCounter(from, firing0.unit.id)
+          this.map.eliminateCounter(from, u0.id)
           if (needDice) {
             targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
           }
-          if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+          if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
+          spotting = false
           anims.push({ loc: from, type: "destroyed" })
         } else {
-          firing0.unit.jammed = true
+          u0.jammed = true
           if (needDice) {
             targetRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
           }
-          if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+          if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
+          spotting = false
           anims.push({ loc: from, type: "jammed" })
         }
       }
@@ -615,7 +621,7 @@ export default class FireAction extends BaseAction {
           targets.forEach(t => {
             if (t.x === c.x && t.y === c.y) {
               if (!(t.counter.unit.isVehicle && !t.counter.unit.armored) &&
-                  !(t.counter.unit.isVehicle && firing0.unit.incendiary)) {
+                  !(t.counter.unit.isVehicle && u0.incendiary)) {
                 if (critical) { critMessage = true }
               }
             }
@@ -636,7 +642,7 @@ export default class FireAction extends BaseAction {
                 if (needDice) { hitRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
                 t.counter.unit.wreck(this.game)
                 anims.push({ loc: c, type: "wreck" })
-              } else if (t.counter.unit.isVehicle && firing0.unit.incendiary) {
+              } else if (t.counter.unit.isVehicle && u0.incendiary) {
                 fp = firepower(this.game, this.convertAToA(firing), t.counter.unit, to, false, [wire])
                 let hitCheck = baseToHit(fp.fp)
                 if (hitCheck < 2) { hitCheck = 2 }
@@ -664,7 +670,7 @@ export default class FireAction extends BaseAction {
                 }
               } else {
                 this.game.moraleChecksNeeded.push({
-                  unit: t.counter.unit, from: fcoords, to: c, incendiary: firing0.unit.incendiary, critical
+                  unit: t.counter.unit, from: fcoords, to: c, incendiary: u0.incendiary, critical
                 })
               }
             }
@@ -686,14 +692,14 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
                   }
-                  if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
+                  if (u0.sponsonSpotting) { removeSpotting(this.game, u0.sponsonSpotting) }
                   anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.sponsonJammed = true
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
                   }
-                  if (firing0.unit.sponsonSpotting) { removeSpotting(this.game, firing0.unit.sponsonSpotting) }
+                  if (u0.sponsonSpotting) { removeSpotting(this.game, u0.sponsonSpotting) }
                   anims.push({ loc: from, type: "jammed" })
                 }
               } else {
@@ -702,19 +708,19 @@ export default class FireAction extends BaseAction {
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">destroyed</span>`
                   }
-                  if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+                  if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
                   anims.push({ loc: from, type: "destroyed" })
                 } else {
                   f.counter.unit.jammed = true
                   if (needDice) {
                     hitRoll.description += `, firing weapon <span style="color: ${failRedColorMarker()};">broken</span>`
                   }
-                  if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+                  if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
                   anims.push({ loc: from, type: "jammed" })
                 }
               }
             } else if (f.counter.unit.breakDestroysWeapon ||
-                       (firing0.unit.parent && firing0.unit.nation !== firing0.unit.parent.nation)) {
+                       (u0.parent && u0.nation !== u0.parent.nation)) {
               const hex = new Coordinate(f.x, f.y)
               if (f.counter.unit.incendiary && f.counter.unit.parent) {
                 this.game.moraleChecksNeeded.push({
@@ -726,7 +732,7 @@ export default class FireAction extends BaseAction {
                 hitRoll.description += `, ${this.formatUnit(f.counter.unit)} ` +
                   `<span style="color: ${failRedColorMarker()};">destroyed</span>`
               }
-              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+              if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
               anims.push({ loc: from, type: "destroyed" })
             } else {
               f.counter.unit.jammed = true
@@ -736,7 +742,7 @@ export default class FireAction extends BaseAction {
                   `<span style="color: ${failRedColorMarker()};">broken</span>`
               }
 
-              if (firing0.unit.spotting) { removeSpotting(this.game, firing0.unit.spotting) }
+              if (u0.spotting) { removeSpotting(this.game, u0.spotting) }
               anims.push({ loc: from, type: "jammed" })
             }
           }
@@ -787,6 +793,7 @@ export default class FireAction extends BaseAction {
         }
       }
     }
+    if (spotting) { addSpotting(this.game, to, u0, sponson) }
     sortStacks(this.map)
     this.game.updateInitiative(2)
     if (this.game.moraleChecksNeeded.length > 0) {

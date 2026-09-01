@@ -4,6 +4,7 @@ import Counter from "../../Counter";
 import Game, { SpottingStatus } from "../../Game";
 import GameAction, { GameActionAddAction, gameActionAddActionType, GameActionPath, GameActionSpottingData, GameActionUnit } from "../../GameAction";
 import Hex from "../../Hex";
+import { observeFrom } from "../decoy";
 import { dataForSpotting } from "../spotting";
 import BaseState, { StateAddAction, stateType } from "./BaseState";
 
@@ -164,5 +165,8 @@ export default class FireDisplaceState extends BaseState {
       },
     }, this.game)
     this.execute(action)
+    for (const p of this.path) {
+      observeFrom(this.game, new Coordinate(p.x, p.y), this.player)
+    }
   }
 }
