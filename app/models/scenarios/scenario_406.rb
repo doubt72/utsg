@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1943, 11, 20].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -28,7 +28,6 @@ module Scenarios
         [4, :usa_marine_rifle_s],
         :usa_m1918_bar,
         :usa_m2_browning,
-        :usa_radio_8inch,
         :usa_lvt_1,
         :usa_lvt_2,
       ] },

@@ -8,6 +8,8 @@ Features/Bug Fixes
   - Add Some Developer Notes
   - Strategy notes
 
+Re-test 008, 011, 103, 201, 302, 303, 401, 406, 512, 604
+
 Nice to Have Eventually:
   ? Better rollback of smoke on reaction fire
 

@@ -17,7 +17,7 @@
 - Bug fix: destroyed/immobilized vehicles should unload at the point hit on reaction fire
 - Bug fix: show offboard target overlay in replay
 - Swapped square and circle breakdown numbers
-- Updated 103, 401, 502, 613
+- Updated 103, 401, 406, 502, 512, 613
 - Added prototypes 614, 615, 616
 
 # 0.133

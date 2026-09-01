@@ -2,7 +2,7 @@ import {
   Direction, Player, UnitStatus, VictoryHex, WeatherType, WindType
 } from "../../utilities/commonTypes"
 import Feature, { FeatureData } from "../Feature"
-import Game from "../Game"
+import Game, { SpottingStatus } from "../Game"
 import Unit, { UnitData } from "../Unit"
 import { GamePhase } from "./gamePhase"
 
@@ -23,6 +23,8 @@ export type GameReplayCounterData = {
   abandoned?: boolean,
   facing: Direction,
   turretFacing?: Direction,
+  spotting?: string,
+  sponsonSpotting?: string,
 
   uf: UnitData | FeatureData,
   children?: GameReplayCounterData[],
@@ -45,6 +47,8 @@ export type GameReplayState = {
   currentWeather: WeatherType,
   windSpeed: WindType,
   windDirection: Direction,
+
+  spottingStatus: SpottingStatus[],
 }
 
 function unitToData(x: number, y: number, unit: Unit): GameReplayCounterData {
@@ -58,7 +62,9 @@ function unitToData(x: number, y: number, unit: Unit): GameReplayCounterData {
     jammed: unit.jammed, sponsonJammed: unit.sponsonJammed,
     weaponDestroyed: unit.weaponDestroyed, sponsonDestroyed: unit.sponsonDestroyed,
     turretJammed: unit.isTurretJammed, abandoned: unit.isAbandoned, facing: unit.facing,
-    turretFacing: unit.turretFacing, uf: unit.rawData, children
+    turretFacing: unit.turretFacing,
+    spotting: unit.spotting, sponsonSpotting: unit.sponsonSpotting,
+    uf: unit.rawData, children,
   }
 }
 
@@ -78,6 +84,8 @@ function dataToUnit(data: GameReplayCounterData): Unit {
   if (data.abandoned) { unit.abandon() }
   unit.facing = data.facing
   unit.turretFacing = data.turretFacing as Direction
+  unit.spotting = data.spotting
+  unit.sponsonSpotting = data.sponsonSpotting
   for (const c of data.children as GameReplayCounterData[]) {
     unit.children.push(dataToUnit(c))
   }
@@ -122,6 +130,8 @@ export function copyGameData(game: Game, sequence: number, undone: boolean): Gam
     currentWeather: game.scenario.map.currentWeather,
     windSpeed: game.scenario.map.windSpeed,
     windDirection: game.scenario.map.windDirection,
+
+    spottingStatus: [... game.spottingStatus],
   }
 }
 
@@ -153,4 +163,6 @@ export function setGameData(game: Game, state: GameReplayState): void {
   game.scenario.map.currentWeather = state.currentWeather
   game.scenario.map.windSpeed = state.windSpeed
   game.scenario.map.windDirection = state.windDirection
+
+  game.spottingStatus = state.spottingStatus
 }

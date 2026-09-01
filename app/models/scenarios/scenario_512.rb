@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["gre"].freeze
     AXIS = ["ger"].freeze
     STATUS = ""
-    VERSION = "1.0"
+    VERSION = "1.1"
 
     DATE = [1941, 4, 6].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -84,7 +84,7 @@ module Scenarios
           start_weather: "dry",
           base_weather: "dry",
           precip: [0, ""],
-          wind: [1, 2, false],
+          wind: [3, 2, false],
           hexes:,
           layout:,
           allied_dir: 1,
