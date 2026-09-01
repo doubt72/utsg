@@ -777,7 +777,7 @@ export default class FireAction extends BaseAction {
           const vehicle_incendiary = f.vehicle !== undefined &&
             (f.vehicle.incendiary || f.vehicle.sponson?.type === sponsonType.Flame)
           const loc = new Coordinate(f.x, f.y)
-          const crew = f.vehicle && ["tank", "spg"].includes(target0.unit.type) && !target0.unit.isAbandoned
+          const crew = f.vehicle && ["tank", "spg"].includes(f.vehicle.type) && !f.vehicle.isAbandoned
           if (crew) {
             this.game.addFireCheck({
               loc, vehicle: true, incendiary, vehicle_incendiary, tank: true,

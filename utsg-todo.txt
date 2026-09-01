@@ -1,5 +1,10 @@
 Features/Bug Fixes
-  + Add "shelf" below markers when controls are present
+  + Allow artillery to target own hex
+  + Batch fire start checks
+  + Differentiate shelf key
+  - Stopping short is wrong, says stop short when you don't
+  - Stopping short scenario in 202 was weird
+  - Did stopping short not flip player properly?
   - Decoy markers
     - Display unobserved in replay
   - Check offboard lines for artillery all edges

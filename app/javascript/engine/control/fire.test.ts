@@ -2420,7 +2420,7 @@ describe("ranged fire attacks", () => {
       expect(game.fireStartCheckNeeded).toStrictEqual([
         {
           loc: new Coordinate(4, 0), vehicle: true, incendiary: false,
-          vehicle_incendiary: false,
+          nation: "ussr", player_nation: "ussr", tank: true, vehicle_incendiary: false,
         },
         {
           loc: new Coordinate(3, 0), vehicle: false, incendiary: false,
@@ -3128,8 +3128,8 @@ describe("ranged fire attacks", () => {
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual([{
-        loc: new Coordinate(4, 2), vehicle: true, incendiary: false,
-        vehicle_incendiary: false,
+        loc: new Coordinate(4, 2), vehicle: true, incendiary: false, vehicle_incendiary: false,
+        nation: "ussr", player_nation: "ussr", tank: true,
       }])
 
       const all = map.allUnits
@@ -3216,8 +3216,8 @@ describe("ranged fire attacks", () => {
       )
 
       expect(game.fireStartCheckNeeded).toStrictEqual([{
-        loc: new Coordinate(4, 2), vehicle: true, incendiary: true,
-        vehicle_incendiary: false,
+        loc: new Coordinate(4, 2), vehicle: true, incendiary: true, nation: "ussr",
+        player_nation: "ussr", tank: true, vehicle_incendiary: false,
       }])
 
       game.setGameState(new FireStartState(game))
@@ -3226,7 +3226,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "checking to see if blaze starts in E3: on 6 or less, rolled 2 [2d10: 1 + 1]: blaze starts"
+        "checking to see if blaze starts in E3: on 6 or less (crew escapes on 7 or less), " +
+          "rolled 2 [2d10: 1 + 1]: blaze starts"
       )
       const counters = map.countersAt(new Coordinate(4, 2))
       expect(counters.length).toBe(4)

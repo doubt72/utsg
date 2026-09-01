@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["uk"].freeze
     AXIS = ["ita"].freeze
     STATUS = ""
-    VERSION = "1.1"
+    VERSION = "1.2"
 
     DATE = [1941, 11, 19].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -63,10 +63,10 @@ module Scenarios
           full-strength British armored regiment reached Sidi Rezegh, where it
           was crushed by the Afrika Korps. The defeat marked the failure of
           the initial British move in Crusader, though it later defeated the
-          Italian−German forces in a battle of attrition and forced them to
+          Italian-German forces in a battle of attrition and forced them to
           retreat. The British attacked with Crusader tanks with long-range
           artillery support but no infantry. The \"Ariete\" Division had adopted
-          the German practice of tank–infantry coordination while training
+          the German practice of tank-infantry coordination while training
           with the Panzer units of the Afrika Korps during the previous months
           and had put it to god use at Bir el Gubi.",
         ]

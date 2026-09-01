@@ -165,7 +165,7 @@ export type GameActionDetails = {
 
   rally_data?: GameActionRallyData,
   fire_data?: GameActionFireData,
-  fire_start_data?: GameActionFireStartData,
+  fire_start_data?: GameActionFireStartData[],
   move_data?: GameActionMoveData,
   breakdown_data?: GameActionBreakdowndData,
   morale_data?: GameActionMoraleData,

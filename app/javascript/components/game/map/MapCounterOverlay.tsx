@@ -261,7 +261,7 @@ export default function MapCounterOverlay({
             }
             if (controls.length > 0) {
               buttons.unshift(
-                <path key="shelf" d={counterActionButtonShelfPath(x-17, layout.y2 - outwidth + 4, maxY)}
+                <path key={`shelf-${i}`} d={counterActionButtonShelfPath(x-17, layout.y2 - outwidth + 4, maxY)}
                       style={{ fill: clearColor }}/>
               )
             }

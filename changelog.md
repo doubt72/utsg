@@ -1,3 +1,11 @@
+# 0.135
+
+- Batch fire checks into one action (not backwards compatible)
+- Nerf radios a bit (requires new versions of scenarios with radios)
+- Allow radio to call in artillery on own hex (I mean, if you really want to...)
+- Bug fix: targeting vehicles in hex breaks fire checks
+- Updated 202
+
 # 0.134
 
 - Add spotting

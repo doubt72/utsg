@@ -1,6 +1,6 @@
-import { Coordinate, hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
+import { hexOpenType, HexOpenType } from "../../../utilities/commonTypes";
 import { roll2d10 } from "../../../utilities/utilities";
-import Game, { SimpleHexCheck } from "../../Game";
+import Game from "../../Game";
 import GameAction from "../../GameAction";
 import { observe } from "../decoy";
 import BaseState, { stateType } from "./BaseState";
@@ -23,22 +23,30 @@ export default class FireStartState extends BaseState {
   }
 
   finish() {
-    const check = this.game.fireStartCheckNeeded[0] as SimpleHexCheck
-    const loc = check.loc as Coordinate
+    const path = []
+    const startData = []
+    const dice = []
+    for (const c of this.game.fireStartCheckNeeded) {
+      path.push({ x: c.loc.x, y: c.loc.y })
+      if (c.tank) {
+        startData.push({
+          vehicle: c.vehicle as boolean, incendiary: c.incendiary as boolean,
+          vehicle_incendiary: c.vehicle_incendiary as boolean,
+          tank: true, nation: c.nation, player_nation: c.player_nation
+        })
+      } else {
+        startData.push({
+          vehicle: c.vehicle as boolean, incendiary: c.incendiary as boolean,
+          vehicle_incendiary: c.vehicle_incendiary as boolean, tank: false,
+        })
+      }
+      dice.push({ result: roll2d10() })
+    }
     const action = new GameAction({
       user: this.game.currentUser, player: this.game.currentPlayer,
       data: {
         action: "fire_start", old_initiative: this.game.initiative,
-        path: [{ x: loc.x, y: loc.y }],
-        fire_start_data: check.tank ? {
-          vehicle: check.vehicle as boolean, incendiary: check.incendiary as boolean,
-          vehicle_incendiary: check.vehicle_incendiary as boolean,
-          tank: true, nation: check.nation, player_nation: check.player_nation
-        } : {
-          vehicle: check.vehicle as boolean, incendiary: check.incendiary as boolean,
-          vehicle_incendiary: check.vehicle_incendiary as boolean, tank: false,
-        },
-        dice_result: [{ result: roll2d10() }]
+        path, fire_start_data: startData, dice_result: dice,
       }
     }, this.game)
     this.game.clearGameState()

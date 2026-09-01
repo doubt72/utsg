@@ -7,9 +7,9 @@ import Unit, { unitDataForTankCrew } from "../Unit";
 import BaseAction from "./BaseAction";
 
 export default class FireStartAction extends BaseAction {
-  diceResult: GameActionDiceResult;
-  hex: GameActionPath;
-  startData: GameActionFireStartData;
+  diceResult: GameActionDiceResult[];
+  target: GameActionPath[];
+  startData: GameActionFireStartData[];
   
   constructor(data: GameActionData, game: Game, index: number) {
     super(data, game, index)
@@ -17,35 +17,45 @@ export default class FireStartAction extends BaseAction {
     this.validate(data.data.dice_result)
     this.validate(data.data.path)
     this.validate(data.data.fire_start_data)
-    this.hex = (data.data.path as GameActionPath[])[0]
-    this.diceResult = (data.data.dice_result as GameActionDiceResult[])[0]
-    this.startData = data.data.fire_start_data as GameActionFireStartData
+    this.target = data.data.path as GameActionPath[]
+    this.diceResult = data.data.dice_result as GameActionDiceResult[]
+    this.startData = data.data.fire_start_data as GameActionFireStartData[]
   }
 
   get type(): string { return "fire_start" }
 
-  get needed(): number {
+  needed(index: number): number {
     return fireStartTarget(
-      this.map, new Coordinate(this.hex.x, this.hex.y), this.startData.vehicle,
-      this.startData.incendiary, this.startData.vehicle_incendiary
+      this.map, new Coordinate(this.target[index].x, this.target[index].y), this.startData[index].vehicle,
+      this.startData[index].incendiary, this.startData[index].vehicle_incendiary
     )
   }
 
-  get htmlValue(): string {
+  indexValue(index: number): string {
+    const need = this.needed(index)
+    const dice = this.diceResult[index].result
     let result = `<span style="color: ${passBlue()};">no effect</span>`
-    if (this.needed >= this.diceResult.result.result) {
+    if (need >= dice.result) {
       result = `blaze <span style="color: ${failRed()};">starts</span>`
-    } else if (this.diceResult.result.result <= 7 && this.startData.vehicle && this.startData.tank) {
+    } else if (dice.result <= 7 && this.startData[index].vehicle && this.startData[index].tank) {
       result += `, <span style="color: ${passGreen()};">crew escapes</span>`
     }
-    const loc = formatCoordinate(new Coordinate(this.hex.x, this.hex.y))
-    return this.needed < 2 ? `checking to see if crew escapes in ${loc}: on 7 or less, ` +
-        `rolled ${formatDieResult(this.diceResult.result)}` +
+    const loc = formatCoordinate(new Coordinate(this.target[index].x, this.target[index].y))
+    return need < 2 ? `checking to see if crew escapes in ${loc}: on 7 or less, ` +
+        `rolled ${formatDieResult(dice)}` +
         `: ${ result }` :
-      `checking to see if blaze starts in ${loc}: on ${formatTarget(this.needed)} or less${
-          this.startData.tank && this.needed < 7 ? " (crew escapes on 7 or less)" : "" }, ` +
-        `rolled ${formatDieResult(this.diceResult.result)}` +
+      `checking to see if blaze starts in ${loc}: on ${formatTarget(need)} or less${
+          this.startData[index].tank && need < 7 ? " (crew escapes on 7 or less)" : "" }, ` +
+        `rolled ${formatDieResult(dice)}` +
         `: ${ result }`
+  }
+
+  get htmlValue(): string {
+    const rc: string[] = []
+    for (let i = 0; i < this.target.length; i++) {
+      rc.push(this.indexValue(i))
+    }
+    return rc.join(", ")
   }
 
   get undoPossible() {
@@ -53,19 +63,22 @@ export default class FireStartAction extends BaseAction {
   }
 
   mutateGame(): void {
-    const loc = new Coordinate(this.hex.x, this.hex.y)
-    if (this.diceResult.result.result <= this.needed) {
-      this.map.addFire(loc)
-      this.game.observeNeeded.push(loc)
-    } else if (this.diceResult.result.result <= 7 && this.startData.vehicle && this.startData.tank) {
-      const unit = new Unit(unitDataForTankCrew(`uf-${this.game.actions.length}`, this.startData.nation as string))
-      unit.playerNation = this.startData.player_nation as string
-      unit.exhaust()
-      this.map.addCounter(loc, unit)
-      this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false, critical: false })
-      this.game.addActionAnimations([{ loc, type: "crewescape" }])
-      if (this.game.currentPlayerNation !== unit.playerNation) { this.game.togglePlayer() }
+    for (let i = 0; i < this.target.length; i++) {
+      const loc = new Coordinate(this.target[i].x, this.target[i].y)
+      const dice = this.diceResult[i].result
+      if (dice.result <= this.needed(i)) {
+        this.map.addFire(loc)
+        this.game.observeNeeded.push(loc)
+      } else if (dice.result <= 7 && this.startData[i].vehicle && this.startData[i].tank) {
+        const unit = new Unit(unitDataForTankCrew(`uf-${this.game.actions.length}`, this.startData[i].nation as string))
+        unit.playerNation = this.startData[i].player_nation as string
+        unit.exhaust()
+        this.map.addCounter(loc, unit)
+        this.game.moraleChecksNeeded.push({ unit, from: [loc], to: loc, incendiary: false, critical: false })
+        this.game.addActionAnimations([{ loc, type: "crewescape" }])
+        if (this.game.currentPlayerNation !== unit.playerNation) { this.game.togglePlayer() }
+      }
     }
-    this.game.fireStartCheckNeeded.shift()
+    this.game.fireStartCheckNeeded = []
   }
 }
