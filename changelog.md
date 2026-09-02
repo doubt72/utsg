@@ -5,6 +5,7 @@
 - Allow radio to call in artillery on own hex (I mean, if you really want to...)
 - Bug fix: targeting vehicles in hex breaks fire checks
 - Updated 202
+- Added prototype 315 (need to add special rule)
 
 # 0.134
 

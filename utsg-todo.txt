@@ -1,12 +1,7 @@
 Features/Bug Fixes
-  + Allow artillery to target own hex
-  + Batch fire start checks
-  + Differentiate shelf key
-  - Stopping short is wrong, says stop short when you don't
-  - Stopping short scenario in 202 was weird
-  - Did stopping short not flip player properly?
   - Decoy markers
     - Display unobserved in replay
+  - Test two-player stopping short (think something might be wrong with it)
   - Check offboard lines for artillery all edges
   - Save/play user scenarios / limit 1 - 3 - 5
   - Playthrough of Clash of Steel
