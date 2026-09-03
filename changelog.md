@@ -1,3 +1,8 @@
+# 0.136
+
+- Bug fix: fix undo for overstack
+- Delete games (which is most of the games) that 0.135 broke
+
 # 0.135
 
 - Start work on random drop deployment

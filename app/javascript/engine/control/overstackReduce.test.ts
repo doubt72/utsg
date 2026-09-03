@@ -194,4 +194,54 @@ describe("overstack reduction", () => {
     expect(units[2].unit.id).toBe("mg")
     expect(units[2].unit.parent?.id).toBe("inf")
   })
+
+  test("can remove unmanned weapon", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    game.phase = gamePhaseType.CleanupOverstack
+    game.setGameState(new OverstackState(game))
+    game.internalCurrentPlayer = 2
+    const unit1 = new Unit(testGMG)
+    unit1.id = "unit1"
+    const loc = new Coordinate(0,0)
+    try {
+      map.addCounter(loc, unit1)
+    } catch(err) {
+      expect(err instanceof StackingActionError).toBe(true)
+    }
+    const unit2 = new Unit(testGInf)
+    unit2.id = "unit2"
+    map.addCounter(loc, unit2)
+    const unit3 = new Unit(testGInf)
+    unit3.id = "unit3"
+    map.addCounter(loc, unit3)
+    organizeStacks(map)
+
+    map.select(unit1)
+    expect(unit1.selected).toBe(true)
+    game.gameState?.finish()
+    expect(map.anyOverstackedUnits(2)).toBe(false)
+    const unit = game.eliminatedUnits[0] as Unit
+    expect(unit.id).toBe("unit1")
+
+    let units = map.countersAt(loc)
+    expect(units.length).toBe(2)
+    expect(units[0].unit.id).toBe("unit2")
+    expect(units[1].unit.id).toBe("unit3")
+
+    const action = game.actions[0]
+    action.undo()
+    expect(game.eliminatedUnits.length).toBe(0)
+    units = map.countersAt(loc)
+    expect(units.length).toBe(3)
+    expect(units[0].unit.id).toBe("unit1")
+    expect(units[0].unit.parent).toBe(undefined)
+    expect(units[0].unit.children.length).toBe(0)
+    expect(units[1].unit.id).toBe("unit2")
+    expect(units[1].unit.parent).toBe(undefined)
+    expect(units[1].unit.children.length).toBe(0)
+    expect(units[2].unit.id).toBe("unit3")
+    expect(units[2].unit.parent).toBe(undefined)
+    expect(units[2].unit.children.length).toBe(0)
+  })
 })

@@ -2,7 +2,7 @@ import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatNation } from "../../utilities/graphics";
 import Game from "../Game";
 import { GameActionData, GameActionUnit } from "../GameAction";
-import organizeStacks from "../support/organizeStacks";
+import organizeStacks, { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
 
@@ -41,7 +41,7 @@ export default class OverstackReduceAction extends BaseAction {
         this.map.loadUnit(loc, loc, id, unit.id)
       }
     }
-    organizeStacks(this.map)
+    sortStacks(this.map)
   }
 
   mutateGame(): void {
