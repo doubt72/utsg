@@ -134,7 +134,7 @@ export type GameActionAddAction = {
 
 export type GameActionPhaseChange = {
   old_phase: GamePhase, new_phase: GamePhase, old_turn: number, new_turn: number,
-  new_player: Player, messages: string[],
+  new_player: Player, messages: string[], done: boolean, status_update: boolean,
 }
 
 export type GameActionWindData = {

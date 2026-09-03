@@ -746,11 +746,9 @@ export default class Map {
   }
 
   anyOverstackedUnits(player: Player): boolean {
-    console.log("any?")
     for (let x = 0; x < this.width; x++) {
       for (let y = 0; y < this.height; y++) {
-        if (this.overstackAt(x, y, player)) { 
-          console.log(`overstack ${x},${y}`);
+        if (this.overstackAt(x, y, player)) {
           return true
         }
       }

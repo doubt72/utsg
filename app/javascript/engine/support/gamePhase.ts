@@ -17,6 +17,7 @@ export function checkPhase(game: Game, backendSync: boolean) {
   const phaseData: GameActionPhaseChange = {
     old_phase: oldPhase, new_phase: oldPhase, messages: [],
     old_turn: oldTurn, new_turn: oldTurn, new_player: game.currentPlayer,
+    done: false, status_update: false,
   }
   const data: GameActionData = {
     player: game.currentPlayer, user: game.currentUser,
@@ -43,19 +44,16 @@ export function checkPhase(game: Game, backendSync: boolean) {
   } else if (oldPhase === gamePhaseType.CleanupWeather) {
     cleanupWeather(game, data)
   }
-  console.log("finish")
-  console.log(phaseData.messages)
   if (oldPhase !== phaseData.new_phase || oldTurn !== phaseData.new_turn ||
       data.player !== phaseData.new_player) {
-    console.log("wot")
     game.executeAction(new GameAction(data, game), backendSync)
-    console.log("here")
-    if (phaseData.messages[phaseData.messages.length - 1] === "game complete") {
+    if (phaseData.done) {
       let winner = game.currentInitiativePlayer
       if (game.playerOneScore !== game.playerTwoScore) {
         winner = game.playerOneScore > game.playerTwoScore ? 1 : 2
       }
       game.clearGameState()
+      game.state = "complete"
       game.executeAction(new GameAction({
         player: winner, user: game.currentUser, data: {
           action: "finish", old_initiative: game.initiative,
@@ -63,7 +61,7 @@ export function checkPhase(game: Game, backendSync: boolean) {
       }, game), backendSync)
     }
   }
-  if (phaseData.messages[phaseData.messages.length - 1] === "starting status update") {
+  if (phaseData.status_update) {
     const targets = game.scenario.map.allStatusChanges()
     game.executeAction(new GameAction({
       player: phaseData.new_player, user: game.currentUser, data: {
@@ -194,14 +192,10 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = phaseData.new_phase
   const player = phaseData.new_player
-  console.log("checking")
   if (game.scenario.map.anyOverstackedUnits(player)) { return }
-  console.log("checked")
   phaseData.messages.push(`overstack check complete for ${formatNation(game, player)} player`)
   phaseData.new_player = otherPlayer(player)
   if (player === game.internalInitiativePlayer) {
-    console.log("here and")
-    console.log(phaseData.messages)
     phaseData.new_phase = oldPhase
     phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)} player`)
     if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
@@ -209,15 +203,14 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
     }
     cleanupOverstack(game, data)
   } else {
-    console.log("there and")
-    console.log(phaseData.messages)
-    // In either case, we're done with this sequence of phase changes;
-    // these are "magic" messages, if these change, must also make changes above
     if (phaseData.new_turn === game.scenario.turns) {
+      phaseData.new_phase = gamePhaseType.CleanupStatus
       phaseData.messages.push("game complete")
+      phaseData.done = true
     } else {
       phaseData.new_phase = gamePhaseType.CleanupStatus
       phaseData.messages.push("starting status update")
+      phaseData.status_update = true
     }
   }
 }

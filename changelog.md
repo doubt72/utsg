@@ -1,5 +1,6 @@
 # 0.136
 
+- Bug fix: overstack doesn't stall game end
 - Bug fix: fix undo for overstack
 - Delete games (which is most of the games) that 0.135 broke
 
