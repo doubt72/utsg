@@ -5,6 +5,7 @@ import { GameActionData, GameActionUnit } from "../GameAction";
 import organizeStacks, { sortStacks } from "../support/organizeStacks";
 import Unit from "../Unit";
 import BaseAction from "./BaseAction";
+import StackingActionError from "./StackingActionError";
 
 export default class OverstackReduceAction extends BaseAction {
   target: GameActionUnit;
@@ -32,7 +33,13 @@ export default class OverstackReduceAction extends BaseAction {
     const loc = new Coordinate(this.target.x, this.target.y)
     const unit = this.game.findUnitById(this.target.id) as Unit
     this.game.removeEliminatedCounter(this.target.id)
-    this.map.addCounter(loc, unit)
+    try {
+      this.map.addCounter(loc, unit)
+    } catch(err) {
+      if (err instanceof StackingActionError) {
+        //
+      } else { throw err }
+    }
     if (this.target.parent) {
       this.map.loadUnit(loc, loc, unit.id, this.target.parent)
     }

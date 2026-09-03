@@ -1,5 +1,7 @@
 import { describe, expect, test } from "vitest";
-import { createBlankGame, testGInf, testGMG, testGTruck, testRInf, testRMG, testRTank } from "./testHelpers";
+import {
+  createBlankGame, testGInf, testGMG, testGTruck, testRGun, testRInf, testRMG, testRTank
+} from "./testHelpers";
 import Unit from "../Unit";
 import { Coordinate } from "../../utilities/commonTypes";
 import OverstackState from "./state/OverstackState";
@@ -201,7 +203,7 @@ describe("overstack reduction", () => {
     game.phase = gamePhaseType.CleanupOverstack
     game.setGameState(new OverstackState(game))
     game.internalCurrentPlayer = 2
-    const unit1 = new Unit(testGMG)
+    const unit1 = new Unit(testRGun)
     unit1.id = "unit1"
     const loc = new Coordinate(0,0)
     try {
@@ -215,25 +217,29 @@ describe("overstack reduction", () => {
     const unit3 = new Unit(testGInf)
     unit3.id = "unit3"
     map.addCounter(loc, unit3)
+    const unit4 = new Unit(testGInf)
+    unit4.id = "unit4"
+    map.addCounter(loc, unit4)
     organizeStacks(map)
 
     map.select(unit1)
     expect(unit1.selected).toBe(true)
     game.gameState?.finish()
-    expect(map.anyOverstackedUnits(2)).toBe(false)
+    expect(map.anyOverstackedUnits(2)).toBe(true)
     const unit = game.eliminatedUnits[0] as Unit
     expect(unit.id).toBe("unit1")
 
     let units = map.countersAt(loc)
-    expect(units.length).toBe(2)
+    expect(units.length).toBe(3)
     expect(units[0].unit.id).toBe("unit2")
     expect(units[1].unit.id).toBe("unit3")
+    expect(units[2].unit.id).toBe("unit4")
 
-    const action = game.actions[0]
-    action.undo()
+    expect(game.actions.length).toBe(1)
+    game.executeUndo(false)
     expect(game.eliminatedUnits.length).toBe(0)
     units = map.countersAt(loc)
-    expect(units.length).toBe(3)
+    expect(units.length).toBe(4)
     expect(units[0].unit.id).toBe("unit1")
     expect(units[0].unit.parent).toBe(undefined)
     expect(units[0].unit.children.length).toBe(0)
@@ -243,5 +249,8 @@ describe("overstack reduction", () => {
     expect(units[2].unit.id).toBe("unit3")
     expect(units[2].unit.parent).toBe(undefined)
     expect(units[2].unit.children.length).toBe(0)
+    expect(units[3].unit.id).toBe("unit4")
+    expect(units[3].unit.parent).toBe(undefined)
+    expect(units[3].unit.children.length).toBe(0)
   })
 })
