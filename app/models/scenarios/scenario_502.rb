@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Armored Connage"
     ALLIES = ["fra"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.5"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1940, 5, 14].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -17,7 +17,7 @@ module Scenarios
         :fra_leader_5_1,
         [2, :fra_leader_5_1],
         [2, :fra_bar_s],
-        [3, :fra_reservist_s],
+        [4, :fra_reservist_s],
         :fra_crew_t,
         [2, :fra_fm_24_29],
         :fra_25mm_hotchkiss,
@@ -56,7 +56,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,

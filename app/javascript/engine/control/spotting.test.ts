@@ -346,7 +346,7 @@ describe("spotting", () => {
     game.setGameState(new FireState(game, false))
 
     select(map, {
-      counter: map.countersAt(tloc)[0],
+      counter: map.countersAt(tloc)[1],
       target: { type: "map", xy: tloc }
     }, () => {})
     expect(target.targetSelected).toBe(true)
@@ -403,7 +403,7 @@ describe("spotting", () => {
     game.setGameState(new FireState(game, false))
 
     select(map, {
-      counter: map.countersAt(tloc)[0],
+      counter: map.countersAt(tloc)[1],
       target: { type: "map", xy: tloc }
     }, () => {})
     expect(target.targetSelected).toBe(true)
@@ -458,7 +458,7 @@ describe("spotting", () => {
     game.setGameState(new FireState(game, false))
 
     select(map, {
-      counter: map.countersAt(tloc)[0],
+      counter: map.countersAt(tloc)[1],
       target: { type: "map", xy: tloc }
     }, () => {})
     expect(target.targetSelected).toBe(true)
@@ -1039,7 +1039,7 @@ describe("spotting", () => {
     game.setGameState(new FireState(game, false))
 
     select(map, {
-      counter: map.countersAt(tloc)[0],
+      counter: map.countersAt(tloc)[1],
       target: { type: "map", xy: tloc }
     }, () => {})
     expect(target.targetSelected).toBe(true)
@@ -1085,7 +1085,7 @@ describe("spotting", () => {
     game.setGameState(new FireState(game, false))
 
     select(map, {
-      counter: map.countersAt(tloc)[0],
+      counter: map.countersAt(tloc)[1],
       target: { type: "map", xy: tloc }
     }, () => {})
     expect(target.targetSelected).toBe(true)

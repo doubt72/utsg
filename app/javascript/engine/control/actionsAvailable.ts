@@ -528,6 +528,7 @@ function currentEnemyAction(game: Game): string {
 
 function addUndo(game: Game, activePlayer: string, actions: GameControl[]) {
   if (!game.lastAction?.undoPossible) { return }
+  if (game.gameState?.type === stateType.Deploy && game.deployState.needsDirection) { return }
   if (!game.gameState?.actionInProgress) {
     actions.push({ type: "undo" })
   }

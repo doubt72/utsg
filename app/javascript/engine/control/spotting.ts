@@ -54,8 +54,10 @@ export function dataForSpotting(game: Game, ref: string): SpottingStatus | undef
 function nextLetter(used: string[]): string {
   // Again, probably not more than 52 targeted weapons in a scenario
   const letters = [
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+    "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+    "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+    "!", "@", "#", "$", "%", "&", "~", "*", "?", "=", "-", "+"
   ]
   for (const l of letters) {
     if (!used.includes(l)) { return l }

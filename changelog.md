@@ -1,3 +1,10 @@
+# 0.137
+
+- Add highlight for chat tab on main page when new messages appear
+- Moved spotting markers to bottom
+- Hide undo when choosing direction on deploy
+- Updated 305, 502
+
 # 0.136
 
 - Bug fix: overstack doesn't stall game end

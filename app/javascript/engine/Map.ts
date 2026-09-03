@@ -485,8 +485,9 @@ export default class Map {
             mk: 1, type: "spotting", i: "spotting", v: s.ref, v2: s.level, name: s.unit.name,
             sn: s.unit.smallName
           }), this)
-          counter.stackingIndex = rc.length
-          rc.push(counter)
+          counter.stackingIndex = 0
+          for (const c of rc) { c.stackingIndex += 1 }
+          rc.unshift(counter)
         }
       }
     }

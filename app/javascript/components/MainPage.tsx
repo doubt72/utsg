@@ -5,10 +5,13 @@ import { CreateGameButton, ScenariosButton } from "./utilities/buttons";
 import GameList from "./GameList";
 import { titleNameStyle } from "./Utilities";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CircleFill } from "react-bootstrap-icons";
 
 export default function MainPage() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [highlightTab, setHighlightTab] = useState<boolean>(false)
 
   useEffect(() => {
     history.pushState(null, "", location.pathname)
@@ -53,28 +56,36 @@ export default function MainPage() {
         <div className="main-page-welcome">
           <div className="main-page-list-tabs">
             <div className={tabClasses(0)} onClick={() => setTab(0)}>welcome</div>
-            <div className={tabClasses(1)} onClick={() => setTab(1)}>chat</div>
+            <div className={tabClasses(1)} onClick={() => {
+                setTab(1)
+                setHighlightTab(false)
+              }}>
+              {highlightTab ? <span className="red smaller-icon"><CircleFill /></span> : ""} chat
+            </div>
             <div className="flex-fill"></div>
           </div>
-          { tab === 0 ?
-            <div className="main-page-welcome-contents">
-              <a href="/assets/scenario-animation2.gif">
-                <img className="main-page-scenario-loop" src="/assets/scenario-animation2.gif" alt="scenario loop" />
-              </a>
-              <p>
-                Welcome to the <strong>{titleNameStyle}</strong> server!  The server is currently
-                in beta as I continue to shake things down, work out the bugs, and test the scenarios.  See
-                the <a className="regular" href="/about">about</a> page for more information
-                about the server, the code of conduct, or to report bugs.
-              </p>
-              <p>
-                Best with Chromium-based browsers; it should work with any modern browser, but
-                rendering performance can vary significantly.
-              </p>
-            </div> :
-            <div className={`main-page-chat-section${loggedIn ? "" : " main-page-chat-section-logged-out"}`}>
-              <ChatDisplay gameId={0} showInput={loggedIn} desyncCallback={() => {}} />
-            </div> }
+          <div className={`main-page-welcome-contents${tab === 0 ? "" : " undisplay"}`}>
+            <a href="/assets/scenario-animation2.gif">
+              <img className="main-page-scenario-loop" src="/assets/scenario-animation2.gif" alt="scenario loop" />
+            </a>
+            <p>
+              Welcome to the <strong>{titleNameStyle}</strong> server!  The server is currently
+              in beta as I continue to shake things down, work out the bugs, and test the scenarios.  See
+              the <a className="regular" href="/about">about</a> page for more information
+              about the server, the code of conduct, or to report bugs.
+            </p>
+            <p>
+              Best with Chromium-based browsers; it should work with any modern browser, but
+              rendering performance can vary significantly.
+            </p>
+          </div>
+          <div className={`main-page-chat-section${loggedIn ? "" : " main-page-chat-section-logged-out"}${
+                   tab === 1 ? "" : " undisplay"
+                 }`}>
+            <ChatDisplay gameId={0} showInput={loggedIn} desyncCallback={() => {}} updateCallback={() => {
+                if (tab !== 1) { setHighlightTab(true) }
+              }} />
+          </div>
         </div>
         <div>
           <div className="main-page-announcements">

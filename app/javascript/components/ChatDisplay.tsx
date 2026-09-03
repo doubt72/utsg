@@ -15,9 +15,12 @@ interface ChatDisplayProps {
   showInput: boolean;
   desyncCallback: () => void;
   collapse?: boolean;
+  updateCallback?: () => void;
 }
 
-export default function ChatDisplay({ gameId, showInput, desyncCallback, collapse = false }: ChatDisplayProps) {
+export default function ChatDisplay({
+  gameId, showInput, desyncCallback, collapse = false, updateCallback,
+}: ChatDisplayProps) {
   const [message, setMessage] = useState("")
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([])
 
@@ -26,6 +29,16 @@ export default function ChatDisplay({ gameId, showInput, desyncCallback, collaps
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     `${protocol}://${host}/cable`
   )
+
+  const update = (id: string) => {
+    if (gameId === 0) {
+      const current = localStorage.getItem("last-global-chat")
+      if (current !== id) {
+        localStorage.setItem("last-global-chat", id)
+        if (updateCallback) { updateCallback() }
+      }
+    }
+  }
 
   const onChange = (value: string) => {
     setMessage(value)
@@ -40,7 +53,10 @@ export default function ChatDisplay({ gameId, showInput, desyncCallback, collaps
 
   useEffect(() => {
     getAPI(`/api/v1/messages?game_id=${gameId}`, {
-      ok: response => response.json().then(json => setChatMessages(json))
+      ok: response => response.json().then(json => {
+        update(json[0]?.id ?? "0")
+        setChatMessages(json)
+      })
     })
   }, [])
 
@@ -56,6 +72,7 @@ export default function ChatDisplay({ gameId, showInput, desyncCallback, collaps
     if (lastMessage) {
       const msg = JSON.parse(lastMessage.data).message
       if (msg && msg.body) {
+        update(msg.body.id)
         setChatMessages([...chatMessages, msg.body])
       }
     }

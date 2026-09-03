@@ -1,5 +1,7 @@
 Features/Bug Fixes
-  - Highlight for chat tab
+  + Remove undo button when picking direction
+  + Move targeting markers to bottom
+  + Highlight for chat tab
   - Decoy markers
     - Display unobserved in replay
   - Test two-player stopping short (think something might be wrong with it)
@@ -8,8 +10,6 @@ Features/Bug Fixes
   - Playthrough of Clash of Steel
   - Add Some Developer Notes
   - Strategy notes
-
-Re-test 008, 011, 103, 201, 302, 303, 401, 406, 512, 604
 
 Nice to Have Eventually:
   ? Better rollback of smoke on reaction fire
