@@ -1,4 +1,5 @@
 Features/Bug Fixes
+  - Highlight for chat tab
   - Decoy markers
     - Display unobserved in replay
   - Test two-player stopping short (think something might be wrong with it)

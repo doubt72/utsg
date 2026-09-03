@@ -41,6 +41,24 @@ export default function SpecialRulesSection({ section }: SectionProps) {
         a decoy can&apos;t do that does&apos;t explicitly reveal a unit will implicitly reveal that
         a unit is not a decoy to your opponent.
       </p>
+      <h3>{section}.1. Random Drop Deployment</h3>
+      <p>
+        Random drops are used in certain airborne scenarios; in a random drop deployment, instead of
+        a the normal deployment process, all squads are split into teams, all teams and leaders are
+        randomly placed in random deployment hexes. If the chosen hex is already occupied by an
+        enemy unit, is next to an enemy unit, is a victory hex, or would result in overstacking, a
+        new hex will be chosen.
+      </p>
+      <p>
+        All teams and leaders so placed must immediately do a morale check (done automatically on
+        the sever), so some teams and leaders will start broken. Any infantry weapons will then be
+        randomly placed on teams (or leaders in the case of offboard artillery).
+      </p>
+      <p>
+        In scenarios with this special rule, the opponent cannot perform any{" "}
+        <strong>rout all</strong> actions during the same turn that the deployment was performed (or
+        turn one if deployment was performed in setup).
+      </p>
     </div>
   );
 }

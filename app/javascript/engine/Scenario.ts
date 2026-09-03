@@ -292,6 +292,10 @@ export default class Scenario {
         return `${allied} infantry units start unobserved`
       } else if (r === "axis_hidden_units") {
         return `${axis} infantry units start unobserved`
+      } else if (r === "allied_random_drop_0") {
+        return `${allied} random drop deployment setup`
+      } else if (r === "allied_random_drop_2") {
+        return `${allied} random drop deployment on turn 2`
       } else if (r === "winter") {
         return `Winter: no digging in, treat water/river hexes as open for infantry`
       } else if (r === "retreat_301") {

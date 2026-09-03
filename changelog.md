@@ -1,5 +1,6 @@
 # 0.135
 
+- Start work on random drop deployment
 - Batch fire checks into one action (not backwards compatible)
 - Nerf radios a bit (requires new versions of scenarios with radios)
 - Allow radio to call in artillery on own hex (I mean, if you really want to...)
