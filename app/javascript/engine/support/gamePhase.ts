@@ -43,9 +43,13 @@ export function checkPhase(game: Game, backendSync: boolean) {
   } else if (oldPhase === gamePhaseType.CleanupWeather) {
     cleanupWeather(game, data)
   }
+  console.log("finish")
+  console.log(phaseData.messages)
   if (oldPhase !== phaseData.new_phase || oldTurn !== phaseData.new_turn ||
       data.player !== phaseData.new_player) {
+    console.log("wot")
     game.executeAction(new GameAction(data, game), backendSync)
+    console.log("here")
     if (phaseData.messages[phaseData.messages.length - 1] === "game complete") {
       let winner = game.currentInitiativePlayer
       if (game.playerOneScore !== game.playerTwoScore) {
@@ -179,7 +183,7 @@ function cleanupCloseCombat(game: Game, data: GameActionData): void {
   phaseData.messages.push("close combat complete")
   phaseData.new_player = game.currentInitiativePlayer
   phaseData.new_phase = gamePhaseType.CleanupOverstack
-  phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)}`)
+  phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)} player`)
   if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
       phaseData.messages.push("no overstacked units, skipping")
   }
@@ -193,13 +197,13 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
   console.log("checking")
   if (game.scenario.map.anyOverstackedUnits(player)) { return }
   console.log("checked")
-  phaseData.messages.push(`overstack check complete for ${formatNation(game, player)}`)
+  phaseData.messages.push(`overstack check complete for ${formatNation(game, player)} player`)
   phaseData.new_player = otherPlayer(player)
   if (player === game.internalInitiativePlayer) {
     console.log("here and")
     console.log(phaseData.messages)
     phaseData.new_phase = oldPhase
-    phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)}`)
+    phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)} player`)
     if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
         phaseData.messages.push("no overstacked units, skipping")
     }

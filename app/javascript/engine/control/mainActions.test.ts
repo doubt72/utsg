@@ -469,9 +469,9 @@ describe("game actions", () => {
     expect(game.actions[2]?.type).toBe("phase")
     expect(game.actions[2]?.stringValue).toBe(
       "both players have passed, main phase complete > starting close combat > no units in contact, skipping > " +
-      "close combat complete > starting overstack check for German > no overstacked units, skipping > " +
-      "overstack check complete for German > starting overstack check for Soviet > " +
-      "no overstacked units, skipping > overstack check complete for Soviet > game complete"
+      "close combat complete > starting overstack check for German player > no overstacked units, skipping > " +
+      "overstack check complete for German player > starting overstack check for Soviet player > " +
+      "no overstacked units, skipping > overstack check complete for Soviet player > game complete"
     )
 
     expect(game.actions.length).toBe(4)
