@@ -190,7 +190,9 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
   const phaseData: GameActionPhaseChange = data.data.phase_data as GameActionPhaseChange
   const oldPhase = phaseData.new_phase
   const player = phaseData.new_player
+  console.log("checking")
   if (game.scenario.map.anyOverstackedUnits(player)) { return }
+  console.log("checked")
   phaseData.messages.push(`overstack check complete for ${formatNation(game, player)}`)
   phaseData.new_player = otherPlayer(player)
   if (player === game.internalInitiativePlayer) {
