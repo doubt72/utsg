@@ -196,6 +196,8 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
   phaseData.messages.push(`overstack check complete for ${formatNation(game, player)}`)
   phaseData.new_player = otherPlayer(player)
   if (player === game.internalInitiativePlayer) {
+    console.log("here and")
+    console.log(phaseData.messages)
     phaseData.new_phase = oldPhase
     phaseData.messages.push(`starting overstack check for ${formatNation(game, phaseData.new_player)}`)
     if (!game.scenario.map.anyOverstackedUnits(phaseData.new_player)) {
@@ -203,6 +205,8 @@ function cleanupOverstack(game: Game, data: GameActionData): void {
     }
     cleanupOverstack(game, data)
   } else {
+    console.log("there and")
+    console.log(phaseData.messages)
     // In either case, we're done with this sequence of phase changes;
     // these are "magic" messages, if these change, must also make changes above
     if (phaseData.new_turn === game.scenario.turns) {
