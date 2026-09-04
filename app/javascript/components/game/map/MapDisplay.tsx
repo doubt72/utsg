@@ -948,7 +948,7 @@ export default function MapDisplay({
     <svg ref={svgRef as React.LegacyRef<SVGSVGElement>}
          className="map-svg" width={width} height={height}
          viewBox={`0 0 ${width / scale} ${height / scale}`}>
-      <MapHexPatterns map={map} />
+      <MapHexPatterns map={map} rotated={map.rotated} />
       {background()}
       {mapDisplay()}
       {weather}

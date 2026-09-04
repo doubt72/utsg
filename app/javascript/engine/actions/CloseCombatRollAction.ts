@@ -1,5 +1,6 @@
 import { Coordinate } from "../../utilities/commonTypes";
 import { formatCoordinate, formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
+import { otherPlayer } from "../../utilities/utilities";
 import { setCCPlayer } from "../control/closeCombat";
 import Game, { closeProgress } from "../Game";
 import { GameActionCCData, GameActionData, GameActionDiceResult, GameActionUnit } from "../GameAction";
@@ -46,11 +47,11 @@ export default class CloseCombatRollAction extends BaseAction {
     const loc = new Coordinate(this.origin[0].x, this.origin[0].y)
     const nation1 = formatNation(this.game, 1)
     const nation2 = formatNation(this.game, 2)
-    let rc = `${nation1} `
+    let rc = `${formatNation(this.game, this.player)} `
     rc += this.origin.map(o => {
       return formatNation(this.game, 1, o.name)
     }).join(", ")
-    rc += ` battles ${nation2} `
+    rc += ` battles ${formatNation(this.game, otherPlayer(this.player))} `
     rc += this.target.map(t => {
       return formatNation(this.game, 2, t.name)
     }).join(", ")

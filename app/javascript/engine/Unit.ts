@@ -269,6 +269,7 @@ export default class Unit {
 
   clone(split?: boolean): Unit {
     const unit = new Unit(this.rawData)
+    unit.playerNation = this.playerNation
     if (split && this.type === unitType.Team) {
       return unit.split()
     } else {

@@ -6,8 +6,8 @@ module Scenarios
     NAME = "A Hard Place"
     ALLIES = ["ind"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 7, 1].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -35,8 +35,8 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_2,
         :ger_leader_5_1,
-        [5, :ger_rifle_s],
-        [2, :ger_mg_34],
+        [6, :ger_rifle_s],
+        [3, :ger_mg_34],
         [2, :ger_sdkfz_250_1],
         :ger_sdkfz_221,
         [6, :ger_pzkpfw_iii_l],

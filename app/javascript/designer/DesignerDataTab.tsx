@@ -297,6 +297,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
             <option value={"s"}>snow</option>
             <option value={"d"}>sand</option>
             <option value={"m"}>mud</option>
+            <option value={"b"}>beach</option>
           </select>
         </div>
         <div className="ml1em" style={{width: "80px"}}>

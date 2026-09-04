@@ -1,5 +1,8 @@
 import { describe, expect, test, vi } from "vitest"
-import { createBlankGame, createFireGame, testGGun, testGHMortar, testGInf, testGMortar, testGRadio, testGTank, testGTD, testITank, testRInf, testRTank } from "./testHelpers";
+import {
+  createBlankGame, createFireGame, testGGun, testGHMortar, testGInf, testGMortar, testGRadio,
+  testGTank, testGTD, testITank, testRInf, testRTank
+} from "./testHelpers";
 import Unit from "../Unit";
 import { Coordinate } from "../../utilities/commonTypes";
 import organizeStacks from "../support/organizeStacks";
@@ -11,9 +14,11 @@ import { StateSelection } from "./state/BaseState";
 import Counter from "../Counter";
 import MoveState from "./state/MoveState";
 import AssaultState from "./state/AssaultState";
-import { GameActionDiceResult } from "../GameAction";
+import GameAction, { GameActionDiceResult } from "../GameAction";
 import { deHTML } from "../../utilities/graphics";
 import FireDisplaceState from "./state/FireDisplaceState";
+import { gamePhaseType } from "../support/gamePhase";
+import CloseCombatState from "./state/CloseCombatState";
 
 describe("spotting", () => {
   const makeAction = (game: Game, ids: string[]): StateSelection[] => {
@@ -1158,5 +1163,85 @@ describe("spotting", () => {
 
     expect(firing2.spotting).toBe(undefined)
     expect(game.spottingStatus).toStrictEqual([])
+  })
+
+  test("close combat break removes targeting", () => {
+    const game = createBlankGame()
+    const map = game.scenario.map
+    const one = new Unit(testGInf)
+    one.id = "one1"
+    const loc = new Coordinate(2, 2)
+    map.addCounter(loc, one)
+    const one2 = new Unit(testGRadio)
+    one2.id = "one2"
+    one2.spotting = "A"
+    map.addCounter(loc, one2)
+
+    const two = new Unit(testRInf)
+    two.id = "two1"
+    map.addCounter(loc, two)
+    organizeStacks(map)
+
+    game.spottingStatus.push({
+      ref: "A", target: new Coordinate(0, 2), level: 1, unit: one2, sponson: false
+    })
+
+    game.executeAction(new GameAction({
+      user: game.currentUser, player: 1, data: {
+        action: "phase", old_initiative: 0, phase_data: {
+          old_phase: gamePhaseType.Main, new_phase: gamePhaseType.CleanupCloseCombat,
+          old_turn: 1, new_turn: 1, new_player: 2, messages: [],
+          done: false, status_update: false,
+        },
+      },
+    }, game), false)
+
+    game.setCloseCombatChecks()
+    game.setGameState(new CloseCombatState(game))
+
+    select(map, {
+      counter: map.countersAt(loc)[0],
+      target: { type: "map", xy: loc}
+    }, () => {})
+
+    const original = Math.random
+    vi.spyOn(Math, "random").mockReturnValue(0.5)
+    game.closeCombatState.rollForCombat()
+    Math.random = original
+
+    expect(game.lastAction?.stringValue).toBe(
+      "German Rifle, Radio 10.5cm battles Soviet Rifle in close combat at C3; " +
+        "Soviet player roll result of 120 [CC: (2 x 7 + 6) x 6] on 7 firepower; " +
+        "German player roll result of 120 [CC: (2 x 7 + 6) x 6] on 7 firepower; " +
+        "Soviet player takes 1 hit, German player takes 1 hit"
+    )
+
+    expect(game.currentPlayer).toBe(1)
+    select(map, {
+      counter: map.countersAt(loc)[0],
+      target: { type: "map", xy: loc}
+    }, () => {})
+    expect(two.selected).toBe(true)
+    game.closeCombatState.reduceUnit()
+
+    expect(game.currentPlayer).toBe(2)
+    select(map, {
+      counter: map.countersAt(loc)[1],
+      target: { type: "map", xy: loc}
+    }, () => {})
+    expect(one.selected).toBe(true)
+    game.closeCombatState.reduceUnit()
+
+    expect(map.selection).toBe(undefined)
+
+    expect(one2.spotting).toBe(undefined)
+    expect(game.spottingStatus).toStrictEqual([])
+
+    const all = map.allCounters
+    expect(all.length).toBe(3)
+    expect(all[0].unit.name).toBe("Rifle")
+    expect(all[1].unit.name).toBe("Rifle")
+    expect(all[2].unit.name).toBe("Radio 10.5cm")
+    expect(game.eliminatedUnits.length).toBe(0)
   })
 })

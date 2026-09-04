@@ -1,3 +1,12 @@
+# 0.138
+
+- Rotate (non-omnidirectional) terrain patterns on rotated maps
+- Bug fix: minor nation reaction fire wrong; unit clone (for ghost) doesn't have correct playerNation
+- Bug fix: remove spotting when unit broken in close combat
+- Bug fix: wrong nations listed for units in close combat description (how did I not notice that)
+- Update/Promoted 104
+- Updated 413, 416
+
 # 0.137
 
 - Add highlight for chat tab on main page when new messages appear
