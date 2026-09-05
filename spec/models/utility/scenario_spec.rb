@@ -213,7 +213,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("022")).to be == "0.1p-c7dde68d33e0636c8650610f8e171bc8"
       expect(Utility::Scenario.checksum("023")).to be == "0.4p-4186f25aa5d8ae6ea17360d8fc970a2e"
 
-      expect(Utility::Scenario.checksum("026")).to be == "0.1a-718bfbfc15238631f5e0fe51f5e94e27"
+      expect(Utility::Scenario.checksum("026")).to be == "0.1b-4388ffbd0eabac534b513ada783bf70b"
 
       expect(Utility::Scenario.checksum("030")).to be == "0.1p-883319d51d97997a86d6200aaad65eb5"
 
@@ -221,7 +221,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("102")).to be == "1.0-fa4245898aed293bc1440cd9bfc5b997"
       expect(Utility::Scenario.checksum("103")).to be == "1.2-0335a3d41329c2899291e6659fda0543"
       expect(Utility::Scenario.checksum("104")).to be == "1.0-ae240025973b17e44540938d881d3452"
-      expect(Utility::Scenario.checksum("105")).to be == "0.4a-8f59a52897beadd979b3f8037e4fe76f"
+      expect(Utility::Scenario.checksum("105")).to be == "0.4b-e1ff0c68baf473b8567a96343a0b125f"
       expect(Utility::Scenario.checksum("106")).to be == "1.0-505c657a6911817f490323772110c1f9"
       expect(Utility::Scenario.checksum("107")).to be == "0.2a-cf0848927824082675d3d96668451a96"
       expect(Utility::Scenario.checksum("108")).to be == "0.3a-f87d7685bcaf32ee014549a6af6b0289"
@@ -248,7 +248,7 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("303")).to be == "1.2-f014b9861a7f2568635a44ea8c1269e6"
       expect(Utility::Scenario.checksum("304")).to be == "1.0-49537261abe56c2ac4663796a9084453"
       expect(Utility::Scenario.checksum("305")).to be == "0.6b-3272056284787b51b6dbcd26f3627a29"
-      expect(Utility::Scenario.checksum("306")).to be == "0.3a-653642dfc570dfe237c3bb046e447057"
+      expect(Utility::Scenario.checksum("306")).to be == "0.3b-b7cc2cb160290613ee965468d6cb08a3"
       expect(Utility::Scenario.checksum("307")).to be == "0.3a-7f9716f3cd8354b0c10ecfa06bf49785"
       expect(Utility::Scenario.checksum("308")).to be == "1.4-87966dc8adf28db7046b4508b42b9550"
       expect(Utility::Scenario.checksum("309")).to be == "0.3a-da6cae120fa9be1e92e6f7d2649c1472"

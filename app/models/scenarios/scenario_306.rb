@@ -6,7 +6,7 @@ module Scenarios
     NAME = "Nuts!"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "b"
     VERSION = "0.3"
 
     DATE = [1944, 12, 24].freeze
@@ -18,14 +18,14 @@ module Scenarios
           :usa_leader_6_2,
           :usa_leader_5_2,
           [2, :usa_leader_5_1],
-          [9, :usa_paratroop_s],
-          [2, :usa_m2_browning],
+          [7, :usa_paratroop_s],
+          :usa_m2_browning,
+          [2, :usa_m1918_bar],
           [2, :usa_m1a1_bazooka],
           :usa_m1_mortar,
           :usa_radio_155mm,
-          [2, :usa_m18_hellcat],
-          :usa_m4_sherman,
-          [5, :trench],
+          [3, :usa_m18_hellcat],
+          [4, :trench],
         ],
       },
     }.freeze
@@ -37,6 +37,7 @@ module Scenarios
           [2, :ger_leader_4_1],
           [8, :ger_rifle_s],
           [3, :ger_mg_42],
+          :ger_radio_15cm,
           [2, :ger_pzkpfw_iv_g],
           [4, :ger_panther_d],
           [3, :ger_stug_iii_f_g],

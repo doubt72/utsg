@@ -1,10 +1,12 @@
 # 0.138
 
+- Minor new game formatting change
 - Rotate (non-omnidirectional) terrain patterns on rotated maps
 - Bug fix: minor nation reaction fire wrong; unit clone (for ghost) doesn't have correct playerNation
 - Bug fix: remove spotting when unit broken in close combat
 - Bug fix: wrong nations listed for units in close combat description (how did I not notice that)
 - Update/Promoted 104
+- Promoted 026, 105, 306 to beta
 - Updated 413, 416
 
 # 0.137
@@ -86,7 +88,7 @@
 - Updated 205, 206, 502
 - Updated/promoted 602
 - Promoted 403
-- Promoted 104, 305, 404 to alpha
+- Promoted 104, 305, 404 to beta
 
 # 0.129
 

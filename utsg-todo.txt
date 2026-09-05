@@ -1,7 +1,5 @@
 Features/Bug Fixes
-  + When a unit's team is broken in close combat, remove spotting marker
-  + Really weird reaction fire with no possible units, just enemy units
-  + rotate terrain patterns on rotated maps
+  - New game formatting for very wide screens
   - Decoy markers
     - Display unobserved in replay
   ? Test two-player stopping short (think something might be wrong with it)

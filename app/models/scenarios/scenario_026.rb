@@ -6,7 +6,7 @@ module Scenarios
     NAME = "The Grain Elevator"
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "b"
     VERSION = "0.1"
 
     DATE = [1942, 9, 21].freeze

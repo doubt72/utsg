@@ -6,7 +6,7 @@ module Scenarios
     NAME = "The Crumbling"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "a"
+    STATUS = "b"
     VERSION = "0.4"
 
     DATE = [1942, 10, 24].freeze

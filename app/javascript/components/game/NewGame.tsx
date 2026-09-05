@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getAPI, postAPI } from "../../utilities/network";
 import Header from "../Header";
 import { CreateGameButton, CustomCheckbox, NavDown, NavUp } from "../utilities/buttons";
-import { ArrowDownCircle, ArrowUpCircle } from "react-bootstrap-icons";
+import { ArrowDownCircle, ArrowRightCircleFill, ArrowUpCircle } from "react-bootstrap-icons";
 import ScenarioRow from "./ScenarioRow";
 import ScenarioSummary from "./ScenarioSummary";
 import { Player } from "../../utilities/commonTypes";
@@ -438,7 +438,11 @@ export default function NewGame() {
                 [You must be logged in to create a game.]
               </div> }
             <div className="flex-fill"></div>
-            <div>start here:</div>
+            <div className="green" style={{fontSize: "200%"}}>
+              <span className="red" style={{fontSize: "70%", verticalAlign: "4px"}}>
+                <ArrowRightCircleFill />
+              </span> start here:
+            </div>
             <div className="flex">
               <div className="flex-fill">
                 {TutorialDisplay()}
@@ -446,43 +450,45 @@ export default function NewGame() {
             </div>
           </div>
           <div className="scenario-list-container">
-            <div className="scenario-list-filter-limit">
-              <label>sort by</label><br />
-              {sortSelector}
-            </div>
-            <div className="scenario-list-filter">
-              <label>filter by scenario name</label>
-              <input
-                type="text"
-                name="string"
-                value={scenarioSearch.string}
-                className="form-input-gray"
-                onChange={({ target }) => onSearchChange(target.name, target.value)}
-              />
-            </div>
-            <div className="scenario-list-filter-limit">
-              <label>by player one faction</label><br />
-              {alliedFactionSelector}
-            </div>
-            <div className="scenario-list-filter-limit">
-              <label>by player two faction</label><br />
-              {axisFactionSelector}
-            </div>
-            <div className="scenario-list-filter-limit">
-              <label>by theater</label><br />
-              {theaterSelector}
-            </div>
-            <div className="scenario-list-filter-limit">
-              <label>by unit types</label><br />
-              {classSelector}
-            </div>
-            <div className="scenario-list-filter-limit">
-              <label>by map size</label><br />
-              {sizeSelector}
-            </div>
-            <div className="scenario-list-filter-limit">
-              <label>by dev status</label><br />
-              {statusSelector}
+            <div className="flex flex-wrap">
+              <div className="scenario-list-filter-limit">
+                <label>sort by</label><br />
+                {sortSelector}
+              </div>
+              <div className="scenario-list-filter">
+                <label>filter by scenario name</label>
+                <input
+                  type="text"
+                  name="string"
+                  value={scenarioSearch.string}
+                  className="form-input-gray"
+                  onChange={({ target }) => onSearchChange(target.name, target.value)}
+                />
+              </div>
+              <div className="scenario-list-filter-limit">
+                <label>by player one faction</label><br />
+                {alliedFactionSelector}
+              </div>
+              <div className="scenario-list-filter-limit">
+                <label>by player two faction</label><br />
+                {axisFactionSelector}
+              </div>
+              <div className="scenario-list-filter-limit">
+                <label>by theater</label><br />
+                {theaterSelector}
+              </div>
+              <div className="scenario-list-filter-limit">
+                <label>by unit types</label><br />
+                {classSelector}
+              </div>
+              <div className="scenario-list-filter-limit">
+                <label>by map size</label><br />
+                {sizeSelector}
+              </div>
+              <div className="scenario-list-filter-limit">
+                <label>by dev status</label><br />
+                {statusSelector}
+              </div>
             </div>
             <div className="scenario-list-select">
               <div>or select a scenario:</div>
