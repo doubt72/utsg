@@ -5,7 +5,8 @@ import Unit from "../Unit"
 import Game from "../Game"
 import select from "./select"
 import {
-  armorHitModifiers, fireHindrance, firepower, hitFromArc, moraleModifiers, rangeMultiplier, untargetedModifiers
+  armorHitModifiers, fireHindrance, firepower, hitFromArc, moraleModifiers, rangeMultiplier,
+  untargetedModifiers
 } from "./fire"
 import Counter from "../Counter"
 import IllegalActionError from "../actions/IllegalActionError"
@@ -190,7 +191,6 @@ describe("ranged fire attacks", () => {
       try {
         game.executeUndo(false)
       } catch(err) {
-        // Can't roll back a smoke roll
         expect(err instanceof IllegalActionError).toBe(true)
       }
     })
@@ -3032,6 +3032,45 @@ describe("ranged fire attacks", () => {
       game.setGameState(new FireState(game, false))
 
       game.fireState.smokeToggle()
+      game.fireState.toHex(1, 2)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.01)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.moraleChecksNeeded).toStrictEqual([])
+      expect(game.lastAction?.stringValue).toBe(
+        "German 3.7cm Pak 36 at D3 fired smoke at B3; targeting roll: " +
+          "target 8, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken; " +
+          "drifts to A3 on 1 [d6]; smoke roll 1 [d10], smoke level 2"
+      )
+
+      const all = map.allCounters
+      expect(all.length).toBe(3)
+      expect(all[0].unit.id).toBe("firing1")
+      expect(all[1].unit.id).toBe("firing2")
+      expect(all[2].feature.id).toBe("0-smoke-0-2")
+      expect(all[2].hex?.x).toBe(0)
+      expect(all[2].hex?.y).toBe(2)
+    })
+
+    test("gun firing smoke miss offboard", () => {
+      const game = createFireGame()
+      const map = game.scenario.map
+      const firing = new Unit(testGInf)
+      firing.id = "firing1"
+      const floc = new Coordinate(3, 2)
+      map.addCounter(floc, firing)
+      const firing2 = new Unit(testGGun)
+      firing2.id = "firing2"
+      map.addCounter(floc, firing2)
+      map.select(firing2)
+      organizeStacks(map)
+
+      game.setGameState(new FireState(game, false))
+
+      game.fireState.smokeToggle()
       game.fireState.toHex(0, 2)
 
       const original = Math.random
@@ -3041,8 +3080,9 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll: target 12, rolled 1 [d10x10: 1 x 1]: miss, " +
-        "firing weapon broken"
+        "German 3.7cm Pak 36 at D3 fired smoke at A3; targeting roll: " +
+          "target 12, rolled 1 [d10x10: 1 x 1]: miss, firing weapon broken; " +
+          "smoke drifts offboard on 1 [d6]"
       )
 
       const all = map.allCounters

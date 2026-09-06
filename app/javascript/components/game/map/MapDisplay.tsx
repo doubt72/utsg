@@ -403,6 +403,9 @@ export default function MapDisplay({
     map.showCoords = showCoords
     map.showAllCounters = showStatusCounters
     map.hideCounters = hideCounters
+    let firingSmoke = false
+    if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.smoke) { firingSmoke = true }
+    if (map.game?.gameState?.type === stateType.Move && map.game.moveState.smoke) { firingSmoke = true }
     map.mapHexes.forEach((row, y) => {
       row.forEach((hex, x) => {
         hexLoader.push(<MapHex key={`${x}-${y}`} hex={hex} />)
@@ -422,7 +425,8 @@ export default function MapDisplay({
         if (state && map.game?.currentUser === user) {
           const shaded = state.openHex(x, y)
           overlayLoader.push(<MapHexOverlay key={`${x}-${y}-o`} hex={hex}
-                                            selectCallback={hexSelection} shaded={shaded} />)
+                                            selectCallback={hexSelection} shaded={shaded}
+                                            firingSmoke={firingSmoke} />)
         }
       })
     })
@@ -486,9 +490,6 @@ export default function MapDisplay({
     } else {
       setFireTargets([])
     }
-    let firingSmoke = false
-    if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.smoke) { firingSmoke = true }
-    if (map.game?.gameState?.type === stateType.Move && map.game.moveState.smoke) { firingSmoke = true }
     if (map.rotated) {
       setCounterDisplay(map.counters.sort((a, b) => {
         if (a.hex?.x === b.hex?.x && a.hex?.y === b.hex?.y) { return a.stackingIndex - b.stackingIndex }

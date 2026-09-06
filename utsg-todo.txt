@@ -1,11 +1,9 @@
 Features/Bug Fixes
-  + Smoke can't be fired into wire/mine hexes (allow selection of features)
-  + smoke outline
-  + Fire start check when vehicles destroyed in mines
-  + Check to see if remaining move of 1 into mines
-  - Should be able to clear mines with MG (check entrench)
-  - Smoke cursor
-  - Smoke in nearby hex?
+  + Smoke in nearby hex?
+  + All movement should prevent smoke
+  + Should be able to clear mines with MG (check entrench)
+  + Don't allow fortifications in places units can't entrench
+  + Smoke cursor
   - Decoy markers
     - Display unobserved in replay
   ? Test two-player stopping short (think something might be wrong with it)

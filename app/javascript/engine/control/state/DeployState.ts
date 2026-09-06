@@ -1,4 +1,4 @@
-import { Coordinate, Direction, featureType, hexOpenType, roadType, terrainType, unitType } from "../../../utilities/commonTypes";
+import { Coordinate, Direction, FeatureType, featureType, hexOpenType, roadType, terrainType, unitType } from "../../../utilities/commonTypes";
 import { stackLimit } from "../../../utilities/utilities";
 import Game from "../../Game";
 import GameAction from "../../GameAction";
@@ -49,7 +49,14 @@ export default class DeployState extends BaseState {
     if (hex.terrain.gun === false && !uf.isFeature && (uf.type === unitType.Gun)) { return false }
     if (uf.isFeature) {
       if (!hex.terrain.vehicle) { return hexOpenType.Closed }
-      if (hex.river && (featureType.Bunker || featureType.Foxhole)) { return hexOpenType.Closed}
+      if ([featureType.Bunker, featureType.Foxhole].includes(uf.type as FeatureType)) {
+        if (hex.river) { return hexOpenType.Closed }
+        if ([
+              terrainType.Sand, terrainType.Shallow, terrainType.Marsh, terrainType.Rough, terrainType.Soft
+            ].includes(hex.baseTerrain)) {
+          return hexOpenType.Closed
+        }
+      }
       for (const f of this.map.countersAt(hex.coord)) {
         if (f.hasFeature) { return hexOpenType.Closed }
       }

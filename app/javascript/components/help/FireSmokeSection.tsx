@@ -27,10 +27,9 @@ export const smokeTable = (
       </tr>
     </tbody>
   </table>
-)
+);
 
 export default function FireSmokeSection() {
-
   return (
     <div>
       <p>
@@ -40,10 +39,13 @@ export default function FireSmokeSection() {
         roll d10 to determine how heavy the resulting smoke is, and a smoke marker is placed in the
         hex:
       </p>
-      { smokeTable }
+      {smokeTable}
       <p>
-        Offboard artillery firing smoke works the same way, except on a miss, smoke is placed in the
-        drift hex.
+        On a miss, smoke will drift one hex with the direction determined by d6.
+      </p>
+      <p>
+        Offboard artillery firing smoke works the same way, except on a miss, smoke drifts as
+        artillery.
       </p>
     </div>
   );

@@ -6,8 +6,9 @@ import Game from "../Game"
 import Hex from "../Hex"
 
 export function showClearObstacles(game: Game): boolean {
-  if (!showCommon(game)) { return false }
+  if (!showCommon(game, false)) { return false }
   const selection = game.assaultState.selection
+  if (selection.filter(s => s.counter.unit.parent === undefined).length > 1) { return false }
   const unit = selection[0].counter.unit
   if (!unit.engineer) { return false }
   const features = game.scenario.map.countersAt(new Coordinate(selection[0].x, selection[0].y))
@@ -35,7 +36,7 @@ export function showEntrench(game: Game): boolean {
       terrainType.Sand, terrainType.Shallow, terrainType.Marsh, terrainType.Rough, terrainType.Soft
     ].includes(hex.baseTerrain)) { return false }
   if (hex.river || hex.railroad) { return false }
-  if (hex.road && hex.roadType ===  roadType.Airfield) { return false }
+  if (hex.road && hex.roadType === roadType.Airfield) { return false }
   if (hex.building) { return false }
   const features = game.scenario.map.countersAt(loc)
   for (const f of features) {

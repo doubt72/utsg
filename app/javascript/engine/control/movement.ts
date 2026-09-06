@@ -67,6 +67,10 @@ export function movementPastCost(map: Map, target: Unit): number {
     const p2 = move.path[i+1]
     const loc1 = new Coordinate(p1.x, p1.y)
     const loc2 = new Coordinate(p2.x, p2.y)
+    const counters = map.countersAt(loc2)
+    for (const c of counters) {
+      if (c.hasFeature && c.feature.currentMovement === "A") { return target.currentMovement }
+    }
     pastCost += movementCost(map, loc1, loc2, target, i)
   }
   return pastCost

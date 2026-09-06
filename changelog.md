@@ -1,7 +1,11 @@
 # 0.139
 
 - Initial random drop deployment implementation
-- Change color of selection outline when firing/laying smoke
+- Add minor drift on smoke miss (non-offboard)
+- Change color of selection/cursor outline when firing/laying smoke
+- Don't allow fortifications in terrain types that can't be entrenched into
+- Bug fix: don't allow non-movement actions after moving into features that use all movement
+- Bug fix: engineers carrying weapons should be able to clear obstacle
 - Bug fix: tanks can't fire smoke into hex with features
 - Bug fix: mine attack destroying tanks should trigger fire start/crew escape
 - Updated 105

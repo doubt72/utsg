@@ -1,4 +1,4 @@
-import { Coordinate, featureType, sponsonType } from "../../utilities/commonTypes";
+import { Coordinate, Direction, featureType, sponsonType } from "../../utilities/commonTypes";
 import { failRedColorMarker, formatCoordinate, formatDieResult, formatNation, formatTarget, parseColorMarkers, passBlueColorMarker } from "../../utilities/graphics";
 import {
   baseToHit, driftRoll, hexDistance, roll2d10, rolld10, rolld10x10,
@@ -516,6 +516,38 @@ export default class FireAction extends BaseAction {
       } else {
         if (needDice) { targetRoll.description += "miss" }
         anims.push({ loc: to, type: "miss" })
+        if (smoke) {
+          if (needDice) {
+            this.diceResults.push({ result: rolld6() })
+          }
+          const dirRoll = this.diceResults[diceIndex++]
+          const hex = this.map.neighborAt(to, dirRoll.result.result as Direction)
+          if (hex) {
+            const loc = hex.coord
+            if (needDice) {
+              dirRoll.description = `drifts to ${formatCoordinate(loc)} ` +
+                `on ${formatDieResult(dirRoll.result)}`
+            }
+            if (needDice) { this.diceResults.push({ result: rolld10() }) }
+            const smokeDice = this.diceResults[diceIndex++]
+            const smokeValue = smokeRoll(smokeDice.result.result)
+            if (needDice) {
+              smokeDice.description = `smoke roll ${formatDieResult(smokeDice.result)}, ` +
+                `smoke level ${formatTarget(smokeValue)}`
+            }
+            this.map.addCounter(loc, new Feature(
+              {
+                ft: 1, t: featureType.Smoke, n: "Smoke", i: "smoke", h: smokeValue,
+                id: `${this.index}-smoke-${loc.x}-${loc.y}`
+              }
+            ))
+            anims.push({ loc: loc, type: "smoke" })
+          } else {
+            if (needDice) {
+              dirRoll.description = `smoke drifts offboard on ${formatDieResult(dirRoll.result)}`
+            }
+          }
+        }
       }
       const breakmod = 0 + (this.intensive ? 1 : 0) +
         (u0.parent && u0.nation !== u0.parent.nation ? 1 : 0)
