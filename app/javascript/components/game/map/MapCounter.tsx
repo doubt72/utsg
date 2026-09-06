@@ -25,9 +25,10 @@ interface MapCounterProps {
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
   onClick?: () => void;
+  firingSmoke?: boolean;
 }
 
-export default function MapCounter({ counter, ovCallback, onClick }: MapCounterProps) {
+export default function MapCounter({ counter, ovCallback, onClick, firingSmoke = false }: MapCounterProps) {
   const [mouseInside, setMouseInside] = useState<boolean>(false)
 
   const counterBack = (
@@ -35,7 +36,7 @@ export default function MapCounter({ counter, ovCallback, onClick }: MapCounterP
   )
 
   const counterOutline = (
-    <path d={counterPath(counter)} style={counterOutlineStyle(counter) as object} />
+    <path d={counterPath(counter)} style={counterOutlineStyle(counter, firingSmoke) as object} />
   )
 
   const showDisabled = () => {

@@ -29,7 +29,7 @@ export function counterStyle(counter: Counter): SVGStyle {
   return { fill: color }
 }
 
-export function counterOutlineStyle(counter: Counter): SVGStyle {
+export function counterOutlineStyle(counter: Counter, smoke: boolean = false): SVGStyle {
   const color = clearColor
   if (counter.hasMarker && counter.marker.type === markerType.Turn) {
     return { fill: color, stroke: "black", strokeWidth: 1 }
@@ -38,7 +38,7 @@ export function counterOutlineStyle(counter: Counter): SVGStyle {
     return { fill: color, stroke: "black", strokeWidth: 1 }
   }
   if (counter.targetUF.selected) {
-    return { fill: color, stroke: selectColor(), strokeWidth: 4 }
+    return { fill: color, stroke: smoke ? "white" : selectColor(), strokeWidth: 4 }
   } else if (counter.targetUF.targetSelected) {
     return { fill: color, stroke: targetSelectColor(), strokeWidth: 4 }
   } else if (counter.unit.dropSelected) {

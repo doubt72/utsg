@@ -15,7 +15,9 @@ import SniperDisplay from "./SniperDisplay";
 import Map from "../../../engine/Map";
 import Counter from "../../../engine/Counter";
 import ReinforcementPanel from "../controls/ReinforcementPanel";
-import { baseTerrainType, Coordinate, CounterSelectionTarget, Direction, Player } from "../../../utilities/commonTypes";
+import {
+  baseTerrainType, Coordinate, CounterSelectionTarget, Direction, Player
+} from "../../../utilities/commonTypes";
 import MapHexOverlay from "./MapHexOverlay";
 import DirectionSelector from "./DirectionSelector";
 import MiniMap from "./MiniMap";
@@ -484,6 +486,9 @@ export default function MapDisplay({
     } else {
       setFireTargets([])
     }
+    let firingSmoke = false
+    if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.smoke) { firingSmoke = true }
+    if (map.game?.gameState?.type === stateType.Move && map.game.moveState.smoke) { firingSmoke = true }
     if (map.rotated) {
       setCounterDisplay(map.counters.sort((a, b) => {
         if (a.hex?.x === b.hex?.x && a.hex?.y === b.hex?.y) { return a.stackingIndex - b.stackingIndex }
@@ -493,14 +498,14 @@ export default function MapDisplay({
         if (counter.hasUnit && map.game) {
           counter.unit.setInterfacePlayer(user, map.game)
         }
-        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} firingSmoke={firingSmoke} />
       }))
     } else {
       setCounterDisplay(map.counters.map((counter, i) => {
         if (counter.hasUnit && map.game) {
           counter.unit.setInterfacePlayer(user, map.game)
         }
-        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} firingSmoke={firingSmoke} />
       }))
     }
     if (map.game?.gameState) {
@@ -508,7 +513,7 @@ export default function MapDisplay({
         if (counter.hasUnit && map.game) {
           counter.unit.setInterfacePlayer(user, map.game)
         }
-        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} />
+        return <MapCounter key={i} counter={counter} ovCallback={setOverlay} firingSmoke={firingSmoke} />
       }))
     } else {
       setActionCounterDisplay([])
@@ -605,6 +610,9 @@ export default function MapDisplay({
       setCounterOverlay(undefined)
       return
     }
+    let firingSmoke = false
+    if (map.game?.gameState?.type === stateType.Fire && map.game.fireState.smoke) { firingSmoke = true }
+    if (map.game?.gameState?.type === stateType.Move && map.game.moveState.smoke) { firingSmoke = true }
     const xShift = (map.previewXSize ?? 1) * xOffset
     const yShift = (map.ySize ?? 1) * yOffset - 50 / scale + 50
     if (showLos && !overlay.counters && !map.game?.gameState?.showOverlays) {
@@ -625,7 +633,7 @@ export default function MapDisplay({
           return <MapCounter key={i} counter={c} ovCallback={() => {}} onClick={() => {
                              map.game?.addMessage("switch off line-of-sight overlay to select counters")
                                updateCallback()
-                             }} />
+                             }} firingSmoke={firingSmoke} />
           }))
       }
     } else if (!overlay.counters) {
@@ -637,7 +645,7 @@ export default function MapDisplay({
                            maxX={width / scale} maxY={height / scale}
                            shiftX={xShift / reshift} shiftY={yShift * reshift} mapScale={mapScale ?? 1}
                            scale={scale} svgRef={svgRef as React.MutableRefObject<HTMLElement>}
-                           mapUpdate={mapUpdate} />
+                           mapUpdate={mapUpdate} firingSmoke={firingSmoke} />
       )
     } else if (!showLos || map.game?.gameState?.showOverlays) {
       setCounterOverlay(
@@ -647,7 +655,7 @@ export default function MapDisplay({
                            maxX={width / scale} maxY={height / scale}
                            shiftX={xShift} shiftY={yShift} mapScale={mapScale ?? 1} scale={scale}
                            svgRef={svgRef as React.MutableRefObject<HTMLElement>}
-                           mapUpdate={mapUpdate} />
+                           mapUpdate={mapUpdate} firingSmoke={firingSmoke} />
       )
     }
   }, [overlay.show, overlay.x, overlay.y, overlay.counters, map.debugLos, mapUpdate])

@@ -1,4 +1,4 @@
-import { Coordinate, featureType } from "../../utilities/commonTypes";
+import { Coordinate, featureType, sponsonType } from "../../utilities/commonTypes";
 import { formatCoordinate, formatDieResult, formatNation, formatTarget } from "../../utilities/graphics";
 import { baseToHit, normalDir, smokeRoll } from "../../utilities/utilities";
 import { addSpotting, removeSpotting } from "../control/spotting";
@@ -161,11 +161,21 @@ export default class MoveAction extends BaseAction {
       this.rush ? unit.unit.exhaust() : unit.unit.activate()
       if (this.moveData?.mines) {
         if (unit.unit.isVehicle && !unit.unit.armored) {
+          this.game.fireStartCheckNeeded.push({
+            loc: end, vehicle: true, incendiary: false, tank: unit.unit.isTankCrewed,
+            vehicle_incendiary: unit.unit.incendiary || unit.unit.sponson?.type === sponsonType.Flame,
+            nation: unit.unit.nation, player_nation: unit.unit.playerNation,
+          })
           unit.unit.wreck(this.game)
           anims.push({ loc: end, type: "wreck" })
         } else if (unit.unit.isVehicle) {
           const armor = unit.unit.lowestHullArmor < 0 ? 0 : unit.unit.lowestHullArmor
           if (hitRoll > hitCheck + armor) {
+            this.game.fireStartCheckNeeded.push({
+              loc: end, vehicle: true, incendiary: false, tank: unit.unit.isTankCrewed,
+              vehicle_incendiary: unit.unit.incendiary || unit.unit.sponson?.type === sponsonType.Flame,
+              nation: unit.unit.nation, player_nation: unit.unit.playerNation,
+            })
             unit.unit.wreck(this.game)
             anims.push({ loc: end, type: "wreck" })
           }

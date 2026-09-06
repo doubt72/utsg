@@ -626,6 +626,10 @@ export default class Unit {
     return this.isWheeled || this.isTracked
   }
 
+  get isTankCrewed(): boolean {
+    return this.isVehicle && ["tank", "spg"].includes(this.type) && !this.isAbandoned
+  }
+
   get isImmobilized(): boolean {
     return this.immobilizationState
   }

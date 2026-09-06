@@ -1,6 +1,9 @@
 # 0.139
 
 - Initial random drop deployment implementation
+- Change color of selection outline when firing/laying smoke
+- Bug fix: tanks can't fire smoke into hex with features
+- Bug fix: mine attack destroying tanks should trigger fire start/crew escape
 - Updated 105
 
 # 0.138

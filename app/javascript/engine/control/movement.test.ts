@@ -2746,7 +2746,7 @@ describe("movement", () => {
     }
   })
 
-  test("moving into AT mines", () => {
+  test("moving into AP mines", () => {
     const game = createMoveGame()
     const map = game.scenario.map
     const unit = new Unit(testGInf)
@@ -2883,6 +2883,11 @@ describe("movement", () => {
       "German PzKpfw 35(t) moved from E3 to D3, mine roll (2d10): target 13, " +
         "rolled 20 [2d10: 10 + 10], vehicle destroyed"
     )
+
+    expect(game.fireStartCheckNeeded).toStrictEqual([{
+      loc: new Coordinate(3, 2), vehicle: true, tank: true, incendiary: false,
+      vehicle_incendiary: false, nation: "ger", player_nation: "ger",
+    }])
 
     const all = map.allCounters
     expect(all.length).toBe(2)

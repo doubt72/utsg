@@ -119,7 +119,7 @@ export default class FireState extends BaseState {
           } else {
             this.map.unTargetSelectAllExcept(x, y)
           }
-        } else {
+        } else if (counter) {
           this.map.targetSelect(counter.unit)
           this.map.clearOtherTargetSelections(x, y, counter.unit.id)
           if (!counter.unit.isVehicle) {

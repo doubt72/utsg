@@ -37,11 +37,12 @@ interface MapCounterOverlayProps {
   counters?: Counter[];
   svgRef: React.MutableRefObject<HTMLElement>;
   mapUpdate: number;
+  firingSmoke?: boolean;
 }
 
 export default function MapCounterOverlay({
   map, setOverlay, selectionCallback, updateCallback, xx, yy, mapScale, scale,
-  shiftX, shiftY, maxX, maxY, counters, svgRef, mapUpdate
+  shiftX, shiftY, maxX, maxY, counters, svgRef, mapUpdate, firingSmoke = false,
 }: MapCounterOverlayProps) {
   const [overlayDisplay, setOverlayDisplay] = useState<JSX.Element | undefined>()
   const [helpDisplay, setHelpDisplay] = useState<JSX.Element | undefined>()
@@ -341,7 +342,7 @@ export default function MapCounterOverlay({
                 { unit ? <path d={counterOutline(cd, getLength(unit, false), 1)}
                                 style={{ fill: "#FFF", stroke: "#FFF", strokeWidth: 1.5 }} /> : "" }
                 { outerLine }
-                <MapCounter counter={cd} ovCallback={() => {}} />
+                <MapCounter counter={cd} ovCallback={() => {}} firingSmoke={firingSmoke} />
               </g>
               {badges}
             </g>
