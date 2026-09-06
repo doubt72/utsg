@@ -19,10 +19,10 @@ export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProp
       for (let j = 1; j < path.length; j++) {
         const last = path[j-1]
         const next = path[j]
-        const offset1 = Math.max(map.counterDataAt(last).length * 5 - 5, 0)
+        const offset1 = Math.max(map.countersAt(last).length * 5 - 5, 0)
         const x1 = map.xOffset(last.x, last.y) + offset1
         const y1 = map.yOffset(last.y) - (map.rotated ? -offset1 : offset1)
-        const offset2 = Math.max(map.counterDataAt(next).length * 5 - 5, 0)
+        const offset2 = Math.max(map.countersAt(next).length * 5 - 5, 0)
         const x2 = map.xOffset(next.x, next.y) + offset2
         const y2 = map.yOffset(next.y) - (map.rotated ? -offset2 : offset2)
         rc.push(
@@ -45,7 +45,7 @@ export default function RoutTrackOverlay({ map, callback }: RoutTrackOverlayProp
     const ends = routEnds(map.game.routState.routPathTree)
     for (let i = 0; i < ends.length; i++) {
       const loc = ends[i]
-      const offset1 = Math.max(map.counterDataAt(loc).length * 5 - 5, 0)
+      const offset1 = Math.max(map.countersAt(loc).length * 5 - 5, 0)
       const x = map.xOffset(loc.x, loc.y) + offset1
       const y = map.yOffset(loc.y) - (map.rotated ? -offset1 : offset1)
       rc.push(

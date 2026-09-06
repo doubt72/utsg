@@ -617,7 +617,7 @@ export default function MapDisplay({
     const xShift = (map.previewXSize ?? 1) * xOffset
     const yShift = (map.ySize ?? 1) * yOffset - 50 / scale + 50
     if (showLos && !overlay.counters && !map.game?.gameState?.showOverlays) {
-      const counters = map.counterDataAt(new Coordinate(overlay.x, overlay.y)).filter(c => !c.u.isFeature)
+      const counters = map.countersAt(new Coordinate(overlay.x, overlay.y)).filter(c => !c.hasFeature)
       if (counters.length < 1) { return }
       if (map.debugLos) { // debugging only, never set in actual games
         setLosOverlay(

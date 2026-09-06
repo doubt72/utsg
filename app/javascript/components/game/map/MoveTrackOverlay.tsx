@@ -125,10 +125,10 @@ export default function MoveTrackOverlay({
     const track: JSX.Element[] = []
     const hx = hexes()
     for (let i = 1; i < hx.length; i++) {
-      const offset1 = Math.max(map.counterDataAt(hx[i-1].coord).length * 5 - 5, 0)
+      const offset1 = Math.max(map.countersAt(hx[i-1].coord).length * 5 - 5, 0)
       const x1 = hx[i-1].xOffset + offset1
       const y1 = hx[i-1].yOffset - (map.rotated ? -offset1 : offset1)
-      const offset2 = Math.max(map.counterDataAt(hx[i].coord).length * 5 - 5, 0)
+      const offset2 = Math.max(map.countersAt(hx[i].coord).length * 5 - 5, 0)
       const x2 = hx[i].xOffset + offset2
       const y2 = hx[i].yOffset - (map.rotated ? -offset2 : offset2)
       track.push(
@@ -156,7 +156,7 @@ export default function MoveTrackOverlay({
     if (lastIndex < 0) { setActionControls([]) }
     setHexCenters(allHexes.map((h, i) => {
       const loc = h.coord
-      const offset = Math.max(map.counterDataAt(h.coord).length * 5 - 5, 0)
+      const offset = Math.max(map.countersAt(h.coord).length * 5 - 5, 0)
       const x = h.xOffset + offset
       const y = h.yOffset - (map.rotated ? -offset : offset)
       const fill = first ? "#AAA" : "#DDD"

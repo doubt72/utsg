@@ -71,12 +71,12 @@ module Scenarios
           land in its intended drop zone.",
           "Timely assembly allowed the 505th to accomplish two of its missions
           on schedule; with the help of a Frenchman who led them into the
-          town, they captured Sainte-Mère-Église by against almost no
-          resistance, and established a blocking position on the northern
-          approaches to the town, as well as fending off the first
-          counter-attacks. However, they failed to capture the bridges over
-          the Merderet at la Fière and Chef-du-Pont despite the assistance of
-          several hundred troops from the 507th and 508th PIRs.",
+          town, they captured Sainte-Mère-Église against almost no resistance,
+          and established a blocking position on the northern approaches to
+          the town, as well as fending off the first counter-attacks. However,
+          they failed to capture the bridges over the Merderet at la Fière and
+          Chef-du-Pont despite the assistance of several hundred troops from
+          the 507th and 508th PIRs.",
         ]
       end
 

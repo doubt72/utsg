@@ -1,3 +1,7 @@
+# 0.140
+
+- Bug fix: entrenchment broken when spotted
+
 # 0.139
 
 - Initial random drop deployment implementation

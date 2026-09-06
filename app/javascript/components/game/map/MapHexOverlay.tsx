@@ -30,9 +30,9 @@ export default function MapHexOverlay({
     if (shaded === hexOpenType.FalseClosed) { style = falseClosedStyle }
     const x = hex.xOffset
     const y = hex.yOffset
-    const xoffset = Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0)
-    let yoffset = Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0)
-    if (hex.map.rotated) { yoffset = -Math.max(hex.map.counterDataAt(hex.coord).length * 5 - 5, 0) }
+    const xoffset = Math.max(hex.map.countersAt(hex.coord).length * 5 - 5, 0)
+    let yoffset = Math.max(hex.map.countersAt(hex.coord).length * 5 - 5, 0)
+    if (hex.map.rotated) { yoffset = -Math.max(hex.map.countersAt(hex.coord).length * 5 - 5, 0) }
     const open = shaded !== hexOpenType.Closed
     let circle: JSX.Element | string = ""
     if (typeof shaded === "number" || shaded === hexOpenType.All) {

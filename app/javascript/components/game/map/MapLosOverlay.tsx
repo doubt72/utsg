@@ -70,7 +70,7 @@ export default function MapLosOverlay({
                                 onMouseEnter={() => setOverlay({ show: false, x: 0, y: 0 })} />
               }
               if (value === false) {
-                const offset = Math.max(map.counterDataAt(to).length * 5 - 5, 0)
+                const offset = Math.max(map.countersAt(to).length * 5 - 5, 0)
                 const xd = hex.xOffset + offset
                 const yd = hex.yOffset + 20 - (map.rotated ? -offset : offset)
                 return (

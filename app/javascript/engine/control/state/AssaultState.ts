@@ -289,7 +289,10 @@ export default class AssaultState extends BaseState {
     const y = this.selection[0].y
     const loc = new Coordinate(x, y)
     const counters = this.map.countersAt(loc)
-    const ck = counters[0].hasFeature
+    let ck = false
+    for (const c of counters) {
+      if (c.hasFeature) { ck = true }
+    }
     this.map.unshiftGhost(loc, new Feature({
       id: "scrape-ghost", ft: 1, n: ck ? "Foxhole" : "Shell Scrape",
       t: "foxhole", i: "foxhole", d: ck ? 2 : 1,

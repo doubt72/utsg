@@ -380,7 +380,7 @@ export function los(map: Map, start: Coordinate, end: Coordinate): TextLayout | 
     }
   }
   const lastHex = path[path.length - 1].hex as Hex;
-  const offset = Math.max(map.counterDataAt(end).length * 5 - 5, 0);
+  const offset = Math.max(map.countersAt(end).length * 5 - 5, 0);
   if (hindrance === 0) {
     return true;
   }

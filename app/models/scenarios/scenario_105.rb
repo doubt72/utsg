@@ -6,14 +6,15 @@ module Scenarios
     NAME = "The Crumbling"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.5"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 10, 24].freeze
     LAYOUT = [23, 11, "x"].freeze
 
     ALLIED_UNITS = {
       "0": { list: [
+        :uk_leader_6_1,
         :uk_leader_5_2,
         :uk_leader_4_1,
         [3, :uk_engineer_s],
@@ -21,7 +22,7 @@ module Scenarios
         [2, :uk_lewis_gun],
         :uk_radio_114mm,
         [2, :uk_valentine_i_vii],
-        [4, :uk_valentine_iii_cs],
+        [5, :uk_valentine_iii_cs],
       ] },
     }.freeze
 
@@ -29,11 +30,11 @@ module Scenarios
       "0": { list: [
         :ger_leader_6_1,
         :ger_leader_5_1,
-        [5, :ger_rifle_s],
-        [3, :ger_elite_crew_t],
+        [4, :ger_rifle_s],
+        [2, :ger_crew_t],
         [2, :ger_mg_34],
         :ger_mg_08_15,
-        [3, :ger_5cm_pak_38],
+        [2, :ger_5cm_pak_38],
         [10, :wire],
         [10, :at_mines8],
         [5, :trench],
