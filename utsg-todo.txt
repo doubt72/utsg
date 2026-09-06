@@ -1,9 +1,4 @@
 Features/Bug Fixes
-  + Smoke in nearby hex?
-  + All movement should prevent smoke
-  + Should be able to clear mines with MG (check entrench)
-  + Don't allow fortifications in places units can't entrench
-  + Smoke cursor
   - Decoy markers
     - Display unobserved in replay
   ? Test two-player stopping short (think something might be wrong with it)

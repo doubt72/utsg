@@ -3828,6 +3828,38 @@ File.open('spotting.svg', 'w') do |file|
   file.puts footer
 end
 
+File.open('firing-smoke.svg', 'w') do |file|
+  file.puts header
+  # write_circle(2, 2, 1, file, false, "#777")
+  # write_circle(2, 98, 1, file, false, "#777")
+  # write_circle(98, 2, 1, file, false, "#777")
+  # write_circle(98, 98, 1, file, false, "#777")
+  radius = 16
+  left = 22
+  bottom = 60
+  path1 = [
+    ["M", left+radius, bottom],
+    ["A", [radius, radius], 45, [0, 1], [left+radius, bottom-radius*2]],
+    ["A", [radius*1.65, radius*1.65], 45, [0, 1], [left+radius*4, bottom-radius*1.75]],
+    ["A", [radius*0.825, radius*0.825], 45, [0, 1], [left+radius*4, bottom]],
+    ["L", left+radius, bottom],
+  ]
+  write_path(path1, file, true, 0, "#FFF")
+  write_path(path1, file, false, 3, "#000")
+  left = 3
+  bottom = 80
+  path2 = [
+    ["M", left+radius, bottom],
+    ["A", [radius, radius], 45, [0, 1], [left+radius, bottom-radius*2]],
+    ["A", [radius*1.65, radius*1.65], 45, [0, 1], [left+radius*4, bottom-radius*1.75]],
+    ["A", [radius*0.825, radius*0.825], 45, [0, 1], [left+radius*4, bottom]],
+    ["L", left+radius, bottom],
+  ]
+  write_path(path2, file, true, 0, "#FFF")
+  write_path(path2, file, false, 3, "#000")
+  file.puts footer
+end
+
 File.open('spotter.svg', 'w') do |file|
   file.puts header
   radius = 28
