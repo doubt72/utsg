@@ -1,5 +1,5 @@
 import { Coordinate, GameControl, unitType } from "../../utilities/commonTypes"
-import { coordinateToLabel } from "../../utilities/utilities"
+import { coordinateToLabel, otherPlayer } from "../../utilities/utilities"
 import Feature from "../Feature"
 import Game from "../Game"
 import Map from "../Map"
@@ -8,6 +8,7 @@ import Unit from "../Unit"
 import { showAbandon, showClearObstacles, showCrew, showEntrench, showRepair } from "./assault"
 import { closeCombatCasualtyNeeded } from "./closeCombat"
 import { showLaySmoke, showLoadMove, showDropMove } from "./movement"
+import { isRandomDrop, isRandomDropFor } from "./randomDrop"
 import { reactionFireCheck } from "./reactionFire"
 import BaseState, { stateType } from "./state/BaseState"
 import BreakdownState, { breakdownCheck } from "./state/BreakdownState"
@@ -170,7 +171,9 @@ export default function actionsAvailable(game: Game, activePlayer: string, activ
 
   if (game.phase === gamePhaseType.Deploy) {
     const select = currSelection(game, false)
-    if (game.gameState?.type === stateType.FinishDeploy) {
+    if (isRandomDrop(game) && game.gameState?.type !== stateType.FinishDeploy) {
+      actions.push({ type: "random_drop" })
+    } else if (game.gameState?.type === stateType.FinishDeploy) {
       if (select !== undefined) {
         actions.push({ type: "undeploy" })
         actions.push({ type: "unselect" })
@@ -650,6 +653,8 @@ export function canRout(unit?: Unit): boolean {
 
 function canEnemyRout(map?: Map): boolean {
   if (!map || !map.game) { return false }
+  const game = map.game
+  if (isRandomDropFor(game, game.turn, otherPlayer(game.currentPlayer))) { return false }
   if (map.game.checkLastSAIsRout(map.game.currentPlayer)) { return false }
   const units = map.allUnits
   for (const u of units) {

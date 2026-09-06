@@ -1,5 +1,16 @@
 Features/Bug Fixes
-  - New game formatting for very wide screens
+  + Random deployment Rules
+    + Random placement
+    + Morale checks
+    + Leaders > infantry > support weapons
+    + Disable unit selection, one button, no undo
+    + Disable opponent rout all for that turn (1 == 0)
+  - Smoke can't be fired into wire/mine hexes (allow selection of features)
+  - Should be able to clear mines with MG (check entrench)
+  - Smoke in nearby hex?
+  - Smoke cursor/smoke outline
+  - Check to see if remaining move of 1 into mines
+  - Fire start check when vehicles destroyed in mines
   - Decoy markers
     - Display unobserved in replay
   ? Test two-player stopping short (think something might be wrong with it)

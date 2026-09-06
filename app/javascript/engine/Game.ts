@@ -38,6 +38,7 @@ import DeployAction from "./actions/DeployAction";
 import SquadJoinState from "./control/state/SquadJoinState";
 import StackingActionError from "./actions/StackingActionError";
 import ShortMoveState from "./control/state/ShortMoveState";
+import { isRandomDrop } from "./control/randomDrop";
 
 export type GameData = {
   id: number;
@@ -1136,14 +1137,17 @@ export default class Game {
   }
 
   reinforcementsCheck(turn: number, player: Player): [boolean, boolean, boolean] {
+    const random = isRandomDrop(this)
     const counters = player === 1 ?
       this.scenario.alliedReinforcements[turn] :
       this.scenario.axisReinforcements[turn]
 
     const confirmation = this.lastAction?.type === "finish_deploy"
+    const doneRandom = confirmation ? false : this.lastAction?.type !== "random_drop"
     const count = counters ? Object.values(counters).reduce((tot, u) => tot + u.x - u.used, 0) : 0
     const initialCount = counters ? Object.values(counters).reduce((tot, u) => tot + u.x, 0) : 0
-    return [confirmation, count !== 0, initialCount !== 0]
+    const notDone = random ? doneRandom : count !== 0
+    return [confirmation, notDone, initialCount !== 0]
   }
 
   undeploy() {

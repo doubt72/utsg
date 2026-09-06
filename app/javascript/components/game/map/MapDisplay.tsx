@@ -38,6 +38,7 @@ import { ActionAnimationDetails } from "../../../engine/Game";
 import FireAction from "../../../engine/actions/FireAction";
 import ActionAnimation from "./ActionAnimation";
 import MapHexNight from "./MapHexNight";
+import { isRandomDrop } from "../../../engine/control/randomDrop";
 
 interface MapDisplayProps {
   map: Map;
@@ -771,6 +772,7 @@ export default function MapDisplay({
       select(map, selection, handleSelect)
     } else if (selection.target.type === "reinforcement" && map.game) {
       if (map.game.phase !== gamePhaseType.Deploy) { return }
+      if (isRandomDrop(map.game)) { return }
       if (selection.target.turn === 99) { return }
       if (map.game.gameState?.type === stateType.Deploy &&
           map.game.deployState.key !== selection.target.key) {

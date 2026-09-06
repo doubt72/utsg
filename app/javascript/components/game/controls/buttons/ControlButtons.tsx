@@ -19,6 +19,7 @@ import OverstackState from "../../../../engine/control/state/OverstackState";
 import RallyState from "../../../../engine/control/state/RallyState";
 import RoutState from "../../../../engine/control/state/RoutState";
 import PassState from "../../../../engine/control/state/PassState";
+import { randomDrop } from "../../../../engine/control/randomDrop";
 
 interface ButtonProps {
   game: Game,
@@ -538,6 +539,16 @@ export function RallyPassButton({ game, vertical, callback }: ButtonProps) {
   }
 
   return <StandardTooltipButton vertical={vertical} text="pass" glyph={<ArrowClockwise />} hotkey={"P"}
+                                callback={submit} />
+}
+
+export function RandomDropButton({ game, vertical, callback }: ButtonProps) {
+  const submit = () => {
+    randomDrop(game)
+    callback()
+  }
+
+  return <StandardTooltipButton vertical={vertical} text="random drop" glyph={DiceGlyph()} hotkey={"D"}
                                 callback={submit} />
 }
 

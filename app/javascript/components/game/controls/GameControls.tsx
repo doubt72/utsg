@@ -18,11 +18,11 @@ import {
   FireSmokeButton, FireSpreadCheckButton, FireStartCheckButton, InitiativeButton, IntensiveFireButton,
   JoinSquadButton, MoraleCheckButton, MoveButton, MoveFinishButton, MoveLoadToggleButton,
   MoveRotateToggleButton, MoveShortToggleButton, MoveSmokeToggleButton, OverstackReduceButton,
-  PassButton, PassCancelButton, PrecipCheckButton, RallyButton, RallyPassButton, ReactionFireButton,
-  ReactionIntensiveFireButton, ReactionPassButton, ResignButton, ResignCancelButton, RoutButton,
-  RoutCheckButton, RoutEliminateButton, RushButton, ShortMoveButton, SkipShortMoveButton,
-  SmokeCheckButton, SniperButton, SplitSquadButton, ToggleSponsonButton, UndeployButton,
-  UndoButton, UnselectButton, WeatherCheckButton
+  PassButton, PassCancelButton, PrecipCheckButton, RallyButton, RallyPassButton, RandomDropButton,
+  ReactionFireButton, ReactionIntensiveFireButton, ReactionPassButton, ResignButton,
+  ResignCancelButton, RoutButton, RoutCheckButton, RoutEliminateButton, RushButton, ShortMoveButton,
+  SkipShortMoveButton, SmokeCheckButton, SniperButton, SplitSquadButton, ToggleSponsonButton,
+  UndeployButton, UndoButton, UnselectButton, WeatherCheckButton
 } from "./buttons/ControlButtons";
 import ReplayButton from "./buttons/ReplayButton";
 
@@ -159,6 +159,8 @@ export default function GameControls({
         }
       } else if (a.type === "undeploy") {
         return <UndeployButton game={game} key={i} callback={callAllBack} vertical={vertical} />
+      } else if (a.type === "random_drop") {
+        return <RandomDropButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "finish_deploy") {
         return <FinishDeployButton game={game} key={i} callback={callAllBack} vertical={vertical} />
       } else if (a.type === "split_squad") {

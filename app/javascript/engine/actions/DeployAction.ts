@@ -46,10 +46,7 @@ export default class DeployAction extends BaseAction {
 
   mutateGame(): void {
     const scenario = this.game.scenario
-    const map = scenario.map
-
     const turn = this.rTurn
-
     const uf = this.player === 1 ? scenario.takeAlliedReinforcement(turn, this.rKey) :
                                    scenario.takeAxisReinforcement(turn, this.rKey)
     uf.playerNation = this.player === 1 ? scenario.alliedFactions[0] : scenario.axisFactions[0]
@@ -67,7 +64,7 @@ export default class DeployAction extends BaseAction {
       if (hideObserved(this.game, u)) { u.observed = false }
       if (u.offBoard) { this.game.replayOffboard.push(u.id) }
     }
-    map.addCounter(this.target, uf)
+    this.map.addCounter(this.target, uf)
   }
 
   undo(): void {

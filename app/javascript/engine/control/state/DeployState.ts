@@ -148,7 +148,8 @@ export default class DeployState extends BaseState {
 
   finish() {
     if (!this.location) { return }
-    const name = hideObserved(this.game, this.counter.counter) ? this.counter.counter.typeName : this.counter.counter.name
+    const name = hideObserved(this.game, this.counter.counter) ?
+      this.counter.counter.typeName : this.counter.counter.name
     const id = `uf-${this.game.actions.length}`
     const action = new GameAction({
       user: this.game.currentUser,

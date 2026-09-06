@@ -42,6 +42,7 @@ import FinishDeployAction from "./actions/FinishDeployAction";
 import ShortMoveAction from "./actions/ShortMoveAction";
 import ObserveAction from "./actions/ObserveAction";
 import RemoveDecoyAction from "./actions/RemoveDecoyAction";
+import RandomDropAction from "./actions/RandomDropAction";
 
 export type GameActionDiceResult = {
   result: DiceResult, description?: string
@@ -53,7 +54,7 @@ export type GameActionUnit = {
   sponson?: boolean, wire?: boolean,
   parent?: string, children?: string[],
   unpin?: boolean, unrout?: boolean,
-  vehicle?: boolean,
+  vehicle?: boolean, mod?: number,
   immobilized?: boolean, turret?: boolean,
   weapon_jammed?: boolean, weapon_broken?: boolean,
   sponson_jammed?: boolean, sponson_broken?: boolean,
@@ -226,6 +227,8 @@ export default class GameAction {
       return new DeploySplitAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "deploy_join_squad") {
       return new DeployJoinAction(this.data, this.game, this.index);
+    } else if (this.data.data.action === "random_drop") {
+      return new RandomDropAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "finish_deploy") {
       return new FinishDeployAction(this.data, this.game, this.index);
     } else if (this.data.data.action === "squad_split") {

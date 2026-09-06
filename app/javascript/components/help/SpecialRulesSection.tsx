@@ -45,14 +45,14 @@ export default function SpecialRulesSection({ section }: SectionProps) {
       <p>
         Random drops are used in certain airborne scenarios; in a random drop deployment, instead of
         a the normal deployment process, all squads are split into teams, all teams and leaders are
-        randomly placed in random deployment hexes. If the chosen hex is already occupied by an
-        enemy unit, is next to an enemy unit, is a victory hex, or would result in overstacking, a
-        new hex will be chosen.
+        randomly placed in random deployment hexes. If the chosen hex is already occupied by a unit
+        (of either side), is next to an enemy unit, is a victory hex, a new hex will be chosen.
       </p>
       <p>
-        All teams and leaders so placed must immediately do a morale check (done automatically on
-        the sever), so some teams and leaders will start broken. Any infantry weapons will then be
-        randomly placed on teams (or leaders in the case of offboard artillery).
+        All teams and leaders so placed must immediately do a morale check with an additional -2
+        modifier (done automatically on the sever), so some teams and leaders will start broken. Any
+        infantry weapons will then be randomly placed on teams (or leaders in the case of offboard
+        artillery).
       </p>
       <p>
         In scenarios with this special rule, the opponent cannot perform any{" "}

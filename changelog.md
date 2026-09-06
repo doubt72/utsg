@@ -1,3 +1,8 @@
+# 0.139
+
+- Initial random drop deployment implementation
+- Updated 105
+
 # 0.138
 
 - Minor new game formatting change
