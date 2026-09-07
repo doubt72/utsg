@@ -1,6 +1,5 @@
 Features/Bug Fixes
-  + Second dig-in off with targeting marker
-  - Change selection rule for fire groups to select leaders in range but not in hex
+  + Change selection rule for fire groups to select leaders in range but not in hex
   - Decoy markers
     - Display unobserved in replay
   ? Test two-player stopping short (think something might be wrong with it)

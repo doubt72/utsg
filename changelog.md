@@ -1,6 +1,10 @@
 # 0.140
 
+- Prevent combining multiple leaders into fire group
 - Bug fix: entrenchment broken when spotted
+- Updated/promoted 105
+- Updated 315
+- Added prototype 316
 
 # 0.139
 

@@ -417,6 +417,10 @@ export default class FireState extends BaseState {
       this.game.addMessage("can't combine fire of units without a leader")
       return false
     } else {
+      if (counter.unit.leader) {
+        this.game.addMessage("can't combine multiple leaders into fire group")
+        return false
+      }
       const distance = hexDistance(new Coordinate(init.x, init.y), new Coordinate(coord.x, coord.y))
       if (distance > leadership) {
         this.game.addMessage("unit outside of leadership range")
