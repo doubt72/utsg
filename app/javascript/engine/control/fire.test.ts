@@ -2918,8 +2918,8 @@ describe("ranged fire attacks", () => {
 
       expect(game.moraleChecksNeeded).toStrictEqual([])
       expect(game.lastAction?.stringValue).toBe(
-        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll: target 9, rolled 100 [d10x10: 10 x 10]: hit; " +
-        "smoke roll: rolled 10 [d10], smoke level 4"
+        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll: target 9, " +
+          "rolled 100 [d10x10: 10 x 10]: hit; smoke roll: rolled 10 [d10], smoke level 4"
       )
 
       const all = map.allCounters
@@ -2960,8 +2960,8 @@ describe("ranged fire attacks", () => {
       Math.random = original
 
       expect(game.lastAction?.stringValue).toBe(
-        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll: target 9, rolled 100 [d10x10: 10 x 10]: hit; " +
-        "smoke roll: rolled 10 [d10], smoke level 4"
+        "German 5cm leGrW 36 at D3 fired smoke at A3; targeting roll: target 9, " +
+          "rolled 100 [d10x10: 10 x 10]: hit; smoke roll: rolled 10 [d10], smoke level 4"
       )
       expect(game.moraleChecksNeeded).toStrictEqual([])
 
@@ -3187,7 +3187,7 @@ describe("ranged fire attacks", () => {
       expect((game.eliminatedUnits[1] as Unit).parent).toBe(undefined)
     })
 
-    test("incendiary", () => {
+    test.only("incendiary", () => {
       const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)
@@ -3265,6 +3265,7 @@ describe("ranged fire attacks", () => {
       game.gameState?.finish()
       Math.random = original
 
+      expect(game.actions.length).toBe(2)
       expect(game.lastAction?.stringValue).toBe(
         "checking to see if blaze starts in E3: on 6 or less (crew escapes on 7 or less), " +
           "rolled 2 [2d10: 1 + 1]: blaze starts"

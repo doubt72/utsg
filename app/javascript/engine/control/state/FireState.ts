@@ -81,11 +81,13 @@ export default class FireState extends BaseState {
   }
 
   get rotateOpen(): boolean {
-    return this.selection[0].counter.unit.turreted && !this.sponson
+    const unit = this.selection[0].counter.unit
+    return (unit.turreted && !unit.isTurretJammed) && !this.sponson
   }
 
   get rotatePossible(): boolean {
-    return this.selection[0].counter.unit.turreted && !this.sponson
+    const unit = this.selection[0].counter.unit
+    return (unit.turreted && !unit.isTurretJammed) && !this.sponson
   }
 
   select(selection: CounterSelectionTarget, callback: () => void) {

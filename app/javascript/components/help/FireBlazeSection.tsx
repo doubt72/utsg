@@ -44,7 +44,7 @@ export default function FireBlazeSection({ section }: SectionProps) {
             <td>
               <strong>no chance</strong>
             </td>
-            <td>marsh, soft ground, water, or base terrain is snow or mud</td>
+            <td>marsh, soft ground, water, or base terrain is snow or mud (unless vehicle)</td>
           </tr>
         </tbody>
       </table>

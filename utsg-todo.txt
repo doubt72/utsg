@@ -1,6 +1,10 @@
 Features/Bug Fixes
+  + Fire starting wrong for snow/mud
+  + Fire checks shouldn't happen if fire already there
+  + Turret jammed is fake
   - Test multiple factions in 319
   - Fix display issues for 317 (trenches, no bridges)
+  - Consider better way of doing animations
   - Decoy markers
     - Display unobserved in replay
   ? Test two-player stopping short (think something might be wrong with it)

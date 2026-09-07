@@ -968,6 +968,9 @@ export default class Map {
           terrainType.Soft].includes(neighbor.baseTerrain)) {
       return 0
     }
+    if ([baseTerrainType.Mud, baseTerrainType.Snow].includes(this.baseTerrain)) {
+      return 0
+    }
     if (this.windSpeed === windType.Breeze) { rc = 1 }
     if (this.windSpeed === windType.Moderate) { rc = 2 }
     if (this.windSpeed === windType.Strong) { rc = 3 }

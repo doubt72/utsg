@@ -809,6 +809,12 @@ export default class FireAction extends BaseAction {
           const vehicle_incendiary = f.vehicle !== undefined &&
             (f.vehicle.incendiary || f.vehicle.sponson?.type === sponsonType.Flame)
           const loc = new Coordinate(f.x, f.y)
+          const counters = this.map.countersAt(loc)
+          let check = false
+          for (const c of counters) {
+            if (c.hasFeature && c.feature.type === featureType.Fire) { check = true; break }
+          }
+          if (check) { continue }
           if (f.vehicle?.isTankCrewed) {
             this.game.addFireCheck({
               loc, vehicle: true, incendiary, vehicle_incendiary, tank: true,

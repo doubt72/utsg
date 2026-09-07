@@ -1,3 +1,12 @@
+# 0.141
+
+- Limit game names to 128 characters
+- Don't check for fire starting if fire already started
+- Bug fix: mud/snow/wet terrain should stop non-vehicle blazes from starting
+- Bug fix: mud/snow stop blaze spreading
+- Bug fix: don't allow jammed turrets to turn when firing
+- Updated 204, 306
+
 # 0.140
 
 - Prevent combining multiple leaders into fire group

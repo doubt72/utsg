@@ -41,11 +41,11 @@ export default function HousekeepingSection({ section }: SectionProps) {
       </p>
       <p>
         Infantry and crewed weapons may not be selected to be removed if assigned to an infantry
-        unit.  Dropped infantry weapons and uncrewed weapons may be selected (in other words, infantry
-        unit operating the weapon must be removed first, or if capturing a hex that had opponent weapons,
-        those may be removed to bring the stack under the stacking limit if the player&apos;s stack
-        would have otherwise been legal).  Unbroken, unpinned squads may
-        be split at this time.  Wrecks may not be removed.
+        unit. Dropped infantry weapons and uncrewed weapons may be selected (in other words,
+        infantry unit operating the weapon must be removed first, or if capturing a hex that had
+        opponent weapons, those may be removed to bring the stack under the stacking limit if the
+        player&apos;s stack would have otherwise been legal). Unbroken, unpinned squads may be split
+        at this time. Wrecks may not be removed.
       </p>
       <p>
         The game ends on the last turn after this phase; there&apos;s no reason to update status,
@@ -54,12 +54,10 @@ export default function HousekeepingSection({ section }: SectionProps) {
       </p>
       <h3>{section}.2. Updating Unit Status and Initiative</h3>
       <p>
-        At this point, all activated, pinned, tired, and routed markers are removed, and any exhausted
-        markers are replaced with tired markers.
+        At this point, all activated, pinned, tired, and routed markers are removed, and any
+        exhausted markers are replaced with tired markers.
       </p>
-      <p>
-        Also, if initiative value is greater than 16, it is reduced to 16 on the same side.
-      </p>
+      <p>Also, if initiative value is greater than 16, it is reduced to 16 on the same side.</p>
       <h3>{section}.3. Checking for Smoke Dispersion</h3>
       <p>
         If any hexes contain a smoke marker, the smoke will disperse at least a little every turn.
@@ -83,9 +81,9 @@ export default function HousekeepingSection({ section }: SectionProps) {
         </div>
       </div>
       <p>
-        The <strong>sd</strong> numbers on the current wind marker are the total hindrance of smoke in a hex that
-        may disperse. Each hex containing smoke is checked separately: a single d10 is rolled, and the
-        following table is checked:
+        The <strong>sd</strong> numbers on the current wind marker are the total hindrance of smoke
+        in a hex that may disperse. Each hex containing smoke is checked separately: a single d10 is
+        rolled, and the following table is checked:
       </p>
       <table>
         <tbody>
@@ -119,9 +117,10 @@ export default function HousekeepingSection({ section }: SectionProps) {
             <CounterDisplay unit={smoke1} />
           </div>
         </div>
-        For example, if the wind was moderate and a 2 was rolled smoke in a given hex, the a smoke marker
-        would be reduced by 3.  If the current hindrance of the smoke marker was 4, it would be reduced to 1;
-        any smoke with a hindrance lower than that would be removed from the board completely.
+        For example, if the wind was moderate and a 2 was rolled smoke in a given hex, the a smoke
+        marker would be reduced by 3. If the current hindrance of the smoke marker was 4, it would
+        be reduced to 1; any smoke with a hindrance lower than that would be removed from the board
+        completely.
       </div>
       <h3>{section}.4. Checking for Blazes Being Extinguished or Spreading</h3>
       <p>
@@ -160,30 +159,26 @@ export default function HousekeepingSection({ section }: SectionProps) {
         removed from the map.
       </p>
       <div className="example">
-        For example, if it was raining and a 6 was rolled, the blaze marker
-        being checked would be removed.
+        For example, if it was raining and a 6 was rolled, the blaze marker being checked would be
+        removed.
       </div>
       <p>
-        After checking to see if the blazes remain, a check is made to see if
-        the blazes spread. Fire spread depends on the <strong>fs</strong>{" "}
-        percentage on the current wind speed and downwind terrain.  Sand, water,
-        marsh, or soft ground will prevent fires from spreading; buildings, forest,
-        brush, fields, orchards, or palm trees increase to chance by 2.  Other
-        terrain features have no effect.
+        After checking to see if the blazes remain, a check is made to see if the blazes spread.
+        Fire spread depends on the <strong>fs</strong> percentage on the current wind speed and
+        downwind terrain. Sand, water, marsh, or soft ground will prevent fires from spreading, as
+        will a base terrain of mud or snow; buildings, forest, brush, fields, orchards, or palm
+        trees increase to chance by 2. Other terrain features have no effect.
       </p>
       <p>
-        Each hex containing a blaze is checked separately: a single d10 is
-        rolled, and if ten times the result is less than or equal to the{" "}
-        <strong>fs</strong> value, the blaze spreads in the direction of the
-        wind. Note that dust also increases the chance of spreading by 10%.
-        There&apos;s no need to check blazes when there&apos;s
-        already a blaze downwind.
+        Each hex containing a blaze is checked separately: a single d10 is rolled, and if ten times
+        the result is less than or equal to the <strong>fs</strong> value, the blaze spreads in the
+        direction of the wind. Note that dust also increases the chance of spreading by 10%.
+        There&apos;s no need to check blazes when there&apos;s already a blaze downwind.
       </p>
       <div className="example">
-        For example, if the wind was moderate, the weather was dry and a 2 was
-        rolled, and the downwind terrain was open, a new blaze marker would be
-        placed in the direction the wind is blowing from the marker being
-        checked.
+        For example, if the wind was moderate, the weather was dry and a 2 was rolled, and the
+        downwind terrain was open, a new blaze marker would be placed in the direction the wind is
+        blowing from the marker being checked.
       </div>
       <h3>{section}.5. Variable Weather</h3>
       <p>If the wind is variable, there is a chance of the wind direction and/or speed changing.</p>
@@ -239,10 +234,10 @@ export default function HousekeepingSection({ section }: SectionProps) {
         </tbody>
       </table>
       <p>
-        Weaken results in the wind being changed to the next weaker of calm, breeze, moderate,
-        or strong.  Strengthen results in the wind being changed in the opposite order.
-        If the wind is already calm, it cannot weaken further so that result has no effect.
-        Similarly the wind cannot strengthen if it is already strong.
+        Weaken results in the wind being changed to the next weaker of calm, breeze, moderate, or
+        strong. Strengthen results in the wind being changed in the opposite order. If the wind is
+        already calm, it cannot weaken further so that result has no effect. Similarly the wind
+        cannot strengthen if it is already strong.
       </p>
     </div>
   );

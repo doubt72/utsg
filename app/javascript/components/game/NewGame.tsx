@@ -127,8 +127,10 @@ export default function NewGame() {
   }, [])
 
   const validateName = (name: string) => {
-    if (name == "") {
+    if (name === "") {
       setFormErrors({ ...formErrors, name: "please choose a name for the game" })
+    } else if (name.length > 128) {
+      setFormErrors({ ...formErrors, name: "game name is too long, please choose a shorter name" })
     } else {
       setFormErrors({ ...formErrors, name: "" })
     }

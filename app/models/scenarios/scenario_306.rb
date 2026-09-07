@@ -7,43 +7,39 @@ module Scenarios
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.3"
+    VERSION = "0.4"
 
     DATE = [1944, 12, 24].freeze
     LAYOUT = [23, 23, "x"].freeze
 
     ALLIED_UNITS = {
-      "0": {
-        list: [
-          :usa_leader_6_2,
-          :usa_leader_5_2,
-          [2, :usa_leader_5_1],
-          [7, :usa_paratroop_s],
-          :usa_m2_browning,
-          [2, :usa_m1918_bar],
-          [2, :usa_m1a1_bazooka],
-          :usa_m1_mortar,
-          :usa_radio_155mm,
-          [3, :usa_m18_hellcat],
-          [4, :trench],
-        ],
-      },
+      "0": { list: [
+        :usa_leader_6_2,
+        :usa_leader_5_2,
+        [2, :usa_leader_5_1],
+        [6, :usa_paratroop_s],
+        :usa_m2_browning,
+        [2, :usa_m1918_bar],
+        [2, :usa_m1a1_bazooka],
+        :usa_m1_mortar,
+        :usa_radio_155mm,
+        [3, :usa_m18_hellcat],
+        [2, :trench],
+      ] },
     }.freeze
 
     AXIS_UNITS = {
-      "0": {
-        list: [
-          :ger_leader_5_1,
-          [2, :ger_leader_4_1],
-          [8, :ger_rifle_s],
-          [3, :ger_mg_42],
-          :ger_radio_15cm,
-          [2, :ger_pzkpfw_iv_g],
-          [4, :ger_panther_d],
-          [3, :ger_stug_iii_f_g],
-          [3, :ger_sdkfz_251_1],
-        ],
-      },
+      "0": { list: [
+        :ger_leader_5_1,
+        [2, :ger_leader_4_1],
+        [8, :ger_rifle_s],
+        [4, :ger_mg_42],
+        :ger_radio_15cm,
+        [2, :ger_pzkpfw_iv_g],
+        [4, :ger_panther_d],
+        [3, :ger_stug_iii_f_g],
+        [3, :ger_sdkfz_251_1],
+      ] },
     }.freeze
 
     class << self
@@ -59,6 +55,7 @@ module Scenarios
           map_data:,
           allied_units:,
           axis_units:,
+          special_rules: ["winter"],
         }
       end
 
@@ -71,7 +68,6 @@ module Scenarios
           Allied forces.  The town was defended primarily by the U.S. 101st
           Airborne Division, along with elements of other units, who became
           encircled by German forces during the rapid advance.",
-
           "Despite being heavily outnumbered, undersupplied, and fighting in
           brutal winter conditions, the American defenders held firm.  The
           siege became famous for the refusal of Brigadier General Anthony
@@ -80,7 +76,6 @@ module Scenarios
           The defenders repelled repeated German attacks while enduring
           artillery barrages, cold, and shortages of food and medical
           supplies.",
-
           "Relief finally came when elements of the Third Army broke through
           the German lines and reached the town.  Although fighting continued
           for a few more days, the siege was effectively lifted.  The stand at
@@ -93,19 +88,29 @@ module Scenarios
         {
           start_weather: "dry",
           base_weather: "dry",
-          precip: [2, "snow"],
+          precip: [4, "snow"],
           wind: [1, 3, false],
           hexes:,
           layout:,
           allied_dir: 4,
           axis_dir: 1,
           victory_hexes: [
-            [2, 8, 1], [3, 18, 1], [4, 3, 1], [8, 9, 1], [10, 10, 1], [11, 1, 1], [13, 6, 1],
-            [14, 12, 1], [19, 11, 2],
+            [3, 18, 1], [4, 3, 1], [10, 10, 1], [13, 6, 1], [18, 11, 2], [15, 12, 1], [8, 9, 1],
           ],
-          allied_setup: { "0" => [["0-16", "*"]] },
-          axis_setup: { "0" => [["18-22", "*"]] },
-          base_terrain: "s",
+          allied_setup: {
+            "0" => [
+              ["0-15", 0], ["0-14", "1-2"], ["0-13", 3], ["0-14", "4-5"], ["0-15", "6-8"],
+              ["0-14", "9-11"], ["0-15", 12], ["0-11", 13], ["0-12", "14-15"], ["0-13", "16-17"],
+              ["0-14", "18-19"], ["0-15", 20], ["0-14", "21-22"],
+            ],
+          },
+          axis_setup: {
+            "0" => [
+              ["17-22", "0-1"], ["18-22", "2-4"], ["17-22", 5], ["18-22", "6-12"], ["17-22", 13],
+              ["16-22", "14-15"], ["17-22", 16], ["16-22", 17], ["17-22", 18], ["16-22", 19],
+              ["17-22", 20], ["16-22", 21], ["17-22", 22],
+            ],
+          },
         }
       end
 
@@ -135,7 +140,8 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -159,7 +165,8 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -183,7 +190,8 @@ module Scenarios
             { t: "f" },
             { t: "f" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -207,7 +215,8 @@ module Scenarios
             { t: "f" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -231,7 +240,8 @@ module Scenarios
             { t: "f" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
@@ -255,7 +265,8 @@ module Scenarios
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
@@ -279,7 +290,8 @@ module Scenarios
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
@@ -303,7 +315,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 3, 4] } },
             { t: "o", r: { d: [1, 4] } },
@@ -327,7 +340,8 @@ module Scenarios
             { t: "o", r: { d: [3, 6] } },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "f" },
             { t: "f" },
@@ -351,7 +365,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "f" },
             { t: "f" },
@@ -375,7 +390,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "f" },
             { t: "o" },
@@ -399,7 +415,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "f" },
             { t: "f" },
             { t: "o" },
@@ -423,7 +440,8 @@ module Scenarios
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
             { t: "o", r: { d: [1, 4] } },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -447,7 +465,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -471,7 +490,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -495,7 +515,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -519,7 +540,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -543,7 +565,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -567,7 +590,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -591,7 +615,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o" },
@@ -615,7 +640,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },
@@ -639,7 +665,8 @@ module Scenarios
             { t: "o" },
             { t: "o" },
             { t: "o" },
-          ], [
+          ],
+          [
             { t: "o" },
             { t: "o" },
             { t: "o", r: { d: [3, 6] } },

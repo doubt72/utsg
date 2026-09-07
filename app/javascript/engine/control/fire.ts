@@ -589,17 +589,21 @@ export function fireStartTarget(
     let check = 2
     const hex = map.hexAt(loc) as Hex
     if ([
-      terrainType.Forest,
-      terrainType.Brush,
-      terrainType.Grain,
-      terrainType.Orchard,
-      terrainType.Palm,
+      terrainType.Forest, terrainType.Brush, terrainType.Grain, terrainType.Orchard, terrainType.Palm,
     ].includes(hex.baseTerrain) ) { check = 3 }
     if ([baseTerrainType.Desert, baseTerrainType.Beach].includes(map.baseTerrain) &&
         hex.baseTerrain === terrainType.Open) {
       check = 1
     }
     if (hex.baseTerrain === terrainType.Sand) { check = 1 }
+    if ([baseTerrainType.Mud, baseTerrainType.Snow].includes(map.baseTerrain) && !vehicle) {
+      return 0
+    }
+    if ([
+      terrainType.Water, terrainType.Shallow, terrainType.Marsh, terrainType.Soft
+    ].includes(hex.baseTerrain) && !vehicle) {
+      return 0
+    }
     if (vehicle) { check = 4 }
     if (incendiary) { check += 2 }
     if (vehicle && vehicle_incendiary) { check += 2 }
