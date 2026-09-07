@@ -115,6 +115,7 @@ module Utility
               radio_10_5cm: :radio_105mm,
               # Field Guns
               "75mm_gun": :"75mm_m1897",
+              "gpf_155mm_k418": :"15cm_sig_33",
               # AT Guns
               type_30_at: :"3_7cm_pak_36",
               "57mm_m1": :qf_6pdr_mk_iv,

@@ -4,7 +4,7 @@
 - Bug fix: entrenchment broken when spotted
 - Updated/promoted 105
 - Updated 315
-- Added prototype 316
+- Added prototype 316, 317, 319
 
 # 0.139
 

@@ -26,6 +26,7 @@ module Utility
 
               ["ger", "7.5cm leIG 18", 32], ["ger", "7.5cm GebG 36", 38],
               ["ger", "10.5cm GebH 40", 42, { sn: 1 }], ["ger", "15cm sIG 33", 36],
+              ["ger", "GPF 155mm K418", 43, { sn: 1 }],
 
               ["ita", "Cannone da 65/17", 13, { sn: 2 }], ["ita", "Obice da 75/18", 34],
               ["ita", "Obice da 100/17", 14, { sn: 1 }],

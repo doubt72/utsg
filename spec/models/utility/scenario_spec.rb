@@ -183,7 +183,7 @@ RSpec.describe Utility::Scenario do
       constants = Scenarios.constants.reject do |k|
         %i[Base Scenario999 Scenario0TT].include?(k)
       end
-      expect(constants.length).to be == 111
+      expect(constants.length).to be == 113
 
       # If any of these change, scenario MUST to be updated with a new version,
       # then update test with new version/checksum
@@ -258,7 +258,10 @@ RSpec.describe Utility::Scenario do
       expect(Utility::Scenario.checksum("313")).to be == "0.1p-d4e9e2f7554679e8eba94aa457e53238"
       expect(Utility::Scenario.checksum("314")).to be == "0.1p-809f34bb223a14eedf68ac83becc41b1"
       expect(Utility::Scenario.checksum("315")).to be == "0.1p-866958c94aa77e81672651a7d4099c82"
-      expect(Utility::Scenario.checksum("316")).to be == "0.1p-25fd7ac95bd3610958cf2f1ed4b53728"
+      expect(Utility::Scenario.checksum("316")).to be == "0.1p-78360f66848bb5a001878f655db96662"
+      expect(Utility::Scenario.checksum("317")).to be == "0.1p-baaf79fb26497d980e680ca57989e2cb"
+
+      expect(Utility::Scenario.checksum("319")).to be == "0.1p-3f89b9a3501473c05f247b14b5fe7971"
 
       expect(Utility::Scenario.checksum("401")).to be == "1.4-ebfa848c514cd84c0591d20d78830bc4"
       expect(Utility::Scenario.checksum("402")).to be == "1.1-489aefc2132dd283d8ba5e9b101b4135"
