@@ -507,6 +507,7 @@ module Utility
               "u__carrier_2pdr": { sz: 3, mv: 7, wpn: :"qf_2_pounder", arm: [0, 0, 0, -1] },
               "u__carrier_6pdr": { sz: 3, mv: 7, wpn: :"qf_6_pounder", arm: [0, 0, 0, -1] },
               "u__carrier_wasp": { sz: 3, mv: 7, wpn: :"ft", arm: [0, 0, 0, -1] },
+              "kangaroo": { sz: 4, mv: 5, wpn: :"m2_browning", trn: 3, arm: [5, 3, 3, -1] },
               # US Armored Vehicles
               "m2a4": { sz: 3, mv: 7, wpn: :"37mm_m3", arm: [2, 2, 2], trt: [2, 2, 2] },
               "m3_stuart": { sz: 3, mv: 5, wpn: :"37mm_m3", arm: [3, 2, 2], trt: [4, 3, 3] },

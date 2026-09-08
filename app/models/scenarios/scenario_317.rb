@@ -85,8 +85,7 @@ module Scenarios
           discovered that their main objective, the artillery battery, had
           been removed. The Rangers regrouped at the top of the cliffs, and a
           small patrol went off in search of the guns which were found nearby
-          nearby (including one being repaired), and destroyed their firing
-          mechanisms with thermite grenades.",
+          nearby (including one being repaired), and destroyed them.",
           "In this hypothetical scenario, the guns are still emplaced and
           functioning, posing a significant danger to the attacking Rangers.",
         ]

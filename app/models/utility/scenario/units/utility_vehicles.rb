@@ -31,6 +31,7 @@ module Utility
               ["uk", "Loyd Carrier", 39], ["uk", "Universal Carrier", 37, { sn: 1 }],
               ["uk", "U. Carrier 2Pdr", 41], ["uk", "U. Carrier 6Pdr", 41],
               ["uk", "U. Carrier Wasp", 44], ["uk", "M5 Half-track", 42],
+              ["uk", "Kangaroo", 44],
 
               ["usa", "M2 Half-track", 41], ["usa", "M3 Half-track", 41],
               ["usa", "M3A1 Half-track", 42], ["usa", "M2 Half-track", 41], ["usa", "LVT-1", 41],

@@ -61,7 +61,8 @@ module Utility
 
               ["chi", "Type 30 AT", 36], ["chi", "45mm 19-K", 34], ["chi", "37mm M3", 42],
 
-              ["fin", "Bofors 37mm AT", 35, { sn: 1 }],
+              ["fin", "Bofors 37mm AT", 35, { sn: 1 }], ["fin", "45mm 53-K", 39],
+              ["fin", "57mm ZiS-2", 41],
 
               ["fra", "25mm Hotchkiss", 34, { sn: 1 }], ["fra", "47mm APX", 39],
 

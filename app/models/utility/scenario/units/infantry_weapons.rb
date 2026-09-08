@@ -115,6 +115,8 @@ module Utility
 
               ["chi", "M1A1 Bazooka", 43],
 
+              ["fin", "Panzerfaust", 43], ["fin", "Panzerschreck", 43],
+
               ["fra", "PIAT", 42],
 
               ["ger", "Panzerfaust", 43], ["ger", "Panzerschreck", 43],

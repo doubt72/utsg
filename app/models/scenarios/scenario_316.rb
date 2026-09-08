@@ -99,7 +99,6 @@ module Scenarios
           axis_dir: 2.5,
           victory_hexes: [
             [8, 9, 1], [10, 5, 1], [8, 6, 1], [12, 13, 1], [4, 8, 1], [4, 5, 1], [7, 12, 2],
-            [7, 4, 1],
           ],
           allied_setup: {
             "0" => [

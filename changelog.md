@@ -5,7 +5,8 @@
 - Bug fix: mud/snow/wet terrain should stop non-vehicle blazes from starting
 - Bug fix: mud/snow stop blaze spreading
 - Bug fix: don't allow jammed turrets to turn when firing
-- Updated 204, 306
+- Updated 204, 306, 316, 317, 506
+- Added prototype 021, 024, 025, 035, 040, 318, 320
 
 # 0.140
 
