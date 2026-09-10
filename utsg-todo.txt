@@ -1,6 +1,8 @@
-Features/Bug Fixes=
-  - Test multiple factions in 319
+Features/Bug Fixes
+  - Switch to scenario ratings
   - Fix display issues for 317 (trenches, no bridges)
+  - About scenario window during game
+  - Test multiple factions in 319
   - Consider better way of doing animations
   - Decoy markers
     - Display unobserved in replay
