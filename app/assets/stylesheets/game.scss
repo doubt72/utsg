@@ -106,6 +106,14 @@
   padding: 0.5em 1em;
 }
 
+.scenario-description-unit {
+  font-family: 'Courier Prime', monospace;
+  position: relative;
+  max-height: 18px;
+  padding-left: 0.5em;
+  // bottom: -5px;
+}
+
 .rotate-text-schedule {
   font-family: 'Courier Prime', monospace;
   font-size: 0.9em;

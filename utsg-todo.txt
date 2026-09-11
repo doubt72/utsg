@@ -1,6 +1,7 @@
 Features/Bug Fixes
-  - Switch to scenario ratings
-  - Fix display issues for 317 (trenches, no bridges)
+  + Switch to scenario ratings
+  + Fix display issues for 317 (trenches, no bridges)
+  - Pointer on smoke hex / click counters, no overlay
   - About scenario window during game
   - Test multiple factions in 319
   - Consider better way of doing animations

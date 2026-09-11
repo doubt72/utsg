@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Purple Heart Battalion"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.4"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1943, 10, 18].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -97,7 +97,7 @@ module Scenarios
           allied_dir: 2.5,
           axis_dir: 5.5,
           victory_hexes: [
-            [8, 2, 2], [2, 3, 2], [10, 8, 2], [7, 11, 2], [5, 15, 1],
+            [8, 2, 2], [2, 3, 2], [10, 8, 2], [8, 10, 2], [7, 12, 1],
           ],
           allied_setup: { "0" => [
             ["0-3", 10], ["0-6", 11], ["0-7", "12-15"], ["13-14", "13-14"], ["12-14", 15],

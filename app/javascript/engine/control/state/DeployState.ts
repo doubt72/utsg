@@ -60,8 +60,12 @@ export default class DeployState extends BaseState {
       for (const f of this.map.countersAt(hex.coord)) {
         if (f.hasFeature) { return hexOpenType.Closed }
       }
-      if ((uf.type === featureType.Mines || uf.type === featureType.Wire) && this.map.victoryNationAt(hex.coord)) {
-        return hexOpenType.Closed
+      if ((uf.type === featureType.Mines || uf.type === featureType.Wire)) {
+        if (hex.river) { return hexOpenType.Closed }
+        if ([terrainType.Shallow, terrainType.Marsh, terrainType.Soft].includes(hex.baseTerrain)) {
+          return hexOpenType.Closed
+        }
+        if (this.map.victoryNationAt(hex.coord)) { return hexOpenType.Closed }
       }
     } else {
       if (unit.size + this.map.sizeAt(hex.coord) > stackLimit) {

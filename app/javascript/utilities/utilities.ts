@@ -8,7 +8,7 @@ export function minorToMajor(code: string): string {
   const lookup: { [index: string]: string } = { bra: "usa", frf: "fra" }
   for (const m of ["can", "aus", "nz", "ind", "sa"]) { lookup[m] = "uk" }
   for (const m of ["pol", "gre", "nor", "bel", "dut", "yug", "cze"]) { lookup[m] = "alm" }
-  for (const m of ["hun", "bul", "rom", "slo", "cro"]) { lookup[m] = "axm" }
+  for (const m of ["hun", "bul", "rom", "slv", "cro"]) { lookup[m] = "axm" }
   return lookup[code] ?? code
 }
 
@@ -67,7 +67,7 @@ export function axisCodeToName(code: string): string {
     { name: "Hungarian", code: "hun" },
     { name: "Bulgarian", code: "bul" },
     { name: "Romanian", code: "rom" },
-    { name: "Slovakian", code: "slo" },
+    { name: "Slovakian", code: "slv" },
     { name: "Croatian", code: "cro" },
     { name: "Vichy French", code: "vcf" },
 
@@ -384,4 +384,4 @@ export const critHitDiff = 8
 export const critMorale = 4
 export const titleName = "A Hex Too Far"
 export const subtitleName = "Light Tactical Battle System"
-export const serverVersion = "0.141"
+export const serverVersion = "0.142"

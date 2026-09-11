@@ -158,7 +158,7 @@ export function hexElevationContinuous(hex: Hex): PathLayout | false {
 }
 
 export function roadPath(hex: Hex): string {
-  return path(hex, hex.roadDirections, hex.roadCenter)
+  return path(hex, true, hex.roadDirections, hex.roadCenter)
 }
 
 export function roadOutlineStyle(hex: Hex): SVGStyle {
@@ -219,7 +219,7 @@ export function roadRotate(hex: Hex): string {
 
 export function railroadPath(hex: Hex): string {
   if (!hex.railroadDirections) { return "" }
-  return hex.railroadDirections.map(d => path(hex, d)).join(" ")
+  return hex.railroadDirections.map(d => path(hex, true, d)).join(" ")
 }
 
 export function railroadBedStyle(): SVGStyle {
@@ -259,10 +259,10 @@ export function railroadTrackStyle(): SVGStyle {
 }
 
 export function riverPath(hex: Hex): string {
-  return path(hex, hex.riverDirections)
+  return path(hex, false, hex.riverDirections)
 }
 
-export function riverStyle(hex: Hex): SVGStyle {
+export function riverStyle(hex: Hex, dirs: number): SVGStyle {
   let color = hex.map.baseTerrain === baseTerrainType.Snow ? iceWater : darkWater
   let dash = undefined
   if (hex.riverType === "g") {
@@ -270,7 +270,7 @@ export function riverStyle(hex: Hex): SVGStyle {
     dash = [14, 14]
   } else if (hex.riverType === "t") {
     color = "#753"
-    dash = [18, 5]
+    dash = dirs > 2 ? [13, 7] : [16, 7]
   }
   return {
     fill: clearColor,
@@ -431,9 +431,9 @@ function generatePaths(hex: Hex, edges: boolean[], edgeOffset: number): string {
   return path.join(" ")
 }
 
-function path(hex: Hex, directions?: Direction[], center?: RoadCenterType): string {
+function path(hex: Hex, road: boolean, directions?: Direction[], center?: RoadCenterType): string {
   if (!directions) { return "" }
-  if (directions.length === 2 && !(hex.river && hex.riverType === streamType.Trench) &&
+  if (directions.length === 2 && !(hex.river && hex.riverType === streamType.Trench && !road) &&
     !(hex.road && hex.roadType === roadType.Airfield)) {
     const d1 = directions[0]
     const d2 = directions[1]

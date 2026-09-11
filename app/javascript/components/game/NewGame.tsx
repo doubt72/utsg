@@ -29,7 +29,7 @@ export default function NewGame() {
   const [players, setPlayers] = useState({ one: "player one" , two: "player two" })
 
   const [scenarioSearch, setScenarioSearch] = useState({
-    sort: "n", sortDir: "asc", string: "", allies: "", axis: "", theater: "", status: "",
+    sort: "r", sortDir: "asc", string: "", allies: "", axis: "", theater: "", status: "",
     type: "", size: "", page: 0,
   })
   const [scroll, setScroll] = useState({ up: false, down: false })
@@ -191,8 +191,8 @@ export default function NewGame() {
   }
 
   const sorts = [
-    { code: "n", name: "Scenario ID"},
     { code: "r", name: "Rating"},
+    { code: "n", name: "Scenario ID"},
     { code: "b", name: "Balance"},
     { code: "d", name: "Date"},
     { code: "m", name: "Map Size"},

@@ -9,7 +9,7 @@ interface MapHexOverlayProps {
   hex: Hex;
   selectCallback: (x: number, y: number) => void,
   shaded: HexOpenType;
-  firingSmoke: boolean;
+  firingSmoke?: boolean;
 }
 
 export default function MapHexOverlay({

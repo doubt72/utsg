@@ -20,6 +20,9 @@ module Utility
               # Hungarian
               ["axm", "38M Toldi I", 39], ["axm", "42M Toldi II", 42], ["axm", "42M Toldi IIA", 43],
 
+              # Slovak
+              ["axm", "LT vz. 35", 38], ["axm", "LT vz. 38", 38],
+
               ["chi", "T-26", 38], ["chi", "Vickers 6-Ton", 34], ["chi", "M3 Stuart", 42],
               ["chi", "M4 Sherman", 43],
 
@@ -104,9 +107,9 @@ module Utility
               ["ger", "StuG III-B/E", 40], ["ger", "StuG III-F/G", 42], ["ger", "StuH 42", 42],
               ["ger", "StuG IV", 43], ["ger", "SdKfz 166", 42], ["ger", "Panzerjäger I", 40],
               ["ger", "Marder I", 42], ["ger", "Marder II", 42], ["ger", "Marder III", 42],
-              ["ger", "Marder III-H/M", 43], ["ger", "Nashorn", 42], ["ger", "Elefant", 42],
+              ["ger", "Marder III-H/M", 43], ["ger", "Nashorn", 42], ["ger", "Ferdinand", 42],
               ["ger", "Jagdpanzer IV", 43], ["ger", "Hetzer", 44], ["ger", "Jagdpanther", 44],
-              ["ger", "Jagdtiger", 44],
+              ["ger", "Jagdtiger", 44], ["ger", "Elefant", 44],
 
               ["ita", "L3/33", 33], ["ita", "L3/35", 35], ["ita", "L3/38", 38],
               ["ita", "Semovente da 47/32", 42, { sn: 4 }],
@@ -150,6 +153,9 @@ module Utility
             key = %i[c n y o]
             [
               ["alm", "Overvalwagen", 40],
+
+              ["axm", "OA vz. 30", 38],
+
               ["chi", "M3A1 Scout Car", 39, { sn: 1 }],
 
               ["fra", "AMC Schneider P16", 28, { sn: 4 }], ["fra", "White AM AC", 15],

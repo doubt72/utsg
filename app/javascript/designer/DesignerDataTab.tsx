@@ -190,7 +190,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
                     { ...data, axis: [target.value] }, setDesignStack
                   )} >
             { [
-                "ger", "ita", "jap", "fin", "hun", "bul", "rom", "slo", "cro", "vcf",
+                "ger", "ita", "jap", "fin", "hun", "bul", "rom", "slv", "cro", "vcf",
               ].map(n => <option key={n} value={n}>{axisCodeToName(n)}</option>) }
           </select>
         </div>

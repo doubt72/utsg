@@ -39,7 +39,7 @@ export function toggleHex(
       const current = checkToggle(hexes, x, y, newX, newY) 
       if (x === 0 && current) {
         starts.push(x)
-      } else {
+      } else  if (x !== 0) {
         const last = checkToggle(hexes, x - 1, y, newX, newY)
         if (current && !last) { starts.push(x) }
         if (!current && last) { ends.push(x-1) }
@@ -96,13 +96,13 @@ function collapseColumns(hexes: DeployHexes, yMax: number): DeployHexes {
 }
 
 function collapseRows(hexes: DeployHexes): DeployHexes {
-  const rc: DeployHexes = []
+  let rc0: DeployHexes = []
   const nums: number[] = []
   for (const h of hexes) {
     if (h[0] === "*" && typeof h[1] === "number") {
       nums.push(h[1])
     } else {
-      rc.push(h)
+      rc0.push(h)
     }
   }
   if (nums.length > 1) {
@@ -110,19 +110,55 @@ function collapseRows(hexes: DeployHexes): DeployHexes {
     for (let i = 1; i < nums.length; i++) {
       if (nums[i] === nums[i - 1] + 1) { continue }
       if (rangeStart < i - 1) {
-        rc.push(["*", `${nums[rangeStart]}-${nums[i - 1]}`])
+        rc0.push(["*", `${nums[rangeStart]}-${nums[i - 1]}`])
       } else {
-        rc.push(["*", nums[i - 1]])
+        rc0.push(["*", nums[i - 1]])
       }
       rangeStart = i
     }
     if (rangeStart < nums.length - 1) {
-      rc.push(["*", `${nums[rangeStart]}-${nums[nums.length - 1]}`])
+      rc0.push(["*", `${nums[rangeStart]}-${nums[nums.length - 1]}`])
     } else {
-      rc.push(["*", nums[nums.length - 1]])
+      rc0.push(["*", nums[nums.length - 1]])
     }
   } else if (nums.length === 1) {
-    rc.push(["*", nums[0]])
+    rc0.push(["*", nums[0]])
   }
-  return rc
+  rc0 = rc0.sort((a, b) => {
+    let aa: number = Number(a)
+    if (typeof a === "string") {
+      if (a === "*") {
+        aa = 0
+      } else {
+        const as = a as string
+        aa = Number(as.substring(0, as.indexOf("-")))
+      }
+    }
+    let bb: number = Number(b)
+    if (typeof b === "string") {
+      if (b === "*") {
+        bb = 0
+      } else {
+        const bs = b as string
+        bb = Number(bs.substring(0, bs.indexOf("-")))
+      }
+    }
+    return bb - aa
+  })
+  const rc1: DeployHexes = []
+  let len = 0
+  let start = rc0[0][1]
+  let nn = rc0[0]
+  for (let i = 1; i < rc0.length; i++) {
+    len += 1
+    if (rc0[i][0] === nn[0] && typeof nn[1] === "number" && typeof rc0[i-1][1] === "number" &&
+        rc0[i][1] === (rc0[i-1][1] as number) + 1) { continue }
+    console.log("bye")
+    rc1.push([nn[0], len < 2 ? nn[1] : `${start}-${rc0[i - 1][1]}`])
+    start = rc0[i][1]
+    nn = rc0[i]
+    len = 0
+  }
+  rc1.push([nn[0], len < 2 ? nn[1] : `${start}-${rc0[rc0.length - 1][1]}`])
+  return rc1
 }

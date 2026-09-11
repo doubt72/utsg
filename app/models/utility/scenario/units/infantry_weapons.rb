@@ -162,7 +162,9 @@ module Utility
             lu = {}
             key = %i[c n y]
             [
-              ["alm", "Radio 7.5cm"],
+              ["alm", "Radio 7.5cm", 36],
+
+              ["axm", "Radio 10.5cm", 36],
 
               ["fra", "Radio 105mm", 13], ["fra", "Radio 155mm", 17],
 

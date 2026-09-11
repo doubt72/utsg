@@ -1,3 +1,12 @@
+# 0.142
+
+- Minor reformatting of unit lists in scenario summary
+- Don't allow minefields in streams
+- Default scenario order to average rating
+- Updated/promoted 202
+- Updated 317
+- Added prototype 031, 032, 033, 034, 036, 038
+
 # 0.141
 
 - Limit game names to 128 characters

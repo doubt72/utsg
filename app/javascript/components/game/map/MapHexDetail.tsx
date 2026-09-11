@@ -1,6 +1,6 @@
 import React from "react";
 import Hex from "../../../engine/Hex";
-import { Coordinate, terrainType } from "../../../utilities/commonTypes";
+import { Coordinate, streamType, terrainType } from "../../../utilities/commonTypes";
 import {
   bridgeStyle, hexEdgeCoreStyle, hexEdgeDecorationStyle, hexEdgePath, railroadBedStyle, railroadBridgeStyle,
   railroadPath, railroadtieStyle, railroadTrackStyle, riverPath, riverStyle, roadEdgeStyle, roadOutlineStyle,
@@ -27,13 +27,14 @@ export default function MapHexDetail({
   const river = () => {
     if (!hex.river) { return "" }
     const path = riverPath(hex)
-    return <path d={path} style={riverStyle(hex) as object} />
+    return <path d={path} style={riverStyle(hex, hex.riverDirections?.length ?? 0) as object} />
   }
 
   const road = () => {
     if (!hex.road) { return "" }
     const path = roadPath(hex)
-    const bridge = hex.river || hex.baseTerrain === terrainType.Water || hex.baseTerrain == terrainType.Shallow
+    const bridge = (hex.river && hex.riverType !== streamType.Trench) ||
+      [terrainType.Water, terrainType.Shallow].includes(hex.baseTerrain)
     return (
       <g>
         <path d={path} style={roadOutlineStyle(hex) as object} transform={roadRotate(hex)} />

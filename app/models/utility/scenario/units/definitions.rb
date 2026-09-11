@@ -136,6 +136,9 @@ module Utility
               m10_achilles: :m10,
               fiat_l3: :l3_35,
               white_scout_car: :m3a1_scout_car,
+              lt_vz__35: :pzkpfw_35t,
+              lt_vz__38: :pzkpfw_38t_a_d,
+              ferdinand: :elefant,
             }
           end
 
@@ -424,6 +427,8 @@ module Utility
               "38m_toldi_i": { sz: 3, mv: 6, wpn: :"s_18_100", bd: 4, arm: [1, 1, 0], trt: [1, 1, 0] },
               "42m_toldi_ii": { sz: 3, mv: 6, wpn: :"s_18_100", arm: [2, 1, 1], trt: [2, 1, 1] },
               "42m_toldi_iia": { sz: 3, mv: 6, wpn: :"37_42m", arm: [3, 1, 1], trt: [3, 1, 1] },
+              # Slovakian Armored Vehicles
+              "oa_vz__30": { sz: 3, mv: 4, wpn: :"zb_vz__26", whl: true, trn: 1, arm: [0, 0, 0], trt: [0, 0, 0] },
               # Dutch (Indonesia) Armored Vehicles
               "overvalwagen": { sz: 3, mv: 5, wpn: :"vickers_mg", whl: true, bd: 3, trn: 1, arm: [1, 0, 0, -1] },
               # Italian Armored Vehicles

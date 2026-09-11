@@ -206,8 +206,8 @@ export default function ScenarioSummary({ data }: ScenarioSummaryProps) {
                 {units.map((unit, i) => {
                   if (unit.x !== undefined) {
                     return (
-                      <div key={i} className="flex nowrap mb05em">
-                        <div className="unit-list-multiplier">{unit.x > 1 ? `${unit.x}x` : ""}</div>
+                      <div key={i} className="flex flex-vertical nowrap">
+                        <div className="scenario-description-unit">{unit.x}x</div>
                         <CounterDisplay unit={unit.counter} />
                       </div>
                     )
