@@ -3829,7 +3829,8 @@ File.open('spotting.svg', 'w') do |file|
 end
 
 File.open('firing-smoke.svg', 'w') do |file|
-  file.puts header
+  # file.puts '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">'
+  file.puts '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 100 100">'
   # write_circle(2, 2, 1, file, false, "#777")
   # write_circle(2, 98, 1, file, false, "#777")
   # write_circle(98, 2, 1, file, false, "#777")
@@ -3837,6 +3838,11 @@ File.open('firing-smoke.svg', 'w') do |file|
   radius = 16
   left = 22
   bottom = 60
+  path3 = [
+    ["M", 10, 10], ["L", 75, 40], ["L", 35, 80], ["L", 10, 10], ["L", 75, 40],
+  ]
+  write_path(path3, file, true, 0, "#000")
+  write_path(path3, file, false, 3, "#000")
   path1 = [
     ["M", left+radius, bottom],
     ["A", [radius, radius], 45, [0, 1], [left+radius, bottom-radius*2]],

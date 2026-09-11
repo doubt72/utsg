@@ -1,5 +1,7 @@
 # 0.142
 
+- Add smoke "pointer" and adjust point spot
+- Don't show unit stacks when dropping smoke
 - Minor reformatting of unit lists in scenario summary
 - Don't allow minefields in streams
 - Default scenario order to average rating

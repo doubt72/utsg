@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 100 100">
+<path d="M 10 10 L 75 40 L 35 80 L 10 10 L 75 40" style="fill:#000;" />
+<path d="M 10 10 L 75 40 L 35 80 L 10 10 L 75 40" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
 <path d="M 38 60 A 16,16 45 0,1 38,28 A 26.4,26.4 45 0,1 86,32.0 A 13.2,13.2 45 0,1 86,60 L 38 60" style="fill:#FFF;" />
 <path d="M 38 60 A 16,16 45 0,1 38,28 A 26.4,26.4 45 0,1 86,32.0 A 13.2,13.2 45 0,1 86,60 L 38 60" style="fill:rgba(0,0,0,0);stroke-width:3;stroke:#000;" />
 <path d="M 19 80 A 16,16 45 0,1 19,48 A 26.4,26.4 45 0,1 67,52.0 A 13.2,13.2 45 0,1 67,80 L 19 80" style="fill:#FFF;" />

@@ -361,6 +361,7 @@ export default class MoveState extends BaseState {
   }
 
   get activeCounters(): Counter[] {
+    if (this.smoke) { return [] }
     const first = this.path[0]
     let rc = this.map.countersAt(new Coordinate(first.x, first.y))
     if (this.loading) {
