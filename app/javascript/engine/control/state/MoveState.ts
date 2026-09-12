@@ -100,7 +100,8 @@ export default class MoveState extends BaseState {
     if (this.dropping) { return hexOpenType.Closed }
     if (this.loading) { return hexOpenType.Closed }
     const selection = this.selection[0].counter
-    if (selection.unit.decoy && this.map.victoryAt(to)) { return hexOpenType.Closed }
+    const vp = this.map.victoryAt(to)
+    if (selection.unit.decoy && vp && vp !== this.game.currentPlayer ) { return hexOpenType.Closed }
     if (this.smoke) { return smokeOpenHex(this.map, from, to, selection.unit) }
     if (from.x === to.x && from.y === to.y) { return hexOpenType.Closed }
     const hexFrom = this.map.hexAt(from) as Hex;

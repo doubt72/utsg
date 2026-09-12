@@ -244,7 +244,6 @@ export default class FireAction extends BaseAction {
             drift.description += `, drifted to ${formatCoordinate(loc)}`
             let hit = false
             for (const d of dHexes) {
-              this.game.observeNeeded.push(d)
               fsHexes.push({ x: d.x, y: d.y })
               if (this.map.countersAt(d).filter(c => c.hasUnit).length > 0) { hit = true }
             }
@@ -259,7 +258,6 @@ export default class FireAction extends BaseAction {
             for (const h of this.map.hexNeighbors(to)) { if (h) { dHexes.push(h.coord)} }
           }
           for (const d of dHexes) {
-            this.game.observeNeeded.push(d)
             if (u0.areaFire || oBoard) {
               fsHexes.push({ x: d.x, y: d.y })
             }
@@ -310,6 +308,7 @@ export default class FireAction extends BaseAction {
                     `infantry effect roll${dHexes.length > 1 ? ` at ${formatCoordinate(d)}` : ""}: target ${formatTarget(hitCheck)}, rolled ${formatDieResult(hitRoll.result)}: `
                 }
                 if (hitRoll.result.result > hitCheck) {
+                  this.game.observeNeeded.push(d)
                   const critical = critHit(hitRoll.result.result, hitCheck)
                   if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
                     critical ? "passed (critical)" : "passed"
@@ -342,6 +341,7 @@ export default class FireAction extends BaseAction {
                     rollbackAddActions(this.map, hex, d, t.counter.unit.id)
                   }
                   if (needDice) { targetRoll.description += `, ${this.formatUnit(t.counter.unit)} destroyed` }
+                  this.game.observeNeeded.push(d)
                   t.counter.unit.wreck(this.game)
                   anims.push({ loc: d, type: "wreck" })
                 } else if (t.counter.unit.isVehicle) {
@@ -371,6 +371,7 @@ export default class FireAction extends BaseAction {
                     if (needDice) {
                       hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
                     }
+                    this.game.observeNeeded.push(d)
                     t.counter.unit.wreck(this.game)
                     anims.push({ loc: d, type: "wreck" })
                   } else if (hitRoll.result.result === hitCheck && !u0.incendiary) {
@@ -382,6 +383,7 @@ export default class FireAction extends BaseAction {
                       rollbackAddActions(this.map, hex, d, t.counter.unit.id)
                       if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(d)}` }
                     }
+                    this.game.observeNeeded.push(d)
                     t.counter.unit.immobilize(this.map)
                     anims.push({ loc: d, type: "immobilized" })
                   } else {
@@ -402,6 +404,7 @@ export default class FireAction extends BaseAction {
           }
           if (needDice) { targetRoll.description += ", vehicle destroyed" }
           target0.unit.wreck(this.game)
+          this.game.observeNeeded.push(dHexes[0])
           anims.push({ loc: dHexes[0], type: "wreck" })
         } else if (target0.unit.isVehicle) {
           let turretHit = false
@@ -450,6 +453,7 @@ export default class FireAction extends BaseAction {
               if (needDice) {
                 hitRoll.description += `<span style="color: ${failRedColorMarker()};">passed</span>, vehicle destroyed`
               }
+              this.game.observeNeeded.push(dHexes[0])
               target0.unit.wreck(this.game)
               anims.push({ loc: dHexes[0], type: "wreck" })
             } else if (hitRoll.result.result === hitCheck) {
@@ -457,6 +461,7 @@ export default class FireAction extends BaseAction {
                 if (needDice) {
                   hitRoll.description += `<span style="color: ${failRedColorMarker()};">tie</span>, turret jammed`
                 }
+                this.game.observeNeeded.push(dHexes[0])
                 target0.unit.jamTurret(this.game)
                 anims.push({ loc: dHexes[0], type: "turret" })
               } else {
@@ -470,6 +475,7 @@ export default class FireAction extends BaseAction {
                   if (target0.unit.turreted) { target0.unit.turretFacing = clone.turretFacing }
                   if (needDice) { hitRoll.description += `, move short at ${formatCoordinate(dHexes[0])}` }
                 }
+                this.game.observeNeeded.push(dHexes[0])
                 target0.unit.immobilize(this.map)
                 anims.push({ loc: dHexes[0], type: "immobilized" })
               }
@@ -486,6 +492,7 @@ export default class FireAction extends BaseAction {
               rollbackAddActions(this.map, hex, dHexes[0], target0.unit.id)
             }
             targetRoll.description += ", no armor on hit side, vehicle destroyed"
+            this.game.observeNeeded.push(dHexes[0])
             target0.unit.wreck(this.game)
             anims.push({ loc: dHexes[0], type: "wreck" })
           }
@@ -505,6 +512,7 @@ export default class FireAction extends BaseAction {
             if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
               critical ? "passed (critical)" : "passed"
             }</span>` }
+            this.game.observeNeeded.push(to)
             anims.push({ loc: dHexes[0], type: critical ? "criteffect" : "effect" })
           } else {
             if (needDice) {

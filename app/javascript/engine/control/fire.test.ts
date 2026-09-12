@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest"
 import { baseToHit, chance2D10, chanceD10x10 } from "../../utilities/utilities"
-import { Coordinate, featureType, sponsonType, weatherType } from "../../utilities/commonTypes"
+import { Coordinate, featureType, sponsonType, terrainType, weatherType } from "../../utilities/commonTypes"
 import Unit from "../Unit"
 import Game from "../Game"
 import select from "./select"
@@ -2341,7 +2341,13 @@ describe("ranged fire attacks", () => {
     })
 
     test("offboard artillery", () => {
-      const game = createFireGame()
+      const game = createBlankGame([
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o", d: 1, st: { s: "f", sh: "t" } }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "f" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+        [{ t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }, { t: "o" }],
+      ])
       const map = game.scenario.map
       const firing = new Unit(testGInf)
       firing.id = "firing1"
@@ -2435,6 +2441,24 @@ describe("ranged fire attacks", () => {
           vehicle_incendiary: false,
         },
       ])
+
+      game.setGameState(new FireStartState(game))
+      vi.spyOn(Math, "random").mockReturnValue(0.99)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(map.hexAt(new Coordinate(3, 0))?.building).toBe(true)
+      expect(map.hexAt(new Coordinate(3, 1))?.baseTerrain).toBe(terrainType.Open)
+      expect(map.hexAt(new Coordinate(4, 0))?.baseTerrain).toBe(terrainType.Open)
+      expect(map.hexAt(new Coordinate(4, 1))?.baseTerrain).toBe(terrainType.Forest)
+      expect(game.actions.length).toBe(2)
+      expect(game.actions[1].stringValue).toBe(
+        "checking to see if blaze starts in E1: on 4 or less (crew escapes on 7 or less), " +
+          "rolled 20 [2d10: 10 + 10]: no effect, checking to see if blaze starts in D1: " +
+          "on 3 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to see if blaze " +
+          "starts in E2: on 3 or less, rolled 20 [2d10: 10 + 10]: no effect, checking to " +
+          "see if blaze starts in D2: on 2 or less, rolled 20 [2d10: 10 + 10]: no effect"
+      )
     })
 
     test("offboard artillery doesn't target wrecks", () => {
@@ -3187,7 +3211,7 @@ describe("ranged fire attacks", () => {
       expect((game.eliminatedUnits[1] as Unit).parent).toBe(undefined)
     })
 
-    test.only("incendiary", () => {
+    test("incendiary", () => {
       const game = createFireGame()
       const map = game.scenario.map
       const firing = new Unit(testGInf)

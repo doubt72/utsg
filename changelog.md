@@ -1,3 +1,13 @@
+# 0.143
+
+- Allow decoys to move into own VP hexes
+- Switch decoy detection to effective hits
+- Bug fix: fire starts not accounting for buildings
+- Bug fix: fix drag offset for reinforcement panel when both map and interface scaled
+- Promoted 107, 315, 405 to beta
+- Promoted 305
+- Updated 026
+
 # 0.142
 
 - Add smoke "pointer" and adjust point spot

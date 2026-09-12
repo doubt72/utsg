@@ -6,8 +6,8 @@ module Scenarios
     NAME = "The Shingle"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.6"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [15, 11, "x"].freeze

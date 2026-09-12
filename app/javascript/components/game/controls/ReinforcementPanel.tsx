@@ -14,7 +14,6 @@ interface ReinforcementPanelProps {
   xx: number;
   yy: number;
   scale: number;
-  mapScale: number;
   closeCallback: MouseEventHandler;
   // eslint-disable-next-line @typescript-eslint/ban-types
   ovCallback: Function;
@@ -22,7 +21,7 @@ interface ReinforcementPanelProps {
 }
 
 export default function ReinforcementPanel({
-  map, player, xx, yy, scale, mapScale, closeCallback, ovCallback, forceUpdate,
+  map, player, xx, yy, scale, closeCallback, ovCallback, forceUpdate,
 }: ReinforcementPanelProps ) {
   const [base, setBase] = useState<JSX.Element | undefined>()
   const [closeButtonHover, setCloseButtonHover] = useState<boolean>(false)
@@ -57,8 +56,8 @@ export default function ReinforcementPanel({
   }
 
   const dragCallback = (event: React.MouseEvent) => {
-    const x = event.movementX / scale / mapScale
-    const y = event.movementY / scale / mapScale
+    const x = event.movementX / scale
+    const y = event.movementY / scale
     if (event.buttons !== 1) { return }
 
     setShiftX(o => { return x + o })

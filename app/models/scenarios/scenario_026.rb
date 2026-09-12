@@ -7,7 +7,7 @@ module Scenarios
     ALLIES = ["ussr"].freeze
     AXIS = ["ger"].freeze
     STATUS = "b"
-    VERSION = "0.1"
+    VERSION = "0.2"
 
     DATE = [1942, 9, 21].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -25,6 +25,13 @@ module Scenarios
         :ussr_decoy_weapon1,
         :ussr_ampulomet,
       ] },
+      "2": { list: [
+        :ussr_leader_3_1,
+        :ussr_rifle_s,
+        :ussr_smg_s,
+        :ussr_decoy_leader6,
+        [2, :ussr_decoy_squad4_s],
+      ] },
     }.freeze
 
     AXIS_UNITS = {
@@ -34,17 +41,16 @@ module Scenarios
         [5, :ger_rifle_s],
         [2, :ger_mg_34],
         [2, :ger_sc],
-        [2, :ger_pzkpfw_iii_j],
-        :ger_radio_15cm,
+        :ger_pzkpfw_iii_j,
+        :ger_radio_10_5cm,
       ] },
-      "3": { list: [
+      "2": { list: [
         :ger_leader_5_1,
         [3, :ger_rifle_s],
         :ger_mg_34,
         :ger_ft,
         :ger_sc,
         :ger_stug_iii_b_e,
-        :ger_pzkpfw_iv_f1,
       ] },
     }.freeze
 
@@ -100,13 +106,14 @@ module Scenarios
           ],
           allied_setup: {
             "0" => [["11-12", 2], ["10-11", 3], ["10-11", 4], ["9-10", 5], [9, 6], [8, 7], [8, 8]],
+            "2" => [[14, "*"]],
           },
           axis_setup: {
             "0" => [
               ["0-8", 0], ["0-7", "1-2"], ["0-6", "3-4"], ["0-5", "5-6"], ["0-4", "7-8"],
               ["0-3", "9-10"],
             ],
-            "3" => [[0, "*"]],
+            "2" => [[0, "*"]],
           },
           base_terrain: "u",
         }

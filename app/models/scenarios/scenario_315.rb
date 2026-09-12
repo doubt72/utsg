@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Drop Zone O"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "p"
-    VERSION = "0.1"
+    STATUS = "b"
+    VERSION = "0.2"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [23, 23, "x"].freeze

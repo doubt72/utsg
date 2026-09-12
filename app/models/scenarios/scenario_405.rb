@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Patrol's End"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1942, 12, 3].freeze
     LAYOUT = [15, 11, "x"].freeze

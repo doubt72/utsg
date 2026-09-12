@@ -588,7 +588,7 @@ export function fireStartTarget(
 ): number {
     let check = 2
     const hex = map.hexAt(loc) as Hex
-    if ([
+    if (hex.building || [
       terrainType.Forest, terrainType.Brush, terrainType.Grain, terrainType.Orchard, terrainType.Palm,
     ].includes(hex.baseTerrain) ) { check = 3 }
     if ([baseTerrainType.Desert, baseTerrainType.Beach].includes(map.baseTerrain) &&

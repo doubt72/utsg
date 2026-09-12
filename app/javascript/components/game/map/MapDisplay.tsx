@@ -819,8 +819,7 @@ export default function MapDisplay({
   const makeReinfocementPanel = (x: number, y: number, player: Player) => {
     if (preview) { return undefined }
     return (
-      <ReinforcementPanel map={map} xx={x} yy={y} player={player}
-                          scale={scale ?? 1} mapScale={mapScale ?? 1}
+      <ReinforcementPanel map={map} xx={x} yy={y} player={player} scale={scale ?? 1}
                           closeCallback={() => {
                             setReinforcementsOverlay(undefined)
                             if (map.game && map.game.gameState?.type === stateType.Deploy) {

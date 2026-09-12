@@ -3,7 +3,7 @@ import Unit from "../Unit"
 import { describe, expect, test, vi } from "vitest"
 import { movementPastCost } from "./movement"
 import {
-  createBlankGame, testFire, testGInf, testGMGDecoy, testGSqdDecoy, testMine, testRInf, testRSqdDecoy, testWire,
+  createBlankGame, testFire, testGInf, testGMGDecoy, testGSqdDecoy, testGTank, testMine, testRInf, testRSqdDecoy, testWire,
 } from "./testHelpers"
 import MoveState from "./state/MoveState"
 import actionsAvailable from "./actionsAvailable"
@@ -23,6 +23,7 @@ describe("decoy", () => {
       const game = createBlankGame()
       const map = game.scenario.map
       map.victoryHexes.push({x: 1, y: 2, player: 1})
+      map.victoryHexes.push({x: 4, y: 2, player: 2})
 
       const mines = new Feature(testMine)
       mines.id = "mines"
@@ -533,6 +534,51 @@ describe("decoy", () => {
       expect(map.allCounters.length).toBe(2)
       expect(map.allCounters[0].unit.observed).toBe(true)
       expect(map.allCounters[1].unit.observed).toBe(true)
+      expect(game.eliminatedUnits.length).toBe(0)
+    })
+
+    test("fire hits unobserved unit but not effective", () => {
+      const game = createBlankGame()
+      game.scenario.map.victoryHexes = []
+      const map = game.scenario.map
+
+      const enemy = new Unit(testRInf)
+      enemy.id = "enemy"
+      enemy.observed = false
+      const eloc = new Coordinate(4, 2)
+      map.addCounter(eloc, enemy)
+
+      const unit = new Unit(testGTank)
+      unit.id = "unit"
+      unit.facing = 4
+      unit.turretFacing = 4
+      unit.observed = false
+      map.addCounter(new Coordinate(2, 2), unit)
+      map.select(unit)
+
+      game.setGameState(new FireState(game, false))
+      select(map, {
+        counter: map.countersAt(eloc)[0],
+        target: { type: "map", xy: eloc }
+      }, () => {})
+      expect(enemy.targetSelected).toBe(true)
+
+      const original = Math.random
+      vi.spyOn(Math, "random").mockReturnValue(0.55)
+      game.gameState?.finish()
+      Math.random = original
+
+      expect(game.actions[0].stringValue).toBe(
+        "German PzKpfw 35(t) at C3 fired at Soviet squad at E3; targeting roll: target 8, " +
+          "rolled 36 [d10x10: 6 x 6]: hit; roll for effect: target 15, rolled 12 [2d10: 6 + 6]: no effect"
+      )
+      expect(game.actions[1].stringValue).toBe("German unit PzKpfw 35(t) observed at C3")
+
+      expect(map.allCounters.length).toBe(4)
+      expect(map.allCounters[1].unit.name).toBe("Rifle")
+      expect(map.allCounters[1].unit.observed).toBe(false)
+      expect(map.allCounters[3].unit.name).toBe("PzKpfw 35(t)")
+      expect(map.allCounters[3].unit.observed).toBe(true)
       expect(game.eliminatedUnits.length).toBe(0)
     })
 
