@@ -14,6 +14,8 @@ module Utility
             lu = {}
             key = %i[c n y o]
             [
+              ["alm", "Renault FT", 26], ["alm", "Renault R35", 36],
+
               # Romanian
               ["axm", "R-2", 38], ["axm", "T-3", 42], ["axm", "T-4", 43], ["axm", "T-38", 40],
 

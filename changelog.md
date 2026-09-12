@@ -1,3 +1,8 @@
+# 0.144
+
+- Updated/promoted 107
+- Added prototype 515, 516
+
 # 0.143
 
 - Allow decoys to move into own VP hexes

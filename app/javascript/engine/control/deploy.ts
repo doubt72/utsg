@@ -158,6 +158,6 @@ function collapseRows(hexes: DeployHexes): DeployHexes {
     nn = rc0[i]
     len = 0
   }
-  rc1.push([nn[0], len < 2 ? nn[1] : `${start}-${rc0[rc0.length - 1][1]}`])
+  rc1.push([nn[0], len < 1 ? nn[1] : `${start}-${rc0[rc0.length - 1][1]}`])
   return rc1
 }

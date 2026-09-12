@@ -99,6 +99,7 @@ module Utility
               czeck_lmg: :zb_vz__26,
               fn_m1930: :m1918_bar,
               type_24_maxim: :mg_08_15,
+              maxim_mg: :mg_08_15,
               type_triple_ten: :m1917_browning,
               # Mortars
               "81mm_mortar": :brandt_m27_31,
@@ -358,6 +359,7 @@ module Utility
               "char_d2": { sz: 4, mv: 4, wpn: :"47mm_sa_35", arm: [3, 3, 3], trt: [3, 3, 3] },
               "somua_s35": { sz: 4, mv: 4, wpn: :"47mm_sa_35", arm: [4, 3, 3], trt: [3, 3, 3] },
               "renault_ft": { sz: 3, mv: 3, wpn: :"37mm_sa_18", arm: [1, 1, 1], trt: [1, 1, 1] },
+              "renault_nc": { sz: 3, mv: 4, wpn: :"37mm_sa_18", arm: [2, 1, 1], trt: [1, 1, 1] },
               "amr_35_zt3": { sz: 3, mv: 6, wpn: :"25mm_hotchkiss", arm: [1, 1, 1] },
               "amc_schneider_p16": { sz: 3, mv: 6, wpn: :"37mm_sa_18", trn: 1, arm: [1, 1, 1], trt: [1, 1, 1] },
               "white_am_ac": { sz: 3, mv: 4, wpn: :"37mm_sa_18", whl: true, trn: 1, arm: [0, 0, 0], trt: [0, 0, 0] },

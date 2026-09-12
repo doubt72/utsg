@@ -1,8 +1,4 @@
 Features/Bug Fixes
-  + Fire start thresholds are wrong
-  + Decoys should be able to move into your own victory hexes
-  + Only reveal on effective hits
-  + Drag on zoom is a bit off
   - About scenario window during game
   - Test multiple factions in 319
   - Consider better way of doing animations

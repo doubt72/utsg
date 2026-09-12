@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Hellfire Pass"
     ALLIES = ["uk"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1941, 6, 15].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -39,7 +39,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 9,
+          turns: 6,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -78,8 +78,8 @@ module Scenarios
           wind: [3, 5, true],
           hexes:,
           layout:,
-          allied_dir: 3.5,
-          axis_dir: 6.5,
+          allied_dir: 6.5,
+          axis_dir: 3.5,
           victory_hexes: [
             [13, 4, 1], [10, 21, 2], [10, 12, 2], [7, 15, 2], [3, 18, 2],
           ],
