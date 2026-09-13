@@ -40,11 +40,12 @@ module Utility
           ]
         end
 
-        def other
+        def other # rubocop:disable Metrics/MethodLength
           lu = {}
           key = %i[c n i y s f r v o]
           [
             ["ita", "Supply Dump", "supply", 0, 8, 0, 0, 0, {}],
+            ["ger", "Port Facility", "supply", 0, 5, 0, 0, 0, {}],
           ].each do |unit|
             other = { t: "other" }
             unit.each_with_index do |v, i|
@@ -58,7 +59,7 @@ module Utility
         def decoys # rubocop:disable Metrics/MethodLength
           lu = {}
           key = %i[t n s v]
-          %w[ger ussr].each do |nation|
+          %w[ger fin ussr].each do |nation|
             [
               ["ldr", "leader6", 1, 6],
               ["sqd", "squad5", 6, 5],
