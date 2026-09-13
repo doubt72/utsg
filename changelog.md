@@ -1,7 +1,7 @@
 # 0.144
 
 - Updated/promoted 107
-- Added prototype 515, 516
+- Added prototype 515, 516, 517, 518
 
 # 0.143
 
