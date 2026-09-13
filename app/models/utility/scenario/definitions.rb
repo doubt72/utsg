@@ -19,6 +19,7 @@ module Utility
           name: "Minor Powers", code: "alm",
           nations: %w[pol gre nor bel dut yug eth bol cze],
         },
+        { name: "Finnish", code: "fin", nations: ["fin"] },
       ].freeze
 
       AVAILABLE_AXIS_FACTIONS = [

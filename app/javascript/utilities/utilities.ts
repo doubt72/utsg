@@ -32,6 +32,7 @@ export function alliedCodeToName(code: string): string {
     { name: "Belgian", code: "bel" },
     { name: "Dutch", code: "dut" },
     { name: "Yugoslavian", code: "yug" },
+    { name: "Finnish", code: "fin" },
 
     // Interwar
     { name: "Republican", code: "rsp" },

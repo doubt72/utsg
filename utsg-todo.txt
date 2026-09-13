@@ -1,10 +1,13 @@
 Features/Bug Fixes
   - About scenario window during game
+  - Pick random scenario
   - 516, 524 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 524 Hidden cavalry
   - 025, 519, 522 Check if winter needed for snow
   - 037, (043), 521 Special escape rules
   - (046) Special partisan rules
+  - (422) Cave special rules
+  - (417) Bonzai special rules
   - 319 Test playing multiple factions
   - 525 Finns on the other side
   - Consider better way of doing animations

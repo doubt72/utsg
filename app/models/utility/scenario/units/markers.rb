@@ -46,6 +46,7 @@ module Utility
               turn20: { mk: 1, type: "turn", v: "yug", v2: "ger" },
               turn21: { mk: 1, type: "turn", v: "gre", v2: "ger" },
               turn22: { mk: 1, type: "turn", v: "gre", v2: "ita" },
+              turn22a: { mk: 1, type: "turn", v: "fin", v2: "ger" },
               turn23: { mk: 1, type: "turn", v: "chi", v2: "jap" },
               turn24: { mk: 1, type: "turn", v: "dut", v2: "jap" },
               turn25: { mk: 1, type: "turn", v: "rsp", v2: "nsp" },

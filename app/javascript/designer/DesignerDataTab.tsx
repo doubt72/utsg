@@ -163,7 +163,7 @@ export default function DesignerDataTab({ designStack, setDesignStack }: Designe
                   )} >
             { [
                 "ussr", "usa", "bra", "uk", "can", "aus", "nz", "ind", "sa", "fra", "frf", "chi",
-                "pol", "gre", "nor", "bel", "dut", "yug",
+                "pol", "gre", "nor", "bel", "dut", "yug", "fin",
               ].map(n => <option key={n} value={n}>{alliedCodeToName(n)}</option>) }
           </select>
         </div>
