@@ -307,7 +307,7 @@
   user-select: none;
 }
 
-.game-error, .game-notification {
+.game-error, .game-notification, .game-summary {
   position: absolute;
   top: 0px;
   left: 0px;
@@ -335,12 +335,25 @@
   border: 2px solid $darkish-green;
 }
 
+.summary-window {
+  position: relative;
+  background-color: #FFF;
+  border-radius: 0.5em;
+  padding: 0.5em 0.25em 0 0.25em;
+  border: 2px solid $darkish-green;
+  margin: 2em;
+}
+
 .game-notification-title {
   padding: 0.2em 0.5em 0 0.5em;
   font-size: 1.5em;
 }
 
 .game-error-window-inner, .game-notification-window-inner {
+  display: flex;
+}
+
+.summary-window-inner {
   display: flex;
 }
 
@@ -373,6 +386,10 @@
   width: 100%;
   right: 8px;
   bottom: 8px;
+}
+
+.game-summary-buttons {
+  margin: 0 0.25em 0.25em 0;
 }
 
 .game-notification-button {

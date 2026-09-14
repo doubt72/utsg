@@ -294,6 +294,15 @@ RSpec.describe Api::V1::ScenariosController do
     end
   end
 
+  describe "random" do
+    it "gets a random scenario" do
+      get :random, params: { status: "p*" }
+
+      expect(response.status).to be == 200
+      expect(JSON.parse(response.body)["id"]).not_to be == "000"
+    end
+  end
+
   describe "filters" do
     it "gets spec scenario when filtering by string" do
       get :index, params: { string: scenario_name, status: "p*" }

@@ -1,5 +1,7 @@
 # 0.144
 
+- Added in-game scenario window
+- Added random scenario picker
 - Updated/promoted 107
 - Added prototype 515, 516, 517, 518, 519, 520, 521, 522, 524
 

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
           get "allied_factions"
           get "axis_factions"
           get "all_units"
+          get "random"
         end
         member do
           get "stats"

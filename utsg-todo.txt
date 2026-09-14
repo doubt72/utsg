@@ -1,6 +1,6 @@
 Features/Bug Fixes
-  - About scenario window during game
-  - Pick random scenario
+  + About scenario window during game
+  + Pick random scenario
   - 516, 523 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry
   - 025, 519, 522 Check if winter needed for snow

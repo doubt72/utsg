@@ -87,12 +87,21 @@ a.custom-button-balance svg {
   margin: 0;
 }
 
+div.summary-button svg {
+  vertical-align: -4px;
+}
+
 a.custom-button {
   padding: 0.33em 0.75em;
 }
 
 div.normal-button {
   padding: 0.125em 0.75em 0.275em;
+}
+
+div.summary-button {
+  padding: 0.05em 0.75em 0.2em;
+  margin: 0.5em 0.5em 0 0;
 }
 
 div.sort-button {

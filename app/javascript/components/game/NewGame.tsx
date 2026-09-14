@@ -35,6 +35,7 @@ export default function NewGame() {
   const [scroll, setScroll] = useState({ up: false, down: false })
   const [scenarioList, setScenarioList] = useState([])
   const [tutorial, setTutorial] = useState<ScenarioListData | undefined>()
+  const [random, setRandom] = useState<boolean>(false)
   const [scenarioData, setScenarioData] = useState<ScenarioData | undefined>()
 
   const [alliedFactions, setAlliedFactions] = useState([])
@@ -46,18 +47,24 @@ export default function NewGame() {
     }
   }, []);
 
+  const params = (page: boolean = true) => {
+    const rc: Record<string, string> = page ? { page: scenarioSearch.page.toString() } : {}
+    if (page) {
+      rc.sort = scenarioSearch.sort
+      rc.sort_dir = scenarioSearch.sortDir
+    }
+    if (scenarioSearch.string != "") { rc.string = scenarioSearch.string }
+    if (scenarioSearch.allies != "") { rc.allies = scenarioSearch.allies }
+    if (scenarioSearch.axis != "") { rc.axis = scenarioSearch.axis }
+    if (scenarioSearch.status != "") { rc.status = scenarioSearch.status }
+    if (scenarioSearch.theater != "") { rc.theater = scenarioSearch.theater }
+    if (scenarioSearch.type != "") { rc.type = scenarioSearch.type }
+    if (scenarioSearch.size != "") { rc.size = scenarioSearch.size }
+    return new URLSearchParams(rc).toString()
+  }
+
   const loadScenarios = () => {
-    const params: Record<string, string> = { page: scenarioSearch.page.toString() }
-    params.sort = scenarioSearch.sort
-    params.sort_dir = scenarioSearch.sortDir
-    if (scenarioSearch.string != "") { params.string = scenarioSearch.string }
-    if (scenarioSearch.allies != "") { params.allies = scenarioSearch.allies }
-    if (scenarioSearch.axis != "") { params.axis = scenarioSearch.axis }
-    if (scenarioSearch.status != "") { params.status = scenarioSearch.status }
-    if (scenarioSearch.theater != "") { params.theater = scenarioSearch.theater }
-    if (scenarioSearch.type != "") { params.type = scenarioSearch.type }
-    if (scenarioSearch.size != "") { params.size = scenarioSearch.size }
-    const urlParams = new URLSearchParams(params).toString()
+    const urlParams = params()
     const url = urlParams.length > 0 ? "/api/v1/scenarios?" + urlParams : "/api/v1/scenarios"
     getAPI(url, {
       ok: response => {
@@ -107,6 +114,7 @@ export default function NewGame() {
   useEffect(() => {
     setFormInput({ ...formInput, scenario: "" })
     checkScenarios()
+    setRandom(false)
   }, [
     scenarioSearch.string, scenarioSearch.allies, scenarioSearch.axis, scenarioSearch.status,
     scenarioSearch.type, scenarioSearch.size, scenarioSearch.theater, scenarioSearch.sort,
@@ -146,8 +154,25 @@ export default function NewGame() {
   }
 
   const setScenario = (code: string) => {
+    setRandom(false)
     setFormInput({ ...formInput, scenario: code })
     setFormErrors({ ...formErrors, scenario: "" })
+  }
+
+  const randomScenario = () => {
+    const urlParams = params(false)
+    const url = "/api/v1/scenarios/random?" + urlParams
+    getAPI(url, {
+      ok: response => {
+        response.json().then(json => {
+          if (json.id) {
+            setScenario(json.id)
+            setScenarioData(json)
+            setRandom(true)
+          }
+        })
+      }
+    })
   }
 
   const onSearchChange = (name: string, value: string) => {
@@ -356,6 +381,16 @@ export default function NewGame() {
     </select>
   )
 
+  const RandomScenario = () => {
+    return (
+      <div className={`scenario-row${random ? " scenario-row-selected" : ""}`}
+           onClick={() => randomScenario()}>
+        <div className="scenario-row-code"></div>
+        <div className="green flex-fill">Choose Random Scenario</div>
+      </div>
+    )
+  }
+
   const TutorialDisplay = () => {
     if (!tutorial) { return "" }
     return (
@@ -448,6 +483,14 @@ export default function NewGame() {
             <div className="flex">
               <div className="flex-fill">
                 {TutorialDisplay()}
+              </div>
+            </div>
+            <div className="flex">
+              <div className="flex-fill">or:</div>
+            </div>
+            <div className="flex">
+              <div className="flex-fill">
+                {RandomScenario()}
               </div>
             </div>
           </div>

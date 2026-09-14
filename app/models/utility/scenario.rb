@@ -22,6 +22,14 @@ module Utility
         end
       end
 
+      def random(options = {})
+        all = all_scenarios(options).filter { |s| s[:id] != "000" }
+        return {} if all.empty?
+
+        rand = Random.new
+        scenario_by_id(all[rand.rand(all.length)][:id])
+      end
+
       def nations_by_key(side, code)
         faction = if side == "allies"
                     Utility::Scenario::Definitions::AVAILABLE_ALLIED_FACTIONS

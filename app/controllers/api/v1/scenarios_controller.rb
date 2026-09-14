@@ -41,6 +41,16 @@ module Api
         render json: Utility::Scenario.stats(params[:id]), status: :ok
       end
 
+      def random
+        options = {}
+        params.each_pair do |key, value|
+          options[key] = value if %w[
+            string allies axis status theater type size
+          ].include? key
+        end
+        render json: Utility::Scenario.random(options), status: :ok
+      end
+
       private
 
       def paginate(data)

@@ -13,13 +13,16 @@ import ErrorDisplay from "./ErrorDisplay";
 import {
   ArrowDownCircle, ArrowRepeat, ArrowRightCircle,
   ArrowsAngleContract, ArrowsAngleExpand, Circle, CircleFill, DashCircle, EyeFill, GeoAlt,
-  GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, Square, SquareFill, Stack
+  GeoAltFill, Hexagon, HexagonFill, Phone, PlusCircle, QuestionCircle, Square, SquareFill,
+  Stack
 } from "react-bootstrap-icons";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { stateType } from "../../engine/control/state/BaseState";
 import NotificationWindow from "./NotificationWindow";
 import DesyncWindow from "./DesyncWindow";
 import { serverVersion } from "../../utilities/utilities";
+import SummaryDisplay from "./SummaryDisplay";
+import Scenario from "../../engine/Scenario";
 
 export default function GameDisplay() {
   const { id } = useParams()
@@ -43,6 +46,7 @@ export default function GameDisplay() {
   const [playerNation, setPlayerNation] = useState<JSX.Element | undefined>()
   const [controls, setControls] = useState<JSX.Element | undefined>()
   const [errorWindow, setErrorWindow] = useState<JSX.Element | undefined>()
+  const [summaryWindow, setSummaryWindow] = useState<JSX.Element | undefined>()
 
   const [collapseHeader, setCollapseHeader] = useState<boolean>(false)
   const [collapseLayout, setCollapseLayout] = useState<boolean>(false)
@@ -651,7 +655,7 @@ export default function GameDisplay() {
       <OverlayTrigger placement="bottom"
                       overlay={ collapseHeader ? expandHeaderTooltip : collapseHeaderTooltip}
                       delay={{ show: 0, hide: 0 }}>
-        <div className={`custom-button normal-button ${
+        <div className={`custom-button normal-button collapse-button ${
                           collapseLayout ? "expand-button-right" : "collapse-button-right"
                         }`}
             onClick={() => {
@@ -751,6 +755,15 @@ export default function GameDisplay() {
                 {game.k?.name}
               </div>
             </div>
+            <div className="custom-button summary-button"
+                 onClick={() => {
+                  setSummaryWindow(
+                    <SummaryDisplay scenario={game.k?.scenario as Scenario}
+                                    close={() => {
+                                      setSummaryWindow(undefined)
+                                    }} />
+                  )
+                 }}><QuestionCircle /> scenario</div>
             { collapseHeaderButton }
           </div>
           <div className="standard-body">
@@ -890,6 +903,7 @@ export default function GameDisplay() {
             { mapDisplay }
           </div>
           {errorWindow}
+          {summaryWindow}
         </div>
       </div>
     </div>
