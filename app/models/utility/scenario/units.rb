@@ -59,7 +59,7 @@ module Utility
         def decoys # rubocop:disable Metrics/MethodLength
           lu = {}
           key = %i[t n s v]
-          %w[ger fin ussr].each do |nation|
+          %w[ger fin ussr alm].each do |nation|
             [
               ["ldr", "leader6", 1, 6],
               ["sqd", "squad5", 6, 5],
@@ -68,6 +68,7 @@ module Utility
               ["sw", "weapon0", 1, 0],
               ["sw", "weapon1", 1, -1],
               ["sw", "weapon2", 1, -2],
+              ["cav", "horse", 3, 7],
             ].each do |unit|
               decoy = { c: nation, i: "decoy", y: 0, d: 1, o: {} }
               unit.each_with_index do |v, i|

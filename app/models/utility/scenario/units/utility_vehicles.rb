@@ -135,6 +135,7 @@ module Utility
               unit.each_with_index do |v, i|
                 cav[key[i]] = v
               end
+              cav[:m] = 1 if cav[:n] == "Horse"
               Definitions.populate_vehicle_data(Units.sanitize(cav[:n]).to_sym, cav)
               lu[:"#{cav[:c]}_#{Units.sanitize(cav[:n])}"] = cav
             end

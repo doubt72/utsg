@@ -3,7 +3,7 @@
 module Scenarios
   class Scenario515 < Base
     ID = "515"
-    NAME = "The Paper Wall"
+    NAME = "A Paper Wall"
     ALLIES = ["yug"].freeze
     AXIS = ["ger"].freeze
     STATUS = "p"
