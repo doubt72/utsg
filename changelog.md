@@ -1,5 +1,6 @@
 # 0.145
 
+- Show hidden units on replay
 - Don't allow decoys to carry (non-decoy) weapons
 - Bug fix: should not count decoy leaders for score
 - Fixing a bunch of typos and such in scenario descriptions

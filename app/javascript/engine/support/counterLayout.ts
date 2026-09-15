@@ -429,5 +429,6 @@ function reverseName(counter: Counter): boolean {
 
 function blueName(counter: Counter): boolean {
   if (!counter.hasUnit) { return false }
-  return !counter.unit.decoy && counter.unit.interfacePlayer && !counter.unit.observed
+  const unit = counter.unit
+  return !unit.decoy && unit.interfacePlayer && !unit.observed
 }

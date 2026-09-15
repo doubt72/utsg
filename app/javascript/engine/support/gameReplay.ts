@@ -23,6 +23,7 @@ export type GameReplayCounterData = {
   abandoned?: boolean,
   facing: Direction,
   turretFacing?: Direction,
+  observed?: boolean,
   spotting?: string,
   sponsonSpotting?: string,
 
@@ -62,7 +63,7 @@ function unitToData(x: number, y: number, unit: Unit): GameReplayCounterData {
     jammed: unit.jammed, sponsonJammed: unit.sponsonJammed,
     weaponDestroyed: unit.weaponDestroyed, sponsonDestroyed: unit.sponsonDestroyed,
     turretJammed: unit.isTurretJammed, abandoned: unit.isAbandoned, facing: unit.facing,
-    turretFacing: unit.turretFacing,
+    turretFacing: unit.turretFacing, observed: unit.observed,
     spotting: unit.spotting, sponsonSpotting: unit.sponsonSpotting,
     uf: unit.rawData, children,
   }
@@ -84,10 +85,14 @@ function dataToUnit(data: GameReplayCounterData): Unit {
   if (data.abandoned) { unit.abandon() }
   unit.facing = data.facing
   unit.turretFacing = data.turretFacing as Direction
+  unit.observed = !!data.observed
+  unit.interfacePlayer = true
   unit.spotting = data.spotting
   unit.sponsonSpotting = data.sponsonSpotting
   for (const c of data.children as GameReplayCounterData[]) {
-    unit.children.push(dataToUnit(c))
+    const child = dataToUnit(c)
+    unit.children.push(child)
+    child.parent = unit
   }
   return unit
 }

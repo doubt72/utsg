@@ -306,6 +306,7 @@ export default class Unit {
         (user === game.playerTwoName && this.playerNation === game.playerTwoNation)) {
       this.interfacePlayer = true
     }
+    if (game.state === "complete") { this.interfacePlayer = true }
   }
 
   get visible(): boolean {
