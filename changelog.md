@@ -1,3 +1,9 @@
+# 0.146
+
+- Updated/promoted 315
+- Promoted 010, 307, 504 to beta
+- Added prototype 419, 424
+
 # 0.145
 
 - Show hidden units on replay

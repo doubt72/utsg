@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Drop Zone O"
     ALLIES = ["usa"].freeze
     AXIS = ["ger"].freeze
-    STATUS = "b"
-    VERSION = "0.2"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1944, 6, 6].freeze
     LAYOUT = [23, 23, "x"].freeze
@@ -33,7 +33,7 @@ module Scenarios
         [5, :ger_volksgrenadier_s],
         [2, :ger_mg_42],
       ] },
-      "5": { list: [
+      "4": { list: [
         :ger_leader_4_1,
         [5, :ger_volksgrenadier_s],
         [2, :ger_mg_42],
@@ -45,7 +45,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 9,
+          turns: 7,
           first_deploy: 2,
           first_action: 1,
           date:,
@@ -95,7 +95,7 @@ module Scenarios
             [4, 17, 2], [3, 5, 2],
           ],
           allied_setup: { "0" => [["1-21", "1-21"]], "2" => [["1-21", "1-21"]] },
-          axis_setup: { "0" => [["*", "*"]], "5" => [[0, "*"]] },
+          axis_setup: { "0" => [["*", "*"]], "4" => [[0, "*"]] },
           base_terrain: "",
           night: true,
         }

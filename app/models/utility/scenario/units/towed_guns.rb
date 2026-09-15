@@ -32,6 +32,7 @@ module Utility
               ["ita", "Obice da 100/17", 14, { sn: 1 }],
 
               ["jap", "70mm Type 92", 32], ["jap", "75mm Type 94", 35],
+              ["jap", "10cm Type 92", 32], ["jap", "15cm Type 89", 29],
 
               ["uk", "QF 25-Pounder", 40], ["uk", "QF 25Pdr Short", 43], ["uk", "QF 4.5inch", 8],
 

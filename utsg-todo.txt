@@ -1,17 +1,17 @@
 Features/Bug Fixes
+  - Should be able to fire into unarmored side of vehicles
+  - Figure out how to compress super big stacks
   ? Initiative check wrong with hidden units/morale check
   - 516 Special cavalry rules (single morale check, mounted but not weapon fire)
   - 523 Hidden cavalry
   - 025, 519, 522 Check if winter needed for snow
   - 037, (043), 521 Special escape rules
   - (046) Special partisan rules
-  - (422) Cave special rules
+  - (420), (425) Cave special rules
   - (417) Bonzai special rules (no VP from casualties)
   - 319 Test playing multiple factions
   - 524 Finns on the other side
   - Consider better way of doing animations
-  + Decoy markers
-    + Display unobserved in replay
   ? Test two-player stopping short (think something might be wrong with it)
   ? Check offboard lines for artillery all edges
   - Save/play user scenarios / limit 1 - 3 - 5

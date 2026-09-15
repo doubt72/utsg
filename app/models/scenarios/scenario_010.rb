@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Fish in a Barrel"
     ALLIES = ["ussr"].freeze
     AXIS = ["hun"].freeze
-    STATUS = "a"
-    VERSION = "0.2"
+    STATUS = "b"
+    VERSION = "0.3"
 
     DATE = [1941, 8, 1].freeze
     LAYOUT = [15, 23, "x"].freeze
@@ -40,7 +40,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 9,
+          turns: 6,
           first_deploy: 1,
           first_action: 2,
           date:,
