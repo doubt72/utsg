@@ -45,7 +45,7 @@ module Scenarios
           first_deploy: 2,
           first_action: 1,
           date:,
-          location: "Normandy, France",
+          location: "Omaha Beach, Normandy, France",
           author: "The Establishment",
           description:,
           map_data:,

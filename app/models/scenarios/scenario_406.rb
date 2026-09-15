@@ -74,7 +74,7 @@ module Scenarios
 
       def description
         [
-          "Part of Operation Galvanic, The landings at Tarawa Atoll,
+          "Part of Operation Galvanic, the landings at Tarawa Atoll,
           specifically on Betio Island, were the first major American
           amphibious assault in the central Pacific.  U.S. Marines of the 2nd
           Marine Division approached under cover of naval and aerial

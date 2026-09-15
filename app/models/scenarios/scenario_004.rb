@@ -62,7 +62,7 @@ module Scenarios
           had additionally limited the ability of the Soviets to bring up
           armor and artillery support.  Regardless, the attack picked up
           momentum and the Soviets made substantial gains, although they were
-          eventually brought to a halt by German counter-attacks.",
+          eventually brought to a halt by German counterattacks.",
           "The next day, while the Soviets attempted to resume their advance,
           the Germans had started to hold fast, and were managing to plug what
           gaps had appeared with divisional reserves who were now fighting

@@ -553,7 +553,7 @@ module Utility
               "lvt_4": { sz: 5, mv: 5, wpn: :"m2_browning", amp: true, bd: 3, trn: 3 },
               "lvta_1": { sz: 4, mv: 5, wpn: :"37mm_m3", amp: true, bd: 4, trn: 3, arm: [1, 0, 0], trt: [4, 3, 3] },
               "lvta_2": { sz: 4, mv: 5, wpn: :"m2_browning", amp: true, bd: 3, trn: 3, arm: [1, 0, 0, -1] },
-              "lvta_4": { sz: 5, mv: 5, wpn: :"75mm_m2_m3", amp: true, bd: 3, trn: 3, arm: [1, 0, 0], trt: [4, 3, 3] },
+              "lvta_4": { sz: 5, mv: 5, wpn: :"75mm_m2_m3", amp: true, bd: 3, trn: 3, arm: [1, 0, 0], trt: [4, 3, 3, -1] },
               # USSR Armored Vehicles
               "bt_5": { sz: 3, mv: 9, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },
               "bt_7": { sz: 3, mv: 9, wpn: :"45mm_19_k", arm: [1, 1, 1], trt: [1, 1, 1] },

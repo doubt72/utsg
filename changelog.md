@@ -1,3 +1,11 @@
+# 0.145
+
+- Don't allow decoys to carry (non-decoy) weapons
+- Bug fix: should not count decoy leaders for score
+- Fixing a bunch of typos and such in scenario descriptions
+- Updated/promoted 405
+- Added prototype 417, 418
+
 # 0.144
 
 - Added in-game scenario window

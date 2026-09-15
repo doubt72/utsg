@@ -272,6 +272,9 @@ export function riverStyle(hex: Hex, dirs: number): SVGStyle {
     color = "#753"
     dash = dirs > 2 ? [13, 7] : [16, 7]
   }
+  if (color === darkWater && hex.baseTerrain === terrainType.Shallow) {
+    color = lightWater
+  }
   return {
     fill: clearColor,
     strokeWidth: 10,

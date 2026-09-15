@@ -86,7 +86,7 @@ module Scenarios
           vital for preventing German counterattacks from reaching Sword
           Beach, where British forces were scheduled to land just hours later.
           Led by Major John Howard, D Company of the 2nd Battalion,
-          Oxfordshire and Buckinghamshire Light Infantry, landed in six wooden
+          Oxfordshire, and Buckinghamshire Light Infantry landed in six wooden
           Horsa gliders just after midnight, achieving near-perfect placement
           only yards from the objectives.",
 

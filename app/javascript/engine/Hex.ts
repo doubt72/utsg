@@ -57,7 +57,7 @@ export default class Hex {
   railroad: boolean;
   railroadDirections?: Direction[][];
 
-  river: boolean;
+  iRiver: boolean;
   riverType?: StreamType;
   riverDirections?: Direction[];
 
@@ -86,8 +86,8 @@ export default class Hex {
     if (this.railroad) {
       this.railroadDirections = data.rr?.d
     }
-    this.river = !!data.s
-    if (this.river) {
+    this.iRiver = !!data.s
+    if (this.iRiver) {
       this.riverDirections = data.s?.d
       this.riverType = data.s?.t ?? "s"
     }
@@ -204,6 +204,11 @@ export default class Hex {
     if (all) { return "all" }
     if (none) { return "none" }
     return edges
+  }
+
+  get river(): boolean {
+    if ([terrainType.Shallow || terrainType.Water].includes(this.baseTerrain)) { return false }
+    return this.iRiver
   }
 
   // "Solid" terrain (i.e., surrounded), no need for curves

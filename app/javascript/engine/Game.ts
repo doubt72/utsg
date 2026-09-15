@@ -645,7 +645,7 @@ export default class Game {
     for (const u of this.eliminatedUnits) {
       if (u.isFeature || u.playerNation === this.playerOneNation) { continue }
       const unit = u as Unit
-      if (unit.leader) {
+      if (unit.leader && !unit.decoy) {
         points += 6
       } else if (!unit.operated && !unit.tankCrew && !unit.decoy) {
         points += unit.size

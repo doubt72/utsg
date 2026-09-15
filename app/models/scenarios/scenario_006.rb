@@ -72,7 +72,7 @@ module Scenarios
           were forced to retreat, although apparently they lost more tanks to
           breakdowns or running out of fuel than actual combat due to extreme
           cold and extremely stretched supply lines [this part is believable -
-          ed.]",
+          ed].",
           "Needless to say, the results were not pretty for the Axis army group, which
           was eventually largely cut off and destroyed in Stalingrad.",
         ]

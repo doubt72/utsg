@@ -314,7 +314,7 @@ export default class FireAction extends BaseAction {
                     critical ? "passed (critical)" : "passed"
                   }</span>` }
                   for (const t of dTargets) {
-                    if (t.counter.unit.canCarrySupport) {
+                    if (t.counter.unit.canCarrySupport && !t.counter.unit.decoy) {
                       this.game.moraleChecksNeeded.push({
                         unit: t.counter.unit, from: [from], to: d, incendiary: u0.incendiary,
                         critical,
@@ -507,8 +507,13 @@ export default class FireAction extends BaseAction {
           }
           if (hitRoll.result.result > hitCheck) {
             const critical = critHit(hitRoll.result.result, hitCheck)
-            targets.forEach(t => this.game.moraleChecksNeeded.push(
-              { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary, critical }))
+            targets.forEach(t => {
+              if (!t.counter.unit.decoy) {
+                this.game.moraleChecksNeeded.push(
+                  { unit: t.counter.unit, from: [from], to, incendiary: target0.unit.incendiary, critical }
+                )
+              }
+            })
             if (needDice) { hitRoll.description += `<span style="color: ${failRedColorMarker()};">${
               critical ? "passed (critical)" : "passed"
             }</span>` }
@@ -708,7 +713,7 @@ export default class FireAction extends BaseAction {
                   if (needDice) { hitRoll.description += `<span style="color: ${passBlueColorMarker()};">failed</span>` }
                   anims.push({ loc: c, type: "nowreck" })
                 }
-              } else {
+              } else if (!t.counter.unit.decoy) {
                 this.game.moraleChecksNeeded.push({
                   unit: t.counter.unit, from: fcoords, to: c, incendiary: u0.incendiary, critical
                 })

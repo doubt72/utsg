@@ -68,7 +68,7 @@ module Scenarios
           artillery support but no infantry. The \"Ariete\" Division had adopted
           the German practice of tank-infantry coordination while training
           with the Panzer units of the Afrika Korps during the previous months
-          and had put it to god use at Bir el Gubi.",
+          and had put it to good use at Bir el Gubi.",
         ]
       end
 

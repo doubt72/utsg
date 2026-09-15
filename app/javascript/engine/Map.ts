@@ -312,7 +312,7 @@ export default class Map {
         list.push(counter)
       } else { list.splice(index, 0, counter) }
       if (unit.uncrewedSW) {
-        if (!last || !last.canCarrySupport) {
+        if (!last || !last.canCarrySupport || (last.decoy && !unit.decoy)) {
           throw new StackingActionError(
             `${counter.name} is not assigned to an operator; it ` +
               "must be placed on a squad, team, or leader to be assigned.  I.e, you must place the " +
@@ -327,7 +327,7 @@ export default class Map {
         }
       }
       if (unit.crewed) {
-        if (!last ||
+        if (!last || last.decoy ||
           (!last.canHandle && !(last.canTow && last.size >= (unit.towSize ?? 0)))) {
           throw new StackingActionError(
             `${counter.name} is not assigned to an operator or vehicle; it ` +

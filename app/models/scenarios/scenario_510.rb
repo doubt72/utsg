@@ -65,7 +65,7 @@ module Scenarios
           rejuvenated French Army, which fallen back on their lines of supply
           and communications and were closer to repair shops, supply dumps and
           stores.  German progress was made only late on the third day of
-          operations, finally forcing crossings of the Somme, and captured
+          operations, finally forcing crossings of the Somme, and the Germans captured
           Paris a week later.",
         ]
       end

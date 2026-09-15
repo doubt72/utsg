@@ -6,8 +6,8 @@ module Scenarios
     NAME = "Patrol's End"
     ALLIES = ["usa"].freeze
     AXIS = ["jap"].freeze
-    STATUS = "b"
-    VERSION = "0.3"
+    STATUS = ""
+    VERSION = "1.0"
 
     DATE = [1942, 12, 3].freeze
     LAYOUT = [15, 11, "x"].freeze
@@ -28,7 +28,7 @@ module Scenarios
         list: [
           :jap_leader_4_1,
           :jap_leader_3_1,
-          [5, :jap_b_division_s],
+          [5, :jap_a_division_s],
           [2, :jap_type_99_lmg],
         ],
       },
@@ -37,7 +37,7 @@ module Scenarios
     class << self
       def generate
         {
-          turns: 7,
+          turns: 5,
           first_deploy: 2,
           first_action: 1,
           date:,

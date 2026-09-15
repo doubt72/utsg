@@ -83,14 +83,15 @@ export default class DeployState extends BaseState {
       const list = this.map.units[hex.coord.y][hex.coord.x]
       const last = list[list.length - 1] as Unit
       if (unit.crewed) {
-        if ((last && !last.isFeature) &&
+        if ((last && !last.isFeature && !last.decoy) &&
             ((last.canTow && last.size >= (unit.towSize ?? 0)) || last.canHandle)) {
           rc = hexOpenType.Open
         } else {
           rc = hexOpenType.Red
         }
       } else if (unit.uncrewedSW) {
-        if ((last && !last.isFeature) && last.canCarrySupport && !(last.leader && unit.baseMovement < 0)) {
+        if ((last && !last.isFeature && !last.decoy) && last.canCarrySupport &&
+            !(last.leader && unit.baseMovement < 0)) {
           rc = hexOpenType.Open
         } else {
           rc = hexOpenType.Red

@@ -385,8 +385,7 @@ export default function NewGame() {
     return (
       <div className={`scenario-row${random ? " scenario-row-selected" : ""}`}
            onClick={() => randomScenario()}>
-        <div className="scenario-row-code"></div>
-        <div className="green flex-fill">Choose Random Scenario</div>
+        <div className="green flex-fill ml1em">Choose Random Scenario [uses filters]</div>
       </div>
     )
   }

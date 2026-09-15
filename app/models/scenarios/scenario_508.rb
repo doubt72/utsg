@@ -59,7 +59,7 @@ module Scenarios
           attempt to capture the Norwegian King and government.",
 
           "After Germany launched its surprise invasion, a
-          detachment of German paratroopers and soldiers advanced inland with
+          detachment of German paratroopers advanced inland with
           the goal of capturing King Haakon VII and his cabinet, who had fled
           Oslo.  Norwegian forces, consisting of local volunteers, soldiers,
           and members of the Royal Guards, set up an ambush at Midtskogen.
@@ -67,7 +67,7 @@ module Scenarios
           to halt the German advance in a short but intense firefight.  The
           German commander was seriously wounded, and the attackers retreated.
           This delay gave the Norwegian leadership critical time to escape
-          further north, eventually allowing them to continue resistance and
+          farther north, eventually allowing them to continue resistance and
           organize in exile.",
         ]
       end

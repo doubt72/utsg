@@ -25,7 +25,7 @@ export default function MapHexDetail({
   hex, maxX, maxY, selectCallback, showTerrain, terrainCallback, svgRef, scale
 }: MapHexDetailProps) {
   const river = () => {
-    if (!hex.river) { return "" }
+    if (!hex.iRiver) { return "" }
     const path = riverPath(hex)
     return <path d={path} style={riverStyle(hex, hex.riverDirections?.length ?? 0) as object} />
   }

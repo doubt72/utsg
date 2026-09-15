@@ -59,7 +59,7 @@ module Scenarios
           from Buna made contact with Australian defenders near the village of
           Kokoda.  This marked the opening clash of what would become the
           Kokoda Track Campaign, a brutal and strategically vital struggle for
-          control of the overland route to Port Moresby through the ruggen
+          control of the overland route to Port Moresby through the rugged
           Owen Stanley Range of Papua New Guinea.  At the time, Kokoda was held
           by a small force of around 80 men from the 39th Battalion, a mostly
           militia unit of young and largely inexperienced Australian soldiers.",
